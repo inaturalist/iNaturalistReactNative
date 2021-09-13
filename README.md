@@ -1,1 +1,1 @@
-# INatMobileReactNative
+# iNaturalistReactNative
