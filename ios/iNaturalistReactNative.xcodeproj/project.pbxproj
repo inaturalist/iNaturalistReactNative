@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* INatMobileReactNativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* INatMobileReactNativeTests.m */; };
+		00E356F31AD99517003FC87E /* iNaturalistReactNativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* iNaturalistReactNativeTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2F251C90E585200A15F090DF /* libPods-INatMobileReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79BCC193EDAF2BBEC35EE061 /* libPods-INatMobileReactNative.a */; };
+		2F251C90E585200A15F090DF /* libPods-iNaturalistReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79BCC193EDAF2BBEC35EE061 /* libPods-iNaturalistReactNative.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		A68440D6D87A41277C71C252 /* libPods-INatMobileReactNative-INatMobileReactNativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74D543A985D4555B8C85B348 /* libPods-INatMobileReactNative-INatMobileReactNativeTests.a */; };
+		A68440D6D87A41277C71C252 /* libPods-iNaturalistReactNative-iNaturalistReactNativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74D543A985D4555B8C85B348 /* libPods-iNaturalistReactNative-iNaturalistReactNativeTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,27 +22,27 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = INatMobileReactNative;
+			remoteInfo = iNaturalistReactNative;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* INatMobileReactNativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = INatMobileReactNativeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* iNaturalistReactNativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iNaturalistReactNativeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* INatMobileReactNativeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INatMobileReactNativeTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* INatMobileReactNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = INatMobileReactNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = INatMobileReactNative/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = INatMobileReactNative/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = INatMobileReactNative/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = INatMobileReactNative/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = INatMobileReactNative/main.m; sourceTree = "<group>"; };
-		74D543A985D4555B8C85B348 /* libPods-INatMobileReactNative-INatMobileReactNativeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-INatMobileReactNative-INatMobileReactNativeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		79BCC193EDAF2BBEC35EE061 /* libPods-INatMobileReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-INatMobileReactNative.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = INatMobileReactNative/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A0F11DC9D133445933F94CEF /* Pods-INatMobileReactNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INatMobileReactNative.release.xcconfig"; path = "Target Support Files/Pods-INatMobileReactNative/Pods-INatMobileReactNative.release.xcconfig"; sourceTree = "<group>"; };
-		AA97B3DCA18D747D9E7F0358 /* Pods-INatMobileReactNative-INatMobileReactNativeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INatMobileReactNative-INatMobileReactNativeTests.debug.xcconfig"; path = "Target Support Files/Pods-INatMobileReactNative-INatMobileReactNativeTests/Pods-INatMobileReactNative-INatMobileReactNativeTests.debug.xcconfig"; sourceTree = "<group>"; };
-		ACD831F90866E862C17F1AD1 /* Pods-INatMobileReactNative-INatMobileReactNativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INatMobileReactNative-INatMobileReactNativeTests.release.xcconfig"; path = "Target Support Files/Pods-INatMobileReactNative-INatMobileReactNativeTests/Pods-INatMobileReactNative-INatMobileReactNativeTests.release.xcconfig"; sourceTree = "<group>"; };
-		AF11579E3E92C4DBEEE751CD /* Pods-INatMobileReactNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INatMobileReactNative.debug.xcconfig"; path = "Target Support Files/Pods-INatMobileReactNative/Pods-INatMobileReactNative.debug.xcconfig"; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* iNaturalistReactNativeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iNaturalistReactNativeTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* iNaturalistReactNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNaturalistReactNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iNaturalistReactNative/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = iNaturalistReactNative/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = iNaturalistReactNative/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = iNaturalistReactNative/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iNaturalistReactNative/main.m; sourceTree = "<group>"; };
+		74D543A985D4555B8C85B348 /* libPods-iNaturalistReactNative-iNaturalistReactNativeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iNaturalistReactNative-iNaturalistReactNativeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79BCC193EDAF2BBEC35EE061 /* libPods-iNaturalistReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iNaturalistReactNative.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = iNaturalistReactNative/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A0F11DC9D133445933F94CEF /* Pods-iNaturalistReactNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative.release.xcconfig"; sourceTree = "<group>"; };
+		AA97B3DCA18D747D9E7F0358 /* Pods-iNaturalistReactNative-iNaturalistReactNativeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-iNaturalistReactNativeTests.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		ACD831F90866E862C17F1AD1 /* Pods-iNaturalistReactNative-iNaturalistReactNativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-iNaturalistReactNativeTests.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests.release.xcconfig"; sourceTree = "<group>"; };
+		AF11579E3E92C4DBEEE751CD /* Pods-iNaturalistReactNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -51,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A68440D6D87A41277C71C252 /* libPods-INatMobileReactNative-INatMobileReactNativeTests.a in Frameworks */,
+				A68440D6D87A41277C71C252 /* libPods-iNaturalistReactNative-iNaturalistReactNativeTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,20 +59,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F251C90E585200A15F090DF /* libPods-INatMobileReactNative.a in Frameworks */,
+				2F251C90E585200A15F090DF /* libPods-iNaturalistReactNative.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* INatMobileReactNativeTests */ = {
+		00E356EF1AD99517003FC87E /* iNaturalistReactNativeTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* INatMobileReactNativeTests.m */,
+				00E356F21AD99517003FC87E /* iNaturalistReactNativeTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = INatMobileReactNativeTests;
+			path = iNaturalistReactNativeTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -83,7 +83,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* INatMobileReactNative */ = {
+		13B07FAE1A68108700A75B9A /* iNaturalistReactNative */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -93,15 +93,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = INatMobileReactNative;
+			name = iNaturalistReactNative;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				79BCC193EDAF2BBEC35EE061 /* libPods-INatMobileReactNative.a */,
-				74D543A985D4555B8C85B348 /* libPods-INatMobileReactNative-INatMobileReactNativeTests.a */,
+				79BCC193EDAF2BBEC35EE061 /* libPods-iNaturalistReactNative.a */,
+				74D543A985D4555B8C85B348 /* libPods-iNaturalistReactNative-iNaturalistReactNativeTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -109,10 +109,10 @@
 		3610B9F08DA0E49FEE702ABA /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				AF11579E3E92C4DBEEE751CD /* Pods-INatMobileReactNative.debug.xcconfig */,
-				A0F11DC9D133445933F94CEF /* Pods-INatMobileReactNative.release.xcconfig */,
-				AA97B3DCA18D747D9E7F0358 /* Pods-INatMobileReactNative-INatMobileReactNativeTests.debug.xcconfig */,
-				ACD831F90866E862C17F1AD1 /* Pods-INatMobileReactNative-INatMobileReactNativeTests.release.xcconfig */,
+				AF11579E3E92C4DBEEE751CD /* Pods-iNaturalistReactNative.debug.xcconfig */,
+				A0F11DC9D133445933F94CEF /* Pods-iNaturalistReactNative.release.xcconfig */,
+				AA97B3DCA18D747D9E7F0358 /* Pods-iNaturalistReactNative-iNaturalistReactNativeTests.debug.xcconfig */,
+				ACD831F90866E862C17F1AD1 /* Pods-iNaturalistReactNative-iNaturalistReactNativeTests.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -128,9 +128,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* INatMobileReactNative */,
+				13B07FAE1A68108700A75B9A /* iNaturalistReactNative */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* INatMobileReactNativeTests */,
+				00E356EF1AD99517003FC87E /* iNaturalistReactNativeTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				3610B9F08DA0E49FEE702ABA /* Pods */,
@@ -143,8 +143,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* INatMobileReactNative.app */,
-				00E356EE1AD99517003FC87E /* INatMobileReactNativeTests.xctest */,
+				13B07F961A680F5B00A75B9A /* iNaturalistReactNative.app */,
+				00E356EE1AD99517003FC87E /* iNaturalistReactNativeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -152,9 +152,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* INatMobileReactNativeTests */ = {
+		00E356ED1AD99517003FC87E /* iNaturalistReactNativeTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "INatMobileReactNativeTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "iNaturalistReactNativeTests" */;
 			buildPhases = (
 				9A9131AE1042013524D6FF09 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -168,14 +168,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = INatMobileReactNativeTests;
-			productName = INatMobileReactNativeTests;
-			productReference = 00E356EE1AD99517003FC87E /* INatMobileReactNativeTests.xctest */;
+			name = iNaturalistReactNativeTests;
+			productName = iNaturalistReactNativeTests;
+			productReference = 00E356EE1AD99517003FC87E /* iNaturalistReactNativeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* INatMobileReactNative */ = {
+		13B07F861A680F5B00A75B9A /* iNaturalistReactNative */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "INatMobileReactNative" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "iNaturalistReactNative" */;
 			buildPhases = (
 				92D52A9C020AEB93DBA18493 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -190,9 +190,9 @@
 			);
 			dependencies = (
 			);
-			name = INatMobileReactNative;
-			productName = INatMobileReactNative;
-			productReference = 13B07F961A680F5B00A75B9A /* INatMobileReactNative.app */;
+			name = iNaturalistReactNative;
+			productName = iNaturalistReactNative;
+			productReference = 13B07F961A680F5B00A75B9A /* iNaturalistReactNative.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -212,7 +212,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "INatMobileReactNative" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "iNaturalistReactNative" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -225,8 +225,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* INatMobileReactNative */,
-				00E356ED1AD99517003FC87E /* INatMobileReactNativeTests */,
+				13B07F861A680F5B00A75B9A /* iNaturalistReactNative */,
+				00E356ED1AD99517003FC87E /* iNaturalistReactNativeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -271,15 +271,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative/Pods-INatMobileReactNative-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative/Pods-INatMobileReactNative-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative/Pods-INatMobileReactNative-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6382315E5922D44E62D91704 /* [CP] Embed Pods Frameworks */ = {
@@ -288,15 +288,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative/Pods-INatMobileReactNative-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative/Pods-INatMobileReactNative-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative/Pods-INatMobileReactNative-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		92D52A9C020AEB93DBA18493 /* [CP] Check Pods Manifest.lock */ = {
@@ -314,7 +314,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-INatMobileReactNative-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-iNaturalistReactNative-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -336,7 +336,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-INatMobileReactNative-INatMobileReactNativeTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-iNaturalistReactNative-iNaturalistReactNativeTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -349,15 +349,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative-INatMobileReactNativeTests/Pods-INatMobileReactNative-INatMobileReactNativeTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative-INatMobileReactNativeTests/Pods-INatMobileReactNative-INatMobileReactNativeTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative-INatMobileReactNativeTests/Pods-INatMobileReactNative-INatMobileReactNativeTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -385,15 +385,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative-INatMobileReactNativeTests/Pods-INatMobileReactNative-INatMobileReactNativeTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative-INatMobileReactNativeTests/Pods-INatMobileReactNative-INatMobileReactNativeTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-INatMobileReactNative-INatMobileReactNativeTests/Pods-INatMobileReactNative-INatMobileReactNativeTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -403,7 +403,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* INatMobileReactNativeTests.m in Sources */,
+				00E356F31AD99517003FC87E /* iNaturalistReactNativeTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,7 +421,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* INatMobileReactNative */;
+			target = 13B07F861A680F5B00A75B9A /* iNaturalistReactNative */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -429,14 +429,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA97B3DCA18D747D9E7F0358 /* Pods-INatMobileReactNative-INatMobileReactNativeTests.debug.xcconfig */;
+			baseConfigurationReference = AA97B3DCA18D747D9E7F0358 /* Pods-iNaturalistReactNative-iNaturalistReactNativeTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = INatMobileReactNativeTests/Info.plist;
+				INFOPLIST_FILE = iNaturalistReactNativeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -450,17 +450,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/INatMobileReactNative.app/INatMobileReactNative";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iNaturalistReactNative.app/iNaturalistReactNative";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ACD831F90866E862C17F1AD1 /* Pods-INatMobileReactNative-INatMobileReactNativeTests.release.xcconfig */;
+			baseConfigurationReference = ACD831F90866E862C17F1AD1 /* Pods-iNaturalistReactNative-iNaturalistReactNativeTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = INatMobileReactNativeTests/Info.plist;
+				INFOPLIST_FILE = iNaturalistReactNativeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -474,19 +474,19 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/INatMobileReactNative.app/INatMobileReactNative";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iNaturalistReactNative.app/iNaturalistReactNative";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AF11579E3E92C4DBEEE751CD /* Pods-INatMobileReactNative.debug.xcconfig */;
+			baseConfigurationReference = AF11579E3E92C4DBEEE751CD /* Pods-iNaturalistReactNative.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = INatMobileReactNative/Info.plist;
+				INFOPLIST_FILE = iNaturalistReactNative/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -497,7 +497,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = INatMobileReactNative;
+				PRODUCT_NAME = iNaturalistReactNative;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -506,12 +506,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0F11DC9D133445933F94CEF /* Pods-INatMobileReactNative.release.xcconfig */;
+			baseConfigurationReference = A0F11DC9D133445933F94CEF /* Pods-iNaturalistReactNative.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = INatMobileReactNative/Info.plist;
+				INFOPLIST_FILE = iNaturalistReactNative/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -522,7 +522,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = INatMobileReactNative;
+				PRODUCT_NAME = iNaturalistReactNative;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -654,7 +654,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "INatMobileReactNativeTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "iNaturalistReactNativeTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -663,7 +663,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "INatMobileReactNative" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "iNaturalistReactNative" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -672,7 +672,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "INatMobileReactNative" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "iNaturalistReactNative" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
