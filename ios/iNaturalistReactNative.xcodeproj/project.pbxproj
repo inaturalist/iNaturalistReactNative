@@ -114,7 +114,6 @@
 				AA97B3DCA18D747D9E7F0358 /* Pods-iNaturalistReactNative-iNaturalistReactNativeTests.debug.xcconfig */,
 				ACD831F90866E862C17F1AD1 /* Pods-iNaturalistReactNative-iNaturalistReactNativeTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -263,7 +262,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export NODE_BINARY=/Users/amanda/.nvm/versions/node/v12.13.0/bin/node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		010B3221A1D8DF0722FE9DE2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -485,6 +484,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = iNaturalistReactNative/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -511,6 +511,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				INFOPLIST_FILE = iNaturalistReactNative/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
