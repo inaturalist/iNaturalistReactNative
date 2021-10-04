@@ -7,8 +7,7 @@ import type { ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   background: {
-    backgroundColor: colors.white,
-    flex: 1
+    backgroundColor: colors.white
   }
 } );
 

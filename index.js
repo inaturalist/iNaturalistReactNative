@@ -1,6 +1,4 @@
-/**
- * @format
- */
+// @flow
 
 import {AppRegistry} from "react-native";
 import ObsList from "./components/Observations/ObservationsList";

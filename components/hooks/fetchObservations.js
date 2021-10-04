@@ -3,13 +3,23 @@
 import { useState, useEffect } from "react";
 import inatjs from "inaturalistjs";
 
-const useFetchObservations = ( ): any => {
+const useFetchObservations = ( ): Array<{
+  uuid: string,
+  userPhoto: string,
+  commonName: string,
+  location: string,
+  timeObservedAt: string,
+  identifications: number,
+  comments: number,
+  qualityGrade: string
+}> => {
   const [observations, setObservations] = useState( [] );
 
   useEffect( ( ) => {
+    let isCurrent = true;
     const fetchObservations = async ( ) => {
       try {
-        const testUser = "albulltest";
+        const testUser = "albullington";
         const params = { user_login: testUser };
         const response = await inatjs.observations.search( params );
         const userObservations = response.results;
@@ -26,12 +36,16 @@ const useFetchObservations = ( ): any => {
             qualityGrade: obs.quality_grade
           };
         } ) );
+        if ( !isCurrent ) { return; }
         setObservations( onlyNecessaryObsDetails );
       } catch ( e ) {
         console.log( e, JSON.stringify( e ), "couldn't fetch observations" );
       }
     };
     fetchObservations( );
+    return ( ) => {
+      isCurrent = false;
+    };
   }, [] );
 
   return observations;
