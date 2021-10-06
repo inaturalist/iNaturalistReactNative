@@ -22,6 +22,7 @@ const ObservationsList = ( ): Node => {
       data={observations}
       keyExtractor={extractKey}
       renderItem={renderItem}
+      testID="ObservationsList.myObservations"
       ListEmptyComponent={renderEmptyState}
     />
   );
