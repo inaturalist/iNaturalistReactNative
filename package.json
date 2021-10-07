@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator='iPhone 13'",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint ."
@@ -34,6 +34,7 @@
     "jest": "^26.6.3",
     "jest-fetch-mock": "^3.0.3",
     "metro-react-native-babel-preset": "^0.66.0",
+    "react-native-clean-project": "^3.6.7",
     "react-native-codegen": "^0.0.7",
     "react-native-testing-library": "^6.0.0",
     "react-test-renderer": "17.0.2"

@@ -10,7 +10,9 @@ target 'iNaturalistReactNative' do
     :path => config[:reactNativePath],
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => false
-  )
+    )
+  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
+  pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
 
   target 'iNaturalistReactNativeTests' do
     inherit! :complete

@@ -1,10 +1,10 @@
 // @flow strict-local
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import inatjs from "inaturalistjs";
-import { parse } from "@babel/core";
+import { Q } from "@nozbe/watermelondb";
 
-// import database from "../../../model/database";
+import database from "../../../model/database";
 
 const useFetchObservations = ( ): Array<{
   uuid: string,
@@ -16,177 +16,131 @@ const useFetchObservations = ( ): Array<{
   comments: number,
   qualityGrade: string
 }> => {
-  const [observations, setObservations] = useState( [] );
+  const FIELDS = useMemo( ( ) => {
+    return {
+    observed_on: true,
+    place_guess: true,
+    quality_grade: true,
+    identifications: true,
+    comments_count: true,
+    taxon: {
+      name: true,
+      preferred_common_name: true
+    },
+    photos: {
+      url: true
+    }
+  };
+}, [] );
+
+const deleteAllDatabaseRecords = async ( ) => {
+  const localObservations = await database.get( "observations" )
+    .query( )
+    .fetch( );
+
+  const deleted = localObservations.map( obs => obs.prepareDestroyPermanently( ) );
+
+  database.batch( ...deleted );
+};
+
+const transformObsForDatabase = ( localObs, obs ) => {
+  localObs.uuid = obs.uuid;
+  localObs.userPhoto = obs.photos[0].url;
+  localObs.commonName = obs.taxon.preferred_common_name || obs.taxon.name;
+  localObs.location = obs.place_guess;
+  localObs.timeObservedAt = obs.observed_on;
+  localObs.identifications = obs.identifications.length;
+  localObs.comments = obs.comment_count;
+  localObs.qualityGrade = obs.quality_grade;
+};
+
+const getExistingObservations = async ( results ) => {
+  const uuids = results.map( obs => obs.uuid );
+  return database.get( "observations" )
+    .query( Q.where( "uuid", Q.oneOf( uuids ) ) )
+    .fetch( );
+};
+
+const createOrUpdateObs = useCallback( ( obs, existingObservations ) => {
+  const obsToUpdate = existingObservations.find( exO => exO.uuid === obs.uuid );
+  if ( obsToUpdate ) {
+    return obsToUpdate
+      .prepareUpdate( existingObs => transformObsForDatabase( existingObs, obs ) );
+  }
+
+  return database.get( "observations" )
+    .prepareCreate( newObs => transformObsForDatabase( newObs, obs ) );
+}, [] );
+
+const writeToDatabase = useCallback( ( results ) => {
+  // based on this description
+  // https://github.com/Nozbe/WatermelonDB/issues/252#issuecomment-466986977
+  database.write( async ( ) => {
+    // await deleteAllDatabaseRecords( );
+    // check which observations already exist - kind of a lot of boilerplate code here
+    // https://github.com/Nozbe/WatermelonDB/issues/36#issue-360631556
+    try {
+      const observationsToUpdate = await getExistingObservations( results );
+      const newObs = results.map( obs => createOrUpdateObs( obs, observationsToUpdate ) );
+      await database.batch( ...newObs );
+    } catch ( e ) {
+      console.log( e, "watermelondb query" );
+    }
+  } );
+}, [createOrUpdateObs] );
 
   useEffect( ( ) => {
     let isCurrent = true;
-
-    const renameInCamelCase = ( results ) => {
-      const renamedResults = results.map( ( obs => {
-        return {
-          uuid: obs.uuid,
-          userPhoto: obs.taxon.default_photo.url,
-          commonName: obs.species_guess,
-          location: obs.place_guess,
-          timeObservedAt: obs.observed_on,
-          identifications: obs.identifications.length || 0,
-          comments: obs.comment_count || 0,
-          qualityGrade: obs.quality_grade
-        };
-      } ) );
-      if ( !isCurrent ) { return; }
-      setObservations( renamedResults );
-    };
-
-    const fetchObservations = async( ) => {
-      const FIELDS = {
-        observed_on: true,
-        species_guess: true,
-        place_guess: true,
-        quality_grade: true,
-        identifications: true,
-        comments_count: true,
-        taxon: {
-          default_photo: {
-            url: true
-          }
-        }
-      };
-
+    const fetchObservations = async ( ) => {
       try {
-        const response = await fetch( "https://api.inaturalist.org/v2/observations", {
-          method: "post",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "X-HTTP-Method-Override": "GET",
-            "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE, HEAD"
-          },
-          body: JSON.stringify( {
-            user_login: "albullington",
-            photos: true,
-            fields: FIELDS
-          } )
-        } );
-        const parsedResponse = await response.json( );
-        renameInCamelCase( parsedResponse.results );
+        const testUser = "albullington";
+        const params = {
+          user_login: testUser,
+          per_page: 400,
+          photos: true,
+          details: "all",
+          fields: FIELDS
+        };
+        const response = await inatjs.observations.search( params );
+        const results = response.results;
+        if ( !isCurrent ) { return; }
+        writeToDatabase( results );
       } catch ( e ) {
         console.log( e, "couldn't fetch observations" );
       }
     };
 
-    // const fetchObservations = async ( ) => {
-    //   try {
-    //     const testUser = "albullington";
-    //     const params = {
-    //       user_login: testUser,
-    //       per_page: 50,
-    //       details: "all",
-    //       fields: "species_guess,observed_on,quality_grade,photos,identifications,comments_count,taxon"
-    //     };
-    //     const response = await inatjs.observations.search( params );
-    //     const userObservations = response.results;
-
-    //     const onlyNecessaryObsDetails = userObservations.map( ( obs => {
-    //       // console.log( obs.photos );
-    //       return {
-    //         uuid: obs.uuid,
-    //         // userPhoto: obs.photos[0],
-    //         commonName: obs.species_guess,
-    //         // location: obs.place_guess || obs.location,
-    //         timeObservedAt: obs.observed_on,
-    //         identifications: obs.identifications.length,
-    //         // comments: obs.comments.length,
-    //         qualityGrade: obs.quality_grade
-    //       };
-    //     } ) );
-    //     console.log( response.results, "response length v2" );
-    //     if ( !isCurrent ) { return; }
-    //     setObservations( onlyNecessaryObsDetails );
-    //   } catch ( e ) {
-    //     console.log( e, "couldn't fetch observations" );
-    //   }
-    // };
     fetchObservations( );
     return ( ) => {
       isCurrent = false;
     };
-  }, [] );
+  }, [FIELDS, writeToDatabase] );
 
-  return observations;
+  return;
 };
 
 export default useFetchObservations;
 
+// const fetchObservations = async( ) => {
 
-// try {
-//   await database.write( async ( ) => {
-//     await database.get( "observations" ).create( localObs => {
-//       userObservations.forEach( ( obs => {
-//         localObs.uuid = obs.uuid;
-//         localObs.userPhoto = obs.taxon.default_photo.square_url;
-//         localObs.commonName = obs.taxon.preferred_common_name || obs.taxon.name;
-//         localObs.location = obs.place_guess || obs.location;
-//         localObs.timeObservedAt = obs.time_observed_at;
-//         localObs.identifications = obs.identifications_count;
-//         localObs.comments = obs.comments.length;
-//         localObs.qualityGrade = obs.quality_grade;
-//       } ) );
-//     } );
-//   } );
-// } catch ( e ) {
-//   console.log( e, "couldn't create new obs in database" );
-// }
-
-// try {
-//   const localObservations = await database.get( "observations" ).query( ).fetch( );
-//   console.log( localObservations, "local obs with fetch?" );
-// } catch ( e ) {
-//   console.log( e, "can't fetch obs" );
-// }
-
-
-// const fetchObservations = async ( ) => {
 //   try {
-//     const testUser = "albullington";
-//     const params = {
-//       user_login: testUser,
-//       photos: true,
-//       fields: {
-//         species_guess: true,
-//         observed_on: true
-//       }
-//     };
-
-//     // const options = {
-//     //   fields: {
-//     //     species_guess: true,
-//     //     observed_on: true
-//     //   }
-//     // };
-//     const response = await inatjs.observations.search( params );
-//     // const userObservations = response.results;
-
-//     // console.log( response, "response v2" );
-
-//     // const onlyNecessaryObsDetails = [];
-
-//     // const onlyNecessaryObsDetails = userObservations.map( ( obs => {
-//     //   return {
-//     //     uuid: obs.uuid,
-//     //     userPhoto: obs.taxon.default_photo.square_url,
-//     //     commonName: obs.taxon.preferred_common_name || obs.taxon.name,
-//     //     location: obs.place_guess || obs.location,
-//     //     timeObservedAt: obs.time_observed_at,
-//     //     identifications: obs.identifications_count,
-//     //     comments: obs.comments.length,
-//     //     qualityGrade: obs.quality_grade
-//     //   };
-//     // } ) );
-//     if ( !isCurrent ) { return; }
-//     setObservations( onlyNecessaryObsDetails );
+//     const response = await fetch( "https://api.inaturalist.org/v2/observations", {
+//       method: "post",
+//       headers: {
+//         Accept: "application/json",
+//         "Content-Type": "application/json",
+//         "X-HTTP-Method-Override": "GET",
+//         "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE, HEAD"
+//       },
+//       body: JSON.stringify( {
+//         user_login: "albullington",
+//         fields: FIELDS
+//       } )
+//     } );
+//     const parsedResponse = await response.json( );
+//     renameResultsInCamelCase( parsedResponse.results );
+//     // writeToDatabase( parsedResponse.results );
 //   } catch ( e ) {
-//     console.log( e, e.message, "couldn't fetch observations" );
+//     console.log( e, "couldn't fetch observations" );
 //   }
 // };
-// fetchObservations( );
