@@ -1,11 +1,13 @@
 import { Database } from "@nozbe/watermelondb";
 import LokiJSAdapter from "@nozbe/watermelondb/adapters/lokijs";
 
-import schema from "./schema";
-import Observations from "./Observations";
+import schema from "../schema";
+import Observations from "../Observations";
 
 const adapter = new LokiJSAdapter( {
-  schema
+  schema,
+  useWebWorker: false,
+  useIncrementalIndexedDB: true
 } );
 
 export default new Database( {

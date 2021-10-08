@@ -3,7 +3,6 @@
 import React from "react";
 import { FlatList, Text, SafeAreaView } from "react-native";
 import type { Node } from "react";
-import inatjs from "inaturalistjs";
 import withObservables from "@nozbe/with-observables";
 
 import ObsCard from "./ObsCard";
@@ -21,14 +20,13 @@ const enhance = withObservables( ["observations"], ( { observations } ) => {
 } );
 
 const ObservationsList = ( { observations } ): Node => {
-  const isHermes = () => !!global.HermesInternal;
-  console.log( isHermes( ), "is hermes" );
   // this custom hook fetches on first component render
   // (and anytime you save while in debug - hot reloading mode )
   useFetchObservations( );
 
+  const handlePress = ( ) => console.log( "nav to obs details from obs list" );
   const extractKey = item => item.uuid;
-  const renderItem = ( { item } ) => <ObsCard item={item} />;
+  const renderItem = ( { item } ) => <ObsCard item={item} handlePress={handlePress} />;
 
   const renderEmptyState = ( ) => <Text testID="ObservationsList.emptyList">no observations</Text>;
 

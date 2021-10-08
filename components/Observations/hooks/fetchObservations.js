@@ -19,17 +19,34 @@ const useFetchObservations = ( ): Array<{
   const FIELDS = useMemo( ( ) => {
     return {
       comments_count: true,
+      created_at: true,
+      description: true,
+      geoprivacy: true,
       identifications: true,
+      latitude: true,
+      location: true,
+      longitude: true,
       observed_on: true,
       photos: {
         url: true
       },
       place_guess: true,
+      positional_accuracy: true,
+      preferences: {
+        prefers_community_taxon: true
+      },
+      private_place_guess: true,
+      public_positional_accuracy: true,
       quality_grade: true,
       taxon: {
+        iconic_taxon_id: true,
+        iconic_taxon_name: true,
         name: true,
-        preferred_common_name: true
-      }
+        preferred_common_name: true,
+        rank: true,
+        rank_level: true
+      },
+      time_observed_at: true
     // from new observation edit
 
     // iconic taxon id
@@ -167,6 +184,7 @@ const writeToDatabase = useCallback( ( results ) => {
         if ( !isCurrent ) { return; }
         writeToDatabase( results );
       } catch ( e ) {
+        if ( !isCurrent ) { return; }
         console.log( e, "couldn't fetch observations" );
       }
     };
@@ -177,7 +195,7 @@ const writeToDatabase = useCallback( ( results ) => {
     };
   }, [FIELDS, writeToDatabase] );
 
-  return;
+  return [];
 };
 
 export default useFetchObservations;
