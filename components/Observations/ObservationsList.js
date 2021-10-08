@@ -21,6 +21,8 @@ const enhance = withObservables( ["observations"], ( { observations } ) => {
 } );
 
 const ObservationsList = ( { observations } ): Node => {
+  const isHermes = () => !!global.HermesInternal;
+  console.log( isHermes( ), "is hermes" );
   // this custom hook fetches on first component render
   // (and anytime you save while in debug - hot reloading mode )
   useFetchObservations( );

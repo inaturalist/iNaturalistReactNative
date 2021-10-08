@@ -1,6 +1,6 @@
 // @flow strict-local
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import inatjs from "inaturalistjs";
 import { Q } from "@nozbe/watermelondb";
 
@@ -18,18 +18,79 @@ const useFetchObservations = ( ): Array<{
 }> => {
   const FIELDS = useMemo( ( ) => {
     return {
-    observed_on: true,
-    place_guess: true,
-    quality_grade: true,
-    identifications: true,
-    comments_count: true,
-    taxon: {
-      name: true,
-      preferred_common_name: true
-    },
-    photos: {
-      url: true
-    }
+      comments_count: true,
+      identifications: true,
+      observed_on: true,
+      photos: {
+        url: true
+      },
+      place_guess: true,
+      quality_grade: true,
+      taxon: {
+        name: true,
+        preferred_common_name: true
+      }
+    // from new observation edit
+
+    // iconic taxon id
+    // geoprivacy
+    // captive/cultivated
+    // multiple observation photos
+    // lat
+    // lng
+    // full observed on timestamp
+    // species_guess
+    // notes
+    // projects
+    // computer vision id or not (owners_id_from_vision)
+    // sounds
+
+    // from iOS
+    // https://github.com/inaturalist/INaturalistIOS/blob/main/INaturalistIOS/ExploreObservationRealm.h
+
+    // obs id (not uuid)
+    // time created
+    // time synced
+    // time updated locally (what's the difference w/ synced?)
+    // privateLat
+    // privateLng
+    // public accuracy
+    // private accuracy
+    // coordinates obscured?
+    // positional accuracy (diff from public/private?)
+    // location
+    // private location
+    // observation media
+    // validation error message
+    // obs photos, sounds, comments, ids, faves, fieldvalue, projects (separate realms)
+
+    // from android
+    // https://github.com/inaturalist/iNaturalistAndroid/blob/main/iNaturalist/src/main/java/org/inaturalist/android/Observation.java
+
+    // taxon geoprivacy
+    // iconic taxon name
+    // id_please (what is this? whether a user allows IDs or not?)
+    // observed_on_string (separate from observed_on)
+    // license
+    // out_of_range
+    // private_place_guess
+    // positioning device
+    // positioning method
+    // taxon_id
+    // time_observed_at
+    // updated_at (there's a different _ method for this too)
+    // user_agent
+    // user_id
+    // user_login
+    // id_count
+    // comments_count
+    // last_comments_count
+    // last_ids_count
+    // is_deleted
+    // scientific_name
+    // rank_level
+    // rank
+    // prefers_community_taxon
   };
 }, [] );
 
@@ -76,7 +137,7 @@ const writeToDatabase = useCallback( ( results ) => {
   // based on this description
   // https://github.com/Nozbe/WatermelonDB/issues/252#issuecomment-466986977
   database.write( async ( ) => {
-    // await deleteAllDatabaseRecords( );
+    await deleteAllDatabaseRecords( );
     // check which observations already exist - kind of a lot of boilerplate code here
     // https://github.com/Nozbe/WatermelonDB/issues/36#issue-360631556
     try {
@@ -120,27 +181,3 @@ const writeToDatabase = useCallback( ( results ) => {
 };
 
 export default useFetchObservations;
-
-// const fetchObservations = async( ) => {
-
-//   try {
-//     const response = await fetch( "https://api.inaturalist.org/v2/observations", {
-//       method: "post",
-//       headers: {
-//         Accept: "application/json",
-//         "Content-Type": "application/json",
-//         "X-HTTP-Method-Override": "GET",
-//         "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE, HEAD"
-//       },
-//       body: JSON.stringify( {
-//         user_login: "albullington",
-//         fields: FIELDS
-//       } )
-//     } );
-//     const parsedResponse = await response.json( );
-//     renameResultsInCamelCase( parsedResponse.results );
-//     // writeToDatabase( parsedResponse.results );
-//   } catch ( e ) {
-//     console.log( e, "couldn't fetch observations" );
-//   }
-// };
