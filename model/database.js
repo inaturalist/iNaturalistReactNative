@@ -1,5 +1,6 @@
 import { Database } from "@nozbe/watermelondb";
 import SQLiteAdapter from "@nozbe/watermelondb/adapters/sqlite";
+import migrations from "./migrations";
 
 import schema from "./schema";
 import Observations from "./Observations";
@@ -8,7 +9,7 @@ import Observations from "./Observations";
 const adapter = new SQLiteAdapter( {
   schema,
   // (You might want to comment it out for development purposes -- see Migrations documentation)
-  // migrations,
+  migrations,
   // (optional database name or file system path)
   // dbName: 'myapp',
   // (recommended option, should work flawlessly out of the box on iOS. On Android,

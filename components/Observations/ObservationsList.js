@@ -1,7 +1,7 @@
 // @flow strict-local
 
 import React from "react";
-import { FlatList, Text, SafeAreaView } from "react-native";
+import { FlatList, SafeAreaView } from "react-native";
 import type { Node } from "react";
 import withObservables from "@nozbe/with-observables";
 
@@ -9,6 +9,7 @@ import ObsCard from "./ObsCard";
 import viewStyles from "../../styles/observations/observationsList";
 import useFetchObservations from "./hooks/fetchObservations";
 import database from "../../model/database";
+import EmptyList from "./EmptyList";
 
 const enhance = withObservables( ["observations"], ( { observations } ) => {
   return {
@@ -28,7 +29,7 @@ const ObservationsList = ( { observations } ): Node => {
   const extractKey = item => item.uuid;
   const renderItem = ( { item } ) => <ObsCard item={item} handlePress={handlePress} />;
 
-  const renderEmptyState = ( ) => <Text testID="ObservationsList.emptyList">no observations</Text>;
+  const renderEmptyState = ( ) => <EmptyList />;
 
   return (
     <SafeAreaView>

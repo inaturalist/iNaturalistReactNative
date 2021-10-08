@@ -38,6 +38,15 @@ const useFetchObservations = ( ): Array<{
       private_place_guess: true,
       public_positional_accuracy: true,
       quality_grade: true,
+      sounds: {
+        file_url: true,
+        file_content_type: true,
+        id: true,
+        license_code: true,
+        play_local: true,
+        url: true,
+        uuid: true
+      },
       taxon: {
         iconic_taxon_id: true,
         iconic_taxon_name: true,
@@ -46,18 +55,17 @@ const useFetchObservations = ( ): Array<{
         rank: true,
         rank_level: true
       },
-      time_observed_at: true
+      taxon_geoprivacy: true,
+      time_observed_at: true,
+      user: {
+        id: true,
+        name: true
+      }
     // from new observation edit
 
-    // iconic taxon id
-    // geoprivacy
     // captive/cultivated
     // multiple observation photos
-    // lat
-    // lng
-    // full observed on timestamp
     // species_guess
-    // notes
     // projects
     // computer vision id or not (owners_id_from_vision)
     // sounds
@@ -66,16 +74,12 @@ const useFetchObservations = ( ): Array<{
     // https://github.com/inaturalist/INaturalistIOS/blob/main/INaturalistIOS/ExploreObservationRealm.h
 
     // obs id (not uuid)
-    // time created
     // time synced
     // time updated locally (what's the difference w/ synced?)
     // privateLat
     // privateLng
-    // public accuracy
     // private accuracy
     // coordinates obscured?
-    // positional accuracy (diff from public/private?)
-    // location
     // private location
     // observation media
     // validation error message
@@ -84,8 +88,6 @@ const useFetchObservations = ( ): Array<{
     // from android
     // https://github.com/inaturalist/iNaturalistAndroid/blob/main/iNaturalist/src/main/java/org/inaturalist/android/Observation.java
 
-    // taxon geoprivacy
-    // iconic taxon name
     // id_please (what is this? whether a user allows IDs or not?)
     // observed_on_string (separate from observed_on)
     // license
@@ -94,20 +96,12 @@ const useFetchObservations = ( ): Array<{
     // positioning device
     // positioning method
     // taxon_id
-    // time_observed_at
     // updated_at (there's a different _ method for this too)
     // user_agent
-    // user_id
-    // user_login
     // id_count
-    // comments_count
     // last_comments_count
     // last_ids_count
     // is_deleted
-    // scientific_name
-    // rank_level
-    // rank
-    // prefers_community_taxon
   };
 }, [] );
 
@@ -130,6 +124,8 @@ const transformObsForDatabase = ( localObs, obs ) => {
   localObs.identifications = obs.identifications.length;
   localObs.comments = obs.comment_count;
   localObs.qualityGrade = obs.quality_grade;
+  localObs.geoprivacy = obs.geoprivacy;
+  localObs.positionalAccuracy = obs.positional_accuracy;
 };
 
 const getExistingObservations = async ( results ) => {
@@ -181,6 +177,7 @@ const writeToDatabase = useCallback( ( results ) => {
         };
         const response = await inatjs.observations.search( params );
         const results = response.results;
+        // console.log( results, "results api" );
         if ( !isCurrent ) { return; }
         writeToDatabase( results );
       } catch ( e ) {

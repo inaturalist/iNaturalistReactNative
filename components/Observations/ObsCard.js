@@ -24,6 +24,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => (
   <Pressable
     onPress={handlePress}
     style={viewStyles.row}
+    testID="ObservationsList.obsCard"
   >
     <Image source={{ uri: item.userPhoto }} style={viewStyles.imageBackground} />
     <View style={viewStyles.obsDetailsColumn}>

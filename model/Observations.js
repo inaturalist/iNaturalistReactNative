@@ -12,4 +12,6 @@ export default class Observations extends Model {
   @field( "identifications" ) identifications
   @field( "comments" ) comments
   @text( "quality_grade" ) qualityGrade
+  @field( "geoprivacy" ) geoprivacy
+  @field( "positional_accuracy" ) positionalAccuracy
 }
