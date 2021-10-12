@@ -10,7 +10,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: colors.white,
     flexDirection: "row",
     flexWrap: "nowrap",
-    height: 100,
+    height: 75,
     justifyContent: "space-evenly"
   },
   shadow: {

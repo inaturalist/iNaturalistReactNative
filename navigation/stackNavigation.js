@@ -1,14 +1,17 @@
+// @flow
+
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ObservationsList from "../components/Observations/ObservationsList";
+
+import DrawerNavigator from "./drawerNavigation";
 
 const Stack = createNativeStackNavigator( );
 
-const App = ( ) => (
+const App = ( ): React.Node => (
   <NavigationContainer>
     <Stack.Navigator>
-      <Stack.Screen name="ObservationsList" component={ObservationsList} />
+      <Stack.Screen name="Drawer" component={DrawerNavigator} />
     </Stack.Navigator>
   </NavigationContainer>
 );
