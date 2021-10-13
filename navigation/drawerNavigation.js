@@ -5,8 +5,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import ObservationsList from "../components/Observations/ObservationsList";
 
-const config = { headerShown: false };
-const screenOptions = { ...config };
+// this removes the default hamburger menu from header
+const screenOptions = { headerLeft: ( ) => <></> };
 
 const Drawer = createDrawerNavigator();
 

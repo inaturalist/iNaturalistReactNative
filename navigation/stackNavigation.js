@@ -8,9 +8,11 @@ import DrawerNavigator from "./drawerNavigation";
 
 const Stack = createNativeStackNavigator( );
 
+const screenOptions = { headerShown: false };
+
 const App = ( ): React.Node => (
   <NavigationContainer>
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen name="Drawer" component={DrawerNavigator} />
     </Stack.Navigator>
   </NavigationContainer>
