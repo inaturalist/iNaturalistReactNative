@@ -6,6 +6,9 @@ import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleS
 import { colors } from "../global";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  center: {
+    alignItems: "center"
+  },
   imageBackground: {
     width: 75,
     height: 75,

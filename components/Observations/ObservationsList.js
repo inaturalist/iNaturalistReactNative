@@ -8,8 +8,11 @@ import ObsCard from "./ObsCard";
 import viewStyles from "../../styles/observations/observationsList";
 import useFetchObservations from "./hooks/fetchObservations";
 import EmptyList from "./EmptyList";
+import useFetchLocalObservations from "./hooks/fetchLocalObservations";
 
 const ObservationsList = ( ): Node => {
+  const localObservations = useFetchLocalObservations( );
+  console.log( localObservations, "local observations" );
   // this custom hook fetches on first component render
   // (and anytime you save while in debug - hot reloading mode )
   useFetchObservations( );
