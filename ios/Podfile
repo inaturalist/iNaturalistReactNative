@@ -12,7 +12,6 @@ target 'iNaturalistReactNative' do
     :hermes_enabled => true
     )
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
-  pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
 
   target 'iNaturalistReactNativeTests' do
     inherit! :complete
