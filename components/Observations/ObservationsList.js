@@ -3,24 +3,13 @@
 import React from "react";
 import { FlatList, SafeAreaView } from "react-native";
 import type { Node } from "react";
-import withObservables from "@nozbe/with-observables";
 
 import ObsCard from "./ObsCard";
 import viewStyles from "../../styles/observations/observationsList";
 import useFetchObservations from "./hooks/fetchObservations";
-import database from "../../model/database";
 import EmptyList from "./EmptyList";
 
-const enhance = withObservables( ["observations"], ( { observations } ) => {
-  return {
-    observations: database.collections
-      .get( "observations" )
-      .query()
-      .observe()
-  };
-} );
-
-const ObservationsList = ( { observations } ): Node => {
+const ObservationsList = ( ): Node => {
   // this custom hook fetches on first component render
   // (and anytime you save while in debug - hot reloading mode )
   useFetchObservations( );
@@ -35,7 +24,7 @@ const ObservationsList = ( { observations } ): Node => {
     <SafeAreaView>
       <FlatList
         contentContainerStyle={viewStyles.background}
-        data={observations}
+        data={[]}
         keyExtractor={extractKey}
         renderItem={renderItem}
         testID="ObservationsList.myObservations"
@@ -45,4 +34,4 @@ const ObservationsList = ( { observations } ): Node => {
   );
 };
 
-export default enhance( ObservationsList );
+export default ObservationsList;

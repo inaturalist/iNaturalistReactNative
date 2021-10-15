@@ -2,9 +2,6 @@
 
 import { useEffect, useMemo, useCallback } from "react";
 import inatjs from "inaturalistjs";
-import { Q } from "@nozbe/watermelondb";
-
-import database from "../../../model/database";
 
 const useFetchObservations = ( ): Array<{
   uuid: string,
@@ -105,63 +102,9 @@ const useFetchObservations = ( ): Array<{
   };
 }, [] );
 
-const deleteAllDatabaseRecords = async ( ) => {
-  const localObservations = await database.get( "observations" )
-    .query( )
-    .fetch( );
-
-  const deleted = localObservations.map( obs => obs.prepareDestroyPermanently( ) );
-
-  database.batch( ...deleted );
-};
-
-const transformObsForDatabase = ( localObs, obs ) => {
-  localObs.uuid = obs.uuid;
-  localObs.userPhoto = obs.photos[0].url;
-  localObs.commonName = obs.taxon.preferred_common_name || obs.taxon.name;
-  localObs.location = obs.place_guess;
-  localObs.timeObservedAt = obs.observed_on;
-  localObs.identifications = obs.identifications.length;
-  localObs.comments = obs.comment_count;
-  localObs.qualityGrade = obs.quality_grade;
-  localObs.geoprivacy = obs.geoprivacy;
-  localObs.positionalAccuracy = obs.positional_accuracy;
-};
-
-const getExistingObservations = async ( results ) => {
-  const uuids = results.map( obs => obs.uuid );
-  return database.get( "observations" )
-    .query( Q.where( "uuid", Q.oneOf( uuids ) ) )
-    .fetch( );
-};
-
-const createOrUpdateObs = useCallback( ( obs, existingObservations ) => {
-  const obsToUpdate = existingObservations.find( exO => exO.uuid === obs.uuid );
-  if ( obsToUpdate ) {
-    return obsToUpdate
-      .prepareUpdate( existingObs => transformObsForDatabase( existingObs, obs ) );
-  }
-
-  return database.get( "observations" )
-    .prepareCreate( newObs => transformObsForDatabase( newObs, obs ) );
-}, [] );
-
 const writeToDatabase = useCallback( ( results ) => {
-  // based on this description
-  // https://github.com/Nozbe/WatermelonDB/issues/252#issuecomment-466986977
-  database.write( async ( ) => {
-    await deleteAllDatabaseRecords( );
-    // check which observations already exist - kind of a lot of boilerplate code here
-    // https://github.com/Nozbe/WatermelonDB/issues/36#issue-360631556
-    try {
-      const observationsToUpdate = await getExistingObservations( results );
-      const newObs = results.map( obs => createOrUpdateObs( obs, observationsToUpdate ) );
-      await database.batch( ...newObs );
-    } catch ( e ) {
-      console.log( e, "watermelondb query" );
-    }
-  } );
-}, [createOrUpdateObs] );
+  console.log( results, "write to database" );
+}, [] );
 
   useEffect( ( ) => {
     let isCurrent = true;
