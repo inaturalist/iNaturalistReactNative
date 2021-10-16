@@ -16,6 +16,7 @@
     "inaturalistjs": "github:inaturalist/inaturalistjs",
     "react": "17.0.2",
     "react-native": "0.65.1",
+    "realm": "^10.8.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-reanimated": "^2.2.2",
     "react-native-safe-area-context": "^3.3.2",
@@ -25,6 +26,7 @@
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@testing-library/react-native": "^7.2.0",
     "babel-jest": "^26.6.3",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
@@ -37,11 +39,21 @@
     "eslint-plugin-react-native": "^3.11.0",
     "flow-bin": "^0.149.0",
     "jest": "^26.6.3",
+    "jest-fetch-mock": "^3.0.3",
     "metro-react-native-babel-preset": "^0.66.0",
+    "react-native-clean-project": "^3.6.7",
     "react-native-codegen": "^0.0.7",
     "react-test-renderer": "17.0.2"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?@react-native|react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base)"
+    ],
+    "automock": false,
+    "verbose": true
   }
 }

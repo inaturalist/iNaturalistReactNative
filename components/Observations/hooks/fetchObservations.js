@@ -1,0 +1,161 @@
+// @flow
+
+import { useEffect, useMemo, useCallback, useRef, useState } from "react";
+import inatjs from "inaturalistjs";
+import Realm from "realm";
+
+import Observation from "../../../models/Observation";
+
+const useFetchObservations = ( ): Array<{
+  uuid: string,
+  userPhoto: string,
+  commonName: string,
+  location: string,
+  timeObservedAt: string,
+  identifications: number,
+  comments: number,
+  qualityGrade: string
+}> => {
+  const [observations, setObservations] = useState( [] );
+  const realmRef = useRef( null );
+  const subscriptionRef = useRef( null );
+
+  const openRealm = useCallback( async ( ) => {
+    try {
+      const config = {
+        schema: [Observation.schema]
+      };
+
+      const realm = await Realm.open( config );
+      realmRef.current = realm;
+
+      const localObservations = realm.objects( "Observation" );
+      if ( localObservations?.length ) {
+        setObservations( localObservations );
+      }
+      subscriptionRef.current = localObservations;
+    }
+    catch ( err ) {
+      console.error( "Error opening realm: ", err.message );
+    }
+  }, [realmRef, setObservations] );
+
+  const closeRealm = useCallback( ( ) => {
+    const subscription = subscriptionRef.current;
+    subscription?.removeAllListeners( );
+    subscriptionRef.current = null;
+
+    const realm = realmRef.current;
+    realm?.close( );
+    realmRef.current = null;
+    setObservations( [] );
+  }, [realmRef] );
+
+  useEffect( ( ) => {
+    openRealm( );
+
+    // Return a cleanup callback to close the realm to prevent memory leaks
+    return closeRealm;
+  }, [openRealm, closeRealm] );
+
+  const FIELDS = useMemo( ( ) => {
+    return {
+      comments_count: true,
+      created_at: true,
+      description: true,
+      geoprivacy: true,
+      identifications: true,
+      latitude: true,
+      location: true,
+      longitude: true,
+      observed_on: true,
+      photos: {
+        url: true
+      },
+      place_guess: true,
+      positional_accuracy: true,
+      preferences: {
+        prefers_community_taxon: true
+      },
+      private_place_guess: true,
+      public_positional_accuracy: true,
+      quality_grade: true,
+      sounds: {
+        file_url: true,
+        file_content_type: true,
+        id: true,
+        license_code: true,
+        play_local: true,
+        url: true,
+        uuid: true
+      },
+      taxon: {
+        iconic_taxon_id: true,
+        iconic_taxon_name: true,
+        name: true,
+        preferred_common_name: true,
+        rank: true,
+        rank_level: true
+      },
+      taxon_geoprivacy: true,
+      time_observed_at: true,
+      user: {
+        id: true,
+        name: true
+      }
+  };
+}, [] );
+
+const writeToDatabase = useCallback( ( results ) => {
+    if ( results.length === 0 ) {
+      return;
+    }
+    // Everything in the function passed to "realm.write" is a transaction and will
+    // hence succeed or fail together. A transcation is the smallest unit of transfer
+    // in Realm so we want to be mindful of how much we put into one single transaction
+    // and split them up if appropriate (more commonly seen server side). Since clients
+    // may occasionally be online during short time spans we want to increase the probability
+    // of sync participants to successfully sync everything in the transaction, otherwise
+    // no changes propagate and the transaction needs to start over when connectivity allows.
+    const realm = realmRef.current;
+    results.forEach( obs => {
+      realm?.write( ( ) => {
+        realm?.create( "Observation", new Observation( obs ) );
+      } );
+    } );
+  console.log( "write to database" );
+}, [] );
+
+  useEffect( ( ) => {
+    let isCurrent = true;
+    const fetchObservations = async ( ) => {
+      try {
+        const testUser = "albullington";
+        const params = {
+          user_login: testUser,
+          per_page: 400,
+          photos: true,
+          details: "all",
+          fields: FIELDS
+        };
+        const response = await inatjs.observations.search( params );
+        const results = response.results;
+        // console.log( results, "results api" );
+        if ( !isCurrent ) { return; }
+        writeToDatabase( results );
+      } catch ( e ) {
+        if ( !isCurrent ) { return; }
+        console.log( e, "couldn't fetch observations" );
+      }
+    };
+
+    fetchObservations( );
+    return ( ) => {
+      isCurrent = false;
+    };
+  }, [FIELDS, writeToDatabase] );
+
+  return [];
+};
+
+export default useFetchObservations;

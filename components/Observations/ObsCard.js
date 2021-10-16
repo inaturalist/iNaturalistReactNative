@@ -1,4 +1,4 @@
-// @flow strict-local
+// @flow
 
 import React from "react";
 import { Pressable, Text, View, Image } from "react-native";
@@ -16,30 +16,28 @@ type Props = {
     identifications: number,
     comments: number,
     qualityGrade: string
-  }
+  },
+  handlePress: Function
 }
 
-const ObsCard = ( { item }: Props ): Node => {
-  const handlePress = ( ) => console.log( "obs card was pressed" );
-
-  return (
-    <Pressable
-      onPress={handlePress}
-      style={viewStyles.row}
-    >
-      <Image source={{ uri: item.userPhoto }} style={viewStyles.imageBackground} />
-      <View style={viewStyles.obsDetailsColumn}>
-        <Text style={textStyles.text}>{item.commonName}</Text>
-        <Text style={textStyles.text}>{item.location}</Text>
-        <Text style={textStyles.text}>{item.timeObservedAt}</Text>
-      </View>
-      <View>
-        <Text style={textStyles.text}>{item.identifications}</Text>
-        <Text style={textStyles.text}>{item.comments}</Text>
-        <Text style={textStyles.text}>{item.qualityGrade}</Text>
-      </View>
-    </Pressable>
-  );
-};
+const ObsCard = ( { item, handlePress }: Props ): Node => (
+  <Pressable
+    onPress={handlePress}
+    style={viewStyles.row}
+    testID="ObservationsList.obsCard"
+  >
+    <Image source={{ uri: item.userPhoto }} style={viewStyles.imageBackground} />
+    <View style={viewStyles.obsDetailsColumn}>
+      <Text style={textStyles.text}>{item.commonName}</Text>
+      <Text style={textStyles.text}>{item.location}</Text>
+      <Text style={textStyles.text}>{item.timeObservedAt}</Text>
+    </View>
+    <View>
+      <Text style={textStyles.text}>{item.identifications}</Text>
+      <Text style={textStyles.text}>{item.comments}</Text>
+      <Text style={textStyles.text}>{item.qualityGrade}</Text>
+    </View>
+  </Pressable>
+);
 
 export default ObsCard;
