@@ -1,4 +1,4 @@
-// @flow strict-local
+// @flow
 
 import React from "react";
 import { Pressable, Text, View, Image } from "react-native";

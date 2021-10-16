@@ -1,8 +1,11 @@
 // @flow
 
+import "react-native-gesture-handler";
+
 import {AppRegistry} from "react-native";
 import inatjs from "inaturalistjs";
-import ObsList from "./components/Observations/ObservationsList";
+import App from "./navigation/stackNavigation";
+// import ObsList from "./components/Observations/ObservationsList";
 import {name as appName} from "./app.json";
 
 inatjs.setConfig( {
@@ -10,4 +13,7 @@ inatjs.setConfig( {
   writeApiURL: "https://api.inaturalist.org/v2"
 } );
 
-AppRegistry.registerComponent( appName, () => ObsList );
+// AppRegistry.registerComponent( appName, () => ObsList );
+
+
+AppRegistry.registerComponent( appName, ( ) => App );
