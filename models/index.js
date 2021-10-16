@@ -1,10 +1,10 @@
 // @flow
 
-import Observations from "./Observations";
+import Observation from "./Observation";
 
 export default {
   schema: [
-    Observations
+    Observation
   ],
   schemaVersion: 1,
   path: "db.realm"

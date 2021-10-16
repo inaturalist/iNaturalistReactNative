@@ -3,7 +3,7 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import Realm from "realm";
 
-import Observations from "../../../models/Observations";
+import Observation from "../../../models/Observation";
 
 const useFetchLocalObservations = ( ): Array<Object> => {
   // The tasks will be set once the realm has opened and the collection has been queried.
@@ -18,7 +18,7 @@ const useFetchLocalObservations = ( ): Array<Object> => {
   const openRealm = useCallback( async ( ) => {
     try {
       const config = {
-        schema: [Observations.schema]
+        schema: [Observation.schema]
       };
 
       // Since this is a non-sync realm (there is no "sync" field defined in the "config" object),
@@ -28,7 +28,7 @@ const useFetchLocalObservations = ( ): Array<Object> => {
 
       // When querying a realm to find objects (e.g. realm.objects('Tasks')) the result we get back
       // and the objects in it are "live" and will always reflect the latest state.
-      const localObservations = realm.objects( "Observations" );
+      const localObservations = realm.objects( "Observation" );
       if ( localObservations?.length ) {
         setObservations( localObservations );
       }
@@ -46,7 +46,7 @@ const useFetchLocalObservations = ( ): Array<Object> => {
         // By querying the objects again, we get a new reference to the Result and triggers
         // a rerender by React. Setting the tasks to either 'tasks' or 'collection' (from the
         // argument) will not trigger a rerender since it is the same reference
-        setObservations( realm.objects( "Observations" ) );
+        setObservations( realm.objects( "Observation" ) );
       } );
     }
     catch ( err ) {

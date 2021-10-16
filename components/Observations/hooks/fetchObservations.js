@@ -1,7 +1,10 @@
-// @flow strict-local
+// @flow
 
-import { useEffect, useMemo, useCallback } from "react";
+import { useEffect, useMemo, useCallback, useRef, useState } from "react";
 import inatjs from "inaturalistjs";
+import Realm from "realm";
+
+import Observation from "../../../models/Observation";
 
 const useFetchObservations = ( ): Array<{
   uuid: string,
@@ -13,6 +16,48 @@ const useFetchObservations = ( ): Array<{
   comments: number,
   qualityGrade: string
 }> => {
+  const [observations, setObservations] = useState( [] );
+  const realmRef = useRef( null );
+  const subscriptionRef = useRef( null );
+
+  const openRealm = useCallback( async ( ) => {
+    try {
+      const config = {
+        schema: [Observation.schema]
+      };
+
+      const realm = await Realm.open( config );
+      realmRef.current = realm;
+
+      const localObservations = realm.objects( "Observation" );
+      if ( localObservations?.length ) {
+        setObservations( localObservations );
+      }
+      subscriptionRef.current = localObservations;
+    }
+    catch ( err ) {
+      console.error( "Error opening realm: ", err.message );
+    }
+  }, [realmRef, setObservations] );
+
+  const closeRealm = useCallback( ( ) => {
+    const subscription = subscriptionRef.current;
+    subscription?.removeAllListeners( );
+    subscriptionRef.current = null;
+
+    const realm = realmRef.current;
+    realm?.close( );
+    realmRef.current = null;
+    setObservations( [] );
+  }, [realmRef] );
+
+  useEffect( ( ) => {
+    openRealm( );
+
+    // Return a cleanup callback to close the realm to prevent memory leaks
+    return closeRealm;
+  }, [openRealm, closeRealm] );
+
   const FIELDS = useMemo( ( ) => {
     return {
       comments_count: true,
@@ -58,52 +103,27 @@ const useFetchObservations = ( ): Array<{
         id: true,
         name: true
       }
-    // from new observation edit
-
-    // captive/cultivated
-    // multiple observation photos
-    // species_guess
-    // projects
-    // computer vision id or not (owners_id_from_vision)
-    // sounds
-
-    // from iOS
-    // https://github.com/inaturalist/INaturalistIOS/blob/main/INaturalistIOS/ExploreObservationRealm.h
-
-    // obs id (not uuid)
-    // time synced
-    // time updated locally (what's the difference w/ synced?)
-    // privateLat
-    // privateLng
-    // private accuracy
-    // coordinates obscured?
-    // private location
-    // observation media
-    // validation error message
-    // obs photos, sounds, comments, ids, faves, fieldvalue, projects (separate realms)
-
-    // from android
-    // https://github.com/inaturalist/iNaturalistAndroid/blob/main/iNaturalist/src/main/java/org/inaturalist/android/Observation.java
-
-    // id_please (what is this? whether a user allows IDs or not?)
-    // observed_on_string (separate from observed_on)
-    // license
-    // out_of_range
-    // private_place_guess
-    // positioning device
-    // positioning method
-    // taxon_id
-    // updated_at (there's a different _ method for this too)
-    // user_agent
-    // id_count
-    // last_comments_count
-    // last_ids_count
-    // is_deleted
   };
 }, [] );
 
 const writeToDatabase = useCallback( ( results ) => {
-  console.log( results, "write to database" );
+    if ( results.length === 0 ) {
+      return;
+    }
+    // Everything in the function passed to "realm.write" is a transaction and will
+    // hence succeed or fail together. A transcation is the smallest unit of transfer
+    // in Realm so we want to be mindful of how much we put into one single transaction
+    // and split them up if appropriate (more commonly seen server side). Since clients
+    // may occasionally be online during short time spans we want to increase the probability
+    // of sync participants to successfully sync everything in the transaction, otherwise
+    // no changes propagate and the transaction needs to start over when connectivity allows.
+    const realm = realmRef.current;
+    results.forEach( obs => {
+      realm?.write( ( ) => {
+        realm?.create( "Observation", new Observation( obs ) );
+      } );
+    } );
+  console.log( "write to database" );
 }, [] );
 
   useEffect( ( ) => {

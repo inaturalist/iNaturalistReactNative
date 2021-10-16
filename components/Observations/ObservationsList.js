@@ -12,7 +12,6 @@ import useFetchLocalObservations from "./hooks/fetchLocalObservations";
 
 const ObservationsList = ( ): Node => {
   const localObservations = useFetchLocalObservations( );
-  console.log( localObservations, "local observations" );
   // this custom hook fetches on first component render
   // (and anytime you save while in debug - hot reloading mode )
   useFetchObservations( );
@@ -24,10 +23,9 @@ const ObservationsList = ( ): Node => {
   const renderEmptyState = ( ) => <EmptyList />;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={viewStyles.safeAreaContainer}>
       <FlatList
-        contentContainerStyle={viewStyles.background}
-        data={[]}
+        data={localObservations}
         keyExtractor={extractKey}
         renderItem={renderItem}
         testID="ObservationsList.myObservations"
