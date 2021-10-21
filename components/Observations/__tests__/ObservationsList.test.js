@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
-import ObservationsList from "../ObservationsList";
+import ObsList from "../ObsList";
 import ObsCard from "../ObsCard";
 
 test( "it renders all inputs as expected", ( ) => {
@@ -11,7 +11,7 @@ test( "it renders all inputs as expected", ( ) => {
     // not sure if there's a better way of doing this without needing to wrap every test
     // https://www.reactnativeschool.com/setup-jest-tests-with-react-navigation
     <NavigationContainer>
-      <ObservationsList />
+      <ObsList />
     </NavigationContainer>
   );
   expect( toJSON ).toMatchSnapshot( );
@@ -27,7 +27,7 @@ test( "renders text passed into observation card", ( ) => {
     />
   );
 
-  expect( getByTestId( "ObservationsList.obsCard" ) ).toBeTruthy( );
+  expect( getByTestId( "ObsList.obsCard" ) ).toBeTruthy( );
   expect( getByText( "Insects" ) ).toBeTruthy( );
   expect( getByText( "SF" ) ).toBeTruthy( );
 } );

@@ -5,7 +5,7 @@ import "react-native-gesture-handler";
 import {AppRegistry} from "react-native";
 import inatjs from "inaturalistjs";
 import App from "./navigation/stackNavigation";
-// import ObsList from "./components/Observations/ObservationsList";
+// import ObsList from "./components/Observations/ObsList";
 import {name as appName} from "./app.json";
 
 inatjs.setConfig( {
