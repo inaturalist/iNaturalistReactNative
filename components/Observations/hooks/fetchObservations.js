@@ -6,16 +6,7 @@ import Realm from "realm";
 
 import Observation from "../../../models/Observation";
 
-const useFetchObservations = ( ): Array<{
-  uuid: string,
-  userPhoto: string,
-  commonName: string,
-  location: string,
-  timeObservedAt: string,
-  identifications: number,
-  comments: number,
-  qualityGrade: string
-}> => {
+const useFetchObservations = ( ): Array<Object> => {
   const [observations, setObservations] = useState( [] );
   const realmRef = useRef( null );
   const subscriptionRef = useRef( null );
@@ -59,7 +50,33 @@ const useFetchObservations = ( ): Array<{
   }, [openRealm, closeRealm] );
 
   const FIELDS = useMemo( ( ) => {
+    const USER_FIELDS = {
+      icon_url: true,
+      id: true,
+      login: true,
+      name: true
+    };
+
+    const TAXON_FIELDS = {
+      default_photo: {
+        square_url: true
+      },
+      iconic_taxon_name: true,
+      name: true,
+      preferred_common_name: true,
+      rank: true,
+      rank_level: true
+    };
+
+    const COMMENT_FIELDS = {
+      body: true,
+      created_at: true,
+      id: true,
+      user: USER_FIELDS
+    };
+
     return {
+      comments: COMMENT_FIELDS,
       comments_count: true,
       created_at: true,
       description: true,
@@ -80,29 +97,10 @@ const useFetchObservations = ( ): Array<{
       private_place_guess: true,
       public_positional_accuracy: true,
       quality_grade: true,
-      sounds: {
-        file_url: true,
-        file_content_type: true,
-        id: true,
-        license_code: true,
-        play_local: true,
-        url: true,
-        uuid: true
-      },
-      taxon: {
-        iconic_taxon_id: true,
-        iconic_taxon_name: true,
-        name: true,
-        preferred_common_name: true,
-        rank: true,
-        rank_level: true
-      },
+      taxon: TAXON_FIELDS,
       taxon_geoprivacy: true,
       time_observed_at: true,
-      user: {
-        id: true,
-        name: true
-      }
+      user: USER_FIELDS
   };
 }, [] );
 
@@ -120,10 +118,13 @@ const writeToDatabase = useCallback( ( results ) => {
     const realm = realmRef.current;
     results.forEach( obs => {
       realm?.write( ( ) => {
+        const existingObs = realm.objects( "Observation" ).filtered( `uuid = '${obs.uuid}'` );
+        if ( existingObs.length > 0 ) {
+          return;
+        }
         realm?.create( "Observation", new Observation( obs ) );
       } );
     } );
-  console.log( "write to database" );
 }, [] );
 
   useEffect( ( ) => {

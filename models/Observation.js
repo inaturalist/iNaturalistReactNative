@@ -1,15 +1,18 @@
 class Observation {
   constructor( obs ) {
     this.uuid = obs.uuid;
-    this.userPhoto = obs.photos[0].url;
+    // this.comments = obs.comments;
+    this.commentCount = obs.comment_count || 0;
     this.commonName = obs.taxon.preferred_common_name || obs.taxon.name;
+    this.createdAt = obs.created_at;
+    this.identificationCount = obs.identifications.length;
     this.location = obs.place_guess;
-    this.timeObservedAt = obs.observed_on;
-    this.identifications = obs.identifications.length;
-    this.comments = obs.comment_count || 0;
     this.qualityGrade = obs.quality_grade;
-    this.geoprivacy = obs.geoprivacy;
-    this.positionalAccuracy = obs.positional_accuracy;
+    this.taxonRank = obs.taxon.rank;
+    this.timeObservedAt = obs.observed_on;
+    this.userProfilePhoto = obs.user.icon_url;
+    this.userLogin = obs.user.login;
+    this.userPhoto = obs.photos[0].url;
   }
 
   static schema = {
@@ -17,13 +20,18 @@ class Observation {
     primaryKey: "uuid",
     properties: {
       uuid: "string",
-      userPhoto: "string",
+      commentCount: "int",
+      // comments: "Comment?",
       commonName: "string",
+      createdAt: "string",
+      identificationCount: "int",
       location: "string",
+      qualityGrade: "string",
+      taxonRank: "string",
       timeObservedAt: "string",
-      identifications: "int",
-      comments: "int",
-      qualityGrade: "string"
+      userProfilePhoto: "string",
+      userLogin: "string",
+      userPhoto: "string"
     }
   }
 }

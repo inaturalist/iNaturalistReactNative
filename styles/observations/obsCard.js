@@ -30,6 +30,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row",
     flexWrap: "nowrap",
     marginVertical: 10
+  },
+  photoContainer: {
+    backgroundColor: colors.black,
+    height: 200
   }
 } );
 

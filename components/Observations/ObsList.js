@@ -6,18 +6,18 @@ import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 
 import ObsCard from "./ObsCard";
-// import useFetchObservations from "./hooks/fetchObservations";
+import useFetchObservations from "./hooks/fetchObservations";
 import EmptyList from "./EmptyList";
 import useFetchLocalObservations from "./hooks/fetchLocalObservations";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
 const ObsList = ( ): Node => {
   const navigation = useNavigation( );
-  const navToObsDetails = ( ) => navigation.navigate( "ObsDetails" );
+  const navToObsDetails = observation => navigation.navigate( "ObsDetails", { observation } );
   const localObservations = useFetchLocalObservations( );
   // this custom hook fetches on first component render
   // (and anytime you save while in debug - hot reloading mode )
-  // useFetchObservations( );
+  useFetchObservations( );
 
   const extractKey = item => item.uuid;
   const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
