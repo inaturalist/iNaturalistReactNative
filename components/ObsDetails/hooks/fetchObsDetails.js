@@ -158,7 +158,6 @@ const useFetchObsDetails = ( uuid: string ): Object => {
         };
         const response = await inatjs.observations.fetch( [uuid], params );
         const results = response.results;
-        console.log( results[0].photos, "results obs details" );
         const obsIds = results[0].identifications;
         const obsPhotos = results[0].photos;
         // const obsComments = results[0].comments;

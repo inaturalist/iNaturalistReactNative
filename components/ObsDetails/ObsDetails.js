@@ -1,6 +1,5 @@
 // @flow
 
-
 import React, { useState } from "react";
 import { Text, View, Image, Pressable } from "react-native";
 import type { Node } from "react";
@@ -13,13 +12,13 @@ import useFetchObsDetails from "./hooks/fetchObsDetails";
 import ActivityTab from "./ActivityTab";
 import SmallUserIcon from "./SmallUserIcon";
 import PhotoScroll from "./PhotoScroll";
+import DataTab from "./DataTab";
 
 const ObsDetails = ( ): Node => {
   const [tab, setTab] = useState( 0 );
 
   const { params } = useRoute( );
   const observation = params.observation;
-  console.log( observation.uuid, "uuid in details" );
   const { ids, photos } = useFetchObsDetails( observation.uuid );
 
   const showActivityTab = ( ) => setTab( 0 );
@@ -51,7 +50,7 @@ const ObsDetails = ( ): Node => {
           <Text style={textStyles.text}>{observation.qualityGrade}</Text>
         </View>
       </View>
-      <Text style={textStyles.locationText}>{observation.location}</Text>
+      <Text style={textStyles.locationText}>{observation.placeGuess}</Text>
       <View style={viewStyles.userProfileRow}>
         <Pressable
           onPress={showActivityTab}
@@ -64,19 +63,7 @@ const ObsDetails = ( ): Node => {
           <Text style={textStyles.greenButtonText}>DATA</Text>
         </Pressable>
       </View>
-      {tab === 0 ? (
-        <>
-          <ActivityTab ids={ids} />
-        </>
-      ) : (
-        <>
-          <Text>{observation.timeObservedAt}</Text>
-          <Text>data: description, location map, date observed, date uploaded</Text>
-          <Text>data: projects, annotations, obs fields, obs created using, copyright</Text>
-          <Text>comment (edit)</Text>
-          <Text>suggest id (edit)</Text>
-        </>
-      )}
+      {tab === 0 ? <ActivityTab ids={ids} /> : <DataTab observation={observation} />}
       </ScrollView>
     </ViewWithFooter>
   );

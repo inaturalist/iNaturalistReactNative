@@ -68,37 +68,21 @@ const useFetchObservations = ( ): Array<Object> => {
       rank_level: true
     };
 
-    const COMMENT_FIELDS = {
-      body: true,
-      created_at: true,
-      id: true,
-      user: USER_FIELDS
-    };
-
     return {
-      comments: COMMENT_FIELDS,
       comments_count: true,
       created_at: true,
       description: true,
-      geoprivacy: true,
+      geojson: true,
       identifications: true,
       latitude: true,
       location: true,
       longitude: true,
-      observed_on: true,
       photos: {
         url: true
       },
       place_guess: true,
-      positional_accuracy: true,
-      preferences: {
-        prefers_community_taxon: true
-      },
-      private_place_guess: true,
-      public_positional_accuracy: true,
       quality_grade: true,
       taxon: TAXON_FIELDS,
-      taxon_geoprivacy: true,
       time_observed_at: true,
       user: USER_FIELDS
   };
@@ -134,9 +118,9 @@ const writeToDatabase = useCallback( ( results ) => {
         const testUser = "albullington";
         const params = {
           user_login: testUser,
-          per_page: 400,
-          photos: true,
-          details: "all",
+          per_page: 100,
+          // photos: true,
+          // details: "all",
           fields: FIELDS
         };
         const response = await inatjs.observations.search( params );

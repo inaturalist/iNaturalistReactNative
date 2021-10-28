@@ -1,4 +1,6 @@
-import React from "react";
+// @flow
+
+import * as React from "react";
 import { Text, View } from "react-native";
 
 import SmallUserIcon from "./SmallUserIcon";
@@ -9,11 +11,11 @@ type Props = {
   ids: Array<Object>
 }
 
-const ActivityTab = ( { ids }: Props ) => ids.map( id => {
+const ActivityTab = ( { ids }: Props ): React.Node => ids.map( id => {
   // this should all perform similarly to the activity tab on web
   // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/components/activity_item.jsx
   return (
-    <View>
+    <View key={id.uuid}>
       <View style={viewStyles.userProfileRow}>
         <View style={viewStyles.userProfileRow}>
           <SmallUserIcon uri={id.user.icon_url} />
