@@ -140,7 +140,7 @@ const writeToDatabase = useCallback( ( results ) => {
     };
   }, [FIELDS, writeToDatabase] );
 
-  return [];
+  return observations;
 };
 
 export default useFetchObservations;
