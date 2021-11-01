@@ -1,6 +1,5 @@
 class Comment {
   constructor( comment ) {
-    console.log( comment, "comment in realm" );
     this.uuid = comment.uuid;
     this.body = comment.body;
     this.createdAt = comment.created_at;

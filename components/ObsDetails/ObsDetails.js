@@ -8,7 +8,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useRoute } from "@react-navigation/core";
 
 import { viewStyles, textStyles } from "../../styles/obsDetails";
-import useFetchObsDetails from "./hooks/fetchObsDetails";
+// import useFetchObsDetails from "./hooks/fetchObsDetails";
+import useFetchObsFromRealm from "./hooks/fetchObsFromRealm";
 import ActivityTab from "./ActivityTab";
 import SmallUserIcon from "./SmallUserIcon";
 import PhotoScroll from "./PhotoScroll";
@@ -18,11 +19,17 @@ const ObsDetails = ( ): Node => {
   const [tab, setTab] = useState( 0 );
 
   const { params } = useRoute( );
-  const observation = params.observation;
-  const { ids, photos } = useFetchObsDetails( observation.uuid );
+  const uuid = params.obsId;
+
+  const observation = useFetchObsFromRealm( uuid );
+
+  const ids = observation && observation.identifications;
+  const photos = observation && observation.photos;
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
+
+  if ( !observation ) { return null; }
 
   return (
     <ViewWithFooter>

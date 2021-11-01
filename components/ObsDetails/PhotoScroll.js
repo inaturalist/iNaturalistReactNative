@@ -18,7 +18,7 @@ const PhotoScroll = ( { photos }: Props ): React.Node => {
       <>
         <Image source={{ uri: photoUrl }} style={imageStyles.fullWidthImage} />
         <Pressable>
-          <Text style={textStyles.license}>{item.license_code}</Text>
+          <Text style={textStyles.license}>{item.licenseCode}</Text>
         </Pressable>
       </>
     );

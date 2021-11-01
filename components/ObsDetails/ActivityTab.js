@@ -18,27 +18,23 @@ const ActivityTab = ( { ids }: Props ): React.Node => ids.map( id => {
     <View key={id.uuid}>
       <View style={viewStyles.userProfileRow}>
         <View style={viewStyles.userProfileRow}>
-          <SmallUserIcon uri={id.user.icon_url} />
-          <Text>{`@${id.user.login}`}</Text>
+          <SmallUserIcon uri={id.userIcon} />
+          <Text>{`@${id.userLogin}`}</Text>
         </View>
         <Text>{id.body}</Text>
         {id.vision && <Text>vision</Text>}
         <Text>{id.category}</Text>
-        {id.created_at && <Text>time (ago)</Text>}
+        {id.createdAt && <Text>time (ago)</Text>}
       </View>
       <View style={viewStyles.speciesDetailRow}>
-        <SmallSquareImage uri={id.taxon.default_photo.square_url} />
+        <SmallSquareImage uri={id.taxonPhoto} />
         <View>
-          <Text style={textStyles.commonNameText}>{id.taxon.preferred_common_name}</Text>
-          <Text style={textStyles.scientificNameText}>{id.taxon.rank} {id.taxon.name}</Text>
+          <Text style={textStyles.commonNameText}>{id.commonName}</Text>
+          <Text style={textStyles.scientificNameText}>{id.rank} {id.name}</Text>
         </View>
       </View>
     </View>
   );
-    // <Text>default photo name</Text>
-    //       <Text>{observation.commonName}</Text>
-    //       <Text>comments</Text>
-    //       <Text>agree button</Text>
 } );
 
 export default ActivityTab;
