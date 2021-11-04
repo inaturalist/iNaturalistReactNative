@@ -84,8 +84,16 @@ const useFetchObservations = ( ): Array<Object> => {
       url: true
     };
 
+    const COMMENT_FIELDS = {
+      body: true,
+      created_at: true,
+      id: true,
+      user: USER_FIELDS
+    };
+
     return {
       comments_count: true,
+      comments: COMMENT_FIELDS,
       created_at: true,
       description: true,
       geojson: true,
@@ -124,6 +132,13 @@ const createIdentificationForRealm = ( id ) => ( {
   vision: id.vision
 } );
 
+const createCommentForRealm = ( id ) => ( {
+  body: id.body,
+  createdAt: id.created_at,
+  id: id.id,
+  user: id.user.login
+} );
+
 const createLinkedIdentifications = useCallback( ( obs ) => {
   const identifications = [];
 
@@ -148,13 +163,27 @@ const createLinkedPhotos = useCallback( ( obs ) => {
   return photos;
 }, [] );
 
+const createLinkedComments = useCallback( ( obs ) => {
+  const comments = [];
+
+  if ( obs.comments.length > 0 ) {
+    obs.comments.forEach( ( photo ) => {
+      const linkedComment = createCommentForRealm( photo );
+      comments.push( linkedComment );
+    } );
+  }
+  return comments;
+}, [] );
+
 const createObservationForRealm = useCallback( ( obs ) => {
   const identifications = createLinkedIdentifications( obs );
   const photos = createLinkedPhotos( obs );
+  const comments = createLinkedComments( obs );
 
   return {
     uuid: obs.uuid,
     commentCount: obs.comment_count || 0,
+    comments,
     commonName: obs.taxon.preferred_common_name,
     createdAt: obs.created_at,
     description: obs.description,
@@ -174,7 +203,7 @@ const createObservationForRealm = useCallback( ( obs ) => {
     userLogin: obs.user.login,
     userPhoto: obs.photos[0].url
   };
-}, [createLinkedIdentifications, createLinkedPhotos] );
+}, [createLinkedIdentifications, createLinkedPhotos, createLinkedComments] );
 
 const writeToDatabase = useCallback( ( results ) => {
     if ( results.length === 0 ) {
@@ -211,6 +240,7 @@ const writeToDatabase = useCallback( ( results ) => {
           fields: FIELDS
         };
         const response = await inatjs.observations.search( params );
+        console.log( response.results, "response" );
         const results = response.results;
         if ( !isCurrent ) { return; }
         writeToDatabase( results );

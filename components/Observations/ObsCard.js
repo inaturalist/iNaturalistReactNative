@@ -17,7 +17,11 @@ const ObsCard = ( { item, handlePress }: Props ): Node => (
     style={viewStyles.row}
     testID="ObsList.obsCard"
   >
-    <Image source={{ uri: item.userPhoto }} style={viewStyles.imageBackground} />
+    <Image
+      source={{ uri: item.userPhoto }}
+      style={viewStyles.imageBackground}
+      testID="ObsList.photo"
+    />
     <View style={viewStyles.obsDetailsColumn}>
       <Text style={textStyles.text}>{item.commonName}</Text>
       <Text style={textStyles.text}>{item.placeGuess}</Text>

@@ -6,5 +6,9 @@ module.exports = {
     "comma-dangle": [2, "never"],
     "space-in-parens": [2, "always"],
     "prettier/prettier": 0
+  },
+  // need this so jest doesn't show as undefined in jest.setup.js
+  env: {
+    "jest": true
   }
 };

@@ -5,7 +5,7 @@ class Observation {
     properties: {
       uuid: "string",
       commentCount: "int",
-      // comments: "Comment[]",
+      comments: "Comment[]",
       commonName: "string?",
       createdAt: "string",
       description: "string?",

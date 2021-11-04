@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Text, View } from "react-native";
 
-import SmallUserIcon from "./SmallUserIcon";
+import UserIcon from "../SharedComponents/UserIcon";
 import SmallSquareImage from "./SmallSquareImage";
 import { textStyles, viewStyles } from "../../styles/obsDetails";
 
@@ -18,7 +18,7 @@ const ActivityTab = ( { ids }: Props ): React.Node => ids.map( id => {
     <View key={id.uuid}>
       <View style={viewStyles.userProfileRow}>
         <View style={viewStyles.userProfileRow}>
-          <SmallUserIcon uri={id.userIcon} />
+          <UserIcon uri={id.userIcon} />
           <Text>{`@${id.userLogin}`}</Text>
         </View>
         <Text>{id.body}</Text>

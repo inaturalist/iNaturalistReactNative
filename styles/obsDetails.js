@@ -77,6 +77,10 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
     borderColor: colors.black,
     borderWidth: 0.5
   },
+  largeIcon: {
+    width: 100,
+    height: 100
+  },
   squareImage: {
     width: 50,
     height: 50,

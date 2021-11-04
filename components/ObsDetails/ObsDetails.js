@@ -5,23 +5,26 @@ import { Text, View, Image, Pressable } from "react-native";
 import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { ScrollView } from "react-native-gesture-handler";
-import { useRoute } from "@react-navigation/core";
+import { useNavigation, useRoute } from "@react-navigation/core";
 
 import { viewStyles, textStyles } from "../../styles/obsDetails";
 // import useFetchObsDetails from "./hooks/fetchObsDetails";
 import useFetchObsFromRealm from "./hooks/fetchObsFromRealm";
 import ActivityTab from "./ActivityTab";
-import SmallUserIcon from "./SmallUserIcon";
+import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "./PhotoScroll";
 import DataTab from "./DataTab";
 
 const ObsDetails = ( ): Node => {
   const [tab, setTab] = useState( 0 );
+  const navigation = useNavigation( );
 
   const { params } = useRoute( );
   const uuid = params.obsId;
 
   const observation = useFetchObsFromRealm( uuid );
+
+  const navToUserProfile = ( ) => navigation.navigate( "UserProfile" );
 
   const ids = observation && observation.identifications;
   const photos = observation && observation.photos;
@@ -35,10 +38,10 @@ const ObsDetails = ( ): Node => {
     <ViewWithFooter>
       <ScrollView>
       <View style={viewStyles.userProfileRow}>
-        <View style={viewStyles.userProfileRow}>
-          <SmallUserIcon uri={observation.userProfilePhoto} />
+        <Pressable style={viewStyles.userProfileRow} onPress={navToUserProfile}>
+          <UserIcon uri={observation.userProfilePhoto} />
           <Text>{`@${observation.userLogin}`}</Text>
-        </View>
+        </Pressable>
         <Text>{observation.createdAt}</Text>
       </View>
       <View style={viewStyles.photoContainer}>

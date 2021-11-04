@@ -1,9 +1,10 @@
 import React from "react";
-import { render } from "@testing-library/react-native";
+import { FlatList } from "react-native";
+import { fireEvent, render, act } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
 import ObsList from "../ObsList";
-import ObsCard from "../ObsCard";
+import EmptyList from "../EmptyList";
 
 test( "it renders all inputs as expected", ( ) => {
   const { toJSON } = render(
@@ -15,19 +16,4 @@ test( "it renders all inputs as expected", ( ) => {
     </NavigationContainer>
   );
   expect( toJSON ).toMatchSnapshot( );
-} );
-
-test( "renders text passed into observation card", ( ) => {
-  const { getByTestId, getByText } = render(
-    <ObsCard
-      item={{
-        commonName: "Insects",
-        location: "SF"
-      }}
-    />
-  );
-
-  expect( getByTestId( "ObsList.obsCard" ) ).toBeTruthy( );
-  expect( getByText( "Insects" ) ).toBeTruthy( );
-  expect( getByText( "SF" ) ).toBeTruthy( );
 } );

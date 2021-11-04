@@ -9,7 +9,7 @@ type Props = {
   uri: string
 }
 
-const SmallUserIcon = ( { uri }: Props ): React.Node => {
+const UserIcon = ( { uri }: Props ): React.Node => {
   const imageSource = { uri };
 
   return (
@@ -17,4 +17,4 @@ const SmallUserIcon = ( { uri }: Props ): React.Node => {
   );
 };
 
-export default SmallUserIcon;
+export default UserIcon;

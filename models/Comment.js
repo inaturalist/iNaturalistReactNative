@@ -1,17 +1,7 @@
 class Comment {
-  constructor( comment ) {
-    this.uuid = comment.uuid;
-    this.body = comment.body;
-    this.createdAt = comment.created_at;
-    this.id = comment.id;
-    this.user = comment.user.login;
-  }
-
   static schema = {
     name: "Comment",
-    primaryKey: "uuid",
     properties: {
-      uuid: "string",
       body: "string",
       createdAt: "string",
       id: "int",
