@@ -143,6 +143,7 @@ const createLinkedIdentifications = useCallback( ( obs ) => {
   const identifications = [];
 
   if ( obs.identifications.length > 0 ) {
+    console.log( obs.identifications.length, "ids length jest" );
     obs.identifications.forEach( ( id ) => {
       const linkedIdentification = createIdentificationForRealm( id );
       identifications.push( linkedIdentification );
@@ -240,7 +241,6 @@ const writeToDatabase = useCallback( ( results ) => {
           fields: FIELDS
         };
         const response = await inatjs.observations.search( params );
-        console.log( response.results, "response" );
         const results = response.results;
         if ( !isCurrent ) { return; }
         writeToDatabase( results );

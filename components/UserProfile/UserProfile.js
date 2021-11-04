@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Text, View } from "react-native";
+import { viewStyles } from "../../styles/userProfile/userProfile";
 import UserIcon from "../SharedComponents/UserIcon";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
@@ -9,7 +10,6 @@ import useFetchUser from "./hooks/fetchUser";
 
 const UserProfile = ( ): React.Node => {
   const user = useFetchUser( );
-  console.log( user, "user in user profile" );
   // last active date
   // bio
   // following
@@ -18,7 +18,7 @@ const UserProfile = ( ): React.Node => {
   return (
     <ViewWithFooter>
       <Text>{`@${user.login}`}</Text>
-      <View>
+      <View style={viewStyles.row}>
         <UserIcon uri={user.icon_url} large />
         <View>
           <Text>{user.name}</Text>
