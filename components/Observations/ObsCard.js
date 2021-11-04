@@ -7,34 +7,29 @@ import type { Node } from "react";
 import { viewStyles, textStyles } from "../../styles/observations/obsCard";
 
 type Props = {
-  item: {
-    uuid: string,
-    userPhoto: string,
-    commonName: string,
-    location: string,
-    timeObservedAt: string,
-    identifications: number,
-    comments: number,
-    qualityGrade: string
-  },
+  item: Object,
   handlePress: Function
 }
 
 const ObsCard = ( { item, handlePress }: Props ): Node => (
   <Pressable
-    onPress={handlePress}
+    onPress={( ) => handlePress( item )}
     style={viewStyles.row}
-    testID="ObservationsList.obsCard"
+    testID="ObsList.obsCard"
   >
-    <Image source={{ uri: item.userPhoto }} style={viewStyles.imageBackground} />
+    <Image
+      source={{ uri: item.userPhoto }}
+      style={viewStyles.imageBackground}
+      testID="ObsList.photo"
+    />
     <View style={viewStyles.obsDetailsColumn}>
       <Text style={textStyles.text}>{item.commonName}</Text>
-      <Text style={textStyles.text}>{item.location}</Text>
+      <Text style={textStyles.text}>{item.placeGuess}</Text>
       <Text style={textStyles.text}>{item.timeObservedAt}</Text>
     </View>
     <View>
-      <Text style={textStyles.text}>{item.identifications}</Text>
-      <Text style={textStyles.text}>{item.comments}</Text>
+      <Text style={textStyles.text}>{item.identificationCount}</Text>
+      <Text style={textStyles.text}>{item.commentCount}</Text>
       <Text style={textStyles.text}>{item.qualityGrade}</Text>
     </View>
   </Pressable>

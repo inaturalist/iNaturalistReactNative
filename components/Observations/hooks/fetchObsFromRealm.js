@@ -3,9 +3,9 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import Realm from "realm";
 
-import Observation from "../../../models/Observation";
+import realmConfig from "../../../models/index";
 
-const useFetchLocalObservations = ( ): Array<Object> => {
+const useFetchObsFromRealm = ( ): Array<Object> => {
   // The tasks will be set once the realm has opened and the collection has been queried.
   const [observations, setObservations] = useState( [] );
   // We store a reference to our realm using useRef that allows us to access it via
@@ -17,13 +17,9 @@ const useFetchLocalObservations = ( ): Array<Object> => {
 
   const openRealm = useCallback( async ( ) => {
     try {
-      const config = {
-        schema: [Observation.schema]
-      };
-
       // Since this is a non-sync realm (there is no "sync" field defined in the "config" object),
       // the realm will be opened synchronously when calling "Realm.open"
-      const realm = await Realm.open( config );
+      const realm = await Realm.open( realmConfig );
       realmRef.current = realm;
 
       // When querying a realm to find objects (e.g. realm.objects('Tasks')) the result we get back
@@ -77,4 +73,4 @@ const useFetchLocalObservations = ( ): Array<Object> => {
   return observations;
 };
 
-export default useFetchLocalObservations;
+export default useFetchObsFromRealm;

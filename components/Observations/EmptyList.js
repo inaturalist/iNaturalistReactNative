@@ -11,7 +11,7 @@ const EmptyList = ( ): Node => {
 
   return (
     <View style={viewStyles.center}>
-      <Text style={textStyles.text} testID="ObservationsList.emptyList">welcome to inaturalist!</Text>
+      <Text style={textStyles.text} testID="ObsList.emptyList">welcome to inaturalist!</Text>
       <Text style={textStyles.text}>make an obs of an organism, and iNat's AI...</Text>
       <Pressable
         onPress={handlePress}
