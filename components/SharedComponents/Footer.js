@@ -13,19 +13,19 @@ const Footer = ( ): React.Node => {
 
   return (
     <View style={[viewStyles.row, viewStyles.shadow]}>
-      <Pressable onPress={toggleSideMenu}>
+      <Pressable onPress={toggleSideMenu} accessibilityRole="link">
         <Text>menu</Text>
       </Pressable>
-      <Pressable>
+      <Pressable accessibilityRole="link">
         <Text>explore</Text>
       </Pressable>
-      <Pressable>
+      <Pressable accessibilityRole="link">
         <Text>camera</Text>
       </Pressable>
-      <Pressable onPress={navToObsList}>
+      <Pressable onPress={navToObsList} accessibilityRole="link">
         <Text>obs list</Text>
       </Pressable>
-      <Pressable>
+      <Pressable accessibilityRole="link">
         <Text>notifications</Text>
       </Pressable>
     </View>

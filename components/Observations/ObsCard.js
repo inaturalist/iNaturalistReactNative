@@ -16,6 +16,8 @@ const ObsCard = ( { item, handlePress }: Props ): Node => (
     onPress={( ) => handlePress( item )}
     style={viewStyles.row}
     testID="ObsList.obsCard"
+    accessibilityRole="link"
+    accessibilityLabel="Navigate to observation details screen"
   >
     <Image
       source={{ uri: item.userPhoto }}

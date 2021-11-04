@@ -10,5 +10,6 @@ module.exports = {
   // need this so jest doesn't show as undefined in jest.setup.js
   env: {
     "jest": true
-  }
+  },
+  ignorePatterns: ["/coverage/*"]
 };
