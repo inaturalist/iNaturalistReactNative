@@ -1,14 +1,14 @@
 import "react-native-gesture-handler/jestSetup";
 
-// jest.mock( "react-native-reanimated", () => {
-//   const Reanimated = require( "react-native-reanimated/mock" );
+require( "jest-fetch-mock" ).enableMocks( );
 
-//   // The mock for `call` immediately calls the callback which is incorrect
-//   // So we override it with a no-op
-//   Reanimated.default.call = () => {};
+// this resolves error with importing file after Jest environment is torn down
+// https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
+jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
+  default: ( ) => ( {getInitialState: {then: jest.fn()}} ),
+  __esModule: true
+} ) );
 
-//   return Reanimated;
+// jest.mock( "realm", ( ) => {
+//   return require( "./__mocks__/realm" );
 // } );
-
-// Silence the warning: Animated: `useNativeDriver` is not supported because the native animated module is missing
-// jest.mock( "react-native/Libraries/Animated/src/NativeAnimatedHelper" );
