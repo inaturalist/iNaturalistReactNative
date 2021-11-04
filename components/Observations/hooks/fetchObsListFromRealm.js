@@ -5,7 +5,7 @@ import Realm from "realm";
 
 import realmConfig from "../../../models/index";
 
-const useFetchObsFromRealm = ( ): Array<Object> => {
+const useFetchObsListFromRealm = ( ): Array<Object> => {
   // The tasks will be set once the realm has opened and the collection has been queried.
   const [observations, setObservations] = useState( [] );
   // We store a reference to our realm using useRef that allows us to access it via
@@ -73,4 +73,4 @@ const useFetchObsFromRealm = ( ): Array<Object> => {
   return observations;
 };
 
-export default useFetchObsFromRealm;
+export default useFetchObsListFromRealm;

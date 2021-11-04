@@ -14,14 +14,14 @@ const useFetchUser = ( ): Object => {
       name: true
     };
 
-    return {
-      user: USER_FIELDS
+  return {
+    user: USER_FIELDS
   };
 }, [] );
 
   useEffect( ( ) => {
     let isCurrent = true;
-    const fetchObservations = async ( ) => {
+    const fetchUserProfile = async ( ) => {
       try {
         const testId = 1132118;
         const ids = `${testId}?fields=name,login,icon_url,created_at,roles,site_id`;
@@ -31,11 +31,11 @@ const useFetchUser = ( ): Object => {
         setUser( results[0] );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch user:", e.message, );
+        console.log( "Couldn't fetch user:", e.message );
       }
     };
 
-    fetchObservations( );
+    fetchUserProfile( );
     return ( ) => {
       isCurrent = false;
     };

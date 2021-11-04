@@ -9,7 +9,7 @@ import { useNavigation, useRoute } from "@react-navigation/core";
 
 import { viewStyles, textStyles } from "../../styles/obsDetails";
 // import useFetchObsDetails from "./hooks/fetchObsDetails";
-import useFetchObsFromRealm from "./hooks/fetchObsFromRealm";
+import useFetchObsDetailsFromRealm from "./hooks/fetchObsFromRealm";
 import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "./PhotoScroll";
@@ -22,7 +22,7 @@ const ObsDetails = ( ): Node => {
   const { params } = useRoute( );
   const uuid = params.obsId;
 
-  const observation = useFetchObsFromRealm( uuid );
+  const observation = useFetchObsDetailsFromRealm( uuid );
 
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile" );
 

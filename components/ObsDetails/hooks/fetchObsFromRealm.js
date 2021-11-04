@@ -5,7 +5,7 @@ import Realm from "realm";
 
 import realmConfig from "../../../models/index";
 
-const useFetchObsFromRealm = ( uuid: string ): Object => {
+const useFetchObsDetailsFromRealm = ( uuid: string ): Object => {
   const [observation, setObservation] = useState( null );
   const realmRef = useRef( null );
 
@@ -37,4 +37,4 @@ const useFetchObsFromRealm = ( uuid: string ): Object => {
   return observation;
 };
 
-export default useFetchObsFromRealm;
+export default useFetchObsDetailsFromRealm;

@@ -1,20 +1,23 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
+import AccessibilityEngine from "react-native-accessibility-engine";
 
 import ObsCard from "../ObsCard";
+
+const testObservation = {
+  userPhoto: "amazon_url",
+  commonName: "Insects",
+  placeGuess: "SF",
+  timeObservedAt: "May 1, 2021",
+  identificationCount: 3,
+  commentCount: 0,
+  qualityGrade: "research"
+};
 
 test( "renders text passed into observation card", ( ) => {
   const { getByTestId, getByText } = render(
     <ObsCard
-      item={{
-        userPhoto: "amazon_url",
-        commonName: "Insects",
-        placeGuess: "SF",
-        timeObservedAt: "May 1, 2021",
-        identificationCount: 3,
-        commentCount: 0,
-        qualityGrade: "research"
-      }}
+      item={testObservation}
     />
   );
 
@@ -44,4 +47,9 @@ test( "handles button press", ( ) => {
 
   fireEvent.press( button );
   expect( fakeNavigation.navigate ).toBeCalledWith( "ObsDetails" );
+} );
+
+test( "should not have accessibility errors", ( ) => {
+  const obsCard = <ObsCard item={testObservation} />;
+  expect( ( ) => AccessibilityEngine.check( obsCard ) ).not.toThrow();
 } );

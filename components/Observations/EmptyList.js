@@ -16,6 +16,7 @@ const EmptyList = ( ): Node => {
       <Pressable
         onPress={handlePress}
         style={viewStyles.row}
+        accessibilityRole="button"
       >
         <Text style={textStyles.text}>learn more</Text>
       </Pressable>

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { View, Text } from "react-native";
 
-import { textStyles, viewStyles } from "../../styles/obsDetails";
+// import { textStyles, viewStyles } from "../../styles/obsDetails";
 import Map from "../SharedComponents/Map";
 
 type Props = {

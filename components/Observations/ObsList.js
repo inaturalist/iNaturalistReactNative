@@ -8,13 +8,13 @@ import type { Node } from "react";
 import ObsCard from "./ObsCard";
 import useFetchObservations from "./hooks/fetchObservations";
 import EmptyList from "./EmptyList";
-import useFetchObsFromRealm from "./hooks/fetchObsFromRealm";
+import useFetchObsListFromRealm from "./hooks/fetchObsListFromRealm";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
 const ObsList = ( ): Node => {
   const navigation = useNavigation( );
   const navToObsDetails = observation => navigation.navigate( "ObsDetails", { obsId: observation.uuid } );
-  const localObservations = useFetchObsFromRealm( );
+  const localObservations = useFetchObsListFromRealm( );
   // this custom hook fetches on first component render
   // (and anytime you save while in debug - hot reloading mode )
   useFetchObservations( );
