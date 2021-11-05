@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm ci
+    - run: npm install
     - run: npm test
 
   # test action works running from the graph
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm ci
+    - run: npm install
     - uses: ./
       with:
         milliseconds: 1000
