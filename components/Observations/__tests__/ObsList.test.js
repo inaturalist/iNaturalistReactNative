@@ -1,10 +1,10 @@
-import React from "react";
+// import React from "react";
 // import { render } from "@testing-library/react-native";
-import { NavigationContainer } from "@react-navigation/native";
+// import { NavigationContainer } from "@react-navigation/native";
 import inatjs from "inaturalistjs";
-import AccessibilityEngine from "react-native-accessibility-engine";
+// import AccessibilityEngine from "react-native-accessibility-engine";
 
-import ObsList from "../ObsList";
+// import ObsList from "../ObsList";
 // import EmptyList from "../EmptyList";
 
 // test( "it renders all inputs as expected", ( ) => {
@@ -48,11 +48,11 @@ test( "searches using the passed in parameters", async ( ) => {
   expect( response ).toEqual( identifications );
 } );
 
-test( "should not have accessibility errors", ( ) => {
-  const obsList = (
-    <NavigationContainer>
-      <ObsList />
-    </NavigationContainer>
-  );
-  expect( ( ) => AccessibilityEngine.check( obsList ) ).not.toThrow();
-} );
+// test( "should not have accessibility errors", ( ) => {
+//   const obsList = (
+//     <NavigationContainer>
+//       <ObsList />
+//     </NavigationContainer>
+//   );
+//   expect( ( ) => AccessibilityEngine.check( obsList ) ).not.toThrow();
+// } );
