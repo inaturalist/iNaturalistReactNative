@@ -143,7 +143,6 @@ const createLinkedIdentifications = useCallback( ( obs ) => {
   const identifications = [];
 
   if ( obs.identifications.length > 0 ) {
-    console.log( obs.identifications.length, "ids length jest" );
     obs.identifications.forEach( ( id ) => {
       const linkedIdentification = createIdentificationForRealm( id );
       identifications.push( linkedIdentification );
