@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react-native";
+// import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import inatjs from "inaturalistjs";
 import AccessibilityEngine from "react-native-accessibility-engine";
