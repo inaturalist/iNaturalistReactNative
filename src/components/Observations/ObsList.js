@@ -1,9 +1,12 @@
 // @flow
 
+// @fbt {"project": "internationalization-test"}
+
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
+import fbt from "fbt";
 
 import ObsCard from "./ObsCard";
 import useFetchObservations from "./hooks/fetchObservations";
@@ -24,6 +27,18 @@ const ObsList = ( ): Node => {
 
   const renderEmptyState = ( ) => <EmptyList />;
 
+  const FBTExampleTitle = ( ) => (
+    <Text>
+      <fbt desc="Section Description">
+        Edit App.js to change this screen and then come back to see
+        your edits.
+      </fbt>
+      {/* <fbt project="foo" desc="a simple example">
+        below is the observation list
+      </fbt> */}
+    </Text>
+  );
+
   return (
     <ViewWithFooter>
       <FlatList
@@ -32,6 +47,7 @@ const ObsList = ( ): Node => {
         renderItem={renderItem}
         testID="ObsList.myObservations"
         ListEmptyComponent={renderEmptyState}
+        ListHeaderComponent={FBTExampleTitle}
       />
     </ViewWithFooter>
   );
