@@ -1,0 +1,20 @@
+##
+# Run fbt to collect new text wrapped in <fbt> tags for translation
+# Merge PRs from Crowdin
+# Generate a single translation file after PR merged
+# Convert the translation output into an Android string resource file
+##
+name: Integrate Crowdin Translations
+jobs:
+  collect-translation-files:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run manifest
+  collect-translation-strings:
+    needs: collect-translation-files
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run collect-fbts
+    
+
+    
