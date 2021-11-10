@@ -5,8 +5,16 @@
 # Convert the translation output into an Android string resource file
 ##
 name: Integrate Crowdin Translations
+
+# https://brennerm.github.io/posts/trigger-github-actions-on-pr-close.html
+# only trigger on pull request closed events
+on:
+  pull_request:
+    types: [ closed ]
+
 jobs:
   collect-translation-files:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - run: npm run manifest
