@@ -27,15 +27,17 @@ const ObsList = ( ): Node => {
 
   const renderEmptyState = ( ) => <EmptyList />;
 
-  const FBTExampleTitle = ( ) => (
+  const ObsListHeader = ( ) => (
     <Text>
-      <fbt desc="Section Description">
-        Edit App.js to change this screen and then come back to see
-        your edits.
+      <fbt desc="plural number of observations">
+        <fbt:plural
+          count={localObservations.length}
+          name="number of observations"
+          showCount="yes"
+          many="observations">
+            observation
+        </fbt:plural>
       </fbt>
-      {/* <fbt project="foo" desc="a simple example">
-        below is the observation list
-      </fbt> */}
     </Text>
   );
 
@@ -47,7 +49,7 @@ const ObsList = ( ): Node => {
         renderItem={renderItem}
         testID="ObsList.myObservations"
         ListEmptyComponent={renderEmptyState}
-        ListHeaderComponent={FBTExampleTitle}
+        ListHeaderComponent={ObsListHeader}
       />
     </ViewWithFooter>
   );

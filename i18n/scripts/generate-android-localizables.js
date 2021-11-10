@@ -35,7 +35,6 @@ const path = require( "path" );
  * @return Locale in the form langCode-rRegionCode.
  */
 function generateAndroidLocale( locale: string ): string {
-  console.log( locale, "lcoale in android" );
   const langRegionCode = locale.split( "_" );
   invariant(
     langRegionCode.length == 2,
