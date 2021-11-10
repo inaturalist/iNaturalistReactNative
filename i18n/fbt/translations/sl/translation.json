@@ -1,0 +1,25 @@
+{
+    "fb-locale": "sl_SI",
+    "translations": {
+        "e379f5ddf643bc28c3a9db67b8f67155": {
+            "tokens": [],
+            "types": [],
+            "translations": [
+                {
+                    "translation": "Edit App.js to change this screen and then come back to see your edits.",
+                    "variations": []
+                }
+            ]
+        },
+        "b05851cda598cb8500b8bf6a477fc577": {
+            "tokens": [],
+            "types": [],
+            "translations": [
+                {
+                    "translation": "obs header!!",
+                    "variations": []
+                }
+            ]
+        }
+    }
+}
