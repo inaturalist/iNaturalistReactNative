@@ -12,6 +12,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3729B384273B13CC0044E012 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3729B386273B13CC0044E012 /* Localizable.strings */; };
+		37C06BD4273C8D49007495C3 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 37C06BD3273C8D49007495C3 /* Localizable.stringsdict */; };
 		69EB4B17196BA7693C5C9F10 /* libPods-iNaturalistReactNative-iNaturalistReactNativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8169D874847737ACF50858BC /* libPods-iNaturalistReactNative-iNaturalistReactNativeTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		FCA3DAE5271E7E17DBF8808E /* libPods-iNaturalistReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD9BD3C540764FBA375535D /* libPods-iNaturalistReactNative.a */; };
@@ -41,6 +42,8 @@
 		3729B385273B13CC0044E012 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3729B387273B13D10044E012 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3729B388273B13D20044E012 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		3755CBA3273C4E9A0050527D /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
+		37C06BD3273C8D49007495C3 /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; path = Localizable.stringsdict; sourceTree = "<group>"; };
 		4398DBA7A239ACD06B75914F /* Pods-iNaturalistReactNative-iNaturalistReactNativeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-iNaturalistReactNativeTests.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7A095FCC327617021DA5A8E8 /* Pods-iNaturalistReactNative-iNaturalistReactNativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-iNaturalistReactNativeTests.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests.release.xcconfig"; sourceTree = "<group>"; };
 		8169D874847737ACF50858BC /* libPods-iNaturalistReactNative-iNaturalistReactNativeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iNaturalistReactNative-iNaturalistReactNativeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,6 +135,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				37C06BD3273C8D49007495C3 /* Localizable.stringsdict */,
 				13B07FAE1A68108700A75B9A /* iNaturalistReactNative */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* iNaturalistReactNativeTests */,
@@ -225,6 +229,7 @@
 				Base,
 				es,
 				"es-419",
+				da,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
@@ -250,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				37C06BD4273C8D49007495C3 /* Localizable.stringsdict in Resources */,
 				3729B384273B13CC0044E012 /* Localizable.strings in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
@@ -440,6 +446,7 @@
 				3729B385273B13CC0044E012 /* en */,
 				3729B387273B13D10044E012 /* es */,
 				3729B388273B13D20044E012 /* es-419 */,
+				3755CBA3273C4E9A0050527D /* da */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

@@ -10,8 +10,9 @@
     "lint": "eslint .",
     "manifest": "fbt-manifest --src src/ --enum-manifest i18n/fbt/.enum_manifest.json --src-manifest i18n/fbt/.src_manifest.json",
     "collect-fbts": "fbt-collect --hash-module fb-tiger-hash --react-native-mode --manifest < i18n/fbt/.src_manifest.json > i18n/fbt/.source_strings.json",
-    "translate-fbts": "fbt-translate --jenkins --source-strings i18n/fbt/.source_strings.json --translations i18n/fbt/translationScriptInput/*.json > i18n/fbt/translatedFbts.json",
-    "generate-android-fbt": "babel-node i18n/scripts/generate-android-localizables-executor.js"
+    "translate-fbts": "fbt-translate --jenkins --source-strings i18n/fbt/.source_strings.json --translations i18n/fbt/translations/**/*.json > i18n/fbt/translatedFbts.json",
+    "generate-android-fbt": "babel-node i18n/scripts/generate-android-localizables-executor.js",
+    "generate-ios-fbt": "babel-node i18n/scripts/generate-ios-localizables-executor.js"
   },
   "dependencies": {
     "@fbtjs/default-collection-transform": "^0.0.3",
