@@ -6,7 +6,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "{number of observations} observations",
+                    "translation": "{number of observations} observationer",
                     "variations": []
                 }
             ]
@@ -26,7 +26,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "MY OBSERVATIONS",
+                    "translation": "MIN OBSERVATIONER",
                     "variations": []
                 }
             ]
