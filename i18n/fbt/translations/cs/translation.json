@@ -1,35 +1,35 @@
 {
-    "fb-locale": "cs_CZ",
-    "translations": {
-        "d20cc87242c64d57e475d4dbbf15b11a": {
-            "tokens": [],
-            "types": [],
-            "translations": [
-                {
-                    "translation": "{number of observations} observations",
-                    "variations": []
-                }
-            ]
-        },
-        "3a07b1e1752ce341ede05988ccd506a2": {
-            "tokens": [],
-            "types": [],
-            "translations": [
-                {
-                    "translation": "1 observation",
-                    "variations": []
-                }
-            ]
-        },
-        "01f7556dc9cfedd804b313a7d4805ec3": {
-            "tokens": [],
-            "types": [],
-            "translations": [
-                {
-                    "translation": "MY OBSERVATIONS",
-                    "variations": []
-                }
-            ]
-        }
+ "fb-locale": "cs_CZ",
+ "translations": {
+  "d20cc87242c64d57e475d4dbbf15b11a": {
+   "tokens": [],
+   "types": [],
+   "translations": [
+    {
+     "translation": "{number of observations} observations",
+     "variations": []
     }
+   ]
+  },
+  "3a07b1e1752ce341ede05988ccd506a2": {
+   "tokens": [],
+   "types": [],
+   "translations": [
+    {
+     "translation": "1 observation",
+     "variations": []
+    }
+   ]
+  },
+  "01f7556dc9cfedd804b313a7d4805ec3": {
+   "tokens": [],
+   "types": [],
+   "translations": [
+    {
+     "translation": "MY OBSERVATIONS",
+     "variations": []
+    }
+   ]
+  }
+ }
 }
