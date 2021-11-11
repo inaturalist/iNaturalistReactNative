@@ -25,7 +25,7 @@ const useFetchObservations = ( ): Array<Object> => {
     catch ( err ) {
       console.error( "Error opening realm: ", err.message );
     }
-  }, [realmRef, setObservations] );
+  }, [realmRef] );
 
   const closeRealm = useCallback( ( ) => {
     const subscription = subscriptionRef.current;

@@ -109,52 +109,47 @@ function generateiOSLocale( locale: string ): ?string {
      if ( typeof localeValues[hash] === "string" ) {
       encodedValues[hash] = localeValues[hash];
      } else {
-      encodedValues[hash] = "testing";
-      // encodedValues[hash] = JSON.stringify( localeValues[hash] );
+      encodedValues[hash] = localeValues[hash];
      }
    }
    return encodedValues;
  }
 
- /**
-  * Take translations output, and write individual JSON files for each locale
-  * raw-es_rES/localizable.json => {<hash> = '\'translatedString'\'}
-  * raw-ru_rRU/localizable.json
-  */
  function generateiOSLocalizableFiles(
    translationOutput: TranslationScriptOutput,
    iOSResDir: string,
    translationsFileName: string,
  ) {
-   try {
+    try {
       for ( const locale in translationOutput ) {
-        // console.log( locale, "locale" );
         const iOSLocale = generateiOSLocale( locale );
         if ( iOSLocale === null || iOSLocale === undefined ) {
           continue;
         }
         const lprojDir = path.join( iOSResDir, `${iOSLocale}.lproj` );
-        // console.log( lprojDir, "lproj directory" );
 
-       if ( !fs.existsSync( lprojDir ) ) {
-         fs.mkdirSync( lprojDir );
-       }
+        if ( !fs.existsSync( lprojDir ) ) {
+          fs.mkdirSync( lprojDir );
+        }
 
-       const createFiles = fs.createWriteStream( path.join( lprojDir, translationsFileName ) );
+        const createFiles = fs.createWriteStream( path.join( lprojDir, translationsFileName ) );
 
-       const values = jsonEncodeValues( translationOutput[locale] );
-       const hashes = Object.keys( values );
-       hashes.forEach( ( hash ) => {
-         const newLine = `"${hash}" = "\\"${values[hash]}\\""`;
-         console.log( newLine, "new line" );
-        // console.log( newLine, "hash" );
-        createFiles.write( newLine + ";\r\n", {encoding: "utf16"} );
-       } );
-      //  fs.writeFileSync(
-      //    path.join( lprojDir, translationsFileName ),
-      //    JSON.stringify( jsonEncodeValues( translationOutput[locale] ) ),
-      //    {encoding: "utf8"},
-      //  );
+        const values = jsonEncodeValues( translationOutput[locale] );
+        const hashes = Object.keys( values );
+        hashes.forEach( hash => {
+          let newLine = "";
+          const plurals = values[hash];
+          const pluralList = Object.keys( plurals );
+          if ( pluralList.length > 0 && typeof plurals !== "string" ) {
+            pluralList.forEach( plural => {
+              newLine = `"${hash}-${plural}" = "\\${plurals[plural]}\\""`;
+              createFiles.write( newLine + ";\r\n" );
+            } );
+          } else {
+            newLine = `"${hash}" = "\\"${values[hash]}\\""`;
+            createFiles.write( newLine + ";\r\n" );
+          }
+        } );
       }
    } catch ( error ) {
      console.error( "An error ocurred while generating the ios localizables" );

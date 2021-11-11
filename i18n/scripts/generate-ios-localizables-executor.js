@@ -55,7 +55,7 @@
    .default( args.TRANSLATIONS_FILENAME, "Localizable.strings" )
    .describe(
      args.TRANSLATIONS_FILENAME,
-     "name that json translation files should take",
+     "name that strings translation files should take",
    ).argv;
 
  if ( argv[args.HELP] ) {
