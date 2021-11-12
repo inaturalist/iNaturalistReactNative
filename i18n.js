@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import * as RNLocalize from "react-native-localize";
+import { DateTime } from "luxon";
 
 import en from "./translations/en";
 import de from "./translations/de";
@@ -28,7 +29,13 @@ i18n
     debug: true,
     fallbackLng: "en",
     interpolation: {
-      escapeValue: false // not needed for react as it escapes by default
+      escapeValue: false, // not needed for react as it escapes by default
+      format: ( value, format, lng ) => {
+        if ( value instanceof Date ) {
+          return DateTime.fromJSDate( value ).setLocale( lng ).toLocaleString( DateTime[format] );
+        }
+        return value;
+      }
     },
     resources: {
       en: {
