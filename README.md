@@ -1,5 +1,9 @@
 # iNaturalistReactNative
 
+## Install packages and pods
+1. Run `npm install`
+2. Run `npx pod-install ios` or `cd ios && pod install` from the root directory
+
 ## Run build
 1. Run `npm start -- --reset-cache` (`npm start` works too, but resetting the cache each time makes for a lot less build issues)
 2. Run `npm run ios` or `npm run android`
