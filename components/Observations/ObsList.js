@@ -1,9 +1,10 @@
 // @flow
 
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
+import { useTranslation } from "react-i18next";
 
 import ObsCard from "./ObsCard";
 import useFetchObservations from "./hooks/fetchObservations";
@@ -12,6 +13,8 @@ import useFetchObsListFromRealm from "./hooks/fetchObsListFromRealm";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
 const ObsList = ( ): Node => {
+  const [count, setCounter] = React.useState( 0 );
+  const { t, i18n } = useTranslation( );
   const navigation = useNavigation( );
   const navToObsDetails = observation => navigation.navigate( "ObsDetails", { obsId: observation.uuid } );
   const localObservations = useFetchObsListFromRealm( );
@@ -24,8 +27,31 @@ const ObsList = ( ): Node => {
 
   const renderEmptyState = ( ) => <EmptyList />;
 
+  const lngs = {
+    en: { nativeName: "English" },
+    de: { nativeName: "Deutsch" }
+  };
+
   return (
     <ViewWithFooter>
+      {Object.keys( lngs ).map( lng => {
+        return (
+          <Pressable
+            key={lng}
+            onPress={() => {
+              i18n.changeLanguage( lng );
+              setCounter( count + 1 );
+            } }
+          >
+            <Text>{lngs[lng].nativeName}</Text>
+          </Pressable>
+        );
+      } )}
+        <Text>{t( "counter", { count } )}</Text>
+        <Text>{t( "description.part1" )}</Text>
+        <Text>
+          {t( "description.part2" )}
+        </Text>
       <FlatList
         data={localObservations}
         keyExtractor={extractKey}
