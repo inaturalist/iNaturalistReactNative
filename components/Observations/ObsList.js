@@ -47,11 +47,7 @@ const ObsList = ( ): Node => {
           </Pressable>
         );
       } )}
-        <Text>{t( "counter", { count } )}</Text>
-        <Text>{t( "description.part1" )}</Text>
-        <Text>
-          {t( "description.part2" )}
-        </Text>
+      <Text>{t( "number_of_observations", {count: localObservations.length } )}</Text>
       <FlatList
         data={localObservations}
         keyExtractor={extractKey}
