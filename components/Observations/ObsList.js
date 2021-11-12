@@ -13,7 +13,6 @@ import useFetchObsListFromRealm from "./hooks/fetchObsListFromRealm";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
 const ObsList = ( ): Node => {
-  const [count, setCounter] = React.useState( 0 );
   const { t, i18n } = useTranslation( );
   const navigation = useNavigation( );
   const navToObsDetails = observation => navigation.navigate( "ObsDetails", { obsId: observation.uuid } );
@@ -38,16 +37,13 @@ const ObsList = ( ): Node => {
         return (
           <Pressable
             key={lng}
-            onPress={() => {
-              i18n.changeLanguage( lng );
-              setCounter( count + 1 );
-            } }
+            onPress={() => i18n.changeLanguage( lng ) }
           >
             <Text>{lngs[lng].nativeName}</Text>
           </Pressable>
         );
       } )}
-      <Text>{t( "number_of_observations", {count: localObservations.length } )}</Text>
+      <Text>{t( "x_observations", {count: localObservations.length } )}</Text>
       <FlatList
         data={localObservations}
         keyExtractor={extractKey}
