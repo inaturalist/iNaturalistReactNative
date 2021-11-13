@@ -5,6 +5,7 @@ import { FlatList, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
+import * as RNLocalize from "react-native-localize";
 
 import ObsCard from "./ObsCard";
 import useFetchObservations from "./hooks/fetchObservations";
@@ -31,6 +32,9 @@ const ObsList = ( ): Node => {
     de: { nativeName: "Deutsch" }
   };
 
+  const userLocale = RNLocalize.getLocales( )[0].languageTag;
+  const intlNumber = new Intl.NumberFormat( userLocale );
+
   return (
     <ViewWithFooter>
       {Object.keys( lngs ).map( lng => {
@@ -43,7 +47,10 @@ const ObsList = ( ): Node => {
           </Pressable>
         );
       } )}
-      <Text>{t( "x_observations", {count: localObservations.length } )}</Text>
+      {console.log( intlNumber.format( 1000 ) )}
+      <Text>{t( "x_observations", { count: localObservations.length } )}</Text>
+      {/* note: international number doesn't seem to deal well with East Asian languages (i.e. Chinese/Japanese) */}
+      <Text>{t( "total_species_seen", { val: intlNumber.format( 999999 ) } )}</Text>
       <FlatList
         data={localObservations}
         keyExtractor={extractKey}
