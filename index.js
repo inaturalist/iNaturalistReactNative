@@ -4,7 +4,7 @@ import "react-native-gesture-handler";
 
 import {AppRegistry} from "react-native";
 import inatjs from "inaturalistjs";
-import App from "./navigation/stackNavigation";
+import App from "./src/navigation/stackNavigation";
 import {name as appName} from "./app.json";
 
 inatjs.setConfig( {

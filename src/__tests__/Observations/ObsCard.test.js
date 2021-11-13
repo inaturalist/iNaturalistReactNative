@@ -2,7 +2,7 @@ import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
 import AccessibilityEngine from "react-native-accessibility-engine";
 
-import ObsCard from "../ObsCard";
+import ObsCard from "../../components/Observations/ObsCard";
 
 const testObservation = {
   userPhoto: "amazon_url",
