@@ -1,5 +1,5 @@
 {
-    "fb-locale": "fr_CA",
+    "fb-locale": "fr_FR",
     "translations": {
         "d20cc87242c64d57e475d4dbbf15b11a": {
             "tokens": [],
@@ -26,7 +26,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "MES OBSERVATIONS",
+                    "translation": "MY OBSERVATIONS",
                     "variations": []
                 }
             ]
