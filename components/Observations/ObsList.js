@@ -47,7 +47,6 @@ const ObsList = ( ): Node => {
           </Pressable>
         );
       } )}
-      {console.log( intlNumber.format( 1000 ) )}
       <Text>{t( "x_observations", { count: localObservations.length } )}</Text>
       {/* note: international number doesn't seem to deal well with East Asian languages (i.e. Chinese/Japanese) */}
       <Text>{t( "total_species_seen", { val: intlNumber.format( 999999 ) } )}</Text>
