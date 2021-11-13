@@ -1,6 +1,4 @@
 module.exports = {
-  date_observed: "Date observed: {{date}}",
-  date_uploaded: "Date uploaded: {{date}}",
   my_observations_caps: "MEINE BEOBACHTUNGEN",
   x_observations_zero: "{{count}} Beobachtungen",
   x_observations_one: "1 Beobachtung",
