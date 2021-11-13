@@ -3,8 +3,8 @@ import { initReactI18next } from "react-i18next";
 import * as RNLocalize from "react-native-localize";
 import { DateTime } from "luxon";
 
-import en from "./translations/en";
-import de from "./translations/de";
+import en from "./translations/en.json";
+import de from "./translations/de.json";
 
 const userLocale = RNLocalize.getLocales( )[0].languageTag;
 
