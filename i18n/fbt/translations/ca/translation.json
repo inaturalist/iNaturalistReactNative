@@ -6,7 +6,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "{number of observations} observations",
+                    "translation": "{number of observations} observacions",
                     "variations": []
                 }
             ]
@@ -16,7 +16,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "1 observation",
+                    "translation": "1 observació",
                     "variations": []
                 }
             ]
@@ -26,7 +26,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "MY OBSERVATIONS",
+                    "translation": "LES MEVES OBSERVACIONS",
                     "variations": []
                 }
             ]
