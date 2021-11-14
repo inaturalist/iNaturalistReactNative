@@ -1,11 +1,11 @@
 {
-  "date_observed": "Date observed: {{date}}",
-  "date_uploaded": "Date uploaded: {{date}}",
-  "my_observations_caps": "MY OBSERVATIONS",
-  "total_species_seen": "{{val, number}} total species seen",
-  "x_observations_zero": "{{count}} observations",
-  "x_observations_one": "1 observation",
-  "x_observations_two": "{{count}} observations",
+  "date_observed": "Tanggal pengamatan: {{date}}",
+  "date_uploaded": "Tanggal pengunggahan: {{date}}",
+  "my_observations_caps": "PENGAMATAN SAYA",
+  "total_species_seen": "{{val, number}} jumlah spesies telah dilihat",
+  "x_observations_zero": "{{count}} pengamatan",
+  "x_observations_one": "1 pengamatan",
+  "x_observations_two": "{{count}} pengamatan",
   "x_observations_few": "{{count}} observations",
   "x_observations_many": "{{count}} observations",
   "x_observations_other": "{{count}} observations"
