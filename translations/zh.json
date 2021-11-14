@@ -1,12 +1,12 @@
 {
-  "date_observed": "Date observed: {{date}}",
-  "date_uploaded": "Date uploaded: {{date}}",
-  "my_observations_caps": "MY OBSERVATIONS",
-  "total_species_seen": "{{val, number}} total species seen",
-  "x_observations_zero": "{{count}} observations",
-  "x_observations_one": "1 observation",
-  "x_observations_two": "{{count}} observations",
-  "x_observations_few": "{{count}} observations",
-  "x_observations_many": "{{count}} observations",
-  "x_observations_other": "{{count}} observations"
+  "date_observed": "觀察日期：{{date}}",
+  "date_uploaded": "上傳日期：{{date}}",
+  "my_observations_caps": "我的觀察紀錄",
+  "total_species_seen": "{{val, number}} 種物種已見",
+  "x_observations_zero": "{{count}} 筆觀察紀錄",
+  "x_observations_one": "一筆觀察紀錄",
+  "x_observations_two": "{{count}} 筆觀察紀錄",
+  "x_observations_few": "{{count}} 筆觀察紀錄",
+  "x_observations_many": "{{count}} 筆觀察紀錄",
+  "x_observations_other": "{{count}} 筆觀察紀錄"
 }
