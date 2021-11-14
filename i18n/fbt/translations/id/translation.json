@@ -6,7 +6,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "{number of observations} observations",
+                    "translation": "{number of observations} pengamatan",
                     "variations": []
                 }
             ]
@@ -16,7 +16,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "1 observation",
+                    "translation": "1 pengamatan",
                     "variations": []
                 }
             ]
