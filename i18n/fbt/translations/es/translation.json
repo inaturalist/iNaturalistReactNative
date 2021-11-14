@@ -1,12 +1,12 @@
 {
-    "fb-locale": "es_ES",
+    "fb-locale": "es_AR",
     "translations": {
         "d20cc87242c64d57e475d4dbbf15b11a": {
             "tokens": [],
             "types": [],
             "translations": [
                 {
-                    "translation": "{number of observations} observations",
+                    "translation": "{number of observations} observaciones",
                     "variations": []
                 }
             ]
@@ -16,7 +16,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "1 observation",
+                    "translation": "1 observación",
                     "variations": []
                 }
             ]
@@ -26,7 +26,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "MY OBSERVATIONS",
+                    "translation": "MIS OBSERVACIONES",
                     "variations": []
                 }
             ]
