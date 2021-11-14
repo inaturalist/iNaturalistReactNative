@@ -1,12 +1,12 @@
 {
-  "date_observed": "Date observed: {{date}}",
-  "date_uploaded": "Date uploaded: {{date}}",
-  "my_observations_caps": "MY OBSERVATIONS",
-  "total_species_seen": "{{val, number}} total species seen",
-  "x_observations_zero": "{{count}} observations",
+  "date_observed": "Observationsdato: {{date}}",
+  "date_uploaded": "Upload-dato: {{date}}",
+  "my_observations_caps": "MINE OBSERVATIONER",
+  "total_species_seen": "{{val, number}} observerede arter i alt",
+  "x_observations_zero": "{{count}} observationer",
   "x_observations_one": "1 observation",
-  "x_observations_two": "{{count}} observations",
-  "x_observations_few": "{{count}} observations",
-  "x_observations_many": "{{count}} observations",
-  "x_observations_other": "{{count}} observations"
+  "x_observations_two": "{{count}} observationer",
+  "x_observations_few": "{{count}} observationer",
+  "x_observations_many": "{{count}} observationer",
+  "x_observations_other": "{{count}} observationer"
 }
