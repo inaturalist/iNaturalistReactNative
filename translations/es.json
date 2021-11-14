@@ -1,12 +1,12 @@
 {
-  "date_observed": "Date observed: {{date}}",
-  "date_uploaded": "Date uploaded: {{date}}",
-  "my_observations_caps": "MY OBSERVATIONS",
-  "total_species_seen": "{{val, number}} total species seen",
-  "x_observations_zero": "{{count}} observations",
-  "x_observations_one": "1 observation",
-  "x_observations_two": "{{count}} observations",
-  "x_observations_few": "{{count}} observations",
-  "x_observations_many": "{{count}} observations",
-  "x_observations_other": "{{count}} observations"
+  "date_observed": "Fecha de observación: {{date}}",
+  "date_uploaded": "Fecha de subida: {{date}}",
+  "my_observations_caps": "MIS OBSERVACIONES",
+  "total_species_seen": "{{val, number}} especies vistas en total",
+  "x_observations_zero": "{{count}} observaciones",
+  "x_observations_one": "1 observación",
+  "x_observations_two": "{{count}} observaciones",
+  "x_observations_few": "{{count}} observaciones",
+  "x_observations_many": "{{count}} observaciones",
+  "x_observations_other": "{{count}} observaciones"
 }
