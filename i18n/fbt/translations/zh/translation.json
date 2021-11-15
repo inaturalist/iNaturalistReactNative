@@ -1,12 +1,12 @@
 {
-    "fb-locale": "zh_CN",
+    "fb-locale": "zh_TW",
     "translations": {
         "d20cc87242c64d57e475d4dbbf15b11a": {
             "tokens": [],
             "types": [],
             "translations": [
                 {
-                    "translation": "{number of observations} observations",
+                    "translation": "{number of observations} 筆觀察紀錄",
                     "variations": []
                 }
             ]
@@ -16,7 +16,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "1 observation",
+                    "translation": "一筆觀察紀錄",
                     "variations": []
                 }
             ]
@@ -26,7 +26,7 @@
             "types": [],
             "translations": [
                 {
-                    "translation": "MY OBSERVATIONS",
+                    "translation": "我的觀察紀錄",
                     "variations": []
                 }
             ]
