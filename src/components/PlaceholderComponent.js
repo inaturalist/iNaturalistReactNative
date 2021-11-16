@@ -6,7 +6,7 @@ import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 
 const PlaceholderComponent = ( ): React.Node => (
   <ViewWithFooter>
-    <Text>screen placeholder, accessible from side menu</Text>
+    <Text>placeholder, accessible from left side menu</Text>
   </ViewWithFooter>
 );
 
