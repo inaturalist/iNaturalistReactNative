@@ -12,6 +12,6 @@ export default {
     Observation,
     Photo
   ],
-  schemaVersion: 1,
+  schemaVersion: 3,
   path: "db.realm"
 };

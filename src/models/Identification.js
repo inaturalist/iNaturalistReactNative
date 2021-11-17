@@ -22,15 +22,15 @@ class Identification {
     properties: {
       uuid: "string",
       body: "string?",
-      category: "string",
+      category: "string?",
       commonName: "string?",
-      createdAt: "string",
-      name: "string",
-      rank: "string",
-      taxonPhoto: "string",
+      createdAt: "string?",
+      name: "string?",
+      rank: "string?",
+      taxonPhoto: "string?",
       userIcon: "string?",
-      userLogin: "string",
-      vision: "bool",
+      userLogin: "string?",
+      vision: "bool?",
       // this creates an inverse relationship so identifications
       // automatically keep track of which Observation they are assigned to
       assignee: {

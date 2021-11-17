@@ -45,24 +45,24 @@ class Observation {
     primaryKey: "uuid",
     properties: {
       uuid: "string",
-      commentCount: "int",
+      commentCount: "int?",
       comments: "Comment[]",
       commonName: "string?",
-      createdAt: "string",
+      createdAt: "string?",
       description: "string?",
       identifications: "Identification[]",
-      identificationCount: "int",
+      identificationCount: "int?",
       latitude: "double?",
-      location: "string",
+      location: "string?",
       longitude: "double?",
       photos: "Photo[]",
-      placeGuess: "string",
-      qualityGrade: "string",
-      taxonRank: "string",
-      timeObservedAt: "string",
-      userProfilePhoto: "string",
-      userLogin: "string",
-      userPhoto: "string"
+      placeGuess: "string?",
+      qualityGrade: "string?",
+      taxonRank: "string?",
+      timeObservedAt: "string?",
+      userProfilePhoto: "string?",
+      userLogin: "string?",
+      userPhoto: "string?"
     }
   }
 }
