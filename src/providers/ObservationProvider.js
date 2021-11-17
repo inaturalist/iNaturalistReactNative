@@ -13,21 +13,21 @@ type Props = {
 const ObservationProvider = ( { children }: Props ): Node => {
   const [observationId, setObservationId] = useState( null );
   const [observationList, setObservationList] = useState( [] );
+
   // We store a reference to our realm using useRef that allows us to access it via
   // realmRef.current for the component's lifetime without causing rerenders if updated.
   const realmRef = useRef( null );
-  // The first time we query the Realm tasks collection we add a listener to it.
+  // The first time we query the Realm collection we add a listener to it.
   // We store the listener in "subscriptionRef" to be able to remove it when the component unmounts.
   const subscriptionRef = useRef( null );
 
   const openRealm = useCallback( async ( ) => {
     try {
-      // Since this is a non-sync realm (there is no "sync" field defined in the "config" object),
-      // the realm will be opened synchronously when calling "Realm.open"
+      // Since this is a non-sync realm, realm will be opened synchronously when calling "Realm.open"
       const realm = await Realm.open( realmConfig );
       realmRef.current = realm;
 
-      // When querying a realm to find objects (e.g. realm.objects('Tasks')) the result we get back
+      // When querying a realm to find objects (e.g. realm.objects('Observation')) the result we get back
       // and the objects in it are "live" and will always reflect the latest state.
       const localObservations = realm.objects( "Observation" );
       if ( localObservations?.length ) {
@@ -36,19 +36,6 @@ const ObservationProvider = ( { children }: Props ): Node => {
 
       // Live queries and objects emit notifications when something has changed that we can listen for.
       subscriptionRef.current = localObservations;
-      // localObservations.addListener( ( /*collection, changes*/ ) => {
-      //   // If wanting to handle deletions, insertions, and modifications differently you can access them through
-      //   // the two arguments. (Always handle them in the following order: deletions, insertions, modifications)
-      //   // If using collection listener (1st arg is the collection):
-      //   // e.g. changes.insertions.forEach((index) => console.log('Inserted item: ', collection[index]));
-      //   // If using object listener (1st arg is the object):
-      //   // e.g. changes.changedProperties.forEach((prop) => console.log(`${prop} changed to ${object[prop]}`));
-
-      //   // By querying the objects again, we get a new reference to the Result and triggers
-      //   // a rerender by React. Setting the tasks to either 'tasks' or 'collection' (from the
-      //   // argument) will not trigger a rerender since it is the same reference
-      //   setObservationList( realm.objects( "Observation" ) );
-      // } );
     }
     catch ( err ) {
       console.error( "Error opening realm: ", err.message );
@@ -61,8 +48,6 @@ const ObservationProvider = ( { children }: Props ): Node => {
     subscriptionRef.current = null;
 
     const realm = realmRef.current;
-    // If having listeners on the realm itself, also remove them using:
-    // realm?.removeAllListeners( );
     realm?.close( );
     realmRef.current = null;
     setObservationList( [] );
@@ -82,7 +67,7 @@ const ObservationProvider = ( { children }: Props ): Node => {
   const observationValue = {
     observationList,
     observationId,
-    setObservation: updateObservationId,
+    updateObservationId,
     fetchObservations
   };
 
