@@ -1,4 +1,13 @@
 class Photo {
+  static createObjectForRealm( photo ) {
+    return {
+      id: photo.id,
+      attribution: photo.attribution,
+      licenseCode: photo.license_code,
+      url: photo.url
+    };
+  }
+
   static schema = {
     name: "Photo",
     // need uuid to be primary key for photos that get uploaded?

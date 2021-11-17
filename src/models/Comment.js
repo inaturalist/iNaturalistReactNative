@@ -1,4 +1,13 @@
 class Comment {
+  static createObjectForRealm( id ) {
+    return {
+      body: id.body,
+      createdAt: id.created_at,
+      id: id.id,
+      user: id.user.login
+    };
+  }
+
   static schema = {
     name: "Comment",
     properties: {
