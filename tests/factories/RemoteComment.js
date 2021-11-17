@@ -1,4 +1,4 @@
-import { define } from "factoria";
+import factory, { define } from "factoria";
 
 export default define( "RemoteComment", faker => ( {
   id: faker.datatype.number( ),
