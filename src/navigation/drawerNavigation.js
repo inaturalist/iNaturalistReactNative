@@ -5,6 +5,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import ObsList from "../components/Observations/ObsList";
 import PlaceholderComponent from "../components/PlaceholderComponent";
+import ObsListRightHeader from "../components/Observations/ObsListRightHeader";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -13,7 +14,13 @@ const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = ( ): React.Node => (
   <Drawer.Navigator screenOptions={screenOptions}>
-    <Drawer.Screen name="my observations" component={ObsList} />
+    <Drawer.Screen
+      name="my observations"
+      component={ObsList}
+      options={( { navigation } ) => ( {
+        headerRight: ( ) => <ObsListRightHeader />
+      } )}
+    />
     <Drawer.Screen name="missions/seen nearby" component={PlaceholderComponent} />
     <Drawer.Screen name="search" component={PlaceholderComponent} />
     <Drawer.Screen name="identify" component={PlaceholderComponent} />

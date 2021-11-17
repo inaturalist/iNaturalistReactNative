@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
@@ -8,15 +8,21 @@ import type { Node } from "react";
 import ObsCard from "./ObsCard";
 import useFetchObservations from "./hooks/fetchObservations";
 import EmptyList from "./EmptyList";
-import useFetchObsListFromRealm from "./hooks/fetchObsListFromRealm";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import { ObservationContext } from "../../providers/contexts";
 
 const ObsList = ( ): Node => {
+  const { observationList, updateObservationId, fetchObservations } = useContext( ObservationContext );
   const navigation = useNavigation( );
-  const navToObsDetails = observation => navigation.navigate( "ObsDetails", { obsId: observation.uuid } );
-  const localObservations = useFetchObsListFromRealm( );
+
+  const navToObsDetails = observation => {
+    updateObservationId( observation.uuid );
+    navigation.navigate( "ObsDetails" );
+  };
   // this custom hook fetches on first component render
   // (and anytime you save while in debug - hot reloading mode )
+  // this will eventually go in a sync button / pull-from-top gesture
+  // instead of automatically fetching every time the component loads
   useFetchObservations( );
 
   const extractKey = item => item.uuid;
@@ -24,10 +30,21 @@ const ObsList = ( ): Node => {
 
   const renderEmptyState = ( ) => <EmptyList />;
 
+  useEffect( ( ) => {
+    // addListener is here to make sure the collection from realm is the most recent, valid
+    // collection, even after a user taps into obs detail and then comes back to
+    // the observation list screen. otherwise, realm results will error as invalidated objects
+    const unsub = navigation.addListener( "focus", ( ) => {
+      fetchObservations( );
+    } );
+
+    return unsub;
+  } );
+
   return (
     <ViewWithFooter>
       <FlatList
-        data={localObservations}
+        data={observationList}
         keyExtractor={extractKey}
         renderItem={renderItem}
         testID="ObsList.myObservations"

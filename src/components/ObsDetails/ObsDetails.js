@@ -1,11 +1,11 @@
 // @flow
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Text, View, Image, Pressable } from "react-native";
 import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { ScrollView } from "react-native-gesture-handler";
-import { useNavigation, useRoute } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/core";
 
 import { viewStyles, textStyles } from "../../styles/obsDetails";
 // import useFetchObsDetails from "./hooks/fetchObsDetails";
@@ -14,14 +14,14 @@ import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "./PhotoScroll";
 import DataTab from "./DataTab";
+import { ObservationContext } from "../../providers/contexts";
 
 const ObsDetails = ( ): Node => {
+  const { observationId } = useContext( ObservationContext );
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  const { params } = useRoute( );
-  const uuid = params.obsId;
-
+  const uuid = observationId;
   const observation = useFetchObsDetailsFromRealm( uuid );
 
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile" );
