@@ -10,7 +10,11 @@ jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
 // https://github.com/callstack/react-native-testing-library/issues/658#issuecomment-766886514
 jest.mock( "react-native/Libraries/LogBox/LogBox" );
 
-// Mock the realm config so it uses an in-memory database
+// Mock the realm config so it uses an in-memory database. This means data is
+// only persisted until realm.close() gets called, so if the code under test
+// needs data to persist in Realm across opening/closing events, we will need
+// to take a different approach, e.g. writing to Realm to disk and erasing
+// those files after each test run
 jest.mock( "../src/models/index", ( ) => {
   const originalModule = jest.requireActual( "../src/models/index" );
 
