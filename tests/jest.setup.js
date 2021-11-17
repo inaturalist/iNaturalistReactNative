@@ -7,6 +7,9 @@ jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
   __esModule: true
 } ) );
 
+// https://github.com/callstack/react-native-testing-library/issues/658#issuecomment-766886514
+jest.mock( "react-native/Libraries/LogBox/LogBox" );
+
 // Mock the realm config so it uses an in-memory database
 jest.mock( "../src/models/index", ( ) => {
   const originalModule = jest.requireActual( "../src/models/index" );
