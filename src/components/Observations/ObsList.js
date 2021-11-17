@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useContext } from "react";
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
@@ -8,13 +8,19 @@ import type { Node } from "react";
 import ObsCard from "./ObsCard";
 import useFetchObservations from "./hooks/fetchObservations";
 import EmptyList from "./EmptyList";
-import useFetchObsListFromRealm from "./hooks/fetchObsListFromRealm";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import { ObservationContext } from "../../providers/contexts";
 
 const ObsList = ( ): Node => {
+  const { observationList, setObservation } = useContext( ObservationContext );
   const navigation = useNavigation( );
-  const navToObsDetails = observation => navigation.navigate( "ObsDetails", { obsId: observation.uuid } );
-  const localObservations = useFetchObsListFromRealm( );
+
+  const navToObsDetails = observation => {
+    console.log( observation.uuid, "observation" );
+    setObservation( observation.uuid );
+    navigation.navigate( "ObsDetails" );
+  };
+  // const navToObsDetails = observation => navigation.navigate( "ObsDetails", { obsId: observation.uuid } );
   // this custom hook fetches on first component render
   // (and anytime you save while in debug - hot reloading mode )
   useFetchObservations( );
@@ -27,7 +33,7 @@ const ObsList = ( ): Node => {
   return (
     <ViewWithFooter>
       <FlatList
-        data={localObservations}
+        data={observationList}
         keyExtractor={extractKey}
         renderItem={renderItem}
         testID="ObsList.myObservations"
