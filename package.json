@@ -9,6 +9,14 @@
     "test": "jest",
     "lint": "eslint ."
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": ["lint-staged"]
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": ["eslint --fix"]
+  },
   "dependencies": {
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
@@ -61,13 +69,5 @@
     "automock": false,
     "resetMocks": false,
     "verbose": true
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": ["lint-staged"]
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx}": ["eslint --fix"]
   }
 }
