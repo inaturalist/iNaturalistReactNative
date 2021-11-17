@@ -15,7 +15,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => (
   <Pressable
     onPress={( ) => handlePress( item )}
     style={viewStyles.row}
-    testID="ObsList.obsCard"
+    testID={`ObsList.obsCard.${item.uuid}`}
     accessibilityRole="link"
     accessibilityLabel="Navigate to observation details screen"
   >
@@ -31,7 +31,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => (
     </View>
     <View>
       <Text style={textStyles.text}>{item.identificationCount}</Text>
-      <Text style={textStyles.text}>{item.commentCount}</Text>
+      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">{item.commentCount}</Text>
       <Text style={textStyles.text}>{item.qualityGrade}</Text>
     </View>
   </Pressable>
