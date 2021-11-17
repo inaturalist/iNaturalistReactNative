@@ -7,7 +7,7 @@ class Identification {
       commonName: id.taxon.preferred_common_name,
       createdAt: id.created_at,
       id: id.id,
-      name: id.taxon.name,
+      name: id.taxon.name,,,,
       rank: id.taxon.rank,
       taxonPhoto: id.taxon.default_photo.square_url,
       userIcon: id.user.icon_url,
