@@ -77,10 +77,13 @@ const ObservationProvider = ( { children }: Props ): Node => {
 
   const updateObservationId = obsId => setObservationId( obsId );
 
+  const fetchObservations = ( ) => openRealm( );
+
   const observationValue = {
     observationList,
     observationId,
-    setObservation: updateObservationId
+    setObservation: updateObservationId,
+    fetchObservations
   };
 
   return (
