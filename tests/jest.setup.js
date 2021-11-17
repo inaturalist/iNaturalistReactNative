@@ -25,3 +25,6 @@ jest.mock( "../src/models/index", ( ) => {
     }
   };
 } );
+
+// Some test environments may need a little more time
+jest.setTimeout( 30000 );
