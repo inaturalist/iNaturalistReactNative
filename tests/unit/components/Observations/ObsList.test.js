@@ -11,6 +11,9 @@ jest.mock( "../../../../src/components/Observations/hooks/fetchObservations" );
 
 jest.mock( "../../../../src/providers/ObservationProvider" );
 
+// Mock ObservationProvider so it provides a specific array of observations
+// without any current observation or ability to update or fetch
+// observations
 const mockObservationProviderWithObservations = observations =>
   ObservationProvider.mockImplementation( ( { children }: Props ): Node => (
     <ObservationContext.Provider value={{
@@ -23,21 +26,22 @@ const mockObservationProviderWithObservations = observations =>
     </ObservationContext.Provider>
   ) );
 
+const renderObsList = async ( ) => waitFor(
+  ( ) => render(
+    <NavigationContainer>
+      <ObservationProvider>
+        <ObsList />
+      </ObservationProvider>
+    </NavigationContainer>
+  )
+);
 
 it( "renders an observation", async ( ) => {
   // const observations = [factory( "LocalObservation", { commentCount: 11 } )];
   const observations = [factory( "LocalObservation", { commentCount: 11 } )];
   // Mock the provided observations so we're just using our test data
   mockObservationProviderWithObservations( observations );
-  const { getByTestId } = await waitFor(
-    ( ) => render(
-      <NavigationContainer>
-        <ObservationProvider>
-          <ObsList />
-        </ObservationProvider>
-      </NavigationContainer>
-    )
-  );
+  const { getByTestId } = await renderObsList( );
   const obs = observations[0];
   const list = getByTestId( "ObsList.myObservations" );
   // Test that there isn't other data lingering
@@ -50,21 +54,13 @@ it( "renders an observation", async ( ) => {
   expect( commentCount.children[0] ).toEqual( obs.commentCount.toString( ) );
 } );
 
-it( "renders two observations", async ( ) => {
+it( "renders multiple observations", async ( ) => {
   const observations = [
     factory( "LocalObservation" ),
     factory( "LocalObservation" )
   ];
   mockObservationProviderWithObservations( observations );
-  const { getByTestId } = await waitFor(
-    ( ) => render(
-      <NavigationContainer>
-        <ObservationProvider>
-          <ObsList />
-        </ObservationProvider>
-      </NavigationContainer>
-    )
-  );
+  const { getByTestId } = await renderObsList( );
   observations.forEach( obs => {
     expect( getByTestId( `ObsList.obsCard.${obs.uuid}` ) ).toBeTruthy( );
   } );

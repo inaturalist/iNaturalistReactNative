@@ -4,7 +4,6 @@ import AccessibilityEngine from "react-native-accessibility-engine";
 import factory from "../../../factory";
 import ObsCard from "../../../../src/components/Observations/ObsCard";
 
-
 const testObservation = factory( "LocalObservation" );
 
 test( "renders text passed into observation card", ( ) => {
