@@ -1,4 +1,5 @@
 import Taxon from "./Taxon";
+import User from "./User";
 class Identification {
   static createObjectForRealm( id ) {
     return {
@@ -8,8 +9,9 @@ class Identification {
       createdAt: id.created_at,
       id: id.id,
       taxon: Taxon.createObjectForRealm( id.taxon ),
-      userIcon: id.user.icon_url,
-      userLogin: id.user.login,
+      user: User.createObjectForRealm( id.user ),
+      // userIcon: id.user.icon_url,
+      // userLogin: id.user.login,
       vision: id.vision
     };
   }
@@ -23,8 +25,9 @@ class Identification {
       category: "string?",
       createdAt: "string?",
       taxon: "Taxon?",
-      userIcon: "string?",
-      userLogin: "string?",
+      user: "User?",
+      // userIcon: "string?",
+      // userLogin: "string?",
       vision: "bool?",
       // this creates an inverse relationship so identifications
       // automatically keep track of which Observation they are assigned to

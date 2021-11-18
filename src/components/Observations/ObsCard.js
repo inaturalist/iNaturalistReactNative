@@ -25,7 +25,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => (
       testID="ObsList.photo"
     />
     <View style={viewStyles.obsDetailsColumn}>
-      <Text style={textStyles.text}>{item.commonName}</Text>
+      <Text style={textStyles.text}>{item.taxon.preferredCommonName}</Text>
       <Text style={textStyles.text}>{item.placeGuess}</Text>
       <Text style={textStyles.text}>{item.timeObservedAt}</Text>
     </View>
