@@ -17,9 +17,6 @@ const ObservationProvider = ( { children }: Props ): Node => {
   // We store a reference to our realm using useRef that allows us to access it via
   // realmRef.current for the component's lifetime without causing rerenders if updated.
   const realmRef = useRef( null );
-  // The first time we query the Realm collection we add a listener to it.
-  // We store the listener in "subscriptionRef" to be able to remove it when the component unmounts.
-  const subscriptionRef = useRef( null );
 
   const openRealm = useCallback( async ( ) => {
     try {
@@ -34,15 +31,10 @@ const ObservationProvider = ( { children }: Props ): Node => {
         setObservationList( localObservations );
       }
 
-      // Live queries and objects emit notifications when something has changed that we can listen for.
-      subscriptionRef.current = localObservations;
-
-      // Not sure subscriptionRef is working, b/c I'm not sure
-      // localObservations actually changes when the Realm collection
-      // updates... so I'm doing it explicitly
       localObservations.addListener( ( ) => {
         // If you just pass localObservations you end up assigning a Results
-        // object to state instead of an array of observations
+        // object to state instead of an array of observations. There's
+        // probably a better way...
         setObservationList( localObservations.map( o => o ) );
       } );
     }
@@ -52,10 +44,6 @@ const ObservationProvider = ( { children }: Props ): Node => {
   }, [realmRef, setObservationList] );
 
   const closeRealm = useCallback( ( ) => {
-    const subscription = subscriptionRef.current;
-    subscription?.removeAllListeners( );
-    subscriptionRef.current = null;
-
     const realm = realmRef.current;
     realm?.close( );
     realmRef.current = null;

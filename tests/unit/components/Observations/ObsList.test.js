@@ -26,22 +26,20 @@ const mockObservationProviderWithObservations = observations =>
     </ObservationContext.Provider>
   ) );
 
-const renderObsList = async ( ) => waitFor(
-  ( ) => render(
-    <NavigationContainer>
-      <ObservationProvider>
-        <ObsList />
-      </ObservationProvider>
-    </NavigationContainer>
-  )
+const renderObsList = ( ) => render(
+  <NavigationContainer>
+    <ObservationProvider>
+      <ObsList />
+    </ObservationProvider>
+  </NavigationContainer>
 );
 
-it( "renders an observation", async ( ) => {
+it( "renders an observation", ( ) => {
   // const observations = [factory( "LocalObservation", { commentCount: 11 } )];
   const observations = [factory( "LocalObservation", { commentCount: 11 } )];
   // Mock the provided observations so we're just using our test data
   mockObservationProviderWithObservations( observations );
-  const { getByTestId } = await renderObsList( );
+  const { getByTestId } = renderObsList( );
   const obs = observations[0];
   const list = getByTestId( "ObsList.myObservations" );
   // Test that there isn't other data lingering
@@ -60,7 +58,7 @@ it( "renders multiple observations", async ( ) => {
     factory( "LocalObservation" )
   ];
   mockObservationProviderWithObservations( observations );
-  const { getByTestId } = await renderObsList( );
+  const { getByTestId } = renderObsList( );
   observations.forEach( obs => {
     expect( getByTestId( `ObsList.obsCard.${obs.uuid}` ) ).toBeTruthy( );
   } );
