@@ -36,6 +36,15 @@ const ObservationProvider = ( { children }: Props ): Node => {
 
       // Live queries and objects emit notifications when something has changed that we can listen for.
       subscriptionRef.current = localObservations;
+
+      // Not sure subscriptionRef is working, b/c I'm not sure
+      // localObservations actually changes when the Realm collection
+      // updates... so I'm doing it explicitly
+      localObservations.addListener( ( ) => {
+        // If you just pass localObservations you end up assigning a Results
+        // object to state instead of an array of observations
+        setObservationList( localObservations.map( o => o ) );
+      } );
     }
     catch ( err ) {
       console.error( "Error opening realm: ", err.message );

@@ -15,6 +15,11 @@ const screenOptions = { headerShown: false };
 
 const App = ( ): React.Node => (
   <NavigationContainer>
+    {/*
+      Why is this providing observations to the entire app and not used
+      selectively for components that need to consume observations?
+      ~~~kueda
+    */}
     <ObservationProvider>
       <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen name="Drawer" component={DrawerNavigator} />
