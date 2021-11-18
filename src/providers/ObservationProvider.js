@@ -36,6 +36,13 @@ const ObservationProvider = ( { children }: Props ): Node => {
 
       // Live queries and objects emit notifications when something has changed that we can listen for.
       subscriptionRef.current = localObservations;
+      localObservations.addListener( ( arr, changes ) => {
+        // changes object has properties including insertions, modifications, and deletions
+        // so we can decide when we need obslist to rerender here. otherwise, it will listen for all changes
+        if ( changes.insertions.length > 0 || changes.modifications.length > 0 ) {
+          setObservationList( realm.objects( "Observation" ) );
+        }
+      } );
     }
     catch ( err ) {
       console.error( "Error opening realm: ", err.message );

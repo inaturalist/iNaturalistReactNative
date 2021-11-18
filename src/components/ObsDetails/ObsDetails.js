@@ -8,7 +8,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/core";
 
 import { viewStyles, textStyles } from "../../styles/obsDetails";
-// import useFetchObsDetails from "./hooks/fetchObsDetails";
 import useFetchObsDetailsFromRealm from "./hooks/fetchObsFromRealm";
 import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
@@ -39,8 +38,10 @@ const ObsDetails = ( ): Node => {
       <ScrollView>
       <View style={viewStyles.userProfileRow}>
         <Pressable style={viewStyles.userProfileRow} onPress={navToUserProfile}>
-          <UserIcon uri={observation.userProfilePhoto} />
-          <Text>{`@${observation.userLogin}`}</Text>
+          {/* TODO: fill user icon in with saved current user icon or icon from another user API call */}
+          <UserIcon uri={null} />
+          {/* TODO: fill in text with saved current user login or login from another user API call */}
+          <Text>@username</Text>
         </Pressable>
         <Text>{observation.createdAt}</Text>
       </View>
@@ -55,8 +56,8 @@ const ObsDetails = ( ): Node => {
           <Text style={textStyles.scientificNameText}>scientific name</Text>
         </View>
         <View>
-          <Text style={textStyles.text}>{observation.identificationCount}</Text>
-          <Text style={textStyles.text}>{observation.commentCount}</Text>
+          <Text style={textStyles.text}>{observation.identifications.length}</Text>
+          <Text style={textStyles.text}>{observation.comments.length}</Text>
           <Text style={textStyles.text}>{observation.qualityGrade}</Text>
         </View>
       </View>
