@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useContext, useEffect } from "react";
-import { FlatList } from "react-native";
+import { FlatList, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 
@@ -23,7 +23,7 @@ const ObsList = ( ): Node => {
   // (and anytime you save while in debug - hot reloading mode )
   // this will eventually go in a sync button / pull-from-top gesture
   // instead of automatically fetching every time the component loads
-  useFetchObservations( );
+  const loading = useFetchObservations( );
 
   const extractKey = item => item.uuid;
   const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
@@ -43,13 +43,18 @@ const ObsList = ( ): Node => {
 
   return (
     <ViewWithFooter>
-      <FlatList
-        data={observationList}
-        keyExtractor={extractKey}
-        renderItem={renderItem}
-        testID="ObsList.myObservations"
-        ListEmptyComponent={renderEmptyState}
-      />
+      {loading
+        ? <ActivityIndicator />
+        : (
+          <FlatList
+            data={observationList}
+            keyExtractor={extractKey}
+            renderItem={renderItem}
+            testID="ObsList.myObservations"
+            ListEmptyComponent={renderEmptyState}
+          />
+        )
+      }
     </ViewWithFooter>
   );
 };

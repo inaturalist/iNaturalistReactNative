@@ -70,36 +70,24 @@ const FIELDS = {
   user: USER_FIELDS
 };
 
-const useFetchObservations = ( ): Array<Object> => {
-  const [observations, setObservations] = useState( [] );
+const useFetchObservations = ( ): boolean => {
+  const [loading, setLoading] = useState( false );
   const realmRef = useRef( null );
-  const subscriptionRef = useRef( null );
 
   const openRealm = useCallback( async ( ) => {
     try {
       const realm = await Realm.open( realmConfig );
       realmRef.current = realm;
-
-      const localObservations = realm.objects( "Observation" );
-      if ( localObservations?.length ) {
-        setObservations( localObservations );
-      }
-      subscriptionRef.current = localObservations;
     }
     catch ( err ) {
       console.error( "Error opening realm: ", err.message );
     }
-  }, [realmRef, setObservations] );
+  }, [realmRef] );
 
   const closeRealm = useCallback( ( ) => {
-    const subscription = subscriptionRef.current;
-    subscription?.removeAllListeners( );
-    subscriptionRef.current = null;
-
     const realm = realmRef.current;
     realm?.close( );
     realmRef.current = null;
-    setObservations( [] );
   }, [realmRef] );
 
   useEffect( ( ) => {
@@ -122,11 +110,13 @@ const writeToDatabase = useCallback( ( results ) => {
         realm?.create( "Observation", newObs );
       } );
     } );
+    setLoading( false );
 }, [] );
 
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchObservations = async ( ) => {
+      setLoading( true );
       try {
         const testUser = "albullington";
         const params = {
@@ -139,6 +129,7 @@ const writeToDatabase = useCallback( ( results ) => {
         if ( !isCurrent ) { return; }
         writeToDatabase( results );
       } catch ( e ) {
+        setLoading( false );
         if ( !isCurrent ) { return; }
         console.log( "Couldn't fetch observations:", e.message, );
       }
@@ -150,7 +141,7 @@ const writeToDatabase = useCallback( ( results ) => {
     };
   }, [writeToDatabase] );
 
-  return observations;
+  return loading;
 };
 
 export default useFetchObservations;
