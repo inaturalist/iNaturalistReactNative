@@ -10,8 +10,6 @@ class Identification {
       id: id.id,
       taxon: Taxon.createObjectForRealm( id.taxon ),
       user: User.createObjectForRealm( id.user ),
-      // userIcon: id.user.icon_url,
-      // userLogin: id.user.login,
       vision: id.vision
     };
   }

@@ -6,7 +6,6 @@ class Comment {
       createdAt: id.created_at,
       id: id.id,
       user: User.createObjectForRealm( id.user )
-      // user: id.user.login
     };
   }
 
