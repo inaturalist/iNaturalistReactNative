@@ -220,6 +220,7 @@ const writeToDatabase = useCallback( ( results ) => {
     results.forEach( obs => {
       const newObs = createObservationForRealm( obs );
       realm?.write( ( ) => {
+        // Shouldn't the primary key in realm handle this?
         const existingObs = realm.objects( "Observation" ).filtered( `uuid = '${obs.uuid}'` );
         if ( existingObs.length > 0 ) {
           return;
