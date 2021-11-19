@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@react-navigation/drawer": "^6.1.8",
+    "@react-navigation/elements": "^1.2.1",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.4",
     "inaturalistjs": "github:inaturalist/inaturalistjs",

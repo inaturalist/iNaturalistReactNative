@@ -70,7 +70,7 @@ const FIELDS = {
   user: USER_FIELDS
 };
 
-const useFetchObservations = ( ): boolean => {
+const useFetchObservations = ( hasLoaded = false ): boolean => {
   const [loading, setLoading] = useState( false );
   const realmRef = useRef( null );
 
@@ -115,6 +115,10 @@ const writeToDatabase = useCallback( ( results ) => {
 
   useEffect( ( ) => {
     let isCurrent = true;
+    if ( hasLoaded ) {
+      setLoading( false );
+      return;
+    }
     const fetchObservations = async ( ) => {
       setLoading( true );
       try {
@@ -139,7 +143,7 @@ const writeToDatabase = useCallback( ( results ) => {
     return ( ) => {
       isCurrent = false;
     };
-  }, [writeToDatabase] );
+  }, [writeToDatabase, hasLoaded] );
 
   return loading;
 };
