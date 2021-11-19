@@ -15,7 +15,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => (
   <Pressable
     onPress={( ) => handlePress( item )}
     style={viewStyles.row}
-    testID="ObsList.obsCard"
+    testID={`ObsList.obsCard.${item.uuid}`}
     accessibilityRole="link"
     accessibilityLabel="Navigate to observation details screen"
   >
