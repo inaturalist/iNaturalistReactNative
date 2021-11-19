@@ -14,12 +14,12 @@ test( "renders text passed into observation card", ( ) => {
   );
 
   expect( getByTestId( `ObsList.obsCard.${testObservation.uuid}` ) ).toBeTruthy( );
-  expect( getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( { "uri": testObservation.userPhoto } );
-  expect( getByText( testObservation.commonName ) ).toBeTruthy( );
+  expect( getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( { "uri": testObservation.photos[0].url } );
+  expect( getByText( testObservation.taxon.preferredCommonName ) ).toBeTruthy( );
   expect( getByText( testObservation.placeGuess ) ).toBeTruthy( );
   expect( getByText( testObservation.timeObservedAt ) ).toBeTruthy( );
-  expect( getByText( testObservation.commentCount.toString( ) ) ).toBeTruthy( );
-  expect( getByText( testObservation.identificationCount.toString( ) ) ).toBeTruthy( );
+  expect( getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );
+  expect( getByText( testObservation.identifications.length.toString( ) ) ).toBeTruthy( );
   expect( getByText( testObservation.qualityGrade ) ).toBeTruthy( );
 } );
 

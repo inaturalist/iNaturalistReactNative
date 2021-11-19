@@ -1,14 +1,21 @@
-import { define } from "factoria";
+import factory, { define } from "factoria";
 
-// TODO use faker for more of these dynamic values. Also, would we really
-// store timeObservedAt like this in Realm?!
+// TODO use faker for more of these dynamic values.
 export default define( "LocalObservation", faker => ( {
   uuid: faker.datatype.uuid( ),
-  userPhoto: faker.image.imageUrl( ),
-  commonName: "Insects",
+  comments: [
+    factory( "LocalComment" ),
+    factory( "LocalComment" ),
+    factory( "LocalComment" )
+  ],
+  identifications: [
+    factory( "LocalIdentification" )
+  ],
+  photos: [
+    factory( "LocalPhoto" )
+  ],
   placeGuess: "SF",
-  timeObservedAt: "May 1, 2021",
-  identificationCount: 3,
-  commentCount: 0,
+  taxon: factory( "LocalTaxon" ),
+  timeObservedAt: "2021-05-09T07:27:05-06:00",
   qualityGrade: "research"
 } ) );

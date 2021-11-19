@@ -11,7 +11,7 @@ class Taxon {
 
   static schema = {
     name: "Taxon",
-    primaryKey: "id",
+    // primaryKey: "id",
     properties: {
       id: "int",
       defaultPhotoSquareUrl: "string?",

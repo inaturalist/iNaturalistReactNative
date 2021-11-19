@@ -10,7 +10,7 @@ class User {
 
   static schema = {
     name: "User",
-    primaryKey: "id",
+    // primaryKey: "id",
     properties: {
       id: "int",
       iconUrl: "string?",
