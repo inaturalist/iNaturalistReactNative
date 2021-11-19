@@ -8,7 +8,7 @@ class Observation {
     const createLinkedObjects = ( list, createFunction ) => {
       if ( list.length === 0 ) { return; }
       return list.map( item => {
-        return createFunction.createObjectForRealm( item );
+        return createFunction.mapApiToRealm( item );
       } );
     };
 
@@ -29,7 +29,7 @@ class Observation {
       photos,
       placeGuess: obs.place_guess,
       qualityGrade: obs.quality_grade,
-      taxon: Taxon.createObjectForRealm( obs.taxon ),
+      taxon: Taxon.mapApiToRealm( obs.taxon ),
       timeObservedAt: obs.time_observed_at
     };
   }

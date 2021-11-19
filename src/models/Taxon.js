@@ -1,5 +1,5 @@
 class Taxon {
-  static createObjectForRealm( taxon ) {
+  static mapApiToRealm( taxon ) {
     return {
       defaultPhotoSquareUrl: taxon.default_photo.square_url,
       id: taxon.id,
@@ -11,6 +11,7 @@ class Taxon {
 
   static schema = {
     name: "Taxon",
+    primaryKey: "id",
     properties: {
       id: "int",
       defaultPhotoSquareUrl: "string?",

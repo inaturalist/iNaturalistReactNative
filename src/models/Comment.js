@@ -1,11 +1,11 @@
 import User from "./User";
 class Comment {
-  static createObjectForRealm( id ) {
+  static mapApiToRealm( comment ) {
     return {
-      body: id.body,
-      createdAt: id.created_at,
-      id: id.id,
-      user: User.createObjectForRealm( id.user )
+      body: comment.body,
+      createdAt: comment.created_at,
+      id: comment.id,
+      user: User.mapApiToRealm( comment.user )
     };
   }
 

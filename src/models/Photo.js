@@ -1,5 +1,5 @@
 class Photo {
-  static createObjectForRealm( photo ) {
+  static mapApiToRealm( photo ) {
     return {
       id: photo.id,
       attribution: photo.attribution,

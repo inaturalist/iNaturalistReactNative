@@ -6,7 +6,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import PlaceholderComponent from "../components/PlaceholderComponent";
 import ObservationProvider from "../providers/ObservationProvider";
-import StackNavigator from "./stackNavigation";
+import MyObservationsStackNavigator from "./myObservationsStackNavigation";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -23,7 +23,7 @@ const App = ( ): React.Node => (
       <Drawer.Navigator screenOptions={screenOptions} name="Drawer">
         <Drawer.Screen
           name="my observations"
-          component={StackNavigator}
+          component={MyObservationsStackNavigator}
           options={hideHeader}
         />
         <Drawer.Screen name="missions/seen nearby" component={PlaceholderComponent} />

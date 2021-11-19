@@ -1,5 +1,5 @@
 class User {
-  static createObjectForRealm( user ) {
+  static mapApiToRealm( user ) {
     return {
       id: user.id,
       iconUrl: user.icon_url,
@@ -10,6 +10,7 @@ class User {
 
   static schema = {
     name: "User",
+    primaryKey: "id",
     properties: {
       id: "int",
       iconUrl: "string?",
