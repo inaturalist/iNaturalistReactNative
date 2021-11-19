@@ -103,8 +103,9 @@ const writeToDatabase = useCallback( ( results ) => {
     results.forEach( obs => {
       const newObs = Observation.createObservationForRealm( obs );
       realm?.write( ( ) => {
-        const existingObs = realm.objects( "Observation" ).filtered( `uuid = '${obs.uuid}'` );
-        if ( existingObs.length > 0 ) {
+        const existingObs = realm.objectForPrimaryKey( "Observation", obs.uuid );
+        if ( existingObs !== undefined ) {
+          // TODO: modify existing objects when syncing from inatjs
           return;
         }
         realm?.create( "Observation", newObs );
