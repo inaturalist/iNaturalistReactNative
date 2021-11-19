@@ -23,8 +23,7 @@ const ObsList = ( ): Node => {
   // (and anytime you save while in debug - hot reloading mode )
   // this will eventually go in a sync button / pull-from-top gesture
   // instead of automatically fetching every time the component loads
-  const hasLoaded = observationList.length > 0;
-  const loading = useFetchObservations( hasLoaded );
+  const loading = useFetchObservations( );
 
   const extractKey = item => item.uuid;
   const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
