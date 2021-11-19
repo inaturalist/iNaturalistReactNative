@@ -3,7 +3,7 @@
 
 import React from "react";
 import factory, { makeResponse } from "../factory";
-import { render, waitFor, within, act } from "@testing-library/react-native";
+import { render, waitFor, within } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import AccessibilityEngine from "react-native-accessibility-engine";
 import ObsList from "../../src/components/Observations/ObsList";

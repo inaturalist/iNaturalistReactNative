@@ -1,5 +1,5 @@
 import React from "react";
-import { waitFor, render, within } from "@testing-library/react-native";
+import { render, within } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import factory from "../../../factory";
 import ObsList from "../../../../src/components/Observations/ObsList";
