@@ -24,7 +24,9 @@ const renderObsList = async ( ) => waitFor(
 );
 
 test( "renders the number of comments from remote response", async ( ) => {
-  const observations = [factory( "RemoteObservation", { place_guess: "foo", comment_count: 13 } )];
+  const observations = [factory( "RemoteObservation", { place_guess: "foo", comments: [
+    factory( "LocalComment" )
+  ] } )];
   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
   const { getByTestId } = await renderObsList( );
   expect( inatjs.observations.search.mock.calls.length ).toBeGreaterThan( 0 );
@@ -32,7 +34,7 @@ test( "renders the number of comments from remote response", async ( ) => {
   const card = getByTestId( `ObsList.obsCard.${obs.uuid}` );
   expect( card ).toBeTruthy( );
   const commentCount = within( card ).getByTestId( "ObsList.obsCard.commentCount" );
-  expect( commentCount.children[0] ).toEqual( obs.comment_count.toString( ) );
+  expect( commentCount.children[0] ).toEqual( obs.comments.length.toString( ) );
 } );
 
 test.todo( "only makes one concurrent request for observations at a time" );

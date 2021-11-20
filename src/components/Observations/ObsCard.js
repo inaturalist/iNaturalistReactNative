@@ -31,7 +31,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => (
     </View>
     <View>
       <Text style={textStyles.text}>{item.identifications.length}</Text>
-      <Text style={textStyles.text}>{item.comments.length}</Text>
+      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">{item.comments.length}</Text>
       <Text style={textStyles.text}>{item.qualityGrade}</Text>
     </View>
   </Pressable>
