@@ -24,8 +24,6 @@ class Identification {
       createdAt: "string?",
       taxon: "Taxon?",
       user: "User?",
-      // userIcon: "string?",
-      // userLogin: "string?",
       vision: "bool?",
       // this creates an inverse relationship so identifications
       // automatically keep track of which Observation they are assigned to
