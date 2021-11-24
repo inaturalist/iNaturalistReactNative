@@ -8,7 +8,7 @@ export default define( "RemoteObservation", faker => ( {
   uuid: faker.datatype.uuid( ),
   user: factory( "RemoteUser" ),
   identifications: [],
-  observationPhotos: [
+  observation_photos: [
     factory( "RemoteObservationPhoto" )
   ],
   comments: [],

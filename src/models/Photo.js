@@ -1,6 +1,5 @@
 class Photo {
   static mapApiToRealm( photo ) {
-    console.log( photo, "photo" );
     return {
       id: photo.id,
       attribution: photo.attribution,
