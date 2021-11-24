@@ -1,15 +1,13 @@
-import Taxon from "./Taxon";
 import User from "./User";
 class Identification {
-  static mapApiToRealm( id ) {
+  static mapApiToRealm( id, realm ) {
     return {
       uuid: id.uuid,
       body: id.body,
       category: id.category,
       createdAt: id.created_at,
       id: id.id,
-      taxon: Taxon.mapApiToRealm( id.taxon ),
-      user: User.mapApiToRealm( id.user ),
+      user: User.mapApiToRealm( id.user, realm ),
       vision: id.vision
     };
   }

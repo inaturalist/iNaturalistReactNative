@@ -4,17 +4,18 @@ import Photo from "./Photo";
 import Taxon from "./Taxon";
 
 class Observation {
-  static createObservationForRealm( obs ) {
+  static createObservationForRealm( obs, realm ) {
     const createLinkedObjects = ( list, createFunction ) => {
       if ( list.length === 0 ) { return; }
       return list.map( item => {
-        return createFunction.mapApiToRealm( item );
+        return createFunction.mapApiToRealm( item, realm, "obs" );
       } );
     };
 
-    const identifications = createLinkedObjects( obs.identifications, Identification );
+    const taxon = Taxon.mapApiToRealm( obs.taxon, realm );
     const photos = createLinkedObjects( obs.photos, Photo );
-    const comments = createLinkedObjects( obs.comments, Comment );
+    const comments = createLinkedObjects( obs.comments, Comment, realm );
+    const identifications = createLinkedObjects( obs.identifications, Identification );
 
     return {
       uuid: obs.uuid,
@@ -29,7 +30,7 @@ class Observation {
       photos,
       placeGuess: obs.place_guess,
       qualityGrade: obs.quality_grade,
-      taxon: Taxon.mapApiToRealm( obs.taxon ),
+      taxon,
       timeObservedAt: obs.time_observed_at
     };
   }
@@ -48,7 +49,7 @@ class Observation {
       photos: "Photo[]",
       placeGuess: "string?",
       qualityGrade: "string?",
-      taxon: "Taxon",
+      taxon: "Taxon?",
       timeObservedAt: "string?"
     }
   }

@@ -1,5 +1,7 @@
 class Taxon {
-  static mapApiToRealm( taxon ) {
+  static mapApiToRealm( taxon, realm ) {
+    const existingTaxon = realm.objectForPrimaryKey( "Taxon", taxon.id );
+    if ( existingTaxon ) { return existingTaxon; }
     return {
       defaultPhotoSquareUrl: taxon.default_photo.square_url,
       id: taxon.id,
@@ -11,7 +13,7 @@ class Taxon {
 
   static schema = {
     name: "Taxon",
-    // primaryKey: "id",
+    primaryKey: "id",
     properties: {
       id: "int",
       defaultPhotoSquareUrl: "string?",

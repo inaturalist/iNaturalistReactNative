@@ -33,6 +33,8 @@ const ObsDetails = ( ): Node => {
 
   if ( !observation ) { return null; }
 
+  const taxon = observation.taxon;
+
   return (
     <ViewWithFooter>
       <ScrollView>
@@ -49,11 +51,11 @@ const ObsDetails = ( ): Node => {
         <PhotoScroll photos={photos} />
       </View>
       <View style={viewStyles.row}>
-        <Image source={{ uri: observation.taxon.defaultPhotoSquareUrl }} style={viewStyles.imageBackground} />
+        <Image source={{ uri: taxon.defaultPhotoSquareUrl }} style={viewStyles.imageBackground} />
         <View style={viewStyles.obsDetailsColumn}>
-          <Text style={textStyles.text}>{observation.taxon.rank}</Text>
-          <Text style={textStyles.commonNameText}>{observation.taxon.preferredCommonName}</Text>
-          <Text style={textStyles.scientificNameText}>{observation.taxon.name}</Text>
+          <Text style={textStyles.text}>{taxon.rank}</Text>
+          <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
+          <Text style={textStyles.scientificNameText}>{taxon.name}</Text>
         </View>
         <View>
           <Text style={textStyles.text}>{observation.identifications.length}</Text>

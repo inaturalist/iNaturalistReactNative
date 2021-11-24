@@ -12,6 +12,7 @@ type Props = {
 }
 
 const ActivityTab = ( { ids }: Props ): React.Node => ids.map( id => {
+  const taxon = id.taxon;
   // this should all perform similarly to the activity tab on web
   // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/components/activity_item.jsx
   return (
@@ -27,10 +28,10 @@ const ActivityTab = ( { ids }: Props ): React.Node => ids.map( id => {
         {id.createdAt && <Text>time (ago)</Text>}
       </View>
       <View style={viewStyles.speciesDetailRow}>
-        <SmallSquareImage uri={id.taxon.defaultPhotoSquareUrl} />
+        <SmallSquareImage uri={taxon.defaultPhotoSquareUrl} />
         <View>
-          <Text style={textStyles.commonNameText}>{id.taxon.preferredCommonName}</Text>
-          <Text style={textStyles.scientificNameText}>{id.taxon.rank} {id.taxon.name}</Text>
+          <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
+          <Text style={textStyles.scientificNameText}>{taxon.rank} {taxon.name}</Text>
         </View>
       </View>
     </View>

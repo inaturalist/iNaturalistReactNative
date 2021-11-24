@@ -1,5 +1,7 @@
 class User {
-  static mapApiToRealm( user ) {
+  static mapApiToRealm( user, realm ) {
+    const existingUser = realm.objectForPrimaryKey( "User", user.id );
+    if ( existingUser ) { return existingUser; }
     return {
       id: user.id,
       iconUrl: user.icon_url,
@@ -10,7 +12,7 @@ class User {
 
   static schema = {
     name: "User",
-    // primaryKey: "id",
+    primaryKey: "id",
     properties: {
       id: "int",
       iconUrl: "string?",

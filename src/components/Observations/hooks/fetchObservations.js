@@ -6,6 +6,7 @@ import Realm from "realm";
 
 import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
+import Taxon from "../../../models/Taxon";
 
 const USER_FIELDS = {
   icon_url: true,
@@ -101,7 +102,7 @@ const writeToDatabase = useCallback( ( results ) => {
     if ( results.length === 0 ) { return; }
     const realm = realmRef.current;
     results.forEach( obs => {
-      const newObs = Observation.createObservationForRealm( obs );
+      const newObs = Observation.createObservationForRealm( obs, realm );
       realm?.write( ( ) => {
         const existingObs = realm.objectForPrimaryKey( "Observation", obs.uuid );
         if ( existingObs !== undefined ) {
@@ -109,6 +110,13 @@ const writeToDatabase = useCallback( ( results ) => {
           return;
         }
         realm?.create( "Observation", newObs );
+        // need to append Taxon object to identifications after the Observation object
+        // has been created with its own Taxon object, otherwise will run into errors
+        // with realm trying to create a Taxon object with an existing primary key
+        obs.identifications.forEach( id => {
+          const identification = realm.objectForPrimaryKey( "Identification", id.uuid );
+          identification.taxon = Taxon.mapApiToRealm( id.taxon, realm );
+        } );
       } );
     } );
     setLoading( false );
