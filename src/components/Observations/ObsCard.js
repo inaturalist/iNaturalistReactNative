@@ -20,18 +20,18 @@ const ObsCard = ( { item, handlePress }: Props ): Node => (
     accessibilityLabel="Navigate to observation details screen"
   >
     <Image
-      source={{ uri: item.userPhoto }}
+      source={{ uri: item.observationPhotos[0].photo.url }}
       style={viewStyles.imageBackground}
       testID="ObsList.photo"
     />
     <View style={viewStyles.obsDetailsColumn}>
-      <Text style={textStyles.text}>{item.commonName}</Text>
+      <Text style={textStyles.text}>{item.taxon.preferredCommonName}</Text>
       <Text style={textStyles.text}>{item.placeGuess}</Text>
       <Text style={textStyles.text}>{item.timeObservedAt}</Text>
     </View>
     <View>
-      <Text style={textStyles.text}>{item.identificationCount}</Text>
-      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">{item.commentCount}</Text>
+      <Text style={textStyles.text}>{item.identifications.length}</Text>
+      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">{item.comments.length}</Text>
       <Text style={textStyles.text}>{item.qualityGrade}</Text>
     </View>
   </Pressable>

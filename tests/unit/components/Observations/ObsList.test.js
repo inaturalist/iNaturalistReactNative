@@ -1,5 +1,5 @@
 import React from "react";
-import { waitFor, render, within } from "@testing-library/react-native";
+import { render, within } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import factory from "../../../factory";
 import ObsList from "../../../../src/components/Observations/ObsList";
@@ -35,8 +35,11 @@ const renderObsList = ( ) => render(
 );
 
 it( "renders an observation", ( ) => {
-  // const observations = [factory( "LocalObservation", { commentCount: 11 } )];
-  const observations = [factory( "LocalObservation", { commentCount: 11 } )];
+  const observations = [factory( "LocalObservation", { comments: [
+    factory( "LocalComment" ),
+    factory( "LocalComment" ),
+    factory( "LocalComment" )
+  ] } )];
   // Mock the provided observations so we're just using our test data
   mockObservationProviderWithObservations( observations );
   const { getByTestId } = renderObsList( );
@@ -49,7 +52,7 @@ it( "renders an observation", ( ) => {
   expect( card ).toBeTruthy( );
   // Test that the card has the correct comment count
   const commentCount = within( card ).getByTestId( "ObsList.obsCard.commentCount" );
-  expect( commentCount.children[0] ).toEqual( obs.commentCount.toString( ) );
+  expect( commentCount.children[0] ).toEqual( obs.comments.length.toString( ) );
 } );
 
 it( "renders multiple observations", async ( ) => {
