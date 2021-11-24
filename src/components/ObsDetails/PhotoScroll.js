@@ -12,13 +12,14 @@ type Props = {
 
 const PhotoScroll = ( { photos }: Props ): React.Node => {
   const renderImage = ( { item } ) => {
-    let photoUrl = item.url.replace( "square", "large" );
+    const photo = item.photo;
+    let photoUrl = photo.url.replace( "square", "large" );
 
     return (
       <>
         <Image source={{ uri: photoUrl }} style={imageStyles.fullWidthImage} />
         <Pressable>
-          <Text style={textStyles.license}>{item.licenseCode}</Text>
+          <Text style={textStyles.license}>{photo.licenseCode}</Text>
         </Pressable>
       </>
     );

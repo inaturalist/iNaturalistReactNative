@@ -32,6 +32,9 @@ const ObservationProvider = ( { children }: Props ): Node => {
       }
 
       localObservations.addListener( ( ) => {
+        // changes object has properties including insertions, modifications, and deletions
+        // so we can decide when we need obslist to rerender here. otherwise, it will listen for all changes
+
         // If you just pass localObservations you end up assigning a Results
         // object to state instead of an array of observations. There's
         // probably a better way...
