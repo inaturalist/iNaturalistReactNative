@@ -11,8 +11,8 @@ export default define( "LocalObservation", faker => ( {
   identifications: [
     factory( "LocalIdentification" )
   ],
-  photos: [
-    factory( "LocalPhoto" )
+  observationPhotos: [
+    factory( "LocalObservationPhoto" )
   ],
   placeGuess: "SF",
   taxon: factory( "LocalTaxon" ),

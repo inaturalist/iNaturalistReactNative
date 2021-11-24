@@ -1,6 +1,6 @@
 import Comment from "./Comment";
 import Identification from "./Identification";
-import Photo from "./Photo";
+import ObservationPhoto from "./ObservationPhoto";
 import Taxon from "./Taxon";
 
 class Observation {
@@ -13,7 +13,7 @@ class Observation {
     };
 
     const taxon = Taxon.mapApiToRealm( obs.taxon, realm );
-    const photos = createLinkedObjects( obs.photos, Photo );
+    const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment, realm );
     const identifications = createLinkedObjects( obs.identifications, Identification );
 
@@ -27,7 +27,8 @@ class Observation {
       // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/ducks/observation.js#L145
       latitude: obs.geojson.coordinates[1],
       longitude: obs.geojson.coordinates[0],
-      photos,
+      observationPhotos,
+      // photos,
       placeGuess: obs.place_guess,
       qualityGrade: obs.quality_grade,
       taxon,
@@ -46,7 +47,7 @@ class Observation {
       identifications: "Identification[]",
       latitude: "double?",
       longitude: "double?",
-      photos: "Photo[]",
+      observationPhotos: "ObservationPhoto[]",
       placeGuess: "string?",
       qualityGrade: "string?",
       taxon: "Taxon?",

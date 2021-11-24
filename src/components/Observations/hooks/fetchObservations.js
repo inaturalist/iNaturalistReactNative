@@ -53,6 +53,13 @@ const COMMENT_FIELDS = {
   user: USER_FIELDS
 };
 
+const OBSERVATION_PHOTOS_FIELDS = {
+  id: true,
+  photo: PHOTO_FIELDS,
+  position: true,
+  uuid: true
+};
+
 const FIELDS = {
   comments_count: true,
   comments: COMMENT_FIELDS,
@@ -63,6 +70,7 @@ const FIELDS = {
   latitude: true,
   location: true,
   longitude: true,
+  observation_photos: OBSERVATION_PHOTOS_FIELDS,
   photos: PHOTO_FIELDS,
   place_guess: true,
   quality_grade: true,

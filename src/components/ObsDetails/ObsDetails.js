@@ -26,7 +26,7 @@ const ObsDetails = ( ): Node => {
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile" );
 
   const ids = observation && observation.identifications;
-  const photos = observation && observation.photos;
+  const photos = observation && observation.observationPhotos;
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );

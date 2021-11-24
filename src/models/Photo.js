@@ -1,5 +1,6 @@
 class Photo {
   static mapApiToRealm( photo ) {
+    console.log( photo, "photo" );
     return {
       id: photo.id,
       attribution: photo.attribution,
@@ -15,14 +16,7 @@ class Photo {
       id: "int?",
       attribution: "string?",
       licenseCode: "string?",
-      url: "string?",
-      // this creates an inverse relationship so photos
-      // automatically keep track of which Observation they are assigned to
-      assignee: {
-        type: "linkingObjects",
-        objectType: "Observation",
-        property: "photos"
-      }
+      url: "string?"
     }
   }
 }

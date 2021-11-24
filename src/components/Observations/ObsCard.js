@@ -20,7 +20,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => (
     accessibilityLabel="Navigate to observation details screen"
   >
     <Image
-      source={{ uri: item.photos[0].url }}
+      source={{ uri: item.observationPhotos[0].photo.url }}
       style={viewStyles.imageBackground}
       testID="ObsList.photo"
     />
