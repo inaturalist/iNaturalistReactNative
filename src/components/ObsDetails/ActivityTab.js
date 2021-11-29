@@ -1,17 +1,18 @@
 // @flow
 
 import * as React from "react";
-import { Text, View } from "react-native";
+import { Text, View, Pressable } from "react-native";
 
 import UserIcon from "../SharedComponents/UserIcon";
 import SmallSquareImage from "./SmallSquareImage";
 import { textStyles, viewStyles } from "../../styles/obsDetails";
 
 type Props = {
-  ids: Array<Object>
+  ids: Array<Object>,
+  navToTaxonDetails: ( ) => { }
 }
 
-const ActivityTab = ( { ids }: Props ): React.Node => ids.map( id => {
+const ActivityTab = ( { ids, navToTaxonDetails }: Props ): React.Node => ids.map( id => {
   const taxon = id.taxon;
   // this should all perform similarly to the activity tab on web
   // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/components/activity_item.jsx
@@ -27,13 +28,13 @@ const ActivityTab = ( { ids }: Props ): React.Node => ids.map( id => {
         <Text>{id.category}</Text>
         {id.createdAt && <Text>time (ago)</Text>}
       </View>
-      <View style={viewStyles.speciesDetailRow}>
+      <Pressable style={viewStyles.speciesDetailRow} onPress={navToTaxonDetails}>
         <SmallSquareImage uri={taxon.defaultPhotoSquareUrl} />
         <View>
           <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
           <Text style={textStyles.scientificNameText}>{taxon.rank} {taxon.name}</Text>
         </View>
-      </View>
+      </Pressable>
     </View>
   );
 } );

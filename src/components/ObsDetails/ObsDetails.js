@@ -24,6 +24,7 @@ const ObsDetails = ( ): Node => {
   const observation = useFetchObsDetailsFromRealm( uuid );
 
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile" );
+  const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails" );
 
   const ids = observation && observation.identifications;
   const photos = observation && observation.observationPhotos;
@@ -52,11 +53,11 @@ const ObsDetails = ( ): Node => {
       </View>
       <View style={viewStyles.row}>
         <Image source={{ uri: taxon.defaultPhotoSquareUrl }} style={viewStyles.imageBackground} />
-        <View style={viewStyles.obsDetailsColumn}>
+        <Pressable style={viewStyles.obsDetailsColumn} onPress={navToTaxonDetails}>
           <Text style={textStyles.text}>{taxon.rank}</Text>
           <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
           <Text style={textStyles.scientificNameText}>{taxon.name}</Text>
-        </View>
+        </Pressable>
         <View>
           <Text style={textStyles.text}>{observation.identifications.length}</Text>
           <Text style={textStyles.text}>{observation.comments.length}</Text>
@@ -76,7 +77,9 @@ const ObsDetails = ( ): Node => {
           <Text style={textStyles.greenButtonText}>DATA</Text>
         </Pressable>
       </View>
-      {tab === 0 ? <ActivityTab ids={ids} /> : <DataTab observation={observation} />}
+      {tab === 0
+        ? <ActivityTab ids={ids} navToTaxonDetails={navToTaxonDetails} />
+        : <DataTab observation={observation} />}
       </ScrollView>
     </ViewWithFooter>
   );
