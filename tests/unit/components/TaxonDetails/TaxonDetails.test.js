@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import AccessibilityEngine from "react-native-accessibility-engine";
 
 import factory from "../../../factory";
 import TaxonDetails from "../../../../src/components/TaxonDetails/TaxonDetails";
@@ -51,3 +52,15 @@ test( "renders taxon details from API call", ( ) => {
   expect( getByText( testTaxon.preferred_common_name ) ).toBeTruthy( );
   expect( getByText( testTaxon.wikipedia_summary ) ).toBeTruthy( );
 } );
+
+// right now this is failing on react-native-modal, since there's a TouchableWithFeedback
+// that allows the user to tap the backdrop and exit the modal
+test.todo( "should not have accessibility errors" );
+// test( "should not have accessibility errors", ( ) => {
+//   const taxonDetails = (
+//     <NavigationContainer>
+//       <TaxonDetails />
+//     </NavigationContainer>
+//   );
+//   expect( taxonDetails ).toBeAccessible( );
+// } );

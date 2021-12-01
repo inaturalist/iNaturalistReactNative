@@ -43,5 +43,5 @@ test( "handles button press", ( ) => {
 
 test( "should not have accessibility errors", ( ) => {
   const obsCard = <ObsCard item={testObservation} />;
-  expect( ( ) => AccessibilityEngine.check( obsCard ) ).not.toThrow();
+  expect( obsCard ).toBeAccessible( );
 } );

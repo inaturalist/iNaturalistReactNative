@@ -20,7 +20,7 @@ const PhotoScroll = ( { photos }: Props ): React.Node => {
     return (
       <>
         <Image testID="PhotoScroll.photo" source={{ uri: photoUrl }} style={imageStyles.fullWidthImage} />
-        <Pressable>
+        <Pressable accessibilityRole="button">
           <Text style={textStyles.license}>{photo.licenseCode || photo.license_code}</Text>
         </Pressable>
       </>
