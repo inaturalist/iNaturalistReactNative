@@ -1,7 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import AccessibilityEngine from "react-native-accessibility-engine";
 
 import factory from "../../../factory";
 import TaxonDetails from "../../../../src/components/TaxonDetails/TaxonDetails";
@@ -12,7 +11,6 @@ const testTaxon = factory( "RemoteTaxon" );
 // https://stackoverflow.com/questions/60270013/how-to-mock-react-custom-hook-returned-value
 const mockExpected = testTaxon;
 jest.mock( "../../../../src/components/TaxonDetails/hooks/fetchTaxonDetails", ( ) => ( {
-  // __esModule: true,
   useFetchTaxonDetails: ( ) => {
     return {
       taxon: mockExpected,

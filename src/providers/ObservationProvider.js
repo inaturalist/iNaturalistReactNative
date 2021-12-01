@@ -11,7 +11,6 @@ type Props = {
 }
 
 const ObservationProvider = ( { children }: Props ): Node => {
-  const [observationId, setObservationId] = useState( null );
   const [observationList, setObservationList] = useState( [] );
 
   // We store a reference to our realm using useRef that allows us to access it via
@@ -60,14 +59,10 @@ const ObservationProvider = ( { children }: Props ): Node => {
     return closeRealm;
   }, [openRealm, closeRealm] );
 
-  const updateObservationId = obsId => setObservationId( obsId );
-
   const fetchObservations = ( ) => openRealm( );
 
   const observationValue = {
     observationList,
-    observationId,
-    updateObservationId,
     fetchObservations
   };
 

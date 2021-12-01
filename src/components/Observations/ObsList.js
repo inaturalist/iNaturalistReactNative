@@ -12,13 +12,10 @@ import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { ObservationContext } from "../../providers/contexts";
 
 const ObsList = ( ): Node => {
-  const { observationList, updateObservationId, fetchObservations } = useContext( ObservationContext );
+  const { observationList, fetchObservations } = useContext( ObservationContext );
   const navigation = useNavigation( );
 
-  const navToObsDetails = observation => {
-    updateObservationId( observation.uuid );
-    navigation.navigate( "ObsDetails" );
-  };
+  const navToObsDetails = observation => navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
   // this custom hook fetches on first component render
   // (and anytime you save while in debug - hot reloading mode )
   // this will eventually go in a sync button / pull-from-top gesture

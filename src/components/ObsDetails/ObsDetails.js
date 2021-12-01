@@ -1,26 +1,25 @@
 // @flow
 
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Text, View, Image, Pressable } from "react-native";
 import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { ScrollView } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { viewStyles, textStyles } from "../../styles/obsDetails";
-import useFetchObsDetailsFromRealm from "./hooks/fetchObsFromRealm";
+import { useFetchObsDetailsFromRealm } from "./hooks/fetchObsFromRealm";
 import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import DataTab from "./DataTab";
-import { ObservationContext } from "../../providers/contexts";
 
 const ObsDetails = ( ): Node => {
-  const { observationId } = useContext( ObservationContext );
+  const { params } = useRoute( );
+  const { uuid } = params;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  const uuid = observationId;
   const observation = useFetchObsDetailsFromRealm( uuid );
 
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile" );
@@ -38,7 +37,7 @@ const ObsDetails = ( ): Node => {
 
   return (
     <ViewWithFooter>
-      <ScrollView>
+      <ScrollView testID={`ObsDetails.${uuid}`}>
       <View style={viewStyles.userProfileRow}>
         <Pressable style={viewStyles.userProfileRow} onPress={navToUserProfile}>
           {/* TODO: fill user icon in with saved current user icon or icon from another user API call */}
