@@ -11,7 +11,7 @@ import { viewStyles, textStyles } from "../../styles/obsDetails";
 import useFetchObsDetailsFromRealm from "./hooks/fetchObsFromRealm";
 import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
-import PhotoScroll from "./PhotoScroll";
+import PhotoScroll from "../SharedComponents/PhotoScroll";
 import DataTab from "./DataTab";
 import { ObservationContext } from "../../providers/contexts";
 

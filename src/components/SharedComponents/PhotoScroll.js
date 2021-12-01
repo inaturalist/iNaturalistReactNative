@@ -4,7 +4,7 @@ import * as React from "react";
 import { Text, Image, Pressable } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
-import { imageStyles, textStyles } from "../../styles/obsDetails";
+import { imageStyles, textStyles } from "../../styles/sharedComponents/photoScroll";
 
 type Props = {
   photos: Array<Object>

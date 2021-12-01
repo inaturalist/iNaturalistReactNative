@@ -6,7 +6,7 @@ import HTML from "react-native-render-html";
 import { useRoute } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import PhotoScroll from "../ObsDetails/PhotoScroll";
+import PhotoScroll from "../SharedComponents/PhotoScroll";
 import { viewStyles, textStyles } from "../../styles/taxonDetails";
 import { useFetchTaxonDetails } from "./hooks/fetchTaxonDetails";
 import { ScrollView } from "react-native-gesture-handler";

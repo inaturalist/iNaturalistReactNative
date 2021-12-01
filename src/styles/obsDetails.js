@@ -1,11 +1,9 @@
 // @flow strict-local
 
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 
 import type { ViewStyleProp, TextStyleProp, ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "./global";
-
-const { width } = Dimensions.get( "screen" );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   imageBackground: {
@@ -60,12 +58,6 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   },
   scientificNameText: {
     color: colors.gray
-  },
-  license: {
-    color: colors.white,
-    position: "absolute",
-    right: 10,
-    bottom: 10
   }
 } );
 
@@ -86,11 +78,6 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
     height: 50,
     borderRadius: 10,
     marginHorizontal: 20
-  },
-  fullWidthImage: {
-    width,
-    height: 200,
-    resizeMode: "contain"
   }
 } );
 
