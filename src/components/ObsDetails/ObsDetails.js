@@ -22,7 +22,7 @@ const ObsDetails = ( ): Node => {
 
   const observation = useFetchObsDetailsFromRealm( uuid );
 
-  const navToUserProfile = ( ) => navigation.navigate( "UserProfile" );
+  const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 
   const ids = observation && observation.identifications;
@@ -78,7 +78,7 @@ const ObsDetails = ( ): Node => {
         </Pressable>
       </View>
       {tab === 0
-        ? <ActivityTab ids={ids} navToTaxonDetails={navToTaxonDetails} />
+        ? <ActivityTab ids={ids} navToTaxonDetails={navToTaxonDetails} navToUserProfile={navToUserProfile} />
         : <DataTab observation={observation} />}
       </ScrollView>
     </ViewWithFooter>

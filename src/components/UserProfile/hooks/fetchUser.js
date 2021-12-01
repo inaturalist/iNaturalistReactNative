@@ -1,31 +1,18 @@
 // @flow
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
 
-const useFetchUser = ( ): Object => {
+const useFetchUser = ( userId: number ): Object => {
   const [user, setUser] = useState( null );
-  const FIELDS = useMemo( ( ) => {
-    const USER_FIELDS = {
-      description: true,
-      icon_url: true,
-      id: true,
-      login: true,
-      name: true
-    };
 
-  return {
-    user: USER_FIELDS
-  };
-}, [] );
 
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchUserProfile = async ( ) => {
       try {
-        const testId = 1132118;
-        const ids = `${testId}?fields=name,login,icon_url,created_at,roles,site_id`;
-        const response = await inatjs.users.fetch( ids );
+        const id = `${userId}?fields=name,login,icon_url,created_at,roles,site_id`;
+        const response = await inatjs.users.fetch( id );
         const results = response.results;
         if ( !isCurrent ) { return; }
         setUser( results[0] );
@@ -39,7 +26,7 @@ const useFetchUser = ( ): Object => {
     return ( ) => {
       isCurrent = false;
     };
-  }, [FIELDS] );
+  }, [userId] );
 
   return user;
 };

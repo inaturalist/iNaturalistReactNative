@@ -9,20 +9,22 @@ import { textStyles, viewStyles } from "../../styles/obsDetails";
 
 type Props = {
   ids: Array<Object>,
-  navToTaxonDetails: ( ) => { }
+  navToTaxonDetails: ( ) => { },
+  navToUserProfile: number => { }
 }
 
-const ActivityTab = ( { ids, navToTaxonDetails }: Props ): React.Node => ids.map( id => {
+const ActivityTab = ( { ids, navToTaxonDetails, navToUserProfile }: Props ): React.Node => ids.map( id => {
   const taxon = id.taxon;
+  const handlePress = ( ) => navToUserProfile( id.user.id );
   // this should all perform similarly to the activity tab on web
   // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/components/activity_item.jsx
   return (
     <View key={id.uuid}>
       <View style={viewStyles.userProfileRow}>
-        <View style={viewStyles.userProfileRow}>
+        <Pressable onPress={handlePress} accessibilityRole="link" style={viewStyles.userProfileRow}>
           <UserIcon uri={id.user.iconUrl} />
           <Text>{`@${id.user.login}`}</Text>
-        </View>
+        </Pressable>
         <Text>{id.body}</Text>
         {id.vision && <Text>vision</Text>}
         <Text>{id.category}</Text>
