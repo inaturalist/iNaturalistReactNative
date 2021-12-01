@@ -31,4 +31,6 @@ const useFetchUser = ( userId: number ): Object => {
   return user;
 };
 
-export default useFetchUser;
+export {
+  useFetchUser
+};

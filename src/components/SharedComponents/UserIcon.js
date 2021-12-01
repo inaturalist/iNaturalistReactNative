@@ -14,10 +14,14 @@ const UserIcon = ( { uri, large }: Props ): React.Node => {
   const imageSource = { uri };
 
   return (
-    <Image source={imageSource} style={[
-      imageStyles.userProfileIcon,
-      large && imageStyles.largeIcon
-    ]} />
+    <Image
+      source={imageSource}
+      style={[
+        imageStyles.userProfileIcon,
+        large && imageStyles.largeIcon
+      ]}
+      testID="UserIcon.photo"
+    />
   );
 };
 

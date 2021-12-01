@@ -8,7 +8,7 @@ import { viewStyles } from "../../styles/userProfile/userProfile";
 import UserIcon from "../SharedComponents/UserIcon";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
-import useFetchUser from "./hooks/fetchUser";
+import { useFetchUser } from "./hooks/fetchUser";
 
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
@@ -22,7 +22,7 @@ const UserProfile = ( ): React.Node => {
   return (
     <ViewWithFooter>
       <Text>{`@${user.login}`}</Text>
-      <View style={viewStyles.row}>
+      <View style={viewStyles.row} testID={`UserProfile.${userId}`}>
         <UserIcon uri={user.icon_url} large />
         <View>
           <Text>{user.name}</Text>
