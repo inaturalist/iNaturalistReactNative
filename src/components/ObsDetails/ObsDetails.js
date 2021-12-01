@@ -24,7 +24,7 @@ const ObsDetails = ( ): Node => {
   const observation = useFetchObsDetailsFromRealm( uuid );
 
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile" );
-  const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails" );
+  const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 
   const ids = observation && observation.identifications;
   const photos = observation && observation.observationPhotos;

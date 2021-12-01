@@ -11,13 +11,15 @@ type Props = {
 }
 
 const PhotoScroll = ( { photos }: Props ): React.Node => {
+  const extractKey = item => item.photo.id;
+
   const renderImage = ( { item } ) => {
     const photo = item.photo;
     let photoUrl = photo.url.replace( "square", "large" );
 
     return (
       <>
-        <Image source={{ uri: photoUrl }} style={imageStyles.fullWidthImage} />
+        <Image testID="PhotoScroll.photo" source={{ uri: photoUrl }} style={imageStyles.fullWidthImage} />
         <Pressable>
           <Text style={textStyles.license}>{photo.licenseCode || photo.license_code}</Text>
         </Pressable>
@@ -28,6 +30,7 @@ const PhotoScroll = ( { photos }: Props ): React.Node => {
   return (
     <FlatList
       horizontal
+      keyExtractor={extractKey}
       data={photos}
       renderItem={renderImage}
     />

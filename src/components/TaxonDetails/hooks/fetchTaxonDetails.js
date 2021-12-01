@@ -28,22 +28,28 @@ const FIELDS = {
   wikipedia_url: true
 };
 
-const useFetchTaxonDetails = ( id: number ): ?Object => {
+const useFetchTaxonDetails = ( id: number ): {
+  taxon: ?Object,
+  loading: boolean
+} => {
   const [taxon, setTaxon] = useState( null );
+  const [loading, setLoading] = useState( false );
 
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchTaxonDetails = async ( ) => {
+      setLoading( true );
       try {
         const params = {
           fields: FIELDS
         };
         const response = await inatjs.taxa.fetch( id, params );
         const results = response.results;
-        console.log( results, "results" );
         if ( !isCurrent ) { return; }
         setTaxon( results[0] );
+        setLoading( false );
       } catch ( e ) {
+        setLoading( false );
         if ( !isCurrent ) { return; }
         console.log( "Couldn't fetch taxon details:", e.message, );
       }
@@ -55,7 +61,41 @@ const useFetchTaxonDetails = ( id: number ): ?Object => {
     };
   }, [id] );
 
-  return taxon;
+  return { taxon, loading };
 };
 
-export default useFetchTaxonDetails;
+const useFetchSimilarSpecies = ( id: number ): Array<Object> => {
+  const [similarSpecies, setSimilarSpecies] = useState( [] );
+
+  useEffect( ( ) => {
+    let isCurrent = true;
+    const fetchSimilarSpecies = async ( ) => {
+      try {
+        const params = {
+          per_page: 20,
+          taxon_id: id
+          // fields: FIELDS
+        };
+        const response = await inatjs.identifications.similar_species( params );
+        const results = response.results;
+        if ( !isCurrent ) { return; }
+        setSimilarSpecies( results );
+      } catch ( e ) {
+        if ( !isCurrent ) { return; }
+        console.log( "Couldn't fetch similar species:", e.message, );
+      }
+    };
+
+    fetchSimilarSpecies( );
+    return ( ) => {
+      isCurrent = false;
+    };
+  }, [id] );
+
+  return similarSpecies;
+};
+
+export {
+  useFetchTaxonDetails,
+  useFetchSimilarSpecies
+};

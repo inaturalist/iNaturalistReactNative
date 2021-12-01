@@ -10,6 +10,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: colors.black,
     height: 200
   },
+  scrollView: {
+    paddingBottom: 150
+  },
   textContainer: {
     marginHorizontal: 25,
     marginTop: 10
