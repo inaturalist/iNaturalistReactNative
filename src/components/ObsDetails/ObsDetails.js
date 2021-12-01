@@ -72,6 +72,7 @@ const ObsDetails = ( ): Node => {
         </Pressable>
         <Pressable
           onPress={showDataTab}
+          testID="ObsDetails.DataTab"
         >
           <Text style={textStyles.greenButtonText}>DATA</Text>
         </Pressable>

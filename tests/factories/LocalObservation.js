@@ -17,5 +17,7 @@ export default define( "LocalObservation", faker => ( {
   placeGuess: "SF",
   taxon: factory( "LocalTaxon" ),
   timeObservedAt: "2021-05-09T07:27:05-06:00",
-  qualityGrade: "research"
+  qualityGrade: "research",
+  latitude: Number( faker.address.latitude( ) ),
+  longitude: Number( faker.address.longitude( ) )
 } ) );

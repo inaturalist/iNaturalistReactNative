@@ -18,8 +18,6 @@ const mockObservationProviderWithObservations = observations =>
   ObservationProvider.mockImplementation( ( { children }: Props ): Node => (
     <ObservationContext.Provider value={{
       observationList: observations,
-      observationId: null,
-      updateObservationId: ( ) => {},
       fetchObservations: ( ) => {}
     }}>
       {children}
