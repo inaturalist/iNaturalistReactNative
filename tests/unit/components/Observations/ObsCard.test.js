@@ -1,6 +1,5 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
-import AccessibilityEngine from "react-native-accessibility-engine";
 import factory from "../../../factory";
 import ObsCard from "../../../../src/components/Observations/ObsCard";
 
@@ -23,7 +22,7 @@ test( "renders text passed into observation card", ( ) => {
   expect( getByText( testObservation.qualityGrade ) ).toBeTruthy( );
 } );
 
-test( "handles button press", ( ) => {
+test( "navigates to ObsDetails on button press", ( ) => {
   const fakeNavigation = {
     navigate: jest.fn( )
   };
@@ -43,5 +42,5 @@ test( "handles button press", ( ) => {
 
 test( "should not have accessibility errors", ( ) => {
   const obsCard = <ObsCard item={testObservation} />;
-  expect( ( ) => AccessibilityEngine.check( obsCard ) ).not.toThrow();
+  expect( obsCard ).toBeAccessible( );
 } );

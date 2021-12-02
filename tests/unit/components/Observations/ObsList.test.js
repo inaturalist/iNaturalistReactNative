@@ -1,5 +1,5 @@
 import React from "react";
-import { render, within } from "@testing-library/react-native";
+import { render, within, fireEvent } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import factory from "../../../factory";
 import ObsList from "../../../../src/components/Observations/ObsList";
@@ -18,8 +18,6 @@ const mockObservationProviderWithObservations = observations =>
   ObservationProvider.mockImplementation( ( { children }: Props ): Node => (
     <ObservationContext.Provider value={{
       observationList: observations,
-      observationId: null,
-      updateObservationId: ( ) => {},
       fetchObservations: ( ) => {}
     }}>
       {children}
@@ -66,3 +64,29 @@ it( "renders multiple observations", async ( ) => {
     expect( getByTestId( `ObsList.obsCard.${obs.uuid}` ) ).toBeTruthy( );
   } );
 } );
+
+it( "renders grid view on button press", ( ) => {
+  const observations = [
+    factory( "LocalObservation" )
+  ];
+  mockObservationProviderWithObservations( observations );
+  const { getByTestId } = renderObsList( );
+  const button = getByTestId( "ObsList.toggleGridView" );
+
+  fireEvent.press( button );
+  observations.forEach( obs => {
+    expect( getByTestId( `ObsList.gridItem.${obs.uuid}` ) ).toBeTruthy( );
+  } );
+} );
+
+test.todo( "should not have accessibility errors" );
+// test( "should not have accessibility errors", ( ) => {
+//   const obsList = (
+//     <NavigationContainer>
+//       <ObservationProvider>
+//         <ObsList />
+//       </ObservationProvider>
+//     </NavigationContainer>
+//   );
+//   expect( obsList ).toBeAccessible( );
+// } );

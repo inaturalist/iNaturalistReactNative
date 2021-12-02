@@ -1,7 +1,7 @@
 // @flow
 
-import React, { useContext, useEffect } from "react";
-import { FlatList, ActivityIndicator } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { FlatList, ActivityIndicator, Pressable, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 
@@ -10,23 +10,23 @@ import useFetchObservations from "./hooks/fetchObservations";
 import EmptyList from "./EmptyList";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { ObservationContext } from "../../providers/contexts";
+import { viewStyles } from "../../styles/observations/obsList";
+import GridItem from "./GridItem";
 
 const ObsList = ( ): Node => {
-  const { observationList, updateObservationId, fetchObservations } = useContext( ObservationContext );
+  const [view, setView] = useState( "list" );
+  const { observationList, fetchObservations } = useContext( ObservationContext );
   const navigation = useNavigation( );
 
-  const navToObsDetails = observation => {
-    updateObservationId( observation.uuid );
-    navigation.navigate( "ObsDetails" );
-  };
+  const navToObsDetails = observation => navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
   // this custom hook fetches on first component render
   // (and anytime you save while in debug - hot reloading mode )
   // this will eventually go in a sync button / pull-from-top gesture
   // instead of automatically fetching every time the component loads
   const loading = useFetchObservations( );
 
-  const extractKey = item => item.uuid;
   const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
+  const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} />;
 
   const renderEmptyState = ( ) => <EmptyList />;
 
@@ -41,15 +41,33 @@ const ObsList = ( ): Node => {
     return unsub;
   } );
 
+  const toggleView = ( ) => view === "list" ? setView( "grid" ) : setView( "list" );
+
   return (
     <ViewWithFooter>
+      <View style={viewStyles.toggleViewRow}>
+        <Pressable
+          onPress={toggleView}
+          accessibilityRole="button"
+        >
+          <Text>list view</Text>
+        </Pressable>
+        <Pressable
+          onPress={toggleView}
+          testID="ObsList.toggleGridView"
+          accessibilityRole="button"
+        >
+          <Text>grid view</Text>
+        </Pressable>
+      </View>
       {loading
         ? <ActivityIndicator />
         : (
           <FlatList
             data={observationList}
-            keyExtractor={extractKey}
-            renderItem={renderItem}
+            key={view === "grid" ? 1 : 0}
+            renderItem={view === "grid" ? renderGridItem : renderItem}
+            numColumns={view === "grid" ? 4 : 1}
             testID="ObsList.myObservations"
             ListEmptyComponent={renderEmptyState}
           />

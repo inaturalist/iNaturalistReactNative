@@ -37,4 +37,6 @@ const useFetchObsDetailsFromRealm = ( uuid: string ): Object => {
   return observation;
 };
 
-export default useFetchObsDetailsFromRealm;
+export {
+  useFetchObsDetailsFromRealm
+};

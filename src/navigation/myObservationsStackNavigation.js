@@ -7,6 +7,7 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import ObsList from "../components/Observations/ObsList";
 import ObsDetails from "../components/ObsDetails/ObsDetails";
 import UserProfile from "../components/UserProfile/UserProfile";
+import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
 import MessagesIcon from "../components/Observations/MessagesIcon";
 import ObservationProvider from "../providers/ObservationProvider";
 
@@ -40,6 +41,11 @@ const App = ( ): React.Node => (
         <Stack.Screen
           name="UserProfile"
           component={UserProfile}
+          options={showBackButton}
+        />
+        <Stack.Screen
+          name="TaxonDetails"
+          component={TaxonDetails}
           options={showBackButton}
         />
     </Stack.Navigator>

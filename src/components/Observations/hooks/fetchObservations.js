@@ -71,7 +71,6 @@ const FIELDS = {
   location: true,
   longitude: true,
   observation_photos: OBSERVATION_PHOTOS_FIELDS,
-  photos: PHOTO_FIELDS,
   place_guess: true,
   quality_grade: true,
   taxon: TAXON_FIELDS,

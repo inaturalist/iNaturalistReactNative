@@ -4,5 +4,6 @@ export default define( "LocalTaxon", faker => ( {
   id: faker.datatype.number( ),
   name: faker.name.firstName( ),
   rank: "family",
-  preferredCommonName: faker.name.findName( )
+  preferredCommonName: faker.name.findName( ),
+  defaultPhotoSquareUrl: faker.image.imageUrl( )
 } ) );
