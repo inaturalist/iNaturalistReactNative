@@ -10,6 +10,7 @@ import UserProfile from "../components/UserProfile/UserProfile";
 import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
 import MessagesIcon from "../components/Observations/MessagesIcon";
 import ObservationProvider from "../providers/ObservationProvider";
+import Explore from "../components/Explore/Explore";
 
 const Stack = createNativeStackNavigator( );
 
@@ -46,6 +47,15 @@ const App = ( ): React.Node => (
         <Stack.Screen
           name="TaxonDetails"
           component={TaxonDetails}
+          options={showBackButton}
+        />
+        {/* TODO: Figure out where Explore actually needs to live in navigator.
+        It seems like it should be a tab navigator within the drawer navigator,
+        which has stacks nested inside for Explore, ObsList, and Notifications
+        and another tab navigator for Camera */}
+        <Stack.Screen
+          name="Explore"
+          component={Explore}
           options={showBackButton}
         />
     </Stack.Navigator>
