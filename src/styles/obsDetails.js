@@ -25,6 +25,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexWrap: "nowrap",
     marginVertical: 10
   },
+  scrollView: {
+    paddingBottom: 100
+  },
   speciesDetailRow: {
     flexDirection: "row",
     flexWrap: "nowrap",

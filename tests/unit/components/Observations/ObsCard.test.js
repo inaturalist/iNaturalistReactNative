@@ -22,7 +22,7 @@ test( "renders text passed into observation card", ( ) => {
   expect( getByText( testObservation.qualityGrade ) ).toBeTruthy( );
 } );
 
-test( "handles button press", ( ) => {
+test( "navigates to ObsDetails on button press", ( ) => {
   const fakeNavigation = {
     navigate: jest.fn( )
   };

@@ -17,5 +17,6 @@ export default define( "RemoteTaxon", faker => ( {
   wikipedia_summary: faker.lorem.paragraph( ),
   taxonPhotos: [{
     photo: factory( "RemotePhoto" )
-  }]
+  }],
+  wikipedia_url: faker.internet.url( )
 } ) );

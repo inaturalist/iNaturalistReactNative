@@ -21,7 +21,12 @@ const ActivityTab = ( { ids, navToTaxonDetails, navToUserProfile }: Props ): Rea
   return (
     <View key={id.uuid}>
       <View style={viewStyles.userProfileRow}>
-        <Pressable onPress={handlePress} accessibilityRole="link" style={viewStyles.userProfileRow}>
+        <Pressable
+          onPress={handlePress}
+          accessibilityRole="link"
+          style={viewStyles.userProfileRow}
+          testID={`ObsDetails.identifier.${id.user.id}`}
+        >
           <UserIcon uri={id.user.iconUrl} />
           <Text>{`@${id.user.login}`}</Text>
         </Pressable>

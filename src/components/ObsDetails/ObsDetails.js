@@ -37,13 +37,19 @@ const ObsDetails = ( ): Node => {
 
   return (
     <ViewWithFooter>
-      <ScrollView testID={`ObsDetails.${uuid}`}>
+      <ScrollView testID={`ObsDetails.${uuid}`} contentContainerStyle={viewStyles.scrollView}>
       <View style={viewStyles.userProfileRow}>
-        <Pressable style={viewStyles.userProfileRow} onPress={navToUserProfile}>
+        {/* TODO: add user id to this handle press event */}
+        <Pressable
+          style={viewStyles.userProfileRow}
+          onPress={navToUserProfile}
+          testID="ObsDetails.currentUser"
+          accessibilityRole="link"
+        >
           {/* TODO: fill user icon in with saved current user icon or icon from another user API call */}
           <UserIcon uri={null} />
           {/* TODO: fill in text with saved current user login or login from another user API call */}
-          <Text>@username</Text>
+          <Text>@currentUser</Text>
         </Pressable>
         <Text>{observation.createdAt}</Text>
       </View>
@@ -52,7 +58,12 @@ const ObsDetails = ( ): Node => {
       </View>
       <View style={viewStyles.row}>
         <Image source={{ uri: taxon.defaultPhotoSquareUrl }} style={viewStyles.imageBackground} />
-        <Pressable style={viewStyles.obsDetailsColumn} onPress={navToTaxonDetails}>
+        <Pressable
+          style={viewStyles.obsDetailsColumn}
+          onPress={navToTaxonDetails}
+          testID={`ObsDetails.taxon.${taxon.id}`}
+          accessibilityRole="link"
+        >
           <Text style={textStyles.text}>{taxon.rank}</Text>
           <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
           <Text style={textStyles.scientificNameText}>{taxon.name}</Text>
@@ -67,12 +78,14 @@ const ObsDetails = ( ): Node => {
       <View style={viewStyles.userProfileRow}>
         <Pressable
           onPress={showActivityTab}
+          accessibilityRole="button"
         >
           <Text style={textStyles.greenButtonText}>ACTIVITY</Text>
         </Pressable>
         <Pressable
           onPress={showDataTab}
           testID="ObsDetails.DataTab"
+          accessibilityRole="button"
         >
           <Text style={textStyles.greenButtonText}>DATA</Text>
         </Pressable>

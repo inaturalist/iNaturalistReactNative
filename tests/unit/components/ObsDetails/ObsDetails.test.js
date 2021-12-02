@@ -7,6 +7,7 @@ import ObsDetails from "../../../../src/components/ObsDetails/ObsDetails";
 
 const testObservation = factory( "LocalObservation" );
 
+const mockedNavigate = jest.fn( );
 const mockExpected = testObservation;
 // TODO: learn how to mock a default export
 jest.mock( "../../../../src/components/ObsDetails/hooks/fetchObsFromRealm", ( ) => ( {
@@ -23,6 +24,9 @@ jest.mock( "@react-navigation/native", ( ) => {
       params: {
         uuid: mockExpected.uuid
       }
+    } ),
+    useNavigation: ( ) => ( {
+      navigate: mockedNavigate
     } )
   };
 } );
@@ -52,4 +56,30 @@ test( "renders data tab on button press", ( ) => {
   // need regex here because the time observed is only a substring within <Text>
   const regex =  new RegExp( time );
   expect( getByText( regex ) ).toBeTruthy( );
+} );
+
+test( "navigates to observer profile on button press", ( ) => {
+  const { getByTestId } = renderObsDetails( );
+
+  fireEvent.press( getByTestId( "ObsDetails.currentUser" ) );
+  // TODO: pass in correct data to make userId defined here and in component
+  expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: undefined } );
+} );
+
+test( "navigates to identifier profile on button press", ( ) => {
+  const { getByTestId } = renderObsDetails( );
+
+  fireEvent.press( getByTestId( `ObsDetails.identifier.${testObservation.identifications[0].user.id}` ) );
+  expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", {
+    userId: testObservation.identifications[0].user.id
+  } );
+} );
+
+test( "navigates to taxon details on button press", ( ) => {
+  const { getByTestId } = renderObsDetails( );
+
+  fireEvent.press( getByTestId( `ObsDetails.taxon.${testObservation.taxon.id}` ) );
+  expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
+    id: testObservation.taxon.id
+  } );
 } );

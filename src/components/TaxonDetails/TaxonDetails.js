@@ -64,7 +64,11 @@ const TaxonDetails = ( ): React.Node => {
             contentWidth={width}
             source={{ html: taxon.wikipedia_summary }}
           />
-          <Pressable onPress={openWikipedia} accessibilityRole="link">
+          <Pressable
+            onPress={openWikipedia}
+            accessibilityRole="link"
+            testID="TaxonDetails.wikipedia"
+          >
             <Text style={textStyles.header}>Read more on Wikipedia</Text>
           </Pressable>
           <Text style={textStyles.header}>TAXONOMY</Text>
