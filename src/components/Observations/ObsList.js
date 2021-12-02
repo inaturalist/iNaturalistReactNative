@@ -46,10 +46,17 @@ const ObsList = ( ): Node => {
   return (
     <ViewWithFooter>
       <View style={viewStyles.toggleViewRow}>
-        <Pressable onPress={toggleView}>
+        <Pressable
+          onPress={toggleView}
+          accessibilityRole="button"
+        >
           <Text>list view</Text>
         </Pressable>
-        <Pressable onPress={toggleView}>
+        <Pressable
+          onPress={toggleView}
+          testID="ObsList.toggleGridView"
+          accessibilityRole="button"
+        >
           <Text>grid view</Text>
         </Pressable>
       </View>
