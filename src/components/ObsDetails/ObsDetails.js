@@ -63,6 +63,7 @@ const ObsDetails = ( ): Node => {
           onPress={navToTaxonDetails}
           testID={`ObsDetails.taxon.${taxon.id}`}
           accessibilityRole="link"
+          accessibilityLabel="go to taxon details"
         >
           <Text style={textStyles.text}>{taxon.rank}</Text>
           <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>

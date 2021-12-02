@@ -83,3 +83,13 @@ test( "navigates to taxon details on button press", ( ) => {
     id: testObservation.taxon.id
   } );
 } );
+
+test.todo( "should not have accessibility errors" );
+// test( "should not have accessibility errors", ( ) => {
+//   const obsDetails = (
+//     <NavigationContainer>
+//       <ObsDetails />
+//     </NavigationContainer>
+//   );
+//   expect( obsDetails ).toBeAccessible( );
+// } );

@@ -39,3 +39,13 @@ test( "renders user profile from API call", ( ) => {
   expect( getByText( `@${testUser.login}` ) ).toBeTruthy( );
   expect( getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( { "uri": testUser.icon_url } );
 } );
+
+test.todo( "should not have accessibility errors" );
+// test( "should not have accessibility errors", ( ) => {
+//   const userProfile = (
+//     <NavigationContainer>
+//       <UserProfile />
+//     </NavigationContainer>
+//   );
+//   expect( userProfile ).toBeAccessible( );
+// } );

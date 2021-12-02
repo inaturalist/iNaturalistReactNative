@@ -35,7 +35,12 @@ const ActivityTab = ( { ids, navToTaxonDetails, navToUserProfile }: Props ): Rea
         <Text>{id.category}</Text>
         {id.createdAt && <Text>time (ago)</Text>}
       </View>
-      <Pressable style={viewStyles.speciesDetailRow} onPress={navToTaxonDetails}>
+      <Pressable
+        style={viewStyles.speciesDetailRow}
+        onPress={navToTaxonDetails}
+        accessibilityRole="link"
+        accessibilityLabel="go to taxon details"
+      >
         <SmallSquareImage uri={taxon.defaultPhotoSquareUrl} />
         <View>
           <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
