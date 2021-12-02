@@ -1,7 +1,7 @@
 // @flow
 
-import React, { useContext, useEffect } from "react";
-import { FlatList, ActivityIndicator } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { FlatList, ActivityIndicator, Pressable, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 
@@ -10,8 +10,11 @@ import useFetchObservations from "./hooks/fetchObservations";
 import EmptyList from "./EmptyList";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { ObservationContext } from "../../providers/contexts";
+import { viewStyles } from "../../styles/observations/obsList";
+import GridItem from "./GridItem";
 
 const ObsList = ( ): Node => {
+  const [view, setView] = useState( "list" );
   const { observationList, fetchObservations } = useContext( ObservationContext );
   const navigation = useNavigation( );
 
@@ -22,8 +25,8 @@ const ObsList = ( ): Node => {
   // instead of automatically fetching every time the component loads
   const loading = useFetchObservations( );
 
-  const extractKey = item => item.uuid;
   const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
+  const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} />;
 
   const renderEmptyState = ( ) => <EmptyList />;
 
@@ -38,15 +41,26 @@ const ObsList = ( ): Node => {
     return unsub;
   } );
 
+  const toggleView = ( ) => view === "list" ? setView( "grid" ) : setView( "list" );
+
   return (
     <ViewWithFooter>
+      <View style={viewStyles.toggleViewRow}>
+        <Pressable onPress={toggleView}>
+          <Text>list view</Text>
+        </Pressable>
+        <Pressable onPress={toggleView}>
+          <Text>grid view</Text>
+        </Pressable>
+      </View>
       {loading
         ? <ActivityIndicator />
         : (
           <FlatList
             data={observationList}
-            keyExtractor={extractKey}
-            renderItem={renderItem}
+            key={view === "grid" ? 1 : 0}
+            renderItem={view === "grid" ? renderGridItem : renderItem}
+            numColumns={view === "grid" ? 4 : 1}
             testID="ObsList.myObservations"
             ListEmptyComponent={renderEmptyState}
           />
