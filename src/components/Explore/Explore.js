@@ -19,7 +19,8 @@ import { ObservationContext } from "../../providers/contexts";
 
 const Explore = ( ): Node => {
   const { exploreList, setExploreList } = useContext( ObservationContext );
-  const [view, setView] = useState( "list" );
+  let view = "list";
+  // const [view, setView] = useState( "list" );
   const [searchTerm, setSearchTerm] = useState( "" );
   const [taxaId, setTaxaId] = useState( null );
   const [location, setLocation] = useState( "" );
