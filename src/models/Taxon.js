@@ -1,6 +1,6 @@
 class Taxon {
   static mapApiToRealm( taxon, realm ) {
-    const existingTaxon = realm.objectForPrimaryKey( "Taxon", taxon.id );
+    const existingTaxon = realm && realm.objectForPrimaryKey( "Taxon", taxon.id );
     if ( existingTaxon ) { return existingTaxon; }
     return {
       defaultPhotoSquareUrl: taxon.default_photo.square_url,

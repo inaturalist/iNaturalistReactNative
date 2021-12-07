@@ -8,13 +8,13 @@ class Observation {
     const createLinkedObjects = ( list, createFunction ) => {
       if ( list.length === 0 ) { return; }
       return list.map( item => {
-        return createFunction.mapApiToRealm( item, realm, "obs" );
+        return createFunction.mapApiToRealm( item, realm );
       } );
     };
 
     const taxon = Taxon.mapApiToRealm( obs.taxon, realm );
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
-    const comments = createLinkedObjects( obs.comments, Comment, realm );
+    const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );
 
     return {
@@ -28,7 +28,6 @@ class Observation {
       latitude: obs.geojson.coordinates[1],
       longitude: obs.geojson.coordinates[0],
       observationPhotos,
-      // photos,
       placeGuess: obs.place_guess,
       qualityGrade: obs.quality_grade,
       taxon,

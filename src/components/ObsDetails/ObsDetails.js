@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Text, View, Image, Pressable } from "react-native";
 import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -13,14 +13,20 @@ import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import DataTab from "./DataTab";
+import { ObservationContext } from "../../providers/contexts";
 
 const ObsDetails = ( ): Node => {
+  const { exploreList } = useContext( ObservationContext );
   const { params } = useRoute( );
   const { uuid } = params;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  const observation = useFetchObsDetailsFromRealm( uuid );
+  let observation = useFetchObsDetailsFromRealm( uuid );
+
+  if ( !observation && exploreList.length > 0 ) {
+    observation = exploreList.filter( obs => obs.uuid === uuid )[0];
+  }
 
   const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );

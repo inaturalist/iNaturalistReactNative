@@ -6,6 +6,17 @@ import type { ViewStyleProp, TextStyleProp, ImageStyleProp } from "react-native/
 import { colors } from "../global";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  dropdown: {
+    backgroundColor: colors.white,
+    borderColor: colors.gray,
+    borderRadius: 40,
+    borderWidth: 0.5,
+    height: 37,
+    paddingLeft: 15,
+    marginHorizontal: 50,
+    marginVertical: 20,
+    width: "75%"
+  }
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
@@ -17,6 +28,10 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
 } );
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
+  pickerIcon: {
+    width: 25,
+    height: 25
+  }
 } );
 
 export {
