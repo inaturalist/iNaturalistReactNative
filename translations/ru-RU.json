@@ -1,12 +1,12 @@
 {
-  "date_observed": "Date observed: {{date}}",
-  "date_uploaded": "Date uploaded: {{date}}",
-  "my_observations_caps": "MY OBSERVATIONS",
-  "total_species_seen": "{{val, number}} total species seen",
-  "x_observations_zero": "{{count}} observations",
-  "x_observations_one": "1 observation",
-  "x_observations_two": "{{count}} observations",
-  "x_observations_few": "{{count}} observations",
-  "x_observations_many": "{{count}} observations",
-  "x_observations_other": "{{count}} observations"
+  "date_observed": "Дата наблюдения: {{date}}",
+  "date_uploaded": "Дата загрузки: {{date}}",
+  "my_observations_caps": "МОИ НАБЛЮДЕНИЯ",
+  "total_species_seen": "{{val, number}} всего наблюдалось видов",
+  "x_observations_zero": "{{count}} наблюдений",
+  "x_observations_one": "1 наблюдение",
+  "x_observations_two": "{{count}} наблюдения",
+  "x_observations_few": "{{count}} наблюдения",
+  "x_observations_many": "{{count}} наблюдений",
+  "x_observations_other": "{{count}} наблюдений"
 }
