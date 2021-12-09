@@ -4,15 +4,23 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import factory from "../../../factory";
 import ObsDetails from "../../../../src/components/ObsDetails/ObsDetails";
+import ObservationProvider from "../../../../src/providers/ObservationProvider";
+import { ObservationContext } from "../../../../src/providers/contexts";
 
-const testObservation = factory( "LocalObservation" );
+// Mock the hooks we use on ObsDetails since we're not trying to test them here
+// jest.mock( "../../../../src/components/Observations/hooks/fetchObservations" );
+
+jest.mock( "../../../../src/providers/ObservationProvider" );
+
+const observations = [factory( "LocalObservation" )];
+const testObservation = observations[0];
 
 const mockedNavigate = jest.fn( );
-const mockExpected = testObservation;
+const mockObservation = testObservation;
 // TODO: learn how to mock a default export
 jest.mock( "../../../../src/components/ObsDetails/hooks/fetchObsFromRealm", ( ) => ( {
   useFetchObsDetailsFromRealm: ( ) => {
-    return mockExpected;
+    return mockObservation;
   }
 } ) );
 
@@ -22,7 +30,7 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useRoute: ( ) => ( {
       params: {
-        uuid: mockExpected.uuid
+        uuid: mockObservation.uuid
       }
     } ),
     useNavigation: ( ) => ( {
@@ -31,19 +39,38 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+// Mock ObservationProvider so it provides a specific array of observations
+// without any current observation or ability to update or fetch
+// observations
+const mockObservationProviderWithObservations = obs =>
+  ObservationProvider.mockImplementation( ( { children }: Props ): Node => (
+    <ObservationContext.Provider value={{
+      exploreList: obs,
+      setExploreList: ( ) => {}
+    }}>
+      {children}
+    </ObservationContext.Provider>
+  ) );
+
 const renderObsDetails = ( ) => render(
   <NavigationContainer>
-    <ObsDetails />
+    <ObservationProvider>
+      <ObsDetails />
+    </ObservationProvider>
   </NavigationContainer>
 );
 
 test( "renders obs details from local Realm", ( ) => {
+  // Mock the provided observations so we're just using our test data
+  mockObservationProviderWithObservations( observations );
   const { getByTestId, getByText } = renderObsDetails( );
 
-  expect( getByTestId( `ObsDetails.${testObservation.uuid}` ) ).toBeTruthy( );
-  expect( getByTestId( "PhotoScroll.photo" ).props.source ).toStrictEqual( { "uri": testObservation.observationPhotos[0].photo.url } );
-  expect( getByText( testObservation.taxon.preferredCommonName ) ).toBeTruthy( );
-  expect( getByText( testObservation.placeGuess ) ).toBeTruthy( );
+  const obs = observations[0];
+
+  expect( getByTestId( `ObsDetails.${obs.uuid}` ) ).toBeTruthy( );
+  expect( getByTestId( "PhotoScroll.photo" ).props.source ).toStrictEqual( { "uri": obs.observationPhotos[0].photo.url } );
+  expect( getByText( obs.taxon.preferredCommonName ) ).toBeTruthy( );
+  expect( getByText( obs.placeGuess ) ).toBeTruthy( );
 } );
 
 

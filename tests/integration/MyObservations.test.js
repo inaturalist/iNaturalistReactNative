@@ -13,6 +13,18 @@ import ObservationProvider from "../../src/providers/ObservationProvider";
 jest.mock( "inaturalistjs" );
 import inatjs from "inaturalistjs";
 
+jest.mock( "@react-navigation/native", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useRoute: ( ) => ( {
+      params: {
+        name: ""
+      }
+    } )
+  };
+} );
+
 const renderObsList = async ( ) => waitFor(
   ( ) => render(
     <NavigationContainer>

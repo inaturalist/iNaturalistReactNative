@@ -15,7 +15,6 @@ import ObservationViews from "../SharedComponents/ObservationViews/ObservationVi
 
 const Explore = ( ): Node => {
   const { exploreList, setExploreList } = useContext( ObservationContext );
-  let view = "list";
   const [searchTerm, setSearchTerm] = useState( "" );
   const [taxaId, setTaxaId] = useState( null );
   const [location, setLocation] = useState( "" );
@@ -55,7 +54,6 @@ const Explore = ( ): Node => {
       <ObservationViews
         loading={loading}
         observationList={exploreList}
-        view={view}
         testID="Explore.observations"
       />
     </ViewWithFooter>

@@ -11,6 +11,20 @@ jest.mock( "../../../../src/components/Observations/hooks/fetchObservations" );
 
 jest.mock( "../../../../src/providers/ObservationProvider" );
 
+const mockExpected = factory( "LocalObservation" );
+
+jest.mock( "@react-navigation/native", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useRoute: ( ) => ( {
+      params: {
+        id: mockExpected.uuid
+      }
+    } )
+  };
+} );
+
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
