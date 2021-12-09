@@ -4,7 +4,7 @@ import React from "react";
 import { Pressable, Text, View, Image } from "react-native";
 import type { Node } from "react";
 
-import { viewStyles, textStyles } from "../../styles/observations/obsCard";
+import { viewStyles, textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 
 type Props = {
   item: Object,

@@ -4,7 +4,7 @@ import React from "react";
 import { Pressable, Text, Image } from "react-native";
 import type { Node } from "react";
 
-import { textStyles, imageStyles, viewStyles } from "../../styles/observations/gridItem";
+import { textStyles, imageStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/gridItem";
 
 type Props = {
   item: Object,
