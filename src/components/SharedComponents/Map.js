@@ -17,23 +17,16 @@ type Props = {
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( { obsLatitude, obsLongitude, mapHeight, taxonId }: Props ): React.Node => {
-  // TODO: get location permissions working in iOS
   const latLng = useFetchUserLocation( );
-  // TODO: fallback to MountainView latlng for Android devices?
-  // const cupertinoLatitude = 37.3229978;
-  // const cupertinoLongitude = -122.0321823;
-
-  // const initialLatitude = latLng ? latLng.latitude : cupertinoLatitude;
-  // const initialLongitude = latLng ? latLng.longitude : cupertinoLongitude;
 
   const initialLatitude = latLng && latLng.latitude;
   const initialLongitude = latLng && latLng.longitude;
 
   const urlTemplate = taxonId && `https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png?taxon_id=${taxonId}&color=%2377B300&verifiable=true`;
 
-  console.log( latLng && latLng.latitude, "user latitude" );
-
   if ( !latLng || !latLng.latitude ) {
+    // TODO: add fallbacks (maybe Cupertino and MountainView) for initial region
+    // when user has no location permissions or no geolocation
     return null;
   }
 

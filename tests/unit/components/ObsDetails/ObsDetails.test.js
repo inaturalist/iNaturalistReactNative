@@ -7,9 +7,6 @@ import ObsDetails from "../../../../src/components/ObsDetails/ObsDetails";
 import ObservationProvider from "../../../../src/providers/ObservationProvider";
 import { ObservationContext } from "../../../../src/providers/contexts";
 
-// Mock the hooks we use on ObsDetails since we're not trying to test them here
-// jest.mock( "../../../../src/components/Observations/hooks/fetchObservations" );
-
 jest.mock( "../../../../src/providers/ObservationProvider" );
 
 const observations = [factory( "LocalObservation" )];
