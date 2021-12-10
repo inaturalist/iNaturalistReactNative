@@ -14,7 +14,11 @@ const DataTab = ( { observation }: Props ): React.Node => (
   <View>
     <Text>Notes</Text>
     <Text>{observation.description}</Text>
-    <Map latitude={observation.latitude} longitude={observation.longitude} />
+    <Map
+      obsLatitude={observation.latitude}
+      obsLongitude={observation.longitude}
+      mapHeight={150}
+    />
     <Text>{observation.placeGuess}</Text>
     <Text>Date</Text>
     <Text>{`date observed ${observation.timeObservedAt}`}</Text>

@@ -1,4 +1,3 @@
-import Taxon from "./Taxon";
 import User from "./User";
 class Identification {
   static mapApiToRealm( id, realm ) {
@@ -8,7 +7,9 @@ class Identification {
       category: id.category,
       createdAt: id.created_at,
       id: id.id,
-      taxon: Taxon.mapApiToRealm( id.taxon, realm ),
+      // need to append Taxon object to identifications after the Observation object
+      // has been created with its own Taxon object, otherwise will run into errors
+      // with realm trying to create a Taxon object with an existing primary key
       user: User.mapApiToRealm( id.user, realm ),
       vision: id.vision
     };

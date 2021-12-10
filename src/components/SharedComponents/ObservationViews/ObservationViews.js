@@ -8,17 +8,20 @@ import { viewStyles } from "../../../styles/observations/obsList";
 import GridItem from "./GridItem";
 import EmptyList from "./EmptyList";
 import ObsCard from "./ObsCard";
+import Map from "../Map";
 
 type Props = {
   loading: boolean,
   observationList: Array<Object>,
-  testID: string
+  testID: string,
+  taxonId?: number
 }
 
 const ObservationViews = ( {
   loading,
   observationList,
-  testID
+  testID,
+  taxonId
 }: Props ): React.Node => {
   const [view, setView] = React.useState( "list" );
   const navigation = useNavigation( );
@@ -31,12 +34,38 @@ const ObservationViews = ( {
 
   const renderEmptyState = ( ) => name !== "Explore" ? <EmptyList /> : null;
 
-  const setListView = ( ) => setView( "list" );
   const setGridView = ( ) => setView( "grid" );
+  const setListView = ( ) => setView( "list" );
+  const setMapView = ( ) => setView( "map" );
+
+  const renderView = ( ) => {
+    if ( view === "map" ) {
+      return <Map taxonId={taxonId} />;
+    } else {
+      return (
+        <FlatList
+          data={observationList}
+          key={view === "grid" ? 1 : 0}
+          renderItem={view === "grid" ? renderGridItem : renderItem}
+          numColumns={view === "grid" ? 4 : 1}
+          testID={testID}
+          ListEmptyComponent={renderEmptyState}
+        />
+      );
+    }
+  };
 
   return (
     <>
       <View style={viewStyles.toggleViewRow}>
+        {name === "Explore" && (
+          <Pressable
+            onPress={setMapView}
+            accessibilityRole="button"
+          >
+            <Text>map view</Text>
+          </Pressable>
+        )}
         <Pressable
           onPress={setListView}
           accessibilityRole="button"
@@ -53,16 +82,7 @@ const ObservationViews = ( {
       </View>
       {loading
         ? <ActivityIndicator />
-        : (
-          <FlatList
-            data={observationList}
-            key={view === "grid" ? 1 : 0}
-            renderItem={view === "grid" ? renderGridItem : renderItem}
-            numColumns={view === "grid" ? 4 : 1}
-            testID={testID}
-            ListEmptyComponent={renderEmptyState}
-          />
-        )}
+        : renderView( )}
     </>
   );
 };

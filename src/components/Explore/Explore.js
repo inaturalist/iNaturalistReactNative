@@ -16,7 +16,7 @@ import ObservationViews from "../SharedComponents/ObservationViews/ObservationVi
 const Explore = ( ): Node => {
   const { exploreList, setExploreList } = useContext( ObservationContext );
   const [searchTerm, setSearchTerm] = useState( "" );
-  const [taxaId, setTaxaId] = useState( null );
+  const [taxonId, setTaxonId] = useState( null );
   const [location, setLocation] = useState( "" );
   const [loading, setLoading] = useState( false );
 
@@ -25,8 +25,8 @@ const Explore = ( ): Node => {
   const updateLocation = input => setLocation( input );
   const showMap = async ( ) => {
     setLoading( true );
-    if ( taxaId !== null ) {
-      setExploreList( await fetchExploreObservations( taxaId ) );
+    if ( taxonId !== null ) {
+      setExploreList( await fetchExploreObservations( taxonId ) );
     }
     setLoading( false );
   };
@@ -38,8 +38,8 @@ const Explore = ( ): Node => {
       <DropdownTaxaPicker
         searchTerm={searchTerm}
         search={setSearchTerm}
-        setTaxaId={setTaxaId}
-        taxaId={taxaId}
+        setTaxonId={setTaxonId}
+        taxonId={taxonId}
       />
       <InputField
         handleTextChange={updateLocation}
@@ -54,6 +54,7 @@ const Explore = ( ): Node => {
       <ObservationViews
         loading={loading}
         observationList={exploreList}
+        taxonId={taxonId}
         testID="Explore.observations"
       />
     </ViewWithFooter>

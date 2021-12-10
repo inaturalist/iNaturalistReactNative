@@ -14,11 +14,11 @@ import { imageStyles, viewStyles } from "../../styles/explore/explore";
 type Props = {
   searchTerm: string,
   search: string => { },
-  setTaxaId: number => { },
-  taxaId: number
+  setTaxonId: number => { },
+  taxonId: number
 }
 
-const TaxaPicker = ( { searchTerm, search, setTaxaId, taxaId }: Props ): Node => {
+const TaxaPicker = ( { searchTerm, search, setTaxonId, taxonId }: Props ): Node => {
   const autocomplete = useFetchTaxaAutocomplete( searchTerm );
 
   const [open, setOpen] = useState( false );
@@ -36,10 +36,10 @@ const TaxaPicker = ( { searchTerm, search, setTaxaId, taxaId }: Props ): Node =>
   return (
     <DropDownPicker
       open={open}
-      value={taxaId}
+      value={taxonId}
       items={items}
       setOpen={setOpen}
-      setValue={setTaxaId}
+      setValue={setTaxonId}
       searchable={true}
       disableLocalSearch={true}
       onChangeSearchText={search}
