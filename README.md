@@ -3,6 +3,7 @@
 ## Install packages and pods
 1. Run `npm install`
 2. Run `npx pod-install ios` or `cd ios && pod install` from the root directory
+3. Make sure to place the `.env` file in the root folder, which is not part of the code repo (contains secrets, such as OAuth client ID).
 
 ## Run build
 1. Run `npm start -- --reset-cache` (`npm start` works too, but resetting the cache each time makes for a lot less build issues)

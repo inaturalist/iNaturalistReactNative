@@ -13,14 +13,18 @@
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.4",
+    "apisauce": "^2.1.2",
     "inaturalistjs": "github:inaturalist/inaturalistjs",
     "react": "17.0.2",
     "react-native": "0.65.1",
+    "react-native-config": "^1.4.5",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-localize": "^2.1.6",
     "react-native-maps": "^0.29.3",
     "react-native-reanimated": "^2.2.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
+    "react-native-sensitive-info": "^6.0.0-alpha.9",
     "realm": "^10.8.0"
   },
   "devDependencies": {

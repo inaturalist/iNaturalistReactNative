@@ -13,6 +13,8 @@ target 'iNaturalistReactNative' do
     )
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
 
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
+
   target 'iNaturalistReactNativeTests' do
     inherit! :complete
     # Pods for testing

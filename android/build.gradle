@@ -8,7 +8,7 @@ buildscript {
         targetSdkVersion = 30
         ndkVersion = "20.1.5948944"
         // kotlinVersion is for watermelonDB
-        kotlinVersion = "1.3.50"
+        // kotlinVersion = "1.3.50"
     }
     repositories {
         google()
