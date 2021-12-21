@@ -1,10 +1,8 @@
 // @flow
-
-import inatjs from "inaturalistjs";
-import Comment from "../../../models/Comment";
-import Identification from "../../../models/Identification";
-import ObservationPhoto from "../../../models/ObservationPhoto";
-import Taxon from "../../../models/Taxon";
+import Comment from "../models/Comment";
+import Identification from "../models/Identification";
+import ObservationPhoto from "../models/ObservationPhoto";
+import Taxon from "../models/Taxon";
 
 const USER_FIELDS = {
   icon_url: true,
@@ -105,25 +103,7 @@ const copyRealmSchema = ( obs: Object ) => {
   };
 };
 
-const fetchExploreObservations = async ( taxonId: number ): Promise<any> => {
-  try {
-    const params = {
-      // per_page: 24,
-      // spam: false,
-      // verifiable: true,
-      // return_bounds: true,
-      photos: true,
-      taxon_id: taxonId,
-      fields: FIELDS
-    };
-    const response = await inatjs.observations.search( params );
-    const { results } = await response;
-    return results.map( obs => copyRealmSchema( obs ) );
-  } catch ( e ) {
-    console.log( "Couldn't fetch explore observations:", e.message, );
-  }
-};
-
 export {
-  fetchExploreObservations
+  FIELDS,
+  copyRealmSchema
 };

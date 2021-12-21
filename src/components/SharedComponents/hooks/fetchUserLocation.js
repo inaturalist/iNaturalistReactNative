@@ -53,4 +53,6 @@ const useFetchUserLocation = ( ): Object => {
   return latLng;
 };
 
-export default useFetchUserLocation;
+export {
+  useFetchUserLocation
+};

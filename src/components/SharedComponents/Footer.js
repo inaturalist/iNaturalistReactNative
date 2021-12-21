@@ -18,7 +18,7 @@ const Footer = ( ): React.Node => {
   const toggleSideMenu = ( ) => navigation.openDrawer( );
   const navToObsList = ( ) => navigation.navigate( "my observations" );
   const navToCameraOptions = ( ) => openModal( );
-  const navToExplore = ( ) => navigation.navigate( "Explore" );
+  const navToExplore = ( ) => navigation.navigate( "explore stack" );
 
   return (
     <>

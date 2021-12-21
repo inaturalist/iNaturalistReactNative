@@ -62,6 +62,7 @@ const ObservationViews = ( {
           <Pressable
             onPress={setMapView}
             accessibilityRole="button"
+            testID="Explore.toggleMapView"
           >
             <Text>map view</Text>
           </Pressable>

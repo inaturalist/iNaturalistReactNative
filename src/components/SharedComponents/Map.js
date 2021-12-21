@@ -5,7 +5,7 @@ import { View } from "react-native";
 import MapView, { UrlTile } from "react-native-maps";
 
 import { viewStyles } from "../../styles/sharedComponents/map";
-import useFetchUserLocation from "./hooks/fetchUserLocation";
+import { useFetchUserLocation } from "./hooks/fetchUserLocation";
 
 type Props = {
   obsLatitude?: number,
@@ -31,7 +31,10 @@ const Map = ( { obsLatitude, obsLongitude, mapHeight, taxonId }: Props ): React.
   }
 
   return (
-    <View style={[viewStyles.mapContainer, mapHeight ? { height: mapHeight } : null]}>
+    <View
+      style={[viewStyles.mapContainer, mapHeight ? { height: mapHeight } : null]}
+      testID="MapView"
+    >
       <MapView
         style={viewStyles.map}
         initialRegion={{

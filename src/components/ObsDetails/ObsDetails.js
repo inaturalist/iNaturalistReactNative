@@ -22,9 +22,11 @@ const ObsDetails = ( ): Node => {
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
+  // MyObservations
   let observation = useFetchObsDetailsFromRealm( uuid );
 
-  if ( !observation && exploreList.length > 0 ) {
+  // Explore
+  if ( !observation && exploreList && exploreList.length > 0 ) {
     observation = exploreList.filter( obs => obs.uuid === uuid )[0];
   }
 

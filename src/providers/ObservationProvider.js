@@ -12,7 +12,6 @@ type Props = {
 
 const ObservationProvider = ( { children }: Props ): Node => {
   const [observationList, setObservationList] = useState( [] );
-  const [exploreList, setExploreList] = useState( [] );
 
   // We store a reference to our realm using useRef that allows us to access it via
   // realmRef.current for the component's lifetime without causing rerenders if updated.
@@ -64,9 +63,7 @@ const ObservationProvider = ( { children }: Props ): Node => {
 
   const observationValue = {
     observationList,
-    fetchObservations,
-    exploreList,
-    setExploreList
+    fetchObservations
   };
 
   return (

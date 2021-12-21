@@ -6,11 +6,12 @@ import { viewStyles, textStyles } from "../../../styles/sharedComponents/buttons
 
 type Props = {
   buttonText: string,
-  handlePress: any
+  handlePress: any,
+  testID: string
 }
 
-const RoundGreenButton = ( { buttonText, handlePress }: Props ): React.Node => (
-  <Pressable style={viewStyles.greenButton} onPress={handlePress}>
+const RoundGreenButton = ( { buttonText, handlePress, testID }: Props ): React.Node => (
+  <Pressable style={viewStyles.greenButton} onPress={handlePress} testID={testID}>
     <Text style={textStyles.greenButtonText}>
       {buttonText}
     </Text>
