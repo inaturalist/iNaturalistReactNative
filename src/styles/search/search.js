@@ -13,6 +13,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     paddingVertical: 5,
     borderBottomColor: colors.gray,
     borderBottomWidth: 1
+  },
+  toggleRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    justifyContent: "space-around"
   }
 } );
 
