@@ -5,7 +5,7 @@ import { Platform } from "react-native";
 import Geolocation from "react-native-geolocation-service";
 import { request, PERMISSIONS } from "react-native-permissions";
 
-const useFetchUserLocation = ( ): Object => {
+const useUserLocation = ( ): Object => {
   const [latLng, setLatLng] = useState( null );
 
   const requestiOSPermissions = async ( ): Promise<?string> => {
@@ -54,5 +54,5 @@ const useFetchUserLocation = ( ): Object => {
 };
 
 export {
-  useFetchUserLocation
+  useUserLocation
 };

@@ -28,6 +28,11 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
 } );
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
+  circularPickerIcon: {
+    width: 25,
+    height: 25,
+    borderRadius: 50
+  },
   pickerIcon: {
     width: 25,
     height: 25

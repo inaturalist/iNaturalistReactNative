@@ -40,7 +40,6 @@ const ExploreProvider = ( { children }: Props ): Node => {
           // TODO: note that there's a bug with place_id in API v2, so this is not working
           // as of Dec 20, 2021 with a place selected
           ...filters,
-          spam: false,
           verifiable: true,
           photos: true,
           fields: FIELDS

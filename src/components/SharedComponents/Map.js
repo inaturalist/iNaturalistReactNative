@@ -5,7 +5,7 @@ import { View } from "react-native";
 import MapView, { UrlTile } from "react-native-maps";
 
 import { viewStyles } from "../../styles/sharedComponents/map";
-import { useFetchUserLocation } from "./hooks/fetchUserLocation";
+import { useUserLocation } from "./hooks/fetchUserLocation";
 
 type Props = {
   obsLatitude?: number,
@@ -17,7 +17,7 @@ type Props = {
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( { obsLatitude, obsLongitude, mapHeight, taxonId }: Props ): React.Node => {
-  const latLng = useFetchUserLocation( );
+  const latLng = useUserLocation( );
 
   const initialLatitude = latLng && latLng.latitude;
   const initialLongitude = latLng && latLng.longitude;

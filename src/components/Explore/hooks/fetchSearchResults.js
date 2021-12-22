@@ -9,8 +9,8 @@ import inatjs from "inaturalistjs";
 //   }
 // };
 
-const useFetchSearchResults = ( q: string, sources: string ): Array<Object> => {
-  const [autocomplete, setAutocomplete] = useState( [] );
+const useRemoteSearchResults = ( q: string, sources: string ): Array<Object> => {
+  const [searchResults, setSearchResults] = useState( [] );
 
   useEffect( ( ) => {
     let isCurrent = true;
@@ -24,7 +24,7 @@ const useFetchSearchResults = ( q: string, sources: string ): Array<Object> => {
         const response = await inatjs.search( params );
         const results = response.results.map( result => result.record );
         if ( !isCurrent ) { return; }
-        setAutocomplete( results );
+        setSearchResults( results );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
         console.log( `Couldn't fetch search results with sources ${sources}:`, e.message, );
@@ -37,7 +37,7 @@ const useFetchSearchResults = ( q: string, sources: string ): Array<Object> => {
     };
   }, [q, sources] );
 
-  return autocomplete;
+  return searchResults;
 };
 
-export default useFetchSearchResults;
+export default useRemoteSearchResults;
