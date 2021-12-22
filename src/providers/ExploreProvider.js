@@ -4,7 +4,7 @@ import type { Node } from "react";
 import inatjs from "inaturalistjs";
 
 import { ExploreContext } from "./contexts";
-import { FIELDS, copyRealmSchema } from "./helpers";
+import { FIELDS } from "./helpers";
 import Observation from "../models/Observation";
 
 type Props = {
