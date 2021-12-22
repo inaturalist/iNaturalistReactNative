@@ -5,6 +5,7 @@ import inatjs from "inaturalistjs";
 
 import { ExploreContext } from "./contexts";
 import { FIELDS, copyRealmSchema } from "./helpers";
+import Observation from "../models/Observation";
 
 type Props = {
   children: any
@@ -47,7 +48,7 @@ const ExploreProvider = ( { children }: Props ): Node => {
         const response = await inatjs.observations.search( params );
         const { results } = await response;
         if ( !isCurrent ) { return; }
-        setExploreList( results.map( obs => copyRealmSchema( obs ) ) );
+        setExploreList( results.map( obs => Observation.copyRealmSchema( obs ) ) );
         setLoadingExplore( false );
       } catch ( e ) {
         if ( !isCurrent ) { return; }

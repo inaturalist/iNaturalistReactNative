@@ -4,6 +4,37 @@ import ObservationPhoto from "./ObservationPhoto";
 import Taxon from "./Taxon";
 
 class Observation {
+  // TODO: figure out if this is the right way to handle schema juggling
+  // and maybe switch to using inatjs.Observation instances
+  static copyRealmSchema( obs ) {
+    const createLinkedObjects = ( list, createFunction ) => {
+      if ( list.length === 0 ) { return; }
+      return list.map( item => {
+        return createFunction.mapApiToRealm( item );
+      } );
+    };
+
+    const taxon = Taxon.mapApiToRealm( obs.taxon );
+    const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
+    const comments = createLinkedObjects( obs.comments, Comment );
+    const identifications = createLinkedObjects( obs.identifications, Identification );
+
+    return {
+      uuid: obs.uuid,
+      comments: comments || [],
+      createdAt: obs.created_at,
+      description: obs.description,
+      identifications: identifications || [],
+      latitude: obs.geojson ? obs.geojson.coordinates[1] : null,
+      longitude: obs.geojson ? obs.geojson.coordinates[0] : null,
+      observationPhotos,
+      placeGuess: obs.place_guess,
+      qualityGrade: obs.quality_grade,
+      taxon,
+      timeObservedAt: obs.time_observed_at
+    };
+  }
+
   static createObservationForRealm( obs, realm ) {
     const createLinkedObjects = ( list, createFunction ) => {
       if ( list.length === 0 ) { return; }
