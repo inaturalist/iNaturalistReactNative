@@ -17,6 +17,7 @@ const useFetchSearchResults = ( q: string, sources: string ): Array<Object> => {
     const fetchSearchResults = async ( ) => {
       try {
         const params = {
+          per_page: 10,
           q,
           // TODO: get fields param working
           sources
