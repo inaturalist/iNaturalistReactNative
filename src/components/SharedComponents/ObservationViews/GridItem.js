@@ -3,6 +3,7 @@
 import React from "react";
 import { Pressable, Text, Image } from "react-native";
 import type { Node } from "react";
+import Observation from "../../../models/Observation";
 
 import { textStyles, imageStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/gridItem";
 
@@ -12,8 +13,6 @@ type Props = {
 }
 
 const GridItem = ( { item, handlePress }: Props ): Node => {
-  const imageUri = ( item && item.observationPhotos ) && { uri: item.observationPhotos[0].photo.url };
-
   const onPress = ( ) => handlePress( item );
 
   return (
@@ -25,7 +24,7 @@ const GridItem = ( { item, handlePress }: Props ): Node => {
       accessibilityLabel="Navigate to observation details screen"
     >
       <Image
-        source={imageUri}
+        source={Observation.uri( item )}
         style={imageStyles.gridImage}
         testID="ObsList.photo"
       />

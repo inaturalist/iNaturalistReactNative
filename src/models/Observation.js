@@ -66,6 +66,8 @@ class Observation {
     };
   }
 
+  static uri = ( item ) => ( item && item.observationPhotos ) && { uri: item.observationPhotos[0].photo.url };
+
   static schema = {
     name: "Observation",
     primaryKey: "uuid",
