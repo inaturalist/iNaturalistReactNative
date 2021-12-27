@@ -10,6 +10,10 @@ class Observation {
     const createLinkedObjects = ( list, createFunction ) => {
       if ( list.length === 0 ) { return; }
       return list.map( item => {
+        if ( createFunction === Identification ) {
+          // this one requires special treatment for appending taxon objects
+          return createFunction.copyRealmSchema( item );
+        }
         return createFunction.mapApiToRealm( item );
       } );
     };

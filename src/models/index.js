@@ -18,6 +18,18 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 2,
-  path: "db.realm"
+  schemaVersion: 3,
+  path: "db.realm",
+  migration: ( oldRealm: any, newRealm: any ) => {
+    if ( oldRealm.schemaVersion < 3 ) {
+      const oldObjects = oldRealm.objects( "Comment" );
+      const newObjects = newRealm.objects( "Comment" );
+      // loop through all objects and set the new property in the new schema
+      for ( const objectIndex in oldObjects ) {
+        const oldObject = oldObjects[objectIndex];
+        const newObject = newObjects[objectIndex];
+        newObject.created_at = oldObject.createdAt;
+      }
+    }
+  }
 };

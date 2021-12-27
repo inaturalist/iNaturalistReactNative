@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Text, View, Image, Pressable } from "react-native";
 import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -8,40 +8,33 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { viewStyles, textStyles } from "../../styles/obsDetails";
-import { useFetchObsDetailsFromRealm } from "./hooks/fetchObsFromRealm";
+// import { useFetchObsDetailsFromRealm } from "./hooks/fetchObsFromRealm";
 import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import DataTab from "./DataTab";
-import { ObservationContext } from "../../providers/contexts";
+import { useObservation } from "./hooks/useObservation";
 
 const ObsDetails = ( ): Node => {
-  const { exploreList } = useContext( ObservationContext );
   const { params } = useRoute( );
   const { uuid } = params;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  // MyObservations
-  let observation = useFetchObsDetailsFromRealm( uuid );
-
-  // Explore
-  if ( !observation && exploreList && exploreList.length > 0 ) {
-    observation = exploreList.filter( obs => obs.uuid === uuid )[0];
-  }
+  const observation = useObservation( uuid );
 
   const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
-
-  const ids = observation && observation.identifications;
-  const photos = observation && observation.observationPhotos;
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
 
   if ( !observation ) { return null; }
 
+  const ids = observation && observation.identifications;
+  const photos = observation && observation.observationPhotos;
   const taxon = observation.taxon;
+  const squarePhoto = taxon && taxon.defaultPhotoSquareUrl;
 
   return (
     <ViewWithFooter>
@@ -65,7 +58,7 @@ const ObsDetails = ( ): Node => {
         <PhotoScroll photos={photos} />
       </View>
       <View style={viewStyles.row}>
-        <Image source={{ uri: taxon.defaultPhotoSquareUrl }} style={viewStyles.imageBackground} />
+        <Image source={{ uri: squarePhoto }} style={viewStyles.imageBackground} />
         <Pressable
           style={viewStyles.obsDetailsColumn}
           onPress={navToTaxonDetails}
