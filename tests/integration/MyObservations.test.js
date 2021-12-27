@@ -54,7 +54,7 @@ test.todo( "only makes one concurrent request for observations at a time" );
 //   const observations = [factory( "RemoteObservation" )];
 //   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
 //   await waitFor( ( ) => render( <NavigationContainer><ObsList /></NavigationContainer> ) );
-//   // this doesn't pass b/c useFetchObservations() gets called a lot; we
+//   // this doesn't pass b/c useObservations() gets called a lot; we
 //   // probably need a way to ensure that only one request is in flight at a
 //   // time
 //   expect( inatjs.observations.search.mock.calls.length ).toEqual( 1 );

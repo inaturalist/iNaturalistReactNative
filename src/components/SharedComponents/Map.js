@@ -5,7 +5,7 @@ import { View } from "react-native";
 import MapView, { UrlTile } from "react-native-maps";
 
 import { viewStyles } from "../../styles/sharedComponents/map";
-import { useUserLocation } from "./hooks/fetchUserLocation";
+import { useUserLocation } from "./hooks/useUserLocation";
 
 type Props = {
   obsLatitude?: number,

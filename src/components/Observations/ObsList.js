@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 
-import useFetchObservations from "./hooks/fetchObservations";
+import useObservations from "./hooks/useObservations";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { ObservationContext } from "../../providers/contexts";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
@@ -17,7 +17,7 @@ const ObsList = ( ): Node => {
   // (and anytime you save while in debug - hot reloading mode )
   // this will eventually go in a sync button / pull-from-top gesture
   // instead of automatically fetching every time the component loads
-  const loading = useFetchObservations( );
+  const loading = useObservations( );
 
   useEffect( ( ) => {
     // addListener is here to make sure the collection from realm is the most recent, valid

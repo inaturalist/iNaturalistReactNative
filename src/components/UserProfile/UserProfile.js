@@ -8,12 +8,12 @@ import { viewStyles } from "../../styles/userProfile/userProfile";
 import UserIcon from "../SharedComponents/UserIcon";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
-import { useFetchUser } from "./hooks/fetchUser";
+import { useUser } from "./hooks/useUser";
 
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
   const { userId } = params;
-  const user = useFetchUser( userId );
+  const user = useUser( userId );
   // last active date
   // bio
   // following

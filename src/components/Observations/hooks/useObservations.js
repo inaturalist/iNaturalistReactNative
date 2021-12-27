@@ -9,7 +9,7 @@ import Observation from "../../../models/Observation";
 import Taxon from "../../../models/Taxon";
 import { FIELDS } from "../../../providers/helpers";
 
-const useFetchObservations = ( ): boolean => {
+const useObservations = ( ): boolean => {
   const [loading, setLoading] = useState( false );
   const realmRef = useRef( null );
 
@@ -91,4 +91,4 @@ const writeToDatabase = useCallback( ( results ) => {
   return loading;
 };
 
-export default useFetchObservations;
+export default useObservations;

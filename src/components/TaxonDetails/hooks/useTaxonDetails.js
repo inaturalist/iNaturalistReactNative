@@ -28,7 +28,7 @@ const FIELDS = {
   wikipedia_url: true
 };
 
-const useFetchTaxonDetails = ( id: number ): {
+const useTaxonDetails = ( id: number ): {
   taxon: ?Object,
   loading: boolean
 } => {
@@ -64,7 +64,7 @@ const useFetchTaxonDetails = ( id: number ): {
   return { taxon, loading };
 };
 
-const useFetchSimilarSpecies = ( id: number ): Array<Object> => {
+const useSimilarSpecies = ( id: number ): Array<Object> => {
   const [similarSpecies, setSimilarSpecies] = useState( [] );
 
   useEffect( ( ) => {
@@ -96,6 +96,6 @@ const useFetchSimilarSpecies = ( id: number ): Array<Object> => {
 };
 
 export {
-  useFetchTaxonDetails,
-  useFetchSimilarSpecies
+  useTaxonDetails,
+  useSimilarSpecies
 };

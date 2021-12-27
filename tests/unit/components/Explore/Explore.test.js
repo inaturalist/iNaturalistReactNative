@@ -13,7 +13,7 @@ const mockLatLng = {
 };
 
 // Mock the hooks we use on Map since we're not trying to test them here
-jest.mock( "../../../../src/components/SharedComponents/hooks/fetchUserLocation" , ( ) => ( {
+jest.mock( "../../../../src/components/SharedComponents/hooks/useUserLocation" , ( ) => ( {
   useUserLocation: ( ) => {
     return mockLatLng;
   }

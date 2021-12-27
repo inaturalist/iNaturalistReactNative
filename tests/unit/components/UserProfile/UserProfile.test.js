@@ -8,8 +8,8 @@ import UserProfile from "../../../../src/components/UserProfile/UserProfile";
 const testUser = factory( "RemoteUser" );
 const mockExpected = testUser;
 
-jest.mock( "../../../../src/components/UserProfile/hooks/fetchUser", ( ) => ( {
-  useFetchUser: ( ) => {
+jest.mock( "../../../../src/components/UserProfile/hooks/useUser", ( ) => ( {
+  useUser: ( ) => {
     return mockExpected;
   }
 } ) );

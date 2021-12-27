@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
 
-const useFetchUser = ( userId: number ): Object => {
+const useUser = ( userId: number ): Object => {
   const [user, setUser] = useState( null );
 
 
@@ -32,5 +32,5 @@ const useFetchUser = ( userId: number ): Object => {
 };
 
 export {
-  useFetchUser
+  useUser
 };
