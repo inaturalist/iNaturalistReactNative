@@ -8,7 +8,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { viewStyles, textStyles } from "../../styles/obsDetails";
-// import { useFetchObsDetailsFromRealm } from "./hooks/fetchObsFromRealm";
 import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
@@ -22,6 +21,7 @@ const ObsDetails = ( ): Node => {
   const navigation = useNavigation( );
 
   const observation = useObservation( uuid );
+  const taxon = observation && observation.taxon;
 
   const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
@@ -31,10 +31,10 @@ const ObsDetails = ( ): Node => {
 
   if ( !observation ) { return null; }
 
-  const ids = observation && observation.identifications;
-  const photos = observation && observation.observationPhotos;
-  const taxon = observation.taxon;
+  const ids = observation.identifications;
+  const photos = observation.observationPhotos;
   const squarePhoto = taxon && taxon.defaultPhotoSquareUrl;
+  const user = observation.user;
 
   return (
     <ViewWithFooter>
@@ -48,9 +48,9 @@ const ObsDetails = ( ): Node => {
           accessibilityRole="link"
         >
           {/* TODO: fill user icon in with saved current user icon or icon from another user API call */}
-          <UserIcon uri={null} />
+          <UserIcon uri={user && user.iconUrl} />
           {/* TODO: fill in text with saved current user login or login from another user API call */}
-          <Text>@currentUser</Text>
+          <Text>{`@${user && user.login}`}</Text>
         </Pressable>
         <Text>{observation.createdAt}</Text>
       </View>

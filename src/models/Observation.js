@@ -2,6 +2,7 @@ import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
 import Taxon from "./Taxon";
+import User from "./User";
 
 class Observation {
   // TODO: figure out if this is the right way to handle schema juggling
@@ -22,6 +23,8 @@ class Observation {
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );
+    const user = User.mapApiToRealm( obs.user );
+    console.log( user, "user in copy realm schema" );
 
     return {
       uuid: obs.uuid,
@@ -35,7 +38,8 @@ class Observation {
       placeGuess: obs.place_guess,
       qualityGrade: obs.quality_grade,
       taxon,
-      timeObservedAt: obs.time_observed_at
+      timeObservedAt: obs.time_observed_at,
+      user
     };
   }
 
@@ -51,6 +55,7 @@ class Observation {
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );
+    const user = User.mapApiToRealm( obs.user );
 
     return {
       uuid: obs.uuid,
@@ -66,7 +71,8 @@ class Observation {
       placeGuess: obs.place_guess,
       qualityGrade: obs.quality_grade,
       taxon,
-      timeObservedAt: obs.time_observed_at
+      timeObservedAt: obs.time_observed_at,
+      user
     };
   }
 
@@ -87,7 +93,8 @@ class Observation {
       placeGuess: "string?",
       qualityGrade: "string?",
       taxon: "Taxon?",
-      timeObservedAt: "string?"
+      timeObservedAt: "string?",
+      user: "User?"
     }
   }
 }
