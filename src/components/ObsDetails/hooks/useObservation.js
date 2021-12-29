@@ -34,7 +34,7 @@ const useObservation = ( uuid: string ): Object => {
 
   useEffect( ( ) => {
     let isCurrent = true;
-    const { isConnected } = NetInfo;
+    // const { isConnected } = NetInfo;
     // fetch observation with uuid
     const fetchObservation = async ( ) => {
       try {

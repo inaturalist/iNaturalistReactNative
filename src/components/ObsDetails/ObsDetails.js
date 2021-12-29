@@ -13,6 +13,8 @@ import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import DataTab from "./DataTab";
 import { useObservation } from "./hooks/useObservation";
+import Taxon from "../../models/Taxon";
+import User from "../../models/User";
 
 const ObsDetails = ( ): Node => {
   const { params } = useRoute( );
@@ -21,10 +23,6 @@ const ObsDetails = ( ): Node => {
   const navigation = useNavigation( );
 
   const observation = useObservation( uuid );
-  const taxon = observation && observation.taxon;
-
-  const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
-  const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
@@ -33,24 +31,24 @@ const ObsDetails = ( ): Node => {
 
   const ids = observation.identifications;
   const photos = observation.observationPhotos;
-  const squarePhoto = taxon && taxon.defaultPhotoSquareUrl;
   const user = observation.user;
+  const taxon = observation.taxon;
+
+  const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
+  const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 
   return (
     <ViewWithFooter>
       <ScrollView testID={`ObsDetails.${uuid}`} contentContainerStyle={viewStyles.scrollView}>
       <View style={viewStyles.userProfileRow}>
-        {/* TODO: add user id to this handle press event */}
         <Pressable
           style={viewStyles.userProfileRow}
-          onPress={navToUserProfile}
+          onPress={( ) => navToUserProfile( user.id )}
           testID="ObsDetails.currentUser"
           accessibilityRole="link"
         >
-          {/* TODO: fill user icon in with saved current user icon or icon from another user API call */}
-          <UserIcon uri={user && user.iconUrl} />
-          {/* TODO: fill in text with saved current user login or login from another user API call */}
-          <Text>{`@${user && user.login}`}</Text>
+          <UserIcon uri={User.uri( user )} />
+          <Text>{User.userHandle( user )}</Text>
         </Pressable>
         <Text>{observation.createdAt}</Text>
       </View>
@@ -58,7 +56,7 @@ const ObsDetails = ( ): Node => {
         <PhotoScroll photos={photos} />
       </View>
       <View style={viewStyles.row}>
-        <Image source={{ uri: squarePhoto }} style={viewStyles.imageBackground} />
+        <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />
         <Pressable
           style={viewStyles.obsDetailsColumn}
           onPress={navToTaxonDetails}

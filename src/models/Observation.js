@@ -19,12 +19,11 @@ class Observation {
       } );
     };
 
-    const taxon = Taxon.mapApiToRealm( obs.taxon );
+    const taxon = Taxon.copyRealmSchema( obs.taxon );
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );
     const user = User.mapApiToRealm( obs.user );
-    console.log( user, "user in copy realm schema" );
 
     return {
       uuid: obs.uuid,
@@ -55,28 +54,29 @@ class Observation {
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );
-    const user = User.mapApiToRealm( obs.user );
+    // const user = User.mapApiToRealm( obs.user );
 
     return {
       uuid: obs.uuid,
       comments,
-      createdAt: obs.created_at,
+      created_at: obs.created_at,
       description: obs.description,
       identifications,
       // obs detail on web says geojson coords are preferred over lat/long
       // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/ducks/observation.js#L145
       latitude: obs.geojson.coordinates[1],
       longitude: obs.geojson.coordinates[0],
+      // observationPhotos is returned from API in camelcase, not snakecase
       observationPhotos,
-      placeGuess: obs.place_guess,
-      qualityGrade: obs.quality_grade,
+      place_guess: obs.place_guess,
+      quality_grade: obs.quality_grade,
       taxon,
-      timeObservedAt: obs.time_observed_at,
-      user
+      time_observed_at: obs.time_observed_at
+      // user
     };
   }
 
-  static uri = ( item ) => ( item && item.observationPhotos ) && { uri: item.observationPhotos[0].photo.url };
+  static uri = obs => ( obs && obs.observationPhotos ) && { uri: obs.observationPhotos[0].photo.url };
 
   static schema = {
     name: "Observation",
@@ -84,17 +84,17 @@ class Observation {
     properties: {
       uuid: "string",
       comments: "Comment[]",
-      createdAt: "string?",
+      created_at: { type: "string?", mapTo: "createdAt" },
       description: "string?",
       identifications: "Identification[]",
       latitude: "double?",
       longitude: "double?",
       observationPhotos: "ObservationPhoto[]",
-      placeGuess: "string?",
-      qualityGrade: "string?",
+      place_guess: { type: "string?", mapTo: "placeGuess" },
+      quality_grade: { type: "string?", mapTo: "qualityGrade" },
       taxon: "Taxon?",
-      timeObservedAt: "string?",
-      user: "User?"
+      time_observed_at: { type: "string?", mapTo: "timeObservedAt" }
+      // user: "User?"
     }
   }
 }

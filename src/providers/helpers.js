@@ -9,7 +9,7 @@ const USER_FIELDS = {
 
 const TAXON_FIELDS = {
   default_photo: {
-    square_url: true
+    url: true
   },
   iconic_taxon_name: true,
   name: true,
@@ -53,7 +53,6 @@ const OBSERVATION_PHOTOS_FIELDS = {
 };
 
 const FIELDS = {
-  comments_count: true,
   comments: COMMENT_FIELDS,
   created_at: true,
   description: true,

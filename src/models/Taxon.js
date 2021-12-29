@@ -1,9 +1,8 @@
+import Photo from "./Photo";
 class Taxon {
-  static mapApiToRealm( taxon, realm ) {
-    const existingTaxon = realm && realm.objectForPrimaryKey( "Taxon", taxon.id );
-    if ( existingTaxon ) { return existingTaxon; }
+  static copyRealmSchema( taxon ) {
     return {
-      defaultPhotoSquareUrl: taxon.default_photo.square_url,
+      default_photo: Photo.mapApiToRealm( taxon.default_photo ),
       id: taxon.id,
       name: taxon.name,
       preferredCommonName: taxon.preferred_common_name,
@@ -11,14 +10,28 @@ class Taxon {
     };
   }
 
+  static mapApiToRealm( taxon, realm ) {
+    const existingTaxon = realm && realm.objectForPrimaryKey( "Taxon", taxon.id );
+    if ( existingTaxon ) { return existingTaxon; }
+    return {
+      default_photo: Photo.mapApiToRealm( taxon.default_photo ),
+      id: taxon.id,
+      name: taxon.name,
+      preferred_common_name: taxon.preferred_common_name,
+      rank: taxon.rank
+    };
+  }
+
+  static uri = ( item ) => ( item && item.default_photo ) && { uri: item.default_photo.url };
+
   static schema = {
     name: "Taxon",
     primaryKey: "id",
     properties: {
       id: "int",
-      defaultPhotoSquareUrl: "string?",
+      default_photo: { type: "Photo?", mapTo: "defaultPhoto" },
       name: "string?",
-      preferredCommonName: "string?",
+      preferred_common_name: { type: "string?", mapTo: "preferredCommonName" },
       rank: "string?"
     }
   }

@@ -6,6 +6,8 @@ import { Text, View, Pressable } from "react-native";
 import UserIcon from "../SharedComponents/UserIcon";
 import SmallSquareImage from "./SmallSquareImage";
 import { textStyles, viewStyles } from "../../styles/obsDetails";
+import Taxon from "../../models/Taxon";
+import User from "../../models/User";
 
 type Props = {
   ids: Array<Object>,
@@ -27,8 +29,8 @@ const ActivityTab = ( { ids, navToTaxonDetails, navToUserProfile }: Props ): Rea
           style={viewStyles.userProfileRow}
           testID={`ObsDetails.identifier.${id.user.id}`}
         >
-          <UserIcon uri={id.user.iconUrl} />
-          <Text>{`@${id.user.login}`}</Text>
+          <UserIcon uri={User.uri( id.user )} />
+          <Text>{User.userHandle( id.user )}</Text>
         </Pressable>
         <Text>{id.body}</Text>
         {id.vision && <Text>vision</Text>}
@@ -41,7 +43,7 @@ const ActivityTab = ( { ids, navToTaxonDetails, navToUserProfile }: Props ): Rea
         accessibilityRole="link"
         accessibilityLabel="go to taxon details"
       >
-        <SmallSquareImage uri={taxon.defaultPhotoSquareUrl} />
+        <SmallSquareImage uri={Taxon.uri( taxon )} />
         <View>
           <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
           <Text style={textStyles.scientificNameText}>{taxon.rank} {taxon.name}</Text>

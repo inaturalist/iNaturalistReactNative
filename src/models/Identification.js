@@ -12,7 +12,6 @@ class Identification {
       user: User.mapApiToRealm( id.user ),
       vision: id.vision
     };
-
   }
 
   static mapApiToRealm( id, realm ) {
@@ -20,7 +19,7 @@ class Identification {
       uuid: id.uuid,
       body: id.body,
       category: id.category,
-      createdAt: id.created_at,
+      created_at: id.created_at,
       id: id.id,
       // need to append Taxon object to identifications after the Observation object
       // has been created with its own Taxon object, otherwise will run into errors
@@ -37,7 +36,7 @@ class Identification {
       uuid: "string",
       body: "string?",
       category: "string?",
-      createdAt: "string?",
+      created_at: { type: "string?", mapTo: "createdAt" },
       taxon: "Taxon?",
       user: "User?",
       vision: "bool?",

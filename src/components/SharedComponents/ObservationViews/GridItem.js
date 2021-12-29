@@ -14,6 +14,8 @@ type Props = {
 
 const GridItem = ( { item, handlePress }: Props ): Node => {
   const onPress = ( ) => handlePress( item );
+  // TODO: fix whatever funkiness is preventing realm mapTo from correctly
+  // displaying camelcased item keys on ObservationList
 
   return (
     <Pressable
@@ -28,7 +30,7 @@ const GridItem = ( { item, handlePress }: Props ): Node => {
         style={imageStyles.gridImage}
         testID="ObsList.photo"
       />
-      <Text style={textStyles.text}>{item.taxon.preferredCommonName}</Text>
+      <Text style={textStyles.text}>{item.taxon.preferredCommonName || item.taxon.preferred_common_name}</Text>
     </Pressable>
   );
 };

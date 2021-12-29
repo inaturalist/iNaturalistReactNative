@@ -14,6 +14,8 @@ type Props = {
 
 const ObsCard = ( { item, handlePress }: Props ): Node => {
   const onPress = ( ) => handlePress( item );
+  // TODO: fix whatever funkiness is preventing realm mapTo from correctly
+  // displaying camelcased item keys on ObservationList
 
   return (
     <Pressable
@@ -29,14 +31,14 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
         testID="ObsList.photo"
       />
       <View style={viewStyles.obsDetailsColumn}>
-        <Text style={textStyles.text}>{item.taxon.preferredCommonName}</Text>
-        <Text style={textStyles.text}>{item.placeGuess}</Text>
-        <Text style={textStyles.text}>{item.timeObservedAt}</Text>
+        <Text style={textStyles.text}>{item.taxon.preferredCommonName || item.taxon.preferred_common_name}</Text>
+        <Text style={textStyles.text}>{item.placeGuess || item.place_guess}</Text>
+        <Text style={textStyles.text}>{item.timeObservedAt || item.time_observed_at}</Text>
       </View>
       <View>
         <Text style={textStyles.text}>{item.identifications.length}</Text>
         <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">{item.comments.length}</Text>
-        <Text style={textStyles.text}>{item.qualityGrade}</Text>
+        <Text style={textStyles.text}>{item.qualityGrade || item.quality_grade}</Text>
       </View>
     </Pressable>
   );

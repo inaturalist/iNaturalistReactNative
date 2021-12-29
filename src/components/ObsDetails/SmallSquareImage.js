@@ -6,15 +6,11 @@ import { Image } from "react-native";
 import { imageStyles } from "../../styles/obsDetails";
 
 type Props = {
-  uri: string
+  uri: Object
 }
 
-const UserIcon = ( { uri }: Props ): React.Node => {
-  const imageSource = { uri };
-
-  return (
-    <Image source={imageSource} style={imageStyles.squareImage} />
-  );
-};
+const UserIcon = ( { uri }: Props ): React.Node => (
+  <Image source={uri} style={imageStyles.squareImage} />
+);
 
 export default UserIcon;

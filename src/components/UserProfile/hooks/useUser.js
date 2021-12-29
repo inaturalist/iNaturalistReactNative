@@ -6,7 +6,6 @@ import inatjs from "inaturalistjs";
 const useUser = ( userId: number ): Object => {
   const [user, setUser] = useState( null );
 
-
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchUserProfile = async ( ) => {

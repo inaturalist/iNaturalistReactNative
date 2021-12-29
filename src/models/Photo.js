@@ -3,7 +3,7 @@ class Photo {
     return {
       id: photo.id,
       attribution: photo.attribution,
-      licenseCode: photo.license_code,
+      license_code: photo.license_code,
       url: photo.url
     };
   }
@@ -14,7 +14,7 @@ class Photo {
     properties: {
       id: "int?",
       attribution: "string?",
-      licenseCode: "string?",
+      license_code: { type: "string?", mapTo: "licenseCode" },
       url: "string?"
     }
   }
