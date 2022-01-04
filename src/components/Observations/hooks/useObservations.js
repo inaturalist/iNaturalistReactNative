@@ -7,6 +7,7 @@ import Realm from "realm";
 import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
 import Taxon from "../../../models/Taxon";
+import User from "../../../models/User";
 import { FIELDS } from "../../../providers/helpers";
 
 const useObservations = ( ): boolean => {
@@ -55,6 +56,11 @@ const writeToDatabase = useCallback( ( results ) => {
           const identification = realm.objectForPrimaryKey( "Identification", id.uuid );
           identification.taxon = Taxon.mapApiToRealm( id.taxon, realm );
         } );
+        // append User object here, otherwise run into errors with realm trying to create
+        // User with existing primary key
+        // the user will be the same for every observation
+        const newlyCreatedObs = realm.objectForPrimaryKey( "Observation", obs.uuid );
+        newlyCreatedObs.user = User.mapApiToRealm( obs.user, realm );
       } );
     } );
     setLoading( false );

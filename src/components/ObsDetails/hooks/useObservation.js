@@ -11,6 +11,7 @@ import { FIELDS } from "../../../providers/helpers";
 
 const useObservation = ( uuid: string ): Object => {
   const [observation, setObservation] = useState( null );
+  const [isConnected, setIsConnected] = useState( null );
 
   const realmRef = useRef( null );
 
@@ -18,8 +19,8 @@ const useObservation = ( uuid: string ): Object => {
     try {
       const realm = await Realm.open( realmConfig );
       realmRef.current = realm;
-      const obs = realm.objects( "Observation" ).filtered( `uuid = '${uuid}'` );
-      setObservation( obs[0] );
+      const obs = realm.objectForPrimaryKey( "Observation", uuid );
+      setObservation( obs );
     }
     catch ( err ) {
       console.error( "Error opening realm: ", err.message );
@@ -33,9 +34,17 @@ const useObservation = ( uuid: string ): Object => {
   }, [realmRef] );
 
   useEffect( ( ) => {
+    const unsubscribe = NetInfo.addEventListener( state => {
+      setIsConnected( !state.isConnected );
+    } );
+
+    // Unsubscribe
+    unsubscribe( );
+  }, [] );
+
+  useEffect( ( ) => {
     let isCurrent = true;
-    // const { isConnected } = NetInfo;
-    // fetch observation with uuid
+
     const fetchObservation = async ( ) => {
       try {
         const params = {
@@ -52,18 +61,17 @@ const useObservation = ( uuid: string ): Object => {
       }
     };
 
-    // if ( isConnected ) {
+    if ( isConnected === false ) {
+      openObservationFromRealm( );
+    } else if ( isConnected ) {
       fetchObservation( );
-    // } else {
-    //   // TODO: make sure this works with no internet
-    //   // if it does, delete fetchObsFromRealm.js
-    //   openObservationFromRealm( );
-    //}
+    }
+
     return ( ) => {
       isCurrent = false;
-      // closeRealm;
+      closeRealm;
     };
-  }, [uuid, openObservationFromRealm, closeRealm] );
+  }, [uuid, openObservationFromRealm, closeRealm, isConnected] );
 
   return observation;
 };

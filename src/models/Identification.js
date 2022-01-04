@@ -15,18 +15,15 @@ class Identification {
   }
 
   static mapApiToRealm( id, realm ) {
-    return {
-      uuid: id.uuid,
-      body: id.body,
-      category: id.category,
-      created_at: id.created_at,
-      id: id.id,
-      // need to append Taxon object to identifications after the Observation object
-      // has been created with its own Taxon object, otherwise will run into errors
-      // with realm trying to create a Taxon object with an existing primary key
-      user: User.mapApiToRealm( id.user, realm ),
-      vision: id.vision
+    const newId = {
+      ...id,
+      user: User.mapApiToRealm( id.user, realm )
     };
+    // need to append Taxon object to identifications after the Observation object
+    // has been created with its own Taxon object, otherwise will run into errors
+    // with realm trying to create a Taxon object with an existing primary key
+    delete newId.taxon;
+    return newId;
   }
 
   static schema = {

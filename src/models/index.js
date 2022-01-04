@@ -18,7 +18,7 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 4,
+  schemaVersion: 5,
   path: "db.realm",
   migration: ( oldRealm: any, newRealm: any ) => {
     if ( oldRealm.schemaVersion < 3 ) {

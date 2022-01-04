@@ -5,8 +5,6 @@ import Taxon from "./Taxon";
 import User from "./User";
 
 class Observation {
-  // TODO: figure out if this is the right way to handle schema juggling
-  // and maybe switch to using inatjs.Observation instances
   static copyRealmSchema( obs ) {
     const createLinkedObjects = ( list, createFunction ) => {
       if ( list.length === 0 ) { return; }
@@ -54,26 +52,22 @@ class Observation {
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );
-    // const user = User.mapApiToRealm( obs.user );
 
-    return {
-      uuid: obs.uuid,
+    const newObs = {
+      ...obs,
       comments,
-      created_at: obs.created_at,
-      description: obs.description,
       identifications,
       // obs detail on web says geojson coords are preferred over lat/long
       // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/ducks/observation.js#L145
       latitude: obs.geojson.coordinates[1],
       longitude: obs.geojson.coordinates[0],
-      // observationPhotos is returned from API in camelcase, not snakecase
       observationPhotos,
-      place_guess: obs.place_guess,
-      quality_grade: obs.quality_grade,
-      taxon,
-      time_observed_at: obs.time_observed_at
-      // user
+      taxon
     };
+
+    // need to append user after the observation realm object has been created
+    delete newObs.user;
+    return newObs;
   }
 
   static uri = obs => ( obs && obs.observationPhotos ) && { uri: obs.observationPhotos[0].photo.url };
@@ -93,8 +87,8 @@ class Observation {
       place_guess: { type: "string?", mapTo: "placeGuess" },
       quality_grade: { type: "string?", mapTo: "qualityGrade" },
       taxon: "Taxon?",
-      time_observed_at: { type: "string?", mapTo: "timeObservedAt" }
-      // user: "User?"
+      time_observed_at: { type: "string?", mapTo: "timeObservedAt" },
+      user: "User?"
     }
   }
 }

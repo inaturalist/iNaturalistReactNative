@@ -2,13 +2,16 @@ import factory, { define } from "factoria";
 import "./RemotePhoto";
 import "./RemoteTaxon";
 import "./RemoteUser";
+import "./RemoteIdentification";
 
 export default define( "RemoteObservation", faker => ( {
   id: faker.datatype.number( ),
   uuid: faker.datatype.uuid( ),
   user: factory( "RemoteUser" ),
-  identifications: [],
-  observation_photos: [
+  identifications: [
+    factory( "RemoteIdentification" )
+  ],
+  observationPhotos: [
     factory( "RemoteObservationPhoto" )
   ],
   comments: [],

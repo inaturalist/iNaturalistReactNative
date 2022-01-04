@@ -14,11 +14,8 @@ class Taxon {
     const existingTaxon = realm && realm.objectForPrimaryKey( "Taxon", taxon.id );
     if ( existingTaxon ) { return existingTaxon; }
     return {
-      default_photo: Photo.mapApiToRealm( taxon.default_photo ),
-      id: taxon.id,
-      name: taxon.name,
-      preferred_common_name: taxon.preferred_common_name,
-      rank: taxon.rank
+      ...taxon,
+      default_photo: Photo.mapApiToRealm( taxon.default_photo )
     };
   }
 

@@ -2,9 +2,7 @@ import User from "./User";
 class Comment {
   static mapApiToRealm( comment, realm ) {
     return {
-      body: comment.body,
-      created_at: comment.created_at,
-      id: comment.id,
+      ...comment,
       user: User.mapApiToRealm( comment.user, realm )
     };
   }
