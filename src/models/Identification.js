@@ -3,14 +3,10 @@ import Taxon from "./Taxon";
 class Identification {
   static copyRealmSchema( id ) {
     return {
-      uuid: id.uuid,
-      body: id.body,
-      category: id.category,
+      ...id,
       createdAt: id.created_at,
-      id: id.id,
       taxon: Taxon.mapApiToRealm( id.taxon ),
-      user: User.mapApiToRealm( id.user ),
-      vision: id.vision
+      user: User.mapApiToRealm( id.user )
     };
   }
 

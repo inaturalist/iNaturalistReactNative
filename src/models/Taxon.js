@@ -2,11 +2,9 @@ import Photo from "./Photo";
 class Taxon {
   static copyRealmSchema( taxon ) {
     return {
+      ...taxon,
       default_photo: Photo.mapApiToRealm( taxon.default_photo ),
-      id: taxon.id,
-      name: taxon.name,
-      preferredCommonName: taxon.preferred_common_name,
-      rank: taxon.rank
+      preferredCommonName: taxon.preferred_common_name
     };
   }
 

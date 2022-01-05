@@ -24,10 +24,9 @@ class Observation {
     const user = User.mapApiToRealm( obs.user );
 
     return {
-      uuid: obs.uuid,
+      ...obs,
       comments: comments || [],
       createdAt: obs.created_at,
-      description: obs.description,
       identifications: identifications || [],
       latitude: obs.geojson ? obs.geojson.coordinates[1] : null,
       longitude: obs.geojson ? obs.geojson.coordinates[0] : null,
