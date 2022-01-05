@@ -16,14 +16,15 @@ const useObservation = ( uuid: string ): Object => {
   const realmRef = useRef( null );
 
   const openObservationFromRealm = useCallback( async ( ) => {
+    const realm = await Realm.open( realmConfig );
+    realmRef.current = realm;
+
     try {
-      const realm = await Realm.open( realmConfig );
-      realmRef.current = realm;
       const obs = realm.objectForPrimaryKey( "Observation", uuid );
       setObservation( obs );
     }
     catch ( err ) {
-      console.error( "Error opening realm: ", err.message );
+      console.error( `Error finding Observation with primary key: ${uuid} `, err.message );
     }
   }, [realmRef, uuid] );
 
@@ -57,7 +58,7 @@ const useObservation = ( uuid: string ): Object => {
         setObservation( obs );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch observation:", e.message, );
+        console.log( `Couldn't fetch observation with uuid ${uuid}: `, e.message, );
       }
     };
 

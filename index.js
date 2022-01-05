@@ -12,9 +12,4 @@ inatjs.setConfig( {
   writeApiURL: "https://stagingapi.inaturalist.org/v2"
 } );
 
-// inatjs.setConfig( {
-//   apiURL: "https://api.inaturalist.org/v2",
-//   writeApiURL: "https://api.inaturalist.org/v2"
-// } );
-
 AppRegistry.registerComponent( appName, ( ) => App );
