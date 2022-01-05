@@ -4,11 +4,11 @@ import { useEffect, useCallback, useRef, useState } from "react";
 import inatjs from "inaturalistjs";
 import Realm from "realm";
 
-import realmConfig from "../../../models/index";
-import Observation from "../../../models/Observation";
-import Taxon from "../../../models/Taxon";
-import User from "../../../models/User";
-import { FIELDS } from "../../../providers/helpers";
+import realmConfig from "../../models/index";
+import Observation from "../../models/Observation";
+import Taxon from "../../models/Taxon";
+import User from "../../models/User";
+import { FIELDS } from "../helpers";
 
 const useObservations = ( ): boolean => {
   const [loading, setLoading] = useState( false );

@@ -7,7 +7,7 @@ import ObservationProvider from "../../../../src/providers/ObservationProvider";
 import { ObservationContext } from "../../../../src/providers/contexts";
 
 // Mock the hooks we use on ObsList since we're not trying to test them here
-jest.mock( "../../../../src/components/Observations/hooks/useObservations" );
+jest.mock( "../../../../src/providers/hooks/useObservations" );
 
 jest.mock( "../../../../src/providers/ObservationProvider" );
 

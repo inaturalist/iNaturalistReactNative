@@ -29,6 +29,7 @@ const ObsDetails = ( ): Node => {
 
   if ( !observation ) { return null; }
 
+
   const ids = observation.identifications;
   const photos = observation.observationPhotos;
   const user = observation.user;

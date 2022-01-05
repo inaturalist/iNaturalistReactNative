@@ -6,12 +6,15 @@ import factory, { makeResponse } from "../factory";
 import { render, waitFor, within } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import AccessibilityEngine from "react-native-accessibility-engine";
+
 import ObsList from "../../src/components/Observations/ObsList";
 import ObservationProvider from "../../src/providers/ObservationProvider";
 
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
 import inatjs from "inaturalistjs";
+
+jest.mock( "../../src/providers/hooks/useObservations" );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
