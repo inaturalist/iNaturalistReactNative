@@ -27,7 +27,7 @@ const Search = ( ): React.Node => {
         <Pressable
           onPress={navToTaxonDetails}
           style={viewStyles.row}
-          testID={`Search.${item.id}`}
+          testID={`Search.taxa.${item.id}`}
         >
           <Image source={imageUrl} style={imageStyles.squareImage} testID={`Search.${item.id}.photo`} />
           <Text>{`${item.preferred_common_name} (${item.rank} ${item.name})`}</Text>
@@ -38,9 +38,10 @@ const Search = ( ): React.Node => {
         <Pressable
           onPress={navToUserProfile}
           style={viewStyles.row}
+          testID={`Search.user.${item.login}`}
         >
           {/* TODO: add an empty icon when user doesn't have an icon */}
-          <Image source={{ uri: item.icon }} style={imageStyles.circularImage} />
+          <Image source={{ uri: item.icon }} style={imageStyles.circularImage} testID={`Search.${item.login}.photo`}/>
           <Text>{`${item.login} (${item.name})`}</Text>
         </Pressable>
       );

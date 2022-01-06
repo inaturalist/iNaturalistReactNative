@@ -2,8 +2,8 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
-import factory from "../../factory";
-import Search from "../../../src/components/Search/Search";
+import factory from "../../../factory";
+import Search from "../../../../src/components/Search/Search";
 
 const testTaxaList = [
   factory( "RemoteTaxon" ),
@@ -12,7 +12,7 @@ const testTaxaList = [
 ];
 
 const mockExpected = testTaxaList;
-jest.mock( "../../../src/sharedHooks/useRemoteSearchResults", ( ) => ( {
+jest.mock( "../../../../src/sharedHooks/useRemoteSearchResults", ( ) => ( {
   __esModule: true,
   default: ( ) => mockExpected
 } ) );
@@ -23,11 +23,6 @@ jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
-    // useRoute: ( ) => ( {
-    //   params: {
-    //     uuid: mockObservation.uuid
-    //   }
-    // } ),
     useNavigation: ( ) => ( {
       navigate: mockedNavigate
     } )
@@ -61,6 +56,6 @@ test( "navigates to TaxonDetails on button press", ( ) => {
 
   const taxon = testTaxaList[0];
 
-  fireEvent.press( getByTestId( `Search.${taxon.id}` ) );
+  fireEvent.press( getByTestId( `Search.taxa.${taxon.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", { id: taxon.id } );
 } );
