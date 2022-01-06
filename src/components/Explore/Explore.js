@@ -7,9 +7,7 @@ import type { Node } from "react";
 import { textStyles } from "../../styles/explore/explore";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import DropdownTaxaPicker from "./DropdownTaxaPicker";
-import DropdownPlacePicker from "./DropdownPlacePicker";
-// import { fetchExploreObservations } from "./helpers/fetchExploreObservations";
+import DropdownPicker from "./DropdownPicker";
 import { ExploreContext } from "../../providers/contexts";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
 
@@ -21,7 +19,7 @@ const Explore = ( ): Node => {
     exploreFilters,
     setExploreFilters
   } = useContext( ExploreContext );
-  const [searchTerm, setSearchTerm] = useState( "" );
+  const [taxon, setTaxon] = useState( "" );
   const [location, setLocation] = useState( "" );
 
   const showMap = ( ) => setLoading( );
@@ -47,17 +45,19 @@ const Explore = ( ): Node => {
     <ViewWithFooter>
       <Text style={textStyles.explanation}>search for species and taxa seen anywhere in the world</Text>
       <Text style={textStyles.explanation}>try searching for insects near your location...</Text>
-      <DropdownTaxaPicker
-        searchTerm={searchTerm}
-        search={setSearchTerm}
-        setTaxonId={setTaxonId}
-        taxonId={taxonId}
+      <DropdownPicker
+        searchQuery={taxon}
+        setSearchQuery={setTaxon}
+        setValue={setTaxonId}
+        sources="taxa"
+        value={taxonId}
       />
-      <DropdownPlacePicker
-        location={location}
-        search={setLocation}
-        setPlaceId={setPlaceId}
-        placeId={placeId}
+      <DropdownPicker
+        searchQuery={location}
+        setSearchQuery={setLocation}
+        setValue={setPlaceId}
+        sources="places"
+        value={placeId}
       />
       <RoundGreenButton
         buttonText="EXPLORE ORGANISMS"

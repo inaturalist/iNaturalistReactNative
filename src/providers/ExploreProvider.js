@@ -4,7 +4,8 @@ import type { Node } from "react";
 import inatjs from "inaturalistjs";
 
 import { ExploreContext } from "./contexts";
-import { FIELDS, copyRealmSchema } from "./helpers";
+import { FIELDS } from "./helpers";
+import Observation from "../models/Observation";
 
 type Props = {
   children: any
@@ -40,7 +41,6 @@ const ExploreProvider = ( { children }: Props ): Node => {
           // TODO: note that there's a bug with place_id in API v2, so this is not working
           // as of Dec 20, 2021 with a place selected
           ...filters,
-          spam: false,
           verifiable: true,
           photos: true,
           fields: FIELDS
@@ -48,7 +48,7 @@ const ExploreProvider = ( { children }: Props ): Node => {
         const response = await inatjs.observations.search( params );
         const { results } = await response;
         if ( !isCurrent ) { return; }
-        setExploreList( results.map( obs => copyRealmSchema( obs ) ) );
+        setExploreList( results.map( obs => Observation.copyRealmSchema( obs ) ) );
         setLoadingExplore( false );
       } catch ( e ) {
         if ( !isCurrent ) { return; }

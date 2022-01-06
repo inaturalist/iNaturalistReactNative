@@ -2,13 +2,16 @@ import factory, { define } from "factoria";
 import "./RemotePhoto";
 import "./RemoteTaxon";
 import "./RemoteUser";
+import "./RemoteIdentification";
 
 export default define( "RemoteObservation", faker => ( {
   id: faker.datatype.number( ),
   uuid: faker.datatype.uuid( ),
   user: factory( "RemoteUser" ),
-  identifications: [],
-  observation_photos: [
+  identifications: [
+    factory( "RemoteIdentification" )
+  ],
+  observationPhotos: [
     factory( "RemoteObservationPhoto" )
   ],
   comments: [],
@@ -21,5 +24,6 @@ export default define( "RemoteObservation", faker => ( {
   time_observed_at: "2021-11-08T21:54:41-08:00",
   location: "1,1",
   place_guess: "blah",
-  quality_grade: "needs_id"
+  quality_grade: "needs_id",
+  description: faker.lorem.paragraph( )
 } ) );

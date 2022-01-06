@@ -1,8 +1,4 @@
 // @flow
-import Comment from "../models/Comment";
-import Identification from "../models/Identification";
-import ObservationPhoto from "../models/ObservationPhoto";
-import Taxon from "../models/Taxon";
 
 const USER_FIELDS = {
   icon_url: true,
@@ -13,7 +9,7 @@ const USER_FIELDS = {
 
 const TAXON_FIELDS = {
   default_photo: {
-    square_url: true
+    url: true
   },
   iconic_taxon_name: true,
   name: true,
@@ -57,7 +53,6 @@ const OBSERVATION_PHOTOS_FIELDS = {
 };
 
 const FIELDS = {
-  comments_count: true,
   comments: COMMENT_FIELDS,
   created_at: true,
   description: true,
@@ -74,36 +69,6 @@ const FIELDS = {
   user: USER_FIELDS
 };
 
-const copyRealmSchema = ( obs: Object ) => {
-  const createLinkedObjects = ( list, createFunction ) => {
-    if ( list.length === 0 ) { return; }
-    return list.map( item => {
-      return createFunction.mapApiToRealm( item );
-    } );
-  };
-
-  const taxon = Taxon.mapApiToRealm( obs.taxon );
-  const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
-  const comments = createLinkedObjects( obs.comments, Comment );
-  const identifications = createLinkedObjects( obs.identifications, Identification );
-
-  return {
-    uuid: obs.uuid,
-    comments: comments || [],
-    createdAt: obs.created_at,
-    description: obs.description,
-    identifications: identifications || [],
-    latitude: obs.geojson ? obs.geojson.coordinates[1] : null,
-    longitude: obs.geojson ? obs.geojson.coordinates[0] : null,
-    observationPhotos,
-    placeGuess: obs.place_guess,
-    qualityGrade: obs.quality_grade,
-    taxon,
-    timeObservedAt: obs.time_observed_at
-  };
-};
-
 export {
-  FIELDS,
-  copyRealmSchema
+  FIELDS
 };

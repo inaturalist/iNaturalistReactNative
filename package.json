@@ -11,6 +11,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@react-native-community/netinfo": "^7.1.7",
     "@react-native-picker/picker": "^2.2.1",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/elements": "^1.2.1",

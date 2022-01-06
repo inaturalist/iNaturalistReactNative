@@ -8,12 +8,11 @@ import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { pickerSelectStyles } from "../../styles/explore/exploreFilters";
 import { ExploreContext } from "../../providers/contexts";
-import DropdownProjectPicker from "./DropdownProjectPicker";
-import DropdownUserPicker from "./DropdownUserPicker";
+import DropdownPicker from "./DropdownPicker";
 
 const ExploreFilters = ( ): Node => {
-  const [projectQuery, setProjectQuery] = useState( "" );
-  const [userQuery, setUserQuery] = useState( "" );
+  const [project, setProject] = useState( "" );
+  const [user, setUser] = useState( "" );
   const { exploreFilters, setExploreFilters } = useContext( ExploreContext );
 
   const setProjectId = ( getValue ) => {
@@ -63,23 +62,22 @@ const ExploreFilters = ( ): Node => {
     <ViewWithFooter>
       <Text>FILTER BY</Text>
       <Text>user</Text>
-      {/* TODO: user autocomplete with value user_id */}
-      <DropdownUserPicker
-        searchTerm={userQuery}
-        search={setUserQuery}
-        setUserId={setUserId}
-        userId={userId}
+      <DropdownPicker
+        searchQuery={user}
+        setSearchQuery={setUser}
+        setValue={setUserId}
+        sources="users"
+        value={userId}
       />
       <Text>project</Text>
-      {/* TODO: project search with value project_id */}
-      <DropdownProjectPicker
-        searchTerm={projectQuery}
-        search={setProjectQuery}
-        setProjectId={setProjectId}
-        projectId={projectId}
+      <DropdownPicker
+        searchQuery={project}
+        setSearchQuery={setProject}
+        setValue={setProjectId}
+        sources="projects"
+        value={projectId}
       />
       <Text>quality grade</Text>
-      {/* TODO: value quality_grade, with research or needs_id options */}
       <RNPickerSelect
         onValueChange={( itemValue ) =>
           setExploreFilters( {

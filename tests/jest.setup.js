@@ -1,4 +1,5 @@
 import "react-native-gesture-handler/jestSetup";
+import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js";
 
 // this resolves error with importing file after Jest environment is torn down
 // https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
@@ -42,3 +43,5 @@ jest.mock( "react-native-geolocation-service", ( ) => {
     getCurrentPosition: ( ) => jest.fn( )
   };
 } );
+
+jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );

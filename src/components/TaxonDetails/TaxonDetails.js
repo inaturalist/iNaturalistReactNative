@@ -8,14 +8,14 @@ import { useRoute } from "@react-navigation/native";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import { viewStyles, textStyles } from "../../styles/taxonDetails";
-import { useFetchTaxonDetails } from "./hooks/fetchTaxonDetails";
+import { useTaxonDetails } from "./hooks/useTaxonDetails";
 import { ScrollView } from "react-native-gesture-handler";
 
 const TaxonDetails = ( ): React.Node => {
   const { params } = useRoute( );
   const { id } = params;
-  const { taxon, loading } = useFetchTaxonDetails( id );
-  // const similarSpecies = useFetchSimilarSpecies( id );
+  const { taxon, loading } = useTaxonDetails( id );
+  // const similarSpecies = useSimilarSpecies( id );
   const { width } = useWindowDimensions( );
 
   const displayTaxonomyList = React.useMemo( ( ) => {
