@@ -5,7 +5,7 @@ import { FlatList, Pressable, Text, Image, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import useFetchSearchResults from "../../sharedHooks/fetchSearchResults";
+import useFetchSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import InputField from "../SharedComponents/InputField";
 import { viewStyles, imageStyles } from "../../styles/search/search";
 
@@ -27,8 +27,9 @@ const Search = ( ): React.Node => {
         <Pressable
           onPress={navToTaxonDetails}
           style={viewStyles.row}
+          testID={`Search.${item.id}`}
         >
-          <Image source={imageUrl} style={imageStyles.squareImage} />
+          <Image source={imageUrl} style={imageStyles.squareImage} testID={`Search.${item.id}.photo`} />
           <Text>{`${item.preferred_common_name} (${item.rank} ${item.name})`}</Text>
         </Pressable>
       );

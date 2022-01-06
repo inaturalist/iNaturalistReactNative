@@ -7,7 +7,7 @@ import type { Node } from "react";
 // this is a placeholder to get functionality working
 import DropDownPicker from "react-native-dropdown-picker";
 
-import useFetchSearchResults from "../../sharedHooks/fetchSearchResults";
+import useFetchSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import { viewStyles } from "../../styles/explore/explore";
 
 type Props = {
