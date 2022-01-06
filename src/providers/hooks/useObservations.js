@@ -37,7 +37,7 @@ const useObservations = ( ): boolean => {
     return closeRealm;
   }, [openRealm, closeRealm] );
 
-const writeToDatabase = useCallback( ( results ) => {
+  const writeToDatabase = useCallback( ( results ) => {
     if ( results.length === 0 ) { return; }
     const realm = realmRef.current;
     results.forEach( obs => {
@@ -64,7 +64,7 @@ const writeToDatabase = useCallback( ( results ) => {
       } );
     } );
     setLoading( false );
-}, [] );
+  }, [] );
 
   useEffect( ( ) => {
     let isCurrent = true;
@@ -85,6 +85,7 @@ const writeToDatabase = useCallback( ( results ) => {
         setLoading( false );
         if ( !isCurrent ) { return; }
         console.log( "Couldn't fetch observations:", e.message, );
+        console.trace( e );
       }
     };
 

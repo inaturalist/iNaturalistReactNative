@@ -14,8 +14,6 @@ import ObservationProvider from "../../src/providers/ObservationProvider";
 jest.mock( "inaturalistjs" );
 import inatjs from "inaturalistjs";
 
-jest.mock( "../../src/providers/hooks/useObservations" );
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {

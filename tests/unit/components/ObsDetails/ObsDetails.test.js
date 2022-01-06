@@ -5,10 +5,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import factory from "../../../factory";
 import ObsDetails from "../../../../src/components/ObsDetails/ObsDetails";
 
-const observations = [factory( "RemoteObservation" )];
-
 const mockedNavigate = jest.fn( );
-const mockObservation = observations[0];
+const mockObservation = factory( "LocalObservation" );
 
 jest.mock( "../../../../src/components/ObsDetails/hooks/useObservation", ( ) => ( {
   useObservation: ( ) => {
@@ -41,7 +39,9 @@ test( "renders obs details from remote call", ( ) => {
   const { getByTestId, getByText } = renderObsDetails( );
 
   expect( getByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
-  expect( getByTestId( "PhotoScroll.photo" ).props.source ).toStrictEqual( { "uri": mockObservation.observationPhotos[0].photo.url } );
+  expect(
+    getByTestId( "PhotoScroll.photo" ).props.source
+  ).toStrictEqual( { "uri": mockObservation.observationPhotos[0].photo.url } );
   expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
   // TODO: figure out how to test elements which are mapped to camelCase via Observation model
   // right now, these elements are not rendering in renderObsDetails( ).debug( ) at all
@@ -65,23 +65,17 @@ test( "navigates to observer profile on button press", ( ) => {
 
 test( "navigates to identifier profile on button press", ( ) => {
   const { getByTestId } = renderObsDetails( );
-
-  const obs = observations[0];
-
-  fireEvent.press( getByTestId( `ObsDetails.identifier.${obs.identifications[0].user.id}` ) );
+  fireEvent.press( getByTestId( `ObsDetails.identifier.${mockObservation.identifications[0].user.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", {
-    userId: obs.identifications[0].user.id
+    userId: mockObservation.identifications[0].user.id
   } );
 } );
 
 test( "navigates to taxon details on button press", ( ) => {
   const { getByTestId } = renderObsDetails( );
-
-  const obs = observations[0];
-
-  fireEvent.press( getByTestId( `ObsDetails.taxon.${obs.taxon.id}` ) );
+  fireEvent.press( getByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
-    id: obs.taxon.id
+    id: mockObservation.taxon.id
   } );
 } );
 
