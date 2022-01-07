@@ -5,19 +5,19 @@ import Taxon from "./Taxon";
 import User from "./User";
 
 class Observation {
-  static copyRealmSchema( obs ) {
+  static mimicRealmMappedPropertiesSchema( obs ) {
     const createLinkedObjects = ( list, createFunction ) => {
       if ( list.length === 0 ) { return; }
       return list.map( item => {
         if ( createFunction === Identification ) {
           // this one requires special treatment for appending taxon objects
-          return createFunction.copyRealmSchema( item );
+          return createFunction.mimicRealmMappedPropertiesSchema( item );
         }
         return createFunction.mapApiToRealm( item );
       } );
     };
 
-    const taxon = Taxon.copyRealmSchema( obs.taxon );
+    const taxon = Taxon.mimicRealmMappedPropertiesSchema( obs.taxon );
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );

@@ -1,6 +1,6 @@
 import Photo from "./Photo";
 class Taxon {
-  static copyRealmSchema( taxon ) {
+  static mimicRealmMappedPropertiesSchema( taxon ) {
     return {
       ...taxon,
       default_photo: Photo.mapApiToRealm( taxon.default_photo ),

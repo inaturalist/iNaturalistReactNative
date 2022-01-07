@@ -48,7 +48,7 @@ const ExploreProvider = ( { children }: Props ): Node => {
         const response = await inatjs.observations.search( params );
         const { results } = await response;
         if ( !isCurrent ) { return; }
-        setExploreList( results.map( obs => Observation.copyRealmSchema( obs ) ) );
+        setExploreList( results.map( obs => Observation.mimicRealmMappedPropertiesSchema( obs ) ) );
         setLoadingExplore( false );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
