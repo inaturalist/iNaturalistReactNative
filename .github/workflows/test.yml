@@ -16,10 +16,9 @@ jobs:
   #       with:
   #         github_token: ${{ github.token }}
   #         cancel_others: true
-
   test:
     name: Run Tests
-    needs: pre_build
+    # needs: pre_build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
