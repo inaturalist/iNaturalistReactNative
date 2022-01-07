@@ -18,6 +18,7 @@ const Footer = ( ): React.Node => {
   const toggleSideMenu = ( ) => navigation.openDrawer( );
   const navToObsList = ( ) => navigation.navigate( "my observations" );
   const navToCameraOptions = ( ) => openModal( );
+  const navToExplore = ( ) => navigation.navigate( "explore stack" );
 
   return (
     <>
@@ -30,7 +31,7 @@ const Footer = ( ): React.Node => {
         <Pressable onPress={toggleSideMenu} accessibilityRole="link">
           <Text>menu</Text>
         </Pressable>
-        <Pressable accessibilityRole="link">
+        <Pressable  onPress={navToExplore} accessibilityRole="link">
           <Text>explore</Text>
         </Pressable>
         <Pressable onPress={navToCameraOptions} accessibilityRole="link">

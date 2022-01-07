@@ -2,9 +2,7 @@ import User from "./User";
 class Comment {
   static mapApiToRealm( comment, realm ) {
     return {
-      body: comment.body,
-      createdAt: comment.created_at,
-      id: comment.id,
+      ...comment,
       user: User.mapApiToRealm( comment.user, realm )
     };
   }
@@ -13,7 +11,7 @@ class Comment {
     name: "Comment",
     properties: {
       body: "string?",
-      createdAt: "string?",
+      created_at: { type: "string?", mapTo: "createdAt" },
       id: "int?",
       user: "User?",
       // this creates an inverse relationship so comments

@@ -1,21 +1,20 @@
 class User {
   static mapApiToRealm( user, realm ) {
-    const existingUser = realm.objectForPrimaryKey( "User", user.id );
+    const existingUser = realm && realm.objectForPrimaryKey( "User", user.id );
     if ( existingUser ) { return existingUser; }
-    return {
-      id: user.id,
-      iconUrl: user.icon_url,
-      login: user.login,
-      name: user.name
-    };
+    return user;
   }
+
+  static uri = user => ( user && user.icon_url ) && { uri: user.icon_url };
+
+  static userHandle = user => ( user && user.login ) && `@${user.login}`;
 
   static schema = {
     name: "User",
     primaryKey: "id",
     properties: {
       id: "int",
-      iconUrl: "string?",
+      icon_url: { type: "string?", mapTo: "iconUrl" },
       login: "string?",
       name: "string?"
     }

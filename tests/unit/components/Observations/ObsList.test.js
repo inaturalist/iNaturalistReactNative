@@ -7,9 +7,23 @@ import ObservationProvider from "../../../../src/providers/ObservationProvider";
 import { ObservationContext } from "../../../../src/providers/contexts";
 
 // Mock the hooks we use on ObsList since we're not trying to test them here
-jest.mock( "../../../../src/components/Observations/hooks/fetchObservations" );
+jest.mock( "../../../../src/providers/hooks/useObservations" );
 
 jest.mock( "../../../../src/providers/ObservationProvider" );
+
+const mockExpected = factory( "LocalObservation" );
+
+jest.mock( "@react-navigation/native", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useRoute: ( ) => ( {
+      params: {
+        id: mockExpected.uuid
+      }
+    } )
+  };
+} );
 
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
