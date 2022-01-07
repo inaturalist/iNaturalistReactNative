@@ -9,6 +9,7 @@ on:
 jobs:
   pre_build:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: fkirc/skip-duplicate-actions@master
         with:
