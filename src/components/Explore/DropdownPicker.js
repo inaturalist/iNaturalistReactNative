@@ -8,7 +8,7 @@ import { Image } from "react-native";
 // this is a placeholder to get functionality working
 import DropDownPicker from "react-native-dropdown-picker";
 
-import useRemoteSearchResults from "./hooks/useRemoteSearchResults";
+import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import { imageStyles, viewStyles } from "../../styles/explore/explore";
 
 type Props = {

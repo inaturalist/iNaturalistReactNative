@@ -85,7 +85,6 @@ const useObservations = ( ): boolean => {
         setLoading( false );
         if ( !isCurrent ) { return; }
         console.log( "Couldn't fetch observations:", e.message, );
-        console.trace( e );
       }
     };
 

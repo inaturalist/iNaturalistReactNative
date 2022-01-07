@@ -65,6 +65,7 @@ test( "navigates to observer profile on button press", ( ) => {
 
 test( "navigates to identifier profile on button press", ( ) => {
   const { getByTestId } = renderObsDetails( );
+
   fireEvent.press( getByTestId( `ObsDetails.identifier.${mockObservation.identifications[0].user.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", {
     userId: mockObservation.identifications[0].user.id
@@ -73,6 +74,7 @@ test( "navigates to identifier profile on button press", ( ) => {
 
 test( "navigates to taxon details on button press", ( ) => {
   const { getByTestId } = renderObsDetails( );
+
   fireEvent.press( getByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
     id: mockObservation.taxon.id
