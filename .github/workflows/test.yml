@@ -10,7 +10,7 @@ jobs:
   pre_build:
     runs-on: ubuntu-latest
     steps:
-      - uses: fkirc/skip-duplicate-actions@master
+      - uses: kueda/skip-duplicate-actions@headless-runs
         with:
           github_token: ${{ github.token }}
           cancel_others: true
