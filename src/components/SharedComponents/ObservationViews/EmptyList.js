@@ -4,7 +4,7 @@ import React from "react";
 import { Pressable, Text, View } from "react-native";
 import type { Node } from "react";
 
-import { viewStyles, textStyles } from "../../styles/observations/obsCard";
+import { viewStyles, textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 
 const EmptyList = ( ): Node => {
   const handlePress = ( ) => console.log( "navigate to learn more" );

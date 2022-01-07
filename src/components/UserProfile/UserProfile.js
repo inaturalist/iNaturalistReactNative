@@ -7,13 +7,13 @@ import { useRoute } from "@react-navigation/native";
 import { viewStyles } from "../../styles/userProfile/userProfile";
 import UserIcon from "../SharedComponents/UserIcon";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-
-import { useFetchUser } from "./hooks/fetchUser";
+import { useUser } from "./hooks/useUser";
+import User from "../../models/User";
 
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
   const { userId } = params;
-  const user = useFetchUser( userId );
+  const user = useUser( userId );
   // last active date
   // bio
   // following
@@ -21,9 +21,9 @@ const UserProfile = ( ): React.Node => {
   if ( !user ) { return null; }
   return (
     <ViewWithFooter>
-      <Text>{`@${user.login}`}</Text>
+      <Text>{User.userHandle( user )}</Text>
       <View style={viewStyles.row} testID={`UserProfile.${userId}`}>
-        <UserIcon uri={user.icon_url} large />
+        <UserIcon uri={User.uri( user )} large />
         <View>
           <Text>{user.name}</Text>
           <Text>{`iNaturalist ${user.roles[0]}`}</Text>

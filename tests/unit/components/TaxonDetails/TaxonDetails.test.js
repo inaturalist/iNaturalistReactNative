@@ -11,14 +11,14 @@ const testTaxon = factory( "RemoteTaxon" );
 // TODO: is this really the best way to mock hooks? based on this answer in Stack Overflow:
 // https://stackoverflow.com/questions/60270013/how-to-mock-react-custom-hook-returned-value
 const mockExpected = testTaxon;
-jest.mock( "../../../../src/components/TaxonDetails/hooks/fetchTaxonDetails", ( ) => ( {
-  useFetchTaxonDetails: ( ) => {
+jest.mock( "../../../../src/components/TaxonDetails/hooks/useTaxonDetails", ( ) => ( {
+  useTaxonDetails: ( ) => {
     return {
       taxon: mockExpected,
       loading: false
     };
   },
-  useFetchSimilarSpecies: ( ) => {
+  useSimilarSpecies: ( ) => {
     return {
       similarSpecies: []
     };

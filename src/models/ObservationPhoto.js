@@ -3,10 +3,8 @@ import Photo from "./Photo";
 class ObservationPhoto {
   static mapApiToRealm( observationPhoto ) {
     return {
-      id: observationPhoto.id,
-      position: observationPhoto.position,
-      photo: Photo.mapApiToRealm( observationPhoto.photo ),
-      uuid: observationPhoto.uuid
+      ...observationPhoto,
+      photo: Photo.mapApiToRealm( observationPhoto.photo )
     };
   }
 

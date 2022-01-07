@@ -21,9 +21,9 @@ const showBackButton = ( { navigation } ) => ( {
   headerLeft: ( ) => <HeaderBackButton onPress={( ) => navigation.goBack( )} />
 } );
 
-const App = ( ): React.Node => (
-  // TODO: decide whether ObservationProvider needs to wrap both ObsList and ObsDetail
-  // or whether we should simply pass the uuid through navigation params
+const MyObservationsStackNavigation = ( ): React.Node => (
+  // ObservationProvider needs to wrap the whole navigator, because a navigator can't have a
+  // provider as its child
   <ObservationProvider>
     <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen
@@ -52,4 +52,4 @@ const App = ( ): React.Node => (
   </ObservationProvider>
 );
 
-export default App;
+export default MyObservationsStackNavigation;

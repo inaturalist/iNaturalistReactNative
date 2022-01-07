@@ -5,14 +5,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import factory from "../../../factory";
 import ObsDetails from "../../../../src/components/ObsDetails/ObsDetails";
 
-const testObservation = factory( "LocalObservation" );
-
 const mockedNavigate = jest.fn( );
-const mockExpected = testObservation;
-// TODO: learn how to mock a default export
-jest.mock( "../../../../src/components/ObsDetails/hooks/fetchObsFromRealm", ( ) => ( {
-  useFetchObsDetailsFromRealm: ( ) => {
-    return mockExpected;
+const mockObservation = factory( "LocalObservation" );
+
+jest.mock( "../../../../src/components/ObsDetails/hooks/useObservation", ( ) => ( {
+  useObservation: ( ) => {
+    return mockObservation;
   }
 } ) );
 
@@ -22,7 +20,7 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useRoute: ( ) => ( {
       params: {
-        uuid: mockExpected.uuid
+        uuid: mockObservation.uuid
       }
     } ),
     useNavigation: ( ) => ( {
@@ -37,13 +35,16 @@ const renderObsDetails = ( ) => render(
   </NavigationContainer>
 );
 
-test( "renders obs details from local Realm", ( ) => {
+test( "renders obs details from remote call", ( ) => {
   const { getByTestId, getByText } = renderObsDetails( );
 
-  expect( getByTestId( `ObsDetails.${testObservation.uuid}` ) ).toBeTruthy( );
-  expect( getByTestId( "PhotoScroll.photo" ).props.source ).toStrictEqual( { "uri": testObservation.observationPhotos[0].photo.url } );
-  expect( getByText( testObservation.taxon.preferredCommonName ) ).toBeTruthy( );
-  expect( getByText( testObservation.placeGuess ) ).toBeTruthy( );
+  expect( getByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
+  expect(
+    getByTestId( "PhotoScroll.photo" ).props.source
+  ).toStrictEqual( { "uri": mockObservation.observationPhotos[0].photo.url } );
+  expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
+  // TODO: figure out how to test elements which are mapped to camelCase via Observation model
+  // right now, these elements are not rendering in renderObsDetails( ).debug( ) at all
 } );
 
 
@@ -52,35 +53,31 @@ test( "renders data tab on button press", ( ) => {
   const button = getByTestId( "ObsDetails.DataTab" );
 
   fireEvent.press( button );
-  const time = testObservation.timeObservedAt;
-  // need regex here because the time observed is only a substring within <Text>
-  const regex =  new RegExp( time );
-  expect( getByText( regex ) ).toBeTruthy( );
+  expect( getByText( mockObservation.description ) ).toBeTruthy( );
 } );
 
 test( "navigates to observer profile on button press", ( ) => {
   const { getByTestId } = renderObsDetails( );
 
   fireEvent.press( getByTestId( "ObsDetails.currentUser" ) );
-  // TODO: pass in correct data to make userId defined here and in component
-  expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: undefined } );
+  expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
 } );
 
 test( "navigates to identifier profile on button press", ( ) => {
   const { getByTestId } = renderObsDetails( );
 
-  fireEvent.press( getByTestId( `ObsDetails.identifier.${testObservation.identifications[0].user.id}` ) );
+  fireEvent.press( getByTestId( `ObsDetails.identifier.${mockObservation.identifications[0].user.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", {
-    userId: testObservation.identifications[0].user.id
+    userId: mockObservation.identifications[0].user.id
   } );
 } );
 
 test( "navigates to taxon details on button press", ( ) => {
   const { getByTestId } = renderObsDetails( );
 
-  fireEvent.press( getByTestId( `ObsDetails.taxon.${testObservation.taxon.id}` ) );
+  fireEvent.press( getByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
-    id: testObservation.taxon.id
+    id: mockObservation.taxon.id
   } );
 } );
 

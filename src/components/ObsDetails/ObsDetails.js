@@ -8,11 +8,13 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { viewStyles, textStyles } from "../../styles/obsDetails";
-import { useFetchObsDetailsFromRealm } from "./hooks/fetchObsFromRealm";
 import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import DataTab from "./DataTab";
+import { useObservation } from "./hooks/useObservation";
+import Taxon from "../../models/Taxon";
+import User from "../../models/User";
 
 const ObsDetails = ( ): Node => {
   const { params } = useRoute( );
@@ -20,36 +22,34 @@ const ObsDetails = ( ): Node => {
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  const observation = useFetchObsDetailsFromRealm( uuid );
-
-  const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
-  const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
-
-  const ids = observation && observation.identifications;
-  const photos = observation && observation.observationPhotos;
+  const observation = useObservation( uuid );
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
 
   if ( !observation ) { return null; }
 
+
+  const ids = observation.identifications;
+  const photos = observation.observationPhotos;
+  const user = observation.user;
   const taxon = observation.taxon;
+
+  const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
+  const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 
   return (
     <ViewWithFooter>
       <ScrollView testID={`ObsDetails.${uuid}`} contentContainerStyle={viewStyles.scrollView}>
       <View style={viewStyles.userProfileRow}>
-        {/* TODO: add user id to this handle press event */}
         <Pressable
           style={viewStyles.userProfileRow}
-          onPress={navToUserProfile}
+          onPress={( ) => navToUserProfile( user.id )}
           testID="ObsDetails.currentUser"
           accessibilityRole="link"
         >
-          {/* TODO: fill user icon in with saved current user icon or icon from another user API call */}
-          <UserIcon uri={null} />
-          {/* TODO: fill in text with saved current user login or login from another user API call */}
-          <Text>@currentUser</Text>
+          <UserIcon uri={User.uri( user )} />
+          <Text>{User.userHandle( user )}</Text>
         </Pressable>
         <Text>{observation.createdAt}</Text>
       </View>
@@ -57,7 +57,7 @@ const ObsDetails = ( ): Node => {
         <PhotoScroll photos={photos} />
       </View>
       <View style={viewStyles.row}>
-        <Image source={{ uri: taxon.defaultPhotoSquareUrl }} style={viewStyles.imageBackground} />
+        <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />
         <Pressable
           style={viewStyles.obsDetailsColumn}
           onPress={navToTaxonDetails}
