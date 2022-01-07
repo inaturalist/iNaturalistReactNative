@@ -7,14 +7,15 @@ on:
   push:
 
 jobs:
-  pre_build:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - uses: fkirc/skip-duplicate-actions@master
-        with:
-          github_token: ${{ github.token }}
-          cancel_others: true
+  # Seemed to stop working on 20220106, see https://github.com/fkirc/skip-duplicate-actions/issues/127
+  # pre_build:
+  #   runs-on: ubuntu-latest
+  #   continue-on-error: true
+  #   steps:
+  #     - uses: fkirc/skip-duplicate-actions@master
+  #       with:
+  #         github_token: ${{ github.token }}
+  #         cancel_others: true
 
   test:
     name: Run Tests
