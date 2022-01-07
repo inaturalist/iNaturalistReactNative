@@ -11,7 +11,7 @@ export default define( "RemoteObservation", faker => ( {
   identifications: [
     factory( "RemoteIdentification" )
   ],
-  observationPhotos: [
+  observation_photos: [
     factory( "RemoteObservationPhoto" )
   ],
   comments: [],
