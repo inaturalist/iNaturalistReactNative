@@ -8,26 +8,26 @@ const FIELDS = {
   icon: true
 };
 
-const useProjects = ( apiParams: Object ): Array<Object> => {
-  const [projects, setProjects] = useState( [] );
+const useProjectDetails = ( id: number ): Array<Object> => {
+  const [projectDetails, setProjectDetails] = useState( [] );
 
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchProjects = async ( ) => {
       try {
         const params = {
-          per_page: 10,
-          ...apiParams
-          // features: true
+          per_page: 1,
+          id
           // fields: FIELDS
         };
         const response = await inatjs.projects.fetch( [], params );
         const { results } = response;
+        console.log( results, "results" );
         if ( !isCurrent ) { return; }
-        setProjects( results );
+        setProjectDetails( results );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch projects:", e.message, );
+        console.log( `Couldn't fetch project details for project_id ${id}:`, e.message, );
       }
     };
 
@@ -35,9 +35,9 @@ const useProjects = ( apiParams: Object ): Array<Object> => {
     return ( ) => {
       isCurrent = false;
     };
-  }, [apiParams] );
+  }, [id] );
 
-  return projects;
+  return projectDetails;
 };
 
-export default useProjects;
+export default useProjectDetails;

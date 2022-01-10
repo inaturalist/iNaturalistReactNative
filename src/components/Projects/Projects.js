@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { FlatList, Pressable, Text, Image, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import InputField from "../SharedComponents/InputField";
@@ -14,15 +15,16 @@ const Projects = ( ): React.Node => {
   const [q, setQ] = React.useState( "" );
   const [apiParams, setApiParams] = React.useState( { } );
 
+  const navigation = useNavigation( );
+
   const projectSearchResults = useRemoteSearchResults( q, "projects" );
 
   const latLng = useUserLocation( );
 
   const projects = useProjects( apiParams );
-  console.log( projects, "featured projects" );
 
   const renderProjectSearchResults = ( { item } ) => {
-    const navToProjectDetails = ( ) => console.log( "nav to project details" );
+    const navToProjectDetails = ( ) => navigation.navigate( "ProjectDetails", { id: item.id } );
     return (
       <Pressable
         onPress={navToProjectDetails}
@@ -38,7 +40,7 @@ const Projects = ( ): React.Node => {
   const clearSearch = ( ) => setQ( "" );
 
   const renderProjectResults = ( { item } ) => {
-    const navToProjectDetails = ( ) => console.log( "nav to project details" );
+    const navToProjectDetails = ( ) => navigation.navigate( "ProjectDetails", { id: item.id } );
     return (
       <Pressable
         onPress={navToProjectDetails}
