@@ -8,6 +8,7 @@ import PlaceholderComponent from "../components/PlaceholderComponent";
 import MyObservationsStackNavigator from "./myObservationsStackNavigation";
 import ExploreStackNavigator from "./exploreStackNavigation";
 import Search from "../components/Search/Search";
+import Projects from "../components/Projects/Projects";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -36,7 +37,7 @@ const App = ( ): React.Node => (
       <Drawer.Screen name="identify" component={PlaceholderComponent} />
       <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
       <Drawer.Screen name="impact" component={PlaceholderComponent} />
-      <Drawer.Screen name="projects" component={PlaceholderComponent} />
+      <Drawer.Screen name="projects" component={Projects} />
       <Drawer.Screen name="guides" component={PlaceholderComponent} />
       <Drawer.Screen name="about" component={PlaceholderComponent} />
       <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />

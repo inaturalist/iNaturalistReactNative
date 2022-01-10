@@ -5,7 +5,7 @@ import { FlatList, Pressable, Text, Image, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import useFetchSearchResults from "../../sharedHooks/useRemoteSearchResults";
+import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import InputField from "../SharedComponents/InputField";
 import { viewStyles, imageStyles } from "../../styles/search/search";
 
@@ -14,7 +14,7 @@ const Search = ( ): React.Node => {
   const [q, setQ] = React.useState( "" );
   const [queryType, setQueryType] = React.useState( "taxa" );
   // choose users or taxa
-  const list = useFetchSearchResults( q, queryType );
+  const list = useRemoteSearchResults( q, queryType );
 
   const renderItem = ( { item } ) => {
     // TODO: make sure TaxonDetails navigates back to Search
