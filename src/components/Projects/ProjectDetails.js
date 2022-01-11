@@ -1,20 +1,18 @@
 // @flow
 
 import * as React from "react";
-import { Text } from "react-native";
+import { Text, ScrollView } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/projects/projectDetails";
 import useProjectDetails from "./hooks/useProjectDetails";
-import { ScrollView } from "react-native-gesture-handler";
 
-const TaxonDetails = ( ): React.Node => {
+const ProjectDetails = ( ): React.Node => {
   const { params } = useRoute( );
   const { id } = params;
   console.log( id, "id in project details" );
   const project = useProjectDetails( id );
-  // const similarSpecies = useSimilarSpecies( id );
 
   return (
     <ViewWithFooter>
@@ -28,5 +26,5 @@ const TaxonDetails = ( ): React.Node => {
   );
 };
 
-export default TaxonDetails;
+export default ProjectDetails;
 

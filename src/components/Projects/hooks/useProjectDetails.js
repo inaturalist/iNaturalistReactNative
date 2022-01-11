@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
 
-const FIELDS = {
-  title: true,
-  icon: true
-};
+// const FIELDS = {
+//   title: true,
+//   icon: true
+// };
 
 const useProjectDetails = ( id: number ): Array<Object> => {
   const [projectDetails, setProjectDetails] = useState( [] );

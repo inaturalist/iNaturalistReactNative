@@ -9,7 +9,8 @@ type Props = {
   handleTextChange: Function,
   placeholder: string,
   text: string,
-  type: string
+  type: string,
+  testID?: string
 }
 
 // same code as Seek:
@@ -18,7 +19,8 @@ const InputField = ( {
   handleTextChange,
   placeholder,
   text,
-  type
+  type,
+  testID
 }: Props ): React.Node => {
   let keyboardType = "default";
 
@@ -49,7 +51,7 @@ const InputField = ( {
       style={textStyles.inputField}
       textContentType={type} // iOS only
       value={text}
-      testID={type}
+      testID={testID}
     />
   );
 };
