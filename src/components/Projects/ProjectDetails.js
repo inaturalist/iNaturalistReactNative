@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { Text, ScrollView, Image, ImageBackground } from "react-native";
+import { Text, Image, ImageBackground } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -16,11 +16,19 @@ const ProjectDetails = ( ): React.Node => {
 
   return (
     <ViewWithFooter>
-        <ImageBackground source={{ uri: project.header_image_url }} style={imageStyles.headerImage}>
-          <Image source={{ uri: project.icon }} style={imageStyles.icon} />
+        <ImageBackground
+          source={{ uri: project.header_image_url }}
+          style={imageStyles.headerImage}
+          testID="ProjectDetails.headerImage"
+        >
+          <Image
+            source={{ uri: project.icon }}
+            style={imageStyles.icon}
+            testID="ProjectDetails.projectIcon"
+          />
         </ImageBackground>
-        <Text style={textStyles.descriptionText}>Title: {project.title}</Text>
-        <Text style={textStyles.descriptionText}>Description: {project.description}</Text>
+        <Text style={textStyles.descriptionText}>{project.title}</Text>
+        <Text style={textStyles.descriptionText}>{project.description}</Text>
         {/* TODO: support joining or leaving projects once oauth is set up */}
         <ProjectObservations id={id} />
     </ViewWithFooter>
