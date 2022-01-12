@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
 
-// const FIELDS = {
-//   title: true,
-//   icon: true
-// };
+const FIELDS = {
+  title: true,
+  icon: true
+};
 
 const useProjects = ( apiParams: Object ): Array<Object> => {
   const [projects, setProjects] = useState( [] );
@@ -17,9 +17,8 @@ const useProjects = ( apiParams: Object ): Array<Object> => {
       try {
         const params = {
           per_page: 10,
-          ...apiParams
-          // features: true
-          // fields: FIELDS
+          ...apiParams,
+          fields: FIELDS
         };
         const response = await inatjs.projects.fetch( [], params );
         const { results } = response;
