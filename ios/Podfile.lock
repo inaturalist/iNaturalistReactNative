@@ -274,11 +274,15 @@ PODS:
     - React-jsi (= 0.65.1)
     - React-perflogger (= 0.65.1)
   - React-jsinspector (0.65.1)
+  - react-native-cameraroll (4.1.2):
+    - React-Core
   - react-native-geolocation-service (5.3.0-beta.4):
     - React
   - react-native-maps (0.29.3):
     - React-Core
   - react-native-netinfo (7.1.7):
+    - React-Core
+  - react-native-pager-view (5.4.9):
     - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
@@ -431,9 +435,11 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -507,12 +513,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-cameraroll:
+    :path: "../node_modules/@react-native-community/cameraroll"
   react-native-geolocation-service:
     :path: "../node_modules/react-native-geolocation-service"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-pager-view:
+    :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-perflogger:
@@ -586,9 +596,11 @@ SPEC CHECKSUMS:
   React-jsi: 12913c841713a15f64eabf5c9ad98592c0ec5940
   React-jsiexecutor: 43f2542aed3c26e42175b339f8d37fe3dd683765
   React-jsinspector: 41e58e5b8e3e0bf061fdf725b03f2144014a8fb0
+  react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
   react-native-geolocation-service: c0efb872258ed9240f1003a70fca9e9757e5c785
   react-native-maps: 41d01d8e0afcebe32bec9eea3bd945adc1b18f7a
   react-native-netinfo: 27f287f2d191693f3b9d01a4273137fcf91c3b5d
+  react-native-pager-view: 3ee7d4c7697fb3ef788346e834a60cca97ed8540
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   React-perflogger: fd28ee1f2b5b150b00043f0301d96bd417fdc339
   React-RCTActionSheet: 7f3fa0855c346aa5d7c60f9ced16e067db6d29fa
