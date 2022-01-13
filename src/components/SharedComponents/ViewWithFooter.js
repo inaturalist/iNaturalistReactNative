@@ -7,11 +7,12 @@ import viewStyles from "../../styles/sharedComponents/viewWithFooter";
 import Footer from "./Footer";
 
 type Props = {
-  children: React.Node
+  children: React.Node,
+  testID?: string
 }
 
-const ViewWithFooter = ( { children }: Props ): React.Node => (
-  <SafeAreaView style={viewStyles.safeAreaContainer}>
+const ViewWithFooter = ( { children, testID }: Props ): React.Node => (
+  <SafeAreaView style={viewStyles.safeAreaContainer} testID={testID}>
     <StatusBar barStyle="dark-content" />
     {children}
     <Footer />

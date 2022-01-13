@@ -1,7 +1,7 @@
 import User from "./User";
 import Taxon from "./Taxon";
 class Identification {
-  static copyRealmSchema( id ) {
+  static mimicRealmMappedPropertiesSchema( id ) {
     return {
       ...id,
       createdAt: id.created_at,

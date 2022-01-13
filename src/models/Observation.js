@@ -5,19 +5,19 @@ import Taxon from "./Taxon";
 import User from "./User";
 
 class Observation {
-  static copyRealmSchema( obs ) {
+  static mimicRealmMappedPropertiesSchema( obs ) {
     const createLinkedObjects = ( list, createFunction ) => {
       if ( list.length === 0 ) { return; }
       return list.map( item => {
         if ( createFunction === Identification ) {
           // this one requires special treatment for appending taxon objects
-          return createFunction.copyRealmSchema( item );
+          return createFunction.mimicRealmMappedPropertiesSchema( item );
         }
         return createFunction.mapApiToRealm( item );
       } );
     };
 
-    const taxon = Taxon.copyRealmSchema( obs.taxon );
+    const taxon = Taxon.mimicRealmMappedPropertiesSchema( obs.taxon );
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );
@@ -69,7 +69,18 @@ class Observation {
     return newObs;
   }
 
+  // TODO: swap this and realm schema to use observation_photos everywhere, if possible
+  // so there's no need for projectUri
   static uri = obs => ( obs && obs.observationPhotos ) && { uri: obs.observationPhotos[0].photo.url };
+
+  static projectUri = obs => {
+    const photo = obs.observation_photos[0];
+    if ( !photo ) { return; }
+    if ( !photo.photo ) { return; }
+    if ( !photo.photo.url ) { return; }
+
+    return { uri: obs.observation_photos[0].photo.url };
+  }
 
   static schema = {
     name: "Observation",

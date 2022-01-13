@@ -53,7 +53,7 @@ const useObservation = ( uuid: string ): Object => {
         };
         const response = await inatjs.observations.fetch( uuid, params );
         const results = response.results;
-        const obs = Observation.copyRealmSchema( results[0] );
+        const obs = Observation.mimicRealmMappedPropertiesSchema( results[0] );
         if ( !isCurrent ) { return; }
         setObservation( obs );
       } catch ( e ) {

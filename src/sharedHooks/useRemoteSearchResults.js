@@ -32,6 +32,8 @@ const useRemoteSearchResults = ( q: string, sources: string ): Array<Object> => 
       }
     };
 
+    // don't bother to fetch search results if there isn't a query
+    if ( q === "" ) { return; }
     fetchSearchResults( );
     return ( ) => {
       isCurrent = false;
