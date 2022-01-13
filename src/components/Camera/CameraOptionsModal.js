@@ -9,7 +9,10 @@ import { textStyles } from "../../styles/sharedComponents/modal";
 const CameraOptionsModal = ( ): React.Node => {
   const navigation = useNavigation( );
 
-  const navToPhotoGallery = ( ) => navigation.navigate( "PhotoGallery" );
+  // access nested screen
+  const navToPhotoGallery = ( ) => navigation.navigate( "camera", {
+    screen: "PhotoGallery"
+  } );
 
   return (
     <View>
