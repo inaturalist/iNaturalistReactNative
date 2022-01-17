@@ -4,22 +4,93 @@ import { version } from "../../../package.json";
 import Config from "react-native-config";
 import SInfo from "react-native-sensitive-info";
 import * as RNLocalize from "react-native-localize";
+import jwt from "jsonwebtoken";
+import RNSInfo from "react-native-sensitive-info";
 
 const HOST = "https://www.inaturalist.org";
-const API_HOST = "https://api.inaturalist.org/v1";
+// const API_HOST = "https://api.inaturalist.org/v1";
 
 // User agent being used, when calling the iNat APIs
 const USER_AGENT = `iNaturalist/${version} (ReactNative)`;
 
+const JWT_TOKEN_EXPIRATION_MINS = 25; // JWT Tokens expire after 30 mins - consider 25 mins as the max time (safe margin)
+
 class AuthenticationService {
   /**
    * Creates base API client for all requests
+   * @param additionalHeaders any additional headers that will be passed to the API
    */
-  static createAPI(): any {
+  static createAPI( additionalHeaders: any ): any {
     return create( {
       baseURL: HOST,
-      headers: { "User-Agent": USER_AGENT }
+      headers: { "User-Agent": USER_AGENT, ...additionalHeaders }
     } );
+  }
+
+  /**
+   * Returns the API access token to be used with all iNaturalist API calls
+   *
+   * @param useJWT if true, we'll use JSON Web Token instead of the "regular" access token
+   * @returns {Promise<string|*>}
+   */
+  static async getAPIToken( useJWT: ?boolean ): Promise<?string> {
+    if ( useJWT ) {
+      return await this.getJWTToken();
+    } else {
+      const accessToken = await RNSInfo.getItem( "accessToken" );
+      return `Bearer ${accessToken}`;
+    }
+  }
+
+  static getAnonymousJWTToken(): string {
+    const claims = {
+      application: "android",
+      exp: Date.now() / 1000 + 300
+    };
+
+    return jwt.sign( claims, Config.JWT_ANONYMOUS_API_SECRET, {
+      algorithm: "HS512"
+    } );
+  }
+
+  /**
+   * Returns most recent JWT (JSON Web Token) for API authentication - renews the token if necessary
+   *
+   * @returns {Promise<string|*>}
+   */
+  static async getJWTToken(): Promise<?string> {
+    let jwtToken = await RNSInfo.getItem( "jwtToken" );
+    let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration" );
+
+    if (
+      !jwtToken ||
+      ( Date.now() - jwtTokenExpiration ) / 1000 > JWT_TOKEN_EXPIRATION_MINS * 60
+    ) {
+      // JWT Tokens expire after 30 mins - if the token is non-existent or older than 25 mins (safe margin) - ask for a new one
+
+      const accessToken = await RNSInfo.getItem( "accessToken" );
+      const api = this.createAPI( { Authorization: `Bearer ${accessToken}` } );
+      const response = await api.get( "/users/api_token.json" );
+
+      if ( !response.ok ) {
+        console.error(
+          `Error while renewing JWT: ${response.problem} - ${response.status}`
+        );
+        return null;
+      }
+
+      // Get newest JWT Token
+      jwtToken = response.data.api_token;
+      jwtTokenExpiration = Date.now();
+
+      await SInfo.setItem( "jwtToken", jwtToken );
+      await SInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration );
+
+      return jwtToken;
+    } else {
+      // Current JWT token is still fresh/valid - return it as-is
+      return jwtToken;
+    }
   }
 
   /**
@@ -63,7 +134,7 @@ class AuthenticationService {
     password: string,
     license: void | string,
     time_zone: void | string
-  ): Promise<string> {
+  ): Promise<?string> {
     const formData = new FormData();
     formData.append( "username", username );
     formData.append( "user[email]", email );
