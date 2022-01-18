@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HeaderBackButton } from "@react-navigation/elements";
 
 import PhotoGallery from "../components/PhotoLibrary/PhotoGallery";
+import ObsEdit from "../components/ObsEdit/ObsEdit";
 
 const Stack = createNativeStackNavigator( );
 
@@ -17,6 +18,10 @@ const CameraStackNavigation = ( ): React.Node => (
     <Stack.Screen
       name="PhotoGallery"
       component={PhotoGallery}
+    />
+    <Stack.Screen
+      name="ObsEdit"
+      component={ObsEdit}
     />
   </Stack.Navigator>
 );
