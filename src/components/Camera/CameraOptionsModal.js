@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { textStyles } from "../../styles/sharedComponents/modal";
 
 type Props = {
-  closeModal: ( ) => { }
+  closeModal: ( ) => void
 }
 
 const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
