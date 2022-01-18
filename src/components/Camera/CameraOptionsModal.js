@@ -6,13 +6,20 @@ import { useNavigation } from "@react-navigation/native";
 
 import { textStyles } from "../../styles/sharedComponents/modal";
 
-const CameraOptionsModal = ( ): React.Node => {
+type Props = {
+  closeModal: ( ) => { }
+}
+
+const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   const navigation = useNavigation( );
 
   // access nested screen
-  const navToPhotoGallery = ( ) => navigation.navigate( "camera", {
-    screen: "PhotoGallery"
-  } );
+  const navToPhotoGallery = ( ) => {
+    navigation.navigate( "camera", {
+      screen: "PhotoGallery"
+    } );
+    closeModal( );
+};
 
   return (
     <View>

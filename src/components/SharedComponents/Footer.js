@@ -25,7 +25,7 @@ const Footer = ( ): React.Node => {
       <Modal
         showModal={showModal}
         closeModal={closeModal}
-        modal={<CameraOptionsModal />}
+        modal={<CameraOptionsModal closeModal={closeModal} />}
       />
       <View style={[viewStyles.row, viewStyles.shadow]}>
         <Pressable onPress={toggleSideMenu} accessibilityRole="link">
