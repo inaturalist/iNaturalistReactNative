@@ -34,6 +34,7 @@
     "react-native-render-html": "^6.3.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
+    "react-native-uuid-generator": "^6.1.1",
     "realm": "^10.8.0"
   },
   "devDependencies": {
