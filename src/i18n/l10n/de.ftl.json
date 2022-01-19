@@ -1,0 +1,7 @@
+{
+  "OBSERVATIONS": "Beobachtungen",
+  "Observations": "Beobachtungen",
+  "date-observed": "Beobachtet am: { $date }",
+  "date-uploaded": "Hinzugefügt: { $date }",
+  "x-observations": "{ $count ->\n  [one] Eine Beobachtung\n *[other] { $count } Beobachtungen\n}"
+}

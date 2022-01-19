@@ -3,6 +3,7 @@
 import * as React from "react";
 import { FlatList, ActivityIndicator, View, Pressable, Text } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 import { viewStyles } from "../../../styles/observations/obsList";
 
 import GridItem from "./GridItem";
@@ -38,6 +39,8 @@ const ObservationViews = ( {
   const setListView = ( ) => setView( "list" );
   const setMapView = ( ) => setView( "map" );
 
+  const { t } = useTranslation();
+
   const renderView = ( ) => {
     if ( view === "map" ) {
       return <Map taxonId={taxonId} />;
@@ -71,14 +74,14 @@ const ObservationViews = ( {
           onPress={setListView}
           accessibilityRole="button"
         >
-          <Text>list view</Text>
+          <Text>{ t( "List-View" ) }</Text>
         </Pressable>
         <Pressable
           onPress={setGridView}
           testID="ObsList.toggleGridView"
           accessibilityRole="button"
         >
-          <Text>grid view</Text>
+          <Text>{ t( "Grid-View" ) }</Text>
         </Pressable>
       </View>
       {loading
