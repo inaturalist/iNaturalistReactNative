@@ -2,7 +2,7 @@
 
 import { StyleSheet } from "react-native";
 
-import type { TextStyleProp, ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import type { TextStyleProp, ImageStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "../global";
 
 const pickerContainer = {
@@ -62,8 +62,16 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   }
 } );
 
+const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  iconicTaxaButtons: {
+    marginHorizontal: 20,
+    marginVertical: 20
+  }
+} );
+
 export {
   pickerSelectStyles,
   textStyles,
-  imageStyles
+  imageStyles,
+  viewStyles
 };
