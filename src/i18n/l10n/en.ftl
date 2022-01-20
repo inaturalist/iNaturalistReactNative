@@ -10,3 +10,4 @@ Grid-View = Grid View
 List-View = List View
 OBSERVATIONS = OBSERVATIONS
 Observations = Observations
+Your-Observations = Your Observations

@@ -4,6 +4,7 @@ const fs = require( "fs" );
 const { readFile, writeFile } = fs.promises;
 const path = require( "path" );
 const util = require( "util" );
+const glob = util.promisify( require( "glob" ) );
 
 // Convert a single FTL file to JSON
 const jsonifyPath = async ( inPath, outPath, options = { } ) => {
@@ -35,16 +36,15 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
   return true;
 };
 
-// Making this a function b/c we might want to put this in a config file, or
-// just use all the available ftl localization files
-const supportedLocales = ( ) => ( [
-  "en",
-  "de"
-] );
+// Assume all existing localized locales are supported
+const supportedLocales = async ( ) => {
+  const paths = await glob( path.join( __dirname, "l10n", "*.ftl" ) );
+  return paths.map( f => path.basename( f, ".ftl" ) );
+};
 
 // Convert all valid localizations from Fluent to Fluent JSON
 const jsonifyLocalizations = async ( options = {} ) => {
-  const locales = supportedLocales( );
+  const locales = await supportedLocales( );
   const converted = [];
   const failed = [];
   // Copy the source ftl to en.ftl, because en is the default locale and
@@ -73,8 +73,8 @@ const jsonifyLocalizations = async ( options = {} ) => {
 
 // Write loadTranslations.js, a file with a function that statically load
 // translation files given a locale
-const writeLoadTranslations = ( ) => {
-  const locales = supportedLocales( );
+const writeLoadTranslations = async ( ) => {
+  const locales = await supportedLocales( );
   const outPath = path.join( __dirname, "loadTranslations.js" );
   const out = fs.createWriteStream( outPath );
   out.write( "// AUTO-GENERATED. See i18ncli.js\n" );
@@ -104,5 +104,16 @@ yargs.usage( "Usage: $0 <cmd> [args]" )
     ( ) => {},
     ( ) => writeLoadTranslations( )
   )
+  .command(
+    "build",
+    "Prepare existing localizations for use in the app",
+    ( ) => {},
+    argv => {
+      jsonifyLocalizations( argv );
+      writeLoadTranslations( );
+    }
+  )
+  // TODO make commands that look for untranslated strings and translated
+  // strings that are no longer in use
   .help( )
   .argv;

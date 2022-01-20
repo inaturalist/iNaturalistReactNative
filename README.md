@@ -29,5 +29,20 @@ We currently have two kinds of tests
 
 We're using [Jest](https://jestjs.io/) and [React Native Testing Library](https://callstack.github.io/react-native-testing-library/) for most of our tests, [factoria](https://github.com/phanan/factoria) and [faker.js](https://github.com/Marak/faker.js/) to generate test data for use with mocks. `Local*` model factories represent locally persisted data, while `Remote*` factories represent that kinds of records we get from an API or external package.
 
+# Translations
+We manage translations through Crowdin. Actually updating the translation files should be largely automated, but this is what it looks like to do it manually (you must have the [Crowdin CLI](https://github.com/crowdin/crowdin-cli) installed and have an [access token](https://crowdin.com/settings#api-key) associated with a Crowdin user that can post files to the specified project):
+
+```bash
+# Upload new strings
+crowdin upload --token YOUR_ACCESS_TOKEN --project-id YOUR_PROJECT_ID
+
+# Download new translations and build for use in the app
+crowdin download --token YOUR_ACCESS_TOKEN --project-id YOUR_PROJECT_ID
+node src/i18n/i18ncli.js build
+git add src/i18n/l10n/*
+git commit -a -m "Updated translations"
+```
+
+
 ## Troubleshooting
 1. Run `react-native clean-project`. This will give you options to clean caches, clean builds, reinstall pods, and reinstall node_modules. Using this eliminates a lot of hard-to-diagnose build issues.
