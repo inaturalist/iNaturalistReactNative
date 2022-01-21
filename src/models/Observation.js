@@ -69,7 +69,18 @@ class Observation {
     return newObs;
   }
 
+  // TODO: swap this and realm schema to use observation_photos everywhere, if possible
+  // so there's no need for projectUri
   static uri = obs => ( obs && obs.observationPhotos ) && { uri: obs.observationPhotos[0].photo.url };
+
+  static projectUri = obs => {
+    const photo = obs.observation_photos[0];
+    if ( !photo ) { return; }
+    if ( !photo.photo ) { return; }
+    if ( !photo.photo.url ) { return; }
+
+    return { uri: obs.observation_photos[0].photo.url };
+  }
 
   static schema = {
     name: "Observation",

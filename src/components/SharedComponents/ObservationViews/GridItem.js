@@ -9,13 +9,17 @@ import { textStyles, imageStyles, viewStyles } from "../../../styles/sharedCompo
 
 type Props = {
   item: Object,
-  handlePress: Function
+  handlePress: Function,
+  uri?: string
 }
 
-const GridItem = ( { item, handlePress }: Props ): Node => {
+const GridItem = ( { item, handlePress, uri }: Props ): Node => {
   const onPress = ( ) => handlePress( item );
   // TODO: fix whatever funkiness is preventing realm mapTo from correctly
   // displaying camelcased item keys on ObservationList
+
+  // TODO: add fallback image when there is no uri
+  const imageUri = uri === "project" ? Observation.projectUri( item ) : Observation.uri( item );
 
   return (
     <Pressable
@@ -26,7 +30,7 @@ const GridItem = ( { item, handlePress }: Props ): Node => {
       accessibilityLabel="Navigate to observation details screen"
     >
       <Image
-        source={Observation.uri( item )}
+        source={imageUri}
         style={imageStyles.gridImage}
         testID="ObsList.photo"
       />

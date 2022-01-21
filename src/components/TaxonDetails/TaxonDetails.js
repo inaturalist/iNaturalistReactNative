@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { Text, View, Pressable, useWindowDimensions, Linking, ActivityIndicator } from "react-native";
+import { Text, View, Pressable, useWindowDimensions, Linking, ActivityIndicator, ScrollView } from "react-native";
 import HTML from "react-native-render-html";
 import { useRoute } from "@react-navigation/native";
 
@@ -9,7 +9,6 @@ import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import { viewStyles, textStyles } from "../../styles/taxonDetails";
 import { useTaxonDetails } from "./hooks/useTaxonDetails";
-import { ScrollView } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
 
 const TaxonDetails = ( ): React.Node => {
