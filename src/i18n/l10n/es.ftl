@@ -12,3 +12,4 @@ List-View = List View
 OBSERVATIONS = OBSERVATIONS
 Observations = Observations
 Your-Observations = Sus observaciones
+TAXONOMY-header = TAXONOMIE es bueno

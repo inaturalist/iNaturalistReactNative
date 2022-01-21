@@ -23,10 +23,12 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
 
   // Allow us to await a result to this callback-based method so we can return
   // true when we know it succeeded
+  // TODO un-promisify this and use { respectComments: false } to exclude
+  // comments, which are going to add a lot of bulk to these files
   const ftl2js = util.promisify( fluent.ftl2js );
   const localizations = await ftl2js( ftlTxt.toString( ) );
   try {
-    await writeFile( outPath, JSON.stringify( localizations, null, 2 ) );
+    await writeFile( outPath, JSON.stringify( localizations, null, 2 ) + "\n" );
   } catch ( writeFileErr ) {
     console.log( `Failed to write ${outPath} with error:` );
     console.log( writeFileErr );

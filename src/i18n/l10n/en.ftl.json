@@ -1,7 +1,8 @@
 {
-  "count-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
-  "date-observed": "Date observed: { $date }",
-  "date-uploaded": "Date uploaded: { $date }",
+  "ABOUT-taxon-header": {
+    "comment": "Header for a block of text describing a taxon",
+    "val": "ABOUT"
+  },
   "Grid-View": {
     "comment": "Label for a view that shows observations as a grid of photos",
     "val": "Grid View"
@@ -10,7 +11,14 @@
     "comment": "Label for a view that shows observations a list",
     "val": "List View"
   },
-  "OBSERVATIONS": "OBSERVATIONS",
-  "Observations": "Observations",
-  "Your-Observations": "Your Observations"
+  "comment": "Header for a section showing taxa similar to a single taxon",
+  "SIMILAR-SPECIES-header": "",
+  "STATUS-header": {
+    "comment": "Header for a block of text describing a taxon's conservation status",
+    "val": "STATUS"
+  },
+  "TAXONOMY-header": {
+    "comment": "Header for a block of text describing a taxon's taxonomy",
+    "val": "TAXONOMY"
+  }
 }
