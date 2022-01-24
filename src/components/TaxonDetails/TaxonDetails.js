@@ -9,6 +9,7 @@ import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import { viewStyles, textStyles } from "../../styles/taxonDetails";
 import { useTaxonDetails } from "./hooks/useTaxonDetails";
+import { useTranslation } from "react-i18next";
 
 const TaxonDetails = ( ): React.Node => {
   const { params } = useRoute( );
@@ -16,6 +17,7 @@ const TaxonDetails = ( ): React.Node => {
   const { taxon, loading } = useTaxonDetails( id );
   // const similarSpecies = useSimilarSpecies( id );
   const { width } = useWindowDimensions( );
+  const { t } = useTranslation();
 
   const displayTaxonomyList = React.useMemo( ( ) => {
     if ( !taxon || taxon.ancestors.length === 0 ) { return; }
@@ -58,7 +60,7 @@ const TaxonDetails = ( ): React.Node => {
           <Text>{taxon.rank}</Text>
           <Text>{taxon.preferred_common_name}</Text>
           <Text>{taxon.name}</Text>
-          <Text style={textStyles.header}>ABOUT</Text>
+          <Text style={textStyles.header}>{ t( "ABOUT-taxon-header" ) }</Text>
           <HTML
             contentWidth={width}
             source={{ html: taxon.wikipedia_summary }}
@@ -70,10 +72,10 @@ const TaxonDetails = ( ): React.Node => {
           >
             <Text style={textStyles.header}>Read more on Wikipedia</Text>
           </Pressable>
-          <Text style={textStyles.header}>TAXONOMY</Text>
+          <Text style={textStyles.header}>{ t( "TAXONOMY-header" ) }</Text>
           {displayTaxonomyList}
-          <Text style={textStyles.header}>STATUS</Text>
-          <Text style={textStyles.header}>SIMILAR SPECIES</Text>
+          <Text style={textStyles.header}>{ t( "STATUS-header" ) }</Text>
+          <Text style={textStyles.header}>{ t( "SIMILAR-SPECIES-header" ) }</Text>
         </View>
       </ScrollView>
     </ViewWithFooter>
