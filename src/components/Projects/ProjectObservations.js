@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { ActivityIndicator, FlatList } from "react-native";
+import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import useProjectObservations from "./hooks/useProjectObservations";
@@ -17,9 +17,7 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
   const navToObsDetails = observation => navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
 
   const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} uri="project" />;
-
-  const renderLoadingWheel = ( ) => <ActivityIndicator />;
-
+  console.log( observations, "obs in project observations" );
   return (
     <FlatList
       data={observations}
@@ -27,7 +25,6 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
       renderItem={renderGridItem}
       numColumns={4}
       testID="ProjectObservations.grid"
-      ListEmptyComponent={renderLoadingWheel}
     />
   );
 };
