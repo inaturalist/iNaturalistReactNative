@@ -77,7 +77,7 @@ const ObsEdit = ( ): Node => {
     value: false
   }];
 
-  const formatDecimal = coordinate => coordinate.toFixed( 6 );
+  const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
 
   const addNotes = text => {
     setObservation( {

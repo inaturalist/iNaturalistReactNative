@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, Pressable, Text, Image, View } from "react-native";
+import { FlatList, Pressable, Text, Image } from "react-native";
 
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
@@ -9,7 +9,7 @@ import InputField from "../SharedComponents/InputField";
 import { viewStyles, imageStyles } from "../../styles/search/search";
 
 type Props = {
-  source: ?string,
+  source: string,
   closeModal: Function,
   updateTaxaId: Function,
   updateProjectIds: Function
@@ -22,9 +22,8 @@ const ObsEditSearch = ( {
   updateProjectIds
 }: Props ): React.Node => {
   const [q, setQ] = React.useState( "" );
-  const [queryType, setQueryType] = React.useState( "taxa" );
   // choose users or taxa
-  const list = useRemoteObsEditSearchResults( q, queryType );
+  const list = useRemoteObsEditSearchResults( q, source );
 
   const updateObsAndCloseModal = id => {
     if ( source === "taxa" ) {
@@ -35,6 +34,8 @@ const ObsEditSearch = ( {
     closeModal( );
   };
 
+  // TODO: when UI is finalized, make sure these list results are not duplicate UI
+  // with Search or Projects; share components if possible
   const renderItem = ( { item } ) => {
     if ( source === "taxa" ) {
       const imageUrl = ( item && item.default_photo ) && { uri: item.default_photo.square_url };
@@ -55,8 +56,11 @@ const ObsEditSearch = ( {
           style={viewStyles.row}
           testID={`ObsEditSearch.project.${item.id}`}
         >
-          <Text>{item.id}</Text>
-          <Image source={{ uri: item.icon }} style={imageStyles.projectIcon} testID={`ObsEditSearch.project.${item.id}.photo`}/>
+          <Image
+            source={{ uri: item.icon }}
+            style={imageStyles.squareImage}
+            testID={`ObsEditSearch.project.${item.id}.photo`}
+          />
           <Text>{item.title}</Text>
         </Pressable>
       );
@@ -67,7 +71,7 @@ const ObsEditSearch = ( {
     <ViewNoFooter>
       <InputField
         handleTextChange={setQ}
-        placeholder={queryType === "taxa" ? "search for taxa" : "search for users"}
+        placeholder={source === "taxa" ? "search for taxa" : "search for projects"}
         text={q}
         type="none"
       />
