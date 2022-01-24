@@ -5,7 +5,7 @@ import { Text, Image, ImageBackground } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import { viewStyles, textStyles, imageStyles } from "../../styles/projects/projectDetails";
+import { textStyles, imageStyles } from "../../styles/projects/projectDetails";
 import useProjectDetails from "./hooks/useProjectDetails";
 import ProjectObservations from "./ProjectObservations";
 
@@ -13,6 +13,8 @@ const ProjectDetails = ( ): React.Node => {
   const { params } = useRoute( );
   const { id } = params;
   const project = useProjectDetails( id );
+
+  console.log( id, "project details id" );
 
   return (
     <ViewWithFooter>

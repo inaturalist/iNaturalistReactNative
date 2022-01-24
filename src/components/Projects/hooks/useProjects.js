@@ -11,6 +11,8 @@ const FIELDS = {
 const useProjects = ( apiParams: Object ): Array<Object> => {
   const [projects, setProjects] = useState( [] );
 
+  // TODO: check with team on whether this is the best endpoint
+  // for joined projects. otherwise, user/:id/membership?
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchProjects = async ( ) => {
@@ -20,7 +22,7 @@ const useProjects = ( apiParams: Object ): Array<Object> => {
           ...apiParams,
           fields: FIELDS
         };
-        const response = await inatjs.projects.fetch( [], params );
+        const response = await inatjs.projects.search( params );
         const { results } = response;
         if ( !isCurrent ) { return; }
         setProjects( results );
