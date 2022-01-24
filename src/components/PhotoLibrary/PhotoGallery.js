@@ -34,8 +34,10 @@ const PhotoGallery = ( ): Node => {
     return (
       <Pressable
         onPress={( ) => selectPhoto( item )}
+        testID={`PhotoGallery.${item.uri}`}
       >
         <Image
+          testID="PhotoGallery.photo"
           source={imageUri}
           style={imageStyles.galleryImage}
         />
@@ -64,6 +66,7 @@ const PhotoGallery = ( ): Node => {
         numColumns={4}
         renderItem={renderImage}
         onEndReached={fetchMorePhotos}
+        testID="PhotoGallery.list"
       />
     </ViewWithFooter>
   );
