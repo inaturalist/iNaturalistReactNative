@@ -66,7 +66,7 @@
     "husky": "^7.0.4",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.66.0",
-    "react-native-accessibility-engine": "^0.7.0",
+    "react-native-accessibility-engine": "^1.0.0",
     "react-native-clean-project": "^3.6.7",
     "react-native-codegen": "^0.0.7",
     "react-test-renderer": "17.0.2",

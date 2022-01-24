@@ -166,11 +166,11 @@ const ObsEdit = ( ): Node => {
       while saving the observation state
       */}
       {/* TODO: allow user to tap into bigger version of photo? */}
-      <Image source={imageUri} style={imageStyles.obsPhoto} />
+      <Image source={imageUri} style={imageStyles.obsPhoto} testID="ObsEdit.photo" />
       <Text style={textStyles.text}>{locationName}</Text>
       <Text style={textStyles.text}>{`Lat: ${formatDecimal( latitude )}, Lon: ${formatDecimal( longitude )}`}</Text>
       {/* TODO: format date and time */}
-      <Text style={textStyles.text}>{`Date & time: ${dateAndTime}`}</Text>
+      <Text style={textStyles.text} testID="ObsEdit.time">{`Date & time: ${dateAndTime}`}</Text>
       <Text style={textStyles.headerText}>2. identification</Text>
       {/* TODO: add suggestions screen */}
       <Pressable onPress={navToSuggestionsPage}>
