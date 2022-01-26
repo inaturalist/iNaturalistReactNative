@@ -3,17 +3,29 @@
 import { useEffect, useState } from "react";
 import CameraRoll from "@react-native-community/cameraroll";
 
+const initialStatus = {
+  photos: [],
+  lastCursor: null,
+  lastAlbum: undefined,
+  hasNextPage: true
+};
+
 const usePhotos = ( options: Object, isScrolling: boolean ): Array<Object> => {
-  const [photoFetchStatus, setPhotoFetchStatus] = useState( {
-    photos: [],
-    lastCursor: null,
-    stillFetching: false
-  } );
+  const [photoFetchStatus, setPhotoFetchStatus] = useState( initialStatus );
 
   useEffect( ( ) => {
     let isCurrent = true;
+    const { lastCursor, photos, hasNextPage } = photoFetchStatus;
 
-    const { lastCursor, photos, stillFetching } = photoFetchStatus;
+    const changedAlbum = ( ) => {
+      if ( options.groupName ) {
+        return photoFetchStatus.lastAlbum !== options.groupName;
+      } else if ( !options.groupName && photoFetchStatus.lastAlbum ) {
+        // switch back to all photos mode
+        return true;
+      }
+      return false;
+    };
 
     const fetchPhotos = async ( ) => {
       try {
@@ -24,6 +36,7 @@ const usePhotos = ( options: Object, isScrolling: boolean ): Array<Object> => {
 
         const p = await CameraRoll.getPhotos( options );
         const endCursor = p.page_info.end_cursor;
+        const nextPage = p.page_info.has_next_page;
         const uris = p.edges.map( ( { node } ) => {
           return {
             location: {
@@ -34,25 +47,37 @@ const usePhotos = ( options: Object, isScrolling: boolean ): Array<Object> => {
             uri: node.image.uri
           };
         } );
+
         if ( !isCurrent ) { return; }
         setPhotoFetchStatus( {
+          ...photoFetchStatus,
           lastCursor: endCursor,
           photos: photos.concat( uris ),
-          stillFetching: false
+          stillFetching: false,
+          hasNextPage: nextPage
         } );
       } catch ( e ) {
         console.log( e, "couldn't get photos from gallery" );
       }
     };
 
-    if ( !stillFetching && isScrolling ) {
-      fetchPhotos( );
+    if ( changedAlbum( ) ) {
+      // reset photo fetch with new album
+      setPhotoFetchStatus( {
+        ...initialStatus,
+        lastAlbum: options.groupName || undefined
+      } );
     }
 
+    if ( !hasNextPage ) { return; }
+
+    if ( isScrolling ) {
+      fetchPhotos( );
+    }
     return ( ) => {
       isCurrent = false;
     };
-  }, [options, photoFetchStatus, isScrolling] );
+  }, [photoFetchStatus, options, isScrolling] );
 
   return photoFetchStatus.photos;
 };

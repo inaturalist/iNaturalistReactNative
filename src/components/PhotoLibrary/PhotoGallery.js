@@ -1,33 +1,47 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
-import { Pressable, Image, FlatList } from "react-native";
+import React, { useContext } from "react";
+import { Pressable, Image, FlatList, ActivityIndicator } from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useAndroidPermission from "./hooks/useAndroidPermission";
-import usePhotos from "./hooks/usePhotos";
 import { imageStyles } from "../../styles/photoLibrary/photoGallery";
+import PhotoGalleryHeader from "./PhotoGalleryHeader";
+import { ObsEditContext } from "../../providers/contexts";
+
+const options = {
+  first: 28,
+  assetType: "Photos",
+  include: ["location"]
+};
 
 const PhotoGallery = ( ): Node => {
-  const navigation = useNavigation( );
-  const [isScrolling, setIsScrolling] = useState( true );
-  const [numPhotosShown, setNumPhotosShown] = useState( 0 );
-  const options = {
-    first: 28,
-    assetType: "Photos",
-    include: ["location"]
-  };
+  const {
+    photoGallery,
+    setIsScrolling,
+    photoOptions,
+    setPhotoOptions
+  } = useContext( ObsEditContext );
 
-  const [photoOptions, setPhotoOptions] = useState( options );
+  const navigation = useNavigation( );
   // const hasAndroidPermission = useAndroidPermission( );
 
-  // photos are fetched from the server on initial render
-  // and anytime a user scrolls through the photo gallery
-  const photos = usePhotos( photoOptions, isScrolling );
-
   const selectPhoto = photo => navigation.navigate( "ObsEdit", { photo } );
+
+  const updateAlbum = album => {
+    const newOptions = {
+      ...options,
+      groupTypes: ( album === null ) ? "All" : "Album"
+    };
+
+    if ( album !== null ) {
+      // $FlowFixMe
+      newOptions.groupName = album;
+    }
+    setPhotoOptions( newOptions );
+  };
 
   const renderImage = ( { item } ) => {
     const imageUri = { uri: item.uri };
@@ -49,24 +63,20 @@ const PhotoGallery = ( ): Node => {
 
   const fetchMorePhotos = ( ) => setIsScrolling( true );
 
-  useEffect( ( ) => {
-    // reset scroll when more photos are fetched from the server
-    if ( photos.length > numPhotosShown ) {
-      setIsScrolling( false );
-      setNumPhotosShown( photos.length );
-    }
-  }, [photos.length, numPhotosShown] );
+  const photosByAlbum = photoGallery[photoOptions.groupName || "All"];
 
   return (
     <ViewWithFooter>
+      <PhotoGalleryHeader updateAlbum={updateAlbum} />
       <FlatList
-        data={photos}
+        data={photosByAlbum}
         initialNumToRender={4}
         keyExtractor={extractKey}
         numColumns={4}
         renderItem={renderImage}
         onEndReached={fetchMorePhotos}
         testID="PhotoGallery.list"
+        ListEmptyComponent={( ) => <ActivityIndicator />}
       />
     </ViewWithFooter>
   );

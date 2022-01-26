@@ -209,6 +209,7 @@ const ObsEdit = ( ): Node => {
         onChangeText={addNotes}
         placeholder="add optional notes"
         style={textStyles.notes}
+        testID="ObsEdit.notes"
       />
       {/* TODO: allow search for projects and add multiple project ids */}
       <Pressable onPress={searchForProjects}>

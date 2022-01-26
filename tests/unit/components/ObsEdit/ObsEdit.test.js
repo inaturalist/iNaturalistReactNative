@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
 import factory from "../../../factory";
@@ -47,4 +47,3 @@ test( "renders observation photo from photo gallery", ( ) => {
 // right now this is failing on react-native-modal, since there's a TouchableWithFeedback
 // that allows the user to tap the backdrop and exit the modal
 test.todo( "should not have accessibility errors" );
-
