@@ -20,15 +20,18 @@ const options = {
 const PhotoGallery = ( ): Node => {
   const {
     photoGallery,
+    setPhotoGallery,
     setIsScrolling,
     photoOptions,
-    setPhotoOptions
+    setPhotoOptions,
+    selectedPhotos,
+    setSelectedPhotos
   } = useContext( ObsEditContext );
 
-  const navigation = useNavigation( );
+  // const navigation = useNavigation( );
   // const hasAndroidPermission = useAndroidPermission( );
 
-  const selectPhoto = photo => navigation.navigate( "ObsEdit", { photo } );
+  // const selectPhoto = photo => navigation.navigate( "ObsEdit", { photo } );
 
   const updateAlbum = album => {
     const newOptions = {
@@ -43,17 +46,57 @@ const PhotoGallery = ( ): Node => {
     setPhotoOptions( newOptions );
   };
 
+  const selectedAlbum = photoOptions.groupName || "All";
+  const photosByAlbum = photoGallery[selectedAlbum];
+  const photosSelectedInAlbum = selectedPhotos[selectedAlbum] || [];
+
+  const updatePhotoGallery = ( rerenderFlatList ) => {
+    setPhotoGallery( {
+      ...photoGallery,
+      // there might be a better way to do this, but adding this key forces the FlatList
+      // to rerender anytime an image is unselected
+      rerenderFlatList
+     } );
+  };
+
+  const selectPhoto = ( isSelected, item ) => {
+    if ( !isSelected ) {
+      setSelectedPhotos( {
+        ...selectedPhotos,
+        [selectedAlbum]: photosSelectedInAlbum.concat( item )
+      } );
+      updatePhotoGallery( false );
+    } else {
+      const newSelection = photosSelectedInAlbum;
+      const selectedIndex = photosSelectedInAlbum.indexOf( item );
+      newSelection.splice( selectedIndex, 1 );
+
+      setSelectedPhotos( {
+        ...selectedPhotos,
+        [selectedAlbum]: newSelection
+      } );
+      updatePhotoGallery( true );
+    }
+  };
+
   const renderImage = ( { item } ) => {
+    const isSelected = photosSelectedInAlbum.some( photo => photo.uri === item.uri );
+
+    const handlePress = ( ) => selectPhoto( isSelected, item );
+
     const imageUri = { uri: item.uri };
     return (
       <Pressable
-        onPress={( ) => selectPhoto( item )}
+        onPress={handlePress}
         testID={`PhotoGallery.${item.uri}`}
       >
         <Image
           testID="PhotoGallery.photo"
           source={imageUri}
-          style={imageStyles.galleryImage}
+          style={[
+            imageStyles.galleryImage,
+            isSelected ? imageStyles.selected : null
+          ]}
         />
       </Pressable>
     );
@@ -63,13 +106,12 @@ const PhotoGallery = ( ): Node => {
 
   const fetchMorePhotos = ( ) => setIsScrolling( true );
 
-  const photosByAlbum = photoGallery[photoOptions.groupName || "All"];
-
   return (
     <ViewWithFooter>
       <PhotoGalleryHeader updateAlbum={updateAlbum} />
       <FlatList
         data={photosByAlbum}
+        extraData={selectedPhotos}
         initialNumToRender={4}
         keyExtractor={extractKey}
         numColumns={4}

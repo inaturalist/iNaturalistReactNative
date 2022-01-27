@@ -19,6 +19,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [photoGallery, setPhotoGallery] = useState( {} );
   const [isScrolling, setIsScrolling] = useState( true );
   const [photoOptions, setPhotoOptions] = useState( options );
+  const [selectedPhotos, setSelectedPhotos] = useState( {} );
 
   // photos are fetched from the server on initial render
   // and anytime a user scrolls through the photo gallery
@@ -52,7 +53,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     isScrolling,
     setIsScrolling,
     photoOptions,
-    setPhotoOptions
+    setPhotoOptions,
+    selectedPhotos,
+    setSelectedPhotos
   };
 
   return (
