@@ -45,7 +45,7 @@ const GroupPhotos = ( ): Node => {
           testID="GroupPhotos.photo"
           source={imageUri}
           style={[
-            imageStyles.galleryImage
+            imageStyles.imagesForGrouping
            //  isSelected ? imageStyles.selected : null
           ]}
         />
@@ -55,11 +55,22 @@ const GroupPhotos = ( ): Node => {
 
   const extractKey = ( item, index ) => `${item}${index}`;
 
+  const groupPhotos = ( ) => {
+    // this is where the combine photos
+    // separate photos
+    // and delete photos functionality will go
+    // in a picker
+    // it will also include a next button to navigate to obs edit
+    // with multiple observations
+    return <></>;
+  };
+
   return (
     <ViewNoFooter>
       {console.log( selectedPhotos, "selected photos in group photos screen" )}
       {/* <GroupPhotosHeader /> */}
       <FlatList
+        contentContainerStyle={viewStyles.centerImages}
         data={orderByTimestamp( )}
         initialNumToRender={4}
         keyExtractor={extractKey}
@@ -69,6 +80,7 @@ const GroupPhotos = ( ): Node => {
         testID="GroupPhotos.list"
         ListEmptyComponent={( ) => <ActivityIndicator />}
       />
+      {groupPhotos( )}
     </ViewNoFooter>
   );
 };

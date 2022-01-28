@@ -11,6 +11,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   createObsButton: {
     height: 75,
     justifyContent: "center"
+  },
+  centerImages: {
+    paddingHorizontal: 20
   }
 } );
 
@@ -18,13 +21,22 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
 
 } );
 
+const galleryImageWidth = width / 4 - 2;
+const groupImageWidth = width / 2 - 40;
+
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   galleryImage: {
-    height: width / 4 - 2,
-    width: width / 4 - 2
+    height: galleryImageWidth,
+    width: galleryImageWidth
   },
   selected: {
     tintColor: colors.inatGreen
+  },
+  imagesForGrouping: {
+    height: groupImageWidth,
+    width: groupImageWidth,
+    marginHorizontal: 10,
+    marginVertical: 10
   }
 } );
 
