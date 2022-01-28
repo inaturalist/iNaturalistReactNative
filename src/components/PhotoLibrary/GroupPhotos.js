@@ -1,7 +1,7 @@
 // @flow
 
-import React, { useContext } from "react";
-import { Pressable, Image, FlatList, ActivityIndicator, View } from "react-native";
+import React, { useContext, useState } from "react";
+import { Pressable, Image, FlatList, ActivityIndicator } from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 
@@ -13,9 +13,26 @@ import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 
 const GroupPhotos = ( ): Node => {
+  const navigation = useNavigation( );
   const {
     selectedPhotos
   } = useContext( ObsEditContext );
+  const [groupedPhotos, setGroupedPhotos] = useState( [] );
+  // const [photosToGroupOrUngroup, setPhotosToGroupOrUngroup] = useState( [] );
+  // observation 1: 3 photos
+  // observation 2: 2 photos
+  // observation 3: 1 photo
+
+  // {
+  //   1: [{}, {}, {}],
+  //   2: [{}, {}],
+  //   3: [{}]
+  // }
+
+  // pass this groupedPhotos object to ObsEdit
+  // or store in provider
+
+  // const navToObsEdit = ( ) => navigation.navigate( "ObsEdit" );
 
   const orderByTimestamp = ( ) => {
     const albums = Object.keys( selectedPhotos );
@@ -46,7 +63,7 @@ const GroupPhotos = ( ): Node => {
           source={imageUri}
           style={[
             imageStyles.imagesForGrouping
-           //  isSelected ? imageStyles.selected : null
+            // isSelected ? imageStyles.selected : null
           ]}
         />
       </Pressable>
