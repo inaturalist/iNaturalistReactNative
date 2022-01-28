@@ -8,7 +8,10 @@ import { colors } from "../global";
 const { width } = Dimensions.get( "screen" );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
-
+  createObsButton: {
+    height: 75,
+    justifyContent: "center"
+  }
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {

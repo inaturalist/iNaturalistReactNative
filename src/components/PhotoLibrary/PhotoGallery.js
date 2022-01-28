@@ -1,15 +1,16 @@
 // @flow
 
 import React, { useContext } from "react";
-import { Pressable, Image, FlatList, ActivityIndicator } from "react-native";
+import { Pressable, Image, FlatList, ActivityIndicator, View } from "react-native";
 import type { Node } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useAndroidPermission from "./hooks/useAndroidPermission";
-import { imageStyles } from "../../styles/photoLibrary/photoGallery";
+import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import { ObsEditContext } from "../../providers/contexts";
+import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 
 const options = {
   first: 28,
@@ -28,10 +29,8 @@ const PhotoGallery = ( ): Node => {
     setSelectedPhotos
   } = useContext( ObsEditContext );
 
-  // const navigation = useNavigation( );
+  const navigation = useNavigation( );
   // const hasAndroidPermission = useAndroidPermission( );
-
-  // const selectPhoto = photo => navigation.navigate( "ObsEdit", { photo } );
 
   const updateAlbum = album => {
     const newOptions = {
@@ -70,11 +69,13 @@ const PhotoGallery = ( ): Node => {
       const newSelection = photosSelectedInAlbum;
       const selectedIndex = photosSelectedInAlbum.indexOf( item );
       newSelection.splice( selectedIndex, 1 );
+      console.log( newSelection.length, "length of new selection in album" );
 
       setSelectedPhotos( {
         ...selectedPhotos,
         [selectedAlbum]: newSelection
       } );
+
       updatePhotoGallery( true );
     }
   };
@@ -106,8 +107,25 @@ const PhotoGallery = ( ): Node => {
 
   const fetchMorePhotos = ( ) => setIsScrolling( true );
 
+  const navToGroupPhotos = ( ) => navigation.navigate( "GroupPhotos" );
+
+  const renderFooter = ( ) => {
+    if ( Object.keys( selectedPhotos ).length > 0 ) {
+      return (
+        <View style={viewStyles.createObsButton}>
+          <RoundGreenButton
+            buttonText="create observations"
+            handlePress={navToGroupPhotos}
+            testID="PhotoGallery.createObsButton"
+          />
+        </View>
+      );
+    }
+    return <></>;
+  };
+
   return (
-    <ViewWithFooter>
+    <ViewNoFooter>
       <PhotoGalleryHeader updateAlbum={updateAlbum} />
       <FlatList
         data={photosByAlbum}
@@ -120,7 +138,8 @@ const PhotoGallery = ( ): Node => {
         testID="PhotoGallery.list"
         ListEmptyComponent={( ) => <ActivityIndicator />}
       />
-    </ViewWithFooter>
+      {renderFooter( )}
+    </ViewNoFooter>
   );
 };
 
