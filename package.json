@@ -7,32 +7,44 @@
     "ios": "react-native run-ios --simulator='iPhone 13'",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepare": "husky install"
   },
   "dependencies": {
+    "@react-native-community/netinfo": "^7.1.7",
+    "@react-native-picker/picker": "^2.2.1",
     "@react-navigation/drawer": "^6.1.8",
+    "@react-navigation/elements": "^1.2.1",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.4",
     "apisauce": "^2.1.2",
+    "axios": "^0.25.0",
     "inaturalistjs": "github:inaturalist/inaturalistjs",
-    "jsonwebtoken": "^8.5.1",
     "react": "17.0.2",
-    "react-native": "0.65.1",
+    "react-native": "0.66.4",
     "react-native-config": "^1.4.5",
+    "react-native-dropdown-picker": "^5.2.3",
+    "react-native-geolocation-service": "^5.3.0-beta.4",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-localize": "^2.1.6",
     "react-native-maps": "^0.29.3",
-    "react-native-reanimated": "^2.2.2",
+    "react-native-modal": "^13.0.0",
+    "react-native-modal-datetime-picker": "^13.0.0",
+    "react-native-permissions": "^3.1.0",
+    "react-native-picker-select": "^8.0.4",
+    "react-native-pure-jwt": "^3.0.0",
+    "react-native-reanimated": "2.3.1",
+    "react-native-render-html": "^6.3.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
     "react-native-sensitive-info": "^6.0.0-alpha.9",
-    "realm": "^10.8.0"
+    "realm": "10.20.0-beta.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
-    "@testing-library/react-native": "^7.2.0",
+    "@testing-library/react-native": "^9.0.0",
     "babel-jest": "^26.6.3",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
@@ -43,11 +55,14 @@
     "eslint-plugin-react": "^7.25.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-react-native": "^3.11.0",
+    "factoria": "^3.2.2",
+    "faker": "^5.5.3",
     "flow-bin": "^0.149.0",
+    "husky": "^7.0.4",
     "jest": "^26.6.3",
-    "jest-fetch-mock": "^3.0.3",
     "metro-react-native-babel-preset": "^0.66.0",
-    "react-native-accessibility-engine": "^0.6.0",
+    "nock": "^13.2.2",
+    "react-native-accessibility-engine": "^0.7.0",
     "react-native-clean-project": "^3.6.7",
     "react-native-codegen": "^0.0.7",
     "react-test-renderer": "17.0.2"
@@ -55,7 +70,10 @@
   "jest": {
     "preset": "react-native",
     "setupFiles": [
-      "<rootDir>/jest.setup.js"
+      "<rootDir>/tests/jest.setup.js"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/node_modules/react-native-accessibility-engine/src/extend-expect.ts"
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?@react-native|react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base)"

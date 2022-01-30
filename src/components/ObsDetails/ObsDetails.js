@@ -5,42 +5,51 @@ import { Text, View, Image, Pressable } from "react-native";
 import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { ScrollView } from "react-native-gesture-handler";
-import { useNavigation, useRoute } from "@react-navigation/core";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { viewStyles, textStyles } from "../../styles/obsDetails";
-// import useFetchObsDetails from "./hooks/fetchObsDetails";
-import useFetchObsDetailsFromRealm from "./hooks/fetchObsFromRealm";
 import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
-import PhotoScroll from "./PhotoScroll";
+import PhotoScroll from "../SharedComponents/PhotoScroll";
 import DataTab from "./DataTab";
+import { useObservation } from "./hooks/useObservation";
+import Taxon from "../../models/Taxon";
+import User from "../../models/User";
 
 const ObsDetails = ( ): Node => {
+  const { params } = useRoute( );
+  const { uuid } = params;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  const { params } = useRoute( );
-  const uuid = params.obsId;
-
-  const observation = useFetchObsDetailsFromRealm( uuid );
-
-  const navToUserProfile = ( ) => navigation.navigate( "UserProfile" );
-
-  const ids = observation && observation.identifications;
-  const photos = observation && observation.photos;
+  const observation = useObservation( uuid );
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
 
   if ( !observation ) { return null; }
 
+
+  const ids = observation.identifications;
+  const photos = observation.observationPhotos;
+  const user = observation.user;
+  const taxon = observation.taxon;
+
+  const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
+  const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
+
   return (
     <ViewWithFooter>
-      <ScrollView>
+      <ScrollView testID={`ObsDetails.${uuid}`} contentContainerStyle={viewStyles.scrollView}>
       <View style={viewStyles.userProfileRow}>
-        <Pressable style={viewStyles.userProfileRow} onPress={navToUserProfile}>
-          <UserIcon uri={observation.userProfilePhoto} />
-          <Text>{`@${observation.userLogin}`}</Text>
+        <Pressable
+          style={viewStyles.userProfileRow}
+          onPress={( ) => navToUserProfile( user.id )}
+          testID="ObsDetails.currentUser"
+          accessibilityRole="link"
+        >
+          <UserIcon uri={User.uri( user )} />
+          <Text>{User.userHandle( user )}</Text>
         </Pressable>
         <Text>{observation.createdAt}</Text>
       </View>
@@ -48,15 +57,21 @@ const ObsDetails = ( ): Node => {
         <PhotoScroll photos={photos} />
       </View>
       <View style={viewStyles.row}>
-        <Image source={{ uri: observation.userPhoto }} style={viewStyles.imageBackground} />
-        <View style={viewStyles.obsDetailsColumn}>
-          <Text style={textStyles.text}>{observation.taxonRank}</Text>
-          <Text style={textStyles.commonNameText}>{observation.commonName}</Text>
-          <Text style={textStyles.scientificNameText}>scientific name</Text>
-        </View>
+        <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />
+        <Pressable
+          style={viewStyles.obsDetailsColumn}
+          onPress={navToTaxonDetails}
+          testID={`ObsDetails.taxon.${taxon.id}`}
+          accessibilityRole="link"
+          accessibilityLabel="go to taxon details"
+        >
+          <Text style={textStyles.text}>{taxon.rank}</Text>
+          <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
+          <Text style={textStyles.scientificNameText}>{taxon.name}</Text>
+        </Pressable>
         <View>
-          <Text style={textStyles.text}>{observation.identificationCount}</Text>
-          <Text style={textStyles.text}>{observation.commentCount}</Text>
+          <Text style={textStyles.text}>{observation.identifications.length}</Text>
+          <Text style={textStyles.text}>{observation.comments.length}</Text>
           <Text style={textStyles.text}>{observation.qualityGrade}</Text>
         </View>
       </View>
@@ -64,16 +79,21 @@ const ObsDetails = ( ): Node => {
       <View style={viewStyles.userProfileRow}>
         <Pressable
           onPress={showActivityTab}
+          accessibilityRole="button"
         >
           <Text style={textStyles.greenButtonText}>ACTIVITY</Text>
         </Pressable>
         <Pressable
           onPress={showDataTab}
+          testID="ObsDetails.DataTab"
+          accessibilityRole="button"
         >
           <Text style={textStyles.greenButtonText}>DATA</Text>
         </Pressable>
       </View>
-      {tab === 0 ? <ActivityTab ids={ids} /> : <DataTab observation={observation} />}
+      {tab === 0
+        ? <ActivityTab ids={ids} navToTaxonDetails={navToTaxonDetails} navToUserProfile={navToUserProfile} />
+        : <DataTab observation={observation} />}
       </ScrollView>
     </ViewWithFooter>
   );

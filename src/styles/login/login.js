@@ -20,7 +20,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  text: {}
+  text: {},
+  error: {
+    color: "#ff0000"
+  }
 } );
 
 export { viewStyles, textStyles };

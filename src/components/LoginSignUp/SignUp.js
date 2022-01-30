@@ -8,9 +8,9 @@ import { viewStyles, textStyles } from "../../styles/login/login";
 import AuthenticationService from "./AuthenticationService";
 
 const SignUp = (): Node => {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState( "" );
+  const [username, setUsername] = useState( "" );
+  const [password, setPassword] = useState( "" );
 
   const register = async () => {
     const error = await AuthenticationService.registerUser(
@@ -19,7 +19,7 @@ const SignUp = (): Node => {
       password
     );
 
-    console.log("Register", error);
+    console.log( "Register", error );
   };
 
   return (

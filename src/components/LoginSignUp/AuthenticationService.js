@@ -4,8 +4,8 @@ import { version } from "../../../package.json";
 import Config from "react-native-config";
 import SInfo from "react-native-sensitive-info";
 import * as RNLocalize from "react-native-localize";
-import jwt from "jsonwebtoken";
 import RNSInfo from "react-native-sensitive-info";
+import { sign } from "react-native-pure-jwt";
 
 const HOST = "https://www.inaturalist.org";
 // const API_HOST = "https://api.inaturalist.org/v1";
@@ -31,36 +31,59 @@ class AuthenticationService {
    * Returns the API access token to be used with all iNaturalist API calls
    *
    * @param useJWT if true, we'll use JSON Web Token instead of the "regular" access token
-   * @returns {Promise<string|*>}
+   * @param allowAnonymousJWTToken (optional=false) if true and user is not logged-in, use anonymous JWT
+   * @returns {Promise<string|*>} access token, null if not logged in
    */
-  static async getAPIToken( useJWT: ?boolean ): Promise<?string> {
+  static async getAPIToken( useJWT: boolean = false,  allowAnonymousJWTToken: boolean = false ): Promise<?string> {
+    let isLoggedIn = await this.isLoggedIn();
+    if ( !isLoggedIn ) {
+      return null;
+    }
+
     if ( useJWT ) {
-      return await this.getJWTToken();
+      return this.getJWTToken( allowAnonymousJWTToken );
     } else {
       const accessToken = await RNSInfo.getItem( "accessToken" );
       return `Bearer ${accessToken}`;
     }
   }
 
-  static getAnonymousJWTToken(): string {
+  /**
+   * Returns the access token to be used in case of an anonymous JWT (e.g. used when getting taxon suggestions)
+   * @returns {Promise<string>}
+   */
+  static async getAnonymousJWTToken(): string {
     const claims = {
       application: "android",
       exp: Date.now() / 1000 + 300
     };
 
-    return jwt.sign( claims, Config.JWT_ANONYMOUS_API_SECRET, {
-      algorithm: "HS512"
+    const hash = await sign( claims, Config.JWT_ANONYMOUS_API_SECRET, {
+      alg: "HS512"
     } );
+
+    return hash;
   }
 
   /**
    * Returns most recent JWT (JSON Web Token) for API authentication - renews the token if necessary
    *
+   * @param allowAnonymousJWTToken (optional=false) if true and user is not logged-in, use anonymous JWT
    * @returns {Promise<string|*>}
    */
-  static async getJWTToken(): Promise<?string> {
+  static async getJWTToken( allowAnonymousJWTToken: boolean = false ): Promise<?string> {
     let jwtToken = await RNSInfo.getItem( "jwtToken" );
     let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration" );
+    if ( jwtTokenExpiration ) {
+      jwtTokenExpiration = parseInt( jwtTokenExpiration );
+    }
+
+    let isLoggedIn = await this.isLoggedIn();
+
+    if ( !isLoggedIn && allowAnonymousJWTToken ) {
+      // User not logged in, and anonymous JWT is allowed - return it
+      return this.getAnonymousJWTToken();
+    }
 
     if (
       !jwtToken ||
@@ -84,7 +107,7 @@ class AuthenticationService {
       jwtTokenExpiration = Date.now();
 
       await SInfo.setItem( "jwtToken", jwtToken );
-      await SInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration );
+      await SInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration.toString() );
 
       return jwtToken;
     } else {
@@ -148,6 +171,7 @@ class AuthenticationService {
       formData.append( "user[preferred_sound_license]", license );
     }
     const locales = RNLocalize.getLocales();
+
     formData.append( "user[locale]", locales[0].languageCode );
     if ( time_zone ) {
       formData.append( "user[time_zone]", time_zone );
@@ -232,6 +256,37 @@ class AuthenticationService {
       accessToken: accessToken,
       username: iNatUsername
     };
+  }
+
+  /**
+   * Returns whether we're currently logged in.
+   *
+   * @returns {Promise<boolean>}
+   */
+  static async isLoggedIn(): Promise<boolean> {
+    const accessToken = await RNSInfo.getItem( "accessToken", {} );
+    return typeof accessToken === "string";
+  }
+
+  /**
+   * Returns the logged-in username
+   *
+   * @returns {Promise<boolean>}
+   */
+  static async getUsername(): Promise<string> {
+    return await RNSInfo.getItem( "username", {} );
+  }
+
+  /**
+   * Signs out the user
+   *
+   * @returns {Promise<void>}
+   */
+  static async signOut() {
+    await SInfo.deleteItem( "jwtToken" );
+    await SInfo.deleteItem( "jwtTokenExpiration" );
+    await SInfo.deleteItem( "username" );
+    await SInfo.deleteItem( "accessToken" );
   }
 }
 

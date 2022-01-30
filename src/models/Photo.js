@@ -1,19 +1,16 @@
 class Photo {
+  static mapApiToRealm( photo ) {
+    return photo;
+  }
+
   static schema = {
     name: "Photo",
-    // need uuid to be primary key for photos that get uploaded?
+    // TODO: need uuid to be primary key for photos that get uploaded?
     properties: {
-      id: "int",
-      attribution: "string",
-      licenseCode: "string",
-      url: "string",
-      // this creates an inverse relationship so photos
-      // automatically keep track of which Observation they are assigned to
-      assignee: {
-        type: "linkingObjects",
-        objectType: "Observation",
-        property: "photos"
-      }
+      id: "int?",
+      attribution: "string?",
+      license_code: { type: "string?", mapTo: "licenseCode" },
+      url: "string?"
     }
   }
 }
