@@ -1,8 +1,5 @@
-import React from "react";
 import nock from "nock";
 import AuthenticationService from "../../../../src/components/LoginSignUp/AuthenticationService";
-import axios from "axios";
-import apisauce from "apisauce";
 
 const USERNAME = "some_user";
 const PASSWORD = "123456";

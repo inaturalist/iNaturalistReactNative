@@ -8,7 +8,6 @@ import RNSInfo from "react-native-sensitive-info";
 import { sign } from "react-native-pure-jwt";
 
 const HOST = "https://www.inaturalist.org";
-// const API_HOST = "https://api.inaturalist.org/v1";
 
 // User agent being used, when calling the iNat APIs
 const USER_AGENT = `iNaturalist/${version} (ReactNative)`;
@@ -75,7 +74,7 @@ class AuthenticationService {
     let jwtToken = await RNSInfo.getItem( "jwtToken" );
     let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration" );
     if ( jwtTokenExpiration ) {
-      jwtTokenExpiration = parseInt( jwtTokenExpiration );
+      jwtTokenExpiration = parseInt( jwtTokenExpiration, 10 );
     }
 
     let isLoggedIn = await this.isLoggedIn();
