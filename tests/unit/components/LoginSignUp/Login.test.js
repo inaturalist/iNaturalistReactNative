@@ -49,7 +49,7 @@ test( "renders login screen (not signed in)", async ( ) => {
 } );
 
 test( "renders login screen and logins", ( ) => {
-  const {getByTestId, findByText, getByText } = renderLogin();
+  const {getByTestId} = renderLogin();
   fireEvent.changeText( getByTestId( "Login.email" ), testUser.email );
   fireEvent.changeText( getByTestId( "Login.password" ), EXPECTED_PASSWORD );
   fireEvent.press( getByTestId( "Login.loginButton" ) );
