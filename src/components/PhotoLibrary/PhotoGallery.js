@@ -69,7 +69,6 @@ const PhotoGallery = ( ): Node => {
       const newSelection = photosSelectedInAlbum;
       const selectedIndex = photosSelectedInAlbum.indexOf( item );
       newSelection.splice( selectedIndex, 1 );
-      console.log( newSelection.length, "length of new selection in album" );
 
       setSelectedPhotos( {
         ...selectedPhotos,

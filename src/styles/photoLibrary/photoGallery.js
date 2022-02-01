@@ -14,11 +14,21 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   centerImages: {
     paddingHorizontal: 20
+  },
+  multiplePhotoTextBackground: {
+    zIndex: 1
   }
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-
+  multiplePhotoText: {
+    color: colors.inatGreen,
+    fontSize: 20,
+    position: "absolute",
+    right: 20,
+    top: 20,
+    backgroundColor: colors.white
+  }
 } );
 
 const galleryImageWidth = width / 4 - 2;

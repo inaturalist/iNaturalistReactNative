@@ -30,6 +30,7 @@ const CameraStackNavigation = ( ): React.Node => (
       <Stack.Screen
         name="GroupPhotos"
         component={GroupPhotos}
+        options={hideHeader}
       />
       <Stack.Screen
         name="ObsEdit"

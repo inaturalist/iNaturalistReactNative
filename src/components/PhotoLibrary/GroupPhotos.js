@@ -1,38 +1,21 @@
 // @flow
 
 import React, { useContext, useState } from "react";
-import { Pressable, Image, FlatList, ActivityIndicator } from "react-native";
+import { Pressable, Image, FlatList, ActivityIndicator, Text, View } from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import useAndroidPermission from "./hooks/useAndroidPermission";
-import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
-// import GroupPhotosHeader from "./GroupPhotosHeader";
+import { imageStyles, viewStyles, textStyles } from "../../styles/photoLibrary/photoGallery";
+import GroupPhotosHeader from "./GroupPhotosHeader";
 import { ObsEditContext } from "../../providers/contexts";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import GroupPhotosFooter from "./GroupPhotosFooter";
 
 const GroupPhotos = ( ): Node => {
   const navigation = useNavigation( );
-  const {
-    selectedPhotos
-  } = useContext( ObsEditContext );
-  const [groupedPhotos, setGroupedPhotos] = useState( [] );
-  // const [photosToGroupOrUngroup, setPhotosToGroupOrUngroup] = useState( [] );
-  // observation 1: 3 photos
-  // observation 2: 2 photos
-  // observation 3: 1 photo
+  const { selectedPhotos } = useContext( ObsEditContext );
 
-  // {
-  //   1: [{}, {}, {}],
-  //   2: [{}, {}],
-  //   3: [{}]
-  // }
-
-  // pass this groupedPhotos object to ObsEdit
-  // or store in provider
-
-  // const navToObsEdit = ( ) => navigation.navigate( "ObsEdit" );
+  const sortByTime = array => array.sort( ( a, b ) => b.timestamp - a.timestamp );
 
   const orderByTimestamp = ( ) => {
     const albums = Object.keys( selectedPhotos );
@@ -41,29 +24,77 @@ const GroupPhotos = ( ): Node => {
       unorderedPhotos = unorderedPhotos.concat( selectedPhotos[album] );
     } );
 
-    return unorderedPhotos.sort( ( a, b ) => {
-      return b.timestamp - a.timestamp;
+    // sort photos from all albums by time
+    const ordered = sortByTime( unorderedPhotos );
+
+    // nest under observationPhotos
+    return ordered.map( photo => {
+      return {
+        observationPhotos: [photo]
+      };
     } );
   };
 
+  const observations = orderByTimestamp( );
+
+  const [photosForObservations, setPhotosForObservations] = useState( {
+    observations
+  } );
+  const [selectedObservations, setSelectedObservations] = useState( [] );
+
+  const updateFlatList = ( rerenderFlatList ) => {
+    setPhotosForObservations( {
+      ...photosForObservations,
+      // there might be a better way to do this, but adding this key forces the FlatList
+      // to rerender anytime an observation is unselected
+      rerenderFlatList
+     } );
+  };
+
+  const selectObservationPhotos = ( isSelected, observation ) => {
+    // select individual observation photos, which can be combined into a single observation
+    // if selecting a combined observation, can separate photos into multiple observations
+    // can a user select more than one combined observation at once?
+    if ( !isSelected ) {
+      const updatedObservations = selectedObservations.concat( observation );
+      setSelectedObservations( updatedObservations );
+      updateFlatList( false );
+    } else {
+      const newSelection = selectedObservations;
+      const selectedIndex = selectedObservations.indexOf( observation );
+      newSelection.splice( selectedIndex, 1 );
+
+      setSelectedObservations( newSelection );
+      updateFlatList( true );
+    }
+  };
+
+  const clearSelection = ( ) => setSelectedObservations( [] );
+
   const renderImage = ( { item } ) => {
-    // const isSelected = photosSelectedInAlbum.some( photo => photo.uri === item.uri );
+    const firstPhoto = item.observationPhotos[0];
+    const isSelected = selectedObservations.includes( item );
+    const hasMultiplePhotos = item.observationPhotos.length > 1;
 
-    // const handlePress = ( ) => selectPhoto( isSelected, item );
-    const handlePress = ( ) => console.log( "handle press in group photos" );
+    const handlePress = ( ) => selectObservationPhotos( isSelected, item );
 
-    const imageUri = { uri: item.uri };
+    const imageUri = firstPhoto && { uri: firstPhoto.uri };
     return (
       <Pressable
         onPress={handlePress}
-        testID={`GroupPhotos.${item.uri}`}
+        testID={`GroupPhotos.${firstPhoto.uri}`}
       >
+        {hasMultiplePhotos && (
+          <View style={viewStyles.multiplePhotoTextBackground}>
+            <Text style={textStyles.multiplePhotoText}>{item.observationPhotos.length}</Text>
+          </View>
+        )}
         <Image
           testID="GroupPhotos.photo"
           source={imageUri}
           style={[
-            imageStyles.imagesForGrouping
-            // isSelected ? imageStyles.selected : null
+            imageStyles.imagesForGrouping,
+            isSelected ? imageStyles.selected : null
           ]}
         />
       </Pressable>
@@ -72,32 +103,95 @@ const GroupPhotos = ( ): Node => {
 
   const extractKey = ( item, index ) => `${item}${index}`;
 
-  const groupPhotos = ( ) => {
-    // this is where the combine photos
-    // separate photos
-    // and delete photos functionality will go
-    // in a picker
-    // it will also include a next button to navigate to obs edit
-    // with multiple observations
-    return <></>;
+  const photos = photosForObservations.observations;
+  const photoSelected = selectedObservations.length > 0;
+
+  // this feels like a lot of convoluted code, but it works
+  const combinePhotos = ( ) => {
+    if ( selectedObservations < 2 ) {
+      return;
+    }
+    // combine selected observations into a single array
+    let combinedPhotos = [];
+    selectedObservations.forEach( obs => {
+      combinedPhotos = combinedPhotos.concat( obs.observationPhotos );
+    } );
+
+    // sort selected observations by timestamp and avoid duplicates
+    const orderedPhotos = [...new Set( sortByTime( combinedPhotos ) ) ];
+    const mostRecentPhoto = orderedPhotos[0];
+
+    let list = photosForObservations.observations;
+
+    const newObsList = { observations: [] };
+
+    // remove selected photos from observations
+    list.forEach( observation => {
+      const obsPhotos = observation.observationPhotos;
+      const mostRecentSelected = obsPhotos.indexOf( mostRecentPhoto );
+      if ( mostRecentSelected !== -1 ) {
+        const newObs = { observationPhotos: orderedPhotos };
+        newObsList.observations.push( newObs );
+      } else {
+        const removeSelectedPhotos = {
+          observationPhotos: []
+        };
+        obsPhotos.forEach( photo => {
+          if ( orderedPhotos.includes( photo ) ) {
+            return;
+          } else {
+            removeSelectedPhotos.observationPhotos.push( photo );
+          }
+          newObsList.observations.push( removeSelectedPhotos );
+        } );
+      }
+    } );
+
+    setPhotosForObservations( newObsList );
+  };
+
+  const separatePhotos = ( ) => {
+    if ( selectedObservations < 2 ) {
+      return;
+    }
+    console.log( "separate photos", photosForObservations );
+  };
+
+  const removePhotos = ( ) => {
+    // not sure what this function is supposed to do
+    console.log( "remove photos" );
+  };
+
+  const navToObsEdit = ( ) => {
+    console.log( "nav to obs edit" );
   };
 
   return (
     <ViewNoFooter>
-      {console.log( selectedPhotos, "selected photos in group photos screen" )}
-      {/* <GroupPhotosHeader /> */}
+      <GroupPhotosHeader
+        photos={observations.length}
+        observations={photos.length}
+        isSelected={photoSelected}
+        clearSelection={clearSelection}
+      />
       <FlatList
         contentContainerStyle={viewStyles.centerImages}
-        data={orderByTimestamp( )}
+        data={photos}
         initialNumToRender={4}
         keyExtractor={extractKey}
         numColumns={2}
         renderItem={renderImage}
-        // onEndReached={fetchMorePhotos}
         testID="GroupPhotos.list"
         ListEmptyComponent={( ) => <ActivityIndicator />}
       />
-      {groupPhotos( )}
+      {photoSelected && (
+        <GroupPhotosFooter
+          combinePhotos={combinePhotos}
+          separatePhotos={separatePhotos}
+          removePhotos={removePhotos}
+          navToObsEdit={navToObsEdit}
+        />
+      )}
     </ViewNoFooter>
   );
 };

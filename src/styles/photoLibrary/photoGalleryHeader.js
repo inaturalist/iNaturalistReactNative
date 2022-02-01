@@ -28,11 +28,18 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   // $FlowFixMe
   inputIOS: pickerText,
   // $FlowFixMe
-  inputAndroid: pickerText
+  inputAndroid: pickerText,
+  footer: {
+    height: 70,
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-
+  header: {
+    marginLeft: 10
+  }
 } );
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
