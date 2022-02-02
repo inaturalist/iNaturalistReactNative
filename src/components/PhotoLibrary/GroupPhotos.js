@@ -13,12 +13,12 @@ import GroupPhotosFooter from "./GroupPhotosFooter";
 
 const GroupPhotos = ( ): Node => {
   const navigation = useNavigation( );
-  const { selectedPhotos } = useContext( ObsEditContext );
+  const { selectedPhotos, setSelectedPhotos } = useContext( ObsEditContext );
+  const albums = Object.keys( selectedPhotos );
 
   const sortByTime = array => array.sort( ( a, b ) => b.timestamp - a.timestamp );
 
   const orderByTimestamp = ( ) => {
-    const albums = Object.keys( selectedPhotos );
     let unorderedPhotos = [];
     albums.forEach( album => {
       unorderedPhotos = unorderedPhotos.concat( selectedPhotos[album] );
@@ -106,11 +106,7 @@ const GroupPhotos = ( ): Node => {
   const photos = photosForObservations.observations;
   const photoSelected = selectedObservations.length > 0;
 
-  // this feels like a lot of convoluted code, but it works
-  const combinePhotos = ( ) => {
-    if ( selectedObservations < 2 ) {
-      return;
-    }
+  const flattenAndOrderSelectedPhotos = ( ) => {
     // combine selected observations into a single array
     let combinedPhotos = [];
     selectedObservations.forEach( obs => {
@@ -118,7 +114,15 @@ const GroupPhotos = ( ): Node => {
     } );
 
     // sort selected observations by timestamp and avoid duplicates
-    const orderedPhotos = [...new Set( sortByTime( combinedPhotos ) ) ];
+    return [...new Set( sortByTime( combinedPhotos ) ) ];
+  };
+
+  // this feels like a lot of convoluted code, but it works
+  const combinePhotos = ( ) => {
+    if ( selectedObservations < 2 ) {
+      return;
+    }
+    const orderedPhotos = flattenAndOrderSelectedPhotos( );
     const mostRecentPhoto = orderedPhotos[0];
 
     let list = photosForObservations.observations;
@@ -158,13 +162,34 @@ const GroupPhotos = ( ): Node => {
   };
 
   const removePhotos = ( ) => {
-    // not sure what this function is supposed to do
-    console.log( "remove photos" );
+    let removedPhotos = [];
+
+    const orderedPhotos = flattenAndOrderSelectedPhotos( );
+
+    // create a list of selected photos in each album, with selected photos removed
+    albums.forEach( album => {
+      removedPhotos = { [album]: selectedPhotos[album].filter( item => !orderedPhotos.includes( item ) ) };
+    } );
+
+    // remove from camera roll screen
+    setSelectedPhotos( removedPhotos );
+    // remove from group photos screen
   };
 
   const navToObsEdit = ( ) => {
     console.log( "nav to obs edit" );
+    // on obs edit, can delete one obs
+
+    // 10 photos, 1 sound per obs
   };
+
+  // cap at 20 photos
+  // max 10 photos per observation
+
+  // animation
+  // in 1.2 second
+  // stay 3-4 seconds
+  // out 1.2 second
 
   return (
     <ViewNoFooter>
