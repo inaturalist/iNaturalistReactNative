@@ -15,6 +15,7 @@ const GroupPhotos = ( ): Node => {
   const navigation = useNavigation( );
   const { selectedPhotos, setSelectedPhotos } = useContext( ObsEditContext );
   const albums = Object.keys( selectedPhotos );
+  console.log( selectedPhotos, "selected photos" );
 
   const sortByTime = array => array.sort( ( a, b ) => b.timestamp - a.timestamp );
 
@@ -162,18 +163,32 @@ const GroupPhotos = ( ): Node => {
   };
 
   const removePhotos = ( ) => {
-    let removedPhotos = [];
+    let removedPhotos = {};
+    let removedFromGroup = [];
 
     const orderedPhotos = flattenAndOrderSelectedPhotos( );
+    const groupedPhotos = photosForObservations.observations;
 
     // create a list of selected photos in each album, with selected photos removed
     albums.forEach( album => {
-      removedPhotos = { [album]: selectedPhotos[album].filter( item => !orderedPhotos.includes( item ) ) };
+      const currentAlbum = selectedPhotos[album];
+      const filteredAlbum = currentAlbum && currentAlbum.filter( item => !orderedPhotos.includes( item ) );
+      removedPhotos.album = filteredAlbum;
     } );
 
     // remove from camera roll screen
     setSelectedPhotos( removedPhotos );
+
+    // create a list of grouped photos, with selected photos removed
+    groupedPhotos.forEach( obs => {
+      const obsPhotos = obs.observationPhotos;
+      const filteredGroupedPhotos = obsPhotos.filter( item => !orderedPhotos.includes( item ) );
+      if ( filteredGroupedPhotos.length > 0 ) {
+        removedFromGroup.push( { observationPhotos: filteredGroupedPhotos } );
+      }
+    } );
     // remove from group photos screen
+    setPhotosForObservations( { observations: removedFromGroup } );
   };
 
   const navToObsEdit = ( ) => {
