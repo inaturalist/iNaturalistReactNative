@@ -15,7 +15,6 @@ const GroupPhotos = ( ): Node => {
   const navigation = useNavigation( );
   const { selectedPhotos, setSelectedPhotos } = useContext( ObsEditContext );
   const albums = Object.keys( selectedPhotos );
-  console.log( selectedPhotos, "selected photos" );
 
   const sortByTime = array => array.sort( ( a, b ) => b.timestamp - a.timestamp );
 
@@ -104,7 +103,7 @@ const GroupPhotos = ( ): Node => {
 
   const extractKey = ( item, index ) => `${item}${index}`;
 
-  const photos = photosForObservations.observations;
+  const groupedPhotos = photosForObservations.observations;
   const photoSelected = selectedObservations.length > 0;
 
   const flattenAndOrderSelectedPhotos = ( ) => {
@@ -118,48 +117,55 @@ const GroupPhotos = ( ): Node => {
     return [...new Set( sortByTime( combinedPhotos ) ) ];
   };
 
-  // this feels like a lot of convoluted code, but it works
   const combinePhotos = ( ) => {
-    if ( selectedObservations < 2 ) {
-      return;
-    }
+    if ( selectedObservations < 2 ) { return; }
+
+    const newObsList = [];
+
     const orderedPhotos = flattenAndOrderSelectedPhotos( );
     const mostRecentPhoto = orderedPhotos[0];
 
-    let list = photosForObservations.observations;
-
-    const newObsList = { observations: [] };
-
     // remove selected photos from observations
-    list.forEach( observation => {
-      const obsPhotos = observation.observationPhotos;
+    groupedPhotos.forEach( obs => {
+      const obsPhotos = obs.observationPhotos;
       const mostRecentSelected = obsPhotos.indexOf( mostRecentPhoto );
+
       if ( mostRecentSelected !== -1 ) {
         const newObs = { observationPhotos: orderedPhotos };
-        newObsList.observations.push( newObs );
+        newObsList.push( newObs );
       } else {
-        const removeSelectedPhotos = {
-          observationPhotos: []
-        };
-        obsPhotos.forEach( photo => {
-          if ( orderedPhotos.includes( photo ) ) {
-            return;
-          } else {
-            removeSelectedPhotos.observationPhotos.push( photo );
-          }
-          newObsList.observations.push( removeSelectedPhotos );
-        } );
+        const filteredPhotos = obsPhotos.filter( item => !orderedPhotos.includes( item ) );
+        if ( filteredPhotos.length > 0 ) {
+          console.log( filteredPhotos, "filteredphotos" );
+          newObsList.push( { observationPhotos: filteredPhotos } );
+        }
       }
     } );
 
-    setPhotosForObservations( newObsList );
+    setPhotosForObservations( { observations: newObsList } );
+    setSelectedObservations( [] );
   };
 
   const separatePhotos = ( ) => {
-    if ( selectedObservations < 2 ) {
-      return;
-    }
-    console.log( "separate photos", photosForObservations );
+    if ( selectedObservations < 2 ) { return; }
+
+    let separatedPhotos = [];
+    const orderedPhotos = flattenAndOrderSelectedPhotos( );
+
+    // create a list of grouped photos, with selected photos split into individual observations
+    groupedPhotos.forEach( obs => {
+      const obsPhotos = obs.observationPhotos;
+      const filteredGroupedPhotos = obsPhotos.filter( item => orderedPhotos.includes( item ) );
+      if ( filteredGroupedPhotos.length > 0 ) {
+        filteredGroupedPhotos.forEach( photo => {
+          separatedPhotos.push( { observationPhotos: [photo] } );
+        } );
+      } else {
+        separatedPhotos.push( obs );
+      }
+    } );
+    setPhotosForObservations( { observations: separatedPhotos } );
+    setSelectedObservations( [] );
   };
 
   const removePhotos = ( ) => {
@@ -167,7 +173,6 @@ const GroupPhotos = ( ): Node => {
     let removedFromGroup = [];
 
     const orderedPhotos = flattenAndOrderSelectedPhotos( );
-    const groupedPhotos = photosForObservations.observations;
 
     // create a list of selected photos in each album, with selected photos removed
     albums.forEach( album => {
@@ -210,13 +215,13 @@ const GroupPhotos = ( ): Node => {
     <ViewNoFooter>
       <GroupPhotosHeader
         photos={observations.length}
-        observations={photos.length}
+        observations={groupedPhotos.length}
         isSelected={photoSelected}
         clearSelection={clearSelection}
       />
       <FlatList
         contentContainerStyle={viewStyles.centerImages}
-        data={photos}
+        data={groupedPhotos}
         initialNumToRender={4}
         keyExtractor={extractKey}
         numColumns={2}
