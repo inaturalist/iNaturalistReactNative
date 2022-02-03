@@ -3,9 +3,9 @@
 import React, { useContext } from "react";
 import { Pressable, Image, FlatList, ActivityIndicator, View } from "react-native";
 import type { Node } from "react";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
-import useAndroidPermission from "./hooks/useAndroidPermission";
+// import useAndroidPermission from "./hooks/useAndroidPermission";
 import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import { PhotoGalleryContext } from "../../providers/contexts";
