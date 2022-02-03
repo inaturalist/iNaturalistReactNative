@@ -1,21 +1,23 @@
 // @flow
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Text, Image, TextInput, Pressable, FlatList } from "react-native";
+import { Text, Image, TextInput, Pressable, FlatList, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
+import { useTranslation } from "react-i18next";
 
 import ScrollWithFooter from "../SharedComponents/ScrollWithFooter";
 import useLocationName from "../../sharedHooks/useLocationName";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import { pickerSelectStyles, textStyles, imageStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
-import iconicTaxaIds from "../../dictionaries/iconicTaxaIds";
+import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
 import { formatDateAndTime, getTimeZone } from "../../sharedHelpers/dateAndTime";
 import Modal from "../SharedComponents/Modal";
 import ObsEditSearch from "./ObsEditSearch";
 
 const ObsEdit = ( ): Node => {
+  const { t } = useTranslation( );
   const [showModal, setModal] = useState( false );
   const [source, setSource] = useState( null );
 
@@ -138,14 +140,17 @@ const ObsEdit = ( ): Node => {
   };
 
 
-  const renderIconicTaxaButton = ( { item } ) => (
-    <Pressable
-      onPress={( ) => updateTaxaId( iconicTaxaIds[item] )}
-      style={viewStyles.iconicTaxaButtons}
-    >
-      <Text>{item}</Text>
-    </Pressable>
-  );
+  const renderIconicTaxaButton = ( { item } ) => {
+    const id = iconicTaxaIds[item];
+    return (
+      <Pressable
+        onPress={( ) => updateTaxaId( id )}
+        style={viewStyles.iconicTaxaButtons}
+      >
+        <Text>{ t( iconicTaxaNames[id] ) }</Text>
+      </Pressable>
+    );
+  };
 
   const showNextObservation = ( ) => setCurrentObservation( currentObservation + 1 );
   const showPrevObservation = ( ) => setCurrentObservation( currentObservation - 1 );
@@ -153,29 +158,29 @@ const ObsEdit = ( ): Node => {
   const renderArrowNavigation = ( ) => {
     if ( obsToEdit.length === 0 ) { return; }
 
-    if ( currentObservation !== 0 ) {
-      return (
-        <Pressable
-          onPress={showPrevObservation}
-        >
-          <Text>previous obs</Text>
-        </Pressable>
-      );
-    }
-    if ( currentObservation !== obsToEdit.length - 1 ) {
-      return (
-        <Pressable
-          onPress={showNextObservation}
-        >
-          <Text>next obs</Text>
-        </Pressable>
-      );
-    }
+    return (
+      <View style={viewStyles.row}>
+        {currentObservation !== 0 && (
+          <Pressable
+            onPress={showPrevObservation}
+          >
+            <Text>previous obs</Text>
+          </Pressable>
+        )}
+        <Text>{`${currentObservation + 1} of ${observations.length}`}</Text>
+        {( currentObservation !== obsToEdit.length - 1 ) && (
+          <Pressable
+            onPress={showNextObservation}
+          >
+            <Text>next obs</Text>
+          </Pressable>
+        )}
+      </View>
+    );
   };
 
   const renderObsPhotos = ( { item } ) => {
     const imageUri = { uri: item.uri };
-    console.log( item, "item in render obs photos" );
     return <Image source={imageUri} style={imageStyles.obsPhoto} testID="ObsEdit.photo" />;
   };
 
@@ -198,7 +203,7 @@ const ObsEdit = ( ): Node => {
         )}
       />
       {renderArrowNavigation( )}
-      <Text style={textStyles.headerText}>1. evidence of organism</Text>
+      <Text style={textStyles.headerText}>{ t( "Evidence" )}</Text>
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
       <FlatList
         data={currentObs.observationPhotos}
@@ -211,7 +216,7 @@ const ObsEdit = ( ): Node => {
       </Text>
       {/* TODO: format date and time */}
       <Text style={textStyles.text} testID="ObsEdit.time">{`Date & time: ${dateAndTime}`}</Text>
-      <Text style={textStyles.headerText}>2. identification</Text>
+      <Text style={textStyles.headerText}>{ t( "Identification" )}</Text>
       {/* TODO: add suggestions screen */}
       <Pressable onPress={navToSuggestionsPage}>
         <Text style={textStyles.text}>view inat id suggestions</Text>
@@ -220,13 +225,15 @@ const ObsEdit = ( ): Node => {
         <Text style={textStyles.text}>tap to search for taxa</Text>
       </Pressable>
       {/* TODO: add iconic taxa with appropriate taxa ids */}
-      <Text style={textStyles.text}>quick add id</Text>
+      <Text style={textStyles.text}>
+        {currentObs.taxon_id && t( iconicTaxaNames[currentObs.taxon_id] )}
+      </Text>
       <FlatList
         data={Object.keys( iconicTaxaIds )}
         horizontal
         renderItem={renderIconicTaxaButton}
       />
-      <Text style={textStyles.headerText}>3. other data:</Text>
+      <Text style={textStyles.headerText}>{ t( "Other-Data" )}</Text>
       <Text style={textStyles.text}>geoprivacy</Text>
       <RNPickerSelect
         onValueChange={updateGeoprivacyStatus}
@@ -243,6 +250,9 @@ const ObsEdit = ( ): Node => {
         style={pickerSelectStyles}
         value={currentObs.captive_flag}
       />
+      <Pressable onPress={searchForProjects}>
+        <Text style={textStyles.text}>tap to add projects</Text>
+      </Pressable>
       <TextInput
         keyboardType="default"
         multiline
@@ -251,9 +261,6 @@ const ObsEdit = ( ): Node => {
         style={textStyles.notes}
         testID="ObsEdit.notes"
       />
-      <Pressable onPress={searchForProjects}>
-        <Text style={textStyles.text}>tap to add projects</Text>
-      </Pressable>
       <RoundGreenButton
         buttonText="upload obs"
         testID="ObsEdit.uploadButton"

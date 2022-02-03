@@ -66,6 +66,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   iconicTaxaButtons: {
     marginHorizontal: 20,
     marginVertical: 20
+  },
+  row: {
+    justifyContent: "center",
+    flexDirection: "row",
+    flexWrap: "nowrap"
   }
 } );
 

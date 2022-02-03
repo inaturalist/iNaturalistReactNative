@@ -14,4 +14,20 @@ const iconicTaxaIds = {
   plants: 47126
 };
 
-export default iconicTaxaIds;
+const iconicTaxaNames = {
+  3: "Birds",
+  20978: "Amphibians",
+  26036: "Reptiles",
+  40151: "Mammals",
+  47178: "Fish",
+  47115: "Mollusks",
+  47158: "Insects",
+  47119: "Arachnids",
+  47170: "Fungi",
+  47126: "Plants"
+};
+
+export {
+  iconicTaxaIds,
+  iconicTaxaNames
+};
