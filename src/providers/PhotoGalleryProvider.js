@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import type { Node } from "react";
 
-import { ObsEditContext } from "./contexts";
+import { PhotoGalleryContext } from "./contexts";
 import usePhotos from "../components/PhotoLibrary/hooks/usePhotos";
 
 type Props = {
@@ -15,7 +15,7 @@ const options = {
   include: ["location"]
 };
 
-const ObsEditProvider = ( { children }: Props ): Node => {
+const PhotoGalleryProvider = ( { children }: Props ): Node => {
   const [photoGallery, setPhotoGallery] = useState( {} );
   const [isScrolling, setIsScrolling] = useState( true );
   const [photoOptions, setPhotoOptions] = useState( options );
@@ -47,7 +47,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     }
   }, [photosFetched, photoGallery, photoOptions, setPhotoGallery] );
 
-  const obsEditValue = {
+  const photoGalleryValue = {
     photoGallery,
     setPhotoGallery,
     isScrolling,
@@ -59,10 +59,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   return (
-    <ObsEditContext.Provider value={obsEditValue}>
+    <PhotoGalleryContext.Provider value={photoGalleryValue}>
       {children}
-    </ObsEditContext.Provider>
+    </PhotoGalleryContext.Provider>
   );
 };
 
-export default ObsEditProvider;
+export default PhotoGalleryProvider;

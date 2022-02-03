@@ -7,13 +7,13 @@ import { useNavigation } from "@react-navigation/native";
 
 import { imageStyles, viewStyles, textStyles } from "../../styles/photoLibrary/photoGallery";
 import GroupPhotosHeader from "./GroupPhotosHeader";
-import { ObsEditContext } from "../../providers/contexts";
+import { PhotoGalleryContext } from "../../providers/contexts";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 
 const GroupPhotos = ( ): Node => {
   const navigation = useNavigation( );
-  const { selectedPhotos, setSelectedPhotos } = useContext( ObsEditContext );
+  const { selectedPhotos, setSelectedPhotos } = useContext( PhotoGalleryContext );
   const albums = Object.keys( selectedPhotos );
 
   const sortByTime = array => array.sort( ( a, b ) => b.timestamp - a.timestamp );
@@ -37,14 +37,14 @@ const GroupPhotos = ( ): Node => {
 
   const observations = orderByTimestamp( );
 
-  const [photosForObservations, setPhotosForObservations] = useState( {
+  const [obsToEdit, setObsToEdit] = useState( {
     observations
   } );
   const [selectedObservations, setSelectedObservations] = useState( [] );
 
   const updateFlatList = ( rerenderFlatList ) => {
-    setPhotosForObservations( {
-      ...photosForObservations,
+    setObsToEdit( {
+      ...obsToEdit,
       // there might be a better way to do this, but adding this key forces the FlatList
       // to rerender anytime an observation is unselected
       rerenderFlatList
@@ -103,7 +103,7 @@ const GroupPhotos = ( ): Node => {
 
   const extractKey = ( item, index ) => `${item}${index}`;
 
-  const groupedPhotos = photosForObservations.observations;
+  const groupedPhotos = obsToEdit.observations;
   const photoSelected = selectedObservations.length > 0;
 
   const flattenAndOrderSelectedPhotos = ( ) => {
@@ -136,13 +136,12 @@ const GroupPhotos = ( ): Node => {
       } else {
         const filteredPhotos = obsPhotos.filter( item => !orderedPhotos.includes( item ) );
         if ( filteredPhotos.length > 0 ) {
-          console.log( filteredPhotos, "filteredphotos" );
           newObsList.push( { observationPhotos: filteredPhotos } );
         }
       }
     } );
 
-    setPhotosForObservations( { observations: newObsList } );
+    setObsToEdit( { observations: newObsList } );
     setSelectedObservations( [] );
   };
 
@@ -164,7 +163,7 @@ const GroupPhotos = ( ): Node => {
         separatedPhotos.push( obs );
       }
     } );
-    setPhotosForObservations( { observations: separatedPhotos } );
+    setObsToEdit( { observations: separatedPhotos } );
     setSelectedObservations( [] );
   };
 
@@ -193,11 +192,11 @@ const GroupPhotos = ( ): Node => {
       }
     } );
     // remove from group photos screen
-    setPhotosForObservations( { observations: removedFromGroup } );
+    setObsToEdit( { observations: removedFromGroup } );
   };
 
   const navToObsEdit = ( ) => {
-    console.log( "nav to obs edit" );
+    navigation.navigate( "ObsEdit", { obsToEdit: obsToEdit.observations } );
     // on obs edit, can delete one obs
 
     // 10 photos, 1 sound per obs
@@ -229,14 +228,12 @@ const GroupPhotos = ( ): Node => {
         testID="GroupPhotos.list"
         ListEmptyComponent={( ) => <ActivityIndicator />}
       />
-      {photoSelected && (
-        <GroupPhotosFooter
-          combinePhotos={combinePhotos}
-          separatePhotos={separatePhotos}
-          removePhotos={removePhotos}
-          navToObsEdit={navToObsEdit}
-        />
-      )}
+      <GroupPhotosFooter
+        combinePhotos={combinePhotos}
+        separatePhotos={separatePhotos}
+        removePhotos={removePhotos}
+        navToObsEdit={navToObsEdit}
+      />
     </ViewNoFooter>
   );
 };

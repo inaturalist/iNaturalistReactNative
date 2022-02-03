@@ -8,7 +8,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import useAndroidPermission from "./hooks/useAndroidPermission";
 import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
-import { ObsEditContext } from "../../providers/contexts";
+import { PhotoGalleryContext } from "../../providers/contexts";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 
@@ -27,7 +27,7 @@ const PhotoGallery = ( ): Node => {
     setPhotoOptions,
     selectedPhotos,
     setSelectedPhotos
-  } = useContext( ObsEditContext );
+  } = useContext( PhotoGalleryContext );
 
   const navigation = useNavigation( );
   // const hasAndroidPermission = useAndroidPermission( );

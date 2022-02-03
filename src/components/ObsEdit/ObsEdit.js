@@ -23,34 +23,47 @@ const ObsEdit = ( ): Node => {
   const closeModal = useCallback( ( ) => setModal( false ), [] );
 
   const { params } = useRoute( );
-  const { photo } = params;
-  const { location } = photo;
+  const { photo, obsToEdit } = params;
+
+  const [observations, setObservations] = useState( [] );
+  const [currentObservation, setCurrentObservation] = useState( 0 );
+
+  const firstPhoto = obsToEdit ? obsToEdit[currentObservation].observationPhotos[0] : photo;
+
+  const { location } = firstPhoto;
   const latitude = location.latitude;
   const longitude = location.longitude;
   const locationName = useLocationName( latitude, longitude );
-  const dateAndTime = formatDateAndTime( photo.timestamp );
+  const dateAndTime = formatDateAndTime( firstPhoto.timestamp );
 
-  // object should look like Seek upload observation:
-  // https://github.com/inaturalist/SeekReactNative/blob/e2df7ca77517e0c4c89f3147dc5a15ed98e31c34/utility/uploadHelpers.js#L198
-  const [observation, setObservation] = useState( {
-    // uuid: generateUUID( ),
-    captive_flag: false,
-    geoprivacy: "open",
-    latitude,
-    longitude,
-    // TODO: we probably want the date time to be translated strings, not date-fns library,
-    // so it will work with all translated languages on iNaturalist
-    observed_on_string: dateAndTime,
-    owners_identification_from_vision_requested: false,
-    photo: {}, // use file uploader
-    // positional_accuracy: number - how to get this from photos?
-    project_ids: [],
-    time_zone: getTimeZone( )
-  } );
-
-  // console.log( observation, "observation in obs edit" );
-
-  const imageUri = { uri: photo.uri };
+  useEffect( ( ) => {
+    // prepare all obs to edit for upload
+    const initialObs = obsToEdit.map( obs => {
+      return {
+        // object should look like Seek upload observation:
+        // https://github.com/inaturalist/SeekReactNative/blob/e2df7ca77517e0c4c89f3147dc5a15ed98e31c34/utility/uploadHelpers.js#L198
+        ...obs,
+            // uuid: generateUUID( ),
+        captive_flag: false,
+        geoprivacy: "open",
+        latitude,
+        longitude,
+        // TODO: we probably want the date time to be translated strings, not date-fns library,
+        // so it will work with all translated languages on iNaturalist
+        observed_on_string: dateAndTime,
+        owners_identification_from_vision_requested: false,
+        // photo: {}, // use file uploader
+        place_guess: locationName || null,
+        positional_accuracy: null,
+        project_ids: [],
+        time_zone: getTimeZone( )
+      };
+    } );
+    // only append keys for upload when screen first loads
+    if ( observations.length === 0 ) {
+      setObservations( initialObs );
+    }
+  }, [obsToEdit, dateAndTime, latitude, longitude, locationName, observations] );
 
   const saveAndUploadObservation = ( ) => console.log( "save obs to realm; try to sync" );
 
@@ -79,43 +92,41 @@ const ObsEdit = ( ): Node => {
 
   const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
 
-  const addNotes = text => {
-    setObservation( {
-      ...observation,
-      description: text
+  const updateObservationKey = ( key, value ) => {
+    const updatedObs = observations.map( ( obs, index ) => {
+      if ( index === currentObservation ) {
+        return {
+          ...obs,
+          [key]: value
+        };
+      } else {
+        return obs;
+      }
     } );
+    setObservations( updatedObs );
   };
 
-  const updateGeoprivacyStatus = value => {
-    setObservation( {
-      ...observation,
-      geoprivacy: value
-    } );
-  };
-
-  const updateCaptiveStatus = value => {
-    setObservation( {
-      ...observation,
-      captive_flag: value
-    } );
-  };
-
-  const updateTaxaId = taxaId => {
-    setObservation( {
-      ...observation,
-      taxon_id: taxaId
-    } );
-  };
+  const addNotes = text => updateObservationKey( "description", text );
+  const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
+  const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
+  const updateTaxaId = taxaId => updateObservationKey( "taxon_id", taxaId );
 
   const updateProjectIds = projectId => {
-    const appendProjectId = observation.project_ids.concat( [projectId] );
-    setObservation( {
-      ...observation,
-      project_ids: appendProjectId
+    const updatedObs = observations.map( ( obs, index ) => {
+      if ( index === currentObservation ) {
+        return {
+          ...obs,
+          project_ids: obs.project_ids.concat( [projectId] )
+        };
+      } else {
+        return obs;
+      }
     } );
+    setObservations( updatedObs );
   };
 
   const navToSuggestionsPage = ( ) => console.log( "nav to suggestions page" );
+
   const searchForTaxa = ( ) => {
     setSource( "taxa" );
     openModal( );
@@ -126,16 +137,6 @@ const ObsEdit = ( ): Node => {
     openModal( );
   };
 
-  useEffect( ( ) => {
-    if ( observation.place_guess ) { return; }
-    if ( locationName ) {
-      setObservation( {
-        ...observation,
-        place_guess: locationName
-      } );
-    }
-  }, [locationName, observation] );
-
 
   const renderIconicTaxaButton = ( { item } ) => (
     <Pressable
@@ -145,6 +146,42 @@ const ObsEdit = ( ): Node => {
       <Text>{item}</Text>
     </Pressable>
   );
+
+  const showNextObservation = ( ) => setCurrentObservation( currentObservation + 1 );
+  const showPrevObservation = ( ) => setCurrentObservation( currentObservation - 1 );
+
+  const renderArrowNavigation = ( ) => {
+    if ( obsToEdit.length === 0 ) { return; }
+
+    if ( currentObservation !== 0 ) {
+      return (
+        <Pressable
+          onPress={showPrevObservation}
+        >
+          <Text>previous obs</Text>
+        </Pressable>
+      );
+    }
+    if ( currentObservation !== obsToEdit.length - 1 ) {
+      return (
+        <Pressable
+          onPress={showNextObservation}
+        >
+          <Text>next obs</Text>
+        </Pressable>
+      );
+    }
+  };
+
+  const renderObsPhotos = ( { item } ) => {
+    const imageUri = { uri: item.uri };
+    console.log( item, "item in render obs photos" );
+    return <Image source={imageUri} style={imageStyles.obsPhoto} testID="ObsEdit.photo" />;
+  };
+
+  const currentObs = observations[currentObservation];
+
+  if ( !currentObs ) { return null; }
 
   return (
     <ScrollWithFooter>
@@ -160,15 +197,18 @@ const ObsEdit = ( ): Node => {
           />
         )}
       />
+      {renderArrowNavigation( )}
       <Text style={textStyles.headerText}>1. evidence of organism</Text>
-      {/* TODO: support multiple photo upload here -
-      allow user to tap back to photo gallery screen and add additional photos
-      while saving the observation state
-      */}
-      {/* TODO: allow user to tap into bigger version of photo? */}
-      <Image source={imageUri} style={imageStyles.obsPhoto} testID="ObsEdit.photo" />
+      {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
+      <FlatList
+        data={currentObs.observationPhotos}
+        horizontal
+        renderItem={renderObsPhotos}
+      />
       <Text style={textStyles.text}>{locationName}</Text>
-      <Text style={textStyles.text}>{`Lat: ${formatDecimal( latitude )}, Lon: ${formatDecimal( longitude )}`}</Text>
+      <Text style={textStyles.text}>
+        {`Lat: ${formatDecimal( latitude )}, Lon: ${formatDecimal( longitude )}, Acc: ${currentObs.positional_accuracy}`}
+      </Text>
       {/* TODO: format date and time */}
       <Text style={textStyles.text} testID="ObsEdit.time">{`Date & time: ${dateAndTime}`}</Text>
       <Text style={textStyles.headerText}>2. identification</Text>
@@ -193,7 +233,7 @@ const ObsEdit = ( ): Node => {
         items={geoprivacyOptions}
         useNativeAndroidPickerStyle={false}
         style={pickerSelectStyles}
-        value={observation.geoprivacy}
+        value={currentObs.geoprivacy}
       />
       <Text style={textStyles.text}>is the organism wild?</Text>
       <RNPickerSelect
@@ -201,7 +241,7 @@ const ObsEdit = ( ): Node => {
         items={captiveOptions}
         useNativeAndroidPickerStyle={false}
         style={pickerSelectStyles}
-        value={observation.captive_flag}
+        value={currentObs.captive_flag}
       />
       <TextInput
         keyboardType="default"
@@ -211,7 +251,6 @@ const ObsEdit = ( ): Node => {
         style={textStyles.notes}
         testID="ObsEdit.notes"
       />
-      {/* TODO: allow search for projects and add multiple project ids */}
       <Pressable onPress={searchForProjects}>
         <Text style={textStyles.text}>tap to add projects</Text>
       </Pressable>
