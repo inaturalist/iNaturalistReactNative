@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { Text, Image, TextInput, Pressable, FlatList, View } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
+import { HeaderBackButton } from "@react-navigation/elements";
 
 import ScrollWithFooter from "../SharedComponents/ScrollWithFooter";
 import useLocationName from "../../sharedHooks/useLocationName";
@@ -17,6 +18,7 @@ import Modal from "../SharedComponents/Modal";
 import ObsEditSearch from "./ObsEditSearch";
 
 const ObsEdit = ( ): Node => {
+  const navigation = useNavigation( );
   const { t } = useTranslation( );
   const [showModal, setModal] = useState( false );
   const [source, setSource] = useState( null );
@@ -160,21 +162,25 @@ const ObsEdit = ( ): Node => {
 
     return (
       <View style={viewStyles.row}>
-        {currentObservation !== 0 && (
-          <Pressable
-            onPress={showPrevObservation}
-          >
-            <Text>previous obs</Text>
-          </Pressable>
-        )}
-        <Text>{`${currentObservation + 1} of ${observations.length}`}</Text>
-        {( currentObservation !== obsToEdit.length - 1 ) && (
-          <Pressable
-            onPress={showNextObservation}
-          >
-            <Text>next obs</Text>
-          </Pressable>
-        )}
+        <HeaderBackButton onPress={( ) => navigation.goBack( )} />
+        <View style={viewStyles.row}>
+          {currentObservation !== 0 && (
+            <Pressable
+              onPress={showPrevObservation}
+            >
+              <Text>previous obs</Text>
+            </Pressable>
+          )}
+          <Text>{`${currentObservation + 1} of ${observations.length}`}</Text>
+          {( currentObservation !== obsToEdit.length - 1 ) && (
+            <Pressable
+              onPress={showNextObservation}
+            >
+              <Text>next obs</Text>
+            </Pressable>
+          )}
+        </View>
+        <View />
       </View>
     );
   };

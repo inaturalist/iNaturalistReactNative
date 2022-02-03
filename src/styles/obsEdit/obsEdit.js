@@ -68,7 +68,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     marginVertical: 20
   },
   row: {
-    justifyContent: "center",
+    justifyContent: "space-between",
     flexDirection: "row",
     flexWrap: "nowrap"
   }

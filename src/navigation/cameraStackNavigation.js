@@ -11,26 +11,20 @@ import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 
 const Stack = createNativeStackNavigator( );
 
-const screenOptions = {
-  headerShown: true
-};
-
 const hideHeader = {
   headerShown: false
 };
 
 const CameraStackNavigation = ( ): React.Node => (
   <PhotoGalleryProvider>
-    <Stack.Navigator screenOptions={screenOptions}>
+    <Stack.Navigator screenOptions={hideHeader}>
       <Stack.Screen
         name="PhotoGallery"
         component={PhotoGallery}
-        options={hideHeader}
       />
       <Stack.Screen
         name="GroupPhotos"
         component={GroupPhotos}
-        options={hideHeader}
       />
       <Stack.Screen
         name="ObsEdit"
