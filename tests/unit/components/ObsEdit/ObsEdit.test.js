@@ -9,6 +9,12 @@ const mockPhoto = factory( "DevicePhoto" );
 
 const mockLocationName = "San Francisco, CA";
 
+const mockGroupedPhotos = [{
+  observationPhotos: [
+    mockPhoto
+  ]
+}];
+
 jest.mock( "../../../../src/sharedHooks/useLocationName" , ( ) => ( {
   __esModule: true,
   default: ( ) => {
@@ -22,7 +28,8 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useRoute: ( ) => ( {
       params: {
-        photo: mockPhoto
+        photo: mockPhoto,
+        obsToEdit: mockGroupedPhotos
       }
     } )
   };
