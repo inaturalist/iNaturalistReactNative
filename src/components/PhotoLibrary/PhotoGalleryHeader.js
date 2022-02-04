@@ -28,6 +28,8 @@ const PhotoGalleryHeader = ( { updateAlbum }: Props ): Node => {
   // was on last, not ObsList every time
   const navBack = ( ) => navigation.goBack( );
 
+  console.log( albums, "albums header" );
+
   return (
     <View style={viewStyles.header}>
       <Pressable

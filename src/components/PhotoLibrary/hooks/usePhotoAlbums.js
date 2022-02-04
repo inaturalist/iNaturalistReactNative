@@ -5,7 +5,8 @@ import CameraRoll from "@react-native-community/cameraroll";
 
 const cameraRoll = [{
   label: "camera roll",
-  value: "All"
+  value: "All",
+  key: "camera roll"
 }];
 
 const usePhotoAlbums = ( ): Array<Object> => {
@@ -20,10 +21,9 @@ const usePhotoAlbums = ( ): Array<Object> => {
         const albums = await CameraRoll.getAlbums( { assetType: "Photos" } );
 
         if ( albums && albums.length > 0 ) { // attempt to fix error on android
-          // TODO: change this to map
           albums.forEach( ( { count, title } ) => {
             if ( count > 0 && title !== "Screenshots" ) { // remove screenshots from gallery
-              names.push( { label: title.toLocaleUpperCase( ), value: title } );
+              names.push( { label: title.toLocaleUpperCase( ), value: title, key: title } );
             }
           } );
         }
