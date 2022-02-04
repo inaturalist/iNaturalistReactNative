@@ -14,8 +14,6 @@ const ProjectDetails = ( ): React.Node => {
   const { id } = params;
   const project = useProjectDetails( id );
 
-  console.log( id, "project details id" );
-
   return (
     <ViewWithFooter>
         <ImageBackground

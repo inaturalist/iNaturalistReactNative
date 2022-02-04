@@ -45,3 +45,11 @@ jest.mock( "react-native-geolocation-service", ( ) => {
 } );
 
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
+
+jest.mock( "react-i18next", () => ( {
+  useTranslation: () => ( {t: key => key} )
+} ) );
+
+jest.mock( "react-native-localize", () => ( {
+  getTimeZone: ( ) => "Europe/Paris" // the timezone you want
+} ) );

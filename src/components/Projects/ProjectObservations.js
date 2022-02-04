@@ -17,7 +17,6 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
   const navToObsDetails = observation => navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
 
   const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} uri="project" />;
-  console.log( observations, "obs in project observations" );
   return (
     <FlatList
       data={observations}

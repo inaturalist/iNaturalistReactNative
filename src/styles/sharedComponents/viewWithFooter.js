@@ -9,6 +9,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   safeAreaContainer: {
     flex: 1,
     backgroundColor: colors.white
+  },
+  scrollPadding: {
+    paddingBottom: 140
   }
 } );
 
