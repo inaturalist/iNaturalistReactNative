@@ -4,6 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import factory from "../../../factory";
 import PhotoGallery from "../../../../src/components/PhotoLibrary/PhotoGallery";
+import PhotoGalleryProvider from "../../../../src/providers/PhotoGalleryProvider";
+// import { PhotoGalleryContext } from "../../../../src/providers/contexts";
 
 const mockPhoto = factory( "DevicePhoto" );
 
@@ -11,6 +13,13 @@ jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotos", ( ) => ( {
   __esModule: true,
   default: ( ) => {
     return [mockPhoto];
+  }
+} ) );
+
+jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotoAlbums", ( ) => ( {
+  __esModule: true,
+  default: ( ) => {
+    return ["All"];
   }
 } ) );
 
@@ -26,9 +35,20 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+// const mockPhotoGalleryProviderWithPhotos = selectedPhotos =>
+//   PhotoGalleryProvider.mockImplementation( ( { children }: Props ): Node => (
+//     <PhotoGalleryContext.Provider value={{
+//       selectedPhotos
+//     }}>
+//       {children}
+//     </PhotoGalleryContext.Provider>
+//   ) );
+
 const renderPhotoGallery = ( ) => render(
   <NavigationContainer>
-    <PhotoGallery />
+    <PhotoGalleryProvider>
+      <PhotoGallery />
+    </PhotoGalleryProvider>
   </NavigationContainer>
 );
 
@@ -45,9 +65,4 @@ test( "renders photos from photo gallery", ( ) => {
 test.todo( "should not have accessibility errors" );
 
 
-test( "navigates to Obs Edit when photo is selected", ( ) => {
-  const { getByTestId } = renderPhotoGallery( );
-
-  fireEvent.press( getByTestId( `PhotoGallery.${mockPhoto.uri}` ) );
-  expect( mockedNavigate ).toHaveBeenCalledWith( "ObsEdit", { photo: mockPhoto } );
-} );
+test.todo( "navigates to GroupPhotos when photo is selected" );
