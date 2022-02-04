@@ -64,8 +64,7 @@ test.todo( "only makes one concurrent request for observations at a time" );
 test( "should not have accessibility errors", async ( ) => {
   const observations = [factory( "RemoteObservation" )];
   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
-  const { getByTestId, debug } = await renderObsList( );
+  const { getByTestId } = await renderObsList( );
   const obsList = getByTestId( "ObsList.myObservations" );
-  // debug( );
   expect( ( ) => AccessibilityEngine.check( obsList ) ).not.toThrow();
 } );
