@@ -10,6 +10,15 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     alignItems: "center",
     justifyContent: "space-between",
     marginVertical: 70
+  },
+  recordButtonRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+  playbackButton: {
+    marginRight: 30
   }
 } );
 
