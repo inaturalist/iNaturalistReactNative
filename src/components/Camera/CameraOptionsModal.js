@@ -13,13 +13,15 @@ type Props = {
 const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   const navigation = useNavigation( );
 
-  // access nested screen
-  const navToPhotoGallery = ( ) => {
-    navigation.navigate( "camera", {
-      screen: "PhotoGallery"
-    } );
+  const navAndCloseModal = ( screen ) => {
+    // access nested screen
+    navigation.navigate( "camera", { screen } );
     closeModal( );
-};
+  };
+
+  const navToPhotoGallery = ( ) => navAndCloseModal( "PhotoGallery" );
+
+  const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 
   return (
     <View>
@@ -29,7 +31,11 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
       >
         <Text style={textStyles.whiteText}>upload photo from gallery</Text>
       </Pressable>
-      <Text style={textStyles.whiteText}>record a sound</Text>
+      <Pressable
+        onPress={navToSoundRecorder}
+      >
+        <Text style={textStyles.whiteText}>record a sound</Text>
+      </Pressable>
       <Text style={textStyles.whiteText}>submit without evidence</Text>
     </View>
   );

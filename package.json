@@ -26,6 +26,7 @@
     "react": "17.0.2",
     "react-i18next": "^11.15.3",
     "react-native": "0.65.1",
+    "react-native-audio-recorder-player": "^3.3.0",
     "react-native-dropdown-picker": "^5.2.3",
     "react-native-geocoder": "^0.5.0",
     "react-native-geolocation-service": "^5.3.0-beta.4",

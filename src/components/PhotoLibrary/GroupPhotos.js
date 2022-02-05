@@ -101,7 +101,7 @@ const GroupPhotos = ( ): Node => {
     );
   };
 
-  const extractKey = ( item, index ) => `${item}${index}`;
+  const extractKey = ( item, index ) => `${item.observationPhotos[0].uri}${index}`;
 
   const groupedPhotos = obsToEdit.observations;
   const photoSelected = selectedObservations.length > 0;
@@ -118,7 +118,7 @@ const GroupPhotos = ( ): Node => {
   };
 
   const combinePhotos = ( ) => {
-    if ( selectedObservations < 2 ) { return; }
+    if ( selectedObservations.length < 2 ) { return; }
 
     const newObsList = [];
 
@@ -146,7 +146,7 @@ const GroupPhotos = ( ): Node => {
   };
 
   const separatePhotos = ( ) => {
-    if ( selectedObservations < 2 ) { return; }
+    if ( selectedObservations.length < 2 ) { return; }
 
     let separatedPhotos = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( );

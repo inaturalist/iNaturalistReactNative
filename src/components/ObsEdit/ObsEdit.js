@@ -101,6 +101,7 @@ const ObsEdit = ( ): Node => {
       if ( index === currentObservation ) {
         return {
           ...obs,
+          // $FlowFixMe
           [key]: value
         };
       } else {
