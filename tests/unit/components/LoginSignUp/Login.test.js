@@ -35,28 +35,24 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const renderLogin = ( ) => render(
+const renderLogin = async ( ) => render(
   <NavigationContainer>
     <Login />
   </NavigationContainer>
 );
 
 test( "renders login screen (not signed in)", async ( ) => {
-  await waitFor( ( ) => {
-    const {getByTestId} = renderLogin();
-    expect( getByTestId( "Login.loginButton" ) ).toBeTruthy();
-  } );
+  const {getByTestId} = renderLogin();
+  expect( getByTestId( "Login.loginButton" ) ).toBeTruthy();
 } );
 
-test( "renders login screen and logins", ( ) => {
-  const {getByTestId} = renderLogin();
-  fireEvent.changeText( getByTestId( "Login.email" ), testUser.email );
-  fireEvent.changeText( getByTestId( "Login.password" ), EXPECTED_PASSWORD );
-  fireEvent.press( getByTestId( "Login.loginButton" ) );
-  /*
+test( "renders login screen and logins", async ( ) => {
+  const {getByTestId, getByText} = renderLogin();
   await waitFor( () => {
+    fireEvent.changeText( getByTestId( "Login.email" ), testUser.email );
+    fireEvent.changeText( getByTestId( "Login.password" ), EXPECTED_PASSWORD );
+    fireEvent.press( getByTestId( "Login.loginButton" ) );
     expect( getByTestId( "Login.loggedInAs" ) ).toBeInTheDOM();
-    //expect( getByText( `Logged in as: ${testUser.login}` ) ).toBeInTheDOM();
+    expect( getByText( `Logged in as: ${testUser.login}` ) ).toBeInTheDOM();
   } );
-   */
 } );

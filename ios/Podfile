@@ -18,8 +18,6 @@ target 'iNaturalistReactNative' do
 
   pod 'react-native-config', :path => '../node_modules/react-native-config'
 
-  pod 'react-native-pure-jwt', :path => '../node_modules/react-native-pure-jwt'
-
   pod 'RNLocalize', :path => '../node_modules/react-native-localize'
 
   target 'iNaturalistReactNativeTests' do

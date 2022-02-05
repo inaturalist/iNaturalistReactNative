@@ -5,23 +5,31 @@ import {Button, Text, TextInput, View} from "react-native";
 import type { Node } from "react";
 
 import { viewStyles, textStyles } from "../../styles/login/login";
-import AuthenticationService from "./AuthenticationService";
+import { isLoggedIn, authenticateUser, getUsername, signOut } from "./AuthenticationService";
 
 const Login = (): Node => {
   const [email, setEmail] = useState( "" );
   const [password, setPassword] = useState( "" );
-  const [isLoggedIn, setIsLoggedIn] = useState( false );
+  const [loggedIn, setLoggedIn] = useState( false );
   const [error, setError] = useState( null );
   const [username, setUsername] = useState( null );
 
   useEffect( () => {
-    AuthenticationService.isLoggedIn().then( ( loggedIn ) => {
-      setIsLoggedIn( loggedIn );
+    let isCurrent = true;
+
+    isLoggedIn().then( ( result ) => {
+      if ( !isCurrent ) {return;}
+
+      setLoggedIn( result );
     } );
+
+    return ( ) => {
+      isCurrent = false;
+    };
   }, [] );
 
   const login = async () => {
-    const success = await AuthenticationService.authenticateUser(
+    const success = await authenticateUser(
       email,
       password
     );
@@ -31,20 +39,18 @@ const Login = (): Node => {
       return;
     }
 
-    setUsername( await AuthenticationService.getUsername() );
-    setIsLoggedIn( true );
+    setUsername( await getUsername() );
+    setLoggedIn( true );
   };
 
-  /*
-  const signOut = () => {
-    await AuthenticationService.signOut();
-    setIsLoggedIn( false );
+  const onSignOut = async () => {
+    await signOut();
+    setLoggedIn( false );
   };
-   */
 
   return (
     <View>
-      {!isLoggedIn ? (
+      {!loggedIn ? (
         <>
           <Text style={textStyles.text}>Login</Text>
 
@@ -71,11 +77,11 @@ const Login = (): Node => {
       ) : (
         <>
           <Text style={textStyles.text} testID="Login.loggedInAs">Logged in as: {username}</Text>
+          <Button title="Sign out" onPress={onSignOut} testID="Login.signOutButton" />
         </>
       )}
     </View>
   );
-  //<Button title="Sign out" onPress={signOut} testID="Login.signOutButton" />
 };
 
 export default Login;

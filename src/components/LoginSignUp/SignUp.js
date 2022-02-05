@@ -5,7 +5,7 @@ import { Button, Text, TextInput, View } from "react-native";
 import type { Node } from "react";
 
 import { viewStyles, textStyles } from "../../styles/login/login";
-import AuthenticationService from "./AuthenticationService";
+import { registerUser } from "./AuthenticationService";
 
 const SignUp = (): Node => {
   const [email, setEmail] = useState( "" );
@@ -13,7 +13,7 @@ const SignUp = (): Node => {
   const [password, setPassword] = useState( "" );
 
   const register = async () => {
-    const error = await AuthenticationService.registerUser(
+    const error = await registerUser(
       email,
       username,
       password

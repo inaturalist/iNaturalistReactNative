@@ -1,5 +1,6 @@
 import "react-native-gesture-handler/jestSetup";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js";
+import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 
 // this resolves error with importing file after Jest environment is torn down
 // https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
@@ -34,6 +35,9 @@ jest.mock( "../src/models/index", ( ) => {
 jest.mock( "react-native-localize", () => {
   return jest.requireActual( "react-native-localize/mock" );
 } );
+
+
+jest.mock( "react-native-device-info", () => mockRNDeviceInfo );
 
 jest.mock( "react-native-sensitive-info", () => {
   class RNSInfo {
@@ -125,3 +129,18 @@ jest.mock( "react-native-geolocation-service", ( ) => {
 } );
 
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
+
+// Make apisauce work with nock
+jest.mock( "apisauce", ( ) => ( {
+  create: ( config ) => {
+    let axiosInstance = jest.requireActual( "axios" ).create( config );
+    const apisauce = jest.requireActual( "apisauce" );
+    return apisauce.create( { ...config, axiosInstance } );
+  }
+} ) );
+
+// FormData isn't available in the testing environment
+function FormDataMock() {
+  this.append = jest.fn();
+}
+global.FormData = FormDataMock;
