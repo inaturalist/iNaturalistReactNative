@@ -1,5 +1,4 @@
 PODS:
-  - Base64 (1.1.2)
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
@@ -73,11 +72,9 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
-  - JWT (3.0.0-beta.12):
-    - Base64 (~> 1.1.2)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.180)
-  - Permission-LocationWhenInUse (3.2.0):
+  - Permission-LocationWhenInUse (3.1.0):
     - RNPermissions
   - RCT-Folly (2021.06.28.00-v2):
     - boost
@@ -283,13 +280,10 @@ PODS:
     - React-Core
   - react-native-geolocation-service (5.3.0-beta.4):
     - React
-  - react-native-maps (0.29.4):
+  - react-native-maps (0.29.3):
     - React-Core
   - react-native-netinfo (7.1.7):
     - React-Core
-  - react-native-pure-jwt (3.0.0):
-    - JWT (= 3.0.0-beta.12)
-    - React
   - react-native-safe-area-context (3.3.2):
     - React-Core
   - react-native-sensitive-info (6.0.0-alpha.9):
@@ -363,11 +357,13 @@ PODS:
     - React
   - RNCPicker (2.2.1):
     - React-Core
+  - RNDeviceInfo (8.4.9):
+    - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNLocalize (2.1.7):
     - React-Core
-  - RNPermissions (3.2.0):
+  - RNPermissions (3.1.0):
     - React-Core
   - RNReanimated (2.3.1):
     - DoubleConversion
@@ -397,7 +393,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.10.2):
+  - RNScreens (3.8.0):
     - React-Core
     - React-RCTImage
   - Yoga (1.14.0)
@@ -450,7 +446,6 @@ DEPENDENCIES:
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
-  - react-native-pure-jwt (from `../node_modules/react-native-pure-jwt`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sensitive-info (from `../node_modules/react-native-sensitive-info`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -467,6 +462,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RealmJS (from `../node_modules/realm`)
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
@@ -476,7 +472,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Base64
     - CocoaAsyncSocket
     - Flipper
     - Flipper-Boost-iOSX
@@ -488,7 +483,6 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - fmt
-    - JWT
     - libevent
     - OpenSSL-Universal
     - YogaKit
@@ -538,8 +532,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
-  react-native-pure-jwt:
-    :path: "../node_modules/react-native-pure-jwt"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-sensitive-info:
@@ -572,6 +564,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/realm"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNLocalize:
@@ -586,7 +580,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
@@ -603,10 +596,9 @@ SPEC CHECKSUMS:
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
-  JWT: 9b5c05abbcc1a0e69c3c91e1655b3387fc7e581d
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
-  Permission-LocationWhenInUse: 13de9a01e006cb53a6ac3c9f8d1ab6cc98318d9c
+  Permission-LocationWhenInUse: d98db702ec75e93a3ff94bc297d0b66ea04231e1
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: 4bf86c70714490bca4bf2696148638284622644b
   RCTTypeSafety: c475a7059eb77935fa53d2c17db299893f057d5d
@@ -621,9 +613,8 @@ SPEC CHECKSUMS:
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-geolocation-service: c0efb872258ed9240f1003a70fca9e9757e5c785
-  react-native-maps: a421fe6aeb74279597c4ea9598f25796108e2d89
+  react-native-maps: 41d01d8e0afcebe32bec9eea3bd945adc1b18f7a
   react-native-netinfo: 27f287f2d191693f3b9d01a4273137fcf91c3b5d
-  react-native-pure-jwt: 5b2e4fda2ec4c64be542bbe957adf88d6ea73d72
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
@@ -640,14 +631,15 @@ SPEC CHECKSUMS:
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
   RealmJS: 74cf2dec0a20e7ca75655b5190eb60c062d106ec
   RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
+  RNDeviceInfo: 4944cf8787b9c5bffaf301fda68cc1a2ec003341
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNLocalize: f567ea0e35116a641cdffe6683b0d212d568f32a
-  RNPermissions: f7ebe52db07c00901127966ca080b4ec6a6ceb0a
+  RNPermissions: 4b54095940aea8c03fa3e6c92d4ac3647b31ed4e
   RNReanimated: da3860204e5660c0dd66739936732197d359d753
-  RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
+  RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b0be3b888a378b74fc213f8d490607b2ec81ada6
+PODFILE CHECKSUM: 71d64b9e0c0b0f64e853445b3dd7ea00c78f64bc
 
 COCOAPODS: 1.11.2
