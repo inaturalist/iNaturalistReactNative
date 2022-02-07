@@ -3,6 +3,7 @@
 ## Install packages and pods
 1. Run `npm install`
 2. Run `npx pod-install ios` or `cd ios && pod install` from the root directory
+3. Make sure to place the `.env` file in the root folder, which is not part of the code repo (contains secrets, such as OAuth client ID).
 
 ## Set up pre-commit hooks
 1. We're using [Husky](https://typicode.github.io/husky/#/) to automatically run `eslint` before each commit. Run `npm run prepare` to install Husky locally.

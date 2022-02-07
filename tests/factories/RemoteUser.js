@@ -2,6 +2,7 @@ import { define } from "factoria";
 
 export default define( "RemoteUser", faker => ( {
   login: faker.internet.userName( ),
+  email: faker.internet.email( ),
   id: faker.datatype.number( ),
   icon_url: faker.image.imageUrl( ),
   roles: [

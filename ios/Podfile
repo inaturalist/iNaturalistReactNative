@@ -16,6 +16,10 @@ target 'iNaturalistReactNative' do
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
 
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
+
+  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
+
   target 'iNaturalistReactNativeTests' do
     inherit! :complete
     # Pods for testing

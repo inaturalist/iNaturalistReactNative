@@ -8,6 +8,7 @@ import PlaceholderComponent from "../components/PlaceholderComponent";
 import MyObservationsStackNavigator from "./myObservationsStackNavigation";
 import ExploreStackNavigator from "./exploreStackNavigation";
 import Search from "../components/Search/Search";
+import Login from "../components/LoginSignUp/Login";
 import ProjectsStackNavigation from "./projectsStackNavigation";
 import CameraStackNavigation from "./cameraStackNavigation";
 
@@ -48,6 +49,7 @@ const App = ( ): React.Node => (
       <Drawer.Screen name="about" component={PlaceholderComponent} />
       <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
       <Drawer.Screen name="settings" component={PlaceholderComponent} />
+      <Drawer.Screen name="login" component={Login} />
       <Drawer.Screen name="logout" component={PlaceholderComponent} />
       <Drawer.Screen
         name="camera"
