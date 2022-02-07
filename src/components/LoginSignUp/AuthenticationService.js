@@ -43,7 +43,7 @@ const getAPIToken = async ( useJWT: boolean = false,  allowAnonymousJWTToken: bo
   if ( useJWT ) {
     return getJWTToken( allowAnonymousJWTToken );
   } else {
-    const accessToken = await RNSInfo.getItem( "accessToken" );
+    const accessToken = await RNSInfo.getItem( "accessToken", {} );
     return `Bearer ${accessToken}`;
   }
 };
@@ -69,7 +69,7 @@ const getAnonymousJWTToken = () => {
  */
 const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ) => {
   let jwtToken = await RNSInfo.getItem( "jwtToken" );
-  let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration" );
+  let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration", {} );
   if ( jwtTokenExpiration ) {
     jwtTokenExpiration = parseInt( jwtTokenExpiration, 10 );
   }
@@ -87,7 +87,7 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ) => {
   ) {
     // JWT Tokens expire after 30 mins - if the token is non-existent or older than 25 mins (safe margin) - ask for a new one
 
-    const accessToken = await RNSInfo.getItem( "accessToken" );
+    const accessToken = await RNSInfo.getItem( "accessToken", {} );
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     const response = await api.get( "/users/api_token.json" );
 

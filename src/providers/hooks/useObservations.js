@@ -6,9 +6,8 @@ import Realm from "realm";
 
 import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
-import Taxon from "../../models/Taxon";
-import User from "../../models/User";
 import { FIELDS } from "../helpers";
+import { getUsername } from "../../components/LoginSignUp/AuthenticationService";
 
 const useObservations = ( ): boolean => {
   const [loading, setLoading] = useState( false );
@@ -43,24 +42,10 @@ const useObservations = ( ): boolean => {
     results.forEach( obs => {
       const newObs = Observation.createObservationForRealm( obs, realm );
       realm?.write( ( ) => {
-        const existingObs = realm.objectForPrimaryKey( "Observation", obs.uuid );
-        if ( existingObs !== undefined ) {
-          // TODO: modify existing objects when syncing from inatjs
-          return;
-        }
-        realm?.create( "Observation", newObs );
-        // need to append Taxon object to identifications after the Observation object
-        // has been created with its own Taxon object, otherwise will run into errors
-        // with realm trying to create a Taxon object with an existing primary key
-        obs.identifications.forEach( id => {
-          const identification = realm.objectForPrimaryKey( "Identification", id.uuid );
-          identification.taxon = Taxon.mapApiToRealm( id.taxon, realm );
-        } );
-        // append User object here, otherwise run into errors with realm trying to create
-        // User with existing primary key
-        // the user will be the same for every observation
-        const newlyCreatedObs = realm.objectForPrimaryKey( "Observation", obs.uuid );
-        newlyCreatedObs.user = User.mapApiToRealm( obs.user, realm );
+        // To upsert an object, call Realm.create() with the update mode set
+        // to modified. The operation either inserts a new object with the given primary key
+        // or updates an existing object that already has that primary key.
+        realm?.create( "Observation", newObs, "modified" );
       } );
     } );
     setLoading( false );
@@ -69,11 +54,11 @@ const useObservations = ( ): boolean => {
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchObservations = async ( ) => {
+      const userLogin = await getUsername( );
       setLoading( true );
       try {
-        const testUser = "albullington";
         const params = {
-          user_login: testUser,
+          user_id: userLogin,
           per_page: 100,
           fields: FIELDS
         };
