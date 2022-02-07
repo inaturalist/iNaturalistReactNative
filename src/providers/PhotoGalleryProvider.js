@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import type { Node } from "react";
 
 import { PhotoGalleryContext } from "./contexts";
-import usePhotos from "../components/PhotoLibrary/hooks/usePhotos";
+import usePhotos from "../../components/PhotoLibrary/hooks/usePhotos";
 
 type Props = {
   children: any
