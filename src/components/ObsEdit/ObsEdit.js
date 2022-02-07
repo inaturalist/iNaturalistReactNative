@@ -203,6 +203,7 @@ const ObsEdit = ( ): Node => {
         modal={(
           <ObsEditSearch
             closeModal={closeModal}
+            // $FlowFixMe
             source={source}
             updateTaxaId={updateTaxaId}
             updateProjectIds={updateProjectIds}

@@ -10,6 +10,7 @@ import AudioRecorderPlayer, {
   // AudioEncoderAndroidType,
   // AudioSet,
   // AudioSourceAndroidType
+  // $FlowFixMe
  } from "react-native-audio-recorder-player";
  import type { Node } from "react";
  import { useTranslation } from "react-i18next";
@@ -44,10 +45,9 @@ const SoundRecorder = ( ): Node => {
 
   const startRecording = async ( ) => {
     try {
-      const audioFile = await audioRecorderPlayer.startRecorder( null, false, true );
+      const audioFile = await audioRecorderPlayer.startRecorder( null, null, true );
       setStatus( "recording" );
       audioRecorderPlayer.addRecordBackListener( ( e ) => {
-        console.log( e, "event start recording" );
         setSound( {
           ...sound,
           recordSecs: e.currentPosition,
@@ -64,14 +64,14 @@ const SoundRecorder = ( ): Node => {
     }
   };
 
-  const pauseRecording = async ( ) => {
-    try {
-      await audioRecorderPlayer.pauseRecorder( );
-      setStatus( "paused" );
-    } catch ( e ) {
-      console.log( "couldn't pause sound recorder:", e );
-    }
-  };
+  // const pauseRecording = async ( ) => {
+  //   try {
+  //     await audioRecorderPlayer.pauseRecorder( );
+  //     setStatus( "paused" );
+  //   } catch ( e ) {
+  //     console.log( "couldn't pause sound recorder:", e );
+  //   }
+  // };
 
   const resumeRecording = async ( ) => {
     try {
@@ -120,8 +120,6 @@ const SoundRecorder = ( ): Node => {
     audioRecorderPlayer.removePlayBackListener( );
     setStatus( "paused" );
   };
-
-  // console.log( uri, sound, "audio file" );
 
   const renderHelpText = ( ) => {
     if ( status === "notStarted" ) {
@@ -195,6 +193,7 @@ const SoundRecorder = ( ): Node => {
           <Text style={[textStyles.alignCenter, textStyles.duration]}>{sound.recordTime}</Text>
         </View>
         <View>
+          {/* TODO: add visualization for sound recording */}
           <Text>insert visualization here</Text>
         </View>
         <View>

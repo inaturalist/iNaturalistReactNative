@@ -34,7 +34,7 @@ const createAPI = ( additionalHeaders: any ) => {
  * @param allowAnonymousJWTToken (optional=false) if true and user is not logged-in, use anonymous JWT
  * @returns {Promise<string|*>} access token, null if not logged in
  */
-const getAPIToken = async ( useJWT: boolean = false,  allowAnonymousJWTToken: boolean = false ) => {
+const getAPIToken = async ( useJWT: boolean = false,  allowAnonymousJWTToken: boolean = false ): Promise<any> => {
   let loggedIn = await isLoggedIn();
   if ( !loggedIn ) {
     return null;
@@ -122,7 +122,7 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ) => {
 const authenticateUser = async (
   username: string,
   password: string
-) => {
+): Promise<boolean> => {
   const userDetails = await verifyCredentials( username, password );
 
   if ( !userDetails ) {
@@ -153,7 +153,7 @@ const registerUser = async (
   password: string,
   license: void | string,
   time_zone: void | string
-) => {
+): Promise<any> => {
   const formData = new FormData();
   formData.append( "username", username );
   formData.append( "user[email]", email );
@@ -259,7 +259,7 @@ const verifyCredentials = async (
  *
  * @returns {Promise<boolean>}
  */
-const isLoggedIn = async () => {
+const isLoggedIn = async (): Promise<boolean> => {
   const accessToken = await RNSInfo.getItem( "accessToken", {} );
   return typeof accessToken === "string";
 };
@@ -269,7 +269,7 @@ const isLoggedIn = async () => {
  *
  * @returns {Promise<boolean>}
  */
-const getUsername = async () => {
+const getUsername = async (): Promise<string> => {
   return await RNSInfo.getItem( "username", {} );
 };
 
