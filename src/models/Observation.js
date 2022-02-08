@@ -93,6 +93,7 @@ class Observation {
       latitude: "double?",
       longitude: "double?",
       observationPhotos: "ObservationPhoto[]",
+      observationSounds: "ObservationSound[]",
       place_guess: { type: "string?", mapTo: "placeGuess" },
       quality_grade: { type: "string?", mapTo: "qualityGrade" },
       taxon: "Taxon?",

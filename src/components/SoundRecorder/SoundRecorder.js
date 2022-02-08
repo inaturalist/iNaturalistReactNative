@@ -14,6 +14,7 @@ import AudioRecorderPlayer, {
  } from "react-native-audio-recorder-player";
  import type { Node } from "react";
  import { useTranslation } from "react-i18next";
+ import { useNavigation } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder";
@@ -22,6 +23,7 @@ import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder
 const audioRecorderPlayer = new AudioRecorderPlayer( );
 
 const SoundRecorder = ( ): Node => {
+  const navigation = useNavigation( );
   const { t } = useTranslation( );
   // TODO: add Android permissions
   // https://www.npmjs.com/package/react-native-audio-recorder-player
@@ -185,6 +187,11 @@ const SoundRecorder = ( ): Node => {
     }
   };
 
+  const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { obsToEdit: [{
+      observationSounds: uri
+    }]
+  } );
+
   return (
     <ViewWithFooter>
       <View style={viewStyles.center}>
@@ -201,14 +208,14 @@ const SoundRecorder = ( ): Node => {
           <View style={viewStyles.recordButtonRow}>
             {renderPlaybackButton( )}
             {renderRecordButton( )}
+            <Pressable
+              onPress={navToObsEdit}
+            >
+              <Text>{ t( "Finish" )}</Text>
+            </Pressable>
           </View>
         </View>
       </View>
-      <Pressable
-        onPress={( ) => console.log( "nav to obs edit" )}
-      >
-        <Text>{ t( "Finish" )}</Text>
-      </Pressable>
     </ViewWithFooter>
   );
 };

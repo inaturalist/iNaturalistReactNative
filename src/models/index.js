@@ -4,6 +4,7 @@ import Comment from "./Comment";
 import Identification from "./Identification";
 import Observation from "./Observation";
 import ObservationPhoto from "./ObservationPhoto";
+import ObservationSound from "./ObservationSound";
 import Photo from "./Photo";
 import Taxon from "./Taxon";
 import User from "./User";
@@ -14,11 +15,12 @@ export default {
     Identification,
     Observation,
     ObservationPhoto,
+    ObservationSound,
     Photo,
     Taxon,
     User
   ],
-  schemaVersion: 5,
+  schemaVersion: 6,
   path: "db.realm",
   migration: ( oldRealm: any, newRealm: any ) => {
     if ( oldRealm.schemaVersion < 3 ) {

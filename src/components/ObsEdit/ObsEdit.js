@@ -28,17 +28,28 @@ const ObsEdit = ( ): Node => {
 
   const { params } = useRoute( );
   const { photo, obsToEdit } = params;
+  console.log( obsToEdit, "sound uri" );
 
   const [observations, setObservations] = useState( [] );
   const [currentObservation, setCurrentObservation] = useState( 0 );
 
-  const firstPhoto = obsToEdit ? obsToEdit[currentObservation].observationPhotos[0] : photo;
+  const setFirstPhoto = ( ) => {
+    if ( obsToEdit && obsToEdit[currentObservation]
+      && obsToEdit[currentObservation].observationPhotos ) {
+        return obsToEdit[currentObservation].observationPhotos[0];
+    } else if ( photo ) {
+      return photo;
+    }
+    return null;
+  };
 
-  const { location } = firstPhoto;
-  const latitude = location.latitude;
-  const longitude = location.longitude;
+  const firstPhoto = setFirstPhoto( );
+
+  const location = ( firstPhoto && firstPhoto.location ) || null;
+  const latitude = ( location && location.latitude ) || null;
+  const longitude = ( location && location.longitude ) || null;
   const locationName = useLocationName( latitude, longitude );
-  const dateAndTime = formatDateAndTime( firstPhoto.timestamp );
+  const dateAndTime = ( firstPhoto && formatDateAndTime( firstPhoto.timestamp ) ) || null;
 
   useEffect( ( ) => {
     // prepare all obs to edit for upload
@@ -193,6 +204,20 @@ const ObsEdit = ( ): Node => {
 
   const currentObs = observations[currentObservation];
 
+  const renderEvidenceList = ( ) => {
+    if ( currentObs.observationPhotos ) {
+      return (
+        <FlatList
+          data={currentObs.observationPhotos}
+          horizontal
+          renderItem={renderObsPhotos}
+        />
+      );
+    } else if ( currentObs.observationSounds ) {
+      return <Text>display sound recording</Text>;
+    }
+  };
+
   if ( !currentObs ) { return null; }
 
   return (
@@ -213,11 +238,7 @@ const ObsEdit = ( ): Node => {
       {renderArrowNavigation( )}
       <Text style={textStyles.headerText}>{ t( "Evidence" )}</Text>
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
-      <FlatList
-        data={currentObs.observationPhotos}
-        horizontal
-        renderItem={renderObsPhotos}
-      />
+      {renderEvidenceList( )}
       <Text style={textStyles.text}>{locationName}</Text>
       <Text style={textStyles.text}>
         {`Lat: ${formatDecimal( latitude )}, Lon: ${formatDecimal( longitude )}, Acc: ${currentObs.positional_accuracy}`}
