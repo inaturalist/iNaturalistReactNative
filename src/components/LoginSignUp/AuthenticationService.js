@@ -68,7 +68,7 @@ const getAnonymousJWTToken = () => {
  * @returns {Promise<string|*>}
  */
 const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ) => {
-  let jwtToken = await RNSInfo.getItem( "jwtToken" );
+  let jwtToken = await RNSInfo.getItem( "jwtToken", {} );
   let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration", {} );
   if ( jwtTokenExpiration ) {
     jwtTokenExpiration = parseInt( jwtTokenExpiration, 10 );
@@ -102,8 +102,8 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ) => {
     jwtToken = response.data.api_token;
     jwtTokenExpiration = Date.now();
 
-    await SInfo.setItem( "jwtToken", jwtToken );
-    await SInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration.toString() );
+    await SInfo.setItem( "jwtToken", jwtToken, {} );
+    await SInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration.toString(), {} );
 
     return jwtToken;
   } else {
@@ -291,5 +291,6 @@ export {
   getAPIToken,
   isLoggedIn,
   getUsername,
-  signOut
+  signOut,
+  getJWTToken
 };
