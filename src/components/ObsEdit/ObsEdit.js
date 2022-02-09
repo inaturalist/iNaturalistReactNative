@@ -7,6 +7,7 @@ import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
+import inatjs, { FileUpload } from "inaturalistjs";
 
 import ScrollWithFooter from "../SharedComponents/ScrollWithFooter";
 import useLocationName from "../../sharedHooks/useLocationName";
@@ -16,6 +17,7 @@ import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds
 import { formatDateAndTime, getTimeZone } from "../../sharedHelpers/dateAndTime";
 import Modal from "../SharedComponents/Modal";
 import ObsEditSearch from "./ObsEditSearch";
+import { getJWTToken } from "../LoginSignUp/AuthenticationService";
 
 const ObsEdit = ( ): Node => {
   const navigation = useNavigation( );
@@ -28,7 +30,6 @@ const ObsEdit = ( ): Node => {
 
   const { params } = useRoute( );
   const { photo, obsToEdit } = params;
-  console.log( obsToEdit, "sound uri" );
 
   const [observations, setObservations] = useState( [] );
   const [currentObservation, setCurrentObservation] = useState( 0 );
@@ -218,6 +219,28 @@ const ObsEdit = ( ): Node => {
     }
   };
 
+  const uploadObservation = async ( ) => {
+    try {
+      // TODO: get JWT token from staging api, not production
+      const apiToken = await getJWTToken( );
+      const obsToUpload = observations[currentObservation];
+
+      const uploadParams = {
+        observation: obsToUpload
+      };
+
+      const options = {
+        api_token: apiToken
+      };
+
+      const response = await inatjs.observations.create( uploadParams, options );
+      const { id } = response[0];
+      console.log( id, "id for uploaded obs" );
+    } catch ( e ) {
+      console.log( JSON.stringify( e.response.status ), "couldn't upload observation" );
+    }
+  };
+
   if ( !currentObs ) { return null; }
 
   return (
@@ -293,7 +316,7 @@ const ObsEdit = ( ): Node => {
       <RoundGreenButton
         buttonText="upload obs"
         testID="ObsEdit.uploadButton"
-        handlePress={saveAndUploadObservation}
+        handlePress={uploadObservation}
       />
     </ScrollWithFooter>
   );

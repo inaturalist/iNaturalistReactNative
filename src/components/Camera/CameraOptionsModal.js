@@ -23,9 +23,15 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 
+  const navToNormalCamera = ( ) => navAndCloseModal( "NormalCamera" );
+
   return (
     <View>
-      <Text style={textStyles.whiteText}>take photo with camera</Text>
+       <Pressable
+        onPress={navToNormalCamera}
+      >
+        <Text style={textStyles.whiteText}>take photo with camera</Text>
+      </Pressable>
       <Pressable
         onPress={navToPhotoGallery}
       >

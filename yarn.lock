@@ -7091,6 +7091,11 @@
   "resolved" "https://registry.npmjs.org/react-native-sensitive-info/-/react-native-sensitive-info-6.0.0-alpha.9.tgz"
   "version" "6.0.0-alpha.9"
 
+"react-native-vision-camera@^2.12.0":
+  "integrity" "sha512-sc6h1OS8Xei/w6roeHix7bcJC6ml8fW+w1slWxQDYYsch1tb65xflMVQ71SNjyE9FN3KyrojLEqZqgN4iDzL9g=="
+  "resolved" "https://registry.npmjs.org/react-native-vision-camera/-/react-native-vision-camera-2.12.0.tgz"
+  "version" "2.12.0"
+
 "react-native-web@^0.13":
   "integrity" "sha512-WR/0ECAmwLQ2+2cL2Ur+0/swXFAtcSM0URoADJmG6D4MnY+wGc91JO8LoOTlgY0USBOY+qG/beRrjFa+RAuOiA=="
   "resolved" "https://registry.npmjs.org/react-native-web/-/react-native-web-0.13.18.tgz"
