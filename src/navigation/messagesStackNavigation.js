@@ -14,9 +14,9 @@ const screenOptions = {
   headerShown: true
 };
 
-const showBackButton = ( { navigation } ) => ( {
-  headerLeft: ( ) => <HeaderBackButton onPress={( ) => navigation.goBack( )} />
-} );
+// TODO const showBackButton = ( { navigation } ) => ( {
+//   headerLeft: ( ) => <HeaderBackButton onPress={( ) => navigation.goBack( )} />
+// } );
 
 const MessagesStackNavigation = ( ): React.Node => (
   // Provider needs to wrap the whole navigator, because a navigator can't have a

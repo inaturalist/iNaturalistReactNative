@@ -7,7 +7,7 @@ import Realm from "realm";
 import realmConfig from "../../models/index";
 import Message from "../../models/Message";
 import User from "../../models/User";
-import { FIELDS } from "../helpers";
+import { MESSAGE_FIELDS } from "../helpers";
 
 const useMessages = ( ): boolean => {
   const [loading, setLoading] = useState( false );
@@ -50,9 +50,9 @@ const useMessages = ( ): boolean => {
         realm?.create( "Message", newMsg );
         // append User object here, otherwise run into errors with realm trying to create
         // User with existing primary key
-        // the user will be the same for every //TODO observation
+        // the user will be the same for every observation //Q does this relate to messages?
         const newlyCreatedMsg = realm.objectForPrimaryKey( "Message", msg.uuid );
-        //Q users?
+        //Q why do we need this special treatment for users and is this right?
         newlyCreatedMsg.fromUser = User.mapApiToRealm( msg.from_user, realm );
         newlyCreatedMsg.toUser = User.mapApiToRealm( msg.to_user, realm );
       } );
@@ -69,7 +69,7 @@ const useMessages = ( ): boolean => {
         const params = {
           user_login: testUser,
           per_page: 100,
-          fields: FIELDS
+          fields: MESSAGE_FIELDS
         };
         const response = await inatjs.messages.search( params );
         const results = response.results;

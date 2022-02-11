@@ -1,10 +1,12 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, Pressable, Text, Image } from "react-native";
-//TODO import { useNavigation } from "@react-navigation/native";
+// TODO import { FlatList, Pressable, Text, Image } from "react-native";
+import { FlatList, Text } from "react-native";
+// TODO import { useNavigation } from "@react-navigation/native";
 
-import { imageStyles, viewStyles, textStyles } from "../../styles/projects/projects"; //TODO
+// TODO import { imageStyles, viewStyles, textStyles } from "../../styles/projects/projects"; 
+import { textStyles } from "../../styles/projects/projects";  // TODO need to style
 
 type Props = {
   loading: boolean,
@@ -17,10 +19,10 @@ const MessageList = ( {
   messageList,
   testID
 }: Props ): React.Node => {
-  //TODO const navigation = useNavigation( );
+  // TODO const navigation = useNavigation( );
 
   const renderMessages = ( { item } ) => {
-    //TODO const navToProjectDetails = ( ) => navigation.navigate( "ProjectDetails", { id: item.id } );
+    // TODO const navToProjectDetails = ( ) => navigation.navigate( "ProjectDetails", { id: item.id } );
     return (
       // TODO <Pressable
       //   onPress={navToProjectDetails}

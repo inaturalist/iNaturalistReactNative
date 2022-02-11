@@ -52,6 +52,13 @@ const OBSERVATION_PHOTOS_FIELDS = {
   uuid: true
 };
 
+const MESSAGE_FIELDS = {
+  subject: true,
+  body: true,
+  from_user: USER_FIELDS,
+  to_user: USER_FIELDS
+};
+
 const FIELDS = {
   comments: COMMENT_FIELDS,
   created_at: true,
@@ -70,5 +77,6 @@ const FIELDS = {
 };
 
 export {
-  FIELDS
+  FIELDS,
+  MESSAGE_FIELDS
 };

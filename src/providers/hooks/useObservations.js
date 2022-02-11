@@ -73,7 +73,7 @@ const useObservations = ( ): boolean => {
       try {
         const testUser = "albullington";
         const params = {
-          user_login: testUser,
+          user_id: testUser,
           per_page: 100,
           fields: FIELDS
         };
