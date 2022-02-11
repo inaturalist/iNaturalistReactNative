@@ -38,7 +38,7 @@ const MessageList = ( {
     <FlatList
       data={messageList}
       renderItem={renderMessages}
-      testID="Message.list"
+      testID="Message.list" //Q: Is this for automated testing?  How should I use?
     />
   );
 };
