@@ -8,9 +8,11 @@ import type { Node } from "react";
 import { viewStyles } from "../../styles/camera/normalCamera";
 
 const NormalCamera = ( ): Node => {
+  // $FlowFixMe
   const camera = useRef<Camera>( null );
+  const [cameraPosition, setCameraPosition] = useState( "back" );
   const devices = useCameraDevices( "wide-angle-camera" );
-  const device = devices.back;
+  const device = devices[cameraPosition];
   const [takePhotoOptions, setTakePhotoOptions] = useState( {
     flash: "off"
   } );
@@ -36,6 +38,11 @@ const NormalCamera = ( ): Node => {
     } );
   };
 
+  const flipCamera = ( ) => {
+    const newPosition = cameraPosition === "back" ? "front" : "back";
+    setCameraPosition( newPosition );
+  };
+
   // TODO: add Android permissions
   if ( device == null ) { return null;}
   return (
@@ -50,7 +57,7 @@ const NormalCamera = ( ): Node => {
         />
       )}
       <Pressable
-        style={viewStyles.captureButton}
+        style={viewStyles.flashButton}
         onPress={toggleFlash}
       >
           <Text>flash</Text>
@@ -60,6 +67,12 @@ const NormalCamera = ( ): Node => {
         onPress={takePhoto}
       >
           <Text>camera capture</Text>
+      </Pressable>
+      <Pressable
+        style={viewStyles.cameraFlipButton}
+        onPress={flipCamera}
+      >
+          <Text>flip camera</Text>
       </Pressable>
     </View>
   );

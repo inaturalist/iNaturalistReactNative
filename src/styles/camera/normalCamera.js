@@ -5,15 +5,29 @@ import { StyleSheet } from "react-native";
 import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "../global";
 
+const buttonRow = {
+  position: "absolute",
+  bottom: 75
+};
+
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   container: {
     flex: 1,
     backgroundColor: colors.black
   },
   captureButton: {
-    position: "absolute",
-    alignSelf: "center",
-    bottom: 75
+    ...buttonRow,
+    alignSelf: "center"
+  },
+  flashButton: {
+    ...buttonRow,
+    alignSelf: "flex-start",
+    left: 50
+  },
+  cameraFlipButton: {
+    ...buttonRow,
+    alignSelf: "flex-end",
+    right: 50
   }
 } );
 
