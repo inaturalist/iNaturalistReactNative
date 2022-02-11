@@ -6,6 +6,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import PlaceholderComponent from "../components/PlaceholderComponent";
 import MyObservationsStackNavigator from "./myObservationsStackNavigation";
+import MessagesStackNavigator from "./messagesStackNavigation";
 import ExploreStackNavigator from "./exploreStackNavigation";
 import Search from "../components/Search/Search";
 import Login from "../components/LoginSignUp/Login";
@@ -36,6 +37,11 @@ const App = ( ): React.Node => (
         options={hideHeader}
       />
       <Drawer.Screen name="missions/seen nearby" component={PlaceholderComponent} />
+      <Drawer.Screen
+        name="messages"
+        component={MessagesStackNavigator}
+        options={hideHeader}
+      />
       <Drawer.Screen name="search" component={Search} />
       <Drawer.Screen name="identify" component={PlaceholderComponent} />
       <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />

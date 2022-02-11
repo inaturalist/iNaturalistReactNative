@@ -7,6 +7,7 @@ import ObservationPhoto from "./ObservationPhoto";
 import Photo from "./Photo";
 import Taxon from "./Taxon";
 import User from "./User";
+import Message from "./Message";
 
 export default {
   schema: [
@@ -16,7 +17,8 @@ export default {
     ObservationPhoto,
     Photo,
     Taxon,
-    User
+    User,
+    Message
   ],
   schemaVersion: 5,
   path: "db.realm",
