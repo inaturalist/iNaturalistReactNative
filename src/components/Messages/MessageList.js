@@ -5,7 +5,7 @@ import * as React from "react";
 import { FlatList, Text } from "react-native";
 // TODO import { useNavigation } from "@react-navigation/native";
 
-// TODO import { imageStyles, viewStyles, textStyles } from "../../styles/projects/projects"; 
+// TODO import { imageStyles, viewStyles, textStyles } from "../../styles/projects/projects";
 import { textStyles } from "../../styles/projects/projects";  // TODO need to style
 
 type Props = {
