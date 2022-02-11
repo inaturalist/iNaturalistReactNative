@@ -28,6 +28,13 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     ...buttonRow,
     alignSelf: "flex-end",
     right: 50
+  },
+  tapToFocusSquare: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: colors.white
   }
 } );
 

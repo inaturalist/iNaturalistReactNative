@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useRef, useState, useEffect } from "react";
-import { Text, StyleSheet, View, Pressable } from "react-native";
+import { Text, StyleSheet, View, Pressable, Animated } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
 import { PinchGestureHandler, PinchGestureHandlerGestureEvent, TapGestureHandler } from "react-native-gesture-handler";
@@ -10,6 +10,10 @@ import { useIsFocused } from "@react-navigation/core";
 
 import { viewStyles } from "../../styles/camera/normalCamera";
 import { useIsForeground } from "./hooks/useIsForeground";
+import FocusSquare from "./FocusSquare";
+
+// a lot of the camera functionality (pinch to zoom, etc.) is lifted from the example library:
+// https://github.com/mrousavy/react-native-vision-camera/blob/7335883969c9102b8a6d14ca7ed871f3de7e1389/example/src/CameraPage.tsx
 
 const SCALE_FULL_ZOOM = 3;
 
@@ -28,6 +32,8 @@ const NormalCamera = ( ): Node => {
     flash: "off"
   } );
   const zoom = useSharedValue( 0 );
+  const [tappedCoordinates, setTappedCoordinates] = useState( null );
+  const tapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
 
   // check if camera page is active
   const isFocused = useIsFocused( );
@@ -73,7 +79,7 @@ const NormalCamera = ( ): Node => {
 
     //#region Effects
     const neutralZoom = device?.neutralZoom ?? 1;
-    useEffect( () => {
+    useEffect( ( ) => {
       // Run everytime the neutralZoomScaled value changes. (reset zoom when device changes)
       zoom.value = neutralZoom;
     }, [neutralZoom, zoom] );
@@ -94,6 +100,16 @@ const NormalCamera = ( ): Node => {
   } );
   //#endregion
 
+  const tapToFocus = async ( { nativeEvent } ) => {
+    try {
+      await camera.current.focus( { x: nativeEvent.x, y: nativeEvent.y } );
+      tapToFocusAnimation.setValue( 1 );
+      setTappedCoordinates( nativeEvent );
+    } catch ( e ) {
+      console.log( e, "couldn't tap to focus" );
+    }
+  };
+
   // TODO: add Android permissions
   if ( device == null ) { return null;}
   return (
@@ -101,17 +117,23 @@ const NormalCamera = ( ): Node => {
       {device !== null && (
         <PinchGestureHandler onGestureEvent={onPinchGesture} enabled={isActive}>
           <Reanimated.View style={StyleSheet.absoluteFill}>
-          <ReanimatedCamera
-            ref={camera}
-            style={StyleSheet.absoluteFill}
-            device={device}
-            isActive
-            photo
-            animatedProps={cameraAnimatedProps}
-          />
+            <TapGestureHandler onHandlerStateChange={tapToFocus} numberOfTaps={1}>
+              <ReanimatedCamera
+                ref={camera}
+                style={StyleSheet.absoluteFill}
+                device={device}
+                isActive={isActive}
+                photo
+                animatedProps={cameraAnimatedProps}
+              />
+            </TapGestureHandler>
           </Reanimated.View>
         </PinchGestureHandler>
       )}
+      <FocusSquare
+        tapToFocusAnimation={tapToFocusAnimation}
+        tappedCoordinates={tappedCoordinates}
+      />
       <Pressable
         style={viewStyles.flashButton}
         onPress={toggleFlash}
