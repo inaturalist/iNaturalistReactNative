@@ -1,7 +1,5 @@
 class User {
   static mapApiToRealm( user, realm ) {
-    const existingUser = realm && realm.objectForPrimaryKey( "User", user.id );
-    if ( existingUser ) { return existingUser; }
     return user;
   }
 

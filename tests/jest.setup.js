@@ -135,7 +135,11 @@ jest.mock( "react-i18next", () => ( {
 } ) );
 
 jest.mock( "react-native-localize", () => ( {
-  getTimeZone: ( ) => "Europe/Paris" // the timezone you want
+  getTimeZone: ( ) => "Europe/Paris", // the timezone you want
+  getLocales: ( ) => [
+    { countryCode: "NL", languageTag: "nl-NL", languageCode: "nl", isRTL: false },
+    { countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false }
+	]
 } ) );
 
 // Make apisauce work with nock

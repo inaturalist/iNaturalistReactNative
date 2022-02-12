@@ -50,7 +50,6 @@ const App = ( ): React.Node => (
       <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
       <Drawer.Screen name="settings" component={PlaceholderComponent} />
       <Drawer.Screen name="login" component={Login} />
-      <Drawer.Screen name="logout" component={PlaceholderComponent} />
       <Drawer.Screen
         name="camera"
         component={CameraStackNavigation}

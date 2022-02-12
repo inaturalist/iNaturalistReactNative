@@ -13,12 +13,9 @@ class Identification {
   static mapApiToRealm( id, realm ) {
     const newId = {
       ...id,
+      taxon: Taxon.mapApiToRealm( id.taxon ),
       user: User.mapApiToRealm( id.user, realm )
     };
-    // need to append Taxon object to identifications after the Observation object
-    // has been created with its own Taxon object, otherwise will run into errors
-    // with realm trying to create a Taxon object with an existing primary key
-    delete newId.taxon;
     return newId;
   }
 

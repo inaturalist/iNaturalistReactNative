@@ -26,6 +26,7 @@ const ID_FIELDS = {
   disagreement: true,
   taxon: TAXON_FIELDS,
   updated_at: true,
+  // $FlowFixMe
   user: Object.assign( { }, USER_FIELDS, { id: true } ),
   uuid: true,
   vision: true
