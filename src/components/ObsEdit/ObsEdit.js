@@ -7,7 +7,7 @@ import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
-import inatjs, { FileUpload } from "inaturalistjs";
+import inatjs from "inaturalistjs";
 
 import ScrollWithFooter from "../SharedComponents/ScrollWithFooter";
 import useLocationName from "../../sharedHooks/useLocationName";
@@ -45,12 +45,23 @@ const ObsEdit = ( ): Node => {
   };
 
   const firstPhoto = setFirstPhoto( );
+  console.log( firstPhoto, "first" );
+
+  const setDateAndTime = ( ) => {
+    if ( firstPhoto && firstPhoto.timestamp ) {
+      return formatDateAndTime( firstPhoto.timestamp );
+    }
+    if ( firstPhoto && firstPhoto.DateTimeOriginal ) {
+      return firstPhoto.DateTimeOriginal;
+    }
+    return null;
+  };
 
   const location = ( firstPhoto && firstPhoto.location ) || null;
   const latitude = ( location && location.latitude ) || null;
   const longitude = ( location && location.longitude ) || null;
   const locationName = useLocationName( latitude, longitude );
-  const dateAndTime = ( firstPhoto && formatDateAndTime( firstPhoto.timestamp ) ) || null;
+  const dateAndTime = setDateAndTime( );
 
   useEffect( ( ) => {
     // prepare all obs to edit for upload
@@ -80,8 +91,6 @@ const ObsEdit = ( ): Node => {
       setObservations( initialObs );
     }
   }, [obsToEdit, dateAndTime, latitude, longitude, locationName, observations] );
-
-  const saveAndUploadObservation = ( ) => console.log( "save obs to realm; try to sync" );
 
   const geoprivacyOptions = [{
     label: "open",
@@ -243,6 +252,10 @@ const ObsEdit = ( ): Node => {
 
   if ( !currentObs ) { return null; }
 
+  const displayDate = dateAndTime ? `Date & time: ${dateAndTime}` : null;
+  const displayLatitude = latitude !== null && `Lat: ${formatDecimal( latitude )}`;
+  const displayLongitude = longitude !== null && `Lon: ${formatDecimal( longitude )}`;
+
   return (
     <ScrollWithFooter>
        <Modal
@@ -264,10 +277,10 @@ const ObsEdit = ( ): Node => {
       {renderEvidenceList( )}
       <Text style={textStyles.text}>{locationName}</Text>
       <Text style={textStyles.text}>
-        {`Lat: ${formatDecimal( latitude )}, Lon: ${formatDecimal( longitude )}, Acc: ${currentObs.positional_accuracy}`}
+        {`${displayLatitude}, ${displayLongitude}, Acc: ${currentObs.positional_accuracy}`}
       </Text>
       {/* TODO: format date and time */}
-      <Text style={textStyles.text} testID="ObsEdit.time">{`Date & time: ${dateAndTime}`}</Text>
+      <Text style={textStyles.text} testID="ObsEdit.time">{displayDate}</Text>
       <Text style={textStyles.headerText}>{ t( "Identification" )}</Text>
       {/* TODO: add suggestions screen */}
       <Pressable onPress={navToSuggestionsPage}>

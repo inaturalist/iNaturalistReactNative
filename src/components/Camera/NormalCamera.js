@@ -4,9 +4,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { Text, StyleSheet, View, Pressable, Animated, Image } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
-import { FlatList, PinchGestureHandler, PinchGestureHandlerGestureEvent, TapGestureHandler } from "react-native-gesture-handler";
+import { FlatList, PinchGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 import Reanimated, { Extrapolate, interpolate, useAnimatedGestureHandler, useAnimatedProps, useSharedValue } from "react-native-reanimated";
 import { useIsFocused } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/native";
 
 import { viewStyles, imageStyles } from "../../styles/camera/normalCamera";
 import { useIsForeground } from "./hooks/useIsForeground";
@@ -23,6 +24,7 @@ Reanimated.addWhitelistedNativeProps( {
 } );
 
 const NormalCamera = ( ): Node => {
+  const navigation = useNavigation( );
   // $FlowFixMe
   const camera = useRef<Camera>( null );
   const [cameraPosition, setCameraPosition] = useState( "back" );
@@ -34,7 +36,7 @@ const NormalCamera = ( ): Node => {
   const zoom = useSharedValue( 0 );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
   const tapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
-  const [capturedPhotos, setCapturedPhotos] = useState( [] );
+  const [observationPhotos, setObservationPhotos] = useState( [] );
 
   // check if camera page is active
   const isFocused = useIsFocused( );
@@ -60,7 +62,16 @@ const NormalCamera = ( ): Node => {
   const takePhoto = async ( ) => {
     try {
       const photo = await camera.current.takePhoto( takePhotoOptions );
-      setCapturedPhotos( capturedPhotos.concat( [photo] ) );
+      const parsedPhoto = {
+        timestamp: null,
+        DateTimeOriginal: photo.metadata["{Exif}"].DateTimeOriginal,
+        uri: photo.path,
+        exif: photo.metadata["{Exif}"]
+      };
+      // only 10 photos allowed
+      if ( observationPhotos.length < 10 ) {
+        setObservationPhotos( observationPhotos.concat( [parsedPhoto] ) );
+      }
     } catch ( e ) {
       console.log( e, "couldn't take photo" );
     }
@@ -112,8 +123,16 @@ const NormalCamera = ( ): Node => {
   };
 
   const renderSmallPhoto = ( { item } ) => (
-    <Image source={{ uri: item.path }} style={imageStyles.smallPhoto} />
+    <Image source={{ uri: item.uri }} style={imageStyles.smallPhoto} />
   );
+
+  const navToObsEdit = ( ) => {
+    navigation.navigate( "ObsEdit", { obsToEdit: [
+      {
+        observationPhotos
+      }
+    ] } );
+  };
 
   // TODO: add Android permissions
   if ( device == null ) { return null;}
@@ -136,7 +155,7 @@ const NormalCamera = ( ): Node => {
         </PinchGestureHandler>
       )}
       <FlatList
-        data={capturedPhotos}
+        data={observationPhotos}
         contentContainerStyle={viewStyles.photoContainer}
         renderItem={renderSmallPhoto}
         horizontal
@@ -162,6 +181,12 @@ const NormalCamera = ( ): Node => {
         onPress={flipCamera}
       >
           <Text>flip camera</Text>
+      </Pressable>
+      <Pressable
+        style={viewStyles.cameraFlipButton}
+        onPress={navToObsEdit}
+      >
+          <Text>next</Text>
       </Pressable>
     </View>
   );
