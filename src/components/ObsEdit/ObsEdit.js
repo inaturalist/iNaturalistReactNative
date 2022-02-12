@@ -45,7 +45,6 @@ const ObsEdit = ( ): Node => {
   };
 
   const firstPhoto = setFirstPhoto( );
-  console.log( firstPhoto, "first" );
 
   const setDateAndTime = ( ) => {
     if ( firstPhoto && firstPhoto.timestamp ) {
