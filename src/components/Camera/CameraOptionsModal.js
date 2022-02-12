@@ -13,9 +13,9 @@ type Props = {
 const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   const navigation = useNavigation( );
 
-  const navAndCloseModal = ( screen ) => {
+  const navAndCloseModal = ( screen, params ) => {
     // access nested screen
-    navigation.navigate( "camera", { screen } );
+    navigation.navigate( "camera", { screen, params } );
     closeModal( );
   };
 
@@ -24,6 +24,10 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 
   const navToNormalCamera = ( ) => navAndCloseModal( "NormalCamera" );
+
+  const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit", { obsToEdit: [{
+    observationPhotos: []
+  }] } );
 
   return (
     <View>
@@ -42,7 +46,11 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
       >
         <Text style={textStyles.whiteText}>record a sound</Text>
       </Pressable>
-      <Text style={textStyles.whiteText}>submit without evidence</Text>
+      <Pressable
+        onPress={navToObsEdit}
+      >
+        <Text style={textStyles.whiteText}>submit without evidence</Text>
+      </Pressable>
     </View>
   );
 };
