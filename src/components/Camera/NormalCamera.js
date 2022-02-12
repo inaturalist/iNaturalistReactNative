@@ -1,14 +1,14 @@
 // @flow
 
 import React, { useRef, useState, useEffect } from "react";
-import { Text, StyleSheet, View, Pressable, Animated } from "react-native";
+import { Text, StyleSheet, View, Pressable, Animated, Image } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
-import { PinchGestureHandler, PinchGestureHandlerGestureEvent, TapGestureHandler } from "react-native-gesture-handler";
+import { FlatList, PinchGestureHandler, PinchGestureHandlerGestureEvent, TapGestureHandler } from "react-native-gesture-handler";
 import Reanimated, { Extrapolate, interpolate, useAnimatedGestureHandler, useAnimatedProps, useSharedValue } from "react-native-reanimated";
 import { useIsFocused } from "@react-navigation/core";
 
-import { viewStyles } from "../../styles/camera/normalCamera";
+import { viewStyles, imageStyles } from "../../styles/camera/normalCamera";
 import { useIsForeground } from "./hooks/useIsForeground";
 import FocusSquare from "./FocusSquare";
 
@@ -34,6 +34,7 @@ const NormalCamera = ( ): Node => {
   const zoom = useSharedValue( 0 );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
   const tapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
+  const [capturedPhotos, setCapturedPhotos] = useState( [] );
 
   // check if camera page is active
   const isFocused = useIsFocused( );
@@ -59,7 +60,7 @@ const NormalCamera = ( ): Node => {
   const takePhoto = async ( ) => {
     try {
       const photo = await camera.current.takePhoto( takePhotoOptions );
-      console.log( photo, "photo" );
+      setCapturedPhotos( capturedPhotos.concat( [photo] ) );
     } catch ( e ) {
       console.log( e, "couldn't take photo" );
     }
@@ -110,6 +111,10 @@ const NormalCamera = ( ): Node => {
     }
   };
 
+  const renderSmallPhoto = ( { item } ) => (
+    <Image source={{ uri: item.path }} style={imageStyles.smallPhoto} />
+  );
+
   // TODO: add Android permissions
   if ( device == null ) { return null;}
   return (
@@ -130,6 +135,12 @@ const NormalCamera = ( ): Node => {
           </Reanimated.View>
         </PinchGestureHandler>
       )}
+      <FlatList
+        data={capturedPhotos}
+        contentContainerStyle={viewStyles.photoContainer}
+        renderItem={renderSmallPhoto}
+        horizontal
+      />
       <FocusSquare
         tapToFocusAnimation={tapToFocusAnimation}
         tappedCoordinates={tappedCoordinates}
