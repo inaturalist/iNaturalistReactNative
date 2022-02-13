@@ -8,7 +8,9 @@ import jwt from "react-native-jwt-io";
 import {Platform} from "react-native";
 import {getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion} from "react-native-device-info";
 
-const HOST = "https://www.inaturalist.org";
+// Base API domain can be overridden (in case we want to use staging URL) - either by placing it in .env file, or
+// in an environment variable.
+const HOST = Config.API_URL || process.env.API_URL || "https://www.inaturalist.org";
 
 // User agent being used, when calling the iNat APIs
 const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
@@ -279,10 +281,10 @@ const getUsername = async () => {
  * @returns {Promise<void>}
  */
 const signOut = async () => {
-  await SInfo.deleteItem( "jwtToken" );
-  await SInfo.deleteItem( "jwtTokenExpiration" );
-  await SInfo.deleteItem( "username" );
-  await SInfo.deleteItem( "accessToken" );
+  await SInfo.deleteItem( "jwtToken", {} );
+  await SInfo.deleteItem( "jwtTokenExpiration", {} );
+  await SInfo.deleteItem( "username", {} );
+  await SInfo.deleteItem( "accessToken", {} );
 };
 
 export {
