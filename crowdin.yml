@@ -1,0 +1,13 @@
+base_path" : "."
+base_url : "https://api.crowdin.com"
+preserve_hierarchy: true
+
+files:
+  - source: "/src/i18n/strings.ftl"
+    dest: "/iNaturalistReactNative/%original_file_name%"
+    translation: "/src/i18n/l10n/%locale%.ftl"
+    export_only_approved: true
+    languages_mapping:
+      locale:
+        es-ES: es
+        ru: ru

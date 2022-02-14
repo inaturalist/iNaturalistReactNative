@@ -6,6 +6,7 @@ import { AppRegistry } from "react-native";
 import inatjs from "inaturalistjs";
 import App from "./src/navigation/rootNavigation";
 import {name as appName} from "./app.json";
+import "./src/i18n";
 
 inatjs.setConfig( {
   apiURL: "https://stagingapi.inaturalist.org/v2",

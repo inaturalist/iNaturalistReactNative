@@ -7,10 +7,11 @@ import { viewStyles } from "../../styles/projects/projects";
 import useProjects from "./hooks/useProjects";
 import ProjectList from "./ProjectList";
 import { useUserLocation } from "../../sharedHooks/useUserLocation";
+import useMemberId from "./hooks/useMemberId";
 
 const ProjectTabs = ( ): React.Node => {
-    // TODO: change member_id to current user's id, not Amanda's id
-  const userJoined = { member_id: 1132118 };
+  const memberId = useMemberId( );
+  const userJoined = { member_id: memberId };
   const [apiParams, setApiParams] = React.useState( userJoined );
 
   const latLng = useUserLocation( );

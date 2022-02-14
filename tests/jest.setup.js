@@ -138,6 +138,18 @@ jest.mock( "react-native-geolocation-service", ( ) => {
 
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 
+jest.mock( "react-i18next", () => ( {
+  useTranslation: () => ( {t: key => key} )
+} ) );
+
+jest.mock( "react-native-localize", () => ( {
+  getTimeZone: ( ) => "Europe/Paris", // the timezone you want
+  getLocales: ( ) => [
+    { countryCode: "NL", languageTag: "nl-NL", languageCode: "nl", isRTL: false },
+    { countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false }
+	]
+} ) );
+
 // Make apisauce work with nock
 jest.mock( "apisauce", ( ) => ( {
   create: ( config ) => {

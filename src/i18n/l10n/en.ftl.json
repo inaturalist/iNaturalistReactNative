@@ -1,0 +1,24 @@
+{
+  "ABOUT-taxon-header": {
+    "comment": "Header for a block of text describing a taxon",
+    "val": "ABOUT"
+  },
+  "Grid-View": {
+    "comment": "Label for a view that shows observations as a grid of photos",
+    "val": "Grid View"
+  },
+  "List-View": {
+    "comment": "Label for a view that shows observations a list",
+    "val": "List View"
+  },
+  "comment": "Header for a section showing taxa similar to a single taxon",
+  "SIMILAR-SPECIES-header": "",
+  "STATUS-header": {
+    "comment": "Header for a block of text describing a taxon's conservation status",
+    "val": "STATUS"
+  },
+  "TAXONOMY-header": {
+    "comment": "Header for a block of text describing a taxon's taxonomy",
+    "val": "TAXONOMY"
+  }
+}

@@ -10,6 +10,7 @@ import ExploreStackNavigator from "./exploreStackNavigation";
 import Search from "../components/Search/Search";
 import Login from "../components/LoginSignUp/Login";
 import ProjectsStackNavigation from "./projectsStackNavigation";
+import CameraStackNavigation from "./cameraStackNavigation";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -20,6 +21,7 @@ const hideHeader = {
 
 const Drawer = createDrawerNavigator( );
 
+// TODO: create a custom side menu that only shows some of these stacks and screens
 const App = ( ): React.Node => (
   <NavigationContainer>
     <Drawer.Navigator screenOptions={screenOptions} name="Drawer">
@@ -48,7 +50,11 @@ const App = ( ): React.Node => (
       <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
       <Drawer.Screen name="settings" component={PlaceholderComponent} />
       <Drawer.Screen name="login" component={Login} />
-      <Drawer.Screen name="logout" component={PlaceholderComponent} />
+      <Drawer.Screen
+        name="camera"
+        component={CameraStackNavigation}
+        options={hideHeader}
+      />
     </Drawer.Navigator>
   </NavigationContainer>
 );

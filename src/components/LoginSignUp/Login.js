@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import {Button, Text, TextInput, View} from "react-native";
 import type { Node } from "react";
 
-import { viewStyles, textStyles } from "../../styles/login/login";
+import { textStyles } from "../../styles/login/login";
 import { isLoggedIn, authenticateUser, getUsername, signOut } from "./AuthenticationService";
 
 const Login = (): Node => {
@@ -56,15 +56,15 @@ const Login = (): Node => {
 
           <Text style={textStyles.text}>Email</Text>
           <TextInput
-            style={viewStyles.input}
+            style={textStyles.input}
             onChangeText={setEmail}
             value={email}
-            autoCompleteType={"email"}
+            autoComplete="email"
             testID="Login.email"
           />
           <Text style={textStyles.text}>Password</Text>
           <TextInput
-            style={viewStyles.input}
+            style={textStyles.input}
             onChangeText={setPassword}
             value={password}
             secureTextEntry={true}

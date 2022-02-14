@@ -21,7 +21,6 @@ const ProjectList = ( { data }: Props ): React.Node => {
         style={viewStyles.row}
         testID={`Project.${item.id}`}
       >
-        <Text style={textStyles.projectName}>{item.id}</Text>
         <Image source={{ uri: item.icon }} style={imageStyles.projectIcon} testID={`Project.${item.id}.photo`}/>
         <Text style={textStyles.projectName}>{item.title}</Text>
       </Pressable>

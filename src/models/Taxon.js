@@ -9,8 +9,6 @@ class Taxon {
   }
 
   static mapApiToRealm( taxon, realm ) {
-    const existingTaxon = realm && realm.objectForPrimaryKey( "Taxon", taxon.id );
-    if ( existingTaxon ) { return existingTaxon; }
     return {
       ...taxon,
       default_photo: Photo.mapApiToRealm( taxon.default_photo )

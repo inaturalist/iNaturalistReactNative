@@ -31,7 +31,7 @@ const SignUp = (): Node => {
         style={viewStyles.input}
         onChangeText={setEmail}
         value={email}
-        autoCompleteType={"email"}
+        autoComplete="email"
       />
 
       <Text style={textStyles.text}>Username</Text>
