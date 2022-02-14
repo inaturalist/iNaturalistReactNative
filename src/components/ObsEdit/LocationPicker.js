@@ -9,6 +9,7 @@ import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import Map from "../SharedComponents/Map";
 import { viewStyles } from "../../styles/obsEdit/locationPicker";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import useLocationName from "../../sharedHooks/useLocationName";
 
 type Props = {
   closeLocationPicker: Function,
@@ -22,7 +23,9 @@ const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node 
     obsLongitude: null
   } );
 
-  console.log( searchQuery, "search" );
+  const locationName = useLocationName( location.obsLatitude, location.obsLongitude );
+
+  console.log( searchQuery, "search", locationName );
 
   const updateLocationAndClose = ( ) => {
     console.log( "do the things" );
