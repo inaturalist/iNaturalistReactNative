@@ -92,8 +92,6 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     const response = await api.get( "/users/api_token.json" );
 
-    console.log( response, "response in auth service" );
-
     if ( !response.ok ) {
       console.error(
         `Error while renewing JWT: ${response.problem} - ${response.status}`
@@ -105,8 +103,8 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
     jwtToken = response.data.api_token;
     jwtTokenExpiration = Date.now();
 
-    await SInfo.setItem( "jwtToken", jwtToken );
-    await SInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration.toString() );
+    await SInfo.setItem( "jwtToken", jwtToken, {} );
+    await SInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration.toString(), {} );
 
     return jwtToken;
   } else {
@@ -227,34 +225,34 @@ const verifyCredentials = async (
   const accessToken = response.data.access_token;
 
   // Next, find the iNat username (since we currently only have the FB/Google email)
-  // response = await api.get(
-  //   "/users/edit.json",
-  //   {},
-  //   {
-  //     headers: {
-  //       Authorization: `Bearer ${accessToken}`,
-  //       "User-Agent": USER_AGENT
-  //     }
-  //   }
-  // );
-  // console.log( response, "response users/edit" );
+  response = await api.get(
+    "/users/edit.json",
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "User-Agent": USER_AGENT
+      }
+    }
+  );
+  console.log( response, "response users/edit" );
 
-  // if ( !response.ok ) {
-  //   console.error(
-  //     "verifyCredentials failed when calling /users/edit.json - ",
-  //     response.problem,
-  //     response.status
-  //   );
+  if ( !response.ok ) {
+    console.error(
+      "verifyCredentials failed when calling /users/edit.json - ",
+      response.problem,
+      response.status
+    );
 
-  //   return null;
-  // }
+    return null;
+  }
 
-  // const iNatUsername = response.data.login;
-  // console.log( "verifyCredentials - logged in username ", iNatUsername );
+  const iNatUsername = response.data.login;
+  console.log( "verifyCredentials - logged in username ", iNatUsername );
 
   return {
-    accessToken: accessToken
-    // username: iNatUsername
+    accessToken: accessToken,
+    username: iNatUsername
   };
 };
 
