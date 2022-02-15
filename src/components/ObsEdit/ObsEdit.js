@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Text, Image, TextInput, Pressable, FlatList, View } from "react-native";
+import { Text, Image, TextInput, Pressable, FlatList, View, Modal } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
@@ -15,9 +15,10 @@ import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import { pickerSelectStyles, textStyles, imageStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
 import { formatDateAndTime, getTimeZone } from "../../sharedHelpers/dateAndTime";
-import Modal from "../SharedComponents/Modal";
+import CustomModal from "../SharedComponents/Modal";
 import ObsEditSearch from "./ObsEditSearch";
 import { getJWTToken } from "../LoginSignUp/AuthenticationService";
+import LocationPicker from "./LocationPicker";
 
 const ObsEdit = ( ): Node => {
   const navigation = useNavigation( );
@@ -33,6 +34,7 @@ const ObsEdit = ( ): Node => {
 
   const [observations, setObservations] = useState( [] );
   const [currentObservation, setCurrentObservation] = useState( 0 );
+  const [showLocationPicker, setShowLocationPicker] = useState( false );
 
   const setFirstPhoto = ( ) => {
     if ( obsToEdit && obsToEdit[currentObservation]
@@ -249,15 +251,46 @@ const ObsEdit = ( ): Node => {
     }
   };
 
+  const openLocationPicker = ( ) => setShowLocationPicker( true );
+  const closeLocationPicker = ( ) => setShowLocationPicker( false );
+
+  const updateLocation = newLocation => {
+    console.log( newLocation, "newLocation from picker" );
+    const updatedObs = observations.map( ( obs, index ) => {
+      if ( index === currentObservation ) {
+        return {
+          ...obs,
+          // $FlowFixMe
+          latitude: newLocation.latitude,
+          longitude: newLocation.longitude,
+          place_guess: newLocation.placeGuess
+        };
+      } else {
+        return obs;
+      }
+    } );
+    setObservations( updatedObs );
+  };
+
+  const renderLocationPickerModal = ( ) => (
+    <Modal visible={showLocationPicker}>
+      <LocationPicker
+        closeLocationPicker={closeLocationPicker}
+        updateLocation={updateLocation}
+      />
+    </Modal>
+  );
+
   if ( !currentObs ) { return null; }
 
   const displayDate = dateAndTime ? `Date & time: ${dateAndTime}` : null;
-  const displayLatitude = latitude !== null && `Lat: ${formatDecimal( latitude )}`;
-  const displayLongitude = longitude !== null && `Lon: ${formatDecimal( longitude )}`;
+  const displayLatitude = currentObs.latitude !== null && `Lat: ${formatDecimal( currentObs.latitude )}`;
+  const displayLongitude = currentObs.longitude !== null && `Lon: ${formatDecimal( currentObs.longitude )}`;
 
   return (
     <ScrollWithFooter>
-       <Modal
+      {renderLocationPickerModal( )}
+       <CustomModal
         showModal={showModal}
         closeModal={closeModal}
         modal={(
@@ -275,9 +308,13 @@ const ObsEdit = ( ): Node => {
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
       {renderEvidenceList( )}
       <Text style={textStyles.text}>{locationName}</Text>
-      <Text style={textStyles.text}>
-        {`${displayLatitude}, ${displayLongitude}, Acc: ${currentObs.positional_accuracy}`}
-      </Text>
+      <Pressable
+        onPress={openLocationPicker}
+      >
+        <Text style={textStyles.text}>
+          {`${displayLatitude}, ${displayLongitude}, Acc: ${currentObs.positional_accuracy}`}
+        </Text>
+      </Pressable>
       {/* TODO: format date and time */}
       <Text style={textStyles.text} testID="ObsEdit.time">{displayDate}</Text>
       <Text style={textStyles.headerText}>{ t( "Identification" )}</Text>
