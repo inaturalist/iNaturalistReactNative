@@ -4,14 +4,13 @@ import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 
-// NOTE: this only works with real API, not staging API
 const useMemberId = ( ): ?number => {
   const [memberId, setMemberId] = useState( null );
 
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchMemberId = async ( ) => {
-      const apiToken = await getJWTToken( false );
+      const apiToken = await getJWTToken( );
       try {
         const options = {
           api_token: apiToken
@@ -21,7 +20,7 @@ const useMemberId = ( ): ?number => {
         setMemberId( results[0].id );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch current member id. Make sure you're not using staging API:", JSON.stringify( e.response ) );
+        console.log( "Couldn't fetch current member id:", JSON.stringify( e.response ) );
       }
     };
 
