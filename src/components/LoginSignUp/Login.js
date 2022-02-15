@@ -6,6 +6,7 @@ import type { Node } from "react";
 
 import { textStyles } from "../../styles/login/login";
 import { isLoggedIn, authenticateUser, getUsername, signOut } from "./AuthenticationService";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
 const Login = (): Node => {
   const [email, setEmail] = useState( "" );
@@ -49,7 +50,7 @@ const Login = (): Node => {
   };
 
   return (
-    <View>
+    <ViewWithFooter>
       {!loggedIn ? (
         <>
           <Text style={textStyles.text}>Login</Text>
@@ -80,7 +81,7 @@ const Login = (): Node => {
           <Button title="Sign out" onPress={onSignOut} testID="Login.signOutButton" />
         </>
       )}
-    </View>
+    </ViewWithFooter>
   );
 };
 

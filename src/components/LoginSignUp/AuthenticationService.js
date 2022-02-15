@@ -28,7 +28,6 @@ const createAPI = ( additionalHeaders: any ) => {
   } );
 };
 
-
 /**
  * Returns the API access token to be used with all iNaturalist API calls
  *
@@ -70,8 +69,8 @@ const getAnonymousJWTToken = () => {
  * @returns {Promise<string|*>}
  */
 const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?string> => {
-  let jwtToken = await RNSInfo.getItem( "jwtToken" );
-  let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration" );
+  let jwtToken = await RNSInfo.getItem( "jwtToken", {} );
+  let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration", {} );
   if ( jwtTokenExpiration ) {
     jwtTokenExpiration = parseInt( jwtTokenExpiration, 10 );
   }
@@ -89,9 +88,11 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
   ) {
     // JWT Tokens expire after 30 mins - if the token is non-existent or older than 25 mins (safe margin) - ask for a new one
 
-    const accessToken = await RNSInfo.getItem( "accessToken" );
+    const accessToken = await RNSInfo.getItem( "accessToken", {} );
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     const response = await api.get( "/users/api_token.json" );
+
+    console.log( response, "response in auth service" );
 
     if ( !response.ok ) {
       console.error(
@@ -132,7 +133,7 @@ const authenticateUser = async (
   }
 
   // Save authentication details to secure storage
-  await SInfo.setItem( "username", userDetails.username, {} );
+  // await SInfo.setItem( "username", userDetails.username, {} );
   await SInfo.setItem( "accessToken", userDetails.accessToken, {} );
 
   return true;
@@ -226,33 +227,34 @@ const verifyCredentials = async (
   const accessToken = response.data.access_token;
 
   // Next, find the iNat username (since we currently only have the FB/Google email)
-  response = await api.get(
-    "/users/edit.json",
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "User-Agent": USER_AGENT
-      }
-    }
-  );
+  // response = await api.get(
+  //   "/users/edit.json",
+  //   {},
+  //   {
+  //     headers: {
+  //       Authorization: `Bearer ${accessToken}`,
+  //       "User-Agent": USER_AGENT
+  //     }
+  //   }
+  // );
+  // console.log( response, "response users/edit" );
 
-  if ( !response.ok ) {
-    console.error(
-      "verifyCredentials failed when calling /users/edit.json - ",
-      response.problem,
-      response.status
-    );
+  // if ( !response.ok ) {
+  //   console.error(
+  //     "verifyCredentials failed when calling /users/edit.json - ",
+  //     response.problem,
+  //     response.status
+  //   );
 
-    return null;
-  }
+  //   return null;
+  // }
 
-  const iNatUsername = response.data.login;
-  console.log( "verifyCredentials - logged in username ", iNatUsername );
+  // const iNatUsername = response.data.login;
+  // console.log( "verifyCredentials - logged in username ", iNatUsername );
 
   return {
-    accessToken: accessToken,
-    username: iNatUsername
+    accessToken: accessToken
+    // username: iNatUsername
   };
 };
 

@@ -11,7 +11,7 @@ const useMemberId = ( ): ?number => {
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchMemberId = async ( ) => {
-      const apiToken = await getJWTToken( false );
+      const apiToken = await getJWTToken( );
       try {
         const options = {
           api_token: apiToken
