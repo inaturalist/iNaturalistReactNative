@@ -13,7 +13,7 @@ type Props = {
   mapHeight?: number,
   taxonId?: number,
   updateCoords?: Function,
-  region: Object
+  region?: Object
 }
 
 // TODO: fallback to another map library
@@ -46,7 +46,7 @@ const Map = ( { obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, reg
     >
       <MapView
         style={viewStyles.map}
-        region={region.latitude ? region : initialRegion}
+        region={( region && region.latitude ) ? region : initialRegion}
         onRegionChange={updateCoords}
         showsUserLocation
         showsMyLocationButton
