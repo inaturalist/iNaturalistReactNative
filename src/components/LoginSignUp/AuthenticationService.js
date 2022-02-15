@@ -235,7 +235,6 @@ const verifyCredentials = async (
       }
     }
   );
-  console.log( response, "response users/edit" );
 
   if ( !response.ok ) {
     console.error(
