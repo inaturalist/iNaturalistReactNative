@@ -131,7 +131,7 @@ const authenticateUser = async (
   }
 
   // Save authentication details to secure storage
-  // await SInfo.setItem( "username", userDetails.username, {} );
+  await SInfo.setItem( "username", userDetails.username, {} );
   await SInfo.setItem( "accessToken", userDetails.accessToken, {} );
 
   return true;
