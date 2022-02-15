@@ -28,22 +28,20 @@ const useLocationName = ( latitude: ?number, longitude: ?number ): ?string => {
     return placeName;
   };
 
-
-
   useEffect( ( ) => {
     let isCurrent = true;
 
-    const fetchLocationName = async ( lat: ?number, lng: ?number ): Promise<?string> => {
+    const fetchLocationName = async ( ): Promise<?string> => {
       try {
-        const results = await Geocoder.geocodePosition( { lat, lng } );
+        const results = await Geocoder.geocodePosition( { lat: latitude, lng: longitude } );
         if ( results.length === 0 || !isCurrent ) { return; }
         setLocation( setPlaceName( results ) );
       } catch ( e ) {
-        console.log( e, "couldn't fetch geocoded position with coordinates: ", lat, lng );
+        console.log( e, "couldn't fetch geocoded position with coordinates: ", latitude, longitude );
       }
     };
 
-    fetchLocationName( latitude, longitude );
+    fetchLocationName( );
 
     return ( ) => {
       isCurrent = false;

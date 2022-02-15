@@ -11,12 +11,14 @@ type Props = {
   obsLatitude?: number,
   obsLongitude?: number,
   mapHeight?: number,
-  taxonId?: number
+  taxonId?: number,
+  updateCoords?: Function,
+  region: Object
 }
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
-const Map = ( { obsLatitude, obsLongitude, mapHeight, taxonId }: Props ): React.Node => {
+const Map = ( { obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region }: Props ): React.Node => {
   const latLng = useUserLocation( );
 
   const initialLatitude = latLng && latLng.latitude;
@@ -30,6 +32,13 @@ const Map = ( { obsLatitude, obsLongitude, mapHeight, taxonId }: Props ): React.
     return null;
   }
 
+  const initialRegion = {
+    latitude: initialLatitude,
+    longitude: initialLongitude,
+    latitudeDelta: 0.2,
+    longitudeDelta: 0.2
+  };
+
   return (
     <View
       style={[viewStyles.mapContainer, mapHeight ? { height: mapHeight } : null]}
@@ -37,12 +46,11 @@ const Map = ( { obsLatitude, obsLongitude, mapHeight, taxonId }: Props ): React.
     >
       <MapView
         style={viewStyles.map}
-        initialRegion={{
-          latitude: initialLatitude,
-          longitude: initialLongitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
-        }}
+        region={region.latitude ? region : initialRegion}
+        onRegionChange={updateCoords}
+        showsUserLocation
+        showsMyLocationButton
+        loadingEnabled
       >
         {taxonId && (
           <UrlTile

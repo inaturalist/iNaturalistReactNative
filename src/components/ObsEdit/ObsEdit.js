@@ -254,7 +254,7 @@ const ObsEdit = ( ): Node => {
   const openLocationPicker = ( ) => setShowLocationPicker( true );
   const closeLocationPicker = ( ) => setShowLocationPicker( false );
 
-  const updateLocation = location => console.log( location, "location from picker" );
+  const updateLocation = newLocation => console.log( newLocation, "newLocation from picker" );
 
   const renderLocationPickerModal = ( ) => (
     <Modal visible={showLocationPicker}>

@@ -1,7 +1,7 @@
 // @flow
 
-import React, { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 import type { Node } from "react";
 
 import InputField from "../SharedComponents/InputField";
@@ -10,6 +10,7 @@ import Map from "../SharedComponents/Map";
 import { viewStyles } from "../../styles/obsEdit/locationPicker";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import useLocationName from "../../sharedHooks/useLocationName";
+import useCoords from "./hooks/useCoords";
 
 type Props = {
   closeLocationPicker: Function,
@@ -18,29 +19,44 @@ type Props = {
 
 const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node => {
   const [searchQuery, setSearchQuery] = useState( "" );
-  const [location, setLocation] = useState( {
-    obsLatitude: null,
-    obsLongitude: null
+  const [region, setRegion] = useState( {
+    latitude: null,
+    longitude: null
   } );
 
-  const locationName = useLocationName( location.obsLatitude, location.obsLongitude );
-
-  console.log( searchQuery, "search", locationName );
+  const locationName = useLocationName( region.latitude, region.longitude );
+  const newCoords = useCoords( searchQuery );
 
   const updateLocationAndClose = ( ) => {
     console.log( "do the things" );
+  };
+
+  useEffect( ( ) => {
+    // update region when user types search term
+    if ( !searchQuery ) { return; }
+    if ( newCoords.latitude !== null && newCoords.latitude !== region.latitude ) {
+      setRegion( newCoords );
+    }
+  }, [newCoords, region, searchQuery] );
+
+  const updateCoords = ( newMapRegion ) => {
+    setSearchQuery( "" );
+    setRegion( newMapRegion );
   };
 
   return (
     <ViewNoFooter>
       <InputField
         handleTextChange={setSearchQuery}
-        placeholder="search for location"
+        placeholder={locationName || ""}
         text={searchQuery}
         type="addressCity"
         testID="LocationPicker.search"
       />
       <Map
+        updateCoords={updateCoords}
+        region={region}
+        mapHeight={600}
       />
       <View style={viewStyles.confirmButtonFooter}>
         <RoundGreenButton
