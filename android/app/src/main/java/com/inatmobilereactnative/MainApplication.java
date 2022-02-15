@@ -13,7 +13,6 @@ import java.util.List;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.facebook.react.bridge.JSIModulePackage;
 import com.swmansion.reanimated.ReanimatedJSIModulePackage;
-import com.zaguiini.RNPureJwt.RNPureJwtPackage;
 
 
 public class MainApplication extends Application implements ReactApplication {

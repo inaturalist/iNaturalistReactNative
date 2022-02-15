@@ -8,7 +8,9 @@ import jwt from "react-native-jwt-io";
 import {Platform} from "react-native";
 import {getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion} from "react-native-device-info";
 
-const HOST = "https://www.inaturalist.org";
+// Base API domain can be overridden (in case we want to use staging URL) - either by placing it in .env file, or
+// in an environment variable.
+const HOST = Config.API_URL || process.env.API_URL || "https://www.inaturalist.org";
 
 // User agent being used, when calling the iNat APIs
 const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
@@ -26,7 +28,6 @@ const createAPI = ( additionalHeaders: any ) => {
   } );
 };
 
-
 /**
  * Returns the API access token to be used with all iNaturalist API calls
  *
@@ -43,7 +44,7 @@ const getAPIToken = async ( useJWT: boolean = false,  allowAnonymousJWTToken: bo
   if ( useJWT ) {
     return getJWTToken( allowAnonymousJWTToken );
   } else {
-    const accessToken = await RNSInfo.getItem( "accessToken" );
+    const accessToken = await RNSInfo.getItem( "accessToken", {} );
     return `Bearer ${accessToken}`;
   }
 };
@@ -68,8 +69,8 @@ const getAnonymousJWTToken = () => {
  * @returns {Promise<string|*>}
  */
 const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?string> => {
-  let jwtToken = await RNSInfo.getItem( "jwtToken" );
-  let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration" );
+  let jwtToken = await RNSInfo.getItem( "jwtToken", {} );
+  let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration", {} );
   if ( jwtTokenExpiration ) {
     jwtTokenExpiration = parseInt( jwtTokenExpiration, 10 );
   }
@@ -87,7 +88,7 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
   ) {
     // JWT Tokens expire after 30 mins - if the token is non-existent or older than 25 mins (safe margin) - ask for a new one
 
-    const accessToken = await RNSInfo.getItem( "accessToken" );
+    const accessToken = await RNSInfo.getItem( "accessToken", {} );
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     const response = await api.get( "/users/api_token.json" );
 
@@ -102,8 +103,8 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
     jwtToken = response.data.api_token;
     jwtTokenExpiration = Date.now();
 
-    await SInfo.setItem( "jwtToken", jwtToken );
-    await SInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration.toString() );
+    await SInfo.setItem( "jwtToken", jwtToken, {} );
+    await SInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration.toString(), {} );
 
     return jwtToken;
   } else {
@@ -279,10 +280,10 @@ const getUsername = async (): Promise<string> => {
  * @returns {Promise<void>}
  */
 const signOut = async () => {
-  await SInfo.deleteItem( "jwtToken" );
-  await SInfo.deleteItem( "jwtTokenExpiration" );
-  await SInfo.deleteItem( "username" );
-  await SInfo.deleteItem( "accessToken" );
+  await SInfo.deleteItem( "jwtToken", {} );
+  await SInfo.deleteItem( "jwtTokenExpiration", {} );
+  await SInfo.deleteItem( "username", {} );
+  await SInfo.deleteItem( "accessToken", {} );
 };
 
 export {
