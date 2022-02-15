@@ -254,7 +254,23 @@ const ObsEdit = ( ): Node => {
   const openLocationPicker = ( ) => setShowLocationPicker( true );
   const closeLocationPicker = ( ) => setShowLocationPicker( false );
 
-  const updateLocation = newLocation => console.log( newLocation, "newLocation from picker" );
+  const updateLocation = newLocation => {
+    console.log( newLocation, "newLocation from picker" );
+    const updatedObs = observations.map( ( obs, index ) => {
+      if ( index === currentObservation ) {
+        return {
+          ...obs,
+          // $FlowFixMe
+          latitude: newLocation.latitude,
+          longitude: newLocation.longitude,
+          place_guess: newLocation.placeGuess
+        };
+      } else {
+        return obs;
+      }
+    } );
+    setObservations( updatedObs );
+  };
 
   const renderLocationPickerModal = ( ) => (
     <Modal visible={showLocationPicker}>
@@ -268,8 +284,8 @@ const ObsEdit = ( ): Node => {
   if ( !currentObs ) { return null; }
 
   const displayDate = dateAndTime ? `Date & time: ${dateAndTime}` : null;
-  const displayLatitude = latitude !== null && `Lat: ${formatDecimal( latitude )}`;
-  const displayLongitude = longitude !== null && `Lon: ${formatDecimal( longitude )}`;
+  const displayLatitude = currentObs.latitude !== null && `Lat: ${formatDecimal( currentObs.latitude )}`;
+  const displayLongitude = currentObs.longitude !== null && `Lon: ${formatDecimal( currentObs.longitude )}`;
 
   return (
     <ScrollWithFooter>

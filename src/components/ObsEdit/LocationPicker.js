@@ -28,7 +28,12 @@ const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node 
   const newCoords = useCoords( searchQuery );
 
   const updateLocationAndClose = ( ) => {
-    console.log( "do the things" );
+    updateLocation( {
+      latitude: region.latitude,
+      longitude: region.longitude,
+      placeGuess: locationName
+    } );
+    closeLocationPicker( );
   };
 
   useEffect( ( ) => {
