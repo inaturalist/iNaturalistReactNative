@@ -32,7 +32,7 @@ class Message {
   }
 
 
-  //Q: https://api.inaturalist.org/v1/docs/#!/Messages/get_messages shows everything is optional - how do we handle?
+  //Q: V2 (https://api.inaturalist.org/v2/docs/#/Messages/get_messages) doesn't specify optionality - how should we handle?
   static schema = {
     name: "Message",
     primaryKey: "uuid", //Q: UUID is used instead of ID - is that right?
