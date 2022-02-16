@@ -30,6 +30,9 @@ We currently have two kinds of tests
 
 We're using [Jest](https://jestjs.io/) and [React Native Testing Library](https://callstack.github.io/react-native-testing-library/) for most of our tests, [factoria](https://github.com/phanan/factoria) and [faker.js](https://github.com/Marak/faker.js/) to generate test data for use with mocks. `Local*` model factories represent locally persisted data, while `Remote*` factories represent that kinds of records we get from an API or external package.
 
+## Running with Staging Environment
+
+1. Override `API_URL` to a staging API domain - either using a local `.env` file, or overriding the environment variable when calling `npm start` - e.g. `API_URL=http://example.com npm start -- --reset-cache`
 # Translations
 
 ## Adding New Text

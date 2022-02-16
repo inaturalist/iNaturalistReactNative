@@ -12,10 +12,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row",
     flexWrap: "nowrap",
     marginVertical: 10
-  },
-  input: {
-    color: "#000000",
-    backgroundColor: "#ffffff"
   }
 } );
 
@@ -23,6 +19,10 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   text: {},
   error: {
     color: "#ff0000"
+  },
+  input: {
+    color: "#000000",
+    backgroundColor: "#ffffff"
   }
 } );
 

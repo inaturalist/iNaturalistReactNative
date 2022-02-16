@@ -51,6 +51,7 @@ class Observation {
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );
+    const user = User.mapApiToRealm( obs.user );
 
     const newObs = {
       ...obs,
@@ -61,11 +62,9 @@ class Observation {
       latitude: obs.geojson.coordinates[1],
       longitude: obs.geojson.coordinates[0],
       observationPhotos,
-      taxon
+      taxon,
+      user
     };
-
-    // need to append user after the observation realm object has been created
-    delete newObs.user;
     return newObs;
   }
 
@@ -94,6 +93,7 @@ class Observation {
       latitude: "double?",
       longitude: "double?",
       observationPhotos: "ObservationPhoto[]",
+      observationSounds: "ObservationSound[]",
       place_guess: { type: "string?", mapTo: "placeGuess" },
       quality_grade: { type: "string?", mapTo: "qualityGrade" },
       taxon: "Taxon?",

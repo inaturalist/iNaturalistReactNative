@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { TextInput, Platform } from "react-native";
+import { colors } from "../../styles/global";
 
 import textStyles from "../../styles/sharedComponents/inputField";
 
@@ -45,7 +46,7 @@ const InputField = ( {
       keyboardType={keyboardType}
       onChangeText={handleTextChange}
       placeholder={placeholder}
-      // placeholderTextColor={colors.placeholderGray}
+      placeholderTextColor={colors.black}
       secureTextEntry={type === "password"}
       selectTextOnFocus={Platform.OS === "android"}
       style={textStyles.inputField}

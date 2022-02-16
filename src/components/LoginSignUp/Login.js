@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import {Button, Text, TextInput, View} from "react-native";
 import type { Node } from "react";
 
-import { viewStyles, textStyles } from "../../styles/login/login";
+import { textStyles } from "../../styles/login/login";
 import { isLoggedIn, authenticateUser, getUsername, signOut } from "./AuthenticationService";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
 const Login = (): Node => {
   const [email, setEmail] = useState( "" );
@@ -49,22 +50,22 @@ const Login = (): Node => {
   };
 
   return (
-    <View>
+    <ViewWithFooter>
       {!loggedIn ? (
         <>
           <Text style={textStyles.text}>Login</Text>
 
           <Text style={textStyles.text}>Email</Text>
           <TextInput
-            style={viewStyles.input}
+            style={textStyles.input}
             onChangeText={setEmail}
             value={email}
-            autoCompleteType={"email"}
+            autoComplete="email"
             testID="Login.email"
           />
           <Text style={textStyles.text}>Password</Text>
           <TextInput
-            style={viewStyles.input}
+            style={textStyles.input}
             onChangeText={setPassword}
             value={password}
             secureTextEntry={true}
@@ -80,7 +81,7 @@ const Login = (): Node => {
           <Button title="Sign out" onPress={onSignOut} testID="Login.signOutButton" />
         </>
       )}
-    </View>
+    </ViewWithFooter>
   );
 };
 

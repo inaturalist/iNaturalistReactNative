@@ -8,7 +8,9 @@ import jwt from "react-native-jwt-io";
 import {Platform} from "react-native";
 import {getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion} from "react-native-device-info";
 
-const HOST = "https://www.inaturalist.org";
+// Base API domain can be overridden (in case we want to use staging URL) - either by placing it in .env file, or
+// in an environment variable.
+const HOST = Config.API_URL || process.env.API_URL || "https://www.inaturalist.org";
 
 // User agent being used, when calling the iNat APIs
 const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
@@ -26,7 +28,6 @@ const createAPI = ( additionalHeaders: any ) => {
   } );
 };
 
-
 /**
  * Returns the API access token to be used with all iNaturalist API calls
  *
@@ -34,7 +35,7 @@ const createAPI = ( additionalHeaders: any ) => {
  * @param allowAnonymousJWTToken (optional=false) if true and user is not logged-in, use anonymous JWT
  * @returns {Promise<string|*>} access token, null if not logged in
  */
-const getAPIToken = async ( useJWT: boolean = false,  allowAnonymousJWTToken: boolean = false ) => {
+const getAPIToken = async ( useJWT: boolean = false,  allowAnonymousJWTToken: boolean = false ): Promise<?string> => {
   let loggedIn = await isLoggedIn();
   if ( !loggedIn ) {
     return null;
@@ -43,7 +44,7 @@ const getAPIToken = async ( useJWT: boolean = false,  allowAnonymousJWTToken: bo
   if ( useJWT ) {
     return getJWTToken( allowAnonymousJWTToken );
   } else {
-    const accessToken = await RNSInfo.getItem( "accessToken" );
+    const accessToken = await RNSInfo.getItem( "accessToken", {} );
     return `Bearer ${accessToken}`;
   }
 };
@@ -67,9 +68,9 @@ const getAnonymousJWTToken = () => {
  * @param allowAnonymousJWTToken (optional=false) if true and user is not logged-in, use anonymous JWT
  * @returns {Promise<string|*>}
  */
-const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ) => {
-  let jwtToken = await RNSInfo.getItem( "jwtToken" );
-  let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration" );
+const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?string> => {
+  let jwtToken = await RNSInfo.getItem( "jwtToken", {} );
+  let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration", {} );
   if ( jwtTokenExpiration ) {
     jwtTokenExpiration = parseInt( jwtTokenExpiration, 10 );
   }
@@ -87,7 +88,7 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ) => {
   ) {
     // JWT Tokens expire after 30 mins - if the token is non-existent or older than 25 mins (safe margin) - ask for a new one
 
-    const accessToken = await RNSInfo.getItem( "accessToken" );
+    const accessToken = await RNSInfo.getItem( "accessToken", {} );
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     const response = await api.get( "/users/api_token.json" );
 
@@ -102,8 +103,8 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ) => {
     jwtToken = response.data.api_token;
     jwtTokenExpiration = Date.now();
 
-    await SInfo.setItem( "jwtToken", jwtToken );
-    await SInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration.toString() );
+    await SInfo.setItem( "jwtToken", jwtToken, {} );
+    await SInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration.toString(), {} );
 
     return jwtToken;
   } else {
@@ -122,7 +123,7 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ) => {
 const authenticateUser = async (
   username: string,
   password: string
-) => {
+): Promise<boolean> => {
   const userDetails = await verifyCredentials( username, password );
 
   if ( !userDetails ) {
@@ -153,7 +154,7 @@ const registerUser = async (
   password: string,
   license: void | string,
   time_zone: void | string
-) => {
+): any => {
   const formData = new FormData();
   formData.append( "username", username );
   formData.append( "user[email]", email );
@@ -259,7 +260,7 @@ const verifyCredentials = async (
  *
  * @returns {Promise<boolean>}
  */
-const isLoggedIn = async () => {
+const isLoggedIn = async (): Promise<boolean> => {
   const accessToken = await RNSInfo.getItem( "accessToken", {} );
   return typeof accessToken === "string";
 };
@@ -269,7 +270,7 @@ const isLoggedIn = async () => {
  *
  * @returns {Promise<boolean>}
  */
-const getUsername = async () => {
+const getUsername = async (): Promise<string> => {
   return await RNSInfo.getItem( "username", {} );
 };
 
@@ -279,10 +280,10 @@ const getUsername = async () => {
  * @returns {Promise<void>}
  */
 const signOut = async () => {
-  await SInfo.deleteItem( "jwtToken" );
-  await SInfo.deleteItem( "jwtTokenExpiration" );
-  await SInfo.deleteItem( "username" );
-  await SInfo.deleteItem( "accessToken" );
+  await SInfo.deleteItem( "jwtToken", {} );
+  await SInfo.deleteItem( "jwtTokenExpiration", {} );
+  await SInfo.deleteItem( "username", {} );
+  await SInfo.deleteItem( "accessToken", {} );
 };
 
 export {
@@ -291,5 +292,6 @@ export {
   getAPIToken,
   isLoggedIn,
   getUsername,
-  signOut
+  signOut,
+  getJWTToken
 };

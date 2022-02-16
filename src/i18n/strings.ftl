@@ -9,6 +9,8 @@ Birds = Birds
 
 Evidence = Evidence
 
+Finish = Finish
+
 Fish = Fish
 
 Fungi = Fungi
@@ -29,7 +31,19 @@ Mollusks = Mollusks
 
 Other-Data = Other Data
 
+Paused = Paused
+
 Plants = Plants
+
+# Help text for playing back a sound recording
+Playing-Sound = Playing Sound
+
+# Help text for beginning a sound recording
+Press-Record-to-Start = Press Record to Start
+
+Record-new-sound = Record new sound
+
+Recording-Sound = Recording Sound
 
 Reptiles = Reptiles
 

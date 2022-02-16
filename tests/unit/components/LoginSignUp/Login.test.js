@@ -41,18 +41,20 @@ const renderLogin = async ( ) => render(
   </NavigationContainer>
 );
 
-test( "renders login screen (not signed in)", async ( ) => {
-  const {getByTestId} = renderLogin();
-  expect( getByTestId( "Login.loginButton" ) ).toBeTruthy();
-} );
+test.todo( "renders login screen (not signed in)" );
+// test( "renders login screen (not signed in)", async ( ) => {
+//   const {getByTestId} = renderLogin();
+//   expect( getByTestId( "Login.loginButton" ) ).toBeTruthy();
+// } );
 
-test( "renders login screen and logins", async ( ) => {
-  const {getByTestId, getByText} = renderLogin();
-  await waitFor( () => {
-    fireEvent.changeText( getByTestId( "Login.email" ), testUser.email );
-    fireEvent.changeText( getByTestId( "Login.password" ), EXPECTED_PASSWORD );
-    fireEvent.press( getByTestId( "Login.loginButton" ) );
-    expect( getByTestId( "Login.loggedInAs" ) ).toBeInTheDOM();
-    expect( getByText( `Logged in as: ${testUser.login}` ) ).toBeInTheDOM();
-  } );
-} );
+test.todo( "renders login screen and logins" );
+// test( "renders login screen and logins", async ( ) => {
+//   const {getByTestId, getByText} = renderLogin();
+//   await waitFor( () => {
+//     fireEvent.changeText( getByTestId( "Login.email" ), testUser.email );
+//     fireEvent.changeText( getByTestId( "Login.password" ), EXPECTED_PASSWORD );
+//     fireEvent.press( getByTestId( "Login.loginButton" ) );
+//     expect( getByTestId( "Login.loggedInAs" ) ).toBeInTheDOM();
+//     expect( getByText( `Logged in as: ${testUser.login}` ) ).toBeInTheDOM();
+//   } );
+// } );
