@@ -4,17 +4,17 @@ import React, { useContext } from "react";
 import type { Node } from "react";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import { MessageContext } from "../../providers/contexts";
 import MessageList from "./MessageList";
+import useMessages from "./hooks/useMessages";
 
 const Messages = ( ): Node => {
-  const { messageList, loading } = useContext( MessageContext );
+  const messages = useMessages();
 
   return (
     <ViewWithFooter>
       <MessageList
-        loading={loading}
-        messageList={messageList}
+//TODO        loading={loading}
+        messageList={messages}
         testID="Messages.messages" //Q
       />
     </ViewWithFooter>

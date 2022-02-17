@@ -25,9 +25,6 @@ class Message {
         toUser: User.mapApiToRealm( msg.to_user, realm ),
         threadId: msg.thread_id
     };
-
-    // need to append user after the observation realm object has been created
-    //delete newObs.user; //Q: Why do we need to do this?
     return newMsg;
   }
 
@@ -35,14 +32,14 @@ class Message {
   //Q: V2 (https://api.inaturalist.org/v2/docs/#/Messages/get_messages) doesn't specify optionality - how should we handle?
   static schema = {
     name: "Message",
-    primaryKey: "uuid", //Q: UUID is used instead of ID - is that right?
+    primaryKey: "id",
     properties: {
-      uuid: "string",
-      subject: "string",
-      body: "string",
+      id: "string",
+      subject: "string?",
+      body: "string?",
       from_user: "User?",
       to_user: "User?",
-      thread_id: "string?" //Q: Thread should be integer according to the model, but do we use strings?
+      thread_id: "string?"
     }
   }
 }

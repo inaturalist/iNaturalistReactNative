@@ -9,19 +9,19 @@ import { FlatList, Text } from "react-native";
 import { textStyles } from "../../styles/projects/projects";  // TODO need to style
 
 type Props = {
-  loading: boolean,
+  //loading: boolean,
   messageList: Array<Object>,
   testID: string
 }
 
 const MessageList = ( {
-  loading,
+  //loading,
   messageList,
   testID
 }: Props ): React.Node => {
   // TODO const navigation = useNavigation( );
 
-  const renderMessages = ( { item } ) => {
+  const renderMessages = ( { message } ) => {
     // TODO const navToProjectDetails = ( ) => navigation.navigate( "ProjectDetails", { id: item.id } );
     return (
       // TODO <Pressable
@@ -29,7 +29,7 @@ const MessageList = ( {
       //   style={viewStyles.row}
       //   testID={`Project.${item.id}`}
       // >
-        <Text style={textStyles.projectName}>{item.subject}</Text>
+        <Text style={textStyles.projectName}>{message.subject}</Text>
       // TODO </Pressable>
     );
   };
