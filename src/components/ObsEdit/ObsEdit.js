@@ -21,6 +21,7 @@ import CustomModal from "../SharedComponents/Modal";
 import ObsEditSearch from "./ObsEditSearch";
 import { getJWTToken } from "../LoginSignUp/AuthenticationService";
 import LocationPicker from "./LocationPicker";
+import CameraOptionsButton from "../SharedComponents/Buttons/CameraOptionsButton";
 
 const ObsEdit = ( ): Node => {
   const navigation = useNavigation( );
@@ -83,7 +84,10 @@ const ObsEdit = ( ): Node => {
   }, [firstPhoto, sound] );
 
   const location = setLocation( );
-  const { latitude, longitude, accuracy } = location;
+  const latitude = location && location.latitude;
+  const longitude = location && location.longitude;
+  const accuracy = location && location.accuracy;
+
   const locationName = useLocationName( latitude, longitude );
   const dateAndTime = setDateAndTime( );
 
@@ -231,6 +235,8 @@ const ObsEdit = ( ): Node => {
     );
   };
 
+  const renderCameraOptionsButton =  ( ) => <CameraOptionsButton />;
+
   const renderObsPhotos = ( { item } ) => {
     const imageUri = { uri: item.uri };
     return <Image source={imageUri} style={imageStyles.obsPhoto} testID="ObsEdit.photo" />;
@@ -245,6 +251,7 @@ const ObsEdit = ( ): Node => {
           data={currentObs.observationPhotos}
           horizontal
           renderItem={renderObsPhotos}
+          ListFooterComponent={renderCameraOptionsButton}
         />
       );
     } else if ( currentObs.observationSounds ) {
@@ -323,9 +330,8 @@ const ObsEdit = ( ): Node => {
     for ( let i = 0; i < obsPhotosToUpload.length; i += 1 ) {
       const photoToUpload = obsPhotosToUpload[i];
       const photoUri = photoToUpload.uri;
-      console.log( photoUri, "photo to resize" );
       const resizedPhoto = await resizeImageForUpload( photoUri );
-      console.log( resizedPhoto, "resized photo" );
+
       const photoParams = {
         "observation_photo[observation_id]": id,
         "observation_photo[uuid]": photoToUpload.uuid,
@@ -335,7 +341,6 @@ const ObsEdit = ( ): Node => {
           type: "image/jpeg"
         } )
       };
-      console.log( photoParams, "create photo params" );
       uploadPhoto( photoParams, apiToken );
     }
   };
@@ -441,7 +446,6 @@ const ObsEdit = ( ): Node => {
       <Pressable onPress={searchForTaxa}>
         <Text style={textStyles.text}>tap to search for taxa</Text>
       </Pressable>
-      {/* TODO: add iconic taxa with appropriate taxa ids */}
       <Text style={textStyles.text}>
         {currentObs.taxon_id && t( iconicTaxaNames[currentObs.taxon_id] )}
       </Text>

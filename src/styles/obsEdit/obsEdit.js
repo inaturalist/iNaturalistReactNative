@@ -71,6 +71,14 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     justifyContent: "space-between",
     flexDirection: "row",
     flexWrap: "nowrap"
+  },
+  evidenceButton: {
+    backgroundColor: colors.inatGreen,
+    width: imageWidth,
+    height: imageWidth,
+    borderRadius: 20,
+    marginHorizontal: 20,
+    marginVertical: 20
   }
 } );
 
