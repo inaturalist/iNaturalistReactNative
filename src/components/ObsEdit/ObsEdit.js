@@ -7,7 +7,9 @@ import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
-import inatjs from "inaturalistjs";
+import inatjs, { FileUpload } from "inaturalistjs";
+import uuid from "react-native-uuid";
+import ImageResizer from "react-native-image-resizer";
 
 import ScrollWithFooter from "../SharedComponents/ScrollWithFooter";
 import useLocationName from "../../sharedHooks/useLocationName";
@@ -71,7 +73,7 @@ const ObsEdit = ( ): Node => {
         // object should look like Seek upload observation:
         // https://github.com/inaturalist/SeekReactNative/blob/e2df7ca77517e0c4c89f3147dc5a15ed98e31c34/utility/uploadHelpers.js#L198
         ...obs,
-            // uuid: generateUUID( ),
+        uuid: uuid.v4( ),
         captive_flag: false,
         geoprivacy: "open",
         latitude,
@@ -229,14 +231,74 @@ const ObsEdit = ( ): Node => {
     }
   };
 
-  const uploadObservation = async ( ) => {
+  const resizeImage = async ( path, width, height?, outputPath? ) => {
     try {
-      // TODO: get JWT token from staging api, not production
-      const apiToken = await getJWTToken( );
+      const { uri } = await ImageResizer.createResizedImage(
+        path,
+        width,
+        height || width, // height
+        "JPEG", // compressFormat
+        100, // quality
+        0, // rotation
+        // $FlowFixMe
+        outputPath, // outputPath
+        true // keep metadata
+      );
+
+      return uri;
+    } catch ( e ) {
+      return "";
+    }
+  };
+
+  const resizeImageForUpload = async ( uri ) => {
+    const maxUploadSize = 2048;
+    return await resizeImage( uri, maxUploadSize, maxUploadSize );
+  };
+
+  const uploadPhoto = async ( photoParams, apiToken ) => {
+    const options = {
+      api_token: apiToken
+    };
+
+    try {
+      await inatjs.observation_photos.create( photoParams, options );
+    } catch ( e ) {
+      console.log( JSON.stringify( e.response ), "couldn't upload photo" );
+    }
+  };
+
+  const createPhotoParams = async ( id, apiToken ) => {
+    const obsPhotosToUpload = observations[currentObservation].observationPhotos;
+
+    for ( let i = 0; i < obsPhotosToUpload.length; i += 1 ) {
+      const photoToUpload = obsPhotosToUpload[i];
+      const photoUri = photoToUpload.uri;
+      const resizedPhoto = await resizeImageForUpload( photoUri );
+      const photoParams = {
+        "observation_photo[observation_id]": id,
+        "observation_photo[uuid]": photoToUpload.uuid,
+        file: new FileUpload( {
+          uri: resizedPhoto,
+          name: "photo.jpeg",
+          type: "image/jpeg"
+        } )
+      };
+      uploadPhoto( photoParams, apiToken );
+    }
+  };
+
+  const uploadObservation = async ( ) => {
+    const FIELDS = {
+      id: true
+    };
+    try {
+      const apiToken = await getJWTToken( false );
       const obsToUpload = observations[currentObservation];
 
       const uploadParams = {
-        observation: obsToUpload
+        observation: obsToUpload,
+        fields: FIELDS
       };
 
       const options = {
@@ -244,10 +306,12 @@ const ObsEdit = ( ): Node => {
       };
 
       const response = await inatjs.observations.create( uploadParams, options );
-      const { id } = response[0];
-      console.log( id, "id for uploaded obs" );
+      console.log( response.id ); // v1
+      createPhotoParams( response.id, apiToken ); // v1
+      // console.log( results[0].id, "response id" );
+      // createPhotoParams( results[0].id );
     } catch ( e ) {
-      console.log( JSON.stringify( e.response.status ), "couldn't upload observation" );
+      console.log( JSON.stringify( e.response.status ), "couldn't upload observation: ", JSON.stringify( e.response ) );
     }
   };
 
@@ -255,7 +319,6 @@ const ObsEdit = ( ): Node => {
   const closeLocationPicker = ( ) => setShowLocationPicker( false );
 
   const updateLocation = newLocation => {
-    console.log( newLocation, "newLocation from picker" );
     const updatedObs = observations.map( ( obs, index ) => {
       if ( index === currentObservation ) {
         return {

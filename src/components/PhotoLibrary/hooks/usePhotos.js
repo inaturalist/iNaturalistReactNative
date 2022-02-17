@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import CameraRoll from "@react-native-community/cameraroll";
+import uuid from "react-native-uuid";
 
 const initialStatus = {
   photos: [],
@@ -44,7 +45,9 @@ const usePhotos = ( options: Object, isScrolling: boolean ): Array<Object> => {
               longitude: node.location && node.location.longitude
             },
             timestamp: node.timestamp,
-            uri: node.image.uri
+            uri: node.image.uri,
+            // adding a uuid here makes it easier to prevent duplicates in uploader
+            uuid: uuid.v4( )
           };
         } );
 
