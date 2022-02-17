@@ -63,6 +63,7 @@ const ObsEdit = ( ): Node => {
   const location = ( firstPhoto && firstPhoto.location ) || null;
   const latitude = ( location && location.latitude ) || null;
   const longitude = ( location && location.longitude ) || null;
+  const accuracy = ( location && location.accuracy ) || null;
   const locationName = useLocationName( latitude, longitude );
   const dateAndTime = setDateAndTime( );
 
@@ -84,7 +85,7 @@ const ObsEdit = ( ): Node => {
         owners_identification_from_vision_requested: false,
         // photo: {}, // use file uploader
         place_guess: locationName || null,
-        positional_accuracy: null,
+        positional_accuracy: accuracy,
         project_ids: [],
         time_zone: getTimeZone( )
       };
@@ -93,7 +94,7 @@ const ObsEdit = ( ): Node => {
     if ( observations.length === 0 ) {
       setObservations( initialObs );
     }
-  }, [obsToEdit, dateAndTime, latitude, longitude, locationName, observations] );
+  }, [obsToEdit, dateAndTime, latitude, longitude, locationName, observations, accuracy] );
 
   const geoprivacyOptions = [{
     label: "open",
@@ -247,6 +248,7 @@ const ObsEdit = ( ): Node => {
 
       return uri;
     } catch ( e ) {
+      console.log( e, "error resizing image" );
       return "";
     }
   };
@@ -270,11 +272,12 @@ const ObsEdit = ( ): Node => {
 
   const createPhotoParams = async ( id, apiToken ) => {
     const obsPhotosToUpload = observations[currentObservation].observationPhotos;
-
     for ( let i = 0; i < obsPhotosToUpload.length; i += 1 ) {
       const photoToUpload = obsPhotosToUpload[i];
       const photoUri = photoToUpload.uri;
+      console.log( photoUri, "photo to resize" );
       const resizedPhoto = await resizeImageForUpload( photoUri );
+      console.log( resizedPhoto, "resized photo" );
       const photoParams = {
         "observation_photo[observation_id]": id,
         "observation_photo[uuid]": photoToUpload.uuid,
@@ -284,6 +287,7 @@ const ObsEdit = ( ): Node => {
           type: "image/jpeg"
         } )
       };
+      console.log( photoParams, "create photo params" );
       uploadPhoto( photoParams, apiToken );
     }
   };
@@ -349,6 +353,7 @@ const ObsEdit = ( ): Node => {
   const displayDate = dateAndTime ? `Date & time: ${dateAndTime}` : null;
   const displayLatitude = currentObs.latitude !== null && `Lat: ${formatDecimal( currentObs.latitude )}`;
   const displayLongitude = currentObs.longitude !== null && `Lon: ${formatDecimal( currentObs.longitude )}`;
+  const displayAccuracy = currentObs.accuracy !== null && `Acc: ${formatDecimal( currentObs.positional_accuracy )}`;
 
   return (
     <ScrollWithFooter>
@@ -375,7 +380,7 @@ const ObsEdit = ( ): Node => {
         onPress={openLocationPicker}
       >
         <Text style={textStyles.text}>
-          {`${displayLatitude}, ${displayLongitude}, Acc: ${currentObs.positional_accuracy}`}
+          {`${displayLatitude}, ${displayLongitude}, ${displayAccuracy}`}
         </Text>
       </Pressable>
       {/* TODO: format date and time */}

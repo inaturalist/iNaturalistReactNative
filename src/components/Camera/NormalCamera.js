@@ -8,6 +8,8 @@ import { FlatList, PinchGestureHandler, TapGestureHandler } from "react-native-g
 import Reanimated, { Extrapolate, interpolate, useAnimatedGestureHandler, useAnimatedProps, useSharedValue } from "react-native-reanimated";
 import { useIsFocused } from "@react-navigation/core";
 import { useNavigation } from "@react-navigation/native";
+import uuid from "react-native-uuid";
+import { useUserLocation } from "../../sharedHooks/useUserLocation";
 
 import { viewStyles, imageStyles } from "../../styles/camera/normalCamera";
 import { useIsForeground } from "./hooks/useIsForeground";
@@ -24,6 +26,7 @@ Reanimated.addWhitelistedNativeProps( {
 } );
 
 const NormalCamera = ( ): Node => {
+  const latLng = useUserLocation( );
   const navigation = useNavigation( );
   // $FlowFixMe
   const camera = useRef<Camera>( null );
@@ -63,10 +66,12 @@ const NormalCamera = ( ): Node => {
     try {
       const photo = await camera.current.takePhoto( takePhotoOptions );
       const parsedPhoto = {
+        location: latLng,
         timestamp: null,
         DateTimeOriginal: photo.metadata["{Exif}"].DateTimeOriginal,
-        uri: photo.path,
-        exif: photo.metadata["{Exif}"]
+        uri: `file://${photo.path}`,
+        // exif: photo.metadata["{Exif}"],
+        uuid: uuid.v4( )
       };
       // only 10 photos allowed
       if ( observationPhotos.length < 10 ) {
