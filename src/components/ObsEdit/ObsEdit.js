@@ -48,7 +48,16 @@ const ObsEdit = ( ): Node => {
     return null;
   };
 
+  const setSound = ( ) => {
+    if ( obsToEdit && obsToEdit[currentObservation]
+      && obsToEdit[currentObservation].observationSounds ) {
+        return obsToEdit[currentObservation].observationSounds;
+    }
+    return null;
+  };
+
   const firstPhoto = setFirstPhoto( );
+  const sound = setSound( );
 
   const setDateAndTime = ( ) => {
     if ( firstPhoto && firstPhoto.timestamp ) {
@@ -57,13 +66,24 @@ const ObsEdit = ( ): Node => {
     if ( firstPhoto && firstPhoto.DateTimeOriginal ) {
       return firstPhoto.DateTimeOriginal;
     }
+    if ( sound ) {
+      return formatDateAndTime( sound.timestamp );
+    }
     return null;
   };
 
-  const location = ( firstPhoto && firstPhoto.location ) || null;
-  const latitude = ( location && location.latitude ) || null;
-  const longitude = ( location && location.longitude ) || null;
-  const accuracy = ( location && location.accuracy ) || null;
+  const setLocation = useCallback( ( ) => {
+    if ( firstPhoto && firstPhoto.location ) {
+      return firstPhoto.location;
+    }
+    if ( sound && sound.location ) {
+      return sound.location;
+    }
+    return null;
+  }, [firstPhoto, sound] );
+
+  const location = setLocation( );
+  const { latitude, longitude, accuracy } = location;
   const locationName = useLocationName( latitude, longitude );
   const dateAndTime = setDateAndTime( );
 
@@ -94,7 +114,7 @@ const ObsEdit = ( ): Node => {
     if ( observations.length === 0 ) {
       setObservations( initialObs );
     }
-  }, [obsToEdit, dateAndTime, latitude, longitude, locationName, observations, accuracy] );
+  }, [obsToEdit, dateAndTime, locationName, observations, accuracy, latitude, longitude] );
 
   const geoprivacyOptions = [{
     label: "open",
@@ -232,6 +252,32 @@ const ObsEdit = ( ): Node => {
     }
   };
 
+  const uploadSound = async ( soundParams, apiToken ) => {
+    const options = {
+      api_token: apiToken
+    };
+
+    try {
+      await inatjs.observation_sounds.create( soundParams, options );
+    } catch ( e ) {
+      console.log( JSON.stringify( e.response ), "couldn't upload sound" );
+    }
+  };
+
+  const createSoundParams = async ( id, apiToken ) => {
+    const obsSoundToUpload = observations[currentObservation].observationSounds;
+    const soundParams = {
+      "observation_sound[observation_id]": id,
+      "observation_sound[uuid]": obsSoundToUpload.uuid,
+      file: new FileUpload( {
+        uri: obsSoundToUpload.uri,
+        name: "audio.m4a",
+        type: "audio/m4a"
+      } )
+    };
+    uploadSound( soundParams, apiToken );
+  };
+
   const resizeImage = async ( path, width, height?, outputPath? ) => {
     try {
       const { uri } = await ImageResizer.createResizedImage(
@@ -272,6 +318,8 @@ const ObsEdit = ( ): Node => {
 
   const createPhotoParams = async ( id, apiToken ) => {
     const obsPhotosToUpload = observations[currentObservation].observationPhotos;
+
+    if ( !obsPhotosToUpload || obsPhotosToUpload.length === 0 ) { return; }
     for ( let i = 0; i < obsPhotosToUpload.length; i += 1 ) {
       const photoToUpload = obsPhotosToUpload[i];
       const photoUri = photoToUpload.uri;
@@ -310,8 +358,8 @@ const ObsEdit = ( ): Node => {
       };
 
       const response = await inatjs.observations.create( uploadParams, options );
-      console.log( response.id ); // v1
       createPhotoParams( response.id, apiToken ); // v1
+      createSoundParams( response.id, apiToken ); // v1
       // console.log( results[0].id, "response id" );
       // createPhotoParams( results[0].id );
     } catch ( e ) {
