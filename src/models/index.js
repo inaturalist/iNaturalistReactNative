@@ -8,7 +8,6 @@ import ObservationSound from "./ObservationSound";
 import Photo from "./Photo";
 import Taxon from "./Taxon";
 import User from "./User";
-import Message from "./Message";
 
 export default {
   schema: [
@@ -19,8 +18,7 @@ export default {
     ObservationSound,
     Photo,
     Taxon,
-    User,
-    Message
+    User
   ],
   schemaVersion: 7,
   path: "db.realm",
