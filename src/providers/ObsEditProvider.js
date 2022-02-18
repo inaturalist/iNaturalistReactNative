@@ -10,34 +10,34 @@ type Props = {
 
 const ObsEditProvider = ( { children }: Props ): Node => {
   const [obsToEdit, setObsToEdit] = useState( [] );
-  const [currentObservation, setCurrentObservation] = useState( 0 );
+  const [currentObsNumber, setCurrentObsNumber] = useState( 0 );
+
+  const currentObs = obsToEdit[currentObsNumber];
 
   const addSound = ( sound ) => {
     const updatedObs = Array.from( obsToEdit );
-    if ( !obsToEdit[currentObservation] ) {
+    if ( !currentObs ) {
       updatedObs.push( { observationSounds: sound } );
       setObsToEdit( updatedObs );
     }
 
-    if ( obsToEdit[currentObservation]
-      && !obsToEdit[currentObservation].observationSounds ) {
-        updatedObs[currentObservation].observationSounds = sound;
-        setObsToEdit( updatedObs );
+    if ( currentObs && !currentObs.observationSounds ) {
+      updatedObs[currentObsNumber].observationSounds = sound;
+      setObsToEdit( updatedObs );
     }
   };
 
   const addPhotos = ( photos ) => {
     // but only if less than 10 per observation? or whatever number we choose
     const updatedObs = Array.from( obsToEdit );
-    if ( !obsToEdit[currentObservation] ) {
+    if ( !currentObs ) {
       updatedObs.push( { observationPhotos: photos } );
       setObsToEdit( updatedObs );
-    } else if ( obsToEdit[currentObservation]
-      && !obsToEdit[currentObservation].observationPhotos ) {
-        updatedObs[currentObservation].observationPhotos = photos;
-        setObsToEdit( updatedObs );
-    } else if ( obsToEdit[currentObservation].observationPhotos ) {
-      updatedObs[currentObservation].observationPhotos.concat( photos );
+    } else if ( currentObs && !currentObs.observationPhotos ) {
+      updatedObs[currentObsNumber].observationPhotos = photos;
+      setObsToEdit( updatedObs );
+    } else if ( currentObs.observationPhotos ) {
+      updatedObs[currentObsNumber].observationPhotos.concat( photos );
     }
   };
 
@@ -45,8 +45,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const obsEditValue = {
     obsToEdit,
-    currentObservation,
-    setCurrentObservation,
+    currentObsNumber,
+    setCurrentObsNumber,
     addSound,
     addPhotos
   };

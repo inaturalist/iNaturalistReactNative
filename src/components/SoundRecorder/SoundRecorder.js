@@ -196,16 +196,6 @@ const SoundRecorder = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  // const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { obsToEdit: [{
-  //     observationSounds: {
-  //       location: latLng,
-  //       uri,
-  //       uuid: uuid.v4( ),
-  //       timestamp: getUnixTime( new Date( ) )
-  //     }
-  //   }]
-  // } );
-
   return (
     <ViewWithFooter>
       <View style={viewStyles.center}>

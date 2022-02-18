@@ -27,8 +27,8 @@ import { ObsEditContext } from "../../providers/contexts";
 const ObsEdit = ( ): Node => {
   const {
     obsToEdit,
-    currentObservation,
-    setCurrentObservation
+    currentObsNumber,
+    setCurrentObsNumber
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -39,27 +39,21 @@ const ObsEdit = ( ): Node => {
   const openModal = useCallback( ( ) => setModal( true ), [] );
   const closeModal = useCallback( ( ) => setModal( false ), [] );
 
-  // const { params } = useRoute( );
-  // const { photo, obsToEdit } = params;
-
   const [observations, setObservations] = useState( [] );
-  // const [currentObservation, setCurrentObservation] = useState( 0 );
   const [showLocationPicker, setShowLocationPicker] = useState( false );
 
   const setFirstPhoto = ( ) => {
-    if ( obsToEdit && obsToEdit[currentObservation]
-      && obsToEdit[currentObservation].observationPhotos ) {
-        return obsToEdit[currentObservation].observationPhotos[0];
-    // } else if ( photo ) {
-    //   return photo;
+    if ( obsToEdit && obsToEdit[currentObsNumber]
+      && obsToEdit[currentObsNumber].observationPhotos ) {
+        return obsToEdit[currentObsNumber].observationPhotos[0];
     }
     return null;
   };
 
   const setSound = ( ) => {
-    if ( obsToEdit && obsToEdit[currentObservation]
-      && obsToEdit[currentObservation].observationSounds ) {
-        return obsToEdit[currentObservation].observationSounds;
+    if ( obsToEdit && obsToEdit[currentObsNumber]
+      && obsToEdit[currentObsNumber].observationSounds ) {
+        return obsToEdit[currentObsNumber].observationSounds;
     }
     return null;
   };
@@ -153,7 +147,7 @@ const ObsEdit = ( ): Node => {
 
   const updateObservationKey = ( key, value ) => {
     const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObservation ) {
+      if ( index === currentObsNumber ) {
         return {
           ...obs,
           // $FlowFixMe
@@ -173,7 +167,7 @@ const ObsEdit = ( ): Node => {
 
   const updateProjectIds = projectId => {
     const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObservation ) {
+      if ( index === currentObsNumber ) {
         return {
           ...obs,
           project_ids: obs.project_ids.concat( [projectId] )
@@ -210,8 +204,8 @@ const ObsEdit = ( ): Node => {
     );
   };
 
-  const showNextObservation = ( ) => setCurrentObservation( currentObservation + 1 );
-  const showPrevObservation = ( ) => setCurrentObservation( currentObservation - 1 );
+  const showNextObservation = ( ) => setCurrentObsNumber( currentObsNumber + 1 );
+  const showPrevObservation = ( ) => setCurrentObsNumber( currentObsNumber - 1 );
 
   const renderArrowNavigation = ( ) => {
     if ( obsToEdit.length === 0 ) { return; }
@@ -220,15 +214,15 @@ const ObsEdit = ( ): Node => {
       <View style={viewStyles.row}>
         <HeaderBackButton onPress={( ) => navigation.goBack( )} />
         <View style={viewStyles.row}>
-          {currentObservation !== 0 && (
+          {currentObsNumber !== 0 && (
             <Pressable
               onPress={showPrevObservation}
             >
               <Text>previous obs</Text>
             </Pressable>
           )}
-          <Text>{`${currentObservation + 1} of ${observations.length}`}</Text>
-          {( currentObservation !== obsToEdit.length - 1 ) && (
+          <Text>{`${currentObsNumber + 1} of ${observations.length}`}</Text>
+          {( currentObsNumber !== obsToEdit.length - 1 ) && (
             <Pressable
               onPress={showNextObservation}
             >
@@ -255,7 +249,7 @@ const ObsEdit = ( ): Node => {
     );
   };
 
-  const currentObs = observations[currentObservation];
+  const currentObs = observations[currentObsNumber];
 
   const renderEvidenceList = ( ) => {
     const displayEvidence = ( ) => {
@@ -281,16 +275,6 @@ const ObsEdit = ( ): Node => {
         ListFooterComponent={renderCameraOptionsButton}
       />
     );
-    // } else if ( currentObs.observationSounds ) {
-    //   return (
-    //     <View style={viewStyles.row}>
-    //       <View style={viewStyles.evidenceButton}>
-    //         <Text>display sound recording</Text>
-    //       </View>
-    //       {renderCameraOptionsButton( )}
-    //     </View>
-    //   );
-    // }
   };
 
   const uploadSound = async ( soundParams, apiToken ) => {
@@ -306,7 +290,7 @@ const ObsEdit = ( ): Node => {
   };
 
   const createSoundParams = async ( id, apiToken ) => {
-    const obsSoundToUpload = observations[currentObservation].observationSounds;
+    const obsSoundToUpload = observations[currentObsNumber].observationSounds;
     const soundParams = {
       "observation_sound[observation_id]": id,
       "observation_sound[uuid]": obsSoundToUpload.uuid,
@@ -358,7 +342,7 @@ const ObsEdit = ( ): Node => {
   };
 
   const createPhotoParams = async ( id, apiToken ) => {
-    const obsPhotosToUpload = observations[currentObservation].observationPhotos;
+    const obsPhotosToUpload = observations[currentObsNumber].observationPhotos;
 
     if ( !obsPhotosToUpload || obsPhotosToUpload.length === 0 ) { return; }
     for ( let i = 0; i < obsPhotosToUpload.length; i += 1 ) {
@@ -385,7 +369,7 @@ const ObsEdit = ( ): Node => {
     };
     try {
       const apiToken = await getJWTToken( false );
-      const obsToUpload = observations[currentObservation];
+      const obsToUpload = observations[currentObsNumber];
 
       const uploadParams = {
         observation: obsToUpload,
@@ -411,7 +395,7 @@ const ObsEdit = ( ): Node => {
 
   const updateLocation = newLocation => {
     const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObservation ) {
+      if ( index === currentObsNumber ) {
         return {
           ...obs,
           // $FlowFixMe
