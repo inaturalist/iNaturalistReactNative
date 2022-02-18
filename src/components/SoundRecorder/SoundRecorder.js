@@ -2,16 +2,9 @@
 
 // @flow
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Text, Pressable, View } from "react-native";
-import AudioRecorderPlayer, {
-  // AVEncoderAudioQualityIOSType,
-  // AVEncodingOption,
-  // AudioEncoderAndroidType,
-  // AudioSet,
-  // AudioSourceAndroidType
-  // $FlowFixMe
- } from "react-native-audio-recorder-player";
+import AudioRecorderPlayer from "react-native-audio-recorder-player";
  import type { Node } from "react";
  import { useTranslation } from "react-i18next";
  import { useNavigation } from "@react-navigation/native";
@@ -21,11 +14,13 @@ import AudioRecorderPlayer, {
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder";
+import { ObsEditContext } from "../../providers/contexts";
 
 // needs to be outside of the component for stopRecorder to work correctly
 const audioRecorderPlayer = new AudioRecorderPlayer( );
 
 const SoundRecorder = ( ): Node => {
+  const { addSound } = useContext( ObsEditContext );
   const latLng = useUserLocation( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -191,15 +186,25 @@ const SoundRecorder = ( ): Node => {
     }
   };
 
-  const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { obsToEdit: [{
-      observationSounds: {
-        location: latLng,
-        uri,
-        uuid: uuid.v4( ),
-        timestamp: getUnixTime( new Date( ) )
-      }
-    }]
-  } );
+  const navToObsEdit = ( ) => {
+    addSound( {
+      location: latLng,
+      uri,
+      uuid: uuid.v4( ),
+      timestamp: getUnixTime( new Date( ) )
+    } );
+    navigation.navigate( "ObsEdit" );
+  };
+
+  // const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { obsToEdit: [{
+  //     observationSounds: {
+  //       location: latLng,
+  //       uri,
+  //       uuid: uuid.v4( ),
+  //       timestamp: getUnixTime( new Date( ) )
+  //     }
+  //   }]
+  // } );
 
   return (
     <ViewWithFooter>

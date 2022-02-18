@@ -79,6 +79,14 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     borderRadius: 20,
     marginHorizontal: 20,
     marginVertical: 20
+  },
+  soundButton: {
+    backgroundColor: colors.gray,
+    width: imageWidth,
+    height: imageWidth,
+    borderRadius: 20,
+    marginHorizontal: 20,
+    marginVertical: 20
   }
 } );
 

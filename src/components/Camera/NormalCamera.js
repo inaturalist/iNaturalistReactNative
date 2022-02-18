@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { Text, StyleSheet, View, Pressable, Animated, Image } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
@@ -14,6 +14,7 @@ import { useUserLocation } from "../../sharedHooks/useUserLocation";
 import { viewStyles, imageStyles } from "../../styles/camera/normalCamera";
 import { useIsForeground } from "./hooks/useIsForeground";
 import FocusSquare from "./FocusSquare";
+import { ObsEditContext } from "../../providers/contexts";
 
 // a lot of the camera functionality (pinch to zoom, etc.) is lifted from the example library:
 // https://github.com/mrousavy/react-native-vision-camera/blob/7335883969c9102b8a6d14ca7ed871f3de7e1389/example/src/CameraPage.tsx
@@ -26,6 +27,7 @@ Reanimated.addWhitelistedNativeProps( {
 } );
 
 const NormalCamera = ( ): Node => {
+  const { addPhotos } = useContext( ObsEditContext );
   const latLng = useUserLocation( );
   const navigation = useNavigation( );
   // $FlowFixMe
@@ -132,11 +134,8 @@ const NormalCamera = ( ): Node => {
   );
 
   const navToObsEdit = ( ) => {
-    navigation.navigate( "ObsEdit", { obsToEdit: [
-      {
-        observationPhotos
-      }
-    ] } );
+    addPhotos( observationPhotos );
+    navigation.navigate( "ObsEdit" );
   };
 
   // TODO: add Android permissions

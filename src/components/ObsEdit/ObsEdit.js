@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { Text, Image, TextInput, Pressable, FlatList, View, Modal } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
@@ -11,7 +11,7 @@ import inatjs, { FileUpload } from "inaturalistjs";
 import uuid from "react-native-uuid";
 import ImageResizer from "react-native-image-resizer";
 
-import ScrollWithFooter from "../SharedComponents/ScrollWithFooter";
+import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import useLocationName from "../../sharedHooks/useLocationName";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import { pickerSelectStyles, textStyles, imageStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
@@ -22,29 +22,36 @@ import ObsEditSearch from "./ObsEditSearch";
 import { getJWTToken } from "../LoginSignUp/AuthenticationService";
 import LocationPicker from "./LocationPicker";
 import CameraOptionsButton from "../SharedComponents/Buttons/CameraOptionsButton";
+import { ObsEditContext } from "../../providers/contexts";
 
 const ObsEdit = ( ): Node => {
+  const {
+    obsToEdit,
+    currentObservation,
+    setCurrentObservation
+  } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const [showModal, setModal] = useState( false );
   const [source, setSource] = useState( null );
+  console.log( obsToEdit, "obs in edit screen" );
 
   const openModal = useCallback( ( ) => setModal( true ), [] );
   const closeModal = useCallback( ( ) => setModal( false ), [] );
 
-  const { params } = useRoute( );
-  const { photo, obsToEdit } = params;
+  // const { params } = useRoute( );
+  // const { photo, obsToEdit } = params;
 
   const [observations, setObservations] = useState( [] );
-  const [currentObservation, setCurrentObservation] = useState( 0 );
+  // const [currentObservation, setCurrentObservation] = useState( 0 );
   const [showLocationPicker, setShowLocationPicker] = useState( false );
 
   const setFirstPhoto = ( ) => {
     if ( obsToEdit && obsToEdit[currentObservation]
       && obsToEdit[currentObservation].observationPhotos ) {
         return obsToEdit[currentObservation].observationPhotos[0];
-    } else if ( photo ) {
-      return photo;
+    // } else if ( photo ) {
+    //   return photo;
     }
     return null;
   };
@@ -107,7 +114,6 @@ const ObsEdit = ( ): Node => {
         // so it will work with all translated languages on iNaturalist
         observed_on_string: dateAndTime,
         owners_identification_from_vision_requested: false,
-        // photo: {}, // use file uploader
         place_guess: locationName || null,
         positional_accuracy: accuracy,
         project_ids: [],
@@ -237,26 +243,54 @@ const ObsEdit = ( ): Node => {
 
   const renderCameraOptionsButton =  ( ) => <CameraOptionsButton />;
 
-  const renderObsPhotos = ( { item } ) => {
+  const renderEvidence = ( { item } ) => {
+    const isSound = item.uri.includes( "m4a" );
     const imageUri = { uri: item.uri };
-    return <Image source={imageUri} style={imageStyles.obsPhoto} testID="ObsEdit.photo" />;
+    return (
+      <Image
+        source={imageUri}
+        style={[imageStyles.obsPhoto, isSound && viewStyles.soundButton]}
+        testID="ObsEdit.photo"
+      />
+    );
   };
 
   const currentObs = observations[currentObservation];
 
   const renderEvidenceList = ( ) => {
-    if ( currentObs.observationPhotos ) {
-      return (
-        <FlatList
-          data={currentObs.observationPhotos}
-          horizontal
-          renderItem={renderObsPhotos}
-          ListFooterComponent={renderCameraOptionsButton}
-        />
-      );
-    } else if ( currentObs.observationSounds ) {
-      return <Text>display sound recording</Text>;
-    }
+    const displayEvidence = ( ) => {
+      console.log( currentObs, "obs photos" );
+      if ( currentObs.observationSounds && !currentObs.observationPhotos ) {
+        return [currentObs.observationSounds];
+      }
+      if ( currentObs.observationPhotos && !currentObs.observationSounds ) {
+        return currentObs.observationPhotos;
+      }
+      if ( currentObs.observationPhotos && currentObs.observationSounds ) {
+        console.log( currentObs.observationPhotos, "returning photos" );
+        return currentObs.observationPhotos.push( currentObs.observationSounds );
+      }
+      return [];
+    };
+    console.log( displayEvidence( ), "evidence" );
+    return (
+      <FlatList
+        data={displayEvidence( )}
+        horizontal
+        renderItem={renderEvidence}
+        ListFooterComponent={renderCameraOptionsButton}
+      />
+    );
+    // } else if ( currentObs.observationSounds ) {
+    //   return (
+    //     <View style={viewStyles.row}>
+    //       <View style={viewStyles.evidenceButton}>
+    //         <Text>display sound recording</Text>
+    //       </View>
+    //       {renderCameraOptionsButton( )}
+    //     </View>
+    //   );
+    // }
   };
 
   const uploadSound = async ( soundParams, apiToken ) => {
@@ -409,7 +443,7 @@ const ObsEdit = ( ): Node => {
   const displayAccuracy = currentObs.accuracy !== null && `Acc: ${formatDecimal( currentObs.positional_accuracy )}`;
 
   return (
-    <ScrollWithFooter>
+    <ScrollNoFooter>
       {renderLocationPickerModal( )}
        <CustomModal
         showModal={showModal}
@@ -487,7 +521,7 @@ const ObsEdit = ( ): Node => {
         testID="ObsEdit.uploadButton"
         handlePress={uploadObservation}
       />
-    </ScrollWithFooter>
+    </ScrollNoFooter>
   );
 };
 

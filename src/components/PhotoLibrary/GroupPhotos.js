@@ -7,11 +7,12 @@ import { useNavigation } from "@react-navigation/native";
 
 import { imageStyles, viewStyles, textStyles } from "../../styles/photoLibrary/photoGallery";
 import GroupPhotosHeader from "./GroupPhotosHeader";
-import { PhotoGalleryContext } from "../../providers/contexts";
+import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 
 const GroupPhotos = ( ): Node => {
+  const { addPhotos } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { selectedPhotos, setSelectedPhotos } = useContext( PhotoGalleryContext );
   const albums = Object.keys( selectedPhotos );
@@ -196,7 +197,8 @@ const GroupPhotos = ( ): Node => {
   };
 
   const navToObsEdit = ( ) => {
-    navigation.navigate( "ObsEdit", { obsToEdit: obsToEdit.observations } );
+    addPhotos( obsToEdit.observations );
+    navigation.navigate( "ObsEdit" );
     // on obs edit, can delete one obs
 
     // 10 photos, 1 sound per obs
