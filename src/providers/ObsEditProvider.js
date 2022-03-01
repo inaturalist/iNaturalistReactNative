@@ -1,7 +1,9 @@
 // @flow
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import type { Node } from "react";
+import uuid from "react-native-uuid";
 
+import { getTimeZone } from "../sharedHelpers/dateAndTime";
 import { ObsEditContext } from "./contexts";
 
 type Props = {
@@ -9,46 +11,86 @@ type Props = {
 }
 
 const ObsEditProvider = ( { children }: Props ): Node => {
-  const [obsToEdit, setObsToEdit] = useState( [] );
   const [currentObsNumber, setCurrentObsNumber] = useState( 0 );
+  const [observations, setObservations] = useState( [] );
 
-  const currentObs = obsToEdit[currentObsNumber];
+  const currentObs = observations[currentObsNumber];
 
   const addSound = ( sound ) => {
-    const updatedObs = Array.from( obsToEdit );
-    if ( !currentObs ) {
-      updatedObs.push( { observationSounds: sound } );
-      setObsToEdit( updatedObs );
-    }
-
-    if ( currentObs && !currentObs.observationSounds ) {
-      updatedObs[currentObsNumber].observationSounds = sound;
-      setObsToEdit( updatedObs );
+    if ( observations.length === 0 ) {
+      const soundObs = createObservation( sound );
+      setObservations( [soundObs] );
+    } else if ( currentObs ) {
+      const updatedObs = Array.from( observations );
+      updatedObs[currentObsNumber].observationSounds = sound.observationSounds;
+      setObservations( updatedObs );
     }
   };
+
+  const mapPhotos = ( photos ) => photos.map( p => {
+    return {
+      uri: p.uri,
+      uuid: p.uuid
+    };
+  } );
 
   const addPhotos = ( photos ) => {
-    // but only if less than 10 per observation? or whatever number we choose
-    const updatedObs = Array.from( obsToEdit );
-    if ( !currentObs ) {
-      updatedObs.push( { observationPhotos: photos } );
-      setObsToEdit( updatedObs );
-    } else if ( currentObs && !currentObs.observationPhotos ) {
-      updatedObs[currentObsNumber].observationPhotos = photos;
-      setObsToEdit( updatedObs );
-    } else if ( currentObs.observationPhotos ) {
-      updatedObs[currentObsNumber].observationPhotos.concat( photos );
+    if ( observations.length === 0 ) {
+      const photoObs = createObservation( photos[0] );
+      photoObs.observationPhotos = mapPhotos( photos );
+      setObservations( [photoObs] );
+    } else if ( currentObs ) {
+      const updatedObs = Array.from( observations );
+      let obsPhotos = updatedObs[currentObsNumber].observationPhotos;
+      const newPhotos = mapPhotos( photos );
+
+      if ( obsPhotos ) {
+        updatedObs[currentObsNumber].observationPhotos = obsPhotos.concat( newPhotos );
+        setObservations( updatedObs );
+      } else {
+        updatedObs[currentObsNumber].observationPhotos = newPhotos;
+        setObservations( updatedObs );
+      }
     }
   };
 
-  console.log( obsToEdit, "obs edit provider" );
+  const addObservations = ( obs ) => {
+    if ( observations.length === 0 ) {
+      const newObs = obs.map( o => {
+        const photoObs = createObservation( o.observationPhotos[0] );
+        photoObs.observationPhotos = mapPhotos( o.observationPhotos );
+        return photoObs;
+      } );
+      setObservations( newObs );
+    }
+    // there is probably another option here where a user
+    // can keep adding gallery photos after making observations
+    // but I'm not sure how that flow will work
+  };
+
+  const createObservation = ( obs ) => {
+    return {
+      // object should look like Seek upload observation:
+      // https://github.com/inaturalist/SeekReactNative/blob/e2df7ca77517e0c4c89f3147dc5a15ed98e31c34/utility/uploadHelpers.js#L198
+      ...obs,
+      captive_flag: false,
+      geoprivacy: "open",
+      owners_identification_from_vision_requested: false,
+      project_ids: [],
+      time_zone: getTimeZone( ),
+      uuid: uuid.v4( )
+    };
+  };
 
   const obsEditValue = {
-    obsToEdit,
     currentObsNumber,
     setCurrentObsNumber,
     addSound,
-    addPhotos
+    addPhotos,
+    addObservations,
+    observations,
+    // currentObs,
+    setObservations
   };
 
   return (

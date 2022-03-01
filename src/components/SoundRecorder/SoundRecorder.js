@@ -4,6 +4,7 @@
 
 import React, { useContext, useState } from "react";
 import { Text, Pressable, View } from "react-native";
+// $FlowFixMe
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
  import type { Node } from "react";
  import { useTranslation } from "react-i18next";
@@ -11,6 +12,7 @@ import AudioRecorderPlayer from "react-native-audio-recorder-player";
  import uuid from "react-native-uuid";
  import { getUnixTime } from "date-fns";
  import { useUserLocation } from "../../sharedHooks/useUserLocation";
+ import { formatDateAndTime } from "../../sharedHelpers/dateAndTime";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder";
@@ -22,6 +24,8 @@ const audioRecorderPlayer = new AudioRecorderPlayer( );
 const SoundRecorder = ( ): Node => {
   const { addSound } = useContext( ObsEditContext );
   const latLng = useUserLocation( );
+  const latitude = latLng && latLng.latitude;
+  const longitude = latLng && latLng.longitude;
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   // TODO: add Android permissions
@@ -188,10 +192,14 @@ const SoundRecorder = ( ): Node => {
 
   const navToObsEdit = ( ) => {
     addSound( {
-      location: latLng,
-      uri,
-      uuid: uuid.v4( ),
-      timestamp: getUnixTime( new Date( ) )
+      latitude,
+      longitude,
+      positional_accuracy: latLng && latLng.accuracy,
+      observationSounds: {
+        uri,
+        uuid: uuid.v4( )
+      },
+      observed_on_string: formatDateAndTime( getUnixTime( new Date( ) ) )
     } );
     navigation.navigate( "ObsEdit" );
   };

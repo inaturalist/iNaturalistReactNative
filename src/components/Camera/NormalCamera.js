@@ -29,6 +29,8 @@ Reanimated.addWhitelistedNativeProps( {
 const NormalCamera = ( ): Node => {
   const { addPhotos } = useContext( ObsEditContext );
   const latLng = useUserLocation( );
+  const latitude = latLng && latLng.latitude;
+  const longitude = latLng && latLng.longitude;
   const navigation = useNavigation( );
   // $FlowFixMe
   const camera = useRef<Camera>( null );
@@ -42,6 +44,14 @@ const NormalCamera = ( ): Node => {
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
   const tapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
   const [observationPhotos, setObservationPhotos] = useState( [] );
+
+  useEffect( ( ) => {
+    navigation.addListener( "focus", ( ) => {
+      if ( observationPhotos.length > 0 ) {
+        setObservationPhotos( [] );
+      }
+    } );
+  }, [navigation, observationPhotos.length] );
 
   // check if camera page is active
   const isFocused = useIsFocused( );
@@ -68,9 +78,14 @@ const NormalCamera = ( ): Node => {
     try {
       const photo = await camera.current.takePhoto( takePhotoOptions );
       const parsedPhoto = {
-        location: latLng,
-        timestamp: null,
-        DateTimeOriginal: photo.metadata["{Exif}"].DateTimeOriginal,
+        latitude,
+        longitude,
+        positional_accuracy: latLng && latLng.accuracy,
+        // location: latLng,
+        // timestamp: null,
+        // TODO: check that this formatting for observed_on_string
+        // shows up as expected on web,
+        observed_on_string: photo.metadata["{Exif}"].DateTimeOriginal,
         uri: `file://${photo.path}`,
         // exif: photo.metadata["{Exif}"],
         uuid: uuid.v4( )

@@ -12,7 +12,7 @@ import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 
 const GroupPhotos = ( ): Node => {
-  const { addPhotos } = useContext( ObsEditContext );
+  const { addObservations } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { selectedPhotos, setSelectedPhotos } = useContext( PhotoGalleryContext );
   const albums = Object.keys( selectedPhotos );
@@ -197,7 +197,7 @@ const GroupPhotos = ( ): Node => {
   };
 
   const navToObsEdit = ( ) => {
-    addPhotos( obsToEdit.observations );
+    addObservations( obsToEdit.observations );
     navigation.navigate( "ObsEdit" );
     // on obs edit, can delete one obs
 
