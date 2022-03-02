@@ -5,28 +5,29 @@ import { Pressable, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { viewStyles } from "../../styles/sharedComponents/footer";
-import CameraOptionsModal from "../Camera/CameraOptionsModal";
-import Modal from "./Modal";
+// import CameraOptionsModal from "../Camera/CameraOptionsModal";
+// import Modal from "./Modal";
+import CameraOptionsButton from "./Buttons/CameraOptionsButton";
 
 const Footer = ( ): React.Node => {
-  const [showModal, setModal] = React.useState( false );
+  // const [showModal, setModal] = React.useState( false );
 
-  const openModal = React.useCallback( ( ) => setModal( true ), [] );
-  const closeModal = React.useCallback( ( ) => setModal( false ), [] );
+  // const openModal = React.useCallback( ( ) => setModal( true ), [] );
+  // const closeModal = React.useCallback( ( ) => setModal( false ), [] );
 
   const navigation = useNavigation( );
   const toggleSideMenu = ( ) => navigation.openDrawer( );
   const navToObsList = ( ) => navigation.navigate( "my observations" );
-  const navToCameraOptions = ( ) => openModal( );
+  // const navToCameraOptions = ( ) => openModal( );
   const navToExplore = ( ) => navigation.navigate( "explore stack" );
 
   return (
     <>
-      <Modal
+      {/* <Modal
         showModal={showModal}
         closeModal={closeModal}
         modal={<CameraOptionsModal closeModal={closeModal} />}
-      />
+      /> */}
       <View style={[viewStyles.row, viewStyles.shadow]}>
         <Pressable onPress={toggleSideMenu} accessibilityRole="link">
           <Text>menu</Text>
@@ -34,9 +35,10 @@ const Footer = ( ): React.Node => {
         <Pressable  onPress={navToExplore} accessibilityRole="link">
           <Text>explore</Text>
         </Pressable>
-        <Pressable onPress={navToCameraOptions} accessibilityRole="link">
+        <CameraOptionsButton buttonType="footer" />
+        {/* <Pressable onPress={navToCameraOptions} accessibilityRole="link">
           <Text>camera</Text>
-        </Pressable>
+        </Pressable> */}
         <Pressable onPress={navToObsList} accessibilityRole="link">
           <Text>obs list</Text>
         </Pressable>

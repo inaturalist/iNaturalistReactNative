@@ -32,7 +32,8 @@ const useUserLocation = ( ): Object => {
         if ( !isCurrent ) { return; }
         setLatLng( {
           latitude: coords.latitude,
-          longitude: coords.longitude
+          longitude: coords.longitude,
+          accuracy: coords.accuracy
         } );
       };
 
