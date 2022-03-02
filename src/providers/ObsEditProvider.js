@@ -82,6 +82,21 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
   };
 
+  const updateObservationKey = ( key, value ) => {
+    const updatedObs = observations.map( ( obs, index ) => {
+      if ( index === currentObsNumber ) {
+        return {
+          ...obs,
+          // $FlowFixMe
+          [key]: value
+        };
+      } else {
+        return obs;
+      }
+    } );
+    setObservations( updatedObs );
+  };
+
   const obsEditValue = {
     currentObsNumber,
     setCurrentObsNumber,
@@ -89,8 +104,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     addPhotos,
     addObservations,
     observations,
-    // currentObs,
-    setObservations
+    setObservations,
+    updateObservationKey
   };
 
   return (

@@ -10,29 +10,16 @@ import { viewStyles, imageStyles } from "../../styles/search/search";
 
 type Props = {
   source: string,
-  closeModal: Function,
-  updateTaxaId: Function,
-  updateProjectIds: Function
+  handlePress: Function
 }
 
 const ObsEditSearch = ( {
   source,
-  closeModal,
-  updateTaxaId,
-  updateProjectIds
+  handlePress
 }: Props ): React.Node => {
   const [q, setQ] = React.useState( "" );
   // choose users or taxa
   const list = useRemoteObsEditSearchResults( q, source );
-
-  const updateObsAndCloseModal = id => {
-    if ( source === "taxa" ) {
-      updateTaxaId( id );
-    } else {
-      updateProjectIds( id );
-    }
-    closeModal( );
-  };
 
   // TODO: when UI is finalized, make sure these list results are not duplicate UI
   // with Search or Projects; share components if possible
@@ -41,7 +28,7 @@ const ObsEditSearch = ( {
       const imageUrl = ( item && item.default_photo ) && { uri: item.default_photo.square_url };
       return (
         <Pressable
-          onPress={( ) => updateObsAndCloseModal( item.id )}
+          onPress={( ) => handlePress( item.id )}
           style={viewStyles.row}
           testID={`ObsEditSearch.taxa.${item.id}`}
         >
@@ -52,7 +39,7 @@ const ObsEditSearch = ( {
     } else {
       return (
         <Pressable
-          onPress={( ) => updateObsAndCloseModal( item.id )}
+          onPress={( ) => handlePress( item.id )}
           style={viewStyles.row}
           testID={`ObsEditSearch.project.${item.id}`}
         >

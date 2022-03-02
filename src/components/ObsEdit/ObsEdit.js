@@ -98,12 +98,7 @@ const ObsEdit = ( ): Node => {
     setObservations( updatedObs );
   };
 
-  const navToSuggestionsPage = ( ) => console.log( "nav to suggestions page" );
-
-  const searchForTaxa = ( ) => {
-    setSource( "taxa" );
-    openModal( );
-  };
+  const navToSuggestionsPage = ( ) => navigation.navigate( "Suggestions" );
 
   const searchForProjects = ( ) => {
     setSource( "projects" );
@@ -361,6 +356,17 @@ const ObsEdit = ( ): Node => {
     return location;
   };
 
+
+  const updateObsAndCloseModal = id => {
+    if ( source === "taxa" ) {
+      updateTaxaId( id );
+    } else {
+      // TODO: need somewhere to display which projects a user has joined
+      updateProjectIds( id );
+    }
+    closeModal( );
+  };
+
   return (
     <ScrollNoFooter>
       {renderLocationPickerModal( )}
@@ -369,11 +375,9 @@ const ObsEdit = ( ): Node => {
         closeModal={closeModal}
         modal={(
           <ObsEditSearch
-            closeModal={closeModal}
             // $FlowFixMe
             source={source}
-            updateTaxaId={updateTaxaId}
-            updateProjectIds={updateProjectIds}
+            handlePress={updateObsAndCloseModal}
           />
         )}
       />
@@ -391,16 +395,13 @@ const ObsEdit = ( ): Node => {
           {displayLocation( )}
         </Text>
       </Pressable>
-      {/* TODO: format date and time */}
       <Text style={textStyles.text} testID="ObsEdit.time">{displayDate}</Text>
       <Text style={textStyles.headerText}>{ t( "Identification" )}</Text>
-      {/* TODO: add suggestions screen */}
-      <Pressable onPress={navToSuggestionsPage}>
-        <Text style={textStyles.text}>view inat id suggestions</Text>
-      </Pressable>
-      <Pressable onPress={searchForTaxa}>
-        <Text style={textStyles.text}>tap to search for taxa</Text>
-      </Pressable>
+      <RoundGreenButton
+        handlePress={navToSuggestionsPage}
+        buttonText="View Identification Suggestions"
+        testID="ObsEdit.Suggestions"
+      />
       <Text style={textStyles.text}>
         {currentObs.taxon_id && t( iconicTaxaNames[currentObs.taxon_id] )}
       </Text>
