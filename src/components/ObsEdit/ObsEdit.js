@@ -302,14 +302,13 @@ const ObsEdit = ( ): Node => {
       };
 
       const response = await inatjs.observations.create( uploadParams, options );
+      const { id } = response.results[0];
       if ( obsToUpload.observationPhotos ) {
-        createPhotoParams( response.id, apiToken ); // v1
+        createPhotoParams( id, apiToken ); // v2
       }
       if ( obsToUpload.observationSounds ) {
-        createSoundParams( response.id, apiToken ); // v1
+        createSoundParams( id, apiToken ); // v2
       }
-      // console.log( results[0].id, "response id" );
-      // createPhotoParams( results[0].id );
     } catch ( e ) {
       console.log( JSON.stringify( e.response.status ), "couldn't upload observation: ", JSON.stringify( e.response ) );
     }
