@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useCallback, useContext } from "react";
-import { Text, Image, TextInput, Pressable, FlatList, View, Modal } from "react-native";
+import { Text, TextInput, Pressable, FlatList, View, Modal } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
@@ -12,22 +12,23 @@ import ImageResizer from "react-native-image-resizer";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import { pickerSelectStyles, textStyles, imageStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
+import { pickerSelectStyles, textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
 import CustomModal from "../SharedComponents/Modal";
 import ObsEditSearch from "./ObsEditSearch";
 import { getJWTToken } from "../LoginSignUp/AuthenticationService";
 import LocationPicker from "./LocationPicker";
-import CameraOptionsButton from "../SharedComponents/Buttons/CameraOptionsButton";
 import { ObsEditContext } from "../../providers/contexts";
 import useLocationName from "../../sharedHooks/useLocationName";
+import EvidenceList from "./EvidenceList";
 
 const ObsEdit = ( ): Node => {
   const {
     currentObsNumber,
     setCurrentObsNumber,
     observations,
-    setObservations
+    setObservations,
+    updateObservationKey
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -63,21 +64,6 @@ const ObsEdit = ( ): Node => {
   }];
 
   const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
-
-  const updateObservationKey = ( key, value ) => {
-    const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObsNumber ) {
-        return {
-          ...obs,
-          // $FlowFixMe
-          [key]: value
-        };
-      } else {
-        return obs;
-      }
-    } );
-    setObservations( updatedObs );
-  };
 
   const addNotes = text => updateObservationKey( "description", text );
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
@@ -149,44 +135,8 @@ const ObsEdit = ( ): Node => {
     );
   };
 
-  const renderCameraOptionsButton =  ( ) => <CameraOptionsButton />;
-
-  const renderEvidence = ( { item } ) => {
-    const isSound = item.uri.includes( "m4a" );
-    const imageUri = { uri: item.uri };
-    return (
-      <Image
-        source={imageUri}
-        style={[imageStyles.obsPhoto, isSound && viewStyles.soundButton]}
-        testID="ObsEdit.photo"
-      />
-    );
-  };
-
   const currentObs = observations[currentObsNumber];
   const placeGuess = useLocationName( currentObs.latitude, currentObs.longitude );
-
-  const renderEvidenceList = ( ) => {
-    const displayEvidence = ( ) => {
-      let evidence = [];
-
-      if ( currentObs.observationPhotos ) {
-        evidence = evidence.concat( currentObs.observationPhotos );
-      }
-      if ( currentObs.observationSounds ) {
-        evidence = evidence.concat( [currentObs.observationSounds] );
-      }
-      return evidence;
-    };
-    return (
-      <FlatList
-        data={displayEvidence( )}
-        horizontal
-        renderItem={renderEvidence}
-        ListFooterComponent={renderCameraOptionsButton}
-      />
-    );
-  };
 
   const uploadSound = async ( soundParams, apiToken ) => {
     const options = {
@@ -384,7 +334,7 @@ const ObsEdit = ( ): Node => {
       {renderArrowNavigation( )}
       <Text style={textStyles.headerText}>{ t( "Evidence" )}</Text>
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
-      {renderEvidenceList( )}
+      <EvidenceList currentObs={currentObs} showCameraOptions />
       <Pressable
         onPress={openLocationPicker}
       >

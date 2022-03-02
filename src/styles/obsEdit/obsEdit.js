@@ -63,6 +63,9 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  evidenceList: {
+    height: 0
+  },
   iconicTaxaButtons: {
     marginHorizontal: 20,
     marginVertical: 20

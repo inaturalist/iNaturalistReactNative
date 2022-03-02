@@ -55,19 +55,21 @@ const ObsEditSearch = ( {
   };
 
   return (
-    <ViewNoFooter>
+    <>
       <InputField
         handleTextChange={setQ}
         placeholder={source === "taxa" ? "search for taxa" : "search for projects"}
         text={q}
         type="none"
       />
+      {list.length > 0 && (
         <FlatList
           data={list}
           renderItem={renderItem}
           testID="ObsEditSearch.listView"
         />
-    </ViewNoFooter>
+      )}
+    </>
   );
 };
 
