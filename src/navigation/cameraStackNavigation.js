@@ -11,7 +11,7 @@ import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
 import NormalCamera from "../components/Camera/NormalCamera";
 import ObsEditProvider from "../providers/ObsEditProvider";
-import TaxaSuggestions from "../components/ObsEdit/TaxaSuggestions";
+import CVSuggestions from "../components/ObsEdit/CVSuggestions";
 
 const Stack = createNativeStackNavigator( );
 
@@ -45,7 +45,7 @@ const CameraStackNavigation = ( ): React.Node => (
         />
         <Stack.Screen
           name="Suggestions"
-          component={TaxaSuggestions}
+          component={CVSuggestions}
         />
       </Stack.Navigator>
     </PhotoGalleryProvider>

@@ -28,7 +28,8 @@ const ObsEdit = ( ): Node => {
     setCurrentObsNumber,
     observations,
     setObservations,
-    updateObservationKey
+    updateObservationKey,
+    identification
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -317,6 +318,41 @@ const ObsEdit = ( ): Node => {
     closeModal( );
   };
 
+  const displayIdentification = ( ) => {
+    if ( identification ) {
+      return (
+        <View style={viewStyles.row}>
+          <View>
+            <Text style={textStyles.text}>
+              {identification.preferred_common_name}
+            </Text>
+            <Text style={textStyles.text}>
+              {identification.name}
+            </Text>
+          </View>
+          <Pressable
+            onPress={navToSuggestionsPage}
+          >
+            <Text style={textStyles.text}>edit</Text>
+          </Pressable>
+        </View>
+      );
+    } else {
+      return (
+        <>
+          <RoundGreenButton
+            handlePress={navToSuggestionsPage}
+            buttonText="View Identification Suggestions"
+            testID="ObsEdit.Suggestions"
+          />
+          <Text style={textStyles.text}>
+            {currentObs.taxon_id && t( iconicTaxaNames[currentObs.taxon_id] )}
+          </Text>
+        </>
+      );
+    }
+  };
+
   return (
     <ScrollNoFooter>
       {renderLocationPickerModal( )}
@@ -347,14 +383,7 @@ const ObsEdit = ( ): Node => {
       </Pressable>
       <Text style={textStyles.text} testID="ObsEdit.time">{displayDate}</Text>
       <Text style={textStyles.headerText}>{ t( "Identification" )}</Text>
-      <RoundGreenButton
-        handlePress={navToSuggestionsPage}
-        buttonText="View Identification Suggestions"
-        testID="ObsEdit.Suggestions"
-      />
-      <Text style={textStyles.text}>
-        {currentObs.taxon_id && t( iconicTaxaNames[currentObs.taxon_id] )}
-      </Text>
+      {displayIdentification( )}
       <FlatList
         data={Object.keys( iconicTaxaIds )}
         horizontal

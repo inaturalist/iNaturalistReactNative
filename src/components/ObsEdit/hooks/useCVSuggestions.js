@@ -21,26 +21,17 @@ const FIELDS = {
   } )
 };
 
-const useTaxaSuggestions = ( currentObs: Object ): Object => {
+const useCVSuggestions = ( currentObs: Object ): Object => {
   const [suggestions, setSuggestions] = useState( [] );
 
   useEffect( ( ) => {
+    if ( !currentObs ) { return; }
     const uri = currentObs.observationPhotos && currentObs.observationPhotos[0].uri;
     const latitude = currentObs.latitude;
     const longitude = currentObs.longitude;
 
-    // const uploadParams = await flattenUploadParameters( image );
-    //   const token = createJwtToken( );
-    //   const options = { api_token: token, user_agent: createUserAgent() };
-
-    //   try {
-    //     const r = await inatjs.computervision.score_image( uploadParams, options );
-    //     if ( r.results.length === 0 ) {
-    //       updateObs( { } );
-    //       return;
-
     let isCurrent = true;
-    const fetchTaxaSuggestions = async ( ): Promise<Object> => {
+    const fetchCVSuggestions = async ( ): Promise<Object> => {
       try {
         const apiToken = await getJWTToken( false );
 
@@ -55,36 +46,21 @@ const useTaxaSuggestions = ( currentObs: Object ): Object => {
           latitude,
           longitude
         };
-        // const params = {
-        //   limit: 10,
-        //   image_url: new FileUpload( {
-        //     uri: uri,
-        //     name: "photo.jpeg",
-        //     type: "image/jpeg"
-        //   } ),
-        //   source: "visual",
-        //   // lat: latitude,
-        //   // lng: longitude,
-        //   fields: FIELDS
-        // };
-        console.log( "fetch suggestions with params: ", params );
+
         const options = {
           api_token: apiToken
         };
 
         const r = await inatjs.computervision.score_image( params, options );
-
-        // const response = await inatjs.taxa.suggest( params, options );
-        console.log( r.results, "results computer vision" );
         setSuggestions( r.results );
         if ( !isCurrent ) { return; }
       } catch ( e ) {
-        console.log( JSON.stringify( e.response ), "couldn't fetch taxa suggestions" );
+        console.log( JSON.stringify( e.response ), "couldn't fetch CV suggestions" );
         if ( !isCurrent ) { return; }
       }
     };
 
-    fetchTaxaSuggestions( );
+    fetchCVSuggestions( );
     return ( ) => {
       isCurrent = false;
     };
@@ -93,6 +69,6 @@ const useTaxaSuggestions = ( currentObs: Object ): Object => {
   return suggestions;
 };
 
-export default useTaxaSuggestions;
+export default useCVSuggestions;
 
 

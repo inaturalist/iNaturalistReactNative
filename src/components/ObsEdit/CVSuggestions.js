@@ -3,38 +3,33 @@
 import React, { useContext } from "react";
 import type { Node } from "react";
 import { View, Text, FlatList, ActivityIndicator, Pressable, Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
-import Observation from "../../models/Observation";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import ObsEditSearch from "./ObsEditSearch";
 import { ObsEditContext } from "../../providers/contexts";
 import EvidenceList from "./EvidenceList";
-import useTaxaSuggestions from "./hooks/useTaxaSuggestions";
-import { viewStyles, textStyles } from "../../styles/obsEdit/taxaSuggestions";
+import useCVSuggestions from "./hooks/useCVSuggestions";
+import { viewStyles, textStyles } from "../../styles/obsEdit/cvSuggestions";
 
-const TaxaSuggestions = ( ): Node => {
+const CVSuggestions = ( ): Node => {
   const {
     observations,
     currentObsNumber,
-    updateObservationKey
+    updateTaxaId,
+    setIdentification
   } = useContext( ObsEditContext );
-  const navigation = useNavigation( );
 
   const currentObs = observations[currentObsNumber];
-
-  const suggestions = useTaxaSuggestions( currentObs );
-
-  const updateTaxaId = taxaId => {
-    updateObservationKey( "taxon_id", taxaId );
-    navigation.navigate( "ObsEdit" );
-  };
+  const suggestions = useCVSuggestions( currentObs );
 
   const renderSuggestions = ( { item } ) => {
     const uri = { uri: item.taxon.taxon_photos[0].photo.medium_url };
     return (
       <Pressable
-        onPress={( ) => console.log( "handle press in render suggestions" )}
+        onPress={( ) => {
+          setIdentification( item.taxon );
+          updateTaxaId( item.taxon.id );
+        }}
         style={viewStyles.row}
       >
         <Image
@@ -52,18 +47,17 @@ const TaxaSuggestions = ( ): Node => {
   return (
     <ViewNoFooter>
       <EvidenceList currentObs={currentObs} />
-      <ObsEditSearch
+      {/* <ObsEditSearch
         source="taxa"
         handlePress={updateTaxaId}
-      />
+      /> */}
       <FlatList
         data={suggestions}
         renderItem={renderSuggestions}
         ListEmptyComponent={( ) => <ActivityIndicator />}
-        contentContainerStyle={viewStyles.suggestionList}
       />
     </ViewNoFooter>
   );
 };
 
-export default TaxaSuggestions;
+export default CVSuggestions;

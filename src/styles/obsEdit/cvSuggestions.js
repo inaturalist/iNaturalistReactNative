@@ -20,11 +20,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row",
     flexWrap: "nowrap",
     marginVertical: 10
-  },
-  suggestionList: {
-    position: "absolute",
-    top: 100,
-    zIndex: 1
   }
 } );
 

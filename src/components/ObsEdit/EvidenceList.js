@@ -45,7 +45,6 @@ const EvidenceList = ( { currentObs, showCameraOptions }: Props ): Node => {
       horizontal
       renderItem={renderEvidence}
       ListFooterComponent={renderCameraOptionsButton}
-      contentContainerStyle={viewStyles.evidenceList}
     />
   );
 };
