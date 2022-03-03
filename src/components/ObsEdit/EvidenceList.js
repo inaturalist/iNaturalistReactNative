@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { FlatList, Image, View } from "react-native";
+import { FlatList, Image, View, Pressable } from "react-native";
 import type { Node } from "react";
 
 import { imageStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
@@ -9,21 +9,40 @@ import CameraOptionsButton from "../SharedComponents/Buttons/CameraOptionsButton
 
 type Props = {
   currentObs: Object,
-  showCameraOptions?: boolean
+  showCameraOptions?: boolean,
+  setSelectedPhoto?: Function,
+  selectedPhoto: number
 }
 
-const EvidenceList = ( { currentObs, showCameraOptions }: Props ): Node => {
+const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, selectedPhoto }: Props ): Node => {
   const renderCameraOptionsButton =  ( ) => showCameraOptions ? <CameraOptionsButton /> : <View />;
 
-  const renderEvidence = ( { item } ) => {
+  const renderEvidence = ( { item, index } ) => {
     const isSound = item.uri.includes( "m4a" );
     const imageUri = { uri: item.uri };
+
+    const handlePress = ( ) => {
+      if ( setSelectedPhoto ) {
+        setSelectedPhoto( index );
+      }
+      return;
+    };
+
     return (
-      <Image
-        source={imageUri}
-        style={[imageStyles.obsPhoto, isSound && viewStyles.soundButton]}
-        testID="ObsEdit.photo"
-      />
+      <Pressable
+        disabled={!setSelectedPhoto}
+        onPress={handlePress}
+      >
+        <Image
+          source={imageUri}
+          style={[
+            imageStyles.obsPhoto,
+            isSound && viewStyles.soundButton,
+            selectedPhoto === index && viewStyles.greenSelectionBorder
+          ]}
+          testID="ObsEdit.photo"
+        />
+      </Pressable>
     );
   };
 
@@ -45,6 +64,7 @@ const EvidenceList = ( { currentObs, showCameraOptions }: Props ): Node => {
       horizontal
       renderItem={renderEvidence}
       ListFooterComponent={renderCameraOptionsButton}
+      contentContainerStyle={viewStyles.evidenceList}
     />
   );
 };

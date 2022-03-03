@@ -24,7 +24,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  text: { }
+  text: { },
+  greenText: {
+    color: colors.inatGreen
+  }
 } );
 
 export {

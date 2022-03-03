@@ -63,6 +63,10 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  greenSelectionBorder: {
+    borderWidth: 5,
+    borderColor: colors.inatGreen
+  },
   iconicTaxaButtons: {
     marginHorizontal: 20,
     marginVertical: 20
@@ -71,6 +75,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     justifyContent: "space-between",
     flexDirection: "row",
     flexWrap: "nowrap"
+  },
+  evidenceList: {
+    marginBottom: 20
   },
   evidenceButton: {
     backgroundColor: colors.inatGreen,
