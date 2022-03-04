@@ -2,27 +2,30 @@
 
 // @flow
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Text, Pressable, View } from "react-native";
-import AudioRecorderPlayer, {
-  // AVEncoderAudioQualityIOSType,
-  // AVEncodingOption,
-  // AudioEncoderAndroidType,
-  // AudioSet,
-  // AudioSourceAndroidType
-  // $FlowFixMe
- } from "react-native-audio-recorder-player";
+// $FlowFixMe
+import AudioRecorderPlayer from "react-native-audio-recorder-player";
  import type { Node } from "react";
  import { useTranslation } from "react-i18next";
  import { useNavigation } from "@react-navigation/native";
+ import uuid from "react-native-uuid";
+ import { getUnixTime } from "date-fns";
+ import { useUserLocation } from "../../sharedHooks/useUserLocation";
+ import { formatDateAndTime } from "../../sharedHelpers/dateAndTime";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder";
+import { ObsEditContext } from "../../providers/contexts";
 
 // needs to be outside of the component for stopRecorder to work correctly
 const audioRecorderPlayer = new AudioRecorderPlayer( );
 
 const SoundRecorder = ( ): Node => {
+  const { addSound } = useContext( ObsEditContext );
+  const latLng = useUserLocation( );
+  const latitude = latLng && latLng.latitude;
+  const longitude = latLng && latLng.longitude;
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   // TODO: add Android permissions
@@ -187,10 +190,19 @@ const SoundRecorder = ( ): Node => {
     }
   };
 
-  const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { obsToEdit: [{
-      observationSounds: uri
-    }]
-  } );
+  const navToObsEdit = ( ) => {
+    addSound( {
+      latitude,
+      longitude,
+      positional_accuracy: latLng && latLng.accuracy,
+      observationSounds: {
+        uri,
+        uuid: uuid.v4( )
+      },
+      observed_on_string: formatDateAndTime( getUnixTime( new Date( ) ) )
+    } );
+    navigation.navigate( "ObsEdit" );
+  };
 
   return (
     <ViewWithFooter>

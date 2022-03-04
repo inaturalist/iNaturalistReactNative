@@ -8,22 +8,28 @@ const useLocationName = ( latitude: ?number, longitude: ?number ): ?string => {
 
   // lifted from SeekReactNative repo
   const setPlaceName = ( results: Array<Object> ) => {
-    let placeName = null;
+    let placeName = "";
 
-    const { locality, subAdminArea, adminArea, country, feature } = results[0];
+    const { streetName, locality, adminArea, countryCode } = results[0];
     // we could get as specific as sublocality here, but a lot of the results are
     // too specific to be helpful in the U.S. at least. neighborhoods, parks, etc.
+
+    // this seems to be preferred formatting for iNat web
+    // TODO: localize formatting
+    // TODO: throttle requests on iOS so this doesn't error out in location picker
+    const appendName = name => placeName.length > 0 ? `, ${name}` : name;
+
+    if ( streetName ) {
+      placeName += streetName;
+    }
     if ( locality ) {
-      placeName = locality;
-    } else if ( subAdminArea ) {
-      placeName = subAdminArea;
-    } else if ( adminArea ) {
-      placeName = adminArea;
-    } else if ( country ) {
-      placeName = country;
-    } else if ( feature ) {
-      // this one shows non-land areas like Channels, Seas, Oceans
-      placeName = feature;
+      placeName += appendName( locality );
+    }
+    if ( adminArea ) {
+      placeName += appendName( adminArea );
+    }
+    if ( countryCode ) {
+      placeName += appendName( countryCode );
     }
     return placeName;
   };

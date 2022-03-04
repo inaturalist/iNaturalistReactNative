@@ -1,26 +1,34 @@
 // @flow
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import { Text, Image, TextInput, Pressable, FlatList, View, Modal } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
-import inatjs from "inaturalistjs";
+import inatjs, { FileUpload } from "inaturalistjs";
+import ImageResizer from "react-native-image-resizer";
 
-import ScrollWithFooter from "../SharedComponents/ScrollWithFooter";
-import useLocationName from "../../sharedHooks/useLocationName";
+import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import { pickerSelectStyles, textStyles, imageStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
-import { formatDateAndTime, getTimeZone } from "../../sharedHelpers/dateAndTime";
 import CustomModal from "../SharedComponents/Modal";
 import ObsEditSearch from "./ObsEditSearch";
 import { getJWTToken } from "../LoginSignUp/AuthenticationService";
 import LocationPicker from "./LocationPicker";
+import CameraOptionsButton from "../SharedComponents/Buttons/CameraOptionsButton";
+import { ObsEditContext } from "../../providers/contexts";
+import useLocationName from "../../sharedHooks/useLocationName";
 
 const ObsEdit = ( ): Node => {
+  const {
+    currentObsNumber,
+    setCurrentObsNumber,
+    observations,
+    setObservations
+  } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const [showModal, setModal] = useState( false );
@@ -29,69 +37,7 @@ const ObsEdit = ( ): Node => {
   const openModal = useCallback( ( ) => setModal( true ), [] );
   const closeModal = useCallback( ( ) => setModal( false ), [] );
 
-  const { params } = useRoute( );
-  const { photo, obsToEdit } = params;
-
-  const [observations, setObservations] = useState( [] );
-  const [currentObservation, setCurrentObservation] = useState( 0 );
   const [showLocationPicker, setShowLocationPicker] = useState( false );
-
-  const setFirstPhoto = ( ) => {
-    if ( obsToEdit && obsToEdit[currentObservation]
-      && obsToEdit[currentObservation].observationPhotos ) {
-        return obsToEdit[currentObservation].observationPhotos[0];
-    } else if ( photo ) {
-      return photo;
-    }
-    return null;
-  };
-
-  const firstPhoto = setFirstPhoto( );
-
-  const setDateAndTime = ( ) => {
-    if ( firstPhoto && firstPhoto.timestamp ) {
-      return formatDateAndTime( firstPhoto.timestamp );
-    }
-    if ( firstPhoto && firstPhoto.DateTimeOriginal ) {
-      return firstPhoto.DateTimeOriginal;
-    }
-    return null;
-  };
-
-  const location = ( firstPhoto && firstPhoto.location ) || null;
-  const latitude = ( location && location.latitude ) || null;
-  const longitude = ( location && location.longitude ) || null;
-  const locationName = useLocationName( latitude, longitude );
-  const dateAndTime = setDateAndTime( );
-
-  useEffect( ( ) => {
-    // prepare all obs to edit for upload
-    const initialObs = obsToEdit.map( obs => {
-      return {
-        // object should look like Seek upload observation:
-        // https://github.com/inaturalist/SeekReactNative/blob/e2df7ca77517e0c4c89f3147dc5a15ed98e31c34/utility/uploadHelpers.js#L198
-        ...obs,
-            // uuid: generateUUID( ),
-        captive_flag: false,
-        geoprivacy: "open",
-        latitude,
-        longitude,
-        // TODO: we probably want the date time to be translated strings, not date-fns library,
-        // so it will work with all translated languages on iNaturalist
-        observed_on_string: dateAndTime,
-        owners_identification_from_vision_requested: false,
-        // photo: {}, // use file uploader
-        place_guess: locationName || null,
-        positional_accuracy: null,
-        project_ids: [],
-        time_zone: getTimeZone( )
-      };
-    } );
-    // only append keys for upload when screen first loads
-    if ( observations.length === 0 ) {
-      setObservations( initialObs );
-    }
-  }, [obsToEdit, dateAndTime, latitude, longitude, locationName, observations] );
 
   const geoprivacyOptions = [{
     label: "open",
@@ -120,7 +66,7 @@ const ObsEdit = ( ): Node => {
 
   const updateObservationKey = ( key, value ) => {
     const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObservation ) {
+      if ( index === currentObsNumber ) {
         return {
           ...obs,
           // $FlowFixMe
@@ -140,7 +86,7 @@ const ObsEdit = ( ): Node => {
 
   const updateProjectIds = projectId => {
     const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObservation ) {
+      if ( index === currentObsNumber ) {
         return {
           ...obs,
           project_ids: obs.project_ids.concat( [projectId] )
@@ -177,25 +123,25 @@ const ObsEdit = ( ): Node => {
     );
   };
 
-  const showNextObservation = ( ) => setCurrentObservation( currentObservation + 1 );
-  const showPrevObservation = ( ) => setCurrentObservation( currentObservation - 1 );
+  const showNextObservation = ( ) => setCurrentObsNumber( currentObsNumber + 1 );
+  const showPrevObservation = ( ) => setCurrentObsNumber( currentObsNumber - 1 );
 
   const renderArrowNavigation = ( ) => {
-    if ( obsToEdit.length === 0 ) { return; }
+    if ( observations.length === 0 ) { return; }
 
     return (
       <View style={viewStyles.row}>
         <HeaderBackButton onPress={( ) => navigation.goBack( )} />
         <View style={viewStyles.row}>
-          {currentObservation !== 0 && (
+          {currentObsNumber !== 0 && (
             <Pressable
               onPress={showPrevObservation}
             >
               <Text>previous obs</Text>
             </Pressable>
           )}
-          <Text>{`${currentObservation + 1} of ${observations.length}`}</Text>
-          {( currentObservation !== obsToEdit.length - 1 ) && (
+          <Text>{`${currentObsNumber + 1} of ${observations.length}`}</Text>
+          {( currentObsNumber !== observations.length - 1 ) && (
             <Pressable
               onPress={showNextObservation}
             >
@@ -208,35 +154,147 @@ const ObsEdit = ( ): Node => {
     );
   };
 
-  const renderObsPhotos = ( { item } ) => {
+  const renderCameraOptionsButton =  ( ) => <CameraOptionsButton />;
+
+  const renderEvidence = ( { item } ) => {
+    const isSound = item.uri.includes( "m4a" );
     const imageUri = { uri: item.uri };
-    return <Image source={imageUri} style={imageStyles.obsPhoto} testID="ObsEdit.photo" />;
+    return (
+      <Image
+        source={imageUri}
+        style={[imageStyles.obsPhoto, isSound && viewStyles.soundButton]}
+        testID="ObsEdit.photo"
+      />
+    );
   };
 
-  const currentObs = observations[currentObservation];
+  const currentObs = observations[currentObsNumber];
+  const placeGuess = useLocationName( currentObs.latitude, currentObs.longitude );
 
   const renderEvidenceList = ( ) => {
-    if ( currentObs.observationPhotos ) {
-      return (
-        <FlatList
-          data={currentObs.observationPhotos}
-          horizontal
-          renderItem={renderObsPhotos}
-        />
+    const displayEvidence = ( ) => {
+      let evidence = [];
+
+      if ( currentObs.observationPhotos ) {
+        evidence = evidence.concat( currentObs.observationPhotos );
+      }
+      if ( currentObs.observationSounds ) {
+        evidence = evidence.concat( [currentObs.observationSounds] );
+      }
+      return evidence;
+    };
+    return (
+      <FlatList
+        data={displayEvidence( )}
+        horizontal
+        renderItem={renderEvidence}
+        ListFooterComponent={renderCameraOptionsButton}
+      />
+    );
+  };
+
+  const uploadSound = async ( soundParams, apiToken ) => {
+    const options = {
+      api_token: apiToken
+    };
+
+    try {
+      await inatjs.observation_sounds.create( soundParams, options );
+    } catch ( e ) {
+      console.log( JSON.stringify( e.response ), "couldn't upload sound" );
+    }
+  };
+
+  const createSoundParams = async ( id, apiToken ) => {
+    const obsSoundToUpload = observations[currentObsNumber].observationSounds;
+    const soundParams = {
+      "observation_sound[observation_id]": id,
+      "observation_sound[uuid]": obsSoundToUpload.uuid,
+      file: new FileUpload( {
+        uri: obsSoundToUpload.uri,
+        name: "audio.m4a",
+        type: "audio/m4a"
+      } )
+    };
+    uploadSound( soundParams, apiToken );
+  };
+
+  const resizeImage = async ( path, width, height?, outputPath? ) => {
+    try {
+      const { uri } = await ImageResizer.createResizedImage(
+        path,
+        width,
+        height || width, // height
+        "JPEG", // compressFormat
+        100, // quality
+        0, // rotation
+        // $FlowFixMe
+        outputPath, // outputPath
+        true // keep metadata
       );
-    } else if ( currentObs.observationSounds ) {
-      return <Text>display sound recording</Text>;
+
+      return uri;
+    } catch ( e ) {
+      console.log( e, "error resizing image" );
+      return "";
+    }
+  };
+
+  const resizeImageForUpload = async ( uri ) => {
+    const maxUploadSize = 2048;
+    return await resizeImage( uri, maxUploadSize, maxUploadSize );
+  };
+
+  const uploadPhoto = async ( photoParams, apiToken ) => {
+    const options = {
+      api_token: apiToken
+    };
+
+    try {
+      await inatjs.observation_photos.create( photoParams, options );
+    } catch ( e ) {
+      console.log( JSON.stringify( e.response ), "couldn't upload photo" );
+    }
+  };
+
+  const createPhotoParams = async ( id, apiToken ) => {
+    const obsPhotosToUpload = observations[currentObsNumber].observationPhotos;
+
+    if ( !obsPhotosToUpload || obsPhotosToUpload.length === 0 ) { return; }
+    for ( let i = 0; i < obsPhotosToUpload.length; i += 1 ) {
+      const photoToUpload = obsPhotosToUpload[i];
+      const photoUri = photoToUpload.uri;
+      const resizedPhoto = await resizeImageForUpload( photoUri );
+
+      const photoParams = {
+        "observation_photo[observation_id]": id,
+        "observation_photo[uuid]": photoToUpload.uuid,
+        file: new FileUpload( {
+          uri: resizedPhoto,
+          name: "photo.jpeg",
+          type: "image/jpeg"
+        } )
+      };
+      uploadPhoto( photoParams, apiToken );
     }
   };
 
   const uploadObservation = async ( ) => {
+    const FIELDS = {
+      id: true
+    };
     try {
-      // TODO: get JWT token from staging api, not production
-      const apiToken = await getJWTToken( );
-      const obsToUpload = observations[currentObservation];
+      const apiToken = await getJWTToken( false );
+      const obsToUpload = observations[currentObsNumber];
 
       const uploadParams = {
-        observation: obsToUpload
+        // TODO: decide how to format place_guess param
+        // right now it looks like street, city, state is preferred on the web
+        observation: {
+          ...obsToUpload,
+          place_guess: placeGuess
+        },
+        fields: FIELDS
       };
 
       const options = {
@@ -244,10 +302,15 @@ const ObsEdit = ( ): Node => {
       };
 
       const response = await inatjs.observations.create( uploadParams, options );
-      const { id } = response[0];
-      console.log( id, "id for uploaded obs" );
+      const { id } = response.results[0];
+      if ( obsToUpload.observationPhotos ) {
+        createPhotoParams( id, apiToken ); // v2
+      }
+      if ( obsToUpload.observationSounds ) {
+        createSoundParams( id, apiToken ); // v2
+      }
     } catch ( e ) {
-      console.log( JSON.stringify( e.response.status ), "couldn't upload observation" );
+      console.log( JSON.stringify( e.response.status ), "couldn't upload observation: ", JSON.stringify( e.response ) );
     }
   };
 
@@ -255,9 +318,8 @@ const ObsEdit = ( ): Node => {
   const closeLocationPicker = ( ) => setShowLocationPicker( false );
 
   const updateLocation = newLocation => {
-    console.log( newLocation, "newLocation from picker" );
     const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObservation ) {
+      if ( index === currentObsNumber ) {
         return {
           ...obs,
           // $FlowFixMe
@@ -283,12 +345,24 @@ const ObsEdit = ( ): Node => {
 
   if ( !currentObs ) { return null; }
 
-  const displayDate = dateAndTime ? `Date & time: ${dateAndTime}` : null;
-  const displayLatitude = currentObs.latitude !== null && `Lat: ${formatDecimal( currentObs.latitude )}`;
-  const displayLongitude = currentObs.longitude !== null && `Lon: ${formatDecimal( currentObs.longitude )}`;
+  const displayDate = currentObs.observed_on_string ? `Date & time: ${currentObs.observed_on_string}` : null;
+
+  const displayLocation = ( ) => {
+    let location = "";
+    if ( currentObs.latitude ) {
+      location += `Lat: ${formatDecimal( currentObs.latitude )}`;
+    }
+    if ( currentObs.longitude ) {
+      location += `, Lon: ${formatDecimal( currentObs.longitude )}`;
+    }
+    if ( currentObs.positional_accuracy ) {
+      location += `, Acc: ${formatDecimal( currentObs.positional_accuracy )}`;
+    }
+    return location;
+  };
 
   return (
-    <ScrollWithFooter>
+    <ScrollNoFooter>
       {renderLocationPickerModal( )}
        <CustomModal
         showModal={showModal}
@@ -307,12 +381,14 @@ const ObsEdit = ( ): Node => {
       <Text style={textStyles.headerText}>{ t( "Evidence" )}</Text>
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
       {renderEvidenceList( )}
-      <Text style={textStyles.text}>{locationName}</Text>
       <Pressable
         onPress={openLocationPicker}
       >
         <Text style={textStyles.text}>
-          {`${displayLatitude}, ${displayLongitude}, Acc: ${currentObs.positional_accuracy}`}
+          {placeGuess}
+        </Text>
+        <Text style={textStyles.text}>
+          {displayLocation( )}
         </Text>
       </Pressable>
       {/* TODO: format date and time */}
@@ -325,7 +401,6 @@ const ObsEdit = ( ): Node => {
       <Pressable onPress={searchForTaxa}>
         <Text style={textStyles.text}>tap to search for taxa</Text>
       </Pressable>
-      {/* TODO: add iconic taxa with appropriate taxa ids */}
       <Text style={textStyles.text}>
         {currentObs.taxon_id && t( iconicTaxaNames[currentObs.taxon_id] )}
       </Text>
@@ -367,7 +442,7 @@ const ObsEdit = ( ): Node => {
         testID="ObsEdit.uploadButton"
         handlePress={uploadObservation}
       />
-    </ScrollWithFooter>
+    </ScrollNoFooter>
   );
 };
 

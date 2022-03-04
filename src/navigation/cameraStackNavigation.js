@@ -10,6 +10,7 @@ import ObsEdit from "../components/ObsEdit/ObsEdit";
 import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
 import NormalCamera from "../components/Camera/NormalCamera";
+import ObsEditProvider from "../providers/ObsEditProvider";
 
 const Stack = createNativeStackNavigator( );
 
@@ -18,30 +19,32 @@ const hideHeader = {
 };
 
 const CameraStackNavigation = ( ): React.Node => (
-  <PhotoGalleryProvider>
-    <Stack.Navigator screenOptions={hideHeader}>
-      <Stack.Screen
-        name="PhotoGallery"
-        component={PhotoGallery}
-      />
-      <Stack.Screen
-        name="GroupPhotos"
-        component={GroupPhotos}
-      />
-      <Stack.Screen
-        name="ObsEdit"
-        component={ObsEdit}
-      />
-      <Stack.Screen
-        name="SoundRecorder"
-        component={SoundRecorder}
-      />
-      <Stack.Screen
-        name="NormalCamera"
-        component={NormalCamera}
-      />
-    </Stack.Navigator>
-  </PhotoGalleryProvider>
+  <ObsEditProvider>
+    <PhotoGalleryProvider>
+      <Stack.Navigator screenOptions={hideHeader}>
+        <Stack.Screen
+          name="PhotoGallery"
+          component={PhotoGallery}
+        />
+        <Stack.Screen
+          name="GroupPhotos"
+          component={GroupPhotos}
+        />
+        <Stack.Screen
+          name="ObsEdit"
+          component={ObsEdit}
+        />
+        <Stack.Screen
+          name="SoundRecorder"
+          component={SoundRecorder}
+        />
+        <Stack.Screen
+          name="NormalCamera"
+          component={NormalCamera}
+        />
+      </Stack.Navigator>
+    </PhotoGalleryProvider>
+  </ObsEditProvider>
 );
 
 export default CameraStackNavigation;
