@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useContext } from "react";
+import React from "react";
 import type { Node } from "react";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -12,11 +12,12 @@ const Messages = ( ): Node => {
   // TODO: apiParams not needed
   const [apiParams, setApiParams] = React.useState( userLogin );
 
-  const messages = useMessages( apiParams );
+  const { messages, loading } = useMessages( apiParams );
 
   return (
     <ViewWithFooter>
       <MessageList
+        loading={loading}
         messageList={messages}
         testID="Messages.messages"
       />

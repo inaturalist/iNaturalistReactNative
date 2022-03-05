@@ -7,8 +7,12 @@ import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 import { MESSAGE_FIELDS } from "../../../providers/helpers";
 
 // TODO: need to trigger a rerender on change of user. Right now API parameters not being used.
-const useMessages = ( apiParams: Object ): Array<Object> => {
+const useMessages = ( apiParams: Object ): {
+  messageList: Array<Object>,
+  loading: boolean
+} => {
   const [messages, setMessages] = useState( [] );
+  const [loading, setLoading] = useState( false );
 
   console.log( "use messages" );
 
@@ -16,6 +20,7 @@ const useMessages = ( apiParams: Object ): Array<Object> => {
     let isCurrent = true;
 
     const fetchMessages = async ( ) => {
+      setLoading( true );
       try {
         const apiToken = await getJWTToken( );
         const options = {
@@ -30,9 +35,11 @@ const useMessages = ( apiParams: Object ): Array<Object> => {
         if ( !isCurrent ) { return; }
         console.log( "Messages returned" );
         setMessages( results );
+        setLoading( false );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
         console.log( "Couldn't fetch messages:", e.message, );
+        setLoading( false );
       }
     };
 
@@ -42,7 +49,7 @@ const useMessages = ( apiParams: Object ): Array<Object> => {
     };
   }, [apiParams] );
 
-  return messages;
+  return { messages, loading };
 };
 
 export default useMessages;
