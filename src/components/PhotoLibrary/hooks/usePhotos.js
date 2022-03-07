@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import CameraRoll from "@react-native-community/cameraroll";
 import uuid from "react-native-uuid";
 import { formatDateAndTime } from "../../../sharedHelpers/dateAndTime";
-import useLocationName from "../../../sharedHooks/useLocationName";
 
 const initialStatus = {
   photos: [],
