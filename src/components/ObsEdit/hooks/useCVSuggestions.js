@@ -56,7 +56,6 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
         const options = {
           api_token: apiToken
         };
-        console.log( params, "params from cv suggestions" );
 
         const r = await inatjs.computervision.score_image( params, options );
         setSuggestions( r.results );

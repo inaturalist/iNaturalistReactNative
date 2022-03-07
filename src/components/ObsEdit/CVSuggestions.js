@@ -5,12 +5,13 @@ import type { Node } from "react";
 import { View, Text, FlatList, ActivityIndicator, Pressable, Image } from "react-native";
 
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
-import ObsEditSearch from "./ObsEditSearch";
 import { ObsEditContext } from "../../providers/contexts";
 import EvidenceList from "./EvidenceList";
 import useCVSuggestions from "./hooks/useCVSuggestions";
 import { viewStyles, textStyles } from "../../styles/obsEdit/cvSuggestions";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
+import InputField from "../SharedComponents/InputField";
 
 const CVSuggestions = ( ): Node => {
   const {
@@ -21,6 +22,9 @@ const CVSuggestions = ( ): Node => {
   } = useContext( ObsEditContext );
   const [showSeenNearby, setShowSeenNearby] = useState( true );
   const [selectedPhoto, setSelectedPhoto] = useState( 0 );
+  const [q, setQ] = React.useState( "" );
+  // choose users or taxa
+  const list = useRemoteObsEditSearchResults( q, "taxa" );
 
   const currentObs = observations[currentObsNumber];
   const suggestions = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
@@ -51,7 +55,50 @@ const CVSuggestions = ( ): Node => {
     );
   };
 
+  const renderSearchResults = ( { item } ) => {
+    const uri = { uri: item.default_photo.square_url };
+
+    const updateIdentification = ( ) => {
+      setIdentification( {
+        name: item.name,
+        preferred_common_name: item.preferred_common_name
+      } );
+      updateTaxaId( item.taxon_id );
+    };
+
+    return (
+      <Pressable
+        onPress={updateIdentification}
+        style={viewStyles.row}
+      >
+        <Image
+          source={uri}
+          style={viewStyles.imageBackground}
+        />
+        <View style={viewStyles.obsDetailsColumn}>
+          <Text style={textStyles.text}>{item.preferred_common_name}</Text>
+          <Text style={textStyles.text}>{item.name}</Text>
+        </View>
+      </Pressable>
+    );
+  };
+
   const toggleSeenNearby = ( ) => setShowSeenNearby( !showSeenNearby );
+
+  const displaySuggestions = ( ) => (
+    <FlatList
+      data={suggestions}
+      renderItem={renderSuggestions}
+      ListEmptyComponent={( ) => <ActivityIndicator />}
+    />
+  );
+
+  const displaySearchResults = ( ) => (
+    <FlatList
+      data={list}
+      renderItem={renderSearchResults}
+    />
+  );
 
   return (
     <ViewNoFooter>
@@ -60,15 +107,13 @@ const CVSuggestions = ( ): Node => {
         setSelectedPhoto={setSelectedPhoto}
         selectedPhoto={selectedPhoto}
       />
-      {/* <ObsEditSearch
-        source="taxa"
-        handlePress={updateTaxaId}
-      /> */}
-      <FlatList
-        data={suggestions}
-        renderItem={renderSuggestions}
-        ListEmptyComponent={( ) => <ActivityIndicator />}
+      <InputField
+        handleTextChange={setQ}
+        placeholder="search for taxa"
+        text={q}
+        type="none"
       />
+      {list ? displaySearchResults( ) : displaySuggestions( )}
       <RoundGreenButton
         handlePress={toggleSeenNearby}
         buttonText={showSeenNearby ? "View species not seen nearby" : "View seen nearby"}
