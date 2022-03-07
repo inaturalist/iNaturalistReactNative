@@ -6,7 +6,7 @@ import Login from "../../../../src/components/LoginSignUp/Login";
 
 const testUser = factory( "RemoteUser" );
 const mockExpected = testUser;
-// const EXPECTED_PASSWORD = "123456";
+const EXPECTED_PASSWORD = "123456";
 
 jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
   authenticateUser: async ( username, password ) => {
@@ -35,11 +35,11 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-// const renderLogin = async ( ) => render(
-//   <NavigationContainer>
-//     <Login />
-//   </NavigationContainer>
-// );
+const renderLogin = async ( ) => render(
+  <NavigationContainer>
+    <Login />
+  </NavigationContainer>
+);
 
 test.todo( "renders login screen (not signed in)" );
 // test( "renders login screen (not signed in)", async ( ) => {
