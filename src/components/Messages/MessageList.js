@@ -16,7 +16,13 @@ const MessageList = ( {
   testID
 }: Props ): React.Node => {
 
-  if ( loading ) { return <ActivityIndicator />; }
+  if ( loading ) {
+    return (
+      <ActivityIndicator
+        testID={"Messages.activityIndicator"}
+      />
+    );
+  }
 
   const renderMessages = ( { item } ) => {
     return (

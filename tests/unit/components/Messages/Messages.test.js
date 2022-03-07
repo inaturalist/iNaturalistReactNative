@@ -11,7 +11,10 @@ const mockMessage = factory( "RemoteMessage" );
 jest.mock( "../../../../src/components/Messages/hooks/useMessages" , ( ) => ( {
   __esModule: true,
   default: ( ) => {
-    return [mockMessage];
+    return {
+      messageList: [mockMessage],
+      loading: false
+    };
   }
 } ) );
 
@@ -31,11 +34,19 @@ const renderMessages = ( ) => render(
   </NavigationContainer>
 );
 
-test( "displays message subject", ( ) => {
+it( "displays message subject", ( ) => {
   const { getByText } = renderMessages( );
 
   waitFor( ( ) => {
     expect( getByText( mockMessage.subject ) ).toBeTruthy( );
+  } );
+} );
+
+it( "displays activity indicator", ( ) => {
+  const { getByTestId } = renderMessages( );
+
+  waitFor( ( ) => {
+    expect( getByTestId( "Messages.activityIndicator" ) ).toBeFalsy( );
   } );
 } );
 
