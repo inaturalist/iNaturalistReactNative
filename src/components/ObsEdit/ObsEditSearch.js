@@ -3,7 +3,6 @@
 import * as React from "react";
 import { FlatList, Pressable, Text, Image } from "react-native";
 
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import InputField from "../SharedComponents/InputField";
 import { viewStyles, imageStyles } from "../../styles/search/search";

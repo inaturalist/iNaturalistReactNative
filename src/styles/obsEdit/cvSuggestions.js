@@ -1,9 +1,11 @@
 // @flow strict-local
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "../global";
+
+const { width } = Dimensions.get( "screen" );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   imageBackground: {
@@ -14,7 +16,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     marginHorizontal: 20
   },
   obsDetailsColumn: {
-    width: 200
+    width: width / 3
   },
   row: {
     flexDirection: "row",
@@ -27,6 +29,10 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   text: { },
   greenText: {
     color: colors.inatGreen
+  },
+  explainerText: {
+    marginHorizontal: 20,
+    marginBottom: 20
   }
 } );
 
