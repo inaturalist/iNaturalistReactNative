@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import type { Node } from "react";
 import uuid from "react-native-uuid";
+import { useNavigation } from "@react-navigation/native";
 
 import { getTimeZone } from "../sharedHelpers/dateAndTime";
 import { ObsEditContext } from "./contexts";
@@ -11,8 +12,10 @@ type Props = {
 }
 
 const ObsEditProvider = ( { children }: Props ): Node => {
+  const navigation = useNavigation( );
   const [currentObsNumber, setCurrentObsNumber] = useState( 0 );
   const [observations, setObservations] = useState( [] );
+  const [identification, setIdentification] = useState( null );
 
   const currentObs = observations[currentObsNumber];
 
@@ -82,6 +85,26 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
   };
 
+  const updateObservationKey = ( key, value ) => {
+    const updatedObs = observations.map( ( obs, index ) => {
+      if ( index === currentObsNumber ) {
+        return {
+          ...obs,
+          // $FlowFixMe
+          [key]: value
+        };
+      } else {
+        return obs;
+      }
+    } );
+    setObservations( updatedObs );
+  };
+
+  const updateTaxaId = taxaId => {
+    updateObservationKey( "taxon_id", taxaId );
+    navigation.navigate( "ObsEdit" );
+  };
+
   const obsEditValue = {
     currentObsNumber,
     setCurrentObsNumber,
@@ -89,8 +112,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     addPhotos,
     addObservations,
     observations,
-    // currentObs,
-    setObservations
+    setObservations,
+    updateObservationKey,
+    updateTaxaId,
+    identification,
+    setIdentification
   };
 
   return (

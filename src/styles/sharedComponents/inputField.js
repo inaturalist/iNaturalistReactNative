@@ -14,8 +14,8 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
     color: colors.black,
     height: 37,
     paddingLeft: 15,
-    marginHorizontal: 50,
-    marginVertical: 20
+    marginHorizontal: 50
+    // marginVertical: 20
   }
 } );
 
