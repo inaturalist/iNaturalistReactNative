@@ -58,6 +58,7 @@ const FIELDS = {
   created_at: true,
   description: true,
   geojson: true,
+  id: true,
   identifications: ID_FIELDS,
   latitude: true,
   location: true,
