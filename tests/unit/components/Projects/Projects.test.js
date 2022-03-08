@@ -37,25 +37,25 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const renderProjects = ( ) => render(
-  <NavigationContainer>
-    <Projects />
-  </NavigationContainer>
+const renderProjects = async () => waitFor(
+  () => render(
+    <NavigationContainer>
+      <Projects />
+    </NavigationContainer>
+  )
 );
 
-test( "displays project search results", ( ) => {
-  const { getByTestId, getByText } = renderProjects( );
+test( "displays project search results", async ( ) => {
+  const { getByTestId, getByText } = await renderProjects( );
 
   const input = getByTestId( "ProjectSearch.input" );
   fireEvent.changeText( input, "butterflies" );
 
-  waitFor( ( ) => {
-    expect( getByText( mockProject.title ) ).toBeTruthy( );
-    expect( getByTestId( `Project.${mockProject.id}.photo` ).props.source ).toStrictEqual( { "uri": mockProject.icon } );
-    fireEvent.press( getByTestId( `Project.${mockProject.id}` ) );
-    expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", {
-      id: mockProject.id
-    } );
+  expect( getByText( mockProject.title ) ).toBeTruthy( );
+  expect( getByTestId( `Project.${mockProject.id}.photo` ).props.source ).toStrictEqual( { "uri": mockProject.icon } );
+  fireEvent.press( getByTestId( `Project.${mockProject.id}` ) );
+  expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", {
+    id: mockProject.id
   } );
 } );
 
