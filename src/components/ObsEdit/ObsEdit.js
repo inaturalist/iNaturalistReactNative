@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useCallback, useContext } from "react";
-import { Text, Image, TextInput, Pressable, FlatList, View, Modal } from "react-native";
+import { Text, TextInput, Pressable, FlatList, View, Modal } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
@@ -12,22 +12,24 @@ import ImageResizer from "react-native-image-resizer";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import { pickerSelectStyles, textStyles, imageStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
+import { pickerSelectStyles, textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
 import CustomModal from "../SharedComponents/Modal";
 import ObsEditSearch from "./ObsEditSearch";
 import { getJWTToken } from "../LoginSignUp/AuthenticationService";
 import LocationPicker from "./LocationPicker";
-import CameraOptionsButton from "../SharedComponents/Buttons/CameraOptionsButton";
 import { ObsEditContext } from "../../providers/contexts";
 import useLocationName from "../../sharedHooks/useLocationName";
+import EvidenceList from "./EvidenceList";
 
 const ObsEdit = ( ): Node => {
   const {
     currentObsNumber,
     setCurrentObsNumber,
     observations,
-    setObservations
+    setObservations,
+    updateObservationKey,
+    identification
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -64,21 +66,6 @@ const ObsEdit = ( ): Node => {
 
   const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
 
-  const updateObservationKey = ( key, value ) => {
-    const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObsNumber ) {
-        return {
-          ...obs,
-          // $FlowFixMe
-          [key]: value
-        };
-      } else {
-        return obs;
-      }
-    } );
-    setObservations( updatedObs );
-  };
-
   const addNotes = text => updateObservationKey( "description", text );
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
   const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
@@ -98,12 +85,7 @@ const ObsEdit = ( ): Node => {
     setObservations( updatedObs );
   };
 
-  const navToSuggestionsPage = ( ) => console.log( "nav to suggestions page" );
-
-  const searchForTaxa = ( ) => {
-    setSource( "taxa" );
-    openModal( );
-  };
+  const navToSuggestionsPage = ( ) => navigation.navigate( "Suggestions" );
 
   const searchForProjects = ( ) => {
     setSource( "projects" );
@@ -154,44 +136,8 @@ const ObsEdit = ( ): Node => {
     );
   };
 
-  const renderCameraOptionsButton =  ( ) => <CameraOptionsButton />;
-
-  const renderEvidence = ( { item } ) => {
-    const isSound = item.uri.includes( "m4a" );
-    const imageUri = { uri: item.uri };
-    return (
-      <Image
-        source={imageUri}
-        style={[imageStyles.obsPhoto, isSound && viewStyles.soundButton]}
-        testID="ObsEdit.photo"
-      />
-    );
-  };
-
   const currentObs = observations[currentObsNumber];
   const placeGuess = useLocationName( currentObs.latitude, currentObs.longitude );
-
-  const renderEvidenceList = ( ) => {
-    const displayEvidence = ( ) => {
-      let evidence = [];
-
-      if ( currentObs.observationPhotos ) {
-        evidence = evidence.concat( currentObs.observationPhotos );
-      }
-      if ( currentObs.observationSounds ) {
-        evidence = evidence.concat( [currentObs.observationSounds] );
-      }
-      return evidence;
-    };
-    return (
-      <FlatList
-        data={displayEvidence( )}
-        horizontal
-        renderItem={renderEvidence}
-        ListFooterComponent={renderCameraOptionsButton}
-      />
-    );
-  };
 
   const uploadSound = async ( soundParams, apiToken ) => {
     const options = {
@@ -361,6 +307,52 @@ const ObsEdit = ( ): Node => {
     return location;
   };
 
+
+  const updateObsAndCloseModal = id => {
+    if ( source === "taxa" ) {
+      updateTaxaId( id );
+    } else {
+      // TODO: need somewhere to display which projects a user has joined
+      updateProjectIds( id );
+    }
+    closeModal( );
+  };
+
+  const displayIdentification = ( ) => {
+    if ( identification ) {
+      return (
+        <View style={viewStyles.row}>
+          <View>
+            <Text style={textStyles.text}>
+              {identification.preferred_common_name}
+            </Text>
+            <Text style={textStyles.text}>
+              {identification.name}
+            </Text>
+          </View>
+          <Pressable
+            onPress={navToSuggestionsPage}
+          >
+            <Text style={textStyles.text}>edit</Text>
+          </Pressable>
+        </View>
+      );
+    } else {
+      return (
+        <>
+          <RoundGreenButton
+            handlePress={navToSuggestionsPage}
+            buttonText="View Identification Suggestions"
+            testID="ObsEdit.Suggestions"
+          />
+          <Text style={textStyles.text}>
+            {currentObs.taxon_id && t( iconicTaxaNames[currentObs.taxon_id] )}
+          </Text>
+        </>
+      );
+    }
+  };
+
   return (
     <ScrollNoFooter>
       {renderLocationPickerModal( )}
@@ -369,18 +361,16 @@ const ObsEdit = ( ): Node => {
         closeModal={closeModal}
         modal={(
           <ObsEditSearch
-            closeModal={closeModal}
             // $FlowFixMe
             source={source}
-            updateTaxaId={updateTaxaId}
-            updateProjectIds={updateProjectIds}
+            handlePress={updateObsAndCloseModal}
           />
         )}
       />
       {renderArrowNavigation( )}
       <Text style={textStyles.headerText}>{ t( "Evidence" )}</Text>
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
-      {renderEvidenceList( )}
+      <EvidenceList currentObs={currentObs} showCameraOptions />
       <Pressable
         onPress={openLocationPicker}
       >
@@ -391,19 +381,9 @@ const ObsEdit = ( ): Node => {
           {displayLocation( )}
         </Text>
       </Pressable>
-      {/* TODO: format date and time */}
       <Text style={textStyles.text} testID="ObsEdit.time">{displayDate}</Text>
       <Text style={textStyles.headerText}>{ t( "Identification" )}</Text>
-      {/* TODO: add suggestions screen */}
-      <Pressable onPress={navToSuggestionsPage}>
-        <Text style={textStyles.text}>view inat id suggestions</Text>
-      </Pressable>
-      <Pressable onPress={searchForTaxa}>
-        <Text style={textStyles.text}>tap to search for taxa</Text>
-      </Pressable>
-      <Text style={textStyles.text}>
-        {currentObs.taxon_id && t( iconicTaxaNames[currentObs.taxon_id] )}
-      </Text>
+      {displayIdentification( )}
       <FlatList
         data={Object.keys( iconicTaxaIds )}
         horizontal

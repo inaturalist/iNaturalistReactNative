@@ -1,7 +1,7 @@
 // @flow strict-local
 
 import React, { useEffect, useState } from "react";
-import {Button, Text, TextInput, View} from "react-native";
+import { Button, Text, TextInput } from "react-native";
 import type { Node } from "react";
 
 import { textStyles } from "../../styles/login/login";
