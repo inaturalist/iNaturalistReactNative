@@ -1,12 +1,11 @@
 // @flow
 
-import { useEffect, useCallback, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
 
 import { FIELDS } from "../../../providers/helpers";
-import { getUsername } from "../../../components/LoginSignUp/AuthenticationService";
 
-const useObservations = ( ): {
+const useObservations = ( placeId: ?string, taxonId: ?number ): {
   observations: Array<Object>,
   loading: boolean
 } => {
@@ -18,20 +17,24 @@ const useObservations = ( ): {
     const fetchObservations = async ( ) => {
       setLoading( true );
       try {
+        console.log( placeId, "place id in params" );
         const params = {
-          // viewer_id: user.id,
-          // preferred_place_id: 1,
+          // TODO: note that there's a bug with place_id in API v2, so this is not working
+          // as of Mar 8, 2022 with a place selected
+          // place_id: placeId,
+          reviewed: false,
+          taxon_id: taxonId,
+          // viewer_id: 1132118,
           // locale: null,
           // ttl: -1,
           // order_by: "random",
           // quality_grade: "any",
           // page: 1,
           // user_id: userLogin,
-          per_page: 30,
+          // per_page: 30,
           fields: FIELDS
         };
         const response = await inatjs.observations.search( params );
-        console.log( response, "response" );
         const results = response.results;
         if ( !isCurrent ) { return; }
         setLoading( false );
@@ -39,15 +42,19 @@ const useObservations = ( ): {
       } catch ( e ) {
         setLoading( false );
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch observations for identify:", e.message, );
+        console.log( "Couldn't fetch observations for identify:", JSON.stringify( e.response ), );
       }
     };
 
-    fetchObservations( );
+    if ( !taxonId ) { return; }
+    // if ( placeId ) {
+      fetchObservations( );
+    // }
+
     return ( ) => {
       isCurrent = false;
     };
-  }, [] );
+  }, [placeId, taxonId] );
 
   return {
     observations,

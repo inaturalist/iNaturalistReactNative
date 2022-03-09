@@ -7,11 +7,12 @@ import { viewStyles, textStyles } from "../../../styles/sharedComponents/buttons
 type Props = {
   buttonText: string,
   handlePress: any,
-  testID: string
+  testID: string,
+  disabled?: boolean
 }
 
-const RoundGreenButton = ( { buttonText, handlePress, testID }: Props ): React.Node => (
-  <Pressable style={viewStyles.greenButton} onPress={handlePress} testID={testID}>
+const RoundGreenButton = ( { buttonText, handlePress, testID, disabled }: Props ): React.Node => (
+  <Pressable style={viewStyles.greenButton} onPress={handlePress} testID={testID} disabled={disabled}>
     <Text style={textStyles.greenButtonText}>
       {buttonText}
     </Text>

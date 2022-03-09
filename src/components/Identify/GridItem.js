@@ -20,6 +20,7 @@ const GridItem = ( { item, handlePress, reviewedIds, setReviewedIds }: Props ): 
   const commonName = item.taxon && item.taxon.preferred_common_name;
   const name = item.taxon ? item.taxon.name : "unknown";
   const isSpecies = item.taxon && item.taxon.rank === "species";
+  const wasReviewed = reviewedIds.includes( item.id );
   const onPress = ( ) => handlePress( item );
   // TODO: fix whatever funkiness is preventing realm mapTo from correctly
   // displaying camelcased item keys on ObservationList
@@ -41,7 +42,7 @@ const GridItem = ( { item, handlePress, reviewedIds, setReviewedIds }: Props ): 
       onPress={onPress}
       style={[
         viewStyles.gridItem,
-        reviewedIds.includes( item.id ) && viewStyles.markReviewed
+        wasReviewed && viewStyles.markReviewed
       ]}
       testID={`ObsList.gridItem.${item.uuid}`}
       accessibilityRole="link"
@@ -67,6 +68,7 @@ const GridItem = ( { item, handlePress, reviewedIds, setReviewedIds }: Props ): 
             handlePress={agreeWithObservation}
             buttonText="agree"
             testID="Identify.agree"
+            disabled={wasReviewed}
           />
         )}
       </View>
