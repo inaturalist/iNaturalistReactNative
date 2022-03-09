@@ -6,13 +6,13 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import PlaceholderComponent from "../components/PlaceholderComponent";
 import MyObservationsStackNavigator from "./myObservationsStackNavigation";
-import MessagesStackNavigator from "./messagesStackNavigation";
 import ExploreStackNavigator from "./exploreStackNavigation";
 import Search from "../components/Search/Search";
 import Login from "../components/LoginSignUp/Login";
 import ProjectsStackNavigation from "./projectsStackNavigation";
 import CameraStackNavigation from "./cameraStackNavigation";
 import CustomDrawerContent from "../components/CustomDrawerContent";
+import MessagesStackNavigator from "./messagesStackNavigation";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -67,4 +67,3 @@ const App = ( ): React.Node => (
 );
 
 export default App;
-
