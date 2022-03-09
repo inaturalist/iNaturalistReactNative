@@ -17,13 +17,12 @@ const useObservations = ( placeId: ?string, taxonId: ?number ): {
     const fetchObservations = async ( ) => {
       setLoading( true );
       try {
-        console.log( placeId, "place id in params" );
         const params = {
           // TODO: note that there's a bug with place_id in API v2, so this is not working
           // as of Mar 8, 2022 with a place selected
-          // place_id: placeId,
+          place_id: placeId,
           reviewed: false,
-          taxon_id: taxonId,
+          // taxon_id: taxonId,
           // viewer_id: 1132118,
           // locale: null,
           // ttl: -1,
@@ -36,9 +35,10 @@ const useObservations = ( placeId: ?string, taxonId: ?number ): {
         };
         const response = await inatjs.observations.search( params );
         const results = response.results;
+        console.log( results, "results" );
         if ( !isCurrent ) { return; }
         setLoading( false );
-        setObservations( results );
+       //  setObservations( results );
       } catch ( e ) {
         setLoading( false );
         if ( !isCurrent ) { return; }
@@ -46,7 +46,7 @@ const useObservations = ( placeId: ?string, taxonId: ?number ): {
       }
     };
 
-    if ( !taxonId ) { return; }
+    // if ( !taxonId || !placeId ) { return; }
     // if ( placeId ) {
       fetchObservations( );
     // }
