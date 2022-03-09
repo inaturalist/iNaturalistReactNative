@@ -18,27 +18,30 @@ const useObservations = ( placeId: ?string, taxonId: ?number ): {
       setLoading( true );
       try {
         const params = {
-          // TODO: note that there's a bug with place_id in API v2, so this is not working
-          // as of Mar 8, 2022 with a place selected
-          place_id: placeId,
           reviewed: false,
-          // taxon_id: taxonId,
           // viewer_id: 1132118,
           // locale: null,
           // ttl: -1,
           // order_by: "random",
           // quality_grade: "any",
-          // page: 1,
-          // user_id: userLogin,
-          // per_page: 30,
           fields: FIELDS
         };
+        if ( placeId ) {
+          // $FlowFixMe
+          params.place_id = placeId;
+        }
+        if ( taxonId ) {
+          // $FlowFixMe
+          params.taxon_id = taxonId;
+        }
+        // $FlowFixMe
+        params.fields.observation_photos.photo.medium_url = true;
+
         const response = await inatjs.observations.search( params );
         const results = response.results;
-        console.log( results, "results" );
         if ( !isCurrent ) { return; }
         setLoading( false );
-       //  setObservations( results );
+        setObservations( results );
       } catch ( e ) {
         setLoading( false );
         if ( !isCurrent ) { return; }
@@ -46,10 +49,10 @@ const useObservations = ( placeId: ?string, taxonId: ?number ): {
       }
     };
 
-    // if ( !taxonId || !placeId ) { return; }
-    // if ( placeId ) {
+    // this is for performance, so we're not searching the entire globe and all organisms
+    if ( taxonId || placeId ) {
       fetchObservations( );
-    // }
+    }
 
     return ( ) => {
       isCurrent = false;
