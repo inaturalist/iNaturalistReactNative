@@ -1,7 +1,7 @@
 // @flow
 
-import React from "react";
-import { Pressable, Text, Image, View } from "react-native";
+import React, { useState } from "react";
+import { Pressable, Text, Image, View, ActivityIndicator } from "react-native";
 import type { Node } from "react";
 
 import Observation from "../../models/Observation";
@@ -17,6 +17,7 @@ type Props = {
 }
 
 const GridItem = ( { item, handlePress, reviewedIds, setReviewedIds }: Props ): Node => {
+  const [showLoadingWheel, setShowLoadingWheel] = useState( false );
   const commonName = item.taxon && item.taxon.preferred_common_name;
   const name = item.taxon ? item.taxon.name : "unknown";
   const isSpecies = item.taxon && item.taxon.rank === "species";
@@ -29,12 +30,14 @@ const GridItem = ( { item, handlePress, reviewedIds, setReviewedIds }: Props ): 
   const imageUri = Observation.projectUri( item );
 
   const agreeWithObservation = async ( ) => {
+    setShowLoadingWheel( true );
     const results = await createIdentification( { observation_id: item.id, taxon_id: item.taxon.id } );
     if ( results === 1 ) {
       const ids = Array.from( reviewedIds );
       ids.push( item.id );
       setReviewedIds( ids );
     }
+    setShowLoadingWheel( false );
   };
 
   return (
@@ -58,6 +61,7 @@ const GridItem = ( { item, handlePress, reviewedIds, setReviewedIds }: Props ): 
         style={imageStyles.userImage}
         testID="ObsList.identifierPhoto"
       />
+      {showLoadingWheel && <ActivityIndicator />}
       <View style={viewStyles.taxonName}>
         <View style={viewStyles.textBox}>
           {commonName && <Text style={textStyles.text}>{commonName}</Text>}
