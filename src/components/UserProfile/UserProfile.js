@@ -14,10 +14,8 @@ const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
   const { userId } = params;
   const user = useUser( userId );
-  // last active date
-  // bio
-  // following
-  // featured observations
+  console.log( user, "user data" );
+
   if ( !user ) { return null; }
   return (
     <ViewWithFooter>
@@ -28,13 +26,20 @@ const UserProfile = ( ): React.Node => {
           <Text>{user.name}</Text>
           <Text>{`iNaturalist ${user.roles[0]}`}</Text>
           <Text>{`Joined: ${user.created_at}`}</Text>
-          <Text>Last Active: N/A</Text>
+          <Text>{`Last Active: ${user.updated_at}`}</Text>
           <Text>{`Affiliation: ${user.site_id}`}</Text>
         </View>
       </View>
-      <Text>Bio</Text>
+      <View>
+        <Text>{`Species count: ${user.species_count}`}</Text>
+        <Text>{`Obs count: ${user.observations_count}`}</Text>
+        <Text>{`Journal post count: ${user.journal_posts_count}`}</Text>
+        <Text>{`Identifications count: ${user.identifications_count}`}</Text>
+      </View>
+      <Text>{`Bio: ${user.description}`}</Text>
+      <Text>projects</Text>
       <Text>Following</Text>
-      <Text>Featured Observations</Text>
+      <Text>Followers</Text>
     </ViewWithFooter>
   );
 };
