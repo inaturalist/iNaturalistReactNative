@@ -12,6 +12,7 @@ import Login from "../components/LoginSignUp/Login";
 import ProjectsStackNavigation from "./projectsStackNavigation";
 import CameraStackNavigation from "./cameraStackNavigation";
 import CustomDrawerContent from "../components/CustomDrawerContent";
+import IdentifyStackNavigation from "./identifyStackNavigation";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -34,7 +35,11 @@ const App = ( ): React.Node => (
         component={MyObservationsStackNavigator}
         options={hideHeader}
       />
-      <Drawer.Screen name="identify" component={PlaceholderComponent} />
+      <Drawer.Screen
+        name="identify"
+        component={IdentifyStackNavigation}
+        options={hideHeader}
+      />
       <Drawer.Screen name="search" component={Search} />
       <Drawer.Screen
         name="projects"
