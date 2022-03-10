@@ -4,17 +4,24 @@ import * as React from "react";
 import { Text, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
-import { viewStyles } from "../../styles/userProfile/userProfile";
+import { textStyles, viewStyles } from "../../styles/userProfile/userProfile";
 import UserIcon from "../SharedComponents/UserIcon";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { useUser } from "./hooks/useUser";
 import User from "../../models/User";
+import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
   const { userId } = params;
   const user = useUser( userId );
-  console.log( user, "user data" );
+
+  const showCount = ( count, label ) => (
+    <View style={viewStyles.countBox}>
+      <Text style={textStyles.text}>{count}</Text>
+      <Text style={textStyles.text}>{label}</Text>
+    </View>
+  );
 
   if ( !user ) { return null; }
   return (
@@ -30,14 +37,15 @@ const UserProfile = ( ): React.Node => {
           <Text>{`Affiliation: ${user.site_id}`}</Text>
         </View>
       </View>
-      <View>
-        <Text>{`Species count: ${user.species_count}`}</Text>
-        <Text>{`Obs count: ${user.observations_count}`}</Text>
-        <Text>{`Journal post count: ${user.journal_posts_count}`}</Text>
-        <Text>{`Identifications count: ${user.identifications_count}`}</Text>
+      <View style={viewStyles.countRow}>
+        {showCount( user.observations_count, "Observations" )}
+        {showCount( user.species_count, "Species" )}
+        {showCount( user.identifications_count, "ID's" )}
+        {showCount( user.journal_posts_count, "Journal Posts" )}
       </View>
       <Text>{`Bio: ${user.description}`}</Text>
-      <Text>projects</Text>
+      <Text>Projects</Text>
+      <UserProjects userId={userId} />
       <Text>Following</Text>
       <Text>Followers</Text>
     </ViewWithFooter>

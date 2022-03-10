@@ -34,6 +34,7 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
     const fetchCVSuggestions = async ( ): Promise<Object> => {
       try {
         setSuggestions( [] );
+        // observed_on: new Date( time * 1000 ).toISOString(),
         const apiToken = await getJWTToken( false );
 
         // works with API v1, not v2
@@ -43,7 +44,6 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
             name: "photo.jpeg",
             type: "image/jpeg"
           } )
-          // observed_on: new Date( time * 1000 ).toISOString(),
         };
 
         if ( showSeenNearby ) {
