@@ -10,6 +10,7 @@ import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { useUser } from "./hooks/useUser";
 import User from "../../models/User";
 import UserProjects from "./UserProjects";
+import CustomHeader from "../SharedComponents/CustomHeader";
 
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
@@ -24,14 +25,17 @@ const UserProfile = ( ): React.Node => {
   );
 
   if ( !user ) { return null; }
+
+  const showUserRole = user.roles.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
+
   return (
     <ViewWithFooter>
-      <Text>{User.userHandle( user )}</Text>
+      <CustomHeader headerText={User.userHandle( user )} />
       <View style={viewStyles.row} testID={`UserProfile.${userId}`}>
         <UserIcon uri={User.uri( user )} large />
         <View>
           <Text>{user.name}</Text>
-          <Text>{`iNaturalist ${user.roles[0]}`}</Text>
+          {showUserRole}
           <Text>{`Joined: ${user.created_at}`}</Text>
           <Text>{`Last Active: ${user.updated_at}`}</Text>
           <Text>{`Affiliation: ${user.site_id}`}</Text>

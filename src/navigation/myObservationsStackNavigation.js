@@ -21,6 +21,10 @@ const showBackButton = ( { navigation } ) => ( {
   headerLeft: ( ) => <HeaderBackButton onPress={( ) => navigation.goBack( )} />
 } );
 
+const hideHeader = {
+  headerShown: false
+};
+
 const MyObservationsStackNavigation = ( ): React.Node => (
   // ObservationProvider needs to wrap the whole navigator, because a navigator can't have a
   // provider as its child
@@ -41,7 +45,7 @@ const MyObservationsStackNavigation = ( ): React.Node => (
         <Stack.Screen
           name="UserProfile"
           component={UserProfile}
-          options={showBackButton}
+          options={hideHeader}
         />
         <Stack.Screen
           name="TaxonDetails"
