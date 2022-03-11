@@ -17,7 +17,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
   // TODO: fix whatever funkiness is preventing realm mapTo from correctly
   // displaying camelcased item keys on ObservationList
 
-  const commonName = item.taxon.preferredCommonName || item.taxon.preferred_common_name;
+  const commonName = item.taxon && ( item.taxon.preferredCommonName || item.taxon.preferred_common_name );
   const placeGuess = item.placeGuess || item.place_guess;
   const timeObserved = item.timeObservedAt || item.time_observed_at;
   const numOfIds = item.identifications.length || 0;

@@ -45,7 +45,7 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
             name: "photo.jpeg",
             type: "image/jpeg"
           } ),
-          fields: "all"
+          fields: JSON.stringify( FIELDS )
         };
 
         if ( showSeenNearby ) {
