@@ -983,7 +983,7 @@
     "pirates" "^4.0.0"
     "source-map-support" "^0.5.16"
 
-"@babel/runtime@^7.12.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.5", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.12.0", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.5", "@babel/runtime@^7.3.1", "@babel/runtime@^7.8.4":
   "integrity" "sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw=="
   "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.15.4.tgz"
   "version" "7.15.4"
@@ -6583,6 +6583,11 @@
   dependencies:
     "p-limit" "^2.2.0"
 
+"p-sleep@^1.1.0":
+  "integrity" "sha512-bwP3GKZirBUYMtiUuBrheLUQdRXVeE/pmHOaLpNJzNfAD4b5AjDn6l823brXcQFade4G/g7GMNQ3KV86E8EaEw=="
+  "resolved" "https://registry.npmjs.org/p-sleep/-/p-sleep-1.1.0.tgz"
+  "version" "1.1.0"
+
 "p-try@^2.0.0":
   "integrity" "sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ=="
   "resolved" "https://registry.npmjs.org/p-try/-/p-try-2.2.0.tgz"
@@ -6809,7 +6814,7 @@
     "kleur" "^3.0.3"
     "sisteransi" "^1.0.5"
 
-"prop-types@^15.5.7", "prop-types@^15.6.0", "prop-types@^15.6.2", "prop-types@^15.7.2":
+"prop-types@^15.5.7", "prop-types@^15.5.8", "prop-types@^15.6.0", "prop-types@^15.6.2", "prop-types@^15.7.2":
   "integrity" "sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz"
   "version" "15.7.2"
@@ -6894,7 +6899,7 @@
     "shell-quote" "^1.6.1"
     "ws" "^7"
 
-"react-dom@>=16.5.1":
+"react-dom@^16.0.0 || ^17.0.0", "react-dom@>= 16.8.0", "react-dom@>=16.5.1":
   "integrity" "sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"
   "version" "17.0.2"
@@ -7176,6 +7181,14 @@
     "object-assign" "^4.1.1"
     "react-is" "^16.12.0 || ^17.0.0"
 
+"react-spring@^8.0.0", "react-spring@^8.0.27":
+  "integrity" "sha512-nDpWBe3ZVezukNRandTeLSPcwwTMjNVu1IDq9qA/AMiUqHuRN4BeSWvKr3eIxxg1vtiYiOLy4FqdfCP5IoP77g=="
+  "resolved" "https://registry.npmjs.org/react-spring/-/react-spring-8.0.27.tgz"
+  "version" "8.0.27"
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "prop-types" "^15.5.8"
+
 "react-test-renderer@^17.0.2", "react-test-renderer@>=16.0.0", "react-test-renderer@17.0.2":
   "integrity" "sha512-yaQ9cB89c17PUb0x6UfWRs7kQCorVdHlutU1boVPEsB8IDZH6n9tHxMacc3y0JoXOJUsZb/t/Mb8FUWMKaM7iQ=="
   "resolved" "https://registry.npmjs.org/react-test-renderer/-/react-test-renderer-17.0.2.tgz"
@@ -7190,6 +7203,13 @@
   "integrity" "sha512-4+ow23tp/Tv7hBM5Az5/Be/eKKF7DIvJ09voz5LyHGQaqqz9WV8YMs31eFvcYQs7d451LSg7kDJV70XYN/Ug/Q=="
   "resolved" "https://registry.npmjs.org/react-timer-mixin/-/react-timer-mixin-0.13.4.tgz"
   "version" "0.13.4"
+
+"react-tinder-card@^1.4.5":
+  "integrity" "sha512-VUdAZQiWoFClTe6Evua4sjYy3L3bSYvoWgEMNroiRoK0h5AsfqDXCfhaizUczN6gEUe0mvVDd4bZcQ1qR4sI7Q=="
+  "resolved" "https://registry.npmjs.org/react-tinder-card/-/react-tinder-card-1.4.5.tgz"
+  "version" "1.4.5"
+  dependencies:
+    "p-sleep" "^1.1.0"
 
 "react@*", "react@^16.0.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@>= 16.0 || < 18.0", "react@>= 16.8.0", "react@>=16.0.0", "react@>=16.13.1", "react@>=16.5.1", "react@>=16.8.6", "react@16 || 17", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="

@@ -81,6 +81,17 @@ class Observation {
     return { uri: obs.observation_photos[0].photo.url };
   }
 
+  static mediumUri = obs => {
+    const photo = obs.observation_photos[0];
+    if ( !photo ) { return; }
+    if ( !photo.photo ) { return; }
+    if ( !photo.photo.url ) { return; }
+
+    const mediumUri = obs.observation_photos[0].photo.url.replace( "square", "medium" );
+
+    return { uri: mediumUri };
+  }
+
   static schema = {
     name: "Observation",
     primaryKey: "uuid",

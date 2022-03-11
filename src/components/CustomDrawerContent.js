@@ -19,7 +19,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     <DrawerContentScrollView {...props}>
       <DrawerItem
         label="identify"
-        onPress={( ) => console.log( "nav to identify" )}
+        onPress={( ) => navigation.navigate( "identify" )}
       />
       <DrawerItem
         label="search"
