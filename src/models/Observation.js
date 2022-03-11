@@ -17,7 +17,7 @@ class Observation {
       } );
     };
 
-    const taxon = Taxon.mimicRealmMappedPropertiesSchema( obs.taxon );
+    const taxon = obs.taxon ? Taxon.mimicRealmMappedPropertiesSchema( obs.taxon ) : null;
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );

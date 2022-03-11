@@ -9,9 +9,10 @@ import { textStyles, viewStyles } from "../../styles/obsDetails";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 
+
 type Props = {
   ids: Array<Object>,
-  navToTaxonDetails: ( ) => { },
+  navToTaxonDetails: Function,
   navToUserProfile: number => { }
 }
 
@@ -22,7 +23,7 @@ const ActivityTab = ( { ids, navToTaxonDetails, navToUserProfile }: Props ): Rea
   // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/components/activity_item.jsx
   return (
     <View key={id.uuid}>
-      <View style={viewStyles.userProfileRow}>
+      <View style={[viewStyles.userProfileRow, viewStyles.rowBorder]}>
         <Pressable
           onPress={handlePress}
           accessibilityRole="link"

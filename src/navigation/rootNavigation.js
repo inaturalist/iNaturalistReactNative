@@ -13,6 +13,7 @@ import ProjectsStackNavigation from "./projectsStackNavigation";
 import CameraStackNavigation from "./cameraStackNavigation";
 import CustomDrawerContent from "../components/CustomDrawerContent";
 import IdentifyStackNavigation from "./identifyStackNavigation";
+import ObsEditProvider from "../providers/ObsEditProvider";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -25,43 +26,45 @@ const Drawer = createDrawerNavigator( );
 
 const App = ( ): React.Node => (
   <NavigationContainer>
-    <Drawer.Navigator
-      screenOptions={screenOptions}
-      name="Drawer"
-      drawerContent={( props ) => <CustomDrawerContent {...props} />}
-    >
-      <Drawer.Screen
-        name="my observations"
-        component={MyObservationsStackNavigator}
-        options={hideHeader}
-      />
-      <Drawer.Screen
-        name="identify"
-        component={IdentifyStackNavigation}
-        options={hideHeader}
-      />
-      <Drawer.Screen name="search" component={Search} />
-      <Drawer.Screen
-        name="projects"
-        component={ProjectsStackNavigation}
-        options={hideHeader}
-      />
-      <Drawer.Screen name="settings" component={PlaceholderComponent} />
-      <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
-      <Drawer.Screen name="about" component={PlaceholderComponent} />
-      <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-      <Drawer.Screen name="login" component={Login} />
-      <Drawer.Screen
-        name="camera"
-        component={CameraStackNavigation}
-        options={hideHeader}
-      />
-      <Drawer.Screen
-        name="explore stack"
-        component={ExploreStackNavigator}
-        options={hideHeader}
-      />
-    </Drawer.Navigator>
+    <ObsEditProvider>
+      <Drawer.Navigator
+        screenOptions={screenOptions}
+        name="Drawer"
+        drawerContent={( props ) => <CustomDrawerContent {...props} />}
+      >
+        <Drawer.Screen
+          name="my observations"
+          component={MyObservationsStackNavigator}
+          options={hideHeader}
+        />
+        <Drawer.Screen
+          name="identify"
+          component={IdentifyStackNavigation}
+          options={hideHeader}
+        />
+        <Drawer.Screen name="search" component={Search} />
+        <Drawer.Screen
+          name="projects"
+          component={ProjectsStackNavigation}
+          options={hideHeader}
+        />
+        <Drawer.Screen name="settings" component={PlaceholderComponent} />
+        <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
+        <Drawer.Screen name="about" component={PlaceholderComponent} />
+        <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
+        <Drawer.Screen name="login" component={Login} />
+        <Drawer.Screen
+          name="camera"
+          component={CameraStackNavigation}
+          options={hideHeader}
+        />
+        <Drawer.Screen
+          name="explore stack"
+          component={ExploreStackNavigator}
+          options={hideHeader}
+        />
+      </Drawer.Navigator>
+    </ObsEditProvider>
   </NavigationContainer>
 );
 

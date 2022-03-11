@@ -5,6 +5,7 @@ import { Text, View } from "react-native";
 import type { Node } from "react";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
+
 import { viewStyles, textStyles } from "../../styles/sharedComponents/customHeader";
 
 type Props = {
