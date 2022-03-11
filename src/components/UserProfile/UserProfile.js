@@ -11,11 +11,16 @@ import { useUser } from "./hooks/useUser";
 import User from "../../models/User";
 import UserProjects from "./UserProjects";
 import CustomHeader from "../SharedComponents/CustomHeader";
+// import useNetworkSite from "./hooks/useNetworkSite";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import updateRelationship from "./helpers/updateRelationship";
+
 
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
   const { userId } = params;
-  const user = useUser( userId );
+  const { user, currentUser } = useUser( userId );
+  // const site = useNetworkSite( );
 
   const showCount = ( count, label ) => (
     <View style={viewStyles.countBox}>
@@ -27,6 +32,8 @@ const UserProfile = ( ): React.Node => {
   if ( !user ) { return null; }
 
   const showUserRole = user.roles.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
+
+  const followUser = ( ) => updateRelationship( { id: userId, relationship: { following: true } } );
 
   return (
     <ViewWithFooter>
@@ -41,6 +48,16 @@ const UserProfile = ( ): React.Node => {
           <Text>{`Affiliation: ${user.site_id}`}</Text>
         </View>
       </View>
+      {!currentUser && (
+        <View style={viewStyles.buttonRow}>
+          <View style={viewStyles.button}>
+            <RoundGreenButton buttonText="Follow" handlePress={followUser} testID="UserProfile.followButton" />
+          </View>
+          <View style={viewStyles.button}>
+            <RoundGreenButton buttonText="Messages" handlePress={( ) => console.log( "open messages" )} testID="UserProfile.messagesButton" />
+          </View>
+        </View>
+      )}
       <View style={viewStyles.countRow}>
         {showCount( user.observations_count, "Observations" )}
         {showCount( user.species_count, "Species" )}

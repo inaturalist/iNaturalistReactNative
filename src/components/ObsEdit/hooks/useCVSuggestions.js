@@ -3,23 +3,24 @@
 import { useEffect, useState } from "react";
 import inatjs, { FileUpload } from "inaturalistjs";
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
+import resizeImageForUpload from "../helpers/resizeImage";
 
-// const TAXON_FIELDS = {
-//   name: true,
-//   preferred_common_name: true
-// };
+const TAXON_FIELDS = {
+  name: true,
+  preferred_common_name: true
+};
 
-// const PHOTO_FIELDS = {
-//   medium_url: true
-// };
+const PHOTO_FIELDS = {
+  medium_url: true
+};
 
-// const FIELDS = {
-//   taxon: Object.assign( {}, TAXON_FIELDS, {
-//     taxon_photos: {
-//       photo: PHOTO_FIELDS
-//     }
-//   } )
-// };
+const FIELDS = {
+  taxon: Object.assign( {}, TAXON_FIELDS, {
+    taxon_photos: {
+      photo: PHOTO_FIELDS
+    }
+  } )
+};
 
 const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selectedPhoto: number ): Object => {
   const [suggestions, setSuggestions] = useState( [] );
@@ -36,14 +37,15 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
         setSuggestions( [] );
         // observed_on: new Date( time * 1000 ).toISOString(),
         const apiToken = await getJWTToken( false );
+        const resizedPhoto = await resizeImageForUpload( uri );
 
-        // works with API v1, not v2
         const params = {
           image: new FileUpload( {
-            uri,
+            uri: resizedPhoto,
             name: "photo.jpeg",
             type: "image/jpeg"
-          } )
+          } ),
+          fields: "all"
         };
 
         if ( showSeenNearby ) {

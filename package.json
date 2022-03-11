@@ -51,7 +51,7 @@
     "react-native-sensitive-info": "^6.0.0-alpha.9",
     "react-native-uuid": "^2.0.1",
     "react-native-vision-camera": "^2.12.0",
-    "realm": "10.20.0-beta.1"
+    "realm": "^10.20.0-beta.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

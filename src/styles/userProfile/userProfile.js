@@ -14,6 +14,14 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     marginHorizontal: 10,
     justifyContent: "space-between"
   },
+  button: {
+    width: width / 2
+  },
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 20
+  },
   countRow: {
     flexDirection: "row"
   },
