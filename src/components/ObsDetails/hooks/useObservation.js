@@ -9,7 +9,7 @@ import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
 import { FIELDS } from "../../../providers/helpers";
 
-const useObservation = ( uuid: string ): Object => {
+const useObservation = ( uuid: string, refetch: boolean ): Object => {
   const [observation, setObservation] = useState( null );
   const [isConnected, setIsConnected] = useState( null );
 
@@ -72,7 +72,7 @@ const useObservation = ( uuid: string ): Object => {
       isCurrent = false;
       closeRealm;
     };
-  }, [uuid, openObservationFromRealm, closeRealm, isConnected] );
+  }, [uuid, openObservationFromRealm, closeRealm, isConnected, refetch] );
 
   return observation;
 };

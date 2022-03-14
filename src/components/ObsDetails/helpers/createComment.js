@@ -4,12 +4,14 @@ import inatjs from "inaturalistjs";
 
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 
-const createComment = async ( body: string ): Promise<?number> => {
+const createComment = async ( body: string, uuid: string ): Promise<?number> => {
   const apiToken = await getJWTToken( false );
   try {
     const apiParams = {
       comment: {
-        body
+        body,
+        parent_id: uuid,
+        parent_type: "Observation"
       }
     };
     const options = {

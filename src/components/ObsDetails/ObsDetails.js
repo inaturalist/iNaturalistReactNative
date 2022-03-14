@@ -22,6 +22,7 @@ import createComment from "./helpers/createComment";
 import faveObservation from "./helpers/faveObservation";
 
 const ObsDetails = ( ): Node => {
+  const [refetch, setRefetch] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
   const { addObservations, setPrevScreen } = useContext( ObsEditContext );
@@ -30,18 +31,18 @@ const ObsDetails = ( ): Node => {
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  const observation = useObservation( uuid );
+  const observation = useObservation( uuid, refetch );
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
 
   if ( !observation ) { return null; }
 
-
   const ids = observation.identifications;
   const photos = observation.observationPhotos;
   const user = observation.user;
   const taxon = observation.taxon;
+  const comments = observation.comments;
 
   const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
@@ -51,7 +52,14 @@ const ObsDetails = ( ): Node => {
     navigation.navigate( "camera", { screen: "Suggestions" } );
   };
   const openCommentBox = ( ) => setShowCommentBox( true );
-  const submitComment = ( ) => createComment( comment );
+  const submitComment = async ( ) => {
+    const response = await createComment( comment, observation.uuid );
+    if ( response ) {
+      setRefetch( true );
+      setComment( "" );
+      setShowCommentBox( false );
+    }
+  };
 
   const showTaxon = ( ) => {
     if ( !taxon ) { return <Text>unknown organism</Text>; }
@@ -125,6 +133,7 @@ const ObsDetails = ( ): Node => {
         ? (
           <ActivityTab
             ids={ids}
+            comments={comments}
             navToTaxonDetails={navToTaxonDetails}
             navToUserProfile={navToUserProfile}
           />

@@ -14,6 +14,7 @@ import CameraStackNavigation from "./cameraStackNavigation";
 import CustomDrawerContent from "../components/CustomDrawerContent";
 import IdentifyStackNavigation from "./identifyStackNavigation";
 import ObsEditProvider from "../providers/ObsEditProvider";
+import NetworkLogging from "../components/NetworkLogging";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -62,6 +63,10 @@ const App = ( ): React.Node => (
           name="explore stack"
           component={ExploreStackNavigator}
           options={hideHeader}
+        />
+        <Drawer.Screen
+          name="network"
+          component={NetworkLogging}
         />
       </Drawer.Navigator>
     </ObsEditProvider>

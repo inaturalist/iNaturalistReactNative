@@ -6,6 +6,7 @@ import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 
 const faveObservation = async ( uuid: string ): Promise<?number> => {
   const apiToken = await getJWTToken( false );
+  console.log( apiToken, "jst" );
   try {
     const params = {
       uuid
