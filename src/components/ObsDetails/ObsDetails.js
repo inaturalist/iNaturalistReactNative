@@ -73,7 +73,6 @@ const ObsDetails = ( ): Node => {
           accessibilityRole="link"
           accessibilityLabel="go to taxon details"
         >
-          <Text style={textStyles.text}>{taxon.rank}</Text>
           <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
           <Text style={textStyles.scientificNameText}>{taxon.name}</Text>
         </Pressable>

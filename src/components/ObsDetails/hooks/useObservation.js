@@ -51,6 +51,14 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
         const params = {
           fields: FIELDS
         };
+
+        // $FlowFixMe
+        params.fields.application = {
+          icon: true,
+          name: true,
+          url: true
+        };
+
         const response = await inatjs.observations.fetch( uuid, params );
         const results = response.results;
         const obs = Observation.mimicRealmMappedPropertiesSchema( results[0] );

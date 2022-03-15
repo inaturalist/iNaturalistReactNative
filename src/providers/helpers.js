@@ -9,7 +9,9 @@ const USER_FIELDS = {
 
 const TAXON_FIELDS = {
   default_photo: {
-    url: true
+    url: true,
+    attribution: true,
+    license_code: true
   },
   iconic_taxon_name: true,
   name: true,

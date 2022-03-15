@@ -77,6 +77,9 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   },
   whiteText: {
     color: colors.white
+  },
+  dataTabText: {
+    marginVertical: 10
   }
 } );
 
