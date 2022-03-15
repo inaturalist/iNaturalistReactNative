@@ -21,7 +21,7 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress }: Props ): React.
   const taxon = item.taxon;
 
   return (
-    <View key={item.uuid}>
+    <>
       <View style={[viewStyles.userProfileRow, viewStyles.rowBorder]}>
         <Pressable
           onPress={handlePress}
@@ -54,7 +54,7 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress }: Props ): React.
       <View style={viewStyles.speciesDetailRow}>
         <Text>{item.body}</Text>
       </View>
-    </View>
+    </>
   );
 };
 
