@@ -31,7 +31,7 @@ const ObsDetails = ( ): Node => {
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  const observation = useObservation( uuid, refetch );
+  const { observation, currentUserFaved } = useObservation( uuid, refetch );
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
@@ -55,7 +55,7 @@ const ObsDetails = ( ): Node => {
   const submitComment = async ( ) => {
     const response = await createComment( comment, observation.uuid );
     if ( response ) {
-      setRefetch( true );
+      setRefetch( !refetch );
       setComment( "" );
       setShowCommentBox( false );
     }
@@ -80,6 +80,16 @@ const ObsDetails = ( ): Node => {
     );
   };
 
+  const faveOrUnfave = async ( ) => {
+    if ( currentUserFaved ) {
+      await faveObservation( uuid, "unfave" );
+      setRefetch( !refetch );
+    } else {
+      await faveObservation( uuid, "fave" );
+      setRefetch( !refetch );
+    }
+  };
+
   return (
     <ViewWithFooter>
       <ScrollView
@@ -99,8 +109,8 @@ const ObsDetails = ( ): Node => {
         <Text>{observation.createdAt}</Text>
       </View>
       <View style={viewStyles.photoContainer}>
-        <Pressable onPress={( ) => faveObservation( uuid )}>
-          <Text style={textStyles.whiteText}>fave observation</Text>
+        <Pressable onPress={faveOrUnfave} style={viewStyles.pressableButton}>
+          <Text style={textStyles.whiteText}>{currentUserFaved ? "faved!" : "tap to fave"}</Text>
         </Pressable>
         <PhotoScroll photos={photos} />
       </View>

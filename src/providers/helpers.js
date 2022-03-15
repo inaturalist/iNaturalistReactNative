@@ -74,5 +74,6 @@ const FIELDS = {
 };
 
 export {
-  FIELDS
+  FIELDS,
+  USER_FIELDS
 };

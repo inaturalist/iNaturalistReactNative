@@ -56,6 +56,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   button: {
     width: width / 2
+  },
+  pressableButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20
   }
 } );
 

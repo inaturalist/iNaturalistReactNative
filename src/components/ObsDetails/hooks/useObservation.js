@@ -7,11 +7,14 @@ import Realm from "realm";
 
 import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
-import { FIELDS } from "../../../providers/helpers";
+import { FIELDS, USER_FIELDS } from "../../../providers/helpers";
+import { getUsername } from "../../../components/LoginSignUp/AuthenticationService";
+
 
 const useObservation = ( uuid: string, refetch: boolean ): Object => {
   const [observation, setObservation] = useState( null );
   const [isConnected, setIsConnected] = useState( null );
+  const [currentUserFaved, setCurrentUserFaved] = useState( null );
 
   const realmRef = useRef( null );
 
@@ -48,6 +51,8 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
 
     const fetchObservation = async ( ) => {
       try {
+        const currentUserLogin = await getUsername( );
+
         const params = {
           fields: FIELDS
         };
@@ -59,10 +64,23 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
           url: true
         };
 
+        // $FlowFixMe
+        params.fields.faves = {
+          user: USER_FIELDS
+        };
+
         const response = await inatjs.observations.fetch( uuid, params );
         const results = response.results;
         const obs = Observation.mimicRealmMappedPropertiesSchema( results[0] );
         if ( !isCurrent ) { return; }
+        if ( obs.faves ) {
+          const userFavedObs = obs.faves.find( fave =>fave.user.login === currentUserLogin );
+          if ( userFavedObs ) {
+            setCurrentUserFaved( true );
+          } else {
+            setCurrentUserFaved( false );
+          }
+        }
         setObservation( obs );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
@@ -82,7 +100,10 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
     };
   }, [uuid, openObservationFromRealm, closeRealm, isConnected, refetch] );
 
-  return observation;
+  return {
+    observation,
+    currentUserFaved
+  };
 };
 
 export {

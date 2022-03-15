@@ -4,9 +4,9 @@ import inatjs from "inaturalistjs";
 
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 
-const faveObservation = async ( uuid: string ): Promise<?number> => {
+const faveObservation = async ( uuid: string, endpoint: string ): Promise<?number> => {
   const apiToken = await getJWTToken( false );
-  console.log( apiToken, "jst" );
+
   try {
     const params = {
       uuid
@@ -15,7 +15,7 @@ const faveObservation = async ( uuid: string ): Promise<?number> => {
       api_token: apiToken
     };
 
-    const response = await inatjs.observations.fave( params, options );
+    const response = await inatjs.observations[endpoint]( params, options );
     return response.total_results;
   } catch ( e ) {
     console.log( "Couldn't fave observation:", JSON.stringify( e.response ), );
