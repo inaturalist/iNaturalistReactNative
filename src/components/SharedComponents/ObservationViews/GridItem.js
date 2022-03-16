@@ -20,6 +20,7 @@ const GridItem = ( { item, handlePress, uri }: Props ): Node => {
 
   // TODO: add fallback image when there is no uri
   const imageUri = uri === "project" ? Observation.projectUri( item ) : Observation.uri( item );
+  const commonName = item.taxon && ( item.taxon.preferredCommonName || item.taxon.preferred_common_name );
 
   return (
     <Pressable
@@ -34,7 +35,7 @@ const GridItem = ( { item, handlePress, uri }: Props ): Node => {
         style={imageStyles.gridImage}
         testID="ObsList.photo"
       />
-      <Text style={textStyles.text}>{item.taxon.preferredCommonName || item.taxon.preferred_common_name}</Text>
+      <Text style={textStyles.text}>{commonName}</Text>
     </Pressable>
   );
 };

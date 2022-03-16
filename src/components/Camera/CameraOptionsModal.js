@@ -43,7 +43,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
       >
         <Text style={textStyles.whiteText}>take photo with camera</Text>
       </Pressable>
-      {!observation && (
+      {!currentObs && (
         <Pressable
           onPress={navToPhotoGallery}
         >
@@ -57,7 +57,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
           <Text style={textStyles.whiteText}>record a sound</Text>
         </Pressable>
       )}
-      {!observation && (
+      {!currentObs && (
         <Pressable
           onPress={navToObsEdit}
         >

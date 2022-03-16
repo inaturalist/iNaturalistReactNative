@@ -9,7 +9,7 @@ import Observation from "../../models/Observation";
 import { FIELDS } from "../helpers";
 import { getUsername } from "../../components/LoginSignUp/AuthenticationService";
 
-const useObservations = ( ): boolean => {
+const useObservations = ( refetch: boolean ): boolean => {
   const [loading, setLoading] = useState( false );
   const realmRef = useRef( null );
 
@@ -77,7 +77,7 @@ const useObservations = ( ): boolean => {
     return ( ) => {
       isCurrent = false;
     };
-  }, [writeToDatabase] );
+  }, [writeToDatabase, refetch] );
 
   return loading;
 };

@@ -13,11 +13,14 @@ type Props = {
 
 const ObservationProvider = ( { children }: Props ): Node => {
   const [observationList, setObservationList] = useState( [] );
+  const [refetch, setRefetch] = useState( false );
+
+  const syncObservations = ( ) => setRefetch( true );
 
   // TODO: put this fetch into either a sync button or a pull-from-top gesture
   // instead of automatically fetching every time ObsProvider loads
   // and add syncing logic to Realm schemas
-  const loading = useObservations( );
+  const loading = useObservations( refetch );
 
   // We store a reference to our realm using useRef that allows us to access it via
   // realmRef.current for the component's lifetime without causing rerenders if updated.
@@ -69,7 +72,8 @@ const ObservationProvider = ( { children }: Props ): Node => {
 
   const observationValue = {
     observationList,
-    loading
+    loading,
+    syncObservations
   };
 
   return (

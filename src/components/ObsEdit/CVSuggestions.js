@@ -128,7 +128,7 @@ const CVSuggestions = ( ): Node => {
           type="none"
         />
       </View>
-      {list ? displaySearchResults( ) : displaySuggestions( )}
+      {list.length > 0 ? displaySearchResults( ) : displaySuggestions( )}
       <RoundGreenButton
         handlePress={toggleSeenNearby}
         buttonText={showSeenNearby ? "View species not seen nearby" : "View seen nearby"}

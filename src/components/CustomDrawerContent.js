@@ -45,6 +45,10 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         label="login"
         onPress={( ) => navigation.navigate( "login" )}
       />
+      <DrawerItem
+        label="network/logging"
+        onPress={( ) => navigation.navigate( "network" )}
+      />
     </DrawerContentScrollView>
   );
 };

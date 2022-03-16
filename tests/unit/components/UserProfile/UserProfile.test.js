@@ -10,7 +10,10 @@ const mockExpected = testUser;
 
 jest.mock( "../../../../src/components/UserProfile/hooks/useUser", ( ) => ( {
   useUser: ( ) => {
-    return mockExpected;
+    return {
+      user: mockExpected,
+      currentUser: null
+    };
   }
 } ) );
 

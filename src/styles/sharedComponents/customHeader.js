@@ -3,33 +3,20 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import { colors } from "../global";
 
 const { width } = Dimensions.get( "screen" );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   row: {
+    backgroundColor: colors.white,
     flexDirection: "row",
     flexWrap: "nowrap",
-    marginVertical: 10,
-    marginHorizontal: 10,
+    alignItems: "center",
     justifyContent: "space-between"
   },
-  button: {
-    width: width / 2
-  },
-  buttonRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginBottom: 20
-  },
-  countRow: {
-    flexDirection: "row"
-  },
-  countBox: {
-    width: width / 4,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderRightWidth: 1
+  element: {
+    width: width / 3
   }
 } );
 
