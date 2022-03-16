@@ -28,10 +28,14 @@ i18next
   } ) )
   .init( {
     // TODO should default to the system locale, or a user preference
+    compatibilityJSON: "v3",
     lng: "en",
     // debug: true,
     interpolation: {
       escapeValue: false // react already safes from xss
+    },
+    react: {
+      useSuspense: false
     }
   } );
 
