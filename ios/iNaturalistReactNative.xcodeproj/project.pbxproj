@@ -159,7 +159,6 @@
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				A331EA91593CFCE8BEC2B108 /* [CP] Embed Pods Frameworks */,
 				D5330C557867060D11370BCC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -182,7 +181,6 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				0BACE869F8ED9B3BA972EF2F /* [CP] Embed Pods Frameworks */,
 				D7FDE6CB7769C45385E67CAA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -264,23 +262,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=/Users/amanda/.nvm/versions/node/v12.13.0/bin/node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		0BACE869F8ED9B3BA972EF2F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		1EC8A7F0D8FF77CF01789C19 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -323,23 +304,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A331EA91593CFCE8BEC2B108 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iNaturalistReactNative-iNaturalistReactNativeTests/Pods-iNaturalistReactNative-iNaturalistReactNativeTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D5330C557867060D11370BCC /* [CP] Copy Pods Resources */ = {
@@ -483,7 +447,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = iNaturalistReactNative/Info.plist;
@@ -496,7 +460,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.inaturalist.iNatMobileBeta;
 				PRODUCT_NAME = iNaturalistReactNative;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -510,7 +474,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
 				INFOPLIST_FILE = iNaturalistReactNative/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -522,7 +486,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.inaturalist.iNatMobileBeta;
 				PRODUCT_NAME = iNaturalistReactNative;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
