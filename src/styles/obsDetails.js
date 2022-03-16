@@ -1,11 +1,16 @@
 // @flow strict-local
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 import type { ViewStyleProp, TextStyleProp, ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "./global";
 
+const { width } = Dimensions.get( "screen" );
+
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  hoverCommentBox: {
+    zIndex: 1
+  },
   imageBackground: {
     width: 75,
     height: 75,
@@ -26,7 +31,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     marginVertical: 10
   },
   scrollView: {
-    paddingBottom: 100
+    paddingBottom: 400
   },
   speciesDetailRow: {
     flexDirection: "row",
@@ -43,6 +48,18 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     justifyContent: "space-between",
     marginHorizontal: 10,
     marginVertical: 5
+  },
+  rowBorder: {
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    marginHorizontal: 0
+  },
+  button: {
+    width: width / 2
+  },
+  pressableButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20
   }
 } );
 
@@ -61,6 +78,12 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   },
   scientificNameText: {
     color: colors.gray
+  },
+  whiteText: {
+    color: colors.white
+  },
+  dataTabText: {
+    marginVertical: 10
   }
 } );
 

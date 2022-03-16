@@ -7,6 +7,9 @@ import inatjs from "inaturalistjs";
 import App from "./src/navigation/rootNavigation";
 import {name as appName} from "./app.json";
 import "./src/i18n";
+import { startNetworkLogging } from "react-native-network-logger";
+
+startNetworkLogging();
 
 // inatjs.setConfig( {
 //   apiURL: "https://stagingapi.inaturalist.org/v1",

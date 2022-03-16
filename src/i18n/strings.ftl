@@ -29,6 +29,8 @@ Mammals = Mammals
 
 Mollusks = Mollusks
 
+Observation = Observation
+
 Other-Data = Other Data
 
 Paused = Paused

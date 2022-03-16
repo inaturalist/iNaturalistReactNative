@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Text, View, Image, Pressable } from "react-native";
 import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -15,32 +15,87 @@ import DataTab from "./DataTab";
 import { useObservation } from "./hooks/useObservation";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
+import { ObsEditContext } from "../../providers/contexts";
+import InputField from "../SharedComponents/InputField";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import createComment from "./helpers/createComment";
+import faveObservation from "./helpers/faveObservation";
 
 const ObsDetails = ( ): Node => {
+  const [refetch, setRefetch] = useState( false );
+  const [showCommentBox, setShowCommentBox] = useState( false );
+  const [comment, setComment] = useState( "" );
+  const { addObservations, setPrevScreen } = useContext( ObsEditContext );
   const { params } = useRoute( );
   const { uuid } = params;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  const observation = useObservation( uuid );
+  const { observation, currentUserFaved } = useObservation( uuid, refetch );
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
 
   if ( !observation ) { return null; }
 
-
   const ids = observation.identifications;
   const photos = observation.observationPhotos;
   const user = observation.user;
   const taxon = observation.taxon;
+  const comments = observation.comments;
 
   const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
+  const navToCVSuggestions = ( ) => {
+    setPrevScreen( "ObsDetails" );
+    addObservations( [observation] );
+    navigation.navigate( "camera", { screen: "Suggestions" } );
+  };
+  const openCommentBox = ( ) => setShowCommentBox( true );
+  const submitComment = async ( ) => {
+    const response = await createComment( comment, observation.uuid );
+    if ( response ) {
+      setRefetch( !refetch );
+      setComment( "" );
+      setShowCommentBox( false );
+    }
+  };
+
+  const showTaxon = ( ) => {
+    if ( !taxon ) { return <Text>unknown organism</Text>; }
+    return (
+      <>
+       <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />
+        <Pressable
+          style={viewStyles.obsDetailsColumn}
+          onPress={navToTaxonDetails}
+          testID={`ObsDetails.taxon.${taxon.id}`}
+          accessibilityRole="link"
+          accessibilityLabel="go to taxon details"
+        >
+          <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
+          <Text style={textStyles.scientificNameText}>{taxon.name}</Text>
+        </Pressable>
+      </>
+    );
+  };
+
+  const faveOrUnfave = async ( ) => {
+    if ( currentUserFaved ) {
+      await faveObservation( uuid, "unfave" );
+      setRefetch( !refetch );
+    } else {
+      await faveObservation( uuid, "fave" );
+      setRefetch( !refetch );
+    }
+  };
 
   return (
     <ViewWithFooter>
-      <ScrollView testID={`ObsDetails.${uuid}`} contentContainerStyle={viewStyles.scrollView}>
+      <ScrollView
+        testID={`ObsDetails.${uuid}`}
+        contentContainerStyle={viewStyles.scrollView}
+      >
       <View style={viewStyles.userProfileRow}>
         <Pressable
           style={viewStyles.userProfileRow}
@@ -54,21 +109,13 @@ const ObsDetails = ( ): Node => {
         <Text>{observation.createdAt}</Text>
       </View>
       <View style={viewStyles.photoContainer}>
+        <Pressable onPress={faveOrUnfave} style={viewStyles.pressableButton}>
+          <Text style={textStyles.whiteText}>{currentUserFaved ? "faved!" : "tap to fave"}</Text>
+        </Pressable>
         <PhotoScroll photos={photos} />
       </View>
       <View style={viewStyles.row}>
-        <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />
-        <Pressable
-          style={viewStyles.obsDetailsColumn}
-          onPress={navToTaxonDetails}
-          testID={`ObsDetails.taxon.${taxon.id}`}
-          accessibilityRole="link"
-          accessibilityLabel="go to taxon details"
-        >
-          <Text style={textStyles.text}>{taxon.rank}</Text>
-          <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
-          <Text style={textStyles.scientificNameText}>{taxon.name}</Text>
-        </Pressable>
+        {showTaxon( )}
         <View>
           <Text style={textStyles.text}>{observation.identifications.length}</Text>
           <Text style={textStyles.text}>{observation.comments.length}</Text>
@@ -92,8 +139,48 @@ const ObsDetails = ( ): Node => {
         </Pressable>
       </View>
       {tab === 0
-        ? <ActivityTab ids={ids} navToTaxonDetails={navToTaxonDetails} navToUserProfile={navToUserProfile} />
+        ? (
+          <ActivityTab
+            ids={ids}
+            comments={comments}
+            navToTaxonDetails={navToTaxonDetails}
+            navToUserProfile={navToUserProfile}
+          />
+        )
         : <DataTab observation={observation} />}
+        <View style={viewStyles.row}>
+          <View style={viewStyles.button}>
+            {/* TODO: get this button working. Not sure why createIdentification isn't working here
+            but it doesn't appear to be working on staging either (Mar 11, 2022) */}
+            <RoundGreenButton
+              buttonText="Suggest an ID"
+              handlePress={navToCVSuggestions}
+              testID="ObsDetail.cvSuggestionsButton"
+            />
+          </View>
+          <View style={viewStyles.button}>
+            <RoundGreenButton
+              buttonText="Comment"
+              handlePress={openCommentBox}
+              testID="ObsDetail.commentButton"
+            />
+          </View>
+        </View>
+        {showCommentBox && (
+          <View style={viewStyles.hoverCommentBox}>
+            <InputField
+              handleTextChange={setComment}
+              placeholder="Add a comment"
+              text={comment}
+              type="none"
+            />
+            <RoundGreenButton
+              buttonText="Submit comment"
+              handlePress={submitComment}
+              testID="ObsDetail.commentSubmitButton"
+            />
+          </View>
+        )}
       </ScrollView>
     </ViewWithFooter>
   );

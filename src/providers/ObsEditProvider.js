@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { getTimeZone } from "../sharedHelpers/dateAndTime";
 import { ObsEditContext } from "./contexts";
+import createIdentification from "../components/Identify/helpers/createIdentification";
 
 type Props = {
   children: any
@@ -16,6 +17,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [currentObsNumber, setCurrentObsNumber] = useState( 0 );
   const [observations, setObservations] = useState( [] );
   const [identification, setIdentification] = useState( null );
+  const [prevScreen, setPrevScreen] = useState( "ObsEdit" );
 
   const currentObs = observations[currentObsNumber];
 
@@ -31,10 +33,19 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const mapPhotos = ( photos ) => photos.map( p => {
-    return {
-      uri: p.uri,
-      uuid: p.uuid
-    };
+    if ( p.uri ) {
+      return {
+        uri: p.uri,
+        uuid: p.uuid
+      };
+    } else {
+      // this is needed to navigate to CV suggestions from ObsDetail
+      // rather than any of the camera/gallery screens
+      return {
+        uri: p.photo.url,
+        uuid: p.uuid
+      };
+    }
   } );
 
   const addPhotos = ( photos ) => {
@@ -100,9 +111,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( updatedObs );
   };
 
-  const updateTaxaId = taxaId => {
-    updateObservationKey( "taxon_id", taxaId );
-    navigation.navigate( "ObsEdit" );
+  const updateTaxaId = async ( taxaId ) => {
+    if ( prevScreen === "ObsEdit" ) {
+      updateObservationKey( "taxon_id", taxaId );
+      navigation.navigate( "ObsEdit" );
+    } else {
+      console.log( observations[0].id, observations[0].uuid, "does id exist in obs" );
+      const results = await createIdentification( { observation_id: observations[0].id, taxon_id: taxaId } );
+      console.log( results, "results in update taxa id" );
+      navigation.navigate( "my observations", { screen: "ObsDetail", params: { uuid: observations[0].uuid } } );
+    }
   };
 
   const obsEditValue = {
@@ -116,7 +134,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     updateObservationKey,
     updateTaxaId,
     identification,
-    setIdentification
+    setIdentification,
+    setPrevScreen
   };
 
   return (
