@@ -20,7 +20,6 @@ const DataTab = ( { observation }: Props ): Node => {
   const application = observation.application && observation.application.name;
   const attribution = observation.taxon && observation.taxon.default_photo
     && observation.taxon.default_photo.attribution;
-  console.log( attribution, "application obs" );
 
   const selectProjectId = ( getValue ) => {
     addToProject( getValue( ), observation.uuid );

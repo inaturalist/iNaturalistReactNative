@@ -4,13 +4,20 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import factory from "../../../factory";
 import ObsDetails from "../../../../src/components/ObsDetails/ObsDetails";
+import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
+import { ObsEditContext } from "../../../../src/providers/contexts";
 
 const mockedNavigate = jest.fn( );
 const mockObservation = factory( "LocalObservation" );
 
+jest.mock( "../../../../src/providers/ObsEditProvider" );
+
 jest.mock( "../../../../src/components/ObsDetails/hooks/useObservation", ( ) => ( {
   useObservation: ( ) => {
-    return mockObservation;
+    return {
+      observation: mockObservation,
+      currentUserFaved: false
+    };
   }
 } ) );
 
@@ -29,13 +36,27 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+const mockObsEditProviderWithObs = ( ) =>
+  ObsEditProvider.mockImplementation( ( { children }: Props ): Node => (
+    <ObsEditContext.Provider value={{
+      addObservations: ( ) => { },
+      setPrevScreen: ( ) => { }
+    }}>
+      {children}
+    </ObsEditContext.Provider>
+  ) );
+
 const renderObsDetails = ( ) => render(
   <NavigationContainer>
-    <ObsDetails />
+    <ObsEditProvider>
+      <ObsDetails />
+    </ObsEditProvider>
   </NavigationContainer>
 );
 
 test( "renders obs details from remote call", ( ) => {
+  mockObsEditProviderWithObs( );
+
   const { getByTestId, getByText } = renderObsDetails( );
 
   expect( getByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
