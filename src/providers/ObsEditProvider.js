@@ -117,7 +117,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       navigation.navigate( "ObsEdit" );
     } else {
       console.log( observations[0].id, observations[0].uuid, "does id exist in obs" );
-      const results = await createIdentification( { observation_id: observations[0].id, taxon_id: taxaId } );
+      const results = await createIdentification( { observation_id: observations[0].uuid, taxon_id: taxaId } );
       console.log( results, "results in update taxa id" );
       navigation.navigate( "my observations", { screen: "ObsDetail", params: { uuid: observations[0].uuid } } );
     }

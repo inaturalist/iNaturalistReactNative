@@ -50,7 +50,7 @@ const CardSwipeView = ( { loading, observationList, testID }: Props ): Node => {
         if ( !isSpecies ) {
           preventSwipeDirections.push( "right" );
         }
-        const agreeParams = { observation_id: obs.id, taxon_id: obs.taxon.id };
+        const agreeParams = { observation_id: obs.uuid, taxon_id: obs.taxon.id };
 
         return (
           <TinderCard

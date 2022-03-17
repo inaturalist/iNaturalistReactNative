@@ -57,7 +57,7 @@ const SoundRecorder = ( ): Node => {
           PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
         ] );
 
-        console.log( "write external stroage", grants );
+        console.log( "write external storage", grants );
 
         if (
           grants["android.permission.WRITE_EXTERNAL_STORAGE"] ===
