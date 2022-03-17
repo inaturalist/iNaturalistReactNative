@@ -8,7 +8,6 @@ import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
 import inatjs, { FileUpload } from "inaturalistjs";
-// import ImageResizer from "react-native-image-resizer";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
@@ -138,7 +137,10 @@ const ObsEdit = ( ): Node => {
   };
 
   const currentObs = observations[currentObsNumber];
-  const placeGuess = useLocationName( currentObs.latitude, currentObs.longitude );
+  const latitude = currentObs && currentObs.latitude;
+  const longitude = currentObs && currentObs.longitude;
+
+  const placeGuess = useLocationName( latitude, longitude );
 
   const uploadSound = async ( soundParams, apiToken ) => {
     const options = {
@@ -271,11 +273,11 @@ const ObsEdit = ( ): Node => {
 
   const displayLocation = ( ) => {
     let location = "";
-    if ( currentObs.latitude ) {
-      location += `Lat: ${formatDecimal( currentObs.latitude )}`;
+    if ( latitude ) {
+      location += `Lat: ${formatDecimal( latitude )}`;
     }
-    if ( currentObs.longitude ) {
-      location += `, Lon: ${formatDecimal( currentObs.longitude )}`;
+    if ( longitude ) {
+      location += `, Lon: ${formatDecimal( longitude )}`;
     }
     if ( currentObs.positional_accuracy ) {
       location += `, Acc: ${formatDecimal( currentObs.positional_accuracy )}`;
