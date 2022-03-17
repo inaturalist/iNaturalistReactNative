@@ -55,6 +55,8 @@ const useObservations = ( refetch: boolean ): boolean => {
     let isCurrent = true;
     const fetchObservations = async ( ) => {
       const userLogin = await getUsername( );
+      console.log( userLogin, "user login fetch observations" );
+      if ( !userLogin ) { return; }
       setLoading( true );
       try {
         const params = {

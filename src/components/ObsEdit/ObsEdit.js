@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useCallback, useContext } from "react";
-import { Text, TextInput, Pressable, FlatList, View, Modal, Platform } from "react-native";
+import { Text, TextInput, Pressable, FlatList, View, Modal, Platform, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
@@ -225,6 +225,18 @@ const ObsEdit = ( ): Node => {
         api_token: apiToken
       };
 
+      Alert.alert(
+        "upload in progress",
+        "check staging to see if upload completed",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log( "Cancel Pressed" ),
+            style: "cancel"
+          },
+          { text: "OK", onPress: () => console.log( "OK Pressed" ) }
+        ]
+      );
       const response = await inatjs.observations.create( uploadParams, options );
       const { id } = response.results[0];
       if ( obsToUpload.observationPhotos ) {
