@@ -7,7 +7,7 @@ import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 import { MESSAGE_FIELDS } from "../../../providers/helpers";
 
 const useMessages = ( ): {
-  messageList: Array<Object>,
+  messages: Array<Object>,
   loading: boolean
 } => {
   const [messages, setMessages] = useState( [] );
