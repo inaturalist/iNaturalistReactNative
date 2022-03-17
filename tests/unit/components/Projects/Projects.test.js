@@ -37,16 +37,14 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const renderProjects = async () => waitFor(
-  () => render(
-    <NavigationContainer>
-      <Projects />
-    </NavigationContainer>
-  )
+const renderProjects = () => render(
+  <NavigationContainer>
+    <Projects />
+  </NavigationContainer>
 );
 
-test( "displays project search results", async ( ) => {
-  const { getByTestId, getByText } = await renderProjects( );
+test( "displays project search results", ( ) => {
+  const { getByTestId, getByText } = renderProjects( );
 
   const input = getByTestId( "ProjectSearch.input" );
   fireEvent.changeText( input, "butterflies" );
