@@ -1,15 +1,19 @@
 // @flow
 
 import { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import CameraRoll from "@react-native-community/cameraroll";
 import uuid from "react-native-uuid";
+
 import { formatDateAndTime } from "../../../sharedHelpers/dateAndTime";
+import hasAndroidPermission from "../helpers/hasAndroidPermission";
 
 const initialStatus = {
   photos: [],
   lastCursor: null,
   lastAlbum: undefined,
-  hasNextPage: true
+  hasNextPage: true,
+  stillFetching: false
 };
 
 const usePhotos = ( options: Object, isScrolling: boolean ): Array<Object> => {
@@ -27,6 +31,12 @@ const usePhotos = ( options: Object, isScrolling: boolean ): Array<Object> => {
         return true;
       }
       return false;
+    };
+
+    const checkAndroidPermissions = async ( ) => {
+      if ( Platform.OS === "android" && !( await hasAndroidPermission( ) ) ) {
+        return;
+      }
     };
 
     const fetchPhotos = async ( ) => {
@@ -75,6 +85,7 @@ const usePhotos = ( options: Object, isScrolling: boolean ): Array<Object> => {
     if ( !hasNextPage ) { return; }
 
     if ( isScrolling ) {
+      checkAndroidPermissions( );
       fetchPhotos( );
     }
     return ( ) => {

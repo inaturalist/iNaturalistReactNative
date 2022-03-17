@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useCallback, useContext } from "react";
-import { Text, TextInput, Pressable, FlatList, View, Modal } from "react-native";
+import { Text, TextInput, Pressable, FlatList, View, Modal, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
@@ -153,14 +153,15 @@ const ObsEdit = ( ): Node => {
   };
 
   const createSoundParams = async ( id, apiToken ) => {
+    const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
     const obsSoundToUpload = observations[currentObsNumber].observationSounds;
     const soundParams = {
       "observation_sound[observation_id]": id,
       "observation_sound[uuid]": obsSoundToUpload.uuid,
       file: new FileUpload( {
         uri: obsSoundToUpload.uri,
-        name: "audio.m4a",
-        type: "audio/m4a"
+        name: `audio.${fileExt}`,
+        type: `audio/${fileExt}`
       } )
     };
     uploadSound( soundParams, apiToken );

@@ -30,6 +30,7 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
       // $FlowFixMe
       const selectedAlbum = photoOptions.groupName || "All";
 
+      console.log( photoGallery[selectedAlbum] && photoGallery[selectedAlbum].length, photosFetched.length, "photo lengths" );
       if ( photoGallery[selectedAlbum]
         && photoGallery[selectedAlbum].length === photosFetched.length ) {
         return;

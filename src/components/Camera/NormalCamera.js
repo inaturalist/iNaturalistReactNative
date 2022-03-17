@@ -46,7 +46,11 @@ const NormalCamera = ( ): Node => {
   const [observationPhotos, setObservationPhotos] = useState( [] );
 
   useEffect( ( ) => {
-    navigation.addListener( "focus", ( ) => {
+    navigation.addListener( "focus", async ( ) => {
+      const cameraPermission = await Camera.getCameraPermissionStatus( );
+      if ( cameraPermission === "not-determined" ) {
+        await Camera.requestCameraPermission( );
+      }
       if ( observationPhotos.length > 0 ) {
         setObservationPhotos( [] );
       }
@@ -81,8 +85,6 @@ const NormalCamera = ( ): Node => {
         latitude,
         longitude,
         positional_accuracy: latLng && latLng.accuracy,
-        // location: latLng,
-        // timestamp: null,
         // TODO: check that this formatting for observed_on_string
         // shows up as expected on web,
         observed_on_string: photo.metadata["{Exif}"].DateTimeOriginal,
@@ -153,7 +155,6 @@ const NormalCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  // TODO: add Android permissions
   if ( device == null ) { return null;}
   return (
     <View style={viewStyles.container}>
@@ -183,24 +184,26 @@ const NormalCamera = ( ): Node => {
         tapToFocusAnimation={tapToFocusAnimation}
         tappedCoordinates={tappedCoordinates}
       />
-      <Pressable
-        style={viewStyles.flashButton}
-        onPress={toggleFlash}
-      >
-          <Text>flash</Text>
-      </Pressable>
-      <Pressable
-        style={viewStyles.captureButton}
-        onPress={takePhoto}
-      >
-          <Text>camera capture</Text>
-      </Pressable>
-      <Pressable
-        style={viewStyles.cameraFlipButton}
-        onPress={flipCamera}
-      >
-          <Text>flip camera</Text>
-      </Pressable>
+      <View style={viewStyles.row}>
+        <Pressable
+          style={viewStyles.flashButton}
+          onPress={toggleFlash}
+        >
+            <Text>flash</Text>
+        </Pressable>
+        <Pressable
+          style={viewStyles.captureButton}
+          onPress={takePhoto}
+        >
+            <Text>camera capture</Text>
+        </Pressable>
+        <Pressable
+          style={viewStyles.cameraFlipButton}
+          onPress={flipCamera}
+        >
+            <Text>flip camera</Text>
+        </Pressable>
+      </View>
       <Pressable
         style={viewStyles.cameraFlipButton}
         onPress={navToObsEdit}

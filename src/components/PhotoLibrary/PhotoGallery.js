@@ -5,7 +5,6 @@ import { Pressable, Image, FlatList, ActivityIndicator, View } from "react-nativ
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-// import useAndroidPermission from "./hooks/useAndroidPermission";
 import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import { PhotoGalleryContext } from "../../providers/contexts";
@@ -30,7 +29,6 @@ const PhotoGallery = ( ): Node => {
   } = useContext( PhotoGalleryContext );
 
   const navigation = useNavigation( );
-  // const hasAndroidPermission = useAndroidPermission( );
 
   const updateAlbum = album => {
     const newOptions = {
