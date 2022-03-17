@@ -17,7 +17,7 @@ class Observation {
       } );
     };
 
-    const taxon = Taxon.mimicRealmMappedPropertiesSchema( obs.taxon );
+    const taxon = obs.taxon ? Taxon.mimicRealmMappedPropertiesSchema( obs.taxon ) : null;
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );
@@ -47,7 +47,7 @@ class Observation {
       } );
     };
 
-    const taxon = Taxon.mapApiToRealm( obs.taxon, realm );
+    const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon, realm ) : null;
     const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
     const comments = createLinkedObjects( obs.comments, Comment );
     const identifications = createLinkedObjects( obs.identifications, Identification );
@@ -59,8 +59,8 @@ class Observation {
       identifications,
       // obs detail on web says geojson coords are preferred over lat/long
       // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/ducks/observation.js#L145
-      latitude: obs.geojson.coordinates[1],
-      longitude: obs.geojson.coordinates[0],
+      latitude: obs.geojson && obs.geojson.coordinates && obs.geojson.coordinates[1],
+      longitude: obs.geojson && obs.geojson.coordinates && obs.geojson.coordinates[0],
       observationPhotos,
       taxon,
       user
@@ -79,6 +79,17 @@ class Observation {
     if ( !photo.photo.url ) { return; }
 
     return { uri: obs.observation_photos[0].photo.url };
+  }
+
+  static mediumUri = obs => {
+    const photo = obs.observation_photos[0];
+    if ( !photo ) { return; }
+    if ( !photo.photo ) { return; }
+    if ( !photo.photo.url ) { return; }
+
+    const mediumUri = obs.observation_photos[0].photo.url.replace( "square", "medium" );
+
+    return { uri: mediumUri };
   }
 
   static schema = {

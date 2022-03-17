@@ -1,8 +1,10 @@
 // @flow strict-local
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+
+const { width } = Dimensions.get( "screen" );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   row: {
@@ -11,11 +13,30 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     marginVertical: 10,
     marginHorizontal: 10,
     justifyContent: "space-between"
+  },
+  button: {
+    width: width / 2
+  },
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 20
+  },
+  countRow: {
+    flexDirection: "row"
+  },
+  countBox: {
+    width: width / 4,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 1
   }
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  text: { }
+  text: {
+    textAlign: "center"
+  }
 } );
 
 export {

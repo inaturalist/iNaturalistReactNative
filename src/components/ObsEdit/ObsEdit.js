@@ -8,7 +8,7 @@ import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
 import inatjs, { FileUpload } from "inaturalistjs";
-import ImageResizer from "react-native-image-resizer";
+// import ImageResizer from "react-native-image-resizer";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
@@ -21,6 +21,7 @@ import LocationPicker from "./LocationPicker";
 import { ObsEditContext } from "../../providers/contexts";
 import useLocationName from "../../sharedHooks/useLocationName";
 import EvidenceList from "./EvidenceList";
+import resizeImageForUpload from "./helpers/resizeImage";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -163,32 +164,6 @@ const ObsEdit = ( ): Node => {
       } )
     };
     uploadSound( soundParams, apiToken );
-  };
-
-  const resizeImage = async ( path, width, height?, outputPath? ) => {
-    try {
-      const { uri } = await ImageResizer.createResizedImage(
-        path,
-        width,
-        height || width, // height
-        "JPEG", // compressFormat
-        100, // quality
-        0, // rotation
-        // $FlowFixMe
-        outputPath, // outputPath
-        true // keep metadata
-      );
-
-      return uri;
-    } catch ( e ) {
-      console.log( e, "error resizing image" );
-      return "";
-    }
-  };
-
-  const resizeImageForUpload = async ( uri ) => {
-    const maxUploadSize = 2048;
-    return await resizeImage( uri, maxUploadSize, maxUploadSize );
   };
 
   const uploadPhoto = async ( photoParams, apiToken ) => {

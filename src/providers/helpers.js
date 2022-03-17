@@ -9,7 +9,9 @@ const USER_FIELDS = {
 
 const TAXON_FIELDS = {
   default_photo: {
-    url: true
+    url: true,
+    attribution: true,
+    license_code: true
   },
   iconic_taxon_name: true,
   name: true,
@@ -65,6 +67,7 @@ const FIELDS = {
   created_at: true,
   description: true,
   geojson: true,
+  id: true,
   identifications: ID_FIELDS,
   latitude: true,
   location: true,
@@ -79,5 +82,6 @@ const FIELDS = {
 
 export {
   FIELDS,
-  MESSAGE_FIELDS
+  MESSAGE_FIELDS,
+  USER_FIELDS
 };
