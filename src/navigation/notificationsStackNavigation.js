@@ -11,7 +11,7 @@ const screenOptions = {
   headerShown: true
 };
 
-const MessagesStackNavigation = (): React.Node => (
+const NotificationsStackNavigation = (): React.Node => (
   <Stack.Navigator screenOptions={screenOptions}>
     <Stack.Screen
       name="Messages"
@@ -25,4 +25,4 @@ const MessagesStackNavigation = (): React.Node => (
   </Stack.Navigator>
 );
 
-export default MessagesStackNavigation;
+export default NotificationsStackNavigation;
