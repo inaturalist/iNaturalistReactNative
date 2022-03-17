@@ -8,11 +8,8 @@ import MessageList from "./MessageList";
 import useMessages from "./hooks/useMessages";
 
 const Messages = ( ): Node => {
-  const userLogin = { user_login: "nickm01" };
-  // TODO: apiParams not needed
-  const [apiParams, setApiParams] = React.useState( userLogin );
 
-  const { messages, loading } = useMessages( apiParams );
+  const { messages, loading } = useMessages( );
 
   return (
     <ViewWithFooter>

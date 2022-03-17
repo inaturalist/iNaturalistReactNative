@@ -6,8 +6,7 @@ import inatjs from "inaturalistjs";
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 import { MESSAGE_FIELDS } from "../../../providers/helpers";
 
-// TODO: need to trigger a rerender on change of user. Right now API parameters not being used.
-const useMessages = ( apiParams: Object ): {
+const useMessages = ( ): {
   messageList: Array<Object>,
   loading: boolean
 } => {
@@ -47,7 +46,7 @@ const useMessages = ( apiParams: Object ): {
     return ( ) => {
       isCurrent = false;
     };
-  }, [apiParams] );
+  }, [] );
 
   return { messages, loading };
 };
