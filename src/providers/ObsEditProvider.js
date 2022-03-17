@@ -27,6 +27,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setObservations( [soundObs] );
     } else if ( currentObs ) {
       const updatedObs = Array.from( observations );
+      // $FlowFixMe
       updatedObs[currentObsNumber].observationSounds = sound.observationSounds;
       setObservations( updatedObs );
     }
@@ -51,17 +52,21 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const addPhotos = ( photos ) => {
     if ( observations.length === 0 ) {
       const photoObs = createObservation( photos[0] );
+      // $FlowFixMe
       photoObs.observationPhotos = mapPhotos( photos );
       setObservations( [photoObs] );
     } else if ( currentObs ) {
       const updatedObs = Array.from( observations );
+      // $FlowFixMe
       let obsPhotos = updatedObs[currentObsNumber].observationPhotos;
       const newPhotos = mapPhotos( photos );
 
       if ( obsPhotos ) {
+        // $FlowFixMe
         updatedObs[currentObsNumber].observationPhotos = obsPhotos.concat( newPhotos );
         setObservations( updatedObs );
       } else {
+        // $FlowFixMe
         updatedObs[currentObsNumber].observationPhotos = newPhotos;
         setObservations( updatedObs );
       }
