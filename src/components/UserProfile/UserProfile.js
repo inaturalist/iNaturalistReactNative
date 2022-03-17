@@ -1,8 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { Text, View } from "react-native";
+import { Text, View, useWindowDimensions } from "react-native";
 import { useRoute } from "@react-navigation/native";
+import HTML from "react-native-render-html";
 
 import { textStyles, viewStyles } from "../../styles/userProfile/userProfile";
 import UserIcon from "../SharedComponents/UserIcon";
@@ -20,6 +21,7 @@ const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
   const { userId } = params;
   const { user, currentUser } = useUser( userId );
+  const { width } = useWindowDimensions( );
   // const site = useNetworkSite( );
 
   const showCount = ( count, label ) => (
@@ -30,6 +32,7 @@ const UserProfile = ( ): React.Node => {
   );
 
   if ( !user ) { return null; }
+  console.log( user, "user profile" );
 
   const showUserRole = user.roles.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
 
@@ -64,7 +67,11 @@ const UserProfile = ( ): React.Node => {
         {showCount( user.identifications_count, "ID's" )}
         {showCount( user.journal_posts_count, "Journal Posts" )}
       </View>
-      <Text>{`Bio: ${user.description}`}</Text>
+      <Text>Bio:</Text>
+      <HTML
+        contentWidth={width}
+        source={{ html: user.description }}
+      />
       <Text>Projects</Text>
       <UserProjects userId={userId} />
       <Text>Following</Text>

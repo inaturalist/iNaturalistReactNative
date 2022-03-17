@@ -7,7 +7,6 @@ const hasAndroidPermission = async ( ): Promise<boolean> => {
 
   try {
     const granted = await PermissionsAndroid.request( retrieve );
-    console.log( granted, "permissions granted?" );
     if ( granted === PermissionsAndroid.RESULTS.GRANTED ) {
       return true;
     }
