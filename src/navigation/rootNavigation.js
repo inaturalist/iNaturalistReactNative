@@ -15,6 +15,7 @@ import CustomDrawerContent from "../components/CustomDrawerContent";
 import IdentifyStackNavigation from "./identifyStackNavigation";
 import ObsEditProvider from "../providers/ObsEditProvider";
 import NetworkLogging from "../components/NetworkLogging";
+import NotificationsStackNavigation from "./notificationsStackNavigation";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -36,6 +37,11 @@ const App = ( ): React.Node => (
         <Drawer.Screen
           name="my observations"
           component={MyObservationsStackNavigator}
+          options={hideHeader}
+        />
+        <Drawer.Screen
+          name="notifications"
+          component={NotificationsStackNavigation}
           options={hideHeader}
         />
         <Drawer.Screen
@@ -74,4 +80,3 @@ const App = ( ): React.Node => (
 );
 
 export default App;
-
