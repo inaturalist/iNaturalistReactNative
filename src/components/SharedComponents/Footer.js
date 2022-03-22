@@ -20,6 +20,7 @@ const Footer = ( ): React.Node => {
   const navToObsList = ( ) => navigation.navigate( "my observations" );
   // const navToCameraOptions = ( ) => openModal( );
   const navToExplore = ( ) => navigation.navigate( "explore stack" );
+  const navToNotifications = ( ) => navigation.navigate( "notifications" );
 
   return (
     <>
@@ -42,7 +43,7 @@ const Footer = ( ): React.Node => {
         <Pressable onPress={navToObsList} accessibilityRole="link">
           <Text>obs list</Text>
         </Pressable>
-        <Pressable accessibilityRole="link">
+        <Pressable onPress={navToNotifications} accessibilityRole="link">
           <Text>notifications</Text>
         </Pressable>
       </View>
