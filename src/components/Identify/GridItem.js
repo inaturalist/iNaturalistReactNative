@@ -31,7 +31,7 @@ const GridItem = ( { item, handlePress, reviewedIds, setReviewedIds }: Props ): 
 
   const agreeWithObservation = async ( ) => {
     setShowLoadingWheel( true );
-    const results = await createIdentification( { observation_id: item.id, taxon_id: item.taxon.id } );
+    const results = await createIdentification( { observation_id: item.uuid, taxon_id: item.taxon.id } );
     if ( results === 1 ) {
       const ids = Array.from( reviewedIds );
       ids.push( item.id );

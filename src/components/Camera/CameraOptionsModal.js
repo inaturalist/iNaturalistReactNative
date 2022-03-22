@@ -12,10 +12,10 @@ type Props = {
 }
 
 const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
-  // ObsEditProvider will not be loaded yet the first time a user opens camera options
-  // so useContext will return undefined
-  const observation = React.useContext( ObsEditContext );
-  const currentObs = observation && observation.currentObs;
+  // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
+  const obsEdit = React.useContext( ObsEditContext );
+  const currentObs = obsEdit && obsEdit.currentObs;
+  const addObservationNoEvidence = obsEdit && obsEdit.addObservationNoEvidence;
   const navigation = useNavigation( );
 
   const hasSound = currentObs && currentObs.observationSounds && currentObs.observationSounds.uri;
@@ -32,9 +32,10 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
 
   const navToNormalCamera = ( ) => navAndCloseModal( "NormalCamera" );
 
-  const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit", { obsToEdit: [{
-    observationPhotos: []
-  }] } );
+  const navToObsEdit = ( ) => {
+    addObservationNoEvidence( );
+    navAndCloseModal( "ObsEdit" );
+  };
 
   return (
     <View>

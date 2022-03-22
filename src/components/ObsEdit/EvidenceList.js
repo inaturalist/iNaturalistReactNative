@@ -11,7 +11,7 @@ type Props = {
   currentObs: Object,
   showCameraOptions?: boolean,
   setSelectedPhoto?: Function,
-  selectedPhoto: number
+  selectedPhoto?: number
 }
 
 const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, selectedPhoto }: Props ): Node => {

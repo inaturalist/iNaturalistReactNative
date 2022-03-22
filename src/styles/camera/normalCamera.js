@@ -42,6 +42,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: colors.black,
     height: 125,
     width
+  },
+  row: {
+    bottom: 40
   }
 } );
 

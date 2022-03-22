@@ -16,14 +16,14 @@ const options = {
 };
 
 const PhotoGalleryProvider = ( { children }: Props ): Node => {
-  const [photoGallery, setPhotoGallery] = useState( {} );
-  const [isScrolling, setIsScrolling] = useState( true );
+  const [isScrolling, setIsScrolling] = useState( false );
   const [photoOptions, setPhotoOptions] = useState( options );
-  const [selectedPhotos, setSelectedPhotos] = useState( {} );
-
   // photos are fetched from the server on initial render
   // and anytime a user scrolls through the photo gallery
   const photosFetched = usePhotos( photoOptions, isScrolling );
+
+  const [photoGallery, setPhotoGallery] = useState( {} );
+  const [selectedPhotos, setSelectedPhotos] = useState( {} );
 
   useEffect( ( ) => {
     if ( photosFetched ) {
@@ -44,6 +44,7 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
       };
 
       setPhotoGallery( updatedPhotoGallery );
+      setIsScrolling( false );
     }
   }, [photosFetched, photoGallery, photoOptions, setPhotoGallery] );
 

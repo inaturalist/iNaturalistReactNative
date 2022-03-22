@@ -1,14 +1,13 @@
 // @flow
 
 import React, { useState, useCallback, useContext } from "react";
-import { Text, TextInput, Pressable, FlatList, View, Modal } from "react-native";
+import { Text, TextInput, Pressable, FlatList, View, Modal, Platform, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
 import inatjs, { FileUpload } from "inaturalistjs";
-// import ImageResizer from "react-native-image-resizer";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
@@ -138,7 +137,10 @@ const ObsEdit = ( ): Node => {
   };
 
   const currentObs = observations[currentObsNumber];
-  const placeGuess = useLocationName( currentObs.latitude, currentObs.longitude );
+  const latitude = currentObs && currentObs.latitude;
+  const longitude = currentObs && currentObs.longitude;
+
+  const placeGuess = useLocationName( latitude, longitude );
 
   const uploadSound = async ( soundParams, apiToken ) => {
     const options = {
@@ -153,14 +155,15 @@ const ObsEdit = ( ): Node => {
   };
 
   const createSoundParams = async ( id, apiToken ) => {
+    const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
     const obsSoundToUpload = observations[currentObsNumber].observationSounds;
     const soundParams = {
       "observation_sound[observation_id]": id,
       "observation_sound[uuid]": obsSoundToUpload.uuid,
       file: new FileUpload( {
         uri: obsSoundToUpload.uri,
-        name: "audio.m4a",
-        type: "audio/m4a"
+        name: `audio.${fileExt}`,
+        type: `audio/${fileExt}`
       } )
     };
     uploadSound( soundParams, apiToken );
@@ -222,6 +225,18 @@ const ObsEdit = ( ): Node => {
         api_token: apiToken
       };
 
+      Alert.alert(
+        "upload in progress",
+        "check staging to see if upload completed",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log( "Cancel Pressed" ),
+            style: "cancel"
+          },
+          { text: "OK", onPress: () => console.log( "OK Pressed" ) }
+        ]
+      );
       const response = await inatjs.observations.create( uploadParams, options );
       const { id } = response.results[0];
       if ( obsToUpload.observationPhotos ) {
@@ -270,11 +285,11 @@ const ObsEdit = ( ): Node => {
 
   const displayLocation = ( ) => {
     let location = "";
-    if ( currentObs.latitude ) {
-      location += `Lat: ${formatDecimal( currentObs.latitude )}`;
+    if ( latitude ) {
+      location += `Lat: ${formatDecimal( latitude )}`;
     }
-    if ( currentObs.longitude ) {
-      location += `, Lon: ${formatDecimal( currentObs.longitude )}`;
+    if ( longitude ) {
+      location += `, Lon: ${formatDecimal( longitude )}`;
     }
     if ( currentObs.positional_accuracy ) {
       location += `, Acc: ${formatDecimal( currentObs.positional_accuracy )}`;

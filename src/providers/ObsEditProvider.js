@@ -27,6 +27,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setObservations( [soundObs] );
     } else if ( currentObs ) {
       const updatedObs = Array.from( observations );
+      // $FlowFixMe
       updatedObs[currentObsNumber].observationSounds = sound.observationSounds;
       setObservations( updatedObs );
     }
@@ -51,17 +52,21 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const addPhotos = ( photos ) => {
     if ( observations.length === 0 ) {
       const photoObs = createObservation( photos[0] );
+      // $FlowFixMe
       photoObs.observationPhotos = mapPhotos( photos );
       setObservations( [photoObs] );
     } else if ( currentObs ) {
       const updatedObs = Array.from( observations );
+      // $FlowFixMe
       let obsPhotos = updatedObs[currentObsNumber].observationPhotos;
       const newPhotos = mapPhotos( photos );
 
       if ( obsPhotos ) {
+        // $FlowFixMe
         updatedObs[currentObsNumber].observationPhotos = obsPhotos.concat( newPhotos );
         setObservations( updatedObs );
       } else {
+        // $FlowFixMe
         updatedObs[currentObsNumber].observationPhotos = newPhotos;
         setObservations( updatedObs );
       }
@@ -72,6 +77,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     if ( observations.length === 0 ) {
       const newObs = obs.map( o => {
         const photoObs = createObservation( o.observationPhotos[0] );
+        // $FlowFixMe
         photoObs.observationPhotos = mapPhotos( o.observationPhotos );
         return photoObs;
       } );
@@ -80,6 +86,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     // there is probably another option here where a user
     // can keep adding gallery photos after making observations
     // but I'm not sure how that flow will work
+  };
+
+  const addObservationNoEvidence = ( ) => {
+    const newObs = createObservation( );
+    setObservations( [newObs] );
   };
 
   const createObservation = ( obs ) => {
@@ -116,8 +127,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       updateObservationKey( "taxon_id", taxaId );
       navigation.navigate( "ObsEdit" );
     } else {
-      console.log( observations[0].id, observations[0].uuid, "does id exist in obs" );
-      const results = await createIdentification( { observation_id: observations[0].id, taxon_id: taxaId } );
+      const results = await createIdentification( { observation_id: observations[0].uuid, taxon_id: taxaId } );
       console.log( results, "results in update taxa id" );
       navigation.navigate( "my observations", { screen: "ObsDetail", params: { uuid: observations[0].uuid } } );
     }
@@ -129,6 +139,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     addSound,
     addPhotos,
     addObservations,
+    addObservationNoEvidence,
     observations,
     setObservations,
     updateObservationKey,
