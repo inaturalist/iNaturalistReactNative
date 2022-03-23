@@ -8,7 +8,6 @@ import ObsList from "../components/Observations/ObsList";
 import ObsDetails from "../components/ObsDetails/ObsDetails";
 import UserProfile from "../components/UserProfile/UserProfile";
 import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
-import MessagesIcon from "../components/Observations/MessagesIcon";
 import ObservationProvider from "../providers/ObservationProvider";
 import CustomHeaderWithTranslation from "../components/SharedComponents/CustomHeaderWithTranslation";
 
@@ -34,9 +33,7 @@ const MyObservationsStackNavigation = ( ): React.Node => (
       <Stack.Screen
         name="ObsList"
         component={ObsList}
-        options={( { navigation } ) => ( {
-          headerRight: ( ) => <MessagesIcon />
-        } )}
+        options={hideHeader}
       />
       <Stack.Screen
         name="ObsDetails"
