@@ -33,6 +33,7 @@
     "react-native-config": "^1.4.5",
     "react-native-device-info": "^8.4.8",
     "react-native-dropdown-picker": "^5.2.3",
+    "react-native-exception-handler": "^2.10.10",
     "react-native-geocoder": "^0.5.0",
     "react-native-geolocation-service": "^5.3.0-beta.4",
     "react-native-gesture-handler": "^1.10.3",

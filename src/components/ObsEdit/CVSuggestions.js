@@ -46,11 +46,14 @@ const CVSuggestions = ( ): Node => {
   };
 
   const renderSuggestions = ( { item } ) => {
-    const uri = { uri: item.taxon.taxon_photos[0].photo.medium_url };
+    const taxon = item && item.taxon;
+    // destructuring so this doesn't cause a crash
+    const mediumUrl = ( taxon && taxon.taxon_photos && taxon.taxon_photos[0].photo ) ? taxon.taxon_photos[0].photo.medium_url : null;
+    const uri = { uri: mediumUrl };
 
     const updateIdentification = ( ) => {
-      setIdentification( item.taxon );
-      updateTaxaId( item.taxon.id );
+      setIdentification( taxon );
+      updateTaxaId( taxon.id );
     };
 
     return (
@@ -60,11 +63,11 @@ const CVSuggestions = ( ): Node => {
           style={viewStyles.imageBackground}
         />
         <View style={viewStyles.obsDetailsColumn}>
-          <Text style={textStyles.text}>{item.taxon.preferred_common_name}</Text>
-          <Text style={textStyles.text}>{item.taxon.name}</Text>
+          <Text style={textStyles.text}>{taxon.preferred_common_name}</Text>
+          <Text style={textStyles.text}>{taxon.name}</Text>
           {showSeenNearby && <Text style={textStyles.greenText}>seen nearby</Text>}
         </View>
-        {renderNavButtons( updateIdentification, item.taxon.id )}
+        {renderNavButtons( updateIdentification, taxon.id )}
       </View>
     );
   };

@@ -18,12 +18,6 @@ target 'iNaturalistReactNative' do
 
   pod 'react-native-config', :path => '../node_modules/react-native-config'
 
-
-  target 'iNaturalistReactNativeTests' do
-    inherit! :complete
-    # Pods for testing
-  end
-
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and

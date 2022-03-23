@@ -296,6 +296,8 @@ PODS:
     - React-jsi (= 0.66.4)
     - React-logger (= 0.66.4)
     - React-perflogger (= 0.66.4)
+  - ReactNativeExceptionHandler (2.10.10):
+    - React-Core
   - RealmJS (10.20.0-beta.1):
     - React
   - RNAudioRecorderPlayer (3.3.0):
@@ -389,6 +391,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - ReactNativeExceptionHandler (from `../node_modules/react-native-exception-handler`)
   - RealmJS (from `../node_modules/realm`)
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
@@ -484,6 +487,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeExceptionHandler:
+    :path: "../node_modules/react-native-exception-handler"
   RealmJS:
     :path: "../node_modules/realm"
   RNAudioRecorderPlayer:
@@ -548,6 +553,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: e3ffca672dd3772536cb844274094b0e2c31b187
   React-runtimeexecutor: dec32ee6f2e2a26e13e58152271535fadff5455a
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
+  ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
   RealmJS: 74cf2dec0a20e7ca75655b5190eb60c062d106ec
   RNAudioRecorderPlayer: 413c69a85412df8476e1dfcc17b3429f62e02ecd
   RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
@@ -560,6 +566,6 @@ SPEC CHECKSUMS:
   VisionCamera: e3f4eea37f32f9a2ab40ce560940174a5258abaf
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
 
-PODFILE CHECKSUM: b4cc6dd668e4126499955bf845bca9b702156b71
+PODFILE CHECKSUM: 55a351af61798294e5bd5ec55bf493996157f1aa
 
 COCOAPODS: 1.11.2
