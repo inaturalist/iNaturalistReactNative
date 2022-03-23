@@ -13,6 +13,7 @@ import { viewStyles, textStyles } from "../../styles/obsEdit/cvSuggestions";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import InputField from "../SharedComponents/InputField";
+import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 
 const CVSuggestions = ( ): Node => {
   const {
@@ -26,6 +27,7 @@ const CVSuggestions = ( ): Node => {
   const [selectedPhoto, setSelectedPhoto] = useState( 0 );
   const [q, setQ] = React.useState( "" );
   const list = useRemoteObsEditSearchResults( q, "taxa" );
+  const isLoggedIn = useLoggedIn( );
 
   const currentObs = observations[currentObsNumber];
   const suggestions = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
@@ -100,11 +102,19 @@ const CVSuggestions = ( ): Node => {
 
   const toggleSeenNearby = ( ) => setShowSeenNearby( !showSeenNearby );
 
+  const emptySuggestionsList = ( ) => {
+    if ( !isLoggedIn ) {
+      return <Text style={textStyles.explainerText}>you must be logged in to see computer vision suggestions</Text>;
+    } else {
+      return <ActivityIndicator />;
+    }
+  };
+
   const displaySuggestions = ( ) => (
     <FlatList
       data={suggestions}
       renderItem={renderSuggestions}
-      ListEmptyComponent={( ) => <ActivityIndicator />}
+      ListEmptyComponent={emptySuggestionsList}
     />
   );
 

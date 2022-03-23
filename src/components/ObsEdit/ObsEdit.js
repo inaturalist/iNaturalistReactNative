@@ -21,6 +21,7 @@ import { ObsEditContext } from "../../providers/contexts";
 import useLocationName from "../../sharedHooks/useLocationName";
 import EvidenceList from "./EvidenceList";
 import resizeImageForUpload from "./helpers/resizeImage";
+import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -35,6 +36,7 @@ const ObsEdit = ( ): Node => {
   const { t } = useTranslation( );
   const [showModal, setModal] = useState( false );
   const [source, setSource] = useState( null );
+  const isLoggedIn = useLoggedIn( );
 
   const openModal = useCallback( ( ) => setModal( true ), [] );
   const closeModal = useCallback( ( ) => setModal( false ), [] );
@@ -407,10 +409,12 @@ const ObsEdit = ( ): Node => {
         style={textStyles.notes}
         testID="ObsEdit.notes"
       />
+      {!isLoggedIn && <Text style={textStyles.text}>you must be logged in to upload observations</Text>}
       <RoundGreenButton
         buttonText="upload obs"
         testID="ObsEdit.uploadButton"
         handlePress={uploadObservation}
+        disabled={!isLoggedIn}
       />
     </ScrollNoFooter>
   );
