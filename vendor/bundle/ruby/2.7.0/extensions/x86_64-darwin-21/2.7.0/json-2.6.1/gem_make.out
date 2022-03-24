@@ -1,0 +1,13 @@
+current directory: /Users/amanda/Desktop/iNaturalistReactNative/vendor/bundle/ruby/2.7.0/gems/json-2.6.1/ext/json
+/Users/amanda/.rvm/rubies/ruby-2.7.4/bin/ruby -I /Users/amanda/.rvm/rubies/ruby-2.7.4/lib/ruby/2.7.0 -r ./siteconf20220324-44852-714fom.rb extconf.rb
+creating Makefile
+
+current directory: /Users/amanda/Desktop/iNaturalistReactNative/vendor/bundle/ruby/2.7.0/gems/json-2.6.1/ext/json
+make "DESTDIR=" clean
+
+current directory: /Users/amanda/Desktop/iNaturalistReactNative/vendor/bundle/ruby/2.7.0/gems/json-2.6.1/ext/json
+make "DESTDIR="
+make: Nothing to be done for `all'.
+
+current directory: /Users/amanda/Desktop/iNaturalistReactNative/vendor/bundle/ruby/2.7.0/gems/json-2.6.1/ext/json
+make "DESTDIR=" install
