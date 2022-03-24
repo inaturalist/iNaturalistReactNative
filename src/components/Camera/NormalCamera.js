@@ -50,7 +50,6 @@ const NormalCamera = ( ): Node => {
     navigation.addListener( "focus", async ( ) => {
       const cameraPermission = await Camera.getCameraPermissionStatus( );
       setPermission( cameraPermission );
-      console.log( cameraPermission, "camera permission android" );
       if ( cameraPermission === "not-determined" ) {
         await Camera.requestCameraPermission( );
       }
