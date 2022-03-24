@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import uuid from "react-native-uuid";
 import { useUserLocation } from "../../sharedHooks/useUserLocation";
 
-import { viewStyles, imageStyles } from "../../styles/camera/normalCamera";
+import { viewStyles, imageStyles, textStyles } from "../../styles/camera/normalCamera";
 import { useIsForeground } from "./hooks/useIsForeground";
 import FocusSquare from "./FocusSquare";
 import { ObsEditContext } from "../../providers/contexts";
@@ -27,6 +27,7 @@ Reanimated.addWhitelistedNativeProps( {
 } );
 
 const NormalCamera = ( ): Node => {
+  const [permission, setPermission] = useState( null );
   const { addPhotos } = useContext( ObsEditContext );
   const latLng = useUserLocation( );
   const latitude = latLng && latLng.latitude;
@@ -48,6 +49,8 @@ const NormalCamera = ( ): Node => {
   useEffect( ( ) => {
     navigation.addListener( "focus", async ( ) => {
       const cameraPermission = await Camera.getCameraPermissionStatus( );
+      setPermission( cameraPermission );
+      console.log( cameraPermission, "camera permission android" );
       if ( cameraPermission === "not-determined" ) {
         await Camera.requestCameraPermission( );
       }
@@ -156,6 +159,13 @@ const NormalCamera = ( ): Node => {
   };
 
   if ( device == null ) { return null;}
+  if ( permission === "denied" ) {
+    return (
+      <View style={viewStyles.container}>
+        <Text style={textStyles.whiteText}>check camera permissions in phone settings</Text>
+      </View>
+    );
+  }
   return (
     <View style={viewStyles.container}>
       {device !== null && (
