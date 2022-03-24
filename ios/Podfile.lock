@@ -11,7 +11,7 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.66.4)
   - fmt (6.2.1)
   - glog (0.3.5)
-  - Permission-LocationWhenInUse (3.1.0):
+  - Permission-LocationWhenInUse (3.3.1):
     - RNPermissions
   - RCT-Folly (2021.06.28.00-v2):
     - boost
@@ -223,12 +223,16 @@ PODS:
     - React
   - react-native-image-resizer (1.4.5):
     - React-Core
-  - react-native-maps (0.29.3):
+  - react-native-maps (0.30.1):
     - React-Core
-  - react-native-netinfo (7.1.7):
+  - react-native-netinfo (8.2.0):
     - React-Core
-  - react-native-safe-area-context (3.3.2):
-    - React-Core
+  - react-native-safe-area-context (4.2.2):
+    - RCT-Folly
+    - RCTRequired
+    - RCTTypeSafety
+    - React
+    - ReactCommon/turbomodule/core
   - react-native-sensitive-info (6.0.0-alpha.9):
     - React-Core
   - React-perflogger (0.66.4)
@@ -300,17 +304,17 @@ PODS:
     - React-Core
   - RealmJS (10.20.0-beta.1):
     - React
-  - RNAudioRecorderPlayer (3.3.0):
+  - RNAudioRecorderPlayer (3.3.4):
     - React-Core
-  - RNCPicker (2.2.1):
+  - RNCPicker (2.4.0):
     - React-Core
-  - RNDeviceInfo (8.4.9):
+  - RNDeviceInfo (8.5.1):
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNLocalize (2.1.7):
+  - RNLocalize (2.2.1):
     - React-Core
-  - RNPermissions (3.1.0):
+  - RNPermissions (3.3.1):
     - React-Core
   - RNReanimated (2.3.1):
     - DoubleConversion
@@ -343,7 +347,7 @@ PODS:
   - RNScreens (3.8.0):
     - React-Core
     - React-RCTImage
-  - VisionCamera (2.12.0):
+  - VisionCamera (2.13.0):
     - React
     - React-callinvoker
     - React-Core
@@ -519,7 +523,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: fe08c1cd7e2e205718d77ad14b34957cce949b58
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
-  Permission-LocationWhenInUse: d98db702ec75e93a3ff94bc297d0b66ea04231e1
+  Permission-LocationWhenInUse: 006c85c8de0c05b5d8be8e8029e4f6b813270293
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: 4bf86c70714490bca4bf2696148638284622644b
   RCTTypeSafety: c475a7059eb77935fa53d2c17db299893f057d5d
@@ -537,9 +541,9 @@ SPEC CHECKSUMS:
   react-native-geocoder: 757427682892bb256f3b3745858cc90eba148a8e
   react-native-geolocation-service: c0efb872258ed9240f1003a70fca9e9757e5c785
   react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
-  react-native-maps: 41d01d8e0afcebe32bec9eea3bd945adc1b18f7a
-  react-native-netinfo: 27f287f2d191693f3b9d01a4273137fcf91c3b5d
-  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
+  react-native-maps: d752b0dd0e1951d815b1336332835aab6b4a836f
+  react-native-netinfo: e922cb2e3eaf9ccdf16b8d4744a89657377aa4a1
+  react-native-safe-area-context: da2d11bd7df9bf7779e9bdc85081c141cfa544f4
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
   React-RCTActionSheet: 7d3041e6761b4f3044a37079ddcb156575fb6d89
@@ -555,15 +559,15 @@ SPEC CHECKSUMS:
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
   RealmJS: 74cf2dec0a20e7ca75655b5190eb60c062d106ec
-  RNAudioRecorderPlayer: 413c69a85412df8476e1dfcc17b3429f62e02ecd
-  RNCPicker: cb57c823d5ce8d2d0b5dfb45ad97b737260dc59e
-  RNDeviceInfo: 4944cf8787b9c5bffaf301fda68cc1a2ec003341
+  RNAudioRecorderPlayer: 4efbe1839fd21c5caf8de132a8b3b51b422aa997
+  RNCPicker: 6d5d64e7b90c240c779ee0938ec433c11e2dd758
+  RNDeviceInfo: 8d4177859b062334835962799460528869a487fb
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNLocalize: f567ea0e35116a641cdffe6683b0d212d568f32a
-  RNPermissions: 4b54095940aea8c03fa3e6c92d4ac3647b31ed4e
+  RNLocalize: cbcb55d0e19c78086ea4eea20e03fe8000bbbced
+  RNPermissions: 34d678157c800b25b22a488e4d8babb57456e796
   RNReanimated: da3860204e5660c0dd66739936732197d359d753
   RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
-  VisionCamera: e3f4eea37f32f9a2ab40ce560940174a5258abaf
+  VisionCamera: 8280788627dc64ff49ba7f3ad8e09c978a83a325
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
 
 PODFILE CHECKSUM: 55a351af61798294e5bd5ec55bf493996157f1aa

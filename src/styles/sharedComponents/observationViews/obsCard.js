@@ -34,6 +34,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   photoContainer: {
     backgroundColor: colors.black,
     height: 200
+  },
+  photoStatRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    justifyContent: "space-between"
   }
 } );
 

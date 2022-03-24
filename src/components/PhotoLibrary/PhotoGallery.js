@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useContext } from "react";
-import { Pressable, Image, FlatList, ActivityIndicator, View } from "react-native";
+import { Pressable, Image, FlatList, ActivityIndicator, View, Text } from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 
@@ -25,7 +25,8 @@ const PhotoGallery = ( ): Node => {
     photoOptions,
     setPhotoOptions,
     selectedPhotos,
-    setSelectedPhotos
+    setSelectedPhotos,
+    fetchingPhotos
   } = useContext( PhotoGalleryContext );
 
   const navigation = useNavigation( );
@@ -121,6 +122,14 @@ const PhotoGallery = ( ): Node => {
     return <></>;
   };
 
+  const renderEmptyList = ( ) => {
+    if ( fetchingPhotos ) {
+      return <ActivityIndicator />;
+    } else {
+      return <Text>no photos found. if this is your first time opening the app and giving permissions, try restarting the app.</Text>;
+    }
+  };
+
   return (
     <ViewNoFooter>
       <PhotoGalleryHeader updateAlbum={updateAlbum} />
@@ -133,7 +142,7 @@ const PhotoGallery = ( ): Node => {
         renderItem={renderImage}
         onEndReached={fetchMorePhotos}
         testID="PhotoGallery.list"
-        ListEmptyComponent={( ) => <ActivityIndicator />}
+        ListEmptyComponent={renderEmptyList( )}
       />
       {renderFooter( )}
     </ViewNoFooter>

@@ -7,12 +7,13 @@ import { colors } from "../../global";
 
 const { width } = Dimensions.get( "screen" );
 
-const imageWidth = width / 3;
+const imageWidth = width / 2 - 20;
 const userImageWidth = 30;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   gridItem: {
-    width: imageWidth
+    width: imageWidth,
+    marginHorizontal: 10
   },
   taxonName: {
     height: 100

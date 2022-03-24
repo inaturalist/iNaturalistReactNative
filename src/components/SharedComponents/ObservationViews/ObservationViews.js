@@ -50,7 +50,7 @@ const ObservationViews = ( {
           data={observationList}
           key={view === "grid" ? 1 : 0}
           renderItem={view === "grid" ? renderGridItem : renderItem}
-          numColumns={view === "grid" ? 4 : 1}
+          numColumns={view === "grid" ? 2 : 1}
           testID={testID}
           ListEmptyComponent={renderEmptyState}
         />
