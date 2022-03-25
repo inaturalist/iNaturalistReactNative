@@ -14,6 +14,9 @@ import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import InputField from "../SharedComponents/InputField";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
+import { t } from "i18next";
+// TODO: do we need custom hook useTranslation or can we just use t from "i18next"?
+// saves some lines of code if we don't need the extra hook
 
 const CVSuggestions = ( ): Node => {
   const {
@@ -30,6 +33,7 @@ const CVSuggestions = ( ): Node => {
   const isLoggedIn = useLoggedIn( );
 
   const currentObs = observations[currentObsNumber];
+  const hasPhotos = currentObs.observationPhotos;
   const suggestions = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
 
   const renderNavButtons = ( updateIdentification, id ) => {
@@ -114,7 +118,7 @@ const CVSuggestions = ( ): Node => {
     <FlatList
       data={suggestions}
       renderItem={renderSuggestions}
-      ListEmptyComponent={emptySuggestionsList}
+      ListEmptyComponent={hasPhotos && emptySuggestionsList}
     />
   );
 
@@ -128,15 +132,16 @@ const CVSuggestions = ( ): Node => {
   return (
     <ViewNoFooter>
       <View>
-        <EvidenceList
-          currentObs={currentObs}
-          setSelectedPhoto={setSelectedPhoto}
-          selectedPhoto={selectedPhoto}
-        />
-        <Text style={textStyles.explainerText}>Select the identification you want to add to this observation...</Text>
+        {hasPhotos && (
+          <EvidenceList
+            currentObs={currentObs}
+            setSelectedPhoto={setSelectedPhoto}
+            selectedPhoto={selectedPhoto}
+          />
+        )}
         <InputField
           handleTextChange={setQ}
-          placeholder="search for taxa"
+          placeholder={t( "Tap-to-search-for-taxa" )}
           text={q}
           type="none"
         />

@@ -26,7 +26,7 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
   const [suggestions, setSuggestions] = useState( [] );
 
   useEffect( ( ) => {
-    if ( !currentObs ) { return; }
+    if ( !currentObs || !currentObs.observationPhotos ) { return; }
     const uri = currentObs.observationPhotos && currentObs.observationPhotos[selectedPhoto].uri;
     const latitude = currentObs.latitude;
     const longitude = currentObs.longitude;

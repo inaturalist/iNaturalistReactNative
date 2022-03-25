@@ -308,6 +308,8 @@ PODS:
     - React-Core
   - RNCPicker (2.4.0):
     - React-Core
+  - RNDateTimePicker (6.1.0):
+    - React-Core
   - RNDeviceInfo (8.5.1):
     - React-Core
   - RNGestureHandler (1.10.3):
@@ -399,6 +401,7 @@ DEPENDENCIES:
   - RealmJS (from `../node_modules/realm`)
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
+  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
@@ -499,6 +502,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-audio-recorder-player"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
+  RNDateTimePicker:
+    :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
@@ -561,6 +566,7 @@ SPEC CHECKSUMS:
   RealmJS: 74cf2dec0a20e7ca75655b5190eb60c062d106ec
   RNAudioRecorderPlayer: 4efbe1839fd21c5caf8de132a8b3b51b422aa997
   RNCPicker: 6d5d64e7b90c240c779ee0938ec433c11e2dd758
+  RNDateTimePicker: 064f3a609fbebc6896f7e5a2f48dcee5d9a6fd51
   RNDeviceInfo: 8d4177859b062334835962799460528869a487fb
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNLocalize: cbcb55d0e19c78086ea4eea20e03fe8000bbbced

@@ -10,6 +10,7 @@ import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
 import NormalCamera from "../components/Camera/NormalCamera";
 import CVSuggestions from "../components/ObsEdit/CVSuggestions";
+import CustomHeaderWithTranslation from "../components/SharedComponents/CustomHeaderWithTranslation";
 
 const Stack = createNativeStackNavigator( );
 
@@ -43,6 +44,10 @@ const CameraStackNavigation = ( ): React.Node => (
       <Stack.Screen
         name="Suggestions"
         component={CVSuggestions}
+        options={{
+          headerTitle: ( props ) => <CustomHeaderWithTranslation {...props} headerText="IDENTIFICATION" />,
+          headerShown: true
+        }}
       />
     </Stack.Navigator>
   </PhotoGalleryProvider>

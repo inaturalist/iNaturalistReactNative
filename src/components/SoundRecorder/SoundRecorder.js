@@ -163,18 +163,6 @@ const SoundRecorder = ( ): Node => {
     setStatus( "paused" );
   };
 
-  const renderHelpText = ( ) => {
-    if ( status === "notStarted" ) {
-      return t( "Press-Record-to-Start" );
-    } else if ( status === "recording" ) {
-      return t( "Recording-Sound" );
-    } else if ( status === "paused" ) {
-      return ( t( "Paused" ) );
-    } else if ( status === "playing" ) {
-      return ( t( "Playing-Sound" ) );
-    }
-  };
-
   const renderRecordButton = ( ) => {
     if ( status === "notStarted" ) {
       return (
@@ -253,7 +241,6 @@ const SoundRecorder = ( ): Node => {
           <Text>insert visualization here</Text>
         </View>
         <View>
-          <Text style={textStyles.alignCenter}>{renderHelpText( )}</Text>
           <View style={viewStyles.recordButtonRow}>
             {renderPlaybackButton( )}
             {renderRecordButton( )}

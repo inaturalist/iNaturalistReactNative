@@ -40,13 +40,14 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
 
   return (
     <View>
+      <TranslatedText style={textStyles.whiteText} text="CREATE-AN-OBSERVATION" />
       <View style={viewStyles.whiteModal}>
-        <TranslatedText text="Evidence" />
-        <TranslatedText text="Add-evidence-onboarding" />
-        <TranslatedText text="You-can" />
+        <TranslatedText text="STEP-1-EVIDENCE" />
+        <TranslatedText text="The-first-thing-you-need-is-evidence" />
         <TranslatedText text="Take-a-photo-with-your-camera" />
         <TranslatedText text="Upload-a-photo-from-your-gallery" />
         <TranslatedText text="Record-a-sound" />
+        <TranslatedText text="Submit-without-evidence" />
       </View>
        <Pressable
         onPress={navToNormalCamera}

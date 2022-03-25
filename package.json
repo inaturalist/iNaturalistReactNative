@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@react-native-community/cameraroll": "^4.1.2",
+    "@react-native-community/datetimepicker": "^6.1.0",
     "@react-native-community/netinfo": "^8.2.0",
     "@react-native-picker/picker": "^2.4.0",
     "@react-navigation/drawer": "^6.3.1",

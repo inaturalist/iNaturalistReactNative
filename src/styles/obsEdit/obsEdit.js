@@ -63,6 +63,9 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  saveButton: {
+    width: 100
+  },
   greenSelectionBorder: {
     borderWidth: 5,
     borderColor: colors.inatGreen
