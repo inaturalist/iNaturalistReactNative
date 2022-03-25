@@ -1,21 +1,25 @@
 // @flow
 import * as React from "react";
-import { Pressable, Text } from "react-native";
+import { Pressable } from "react-native";
 
 import { viewStyles, textStyles } from "../../../styles/sharedComponents/buttons/roundGreenButton";
+import TranslatedText from "../TranslatedText";
 
 type Props = {
   buttonText: string,
   handlePress: any,
   testID: string,
-  disabled?: boolean
+  disabled?: boolean,
+  count: number
 }
 
-const RoundGreenButton = ( { buttonText, handlePress, testID, disabled }: Props ): React.Node => (
+const RoundGreenButton = ( { buttonText, handlePress, testID, disabled, count }: Props ): React.Node => (
   <Pressable style={viewStyles.greenButton} onPress={handlePress} testID={testID} disabled={disabled}>
-    <Text style={textStyles.greenButtonText}>
-      {buttonText}
-    </Text>
+    <TranslatedText
+      style={textStyles.greenButtonText}
+      text={buttonText}
+      count={count}
+    />
   </Pressable>
 );
 

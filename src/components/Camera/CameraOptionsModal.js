@@ -4,8 +4,9 @@ import * as React from "react";
 import { Text, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { textStyles } from "../../styles/sharedComponents/modal";
+import { textStyles, viewStyles } from "../../styles/sharedComponents/modal";
 import { ObsEditContext } from "../../providers/contexts";
+import TranslatedText from "../SharedComponents/TranslatedText";
 
 type Props = {
   closeModal: ( ) => void
@@ -39,6 +40,14 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
 
   return (
     <View>
+      <View style={viewStyles.whiteModal}>
+        <TranslatedText text="Evidence" />
+        <TranslatedText text="Add-evidence-onboarding" />
+        <TranslatedText text="You-can" />
+        <TranslatedText text="Take-a-photo-with-your-camera" />
+        <TranslatedText text="Upload-a-photo-from-your-gallery" />
+        <TranslatedText text="Record-a-sound" />
+      </View>
        <Pressable
         onPress={navToNormalCamera}
       >

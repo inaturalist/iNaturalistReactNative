@@ -1,6 +1,9 @@
 # Header for a block of text describing a taxon
 ABOUT-taxon-header = ABOUT
 
+# Onboarding for users adding their first evidence of an organism
+Add-evidence-onboarding = Add evidence of an organism. This helps others identify what you saw.
+
 Amphibians = Amphibians
 
 Arachnids = Arachnids
@@ -43,6 +46,8 @@ Playing-Sound = Playing Sound
 # Help text for beginning a sound recording
 Press-Record-to-Start = Press Record to Start
 
+Record-a-sound = Record a sound
+
 Record-new-sound = Record new sound
 
 Recording-Sound = Recording Sound
@@ -55,5 +60,16 @@ SIMILAR-SPECIES-header
 # Header for a block of text describing a taxon's conservation status
 STATUS-header = STATUS
 
+Take-a-photo-with-your-camera = Take a photo with your camera
+
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY
+
+Upload-a-photo-from-your-gallery = Upload a photo from your gallery
+
+Upload-X-photos = Upload {$count ->
+    [one] 1 photo
+    *[other] {$count} photos
+}
+
+You-can = You can:

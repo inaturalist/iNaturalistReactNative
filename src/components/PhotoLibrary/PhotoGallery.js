@@ -26,7 +26,8 @@ const PhotoGallery = ( ): Node => {
     setPhotoOptions,
     selectedPhotos,
     setSelectedPhotos,
-    fetchingPhotos
+    fetchingPhotos,
+    totalSelected
   } = useContext( PhotoGalleryContext );
 
   const navigation = useNavigation( );
@@ -112,7 +113,8 @@ const PhotoGallery = ( ): Node => {
       return (
         <View style={viewStyles.createObsButton}>
           <RoundGreenButton
-            buttonText="create observations"
+            buttonText="Upload-X-photos"
+            count={totalSelected}
             handlePress={navToGroupPhotos}
             testID="PhotoGallery.createObsButton"
           />

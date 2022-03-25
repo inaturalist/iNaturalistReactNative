@@ -3,22 +3,57 @@
     "comment": "Header for a block of text describing a taxon",
     "val": "ABOUT"
   },
+  "Add-evidence-onboarding": {
+    "comment": "Onboarding for users adding their first evidence of an organism",
+    "val": "Add evidence of an organism. This helps others identify what you saw."
+  },
+  "Amphibians": "Amphibians",
+  "Arachnids": "Arachnids",
+  "Birds": "Birds",
+  "Evidence": "Evidence",
+  "Finish": "Finish",
+  "Fish": "Fish",
+  "Fungi": "Fungi",
   "Grid-View": {
     "comment": "Label for a view that shows observations as a grid of photos",
     "val": "Grid View"
   },
+  "Identification": "Identification",
+  "Insects": "Insects",
   "List-View": {
     "comment": "Label for a view that shows observations a list",
     "val": "List View"
   },
+  "Mammals": "Mammals",
+  "Mollusks": "Mollusks",
+  "Observation": "Observation",
+  "Other-Data": "Other Data",
+  "Paused": "Paused",
+  "Plants": "Plants",
+  "Playing-Sound": {
+    "comment": "Help text for playing back a sound recording",
+    "val": "Playing Sound"
+  },
+  "Press-Record-to-Start": {
+    "comment": "Help text for beginning a sound recording",
+    "val": "Press Record to Start"
+  },
+  "Record-a-sound": "Record a sound",
+  "Record-new-sound": "Record new sound",
+  "Recording-Sound": "Recording Sound",
+  "Reptiles": "Reptiles",
   "comment": "Header for a section showing taxa similar to a single taxon",
   "SIMILAR-SPECIES-header": "",
   "STATUS-header": {
     "comment": "Header for a block of text describing a taxon's conservation status",
     "val": "STATUS"
   },
+  "Take-a-photo-with-your-camera": "Take a photo with your camera",
   "TAXONOMY-header": {
     "comment": "Header for a block of text describing a taxon's taxonomy",
     "val": "TAXONOMY"
-  }
+  },
+  "Upload-a-photo-from-your-gallery": "Upload a photo from your gallery",
+  "Upload-X-photos": "Upload { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}",
+  "You-can": "You can:"
 }

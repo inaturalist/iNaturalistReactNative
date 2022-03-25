@@ -27,6 +27,16 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
   const [photoGallery, setPhotoGallery] = useState( {} );
   const [selectedPhotos, setSelectedPhotos] = useState( {} );
 
+  const totalSelected = ( ) => {
+    let total = 0;
+    const albums = Object.keys( selectedPhotos );
+
+    albums.forEach( album => {
+      total += selectedPhotos[album].length;
+    } );
+    return total;
+  };
+
   useEffect( ( ) => {
     if ( photosFetched ) {
       // $FlowFixMe
@@ -59,7 +69,8 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
     setPhotoOptions,
     selectedPhotos,
     setSelectedPhotos,
-    fetchingPhotos
+    fetchingPhotos,
+    totalSelected: totalSelected( )
   };
 
   return (
