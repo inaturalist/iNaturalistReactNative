@@ -10,7 +10,7 @@ type Props = {
   handlePress: any,
   testID: string,
   disabled?: boolean,
-  count: number
+  count?: number
 }
 
 const RoundGreenButton = ( { buttonText, handlePress, testID, disabled, count }: Props ): React.Node => (

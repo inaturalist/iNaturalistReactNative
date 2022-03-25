@@ -1,4 +1,8 @@
 {
+  "X-photos-X-observations": {
+    "comment": "Displays number of photos and observations a user has selected from the camera roll",
+    "val": "{ $photoCount ->\n  [one] 1 photo\n *[other] { $photoCount } photos\n}, { $observationCount ->\n  [one] 1 observation\n *[other] { $observationCount } observations\n}"
+  },
   "ABOUT-taxon-header": {
     "comment": "Header for a block of text describing a taxon",
     "val": "ABOUT"
@@ -10,6 +14,11 @@
   "Amphibians": "Amphibians",
   "Arachnids": "Arachnids",
   "Birds": "Birds",
+  "Combine-Photos": "Combine Photos",
+  "Combine-photos-onboarding": {
+    "comment": "Onboarding for users learning to group photos in the camera roll",
+    "val": "Combine photos into observations – make sure there is only one species per observation"
+  },
   "Evidence": "Evidence",
   "Finish": "Finish",
   "Fish": "Fish",
@@ -18,6 +27,7 @@
     "comment": "Label for a view that shows observations as a grid of photos",
     "val": "Grid View"
   },
+  "Group-Photos": "Group Photos",
   "Identification": "Identification",
   "Insects": "Insects",
   "List-View": {
@@ -26,6 +36,7 @@
   },
   "Mammals": "Mammals",
   "Mollusks": "Mollusks",
+  "Next": "Next",
   "Observation": "Observation",
   "Other-Data": "Other Data",
   "Paused": "Paused",
@@ -41,9 +52,14 @@
   "Record-a-sound": "Record a sound",
   "Record-new-sound": "Record new sound",
   "Recording-Sound": "Recording Sound",
+  "Remove-Photos": "Remove Photos",
   "Reptiles": "Reptiles",
-  "comment": "Header for a section showing taxa similar to a single taxon",
-  "SIMILAR-SPECIES-header": "",
+  "Select": "Select",
+  "Separate-Photos": "Separate Photos",
+  "SIMILAR-SPECIES-header": {
+    "comment": "Header for a section showing taxa similar to a single taxon",
+    "val": "SIMILAR SPECIES"
+  },
   "STATUS-header": {
     "comment": "Header for a block of text describing a taxon's conservation status",
     "val": "STATUS"
@@ -54,6 +70,9 @@
     "val": "TAXONOMY"
   },
   "Upload-a-photo-from-your-gallery": "Upload a photo from your gallery",
-  "Upload-X-photos": "Upload { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}",
+  "Upload-X-photos": {
+    "comment": "Shows the number of photos a user selected from the camera roll for upload",
+    "val": "Upload { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
+  },
   "You-can": "You can:"
 }

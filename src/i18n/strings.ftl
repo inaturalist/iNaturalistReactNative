@@ -1,3 +1,13 @@
+
+# Displays number of photos and observations a user has selected from the camera roll
+X-photos-X-observations = {$photoCount ->
+    [one] 1 photo
+    *[other] {$photoCount} photos
+}, {$observationCount ->
+    [one] 1 observation
+    *[other] {$observationCount} observations
+}
+
 # Header for a block of text describing a taxon
 ABOUT-taxon-header = ABOUT
 
@@ -10,6 +20,13 @@ Arachnids = Arachnids
 
 Birds = Birds
 
+Cancel = Cancel
+
+Combine-Photos = Combine Photos
+
+# Onboarding for users learning to group photos in the camera roll
+Combine-photos-onboarding = Combine photos into observations – make sure there is only one species per observation
+
 Evidence = Evidence
 
 Finish = Finish
@@ -21,6 +38,8 @@ Fungi = Fungi
 # Label for a view that shows observations as a grid of photos
 Grid-View = Grid View
 
+Group-Photos = Group Photos
+
 Identification = Identification
 
 Insects = Insects
@@ -31,6 +50,8 @@ List-View = List View
 Mammals = Mammals
 
 Mollusks = Mollusks
+
+Next = Next
 
 Observation = Observation
 
@@ -52,10 +73,16 @@ Record-new-sound = Record new sound
 
 Recording-Sound = Recording Sound
 
+Remove-Photos = Remove Photos
+
 Reptiles = Reptiles
 
+Select = Select
+
+Separate-Photos = Separate Photos
+
 # Header for a section showing taxa similar to a single taxon
-SIMILAR-SPECIES-header
+SIMILAR-SPECIES-header = SIMILAR SPECIES
 
 # Header for a block of text describing a taxon's conservation status
 STATUS-header = STATUS
@@ -67,6 +94,7 @@ TAXONOMY-header = TAXONOMY
 
 Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 
+# Shows the number of photos a user selected from the camera roll for upload
 Upload-X-photos = Upload {$count ->
     [one] 1 photo
     *[other] {$count} photos

@@ -217,8 +217,6 @@ const GroupPhotos = ( ): Node => {
       <GroupPhotosHeader
         photos={observations.length}
         observations={groupedPhotos.length}
-        isSelected={photoSelected}
-        clearSelection={clearSelection}
       />
       <FlatList
         contentContainerStyle={viewStyles.centerImages}
@@ -235,6 +233,8 @@ const GroupPhotos = ( ): Node => {
         separatePhotos={separatePhotos}
         removePhotos={removePhotos}
         navToObsEdit={navToObsEdit}
+        clearSelection={clearSelection}
+        selectedObservations={selectedObservations}
       />
     </ViewNoFooter>
   );
