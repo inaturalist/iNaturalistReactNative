@@ -6,7 +6,9 @@ import type { ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   messages: {
-    marginRight: 20
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    margin: 20
   }
 } );
 

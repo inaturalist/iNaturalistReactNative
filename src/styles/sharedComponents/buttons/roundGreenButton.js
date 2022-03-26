@@ -13,6 +13,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     paddingVertical: 10,
     width: "80%",
     alignSelf: "center"
+  },
+  disabled: {
+    backgroundColor: colors.lightGray
   }
 } );
 

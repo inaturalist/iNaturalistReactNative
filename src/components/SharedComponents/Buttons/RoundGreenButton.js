@@ -14,7 +14,12 @@ type Props = {
 }
 
 const RoundGreenButton = ( { buttonText, handlePress, testID, disabled, count }: Props ): React.Node => (
-  <Pressable style={viewStyles.greenButton} onPress={handlePress} testID={testID} disabled={disabled}>
+  <Pressable
+    style={[viewStyles.greenButton, disabled && viewStyles.disabled]}
+    onPress={handlePress}
+    testID={testID}
+    disabled={disabled}
+  >
     <TranslatedText
       style={textStyles.greenButtonText}
       text={buttonText}

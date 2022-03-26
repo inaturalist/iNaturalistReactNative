@@ -27,6 +27,8 @@ const ExploreProvider = ( { children }: Props ): Node => {
   const [exploreList, setExploreList] = useState( [] );
   const [exploreFilters, setExploreFilters] = useState( initialFilters );
   const [loadingExplore, setLoadingExplore] = useState( false );
+  const [taxon, setTaxon] = useState( "" );
+  const [location, setLocation] = useState( "" );
 
   useEffect( ( ) => {
     let isCurrent = true;
@@ -74,7 +76,11 @@ const ExploreProvider = ( { children }: Props ): Node => {
     setLoading,
     exploreFilters,
     setExploreFilters,
-    clearFilters
+    clearFilters,
+    taxon,
+    setTaxon,
+    location,
+    setLocation
   };
 
   return (

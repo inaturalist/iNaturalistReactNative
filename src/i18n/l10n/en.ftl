@@ -26,6 +26,8 @@ CREATE-AN-OBSERVATION = CREATE AN OBSERVATION
 
 Evidence = Evidence
 
+Explore = Explore
+
 Finish = Finish
 
 Fish = Fish
@@ -122,6 +124,8 @@ Upload-X-photos = Upload {$count ->
     [one] 1 photo
     *[other] {$count} photos
 }
+
+Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
 
 # Displays number of photos and observations a user has selected from the camera roll
 X-photos-X-observations = {$photoCount ->
