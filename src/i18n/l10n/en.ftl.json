@@ -35,6 +35,7 @@
     "comment": "Label for a view that shows observations a list",
     "val": "List View"
   },
+  "Location": "Location",
   "Mammals": "Mammals",
   "Mollusks": "Mollusks",
   "New-Observation": "New Observation",
@@ -60,6 +61,8 @@
   "Recording-Sound": "Recording Sound",
   "Remove-Photos": "Remove Photos",
   "Reptiles": "Reptiles",
+  "Search-for-a-location": "Search for a location",
+  "Search-for-a-taxon": "Search for a taxon",
   "Select": "Select",
   "Separate-Photos": "Separate Photos",
   "SIMILAR-SPECIES-header": {
@@ -77,6 +80,7 @@
   "Submit-without-evidence": "Submit without evidence",
   "Take-a-photo-with-your-camera": "Take a photo with your camera",
   "Tap-to-search-for-taxa": "Tap to search for taxa",
+  "Taxon": "Taxon",
   "TAXONOMY-header": {
     "comment": "Header for a block of text describing a taxon's taxonomy",
     "val": "TAXONOMY"
@@ -92,6 +96,10 @@
     "val": "Upload { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
   },
   "Visually-search-iNaturalist-data": "Visually search iNaturalist’s wealth of data. Search by a taxon in a location",
+  "X-Observations": {
+    "comment": "Banner above Explore Map showing total number of results",
+    "val": "{ $observationCount ->\n  [one] 1 Observation\n *[other] { $observationCount } Observations\n}"
+  },
   "X-photos-X-observations": {
     "comment": "Displays number of photos and observations a user has selected from the camera roll",
     "val": "{ $photoCount ->\n  [one] 1 photo\n *[other] { $photoCount } photos\n}, { $observationCount ->\n  [one] 1 observation\n *[other] { $observationCount } observations\n}"

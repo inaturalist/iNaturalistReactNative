@@ -2,23 +2,26 @@
 
 import React, { useContext } from "react";
 import type { Node } from "react";
+import { Dimensions } from "react-native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-
 import { ExploreContext } from "../../providers/contexts";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
-
 import BottomCard from "./BottomCard";
+
+const { height } = Dimensions.get( "screen" );
+
+// make map small enough to show bottom card
+const mapHeight = height - 400;
 
 const Explore = ( ): Node => {
   const {
     exploreList,
     loadingExplore,
-    exploreFilters
+    exploreFilters,
+    totalObservations
   } = useContext( ExploreContext );
   const taxonId = exploreFilters ? exploreFilters.taxon_id : null;
-
-  console.log( exploreList, "explore list" );
 
   return (
     <ViewWithFooter>
@@ -28,6 +31,8 @@ const Explore = ( ): Node => {
           observationList={exploreList}
           taxonId={taxonId}
           testID="Explore.observations"
+          mapHeight={mapHeight}
+          totalObservations={totalObservations}
         />
       )}
       <BottomCard />

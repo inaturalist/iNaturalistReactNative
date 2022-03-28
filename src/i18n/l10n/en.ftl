@@ -50,6 +50,8 @@ Insects = Insects
 # Label for a view that shows observations a list
 List-View = List View
 
+Location = Location
+
 Mammals = Mammals
 
 Mollusks = Mollusks
@@ -90,6 +92,10 @@ Remove-Photos = Remove Photos
 
 Reptiles = Reptiles
 
+Search-for-a-location = Search for a location
+
+Search-for-a-taxon = Search for a taxon
+
 Select = Select
 
 Separate-Photos = Separate Photos
@@ -109,6 +115,8 @@ Take-a-photo-with-your-camera = Take a photo with your camera
 
 Tap-to-search-for-taxa = Tap to search for taxa
 
+Taxon = Taxon
+
 # Header for a block of text describing a taxon's taxonomy
 TAXONOMY-header = TAXONOMY
 
@@ -126,6 +134,12 @@ Upload-X-photos = Upload {$count ->
 }
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
+
+# Banner above Explore Map showing total number of results
+X-Observations = {$observationCount ->
+    [one] 1 Observation
+    *[other] {$observationCount} Observations
+}
 
 # Displays number of photos and observations a user has selected from the camera roll
 X-photos-X-observations = {$photoCount ->

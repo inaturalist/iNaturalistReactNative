@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import type { Node } from "react";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";

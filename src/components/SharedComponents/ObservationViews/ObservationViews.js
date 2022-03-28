@@ -4,8 +4,8 @@ import * as React from "react";
 import { FlatList, ActivityIndicator, View, Pressable, Text } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { viewStyles } from "../../../styles/observations/obsList";
 
+import { viewStyles, textStyles } from "../../../styles/observations/obsList";
 import GridItem from "./GridItem";
 import EmptyList from "./EmptyList";
 import ObsCard from "./ObsCard";
@@ -15,14 +15,18 @@ type Props = {
   loading: boolean,
   observationList: Array<Object>,
   testID: string,
-  taxonId?: number
+  taxonId?: number,
+  mapHeight: number,
+  totalObservations?: number
 }
 
 const ObservationViews = ( {
   loading,
   observationList,
   testID,
-  taxonId
+  taxonId,
+  mapHeight,
+  totalObservations
 }: Props ): React.Node => {
   const [view, setView] = React.useState( "list" );
   const navigation = useNavigation( );
@@ -39,11 +43,11 @@ const ObservationViews = ( {
   const setListView = ( ) => setView( "list" );
   const setMapView = ( ) => setView( "map" );
 
-  const { t } = useTranslation();
+  const { t } = useTranslation( );
 
   const renderView = ( ) => {
     if ( view === "map" ) {
-      return <Map taxonId={taxonId} />;
+      return <Map taxonId={taxonId} mapHeight={mapHeight} />;
     } else {
       return (
         <FlatList
@@ -58,10 +62,17 @@ const ObservationViews = ( {
     }
   };
 
+  const isExplore = name === "Explore";
+
   return (
     <>
+      {isExplore && (
+        <View style={[viewStyles.whiteBanner, view === "map" && viewStyles.greenBanner]}>
+          <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>{t( "X-Observations", { observationCount: totalObservations } )}</Text>
+        </View>
+      )}
       <View style={viewStyles.toggleViewRow}>
-        {name === "Explore" && (
+        {isExplore && (
           <Pressable
             onPress={setMapView}
             accessibilityRole="button"

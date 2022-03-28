@@ -135,6 +135,12 @@ Upload-X-photos = Upload {$count ->
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
 
+# Banner above Explore Map showing total number of results
+X-Observations = {$observationCount ->
+    [one] 1 Observation
+    *[other] {$observationCount} Observations
+}
+
 # Displays number of photos and observations a user has selected from the camera roll
 X-photos-X-observations = {$photoCount ->
     [one] 1 photo

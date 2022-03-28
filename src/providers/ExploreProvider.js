@@ -29,6 +29,7 @@ const ExploreProvider = ( { children }: Props ): Node => {
   const [loadingExplore, setLoadingExplore] = useState( false );
   const [taxon, setTaxon] = useState( "" );
   const [location, setLocation] = useState( "" );
+  const [totalObservations, setTotalObservations] = useState( null );
 
   useEffect( ( ) => {
     let isCurrent = true;
@@ -48,10 +49,12 @@ const ExploreProvider = ( { children }: Props ): Node => {
           fields: FIELDS
         };
         const response = await inatjs.observations.search( params );
+        const totalResults = response.total_results;
         const { results } = await response;
         if ( !isCurrent ) { return; }
         setExploreList( results.map( obs => Observation.mimicRealmMappedPropertiesSchema( obs ) ) );
         setLoadingExplore( false );
+        setTotalObservations( totalResults );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
         setLoadingExplore( false );
@@ -80,7 +83,8 @@ const ExploreProvider = ( { children }: Props ): Node => {
     taxon,
     setTaxon,
     location,
-    setLocation
+    setLocation,
+    totalObservations
   };
 
   return (
