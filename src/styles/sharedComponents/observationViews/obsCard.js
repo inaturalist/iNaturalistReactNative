@@ -5,7 +5,9 @@ import { StyleSheet, Dimensions } from "react-native";
 import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "../../global";
 
-const { height } = Dimensions.get( "screen" );
+const { height, width } = Dimensions.get( "screen" );
+
+const imageWidth = width / 2 - 20;
 
 // safe area heights: https://stackoverflow.com/questions/46376860/what-is-the-safe-region-for-iphone-x-in-pixels-that-factors-the-top-notch-an/49174154
 const safeAreaViewPortraitMode = 78;
@@ -38,7 +40,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   photoStatRow: {
     flexDirection: "row",
     flexWrap: "nowrap",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    position: "absolute",
+    bottom: 80,
+    width: imageWidth,
+    backgroundColor: colors.white
   }
 } );
 

@@ -24,17 +24,25 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   markReviewed: {
     backgroundColor: colors.gray,
     opacity: 0.5
+  },
+  totalObsPhotos: {
+    position: "absolute",
+    right: 0,
+    backgroundColor: colors.inatGreen,
+    padding: 10,
+    width: 40,
+    zIndex: 1
   }
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  text: { }
 } );
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   gridImage: {
     width: imageWidth,
-    height: imageWidth
+    height: imageWidth,
+    backgroundColor: colors.black
   },
   userImage: {
     borderRadius: 50,

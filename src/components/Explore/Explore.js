@@ -12,7 +12,7 @@ import BottomCard from "./BottomCard";
 const { height } = Dimensions.get( "screen" );
 
 // make map small enough to show bottom card
-const mapHeight = height - 400;
+const mapHeight = height - 450;
 
 const Explore = ( ): Node => {
   const {

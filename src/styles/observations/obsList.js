@@ -7,10 +7,23 @@ import { colors } from "../global";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   toggleViewRow: {
+    width: 140,
     flexDirection: "row",
     flexWrap: "nowrap",
     justifyContent: "space-around",
-    marginVertical: 20
+    paddingVertical: 20,
+    position: "absolute"
+  },
+  exploreButtons: {
+    borderRadius: 40,
+    borderWidth: 1,
+    top: 400,
+    zIndex: 1,
+    backgroundColor: colors.white
+  },
+  obsListButtons: {
+    right: 0,
+    top: 100
   },
   greenBanner: {
     paddingVertical: 20,

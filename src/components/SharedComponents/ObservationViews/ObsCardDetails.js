@@ -17,9 +17,9 @@ const ObsCardDetails = ( { item }: Props ): Node => {
 
   return (
     <>
-      <Text style={textStyles.text}>{commonName || "no common name"}</Text>
-      <Text style={textStyles.text}>{placeGuess || "no place guess"}</Text>
-      <Text style={textStyles.text}>{timeObserved || "no time given"}</Text>
+      <Text style={textStyles.text} numberOfLines={1}>{commonName || "no common name"}</Text>
+      <Text style={textStyles.text} numberOfLines={1}>{placeGuess || "no place guess"}</Text>
+      <Text style={textStyles.text} numberOfLines={1}>{timeObserved || "no time given"}</Text>
     </>
   );
 };

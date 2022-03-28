@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Pressable, Image } from "react-native";
+import { Pressable, Image, Text, View } from "react-native";
 import type { Node } from "react";
 import Observation from "../../../models/Observation";
 
@@ -23,6 +23,8 @@ const GridItem = ( { item, handlePress, uri }: Props ): Node => {
   // TODO: add fallback image when there is no uri
   const imageUri = uri === "project" ? Observation.projectUri( item ) : Observation.uri( item, true );
 
+  const totalObsPhotos = item.observationPhotos && item.observationPhotos.length;
+
   return (
     <Pressable
       onPress={onPress}
@@ -31,6 +33,11 @@ const GridItem = ( { item, handlePress, uri }: Props ): Node => {
       accessibilityRole="link"
       accessibilityLabel="Navigate to observation details screen"
     >
+      {totalObsPhotos > 1 && (
+        <View style={viewStyles.totalObsPhotos}>
+          <Text>{totalObsPhotos}</Text>
+        </View>
+      )}
       <Image
         source={imageUri}
         style={imageStyles.gridImage}

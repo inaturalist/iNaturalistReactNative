@@ -36,9 +36,6 @@ Fungi = Fungi
 
 Geoprivacy = Geoprivacy:
 
-# Label for a view that shows observations as a grid of photos
-Grid-View = Grid View
-
 Group-Photos = Group Photos
 
 IDENTIFICATION = IDENTIFICATION
@@ -46,9 +43,6 @@ IDENTIFICATION = IDENTIFICATION
 Identification = Identification
 
 Insects = Insects
-
-# Label for a view that shows observations a list
-List-View = List View
 
 Location = Location
 

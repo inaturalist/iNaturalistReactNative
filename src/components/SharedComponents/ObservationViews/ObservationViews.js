@@ -71,28 +71,28 @@ const ObservationViews = ( {
           <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>{t( "X-Observations", { observationCount: totalObservations } )}</Text>
         </View>
       )}
-      <View style={viewStyles.toggleViewRow}>
+      <View style={[viewStyles.toggleViewRow, isExplore ? viewStyles.exploreButtons : viewStyles.obsListButtons]}>
         {isExplore && (
           <Pressable
             onPress={setMapView}
             accessibilityRole="button"
             testID="Explore.toggleMapView"
           >
-            <Text>map view</Text>
+            <Text>map</Text>
           </Pressable>
         )}
         <Pressable
           onPress={setListView}
           accessibilityRole="button"
         >
-          <Text>{ t( "List-View" ) }</Text>
+          <Text>list</Text>
         </Pressable>
         <Pressable
           onPress={setGridView}
           testID="ObsList.toggleGridView"
           accessibilityRole="button"
         >
-          <Text>{ t( "Grid-View" ) }</Text>
+          <Text>grid</Text>
         </Pressable>
       </View>
       {loading
