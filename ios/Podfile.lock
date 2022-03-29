@@ -306,6 +306,8 @@ PODS:
     - React
   - RNAudioRecorderPlayer (3.3.4):
     - React-Core
+  - RNCCheckbox (0.5.12):
+    - React-Core
   - RNCPicker (2.4.0):
     - React-Core
   - RNDateTimePicker (6.1.0):
@@ -400,6 +402,7 @@ DEPENDENCIES:
   - ReactNativeExceptionHandler (from `../node_modules/react-native-exception-handler`)
   - RealmJS (from `../node_modules/realm`)
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
+  - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -500,6 +503,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/realm"
   RNAudioRecorderPlayer:
     :path: "../node_modules/react-native-audio-recorder-player"
+  RNCCheckbox:
+    :path: "../node_modules/@react-native-community/checkbox"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
   RNDateTimePicker:
@@ -565,6 +570,7 @@ SPEC CHECKSUMS:
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
   RealmJS: 74cf2dec0a20e7ca75655b5190eb60c062d106ec
   RNAudioRecorderPlayer: 4efbe1839fd21c5caf8de132a8b3b51b422aa997
+  RNCCheckbox: ed1b4ca295475b41e7251ebae046360a703b6eb5
   RNCPicker: 6d5d64e7b90c240c779ee0938ec433c11e2dd758
   RNDateTimePicker: 064f3a609fbebc6896f7e5a2f48dcee5d9a6fd51
   RNDeviceInfo: 8d4177859b062334835962799460528869a487fb

@@ -16,7 +16,7 @@ type Props = {
   observationList: Array<Object>,
   testID: string,
   taxonId?: number,
-  mapHeight: number,
+  mapHeight?: number,
   totalObservations?: number
 }
 

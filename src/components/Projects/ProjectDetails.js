@@ -18,6 +18,7 @@ const ProjectDetails = ( ): React.Node => {
     <ViewWithFooter>
         <ImageBackground
           source={{ uri: project.header_image_url }}
+          // $FlowFixMe
           style={imageStyles.headerImage}
           testID="ProjectDetails.headerImage"
         >

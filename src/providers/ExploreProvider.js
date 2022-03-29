@@ -12,14 +12,20 @@ type Props = {
 }
 
 const initialFilters = {
+  captive: false,
   d1: null,
   d2: null,
+  introduced: false,
   month: null,
+  native: false,
+  photos: true,
   place_id: null,
   project_id: null,
-  quality_grade: null,
+  quality_grade: [],
   sort_by: "observed_on",
+  sounds: false,
   taxon_id: null,
+  threatened: false,
   user_id: null
 };
 

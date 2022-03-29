@@ -157,7 +157,8 @@ const NormalCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  if ( device == null ) { return null;}
+  if ( device == null ) { return null; }
+  // $FlowFixMe
   if ( permission === "denied" ) {
     return (
       <View style={viewStyles.container}>

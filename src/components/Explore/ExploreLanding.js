@@ -8,20 +8,16 @@ import { useNavigation } from "@react-navigation/native";
 import { textStyles, viewStyles } from "../../styles/explore/explore";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import DropdownPicker from "./DropdownPicker";
+// import DropdownPicker from "./DropdownPicker";
 import { ExploreContext } from "../../providers/contexts";
 import TranslatedText from "../SharedComponents/TranslatedText";
 import FiltersIcon from "./FiltersIcon";
+import TaxonLocationSearch from "./TaxonLocationSearch";
 
 const Explore = ( ): Node => {
   const {
     setLoading,
-    exploreFilters,
-    setExploreFilters,
-    taxon,
-    setTaxon,
-    location,
-    setLocation
+    exploreFilters
   } = useContext( ExploreContext );
   const navigation = useNavigation( );
 
@@ -30,46 +26,14 @@ const Explore = ( ): Node => {
     navigation.navigate( "Explore" );
   };
 
-  const setTaxonId = ( getValue ) => {
-    setExploreFilters( {
-      ...exploreFilters,
-      taxon_id: getValue( )
-    } );
-  };
-
-  const setPlaceId = ( getValue ) => {
-    setExploreFilters( {
-      ...exploreFilters,
-      place_id: getValue( )
-    } );
-  };
-
   const taxonId = exploreFilters ? exploreFilters.taxon_id : null;
-  const placeId = exploreFilters ? exploreFilters.place_id : null;
 
   return (
     <ViewWithFooter>
       <TranslatedText text="Explore" />
       <TranslatedText style={textStyles.explanation} text="Visually-search-iNaturalist-data" />
       <FiltersIcon />
-      <TranslatedText text="Taxon" />
-      <DropdownPicker
-        searchQuery={taxon}
-        setSearchQuery={setTaxon}
-        setValue={setTaxonId}
-        sources="taxa"
-        value={taxonId}
-        placeholder="Search-for-a-taxon"
-      />
-      <TranslatedText text="Location" />
-      <DropdownPicker
-        searchQuery={location}
-        setSearchQuery={setLocation}
-        setValue={setPlaceId}
-        sources="places"
-        value={placeId}
-        placeholder="Search-for-a-location"
-      />
+      <TaxonLocationSearch />
       <View style={viewStyles.positionBottom}>
         <RoundGreenButton
           buttonText="Explore"
