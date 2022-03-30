@@ -15,6 +15,7 @@ import TaxonLocationSearch from "./TaxonLocationSearch";
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import TranslatedText from "../SharedComponents/TranslatedText";
 import InputField from "../SharedComponents/InputField";
+import ExploreFooter from "./ExploreFooter";
 
 const ExploreFilters = ( ): Node => {
   const [project, setProject] = useState( "" );
@@ -297,8 +298,10 @@ const ExploreFilters = ( ): Node => {
         }
         }}
       />
-      <TranslatedText text="Filters" />
-      <TranslatedText text="Reset" />
+      <View style={viewStyles.filtersRow}>
+        <TranslatedText text="Filters" />
+        <TranslatedText text="Reset" />
+      </View>
       <TranslatedText text="Quality-Grade" />
       <View style={viewStyles.checkboxRow}>
         {renderQualityGradeCheckbox( "research" )}
@@ -413,6 +416,7 @@ const ExploreFilters = ( ): Node => {
         type="none"
       />
       <View style={viewStyles.bottomPadding} />
+      <ExploreFooter />
     </ScrollNoFooter>
   );
 };

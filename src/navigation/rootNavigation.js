@@ -16,6 +16,7 @@ import IdentifyStackNavigation from "./identifyStackNavigation";
 import ObsEditProvider from "../providers/ObsEditProvider";
 import NetworkLogging from "../components/NetworkLogging";
 import NotificationsStackNavigation from "./notificationsStackNavigation";
+import About from "../components/About";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -57,7 +58,10 @@ const App = ( ): React.Node => (
         />
         <Drawer.Screen name="settings" component={PlaceholderComponent} />
         <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
-        <Drawer.Screen name="about" component={PlaceholderComponent} />
+        <Drawer.Screen
+          name="about"
+          component={About}
+        />
         <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
         <Drawer.Screen name="login" component={Login} />
         <Drawer.Screen

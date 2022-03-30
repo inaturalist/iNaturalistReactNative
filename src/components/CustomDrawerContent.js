@@ -35,7 +35,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       />
       <DrawerItem
         label="about"
-        onPress={( ) => console.log( "nav to about" )}
+        onPress={( ) => navigation.navigate( "about" )}
       />
       <DrawerItem
         label="help/tutorials"

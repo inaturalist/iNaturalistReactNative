@@ -3,6 +3,7 @@
 import { StyleSheet } from "react-native";
 
 import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import { colors } from "../global";
 
 const pickerSelectStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   inputIOS: {
@@ -40,6 +41,13 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   checkboxRow: {
     flexDirection: "row",
     flexWrap: "nowrap"
+  },
+  filtersRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    justifyContent: "space-between",
+    backgroundColor: colors.lightGray,
+    paddingVertical: 20
   },
   radioButtonBox: {
     borderWidth: 0
