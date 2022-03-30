@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useContext } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
 import CheckBox from "@react-native-community/checkbox";
@@ -14,25 +14,30 @@ import DropdownPicker from "./DropdownPicker";
 import TaxonLocationSearch from "./TaxonLocationSearch";
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import TranslatedText from "../SharedComponents/TranslatedText";
-import InputField from "../SharedComponents/InputField";
 import ExploreFooter from "./ExploreFooter";
+import InputField from "../SharedComponents/InputField";
+import ResetFiltersButton from "./ResetFiltersButton";
 
 const ExploreFilters = ( ): Node => {
   const [project, setProject] = useState( "" );
   const [user, setUser] = useState( "" );
-  const { exploreFilters, setExploreFilters } = useContext( ExploreContext );
-  const [toggleCheckBox, setToggleCheckBox] = useState( false );
+  const {
+    exploreFilters,
+    setExploreFilters,
+    unappliedFilters,
+    setUnappliedFilters
+  } = useContext( ExploreContext );
 
   const setProjectId = ( getValue ) => {
-    setExploreFilters( {
-      ...exploreFilters,
+    setUnappliedFilters( {
+      ...unappliedFilters,
       project_id: getValue( )
     } );
   };
 
   const setUserId = ( getValue ) => {
-    setExploreFilters( {
-      ...exploreFilters,
+    setUnappliedFilters( {
+      ...unappliedFilters,
       user_id: getValue( )
     } );
   };
@@ -127,11 +132,11 @@ const ExploreFilters = ( ): Node => {
     { label: t( "Ranks-infrahybrid" ), value: "infrahybrid" }
   ];
 
-  const projectId = exploreFilters ? exploreFilters.project_id : null;
-  const userId = exploreFilters ? exploreFilters.user_id : null;
+  const projectId = unappliedFilters ? unappliedFilters.project_id : null;
+  const userId = unappliedFilters ? unappliedFilters.user_id : null;
 
   const renderQualityGradeCheckbox = ( qualityGrade ) => {
-    const filter = exploreFilters.quality_grade;
+    const filter = unappliedFilters.quality_grade;
     const hasFilter = filter.includes( qualityGrade );
 
     return (
@@ -141,14 +146,14 @@ const ExploreFilters = ( ): Node => {
         value={hasFilter}
         onValueChange={( ) => {
           if ( hasFilter ) {
-            setExploreFilters( {
-              ...exploreFilters,
+            setUnappliedFilters( {
+              ...unappliedFilters,
               quality_grade: filter.filter( e => e !== qualityGrade )
             } );
           } else {
             filter.push( qualityGrade );
-            setExploreFilters( {
-              ...exploreFilters,
+            setUnappliedFilters( {
+              ...unappliedFilters,
               quality_grade: filter
             } );
           }
@@ -159,7 +164,7 @@ const ExploreFilters = ( ): Node => {
   };
 
   const renderMediaCheckbox = ( mediaType ) => {
-    const { sounds, photos } = exploreFilters;
+    const { sounds, photos } = unappliedFilters;
     return (
       <CheckBox
         boxType="square"
@@ -167,14 +172,14 @@ const ExploreFilters = ( ): Node => {
         value={mediaType === "photos" ? photos : sounds}
         onValueChange={( ) => {
           if ( mediaType === "photos" ) {
-            setExploreFilters( {
-              ...exploreFilters,
-              photos: !exploreFilters.photos
+            setUnappliedFilters( {
+              ...unappliedFilters,
+              photos: !unappliedFilters.photos
             } );
           } else {
-            setExploreFilters( {
-              ...exploreFilters,
-              sounds: !exploreFilters.sounds
+            setUnappliedFilters( {
+              ...unappliedFilters,
+              sounds: !unappliedFilters.sounds
             } );
           }
         }}
@@ -184,7 +189,7 @@ const ExploreFilters = ( ): Node => {
   };
 
   const renderStatusCheckbox = ( status ) => {
-    const { native, captive, introduced, threatened } = exploreFilters;
+    const { native, captive, introduced, threatened } = unappliedFilters;
 
     let value;
 
@@ -204,10 +209,10 @@ const ExploreFilters = ( ): Node => {
         disabled={false}
         value={value}
         onValueChange={( ) => {
-          setExploreFilters( {
-            ...exploreFilters,
+          setUnappliedFilters( {
+            ...unappliedFilters,
             // $FlowFixMe
-            [status]: !exploreFilters[status]
+            [status]: !unappliedFilters[status]
           } );
         }}
         style={viewStyles.checkbox}
@@ -218,8 +223,8 @@ const ExploreFilters = ( ): Node => {
   const renderRankPicker = ( rank ) => (
     <RNPickerSelect
       onValueChange={( itemValue ) => {
-        setExploreFilters( {
-          ...exploreFilters,
+        setUnappliedFilters( {
+          ...unappliedFilters,
           // $FlowFixMe
           [rank]: [itemValue]
         } );
@@ -227,34 +232,34 @@ const ExploreFilters = ( ): Node => {
       items={ranks}
       useNativeAndroidPickerStyle={false}
       style={pickerSelectStyles}
-      value={exploreFilters[rank].length > 0 ? exploreFilters[rank][0] : null}
+      value={unappliedFilters[rank].length > 0 ? unappliedFilters[rank][0] : null}
     />
   );
 
   const renderMonthsPicker = ( ) => {
-    const firstMonth = exploreFilters.months[0];
-    const lastMonth = exploreFilters.months[exploreFilters.months.length - 1];
+    const firstMonth = unappliedFilters.months[0];
+    const lastMonth = unappliedFilters.months[unappliedFilters.months.length - 1];
 
-    const includesMonth = value => exploreFilters.months.includes( value );
+    const includesMonth = value => unappliedFilters.months.includes( value );
 
     const fillInMonths = ( itemValue ) => {
       months.forEach( ( { value } ) => {
         if ( value >= firstMonth && value <= itemValue && !includesMonth( value ) ) {
-          exploreFilters.months.push( value );
+          unappliedFilters.months.push( value );
         } else if ( value > itemValue && includesMonth( value ) ) {
-          const index = exploreFilters.months.indexOf( value );
-          exploreFilters.months.splice( index );
+          const index = unappliedFilters.months.indexOf( value );
+          unappliedFilters.months.splice( index );
         }
       } );
-      setExploreFilters( { ...exploreFilters } );
+      setUnappliedFilters( { ...unappliedFilters } );
     };
 
     return (
       <>
         <RNPickerSelect
           onValueChange={( itemValue ) => {
-            exploreFilters.months = [itemValue];
-            setExploreFilters( { ...exploreFilters } );
+            unappliedFilters.months = [itemValue];
+            setUnappliedFilters( { ...unappliedFilters } );
           }}
           items={months}
           useNativeAndroidPickerStyle={false}
@@ -273,151 +278,151 @@ const ExploreFilters = ( ): Node => {
   };
 
   return (
-    <ScrollNoFooter>
-      <TaxonLocationSearch />
-      <TranslatedText text="Sort-by" />
-      <RadioButtonRN
-        data={sortByRadioButtons}
-        boxStyle={viewStyles.radioButtonBox}
-        selectedBtn={( { type } ) => {
-          console.log( type );
-
-        if ( type === "desc" || type === "asc" ) {
-          setExploreFilters( {
-            ...exploreFilters,
-            order: type,
-            order_by: "created_at"
-          } );
-        } else {
-          // votes or observed_on only sort by most recent
-          setExploreFilters( {
-            ...exploreFilters,
-            order: "desc",
-            order_by: type
-          } );
-        }
-        }}
-      />
-      <View style={viewStyles.filtersRow}>
-        <TranslatedText text="Filters" />
-        <TranslatedText text="Reset" />
-      </View>
-      <TranslatedText text="Quality-Grade" />
-      <View style={viewStyles.checkboxRow}>
-        {renderQualityGradeCheckbox( "research" )}
-        <TranslatedText text="Research-Grade" />
-      </View>
-      <View style={viewStyles.checkboxRow}>
-        {renderQualityGradeCheckbox( "needs_id" )}
-        <TranslatedText text="Needs-ID" />
-      </View>
-      <View style={viewStyles.checkboxRow}>
-        {renderQualityGradeCheckbox( "casual" )}
-        <TranslatedText text="Casual" />
-      </View>
-      <TranslatedText text="User" />
-      <TranslatedText text="Search-for-a-user" />
-      <DropdownPicker
-        searchQuery={user}
-        setSearchQuery={setUser}
-        setValue={setUserId}
-        sources="users"
-        value={userId}
-      />
-      <TranslatedText text="Projects" />
-      <TranslatedText text="Search-for-a-project" />
-      <DropdownPicker
-        searchQuery={project}
-        setSearchQuery={setProject}
-        setValue={setProjectId}
-        sources="projects"
-        value={projectId}
-      />
-      <TranslatedText text="Rank" />
-      <TranslatedText text="Low" />
-      {renderRankPicker( "lrank" )}
-      <TranslatedText text="High" />
-      {renderRankPicker( "hrank" )}
-      <TranslatedText text="Date" />
-      <TranslatedText text="Months" />
-      {renderMonthsPicker( )}
-      <TranslatedText text="Media" />
-      <View style={viewStyles.checkboxRow}>
-        {renderMediaCheckbox( "photos" )}
-        <TranslatedText text="Has-Photos" />
-      </View>
-      <View style={viewStyles.checkboxRow}>
-        {renderMediaCheckbox( "sounds" )}
-        <TranslatedText text="Has-Sounds" />
-      </View>
-      <TranslatedText text="Status" />
-      <View style={viewStyles.checkboxRow}>
-        {renderStatusCheckbox( "introduced" )}
-        <TranslatedText text="Introduced" />
-      </View>
-      <View style={viewStyles.checkboxRow}>
-        {renderStatusCheckbox( "native" )}
-        <TranslatedText text="Native" />
-      </View>
-      <View style={viewStyles.checkboxRow}>
-        {renderStatusCheckbox( "threatened" )}
-        <TranslatedText text="Threatened" />
-      </View>
-      <View style={viewStyles.checkboxRow}>
-        {renderStatusCheckbox( "captive" )}
-        <TranslatedText text="Captive-Cultivated" />
-      </View>
-      <TranslatedText text="Reviewed" />
-      <RadioButtonRN
-        data={reviewedRadioButtons}
-        boxStyle={viewStyles.radioButtonBox}
-        selectedBtn={( { type } ) => {
-          console.log( type );
-          if ( type === "all" ) {
-            delete exploreFilters.reviewed;
-            setExploreFilters( { ...exploreFilters } );
-          } else if ( type === "reviewed" ) {
+    <>
+      <ScrollNoFooter>
+        <TaxonLocationSearch />
+        <TranslatedText text="Sort-by" />
+        <RadioButtonRN
+          data={sortByRadioButtons}
+          initial={1}
+          boxStyle={viewStyles.radioButtonBox}
+          selectedBtn={( { type } ) => {
+          if ( type === "desc" || type === "asc" ) {
             setExploreFilters( {
               ...exploreFilters,
-              reviewed: true
+              order: type,
+              order_by: "created_at"
             } );
           } else {
+            // votes or observed_on only sort by most recent
             setExploreFilters( {
               ...exploreFilters,
-              reviewed: false
+              order: "desc",
+              order_by: type
             } );
           }
-        }}
-      />
-      <TranslatedText text="Photo-Licensing" />
-      <RNPickerSelect
-        onValueChange={( itemValue ) => {
-          console.log( itemValue, "item value" );
-          setExploreFilters( {
-            ...exploreFilters,
-            photo_license: itemValue === "all" ? [] : [itemValue]
-          } );
-        }}
-        items={photoLicenses}
-        useNativeAndroidPickerStyle={false}
-        style={pickerSelectStyles}
-        value={exploreFilters.photo_license.length > 0 ? exploreFilters.photo_license[0] : "all"}
-      />
-      <TranslatedText text="Description-Tags" />
-      <InputField
-        handleTextChange={( q ) => {
-          setExploreFilters( {
-            ...exploreFilters,
-            q
-          } );
-        }}
-        placeholder={t( "Search-for-description-tags-text" )}
-        text={exploreFilters.q}
-        type="none"
-      />
-      <View style={viewStyles.bottomPadding} />
+          }}
+        />
+        <View style={viewStyles.filtersRow}>
+          <TranslatedText text="Filters" />
+          <ResetFiltersButton />
+        </View>
+        <TranslatedText text="Quality-Grade" />
+        <View style={viewStyles.checkboxRow}>
+          {renderQualityGradeCheckbox( "research" )}
+          <TranslatedText text="Research-Grade" />
+        </View>
+        <View style={viewStyles.checkboxRow}>
+          {renderQualityGradeCheckbox( "needs_id" )}
+          <TranslatedText text="Needs-ID" />
+        </View>
+        <View style={viewStyles.checkboxRow}>
+          {renderQualityGradeCheckbox( "casual" )}
+          <TranslatedText text="Casual" />
+        </View>
+        <TranslatedText text="User" />
+        <TranslatedText text="Search-for-a-user" />
+        <DropdownPicker
+          searchQuery={user}
+          setSearchQuery={setUser}
+          setValue={setUserId}
+          sources="users"
+          value={userId}
+        />
+        <TranslatedText text="Projects" />
+        <TranslatedText text="Search-for-a-project" />
+        <DropdownPicker
+          searchQuery={project}
+          setSearchQuery={setProject}
+          setValue={setProjectId}
+          sources="projects"
+          value={projectId}
+        />
+        <TranslatedText text="Rank" />
+        <TranslatedText text="Low" />
+        {renderRankPicker( "lrank" )}
+        <TranslatedText text="High" />
+        {renderRankPicker( "hrank" )}
+        <TranslatedText text="Date" />
+        <TranslatedText text="Months" />
+        {renderMonthsPicker( )}
+        <TranslatedText text="Media" />
+        <View style={viewStyles.checkboxRow}>
+          {renderMediaCheckbox( "photos" )}
+          <TranslatedText text="Has-Photos" />
+        </View>
+        <View style={viewStyles.checkboxRow}>
+          {renderMediaCheckbox( "sounds" )}
+          <TranslatedText text="Has-Sounds" />
+        </View>
+        <TranslatedText text="Status" />
+        <View style={viewStyles.checkboxRow}>
+          {renderStatusCheckbox( "introduced" )}
+          <TranslatedText text="Introduced" />
+        </View>
+        <View style={viewStyles.checkboxRow}>
+          {renderStatusCheckbox( "native" )}
+          <TranslatedText text="Native" />
+        </View>
+        <View style={viewStyles.checkboxRow}>
+          {renderStatusCheckbox( "threatened" )}
+          <TranslatedText text="Threatened" />
+        </View>
+        <View style={viewStyles.checkboxRow}>
+          {renderStatusCheckbox( "captive" )}
+          <TranslatedText text="Captive-Cultivated" />
+        </View>
+        <TranslatedText text="Reviewed" />
+        <RadioButtonRN
+          data={reviewedRadioButtons}
+          initial={1}
+          boxStyle={viewStyles.radioButtonBox}
+          selectedBtn={( { type } ) => {
+            if ( type === "all" ) {
+              delete unappliedFilters.reviewed;
+              setUnappliedFilters( { ...unappliedFilters } );
+            } else if ( type === "reviewed" ) {
+              setUnappliedFilters( {
+                ...unappliedFilters,
+                reviewed: true
+              } );
+            } else {
+              setUnappliedFilters( {
+                ...unappliedFilters,
+                reviewed: false
+              } );
+            }
+          }}
+        />
+        <TranslatedText text="Photo-Licensing" />
+        <RNPickerSelect
+          onValueChange={( itemValue ) => {
+            setUnappliedFilters( {
+              ...unappliedFilters,
+              photo_license: itemValue === "all" ? [] : [itemValue]
+            } );
+          }}
+          items={photoLicenses}
+          useNativeAndroidPickerStyle={false}
+          style={pickerSelectStyles}
+          value={unappliedFilters.photo_license.length > 0 ? unappliedFilters.photo_license[0] : "all"}
+        />
+        <TranslatedText text="Description-Tags" />
+        <InputField
+          handleTextChange={( q ) => {
+            setUnappliedFilters( {
+              ...unappliedFilters,
+              q
+            } );
+          }}
+          placeholder={t( "Search-for-description-tags-text" )}
+          text={unappliedFilters.q}
+          type="none"
+        />
+        <View style={viewStyles.bottomPadding} />
+      </ScrollNoFooter>
       <ExploreFooter />
-    </ScrollNoFooter>
+    </>
   );
 };
 

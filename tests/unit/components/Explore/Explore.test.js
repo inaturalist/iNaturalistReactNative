@@ -32,7 +32,7 @@ const mockExploreProviderWithObservations = observations =>
       setLoading: ( ) => {},
       exploreFilters: {},
       setExploreFilters: ( ) => {},
-      clearFilters: ( ) => {}
+      resetFilters: ( ) => {}
     }}>
       {children}
     </ExploreContext.Provider>

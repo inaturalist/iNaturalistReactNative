@@ -54,6 +54,12 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   bottomPadding: {
     padding: 140
+  },
+  footer: {
+    height: 100,
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    backgroundColor: colors.white
   }
 } );
 

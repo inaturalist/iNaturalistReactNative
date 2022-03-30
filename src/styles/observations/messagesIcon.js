@@ -8,7 +8,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   messages: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    margin: 20
+    marginRight: 20
   }
 } );
 

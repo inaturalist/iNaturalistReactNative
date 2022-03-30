@@ -2,13 +2,11 @@
 
 import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HeaderBackButton } from "@react-navigation/elements";
 
 import ExploreProvider from "../providers/ExploreProvider";
 import Explore from "../components/Explore/Explore";
 import ExploreFilters from "../components/Explore/ExploreFilters";
 import ExploreLanding from "../components/Explore/ExploreLanding";
-import ClearFiltersButton from "../components/Explore/ClearFilterButton";
 
 const Stack = createNativeStackNavigator( );
 
@@ -32,10 +30,7 @@ const ExploreStackNavigation = ( ): React.Node => (
       <Stack.Screen
         name="ExploreFilters"
         component={ExploreFilters}
-        options={( { navigation } ) => ( {
-          headerLeft: ( ) => <HeaderBackButton onPress={( ) => navigation.goBack( )} />,
-          headerRight: ( ) => <ClearFiltersButton />
-        } )}
+        options={hideHeader}
       />
     </Stack.Navigator>
   </ExploreProvider>

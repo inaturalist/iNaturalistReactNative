@@ -11,32 +11,39 @@ type Props = {
   children: any
 }
 
+const initialOptions = {
+  order: "desc",
+  order_by: "created_at",
+  taxon_id: null,
+  place_id: null
+};
+
 const initialFilters = {
   captive: false,
-  d1: null,
-  d2: null,
   hrank: [],
   introduced: false,
   lrank: [],
   months: [],
   native: false,
-  order: "desc",
-  order_by: "created_at",
   photo_license: [],
   photos: true,
-  place_id: null,
   project_id: null,
   // start by showing verifiable observations
   quality_grade: ["needs_id", "research"],
   sounds: false,
-  taxon_id: null,
   threatened: false,
   user_id: null
 };
 
 const ExploreProvider = ( { children }: Props ): Node => {
   const [exploreList, setExploreList] = useState( [] );
-  const [exploreFilters, setExploreFilters] = useState( initialFilters );
+  const [exploreFilters, setExploreFilters] = useState( {
+    ...initialOptions,
+    ...initialFilters
+  } );
+  const [unappliedFilters, setUnappliedFilters] = useState( {
+    ...initialFilters
+  } );
   const [loadingExplore, setLoadingExplore] = useState( false );
   const [taxon, setTaxon] = useState( "" );
   const [location, setLocation] = useState( "" );
@@ -52,11 +59,7 @@ const ExploreProvider = ( { children }: Props ): Node => {
       const filters = Object.fromEntries( Object.entries( exploreFilters ).filter( ( [_, v] ) => v != null ) );
       try {
         const params = {
-          // TODO: note that there's a bug with place_id in API v2, so this is not working
-          // as of Dec 20, 2021 with a place selected
           ...filters,
-          verifiable: true,
-          photos: true,
           fields: FIELDS
         };
         const response = await inatjs.observations.search( params );
@@ -82,7 +85,21 @@ const ExploreProvider = ( { children }: Props ): Node => {
 
   const setLoading = ( ) => setLoadingExplore( true );
 
-  const clearFilters = ( ) => setExploreFilters( initialFilters );
+  const resetFilters = ( ) => setExploreFilters( {
+    ...exploreFilters,
+    ...initialFilters
+  } );
+
+  const applyFilters = ( ) => {
+    setLoadingExplore( true );
+    const applied = Object.assign( exploreFilters, unappliedFilters );
+    console.log( applied, "applied" );
+    setExploreFilters( applied );
+  };
+
+  const resetUnappliedFilters = ( )  => setUnappliedFilters( {
+    ...initialFilters
+  } );
 
   const exploreValue = {
     exploreList,
@@ -90,12 +107,16 @@ const ExploreProvider = ( { children }: Props ): Node => {
     setLoading,
     exploreFilters,
     setExploreFilters,
-    clearFilters,
+    resetFilters,
     taxon,
     setTaxon,
     location,
     setLocation,
-    totalObservations
+    totalObservations,
+    unappliedFilters,
+    setUnappliedFilters,
+    applyFilters,
+    resetUnappliedFilters
   };
 
   return (

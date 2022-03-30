@@ -7,16 +7,19 @@ import {
 import { getVersion, getBuildNumber } from "react-native-device-info";
 
 import type { Node } from "react";
+import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 
 const AboutScreen = ( ): Node => {
   const appVersion = getVersion( );
   const buildVersion = getBuildNumber( );
 
   return (
-    <Text>
-      app version:
-      {` ${appVersion} (${buildVersion})`}
-    </Text>
+    <ViewWithFooter>
+      <Text>
+        app version:
+        {` ${appVersion} (${buildVersion})`}
+      </Text>
+    </ViewWithFooter>
   );
 };
 
