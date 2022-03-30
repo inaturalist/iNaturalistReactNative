@@ -62,18 +62,18 @@ const ExploreFilters = ( ): Node => {
   }];
 
   const months = [
-    { label: "jan", value: 1 },
-    { label: "feb", value: 2 },
-    { label: "mar", value: 3 },
-    { label: "apr", value: 4 },
-    { label: "may", value: 5 },
-    { label: "jun", value: 6 },
-    { label: "jul", value: 7 },
-    { label: "aug", value: 8 },
-    { label: "sept", value: 9 },
-    { label: "oct", value: 10 },
-    { label: "nov", value: 11 },
-    { label: "dec", value: 12 }
+    { label: t( "Month-January" ), value: 1 },
+    { label: t( "Month-February" ), value: 2 },
+    { label: t( "Month-March" ), value: 3 },
+    { label: t( "Month-April" ), value: 4 },
+    { label: t( "Month-May" ), value: 5 },
+    { label: t( "Month-June" ), value: 6 },
+    { label: t( "Month-July" ), value: 7 },
+    { label: t( "Month-August" ), value: 8 },
+    { label: t( "Month-September" ), value: 9 },
+    { label: t( "Month-October" ), value: 10 },
+    { label: t( "Month-November" ), value: 11 },
+    { label: t( "Month-December" ), value: 12 }
   ];
 
   const photoLicenses = [
@@ -217,9 +217,9 @@ const ExploreFilters = ( ): Node => {
   const renderRankPicker = ( rank ) => (
     <RNPickerSelect
       onValueChange={( itemValue ) => {
-        console.log( itemValue, "low rank" );
         setExploreFilters( {
           ...exploreFilters,
+          // $FlowFixMe
           [rank]: [itemValue]
         } );
       }}
@@ -229,6 +229,47 @@ const ExploreFilters = ( ): Node => {
       value={exploreFilters[rank].length > 0 ? exploreFilters[rank][0] : null}
     />
   );
+
+  const renderMonthsPicker = ( ) => {
+    const firstMonth = exploreFilters.months[0];
+    const lastMonth = exploreFilters.months[exploreFilters.months.length - 1];
+
+    const includesMonth = value => exploreFilters.months.includes( value );
+
+    const fillInMonths = ( itemValue ) => {
+      months.forEach( ( { value } ) => {
+        if ( value >= firstMonth && value <= itemValue && !includesMonth( value ) ) {
+          exploreFilters.months.push( value );
+        } else if ( value > itemValue && includesMonth( value ) ) {
+          const index = exploreFilters.months.indexOf( value );
+          exploreFilters.months.splice( index );
+        }
+      } );
+      setExploreFilters( { ...exploreFilters } );
+    };
+
+    return (
+      <>
+        <RNPickerSelect
+          onValueChange={( itemValue ) => {
+            exploreFilters.months = [itemValue];
+            setExploreFilters( { ...exploreFilters } );
+          }}
+          items={months}
+          useNativeAndroidPickerStyle={false}
+          style={pickerSelectStyles}
+          value={firstMonth}
+        />
+        <RNPickerSelect
+          onValueChange={( itemValue ) => fillInMonths( itemValue )}
+          items={months}
+          useNativeAndroidPickerStyle={false}
+          style={pickerSelectStyles}
+          value={lastMonth}
+        />
+      </>
+    );
+  };
 
   return (
     <ScrollNoFooter>
@@ -256,7 +297,6 @@ const ExploreFilters = ( ): Node => {
         }
         }}
       />
-      {console.log( exploreFilters, "explore filter qg" )}
       <TranslatedText text="Filters" />
       <TranslatedText text="Reset" />
       <TranslatedText text="Quality-Grade" />
@@ -295,21 +335,9 @@ const ExploreFilters = ( ): Node => {
       {renderRankPicker( "lrank" )}
       <TranslatedText text="High" />
       {renderRankPicker( "hrank" )}
-            {/* <Text>date</Text>
-      <Text>months</Text> */}
-      {/* TODO: make months accept multiple values */}
-      {/* <RNPickerSelect
-        onValueChange={( itemValue ) =>
-          setExploreFilters( {
-            ...exploreFilters,
-            month: itemValue
-          } )
-        }
-        items={months}
-        useNativeAndroidPickerStyle={false}
-        style={pickerSelectStyles}
-        value={exploreFilters.month}
-      /> */}
+      <TranslatedText text="Date" />
+      <TranslatedText text="Months" />
+      {renderMonthsPicker( )}
       <TranslatedText text="Media" />
       <View style={viewStyles.checkboxRow}>
         {renderMediaCheckbox( "photos" )}

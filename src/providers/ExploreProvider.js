@@ -18,7 +18,7 @@ const initialFilters = {
   hrank: [],
   introduced: false,
   lrank: [],
-  month: null,
+  months: [],
   native: false,
   order: "desc",
   order_by: "created_at",
@@ -26,7 +26,8 @@ const initialFilters = {
   photos: true,
   place_id: null,
   project_id: null,
-  quality_grade: [],
+  // start by showing verifiable observations
+  quality_grade: ["needs_id", "research"],
   sounds: false,
   taxon_id: null,
   threatened: false,
