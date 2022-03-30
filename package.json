@@ -28,6 +28,7 @@
     "i18next-fluent": "^2.0.0",
     "i18next-resources-to-backend": "^1.0.0",
     "inaturalistjs": "github:inaturalist/inaturalistjs",
+    "radio-buttons-react-native": "^1.0.4",
     "react": "17.0.2",
     "react-i18next": "^11.16.1",
     "react-native": "^0.67.4",

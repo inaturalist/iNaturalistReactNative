@@ -40,6 +40,12 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   checkboxRow: {
     flexDirection: "row",
     flexWrap: "nowrap"
+  },
+  radioButtonBox: {
+    borderWidth: 0
+  },
+  bottomPadding: {
+    padding: 140
   }
 } );
 

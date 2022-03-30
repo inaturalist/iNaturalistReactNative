@@ -5,13 +5,16 @@ import { Text, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
 import CheckBox from "@react-native-community/checkbox";
+import RadioButtonRN from "radio-buttons-react-native";
+import { t } from "i18next";
 
 import { pickerSelectStyles, viewStyles } from "../../styles/explore/exploreFilters";
 import { ExploreContext } from "../../providers/contexts";
 import DropdownPicker from "./DropdownPicker";
 import TaxonLocationSearch from "./TaxonLocationSearch";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import TranslatedText from "../SharedComponents/TranslatedText";
+import InputField from "../SharedComponents/InputField";
 
 const ExploreFilters = ( ): Node => {
   const [project, setProject] = useState( "" );
@@ -33,6 +36,31 @@ const ExploreFilters = ( ): Node => {
     } );
   };
 
+  const sortByRadioButtons = [{
+    label: t( "Date-added-newest-to-oldest" ),
+    type: "desc"
+  }, {
+    label: t( "Date-added-oldest-to-newest" ),
+    type: "asc"
+  }, {
+    label: t( "Recently-observed" ),
+    type: "observed_on"
+  }, {
+    label: t( "Most-faved" ),
+    type: "votes"
+  }];
+
+  const reviewedRadioButtons = [{
+    label: t( "All-observations" ),
+    type: "all"
+  }, {
+    label: t( "Reviewed-only" ),
+    type: "reviewed"
+  }, {
+    label: t( "Unreviewed-only" ),
+    type: "unreviewed"
+  }];
+
   const months = [
     { label: "jan", value: 1 },
     { label: "feb", value: 2 },
@@ -48,15 +76,54 @@ const ExploreFilters = ( ): Node => {
     { label: "dec", value: 12 }
   ];
 
-  const qualityGradeOptions = [
-    { label: "research", value: "research" },
-    { label: "needs id", value: "needs_id" }
+  const photoLicenses = [
+    { label: t( "All" ), value: "all" },
+    { label: "CC-BY", value: "cc-by" },
+    { label: "CC-BY-NC", value: "cc-by-nc" },
+    { label: "CC-BY-ND", value: "cc-by-nd" },
+    { label: "CC-BY-SA", value: "cc-by-sa" },
+    { label: "CC-BY-NC-ND", value: "cc-by-nc-nd" },
+    { label: "CC-BY-NC-SA", value: "cc-by-nc-sa" },
+    { label: "CC0", value: "cc0" }
   ];
 
-  const sortOptions = [
-    { label: "id", value: "observations.id" },
-    { label: "observed on", value: "observed_on" },
-    { label: "faves", value: "votes" }
+  const ranks = [
+    { label: t( "Ranks-stateofmatter" ), value: "stateofmatter" },
+    { label: t( "Ranks-kingdom" ), value: "kingdom" },
+    { label: t( "Ranks-subkingdom" ), value: "subkingdom" },
+    { label: t(  "Ranks-phylum" ), value: "phylum" },
+    { label: t( "Ranks-subphylum" ), value: "subphylum" },
+    { label: t( "Ranks-superclass" ), value: "superclass" },
+    { label: t( "Ranks-class" ), value: "class" },
+    { label: t( "Ranks-subclass" ), value: "subclass" },
+    { label: t( "Ranks-infraclass" ), value: "infraclass" },
+    { label: t( "Ranks-superorder" ), value: "superorder" },
+    { label: t( "Ranks-order" ), value: "order" },
+    { label: t( "Ranks-suborder" ), value: "suborder" },
+    { label: t( "Ranks-infraorder" ), value: "infraorder" },
+    { label: t( "Ranks-subterclass" ), value: "subterclass" },
+    { label: t( "Ranks-parvorder" ), value: "parvorder" },
+    { label: t( "Ranks-zoosection" ), value: "zoosection" },
+    { label: t( "Ranks-zoosubsection" ), value: "zoosubsection" },
+    { label: t( "Ranks-superfamily" ), value: "superfamily" },
+    { label: t( "Ranks-epifamily" ), value: "epifamily" },
+    { label: t( "Ranks-family" ), value: "family" },
+    { label: t( "Ranks-subfamily" ), value: "subfamily" },
+    { label: t( "Ranks-supertribe" ), value: "supertribe" },
+    { label: t( "Ranks-tribe" ), value: "tribe" },
+    { label: t( "Ranks-subtribe" ), value: "subtribe" },
+    { label: t( "Ranks-genus" ), value: "genus" },
+    { label: t( "Ranks-genushybrid" ), value: "genushybrid" },
+    { label: t( "Ranks-subgenus" ), value: "subgenus" },
+    { label: t( "Ranks-section" ), value: "section" },
+    { label: t( "Ranks-subsection" ), value: "subsection" },
+    { label: t( "Ranks-complex" ), value: "complex" },
+    { label: t( "Ranks-species" ), value: "species" },
+    { label: t( "Ranks-hybrid" ), value: "hybrid" },
+    { label: t( "Ranks-subspecies" ), value: "subspecies" },
+    { label: t( "Ranks-variety" ), value: "variety" },
+    { label: t( "Ranks-form" ), value: "form" },
+    { label: t( "Ranks-infrahybrid" ), value: "infrahybrid" }
   ];
 
   const projectId = exploreFilters ? exploreFilters.project_id : null;
@@ -147,22 +214,48 @@ const ExploreFilters = ( ): Node => {
     );
   };
 
+  const renderRankPicker = ( rank ) => (
+    <RNPickerSelect
+      onValueChange={( itemValue ) => {
+        console.log( itemValue, "low rank" );
+        setExploreFilters( {
+          ...exploreFilters,
+          [rank]: [itemValue]
+        } );
+      }}
+      items={ranks}
+      useNativeAndroidPickerStyle={false}
+      style={pickerSelectStyles}
+      value={exploreFilters[rank].length > 0 ? exploreFilters[rank][0] : null}
+    />
+  );
+
   return (
-    <ViewNoFooter>
+    <ScrollNoFooter>
       <TaxonLocationSearch />
       <TranslatedText text="Sort-by" />
-      {/* <RNPickerSelect
-        onValueChange={( itemValue ) =>
+      <RadioButtonRN
+        data={sortByRadioButtons}
+        boxStyle={viewStyles.radioButtonBox}
+        selectedBtn={( { type } ) => {
+          console.log( type );
+
+        if ( type === "desc" || type === "asc" ) {
           setExploreFilters( {
             ...exploreFilters,
-            sort_by: itemValue
-          } )
+            order: type,
+            order_by: "created_at"
+          } );
+        } else {
+          // votes or observed_on only sort by most recent
+          setExploreFilters( {
+            ...exploreFilters,
+            order: "desc",
+            order_by: type
+          } );
         }
-        items={sortOptions}
-        useNativeAndroidPickerStyle={false}
-        style={pickerSelectStyles}
-        value={exploreFilters.sort_by}
-      /> */}
+        }}
+      />
       {console.log( exploreFilters, "explore filter qg" )}
       <TranslatedText text="Filters" />
       <TranslatedText text="Reset" />
@@ -181,8 +274,42 @@ const ExploreFilters = ( ): Node => {
       </View>
       <TranslatedText text="User" />
       <TranslatedText text="Search-for-a-user" />
+      <DropdownPicker
+        searchQuery={user}
+        setSearchQuery={setUser}
+        setValue={setUserId}
+        sources="users"
+        value={userId}
+      />
       <TranslatedText text="Projects" />
       <TranslatedText text="Search-for-a-project" />
+      <DropdownPicker
+        searchQuery={project}
+        setSearchQuery={setProject}
+        setValue={setProjectId}
+        sources="projects"
+        value={projectId}
+      />
+      <TranslatedText text="Rank" />
+      <TranslatedText text="Low" />
+      {renderRankPicker( "lrank" )}
+      <TranslatedText text="High" />
+      {renderRankPicker( "hrank" )}
+            {/* <Text>date</Text>
+      <Text>months</Text> */}
+      {/* TODO: make months accept multiple values */}
+      {/* <RNPickerSelect
+        onValueChange={( itemValue ) =>
+          setExploreFilters( {
+            ...exploreFilters,
+            month: itemValue
+          } )
+        }
+        items={months}
+        useNativeAndroidPickerStyle={false}
+        style={pickerSelectStyles}
+        value={exploreFilters.month}
+      /> */}
       <TranslatedText text="Media" />
       <View style={viewStyles.checkboxRow}>
         {renderMediaCheckbox( "photos" )}
@@ -209,38 +336,56 @@ const ExploreFilters = ( ): Node => {
         {renderStatusCheckbox( "captive" )}
         <TranslatedText text="Captive-Cultivated" />
       </View>
-      {/* <Text>user</Text>
-      <DropdownPicker
-        searchQuery={user}
-        setSearchQuery={setUser}
-        setValue={setUserId}
-        sources="users"
-        value={userId}
+      <TranslatedText text="Reviewed" />
+      <RadioButtonRN
+        data={reviewedRadioButtons}
+        boxStyle={viewStyles.radioButtonBox}
+        selectedBtn={( { type } ) => {
+          console.log( type );
+          if ( type === "all" ) {
+            delete exploreFilters.reviewed;
+            setExploreFilters( { ...exploreFilters } );
+          } else if ( type === "reviewed" ) {
+            setExploreFilters( {
+              ...exploreFilters,
+              reviewed: true
+            } );
+          } else {
+            setExploreFilters( {
+              ...exploreFilters,
+              reviewed: false
+            } );
+          }
+        }}
       />
-      <Text>project</Text>
-      <DropdownPicker
-        searchQuery={project}
-        setSearchQuery={setProject}
-        setValue={setProjectId}
-        sources="projects"
-        value={projectId}
-      />
-      {/* <Text>date</Text>
-      <Text>months</Text> */}
-      {/* TODO: make months accept multiple values */}
-      {/* <RNPickerSelect
-        onValueChange={( itemValue ) =>
+      <TranslatedText text="Photo-Licensing" />
+      <RNPickerSelect
+        onValueChange={( itemValue ) => {
+          console.log( itemValue, "item value" );
           setExploreFilters( {
             ...exploreFilters,
-            month: itemValue
-          } )
-        }
-        items={months}
+            photo_license: itemValue === "all" ? [] : [itemValue]
+          } );
+        }}
+        items={photoLicenses}
         useNativeAndroidPickerStyle={false}
         style={pickerSelectStyles}
-        value={exploreFilters.month}
-      /> */}
-    </ViewNoFooter>
+        value={exploreFilters.photo_license.length > 0 ? exploreFilters.photo_license[0] : "all"}
+      />
+      <TranslatedText text="Description-Tags" />
+      <InputField
+        handleTextChange={( q ) => {
+          setExploreFilters( {
+            ...exploreFilters,
+            q
+          } );
+        }}
+        placeholder={t( "Search-for-description-tags-text" )}
+        text={exploreFilters.q}
+        type="none"
+      />
+      <View style={viewStyles.bottomPadding} />
+    </ScrollNoFooter>
   );
 };
 

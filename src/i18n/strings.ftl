@@ -9,6 +9,10 @@ Add-optional-notes = Add optional notes
 
 Add-to-projects = Add to projects
 
+All = All
+
+All-observations = All observations
+
 Amphibians = Amphibians
 
 Arachnids = Arachnids
@@ -28,6 +32,12 @@ Combine-Photos = Combine Photos
 Combine-photos-onboarding = Combine photos into observations – make sure there is only one species per observation
 
 CREATE-AN-OBSERVATION = CREATE AN OBSERVATION
+
+Date-added-newest-to-oldest = Date added - newest to oldest
+
+Date-added-oldest-to-newest = Date added - oldest to newest
+
+Description-Tags = Description/Tags
 
 Evidence = Evidence
 
@@ -49,6 +59,8 @@ Has-Photos = Has Photos
 
 Has-Sounds = Has Sounds
 
+High = High
+
 IDENTIFICATION = IDENTIFICATION
 
 Identification = Identification
@@ -59,11 +71,15 @@ Introduced = Introduced
 
 Location = Location
 
+Low = Low
+
 Mammals = Mammals
 
 Media = Media
 
 Mollusks = Mollusks
+
+Most-faved = Most faved
 
 Native = Native
 
@@ -86,6 +102,8 @@ Other-Data = Other Data
 
 Paused = Paused
 
+Photo-Licensing = Photo Licensing
+
 Plants = Plants
 
 # Help text for playing back a sound recording
@@ -99,6 +117,82 @@ Private = Private
 Projects = Projects
 
 Quality-Grade = Quality Grade
+
+Rank = Rank
+
+Ranks-stateofmatter = state of matter
+
+Ranks-kingdom = kingdom
+
+Ranks-subkingdom = subkingdom
+
+Ranks-phylum = phylum
+
+Ranks-subphylum = subphylum
+
+Ranks-superclass = superclass
+
+Ranks-class = class
+
+Ranks-subclass = subclass
+
+Ranks-infraclass = infraclass
+
+Ranks-superorder = superorder
+
+Ranks-order = order
+
+Ranks-suborder = suborder
+
+Ranks-infraorder = infraorder
+
+Ranks-subterclass = subterclass
+
+Ranks-parvorder = parvorder
+
+Ranks-zoosection = zoosection
+
+Ranks-zoosubsection = zoosubsection
+
+Ranks-superfamily = superfamily
+
+Ranks-epifamily = epifamily
+
+Ranks-family = family
+
+Ranks-subfamily = subfamily
+
+Ranks-supertribe = supertribe
+
+Ranks-tribe = tribe
+
+Ranks-subtribe = subtribe
+
+Ranks-genus = genus
+
+Ranks-genushybrid = genushybrid
+
+Ranks-subgenus = subgenus
+
+Ranks-section = section
+
+Ranks-subsection = subsection
+
+Ranks-complex = complex
+
+Ranks-species = species
+
+Ranks-hybrid = hybrid
+  
+Ranks-subspecies = subspecies
+
+Ranks-variety = variety
+
+Ranks-form = form
+
+Ranks-infrahybrid = infrahybrid
+
+Recently-observed = Recently observed
 
 Record-a-sound = Record a sound
 
@@ -115,6 +209,10 @@ Research-Grade = Research Grade
 
 Reset = Reset
 
+Reviewed = Reviewed
+
+Reviewed-only = Reviewed only
+
 Search-for-a-location = Search for a location
 
 Search-for-a-project = Search for a project
@@ -122,6 +220,8 @@ Search-for-a-project = Search for a project
 Search-for-a-taxon = Search for a taxon
 
 Search-for-a-user = Search for a user
+
+Search-for-description-tags-text = Search for description/tags text
 
 Select = Select
 
@@ -155,6 +255,8 @@ TAXONOMY-header = TAXONOMY
 The-first-thing-you-need-is-evidence = The first thing you need is evidence of an organism. This helps others identify what you saw.
 
 Threatened = Threatened
+
+Unreviewed-only = Unreviewed only
 
 Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 
