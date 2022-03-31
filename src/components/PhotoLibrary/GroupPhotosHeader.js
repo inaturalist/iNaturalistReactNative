@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { View, Pressable, Text } from "react-native";
+import { View, Text } from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { HeaderBackButton } from "@react-navigation/elements";

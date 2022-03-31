@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import type { Node } from "react";
 import { View } from "react-native";
 
-import { textStyles, viewStyles } from "../../styles/explore/explore";
+import { viewStyles } from "../../styles/explore/explore";
 import DropdownPicker from "./DropdownPicker";
 import { ExploreContext } from "../../providers/contexts";
 import TranslatedText from "../SharedComponents/TranslatedText";

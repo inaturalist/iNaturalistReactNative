@@ -8,7 +8,7 @@ import App from "./src/navigation/rootNavigation";
 import {name as appName} from "./app.json";
 import "./src/i18n";
 import { startNetworkLogging } from "react-native-network-logger";
-import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
+import { setJSExceptionHandler } from "react-native-exception-handler";
 
 // https://github.com/a7ul/react-native-exception-handler-example/blob/7c8f32d53856db1cc10f968c58034b285926951b/App.js
 const errorHandler = ( e, isFatal ) => {
