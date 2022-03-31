@@ -31,6 +31,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   whiteBanner: {
     paddingVertical: 20
+  },
+  footer: {
+    paddingTop: 100
   }
 } );
 

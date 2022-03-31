@@ -20,7 +20,7 @@ const useLoggedIn = ( ): ?boolean => {
         }
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch user:", e.message );
+        console.log( "Couldn't check whether user logged in:", e.message );
       }
     };
 

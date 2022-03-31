@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, ActivityIndicator, View, Pressable, Text } from "react-native";
+import { FlatList, View, Pressable, Text } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
@@ -10,6 +10,7 @@ import GridItem from "./GridItem";
 import EmptyList from "./EmptyList";
 import ObsCard from "./ObsCard";
 import Map from "../Map";
+import InfiniteScrollFooter from "./InfiniteScrollFooter";
 
 type Props = {
   loading: boolean,
@@ -17,7 +18,8 @@ type Props = {
   testID: string,
   taxonId?: number,
   mapHeight?: number,
-  totalObservations?: number
+  totalObservations?: number,
+  handleEndReached?: Function
 }
 
 const ObservationViews = ( {
@@ -26,7 +28,8 @@ const ObservationViews = ( {
   testID,
   taxonId,
   mapHeight,
-  totalObservations
+  totalObservations,
+  handleEndReached
 }: Props ): React.Node => {
   const [view, setView] = React.useState( "list" );
   const navigation = useNavigation( );
@@ -45,6 +48,8 @@ const ObservationViews = ( {
 
   const { t } = useTranslation( );
 
+  const renderFooter = ( ) => loading ? <InfiniteScrollFooter /> : <View style={viewStyles.footer} />;
+
   const renderView = ( ) => {
     if ( view === "map" ) {
       return <Map taxonId={taxonId} mapHeight={mapHeight} />;
@@ -57,6 +62,8 @@ const ObservationViews = ( {
           numColumns={view === "grid" ? 2 : 1}
           testID={testID}
           ListEmptyComponent={renderEmptyState}
+          onEndReached={handleEndReached}
+          ListFooterComponent={renderFooter}
         />
       );
     }
@@ -95,9 +102,10 @@ const ObservationViews = ( {
           <Text>grid</Text>
         </Pressable>
       </View>
-      {loading
+      {renderView( )}
+      {/* {loading
         ? <ActivityIndicator />
-        : renderView( )}
+        : renderView( )} */}
     </>
   );
 };
