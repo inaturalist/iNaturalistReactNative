@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useCallback, useContext } from "react";
-import { Text, TextInput, Pressable, FlatList, View, Modal, Platform, Alert } from "react-native";
+import { Text, Pressable, FlatList, View, Modal, Platform, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
@@ -24,6 +24,7 @@ import resizeImageForUpload from "./helpers/resizeImage";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 import DatePicker from "./DatePicker";
 import TranslatedText from "../SharedComponents/TranslatedText";
+import Notes from "./Notes";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -416,14 +417,7 @@ const ObsEdit = ( ): Node => {
           value={currentObs.captive_flag}
         />
       </View>
-      <TextInput
-        keyboardType="default"
-        multiline
-        onChangeText={addNotes}
-        placeholder={t( "Add-optional-notes" )}
-        style={textStyles.notes}
-        testID="ObsEdit.notes"
-      />
+      <Notes addNotes={addNotes} />
       <Pressable onPress={searchForProjects}>
         <TranslatedText style={textStyles.text} text="Add-to-projects" />
       </Pressable>
