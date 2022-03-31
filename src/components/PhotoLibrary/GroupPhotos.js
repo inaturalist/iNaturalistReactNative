@@ -147,7 +147,17 @@ const GroupPhotos = ( ): Node => {
   };
 
   const separatePhotos = ( ) => {
-    if ( selectedObservations.length < 2 ) { return; }
+    let maxCombinedPhotos = 0;
+
+    selectedObservations.forEach( obs => {
+      const numPhotos = obs.observationPhotos.length;
+      if ( numPhotos > maxCombinedPhotos ) {
+        maxCombinedPhotos = numPhotos;
+      }
+    } );
+
+    // make sure at least one set of combined photos is selected
+    if ( maxCombinedPhotos < 2 ) { return; }
 
     let separatedPhotos = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( );
