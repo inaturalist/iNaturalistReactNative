@@ -6,13 +6,14 @@ const PASSWORD = "123456";
 const ACCESS_TOKEN = "some_token";
 const ACCESS_TOKEN_AUTHORIZATION_HEADER = `Bearer ${ACCESS_TOKEN}`;
 const JWT = "jwt_token";
+const USERID = 113113;
 
 test( "authenticates user", async ( ) => {
   const scope = nock( "https://www.inaturalist.org" )
     .post( "/oauth/token" )
     .reply( 200, { access_token: ACCESS_TOKEN } )
     .get( "/users/edit.json" )
-    .reply( 200, { login: USERNAME } );
+    .reply( 200, { login: USERNAME, id: USERID } );
 
   const scope2 = nock( "https://www.inaturalist.org" , {
     reqheaders: {
@@ -48,7 +49,7 @@ test( "registers user", async ( ) => {
     .post( "/oauth/token" )
     .reply( 200, { access_token: ACCESS_TOKEN } )
     .get( "/users/edit.json" )
-    .reply( 200, { login: USERNAME } )
+    .reply( 200, { login: USERNAME, id: USERID } )
     .post( "/users.json" )
     .reply( 200 );
 

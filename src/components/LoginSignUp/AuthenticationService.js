@@ -130,10 +130,12 @@ const authenticateUser = async (
     return false;
   }
 
+  const userId = userDetails.userId && userDetails.userId.toString( );
+
   // Save authentication details to secure storage
   await SInfo.setItem( "username", userDetails.username, {} );
   await SInfo.setItem( "accessToken", userDetails.accessToken, {} );
-  await SInfo.setItem( "userId", userDetails.userId.toString( ), {} );
+  await SInfo.setItem( "userId", userId, {} );
 
   return true;
 };

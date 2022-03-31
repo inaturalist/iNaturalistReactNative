@@ -6,7 +6,6 @@ import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import UserIcon from "../SharedComponents/UserIcon";
-// import { useCurrentUser } from "./hooks/useCurrentUser";
 import { useUser } from "../UserProfile/hooks/useUser";
 import User from "../../models/User";
 import { viewStyles } from "../../styles/observations/userCard";
@@ -19,7 +18,6 @@ const UserCard = ( { userId }: Props ): Node => {
   // TODO: this currently doesn't show up on initial login
   // because user id can't be fetched
   const navigation = useNavigation( );
-  // const userId = useCurrentUser( );
   const { user } = useUser( userId );
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId } );
 
