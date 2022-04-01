@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { Text, View, Pressable, PermissionsAndroid, Platform } from "react-native";
+import { Text, View, Pressable, Platform } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -12,6 +12,7 @@ import { viewStyles, textStyles } from "../../styles/camera/normalCamera";
 import { ObsEditContext } from "../../providers/contexts";
 import CameraView from "./CameraView";
 import TopPhotos from "./TopPhotos";
+import checkCameraPermissions from "./helpers/androidPermissions";
 
 const NormalCamera = ( ): Node => {
   const [permission, setPermission] = useState( null );
@@ -31,23 +32,18 @@ const NormalCamera = ( ): Node => {
   const [observationPhotos, setObservationPhotos] = useState( [] );
 
   useEffect( ( ) => {
-    const requestAndroidPermissions = async ( ) => {
-      try {
-        const granted = await PermissionsAndroid.request( PermissionsAndroid.PERMISSIONS.CAMERA );
-        console.log( granted, "camera permission android" );
-        if ( granted === PermissionsAndroid.RESULTS.GRANTED ) {
-          setPermission( "granted" );
-        } else {
-          setPermission( "denied" );
+    const requestAndroidPermissions = ( ) => {
+      checkCameraPermissions( ).then( ( result ) => {
+        if ( result === "permissions" ) {
+          console.log( result, "result in then catch" );
         }
-      } catch ( err ) {
-        console.log( err, "error requesting android permissions" );
-        setPermission( "not-determined" );
-      }
+        console.log( "result not permissions" );
+      } ).catch( e => console.log( e, "couldn't get camera permissions" ) );
     };
 
     navigation.addListener( "focus", ( ) => {
       if ( Platform.OS === "android" ) {
+        console.log( "requesting android permissions on focus" );
         requestAndroidPermissions( );
       }
     } );
@@ -100,6 +96,8 @@ const NormalCamera = ( ): Node => {
     addPhotos( observationPhotos );
     navigation.navigate( "ObsEdit" );
   };
+
+  console.log( device === null, permission, "device and permission" );
 
   // $FlowFixMe
   if ( permission === "denied" ) {

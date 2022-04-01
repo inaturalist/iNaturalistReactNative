@@ -2,19 +2,20 @@
 
 import { PermissionsAndroid } from "react-native";
 
+const checkCameraPermissions = async ( ): Promise<any> => {
+  const { PERMISSIONS, RESULTS } = PermissionsAndroid;
 
-const requestCameraPermission = async ( ): Promise<string> => {
   try {
-    const granted = await PermissionsAndroid.request( PermissionsAndroid.PERMISSIONS.CAMERA );
-    if ( granted === PermissionsAndroid.RESULTS.GRANTED ) {
-      console.log( granted, "permission requested and granted" );
-      return "granted";
-    } else {
-      return "denied";
+    const granted = await PermissionsAndroid.request( PERMISSIONS.CAMERA );
+    console.log( granted, "granted camera permissions in helper func" );
+
+    if ( granted === RESULTS.GRANTED ) {
+      return true;
     }
-  } catch ( err ) {
-    return "not-determined";
+    return "permissions";
+  } catch ( e ) {
+    return e;
   }
 };
 
-export default requestCameraPermission;
+export default checkCameraPermissions;
