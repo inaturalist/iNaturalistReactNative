@@ -6,13 +6,13 @@ import React, { useContext, useState, useEffect } from "react";
 import { Text, Pressable, View, Platform, PermissionsAndroid } from "react-native";
 // $FlowFixMe
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
- import type { Node } from "react";
- import { useTranslation } from "react-i18next";
- import { useNavigation } from "@react-navigation/native";
- import uuid from "react-native-uuid";
- import { getUnixTime } from "date-fns";
- import { useUserLocation } from "../../sharedHooks/useUserLocation";
- import { formatDateAndTime } from "../../sharedHelpers/dateAndTime";
+import type { Node } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigation } from "@react-navigation/native";
+import uuid from "react-native-uuid";
+import { getUnixTime } from "date-fns";
+import { useUserLocation } from "../../sharedHooks/useUserLocation";
+import { formatDateAndTime } from "../../sharedHelpers/dateAndTime";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder";
@@ -163,18 +163,6 @@ const SoundRecorder = ( ): Node => {
     setStatus( "paused" );
   };
 
-  const renderHelpText = ( ) => {
-    if ( status === "notStarted" ) {
-      return t( "Press-Record-to-Start" );
-    } else if ( status === "recording" ) {
-      return t( "Recording-Sound" );
-    } else if ( status === "paused" ) {
-      return ( t( "Paused" ) );
-    } else if ( status === "playing" ) {
-      return ( t( "Playing-Sound" ) );
-    }
-  };
-
   const renderRecordButton = ( ) => {
     if ( status === "notStarted" ) {
       return (
@@ -253,7 +241,6 @@ const SoundRecorder = ( ): Node => {
           <Text>insert visualization here</Text>
         </View>
         <View>
-          <Text style={textStyles.alignCenter}>{renderHelpText( )}</Text>
           <View style={viewStyles.recordButtonRow}>
             {renderPlaybackButton( )}
             {renderRecordButton( )}

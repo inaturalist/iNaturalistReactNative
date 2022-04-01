@@ -20,10 +20,22 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
   const [photoOptions, setPhotoOptions] = useState( options );
   // photos are fetched from the server on initial render
   // and anytime a user scrolls through the photo gallery
-  const photosFetched = usePhotos( photoOptions, isScrolling );
+  const photoFetchStatus = usePhotos( photoOptions, isScrolling );
+  const photosFetched = photoFetchStatus.photos;
+  const fetchingPhotos = photoFetchStatus.fetchingPhotos;
 
   const [photoGallery, setPhotoGallery] = useState( {} );
   const [selectedPhotos, setSelectedPhotos] = useState( {} );
+
+  const totalSelected = ( ) => {
+    let total = 0;
+    const albums = Object.keys( selectedPhotos );
+
+    albums.forEach( album => {
+      total += selectedPhotos[album].length;
+    } );
+    return total;
+  };
 
   useEffect( ( ) => {
     if ( photosFetched ) {
@@ -56,7 +68,9 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
     photoOptions,
     setPhotoOptions,
     selectedPhotos,
-    setSelectedPhotos
+    setSelectedPhotos,
+    fetchingPhotos,
+    totalSelected: totalSelected( )
   };
 
   return (

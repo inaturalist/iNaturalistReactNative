@@ -130,9 +130,12 @@ const authenticateUser = async (
     return false;
   }
 
+  const userId = userDetails.userId && userDetails.userId.toString( );
+
   // Save authentication details to secure storage
   await SInfo.setItem( "username", userDetails.username, {} );
   await SInfo.setItem( "accessToken", userDetails.accessToken, {} );
+  await SInfo.setItem( "userId", userId, {} );
 
   return true;
 };
@@ -247,11 +250,13 @@ const verifyCredentials = async (
   }
 
   const iNatUsername = response.data.login;
+  const iNatID = response.data.id;
   console.log( "verifyCredentials - logged in username ", iNatUsername );
 
   return {
     accessToken: accessToken,
-    username: iNatUsername
+    username: iNatUsername,
+    userId: iNatID
   };
 };
 
@@ -275,6 +280,15 @@ const getUsername = async (): Promise<string> => {
 };
 
 /**
+ * Returns the logged-in userId
+ *
+ * @returns {Promise<boolean>}
+ */
+ const getUserId = async (): Promise<string> => {
+  return await RNSInfo.getItem( "userId", {} );
+};
+
+/**
  * Signs out the user
  *
  * @returns {Promise<void>}
@@ -293,5 +307,6 @@ export {
   isLoggedIn,
   getUsername,
   signOut,
-  getJWTToken
+  getJWTToken,
+  getUserId
 };

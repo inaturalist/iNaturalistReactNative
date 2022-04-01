@@ -16,7 +16,7 @@ const initialStatus = {
   fetchingPhotos: false
 };
 
-const usePhotos = ( options: Object, isScrolling: boolean ): Array<Object> => {
+const usePhotos = ( options: Object, isScrolling: boolean ): Object => {
   const [photoFetchStatus, setPhotoFetchStatus] = useState( initialStatus );
 
   const fetchPhotos = useCallback( async ( ) => {
@@ -107,7 +107,7 @@ const usePhotos = ( options: Object, isScrolling: boolean ): Array<Object> => {
     }
   }, [photoFetchStatus, options] );
 
-  return photoFetchStatus.photos;
+  return photoFetchStatus;
 };
 
 export default usePhotos;

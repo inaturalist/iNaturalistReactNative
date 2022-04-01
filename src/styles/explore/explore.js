@@ -13,17 +13,29 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     borderWidth: 0.5,
     height: 37,
     paddingLeft: 15,
-    marginHorizontal: 50,
-    marginVertical: 20,
-    width: "75%"
+    marginVertical: 5
+  },
+  positionBottom: {
+    bottom: 140,
+    width: "100%",
+    position: "absolute"
+  },
+  bottomCard: {
+    backgroundColor: colors.white,
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    borderColor: colors.gray,
+    borderWidth: 1,
+    paddingTop: 20,
+    paddingBottom: 70,
+    paddingHorizontal: 20
   }
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   explanation: {
     color: colors.gray,
-    textAlign: "center",
-    marginVertical: 10
+    margin: 10
   }
 } );
 

@@ -70,7 +70,18 @@ class Observation {
 
   // TODO: swap this and realm schema to use observation_photos everywhere, if possible
   // so there's no need for projectUri
-  static uri = obs => ( obs && obs.observationPhotos && obs.observationPhotos[0] ) && { uri: obs.observationPhotos[0].photo.url };
+  static uri = ( obs, medium ) => {
+    let photoUri;
+    if ( obs && obs.observationPhotos && obs.observationPhotos[0] ) {
+      if ( medium ) {
+        // need medium size for GridView component
+        photoUri = obs.observationPhotos[0].photo.url.replace( "square", "medium" );
+      } else {
+        photoUri = obs.observationPhotos[0].photo.url;
+      }
+    }
+    return { uri: photoUri };
+  }
 
   static projectUri = obs => {
     const photo = obs.observation_photos[0];

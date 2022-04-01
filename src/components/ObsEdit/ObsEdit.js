@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useCallback, useContext } from "react";
-import { Text, TextInput, Pressable, FlatList, View, Modal, Platform, Alert } from "react-native";
+import { Text, Pressable, FlatList, View, Modal, Platform, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
@@ -21,6 +21,11 @@ import { ObsEditContext } from "../../providers/contexts";
 import useLocationName from "../../sharedHooks/useLocationName";
 import EvidenceList from "./EvidenceList";
 import resizeImageForUpload from "./helpers/resizeImage";
+import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
+import DatePicker from "./DatePicker";
+import TranslatedText from "../SharedComponents/TranslatedText";
+import Notes from "./Notes";
+import BottomModal from "./BottomModal";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -34,23 +39,27 @@ const ObsEdit = ( ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const [showModal, setModal] = useState( false );
+  const [showBottomModal, setBottomModal] = useState( false );
   const [source, setSource] = useState( null );
+  const isLoggedIn = useLoggedIn( );
 
   const openModal = useCallback( ( ) => setModal( true ), [] );
   const closeModal = useCallback( ( ) => setModal( false ), [] );
+  const openBottomModal = useCallback( ( ) => setBottomModal( true ), [] );
+  const closeBottomModal = useCallback( ( ) => setBottomModal( false ), [] );
 
   const [showLocationPicker, setShowLocationPicker] = useState( false );
 
   const geoprivacyOptions = [{
-    label: "open",
+    label: t( "Open" ),
     value: "open"
   },
   {
-    label: "obscured",
+    label: t( "Obscured" ),
     value: "obscured"
   },
   {
-    label: "private",
+    label: t( "Private" ),
     value: "private"
   }];
 
@@ -70,6 +79,7 @@ const ObsEdit = ( ): Node => {
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
   const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
   const updateTaxaId = taxaId => updateObservationKey( "taxon_id", taxaId );
+  const updateObservedOn = value => updateObservationKey( "observed_on_string", value );
 
   const updateProjectIds = projectId => {
     const updatedObs = observations.map( ( obs, index ) => {
@@ -111,26 +121,35 @@ const ObsEdit = ( ): Node => {
   const renderArrowNavigation = ( ) => {
     if ( observations.length === 0 ) { return; }
 
+    const handleBackButtonPress = ( ) => {
+      openBottomModal( );
+      // show modal to dissuade user from going back
+      // navigation.goBack( );
+    };
+
     return (
       <View style={viewStyles.row}>
-        <HeaderBackButton onPress={( ) => navigation.goBack( )} />
-        <View style={viewStyles.row}>
-          {currentObsNumber !== 0 && (
-            <Pressable
-              onPress={showPrevObservation}
-            >
-              <Text>previous obs</Text>
-            </Pressable>
+        <HeaderBackButton onPress={handleBackButtonPress} />
+        {observations.length === 1
+          ? <TranslatedText text="New-Observation" /> : (
+            <View style={viewStyles.row}>
+              {currentObsNumber !== 0 && (
+                <Pressable
+                  onPress={showPrevObservation}
+                >
+                  <Text>previous obs</Text>
+                </Pressable>
+              )}
+              <Text>{`${currentObsNumber + 1} of ${observations.length}`}</Text>
+              {( currentObsNumber !== observations.length - 1 ) && (
+                <Pressable
+                  onPress={showNextObservation}
+                >
+                  <Text>next obs</Text>
+                </Pressable>
+              )}
+            </View>
           )}
-          <Text>{`${currentObsNumber + 1} of ${observations.length}`}</Text>
-          {( currentObsNumber !== observations.length - 1 ) && (
-            <Pressable
-              onPress={showNextObservation}
-            >
-              <Text>next obs</Text>
-            </Pressable>
-          )}
-        </View>
         <View />
       </View>
     );
@@ -270,6 +289,12 @@ const ObsEdit = ( ): Node => {
     setObservations( updatedObs );
   };
 
+  const handleDatePicked = ( selectedDate ) => {
+    if ( selectedDate ) {
+      updateObservedOn( selectedDate );
+    }
+  };
+
   const renderLocationPickerModal = ( ) => (
     <Modal visible={showLocationPicker}>
       <LocationPicker
@@ -281,7 +306,8 @@ const ObsEdit = ( ): Node => {
 
   if ( !currentObs ) { return null; }
 
-  const displayDate = currentObs.observed_on_string ? `Date & time: ${currentObs.observed_on_string}` : null;
+  // TODO: make sure observed_on_string uses same time format with all types of evidence (camera, gallery, etc)
+  const displayDate = currentObs.observed_on_string ? `${currentObs.observed_on_string}` : null;
 
   const displayLocation = ( ) => {
     let location = "";
@@ -345,8 +371,16 @@ const ObsEdit = ( ): Node => {
 
   return (
     <ScrollNoFooter>
+      <CustomModal
+        showModal={showBottomModal}
+        closeModal={closeBottomModal}
+        modal={(
+          <BottomModal />
+        )}
+        style={viewStyles.noMargin}
+      />
       {renderLocationPickerModal( )}
-       <CustomModal
+      <CustomModal
         showModal={showModal}
         closeModal={closeModal}
         modal={(
@@ -358,60 +392,69 @@ const ObsEdit = ( ): Node => {
         )}
       />
       {renderArrowNavigation( )}
-      <Text style={textStyles.headerText}>{ t( "Evidence" )}</Text>
+      <TranslatedText style={textStyles.headerText} text="Evidence" />
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
       <EvidenceList currentObs={currentObs} showCameraOptions />
       <Pressable
         onPress={openLocationPicker}
       >
         <Text style={textStyles.text}>
-          {placeGuess}
+          {placeGuess || t( "Add-Location" )}
         </Text>
         <Text style={textStyles.text}>
-          {displayLocation( )}
+          {displayLocation( ) || t( "No-Location" )}
         </Text>
       </Pressable>
-      <Text style={textStyles.text} testID="ObsEdit.time">{displayDate}</Text>
-      <Text style={textStyles.headerText}>{ t( "Identification" )}</Text>
+      <DatePicker displayDate={displayDate} handleDatePicked={handleDatePicked} />
+      <TranslatedText style={textStyles.headerText} text="Identification" />
       {displayIdentification( )}
       <FlatList
         data={Object.keys( iconicTaxaIds )}
         horizontal
         renderItem={renderIconicTaxaButton}
       />
-      <Text style={textStyles.headerText}>{ t( "Other-Data" )}</Text>
-      <Text style={textStyles.text}>geoprivacy</Text>
-      <RNPickerSelect
-        onValueChange={updateGeoprivacyStatus}
-        items={geoprivacyOptions}
-        useNativeAndroidPickerStyle={false}
-        style={pickerSelectStyles}
-        value={currentObs.geoprivacy}
-      />
-      <Text style={textStyles.text}>is the organism wild?</Text>
-      <RNPickerSelect
-        onValueChange={updateCaptiveStatus}
-        items={captiveOptions}
-        useNativeAndroidPickerStyle={false}
-        style={pickerSelectStyles}
-        value={currentObs.captive_flag}
-      />
+      <TranslatedText style={textStyles.headerText} text="Other-Data" />
+      <View style={viewStyles.row}>
+        <TranslatedText style={textStyles.text} text="Geoprivacy" />
+        <RNPickerSelect
+          onValueChange={updateGeoprivacyStatus}
+          items={geoprivacyOptions}
+          useNativeAndroidPickerStyle={false}
+          style={pickerSelectStyles}
+          value={currentObs.geoprivacy}
+        />
+
+      </View>
+      <View style={viewStyles.row}>
+        <Text style={textStyles.text}>is the organism wild?</Text>
+        <RNPickerSelect
+          onValueChange={updateCaptiveStatus}
+          items={captiveOptions}
+          useNativeAndroidPickerStyle={false}
+          style={pickerSelectStyles}
+          value={currentObs.captive_flag}
+        />
+      </View>
+      <Notes addNotes={addNotes} />
       <Pressable onPress={searchForProjects}>
-        <Text style={textStyles.text}>tap to add projects</Text>
+        <TranslatedText style={textStyles.text} text="Add-to-projects" />
       </Pressable>
-      <TextInput
-        keyboardType="default"
-        multiline
-        onChangeText={addNotes}
-        placeholder="add optional notes"
-        style={textStyles.notes}
-        testID="ObsEdit.notes"
-      />
-      <RoundGreenButton
-        buttonText="upload obs"
-        testID="ObsEdit.uploadButton"
-        handlePress={uploadObservation}
-      />
+      {!isLoggedIn && <Text style={textStyles.text}>you must be logged in to upload observations</Text>}
+      <View style={viewStyles.row}>
+        <View style={viewStyles.saveButton}>
+          <RoundGreenButton
+            buttonText="save"
+            testID="ObsEdit.saveButton"
+            handlePress={( ) => console.log( "save to realm for later upload" )}
+          />
+        </View>
+        <RoundGreenButton
+          buttonText="UPLOAD-OBSERVATION"
+          testID="ObsEdit.uploadButton"
+          handlePress={uploadObservation}
+          disabled={!isLoggedIn}
+        />
+      </View>
     </ScrollNoFooter>
   );
 };

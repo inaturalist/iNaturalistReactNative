@@ -58,6 +58,9 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
+# Ruby gems
+vendor/
+
 # Realm
 *.realm*
 

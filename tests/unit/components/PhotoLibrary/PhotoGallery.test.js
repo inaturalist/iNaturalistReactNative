@@ -55,6 +55,8 @@ const renderPhotoGallery = ( ) => render(
 test( "renders photos from photo gallery", ( ) => {
   const { getByTestId } = renderPhotoGallery( );
 
+  // console.log( mockPhoto, "mock photo in test" );
+
   expect( getByTestId( "PhotoGallery.list" ) ).toBeTruthy( );
   expect( getByTestId( `PhotoGallery.${mockPhoto.uri}` ) ).toBeTruthy( );
   expect( getByTestId( "PhotoGallery.photo" ).props.source ).toStrictEqual( { "uri": mockPhoto.uri } );

@@ -35,7 +35,7 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress }: Props ): React.
         {item.vision && <Text>vision</Text>}
         <Text>{item.category}</Text>
         {item.created_at && <Text>{timeAgo( item.created_at )}</Text>}
-        <FlagDropdown id={item} />
+        <FlagDropdown />
       </View>
       {taxon && (
         <Pressable

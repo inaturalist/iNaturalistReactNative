@@ -2,8 +2,16 @@
 
 import { StyleSheet } from "react-native";
 
-import type { TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "../global";
+
+const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  whiteModal: {
+    backgroundColor: colors.white,
+    borderRadius: 40,
+    padding: 20
+  }
+} );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   whiteText: {
@@ -13,5 +21,6 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
 } );
 
 export {
-  textStyles
+  textStyles,
+  viewStyles
 };

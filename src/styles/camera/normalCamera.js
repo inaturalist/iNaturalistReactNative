@@ -49,7 +49,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-
+  whiteText: {
+    color: colors.white,
+    zIndex: 1,
+    fontSize: 24
+  }
 } );
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {

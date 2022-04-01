@@ -13,6 +13,10 @@ import { viewStyles, textStyles } from "../../styles/obsEdit/cvSuggestions";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import InputField from "../SharedComponents/InputField";
+import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
+import { t } from "i18next";
+// TODO: do we need custom hook useTranslation or can we just use t from "i18next"?
+// saves some lines of code if we don't need the extra hook
 
 const CVSuggestions = ( ): Node => {
   const {
@@ -26,8 +30,10 @@ const CVSuggestions = ( ): Node => {
   const [selectedPhoto, setSelectedPhoto] = useState( 0 );
   const [q, setQ] = React.useState( "" );
   const list = useRemoteObsEditSearchResults( q, "taxa" );
+  const isLoggedIn = useLoggedIn( );
 
   const currentObs = observations[currentObsNumber];
+  const hasPhotos = currentObs.observationPhotos;
   const suggestions = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
 
   const renderNavButtons = ( updateIdentification, id ) => {
@@ -46,11 +52,14 @@ const CVSuggestions = ( ): Node => {
   };
 
   const renderSuggestions = ( { item } ) => {
-    const uri = { uri: item.taxon.taxon_photos[0].photo.medium_url };
+    const taxon = item && item.taxon;
+    // destructuring so this doesn't cause a crash
+    const mediumUrl = ( taxon && taxon.taxon_photos && taxon.taxon_photos[0].photo ) ? taxon.taxon_photos[0].photo.medium_url : null;
+    const uri = { uri: mediumUrl };
 
     const updateIdentification = ( ) => {
-      setIdentification( item.taxon );
-      updateTaxaId( item.taxon.id );
+      setIdentification( taxon );
+      updateTaxaId( taxon.id );
     };
 
     return (
@@ -60,11 +69,11 @@ const CVSuggestions = ( ): Node => {
           style={viewStyles.imageBackground}
         />
         <View style={viewStyles.obsDetailsColumn}>
-          <Text style={textStyles.text}>{item.taxon.preferred_common_name}</Text>
-          <Text style={textStyles.text}>{item.taxon.name}</Text>
+          <Text style={textStyles.text}>{taxon.preferred_common_name}</Text>
+          <Text style={textStyles.text}>{taxon.name}</Text>
           {showSeenNearby && <Text style={textStyles.greenText}>seen nearby</Text>}
         </View>
-        {renderNavButtons( updateIdentification, item.taxon.id )}
+        {renderNavButtons( updateIdentification, taxon.id )}
       </View>
     );
   };
@@ -97,11 +106,19 @@ const CVSuggestions = ( ): Node => {
 
   const toggleSeenNearby = ( ) => setShowSeenNearby( !showSeenNearby );
 
+  const emptySuggestionsList = ( ) => {
+    if ( !isLoggedIn ) {
+      return <Text style={textStyles.explainerText}>you must be logged in to see computer vision suggestions</Text>;
+    } else {
+      return <ActivityIndicator />;
+    }
+  };
+
   const displaySuggestions = ( ) => (
     <FlatList
       data={suggestions}
       renderItem={renderSuggestions}
-      ListEmptyComponent={( ) => <ActivityIndicator />}
+      ListEmptyComponent={hasPhotos && emptySuggestionsList}
     />
   );
 
@@ -115,15 +132,16 @@ const CVSuggestions = ( ): Node => {
   return (
     <ViewNoFooter>
       <View>
-        <EvidenceList
-          currentObs={currentObs}
-          setSelectedPhoto={setSelectedPhoto}
-          selectedPhoto={selectedPhoto}
-        />
-        <Text style={textStyles.explainerText}>Select the identification you want to add to this observation...</Text>
+        {hasPhotos && (
+          <EvidenceList
+            currentObs={currentObs}
+            setSelectedPhoto={setSelectedPhoto}
+            selectedPhoto={selectedPhoto}
+          />
+        )}
         <InputField
           handleTextChange={setQ}
-          placeholder="search for taxa"
+          placeholder={t( "Tap-to-search-for-taxa" )}
           text={q}
           type="none"
         />

@@ -35,7 +35,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       />
       <DrawerItem
         label="about"
-        onPress={( ) => console.log( "nav to about" )}
+        onPress={( ) => navigation.navigate( "about" )}
       />
       <DrawerItem
         label="help/tutorials"
@@ -48,6 +48,10 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       <DrawerItem
         label="network/logging"
         onPress={( ) => navigation.navigate( "network" )}
+      />
+      <DrawerItem
+        label="projects"
+        onPress={( ) => navigation.navigate( "projects" )}
       />
     </DrawerContentScrollView>
   );

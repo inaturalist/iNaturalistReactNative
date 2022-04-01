@@ -105,7 +105,6 @@ const GroupPhotos = ( ): Node => {
   const extractKey = ( item, index ) => `${item.observationPhotos[0].uri}${index}`;
 
   const groupedPhotos = obsToEdit.observations;
-  const photoSelected = selectedObservations.length > 0;
 
   const flattenAndOrderSelectedPhotos = ( ) => {
     // combine selected observations into a single array
@@ -147,7 +146,17 @@ const GroupPhotos = ( ): Node => {
   };
 
   const separatePhotos = ( ) => {
-    if ( selectedObservations.length < 2 ) { return; }
+    let maxCombinedPhotos = 0;
+
+    selectedObservations.forEach( obs => {
+      const numPhotos = obs.observationPhotos.length;
+      if ( numPhotos > maxCombinedPhotos ) {
+        maxCombinedPhotos = numPhotos;
+      }
+    } );
+
+    // make sure at least one set of combined photos is selected
+    if ( maxCombinedPhotos < 2 ) { return; }
 
     let separatedPhotos = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( );
@@ -217,8 +226,6 @@ const GroupPhotos = ( ): Node => {
       <GroupPhotosHeader
         photos={observations.length}
         observations={groupedPhotos.length}
-        isSelected={photoSelected}
-        clearSelection={clearSelection}
       />
       <FlatList
         contentContainerStyle={viewStyles.centerImages}
@@ -235,6 +242,8 @@ const GroupPhotos = ( ): Node => {
         separatePhotos={separatePhotos}
         removePhotos={removePhotos}
         navToObsEdit={navToObsEdit}
+        clearSelection={clearSelection}
+        selectedObservations={selectedObservations}
       />
     </ViewNoFooter>
   );
