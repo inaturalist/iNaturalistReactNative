@@ -1,8 +1,8 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, Text, ActivityIndicator } from "react-native";
-import { textStyles } from "../../styles/messages/messages";
+import { FlatList, Text, Pressable, ActivityIndicator, View } from "react-native";
+import { textStyles, imageStyles, viewStyles } from "../../styles/messages/messages";
 
 type Props = {
   loading: boolean,
@@ -25,8 +25,24 @@ const MessageList = ( {
   }
 
   const renderMessages = ( { item } ) => {
+    const navToMessageDetails = ( ) => {
+      console.log( "nav" );
+    };
+    console.log(item);
+
+      //<Image source={{ uri: item.icon }} style={imageStyles.messageIcon} testID={`Project.${item.id}.photo`}/>
+
     return (
-        <Text style={textStyles.projectName}>{item.subject}</Text>
+      <Pressable
+        onPress={navToMessageDetails}
+        style={viewStyles.row}
+        testID={`Message.${item.id}`}
+      >
+        <View>
+          <Text style={textStyles.messageFrom}>{item.from_user.login}</Text>
+          <Text style={textStyles.messageSubject}>{item.subject}</Text>
+        </View>
+    </Pressable>
     );
   };
 
