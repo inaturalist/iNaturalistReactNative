@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { Text, View, Pressable, PermissionsAndroid } from "react-native";
+import { Text, View, Pressable, PermissionsAndroid, Platform } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -47,7 +47,9 @@ const NormalCamera = ( ): Node => {
     };
 
     navigation.addListener( "focus", ( ) => {
-      requestAndroidPermissions( );
+      if ( Platform.OS === "android" ) {
+        requestAndroidPermissions( );
+      }
     } );
   }, [navigation] );
 

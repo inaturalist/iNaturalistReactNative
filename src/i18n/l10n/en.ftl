@@ -33,9 +33,16 @@ Combine-photos-onboarding = Combine photos into observations – make sure ther
 
 CREATE-AN-OBSERVATION = CREATE AN OBSERVATION
 
+Date = Date
+
 Date-added-newest-to-oldest = Date added - newest to oldest
 
 Date-added-oldest-to-newest = Date added - oldest to newest
+
+DELETE-X-OBSERVATIONS = DELETE {$count ->
+    [one] 1 OBSERVATION
+    *[other] {$count} OBSERVATIONS
+}
 
 Description-Tags = Description/Tags
 
@@ -79,6 +86,33 @@ Media = Media
 
 Mollusks = Mollusks
 
+# The following Month- strings are the months of the year (in month order, not alphabetical order)
+Month-January = January
+
+Month-February = February
+
+Month-March = March
+
+Month-April = April
+
+Month-May = May
+
+Month-June = June
+
+Month-July = July
+
+Month-August = August
+
+Month-September = September
+
+Month-October = October
+
+Month-November = November
+
+Month-December = December
+
+Months = Months
+
 Most-faved = Most faved
 
 Native = Native
@@ -120,6 +154,7 @@ Quality-Grade = Quality Grade
 
 Rank = Rank
 
+# The following Ranks- strings are taxonomic ranks (in taxonomic order, not alphabetical order)
 Ranks-stateofmatter = state of matter
 
 Ranks-kingdom = kingdom

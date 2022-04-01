@@ -24,8 +24,10 @@
     "val": "Combine photos into observations – make sure there is only one species per observation"
   },
   "CREATE-AN-OBSERVATION": "CREATE AN OBSERVATION",
+  "Date": "Date",
   "Date-added-newest-to-oldest": "Date added - newest to oldest",
   "Date-added-oldest-to-newest": "Date added - oldest to newest",
+  "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}",
   "Description-Tags": "Description/Tags",
   "Evidence": "Evidence",
   "Explore": "Explore",
@@ -47,6 +49,22 @@
   "Mammals": "Mammals",
   "Media": "Media",
   "Mollusks": "Mollusks",
+  "Month-January": {
+    "comment": "The following Month- strings are the months of the year (in month order, not alphabetical order)",
+    "val": "January"
+  },
+  "Month-February": "February",
+  "Month-March": "March",
+  "Month-April": "April",
+  "Month-May": "May",
+  "Month-June": "June",
+  "Month-July": "July",
+  "Month-August": "August",
+  "Month-September": "September",
+  "Month-October": "October",
+  "Month-November": "November",
+  "Month-December": "December",
+  "Months": "Months",
   "Most-faved": "Most faved",
   "Native": "Native",
   "Needs-ID": {
@@ -75,7 +93,10 @@
   "Projects": "Projects",
   "Quality-Grade": "Quality Grade",
   "Rank": "Rank",
-  "Ranks-stateofmatter": "state of matter",
+  "Ranks-stateofmatter": {
+    "comment": "The following Ranks- strings are taxonomic ranks (in taxonomic order, not alphabetical order)",
+    "val": "state of matter"
+  },
   "Ranks-kingdom": "kingdom",
   "Ranks-subkingdom": "subkingdom",
   "Ranks-phylum": "phylum",
