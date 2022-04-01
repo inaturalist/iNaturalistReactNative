@@ -125,7 +125,6 @@ const PhotoGallery = ( ): Node => {
   };
 
   const renderEmptyList = ( ) => {
-    console.log( "rendering empty list" );
     if ( fetchingPhotos ) {
       return <ActivityIndicator />;
     } else {

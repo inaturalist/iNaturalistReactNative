@@ -39,6 +39,11 @@ Date-added-newest-to-oldest = Date added - newest to oldest
 
 Date-added-oldest-to-newest = Date added - oldest to newest
 
+DELETE-X-OBSERVATIONS = DELETE {$observationCount ->
+    [one] 1 OBSERVATION
+    *[other] {$observationCount} OBSERVATIONS
+}
+
 Description-Tags = Description/Tags
 
 Evidence = Evidence

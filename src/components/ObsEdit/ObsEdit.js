@@ -25,6 +25,7 @@ import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 import DatePicker from "./DatePicker";
 import TranslatedText from "../SharedComponents/TranslatedText";
 import Notes from "./Notes";
+import BottomModal from "./BottomModal";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -38,11 +39,14 @@ const ObsEdit = ( ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const [showModal, setModal] = useState( false );
+  const [showBottomModal, setBottomModal] = useState( false );
   const [source, setSource] = useState( null );
   const isLoggedIn = useLoggedIn( );
 
   const openModal = useCallback( ( ) => setModal( true ), [] );
   const closeModal = useCallback( ( ) => setModal( false ), [] );
+  const openBottomModal = useCallback( ( ) => setBottomModal( true ), [] );
+  const closeBottomModal = useCallback( ( ) => setBottomModal( false ), [] );
 
   const [showLocationPicker, setShowLocationPicker] = useState( false );
 
@@ -117,9 +121,15 @@ const ObsEdit = ( ): Node => {
   const renderArrowNavigation = ( ) => {
     if ( observations.length === 0 ) { return; }
 
+    const handleBackButtonPress = ( ) => {
+      openBottomModal( );
+      // show modal to dissuade user from going back
+      // navigation.goBack( );
+    };
+
     return (
       <View style={viewStyles.row}>
-        <HeaderBackButton onPress={( ) => navigation.goBack( )} />
+        <HeaderBackButton onPress={handleBackButtonPress} />
         {observations.length === 1
           ? <TranslatedText text="New-Observation" /> : (
             <View style={viewStyles.row}>
@@ -361,8 +371,16 @@ const ObsEdit = ( ): Node => {
 
   return (
     <ScrollNoFooter>
+      <CustomModal
+        showModal={showBottomModal}
+        closeModal={closeBottomModal}
+        modal={(
+          <BottomModal />
+        )}
+        style={viewStyles.noMargin}
+      />
       {renderLocationPickerModal( )}
-       <CustomModal
+      <CustomModal
         showModal={showModal}
         closeModal={closeModal}
         modal={(
