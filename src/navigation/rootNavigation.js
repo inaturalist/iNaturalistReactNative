@@ -11,6 +11,7 @@ import Search from "../components/Search/Search";
 import Login from "../components/LoginSignUp/Login";
 import ProjectsStackNavigation from "./projectsStackNavigation";
 import CameraStackNavigation from "./cameraStackNavigation";
+import Settings from "../components/Settings/Settings";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -48,7 +49,7 @@ const App = ( ): React.Node => (
       <Drawer.Screen name="guides" component={PlaceholderComponent} />
       <Drawer.Screen name="about" component={PlaceholderComponent} />
       <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-      <Drawer.Screen name="settings" component={PlaceholderComponent} />
+      <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
       <Drawer.Screen name="login" component={Login} />
       <Drawer.Screen
         name="camera"
