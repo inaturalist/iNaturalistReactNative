@@ -69,3 +69,6 @@ vendor/
 
 # Secrets file
 .env
+
+# Fastlane-generated files
+*.zip
