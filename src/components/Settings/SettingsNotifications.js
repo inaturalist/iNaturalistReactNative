@@ -1,4 +1,4 @@
-import {Button, Image, Pressable, Text, TextInput, View} from "react-native";
+import {Pressable, Text, View} from "react-native";
 import {viewStyles, textStyles} from "../../styles/settings/settings";
 import React from "react";
 import Switch from "react-native/Libraries/Components/Switch/Switch";

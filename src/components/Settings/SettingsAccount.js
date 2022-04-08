@@ -1,13 +1,10 @@
-import {Image, Text, TextInput, View} from "react-native";
+import {Text, View} from "react-native";
 import {viewStyles, textStyles} from "../../styles/settings/settings";
-import React, {useEffect} from "react";
+import React from "react";
 import {Picker} from "@react-native-picker/picker";
-import {useDebounce} from "use-debounce";
 import {colors} from "../../styles/global";
-import inatjs from "inaturalistjs";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import CheckBox from "@react-native-community/checkbox";
-import {inatPlaceTypes} from "../../dictionaries/places";
 import {inatLanguages} from "../../dictionaries/languages";
 import {inatTimezones} from "../../dictionaries/timezones";
 import {inatNetworks} from "../../dictionaries/networks";

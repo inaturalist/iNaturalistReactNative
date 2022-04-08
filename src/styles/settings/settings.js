@@ -42,6 +42,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     height: 130,
     width: 130
   },
+  relationshipImage: {
+    height: 60,
+    width: 60
+  },
   textInput: {
     color: "#000000",
     borderWidth: 1,
@@ -90,6 +94,48 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
+  },
+  relationshipRow: {
+    marginTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCCCCC",
+    paddingBottom: 10
+  },
+  removeRelationship: {
+    width: 100,
+    borderColor: "#CCCCCC",
+    borderWidth: 1,
+    borderStyle: "solid",
+    flexDirection: "column",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  paginationContainer: {
+    marginTop: 20,
+    marginBottom: 20,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  pageButton: {
+    width: 30,
+    borderColor: "#CCCCCC",
+    borderWidth: 1,
+    borderStyle: "solid",
+    flexDirection: "column",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10
+  },
+  userPic: {
+    width: 30,
+    height: 30,
+    alignSelf: "center"
+  },
+  applicationRow: {
+    marginTop: 20
   }
 } );
 
@@ -125,8 +171,13 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   checkbox: {
     flexWrap: "wrap",
     maxWidth: "90%"
+  },
+  currentPage: {
+    fontWeight: "bold"
+  },
+  applicationName: {
+    flex: 1
   }
-
 } );
 
 export {

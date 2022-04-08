@@ -1,6 +1,6 @@
-import {Image, Pressable, Text, TextInput, View} from "react-native";
+import {Pressable, Text, View} from "react-native";
 import {viewStyles, textStyles} from "../../styles/settings/settings";
-import React, {useEffect} from "react";
+import React from "react";
 import {Picker} from "@react-native-picker/picker";
 import {colors} from "../../styles/global";
 import CheckBox from "@react-native-community/checkbox";

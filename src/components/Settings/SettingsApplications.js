@@ -35,8 +35,8 @@ const SettingsApplications = ( { authorizedApps, providerAuthorizations, onAppRe
 
       <Text style={[textStyles.title, textStyles.marginTop]}>External Applications</Text>
       {authorizedApps.filter( ( app ) => !app.application.official ).map( ( app ) => (
-        <View key={app.application.id} style={{...viewStyles.row, marginTop: 20}}>
-          <Text style={{ flex: 1 }}>{app.application.name} (authorized on: {app.created_at})</Text>
+        <View key={app.application.id} style={[viewStyles.row, viewStyles.applicationRow]}>
+          <Text style={textStyles.applicationName}>{app.application.name} (authorized on: {app.created_at})</Text>
           <Pressable style={viewStyles.revokeAccess} onPress={() => askToRevokeApp( app )}><Text>Revoke</Text></Pressable>
         </View>
       ) )}

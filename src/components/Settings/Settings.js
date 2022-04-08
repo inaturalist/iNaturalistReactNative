@@ -19,6 +19,7 @@ import {SettingsNotifications, EMAIL_NOTIFICATIONS} from "./SettingsNotification
 import SettingsAccount from "./SettingsAccount";
 import SettingsContentDisplay from "./SettingsContentDisplay";
 import SettingsApplications from "./SettingsApplications";
+import SettingsRelationships from "./SettingsRelationships";
 
 
 const TAB_TYPE_PROFILE = "profile";
@@ -93,19 +94,21 @@ const Settings = ( { children }: Props ): Node => {
     };
   }, [] );
 
-  useEffect( () => {
-    async function fetchProfile() {
-      try {
-        const response = await inatjs.users.me( {api_token: accessToken} );
-        console.log( "User object", response.results[0] );
-        setSettings( response.results[0] );
-        setIsLoading( false );
-      } catch ( exc ) {
-        console.error( "exc", exc );
-        console.error( JSON.stringify( exc ) );
-      }
-    }
 
+  const fetchProfile = async () => {
+    try {
+      const response = await inatjs.users.me( {api_token: accessToken} );
+      console.log( "User object", response.results[0] );
+      setSettings( response.results[0] );
+      setIsLoading( false );
+    } catch ( exc ) {
+      console.error( "exc", exc );
+      console.error( JSON.stringify( exc ) );
+    }
+  };
+
+
+  useEffect( () => {
     async function fetchApplications() {
       try {
         const apps = await inatjs.authorized_applications.search( {}, {api_token: accessToken} );
@@ -124,7 +127,7 @@ const Settings = ( { children }: Props ): Node => {
       fetchProfile();
       fetchApplications();
     }
-  }, [accessToken] );
+  }, [accessToken, fetchProfile] );
 
   const saveSettings = async () => {
     setIsSaving( true );
@@ -185,6 +188,7 @@ const Settings = ( { children }: Props ): Node => {
             providerAuthorizations={providerAuthorizations}
             onAppRevoked={revokeApp}
           />}
+          {activeTab === TAB_TYPE_RELATIONSHIPS && <SettingsRelationships settings={settings} accessToken={accessToken} onRefreshUser={fetchProfile} />}
         </ScrollView>
       }
     </SafeAreaView>
