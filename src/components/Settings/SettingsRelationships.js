@@ -56,7 +56,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
     } catch ( e ) {
       console.error( JSON.stringify( e ) );
     }
-  } );
+  }, [accessToken, finalUserSearch, following, page, sortBy, trusted] );
 
   useEffect( () => {
     refreshRelationships();

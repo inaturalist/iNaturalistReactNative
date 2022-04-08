@@ -1,6 +1,6 @@
 // @flow strict-local
 
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {
   ActivityIndicator,
   Button,
@@ -95,7 +95,7 @@ const Settings = ( { children }: Props ): Node => {
   }, [] );
 
 
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback( async () => {
     try {
       const response = await inatjs.users.me( {api_token: accessToken} );
       console.log( "User object", response.results[0] );
@@ -105,7 +105,7 @@ const Settings = ( { children }: Props ): Node => {
       console.error( "exc", exc );
       console.error( JSON.stringify( exc ) );
     }
-  };
+  }, [accessToken] );
 
 
   useEffect( () => {
