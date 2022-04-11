@@ -144,7 +144,7 @@ android {
         applicationId "com.inaturalistreactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
+        versionCode 8
         versionName "0.1.0"
     }
     splits {
@@ -204,6 +204,9 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-config')
+
+    // https://stackoverflow.com/a/68836720 adding this to see if it fixes crash on startup for Android S+
+    implementation 'androidx.work:work-runtime:2.7.0-alpha05'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
