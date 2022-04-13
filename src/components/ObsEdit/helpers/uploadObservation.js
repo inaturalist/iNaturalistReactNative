@@ -5,7 +5,8 @@ import inatjs, { FileUpload } from "inaturalistjs";
 
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 import resizeImageForUpload from "./resizeImage";
-import fetchPlaceName from "../../../sharedHelpers/fetchPlaceName";
+import markUploaded from "./markUploaded";
+// import fetchPlaceName from "../../../sharedHelpers/fetchPlaceName";
 
 const uploadSound = async ( soundParams, apiToken ) => {
   const options = {
@@ -68,7 +69,7 @@ const createPhotoParams = async ( id, apiToken, obsToUpload ) => {
   }
 };
 
-const uploadObservation = async ( obsToUpload ) => {
+const uploadObservation = async ( obsToUpload: Object ) => {
   const FIELDS = {
     id: true
   };
@@ -105,7 +106,8 @@ const uploadObservation = async ( obsToUpload ) => {
     // );
     const response = await inatjs.observations.create( uploadParams, options );
     const { id } = response.results[0];
-    // need to save id to realm and also set sync time
+    // save id to realm and set time synced
+    await markUploaded( obsToUpload.uuid, id );
     if ( obsToUpload.observationPhotos ) {
       createPhotoParams( id, apiToken, obsToUpload ); // v2
     }

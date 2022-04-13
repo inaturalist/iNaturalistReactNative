@@ -148,6 +148,7 @@ class Observation {
       created_at: { type: "string?", mapTo: "createdAt" },
       description: "string?",
       geoprivacy: "string?",
+      id: "int?",
       identifications: "Identification[]",
       latitude: "double?",
       longitude: "double?",
