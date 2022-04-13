@@ -1,5 +1,5 @@
 import * as RNLocalize from "react-native-localize";
-import { formatISO, fromUnixTime, formatDistanceToNow } from "date-fns";
+import { formatISO, fromUnixTime, formatDistanceToNow, parseISO, format } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 
 const getTimeZone = ( ) => RNLocalize.getTimeZone( );
@@ -19,9 +19,12 @@ const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
 
 const getUTCDate = ( date, timeZone ) => zonedTimeToUtc( date, timeZone );
 
+const formatObsListTime = ( date ) => format( parseISO( date ), "M/d/yy HH:mm a" );
+
 export {
   getTimeZone,
   formatDateAndTime,
   timeAgo,
-  getUTCDate
+  getUTCDate,
+  formatObsListTime
 };

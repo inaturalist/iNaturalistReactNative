@@ -5,6 +5,7 @@ import { Text } from "react-native";
 import type { Node } from "react";
 
 import { textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
+import { formatObsListTime } from "../../../sharedHelpers/dateAndTime";
 
 type Props = {
   item: Object,
@@ -13,7 +14,7 @@ type Props = {
 
 const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
   const placeGuess = item.placeGuess || item.place_guess;
-  const timeObserved = item.timeObservedAt || item.time_observed_at;
+  const timeObserved = formatObsListTime( item.timeObservedAt || item.time_observed_at );
 
   const displayName = ( ) => {
     if ( needsUpload ) {
