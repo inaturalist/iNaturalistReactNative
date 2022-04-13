@@ -13,6 +13,7 @@ import { useCurrentUser } from "./hooks/useCurrentUser";
 import BottomModal from "../SharedComponents/BottomModal";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import uploadObservation from "../ObsEdit/helpers/uploadObservation";
+import Observation from "../../models/Observation";
 
 const ObsList = ( ): Node => {
   const { params } = useRoute( );
@@ -31,8 +32,8 @@ const ObsList = ( ): Node => {
 
   const renderUploadModal = ( ) => {
     const uploadObservations = ( ) => obsToUpload.forEach( obs => {
-      console.log( obs, "observation in upload modal" );
-      // uploadObservation( obs );
+      const mappedObs = Observation.mapObservationForUpload( obs );
+      uploadObservation( mappedObs );
     } );
 
     return (

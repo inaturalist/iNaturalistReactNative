@@ -84,6 +84,23 @@ class Observation {
     return newObs;
   }
 
+  static mapObservationForUpload( obs ) {
+    return {
+      species_guess: obs.species_guess,
+      description: obs.description,
+      observed_on_string: obs.observed_on_string,
+      place_guess: obs.place_guess,
+      latitude: obs.latitude,
+      longitude: obs.longitude,
+      positional_accuracy: obs.positional_accuracy,
+      taxon_id: obs.taxon && obs.taxon.id,
+      geoprivacy: obs.geoprivacy,
+      uuid: obs.uuid,
+      captive_flag: obs.captive_flag,
+      owners_identification_from_vision_requested: obs.owners_identification_from_vision_requested
+    };
+  }
+
   // TODO: swap this and realm schema to use observation_photos everywhere, if possible
   // so there's no need for projectUri
   static uri = ( obs, medium ) => {

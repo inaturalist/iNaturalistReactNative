@@ -105,6 +105,7 @@ const uploadObservation = async ( obsToUpload ) => {
     // );
     const response = await inatjs.observations.create( uploadParams, options );
     const { id } = response.results[0];
+    // need to save id to realm and also set sync time
     if ( obsToUpload.observationPhotos ) {
       createPhotoParams( id, apiToken, obsToUpload ); // v2
     }
