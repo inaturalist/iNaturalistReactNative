@@ -3,10 +3,14 @@ import React, { useState } from "react";
 import type { Node } from "react";
 import uuid from "react-native-uuid";
 import { useNavigation } from "@react-navigation/native";
+import Realm from "realm";
 
 import { getTimeZone } from "../sharedHelpers/dateAndTime";
 import { ObsEditContext } from "./contexts";
 import createIdentification from "../components/Identify/helpers/createIdentification";
+import realmConfig from "../models/index";
+import Observation from "../models/Observation";
+import fetchPlaceName from "../sharedHelpers/fetchPlaceName";
 
 type Props = {
   children: any
@@ -89,11 +93,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const addObservationNoEvidence = ( ) => {
+    // TODO: does this need location and place name?
     const newObs = createObservation( );
     setObservations( [newObs] );
   };
 
   const createObservation = ( obs ) => {
+    // const placeGuess = await fetchPlaceName( obs.latitude, obs.longitude );
+    // console.log( placeGuess, "place guess in create obs" );
     return {
       // object should look like Seek upload observation:
       // https://github.com/inaturalist/SeekReactNative/blob/e2df7ca77517e0c4c89f3147dc5a15ed98e31c34/utility/uploadHelpers.js#L198
@@ -133,6 +140,29 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     }
   };
 
+  const saveObservation = async ( ) => {
+    try {
+      const realm = await Realm.open( realmConfig );
+      const obsToSave = Observation.saveLocalObservationForUpload( currentObs, realm );
+      realm?.write( ( ) => {
+        realm?.create( "Observation", obsToSave );
+      } );
+      navigation.navigate( "my observations" );
+    } catch ( e ) {
+      console.log( e, "couldn't save observation to realm" );
+    }
+  };
+
+  const openSavedObservation = async ( savedUUID ) => {
+    try {
+      const realm = await Realm.open( realmConfig );
+      const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
+      setObservations( [obs] );
+    } catch ( e ) {
+      console.log( e, "couldn't save observation to realm" );
+    }
+  };
+
   const obsEditValue = {
     currentObsNumber,
     setCurrentObsNumber,
@@ -146,7 +176,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     updateTaxaId,
     identification,
     setIdentification,
-    setPrevScreen
+    setPrevScreen,
+    saveObservation,
+    openSavedObservation
   };
 
   return (

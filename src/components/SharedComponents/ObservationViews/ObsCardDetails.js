@@ -7,17 +7,25 @@ import type { Node } from "react";
 import { textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 
 type Props = {
-  item: Object
+  item: Object,
+  needsUpload: boolean
 }
 
-const ObsCardDetails = ( { item }: Props ): Node => {
-  const commonName = item.taxon && ( item.taxon.preferredCommonName || item.taxon.preferred_common_name );
+const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
   const placeGuess = item.placeGuess || item.place_guess;
   const timeObserved = item.timeObservedAt || item.time_observed_at;
 
+  const displayName = ( ) => {
+    if ( needsUpload ) {
+      return item.species_guess || "no name";
+    } else {
+      return item.taxon ? ( item.taxon.preferredCommonName || item.taxon.preferred_common_name ) : "no name";
+    }
+  };
+
   return (
     <>
-      <Text style={textStyles.text} numberOfLines={1}>{commonName || "no common name"}</Text>
+      <Text style={textStyles.text} numberOfLines={1}>{displayName( )}</Text>
       <Text style={textStyles.text} numberOfLines={1}>{placeGuess || "no place guess"}</Text>
       <Text style={textStyles.text} numberOfLines={1}>{timeObserved || "no time given"}</Text>
     </>

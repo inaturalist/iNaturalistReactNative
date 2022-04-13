@@ -1,13 +1,12 @@
 // @flow
 
 import React, { useState, useCallback, useContext } from "react";
-import { Text, Pressable, FlatList, View, Modal, Platform, Alert } from "react-native";
+import { Text, Pressable, FlatList, View, Modal } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
-import inatjs, { FileUpload } from "inaturalistjs";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
@@ -15,17 +14,16 @@ import { pickerSelectStyles, textStyles, viewStyles } from "../../styles/obsEdit
 import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
 import CustomModal from "../SharedComponents/Modal";
 import ObsEditSearch from "./ObsEditSearch";
-import { getJWTToken } from "../LoginSignUp/AuthenticationService";
 import LocationPicker from "./LocationPicker";
 import { ObsEditContext } from "../../providers/contexts";
 import useLocationName from "../../sharedHooks/useLocationName";
 import EvidenceList from "./EvidenceList";
-import resizeImageForUpload from "./helpers/resizeImage";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 import DatePicker from "./DatePicker";
 import TranslatedText from "../SharedComponents/TranslatedText";
 import Notes from "./Notes";
 import BottomModal from "./BottomModal";
+import uploadObservation from "./helpers/uploadObservation";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -34,7 +32,8 @@ const ObsEdit = ( ): Node => {
     observations,
     setObservations,
     updateObservationKey,
-    identification
+    identification,
+    saveObservation
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -161,114 +160,6 @@ const ObsEdit = ( ): Node => {
 
   const placeGuess = useLocationName( latitude, longitude );
 
-  const uploadSound = async ( soundParams, apiToken ) => {
-    const options = {
-      api_token: apiToken
-    };
-
-    try {
-      await inatjs.observation_sounds.create( soundParams, options );
-    } catch ( e ) {
-      console.log( JSON.stringify( e.response ), "couldn't upload sound" );
-    }
-  };
-
-  const createSoundParams = async ( id, apiToken ) => {
-    const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
-    const obsSoundToUpload = observations[currentObsNumber].observationSounds;
-    const soundParams = {
-      "observation_sound[observation_id]": id,
-      "observation_sound[uuid]": obsSoundToUpload.uuid,
-      file: new FileUpload( {
-        uri: obsSoundToUpload.uri,
-        name: `audio.${fileExt}`,
-        type: `audio/${fileExt}`
-      } )
-    };
-    uploadSound( soundParams, apiToken );
-  };
-
-  const uploadPhoto = async ( photoParams, apiToken ) => {
-    const options = {
-      api_token: apiToken
-    };
-
-    try {
-      await inatjs.observation_photos.create( photoParams, options );
-    } catch ( e ) {
-      console.log( JSON.stringify( e.response ), "couldn't upload photo" );
-    }
-  };
-
-  const createPhotoParams = async ( id, apiToken ) => {
-    const obsPhotosToUpload = observations[currentObsNumber].observationPhotos;
-
-    if ( !obsPhotosToUpload || obsPhotosToUpload.length === 0 ) { return; }
-    for ( let i = 0; i < obsPhotosToUpload.length; i += 1 ) {
-      const photoToUpload = obsPhotosToUpload[i];
-      const photoUri = photoToUpload.uri;
-      const resizedPhoto = await resizeImageForUpload( photoUri );
-
-      const photoParams = {
-        "observation_photo[observation_id]": id,
-        "observation_photo[uuid]": photoToUpload.uuid,
-        file: new FileUpload( {
-          uri: resizedPhoto,
-          name: "photo.jpeg",
-          type: "image/jpeg"
-        } )
-      };
-      uploadPhoto( photoParams, apiToken );
-    }
-  };
-
-  const uploadObservation = async ( ) => {
-    const FIELDS = {
-      id: true
-    };
-    try {
-      const apiToken = await getJWTToken( false );
-      const obsToUpload = observations[currentObsNumber];
-
-      const uploadParams = {
-        // TODO: decide how to format place_guess param
-        // right now it looks like street, city, state is preferred on the web
-        observation: {
-          ...obsToUpload,
-          place_guess: placeGuess
-        },
-        fields: FIELDS
-      };
-
-      const options = {
-        api_token: apiToken
-      };
-
-      Alert.alert(
-        "upload in progress",
-        "check staging to see if upload completed",
-        [
-          {
-            text: "Cancel",
-            onPress: () => console.log( "Cancel Pressed" ),
-            style: "cancel"
-          },
-          { text: "OK", onPress: () => console.log( "OK Pressed" ) }
-        ]
-      );
-      const response = await inatjs.observations.create( uploadParams, options );
-      const { id } = response.results[0];
-      if ( obsToUpload.observationPhotos ) {
-        createPhotoParams( id, apiToken ); // v2
-      }
-      if ( obsToUpload.observationSounds ) {
-        createSoundParams( id, apiToken ); // v2
-      }
-    } catch ( e ) {
-      console.log( JSON.stringify( e.response.status ), "couldn't upload observation: ", JSON.stringify( e.response ) );
-    }
-  };
-
   const openLocationPicker = ( ) => setShowLocationPicker( true );
   const closeLocationPicker = ( ) => setShowLocationPicker( false );
 
@@ -322,7 +213,6 @@ const ObsEdit = ( ): Node => {
     }
     return location;
   };
-
 
   const updateObsAndCloseModal = id => {
     if ( source === "taxa" ) {
@@ -399,7 +289,7 @@ const ObsEdit = ( ): Node => {
         onPress={openLocationPicker}
       >
         <Text style={textStyles.text}>
-          {placeGuess || t( "Add-Location" )}
+          {currentObs.place_guess || t( "Add-Location" )}
         </Text>
         <Text style={textStyles.text}>
           {displayLocation( ) || t( "No-Location" )}
@@ -445,13 +335,13 @@ const ObsEdit = ( ): Node => {
           <RoundGreenButton
             buttonText="save"
             testID="ObsEdit.saveButton"
-            handlePress={( ) => console.log( "save to realm for later upload" )}
+            handlePress={saveObservation}
           />
         </View>
         <RoundGreenButton
           buttonText="UPLOAD-OBSERVATION"
           testID="ObsEdit.uploadButton"
-          handlePress={uploadObservation}
+          handlePress={ ( ) => uploadObservation( observations[currentObsNumber] )}
           disabled={!isLoggedIn}
         />
       </View>

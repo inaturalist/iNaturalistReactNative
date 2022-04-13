@@ -297,10 +297,22 @@ Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
 
+# Shows the number of observations a user can upload to iNat from my observations page
+Upload-X-Observations = Upload {$count ->
+    [one] 1 Observation
+    *[other] {$count} Observations
+}
+
 # Shows the number of photos a user selected from the camera roll for upload
 Upload-X-photos = Upload {$count ->
     [one] 1 photo
     *[other] {$count} photos
+}
+
+# Shows the number of observations a user is currently uploading on my observations page
+Uploading-X-Observations = Uploading {$count ->
+    [one] 1 Observation
+    *[other] {$count} Observations
 }
 
 User = User

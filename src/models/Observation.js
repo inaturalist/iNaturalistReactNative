@@ -4,6 +4,8 @@ import ObservationPhoto from "./ObservationPhoto";
 import Taxon from "./Taxon";
 import User from "./User";
 
+import { getUTCDate } from "../sharedHelpers/dateAndTime";
+
 class Observation {
   static mimicRealmMappedPropertiesSchema( obs ) {
     const createLinkedObjects = ( list, createFunction ) => {
@@ -39,18 +41,18 @@ class Observation {
     };
   }
 
-  static createObservationForRealm( obs, realm ) {
-    const createLinkedObjects = ( list, createFunction ) => {
-      if ( list.length === 0 ) { return; }
-      return list.map( item => {
-        return createFunction.mapApiToRealm( item, realm );
-      } );
-    };
+  static createLinkedObjects = ( list, createFunction, realm ) => {
+    if ( list.length === 0 ) { return; }
+    return list.map( item => {
+      return createFunction.mapApiToRealm( item, realm );
+    } );
+  };
 
+  static createObservationForRealm( obs, realm ) {
     const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon, realm ) : null;
-    const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
-    const comments = createLinkedObjects( obs.comments, Comment );
-    const identifications = createLinkedObjects( obs.identifications, Identification );
+    const observationPhotos = Observation.createLinkedObjects( obs.observation_photos, ObservationPhoto, realm );
+    const comments = Observation.createLinkedObjects( obs.comments, Comment, realm );
+    const identifications = Observation.createLinkedObjects( obs.identifications, Identification, realm );
     const user = User.mapApiToRealm( obs.user );
 
     const newObs = {
@@ -68,6 +70,20 @@ class Observation {
     return newObs;
   }
 
+  static saveLocalObservationForUpload( obs, realm ) {
+    const taxon = obs.taxon_id ? Taxon.mapApiToRealm( { id: obs.taxon_id }, realm ) : null;
+    const observationPhotos = Observation.createLinkedObjects( obs.observationPhotos, ObservationPhoto, realm );
+
+    const newObs = {
+      ...obs,
+      taxon,
+      observationPhotos,
+      timeSynced: null,
+      timeUpdatedLocally: getUTCDate( new Date( ), obs.time_zone )
+    };
+    return newObs;
+  }
+
   // TODO: swap this and realm schema to use observation_photos everywhere, if possible
   // so there's no need for projectUri
   static uri = ( obs, medium ) => {
@@ -77,7 +93,9 @@ class Observation {
         // need medium size for GridView component
         photoUri = obs.observationPhotos[0].photo.url.replace( "square", "medium" );
       } else {
-        photoUri = obs.observationPhotos[0].photo.url;
+        photoUri = ( obs.observationPhotos[0].photo && obs.observationPhotos[0].photo.url )
+          ? obs.observationPhotos[0].photo.url
+          : null;
       }
     }
     return { uri: photoUri };
@@ -108,19 +126,33 @@ class Observation {
     primaryKey: "uuid",
     properties: {
       uuid: "string",
+      captive_flag: "bool?",
       comments: "Comment[]",
       created_at: { type: "string?", mapTo: "createdAt" },
       description: "string?",
+      geoprivacy: "string?",
       identifications: "Identification[]",
       latitude: "double?",
       longitude: "double?",
       observationPhotos: "ObservationPhoto[]",
       observationSounds: "ObservationSound[]",
+      observed_on_string: "string?",
+      owners_identification_from_vision_requested: "bool?",
+      species_guess: "string?",
       place_guess: { type: "string?", mapTo: "placeGuess" },
+      positional_accuracy: "double?",
       quality_grade: { type: "string?", mapTo: "qualityGrade" },
       taxon: "Taxon?",
       time_observed_at: { type: "string?", mapTo: "timeObservedAt" },
+      time_zone: "string?",
+      timeSynced: "date?",
+      timeUpdatedLocally: "date?",
       user: "User?"
+
+      // need project ids, but skipping this for now
+      // to get rest of upload working
+      // project_ids
+      // note that taxon_id is nested under Taxon
     }
   }
 }

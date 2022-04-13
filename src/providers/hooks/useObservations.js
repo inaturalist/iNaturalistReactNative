@@ -17,10 +17,15 @@ const useObservations = ( ): Object => {
   const nextPageToFetch = observationList.length > 0 ? Math.ceil( observationList.length / perPage ) : 1;
   const [page, setPage] = useState( nextPageToFetch );
   const [userLogin, setUserLogin] = useState( null );
+  const [obsToUpload, setObsToUpload] = useState( [] );
 
-  const syncObservations = ( username ) => {
+  const syncObservations = ( username = null ) => {
     // await username on login screen for initial fetch
-    setUserLogin( username );
+    if ( typeof username === "string" ) {
+      setUserLogin( username );
+    } else {
+      setUserLogin( null );
+    }
   };
 
   // We store a reference to our realm using useRef that allows us to access it via
@@ -34,10 +39,15 @@ const useObservations = ( ): Object => {
 
     // When querying a realm to find objects (e.g. realm.objects('Observation')) the result we get back
     // and the objects in it are "live" and will always reflect the latest state.
-    const localObservations = realm.objects( "Observation" );
+    const localObservations = realm.objects( "Observation" ).sorted( "createdAt" );
+    const notUploadedObs = realm.objects( "Observation" ).filtered( "timeSynced == null && timeUpdatedLocally != null" );
 
     if ( localObservations?.length ) {
       setObservationList( localObservations );
+    }
+
+    if ( notUploadedObs?.length ) {
+      setObsToUpload( notUploadedObs );
     }
 
     try {
@@ -92,7 +102,7 @@ const useObservations = ( ): Object => {
     let isCurrent = true;
     const fetchObservations = async ( ) => {
       const username = await getUsername( );
-      console.log( userLogin || username, "user login fetch observations for page: ", page );
+      console.log( userLogin, username, "user login fetch observations for page: ", page );
       if ( !userLogin && !username ) { return; }
       setLoading( true );
       try {
@@ -125,7 +135,8 @@ const useObservations = ( ): Object => {
     loading,
     observationList,
     syncObservations,
-    fetchNextObservations
+    fetchNextObservations,
+    obsToUpload
   };
 };
 

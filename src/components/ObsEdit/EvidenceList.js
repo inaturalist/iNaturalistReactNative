@@ -18,7 +18,7 @@ const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, select
   const renderCameraOptionsButton =  ( ) => showCameraOptions ? <CameraOptionsButton /> : <View />;
 
   const renderEvidence = ( { item, index } ) => {
-    const isSound = item.uri.includes( "m4a" );
+    const isSound = item.uri && item.uri.includes( "m4a" );
     const imageUri = { uri: item.uri };
 
     const handlePress = ( ) => {

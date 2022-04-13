@@ -11,6 +11,7 @@ import EmptyList from "./EmptyList";
 import ObsCard from "./ObsCard";
 import Map from "../Map";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
+import { ObsEditContext } from "../../../providers/contexts";
 
 type Props = {
   loading: boolean,
@@ -31,11 +32,22 @@ const ObservationViews = ( {
   totalObservations,
   handleEndReached
 }: Props ): React.Node => {
+  const { openSavedObservation } = React.useContext( ObsEditContext );
   const [view, setView] = React.useState( "list" );
   const navigation = useNavigation( );
   const { name } = useRoute( );
 
-  const navToObsDetails = observation => navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
+  const navToObsDetails = async ( observation ) => {
+    const needsUpload = observation.timeSynced === null && observation.timeUpdatedLocally !== null;
+    if ( needsUpload ) {
+      await openSavedObservation( observation.uuid );
+      navigation.navigate( "camera", {
+        screen: "ObsEdit"
+      } );
+    } else {
+      navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
+    }
+  };
 
   const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
   const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} />;
@@ -103,9 +115,6 @@ const ObservationViews = ( {
         </Pressable>
       </View>
       {renderView( )}
-      {/* {loading
-        ? <ActivityIndicator />
-        : renderView( )} */}
     </>
   );
 };
