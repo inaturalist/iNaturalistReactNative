@@ -3,7 +3,7 @@
 import { Platform } from "react-native";
 import inatjs, { FileUpload } from "inaturalistjs";
 
-import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
+import { getJWTToken } from "../../components/LoginSignUp/AuthenticationService";
 import resizeImageForUpload from "./resizeImage";
 import markUploaded from "./markUploaded";
 // import fetchPlaceName from "../../../sharedHelpers/fetchPlaceName";
@@ -48,6 +48,7 @@ const uploadPhoto = async ( photoParams, apiToken ) => {
 };
 
 const createPhotoParams = async ( id, apiToken, obsToUpload ) => {
+  console.log( obsToUpload, "create photo params" );
   const obsPhotosToUpload = obsToUpload.observationPhotos;
 
   if ( !obsPhotosToUpload || obsPhotosToUpload.length === 0 ) { return; }
@@ -70,9 +71,7 @@ const createPhotoParams = async ( id, apiToken, obsToUpload ) => {
 };
 
 const uploadObservation = async ( obsToUpload: Object ) => {
-  const FIELDS = {
-    id: true
-  };
+  const FIELDS = { id: true };
 
   try {
     const apiToken = await getJWTToken( false );
@@ -111,9 +110,9 @@ const uploadObservation = async ( obsToUpload: Object ) => {
     if ( obsToUpload.observationPhotos ) {
       createPhotoParams( id, apiToken, obsToUpload ); // v2
     }
-    if ( obsToUpload.observationSounds ) {
-      createSoundParams( id, apiToken, obsToUpload ); // v2
-    }
+    // if ( obsToUpload.observationSounds ) {
+    //   createSoundParams( id, apiToken, obsToUpload ); // v2
+    // }
   } catch ( e ) {
     console.log( JSON.stringify( e.response.status ), "couldn't upload observation: ", JSON.stringify( e.response ) );
   }

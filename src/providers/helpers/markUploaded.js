@@ -1,8 +1,8 @@
 // @flow
 import Realm from "realm";
 
-import realmConfig from "../../../models/index";
-import { getUTCDate } from "../../../sharedHelpers/dateAndTime";
+import realmConfig from "../../models/index";
+import { getUTCDate } from "../../sharedHelpers/dateAndTime";
 
 const markUploaded = async ( uuid: string, id: number ) => {
   try {

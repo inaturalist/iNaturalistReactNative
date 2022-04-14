@@ -12,7 +12,7 @@ import UserCard from "./UserCard";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import BottomModal from "../SharedComponents/BottomModal";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import uploadObservation from "../ObsEdit/helpers/uploadObservation";
+import uploadObservation from "../../providers/helpers/uploadObservation";
 import Observation from "../../models/Observation";
 
 const ObsList = ( ): Node => {

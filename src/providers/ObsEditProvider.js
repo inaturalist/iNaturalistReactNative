@@ -9,8 +9,9 @@ import { getTimeZone } from "../sharedHelpers/dateAndTime";
 import { ObsEditContext } from "./contexts";
 import createIdentification from "../components/Identify/helpers/createIdentification";
 import realmConfig from "../models/index";
-import Observation from "../models/Observation";
 import fetchPlaceName from "../sharedHelpers/fetchPlaceName";
+import saveLocalObservation from "./helpers/saveLocalObservation";
+import uploadObservation from "./helpers/uploadObservation";
 
 type Props = {
   children: any
@@ -141,16 +142,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const saveObservation = async ( ) => {
-    try {
-      const realm = await Realm.open( realmConfig );
-      const obsToSave = Observation.saveLocalObservationForUpload( currentObs, realm );
-      realm?.write( ( ) => {
-        realm?.create( "Observation", obsToSave );
-      } );
-      navigation.navigate( "my observations" );
-    } catch ( e ) {
-      console.log( e, "couldn't save observation to realm" );
-    }
+    const saved = await saveLocalObservation( currentObs );
+    console.log( saved, "obs was saved locally" );
+    navigation.navigate( "my observations" );
+  };
+
+  const saveAndUploadObservation = async ( ) => {
+    const saved = await saveLocalObservation( currentObs );
+    console.log( saved, "obs was saved; ready to upload" );
+    uploadObservation( currentObs );
+    navigation.navigate( "my observations" );
   };
 
   const openSavedObservation = async ( savedUUID ) => {
@@ -178,6 +179,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setIdentification,
     setPrevScreen,
     saveObservation,
+    saveAndUploadObservation,
     openSavedObservation
   };
 

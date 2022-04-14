@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import inatjs, { FileUpload } from "inaturalistjs";
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
-import resizeImageForUpload from "../helpers/resizeImage";
+import resizeImageForUpload from "../../../providers/helpers/resizeImage";
 
 const TAXON_FIELDS = {
   name: true,

@@ -23,7 +23,7 @@ import DatePicker from "./DatePicker";
 import TranslatedText from "../SharedComponents/TranslatedText";
 import Notes from "./Notes";
 import BottomModal from "./BottomModal";
-import uploadObservation from "./helpers/uploadObservation";
+// import uploadObservation from "./helpers/uploadObservation";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -33,7 +33,8 @@ const ObsEdit = ( ): Node => {
     setObservations,
     updateObservationKey,
     identification,
-    saveObservation
+    saveObservation,
+    saveAndUploadObservation
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -341,7 +342,7 @@ const ObsEdit = ( ): Node => {
         <RoundGreenButton
           buttonText="UPLOAD-OBSERVATION"
           testID="ObsEdit.uploadButton"
-          handlePress={ ( ) => uploadObservation( observations[currentObsNumber] )}
+          handlePress={saveAndUploadObservation}
           disabled={!isLoggedIn}
         />
       </View>

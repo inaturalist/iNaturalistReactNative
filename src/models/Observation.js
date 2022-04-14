@@ -72,7 +72,7 @@ class Observation {
 
   static saveLocalObservationForUpload( obs, realm ) {
     const taxon = obs.taxon_id ? Taxon.mapApiToRealm( { id: obs.taxon_id }, realm ) : null;
-    const observationPhotos = Observation.createLinkedObjects( obs.observationPhotos, ObservationPhoto, realm );
+    const observationPhotos = obs.observationPhotos.map( photo => ObservationPhoto.saveLocalObservationPhotoForUpload( photo ) );
 
     const newObs = {
       ...obs,
