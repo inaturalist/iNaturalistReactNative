@@ -14,7 +14,13 @@ type Props = {
 
 const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
   const placeGuess = item.placeGuess || item.place_guess;
-  const timeObserved = formatObsListTime( item.timeObservedAt || item.time_observed_at );
+
+  const displayTime = ( ) => {
+    if ( item.timeObservedAt || item.time_observed_at ) {
+      return formatObsListTime( item.timeObservedAt || item.time_observed_at );
+    }
+    return "no time given";
+  };
 
   const displayName = ( ) => {
     if ( needsUpload ) {
@@ -28,7 +34,7 @@ const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
     <>
       <Text style={textStyles.text} numberOfLines={1}>{displayName( )}</Text>
       <Text style={textStyles.text} numberOfLines={1}>{placeGuess || "no place guess"}</Text>
-      <Text style={textStyles.text} numberOfLines={1}>{timeObserved || "no time given"}</Text>
+      <Text style={textStyles.text} numberOfLines={1}>{displayTime( )}</Text>
     </>
   );
 };

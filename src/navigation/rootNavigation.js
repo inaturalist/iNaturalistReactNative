@@ -3,6 +3,7 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import PlaceholderComponent from "../components/PlaceholderComponent";
 import MyObservationsStackNavigator from "./myObservationsStackNavigation";
@@ -28,59 +29,61 @@ const hideHeader = {
 const Drawer = createDrawerNavigator( );
 
 const App = ( ): React.Node => (
-  <NavigationContainer>
-    <ObsEditProvider>
-      <Drawer.Navigator
-        screenOptions={screenOptions}
-        name="Drawer"
-        drawerContent={( props ) => <CustomDrawerContent {...props} />}
-      >
-        <Drawer.Screen
-          name="my observations"
-          component={MyObservationsStackNavigator}
-          options={hideHeader}
-        />
-        <Drawer.Screen
-          name="notifications"
-          component={NotificationsStackNavigation}
-          options={hideHeader}
-        />
-        <Drawer.Screen
-          name="identify"
-          component={IdentifyStackNavigation}
-          options={hideHeader}
-        />
-        <Drawer.Screen name="search" component={Search} />
-        <Drawer.Screen
-          name="projects"
-          component={ProjectsStackNavigation}
-          options={hideHeader}
-        />
-        <Drawer.Screen name="settings" component={PlaceholderComponent} />
-        <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
-        <Drawer.Screen
-          name="about"
-          component={About}
-        />
-        <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-        <Drawer.Screen name="login" component={Login} />
-        <Drawer.Screen
-          name="camera"
-          component={CameraStackNavigation}
-          options={hideHeader}
-        />
-        <Drawer.Screen
-          name="explore stack"
-          component={ExploreStackNavigator}
-          options={hideHeader}
-        />
-        <Drawer.Screen
-          name="network"
-          component={NetworkLogging}
-        />
-      </Drawer.Navigator>
-    </ObsEditProvider>
-  </NavigationContainer>
+  <GestureHandlerRootView style={{ flex: 1 }}>
+    <NavigationContainer>
+      <ObsEditProvider>
+        <Drawer.Navigator
+          screenOptions={screenOptions}
+          name="Drawer"
+          drawerContent={( props ) => <CustomDrawerContent {...props} />}
+        >
+          <Drawer.Screen
+            name="my observations"
+            component={MyObservationsStackNavigator}
+            options={hideHeader}
+          />
+          <Drawer.Screen
+            name="notifications"
+            component={NotificationsStackNavigation}
+            options={hideHeader}
+          />
+          <Drawer.Screen
+            name="identify"
+            component={IdentifyStackNavigation}
+            options={hideHeader}
+          />
+          <Drawer.Screen name="search" component={Search} />
+          <Drawer.Screen
+            name="projects"
+            component={ProjectsStackNavigation}
+            options={hideHeader}
+          />
+          <Drawer.Screen name="settings" component={PlaceholderComponent} />
+          <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
+          <Drawer.Screen
+            name="about"
+            component={About}
+          />
+          <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
+          <Drawer.Screen name="login" component={Login} />
+          <Drawer.Screen
+            name="camera"
+            component={CameraStackNavigation}
+            options={hideHeader}
+          />
+          <Drawer.Screen
+            name="explore stack"
+            component={ExploreStackNavigator}
+            options={hideHeader}
+          />
+          <Drawer.Screen
+            name="network"
+            component={NetworkLogging}
+          />
+        </Drawer.Navigator>
+      </ObsEditProvider>
+    </NavigationContainer>
+  </GestureHandlerRootView>
 );
 
 export default App;

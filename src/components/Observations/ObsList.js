@@ -33,7 +33,7 @@ const ObsList = ( ): Node => {
   const renderUploadModal = ( ) => {
     const uploadObservations = ( ) => obsToUpload.forEach( obs => {
       const mappedObs = Observation.mapObservationForUpload( obs );
-      uploadObservation( mappedObs );
+      uploadObservation( mappedObs, obs );
     } );
 
     return (

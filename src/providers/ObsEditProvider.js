@@ -12,6 +12,7 @@ import realmConfig from "../models/index";
 import fetchPlaceName from "../sharedHelpers/fetchPlaceName";
 import saveLocalObservation from "./helpers/saveLocalObservation";
 import uploadObservation from "./helpers/uploadObservation";
+import Observation from "../models/Observation";
 
 type Props = {
   children: any
@@ -142,15 +143,22 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const saveObservation = async ( ) => {
-    const saved = await saveLocalObservation( currentObs );
-    console.log( saved, "obs was saved locally" );
+    const localObs = await saveLocalObservation( currentObs );
+    if ( localObs ) {
+      setCurrentObsNumber( 0 );
+      setObservations( [] );
+    }
     navigation.navigate( "my observations" );
   };
 
   const saveAndUploadObservation = async ( ) => {
-    const saved = await saveLocalObservation( currentObs );
-    console.log( saved, "obs was saved; ready to upload" );
-    uploadObservation( currentObs );
+    const localObs = await saveLocalObservation( currentObs );
+    if ( localObs ) {
+      setCurrentObsNumber( 0 );
+      setObservations( [] );
+    }
+    const mappedObs = Observation.mapObservationForUpload( localObs );
+    uploadObservation( mappedObs, localObs );
     navigation.navigate( "my observations" );
   };
 

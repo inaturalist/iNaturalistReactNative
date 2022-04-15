@@ -1,39 +1,38 @@
 // @flow
 
-import { Platform } from "react-native";
-import inatjs, { FileUpload } from "inaturalistjs";
+import inatjs from "inaturalistjs";
 
 import { getJWTToken } from "../../components/LoginSignUp/AuthenticationService";
-import resizeImageForUpload from "./resizeImage";
 import markUploaded from "./markUploaded";
+import ObservationPhoto from "../../models/ObservationPhoto";
 // import fetchPlaceName from "../../../sharedHelpers/fetchPlaceName";
 
-const uploadSound = async ( soundParams, apiToken ) => {
-  const options = {
-    api_token: apiToken
-  };
+// const uploadSound = async ( soundParams, apiToken ) => {
+//   const options = {
+//     api_token: apiToken
+//   };
 
-  try {
-    await inatjs.observation_sounds.create( soundParams, options );
-  } catch ( e ) {
-    console.log( JSON.stringify( e.response ), "couldn't upload sound" );
-  }
-};
+//   try {
+//     await inatjs.observation_sounds.create( soundParams, options );
+//   } catch ( e ) {
+//     console.log( JSON.stringify( e.response ), "couldn't upload sound" );
+//   }
+// };
 
-const createSoundParams = async ( id, apiToken, obsToUpload ) => {
-  const fileExt = Platform.OS === "andr oid" ? "mp4" : "m4a";
-  const obsSoundToUpload = obsToUpload.observationSounds;
-  const soundParams = {
-    "observation_sound[observation_id]": id,
-    "observation_sound[uuid]": obsSoundToUpload.uuid,
-    file: new FileUpload( {
-      uri: obsSoundToUpload.uri,
-      name: `audio.${fileExt}`,
-      type: `audio/${fileExt}`
-    } )
-  };
-  uploadSound( soundParams, apiToken );
-};
+// const createSoundParams = async ( id, apiToken, obsToUpload ) => {
+//   const fileExt = Platform.OS === "andr oid" ? "mp4" : "m4a";
+//   const obsSoundToUpload = obsToUpload.observationSounds;
+//   const soundParams = {
+//     "observation_sound[observation_id]": id,
+//     "observation_sound[uuid]": obsSoundToUpload.uuid,
+//     file: new FileUpload( {
+//       uri: obsSoundToUpload.uri,
+//       name: `audio.${fileExt}`,
+//       type: `audio/${fileExt}`
+//     } )
+//   };
+//   uploadSound( soundParams, apiToken );
+// };
 
 const uploadPhoto = async ( photoParams, apiToken ) => {
   const options = {
@@ -47,30 +46,20 @@ const uploadPhoto = async ( photoParams, apiToken ) => {
   }
 };
 
-const createPhotoParams = async ( id, apiToken, obsToUpload ) => {
-  console.log( obsToUpload, "create photo params" );
-  const obsPhotosToUpload = obsToUpload.observationPhotos;
+const createPhotoParams = async ( id, apiToken, localObs ) => {
+  const obsPhotosToUpload = localObs.observationPhotos;
 
   if ( !obsPhotosToUpload || obsPhotosToUpload.length === 0 ) { return; }
   for ( let i = 0; i < obsPhotosToUpload.length; i += 1 ) {
     const photoToUpload = obsPhotosToUpload[i];
-    const photoUri = photoToUpload.uri;
-    const resizedPhoto = await resizeImageForUpload( photoUri );
+    const photoParams = ObservationPhoto.mapPhotoForUpload( id, photoToUpload );
+    console.log( photoParams, "photo params in create photo params" );
 
-    const photoParams = {
-      "observation_photo[observation_id]": id,
-      "observation_photo[uuid]": photoToUpload.uuid,
-      file: new FileUpload( {
-        uri: resizedPhoto,
-        name: "photo.jpeg",
-        type: "image/jpeg"
-      } )
-    };
     uploadPhoto( photoParams, apiToken );
   }
 };
 
-const uploadObservation = async ( obsToUpload: Object ) => {
+const uploadObservation = async ( obsToUpload: Object, localObs: Object ) => {
   const FIELDS = { id: true };
 
   try {
@@ -91,24 +80,12 @@ const uploadObservation = async ( obsToUpload: Object ) => {
       api_token: apiToken
     };
 
-    // Alert.alert(
-    //   "upload in progress",
-    //   "check staging to see if upload completed",
-    //   [
-    //     {
-    //       text: "Cancel",
-    //       onPress: () => console.log( "Cancel Pressed" ),
-    //       style: "cancel"
-    //     },
-    //     { text: "OK", onPress: () => console.log( "OK Pressed" ) }
-    //   ]
-    // );
     const response = await inatjs.observations.create( uploadParams, options );
     const { id } = response.results[0];
     // save id to realm and set time synced
     await markUploaded( obsToUpload.uuid, id );
-    if ( obsToUpload.observationPhotos ) {
-      createPhotoParams( id, apiToken, obsToUpload ); // v2
+    if ( localObs.observationPhotos ) {
+      createPhotoParams( id, apiToken, localObs ); // v2
     }
     // if ( obsToUpload.observationSounds ) {
     //   createSoundParams( id, apiToken, obsToUpload ); // v2

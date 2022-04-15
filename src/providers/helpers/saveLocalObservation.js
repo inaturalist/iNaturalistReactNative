@@ -5,17 +5,17 @@ import Realm from "realm";
 import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
 
-const saveLocalObservation = async ( currentObs: Object ): Promise<string> => {
+const saveLocalObservation = async ( currentObs: Object ): Promise<any> => {
   try {
     const realm = await Realm.open( realmConfig );
     const obsToSave = Observation.saveLocalObservationForUpload( currentObs, realm );
     realm?.write( ( ) => {
       realm?.create( "Observation", obsToSave );
     } );
-    return "saved";
+    return realm.objectForPrimaryKey( "Observation", currentObs.uuid );
   } catch ( e ) {
     console.log( e, "couldn't save observation locally" );
-    return "not-saved";
+    return null;
   }
 };
 

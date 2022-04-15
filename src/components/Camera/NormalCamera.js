@@ -13,6 +13,7 @@ import { ObsEditContext } from "../../providers/contexts";
 import CameraView from "./CameraView";
 import TopPhotos from "./TopPhotos";
 import checkCameraPermissions from "./helpers/androidPermissions";
+import resizeImageForUpload from "../../providers/helpers/resizeImage";
 
 const NormalCamera = ( ): Node => {
   const [permission, setPermission] = useState( null );
@@ -60,6 +61,7 @@ const NormalCamera = ( ): Node => {
   const takePhoto = async ( ) => {
     try {
       const photo = await camera.current.takePhoto( takePhotoOptions );
+      const resizedPhoto = await resizeImageForUpload( photo.path );
       const parsedPhoto = {
         latitude,
         longitude,
@@ -67,8 +69,7 @@ const NormalCamera = ( ): Node => {
         // TODO: check that this formatting for observed_on_string
         // shows up as expected on web,
         observed_on_string: photo.metadata["{Exif}"].DateTimeOriginal,
-        uri: `file://${photo.path}`,
-        // exif: photo.metadata["{Exif}"],
+        uri: resizedPhoto,
         uuid: uuid.v4( )
       };
       // only 10 photos allowed
@@ -96,8 +97,6 @@ const NormalCamera = ( ): Node => {
     addPhotos( observationPhotos );
     navigation.navigate( "ObsEdit" );
   };
-
-  console.log( device === null, permission, "device and permission" );
 
   // $FlowFixMe
   if ( permission === "denied" ) {

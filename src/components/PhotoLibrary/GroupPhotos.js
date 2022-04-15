@@ -10,6 +10,7 @@ import GroupPhotosHeader from "./GroupPhotosHeader";
 import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotosFooter from "./GroupPhotosFooter";
+import resizeImageForUpload from "../../providers/helpers/resizeImage";
 
 const GroupPhotos = ( ): Node => {
   const { addObservations } = useContext( ObsEditContext );
@@ -206,6 +207,13 @@ const GroupPhotos = ( ): Node => {
   };
 
   const navToObsEdit = ( ) => {
+    obsToEdit.observations.map( obs => {
+      const obsPhotos = obs.observationPhotos;
+      obsPhotos.map( async photo => {
+        const resizedPhoto = await resizeImageForUpload( photo.uri );
+        photo.uri = resizedPhoto;
+      } );
+    } );
     addObservations( obsToEdit.observations );
     navigation.navigate( "ObsEdit" );
     // on obs edit, can delete one obs
