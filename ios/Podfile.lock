@@ -300,8 +300,6 @@ PODS:
     - React-jsi (= 0.67.4)
     - React-logger (= 0.67.4)
     - React-perflogger (= 0.67.4)
-  - ReactNativeExceptionHandler (2.10.10):
-    - React-Core
   - RealmJS (10.20.0-beta.1):
     - React
   - RNAudioRecorderPlayer (3.3.4):
@@ -316,13 +314,13 @@ PODS:
     - React-Core
   - RNFS (2.19.0):
     - React-Core
-  - RNGestureHandler (2.1.0):
+  - RNGestureHandler (2.4.0):
     - React-Core
   - RNLocalize (2.2.1):
     - React-Core
   - RNPermissions (3.3.1):
     - React-Core
-  - RNReanimated (2.2.4):
+  - RNReanimated (2.7.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -330,7 +328,6 @@ PODS:
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
-    - React
     - React-callinvoker
     - React-Core
     - React-Core/DevSupport
@@ -348,7 +345,6 @@ PODS:
     - React-RCTNetwork
     - React-RCTSettings
     - React-RCTText
-    - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
   - RNScreens (3.13.1):
@@ -402,7 +398,6 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - ReactNativeExceptionHandler (from `../node_modules/react-native-exception-handler`)
   - RealmJS (from `../node_modules/realm`)
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
@@ -501,8 +496,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  ReactNativeExceptionHandler:
-    :path: "../node_modules/react-native-exception-handler"
   RealmJS:
     :path: "../node_modules/realm"
   RNAudioRecorderPlayer:
@@ -573,7 +566,6 @@ SPEC CHECKSUMS:
   React-RCTVibration: 3b52a7dced19cdb025b4f88ab26ceb2d85f30ba2
   React-runtimeexecutor: a9d3c82ddf7ffdad9fbe6a81c6d6f8c06385464d
   ReactCommon: 07d0c460b9ba9af3eaf1b8f5abe7daaad28c9c4e
-  ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
   RealmJS: 74cf2dec0a20e7ca75655b5190eb60c062d106ec
   RNAudioRecorderPlayer: 4efbe1839fd21c5caf8de132a8b3b51b422aa997
   RNCCheckbox: ed1b4ca295475b41e7251ebae046360a703b6eb5
@@ -581,10 +573,10 @@ SPEC CHECKSUMS:
   RNDateTimePicker: 064f3a609fbebc6896f7e5a2f48dcee5d9a6fd51
   RNDeviceInfo: 8d4177859b062334835962799460528869a487fb
   RNFS: fc610f78fdf8bfc89a9e5cc2f898519f4dba1002
-  RNGestureHandler: e5c7cab5f214503dcefd6b2b0cefb050e1f51c4a
+  RNGestureHandler: 50e6ffee79932d14ea747d4ea4cc99aac0f24e86
   RNLocalize: cbcb55d0e19c78086ea4eea20e03fe8000bbbced
   RNPermissions: 34d678157c800b25b22a488e4d8babb57456e796
-  RNReanimated: e28dfaa950064b674fde0a9b736e62b9dff500a7
+  RNReanimated: 96ab42cfb0e5517293499e0f3f810420eb459f75
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   VisionCamera: f6ebc7a6be166f3cd5744972b9ae394ca15a5145
   Yoga: d6b6a80659aa3e91aaba01d0012e7edcbedcbecd

@@ -5,6 +5,7 @@ import Taxon from "./Taxon";
 import User from "./User";
 
 import { getUTCDate } from "../sharedHelpers/dateAndTime";
+import ObservationSound from "./ObservationSound";
 
 class Observation {
   static mimicRealmMappedPropertiesSchema( obs ) {
@@ -72,12 +73,14 @@ class Observation {
 
   static saveLocalObservationForUpload( obs, realm ) {
     const taxon = obs.taxon_id ? Taxon.mapApiToRealm( { id: obs.taxon_id }, realm ) : null;
-    const observationPhotos = obs.observationPhotos.map( photo => ObservationPhoto.saveLocalObservationPhotoForUpload( photo ) );
+    const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => ObservationPhoto.saveLocalObservationPhotoForUpload( photo ) );
+    const observationSound = obs.observationSound && ObservationSound.saveLocalObservationSoundForUpload( obs.observationSound );
 
     const newObs = {
       ...obs,
       taxon,
       observationPhotos,
+      observationSound,
       timeSynced: null,
       timeUpdatedLocally: getUTCDate( new Date( ), obs.time_zone )
     };
@@ -153,7 +156,7 @@ class Observation {
       latitude: "double?",
       longitude: "double?",
       observationPhotos: "ObservationPhoto[]",
-      observationSounds: "ObservationSound[]",
+      observationSound: "ObservationSound?",
       observed_on_string: "string?",
       owners_identification_from_vision_requested: "bool?",
       species_guess: "string?",

@@ -11,9 +11,10 @@ import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import uuid from "react-native-uuid";
 import { getUnixTime } from "date-fns";
+import RNFS from "react-native-fs";
+
 import { useUserLocation } from "../../sharedHooks/useUserLocation";
 import { formatDateAndTime } from "../../sharedHelpers/dateAndTime";
-
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder";
 import { ObsEditContext } from "../../providers/contexts";
@@ -22,6 +23,7 @@ import { ObsEditContext } from "../../providers/contexts";
 const audioRecorderPlayer = new AudioRecorderPlayer( );
 
 const SoundRecorder = ( ): Node => {
+  const soundUUID = uuid.v4( );
   const { addSound } = useContext( ObsEditContext );
   const latLng = useUserLocation( );
   const latitude = latLng && latLng.latitude;
@@ -85,9 +87,27 @@ const SoundRecorder = ( ): Node => {
     } );
   }, [navigation] );
 
+  const moveFromCacheToDocumentDirectory = async ( soundPath ) => {
+    // in theory, should be able to pass in a path to the audio recorder
+    // but that's buggy so moving the file from cache to docs instead
+    const cacheDir = RNFS.CachesDirectoryPath;
+    const docDir = RNFS.DocumentDirectoryPath;
+
+    const audioFile = `${cacheDir}/${soundPath}`;
+    const soundUploadsFolder = `${docDir}/soundUploads`;
+    await RNFS.mkdir( soundUploadsFolder );
+    const soundDirectory = `${soundUploadsFolder}/${soundPath}`;
+
+    await RNFS.moveFile( audioFile, soundDirectory );
+    return soundDirectory;
+  };
+
   const startRecording = async ( ) => {
+    const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
+    const soundPath = `${soundUUID}.${fileExt}`;
+
     try {
-      const audioFile = await audioRecorderPlayer.startRecorder( null, null, true );
+      await audioRecorderPlayer.startRecorder( soundPath, null, true );
       setStatus( "recording" );
       audioRecorderPlayer.addRecordBackListener( ( e ) => {
         setSound( {
@@ -100,7 +120,8 @@ const SoundRecorder = ( ): Node => {
         } );
         return;
       } );
-      setUri( audioFile );
+      const storedFile = await moveFromCacheToDocumentDirectory( soundPath );
+      setUri( storedFile );
     } catch ( e ) {
       console.log( "couldn't start sound recorder:", e );
     }
@@ -220,9 +241,9 @@ const SoundRecorder = ( ): Node => {
       latitude,
       longitude,
       positional_accuracy: latLng && latLng.accuracy,
-      observationSounds: {
+      observationSound: {
         uri,
-        uuid: uuid.v4( )
+        uuid: soundUUID
       },
       observed_on_string: formatDateAndTime( getUnixTime( new Date( ) ) )
     } );

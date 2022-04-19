@@ -1,5 +1,5 @@
 // @flow
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import type { Node } from "react";
 import uuid from "react-native-uuid";
 import { useNavigation } from "@react-navigation/native";
@@ -13,12 +13,14 @@ import fetchPlaceName from "../sharedHelpers/fetchPlaceName";
 import saveLocalObservation from "./helpers/saveLocalObservation";
 import uploadObservation from "./helpers/uploadObservation";
 import Observation from "../models/Observation";
+import { PhotoGalleryContext } from "./contexts";
 
 type Props = {
   children: any
 }
 
 const ObsEditProvider = ( { children }: Props ): Node => {
+  const { setSelectedPhotos } = useContext( PhotoGalleryContext );
   const navigation = useNavigation( );
   const [currentObsNumber, setCurrentObsNumber] = useState( 0 );
   const [observations, setObservations] = useState( [] );
@@ -34,7 +36,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     } else if ( currentObs ) {
       const updatedObs = Array.from( observations );
       // $FlowFixMe
-      updatedObs[currentObsNumber].observationSounds = sound.observationSounds;
+      updatedObs[currentObsNumber].observationSound = sound.observationSound;
       setObservations( updatedObs );
     }
   };
@@ -146,20 +148,25 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     if ( observations.length === 1 ) {
       setCurrentObsNumber( 0 );
       setObservations( [] );
+      setSelectedPhotos( {} );
       navigation.navigate( "my observations" );
+      // navigation.navigate( "my observations", {
+      //   screen: "ObsList",
+      //   params: { syncData: true }
+      // } );
     } else {
       if ( currentObsNumber === observations.length - 1 ) {
         console.log( "current obs number is last in array" );
         observations.pop( );
         console.log( observations.length, "obs after pop" );
+        setCurrentObsNumber( observations.length );
         setObservations( observations );
-        navigation.navigate( "ObsEdit" );
       } else {
         console.log( "current obs number is not last" );
         observations.splice( currentObsNumber, 1 );
         console.log( observations.length, "obs after splice" );
+        setCurrentObsNumber( currentObsNumber );
         setObservations( observations );
-        navigation.navigate( "ObsEdit" );
       }
     }
   };

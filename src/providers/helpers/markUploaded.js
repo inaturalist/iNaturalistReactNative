@@ -30,7 +30,20 @@ const markPhotoUploaded = async ( uuid: string, id: number ) => {
   }
 };
 
+const markSoundUploaded = async ( uuid: string, id: number ) => {
+  try {
+    const realm = await Realm.open( realmConfig );
+    const obsSound = realm.objectForPrimaryKey( "ObservationSound", uuid );
+    realm?.write( ( ) => {
+      obsSound.id = id;
+    } );
+  } catch ( e ) {
+    console.log( e, "couldn't mark photo uploaded in realm" );
+  }
+};
+
 export {
   markUploaded,
-  markPhotoUploaded
+  markPhotoUploaded,
+  markSoundUploaded
 };

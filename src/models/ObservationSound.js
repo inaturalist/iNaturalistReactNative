@@ -1,15 +1,34 @@
+import { Platform } from "react-native";
+import { FileUpload } from "inaturalistjs";
 class ObservationSound {
-  static mapApiToRealm( observationSound ) {
-    return observationSound;
+  static saveLocalObservationSoundForUpload( observationSound ) {
+    console.log( observationSound, "sound" );
+    return {
+      ...observationSound,
+      file_url: observationSound.uri
+    };
   }
 
-  // TODO: does sound need a uuid? it has one in iNaturalistIOS
-  // https://github.com/inaturalist/INaturalistIOS/blob/1b52a28ea70908119930348a4c4f4242eb3ca47b/INaturalistIOS/ExploreObservationSound.h
+  static mapSoundForUpload( id, observationSound ) {
+    console.log( observationSound.file_url );
+    const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
+
+    return {
+      "observation_sound[observation_id]": id,
+      "observation_sound[uuid]": observationSound.uuid,
+      file: new FileUpload( {
+        uri: observationSound.file_url,
+        name: `audio.${fileExt}`,
+        type: `audio/${fileExt}`
+      } )
+    };
+  }
+
   static schema = {
     name: "ObservationSound",
-    // primaryKey: "uuid",
+    primaryKey: "uuid",
     properties: {
-      // uuid: "string",
+      uuid: "string",
       id: "int?",
       file_url: { type: "string", mapTo: "fileUrl" },
       // this creates an inverse relationship so observation sounds
@@ -17,7 +36,7 @@ class ObservationSound {
       assignee: {
         type: "linkingObjects",
         objectType: "Observation",
-        property: "observationSounds"
+        property: "observationSound"
       }
     }
   }

@@ -52,8 +52,8 @@ const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, select
     if ( currentObs.observationPhotos ) {
       evidence = evidence.concat( currentObs.observationPhotos );
     }
-    if ( currentObs.observationSounds ) {
-      evidence = evidence.concat( [currentObs.observationSounds] );
+    if ( currentObs.observationSound ) {
+      evidence = evidence.concat( [currentObs.observationSound] );
     }
     return evidence;
   };

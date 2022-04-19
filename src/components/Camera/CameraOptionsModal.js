@@ -19,7 +19,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   const addObservationNoEvidence = obsEdit && obsEdit.addObservationNoEvidence;
   const navigation = useNavigation( );
 
-  const hasSound = currentObs && currentObs.observationSounds && currentObs.observationSounds.uri;
+  const hasSound = currentObs && currentObs.observationSound && currentObs.observationSound.uri;
 
   const navAndCloseModal = ( screen, params ) => {
     // access nested screen

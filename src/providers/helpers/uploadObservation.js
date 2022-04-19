@@ -3,46 +3,37 @@
 import inatjs from "inaturalistjs";
 
 import { getJWTToken } from "../../components/LoginSignUp/AuthenticationService";
-import { markUploaded, markPhotoUploaded } from "./markUploaded";
+import { markUploaded, markPhotoUploaded, markSoundUploaded } from "./markUploaded";
 import ObservationPhoto from "../../models/ObservationPhoto";
+import ObservationSound from "../../models/ObservationSound";
 // import fetchPlaceName from "../../../sharedHelpers/fetchPlaceName";
 
-// const uploadSound = async ( soundParams, apiToken ) => {
-//   const options = {
-//     api_token: apiToken
-//   };
+const uploadSound = async ( soundParams, apiToken, uuid ) => {
+  const options = { api_token: apiToken };
 
-//   try {
-//     await inatjs.observation_sounds.create( soundParams, options );
-//   } catch ( e ) {
-//     console.log( JSON.stringify( e.response ), "couldn't upload sound" );
-//   }
-// };
+  try {
+    const { results } = await inatjs.observation_sounds.create( soundParams, options );
+    const soundId = results[0].id;
+    console.log( soundId, "sound created" );
+    await markSoundUploaded( uuid, soundId );
+  } catch ( e ) {
+    console.log( JSON.stringify( e.response ), "couldn't upload sound" );
+  }
+};
 
-// const createSoundParams = async ( id, apiToken, obsToUpload ) => {
-//   const fileExt = Platform.OS === "andr oid" ? "mp4" : "m4a";
-//   const obsSoundToUpload = obsToUpload.observationSounds;
-//   const soundParams = {
-//     "observation_sound[observation_id]": id,
-//     "observation_sound[uuid]": obsSoundToUpload.uuid,
-//     file: new FileUpload( {
-//       uri: obsSoundToUpload.uri,
-//       name: `audio.${fileExt}`,
-//       type: `audio/${fileExt}`
-//     } )
-//   };
-//   uploadSound( soundParams, apiToken );
-// };
+const createSoundParams = async ( id, apiToken, localObs ) => {
+  const obsSoundToUpload = localObs.observationSound;
+  const soundParams = ObservationSound.mapSoundForUpload( id, obsSoundToUpload );
+  console.log( soundParams, "sound params" );
+  uploadSound( soundParams, apiToken, obsSoundToUpload.uuid );
+};
 
 const uploadPhoto = async ( photoParams, apiToken, uuid ) => {
-  const options = {
-    api_token: apiToken
-  };
+  const options = { api_token: apiToken };
 
   try {
     const { results } = await inatjs.observation_photos.create( photoParams, options );
     const photoId = results[0].id;
-    console.log( photoId, "photo created" );
     await markPhotoUploaded( uuid, photoId );
   } catch ( e ) {
     console.log( JSON.stringify( e.response ), "couldn't upload photo" );
@@ -88,9 +79,9 @@ const uploadObservation = async ( obsToUpload: Object, localObs: Object ) => {
     if ( localObs.observationPhotos ) {
       createPhotoParams( id, apiToken, localObs ); // v2
     }
-    // if ( obsToUpload.observationSounds ) {
-    //   createSoundParams( id, apiToken, obsToUpload ); // v2
-    // }
+    if ( localObs.observationSound ) {
+      createSoundParams( id, apiToken, localObs ); // v2
+    }
   } catch ( e ) {
     console.log( JSON.stringify( e.response.status ), "couldn't upload observation: ", JSON.stringify( e.response ) );
   }

@@ -18,6 +18,7 @@ import ObsEditProvider from "../providers/ObsEditProvider";
 import NetworkLogging from "../components/NetworkLogging";
 import NotificationsStackNavigation from "./notificationsStackNavigation";
 import About from "../components/About";
+import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -31,57 +32,59 @@ const Drawer = createDrawerNavigator( );
 const App = ( ): React.Node => (
   <GestureHandlerRootView style={{ flex: 1 }}>
     <NavigationContainer>
-      <ObsEditProvider>
-        <Drawer.Navigator
-          screenOptions={screenOptions}
-          name="Drawer"
-          drawerContent={( props ) => <CustomDrawerContent {...props} />}
-        >
-          <Drawer.Screen
-            name="my observations"
-            component={MyObservationsStackNavigator}
-            options={hideHeader}
-          />
-          <Drawer.Screen
-            name="notifications"
-            component={NotificationsStackNavigation}
-            options={hideHeader}
-          />
-          <Drawer.Screen
-            name="identify"
-            component={IdentifyStackNavigation}
-            options={hideHeader}
-          />
-          <Drawer.Screen name="search" component={Search} />
-          <Drawer.Screen
-            name="projects"
-            component={ProjectsStackNavigation}
-            options={hideHeader}
-          />
-          <Drawer.Screen name="settings" component={PlaceholderComponent} />
-          <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
-          <Drawer.Screen
-            name="about"
-            component={About}
-          />
-          <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-          <Drawer.Screen name="login" component={Login} />
-          <Drawer.Screen
-            name="camera"
-            component={CameraStackNavigation}
-            options={hideHeader}
-          />
-          <Drawer.Screen
-            name="explore stack"
-            component={ExploreStackNavigator}
-            options={hideHeader}
-          />
-          <Drawer.Screen
-            name="network"
-            component={NetworkLogging}
-          />
-        </Drawer.Navigator>
-      </ObsEditProvider>
+      <PhotoGalleryProvider>
+        <ObsEditProvider>
+          <Drawer.Navigator
+            screenOptions={screenOptions}
+            name="Drawer"
+            drawerContent={( props ) => <CustomDrawerContent {...props} />}
+          >
+            <Drawer.Screen
+              name="my observations"
+              component={MyObservationsStackNavigator}
+              options={hideHeader}
+            />
+            <Drawer.Screen
+              name="notifications"
+              component={NotificationsStackNavigation}
+              options={hideHeader}
+            />
+            <Drawer.Screen
+              name="identify"
+              component={IdentifyStackNavigation}
+              options={hideHeader}
+            />
+            <Drawer.Screen name="search" component={Search} />
+            <Drawer.Screen
+              name="projects"
+              component={ProjectsStackNavigation}
+              options={hideHeader}
+            />
+            <Drawer.Screen name="settings" component={PlaceholderComponent} />
+            <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
+            <Drawer.Screen
+              name="about"
+              component={About}
+            />
+            <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
+            <Drawer.Screen name="login" component={Login} />
+            <Drawer.Screen
+              name="camera"
+              component={CameraStackNavigation}
+              options={hideHeader}
+            />
+            <Drawer.Screen
+              name="explore stack"
+              component={ExploreStackNavigator}
+              options={hideHeader}
+            />
+            <Drawer.Screen
+              name="network"
+              component={NetworkLogging}
+            />
+          </Drawer.Navigator>
+        </ObsEditProvider>
+      </PhotoGalleryProvider>
     </NavigationContainer>
   </GestureHandlerRootView>
 );
