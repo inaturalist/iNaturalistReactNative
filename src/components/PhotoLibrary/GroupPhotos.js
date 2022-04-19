@@ -206,15 +206,27 @@ const GroupPhotos = ( ): Node => {
     setObsToEdit( { observations: removedFromGroup } );
   };
 
-  const navToObsEdit = ( ) => {
-    obsToEdit.observations.map( obs => {
+  const saveResizedPhotos = ( obsPhotos ) => {
+    return Promise.all( obsPhotos.map( async photo => {
+      const resizedPhoto = await resizeImageForUpload( photo.uri );
+      return {
+        ...photo,
+        uri: resizedPhoto
+      };
+    } ) );
+  };
+
+  const navToObsEdit = async ( ) => {
+    const obsResizedPhotos = obsToEdit.observations.map( async obs => {
       const obsPhotos = obs.observationPhotos;
-      obsPhotos.map( async photo => {
-        const resizedPhoto = await resizeImageForUpload( photo.uri );
-        photo.uri = resizedPhoto;
-      } );
+      const resizedPhotos = await saveResizedPhotos( obsPhotos );
+      return {
+        ...obs,
+        observationPhotos: resizedPhotos
+      };
     } );
-    addObservations( obsToEdit.observations );
+    const resizedPhotos = await Promise.all( obsResizedPhotos );
+    addObservations( resizedPhotos );
     navigation.navigate( "ObsEdit" );
     // on obs edit, can delete one obs
 

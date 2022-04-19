@@ -142,24 +142,42 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     }
   };
 
+  const setNextScreen = ( ) => {
+    if ( observations.length === 1 ) {
+      setCurrentObsNumber( 0 );
+      setObservations( [] );
+      navigation.navigate( "my observations" );
+    } else {
+      if ( currentObsNumber === observations.length - 1 ) {
+        console.log( "current obs number is last in array" );
+        observations.pop( );
+        console.log( observations.length, "obs after pop" );
+        setObservations( observations );
+        navigation.navigate( "ObsEdit" );
+      } else {
+        console.log( "current obs number is not last" );
+        observations.splice( currentObsNumber, 1 );
+        console.log( observations.length, "obs after splice" );
+        setObservations( observations );
+        navigation.navigate( "ObsEdit" );
+      }
+    }
+  };
+
   const saveObservation = async ( ) => {
     const localObs = await saveLocalObservation( currentObs );
     if ( localObs ) {
-      setCurrentObsNumber( 0 );
-      setObservations( [] );
+      setNextScreen( );
     }
-    navigation.navigate( "my observations" );
   };
 
   const saveAndUploadObservation = async ( ) => {
     const localObs = await saveLocalObservation( currentObs );
-    if ( localObs ) {
-      setCurrentObsNumber( 0 );
-      setObservations( [] );
-    }
     const mappedObs = Observation.mapObservationForUpload( localObs );
     uploadObservation( mappedObs, localObs );
-    navigation.navigate( "my observations" );
+    if ( localObs ) {
+      setNextScreen( );
+    }
   };
 
   const openSavedObservation = async ( savedUUID ) => {

@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { StyleSheet, Animated } from "react-native";
 import { Camera } from "react-native-vision-camera";
 import type { Node } from "react";
-import { useIsFocused } from "@react-navigation/core";
+import { useIsFocused } from "@react-navigation/native";
 import { PinchGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 import Reanimated, { Extrapolate, interpolate, useAnimatedGestureHandler, useAnimatedProps, useSharedValue } from "react-native-reanimated";
 

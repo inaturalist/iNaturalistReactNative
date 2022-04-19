@@ -3,7 +3,7 @@
 import inatjs from "inaturalistjs";
 
 import { getJWTToken } from "../../components/LoginSignUp/AuthenticationService";
-import markUploaded from "./markUploaded";
+import { markUploaded, markPhotoUploaded } from "./markUploaded";
 import ObservationPhoto from "../../models/ObservationPhoto";
 // import fetchPlaceName from "../../../sharedHelpers/fetchPlaceName";
 
@@ -34,13 +34,16 @@ import ObservationPhoto from "../../models/ObservationPhoto";
 //   uploadSound( soundParams, apiToken );
 // };
 
-const uploadPhoto = async ( photoParams, apiToken ) => {
+const uploadPhoto = async ( photoParams, apiToken, uuid ) => {
   const options = {
     api_token: apiToken
   };
 
   try {
-    await inatjs.observation_photos.create( photoParams, options );
+    const { results } = await inatjs.observation_photos.create( photoParams, options );
+    const photoId = results[0].id;
+    console.log( photoId, "photo created" );
+    await markPhotoUploaded( uuid, photoId );
   } catch ( e ) {
     console.log( JSON.stringify( e.response ), "couldn't upload photo" );
   }
@@ -53,9 +56,7 @@ const createPhotoParams = async ( id, apiToken, localObs ) => {
   for ( let i = 0; i < obsPhotosToUpload.length; i += 1 ) {
     const photoToUpload = obsPhotosToUpload[i];
     const photoParams = ObservationPhoto.mapPhotoForUpload( id, photoToUpload );
-    console.log( photoParams, "photo params in create photo params" );
-
-    uploadPhoto( photoParams, apiToken );
+    uploadPhoto( photoParams, apiToken, photoToUpload.uuid );
   }
 };
 
