@@ -156,16 +156,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       // } );
     } else {
       if ( currentObsNumber === observations.length - 1 ) {
-        console.log( "current obs number is last in array" );
         observations.pop( );
-        console.log( observations.length, "obs after pop" );
-        setCurrentObsNumber( observations.length );
+        setCurrentObsNumber( observations.length - 1 );
         setObservations( observations );
       } else {
-        console.log( "current obs number is not last" );
         observations.splice( currentObsNumber, 1 );
-        console.log( observations.length, "obs after splice" );
         setCurrentObsNumber( currentObsNumber );
+        // this seems necessary for rerendering the ObsEdit screen
+        setObservations( [] );
         setObservations( observations );
       }
     }
