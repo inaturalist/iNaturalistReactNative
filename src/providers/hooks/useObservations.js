@@ -39,7 +39,9 @@ const useObservations = ( ): Object => {
 
     // When querying a realm to find objects (e.g. realm.objects('Observation')) the result we get back
     // and the objects in it are "live" and will always reflect the latest state.
-    const localObservations = realm.objects( "Observation" ).sorted( "createdAt", true );
+
+    const localObservations = realm.objects( "Observation" ).sorted( "timeObservedAt", true );
+    console.log( localObservations.length, "local obs in useObservations" );
     const notUploadedObs = realm.objects( "Observation" ).filtered( "timeSynced == null && timeUpdatedLocally != null" );
 
     if ( localObservations?.length ) {

@@ -16,6 +16,7 @@ const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
   const placeGuess = item.placeGuess || item.place_guess;
 
   const displayTime = ( ) => {
+    // console.log( item.timeObservedAt, item.time_observed_at, "time observed" );
     if ( item.timeObservedAt || item.time_observed_at ) {
       return formatObsListTime( item.timeObservedAt || item.time_observed_at );
     }

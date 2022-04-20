@@ -82,7 +82,8 @@ class Observation {
       observationPhotos,
       observationSound,
       timeSynced: null,
-      timeUpdatedLocally: getUTCDate( new Date( ), obs.time_zone )
+      timeUpdatedLocally: getUTCDate( new Date( ), obs.time_zone ),
+      time_observed_at: obs.observed_on_string
     };
     return newObs;
   }

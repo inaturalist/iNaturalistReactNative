@@ -25,6 +25,9 @@ const ObsList = ( ): Node => {
     // start fetching data immediately after successful login
     if ( params && params.syncData && params.userLogin ) {
       syncObservations( params.userLogin );
+    } else if ( params && params.savedLocalData ) {
+      // from obsEdit screen
+      syncObservations( );
     }
   }, [params, syncObservations] );
 

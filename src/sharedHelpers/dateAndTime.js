@@ -21,10 +21,18 @@ const getUTCDate = ( date, timeZone ) => zonedTimeToUtc( date, timeZone );
 
 const formatObsListTime = ( date ) => format( parseISO( date ), "M/d/yy HH:mm a" );
 
+const formatCameraDate = ( date ) => {
+  const splitDateAndTime = date.split( " " );
+  const day = splitDateAndTime[0].replaceAll( ":", "-" );
+  const formattedDate = day + "T" + splitDateAndTime[1];
+  return formattedDate;
+};
+
 export {
   getTimeZone,
   formatDateAndTime,
   timeAgo,
   getUTCDate,
-  formatObsListTime
+  formatObsListTime,
+  formatCameraDate
 };

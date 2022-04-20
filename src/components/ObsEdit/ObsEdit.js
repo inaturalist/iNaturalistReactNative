@@ -43,8 +43,6 @@ const ObsEdit = ( ): Node => {
   const [source, setSource] = useState( null );
   const isLoggedIn = useLoggedIn( );
 
-  console.log( observations.length, currentObsNumber, "obs number and length in obsedit" );
-
   const openModal = useCallback( ( ) => setModal( true ), [] );
   const closeModal = useCallback( ( ) => setModal( false ), [] );
   const openBottomModal = useCallback( ( ) => setBottomModal( true ), [] );

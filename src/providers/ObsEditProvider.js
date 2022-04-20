@@ -149,11 +149,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setCurrentObsNumber( 0 );
       setObservations( [] );
       setSelectedPhotos( {} );
-      navigation.navigate( "my observations" );
-      // navigation.navigate( "my observations", {
-      //   screen: "ObsList",
-      //   params: { syncData: true }
-      // } );
+      // navigation.navigate( "my observations" );
+      navigation.navigate( "my observations", {
+        screen: "ObsList",
+        params: { savedLocalData: true }
+      } );
     } else {
       if ( currentObsNumber === observations.length - 1 ) {
         observations.pop( );

@@ -14,6 +14,7 @@ import CameraView from "./CameraView";
 import TopPhotos from "./TopPhotos";
 import checkCameraPermissions from "./helpers/androidPermissions";
 import resizeImageForUpload from "../../providers/helpers/resizeImage";
+import { formatCameraDate } from "../../sharedHelpers/dateAndTime";
 
 const NormalCamera = ( ): Node => {
   const [permission, setPermission] = useState( null );
@@ -62,13 +63,14 @@ const NormalCamera = ( ): Node => {
     try {
       const photo = await camera.current.takePhoto( takePhotoOptions );
       const resizedPhoto = await resizeImageForUpload( photo.path );
+      const formattedDate = formatCameraDate( photo.metadata["{Exif}"].DateTimeOriginal );
       const parsedPhoto = {
         latitude,
         longitude,
         positional_accuracy: latLng && latLng.accuracy,
         // TODO: check that this formatting for observed_on_string
         // shows up as expected on web,
-        observed_on_string: photo.metadata["{Exif}"].DateTimeOriginal,
+        observed_on_string: formattedDate,
         uri: resizedPhoto,
         uuid: uuid.v4( )
       };
