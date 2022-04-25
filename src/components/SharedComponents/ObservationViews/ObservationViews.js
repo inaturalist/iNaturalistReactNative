@@ -38,7 +38,7 @@ const ObservationViews = ( {
   const { name } = useRoute( );
 
   const navToObsDetails = async ( observation ) => {
-    const needsUpload = observation.timeSynced === null && observation.timeUpdatedLocally !== null;
+    const needsUpload = observation._synced_at === null;
     if ( needsUpload ) {
       await openSavedObservation( observation.uuid );
       navigation.navigate( "camera", {

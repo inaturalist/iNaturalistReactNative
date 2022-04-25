@@ -16,7 +16,7 @@ type Props = {
 
 const ObsCard = ( { item, handlePress }: Props ): Node => {
   const onPress = ( ) => handlePress( item );
-  const needsUpload = item.timeSynced === null && item.timeUpdatedLocally !== null;
+  const needsUpload = item._synced_at === null;
 
   return (
     <Pressable

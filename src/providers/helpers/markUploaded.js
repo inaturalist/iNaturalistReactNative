@@ -12,7 +12,7 @@ const markUploaded = async ( uuid: string, id: number ) => {
     const obs = realm.objectForPrimaryKey( "Observation", uuid );
     realm?.write( ( ) => {
       obs.id = id;
-      obs.timeSynced = getUTCDate( new Date( ) );
+      obs._synced_at = getUTCDate( new Date( ) );
     } );
   } catch ( e ) {
     console.log( e, "couldn't mark obs uploaded in realm" );
@@ -25,7 +25,6 @@ const markPhotoUploaded = async ( uuid: string, id: number ) => {
     const obsPhoto = realm.objectForPrimaryKey( "ObservationPhoto", uuid );
     realm?.write( ( ) => {
       obsPhoto.photo.id = id;
-      obsPhoto.photo.timeSynced = getUTCDate( new Date( ) );
     } );
   } catch ( e ) {
     console.log( e, "couldn't mark photo uploaded in realm" );

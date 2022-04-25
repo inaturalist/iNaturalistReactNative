@@ -1,5 +1,3 @@
-import { getUTCDate } from "../sharedHelpers/dateAndTime";
-
 class Photo {
   static mapApiToRealm( photo ) {
     return photo;
@@ -7,9 +5,7 @@ class Photo {
 
   static saveLocalPhotoForUpload( observationPhoto ) {
     return {
-      localFilePath: observationPhoto.uri,
-      timeSynced: null,
-      timeUpdatedLocally: getUTCDate( new Date( ) )
+      localFilePath: observationPhoto.uri
     };
   }
 
@@ -21,9 +17,7 @@ class Photo {
       attribution: "string?",
       license_code: { type: "string?", mapTo: "licenseCode" },
       url: "string?",
-      localFilePath: "string?",
-      timeSynced: "date?",
-      timeUpdatedLocally: "date?"
+      localFilePath: "string?"
     }
   }
 }

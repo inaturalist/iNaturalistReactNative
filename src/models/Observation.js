@@ -78,12 +78,11 @@ class Observation {
 
     const newObs = {
       ...obs,
+      _synced_at: null,
+      _updated_at: getUTCDate( new Date( ) ),
       taxon,
       observationPhotos,
-      observationSounds,
-      timeSynced: null,
-      timeUpdatedLocally: getUTCDate( new Date( ) ),
-      time_observed_at: obs.observed_on_string
+      observationSounds
     };
     return newObs;
   }
@@ -146,9 +145,16 @@ class Observation {
     name: "Observation",
     primaryKey: "uuid",
     properties: {
+      // datetime the observation was created on the device
+      _created_at: "date?",
+      // datetime the observation was last synced with the server
+      _synced_at: "date?",
+      // datetime the observation was updated on the device (i.e. edited locally)
+      _updated_at: "date?",
       uuid: "string",
       captive_flag: "bool?",
       comments: "Comment[]",
+      // timestamp of when observation was created on the server; not editable
       created_at: { type: "string?", mapTo: "createdAt" },
       description: "string?",
       geoprivacy: "string?",
@@ -158,6 +164,7 @@ class Observation {
       longitude: "double?",
       observationPhotos: "ObservationPhoto[]",
       observationSounds: "ObservationSound[]",
+      // date and/or time submitted to the server when a new obs is uploaded
       observed_on_string: "string?",
       owners_identification_from_vision: "bool?",
       species_guess: "string?",
@@ -165,9 +172,8 @@ class Observation {
       positional_accuracy: "double?",
       quality_grade: { type: "string?", mapTo: "qualityGrade" },
       taxon: "Taxon?",
+      // datetime when the observer observed the organism; user-editable, but only by changing observed_on_string
       time_observed_at: { type: "string?", mapTo: "timeObservedAt" },
-      timeSynced: "date?",
-      timeUpdatedLocally: "date?",
       user: "User?"
 
       // need project ids, but skipping this for now

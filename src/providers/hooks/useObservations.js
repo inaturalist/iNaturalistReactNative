@@ -42,7 +42,7 @@ const useObservations = ( ): Object => {
 
     const localObservations = realm.objects( "Observation" ).sorted( "timeObservedAt", true );
     console.log( localObservations.length, "local obs in useObservations" );
-    const notUploadedObs = realm.objects( "Observation" ).filtered( "timeSynced == null && timeUpdatedLocally != null" );
+    const notUploadedObs = realm.objects( "Observation" ).filtered( "_synced_at == null" );
 
     if ( localObservations?.length ) {
       setObservationList( localObservations );
