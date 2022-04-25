@@ -5,7 +5,6 @@ import uuid from "react-native-uuid";
 import { useNavigation } from "@react-navigation/native";
 import Realm from "realm";
 
-import { getTimeZone } from "../sharedHelpers/dateAndTime";
 import { ObsEditContext } from "./contexts";
 import createIdentification from "../components/Identify/helpers/createIdentification";
 import realmConfig from "../models/index";

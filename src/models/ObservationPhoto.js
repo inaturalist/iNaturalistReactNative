@@ -22,7 +22,7 @@ class ObservationPhoto {
       "observation_photo[uuid]": observationPhoto.uuid,
       file: new FileUpload( {
         uri: observationPhoto.photo.localFilePath,
-        name: "photo.jpeg",
+        name: `${observationPhoto.uuid}.jpeg`,
         type: "image/jpeg"
       } )
     };

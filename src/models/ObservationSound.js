@@ -18,7 +18,7 @@ class ObservationSound {
       "observation_sound[uuid]": observationSound.uuid,
       file: new FileUpload( {
         uri: observationSound.file_url,
-        name: `audio.${fileExt}`,
+        name: `${observationSound.uuid}.${fileExt}`,
         type: `audio/${fileExt}`
       } )
     };
