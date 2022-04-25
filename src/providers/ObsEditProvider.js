@@ -113,7 +113,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       geoprivacy: "open",
       owners_identification_from_vision_requested: false,
       project_ids: [],
-      time_zone: getTimeZone( ),
       uuid: uuid.v4( )
     };
   };

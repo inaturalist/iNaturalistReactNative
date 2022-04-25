@@ -82,7 +82,7 @@ class Observation {
       observationPhotos,
       observationSound,
       timeSynced: null,
-      timeUpdatedLocally: getUTCDate( new Date( ), obs.time_zone ),
+      timeUpdatedLocally: getUTCDate( new Date( ) ),
       time_observed_at: obs.observed_on_string
     };
     return newObs;
@@ -166,7 +166,6 @@ class Observation {
       quality_grade: { type: "string?", mapTo: "qualityGrade" },
       taxon: "Taxon?",
       time_observed_at: { type: "string?", mapTo: "timeObservedAt" },
-      time_zone: "string?",
       timeSynced: "date?",
       timeUpdatedLocally: "date?",
       user: "User?"
