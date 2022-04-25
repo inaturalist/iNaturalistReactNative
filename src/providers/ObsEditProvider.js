@@ -35,7 +35,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     } else if ( currentObs ) {
       const updatedObs = Array.from( observations );
       // $FlowFixMe
-      updatedObs[currentObsNumber].observationSound = sound.observationSound;
+      updatedObs[currentObsNumber].observationSounds = sound.observationSounds;
       setObservations( updatedObs );
     }
   };
@@ -110,7 +110,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       ...obs,
       captive_flag: false,
       geoprivacy: "open",
-      owners_identification_from_vision_requested: false,
+      owners_identification_from_vision: false,
       project_ids: [],
       uuid: uuid.v4( )
     };

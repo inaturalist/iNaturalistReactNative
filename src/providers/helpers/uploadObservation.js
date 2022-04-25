@@ -14,7 +14,6 @@ const uploadSound = async ( soundParams, apiToken, uuid ) => {
   try {
     const { results } = await inatjs.observation_sounds.create( soundParams, options );
     const soundId = results[0].id;
-    console.log( soundId, "sound created" );
     await markSoundUploaded( uuid, soundId );
   } catch ( e ) {
     console.log( JSON.stringify( e.response ), "couldn't upload sound" );
@@ -22,10 +21,14 @@ const uploadSound = async ( soundParams, apiToken, uuid ) => {
 };
 
 const createSoundParams = async ( id, apiToken, localObs ) => {
-  const obsSoundToUpload = localObs.observationSound;
-  const soundParams = ObservationSound.mapSoundForUpload( id, obsSoundToUpload );
-  console.log( soundParams, "sound params" );
-  uploadSound( soundParams, apiToken, obsSoundToUpload.uuid );
+  const obsSoundsToUpload = localObs.observationSounds;
+
+  if ( !obsSoundsToUpload || obsSoundsToUpload.length === 0 ) { return; }
+  for ( let i = 0; i < obsSoundsToUpload.length; i += 1 ) {
+    const soundToUpload = obsSoundsToUpload[i];
+    const soundParams = ObservationSound.mapSoundForUpload( id, soundToUpload );
+    uploadSound( soundParams, apiToken, soundToUpload.uuid );
+  }
 };
 
 const uploadPhoto = async ( photoParams, apiToken, uuid ) => {
@@ -79,7 +82,7 @@ const uploadObservation = async ( obsToUpload: Object, localObs: Object ) => {
     if ( localObs.observationPhotos ) {
       createPhotoParams( id, apiToken, localObs ); // v2
     }
-    if ( localObs.observationSound ) {
+    if ( localObs.observationSounds ) {
       createSoundParams( id, apiToken, localObs ); // v2
     }
   } catch ( e ) {

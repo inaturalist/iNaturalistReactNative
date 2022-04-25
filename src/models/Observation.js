@@ -74,13 +74,13 @@ class Observation {
   static saveLocalObservationForUpload( obs, realm ) {
     const taxon = obs.taxon_id ? Taxon.mapApiToRealm( { id: obs.taxon_id }, realm ) : null;
     const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => ObservationPhoto.saveLocalObservationPhotoForUpload( photo ) );
-    const observationSound = obs.observationSound && ObservationSound.saveLocalObservationSoundForUpload( obs.observationSound );
+    const observationSounds = obs.observationSounds && obs.observationSounds.map( sound => ObservationSound.saveLocalObservationSoundForUpload( sound ) );
 
     const newObs = {
       ...obs,
       taxon,
       observationPhotos,
-      observationSound,
+      observationSounds,
       timeSynced: null,
       timeUpdatedLocally: getUTCDate( new Date( ) ),
       time_observed_at: obs.observed_on_string
@@ -101,7 +101,7 @@ class Observation {
       geoprivacy: obs.geoprivacy,
       uuid: obs.uuid,
       captive_flag: obs.captive_flag,
-      owners_identification_from_vision_requested: obs.owners_identification_from_vision_requested
+      owners_identification_from_vision_requested: obs.owners_identification_from_vision
     };
   }
 
@@ -157,9 +157,9 @@ class Observation {
       latitude: "double?",
       longitude: "double?",
       observationPhotos: "ObservationPhoto[]",
-      observationSound: "ObservationSound?",
+      observationSounds: "ObservationSound[]",
       observed_on_string: "string?",
-      owners_identification_from_vision_requested: "bool?",
+      owners_identification_from_vision: "bool?",
       species_guess: "string?",
       place_guess: { type: "string?", mapTo: "placeGuess" },
       positional_accuracy: "double?",

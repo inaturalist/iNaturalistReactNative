@@ -1,16 +1,15 @@
 import { Platform } from "react-native";
 import { FileUpload } from "inaturalistjs";
 class ObservationSound {
-  static saveLocalObservationSoundForUpload( observationSound ) {
-    console.log( observationSound, "sound" );
+  static saveLocalObservationSoundForUpload( sound ) {
+    console.log( sound, "observation sound" );
     return {
-      ...observationSound,
-      file_url: observationSound.uri
+      ...sound,
+      file_url: sound.uri
     };
   }
 
   static mapSoundForUpload( id, observationSound ) {
-    console.log( observationSound.file_url );
     const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
 
     return {
@@ -36,7 +35,7 @@ class ObservationSound {
       assignee: {
         type: "linkingObjects",
         objectType: "Observation",
-        property: "observationSound"
+        property: "observationSounds"
       }
     }
   }

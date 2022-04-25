@@ -4,6 +4,8 @@ import Realm from "realm";
 import realmConfig from "../../models/index";
 import { getUTCDate } from "../../sharedHelpers/dateAndTime";
 
+// const markRecordUploaded = async ( uuid: string, type: string)
+
 const markUploaded = async ( uuid: string, id: number ) => {
   try {
     const realm = await Realm.open( realmConfig );

@@ -241,10 +241,10 @@ const SoundRecorder = ( ): Node => {
       latitude,
       longitude,
       positional_accuracy: latLng && latLng.accuracy,
-      observationSound: {
+      observationSounds: [{
         uri,
         uuid: soundUUID
-      },
+      }],
       observed_on_string: formatDateAndTime( getUnixTime( new Date( ) ) )
     } );
     navigation.navigate( "ObsEdit" );
