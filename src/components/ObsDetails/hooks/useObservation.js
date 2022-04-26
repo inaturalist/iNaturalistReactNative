@@ -7,7 +7,7 @@ import Realm from "realm";
 
 import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
-import { FIELDS, USER_FIELDS } from "../../../providers/helpers";
+import { FIELDS, USER_FIELDS } from "../../../providers/fields";
 import { getUsername } from "../../../components/LoginSignUp/AuthenticationService";
 
 

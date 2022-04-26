@@ -4,10 +4,10 @@ import { useEffect, useCallback, useRef, useState } from "react";
 import inatjs from "inaturalistjs";
 import Realm from "realm";
 
-import realmConfig from "../../models/index";
-import Observation from "../../models/Observation";
-import { FIELDS } from "../helpers";
-import { getUsername } from "../../components/LoginSignUp/AuthenticationService";
+import realmConfig from "../../../models/index";
+import Observation from "../../../models/Observation";
+import { FIELDS } from "../../../providers/fields";
+import { getUsername } from "../../../components/LoginSignUp/AuthenticationService";
 
 const perPage = 6;
 

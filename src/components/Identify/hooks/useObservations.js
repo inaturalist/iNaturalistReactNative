@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
 
-import { FIELDS } from "../../../providers/helpers";
+import { FIELDS } from "../../../providers/fields";
 
 const useObservations = ( placeId: ?string, taxonId: ?number ): {
   observations: Array<Object>,
