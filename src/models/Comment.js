@@ -10,6 +10,7 @@ class Comment {
   static schema = {
     name: "Comment",
     properties: {
+      uuid: "string",
       body: "string?",
       created_at: { type: "string?", mapTo: "createdAt" },
       id: "int?",
