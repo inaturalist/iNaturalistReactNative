@@ -4,7 +4,6 @@ import ObservationPhoto from "./ObservationPhoto";
 import Taxon from "./Taxon";
 import User from "./User";
 
-import { getUTCDate } from "../sharedHelpers/dateAndTime";
 import ObservationSound from "./ObservationSound";
 
 class Observation {
@@ -58,6 +57,9 @@ class Observation {
 
     const newObs = {
       ...obs,
+      // this time is used for sorting observations in ObsList
+      _created_at: obs.created_at,
+      _synced_at: new Date( ),
       comments,
       identifications,
       // obs detail on web says geojson coords are preferred over lat/long
@@ -79,7 +81,7 @@ class Observation {
     const newObs = {
       ...obs,
       _synced_at: null,
-      _updated_at: getUTCDate( new Date( ) ),
+      _updated_at: new Date( ),
       taxon,
       observationPhotos,
       observationSounds

@@ -1,8 +1,4 @@
-// import * as RNLocalize from "react-native-localize";
-import { formatISO, fromUnixTime, formatDistanceToNow, parseISO, format } from "date-fns";
-import { zonedTimeToUtc } from "date-fns-tz";
-
-// const getTimeZone = ( ) => RNLocalize.getTimeZone( );
+import { formatISO, fromUnixTime, formatDistanceToNow, format } from "date-fns";
 
 // two options for observed_on_string in uploader are:
 // 2020-03-01 00:00 or 2021-03-24T14:40:25
@@ -17,9 +13,7 @@ const formatDateAndTime = timestamp => {
 
 const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
 
-const getUTCDate = ( date, timeZone ) => zonedTimeToUtc( date, timeZone );
-
-const formatObsListTime = ( date ) => format( parseISO( date ), "M/d/yy HH:mm a" );
+const formatObsListTime = ( date ) => format( date, "M/d/yy HH:mm a" );
 
 const formatCameraDate = ( date ) => {
   const splitDateAndTime = date.split( " " );
@@ -29,10 +23,8 @@ const formatCameraDate = ( date ) => {
 };
 
 export {
-  // getTimeZone,
   formatDateAndTime,
   timeAgo,
-  getUTCDate,
   formatObsListTime,
   formatCameraDate
 };

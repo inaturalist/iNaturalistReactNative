@@ -2,7 +2,6 @@
 import Realm from "realm";
 
 import realmConfig from "../../models/index";
-import { getUTCDate } from "../../sharedHelpers/dateAndTime";
 
 // const markRecordUploaded = async ( uuid: string, type: string)
 
@@ -12,7 +11,7 @@ const markUploaded = async ( uuid: string, id: number ) => {
     const obs = realm.objectForPrimaryKey( "Observation", uuid );
     realm?.write( ( ) => {
       obs.id = id;
-      obs._synced_at = getUTCDate( new Date( ) );
+      obs._synced_at = new Date( );
     } );
   } catch ( e ) {
     console.log( e, "couldn't mark obs uploaded in realm" );
