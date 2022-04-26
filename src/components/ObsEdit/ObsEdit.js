@@ -122,9 +122,9 @@ const ObsEdit = ( ): Node => {
     if ( observations.length === 0 ) { return; }
 
     const handleBackButtonPress = ( ) => {
-      openBottomModal( );
+      // openBottomModal( );
       // show modal to dissuade user from going back
-      // navigation.goBack( );
+      navigation.goBack( );
     };
 
     return (
@@ -262,14 +262,14 @@ const ObsEdit = ( ): Node => {
 
   return (
     <ScrollNoFooter>
-      <CustomModal
+      {/* <CustomModal
         showModal={showBottomModal}
         closeModal={closeBottomModal}
         modal={(
           <BottomModal />
         )}
         style={viewStyles.noMargin}
-      />
+      /> */}
       {renderLocationPickerModal( )}
       <CustomModal
         showModal={showModal}
