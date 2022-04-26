@@ -70,7 +70,7 @@ const UserProfile = ( ): React.Node => {
       <Text>Bio:</Text>
       <HTML
         contentWidth={width}
-        source={{ html: user.description }}
+        html={user.description}
       />
       <Text>Projects</Text>
       <UserProjects userId={userId} />

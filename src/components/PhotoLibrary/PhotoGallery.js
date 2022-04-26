@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Pressable, Image, FlatList, ActivityIndicator, View, Text } from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -27,8 +27,20 @@ const PhotoGallery = ( ): Node => {
     selectedPhotos,
     setSelectedPhotos,
     fetchingPhotos,
-    totalSelected
+    totalSelected,
+    permissionGranted,
+    setPermissionGranted
   } = useContext( PhotoGalleryContext );
+
+  // Sort of bad, but if PhotoGallery is being rendered that should mean we've
+  // asked for and received the permissions it needs... but we the
+  // PhotoGalleryProvider / context might not know about that. This will make
+  // sure it does.
+  useEffect( ( ) => {
+    if ( !permissionGranted ) {
+      setPermissionGranted( true );
+    }
+  } );
 
   const navigation = useNavigation( );
 
@@ -108,22 +120,6 @@ const PhotoGallery = ( ): Node => {
 
   const navToGroupPhotos = ( ) => navigation.navigate( "GroupPhotos" );
 
-  const renderFooter = ( ) => {
-    if ( Object.keys( selectedPhotos ).length > 0 ) {
-      return (
-        <View style={viewStyles.createObsButton}>
-          <RoundGreenButton
-            buttonText="Upload-X-photos"
-            count={totalSelected}
-            handlePress={navToGroupPhotos}
-            testID="PhotoGallery.createObsButton"
-          />
-        </View>
-      );
-    }
-    return <></>;
-  };
-
   const renderEmptyList = ( ) => {
     if ( fetchingPhotos ) {
       return <ActivityIndicator />;
@@ -146,7 +142,16 @@ const PhotoGallery = ( ): Node => {
         testID="PhotoGallery.list"
         ListEmptyComponent={renderEmptyList( )}
       />
-      {renderFooter( )}
+      { Object.keys( selectedPhotos ).length > 0 && (
+        <View style={viewStyles.createObsButton}>
+          <RoundGreenButton
+            buttonText="Upload-X-photos"
+            count={totalSelected || 0}
+            handlePress={navToGroupPhotos}
+            testID="PhotoGallery.createObsButton"
+          />
+        </View>
+      ) }
     </ViewNoFooter>
   );
 };

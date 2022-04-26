@@ -10,11 +10,11 @@ type Props = {
   testID?: string
 }
 
-const ViewWithFooter = ( { children, testID }: Props ): React.Node => (
+const ViewNoFooter = ( { children, testID }: Props ): React.Node => (
   <SafeAreaView style={viewStyles.safeAreaContainer} testID={testID}>
     <StatusBar barStyle="dark-content" />
     {children}
   </SafeAreaView>
 );
 
-export default ViewWithFooter;
+export default ViewNoFooter;
