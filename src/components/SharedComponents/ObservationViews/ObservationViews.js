@@ -32,21 +32,21 @@ const ObservationViews = ( {
   totalObservations,
   handleEndReached
 }: Props ): React.Node => {
-  const { openSavedObservation } = React.useContext( ObsEditContext );
+  // const { openSavedObservation } = React.useContext( ObsEditContext );
   const [view, setView] = React.useState( "list" );
   const navigation = useNavigation( );
   const { name } = useRoute( );
 
   const navToObsDetails = async ( observation ) => {
-    const needsUpload = observation._synced_at === null;
-    if ( needsUpload ) {
-      await openSavedObservation( observation.uuid );
-      navigation.navigate( "camera", {
-        screen: "ObsEdit"
-      } );
-    } else {
+    // const needsUpload = observation._synced_at === null;
+    // if ( needsUpload ) {
+    //   await openSavedObservation( observation.uuid );
+    //   navigation.navigate( "camera", {
+    //     screen: "ObsEdit"
+    //   } );
+    // } else {
       navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
-    }
+    // }
   };
 
   const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
