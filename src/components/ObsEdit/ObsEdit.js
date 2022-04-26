@@ -16,13 +16,13 @@ import CustomModal from "../SharedComponents/Modal";
 import ObsEditSearch from "./ObsEditSearch";
 import LocationPicker from "./LocationPicker";
 import { ObsEditContext } from "../../providers/contexts";
-import useLocationName from "../../sharedHooks/useLocationName";
 import EvidenceList from "./EvidenceList";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 import DatePicker from "./DatePicker";
 import TranslatedText from "../SharedComponents/TranslatedText";
 import Notes from "./Notes";
-import BottomModal from "./BottomModal";
+import { displayDateTimeObsEdit } from "../../sharedHelpers/dateAndTime";
+// import BottomModal from "./BottomModal";
 // import uploadObservation from "./helpers/uploadObservation";
 
 const ObsEdit = ( ): Node => {
@@ -39,14 +39,14 @@ const ObsEdit = ( ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const [showModal, setModal] = useState( false );
-  const [showBottomModal, setBottomModal] = useState( false );
+  // const [showBottomModal, setBottomModal] = useState( false );
   const [source, setSource] = useState( null );
   const isLoggedIn = useLoggedIn( );
 
   const openModal = useCallback( ( ) => setModal( true ), [] );
   const closeModal = useCallback( ( ) => setModal( false ), [] );
-  const openBottomModal = useCallback( ( ) => setBottomModal( true ), [] );
-  const closeBottomModal = useCallback( ( ) => setBottomModal( false ), [] );
+  // const openBottomModal = useCallback( ( ) => setBottomModal( true ), [] );
+  // const closeBottomModal = useCallback( ( ) => setBottomModal( false ), [] );
 
   const [showLocationPicker, setShowLocationPicker] = useState( false );
 
@@ -159,8 +159,6 @@ const ObsEdit = ( ): Node => {
   const latitude = currentObs && currentObs.latitude;
   const longitude = currentObs && currentObs.longitude;
 
-  const placeGuess = useLocationName( latitude, longitude );
-
   const openLocationPicker = ( ) => setShowLocationPicker( true );
   const closeLocationPicker = ( ) => setShowLocationPicker( false );
 
@@ -199,7 +197,7 @@ const ObsEdit = ( ): Node => {
   if ( !currentObs ) { return null; }
 
   // TODO: make sure observed_on_string uses same time format with all types of evidence (camera, gallery, etc)
-  const displayDate = currentObs.observed_on_string ? `${currentObs.observed_on_string}` : null;
+  const displayDate = currentObs.observed_on_string ? displayDateTimeObsEdit( currentObs.observed_on_string ) : null;
 
   const displayLocation = ( ) => {
     let location = "";

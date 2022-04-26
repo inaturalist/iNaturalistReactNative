@@ -1,4 +1,4 @@
-import { formatISO, fromUnixTime, formatDistanceToNow, format } from "date-fns";
+import { formatISO, fromUnixTime, formatDistanceToNow, format, getUnixTime } from "date-fns";
 
 // two options for observed_on_string in uploader are:
 // 2020-03-01 00:00 or 2021-03-24T14:40:25
@@ -10,6 +10,10 @@ const formatDateAndTime = timestamp => {
   const stripTimeZone = formattedISODate.split( "-" ).slice( 0, -1 );
   return stripTimeZone.join( "-" );
 };
+
+const createObservedOnStringForUpload = ( ) => formatDateAndTime( getUnixTime( new Date( ) ) );
+
+const displayDateTimeObsEdit = ( date ) => format( new Date( date ), "PPpp" );
 
 const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
 
@@ -26,5 +30,7 @@ export {
   formatDateAndTime,
   timeAgo,
   formatObsListTime,
-  formatCameraDate
+  formatCameraDate,
+  createObservedOnStringForUpload,
+  displayDateTimeObsEdit
 };

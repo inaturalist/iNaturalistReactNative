@@ -23,9 +23,11 @@ const usePhotos = ( options: Object, isScrolling: boolean ): Object => {
     const { lastCursor, photos, fetchingPhotos, hasNextPage } = photoFetchStatus;
 
     const mapPhotoUris = ( p ) => p.edges.map( ( { node } ) => {
+      const latitude = node.location && node.location.latitude;
+      const longitude = node.location && node.location.longitude;
       return {
-        latitude: node.location && node.location.latitude,
-        longitude: node.location && node.location.longitude,
+        latitude,
+        longitude,
         observed_on_string: formatDateAndTime( node.timestamp ),
         timestamp: node.timestamp,
         uri: node.image.uri,

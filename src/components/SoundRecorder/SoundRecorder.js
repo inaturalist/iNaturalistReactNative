@@ -10,11 +10,10 @@ import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import uuid from "react-native-uuid";
-import { getUnixTime } from "date-fns";
 import RNFS from "react-native-fs";
 
 import { useUserLocation } from "../../sharedHooks/useUserLocation";
-import { formatDateAndTime } from "../../sharedHelpers/dateAndTime";
+import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder";
 import { ObsEditContext } from "../../providers/contexts";
@@ -26,8 +25,6 @@ const SoundRecorder = ( ): Node => {
   const soundUUID = uuid.v4( );
   const { addSound } = useContext( ObsEditContext );
   const latLng = useUserLocation( );
-  const latitude = latLng && latLng.latitude;
-  const longitude = latLng && latLng.longitude;
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   // TODO: add Android permissions
@@ -238,14 +235,12 @@ const SoundRecorder = ( ): Node => {
 
   const navToObsEdit = ( ) => {
     addSound( {
-      latitude,
-      longitude,
-      positional_accuracy: latLng && latLng.accuracy,
+      ...latLng,
       observationSounds: [{
         uri,
         uuid: soundUUID
       }],
-      observed_on_string: formatDateAndTime( getUnixTime( new Date( ) ) )
+      observed_on_string: createObservedOnStringForUpload( )
     } );
     navigation.navigate( "ObsEdit" );
   };

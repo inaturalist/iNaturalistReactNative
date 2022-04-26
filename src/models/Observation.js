@@ -80,6 +80,7 @@ class Observation {
 
     const newObs = {
       ...obs,
+      _created_at: new Date( ),
       _synced_at: null,
       _updated_at: new Date( ),
       taxon,
@@ -111,13 +112,13 @@ class Observation {
   static uri = ( obs, medium ) => {
     let photoUri;
     if ( obs && obs.observationPhotos && obs.observationPhotos[0] ) {
+      const { photo } = obs.observationPhotos[0];
       if ( medium ) {
         // need medium size for GridView component
-        photoUri = obs.observationPhotos[0].photo.url.replace( "square", "medium" );
+        photoUri = photo.url.replace( "square", "medium" );
       } else {
-        photoUri = ( obs.observationPhotos[0].photo && obs.observationPhotos[0].photo.url )
-          ? obs.observationPhotos[0].photo.url
-          : null;
+        // show localFilePath for photos not yet uploaded and synced
+        photoUri = ( photo && photo.url ) ? photo.url : photo.localFilePath;
       }
     }
     return { uri: photoUri };

@@ -20,7 +20,10 @@ const useObservations = ( ): Object => {
   const [obsToUpload, setObsToUpload] = useState( [] );
 
   const syncObservations = ( username = null ) => {
-    // await username on login screen for initial fetch
+    // initial getUsername( ) fetch after login screen wasn't working without
+    // passing username as navigation props, likely due to a timing issue
+    // so here we're setting userLogin from props instead of from getUsername( )
+    // but there's probably a cleaner way to do this
     if ( typeof username === "string" ) {
       setUserLogin( username );
     } else {
@@ -41,7 +44,6 @@ const useObservations = ( ): Object => {
     // and the objects in it are "live" and will always reflect the latest state.
 
     const localObservations = realm.objects( "Observation" ).sorted( "_created_at", true );
-    console.log( localObservations.length, "local obs in useObservations" );
     const notUploadedObs = realm.objects( "Observation" ).filtered( "_synced_at == null" );
 
     if ( localObservations?.length ) {
@@ -104,7 +106,6 @@ const useObservations = ( ): Object => {
     let isCurrent = true;
     const fetchObservations = async ( ) => {
       const username = await getUsername( );
-      console.log( userLogin, username, "user login fetch observations for page: ", page );
       if ( !userLogin && !username ) { return; }
       setLoading( true );
       try {

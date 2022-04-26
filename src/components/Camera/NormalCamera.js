@@ -20,8 +20,6 @@ const NormalCamera = ( ): Node => {
   const [permission, setPermission] = useState( null );
   const { addPhotos } = useContext( ObsEditContext );
   const latLng = useUserLocation( );
-  const latitude = latLng && latLng.latitude;
-  const longitude = latLng && latLng.longitude;
   const navigation = useNavigation( );
   // $FlowFixMe
   const camera = useRef<Camera>( null );
@@ -65,9 +63,7 @@ const NormalCamera = ( ): Node => {
       const resizedPhoto = await resizeImageForUpload( photo.path );
       const formattedDate = formatCameraDate( photo.metadata["{Exif}"].DateTimeOriginal );
       const parsedPhoto = {
-        latitude,
-        longitude,
-        positional_accuracy: latLng && latLng.accuracy,
+        ...latLng,
         // TODO: check that this formatting for observed_on_string
         // shows up as expected on web,
         observed_on_string: formattedDate,

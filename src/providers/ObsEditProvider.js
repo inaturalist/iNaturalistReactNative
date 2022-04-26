@@ -8,17 +8,19 @@ import Realm from "realm";
 import { ObsEditContext } from "./contexts";
 import createIdentification from "../components/Identify/helpers/createIdentification";
 import realmConfig from "../models/index";
-import fetchPlaceName from "../sharedHelpers/fetchPlaceName";
 import saveLocalObservation from "./helpers/saveLocalObservation";
 import uploadObservation from "./helpers/uploadObservation";
 import Observation from "../models/Observation";
 import { PhotoGalleryContext } from "./contexts";
+import { useUserLocation } from "../sharedHooks/useUserLocation";
+import { createObservedOnStringForUpload } from "../sharedHelpers/dateAndTime";
 
 type Props = {
   children: any
 }
 
 const ObsEditProvider = ( { children }: Props ): Node => {
+  const latLng = useUserLocation( );
   const { setSelectedPhotos } = useContext( PhotoGalleryContext );
   const navigation = useNavigation( );
   const [currentObsNumber, setCurrentObsNumber] = useState( 0 );
@@ -96,14 +98,15 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const addObservationNoEvidence = ( ) => {
-    // TODO: does this need location and place name?
-    const newObs = createObservation( );
+    const obs = {
+      ...latLng,
+      observed_on_string: createObservedOnStringForUpload( )
+    };
+    const newObs = createObservation( obs );
     setObservations( [newObs] );
   };
 
   const createObservation = ( obs ) => {
-    // const placeGuess = await fetchPlaceName( obs.latitude, obs.longitude );
-    // console.log( placeGuess, "place guess in create obs" );
     return {
       // object should look like Seek upload observation:
       // https://github.com/inaturalist/SeekReactNative/blob/e2df7ca77517e0c4c89f3147dc5a15ed98e31c34/utility/uploadHelpers.js#L198

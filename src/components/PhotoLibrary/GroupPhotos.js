@@ -11,6 +11,7 @@ import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 import resizeImageForUpload from "../../providers/helpers/resizeImage";
+import fetchPlaceName from "../../sharedHelpers/fetchPlaceName";
 
 const GroupPhotos = ( ): Node => {
   const { addObservations } = useContext( ObsEditContext );
@@ -206,11 +207,13 @@ const GroupPhotos = ( ): Node => {
     setObsToEdit( { observations: removedFromGroup } );
   };
 
-  const saveResizedPhotos = ( obsPhotos ) => {
+  const saveResizedPhotosWithLocationAdded = ( obsPhotos ) => {
     return Promise.all( obsPhotos.map( async photo => {
       const resizedPhoto = await resizeImageForUpload( photo.uri );
+      const placeGuess = await fetchPlaceName( photo.latitude, photo.longitude );
       return {
         ...photo,
+        place_guess: placeGuess,
         uri: resizedPhoto
       };
     } ) );
@@ -219,7 +222,7 @@ const GroupPhotos = ( ): Node => {
   const navToObsEdit = async ( ) => {
     const obsResizedPhotos = obsToEdit.observations.map( async obs => {
       const obsPhotos = obs.observationPhotos;
-      const resizedPhotos = await saveResizedPhotos( obsPhotos );
+      const resizedPhotos = await saveResizedPhotosWithLocationAdded( obsPhotos );
       return {
         ...obs,
         observationPhotos: resizedPhotos
@@ -228,18 +231,7 @@ const GroupPhotos = ( ): Node => {
     const resizedPhotos = await Promise.all( obsResizedPhotos );
     addObservations( resizedPhotos );
     navigation.navigate( "ObsEdit" );
-    // on obs edit, can delete one obs
-
-    // 10 photos, 1 sound per obs
   };
-
-  // cap at 20 photos
-  // max 10 photos per observation
-
-  // animation
-  // in 1.2 second
-  // stay 3-4 seconds
-  // out 1.2 second
 
   return (
     <ViewNoFooter>
