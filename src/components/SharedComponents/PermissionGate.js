@@ -10,6 +10,7 @@ import {
   View
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 import ViewNoFooter from "./ViewNoFooter";
 
@@ -25,6 +26,7 @@ type Props = {
 // asking the user for a permission.
 const PermissionGate = ( { children, permission }: Props ): Node => {
   const navigation = useNavigation( );
+  const { t } = useTranslation();
   const [result, setResult] = useState( Platform.OS === "android" ? null : "granted" );
   useEffect( ( ) => {
     // kueda 20220422: for reasons I don't understand, the app crashes if this
@@ -76,16 +78,16 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
         }
       }}
     >
-      <Text>Grant Permission</Text>
+      <Text>{ t( "Grant-Permission" ) }</Text>
     </Pressable>
   );
 
   const noPermission = (
     <ViewNoFooter>
-      <Text>You denied iNaturalist permission to do that.</Text>
+      <Text>{ t( "You-denied-iNaturalist-permission-to-do-that" ) }</Text>
       { result === "denied" && manualGrantButton }
       { result === "never_ask_again" && (
-        <Text>Go to the Settings app to grant iNat the appropriate permissions.</Text>
+        <Text>{ t( "Go-to-the-Settings-app-to-grant-permissions" ) }</Text>
       ) }
     </ViewNoFooter>
   );

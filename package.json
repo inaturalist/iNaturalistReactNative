@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "translate": "node src/i18n/i18ncli.js build"
   },
   "dependencies": {
     "@react-native-community/cameraroll": "^4.1.2",
