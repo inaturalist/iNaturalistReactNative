@@ -1,9 +1,10 @@
 // @flow
 
 import React, { useState, useEffect } from "react";
-import { TextInput, Keyboard } from "react-native";
+import { Keyboard } from "react-native";
 import type { Node } from "react";
 import { t } from "i18next";
+import { TextInput } from "react-native-paper";
 
 import { textStyles } from "../../styles/obsEdit/obsEdit";
 import { colors } from "../../styles/global";
