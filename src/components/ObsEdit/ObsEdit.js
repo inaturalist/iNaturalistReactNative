@@ -21,7 +21,7 @@ import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 import DatePicker from "./DatePicker";
 import TranslatedText from "../SharedComponents/TranslatedText";
 import Notes from "./Notes";
-import { displayDateTimeObsEdit } from "../../sharedHelpers/dateAndTime";
+import { displayDateTimeObsEdit, createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
 // import BottomModal from "./BottomModal";
 // import uploadObservation from "./helpers/uploadObservation";
 
@@ -181,7 +181,8 @@ const ObsEdit = ( ): Node => {
 
   const handleDatePicked = ( selectedDate ) => {
     if ( selectedDate ) {
-      updateObservedOn( selectedDate );
+      const dateString = createObservedOnStringForUpload( selectedDate );
+      updateObservedOn( dateString );
     }
   };
 

@@ -11,7 +11,7 @@ const formatDateAndTime = timestamp => {
   return stripTimeZone.join( "-" );
 };
 
-const createObservedOnStringForUpload = ( ) => formatDateAndTime( getUnixTime( new Date( ) ) );
+const createObservedOnStringForUpload = ( date ) => formatDateAndTime( getUnixTime( date || new Date( ) ) );
 
 const displayDateTimeObsEdit = ( date ) => format( new Date( date ), "PPpp" );
 
