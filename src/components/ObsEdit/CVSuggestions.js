@@ -36,6 +36,11 @@ const CVSuggestions = ( ): Node => {
   const hasPhotos = currentObs.observationPhotos;
   const suggestions = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
 
+  const speciesGuess = ( taxon ) => {
+    if ( !taxon ) { return null; }
+    return taxon.preferred_common_name ? taxon.preferred_common_name : taxon.name;
+  };
+
   const renderNavButtons = ( updateIdentification, id ) => {
     const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id } );
     return (
@@ -59,7 +64,7 @@ const CVSuggestions = ( ): Node => {
 
     const updateIdentification = ( ) => {
       setIdentification( taxon );
-      updateTaxaId( taxon.id );
+      updateTaxaId( taxon.id, speciesGuess( taxon ) );
     };
 
     return (
@@ -86,7 +91,7 @@ const CVSuggestions = ( ): Node => {
         name: item.name,
         preferred_common_name: item.preferred_common_name
       } );
-      updateTaxaId( item.id );
+      updateTaxaId( item.id, speciesGuess( item ) );
     };
 
     return (

@@ -103,7 +103,7 @@ class Observation {
       geoprivacy: obs.geoprivacy,
       uuid: obs.uuid,
       captive_flag: obs.captive_flag,
-      owners_identification_from_vision_requested: obs.owners_identification_from_vision
+      owners_identification_from_vision: obs.owners_identification_from_vision
     };
   }
 

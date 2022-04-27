@@ -10,7 +10,9 @@ const saveLocalObservation = async ( currentObs: Object ): Promise<any> => {
     const realm = await Realm.open( realmConfig );
     const obsToSave = Observation.saveLocalObservationForUpload( currentObs, realm );
     realm?.write( ( ) => {
-      realm?.create( "Observation", obsToSave );
+      // using 'modified' here for the case where a new observation has the same Taxon
+      // as a previous observation; otherwise, realm will error out
+      realm?.create( "Observation", obsToSave, "modified" );
     } );
     return realm.objectForPrimaryKey( "Observation", currentObs.uuid );
   } catch ( e ) {

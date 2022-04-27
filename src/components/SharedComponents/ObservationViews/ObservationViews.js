@@ -11,7 +11,7 @@ import EmptyList from "./EmptyList";
 import ObsCard from "./ObsCard";
 import Map from "../Map";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
-import { ObsEditContext } from "../../../providers/contexts";
+// import { ObsEditContext } from "../../../providers/contexts";
 
 type Props = {
   loading: boolean,

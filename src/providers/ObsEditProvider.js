@@ -134,13 +134,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( updatedObs );
   };
 
-  const updateTaxaId = async ( taxaId ) => {
+  const updateTaxaId = async ( taxaId, speciesGuess ) => {
     if ( prevScreen === "ObsEdit" ) {
       updateObservationKey( "taxon_id", taxaId );
+
+      // TODO: is species_guess really helpful / necessary? it seems
+      // to make it easier to display a name in local ObsList before upload
+      updateObservationKey( "species_guess", speciesGuess );
       navigation.navigate( "ObsEdit" );
     } else {
-      const results = await createIdentification( { observation_id: observations[0].uuid, taxon_id: taxaId } );
-      console.log( results, "results in update taxa id" );
+      await createIdentification( { observation_id: observations[0].uuid, taxon_id: taxaId } );
       navigation.navigate( "my observations", { screen: "ObsDetail", params: { uuid: observations[0].uuid } } );
     }
   };
@@ -150,6 +153,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setCurrentObsNumber( 0 );
       setObservations( [] );
       setSelectedPhotos( {} );
+      setIdentification( null );
       // navigation.navigate( "my observations" );
       navigation.navigate( "my observations", {
         screen: "ObsList",
