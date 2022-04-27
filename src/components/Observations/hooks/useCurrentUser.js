@@ -13,6 +13,10 @@ const useCurrentUser = ( ): Object => {
     const fetchUserProfile = async ( ) => {
       try {
         const apiToken = await getJWTToken( false );
+        if ( !apiToken ) {
+          isCurrent = false;
+          return;
+        }
         const options = {
           api_token: apiToken
         };

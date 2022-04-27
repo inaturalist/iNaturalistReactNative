@@ -33,7 +33,7 @@ const Login = (): Node => {
 
   const login = async () => {
     const success = await authenticateUser(
-      email,
+      email.trim( ),
       password
     );
 
@@ -78,6 +78,7 @@ const Login = (): Node => {
             autoComplete="email"
             testID="Login.email"
             autoCapitalize="none"
+            keyboardType="email-address"
           />
           <Text style={textStyles.text}>Password</Text>
           <TextInput

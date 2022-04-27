@@ -1,12 +1,10 @@
 // @flow
 
 import { useEffect, useState, useCallback } from "react";
-import { Platform } from "react-native";
 import CameraRoll from "@react-native-community/cameraroll";
 import uuid from "react-native-uuid";
 
 import { formatDateAndTime } from "../../../sharedHelpers/dateAndTime";
-import hasAndroidPermission from "../helpers/hasAndroidPermission";
 
 const initialStatus = {
   photos: [],
@@ -16,7 +14,7 @@ const initialStatus = {
   fetchingPhotos: false
 };
 
-const usePhotos = ( options: Object, isScrolling: boolean ): Object => {
+const usePhotos = ( options: Object, isScrolling: boolean, permissionGranted: boolean = true ): Object => {
   const [photoFetchStatus, setPhotoFetchStatus] = useState( initialStatus );
 
   const fetchPhotos = useCallback( async ( ) => {
@@ -65,27 +63,18 @@ const usePhotos = ( options: Object, isScrolling: boolean ): Object => {
   }, [photoFetchStatus, options] );
 
   useEffect( ( ) => {
-    const checkAndroidPermissions = async ( ) => {
-      if ( Platform.OS === "android" && !( await hasAndroidPermission( ) ) ) {
-        return;
-      }
-    };
-    checkAndroidPermissions( );
-  }, [] );
-
-  useEffect( ( ) => {
     // this should happen anytime initial status set, like album change or initial load
-    if ( photoFetchStatus.lastCursor === null ) {
+    if ( permissionGranted && photoFetchStatus.lastCursor === null ) {
       fetchPhotos( );
     }
-  }, [photoFetchStatus.lastCursor, fetchPhotos] );
+  }, [permissionGranted, photoFetchStatus.lastCursor, fetchPhotos] );
 
   useEffect( ( ) => {
     // this should happen when onEndReached is called from Photo Gallery screen
-    if ( isScrolling ) {
+    if ( permissionGranted && isScrolling ) {
       fetchPhotos( );
     }
-  }, [isScrolling, fetchPhotos] );
+  }, [permissionGranted, isScrolling, fetchPhotos] );
 
   useEffect( ( ) => {
     const changedAlbum = ( ) => {
