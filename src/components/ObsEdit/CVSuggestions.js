@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 import type { Node } from "react";
 import { View, Text, FlatList, ActivityIndicator, Pressable, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Searchbar } from "react-native-paper";
 
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import { ObsEditContext } from "../../providers/contexts";
@@ -144,12 +145,17 @@ const CVSuggestions = ( ): Node => {
             selectedPhoto={selectedPhoto}
           />
         )}
-        <InputField
+        <Searchbar
+          placeholder={t( "Tap-to-search-for-taxa" )}
+          onChangeText={setQ}
+          value={q}
+        />
+        {/* <InputField
           handleTextChange={setQ}
           placeholder={t( "Tap-to-search-for-taxa" )}
           text={q}
           type="none"
-        />
+        /> */}
       </View>
       {list.length > 0 ? displaySearchResults( ) : displaySuggestions( )}
       <RoundGreenButton
