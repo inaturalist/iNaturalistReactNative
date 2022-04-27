@@ -2,7 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import type { Node } from "react";
-import { Text, Platform, Pressable, PermissionsAndroid } from "react-native";
+import {
+  PermissionsAndroid,
+  Platform,
+  Pressable,
+  Text,
+  View
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import ViewNoFooter from "./ViewNoFooter";
@@ -89,9 +95,9 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
   else if ( result !== null ) { content = noPermission; }
 
   return (
-    <ViewNoFooter>
+    <View style={{ flex: 1 }}>
       { content }
-    </ViewNoFooter>
+    </View>
   );
 };
 
