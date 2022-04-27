@@ -13,7 +13,6 @@ import useCVSuggestions from "./hooks/useCVSuggestions";
 import { viewStyles, textStyles } from "../../styles/obsEdit/cvSuggestions";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import InputField from "../SharedComponents/InputField";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 import { t } from "i18next";
 // TODO: do we need custom hook useTranslation or can we just use t from "i18next"?
@@ -35,7 +34,7 @@ const CVSuggestions = ( ): Node => {
 
   const currentObs = observations[currentObsNumber];
   const hasPhotos = currentObs.observationPhotos;
-  const suggestions = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
+  const { suggestions, status } = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
 
   const speciesGuess = ( taxon ) => {
     if ( !taxon ) { return null; }
@@ -115,6 +114,8 @@ const CVSuggestions = ( ): Node => {
   const emptySuggestionsList = ( ) => {
     if ( !isLoggedIn ) {
       return <Text style={textStyles.explainerText}>you must be logged in to see computer vision suggestions</Text>;
+    } else if ( status === "no_results" ) {
+      return <Text style={textStyles.explainerText}>no computervision suggestions found</Text>;
     } else {
       return <ActivityIndicator />;
     }
@@ -149,13 +150,8 @@ const CVSuggestions = ( ): Node => {
           placeholder={t( "Tap-to-search-for-taxa" )}
           onChangeText={setQ}
           value={q}
+          style={viewStyles.searchBar}
         />
-        {/* <InputField
-          handleTextChange={setQ}
-          placeholder={t( "Tap-to-search-for-taxa" )}
-          text={q}
-          type="none"
-        /> */}
       </View>
       {list.length > 0 ? displaySearchResults( ) : displaySuggestions( )}
       <RoundGreenButton
