@@ -25,6 +25,11 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  __esModule: true,
+  useLoggedIn: ( ) => true
+} ) );
+
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
