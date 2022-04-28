@@ -3,47 +3,21 @@ import Realm from "realm";
 
 import realmConfig from "../../models/index";
 
-// const markRecordUploaded = async ( uuid: string, type: string)
+const markRecordUploaded = async ( uuid: string, type: string, response: Object ) => {
+  const { id } = response.results[0];
 
-const markUploaded = async ( uuid: string, id: number ) => {
   try {
     const realm = await Realm.open( realmConfig );
-    const obs = realm.objectForPrimaryKey( "Observation", uuid );
+    const record = realm.objectForPrimaryKey( type, uuid );
     realm?.write( ( ) => {
-      obs.id = id;
-      obs._synced_at = new Date( );
+      record.id = id;
+      record._synced_at = new Date( );
     } );
   } catch ( e ) {
-    console.log( e, "couldn't mark obs uploaded in realm" );
-  }
-};
-
-const markPhotoUploaded = async ( uuid: string, id: number ) => {
-  try {
-    const realm = await Realm.open( realmConfig );
-    const obsPhoto = realm.objectForPrimaryKey( "ObservationPhoto", uuid );
-    realm?.write( ( ) => {
-      obsPhoto.photo.id = id;
-    } );
-  } catch ( e ) {
-    console.log( e, "couldn't mark photo uploaded in realm" );
-  }
-};
-
-const markSoundUploaded = async ( uuid: string, id: number ) => {
-  try {
-    const realm = await Realm.open( realmConfig );
-    const obsSound = realm.objectForPrimaryKey( "ObservationSound", uuid );
-    realm?.write( ( ) => {
-      obsSound.id = id;
-    } );
-  } catch ( e ) {
-    console.log( e, "couldn't mark photo uploaded in realm" );
+    console.log( e, `couldn't mark ${type} uploaded in realm` );
   }
 };
 
 export {
-  markUploaded,
-  markPhotoUploaded,
-  markSoundUploaded
+  markRecordUploaded
 };

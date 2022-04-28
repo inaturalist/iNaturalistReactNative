@@ -74,15 +74,24 @@ class Observation {
   }
 
   static saveLocalObservationForUpload( obs, realm ) {
+    const newLocalRecord = {
+      _created_at: new Date( ),
+      _synced_at: null,
+      _updated_at: new Date( )
+    };
     const taxon = obs.taxon_id ? Taxon.mapApiToRealm( { id: obs.taxon_id }, realm ) : null;
-    const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => ObservationPhoto.saveLocalObservationPhotoForUpload( photo ) );
-    const observationSounds = obs.observationSounds && obs.observationSounds.map( sound => ObservationSound.saveLocalObservationSoundForUpload( sound ) );
+    const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => ObservationPhoto.saveLocalObservationPhotoForUpload( {
+      ...newLocalRecord,
+      ...photo
+     } ) );
+    const observationSounds = obs.observationSounds && obs.observationSounds.map( sound => ObservationSound.saveLocalObservationSoundForUpload( {
+      ...newLocalRecord,
+      ...sound
+    } ) );
 
     const newObs = {
       ...obs,
-      _created_at: new Date( ),
-      _synced_at: null,
-      _updated_at: new Date( ),
+      ...newLocalRecord,
       taxon,
       observationPhotos,
       observationSounds

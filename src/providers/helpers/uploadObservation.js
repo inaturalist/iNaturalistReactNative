@@ -3,90 +3,63 @@
 import inatjs from "inaturalistjs";
 
 import { getJWTToken } from "../../components/LoginSignUp/AuthenticationService";
-import { markUploaded, markPhotoUploaded, markSoundUploaded } from "./markUploaded";
+import { markRecordUploaded } from "./markUploaded";
 import ObservationPhoto from "../../models/ObservationPhoto";
 import ObservationSound from "../../models/ObservationSound";
-// import fetchPlaceName from "../../../sharedHelpers/fetchPlaceName";
 
-const uploadSound = async ( soundParams, apiToken, uuid ) => {
-  const options = { api_token: apiToken };
-
+const uploadToServer = async ( params, options, uuid, type, apiCall ) => {
   try {
-    const { results } = await inatjs.observation_sounds.create( soundParams, options );
-    const soundId = results[0].id;
-    await markSoundUploaded( uuid, soundId );
+    const response = await apiCall.create( params, options );
+    await markRecordUploaded( uuid, type, response );
   } catch ( e ) {
-    console.log( JSON.stringify( e.response ), "couldn't upload sound" );
+    console.log( JSON.stringify( e.response ), `couldn't upload ${type}` );
   }
 };
 
-const createSoundParams = async ( id, apiToken, localObs ) => {
-  const obsSoundsToUpload = localObs.observationSounds;
-
-  if ( !obsSoundsToUpload || obsSoundsToUpload.length === 0 ) { return; }
-  for ( let i = 0; i < obsSoundsToUpload.length; i += 1 ) {
-    const soundToUpload = obsSoundsToUpload[i];
-    const soundParams = ObservationSound.mapSoundForUpload( id, soundToUpload );
-    uploadSound( soundParams, apiToken, soundToUpload.uuid );
-  }
-};
-
-const uploadPhoto = async ( photoParams, apiToken, uuid ) => {
-  const options = { api_token: apiToken };
-
-  try {
-    const { results } = await inatjs.observation_photos.create( photoParams, options );
-    const photoId = results[0].id;
-    await markPhotoUploaded( uuid, photoId );
-  } catch ( e ) {
-    console.log( JSON.stringify( e.response ), "couldn't upload photo" );
-  }
-};
-
-const createPhotoParams = async ( id, apiToken, localObs ) => {
-  const obsPhotosToUpload = localObs.observationPhotos;
-
-  if ( !obsPhotosToUpload || obsPhotosToUpload.length === 0 ) { return; }
-  for ( let i = 0; i < obsPhotosToUpload.length; i += 1 ) {
-    const photoToUpload = obsPhotosToUpload[i];
-    const photoParams = ObservationPhoto.mapPhotoForUpload( id, photoToUpload );
-    uploadPhoto( photoParams, apiToken, photoToUpload.uuid );
+const createParams = ( response, options, evidence, mapLocalModelForUpload, type, apiCall ) => {
+  const { id } = response.results[0];
+  if ( !evidence || evidence.length === 0 ) { return; }
+  for ( let i = 0; i < evidence.length; i += 1 ) {
+    const currentEvidence = evidence[i];
+    const params = mapLocalModelForUpload( id, currentEvidence );
+    uploadToServer( params, options, currentEvidence.uuid, type, apiCall );
   }
 };
 
 const uploadObservation = async ( obsToUpload: Object, localObs: Object ) => {
-  const FIELDS = { id: true };
-
   try {
     const apiToken = await getJWTToken( false );
+    const options = { api_token: apiToken };
 
     const uploadParams = {
-      // TODO: decide how to format place_guess param
-      // right now it looks like street, city, state is preferred on the web
-      observation: {
-        ...obsToUpload
-        // where's the right place to do this? save to realm, then upload?
-        // place_guess: fetchPlaceName( obsToUpload.latitude, obsToUpload.longitude )
-      },
-      fields: FIELDS
-    };
-
-    const options = {
-      api_token: apiToken
+      observation: { ...obsToUpload },
+      fields: { id: true }
     };
 
     const response = await inatjs.observations.create( uploadParams, options );
-    const { id } = response.results[0];
-    // save id to realm and set time synced
-    await markUploaded( obsToUpload.uuid, id );
+    await markRecordUploaded( obsToUpload.uuid, "Observation", response );
     if ( localObs.observationPhotos ) {
-      createPhotoParams( id, apiToken, localObs ); // v2
+      createParams(
+        response,
+        options,
+        localObs.observationPhotos,
+        ObservationPhoto.mapPhotoForUpload,
+        "ObservationPhoto",
+        inatjs.observation_photos
+      );
     }
     if ( localObs.observationSounds ) {
-      createSoundParams( id, apiToken, localObs ); // v2
+      createParams(
+        response,
+        options,
+        localObs.observationSounds,
+        ObservationSound.mapSoundForUpload,
+        "ObservationSound",
+        inatjs.observation_sounds
+      );
     }
   } catch ( e ) {
-    console.log( JSON.stringify( e.response.status ), "couldn't upload observation: ", JSON.stringify( e.response ) );
+    console.log( "couldn't upload observation: ", e );
   }
 };
 

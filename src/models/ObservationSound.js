@@ -2,7 +2,6 @@ import { Platform } from "react-native";
 import { FileUpload } from "inaturalistjs";
 class ObservationSound {
   static saveLocalObservationSoundForUpload( sound ) {
-    console.log( sound, "observation sound" );
     return {
       ...sound,
       file_url: sound.uri
@@ -27,6 +26,12 @@ class ObservationSound {
     name: "ObservationSound",
     primaryKey: "uuid",
     properties: {
+      // datetime the obsSound was created on the device
+      _created_at: "date?",
+      // datetime the obsSound was last synced with the server
+      _synced_at: "date?",
+      // datetime the obsSound was updated on the device (i.e. edited locally)
+      _updated_at: "date?",
       uuid: "string",
       id: "int?",
       file_url: { type: "string", mapTo: "fileUrl" },

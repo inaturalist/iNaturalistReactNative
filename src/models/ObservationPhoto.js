@@ -32,6 +32,12 @@ class ObservationPhoto {
     name: "ObservationPhoto",
     primaryKey: "uuid",
     properties: {
+      // datetime the obsPhoto was created on the device
+      _created_at: "date?",
+      // datetime the obsPhoto was last synced with the server
+      _synced_at: "date?",
+      // datetime the obsPhoto was updated on the device (i.e. edited locally)
+      _updated_at: "date?",
       uuid: "string",
       id: "int?",
       photo: "Photo?",
