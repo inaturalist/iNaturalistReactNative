@@ -30,7 +30,7 @@ const CameraOptionsButton = ( { buttonType }: Props ): React.Node => {
       {buttonType === "footer"
         ? (
           <Pressable onPress={navToCameraOptions} accessibilityRole="link">
-            <Icon name="camera" size={30} />
+            <Icon name="plus-circle" size={35} />
           </Pressable>
         ) : (
           <Pressable onPress={navToCameraOptions}>

@@ -124,7 +124,7 @@ class Observation {
       const { photo } = obs.observationPhotos[0];
       if ( medium ) {
         // need medium size for GridView component
-        photoUri = photo.url.replace( "square", "medium" );
+        photoUri = ( photo && photo.url ) && photo.url.replace( "square", "medium" );
       } else {
         // show localFilePath for photos not yet uploaded and synced
         photoUri = ( photo && photo.url ) ? photo.url : photo.localFilePath;

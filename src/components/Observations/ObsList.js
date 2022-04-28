@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import type { Node } from "react";
-import { Pressable, Text } from "react-native";
+import { Text } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -55,14 +55,12 @@ const ObsList = ( ): Node => {
   return (
     <ViewWithFooter>
       <UserCard userId={userId || id} />
-      <Pressable onPress={syncObservations}>
-        <Text>sync</Text>
-      </Pressable>
       <ObservationViews
         loading={loading}
         observationList={observationList}
         testID="ObsList.myObservations"
         handleEndReached={fetchNextObservations}
+        syncObservations={syncObservations}
       />
       {obsToUpload.length > 0 && (
         <BottomModal height={200}>

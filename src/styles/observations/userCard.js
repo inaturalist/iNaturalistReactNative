@@ -13,6 +13,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   userDetails: {
     marginLeft: 10
+  },
+  editProfile: {
+    position: "absolute",
+    right: 0
   }
 } );
 
