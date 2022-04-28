@@ -60,6 +60,16 @@ Fungi = Fungi
 
 Geoprivacy = Geoprivacy:
 
+# Instruction for an Android user to go to the Settings app to grant
+# permissions after they have asked never to be asked for that permission
+# again
+Go-to-the-Settings-app-to-grant-permissions =
+    Go to the Settings app to grant iNaturalist the appropriate permissions.
+
+# Verb phrase label for a button to grant the app a permission, e.g.
+# permission to use the camera
+Grant-Permission = Grant Permission
+
 Group-Photos = Group Photos
 
 Has-Photos = Has Photos
@@ -333,3 +343,8 @@ X-photos-X-observations = {$photoCount ->
     [one] 1 observation
     *[other] {$observationCount} observations
 }
+
+# Message shown when a permission is required to use a part of the app
+# (e.g. permission to access the camera) but the user denied the permission.
+You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
+

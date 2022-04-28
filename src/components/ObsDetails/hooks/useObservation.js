@@ -96,7 +96,7 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
 
     return ( ) => {
       isCurrent = false;
-      closeRealm;
+      closeRealm( );
     };
   }, [uuid, openObservationFromRealm, closeRealm, isConnected, refetch] );
 

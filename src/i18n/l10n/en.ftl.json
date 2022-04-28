@@ -36,6 +36,14 @@
   "Fish": "Fish",
   "Fungi": "Fungi",
   "Geoprivacy": "Geoprivacy:",
+  "Go-to-the-Settings-app-to-grant-permissions": {
+    "comment": "Instruction for an Android user to go to the Settings app to grant\npermissions after they have asked never to be asked for that permission\nagain",
+    "val": "Go to the Settings app to grant iNaturalist the appropriate permissions."
+  },
+  "Grant-Permission": {
+    "comment": "Verb phrase label for a button to grant the app a permission, e.g.\npermission to use the camera",
+    "val": "Grant Permission"
+  },
   "Group-Photos": "Group Photos",
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
@@ -203,5 +211,9 @@
   "X-photos-X-observations": {
     "comment": "Displays number of photos and observations a user has selected from the camera roll",
     "val": "{ $photoCount ->\n  [one] 1 photo\n *[other] { $photoCount } photos\n}, { $observationCount ->\n  [one] 1 observation\n *[other] { $observationCount } observations\n}"
+  },
+  "You-denied-iNaturalist-permission-to-do-that": {
+    "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
+    "val": "You denied iNaturalist permission to do that"
   }
 }

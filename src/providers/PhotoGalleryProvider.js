@@ -1,5 +1,6 @@
 // @flow
 import React, { useState, useEffect } from "react";
+import { Platform } from "react-native";
 import type { Node } from "react";
 
 import { PhotoGalleryContext } from "./contexts";
@@ -18,9 +19,11 @@ const options = {
 const PhotoGalleryProvider = ( { children }: Props ): Node => {
   const [isScrolling, setIsScrolling] = useState( false );
   const [photoOptions, setPhotoOptions] = useState( options );
+  // Track whether permission to access photos has been granted for Android
+  const [permissionGranted, setPermissionGranted] = useState( Platform.OS !== "android" );
   // photos are fetched from the server on initial render
   // and anytime a user scrolls through the photo gallery
-  const photoFetchStatus = usePhotos( photoOptions, isScrolling );
+  const photoFetchStatus = usePhotos( photoOptions, isScrolling, permissionGranted );
   const photosFetched = photoFetchStatus.photos;
   const fetchingPhotos = photoFetchStatus.fetchingPhotos;
 
@@ -70,7 +73,9 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
     selectedPhotos,
     setSelectedPhotos,
     fetchingPhotos,
-    totalSelected: totalSelected( )
+    totalSelected: totalSelected( ),
+    permissionGranted,
+    setPermissionGranted
   };
 
   return (

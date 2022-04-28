@@ -80,10 +80,6 @@ const useObservations = ( ): Object => {
 
   useEffect( ( ) => {
     openRealm( );
-
-    // TODO: I think we need a cleanup function here to prevent memory leaks, but when we have it,
-    // this error basically prevents the app from loading with a black screen of death
-    // 'Exception in HostFunction: Cannot access realm that has been closed'
     return closeRealm;
   }, [openRealm, closeRealm] );
 

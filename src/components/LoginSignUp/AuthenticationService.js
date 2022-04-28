@@ -82,6 +82,10 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
     return getAnonymousJWTToken();
   }
 
+  if ( !loggedIn ) {
+    return null;
+  }
+
   if (
     !jwtToken ||
     ( Date.now() - jwtTokenExpiration ) / 1000 > JWT_TOKEN_EXPIRATION_MINS * 60

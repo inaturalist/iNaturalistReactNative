@@ -45,7 +45,6 @@ it( "displays activity indicator when loading", ( ) => {
 } );
 
 it( "displays message subject and not activity indicator when loading complete", ( ) => {
-  console.log( "------1" );
   useMessages.default = ( ) => {
     return {
       messages: [mockMessage],

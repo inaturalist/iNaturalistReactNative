@@ -12,14 +12,18 @@ const mockPhoto = factory( "DevicePhoto" );
 jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotos", ( ) => ( {
   __esModule: true,
   default: ( ) => {
-    return [mockPhoto];
+    return { photos: [mockPhoto] };
   }
 } ) );
 
 jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotoAlbums", ( ) => ( {
   __esModule: true,
   default: ( ) => {
-    return ["All"];
+    return [{
+      label: "camera roll",
+      value: "All",
+      key: "camera roll"
+    }];
   }
 } ) );
 
