@@ -1,7 +1,8 @@
 // @flow
 
 import * as React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import CameraOptionsModal from "../../Camera/CameraOptionsModal";
 import Modal from "../Modal";
@@ -29,7 +30,7 @@ const CameraOptionsButton = ( { buttonType }: Props ): React.Node => {
       {buttonType === "footer"
         ? (
           <Pressable onPress={navToCameraOptions} accessibilityRole="link">
-            <Text>camera</Text>
+            <Icon name="camera" size={30} />
           </Pressable>
         ) : (
           <Pressable onPress={navToCameraOptions}>
