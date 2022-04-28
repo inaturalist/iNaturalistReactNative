@@ -21,6 +21,7 @@ import NotificationsStackNavigation from "./notificationsStackNavigation";
 import About from "../components/About";
 import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import { colors } from "../styles/global";
+import { viewStyles } from "../styles/navigation/rootNavigation";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -43,7 +44,7 @@ const theme = {
 
 const App = ( ): React.Node => (
   <PaperProvider theme={theme}>
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={viewStyles.container}>
       <NavigationContainer>
         <PhotoGalleryProvider>
           <ObsEditProvider>
