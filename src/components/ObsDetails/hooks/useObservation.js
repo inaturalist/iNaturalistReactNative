@@ -84,6 +84,8 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
         setObservation( obs );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
+        // try to open from realm: this is for observations that still need to be uploaded
+        openObservationFromRealm( );
         console.log( `Couldn't fetch observation with uuid ${uuid}: `, e.message, );
       }
     };

@@ -108,7 +108,7 @@ const ObservationViews = ( {
               accessibilityRole="button"
               testID="Explore.toggleMapView"
             >
-              <Text>map</Text>
+              <Icon name="map-outline" size={30} />
             </Pressable>
           )}
           <Pressable

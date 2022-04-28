@@ -36,8 +36,8 @@ const theme = {
   roundness: 2,
   colors: {
     ...DefaultTheme.colors,
-    primary: colors.inatGreen,
-    accent: "#f1c40f"
+    primary: colors.lightGray,
+    accent: colors.inatGreen
   }
 };
 

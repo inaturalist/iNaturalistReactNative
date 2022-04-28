@@ -24,7 +24,7 @@ const ObsDetails = ( ): Node => {
   const [refetch, setRefetch] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
-  const { addObservations, setPrevScreen } = useContext( ObsEditContext );
+  const { addObservations } = useContext( ObsEditContext );
   const { params } = useRoute( );
   const { uuid } = params;
   const [tab, setTab] = useState( 0 );
@@ -46,7 +46,6 @@ const ObsDetails = ( ): Node => {
   const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
   const navToCVSuggestions = ( ) => {
-    setPrevScreen( "ObsDetails" );
     addObservations( [observation] );
     navigation.navigate( "camera", { screen: "Suggestions" } );
   };

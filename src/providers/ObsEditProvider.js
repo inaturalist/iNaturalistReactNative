@@ -6,7 +6,6 @@ import { useNavigation } from "@react-navigation/native";
 import Realm from "realm";
 
 import { ObsEditContext } from "./contexts";
-import createIdentification from "../components/Identify/helpers/createIdentification";
 import realmConfig from "../models/index";
 import saveLocalObservation from "./helpers/saveLocalObservation";
 import uploadObservation from "./helpers/uploadObservation";
@@ -25,8 +24,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const [currentObsNumber, setCurrentObsNumber] = useState( 0 );
   const [observations, setObservations] = useState( [] );
-  const [identification, setIdentification] = useState( null );
-  const [prevScreen, setPrevScreen] = useState( "ObsEdit" );
 
   const currentObs = observations[currentObsNumber];
 
@@ -134,18 +131,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( updatedObs );
   };
 
-  const updateTaxaId = async ( taxaId, speciesGuess ) => {
-    if ( prevScreen === "ObsEdit" ) {
-      updateObservationKey( "taxon_id", taxaId );
-
-      // TODO: is species_guess really helpful / necessary? it seems
-      // to make it easier to display a name in local ObsList before upload
-      updateObservationKey( "species_guess", speciesGuess );
-      navigation.navigate( "ObsEdit" );
-    } else {
-      await createIdentification( { observation_id: observations[0].uuid, taxon_id: taxaId } );
-      navigation.navigate( "my observations", { screen: "ObsDetail", params: { uuid: observations[0].uuid } } );
-    }
+  const updateTaxon = ( taxon ) => {
+    updateObservationKey( "taxon", taxon );
+    navigation.navigate( "ObsEdit" );
   };
 
   const setNextScreen = ( ) => {
@@ -153,8 +141,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setCurrentObsNumber( 0 );
       setObservations( [] );
       setSelectedPhotos( {} );
-      setIdentification( null );
-      // navigation.navigate( "my observations" );
+
       navigation.navigate( "my observations", {
         screen: "ObsList",
         params: { savedLocalData: true }
@@ -196,7 +183,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
       setObservations( [obs] );
     } catch ( e ) {
-      console.log( e, "couldn't save observation to realm" );
+      console.log( e, "couldn't open saved observation in realm" );
     }
   };
 
@@ -210,10 +197,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     observations,
     setObservations,
     updateObservationKey,
-    updateTaxaId,
-    identification,
-    setIdentification,
-    setPrevScreen,
+    updateTaxon,
     saveObservation,
     saveAndUploadObservation,
     openSavedObservation

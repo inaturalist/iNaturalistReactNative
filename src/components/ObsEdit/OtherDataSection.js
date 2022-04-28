@@ -25,8 +25,6 @@ const OtherDataSection = ( ): Node => {
   const [showModal, setModal] = useState( false );
   const [source, setSource] = useState( null );
 
-  const updateTaxaId = taxaId => updateObservationKey( "taxon_id", taxaId );
-
   const openModal = useCallback( ( ) => setModal( true ), [] );
   const closeModal = useCallback( ( ) => setModal( false ), [] );
 
@@ -79,12 +77,8 @@ const OtherDataSection = ( ): Node => {
   };
 
   const updateObsAndCloseModal = id => {
-    if ( source === "taxa" ) {
-      updateTaxaId( id );
-    } else {
-      // TODO: need somewhere to display which projects a user has joined
-      updateProjectIds( id );
-    }
+    // TODO: need somewhere to display which projects a user has joined
+    updateProjectIds( id );
     closeModal( );
   };
 

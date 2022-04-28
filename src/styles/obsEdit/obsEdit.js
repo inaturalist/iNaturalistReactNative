@@ -98,6 +98,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     borderRadius: 20,
     marginHorizontal: 20,
     marginVertical: 20
+  },
+  selected: {
+    backgroundColor: colors.inatGreen
   }
 } );
 

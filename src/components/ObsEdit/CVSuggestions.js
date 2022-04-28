@@ -22,8 +22,7 @@ const CVSuggestions = ( ): Node => {
   const {
     observations,
     currentObsNumber,
-    updateTaxaId,
-    setIdentification
+    updateTaxon
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const [showSeenNearby, setShowSeenNearby] = useState( true );
@@ -35,11 +34,6 @@ const CVSuggestions = ( ): Node => {
   const currentObs = observations[currentObsNumber];
   const hasPhotos = currentObs.observationPhotos;
   const { suggestions, status } = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
-
-  const speciesGuess = ( taxon ) => {
-    if ( !taxon ) { return null; }
-    return taxon.preferred_common_name ? taxon.preferred_common_name : taxon.name;
-  };
 
   const renderNavButtons = ( updateIdentification, id ) => {
     const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id } );
@@ -62,10 +56,7 @@ const CVSuggestions = ( ): Node => {
     const mediumUrl = ( taxon && taxon.taxon_photos && taxon.taxon_photos[0].photo ) ? taxon.taxon_photos[0].photo.medium_url : null;
     const uri = { uri: mediumUrl };
 
-    const updateIdentification = ( ) => {
-      setIdentification( taxon );
-      updateTaxaId( taxon.id, speciesGuess( taxon ) );
-    };
+    const updateIdentification = ( ) => updateTaxon( taxon );
 
     return (
       <View style={viewStyles.row}>
@@ -86,13 +77,13 @@ const CVSuggestions = ( ): Node => {
   const renderSearchResults = ( { item } ) => {
     const uri = { uri: item.default_photo.square_url };
 
-    const updateIdentification = ( ) => {
-      setIdentification( {
-        name: item.name,
-        preferred_common_name: item.preferred_common_name
-      } );
-      updateTaxaId( item.id, speciesGuess( item ) );
+    const newTaxon = {
+      name: item.name,
+      preferred_common_name: item.preferred_common_name,
+      id: item.id
     };
+
+    const updateIdentification = ( ) => updateTaxon( newTaxon );
 
     return (
       <View style={viewStyles.row}>

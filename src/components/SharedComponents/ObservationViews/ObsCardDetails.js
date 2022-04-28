@@ -3,6 +3,7 @@
 import React from "react";
 import { Text } from "react-native";
 import type { Node } from "react";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import { formatObsListTime } from "../../../sharedHelpers/dateAndTime";
@@ -33,8 +34,14 @@ const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
   return (
     <>
       <Text style={textStyles.text} numberOfLines={1}>{displayName( )}</Text>
-      <Text style={textStyles.text} numberOfLines={1}>{placeGuess || "no place guess"}</Text>
-      <Text style={textStyles.text} numberOfLines={1}>{displayTime( )}</Text>
+      <Text style={textStyles.text} numberOfLines={1}>
+        <Icon name="map-marker" size={15} />
+        {placeGuess || "no place guess"}
+      </Text>
+      <Text style={textStyles.text} numberOfLines={1}>
+        <Icon name="clock" size={15} />
+        {displayTime( )}
+      </Text>
     </>
   );
 };

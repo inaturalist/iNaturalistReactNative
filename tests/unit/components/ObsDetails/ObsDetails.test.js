@@ -39,8 +39,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 const mockObsEditProviderWithObs = ( ) =>
   ObsEditProvider.mockImplementation( ( { children }: Props ): Node => (
     <ObsEditContext.Provider value={{
-      addObservations: ( ) => { },
-      setPrevScreen: ( ) => { }
+      addObservations: ( ) => { }
     }}>
       {children}
     </ObsEditContext.Provider>

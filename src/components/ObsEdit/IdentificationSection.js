@@ -16,29 +16,31 @@ const IdentificationSection = ( ): Node => {
   const {
     currentObsNumber,
     observations,
-    updateObservationKey,
-    identification
+    updateTaxon
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
   const currentObs = observations[currentObsNumber];
+  const identification = currentObs.taxon;
 
-  const updateTaxaId = taxaId => updateObservationKey( "taxon_id", taxaId );
+  const updateIdentification = ( taxon ) => updateTaxon( taxon );
 
   const navToSuggestionsPage = ( ) => navigation.navigate( "Suggestions" );
 
   const renderIconicTaxaButton = ( { item } ) => {
     const id = iconicTaxaIds[item];
+    const label = t( iconicTaxaNames[id] );
+    const selected = identification && id === identification.id;
     return (
       <Pressable
-        onPress={( ) => updateTaxaId( id )}
-        style={viewStyles.iconicTaxaButtons}
+        onPress={( ) => updateIdentification( { id, preferred_common_name: label } )}
       >
         <Avatar.Text
           size={54}
-          label={ t( iconicTaxaNames[id] ) }
+          label={label}
           labelStyle={textStyles.smallLabel}
+          style={[viewStyles.iconicTaxaButtons, selected && viewStyles.selected]}
         />
       </Pressable>
     );
@@ -72,7 +74,7 @@ const IdentificationSection = ( ): Node => {
             testID="ObsEdit.Suggestions"
           />
           <Text style={textStyles.text}>
-            {currentObs.taxon_id && t( iconicTaxaNames[currentObs.taxon_id] )}
+            {identification && identification.id && t( iconicTaxaNames[identification.id] )}
           </Text>
         </>
       );
