@@ -7,6 +7,8 @@ import ObsEdit from "../../../../src/components/ObsEdit/ObsEdit";
 import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import { ObsEditContext } from "../../../../src/providers/contexts";
 
+jest.useFakeTimers( );
+
 const mockLocationName = "San Francisco, CA";
 
 jest.mock( "../../../../src/providers/ObsEditProvider" );
