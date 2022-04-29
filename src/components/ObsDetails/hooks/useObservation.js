@@ -25,9 +25,8 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
     try {
       const obs = realm.objectForPrimaryKey( "Observation", uuid );
       setObservation( obs );
-    }
-    catch ( err ) {
-      console.error( `Error finding Observation with primary key: ${uuid} `, err.message );
+    } catch ( e ) {
+      console.log( `Error finding Observation with primary key: ${uuid} `, e.message );
     }
   }, [realmRef, uuid] );
 
@@ -71,6 +70,10 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
 
         const response = await inatjs.observations.fetch( uuid, params );
         const results = response.results;
+        if ( results.length === 0 ) {
+          openObservationFromRealm( );
+          return;
+        }
         const obs = Observation.mimicRealmMappedPropertiesSchema( results[0] );
         if ( !isCurrent ) { return; }
         if ( obs.faves ) {

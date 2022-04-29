@@ -8,6 +8,7 @@ import { textStyles } from "../../styles/obsDetails";
 import Map from "../SharedComponents/Map";
 import DropdownPicker from "../Explore/DropdownPicker";
 import addToProject from "./helpers/addToProject";
+import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 
 type Props = {
   observation: Object
@@ -26,6 +27,16 @@ const DataTab = ( { observation }: Props ): Node => {
     setProjectId( getValue( ) );
   };
 
+  const displayTimeObserved = ( ) => {
+    if ( observation.timeObservedAt ) {
+      return observation.timeObservedAt;
+    }
+    if ( observation.observed_on_string ) {
+      return observation.observed_on_string;
+    }
+    return "";
+  };
+
   return (
     <View>
       <Text style={textStyles.dataTabText}>Notes</Text>
@@ -35,11 +46,12 @@ const DataTab = ( { observation }: Props ): Node => {
         obsLongitude={observation.longitude}
         mapHeight={150}
       />
-      {/* {console.log( observation, "obs" )} */}
-      <Text style={textStyles.dataTabText}>{observation.placeGuess}</Text>
+      <Text style={textStyles.dataTabText}>
+        {checkCamelAndSnakeCase( observation, "placeGuess" )}
+      </Text>
       <Text style={textStyles.dataTabText}>Date</Text>
-      <Text style={textStyles.dataTabText}>{`date observed ${observation.timeObservedAt}`}</Text>
-      <Text style={textStyles.dataTabText}>{`date uploaded ${observation.createdAt}`}</Text>
+      <Text style={textStyles.dataTabText}>{`date observed ${displayTimeObserved( )}`}</Text>
+      <Text style={textStyles.dataTabText}>{`date created ${observation._created_at}`}</Text>
       <Text style={textStyles.dataTabText}>Projects</Text>
       {/* TODO: create a custom dropdown that doesn't use FlatList */}
       <DropdownPicker

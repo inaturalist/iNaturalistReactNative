@@ -7,6 +7,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import { formatObsListTime } from "../../../sharedHelpers/dateAndTime";
+import checkCamelAndSnakeCase from "../../ObsDetails/helpers/checkCamelAndSnakeCase";
 
 type Props = {
   item: Object,
@@ -14,7 +15,7 @@ type Props = {
 }
 
 const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
-  const placeGuess = item.placeGuess || item.place_guess;
+  const placeGuess = checkCamelAndSnakeCase( item, "placeGuess" );
 
   const displayTime = ( ) => {
     if ( item._created_at ) {
@@ -23,13 +24,7 @@ const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
     return "no time given";
   };
 
-  const displayName = ( ) => {
-    if ( needsUpload ) {
-      return item.species_guess || "no name";
-    } else {
-      return item.taxon ? ( item.taxon.preferredCommonName || item.taxon.preferred_common_name ) : "no name";
-    }
-  };
+  const displayName = ( ) => item.taxon ? checkCamelAndSnakeCase( item.taxon, "preferredCommonName" ) : "no name";
 
   return (
     <>

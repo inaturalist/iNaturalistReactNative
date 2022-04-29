@@ -80,7 +80,6 @@ class Observation {
       _updated_at: new Date( )
     };
     const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon, realm ) : null;
-    console.log( taxon, "taxon in save local obs" );
     const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => ObservationPhoto.saveLocalObservationPhotoForUpload( {
       ...newLocalRecord,
       ...photo
@@ -95,7 +94,8 @@ class Observation {
       ...newLocalRecord,
       taxon,
       observationPhotos,
-      observationSounds
+      observationSounds,
+      quality_grade: "needs_id"
     };
     return newObs;
   }

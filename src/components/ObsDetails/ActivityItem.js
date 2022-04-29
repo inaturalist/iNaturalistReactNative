@@ -19,19 +19,22 @@ type Props = {
 
 const ActivityItem = ( { item, navToTaxonDetails, handlePress }: Props ): React.Node => {
   const taxon = item.taxon;
+  const user = item.user;
 
   return (
     <>
       <View style={[viewStyles.userProfileRow, viewStyles.rowBorder]}>
-        <Pressable
-          onPress={handlePress}
-          accessibilityRole="link"
-          style={viewStyles.userProfileRow}
-          testID={`ObsDetails.identifier.${item.user.id}`}
-        >
-          <UserIcon uri={User.uri( item.user )} />
-          <Text>{User.userHandle( item.user )}</Text>
-        </Pressable>
+        {user && (
+          <Pressable
+            onPress={handlePress}
+            accessibilityRole="link"
+            style={viewStyles.userProfileRow}
+            testID={`ObsDetails.identifier.${user.id}`}
+          >
+            <UserIcon uri={User.uri( user )} />
+            <Text>{User.userHandle( user )}</Text>
+          </Pressable>
+        )}
         {item.vision && <Text>vision</Text>}
         <Text>{item.category}</Text>
         {item.created_at && <Text>{timeAgo( item.created_at )}</Text>}

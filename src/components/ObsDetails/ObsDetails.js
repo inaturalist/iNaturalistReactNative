@@ -19,6 +19,8 @@ import InputField from "../SharedComponents/InputField";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import createComment from "./helpers/createComment";
 import faveObservation from "./helpers/faveObservation";
+import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
+import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
 
 const ObsDetails = ( ): Node => {
   const [refetch, setRefetch] = useState( false );
@@ -71,7 +73,9 @@ const ObsDetails = ( ): Node => {
           accessibilityRole="link"
           accessibilityLabel="go to taxon details"
         >
-          <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
+          <Text style={textStyles.commonNameText}>
+            {checkCamelAndSnakeCase( taxon, "preferredCommonName" )}
+          </Text>
           <Text style={textStyles.scientificNameText}>{taxon.name}</Text>
         </Pressable>
       </>
@@ -87,6 +91,10 @@ const ObsDetails = ( ): Node => {
       setRefetch( !refetch );
     }
   };
+
+  const displayCreatedAt = ( ) => observation.createdAt
+    ? observation.createdAt
+    : formatObsListTime( observation._created_at );
 
   return (
     <ViewWithFooter>
@@ -104,7 +112,7 @@ const ObsDetails = ( ): Node => {
           <UserIcon uri={User.uri( user )} />
           <Text>{User.userHandle( user )}</Text>
         </Pressable>
-        <Text>{observation.createdAt}</Text>
+        <Text>{displayCreatedAt( )}</Text>
       </View>
       <View style={viewStyles.photoContainer}>
         <Pressable onPress={faveOrUnfave} style={viewStyles.pressableButton}>
@@ -117,10 +125,12 @@ const ObsDetails = ( ): Node => {
         <View>
           <Text style={textStyles.text}>{observation.identifications.length}</Text>
           <Text style={textStyles.text}>{observation.comments.length}</Text>
-          <Text style={textStyles.text}>{observation.qualityGrade}</Text>
+          <Text style={textStyles.text}>{checkCamelAndSnakeCase( observation, "qualityGrade" )}</Text>
         </View>
       </View>
-      <Text style={textStyles.locationText}>{observation.placeGuess}</Text>
+      <Text style={textStyles.locationText}>
+        {checkCamelAndSnakeCase( observation, "placeGuess" )}
+      </Text>
       <View style={viewStyles.userProfileRow}>
         <Pressable
           onPress={showActivityTab}
