@@ -1,9 +1,7 @@
-
-
 // @flow
 
-import React, { useContext, useState, useEffect } from "react";
-import { Text, Pressable, View, Platform, PermissionsAndroid } from "react-native";
+import React, { useContext, useState } from "react";
+import { Text, Pressable, View } from "react-native";
 // $FlowFixMe
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import type { Node } from "react";
@@ -28,7 +26,6 @@ const SoundRecorder = ( ): Node => {
   const longitude = latLng && latLng.longitude;
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-  // TODO: add Android permissions
   // https://www.npmjs.com/package/react-native-audio-recorder-player
   const [sound, setSound] = useState( {
     // recording
@@ -47,43 +44,6 @@ const SoundRecorder = ( ): Node => {
   const [status, setStatus] = useState( "notStarted" );
 
   audioRecorderPlayer.setSubscriptionDuration( 0.09 ); // optional. Default is 0.1
-
-  const checkAndroidPermissions = async ( ) => {
-    if ( Platform.OS === "android" ) {
-      try {
-        const grants = await PermissionsAndroid.requestMultiple( [
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
-        ] );
-
-        console.log( "write external storage", grants );
-
-        if (
-          grants["android.permission.WRITE_EXTERNAL_STORAGE"] ===
-            PermissionsAndroid.RESULTS.GRANTED &&
-          grants["android.permission.READ_EXTERNAL_STORAGE"] ===
-            PermissionsAndroid.RESULTS.GRANTED &&
-          grants["android.permission.RECORD_AUDIO"] ===
-            PermissionsAndroid.RESULTS.GRANTED
-        ) {
-          console.log( "Permissions granted" );
-        } else {
-          console.log( "All required permissions not granted" );
-          return;
-        }
-      } catch ( err ) {
-        console.warn( err );
-        return;
-      }
-    }
-  };
-
-  useEffect( ( ) => {
-    navigation.addListener( "focus", async ( )  => {
-      await checkAndroidPermissions( );
-    } );
-  }, [navigation] );
 
   const startRecording = async ( ) => {
     try {
@@ -105,15 +65,6 @@ const SoundRecorder = ( ): Node => {
       console.log( "couldn't start sound recorder:", e );
     }
   };
-
-  // const pauseRecording = async ( ) => {
-  //   try {
-  //     await audioRecorderPlayer.pauseRecorder( );
-  //     setStatus( "paused" );
-  //   } catch ( e ) {
-  //     console.log( "couldn't pause sound recorder:", e );
-  //   }
-  // };
 
   const resumeRecording = async ( ) => {
     try {

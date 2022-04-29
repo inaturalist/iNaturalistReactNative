@@ -36,6 +36,16 @@ const NormalCameraWithPermission = ( ) => (
   </PermissionGate>
 );
 
+const SoundRecorderWithPermission = ( ) => (
+  <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
+    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
+      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
+        <SoundRecorder />
+      </PermissionGate>
+    </PermissionGate>
+  </PermissionGate>
+);
+
 const CameraStackNavigation = ( ): React.Node => (
   <PhotoGalleryProvider>
     <Stack.Navigator screenOptions={hideHeader}>
@@ -53,7 +63,7 @@ const CameraStackNavigation = ( ): React.Node => (
       />
       <Stack.Screen
         name="SoundRecorder"
-        component={SoundRecorder}
+        component={SoundRecorderWithPermission}
       />
       <Stack.Screen
         name="NormalCamera"
