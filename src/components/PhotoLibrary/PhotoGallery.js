@@ -28,17 +28,18 @@ const PhotoGallery = ( ): Node => {
     setSelectedPhotos,
     fetchingPhotos,
     totalSelected,
-    permissionGranted,
-    setPermissionGranted
+    canRequestPhotos,
+    setCanRequestPhotos
   } = useContext( PhotoGalleryContext );
 
-  // Sort of bad, but if PhotoGallery is being rendered that should mean we've
-  // asked for and received the permissions it needs... but we the
-  // PhotoGalleryProvider / context might not know about that. This will make
-  // sure it does.
+  // If this component is being rendered we have either already asked for
+  // permissions in Android via a PermissionGate parent component, or the
+  // user is expecting us to ask for permissions via CameraRoll in iOS.
+  // Either way, we need to inform the context that it is now ok to request
+  // photos from the operating system.
   useEffect( ( ) => {
-    if ( !permissionGranted ) {
-      setPermissionGranted( true );
+    if ( !canRequestPhotos ) {
+      setCanRequestPhotos( true );
     }
   } );
 
