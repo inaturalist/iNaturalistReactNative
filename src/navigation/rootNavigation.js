@@ -17,6 +17,7 @@ import ObsEditProvider from "../providers/ObsEditProvider";
 import NetworkLogging from "../components/NetworkLogging";
 import NotificationsStackNavigation from "./notificationsStackNavigation";
 import About from "../components/About";
+import Mortal from "../components/SharedComponents/Mortal";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -24,6 +25,11 @@ const hideHeader = {
   headerShown: false,
   label: "my observations"
 };
+
+// The login component should be not preserve its state or effects after the
+// user navigates away from it. This will simply cause it to unmount when it
+// loses focus
+const MortalLogin = ( ) => <Mortal><Login /></Mortal>;
 
 const Drawer = createDrawerNavigator( );
 
@@ -63,7 +69,7 @@ const App = ( ): React.Node => (
           component={About}
         />
         <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-        <Drawer.Screen name="login" component={Login} />
+        <Drawer.Screen name="login" component={MortalLogin} />
         <Drawer.Screen
           name="camera"
           component={CameraStackNavigation}

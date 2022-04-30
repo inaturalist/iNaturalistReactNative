@@ -57,47 +57,46 @@ const Login = (): Node => {
     setLoggedIn( false );
   };
 
-  useEffect( ( ) => {
-    navigation.addListener( "blur", ( ) => {
-      setEmail( "" );
-      setPassword( "" );
-    }, [] );
-  }, [navigation] );
-
   return (
     <ViewWithFooter>
-      {!loggedIn ? (
-        <>
-          <Text style={textStyles.text}>Login</Text>
-
-          <Text style={textStyles.text}>Email</Text>
-          <TextInput
-            style={textStyles.input}
-            onChangeText={setEmail}
-            value={email}
-            autoComplete="email"
-            testID="Login.email"
-            autoCapitalize="none"
-            keyboardType="email-address"
-          />
-          <Text style={textStyles.text}>Password</Text>
-          <TextInput
-            style={textStyles.input}
-            onChangeText={setPassword}
-            value={password}
-            secureTextEntry={true}
-            testID="Login.password"
-          />
-          <Button title="Login" onPress={login} testID="Login.loginButton" />
-
-          {error && <Text style={textStyles.error}>{error}</Text>}
-        </>
-      ) : (
-        <>
-          <Text style={textStyles.text} testID="Login.loggedInAs">Logged in as: {username}</Text>
-          <Button title="Sign out" onPress={onSignOut} testID="Login.signOutButton" />
-        </>
-      )}
+      {loggedIn
+        ? (
+          <>
+            <Text style={textStyles.text} testID="Login.loggedInAs">Logged in as: {username}</Text>
+            <Button title="Sign out" onPress={onSignOut} testID="Login.signOutButton" />
+          </>
+        )
+        : (
+          <>
+            <Text style={textStyles.text}>Login</Text>
+            <Text style={textStyles.text}>Email</Text>
+            <TextInput
+              style={textStyles.input}
+              onChangeText={text => {
+                setError( null );
+                setEmail( text );
+              }}
+              value={email}
+              autoComplete="email"
+              testID="Login.email"
+              autoCapitalize="none"
+              keyboardType="email-address"
+            />
+            <Text style={textStyles.text}>Password</Text>
+            <TextInput
+              style={textStyles.input}
+              onChangeText={text => {
+                setError( null );
+                setPassword( text );
+              }}
+              value={password}
+              secureTextEntry={true}
+              testID="Login.password"
+            />
+            <Button title="Login" onPress={login} testID="Login.loginButton" />
+            {error && <Text style={textStyles.error}>{error}</Text>}
+          </>
+        )}
     </ViewWithFooter>
   );
 };
