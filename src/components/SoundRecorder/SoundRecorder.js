@@ -9,11 +9,7 @@ import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
-import uuid from "react-native-uuid";
-import RNFS from "react-native-fs";
 
-import { useUserLocation } from "../../sharedHooks/useUserLocation";
-import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder";
 import { ObsEditContext } from "../../providers/contexts";
@@ -22,9 +18,7 @@ import { ObsEditContext } from "../../providers/contexts";
 const audioRecorderPlayer = new AudioRecorderPlayer( );
 
 const SoundRecorder = ( ): Node => {
-  const soundUUID = uuid.v4( );
   const { addSound } = useContext( ObsEditContext );
-  const latLng = useUserLocation( );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   // TODO: add Android permissions
@@ -56,8 +50,6 @@ const SoundRecorder = ( ): Node => {
           PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
         ] );
 
-        console.log( "write external storage", grants );
-
         if (
           grants["android.permission.WRITE_EXTERNAL_STORAGE"] ===
             PermissionsAndroid.RESULTS.GRANTED &&
@@ -84,27 +76,9 @@ const SoundRecorder = ( ): Node => {
     } );
   }, [navigation] );
 
-  const moveFromCacheToDocumentDirectory = async ( soundPath ) => {
-    // in theory, should be able to pass in a path to the audio recorder
-    // but that's buggy so moving the file from cache to docs instead
-    const cacheDir = RNFS.CachesDirectoryPath;
-    const docDir = RNFS.DocumentDirectoryPath;
-
-    const audioFile = `${cacheDir}/${soundPath}`;
-    const soundUploadsFolder = `${docDir}/soundUploads`;
-    await RNFS.mkdir( soundUploadsFolder );
-    const soundDirectory = `${soundUploadsFolder}/${soundPath}`;
-
-    await RNFS.moveFile( audioFile, soundDirectory );
-    return soundDirectory;
-  };
-
   const startRecording = async ( ) => {
-    const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
-    const soundPath = `${soundUUID}.${fileExt}`;
-
     try {
-      await audioRecorderPlayer.startRecorder( soundPath, null, true );
+      const cachedFile = await audioRecorderPlayer.startRecorder( null, null, true );
       setStatus( "recording" );
       audioRecorderPlayer.addRecordBackListener( ( e ) => {
         setSound( {
@@ -117,21 +91,12 @@ const SoundRecorder = ( ): Node => {
         } );
         return;
       } );
-      const storedFile = await moveFromCacheToDocumentDirectory( soundPath );
-      setUri( storedFile );
+      console.log( cachedFile, "cached file in sound recorder" );
+      setUri( cachedFile );
     } catch ( e ) {
       console.log( "couldn't start sound recorder:", e );
     }
   };
-
-  // const pauseRecording = async ( ) => {
-  //   try {
-  //     await audioRecorderPlayer.pauseRecorder( );
-  //     setStatus( "paused" );
-  //   } catch ( e ) {
-  //     console.log( "couldn't pause sound recorder:", e );
-  //   }
-  // };
 
   const resumeRecording = async ( ) => {
     try {
@@ -234,14 +199,7 @@ const SoundRecorder = ( ): Node => {
   };
 
   const navToObsEdit = ( ) => {
-    addSound( {
-      ...latLng,
-      observationSounds: [{
-        uri,
-        uuid: soundUUID
-      }],
-      observed_on_string: createObservedOnStringForUpload( )
-    } );
+    addSound( );
     navigation.navigate( "ObsEdit" );
   };
 

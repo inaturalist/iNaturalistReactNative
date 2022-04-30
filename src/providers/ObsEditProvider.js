@@ -13,6 +13,7 @@ import Observation from "../models/Observation";
 import { PhotoGalleryContext } from "./contexts";
 import { useUserLocation } from "../sharedHooks/useUserLocation";
 import { createObservedOnStringForUpload } from "../sharedHelpers/dateAndTime";
+import ObservationSound from "../models/ObservationSound";
 
 type Props = {
   children: any
@@ -27,7 +28,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const currentObs = observations[currentObsNumber];
 
-  const addSound = ( sound ) => {
+  const addSound = async ( ) => {
+    const sound = await ObservationSound.createNewSound( );
     if ( observations.length === 0 ) {
       const soundObs = createObservation( sound );
       setObservations( [soundObs] );
