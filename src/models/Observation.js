@@ -1,12 +1,35 @@
+import uuid from "react-native-uuid";
+
 import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
+import ObservationSound from "./ObservationSound";
 import Taxon from "./Taxon";
 import User from "./User";
-
-import ObservationSound from "./ObservationSound";
+import { createObservedOnStringForUpload } from "../sharedHelpers/dateAndTime";
+import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 
 class Observation {
+  static createNewObservation( obs ) {
+    return {
+      ...obs,
+      captive_flag: false,
+      geoprivacy: "open",
+      owners_identification_from_vision: false,
+      project_ids: [],
+      uuid: uuid.v4( )
+    };
+  }
+
+  static async createObsWithNoEvidence( ) {
+    const latLng = await fetchUserLocation( );
+    const obs = {
+      ...latLng,
+      observed_on_string: createObservedOnStringForUpload( )
+    };
+    return Observation.createNewObservation( obs );
+  }
+
   static mimicRealmMappedPropertiesSchema( obs ) {
     const createLinkedObjects = ( list, createFunction ) => {
       if ( list.length === 0 ) { return; }

@@ -31,7 +31,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const addSound = async ( ) => {
     const sound = await ObservationSound.createNewSound( );
     if ( observations.length === 0 ) {
-      const soundObs = createObservation( sound );
+      const soundObs = Observation.createNewObservation( sound );
       setObservations( [soundObs] );
     } else if ( currentObs ) {
       const updatedObs = Array.from( observations );
@@ -59,7 +59,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const addPhotos = ( photos ) => {
     if ( observations.length === 0 ) {
-      const photoObs = createObservation( photos[0] );
+      const photoObs = Observation.createNewObservation( photos[0] );
       // $FlowFixMe
       photoObs.observationPhotos = mapPhotos( photos );
       setObservations( [photoObs] );
@@ -84,7 +84,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const addObservations = ( obs ) => {
     if ( observations.length === 0 ) {
       const newObs = obs.map( o => {
-        const photoObs = createObservation( o.observationPhotos[0] );
+        const photoObs = Observation.createNewObservation( o.observationPhotos[0] );
         // $FlowFixMe
         photoObs.observationPhotos = mapPhotos( o.observationPhotos );
         return photoObs;
@@ -97,26 +97,27 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const addObservationNoEvidence = ( ) => {
-    const obs = {
-      ...latLng,
-      observed_on_string: createObservedOnStringForUpload( )
-    };
-    const newObs = createObservation( obs );
+    const newObs = Observation.createObsWithNoEvidence( );
+    // const obs = {
+    //   ...latLng,
+    //   observed_on_string: createObservedOnStringForUpload( )
+    // };
+    // const newObs = Observation.createNewObservation( obs );
     setObservations( [newObs] );
   };
 
-  const createObservation = ( obs ) => {
-    return {
-      // object should look like Seek upload observation:
-      // https://github.com/inaturalist/SeekReactNative/blob/e2df7ca77517e0c4c89f3147dc5a15ed98e31c34/utility/uploadHelpers.js#L198
-      ...obs,
-      captive_flag: false,
-      geoprivacy: "open",
-      owners_identification_from_vision: false,
-      project_ids: [],
-      uuid: uuid.v4( )
-    };
-  };
+  // const Observation.createNewObservation = ( obs ) => {
+  //   return {
+  //     // object should look like Seek upload observation:
+  //     // https://github.com/inaturalist/SeekReactNative/blob/e2df7ca77517e0c4c89f3147dc5a15ed98e31c34/utility/uploadHelpers.js#L198
+  //     ...obs,
+  //     captive_flag: false,
+  //     geoprivacy: "open",
+  //     owners_identification_from_vision: false,
+  //     project_ids: [],
+  //     uuid: uuid.v4( )
+  //   };
+  // };
 
   const updateObservationKey = ( key, value ) => {
     const updatedObs = observations.map( ( obs, index ) => {
