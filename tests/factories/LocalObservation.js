@@ -2,7 +2,7 @@ import factory, { define } from "factoria";
 
 // TODO use faker for more of these dynamic values.
 export default define( "LocalObservation", faker => ( {
-  _created_at: "1966-05-06T07:27:06-08:00",
+  _created_at: faker.date.past( ),
   uuid: faker.datatype.uuid( ),
   comments: [
     factory( "LocalComment" ),

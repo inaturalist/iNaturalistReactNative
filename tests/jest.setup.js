@@ -165,3 +165,12 @@ function FormDataMock() {
 }
 global.FormData = FormDataMock;
 
+jest.mock( "react-native-fs", ( ) => {
+  const RNFS = {
+    moveFile: async ( ) => {
+      return "testdata";
+    }
+  };
+
+  return RNFS;
+} );
