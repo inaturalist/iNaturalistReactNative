@@ -15,6 +15,7 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
   const [observation, setObservation] = useState( null );
   const [isConnected, setIsConnected] = useState( null );
   const [currentUserFaved, setCurrentUserFaved] = useState( null );
+  const [isCurrentUserObservation, setIsCurrentUserObservation] = useState( false );
 
   const realmRef = useRef( null );
 
@@ -25,6 +26,7 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
     try {
       const obs = realm.objectForPrimaryKey( "Observation", uuid );
       setObservation( obs );
+      setIsCurrentUserObservation( true );
     } catch ( e ) {
       console.log( `Error finding Observation with primary key: ${uuid} `, e.message );
     }
@@ -85,6 +87,9 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
           }
         }
         setObservation( obs );
+        if ( currentUserLogin === obs.user.login ) {
+          setIsCurrentUserObservation( true );
+        }
       } catch ( e ) {
         if ( !isCurrent ) { return; }
         // try to open from realm: this is for observations that still need to be uploaded
@@ -107,7 +112,8 @@ const useObservation = ( uuid: string, refetch: boolean ): Object => {
 
   return {
     observation,
-    currentUserFaved
+    currentUserFaved,
+    isCurrentUserObservation
   };
 };
 

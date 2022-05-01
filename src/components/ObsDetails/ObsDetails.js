@@ -6,7 +6,7 @@ import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-import { viewStyles, textStyles } from "../../styles/obsDetails";
+import { viewStyles, textStyles } from "../../styles/obsDetails/obsDetails";
 import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
@@ -21,6 +21,7 @@ import createComment from "./helpers/createComment";
 import faveObservation from "./helpers/faveObservation";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
+import ObsDetailsHeader from "./ObsDetailsHeader";
 
 const ObsDetails = ( ): Node => {
   const [refetch, setRefetch] = useState( false );
@@ -32,7 +33,7 @@ const ObsDetails = ( ): Node => {
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  const { observation, currentUserFaved } = useObservation( uuid, refetch );
+  const { observation, currentUserFaved, isCurrentUserObservation } = useObservation( uuid, refetch );
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
@@ -98,6 +99,7 @@ const ObsDetails = ( ): Node => {
 
   return (
     <ViewWithFooter>
+      <ObsDetailsHeader observationUUID={uuid} isCurrentUserObservation={isCurrentUserObservation} />
       <ScrollView
         testID={`ObsDetails.${uuid}`}
         contentContainerStyle={viewStyles.scrollView}

@@ -8,7 +8,7 @@ import ObsList from "../components/Observations/ObsList";
 import ObsDetails from "../components/ObsDetails/ObsDetails";
 import UserProfile from "../components/UserProfile/UserProfile";
 import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
-import CustomHeaderWithTranslation from "../components/SharedComponents/CustomHeaderWithTranslation";
+import ObsDetailsHeader from "../components/ObsDetails/ObsDetailsHeader";
 
 const Stack = createNativeStackNavigator( );
 
@@ -34,7 +34,7 @@ const MyObservationsStackNavigation = ( ): React.Node => (
     <Stack.Screen
       name="ObsDetails"
       component={ObsDetails}
-      options={{ headerTitle: ( props ) => <CustomHeaderWithTranslation {...props} headerText="Observation" /> }}
+      options={hideHeader}
       />
     <Stack.Screen
       name="UserProfile"

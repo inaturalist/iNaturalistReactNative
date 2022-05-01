@@ -13,7 +13,7 @@ class Observation {
   static createNewObservation( obs ) {
     return {
       ...obs,
-      captive_flag: false,
+      captive: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
       project_ids: [],
@@ -135,7 +135,7 @@ class Observation {
       taxon_id: obs.taxon && obs.taxon.id,
       geoprivacy: obs.geoprivacy,
       uuid: obs.uuid,
-      captive_flag: obs.captive_flag,
+      captive_flag: obs.captive,
       owners_identification_from_vision: obs.owners_identification_from_vision
     };
   }
@@ -188,7 +188,7 @@ class Observation {
       // datetime the observation was updated on the device (i.e. edited locally)
       _updated_at: "date?",
       uuid: "string",
-      captive_flag: "bool?",
+      captive: "bool?",
       comments: "Comment[]",
       // timestamp of when observation was created on the server; not editable
       created_at: { type: "string?", mapTo: "createdAt" },

@@ -91,7 +91,6 @@ const SoundRecorder = ( ): Node => {
         } );
         return;
       } );
-      console.log( cachedFile, "cached file in sound recorder" );
       setUri( cachedFile );
     } catch ( e ) {
       console.log( "couldn't start sound recorder:", e );

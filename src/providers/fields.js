@@ -63,10 +63,12 @@ const MESSAGE_FIELDS = {
 };
 
 const FIELDS = {
+  captive: true,
   comments: COMMENT_FIELDS,
   created_at: true,
   description: true,
   geojson: true,
+  geoprivacy: true,
   id: true,
   identifications: ID_FIELDS,
   latitude: true,

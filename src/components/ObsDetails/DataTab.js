@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { View, Text } from "react-native";
 import type { Node } from "react";
 
-import { textStyles } from "../../styles/obsDetails";
+import { textStyles } from "../../styles/obsDetails/obsDetails";
 import Map from "../SharedComponents/Map";
 import DropdownPicker from "../Explore/DropdownPicker";
 import addToProject from "./helpers/addToProject";

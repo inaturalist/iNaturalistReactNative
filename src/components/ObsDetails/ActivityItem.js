@@ -5,7 +5,7 @@ import { Text, View, Pressable } from "react-native";
 
 import UserIcon from "../SharedComponents/UserIcon";
 import SmallSquareImage from "./SmallSquareImage";
-import { textStyles, viewStyles } from "../../styles/obsDetails";
+import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import FlagDropdown from "./FlagDropdown";

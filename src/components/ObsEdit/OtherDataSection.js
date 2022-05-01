@@ -55,7 +55,7 @@ const OtherDataSection = ( ): Node => {
 
   const addNotes = text => updateObservationKey( "description", text );
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
-  const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
+  const updateCaptiveStatus = value => updateObservationKey( "captive", value );
 
   const searchForProjects = ( ) => {
     setSource( "projects" );
@@ -112,7 +112,7 @@ const OtherDataSection = ( ): Node => {
           items={captiveOptions}
           useNativeAndroidPickerStyle={false}
           style={pickerSelectStyles}
-          value={currentObs.captive_flag}
+          value={currentObs.captive}
         />
       </View>
       <Pressable onPress={searchForProjects}>

@@ -1,7 +1,6 @@
 // @flow
 import React, { useState, useContext } from "react";
 import type { Node } from "react";
-import uuid from "react-native-uuid";
 import { useNavigation } from "@react-navigation/native";
 import Realm from "realm";
 
@@ -11,8 +10,6 @@ import saveLocalObservation from "./helpers/saveLocalObservation";
 import uploadObservation from "./helpers/uploadObservation";
 import Observation from "../models/Observation";
 import { PhotoGalleryContext } from "./contexts";
-import { useUserLocation } from "../sharedHooks/useUserLocation";
-import { createObservedOnStringForUpload } from "../sharedHelpers/dateAndTime";
 import ObservationSound from "../models/ObservationSound";
 
 type Props = {
@@ -20,7 +17,6 @@ type Props = {
 }
 
 const ObsEditProvider = ( { children }: Props ): Node => {
-  const latLng = useUserLocation( );
   const { setSelectedPhotos } = useContext( PhotoGalleryContext );
   const navigation = useNavigation( );
   const [currentObsNumber, setCurrentObsNumber] = useState( 0 );
@@ -32,6 +28,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     const sound = await ObservationSound.createNewSound( );
     if ( observations.length === 0 ) {
       const soundObs = Observation.createNewObservation( sound );
+      console.log( soundObs, "soundObs in obs edit provider" );
       setObservations( [soundObs] );
     } else if ( currentObs ) {
       const updatedObs = Array.from( observations );
@@ -98,26 +95,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const addObservationNoEvidence = ( ) => {
     const newObs = Observation.createObsWithNoEvidence( );
-    // const obs = {
-    //   ...latLng,
-    //   observed_on_string: createObservedOnStringForUpload( )
-    // };
-    // const newObs = Observation.createNewObservation( obs );
     setObservations( [newObs] );
   };
-
-  // const Observation.createNewObservation = ( obs ) => {
-  //   return {
-  //     // object should look like Seek upload observation:
-  //     // https://github.com/inaturalist/SeekReactNative/blob/e2df7ca77517e0c4c89f3147dc5a15ed98e31c34/utility/uploadHelpers.js#L198
-  //     ...obs,
-  //     captive_flag: false,
-  //     geoprivacy: "open",
-  //     owners_identification_from_vision: false,
-  //     project_ids: [],
-  //     uuid: uuid.v4( )
-  //   };
-  // };
 
   const updateObservationKey = ( key, value ) => {
     const updatedObs = observations.map( ( obs, index ) => {

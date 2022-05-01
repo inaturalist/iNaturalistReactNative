@@ -15,7 +15,7 @@ import { ObsEditContext } from "../../providers/contexts";
 import EvidenceList from "./EvidenceList";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 import DatePicker from "./DatePicker";
-import { displayDateTimeObsEdit, createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
+import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
 import TranslatedHeadline from "../SharedComponents/Typography/TranslatedHeadline";
 import IdentificationSection from "./IdentificationSection";
 import OtherDataSection from "./OtherDataSection";
@@ -90,6 +90,8 @@ const ObsEdit = ( ): Node => {
   const latitude = currentObs && currentObs.latitude;
   const longitude = currentObs && currentObs.longitude;
 
+  console.log( currentObs.geoprivacy, "current obs" );
+
   const openLocationPicker = ( ) => setShowLocationPicker( true );
   const closeLocationPicker = ( ) => setShowLocationPicker( false );
 
@@ -127,9 +129,6 @@ const ObsEdit = ( ): Node => {
   );
 
   if ( !currentObs ) { return null; }
-
-  // TODO: make sure observed_on_string uses same time format with all types of evidence (camera, gallery, etc)
-  const displayDate = currentObs.observed_on_string ? displayDateTimeObsEdit( currentObs.observed_on_string ) : null;
 
   const displayLocation = ( ) => {
     let location = "";
@@ -170,7 +169,7 @@ const ObsEdit = ( ): Node => {
           {displayLocation( ) || t( "No-Location" )}
         </Text>
       </Pressable>
-      <DatePicker displayDate={displayDate} handleDatePicked={handleDatePicked} />
+      <DatePicker currentObs={currentObs} handleDatePicked={handleDatePicked} />
       <TranslatedHeadline style={textStyles.headerText} text="Identification" />
       <IdentificationSection />
       <TranslatedHeadline style={textStyles.headerText} text="Other-Data" />
