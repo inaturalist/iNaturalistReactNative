@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { FlatList, Image, View, Pressable } from "react-native";
+import { FlatList, Image, Pressable } from "react-native";
 import type { Node } from "react";
 
 import { imageStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
@@ -18,11 +18,9 @@ const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, select
   // const renderCameraOptionsButton =  ( ) => showCameraOptions ? <CameraOptionsButton /> : <View />;
 
   const renderEvidence = ( { item, index } ) => {
-    const isSound = item.uri && item.uri.includes( "m4a" );
+    const isSound = item?.file_url;
     let photoUrl = item?.photo?.url || item?.photo?.localFilePath;
-    console.log( photoUrl, "obs photos length" );
     const imageUri = { uri: photoUrl };
-    // const imageUri = { uri: item.uri };
 
     const handlePress = ( ) => {
       if ( setSelectedPhoto ) {
@@ -53,13 +51,11 @@ const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, select
     let evidence = [];
 
     if ( currentObs.observationPhotos ) {
-      evidence = currentObs.observationPhotos;
-      // evidence = evidence.concat( currentObs.observationPhotos );
+      evidence = evidence.concat( currentObs.observationPhotos );
     }
-    // if ( currentObs.observationSounds ) {
-    //   evidence = evidence.concat( [currentObs.observationSounds] );
-    // }
-    console.log( evidence.length, "evidence" );
+    if ( currentObs.observationSounds ) {
+      evidence = evidence.concat( currentObs.observationSounds );
+    }
     return evidence;
   };
 

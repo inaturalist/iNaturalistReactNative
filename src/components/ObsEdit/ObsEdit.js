@@ -87,7 +87,6 @@ const ObsEdit = ( ): Node => {
   };
 
   const currentObs = observations[currentObsNumber];
-  console.log( currentObs, "current obs in obs edit" );
   const latitude = currentObs && currentObs.latitude;
   const longitude = currentObs && currentObs.longitude;
 

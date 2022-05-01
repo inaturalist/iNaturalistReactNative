@@ -2,9 +2,6 @@ import { Platform } from "react-native";
 import { FileUpload } from "inaturalistjs";
 import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
-
-import { createObservedOnStringForUpload } from "../sharedHelpers/dateAndTime";
-import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 class ObservationSound {
   static async moveFromCacheToDocumentDirectory( soundUUID ) {
     const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
@@ -21,25 +18,26 @@ class ObservationSound {
     return soundDirectory;
   }
 
-  static async createNewSound( ) {
-    const latLng = await fetchUserLocation( );
-    const soundUUID = uuid.v4( );
-    const uri = await ObservationSound.moveFromCacheToDocumentDirectory( soundUUID );
-
-    return {
-      ...latLng,
-      observationSounds: [{
-        uri,
-        uuid: soundUUID
-      }],
-      observed_on_string: createObservedOnStringForUpload( )
-    };
-  }
-
   static saveLocalObservationSoundForUpload( sound ) {
     return {
       ...sound,
       file_url: sound.uri
+    };
+  }
+
+  static async createNewSound( ) {
+    const soundUUID = uuid.v4( );
+    const uri = await ObservationSound.moveFromCacheToDocumentDirectory( soundUUID );
+
+    const sound = ObservationSound.saveLocalObservationSoundForUpload( {
+      uri,
+      uuid: soundUUID
+    } );
+
+    console.log( sound, "sound in obs sound" );
+
+    return {
+      ...sound
     };
   }
 

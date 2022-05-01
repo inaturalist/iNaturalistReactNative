@@ -30,12 +30,22 @@ class Observation {
     return Observation.createNewObservation( obs );
   }
 
-  static async createObsWithObsPhotos( observationPhotos ) {
+  static async createObsWithPhotos( observationPhotos ) {
     const latLng = await fetchUserLocation( );
     const obs = {
       ...latLng,
       observed_on_string: createObservedOnStringForUpload( ),
       observationPhotos
+    };
+    return Observation.createNewObservation( obs );
+  }
+
+  static async createObsWithSounds( observationSounds ) {
+    const latLng = await fetchUserLocation( );
+    const obs = {
+      ...latLng,
+      observed_on_string: createObservedOnStringForUpload( ),
+      observationSounds
     };
     return Observation.createNewObservation( obs );
   }

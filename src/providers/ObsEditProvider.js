@@ -26,16 +26,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const addSound = async ( ) => {
     const sound = await ObservationSound.createNewSound( );
-    if ( observations.length === 0 ) {
-      const soundObs = Observation.createNewObservation( sound );
-      console.log( soundObs, "soundObs in obs edit provider" );
-      setObservations( [soundObs] );
-    } else if ( currentObs ) {
-      const updatedObs = Array.from( observations );
-      // $FlowFixMe
-      updatedObs[currentObsNumber].observationSounds = sound.observationSounds;
-      setObservations( updatedObs );
-    }
+    const newObs = await Observation.createObsWithSounds( [sound] );
+    setObservations( [newObs] );
   };
 
   const mapPhotos = ( photos ) => photos.map( p => {
@@ -55,7 +47,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   } );
 
   const addPhotos = async ( photos ) => {
-    const newObs = await Observation.createObsWithObsPhotos( photos );
+    const newObs = await Observation.createObsWithPhotos( photos );
     setObservations( [newObs] );
   };
 
