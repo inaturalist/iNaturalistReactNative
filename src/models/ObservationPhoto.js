@@ -1,5 +1,8 @@
-import Photo from "./Photo";
 import { FileUpload } from "inaturalistjs";
+import uuid from "react-native-uuid";
+
+import Photo from "./Photo";
+import resizeImageForUpload from "../providers/helpers/resizeImage";
 
 class ObservationPhoto {
   static mapApiToRealm( observationPhoto ) {
@@ -25,6 +28,17 @@ class ObservationPhoto {
         name: `${observationPhoto.uuid}.jpeg`,
         type: "image/jpeg"
       } )
+    };
+  }
+
+  static async formatObsPhotoFromNormalCamera( photo ) {
+    const resizedPhoto = await resizeImageForUpload( photo.path );
+
+    const obsPhoto = ObservationPhoto.saveLocalObservationPhotoForUpload( { uri: resizedPhoto } );
+
+    return {
+      ...obsPhoto,
+      uuid: uuid.v4( )
     };
   }
 

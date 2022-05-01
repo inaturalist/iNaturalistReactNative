@@ -54,28 +54,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     }
   } );
 
-  const addPhotos = ( photos ) => {
-    if ( observations.length === 0 ) {
-      const photoObs = Observation.createNewObservation( photos[0] );
-      // $FlowFixMe
-      photoObs.observationPhotos = mapPhotos( photos );
-      setObservations( [photoObs] );
-    } else if ( currentObs ) {
-      const updatedObs = Array.from( observations );
-      // $FlowFixMe
-      let obsPhotos = updatedObs[currentObsNumber].observationPhotos;
-      const newPhotos = mapPhotos( photos );
-
-      if ( obsPhotos ) {
-        // $FlowFixMe
-        updatedObs[currentObsNumber].observationPhotos = obsPhotos.concat( newPhotos );
-        setObservations( updatedObs );
-      } else {
-        // $FlowFixMe
-        updatedObs[currentObsNumber].observationPhotos = newPhotos;
-        setObservations( updatedObs );
-      }
-    }
+  const addPhotos = async ( photos ) => {
+    const newObs = await Observation.createObsWithObsPhotos( photos );
+    setObservations( [newObs] );
   };
 
   const addObservations = ( obs ) => {
@@ -93,8 +74,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     // but I'm not sure how that flow will work
   };
 
-  const addObservationNoEvidence = ( ) => {
-    const newObs = Observation.createObsWithNoEvidence( );
+  const addObservationNoEvidence = async ( ) => {
+    const newObs = await Observation.createObsWithNoEvidence( );
     setObservations( [newObs] );
   };
 

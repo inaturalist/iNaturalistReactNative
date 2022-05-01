@@ -16,7 +16,7 @@ class Observation {
       captive: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
-      project_ids: [],
+      // project_ids: [],
       uuid: uuid.v4( )
     };
   }
@@ -26,6 +26,16 @@ class Observation {
     const obs = {
       ...latLng,
       observed_on_string: createObservedOnStringForUpload( )
+    };
+    return Observation.createNewObservation( obs );
+  }
+
+  static async createObsWithObsPhotos( observationPhotos ) {
+    const latLng = await fetchUserLocation( );
+    const obs = {
+      ...latLng,
+      observed_on_string: createObservedOnStringForUpload( ),
+      observationPhotos
     };
     return Observation.createNewObservation( obs );
   }

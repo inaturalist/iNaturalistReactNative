@@ -5,7 +5,7 @@ import { FlatList, Image, View, Pressable } from "react-native";
 import type { Node } from "react";
 
 import { imageStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
-import CameraOptionsButton from "../SharedComponents/Buttons/CameraOptionsButton";
+// import CameraOptionsButton from "../SharedComponents/Buttons/CameraOptionsButton";
 
 type Props = {
   currentObs: Object,
@@ -15,11 +15,14 @@ type Props = {
 }
 
 const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, selectedPhoto }: Props ): Node => {
-  const renderCameraOptionsButton =  ( ) => showCameraOptions ? <CameraOptionsButton /> : <View />;
+  // const renderCameraOptionsButton =  ( ) => showCameraOptions ? <CameraOptionsButton /> : <View />;
 
   const renderEvidence = ( { item, index } ) => {
     const isSound = item.uri && item.uri.includes( "m4a" );
-    const imageUri = { uri: item.uri };
+    let photoUrl = item?.photo?.url || item?.photo?.localFilePath;
+    console.log( photoUrl, "obs photos length" );
+    const imageUri = { uri: photoUrl };
+    // const imageUri = { uri: item.uri };
 
     const handlePress = ( ) => {
       if ( setSelectedPhoto ) {
@@ -50,11 +53,13 @@ const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, select
     let evidence = [];
 
     if ( currentObs.observationPhotos ) {
-      evidence = evidence.concat( currentObs.observationPhotos );
+      evidence = currentObs.observationPhotos;
+      // evidence = evidence.concat( currentObs.observationPhotos );
     }
-    if ( currentObs.observationSounds ) {
-      evidence = evidence.concat( [currentObs.observationSounds] );
-    }
+    // if ( currentObs.observationSounds ) {
+    //   evidence = evidence.concat( [currentObs.observationSounds] );
+    // }
+    console.log( evidence.length, "evidence" );
     return evidence;
   };
 
@@ -63,7 +68,7 @@ const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, select
       data={displayEvidence( )}
       horizontal
       renderItem={renderEvidence}
-      ListFooterComponent={renderCameraOptionsButton}
+      // ListFooterComponent={renderCameraOptionsButton}
       contentContainerStyle={viewStyles.evidenceList}
     />
   );
