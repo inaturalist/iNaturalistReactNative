@@ -1,6 +1,6 @@
 import {Alert, Image, Text, TextInput, View} from "react-native";
 import {viewStyles, textStyles} from "../../styles/settings/settings";
-import React, {useCallback, useEffect} from "react";
+import React, {useEffect} from "react";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import {useDebounce} from "use-debounce";
 import inatjs from "inaturalistjs";

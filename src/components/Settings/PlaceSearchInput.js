@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import {useDebounce} from "use-debounce";
-import inatjs from "inaturalistjs";
 import {Image, Text, TextInput, View} from "react-native";
 import {textStyles, viewStyles} from "../../styles/settings/settings";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
