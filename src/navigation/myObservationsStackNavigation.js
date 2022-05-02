@@ -8,7 +8,6 @@ import ObsList from "../components/Observations/ObsList";
 import ObsDetails from "../components/ObsDetails/ObsDetails";
 import UserProfile from "../components/UserProfile/UserProfile";
 import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
-import ObsDetailsHeader from "../components/ObsDetails/ObsDetailsHeader";
 
 const Stack = createNativeStackNavigator( );
 

@@ -19,7 +19,7 @@ const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, select
 
   const renderEvidence = ( { item, index } ) => {
     const isSound = item?.file_url;
-    let photoUrl = item?.photo?.url || item?.photo?.localFilePath;
+    let photoUrl = item.photo?.url || item?.photo?.localFilePath;
     const imageUri = { uri: photoUrl };
 
     const handlePress = ( ) => {
@@ -51,7 +51,7 @@ const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, select
     let evidence = [];
 
     if ( currentObs.observationPhotos ) {
-      evidence = evidence.concat( currentObs.observationPhotos );
+      evidence = currentObs.observationPhotos;
     }
     if ( currentObs.observationSounds ) {
       evidence = evidence.concat( currentObs.observationSounds );

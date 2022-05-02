@@ -1,9 +1,9 @@
 // @flow
 
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import type { Node } from "react";
 import { Text } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
@@ -30,6 +30,15 @@ const ObsList = ( ): Node => {
       syncObservations( );
     }
   }, [params, syncObservations] );
+
+  // useFocusEffect(
+  //   useCallback( ( ) => {
+  //     const unsubscribe = syncObservations( );
+  //     console.log( "sync in focus effect" );
+
+  //     return ( ) => unsubscribe;
+  //   }, [syncObservations] )
+  // );
 
   const userId = useCurrentUser( );
 

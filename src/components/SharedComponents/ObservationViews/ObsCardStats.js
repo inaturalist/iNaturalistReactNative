@@ -13,8 +13,8 @@ type Props = {
 }
 
 const ObsCardStats = ( { item, type }: Props ): Node => {
-  const numOfIds = item.identifications.length || 0;
-  const numOfComments = item.comments.length || 0;
+  const numOfIds = item.identifications?.length || 0;
+  const numOfComments = item.comments?.length || 0;
   const qualityGrade = checkCamelAndSnakeCase( item, "qualityGrade" );
 
   const renderColumn = ( ) => (

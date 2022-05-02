@@ -10,7 +10,6 @@ import GroupPhotosHeader from "./GroupPhotosHeader";
 import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotosFooter from "./GroupPhotosFooter";
-import ObservationPhoto from "../../models/ObservationPhoto";
 import Observation from "../../models/Observation";
 import { orderByTimestamp, flattenAndOrderSelectedPhotos } from "./helpers/groupPhotoHelpers";
 

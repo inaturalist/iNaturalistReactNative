@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useState, useContext } from "react";
-import { Text, View, Image, Pressable, ScrollView } from "react-native";
+import { Text, View, Image, Pressable, ScrollView, LogBox } from "react-native";
 import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -11,7 +11,7 @@ import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import DataTab from "./DataTab";
-import { useObservation } from "./hooks/useObservation";
+import { useRemoteObservation } from "./hooks/useObservation";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import { ObsEditContext } from "../../providers/contexts";
@@ -23,18 +23,30 @@ import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
 import ObsDetailsHeader from "./ObsDetailsHeader";
 
+// this is getting triggered by passing dates, like _created_at, through
+// react navigation via the observation object. it doesn't seem to
+// actually be breaking anything, for the moment (May 2, 2022)
+LogBox.ignoreLogs( [
+  "Non-serializable values were found in the navigation state"
+] );
+
 const ObsDetails = ( ): Node => {
   const [refetch, setRefetch] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
   const { addObservations } = useContext( ObsEditContext );
   const { params } = useRoute( );
-  const { uuid } = params;
+  let observation = params.observation;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  const { observation, currentUserFaved, isCurrentUserObservation } = useObservation( uuid, refetch );
+  // TODO: we'll probably need to redo this logic a bit now that we're
+  // passing an observation via navigation instead of reopening realm
+  const { remoteObservation, currentUserFaved, isCurrentUserObservation } = useRemoteObservation( observation, refetch );
 
+  if ( remoteObservation && !observation ) {
+    observation = remoteObservation;
+  }
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
 
@@ -45,6 +57,7 @@ const ObsDetails = ( ): Node => {
   const user = observation.user;
   const taxon = observation.taxon;
   const comments = observation.comments;
+  const uuid = observation.uuid;
 
   const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
@@ -54,7 +67,7 @@ const ObsDetails = ( ): Node => {
   };
   const openCommentBox = ( ) => setShowCommentBox( true );
   const submitComment = async ( ) => {
-    const response = await createComment( comment, observation.uuid );
+    const response = await createComment( comment, uuid );
     if ( response ) {
       setRefetch( !refetch );
       setComment( "" );

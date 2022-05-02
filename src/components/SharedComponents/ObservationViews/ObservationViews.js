@@ -48,7 +48,8 @@ const ObservationViews = ( {
     //     screen: "ObsEdit"
     //   } );
     // } else {
-      navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
+      navigation.navigate( "ObsDetails", { observation } );
+      // navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
     // }
   };
 
