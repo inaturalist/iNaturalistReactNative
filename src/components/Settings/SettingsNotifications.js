@@ -20,21 +20,20 @@ const EMAIL_NOTIFICATIONS = {
 };
 
 
-const EmailNotification = ( { title, value, onValueChange } ): React.Node => {
-  return <Pressable style={[viewStyles.row, viewStyles.notificationCheckbox]}  onPress={() => onValueChange( !value )}>
+const EmailNotification = ( { title, value, onValueChange } ): React.Node => (
+  <Pressable style={[viewStyles.row, viewStyles.notificationCheckbox]}  onPress={() => onValueChange( !value )}>
     <CheckBox
       value={value}
       onValueChange={onValueChange}
       tintColors={{false: colors.inatGreen, true: colors.inatGreen}}
     />
       <Text style={textStyles.notificationTitle}>{title}</Text>
-  </Pressable>;
+  </Pressable>
+);
 
-};
 
-
-const Notification = ( { title, description, value, onValueChange } ): React.Node => {
-  return <View style={[viewStyles.row, viewStyles.notificationContainer]}>
+const Notification = ( { title, description, value, onValueChange } ): React.Node => (
+  <View style={[viewStyles.row, viewStyles.notificationContainer]}>
     <View style={[viewStyles.column, viewStyles.notificationLeftSide]}>
       <Text style={textStyles.notificationTitle}>{title}</Text>
       <Text>{description}</Text>
@@ -42,12 +41,10 @@ const Notification = ( { title, description, value, onValueChange } ): React.Nod
     <View style={[viewStyles.column, viewStyles.switch]}>
       <Switch value={value} onValueChange={onValueChange} />
     </View>
-  </View>;
+  </View>
+);
 
-};
-
-const SettingsNotifications = ( { settings, onSettingsModified } ): React.Node => {
-  return (
+const SettingsNotifications = ( { settings, onSettingsModified } ): React.Node => (
     <>
       <Text style={textStyles.title}>iNaturalist Activity Notifications</Text>
       <Notification
@@ -82,7 +79,6 @@ const SettingsNotifications = ( { settings, onSettingsModified } ): React.Node =
         ) )}
       </>}
     </>
-  );
-};
+);
 
 export { SettingsNotifications, EMAIL_NOTIFICATIONS };

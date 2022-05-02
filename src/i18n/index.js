@@ -27,7 +27,7 @@ i18next
     callback( null, loadTranslations( locale ) );
   } ) )
   .init( {
-    // TODO should default to the system locale, or a user preference
+    // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
     compatibilityJSON: "v3",
     lng: "en",
     // debug: true,
@@ -35,6 +35,7 @@ i18next
       escapeValue: false // react already safes from xss
     },
     react: {
+      // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
       useSuspense: false
     }
   } );

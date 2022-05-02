@@ -20,6 +20,8 @@ import SettingsAccount from "./SettingsAccount";
 import SettingsContentDisplay from "./SettingsContentDisplay";
 import SettingsApplications from "./SettingsApplications";
 import SettingsRelationships from "./SettingsRelationships";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import useUserMe from "./hooks/useUserMe";
 
 
 const TAB_TYPE_PROFILE = "profile";
@@ -75,12 +77,11 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => {
 
 const Settings = ( { children }: Props ): Node => {
   const [activeTab, setActiveTab] = useState( TAB_TYPE_PROFILE );
-  const [settings, setSettings] = useState( {} );
+  const [settings, setSettings] = useState( );
   const [accessToken, setAccessToken] = useState( );
   const [isLoading, setIsLoading] = useState( true );
   const [isSaving, setIsSaving] = useState( false );
-  const [authorizedApps, setAuthorizedApps] = useState( [] );
-  const [providerAuthorizations, setProviderAuthorizations] = useState( [] );
+  const user = useUserMe( accessToken );
 
   useEffect( () => {
     let isCurrent = true;
@@ -96,36 +97,17 @@ const Settings = ( { children }: Props ): Node => {
 
 
   const fetchProfile = useCallback( async () => {
-    try {
-      const response = await inatjs.users.me( {api_token: accessToken} );
-      console.log( "User object", response.results[0] );
-      setSettings( response.results[0] );
+    if ( user ) {
+      console.log( "User object", user );
+      setSettings( user );
       setIsLoading( false );
-    } catch ( exc ) {
-      console.error( "exc", exc );
-      console.error( JSON.stringify( exc ) );
     }
-  }, [accessToken] );
+  }, [user] );
 
 
   useEffect( () => {
-    async function fetchApplications() {
-      try {
-        const apps = await inatjs.authorized_applications.search( {}, {api_token: accessToken} );
-        console.log( "Authorized Applications", apps.results );
-        setAuthorizedApps( apps.results );
-        const providers = await inatjs.provider_authorizations.search( {}, {api_token: accessToken} );
-        console.log( "Provider Authorizations", providers.results );
-        setProviderAuthorizations( providers.results );
-      } catch ( exc ) {
-        console.error( "exc", exc );
-        console.error( JSON.stringify( exc ) );
-      }
-    }
-
     if ( accessToken ) {
       fetchProfile();
-      fetchApplications();
     }
   }, [accessToken, fetchProfile] );
 
@@ -161,37 +143,29 @@ const Settings = ( { children }: Props ): Node => {
     setIsSaving( false );
   };
 
-  const revokeApp = async ( appId ) => {
-    const response = await inatjs.authorized_applications.delete( { id: appId }, {api_token: accessToken} );
-    console.log( "Revoked app", response );
-    const apps = await inatjs.authorized_applications.search( {}, {api_token: accessToken} );
-    console.log( "Authorized Applications", apps.results );
-    setAuthorizedApps( apps.results );
-  };
-
   return (
-    <SafeAreaView style={viewStyles.container}>
-      <StatusBar barStyle="dark-content" />
-      <View style={viewStyles.headerRow}>
-        <Text style={textStyles.header}>Settings</Text>
-        <Button style={viewStyles.saveSettings} title="Save" onPress={saveSettings} disabled={isLoading || isSaving} />
-      </View>
-      <SettingsTabs activeTab={activeTab} onTabPress={setActiveTab} />
-      {isLoading ? <ActivityIndicator size="large" /> :
-        <ScrollView>
-          {activeTab === TAB_TYPE_PROFILE && <SettingsProfile settings={settings} onSettingsModified={setSettings} />}
-          {activeTab === TAB_TYPE_ACCOUNT && <SettingsAccount settings={settings} onSettingsModified={setSettings} />}
-          {activeTab === TAB_TYPE_NOTIFICATIONS && <SettingsNotifications settings={settings} onSettingsModified={setSettings} />}
-          {activeTab === TAB_TYPE_CONTENT_DISPLAY && <SettingsContentDisplay settings={settings} onSettingsModified={setSettings} />}
-          {activeTab === TAB_TYPE_APPLICATIONS && <SettingsApplications
-            authorizedApps={authorizedApps}
-            providerAuthorizations={providerAuthorizations}
-            onAppRevoked={revokeApp}
-          />}
-          {activeTab === TAB_TYPE_RELATIONSHIPS && <SettingsRelationships settings={settings} accessToken={accessToken} onRefreshUser={fetchProfile} />}
-        </ScrollView>
-      }
-    </SafeAreaView>
+    <ViewWithFooter>
+      <SafeAreaView style={viewStyles.container}>
+        <StatusBar barStyle="dark-content" />
+        <View style={viewStyles.headerRow}>
+          <Text style={textStyles.header}>Settings</Text>
+          <Button style={viewStyles.saveSettings} title="Save" onPress={saveSettings} disabled={isLoading || isSaving} />
+        </View>
+        <SettingsTabs activeTab={activeTab} onTabPress={setActiveTab} />
+        {isLoading ? <ActivityIndicator size="large" /> :
+          <ScrollView>
+            {activeTab === TAB_TYPE_PROFILE && <SettingsProfile settings={settings} onSettingsModified={setSettings} />}
+            {activeTab === TAB_TYPE_ACCOUNT && <SettingsAccount settings={settings} onSettingsModified={setSettings} />}
+            {activeTab === TAB_TYPE_NOTIFICATIONS && <SettingsNotifications settings={settings} onSettingsModified={setSettings} />}
+            {activeTab === TAB_TYPE_CONTENT_DISPLAY && <SettingsContentDisplay settings={settings} onSettingsModified={setSettings} />}
+            {activeTab === TAB_TYPE_APPLICATIONS && <SettingsApplications
+              accessToken={accessToken}
+            />}
+            {activeTab === TAB_TYPE_RELATIONSHIPS && <SettingsRelationships settings={settings} accessToken={accessToken} onRefreshUser={fetchProfile} />}
+          </ScrollView>
+        }
+      </SafeAreaView>
+    </ViewWithFooter>
   );
 };
 

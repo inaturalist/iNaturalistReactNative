@@ -8,6 +8,7 @@ import {Picker} from "@react-native-picker/picker";
 import {colors} from "../../styles/global";
 import CheckBox from "@react-native-community/checkbox";
 import UserSearchInput from "./UserSearchInput";
+import useRelationships from "./hooks/useRelationships";
 
 const FOLLOWING = {
   all: "All",
@@ -30,7 +31,6 @@ const SORT_BY = {
 
 
 const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): React.Node => {
-  const [relationshipResults, setRelationshipResults] = React.useState( [] );
   const [userSearch, setUserSearch] = React.useState( "" );
   // So we'll start searching only once the user finished typing
   const [finalUserSearch] = useDebounce( userSearch, 500 );
@@ -38,29 +38,15 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
   const [trusted, setTrusted] = React.useState( "all" );
   const [sortBy, setSortBy] = React.useState( "desc" );
   const [page, setPage] = React.useState( 1 );
-  const [totalPages, setTotalPages] = React.useState( 1 );
   const [blockedUsers, setBlockedUsers] = React.useState( [] );
   const [mutedUsers, setMutedUsers] = React.useState( [] );
 
-  const refreshRelationships = useCallback( async () => {
-    try {
-      const orderBy = ["a_to_z", "z_to_a"].includes( sortBy ) ? "" : "users.login";
-      const order = ["z_to_a", "recently_added"].includes( sortBy ) ? "desc" : "asc";
-      console.log( {q: finalUserSearch, following, trusted, order_by: orderBy, order: order } );
-      const response = await inatjs.relationships.search(
-        {q: finalUserSearch, following, trusted, order_by: orderBy, order: order, per_page: 10, page },
-        { api_token: accessToken} );
-      console.log( response );
-      setRelationshipResults( response.results );
-      setTotalPages( Math.ceil( response.total_results / response.per_page ) );
-    } catch ( e ) {
-      console.error( JSON.stringify( e ) );
-    }
-  }, [accessToken, finalUserSearch, following, page, sortBy, trusted] );
-
-  useEffect( () => {
-    refreshRelationships();
-  }, [accessToken, finalUserSearch, following, trusted, sortBy, page, refreshRelationships] );
+  const [refreshRelationships, setRefreshRelationships] = React.useState( Math.random() );
+  const orderBy = ["a_to_z", "z_to_a"].includes( sortBy ) ? "" : "users.login";
+  const order = ["z_to_a", "recently_added"].includes( sortBy ) ? "desc" : "asc";
+  const relationshipParams = {q: finalUserSearch, following, trusted, order_by: orderBy, order: order, per_page: 10, page, random: refreshRelationships };
+  const [relationshipResults, perPage, totalResults] = useRelationships( accessToken, relationshipParams );
+  const totalPages = totalResults > 0 && perPage > 0 ? Math.ceil( totalResults / perPage ) : 1;
 
   useEffect( () => {
     const getBlockedUsers = async () => {
@@ -99,7 +85,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
       { api_token: accessToken}
     );
     console.log( response );
-    refreshRelationships();
+    setRefreshRelationships( Math.random() );
   };
 
   const askToRemoveRelationship = ( relationship ) => {
@@ -113,7 +99,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
               { api_token: accessToken}
             );
             console.log( response );
-            refreshRelationships();
+            setRefreshRelationships( Math.random() );
           } }
       ],
       {
