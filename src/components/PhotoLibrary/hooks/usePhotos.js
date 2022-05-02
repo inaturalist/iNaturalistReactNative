@@ -2,9 +2,9 @@
 
 import { useEffect, useState, useCallback } from "react";
 import CameraRoll from "@react-native-community/cameraroll";
-import uuid from "react-native-uuid";
+// import uuid from "react-native-uuid";
 
-import { formatDateAndTime } from "../../../sharedHelpers/dateAndTime";
+// import { formatDateAndTime } from "../../../sharedHelpers/dateAndTime";
 
 const initialStatus = {
   photos: [],
@@ -21,17 +21,18 @@ const usePhotos = ( options: Object, isScrolling: boolean, permissionGranted: bo
     const { lastCursor, photos, fetchingPhotos, hasNextPage } = photoFetchStatus;
 
     const mapPhotoUris = ( p ) => p.edges.map( ( { node } ) => {
-      const latitude = node.location && node.location.latitude;
-      const longitude = node.location && node.location.longitude;
-      return {
-        latitude,
-        longitude,
-        observed_on_string: formatDateAndTime( node.timestamp ),
-        timestamp: node.timestamp,
-        uri: node.image.uri,
-        // adding a uuid here makes it easier to prevent duplicates in uploader
-        uuid: uuid.v4( )
-      };
+      return node;
+      // const latitude = node.location && node.location.latitude;
+      // const longitude = node.location && node.location.longitude;
+      // return {
+      //   latitude,
+      //   longitude,
+      //   observed_on_string: formatDateAndTime( node.timestamp ),
+      //   timestamp: node.timestamp,
+      //   uri: node.image.uri,
+      //   // adding a uuid here makes it easier to prevent duplicates in uploader
+      //   uuid: uuid.v4( )
+      // };
     } );
 
     try {

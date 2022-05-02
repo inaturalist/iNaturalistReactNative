@@ -30,40 +30,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( [newObs] );
   };
 
-  const mapPhotos = ( photos ) => photos.map( p => {
-    if ( p.uri ) {
-      return {
-        uri: p.uri,
-        uuid: p.uuid
-      };
-    } else {
-      // this is needed to navigate to CV suggestions from ObsDetail
-      // rather than any of the camera/gallery screens
-      return {
-        uri: p.photo.url,
-        uuid: p.uuid
-      };
-    }
-  } );
-
   const addPhotos = async ( photos ) => {
     const newObs = await Observation.createObsWithPhotos( photos );
     setObservations( [newObs] );
   };
 
-  const addObservations = ( obs ) => {
-    if ( observations.length === 0 ) {
-      const newObs = obs.map( o => {
-        const photoObs = Observation.createNewObservation( o.observationPhotos[0] );
-        // $FlowFixMe
-        photoObs.observationPhotos = mapPhotos( o.observationPhotos );
-        return photoObs;
-      } );
-      setObservations( newObs );
-    }
-    // there is probably another option here where a user
-    // can keep adding gallery photos after making observations
-    // but I'm not sure how that flow will work
+  const addObservations = async ( obs ) => {
+    setObservations( obs );
   };
 
   const addObservationNoEvidence = async ( ) => {

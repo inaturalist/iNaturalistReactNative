@@ -50,6 +50,20 @@ class Observation {
     return Observation.createNewObservation( obs );
   }
 
+  static async createMutipleObsFromGalleryPhotos( obs ) {
+    const createObsPhoto = async ( photos ) => {
+      return Promise.all( photos.map( async photo => {
+        const obsPhoto = await ObservationPhoto.formatObsPhotoFromGallery( photo );
+        return obsPhoto;
+      } ) );
+    };
+
+    return Promise.all( obs.map( async ( { photos } ) => {
+      const obsPhotos = await createObsPhoto( photos );
+      return await Observation.createObsWithPhotos( obsPhotos );
+    } ) );
+  }
+
   static mimicRealmMappedPropertiesSchema( obs ) {
     const createLinkedObjects = ( list, createFunction ) => {
       if ( list.length === 0 ) { return; }

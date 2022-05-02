@@ -42,6 +42,17 @@ class ObservationPhoto {
     };
   }
 
+  static async formatObsPhotoFromGallery( photo ) {
+    const resizedPhoto = await resizeImageForUpload( photo.image.uri );
+
+    const obsPhoto = ObservationPhoto.saveLocalObservationPhotoForUpload( { uri: resizedPhoto } );
+
+    return {
+      ...obsPhoto,
+      uuid: uuid.v4( )
+    };
+  }
+
   static schema = {
     name: "ObservationPhoto",
     primaryKey: "uuid",
