@@ -1,9 +1,9 @@
 // @flow
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import type { Node } from "react";
 import { Text } from "react-native";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
