@@ -5,7 +5,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import factory from "../../../factory";
 import PhotoGallery from "../../../../src/components/PhotoLibrary/PhotoGallery";
 import PhotoGalleryProvider from "../../../../src/providers/PhotoGalleryProvider";
-// import { PhotoGalleryContext } from "../../../../src/providers/contexts";
 
 const mockPhoto = factory( "DevicePhoto" );
 

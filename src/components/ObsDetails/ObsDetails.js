@@ -11,7 +11,7 @@ import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import DataTab from "./DataTab";
-import { useRemoteObservation } from "./hooks/useObservation";
+import { useRemoteObservation } from "./hooks/useRemoteObservation";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import { ObsEditContext } from "../../providers/contexts";

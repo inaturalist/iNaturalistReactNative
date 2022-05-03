@@ -6,7 +6,7 @@ import NetInfo from "@react-native-community/netinfo";
 
 import Observation from "../../../models/Observation";
 import { FIELDS, USER_FIELDS } from "../../../providers/fields";
-import { getUsername } from "../../../components/LoginSignUp/AuthenticationService";
+import { getUsername } from "../../LoginSignUp/AuthenticationService";
 
 const useRemoteObservation = ( observation: Object, refetch: boolean ): Object => {
   const [remoteObservation, setRemoteObservation] = useState( null );

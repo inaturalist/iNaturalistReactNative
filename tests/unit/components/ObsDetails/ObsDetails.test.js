@@ -12,11 +12,12 @@ const mockObservation = factory( "LocalObservation" );
 
 jest.mock( "../../../../src/providers/ObsEditProvider" );
 
-jest.mock( "../../../../src/components/ObsDetails/hooks/useObservation", ( ) => ( {
-  useObservation: ( ) => {
+jest.mock( "../../../../src/components/ObsDetails/hooks/useRemoteObservation", ( ) => ( {
+  useRemoteObservation: ( ) => {
     return {
-      observation: mockObservation,
-      currentUserFaved: false
+      remoteObservation: mockObservation,
+      currentUserFaved: false,
+      isCurrentUserObservation: false
     };
   }
 } ) );
