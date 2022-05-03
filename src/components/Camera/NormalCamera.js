@@ -5,12 +5,14 @@ import { Text, View, Pressable } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { Avatar } from "react-native-paper";
 
 import { viewStyles } from "../../styles/camera/normalCamera";
 import { ObsEditContext } from "../../providers/contexts";
 import CameraView from "./CameraView";
 import TopPhotos from "./TopPhotos";
 import ObservationPhoto from "../../models/ObservationPhoto";
+import { textStyles } from "../../styles/obsDetails/obsDetails";
 
 const NormalCamera = ( ): Node => {
   const { addPhotos } = useContext( ObsEditContext );
@@ -73,27 +75,31 @@ const NormalCamera = ( ): Node => {
           style={viewStyles.flashButton}
           onPress={toggleFlash}
         >
-            <Text>flash</Text>
-        </Pressable>
-        <Pressable
-          style={viewStyles.captureButton}
-          onPress={takePhoto}
-        >
-            <Text>camera capture</Text>
+          <Avatar.Icon size={40} icon="flash" />
         </Pressable>
         <Pressable
           style={viewStyles.cameraFlipButton}
+          onPress={takePhoto}
+        >
+          <Avatar.Icon size={40} icon="camera-flip" />
+        </Pressable>
+        <View />
+
+      </View>
+      <View style={viewStyles.secondRow}>
+        <Pressable
+          style={viewStyles.captureButton}
           onPress={flipCamera}
         >
-          <Text>flip camera</Text>
+          <Avatar.Icon size={40} icon="circle-outline" />
+        </Pressable>
+        <Pressable
+          style={viewStyles.cameraFlipButton}
+          onPress={navToObsEdit}
+        >
+          <Text style={textStyles.whiteText}>next</Text>
         </Pressable>
       </View>
-      <Pressable
-        style={viewStyles.cameraFlipButton}
-        onPress={navToObsEdit}
-      >
-          <Text>next</Text>
-      </Pressable>
     </View>
   );
 };
