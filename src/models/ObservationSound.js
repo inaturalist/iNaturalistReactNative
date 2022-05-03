@@ -34,8 +34,6 @@ class ObservationSound {
       uuid: soundUUID
     } );
 
-    console.log( sound, "sound in obs sound" );
-
     return {
       ...sound
     };

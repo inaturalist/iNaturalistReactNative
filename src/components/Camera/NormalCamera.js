@@ -11,7 +11,6 @@ import { viewStyles } from "../../styles/camera/normalCamera";
 import { ObsEditContext } from "../../providers/contexts";
 import CameraView from "./CameraView";
 import TopPhotos from "./TopPhotos";
-import ObservationPhoto from "../../models/ObservationPhoto";
 import { textStyles } from "../../styles/obsDetails/obsDetails";
 
 const NormalCamera = ( ): Node => {
@@ -25,23 +24,23 @@ const NormalCamera = ( ): Node => {
   const [takePhotoOptions, setTakePhotoOptions] = useState( {
     flash: "off"
   } );
-  const [observationPhotos, setObservationPhotos] = useState( [] );
+  const [photos, setPhotos] = useState( [] );
 
   useEffect( ( ) => {
     navigation.addListener( "blur", ( ) => {
-      if ( observationPhotos.length > 0 ) {
-        setObservationPhotos( [] );
+      if ( photos.length > 0 ) {
+        setPhotos( [] );
       }
     } );
-  }, [navigation, observationPhotos] );
+  }, [navigation, photos] );
 
   const takePhoto = async ( ) => {
     try {
       const photo = await camera.current.takePhoto( takePhotoOptions );
-      const obsPhoto = await ObservationPhoto.formatObsPhotoFromNormalCamera( photo );
+      // const obsPhoto = await ObservationPhoto.formatObsPhotoFromNormalCamera( photo );
       // only 10 photos allowed
-      if ( observationPhotos.length < 10 ) {
-        setObservationPhotos( observationPhotos.concat( [obsPhoto] ) );
+      if ( photos.length < 10 ) {
+        setPhotos( photos.concat( [photo] ) );
       }
     } catch ( e ) {
       console.log( e, "couldn't take photo" );
@@ -61,15 +60,14 @@ const NormalCamera = ( ): Node => {
   };
 
   const navToObsEdit = ( ) => {
-    console.log( observationPhotos, "obs phtoos in camera" );
-    addPhotos( observationPhotos );
+    addPhotos( photos );
     navigation.navigate( "ObsEdit" );
   };
 
   return (
     <View style={viewStyles.container}>
       {device && <CameraView device={device} camera={camera} />}
-      <TopPhotos observationPhotos={observationPhotos} />
+      <TopPhotos photos={photos} />
       <View style={viewStyles.row}>
         <Pressable
           style={viewStyles.flashButton}
@@ -79,7 +77,7 @@ const NormalCamera = ( ): Node => {
         </Pressable>
         <Pressable
           style={viewStyles.cameraFlipButton}
-          onPress={takePhoto}
+          onPress={flipCamera}
         >
           <Avatar.Icon size={40} icon="camera-flip" />
         </Pressable>
@@ -89,7 +87,7 @@ const NormalCamera = ( ): Node => {
       <View style={viewStyles.secondRow}>
         <Pressable
           style={viewStyles.captureButton}
-          onPress={flipCamera}
+          onPress={takePhoto}
         >
           <Avatar.Icon size={40} icon="circle-outline" />
         </Pressable>

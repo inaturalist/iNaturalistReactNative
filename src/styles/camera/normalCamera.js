@@ -19,7 +19,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   captureButton: {
     ...buttonRow,
-    alignSelf: "center"
+    alignSelf: "center",
+    padding: 10,
+    zIndex: 1
   },
   flashButton: {
     ...buttonRow,

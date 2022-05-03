@@ -11,6 +11,8 @@ import uploadObservation from "./helpers/uploadObservation";
 import Observation from "../models/Observation";
 import { PhotoGalleryContext } from "./contexts";
 import ObservationSound from "../models/ObservationSound";
+import ObservationPhoto from "../models/ObservationPhoto";
+import { formatCameraDate } from "../sharedHelpers/dateAndTime";
 
 type Props = {
   children: any
@@ -31,13 +33,18 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const addPhotos = async ( photos ) => {
-    const newObs = await Observation.createObsWithPhotos( photos );
+    const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
+
+    const obsPhotos = await Promise.all( photos.map( async photo => {
+      const obsPhoto = await ObservationPhoto.formatObsPhotoFromNormalCamera( photo );
+      return obsPhoto;
+    } ) );
+
+    const newObs = await Observation.createObsWithPhotos( obsPhotos, observedOn );
     setObservations( [newObs] );
   };
 
-  const addObservations = async ( obs ) => {
-    setObservations( obs );
-  };
+  const addObservations = async ( obs ) => setObservations( obs );
 
   const addObservationNoEvidence = async ( ) => {
     const newObs = await Observation.createObsWithNoEvidence( );

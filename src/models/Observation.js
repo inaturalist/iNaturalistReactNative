@@ -6,7 +6,7 @@ import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
 import Taxon from "./Taxon";
 import User from "./User";
-import { createObservedOnStringForUpload } from "../sharedHelpers/dateAndTime";
+import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
 import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 
 class Observation {
@@ -30,11 +30,11 @@ class Observation {
     return Observation.createNewObservation( obs );
   }
 
-  static async createObsWithPhotos( observationPhotos ) {
+  static async createObsWithPhotos( observationPhotos, observedOn ) {
     const latLng = await fetchUserLocation( );
     const obs = {
       ...latLng,
-      observed_on_string: createObservedOnStringForUpload( ),
+      observed_on_string: observedOn || createObservedOnStringForUpload( ),
       observationPhotos
     };
     return Observation.createNewObservation( obs );
@@ -59,8 +59,10 @@ class Observation {
     };
 
     return Promise.all( obs.map( async ( { photos } ) => {
+      // take the observed_on_string time from the first photo in an observation
+      const observedOn = formatDateAndTime( photos[0].timestamp );
       const obsPhotos = await createObsPhoto( photos );
-      return await Observation.createObsWithPhotos( obsPhotos );
+      return await Observation.createObsWithPhotos( obsPhotos, observedOn );
     } ) );
   }
 

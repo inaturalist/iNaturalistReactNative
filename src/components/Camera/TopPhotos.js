@@ -7,19 +7,19 @@ import type { Node } from "react";
 import { viewStyles, imageStyles, textStyles } from "../../styles/camera/normalCamera";
 
 type Props = {
-  observationPhotos: Array<Object>
+  photos: Array<Object>
 }
 
-const TopPhotos = ( { observationPhotos }: Props ): Node => {
+const TopPhotos = ( { photos }: Props ): Node => {
   const renderSmallPhoto = ( { item } ) => (
-    <Image source={{ uri: item.uri }} style={imageStyles.smallPhoto} />
+    <Image source={{ uri: item.path }} style={imageStyles.smallPhoto} />
   );
 
   const emptyDescription = ( ) => <Text style={textStyles.topPhotoText}>Photos you take will appear here</Text>;
 
   return (
     <FlatList
-      data={observationPhotos}
+      data={photos}
       contentContainerStyle={viewStyles.photoContainer}
       renderItem={renderSmallPhoto}
       horizontal
