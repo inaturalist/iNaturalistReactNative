@@ -56,6 +56,7 @@ const OBSERVATION_PHOTOS_FIELDS = {
 };
 
 const MESSAGE_FIELDS = {
+  id: true,
   subject: true,
   body: true,
   from_user: USER_FIELDS,

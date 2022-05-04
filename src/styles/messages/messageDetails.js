@@ -1,31 +1,34 @@
 // @flow strict-local
 
 import { StyleSheet, Dimensions } from "react-native";
-
 import type { TextStyleProp, ImageStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 
 const { width } = Dimensions.get( "screen" );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
-  row: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    alignItems: "center",
-    paddingVertical: 5,
-    paddingHorizontal: 20
-  }
-} );
+    main: {
+      paddingHorizontal: 20
+    }
+  } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   messageSubject: {
     maxWidth: width - 100,
-    flexWrap: "wrap-reverse"
+    flexWrap: "wrap-reverse",
+    paddingBottom: 5
   },
   messageFrom: {
     maxWidth: width - 100,
     flexWrap: "wrap-reverse",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    paddingBottom: 5
+  },
+  messageBody: {
+    maxWidth: width - 100,
+    flexWrap: "wrap-reverse",
+    paddingTop: 10
   }
+
 } );
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {

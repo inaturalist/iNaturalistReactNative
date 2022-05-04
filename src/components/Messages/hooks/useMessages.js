@@ -33,6 +33,7 @@ const useMessages = ( ): {
         const { results } = response;
         if ( !isCurrent ) { return; }
         console.log( "Messages returned" );
+        console.log( results );
         setMessages( results );
         setLoading( false );
       } catch ( e ) {
