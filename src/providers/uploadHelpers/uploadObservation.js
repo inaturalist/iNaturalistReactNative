@@ -1,11 +1,27 @@
 // @flow
 
 import inatjs from "inaturalistjs";
+import Realm from "realm";
 
+import realmConfig from "../../models/index";
 import { getJWTToken } from "../../components/LoginSignUp/AuthenticationService";
-import { markRecordUploaded } from "./markUploaded";
 import ObservationPhoto from "../../models/ObservationPhoto";
 import ObservationSound from "../../models/ObservationSound";
+
+const markRecordUploaded = async ( uuid: string, type: string, response: Object ) => {
+  const { id } = response.results[0];
+
+  try {
+    const realm = await Realm.open( realmConfig );
+    const record = realm.objectForPrimaryKey( type, uuid );
+    realm?.write( ( ) => {
+      record.id = id;
+      record._synced_at = new Date( );
+    } );
+  } catch ( e ) {
+    console.log( e, `couldn't mark ${type} uploaded in realm` );
+  }
+};
 
 const uploadToServer = async ( params, options, uuid, type, apiCall ) => {
   try {

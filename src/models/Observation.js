@@ -12,6 +12,26 @@ import { formatCameraDate } from "../sharedHelpers/dateAndTime";
 import { getUserId } from "../components/LoginSignUp/AuthenticationService";
 
 class Observation {
+  static FIELDS = {
+    captive: true,
+    comments: Comment.COMMENT_FIELDS,
+    created_at: true,
+    description: true,
+    geojson: true,
+    geoprivacy: true,
+    id: true,
+    identifications: Identification.ID_FIELDS,
+    latitude: true,
+    location: true,
+    longitude: true,
+    observation_photos: ObservationPhoto.OBSERVATION_PHOTOS_FIELDS,
+    place_guess: true,
+    quality_grade: true,
+    taxon: Taxon.TAXON_FIELDS,
+    time_observed_at: true,
+    user: User.USER_FIELDS
+  }
+
   static createNewObservation( obs ) {
     return {
       ...obs,

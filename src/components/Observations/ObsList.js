@@ -11,7 +11,7 @@ import UserCard from "./UserCard";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import BottomModal from "../SharedComponents/BottomModal";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import uploadObservation from "../../providers/helpers/uploadObservation";
+import uploadObservation from "../../providers/uploadHelpers/uploadObservation";
 import Observation from "../../models/Observation";
 import useObservations from "./hooks/useObservations";
 

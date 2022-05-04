@@ -1,4 +1,11 @@
 class Photo {
+  static PHOTO_FIELDS = {
+    id: true,
+    attribution: true,
+    license_code: true,
+    url: true
+  };
+
   static mapApiToRealm( photo ) {
     return photo;
   }

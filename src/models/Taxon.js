@@ -1,5 +1,18 @@
 import Photo from "./Photo";
 class Taxon {
+  static TAXON_FIELDS = {
+    default_photo: {
+      url: true,
+      attribution: true,
+      license_code: true
+    },
+    iconic_taxon_name: true,
+    name: true,
+    preferred_common_name: true,
+    rank: true,
+    rank_level: true
+  };
+
   static mimicRealmMappedPropertiesSchema( taxon ) {
     return {
       ...taxon,

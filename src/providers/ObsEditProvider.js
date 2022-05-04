@@ -6,8 +6,8 @@ import Realm from "realm";
 
 import { ObsEditContext } from "./contexts";
 import realmConfig from "../models/index";
-import saveLocalObservation from "./helpers/saveLocalObservation";
-import uploadObservation from "./helpers/uploadObservation";
+import saveLocalObservation from "./uploadHelpers/saveLocalObservation";
+import uploadObservation from "./uploadHelpers/uploadObservation";
 import Observation from "../models/Observation";
 import { PhotoGalleryContext } from "./contexts";
 

@@ -2,9 +2,16 @@ import { FileUpload } from "inaturalistjs";
 import uuid from "react-native-uuid";
 
 import Photo from "./Photo";
-import resizeImageForUpload from "../providers/helpers/resizeImage";
+import resizeImageForUpload from "../providers/uploadHelpers/resizeImage";
 
 class ObservationPhoto {
+  static OBSERVATION_PHOTOS_FIELDS = {
+    id: true,
+    photo: Photo.PHOTO_FIELDS,
+    position: true,
+    uuid: true
+  };
+
   static mapApiToRealm( observationPhoto ) {
     return {
       ...observationPhoto,
