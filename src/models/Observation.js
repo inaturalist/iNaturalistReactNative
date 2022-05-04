@@ -8,6 +8,7 @@ import Taxon from "./Taxon";
 import User from "./User";
 import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
 import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
+import { formatCameraDate } from "../sharedHelpers/dateAndTime";
 
 class Observation {
   static createNewObservation( obs ) {
@@ -40,30 +41,38 @@ class Observation {
     return Observation.createNewObservation( obs );
   }
 
-  static async createObsWithSounds( observationSounds ) {
+  static async createObsWithSounds( ) {
+    const sound = await ObservationSound.createNewSound( );
     const latLng = await fetchUserLocation( );
     const obs = {
       ...latLng,
       observed_on_string: createObservedOnStringForUpload( ),
-      observationSounds
+      observationSounds: [sound]
     };
     return Observation.createNewObservation( obs );
   }
 
-  static async createMutipleObsFromGalleryPhotos( obs ) {
-    const createObsPhoto = async ( photos ) => {
-      return Promise.all( photos.map( async photo => {
-        const obsPhoto = await ObservationPhoto.formatObsPhotoFromGallery( photo );
-        return obsPhoto;
-      } ) );
-    };
+  static async createObsPhotos( photos, createPhoto ) {
+    return await Promise.all( photos.map( async photo => {
+      return await createPhoto( photo );
+    } ) );
+  }
 
+  static async createMutipleObsFromGalleryPhotos( obs ) {
     return Promise.all( obs.map( async ( { photos } ) => {
       // take the observed_on_string time from the first photo in an observation
       const observedOn = formatDateAndTime( photos[0].timestamp );
-      const obsPhotos = await createObsPhoto( photos );
+      const obsPhotos = await Observation.createObsPhotos( photos, ObservationPhoto.formatObsPhotoFromGallery );
       return await Observation.createObsWithPhotos( obsPhotos, observedOn );
     } ) );
+  }
+
+  static async createObsFromNormalCamera( photos ) {
+    // take the observed_on_string time from the first photo in an observation
+    const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
+    const obsPhotos = await Observation.createObsPhotos( photos, ObservationPhoto.formatObsPhotoFromNormalCamera );
+
+    return await Observation.createObsWithPhotos( obsPhotos, observedOn );
   }
 
   static mimicRealmMappedPropertiesSchema( obs ) {

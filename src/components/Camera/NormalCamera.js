@@ -14,6 +14,7 @@ import TopPhotos from "./TopPhotos";
 import { textStyles } from "../../styles/obsDetails/obsDetails";
 
 const NormalCamera = ( ): Node => {
+  // TODO: figure out if there's a way to write location to photo metadata with RN
   const { addPhotos } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   // $FlowFixMe
@@ -37,7 +38,6 @@ const NormalCamera = ( ): Node => {
   const takePhoto = async ( ) => {
     try {
       const photo = await camera.current.takePhoto( takePhotoOptions );
-      // const obsPhoto = await ObservationPhoto.formatObsPhotoFromNormalCamera( photo );
       // only 10 photos allowed
       if ( photos.length < 10 ) {
         setPhotos( photos.concat( [photo] ) );

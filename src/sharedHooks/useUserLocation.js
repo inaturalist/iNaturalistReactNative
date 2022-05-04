@@ -9,6 +9,7 @@ import fetchPlaceName from "../sharedHelpers/fetchPlaceName";
 const useUserLocation = ( ): Object => {
   const [latLng, setLatLng] = useState( null );
 
+  // TODO: wrap this in PermissionsGate so permissions aren't requested at odd times
   const requestiOSPermissions = async ( ): Promise<?string> => {
     // TODO: test this on a real device
     if ( Platform.OS === "ios" ) {

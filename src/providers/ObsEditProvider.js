@@ -10,9 +10,6 @@ import saveLocalObservation from "./helpers/saveLocalObservation";
 import uploadObservation from "./helpers/uploadObservation";
 import Observation from "../models/Observation";
 import { PhotoGalleryContext } from "./contexts";
-import ObservationSound from "../models/ObservationSound";
-import ObservationPhoto from "../models/ObservationPhoto";
-import { formatCameraDate } from "../sharedHelpers/dateAndTime";
 
 type Props = {
   children: any
@@ -27,20 +24,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const currentObs = observations[currentObsNumber];
 
   const addSound = async ( ) => {
-    const sound = await ObservationSound.createNewSound( );
-    const newObs = await Observation.createObsWithSounds( [sound] );
+    const newObs = await Observation.createObsWithSounds( );
     setObservations( [newObs] );
   };
 
   const addPhotos = async ( photos ) => {
-    const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
-
-    const obsPhotos = await Promise.all( photos.map( async photo => {
-      const obsPhoto = await ObservationPhoto.formatObsPhotoFromNormalCamera( photo );
-      return obsPhoto;
-    } ) );
-
-    const newObs = await Observation.createObsWithPhotos( obsPhotos, observedOn );
+    const newObs = await Observation.createObsFromNormalCamera( photos );
     setObservations( [newObs] );
   };
 

@@ -69,7 +69,7 @@ const useRemoteObservation = ( observation: Object, refetch: boolean ): Object =
     };
 
     // TODO: probably need an error message for no connectivity
-    if ( isConnected ) {
+    if ( isConnected && !observation ) {
       fetchObservation( );
     }
 
