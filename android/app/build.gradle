@@ -151,8 +151,8 @@ android {
         applicationId "com.inaturalistreactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "0.1.0"
+        versionCode 9
+        versionName "0.1.1"
     }
     splits {
         abi {
