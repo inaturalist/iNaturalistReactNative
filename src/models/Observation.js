@@ -9,6 +9,7 @@ import User from "./User";
 import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
 import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 import { formatCameraDate } from "../sharedHelpers/dateAndTime";
+import { getUserId } from "../components/LoginSignUp/AuthenticationService";
 
 class Observation {
   static createNewObservation( obs ) {
@@ -141,7 +142,12 @@ class Observation {
     return newObs;
   }
 
-  static saveLocalObservationForUpload( obs, realm ) {
+  static async saveLocalObservationForUpload( obs, realm ) {
+    // make sure local observations have user details for ObsDetail
+    const id = await getUserId( );
+    const user = realm.objectForPrimaryKey( "User", Number( id ) );
+    obs.user = user;
+
     const newLocalRecord = {
       _created_at: new Date( ),
       _synced_at: null,
@@ -157,7 +163,7 @@ class Observation {
       ...sound
     } ) );
 
-    const newObs = {
+    const obsToSave = {
       ...obs,
       ...newLocalRecord,
       taxon,
@@ -165,7 +171,13 @@ class Observation {
       observationSounds,
       quality_grade: "needs_id"
     };
-    return newObs;
+
+    realm?.write( ( ) => {
+      // using 'modified' here for the case where a new observation has the same Taxon
+      // as a previous observation; otherwise, realm will error out
+      realm?.create( "Observation", obsToSave, "modified" );
+    } );
+    return realm.objectForPrimaryKey( "Observation", obs.uuid );
   }
 
   static mapObservationForUpload( obs ) {
