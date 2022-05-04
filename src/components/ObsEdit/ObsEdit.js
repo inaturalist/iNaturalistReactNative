@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
+import { Headline } from "react-native-paper";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
@@ -16,7 +17,6 @@ import EvidenceList from "./EvidenceList";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 import DatePicker from "./DatePicker";
 import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
-import TranslatedHeadline from "../SharedComponents/Typography/TranslatedHeadline";
 import IdentificationSection from "./IdentificationSection";
 import OtherDataSection from "./OtherDataSection";
 // import BottomModal from "./BottomModal";
@@ -62,7 +62,7 @@ const ObsEdit = ( ): Node => {
       <View style={viewStyles.row}>
         <HeaderBackButton onPress={handleBackButtonPress} />
         {observations.length === 1
-          ? <TranslatedHeadline text="New-Observation" /> : (
+          ? <Headline>{t( "New-Observation" )}</Headline> : (
             <View style={viewStyles.row}>
               {currentObsNumber !== 0 && (
                 <Pressable
@@ -154,7 +154,7 @@ const ObsEdit = ( ): Node => {
       /> */}
       {renderLocationPickerModal( )}
       {renderArrowNavigation( )}
-      <TranslatedHeadline style={textStyles.headerText} text="Evidence" />
+      <Headline style={textStyles.headerText}>{t( "Evidence" )}</Headline>
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
       <EvidenceList currentObs={currentObs} showCameraOptions />
       <Pressable
@@ -168,9 +168,9 @@ const ObsEdit = ( ): Node => {
         </Text>
       </Pressable>
       <DatePicker currentObs={currentObs} handleDatePicked={handleDatePicked} />
-      <TranslatedHeadline style={textStyles.headerText} text="Identification" />
+      <Headline style={textStyles.headerText}>{t( "Identification" )}</Headline>
       <IdentificationSection />
-      <TranslatedHeadline style={textStyles.headerText} text="Other-Data" />
+      <Headline style={textStyles.headerText}>{t( "Other-Data" )}</Headline>
       <OtherDataSection />
       {!isLoggedIn && <Text style={textStyles.text}>you must be logged in to upload observations</Text>}
       <View style={viewStyles.row}>
