@@ -31,15 +31,6 @@ const ObsList = ( ): Node => {
     }
   }, [params, syncObservations] );
 
-  // useFocusEffect(
-  //   useCallback( ( ) => {
-  //     const unsubscribe = syncObservations( );
-  //     console.log( "sync in focus effect" );
-
-  //     return ( ) => unsubscribe;
-  //   }, [syncObservations] )
-  // );
-
   const userId = useCurrentUser( );
 
   const renderUploadModal = ( ) => {
@@ -71,7 +62,7 @@ const ObsList = ( ): Node => {
         handleEndReached={fetchNextObservations}
         syncObservations={syncObservations}
       />
-      {obsToUpload.length > 0 && (
+      {( obsToUpload.length > 0 && userId !== null ) && (
         <BottomModal height={200}>
           {renderUploadModal( )}
         </BottomModal>
