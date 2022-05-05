@@ -12,7 +12,6 @@ const useRemoteObservation = ( observation: Object, refetch: boolean ): Object =
   const [remoteObservation, setRemoteObservation] = useState( null );
   const [isConnected, setIsConnected] = useState( null );
   const [currentUserFaved, setCurrentUserFaved] = useState( null );
-  const [isCurrentUserObservation, setIsCurrentUserObservation] = useState( false );
 
   useEffect( ( ) => {
     const unsubscribe = NetInfo.addEventListener( state => {
@@ -59,9 +58,6 @@ const useRemoteObservation = ( observation: Object, refetch: boolean ): Object =
           }
         }
         setRemoteObservation( obs );
-        if ( currentUserLogin === obs.user.login ) {
-          setIsCurrentUserObservation( true );
-        }
       } catch ( e ) {
         if ( !isCurrent ) { return; }
         console.log( `Couldn't fetch observation with uuid ${observation.uuid}: `, e.message, );
@@ -80,8 +76,7 @@ const useRemoteObservation = ( observation: Object, refetch: boolean ): Object =
 
   return {
     remoteObservation,
-    currentUserFaved,
-    isCurrentUserObservation
+    currentUserFaved
   };
 };
 

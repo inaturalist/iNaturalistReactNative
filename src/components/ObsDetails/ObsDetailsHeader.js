@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { Headline, Button } from "react-native-paper";
@@ -13,22 +13,32 @@ import { viewStyles } from "../../styles/obsDetails/obsDetailsHeader";
 import { colors } from "../../styles/global";
 
 type Props = {
-  observationUUID: string,
-  isCurrentUserObservation: boolean
+  observationUUID: string
 }
 
-const ObsDetailsHeader = ( { observationUUID, isCurrentUserObservation }: Props ): Node => {
+const ObsDetailsHeader = ( { observationUUID }: Props ): Node => {
+  const [isLocal, setIsLocal] = useState( null );
   const { openSavedObservation } = React.useContext( ObsEditContext );
 
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
-  const navToObsEdit = async ( ) => {
-    await openSavedObservation( observationUUID );
+  const navToObsEdit = ( ) => {
     navigation.navigate( "camera", {
       screen: "ObsEdit"
     } );
   };
+
+  useEffect( ( ) => {
+    const checkForLocalObservation = async ( ) => {
+      const isLocalObservation = await openSavedObservation( observationUUID );
+      setIsLocal( isLocalObservation );
+    };
+
+    navigation.addListener( "focus", ( ) => {
+      checkForLocalObservation( );
+    } );
+  }, [observationUUID, openSavedObservation, navigation] );
 
   const goBack = ( ) => navigation.goBack( );
 
@@ -36,7 +46,7 @@ const ObsDetailsHeader = ( { observationUUID, isCurrentUserObservation }: Props 
     <View style={viewStyles.headerRow}>
       <HeaderBackButton onPress={goBack} />
       <Headline>{t( "Observation" )}</Headline>
-      {isCurrentUserObservation ? <Button icon="pencil" onPress={navToObsEdit} color={colors.gray} /> : <View />}
+      {isLocal ? <Button icon="pencil" onPress={navToObsEdit} color={colors.gray} /> : <View />}
     </View>
   );
 };

@@ -42,7 +42,7 @@ const ObsDetails = ( ): Node => {
 
   // TODO: we'll probably need to redo this logic a bit now that we're
   // passing an observation via navigation instead of reopening realm
-  const { remoteObservation, currentUserFaved, isCurrentUserObservation } = useRemoteObservation( observation, refetch );
+  const { remoteObservation, currentUserFaved } = useRemoteObservation( observation, refetch );
 
   if ( remoteObservation && !observation ) {
     observation = remoteObservation;
@@ -112,7 +112,7 @@ const ObsDetails = ( ): Node => {
 
   return (
     <ViewWithFooter>
-      <ObsDetailsHeader observationUUID={uuid} isCurrentUserObservation={isCurrentUserObservation} />
+      <ObsDetailsHeader observationUUID={uuid} />
       <ScrollView
         testID={`ObsDetails.${uuid}`}
         contentContainerStyle={viewStyles.scrollView}
