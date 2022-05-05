@@ -6,7 +6,6 @@ import Realm from "realm";
 
 import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
-import { FIELDS } from "../../../providers/fields";
 import { getUsername } from "../../../components/LoginSignUp/AuthenticationService";
 
 const perPage = 6;
@@ -109,7 +108,7 @@ const useObservations = ( ): Object => {
           user_id: userLogin || username,
           page,
           per_page: perPage,
-          fields: FIELDS
+          fields: Observation.FIELDS
         };
         const response = await inatjs.observations.search( params );
         const results = response.results;

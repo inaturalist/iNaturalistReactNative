@@ -5,7 +5,7 @@ import inatjs from "inaturalistjs";
 import NetInfo from "@react-native-community/netinfo";
 
 import Observation from "../../../models/Observation";
-import { FIELDS, USER_FIELDS } from "../../../providers/fields";
+import User from "../../../models/User";
 import { getUsername } from "../../LoginSignUp/AuthenticationService";
 
 const useRemoteObservation = ( observation: Object, refetch: boolean ): Object => {
@@ -30,7 +30,7 @@ const useRemoteObservation = ( observation: Object, refetch: boolean ): Object =
         const currentUserLogin = await getUsername( );
 
         const params = {
-          fields: FIELDS
+          fields: Observation.FIELDS
         };
 
         // $FlowFixMe
@@ -42,7 +42,7 @@ const useRemoteObservation = ( observation: Object, refetch: boolean ): Object =
 
         // $FlowFixMe
         params.fields.faves = {
-          user: USER_FIELDS
+          user: User.USER_FIELDS
         };
 
         const response = await inatjs.observations.fetch( observation.uuid, params );
