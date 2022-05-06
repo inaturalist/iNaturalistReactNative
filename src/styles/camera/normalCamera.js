@@ -42,11 +42,18 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: colors.black,
     height: 125,
     width
+  },
+  row: {
+    bottom: 40
   }
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-
+  whiteText: {
+    color: colors.white,
+    zIndex: 1,
+    fontSize: 24
+  }
 } );
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {

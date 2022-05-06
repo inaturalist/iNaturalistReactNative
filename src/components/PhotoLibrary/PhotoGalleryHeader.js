@@ -1,10 +1,11 @@
 // @flow
 
 import React from "react";
-import { View, Pressable, Text } from "react-native";
+import { View } from "react-native";
 import type { Node } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import { useNavigation } from "@react-navigation/native";
+import { HeaderBackButton } from "@react-navigation/elements";
 
 import usePhotoAlbums from "./hooks/usePhotoAlbums";
 import { viewStyles } from "../../styles/photoLibrary/photoGalleryHeader";
@@ -30,11 +31,7 @@ const PhotoGalleryHeader = ( { updateAlbum }: Props ): Node => {
 
   return (
     <View style={viewStyles.header}>
-      <Pressable
-        onPress={navBack}
-      >
-        <Text>back button</Text>
-      </Pressable>
+      <HeaderBackButton onPress={navBack} />
       <RNPickerSelect
         hideIcon
         items={albums}

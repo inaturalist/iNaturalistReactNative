@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
 import factory from "../../../factory";
@@ -37,7 +37,7 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const renderProjects = ( ) => render(
+const renderProjects = () => render(
   <NavigationContainer>
     <Projects />
   </NavigationContainer>
@@ -49,13 +49,11 @@ test( "displays project search results", ( ) => {
   const input = getByTestId( "ProjectSearch.input" );
   fireEvent.changeText( input, "butterflies" );
 
-  waitFor( ( ) => {
-    expect( getByText( mockProject.title ) ).toBeTruthy( );
-    expect( getByTestId( `Project.${mockProject.id}.photo` ).props.source ).toStrictEqual( { "uri": mockProject.icon } );
-    fireEvent.press( getByTestId( `Project.${mockProject.id}` ) );
-    expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", {
-      id: mockProject.id
-    } );
+  expect( getByText( mockProject.title ) ).toBeTruthy( );
+  expect( getByTestId( `Project.${mockProject.id}.photo` ).props.source ).toStrictEqual( { "uri": mockProject.icon } );
+  fireEvent.press( getByTestId( `Project.${mockProject.id}` ) );
+  expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", {
+    id: mockProject.id
   } );
 } );
 

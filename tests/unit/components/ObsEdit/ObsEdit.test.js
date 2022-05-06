@@ -4,16 +4,12 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import factory from "../../../factory";
 import ObsEdit from "../../../../src/components/ObsEdit/ObsEdit";
-
-const mockPhoto = factory( "DevicePhoto" );
+import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
+import { ObsEditContext } from "../../../../src/providers/contexts";
 
 const mockLocationName = "San Francisco, CA";
 
-const mockGroupedPhotos = [{
-  observationPhotos: [
-    mockPhoto
-  ]
-}];
+jest.mock( "../../../../src/providers/ObsEditProvider" );
 
 jest.mock( "../../../../src/sharedHooks/useLocationName" , ( ) => ( {
   __esModule: true,
@@ -25,29 +21,48 @@ jest.mock( "../../../../src/sharedHooks/useLocationName" , ( ) => ( {
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
-    ...actualNav,
-    useRoute: ( ) => ( {
-      params: {
-        photo: mockPhoto,
-        obsToEdit: mockGroupedPhotos
-      }
-    } )
+    ...actualNav
   };
 } );
 
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  __esModule: true,
+  useLoggedIn: ( ) => true
+} ) );
+
+// Mock ObservationProvider so it provides a specific array of observations
+// without any current observation or ability to update or fetch
+// observations
+const mockObsEditProviderWithObs = obs =>
+  ObsEditProvider.mockImplementation( ( { children }: Props ): Node => (
+    <ObsEditContext.Provider value={{
+      observations: obs,
+      currentObsNumber: 0
+    }}>
+      {children}
+    </ObsEditContext.Provider>
+  ) );
+
 const renderObsEdit = ( ) => render(
   <NavigationContainer>
-    <ObsEdit />
+    <ObsEditProvider>
+      <ObsEdit />
+    </ObsEditProvider>
   </NavigationContainer>
 );
 
 test( "renders observation photo from photo gallery", ( ) => {
-  const { getByTestId, getByText } = renderObsEdit( );
+  const observations = [factory( "RemoteObservation", {
+    latitude: 37.99,
+    longitude: -142.88
+  } )];
+  mockObsEditProviderWithObs( observations );
 
-  const { longitude } = mockPhoto.location;
+  const { getByText } = renderObsEdit( );
 
-  expect( getByTestId( "ObsEdit.photo" ).props.source ).toStrictEqual( { "uri": mockPhoto.uri } );
-  expect( getByText( mockLocationName ) ).toBeTruthy( );
+  const obs = observations[0];
+  const { longitude } = obs;
+
   expect( getByText( new RegExp( longitude ) ) ).toBeTruthy( );
 } );
 

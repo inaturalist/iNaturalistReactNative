@@ -7,6 +7,7 @@ import { Image } from "react-native";
 // and allows users to input immediately instead of first tapping the dropdown
 // this is a placeholder to get functionality working
 import DropDownPicker from "react-native-dropdown-picker";
+import { t } from "i18next";
 
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import { imageStyles, viewStyles } from "../../styles/explore/explore";
@@ -16,7 +17,8 @@ type Props = {
   setSearchQuery: string => { },
   setValue: number => { },
   sources: string,
-  value: number
+  value: number,
+  placeholder: string
 }
 
 const DropdownPicker = ( {
@@ -24,7 +26,8 @@ const DropdownPicker = ( {
   setSearchQuery,
   setValue,
   sources,
-  value
+  value,
+  placeholder
 }: Props ): Node => {
   const searchResults = useRemoteSearchResults( searchQuery, sources );
 
@@ -85,7 +88,7 @@ const DropdownPicker = ( {
       searchable={true}
       disableLocalSearch={true}
       onChangeSearchText={setSearchQuery}
-      placeholder="Search"
+      placeholder={t( placeholder )}
       style={viewStyles.dropdown}
     />
   );

@@ -12,14 +12,18 @@ const mockPhoto = factory( "DevicePhoto" );
 jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotos", ( ) => ( {
   __esModule: true,
   default: ( ) => {
-    return [mockPhoto];
+    return { photos: [mockPhoto] };
   }
 } ) );
 
 jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotoAlbums", ( ) => ( {
   __esModule: true,
   default: ( ) => {
-    return ["All"];
+    return [{
+      label: "camera roll",
+      value: "All",
+      key: "camera roll"
+    }];
   }
 } ) );
 
@@ -54,6 +58,8 @@ const renderPhotoGallery = ( ) => render(
 
 test( "renders photos from photo gallery", ( ) => {
   const { getByTestId } = renderPhotoGallery( );
+
+  // console.log( mockPhoto, "mock photo in test" );
 
   expect( getByTestId( "PhotoGallery.list" ) ).toBeTruthy( );
   expect( getByTestId( `PhotoGallery.${mockPhoto.uri}` ) ).toBeTruthy( );

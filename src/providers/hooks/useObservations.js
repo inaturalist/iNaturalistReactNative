@@ -9,30 +9,63 @@ import Observation from "../../models/Observation";
 import { FIELDS } from "../helpers";
 import { getUsername } from "../../components/LoginSignUp/AuthenticationService";
 
-const useObservations = ( ): boolean => {
+const perPage = 6;
+
+const useObservations = ( ): Object => {
   const [loading, setLoading] = useState( false );
+  const [observationList, setObservationList] = useState( [] );
+  const nextPageToFetch = observationList.length > 0 ? Math.ceil( observationList.length / perPage ) : 1;
+  const [page, setPage] = useState( nextPageToFetch );
+  const [userLogin, setUserLogin] = useState( null );
+
+  const syncObservations = ( username ) => {
+    // await username on login screen for initial fetch
+    setUserLogin( username );
+  };
+
+  // We store a reference to our realm using useRef that allows us to access it via
+  // realmRef.current for the component's lifetime without causing rerenders if updated.
   const realmRef = useRef( null );
 
   const openRealm = useCallback( async ( ) => {
+    // Since this is a non-sync realm, realm will be opened synchronously when calling "Realm.open"
+    const realm = await Realm.open( realmConfig );
+    realmRef.current = realm;
+
+    // When querying a realm to find objects (e.g. realm.objects('Observation')) the result we get back
+    // and the objects in it are "live" and will always reflect the latest state.
+    const localObservations = realm.objects( "Observation" );
+
+    if ( localObservations?.length ) {
+      setObservationList( localObservations );
+    }
+
     try {
-      const realm = await Realm.open( realmConfig );
-      realmRef.current = realm;
+      localObservations.addListener( ( ) => {
+        // If you just pass localObservations you end up assigning a Results
+        // object to state instead of an array of observations. There's
+        // probably a better way...
+        setObservationList( localObservations.map( o => o ) );
+      } );
+    } catch ( err ) {
+      console.error( "Unable to update local observations 1: ", err.message );
     }
-    catch ( err ) {
-      console.error( "Error opening realm: ", err.message );
-    }
-  }, [realmRef] );
+    return ( ) => {
+      // remember to remove listeners to avoid async updates
+      localObservations.removeAllListeners( );
+      realm.close( );
+    };
+  }, [realmRef, setObservationList] );
 
   const closeRealm = useCallback( ( ) => {
     const realm = realmRef.current;
     realm?.close( );
     realmRef.current = null;
+    setObservationList( [] );
   }, [realmRef] );
 
   useEffect( ( ) => {
     openRealm( );
-
-    // Return a cleanup callback to close the realm to prevent memory leaks
     return closeRealm;
   }, [openRealm, closeRealm] );
 
@@ -54,12 +87,15 @@ const useObservations = ( ): boolean => {
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchObservations = async ( ) => {
-      const userLogin = await getUsername( );
+      const username = await getUsername( );
+      console.log( userLogin || username, "user login fetch observations for page: ", page );
+      if ( !userLogin && !username ) { return; }
       setLoading( true );
       try {
         const params = {
-          user_id: userLogin,
-          per_page: 100,
+          user_id: userLogin || username,
+          page,
+          per_page: perPage,
           fields: FIELDS
         };
         const response = await inatjs.observations.search( params );
@@ -77,9 +113,16 @@ const useObservations = ( ): boolean => {
     return ( ) => {
       isCurrent = false;
     };
-  }, [writeToDatabase] );
+  }, [writeToDatabase, page, userLogin] );
 
-  return loading;
+  const fetchNextObservations = ( ) => setPage( page + 1 );
+
+  return {
+    loading,
+    observationList,
+    syncObservations,
+    fetchNextObservations
+  };
 };
 
 export default useObservations;

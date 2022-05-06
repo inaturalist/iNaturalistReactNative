@@ -2,7 +2,8 @@
 
 import { StyleSheet } from "react-native";
 
-import type { TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import { colors } from "../global";
 
 const pickerSelectStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   inputIOS: {
@@ -29,6 +30,40 @@ const pickerSelectStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   }
 } );
 
+const checkboxWidth = 18;
+
+const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  checkbox: {
+    width: checkboxWidth,
+    height: checkboxWidth,
+    padding: 10
+  },
+  checkboxRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap"
+  },
+  filtersRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    justifyContent: "space-between",
+    backgroundColor: colors.lightGray,
+    paddingVertical: 20
+  },
+  radioButtonBox: {
+    borderWidth: 0
+  },
+  bottomPadding: {
+    padding: 140
+  },
+  footer: {
+    height: 100,
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    backgroundColor: colors.white
+  }
+} );
+
 export {
-  pickerSelectStyles
+  pickerSelectStyles,
+  viewStyles
 };

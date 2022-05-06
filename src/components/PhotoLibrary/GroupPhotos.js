@@ -7,11 +7,12 @@ import { useNavigation } from "@react-navigation/native";
 
 import { imageStyles, viewStyles, textStyles } from "../../styles/photoLibrary/photoGallery";
 import GroupPhotosHeader from "./GroupPhotosHeader";
-import { PhotoGalleryContext } from "../../providers/contexts";
+import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 
 const GroupPhotos = ( ): Node => {
+  const { addObservations } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { selectedPhotos, setSelectedPhotos } = useContext( PhotoGalleryContext );
   const albums = Object.keys( selectedPhotos );
@@ -104,7 +105,6 @@ const GroupPhotos = ( ): Node => {
   const extractKey = ( item, index ) => `${item.observationPhotos[0].uri}${index}`;
 
   const groupedPhotos = obsToEdit.observations;
-  const photoSelected = selectedObservations.length > 0;
 
   const flattenAndOrderSelectedPhotos = ( ) => {
     // combine selected observations into a single array
@@ -146,7 +146,17 @@ const GroupPhotos = ( ): Node => {
   };
 
   const separatePhotos = ( ) => {
-    if ( selectedObservations.length < 2 ) { return; }
+    let maxCombinedPhotos = 0;
+
+    selectedObservations.forEach( obs => {
+      const numPhotos = obs.observationPhotos.length;
+      if ( numPhotos > maxCombinedPhotos ) {
+        maxCombinedPhotos = numPhotos;
+      }
+    } );
+
+    // make sure at least one set of combined photos is selected
+    if ( maxCombinedPhotos < 2 ) { return; }
 
     let separatedPhotos = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( );
@@ -196,7 +206,8 @@ const GroupPhotos = ( ): Node => {
   };
 
   const navToObsEdit = ( ) => {
-    navigation.navigate( "ObsEdit", { obsToEdit: obsToEdit.observations } );
+    addObservations( obsToEdit.observations );
+    navigation.navigate( "ObsEdit" );
     // on obs edit, can delete one obs
 
     // 10 photos, 1 sound per obs
@@ -215,8 +226,6 @@ const GroupPhotos = ( ): Node => {
       <GroupPhotosHeader
         photos={observations.length}
         observations={groupedPhotos.length}
-        isSelected={photoSelected}
-        clearSelection={clearSelection}
       />
       <FlatList
         contentContainerStyle={viewStyles.centerImages}
@@ -233,6 +242,8 @@ const GroupPhotos = ( ): Node => {
         separatePhotos={separatePhotos}
         removePhotos={removePhotos}
         navToObsEdit={navToObsEdit}
+        clearSelection={clearSelection}
+        selectedObservations={selectedObservations}
       />
     </ViewNoFooter>
   );

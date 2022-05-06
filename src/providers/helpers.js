@@ -9,7 +9,9 @@ const USER_FIELDS = {
 
 const TAXON_FIELDS = {
   default_photo: {
-    url: true
+    url: true,
+    attribution: true,
+    license_code: true
   },
   iconic_taxon_name: true,
   name: true,
@@ -53,11 +55,19 @@ const OBSERVATION_PHOTOS_FIELDS = {
   uuid: true
 };
 
+const MESSAGE_FIELDS = {
+  subject: true,
+  body: true,
+  from_user: USER_FIELDS,
+  to_user: USER_FIELDS
+};
+
 const FIELDS = {
   comments: COMMENT_FIELDS,
   created_at: true,
   description: true,
   geojson: true,
+  id: true,
   identifications: ID_FIELDS,
   latitude: true,
   location: true,
@@ -71,5 +81,7 @@ const FIELDS = {
 };
 
 export {
-  FIELDS
+  FIELDS,
+  MESSAGE_FIELDS,
+  USER_FIELDS
 };

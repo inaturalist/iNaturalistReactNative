@@ -11,6 +11,12 @@ import Search from "../components/Search/Search";
 import Login from "../components/LoginSignUp/Login";
 import ProjectsStackNavigation from "./projectsStackNavigation";
 import CameraStackNavigation from "./cameraStackNavigation";
+import CustomDrawerContent from "../components/CustomDrawerContent";
+import IdentifyStackNavigation from "./identifyStackNavigation";
+import ObsEditProvider from "../providers/ObsEditProvider";
+import NetworkLogging from "../components/NetworkLogging";
+import NotificationsStackNavigation from "./notificationsStackNavigation";
+import About from "../components/About";
 import Settings from "../components/Settings/Settings";
 
 // this removes the default hamburger menu from header
@@ -22,43 +28,60 @@ const hideHeader = {
 
 const Drawer = createDrawerNavigator( );
 
-// TODO: create a custom side menu that only shows some of these stacks and screens
 const App = ( ): React.Node => (
   <NavigationContainer>
-    <Drawer.Navigator screenOptions={screenOptions} name="Drawer">
-      <Drawer.Screen
-        name="my observations"
-        component={MyObservationsStackNavigator}
-        options={hideHeader}
-      />
-      <Drawer.Screen
-        name="explore stack"
-        component={ExploreStackNavigator}
-        options={hideHeader}
-      />
-      <Drawer.Screen name="missions/seen nearby" component={PlaceholderComponent} />
-      <Drawer.Screen name="search" component={Search} />
-      <Drawer.Screen name="identify" component={PlaceholderComponent} />
-      <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
-      <Drawer.Screen name="impact" component={PlaceholderComponent} />
-      <Drawer.Screen
-        name="projects"
-        component={ProjectsStackNavigation}
-        options={hideHeader}
-      />
-      <Drawer.Screen name="guides" component={PlaceholderComponent} />
-      <Drawer.Screen name="about" component={PlaceholderComponent} />
-      <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-      <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
-      <Drawer.Screen name="login" component={Login} />
-      <Drawer.Screen
-        name="camera"
-        component={CameraStackNavigation}
-        options={hideHeader}
-      />
-    </Drawer.Navigator>
+    <ObsEditProvider>
+      <Drawer.Navigator
+        screenOptions={screenOptions}
+        name="Drawer"
+        drawerContent={( props ) => <CustomDrawerContent {...props} />}
+      >
+        <Drawer.Screen
+          name="my observations"
+          component={MyObservationsStackNavigator}
+          options={hideHeader}
+        />
+        <Drawer.Screen
+          name="notifications"
+          component={NotificationsStackNavigation}
+          options={hideHeader}
+        />
+        <Drawer.Screen
+          name="identify"
+          component={IdentifyStackNavigation}
+          options={hideHeader}
+        />
+        <Drawer.Screen name="search" component={Search} />
+        <Drawer.Screen
+          name="projects"
+          component={ProjectsStackNavigation}
+          options={hideHeader}
+        />
+        <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
+        <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
+        <Drawer.Screen
+          name="about"
+          component={About}
+        />
+        <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
+        <Drawer.Screen name="login" component={Login} />
+        <Drawer.Screen
+          name="camera"
+          component={CameraStackNavigation}
+          options={hideHeader}
+        />
+        <Drawer.Screen
+          name="explore stack"
+          component={ExploreStackNavigator}
+          options={hideHeader}
+        />
+        <Drawer.Screen
+          name="network"
+          component={NetworkLogging}
+        />
+      </Drawer.Navigator>
+    </ObsEditProvider>
   </NavigationContainer>
 );
 
 export default App;
-

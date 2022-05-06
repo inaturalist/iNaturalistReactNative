@@ -3,22 +3,209 @@
     "comment": "Header for a block of text describing a taxon",
     "val": "ABOUT"
   },
-  "Grid-View": {
-    "comment": "Label for a view that shows observations as a grid of photos",
-    "val": "Grid View"
+  "Add-Date-Time": "Add Date/Time",
+  "Add-Location": "Add Location",
+  "Add-optional-notes": "Add optional notes",
+  "Add-to-projects": "Add to projects",
+  "All": "All",
+  "All-observations": "All observations",
+  "Amphibians": "Amphibians",
+  "Arachnids": "Arachnids",
+  "Birds": "Birds",
+  "Cancel": "Cancel",
+  "Captive-Cultivated": "Captive/Cultivated",
+  "Casual": {
+    "comment": "Quality grade option",
+    "val": "Casual"
   },
-  "List-View": {
-    "comment": "Label for a view that shows observations a list",
-    "val": "List View"
+  "Combine-Photos": "Combine Photos",
+  "Combine-photos-onboarding": {
+    "comment": "Onboarding for users learning to group photos in the camera roll",
+    "val": "Combine photos into observations – make sure there is only one species per observation"
   },
-  "comment": "Header for a section showing taxa similar to a single taxon",
-  "SIMILAR-SPECIES-header": "",
+  "CREATE-AN-OBSERVATION": "CREATE AN OBSERVATION",
+  "Date": "Date",
+  "Date-added-newest-to-oldest": "Date added - newest to oldest",
+  "Date-added-oldest-to-newest": "Date added - oldest to newest",
+  "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}",
+  "Description-Tags": "Description/Tags",
+  "Evidence": "Evidence",
+  "Explore": "Explore",
+  "Filters": "Filters",
+  "Finish": "Finish",
+  "Fish": "Fish",
+  "Fungi": "Fungi",
+  "Geoprivacy": "Geoprivacy:",
+  "Go-to-the-Settings-app-to-grant-permissions": {
+    "comment": "Instruction for an Android user to go to the Settings app to grant\npermissions after they have asked never to be asked for that permission\nagain",
+    "val": "Go to the Settings app to grant iNaturalist the appropriate permissions."
+  },
+  "Grant-Permission": {
+    "comment": "Verb phrase label for a button to grant the app a permission, e.g.\npermission to use the camera",
+    "val": "Grant Permission"
+  },
+  "Group-Photos": "Group Photos",
+  "Has-Photos": "Has Photos",
+  "Has-Sounds": "Has Sounds",
+  "High": "High",
+  "IDENTIFICATION": "IDENTIFICATION",
+  "Identification": "Identification",
+  "Insects": "Insects",
+  "Introduced": "Introduced",
+  "Location": "Location",
+  "Low": "Low",
+  "Mammals": "Mammals",
+  "Media": "Media",
+  "Mollusks": "Mollusks",
+  "Month-January": {
+    "comment": "The following Month- strings are the months of the year (in month order, not alphabetical order)",
+    "val": "January"
+  },
+  "Month-February": "February",
+  "Month-March": "March",
+  "Month-April": "April",
+  "Month-May": "May",
+  "Month-June": "June",
+  "Month-July": "July",
+  "Month-August": "August",
+  "Month-September": "September",
+  "Month-October": "October",
+  "Month-November": "November",
+  "Month-December": "December",
+  "Months": "Months",
+  "Most-faved": "Most faved",
+  "Native": "Native",
+  "Needs-ID": {
+    "comment": "Quality grade option",
+    "val": "Needs ID"
+  },
+  "New-Observation": "New Observation",
+  "Next": "Next",
+  "No-Location": "No Location",
+  "Obscured": "Obscured",
+  "Observation": "Observation",
+  "Open": "Open",
+  "Other-Data": "Other Data",
+  "Paused": "Paused",
+  "Photo-Licensing": "Photo Licensing",
+  "Plants": "Plants",
+  "Playing-Sound": {
+    "comment": "Help text for playing back a sound recording",
+    "val": "Playing Sound"
+  },
+  "Press-Record-to-Start": {
+    "comment": "Help text for beginning a sound recording",
+    "val": "Press Record to Start"
+  },
+  "Private": "Private",
+  "Projects": "Projects",
+  "Quality-Grade": "Quality Grade",
+  "Rank": "Rank",
+  "Ranks-stateofmatter": {
+    "comment": "The following Ranks- strings are taxonomic ranks (in taxonomic order, not alphabetical order)",
+    "val": "state of matter"
+  },
+  "Ranks-kingdom": "kingdom",
+  "Ranks-subkingdom": "subkingdom",
+  "Ranks-phylum": "phylum",
+  "Ranks-subphylum": "subphylum",
+  "Ranks-superclass": "superclass",
+  "Ranks-class": "class",
+  "Ranks-subclass": "subclass",
+  "Ranks-infraclass": "infraclass",
+  "Ranks-superorder": "superorder",
+  "Ranks-order": "order",
+  "Ranks-suborder": "suborder",
+  "Ranks-infraorder": "infraorder",
+  "Ranks-subterclass": "subterclass",
+  "Ranks-parvorder": "parvorder",
+  "Ranks-zoosection": "zoosection",
+  "Ranks-zoosubsection": "zoosubsection",
+  "Ranks-superfamily": "superfamily",
+  "Ranks-epifamily": "epifamily",
+  "Ranks-family": "family",
+  "Ranks-subfamily": "subfamily",
+  "Ranks-supertribe": "supertribe",
+  "Ranks-tribe": "tribe",
+  "Ranks-subtribe": "subtribe",
+  "Ranks-genus": "genus",
+  "Ranks-genushybrid": "genushybrid",
+  "Ranks-subgenus": "subgenus",
+  "Ranks-section": "section",
+  "Ranks-subsection": "subsection",
+  "Ranks-complex": "complex",
+  "Ranks-species": "species",
+  "Ranks-hybrid": "hybrid",
+  "Ranks-subspecies": "subspecies",
+  "Ranks-variety": "variety",
+  "Ranks-form": "form",
+  "Ranks-infrahybrid": "infrahybrid",
+  "Recently-observed": "Recently observed",
+  "Record-a-sound": "Record a sound",
+  "Record-new-sound": "Record new sound",
+  "Recording-Sound": "Recording Sound",
+  "Remove-Photos": "Remove Photos",
+  "Reptiles": "Reptiles",
+  "Research-Grade": {
+    "comment": "Quality grade option",
+    "val": "Research Grade"
+  },
+  "Reset": "Reset",
+  "Reviewed": "Reviewed",
+  "Reviewed-only": "Reviewed only",
+  "Search-for-a-location": "Search for a location",
+  "Search-for-a-project": "Search for a project",
+  "Search-for-a-taxon": "Search for a taxon",
+  "Search-for-a-user": "Search for a user",
+  "Search-for-description-tags-text": "Search for description/tags text",
+  "Select": "Select",
+  "Separate-Photos": "Separate Photos",
+  "SIMILAR-SPECIES-header": {
+    "comment": "Header for a section showing taxa similar to a single taxon",
+    "val": "SIMILAR SPECIES"
+  },
+  "Sort-by": "Sort by",
+  "Status": "Status",
   "STATUS-header": {
     "comment": "Header for a block of text describing a taxon's conservation status",
     "val": "STATUS"
   },
+  "STEP-1-EVIDENCE": {
+    "comment": "Header in pop up explaining options for creating an observation",
+    "val": "STEP 1. EVIDENCE"
+  },
+  "Submit-without-evidence": "Submit without evidence",
+  "Take-a-photo-with-your-camera": "Take a photo with your camera",
+  "Tap-to-search-for-taxa": "Tap to search for taxa",
+  "Taxon": "Taxon",
   "TAXONOMY-header": {
     "comment": "Header for a block of text describing a taxon's taxonomy",
     "val": "TAXONOMY"
+  },
+  "The-first-thing-you-need-is-evidence": {
+    "comment": "Onboarding for users adding their first evidence of an organism",
+    "val": "The first thing you need is evidence of an organism. This helps others identify what you saw."
+  },
+  "Threatened": "Threatened",
+  "Unreviewed-only": "Unreviewed only",
+  "Upload-a-photo-from-your-gallery": "Upload a photo from your gallery",
+  "UPLOAD-OBSERVATION": "UPLOAD OBSERVATION",
+  "Upload-X-photos": {
+    "comment": "Shows the number of photos a user selected from the camera roll for upload",
+    "val": "Upload { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
+  },
+  "User": "User",
+  "Visually-search-iNaturalist-data": "Visually search iNaturalist’s wealth of data. Search by a taxon in a location",
+  "X-Observations": {
+    "comment": "Banner above Explore Map showing total number of results",
+    "val": "{ $observationCount ->\n  [one] 1 Observation\n *[other] { $observationCount } Observations\n}"
+  },
+  "X-photos-X-observations": {
+    "comment": "Displays number of photos and observations a user has selected from the camera roll",
+    "val": "{ $photoCount ->\n  [one] 1 photo\n *[other] { $photoCount } photos\n}, { $observationCount ->\n  [one] 1 observation\n *[other] { $observationCount } observations\n}"
+  },
+  "You-denied-iNaturalist-permission-to-do-that": {
+    "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
+    "val": "You denied iNaturalist permission to do that"
   }
 }

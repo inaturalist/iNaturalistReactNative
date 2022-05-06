@@ -22,7 +22,10 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   },
   input: {
     color: "#000000",
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10
   }
 } );
 

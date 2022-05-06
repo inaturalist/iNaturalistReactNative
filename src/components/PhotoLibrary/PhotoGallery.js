@@ -1,11 +1,10 @@
 // @flow
 
-import React, { useContext } from "react";
-import { Pressable, Image, FlatList, ActivityIndicator, View } from "react-native";
+import React, { useContext, useEffect } from "react";
+import { Pressable, Image, FlatList, ActivityIndicator, View, Text } from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-// import useAndroidPermission from "./hooks/useAndroidPermission";
 import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import { PhotoGalleryContext } from "../../providers/contexts";
@@ -26,11 +25,24 @@ const PhotoGallery = ( ): Node => {
     photoOptions,
     setPhotoOptions,
     selectedPhotos,
-    setSelectedPhotos
+    setSelectedPhotos,
+    fetchingPhotos,
+    totalSelected,
+    permissionGranted,
+    setPermissionGranted
   } = useContext( PhotoGalleryContext );
 
+  // Sort of bad, but if PhotoGallery is being rendered that should mean we've
+  // asked for and received the permissions it needs... but we the
+  // PhotoGalleryProvider / context might not know about that. This will make
+  // sure it does.
+  useEffect( ( ) => {
+    if ( !permissionGranted ) {
+      setPermissionGranted( true );
+    }
+  } );
+
   const navigation = useNavigation( );
-  // const hasAndroidPermission = useAndroidPermission( );
 
   const updateAlbum = album => {
     const newOptions = {
@@ -108,19 +120,12 @@ const PhotoGallery = ( ): Node => {
 
   const navToGroupPhotos = ( ) => navigation.navigate( "GroupPhotos" );
 
-  const renderFooter = ( ) => {
-    if ( Object.keys( selectedPhotos ).length > 0 ) {
-      return (
-        <View style={viewStyles.createObsButton}>
-          <RoundGreenButton
-            buttonText="create observations"
-            handlePress={navToGroupPhotos}
-            testID="PhotoGallery.createObsButton"
-          />
-        </View>
-      );
+  const renderEmptyList = ( ) => {
+    if ( fetchingPhotos ) {
+      return <ActivityIndicator />;
+    } else {
+      return <Text>no photos found. if this is your first time opening the app and giving permissions, try restarting the app.</Text>;
     }
-    return <></>;
   };
 
   return (
@@ -135,9 +140,18 @@ const PhotoGallery = ( ): Node => {
         renderItem={renderImage}
         onEndReached={fetchMorePhotos}
         testID="PhotoGallery.list"
-        ListEmptyComponent={( ) => <ActivityIndicator />}
+        ListEmptyComponent={renderEmptyList( )}
       />
-      {renderFooter( )}
+      { Object.keys( selectedPhotos ).length > 0 && (
+        <View style={viewStyles.createObsButton}>
+          <RoundGreenButton
+            buttonText="Upload-X-photos"
+            count={totalSelected || 0}
+            handlePress={navToGroupPhotos}
+            testID="PhotoGallery.createObsButton"
+          />
+        </View>
+      ) }
     </ViewNoFooter>
   );
 };

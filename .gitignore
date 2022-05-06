@@ -58,6 +58,9 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
+# Ruby gems
+vendor/
+
 # Realm
 *.realm*
 
@@ -66,3 +69,6 @@ buck-out/
 
 # Secrets file
 .env
+
+# Fastlane-generated files
+*.zip

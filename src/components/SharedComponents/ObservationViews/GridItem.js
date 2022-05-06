@@ -1,11 +1,13 @@
 // @flow
 
 import React from "react";
-import { Pressable, Text, Image } from "react-native";
+import { Pressable, Image, Text, View } from "react-native";
 import type { Node } from "react";
 import Observation from "../../../models/Observation";
 
-import { textStyles, imageStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/gridItem";
+import { imageStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/gridItem";
+import ObsCardDetails from "./ObsCardDetails";
+import ObsCardStats from "./ObsCardStats";
 
 type Props = {
   item: Object,
@@ -19,7 +21,9 @@ const GridItem = ( { item, handlePress, uri }: Props ): Node => {
   // displaying camelcased item keys on ObservationList
 
   // TODO: add fallback image when there is no uri
-  const imageUri = uri === "project" ? Observation.projectUri( item ) : Observation.uri( item );
+  const imageUri = uri === "project" ? Observation.projectUri( item ) : Observation.uri( item, true );
+
+  const totalObsPhotos = item.observationPhotos && item.observationPhotos.length;
 
   return (
     <Pressable
@@ -29,12 +33,18 @@ const GridItem = ( { item, handlePress, uri }: Props ): Node => {
       accessibilityRole="link"
       accessibilityLabel="Navigate to observation details screen"
     >
+      {totalObsPhotos > 1 && (
+        <View style={viewStyles.totalObsPhotos}>
+          <Text>{totalObsPhotos}</Text>
+        </View>
+      )}
       <Image
         source={imageUri}
         style={imageStyles.gridImage}
         testID="ObsList.photo"
       />
-      <Text style={textStyles.text}>{item.taxon.preferredCommonName || item.taxon.preferred_common_name}</Text>
+      <ObsCardStats item={item} />
+      <ObsCardDetails item={item} />
     </Pressable>
   );
 };

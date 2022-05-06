@@ -1,5 +1,6 @@
 // @flow
 import React, { useState, useEffect } from "react";
+import { Platform } from "react-native";
 import type { Node } from "react";
 
 import { PhotoGalleryContext } from "./contexts";
@@ -16,14 +17,28 @@ const options = {
 };
 
 const PhotoGalleryProvider = ( { children }: Props ): Node => {
-  const [photoGallery, setPhotoGallery] = useState( {} );
-  const [isScrolling, setIsScrolling] = useState( true );
+  const [isScrolling, setIsScrolling] = useState( false );
   const [photoOptions, setPhotoOptions] = useState( options );
-  const [selectedPhotos, setSelectedPhotos] = useState( {} );
-
+  // Track whether permission to access photos has been granted for Android
+  const [permissionGranted, setPermissionGranted] = useState( Platform.OS !== "android" );
   // photos are fetched from the server on initial render
   // and anytime a user scrolls through the photo gallery
-  const photosFetched = usePhotos( photoOptions, isScrolling );
+  const photoFetchStatus = usePhotos( photoOptions, isScrolling, permissionGranted );
+  const photosFetched = photoFetchStatus.photos;
+  const fetchingPhotos = photoFetchStatus.fetchingPhotos;
+
+  const [photoGallery, setPhotoGallery] = useState( {} );
+  const [selectedPhotos, setSelectedPhotos] = useState( {} );
+
+  const totalSelected = ( ) => {
+    let total = 0;
+    const albums = Object.keys( selectedPhotos );
+
+    albums.forEach( album => {
+      total += selectedPhotos[album].length;
+    } );
+    return total;
+  };
 
   useEffect( ( ) => {
     if ( photosFetched ) {
@@ -44,6 +59,7 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
       };
 
       setPhotoGallery( updatedPhotoGallery );
+      setIsScrolling( false );
     }
   }, [photosFetched, photoGallery, photoOptions, setPhotoGallery] );
 
@@ -55,7 +71,11 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
     photoOptions,
     setPhotoOptions,
     selectedPhotos,
-    setSelectedPhotos
+    setSelectedPhotos,
+    fetchingPhotos,
+    totalSelected: totalSelected( ),
+    permissionGranted,
+    setPermissionGranted
   };
 
   return (

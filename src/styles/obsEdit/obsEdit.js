@@ -63,6 +63,29 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  bottomModal: {
+    backgroundColor: colors.white,
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    borderColor: colors.gray,
+    borderWidth: 1,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+    position: "absolute",
+    bottom: 0,
+    width: "100%"
+  },
+  noMargin: {
+    margin: 0
+  },
+  saveButton: {
+    width: 100
+  },
+  greenSelectionBorder: {
+    borderWidth: 5,
+    borderColor: colors.inatGreen
+  },
   iconicTaxaButtons: {
     marginHorizontal: 20,
     marginVertical: 20
@@ -71,6 +94,25 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     justifyContent: "space-between",
     flexDirection: "row",
     flexWrap: "nowrap"
+  },
+  evidenceList: {
+    marginBottom: 20
+  },
+  evidenceButton: {
+    backgroundColor: colors.inatGreen,
+    width: imageWidth,
+    height: imageWidth,
+    borderRadius: 20,
+    marginHorizontal: 20,
+    marginVertical: 20
+  },
+  soundButton: {
+    backgroundColor: colors.gray,
+    width: imageWidth,
+    height: imageWidth,
+    borderRadius: 20,
+    marginHorizontal: 20,
+    marginVertical: 20
   }
 } );
 
