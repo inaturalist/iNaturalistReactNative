@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import type { Node } from "react";
 import { Text } from "react-native";
 import { useRoute } from "@react-navigation/native";
@@ -14,8 +14,10 @@ import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import uploadObservation from "../../providers/uploadHelpers/uploadObservation";
 import Observation from "../../models/Observation";
 import useObservations from "./hooks/useObservations";
+import { RealmContext } from "../../providers/contexts";
 
 const ObsList = ( ): Node => {
+  const realm = useContext( RealmContext );
   const { params } = useRoute( );
   const { observationList, loading, syncObservations, fetchNextObservations, obsToUpload } = useObservations( );
 
@@ -36,7 +38,7 @@ const ObsList = ( ): Node => {
   const renderUploadModal = ( ) => {
     const uploadObservations = ( ) => obsToUpload.forEach( obs => {
       const mappedObs = Observation.mapObservationForUpload( obs );
-      uploadObservation( mappedObs, obs );
+      uploadObservation( realm, mappedObs, obs );
     } );
 
     return (

@@ -1,16 +1,15 @@
 // @flow
 
-import { useEffect, useCallback, useRef, useState } from "react";
+import { useEffect, useCallback, useState, useContext } from "react";
 import inatjs from "inaturalistjs";
-import Realm from "realm";
-
-import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
 import { getUsername } from "../../../components/LoginSignUp/AuthenticationService";
+import { RealmContext } from "../../../providers/contexts";
 
 const perPage = 6;
 
 const useObservations = ( ): Object => {
+  const realm = useContext( RealmContext );
   const [loading, setLoading] = useState( false );
   const [observationList, setObservationList] = useState( [] );
   const nextPageToFetch = observationList.length > 0 ? Math.ceil( observationList.length / perPage ) : 1;
@@ -30,20 +29,11 @@ const useObservations = ( ): Object => {
     }
   };
 
-  // We store a reference to our realm using useRef that allows us to access it via
-  // realmRef.current for the component's lifetime without causing rerenders if updated.
-  const realmRef = useRef( null );
-
-  const openRealm = useCallback( async ( ) => {
-    // Since this is a non-sync realm, realm will be opened synchronously when calling "Realm.open"
-    const realm = await Realm.open( realmConfig );
-    realmRef.current = realm;
-
+  const loadObservations = useCallback( async ( ) => {
     // When querying a realm to find objects (e.g. realm.objects('Observation')) the result we get back
     // and the objects in it are "live" and will always reflect the latest state.
-
-    const localObservations = realm.objects( "Observation" ).sorted( "_created_at", true );
-    const notUploadedObs = realm.objects( "Observation" ).filtered( "_synced_at == null" );
+    const localObservations = realm?.objects( "Observation" ).sorted( "_created_at", true );
+    const notUploadedObs = realm?.objects( "Observation" ).filtered( "_synced_at == null" );
 
     if ( localObservations?.length ) {
       setObservationList( localObservations );
@@ -54,7 +44,7 @@ const useObservations = ( ): Object => {
     }
 
     try {
-      localObservations.addListener( ( ) => {
+      localObservations?.addListener( ( ) => {
         // If you just pass localObservations you end up assigning a Results
         // object to state instead of an array of observations. There's
         // probably a better way...
@@ -65,26 +55,21 @@ const useObservations = ( ): Object => {
     }
     return ( ) => {
       // remember to remove listeners to avoid async updates
-      localObservations.removeAllListeners( );
-      realm.close( );
+      localObservations?.removeAllListeners( );
     };
-  }, [realmRef, setObservationList] );
+  }, [realm, setObservationList] );
 
-  const closeRealm = useCallback( ( ) => {
-    const realm = realmRef.current;
-    realm?.close( );
-    realmRef.current = null;
+  const clearObservations = useCallback( ( ) => {
     setObservationList( [] );
-  }, [realmRef] );
+  }, [setObservationList] );
 
   useEffect( ( ) => {
-    openRealm( );
-    return closeRealm;
-  }, [openRealm, closeRealm] );
+    loadObservations( );
+    return clearObservations;
+  }, [loadObservations, clearObservations] );
 
   const writeToDatabase = useCallback( ( results ) => {
     if ( results.length === 0 ) { return; }
-    const realm = realmRef.current;
     results.forEach( obs => {
       const newObs = Observation.createObservationForRealm( obs, realm );
       realm?.write( ( ) => {
@@ -95,7 +80,7 @@ const useObservations = ( ): Object => {
       } );
     } );
     setLoading( false );
-  }, [] );
+  }, [realm] );
 
   useEffect( ( ) => {
     let isCurrent = true;

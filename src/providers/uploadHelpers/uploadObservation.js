@@ -1,18 +1,14 @@
 // @flow
 
 import inatjs from "inaturalistjs";
-import Realm from "realm";
-
-import realmConfig from "../../models/index";
 import { getJWTToken } from "../../components/LoginSignUp/AuthenticationService";
 import ObservationPhoto from "../../models/ObservationPhoto";
 import ObservationSound from "../../models/ObservationSound";
 
-const markRecordUploaded = async ( uuid: string, type: string, response: Object ) => {
+const markRecordUploaded = async ( realm: Object, uuid: string, type: string, response: Object ) => {
   const { id } = response.results[0];
 
   try {
-    const realm = await Realm.open( realmConfig );
     const record = realm.objectForPrimaryKey( type, uuid );
     realm?.write( ( ) => {
       record.id = id;
@@ -42,7 +38,7 @@ const createParams = ( response, options, evidence, mapLocalModelForUpload, type
   }
 };
 
-const uploadObservation = async ( obsToUpload: Object, localObs: Object ) => {
+const uploadObservation = async ( realm: Object, obsToUpload: Object, localObs: Object ) => {
   try {
     const apiToken = await getJWTToken( false );
     const options = { api_token: apiToken };
@@ -53,7 +49,7 @@ const uploadObservation = async ( obsToUpload: Object, localObs: Object ) => {
     };
 
     const response = await inatjs.observations.create( uploadParams, options );
-    await markRecordUploaded( obsToUpload.uuid, "Observation", response );
+    await markRecordUploaded( realm, obsToUpload.uuid, "Observation", response );
     if ( localObs.observationPhotos ) {
       createParams(
         response,

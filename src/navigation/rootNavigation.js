@@ -20,6 +20,7 @@ import NetworkLogging from "../components/NetworkLogging";
 import NotificationsStackNavigation from "./notificationsStackNavigation";
 import About from "../components/About";
 import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
+import RealmProvider from "../providers/RealmProvider";
 import { colors } from "../styles/global";
 import { viewStyles } from "../styles/navigation/rootNavigation";
 
@@ -46,59 +47,61 @@ const App = ( ): React.Node => (
   <PaperProvider theme={theme}>
     <GestureHandlerRootView style={viewStyles.container}>
       <NavigationContainer>
-        <PhotoGalleryProvider>
-          <ObsEditProvider>
-            <Drawer.Navigator
-              screenOptions={screenOptions}
-              name="Drawer"
-              drawerContent={( props ) => <CustomDrawerContent {...props} />}
-            >
-              <Drawer.Screen
-                name="my observations"
-                component={MyObservationsStackNavigator}
-                options={hideHeader}
-              />
-              <Drawer.Screen
-                name="notifications"
-                component={NotificationsStackNavigation}
-                options={hideHeader}
-              />
-              <Drawer.Screen
-                name="identify"
-                component={IdentifyStackNavigation}
-                options={hideHeader}
-              />
-              <Drawer.Screen name="search" component={Search} />
-              <Drawer.Screen
-                name="projects"
-                component={ProjectsStackNavigation}
-                options={hideHeader}
-              />
-              <Drawer.Screen name="settings" component={PlaceholderComponent} />
-              <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
-              <Drawer.Screen
-                name="about"
-                component={About}
-              />
-              <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-              <Drawer.Screen name="login" component={Login} />
-              <Drawer.Screen
-                name="camera"
-                component={CameraStackNavigation}
-                options={hideHeader}
-              />
-              <Drawer.Screen
-                name="explore stack"
-                component={ExploreStackNavigator}
-                options={hideHeader}
-              />
-              <Drawer.Screen
-                name="network"
-                component={NetworkLogging}
-              />
-            </Drawer.Navigator>
-          </ObsEditProvider>
-        </PhotoGalleryProvider>
+        <RealmProvider>
+          <PhotoGalleryProvider>
+            <ObsEditProvider>
+              <Drawer.Navigator
+                screenOptions={screenOptions}
+                name="Drawer"
+                drawerContent={( props ) => <CustomDrawerContent {...props} />}
+              >
+                <Drawer.Screen
+                  name="my observations"
+                  component={MyObservationsStackNavigator}
+                  options={hideHeader}
+                />
+                <Drawer.Screen
+                  name="notifications"
+                  component={NotificationsStackNavigation}
+                  options={hideHeader}
+                />
+                <Drawer.Screen
+                  name="identify"
+                  component={IdentifyStackNavigation}
+                  options={hideHeader}
+                />
+                <Drawer.Screen name="search" component={Search} />
+                <Drawer.Screen
+                  name="projects"
+                  component={ProjectsStackNavigation}
+                  options={hideHeader}
+                />
+                <Drawer.Screen name="settings" component={PlaceholderComponent} />
+                <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
+                <Drawer.Screen
+                  name="about"
+                  component={About}
+                />
+                <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
+                <Drawer.Screen name="login" component={Login} />
+                <Drawer.Screen
+                  name="camera"
+                  component={CameraStackNavigation}
+                  options={hideHeader}
+                />
+                <Drawer.Screen
+                  name="explore stack"
+                  component={ExploreStackNavigator}
+                  options={hideHeader}
+                />
+                <Drawer.Screen
+                  name="network"
+                  component={NetworkLogging}
+                />
+              </Drawer.Navigator>
+            </ObsEditProvider>
+          </PhotoGalleryProvider>
+        </RealmProvider>
       </NavigationContainer>
     </GestureHandlerRootView>
   </PaperProvider>

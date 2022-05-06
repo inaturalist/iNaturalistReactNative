@@ -2,20 +2,17 @@
 import React, { useState, useContext } from "react";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
-import Realm from "realm";
 
-import { ObsEditContext } from "./contexts";
-import realmConfig from "../models/index";
-import saveLocalObservation from "./uploadHelpers/saveLocalObservation";
+import { ObsEditContext, PhotoGalleryContext, RealmContext } from "./contexts";
 import uploadObservation from "./uploadHelpers/uploadObservation";
 import Observation from "../models/Observation";
-import { PhotoGalleryContext } from "./contexts";
 
 type Props = {
   children: any
 }
 
 const ObsEditProvider = ( { children }: Props ): Node => {
+  const realm = useContext( RealmContext );
   const { setSelectedPhotos } = useContext( PhotoGalleryContext );
   const navigation = useNavigation( );
   const [currentObsNumber, setCurrentObsNumber] = useState( 0 );
@@ -86,16 +83,22 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const saveObservation = async ( ) => {
-    const localObs = await saveLocalObservation( currentObs );
-    if ( localObs ) {
-      setNextScreen( );
+    try {
+      const localObs = await Observation.saveLocalObservationForUpload( currentObs, realm );
+      if ( localObs ) {
+        setNextScreen( );
+      } else {
+        console.warn( "ObsEditProvider.saveObservation Failed to save localObs: ", localObs );
+      }
+    } catch ( e ) {
+      console.error( "ObsEditProvider.saveObservation: ", e );
     }
   };
 
   const saveAndUploadObservation = async ( ) => {
-    const localObs = await saveLocalObservation( currentObs );
+    const localObs = await Observation.saveLocalObservationForUpload( currentObs, realm );
     const mappedObs = Observation.mapObservationForUpload( localObs );
-    uploadObservation( mappedObs, localObs );
+    uploadObservation( realm, mappedObs, localObs );
     if ( localObs ) {
       setNextScreen( );
     }
@@ -103,8 +106,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const openSavedObservation = async ( savedUUID ) => {
     try {
-      const realm = await Realm.open( realmConfig );
-      const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
+      const obs = realm?.objectForPrimaryKey( "Observation", savedUUID );
       setObservations( [obs] );
       return obs;
     } catch ( e ) {
