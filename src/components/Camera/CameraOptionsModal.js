@@ -16,7 +16,6 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
   const obsEdit = React.useContext( ObsEditContext );
   const currentObs = obsEdit && obsEdit.currentObs;
-  const addObservationNoEvidence = obsEdit && obsEdit.addObservationNoEvidence;
   const navigation = useNavigation( );
 
   const hasSound = currentObs && currentObs.observationSounds && currentObs.observationSounds.uri;
@@ -33,10 +32,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
 
   const navToNormalCamera = ( ) => navAndCloseModal( "NormalCamera" );
 
-  const navToObsEdit = ( ) => {
-    addObservationNoEvidence( );
-    navAndCloseModal( "ObsEdit" );
-  };
+  const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
 
   return (
     <View>
@@ -49,22 +45,16 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
         <TranslatedText text="Record-a-sound" />
         <TranslatedText text="Submit-without-evidence" />
       </View>
-       <Pressable
-        onPress={navToNormalCamera}
-      >
+      <Pressable onPress={navToNormalCamera}>
         <Text style={textStyles.whiteText}>take photo with camera</Text>
       </Pressable>
       {!currentObs && (
-        <Pressable
-          onPress={navToPhotoGallery}
-        >
+        <Pressable onPress={navToPhotoGallery}>
           <Text style={textStyles.whiteText}>upload photo from gallery</Text>
         </Pressable>
       )}
       {!hasSound && (
-        <Pressable
-          onPress={navToSoundRecorder}
-        >
+        <Pressable onPress={navToSoundRecorder}>
           <Text style={textStyles.whiteText}>record a sound</Text>
         </Pressable>
       )}

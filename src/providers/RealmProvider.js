@@ -5,6 +5,7 @@ import type { Node } from "react";
 
 import { RealmContext } from "./contexts";
 import realmConfig from "../models/realmConfig";
+import Record from "../models/Record";
 
 type Props = {
   children: any
@@ -34,6 +35,10 @@ const RealmProvider = ( { children }: Props ): Node => {
     realm?.close( );
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [] );
+
+  useEffect( ( ) => {
+    Record.realm = realm;
+  }, [realm] );
 
   return (
     <RealmContext.Provider value={realm}>

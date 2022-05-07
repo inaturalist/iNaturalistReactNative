@@ -1,5 +1,6 @@
 import uuid from "react-native-uuid";
 
+import Record from "./Record";
 import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
@@ -11,7 +12,7 @@ import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 import { formatCameraDate } from "../sharedHelpers/dateAndTime";
 import { getUserId } from "../components/LoginSignUp/AuthenticationService";
 
-class Observation {
+class Observation extends Record {
   static FIELDS = {
     captive: true,
     comments: Comment.COMMENT_FIELDS,
@@ -32,69 +33,60 @@ class Observation {
     user: User.USER_FIELDS
   }
 
-  static createNewObservation( obs ) {
-    return {
-      ...obs,
+  static new( defaults = {} ) {
+    console.log( "[DEBUG] Observation.new, defaults: ", defaults );
+    return super.new( {
+      ...defaults,
       captive: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
-      // project_ids: [],
       uuid: uuid.v4( )
-    };
+    } );
   }
 
-  static async createObsWithNoEvidence( ) {
-    const latLng = await fetchUserLocation( );
-    const obs = {
-      ...latLng,
-      observed_on_string: createObservedOnStringForUpload( )
-    };
-    return Observation.createNewObservation( obs );
-  }
+  // static async createObsWithPhotos( observationPhotos, observedOn ) {
+  //   const latLng = await fetchUserLocation( );
+  //   const obs = {
+  //     ...latLng,
+  //     observed_on_string: observedOn || createObservedOnStringForUpload( ),
+  //     observationPhotos
+  //   };
+  //   return this.new( obs );
+  // }
 
-  static async createObsWithPhotos( observationPhotos, observedOn ) {
-    const latLng = await fetchUserLocation( );
-    const obs = {
-      ...latLng,
-      observed_on_string: observedOn || createObservedOnStringForUpload( ),
-      observationPhotos
-    };
-    return Observation.createNewObservation( obs );
-  }
+  // static async createObsWithSounds( ) {
+  //   const sound = await ObservationSound.createNewSound( );
+  //   const latLng = await fetchUserLocation( );
+  //   const obs = {
+  //     ...latLng,
+  //     observed_on_string: createObservedOnStringForUpload( ),
+  //     observationSounds: [sound]
+  //   };
+  //   return Observation.createNewObservation( obs );
+  // }
 
-  static async createObsWithSounds( ) {
-    const sound = await ObservationSound.createNewSound( );
-    const latLng = await fetchUserLocation( );
-    const obs = {
-      ...latLng,
-      observed_on_string: createObservedOnStringForUpload( ),
-      observationSounds: [sound]
-    };
-    return Observation.createNewObservation( obs );
-  }
+  // static async createObsPhotos( photos, createPhoto ) {
+  //   return await Promise.all( photos.map( async photo => {
+  //     return await createPhoto( photo );
+  //   } ) );
+  // }
 
-  static async createObsPhotos( photos, createPhoto ) {
-    return await Promise.all( photos.map( async photo => {
-      return await createPhoto( photo );
-    } ) );
-  }
+  // static async createMutipleObsFromGalleryPhotos( obs ) {
+  //   return Promise.all( obs.map( async ( { photos } ) => {
+  //     // take the observed_on_string time from the first photo in an observation
+  //     const observedOn = formatDateAndTime( photos[0].timestamp );
+  //     const obsPhotos = await Observation.createObsPhotos( photos, ObservationPhoto.formatObsPhotoFromGallery );
+  //     return await Observation.createObsWithPhotos( obsPhotos, observedOn );
+  //   } ) );
+  // }
 
-  static async createMutipleObsFromGalleryPhotos( obs ) {
-    return Promise.all( obs.map( async ( { photos } ) => {
-      // take the observed_on_string time from the first photo in an observation
-      const observedOn = formatDateAndTime( photos[0].timestamp );
-      const obsPhotos = await Observation.createObsPhotos( photos, ObservationPhoto.formatObsPhotoFromGallery );
-      return await Observation.createObsWithPhotos( obsPhotos, observedOn );
-    } ) );
-  }
+  // static async createObsFromNormalCamera( photos ) {
+  //   // take the observed_on_string time from the first photo in an observation
+  //   const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
+  //   const obsPhotos = await Observation.createObsPhotos( photos, ObservationPhoto.formatObsPhotoFromNormalCamera );
 
-  static async createObsFromNormalCamera( photos ) {
-    // take the observed_on_string time from the first photo in an observation
-    const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
-    const obsPhotos = await Observation.createObsPhotos( photos, ObservationPhoto.formatObsPhotoFromNormalCamera );
-
-    return await Observation.createObsWithPhotos( obsPhotos, observedOn );
-  }
+  //   return await Observation.createObsWithPhotos( obsPhotos, observedOn );
+  // }
 
   static mimicRealmMappedPropertiesSchema( obs ) {
     const createLinkedObjects = ( list, createFunction ) => {
@@ -162,43 +154,44 @@ class Observation {
     return newObs;
   }
 
-  static async saveLocalObservationForUpload( obs, realm ) {
-    // make sure local observations have user details for ObsDetail
-    const id = await getUserId( );
-    const user = realm.objectForPrimaryKey( "User", Number( id ) );
-    obs.user = user;
+  // static async saveLocalObservationForUpload( obs ) {
+  //   console.log( "[DEBUG] Observation.realm: ", Observation.realm );
+  //   // make sure local observations have user details for ObsDetail
+  //   const id = await getUserId( );
+  //   const user = Observation.realm?.objectForPrimaryKey( "User", Number( id ) );
+  //   obs.user = user;
 
-    const newLocalRecord = {
-      _created_at: new Date( ),
-      _synced_at: null,
-      _updated_at: new Date( )
-    };
-    const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon, realm ) : null;
-    const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => ObservationPhoto.saveLocalObservationPhotoForUpload( {
-      ...newLocalRecord,
-      ...photo
-     } ) );
-    const observationSounds = obs.observationSounds && obs.observationSounds.map( sound => ObservationSound.saveLocalObservationSoundForUpload( {
-      ...newLocalRecord,
-      ...sound
-    } ) );
+  //   const newLocalRecord = {
+  //     _created_at: new Date( ),
+  //     _synced_at: null,
+  //     _updated_at: new Date( )
+  //   };
+  //   const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
+  //   const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => ObservationPhoto.saveLocalObservationPhotoForUpload( {
+  //     ...newLocalRecord,
+  //     ...photo
+  //    } ) );
+  //   const observationSounds = obs.observationSounds && obs.observationSounds.map( sound => ObservationSound.saveLocalObservationSoundForUpload( {
+  //     ...newLocalRecord,
+  //     ...sound
+  //   } ) );
 
-    const obsToSave = {
-      ...obs,
-      ...newLocalRecord,
-      taxon,
-      observationPhotos,
-      observationSounds,
-      quality_grade: "needs_id"
-    };
+  //   const obsToSave = {
+  //     ...obs,
+  //     ...newLocalRecord,
+  //     taxon,
+  //     observationPhotos,
+  //     observationSounds,
+  //     quality_grade: "needs_id"
+  //   };
 
-    realm?.write( ( ) => {
-      // using 'modified' here for the case where a new observation has the same Taxon
-      // as a previous observation; otherwise, realm will error out
-      realm?.create( "Observation", obsToSave, "modified" );
-    } );
-    return realm.objectForPrimaryKey( "Observation", obs.uuid );
-  }
+  //   Observation.realm?.write( ( ) => {
+  //     // using 'modified' here for the case where a new observation has the same Taxon
+  //     // as a previous observation; otherwise, realm will error out
+  //     Observation.realm?.create( "Observation", obsToSave, "modified" );
+  //   } );
+  //   return Observation.realm.objectForPrimaryKey( "Observation", obs.uuid );
+  // }
 
   static mapObservationForUpload( obs ) {
     return {
@@ -294,6 +287,15 @@ class Observation {
       // project_ids
       // note that taxon_id is nested under Taxon
     }
+  }
+
+  save( ) {
+    console.log( "[DEBUG] Observation#save, this: ", this );
+    console.log( "[DEBUG] Observation#save, this.uuid: ", this.uuid );
+
+    this._created_at = this._created_at || new Date( );
+    this._updated_at = new Date( );
+    super.save( );
   }
 }
 

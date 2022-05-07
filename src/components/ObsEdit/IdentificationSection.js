@@ -12,17 +12,12 @@ import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
 import { ObsEditContext } from "../../providers/contexts";
 
-const IdentificationSection = ( ): Node => {
+const IdentificationSection = ( { taxon } ): Node => {
   const {
-    currentObsNumber,
-    observations,
     updateTaxon
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-
-  const currentObs = observations[currentObsNumber];
-  const identification = currentObs.taxon;
 
   const updateIdentification = ( taxon ) => updateTaxon( taxon );
 
@@ -31,7 +26,7 @@ const IdentificationSection = ( ): Node => {
   const renderIconicTaxaButton = ( { item } ) => {
     const id = iconicTaxaIds[item];
     const label = t( iconicTaxaNames[id] );
-    const selected = identification && id === identification.id;
+    const selected = taxon && id === taxon.id;
     return (
       <Pressable
         onPress={( ) => updateIdentification( { id, preferred_common_name: label } )}
@@ -47,15 +42,15 @@ const IdentificationSection = ( ): Node => {
   };
 
   const displayIdentification = ( ) => {
-    if ( identification ) {
+    if ( taxon ) {
       return (
         <View style={viewStyles.row}>
           <View>
             <Text style={textStyles.text}>
-              {identification.preferred_common_name}
+              {taxon.preferred_common_name}
             </Text>
             <Text style={textStyles.text}>
-              {identification.name}
+              {taxon.name}
             </Text>
           </View>
           <Pressable
@@ -74,7 +69,7 @@ const IdentificationSection = ( ): Node => {
             testID="ObsEdit.Suggestions"
           />
           <Text style={textStyles.text}>
-            {identification && identification.id && t( iconicTaxaNames[identification.id] )}
+            {taxon && taxon.id && t( iconicTaxaNames[taxon.id] )}
           </Text>
         </>
       );

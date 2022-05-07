@@ -19,6 +19,8 @@ import DatePicker from "./DatePicker";
 import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
 import IdentificationSection from "./IdentificationSection";
 import OtherDataSection from "./OtherDataSection";
+
+import Observation from "../../models/Observation";
 // import BottomModal from "./BottomModal";
 // import uploadObservation from "./helpers/uploadObservation";
 
@@ -62,7 +64,8 @@ const ObsEdit = ( ): Node => {
       <View style={viewStyles.row}>
         <HeaderBackButton onPress={handleBackButtonPress} />
         {observations.length === 1
-          ? <Headline>{t( "New-Observation" )}</Headline> : (
+          ? <Headline>{t( "New-Observation" )}</Headline>
+          : (
             <View style={viewStyles.row}>
               {currentObsNumber !== 0 && (
                 <Pressable
@@ -86,7 +89,7 @@ const ObsEdit = ( ): Node => {
     );
   };
 
-  const currentObs = observations[currentObsNumber];
+  const currentObs = observations[currentObsNumber] || Observation.new( );
   const latitude = currentObs && currentObs.latitude;
   const longitude = currentObs && currentObs.longitude;
 
@@ -169,16 +172,22 @@ const ObsEdit = ( ): Node => {
       </Pressable>
       <DatePicker currentObs={currentObs} handleDatePicked={handleDatePicked} />
       <Headline style={textStyles.headerText}>{t( "Identification" )}</Headline>
-      <IdentificationSection />
+      <IdentificationSection taxon={currentObs.taxon} />
       <Headline style={textStyles.headerText}>{t( "Other-Data" )}</Headline>
-      <OtherDataSection />
+      {/*<OtherDataSection />*/}
       {!isLoggedIn && <Text style={textStyles.text}>you must be logged in to upload observations</Text>}
       <View style={viewStyles.row}>
         <View style={viewStyles.saveButton}>
           <RoundGreenButton
             buttonText="save"
             testID="ObsEdit.saveButton"
-            handlePress={saveObservation}
+            handlePress={( ) => {
+              currentObs.save( );
+              navigation.navigate( "my observations", {
+                screen: "ObsList",
+                params: { savedLocalData: true }
+              } );
+            }}
           />
         </View>
         <RoundGreenButton

@@ -33,7 +33,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const addObservations = async ( obs ) => setObservations( obs );
 
   const addObservationNoEvidence = async ( ) => {
-    const newObs = await Observation.createObsWithNoEvidence( );
+    const newObs = Observation.new( );
     setObservations( [newObs] );
   };
 
@@ -84,7 +84,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const saveObservation = async ( ) => {
     try {
-      const localObs = await Observation.saveLocalObservationForUpload( currentObs, realm );
+      // const localObs = await Observation.saveLocalObservationForUpload( currentObs );
+      const localObs = currentObs.save( );
       if ( localObs ) {
         setNextScreen( );
       } else {
@@ -96,7 +97,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const saveAndUploadObservation = async ( ) => {
-    const localObs = await Observation.saveLocalObservationForUpload( currentObs, realm );
+    // const localObs = await Observation.saveLocalObservationForUpload( currentObs );
+    const localObs = currentObs.save( );
     const mappedObs = Observation.mapObservationForUpload( localObs );
     uploadObservation( realm, mappedObs, localObs );
     if ( localObs ) {
@@ -106,7 +108,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const openSavedObservation = async ( savedUUID ) => {
     try {
-      const obs = realm?.objectForPrimaryKey( "Observation", savedUUID );
+      const obs = Observation.find( savedUUID );
       setObservations( [obs] );
       return obs;
     } catch ( e ) {
