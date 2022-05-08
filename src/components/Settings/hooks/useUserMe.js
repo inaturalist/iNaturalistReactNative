@@ -8,12 +8,15 @@ const useUserMe = ( accessToken: string ): Array<Object> => {
     let isCurrent = true;
     const fetchSearchResults = async ( ) => {
       try {
-        const response = await inatjs.users.me( {api_token: accessToken} );
+        const response = await inatjs.users.me( {api_token: accessToken, fields:
+          "all"
+          } );
         if ( !isCurrent ) { return; }
         setResult( response.results[0] );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch search results:", e.message, );
+        console.log( "Couldn't fetch user:", e.message, );
+        console.error( JSON.stringify( e ) );
       }
     };
 

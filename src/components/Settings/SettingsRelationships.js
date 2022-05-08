@@ -44,7 +44,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
   const [refreshRelationships, setRefreshRelationships] = React.useState( Math.random() );
   const orderBy = ["a_to_z", "z_to_a"].includes( sortBy ) ? "" : "users.login";
   const order = ["z_to_a", "recently_added"].includes( sortBy ) ? "desc" : "asc";
-  const relationshipParams = {q: finalUserSearch, following, trusted, order_by: orderBy, order: order, per_page: 10, page, random: refreshRelationships };
+  const relationshipParams = {q: finalUserSearch, following, trusted, order_by: orderBy, order: order, per_page: 10, page, random: refreshRelationships, fields: "all" };
   const [relationshipResults, perPage, totalResults] = useRelationships( accessToken, relationshipParams );
   const totalPages = totalResults > 0 && perPage > 0 ? Math.ceil( totalResults / perPage ) : 1;
 

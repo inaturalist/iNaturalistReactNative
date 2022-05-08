@@ -45,14 +45,14 @@ startNetworkLogging();
 //   writeApiURL: "https://stagingapi.inaturalist.org/v1"
 // } );
 
-// inatjs.setConfig( {
-//   apiURL: "https://stagingapi.inaturalist.org/v2",
-//   writeApiURL: "https://stagingapi.inaturalist.org/v2"
-// } );
-
 inatjs.setConfig( {
-  apiURL: "https://api.inaturalist.org/v1",
-  writeApiURL: "https://api.inaturalist.org/v1"
+  apiURL: "https://stagingapi.inaturalist.org/v2",
+  writeApiURL: "https://stagingapi.inaturalist.org/v2"
 } );
+
+// inatjs.setConfig( {
+//   apiURL: "https://api.inaturalist.org/v1",
+//   writeApiURL: "https://api.inaturalist.org/v1"
+// } );
 
 AppRegistry.registerComponent( appName, ( ) => App );
