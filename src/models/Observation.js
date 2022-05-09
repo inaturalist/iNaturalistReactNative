@@ -32,50 +32,42 @@ class Observation {
     user: User.USER_FIELDS
   }
 
-  static createNewObservation( obs ) {
+  static async new( obs ) {
+    const latLng = await fetchUserLocation( );
+
     return {
       ...obs,
+      ...latLng,
       captive: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
+      observed_on_string: createObservedOnStringForUpload( ),
       // project_ids: [],
       uuid: uuid.v4( )
     };
   }
 
-  static async createObsWithNoEvidence( ) {
-    const latLng = await fetchUserLocation( );
-    const obs = {
-      ...latLng,
-      observed_on_string: createObservedOnStringForUpload( )
-    };
-    return Observation.createNewObservation( obs );
-  }
-
   static async createObsWithPhotos( observationPhotos, observedOn ) {
-    const latLng = await fetchUserLocation( );
-    const obs = {
-      ...latLng,
-      observed_on_string: observedOn || createObservedOnStringForUpload( ),
-      observationPhotos
-    };
-    return Observation.createNewObservation( obs );
+    const observation = await Observation.new( );
+    observation.observationPhotos = observationPhotos;
+
+    if ( observedOn ) {
+      observation.observed_on_string = observedOn;
+    }
+    return observation;
   }
 
   static async createObsWithSounds( ) {
-    const sound = await ObservationSound.createNewSound( );
-    const latLng = await fetchUserLocation( );
-    const obs = {
-      ...latLng,
-      observed_on_string: createObservedOnStringForUpload( ),
-      observationSounds: [sound]
-    };
-    return Observation.createNewObservation( obs );
+    const observation = await Observation.new( );
+    const sound = await ObservationSound.new( );
+    observation.observationSounds = [sound];
+    return observation;
   }
 
-  static async createObsPhotos( photos, createPhoto ) {
+  static async createObsPhotos( photos ) {
     return await Promise.all( photos.map( async photo => {
-      return await createPhoto( photo );
+      const uri = photo.image?.uri || photo.path;
+      return await ObservationPhoto.new( uri );
     } ) );
   }
 
@@ -83,7 +75,7 @@ class Observation {
     return Promise.all( obs.map( async ( { photos } ) => {
       // take the observed_on_string time from the first photo in an observation
       const observedOn = formatDateAndTime( photos[0].timestamp );
-      const obsPhotos = await Observation.createObsPhotos( photos, ObservationPhoto.formatObsPhotoFromGallery );
+      const obsPhotos = await Observation.createObsPhotos( photos );
       return await Observation.createObsWithPhotos( obsPhotos, observedOn );
     } ) );
   }
@@ -91,7 +83,7 @@ class Observation {
   static async createObsFromNormalCamera( photos ) {
     // take the observed_on_string time from the first photo in an observation
     const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
-    const obsPhotos = await Observation.createObsPhotos( photos, ObservationPhoto.formatObsPhotoFromNormalCamera );
+    const obsPhotos = await Observation.createObsPhotos( photos );
 
     return await Observation.createObsWithPhotos( obsPhotos, observedOn );
   }
@@ -174,14 +166,18 @@ class Observation {
       _updated_at: new Date( )
     };
     const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon, realm ) : null;
-    const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => ObservationPhoto.saveLocalObservationPhotoForUpload( {
-      ...newLocalRecord,
-      ...photo
-     } ) );
-    const observationSounds = obs.observationSounds && obs.observationSounds.map( sound => ObservationSound.saveLocalObservationSoundForUpload( {
-      ...newLocalRecord,
-      ...sound
-    } ) );
+    const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => {
+      return {
+        ...newLocalRecord,
+        ...photo
+      };
+    } );
+    const observationSounds = obs.observationSounds && obs.observationSounds.map( sound => {
+      return {
+        ...newLocalRecord,
+        ...sound
+      };
+    } );
 
     const obsToSave = {
       ...obs,

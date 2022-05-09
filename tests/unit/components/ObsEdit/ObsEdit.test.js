@@ -41,7 +41,7 @@ const mockObsEditProviderWithObs = obs =>
   ObsEditProvider.mockImplementation( ( { children }: Props ): Node => (
     <ObsEditContext.Provider value={{
       observations: obs,
-      currentObsNumber: 0
+      currentObsIndex: 0
     }}>
       {children}
     </ObsEditContext.Provider>

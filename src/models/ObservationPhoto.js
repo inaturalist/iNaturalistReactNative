@@ -19,13 +19,6 @@ class ObservationPhoto {
     };
   }
 
-  static saveLocalObservationPhotoForUpload( observationPhoto ) {
-    return {
-      ...observationPhoto,
-      photo: Photo.saveLocalPhotoForUpload( observationPhoto )
-    };
-  }
-
   static mapPhotoForUpload( id, observationPhoto ) {
     return {
       "observation_photo[observation_id]": id,
@@ -38,25 +31,14 @@ class ObservationPhoto {
     };
   }
 
-  static async formatObsPhotoFromNormalCamera( photo ) {
-    const resizedPhoto = await resizeImageForUpload( photo.path );
-
-    const obsPhoto = ObservationPhoto.saveLocalObservationPhotoForUpload( { uri: resizedPhoto } );
+  static async new( uri ) {
+    const localFilePath = await resizeImageForUpload( uri );
 
     return {
-      ...obsPhoto,
-      uuid: uuid.v4( )
-    };
-  }
-
-  static async formatObsPhotoFromGallery( photo ) {
-    const resizedPhoto = await resizeImageForUpload( photo.image.uri );
-
-    const obsPhoto = ObservationPhoto.saveLocalObservationPhotoForUpload( { uri: resizedPhoto } );
-
-    return {
-      ...obsPhoto,
-      uuid: uuid.v4( )
+      uuid: uuid.v4( ),
+      photo: {
+        localFilePath
+      }
     };
   }
 

@@ -24,8 +24,8 @@ import OtherDataSection from "./OtherDataSection";
 
 const ObsEdit = ( ): Node => {
   const {
-    currentObsNumber,
-    setCurrentObsNumber,
+    currentObsIndex,
+    setcurrentObsIndex,
     observations,
     setObservations,
     updateObservationKey,
@@ -46,8 +46,8 @@ const ObsEdit = ( ): Node => {
 
   const updateObservedOn = value => updateObservationKey( "observed_on_string", value );
 
-  const showNextObservation = ( ) => setCurrentObsNumber( currentObsNumber + 1 );
-  const showPrevObservation = ( ) => setCurrentObsNumber( currentObsNumber - 1 );
+  const showNextObservation = ( ) => setcurrentObsIndex( currentObsIndex + 1 );
+  const showPrevObservation = ( ) => setcurrentObsIndex( currentObsIndex - 1 );
 
   const renderArrowNavigation = ( ) => {
     if ( observations.length === 0 ) { return; }
@@ -64,15 +64,15 @@ const ObsEdit = ( ): Node => {
         {observations.length === 1
           ? <Headline>{t( "New-Observation" )}</Headline> : (
             <View style={viewStyles.row}>
-              {currentObsNumber !== 0 && (
+              {currentObsIndex !== 0 && (
                 <Pressable
                   onPress={showPrevObservation}
                 >
                   <Text>previous obs</Text>
                 </Pressable>
               )}
-              <Text>{`${currentObsNumber + 1} of ${observations.length}`}</Text>
-              {( currentObsNumber !== observations.length - 1 ) && (
+              <Text>{`${currentObsIndex + 1} of ${observations.length}`}</Text>
+              {( currentObsIndex !== observations.length - 1 ) && (
                 <Pressable
                   onPress={showNextObservation}
                 >
@@ -86,7 +86,7 @@ const ObsEdit = ( ): Node => {
     );
   };
 
-  const currentObs = observations[currentObsNumber];
+  const currentObs = observations[currentObsIndex];
   const latitude = currentObs && currentObs.latitude;
   const longitude = currentObs && currentObs.longitude;
 
@@ -95,7 +95,7 @@ const ObsEdit = ( ): Node => {
 
   const updateLocation = newLocation => {
     const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObsNumber ) {
+      if ( index === currentObsIndex ) {
         return {
           ...obs,
           // $FlowFixMe

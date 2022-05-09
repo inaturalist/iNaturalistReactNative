@@ -16,7 +16,7 @@ import Notes from "./Notes";
 
 const OtherDataSection = ( ): Node => {
   const {
-    currentObsNumber,
+    currentObsIndex,
     observations,
     updateObservationKey,
     setObservations
@@ -51,7 +51,7 @@ const OtherDataSection = ( ): Node => {
     value: false
   }];
 
-  const currentObs = observations[currentObsNumber];
+  const currentObs = observations[currentObsIndex];
 
   const addNotes = text => updateObservationKey( "description", text );
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
@@ -64,7 +64,7 @@ const OtherDataSection = ( ): Node => {
 
   const updateProjectIds = projectId => {
     const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObsNumber ) {
+      if ( index === currentObsIndex ) {
         return {
           ...obs,
           project_ids: obs.project_ids.concat( [projectId] )
@@ -118,7 +118,7 @@ const OtherDataSection = ( ): Node => {
       <Pressable onPress={searchForProjects}>
         <TranslatedText style={textStyles.text} text="Add-to-projects" />
       </Pressable>
-      <Notes addNotes={addNotes} />
+      <Notes addNotes={addNotes} description={currentObs.description} />
     </>
   );
 };

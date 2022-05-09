@@ -10,12 +10,6 @@ class Photo {
     return photo;
   }
 
-  static saveLocalPhotoForUpload( observationPhoto ) {
-    return {
-      localFilePath: observationPhoto.uri
-    };
-  }
-
   static schema = {
     name: "Photo",
     // TODO: need uuid to be primary key for photos that get uploaded?

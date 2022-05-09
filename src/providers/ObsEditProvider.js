@@ -18,10 +18,10 @@ type Props = {
 const ObsEditProvider = ( { children }: Props ): Node => {
   const { setSelectedPhotos } = useContext( PhotoGalleryContext );
   const navigation = useNavigation( );
-  const [currentObsNumber, setCurrentObsNumber] = useState( 0 );
+  const [currentObsIndex, setcurrentObsIndex] = useState( 0 );
   const [observations, setObservations] = useState( [] );
 
-  const currentObs = observations[currentObsNumber];
+  const currentObs = observations[currentObsIndex];
 
   const addSound = async ( ) => {
     const newObs = await Observation.createObsWithSounds( );
@@ -36,13 +36,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const addObservations = async ( obs ) => setObservations( obs );
 
   const addObservationNoEvidence = async ( ) => {
-    const newObs = await Observation.createObsWithNoEvidence( );
+    const newObs = await Observation.new( );
     setObservations( [newObs] );
   };
 
   const updateObservationKey = ( key, value ) => {
     const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObsNumber ) {
+      if ( index === currentObsIndex ) {
         return {
           ...obs,
           // $FlowFixMe
@@ -62,7 +62,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const setNextScreen = ( ) => {
     if ( observations.length === 1 ) {
-      setCurrentObsNumber( 0 );
+      setcurrentObsIndex( 0 );
       setObservations( [] );
       setSelectedPhotos( {} );
 
@@ -71,13 +71,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         params: { savedLocalData: true }
       } );
     } else {
-      if ( currentObsNumber === observations.length - 1 ) {
+      if ( currentObsIndex === observations.length - 1 ) {
         observations.pop( );
-        setCurrentObsNumber( observations.length - 1 );
+        setcurrentObsIndex( observations.length - 1 );
         setObservations( observations );
       } else {
-        observations.splice( currentObsNumber, 1 );
-        setCurrentObsNumber( currentObsNumber );
+        observations.splice( currentObsIndex, 1 );
+        setcurrentObsIndex( currentObsIndex );
         // this seems necessary for rerendering the ObsEdit screen
         setObservations( [] );
         setObservations( observations );
@@ -114,8 +114,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const obsEditValue = {
-    currentObsNumber,
-    setCurrentObsNumber,
+    currentObsIndex,
+    setcurrentObsIndex,
     addSound,
     addPhotos,
     addObservations,

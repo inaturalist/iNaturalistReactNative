@@ -23,22 +23,22 @@ const markRecordUploaded = async ( uuid: string, type: string, response: Object 
   }
 };
 
-const uploadToServer = async ( params, options, uuid, type, apiCall ) => {
+const uploadToServer = async ( params, options, uuid, type, endpoint ) => {
   try {
-    const response = await apiCall.create( params, options );
+    const response = await endpoint.create( params, options );
     await markRecordUploaded( uuid, type, response );
   } catch ( e ) {
     console.log( JSON.stringify( e.response ), `couldn't upload ${type}` );
   }
 };
 
-const createParams = ( response, options, evidence, mapLocalModelForUpload, type, apiCall ) => {
+const flattenParams = ( response, options, evidence, mapLocalModelForUpload, type, endpoint ) => {
   const { id } = response.results[0];
   if ( !evidence || evidence.length === 0 ) { return; }
   for ( let i = 0; i < evidence.length; i += 1 ) {
     const currentEvidence = evidence[i];
     const params = mapLocalModelForUpload( id, currentEvidence );
-    uploadToServer( params, options, currentEvidence.uuid, type, apiCall );
+    uploadToServer( params, options, currentEvidence.uuid, type, endpoint );
   }
 };
 
@@ -55,7 +55,7 @@ const uploadObservation = async ( obsToUpload: Object, localObs: Object ) => {
     const response = await inatjs.observations.create( uploadParams, options );
     await markRecordUploaded( obsToUpload.uuid, "Observation", response );
     if ( localObs.observationPhotos ) {
-      createParams(
+      flattenParams(
         response,
         options,
         localObs.observationPhotos,
@@ -65,7 +65,7 @@ const uploadObservation = async ( obsToUpload: Object, localObs: Object ) => {
       );
     }
     if ( localObs.observationSounds ) {
-      createParams(
+      flattenParams(
         response,
         options,
         localObs.observationSounds,

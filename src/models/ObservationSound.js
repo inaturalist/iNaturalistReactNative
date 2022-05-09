@@ -18,24 +18,13 @@ class ObservationSound {
     return soundDirectory;
   }
 
-  static saveLocalObservationSoundForUpload( sound ) {
-    return {
-      ...sound,
-      file_url: sound.uri
-    };
-  }
-
-  static async createNewSound( ) {
+  static async new( ) {
     const soundUUID = uuid.v4( );
     const uri = await ObservationSound.moveFromCacheToDocumentDirectory( soundUUID );
 
-    const sound = ObservationSound.saveLocalObservationSoundForUpload( {
-      uri,
-      uuid: soundUUID
-    } );
-
     return {
-      ...sound
+      file_url: uri,
+      uuid: soundUUID
     };
   }
 

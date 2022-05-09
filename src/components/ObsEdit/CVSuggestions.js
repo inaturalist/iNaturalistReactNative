@@ -21,7 +21,7 @@ import { t } from "i18next";
 const CVSuggestions = ( ): Node => {
   const {
     observations,
-    currentObsNumber,
+    currentObsIndex,
     updateTaxon
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
@@ -31,7 +31,7 @@ const CVSuggestions = ( ): Node => {
   const list = useRemoteObsEditSearchResults( q, "taxa" );
   const isLoggedIn = useLoggedIn( );
 
-  const currentObs = observations[currentObsNumber];
+  const currentObs = observations[currentObsIndex];
   const hasPhotos = currentObs.observationPhotos;
   const { suggestions, status } = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
 

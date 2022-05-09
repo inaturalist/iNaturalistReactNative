@@ -14,14 +14,14 @@ import { ObsEditContext } from "../../providers/contexts";
 
 const IdentificationSection = ( ): Node => {
   const {
-    currentObsNumber,
+    currentObsIndex,
     observations,
     updateTaxon
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
-  const currentObs = observations[currentObsNumber];
+  const currentObs = observations[currentObsIndex];
   const identification = currentObs.taxon;
 
   const updateIdentification = ( taxon ) => updateTaxon( taxon );

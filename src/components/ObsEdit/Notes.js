@@ -10,10 +10,11 @@ import { textStyles } from "../../styles/obsEdit/obsEdit";
 import { colors } from "../../styles/global";
 
 type Props = {
-  addNotes: Function
+  addNotes: Function,
+  description: ?string
 }
 
-const Notes = ( { addNotes }: Props ): Node => {
+const Notes = ( { addNotes, description }: Props ): Node => {
   const [keyboardOffset, setKeyboardOffset] = useState( 0 );
 
   useEffect( ( ) => {
@@ -43,6 +44,7 @@ const Notes = ( { addNotes }: Props ): Node => {
       keyboardType="default"
       multiline
       onChangeText={addNotes}
+      value={description}
       placeholder={t( "Add-optional-notes" )}
       style={[textStyles.notes, keyboardOffset > 0 && offset]}
       testID="ObsEdit.notes"
