@@ -17,8 +17,7 @@ type Props = {
 
 const GridItem = ( { item, handlePress, uri }: Props ): Node => {
   const onPress = ( ) => handlePress( item );
-  // TODO: fix whatever funkiness is preventing realm mapTo from correctly
-  // displaying camelcased item keys on ObservationList
+  const needsUpload = item._synced_at === null;
 
   // TODO: add fallback image when there is no uri
   const imageUri = uri === "project" ? Observation.projectUri( item ) : Observation.uri( item, true );
@@ -44,7 +43,7 @@ const GridItem = ( { item, handlePress, uri }: Props ): Node => {
         testID="ObsList.photo"
       />
       <ObsCardStats item={item} />
-      <ObsCardDetails item={item} />
+      <ObsCardDetails item={item} needsUpload={needsUpload} />
     </Pressable>
   );
 };

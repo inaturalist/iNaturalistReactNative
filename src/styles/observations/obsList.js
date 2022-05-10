@@ -7,12 +7,10 @@ import { colors } from "../global";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   toggleViewRow: {
-    width: 140,
+    paddingVertical: 10,
     flexDirection: "row",
     flexWrap: "nowrap",
-    justifyContent: "space-around",
-    paddingVertical: 20,
-    position: "absolute"
+    justifyContent: "space-between"
   },
   exploreButtons: {
     borderRadius: 40,
@@ -20,10 +18,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     top: 400,
     zIndex: 1,
     backgroundColor: colors.white
-  },
-  obsListButtons: {
-    right: 0,
-    top: 100
   },
   greenBanner: {
     paddingVertical: 20,
@@ -34,6 +28,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   footer: {
     paddingTop: 100
+  },
+  toggleButtons: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    marginHorizontal: 15
   }
 } );
 

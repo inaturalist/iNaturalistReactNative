@@ -32,7 +32,6 @@ const UserProfile = ( ): React.Node => {
   );
 
   if ( !user ) { return null; }
-  console.log( user, "user profile" );
 
   const showUserRole = user.roles.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
 

@@ -1,6 +1,6 @@
 // @flow
 import * as React from "react";
-import { Pressable } from "react-native";
+import { Button } from "react-native-paper";
 
 import { viewStyles, textStyles } from "../../../styles/sharedComponents/buttons/roundGreenButton";
 import TranslatedText from "../TranslatedText";
@@ -14,7 +14,7 @@ type Props = {
 }
 
 const RoundGreenButton = ( { buttonText, handlePress, testID, disabled, count }: Props ): React.Node => (
-  <Pressable
+  <Button
     style={[viewStyles.greenButton, disabled && viewStyles.disabled]}
     onPress={handlePress}
     testID={testID}
@@ -25,7 +25,7 @@ const RoundGreenButton = ( { buttonText, handlePress, testID, disabled, count }:
       text={buttonText}
       count={count}
     />
-  </Pressable>
+  </Button>
 );
 
 export default RoundGreenButton;

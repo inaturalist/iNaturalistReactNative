@@ -12,6 +12,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
+import { viewStyles } from "../../styles/permissionGate";
 import ViewNoFooter from "./ViewNoFooter";
 
 type Props = {
@@ -56,13 +57,7 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
 
   const manualGrantButton = (
     <Pressable
-      style={{
-        borderWidth: 1,
-        borderStyle: "solid",
-        borderColor: "black",
-        padding: 5,
-        fontWeight: "bold"
-      }}
+      style={viewStyles.permissionButton}
       onPress={ async ( ) => {
         try {
           const r = await PermissionsAndroid.request( permission );

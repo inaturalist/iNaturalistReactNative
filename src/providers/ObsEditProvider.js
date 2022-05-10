@@ -1,115 +1,48 @@
 // @flow
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import type { Node } from "react";
-import uuid from "react-native-uuid";
 import { useNavigation } from "@react-navigation/native";
+import Realm from "realm";
 
-import { getTimeZone } from "../sharedHelpers/dateAndTime";
 import { ObsEditContext } from "./contexts";
-import createIdentification from "../components/Identify/helpers/createIdentification";
+import realmConfig from "../models/index";
+import saveLocalObservation from "./uploadHelpers/saveLocalObservation";
+import uploadObservation from "./uploadHelpers/uploadObservation";
+import Observation from "../models/Observation";
+import { PhotoGalleryContext } from "./contexts";
 
 type Props = {
   children: any
 }
 
 const ObsEditProvider = ( { children }: Props ): Node => {
+  const { setSelectedPhotos } = useContext( PhotoGalleryContext );
   const navigation = useNavigation( );
-  const [currentObsNumber, setCurrentObsNumber] = useState( 0 );
+  const [currentObsIndex, setCurrentObsIndex] = useState( 0 );
   const [observations, setObservations] = useState( [] );
-  const [identification, setIdentification] = useState( null );
-  const [prevScreen, setPrevScreen] = useState( "ObsEdit" );
 
-  const currentObs = observations[currentObsNumber];
+  const currentObs = observations[currentObsIndex];
 
-  const addSound = ( sound ) => {
-    if ( observations.length === 0 ) {
-      const soundObs = createObservation( sound );
-      setObservations( [soundObs] );
-    } else if ( currentObs ) {
-      const updatedObs = Array.from( observations );
-      // $FlowFixMe
-      updatedObs[currentObsNumber].observationSounds = sound.observationSounds;
-      setObservations( updatedObs );
-    }
-  };
-
-  const mapPhotos = ( photos ) => photos.map( p => {
-    if ( p.uri ) {
-      return {
-        uri: p.uri,
-        uuid: p.uuid
-      };
-    } else {
-      // this is needed to navigate to CV suggestions from ObsDetail
-      // rather than any of the camera/gallery screens
-      return {
-        uri: p.photo.url,
-        uuid: p.uuid
-      };
-    }
-  } );
-
-  const addPhotos = ( photos ) => {
-    if ( observations.length === 0 ) {
-      const photoObs = createObservation( photos[0] );
-      // $FlowFixMe
-      photoObs.observationPhotos = mapPhotos( photos );
-      setObservations( [photoObs] );
-    } else if ( currentObs ) {
-      const updatedObs = Array.from( observations );
-      // $FlowFixMe
-      let obsPhotos = updatedObs[currentObsNumber].observationPhotos;
-      const newPhotos = mapPhotos( photos );
-
-      if ( obsPhotos ) {
-        // $FlowFixMe
-        updatedObs[currentObsNumber].observationPhotos = obsPhotos.concat( newPhotos );
-        setObservations( updatedObs );
-      } else {
-        // $FlowFixMe
-        updatedObs[currentObsNumber].observationPhotos = newPhotos;
-        setObservations( updatedObs );
-      }
-    }
-  };
-
-  const addObservations = ( obs ) => {
-    if ( observations.length === 0 ) {
-      const newObs = obs.map( o => {
-        const photoObs = createObservation( o.observationPhotos[0] );
-        // $FlowFixMe
-        photoObs.observationPhotos = mapPhotos( o.observationPhotos );
-        return photoObs;
-      } );
-      setObservations( newObs );
-    }
-    // there is probably another option here where a user
-    // can keep adding gallery photos after making observations
-    // but I'm not sure how that flow will work
-  };
-
-  const addObservationNoEvidence = ( ) => {
-    const newObs = createObservation( );
+  const addSound = async ( ) => {
+    const newObs = await Observation.createObsWithSounds( );
     setObservations( [newObs] );
   };
 
-  const createObservation = ( obs ) => {
-    return {
-      // object should look like Seek upload observation:
-      // https://github.com/inaturalist/SeekReactNative/blob/e2df7ca77517e0c4c89f3147dc5a15ed98e31c34/utility/uploadHelpers.js#L198
-      ...obs,
-      captive_flag: false,
-      geoprivacy: "open",
-      owners_identification_from_vision_requested: false,
-      project_ids: [],
-      time_zone: getTimeZone( ),
-      uuid: uuid.v4( )
-    };
+  const addPhotos = async ( photos ) => {
+    const newObs = await Observation.createObsFromNormalCamera( photos );
+    setObservations( [newObs] );
+  };
+
+  const addObservations = async ( obs ) => setObservations( obs );
+
+  const addObservationNoEvidence = async ( ) => {
+    const newObs = await Observation.new( );
+    setObservations( [newObs] );
   };
 
   const updateObservationKey = ( key, value ) => {
     const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObsNumber ) {
+      if ( index === currentObsIndex ) {
         return {
           ...obs,
           // $FlowFixMe
@@ -122,20 +55,67 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( updatedObs );
   };
 
-  const updateTaxaId = async ( taxaId ) => {
-    if ( prevScreen === "ObsEdit" ) {
-      updateObservationKey( "taxon_id", taxaId );
-      navigation.navigate( "ObsEdit" );
+  const updateTaxon = ( taxon ) => {
+    updateObservationKey( "taxon", taxon );
+    navigation.navigate( "ObsEdit" );
+  };
+
+  const setNextScreen = ( ) => {
+    if ( observations.length === 1 ) {
+      setCurrentObsIndex( 0 );
+      setObservations( [] );
+      setSelectedPhotos( {} );
+
+      navigation.navigate( "my observations", {
+        screen: "ObsList",
+        params: { savedLocalData: true }
+      } );
     } else {
-      const results = await createIdentification( { observation_id: observations[0].uuid, taxon_id: taxaId } );
-      console.log( results, "results in update taxa id" );
-      navigation.navigate( "my observations", { screen: "ObsDetail", params: { uuid: observations[0].uuid } } );
+      if ( currentObsIndex === observations.length - 1 ) {
+        observations.pop( );
+        setCurrentObsIndex( observations.length - 1 );
+        setObservations( observations );
+      } else {
+        observations.splice( currentObsIndex, 1 );
+        setCurrentObsIndex( currentObsIndex );
+        // this seems necessary for rerendering the ObsEdit screen
+        setObservations( [] );
+        setObservations( observations );
+      }
+    }
+  };
+
+  const saveObservation = async ( ) => {
+    const localObs = await saveLocalObservation( currentObs );
+    if ( localObs ) {
+      setNextScreen( );
+    }
+  };
+
+  const saveAndUploadObservation = async ( ) => {
+    const localObs = await saveLocalObservation( currentObs );
+    const mappedObs = Observation.mapObservationForUpload( localObs );
+    uploadObservation( mappedObs, localObs );
+    if ( localObs ) {
+      setNextScreen( );
+    }
+  };
+
+  const openSavedObservation = async ( savedUUID ) => {
+    try {
+      const realm = await Realm.open( realmConfig );
+      const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
+      setObservations( [obs] );
+      return obs;
+    } catch ( e ) {
+      console.log( e, "couldn't open saved observation in realm" );
+      return null;
     }
   };
 
   const obsEditValue = {
-    currentObsNumber,
-    setCurrentObsNumber,
+    currentObsIndex,
+    setCurrentObsIndex,
     addSound,
     addPhotos,
     addObservations,
@@ -143,10 +123,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     observations,
     setObservations,
     updateObservationKey,
-    updateTaxaId,
-    identification,
-    setIdentification,
-    setPrevScreen
+    updateTaxon,
+    saveObservation,
+    saveAndUploadObservation,
+    openSavedObservation
   };
 
   return (
