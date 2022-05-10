@@ -18,7 +18,7 @@ type Props = {
 const ObsEditProvider = ( { children }: Props ): Node => {
   const { setSelectedPhotos } = useContext( PhotoGalleryContext );
   const navigation = useNavigation( );
-  const [currentObsIndex, setcurrentObsIndex] = useState( 0 );
+  const [currentObsIndex, setCurrentObsIndex] = useState( 0 );
   const [observations, setObservations] = useState( [] );
 
   const currentObs = observations[currentObsIndex];
@@ -62,7 +62,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const setNextScreen = ( ) => {
     if ( observations.length === 1 ) {
-      setcurrentObsIndex( 0 );
+      setCurrentObsIndex( 0 );
       setObservations( [] );
       setSelectedPhotos( {} );
 
@@ -73,11 +73,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     } else {
       if ( currentObsIndex === observations.length - 1 ) {
         observations.pop( );
-        setcurrentObsIndex( observations.length - 1 );
+        setCurrentObsIndex( observations.length - 1 );
         setObservations( observations );
       } else {
         observations.splice( currentObsIndex, 1 );
-        setcurrentObsIndex( currentObsIndex );
+        setCurrentObsIndex( currentObsIndex );
         // this seems necessary for rerendering the ObsEdit screen
         setObservations( [] );
         setObservations( observations );
@@ -115,7 +115,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const obsEditValue = {
     currentObsIndex,
-    setcurrentObsIndex,
+    setCurrentObsIndex,
     addSound,
     addPhotos,
     addObservations,

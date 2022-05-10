@@ -4,6 +4,7 @@ import RNFS from "react-native-fs";
 const photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
 
 const resizeImage = async ( path, width, height? ) => {
+  console.log( path, "path for resizing image, android" );
   try {
     const { uri } = await ImageResizer.createResizedImage(
       path,

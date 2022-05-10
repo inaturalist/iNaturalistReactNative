@@ -50,10 +50,6 @@ class Observation {
   static async createObsWithPhotos( observationPhotos, observedOn ) {
     const observation = await Observation.new( );
     observation.observationPhotos = observationPhotos;
-
-    if ( observedOn ) {
-      observation.observed_on_string = observedOn;
-    }
     return observation;
   }
 
@@ -64,8 +60,9 @@ class Observation {
     return observation;
   }
 
-  static async createObsPhotos( photos ) {
+  static async formatObsPhotos( photos ) {
     return await Promise.all( photos.map( async photo => {
+      // photo.image?.uri is for gallery photos; photo.path is for normal camera
       const uri = photo.image?.uri || photo.path;
       return await ObservationPhoto.new( uri );
     } ) );
@@ -75,7 +72,7 @@ class Observation {
     return Promise.all( obs.map( async ( { photos } ) => {
       // take the observed_on_string time from the first photo in an observation
       const observedOn = formatDateAndTime( photos[0].timestamp );
-      const obsPhotos = await Observation.createObsPhotos( photos );
+      const obsPhotos = await Observation.formatObsPhotos( photos );
       return await Observation.createObsWithPhotos( obsPhotos, observedOn );
     } ) );
   }
@@ -83,7 +80,7 @@ class Observation {
   static async createObsFromNormalCamera( photos ) {
     // take the observed_on_string time from the first photo in an observation
     const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
-    const obsPhotos = await Observation.createObsPhotos( photos );
+    const obsPhotos = await Observation.formatObsPhotos( photos );
 
     return await Observation.createObsWithPhotos( obsPhotos, observedOn );
   }
@@ -130,7 +127,7 @@ class Observation {
   };
 
   static createObservationForRealm( obs, realm ) {
-    const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon, realm ) : null;
+    const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
     const observationPhotos = Observation.createLinkedObjects( obs.observation_photos, ObservationPhoto, realm );
     const comments = Observation.createLinkedObjects( obs.comments, Comment, realm );
     const identifications = Observation.createLinkedObjects( obs.identifications, Identification, realm );
@@ -165,7 +162,7 @@ class Observation {
       _synced_at: null,
       _updated_at: new Date( )
     };
-    const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon, realm ) : null;
+    const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
     const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => {
       return {
         ...newLocalRecord,

@@ -20,6 +20,7 @@ const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, select
   const renderEvidence = ( { item, index } ) => {
     const isSound = item?.file_url;
     let photoUrl = item.photo?.url || item?.photo?.localFilePath;
+    console.log( photoUrl, item.photo, "photo url in render evidence" );
     const imageUri = { uri: photoUrl };
 
     const handlePress = ( ) => {

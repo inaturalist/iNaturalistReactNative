@@ -40,11 +40,9 @@ const ObsDetailsHeader = ( { observationUUID }: Props ): Node => {
     } );
   }, [observationUUID, openSavedObservation, navigation] );
 
-  const goBack = ( ) => navigation.goBack( );
-
   return (
     <View style={viewStyles.headerRow}>
-      <HeaderBackButton onPress={goBack} />
+      <HeaderBackButton onPress={( ) => navigation.goBack( )} />
       <Headline>{t( "Observation" )}</Headline>
       {isLocal ? <Button icon="pencil" onPress={navToObsEdit} color={colors.gray} /> : <View />}
     </View>

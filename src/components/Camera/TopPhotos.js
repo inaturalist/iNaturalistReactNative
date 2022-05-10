@@ -5,15 +5,20 @@ import { FlatList, Image, Text } from "react-native";
 import type { Node } from "react";
 
 import { viewStyles, imageStyles, textStyles } from "../../styles/camera/normalCamera";
+import Photo from "../../models/Photo";
 
 type Props = {
   photos: Array<Object>
 }
 
 const TopPhotos = ( { photos }: Props ): Node => {
-  const renderSmallPhoto = ( { item } ) => (
-    <Image source={{ uri: item.path }} style={imageStyles.smallPhoto} />
-  );
+  const renderSmallPhoto = ( { item } ) => {
+    const uri = Photo.setPlatformSpecificFilePath( item.path );
+
+    return (
+      <Image source={{ uri }} style={imageStyles.smallPhoto} />
+    );
+  };
 
   const emptyDescription = ( ) => <Text style={textStyles.topPhotoText}>Photos you take will appear here</Text>;
 

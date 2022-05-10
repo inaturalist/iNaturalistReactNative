@@ -21,7 +21,7 @@ class Taxon {
     };
   }
 
-  static mapApiToRealm( taxon, realm ) {
+  static mapApiToRealm( taxon ) {
     return {
       ...taxon,
       default_photo: Photo.mapApiToRealm( taxon.default_photo )

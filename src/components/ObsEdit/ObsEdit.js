@@ -25,7 +25,7 @@ import OtherDataSection from "./OtherDataSection";
 const ObsEdit = ( ): Node => {
   const {
     currentObsIndex,
-    setcurrentObsIndex,
+    setCurrentObsIndex,
     observations,
     setObservations,
     updateObservationKey,
@@ -46,8 +46,8 @@ const ObsEdit = ( ): Node => {
 
   const updateObservedOn = value => updateObservationKey( "observed_on_string", value );
 
-  const showNextObservation = ( ) => setcurrentObsIndex( currentObsIndex + 1 );
-  const showPrevObservation = ( ) => setcurrentObsIndex( currentObsIndex - 1 );
+  const showNextObservation = ( ) => setCurrentObsIndex( currentObsIndex + 1 );
+  const showPrevObservation = ( ) => setCurrentObsIndex( currentObsIndex - 1 );
 
   const renderArrowNavigation = ( ) => {
     if ( observations.length === 0 ) { return; }

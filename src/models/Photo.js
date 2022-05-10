@@ -1,3 +1,5 @@
+import { Platform } from "react-native";
+
 class Photo {
   static PHOTO_FIELDS = {
     id: true,
@@ -8,6 +10,10 @@ class Photo {
 
   static mapApiToRealm( photo ) {
     return photo;
+  }
+
+  static setPlatformSpecificFilePath( uri ) {
+    return Platform.OS === "android" ? "file://" + uri : uri;
   }
 
   static schema = {
