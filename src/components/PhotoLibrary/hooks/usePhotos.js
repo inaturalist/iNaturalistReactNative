@@ -14,7 +14,17 @@ const initialStatus = {
   fetchingPhotos: false
 };
 
-const usePhotos = ( options: Object, isScrolling: boolean, permissionGranted: boolean = true ): Object => {
+/**
+ * Hook that manages access to photos from the operating system.
+ * @param {object} options Options passed to @react-native-community/cameraroll; @see
+ *  https://github.com/react-native-cameraroll/react-native-cameraroll#getphotos
+ * @param {boolean} isSrolling Whether or not the user is scrolling; generally
+ *  we need to fetch more photos when scrolling.
+ * @param {boolean} canRequestPhotos Whether or not this hook can fetch photos
+ *  now, e.g. if permissions have been granted (Android), or if it's ok to
+ *  request permissions (iOS)
+ */
+const usePhotos = ( options: Object, isScrolling: boolean, canRequestPhotos: boolean = true ): Object => {
   const [photoFetchStatus, setPhotoFetchStatus] = useState( initialStatus );
 
   const fetchPhotos = useCallback( async ( ) => {
@@ -67,17 +77,17 @@ const usePhotos = ( options: Object, isScrolling: boolean, permissionGranted: bo
 
   useEffect( ( ) => {
     // this should happen anytime initial status set, like album change or initial load
-    if ( permissionGranted && photoFetchStatus.lastCursor === null ) {
+    if ( canRequestPhotos && photoFetchStatus.lastCursor === null ) {
       fetchPhotos( );
     }
-  }, [permissionGranted, photoFetchStatus.lastCursor, fetchPhotos] );
+  }, [canRequestPhotos, photoFetchStatus.lastCursor, fetchPhotos] );
 
   useEffect( ( ) => {
     // this should happen when onEndReached is called from Photo Gallery screen
-    if ( permissionGranted && isScrolling ) {
+    if ( canRequestPhotos && isScrolling ) {
       fetchPhotos( );
     }
-  }, [permissionGranted, isScrolling, fetchPhotos] );
+  }, [canRequestPhotos, isScrolling, fetchPhotos] );
 
   useEffect( ( ) => {
     const changedAlbum = ( ) => {
@@ -103,5 +113,3 @@ const usePhotos = ( options: Object, isScrolling: boolean, permissionGranted: bo
 };
 
 export default usePhotos;
-
-
