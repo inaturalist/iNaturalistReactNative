@@ -1,7 +1,5 @@
 import { FileUpload } from "inaturalistjs";
 import uuid from "react-native-uuid";
-import { Platform } from "react-native";
-import RNFS from "react-native-fs";
 
 import Photo from "./Photo";
 import resizeImageForUpload from "../providers/uploadHelpers/resizeImage";
