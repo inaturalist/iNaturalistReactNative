@@ -1,6 +1,20 @@
 import User from "./User";
 import Taxon from "./Taxon";
 class Identification {
+  static ID_FIELDS = {
+    body: true,
+    category: true,
+    created_at: true,
+    current: true,
+    disagreement: true,
+    taxon: Taxon.TAXON_FIELDS,
+    updated_at: true,
+    // $FlowFixMe
+    user: Object.assign( { }, User.USER_FIELDS, { id: true } ),
+    uuid: true,
+    vision: true
+  };
+
   static mimicRealmMappedPropertiesSchema( id ) {
     return {
       ...id,

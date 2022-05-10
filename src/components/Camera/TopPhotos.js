@@ -1,26 +1,34 @@
 // @flow
 
 import React from "react";
-import { FlatList, Image } from "react-native";
+import { FlatList, Image, Text } from "react-native";
 import type { Node } from "react";
 
-import { viewStyles, imageStyles } from "../../styles/camera/normalCamera";
+import { viewStyles, imageStyles, textStyles } from "../../styles/camera/normalCamera";
+import Photo from "../../models/Photo";
 
 type Props = {
-  observationPhotos: Array<Object>
+  photos: Array<Object>
 }
 
-const TopPhotos = ( { observationPhotos }: Props ): Node => {
-  const renderSmallPhoto = ( { item } ) => (
-    <Image source={{ uri: item.uri }} style={imageStyles.smallPhoto} />
-  );
+const TopPhotos = ( { photos }: Props ): Node => {
+  const renderSmallPhoto = ( { item } ) => {
+    const uri = Photo.setPlatformSpecificFilePath( item.path );
+
+    return (
+      <Image source={{ uri }} style={imageStyles.smallPhoto} />
+    );
+  };
+
+  const emptyDescription = ( ) => <Text style={textStyles.topPhotoText}>Photos you take will appear here</Text>;
 
   return (
     <FlatList
-      data={observationPhotos}
+      data={photos}
       contentContainerStyle={viewStyles.photoContainer}
       renderItem={renderSmallPhoto}
       horizontal
+      ListEmptyComponent={emptyDescription}
     />
   );
 };

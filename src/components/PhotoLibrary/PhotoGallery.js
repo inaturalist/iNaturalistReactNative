@@ -93,15 +93,16 @@ const PhotoGallery = ( ): Node => {
   };
 
   const renderImage = ( { item } ) => {
-    const isSelected = photosSelectedInAlbum.some( photo => photo.uri === item.uri );
+    const uri = item?.image?.uri;
+    const isSelected = photosSelectedInAlbum.some( photo => photo.image.uri === uri );
 
     const handlePress = ( ) => selectPhoto( isSelected, item );
 
-    const imageUri = { uri: item.uri };
+    const imageUri = { uri };
     return (
       <Pressable
         onPress={handlePress}
-        testID={`PhotoGallery.${item.uri}`}
+        testID={`PhotoGallery.${uri}`}
       >
         <Image
           testID="PhotoGallery.photo"

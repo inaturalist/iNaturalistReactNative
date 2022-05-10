@@ -1,4 +1,11 @@
 class User {
+  static USER_FIELDS = {
+    icon_url: true,
+    id: true,
+    login: true,
+    name: true
+  };
+
   static mapApiToRealm( user, realm ) {
     return user;
   }

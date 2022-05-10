@@ -17,11 +17,13 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1.0</string>
+	<string>0.1.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>7</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false />
 	<key>LSRequiresIPhoneOS</key>
 	<true />
 	<key>NSAppTransportSecurity</key>
@@ -45,6 +47,10 @@
 	<string>Export and import ${PRODUCT_NAME} photos to and from your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Export and import ${PRODUCT_NAME} photos to and from your library.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MaterialCommunityIcons.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

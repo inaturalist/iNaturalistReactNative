@@ -6,15 +6,15 @@ import { useTranslation } from "react-i18next";
 import type { Node } from "react";
 
 import { textStyles } from "../../styles/obsEdit/obsEdit";
-
+import { displayDateTimeObsEdit } from "../../sharedHelpers/dateAndTime";
 import DateTimePicker from "../SharedComponents/DateTimePicker";
 
 type Props = {
-  displayDate: ?string,
-  handleDatePicked: ( Date ) => void
+  handleDatePicked: ( Date ) => void,
+  currentObs: Object
 }
 
-const DatePicker = ( { displayDate, handleDatePicked }: Props ): Node => {
+const DatePicker = ( { handleDatePicked, currentObs }: Props ): Node => {
   const { t } = useTranslation( );
   const [showModal, setShowModal] = useState( false );
 
@@ -24,6 +24,16 @@ const DatePicker = ( { displayDate, handleDatePicked }: Props ): Node => {
   const handlePicked = ( value ) => {
     handleDatePicked( value );
     closeModal();
+  };
+
+  const displayDate = ( ) => {
+    if ( currentObs.observed_on_string ) {
+      return displayDateTimeObsEdit( currentObs.observed_on_string );
+    } else if ( currentObs.time_observed_at ) {
+      // this is for observations already uploaded to iNat
+      return displayDateTimeObsEdit( currentObs.time_observed_at );
+    }
+    return "";
   };
 
   return (
@@ -38,7 +48,7 @@ const DatePicker = ( { displayDate, handleDatePicked }: Props ): Node => {
         onPress={openModal}
       >
         <Text style={textStyles.text} testID="ObsEdit.time">
-           {displayDate || t( "Add-Date-Time" )}
+          {displayDate( ) || t( "Add-Date-Time" )}
         </Text>
       </Pressable>
     </>

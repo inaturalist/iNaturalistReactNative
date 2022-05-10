@@ -7,6 +7,10 @@ import ObsEdit from "../../../../src/components/ObsEdit/ObsEdit";
 import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import { ObsEditContext } from "../../../../src/providers/contexts";
 
+// this resolves a test failure with the Animated library:
+// Animated: `useNativeDriver` is not supported because the native animated module is missing.
+jest.useFakeTimers( );
+
 const mockLocationName = "San Francisco, CA";
 
 jest.mock( "../../../../src/providers/ObsEditProvider" );
@@ -37,7 +41,7 @@ const mockObsEditProviderWithObs = obs =>
   ObsEditProvider.mockImplementation( ( { children }: Props ): Node => (
     <ObsEditContext.Provider value={{
       observations: obs,
-      currentObsNumber: 0
+      currentObsIndex: 0
     }}>
       {children}
     </ObsEditContext.Provider>

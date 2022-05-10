@@ -16,7 +16,6 @@ test( "renders text passed into observation card", ( ) => {
   expect( getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( { "uri": testObservation.observationPhotos[0].photo.url } );
   expect( getByText( testObservation.taxon.preferredCommonName ) ).toBeTruthy( );
   expect( getByText( testObservation.placeGuess ) ).toBeTruthy( );
-  expect( getByText( testObservation.timeObservedAt ) ).toBeTruthy( );
   expect( getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );
   expect( getByText( testObservation.identifications.length.toString( ) ) ).toBeTruthy( );
   expect( getByText( testObservation.qualityGrade ) ).toBeTruthy( );

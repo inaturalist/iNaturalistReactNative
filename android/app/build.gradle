@@ -83,6 +83,13 @@ project.ext.react = [
 
 apply from: "../../node_modules/react-native/react.gradle"
 
+// add vector icons to project
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialCommunityIcons.ttf' ]
+]
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -144,8 +151,8 @@ android {
         applicationId "com.inaturalistreactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "0.1.0"
+        versionCode 10
+        versionName "0.1.1"
     }
     splits {
         abi {

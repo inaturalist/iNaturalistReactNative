@@ -1,6 +1,10 @@
 import ImageResizer from "react-native-image-resizer";
+import RNFS from "react-native-fs";
 
-const resizeImage = async ( path, width, height?, outputPath? ) => {
+const photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
+
+const resizeImage = async ( path, width, height? ) => {
+  console.log( path, "path for resizing image, android" );
   try {
     const { uri } = await ImageResizer.createResizedImage(
       path,
@@ -10,7 +14,7 @@ const resizeImage = async ( path, width, height?, outputPath? ) => {
       100, // quality
       0, // rotation
       // $FlowFixMe
-      outputPath, // outputPath
+      photoUploadPath,
       true // keep metadata
     );
 
