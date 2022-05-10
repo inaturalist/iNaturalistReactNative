@@ -22,6 +22,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row",
     flexWrap: "nowrap",
     marginVertical: 10
+  },
+  searchBar: {
+    marginHorizontal: 10
   }
 } );
 

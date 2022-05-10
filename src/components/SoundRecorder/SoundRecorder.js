@@ -9,10 +9,6 @@ import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
-import uuid from "react-native-uuid";
-import { getUnixTime } from "date-fns";
-import { useUserLocation } from "../../sharedHooks/useUserLocation";
-import { formatDateAndTime } from "../../sharedHelpers/dateAndTime";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder";
@@ -23,9 +19,6 @@ const audioRecorderPlayer = new AudioRecorderPlayer( );
 
 const SoundRecorder = ( ): Node => {
   const { addSound } = useContext( ObsEditContext );
-  const latLng = useUserLocation( );
-  const latitude = latLng && latLng.latitude;
-  const longitude = latLng && latLng.longitude;
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   // TODO: add Android permissions
@@ -57,8 +50,6 @@ const SoundRecorder = ( ): Node => {
           PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
         ] );
 
-        console.log( "write external storage", grants );
-
         if (
           grants["android.permission.WRITE_EXTERNAL_STORAGE"] ===
             PermissionsAndroid.RESULTS.GRANTED &&
@@ -87,7 +78,7 @@ const SoundRecorder = ( ): Node => {
 
   const startRecording = async ( ) => {
     try {
-      const audioFile = await audioRecorderPlayer.startRecorder( null, null, true );
+      const cachedFile = await audioRecorderPlayer.startRecorder( null, null, true );
       setStatus( "recording" );
       audioRecorderPlayer.addRecordBackListener( ( e ) => {
         setSound( {
@@ -100,20 +91,11 @@ const SoundRecorder = ( ): Node => {
         } );
         return;
       } );
-      setUri( audioFile );
+      setUri( cachedFile );
     } catch ( e ) {
       console.log( "couldn't start sound recorder:", e );
     }
   };
-
-  // const pauseRecording = async ( ) => {
-  //   try {
-  //     await audioRecorderPlayer.pauseRecorder( );
-  //     setStatus( "paused" );
-  //   } catch ( e ) {
-  //     console.log( "couldn't pause sound recorder:", e );
-  //   }
-  // };
 
   const resumeRecording = async ( ) => {
     try {
@@ -216,16 +198,7 @@ const SoundRecorder = ( ): Node => {
   };
 
   const navToObsEdit = ( ) => {
-    addSound( {
-      latitude,
-      longitude,
-      positional_accuracy: latLng && latLng.accuracy,
-      observationSounds: {
-        uri,
-        uuid: uuid.v4( )
-      },
-      observed_on_string: formatDateAndTime( getUnixTime( new Date( ) ) )
-    } );
+    addSound( );
     navigation.navigate( "ObsEdit" );
   };
 

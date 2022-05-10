@@ -7,6 +7,8 @@ import { colors } from "../global";
 
 const { width } = Dimensions.get( "screen" );
 
+const oneThirdWidth = width / 3;
+
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   row: {
     backgroundColor: colors.white,
@@ -15,8 +17,13 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     alignItems: "center",
     justifyContent: "space-between"
   },
-  element: {
-    width: width / 3
+  headerRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    justifyContent: "space-around"
+  },
+  oneThirdWidth: {
+    width: oneThirdWidth
   }
 } );
 

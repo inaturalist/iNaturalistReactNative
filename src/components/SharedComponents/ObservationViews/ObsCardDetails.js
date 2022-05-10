@@ -3,23 +3,40 @@
 import React from "react";
 import { Text } from "react-native";
 import type { Node } from "react";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
+import { formatObsListTime } from "../../../sharedHelpers/dateAndTime";
+import checkCamelAndSnakeCase from "../../ObsDetails/helpers/checkCamelAndSnakeCase";
 
 type Props = {
-  item: Object
+  item: Object,
+  needsUpload: boolean
 }
 
-const ObsCardDetails = ( { item }: Props ): Node => {
-  const commonName = item.taxon && ( item.taxon.preferredCommonName || item.taxon.preferred_common_name );
-  const placeGuess = item.placeGuess || item.place_guess;
-  const timeObserved = item.timeObservedAt || item.time_observed_at;
+const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
+  const placeGuess = checkCamelAndSnakeCase( item, "placeGuess" );
+
+  const displayTime = ( ) => {
+    if ( item._created_at ) {
+      return formatObsListTime( item._created_at );
+    }
+    return "no time given";
+  };
+
+  const displayName = ( ) => item.taxon ? checkCamelAndSnakeCase( item.taxon, "preferredCommonName" ) : "no name";
 
   return (
     <>
-      <Text style={textStyles.text} numberOfLines={1}>{commonName || "no common name"}</Text>
-      <Text style={textStyles.text} numberOfLines={1}>{placeGuess || "no place guess"}</Text>
-      <Text style={textStyles.text} numberOfLines={1}>{timeObserved || "no time given"}</Text>
+      <Text style={textStyles.text} numberOfLines={1}>{displayName( )}</Text>
+      <Text style={textStyles.text} numberOfLines={1}>
+        <Icon name="map-marker" size={15} />
+        {placeGuess || "no place guess"}
+      </Text>
+      <Text style={textStyles.text} numberOfLines={1}>
+        <Icon name="clock" size={15} />
+        {displayTime( )}
+      </Text>
     </>
   );
 };

@@ -4,10 +4,9 @@ import { useEffect, useCallback, useRef, useState } from "react";
 import inatjs from "inaturalistjs";
 import Realm from "realm";
 
-import realmConfig from "../../models/index";
-import Observation from "../../models/Observation";
-import { FIELDS } from "../helpers";
-import { getUsername } from "../../components/LoginSignUp/AuthenticationService";
+import realmConfig from "../../../models/index";
+import Observation from "../../../models/Observation";
+import { getUsername } from "../../../components/LoginSignUp/AuthenticationService";
 
 const perPage = 6;
 
@@ -17,10 +16,18 @@ const useObservations = ( ): Object => {
   const nextPageToFetch = observationList.length > 0 ? Math.ceil( observationList.length / perPage ) : 1;
   const [page, setPage] = useState( nextPageToFetch );
   const [userLogin, setUserLogin] = useState( null );
+  const [obsToUpload, setObsToUpload] = useState( [] );
 
-  const syncObservations = ( username ) => {
-    // await username on login screen for initial fetch
-    setUserLogin( username );
+  const syncObservations = ( username = null ) => {
+    // initial getUsername( ) fetch after login screen wasn't working without
+    // passing username as navigation props, likely due to a timing issue
+    // so here we're setting userLogin from props instead of from getUsername( )
+    // but there's probably a cleaner way to do this
+    if ( typeof username === "string" ) {
+      setUserLogin( username );
+    } else {
+      setUserLogin( null );
+    }
   };
 
   // We store a reference to our realm using useRef that allows us to access it via
@@ -34,10 +41,16 @@ const useObservations = ( ): Object => {
 
     // When querying a realm to find objects (e.g. realm.objects('Observation')) the result we get back
     // and the objects in it are "live" and will always reflect the latest state.
-    const localObservations = realm.objects( "Observation" );
+
+    const localObservations = realm.objects( "Observation" ).sorted( "_created_at", true );
+    const notUploadedObs = realm.objects( "Observation" ).filtered( "_synced_at == null" );
 
     if ( localObservations?.length ) {
       setObservationList( localObservations );
+    }
+
+    if ( notUploadedObs?.length ) {
+      setObsToUpload( notUploadedObs );
     }
 
     try {
@@ -88,7 +101,6 @@ const useObservations = ( ): Object => {
     let isCurrent = true;
     const fetchObservations = async ( ) => {
       const username = await getUsername( );
-      console.log( userLogin || username, "user login fetch observations for page: ", page );
       if ( !userLogin && !username ) { return; }
       setLoading( true );
       try {
@@ -96,7 +108,7 @@ const useObservations = ( ): Object => {
           user_id: userLogin || username,
           page,
           per_page: perPage,
-          fields: FIELDS
+          fields: Observation.FIELDS
         };
         const response = await inatjs.observations.search( params );
         const results = response.results;
@@ -121,7 +133,8 @@ const useObservations = ( ): Object => {
     loading,
     observationList,
     syncObservations,
-    fetchNextObservations
+    fetchNextObservations,
+    obsToUpload
   };
 };
 

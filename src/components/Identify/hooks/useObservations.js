@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
 
-import { FIELDS } from "../../../providers/helpers";
+import Observation from "../../../models/Observation";
+
 
 const useObservations = ( placeId: ?string, taxonId: ?number ): {
   observations: Array<Object>,
@@ -24,7 +25,7 @@ const useObservations = ( placeId: ?string, taxonId: ?number ): {
           // ttl: -1,
           // order_by: "random",
           // quality_grade: "any",
-          fields: FIELDS
+          fields: Observation.FIELDS
         };
         if ( placeId ) {
           // $FlowFixMe

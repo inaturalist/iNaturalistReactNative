@@ -1,10 +1,90 @@
+import uuid from "react-native-uuid";
+
 import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
+import ObservationSound from "./ObservationSound";
 import Taxon from "./Taxon";
 import User from "./User";
+import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
+import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
+import { formatCameraDate } from "../sharedHelpers/dateAndTime";
+import { getUserId } from "../components/LoginSignUp/AuthenticationService";
 
 class Observation {
+  static FIELDS = {
+    captive: true,
+    comments: Comment.COMMENT_FIELDS,
+    created_at: true,
+    description: true,
+    geojson: true,
+    geoprivacy: true,
+    id: true,
+    identifications: Identification.ID_FIELDS,
+    latitude: true,
+    location: true,
+    longitude: true,
+    observation_photos: ObservationPhoto.OBSERVATION_PHOTOS_FIELDS,
+    place_guess: true,
+    quality_grade: true,
+    taxon: Taxon.TAXON_FIELDS,
+    time_observed_at: true,
+    user: User.USER_FIELDS
+  }
+
+  static async new( obs ) {
+    const latLng = await fetchUserLocation( );
+
+    return {
+      ...obs,
+      ...latLng,
+      captive: false,
+      geoprivacy: "open",
+      owners_identification_from_vision: false,
+      observed_on_string: createObservedOnStringForUpload( ),
+      // project_ids: [],
+      uuid: uuid.v4( )
+    };
+  }
+
+  static async createObsWithPhotos( observationPhotos, observedOn ) {
+    const observation = await Observation.new( );
+    observation.observationPhotos = observationPhotos;
+    return observation;
+  }
+
+  static async createObsWithSounds( ) {
+    const observation = await Observation.new( );
+    const sound = await ObservationSound.new( );
+    observation.observationSounds = [sound];
+    return observation;
+  }
+
+  static async formatObsPhotos( photos ) {
+    return await Promise.all( photos.map( async photo => {
+      // photo.image?.uri is for gallery photos; photo.path is for normal camera
+      const uri = photo.image?.uri || photo.path;
+      return await ObservationPhoto.new( uri );
+    } ) );
+  }
+
+  static async createMutipleObsFromGalleryPhotos( obs ) {
+    return Promise.all( obs.map( async ( { photos } ) => {
+      // take the observed_on_string time from the first photo in an observation
+      const observedOn = formatDateAndTime( photos[0].timestamp );
+      const obsPhotos = await Observation.formatObsPhotos( photos );
+      return await Observation.createObsWithPhotos( obsPhotos, observedOn );
+    } ) );
+  }
+
+  static async createObsFromNormalCamera( photos ) {
+    // take the observed_on_string time from the first photo in an observation
+    const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
+    const obsPhotos = await Observation.formatObsPhotos( photos );
+
+    return await Observation.createObsWithPhotos( obsPhotos, observedOn );
+  }
+
   static mimicRealmMappedPropertiesSchema( obs ) {
     const createLinkedObjects = ( list, createFunction ) => {
       if ( list.length === 0 ) { return; }
@@ -39,22 +119,25 @@ class Observation {
     };
   }
 
-  static createObservationForRealm( obs, realm ) {
-    const createLinkedObjects = ( list, createFunction ) => {
-      if ( list.length === 0 ) { return; }
-      return list.map( item => {
-        return createFunction.mapApiToRealm( item, realm );
-      } );
-    };
+  static createLinkedObjects = ( list, createFunction, realm ) => {
+    if ( list.length === 0 ) { return; }
+    return list.map( item => {
+      return createFunction.mapApiToRealm( item, realm );
+    } );
+  };
 
-    const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon, realm ) : null;
-    const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
-    const comments = createLinkedObjects( obs.comments, Comment );
-    const identifications = createLinkedObjects( obs.identifications, Identification );
+  static createObservationForRealm( obs, realm ) {
+    const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
+    const observationPhotos = Observation.createLinkedObjects( obs.observation_photos, ObservationPhoto, realm );
+    const comments = Observation.createLinkedObjects( obs.comments, Comment, realm );
+    const identifications = Observation.createLinkedObjects( obs.identifications, Identification, realm );
     const user = User.mapApiToRealm( obs.user );
 
     const newObs = {
       ...obs,
+      // this time is used for sorting observations in ObsList
+      _created_at: obs.created_at,
+      _synced_at: new Date( ),
       comments,
       identifications,
       // obs detail on web says geojson coords are preferred over lat/long
@@ -68,16 +151,77 @@ class Observation {
     return newObs;
   }
 
+  static async saveLocalObservationForUpload( obs, realm ) {
+    // make sure local observations have user details for ObsDetail
+    const id = await getUserId( );
+    const user = realm.objectForPrimaryKey( "User", Number( id ) );
+    obs.user = user;
+
+    const newLocalRecord = {
+      _created_at: new Date( ),
+      _synced_at: null,
+      _updated_at: new Date( )
+    };
+    const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
+    const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => {
+      return {
+        ...newLocalRecord,
+        ...photo
+      };
+    } );
+    const observationSounds = obs.observationSounds && obs.observationSounds.map( sound => {
+      return {
+        ...newLocalRecord,
+        ...sound
+      };
+    } );
+
+    const obsToSave = {
+      ...obs,
+      ...newLocalRecord,
+      taxon,
+      observationPhotos,
+      observationSounds,
+      quality_grade: "needs_id"
+    };
+
+    realm?.write( ( ) => {
+      // using 'modified' here for the case where a new observation has the same Taxon
+      // as a previous observation; otherwise, realm will error out
+      realm?.create( "Observation", obsToSave, "modified" );
+    } );
+    return realm.objectForPrimaryKey( "Observation", obs.uuid );
+  }
+
+  static mapObservationForUpload( obs ) {
+    return {
+      species_guess: obs.species_guess,
+      description: obs.description,
+      observed_on_string: obs.observed_on_string,
+      place_guess: obs.place_guess,
+      latitude: obs.latitude,
+      longitude: obs.longitude,
+      positional_accuracy: obs.positional_accuracy,
+      taxon_id: obs.taxon && obs.taxon.id,
+      geoprivacy: obs.geoprivacy,
+      uuid: obs.uuid,
+      captive_flag: obs.captive,
+      owners_identification_from_vision: obs.owners_identification_from_vision
+    };
+  }
+
   // TODO: swap this and realm schema to use observation_photos everywhere, if possible
   // so there's no need for projectUri
   static uri = ( obs, medium ) => {
     let photoUri;
     if ( obs && obs.observationPhotos && obs.observationPhotos[0] ) {
+      const { photo } = obs.observationPhotos[0];
       if ( medium ) {
         // need medium size for GridView component
-        photoUri = obs.observationPhotos[0].photo.url.replace( "square", "medium" );
+        photoUri = ( photo && photo.url ) && photo.url.replace( "square", "medium" );
       } else {
-        photoUri = obs.observationPhotos[0].photo.url;
+        // show localFilePath for photos not yet uploaded and synced
+        photoUri = ( photo && photo.url ) ? photo.url : photo.localFilePath;
       }
     }
     return { uri: photoUri };
@@ -107,20 +251,41 @@ class Observation {
     name: "Observation",
     primaryKey: "uuid",
     properties: {
+      // datetime the observation was created on the device
+      _created_at: "date?",
+      // datetime the observation was last synced with the server
+      _synced_at: "date?",
+      // datetime the observation was updated on the device (i.e. edited locally)
+      _updated_at: "date?",
       uuid: "string",
+      captive: "bool?",
       comments: "Comment[]",
+      // timestamp of when observation was created on the server; not editable
       created_at: { type: "string?", mapTo: "createdAt" },
       description: "string?",
+      geoprivacy: "string?",
+      id: "int?",
       identifications: "Identification[]",
       latitude: "double?",
       longitude: "double?",
       observationPhotos: "ObservationPhoto[]",
       observationSounds: "ObservationSound[]",
+      // date and/or time submitted to the server when a new obs is uploaded
+      observed_on_string: "string?",
+      owners_identification_from_vision: "bool?",
+      species_guess: "string?",
       place_guess: { type: "string?", mapTo: "placeGuess" },
+      positional_accuracy: "double?",
       quality_grade: { type: "string?", mapTo: "qualityGrade" },
       taxon: "Taxon?",
+      // datetime when the observer observed the organism; user-editable, but only by changing observed_on_string
       time_observed_at: { type: "string?", mapTo: "timeObservedAt" },
       user: "User?"
+
+      // need project ids, but skipping this for now
+      // to get rest of upload working
+      // project_ids
+      // note that taxon_id is nested under Taxon
     }
   }
 }

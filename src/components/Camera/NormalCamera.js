@@ -5,20 +5,17 @@ import { Text, View, Pressable } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
-import uuid from "react-native-uuid";
+import { Avatar } from "react-native-paper";
 
-import { useUserLocation } from "../../sharedHooks/useUserLocation";
 import { viewStyles } from "../../styles/camera/normalCamera";
 import { ObsEditContext } from "../../providers/contexts";
 import CameraView from "./CameraView";
 import TopPhotos from "./TopPhotos";
-
+import { textStyles } from "../../styles/obsDetails/obsDetails";
 
 const NormalCamera = ( ): Node => {
+  // TODO: figure out if there's a way to write location to photo metadata with RN
   const { addPhotos } = useContext( ObsEditContext );
-  const latLng = useUserLocation( );
-  const latitude = latLng && latLng.latitude;
-  const longitude = latLng && latLng.longitude;
   const navigation = useNavigation( );
   // $FlowFixMe
   const camera = useRef<Camera>( null );
@@ -28,33 +25,22 @@ const NormalCamera = ( ): Node => {
   const [takePhotoOptions, setTakePhotoOptions] = useState( {
     flash: "off"
   } );
-  const [observationPhotos, setObservationPhotos] = useState( [] );
+  const [photos, setPhotos] = useState( [] );
 
   useEffect( ( ) => {
     navigation.addListener( "blur", ( ) => {
-      if ( observationPhotos.length > 0 ) {
-        setObservationPhotos( [] );
+      if ( photos.length > 0 ) {
+        setPhotos( [] );
       }
     } );
-  }, [navigation, observationPhotos] );
+  }, [navigation, photos] );
 
   const takePhoto = async ( ) => {
     try {
       const photo = await camera.current.takePhoto( takePhotoOptions );
-      const parsedPhoto = {
-        latitude,
-        longitude,
-        positional_accuracy: latLng && latLng.accuracy,
-        // TODO: check that this formatting for observed_on_string
-        // shows up as expected on web,
-        observed_on_string: photo.metadata["{Exif}"].DateTimeOriginal,
-        uri: `file://${photo.path}`,
-        // exif: photo.metadata["{Exif}"],
-        uuid: uuid.v4( )
-      };
       // only 10 photos allowed
-      if ( observationPhotos.length < 10 ) {
-        setObservationPhotos( observationPhotos.concat( [parsedPhoto] ) );
+      if ( photos.length < 10 ) {
+        setPhotos( photos.concat( [photo] ) );
       }
     } catch ( e ) {
       console.log( e, "couldn't take photo" );
@@ -74,40 +60,44 @@ const NormalCamera = ( ): Node => {
   };
 
   const navToObsEdit = ( ) => {
-    addPhotos( observationPhotos );
+    addPhotos( photos );
     navigation.navigate( "ObsEdit" );
   };
 
   return (
     <View style={viewStyles.container}>
       {device && <CameraView device={device} camera={camera} />}
-      <TopPhotos observationPhotos={observationPhotos} />
+      <TopPhotos photos={photos} />
       <View style={viewStyles.row}>
         <Pressable
           style={viewStyles.flashButton}
           onPress={toggleFlash}
         >
-            <Text>flash</Text>
-        </Pressable>
-        <Pressable
-          style={viewStyles.captureButton}
-          onPress={takePhoto}
-        >
-            <Text>camera capture</Text>
+          <Avatar.Icon size={40} icon="flash" />
         </Pressable>
         <Pressable
           style={viewStyles.cameraFlipButton}
           onPress={flipCamera}
         >
-            <Text>flip camera</Text>
+          <Avatar.Icon size={40} icon="camera-flip" />
+        </Pressable>
+        <View />
+
+      </View>
+      <View style={viewStyles.secondRow}>
+        <Pressable
+          style={viewStyles.captureButton}
+          onPress={takePhoto}
+        >
+          <Avatar.Icon size={40} icon="circle-outline" />
+        </Pressable>
+        <Pressable
+          style={viewStyles.cameraFlipButton}
+          onPress={navToObsEdit}
+        >
+          <Text style={textStyles.whiteText}>next</Text>
         </Pressable>
       </View>
-      <Pressable
-        style={viewStyles.cameraFlipButton}
-        onPress={navToObsEdit}
-      >
-          <Text>next</Text>
-      </Pressable>
     </View>
   );
 };

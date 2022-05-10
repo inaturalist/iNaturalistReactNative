@@ -1,5 +1,12 @@
 import User from "./User";
 class Comment {
+  static COMMENT_FIELDS = {
+    body: true,
+    created_at: true,
+    id: true,
+    user: User.USER_FIELDS
+  };
+
   static mapApiToRealm( comment, realm ) {
     return {
       ...comment,
