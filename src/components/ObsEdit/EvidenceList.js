@@ -20,6 +20,10 @@ const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, select
   const renderEvidence = ( { item, index } ) => {
     const isSound = item?.file_url;
     let photoUrl = item.photo?.url || item?.photo?.localFilePath;
+    // TODO this needs to deal with sounds
+    if ( !photoUrl ) {
+      throw "Tried to render photo that has no url or path!";
+    }
     const imageUri = { uri: photoUrl };
 
     const handlePress = ( ) => {

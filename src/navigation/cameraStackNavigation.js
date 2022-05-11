@@ -21,18 +21,18 @@ const hideHeader = {
 };
 
 const PhotoGalleryWithPermission = ( ) => (
-  <PermissionGate
-    permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}
-  >
-    <PhotoGallery />
+  <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
+    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
+      <PhotoGallery />
+    </PermissionGate>
   </PermissionGate>
 );
 
 const NormalCameraWithPermission = ( ) => (
-  <PermissionGate
-    permission={PermissionsAndroid.PERMISSIONS.CAMERA}
-  >
-    <NormalCamera />
+  <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
+    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
+      <NormalCamera />
+    </PermissionGate>
   </PermissionGate>
 );
 
