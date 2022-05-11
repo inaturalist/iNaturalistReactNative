@@ -1,4 +1,3 @@
-import { photos } from "inaturalistjs";
 import { Platform } from "react-native";
 
 class Photo {
