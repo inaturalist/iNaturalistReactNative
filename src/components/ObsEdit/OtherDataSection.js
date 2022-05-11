@@ -15,6 +15,7 @@ import Notes from "./Notes";
 
 
 const OtherDataSection = ( ): Node => {
+  const showForMilestoneOne = false;
   const {
     currentObsIndex,
     observations,
@@ -55,7 +56,7 @@ const OtherDataSection = ( ): Node => {
 
   const addNotes = text => updateObservationKey( "description", text );
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
-  const updateCaptiveStatus = value => updateObservationKey( "captive", value );
+  const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
 
   const searchForProjects = ( ) => {
     setSource( "projects" );
@@ -112,12 +113,14 @@ const OtherDataSection = ( ): Node => {
           items={captiveOptions}
           useNativeAndroidPickerStyle={false}
           style={pickerSelectStyles}
-          value={currentObs.captive}
+          value={currentObs.captive_flag}
         />
       </View>
-      <Pressable onPress={searchForProjects}>
-        <TranslatedText style={textStyles.text} text="Add-to-projects" />
-      </Pressable>
+      {showForMilestoneOne && (
+        <Pressable onPress={searchForProjects}>
+          <TranslatedText style={textStyles.text} text="Add-to-projects" />
+        </Pressable>
+      )}
       <Notes addNotes={addNotes} description={currentObs.description} />
     </>
   );

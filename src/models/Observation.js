@@ -38,10 +38,11 @@ class Observation {
     return {
       ...obs,
       ...latLng,
-      captive: false,
+      captive_flag: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
       observed_on_string: createObservedOnStringForUpload( ),
+      quality_grade: "needs_id",
       // project_ids: [],
       uuid: uuid.v4( )
     };
@@ -157,40 +158,51 @@ class Observation {
     const user = realm.objectForPrimaryKey( "User", Number( id ) );
     obs.user = user;
 
-    const newLocalRecord = {
-      _created_at: new Date( ),
-      _synced_at: null,
+    const timestamps = {
       _updated_at: new Date( )
     };
+
+    const isSavedObservation = realm.objectForPrimaryKey( "Observation", obs.uuid );
+
+    if ( !isSavedObservation ) {
+      timestamps._created_at = new Date( );
+      timestamps._synced_at = null;
+    }
+
+    const addTimestampsToEvidence = ( evidence ) => {
+      // right now there isn't a way to edit photos or sounds via ObsEdit
+      // so we only need to add timestamps on the first time a local observation is saved
+      if ( !isSavedObservation ) {
+        evidence && evidence.map( record => {
+          return {
+            ...timestamps,
+            ...record
+          };
+        } );
+      }
+      return evidence;
+    };
+
     const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
-    const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => {
-      return {
-        ...newLocalRecord,
-        ...photo
-      };
-    } );
-    const observationSounds = obs.observationSounds && obs.observationSounds.map( sound => {
-      return {
-        ...newLocalRecord,
-        ...sound
-      };
-    } );
+    const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
+    const observationSounds = addTimestampsToEvidence( obs.observationSounds );
 
     const obsToSave = {
       ...obs,
-      ...newLocalRecord,
+      ...timestamps,
       taxon,
       observationPhotos,
-      observationSounds,
-      quality_grade: "needs_id"
+      observationSounds
     };
 
     realm?.write( ( ) => {
       // using 'modified' here for the case where a new observation has the same Taxon
       // as a previous observation; otherwise, realm will error out
+      // also using modified for updating observations which were already saved locally
       realm?.create( "Observation", obsToSave, "modified" );
     } );
-    return realm.objectForPrimaryKey( "Observation", obs.uuid );
+    const observation = realm.objectForPrimaryKey( "Observation", obs.uuid );
+    return observation;
   }
 
   static mapObservationForUpload( obs ) {
@@ -205,8 +217,29 @@ class Observation {
       taxon_id: obs.taxon && obs.taxon.id,
       geoprivacy: obs.geoprivacy,
       uuid: obs.uuid,
-      captive_flag: obs.captive,
+      captive_flag: obs.captive_flag,
       owners_identification_from_vision: obs.owners_identification_from_vision
+    };
+  }
+
+  static mapPlainObjectForObsEdit( obs ) {
+    // need to convert everything into plain JS objects
+    // so user can edit fields in ObsEdit before saving a modified object in realm
+    return {
+      species_guess: obs.species_guess,
+      description: obs.description,
+      observed_on_string: obs.observed_on_string,
+      place_guess: obs.place_guess,
+      latitude: obs.latitude,
+      longitude: obs.longitude,
+      positional_accuracy: obs.positional_accuracy,
+      taxon: Taxon.mapPlainObjectForObsEdit( obs.taxon ),
+      geoprivacy: obs.geoprivacy,
+      uuid: obs.uuid,
+      captive_flag: obs.captive_flag,
+      owners_identification_from_vision: obs.owners_identification_from_vision,
+      observationPhotos: obs.observationPhotos.map( photo => ObservationPhoto.mapPlainObjectForObsEdit( photo ) )
+      // observationSounds: obs.observationSounds
     };
   }
 
@@ -258,7 +291,7 @@ class Observation {
       // datetime the observation was updated on the device (i.e. edited locally)
       _updated_at: "date?",
       uuid: "string",
-      captive: "bool?",
+      captive_flag: "bool?",
       comments: "Comment[]",
       // timestamp of when observation was created on the server; not editable
       created_at: { type: "string?", mapTo: "createdAt" },

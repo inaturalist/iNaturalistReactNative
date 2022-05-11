@@ -105,7 +105,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     try {
       const realm = await Realm.open( realmConfig );
       const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
-      setObservations( [obs] );
+      const plainObject = Observation.mapPlainObjectForObsEdit( obs );
+      setObservations( [plainObject] );
       return obs;
     } catch ( e ) {
       console.log( e, "couldn't open saved observation in realm" );

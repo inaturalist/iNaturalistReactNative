@@ -28,6 +28,16 @@ class Taxon {
     };
   }
 
+  static mapPlainObjectForObsEdit( taxon ) {
+    return {
+      id: taxon.id,
+      default_photo: taxon.default_photo,
+      name: taxon.name,
+      preferred_common_name: taxon.preferred_common_name,
+      rank: taxon.rank
+    };
+  }
+
   static uri = ( item ) => ( item && item.default_photo ) && { uri: item.default_photo.url };
 
   static schema = {

@@ -42,6 +42,15 @@ class ObservationPhoto {
     };
   }
 
+  static mapPlainObjectForObsEdit( obsPhoto ) {
+    return {
+      uuid: obsPhoto.uuid,
+      id: obsPhoto.id,
+      photo: Photo.mapPlainObjectForObsEdit( obsPhoto.photo ),
+      position: obsPhoto.position
+    };
+  }
+
   static schema = {
     name: "ObservationPhoto",
     primaryKey: "uuid",

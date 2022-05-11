@@ -1,3 +1,4 @@
+import { photos } from "inaturalistjs";
 import { Platform } from "react-native";
 
 class Photo {
@@ -14,6 +15,16 @@ class Photo {
 
   static setPlatformSpecificFilePath( uri ) {
     return Platform.OS === "android" ? "file://" + uri : uri;
+  }
+
+  static mapPlainObjectForObsEdit( photo ) {
+    return {
+      id: photo.id,
+      attribution: photo.attribution,
+      license_code: photo.license_code,
+      url: photo.url,
+      localFilePath: photo.localFilePath
+    };
   }
 
   static schema = {
