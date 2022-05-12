@@ -1,6 +1,8 @@
+import Realm from "realm";
+
 import User from "./User";
 import Taxon from "./Taxon";
-class Identification {
+class Identification extends Realm.Object {
   static ID_FIELDS = {
     body: true,
     category: true,

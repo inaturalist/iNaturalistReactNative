@@ -1,6 +1,7 @@
 import { Platform } from "react-native";
+import Realm from "realm";
 
-class Photo {
+class Photo extends Realm.Object {
   static PHOTO_FIELDS = {
     id: true,
     attribution: true,
@@ -14,16 +15,6 @@ class Photo {
 
   static setPlatformSpecificFilePath( uri ) {
     return Platform.OS === "android" ? "file://" + uri : uri;
-  }
-
-  static mapPlainObjectForObsEdit( photo ) {
-    return {
-      id: photo.id,
-      attribution: photo.attribution,
-      license_code: photo.license_code,
-      url: photo.url,
-      localFilePath: photo.localFilePath
-    };
   }
 
   static schema = {

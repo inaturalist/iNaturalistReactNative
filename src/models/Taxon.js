@@ -1,5 +1,7 @@
+import Realm from "realm";
+
 import Photo from "./Photo";
-class Taxon {
+class Taxon extends Realm.Object {
   static TAXON_FIELDS = {
     default_photo: {
       url: true,
@@ -25,16 +27,6 @@ class Taxon {
     return {
       ...taxon,
       default_photo: Photo.mapApiToRealm( taxon.default_photo )
-    };
-  }
-
-  static mapPlainObjectForObsEdit( taxon ) {
-    return {
-      id: taxon.id,
-      default_photo: taxon.default_photo,
-      name: taxon.name,
-      preferred_common_name: taxon.preferred_common_name,
-      rank: taxon.rank
     };
   }
 

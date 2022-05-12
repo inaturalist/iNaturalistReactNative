@@ -1,4 +1,5 @@
 import uuid from "react-native-uuid";
+import Realm from "realm";
 
 import Comment from "./Comment";
 import Identification from "./Identification";
@@ -11,7 +12,9 @@ import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 import { formatCameraDate } from "../sharedHelpers/dateAndTime";
 import { getUserId } from "../components/LoginSignUp/AuthenticationService";
 
-class Observation {
+// noting that methods like .toJSON( ) are only accessible when the model class is extended with Realm.Object
+// per this issue: https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
+class Observation extends Realm.Object {
   static FIELDS = {
     captive: true,
     comments: Comment.COMMENT_FIELDS,
@@ -219,27 +222,6 @@ class Observation {
       uuid: obs.uuid,
       captive_flag: obs.captive_flag,
       owners_identification_from_vision: obs.owners_identification_from_vision
-    };
-  }
-
-  static mapPlainObjectForObsEdit( obs ) {
-    // need to convert everything into plain JS objects
-    // so user can edit fields in ObsEdit before saving a modified object in realm
-    return {
-      species_guess: obs.species_guess,
-      description: obs.description,
-      observed_on_string: obs.observed_on_string,
-      place_guess: obs.place_guess,
-      latitude: obs.latitude,
-      longitude: obs.longitude,
-      positional_accuracy: obs.positional_accuracy,
-      taxon: Taxon.mapPlainObjectForObsEdit( obs.taxon ),
-      geoprivacy: obs.geoprivacy,
-      uuid: obs.uuid,
-      captive_flag: obs.captive_flag,
-      owners_identification_from_vision: obs.owners_identification_from_vision,
-      observationPhotos: obs.observationPhotos.map( photo => ObservationPhoto.mapPlainObjectForObsEdit( photo ) )
-      // observationSounds: obs.observationSounds
     };
   }
 

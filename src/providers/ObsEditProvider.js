@@ -105,7 +105,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     try {
       const realm = await Realm.open( realmConfig );
       const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
-      const plainObject = Observation.mapPlainObjectForObsEdit( obs );
+      const plainObject = obs.toJSON( );
       setObservations( [plainObject] );
       return obs;
     } catch ( e ) {

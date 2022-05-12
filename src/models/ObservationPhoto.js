@@ -1,10 +1,11 @@
 import { FileUpload } from "inaturalistjs";
 import uuid from "react-native-uuid";
+import Realm from "realm";
 
 import Photo from "./Photo";
 import resizeImageForUpload from "../providers/uploadHelpers/resizeImage";
 
-class ObservationPhoto {
+class ObservationPhoto extends Realm.Object {
   static OBSERVATION_PHOTOS_FIELDS = {
     id: true,
     photo: Photo.PHOTO_FIELDS,
@@ -39,15 +40,6 @@ class ObservationPhoto {
       photo: {
         localFilePath
       }
-    };
-  }
-
-  static mapPlainObjectForObsEdit( obsPhoto ) {
-    return {
-      uuid: obsPhoto.uuid,
-      id: obsPhoto.id,
-      photo: Photo.mapPlainObjectForObsEdit( obsPhoto.photo ),
-      position: obsPhoto.position
     };
   }
 
