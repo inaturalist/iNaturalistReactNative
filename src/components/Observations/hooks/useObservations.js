@@ -88,6 +88,15 @@ const useObservations = ( ): Object => {
     if ( results.length === 0 ) { return; }
     const realm = realmRef.current;
     results.forEach( obs => {
+      const existingObs = realm?.objectForPrimaryKey( "Observation", obs.uuid );
+
+      if ( existingObs ) {
+        // if observation has been updated locally since the last sync, do not overwrite
+        // with observation attributes from server
+        if ( existingObs._updated_at >= existingObs._synced_at ) {
+          return;
+        }
+      }
       const newObs = Observation.createObservationForRealm( obs, realm );
       realm?.write( ( ) => {
         // To upsert an object, call Realm.create() with the update mode set
