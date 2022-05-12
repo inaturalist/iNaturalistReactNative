@@ -7,13 +7,13 @@ import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "react-native-paper";
 
-import { viewStyles } from "../../styles/camera/normalCamera";
+import { viewStyles } from "../../styles/camera/standardCamera";
 import { ObsEditContext } from "../../providers/contexts";
 import CameraView from "./CameraView";
 import TopPhotos from "./TopPhotos";
 import { textStyles } from "../../styles/obsDetails/obsDetails";
 
-const NormalCamera = ( ): Node => {
+const StandardCamera = ( ): Node => {
   // TODO: figure out if there's a way to write location to photo metadata with RN
   const { addPhotos } = useContext( ObsEditContext );
   const navigation = useNavigation( );
@@ -102,4 +102,4 @@ const NormalCamera = ( ): Node => {
   );
 };
 
-export default NormalCamera;
+export default StandardCamera;

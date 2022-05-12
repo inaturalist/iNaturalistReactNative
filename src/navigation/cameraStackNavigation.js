@@ -7,7 +7,7 @@ import { PermissionsAndroid } from "react-native";
 import GroupPhotos from "../components/PhotoLibrary/GroupPhotos";
 import ObsEdit from "../components/ObsEdit/ObsEdit";
 import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
-import NormalCamera from "../components/Camera/NormalCamera";
+import StandardCamera from "../components/Camera/StandardCamera";
 import CVSuggestions from "../components/ObsEdit/CVSuggestions";
 import CustomHeaderWithTranslation from "../components/SharedComponents/CustomHeaderWithTranslation";
 import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
@@ -28,10 +28,10 @@ const PhotoGalleryWithPermission = ( ) => (
   </PermissionGate>
 );
 
-const NormalCameraWithPermission = ( ) => (
+const StandardCameraWithPermission = ( ) => (
   <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
     <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-      <NormalCamera />
+      <StandardCamera />
     </PermissionGate>
   </PermissionGate>
 );
@@ -66,8 +66,8 @@ const CameraStackNavigation = ( ): React.Node => (
         component={SoundRecorderWithPermission}
       />
       <Stack.Screen
-        name="NormalCamera"
-        component={NormalCameraWithPermission}
+        name="StandardCamera"
+        component={StandardCameraWithPermission}
       />
       <Stack.Screen
         name="Suggestions"

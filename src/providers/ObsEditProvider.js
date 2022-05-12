@@ -29,7 +29,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const addPhotos = async ( photos ) => {
-    const newObs = await Observation.createObsFromNormalCamera( photos );
+    const newObs = await Observation.createObsFromStandardCamera( photos );
     setObservations( [newObs] );
   };
 
