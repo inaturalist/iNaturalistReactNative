@@ -4,7 +4,7 @@ import React from "react";
 import { FlatList, Image, Text } from "react-native";
 import type { Node } from "react";
 
-import { viewStyles, imageStyles, textStyles } from "../../styles/camera/normalCamera";
+import { viewStyles, imageStyles, textStyles } from "../../styles/camera/standardCamera";
 import Photo from "../../models/Photo";
 
 type Props = {

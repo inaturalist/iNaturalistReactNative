@@ -77,7 +77,7 @@ class Observation {
     } ) );
   }
 
-  static async createObsFromNormalCamera( photos ) {
+  static async createObsFromStandardCamera( photos ) {
     // take the observed_on_string time from the first photo in an observation
     const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
     const obsPhotos = await Observation.formatObsPhotos( photos );
