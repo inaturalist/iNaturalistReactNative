@@ -1,9 +1,11 @@
 // @flow strict-local
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 import type { TextStyleProp, ImageStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "../global";
+
+const { width } = Dimensions.get( "screen" );
 
 const pickerContainer = {
   paddingHorizontal: 10
@@ -36,6 +38,7 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
 } );
 
 const imageWidth = 100;
+const smallImageWidth = imageWidth - 40;
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   obsPhoto: {
@@ -44,6 +47,13 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
     borderRadius: 20,
     marginHorizontal: 20,
     marginVertical: 20
+  },
+  smallPhoto: {
+    width: smallImageWidth,
+    height: smallImageWidth,
+    marginVertical: 40,
+    borderRadius: 10,
+    marginHorizontal: 5
   }
 } );
 
@@ -101,6 +111,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   selected: {
     backgroundColor: colors.inatGreen
+  },
+  photoContainer: {
+    backgroundColor: colors.black,
+    height: 125,
+    width
   }
 } );
 
