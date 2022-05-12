@@ -10,7 +10,7 @@ import { Avatar } from "react-native-paper";
 import { viewStyles } from "../../styles/camera/standardCamera";
 import { ObsEditContext } from "../../providers/contexts";
 import CameraView from "./CameraView";
-import TopPhotos from "./TopPhotos";
+import PhotoPreview from "./PhotoPreview";
 import { textStyles } from "../../styles/obsDetails/obsDetails";
 
 const StandardCamera = ( ): Node => {
@@ -67,7 +67,7 @@ const StandardCamera = ( ): Node => {
   return (
     <View style={viewStyles.container}>
       {device && <CameraView device={device} camera={camera} />}
-      <TopPhotos photos={photos} />
+      <PhotoPreview photos={photos} setPhotos={setPhotos} />
       <View style={viewStyles.row}>
         <Pressable
           style={viewStyles.flashButton}

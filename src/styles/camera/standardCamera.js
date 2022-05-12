@@ -52,6 +52,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: colors.black,
     width,
     height: 125
+  },
+  deleteButton: {
+    left: -20,
+    zIndex: 1,
+    top: 30
   }
 } );
 
