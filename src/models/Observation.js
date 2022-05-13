@@ -165,9 +165,9 @@ class Observation extends Realm.Object {
       _updated_at: new Date( )
     };
 
-    const isSavedObservation = realm.objectForPrimaryKey( "Observation", obs.uuid );
+    const existingObservation = realm.objectForPrimaryKey( "Observation", obs.uuid );
 
-    if ( !isSavedObservation ) {
+    if ( !existingObservation ) {
       timestamps._created_at = new Date( );
       timestamps._synced_at = null;
     }
@@ -175,7 +175,7 @@ class Observation extends Realm.Object {
     const addTimestampsToEvidence = ( evidence ) => {
       // right now there isn't a way to edit photos or sounds via ObsEdit
       // so we only need to add timestamps on the first time a local observation is saved
-      if ( !isSavedObservation ) {
+      if ( !existingObservation ) {
         evidence && evidence.map( record => {
           return {
             ...timestamps,
@@ -204,8 +204,7 @@ class Observation extends Realm.Object {
       // also using modified for updating observations which were already saved locally
       realm?.create( "Observation", obsToSave, "modified" );
     } );
-    const observation = realm.objectForPrimaryKey( "Observation", obs.uuid );
-    return observation;
+    return realm.objectForPrimaryKey( "Observation", obs.uuid );
   }
 
   static mapObservationForUpload( obs ) {
