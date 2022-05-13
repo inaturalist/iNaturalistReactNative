@@ -20,9 +20,19 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 20,
+  schemaVersion: 21,
   path: "db.realm",
   migration: ( oldRealm: any, newRealm: any ) => {
+    if ( oldRealm.schemaVersion < 21 ) {
+      const oldObservations = oldRealm.objects( "Observation" );
+      const newObservations = newRealm.objects( "Observation" );
+
+      for ( const objectIndex in oldObservations ) {
+        const oldObservation = oldObservations[objectIndex];
+        const newObservation = newObservations[objectIndex];
+        newObservation.captive_flag = oldObservation.captive;
+      }
+    }
     if ( oldRealm.schemaVersion < 16 ) {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );

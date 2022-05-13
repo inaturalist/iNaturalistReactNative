@@ -1,4 +1,6 @@
-class User {
+import Realm from "realm";
+
+class User extends Realm.Object {
   static USER_FIELDS = {
     icon_url: true,
     id: true,
