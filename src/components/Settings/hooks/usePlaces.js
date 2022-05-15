@@ -10,12 +10,13 @@ const usePlaces = ( q: string ): Array<Object> => {
       try {
         const params = {
           per_page: 10,
-          q
+          q,
+          sources: "places"
         };
-        const response = await inatjs.places.autocomplete( params );
+        const response = await inatjs.search( params );
         const results = response.results;
         if ( !isCurrent ) { return; }
-        setSearchResults( results );
+        setSearchResults( results.map( r => r.record ) );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
         console.log( "Couldn't fetch search results:", e.message, );

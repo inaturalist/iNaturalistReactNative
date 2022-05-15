@@ -4,10 +4,15 @@ import {launchImageLibrary} from "react-native-image-picker";
 import React from "react";
 
 const SettingsProfile = ( { settings, onSettingsModified } ): React.Node => {
-  const profileSource =
-    settings.removeProfilePhoto || !settings.icon ?
-      require( "./../../images/profile.png" ) :
-      { uri: settings.newProfilePhoto ? settings.newProfilePhoto.uri : settings.icon};
+
+  let profileSource;
+  if ( settings.newProfilePhoto && !settings.removeProfilePhoto ) {
+    profileSource = { uri: settings.newProfilePhoto.uri };
+  } else if (
+    settings.icon && !settings.removeProfilePhoto ) { profileSource = { uri: settings.icon };
+  } else {
+    profileSource = require( "./../../images/profile.png" );
+  }
 
   const onImageSelected = ( response ) => {
     if ( response.didCancel ) {return;}

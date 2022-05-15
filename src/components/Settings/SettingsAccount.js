@@ -6,7 +6,6 @@ import {colors} from "../../styles/global";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import CheckBox from "@react-native-community/checkbox";
 import {inatLanguages} from "../../dictionaries/languages";
-import {inatTimezones} from "../../dictionaries/timezones";
 import {inatNetworks} from "../../dictionaries/networks";
 import PlaceSearchInput from "./PlaceSearchInput";
 
@@ -15,25 +14,6 @@ const SettingsAccount = ( { settings, onSettingsModified } ): React.Node => {
   return (
     <>
       <Text style={textStyles.title}>Account</Text>
-
-      <Text style={textStyles.subTitle}>Time Zone</Text>
-      <Text>All your observations will default to this time zone unless you specify otherwise.</Text>
-      <View style={viewStyles.selectorContainer}>
-        <Picker
-          style={viewStyles.selector}
-          dropdownIconColor={colors.inatGreen}
-          selectedValue={settings.time_zone}
-          onValueChange={( itemValue, itemIndex ) =>
-            onSettingsModified( { ...settings, time_zone: itemValue } )
-          }>
-          {Object.keys( inatTimezones ).map( ( k ) => (
-            <Picker.Item
-              key={k}
-              label={inatTimezones[k]}
-              value={k} />
-          ) )}
-        </Picker>
-      </View>
 
       <Text style={[textStyles.subTitle]}>Language/Locale</Text>
       <Text>This sets your language and date formatting preferences across iNaturalist based on your locale.</Text>

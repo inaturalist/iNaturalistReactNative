@@ -38,6 +38,7 @@ const PlaceSearchInput = ( { placeId, onPlaceChanged} ): React.Node => {
         />
         <Pressable style={viewStyles.clearSearch} onPress={() => {
           setHideResults( true );
+          setPlaceSearch( "" );
           onPlaceChanged( 0 );
         }}>
           <Image

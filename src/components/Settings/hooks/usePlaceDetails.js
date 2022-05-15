@@ -8,7 +8,7 @@ const usePlaceDetails = ( placeId: string ): Array<Object> => {
     let isCurrent = true;
     const fetchSearchResults = async ( ) => {
       try {
-        const response = await inatjs.places.fetch( placeId );
+        const response = await inatjs.places.fetch( placeId, {fields: "display_name"} );
         const result = response.results[0];
         if ( !isCurrent ) { return; }
         setSearchResult( result );
