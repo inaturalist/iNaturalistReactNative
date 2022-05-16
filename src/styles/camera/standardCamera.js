@@ -54,9 +54,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     height: 125
   },
   deleteButton: {
+    paddingHorizontal: 10,
     left: -20,
     zIndex: 1,
-    top: 30
+    paddingVertical: 30
   }
 } );
 
