@@ -1,6 +1,7 @@
 import { Platform } from "react-native";
+import Realm from "realm";
 
-class Photo {
+class Photo extends Realm.Object {
   static PHOTO_FIELDS = {
     id: true,
     attribution: true,
