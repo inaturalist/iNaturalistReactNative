@@ -1,7 +1,7 @@
 // @flow
 
-import React, { useState, useContext } from "react";
-import { Text, Pressable, View, Modal } from "react-native";
+import React, { useContext } from "react";
+import { Text, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,14 +11,11 @@ import { Headline } from "react-native-paper";
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
-import LocationPicker from "./LocationPicker";
 import { ObsEditContext } from "../../providers/contexts";
-import EvidenceList from "./EvidenceList";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
-import DatePicker from "./DatePicker";
-import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
 import IdentificationSection from "./IdentificationSection";
 import OtherDataSection from "./OtherDataSection";
+import EvidenceSection from "./EvidenceSection";
 // import BottomModal from "./BottomModal";
 // import uploadObservation from "./helpers/uploadObservation";
 
@@ -27,8 +24,6 @@ const ObsEdit = ( ): Node => {
     currentObsIndex,
     setCurrentObsIndex,
     observations,
-    setObservations,
-    updateObservationKey,
     saveObservation,
     saveAndUploadObservation
   } = useContext( ObsEditContext );
@@ -39,12 +34,6 @@ const ObsEdit = ( ): Node => {
 
   // const openBottomModal = useCallback( ( ) => setBottomModal( true ), [] );
   // const closeBottomModal = useCallback( ( ) => setBottomModal( false ), [] );
-
-  const [showLocationPicker, setShowLocationPicker] = useState( false );
-
-  const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
-
-  const updateObservedOn = value => updateObservationKey( "observed_on_string", value );
 
   const showNextObservation = ( ) => setCurrentObsIndex( currentObsIndex + 1 );
   const showPrevObservation = ( ) => setCurrentObsIndex( currentObsIndex - 1 );
@@ -87,60 +76,8 @@ const ObsEdit = ( ): Node => {
   };
 
   const currentObs = observations[currentObsIndex];
-  const latitude = currentObs && currentObs.latitude;
-  const longitude = currentObs && currentObs.longitude;
-
-  const openLocationPicker = ( ) => setShowLocationPicker( true );
-  const closeLocationPicker = ( ) => setShowLocationPicker( false );
-
-  const updateLocation = newLocation => {
-    const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObsIndex ) {
-        return {
-          ...obs,
-          // $FlowFixMe
-          latitude: newLocation.latitude,
-          longitude: newLocation.longitude,
-          place_guess: newLocation.placeGuess
-        };
-      } else {
-        return obs;
-      }
-    } );
-    setObservations( updatedObs );
-  };
-
-  const handleDatePicked = ( selectedDate ) => {
-    if ( selectedDate ) {
-      const dateString = createObservedOnStringForUpload( selectedDate );
-      updateObservedOn( dateString );
-    }
-  };
-
-  const renderLocationPickerModal = ( ) => (
-    <Modal visible={showLocationPicker}>
-      <LocationPicker
-        closeLocationPicker={closeLocationPicker}
-        updateLocation={updateLocation}
-      />
-    </Modal>
-  );
 
   if ( !currentObs ) { return null; }
-
-  const displayLocation = ( ) => {
-    let location = "";
-    if ( latitude ) {
-      location += `Lat: ${formatDecimal( latitude )}`;
-    }
-    if ( longitude ) {
-      location += `, Lon: ${formatDecimal( longitude )}`;
-    }
-    if ( currentObs.positional_accuracy ) {
-      location += `, Acc: ${formatDecimal( currentObs.positional_accuracy )}`;
-    }
-    return location;
-  };
 
   return (
     <ScrollNoFooter>
@@ -152,22 +89,9 @@ const ObsEdit = ( ): Node => {
         )}
         style={viewStyles.noMargin}
       /> */}
-      {renderLocationPickerModal( )}
       {renderArrowNavigation( )}
       <Headline style={textStyles.headerText}>{t( "Evidence" )}</Headline>
-      {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
-      <EvidenceList currentObs={currentObs} showCameraOptions />
-      <Pressable
-        onPress={openLocationPicker}
-      >
-        <Text style={textStyles.text}>
-          {currentObs.place_guess || t( "Add-Location" )}
-        </Text>
-        <Text style={textStyles.text}>
-          {displayLocation( ) || t( "No-Location" )}
-        </Text>
-      </Pressable>
-      <DatePicker currentObs={currentObs} handleDatePicked={handleDatePicked} />
+      <EvidenceSection />
       <Headline style={textStyles.headerText}>{t( "Identification" )}</Headline>
       <IdentificationSection />
       <Headline style={textStyles.headerText}>{t( "Other-Data" )}</Headline>
