@@ -1,4 +1,5 @@
 import uuid from "react-native-uuid";
+import Realm from "realm";
 
 import Comment from "./Comment";
 import Identification from "./Identification";
@@ -11,7 +12,9 @@ import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 import { formatCameraDate } from "../sharedHelpers/dateAndTime";
 import { getUserId } from "../components/LoginSignUp/AuthenticationService";
 
-class Observation {
+// noting that methods like .toJSON( ) are only accessible when the model class is extended with Realm.Object
+// per this issue: https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
+class Observation extends Realm.Object {
   static FIELDS = {
     captive: true,
     comments: Comment.COMMENT_FIELDS,
@@ -38,10 +41,11 @@ class Observation {
     return {
       ...obs,
       ...latLng,
-      captive: false,
+      captive_flag: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
       observed_on_string: createObservedOnStringForUpload( ),
+      quality_grade: "needs_id",
       // project_ids: [],
       uuid: uuid.v4( )
     };
@@ -77,7 +81,7 @@ class Observation {
     } ) );
   }
 
-  static async createObsFromNormalCamera( photos ) {
+  static async createObsFromStandardCamera( photos ) {
     // take the observed_on_string time from the first photo in an observation
     const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
     const obsPhotos = await Observation.formatObsPhotos( photos );
@@ -157,37 +161,47 @@ class Observation {
     const user = realm.objectForPrimaryKey( "User", Number( id ) );
     obs.user = user;
 
-    const newLocalRecord = {
-      _created_at: new Date( ),
-      _synced_at: null,
+    const timestamps = {
       _updated_at: new Date( )
     };
+
+    const existingObservation = realm.objectForPrimaryKey( "Observation", obs.uuid );
+
+    if ( !existingObservation ) {
+      timestamps._created_at = new Date( );
+      timestamps._synced_at = null;
+    }
+
+    const addTimestampsToEvidence = ( evidence ) => {
+      // right now there isn't a way to edit photos or sounds via ObsEdit
+      // so we only need to add timestamps on the first time a local observation is saved
+      if ( !existingObservation ) {
+        evidence && evidence.map( record => {
+          return {
+            ...timestamps,
+            ...record
+          };
+        } );
+      }
+      return evidence;
+    };
+
     const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
-    const observationPhotos = obs.observationPhotos && obs.observationPhotos.map( photo => {
-      return {
-        ...newLocalRecord,
-        ...photo
-      };
-    } );
-    const observationSounds = obs.observationSounds && obs.observationSounds.map( sound => {
-      return {
-        ...newLocalRecord,
-        ...sound
-      };
-    } );
+    const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
+    const observationSounds = addTimestampsToEvidence( obs.observationSounds );
 
     const obsToSave = {
       ...obs,
-      ...newLocalRecord,
+      ...timestamps,
       taxon,
       observationPhotos,
-      observationSounds,
-      quality_grade: "needs_id"
+      observationSounds
     };
 
     realm?.write( ( ) => {
       // using 'modified' here for the case where a new observation has the same Taxon
       // as a previous observation; otherwise, realm will error out
+      // also using modified for updating observations which were already saved locally
       realm?.create( "Observation", obsToSave, "modified" );
     } );
     return realm.objectForPrimaryKey( "Observation", obs.uuid );
@@ -205,7 +219,7 @@ class Observation {
       taxon_id: obs.taxon && obs.taxon.id,
       geoprivacy: obs.geoprivacy,
       uuid: obs.uuid,
-      captive_flag: obs.captive,
+      captive_flag: obs.captive_flag,
       owners_identification_from_vision: obs.owners_identification_from_vision
     };
   }
@@ -258,7 +272,7 @@ class Observation {
       // datetime the observation was updated on the device (i.e. edited locally)
       _updated_at: "date?",
       uuid: "string",
-      captive: "bool?",
+      captive_flag: "bool?",
       comments: "Comment[]",
       // timestamp of when observation was created on the server; not editable
       created_at: { type: "string?", mapTo: "createdAt" },

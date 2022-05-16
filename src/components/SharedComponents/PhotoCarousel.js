@@ -3,7 +3,6 @@
 import React from "react";
 import { FlatList, Image, Pressable } from "react-native";
 import type { Node } from "react";
-import { useNavigation } from "@react-navigation/native";
 
 import { imageStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import Photo from "../../models/Photo";
@@ -23,23 +22,16 @@ const PhotoCarousel = ( {
   selectedPhoto,
   containerStyle
 }: Props ): Node => {
-  const navigation = useNavigation( );
-
   const renderPhoto = ( { item, index } ) => {
     const uri = Photo.setPlatformSpecificFilePath( item.path );
 
-    const handlePress = ( ) => {
-      if ( setSelectedPhoto ) {
-        setSelectedPhoto( index );
-      }
-      navigation.navigate( "MediaViewer", { photos } );
-      // return;
-    };
-
     return (
       <Pressable
-        // disabled={!setSelectedPhoto}
-        onPress={handlePress}
+        onPress={( ) => {
+          if ( setSelectedPhoto ) {
+            setSelectedPhoto( index );
+          }
+        }}
       >
         <Image
           source={{ uri }}

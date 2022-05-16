@@ -2,7 +2,7 @@
 
 import { StyleSheet, Dimensions } from "react-native";
 
-import type { ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import type { ImageStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 
 const { width, height } = Dimensions.get( "screen" );
 
@@ -13,6 +13,11 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   }
 } );
 
+const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+
+} );
+
 export {
-  imageStyles
+  imageStyles,
+  viewStyles
 };

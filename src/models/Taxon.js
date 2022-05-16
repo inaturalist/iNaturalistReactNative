@@ -1,5 +1,7 @@
+import Realm from "realm";
+
 import Photo from "./Photo";
-class Taxon {
+class Taxon extends Realm.Object {
   static TAXON_FIELDS = {
     default_photo: {
       url: true,

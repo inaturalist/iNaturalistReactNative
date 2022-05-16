@@ -144,6 +144,7 @@
   "Record-a-sound": "Record a sound",
   "Record-new-sound": "Record new sound",
   "Recording-Sound": "Recording Sound",
+  "Remove-Photo": "Remove Photo",
   "Remove-Photos": "Remove Photos",
   "Reptiles": "Reptiles",
   "Research-Grade": {
@@ -207,6 +208,10 @@
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $observationCount ->\n  [one] 1 Observation\n *[other] { $observationCount } Observations\n}"
+  },
+  "X-Photos": {
+    "comment": "Displays number of photos attached to an observation in the Media Viewer",
+    "val": "{ $photoCount ->\n  [one] 1 Photo\n *[other] { $photoCount } Photos\n}"
   },
   "X-photos-X-observations": {
     "comment": "Displays number of photos and observations a user has selected from the camera roll",

@@ -24,7 +24,6 @@ const EvidenceList = ( { currentObs, showCameraOptions, setSelectedPhoto, select
     if ( !photoUrl ) {
       throw "Tried to render photo that has no url or path!";
     }
-    console.log( photoUrl, item.photo, "photo url in render evidence" );
     const imageUri = { uri: photoUrl };
 
     const handlePress = ( ) => {

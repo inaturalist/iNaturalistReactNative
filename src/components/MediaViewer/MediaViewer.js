@@ -1,8 +1,7 @@
 // @flow
 
-import React from "react";
-import { useState } from "react";
-import { Image } from "react-native";
+import React, { useState, useRef } from "react";
+import { Image, Text, Dimensions, FlatList } from "react-native";
 import type { Node } from "react";
 import { useRoute } from "@react-navigation/native";
 import { Appbar } from "react-native-paper";
@@ -13,25 +12,57 @@ import Photo from "../../models/Photo";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 
-const MediaViewer = ( ): Node => {
-  const [selectedPhoto, setSelectedPhoto] = useState( 0 );
-  const { params } = useRoute( );
-  const { photos } = params;
-  const { t } = useTranslation( );
+const { width } = Dimensions.get( "screen" );
 
-  const uri = Photo.setPlatformSpecificFilePath( photos[selectedPhoto].path );
+const MediaViewer = ( ): Node => {
+  const { params } = useRoute( );
+  const { photos, mainPhoto } = params;
+  const [selectedPhoto, setSelectedPhoto] = useState( mainPhoto );
+
+  const { t } = useTranslation( );
+  const flatList = useRef( null );
+
+  const renderItem = ( { item, index } ) => {
+    const uri = Photo.setPlatformSpecificFilePath( photos[index].path );
+    return <Image source={{ uri }} style={imageStyles.selectedPhoto} />;
+  };
+
+  const handleScroll = ( { nativeEvent } ) => {
+    // this updates main photo based on main view scroll left or right
+    const { x } = nativeEvent.contentOffset;
+    const index = Math.round( x / width );
+    setSelectedPhoto( index );
+  };
+
+  const handleSelectedPhoto = ( index ) => {
+    // this updates main photo when user taps to select a carousel photo
+    if ( flatList && flatList.current !== null ) {
+      flatList.current.scrollToIndex( { index, animated: true } );
+    }
+  };
 
   return (
     <ViewNoFooter>
       <Appbar.Header>
-        <Appbar.Content title={t( "X Photos", { numOfPhotos: photos.length } )} />
+        <Appbar.Content title={t( "X-Photos", { photoCount: photos.length } )} />
       </Appbar.Header>
-      <Image source={{ uri }} style={imageStyles.selectedPhoto} />
+      <FlatList
+        ref={flatList}
+        bounces={false}
+        data={photos}
+        horizontal
+        initialNumToRender={1}
+        pagingEnabled
+        renderItem={renderItem}
+        onMomentumScrollEnd={handleScroll}
+        initialScrollIndex={mainPhoto}
+      />
       <PhotoCarousel
         photos={photos}
         selectedPhoto={selectedPhoto}
-        setSelectedPhoto={setSelectedPhoto}
+        setSelectedPhoto={handleSelectedPhoto}
       />
+      <Text>{t( "Remove-Photo" )}</Text>
     </ViewNoFooter>
   );
 };

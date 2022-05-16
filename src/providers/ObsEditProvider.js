@@ -29,7 +29,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const addPhotos = async ( photos ) => {
-    const newObs = await Observation.createObsFromNormalCamera( photos );
+    const newObs = await Observation.createObsFromStandardCamera( photos );
     setObservations( [newObs] );
   };
 
@@ -102,15 +102,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const openSavedObservation = async ( savedUUID ) => {
-    try {
-      const realm = await Realm.open( realmConfig );
-      const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
-      setObservations( [obs] );
-      return obs;
-    } catch ( e ) {
-      console.log( e, "couldn't open saved observation in realm" );
-      return null;
-    }
+    const realm = await Realm.open( realmConfig );
+    const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
+    const plainObject = obs.toJSON( );
+    setObservations( [plainObject] );
+    return obs;
   };
 
   const obsEditValue = {
