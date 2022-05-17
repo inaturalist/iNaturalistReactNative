@@ -20,13 +20,14 @@ const MediaViewer = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { photos, mainPhoto } = params;
+  console.log( photos, "photos" );
   const [selectedPhoto, setSelectedPhoto] = useState( mainPhoto );
 
   const { t } = useTranslation( );
   const flatList = useRef( null );
 
   const renderItem = ( { item, index } ) => {
-    const uri = Photo.setPlatformSpecificFilePath( photos[index].path );
+    const uri = Photo.setPlatformSpecificFilePath( photos[index].uri );
     return <Image source={{ uri }} style={imageStyles.selectedPhoto} />;
   };
 

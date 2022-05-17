@@ -38,7 +38,13 @@ const PhotoCarousel = ( {
   );
 
   const renderPhoto = ( { item, index } ) => {
-    const uri = Photo.setPlatformSpecificFilePath( item.path );
+    const { uri } = item;
+    // console.log( item, "item in render photo" );
+    // const uri = Photo.setPlatformSpecificFilePath( item.path );
+
+    if ( !uri ) {
+      // throw "Tried to render photo that has no url or path!";
+    }
 
     return (
       <Pressable

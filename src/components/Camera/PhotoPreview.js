@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { viewStyles, textStyles } from "../../styles/camera/standardCamera";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import Photo from "../../models/Photo";
 
 type Props = {
   photos: Array<Object>,
@@ -22,8 +23,16 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
   const [photoToDelete, setPhotoToDelete] = useState( null );
   const navigation = useNavigation( );
 
+  const displayPhotos = ( ) => {
+    return photos.map( p => {
+      return {
+        uri: Photo.setPlatformSpecificFilePath( p.path )
+      };
+    } );
+  };
+
   const handleSelection = ( mainPhoto ) => {
-    navigation.navigate( "MediaViewer", { photos, mainPhoto } );
+    navigation.navigate( "MediaViewer", { photos: displayPhotos( ), mainPhoto } );
   };
 
   const showDialog = ( ) => setVisible( true );
@@ -78,7 +87,7 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
         </Dialog>
       </Portal>
       <PhotoCarousel
-        photos={photos}
+        photos={displayPhotos( )}
         emptyComponent={emptyDescription}
         containerStyle="camera"
         handleDelete={handleDelete}

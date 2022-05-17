@@ -12,7 +12,6 @@ type Props = {
 }
 
 const PhotoDeleteDialog = ( { photo }: Props ): Node => {
-  console.log( photo, "photo delete dialog" );
   const { t } = useTranslation( );
   const [visible, setVisible] = useState( false );
   // const [photoToDelete, setPhotoToDelete] = useState( null );
