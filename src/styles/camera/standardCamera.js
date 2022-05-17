@@ -52,6 +52,23 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: colors.black,
     width,
     height: 125
+  },
+  deleteButton: {
+    paddingHorizontal: 10,
+    left: 44,
+    top: -50,
+    paddingVertical: 10
+  },
+  confirmButton: {
+    backgroundColor: colors.inatGreen,
+    borderRadius: 40,
+    alignSelf: "center"
+  },
+  cancelButton: {
+    backgroundColor: colors.gray,
+    borderRadius: 40,
+    alignSelf: "center",
+    marginRight: 10
   }
 } );
 
@@ -71,9 +88,10 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   smallPhoto: {
-    height: 50,
-    width: 50,
-    top: 50,
+    height: 80,
+    width: 80,
+    top: 40,
+    borderRadius: 10,
     marginHorizontal: 5
   }
 } );

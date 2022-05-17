@@ -150,6 +150,8 @@ Paused = Paused
 
 Photo-Licensing = Photo Licensing
 
+Photos-you-take-will-appear-here = Photos you take will appear here
+
 Plants = Plants
 
 # Help text for playing back a sound recording
