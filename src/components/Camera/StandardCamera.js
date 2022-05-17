@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useRef, useState, useEffect, useContext } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { Text, View, Pressable } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
@@ -26,14 +26,6 @@ const StandardCamera = ( ): Node => {
     flash: "off"
   } );
   const [photos, setPhotos] = useState( [] );
-
-  useEffect( ( ) => {
-    navigation.addListener( "blur", ( ) => {
-      if ( photos.length > 0 ) {
-        setPhotos( [] );
-      }
-    } );
-  }, [navigation, photos] );
 
   const takePhoto = async ( ) => {
     try {

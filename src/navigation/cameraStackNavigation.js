@@ -14,6 +14,7 @@ import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import PhotoGallery from "../components/PhotoLibrary/PhotoGallery";
 import PermissionGate from "../components/SharedComponents/PermissionGate";
 import MediaViewer from "../components/MediaViewer/MediaViewer";
+import Mortal from "../components/SharedComponents/Mortal";
 
 const Stack = createNativeStackNavigator( );
 
@@ -48,42 +49,44 @@ const SoundRecorderWithPermission = ( ) => (
 );
 
 const CameraStackNavigation = ( ): React.Node => (
-  <PhotoGalleryProvider>
-    <Stack.Navigator screenOptions={hideHeader}>
-      <Stack.Screen
-        name="PhotoGallery"
-        component={PhotoGalleryWithPermission}
-      />
-      <Stack.Screen
-        name="GroupPhotos"
-        component={GroupPhotos}
-      />
-      <Stack.Screen
-        name="ObsEdit"
-        component={ObsEdit}
-      />
-      <Stack.Screen
-        name="SoundRecorder"
-        component={SoundRecorderWithPermission}
-      />
-      <Stack.Screen
-        name="StandardCamera"
-        component={StandardCameraWithPermission}
-      />
-      <Stack.Screen
-        name="Suggestions"
-        component={CVSuggestions}
-        options={{
-          headerTitle: ( props ) => <CustomHeaderWithTranslation {...props} headerText="IDENTIFICATION" />,
-          headerShown: true
-        }}
-      />
-       <Stack.Screen
-          name="MediaViewer"
-          component={MediaViewer}
+  <Mortal>
+    <PhotoGalleryProvider>
+      <Stack.Navigator screenOptions={hideHeader}>
+        <Stack.Screen
+          name="PhotoGallery"
+          component={PhotoGalleryWithPermission}
         />
-    </Stack.Navigator>
-  </PhotoGalleryProvider>
+        <Stack.Screen
+          name="GroupPhotos"
+          component={GroupPhotos}
+        />
+        <Stack.Screen
+          name="ObsEdit"
+          component={ObsEdit}
+        />
+        <Stack.Screen
+          name="SoundRecorder"
+          component={SoundRecorderWithPermission}
+        />
+        <Stack.Screen
+          name="StandardCamera"
+          component={StandardCameraWithPermission}
+        />
+        <Stack.Screen
+          name="Suggestions"
+          component={CVSuggestions}
+          options={{
+            headerTitle: ( props ) => <CustomHeaderWithTranslation {...props} headerText="IDENTIFICATION" />,
+            headerShown: true
+          }}
+        />
+        <Stack.Screen
+            name="MediaViewer"
+            component={MediaViewer}
+          />
+      </Stack.Navigator>
+    </PhotoGalleryProvider>
+  </Mortal>
 );
 
 export default CameraStackNavigation;

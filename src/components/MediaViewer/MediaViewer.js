@@ -3,9 +3,10 @@
 import React, { useState, useRef } from "react";
 import { Image, Dimensions, FlatList } from "react-native";
 import type { Node } from "react";
-import { useRoute } from "@react-navigation/native";
-import { Appbar, Button } from "react-native-paper";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { Appbar } from "react-native-paper";
 import { useTranslation } from "react-i18next";
+import { HeaderBackButton } from "@react-navigation/elements";
 
 import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
 import Photo from "../../models/Photo";
@@ -16,6 +17,7 @@ import PhotoDeleteDialog from "./PhotoDeleteDialog";
 const { width } = Dimensions.get( "screen" );
 
 const MediaViewer = ( ): Node => {
+  const navigation = useNavigation( );
   const { params } = useRoute( );
   const { photos, mainPhoto } = params;
   const [selectedPhoto, setSelectedPhoto] = useState( mainPhoto );
@@ -72,6 +74,7 @@ const MediaViewer = ( ): Node => {
         selectedPhoto={selectedPhoto}
         setSelectedPhoto={handleSelectedPhoto}
       />
+      <HeaderBackButton onPress={( ) => navigation.goBack( )} />
       <PhotoDeleteDialog photo={photo} />
       {/* <Button style={viewStyles.alignRight}>{t( "Remove-Photo" )}</Button> */}
     </ViewNoFooter>
