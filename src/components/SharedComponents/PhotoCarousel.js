@@ -6,7 +6,6 @@ import type { Node } from "react";
 import { Avatar } from "react-native-paper";
 
 import { imageStyles, viewStyles } from "../../styles/sharedComponents/photoCarousel";
-import Photo from "../../models/Photo";
 
 type Props = {
   emptyComponent?: Function,

@@ -9,9 +9,9 @@ import { useNavigation } from "@react-navigation/native";
 import { textStyles } from "../../styles/obsEdit/obsEdit";
 import LocationPicker from "./LocationPicker";
 import { ObsEditContext } from "../../providers/contexts";
-import EvidenceList from "./EvidenceList";
 import DatePicker from "./DatePicker";
 import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
+import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
 const EvidenceSection = ( ): Node => {
   const {
@@ -99,7 +99,10 @@ const EvidenceSection = ( ): Node => {
     <>
       {renderLocationPickerModal( )}
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
-      <EvidenceList photos={displayPhotos( )} setSelectedPhoto={handleSelection} />
+      <PhotoCarousel
+        photos={displayPhotos( )}
+        setSelectedPhoto={handleSelection}
+      />
       <Pressable
         onPress={openLocationPicker}
       >
