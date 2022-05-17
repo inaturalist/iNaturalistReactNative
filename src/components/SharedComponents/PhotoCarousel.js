@@ -3,8 +3,9 @@
 import React from "react";
 import { FlatList, Image, Pressable } from "react-native";
 import type { Node } from "react";
+import { Avatar } from "react-native-paper";
 
-import { imageStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
+import { imageStyles, viewStyles } from "../../styles/sharedComponents/photoCarousel";
 import Photo from "../../models/Photo";
 
 type Props = {
@@ -12,7 +13,8 @@ type Props = {
   photos: Array<Object>,
   setSelectedPhoto?: Function,
   selectedPhoto?: number,
-  containerStyle?: string
+  containerStyle?: string,
+  handleDelete?: Function
 }
 
 const PhotoCarousel = ( {
@@ -20,8 +22,21 @@ const PhotoCarousel = ( {
   emptyComponent,
   setSelectedPhoto,
   selectedPhoto,
-  containerStyle
+  containerStyle,
+  handleDelete
 }: Props ): Node => {
+  const renderDeleteButton = ( item ) => (
+    <Pressable
+      onPress={( ) => {
+        if ( !handleDelete ) { return; }
+        handleDelete( item );
+      }}
+      style={viewStyles.deleteButton}
+    >
+      <Avatar.Icon icon="delete-forever" size={30} />
+    </Pressable>
+  );
+
   const renderPhoto = ( { item, index } ) => {
     const uri = Photo.setPlatformSpecificFilePath( item.path );
 
@@ -37,11 +52,11 @@ const PhotoCarousel = ( {
           source={{ uri }}
           style={[
             imageStyles.obsPhoto,
-            selectedPhoto === index && viewStyles.greenSelectionBorder,
-            ( containerStyle === "camera" ) && imageStyles.smallPhoto
+            selectedPhoto === index && viewStyles.greenSelectionBorder
           ]}
           testID="ObsEdit.photo"
         />
+        {( containerStyle === "camera" ) && renderDeleteButton( item )}
       </Pressable>
     );
   };

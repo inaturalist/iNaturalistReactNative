@@ -37,16 +37,16 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   }
 } );
 
-const imageWidth = 100;
+const imageWidth = 66;
 const smallImageWidth = imageWidth - 40;
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   obsPhoto: {
     width: imageWidth,
     height: imageWidth,
-    borderRadius: 20,
-    marginHorizontal: 20,
-    marginVertical: 20
+    borderRadius: 8,
+    marginHorizontal: 6,
+    marginVertical: 27
   },
   smallPhoto: {
     width: smallImageWidth,
@@ -78,8 +78,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     width: 100
   },
   greenSelectionBorder: {
-    borderWidth: 5,
-    borderColor: colors.inatGreen
+    borderWidth: 3,
+    borderColor: colors.selectionGreen
   },
   iconicTaxaButtons: {
     marginHorizontal: 20,

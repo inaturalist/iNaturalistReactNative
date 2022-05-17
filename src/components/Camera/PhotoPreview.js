@@ -1,15 +1,15 @@
 // @flow
 
 import React, { useState } from "react";
-import { FlatList, Image, Pressable, Text } from "react-native";
+import { Text } from "react-native";
 import type { Node } from "react";
 import RNFS from "react-native-fs";
-import { Button, Paragraph, Dialog, Portal, Avatar } from "react-native-paper";
+import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 
-import { viewStyles, imageStyles, textStyles } from "../../styles/camera/standardCamera";
-import Photo from "../../models/Photo";
+import { viewStyles, textStyles } from "../../styles/camera/standardCamera";
+import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
 type Props = {
   photos: Array<Object>,
@@ -49,38 +49,9 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
     hideDialog( );
   };
 
-  const renderSmallPhoto = ( { item, index } ) => {
-    const uri = Photo.setPlatformSpecificFilePath( item.path );
-
-    return (
-      <Pressable onPress={( ) => handleSelection( index )}>
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Content>
-              <Paragraph>{t( "Are-you-sure" )}</Paragraph>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={hideDialog} style={viewStyles.cancelButton}>
-                {t( "Cancel" )}
-              </Button>
-              <Button onPress={deletePhoto} style={viewStyles.confirmButton}>
-                {t( "Yes-delete-photo" )}
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
-        <Image source={{ uri }} style={imageStyles.smallPhoto} />
-        <Pressable
-          onPress={( ) => {
-            setPhotoToDelete( item );
-            showDialog( );
-          }}
-          style={viewStyles.deleteButton}
-        >
-          <Avatar.Icon icon="delete-forever" size={30} />
-        </Pressable>
-      </Pressable>
-    );
+  const handleDelete = ( item ) => {
+    setPhotoToDelete( item );
+    showDialog( );
   };
 
   const emptyDescription = ( ) => (
@@ -90,13 +61,30 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
   );
 
   return (
-    <FlatList
-      data={photos}
-      contentContainerStyle={viewStyles.photoContainer}
-      renderItem={renderSmallPhoto}
-      horizontal
-      ListEmptyComponent={emptyDescription}
-    />
+    <>
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Content>
+            <Paragraph>{t( "Are-you-sure" )}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideDialog} style={viewStyles.cancelButton}>
+              {t( "Cancel" )}
+            </Button>
+            <Button onPress={deletePhoto} style={viewStyles.confirmButton}>
+              {t( "Yes-delete-photo" )}
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+      <PhotoCarousel
+        photos={photos}
+        emptyComponent={emptyDescription}
+        containerStyle="camera"
+        handleDelete={handleDelete}
+        setSelectedPhoto={handleSelection}
+      />
+    </>
   );
 };
 
