@@ -17,6 +17,8 @@ Amphibians = Amphibians
 
 Arachnids = Arachnids
 
+Are-you-sure = Are you sure?
+
 Birds = Birds
 
 Cancel = Cancel
@@ -351,6 +353,8 @@ X-photos-X-observations = {$photoCount ->
     [one] 1 observation
     *[other] {$observationCount} observations
 }
+
+Yes-delete-photo = Yes, delete photo
 
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.

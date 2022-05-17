@@ -1,16 +1,17 @@
 // @flow
 
 import React, { useState, useRef } from "react";
-import { Image, Text, Dimensions, FlatList } from "react-native";
+import { Image, Dimensions, FlatList } from "react-native";
 import type { Node } from "react";
 import { useRoute } from "@react-navigation/native";
-import { Appbar } from "react-native-paper";
+import { Appbar, Button } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
-import { imageStyles } from "../../styles/mediaViewer/mediaViewer";
+import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
 import Photo from "../../models/Photo";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import PhotoDeleteDialog from "./PhotoDeleteDialog";
 
 const { width } = Dimensions.get( "screen" );
 
@@ -41,9 +42,17 @@ const MediaViewer = ( ): Node => {
     }
   };
 
+  const getItemLayout = ( data, index ) => ( {
+    length: ( width ),
+    offset: ( width ) * index,
+    index
+  } );
+
+  const photo = Photo.setPlatformSpecificFilePath( photos[selectedPhoto].path );
+
   return (
-    <ViewNoFooter>
-      <Appbar.Header>
+    <ViewNoFooter style={viewStyles.container}>
+      <Appbar.Header style={viewStyles.container}>
         <Appbar.Content title={t( "X-Photos", { photoCount: photos.length } )} />
       </Appbar.Header>
       <FlatList
@@ -53,6 +62,7 @@ const MediaViewer = ( ): Node => {
         horizontal
         initialNumToRender={1}
         pagingEnabled
+        getItemLayout={getItemLayout}
         renderItem={renderItem}
         onMomentumScrollEnd={handleScroll}
         initialScrollIndex={mainPhoto}
@@ -62,7 +72,8 @@ const MediaViewer = ( ): Node => {
         selectedPhoto={selectedPhoto}
         setSelectedPhoto={handleSelectedPhoto}
       />
-      <Text>{t( "Remove-Photo" )}</Text>
+      <PhotoDeleteDialog photo={photo} />
+      {/* <Button style={viewStyles.alignRight}>{t( "Remove-Photo" )}</Button> */}
     </ViewNoFooter>
   );
 };

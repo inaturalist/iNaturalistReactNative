@@ -11,6 +11,7 @@
   "All-observations": "All observations",
   "Amphibians": "Amphibians",
   "Arachnids": "Arachnids",
+  "Are-you-sure": "Are you sure?",
   "Birds": "Birds",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
@@ -217,6 +218,7 @@
     "comment": "Displays number of photos and observations a user has selected from the camera roll",
     "val": "{ $photoCount ->\n  [one] 1 photo\n *[other] { $photoCount } photos\n}, { $observationCount ->\n  [one] 1 observation\n *[other] { $observationCount } observations\n}"
   },
+  "Yes-delete-photo": "Yes, delete photo",
   "You-denied-iNaturalist-permission-to-do-that": {
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
     "val": "You denied iNaturalist permission to do that"
