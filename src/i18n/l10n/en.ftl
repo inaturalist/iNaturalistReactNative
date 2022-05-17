@@ -17,6 +17,8 @@ Amphibians = Amphibians
 
 Arachnids = Arachnids
 
+Are-you-sure = Are you sure?
+
 Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
 
 Birds = Birds
@@ -151,6 +153,8 @@ Other-Data = Other Data
 Paused = Paused
 
 Photo-Licensing = Photo Licensing
+
+Photos-you-take-will-appear-here = Photos you take will appear here
 
 Plants = Plants
 
@@ -349,6 +353,8 @@ X-photos-X-observations = {$photoCount ->
     [one] 1 observation
     *[other] {$observationCount} observations
 }
+
+Yes-delete-photo = Yes, delete photo
 
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.
