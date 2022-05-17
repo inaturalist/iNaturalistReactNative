@@ -8,6 +8,7 @@ import ObsList from "../components/Observations/ObsList";
 import ObsDetails from "../components/ObsDetails/ObsDetails";
 import UserProfile from "../components/UserProfile/UserProfile";
 import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
+import Mortal from "../components/SharedComponents/Mortal";
 
 const Stack = createNativeStackNavigator( );
 
@@ -24,28 +25,30 @@ const hideHeader = {
 };
 
 const MyObservationsStackNavigation = ( ): React.Node => (
-  <Stack.Navigator screenOptions={screenOptions}>
-    <Stack.Screen
-      name="ObsList"
-      component={ObsList}
-      options={hideHeader}
-    />
-    <Stack.Screen
-      name="ObsDetails"
-      component={ObsDetails}
-      options={hideHeader}
+  <Mortal>
+    <Stack.Navigator screenOptions={screenOptions}>
+      <Stack.Screen
+        name="ObsList"
+        component={ObsList}
+        options={hideHeader}
       />
-    <Stack.Screen
-      name="UserProfile"
-      component={UserProfile}
-      options={hideHeader}
-    />
-    <Stack.Screen
-      name="TaxonDetails"
-      component={TaxonDetails}
-      options={showBackButton}
-    />
-  </Stack.Navigator>
+      <Stack.Screen
+        name="ObsDetails"
+        component={ObsDetails}
+        options={hideHeader}
+        />
+      <Stack.Screen
+        name="UserProfile"
+        component={UserProfile}
+        options={hideHeader}
+      />
+      <Stack.Screen
+        name="TaxonDetails"
+        component={TaxonDetails}
+        options={showBackButton}
+      />
+    </Stack.Navigator>
+  </Mortal>
 );
 
 export default MyObservationsStackNavigation;
