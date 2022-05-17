@@ -52,6 +52,23 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: colors.black,
     width,
     height: 125
+  },
+  deleteButton: {
+    paddingHorizontal: 10,
+    left: -20,
+    zIndex: 1,
+    paddingVertical: 30
+  },
+  confirmButton: {
+    backgroundColor: colors.inatGreen,
+    borderRadius: 40,
+    alignSelf: "center"
+  },
+  cancelButton: {
+    backgroundColor: colors.gray,
+    borderRadius: 40,
+    alignSelf: "center",
+    marginRight: 10
   }
 } );
 
