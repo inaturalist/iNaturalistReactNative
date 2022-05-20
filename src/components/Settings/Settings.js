@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import {
   ActivityIndicator,
-  Alert,
   Button,
   Pressable,
   SafeAreaView,
@@ -156,9 +155,6 @@ const Settings = ( { children }: Props ): Node => {
   const [accessToken, setAccessToken] = useState();
   const [isLoading, setIsLoading] = useState( true );
   const [isSaving, setIsSaving] = useState( false );
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState( true );
-  const navigation = useNavigation();
-  const isFocused = useIsFocused();
   const user = useUserMe( accessToken );
 
   const fetchProfile = useCallback( async () => {
