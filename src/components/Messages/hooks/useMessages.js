@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
 
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
-import { MESSAGE_FIELDS } from "../../../providers/helpers";
+import { MESSAGE_FIELDS } from "../../../providers/fields";
 
 const useMessages = ( ): {
   messages: Array<Object>,

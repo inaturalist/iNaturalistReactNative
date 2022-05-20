@@ -11,11 +11,13 @@ type Props = {
 }
 
 const PhotoScroll = ( { photos }: Props ): React.Node => {
-  const extractKey = item => item.photo.id;
+  const extractKey = item => item?.uuid;
 
   const renderImage = ( { item } ) => {
     const photo = item.photo;
-    let photoUrl = photo.url.replace( "square", "large" );
+
+    // check for local file path for unuploaded photos
+    let photoUrl = ( photo && photo.url ) ? photo.url.replace( "square", "large" ) : photo.localFilePath;
 
     return (
       <>

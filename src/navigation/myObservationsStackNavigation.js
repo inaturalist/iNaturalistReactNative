@@ -8,8 +8,7 @@ import ObsList from "../components/Observations/ObsList";
 import ObsDetails from "../components/ObsDetails/ObsDetails";
 import UserProfile from "../components/UserProfile/UserProfile";
 import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
-import ObservationProvider from "../providers/ObservationProvider";
-import CustomHeaderWithTranslation from "../components/SharedComponents/CustomHeaderWithTranslation";
+import Mortal from "../components/SharedComponents/Mortal";
 
 const Stack = createNativeStackNavigator( );
 
@@ -26,9 +25,7 @@ const hideHeader = {
 };
 
 const MyObservationsStackNavigation = ( ): React.Node => (
-  // ObservationProvider needs to wrap the whole navigator, because a navigator can't have a
-  // provider as its child
-  <ObservationProvider>
+  <Mortal>
     <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen
         name="ObsList"
@@ -38,7 +35,7 @@ const MyObservationsStackNavigation = ( ): React.Node => (
       <Stack.Screen
         name="ObsDetails"
         component={ObsDetails}
-        options={{ headerTitle: ( props ) => <CustomHeaderWithTranslation {...props} headerText="Observation" /> }}
+        options={hideHeader}
         />
       <Stack.Screen
         name="UserProfile"
@@ -51,7 +48,7 @@ const MyObservationsStackNavigation = ( ): React.Node => (
         options={showBackButton}
       />
     </Stack.Navigator>
-  </ObservationProvider>
+  </Mortal>
 );
 
 export default MyObservationsStackNavigation;

@@ -1,6 +1,20 @@
-class Photo {
+import { Platform } from "react-native";
+import Realm from "realm";
+
+class Photo extends Realm.Object {
+  static PHOTO_FIELDS = {
+    id: true,
+    attribution: true,
+    license_code: true,
+    url: true
+  };
+
   static mapApiToRealm( photo ) {
     return photo;
+  }
+
+  static setPlatformSpecificFilePath( uri ) {
+    return Platform.OS === "android" ? "file://" + uri : uri;
   }
 
   static schema = {
@@ -10,7 +24,8 @@ class Photo {
       id: "int?",
       attribution: "string?",
       license_code: { type: "string?", mapTo: "licenseCode" },
-      url: "string?"
+      url: "string?",
+      localFilePath: "string?"
     }
   }
 }

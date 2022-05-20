@@ -1,5 +1,14 @@
+import Realm from "realm";
+
 import User from "./User";
-class Comment {
+class Comment extends Realm.Object {
+  static COMMENT_FIELDS = {
+    body: true,
+    created_at: true,
+    id: true,
+    user: User.USER_FIELDS
+  };
+
   static mapApiToRealm( comment, realm ) {
     return {
       ...comment,

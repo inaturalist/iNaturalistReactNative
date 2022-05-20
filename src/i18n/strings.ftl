@@ -17,6 +17,10 @@ Amphibians = Amphibians
 
 Arachnids = Arachnids
 
+Are-you-sure = Are you sure?
+
+Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
+
 Birds = Birds
 
 Cancel = Cancel
@@ -88,6 +92,8 @@ Introduced = Introduced
 
 Location = Location
 
+Log-in = Log in
+
 Low = Low
 
 Mammals = Mammals
@@ -147,6 +153,8 @@ Other-Data = Other Data
 Paused = Paused
 
 Photo-Licensing = Photo Licensing
+
+Photos-you-take-will-appear-here = Photos you take will appear here
 
 Plants = Plants
 
@@ -272,6 +280,8 @@ Select = Select
 
 Separate-Photos = Separate Photos
 
+Sign-out = Sign out
+
 # Header for a section showing taxa similar to a single taxon
 SIMILAR-SPECIES-header = SIMILAR SPECIES
 
@@ -307,10 +317,22 @@ Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
 
+# Shows the number of observations a user can upload to iNat from my observations page
+Upload-X-Observations = Upload {$count ->
+    [one] 1 Observation
+    *[other] {$count} Observations
+}
+
 # Shows the number of photos a user selected from the camera roll for upload
 Upload-X-photos = Upload {$count ->
     [one] 1 photo
     *[other] {$count} photos
+}
+
+# Shows the number of observations a user is currently uploading on my observations page
+Uploading-X-Observations = Uploading {$count ->
+    [one] 1 Observation
+    *[other] {$count} Observations
 }
 
 User = User
@@ -331,6 +353,8 @@ X-photos-X-observations = {$photoCount ->
     [one] 1 observation
     *[other] {$observationCount} observations
 }
+
+Yes-delete-photo = Yes, delete photo
 
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.

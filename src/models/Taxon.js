@@ -1,5 +1,20 @@
+import Realm from "realm";
+
 import Photo from "./Photo";
-class Taxon {
+class Taxon extends Realm.Object {
+  static TAXON_FIELDS = {
+    default_photo: {
+      url: true,
+      attribution: true,
+      license_code: true
+    },
+    iconic_taxon_name: true,
+    name: true,
+    preferred_common_name: true,
+    rank: true,
+    rank_level: true
+  };
+
   static mimicRealmMappedPropertiesSchema( taxon ) {
     return {
       ...taxon,
@@ -8,7 +23,7 @@ class Taxon {
     };
   }
 
-  static mapApiToRealm( taxon, realm ) {
+  static mapApiToRealm( taxon ) {
     return {
       ...taxon,
       default_photo: Photo.mapApiToRealm( taxon.default_photo )

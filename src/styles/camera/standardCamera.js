@@ -19,7 +19,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   captureButton: {
     ...buttonRow,
-    alignSelf: "center"
+    alignSelf: "center",
+    padding: 10,
+    zIndex: 1
   },
   flashButton: {
     ...buttonRow,
@@ -44,7 +46,29 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     width
   },
   row: {
-    bottom: 40
+    bottom: -50
+  },
+  secondRow: {
+    backgroundColor: colors.black,
+    width,
+    height: 125
+  },
+  deleteButton: {
+    paddingHorizontal: 10,
+    left: -20,
+    zIndex: 1,
+    paddingVertical: 30
+  },
+  confirmButton: {
+    backgroundColor: colors.inatGreen,
+    borderRadius: 40,
+    alignSelf: "center"
+  },
+  cancelButton: {
+    backgroundColor: colors.gray,
+    borderRadius: 40,
+    alignSelf: "center",
+    marginRight: 10
   }
 } );
 
@@ -53,6 +77,12 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
     color: colors.white,
     zIndex: 1,
     fontSize: 24
+  },
+  topPhotoText: {
+    bottom: 10,
+    color: colors.white,
+    position: "absolute",
+    fontSize: 18
   }
 } );
 

@@ -31,7 +31,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 
-  const navToNormalCamera = ( ) => navAndCloseModal( "NormalCamera" );
+  const navToStandardCamera = ( ) => navAndCloseModal( "StandardCamera" );
 
   const navToObsEdit = ( ) => {
     addObservationNoEvidence( );
@@ -50,7 +50,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
         <TranslatedText text="Submit-without-evidence" />
       </View>
        <Pressable
-        onPress={navToNormalCamera}
+        onPress={navToStandardCamera}
       >
         <Text style={textStyles.whiteText}>take photo with camera</Text>
       </Pressable>

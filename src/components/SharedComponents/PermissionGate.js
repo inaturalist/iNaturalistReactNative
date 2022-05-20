@@ -12,6 +12,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
+import { viewStyles } from "../../styles/permissionGate";
 import ViewNoFooter from "./ViewNoFooter";
 
 type Props = {
@@ -47,22 +48,22 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
         console.warn( `[DEBUG ${Platform.OS}] PermissionGate: Failed to request permission (${permission}): ${e}` );
       }
     };
+    // If this is Android and we haven't even checked the permissions, do it now
+    if ( result === null ) {
+      requestAndroidPermissions( );
+    }
+
+    // If this component has already been rendered but was just returned to in the navigation, check again
     navigation.addListener( "focus", async ( ) => {
-      if ( Platform.OS === "android" ) {
+      if ( result === null && Platform.OS === "android" ) {
         await requestAndroidPermissions( );
       }
     } );
-  }, [permission, navigation] );
+  }, [permission, navigation, result] );
 
   const manualGrantButton = (
     <Pressable
-      style={{
-        borderWidth: 1,
-        borderStyle: "solid",
-        borderColor: "black",
-        padding: 5,
-        fontWeight: "bold"
-      }}
+      style={viewStyles.permissionButton}
       onPress={ async ( ) => {
         try {
           const r = await PermissionsAndroid.request( permission );

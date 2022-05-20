@@ -6,19 +6,11 @@ import type { TextStyleProp, ImageStyleProp, ViewStyleProp } from "react-native/
 import { colors } from "../global";
 
 const pickerContainer = {
-  alignItems: "center",
-  flexDirection: "row",
-  flexWrap: "nowrap",
-  paddingHorizontal: 30
+  paddingHorizontal: 10
 };
 
 const pickerText = {
-  borderRadius: 10,
-  fontSize: 16,
-  paddingVertical: 12,
-  paddingHorizontal: 10,
-  color: colors.white,
-  backgroundColor: colors.gray
+
 };
 
 const pickerSelectStyles: { [string]: TextStyleProp } = StyleSheet.create( {
@@ -30,23 +22,16 @@ const pickerSelectStyles: { [string]: TextStyleProp } = StyleSheet.create( {
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   headerText: {
-    fontSize: 20,
-    color: colors.white,
-    backgroundColor: colors.gray,
-    marginHorizontal: 20,
-    marginTop: 20
+    marginHorizontal: 20
   },
   text: {
     marginHorizontal: 20
   },
   notes: {
-    marginHorizontal: 20,
-    height: 75,
-    borderColor: colors.gray,
-    borderWidth: 1,
-    borderRadius: 10,
-    marginTop: 20,
-    marginBottom: 10
+    marginHorizontal: 20
+  },
+  smallLabel: {
+    fontSize: 11
   }
 } );
 
@@ -91,9 +76,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     marginVertical: 20
   },
   row: {
-    justifyContent: "space-between",
     flexDirection: "row",
-    flexWrap: "nowrap"
+    flexWrap: "nowrap",
+    marginVertical: 10
   },
   evidenceList: {
     marginBottom: 20
@@ -113,6 +98,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     borderRadius: 20,
     marginHorizontal: 20,
     marginVertical: 20
+  },
+  selected: {
+    backgroundColor: colors.inatGreen
   }
 } );
 

@@ -5,6 +5,7 @@ import { Text, View } from "react-native";
 import type { Node } from "react";
 
 import { textStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
+import checkCamelAndSnakeCase from "../../ObsDetails/helpers/checkCamelAndSnakeCase";
 
 type Props = {
   item: Object,
@@ -12,9 +13,9 @@ type Props = {
 }
 
 const ObsCardStats = ( { item, type }: Props ): Node => {
-  const numOfIds = item.identifications.length || 0;
-  const numOfComments = item.comments.length || 0;
-  const qualityGrade = item.qualityGrade || item.quality_grade;
+  const numOfIds = item.identifications?.length || 0;
+  const numOfComments = item.comments?.length || 0;
+  const qualityGrade = checkCamelAndSnakeCase( item, "qualityGrade" );
 
   const renderColumn = ( ) => (
     <View>
