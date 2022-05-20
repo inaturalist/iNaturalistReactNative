@@ -13,7 +13,6 @@ import {
   View
 } from "react-native";
 import type { Node } from "react";
-import { useNavigation } from "@react-navigation/native";
 import inatjs from "inaturalistjs";
 import { viewStyles, textStyles } from "../../styles/settings/settings";
 import { getAPIToken } from "../LoginSignUp/AuthenticationService";
@@ -28,7 +27,6 @@ import SettingsApplications from "./SettingsApplications";
 import SettingsRelationships from "./SettingsRelationships";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useUserMe from "./hooks/useUserMe";
-import {useIsFocused} from "@react-navigation/core";
 
 const TAB_TYPE_PROFILE = "profile";
 const TAB_TYPE_ACCOUNT = "account";
