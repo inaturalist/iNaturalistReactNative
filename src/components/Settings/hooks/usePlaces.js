@@ -11,12 +11,13 @@ const usePlaces = ( q: string ): Array<Object> => {
         const params = {
           per_page: 10,
           q,
-          sources: "places"
+          sources: "places",
+          fields: "place,place.display_name,place.place_type"
         };
         const response = await inatjs.search( params );
         const results = response.results;
         if ( !isCurrent ) { return; }
-        setSearchResults( results.map( r => r.record ) );
+        setSearchResults( results.map( r => r.place ) );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
         console.log( "Couldn't fetch search results:", e.message, );

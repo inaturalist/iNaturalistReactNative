@@ -40,11 +40,6 @@ setJSExceptionHandler( errorHandler, true );
 
 startNetworkLogging();
 
-// inatjs.setConfig( {
-//   apiURL: "https://stagingapi.inaturalist.org/v1",
-//   writeApiURL: "https://stagingapi.inaturalist.org/v1"
-// } );
-
 inatjs.setConfig( {
   apiURL: "https://stagingapi.inaturalist.org/v2",
   writeApiURL: "https://stagingapi.inaturalist.org/v2"
