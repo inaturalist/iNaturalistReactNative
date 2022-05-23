@@ -10,7 +10,7 @@ import {getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersi
 
 // Base API domain can be overridden (in case we want to use staging URL) - either by placing it in .env file, or
 // in an environment variable.
-const HOST = Config.API_URL || process.env.API_URL || "https://www.inaturalist.org";
+const HOST = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "https://www.inaturalist.org";
 
 // User agent being used, when calling the iNat APIs
 const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
