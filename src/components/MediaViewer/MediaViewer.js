@@ -6,6 +6,7 @@ import type { Node } from "react";
 import { Appbar } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
+import ImageZoom from "react-native-image-pan-zoom";
 
 import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
 import Photo from "../../models/Photo";
@@ -13,7 +14,8 @@ import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import PhotoDeleteDialog from "./PhotoDeleteDialog";
 
-const { width } = Dimensions.get( "screen" );
+const { width, height } = Dimensions.get( "screen" );
+const mainImageHeight = height - 350;
 
 type Props = {
   photos: Array<Object>,
@@ -24,34 +26,35 @@ type Props = {
 
 const MediaViewer = ( { photos, setPhotos, mainPhoto, hideModal }: Props ): Node => {
   const [selectedPhoto, setSelectedPhoto] = useState( mainPhoto );
-
   const { t } = useTranslation( );
-  const flatList = useRef( null );
+  // const flatList = useRef( null );
 
-  const renderItem = ( { item, index } ) => {
-    const uri = Photo.displayLocalOrRemotePhoto( photos[index] );
-    return <Image style={imageStyles.selectedPhoto} source={{ uri }} />;
-  };
+  // const renderItem = ( { item, index } ) => {
+  //   const uri = Photo.displayLocalOrRemotePhoto( photos[index] );
+  //   return <Image style={imageStyles.selectedPhoto} source={{ uri }} />;
+  // };
 
-  const handleScroll = ( { nativeEvent } ) => {
-    // this updates main photo based on main view scroll left or right
-    const { x } = nativeEvent.contentOffset;
-    const index = Math.round( x / width );
-    setSelectedPhoto( index );
-  };
+  // const handleScroll = ( { nativeEvent } ) => {
+  //   // this updates main photo based on main view scroll left or right
+  //   const { x } = nativeEvent.contentOffset;
+  //   const index = Math.round( x / width );
+  //   setSelectedPhoto( index );
+  // };
 
-  const handleSelectedPhoto = ( index ) => {
-    // this updates main photo when user taps to select a carousel photo
-    if ( flatList && flatList.current !== null ) {
-      flatList.current.scrollToIndex( { index, animated: true } );
-    }
-  };
+  const handleSelectedPhoto = ( index ) => setSelectedPhoto( index );
 
-  const getItemLayout = ( data, index ) => ( {
-    length: ( width ),
-    offset: ( width ) * index,
-    index
-  } );
+  // const handleSelectedPhoto = ( index ) => {
+  //   // this updates main photo when user taps to select a carousel photo
+  //   if ( flatList && flatList.current !== null ) {
+  //     flatList.current.scrollToIndex( { index, animated: true } );
+  //   }
+  // };
+
+  // const getItemLayout = ( data, index ) => ( {
+  //   length: ( width ),
+  //   offset: ( width ) * index,
+  //   index
+  // } );
 
   useEffect( ( ) => {
     // automatically select the only photo in the media viewer
@@ -65,7 +68,20 @@ const MediaViewer = ( { photos, setPhotos, mainPhoto, hideModal }: Props ): Node
       <Appbar.Header style={viewStyles.container}>
         <Appbar.Content title={t( "X-Photos", { photoCount: photos.length } )} />
       </Appbar.Header>
-      <FlatList
+      {photos.length > 0 && (
+        <ImageZoom
+          cropWidth={width}
+          cropHeight={mainImageHeight}
+          imageWidth={width}
+          imageHeight={mainImageHeight}
+        >
+          <Image
+            style={imageStyles.selectedPhoto}
+            source={{ uri: Photo.displayLocalOrRemotePhoto( photos[selectedPhoto] ) }}
+          />
+        </ImageZoom>
+      )}
+      {/* <FlatList
         // $FlowFixMe
         ref={flatList}
         bounces={false}
@@ -79,7 +95,7 @@ const MediaViewer = ( { photos, setPhotos, mainPhoto, hideModal }: Props ): Node
         initialScrollIndex={mainPhoto}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-      />
+      /> */}
       <PhotoCarousel
         photos={photos}
         selectedPhoto={selectedPhoto}
