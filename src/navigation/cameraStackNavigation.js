@@ -13,7 +13,6 @@ import CustomHeaderWithTranslation from "../components/SharedComponents/CustomHe
 import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import PhotoGallery from "../components/PhotoLibrary/PhotoGallery";
 import PermissionGate from "../components/SharedComponents/PermissionGate";
-import MediaViewer from "../components/MediaViewer/MediaViewer";
 import Mortal from "../components/SharedComponents/Mortal";
 
 const Stack = createNativeStackNavigator( );
@@ -80,10 +79,6 @@ const CameraStackNavigation = ( ): React.Node => (
             headerShown: true
           }}
         />
-        <Stack.Screen
-            name="MediaViewer"
-            component={MediaViewer}
-          />
       </Stack.Navigator>
     </PhotoGalleryProvider>
   </Mortal>
