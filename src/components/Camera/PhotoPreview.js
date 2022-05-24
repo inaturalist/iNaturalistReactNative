@@ -32,7 +32,6 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
   const handleSelection = ( photo ) => {
     setMainPhoto( photo );
     showModal( );
-    // navigation.navigate( "MediaViewer", { photos, mainPhoto } );
   };
 
   const showDialog = ( ) => setDeleteDialogVisible( true );
