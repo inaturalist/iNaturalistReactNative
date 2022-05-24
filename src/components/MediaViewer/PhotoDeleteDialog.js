@@ -14,7 +14,8 @@ type Props = {
 const PhotoDeleteDialog = ( { photo }: Props ): Node => {
   const { t } = useTranslation( );
   const [visible, setVisible] = useState( false );
-  // const [photoToDelete, setPhotoToDelete] = useState( null );
+  const [photoToDelete, setPhotoToDelete] = useState( null );
+  console.log( photoToDelete, "photo to delete" );
 
   const showDialog = ( ) => setVisible( true );
   const hideDialog = ( ) => {
@@ -59,7 +60,7 @@ const PhotoDeleteDialog = ( { photo }: Props ): Node => {
         <Button
           style={viewStyles.alignRight}
           onPress={( ) => {
-            // setPhotoToDelete( item );
+            setPhotoToDelete( photo );
             showDialog( );
           }}
         >

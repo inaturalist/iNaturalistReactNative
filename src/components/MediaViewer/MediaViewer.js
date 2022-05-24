@@ -20,7 +20,6 @@ const MediaViewer = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { photos, mainPhoto } = params;
-  console.log( photos, "photos" );
   const [selectedPhoto, setSelectedPhoto] = useState( mainPhoto );
 
   const { t } = useTranslation( );
@@ -28,7 +27,8 @@ const MediaViewer = ( ): Node => {
 
   const renderItem = ( { item, index } ) => {
     const uri = Photo.setPlatformSpecificFilePath( photos[index].uri );
-    return <Image source={{ uri }} style={imageStyles.selectedPhoto} />;
+
+    return <Image style={imageStyles.selectedPhoto} source={{ uri }} />;
   };
 
   const handleScroll = ( { nativeEvent } ) => {
@@ -51,7 +51,7 @@ const MediaViewer = ( ): Node => {
     index
   } );
 
-  const photo = Photo.setPlatformSpecificFilePath( photos[selectedPhoto].path );
+  const photo = Photo.setPlatformSpecificFilePath( photos[selectedPhoto].uri );
 
   return (
     <ViewNoFooter style={viewStyles.container}>
@@ -59,6 +59,7 @@ const MediaViewer = ( ): Node => {
         <Appbar.Content title={t( "X-Photos", { photoCount: photos.length } )} />
       </Appbar.Header>
       <FlatList
+        // $FlowFixMe
         ref={flatList}
         bounces={false}
         data={photos}
@@ -69,6 +70,8 @@ const MediaViewer = ( ): Node => {
         renderItem={renderItem}
         onMomentumScrollEnd={handleScroll}
         initialScrollIndex={mainPhoto}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
       />
       <PhotoCarousel
         photos={photos}
@@ -77,7 +80,6 @@ const MediaViewer = ( ): Node => {
       />
       <HeaderBackButton onPress={( ) => navigation.goBack( )} />
       <PhotoDeleteDialog photo={photo} />
-      {/* <Button style={viewStyles.alignRight}>{t( "Remove-Photo" )}</Button> */}
     </ViewNoFooter>
   );
 };
