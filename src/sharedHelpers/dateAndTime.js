@@ -25,18 +25,10 @@ const formatObsListTime = ( date ) => {
   return format( date, dateTime );
 };
 
-const formatCameraDate = ( date ) => {
-  const splitDateAndTime = date.split( " " );
-  const day = splitDateAndTime[0].replaceAll( ":", "-" );
-  const formattedDate = day + "T" + splitDateAndTime[1];
-  return formattedDate;
-};
-
 export {
   formatDateAndTime,
   timeAgo,
   formatObsListTime,
-  formatCameraDate,
   createObservedOnStringForUpload,
   displayDateTimeObsEdit
 };

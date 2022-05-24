@@ -9,7 +9,6 @@ import Taxon from "./Taxon";
 import User from "./User";
 import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
 import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
-import { formatCameraDate } from "../sharedHelpers/dateAndTime";
 import { getUserId } from "../components/LoginSignUp/AuthenticationService";
 
 // noting that methods like .toJSON( ) are only accessible when the model class is extended with Realm.Object
@@ -79,14 +78,6 @@ class Observation extends Realm.Object {
       const obsPhotos = await Observation.formatObsPhotos( photos );
       return await Observation.createObsWithPhotos( obsPhotos, observedOn );
     } ) );
-  }
-
-  static async createObsFromStandardCamera( photos ) {
-    // take the observed_on_string time from the first photo in an observation
-    const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
-    const obsPhotos = await Observation.formatObsPhotos( photos );
-
-    return await Observation.createObsWithPhotos( obsPhotos, observedOn );
   }
 
   static mimicRealmMappedPropertiesSchema( obs ) {

@@ -83,16 +83,16 @@ const EvidenceSection = ( ): Node => {
     return location;
   };
 
-  const displayPhotos = ( ) => {
-    return currentObs.observationPhotos.map( p => {
-      return {
-        uri: p.photo?.url || p?.photo?.localFilePath
-      };
-    } );
-  };
+  // const displayPhotos = ( ) => {
+  //   return currentObs.observationPhotos.map( p => {
+  //     return {
+  //       uri: p.photo?.url || p?.photo?.localFilePath
+  //     };
+  //   } );
+  // };
 
   const handleSelection = ( mainPhoto ) => {
-    navigation.navigate( "MediaViewer", { photos: displayPhotos( ), mainPhoto } );
+    navigation.navigate( "MediaViewer", { photos: currentObs.observationPhotos, mainPhoto } );
   };
 
   return (
@@ -100,7 +100,7 @@ const EvidenceSection = ( ): Node => {
       {renderLocationPickerModal( )}
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
       <PhotoCarousel
-        photos={displayPhotos( )}
+        photos={currentObs.observationPhotos}
         setSelectedPhoto={handleSelection}
       />
       <Pressable

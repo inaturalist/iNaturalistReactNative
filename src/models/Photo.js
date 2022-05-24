@@ -1,6 +1,8 @@
 import { Platform } from "react-native";
 import Realm from "realm";
 
+import resizeImageForUpload from "../providers/uploadHelpers/resizeImage";
+
 class Photo extends Realm.Object {
   static PHOTO_FIELDS = {
     id: true,
@@ -15,6 +17,18 @@ class Photo extends Realm.Object {
 
   static setPlatformSpecificFilePath( uri ) {
     return Platform.OS === "android" ? "file://" + uri : uri;
+  }
+
+  static async new( uri ) {
+    const localFilePath = await resizeImageForUpload( uri );
+
+    return {
+      localFilePath
+    };
+  }
+
+  static displayLocalOrRemotePhoto( p ) {
+    return p.photo?.url || p?.photo?.localFilePath;
   }
 
   static schema = {

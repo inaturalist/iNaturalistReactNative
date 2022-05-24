@@ -5,6 +5,7 @@ import { FlatList, Image, Pressable } from "react-native";
 import type { Node } from "react";
 import { Avatar } from "react-native-paper";
 
+import Photo from "../../models/Photo";
 import { imageStyles, viewStyles } from "../../styles/sharedComponents/photoCarousel";
 
 type Props = {
@@ -37,9 +38,7 @@ const PhotoCarousel = ( {
   );
 
   const renderPhoto = ( { item, index } ) => {
-    const { uri } = item;
-    // console.log( item, "item in render photo" );
-    // const uri = Photo.setPlatformSpecificFilePath( item.path );
+    const uri = Photo.displayLocalOrRemotePhoto( item );
 
     if ( !uri ) {
       // throw "Tried to render photo that has no url or path!";

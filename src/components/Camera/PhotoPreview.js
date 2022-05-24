@@ -23,16 +23,16 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
   const [photoToDelete, setPhotoToDelete] = useState( null );
   const navigation = useNavigation( );
 
-  const displayPhotos = ( ) => {
-    return photos.map( p => {
-      return {
-        uri: Photo.setPlatformSpecificFilePath( p.path )
-      };
-    } );
-  };
+  // const displayPhotos = ( ) => {
+  //   return photos.map( p => {
+  //     return {
+  //       uri: Photo.setPlatformSpecificFilePath( p.path )
+  //     };
+  //   } );
+  // };
 
   const handleSelection = ( mainPhoto ) => {
-    navigation.navigate( "MediaViewer", { photos: displayPhotos( ), mainPhoto } );
+    navigation.navigate( "MediaViewer", { photos, mainPhoto } );
   };
 
   const showDialog = ( ) => setVisible( true );
@@ -87,7 +87,7 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
         </Dialog>
       </Portal>
       <PhotoCarousel
-        photos={displayPhotos( )}
+        photos={photos}
         emptyComponent={emptyDescription}
         containerStyle="camera"
         handleDelete={handleDelete}

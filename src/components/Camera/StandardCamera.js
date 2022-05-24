@@ -6,12 +6,15 @@ import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "react-native-paper";
+import Realm from "realm";
 
 import { viewStyles } from "../../styles/camera/standardCamera";
 import { ObsEditContext } from "../../providers/contexts";
 import CameraView from "./CameraView";
 import PhotoPreview from "./PhotoPreview";
 import { textStyles } from "../../styles/obsDetails/obsDetails";
+import realmConfig from "../../models/index";
+import ObservationPhoto from "../../models/ObservationPhoto";
 
 const StandardCamera = ( ): Node => {
   // TODO: figure out if there's a way to write location to photo metadata with RN
@@ -30,9 +33,12 @@ const StandardCamera = ( ): Node => {
   const takePhoto = async ( ) => {
     try {
       const photo = await camera.current.takePhoto( takePhotoOptions );
+      const realm = await Realm.open( realmConfig );
+      const obsPhoto = await ObservationPhoto.saveObservationPhoto( realm, photo );
+
       // only 10 photos allowed
       if ( photos.length < 10 ) {
-        setPhotos( photos.concat( [photo] ) );
+        setPhotos( photos.concat( [obsPhoto] ) );
       }
     } catch ( e ) {
       console.log( e, "couldn't take photo" );
