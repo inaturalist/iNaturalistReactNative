@@ -1,7 +1,6 @@
-import { Platform } from "react-native";
 import Realm from "realm";
-
-import resizeImageForUpload from "../providers/uploadHelpers/resizeImage";
+import ImageResizer from "react-native-image-resizer";
+import RNFS from "react-native-fs";
 
 class Photo extends Realm.Object {
   static PHOTO_FIELDS = {
@@ -11,16 +10,38 @@ class Photo extends Realm.Object {
     url: true
   };
 
+  static photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
+
   static mapApiToRealm( photo ) {
     return photo;
   }
 
-  static setPlatformSpecificFilePath( uri ) {
-    return Platform.OS === "android" ? "file://" + uri : uri;
+  static async resizeImageForUpload( path ) {
+    const width = 2048;
+    const photoUploadPath = Photo.photoUploadPath;
+
+    await RNFS.mkdir( photoUploadPath );
+    try {
+      const { uri } = await ImageResizer.createResizedImage(
+        path,
+        width,
+        width, // height
+        "JPEG", // compressFormat
+        100, // quality
+        0, // rotation
+        // $FlowFixMe
+        photoUploadPath,
+        true // keep metadata
+      );
+      return uri;
+    } catch ( e ) {
+      console.log( e, "error resizing image" );
+      return "";
+    }
   }
 
   static async new( uri ) {
-    const localFilePath = await resizeImageForUpload( uri );
+    const localFilePath = await Photo.resizeImageForUpload( uri );
 
     return {
       localFilePath

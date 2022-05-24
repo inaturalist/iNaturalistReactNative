@@ -26,8 +26,7 @@ const MediaViewer = ( ): Node => {
   const flatList = useRef( null );
 
   const renderItem = ( { item, index } ) => {
-    const uri = Photo.setPlatformSpecificFilePath( photos[index].uri );
-
+    const uri = Photo.displayLocalOrRemotePhoto( photos[index] );
     return <Image style={imageStyles.selectedPhoto} source={{ uri }} />;
   };
 
@@ -51,7 +50,7 @@ const MediaViewer = ( ): Node => {
     index
   } );
 
-  const photo = Photo.setPlatformSpecificFilePath( photos[selectedPhoto].uri );
+  const photo = Photo.displayLocalOrRemotePhoto( photos[selectedPhoto] );
 
   return (
     <ViewNoFooter style={viewStyles.container}>

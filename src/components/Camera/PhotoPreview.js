@@ -10,7 +10,6 @@ import { useNavigation } from "@react-navigation/native";
 
 import { viewStyles, textStyles } from "../../styles/camera/standardCamera";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
-import Photo from "../../models/Photo";
 
 type Props = {
   photos: Array<Object>,
@@ -22,14 +21,6 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
   const [visible, setVisible] = useState( false );
   const [photoToDelete, setPhotoToDelete] = useState( null );
   const navigation = useNavigation( );
-
-  // const displayPhotos = ( ) => {
-  //   return photos.map( p => {
-  //     return {
-  //       uri: Photo.setPlatformSpecificFilePath( p.path )
-  //     };
-  //   } );
-  // };
 
   const handleSelection = ( mainPhoto ) => {
     navigation.navigate( "MediaViewer", { photos, mainPhoto } );
@@ -45,6 +36,7 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
     if ( !photoToDelete ) { return; }
     const updatedPhotos = photos;
     const photoIndex = photos.findIndex( p => p === photoToDelete );
+    console.log( photoToDelete, "photo to delete in photo preview" );
     updatedPhotos.splice( photoIndex, 1 );
 
     // spreading the array forces PhotoPreview to rerender on each photo deletion
