@@ -52,6 +52,11 @@ class Photo extends Realm.Object {
     return p.photo?.url || p?.photo?.localFilePath;
   }
 
+  static deleteLocalImage( path ) {
+    const fileName = path.split( "photoUploads/" )[1];
+    RNFS.unlink( `${Photo.photoUploadPath}/${fileName}` );
+  }
+
   static schema = {
     name: "Photo",
     // TODO: need uuid to be primary key for photos that get uploaded?

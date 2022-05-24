@@ -3,13 +3,15 @@
 import React, { useState } from "react";
 import { Text } from "react-native";
 import type { Node } from "react";
-import RNFS from "react-native-fs";
+import Realm from "realm";
 import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 
 import { viewStyles, textStyles } from "../../styles/camera/standardCamera";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import ObservationPhoto from "../../models/ObservationPhoto";
+import realmConfig from "../../models/index";
 
 type Props = {
   photos: Array<Object>,
@@ -32,20 +34,17 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
     setVisible( false );
   };
 
-  const deletePhoto = ( ) => {
+  const deletePhoto = async ( ) => {
     if ( !photoToDelete ) { return; }
     const updatedPhotos = photos;
     const photoIndex = photos.findIndex( p => p === photoToDelete );
-    console.log( photoToDelete, "photo to delete in photo preview" );
     updatedPhotos.splice( photoIndex, 1 );
 
     // spreading the array forces PhotoPreview to rerender on each photo deletion
     setPhotos( [...updatedPhotos] );
 
-    // delete photo thumbnail from temp directory
-    const tempDirectory = `${RNFS.TemporaryDirectoryPath}/ReactNative`;
-    const fileName = photoToDelete.path.split( "ReactNative/" )[1];
-    RNFS.unlink( `${tempDirectory}/${fileName}` );
+    const realm = await Realm.open( realmConfig );
+    await ObservationPhoto.deleteObservationPhoto( realm, photoToDelete );
 
     hideDialog( );
   };
