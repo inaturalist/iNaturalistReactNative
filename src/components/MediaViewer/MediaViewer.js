@@ -1,9 +1,8 @@
 // @flow
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Image, Dimensions, FlatList } from "react-native";
 import type { Node } from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
 import { Appbar } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
@@ -16,10 +15,14 @@ import PhotoDeleteDialog from "./PhotoDeleteDialog";
 
 const { width } = Dimensions.get( "screen" );
 
-const MediaViewer = ( ): Node => {
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
-  const { photos, mainPhoto } = params;
+type Props = {
+  photos: Array<Object>,
+  setPhotos: Function,
+  mainPhoto: Object,
+  hideModal: Function
+}
+
+const MediaViewer = ( { photos, setPhotos, mainPhoto, hideModal }: Props ): Node => {
   const [selectedPhoto, setSelectedPhoto] = useState( mainPhoto );
 
   const { t } = useTranslation( );
@@ -50,7 +53,12 @@ const MediaViewer = ( ): Node => {
     index
   } );
 
-  const photo = Photo.displayLocalOrRemotePhoto( photos[selectedPhoto] );
+  useEffect( ( ) => {
+    // automatically select the only photo in the media viewer
+    if ( photos.length === 1 && selectedPhoto !== 0 ) {
+      setSelectedPhoto( 0 );
+    }
+  }, [photos, selectedPhoto] );
 
   return (
     <ViewNoFooter style={viewStyles.container}>
@@ -77,8 +85,12 @@ const MediaViewer = ( ): Node => {
         selectedPhoto={selectedPhoto}
         setSelectedPhoto={handleSelectedPhoto}
       />
-      <HeaderBackButton onPress={( ) => navigation.goBack( )} />
-      <PhotoDeleteDialog photo={photo} />
+      <HeaderBackButton onPress={hideModal} />
+      <PhotoDeleteDialog
+        photo={photos[selectedPhoto]}
+        photos={photos}
+        setPhotos={setPhotos}
+      />
     </ViewNoFooter>
   );
 };

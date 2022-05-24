@@ -4,14 +4,14 @@ import React, { useState } from "react";
 import { Text } from "react-native";
 import type { Node } from "react";
 import Realm from "realm";
-import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
+import { Button, Paragraph, Dialog, Portal, Modal } from "react-native-paper";
 import { useTranslation } from "react-i18next";
-import { useNavigation } from "@react-navigation/native";
 
 import { viewStyles, textStyles } from "../../styles/camera/standardCamera";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 import ObservationPhoto from "../../models/ObservationPhoto";
 import realmConfig from "../../models/index";
+import MediaViewer from "../MediaViewer/MediaViewer";
 
 type Props = {
   photos: Array<Object>,
@@ -20,18 +20,25 @@ type Props = {
 
 const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
   const { t } = useTranslation( );
-  const [visible, setVisible] = useState( false );
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const [photoToDelete, setPhotoToDelete] = useState( null );
-  const navigation = useNavigation( );
+  const [mainPhoto, setMainPhoto] = useState( null );
 
-  const handleSelection = ( mainPhoto ) => {
-    navigation.navigate( "MediaViewer", { photos, mainPhoto } );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+
+  const showModal = ( ) => setMediaViewerVisible( true );
+  const hideModal = ( ) => setMediaViewerVisible( false );
+
+  const handleSelection = ( photo ) => {
+    setMainPhoto( photo );
+    showModal( );
+    // navigation.navigate( "MediaViewer", { photos, mainPhoto } );
   };
 
-  const showDialog = ( ) => setVisible( true );
+  const showDialog = ( ) => setDeleteDialogVisible( true );
   const hideDialog = ( ) => {
     setPhotoToDelete( null );
-    setVisible( false );
+    setDeleteDialogVisible( false );
   };
 
   const deletePhoto = async ( ) => {
@@ -63,7 +70,7 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
   return (
     <>
       <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
+        <Dialog visible={deleteDialogVisible} onDismiss={hideDialog}>
           <Dialog.Content>
             <Paragraph>{t( "Are-you-sure" )}</Paragraph>
           </Dialog.Content>
@@ -76,6 +83,16 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
             </Button>
           </Dialog.Actions>
         </Dialog>
+      </Portal>
+      <Portal>
+        <Modal visible={mediaViewerVisible} onDismiss={hideModal} contentContainerStyle={viewStyles.container}>
+          <MediaViewer
+            mainPhoto={mainPhoto}
+            photos={photos}
+            setPhotos={setPhotos}
+            hideModal={hideModal}
+          />
+        </Modal>
       </Portal>
       <PhotoCarousel
         photos={photos}

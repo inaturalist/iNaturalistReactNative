@@ -49,7 +49,7 @@ class Photo extends Realm.Object {
   }
 
   static displayLocalOrRemotePhoto( p ) {
-    return p.photo?.url || p?.photo?.localFilePath;
+    return p?.photo?.url || p?.photo?.localFilePath;
   }
 
   static deleteLocalImage( path ) {

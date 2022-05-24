@@ -4,7 +4,6 @@ import React, { useState, useContext } from "react";
 import { Text, Pressable, Modal } from "react-native";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigation } from "@react-navigation/native";
 
 import { textStyles } from "../../styles/obsEdit/obsEdit";
 import LocationPicker from "./LocationPicker";
@@ -13,7 +12,13 @@ import DatePicker from "./DatePicker";
 import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
-const EvidenceSection = ( ): Node => {
+type Props = {
+  handleSelection: Function
+}
+
+const EvidenceSection = ( {
+  handleSelection
+}: Props ): Node => {
   const {
     currentObsIndex,
     observations,
@@ -21,8 +26,6 @@ const EvidenceSection = ( ): Node => {
     updateObservationKey
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
-  const navigation = useNavigation( );
-
   const [showLocationPicker, setShowLocationPicker] = useState( false );
 
   const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
@@ -81,18 +84,6 @@ const EvidenceSection = ( ): Node => {
       location += `, Acc: ${formatDecimal( currentObs.positional_accuracy )}`;
     }
     return location;
-  };
-
-  // const displayPhotos = ( ) => {
-  //   return currentObs.observationPhotos.map( p => {
-  //     return {
-  //       uri: p.photo?.url || p?.photo?.localFilePath
-  //     };
-  //   } );
-  // };
-
-  const handleSelection = ( mainPhoto ) => {
-    navigation.navigate( "MediaViewer", { photos: currentObs.observationPhotos, mainPhoto } );
   };
 
   return (

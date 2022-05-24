@@ -1,12 +1,12 @@
 // @flow
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Text, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
-import { Headline } from "react-native-paper";
+import { Headline, Portal, Modal } from "react-native-paper";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
@@ -18,6 +18,8 @@ import OtherDataSection from "./OtherDataSection";
 import EvidenceSection from "./EvidenceSection";
 // import BottomModal from "./BottomModal";
 // import uploadObservation from "./helpers/uploadObservation";
+import MediaViewer from "../MediaViewer/MediaViewer";
+import { colors } from "../../styles/global";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -25,12 +27,18 @@ const ObsEdit = ( ): Node => {
     setCurrentObsIndex,
     observations,
     saveObservation,
-    saveAndUploadObservation
+    saveAndUploadObservation,
+    setObservations
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   // const [showBottomModal, setBottomModal] = useState( false );
   const isLoggedIn = useLoggedIn( );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [mainPhoto, setMainPhoto] = useState( null );
+
+  const showModal = ( ) => setMediaViewerVisible( true );
+  const hideModal = ( ) => setMediaViewerVisible( false );
 
   // const openBottomModal = useCallback( ( ) => setBottomModal( true ), [] );
   // const closeBottomModal = useCallback( ( ) => setBottomModal( false ), [] );
@@ -75,44 +83,72 @@ const ObsEdit = ( ): Node => {
     );
   };
 
+
+  const setPhotos = ( photos ) => {
+    const updatedObservations = observations;
+    currentObs.observationPhotos = photos;
+    setObservations( [...updatedObservations] );
+  };
+
+  const handleSelection = ( photo ) => {
+    setMainPhoto( photo );
+    showModal( );
+  };
+
   const currentObs = observations[currentObsIndex];
 
   if ( !currentObs ) { return null; }
 
   return (
-    <ScrollNoFooter>
-      {/* <CustomModal
-        showModal={showBottomModal}
-        closeModal={closeBottomModal}
-        modal={(
-          <BottomModal />
-        )}
-        style={viewStyles.noMargin}
-      /> */}
-      {renderArrowNavigation( )}
-      <Headline style={textStyles.headerText}>{t( "Evidence" )}</Headline>
-      <EvidenceSection />
-      <Headline style={textStyles.headerText}>{t( "Identification" )}</Headline>
-      <IdentificationSection />
-      <Headline style={textStyles.headerText}>{t( "Other-Data" )}</Headline>
-      <OtherDataSection />
-      {!isLoggedIn && <Text style={textStyles.text}>you must be logged in to upload observations</Text>}
-      <View style={viewStyles.row}>
-        <View style={viewStyles.saveButton}>
+    <>
+      <Portal>
+        <Modal
+          visible={mediaViewerVisible}
+          onDismiss={hideModal}
+          contentContainerStyle={viewStyles.container}
+        >
+          <MediaViewer
+            mainPhoto={mainPhoto}
+            photos={currentObs.observationPhotos}
+            setPhotos={setPhotos}
+            hideModal={hideModal}
+          />
+        </Modal>
+      </Portal>
+      <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
+        {/* <CustomModal
+          showModal={showBottomModal}
+          closeModal={closeBottomModal}
+          modal={(
+            <BottomModal />
+          )}
+          style={viewStyles.noMargin}
+        /> */}
+        {renderArrowNavigation( )}
+        <Headline style={textStyles.headerText}>{t( "Evidence" )}</Headline>
+        <EvidenceSection handleSelection={handleSelection} />
+        <Headline style={textStyles.headerText}>{t( "Identification" )}</Headline>
+        <IdentificationSection />
+        <Headline style={textStyles.headerText}>{t( "Other-Data" )}</Headline>
+        <OtherDataSection />
+        {!isLoggedIn && <Text style={textStyles.text}>you must be logged in to upload observations</Text>}
+        <View style={viewStyles.row}>
+          <View style={viewStyles.saveButton}>
+            <RoundGreenButton
+              buttonText="save"
+              testID="ObsEdit.saveButton"
+              handlePress={saveObservation}
+            />
+          </View>
           <RoundGreenButton
-            buttonText="save"
-            testID="ObsEdit.saveButton"
-            handlePress={saveObservation}
+            buttonText="UPLOAD-OBSERVATION"
+            testID="ObsEdit.uploadButton"
+            handlePress={saveAndUploadObservation}
+            disabled={!isLoggedIn}
           />
         </View>
-        <RoundGreenButton
-          buttonText="UPLOAD-OBSERVATION"
-          testID="ObsEdit.uploadButton"
-          handlePress={saveAndUploadObservation}
-          disabled={!isLoggedIn}
-        />
-      </View>
-    </ScrollNoFooter>
+      </ScrollNoFooter>
+    </>
   );
 };
 
