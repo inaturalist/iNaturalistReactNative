@@ -1,6 +1,7 @@
 // @flow strict-local
 
 import { StyleSheet } from "react-native";
+import { colors } from "../global";
 
 import type {
   ViewStyleProp,
@@ -12,6 +13,22 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row",
     flexWrap: "nowrap",
     marginVertical: 10
+  },
+  containerStyle: {
+    backgroundColor: colors.white,
+    padding: 20,
+    marginHorizontal: 20
+  },
+  greenButton: {
+    backgroundColor: colors.inatGreen,
+    borderRadius: 40,
+    alignSelf: "center"
+  },
+  grayButton: {
+    backgroundColor: colors.gray,
+    borderRadius: 40,
+    alignSelf: "center",
+    marginRight: 20
   }
 } );
 

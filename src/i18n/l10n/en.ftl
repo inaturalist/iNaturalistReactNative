@@ -19,6 +19,8 @@ Arachnids = Arachnids
 
 Are-you-sure = Are you sure?
 
+Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
+
 Birds = Birds
 
 Cancel = Cancel
@@ -89,6 +91,8 @@ Insects = Insects
 Introduced = Introduced
 
 Location = Location
+
+Log-in = Log in
 
 Low = Low
 
@@ -277,6 +281,8 @@ Search-for-description-tags-text = Search for description/tags text
 Select = Select
 
 Separate-Photos = Separate Photos
+
+Sign-out = Sign out
 
 # Header for a section showing taxa similar to a single taxon
 SIMILAR-SPECIES-header = SIMILAR SPECIES
