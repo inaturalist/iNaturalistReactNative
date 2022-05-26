@@ -76,12 +76,14 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     position: "absolute",
     right: 0
   },
+  kebabMenuWrapper: {
+    zIndex: 100
+  },
   kebabMenuPlacement: {
     top: 0,
-    left: -100,
+    left: -200,
     position: "absolute",
-    width: 200,
-    zIndex: 100
+    width: 200
   }
 } );
 
