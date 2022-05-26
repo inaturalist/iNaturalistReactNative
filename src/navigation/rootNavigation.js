@@ -44,7 +44,8 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: colors.lightGray,
-    accent: colors.inatGreen
+    accent: colors.inatGreen,
+    surface: colors.white
   }
 };
 

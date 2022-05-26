@@ -43,6 +43,8 @@ Date-added-newest-to-oldest = Date added - newest to oldest
 
 Date-added-oldest-to-newest = Date added - oldest to newest
 
+Delete-comment = Delete comment
+
 DELETE-X-OBSERVATIONS = DELETE {$count ->
     [one] 1 OBSERVATION
     *[other] {$count} OBSERVATIONS

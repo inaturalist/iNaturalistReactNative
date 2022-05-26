@@ -46,13 +46,14 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexWrap: "nowrap",
     alignItems: "center",
     justifyContent: "space-between",
-    marginHorizontal: 10,
+    marginHorizontal: 13,
     marginVertical: 5
   },
   rowBorder: {
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    marginHorizontal: 0
+    marginHorizontal: 0,
+    borderColor: colors.borderGray
   },
   button: {
     width: width / 2
@@ -60,6 +61,27 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   pressableButton: {
     paddingVertical: 10,
     paddingHorizontal: 20
+  },
+  userIcon: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    alignItems: "center",
+    marginHorizontal: 13,
+    marginVertical: 5
+  },
+  labels: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    alignItems: "center",
+    position: "absolute",
+    right: 0
+  },
+  kebabMenuPlacement: {
+    top: 0,
+    left: -100,
+    position: "absolute",
+    width: 200,
+    zIndex: 100
   }
 } );
 
@@ -84,26 +106,30 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   },
   dataTabText: {
     marginVertical: 10
+  },
+  labels: {
+    marginRight: 5
   }
 } );
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   userProfileIcon: {
-    width: 32,
-    height: 32,
+    width: 30,
+    height: 30,
     borderRadius: 50,
     borderColor: colors.black,
-    borderWidth: 0.5
+    borderWidth: 0.5,
+    marginRight: 10
   },
   largeIcon: {
     width: 100,
     height: 100
   },
   squareImage: {
-    width: 50,
-    height: 50,
+    width: 47,
+    height: 47,
     borderRadius: 10,
-    marginHorizontal: 20
+    marginRight: 18
   }
 } );
 
