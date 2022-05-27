@@ -3,11 +3,12 @@
 import React from "react";
 import { Pressable, Image, Text, View } from "react-native";
 import type { Node } from "react";
-import Observation from "../../../models/Observation";
 
 import { imageStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/gridItem";
+import Observation from "../../../models/Observation";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
+import Photo from "../../../models/Photo";
 
 type Props = {
   item: Object,
@@ -19,8 +20,12 @@ const GridItem = ( { item, handlePress, uri }: Props ): Node => {
   const onPress = ( ) => handlePress( item );
   const needsUpload = item._synced_at === null;
 
+  const photo = item?.observationPhotos?.[0]?.photo;
+
   // TODO: add fallback image when there is no uri
-  const imageUri = uri === "project" ? Observation.projectUri( item ) : Observation.uri( item, true );
+  const imageUri = uri === "project"
+    ? Observation.projectUri( item )
+    : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
 
   const totalObsPhotos = item.observationPhotos && item.observationPhotos.length;
 

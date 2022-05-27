@@ -54,6 +54,14 @@ class Photo extends Realm.Object {
     return url?.replace( "square", "large" );
   }
 
+  static displayMediumPhoto( url ) {
+    return url?.replace( "square", "medium" );
+  }
+
+  static displayLocalOrRemoteMediumPhoto( photo ) {
+    return Photo.displayMediumPhoto( photo?.url ) || photo?.localFilePath;
+  }
+
   static displayLocalOrRemoteSquarePhoto( photo ) {
     return photo?.url || photo?.localFilePath;
   }

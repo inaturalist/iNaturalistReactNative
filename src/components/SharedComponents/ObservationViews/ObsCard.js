@@ -3,11 +3,11 @@
 import React from "react";
 import { Pressable, View, Image, Text } from "react-native";
 import type { Node } from "react";
-import Observation from "../../../models/Observation";
 
 import { viewStyles, textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
+import Photo from "../../../models/Photo";
 
 type Props = {
   item: Object,
@@ -18,6 +18,8 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
   const onPress = ( ) => handlePress( item );
   const needsUpload = item._synced_at === null;
 
+  const photo = item?.observationPhotos?.[0]?.photo;
+
   return (
     <Pressable
       onPress={onPress}
@@ -27,7 +29,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
       accessibilityLabel="Navigate to observation details screen"
     >
       <Image
-        source={Observation.uri( item )}
+        source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
         style={viewStyles.imageBackground}
         testID="ObsList.photo"
       />

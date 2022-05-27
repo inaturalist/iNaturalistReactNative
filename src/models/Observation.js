@@ -215,23 +215,6 @@ class Observation extends Realm.Object {
     };
   }
 
-  // TODO: swap this and realm schema to use observation_photos everywhere, if possible
-  // so there's no need for projectUri
-  static uri = ( obs, medium ) => {
-    let photoUri;
-    if ( obs && obs.observationPhotos && obs.observationPhotos[0] ) {
-      const { photo } = obs.observationPhotos[0];
-      if ( medium ) {
-        // need medium size for GridView component
-        photoUri = ( photo && photo.url ) && photo.url.replace( "square", "medium" );
-      } else {
-        // show localFilePath for photos not yet uploaded and synced
-        photoUri = ( photo && photo.url ) ? photo.url : photo.localFilePath;
-      }
-    }
-    return { uri: photoUri };
-  }
-
   static projectUri = obs => {
     const photo = obs.observation_photos[0];
     if ( !photo ) { return; }
