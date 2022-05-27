@@ -53,6 +53,7 @@ class Observation extends Realm.Object {
   static async createObsWithPhotos( observationPhotos, observedOn ) {
     const observation = await Observation.new( );
     observation.observationPhotos = observationPhotos;
+    console.log( observationPhotos, "observation photos" );
     return observation;
   }
 
@@ -65,8 +66,8 @@ class Observation extends Realm.Object {
 
   static async formatObsPhotos( photos ) {
     return await Promise.all( photos.map( async photo => {
-      // photo.image?.uri is for gallery photos; photo.path is for normal camera
-      const uri = photo.image?.uri || photo.path;
+      // photo.image?.uri is for gallery photos; photo is for normal camera
+      const uri = photo.image?.uri || photo;
       return await ObservationPhoto.new( uri );
     } ) );
   }

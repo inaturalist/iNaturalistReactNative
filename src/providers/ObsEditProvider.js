@@ -10,6 +10,7 @@ import saveLocalObservation from "./uploadHelpers/saveLocalObservation";
 import uploadObservation from "./uploadHelpers/uploadObservation";
 import Observation from "../models/Observation";
 import { PhotoGalleryContext } from "./contexts";
+import ObservationPhoto from "../models/ObservationPhoto";
 
 type Props = {
   children: any
@@ -29,7 +30,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const addPhotos = async ( photos ) => {
-    const newObs = await Observation.createObsWithPhotos( photos );
+    const realm = await Realm.open( realmConfig );
+    const obsPhotos = await Promise.all( photos.map( async photo => {
+      return await ObservationPhoto.new( photo, realm );
+    } ) );
+    const newObs = await Observation.createObsWithPhotos( obsPhotos );
     setObservations( [newObs] );
   };
 

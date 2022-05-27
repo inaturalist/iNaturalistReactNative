@@ -103,6 +103,7 @@ const ObsEdit = ( ): Node => {
     const uris = currentObs.observationPhotos.map( ( obsPhoto => {
       return Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo );
     } ) );
+    console.log( uris, "uris" );
     setPhotoUris( uris );
   }, [currentObs ] );
 
