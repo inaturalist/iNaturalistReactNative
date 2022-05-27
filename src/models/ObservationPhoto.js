@@ -40,25 +40,6 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
-  static async saveObservationPhoto( realm, photo ) {
-    const obsPhoto = await ObservationPhoto.new( photo.path );
-    realm?.write( ( ) => {
-      realm?.create( "ObservationPhoto", obsPhoto );
-    } );
-    return obsPhoto;
-  }
-
-  static async deleteObservationPhoto( realm, photo ) {
-    const photoToDelete = realm.objectForPrimaryKey( "ObservationPhoto", photo.uuid );
-
-    // delete localFilePath on disk
-    Photo.deleteLocalImage( photo.photo?.localFilePath );
-
-    realm?.write( ( ) => {
-      realm?.delete( photoToDelete );
-    } );
-  }
-
   static schema = {
     name: "ObservationPhoto",
     primaryKey: "uuid",

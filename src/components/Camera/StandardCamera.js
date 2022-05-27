@@ -14,7 +14,7 @@ import CameraView from "./CameraView";
 import PhotoPreview from "./PhotoPreview";
 import { textStyles } from "../../styles/obsDetails/obsDetails";
 import realmConfig from "../../models/index";
-import ObservationPhoto from "../../models/ObservationPhoto";
+import Photo from "../../models/Photo";
 
 const StandardCamera = ( ): Node => {
   // TODO: figure out if there's a way to write location to photo metadata with RN
@@ -28,17 +28,17 @@ const StandardCamera = ( ): Node => {
   const [takePhotoOptions, setTakePhotoOptions] = useState( {
     flash: "off"
   } );
-  const [photos, setPhotos] = useState( [] );
+  const [photoUris, setPhotoUris] = useState( [] );
 
   const takePhoto = async ( ) => {
     try {
-      const photo = await camera.current.takePhoto( takePhotoOptions );
+      const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
       const realm = await Realm.open( realmConfig );
-      const obsPhoto = await ObservationPhoto.saveObservationPhoto( realm, photo );
+      const uri = await Photo.savePhoto( realm, cameraPhoto );
 
-      // only 10 photos allowed
-      if ( photos.length < 10 ) {
-        setPhotos( photos.concat( [obsPhoto] ) );
+      // only 10 photoUris allowed
+      if ( photoUris.length < 10 ) {
+        setPhotoUris( photoUris.concat( [uri] ) );
       }
     } catch ( e ) {
       console.log( e, "couldn't take photo" );
@@ -58,14 +58,14 @@ const StandardCamera = ( ): Node => {
   };
 
   const navToObsEdit = ( ) => {
-    addPhotos( photos );
+    addPhotos( photoUris );
     navigation.navigate( "ObsEdit" );
   };
 
   return (
     <View style={viewStyles.container}>
       {device && <CameraView device={device} camera={camera} />}
-      <PhotoPreview photos={photos} setPhotos={setPhotos} />
+      <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} />
       <View style={viewStyles.row}>
         <Pressable
           style={viewStyles.flashButton}

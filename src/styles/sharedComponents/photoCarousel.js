@@ -10,7 +10,7 @@ const { width } = Dimensions.get( "screen" );
 const imageWidth = 66;
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
-  obsPhoto: {
+  photo: {
     width: imageWidth,
     height: imageWidth,
     borderRadius: 8,

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
@@ -16,10 +16,8 @@ import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 import IdentificationSection from "./IdentificationSection";
 import OtherDataSection from "./OtherDataSection";
 import EvidenceSection from "./EvidenceSection";
-// import BottomModal from "./BottomModal";
-// import uploadObservation from "./helpers/uploadObservation";
 import MediaViewer from "../MediaViewer/MediaViewer";
-import { colors } from "../../styles/global";
+import Photo from "../../models/Photo";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -32,16 +30,14 @@ const ObsEdit = ( ): Node => {
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-  // const [showBottomModal, setBottomModal] = useState( false );
+
   const isLoggedIn = useLoggedIn( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const [mainPhoto, setMainPhoto] = useState( null );
+  const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
+  const [photoUris, setPhotoUris] = useState( [] );
 
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
-
-  // const openBottomModal = useCallback( ( ) => setBottomModal( true ), [] );
-  // const closeBottomModal = useCallback( ( ) => setBottomModal( false ), [] );
 
   const showNextObservation = ( ) => setCurrentObsIndex( currentObsIndex + 1 );
   const showPrevObservation = ( ) => setCurrentObsIndex( currentObsIndex - 1 );
@@ -50,7 +46,6 @@ const ObsEdit = ( ): Node => {
     if ( observations.length === 0 ) { return; }
 
     const handleBackButtonPress = ( ) => {
-      // openBottomModal( );
       // show modal to dissuade user from going back
       navigation.goBack( );
     };
@@ -84,18 +79,32 @@ const ObsEdit = ( ): Node => {
   };
 
 
-  const setPhotos = ( photos ) => {
+  const setPhotos = ( uris ) => {
     const updatedObservations = observations;
-    currentObs.observationPhotos = photos;
+    const updatedObsPhotos = currentObs.observationPhotos.filter( obsPhoto => {
+      const { photo } = obsPhoto;
+      if ( uris.includes( photo.url || photo.localFilePath ) ) {
+        return obsPhoto;
+      }
+    } );
+    currentObs.observationPhotos = updatedObsPhotos;
     setObservations( [...updatedObservations] );
   };
 
   const handleSelection = ( photo ) => {
-    setMainPhoto( photo );
+    setInitialPhotoSelected( photo );
     showModal( );
   };
 
   const currentObs = observations[currentObsIndex];
+
+  useEffect( ( ) => {
+    if ( !currentObs || !currentObs.observationPhotos ) { return; }
+    const uris = currentObs.observationPhotos.map( ( obsPhoto => {
+      return Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo );
+    } ) );
+    setPhotoUris( uris );
+  }, [currentObs ] );
 
   if ( !currentObs ) { return null; }
 
@@ -108,25 +117,17 @@ const ObsEdit = ( ): Node => {
           contentContainerStyle={viewStyles.container}
         >
           <MediaViewer
-            mainPhoto={mainPhoto}
-            photos={currentObs.observationPhotos}
-            setPhotos={setPhotos}
+            initialPhotoSelected={initialPhotoSelected}
+            photoUris={photoUris}
+            setPhotoUris={setPhotos}
             hideModal={hideModal}
           />
         </Modal>
       </Portal>
       <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
-        {/* <CustomModal
-          showModal={showBottomModal}
-          closeModal={closeBottomModal}
-          modal={(
-            <BottomModal />
-          )}
-          style={viewStyles.noMargin}
-        /> */}
         {renderArrowNavigation( )}
         <Headline style={textStyles.headerText}>{t( "Evidence" )}</Headline>
-        <EvidenceSection handleSelection={handleSelection} />
+        <EvidenceSection handleSelection={handleSelection} photoUris={photoUris} />
         <Headline style={textStyles.headerText}>{t( "Identification" )}</Headline>
         <IdentificationSection />
         <Headline style={textStyles.headerText}>{t( "Other-Data" )}</Headline>

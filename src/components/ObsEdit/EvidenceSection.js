@@ -13,11 +13,13 @@ import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
 type Props = {
-  handleSelection: Function
+  handleSelection: Function,
+  photoUris: Array<Object>
 }
 
 const EvidenceSection = ( {
-  handleSelection
+  handleSelection,
+  photoUris
 }: Props ): Node => {
   const {
     currentObsIndex,
@@ -91,8 +93,8 @@ const EvidenceSection = ( {
       {renderLocationPickerModal( )}
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
       <PhotoCarousel
-        photos={currentObs.observationPhotos}
-        setSelectedPhoto={handleSelection}
+        photoUris={photoUris}
+        setSelectedPhotoIndex={handleSelection}
       />
       <Pressable
         onPress={openLocationPicker}
