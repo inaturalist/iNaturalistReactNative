@@ -66,7 +66,7 @@ const StandardCamera = ( ): Node => {
     <View style={viewStyles.container}>
       {device && <CameraView device={device} camera={camera} />}
       <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} />
-      <View style={viewStyles.row}>
+      <View style={viewStyles.cameraSettingsRow}>
         <Pressable
           style={viewStyles.flashButton}
           onPress={toggleFlash}
@@ -82,7 +82,7 @@ const StandardCamera = ( ): Node => {
         <View />
 
       </View>
-      <View style={viewStyles.secondRow}>
+      <View style={viewStyles.cameraCaptureRow}>
         <Pressable
           style={viewStyles.captureButton}
           onPress={takePhoto}
@@ -90,7 +90,7 @@ const StandardCamera = ( ): Node => {
           <Avatar.Icon size={40} icon="circle-outline" />
         </Pressable>
         <Pressable
-          style={viewStyles.cameraFlipButton}
+          style={viewStyles.nextButton}
           onPress={navToObsEdit}
         >
           <Text style={textStyles.whiteText}>next</Text>

@@ -16,8 +16,14 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
     borderRadius: 8,
     marginHorizontal: 6,
     marginVertical: 27
+  },
+  photoStandardCamera: {
+    marginTop: 50,
+    marginBottom: 18
   }
 } );
+
+const heightPhotoContainerCamera = 50 + 18 + 66;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   greenSelectionBorder: {
@@ -26,8 +32,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   photoContainer: {
     backgroundColor: colors.black,
-    paddingTop: 20,
-    height: 125,
+    position: "absolute",
+    top: 0,
+    height: heightPhotoContainerCamera,
     width
   },
   deleteButton: {

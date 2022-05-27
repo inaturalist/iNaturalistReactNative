@@ -48,7 +48,8 @@ const PhotoCarousel = ( {
         source={{ uri: item }}
         style={[
           imageStyles.photo,
-          selectedPhotoIndex === index && viewStyles.greenSelectionBorder
+          selectedPhotoIndex === index && viewStyles.greenSelectionBorder,
+          ( containerStyle === "camera" ) && imageStyles.photoStandardCamera
         ]}
         testID="ObsEdit.photo"
       />
