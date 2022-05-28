@@ -2,7 +2,7 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { Text, Pressable, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
@@ -29,7 +29,10 @@ const ObsEdit = ( ): Node => {
     setObservations
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
+  const { params } = useRoute( );
   const { t } = useTranslation( );
+
+  const lastScreen = params?.lastScreen;
 
   const isLoggedIn = useLoggedIn( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -46,8 +49,15 @@ const ObsEdit = ( ): Node => {
     if ( observations.length === 0 ) { return; }
 
     const handleBackButtonPress = ( ) => {
-      // show modal to dissuade user from going back
-      navigation.goBack( );
+      if ( lastScreen === "StandardCamera" ) {
+        navigation.navigate( "camera", {
+          screen: "StandardCamera",
+          params: { photos: photoUris }
+        } );
+      } else {
+        // show modal to dissuade user from going back
+        navigation.goBack( );
+      }
     };
 
     return (
@@ -78,7 +88,6 @@ const ObsEdit = ( ): Node => {
     );
   };
 
-
   const setPhotos = ( uris ) => {
     const updatedObservations = observations;
     const updatedObsPhotos = currentObs.observationPhotos.filter( obsPhoto => {
@@ -103,7 +112,6 @@ const ObsEdit = ( ): Node => {
     const uris = currentObs.observationPhotos.map( ( obsPhoto => {
       return Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo );
     } ) );
-    console.log( uris, "uris" );
     setPhotoUris( uris );
   }, [currentObs ] );
 

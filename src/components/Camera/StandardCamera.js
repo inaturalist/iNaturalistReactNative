@@ -1,10 +1,10 @@
 // @flow
 
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { Text, View, Pressable } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Avatar } from "react-native-paper";
 import Realm from "realm";
 
@@ -20,6 +20,8 @@ const StandardCamera = ( ): Node => {
   // TODO: figure out if there's a way to write location to photo metadata with RN
   const { addPhotos } = useContext( ObsEditContext );
   const navigation = useNavigation( );
+  const { params } = useRoute( );
+  const photos = params?.photos;
   // $FlowFixMe
   const camera = useRef<Camera>( null );
   const [cameraPosition, setCameraPosition] = useState( "back" );
@@ -59,8 +61,14 @@ const StandardCamera = ( ): Node => {
 
   const navToObsEdit = ( ) => {
     addPhotos( photoUris );
-    navigation.navigate( "ObsEdit" );
+    navigation.navigate( "ObsEdit", { lastScreen: "StandardCamera" } );
   };
+
+  useEffect( ( ) => {
+    if ( photos?.length > 0 ) {
+      setPhotoUris( photos );
+    }
+  }, [photos] );
 
   return (
     <View style={viewStyles.container}>
