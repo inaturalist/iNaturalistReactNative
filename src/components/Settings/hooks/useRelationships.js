@@ -1,7 +1,16 @@
 import inatjs from "inaturalistjs";
 import {useEffect, useState} from "react";
 
-const useRelationships = ( accessToken, params ): Array<Object> => {
+const useRelationships = ( accessToken, {
+  q,
+  following,
+  trusted,
+  order_by,
+  order,
+  per_page,
+  page,
+  random
+} ): Array<Object> => {
   const [searchResults, setSearchResults] = useState( [] );
   const [perPage, setPerPage] = useState( 0 );
   const [totalResults, setTotalResults] = useState( 0 );
@@ -10,7 +19,16 @@ const useRelationships = ( accessToken, params ): Array<Object> => {
     let isCurrent = true;
     const fetchSearchResults = async ( ) => {
       try {
-        const response = await inatjs.relationships.search( params, {api_token: accessToken} );
+        const response = await inatjs.relationships.search( {
+          q,
+          following,
+          trusted,
+          order_by,
+          order,
+          per_page,
+          page,
+          fields: "all"
+        }, {api_token: accessToken} );
         const results = response.results;
         if ( !isCurrent ) { return; }
         setSearchResults( results );
@@ -28,7 +46,7 @@ const useRelationships = ( accessToken, params ): Array<Object> => {
     return ( ) => {
       isCurrent = false;
     };
-  }, [accessToken, params] );
+  }, [accessToken, q, following, trusted, order_by, order, per_page, page, random] );
 
   return [searchResults, perPage, totalResults];
 };

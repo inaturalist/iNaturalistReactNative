@@ -10,7 +10,8 @@ const UserSearchInput = ( { onUserChanged} ): React.Node => {
   const [userSearch, setUserSearch] = React.useState( "" );
   // So we'll start searching only once the user finished typing
   const [finalUserSearch] = useDebounce( userSearch, 500 );
-  const userResults = useRemoteSearchResults( finalUserSearch, "users" );
+  const userResults = useRemoteSearchResults( finalUserSearch, "users", "user.login,user.name,user.icon" ).map( r => r.user );
+  console.log( "AAA - useRemoteSearchResults", userResults );
 
   useEffect( () => {
     if ( finalUserSearch.length === 0 ) {
@@ -51,7 +52,7 @@ const UserSearchInput = ( { onUserChanged} ): React.Node => {
           <Image
             style={viewStyles.userPic}
             resizeMode="contain"
-            source={{ uri: result.icon_url }}
+            source={{ uri: result.icon }}
           />
           <Text style={textStyles.resultPlaceName}>{result.login}</Text>
           <Text style={textStyles.resultPlaceType}>{result.name}</Text>

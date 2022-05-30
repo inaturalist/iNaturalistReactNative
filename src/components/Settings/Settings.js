@@ -197,7 +197,7 @@ const Settings = ( { children }: Props ): Node => {
       api_token: accessToken
     } );
     console.log( "Updated user", response );
-    const userResponse = await inatjs.users.me( { api_token: accessToken } );
+    const userResponse = await inatjs.users.me( { api_token: accessToken, fields: "all" } );
     console.log( "User object", userResponse.results[0] );
     setSettings( userResponse.results[0] );
     setIsSaving( false );

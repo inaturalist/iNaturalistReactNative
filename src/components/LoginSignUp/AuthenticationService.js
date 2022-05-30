@@ -10,8 +10,7 @@ import {getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersi
 
 // Base API domain can be overridden (in case we want to use staging URL) - either by placing it in .env file, or
 // in an environment variable.
-// TODO
-const HOST = "https://staging.inaturalist.org" || Config.API_URL || process.env.API_URL || "https://www.inaturalist.org";
+const API_HOST = Config.API_URL || process.env.API_URL || "https://www.inaturalist.org";
 
 // User agent being used, when calling the iNat APIs
 const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
@@ -24,7 +23,7 @@ const JWT_TOKEN_EXPIRATION_MINS = 25; // JWT Tokens expire after 30 mins - consi
  */
 const createAPI = ( additionalHeaders: any ) => {
   return create( {
-    baseURL: HOST,
+    baseURL: API_HOST,
     headers: { "User-Agent": USER_AGENT, ...additionalHeaders }
   } );
 };
@@ -306,6 +305,7 @@ const signOut = async () => {
 };
 
 export {
+  API_HOST,
   authenticateUser,
   registerUser,
   getAPIToken,

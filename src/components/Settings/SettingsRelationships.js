@@ -11,13 +11,13 @@ import UserSearchInput from "./UserSearchInput";
 import useRelationships from "./hooks/useRelationships";
 
 const FOLLOWING = {
-  all: "All",
+  any: "All",
   yes: "Yes",
   no: "No"
 };
 
 const TRUSTED = {
-  all: "All",
+  any: "All",
   yes: "Yes",
   no: "No"
 };
@@ -42,9 +42,22 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
   const [mutedUsers, setMutedUsers] = React.useState( [] );
 
   const [refreshRelationships, setRefreshRelationships] = React.useState( Math.random() );
-  const orderBy = ["a_to_z", "z_to_a"].includes( sortBy ) ? "" : "users.login";
-  const order = ["z_to_a", "recently_added"].includes( sortBy ) ? "desc" : "asc";
-  const relationshipParams = {q: finalUserSearch, following, trusted, order_by: orderBy, order: order, per_page: 10, page, random: refreshRelationships, fields: "all" };
+  let orderBy;
+  let order;
+  if ( sortBy === "recently_added" ) {
+    orderBy = "date";
+    order = "desc";
+  } else if ( sortBy === "earliest_added" ) {
+    orderBy = "date";
+    order = "asc";
+  } else if ( sortBy === "a_to_z" ) {
+    orderBy = "user";
+    order = "asc";
+  } else if ( sortBy === "z_to_a" ) {
+    orderBy = "user";
+    order = "desc";
+  }
+  const relationshipParams = {q: finalUserSearch, following, trusted, order_by: orderBy, order: order, per_page: 10, page, random: refreshRelationships };
   const [relationshipResults, perPage, totalResults] = useRelationships( accessToken, relationshipParams );
   const totalPages = totalResults > 0 && perPage > 0 ? Math.ceil( totalResults / perPage ) : 1;
 
