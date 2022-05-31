@@ -97,6 +97,11 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
     const response = await api.get( "/users/api_token.json" );
 
     if ( !response.ok ) {
+      // this deletes the user JWT and saved login details when a user is not actually signed in anymore
+      // for example, if they installed, deleted, and reinstalled the app without logging out
+      if ( response.status === 401 ) {
+        signOut( );
+      }
       console.error(
         `Error while renewing JWT: ${response.problem} - ${response.status}`
       );
