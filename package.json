@@ -7,8 +7,10 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint .",
-    "prepare": "husky install",
+    "lint": "npm run lint:eslint && npm run lint:flow",
+    "lint:eslint": "eslint .",
+    "lint:flow": "flow check",
+    "postinstall": "husky install",
     "translate": "node src/i18n/i18ncli.js build"
   },
   "dependencies": {
@@ -114,7 +116,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "flow check"
+      "pre-commit": "npm run lint"
     }
   }
 }

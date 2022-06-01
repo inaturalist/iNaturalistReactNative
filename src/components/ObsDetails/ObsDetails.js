@@ -198,7 +198,7 @@ const ObsDetails = ( ): Node => {
               type="none"
             />
             <RoundGreenButton
-              buttonTexts="Submit comment"
+              buttonText="Submit comment"
               handlePress={submitComment}
               testID="ObsDetail.commentSubmitButton"
             />
