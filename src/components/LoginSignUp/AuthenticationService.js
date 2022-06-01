@@ -7,6 +7,7 @@ import RNSInfo from "react-native-sensitive-info";
 import jwt from "react-native-jwt-io";
 import {Platform} from "react-native";
 import {getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion} from "react-native-device-info";
+import { MMKVLoader } from "react-native-mmkv-storage";
 
 // Base API domain can be overridden (in case we want to use staging URL) - either by placing it in .env file, or
 // in an environment variable.
@@ -145,6 +146,10 @@ const authenticateUser = async (
   await SInfo.setItem( "username", userDetails.username, {} );
   await SInfo.setItem( "accessToken", userDetails.accessToken, {} );
   await SInfo.setItem( "userId", userId, {} );
+
+  // Save userId to local, encrypted storage
+  const MMKV = new MMKVLoader( ).initialize( );
+  await MMKV.setStringAsync( "userId", userId );
 
   return true;
 };

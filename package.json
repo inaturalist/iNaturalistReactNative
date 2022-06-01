@@ -48,6 +48,7 @@
     "react-native-jwt-io": "^1.0.3",
     "react-native-localize": "^2.2.1",
     "react-native-maps": "^0.30.1",
+    "react-native-mmkv-storage": "^0.7.6",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^13.1.0",
     "react-native-network-logger": "^1.12.0",

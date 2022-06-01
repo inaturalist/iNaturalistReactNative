@@ -1,11 +1,14 @@
 // @flow
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   DrawerContentScrollView,
   DrawerItem
 } from "@react-navigation/drawer";
 import type { Node } from "react";
+import { MMKVLoader } from "react-native-mmkv-storage";
+
+import { signOut } from "../components/LoginSignUp/AuthenticationService";
 
 type Props = {
   props: any
@@ -14,6 +17,22 @@ type Props = {
 const CustomDrawerContent = ( { ...props }: Props ): Node => {
   // $FlowFixMe
   const { navigation } = props;
+
+
+  useEffect( ( ) => {
+    const MMKV = new MMKVLoader( ).initialize( );
+
+    const checkForSignedInUser = async ( ) => {
+      let userId = await MMKV.getStringAsync( "userId" );
+      console.log( userId, "user id in check for signed in user" );
+      if ( !userId ) {
+        await signOut( );
+      }
+    };
+
+    checkForSignedInUser( );
+  }, [] );
+
 
   return (
     <DrawerContentScrollView {...props}>
