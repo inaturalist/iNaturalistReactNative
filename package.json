@@ -111,5 +111,10 @@
     "automock": false,
     "resetMocks": false,
     "verbose": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "flow check"
+    }
   }
 }
