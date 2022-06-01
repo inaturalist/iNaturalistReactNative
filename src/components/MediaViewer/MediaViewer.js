@@ -18,7 +18,7 @@ const { width, height } = Dimensions.get( "screen" );
 const selectedImageHeight = height - 350;
 
 type Props = {
-  photoUris: Array<Object>,
+  photoUris: Array<string>,
   setPhotoUris: Function,
   initialPhotoSelected: Object,
   hideModal: Function

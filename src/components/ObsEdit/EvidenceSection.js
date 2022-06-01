@@ -14,7 +14,7 @@ import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
 type Props = {
   handleSelection: Function,
-  photoUris: Array<Object>
+  photoUris: Array<string>
 }
 
 const EvidenceSection = ( {

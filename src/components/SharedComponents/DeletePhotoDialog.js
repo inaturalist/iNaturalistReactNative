@@ -13,7 +13,7 @@ import realmConfig from "../../models/index";
 type Props = {
   deleteDialogVisible: boolean,
   photoUriToDelete: ?string,
-  photoUris: Array<Object>,
+  photoUris: Array<string>,
   setPhotoUris: Function,
   hideDialog: Function
 }

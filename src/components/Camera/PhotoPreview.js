@@ -12,7 +12,7 @@ import MediaViewer from "../MediaViewer/MediaViewer";
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 
 type Props = {
-  photoUris: Array<Object>,
+  photoUris: Array<string>,
   setPhotoUris: Function
 }
 

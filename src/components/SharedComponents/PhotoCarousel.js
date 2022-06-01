@@ -9,7 +9,7 @@ import { imageStyles, viewStyles } from "../../styles/sharedComponents/photoCaro
 
 type Props = {
   emptyComponent?: Function,
-  photoUris: Array<Object>,
+  photoUris: Array<string>,
   setSelectedPhotoIndex?: Function,
   selectedPhotoIndex?: number,
   containerStyle?: string,
