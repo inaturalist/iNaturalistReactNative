@@ -1,80 +1,46 @@
 // @flow
 
 import React, { useState } from "react";
-import { FlatList, Image, Pressable, Text } from "react-native";
+import { Text } from "react-native";
 import type { Node } from "react";
-import RNFS from "react-native-fs";
-import { Button, Paragraph, Dialog, Portal, Avatar } from "react-native-paper";
+import { Portal, Modal } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
-import { viewStyles, imageStyles, textStyles } from "../../styles/camera/standardCamera";
-import Photo from "../../models/Photo";
+import { viewStyles, textStyles } from "../../styles/camera/standardCamera";
+import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import MediaViewer from "../MediaViewer/MediaViewer";
+import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 
 type Props = {
-  photos: Array<Object>,
-  setPhotos: Function
+  photoUris: Array<string>,
+  setPhotoUris: Function
 }
 
-const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
+const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
   const { t } = useTranslation( );
-  const [visible, setVisible] = useState( false );
-  const [photoToDelete, setPhotoToDelete] = useState( null );
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
+  const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
+  const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
-  const showDialog = ( ) => setVisible( true );
+  const showModal = ( ) => setMediaViewerVisible( true );
+  const hideModal = ( ) => setMediaViewerVisible( false );
+
+  const handleSelection = ( photoUri ) => {
+    setInitialPhotoSelected( photoUri );
+    showModal( );
+  };
+
+  const showDialog = ( ) => setDeleteDialogVisible( true );
+
   const hideDialog = ( ) => {
-    setPhotoToDelete( null );
-    setVisible( false );
+    setPhotoUriToDelete( null );
+    setDeleteDialogVisible( false );
   };
 
-  const deletePhoto = ( ) => {
-    if ( !photoToDelete ) { return; }
-    const updatedPhotos = photos;
-    const photoIndex = photos.findIndex( p => p === photoToDelete );
-    updatedPhotos.splice( photoIndex, 1 );
-
-    // spreading the array forces PhotoPreview to rerender on each photo deletion
-    setPhotos( [...updatedPhotos] );
-
-    // delete photo thumbnail from temp directory
-    const tempDirectory = `${RNFS.TemporaryDirectoryPath}/ReactNative`;
-    const fileName = photoToDelete.path.split( "ReactNative/" )[1];
-    RNFS.unlink( `${tempDirectory}/${fileName}` );
-
-    hideDialog( );
-  };
-
-  const renderSmallPhoto = ( { item } ) => {
-    const uri = Photo.setPlatformSpecificFilePath( item.path );
-
-    return (
-      <>
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Content>
-              <Paragraph>{t( "Are-you-sure" )}</Paragraph>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={hideDialog} style={viewStyles.cancelButton}>
-                {t( "Cancel" )}
-              </Button>
-              <Button onPress={deletePhoto} style={viewStyles.confirmButton}>
-                {t( "Yes-delete-photo" )}
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
-        <Image source={{ uri }} style={imageStyles.smallPhoto} />
-        <Pressable
-          onPress={( ) => {
-            setPhotoToDelete( item );
-            showDialog( );
-          }}
-          style={viewStyles.deleteButton}
-        >
-          <Avatar.Icon icon="delete-forever" size={30} />
-        </Pressable>
-      </>
-    );
+  const handleDelete = ( photoUri ) => {
+    setPhotoUriToDelete( photoUri );
+    showDialog( );
   };
 
   const emptyDescription = ( ) => (
@@ -84,13 +50,36 @@ const PhotoPreview = ( { photos, setPhotos }: Props ): Node => {
   );
 
   return (
-    <FlatList
-      data={photos}
-      contentContainerStyle={viewStyles.photoContainer}
-      renderItem={renderSmallPhoto}
-      horizontal
-      ListEmptyComponent={emptyDescription}
-    />
+    <>
+      <DeletePhotoDialog
+        deleteDialogVisible={deleteDialogVisible}
+        photoUriToDelete={photoUriToDelete}
+        photoUris={photoUris}
+        setPhotoUris={setPhotoUris}
+        hideDialog={hideDialog}
+      />
+      <Portal>
+        <Modal
+          visible={mediaViewerVisible}
+          onDismiss={hideModal}
+          contentContainerStyle={viewStyles.container}
+        >
+          <MediaViewer
+            initialPhotoSelected={initialPhotoSelected}
+            photoUris={photoUris}
+            setPhotoUris={setPhotoUris}
+            hideModal={hideModal}
+          />
+        </Modal>
+      </Portal>
+      <PhotoCarousel
+        photoUris={photoUris}
+        emptyComponent={emptyDescription}
+        containerStyle="camera"
+        handleDelete={handleDelete}
+        setSelectedPhotoIndex={handleSelection}
+      />
+    </>
   );
 };
 

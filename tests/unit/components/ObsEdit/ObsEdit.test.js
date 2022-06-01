@@ -15,6 +15,16 @@ const mockLocationName = "San Francisco, CA";
 
 jest.mock( "../../../../src/providers/ObsEditProvider" );
 
+// mock Portal with a Modal component inside of it (MediaViewer)
+jest.mock( "react-native-paper", () => {
+  const RealModule = jest.requireActual( "react-native-paper" );
+  const MockedModule = {
+    ...RealModule,
+    Portal: ( {children} ) => <>{children}</>
+  };
+  return MockedModule;
+} );
+
 jest.mock( "../../../../src/sharedHooks/useLocationName" , ( ) => ( {
   __esModule: true,
   default: ( ) => {
@@ -25,7 +35,9 @@ jest.mock( "../../../../src/sharedHooks/useLocationName" , ( ) => ( {
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
-    ...actualNav
+    ...actualNav,
+    useRoute: ( ) => ( {
+    } )
   };
 } );
 

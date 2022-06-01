@@ -8,11 +8,19 @@ import { useTranslation } from "react-i18next";
 import { textStyles } from "../../styles/obsEdit/obsEdit";
 import LocationPicker from "./LocationPicker";
 import { ObsEditContext } from "../../providers/contexts";
-import EvidenceList from "./EvidenceList";
 import DatePicker from "./DatePicker";
 import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
+import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
-const EvidenceSection = ( ): Node => {
+type Props = {
+  handleSelection: Function,
+  photoUris: Array<string>
+}
+
+const EvidenceSection = ( {
+  handleSelection,
+  photoUris
+}: Props ): Node => {
   const {
     currentObsIndex,
     observations,
@@ -20,7 +28,6 @@ const EvidenceSection = ( ): Node => {
     updateObservationKey
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
-
   const [showLocationPicker, setShowLocationPicker] = useState( false );
 
   const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
@@ -85,7 +92,10 @@ const EvidenceSection = ( ): Node => {
     <>
       {renderLocationPickerModal( )}
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
-      <EvidenceList currentObs={currentObs} showCameraOptions />
+      <PhotoCarousel
+        photoUris={photoUris}
+        setSelectedPhotoIndex={handleSelection}
+      />
       <Pressable
         onPress={openLocationPicker}
       >

@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import inatjs, { FileUpload } from "inaturalistjs";
+
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
-import resizeImageForUpload from "../../../providers/uploadHelpers/resizeImage";
+import Photo from "../../../models/Photo";
 
 const TAXON_FIELDS = {
   name: true,
@@ -38,7 +39,7 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
         setSuggestions( [] );
         // observed_on: new Date( time * 1000 ).toISOString(),
         const apiToken = await getJWTToken( false );
-        const resizedPhoto = await resizeImageForUpload( uri );
+        const resizedPhoto = await Photo.resizeImageForUpload( uri );
 
         const params = {
           image: new FileUpload( {

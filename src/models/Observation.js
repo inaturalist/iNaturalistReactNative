@@ -9,7 +9,6 @@ import Taxon from "./Taxon";
 import User from "./User";
 import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
 import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
-import { formatCameraDate } from "../sharedHelpers/dateAndTime";
 import { getUserId } from "../components/LoginSignUp/AuthenticationService";
 
 // noting that methods like .toJSON( ) are only accessible when the model class is extended with Realm.Object
@@ -54,6 +53,7 @@ class Observation extends Realm.Object {
   static async createObsWithPhotos( observationPhotos, observedOn ) {
     const observation = await Observation.new( );
     observation.observationPhotos = observationPhotos;
+    console.log( observationPhotos, "observation photos" );
     return observation;
   }
 
@@ -66,8 +66,8 @@ class Observation extends Realm.Object {
 
   static async formatObsPhotos( photos ) {
     return await Promise.all( photos.map( async photo => {
-      // photo.image?.uri is for gallery photos; photo.path is for normal camera
-      const uri = photo.image?.uri || photo.path;
+      // photo.image?.uri is for gallery photos; photo is for normal camera
+      const uri = photo.image?.uri || photo;
       return await ObservationPhoto.new( uri );
     } ) );
   }
@@ -79,14 +79,6 @@ class Observation extends Realm.Object {
       const obsPhotos = await Observation.formatObsPhotos( photos );
       return await Observation.createObsWithPhotos( obsPhotos, observedOn );
     } ) );
-  }
-
-  static async createObsFromStandardCamera( photos ) {
-    // take the observed_on_string time from the first photo in an observation
-    const observedOn = formatCameraDate( photos[0].metadata["{Exif}"].DateTimeOriginal );
-    const obsPhotos = await Observation.formatObsPhotos( photos );
-
-    return await Observation.createObsWithPhotos( obsPhotos, observedOn );
   }
 
   static mimicRealmMappedPropertiesSchema( obs ) {
@@ -222,23 +214,6 @@ class Observation extends Realm.Object {
       captive_flag: obs.captive_flag,
       owners_identification_from_vision: obs.owners_identification_from_vision
     };
-  }
-
-  // TODO: swap this and realm schema to use observation_photos everywhere, if possible
-  // so there's no need for projectUri
-  static uri = ( obs, medium ) => {
-    let photoUri;
-    if ( obs && obs.observationPhotos && obs.observationPhotos[0] ) {
-      const { photo } = obs.observationPhotos[0];
-      if ( medium ) {
-        // need medium size for GridView component
-        photoUri = ( photo && photo.url ) && photo.url.replace( "square", "medium" );
-      } else {
-        // show localFilePath for photos not yet uploaded and synced
-        photoUri = ( photo && photo.url ) ? photo.url : photo.localFilePath;
-      }
-    }
-    return { uri: photoUri };
   }
 
   static projectUri = obs => {

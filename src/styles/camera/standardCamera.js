@@ -2,7 +2,7 @@
 
 import { StyleSheet, Dimensions } from "react-native";
 
-import type { ViewStyleProp, TextStyleProp, ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "../global";
 
 const { width } = Dimensions.get( "screen" );
@@ -12,16 +12,23 @@ const buttonRow = {
   bottom: 75
 };
 
+const cameraCaptureRowHeight = 69 + 36 + 54;
+
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   container: {
     flex: 1,
     backgroundColor: colors.black
   },
   captureButton: {
-    ...buttonRow,
-    alignSelf: "center",
-    padding: 10,
-    zIndex: 1
+    position: "absolute",
+    bottom: 54,
+    alignSelf: "center"
+  },
+  nextButton: {
+    position: "absolute",
+    bottom: 71,
+    right: 47,
+    alignSelf: "flex-end"
   },
   flashButton: {
     ...buttonRow,
@@ -40,24 +47,13 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     borderWidth: 2,
     borderColor: colors.white
   },
-  photoContainer: {
-    backgroundColor: colors.black,
-    height: 125,
-    width
+  cameraSettingsRow: {
+    bottom: -52
   },
-  row: {
-    bottom: -50
-  },
-  secondRow: {
+  cameraCaptureRow: {
     backgroundColor: colors.black,
     width,
-    height: 125
-  },
-  deleteButton: {
-    paddingHorizontal: 10,
-    left: -20,
-    zIndex: 1,
-    paddingVertical: 30
+    height: cameraCaptureRowHeight
   },
   confirmButton: {
     backgroundColor: colors.inatGreen,
@@ -86,17 +82,7 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   }
 } );
 
-const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
-  smallPhoto: {
-    height: 50,
-    width: 50,
-    top: 50,
-    marginHorizontal: 5
-  }
-} );
-
 export {
   viewStyles,
-  textStyles,
-  imageStyles
+  textStyles
 };

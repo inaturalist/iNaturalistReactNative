@@ -253,6 +253,8 @@ Record-new-sound = Record new sound
 
 Recording-Sound = Recording Sound
 
+Remove-Photo = Remove Photo
+
 Remove-Photos = Remove Photos
 
 Reptiles = Reptiles
@@ -343,6 +345,12 @@ Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of dat
 X-Observations = {$observationCount ->
     [one] 1 Observation
     *[other] {$observationCount} Observations
+}
+
+# Displays number of photos attached to an observation in the Media Viewer
+X-Photos = {$photoCount ->
+    [one] 1 Photo
+    *[other] {$photoCount} Photos
 }
 
 # Displays number of photos and observations a user has selected from the camera roll
