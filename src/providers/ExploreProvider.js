@@ -4,7 +4,6 @@ import type { Node } from "react";
 import inatjs from "inaturalistjs";
 
 import { ExploreContext } from "./contexts";
-import { FIELDS } from "./fields";
 import Observation from "../models/Observation";
 
 type Props = {
@@ -60,7 +59,7 @@ const ExploreProvider = ( { children }: Props ): Node => {
       try {
         const params = {
           ...filters,
-          fields: FIELDS
+          fields: Observation.FIELDS
         };
         const response = await inatjs.observations.search( params );
         const totalResults = response.total_results;

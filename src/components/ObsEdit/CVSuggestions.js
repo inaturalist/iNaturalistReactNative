@@ -24,14 +24,14 @@ const CVSuggestions = ( ): Node => {
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const [showSeenNearby, setShowSeenNearby] = useState( true );
-  const [selectedPhoto, setSelectedPhoto] = useState( 0 );
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
   const [q, setQ] = React.useState( "" );
   const list = useRemoteObsEditSearchResults( q, "taxa" );
   const isLoggedIn = useLoggedIn( );
 
   const currentObs = observations[currentObsIndex];
   const hasPhotos = currentObs.observationPhotos;
-  const { suggestions, status } = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
+  const { suggestions, status } = useCVSuggestions( currentObs, showSeenNearby, selectedPhotoIndex );
 
   const renderNavButtons = ( updateIdentification, id ) => {
     const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id } );
@@ -138,9 +138,9 @@ const CVSuggestions = ( ): Node => {
       <View>
         {hasPhotos && (
           <PhotoCarousel
-            photos={displayPhotos( )}
-            setSelectedPhoto={setSelectedPhoto}
-            selectedPhoto={selectedPhoto}
+            photoUris={displayPhotos( )}
+            setSelectedPhotoIndex={setSelectedPhotoIndex}
+            selectedPhotoIndex={selectedPhotoIndex}
           />
         )}
         <Searchbar
