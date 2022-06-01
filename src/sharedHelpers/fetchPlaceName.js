@@ -30,7 +30,7 @@ const setPlaceName = ( results: Array<Object> ) => {
   return placeName;
 };
 
-const fetchPlaceName = async ( lat, lng ): Promise<?string> => {
+const fetchPlaceName = async ( lat: number, lng: number ): Promise<?string> => {
   try {
     const results = await Geocoder.geocodePosition( { lat, lng } );
     if ( results.length === 0 ) { return; }

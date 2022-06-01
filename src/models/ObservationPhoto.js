@@ -3,7 +3,6 @@ import uuid from "react-native-uuid";
 import Realm from "realm";
 
 import Photo from "./Photo";
-import resizeImageForUpload from "../providers/uploadHelpers/resizeImage";
 
 class ObservationPhoto extends Realm.Object {
   static OBSERVATION_PHOTOS_FIELDS = {
@@ -32,14 +31,13 @@ class ObservationPhoto extends Realm.Object {
     };
   }
 
-  static async new( uri ) {
-    const localFilePath = await resizeImageForUpload( uri );
-
+  static async new( uri, realm ) {
+    const photo = realm.objects( "Photo" ).filtered( `localFilePath == "${uri}"` )[0];
     return {
+      _created_at: new Date( ),
+      _updated_at: new Date( ),
       uuid: uuid.v4( ),
-      photo: {
-        localFilePath
-      }
+      photo: photo || await Photo.new( uri )
     };
   }
 
