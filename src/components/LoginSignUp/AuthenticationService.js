@@ -8,6 +8,9 @@ import jwt from "react-native-jwt-io";
 import {Platform} from "react-native";
 import {getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion} from "react-native-device-info";
 import { MMKVLoader } from "react-native-mmkv-storage";
+import Realm from "realm";
+
+import realmConfig from "../../models/index";
 
 // Base API domain can be overridden (in case we want to use staging URL) - either by placing it in .env file, or
 // in an environment variable.
@@ -145,7 +148,7 @@ const authenticateUser = async (
   // Save authentication details to secure storage
   await SInfo.setItem( "username", userDetails.username, {} );
   await SInfo.setItem( "accessToken", userDetails.accessToken, {} );
-  await SInfo.setItem( "userId", userId, {} );
+  // await SInfo.setItem( "userId", userId, {} );
 
   // Save userId to local, encrypted storage
   const MMKV = new MMKVLoader( ).initialize( );
@@ -299,7 +302,9 @@ const getUsername = async (): Promise<string> => {
  * @returns {Promise<boolean>}
  */
  const getUserId = async (): Promise<string> => {
-  return await RNSInfo.getItem( "userId", {} );
+  const MMKV = new MMKVLoader( ).initialize( );
+  return await MMKV.getStringAsync( "userId" );
+  // return await RNSInfo.getItem( "userId", {} );
 };
 
 /**
@@ -307,7 +312,8 @@ const getUsername = async (): Promise<string> => {
  *
  * @returns {Promise<void>}
  */
-const signOut = async () => {
+const signOut = async ( ) => {
+  Realm.deleteFile( realmConfig );
   await SInfo.deleteItem( "jwtToken", {} );
   await SInfo.deleteItem( "jwtTokenExpiration", {} );
   await SInfo.deleteItem( "username", {} );

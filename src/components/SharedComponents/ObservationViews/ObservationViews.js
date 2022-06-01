@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, View, Pressable, Text } from "react-native";
+import { FlatList, View, Pressable, Text, ActivityIndicator } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -56,7 +56,12 @@ const ObservationViews = ( {
   const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
   const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} />;
 
-  const renderEmptyState = ( ) => name !== "Explore" ? <EmptyList /> : null;
+  const renderEmptyState = ( ) => {
+    if ( name !== "Explore" ) {
+      return loading ? <ActivityIndicator /> : <EmptyList />;
+    }
+    return null;
+  };
 
   const setGridView = ( ) => setView( "grid" );
   const setListView = ( ) => setView( "list" );
