@@ -1,5 +1,6 @@
 import inatjs from "inaturalistjs";
 import {useEffect, useState} from "react";
+import {Alert} from "react-native";
 
 const usePlaceDetails = ( placeId: string ): Array<Object> => {
   const [searchResult, setSearchResult] = useState( null );
@@ -14,7 +15,15 @@ const usePlaceDetails = ( placeId: string ): Array<Object> => {
         setSearchResult( result );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch search results:", e.message, );
+        console.error( e );
+        Alert.alert(
+          "Error",
+          "Couldn't retrieve place details!",
+          [{ text: "OK" }],
+          {
+            cancelable: true
+          }
+        );
       }
     };
 

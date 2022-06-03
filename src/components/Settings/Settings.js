@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import {
-  ActivityIndicator,
+  ActivityIndicator, Alert,
   Button,
   Pressable,
   SafeAreaView,
@@ -193,9 +193,25 @@ const Settings = ( { children }: Props ): Node => {
     }
 
     console.log( "Payload", payload );
-    const response = await inatjs.users.update( payload, {
-      api_token: accessToken
-    } );
+    let response;
+    try {
+      response = await inatjs.users.update( payload, {
+        api_token: accessToken
+      } );
+    } catch ( e ) {
+      console.error( e );
+      Alert.alert(
+        "Error",
+        "Couldn't save settings!",
+        [{ text: "OK" }],
+        {
+          cancelable: true
+        }
+      );
+      setIsSaving( false );
+      return;
+    }
+
     console.log( "Updated user", response );
     const userResponse = await inatjs.users.me( { api_token: accessToken, fields: "all" } );
     console.log( "User object", userResponse.results[0] );

@@ -31,7 +31,6 @@ i18next
   } ) )
   .init( {
     // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
-    compatibilityJSON: "v3",
     lng: "en",
     // debug: true,
     interpolation: {

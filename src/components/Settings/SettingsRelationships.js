@@ -64,10 +64,19 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
   useEffect( () => {
     const getBlockedUsers = async () => {
       try {
-        const responses = await Promise.all( settings.blocked_user_ids.map( ( userId ) => inatjs.users.fetch( userId ) ) );
+        const responses = await Promise.all( settings.blocked_user_ids.map( ( userId ) => inatjs.users.fetch( userId, { fields: "icon,login,name"} ) ) );
         setBlockedUsers( responses.map( ( r ) => r.results[0] ) );
       } catch ( e ) {
         console.error( e );
+        Alert.alert(
+          "Error",
+          "Couldn't retrieve blocked users!",
+          [{ text: "OK" }],
+          {
+            cancelable: true
+          }
+        );
+        return;
       }
     };
     if ( settings.blocked_user_ids.length > 0 ) {
@@ -78,10 +87,19 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
 
     const getMutedUsers = async () => {
       try {
-        const responses = await Promise.all( settings.muted_user_ids.map( ( userId ) => inatjs.users.fetch( userId ) ) );
+        const responses = await Promise.all( settings.muted_user_ids.map( ( userId ) => inatjs.users.fetch( userId, { fields: "icon,login,name" } ) ) );
         setMutedUsers( responses.map( ( r ) => r.results[0] ) );
       } catch ( e ) {
         console.error( e );
+        Alert.alert(
+          "Error",
+          "Couldn't retrieve muted users!",
+          [{ text: "OK" }],
+          {
+            cancelable: true
+          }
+        );
+        return;
       }
     };
     if ( settings.muted_user_ids.length > 0 ) {
@@ -93,10 +111,24 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
 
 
   const updateRelationship = async ( relationship, update ) => {
-    const response = await inatjs.relationships.update(
-      { id: relationship.id, relationship: update },
-      { api_token: accessToken}
-    );
+    let response;
+    try {
+      response = await inatjs.relationships.update(
+        { id: relationship.id, relationship: update },
+        { api_token: accessToken}
+      );
+    } catch ( e ) {
+      console.error( e );
+      Alert.alert(
+        "Error",
+        "Couldn't update relationship!",
+        [{ text: "OK" }],
+        {
+          cancelable: true
+        }
+      );
+      return;
+    }
     console.log( response );
     setRefreshRelationships( Math.random() );
   };
@@ -107,10 +139,24 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
       `You will no longer be following or trusting ${relationship.friendUser.login}.`,
       [
         { text: "Remove Relationship", onPress: async () => {
-            const response = await inatjs.relationships.delete(
-              { id: relationship.id },
-              { api_token: accessToken}
-            );
+            let response;
+            try {
+              response = await inatjs.relationships.delete(
+                { id: relationship.id },
+                { api_token: accessToken}
+              );
+            } catch ( e ) {
+              console.error( e );
+              Alert.alert(
+                "Error",
+                "Couldn't delete relationship!",
+                [{ text: "OK" }],
+                {
+                  cancelable: true
+                }
+              );
+              return;
+            }
             console.log( response );
             setRefreshRelationships( Math.random() );
           } }
@@ -123,10 +169,24 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
 
 
   const unblockUser = async ( user ) => {
-    const response = await inatjs.users.unblock(
-      { id: user.id },
-      { api_token: accessToken}
-    );
+    let response;
+    try {
+      response = await inatjs.users.unblock(
+        { id: user.id },
+        { api_token: accessToken}
+      );
+    } catch ( e ) {
+      console.error( e );
+      Alert.alert(
+        "Error",
+        "Couldn't unblock user!",
+        [{ text: "OK" }],
+        {
+          cancelable: true
+        }
+      );
+      return;
+    }
     console.log( "Unblock", response );
     onRefreshUser();
   };
@@ -134,10 +194,24 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
   const blockUser = async ( user ) => {
     if ( !user ) {return;}
 
-    const response = await inatjs.users.block(
+    let response;
+    try {
+    response = await inatjs.users.block(
       { id: user.id },
       { api_token: accessToken}
     );
+    } catch ( e ) {
+      console.error( e );
+      Alert.alert(
+        "Error",
+        "Couldn't block user!",
+        [{ text: "OK" }],
+        {
+          cancelable: true
+        }
+      );
+      return;
+    }
     console.log( "Block", response );
     onRefreshUser();
   };
@@ -147,7 +221,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
     return <View style={[viewStyles.row, viewStyles.relationshipRow]}>
       <Image
         style={viewStyles.relationshipImage}
-        source={{ uri: user.icon_url}}
+        source={{ uri: user.icon}}
       />
       <View style={viewStyles.column}>
         <Text>{user.login}</Text>
@@ -158,10 +232,24 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
   };
 
   const unmuteUser = async ( user ) => {
-    const response = await inatjs.users.unmute(
-      { id: user.id },
-      { api_token: accessToken}
-    );
+    let response;
+    try {
+      response = await inatjs.users.unmute(
+        { id: user.id },
+        { api_token: accessToken}
+      );
+    } catch ( e ) {
+      console.error( e );
+      Alert.alert(
+        "Error",
+        "Couldn't unmute user!",
+        [{ text: "OK" }],
+        {
+          cancelable: true
+        }
+      );
+      return;
+    }
     console.log( "Unmute", response );
     onRefreshUser();
   };
@@ -170,10 +258,24 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
   const muteUser = async ( user ) => {
     if ( !user ) {return;}
 
-    const response = await inatjs.users.mute(
-      { id: user.id },
-      { api_token: accessToken}
-    );
+    let response;
+    try {
+      response = await inatjs.users.mute(
+        { id: user.id },
+        { api_token: accessToken}
+      );
+    } catch ( e ) {
+      console.error( e );
+      Alert.alert(
+        "Error",
+        "Couldn't mute user!",
+        [{ text: "OK" }],
+        {
+          cancelable: true
+        }
+      );
+      return;
+    }
     console.log( "Mute", response );
     onRefreshUser();
   };
@@ -183,7 +285,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
     return <View style={[viewStyles.row, viewStyles.relationshipRow]}>
       <Image
         style={viewStyles.relationshipImage}
-        source={{ uri: user.icon_url}}
+        source={{ uri: user.icon}}
       />
       <View style={viewStyles.column}>
         <Text>{user.login}</Text>

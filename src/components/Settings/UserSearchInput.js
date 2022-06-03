@@ -11,7 +11,6 @@ const UserSearchInput = ( { onUserChanged} ): React.Node => {
   // So we'll start searching only once the user finished typing
   const [finalUserSearch] = useDebounce( userSearch, 500 );
   const userResults = useRemoteSearchResults( finalUserSearch, "users", "user.login,user.name,user.icon" ).map( r => r.user );
-  console.log( "AAA - useRemoteSearchResults", userResults );
 
   useEffect( () => {
     if ( finalUserSearch.length === 0 ) {

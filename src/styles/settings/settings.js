@@ -11,7 +11,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     display: "flex",
     flexDirection: "column",
     flexWrap: "nowrap",
-    height: "100%"
+    height: "auto",
+    paddingBottom: 200
   },
   tabsRow: {
     backgroundColor: colors.white,

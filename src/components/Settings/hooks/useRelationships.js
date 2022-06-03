@@ -1,5 +1,6 @@
 import inatjs from "inaturalistjs";
 import {useEffect, useState} from "react";
+import {Alert} from "react-native";
 
 const useRelationships = ( accessToken, {
   q,
@@ -36,7 +37,15 @@ const useRelationships = ( accessToken, {
         setTotalResults( response.total_results );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch search results:", e.message, );
+        console.error( e );
+        Alert.alert(
+          "Error",
+          "Couldn't retrieve relationships!",
+          [{ text: "OK" }],
+          {
+            cancelable: true
+          }
+        );
       }
     };
 

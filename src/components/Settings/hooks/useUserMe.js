@@ -1,5 +1,6 @@
 import inatjs from "inaturalistjs";
 import {useEffect, useState} from "react";
+import {Alert} from "react-native";
 
 const useUserMe = ( accessToken: string ): Array<Object> => {
   const [result, setResult] = useState( null );
@@ -15,8 +16,15 @@ const useUserMe = ( accessToken: string ): Array<Object> => {
         setResult( response.results[0] );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch user:", e.message, );
-        console.error( JSON.stringify( e ) );
+        console.error( e );
+        Alert.alert(
+          "Error",
+          "Couldn't retrieve user details!",
+          [{ text: "OK" }],
+          {
+            cancelable: true
+          }
+        );
       }
     };
 
