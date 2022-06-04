@@ -67,10 +67,12 @@ const UserProfile = ( ): React.Node => {
         {showCount( user.journal_posts_count, "Journal Posts" )}
       </View>
       <Text>Bio:</Text>
-      <HTML
-        contentWidth={width}
-        html={user.description}
-      />
+      { user && user.description && user.description.length > 0  && (
+        <HTML
+          contentWidth={width}
+          source={{ html: user.description }}
+        />
+      ) }
       <Text>Projects</Text>
       <UserProjects userId={userId} />
       <Text>Following</Text>

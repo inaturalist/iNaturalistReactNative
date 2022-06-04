@@ -206,7 +206,7 @@ const registerUser = async (
     return response.data.errors[0];
   }
 
-  console.info( "registerUser - success" );
+  // console.info( "registerUser - success" );
   return null;
 };
 
@@ -268,7 +268,7 @@ const verifyCredentials = async (
 
   const iNatUsername = response.data.login;
   const iNatID = response.data.id;
-  console.log( "verifyCredentials - logged in username ", iNatUsername );
+  // console.log( "verifyCredentials - logged in username ", iNatUsername );
 
   return {
     accessToken: accessToken,

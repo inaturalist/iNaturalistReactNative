@@ -180,6 +180,13 @@ jest.mock( "react-native-fs", ( ) => {
 // mmkvJestSetup.js that were causing errors like this:
 // `TypeError: _NativeSafeAreaContext.default.getConstants is not a
 // function`
+jest.mock( "react-native-mmkv-storage/dist/src/mmkv/init.js", ( ) => ( {
+  init: ( ) => true
+} ) );
+
 require( "react-native" ).NativeModules.MMKVNative = {
   install: jest.fn( ( ) => true )
 };
+
+// Mock native animation for all tests
+jest.mock( "react-native/Libraries/Animated/NativeAnimatedHelper" );
