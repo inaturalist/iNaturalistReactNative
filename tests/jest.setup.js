@@ -174,3 +174,12 @@ jest.mock( "react-native-fs", ( ) => {
 
   return RNFS;
 } );
+
+// Mock react-native-mmkv-storage similar to the way advised in
+// https://rnmmkv.vercel.app/#/mockjest, except ignoring some parts of
+// mmkvJestSetup.js that were causing errors like this:
+// `TypeError: _NativeSafeAreaContext.default.getConstants is not a
+// function`
+require( "react-native" ).NativeModules.MMKVNative = {
+  install: jest.fn( ( ) => true )
+};
