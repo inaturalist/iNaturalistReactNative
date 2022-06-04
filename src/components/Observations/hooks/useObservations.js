@@ -84,6 +84,8 @@ const useObservations = ( ): Object => {
       const userId = await getUserId( );
       if ( userId ) {
         openRealm( );
+      } else {
+        setLoading( false );
       }
     };
 
