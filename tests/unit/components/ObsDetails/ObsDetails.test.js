@@ -38,7 +38,7 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-jest.mock( "../../../../src/components/LoginSignup/AuthenticationService", ( ) => ( {
+jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
   getUserId: ( ) => mockObservation.user.id
 } ) );
 

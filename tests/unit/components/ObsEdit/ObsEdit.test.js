@@ -48,7 +48,7 @@ jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
 
 const mockCurrentUser = factory( "LocalUser" );
 
-jest.mock( "../../../../src/components/LoginSignup/AuthenticationService", ( ) => ( {
+jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
   getUserId: ( ) => mockCurrentUser.id
 } ) );
 
