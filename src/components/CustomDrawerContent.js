@@ -27,7 +27,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       />
       <DrawerItem
         label="settings"
-        onPress={( ) => console.log( "nav to settings" )}
+        onPress={( ) => navigation.navigate( "settings" )}
       />
       <DrawerItem
         label="following"
