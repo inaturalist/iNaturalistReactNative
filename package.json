@@ -7,8 +7,10 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint .",
-    "prepare": "husky install",
+    "lint": "npm run lint:eslint && npm run lint:flow",
+    "lint:eslint": "eslint .",
+    "lint:flow": "flow check",
+    "postinstall": "husky install",
     "translate": "node src/i18n/i18ncli.js build"
   },
   "dependencies": {
@@ -45,6 +47,7 @@
     "react-native-geocoder": "^0.5.0",
     "react-native-geolocation-service": "^5.3.0-beta.4",
     "react-native-gesture-handler": "^2.4.1",
+    "react-native-image-pan-zoom": "^2.1.12",
     "react-native-image-picker": "^4.7.3",
     "react-native-image-resizer": "^1.4.5",
     "react-native-jwt-io": "^1.0.3",
@@ -113,5 +116,10 @@
     "automock": false,
     "resetMocks": false,
     "verbose": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   }
 }

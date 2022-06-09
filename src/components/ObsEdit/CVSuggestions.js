@@ -5,18 +5,16 @@ import type { Node } from "react";
 import { View, Text, FlatList, ActivityIndicator, Pressable, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Searchbar } from "react-native-paper";
+import { t } from "i18next";
 
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import { ObsEditContext } from "../../providers/contexts";
-import EvidenceList from "./EvidenceList";
 import useCVSuggestions from "./hooks/useCVSuggestions";
 import { viewStyles, textStyles } from "../../styles/obsEdit/cvSuggestions";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
-import { t } from "i18next";
-// TODO: do we need custom hook useTranslation or can we just use t from "i18next"?
-// saves some lines of code if we don't need the extra hook
+import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
 const CVSuggestions = ( ): Node => {
   const {
@@ -26,14 +24,14 @@ const CVSuggestions = ( ): Node => {
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const [showSeenNearby, setShowSeenNearby] = useState( true );
-  const [selectedPhoto, setSelectedPhoto] = useState( 0 );
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
   const [q, setQ] = React.useState( "" );
   const list = useRemoteObsEditSearchResults( q, "taxa" );
   const isLoggedIn = useLoggedIn( );
 
   const currentObs = observations[currentObsIndex];
   const hasPhotos = currentObs.observationPhotos;
-  const { suggestions, status } = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
+  const { suggestions, status } = useCVSuggestions( currentObs, showSeenNearby, selectedPhotoIndex );
 
   const renderNavButtons = ( updateIdentification, id ) => {
     const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id } );
@@ -127,14 +125,22 @@ const CVSuggestions = ( ): Node => {
     />
   );
 
+  const displayPhotos = ( ) => {
+    return currentObs.observationPhotos.map( p => {
+      return {
+        uri: p.photo?.url || p?.photo?.localFilePath
+      };
+    } );
+  };
+
   return (
     <ViewNoFooter>
       <View>
         {hasPhotos && (
-          <EvidenceList
-            currentObs={currentObs}
-            setSelectedPhoto={setSelectedPhoto}
-            selectedPhoto={selectedPhoto}
+          <PhotoCarousel
+            photoUris={displayPhotos( )}
+            setSelectedPhotoIndex={setSelectedPhotoIndex}
+            selectedPhotoIndex={selectedPhotoIndex}
           />
         )}
         <Searchbar

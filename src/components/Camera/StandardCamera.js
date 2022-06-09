@@ -1,22 +1,27 @@
 // @flow
 
-import React, { useRef, useState, useEffect, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { Text, View, Pressable } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Avatar } from "react-native-paper";
+import Realm from "realm";
 
 import { viewStyles } from "../../styles/camera/standardCamera";
 import { ObsEditContext } from "../../providers/contexts";
 import CameraView from "./CameraView";
 import PhotoPreview from "./PhotoPreview";
 import { textStyles } from "../../styles/obsDetails/obsDetails";
+import realmConfig from "../../models/index";
+import Photo from "../../models/Photo";
 
 const StandardCamera = ( ): Node => {
   // TODO: figure out if there's a way to write location to photo metadata with RN
   const { addPhotos } = useContext( ObsEditContext );
   const navigation = useNavigation( );
+  const { params } = useRoute( );
+  const photos = params?.photos;
   // $FlowFixMe
   const camera = useRef<Camera>( null );
   const [cameraPosition, setCameraPosition] = useState( "back" );
@@ -25,22 +30,17 @@ const StandardCamera = ( ): Node => {
   const [takePhotoOptions, setTakePhotoOptions] = useState( {
     flash: "off"
   } );
-  const [photos, setPhotos] = useState( [] );
-
-  useEffect( ( ) => {
-    navigation.addListener( "blur", ( ) => {
-      if ( photos.length > 0 ) {
-        setPhotos( [] );
-      }
-    } );
-  }, [navigation, photos] );
+  const [photoUris, setPhotoUris] = useState( [] );
 
   const takePhoto = async ( ) => {
     try {
-      const photo = await camera.current.takePhoto( takePhotoOptions );
-      // only 10 photos allowed
-      if ( photos.length < 10 ) {
-        setPhotos( photos.concat( [photo] ) );
+      const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
+      const realm = await Realm.open( realmConfig );
+      const uri = await Photo.savePhoto( realm, cameraPhoto );
+
+      // only 10 photoUris allowed
+      if ( photoUris.length < 10 ) {
+        setPhotoUris( photoUris.concat( [uri] ) );
       }
     } catch ( e ) {
       console.log( e, "couldn't take photo" );
@@ -60,15 +60,21 @@ const StandardCamera = ( ): Node => {
   };
 
   const navToObsEdit = ( ) => {
-    addPhotos( photos );
-    navigation.navigate( "ObsEdit" );
+    addPhotos( photoUris );
+    navigation.navigate( "ObsEdit", { lastScreen: "StandardCamera" } );
   };
+
+  useEffect( ( ) => {
+    if ( photos?.length > 0 ) {
+      setPhotoUris( photos );
+    }
+  }, [photos] );
 
   return (
     <View style={viewStyles.container}>
       {device && <CameraView device={device} camera={camera} />}
-      <PhotoPreview photos={photos} setPhotos={setPhotos} />
-      <View style={viewStyles.row}>
+      <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} />
+      <View style={viewStyles.cameraSettingsRow}>
         <Pressable
           style={viewStyles.flashButton}
           onPress={toggleFlash}
@@ -84,7 +90,7 @@ const StandardCamera = ( ): Node => {
         <View />
 
       </View>
-      <View style={viewStyles.secondRow}>
+      <View style={viewStyles.cameraCaptureRow}>
         <Pressable
           style={viewStyles.captureButton}
           onPress={takePhoto}
@@ -92,7 +98,7 @@ const StandardCamera = ( ): Node => {
           <Avatar.Icon size={40} icon="circle-outline" />
         </Pressable>
         <Pressable
-          style={viewStyles.cameraFlipButton}
+          style={viewStyles.nextButton}
           onPress={navToObsEdit}
         >
           <Text style={textStyles.whiteText}>next</Text>
