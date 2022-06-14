@@ -1,5 +1,3 @@
-// @flow strict-local
-
 import React, { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import {
@@ -36,7 +34,9 @@ const TAB_TYPE_CONTENT_DISPLAY = "content_display";
 const TAB_TYPE_APPLICATIONS = "applications";
 
 // List of all user settings that will be saved (when calling the API to update the settings).
-const SETTINGS_PROPERTIES_LIST = [
+// $FlowIgnore
+const emailNotificationsValues: Array<string> = Object.values( EMAIL_NOTIFICATIONS );
+const SETTINGS_PROPERTIES_LIST: Array<string> = [
   "login",
   "email",
   "name",
@@ -61,7 +61,7 @@ const SETTINGS_PROPERTIES_LIST = [
   "make_observation_licenses_same",
   "make_photo_licenses_same",
   "make_sound_licenses_same",
-  ...Object.values( EMAIL_NOTIFICATIONS )
+  ...emailNotificationsValues
 ];
 
 type Props = {
@@ -149,8 +149,8 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => {
 
 const Settings = ( { children }: Props ): Node => {
   const [activeTab, setActiveTab] = useState( TAB_TYPE_PROFILE );
-  const [settings, setSettings] = useState();
-  const [accessToken, setAccessToken] = useState();
+  const [settings, setSettings] = useState( {} );
+  const [accessToken, setAccessToken] = useState( null );
   const [isLoading, setIsLoading] = useState( true );
   const [isSaving, setIsSaving] = useState( false );
   const user = useUserMe( accessToken );
@@ -164,7 +164,7 @@ const Settings = ( { children }: Props ): Node => {
   }, [user] );
 
   useEffect( () => {
-    if ( accessToken ) {
+    if ( accessToken !== null ) {
       fetchProfile();
     }
   }, [accessToken, fetchProfile] );
@@ -172,9 +172,9 @@ const Settings = ( { children }: Props ): Node => {
   const saveSettings = async () => {
     setIsSaving( true );
     const payload = {
-      id: settings.id
+      id: settings?.id
     };
-    SETTINGS_PROPERTIES_LIST.forEach( ( v ) => {
+    SETTINGS_PROPERTIES_LIST.forEach( ( v: string ) => {
       payload[`user[${v}]`] = settings[v];
     } );
 
@@ -240,7 +240,6 @@ const Settings = ( { children }: Props ): Node => {
         <View style={viewStyles.headerRow}>
           <Text style={textStyles.header}>Settings</Text>
           <Button
-            style={viewStyles.saveSettings}
             title="Save"
             onPress={saveSettings}
             disabled={isLoading || isSaving}

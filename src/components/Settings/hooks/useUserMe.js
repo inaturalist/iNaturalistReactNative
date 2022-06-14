@@ -1,8 +1,10 @@
+// @flow
+
 import inatjs from "inaturalistjs";
 import {useEffect, useState} from "react";
 import {Alert} from "react-native";
 
-const useUserMe = ( accessToken: string ): Array<Object> => {
+const useUserMe = ( accessToken: string ): Array<Object> | null => {
   const [result, setResult] = useState( null );
 
   useEffect( ( ) => {

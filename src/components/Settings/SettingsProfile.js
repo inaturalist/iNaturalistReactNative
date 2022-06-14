@@ -1,9 +1,14 @@
+// @flow
+
 import {Button, Image, Text, TextInput, View} from "react-native";
 import {viewStyles} from "../../styles/settings/settings";
+// $FlowIgnore
 import {launchImageLibrary} from "react-native-image-picker";
 import React from "react";
+import type { Node } from "react";
+import type { SettingsProps } from "./types";
 
-const SettingsProfile = ( { settings, onSettingsModified } ): React.Node => {
+const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Node => {
 
   let profileSource;
   if ( settings.newProfilePhoto && !settings.removeProfilePhoto ) {

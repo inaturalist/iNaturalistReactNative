@@ -1,3 +1,5 @@
+// @flow
+
 import {Pressable, Text, View} from "react-native";
 import {viewStyles, textStyles} from "../../styles/settings/settings";
 import React from "react";
@@ -6,6 +8,8 @@ import {colors} from "../../styles/global";
 import CheckBox from "@react-native-community/checkbox";
 import PlaceSearchInput from "./PlaceSearchInput";
 import {inatLicenses} from "../../dictionaries/licenses";
+import type { Node } from "react";
+import type { SettingsProps } from "./types";
 
 const PROJECT_SETTINGS = {
   any: "Any",
@@ -26,7 +30,14 @@ const ADD_OBSERVATION_FIELDS = {
 };
 
 
-const LicenseSelector = ( { value, onValueChanged, title, updateExistingTitle, onUpdateExisting, updateExisting } ): React.Node => {
+const LicenseSelector = ( {
+  value,
+  onValueChanged,
+  title,
+  updateExistingTitle,
+  onUpdateExisting,
+  updateExisting
+} ): Node => {
   return <>
     <Text style={textStyles.subTitle}>{title}</Text>
     <View style={viewStyles.selectorContainer}>
@@ -58,7 +69,7 @@ const LicenseSelector = ( { value, onValueChanged, title, updateExistingTitle, o
   </>;
 };
 
-const SettingsContentDisplay = ( { settings, onSettingsModified } ): React.Node => {
+const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps ): Node => {
 
   return (
     <>

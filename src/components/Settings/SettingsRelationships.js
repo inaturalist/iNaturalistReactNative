@@ -1,6 +1,9 @@
+// @flow
+
 import {Alert, Image, Text, TextInput, View} from "react-native";
 import {viewStyles, textStyles} from "../../styles/settings/settings";
 import React, {useEffect} from "react";
+import type { Node } from "react";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import {useDebounce} from "use-debounce";
 import inatjs from "inaturalistjs";
@@ -29,8 +32,13 @@ const SORT_BY = {
   z_to_a: "Z to A"
 };
 
+type Props = {
+  accessToken: string,
+  settings: Object,
+  onRefreshUser: Function
+};
 
-const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): React.Node => {
+const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props ): Node => {
   const [userSearch, setUserSearch] = React.useState( "" );
   // So we'll start searching only once the user finished typing
   const [finalUserSearch] = useDebounce( userSearch, 500 );
@@ -217,7 +225,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
   };
 
 
-  const BlockedUser = ( {user} ): React.Node => {
+  const BlockedUser = ( {user} ): Node => {
     return <View style={[viewStyles.row, viewStyles.relationshipRow]}>
       <Image
         style={viewStyles.relationshipImage}
@@ -281,7 +289,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
   };
 
 
-  const MutedUser = ( {user} ): React.Node => {
+  const MutedUser = ( {user} ): Node => {
     return <View style={[viewStyles.row, viewStyles.relationshipRow]}>
       <Image
         style={viewStyles.relationshipImage}
@@ -296,7 +304,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser } ): Reac
   };
 
 
-  const Relationship = ( {relationship} ): React.Node => {
+  const Relationship = ( {relationship} ): Node => {
     return  <View style={[viewStyles.column, viewStyles.relationshipRow]}>
       <View style={viewStyles.row}>
         <Image

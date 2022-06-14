@@ -14,7 +14,7 @@ const Search = ( ): React.Node => {
   const [q, setQ] = React.useState( "" );
   const [queryType, setQueryType] = React.useState( "taxa" );
   // choose users or taxa
-  const list = useRemoteSearchResults( q, queryType );
+  const list = useRemoteSearchResults( q, queryType, "all" );
 
   const renderItem = ( { item } ) => {
     // TODO: make sure TaxonDetails navigates back to Search

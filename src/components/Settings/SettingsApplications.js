@@ -1,13 +1,20 @@
+// @flow
+
 import {Alert, Text, View} from "react-native";
 import {viewStyles, textStyles} from "../../styles/settings/settings";
 import React, {useEffect, useState} from "react";
+import type { Node } from "react";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import {inatProviders} from "../../dictionaries/providers";
 import inatjs from "inaturalistjs";
 import useAuthorizedApplications from "./hooks/useAuthorizedApplications";
 import useProviderAuthorizations from "./hooks/useProviderAuthorizations";
 
-const SettingsApplications = ( { accessToken } ): React.Node => {
+type Props = {
+  accessToken: string
+}
+
+const SettingsApplications = ( { accessToken }: Props ): Node => {
   const currentAuthorizedApps = useAuthorizedApplications( accessToken );
   const [authorizedApps, setAuthorizedApps] = useState( [] );
   const providerAuthorizations = useProviderAuthorizations( accessToken );

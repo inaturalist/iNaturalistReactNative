@@ -1,9 +1,13 @@
+// @flow
+
 import {Pressable, Text, View} from "react-native";
 import {viewStyles, textStyles} from "../../styles/settings/settings";
 import React from "react";
+import type { Node } from "react";
 import Switch from "react-native/Libraries/Components/Switch/Switch";
 import CheckBox from "@react-native-community/checkbox";
 import { colors } from "../../styles/global";
+import type { SettingsProps } from "./types";
 
 
 const EMAIL_NOTIFICATIONS = {
@@ -20,7 +24,7 @@ const EMAIL_NOTIFICATIONS = {
 };
 
 
-const EmailNotification = ( { title, value, onValueChange } ): React.Node => (
+const EmailNotification = ( { title, value, onValueChange } ): Node => (
   <Pressable style={[viewStyles.row, viewStyles.notificationCheckbox]}  onPress={() => onValueChange( !value )}>
     <CheckBox
       value={value}
@@ -32,7 +36,7 @@ const EmailNotification = ( { title, value, onValueChange } ): React.Node => (
 );
 
 
-const Notification = ( { title, description, value, onValueChange } ): React.Node => (
+const Notification = ( { title, description, value, onValueChange } ): Node => (
   <View style={[viewStyles.row, viewStyles.notificationContainer]}>
     <View style={[viewStyles.column, viewStyles.notificationLeftSide]}>
       <Text style={textStyles.notificationTitle}>{title}</Text>
@@ -44,7 +48,7 @@ const Notification = ( { title, description, value, onValueChange } ): React.Nod
   </View>
 );
 
-const SettingsNotifications = ( { settings, onSettingsModified } ): React.Node => (
+const SettingsNotifications = ( { settings, onSettingsModified }: SettingsProps ): Node => (
     <>
       <Text style={textStyles.title}>iNaturalist Activity Notifications</Text>
       <Notification
@@ -74,6 +78,7 @@ const SettingsNotifications = ( { settings, onSettingsModified } ): React.Node =
             key={k}
             title={k}
             value={settings[EMAIL_NOTIFICATIONS[k]]}
+            // $FlowIgnore
             onValueChange={( v ) => onSettingsModified( { ...settings, [EMAIL_NOTIFICATIONS[k]]: v } )}
           />
         ) )}

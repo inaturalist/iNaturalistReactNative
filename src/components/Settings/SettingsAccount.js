@@ -1,3 +1,5 @@
+// @flow
+
 import {Text, View} from "react-native";
 import {viewStyles, textStyles} from "../../styles/settings/settings";
 import React from "react";
@@ -8,8 +10,10 @@ import CheckBox from "@react-native-community/checkbox";
 import {inatLanguages} from "../../dictionaries/languages";
 import {inatNetworks} from "../../dictionaries/networks";
 import PlaceSearchInput from "./PlaceSearchInput";
+import type { Node } from "react";
+import type { SettingsProps } from "./types";
 
-const SettingsAccount = ( { settings, onSettingsModified } ): React.Node => {
+const SettingsAccount = ( { settings, onSettingsModified }: SettingsProps ): Node => {
 
   return (
     <>

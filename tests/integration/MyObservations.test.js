@@ -3,7 +3,8 @@
 
 import React from "react";
 import factory, { makeResponse } from "../factory";
-import { render, waitFor } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
+// import { waitFor } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import AccessibilityEngine from "react-native-accessibility-engine";
 
