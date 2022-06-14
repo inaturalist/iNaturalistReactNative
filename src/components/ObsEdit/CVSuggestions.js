@@ -26,7 +26,7 @@ const CVSuggestions = ( ): Node => {
   const [showSeenNearby, setShowSeenNearby] = useState( true );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
   const [q, setQ] = React.useState( "" );
-  const list = useRemoteObsEditSearchResults( q, "taxa" );
+  const list = useRemoteObsEditSearchResults( q, "taxa", "all" );
   const isLoggedIn = useLoggedIn( );
 
   const currentObs = observations[currentObsIndex];

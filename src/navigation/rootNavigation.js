@@ -24,6 +24,7 @@ import Mortal from "../components/SharedComponents/Mortal";
 import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import { colors } from "../styles/global";
 import { viewStyles } from "../styles/navigation/rootNavigation";
+import Settings from "../components/Settings/Settings";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -93,7 +94,7 @@ const App = ( ): React.Node => {
                   component={ProjectsStackNavigation}
                   options={hideHeader}
                 />
-                <Drawer.Screen name="settings" component={PlaceholderComponent} />
+                <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
                 <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
                 <Drawer.Screen
                   name="about"

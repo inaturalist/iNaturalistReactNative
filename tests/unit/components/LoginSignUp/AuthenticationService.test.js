@@ -1,5 +1,13 @@
 import nock from "nock";
-import { isLoggedIn, getAPIToken, getUsername, registerUser, authenticateUser, signOut } from "../../../../src/components/LoginSignUp/AuthenticationService";
+import {
+  isLoggedIn,
+  getAPIToken,
+  getUsername,
+  registerUser,
+  authenticateUser,
+  signOut,
+  API_HOST
+} from "../../../../src/components/LoginSignUp/AuthenticationService";
 
 const USERNAME = "some_user";
 const PASSWORD = "123456";
@@ -16,14 +24,13 @@ beforeEach( ( ) => {
 } );
 
 test( "authenticates user", async ( ) => {
-
-  const scope = nock( "https://www.inaturalist.org" )
+  const scope = nock( API_HOST )
     .post( "/oauth/token" )
     .reply( 200, { access_token: ACCESS_TOKEN } )
     .get( "/users/edit.json" )
     .reply( 200, { login: USERNAME, id: USERID } );
 
-  const scope2 = nock( "https://www.inaturalist.org" , {
+  const scope2 = nock( API_HOST , {
     reqheaders: {
       authorization: ACCESS_TOKEN_AUTHORIZATION_HEADER
     }} )
@@ -53,7 +60,7 @@ test( "authenticates user", async ( ) => {
 
 
 test( "registers user", async ( ) => {
-  const scope = nock( "https://www.inaturalist.org" )
+  const scope = nock( API_HOST )
     .post( "/oauth/token" )
     .reply( 200, { access_token: ACCESS_TOKEN } )
     .get( "/users/edit.json" )

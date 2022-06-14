@@ -1,15 +1,8 @@
-// @flow
-
-import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
+import {useEffect, useState} from "react";
+import {Alert} from "react-native";
 
-// const FIELDS = {
-//   record: {
-//     name: true
-//   }
-// };
-
-const useRemoteSearchResults = ( q: string, sources: string, fields: string ): Array<Object> => {
+const usePlaces = ( q: string ): Array<Object> => {
   const [searchResults, setSearchResults] = useState( [] );
 
   useEffect( ( ) => {
@@ -19,16 +12,24 @@ const useRemoteSearchResults = ( q: string, sources: string, fields: string ): A
         const params = {
           per_page: 10,
           q,
-          sources,
-          fields: fields || "all"
+          sources: "places",
+          fields: "place,place.display_name,place.place_type"
         };
         const response = await inatjs.search( params );
         const results = response.results;
         if ( !isCurrent ) { return; }
-        setSearchResults( results );
+        setSearchResults( results.map( r => r.place ) );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( `Couldn't fetch search results with sources ${sources}:`, e.message, );
+        console.error( e );
+        Alert.alert(
+          "Error",
+          "Couldn't retrieve places!",
+          [{ text: "OK" }],
+          {
+            cancelable: true
+          }
+        );
       }
     };
 
@@ -38,9 +39,9 @@ const useRemoteSearchResults = ( q: string, sources: string, fields: string ): A
     return ( ) => {
       isCurrent = false;
     };
-  }, [q, sources, fields] );
+  }, [q] );
 
   return searchResults;
 };
 
-export default useRemoteSearchResults;
+export default usePlaces;

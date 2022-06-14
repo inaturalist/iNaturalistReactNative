@@ -29,6 +29,7 @@
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "date-fns": "^2.28.0",
     "date-fns-tz": "^1.3.3",
+    "fbjs": "^3.0.4",
     "i18next": "^21.6.14",
     "i18next-fluent": "^2.0.0",
     "i18next-resources-to-backend": "^1.0.0",
@@ -47,6 +48,7 @@
     "react-native-geolocation-service": "^5.3.0-beta.4",
     "react-native-gesture-handler": "^2.4.1",
     "react-native-image-pan-zoom": "^2.1.12",
+    "react-native-image-picker": "^4.7.3",
     "react-native-image-resizer": "^1.4.5",
     "react-native-jwt-io": "^1.0.3",
     "react-native-localize": "^2.2.1",
@@ -68,7 +70,8 @@
     "react-native-vision-camera": "^2.13.0",
     "react-spring": "^8.0.27",
     "react-tinder-card": "^1.4.5",
-    "realm": "^10.20.0-beta.1"
+    "realm": "^10.20.0-beta.1",
+    "use-debounce": "^7.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

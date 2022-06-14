@@ -98,7 +98,7 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
   else if ( result !== null ) { content = noPermission; }
 
   return (
-    <View style={viewStyles.permissionGate}>
+    <View style={viewStyles.PermissionGate}>
       { content }
     </View>
   );
