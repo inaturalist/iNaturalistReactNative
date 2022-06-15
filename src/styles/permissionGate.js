@@ -13,7 +13,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     borderStyle: "solid",
     borderColor: "black",
     padding: 5
-  }
+  },
+  permissionGate: { flex: 1 }
 } );
 
 export {

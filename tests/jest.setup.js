@@ -174,3 +174,10 @@ jest.mock( "react-native-fs", ( ) => {
 
   return RNFS;
 } );
+
+require( "react-native" ).NativeModules.MMKVNative = {
+  install: jest.fn( ( ) => true )
+};
+
+// Mock native animation for all tests
+jest.mock( "react-native/Libraries/Animated/NativeAnimatedHelper" );

@@ -1,8 +1,4 @@
-// import React from "react";
-// import {render} from "@testing-library/react-native";
-// import { NavigationContainer } from "@react-navigation/native";
 import factory from "../../../factory";
-// import Login from "../../../../src/components/LoginSignUp/Login";
 
 const testUser = factory( "RemoteUser" );
 const mockExpected = testUser;
@@ -33,12 +29,6 @@ jest.mock( "@react-navigation/native", ( ) => {
     } )
   };
 } );
-
-// const renderLogin = async ( ) => render(
-//   <NavigationContainer>
-//     <Login />
-//   </NavigationContainer>
-// );
 
 test.todo( "renders login screen (not signed in)" );
 // test( "renders login screen (not signed in)", async ( ) => {

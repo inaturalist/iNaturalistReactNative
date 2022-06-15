@@ -4,7 +4,7 @@
 import React from "react";
 import factory, { makeResponse } from "../factory";
 import { render } from "@testing-library/react-native";
-// import { waitFor } from "@testing-library/react-native";
+import { waitFor } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import AccessibilityEngine from "react-native-accessibility-engine";
 
@@ -62,7 +62,8 @@ test.todo( "only makes one concurrent request for observations at a time" );
 test( "should not have accessibility errors", async ( ) => {
   const observations = [factory( "RemoteObservation" )];
   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
-  const { getByTestId } = await renderObsList( );
+  // const { getByTestId } = await renderObsList( );
+  const { getByTestId } = await waitFor( ( ) => renderObsList( ) );
   const obsList = getByTestId( "ObsList.myObservations" );
   expect( ( ) => AccessibilityEngine.check( obsList ) ).not.toThrow();
 } );

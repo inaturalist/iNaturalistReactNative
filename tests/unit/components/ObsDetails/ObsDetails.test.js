@@ -38,6 +38,10 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
+  getUserId: ( ) => mockObservation.user.id
+} ) );
+
 const mockObsEditProviderWithObs = ( ) =>
   ObsEditProvider.mockImplementation( ( { children }: Props ): Node => (
     <ObsEditContext.Provider value={{

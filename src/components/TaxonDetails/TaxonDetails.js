@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from "react";
+import _ from "lodash";
 import { Text, View, Pressable, useWindowDimensions, Linking, ActivityIndicator, ScrollView } from "react-native";
 import HTML from "react-native-render-html";
 import { useRoute } from "@react-navigation/native";
@@ -54,7 +55,7 @@ const TaxonDetails = ( ): React.Node => {
         testID={`TaxonDetails.${taxon.id}`}
       >
         <View style={viewStyles.photoContainer}>
-          <PhotoScroll photos={taxon.taxonPhotos} />
+          <PhotoScroll photos={_.compact( taxon.taxonPhotos.map( tp => tp.photo ) )} />
         </View>
         <View style={viewStyles.textContainer}>
           <Text>{taxon.rank}</Text>
