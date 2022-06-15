@@ -16,13 +16,6 @@ const ACCESS_TOKEN_AUTHORIZATION_HEADER = `Bearer ${ACCESS_TOKEN}`;
 const JWT = "jwt_token";
 const USERID = 113113;
 
-beforeEach( ( ) => {
-  // Install the in-memory adapter for react-native-mmkv-storage
-  let mmkvMock = require( "react-native-mmkv-storage/jest/dist/jest/memoryStore.js" );
-  mmkvMock.unmock(); // Cleanup if already mocked
-  mmkvMock.mock(); // Mock the storage
-} );
-
 test( "authenticates user", async ( ) => {
   const scope = nock( API_HOST )
     .post( "/oauth/token" )

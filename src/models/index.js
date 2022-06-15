@@ -1,5 +1,3 @@
-// @flow
-
 import Comment from "./Comment";
 import Identification from "./Identification";
 import Observation from "./Observation";
@@ -20,9 +18,9 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 22,
+  schemaVersion: 23,
   path: "db.realm",
-  migration: ( oldRealm: any, newRealm: any ) => {
+  migration: ( oldRealm, newRealm ) => {
     if ( oldRealm.schemaVersion < 21 ) {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );

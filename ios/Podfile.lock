@@ -11,9 +11,6 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.67.4)
   - fmt (6.2.1)
   - glog (0.3.5)
-  - MMKV (1.2.10):
-    - MMKVCore (~> 1.2.10)
-  - MMKVCore (1.2.13)
   - Permission-LocationWhenInUse (3.3.1):
     - RNPermissions
   - RCT-Folly (2021.06.28.00-v2):
@@ -230,9 +227,6 @@ PODS:
     - React-Core
   - react-native-maps (0.30.1):
     - React-Core
-  - react-native-mmkv-storage (0.7.6):
-    - MMKV (= 1.2.10)
-    - React-Core
   - react-native-netinfo (8.3.0):
     - React-Core
   - react-native-safe-area-context (4.2.4):
@@ -394,7 +388,6 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-maps (from `../node_modules/react-native-maps`)
-  - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sensitive-info (from `../node_modules/react-native-sensitive-info`)
@@ -429,8 +422,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - fmt
-    - MMKV
-    - MMKVCore
 
 EXTERNAL SOURCES:
   boost:
@@ -483,8 +474,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-resizer"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
-  react-native-mmkv-storage:
-    :path: "../node_modules/react-native-mmkv-storage"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
@@ -553,8 +542,6 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 0f4e1f4cfeace095694436e7c7fcc5bf4b03a0ff
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
-  MMKV: 76033b9ace2006623308910a3afcc0e25eba3140
-  MMKVCore: 3388952ded307e41b3ed8a05892736a236ed1b8e
   Permission-LocationWhenInUse: 50736c907dff5a77d80a3503d3b333831148288b
   RCT-Folly: 803a9cfd78114b2ec0f140cfa6fa2a6bafb2d685
   RCTRequired: 0aa6c1c27e1d65920df35ceea5341a5fe76bdb79
@@ -575,7 +562,6 @@ SPEC CHECKSUMS:
   react-native-image-picker: 9f9eb160a4f4fc0702f9d0a60fa453b413258ef8
   react-native-image-resizer: 506412a2bdd70dde64a61e13505ce10f61a04369
   react-native-maps: d752b0dd0e1951d815b1336332835aab6b4a836f
-  react-native-mmkv-storage: ba38e5e813ea3d5d37af834a9d867b1ce10aa96d
   react-native-netinfo: ebbcd8fbe1a0ce7035e43cd18c5a545dcb93dd08
   react-native-safe-area-context: a95ad1a0e18341f58c5d6f53b0e2d43efade1a67
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd

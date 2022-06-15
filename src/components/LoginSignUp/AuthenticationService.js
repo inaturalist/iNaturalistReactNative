@@ -7,7 +7,6 @@ import RNSInfo from "react-native-sensitive-info";
 import jwt from "react-native-jwt-io";
 import {Platform} from "react-native";
 import {getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion} from "react-native-device-info";
-import { MMKVLoader } from "react-native-mmkv-storage";
 import Realm from "realm";
 
 import realmConfig from "../../models/index";
@@ -143,16 +142,23 @@ const authenticateUser = async (
     return false;
   }
 
-  const userId = userDetails.userId && userDetails.userId.toString( );
+  const { userId, username: remoteUsername, accessToken } = userDetails;
+  if ( !userId ) {
+    return false;
+  }
 
   // Save authentication details to secure storage
-  await SInfo.setItem( "username", userDetails.username, {} );
-  await SInfo.setItem( "accessToken", userDetails.accessToken, {} );
+  await SInfo.setItem( "username", remoteUsername, {} );
+  await SInfo.setItem( "accessToken", accessToken, {} );
   // await SInfo.setItem( "userId", userId, {} );
 
   // Save userId to local, encrypted storage
-  const MMKV = new MMKVLoader( ).initialize( );
-  await MMKV.setStringAsync( "userId", userId );
+  const currentUser = { id: userId, login: remoteUsername, signedIn: true };
+  const realm = await Realm.open( realmConfig );
+  realm.write( ( ) => {
+    realm?.create( "User", currentUser, "modified" );
+  } );
+  realm.close( );
 
   return true;
 };
@@ -301,10 +307,12 @@ const getUsername = async (): Promise<string> => {
  *
  * @returns {Promise<boolean>}
  */
- const getUserId = async (): Promise<string> => {
-  const MMKV = new MMKVLoader( ).initialize( );
-  return await MMKV.getStringAsync( "userId" );
-  // return await RNSInfo.getItem( "userId", {} );
+ const getUserId = async (): Promise<string | null> => {
+  const realm = await Realm.open( realmConfig );
+  const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
+  const currentUserId = currentUser?.id?.toString( );
+  realm.close( );
+  return currentUserId;
 };
 
 /**

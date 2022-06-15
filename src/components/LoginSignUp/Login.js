@@ -27,16 +27,21 @@ const Login = ( ): Node => {
   useEffect( ( ) => {
     let isCurrent = true;
 
-    isLoggedIn( ).then( ( result ) => {
+    const fetchLoggedIn = async ( ) => {
       if ( !isCurrent ) {return;}
 
-      setLoggedIn( result );
-    } );
+      setLoggedIn( await isLoggedIn( ) );
+      if ( loggedIn ) {
+        setUsername( await getUsername( ) );
+      }
+    };
+
+    fetchLoggedIn( );
 
     return ( ) => {
       isCurrent = false;
     };
-  }, [] );
+  }, [loggedIn] );
 
   const login = async ( ) => {
     const success = await authenticateUser(
