@@ -22,12 +22,12 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import {colors} from "../../styles/global";
-import Identification from "../../models/Identification";
+import {BottomSheetBackdropProps} from "@gorhom/bottom-sheet";
 
 type Props = {
   route: {
     params: {
-      onIDAdded: ( identification: Identification ) => void
+      onIDAdded: ( identification: {[string]: any} ) => void
     }
   }
 }
@@ -38,12 +38,12 @@ const AddID = ( { route }: Props ): React.Node => {
   const [comment, setComment] = useState( "" );
   const [commentDraft, setCommentDraft] = useState( "" );
   const { onIDAdded } = route.params;
-  const bottomSheetModalRef = useRef<BottomSheetModal>( null );
+  const bottomSheetModalRef = useRef( null );
   const [taxonSearch, setTaxonSearch] = useState( "" );
   const taxonList = useRemoteSearchResults( taxonSearch, "taxa", "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url,taxon.rank" ).map( r => r.taxon );
   const navigation = useNavigation( );
 
-  const renderBackdrop = ( props: BottomSheetBackdropProps ) => (
+  const renderBackdrop = ( props ) => (
     <BottomSheetBackdrop {...props} pressBehavior={"close"}
                          appearsOnIndex={0}
                          disappearsOnIndex={-1}
@@ -87,8 +87,8 @@ const AddID = ( { route }: Props ): React.Node => {
       <Text style={textStyles.taxonResultName}>{item.name}</Text>
       <Text style={textStyles.taxonResultScientificName}>{item.preferred_common_name}</Text>
       </View>
-      <Pressable style={viewStyles.taxonResultInfo} onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )} accessibilityRole="link"><Icon style={viewStyles.taxonResultInfoIcon} name="information-outline" size={25} /></Pressable>
-      <Pressable style={viewStyles.taxonResultSelect} onPress={() => { onIDAdded( createID( item ) ); navigation.goBack(); }} accessibilityRole="link"><Icon style={viewStyles.taxonResultSelectIcon} name="check-bold" size={25} /></Pressable>
+      <Pressable style={viewStyles.taxonResultInfo} onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )} accessibilityRole="link"><Icon style={textStyles.taxonResultInfoIcon} name="information-outline" size={25} /></Pressable>
+      <Pressable style={viewStyles.taxonResultSelect} onPress={() => { onIDAdded( createID( item ) ); navigation.goBack(); }} accessibilityRole="link"><Icon style={textStyles.taxonResultSelectIcon} name="check-bold" size={25} /></Pressable>
     </View>;
   };
 
@@ -101,15 +101,15 @@ const AddID = ( { route }: Props ): React.Node => {
             {comment.length > 0 && <View>
               <Text>{t( "ID-Comment" )}</Text>
               <View style={viewStyles.commentContainer}>
-                <Icon style={viewStyles.commentLeftIcon} name="chat-processing-outline" size={25} />
+                <Icon style={textStyles.commentLeftIcon} name="chat-processing-outline" size={25} />
                 <Text style={textStyles.comment}>{comment}</Text>
-                <Pressable style={viewStyles.commentRightIconContainer} onPress={editComment} accessibilityRole="link"><Icon style={viewStyles.commentRightIcon} name="pencil" size={25} /></Pressable>
+                <Pressable style={viewStyles.commentRightIconContainer} onPress={editComment} accessibilityRole="link"><Icon style={textStyles.commentRightIcon} name="pencil" size={25} /></Pressable>
               </View>
             </View>
             }
             <Text>{t( "Search-Taxon-ID" )}</Text>
             <TextInput
-              left={<TextInput.Icon name={() => <Icon style={viewStyles.taxonSearchIcon} name={"magnify"} size={25} />} />}
+              left={<TextInput.Icon name={() => <Icon style={textStyles.taxonSearchIcon} name={"magnify"} size={25} />} />}
               style={viewStyles.taxonSearch}
               value={taxonSearch}
               onChangeText={setTaxonSearch}
@@ -158,7 +158,7 @@ const AddID = ( { route }: Props ): React.Node => {
               style={viewStyles.commentClear}
               onPress={() => setCommentDraft( "" )}>
               <Text
-                style={commentDraft.length === 0 ? textStyles.disabled : null}>{t( "Clear" )}</Text>
+                style={[viewStyles.commentClearText, commentDraft.length === 0 ? textStyles.disabled : null]}>{t( "Clear" )}</Text>
             </TouchableOpacity>
           </View>
 

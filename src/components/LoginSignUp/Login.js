@@ -5,9 +5,7 @@ import { Text, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
-import Realm from "realm";
 
-import realmConfig from "../../models/index";
 import { textStyles, viewStyles } from "../../styles/login/login";
 import { isLoggedIn, authenticateUser, getUsername, getUserId, signOut } from "./AuthenticationService";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -29,16 +27,21 @@ const Login = ( ): Node => {
   useEffect( ( ) => {
     let isCurrent = true;
 
-    isLoggedIn( ).then( ( result ) => {
+    const fetchLoggedIn = async ( ) => {
       if ( !isCurrent ) {return;}
 
-      setLoggedIn( result );
-    } );
+      setLoggedIn( await isLoggedIn( ) );
+      if ( loggedIn ) {
+        setUsername( await getUsername( ) );
+      }
+    };
+
+    fetchLoggedIn( );
 
     return ( ) => {
       isCurrent = false;
     };
-  }, [] );
+  }, [loggedIn] );
 
   const login = async ( ) => {
     const success = await authenticateUser(
@@ -62,7 +65,6 @@ const Login = ( ): Node => {
   };
 
   const onSignOut = async ( ) => {
-    Realm.deleteFile( realmConfig );
     await signOut( );
     setLoggedIn( false );
   };

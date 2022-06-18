@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useState, useContext } from "react";
+import _ from "lodash";
 import { Text, View, Image, Pressable, ScrollView, LogBox } from "react-native";
 import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -52,11 +53,11 @@ const ObsDetails = ( ): Node => {
 
   if ( !observation ) { return null; }
 
-  const ids = observation.identifications;
-  const photos = observation.observationPhotos;
+  const ids = observation.identifications.map( i => i );
+  const comments = observation.comments.map( c => c );
+  const photos = _.compact( observation.observationPhotos.map( op => op.photo ) );
   const user = observation.user;
   const taxon = observation.taxon;
-  const comments = observation.comments;
   const uuid = observation.uuid;
 
   const onIDAdded = ( identification ) => {

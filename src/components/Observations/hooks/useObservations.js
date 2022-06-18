@@ -6,12 +6,12 @@ import Realm from "realm";
 
 import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
-import { getUsername } from "../../../components/LoginSignUp/AuthenticationService";
+import { getUsername, getUserId } from "../../../components/LoginSignUp/AuthenticationService";
 
 const perPage = 6;
 
 const useObservations = ( ): Object => {
-  const [loading, setLoading] = useState( false );
+  const [loading, setLoading] = useState( true );
   const [observationList, setObservationList] = useState( [] );
   const nextPageToFetch = observationList.length > 0 ? Math.ceil( observationList.length / perPage ) : 1;
   const [page, setPage] = useState( nextPageToFetch );
@@ -80,7 +80,16 @@ const useObservations = ( ): Object => {
   }, [realmRef] );
 
   useEffect( ( ) => {
-    openRealm( );
+    const checkForSignedInUser = async ( ) => {
+      const userId = await getUserId( );
+      if ( userId ) {
+        openRealm( );
+      } else {
+        setLoading( false );
+      }
+    };
+
+    checkForSignedInUser( );
     return closeRealm;
   }, [openRealm, closeRealm] );
 

@@ -17,7 +17,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   scrollView: {
     paddingTop: 10,
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
+    paddingBottom: 60
   },
   commentInputContainer: {
     position: "relative"
@@ -36,15 +37,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     paddingBottom: 8,
     height: 150
   },
-  commentClear: {
-    position: "absolute",
-    right: 20,
-    bottom: 30,
-    zIndex: 9999,
-    width: 40,
-    height: 20,
-    color: colors.black
-  },
   bottomModal: {
     padding: 20
   },
@@ -52,8 +44,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row",
     flexWrap: "nowrap",
     width: "100%",
-    justifyContent: "space-around",
-    gap: 10
+    justifyContent: "space-around"
   },
   commentButton: {
     width: 150
@@ -69,15 +60,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: "#D9E5B8",
     alignItems: "center"
   },
-  commentLeftIcon: {
-    marginRight: 10,
-    color: colors.inatGreen
-  },
   commentRightIconContainer: {
     marginLeft: "auto"
-  },
-  commentRightIcon: {
-    color: colors.inatGreen
   },
   taxonSearch: {
     marginTop: 10
@@ -104,14 +88,13 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     marginLeft: "auto",
     marginRight: 10
   },
-  taxonResultInfoIcon: {
-    color: colors.gray
-  },
-  taxonResultSelectIcon: {
-    color: colors.inatGreen
-  },
-  taxonSearchIcon: {
-    color: colors.gray
+  commentClear: {
+    position: "absolute",
+    right: 20,
+    bottom: 30,
+    zIndex: 9999,
+    width: 40,
+    height: 20
   }
 } );
 
@@ -129,6 +112,25 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   commentHeader: {
     fontSize: 22,
     marginBottom: 10
+  },
+  taxonSearchIcon: {
+    color: colors.gray
+  },
+  taxonResultInfoIcon: {
+    color: colors.gray
+  },
+  taxonResultSelectIcon: {
+    color: colors.inatGreen
+  },
+  commentClearText: {
+    color: colors.black
+  },
+  commentLeftIcon: {
+    marginRight: 10,
+    color: colors.inatGreen
+  },
+  commentRightIcon: {
+    color: colors.inatGreen
   }
 } );
 

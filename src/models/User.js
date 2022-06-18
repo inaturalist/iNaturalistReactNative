@@ -23,7 +23,8 @@ class User extends Realm.Object {
       id: "int",
       icon_url: { type: "string?", mapTo: "iconUrl" },
       login: "string?",
-      name: "string?"
+      name: "string?",
+      signedIn: "bool?"
     }
   }
 }

@@ -12,7 +12,7 @@ type Props = {
 }
 
 const ProjectSearch = ( { q, clearSearch }: Props ): React.Node => {
-  const projectSearchResults = useRemoteSearchResults( q, "projects" );
+  const projectSearchResults = useRemoteSearchResults( q, "projects", "all" );
 
   if ( q === "" ) {
     return null;

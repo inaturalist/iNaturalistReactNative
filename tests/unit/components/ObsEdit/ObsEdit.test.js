@@ -46,6 +46,12 @@ jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
   useLoggedIn: ( ) => true
 } ) );
 
+const mockCurrentUser = factory( "LocalUser" );
+
+jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
+  getUserId: ( ) => mockCurrentUser.id
+} ) );
+
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
@@ -70,7 +76,8 @@ const renderObsEdit = ( ) => render(
 test( "renders observation photo from photo gallery", ( ) => {
   const observations = [factory( "RemoteObservation", {
     latitude: 37.99,
-    longitude: -142.88
+    longitude: -142.88,
+    user: mockCurrentUser
   } )];
   mockObsEditProviderWithObs( observations );
 

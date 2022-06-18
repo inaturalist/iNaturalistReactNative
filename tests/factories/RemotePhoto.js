@@ -4,5 +4,6 @@ export default define( "RemotePhoto", faker => ( {
   id: faker.datatype.number( ),
   attribution: faker.lorem.sentence( ),
   license_code: "cc-by",
-  url: faker.image.imageUrl( )
+  url: faker.image.imageUrl( ),
+  uuid: faker.datatype.uuid( )
 } ) );
