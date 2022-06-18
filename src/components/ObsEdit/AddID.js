@@ -22,7 +22,6 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import {colors} from "../../styles/global";
-import {BottomSheetBackdropProps} from "@gorhom/bottom-sheet";
 
 type Props = {
   route: {
