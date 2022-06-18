@@ -6,5 +6,7 @@ export const colors = {
   inatGreen: "#77b300",
   gray: "#393939",
   lightGray: "#f5f5f5",
-  selectionGreen: "#C1FF00"
+  midGray: "#cccccc",
+  selectionGreen: "#C1FF00",
+  red: "#ff0000"
 };
