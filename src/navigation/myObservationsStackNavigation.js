@@ -9,7 +9,7 @@ import ObsDetails from "../components/ObsDetails/ObsDetails";
 import UserProfile from "../components/UserProfile/UserProfile";
 import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
 import Mortal from "../components/SharedComponents/Mortal";
-import SuggestID from "../components/ObsEdit/SuggestID";
+import AddID from "../components/ObsEdit/AddID";
 
 const Stack = createNativeStackNavigator( );
 
@@ -49,8 +49,8 @@ const MyObservationsStackNavigation = ( ): React.Node => (
         options={showBackButton}
       />
       <Stack.Screen
-        name="SuggestID"
-        component={SuggestID}
+        name="AddID"
+        component={AddID}
         options={hideHeader}
       />
     </Stack.Navigator>

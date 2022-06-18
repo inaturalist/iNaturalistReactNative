@@ -226,5 +226,21 @@
   "You-denied-iNaturalist-permission-to-do-that": {
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
     "val": "You denied iNaturalist permission to do that"
-  }
+  },
+  "Add-ID-Header": {
+    "comment": "Header of Add ID screen",
+    "val": "Add ID"
+  },
+  "ID-Comment": {
+    "comment": "Text above a user's comment for his identification",
+    "val": "Your identification will be posted with the following comment:"
+  },
+  "Search-Taxon-ID": {
+    "comment": "Label above text box to search for taxa for identification",
+    "val": "Search for a taxon to add an identification"
+  },
+  "Edit-comment": "Edit comment",
+  "Add-optional-comment": "Add an optional comment to this ID",
+  "Clear": "Clear",
+  "Add-comment": "Add comment"
 }

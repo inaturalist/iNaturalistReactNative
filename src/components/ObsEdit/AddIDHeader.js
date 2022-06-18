@@ -8,25 +8,25 @@ import { useNavigation } from "@react-navigation/native";
 import {Pressable, View} from "react-native";
 import { HeaderBackButton } from "@react-navigation/elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { viewStyles } from "../../styles/obsDetails/obsDetailsHeader";
+import { viewStyles } from "../../styles/obsDetails/addID";
 
 type Props = {
   showEditComment: boolean,
-  onEditComment: () => void
+  onEditCommentPressed: () => void
 }
 
-const SuggestIDHeader = ( { showEditComment, onEditComment }: Props ): Node => {
+const AddIDHeader = ( { showEditComment, onEditCommentPressed }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
   return (
     <View style={viewStyles.headerRow}>
       <HeaderBackButton onPress={( ) => navigation.goBack( )} />
-      <Headline>{t( "Add an ID" )}</Headline>
+      <Headline>{t( "Add-ID-Header" )}</Headline>
       {showEditComment ?
-        <Pressable onPress={onEditComment} accessibilityRole="link"><Icon name="chat-processing-outline" size={25} /></Pressable> : <View />}
+        <Pressable onPress={onEditCommentPressed} accessibilityRole="link"><Icon name="chat-processing-outline" size={25} /></Pressable> : <View />}
     </View>
   );
 };
 
-export default SuggestIDHeader;
+export default AddIDHeader;

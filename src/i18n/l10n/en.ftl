@@ -236,7 +236,7 @@ Ranks-complex = complex
 Ranks-species = species
 
 Ranks-hybrid = hybrid
-  
+
 Ranks-subspecies = subspecies
 
 Ranks-variety = variety
@@ -368,3 +368,19 @@ Yes-delete-photo = Yes, delete photo
 # (e.g. permission to access the camera) but the user denied the permission.
 You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
 
+# Header of Add ID screen
+Add-ID-Header = Add ID
+
+# Text above a user's comment for his identification
+ID-Comment = Your identification will be posted with the following comment:
+
+# Label above text box to search for taxa for identification
+Search-Taxon-ID = Search for a taxon to add an identification
+
+Edit-comment = Edit comment
+
+Add-optional-comment = Add an optional comment to this ID
+
+Clear = Clear
+
+Add-comment = Add comment

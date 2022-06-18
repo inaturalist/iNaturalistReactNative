@@ -7,10 +7,10 @@ import {
   TouchableOpacity, FlatList, Image
 } from "react-native";
 import {useNavigation} from "@react-navigation/native";
-import { viewStyles, textStyles } from "../../styles/obsDetails/suggestID";
+import { viewStyles, textStyles } from "../../styles/obsDetails/addID";
 import { useTranslation } from "react-i18next";
 import { TextInput as NativeTextInput } from "react-native";
-import SuggestIDHeader from "./SuggestIDHeader";
+import AddIDHeader from "./AddIDHeader";
 import {useRef, useState} from "react";
 import {
   BottomSheetBackdrop,
@@ -21,15 +21,26 @@ import {Button, Headline, Text, TextInput} from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import {colors} from "../../styles/global";
+import Identification from "../../models/Identification";
 
-const SuggestID = ( { route } ): React.Node => {
+type Props = {
+  route: {
+    params: {
+      onIDAdded: ( identification: Identification ) => void
+    }
+  }
+}
+
+
+const AddID = ( { route }: Props ): React.Node => {
   const { t } = useTranslation( );
   const [comment, setComment] = useState( "" );
   const [commentDraft, setCommentDraft] = useState( "" );
   const { onIDAdded } = route.params;
   const bottomSheetModalRef = useRef<BottomSheetModal>( null );
   const [taxonSearch, setTaxonSearch] = useState( "" );
-  const taxonList = useRemoteSearchResults( taxonSearch, "taxa", "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url" ).map( r => r.taxon );
+  const taxonList = useRemoteSearchResults( taxonSearch, "taxa", "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url,taxon.rank" ).map( r => r.taxon );
   const navigation = useNavigation( );
 
   const renderBackdrop = ( props: BottomSheetBackdropProps ) => (
@@ -44,28 +55,51 @@ const SuggestID = ( { route } ): React.Node => {
     bottomSheetModalRef.current?.present();
   };
 
+  const createPhoto = ( photo ) => {
+    return {
+      id: photo.id,
+      url: photo.square_url
+    };
+  };
+
+  const createID = ( taxon ) => {
+    const newTaxon = {
+      id: taxon.id,
+      default_photo: taxon.default_photo ? createPhoto( taxon.default_photo ) : null,
+      name: taxon.name,
+      preferred_common_name: taxon.preferred_common_name,
+      rank: taxon.rank
+    };
+    const newID = {
+      body: comment,
+      taxon: newTaxon
+    };
+
+    return newID;
+  };
+
   const renderTaxonResult = ( {item} ) => {
+    const taxonImage = item.default_photo ? { uri: item.default_photo.square_url } : Icon.getImageSourceSync( "leaf", 50, colors.inatGreen );
+
     return <View style={viewStyles.taxonResult}>
-      <Image style={viewStyles.taxonResultIcon} source={{ uri: item.default_photo.square_url }} />
+      <Image style={viewStyles.taxonResultIcon} source={taxonImage} />
       <View style={viewStyles.taxonResultNameContainer}>
       <Text style={textStyles.taxonResultName}>{item.name}</Text>
       <Text style={textStyles.taxonResultScientificName}>{item.preferred_common_name}</Text>
       </View>
       <Pressable style={viewStyles.taxonResultInfo} onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )} accessibilityRole="link"><Icon style={viewStyles.taxonResultInfoIcon} name="information-outline" size={25} /></Pressable>
-      <Pressable style={viewStyles.taxonResultSelect} onPress={() => { onIDAdded( { taxon: item, comment } ); navigation.goBack(); }} accessibilityRole="link"><Icon style={viewStyles.taxonResultSelectIcon} name="check-bold" size={25} /></Pressable>
+      <Pressable style={viewStyles.taxonResultSelect} onPress={() => { onIDAdded( createID( item ) ); navigation.goBack(); }} accessibilityRole="link"><Icon style={viewStyles.taxonResultSelectIcon} name="check-bold" size={25} /></Pressable>
     </View>;
   };
 
   return (
     <BottomSheetModalProvider>
       <ViewNoFooter>
-        <SuggestIDHeader showEditComment={comment.length === 0} onEditComment={editComment} />
-        <View
-          contentContainerStyle={viewStyles.scrollView}
-        >
-          <View>
+        <AddIDHeader showEditComment={comment.length === 0} onEditCommentPressed={editComment} />
+        <View>
+          <View style={viewStyles.scrollView}>
             {comment.length > 0 && <View>
-              <Text>{t( "Your identification will be posted with the following comment:" )}</Text>
+              <Text>{t( "ID-Comment" )}</Text>
               <View style={viewStyles.commentContainer}>
                 <Icon style={viewStyles.commentLeftIcon} name="chat-processing-outline" size={25} />
                 <Text style={textStyles.comment}>{comment}</Text>
@@ -73,12 +107,13 @@ const SuggestID = ( { route } ): React.Node => {
               </View>
             </View>
             }
-            <Text>{t( "Search for a taxon to add an identification" )}</Text>
+            <Text>{t( "Search-Taxon-ID" )}</Text>
             <TextInput
               left={<TextInput.Icon name={() => <Icon style={viewStyles.taxonSearchIcon} name={"magnify"} size={25} />} />}
               style={viewStyles.taxonSearch}
               value={taxonSearch}
               onChangeText={setTaxonSearch}
+              selectionColor={colors.black}
             />
             <FlatList
               data={taxonList}
@@ -96,14 +131,16 @@ const SuggestID = ( { route } ): React.Node => {
           enablePanDownToClose={false}
           snapPoints={["50%"]}
           backdropComponent={renderBackdrop}
+          style={viewStyles.bottomModal}
         >
-          <Headline>{t( comment.length > 0 ? "Edit Comment" : "Add an Optional Comment to this ID" )}</Headline>
+          <Headline style={textStyles.commentHeader}>{comment.length > 0 ? t( "Edit-comment" ) : t( "Add-optional-comment" )}</Headline>
           <View style={viewStyles.commentInputContainer}>
             <TextInput
               keyboardType="default"
               style={viewStyles.commentInput}
               value={commentDraft}
-              activeUnderlineColor="#ff000000"
+              selectionColor={colors.black}
+              activeUnderlineColor={colors.transparent}
               autoFocus
               multiline
               onChangeText={setCommentDraft}
@@ -129,19 +166,20 @@ const SuggestID = ( { route } ): React.Node => {
             <Button
               style={viewStyles.commentButton}
               uppercase={false}
-              color="#cccccc"
+              color={colors.midGray}
               onPress={() => {
                 bottomSheetModalRef.current?.dismiss();
               }}>{t( "Cancel" )}</Button>
             <Button
               style={viewStyles.commentButton}
               uppercase={false}
-              color="#cccccc"
+              disabled={commentDraft.length === 0}
+              color={colors.midGray}
               mode="contained"
               onPress={() => {
                 setComment( commentDraft );
                 bottomSheetModalRef.current?.dismiss();
-              }}>{t( comment.length > 0 ? "Edit Comment" : "Add Comment" )}</Button>
+              }}>{comment.length > 0 ? t( "Edit-comment" ) : t( "Add-comment" )}</Button>
           </View>
         </BottomSheetModal>
       </ViewNoFooter>
@@ -149,5 +187,5 @@ const SuggestID = ( { route } ): React.Node => {
   );
 };
 
-export default SuggestID;
+export default AddID;
 

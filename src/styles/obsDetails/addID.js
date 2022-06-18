@@ -8,6 +8,17 @@ import { colors } from "../global";
 const { width } = Dimensions.get( "screen" );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  headerRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    justifyContent: "space-between",
+    padding: 10
+  },
+  scrollView: {
+    paddingTop: 10,
+    paddingLeft: 20,
+    paddingRight: 20
+  },
   commentInputContainer: {
     position: "relative"
   },
@@ -15,7 +26,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: colors.white,
     height: 150,
     padding: 0,
-    margin: 10
+    marginBottom: 20
   },
   commentInputText: {
     borderWidth: 1,
@@ -28,11 +39,14 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   commentClear: {
     position: "absolute",
     right: 20,
-    bottom: 20,
+    bottom: 30,
     zIndex: 9999,
     width: 40,
     height: 20,
     color: colors.black
+  },
+  bottomModal: {
+    padding: 20
   },
   commentButtonContainer: {
     flexDirection: "row",
@@ -47,9 +61,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   commentContainer: {
     flexDirection: "row",
     flexWrap: "nowrap",
-    width: width - 20,
+    width: width - 40,
     padding: 10,
-    margin: 10,
+    marginTop: 10,
+    marginBottom: 20,
     borderRadius: 10,
     backgroundColor: "#D9E5B8",
     alignItems: "center"
@@ -65,14 +80,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     color: colors.inatGreen
   },
   taxonSearch: {
-    marginLeft: 10,
-    marginRight: 10
+    marginTop: 10
   },
   taxonList: {
     marginBottom: "auto",
-    marginTop: 20,
-    marginLeft: 10,
-    marginRight: 10
+    marginTop: 20
   },
   taxonResult: {
     flexDirection: "row",
@@ -82,7 +94,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   taxonResultIcon: {
     width: 50,
     height: 50,
-    marginRight: 10
+    marginRight: 10,
+    backgroundColor: colors.lightGray
   },
   taxonResultNameContainer: {
     flexDirection: "column"
@@ -112,6 +125,10 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   taxonResultScientificName: {
     color: colors.gray,
     fontStyle: "italic"
+  },
+  commentHeader: {
+    fontSize: 22,
+    marginBottom: 10
   }
 } );
 

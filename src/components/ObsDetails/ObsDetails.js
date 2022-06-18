@@ -59,15 +59,15 @@ const ObsDetails = ( ): Node => {
   const comments = observation.comments;
   const uuid = observation.uuid;
 
-  const onIDAdded = ( { taxon, comment} ) => {
-    console.log( "onIDAdded", comment, taxon );
+  const onIDAdded = ( identification ) => {
+    console.log( "onIDAdded", identification );
   };
 
   const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
-  const navToSuggestID = ( ) => {
+  const navToAddID = ( ) => {
     addObservations( [observation] );
-    navigation.push( "SuggestID", { onIDAdded: onIDAdded} );
+    navigation.push( "AddID", { onIDAdded: onIDAdded} );
   };
   const openCommentBox = ( ) => setShowCommentBox( true );
   const submitComment = async ( ) => {
@@ -181,7 +181,7 @@ const ObsDetails = ( ): Node => {
             but it doesn't appear to be working on staging either (Mar 11, 2022) */}
             <RoundGreenButton
               buttonText="Suggest an ID"
-              handlePress={navToSuggestID}
+              handlePress={navToAddID}
               testID="ObsDetail.cvSuggestionsButton"
             />
           </View>
