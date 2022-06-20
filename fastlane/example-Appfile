@@ -1,0 +1,2 @@
+json_key_file("path/to/your/service/acount/key.json")
+package_name("org.inaturalist.android")
