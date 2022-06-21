@@ -59,7 +59,8 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   },
   error: {
     color: colors.red,
-    marginTop: 20
+    marginTop: 20,
+    textAlign: "center"
   },
   forgotPassword: {
     alignSelf: "flex-end",
