@@ -1,6 +1,6 @@
   // @flow
 
-import Geocoder from "react-native-geocoder";
+import Geocoder from "react-native-geocoder-reborn";
 
 // lifted from SeekReactNative repo
 const setPlaceName = ( results: Array<Object> ) => {

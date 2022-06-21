@@ -174,7 +174,7 @@ lane :release do
     commitish: "main",
     upload_assets: [apk_path]
   )
-  system "git checkout main", exception: true
+  system "git checkout main"
 end
 
 lane :beta do

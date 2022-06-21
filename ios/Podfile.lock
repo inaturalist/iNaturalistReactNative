@@ -217,7 +217,7 @@ PODS:
     - react-native-config/App (= 1.4.5)
   - react-native-config/App (1.4.5):
     - React-Core
-  - react-native-geocoder (0.5.0):
+  - react-native-geocoder-reborn (0.9.0):
     - React
   - react-native-geolocation-service (5.3.0-beta.4):
     - React
@@ -383,7 +383,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-config (from `../node_modules/react-native-config`)
-  - react-native-geocoder (from `../node_modules/react-native-geocoder`)
+  - react-native-geocoder-reborn (from `../node_modules/react-native-geocoder-reborn`)
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
@@ -464,8 +464,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/cameraroll"
   react-native-config:
     :path: "../node_modules/react-native-config"
-  react-native-geocoder:
-    :path: "../node_modules/react-native-geocoder"
+  react-native-geocoder-reborn:
+    :path: "../node_modules/react-native-geocoder-reborn"
   react-native-geolocation-service:
     :path: "../node_modules/react-native-geolocation-service"
   react-native-image-picker:
@@ -557,7 +557,7 @@ SPEC CHECKSUMS:
   React-logger: a1f028f6d8639a3f364ef80419e5e862e1115250
   react-native-cameraroll: 60ac50a5209777cbccfe8d7a62d0743a9da87060
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
-  react-native-geocoder: 757427682892bb256f3b3745858cc90eba148a8e
+  react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
   react-native-geolocation-service: c0efb872258ed9240f1003a70fca9e9757e5c785
   react-native-image-picker: 9f9eb160a4f4fc0702f9d0a60fa453b413258ef8
   react-native-image-resizer: 506412a2bdd70dde64a61e13505ce10f61a04369

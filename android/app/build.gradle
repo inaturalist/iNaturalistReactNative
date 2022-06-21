@@ -164,6 +164,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 9
         versionName "0.1.1"
+        setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
     }
     splits {
         abi {
