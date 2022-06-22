@@ -236,7 +236,7 @@ Ranks-complex = complex
 Ranks-species = species
 
 Ranks-hybrid = hybrid
-  
+
 Ranks-subspecies = subspecies
 
 Ranks-variety = variety
@@ -368,3 +368,32 @@ Yes-delete-photo = Yes, delete photo
 # (e.g. permission to access the camera) but the user denied the permission.
 You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
 
+# Appears in the login screen
+Login-header = Log in to use iNaturalist
+Login-sub-title = Document living things, identify organisms & contribute to science
+
+# Appears above the text fields
+Username-or-Email = Username or Email
+Password = Password
+
+# Forgot password link
+Forgot-Password = Forgot Password?
+
+# Appears when the user enters invalid username/password
+Invalid-login = The username or password is incorrect
+
+# Appears in the reset password screen
+Reset-password-header = Let's reset your password
+# Appears above the email text field
+Email = email
+# Reset password button
+Reset-Password = Reset Password
+
+# When the user tries to reset password but enters a non-existent email
+No-account-found = No account found with that email
+
+# After pressing the reset password button
+Check-your-email = Check your email! We've sent password reset instructions.
+Return-to-login = Return to login
+
+Logged-in-as = Logged in as: { $username }
