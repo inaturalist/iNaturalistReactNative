@@ -158,22 +158,32 @@ lane :release do
   if File.exist?( apk_path )
     puts "APK already exists at #{apk_path}"
   else
-    gradle( task: "build", project_dir: "android" )
+    gradle( task: "build", project_dir: "android", flags: "-x lint" )
   end
   unless File.exist?( apk_path )
     UI.abort_with_message! "Failed to create APK at #{apk_path}"
   end
 
-  github_release = set_github_release(
-    repository_name: "inaturalist/iNaturalistReactNative",
-    api_token: ENV["GITHUB_TOKEN"],
-    name: last_tag,
-    tag_name: last_tag,
-    description: ( File.read( changelog_path ) rescue nil ),
-    # This is really just a fallback in case last_tag isn't really a tag
-    commitish: "main",
-    upload_assets: [apk_path]
+  github_release = get_github_release(
+    url: "inaturalist/iNaturalistReactNative",
+    version: last_tag,
+    api_token: ENV["GITHUB_TOKEN"]
   )
+
+  if github_release
+    puts "Release already exists at #{github_release["url"]}. You need to manually upload any missing assets."
+  else
+    set_github_release(
+      repository_name: "inaturalist/iNaturalistReactNative",
+      api_token: ENV["GITHUB_TOKEN"],
+      name: last_tag,
+      tag_name: last_tag,
+      description: ( File.read( changelog_path ) rescue nil ),
+      # This is really just a fallback in case last_tag isn't really a tag
+      commitish: "main",
+      upload_assets: [apk_path]
+    )
+  end
   system "git checkout main"
 end
 
