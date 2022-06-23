@@ -29,6 +29,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
+### internal
+
+```sh
+[bundle exec] fastlane internal
+```
+
+
+
 ### beta
 
 ```sh

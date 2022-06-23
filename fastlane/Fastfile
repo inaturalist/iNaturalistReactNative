@@ -187,20 +187,41 @@ lane :release do
   system "git checkout main"
 end
 
-lane :beta do
-  desc "Push builds for the latest tag to test tracks"
+lane :internal do
+  desc "Push builds for the latest tag for internal testing"
   # Ensure build files exist for the latest tag
   aab_path = get_aab_path
   unless File.exist?( aab_path )
     UI.abort_with_message! "AAB does not exist at #{aab_path}. You may need to run the release lane before making a beta"
   end
+  last_tag = last_git_tag
+  if last_tag.nil? || last_tag.empty?
+    UI.abort_with_message! "No tags have been added yet. Try starting with `fastlane tag`"
+  end
+  upload_to_play_store(
+    aab: aab_path,
+    track: "internal",
+    version_name: last_tag
+  )
+end
+
+lane :beta do
+  desc "Push builds for the latest tag for public testing"
   # Push to play store beta track. In theory some time has elapsed between now
   # and creating the release and translators have translated the release
   # notes. In theory, and if we configure things correctly,
   # upload_to_play_store will grab the appropriate release notes for the
   # current version code, even if they aren't actually present for the tag
   # the AAB was built from.
-  upload_to_play_store( aab: aab_path, track: "beta" )
+  upload_to_play_store(
+    aab: aab_path,
+    track: "internal"
+  )
+  upload_to_play_store(
+    version_code: build_number,
+    track: "internal",
+    track_promote_to: "beta"
+  )
 end
 
 lane :prod do

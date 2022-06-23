@@ -110,7 +110,11 @@ fastlane tag
 # add build files to the release
 fastlane release
 
-# Upload the build for the latest tag for public testing
+# Upload the build for the latest tag for internal testing
+fastlane internal
+
+# Upload the build for the latest tag for public testing (promotes latest
+# internal build to open testing)
 fastlane beta
 
 # Upload the build for the latest tag to production release. In Android, this
