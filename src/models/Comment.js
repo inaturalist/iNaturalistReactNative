@@ -9,7 +9,7 @@ class Comment extends Realm.Object {
     body: true,
     created_at: true,
     id: true,
-    user: User.USER_FIELDS
+    user: User && User.USER_FIELDS
   };
 
   static mapApiToRealm( comment, realm ) {
