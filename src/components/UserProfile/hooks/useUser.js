@@ -43,7 +43,7 @@ const useUser = ( userId: number ): Object => {
         setUser( results[0] );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch user:", e.message );
+        // console.log( "Couldn't fetch user:", e.message );
       }
     };
 

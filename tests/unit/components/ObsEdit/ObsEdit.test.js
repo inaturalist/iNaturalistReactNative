@@ -15,6 +15,16 @@ const mockLocationName = "San Francisco, CA";
 
 jest.mock( "../../../../src/providers/ObsEditProvider" );
 
+// mock Portal with a Modal component inside of it (MediaViewer)
+jest.mock( "react-native-paper", () => {
+  const RealModule = jest.requireActual( "react-native-paper" );
+  const MockedModule = {
+    ...RealModule,
+    Portal: ( {children} ) => <>{children}</>
+  };
+  return MockedModule;
+} );
+
 jest.mock( "../../../../src/sharedHooks/useLocationName" , ( ) => ( {
   __esModule: true,
   default: ( ) => {
@@ -25,13 +35,21 @@ jest.mock( "../../../../src/sharedHooks/useLocationName" , ( ) => ( {
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
-    ...actualNav
+    ...actualNav,
+    useRoute: ( ) => ( {
+    } )
   };
 } );
 
 jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
   __esModule: true,
   useLoggedIn: ( ) => true
+} ) );
+
+const mockCurrentUser = factory( "LocalUser" );
+
+jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
+  getUserId: ( ) => mockCurrentUser.id
 } ) );
 
 // Mock ObservationProvider so it provides a specific array of observations
@@ -58,7 +76,8 @@ const renderObsEdit = ( ) => render(
 test( "renders observation photo from photo gallery", ( ) => {
   const observations = [factory( "RemoteObservation", {
     latitude: 37.99,
-    longitude: -142.88
+    longitude: -142.88,
+    user: mockCurrentUser
   } )];
   mockObsEditProviderWithObs( observations );
 

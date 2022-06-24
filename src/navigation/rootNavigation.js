@@ -6,6 +6,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
+import { signOut, getUserId } from "../components/LoginSignUp/AuthenticationService";
 import PlaceholderComponent from "../components/PlaceholderComponent";
 import MyObservationsStackNavigator from "./myObservationsStackNavigation";
 import ExploreStackNavigator from "./exploreStackNavigation";
@@ -23,6 +24,7 @@ import Mortal from "../components/SharedComponents/Mortal";
 import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import { colors } from "../styles/global";
 import { viewStyles } from "../styles/navigation/rootNavigation";
+import Settings from "../components/Settings/Settings";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <></> };
@@ -49,66 +51,79 @@ const theme = {
   }
 };
 
-const App = ( ): React.Node => (
-  <PaperProvider theme={theme}>
-    <GestureHandlerRootView style={viewStyles.container}>
-      <NavigationContainer>
-        <PhotoGalleryProvider>
-          <ObsEditProvider>
-            <Drawer.Navigator
-              screenOptions={screenOptions}
-              name="Drawer"
-              drawerContent={( props ) => <CustomDrawerContent {...props} />}
-            >
-              <Drawer.Screen
-                name="my observations"
-                component={MyObservationsStackNavigator}
-                options={hideHeader}
-              />
-              <Drawer.Screen
-                name="notifications"
-                component={NotificationsStackNavigation}
-                options={hideHeader}
-              />
-              <Drawer.Screen
-                name="identify"
-                component={IdentifyStackNavigation}
-                options={hideHeader}
-              />
-              <Drawer.Screen name="search" component={Search} />
-              <Drawer.Screen
-                name="projects"
-                component={ProjectsStackNavigation}
-                options={hideHeader}
-              />
-              <Drawer.Screen name="settings" component={PlaceholderComponent} />
-              <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
-              <Drawer.Screen
-                name="about"
-                component={About}
-              />
-              <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-              <Drawer.Screen name="login" component={MortalLogin} />
-              <Drawer.Screen
-                name="camera"
-                component={CameraStackNavigation}
-                options={hideHeader}
-              />
-              <Drawer.Screen
-                name="explore stack"
-                component={ExploreStackNavigator}
-                options={hideHeader}
-              />
-              <Drawer.Screen
-                name="network"
-                component={NetworkLogging}
-              />
-            </Drawer.Navigator>
-          </ObsEditProvider>
-        </PhotoGalleryProvider>
-      </NavigationContainer>
-    </GestureHandlerRootView>
-  </PaperProvider>
-);
+const App = ( ): React.Node => {
+  React.useEffect( ( ) => {
+    const checkForSignedInUser = async ( ) => {
+      const userId = await getUserId( );
+      if ( !userId ) {
+        await signOut( );
+      }
+    };
+
+    checkForSignedInUser( );
+  }, [] );
+
+  return (
+    <PaperProvider theme={theme}>
+      <GestureHandlerRootView style={viewStyles.container}>
+        <NavigationContainer>
+          <PhotoGalleryProvider>
+            <ObsEditProvider>
+              <Drawer.Navigator
+                screenOptions={screenOptions}
+                name="Drawer"
+                drawerContent={( props ) => <CustomDrawerContent {...props} />}
+              >
+                <Drawer.Screen
+                  name="my observations"
+                  component={MyObservationsStackNavigator}
+                  options={hideHeader}
+                />
+                <Drawer.Screen
+                  name="notifications"
+                  component={NotificationsStackNavigation}
+                  options={hideHeader}
+                />
+                <Drawer.Screen
+                  name="identify"
+                  component={IdentifyStackNavigation}
+                  options={hideHeader}
+                />
+                <Drawer.Screen name="search" component={Search} />
+                <Drawer.Screen
+                  name="projects"
+                  component={ProjectsStackNavigation}
+                  options={hideHeader}
+                />
+                <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
+                <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
+                <Drawer.Screen
+                  name="about"
+                  component={About}
+                />
+                <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
+                <Drawer.Screen name="login" component={MortalLogin} options={hideHeader}/>
+                <Drawer.Screen
+                  name="camera"
+                  component={CameraStackNavigation}
+                  options={hideHeader}
+                />
+                <Drawer.Screen
+                  name="explore stack"
+                  component={ExploreStackNavigator}
+                  options={hideHeader}
+                />
+                <Drawer.Screen
+                  name="network"
+                  component={NetworkLogging}
+                />
+              </Drawer.Navigator>
+            </ObsEditProvider>
+          </PhotoGalleryProvider>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </PaperProvider>
+  );
+};
 
 export default App;

@@ -24,13 +24,14 @@ const KebabMenu = ( { uuid, toggleRefetch }: Props ): Node => {
   const closeMenu = ( ) => setVisible( false );
 
   return (
-    // need View here to keep kebab menu on top of other components
-    <View style={viewStyles.kebabMenuWrapper}>
-      <Provider theme={DefaultTheme}>
+    <Provider theme={DefaultTheme}>
+      {/* need View here to keep kebab menu on top of other components */}
+      <View style={viewStyles.kebabMenuWrapper}>
         <Menu
           visible={visible}
           onDismiss={closeMenu}
           style={viewStyles.kebabMenuPlacement}
+          contentStyle={viewStyles.textPadding}
           anchor={
             <Button onPress={openMenu} icon="dots-horizontal" color="#999999" />
           }>
@@ -43,8 +44,8 @@ const KebabMenu = ( { uuid, toggleRefetch }: Props ): Node => {
             title={t( "Delete-comment" )}
           />
         </Menu>
-      </Provider>
-    </View>
+      </View>
+    </Provider>
   );
 };
 

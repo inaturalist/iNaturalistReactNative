@@ -1,9 +1,11 @@
 // @flow strict-local
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 import type { TextStyleProp, ImageStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "../global";
+
+const { width } = Dimensions.get( "screen" );
 
 const pickerContainer = {
   paddingHorizontal: 10
@@ -35,15 +37,23 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   }
 } );
 
-const imageWidth = 100;
+const imageWidth = 66;
+const smallImageWidth = imageWidth - 40;
 
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   obsPhoto: {
     width: imageWidth,
     height: imageWidth,
-    borderRadius: 20,
-    marginHorizontal: 20,
-    marginVertical: 20
+    borderRadius: 8,
+    marginHorizontal: 6,
+    marginVertical: 27
+  },
+  smallPhoto: {
+    width: smallImageWidth,
+    height: smallImageWidth,
+    marginVertical: 40,
+    borderRadius: 10,
+    marginHorizontal: 5
   }
 } );
 
@@ -68,8 +78,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     width: 100
   },
   greenSelectionBorder: {
-    borderWidth: 5,
-    borderColor: colors.inatGreen
+    borderWidth: 3,
+    borderColor: colors.selectionGreen
   },
   iconicTaxaButtons: {
     marginHorizontal: 20,
@@ -101,6 +111,18 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   selected: {
     backgroundColor: colors.inatGreen
+  },
+  photoContainer: {
+    backgroundColor: colors.black,
+    height: 125,
+    width
+  },
+  container: {
+    flex: 1,
+    backgroundColor: colors.black
+  },
+  mediaViewerSafeAreaView: {
+    backgroundColor: colors.black
   }
 } );
 

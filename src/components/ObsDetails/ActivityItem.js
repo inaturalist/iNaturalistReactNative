@@ -1,7 +1,8 @@
 // @flow
 
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, Pressable } from "react-native";
+import type { Node } from "react";
 
 import UserIcon from "../SharedComponents/UserIcon";
 import SmallSquareImage from "./SmallSquareImage";
@@ -18,12 +19,12 @@ type Props = {
   toggleRefetch: Function
 }
 
-const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: Props ): React.Node => {
-  const [currentUser, setCurrentUser] = React.useState( null );
+const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: Props ): Node => {
+  const [currentUser, setCurrentUser] = useState( null );
   const taxon = item.taxon;
   const user = item.user;
 
-  React.useEffect( ( ) => {
+  useEffect( ( ) => {
     const isCurrentUser = async ( ) => {
       const current = await User.isCurrentUser( user.login );
       setCurrentUser( current );
@@ -49,7 +50,9 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
           {item.vision && <Text style={textStyles.labels}>vision</Text>}
           <Text style={textStyles.labels}>{item.category}</Text>
           {item.created_at && <Text style={textStyles.labels}>{timeAgo( item.created_at )}</Text>}
-          {item.body && currentUser ? <KebabMenu uuid={item.uuid} toggleRefetch={toggleRefetch} /> : <Text>menu</Text>}
+          {item.body && currentUser
+            ? <KebabMenu uuid={item.uuid} toggleRefetch={toggleRefetch} />
+            : <Text>menu</Text>}
         </View>
       </View>
       {taxon && (
