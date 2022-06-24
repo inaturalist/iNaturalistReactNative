@@ -2,7 +2,7 @@
 
 import React from "react";
 import type { Node } from "react";
-import { Image, LogBox } from "react-native";
+import { Image } from "react-native";
 // TODO: we'll probably need a custom dropdown picker which looks like a search bar
 // and allows users to input immediately instead of first tapping the dropdown
 // this is a placeholder to get functionality working
@@ -40,10 +40,6 @@ const DropdownPicker = ( {
   zIndexInverse
 }: Props ): Node => {
   const searchResults = useRemoteSearchResults( searchQuery, sources );
-
-  LogBox.ignoreLogs( [
-    "Warning: Encountered two children with the same key, `undefined`"
-  ] );
 
   const placesItem = place => {
     return {
