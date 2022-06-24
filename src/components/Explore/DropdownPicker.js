@@ -1,8 +1,8 @@
 // flow
 
-import React, { useState } from "react";
+import React from "react";
 import type { Node } from "react";
-import { Image } from "react-native";
+import { Image, LogBox } from "react-native";
 // TODO: we'll probably need a custom dropdown picker which looks like a search bar
 // and allows users to input immediately instead of first tapping the dropdown
 // this is a placeholder to get functionality working
@@ -18,7 +18,12 @@ type Props = {
   setValue: number => { },
   sources: string,
   value: number,
-  placeholder: string
+  placeholder: string,
+  open: boolean,
+  onOpen: Function,
+  onClose: Function,
+  zIndex: number,
+  zIndexInverse: number
 }
 
 const DropdownPicker = ( {
@@ -27,11 +32,18 @@ const DropdownPicker = ( {
   setValue,
   sources,
   value,
-  placeholder
+  placeholder,
+  open,
+  onOpen,
+  onClose,
+  zIndex,
+  zIndexInverse
 }: Props ): Node => {
   const searchResults = useRemoteSearchResults( searchQuery, sources );
 
-  const [open, setOpen] = useState( false );
+  LogBox.ignoreLogs( [
+    "Warning: Encountered two children with the same key, `undefined`"
+  ] );
 
   const placesItem = place => {
     return {
@@ -41,6 +53,7 @@ const DropdownPicker = ( {
   };
 
   const taxonItem = taxa => {
+    // console.log( taxa, "taxa in item" );
     return {
       // TODO: match styling on the web; only show matched_term if the common name isn't clearly
       // linked to the search result
@@ -80,10 +93,13 @@ const DropdownPicker = ( {
 
   return (
     <DropDownPicker
+      onClose={onClose}
+      zIndex={zIndex}
+      zIndexInverse={zIndexInverse}
       open={open}
+      onOpen={onOpen}
       value={value}
       items={displayItems( )}
-      setOpen={setOpen}
       setValue={setValue}
       searchable={true}
       disableLocalSearch={true}
