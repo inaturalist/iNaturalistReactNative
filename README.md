@@ -96,9 +96,14 @@ We use [fastlane](https://docs.fastlane.tools/) to help automate parts of the de
 1. Make a [Github personal access token](https://github.com/settings/tokens/) with repo access in the `GITHUB_TOKEN` environmental variable.
 1. `cp android/example-keystore.properties android/keystore.properties` and fill in the relevant values provided by another member of iNat staff.
 1. `cp fastlane/example-Appfile fastlane/Appfile` and fill in the relevant values provided by another member of iNat staff.
+1. Work with iNat staff to either get a new Apple ID or associate an existing one with the iNat Apple development team
+1. Sign in to Xcode with your Apple ID
+1. Manage Certificates and add an Apple Distribution certificate associated with the iNaturalist team
 
 
 ### Usage
+
+The current expectation is that you we tag to freeze the code, bump the version, and describe the changes represented by the tag. Then we release to make builds and publish on Github. Later, presumably when some of the change logs have been translated, we push builds for internal testing. If that looks ok, we push to public testing, and later to production release.
 
 ```zsh
 # Make a git tag. This will bump the build number and prompt you to describe
