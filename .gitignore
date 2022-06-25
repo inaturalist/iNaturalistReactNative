@@ -66,3 +66,7 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/Appfile
 android/keystore.properties
+
+# Apple signing and auth files that fastlane might download
+*.cer
+*.mobileprovision
