@@ -17,7 +17,8 @@ def set_android_version_name( new_version_name )
   File.open( build_gradle_path, "w" ) { | f | f.write( new_gradle ) }
 end
 
-def get_changelog_path( build_number )
+def get_changelog_path( build_number = nil )
+  build_number ||= get_build_number( xcodeproj: XCODEPROJ )
   changelog_dir_path = File.join( "metadata", "android", "en-US", "changelogs" )
   FileUtils.mkpath( changelog_dir_path )
   File.join( changelog_dir_path, "#{build_number}.txt" )
@@ -243,12 +244,22 @@ lane :internal do
   if last_tag.nil? || last_tag.empty?
     UI.abort_with_message! "No tags have been added yet. Try starting with `fastlane tag`"
   end
+  changelog_path = get_changelog_path
+  unless File.exist?( changelog_path )
+    UI.abort_with_message! <<~MSG
+      No change log file exists at #{changelog_path}. That should have been
+      created when you ran `fastlane tag`.
+    MSG
+  end
   upload_to_play_store(
     aab: aab_path,
     track: "internal",
     version_name: last_tag
   )
-  upload_to_testflight( ipa: get_ipa_path( build_number ) )
+  upload_to_testflight(
+    ipa: get_ipa_path( build_number ),
+    changelog: ( File.read( changelog_path ) rescue nil )
+  )
 end
 
 lane :beta do
