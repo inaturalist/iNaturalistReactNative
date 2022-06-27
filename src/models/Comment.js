@@ -1,13 +1,15 @@
 import Realm from "realm";
+import inatjs from "inaturalistjs";
 
+import { getJWTToken } from "../components/LoginSignUp/AuthenticationService";
 import User from "./User";
 class Comment extends Realm.Object {
   static COMMENT_FIELDS = {
+    uuid: true,
     body: true,
     created_at: true,
     id: true,
-    user: User.USER_FIELDS,
-    uuid: true
+    user: User && User.USER_FIELDS
   };
 
   static mapApiToRealm( comment, realm ) {
@@ -15,6 +17,23 @@ class Comment extends Realm.Object {
       ...comment,
       user: User.mapApiToRealm( comment.user, realm )
     };
+  }
+
+  static async deleteComment( id, realm ) {
+    // first delete locally
+    realm?.write( ( ) => {
+      const commentToDelete = realm.objects( "Comment" ).filtered( `uuid == "${id}"` )[0];
+      realm.delete( commentToDelete );
+    } );
+
+    // then delete remotely
+    const apiToken = await getJWTToken( false );
+    const options = { api_token: apiToken };
+    try {
+      await inatjs.comments.delete( { id }, options );
+    } catch ( e ) {
+      console.log( JSON.stringify( e ), "couldn't delete comment" );
+    }
   }
 
   static schema = {

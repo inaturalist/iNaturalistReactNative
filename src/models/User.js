@@ -1,5 +1,7 @@
 import Realm from "realm";
 
+import { getUsername } from "../components/LoginSignUp/AuthenticationService";
+
 class User extends Realm.Object {
   static USER_FIELDS = {
     icon_url: true,
@@ -15,6 +17,11 @@ class User extends Realm.Object {
   static uri = user => ( user && user.icon_url ) && { uri: user.icon_url };
 
   static userHandle = user => ( user && user.login ) && `@${user.login}`;
+
+  static async isCurrentUser( username ) {
+    const currentUserLogin = await getUsername( );
+    return username === currentUserLogin;
+  }
 
   static schema = {
     name: "User",

@@ -31,7 +31,7 @@ class Observation extends Realm.Object {
     quality_grade: true,
     taxon: Taxon.TAXON_FIELDS,
     time_observed_at: true,
-    user: User.USER_FIELDS
+    user: User && User.USER_FIELDS
   }
 
   static async new( obs ) {
