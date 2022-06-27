@@ -24,6 +24,7 @@ const ObsList = ( ): Node => {
   const id = params && params.userId;
   const userId = useCurrentUser( ) || id;
   const { user } = useUser( userId );
+  const numObsToUpload = obsToUpload?.length;
 
   useEffect( ( ) => {
     // start fetching data immediately after successful login
@@ -48,7 +49,7 @@ const ObsList = ( ): Node => {
         <Text>Whenever you get internet connection, you can sync your observations to iNaturalist.</Text>
         <RoundGreenButton
           buttonText="Upload-X-Observations"
-          count={obsToUpload.length}
+          count={numObsToUpload}
           handlePress={uploadObservations}
           testID="ObsList.uploadButton"
         />
@@ -58,7 +59,7 @@ const ObsList = ( ): Node => {
 
   return (
     <ViewWithFooter>
-      {user ? <UserCard userId={userId} user={user} /> : <LoggedOutCard />}
+      {user ? <UserCard userId={userId} user={user} /> : <LoggedOutCard numObsToUpload={numObsToUpload} />}
       <ObservationViews
         loading={loading}
         observationList={observationList}
@@ -66,7 +67,7 @@ const ObsList = ( ): Node => {
         handleEndReached={fetchNextObservations}
         syncObservations={syncObservations}
       />
-      {( obsToUpload.length > 0 && userId !== null ) && (
+      {( numObsToUpload > 0 && userId !== null ) && (
         <BottomModal height={200}>
           {renderUploadModal( )}
         </BottomModal>

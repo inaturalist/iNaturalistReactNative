@@ -311,7 +311,9 @@ const getUsername = async (): Promise<string> => {
   const realm = await Realm.open( realmConfig );
   const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
   const currentUserId = currentUser?.id?.toString( );
-  realm.close( );
+  // TODO: still need to figure out the right way/time to close realm
+  // but omitting for now bc it interferes with a user being able to save a local observation if they're logged out
+  // realm.close( );
   return currentUserId;
 };
 

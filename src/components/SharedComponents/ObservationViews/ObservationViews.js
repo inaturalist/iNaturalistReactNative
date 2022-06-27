@@ -57,8 +57,8 @@ const ObservationViews = ( {
   const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} />;
 
   const renderEmptyState = ( ) => {
-    if ( name !== "Explore" ) {
-      return loading ? <ActivityIndicator /> : <EmptyList />;
+    if ( name !== "Explore" && !loading ) {
+      return <EmptyList />;
     }
     return null;
   };

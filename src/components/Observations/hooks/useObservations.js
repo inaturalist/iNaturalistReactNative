@@ -55,6 +55,12 @@ const useObservations = ( ): Object => {
       setObsToUpload( notUploadedObs );
     }
 
+    // don't show activity wheel if user is logged out and API is not called
+    const userId = await getUserId( );
+    if ( !userId ) {
+      setLoading( false );
+    }
+
     try {
       localObservations.addListener( ( ) => {
         // If you just pass localObservations you end up assigning a Results
@@ -80,16 +86,17 @@ const useObservations = ( ): Object => {
   }, [realmRef] );
 
   useEffect( ( ) => {
-    const checkForSignedInUser = async ( ) => {
-      const userId = await getUserId( );
-      if ( userId ) {
-        openRealm( );
-      } else {
-        setLoading( false );
-      }
-    };
+    // const checkForSignedInUser = async ( ) => {
+    //   const userId = await getUserId( );
+    //   if ( userId ) {
+    //     openRealm( );
+    //   } else {
+    //     setLoading( false );
+    //   }
+    // };
 
-    checkForSignedInUser( );
+    // checkForSignedInUser( );
+    openRealm( );
     return closeRealm;
   }, [openRealm, closeRealm] );
 
