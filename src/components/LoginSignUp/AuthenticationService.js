@@ -8,7 +8,6 @@ import jwt from "react-native-jwt-io";
 import {Platform} from "react-native";
 import {getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion} from "react-native-device-info";
 import Realm from "realm";
-
 import realmConfig from "../../models/index";
 
 // Base API domain can be overridden (in case we want to use staging URL) - either by placing it in .env file, or
@@ -302,6 +301,18 @@ const getUsername = async (): Promise<string> => {
   return await RNSInfo.getItem( "username", {} );
 };
 
+
+/**
+ * Returns the logged-in user
+ *
+ * @returns {Promise<boolean>}
+ */
+const getUser = async (): Promise<Object | null> => {
+  const realm = await Realm.open( realmConfig );
+  return realm.objects( "User" ).filtered( "signedIn == true" )[0];
+};
+
+
 /**
  * Returns the logged-in userId
  *
@@ -310,9 +321,9 @@ const getUsername = async (): Promise<string> => {
  const getUserId = async (): Promise<string | null> => {
   const realm = await Realm.open( realmConfig );
   const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
-  const currentUserId = currentUser?.id?.toString( );
+  const userId = currentUser?.id?.toString( );
   realm.close( );
-  return currentUserId;
+  return userId;
 };
 
 /**
@@ -337,5 +348,6 @@ export {
   getUsername,
   signOut,
   getJWTToken,
+  getUser,
   getUserId
 };

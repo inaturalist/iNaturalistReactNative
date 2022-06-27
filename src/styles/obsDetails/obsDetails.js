@@ -8,6 +8,9 @@ import { colors } from "../global";
 const { width } = Dimensions.get( "screen" );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  temporaryRow: {
+    opacity: 0.5
+  },
   hoverCommentBox: {
     zIndex: 1
   },

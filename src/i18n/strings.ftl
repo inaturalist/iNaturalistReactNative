@@ -384,3 +384,11 @@ Add-optional-comment = Add an optional comment to this ID
 Clear = Clear
 
 Add-comment = Add comment
+
+OK = OK
+
+Error = Error
+
+Couldnt-create-identification = Couldn't create identification - { $error }
+
+Unknown-error = Unknown error

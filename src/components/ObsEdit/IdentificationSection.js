@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useContext } from "react";
-import { Text, Pressable, FlatList, View } from "react-native";
+import {Text, Pressable, FlatList, View} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,9 +24,14 @@ const IdentificationSection = ( ): Node => {
   const currentObs = observations[currentObsIndex];
   const identification = currentObs.taxon;
 
+  const onIDAdded = async ( id ) => {
+    console.log( "onIDAdded", id );
+    updateIdentification( id.taxon );
+  };
+
   const updateIdentification = ( taxon ) => updateTaxon( taxon );
 
-  const navToSuggestionsPage = ( ) => navigation.navigate( "Suggestions" );
+  const navToAddID = ( ) => navigation.push( "AddID", { onIDAdded: onIDAdded } );
 
   const renderIconicTaxaButton = ( { item } ) => {
     const id = iconicTaxaIds[item];
@@ -59,7 +64,7 @@ const IdentificationSection = ( ): Node => {
             </Text>
           </View>
           <Pressable
-            onPress={navToSuggestionsPage}
+            onPress={navToAddID}
           >
             <Text style={textStyles.text}>edit</Text>
           </Pressable>
@@ -69,7 +74,7 @@ const IdentificationSection = ( ): Node => {
       return (
         <>
           <RoundGreenButton
-            handlePress={navToSuggestionsPage}
+            handlePress={navToAddID}
             buttonText="View Identification Suggestions"
             testID="ObsEdit.Suggestions"
           />

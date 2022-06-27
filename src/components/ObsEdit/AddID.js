@@ -22,11 +22,13 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import {colors} from "../../styles/global";
+import uuid from "react-native-uuid";
 
 type Props = {
   route: {
     params: {
-      onIDAdded: ( identification: {[string]: any} ) => void
+      onIDAdded: ( identification: {[string]: any} ) => void,
+      goBackOnSave: boolean
     }
   }
 }
@@ -36,7 +38,7 @@ const AddID = ( { route }: Props ): React.Node => {
   const { t } = useTranslation( );
   const [comment, setComment] = useState( "" );
   const [commentDraft, setCommentDraft] = useState( "" );
-  const { onIDAdded } = route.params;
+  const { onIDAdded, goBackOnSave } = route.params;
   const bottomSheetModalRef = useRef( null );
   const [taxonSearch, setTaxonSearch] = useState( "" );
   const taxonList = useRemoteSearchResults( taxonSearch, "taxa", "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url,taxon.rank" ).map( r => r.taxon );
@@ -49,7 +51,7 @@ const AddID = ( { route }: Props ): React.Node => {
     />
   );
 
-  const editComment = () => {
+  const editComment = ( event ) => {
     setCommentDraft( comment );
     bottomSheetModalRef.current?.present();
   };
@@ -70,6 +72,7 @@ const AddID = ( { route }: Props ): React.Node => {
       rank: taxon.rank
     };
     const newID = {
+      uuid: uuid.v4( ),
       body: comment,
       taxon: newTaxon
     };
@@ -87,7 +90,7 @@ const AddID = ( { route }: Props ): React.Node => {
       <Text style={textStyles.taxonResultScientificName}>{item.preferred_common_name}</Text>
       </View>
       <Pressable style={viewStyles.taxonResultInfo} onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )} accessibilityRole="link"><Icon style={textStyles.taxonResultInfoIcon} name="information-outline" size={25} /></Pressable>
-      <Pressable style={viewStyles.taxonResultSelect} onPress={() => { onIDAdded( createID( item ) ); navigation.goBack(); }} accessibilityRole="link"><Icon style={textStyles.taxonResultSelectIcon} name="check-bold" size={25} /></Pressable>
+      <Pressable style={viewStyles.taxonResultSelect} onPress={() => { onIDAdded( createID( item ) ); if ( goBackOnSave ) {navigation.goBack();} }} accessibilityRole="link"><Icon style={textStyles.taxonResultSelectIcon} name="check-bold" size={25} /></Pressable>
     </View>;
   };
 

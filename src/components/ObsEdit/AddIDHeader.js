@@ -12,7 +12,7 @@ import { viewStyles } from "../../styles/obsDetails/addID";
 
 type Props = {
   showEditComment: boolean,
-  onEditCommentPressed: () => void
+  onEditCommentPressed: ( event: any ) => void
 }
 
 const AddIDHeader = ( { showEditComment, onEditCommentPressed }: Props ): Node => {
