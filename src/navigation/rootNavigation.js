@@ -4,7 +4,7 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
 import { signOut, getUserId } from "../components/LoginSignUp/AuthenticationService";
 import PlaceholderComponent from "../components/PlaceholderComponent";
@@ -43,10 +43,11 @@ const Drawer = createDrawerNavigator( );
 const theme = {
   ...DefaultTheme,
   roundness: 2,
+  version: 3,
   colors: {
     ...DefaultTheme.colors,
     primary: colors.lightGray,
-    accent: colors.inatGreen,
+    secondary: colors.inatGreen,
     surface: colors.white
   }
 };

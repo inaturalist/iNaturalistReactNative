@@ -14,12 +14,16 @@ import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import uploadObservation from "../../providers/uploadHelpers/uploadObservation";
 import Observation from "../../models/Observation";
 import useObservations from "./hooks/useObservations";
+import LoggedOutCard from "./LoggedOutCard";
+import { useUser } from "../UserProfile/hooks/useUser";
 
 const ObsList = ( ): Node => {
   const { params } = useRoute( );
   const { observationList, loading, syncObservations, fetchNextObservations, obsToUpload } = useObservations( );
 
   const id = params && params.userId;
+  const userId = useCurrentUser( ) || id;
+  const { user } = useUser( userId );
 
   useEffect( ( ) => {
     // start fetching data immediately after successful login
@@ -31,7 +35,7 @@ const ObsList = ( ): Node => {
     }
   }, [params, syncObservations] );
 
-  const userId = useCurrentUser( );
+
 
   const renderUploadModal = ( ) => {
     const uploadObservations = ( ) => obsToUpload.forEach( obs => {
@@ -54,7 +58,7 @@ const ObsList = ( ): Node => {
 
   return (
     <ViewWithFooter>
-      <UserCard userId={userId || id} />
+      {user ? <UserCard userId={userId} user={user} /> : <LoggedOutCard />}
       <ObservationViews
         loading={loading}
         observationList={observationList}

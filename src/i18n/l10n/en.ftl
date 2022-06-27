@@ -96,6 +96,8 @@ Location = Location
 
 Log-in = Log in
 
+Log-in-to-iNaturalist = Log in to iNaturalist
+
 Low = Low
 
 Mammals = Mammals
@@ -364,6 +366,11 @@ X-photos-X-observations = {$photoCount ->
     *[other] {$observationCount} observations
 }
 
+X-unuploaded-observations = {$observationCount ->
+    [one] 1 unuploaded observation
+    *[other] {$observationCount} unuploaded observations
+}
+
 Yes-delete-photo = Yes, delete photo
 
 # Message shown when a permission is required to use a part of the app
@@ -398,5 +405,4 @@ No-account-found = No account found with that email
 Check-your-email = Check your email! We've sent password reset instructions.
 Return-to-login = Return to login
 
-Sign-out = Sign out
 Logged-in-as = Logged in as: { $username }

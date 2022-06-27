@@ -96,6 +96,8 @@ Location = Location
 
 Log-in = Log in
 
+Log-in-to-iNaturalist = Log in to iNaturalist
+
 Low = Low
 
 Mammals = Mammals
@@ -362,6 +364,11 @@ X-photos-X-observations = {$photoCount ->
 }, {$observationCount ->
     [one] 1 observation
     *[other] {$observationCount} observations
+}
+
+X-unuploaded-observations = {$observationCount ->
+    [one] 1 unuploaded observation
+    *[other] {$observationCount} unuploaded observations
 }
 
 Yes-delete-photo = Yes, delete photo
