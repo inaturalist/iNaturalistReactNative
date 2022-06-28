@@ -9,13 +9,14 @@ import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
 import UserCard from "./UserCard";
 import { useCurrentUser } from "./hooks/useCurrentUser";
-import BottomModal from "../SharedComponents/BottomModal";
+import BottomSheet from "../SharedComponents/BottomSheet";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import uploadObservation from "../../providers/uploadHelpers/uploadObservation";
 import Observation from "../../models/Observation";
 import useObservations from "./hooks/useObservations";
 import LoggedOutCard from "./LoggedOutCard";
 import { useUser } from "../UserProfile/hooks/useUser";
+import LoginPrompt from "./LoginPrompt";
 
 const ObsList = ( ): Node => {
   const { params } = useRoute( );
@@ -36,9 +37,7 @@ const ObsList = ( ): Node => {
     }
   }, [params, syncObservations] );
 
-
-
-  const renderUploadModal = ( ) => {
+  const renderUploadPrompt = ( ) => {
     const uploadObservations = ( ) => obsToUpload.forEach( obs => {
       const mappedObs = Observation.mapObservationForUpload( obs );
       uploadObservation( mappedObs, obs );
@@ -66,11 +65,15 @@ const ObsList = ( ): Node => {
         testID="ObsList.myObservations"
         handleEndReached={fetchNextObservations}
         syncObservations={syncObservations}
+        userId={userId}
       />
-      {( numObsToUpload > 0 && userId !== null ) && (
-        <BottomModal height={200}>
-          {renderUploadModal( )}
-        </BottomModal>
+      {( numObsToUpload > 0 ) && (
+        <BottomSheet height={200}>
+          {!userId
+            ? <LoginPrompt />
+            : renderUploadPrompt( )
+          }
+        </BottomSheet>
       )}
     </ViewWithFooter>
   );

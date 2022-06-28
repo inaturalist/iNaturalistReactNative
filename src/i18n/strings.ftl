@@ -35,6 +35,8 @@ Combine-Photos = Combine Photos
 # Onboarding for users learning to group photos in the camera roll
 Combine-photos-onboarding = Combine photos into observations – make sure there is only one species per observation
 
+Create-an-iNaturalist-account-to-save-your-observations = Create an iNaturalist account to save your observations and contribute them to science.
+
 CREATE-AN-OBSERVATION = CREATE AN OBSERVATION
 
 Date = Date

@@ -22,7 +22,8 @@ type Props = {
   mapHeight?: number,
   totalObservations?: number,
   handleEndReached?: Function,
-  syncObservations?: Function
+  syncObservations?: Function,
+  userId?: ?number
 }
 
 const ObservationViews = ( {
@@ -33,7 +34,8 @@ const ObservationViews = ( {
   mapHeight,
   totalObservations,
   handleEndReached,
-  syncObservations
+  syncObservations,
+  userId
 }: Props ): React.Node => {
   // const { openSavedObservation } = React.useContext( ObsEditContext );
   const [view, setView] = React.useState( "list" );
@@ -102,9 +104,11 @@ const ObservationViews = ( {
       <View style={[viewStyles.toggleViewRow, isExplore && viewStyles.exploreButtons]}>
         {!isExplore && (
           <View style={viewStyles.toggleButtons}>
-            <Pressable onPress={syncObservations}>
-              <Icon name="sync" size={30} />
-            </Pressable>
+            {userId && (
+              <Pressable onPress={syncObservations}>
+                <Icon name="sync" size={30} />
+              </Pressable>
+            )}
           </View>
         )}
         <View style={viewStyles.toggleButtons}>
