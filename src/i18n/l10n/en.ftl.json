@@ -29,6 +29,7 @@
   "Date": "Date",
   "Date-added-newest-to-oldest": "Date added - newest to oldest",
   "Date-added-oldest-to-newest": "Date added - oldest to newest",
+  "Delete-comment": "Delete comment",
   "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}",
   "Description-Tags": "Description/Tags",
   "Evidence": "Evidence",
@@ -227,6 +228,46 @@
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
     "val": "You denied iNaturalist permission to do that"
   },
+  "Login-header": {
+    "comment": "Appears in the login screen",
+    "val": "Log in to use iNaturalist"
+  },
+  "Login-sub-title": "Document living things, identify organisms & contribute to science",
+  "Username-or-Email": {
+    "comment": "Appears above the text fields",
+    "val": "Username or Email"
+  },
+  "Password": "Password",
+  "Forgot-Password": {
+    "comment": "Forgot password link",
+    "val": "Forgot Password?"
+  },
+  "Invalid-login": {
+    "comment": "Appears when the user enters invalid username/password",
+    "val": "The username or password is incorrect"
+  },
+  "Reset-password-header": {
+    "comment": "Appears in the reset password screen",
+    "val": "Let's reset your password"
+  },
+  "Email": {
+    "comment": "Appears above the email text field",
+    "val": "email"
+  },
+  "Reset-Password": {
+    "comment": "Reset password button",
+    "val": "Reset Password"
+  },
+  "No-account-found": {
+    "comment": "When the user tries to reset password but enters a non-existent email",
+    "val": "No account found with that email"
+  },
+  "Check-your-email": {
+    "comment": "After pressing the reset password button",
+    "val": "Check your email! We've sent password reset instructions."
+  },
+  "Return-to-login": "Return to login",
+  "Logged-in-as": "Logged in as: { $username }",
   "Add-ID-Header": {
     "comment": "Header of Add ID screen",
     "val": "Add ID"

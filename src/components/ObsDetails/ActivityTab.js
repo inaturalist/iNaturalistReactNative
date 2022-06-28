@@ -9,10 +9,11 @@ type Props = {
   ids: Array<Object>,
   comments: Array<Object>,
   navToTaxonDetails: Function,
-  navToUserProfile: number => { }
+  navToUserProfile: number => { },
+  toggleRefetch: Function
 }
 
-const ActivityTab = ( { comments, ids, navToTaxonDetails, navToUserProfile }: Props ): React.Node => {
+const ActivityTab = ( { comments, ids, navToTaxonDetails, navToUserProfile, toggleRefetch }: Props ): React.Node => {
   if ( comments.length === 0 && ids.length === 0 ) {
     return <Text>no comments or ids to display</Text>;
   }
@@ -26,7 +27,7 @@ const ActivityTab = ( { comments, ids, navToTaxonDetails, navToUserProfile }: Pr
     // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/components/activity_item.jsx
     return (
       <View key={item.uuid}>
-        <ActivityItem item={item} handlePress={handlePress} navToTaxonDetails={navToTaxonDetails} />
+        <ActivityItem item={item} handlePress={handlePress} navToTaxonDetails={navToTaxonDetails} toggleRefetch={toggleRefetch} />
       </View>
     );
   } );

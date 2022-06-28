@@ -46,7 +46,8 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: colors.lightGray,
-    accent: colors.inatGreen
+    accent: colors.inatGreen,
+    surface: colors.white
   }
 };
 
@@ -101,7 +102,7 @@ const App = ( ): React.Node => {
                   component={About}
                 />
                 <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-                <Drawer.Screen name="login" component={MortalLogin} />
+                <Drawer.Screen name="login" component={MortalLogin} options={hideHeader}/>
                 <Drawer.Screen
                   name="camera"
                   component={CameraStackNavigation}
