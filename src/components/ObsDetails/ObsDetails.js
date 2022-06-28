@@ -1,18 +1,18 @@
 // @flow
 
 import React, { useState, useContext } from "react";
-import { Text, View, Image, Pressable } from "react-native";
+import _ from "lodash";
+import { Text, View, Image, Pressable, ScrollView, LogBox } from "react-native";
 import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-import { viewStyles, textStyles } from "../../styles/obsDetails";
+import { viewStyles, textStyles } from "../../styles/obsDetails/obsDetails";
 import ActivityTab from "./ActivityTab";
 import UserIcon from "../SharedComponents/UserIcon";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import DataTab from "./DataTab";
-import { useObservation } from "./hooks/useObservation";
+import { useRemoteObservation } from "./hooks/useRemoteObservation";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import { ObsEditContext } from "../../providers/contexts";
@@ -20,40 +20,55 @@ import InputField from "../SharedComponents/InputField";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import createComment from "./helpers/createComment";
 import faveObservation from "./helpers/faveObservation";
+import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
+import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
+import ObsDetailsHeader from "./ObsDetailsHeader";
+
+// this is getting triggered by passing dates, like _created_at, through
+// react navigation via the observation object. it doesn't seem to
+// actually be breaking anything, for the moment (May 2, 2022)
+LogBox.ignoreLogs( [
+  "Non-serializable values were found in the navigation state"
+] );
 
 const ObsDetails = ( ): Node => {
   const [refetch, setRefetch] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
-  const { addObservations, setPrevScreen } = useContext( ObsEditContext );
+  const { addObservations } = useContext( ObsEditContext );
   const { params } = useRoute( );
-  const { uuid } = params;
+  let observation = params.observation;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
 
-  const { observation, currentUserFaved } = useObservation( uuid, refetch );
+  // TODO: we'll probably need to redo this logic a bit now that we're
+  // passing an observation via navigation instead of reopening realm
+  const { remoteObservation, currentUserFaved } = useRemoteObservation( observation, refetch );
 
+  if ( remoteObservation && !observation ) {
+    observation = remoteObservation;
+  }
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
 
   if ( !observation ) { return null; }
 
-  const ids = observation.identifications;
-  const photos = observation.observationPhotos;
+  const ids = observation.identifications.map( i => i );
+  const comments = observation.comments.map( c => c );
+  const photos = _.compact( observation.observationPhotos.map( op => op.photo ) );
   const user = observation.user;
   const taxon = observation.taxon;
-  const comments = observation.comments;
+  const uuid = observation.uuid;
 
   const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
   const navToCVSuggestions = ( ) => {
-    setPrevScreen( "ObsDetails" );
     addObservations( [observation] );
     navigation.navigate( "camera", { screen: "Suggestions" } );
   };
   const openCommentBox = ( ) => setShowCommentBox( true );
   const submitComment = async ( ) => {
-    const response = await createComment( comment, observation.uuid );
+    const response = await createComment( comment, uuid );
     if ( response ) {
       setRefetch( !refetch );
       setComment( "" );
@@ -73,7 +88,9 @@ const ObsDetails = ( ): Node => {
           accessibilityRole="link"
           accessibilityLabel="go to taxon details"
         >
-          <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
+          <Text style={textStyles.commonNameText}>
+            {checkCamelAndSnakeCase( taxon, "preferredCommonName" )}
+          </Text>
           <Text style={textStyles.scientificNameText}>{taxon.name}</Text>
         </Pressable>
       </>
@@ -90,8 +107,13 @@ const ObsDetails = ( ): Node => {
     }
   };
 
+  const displayCreatedAt = ( ) => observation.createdAt
+    ? observation.createdAt
+    : formatObsListTime( observation._created_at );
+
   return (
     <ViewWithFooter>
+      <ObsDetailsHeader observationUUID={uuid} />
       <ScrollView
         testID={`ObsDetails.${uuid}`}
         contentContainerStyle={viewStyles.scrollView}
@@ -106,7 +128,7 @@ const ObsDetails = ( ): Node => {
           <UserIcon uri={User.uri( user )} />
           <Text>{User.userHandle( user )}</Text>
         </Pressable>
-        <Text>{observation.createdAt}</Text>
+        <Text>{displayCreatedAt( )}</Text>
       </View>
       <View style={viewStyles.photoContainer}>
         <Pressable onPress={faveOrUnfave} style={viewStyles.pressableButton}>
@@ -119,10 +141,12 @@ const ObsDetails = ( ): Node => {
         <View>
           <Text style={textStyles.text}>{observation.identifications.length}</Text>
           <Text style={textStyles.text}>{observation.comments.length}</Text>
-          <Text style={textStyles.text}>{observation.qualityGrade}</Text>
+          <Text style={textStyles.text}>{checkCamelAndSnakeCase( observation, "qualityGrade" )}</Text>
         </View>
       </View>
-      <Text style={textStyles.locationText}>{observation.placeGuess}</Text>
+      <Text style={textStyles.locationText}>
+        {checkCamelAndSnakeCase( observation, "placeGuess" )}
+      </Text>
       <View style={viewStyles.userProfileRow}>
         <Pressable
           onPress={showActivityTab}

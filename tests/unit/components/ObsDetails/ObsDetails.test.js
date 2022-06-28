@@ -12,11 +12,12 @@ const mockObservation = factory( "LocalObservation" );
 
 jest.mock( "../../../../src/providers/ObsEditProvider" );
 
-jest.mock( "../../../../src/components/ObsDetails/hooks/useObservation", ( ) => ( {
-  useObservation: ( ) => {
+jest.mock( "../../../../src/components/ObsDetails/hooks/useRemoteObservation", ( ) => ( {
+  useRemoteObservation: ( ) => {
     return {
-      observation: mockObservation,
-      currentUserFaved: false
+      remoteObservation: mockObservation,
+      currentUserFaved: false,
+      isCurrentUserObservation: false
     };
   }
 } ) );
@@ -31,16 +32,20 @@ jest.mock( "@react-navigation/native", ( ) => {
       }
     } ),
     useNavigation: ( ) => ( {
-      navigate: mockedNavigate
+      navigate: mockedNavigate,
+      addListener: jest.fn( )
     } )
   };
 } );
 
+jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
+  getUserId: ( ) => mockObservation.user.id
+} ) );
+
 const mockObsEditProviderWithObs = ( ) =>
   ObsEditProvider.mockImplementation( ( { children }: Props ): Node => (
     <ObsEditContext.Provider value={{
-      addObservations: ( ) => { },
-      setPrevScreen: ( ) => { }
+      addObservations: ( ) => { }
     }}>
       {children}
     </ObsEditContext.Provider>

@@ -5,21 +5,24 @@ import { NavigationContainer } from "@react-navigation/native";
 import factory from "../../../factory";
 import PhotoGallery from "../../../../src/components/PhotoLibrary/PhotoGallery";
 import PhotoGalleryProvider from "../../../../src/providers/PhotoGalleryProvider";
-// import { PhotoGalleryContext } from "../../../../src/providers/contexts";
 
 const mockPhoto = factory( "DevicePhoto" );
 
 jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotos", ( ) => ( {
   __esModule: true,
   default: ( ) => {
-    return [mockPhoto];
+    return { photos: [mockPhoto] };
   }
 } ) );
 
 jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotoAlbums", ( ) => ( {
   __esModule: true,
   default: ( ) => {
-    return ["All"];
+    return [{
+      label: "camera roll",
+      value: "All",
+      key: "camera roll"
+    }];
   }
 } ) );
 

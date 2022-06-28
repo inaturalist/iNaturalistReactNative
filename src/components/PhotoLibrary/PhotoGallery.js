@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Pressable, Image, FlatList, ActivityIndicator, View, Text } from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -27,8 +27,21 @@ const PhotoGallery = ( ): Node => {
     selectedPhotos,
     setSelectedPhotos,
     fetchingPhotos,
-    totalSelected
+    totalSelected,
+    canRequestPhotos,
+    setCanRequestPhotos
   } = useContext( PhotoGalleryContext );
+
+  // If this component is being rendered we have either already asked for
+  // permissions in Android via a PermissionGate parent component, or the
+  // user is expecting us to ask for permissions via CameraRoll in iOS.
+  // Either way, we need to inform the context that it is now ok to request
+  // photos from the operating system.
+  useEffect( ( ) => {
+    if ( !canRequestPhotos ) {
+      setCanRequestPhotos( true );
+    }
+  } );
 
   const navigation = useNavigation( );
 
@@ -80,15 +93,16 @@ const PhotoGallery = ( ): Node => {
   };
 
   const renderImage = ( { item } ) => {
-    const isSelected = photosSelectedInAlbum.some( photo => photo.uri === item.uri );
+    const uri = item?.image?.uri;
+    const isSelected = photosSelectedInAlbum.some( photo => photo.image.uri === uri );
 
     const handlePress = ( ) => selectPhoto( isSelected, item );
 
-    const imageUri = { uri: item.uri };
+    const imageUri = { uri };
     return (
       <Pressable
         onPress={handlePress}
-        testID={`PhotoGallery.${item.uri}`}
+        testID={`PhotoGallery.${uri}`}
       >
         <Image
           testID="PhotoGallery.photo"
@@ -107,22 +121,6 @@ const PhotoGallery = ( ): Node => {
   const fetchMorePhotos = ( ) => setIsScrolling( true );
 
   const navToGroupPhotos = ( ) => navigation.navigate( "GroupPhotos" );
-
-  const renderFooter = ( ) => {
-    if ( Object.keys( selectedPhotos ).length > 0 ) {
-      return (
-        <View style={viewStyles.createObsButton}>
-          <RoundGreenButton
-            buttonText="Upload-X-photos"
-            count={totalSelected}
-            handlePress={navToGroupPhotos}
-            testID="PhotoGallery.createObsButton"
-          />
-        </View>
-      );
-    }
-    return <></>;
-  };
 
   const renderEmptyList = ( ) => {
     if ( fetchingPhotos ) {
@@ -146,7 +144,16 @@ const PhotoGallery = ( ): Node => {
         testID="PhotoGallery.list"
         ListEmptyComponent={renderEmptyList( )}
       />
-      {renderFooter( )}
+      { Object.keys( selectedPhotos ).length > 0 && (
+        <View style={viewStyles.createObsButton}>
+          <RoundGreenButton
+            buttonText="Upload-X-photos"
+            count={totalSelected || 0}
+            handlePress={navToGroupPhotos}
+            testID="PhotoGallery.createObsButton"
+          />
+        </View>
+      ) }
     </ViewNoFooter>
   );
 };

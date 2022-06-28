@@ -4,37 +4,34 @@ import React, { useContext, useState } from "react";
 import type { Node } from "react";
 import { View, Text, FlatList, ActivityIndicator, Pressable, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Searchbar } from "react-native-paper";
+import { t } from "i18next";
 
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import { ObsEditContext } from "../../providers/contexts";
-import EvidenceList from "./EvidenceList";
 import useCVSuggestions from "./hooks/useCVSuggestions";
 import { viewStyles, textStyles } from "../../styles/obsEdit/cvSuggestions";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import InputField from "../SharedComponents/InputField";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
-import { t } from "i18next";
-// TODO: do we need custom hook useTranslation or can we just use t from "i18next"?
-// saves some lines of code if we don't need the extra hook
+import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
 const CVSuggestions = ( ): Node => {
   const {
     observations,
-    currentObsNumber,
-    updateTaxaId,
-    setIdentification
+    currentObsIndex,
+    updateTaxon
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const [showSeenNearby, setShowSeenNearby] = useState( true );
-  const [selectedPhoto, setSelectedPhoto] = useState( 0 );
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
   const [q, setQ] = React.useState( "" );
-  const list = useRemoteObsEditSearchResults( q, "taxa" );
+  const list = useRemoteObsEditSearchResults( q, "taxa", "all" );
   const isLoggedIn = useLoggedIn( );
 
-  const currentObs = observations[currentObsNumber];
+  const currentObs = observations[currentObsIndex];
   const hasPhotos = currentObs.observationPhotos;
-  const suggestions = useCVSuggestions( currentObs, showSeenNearby, selectedPhoto );
+  const { suggestions, status } = useCVSuggestions( currentObs, showSeenNearby, selectedPhotoIndex );
 
   const renderNavButtons = ( updateIdentification, id ) => {
     const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id } );
@@ -57,10 +54,7 @@ const CVSuggestions = ( ): Node => {
     const mediumUrl = ( taxon && taxon.taxon_photos && taxon.taxon_photos[0].photo ) ? taxon.taxon_photos[0].photo.medium_url : null;
     const uri = { uri: mediumUrl };
 
-    const updateIdentification = ( ) => {
-      setIdentification( taxon );
-      updateTaxaId( taxon.id );
-    };
+    const updateIdentification = ( ) => updateTaxon( taxon );
 
     return (
       <View style={viewStyles.row}>
@@ -81,13 +75,13 @@ const CVSuggestions = ( ): Node => {
   const renderSearchResults = ( { item } ) => {
     const uri = { uri: item.default_photo.square_url };
 
-    const updateIdentification = ( ) => {
-      setIdentification( {
-        name: item.name,
-        preferred_common_name: item.preferred_common_name
-      } );
-      updateTaxaId( item.id );
+    const newTaxon = {
+      name: item.name,
+      preferred_common_name: item.preferred_common_name,
+      id: item.id
     };
+
+    const updateIdentification = ( ) => updateTaxon( newTaxon );
 
     return (
       <View style={viewStyles.row}>
@@ -109,6 +103,8 @@ const CVSuggestions = ( ): Node => {
   const emptySuggestionsList = ( ) => {
     if ( !isLoggedIn ) {
       return <Text style={textStyles.explainerText}>you must be logged in to see computer vision suggestions</Text>;
+    } else if ( status === "no_results" ) {
+      return <Text style={textStyles.explainerText}>no computervision suggestions found</Text>;
     } else {
       return <ActivityIndicator />;
     }
@@ -129,21 +125,29 @@ const CVSuggestions = ( ): Node => {
     />
   );
 
+  const displayPhotos = ( ) => {
+    return currentObs.observationPhotos.map( p => {
+      return {
+        uri: p.photo?.url || p?.photo?.localFilePath
+      };
+    } );
+  };
+
   return (
     <ViewNoFooter>
       <View>
         {hasPhotos && (
-          <EvidenceList
-            currentObs={currentObs}
-            setSelectedPhoto={setSelectedPhoto}
-            selectedPhoto={selectedPhoto}
+          <PhotoCarousel
+            photoUris={displayPhotos( )}
+            setSelectedPhotoIndex={setSelectedPhotoIndex}
+            selectedPhotoIndex={selectedPhotoIndex}
           />
         )}
-        <InputField
-          handleTextChange={setQ}
+        <Searchbar
           placeholder={t( "Tap-to-search-for-taxa" )}
-          text={q}
-          type="none"
+          onChangeText={setQ}
+          value={q}
+          style={viewStyles.searchBar}
         />
       </View>
       {list.length > 0 ? displaySearchResults( ) : displaySuggestions( )}

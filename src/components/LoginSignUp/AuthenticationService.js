@@ -7,10 +7,13 @@ import RNSInfo from "react-native-sensitive-info";
 import jwt from "react-native-jwt-io";
 import {Platform} from "react-native";
 import {getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion} from "react-native-device-info";
+import Realm from "realm";
+
+import realmConfig from "../../models/index";
 
 // Base API domain can be overridden (in case we want to use staging URL) - either by placing it in .env file, or
 // in an environment variable.
-const HOST = Config.API_URL || process.env.API_URL || "https://www.inaturalist.org";
+const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "https://www.inaturalist.org";
 
 // User agent being used, when calling the iNat APIs
 const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
@@ -23,7 +26,7 @@ const JWT_TOKEN_EXPIRATION_MINS = 25; // JWT Tokens expire after 30 mins - consi
  */
 const createAPI = ( additionalHeaders: any ) => {
   return create( {
-    baseURL: HOST,
+    baseURL: API_HOST,
     headers: { "User-Agent": USER_AGENT, ...additionalHeaders }
   } );
 };
@@ -82,6 +85,10 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
     return getAnonymousJWTToken();
   }
 
+  if ( !loggedIn ) {
+    return null;
+  }
+
   if (
     !jwtToken ||
     ( Date.now() - jwtTokenExpiration ) / 1000 > JWT_TOKEN_EXPIRATION_MINS * 60
@@ -93,6 +100,11 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
     const response = await api.get( "/users/api_token.json" );
 
     if ( !response.ok ) {
+      // this deletes the user JWT and saved login details when a user is not actually signed in anymore
+      // for example, if they installed, deleted, and reinstalled the app without logging out
+      if ( response.status === 401 ) {
+        signOut( );
+      }
       console.error(
         `Error while renewing JWT: ${response.problem} - ${response.status}`
       );
@@ -130,12 +142,23 @@ const authenticateUser = async (
     return false;
   }
 
-  const userId = userDetails.userId && userDetails.userId.toString( );
+  const { userId, username: remoteUsername, accessToken } = userDetails;
+  if ( !userId ) {
+    return false;
+  }
 
   // Save authentication details to secure storage
-  await SInfo.setItem( "username", userDetails.username, {} );
-  await SInfo.setItem( "accessToken", userDetails.accessToken, {} );
-  await SInfo.setItem( "userId", userId, {} );
+  await SInfo.setItem( "username", remoteUsername, {} );
+  await SInfo.setItem( "accessToken", accessToken, {} );
+  // await SInfo.setItem( "userId", userId, {} );
+
+  // Save userId to local, encrypted storage
+  const currentUser = { id: userId, login: remoteUsername, signedIn: true };
+  const realm = await Realm.open( realmConfig );
+  realm.write( ( ) => {
+    realm?.create( "User", currentUser, "modified" );
+  } );
+  realm.close( );
 
   return true;
 };
@@ -189,7 +212,7 @@ const registerUser = async (
     return response.data.errors[0];
   }
 
-  console.info( "registerUser - success" );
+  // console.info( "registerUser - success" );
   return null;
 };
 
@@ -251,7 +274,7 @@ const verifyCredentials = async (
 
   const iNatUsername = response.data.login;
   const iNatID = response.data.id;
-  console.log( "verifyCredentials - logged in username ", iNatUsername );
+  // console.log( "verifyCredentials - logged in username ", iNatUsername );
 
   return {
     accessToken: accessToken,
@@ -284,8 +307,12 @@ const getUsername = async (): Promise<string> => {
  *
  * @returns {Promise<boolean>}
  */
- const getUserId = async (): Promise<string> => {
-  return await RNSInfo.getItem( "userId", {} );
+ const getUserId = async (): Promise<string | null> => {
+  const realm = await Realm.open( realmConfig );
+  const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
+  const currentUserId = currentUser?.id?.toString( );
+  realm.close( );
+  return currentUserId;
 };
 
 /**
@@ -293,7 +320,8 @@ const getUsername = async (): Promise<string> => {
  *
  * @returns {Promise<void>}
  */
-const signOut = async () => {
+const signOut = async ( ) => {
+  Realm.deleteFile( realmConfig );
   await SInfo.deleteItem( "jwtToken", {} );
   await SInfo.deleteItem( "jwtTokenExpiration", {} );
   await SInfo.deleteItem( "username", {} );
@@ -301,6 +329,7 @@ const signOut = async () => {
 };
 
 export {
+  API_HOST,
   authenticateUser,
   registerUser,
   getAPIToken,

@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { View, Animated } from "react-native";
 import type { Node } from "react";
 
-import { viewStyles } from "../../styles/camera/normalCamera";
+import { viewStyles } from "../../styles/camera/standardCamera";
 
 type Props = {
   tappedCoordinates: Object,

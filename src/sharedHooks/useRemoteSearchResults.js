@@ -9,7 +9,7 @@ import inatjs from "inaturalistjs";
 //   }
 // };
 
-const useRemoteSearchResults = ( q: string, sources: string ): Array<Object> => {
+const useRemoteSearchResults = ( q: string, sources: string, fields: string ): Array<Object> => {
   const [searchResults, setSearchResults] = useState( [] );
 
   useEffect( ( ) => {
@@ -19,11 +19,11 @@ const useRemoteSearchResults = ( q: string, sources: string ): Array<Object> => 
         const params = {
           per_page: 10,
           q,
-          // TODO: get fields param working
-          sources
+          sources,
+          fields: fields || "all"
         };
         const response = await inatjs.search( params );
-        const results = response.results.map( result => result.record );
+        const results = response.results;
         if ( !isCurrent ) { return; }
         setSearchResults( results );
       } catch ( e ) {
@@ -38,7 +38,7 @@ const useRemoteSearchResults = ( q: string, sources: string ): Array<Object> => 
     return ( ) => {
       isCurrent = false;
     };
-  }, [q, sources] );
+  }, [q, sources, fields] );
 
   return searchResults;
 };

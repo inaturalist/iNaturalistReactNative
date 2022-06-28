@@ -18,9 +18,13 @@ const options = {
 const PhotoGalleryProvider = ( { children }: Props ): Node => {
   const [isScrolling, setIsScrolling] = useState( false );
   const [photoOptions, setPhotoOptions] = useState( options );
-  // photos are fetched from the server on initial render
-  // and anytime a user scrolls through the photo gallery
-  const photoFetchStatus = usePhotos( photoOptions, isScrolling );
+  // Whether or not usePhotos can fetch photos now, e.g. if permissions have
+  // been granted (Android), or if it's ok to request permissions (iOS). This
+  // should be used by whatever component is using this context so that
+  // photos are requested (and permissions are potentially requested) when
+  // they are needed and not just when this provider initializes
+  const [canRequestPhotos, setCanRequestPhotos] = useState( false );
+  const photoFetchStatus = usePhotos( photoOptions, isScrolling, canRequestPhotos );
   const photosFetched = photoFetchStatus.photos;
   const fetchingPhotos = photoFetchStatus.fetchingPhotos;
 
@@ -70,7 +74,9 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
     selectedPhotos,
     setSelectedPhotos,
     fetchingPhotos,
-    totalSelected: totalSelected( )
+    totalSelected: totalSelected( ),
+    canRequestPhotos,
+    setCanRequestPhotos
   };
 
   return (

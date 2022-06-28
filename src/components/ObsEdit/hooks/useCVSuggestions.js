@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import inatjs, { FileUpload } from "inaturalistjs";
+
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
-import resizeImageForUpload from "../helpers/resizeImage";
+import Photo from "../../../models/Photo";
 
 const TAXON_FIELDS = {
   name: true,
@@ -24,6 +25,7 @@ const FIELDS = {
 
 const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selectedPhoto: number ): Object => {
   const [suggestions, setSuggestions] = useState( [] );
+  const [status, setStatus] = useState( null );
 
   useEffect( ( ) => {
     if ( !currentObs || !currentObs.observationPhotos ) { return; }
@@ -37,7 +39,7 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
         setSuggestions( [] );
         // observed_on: new Date( time * 1000 ).toISOString(),
         const apiToken = await getJWTToken( false );
-        const resizedPhoto = await resizeImageForUpload( uri );
+        const resizedPhoto = await Photo.resizeImageForUpload( uri );
 
         const params = {
           image: new FileUpload( {
@@ -60,7 +62,11 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
         };
 
         const r = await inatjs.computervision.score_image( params, options );
-        setSuggestions( r.results );
+        if ( r.total_results > 0 ) {
+          setSuggestions( r.results );
+        } else {
+          setStatus( "no_results" );
+        }
         if ( !isCurrent ) { return; }
       } catch ( e ) {
         console.log( JSON.stringify( e.response ), "couldn't fetch CV suggestions" );
@@ -74,7 +80,10 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
     };
   }, [currentObs, showSeenNearby, selectedPhoto] );
 
-  return suggestions;
+  return {
+    suggestions,
+    status
+  };
 };
 
 export default useCVSuggestions;

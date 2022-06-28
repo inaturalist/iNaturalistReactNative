@@ -17,6 +17,10 @@ Amphibians = Amphibians
 
 Arachnids = Arachnids
 
+Are-you-sure = Are you sure?
+
+Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
+
 Birds = Birds
 
 Cancel = Cancel
@@ -60,6 +64,16 @@ Fungi = Fungi
 
 Geoprivacy = Geoprivacy:
 
+# Instruction for an Android user to go to the Settings app to grant
+# permissions after they have asked never to be asked for that permission
+# again
+Go-to-the-Settings-app-to-grant-permissions =
+    Go to the Settings app to grant iNaturalist the appropriate permissions.
+
+# Verb phrase label for a button to grant the app a permission, e.g.
+# permission to use the camera
+Grant-Permission = Grant Permission
+
 Group-Photos = Group Photos
 
 Has-Photos = Has Photos
@@ -77,6 +91,8 @@ Insects = Insects
 Introduced = Introduced
 
 Location = Location
+
+Log-in = Log in
 
 Low = Low
 
@@ -137,6 +153,8 @@ Other-Data = Other Data
 Paused = Paused
 
 Photo-Licensing = Photo Licensing
+
+Photos-you-take-will-appear-here = Photos you take will appear here
 
 Plants = Plants
 
@@ -235,6 +253,8 @@ Record-new-sound = Record new sound
 
 Recording-Sound = Recording Sound
 
+Remove-Photo = Remove Photo
+
 Remove-Photos = Remove Photos
 
 Reptiles = Reptiles
@@ -261,6 +281,8 @@ Search-for-description-tags-text = Search for description/tags text
 Select = Select
 
 Separate-Photos = Separate Photos
+
+Sign-out = Sign out
 
 # Header for a section showing taxa similar to a single taxon
 SIMILAR-SPECIES-header = SIMILAR SPECIES
@@ -297,10 +319,22 @@ Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
 
+# Shows the number of observations a user can upload to iNat from my observations page
+Upload-X-Observations = Upload {$count ->
+    [one] 1 Observation
+    *[other] {$count} Observations
+}
+
 # Shows the number of photos a user selected from the camera roll for upload
 Upload-X-photos = Upload {$count ->
     [one] 1 photo
     *[other] {$count} photos
+}
+
+# Shows the number of observations a user is currently uploading on my observations page
+Uploading-X-Observations = Uploading {$count ->
+    [one] 1 Observation
+    *[other] {$count} Observations
 }
 
 User = User
@@ -313,6 +347,12 @@ X-Observations = {$observationCount ->
     *[other] {$observationCount} Observations
 }
 
+# Displays number of photos attached to an observation in the Media Viewer
+X-Photos = {$photoCount ->
+    [one] 1 Photo
+    *[other] {$photoCount} Photos
+}
+
 # Displays number of photos and observations a user has selected from the camera roll
 X-photos-X-observations = {$photoCount ->
     [one] 1 photo
@@ -321,3 +361,10 @@ X-photos-X-observations = {$photoCount ->
     [one] 1 observation
     *[other] {$observationCount} observations
 }
+
+Yes-delete-photo = Yes, delete photo
+
+# Message shown when a permission is required to use a part of the app
+# (e.g. permission to access the camera) but the user denied the permission.
+You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
+

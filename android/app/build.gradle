@@ -83,6 +83,13 @@ project.ext.react = [
 
 apply from: "../../node_modules/react-native/react.gradle"
 
+// add vector icons to project
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialCommunityIcons.ttf' ]
+]
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -135,6 +142,17 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", true);
 
+// Create a variable called keystorePropertiesFile, and initialize it to your
+// keystore.properties file, in the rootProject folder. keystore.properties
+// contains values like the local path to your keystore and the password.
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -144,8 +162,9 @@ android {
         applicationId "com.inaturalistreactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 6
-        versionName "0.1.0"
+        versionCode 13
+        versionName "0.1.1"
+        setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
     }
     splits {
         abi {
@@ -163,10 +182,10 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file(INATRN_RELEASE_STORE_FILE)
-            storePassword pass
-            keyAlias INATRN_RELEASE_KEY_ALIAS
-            keyPassword pass
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
         }
     }
     buildTypes {
@@ -204,6 +223,9 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-config')
+
+    // https://stackoverflow.com/a/68836720 adding this to see if it fixes crash on startup for Android S+
+    implementation 'androidx.work:work-runtime:2.7.0-alpha05'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 

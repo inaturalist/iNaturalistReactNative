@@ -1,5 +1,15 @@
+import Realm from "realm";
+
 import User from "./User";
-class Comment {
+class Comment extends Realm.Object {
+  static COMMENT_FIELDS = {
+    body: true,
+    created_at: true,
+    id: true,
+    user: User.USER_FIELDS,
+    uuid: true
+  };
+
   static mapApiToRealm( comment, realm ) {
     return {
       ...comment,
@@ -10,6 +20,7 @@ class Comment {
   static schema = {
     name: "Comment",
     properties: {
+      uuid: "string",
       body: "string?",
       created_at: { type: "string?", mapTo: "createdAt" },
       id: "int?",

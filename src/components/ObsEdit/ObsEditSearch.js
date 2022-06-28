@@ -18,7 +18,7 @@ const ObsEditSearch = ( {
 }: Props ): React.Node => {
   const [q, setQ] = React.useState( "" );
   // choose users or taxa
-  const list = useRemoteObsEditSearchResults( q, source );
+  const list = useRemoteObsEditSearchResults( q, source, "all" );
 
   // TODO: when UI is finalized, make sure these list results are not duplicate UI
   // with Search or Projects; share components if possible

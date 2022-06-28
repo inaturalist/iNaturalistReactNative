@@ -18,6 +18,8 @@ target 'iNaturalistReactNative' do
 
   pod 'react-native-config', :path => '../node_modules/react-native-config'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
@@ -27,4 +29,6 @@ target 'iNaturalistReactNative' do
   # post_install do |installer|
   #   react_native_post_install(installer)
   # end
+  pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
+
 end

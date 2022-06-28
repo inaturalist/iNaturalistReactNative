@@ -9,9 +9,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   greenButton: {
     backgroundColor: colors.inatGreen,
     borderRadius: 40,
-    paddingHorizontal: 25,
-    paddingVertical: 10,
-    width: "80%",
     alignSelf: "center"
   },
   disabled: {

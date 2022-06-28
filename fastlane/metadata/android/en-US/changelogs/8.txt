@@ -1,0 +1,5 @@
+First release
+
+* Basic log in
+* Basic new observation flow
+* Basic My Observations, Obs Detail, Obs Edit

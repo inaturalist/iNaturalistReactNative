@@ -11,6 +11,8 @@
   "All-observations": "All observations",
   "Amphibians": "Amphibians",
   "Arachnids": "Arachnids",
+  "Are-you-sure": "Are you sure?",
+  "Are-you-sure-you-want-to-sign-out": "Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.",
   "Birds": "Birds",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
@@ -36,6 +38,14 @@
   "Fish": "Fish",
   "Fungi": "Fungi",
   "Geoprivacy": "Geoprivacy:",
+  "Go-to-the-Settings-app-to-grant-permissions": {
+    "comment": "Instruction for an Android user to go to the Settings app to grant\npermissions after they have asked never to be asked for that permission\nagain",
+    "val": "Go to the Settings app to grant iNaturalist the appropriate permissions."
+  },
+  "Grant-Permission": {
+    "comment": "Verb phrase label for a button to grant the app a permission, e.g.\npermission to use the camera",
+    "val": "Grant Permission"
+  },
   "Group-Photos": "Group Photos",
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
@@ -45,6 +55,7 @@
   "Insects": "Insects",
   "Introduced": "Introduced",
   "Location": "Location",
+  "Log-in": "Log in",
   "Low": "Low",
   "Mammals": "Mammals",
   "Media": "Media",
@@ -80,6 +91,7 @@
   "Other-Data": "Other Data",
   "Paused": "Paused",
   "Photo-Licensing": "Photo Licensing",
+  "Photos-you-take-will-appear-here": "Photos you take will appear here",
   "Plants": "Plants",
   "Playing-Sound": {
     "comment": "Help text for playing back a sound recording",
@@ -136,6 +148,7 @@
   "Record-a-sound": "Record a sound",
   "Record-new-sound": "Record new sound",
   "Recording-Sound": "Recording Sound",
+  "Remove-Photo": "Remove Photo",
   "Remove-Photos": "Remove Photos",
   "Reptiles": "Reptiles",
   "Research-Grade": {
@@ -152,6 +165,7 @@
   "Search-for-description-tags-text": "Search for description/tags text",
   "Select": "Select",
   "Separate-Photos": "Separate Photos",
+  "Sign-out": "Sign out",
   "SIMILAR-SPECIES-header": {
     "comment": "Header for a section showing taxa similar to a single taxon",
     "val": "SIMILAR SPECIES"
@@ -182,9 +196,17 @@
   "Unreviewed-only": "Unreviewed only",
   "Upload-a-photo-from-your-gallery": "Upload a photo from your gallery",
   "UPLOAD-OBSERVATION": "UPLOAD OBSERVATION",
+  "Upload-X-Observations": {
+    "comment": "Shows the number of observations a user can upload to iNat from my observations page",
+    "val": "Upload { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
+  },
   "Upload-X-photos": {
     "comment": "Shows the number of photos a user selected from the camera roll for upload",
     "val": "Upload { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
+  },
+  "Uploading-X-Observations": {
+    "comment": "Shows the number of observations a user is currently uploading on my observations page",
+    "val": "Uploading { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
   "User": "User",
   "Visually-search-iNaturalist-data": "Visually search iNaturalist’s wealth of data. Search by a taxon in a location",
@@ -192,8 +214,17 @@
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $observationCount ->\n  [one] 1 Observation\n *[other] { $observationCount } Observations\n}"
   },
+  "X-Photos": {
+    "comment": "Displays number of photos attached to an observation in the Media Viewer",
+    "val": "{ $photoCount ->\n  [one] 1 Photo\n *[other] { $photoCount } Photos\n}"
+  },
   "X-photos-X-observations": {
     "comment": "Displays number of photos and observations a user has selected from the camera roll",
     "val": "{ $photoCount ->\n  [one] 1 photo\n *[other] { $photoCount } photos\n}, { $observationCount ->\n  [one] 1 observation\n *[other] { $observationCount } observations\n}"
+  },
+  "Yes-delete-photo": "Yes, delete photo",
+  "You-denied-iNaturalist-permission-to-do-that": {
+    "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
+    "val": "You denied iNaturalist permission to do that"
   }
 }

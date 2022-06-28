@@ -7,9 +7,23 @@ import ObsEdit from "../../../../src/components/ObsEdit/ObsEdit";
 import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import { ObsEditContext } from "../../../../src/providers/contexts";
 
+// this resolves a test failure with the Animated library:
+// Animated: `useNativeDriver` is not supported because the native animated module is missing.
+jest.useFakeTimers( );
+
 const mockLocationName = "San Francisco, CA";
 
 jest.mock( "../../../../src/providers/ObsEditProvider" );
+
+// mock Portal with a Modal component inside of it (MediaViewer)
+jest.mock( "react-native-paper", () => {
+  const RealModule = jest.requireActual( "react-native-paper" );
+  const MockedModule = {
+    ...RealModule,
+    Portal: ( {children} ) => <>{children}</>
+  };
+  return MockedModule;
+} );
 
 jest.mock( "../../../../src/sharedHooks/useLocationName" , ( ) => ( {
   __esModule: true,
@@ -21,9 +35,22 @@ jest.mock( "../../../../src/sharedHooks/useLocationName" , ( ) => ( {
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
-    ...actualNav
+    ...actualNav,
+    useRoute: ( ) => ( {
+    } )
   };
 } );
+
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  __esModule: true,
+  useLoggedIn: ( ) => true
+} ) );
+
+const mockCurrentUser = factory( "LocalUser" );
+
+jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
+  getUserId: ( ) => mockCurrentUser.id
+} ) );
 
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
@@ -32,7 +59,7 @@ const mockObsEditProviderWithObs = obs =>
   ObsEditProvider.mockImplementation( ( { children }: Props ): Node => (
     <ObsEditContext.Provider value={{
       observations: obs,
-      currentObsNumber: 0
+      currentObsIndex: 0
     }}>
       {children}
     </ObsEditContext.Provider>
@@ -49,7 +76,8 @@ const renderObsEdit = ( ) => render(
 test( "renders observation photo from photo gallery", ( ) => {
   const observations = [factory( "RemoteObservation", {
     latitude: 37.99,
-    longitude: -142.88
+    longitude: -142.88,
+    user: mockCurrentUser
   } )];
   mockObsEditProviderWithObs( observations );
 

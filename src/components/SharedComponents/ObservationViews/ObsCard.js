@@ -1,13 +1,13 @@
 // @flow
 
 import React from "react";
-import { Pressable, View, Image } from "react-native";
+import { Pressable, View, Image, Text } from "react-native";
 import type { Node } from "react";
-import Observation from "../../../models/Observation";
 
-import { viewStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
+import { viewStyles, textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
+import Photo from "../../../models/Photo";
 
 type Props = {
   item: Object,
@@ -16,6 +16,9 @@ type Props = {
 
 const ObsCard = ( { item, handlePress }: Props ): Node => {
   const onPress = ( ) => handlePress( item );
+  const needsUpload = item._synced_at === null;
+
+  const photo = item?.observationPhotos?.[0]?.photo;
 
   return (
     <Pressable
@@ -26,15 +29,15 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
       accessibilityLabel="Navigate to observation details screen"
     >
       <Image
-        source={Observation.uri( item )}
+        source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
         style={viewStyles.imageBackground}
         testID="ObsList.photo"
       />
       <View style={viewStyles.obsDetailsColumn}>
         {/* TODO: fill in with actual empty states */}
-        <ObsCardDetails item={item} />
+        <ObsCardDetails item={item} needsUpload={needsUpload} />
       </View>
-      <ObsCardStats item={item} type="list" />
+      {needsUpload ? <Text style={textStyles.wrap}>needs upload</Text> : <ObsCardStats item={item} type="list" />}
     </Pressable>
   );
 };

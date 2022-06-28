@@ -1,5 +1,3 @@
-// @flow
-
 import Comment from "./Comment";
 import Identification from "./Identification";
 import Observation from "./Observation";
@@ -20,9 +18,30 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 7,
+  schemaVersion: 23,
   path: "db.realm",
-  migration: ( oldRealm: any, newRealm: any ) => {
+  migration: ( oldRealm, newRealm ) => {
+    if ( oldRealm.schemaVersion < 21 ) {
+      const oldObservations = oldRealm.objects( "Observation" );
+      const newObservations = newRealm.objects( "Observation" );
+
+      for ( const objectIndex in oldObservations ) {
+        const oldObservation = oldObservations[objectIndex];
+        const newObservation = newObservations[objectIndex];
+        newObservation.captive_flag = oldObservation.captive;
+      }
+    }
+    if ( oldRealm.schemaVersion < 16 ) {
+      const oldObservations = oldRealm.objects( "Observation" );
+      const newObservations = newRealm.objects( "Observation" );
+
+      for ( const objectIndex in oldObservations ) {
+        const oldObservation = oldObservations[objectIndex];
+        const newObservation = newObservations[objectIndex];
+        newObservation._synced_at = oldObservation.timeSynced;
+        newObservation._updated_at = oldObservation.timeUpdatedLocally;
+      }
+    }
     if ( oldRealm.schemaVersion < 3 ) {
       const oldComments = oldRealm.objects( "Comment" );
       const newComments = newRealm.objects( "Comment" );

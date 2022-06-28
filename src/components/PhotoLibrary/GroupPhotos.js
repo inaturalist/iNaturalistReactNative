@@ -10,37 +10,18 @@ import GroupPhotosHeader from "./GroupPhotosHeader";
 import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotosFooter from "./GroupPhotosFooter";
+import Observation from "../../models/Observation";
+import { orderByTimestamp, flattenAndOrderSelectedPhotos } from "./helpers/groupPhotoHelpers";
 
 const GroupPhotos = ( ): Node => {
   const { addObservations } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { selectedPhotos, setSelectedPhotos } = useContext( PhotoGalleryContext );
   const albums = Object.keys( selectedPhotos );
+  const observations = orderByTimestamp( albums, selectedPhotos );
 
-  const sortByTime = array => array.sort( ( a, b ) => b.timestamp - a.timestamp );
-
-  const orderByTimestamp = ( ) => {
-    let unorderedPhotos = [];
-    albums.forEach( album => {
-      unorderedPhotos = unorderedPhotos.concat( selectedPhotos[album] );
-    } );
-
-    // sort photos from all albums by time
-    const ordered = sortByTime( unorderedPhotos );
-
-    // nest under observationPhotos
-    return ordered.map( photo => {
-      return {
-        observationPhotos: [photo]
-      };
-    } );
-  };
-
-  const observations = orderByTimestamp( );
-
-  const [obsToEdit, setObsToEdit] = useState( {
-    observations
-  } );
+  // nesting observations under observations key to be able to rerender flatlist on selections
+  const [obsToEdit, setObsToEdit] = useState( { observations } );
   const [selectedObservations, setSelectedObservations] = useState( [] );
 
   const updateFlatList = ( rerenderFlatList ) => {
@@ -73,13 +54,13 @@ const GroupPhotos = ( ): Node => {
   const clearSelection = ( ) => setSelectedObservations( [] );
 
   const renderImage = ( { item } ) => {
-    const firstPhoto = item.observationPhotos[0];
+    const firstPhoto = item.photos[0];
     const isSelected = selectedObservations.includes( item );
-    const hasMultiplePhotos = item.observationPhotos.length > 1;
+    const hasMultiplePhotos = item.photos.length > 1;
 
     const handlePress = ( ) => selectObservationPhotos( isSelected, item );
 
-    const imageUri = firstPhoto && { uri: firstPhoto.uri };
+    const imageUri = firstPhoto && { uri: firstPhoto.image.uri };
     return (
       <Pressable
         onPress={handlePress}
@@ -87,7 +68,7 @@ const GroupPhotos = ( ): Node => {
       >
         {hasMultiplePhotos && (
           <View style={viewStyles.multiplePhotoTextBackground}>
-            <Text style={textStyles.multiplePhotoText}>{item.observationPhotos.length}</Text>
+            <Text style={textStyles.multiplePhotoText}>{item.photos.length}</Text>
           </View>
         )}
         <Image
@@ -102,41 +83,30 @@ const GroupPhotos = ( ): Node => {
     );
   };
 
-  const extractKey = ( item, index ) => `${item.observationPhotos[0].uri}${index}`;
+  const extractKey = ( item, index ) => `${item.photos[0].uri}${index}`;
 
   const groupedPhotos = obsToEdit.observations;
-
-  const flattenAndOrderSelectedPhotos = ( ) => {
-    // combine selected observations into a single array
-    let combinedPhotos = [];
-    selectedObservations.forEach( obs => {
-      combinedPhotos = combinedPhotos.concat( obs.observationPhotos );
-    } );
-
-    // sort selected observations by timestamp and avoid duplicates
-    return [...new Set( sortByTime( combinedPhotos ) ) ];
-  };
 
   const combinePhotos = ( ) => {
     if ( selectedObservations.length < 2 ) { return; }
 
     const newObsList = [];
 
-    const orderedPhotos = flattenAndOrderSelectedPhotos( );
+    const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
     const mostRecentPhoto = orderedPhotos[0];
 
     // remove selected photos from observations
     groupedPhotos.forEach( obs => {
-      const obsPhotos = obs.observationPhotos;
+      const obsPhotos = obs.photos;
       const mostRecentSelected = obsPhotos.indexOf( mostRecentPhoto );
 
       if ( mostRecentSelected !== -1 ) {
-        const newObs = { observationPhotos: orderedPhotos };
+        const newObs = { photos: orderedPhotos };
         newObsList.push( newObs );
       } else {
         const filteredPhotos = obsPhotos.filter( item => !orderedPhotos.includes( item ) );
         if ( filteredPhotos.length > 0 ) {
-          newObsList.push( { observationPhotos: filteredPhotos } );
+          newObsList.push( { photos: filteredPhotos } );
         }
       }
     } );
@@ -149,7 +119,7 @@ const GroupPhotos = ( ): Node => {
     let maxCombinedPhotos = 0;
 
     selectedObservations.forEach( obs => {
-      const numPhotos = obs.observationPhotos.length;
+      const numPhotos = obs.photos.length;
       if ( numPhotos > maxCombinedPhotos ) {
         maxCombinedPhotos = numPhotos;
       }
@@ -159,15 +129,15 @@ const GroupPhotos = ( ): Node => {
     if ( maxCombinedPhotos < 2 ) { return; }
 
     let separatedPhotos = [];
-    const orderedPhotos = flattenAndOrderSelectedPhotos( );
+    const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
 
     // create a list of grouped photos, with selected photos split into individual observations
     groupedPhotos.forEach( obs => {
-      const obsPhotos = obs.observationPhotos;
+      const obsPhotos = obs.photos;
       const filteredGroupedPhotos = obsPhotos.filter( item => orderedPhotos.includes( item ) );
       if ( filteredGroupedPhotos.length > 0 ) {
         filteredGroupedPhotos.forEach( photo => {
-          separatedPhotos.push( { observationPhotos: [photo] } );
+          separatedPhotos.push( { photos: [photo] } );
         } );
       } else {
         separatedPhotos.push( obs );
@@ -195,31 +165,22 @@ const GroupPhotos = ( ): Node => {
 
     // create a list of grouped photos, with selected photos removed
     groupedPhotos.forEach( obs => {
-      const obsPhotos = obs.observationPhotos;
+      const obsPhotos = obs.photos;
       const filteredGroupedPhotos = obsPhotos.filter( item => !orderedPhotos.includes( item ) );
       if ( filteredGroupedPhotos.length > 0 ) {
-        removedFromGroup.push( { observationPhotos: filteredGroupedPhotos } );
+        removedFromGroup.push( { photos: filteredGroupedPhotos } );
       }
     } );
     // remove from group photos screen
     setObsToEdit( { observations: removedFromGroup } );
   };
 
-  const navToObsEdit = ( ) => {
-    addObservations( obsToEdit.observations );
+  const navToObsEdit = async ( ) => {
+    const obs = obsToEdit.observations;
+    const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs );
+    addObservations( obsPhotos );
     navigation.navigate( "ObsEdit" );
-    // on obs edit, can delete one obs
-
-    // 10 photos, 1 sound per obs
   };
-
-  // cap at 20 photos
-  // max 10 photos per observation
-
-  // animation
-  // in 1.2 second
-  // stay 3-4 seconds
-  // out 1.2 second
 
   return (
     <ViewNoFooter>

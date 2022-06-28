@@ -3,12 +3,12 @@
 
 import React from "react";
 import factory, { makeResponse } from "../factory";
-import { render, waitFor } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
+import { waitFor } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import AccessibilityEngine from "react-native-accessibility-engine";
 
 import ObsList from "../../src/components/Observations/ObsList";
-import ObservationProvider from "../../src/providers/ObservationProvider";
 
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
@@ -26,14 +26,10 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const renderObsList = async ( ) => waitFor(
-  ( ) => render(
-    <NavigationContainer>
-      <ObservationProvider>
-        <ObsList />
-      </ObservationProvider>
-    </NavigationContainer>
-  )
+const renderObsList = ( ) => render(
+  <NavigationContainer>
+    <ObsList />
+  </NavigationContainer>
 );
 // TODO: mock.calls.length started returning 0, need to figure out why this isn't working
 test.todo( "renders the number of comments from remote response" );
@@ -66,7 +62,8 @@ test.todo( "only makes one concurrent request for observations at a time" );
 test( "should not have accessibility errors", async ( ) => {
   const observations = [factory( "RemoteObservation" )];
   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
-  const { getByTestId } = await renderObsList( );
+  // const { getByTestId } = await renderObsList( );
+  const { getByTestId } = await waitFor( ( ) => renderObsList( ) );
   const obsList = getByTestId( "ObsList.myObservations" );
   expect( ( ) => AccessibilityEngine.check( obsList ) ).not.toThrow();
 } );

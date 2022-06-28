@@ -2,6 +2,9 @@
 import i18next from "i18next";
 // React tooling for i18next
 import { initReactI18next } from "react-i18next";
+// Polyfill to support i18next reliance on Intl.PluralRules. See
+// https://www.i18next.com/misc/migration-guide#v20.x.x-to-v21.0.0
+import "intl-pluralrules";
 // i18next plugin that lazy-loads local translations as if they were an
 // i18next backend. We're using it to exert some control over how we load
 // translations, e.g. to only load translations for one locale at a time.
@@ -27,14 +30,14 @@ i18next
     callback( null, loadTranslations( locale ) );
   } ) )
   .init( {
-    // TODO should default to the system locale, or a user preference
-    compatibilityJSON: "v3",
+    // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
     lng: "en",
     // debug: true,
     interpolation: {
       escapeValue: false // react already safes from xss
     },
     react: {
+      // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
       useSuspense: false
     }
   } );

@@ -1,7 +1,4 @@
-import * as RNLocalize from "react-native-localize";
-import { formatISO, fromUnixTime, formatDistanceToNow } from "date-fns";
-
-const getTimeZone = ( ) => RNLocalize.getTimeZone( );
+import { formatISO, fromUnixTime, formatDistanceToNow, format, getUnixTime, parseISO } from "date-fns";
 
 // two options for observed_on_string in uploader are:
 // 2020-03-01 00:00 or 2021-03-24T14:40:25
@@ -14,10 +11,24 @@ const formatDateAndTime = timestamp => {
   return stripTimeZone.join( "-" );
 };
 
+const createObservedOnStringForUpload = ( date ) => formatDateAndTime( getUnixTime( date || new Date( ) ) );
+
+const displayDateTimeObsEdit = ( date ) => format( new Date( date ), "PPpp" );
+
 const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
 
+const formatObsListTime = ( date ) => {
+  const dateTime = "M/d/yy HH:mm a";
+  if ( typeof date === "string" ) {
+    return format( parseISO( date ), dateTime );
+  }
+  return format( date, dateTime );
+};
+
 export {
-  getTimeZone,
   formatDateAndTime,
-  timeAgo
+  timeAgo,
+  formatObsListTime,
+  createObservedOnStringForUpload,
+  displayDateTimeObsEdit
 };
