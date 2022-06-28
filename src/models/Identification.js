@@ -12,7 +12,7 @@ class Identification extends Realm.Object {
     taxon: Taxon.TAXON_FIELDS,
     updated_at: true,
     // $FlowFixMe
-    user: Object.assign( { }, User.USER_FIELDS, { id: true } ),
+    user: User && Object.assign( { }, User.USER_FIELDS, { id: true } ),
     uuid: true,
     vision: true
   };

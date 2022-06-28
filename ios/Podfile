@@ -29,6 +29,5 @@ target 'iNaturalistReactNative' do
   # post_install do |installer|
   #   react_native_post_install(installer)
   # end
-  pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
 
 end

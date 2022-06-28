@@ -3,12 +3,6 @@
 import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
 
-// const FIELDS = {
-//   record: {
-//     name: true
-//   }
-// };
-
 const useRemoteSearchResults = ( q: string, sources: string, fields: string ): Array<Object> => {
   const [searchResults, setSearchResults] = useState( [] );
 
@@ -22,10 +16,23 @@ const useRemoteSearchResults = ( q: string, sources: string, fields: string ): A
           sources,
           fields: fields || "all"
         };
-        const response = await inatjs.search( params );
-        const results = response.results;
+        const { results } = await inatjs.search( params );
+        const records = results.map( result => {
+          if ( sources === "taxa" ) {
+            return result.taxon;
+          }
+          if ( sources === "places" ) {
+            return result.place;
+          }
+          if ( sources === "users" ) {
+            return result.user;
+          }
+          if ( sources === "projects" ) {
+            return result.project;
+          }
+        } );
         if ( !isCurrent ) { return; }
-        setSearchResults( results );
+        setSearchResults( records );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
         console.log( `Couldn't fetch search results with sources ${sources}:`, e.message, );
