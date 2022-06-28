@@ -1,8 +1,11 @@
-Testing fastlane tagging functionality.
+Going to try a release build and see what happens.
 
-# Enter notes about what's new in v0.1.1+15. Lines beginning with # will be ignored.
+# Enter notes about what's new in v0.1.1+16. Lines beginning with # will be ignored.
 #
 # Here's what changed since the last tag:
+# * e3a34e4 Switch nano to vim (Amanda Bullington, 2022-06-28 13:23:13 -0700)
+# * 748b3a5 Add a tag (Amanda Bullington, 2022-06-28 13:03:44 -0700)
+# * f9981e2 Still testing git tag (Amanda Bullington, 2022-06-28 12:56:48 -0700)
 # * d6dfd35 Create COMMIT_EDITMSG file (Amanda Bullington, 2022-06-28 12:50:54 -0700)
 # * 2fc4dd9 Committing changes so I can test fastlane tag (Amanda Bullington, 2022-06-28 12:37:36 -0700)
 # * a0f5779 Some more minor bug fixes for fastlane (Ken-ichi Ueda, 2022-06-25 11:08:32 -0700)
