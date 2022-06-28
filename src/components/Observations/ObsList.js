@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import type { Node } from "react";
-import { Text } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -10,13 +9,11 @@ import ObservationViews from "../SharedComponents/ObservationViews/ObservationVi
 import UserCard from "./UserCard";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import BottomSheet from "../SharedComponents/BottomSheet";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import uploadObservation from "../../providers/uploadHelpers/uploadObservation";
-import Observation from "../../models/Observation";
 import useObservations from "./hooks/useObservations";
 import LoggedOutCard from "./LoggedOutCard";
 import { useUser } from "../UserProfile/hooks/useUser";
 import LoginPrompt from "./LoginPrompt";
+import UploadPrompt from "./UploadPrompt";
 
 const ObsList = ( ): Node => {
   const { params } = useRoute( );
@@ -37,25 +34,6 @@ const ObsList = ( ): Node => {
     }
   }, [params, syncObservations] );
 
-  const renderUploadPrompt = ( ) => {
-    const uploadObservations = ( ) => obsToUpload.forEach( obs => {
-      const mappedObs = Observation.mapObservationForUpload( obs );
-      uploadObservation( mappedObs, obs );
-    } );
-
-    return (
-      <>
-        <Text>Whenever you get internet connection, you can sync your observations to iNaturalist.</Text>
-        <RoundGreenButton
-          buttonText="Upload-X-Observations"
-          count={numObsToUpload}
-          handlePress={uploadObservations}
-          testID="ObsList.uploadButton"
-        />
-      </>
-    );
-  };
-
   return (
     <ViewWithFooter>
       {user ? <UserCard userId={userId} user={user} /> : <LoggedOutCard numObsToUpload={numObsToUpload} />}
@@ -71,7 +49,7 @@ const ObsList = ( ): Node => {
         <BottomSheet height={200}>
           {!userId
             ? <LoginPrompt />
-            : renderUploadPrompt( )
+            : <UploadPrompt obsToUpload={obsToUpload} />
           }
         </BottomSheet>
       )}

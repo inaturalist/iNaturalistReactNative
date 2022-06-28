@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, View, Pressable, Text, ActivityIndicator } from "react-native";
+import { FlatList, View, Pressable, Text } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";

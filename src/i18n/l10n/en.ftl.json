@@ -213,6 +213,7 @@
   },
   "User": "User",
   "Visually-search-iNaturalist-data": "Visually search iNaturalist’s wealth of data. Search by a taxon in a location",
+  "Whenever-you-get-internet-connection-you-can-upload": "Whenever you get internet connection, you can upload your observations to iNaturalist.",
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $observationCount ->\n  [one] 1 Observation\n *[other] { $observationCount } Observations\n}"

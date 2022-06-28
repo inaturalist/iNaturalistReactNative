@@ -347,6 +347,8 @@ User = User
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
 
+Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
+
 # Banner above Explore Map showing total number of results
 X-Observations = {$observationCount ->
     [one] 1 Observation
