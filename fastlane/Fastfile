@@ -1,7 +1,7 @@
 require "fileutils"
 
 VERSION = File.open( "../package.json" ) { | f | JSON.parse( f.read )["version"] }
-EDITOR = ENV["EDITOR"] || `git config core.editor`.strip || "nano"
+EDITOR = ENV["EDITOR"] || `git config core.editor`.strip || "vi"
 XCODEPROJ = "ios/iNaturalistReactNative.xcodeproj"
 PACKAGE_ID = CredentialsManager::AppfileConfig.try_fetch_value( :package_name )
 
