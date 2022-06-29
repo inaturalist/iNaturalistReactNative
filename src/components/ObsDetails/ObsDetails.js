@@ -51,6 +51,8 @@ const ObsDetails = ( ): Node => {
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
 
+  const toggleRefetch = ( ) => setRefetch( !refetch );
+
   if ( !observation ) { return null; }
 
   const ids = observation.identifications.map( i => i );
@@ -118,61 +120,62 @@ const ObsDetails = ( ): Node => {
         testID={`ObsDetails.${uuid}`}
         contentContainerStyle={viewStyles.scrollView}
       >
-      <View style={viewStyles.userProfileRow}>
-        <Pressable
-          style={viewStyles.userProfileRow}
-          onPress={( ) => navToUserProfile( user.id )}
-          testID="ObsDetails.currentUser"
-          accessibilityRole="link"
-        >
-          <UserIcon uri={User.uri( user )} />
-          <Text>{User.userHandle( user )}</Text>
-        </Pressable>
-        <Text>{displayCreatedAt( )}</Text>
-      </View>
-      <View style={viewStyles.photoContainer}>
-        <Pressable onPress={faveOrUnfave} style={viewStyles.pressableButton}>
-          <Text style={textStyles.whiteText}>{currentUserFaved ? "faved!" : "tap to fave"}</Text>
-        </Pressable>
-        <PhotoScroll photos={photos} />
-      </View>
-      <View style={viewStyles.row}>
-        {showTaxon( )}
-        <View>
-          <Text style={textStyles.text}>{observation.identifications.length}</Text>
-          <Text style={textStyles.text}>{observation.comments.length}</Text>
-          <Text style={textStyles.text}>{checkCamelAndSnakeCase( observation, "qualityGrade" )}</Text>
+        <View style={viewStyles.userProfileRow}>
+          <Pressable
+            style={viewStyles.userProfileRow}
+            onPress={( ) => navToUserProfile( user.id )}
+            testID="ObsDetails.currentUser"
+            accessibilityRole="link"
+          >
+            <UserIcon uri={User.uri( user )} />
+            <Text>{User.userHandle( user )}</Text>
+          </Pressable>
+          <Text>{displayCreatedAt( )}</Text>
         </View>
-      </View>
-      <Text style={textStyles.locationText}>
-        {checkCamelAndSnakeCase( observation, "placeGuess" )}
-      </Text>
-      <View style={viewStyles.userProfileRow}>
-        <Pressable
-          onPress={showActivityTab}
-          accessibilityRole="button"
-        >
-          <Text style={textStyles.greenButtonText}>ACTIVITY</Text>
-        </Pressable>
-        <Pressable
-          onPress={showDataTab}
-          testID="ObsDetails.DataTab"
-          accessibilityRole="button"
-        >
-          <Text style={textStyles.greenButtonText}>DATA</Text>
-        </Pressable>
-      </View>
-      {tab === 0
-        ? (
-          <ActivityTab
-            ids={ids}
-            comments={comments}
-            navToTaxonDetails={navToTaxonDetails}
-            navToUserProfile={navToUserProfile}
-          />
-        )
-        : <DataTab observation={observation} />}
+        <View style={viewStyles.photoContainer}>
+          <Pressable onPress={faveOrUnfave} style={viewStyles.pressableButton}>
+            <Text style={textStyles.whiteText}>{currentUserFaved ? "faved!" : "tap to fave"}</Text>
+          </Pressable>
+          <PhotoScroll photos={photos} />
+        </View>
         <View style={viewStyles.row}>
+          {showTaxon( )}
+          <View>
+            <Text style={textStyles.text}>{observation.identifications.length}</Text>
+            <Text style={textStyles.text}>{observation.comments.length}</Text>
+            <Text style={textStyles.text}>{checkCamelAndSnakeCase( observation, "qualityGrade" )}</Text>
+          </View>
+        </View>
+        <Text style={textStyles.locationText}>
+          {checkCamelAndSnakeCase( observation, "placeGuess" )}
+        </Text>
+        <View style={viewStyles.userProfileRow}>
+          <Pressable
+            onPress={showActivityTab}
+            accessibilityRole="button"
+          >
+            <Text style={textStyles.greenButtonText}>ACTIVITY</Text>
+          </Pressable>
+          <Pressable
+            onPress={showDataTab}
+            testID="ObsDetails.DataTab"
+            accessibilityRole="button"
+          >
+            <Text style={textStyles.greenButtonText}>DATA</Text>
+          </Pressable>
+        </View>
+        {tab === 0
+          ? (
+            <ActivityTab
+              ids={ids}
+              comments={comments}
+              navToTaxonDetails={navToTaxonDetails}
+              navToUserProfile={navToUserProfile}
+              toggleRefetch={toggleRefetch}
+            />
+          )
+          : <DataTab observation={observation} />}
+          <View style={viewStyles.row}>
           <View style={viewStyles.button}>
             {/* TODO: get this button working. Not sure why createIdentification isn't working here
             but it doesn't appear to be working on staging either (Mar 11, 2022) */}
