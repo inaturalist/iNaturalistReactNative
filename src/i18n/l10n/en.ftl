@@ -9,6 +9,9 @@ Add-optional-notes = Add optional notes
 
 Add-to-projects = Add to projects
 
+# Shows user network affiliation on user profile
+Affiliation-colon = Affiliation:
+
 All = All
 
 All-observations = All observations
@@ -20,6 +23,9 @@ Arachnids = Arachnids
 Are-you-sure = Are you sure?
 
 Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
+
+# Header above user biography / user description on user profile
+BIO = BIO
 
 Birds = Birds
 
@@ -43,6 +49,10 @@ Date-added-newest-to-oldest = Date added - newest to oldest
 
 Date-added-oldest-to-newest = Date added - oldest to newest
 
+Date-observed-colon = Date observed:
+
+Date-uploaded-colon = Date uploaded:
+
 Delete-comment = Delete comment
 
 DELETE-X-OBSERVATIONS = DELETE {$count ->
@@ -55,6 +65,9 @@ Description-Tags = Description/Tags
 Evidence = Evidence
 
 Explore = Explore
+
+# Header for featured projects
+Featured = Featured
 
 Filters = Filters
 
@@ -84,13 +97,28 @@ Has-Sounds = Has Sounds
 
 High = High
 
+IDs = ID's
+
 IDENTIFICATION = IDENTIFICATION
 
 Identification = Identification
 
+iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists.
+
 Insects = Insects
 
 Introduced = Introduced
+
+# Header for joined projects
+Joined = Joined
+
+# Shows date user joined iNaturalist on user profile
+Joined-colon = Joined:
+
+Journal-Posts = Journal Posts
+
+# Shows date user last active on iNaturalist on user profile
+Last-Active-colon = Last Active:
 
 Location = Location
 
@@ -135,6 +163,9 @@ Most-faved = Most faved
 
 Native = Native
 
+# Header for nearby projects
+Nearby = Nearby
+
 # Quality grade option
 Needs-ID = Needs ID
 
@@ -144,11 +175,19 @@ Next = Next
 
 No-Location = No Location
 
+# Header for observation description on observation detail
+Notes = Notes
+
 Obscured = Obscured
 
 Observation = Observation
 
+Observations = Observations
+
 Open = Open
+
+# Picker prompt on observation edit
+Organism-is-wild = Organism is wild
 
 Other-Data = Other Data
 
@@ -167,6 +206,8 @@ Playing-Sound = Playing Sound
 Press-Record-to-Start = Press Record to Start
 
 Private = Private
+
+PROJECTS = PROJECTS
 
 Projects = Projects
 
@@ -247,6 +288,8 @@ Ranks-form = form
 
 Ranks-infrahybrid = infrahybrid
 
+Read-more-on-Wikipedia = Read more on Wikipedia
+
 Recently-observed = Recently observed
 
 Record-a-sound = Record a sound
@@ -286,10 +329,14 @@ Separate-Photos = Separate Photos
 
 Sign-out = Sign out
 
+Sign-Up = Sign Up
+
 # Header for a section showing taxa similar to a single taxon
 SIMILAR-SPECIES-header = SIMILAR SPECIES
 
 Sort-by = Sort by
+
+Species = Species
 
 Status = Status
 
@@ -312,6 +359,9 @@ TAXONOMY-header = TAXONOMY
 
 # Onboarding for users adding their first evidence of an organism
 The-first-thing-you-need-is-evidence = The first thing you need is evidence of an organism. This helps others identify what you saw.
+
+# Describes whether a user made this observation from web, iOS, or Android
+This-observation-was-created-using = This observation was created using:
 
 Threatened = Threatened
 
@@ -341,7 +391,11 @@ Uploading-X-Observations = Uploading {$count ->
 
 User = User
 
+Username = Username
+
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
+
+Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
 # Banner above Explore Map showing total number of results
 X-Observations = {$observationCount ->
@@ -398,5 +452,4 @@ No-account-found = No account found with that email
 Check-your-email = Check your email! We've sent password reset instructions.
 Return-to-login = Return to login
 
-Sign-out = Sign out
 Logged-in-as = Logged in as: { $username }

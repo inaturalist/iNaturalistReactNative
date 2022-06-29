@@ -7,12 +7,20 @@
   "Add-Location": "Add Location",
   "Add-optional-notes": "Add optional notes",
   "Add-to-projects": "Add to projects",
+  "Affiliation-colon": {
+    "comment": "Shows user network affiliation on user profile",
+    "val": "Affiliation:"
+  },
   "All": "All",
   "All-observations": "All observations",
   "Amphibians": "Amphibians",
   "Arachnids": "Arachnids",
   "Are-you-sure": "Are you sure?",
   "Are-you-sure-you-want-to-sign-out": "Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.",
+  "BIO": {
+    "comment": "Header above user biography / user description on user profile",
+    "val": "BIO"
+  },
   "Birds": "Birds",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
@@ -29,11 +37,17 @@
   "Date": "Date",
   "Date-added-newest-to-oldest": "Date added - newest to oldest",
   "Date-added-oldest-to-newest": "Date added - oldest to newest",
+  "Date-observed-colon": "Date observed:",
+  "Date-uploaded-colon": "Date uploaded:",
   "Delete-comment": "Delete comment",
   "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}",
   "Description-Tags": "Description/Tags",
   "Evidence": "Evidence",
   "Explore": "Explore",
+  "Featured": {
+    "comment": "Header for featured projects",
+    "val": "Featured"
+  },
   "Filters": "Filters",
   "Finish": "Finish",
   "Fish": "Fish",
@@ -51,10 +65,25 @@
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
   "High": "High",
+  "IDs": "ID's",
   "IDENTIFICATION": "IDENTIFICATION",
   "Identification": "Identification",
+  "iNaturalist-is-a-community-of-naturalists": "iNaturalist is a community of naturalists.",
   "Insects": "Insects",
   "Introduced": "Introduced",
+  "Joined": {
+    "comment": "Header for joined projects",
+    "val": "Joined"
+  },
+  "Joined-colon": {
+    "comment": "Shows date user joined iNaturalist on user profile",
+    "val": "Joined:"
+  },
+  "Journal-Posts": "Journal Posts",
+  "Last-Active-colon": {
+    "comment": "Shows date user last active on iNaturalist on user profile",
+    "val": "Last Active:"
+  },
   "Location": "Location",
   "Log-in": "Log in",
   "Low": "Low",
@@ -79,6 +108,10 @@
   "Months": "Months",
   "Most-faved": "Most faved",
   "Native": "Native",
+  "Nearby": {
+    "comment": "Header for nearby projects",
+    "val": "Nearby"
+  },
   "Needs-ID": {
     "comment": "Quality grade option",
     "val": "Needs ID"
@@ -86,9 +119,18 @@
   "New-Observation": "New Observation",
   "Next": "Next",
   "No-Location": "No Location",
+  "Notes": {
+    "comment": "Header for observation description on observation detail",
+    "val": "Notes"
+  },
   "Obscured": "Obscured",
   "Observation": "Observation",
+  "Observations": "Observations",
   "Open": "Open",
+  "Organism-is-wild": {
+    "comment": "Picker prompt on observation edit",
+    "val": "Organism is wild"
+  },
   "Other-Data": "Other Data",
   "Paused": "Paused",
   "Photo-Licensing": "Photo Licensing",
@@ -103,6 +145,7 @@
     "val": "Press Record to Start"
   },
   "Private": "Private",
+  "PROJECTS": "PROJECTS",
   "Projects": "Projects",
   "Quality-Grade": "Quality Grade",
   "Rank": "Rank",
@@ -145,6 +188,7 @@
   "Ranks-variety": "variety",
   "Ranks-form": "form",
   "Ranks-infrahybrid": "infrahybrid",
+  "Read-more-on-Wikipedia": "Read more on Wikipedia",
   "Recently-observed": "Recently observed",
   "Record-a-sound": "Record a sound",
   "Record-new-sound": "Record new sound",
@@ -167,11 +211,13 @@
   "Select": "Select",
   "Separate-Photos": "Separate Photos",
   "Sign-out": "Sign out",
+  "Sign-Up": "Sign Up",
   "SIMILAR-SPECIES-header": {
     "comment": "Header for a section showing taxa similar to a single taxon",
     "val": "SIMILAR SPECIES"
   },
   "Sort-by": "Sort by",
+  "Species": "Species",
   "Status": "Status",
   "STATUS-header": {
     "comment": "Header for a block of text describing a taxon's conservation status",
@@ -193,6 +239,10 @@
     "comment": "Onboarding for users adding their first evidence of an organism",
     "val": "The first thing you need is evidence of an organism. This helps others identify what you saw."
   },
+  "This-observation-was-created-using": {
+    "comment": "Describes whether a user made this observation from web, iOS, or Android",
+    "val": "This observation was created using:"
+  },
   "Threatened": "Threatened",
   "Unreviewed-only": "Unreviewed only",
   "Upload-a-photo-from-your-gallery": "Upload a photo from your gallery",
@@ -210,7 +260,9 @@
     "val": "Uploading { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
   "User": "User",
+  "Username": "Username",
   "Visually-search-iNaturalist-data": "Visually search iNaturalist’s wealth of data. Search by a taxon in a location",
+  "Whenever-you-get-internet-connection-you-can-upload": "Whenever you get internet connection, you can upload your observations to iNaturalist.",
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $observationCount ->\n  [one] 1 Observation\n *[other] { $observationCount } Observations\n}"

@@ -49,9 +49,9 @@ Date-added-newest-to-oldest = Date added - newest to oldest
 
 Date-added-oldest-to-newest = Date added - oldest to newest
 
-Date-observed = Date observed:
+Date-observed-colon = Date observed:
 
-Date-uploaded = Date uploaded:
+Date-uploaded-colon = Date uploaded:
 
 Delete-comment = Delete comment
 

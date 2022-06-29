@@ -51,8 +51,8 @@ const DataTab = ( { observation }: Props ): Node => {
         {checkCamelAndSnakeCase( observation, "placeGuess" )}
       </Text>
       <Text style={textStyles.dataTabText}>{t( "Date" )}</Text>
-      <Text style={textStyles.dataTabText}>{`${t( "Date-observed" )} ${displayTimeObserved( )}`}</Text>
-      <Text style={textStyles.dataTabText}>{`${t( "Date-uploaded" )} ${observation._synced_at}`}</Text>
+      <Text style={textStyles.dataTabText}>{`${t( "Date-observed-colon" )} ${displayTimeObserved( )}`}</Text>
+      <Text style={textStyles.dataTabText}>{`${t( "Date-uploaded-colon" )} ${observation._synced_at}`}</Text>
       <Text style={textStyles.dataTabText}>{t( "Projects" )}</Text>
       {/* TODO: create a custom dropdown that doesn't use FlatList */}
       <DropdownPicker
