@@ -70,7 +70,7 @@ const Login = ( ): Node => {
   };
 
   const onSignOut = async ( ) => {
-    await signOut( );
+    await signOut( true );
     setLoggedIn( false );
   };
 

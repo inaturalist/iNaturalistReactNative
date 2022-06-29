@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { signOut, getUserId } from "../components/LoginSignUp/AuthenticationService";
 import PlaceholderComponent from "../components/PlaceholderComponent";
@@ -56,8 +57,14 @@ const App = ( ): React.Node => {
   React.useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {
       const userId = await getUserId( );
+      const alreadyLaunched = await AsyncStorage.getItem( "alreadyLaunched" );
+      let deleteRealm = false;
+      if ( !alreadyLaunched ) {
+        deleteRealm = true;
+        await AsyncStorage.setItem( "alreadyLaunched", "true" );
+      }
       if ( !userId ) {
-        await signOut( );
+        await signOut( deleteRealm );
       }
     };
 
