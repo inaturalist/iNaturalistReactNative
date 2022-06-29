@@ -19,10 +19,6 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-<<<<<<< HEAD
-	<string>5</string>
-=======
 	<string>13</string>
->>>>>>> a0f5779a6f509d3a54046c17c19d7e5e7e8355c1
 </dict>
 </plist>
