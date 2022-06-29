@@ -113,7 +113,7 @@ const SoundRecorder = ( ): Node => {
         <Pressable
           onPress={startRecording}
         >
-          <Text style={[textStyles.alignCenter, textStyles.duration]}>start</Text>
+          <Text style={[textStyles.alignCenter, textStyles.duration]}>{t( "Press-Record-to-Start" )}</Text>
         </Pressable>
       );
     } else if ( status === "paused" ) {
@@ -121,11 +121,11 @@ const SoundRecorder = ( ): Node => {
         <Pressable
           onPress={resumeRecording}
         >
-          <Text style={[textStyles.alignCenter, textStyles.duration]}>resume</Text>
+          <Text style={[textStyles.alignCenter, textStyles.duration]}>{t( "Paused" )}</Text>
         </Pressable>
       );
     } else if ( status === "playing" ) {
-      return <Text style={[textStyles.alignCenter, textStyles.duration]}>playing</Text>;
+      return <Text style={[textStyles.alignCenter, textStyles.duration]}>{t( "Playing-Sound" )}</Text>;
     } else {
       return (
         <Pressable
@@ -144,7 +144,7 @@ const SoundRecorder = ( ): Node => {
           onPress={playRecording}
           style={viewStyles.playbackButton}
         >
-          <Text>play</Text>
+          <Text>{t( "Play" )}</Text>
         </Pressable>
       );
     } else if ( status === "playing" ) {
