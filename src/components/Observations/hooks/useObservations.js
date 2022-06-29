@@ -86,16 +86,6 @@ const useObservations = ( ): Object => {
   }, [realmRef] );
 
   useEffect( ( ) => {
-    // const checkForSignedInUser = async ( ) => {
-    //   const userId = await getUserId( );
-    //   if ( userId ) {
-    //     openRealm( );
-    //   } else {
-    //     setLoading( false );
-    //   }
-    // };
-
-    // checkForSignedInUser( );
     openRealm( );
     return closeRealm;
   }, [openRealm, closeRealm] );
