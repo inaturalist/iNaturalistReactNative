@@ -10,6 +10,7 @@ import { View } from "react-native";
 import { viewStyles } from "../../styles/obsDetails/obsDetails";
 import Comment from "../../models/Comment";
 import realmConfig from "../../models/index";
+import { colors } from "../../styles/global";
 
 type Props = {
   uuid: string,
@@ -33,7 +34,7 @@ const KebabMenu = ( { uuid, toggleRefetch }: Props ): Node => {
           style={viewStyles.kebabMenuPlacement}
           contentStyle={viewStyles.textPadding}
           anchor={
-            <Button onPress={openMenu} icon="dots-horizontal" color="#999999" />
+            <Button onPress={openMenu} icon="dots-horizontal" textColor={colors.logInGray} />
           }>
           <Menu.Item
             onPress={async ( ) => {

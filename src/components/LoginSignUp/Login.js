@@ -70,7 +70,7 @@ const Login = ( ): Node => {
   };
 
   const onSignOut = async ( ) => {
-    await signOut( true );
+    await signOut( { deleteRealm: true } );
     setLoggedIn( false );
   };
 

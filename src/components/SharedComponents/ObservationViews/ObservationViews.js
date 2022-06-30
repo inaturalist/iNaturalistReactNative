@@ -12,7 +12,6 @@ import EmptyList from "./EmptyList";
 import ObsCard from "./ObsCard";
 import Map from "../Map";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
-// import { ObsEditContext } from "../../../providers/contexts";
 
 type Props = {
   loading: boolean,
@@ -37,22 +36,12 @@ const ObservationViews = ( {
   syncObservations,
   userId
 }: Props ): React.Node => {
-  // const { openSavedObservation } = React.useContext( ObsEditContext );
   const [view, setView] = React.useState( "list" );
   const navigation = useNavigation( );
   const { name } = useRoute( );
 
   const navToObsDetails = async ( observation ) => {
-    // const needsUpload = observation._synced_at === null;
-    // if ( needsUpload ) {
-    //   await openSavedObservation( observation.uuid );
-    //   navigation.navigate( "camera", {
-    //     screen: "ObsEdit"
-    //   } );
-    // } else {
-      navigation.navigate( "ObsDetails", { observation } );
-      // navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
-    // }
+    navigation.navigate( "ObsDetails", { observation } );
   };
 
   const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
@@ -84,7 +73,6 @@ const ObservationViews = ( {
           renderItem={view === "grid" ? renderGridItem : renderItem}
           numColumns={view === "grid" ? 2 : 1}
           testID={testID}
-          ListEmptyComponent={renderEmptyState}
           onEndReached={handleEndReached}
           ListFooterComponent={renderFooter}
         />
@@ -94,13 +82,8 @@ const ObservationViews = ( {
 
   const isExplore = name === "Explore";
 
-  return (
-    <>
-      {isExplore && (
-        <View style={[viewStyles.whiteBanner, view === "map" && viewStyles.greenBanner]}>
-          <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>{t( "X-Observations", { observationCount: totalObservations } )}</Text>
-        </View>
-      )}
+  const renderButtonsRow = ( ) => {
+    return (
       <View style={[viewStyles.toggleViewRow, isExplore && viewStyles.exploreButtons]}>
         {!isExplore && (
           <View style={viewStyles.toggleButtons}>
@@ -136,7 +119,24 @@ const ObservationViews = ( {
           </Pressable>
         </View>
       </View>
-      {renderView( )}
+    );
+  };
+
+  return (
+    <>
+      {isExplore && (
+        <View style={[viewStyles.whiteBanner, view === "map" && viewStyles.greenBanner]}>
+          <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>{t( "X-Observations", { observationCount: totalObservations } )}</Text>
+        </View>
+      )}
+      {observationList.length === 0
+        ? renderEmptyState( )
+        : (
+          <>
+            {renderButtonsRow( )}
+            {renderView( )}
+          </>
+        )}
     </>
   );
 };

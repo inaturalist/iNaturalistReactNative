@@ -47,8 +47,9 @@ const theme = {
   version: 3,
   colors: {
     ...DefaultTheme.colors,
-    primary: colors.lightGray,
-    secondary: colors.inatGreen,
+    primary: colors.inatGreen,
+    secondary: colors.secondary,
+    tertiary: colors.tertiary,
     surface: colors.white
   }
 };
@@ -68,7 +69,7 @@ const App = ( ): React.Node => {
         await AsyncStorage.setItem( "alreadyLaunched", "true" );
       }
       if ( !userId ) {
-        await signOut( deleteRealm );
+        await signOut( { deleteRealm } );
       }
     };
 
