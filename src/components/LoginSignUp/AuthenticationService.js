@@ -325,7 +325,7 @@ const getUsername = async (): Promise<string> => {
 const signOut = async ( options: {
   deleteRealm: boolean
 } ) => {
-  if ( options.deleteRealm ) {
+  if ( options?.deleteRealm ) {
     Realm.deleteFile( realmConfig );
   }
   await SInfo.deleteItem( "jwtToken", {} );

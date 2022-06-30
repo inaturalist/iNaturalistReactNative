@@ -123,7 +123,7 @@ const ObservationViews = ( {
   };
 
   return (
-    <>
+    <View testID="ObservationViews.myObservations">
       {isExplore && (
         <View style={[viewStyles.whiteBanner, view === "map" && viewStyles.greenBanner]}>
           <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>{t( "X-Observations", { observationCount: totalObservations } )}</Text>
@@ -137,7 +137,7 @@ const ObservationViews = ( {
             {renderView( )}
           </>
         )}
-    </>
+    </View>
   );
 };
 
