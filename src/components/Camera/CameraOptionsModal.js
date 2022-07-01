@@ -1,8 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { Text, View, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Avatar } from "react-native-paper";
 
 import { textStyles, viewStyles } from "../../styles/sharedComponents/modal";
 import { ObsEditContext } from "../../providers/contexts";
@@ -52,27 +53,27 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
        <Pressable
         onPress={navToStandardCamera}
       >
-        <Text style={textStyles.whiteText}>take photo with camera</Text>
+        <Avatar.Icon size={40} icon="camera" />
       </Pressable>
       {!currentObs && (
         <Pressable
           onPress={navToPhotoGallery}
         >
-          <Text style={textStyles.whiteText}>upload photo from gallery</Text>
+          <Avatar.Icon size={40} icon="folder-multiple-image" />
         </Pressable>
       )}
       {!hasSound && (
         <Pressable
           onPress={navToSoundRecorder}
         >
-          <Text style={textStyles.whiteText}>record a sound</Text>
+          <Avatar.Icon size={40} icon="microphone" />
         </Pressable>
       )}
       {!currentObs && (
         <Pressable
           onPress={navToObsEdit}
         >
-          <Text style={textStyles.whiteText}>submit without evidence</Text>
+          <Avatar.Icon size={40} icon="square-edit-outline" />
         </Pressable>
       )}
     </View>

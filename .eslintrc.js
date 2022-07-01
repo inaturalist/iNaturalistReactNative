@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: "@react-native-community",
+  extends: ["@react-native-community", "plugin:i18next/recommended"],
   rules: {
     quotes: [2, "double"],
     "comma-dangle": [2, "never"],

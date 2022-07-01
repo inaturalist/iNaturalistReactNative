@@ -4,6 +4,7 @@ import React, { useContext, useEffect } from "react";
 import { Pressable, Image, FlatList, ActivityIndicator, View, Text } from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { t } from "i18next";
 
 import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
@@ -126,7 +127,7 @@ const PhotoGallery = ( ): Node => {
     if ( fetchingPhotos ) {
       return <ActivityIndicator />;
     } else {
-      return <Text>no photos found. if this is your first time opening the app and giving permissions, try restarting the app.</Text>;
+      return <Text>{t( "No-photos-found" )}</Text>;
     }
   };
 

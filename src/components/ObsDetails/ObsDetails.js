@@ -6,6 +6,7 @@ import { Text, View, Image, Pressable, ScrollView, LogBox } from "react-native";
 import type { Node } from "react";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { t } from "i18next";
 
 import { viewStyles, textStyles } from "../../styles/obsDetails/obsDetails";
 import ActivityTab from "./ActivityTab";
@@ -79,7 +80,7 @@ const ObsDetails = ( ): Node => {
   };
 
   const showTaxon = ( ) => {
-    if ( !taxon ) { return <Text>unknown organism</Text>; }
+    if ( !taxon ) { return <Text>{t( "Unknown-organism" )}</Text>; }
     return (
       <>
        <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />

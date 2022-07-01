@@ -25,6 +25,7 @@ import SettingsApplications from "./SettingsApplications";
 import SettingsRelationships from "./SettingsRelationships";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useUserMe from "./hooks/useUserMe";
+import { t } from "i18next";
 
 const TAB_TYPE_PROFILE = "profile";
 const TAB_TYPE_ACCOUNT = "account";
@@ -79,7 +80,7 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => {
           <Text
             style={activeTab === TAB_TYPE_PROFILE ? textStyles.activeTab : null}
           >
-            profile
+            {t( "Profile" )}
           </Text>
         </Pressable>
         <Pressable
@@ -89,7 +90,7 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => {
           <Text
             style={activeTab === TAB_TYPE_ACCOUNT ? textStyles.activeTab : null}
           >
-            account
+            {t( "Account" )}
           </Text>
         </Pressable>
         <Pressable
@@ -101,7 +102,7 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => {
               activeTab === TAB_TYPE_NOTIFICATIONS ? textStyles.activeTab : null
             }
           >
-            notifications
+            {t( "Notifications" )}
           </Text>
         </Pressable>
         <Pressable
@@ -113,7 +114,7 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => {
               activeTab === TAB_TYPE_RELATIONSHIPS ? textStyles.activeTab : null
             }
           >
-            relationships
+            {t( "Relationships" )}
           </Text>
         </Pressable>
         <Pressable
@@ -127,7 +128,7 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => {
                 : null
             }
           >
-            content&display
+            {t( "Content-Display" )}
           </Text>
         </Pressable>
         <Pressable
@@ -139,7 +140,7 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => {
               activeTab === TAB_TYPE_APPLICATIONS ? textStyles.activeTab : null
             }
           >
-            applications
+            {t( "Applications" )}
           </Text>
         </Pressable>
       </View>
@@ -222,8 +223,8 @@ const Settings = ( { children }: Props ): Node => {
   useFocusEffect(
     React.useCallback( () => {
       // Reload the settings
-      getAPIToken( true ).then( ( t ) => {
-        setAccessToken( t );
+      getAPIToken( true ).then( ( token ) => {
+        setAccessToken( token );
       } );
 
       return () => {
@@ -238,7 +239,7 @@ const Settings = ( { children }: Props ): Node => {
       <SafeAreaView style={viewStyles.container}>
         <StatusBar barStyle="dark-content" />
         <View style={viewStyles.headerRow}>
-          <Text style={textStyles.header}>Settings</Text>
+          <Text style={textStyles.header}>{t( "Settings" )}</Text>
           <Button
             title="Save"
             onPress={saveSettings}

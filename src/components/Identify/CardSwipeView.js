@@ -9,6 +9,7 @@ import { viewStyles, imageStyles, textStyles } from "../../styles/identify/ident
 import Observation from "../../models/Observation";
 import markAsReviewed from "./helpers/markAsReviewed";
 import createIdentification from "./helpers/createIdentification";
+import PlaceholderText from "../PlaceholderText";
 
 type Props = {
   loading: boolean,
@@ -39,8 +40,8 @@ const CardSwipeView = ( { loading, observationList, testID }: Props ): Node => {
 
   return (
     <View style={viewStyles.cardContainer}>
-      <Text>Swipe left to mark as reviewed.</Text>
-      <Text>Swipe right to agree.</Text>
+      <PlaceholderText text="Swipe left to mark as reviewed." />
+      <PlaceholderText text="Swipe right to agree." />
       {observationList.map( obs => {
         const commonName = obs.taxon && obs.taxon.preferred_common_name;
         const name = obs.taxon ? obs.taxon.name : "unknown";

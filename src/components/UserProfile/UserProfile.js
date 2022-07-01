@@ -4,6 +4,7 @@ import * as React from "react";
 import { Text, View, useWindowDimensions } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import HTML from "react-native-render-html";
+import { t } from "i18next";
 
 import { textStyles, viewStyles } from "../../styles/userProfile/userProfile";
 import UserIcon from "../SharedComponents/UserIcon";
@@ -45,9 +46,9 @@ const UserProfile = ( ): React.Node => {
         <View>
           <Text>{user.name}</Text>
           {showUserRole}
-          <Text>{`Joined: ${user.created_at}`}</Text>
-          <Text>{`Last Active: ${user.updated_at}`}</Text>
-          <Text>{`Affiliation: ${user.site_id}`}</Text>
+          <Text>{`${t( "Joined-colon" )} ${user.created_at}`}</Text>
+          <Text>{`${t( "Last-Active-colon" )} ${user.updated_at}`}</Text>
+          <Text>{`${t( "Affiliation-colon" )} ${user.site_id}`}</Text>
         </View>
       </View>
       {!currentUser && (
@@ -61,22 +62,20 @@ const UserProfile = ( ): React.Node => {
         </View>
       )}
       <View style={viewStyles.countRow}>
-        {showCount( user.observations_count, "Observations" )}
-        {showCount( user.species_count, "Species" )}
-        {showCount( user.identifications_count, "ID's" )}
-        {showCount( user.journal_posts_count, "Journal Posts" )}
+        {showCount( user.observations_count, t( "Observations" ) )}
+        {showCount( user.species_count, t( "Species" ) )}
+        {showCount( user.identifications_count, t( "IDs" ) )}
+        {showCount( user.journal_posts_count, t( "Journal-Posts" ) )}
       </View>
-      <Text>Bio:</Text>
+      <Text>{t( "BIO" )}</Text>
       { user && user.description && user.description.length > 0  && (
         <HTML
           contentWidth={width}
           source={{ html: user.description }}
         />
       ) }
-      <Text>Projects</Text>
+      <Text>{t( "PROJECTS" )}</Text>
       <UserProjects userId={userId} />
-      <Text>Following</Text>
-      <Text>Followers</Text>
     </ViewWithFooter>
   );
 };

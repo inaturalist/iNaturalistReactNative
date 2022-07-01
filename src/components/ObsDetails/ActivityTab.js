@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { View, Text } from "react-native";
+import { t } from "i18next";
 
 import ActivityItem from "./ActivityItem";
 
@@ -15,7 +16,7 @@ type Props = {
 
 const ActivityTab = ( { comments, ids, navToTaxonDetails, navToUserProfile, toggleRefetch }: Props ): React.Node => {
   if ( comments.length === 0 && ids.length === 0 ) {
-    return <Text>no comments or ids to display</Text>;
+    return <Text>{t( "No-comments-or-ids-to-display" )}</Text>;
   }
 
   const activityItems = ids.concat( comments )

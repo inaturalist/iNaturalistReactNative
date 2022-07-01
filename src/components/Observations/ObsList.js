@@ -14,6 +14,7 @@ import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import uploadObservation from "../../providers/uploadHelpers/uploadObservation";
 import Observation from "../../models/Observation";
 import useObservations from "./hooks/useObservations";
+import { t } from "i18next";
 
 const ObsList = ( ): Node => {
   const { params } = useRoute( );
@@ -41,7 +42,7 @@ const ObsList = ( ): Node => {
 
     return (
       <>
-        <Text>Whenever you get internet connection, you can sync your observations to iNaturalist.</Text>
+        <Text>{t( "Whenever-you-get-internet-connection-you-can-upload" )}</Text>
         <RoundGreenButton
           buttonText="Upload-X-Observations"
           count={obsToUpload.length}

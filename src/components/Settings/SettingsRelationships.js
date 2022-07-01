@@ -4,6 +4,7 @@ import {Alert, Image, Text, TextInput, View} from "react-native";
 import {viewStyles, textStyles} from "../../styles/settings/settings";
 import React, {useEffect} from "react";
 import type { Node } from "react";
+import { t } from "i18next";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import {useDebounce} from "use-debounce";
 import inatjs from "inaturalistjs";
@@ -235,7 +236,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
         <Text>{user.login}</Text>
         <Text>{user.name}</Text>
       </View>
-      <Pressable style={viewStyles.removeRelationship} onPress={() => unblockUser( user )}><Text>Unblock</Text></Pressable>
+      <Pressable style={viewStyles.removeRelationship} onPress={() => unblockUser( user )}><Text>{t( "Unblock" )}</Text></Pressable>
     </View>;
   };
 
@@ -299,7 +300,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
         <Text>{user.login}</Text>
         <Text>{user.name}</Text>
       </View>
-      <Pressable style={viewStyles.removeRelationship} onPress={() => unmuteUser( user )}><Text>Unmute</Text></Pressable>
+      <Pressable style={viewStyles.removeRelationship} onPress={() => unmuteUser( user )}><Text>{t( "Unmute" )}</Text></Pressable>
     </View>;
   };
 
@@ -322,7 +323,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
               onValueChange={( x ) => { updateRelationship( relationship, { following: !relationship.following } ); }}
               tintColors={{false: colors.inatGreen, true: colors.inatGreen}}
             />
-            <Text>Following</Text>
+            <Text>{t( "Following" )}</Text>
           </View>
           <View style={[viewStyles.row, viewStyles.notificationCheckbox]}>
             <CheckBox
@@ -330,19 +331,19 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
               onValueChange={( x ) => { updateRelationship( relationship, { trust: !relationship.trust } ); }}
               tintColors={{false: colors.inatGreen, true: colors.inatGreen}}
             />
-            <Text>Trust with hidden coordinates</Text>
+            <Text>{t( "Trust-with-hidden-coordinates" )}</Text>
           </View>
         </View>
       </View>
-      <Text>Added on {relationship.created_at}</Text>
-      <Pressable style={viewStyles.removeRelationship} onPress={() => askToRemoveRelationship( relationship )}><Text>Remove Relationship</Text></Pressable>
+      <Text>{t( "Added-on-date", { date: relationship.created_at } )}</Text>
+      <Pressable style={viewStyles.removeRelationship} onPress={() => askToRemoveRelationship( relationship )}><Text>{t( "Remove-Relationship" )}</Text></Pressable>
     </View>;
   };
 
 
   return (
     <View style={viewStyles.column}>
-      <Text style={textStyles.title}>Relationships</Text>
+      <Text style={textStyles.title}>{t( "Relationships" )}</Text>
       <View style={viewStyles.row}>
         <TextInput
           style={viewStyles.textInput}
@@ -361,7 +362,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
           />
         </Pressable>
       </View>
-      <Text>Following</Text>
+      <Text>{t( "Following" )}</Text>
       <View style={viewStyles.row}>
         <View style={viewStyles.selectorContainer}>
           <Picker
@@ -381,7 +382,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
         </View>
       </View>
 
-      <Text>Trusted</Text>
+      <Text>{t( "Trusted" )}</Text>
       <View style={viewStyles.row}>
         <View style={viewStyles.selectorContainer}>
           <Picker
@@ -401,7 +402,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
         </View>
       </View>
 
-      <Text>Sort By</Text>
+      <Text>{t( "Sort-By" )}</Text>
       <View style={viewStyles.row}>
         <View style={viewStyles.selectorContainer}>
           <Picker
@@ -432,13 +433,13 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
         <Pressable disabled={page === totalPages} style={viewStyles.pageButton} onPress={() => setPage( page + 1 )}><Text>&gt;</Text></Pressable>
       </View>}
 
-      <Text style={textStyles.title}>Blocked Users</Text>
+      <Text style={textStyles.title}>{t( "Blocked-Users" )}</Text>
       <UserSearchInput userId={0} onUserChanged={( u ) => blockUser( u )} />
       {blockedUsers.map( ( user ) => (
         <BlockedUser key={user.id} user={user} />
       ) )}
 
-      <Text style={textStyles.title}>Muted Users</Text>
+      <Text style={textStyles.title}>{t( "Muted-Users" )}</Text>
       <UserSearchInput userId={0} onUserChanged={( u ) => muteUser( u )} />
       {mutedUsers.map( ( user ) => (
         <MutedUser key={user.id} user={user} />

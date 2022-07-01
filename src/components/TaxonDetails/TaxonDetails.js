@@ -71,7 +71,7 @@ const TaxonDetails = ( ): React.Node => {
             accessibilityRole="link"
             testID="TaxonDetails.wikipedia"
           >
-            <Text style={textStyles.header}>Read more on Wikipedia</Text>
+            <Text style={textStyles.header}>{ t( "Read-more-on-Wikipedia" )}</Text>
           </Pressable>
           <Text style={textStyles.header}>{ t( "TAXONOMY-header" ) }</Text>
           {displayTaxonomyList}

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { View, Text } from "react-native";
 import type { Node } from "react";
+import { t } from "i18next";
 
 import { textStyles } from "../../styles/obsDetails/obsDetails";
 import Map from "../SharedComponents/Map";
@@ -39,7 +40,7 @@ const DataTab = ( { observation }: Props ): Node => {
 
   return (
     <View>
-      <Text style={textStyles.dataTabText}>Notes</Text>
+      <Text style={textStyles.dataTabText}>{t( "Notes" )}</Text>
       <Text style={textStyles.dataTabText}>{observation.description || "no description"}</Text>
       <Map
         obsLatitude={observation.latitude}
@@ -49,10 +50,10 @@ const DataTab = ( { observation }: Props ): Node => {
       <Text style={textStyles.dataTabText}>
         {checkCamelAndSnakeCase( observation, "placeGuess" )}
       </Text>
-      <Text style={textStyles.dataTabText}>Date</Text>
-      <Text style={textStyles.dataTabText}>{`date observed ${displayTimeObserved( )}`}</Text>
-      <Text style={textStyles.dataTabText}>{`date created ${observation._created_at}`}</Text>
-      <Text style={textStyles.dataTabText}>Projects</Text>
+      <Text style={textStyles.dataTabText}>{t( "Date" )}</Text>
+      <Text style={textStyles.dataTabText}>{`${t( "Date-observed-colon" )} ${displayTimeObserved( )}`}</Text>
+      <Text style={textStyles.dataTabText}>{`${t( "Date-uploaded-colon" )} ${observation._synced_at}`}</Text>
+      <Text style={textStyles.dataTabText}>{t( "Projects" )}</Text>
       {/* TODO: create a custom dropdown that doesn't use FlatList */}
       <DropdownPicker
         searchQuery={project}
@@ -61,12 +62,11 @@ const DataTab = ( { observation }: Props ): Node => {
         sources="projects"
         value={projectId}
       />
-      <Text style={textStyles.dataTabText}>Observation Fields & Annotations</Text>
-      <Text style={textStyles.dataTabText}>Other Data</Text>
+      <Text style={textStyles.dataTabText}>{t( "Other-Data" )}</Text>
       {attribution && <Text style={textStyles.dataTabText}>{attribution}</Text>}
       {application && (
         <>
-          <Text style={textStyles.dataTabText}>This observation was created using:</Text>
+          <Text style={textStyles.dataTabText}>{t( "This-observation-was-created-using" )}</Text>
           <Text style={textStyles.dataTabText}>{application}</Text>
         </>
       )}
