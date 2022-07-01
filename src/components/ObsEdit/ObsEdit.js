@@ -7,6 +7,7 @@ import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { Headline, Portal, Modal } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
@@ -70,7 +71,7 @@ const ObsEdit = ( ): Node => {
                 <Pressable
                   onPress={showPrevObservation}
                 >
-                  <Text>previous obs</Text>
+                  <Icon name="arrow-left" size={35} />
                 </Pressable>
               )}
               <Text>{`${currentObsIndex + 1} of ${observations.length}`}</Text>
@@ -78,7 +79,7 @@ const ObsEdit = ( ): Node => {
                 <Pressable
                   onPress={showNextObservation}
                 >
-                  <Text>next obs</Text>
+                  <Icon name="arrow-right" size={35} />
                 </Pressable>
               )}
             </View>
@@ -141,7 +142,6 @@ const ObsEdit = ( ): Node => {
         <IdentificationSection />
         <Headline style={textStyles.headerText}>{t( "Other-Data" )}</Headline>
         <OtherDataSection />
-        {!isLoggedIn && <Text style={textStyles.text}>you must be logged in to upload observations</Text>}
         <View style={viewStyles.row}>
           <View style={viewStyles.saveButton}>
             <RoundGreenButton

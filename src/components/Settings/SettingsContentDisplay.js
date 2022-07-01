@@ -10,6 +10,7 @@ import PlaceSearchInput from "./PlaceSearchInput";
 import {inatLicenses} from "../../dictionaries/licenses";
 import type { Node } from "react";
 import type { SettingsProps } from "./types";
+import { t } from "i18next";
 
 const PROJECT_SETTINGS = {
   any: "Any",
@@ -73,8 +74,8 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
 
   return (
     <>
-      <Text style={textStyles.title}>Project Settings</Text>
-      <Text style={textStyles.subTitle}>Which traditional projects can add your observations?</Text>
+      <Text style={textStyles.title}>{t( "Project-Settings" )}</Text>
+      <Text style={textStyles.subTitle}>{t( "Which-traditional-projects-can-add-your-observations" )}</Text>
       <View style={viewStyles.selectorContainer}>
         <Picker
           style={viewStyles.selector}
@@ -92,7 +93,7 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
         </Picker>
       </View>
 
-      <Text style={[textStyles.title, textStyles.marginTop]}>Taxonomy Settings</Text>
+      <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Taxonomy-Settings" )}</Text>
       <Pressable style={[viewStyles.row, viewStyles.notificationCheckbox]}  onPress={() => {
         onSettingsModified( { ...settings, prefers_automatic_taxonomic_changes: !settings.prefers_automatic_taxonomic_changes } );
       }}>
@@ -103,12 +104,12 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
           }}
           tintColors={{false: colors.inatGreen, true: colors.inatGreen}}
         />
-        <Text style={textStyles.notificationTitle}>Automatically update my content for taxon changes</Text>
+        <Text style={textStyles.notificationTitle}>{t( "Automatically-update-my-content-for-taxon-changes" )}</Text>
       </Pressable>
 
-      <Text style={[textStyles.title, textStyles.marginTop]}>Names</Text>
-      <Text style={textStyles.subTitle}>Display</Text>
-      <Text>This is how all taxon names will be displayed to you across iNaturalist</Text>
+      <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Names" )}</Text>
+      <Text style={textStyles.subTitle}>{t( "Display" )}</Text>
+      <Text>{t( "This-is-how-all-taxon-names-will-be-displayed-to-you-across-iNaturalist" )}</Text>
       <View style={viewStyles.selectorContainer}>
         <Picker
           style={viewStyles.selector}
@@ -145,10 +146,10 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
           ) )}
         </Picker>
       </View>
-      <Text style={textStyles.subTitle}>Prioritize common names used in this place.</Text>
+      <Text style={textStyles.subTitle}>{t( "Prioritize-common-names-used-in-this-place" )}</Text>
       <PlaceSearchInput placeId={settings.place_id} onPlaceChanged={( p ) => onSettingsModified( { ...settings, place_id: p} )} />
 
-      <Text style={[textStyles.title, textStyles.marginTop]}>Community Moderation Settings</Text>
+      <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Community-Moderation-Settings" )}</Text>
       <Pressable style={[viewStyles.row, viewStyles.notificationCheckbox]}  onPress={() => {
         onSettingsModified( { ...settings, prefers_community_taxa: !settings.prefers_community_taxa } );
       }}>
@@ -159,9 +160,9 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
           }}
           tintColors={{false: colors.inatGreen, true: colors.inatGreen}}
         />
-        <Text style={textStyles.notificationTitle}>Accept community identifications</Text>
+        <Text style={textStyles.notificationTitle}>{t( "Accept-community-identifications" )}</Text>
       </Pressable>
-      <Text style={textStyles.subTitle}>Who can add observation fields to my observations?</Text>
+      <Text style={textStyles.subTitle}>{t( "Who-can-add-observation-fields-to-my-observations" )}</Text>
       <View style={viewStyles.selectorContainer}>
         <Picker
           style={viewStyles.selector}
@@ -179,7 +180,7 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
         </Picker>
       </View>
 
-      <Text style={[textStyles.title, textStyles.marginTop]}>Licensing</Text>
+      <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Licensing" )}</Text>
       <LicenseSelector
         title="Default observation license"
         value={settings.preferred_observation_license}

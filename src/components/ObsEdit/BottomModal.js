@@ -1,13 +1,14 @@
 // @flow
 
 import React, { useContext } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import { viewStyles } from "../../styles/obsEdit/obsEdit";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import { ObsEditContext } from "../../providers/contexts";
+import PlaceholderText from "../PlaceholderText";
 
 const BottomModal = ( ): Node => {
   const navigation = useNavigation( );
@@ -29,8 +30,7 @@ const BottomModal = ( ): Node => {
 
   return (
     <View style={viewStyles.bottomModal}>
-      <Text>cancel creating observations?</Text>
-      <Text>by exiting...</Text>
+      <PlaceholderText text="cancel creating observations?" />
       <View style={viewStyles.row}>
         <View style={viewStyles.saveButton}>
           <RoundGreenButton

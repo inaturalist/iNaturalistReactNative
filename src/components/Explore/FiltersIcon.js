@@ -1,8 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { Text, Pressable } from "react-native";
+import { Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { viewStyles } from "../../styles/observations/messagesIcon";
 
@@ -15,7 +16,7 @@ const FiltersIcon = ( ): React.Node => {
       onPress={navToExploreFilters}
       style={viewStyles.messages}
     >
-      <Text>filters</Text>
+      <Icon name="filter-variant" size={35} />
     </Pressable>
   );
 };

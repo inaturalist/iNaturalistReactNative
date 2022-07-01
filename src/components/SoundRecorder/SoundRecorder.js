@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder";
 import { ObsEditContext } from "../../providers/contexts";
+import PlaceholderText from "../PlaceholderText";
 
 // needs to be outside of the component for stopRecorder to work correctly
 const audioRecorderPlayer = new AudioRecorderPlayer( );
@@ -113,7 +114,7 @@ const SoundRecorder = ( ): Node => {
         <Pressable
           onPress={startRecording}
         >
-          <Text style={[textStyles.alignCenter, textStyles.duration]}>start</Text>
+          <Text style={[textStyles.alignCenter, textStyles.duration]}>{t( "Press-Record-to-Start" )}</Text>
         </Pressable>
       );
     } else if ( status === "paused" ) {
@@ -121,17 +122,17 @@ const SoundRecorder = ( ): Node => {
         <Pressable
           onPress={resumeRecording}
         >
-          <Text style={[textStyles.alignCenter, textStyles.duration]}>resume</Text>
+          <Text style={[textStyles.alignCenter, textStyles.duration]}>{t( "Paused" )}</Text>
         </Pressable>
       );
     } else if ( status === "playing" ) {
-      return <Text style={[textStyles.alignCenter, textStyles.duration]}>playing</Text>;
+      return <Text style={[textStyles.alignCenter, textStyles.duration]}>{t( "Playing-Sound" )}</Text>;
     } else {
       return (
         <Pressable
           onPress={stopRecording}
         >
-          <Text style={[textStyles.alignCenter, textStyles.duration]}>stop</Text>
+          <PlaceholderText text="stop" style={[textStyles.alignCenter, textStyles.duration]} />
         </Pressable>
       );
     }
@@ -144,7 +145,7 @@ const SoundRecorder = ( ): Node => {
           onPress={playRecording}
           style={viewStyles.playbackButton}
         >
-          <Text>play</Text>
+          <Text>{t( "Play" )}</Text>
         </Pressable>
       );
     } else if ( status === "playing" ) {
@@ -153,7 +154,7 @@ const SoundRecorder = ( ): Node => {
           onPress={stopPlayback}
           style={viewStyles.playbackButton}
         >
-          <Text>stop</Text>
+          <PlaceholderText text="stop" />
         </Pressable>
       );
     }
@@ -173,7 +174,6 @@ const SoundRecorder = ( ): Node => {
         </View>
         <View>
           {/* TODO: add visualization for sound recording */}
-          <Text>insert visualization here</Text>
         </View>
         <View>
           <View style={viewStyles.recordButtonRow}>

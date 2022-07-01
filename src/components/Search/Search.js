@@ -8,6 +8,7 @@ import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import InputField from "../SharedComponents/InputField";
 import { viewStyles, imageStyles } from "../../styles/search/search";
+import PlaceholderText from "../PlaceholderText";
 
 const Search = ( ): React.Node => {
   const navigation = useNavigation( );
@@ -59,14 +60,14 @@ const Search = ( ): React.Node => {
           testID="Search.taxa"
           accessibilityRole="button"
         >
-          <Text>search taxa</Text>
+          <PlaceholderText text="search taxa" />
         </Pressable>
         <Pressable
           onPress={setUserSearch}
           testID="Search.users"
           accessibilityRole="button"
         >
-          <Text>search users</Text>
+          <PlaceholderText text="search users" />
         </Pressable>
       </View>
       <InputField
