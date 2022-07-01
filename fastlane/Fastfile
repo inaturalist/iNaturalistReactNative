@@ -1,5 +1,13 @@
 require "fileutils"
 
+appfile_path = File.join( File.expand_path( File.dirname( __FILE__ ) ), "Appfile" )
+unless File.exist?( appfile_path )
+  UI.abort_with_message! <<~NO_APPFILE_ERROR.gsub( /\s+/, " " ).strip
+    Could not find #{appfile_path}. Copy the example file in that directory to
+    that path and fill in the relevant values to use Fastlane.
+  NO_APPFILE_ERROR
+end
+
 VERSION = File.open( "../package.json" ) { | f | JSON.parse( f.read )["version"] }
 editor_cmd = [
   `which vi`,
@@ -144,6 +152,18 @@ end
 platform :android do
   lane :build do
     desc "Build release files for Android"
+    keystore_properties_path = File.join(
+      File.expand_path( File.dirname( __FILE__ ) ),
+      "..",
+      "android",
+      "keystore.properties"
+    )
+    unless File.exist?( keystore_properties_path )
+      UI.abort_with_message! <<~NO_KEYSTORE_PROPERTIES_ERROR.gsub( /\s+/, " " ).strip
+        Could not find #{keystore_properties_path}. Copy the example file in that directory to
+        that path and fill in the relevant values to build for Android.
+      NO_KEYSTORE_PROPERTIES_ERROR
+    end
     build_number = get_build_number( xcodeproj: XCODEPROJ )
     # Build AAB. This should write
     # android/app/build/outputs/bundle/release/PACKAGE_ID-vVERSION_NAME+VERSION_CODE-release.aab
