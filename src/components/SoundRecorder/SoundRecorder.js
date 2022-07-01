@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { viewStyles, textStyles } from "../../styles/soundRecorder/soundRecorder";
 import { ObsEditContext } from "../../providers/contexts";
+import PlaceholderText from "../PlaceholderText";
 
 // needs to be outside of the component for stopRecorder to work correctly
 const audioRecorderPlayer = new AudioRecorderPlayer( );
@@ -131,7 +132,7 @@ const SoundRecorder = ( ): Node => {
         <Pressable
           onPress={stopRecording}
         >
-          <Text style={[textStyles.alignCenter, textStyles.duration]}>stop</Text>
+          <PlaceholderText text="stop" style={[textStyles.alignCenter, textStyles.duration]} />
         </Pressable>
       );
     }
@@ -153,7 +154,7 @@ const SoundRecorder = ( ): Node => {
           onPress={stopPlayback}
           style={viewStyles.playbackButton}
         >
-          <Text>stop</Text>
+          <PlaceholderText text="stop" />
         </Pressable>
       );
     }
@@ -173,7 +174,6 @@ const SoundRecorder = ( ): Node => {
         </View>
         <View>
           {/* TODO: add visualization for sound recording */}
-          <Text>insert visualization here</Text>
         </View>
         <View>
           <View style={viewStyles.recordButtonRow}>

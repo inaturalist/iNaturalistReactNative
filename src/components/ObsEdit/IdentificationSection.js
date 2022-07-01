@@ -11,6 +11,7 @@ import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
 import { ObsEditContext } from "../../providers/contexts";
+import PlaceholderText from "../PlaceholderText";
 
 const IdentificationSection = ( ): Node => {
   const {
@@ -61,7 +62,7 @@ const IdentificationSection = ( ): Node => {
           <Pressable
             onPress={navToSuggestionsPage}
           >
-            <Text style={textStyles.text}>edit</Text>
+            <PlaceholderText text="edit" style={[textStyles.text]} />
           </Pressable>
         </View>
       );

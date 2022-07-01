@@ -49,9 +49,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  wrap: {
-    maxWidth: 45
-  }
 } );
 
 export {

@@ -12,7 +12,7 @@ const EmptyList = ( ): Node => {
 
   return (
     <View style={viewStyles.center}>
-      <Text style={textStyles.text} testID="ObsList.emptyList">{t( "iNaturalist-is-a-community-of-naturalists." )}</Text>
+      <Text style={textStyles.text} testID="ObsList.emptyList">{t( "iNaturalist-is-a-community-of-naturalists" )}</Text>
     </View>
   );
 };

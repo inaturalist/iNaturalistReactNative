@@ -2,6 +2,7 @@
 
 import {Button, Image, Text, TextInput, View} from "react-native";
 import {viewStyles} from "../../styles/settings/settings";
+import { t } from "i18next";
 // $FlowIgnore
 import {launchImageLibrary} from "react-native-image-picker";
 import React from "react";
@@ -26,7 +27,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
 
   return (
     <>
-      <Text>Profile Picture</Text>
+      <Text>{t( "Profile-Picture" )}</Text>
       <View style={viewStyles.row}>
         <Image
           style={viewStyles.profileImage}
@@ -38,7 +39,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
         </View>
       </View>
       <View style={viewStyles.column}>
-        <Text>Username</Text>
+        <Text>{t( "Username" )}</Text>
         <TextInput
           style={viewStyles.textInput}
           onChangeText={( x ) => onSettingsModified( { ...settings, login: x} )}
@@ -46,7 +47,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
         />
       </View>
       <View style={viewStyles.column}>
-        <Text>Email</Text>
+        <Text>{t( "Email" )}</Text>
         <TextInput
           style={viewStyles.textInput}
           onChangeText={( x ) => onSettingsModified( { ...settings, email: x} )}
@@ -54,7 +55,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
         />
       </View>
       <View style={viewStyles.column}>
-        <Text>Display Name</Text>
+        <Text>{t( "Display-Name" )}</Text>
         <TextInput
           style={viewStyles.textInput}
           onChangeText={( x ) => onSettingsModified( { ...settings, name: x} )}
@@ -62,7 +63,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
         />
       </View>
       <View style={viewStyles.column}>
-        <Text>Bio</Text>
+        <Text>{t( "Bio" )}</Text>
         <TextInput
           style={viewStyles.textInput}
           multiline
