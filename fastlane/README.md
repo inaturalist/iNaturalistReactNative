@@ -29,6 +29,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
+### clean
+
+```sh
+[bundle exec] fastlane clean
+```
+
+
+
 ### release
 
 ```sh
@@ -74,6 +82,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
+### android clean
+
+```sh
+[bundle exec] fastlane android clean
+```
+
+
+
 ----
 
 
@@ -83,6 +99,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ```sh
 [bundle exec] fastlane ios build
+```
+
+
+
+### ios clean
+
+```sh
+[bundle exec] fastlane ios clean
 ```
 
 

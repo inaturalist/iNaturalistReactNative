@@ -189,6 +189,17 @@ platform :android do
       UI.abort_with_message! "Failed to create APK at #{apk_path}"
     end
   end
+
+  lane :clean do
+    Dir.glob( File.join( File.dirname( get_aab_path ), "*.aab" ) ).each do | aab_path |
+      UI.message "Deleting #{aab_path}"
+      File.delete aab_path
+    end
+    Dir.glob( File.join( File.dirname( get_apk_path ), "*.apk" ) ).each do | apk_path |
+      UI.message "Deleting #{apk_path}"
+      File.delete apk_path
+    end
+  end
 end
 
 platform :ios do
@@ -209,12 +220,25 @@ platform :ios do
       )
     end
   end
+
+  lane :clean do
+    Dir.glob( File.join( File.dirname( get_ipa_path ), "*.ipa" ) ).each do | ipa_path |
+      UI.message "Deleting #{ipa_path}"
+      File.delete ipa_path
+    end
+  end
 end
 
 lane :build do
   desc "Build release files for all platforms"
   Fastlane::LaneManager.cruise_lane "ios", "build"
   Fastlane::LaneManager.cruise_lane "android", "build"
+end
+
+lane :clean do
+  desc "Delete build artifacts"
+  Fastlane::LaneManager.cruise_lane "ios", "clean"
+  Fastlane::LaneManager.cruise_lane "android", "clean"
 end
 
 lane :release do
