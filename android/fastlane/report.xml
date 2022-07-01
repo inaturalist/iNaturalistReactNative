@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000691">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: android_get_version_name" time="0.000507">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: android_get_version_code" time="0.000443">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: slack" time="157.450487">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>
