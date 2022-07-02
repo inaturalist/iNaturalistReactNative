@@ -1,33 +1,33 @@
 // @flow
 
-import React, {useState, useContext, useEffect} from "react";
 import _ from "lodash";
-import {Text, View, Image, Pressable, ScrollView, LogBox, Alert} from "react-native";
+import React, {useState, useContext, useEffect} from "react";
 import type { Node } from "react";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { t } from "i18next";
+import { formatISO } from "date-fns";
+import { Text, View, Image, Pressable, ScrollView, LogBox, Alert } from "react-native";
+import { useTranslation } from "react-i18next";
 
-import { viewStyles, textStyles } from "../../styles/obsDetails/obsDetails";
 import ActivityTab from "./ActivityTab";
-import UserIcon from "../SharedComponents/UserIcon";
-import PhotoScroll from "../SharedComponents/PhotoScroll";
-import DataTab from "./DataTab";
-import { useRemoteObservation } from "./hooks/useRemoteObservation";
-import Taxon from "../../models/Taxon";
-import User from "../../models/User";
-import { ObsEditContext } from "../../providers/contexts";
-import InputField from "../SharedComponents/InputField";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import createComment from "./helpers/createComment";
-import faveObservation from "./helpers/faveObservation";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
-import {formatObsListTime} from "../../sharedHelpers/dateAndTime";
-import ObsDetailsHeader from "./ObsDetailsHeader";
+import createComment from "./helpers/createComment";
 import createIdentification from "../Identify/helpers/createIdentification";
-import {getUser} from "../LoginSignUp/AuthenticationService";
-import {formatISO} from "date-fns";
-import {useTranslation} from "react-i18next";
+import DataTab from "./DataTab";
+import faveObservation from "./helpers/faveObservation";
+import InputField from "../SharedComponents/InputField";
+import ObsDetailsHeader from "./ObsDetailsHeader";
+import PhotoScroll from "../SharedComponents/PhotoScroll";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Taxon from "../../models/Taxon";
+import TranslatedText from "../SharedComponents/TranslatedText";
+import User from "../../models/User";
+import UserIcon from "../SharedComponents/UserIcon";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import { ObsEditContext } from "../../providers/contexts";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRemoteObservation } from "./hooks/useRemoteObservation";
+import { viewStyles, textStyles } from "../../styles/obsDetails/obsDetails";
+import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
+import { getUser } from "../LoginSignUp/AuthenticationService";
 
 // this is getting triggered by passing dates, like _created_at, through
 // react navigation via the observation object. it doesn't seem to
@@ -59,7 +59,7 @@ const ObsDetails = ( ): Node => {
   const showDataTab = ( ) => setTab( 1 );
 
   const toggleRefetch = ( ) => setRefetch( !refetch );
-    
+
   useEffect( () => {
     if ( observation ) {setIds( observation.identifications.map( i => i ) );}
   }, [observation] );
@@ -218,14 +218,14 @@ const ObsDetails = ( ): Node => {
             onPress={showActivityTab}
             accessibilityRole="button"
           >
-            <Text style={textStyles.greenButtonText}>ACTIVITY</Text>
+            <TranslatedText style={textStyles.greenButtonText} text="ACTIVITY" />
           </Pressable>
           <Pressable
             onPress={showDataTab}
             testID="ObsDetails.DataTab"
             accessibilityRole="button"
           >
-            <Text style={textStyles.greenButtonText}>DATA</Text>
+            <TranslatedText style={textStyles.greenButtonText} text="DATA" />
           </Pressable>
         </View>
         {tab === 0
