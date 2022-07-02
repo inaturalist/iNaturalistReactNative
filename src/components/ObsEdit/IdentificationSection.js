@@ -31,7 +31,7 @@ const IdentificationSection = ( ): Node => {
 
   const updateIdentification = ( taxon ) => updateTaxon( taxon );
 
-  const navToAddID = ( ) => navigation.push( "AddID", { onIDAdded: onIDAdded } );
+  const navToAddID = ( ) => navigation.push( "AddID", { onIDAdded: onIDAdded, hideComment: true } );
 
   const renderIconicTaxaButton = ( { item } ) => {
     const id = iconicTaxaIds[item];

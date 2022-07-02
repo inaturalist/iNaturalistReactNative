@@ -28,7 +28,8 @@ type Props = {
   route: {
     params: {
       onIDAdded: ( identification: {[string]: any} ) => void,
-      goBackOnSave: boolean
+      goBackOnSave: boolean,
+      hideComment: boolean
     }
   }
 }
@@ -38,10 +39,10 @@ const AddID = ( { route }: Props ): React.Node => {
   const { t } = useTranslation( );
   const [comment, setComment] = useState( "" );
   const [commentDraft, setCommentDraft] = useState( "" );
-  const { onIDAdded, goBackOnSave } = route.params;
+  const { onIDAdded, goBackOnSave, hideComment } = route.params;
   const bottomSheetModalRef = useRef( null );
   const [taxonSearch, setTaxonSearch] = useState( "" );
-  const taxonList = useRemoteSearchResults( taxonSearch, "taxa", "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url,taxon.rank" ).map( r => r.taxon );
+  const taxonList = useRemoteSearchResults( taxonSearch, "taxa", "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url,taxon.rank" );
   const navigation = useNavigation( );
 
   const renderBackdrop = ( props ) => (
@@ -83,8 +84,9 @@ const AddID = ( { route }: Props ): React.Node => {
   const renderTaxonResult = ( {item} ) => {
     const taxonImage = item.default_photo ? { uri: item.default_photo.square_url } : Icon.getImageSourceSync( "leaf", 50, colors.inatGreen );
 
-    return <View style={viewStyles.taxonResult}>
-      <Image style={viewStyles.taxonResultIcon} source={taxonImage} />
+    return <View style={viewStyles.taxonResult} testID={`Search.taxa.${item.id}`}>
+      <Image style={viewStyles.taxonResultIcon} source={taxonImage} testID={`Search.taxa.${item.id}.photo`}
+      />
       <View style={viewStyles.taxonResultNameContainer}>
       <Text style={textStyles.taxonResultName}>{item.name}</Text>
       <Text style={textStyles.taxonResultScientificName}>{item.preferred_common_name}</Text>
@@ -97,7 +99,7 @@ const AddID = ( { route }: Props ): React.Node => {
   return (
     <BottomSheetModalProvider>
       <ViewNoFooter>
-        <AddIDHeader showEditComment={comment.length === 0} onEditCommentPressed={editComment} />
+        <AddIDHeader showEditComment={!hideComment && comment.length === 0} onEditCommentPressed={editComment} />
         <View>
           <View style={viewStyles.scrollView}>
             {comment.length > 0 && <View>
@@ -111,6 +113,7 @@ const AddID = ( { route }: Props ): React.Node => {
             }
             <Text>{t( "Search-Taxon-ID" )}</Text>
             <TextInput
+              testID={"SearchTaxon"}
               left={<TextInput.Icon name={() => <Icon style={textStyles.taxonSearchIcon} name={"magnify"} size={25} />} />}
               style={viewStyles.taxonSearch}
               value={taxonSearch}
