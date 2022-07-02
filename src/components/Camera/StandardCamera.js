@@ -7,6 +7,7 @@ import type { Node } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Avatar } from "react-native-paper";
 import Realm from "realm";
+import { t } from "i18next";
 
 import { viewStyles } from "../../styles/camera/standardCamera";
 import { ObsEditContext } from "../../providers/contexts";
@@ -101,7 +102,7 @@ const StandardCamera = ( ): Node => {
           style={viewStyles.nextButton}
           onPress={navToObsEdit}
         >
-          <Text style={textStyles.whiteText}>next</Text>
+          <Text style={textStyles.whiteText}>{t( "Next" )}</Text>
         </Pressable>
       </View>
     </View>

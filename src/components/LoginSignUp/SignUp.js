@@ -1,8 +1,9 @@
-// @flow strict-local
+// @flow
 
 import React, { useState } from "react";
 import { Button, Text, TextInput, View } from "react-native";
 import type { Node } from "react";
+import { t } from "i18next";
 
 import { viewStyles, textStyles } from "../../styles/login/login";
 import { registerUser } from "./AuthenticationService";
@@ -24,9 +25,9 @@ const SignUp = (): Node => {
 
   return (
     <View>
-      <Text style={textStyles.text}>Sign Up</Text>
+      <Text style={textStyles.text}>{t( "Sign-Up" )}</Text>
 
-      <Text style={textStyles.text}>Email</Text>
+      <Text style={textStyles.text}>{t( "Email" )}</Text>
       <TextInput
         style={viewStyles.input}
         onChangeText={setEmail}
@@ -34,14 +35,14 @@ const SignUp = (): Node => {
         autoComplete="email"
       />
 
-      <Text style={textStyles.text}>Username</Text>
+      <Text style={textStyles.text}>{t( "Username" )}</Text>
       <TextInput
         style={viewStyles.input}
         onChangeText={setUsername}
         value={username}
       />
 
-      <Text style={textStyles.text}>Password</Text>
+      <Text style={textStyles.text}>{t( "Password" )}</Text>
       <TextInput
         style={viewStyles.input}
         onChangeText={setPassword}

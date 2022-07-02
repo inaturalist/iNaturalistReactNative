@@ -1,9 +1,10 @@
 // @flow
 
 import * as React from "react";
-import { Pressable, Text } from "react-native";
+import { Pressable } from "react-native";
 
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
+import PlaceholderText from "../PlaceholderText";
 import ProjectList from "./ProjectList";
 
 type Props = {
@@ -23,7 +24,7 @@ const ProjectSearch = ( { q, clearSearch }: Props ): React.Node => {
       <Pressable
         onPress={clearSearch}
       >
-        <Text>cancel search</Text>
+        <PlaceholderText text="cancel search" />
       </Pressable>
       <ProjectList data={projectSearchResults} />
     </>
