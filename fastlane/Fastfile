@@ -10,7 +10,6 @@ end
 
 VERSION = File.open( "../package.json" ) { | f | JSON.parse( f.read )["version"] }
 editor_cmd = [
-  `which vi`,
   ENV["EDITOR"],
   `git config core.editor`,
   `which vi`
