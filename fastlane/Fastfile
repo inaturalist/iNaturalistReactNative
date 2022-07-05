@@ -124,7 +124,7 @@ lane :tag do
   release_notes.strip!
   FileUtils.rm( fname )
   if release_notes.strip.size == 0
-    reset_git_repo
+    reset_git_repo skip_clean: true
     UI.abort_with_message! "You gotta enter release notes!"
   end
 
