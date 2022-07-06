@@ -290,7 +290,7 @@ lane :release do
       upload_assets: [apk_path]
     )
   end
-  system "git checkout #{original_branch}"
+  system "git checkout #{original_branch}", exception: true
 end
 
 lane :internal do
