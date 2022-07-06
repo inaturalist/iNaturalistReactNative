@@ -34,7 +34,7 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
   }, [user] );
 
   return (
-    <>
+    <View style={[item.temporary ? viewStyles.temporaryRow : null]}>
       <View style={[viewStyles.userProfileRow, viewStyles.rowBorder]}>
         {user && (
           <Pressable
@@ -73,7 +73,7 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
       <View style={viewStyles.speciesDetailRow}>
         <Text>{item.body}</Text>
       </View>
-    </>
+    </View>
   );
 };
 

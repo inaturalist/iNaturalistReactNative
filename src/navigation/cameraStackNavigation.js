@@ -14,6 +14,7 @@ import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import PhotoGallery from "../components/PhotoLibrary/PhotoGallery";
 import PermissionGate from "../components/SharedComponents/PermissionGate";
 import Mortal from "../components/SharedComponents/Mortal";
+import AddID from "../components/ObsEdit/AddID";
 
 const Stack = createNativeStackNavigator( );
 
@@ -78,6 +79,11 @@ const CameraStackNavigation = ( ): React.Node => (
             headerTitle: ( props ) => <CustomHeaderWithTranslation {...props} headerText="IDENTIFICATION" />,
             headerShown: true
           }}
+        />
+        <Stack.Screen
+          name="AddID"
+          component={AddID}
+          options={hideHeader}
         />
       </Stack.Navigator>
     </PhotoGalleryProvider>

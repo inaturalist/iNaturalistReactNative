@@ -10,7 +10,6 @@ type Props = {
 }
 
 const PlaceholderText = ( { text, style }: Props ): Node => (
-  // eslint-disable-next-line react-native/no-inline-styles
   <Text style={[{ color: "red", textTransform: "uppercase", fontSize: 30 }].concat( style )}>
     { text }
   </Text>
