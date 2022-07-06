@@ -10,9 +10,12 @@ import type {
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   container: {
-    paddingLeft: 40,
-    paddingRight: 40,
-    paddingTop: 40
+    flex: 1
+  },
+  paddedContainer: {
+    flex: 1,
+    padding: "10%",
+    justifyContent: "center"
   },
   greenButton: {
     backgroundColor: colors.inatGreen,
@@ -33,9 +36,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     height: 50,
     alignSelf: "center",
     marginTop: 30,
-    borderRadius: 10,
-    justifyContent: "center",
-    backgroundColor: colors.midGray
+    justifyContent: "center"
+  },
+  logoutForm: {
+    alignItems: "center"
   }
 } );
 

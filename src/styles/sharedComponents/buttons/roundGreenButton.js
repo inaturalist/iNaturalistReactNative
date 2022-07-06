@@ -12,7 +12,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     alignSelf: "center"
   },
   disabled: {
-    backgroundColor: colors.lightGray
+    backgroundColor: colors.inatGreenDisabled
   }
 } );
 
