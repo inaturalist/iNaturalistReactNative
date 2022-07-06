@@ -1,0 +1,352 @@
+require "fileutils"
+
+appfile_path = File.join( File.expand_path( File.dirname( __FILE__ ) ), "Appfile" )
+unless File.exist?( appfile_path )
+  UI.abort_with_message! <<~NO_APPFILE_ERROR.gsub( /\s+/, " " ).strip
+    Could not find #{appfile_path}. Copy the example file in that directory to
+    that path and fill in the relevant values to use Fastlane.
+  NO_APPFILE_ERROR
+end
+
+VERSION = File.open( "../package.json" ) { | f | JSON.parse( f.read )["version"] }
+editor_cmd = [
+  ENV["EDITOR"],
+  `git config core.editor`,
+  `which vi`
+].map{| e | e.to_s.strip }.detect {| e | !e.empty? }
+if editor_cmd.nil?
+  UI.abort_with_message! <<~NO_EDITOR_ERROR
+    Could not find an editor, not even vi. Set the EDITOR environmental
+    variable or the core.editor git config"
+  NO_EDITOR_ERROR
+end
+editor_cmd_needs_to_wait = ( editor_cmd =~ /^code / || editor_cmd =~ /^subl / ) && !editor_cmd.include?( "-w" )
+EDITOR = editor_cmd_needs_to_wait ? "#{editor_cmd} -w" : editor_cmd
+XCODEPROJ = "ios/iNaturalistReactNative.xcodeproj"
+PACKAGE_ID = CredentialsManager::AppfileConfig.try_fetch_value( :package_name )
+
+def set_android_version_code( new_version_code )
+  build_gradle_path = "../android/app/build.gradle"
+  new_gradle = File.read( build_gradle_path ).sub( /versionCode\s+\d+/, "versionCode #{new_version_code}" )
+  File.open( build_gradle_path, "w" ) { | f | f.write( new_gradle ) }
+end
+
+def set_android_version_name( new_version_name )
+  build_gradle_path = "../android/app/build.gradle"
+  new_gradle = File.read( build_gradle_path ).sub( /versionName\s+".+"/, "versionName \"#{VERSION}\"" )
+  File.open( build_gradle_path, "w" ) { | f | f.write( new_gradle ) }
+end
+
+def get_changelog_path( build_number = nil )
+  build_number ||= get_build_number( xcodeproj: XCODEPROJ )
+  changelog_dir_path = File.join( "metadata", "android", "en-US", "changelogs" )
+  FileUtils.mkpath( changelog_dir_path )
+  File.join( changelog_dir_path, "#{build_number}.txt" )
+end
+
+def get_aab_path( build_number = nil )
+  build_number ||= get_build_number( xcodeproj: XCODEPROJ )
+  aab_path = File.join(
+    File.expand_path( File.dirname( __FILE__ ) ),
+    "..",
+    "android",
+    "app",
+    "build",
+    "outputs",
+    "bundle",
+    "release",
+    "#{PACKAGE_ID}-v#{VERSION}+#{build_number}-release.aab"
+  )
+end
+
+def get_apk_path( build_number = nil )
+  build_number ||= get_build_number( xcodeproj: XCODEPROJ )
+  aab_path = File.join(
+    File.expand_path( File.dirname( __FILE__ ) ),
+    "..",
+    "android",
+    "app",
+    "build",
+    "outputs",
+    "apk",
+    "release",
+    "#{PACKAGE_ID}-v#{VERSION}+#{build_number}-release.apk"
+  )
+end
+
+def get_ipa_path( build_number = nil )
+  build_number ||= get_build_number( xcodeproj: XCODEPROJ )
+  aab_path = File.join(
+    File.expand_path( File.dirname( __FILE__ ) ),
+    "..",
+    "ios",
+    "build",
+    "#{PACKAGE_ID}-v#{VERSION}+#{build_number}.ipa"
+  )
+end
+
+lane :tag do
+  desc "Add a new tag with an incremented version"
+  ensure_git_status_clean
+  last_tag = last_git_tag
+  # Increment the iOS build number
+  increment_build_number( xcodeproj: XCODEPROJ )
+  build_number = get_build_number( xcodeproj: XCODEPROJ )
+  # set android/app/build.gradle versionCode to this build_number
+  set_android_version_code( build_number )
+  # set android/app/build.gradle versionName to VERSION
+  set_android_version_name( VERSION )
+  tag = "v#{VERSION}+#{build_number}"
+
+  changes = changelog_from_git_commits( pretty: "# * %h %s (%an, %ai)" )
+  if last_tag && changes.empty?
+    UI.abort_with_message! "Nothing has changed since the last tag (#{last_tag})"
+  end
+  
+  # Get release notes
+  # Bit silly but takes advantage of existing syntax highlighting
+  fname = "COMMIT_EDITMSG"
+  File.open( fname, "w" ) do | f |
+    f << <<~INSTRUCTIONS
+
+
+      # Enter notes about what's new in #{tag}. Lines beginning with # will be ignored.
+      #
+      # Here's what changed since the last tag:
+      #{changes}
+    INSTRUCTIONS
+  end
+  system "#{EDITOR} #{fname}", exception: true
+  release_notes = ""
+  File.readlines( fname ).each do | line |
+    release_notes += line unless line[0] == "#"
+  end
+  release_notes.strip!
+  FileUtils.rm( fname )
+  if release_notes.strip.size == 0
+    reset_git_repo skip_clean: true
+    UI.abort_with_message! "You gotta enter release notes!"
+  end
+
+  # Write release notes to a place where they can be translated and add that file to git
+  changelog_path = get_changelog_path( build_number )
+  File.open( changelog_path, "w" ) do | f |
+    f << "#{release_notes}\n"
+  end
+  changelog_git_path = File.join( "fastlane", changelog_path )
+  git_add( path: changelog_git_path )
+
+  # commit
+  commit_version_bump( message: tag, xcodeproj: XCODEPROJ, include: [
+    "android/app/build.gradle",
+    changelog_git_path
+  ] )
+  push_to_git_remote
+
+  # Create a tag for this release
+  add_git_tag( tag: tag )
+  push_git_tags
+end
+
+platform :android do
+  lane :build do
+    desc "Build release files for Android"
+    keystore_properties_path = File.join(
+      File.expand_path( File.dirname( __FILE__ ) ),
+      "..",
+      "android",
+      "keystore.properties"
+    )
+    unless File.exist?( keystore_properties_path )
+      UI.abort_with_message! <<~NO_KEYSTORE_PROPERTIES_ERROR.gsub( /\s+/, " " ).strip
+        Could not find #{keystore_properties_path}. Copy the example file in that directory to
+        that path and fill in the relevant values to build for Android.
+      NO_KEYSTORE_PROPERTIES_ERROR
+    end
+    build_number = get_build_number( xcodeproj: XCODEPROJ )
+    # Build AAB. This should write
+    # android/app/build/outputs/bundle/release/PACKAGE_ID-vVERSION_NAME+VERSION_CODE-release.aab
+    aab_path = get_aab_path( build_number )
+    if File.exist?( aab_path )
+      UI.important "AAB already exists at #{aab_path}"
+    else
+      gradle( task: "bundle", project_dir: "android" )
+    end
+    unless File.exist?( aab_path )
+      UI.abort_with_message! "Failed to create AAB at #{aab_path}"
+    end
+
+    # Build APK. This should write
+    # android/app/build/outputs/apk/release/PACKAGE_ID-vVERSION_NAME+VERSION_CODE-release.apk
+    apk_path = get_apk_path( build_number )
+    if File.exist?( apk_path )
+      UI.important "APK already exists at #{apk_path}"
+    else
+      gradle( task: "build", project_dir: "android", flags: "-x lint" )
+    end
+    unless File.exist?( apk_path )
+      UI.abort_with_message! "Failed to create APK at #{apk_path}"
+    end
+  end
+
+  lane :clean do
+    Dir.glob( File.join( File.dirname( get_aab_path ), "*.aab" ) ).each do | aab_path |
+      UI.message "Deleting #{aab_path}"
+      File.delete aab_path
+    end
+    Dir.glob( File.join( File.dirname( get_apk_path ), "*.apk" ) ).each do | apk_path |
+      UI.message "Deleting #{apk_path}"
+      File.delete apk_path
+    end
+  end
+end
+
+platform :ios do
+  lane :build do
+    desc "Build release files for iOS"
+    # Build iOS app
+    get_certificates
+    get_provisioning_profile
+    ipa_path = get_ipa_path
+    if File.exist?( ipa_path )
+      UI.important "IPA already exists at #{ipa_path}"
+    else
+      build_app(
+        workspace: File.join( "ios", "iNaturalistReactNative.xcworkspace" ),
+        scheme: "iNaturalistReactNative",
+        output_directory: File.dirname( ipa_path ),
+        output_name: File.basename( ipa_path )
+      )
+    end
+  end
+
+  lane :clean do
+    Dir.glob( File.join( File.dirname( get_ipa_path ), "*.ipa" ) ).each do | ipa_path |
+      UI.message "Deleting #{ipa_path}"
+      File.delete ipa_path
+    end
+  end
+end
+
+lane :build do
+  desc "Build release files for all platforms"
+  Fastlane::LaneManager.cruise_lane "ios", "build"
+  Fastlane::LaneManager.cruise_lane "android", "build"
+end
+
+lane :clean do
+  desc "Delete build artifacts"
+  Fastlane::LaneManager.cruise_lane "ios", "clean"
+  Fastlane::LaneManager.cruise_lane "android", "clean"
+end
+
+lane :release do
+  desc "Make github release for the latest tag and make builds"
+  last_tag = last_git_tag
+  if last_tag.nil? || last_tag.empty?
+    UI.abort_with_message! "No tags have been added yet. Try starting with `fastlane tag`"
+  end
+  original_branch = git_branch
+  system "git checkout #{last_tag}", exception: true
+  build_number = get_build_number( xcodeproj: XCODEPROJ )
+  if build_number.to_s != last_tag.split( "+" ).last
+    UI.abort_with_message! <<~MSG
+      The last tag doesn't match the current build number. Either make a new
+      tag or check out the tag before releasing.
+    MSG
+  end
+  changelog_path = get_changelog_path( build_number )
+  unless File.exist?( changelog_path )
+    UI.abort_with_message! <<~MSG
+      No change log file exists at #{changelog_path}. That should have been
+      created when you ran `fastlane tag`.
+    MSG
+  end
+
+  build
+
+  apk_path = get_apk_path( build_number )
+  unless File.exist?( apk_path )
+    UI.abort_with_message! "Failed to find APK at #{apk_path}"
+  end
+
+  github_release = get_github_release(
+    url: "inaturalist/iNaturalistReactNative",
+    version: last_tag,
+    api_token: ENV["GITHUB_TOKEN"]
+  )
+
+  if github_release
+    UI.important "Release already exists at #{github_release["url"]}. You need to manually upload any missing assets."
+  else
+    set_github_release(
+      repository_name: "inaturalist/iNaturalistReactNative",
+      api_token: ENV["GITHUB_TOKEN"],
+      name: last_tag,
+      tag_name: last_tag,
+      description: ( File.read( changelog_path ) rescue nil ),
+      # This is really just a fallback in case last_tag isn't really a tag
+      commitish: "main",
+      upload_assets: [apk_path]
+    )
+  end
+  system "git checkout #{original_branch}", exception: true
+end
+
+lane :internal do
+  desc "Push builds for the latest tag for internal testing"
+  # Ensure build files exist for the latest tag
+  aab_path = get_aab_path
+  unless File.exist?( aab_path )
+    UI.abort_with_message! "AAB does not exist at #{aab_path}. You may need to run the release lane before making a beta"
+  end
+  last_tag = last_git_tag
+  if last_tag.nil? || last_tag.empty?
+    UI.abort_with_message! "No tags have been added yet. Try starting with `fastlane tag`"
+  end
+  changelog_path = get_changelog_path
+  unless File.exist?( changelog_path )
+    UI.abort_with_message! <<~MSG
+      No change log file exists at #{changelog_path}. That should have been
+      created when you ran `fastlane tag`.
+    MSG
+  end
+  upload_to_play_store(
+    aab: aab_path,
+    track: "internal",
+    release_status: "draft",
+    version_name: last_tag
+  )
+  upload_to_testflight(
+    ipa: get_ipa_path,
+    changelog: ( File.read( changelog_path ) rescue nil )
+  )
+end
+
+lane :beta do
+  desc "Push builds for the latest tag for public testing"
+  # Push to play store beta track. In theory some time has elapsed between now
+  # and creating the release and translators have translated the release
+  # notes. In theory, and if we configure things correctly,
+  # upload_to_play_store will grab the appropriate release notes for the
+  # current version code, even if they aren't actually present for the tag
+  # the AAB was built from.
+  upload_to_play_store(
+    aab: aab_path,
+    track: "internal"
+  )
+  upload_to_play_store(
+    version_code: build_number,
+    track: "internal",
+    track_promote_to: "beta"
+  )
+end
+
+lane :prod do
+  desc "Push builds for the latest tag to production"
+  build_number = get_build_number( xcodeproj: XCODEPROJ )
+  # In theory this will move the release associated with the build_number in
+  # the beta track to the production track and 100% rollout... but I haven't
+  # been able to test that yet
+  upload_to_play_store( version_code: build_number, track: "beta", track_promote_to: "production" )
+end

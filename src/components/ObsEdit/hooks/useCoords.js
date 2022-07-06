@@ -1,7 +1,7 @@
 // @flow
 
 import { useEffect, useState } from "react";
-import Geocoder from "react-native-geocoder";
+import Geocoder from "react-native-geocoder-reborn";
 
 const useCoords = ( location: string ): Object => {
   const [coords, setCoords] = useState( {

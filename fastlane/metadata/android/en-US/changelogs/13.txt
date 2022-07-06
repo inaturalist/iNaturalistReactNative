@@ -1,0 +1,4 @@
+Several updates to release automation, no changes in app functionality
+
+* Upload to TestFlight as a part of pushing internal builds
+* Re-arranged some Fastlane code

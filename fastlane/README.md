@@ -13,15 +13,103 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
-## Android
-
-### android internal
+### tag
 
 ```sh
-[bundle exec] fastlane android internal
+[bundle exec] fastlane tag
 ```
 
-Distributes iNaturalistReactNative Android bundle to the Play Store internal track
+
+
+### build
+
+```sh
+[bundle exec] fastlane build
+```
+
+
+
+### clean
+
+```sh
+[bundle exec] fastlane clean
+```
+
+
+
+### release
+
+```sh
+[bundle exec] fastlane release
+```
+
+
+
+### internal
+
+```sh
+[bundle exec] fastlane internal
+```
+
+
+
+### beta
+
+```sh
+[bundle exec] fastlane beta
+```
+
+
+
+### prod
+
+```sh
+[bundle exec] fastlane prod
+```
+
+
+
+----
+
+
+## Android
+
+### android build
+
+```sh
+[bundle exec] fastlane android build
+```
+
+
+
+### android clean
+
+```sh
+[bundle exec] fastlane android clean
+```
+
+
+
+----
+
+
+## iOS
+
+### ios build
+
+```sh
+[bundle exec] fastlane ios build
+```
+
+
+
+### ios clean
+
+```sh
+[bundle exec] fastlane ios clean
+```
+
+
 
 ----
 

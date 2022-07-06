@@ -41,17 +41,6 @@ buck-out/
 *.keystore
 !debug.keystore
 
-# fastlane
-#
-# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
-# screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/
-
-*/fastlane/report.xml
-*/fastlane/Preview.html
-*/fastlane/screenshots
-
 # Bundle artifact
 *.jsbundle
 
@@ -70,5 +59,14 @@ vendor/
 # Secrets file
 .env
 
-# Fastlane-generated files
+# Fastlane files
 *.zip
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/Appfile
+android/keystore.properties
+
+# Apple signing and auth files that fastlane might download
+*.cer
+*.mobileprovision
