@@ -90,13 +90,15 @@ const EvidenceSection = ( {
 
   return (
     <>
-      {renderLocationPickerModal( )}
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
       <PhotoCarousel
         photoUris={photoUris}
         setSelectedPhotoIndex={handleSelection}
       />
-      <Pressable
+      {/* TODO: bring back the location picker when it works on Android and allows navigation back */}
+      {/* renderLocationPickerModal( ) */}
+      {/*
+        <Pressable
         onPress={openLocationPicker}
       >
         <Text style={textStyles.text}>
@@ -106,6 +108,13 @@ const EvidenceSection = ( {
           {displayLocation( ) || t( "No-Location" )}
         </Text>
       </Pressable>
+      */}
+      <Text style={textStyles.text}>
+        {currentObs.place_guess}
+      </Text>
+      <Text style={textStyles.text}>
+        {displayLocation( ) || t( "No-Location" )}
+      </Text>
       <DatePicker currentObs={currentObs} handleDatePicked={handleDatePicked} />
     </>
   );
