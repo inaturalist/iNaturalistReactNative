@@ -1,12 +1,12 @@
 // @flow
 
 import React, { useState, useContext } from "react";
-import { Text, Modal } from "react-native";
+import { Text } from "react-native";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 
 import { textStyles } from "../../styles/obsEdit/obsEdit";
-import LocationPicker from "./LocationPicker";
+// import LocationPicker from "./LocationPicker";
 import { ObsEditContext } from "../../providers/contexts";
 import DatePicker from "./DatePicker";
 import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
@@ -24,11 +24,11 @@ const EvidenceSection = ( {
   const {
     currentObsIndex,
     observations,
-    setObservations,
+    // setObservations,
     updateObservationKey
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
-  const [showLocationPicker, setShowLocationPicker] = useState( false );
+  // const [showLocationPicker, setShowLocationPicker] = useState( false );
 
   const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
 
@@ -39,24 +39,24 @@ const EvidenceSection = ( {
   const longitude = currentObs && currentObs.longitude;
 
   // const openLocationPicker = ( ) => setShowLocationPicker( true );
-  const closeLocationPicker = ( ) => setShowLocationPicker( false );
+  // const closeLocationPicker = ( ) => setShowLocationPicker( false );
 
-  const updateLocation = newLocation => {
-    const updatedObs = observations.map( ( obs, index ) => {
-      if ( index === currentObsIndex ) {
-        return {
-          ...obs,
-          // $FlowFixMe
-          latitude: newLocation.latitude,
-          longitude: newLocation.longitude,
-          place_guess: newLocation.placeGuess
-        };
-      } else {
-        return obs;
-      }
-    } );
-    setObservations( updatedObs );
-  };
+  // const updateLocation = newLocation => {
+  //   const updatedObs = observations.map( ( obs, index ) => {
+  //     if ( index === currentObsIndex ) {
+  //       return {
+  //         ...obs,
+  //         // $FlowFixMe
+  //         latitude: newLocation.latitude,
+  //         longitude: newLocation.longitude,
+  //         place_guess: newLocation.placeGuess
+  //       };
+  //     } else {
+  //       return obs;
+  //     }
+  //   } );
+  //   setObservations( updatedObs );
+  // };
 
   const handleDatePicked = ( selectedDate ) => {
     if ( selectedDate ) {
