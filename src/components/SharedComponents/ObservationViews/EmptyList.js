@@ -9,7 +9,9 @@ import { viewStyles, textStyles } from "../../../styles/sharedComponents/observa
 
 const EmptyList = ( ): Node => (
   <View style={viewStyles.center}>
-    <Text style={textStyles.text} testID="ObsList.emptyList">{t( "iNaturalist-is-a-community-of-naturalists" )}</Text>
+    <Text style={textStyles.text} testID="ObsList.emptyList">
+      {t( "iNaturalist-is-a-community-of-naturalists" )}
+    </Text>
   </View>
 );
 

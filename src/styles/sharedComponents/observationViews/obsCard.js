@@ -5,15 +5,14 @@ import { StyleSheet, Dimensions } from "react-native";
 import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "../../global";
 
-const { width } = Dimensions.get( "screen" );
+const { width, height } = Dimensions.get( "screen" );
 
 const imageWidth = width / 2 - 20;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   center: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    top: height / 3,
+    alignItems: "center"
   },
   imageBackground: {
     width: 75,
