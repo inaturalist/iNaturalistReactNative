@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Text } from "react-native";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";

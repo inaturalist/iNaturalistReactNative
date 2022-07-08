@@ -46,7 +46,7 @@ const ObsList = ( ): Node => {
         userId={userId}
       />
       {( numObsToUpload > 0 ) && (
-        <BottomSheet height={200}>
+        <BottomSheet>
           {!userId
             ? <LoginPrompt />
             : <UploadPrompt obsToUpload={obsToUpload} />
