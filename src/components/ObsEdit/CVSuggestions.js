@@ -15,6 +15,7 @@ import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import PlaceholderText from "../PlaceholderText";
 
 const CVSuggestions = ( ): Node => {
   const {
@@ -38,11 +39,11 @@ const CVSuggestions = ( ): Node => {
     return (
       <View>
         <Pressable onPress={navToTaxonDetails}>
-          <Text>info</Text>
+          <PlaceholderText text="info" />
         </Pressable>
-        <Text>compare tool</Text>
+        <PlaceholderText text="compare tool" />
         <Pressable onPress={updateIdentification}>
-          <Text>confirm id</Text>
+          <PlaceholderText text="confirm id" />
         </Pressable>
       </View>
     );
@@ -65,7 +66,8 @@ const CVSuggestions = ( ): Node => {
         <View style={viewStyles.obsDetailsColumn}>
           <Text style={textStyles.text}>{taxon.preferred_common_name}</Text>
           <Text style={textStyles.text}>{taxon.name}</Text>
-          {showSeenNearby && <Text style={textStyles.greenText}>seen nearby</Text>}
+          {showSeenNearby
+            && <PlaceholderText style={[textStyles.greenText]} text="seen nearby" />}
         </View>
         {renderNavButtons( updateIdentification, taxon.id )}
       </View>
@@ -102,9 +104,9 @@ const CVSuggestions = ( ): Node => {
 
   const emptySuggestionsList = ( ) => {
     if ( !isLoggedIn ) {
-      return <Text style={textStyles.explainerText}>you must be logged in to see computer vision suggestions</Text>;
+      return <PlaceholderText style={[textStyles.explainerText]} text="you must be logged in to see computer vision suggestions" />;
     } else if ( status === "no_results" ) {
-      return <Text style={textStyles.explainerText}>no computervision suggestions found</Text>;
+      return <PlaceholderText style={[textStyles.explainerText]} text="no computervision suggestions found" />;
     } else {
       return <ActivityIndicator />;
     }

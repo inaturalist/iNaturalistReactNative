@@ -9,6 +9,7 @@ import {inatProviders} from "../../dictionaries/providers";
 import inatjs from "inaturalistjs";
 import useAuthorizedApplications from "./hooks/useAuthorizedApplications";
 import useProviderAuthorizations from "./hooks/useProviderAuthorizations";
+import { t } from "i18next";
 
 type Props = {
   accessToken: string
@@ -48,12 +49,12 @@ const SettingsApplications = ( { accessToken }: Props ): Node => {
 
   return (
     <View style={viewStyles.column}>
-      <Text style={textStyles.title}>iNaturalist Applications</Text>
+      <Text style={textStyles.title}>{t( "iNaturalist-Applications" )}</Text>
       {authorizedApps.filter( ( app ) => app.application.official ).map( ( app ) => (
-        <Text key={app.application.id}>{app.application.name} (authorized on: {app.created_at})</Text>
+        <Text key={app.application.id}>{t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}</Text>
       ) )}
 
-      <Text style={[textStyles.title, textStyles.marginTop]}>Connected Accounts</Text>
+      <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Connected-Accounts" )}</Text>
       {Object.keys( inatProviders ).map( ( providerKey ) => {
         const connectedProvider = providerAuthorizations.find( x => x.provider_name === providerKey );
         return ( <Text
@@ -61,11 +62,11 @@ const SettingsApplications = ( { accessToken }: Props ): Node => {
       } )}
 
 
-      <Text style={[textStyles.title, textStyles.marginTop]}>External Applications</Text>
+      <Text style={[textStyles.title, textStyles.marginTop]}>{t( "External-Applications" )}</Text>
       {authorizedApps.filter( ( app ) => !app.application.official ).map( ( app ) => (
         <View key={app.application.id} style={[viewStyles.row, viewStyles.applicationRow]}>
-          <Text style={textStyles.applicationName}>{app.application.name} (authorized on: {app.created_at})</Text>
-          <Pressable style={viewStyles.revokeAccess} onPress={() => askToRevokeApp( app )}><Text>Revoke</Text></Pressable>
+          <Text style={textStyles.applicationName}>{t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}</Text>
+          <Pressable style={viewStyles.revokeAccess} onPress={() => askToRevokeApp( app )}><Text>{t( "Revoke" )}</Text></Pressable>
         </View>
       ) )}
     </View>

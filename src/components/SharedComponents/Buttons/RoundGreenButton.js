@@ -7,23 +7,35 @@ import TranslatedText from "../TranslatedText";
 
 type Props = {
   buttonText: string,
-  handlePress: any,
-  testID: string,
+  count?: number,
   disabled?: boolean,
-  count?: number
+  handlePress: any,
+  loading?: boolean,
+  style?: any,
+  testID: string
 }
 
-const RoundGreenButton = ( { buttonText, handlePress, testID, disabled, count }: Props ): React.Node => (
+const RoundGreenButton = ( {
+  buttonText,
+  count,
+  disabled,
+  handlePress,
+  loading,
+  style,
+  testID
+}: Props ): React.Node => (
   <Button
-    style={[viewStyles.greenButton, disabled && viewStyles.disabled]}
-    onPress={handlePress}
-    testID={testID}
     disabled={disabled}
+    loading={loading}
+    onPress={handlePress}
+    style={[style, viewStyles.greenButton, disabled && viewStyles.disabled]}
+    testID={testID}
+    uppercase={false}
   >
     <TranslatedText
+      count={count}
       style={textStyles.greenButtonText}
       text={buttonText}
-      count={count}
     />
   </Button>
 );

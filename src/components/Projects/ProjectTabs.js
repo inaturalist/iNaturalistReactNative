@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Pressable, Text, View } from "react-native";
+import { t } from "i18next";
 
 import { viewStyles } from "../../styles/projects/projects";
 import useProjects from "./hooks/useProjects";
@@ -33,18 +34,18 @@ const ProjectTabs = ( ): React.Node => {
         <Pressable
           onPress={fetchUserJoinedProjects}
         >
-          <Text>joined projects</Text>
+          <Text>{t( "Joined" )}</Text>
+        </Pressable>
+        <Pressable
+          onPress={fetchFeaturedProjects}
+        >
+          <Text>{t( "Featured" )}</Text>
         </Pressable>
         <Pressable
           onPress={fetchProjectsByLatLng}
           testID="ProjectTabs.featured"
         >
-          <Text>nearby projects</Text>
-        </Pressable>
-        <Pressable
-          onPress={fetchFeaturedProjects}
-        >
-          <Text>featured projects</Text>
+          <Text>{t( "Nearby" )}</Text>
         </Pressable>
       </View>
       <ProjectList data={projects} />

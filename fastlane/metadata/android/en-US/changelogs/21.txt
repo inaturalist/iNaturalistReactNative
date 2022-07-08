@@ -1,0 +1,4 @@
+Several minor changes to fastlane config
+
+* Ensure we return to the original branch after release, not just to main
+* Avoid git clean when release fails

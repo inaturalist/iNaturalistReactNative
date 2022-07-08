@@ -11,6 +11,7 @@ import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import KebabMenu from "./KebabMenu";
 import { timeAgo } from "../../sharedHelpers/dateAndTime";
+import PlaceholderText from "../PlaceholderText";
 
 type Props = {
   item: Object,
@@ -33,7 +34,7 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
   }, [user] );
 
   return (
-    <>
+    <View style={[item.temporary ? viewStyles.temporaryRow : null]}>
       <View style={[viewStyles.userProfileRow, viewStyles.rowBorder]}>
         {user && (
           <Pressable
@@ -47,12 +48,12 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
           </Pressable>
         )}
         <View style={viewStyles.labels}>
-          {item.vision && <Text style={textStyles.labels}>vision</Text>}
+          {item.vision && <PlaceholderText style={[textStyles.labels]} text="vision" />}
           <Text style={textStyles.labels}>{item.category}</Text>
           {item.created_at && <Text style={textStyles.labels}>{timeAgo( item.created_at )}</Text>}
           {item.body && currentUser
             ? <KebabMenu uuid={item.uuid} toggleRefetch={toggleRefetch} />
-            : <Text>menu</Text>}
+            : <PlaceholderText text="menu" />}
         </View>
       </View>
       {taxon && (
@@ -72,7 +73,7 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
       <View style={viewStyles.speciesDetailRow}>
         <Text>{item.body}</Text>
       </View>
-    </>
+    </View>
   );
 };
 

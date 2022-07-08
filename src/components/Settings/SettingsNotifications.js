@@ -8,6 +8,7 @@ import Switch from "react-native/Libraries/Components/Switch/Switch";
 import CheckBox from "@react-native-community/checkbox";
 import { colors } from "../../styles/global";
 import type { SettingsProps } from "./types";
+import { t } from "i18next";
 
 
 const EMAIL_NOTIFICATIONS = {
@@ -50,7 +51,7 @@ const Notification = ( { title, description, value, onValueChange } ): Node => (
 
 const SettingsNotifications = ( { settings, onSettingsModified }: SettingsProps ): Node => (
     <>
-      <Text style={textStyles.title}>iNaturalist Activity Notifications</Text>
+      <Text style={textStyles.title}>{t( "iNaturalist-Activity-Notifications" )}</Text>
       <Notification
         title="Notify me of mentions (e.g. @username)"
         description="If you turn this off, you will not get any notifications when someone mentions you on iNaturalist."
@@ -63,7 +64,7 @@ const SettingsNotifications = ( { settings, onSettingsModified }: SettingsProps 
         value={settings.prefers_redundant_identification_notifications}
         onValueChange={( v ) => onSettingsModified( { ...settings, prefers_redundant_identification_notifications: v} )}
       />
-      <Text style={textStyles.title}>Email Notifications</Text>
+      <Text style={textStyles.title}>{t( "Email-Notifications" )}</Text>
       <Notification
         title="Receive Email Notifications"
         description="If you turn this off, you will no longer receive any emails from iNaturalist regarding notifications."

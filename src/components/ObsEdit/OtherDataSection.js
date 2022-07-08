@@ -76,7 +76,7 @@ const OtherDataSection = ( ): Node => {
         />
       </View>
       <View style={viewStyles.row}>
-        <Text style={textStyles.text}>is the organism wild?</Text>
+        <Text style={textStyles.text}>{t( "Organism-is-wild" )}</Text>
         <RNPickerSelect
           onValueChange={updateCaptiveStatus}
           items={captiveOptions}

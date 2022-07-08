@@ -1,13 +1,11 @@
 // @flow
 
 import React from "react";
-import {
-  Text
-} from "react-native";
 import { getVersion, getBuildNumber } from "react-native-device-info";
 
 import type { Node } from "react";
 import ViewWithFooter from "./SharedComponents/ViewWithFooter";
+import PlaceholderText from "./PlaceholderText";
 
 const AboutScreen = ( ): Node => {
   const appVersion = getVersion( );
@@ -15,10 +13,7 @@ const AboutScreen = ( ): Node => {
 
   return (
     <ViewWithFooter>
-      <Text>
-        app version:
-        {` ${appVersion} (${buildVersion})`}
-      </Text>
+      <PlaceholderText text={`app version: ${appVersion} (${buildVersion})`} />
     </ViewWithFooter>
   );
 };

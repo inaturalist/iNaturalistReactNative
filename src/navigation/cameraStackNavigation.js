@@ -14,6 +14,7 @@ import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import PhotoGallery from "../components/PhotoLibrary/PhotoGallery";
 import PermissionGate from "../components/SharedComponents/PermissionGate";
 import Mortal from "../components/SharedComponents/Mortal";
+import AddID from "../components/ObsEdit/AddID";
 
 const Stack = createNativeStackNavigator( );
 
@@ -47,6 +48,8 @@ const SoundRecorderWithPermission = ( ) => (
   </PermissionGate>
 );
 
+const suggestionsTitle = ( props ) => <CustomHeaderWithTranslation {...props} headerText="IDENTIFICATION" />;
+
 const CameraStackNavigation = ( ): React.Node => (
   <Mortal>
     <PhotoGalleryProvider>
@@ -75,9 +78,14 @@ const CameraStackNavigation = ( ): React.Node => (
           name="Suggestions"
           component={CVSuggestions}
           options={{
-            headerTitle: ( props ) => <CustomHeaderWithTranslation {...props} headerText="IDENTIFICATION" />,
+            headerTitle: suggestionsTitle,
             headerShown: true
           }}
+        />
+        <Stack.Screen
+          name="AddID"
+          component={AddID}
+          options={hideHeader}
         />
       </Stack.Navigator>
     </PhotoGalleryProvider>

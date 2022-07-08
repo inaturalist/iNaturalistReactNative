@@ -76,6 +76,8 @@ const App = ( ): React.Node => {
     checkForSignedInUser( );
   }, [] );
 
+  const drawerContent = ( props ) => <CustomDrawerContent {...props} />;
+
   return (
     <PaperProvider theme={theme}>
       <GestureHandlerRootView style={viewStyles.container}>
@@ -85,7 +87,7 @@ const App = ( ): React.Node => {
               <Drawer.Navigator
                 screenOptions={screenOptions}
                 name="Drawer"
-                drawerContent={( props ) => <CustomDrawerContent {...props} />}
+                drawerContent={drawerContent}
               >
                 <Drawer.Screen
                   name="my observations"
