@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
 
-import { getJWTToken } from "../../../components/LoginSignUp/AuthenticationService";
+import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 
 const useCurrentUser = ( ): Object => {
   const [currentUser, setCurrentUser] = useState( null );
@@ -21,7 +21,7 @@ const useCurrentUser = ( ): Object => {
           api_token: apiToken
         };
         const response = await inatjs.users.me( options );
-        const results = response.results;
+        const { results } = response;
         if ( !isCurrent ) { return; }
         setCurrentUser( results[0].id );
       } catch ( e ) {
@@ -39,6 +39,4 @@ const useCurrentUser = ( ): Object => {
   return currentUser;
 };
 
-export {
-  useCurrentUser
-};
+export default useCurrentUser;

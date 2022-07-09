@@ -5,7 +5,7 @@ import { View } from "react-native";
 import MapView, { UrlTile } from "react-native-maps";
 
 import { viewStyles } from "../../styles/sharedComponents/map";
-import { useUserLocation } from "../../sharedHooks/useUserLocation";
+import useUserLocation from "../../sharedHooks/useUserLocation";
 
 type Props = {
   obsLatitude?: number,
@@ -18,11 +18,13 @@ type Props = {
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
-const Map = ( { obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region }: Props ): React.Node => {
+const Map = ( {
+  obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region
+}: Props ): React.Node => {
   const latLng = useUserLocation( );
 
-  const initialLatitude = latLng && latLng.latitude;
-  const initialLongitude = latLng && latLng.longitude;
+  const initialLatitude = obsLatitude || ( latLng && latLng.latitude );
+  const initialLongitude = obsLongitude || ( latLng && latLng.longitude );
 
   const urlTemplate = taxonId && `https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png?taxon_id=${taxonId}&color=%2377B300&verifiable=true`;
 

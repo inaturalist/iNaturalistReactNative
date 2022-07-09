@@ -1,6 +1,6 @@
 // @flow strict-local
 
-export const colors = {
+export default {
   white: "#ffffff",
   black: "#000000",
   transparent: "#ff000000",

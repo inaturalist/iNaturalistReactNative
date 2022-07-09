@@ -2,17 +2,16 @@
 // remote data retrieval and local data persistence
 
 import React from "react";
-import factory, { makeResponse } from "../factory";
-import { render } from "@testing-library/react-native";
-import { waitFor } from "@testing-library/react-native";
+import { render, waitFor } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import AccessibilityEngine from "react-native-accessibility-engine";
 
+import inatjs from "inaturalistjs";
 import ObsList from "../../src/components/Observations/ObsList";
+import factory, { makeResponse } from "../factory";
 
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
-import inatjs from "inaturalistjs";
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );

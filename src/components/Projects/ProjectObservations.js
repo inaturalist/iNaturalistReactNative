@@ -14,9 +14,13 @@ type Props = {
 const ProjectObservations = ( { id }: Props ): React.Node => {
   const observations = useProjectObservations( id );
   const navigation = useNavigation( );
-  const navToObsDetails = observation => navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
+  const navToObsDetails = observation => {
+    navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
+  };
 
-  const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} uri="project" />;
+  const renderGridItem = ( { item } ) => (
+    <GridItem item={item} handlePress={navToObsDetails} uri="project" />
+  );
   return (
     <FlatList
       data={observations}
@@ -29,4 +33,3 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
 };
 
 export default ProjectObservations;
-

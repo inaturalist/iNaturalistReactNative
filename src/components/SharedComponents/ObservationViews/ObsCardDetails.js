@@ -10,11 +10,10 @@ import { formatObsListTime } from "../../../sharedHelpers/dateAndTime";
 import checkCamelAndSnakeCase from "../../ObsDetails/helpers/checkCamelAndSnakeCase";
 
 type Props = {
-  item: Object,
-  needsUpload: boolean
+  item: Object
 }
 
-const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
+const ObsCardDetails = ( { item }: Props ): Node => {
   const placeGuess = checkCamelAndSnakeCase( item, "placeGuess" );
 
   const displayTime = ( ) => {
@@ -24,7 +23,10 @@ const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
     return "no time given";
   };
 
-  const displayName = ( ) => item.taxon ? checkCamelAndSnakeCase( item.taxon, "preferredCommonName" ) : "no name";
+  const displayName = ( ) => ( item.taxon
+    ? checkCamelAndSnakeCase( item.taxon, "preferredCommonName" )
+    : "no name"
+  );
 
   return (
     <>
@@ -42,8 +44,3 @@ const ObsCardDetails = ( { item, needsUpload }: Props ): Node => {
 };
 
 export default ObsCardDetails;
-
-
-
-
-

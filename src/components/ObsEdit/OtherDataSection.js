@@ -11,7 +11,6 @@ import { ObsEditContext } from "../../providers/contexts";
 import TranslatedText from "../SharedComponents/TranslatedText";
 import Notes from "./Notes";
 
-
 const OtherDataSection = ( ): Node => {
   const {
     currentObsIndex,

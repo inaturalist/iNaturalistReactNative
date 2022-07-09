@@ -28,7 +28,7 @@ const useProjects = ( apiParams: Object ): Array<Object> => {
         setProjects( results );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch projects:", e.message, );
+        console.log( "Couldn't fetch projects:", e.message );
       }
     };
 

@@ -14,4 +14,3 @@ const NetworkLogging = ( ): Node => (
 );
 
 export default NetworkLogging;
-

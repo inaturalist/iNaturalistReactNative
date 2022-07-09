@@ -1,10 +1,15 @@
 // @flow
 
 import React from "react";
-import { Pressable, Image, Text, View } from "react-native";
+import {
+  Pressable, Image, Text, View
+} from "react-native";
 import type { Node } from "react";
 
-import { imageStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/gridItem";
+import {
+  imageStyles,
+  viewStyles
+} from "../../../styles/sharedComponents/observationViews/gridItem";
 import Observation from "../../../models/Observation";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
@@ -18,7 +23,6 @@ type Props = {
 
 const GridItem = ( { item, handlePress, uri }: Props ): Node => {
   const onPress = ( ) => handlePress( item );
-  const needsUpload = item._synced_at === null;
 
   const photo = item?.observationPhotos?.[0]?.photo;
 
@@ -48,7 +52,7 @@ const GridItem = ( { item, handlePress, uri }: Props ): Node => {
         testID="ObsList.photo"
       />
       <ObsCardStats item={item} />
-      <ObsCardDetails item={item} needsUpload={needsUpload} />
+      <ObsCardDetails item={item} />
     </Pressable>
   );
 };

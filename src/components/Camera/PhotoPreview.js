@@ -26,7 +26,7 @@ const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
 
-  const handleSelection = ( photoUri ) => {
+  const handleSelection = photoUri => {
     setInitialPhotoSelected( photoUri );
     showModal( );
   };
@@ -38,7 +38,7 @@ const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
     setDeleteDialogVisible( false );
   };
 
-  const handleDelete = ( photoUri ) => {
+  const handleDelete = photoUri => {
     setPhotoUriToDelete( photoUri );
     showDialog( );
   };

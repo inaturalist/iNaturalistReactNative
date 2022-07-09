@@ -1,15 +1,15 @@
 // @flow
 
-import {Alert, Text, View} from "react-native";
-import {viewStyles, textStyles} from "../../styles/settings/settings";
-import React, {useEffect, useState} from "react";
+import { Alert, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import type { Node } from "react";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
-import {inatProviders} from "../../dictionaries/providers";
 import inatjs from "inaturalistjs";
+import { t } from "i18next";
+import inatProviders from "../../dictionaries/providers";
+import { viewStyles, textStyles } from "../../styles/settings/settings";
 import useAuthorizedApplications from "./hooks/useAuthorizedApplications";
 import useProviderAuthorizations from "./hooks/useProviderAuthorizations";
-import { t } from "i18next";
 
 type Props = {
   accessToken: string
@@ -24,17 +24,19 @@ const SettingsApplications = ( { accessToken }: Props ): Node => {
     setAuthorizedApps( currentAuthorizedApps );
   }, [currentAuthorizedApps] );
 
-  const revokeApp = async ( appId ) => {
-    const response = await inatjs.authorized_applications.delete( { id: appId }, {api_token: accessToken} );
+  const revokeApp = async appId => {
+    const response = await inatjs.authorized_applications.delete(
+      { id: appId },
+      { api_token: accessToken }
+    );
     console.log( "Revoked app", response );
     // Refresh authorized applications
-    const apps = await inatjs.authorized_applications.search( {}, {api_token: accessToken} );
+    const apps = await inatjs.authorized_applications.search( {}, { api_token: accessToken } );
     console.log( "Authorized Applications", apps.results );
     setAuthorizedApps( apps.results );
   };
 
-
-  const askToRevokeApp = ( app ) => {
+  const askToRevokeApp = app => {
     Alert.alert(
       `Revoke ${app.application.name}?`,
       "This will sign you out of your current session on this application.",
@@ -50,23 +52,37 @@ const SettingsApplications = ( { accessToken }: Props ): Node => {
   return (
     <View style={viewStyles.column}>
       <Text style={textStyles.title}>{t( "iNaturalist-Applications" )}</Text>
-      {authorizedApps.filter( ( app ) => app.application.official ).map( ( app ) => (
-        <Text key={app.application.id}>{t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}</Text>
+      {authorizedApps.filter( app => app.application.official ).map( app => (
+        <Text key={app.application.id}>
+          {t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}
+        </Text>
       ) )}
 
       <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Connected-Accounts" )}</Text>
-      {Object.keys( inatProviders ).map( ( providerKey ) => {
-        const connectedProvider = providerAuthorizations.find( x => x.provider_name === providerKey );
-        return ( <Text
-          key={providerKey}>{inatProviders[providerKey]} {connectedProvider && `(authorized on: ${connectedProvider.created_at})`}</Text> );
+      {Object.keys( inatProviders ).map( providerKey => {
+        const connectedProvider = providerAuthorizations.find(
+          x => x.provider_name === providerKey
+        );
+        return (
+          <Text
+            key={providerKey}
+          >
+            {inatProviders[providerKey]}
+            {" "}
+            {connectedProvider && `(authorized on: ${connectedProvider.created_at})`}
+          </Text>
+        );
       } )}
 
-
       <Text style={[textStyles.title, textStyles.marginTop]}>{t( "External-Applications" )}</Text>
-      {authorizedApps.filter( ( app ) => !app.application.official ).map( ( app ) => (
+      {authorizedApps.filter( app => !app.application.official ).map( app => (
         <View key={app.application.id} style={[viewStyles.row, viewStyles.applicationRow]}>
-          <Text style={textStyles.applicationName}>{t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}</Text>
-          <Pressable style={viewStyles.revokeAccess} onPress={() => askToRevokeApp( app )}><Text>{t( "Revoke" )}</Text></Pressable>
+          <Text style={textStyles.applicationName}>
+            {t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}
+          </Text>
+          <Pressable style={viewStyles.revokeAccess} onPress={() => askToRevokeApp( app )}>
+            <Text>{t( "Revoke" )}</Text>
+          </Pressable>
         </View>
       ) )}
     </View>

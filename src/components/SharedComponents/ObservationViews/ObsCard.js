@@ -36,7 +36,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
       />
       <View style={viewStyles.obsDetailsColumn}>
         {/* TODO: fill in with actual empty states */}
-        <ObsCardDetails item={item} needsUpload={needsUpload} />
+        <ObsCardDetails item={item} />
       </View>
       {needsUpload
         ? <Avatar.Icon size={40} icon="arrow-up-circle-outline" />

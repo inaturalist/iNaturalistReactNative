@@ -24,14 +24,16 @@ type Props = {
   hideModal: Function
 }
 
-const MediaViewer = ( { photoUris, setPhotoUris, initialPhotoSelected, hideModal }: Props ): Node => {
+const MediaViewer = ( {
+  photoUris, setPhotoUris, initialPhotoSelected, hideModal
+}: Props ): Node => {
   const { t } = useTranslation( );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( initialPhotoSelected );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
 
   const numOfPhotos = photoUris.length;
 
-  const handlePhotoSelection = ( index ) => setSelectedPhotoIndex( index );
+  const handlePhotoSelection = index => setSelectedPhotoIndex( index );
 
   const showDialog = ( ) => setDeleteDialogVisible( true );
   const hideDialog = ( ) => setDeleteDialogVisible( false );

@@ -1,6 +1,8 @@
 // @flow
 
-import React, { useRef, useState, useContext, useEffect } from "react";
+import React, {
+  useRef, useState, useContext, useEffect
+} from "react";
 import { Text, View, Pressable } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";

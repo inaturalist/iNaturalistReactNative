@@ -1,0 +1,38 @@
+// @flow
+
+import {
+  Image,
+  Pressable,
+  Text,
+  View
+} from "react-native";
+import React from "react";
+import { t } from "i18next";
+import type { Node } from "react";
+import { viewStyles } from "../../styles/settings/settings";
+
+type Props = {
+  unblockUser: Function,
+  user: Object
+}
+
+const BlockedUser = ( { user, unblockUser }:Props ): Node => (
+  <View style={[viewStyles.row, viewStyles.relationshipRow]}>
+    <Image
+      style={viewStyles.relationshipImage}
+      source={{ uri: user.icon }}
+    />
+    <View style={viewStyles.column}>
+      <Text>{user.login}</Text>
+      <Text>{user.name}</Text>
+    </View>
+    <Pressable
+      style={viewStyles.removeRelationship}
+      onPress={() => unblockUser( user )}
+    >
+      <Text>{t( "Unblock" )}</Text>
+    </Pressable>
+  </View>
+);
+
+export default BlockedUser;

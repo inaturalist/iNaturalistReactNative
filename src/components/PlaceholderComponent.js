@@ -1,8 +1,8 @@
 // @flow
 
 import React from "react";
-import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 import type { Node } from "react";
+import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 import PlaceholderText from "./PlaceholderText";
 
 const PlaceholderComponent = ( ): Node => (

@@ -18,7 +18,7 @@ type Props = {
  * Morghulis!
  * @see https://www.corstianboerman.com/blog/2020-09-05/force-a-component-to-unmount-with-react-navigation
  */
-export default function Mortal( { children }: Props ): Node {
+const Mortal = ( { children }: Props ): Node => {
   const [isVisible, setIsVisible] = useState( false );
 
   useFocusEffect(
@@ -31,7 +31,10 @@ export default function Mortal( { children }: Props ): Node {
     }, [] )
   );
 
-  return (
-    <>{ isVisible && children }</>
-  );
-}
+  if ( !isVisible ) return null;
+
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  return <>{ children }</>;
+};
+
+export default Mortal;

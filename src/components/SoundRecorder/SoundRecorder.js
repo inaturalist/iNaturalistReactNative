@@ -43,16 +43,15 @@ const SoundRecorder = ( ): Node => {
     try {
       const cachedFile = await audioRecorderPlayer.startRecorder( null, null, true );
       setStatus( "recording" );
-      audioRecorderPlayer.addRecordBackListener( ( e ) => {
+      audioRecorderPlayer.addRecordBackListener( e => {
         setSound( {
           ...sound,
           recordSecs: e.currentPosition,
           recordTime: audioRecorderPlayer.mmssss(
-            Math.floor( e.currentPosition ),
+            Math.floor( e.currentPosition )
           ),
           currentMetering: e.currentMetering
         } );
-        return;
       } );
       setUri( cachedFile );
     } catch ( e ) {
@@ -87,7 +86,7 @@ const SoundRecorder = ( ): Node => {
     try {
       setStatus( "playing" );
       await audioRecorderPlayer.startPlayer( uri );
-      audioRecorderPlayer.addPlayBackListener( ( e ) => {
+      audioRecorderPlayer.addPlayBackListener( e => {
         setSound( {
           ...sound,
           currentPositionSec: e.currentPosition,
@@ -95,7 +94,6 @@ const SoundRecorder = ( ): Node => {
           playTime: audioRecorderPlayer.mmssss( Math.floor( e.currentPosition ) ),
           duration: audioRecorderPlayer.mmssss( Math.floor( e.duration ) )
         } );
-        return;
       } );
     } catch ( e ) {
       console.log( "can't play recording: ", e );
@@ -114,10 +112,12 @@ const SoundRecorder = ( ): Node => {
         <Pressable
           onPress={startRecording}
         >
-          <Text style={[textStyles.alignCenter, textStyles.duration]}>{t( "Press-Record-to-Start" )}</Text>
+          <Text style={[textStyles.alignCenter, textStyles.duration]}>
+            {t( "Press-Record-to-Start" )}
+          </Text>
         </Pressable>
       );
-    } else if ( status === "paused" ) {
+    } if ( status === "paused" ) {
       return (
         <Pressable
           onPress={resumeRecording}
@@ -125,17 +125,20 @@ const SoundRecorder = ( ): Node => {
           <Text style={[textStyles.alignCenter, textStyles.duration]}>{t( "Paused" )}</Text>
         </Pressable>
       );
-    } else if ( status === "playing" ) {
-      return <Text style={[textStyles.alignCenter, textStyles.duration]}>{t( "Playing-Sound" )}</Text>;
-    } else {
+    } if ( status === "playing" ) {
       return (
-        <Pressable
-          onPress={stopRecording}
-        >
-          <PlaceholderText text="stop" style={[textStyles.alignCenter, textStyles.duration]} />
-        </Pressable>
+        <Text style={[textStyles.alignCenter, textStyles.duration]}>
+          {t( "Playing-Sound" )}
+        </Text>
       );
     }
+    return (
+      <Pressable
+        onPress={stopRecording}
+      >
+        <PlaceholderText text="stop" style={[textStyles.alignCenter, textStyles.duration]} />
+      </Pressable>
+    );
   };
 
   const renderPlaybackButton = ( ) => {
@@ -148,7 +151,7 @@ const SoundRecorder = ( ): Node => {
           <Text>{t( "Play" )}</Text>
         </Pressable>
       );
-    } else if ( status === "playing" ) {
+    } if ( status === "playing" ) {
       return (
         <Pressable
           onPress={stopPlayback}
@@ -158,6 +161,8 @@ const SoundRecorder = ( ): Node => {
         </Pressable>
       );
     }
+    // TODO does this ever have a status value that isn't paused or playing?
+    return <View />;
   };
 
   const navToObsEdit = ( ) => {

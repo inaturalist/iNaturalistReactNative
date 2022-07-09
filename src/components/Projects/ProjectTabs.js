@@ -7,7 +7,7 @@ import { t } from "i18next";
 import { viewStyles } from "../../styles/projects/projects";
 import useProjects from "./hooks/useProjects";
 import ProjectList from "./ProjectList";
-import { useUserLocation } from "../../sharedHooks/useUserLocation";
+import useUserLocation from "../../sharedHooks/useUserLocation";
 import useMemberId from "./hooks/useMemberId";
 
 const ProjectTabs = ( ): React.Node => {

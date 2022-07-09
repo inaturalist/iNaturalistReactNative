@@ -44,7 +44,7 @@ const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node 
     }
   }, [newCoords, region, searchQuery] );
 
-  const updateCoords = ( newMapRegion ) => {
+  const updateCoords = newMapRegion => {
     setSearchQuery( "" );
     setRegion( newMapRegion );
   };

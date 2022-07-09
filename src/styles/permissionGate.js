@@ -18,5 +18,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 } );
 
 export {
+  // eslint-disable-next-line import/prefer-default-export
   viewStyles
 };

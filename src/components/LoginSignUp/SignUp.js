@@ -1,7 +1,9 @@
 // @flow
 
 import React, { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import {
+  Button, Text, TextInput, View
+} from "react-native";
 import type { Node } from "react";
 import { t } from "i18next";
 
@@ -47,7 +49,7 @@ const SignUp = (): Node => {
         style={viewStyles.input}
         onChangeText={setPassword}
         value={password}
-        secureTextEntry={true}
+        secureTextEntry
       />
       <Button title="Register" onPress={register} />
     </View>

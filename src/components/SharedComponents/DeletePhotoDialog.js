@@ -3,7 +3,9 @@
 import React from "react";
 import type { Node } from "react";
 import Realm from "realm";
-import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
+import {
+  Button, Paragraph, Dialog, Portal
+} from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
 import { viewStyles } from "../../styles/camera/standardCamera";

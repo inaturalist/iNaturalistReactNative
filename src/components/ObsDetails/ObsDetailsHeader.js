@@ -10,7 +10,7 @@ import { HeaderBackButton } from "@react-navigation/elements";
 
 import { ObsEditContext } from "../../providers/contexts";
 import { viewStyles } from "../../styles/obsDetails/obsDetailsHeader";
-import { colors } from "../../styles/global";
+import colors from "../../styles/colors";
 
 type Props = {
   observationUUID: string

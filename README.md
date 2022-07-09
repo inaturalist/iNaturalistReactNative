@@ -33,6 +33,7 @@ We're using [Jest](https://jestjs.io/) and [React Native Testing Library](https:
 ## Running with Staging Environment
 
 1. Override `API_URL` to a staging API domain - either using a local `.env` file, or overriding the environment variable when calling `npm start` - e.g. `API_URL=http://example.com npm start -- --reset-cache`
+
 # Translations
 
 ## Adding New Text

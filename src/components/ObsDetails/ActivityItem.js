@@ -20,10 +20,12 @@ type Props = {
   toggleRefetch: Function
 }
 
-const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: Props ): Node => {
+const ActivityItem = ( {
+  item, navToTaxonDetails, handlePress, toggleRefetch
+}: Props ): Node => {
   const [currentUser, setCurrentUser] = useState( null );
-  const taxon = item.taxon;
-  const user = item.user;
+  const { taxon } = item;
+  const { user } = item;
 
   useEffect( ( ) => {
     const isCurrentUser = async ( ) => {
@@ -66,7 +68,11 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
           <SmallSquareImage uri={Taxon.uri( taxon )} />
           <View>
             <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
-            <Text style={textStyles.scientificNameText}>{taxon.rank} {taxon.name}</Text>
+            <Text style={textStyles.scientificNameText}>
+              {taxon.rank}
+              {" "}
+              {taxon.name}
+            </Text>
           </View>
         </Pressable>
       )}

@@ -1,7 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, Pressable, Text, Image, View } from "react-native";
+import {
+  FlatList, Pressable, Text, Image, View
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -30,23 +32,30 @@ const Search = ( ): React.Node => {
           style={viewStyles.row}
           testID={`Search.taxa.${item.id}`}
         >
-          <Image source={imageUrl} style={imageStyles.squareImage} testID={`Search.${item.id}.photo`} />
+          <Image
+            source={imageUrl}
+            style={imageStyles.squareImage}
+            testID={`Search.${item.id}.photo`}
+          />
           <Text>{`${item.preferred_common_name} (${item.rank} ${item.name})`}</Text>
         </Pressable>
       );
-    } else {
-      return (
-        <Pressable
-          onPress={navToUserProfile}
-          style={viewStyles.row}
-          testID={`Search.user.${item.login}`}
-        >
-          {/* TODO: add an empty icon when user doesn't have an icon */}
-          <Image source={{ uri: item.icon }} style={imageStyles.circularImage} testID={`Search.${item.login}.photo`}/>
-          <Text>{`${item.login} (${item.name})`}</Text>
-        </Pressable>
-      );
     }
+    return (
+      <Pressable
+        onPress={navToUserProfile}
+        style={viewStyles.row}
+        testID={`Search.user.${item.login}`}
+      >
+        {/* TODO: add an empty icon when user doesn't have an icon */}
+        <Image
+          source={{ uri: item.icon }}
+          style={imageStyles.circularImage}
+          testID={`Search.${item.login}.photo`}
+        />
+        <Text>{`${item.login} (${item.name})`}</Text>
+      </Pressable>
+    );
   };
 
   const setTaxaSearch = ( ) => setQueryType( "taxa" );
@@ -76,11 +85,11 @@ const Search = ( ): React.Node => {
         text={q}
         type="none"
       />
-        <FlatList
-          data={list}
-          renderItem={renderItem}
-          testID="Search.listView"
-        />
+      <FlatList
+        data={list}
+        renderItem={renderItem}
+        testID="Search.listView"
+      />
     </ViewWithFooter>
   );
 };

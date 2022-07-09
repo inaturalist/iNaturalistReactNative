@@ -1,11 +1,11 @@
 import React from "react";
-import {fireEvent, render, waitFor} from "@testing-library/react-native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import inatjs from "inaturalistjs";
 import AddID from "../../../../src/components/ObsEdit/AddID";
-import factory, {makeResponse} from "../../../factory";
+import factory, { makeResponse } from "../../../factory";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
-import inatjs from "inaturalistjs";
 
 // this resolves a test failure with the Animated library:
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.
@@ -28,7 +28,7 @@ const testTaxaList = [
 
 const mockExpected = testTaxaList;
 
-const renderAddID = ( route ) => render(
+const renderAddID = route => render(
   <NavigationContainer>
     <AddID route={route} />
   </NavigationContainer>
@@ -39,14 +39,15 @@ test( "renders taxon search results", async ( ) => {
   const route = { params: { } };
   const { getByTestId } = renderAddID( route );
 
-
   const input = getByTestId( "SearchTaxon" );
   await waitFor( () => {
     fireEvent.changeText( input, "Some taxon" );
   } );
 
-  const taxon = testTaxaList[0].taxon;
+  const { taxon } = testTaxaList[0];
 
   expect( getByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
-  expect( getByTestId( `Search.taxa.${taxon.id}.photo` ).props.source ).toStrictEqual( { "uri": taxon.default_photo.square_url } );
+  expect(
+    getByTestId( `Search.taxa.${taxon.id}.photo` ).props.source
+  ).toStrictEqual( { uri: taxon.default_photo.square_url } );
 } );

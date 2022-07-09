@@ -2,15 +2,17 @@
 
 import * as React from "react";
 import _ from "lodash";
-import { Text, View, Pressable, useWindowDimensions, Linking, ActivityIndicator, ScrollView } from "react-native";
+import {
+  Text, View, Pressable, useWindowDimensions, Linking, ActivityIndicator, ScrollView
+} from "react-native";
 import HTML from "react-native-render-html";
 import { useRoute } from "@react-navigation/native";
 
+import { useTranslation } from "react-i18next";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import { viewStyles, textStyles } from "../../styles/taxonDetails";
 import { useTaxonDetails } from "./hooks/useTaxonDetails";
-import { useTranslation } from "react-i18next";
 
 const TaxonDetails = ( ): React.Node => {
   const { params } = useRoute( );
@@ -21,7 +23,7 @@ const TaxonDetails = ( ): React.Node => {
   const { t } = useTranslation();
 
   const displayTaxonomyList = React.useMemo( ( ) => {
-    if ( !taxon || taxon.ancestors.length === 0 ) { return; }
+    if ( !taxon || taxon.ancestors.length === 0 ) { return <View />; }
     return taxon.ancestors.map( ( ancestor, i ) => {
       const addIndent = index => index * 5;
       const currentTaxon = `${taxon.preferred_common_name} (${taxon.name})`;
@@ -29,7 +31,11 @@ const TaxonDetails = ( ): React.Node => {
       const formattedAncestor = ancestor.preferred_common_name
         ? `${ancestor.preferred_common_name} (${ancestor.rank} ${ancestor.name})`
         : `(${ancestor.rank} ${ancestor.name})`;
-      const displayAncestor = <Text style={{ marginLeft: addIndent( i ) }}>{formattedAncestor}</Text>;
+      const displayAncestor = (
+        <Text style={{ marginLeft: addIndent( i ) }}>
+          {formattedAncestor}
+        </Text>
+      );
       const displayTaxon = <Text style={{ marginLeft: addIndent( i + 1 ) }}>{currentTaxon}</Text>;
 
       const lastAncestor = i === taxon.ancestors.length - 1;
@@ -84,4 +90,3 @@ const TaxonDetails = ( ): React.Node => {
 };
 
 export default TaxonDetails;
-

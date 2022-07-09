@@ -42,7 +42,8 @@ test( "renders taxon search results from API call", ( ) => {
 
   const commonName = taxon.preferred_common_name;
   expect( getByTestId( "Search.taxa" ) ).toBeTruthy( );
-  expect( getByTestId( `Search.${taxon.id}.photo` ).props.source ).toStrictEqual( { "uri": taxon.default_photo.square_url } );
+  expect( getByTestId( `Search.${taxon.id}.photo` ).props.source )
+    .toStrictEqual( { uri: taxon.default_photo.square_url } );
   // using RegExp to be able to search within a string
   expect( getByText( new RegExp( commonName ) ) ).toBeTruthy( );
 } );

@@ -1,16 +1,16 @@
 // @flow
 
-import {Pressable, Text, View} from "react-native";
-import {viewStyles, textStyles} from "../../styles/settings/settings";
+import { Pressable, Text, View } from "react-native";
 import React from "react";
-import {Picker} from "@react-native-picker/picker";
-import {colors} from "../../styles/global";
+import { Picker } from "@react-native-picker/picker";
 import CheckBox from "@react-native-community/checkbox";
-import PlaceSearchInput from "./PlaceSearchInput";
-import {inatLicenses} from "../../dictionaries/licenses";
 import type { Node } from "react";
-import type { SettingsProps } from "./types";
 import { t } from "i18next";
+import { viewStyles, textStyles } from "../../styles/settings/settings";
+import colors from "../../styles/colors";
+import PlaceSearchInput from "./PlaceSearchInput";
+import inatLicenses from "../../dictionaries/licenses";
+import type { SettingsProps } from "./types";
 
 const PROJECT_SETTINGS = {
   any: "Any",
@@ -30,7 +30,6 @@ const ADD_OBSERVATION_FIELDS = {
   observer: "Only you"
 };
 
-
 const LicenseSelector = ( {
   value,
   onValueChanged,
@@ -38,73 +37,96 @@ const LicenseSelector = ( {
   updateExistingTitle,
   onUpdateExisting,
   updateExisting
-} ): Node => {
-  return <>
+} ): Node => (
+  <>
     <Text style={textStyles.subTitle}>{title}</Text>
     <View style={viewStyles.selectorContainer}>
       <Picker
         style={viewStyles.selector}
         dropdownIconColor={colors.inatGreen}
         selectedValue={value}
-        onValueChange={onValueChanged}>
-        {inatLicenses.map( ( l ) => (
+        onValueChange={onValueChanged}
+      >
+        {inatLicenses.map( l => (
           <Picker.Item
             key={l.value}
             label={l.title}
-            value={l.value} />
+            value={l.value}
+          />
         ) )}
       </Picker>
     </View>
 
-    <Pressable style={[viewStyles.row, viewStyles.notificationCheckbox]}  onPress={() => {
-      onUpdateExisting( !updateExisting );
-    }}>
+    <Pressable
+      style={[viewStyles.row, viewStyles.notificationCheckbox]}
+      onPress={() => {
+        onUpdateExisting( !updateExisting );
+      }}
+    >
       <CheckBox
         value={updateExisting}
         onValueChange={onUpdateExisting}
-        tintColors={{false: colors.inatGreen, true: colors.inatGreen}}
+        tintColors={{ false: colors.inatGreen, true: colors.inatGreen }}
       />
       <Text style={textStyles.notificationTitle}>{updateExistingTitle}</Text>
     </Pressable>
-
-  </>;
-};
+  </>
+);
 
 const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps ): Node => {
+  let taxonNamePreference = "prefers_common_names";
+  if ( settings.prefers_scientific_name_first ) {
+    taxonNamePreference = "prefers_scientific_name_first";
+  } else if ( settings.prefers_scientific_names ) {
+    taxonNamePreference = "prefers_scientific_names";
+  }
 
   return (
     <>
       <Text style={textStyles.title}>{t( "Project-Settings" )}</Text>
-      <Text style={textStyles.subTitle}>{t( "Which-traditional-projects-can-add-your-observations" )}</Text>
+      <Text style={textStyles.subTitle}>
+        {t( "Which-traditional-projects-can-add-your-observations" )}
+      </Text>
       <View style={viewStyles.selectorContainer}>
         <Picker
           style={viewStyles.selector}
           dropdownIconColor={colors.inatGreen}
           selectedValue={settings.preferred_project_addition_by}
-          onValueChange={( itemValue, itemIndex ) =>
-            onSettingsModified( { ...settings, preferred_project_addition_by: itemValue } )
-          }>
-          {Object.keys( PROJECT_SETTINGS ).map( ( k ) => (
+          onValueChange={( itemValue, _itemIndex ) => onSettingsModified( {
+            ...settings,
+            preferred_project_addition_by: itemValue
+          } )}
+        >
+          {Object.keys( PROJECT_SETTINGS ).map( k => (
             <Picker.Item
               key={k}
               label={PROJECT_SETTINGS[k]}
-              value={k} />
+              value={k}
+            />
           ) )}
         </Picker>
       </View>
 
       <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Taxonomy-Settings" )}</Text>
-      <Pressable style={[viewStyles.row, viewStyles.notificationCheckbox]}  onPress={() => {
-        onSettingsModified( { ...settings, prefers_automatic_taxonomic_changes: !settings.prefers_automatic_taxonomic_changes } );
-      }}>
+      <Pressable
+        style={[viewStyles.row, viewStyles.notificationCheckbox]}
+        onPress={() => {
+          onSettingsModified( {
+            ...settings,
+            prefers_automatic_taxonomic_changes: !settings.prefers_automatic_taxonomic_changes
+          } );
+        }}
+      >
         <CheckBox
           value={settings.prefers_automatic_taxonomic_changes}
-          onValueChange={( v ) => {
+          onValueChange={v => {
             onSettingsModified( { ...settings, prefers_automatic_taxonomic_changes: v } );
           }}
-          tintColors={{false: colors.inatGreen, true: colors.inatGreen}}
+          tintColors={{ false: colors.inatGreen, true: colors.inatGreen }}
         />
-        <Text style={textStyles.notificationTitle}>{t( "Automatically-update-my-content-for-taxon-changes" )}</Text>
+        <Text style={textStyles.notificationTitle}>
+          {t( "Automatically-update-my-content-for-taxon-changes" )}
+        </Text>
       </Pressable>
 
       <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Names" )}</Text>
@@ -114,68 +136,84 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
         <Picker
           style={viewStyles.selector}
           dropdownIconColor={colors.inatGreen}
-          selectedValue={
-            settings.prefers_common_names && !settings.prefers_scientific_name_first ? "prefers_common_names" :
-              ( settings.prefers_common_names && settings.prefers_scientific_name_first ?
-                  "prefers_scientific_name_first" : "prefers_scientific_names"
-              )
-          }
-          onValueChange={( value, itemIndex ) => {
+          selectedValue={taxonNamePreference}
+          onValueChange={( value, _itemIndex ) => {
             if ( value === "prefers_common_names" ) {
-              onSettingsModified( { ...settings,
+              onSettingsModified( {
+                ...settings,
                 prefers_common_names: true,
                 prefers_scientific_name_first: false
               } );
             } else if ( value === "prefers_scientific_name_first" ) {
-              onSettingsModified( { ...settings,
+              onSettingsModified( {
+                ...settings,
                 prefers_common_names: true,
                 prefers_scientific_name_first: true
               } );
             } else if ( value === "prefers_scientific_names" ) {
-              onSettingsModified( { ...settings,
+              onSettingsModified( {
+                ...settings,
                 prefers_common_names: false,
                 prefers_scientific_name_first: false
               } );
             }
-          }}>
-          {Object.keys( TAXON_DISPLAY ).map( ( k ) => (
+          }}
+        >
+          {Object.keys( TAXON_DISPLAY ).map( k => (
             <Picker.Item
               key={k}
               label={TAXON_DISPLAY[k]}
-              value={k} />
+              value={k}
+            />
           ) )}
         </Picker>
       </View>
       <Text style={textStyles.subTitle}>{t( "Prioritize-common-names-used-in-this-place" )}</Text>
-      <PlaceSearchInput placeId={settings.place_id} onPlaceChanged={( p ) => onSettingsModified( { ...settings, place_id: p} )} />
+      <PlaceSearchInput
+        placeId={settings.place_id}
+        onPlaceChanged={p => onSettingsModified( { ...settings, place_id: p } )}
+      />
 
-      <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Community-Moderation-Settings" )}</Text>
-      <Pressable style={[viewStyles.row, viewStyles.notificationCheckbox]}  onPress={() => {
-        onSettingsModified( { ...settings, prefers_community_taxa: !settings.prefers_community_taxa } );
-      }}>
+      <Text style={[textStyles.title, textStyles.marginTop]}>
+        {t( "Community-Moderation-Settings" )}
+      </Text>
+      <Pressable
+        style={[viewStyles.row, viewStyles.notificationCheckbox]}
+        onPress={() => {
+          onSettingsModified( {
+            ...settings,
+            prefers_community_taxa: !settings.prefers_community_taxa
+          } );
+        }}
+      >
         <CheckBox
           value={settings.prefers_community_taxa}
-          onValueChange={( v ) => {
+          onValueChange={v => {
             onSettingsModified( { ...settings, prefers_community_taxa: v } );
           }}
-          tintColors={{false: colors.inatGreen, true: colors.inatGreen}}
+          tintColors={{ false: colors.inatGreen, true: colors.inatGreen }}
         />
         <Text style={textStyles.notificationTitle}>{t( "Accept-community-identifications" )}</Text>
       </Pressable>
-      <Text style={textStyles.subTitle}>{t( "Who-can-add-observation-fields-to-my-observations" )}</Text>
+      <Text style={textStyles.subTitle}>
+        {t( "Who-can-add-observation-fields-to-my-observations" )}
+      </Text>
       <View style={viewStyles.selectorContainer}>
         <Picker
           style={viewStyles.selector}
           dropdownIconColor={colors.inatGreen}
           selectedValue={settings.preferred_observation_fields_by}
-          onValueChange={( itemValue, itemIndex ) =>
-            onSettingsModified( { ...settings, preferred_observation_fields_by: itemValue } )
-          }>
-          {Object.keys( ADD_OBSERVATION_FIELDS ).map( ( k ) => (
+          onValueChange={( itemValue, _itemIndex ) => onSettingsModified( {
+            ...settings,
+            preferred_observation_fields_by: itemValue
+          } )}
+        >
+          {Object.keys( ADD_OBSERVATION_FIELDS ).map( k => (
             <Picker.Item
               key={k}
               label={ADD_OBSERVATION_FIELDS[k]}
-              value={k} />
+              value={k}
+            />
           ) )}
         </Picker>
       </View>
@@ -184,26 +222,32 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
       <LicenseSelector
         title="Default observation license"
         value={settings.preferred_observation_license}
-        onValueChanged={( v ) => onSettingsModified( { ...settings, preferred_observation_license: v} )}
+        onValueChanged={v => onSettingsModified( {
+          ...settings,
+          preferred_observation_license: v
+        } )}
         updateExistingTitle="Update existing observations with new license choices"
         updateExisting={settings.make_observation_licenses_same}
-        onUpdateExisting={( v ) => onSettingsModified( { ...settings, make_observation_licenses_same: v} )}
+        onUpdateExisting={v => onSettingsModified( {
+          ...settings,
+          make_observation_licenses_same: v
+        } )}
       />
       <LicenseSelector
         title="Default photo license"
         value={settings.preferred_photo_license}
-        onValueChanged={( v ) => onSettingsModified( { ...settings, preferred_photo_license: v} )}
+        onValueChanged={v => onSettingsModified( { ...settings, preferred_photo_license: v } )}
         updateExistingTitle="Update existing photos with new license choices"
         updateExisting={settings.make_photo_licenses_same}
-        onUpdateExisting={( v ) => onSettingsModified( { ...settings, make_photo_licenses_same: v} )}
+        onUpdateExisting={v => onSettingsModified( { ...settings, make_photo_licenses_same: v } )}
       />
       <LicenseSelector
         title="Default sound license"
         value={settings.preferred_sound_license}
-        onValueChanged={( v ) => onSettingsModified( { ...settings, preferred_sound_license: v} )}
+        onValueChanged={v => onSettingsModified( { ...settings, preferred_sound_license: v } )}
         updateExistingTitle="Update existing sounds with new license choices"
         updateExisting={settings.make_sound_licenses_same}
-        onUpdateExisting={( v ) => onSettingsModified( { ...settings, make_sound_licenses_same: v} )}
+        onUpdateExisting={v => onSettingsModified( { ...settings, make_sound_licenses_same: v } )}
       />
     </>
   );

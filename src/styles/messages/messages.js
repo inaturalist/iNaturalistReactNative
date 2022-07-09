@@ -13,7 +13,7 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   }
 } );
 
-
 export {
+  // eslint-disable-next-line import/prefer-default-export
   textStyles
 };

@@ -1,19 +1,24 @@
 // @flow
 
 import inatjs from "inaturalistjs";
-import {useEffect, useState} from "react";
-import {Alert} from "react-native";
+import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 const useUserMe = ( accessToken: string ): Array<Object> | null => {
   const [result, setResult] = useState( null );
 
-  useEffect( ( ) => {
+  useEffect( ( ): function => {
     let isCurrent = true;
+    const cleanUp = ( ) => {
+      isCurrent = false;
+    };
     const fetchSearchResults = async ( ) => {
       try {
-        const response = await inatjs.users.me( {api_token: accessToken, fields:
+        const response = await inatjs.users.me( {
+          api_token: accessToken,
+          fields:
           "all"
-          } );
+        } );
         if ( !isCurrent ) { return; }
         setResult( response.results[0] );
       } catch ( e ) {
@@ -31,11 +36,9 @@ const useUserMe = ( accessToken: string ): Array<Object> | null => {
     };
 
     // don't bother to fetch search results if there isn't a query
-    if ( !accessToken ) { return; }
+    if ( !accessToken ) { return cleanUp; }
     fetchSearchResults( );
-    return ( ) => {
-      isCurrent = false;
-    };
+    return cleanUp;
   }, [accessToken] );
 
   return result;

@@ -1,18 +1,23 @@
 // @flow
 
-import {Alert, Image, Text, TextInput, View} from "react-native";
-import {viewStyles, textStyles} from "../../styles/settings/settings";
-import React, {useEffect} from "react";
+import {
+  Alert, Image, Text, TextInput, View
+} from "react-native";
+import React, { useEffect } from "react";
 import type { Node } from "react";
 import { t } from "i18next";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
-import {useDebounce} from "use-debounce";
+import { useDebounce } from "use-debounce";
 import inatjs from "inaturalistjs";
-import {Picker} from "@react-native-picker/picker";
-import {colors} from "../../styles/global";
-import CheckBox from "@react-native-community/checkbox";
+import { Picker } from "@react-native-picker/picker";
+import colors from "../../styles/colors";
+import { viewStyles, textStyles } from "../../styles/settings/settings";
 import UserSearchInput from "./UserSearchInput";
 import useRelationships from "./hooks/useRelationships";
+
+import BlockedUser from "./BlockedUser";
+import MutedUser from "./MutedUser";
+import Relationship from "./Relationship";
 
 const FOLLOWING = {
   any: "All",
@@ -66,15 +71,32 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     orderBy = "user";
     order = "desc";
   }
-  const relationshipParams = {q: finalUserSearch, following, trusted, order_by: orderBy, order: order, per_page: 10, page, random: refreshRelationships };
-  const [relationshipResults, perPage, totalResults] = useRelationships( accessToken, relationshipParams );
+  const relationshipParams = {
+    q: finalUserSearch,
+    following,
+    trusted,
+    order_by: orderBy,
+    order,
+    per_page: 10,
+    page,
+    random: refreshRelationships
+  };
+  const [
+    relationshipResults,
+    perPage,
+    totalResults
+  ] = useRelationships( accessToken, relationshipParams );
   const totalPages = totalResults > 0 && perPage > 0 ? Math.ceil( totalResults / perPage ) : 1;
 
   useEffect( () => {
     const getBlockedUsers = async () => {
       try {
-        const responses = await Promise.all( settings.blocked_user_ids.map( ( userId ) => inatjs.users.fetch( userId, { fields: "icon,login,name"} ) ) );
-        setBlockedUsers( responses.map( ( r ) => r.results[0] ) );
+        const responses = await Promise.all(
+          settings.blocked_user_ids.map(
+            userId => inatjs.users.fetch( userId, { fields: "icon,login,name" } )
+          )
+        );
+        setBlockedUsers( responses.map( r => r.results[0] ) );
       } catch ( e ) {
         console.error( e );
         Alert.alert(
@@ -85,7 +107,6 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
             cancelable: true
           }
         );
-        return;
       }
     };
     if ( settings.blocked_user_ids.length > 0 ) {
@@ -96,8 +117,12 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
 
     const getMutedUsers = async () => {
       try {
-        const responses = await Promise.all( settings.muted_user_ids.map( ( userId ) => inatjs.users.fetch( userId, { fields: "icon,login,name" } ) ) );
-        setMutedUsers( responses.map( ( r ) => r.results[0] ) );
+        const responses = await Promise.all(
+          settings.muted_user_ids.map(
+            userId => inatjs.users.fetch( userId, { fields: "icon,login,name" } )
+          )
+        );
+        setMutedUsers( responses.map( r => r.results[0] ) );
       } catch ( e ) {
         console.error( e );
         Alert.alert(
@@ -108,7 +133,6 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
             cancelable: true
           }
         );
-        return;
       }
     };
     if ( settings.muted_user_ids.length > 0 ) {
@@ -118,13 +142,12 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     }
   }, [settings] );
 
-
   const updateRelationship = async ( relationship, update ) => {
     let response;
     try {
       response = await inatjs.relationships.update(
         { id: relationship.id, relationship: update },
-        { api_token: accessToken}
+        { api_token: accessToken }
       );
     } catch ( e ) {
       console.error( e );
@@ -142,17 +165,19 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     setRefreshRelationships( Math.random() );
   };
 
-  const askToRemoveRelationship = ( relationship ) => {
+  const askToRemoveRelationship = relationship => {
     Alert.alert(
       "Remove Relationship?",
       `You will no longer be following or trusting ${relationship.friendUser.login}.`,
       [
-        { text: "Remove Relationship", onPress: async () => {
+        {
+          text: "Remove Relationship",
+          onPress: async () => {
             let response;
             try {
               response = await inatjs.relationships.delete(
                 { id: relationship.id },
-                { api_token: accessToken}
+                { api_token: accessToken }
               );
             } catch ( e ) {
               console.error( e );
@@ -168,7 +193,8 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
             }
             console.log( response );
             setRefreshRelationships( Math.random() );
-          } }
+          }
+        }
       ],
       {
         cancelable: true
@@ -176,13 +202,12 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     );
   };
 
-
-  const unblockUser = async ( user ) => {
+  const unblockUser = async user => {
     let response;
     try {
       response = await inatjs.users.unblock(
         { id: user.id },
-        { api_token: accessToken}
+        { api_token: accessToken }
       );
     } catch ( e ) {
       console.error( e );
@@ -200,15 +225,15 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     onRefreshUser();
   };
 
-  const blockUser = async ( user ) => {
-    if ( !user ) {return;}
+  const blockUser = async user => {
+    if ( !user ) { return; }
 
     let response;
     try {
-    response = await inatjs.users.block(
-      { id: user.id },
-      { api_token: accessToken}
-    );
+      response = await inatjs.users.block(
+        { id: user.id },
+        { api_token: accessToken }
+      );
     } catch ( e ) {
       console.error( e );
       Alert.alert(
@@ -225,27 +250,12 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     onRefreshUser();
   };
 
-
-  const BlockedUser = ( {user} ): Node => {
-    return <View style={[viewStyles.row, viewStyles.relationshipRow]}>
-      <Image
-        style={viewStyles.relationshipImage}
-        source={{ uri: user.icon}}
-      />
-      <View style={viewStyles.column}>
-        <Text>{user.login}</Text>
-        <Text>{user.name}</Text>
-      </View>
-      <Pressable style={viewStyles.removeRelationship} onPress={() => unblockUser( user )}><Text>{t( "Unblock" )}</Text></Pressable>
-    </View>;
-  };
-
-  const unmuteUser = async ( user ) => {
+  const unmuteUser = async user => {
     let response;
     try {
       response = await inatjs.users.unmute(
         { id: user.id },
-        { api_token: accessToken}
+        { api_token: accessToken }
       );
     } catch ( e ) {
       console.error( e );
@@ -263,15 +273,14 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     onRefreshUser();
   };
 
-
-  const muteUser = async ( user ) => {
-    if ( !user ) {return;}
+  const muteUser = async user => {
+    if ( !user ) { return; }
 
     let response;
     try {
       response = await inatjs.users.mute(
         { id: user.id },
-        { api_token: accessToken}
+        { api_token: accessToken }
       );
     } catch ( e ) {
       console.error( e );
@@ -289,72 +298,23 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     onRefreshUser();
   };
 
-
-  const MutedUser = ( {user} ): Node => {
-    return <View style={[viewStyles.row, viewStyles.relationshipRow]}>
-      <Image
-        style={viewStyles.relationshipImage}
-        source={{ uri: user.icon}}
-      />
-      <View style={viewStyles.column}>
-        <Text>{user.login}</Text>
-        <Text>{user.name}</Text>
-      </View>
-      <Pressable style={viewStyles.removeRelationship} onPress={() => unmuteUser( user )}><Text>{t( "Unmute" )}</Text></Pressable>
-    </View>;
-  };
-
-
-  const Relationship = ( {relationship} ): Node => {
-    return  <View style={[viewStyles.column, viewStyles.relationshipRow]}>
-      <View style={viewStyles.row}>
-        <Image
-          style={viewStyles.relationshipImage}
-          source={{ uri: relationship.friendUser.icon_url}}
-        />
-        <View style={viewStyles.column}>
-          <Text>{relationship.friendUser.login}</Text>
-          <Text>{relationship.friendUser.name}</Text>
-        </View>
-        <View style={viewStyles.column}>
-          <View style={[viewStyles.row, viewStyles.notificationCheckbox]}>
-            <CheckBox
-              value={relationship.following}
-              onValueChange={( x ) => { updateRelationship( relationship, { following: !relationship.following } ); }}
-              tintColors={{false: colors.inatGreen, true: colors.inatGreen}}
-            />
-            <Text>{t( "Following" )}</Text>
-          </View>
-          <View style={[viewStyles.row, viewStyles.notificationCheckbox]}>
-            <CheckBox
-              value={relationship.trust}
-              onValueChange={( x ) => { updateRelationship( relationship, { trust: !relationship.trust } ); }}
-              tintColors={{false: colors.inatGreen, true: colors.inatGreen}}
-            />
-            <Text>{t( "Trust-with-hidden-coordinates" )}</Text>
-          </View>
-        </View>
-      </View>
-      <Text>{t( "Added-on-date", { date: relationship.created_at } )}</Text>
-      <Pressable style={viewStyles.removeRelationship} onPress={() => askToRemoveRelationship( relationship )}><Text>{t( "Remove-Relationship" )}</Text></Pressable>
-    </View>;
-  };
-
-
   return (
     <View style={viewStyles.column}>
       <Text style={textStyles.title}>{t( "Relationships" )}</Text>
       <View style={viewStyles.row}>
         <TextInput
           style={viewStyles.textInput}
-          onChangeText={( v ) => {
+          onChangeText={v => {
             setUserSearch( v );
           }}
           value={userSearch}
         />
-        <Pressable style={viewStyles.clearSearch} onPress={() => {
-          setUserSearch( "" );
-        }}>
+        <Pressable
+          style={viewStyles.clearSearch}
+          onPress={() => {
+            setUserSearch( "" );
+          }}
+        >
           <Image
             style={viewStyles.clearSearch}
             resizeMode="contain"
@@ -369,14 +329,14 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
             style={viewStyles.selector}
             dropdownIconColor={colors.inatGreen}
             selectedValue={following}
-            onValueChange={( itemValue, itemIndex ) =>
-              setFollowing( itemValue )
-            }>
-            {Object.keys( FOLLOWING ).map( ( k ) => (
+            onValueChange={( itemValue, _itemIndex ) => setFollowing( itemValue )}
+          >
+            {Object.keys( FOLLOWING ).map( k => (
               <Picker.Item
                 key={k}
                 label={FOLLOWING[k]}
-                value={k} />
+                value={k}
+              />
             ) )}
           </Picker>
         </View>
@@ -389,14 +349,14 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
             style={viewStyles.selector}
             dropdownIconColor={colors.inatGreen}
             selectedValue={trusted}
-            onValueChange={( itemValue, itemIndex ) =>
-              setTrusted( itemValue )
-            }>
-            {Object.keys( TRUSTED ).map( ( k ) => (
+            onValueChange={( itemValue, _itemIndex ) => setTrusted( itemValue )}
+          >
+            {Object.keys( TRUSTED ).map( k => (
               <Picker.Item
                 key={k}
                 label={TRUSTED[k]}
-                value={k} />
+                value={k}
+              />
             ) )}
           </Picker>
         </View>
@@ -409,40 +369,65 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
             style={viewStyles.selector}
             dropdownIconColor={colors.inatGreen}
             selectedValue={sortBy}
-            onValueChange={( itemValue, itemIndex ) =>
-              setSortBy( itemValue )
-            }>
-            {Object.keys( SORT_BY ).map( ( k ) => (
+            onValueChange={( itemValue, _itemIndex ) => setSortBy( itemValue )}
+          >
+            {Object.keys( SORT_BY ).map( k => (
               <Picker.Item
                 key={k}
                 label={SORT_BY[k]}
-                value={k} />
+                value={k}
+              />
             ) )}
           </Picker>
         </View>
       </View>
 
-      {relationshipResults.map( ( relationship ) => (
-        <Relationship key={relationship.id} relationship={relationship} />
+      {relationshipResults.map( relationship => (
+        <Relationship
+          key={relationship.id}
+          relationship={relationship}
+          updateRelationship={updateRelationship}
+          askToRemoveRelationship={askToRemoveRelationship}
+        />
       ) )}
-      { totalPages > 1 && <View style={[viewStyles.row, viewStyles.paginationContainer]}>
-        <Pressable disabled={page === 1} style={viewStyles.pageButton} onPress={() => setPage( page - 1 )}><Text>&lt;</Text></Pressable>
-        {[...Array( totalPages ).keys()].map( ( x ) => (
-          <Pressable key={x} style={viewStyles.pageButton} onPress={() => setPage( x + 1 )}><Text style={x + 1 === page ? textStyles.currentPage : null}>{x + 1}</Text></Pressable>
+      { totalPages > 1 && (
+      <View style={[viewStyles.row, viewStyles.paginationContainer]}>
+        <Pressable
+          disabled={page === 1}
+          style={viewStyles.pageButton}
+          onPress={() => setPage( page - 1 )}
+        >
+          <Text>&lt;</Text>
+        </Pressable>
+        {[...Array( totalPages ).keys()].map( x => (
+          <Pressable
+            key={x}
+            style={viewStyles.pageButton}
+            onPress={() => setPage( x + 1 )}
+          >
+            <Text style={x + 1 === page ? textStyles.currentPage : null}>{x + 1}</Text>
+          </Pressable>
         ) )}
-        <Pressable disabled={page === totalPages} style={viewStyles.pageButton} onPress={() => setPage( page + 1 )}><Text>&gt;</Text></Pressable>
-      </View>}
+        <Pressable
+          disabled={page === totalPages}
+          style={viewStyles.pageButton}
+          onPress={() => setPage( page + 1 )}
+        >
+          <Text>&gt;</Text>
+        </Pressable>
+      </View>
+      )}
 
       <Text style={textStyles.title}>{t( "Blocked-Users" )}</Text>
-      <UserSearchInput userId={0} onUserChanged={( u ) => blockUser( u )} />
-      {blockedUsers.map( ( user ) => (
-        <BlockedUser key={user.id} user={user} />
+      <UserSearchInput userId={0} onUserChanged={u => blockUser( u )} />
+      {blockedUsers.map( user => (
+        <BlockedUser key={user.id} user={user} unblockUser={unblockUser} />
       ) )}
 
       <Text style={textStyles.title}>{t( "Muted-Users" )}</Text>
-      <UserSearchInput userId={0} onUserChanged={( u ) => muteUser( u )} />
-      {mutedUsers.map( ( user ) => (
-        <MutedUser key={user.id} user={user} />
+      <UserSearchInput userId={0} onUserChanged={u => muteUser( u )} />
+      {mutedUsers.map( user => (
+        <MutedUser key={user.id} user={user} unmuteUser={unmuteUser} />
       ) )}
     </View>
   );

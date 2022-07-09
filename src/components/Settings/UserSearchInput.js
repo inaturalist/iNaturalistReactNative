@@ -1,16 +1,22 @@
-import React, {useEffect} from "react";
-import {useDebounce} from "use-debounce";
-import {Image, Text, TextInput, View} from "react-native";
-import {textStyles, viewStyles} from "../../styles/settings/settings";
+import React, { useEffect } from "react";
+import { useDebounce } from "use-debounce";
+import {
+  Image, Text, TextInput, View
+} from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import { textStyles, viewStyles } from "../../styles/settings/settings";
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 
-const UserSearchInput = ( { onUserChanged} ): React.Node => {
+const UserSearchInput = ( { onUserChanged } ): React.Node => {
   const [hideResults, setHideResults] = React.useState( true );
   const [userSearch, setUserSearch] = React.useState( "" );
   // So we'll start searching only once the user finished typing
   const [finalUserSearch] = useDebounce( userSearch, 500 );
-  const userResults = useRemoteSearchResults( finalUserSearch, "users", "user.login,user.name,user.icon" ).map( r => r.user );
+  const userResults = useRemoteSearchResults(
+    finalUserSearch,
+    "users",
+    "user.login,user.name,user.icon"
+  ).map( r => r.user );
 
   useEffect( () => {
     if ( finalUserSearch.length === 0 ) {
@@ -18,22 +24,25 @@ const UserSearchInput = ( { onUserChanged} ): React.Node => {
     }
   }, [finalUserSearch] );
 
-  return  (
+  return (
     <View style={viewStyles.column}>
       <View style={viewStyles.row}>
         <TextInput
           style={viewStyles.textInput}
-          onChangeText={( v ) => {
+          onChangeText={v => {
             setHideResults( false );
             setUserSearch( v );
           }}
           value={userSearch}
         />
-        <Pressable style={viewStyles.clearSearch} onPress={() => {
-          setHideResults( true );
-          onUserChanged( null );
-          setUserSearch( "" );
-        }}>
+        <Pressable
+          style={viewStyles.clearSearch}
+          onPress={() => {
+            setHideResults( true );
+            onUserChanged( null );
+            setUserSearch( "" );
+          }}
+        >
           <Image
             style={viewStyles.clearSearch}
             resizeMode="contain"
@@ -41,13 +50,16 @@ const UserSearchInput = ( { onUserChanged} ): React.Node => {
           />
         </Pressable>
       </View>
-      {!hideResults && finalUserSearch.length > 0 && userResults.map( ( result ) => (
-        <Pressable key={result.id} style={[viewStyles.row, viewStyles.placeResultContainer]}
-                   onPress={() => {
-                     setHideResults( true );
-                     onUserChanged( result );
-                     setUserSearch( result.login );
-                   }}>
+      {!hideResults && finalUserSearch.length > 0 && userResults.map( result => (
+        <Pressable
+          key={result.id}
+          style={[viewStyles.row, viewStyles.placeResultContainer]}
+          onPress={() => {
+            setHideResults( true );
+            onUserChanged( result );
+            setUserSearch( result.login );
+          }}
+        >
           <Image
             style={viewStyles.userPic}
             resizeMode="contain"
@@ -59,7 +71,6 @@ const UserSearchInput = ( { onUserChanged} ): React.Node => {
       ) )}
     </View>
   );
-
 };
 
 export default UserSearchInput;

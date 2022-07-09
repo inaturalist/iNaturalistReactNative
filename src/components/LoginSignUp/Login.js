@@ -1,16 +1,22 @@
 // @flow
 
 import React, { useEffect, useState } from "react";
-import {Image, Linking, ScrollView, TouchableOpacity, View} from "react-native";
+import {
+  Image, Linking, ScrollView, TouchableOpacity, View
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
-import {Button, Paragraph, Dialog, Portal, Text, TextInput} from "react-native-paper";
+import {
+  Button, Paragraph, Dialog, Portal, Text, TextInput
+} from "react-native-paper";
 
-import { textStyles, viewStyles, imageStyles } from "../../styles/login/login";
-import { isLoggedIn, authenticateUser, getUsername, getUserId, signOut } from "./AuthenticationService";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { useTranslation } from "react-i18next";
-import {colors} from "../../styles/global";
+import { textStyles, viewStyles, imageStyles } from "../../styles/login/login";
+import {
+  isLoggedIn, authenticateUser, getUsername, getUserId, signOut
+} from "./AuthenticationService";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import colors from "../../styles/colors";
 
 const Login = ( ): Node => {
   const { t } = useTranslation( );
@@ -30,7 +36,7 @@ const Login = ( ): Node => {
     let isCurrent = true;
 
     const fetchLoggedIn = async ( ) => {
-      if ( !isCurrent ) {return;}
+      if ( !isCurrent ) { return; }
 
       setLoggedIn( await isLoggedIn( ) );
       if ( loggedIn ) {
@@ -91,7 +97,11 @@ const Login = ( ): Node => {
                     <Paragraph>{t( "Are-you-sure-you-want-to-sign-out" )}</Paragraph>
                   </Dialog.Content>
                   <Dialog.Actions>
-                    <Button style={viewStyles.grayButton} onPress={hideDialog} testID="Login.signOutButton">
+                    <Button
+                      style={viewStyles.grayButton}
+                      onPress={hideDialog}
+                      testID="Login.signOutButton"
+                    >
                       {t( "Cancel" )}
                     </Button>
                     <Button style={viewStyles.greenButton} onPress={onSignOut}>
@@ -100,20 +110,30 @@ const Login = ( ): Node => {
                   </Dialog.Actions>
                 </Dialog>
               </Portal>
-              <Text style={textStyles.text} testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
+              <Text
+                style={textStyles.text}
+                testID="Login.loggedInAs"
+              >
+                {t( "Logged-in-as", { username } )}
+              </Text>
               <Button
                 style={viewStyles.button}
                 onPress={showDialog}
                 mode="contained"
                 uppercase={false}
-                testID="Login.signOutButton">
+                testID="Login.signOutButton"
+              >
                 {t( "Sign-out" )}
               </Button>
             </>
           )
           : (
             <View>
-              <Image style={imageStyles.logo} resizeMode="contain" source={require( "../../images/inat_logo.png" )} />
+              <Image
+                style={imageStyles.logo}
+                resizeMode="contain"
+                source={require( "../../images/inat_logo.png" )}
+              />
               <Text style={textStyles.header}>{t( "Login-header" )}</Text>
               <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
               <Text style={textStyles.fieldText}>{t( "Username-or-Email" )}</Text>
@@ -138,7 +158,7 @@ const Login = ( ): Node => {
                   setPassword( text );
                 }}
                 value={password}
-                secureTextEntry={true}
+                secureTextEntry
                 testID="Login.password"
                 selectionColor={colors.black}
               />
@@ -153,7 +173,8 @@ const Login = ( ): Node => {
                 onPress={login}
                 loading={loading}
                 disabled={!email || !password}
-                testID="Login.loginButton">
+                testID="Login.loginButton"
+              >
                 {t( "Log-in" )}
               </Button>
             </View>

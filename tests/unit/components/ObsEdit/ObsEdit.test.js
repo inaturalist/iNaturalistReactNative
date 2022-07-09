@@ -20,16 +20,15 @@ jest.mock( "react-native-paper", () => {
   const RealModule = jest.requireActual( "react-native-paper" );
   const MockedModule = {
     ...RealModule,
-    Portal: ( {children} ) => <>{children}</>
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    Portal: ( { children } ) => <>{children}</>
   };
   return MockedModule;
 } );
 
-jest.mock( "../../../../src/sharedHooks/useLocationName" , ( ) => ( {
+jest.mock( "../../../../src/sharedHooks/useLocationName", ( ) => ( {
   __esModule: true,
-  default: ( ) => {
-    return mockLocationName;
-  }
+  default: ( ) => mockLocationName
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -43,7 +42,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
   __esModule: true,
-  useLoggedIn: ( ) => true
+  default: ( ) => true
 } ) );
 
 const mockCurrentUser = factory( "LocalUser" );
@@ -55,15 +54,16 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
-const mockObsEditProviderWithObs = obs =>
-  ObsEditProvider.mockImplementation( ( { children }: Props ): Node => (
-    <ObsEditContext.Provider value={{
-      observations: obs,
-      currentObsIndex: 0
-    }}>
-      {children}
-    </ObsEditContext.Provider>
-  ) );
+const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  <ObsEditContext.Provider value={{
+    observations: obs,
+    currentObsIndex: 0
+  }}
+  >
+    {children}
+  </ObsEditContext.Provider>
+) );
 
 const renderObsEdit = ( ) => render(
   <NavigationContainer>

@@ -10,7 +10,7 @@ import * as useMessages from "../../../../src/components/Messages/hooks/useMessa
 const mockedNavigate = jest.fn( );
 const mockMessage = factory( "RemoteMessage" );
 
-jest.mock( "../../../../src/components/Messages/hooks/useMessages" , ( ) => ( {
+jest.mock( "../../../../src/components/Messages/hooks/useMessages", ( ) => ( {
   __esModule: true,
   default: null
 } ) );
@@ -34,27 +34,22 @@ const renderMessages = ( ) => render(
 );
 
 it( "displays activity indicator when loading", ( ) => {
-  useMessages.default = ( ) => {
-    return {
-      messages: [],
-      loading: true
-    };
-  };
+  // eslint-disable-next-line no-import-assign
+  useMessages.default = ( ) => ( {
+    messages: [],
+    loading: true
+  } );
   const { getByTestId } = renderMessages( );
   expect( getByTestId( "Messages.activityIndicator" ) ).toBeTruthy( );
 } );
 
 it( "displays message subject and not activity indicator when loading complete", ( ) => {
-  useMessages.default = ( ) => {
-    return {
-      messages: [mockMessage],
-      loading: false
-    };
-  };
+  // eslint-disable-next-line no-import-assign
+  useMessages.default = ( ) => ( {
+    messages: [mockMessage],
+    loading: false
+  } );
   const { getByText, queryByTestId } = renderMessages( );
   expect( getByText( mockMessage.subject ) ).toBeTruthy( );
   expect( queryByTestId( "Messages.activityIndicator" ) ).toBeNull( );
 } );
-
-
-

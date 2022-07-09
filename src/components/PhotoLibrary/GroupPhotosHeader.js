@@ -24,10 +24,12 @@ const GroupPhotosHeader = ( { photos, observations }: Props ): Node => {
   return (
     <>
       <View style={viewStyles.header}>
-      <HeaderBackButton onPress={navBack} />
-      <TranslatedText style={textStyles.header} text="Group-Photos" />
+        <HeaderBackButton onPress={navBack} />
+        <TranslatedText style={textStyles.header} text="Group-Photos" />
       </View>
-      <Text style={textStyles.header}>{t( "X-photos-X-observations", { photoCount: photos, observationCount: observations } )}</Text>
+      <Text style={textStyles.header}>
+        {t( "X-photos-X-observations", { photoCount: photos, observationCount: observations } )}
+      </Text>
       <TranslatedText style={textStyles.text} text="Combine-photos-onboarding" />
     </>
   );

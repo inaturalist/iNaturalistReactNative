@@ -45,7 +45,7 @@ test( "displays user search results on button press", ( ) => {
 
   fireEvent.press( button );
   expect( getByTestId( `Search.user.${login}` ) ).toBeTruthy( );
-  expect( getByTestId( `Search.${login}.photo` ).props.source ).toStrictEqual( { "uri": user.icon } );
+  expect( getByTestId( `Search.${login}.photo` ).props.source ).toStrictEqual( { uri: user.icon } );
   expect( getByText( new RegExp( login ) ) ).toBeTruthy( );
 } );
 
@@ -60,4 +60,3 @@ test( "navigates to user profile on button press", ( ) => {
   fireEvent.press( getByTestId( `Search.user.${login}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: user.id } );
 } );
-

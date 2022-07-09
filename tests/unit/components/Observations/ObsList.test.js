@@ -5,24 +5,24 @@ import factory from "../../../factory";
 import ObsList from "../../../../src/components/Observations/ObsList";
 
 const mockObservations = [
-  factory( "LocalObservation", { comments: [
-    factory( "LocalComment" ),
-    factory( "LocalComment" ),
-    factory( "LocalComment" )
-  ] } ),
+  factory( "LocalObservation", {
+    comments: [
+      factory( "LocalComment" ),
+      factory( "LocalComment" ),
+      factory( "LocalComment" )
+    ]
+  } ),
   factory( "LocalObservation" )
 ];
 
 // Mock the hooks we use on ObsList since we're not trying to test them here
 jest.mock( "../../../../src/components/Observations/hooks/useObservations", ( ) => ( {
   __esModule: true,
-  default: ( ) => {
-    return {
-      observationList: mockObservations,
-      loading: false,
-      obsToUpload: mockObservations
-    };
-  }
+  default: ( ) => ( {
+    observationList: mockObservations,
+    loading: false,
+    obsToUpload: mockObservations
+  } )
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {

@@ -35,14 +35,14 @@ const TaxonLocationSearch = ( ): Node => {
     setTaxonOpen( false );
   }, [] );
 
-  const setTaxonId = ( getValue ) => {
+  const setTaxonId = getValue => {
     setExploreFilters( {
       ...exploreFilters,
       taxon_id: getValue( )
     } );
   };
 
-  const setPlaceId = ( getValue ) => {
+  const setPlaceId = getValue => {
     setExploreFilters( {
       ...exploreFilters,
       place_id: getValue( )

@@ -26,7 +26,7 @@ const ExploreFooter = ( ): Node => {
 
   return (
     <View style={viewStyles.footer}>
-      <HeaderBackButton onPress={clearFiltersAndNavigate} style={viewStyles.element}/>
+      <HeaderBackButton onPress={clearFiltersAndNavigate} style={viewStyles.element} />
       <RoundGreenButton
         handlePress={applyFiltersAndNavigate}
         buttonText="Apply Filters"

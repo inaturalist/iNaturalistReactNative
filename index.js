@@ -1,14 +1,14 @@
 // @flow
 
 import "react-native-gesture-handler";
-
-import { AppRegistry } from "react-native";
-import inatjs from "inaturalistjs";
 import Config from "react-native-config";
-import App from "./src/navigation/rootNavigation";
-import {name as appName} from "./app.json";
-import "./src/i18n";
+import inatjs from "inaturalistjs";
+import { AppRegistry } from "react-native";
 import { startNetworkLogging } from "react-native-network-logger";
+
+import App from "./src/navigation/rootNavigation";
+import { name as appName } from "./app.json";
+import "./src/i18n";
 
 startNetworkLogging();
 

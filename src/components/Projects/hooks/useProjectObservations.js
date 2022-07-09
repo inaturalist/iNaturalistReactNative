@@ -44,7 +44,7 @@ const useProjectObservations = ( id: number ): Object => {
         setProjectObservations( results );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( `Couldn't fetch project observations for project_id ${id}:`, e.message, );
+        console.log( `Couldn't fetch project observations for project_id ${id}:`, e.message );
       }
     };
 

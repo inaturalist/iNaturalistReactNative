@@ -15,5 +15,4 @@ const PlaceholderText = ( { text, style }: Props ): Node => (
   </Text>
 );
 
-
 export default PlaceholderText;

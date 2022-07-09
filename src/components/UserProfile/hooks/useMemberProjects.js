@@ -26,7 +26,7 @@ const useMemberProjects = ( userId: number ): Array<Object> => {
         setProjects( results );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch member projects:", e.message, );
+        console.log( "Couldn't fetch member projects:", e.message );
       }
     };
 

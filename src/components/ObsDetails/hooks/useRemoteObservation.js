@@ -46,11 +46,11 @@ const useRemoteObservation = ( observation: Object, refetch: boolean ): Object =
         };
 
         const response = await inatjs.observations.fetch( observation.uuid, params );
-        const results = response.results;
+        const { results } = response;
         const obs = Observation.mimicRealmMappedPropertiesSchema( results[0] );
         if ( !isCurrent ) { return; }
         if ( obs.faves ) {
-          const userFavedObs = obs.faves.find( fave =>fave.user.login === currentUserLogin );
+          const userFavedObs = obs.faves.find( fave => fave.user.login === currentUserLogin );
           if ( userFavedObs ) {
             setCurrentUserFaved( true );
           } else {
@@ -60,7 +60,7 @@ const useRemoteObservation = ( observation: Object, refetch: boolean ): Object =
         setRemoteObservation( obs );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( `Couldn't fetch observation with uuid ${observation.uuid}: `, e.message, );
+        console.log( `Couldn't fetch observation with uuid ${observation.uuid}: `, e.message );
       }
     };
 
@@ -80,6 +80,4 @@ const useRemoteObservation = ( observation: Object, refetch: boolean ): Object =
   };
 };
 
-export {
-  useRemoteObservation
-};
+export default useRemoteObservation;

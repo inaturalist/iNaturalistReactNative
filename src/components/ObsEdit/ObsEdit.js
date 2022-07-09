@@ -13,7 +13,7 @@ import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { ObsEditContext } from "../../providers/contexts";
-import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
+import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import IdentificationSection from "./IdentificationSection";
 import OtherDataSection from "./OtherDataSection";
 import EvidenceSection from "./EvidenceSection";
@@ -46,8 +46,8 @@ const ObsEdit = ( ): Node => {
   const showNextObservation = ( ) => setCurrentObsIndex( currentObsIndex + 1 );
   const showPrevObservation = ( ) => setCurrentObsIndex( currentObsIndex - 1 );
 
-  const renderArrowNavigation = ( ) => {
-    if ( observations.length === 0 ) { return; }
+  const renderArrowNavigation = ( ): Node | null => {
+    if ( observations.length === 0 ) { return null; }
 
     const handleBackButtonPress = ( ) => {
       if ( lastScreen === "StandardCamera" ) {
@@ -89,32 +89,33 @@ const ObsEdit = ( ): Node => {
     );
   };
 
-  const setPhotos = ( uris ) => {
+  const currentObs = observations[currentObsIndex];
+
+  const setPhotos = uris => {
     const updatedObservations = observations;
     const updatedObsPhotos = currentObs.observationPhotos.filter( obsPhoto => {
       const { photo } = obsPhoto;
       if ( uris.includes( photo.url || photo.localFilePath ) ) {
         return obsPhoto;
       }
+      return false;
     } );
     currentObs.observationPhotos = updatedObsPhotos;
     setObservations( [...updatedObservations] );
   };
 
-  const handleSelection = ( photo ) => {
+  const handleSelection = photo => {
     setInitialPhotoSelected( photo );
     showModal( );
   };
 
-  const currentObs = observations[currentObsIndex];
-
   useEffect( ( ) => {
     if ( !currentObs || !currentObs.observationPhotos ) { return; }
-    const uris = currentObs.observationPhotos.map( ( obsPhoto => {
-      return Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo );
-    } ) );
+    const uris = currentObs.observationPhotos.map(
+      obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
+    );
     setPhotoUris( uris );
-  }, [currentObs ] );
+  }, [currentObs] );
 
   if ( !currentObs ) { return null; }
 

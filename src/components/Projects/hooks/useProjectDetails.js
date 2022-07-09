@@ -26,7 +26,7 @@ const useProjectDetails = ( id: number ): Object => {
         setProjectDetails( results[0] );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( `Couldn't fetch project details for project_id ${id}:`, e.message, );
+        console.log( `Couldn't fetch project details for project_id ${id}:`, e.message );
       }
     };
 

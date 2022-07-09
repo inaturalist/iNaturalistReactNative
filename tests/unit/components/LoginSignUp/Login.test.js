@@ -4,21 +4,15 @@ const testUser = factory( "RemoteUser" );
 const mockExpected = testUser;
 
 jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
-  authenticateUser: async ( username, password ) => {
-    console.log( "Authenticate ", username, "==>", password );
+  authenticateUser: async ( ) => {
     this.loggedIn = true;
     return true;
   },
   signOut: async () => {
     this.loggedIn = false;
   },
-  getUsername: async () => {
-    console.log( "getUsername", mockExpected.login );
-    return mockExpected.login;
-  },
-  isLoggedIn: async () => {
-    return this.loggedIn;
-  }
+  getUsername: async () => mockExpected.login,
+  isLoggedIn: async () => this.loggedIn
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {

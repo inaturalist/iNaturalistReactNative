@@ -12,15 +12,16 @@ const mockObservation = factory( "LocalObservation" );
 
 jest.mock( "../../../../src/providers/ObsEditProvider" );
 
-jest.mock( "../../../../src/components/ObsDetails/hooks/useRemoteObservation", ( ) => ( {
-  useRemoteObservation: ( ) => {
-    return {
+jest.mock(
+  "../../../../src/components/ObsDetails/hooks/useRemoteObservation",
+  ( ) => ( {
+    __esModule: true,
+    default: ( _observation, _refetch ) => ( {
       remoteObservation: mockObservation,
-      currentUserFaved: false,
-      isCurrentUserObservation: false
-    };
-  }
-} ) );
+      currentUserFaved: false
+    } )
+  } )
+);
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -42,14 +43,15 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
   getUserId: ( ) => mockObservation.user.id
 } ) );
 
-const mockObsEditProviderWithObs = ( ) =>
-  ObsEditProvider.mockImplementation( ( { children }: Props ): Node => (
-    <ObsEditContext.Provider value={{
-      addObservations: ( ) => { }
-    }}>
-      {children}
-    </ObsEditContext.Provider>
-  ) );
+const mockObsEditProviderWithObs = ( ) => ObsEditProvider.mockImplementation( ( { children } ) => (
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  <ObsEditContext.Provider value={{
+    addObservations: ( ) => { }
+  }}
+  >
+    {children}
+  </ObsEditContext.Provider>
+) );
 
 const renderObsDetails = ( ) => render(
   <NavigationContainer>
@@ -67,12 +69,11 @@ test( "renders obs details from remote call", ( ) => {
   expect( getByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
   expect(
     getByTestId( "PhotoScroll.photo" ).props.source
-  ).toStrictEqual( { "uri": mockObservation.observationPhotos[0].photo.url } );
+  ).toStrictEqual( { uri: mockObservation.observationPhotos[0].photo.url } );
   expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
   // TODO: figure out how to test elements which are mapped to camelCase via Observation model
   // right now, these elements are not rendering in renderObsDetails( ).debug( ) at all
 } );
-
 
 test( "renders data tab on button press", ( ) => {
   const { getByTestId, getByText } = renderObsDetails( );
@@ -86,13 +87,16 @@ test( "navigates to observer profile on button press", ( ) => {
   const { getByTestId } = renderObsDetails( );
 
   fireEvent.press( getByTestId( "ObsDetails.currentUser" ) );
-  expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
+  expect( mockedNavigate )
+    .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
 } );
 
 test( "navigates to identifier profile on button press", ( ) => {
   const { getByTestId } = renderObsDetails( );
 
-  fireEvent.press( getByTestId( `ObsDetails.identifier.${mockObservation.identifications[0].user.id}` ) );
+  fireEvent.press(
+    getByTestId( `ObsDetails.identifier.${mockObservation.identifications[0].user.id}` )
+  );
   expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", {
     userId: mockObservation.identifications[0].user.id
   } );

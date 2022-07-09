@@ -2,7 +2,11 @@
 
 import { StyleSheet } from "react-native";
 
-import type { ViewStyleProp, TextStyleProp, ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import type {
+  ViewStyleProp,
+  TextStyleProp,
+  ImageStyleProp
+} from "react-native/Libraries/StyleSheet/StyleSheet";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   center: {

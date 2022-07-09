@@ -23,8 +23,9 @@ const addToProject = async ( projectId: number, obsId: string ): Promise<?number
     console.log( response, "response in project add" );
     return response.total_results;
   } catch ( e ) {
-    console.log( "Couldn't add to project:", JSON.stringify( e.response ), );
+    console.log( "Couldn't add to project:", JSON.stringify( e.response ) );
   }
+  return 0;
 };
 
 export default addToProject;

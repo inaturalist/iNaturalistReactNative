@@ -26,6 +26,7 @@ type Props = {
 // future we might want to extend this to always show a custom view before
 // asking the user for a permission.
 const PermissionGate = ( { children, permission }: Props ): Node => {
+  console.log( "PermissionGate" );
   const navigation = useNavigation( );
   const { t } = useTranslation();
   const [result, setResult] = useState( Platform.OS === "android" ? null : "granted" );
@@ -45,6 +46,7 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
           setResult( "never_ask_again" );
         }
       } catch ( e ) {
+        // eslint-disable-next-line max-len
         console.warn( `[DEBUG ${Platform.OS}] PermissionGate: Failed to request permission (${permission}): ${e}` );
       }
     };
@@ -53,7 +55,8 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
       requestAndroidPermissions( );
     }
 
-    // If this component has already been rendered but was just returned to in the navigation, check again
+    // If this component has already been rendered but was just returned to in
+    // the navigation, check again
     navigation.addListener( "focus", async ( ) => {
       if ( result === null && Platform.OS === "android" ) {
         await requestAndroidPermissions( );
@@ -64,7 +67,7 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
   const manualGrantButton = (
     <Pressable
       style={viewStyles.permissionButton}
-      onPress={ async ( ) => {
+      onPress={async ( ) => {
         try {
           const r = await PermissionsAndroid.request( permission );
           if ( r === PermissionsAndroid.RESULTS.GRANTED ) {
@@ -75,7 +78,10 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
             setResult( "never_ask_again" );
           }
         } catch ( e ) {
-          console.warn( `[DEBUG ${Platform.OS}] PermissionGate: Failed to request permission (${permission}): ${e}` );
+          console.warn(
+            // eslint-disable-next-line max-len
+            `[DEBUG ${Platform.OS}] PermissionGate: Failed to request permission (${permission}): ${e}`
+          );
         }
       }}
     >
@@ -94,8 +100,11 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
   );
 
   let content = <Text>Requesting permission...</Text>;
-  if ( result === "granted" ) { content = children; }
-  else if ( result !== null ) { content = noPermission; }
+  if ( result === "granted" ) {
+    content = children;
+  } else if ( result !== null ) {
+    content = noPermission;
+  }
 
   return (
     <View style={viewStyles.PermissionGate}>

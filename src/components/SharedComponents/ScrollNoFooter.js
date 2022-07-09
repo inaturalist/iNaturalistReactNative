@@ -1,7 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { SafeAreaView, StatusBar, ScrollView, Keyboard } from "react-native";
+import {
+  SafeAreaView, StatusBar, ScrollView, Keyboard
+} from "react-native";
 
 import viewStyles from "../../styles/sharedComponents/viewWithFooter";
 

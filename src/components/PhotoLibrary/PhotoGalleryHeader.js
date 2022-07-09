@@ -17,7 +17,7 @@ type Props = {
 const PhotoGalleryHeader = ( { updateAlbum }: Props ): Node => {
   const navigation = useNavigation( );
 
-  const changeAlbum = ( newAlbum ) => {
+  const changeAlbum = newAlbum => {
     updateAlbum( newAlbum !== "All" ? newAlbum : null );
   };
 

@@ -9,14 +9,13 @@ import { t } from "i18next";
 import { textStyles, viewStyles } from "../../styles/userProfile/userProfile";
 import UserIcon from "../SharedComponents/UserIcon";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import { useUser } from "./hooks/useUser";
+import useUser from "./hooks/useUser";
 import User from "../../models/User";
 import UserProjects from "./UserProjects";
 import CustomHeader from "../SharedComponents/CustomHeader";
 // import useNetworkSite from "./hooks/useNetworkSite";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import updateRelationship from "./helpers/updateRelationship";
-
 
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
@@ -54,10 +53,18 @@ const UserProfile = ( ): React.Node => {
       {!currentUser && (
         <View style={viewStyles.buttonRow}>
           <View style={viewStyles.button}>
-            <RoundGreenButton buttonText="Follow" handlePress={followUser} testID="UserProfile.followButton" />
+            <RoundGreenButton
+              buttonText="Follow"
+              handlePress={followUser}
+              testID="UserProfile.followButton"
+            />
           </View>
           <View style={viewStyles.button}>
-            <RoundGreenButton buttonText="Messages" handlePress={( ) => console.log( "open messages" )} testID="UserProfile.messagesButton" />
+            <RoundGreenButton
+              buttonText="Messages"
+              handlePress={( ) => console.log( "open messages" )}
+              testID="UserProfile.messagesButton"
+            />
           </View>
         </View>
       )}
@@ -68,7 +75,7 @@ const UserProfile = ( ): React.Node => {
         {showCount( user.journal_posts_count, t( "Journal-Posts" ) )}
       </View>
       <Text>{t( "BIO" )}</Text>
-      { user && user.description && user.description.length > 0  && (
+      { user && user.description && user.description.length > 0 && (
         <HTML
           contentWidth={width}
           source={{ html: user.description }}
@@ -81,4 +88,3 @@ const UserProfile = ( ): React.Node => {
 };
 
 export default UserProfile;
-

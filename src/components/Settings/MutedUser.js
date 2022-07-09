@@ -1,0 +1,38 @@
+// @flow
+
+import {
+  Image,
+  Pressable,
+  Text,
+  View
+} from "react-native";
+import React from "react";
+import { t } from "i18next";
+import type { Node } from "react";
+import { viewStyles } from "../../styles/settings/settings";
+
+type Props = {
+  unmuteUser: Function,
+  user: Object
+}
+
+const MutedUser = ( { user, unmuteUser }: Props ): Node => (
+  <View style={[viewStyles.row, viewStyles.relationshipRow]}>
+    <Image
+      style={viewStyles.relationshipImage}
+      source={{ uri: user.icon }}
+    />
+    <View style={viewStyles.column}>
+      <Text>{user.login}</Text>
+      <Text>{user.name}</Text>
+    </View>
+    <Pressable
+      style={viewStyles.removeRelationship}
+      onPress={() => unmuteUser( user )}
+    >
+      <Text>{t( "Unmute" )}</Text>
+    </Pressable>
+  </View>
+);
+
+export default MutedUser;

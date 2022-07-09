@@ -3,6 +3,7 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
@@ -22,12 +23,12 @@ import NotificationsStackNavigation from "./notificationsStackNavigation";
 import About from "../components/About";
 import Mortal from "../components/SharedComponents/Mortal";
 import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
-import { colors } from "../styles/global";
+import colors from "../styles/colors";
 import { viewStyles } from "../styles/navigation/rootNavigation";
 import Settings from "../components/Settings/Settings";
 
 // this removes the default hamburger menu from header
-const screenOptions = { headerLeft: ( ) => <></> };
+const screenOptions = { headerLeft: ( ) => <View /> };
 const hideHeader = {
   headerShown: false,
   label: "my observations"
@@ -51,6 +52,10 @@ const theme = {
   }
 };
 
+const drawerRenderer = ( { state, navigation, descriptors } ) => (
+  <CustomDrawerContent state={state} navigation={navigation} descriptors={descriptors} />
+);
+
 const App = ( ): React.Node => {
   React.useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {
@@ -72,7 +77,7 @@ const App = ( ): React.Node => {
               <Drawer.Navigator
                 screenOptions={screenOptions}
                 name="Drawer"
-                drawerContent={( props ) => <CustomDrawerContent {...props} />}
+                drawerContent={drawerRenderer}
               >
                 <Drawer.Screen
                   name="my observations"
@@ -102,7 +107,7 @@ const App = ( ): React.Node => {
                   component={About}
                 />
                 <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-                <Drawer.Screen name="login" component={MortalLogin} options={hideHeader}/>
+                <Drawer.Screen name="login" component={MortalLogin} options={hideHeader} />
                 <Drawer.Screen
                   name="camera"
                   component={CameraStackNavigation}

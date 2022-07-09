@@ -1,15 +1,14 @@
 // @flow
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useMemo } from "react";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Realm from "realm";
 
-import { ObsEditContext } from "./contexts";
+import { ObsEditContext, PhotoGalleryContext } from "./contexts";
 import realmConfig from "../models/index";
 import saveLocalObservation from "./uploadHelpers/saveLocalObservation";
 import uploadObservation from "./uploadHelpers/uploadObservation";
 import Observation from "../models/Observation";
-import { PhotoGalleryContext } from "./contexts";
 import ObservationPhoto from "../models/ObservationPhoto";
 
 type Props = {
@@ -29,16 +28,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( [newObs] );
   };
 
-  const addPhotos = async ( photos ) => {
+  const addPhotos = async photos => {
     const realm = await Realm.open( realmConfig );
-    const obsPhotos = await Promise.all( photos.map( async photo => {
-      return await ObservationPhoto.new( photo, realm );
-    } ) );
+    const obsPhotos = await Promise.all( photos.map(
+      async photo => ObservationPhoto.new( photo, realm )
+    ) );
     const newObs = await Observation.createObsWithPhotos( obsPhotos );
     setObservations( [newObs] );
   };
 
-  const addObservations = async ( obs ) => setObservations( obs );
+  const addObservations = async obs => setObservations( obs );
 
   const addObservationNoEvidence = async ( ) => {
     const newObs = await Observation.new( );
@@ -53,14 +52,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           // $FlowFixMe
           [key]: value
         };
-      } else {
-        return obs;
       }
+      return obs;
     } );
     setObservations( updatedObs );
   };
 
-  const updateTaxon = ( taxon ) => {
+  const updateTaxon = taxon => {
     updateObservationKey( "taxon", taxon );
     navigation.navigate( "ObsEdit" );
   };
@@ -75,18 +73,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         screen: "ObsList",
         params: { savedLocalData: true }
       } );
+    } else if ( currentObsIndex === observations.length - 1 ) {
+      observations.pop( );
+      setCurrentObsIndex( observations.length - 1 );
+      setObservations( observations );
     } else {
-      if ( currentObsIndex === observations.length - 1 ) {
-        observations.pop( );
-        setCurrentObsIndex( observations.length - 1 );
-        setObservations( observations );
-      } else {
-        observations.splice( currentObsIndex, 1 );
-        setCurrentObsIndex( currentObsIndex );
-        // this seems necessary for rerendering the ObsEdit screen
-        setObservations( [] );
-        setObservations( observations );
-      }
+      observations.splice( currentObsIndex, 1 );
+      setCurrentObsIndex( currentObsIndex );
+      // this seems necessary for rerendering the ObsEdit screen
+      setObservations( [] );
+      setObservations( observations );
     }
   };
 
@@ -106,7 +102,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     }
   };
 
-  const openSavedObservation = async ( savedUUID ) => {
+  const openSavedObservation = async savedUUID => {
     const realm = await Realm.open( realmConfig );
     const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
     const plainObject = obs.toJSON( );
@@ -114,7 +110,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     return obs;
   };
 
-  const obsEditValue = {
+  const obsEditValue = useMemo( ( ) => ( {
     currentObsIndex,
     setCurrentObsIndex,
     addSound,
@@ -128,7 +124,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     saveObservation,
     saveAndUploadObservation,
     openSavedObservation
-  };
+  } ), [] );
 
   return (
     <ObsEditContext.Provider value={obsEditValue}>

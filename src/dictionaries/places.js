@@ -1,4 +1,4 @@
-const inatPlaceTypes = {
+export default {
   0: "Undefined",
   2: "Street Segment",
   5: "Intersection",
@@ -50,8 +50,4 @@ const inatPlaceTypes = {
   1018: "Local Authority",
   1019: "Poblacion",
   1020: "Delegation"
-};
-
-export {
-  inatPlaceTypes
 };

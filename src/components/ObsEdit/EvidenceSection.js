@@ -51,14 +51,13 @@ const EvidenceSection = ( {
           longitude: newLocation.longitude,
           place_guess: newLocation.placeGuess
         };
-      } else {
-        return obs;
       }
+      return obs;
     } );
     setObservations( updatedObs );
   };
 
-  const handleDatePicked = ( selectedDate ) => {
+  const handleDatePicked = selectedDate => {
     if ( selectedDate ) {
       const dateString = createObservedOnStringForUpload( selectedDate );
       updateObservedOn( dateString );

@@ -16,25 +16,24 @@ const ProjectDetails = ( ): React.Node => {
 
   return (
     <ViewWithFooter>
-        <ImageBackground
-          source={{ uri: project.header_image_url }}
+      <ImageBackground
+        source={{ uri: project.header_image_url }}
           // $FlowFixMe
-          style={imageStyles.headerImage}
-          testID="ProjectDetails.headerImage"
-        >
-          <Image
-            source={{ uri: project.icon }}
-            style={imageStyles.icon}
-            testID="ProjectDetails.projectIcon"
-          />
-        </ImageBackground>
-        <Text style={textStyles.descriptionText}>{project.title}</Text>
-        <Text style={textStyles.descriptionText}>{project.description}</Text>
-        {/* TODO: support joining or leaving projects once oauth is set up */}
-        <ProjectObservations id={id} />
+        style={imageStyles.headerImage}
+        testID="ProjectDetails.headerImage"
+      >
+        <Image
+          source={{ uri: project.icon }}
+          style={imageStyles.icon}
+          testID="ProjectDetails.projectIcon"
+        />
+      </ImageBackground>
+      <Text style={textStyles.descriptionText}>{project.title}</Text>
+      <Text style={textStyles.descriptionText}>{project.description}</Text>
+      {/* TODO: support joining or leaving projects once oauth is set up */}
+      <ProjectObservations id={id} />
     </ViewWithFooter>
   );
 };
 
 export default ProjectDetails;
-

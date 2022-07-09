@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import type { Node } from "react";
 
 import { PhotoGalleryContext } from "./contexts";
@@ -26,7 +26,7 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
   const [canRequestPhotos, setCanRequestPhotos] = useState( false );
   const photoFetchStatus = usePhotos( photoOptions, isScrolling, canRequestPhotos );
   const photosFetched = photoFetchStatus.photos;
-  const fetchingPhotos = photoFetchStatus.fetchingPhotos;
+  const { fetchingPhotos } = photoFetchStatus;
 
   const [photoGallery, setPhotoGallery] = useState( {} );
   const [selectedPhotos, setSelectedPhotos] = useState( {} );
@@ -64,7 +64,7 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
     }
   }, [photosFetched, photoGallery, photoOptions, setPhotoGallery] );
 
-  const photoGalleryValue = {
+  const photoGalleryValue = useMemo( ( ) => ( {
     photoGallery,
     setPhotoGallery,
     isScrolling,
@@ -77,7 +77,7 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
     totalSelected: totalSelected( ),
     canRequestPhotos,
     setCanRequestPhotos
-  };
+  } ) );
 
   return (
     <PhotoGalleryContext.Provider value={photoGalleryValue}>

@@ -1,13 +1,15 @@
-import React, {useEffect} from "react";
-import {useDebounce} from "use-debounce";
-import {Image, Text, TextInput, View} from "react-native";
-import {textStyles, viewStyles} from "../../styles/settings/settings";
+import React, { useEffect } from "react";
+import { useDebounce } from "use-debounce";
+import {
+  Image, Text, TextInput, View
+} from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
-import {inatPlaceTypes} from "../../dictionaries/places";
+import { textStyles, viewStyles } from "../../styles/settings/settings";
+import inatPlaceTypes from "../../dictionaries/places";
 import usePlaces from "./hooks/usePlaces";
 import usePlaceDetails from "./hooks/usePlaceDetails";
 
-const PlaceSearchInput = ( { placeId, onPlaceChanged} ): React.Node => {
+const PlaceSearchInput = ( { placeId, onPlaceChanged } ): React.Node => {
   const [hideResults, setHideResults] = React.useState( true );
   const [placeSearch, setPlaceSearch] = React.useState( "" );
   // So we'll start searching only once the user finished typing
@@ -22,25 +24,27 @@ const PlaceSearchInput = ( { placeId, onPlaceChanged} ): React.Node => {
     } else {
       setPlaceSearch( "" );
     }
-
   }, [placeDetails] );
 
-  return  (
+  return (
     <View style={viewStyles.column}>
       <View style={viewStyles.row}>
         <TextInput
           style={viewStyles.textInput}
-          onChangeText={( v ) => {
+          onChangeText={v => {
             setHideResults( false );
             setPlaceSearch( v );
           }}
           value={placeSearch}
         />
-        <Pressable style={viewStyles.clearSearch} onPress={() => {
-          setHideResults( true );
-          setPlaceSearch( "" );
-          onPlaceChanged( 0 );
-        }}>
+        <Pressable
+          style={viewStyles.clearSearch}
+          onPress={() => {
+            setHideResults( true );
+            setPlaceSearch( "" );
+            onPlaceChanged( 0 );
+          }}
+        >
           <Image
             style={viewStyles.clearSearch}
             resizeMode="contain"
@@ -48,19 +52,21 @@ const PlaceSearchInput = ( { placeId, onPlaceChanged} ): React.Node => {
           />
         </Pressable>
       </View>
-      {!hideResults && finalPlaceSearch.length > 0 && placeResults.map( ( place ) => (
-        <Pressable key={place.id} style={[viewStyles.row, viewStyles.placeResultContainer]}
-                   onPress={() => {
-                     setHideResults( true );
-                     onPlaceChanged( place.id );
-                   }}>
+      {!hideResults && finalPlaceSearch.length > 0 && placeResults.map( place => (
+        <Pressable
+          key={place.id}
+          style={[viewStyles.row, viewStyles.placeResultContainer]}
+          onPress={() => {
+            setHideResults( true );
+            onPlaceChanged( place.id );
+          }}
+        >
           <Text style={textStyles.resultPlaceName}>{place.display_name}</Text>
           <Text style={textStyles.resultPlaceType}>{inatPlaceTypes[place.place_type]}</Text>
         </Pressable>
       ) )}
     </View>
   );
-
 };
 
 export default PlaceSearchInput;

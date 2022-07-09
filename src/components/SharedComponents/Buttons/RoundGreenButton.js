@@ -13,7 +13,9 @@ type Props = {
   count?: number
 }
 
-const RoundGreenButton = ( { buttonText, handlePress, testID, disabled, count }: Props ): React.Node => (
+const RoundGreenButton = ( {
+  buttonText, handlePress, testID, disabled, count
+}: Props ): React.Node => (
   <Button
     style={[viewStyles.greenButton, disabled && viewStyles.disabled]}
     onPress={handlePress}

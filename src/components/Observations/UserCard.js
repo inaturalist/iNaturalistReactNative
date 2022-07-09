@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import UserIcon from "../SharedComponents/UserIcon";
-import { useUser } from "../UserProfile/hooks/useUser";
+import useUser from "../UserProfile/hooks/useUser";
 import User from "../../models/User";
 import { viewStyles } from "../../styles/observations/userCard";
 

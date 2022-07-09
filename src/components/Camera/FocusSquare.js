@@ -35,7 +35,8 @@ const FocusSquare = ( { tappedCoordinates, tapToFocusAnimation }: Props ): Node 
           left: tappedCoordinates.x,
           top: tappedCoordinates.y
         }
-      ]} />
+      ]}
+      />
     </Animated.View>
   );
 };

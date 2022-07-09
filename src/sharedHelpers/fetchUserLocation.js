@@ -3,7 +3,7 @@
 import { Platform } from "react-native";
 import Geolocation from "react-native-geolocation-service";
 import { request, PERMISSIONS } from "react-native-permissions";
-import fetchPlaceName from "../sharedHelpers/fetchPlaceName";
+import fetchPlaceName from "./fetchPlaceName";
 
 const requestiOSPermissions = async ( ): Promise<?string> => {
   // TODO: test this on a real device
@@ -15,16 +15,19 @@ const requestiOSPermissions = async ( ): Promise<?string> => {
       console.log( e, ": error requesting iOS permissions" );
     }
   }
+  return null;
 };
 
 const options = { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
 
-const getCurrentPosition = ( ) => new Promise( ( resolve, error ) => Geolocation.getCurrentPosition( resolve, error, options ) );
+const getCurrentPosition = ( ) => new Promise(
+  ( resolve, error ) => { Geolocation.getCurrentPosition( resolve, error, options ); }
+);
 
 const fetchUserLocation = async ( ): ?Object => {
   const permissions = await requestiOSPermissions( );
   // TODO: handle case where iOS permissions are not granted
-  if ( permissions !== "granted" ) { return; }
+  if ( permissions !== "granted" ) { return null; }
 
   try {
     const { coords } = await getCurrentPosition( );
@@ -38,8 +41,7 @@ const fetchUserLocation = async ( ): ?Object => {
   } catch ( e ) {
     console.log( e, "couldn't get latLng" );
   }
+  return null;
 };
 
-
 export default fetchUserLocation;
-

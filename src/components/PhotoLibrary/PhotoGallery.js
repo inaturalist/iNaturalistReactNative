@@ -1,7 +1,9 @@
 // @flow
 
 import React, { useContext, useEffect } from "react";
-import { Pressable, Image, FlatList, ActivityIndicator, View, Text } from "react-native";
+import {
+  Pressable, Image, FlatList, ActivityIndicator, View, Text
+} from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { t } from "i18next";
@@ -63,13 +65,13 @@ const PhotoGallery = ( ): Node => {
   const photosByAlbum = photoGallery[selectedAlbum];
   const photosSelectedInAlbum = selectedPhotos[selectedAlbum] || [];
 
-  const updatePhotoGallery = ( rerenderFlatList ) => {
+  const updatePhotoGallery = rerenderFlatList => {
     setPhotoGallery( {
       ...photoGallery,
       // there might be a better way to do this, but adding this key forces the FlatList
       // to rerender anytime an image is unselected
       rerenderFlatList
-     } );
+    } );
   };
 
   const selectPhoto = ( isSelected, item ) => {
@@ -126,9 +128,8 @@ const PhotoGallery = ( ): Node => {
   const renderEmptyList = ( ) => {
     if ( fetchingPhotos ) {
       return <ActivityIndicator />;
-    } else {
-      return <Text>{t( "No-photos-found" )}</Text>;
     }
+    return <Text>{t( "No-photos-found" )}</Text>;
   };
 
   return (

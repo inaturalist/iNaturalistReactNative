@@ -9,7 +9,8 @@ import ObsEdit from "../components/ObsEdit/ObsEdit";
 import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
 import StandardCamera from "../components/Camera/StandardCamera";
 import CVSuggestions from "../components/ObsEdit/CVSuggestions";
-import CustomHeaderWithTranslation from "../components/SharedComponents/CustomHeaderWithTranslation";
+import CustomHeaderWithTranslation from
+  "../components/SharedComponents/CustomHeaderWithTranslation";
 import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import PhotoGallery from "../components/PhotoLibrary/PhotoGallery";
 import PermissionGate from "../components/SharedComponents/PermissionGate";
@@ -76,7 +77,7 @@ const CameraStackNavigation = ( ): React.Node => (
           name="Suggestions"
           component={CVSuggestions}
           options={{
-            headerTitle: ( props ) => <CustomHeaderWithTranslation {...props} headerText="IDENTIFICATION" />,
+            headerTitle: <CustomHeaderWithTranslation headerText="IDENTIFICATION" />,
             headerShown: true
           }}
         />

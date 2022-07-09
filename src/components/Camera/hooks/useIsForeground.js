@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AppState, AppStateStatus } from "react-native";
 
-export const useIsForeground = ( ): boolean => {
+export default ( ): boolean => {
   const [isForeground, setIsForeground] = useState( true );
 
   useEffect( ( ) => {

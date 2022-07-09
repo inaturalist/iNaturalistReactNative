@@ -20,7 +20,9 @@ const ObsCardStats = ( { item, type }: Props ): Node => {
   const renderColumn = ( ) => (
     <View>
       <Text style={textStyles.text}>{numOfIds || "no ids"}</Text>
-      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">{numOfComments || 0}</Text>
+      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">
+        {numOfComments || 0}
+      </Text>
       <Text style={textStyles.text}>{qualityGrade || "no quality grade"}</Text>
     </View>
   );
@@ -28,7 +30,9 @@ const ObsCardStats = ( { item, type }: Props ): Node => {
   const renderRow = ( ) => (
     <View style={viewStyles.photoStatRow}>
       <Text style={textStyles.text}>{numOfIds || "no ids"}</Text>
-      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">{numOfComments || 0}</Text>
+      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">
+        {numOfComments || 0}
+      </Text>
       <Text style={textStyles.text}>{qualityGrade || "no quality grade"}</Text>
     </View>
   );
@@ -37,8 +41,3 @@ const ObsCardStats = ( { item, type }: Props ): Node => {
 };
 
 export default ObsCardStats;
-
-
-
-
-

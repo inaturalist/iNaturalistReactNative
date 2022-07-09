@@ -31,7 +31,6 @@ const usePhotoAlbums = ( ): Array<Object> => {
         setPhotoAlbums( names );
       } catch ( e ) {
         console.log( e, "couldn't fetch photo albums" );
-        return;
       }
     };
 
@@ -46,5 +45,3 @@ const usePhotoAlbums = ( ): Array<Object> => {
 };
 
 export default usePhotoAlbums;
-
-

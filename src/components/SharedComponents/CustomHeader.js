@@ -17,7 +17,7 @@ const CustomHeader = ( { headerText }: Props ): Node => {
 
   return (
     <View style={viewStyles.row}>
-      <HeaderBackButton onPress={( ) => navigation.goBack( )} style={viewStyles.element}/>
+      <HeaderBackButton onPress={( ) => navigation.goBack( )} style={viewStyles.element} />
       <Text style={[viewStyles.element, textStyles.text]}>{headerText}</Text>
       <View style={viewStyles.element} />
     </View>

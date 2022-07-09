@@ -13,10 +13,9 @@ const mockLatLng = {
 };
 
 // Mock the hooks we use on Map since we're not trying to test them here
-jest.mock( "../../../../src/sharedHooks/useUserLocation" , ( ) => ( {
-  useUserLocation: ( ) => {
-    return mockLatLng;
-  }
+jest.mock( "../../../../src/sharedHooks/useUserLocation", ( ) => ( {
+  default: ( ) => mockLatLng,
+  __esModule: true
 } ) );
 
 jest.mock( "../../../../src/providers/ExploreProvider" );
@@ -24,19 +23,23 @@ jest.mock( "../../../../src/providers/ExploreProvider" );
 // Mock ExploreProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
-const mockExploreProviderWithObservations = observations =>
-  ExploreProvider.mockImplementation( ( { children }: Props ): Node => (
-    <ExploreContext.Provider value={{
-      exploreList: observations,
-      setExploreList: ( ) => {},
-      setLoading: ( ) => {},
-      exploreFilters: {},
-      setExploreFilters: ( ) => {},
-      resetFilters: ( ) => {}
-    }}>
+const mockExploreProviderWithObservations = observations => (
+  ExploreProvider.mockImplementation( ( { children } ) => (
+    <ExploreContext.Provider
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
+      value={{
+        exploreList: observations,
+        setExploreList: ( ) => {},
+        setLoading: ( ) => {},
+        exploreFilters: {},
+        setExploreFilters: ( ) => {},
+        resetFilters: ( ) => {}
+      }}
+    >
       {children}
     </ExploreContext.Provider>
-  ) );
+  ) )
+);
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );

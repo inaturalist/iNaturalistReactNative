@@ -24,14 +24,20 @@ const initialStatus = {
  *  now, e.g. if permissions have been granted (Android), or if it's ok to
  *  request permissions (iOS)
  */
-const usePhotos = ( options: Object, isScrolling: boolean, canRequestPhotos: boolean = true ): Object => {
+const usePhotos = (
+  options: Object,
+  isScrolling: boolean,
+  canRequestPhotos: boolean = true
+): Object => {
   const [photoFetchStatus, setPhotoFetchStatus] = useState( initialStatus );
 
   const fetchPhotos = useCallback( async ( ) => {
-    const { lastCursor, photos, fetchingPhotos, hasNextPage } = photoFetchStatus;
+    const {
+      lastCursor, photos, fetchingPhotos, hasNextPage
+    } = photoFetchStatus;
 
-    const mapPhotoUris = ( p ) => p.edges.map( ( { node } ) => {
-      return node;
+    const mapPhotoUris = p => p.edges.map(
+      ( { node } ) => node
       // const latitude = node.location && node.location.latitude;
       // const longitude = node.location && node.location.longitude;
       // return {
@@ -43,7 +49,7 @@ const usePhotos = ( options: Object, isScrolling: boolean, canRequestPhotos: boo
       //   // adding a uuid here makes it easier to prevent duplicates in uploader
       //   uuid: uuid.v4( )
       // };
-    } );
+    );
 
     try {
       // keep track of the last photo fetched
@@ -93,7 +99,7 @@ const usePhotos = ( options: Object, isScrolling: boolean, canRequestPhotos: boo
     const changedAlbum = ( ) => {
       if ( options.groupName ) {
         return photoFetchStatus.lastAlbum !== options.groupName;
-      } else if ( !options.groupName && photoFetchStatus.lastAlbum ) {
+      } if ( !options.groupName && photoFetchStatus.lastAlbum ) {
         // switch back to all photos mode
         return true;
       }

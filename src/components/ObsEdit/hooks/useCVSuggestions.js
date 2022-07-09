@@ -16,22 +16,27 @@ const PHOTO_FIELDS = {
 };
 
 const FIELDS = {
-  taxon: Object.assign( {}, TAXON_FIELDS, {
+  taxon: {
+    ...TAXON_FIELDS,
     taxon_photos: {
       photo: PHOTO_FIELDS
     }
-  } )
+  }
 };
 
-const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selectedPhoto: number ): Object => {
+const useCVSuggestions = (
+  currentObs: Object,
+  showSeenNearby: boolean,
+  selectedPhoto: number
+): Object => {
   const [suggestions, setSuggestions] = useState( [] );
   const [status, setStatus] = useState( null );
 
   useEffect( ( ) => {
-    if ( !currentObs || !currentObs.observationPhotos ) { return; }
+    if ( !currentObs || !currentObs.observationPhotos ) { return ( ) => { }; }
     const uri = currentObs.observationPhotos && currentObs.observationPhotos[selectedPhoto].uri;
-    const latitude = currentObs.latitude;
-    const longitude = currentObs.longitude;
+    const { latitude } = currentObs;
+    const { longitude } = currentObs;
 
     let isCurrent = true;
     const fetchCVSuggestions = async ( ): Promise<Object> => {
@@ -70,7 +75,6 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
         if ( !isCurrent ) { return; }
       } catch ( e ) {
         console.log( JSON.stringify( e.response ), "couldn't fetch CV suggestions" );
-        if ( !isCurrent ) { return; }
       }
     };
 
@@ -87,5 +91,3 @@ const useCVSuggestions = ( currentObs: Object, showSeenNearby: boolean, selected
 };
 
 export default useCVSuggestions;
-
-

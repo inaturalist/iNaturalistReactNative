@@ -18,7 +18,7 @@ class Photo extends Realm.Object {
 
   static async resizeImageForUpload( path ) {
     const width = 2048;
-    const photoUploadPath = Photo.photoUploadPath;
+    const { photoUploadPath } = Photo;
 
     await RNFS.mkdir( photoUploadPath );
     try {

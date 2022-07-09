@@ -7,7 +7,7 @@ import { t } from "i18next";
 import { TextInput } from "react-native-paper";
 
 import { textStyles } from "../../styles/obsEdit/obsEdit";
-import { colors } from "../../styles/global";
+import colors from "../../styles/colors";
 
 type Props = {
   addNotes: Function,
@@ -18,10 +18,10 @@ const Notes = ( { addNotes, description }: Props ): Node => {
   const [keyboardOffset, setKeyboardOffset] = useState( 0 );
 
   useEffect( ( ) => {
-    const showSubscription = Keyboard.addListener( "keyboardDidShow", ( e ) => {
+    const showSubscription = Keyboard.addListener( "keyboardDidShow", e => {
       setKeyboardOffset( e.endCoordinates.height );
     } );
-    const hideSubscription = Keyboard.addListener( "keyboardDidHide", ( e ) => {
+    const hideSubscription = Keyboard.addListener( "keyboardDidHide", ( ) => {
       setKeyboardOffset( 0 );
     } );
 

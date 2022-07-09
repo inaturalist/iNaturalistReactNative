@@ -10,20 +10,16 @@ const mockPhoto = factory( "DevicePhoto" );
 
 jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotos", ( ) => ( {
   __esModule: true,
-  default: ( ) => {
-    return { photos: [mockPhoto] };
-  }
+  default: ( ) => ( { photos: [mockPhoto] } )
 } ) );
 
 jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotoAlbums", ( ) => ( {
   __esModule: true,
-  default: ( ) => {
-    return [{
-      label: "camera roll",
-      value: "All",
-      key: "camera roll"
-    }];
-  }
+  default: ( ) => [{
+    label: "camera roll",
+    value: "All",
+    key: "camera roll"
+  }]
 } ) );
 
 const mockedNavigate = jest.fn( );
@@ -62,12 +58,12 @@ test( "renders photos from photo gallery", ( ) => {
 
   expect( getByTestId( "PhotoGallery.list" ) ).toBeTruthy( );
   expect( getByTestId( `PhotoGallery.${mockPhoto.uri}` ) ).toBeTruthy( );
-  expect( getByTestId( "PhotoGallery.photo" ).props.source ).toStrictEqual( { "uri": mockPhoto.uri } );
+  expect( getByTestId( "PhotoGallery.photo" ).props.source )
+    .toStrictEqual( { uri: mockPhoto.uri } );
 } );
 
 // right now this is failing on react-native-modal, since there's a TouchableWithFeedback
 // that allows the user to tap the backdrop and exit the modal
 test.todo( "should not have accessibility errors" );
-
 
 test.todo( "navigates to GroupPhotos when photo is selected" );

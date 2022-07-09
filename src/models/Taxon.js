@@ -1,6 +1,7 @@
 import Realm from "realm";
 
 import Photo from "./Photo";
+
 class Taxon extends Realm.Object {
   static TAXON_FIELDS = {
     default_photo: {
@@ -30,7 +31,7 @@ class Taxon extends Realm.Object {
     };
   }
 
-  static uri = ( item ) => ( item && item.default_photo ) && { uri: item.default_photo.url };
+  static uri = item => ( item && item.default_photo ) && { uri: item.default_photo.url };
 
   static schema = {
     name: "Taxon",

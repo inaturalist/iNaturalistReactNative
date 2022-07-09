@@ -1,7 +1,9 @@
 import Realm from "realm";
 
+// eslint-disable-next-line import/no-cycle
 import User from "./User";
 import Taxon from "./Taxon";
+
 class Identification extends Realm.Object {
   static ID_FIELDS = {
     body: true,
@@ -12,7 +14,7 @@ class Identification extends Realm.Object {
     taxon: Taxon.TAXON_FIELDS,
     updated_at: true,
     // $FlowFixMe
-    user: User && Object.assign( { }, User.USER_FIELDS, { id: true } ),
+    user: User && ( { ...User.USER_FIELDS, id: true } ),
     uuid: true,
     vision: true
   };

@@ -20,6 +20,7 @@ const useUserLocation = ( ): Object => {
         console.log( e, ": error requesting iOS permissions" );
       }
     }
+    return null;
   };
 
   useEffect( ( ) => {
@@ -42,7 +43,7 @@ const useUserLocation = ( ): Object => {
       };
 
       // TODO: set geolocation fetch error
-      const failure = ( error ) => console.log( error.code, error.message );
+      const failure = error => console.log( error.code, error.message );
 
       const options = { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
 
@@ -58,6 +59,4 @@ const useUserLocation = ( ): Object => {
   return latLng;
 };
 
-export {
-  useUserLocation
-};
+export default useUserLocation;

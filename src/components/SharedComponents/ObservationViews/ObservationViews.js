@@ -1,7 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, View, Pressable, Text, ActivityIndicator } from "react-native";
+import {
+  FlatList, View, Pressable, Text, ActivityIndicator
+} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -40,7 +42,7 @@ const ObservationViews = ( {
   const navigation = useNavigation( );
   const { name } = useRoute( );
 
-  const navToObsDetails = async ( observation ) => {
+  const navToObsDetails = async observation => {
     // const needsUpload = observation._synced_at === null;
     // if ( needsUpload ) {
     //   await openSavedObservation( observation.uuid );
@@ -48,8 +50,8 @@ const ObservationViews = ( {
     //     screen: "ObsEdit"
     //   } );
     // } else {
-      navigation.navigate( "ObsDetails", { observation } );
-      // navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
+    navigation.navigate( "ObsDetails", { observation } );
+    // navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
     // }
   };
 
@@ -69,25 +71,27 @@ const ObservationViews = ( {
 
   const { t } = useTranslation( );
 
-  const renderFooter = ( ) => loading ? <InfiniteScrollFooter /> : <View style={viewStyles.footer} />;
+  const renderFooter = ( ) => ( loading
+    ? <InfiniteScrollFooter />
+    : <View style={viewStyles.footer} />
+  );
 
   const renderView = ( ) => {
     if ( view === "map" ) {
       return <Map taxonId={taxonId} mapHeight={mapHeight} />;
-    } else {
-      return (
-        <FlatList
-          data={observationList}
-          key={view === "grid" ? 1 : 0}
-          renderItem={view === "grid" ? renderGridItem : renderItem}
-          numColumns={view === "grid" ? 2 : 1}
-          testID={testID}
-          ListEmptyComponent={renderEmptyState}
-          onEndReached={handleEndReached}
-          ListFooterComponent={renderFooter}
-        />
-      );
     }
+    return (
+      <FlatList
+        data={observationList}
+        key={view === "grid" ? 1 : 0}
+        renderItem={view === "grid" ? renderGridItem : renderItem}
+        numColumns={view === "grid" ? 2 : 1}
+        testID={testID}
+        ListEmptyComponent={renderEmptyState}
+        onEndReached={handleEndReached}
+        ListFooterComponent={renderFooter}
+      />
+    );
   };
 
   const isExplore = name === "Explore";
@@ -96,7 +100,9 @@ const ObservationViews = ( {
     <>
       {isExplore && (
         <View style={[viewStyles.whiteBanner, view === "map" && viewStyles.greenBanner]}>
-          <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>{t( "X-Observations", { observationCount: totalObservations } )}</Text>
+          <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>
+            {t( "X-Observations", { observationCount: totalObservations } )}
+          </Text>
         </View>
       )}
       <View style={[viewStyles.toggleViewRow, isExplore && viewStyles.exploreButtons]}>

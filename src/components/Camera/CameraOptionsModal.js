@@ -50,29 +50,21 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
         <TranslatedText text="Record-a-sound" />
         <TranslatedText text="Submit-without-evidence" />
       </View>
-       <Pressable
-        onPress={navToStandardCamera}
-      >
+      <Pressable onPress={navToStandardCamera}>
         <Avatar.Icon size={40} icon="camera" />
       </Pressable>
       {!currentObs && (
-        <Pressable
-          onPress={navToPhotoGallery}
-        >
+        <Pressable onPress={navToPhotoGallery}>
           <Avatar.Icon size={40} icon="folder-multiple-image" />
         </Pressable>
       )}
       {!hasSound && (
-        <Pressable
-          onPress={navToSoundRecorder}
-        >
+        <Pressable onPress={navToSoundRecorder}>
           <Avatar.Icon size={40} icon="microphone" />
         </Pressable>
       )}
       {!currentObs && (
-        <Pressable
-          onPress={navToObsEdit}
-        >
+        <Pressable onPress={navToObsEdit}>
           <Avatar.Icon size={40} icon="square-edit-outline" />
         </Pressable>
       )}

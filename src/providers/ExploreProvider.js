@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import type { Node } from "react";
 import inatjs from "inaturalistjs";
 
@@ -51,11 +51,13 @@ const ExploreProvider = ( { children }: Props ): Node => {
   useEffect( ( ) => {
     let isCurrent = true;
 
-    if ( !loadingExplore ) { return; }
+    if ( !loadingExplore ) { return ( ) => { }; }
 
     const fetchExplore = async ( ) => {
       // create filters object excluding keys with null values
-      const filters = Object.fromEntries( Object.entries( exploreFilters ).filter( ( [_, v] ) => v != null ) );
+      const filters = Object.fromEntries(
+        Object.entries( exploreFilters ).filter( ( [_, v] ) => v != null )
+      );
       try {
         const params = {
           ...filters,
@@ -71,7 +73,7 @@ const ExploreProvider = ( { children }: Props ): Node => {
       } catch ( e ) {
         if ( !isCurrent ) { return; }
         setLoadingExplore( false );
-        console.log( "Couldn't fetch explore observations:", e.message, );
+        console.log( "Couldn't fetch explore observations:", e.message );
       }
     };
 
@@ -96,11 +98,11 @@ const ExploreProvider = ( { children }: Props ): Node => {
     setExploreFilters( applied );
   };
 
-  const resetUnappliedFilters = ( )  => setUnappliedFilters( {
+  const resetUnappliedFilters = ( ) => setUnappliedFilters( {
     ...initialFilters
   } );
 
-  const exploreValue = {
+  const exploreValue = useMemo( ( ) => ( {
     exploreList,
     loadingExplore,
     setLoading,
@@ -116,7 +118,7 @@ const ExploreProvider = ( { children }: Props ): Node => {
     setUnappliedFilters,
     applyFilters,
     resetUnappliedFilters
-  };
+  } ), [] );
 
   return (
     <ExploreContext.Provider value={exploreValue}>

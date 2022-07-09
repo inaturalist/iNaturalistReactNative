@@ -24,7 +24,7 @@ const PhotoCarousel = ( {
   containerStyle,
   handleDelete
 }: Props ): Node => {
-  const renderDeleteButton = ( photoUri ) => (
+  const renderDeleteButton = photoUri => (
     <Pressable
       onPress={( ) => {
         if ( !handleDelete ) { return; }

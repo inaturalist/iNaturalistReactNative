@@ -23,7 +23,12 @@ const markRecordUploaded = async ( uuid: string, type: string, response: Object 
   }
 };
 
-const uploadToServer = async ( uuid: string, type: string, params: Object, apiEndpoint: Function ) => {
+const uploadToServer = async (
+  uuid: string,
+  type: string,
+  params: Object,
+  apiEndpoint: Function
+) => {
   const apiToken = await getJWTToken( false );
   const options = { api_token: apiToken };
 

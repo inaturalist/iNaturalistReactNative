@@ -25,7 +25,6 @@ const useCoords = ( location: string ): Object => {
         } );
       } catch ( e ) {
         console.log( e, "couldn't fetch coords by location name" );
-        if ( !isCurrent ) { return; }
       }
     };
 
@@ -43,5 +42,3 @@ const useCoords = ( location: string ): Object => {
 };
 
 export default useCoords;
-
-

@@ -37,7 +37,7 @@ const MyObservationsStackNavigation = ( ): React.Node => (
         name="ObsDetails"
         component={ObsDetails}
         options={hideHeader}
-        />
+      />
       <Stack.Screen
         name="UserProfile"
         component={UserProfile}

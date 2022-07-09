@@ -10,21 +10,15 @@ import GridItem from "./GridItem";
 type Props = {
   loading: boolean,
   observationList: Array<Object>,
-  testID: string,
-  taxonId?: number
+  testID: string
 }
 
 const GridView = ( {
   loading,
   observationList,
-  testID,
-  taxonId
+  testID
 }: Props ): Node => {
   const [reviewedIds, setReviewedIds] = useState( [] );
-  // const navigation = useNavigation( );
-  // const { name } = useRoute( );
-
-  // const navToObsDetails = observation => navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
 
   const renderGridItem = ( { item } ) => (
     <GridItem

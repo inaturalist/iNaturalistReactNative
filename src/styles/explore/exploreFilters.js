@@ -3,7 +3,7 @@
 import { StyleSheet } from "react-native";
 
 import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-import { colors } from "../global";
+import colors from "../colors";
 
 const pickerSelectStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   inputIOS: {

@@ -18,4 +18,3 @@ const UserProjects = ( { userId }: Props ): React.Node => {
 };
 
 export default UserProjects;
-

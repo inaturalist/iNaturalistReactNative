@@ -13,7 +13,8 @@ test( "renders text passed into observation card", ( ) => {
   );
 
   expect( getByTestId( `ObsList.obsCard.${testObservation.uuid}` ) ).toBeTruthy( );
-  expect( getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( { "uri": testObservation.observationPhotos[0].photo.url } );
+  expect( getByTestId( "ObsList.photo" ).props.source )
+    .toStrictEqual( { uri: testObservation.observationPhotos[0].photo.url } );
   expect( getByText( testObservation.taxon.preferredCommonName ) ).toBeTruthy( );
   expect( getByText( testObservation.placeGuess ) ).toBeTruthy( );
   expect( getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );
@@ -29,7 +30,7 @@ test( "navigates to ObsDetails on button press", ( ) => {
   const { getByTestId } = render(
     <ObsCard
       item={testObservation}
-      handlePress={item => fakeNavigation.navigate( "ObsDetails" )}
+      handlePress={( ) => fakeNavigation.navigate( "ObsDetails" )}
     />
   );
 

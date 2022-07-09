@@ -3,7 +3,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-import { colors } from "../../global";
+import colors from "../../colors";
 
 const { height, width } = Dimensions.get( "screen" );
 

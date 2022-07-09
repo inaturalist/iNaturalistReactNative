@@ -23,7 +23,7 @@ const DataTab = ( { observation }: Props ): Node => {
   const attribution = observation.taxon && observation.taxon.default_photo
     && observation.taxon.default_photo.attribution;
 
-  const selectProjectId = ( getValue ) => {
+  const selectProjectId = getValue => {
     addToProject( getValue( ), observation.uuid );
     setProjectId( getValue( ) );
   };
@@ -51,8 +51,12 @@ const DataTab = ( { observation }: Props ): Node => {
         {checkCamelAndSnakeCase( observation, "placeGuess" )}
       </Text>
       <Text style={textStyles.dataTabText}>{t( "Date" )}</Text>
-      <Text style={textStyles.dataTabText}>{`${t( "Date-observed-colon" )} ${displayTimeObserved( )}`}</Text>
-      <Text style={textStyles.dataTabText}>{`${t( "Date-uploaded-colon" )} ${observation._synced_at}`}</Text>
+      <Text style={textStyles.dataTabText}>
+        {`${t( "Date-observed-colon" )} ${displayTimeObserved( )}`}
+      </Text>
+      <Text style={textStyles.dataTabText}>
+        {`${t( "Date-uploaded-colon" )} ${observation._synced_at}`}
+      </Text>
       <Text style={textStyles.dataTabText}>{t( "Projects" )}</Text>
       {/* TODO: create a custom dropdown that doesn't use FlatList */}
       <DropdownPicker

@@ -14,17 +14,14 @@ const mockLatLng = {
 };
 
 // Mock the hooks we use on Map since we're not trying to test them here
-jest.mock( "../../../../src/sharedHooks/useUserLocation" , ( ) => ( {
-  useUserLocation: ( ) => {
-    return mockLatLng;
-  }
+jest.mock( "../../../../src/sharedHooks/useUserLocation", ( ) => ( {
+  default: ( ) => mockLatLng,
+  __esModule: true
 } ) );
 
-jest.mock( "../../../../src/components/Projects/hooks/useProjects" , ( ) => ( {
+jest.mock( "../../../../src/components/Projects/hooks/useProjects", ( ) => ( {
   __esModule: true,
-  default: ( ) => {
-    return [mockProject];
-  }
+  default: ( ) => [mockProject]
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -50,10 +47,10 @@ test( "displays project search results", ( ) => {
   fireEvent.changeText( input, "butterflies" );
 
   expect( getByText( mockProject.title ) ).toBeTruthy( );
-  expect( getByTestId( `Project.${mockProject.id}.photo` ).props.source ).toStrictEqual( { "uri": mockProject.icon } );
+  expect( getByTestId( `Project.${mockProject.id}.photo` ).props.source )
+    .toStrictEqual( { uri: mockProject.icon } );
   fireEvent.press( getByTestId( `Project.${mockProject.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", {
     id: mockProject.id
   } );
 } );
-

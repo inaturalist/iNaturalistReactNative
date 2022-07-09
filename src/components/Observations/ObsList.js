@@ -5,20 +5,22 @@ import type { Node } from "react";
 import { Text } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
+import { t } from "i18next";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
 import UserCard from "./UserCard";
-import { useCurrentUser } from "./hooks/useCurrentUser";
+import useCurrentUser from "./hooks/useCurrentUser";
 import BottomModal from "../SharedComponents/BottomModal";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import uploadObservation from "../../providers/uploadHelpers/uploadObservation";
 import Observation from "../../models/Observation";
 import useObservations from "./hooks/useObservations";
-import { t } from "i18next";
 
 const ObsList = ( ): Node => {
   const { params } = useRoute( );
-  const { observationList, loading, syncObservations, fetchNextObservations, obsToUpload } = useObservations( );
+  const {
+    observationList, loading, syncObservations, fetchNextObservations, obsToUpload
+  } = useObservations( );
 
   const id = params && params.userId;
 

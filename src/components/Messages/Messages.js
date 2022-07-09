@@ -8,7 +8,6 @@ import MessageList from "./MessageList";
 import useMessages from "./hooks/useMessages";
 
 const Messages = ( ): Node => {
-
   // TODO: Reload when accessing again
   const { messages, loading } = useMessages( );
 

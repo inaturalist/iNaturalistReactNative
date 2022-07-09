@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import type { Node } from "react";
-import { Button, Menu, Provider, DefaultTheme } from "react-native-paper";
+import {
+  Button, Menu, Provider, DefaultTheme
+} from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import Realm from "realm";
 import { View } from "react-native";
@@ -34,7 +36,8 @@ const KebabMenu = ( { uuid, toggleRefetch }: Props ): Node => {
           contentStyle={viewStyles.textPadding}
           anchor={
             <Button onPress={openMenu} icon="dots-horizontal" color="#999999" />
-          }>
+          }
+        >
           <Menu.Item
             onPress={async ( ) => {
               const realm = await Realm.open( realmConfig );
