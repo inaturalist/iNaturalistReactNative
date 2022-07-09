@@ -37,6 +37,8 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+jest.mock( "@gorhom/bottom-sheet", () => require( "@gorhom/bottom-sheet/mock" ) );
+
 const renderObsList = ( ) => render(
   <NavigationContainer>
     <ObsList />
