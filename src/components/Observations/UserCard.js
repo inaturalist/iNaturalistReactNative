@@ -7,22 +7,19 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import UserIcon from "../SharedComponents/UserIcon";
-import useUser from "../UserProfile/hooks/useUser";
 import User from "../../models/User";
 import { viewStyles } from "../../styles/observations/userCard";
 
 type Props = {
-  userId: number
+  userId: number,
+  user: Object
 }
 
-const UserCard = ( { userId }: Props ): Node => {
+const UserCard = ( { userId, user }: Props ): Node => {
   // TODO: this currently doesn't show up on initial login
   // because user id can't be fetched
   const navigation = useNavigation( );
-  const { user } = useUser( userId );
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId } );
-
-  if ( !user ) { return null; }
 
   return (
     <View style={viewStyles.userCard}>

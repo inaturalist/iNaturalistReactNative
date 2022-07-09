@@ -29,7 +29,7 @@ const DatePicker = ( {
       customHeaderIOS={EmptyHeader}
       isDarkModeEnabled={colorScheme === "dark"}
       isVisible={isDateTimePickerVisible}
-      maximumDate={new Date()}
+      maximumDate={new Date( )}
       mode={datetime ? "datetime" : "date"}
       onCancel={toggleDateTimePicker}
       onConfirm={onDatePicked}

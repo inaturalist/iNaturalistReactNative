@@ -46,26 +46,33 @@ const DropdownPicker = ( {
     value: place.uuid
   } );
 
-  const taxonItem = taxon => {
-    const icon = <Image source={{ uri: taxon.default_photo.url }} style={imageStyles.pickerIcon} />;
-    return {
-      // TODO: match styling on the web; only show matched_term if the common name isn't clearly
-      // linked to the search result
-      label: `${taxon.preferred_common_name} (${taxon.matched_term})`,
-      value: taxon.id,
-      icon
-    };
-  };
+  const taxonIcon = taxa => (
+    <Image source={{ uri: taxa.default_photo.url }} style={imageStyles.pickerIcon} />
+  );
+  const userIcon = user => (
+    <Image source={{ uri: user.icon }} style={imageStyles.circularPickerIcon} />
+  );
+  const projectIcon = project => (
+    <Image source={{ uri: project.icon }} style={imageStyles.pickerIcon} />
+  );
+
+  const taxonItem = taxa => ( {
+    // TODO: match styling on the web; only show matched_term if the common name isn't clearly
+    // linked to the search result
+    label: `${taxa.preferred_common_name} (${taxa.matched_term})`,
+    value: taxa.id,
+    icon: taxonIcon( taxa )
+  } );
   const userItem = user => ( {
     label: user.login,
     value: user.id,
-    icon: <Image source={{ uri: user.icon }} style={imageStyles.circularPickerIcon} />
+    icon: userIcon( user )
   } );
 
   const projectItem = project => ( {
     label: project.title,
     value: project.id,
-    icon: <Image source={{ uri: project.icon }} style={imageStyles.pickerIcon} />
+    icon: projectIcon( project )
   } );
 
   const displayItems = ( ) => {

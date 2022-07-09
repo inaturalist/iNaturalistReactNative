@@ -3,7 +3,7 @@
 import {
   Alert, Image, Text, TextInput, View
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import type { Node } from "react";
 import { t } from "i18next";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
@@ -142,7 +142,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     }
   }, [settings] );
 
-  const updateRelationship = async ( relationship, update ) => {
+  const updateRelationship = useCallback( async ( relationship, update ) => {
     let response;
     try {
       response = await inatjs.relationships.update(
@@ -163,9 +163,9 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     }
     console.log( response );
     setRefreshRelationships( Math.random() );
-  };
+  }, [accessToken] );
 
-  const askToRemoveRelationship = relationship => {
+  const askToRemoveRelationship = useCallback( relationship => {
     Alert.alert(
       "Remove Relationship?",
       `You will no longer be following or trusting ${relationship.friendUser.login}.`,
@@ -200,9 +200,9 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
         cancelable: true
       }
     );
-  };
+  }, [accessToken] );
 
-  const unblockUser = async user => {
+  const unblockUser = useCallback( async user => {
     let response;
     try {
       response = await inatjs.users.unblock(
@@ -223,7 +223,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     }
     console.log( "Unblock", response );
     onRefreshUser();
-  };
+  }, [accessToken, onRefreshUser] );
 
   const blockUser = async user => {
     if ( !user ) { return; }
@@ -250,7 +250,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     onRefreshUser();
   };
 
-  const unmuteUser = async user => {
+  const unmuteUser = useCallback( async user => {
     let response;
     try {
       response = await inatjs.users.unmute(
@@ -271,7 +271,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     }
     console.log( "Unmute", response );
     onRefreshUser();
-  };
+  }, [accessToken, onRefreshUser] );
 
   const muteUser = async user => {
     if ( !user ) { return; }
@@ -299,6 +299,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
   };
 
   return (
+    // $FlowFixMe
     <View style={viewStyles.column}>
       <Text style={textStyles.title}>{t( "Relationships" )}</Text>
       <View style={viewStyles.row}>

@@ -60,7 +60,6 @@ class Observation extends Realm.Object {
   static async createObsWithPhotos( observationPhotos ) {
     const observation = await Observation.new( );
     observation.observationPhotos = observationPhotos;
-    console.log( observationPhotos, "observation photos" );
     return observation;
   }
 
@@ -163,8 +162,10 @@ class Observation extends Realm.Object {
   static async saveLocalObservationForUpload( obs, realm ) {
     // make sure local observations have user details for ObsDetail
     const id = await getUserId( );
-    const user = realm.objectForPrimaryKey( "User", Number( id ) );
-    obs.user = user;
+    const user = id && realm.objectForPrimaryKey( "User", Number( id ) );
+    if ( user ) {
+      obs.user = user;
+    }
 
     const timestamps = {
       _updated_at: new Date( )

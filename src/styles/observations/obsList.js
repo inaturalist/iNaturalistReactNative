@@ -33,6 +33,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row",
     flexWrap: "nowrap",
     marginHorizontal: 15
+  },
+  grayButton: {
+    borderRadius: 40,
+    marginTop: 17
   }
 } );
 
@@ -42,6 +46,9 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   },
   whiteText: {
     color: colors.white
+  },
+  grayButtonText: {
+    fontSize: 18
   }
 } );
 

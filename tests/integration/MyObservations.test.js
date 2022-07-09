@@ -63,6 +63,6 @@ test( "should not have accessibility errors", async ( ) => {
   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
   // const { getByTestId } = await renderObsList( );
   const { getByTestId } = await waitFor( ( ) => renderObsList( ) );
-  const obsList = getByTestId( "ObsList.myObservations" );
+  const obsList = getByTestId( "ObservationViews.myObservations" );
   expect( ( ) => AccessibilityEngine.check( obsList ) ).not.toThrow();
 } );

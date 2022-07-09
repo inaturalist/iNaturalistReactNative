@@ -33,7 +33,7 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
   useEffect( ( ) => {
     // kueda 20220422: for reasons I don't understand, the app crashes if this
     // effect refers to anything defined outside of this function, hence no
-    // constances for the result states and no abstraction of this method for
+    // constants for the result states and no abstraction of this method for
     // requesting permissions
     const requestAndroidPermissions = async ( ) => {
       try {

@@ -3,7 +3,7 @@
 import React from "react";
 import { FlatList, Image, Pressable } from "react-native";
 import type { Node } from "react";
-import { Avatar } from "react-native-paper";
+import { Avatar, useTheme } from "react-native-paper";
 
 import { imageStyles, viewStyles } from "../../styles/sharedComponents/photoCarousel";
 
@@ -24,6 +24,7 @@ const PhotoCarousel = ( {
   containerStyle,
   handleDelete
 }: Props ): Node => {
+  const { colors } = useTheme( );
   const renderDeleteButton = photoUri => (
     <Pressable
       onPress={( ) => {
@@ -32,7 +33,7 @@ const PhotoCarousel = ( {
       }}
       style={viewStyles.deleteButton}
     >
-      <Avatar.Icon icon="delete-forever" size={30} />
+      <Avatar.Icon icon="delete-forever" size={30} style={{ backgroundColor: colors.background }} />
     </Pressable>
   );
 

@@ -70,6 +70,8 @@ Connected-Accounts = Connected Accounts
 
 Content-Display = Content & Display
 
+Create-an-iNaturalist-account-to-save-your-observations = Create an iNaturalist account to save your observations and contribute them to science.
+
 CREATE-AN-OBSERVATION = CREATE AN OBSERVATION
 
 Date = Date
@@ -185,6 +187,8 @@ Licensing = Licensing
 Location = Location
 
 Log-in = Log in
+
+Log-in-to-iNaturalist = Log in to iNaturalist
 
 Logged-in-as = Logged in as: { $username }
 
@@ -556,6 +560,11 @@ X-photos-X-observations = {$photoCount ->
 }, {$observationCount ->
     [one] 1 observation
     *[other] {$observationCount} observations
+}
+
+X-unuploaded-observations = {$observationCount ->
+    [one] 1 unuploaded observation
+    *[other] {$observationCount} unuploaded observations
 }
 
 Yes-delete-photo = Yes, delete photo

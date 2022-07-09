@@ -2,7 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  Image, Linking, ScrollView, TouchableOpacity, View
+  Image,
+  KeyboardAvoidingView,
+  Linking,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  View
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
@@ -13,9 +19,13 @@ import {
 import { useTranslation } from "react-i18next";
 import { textStyles, viewStyles, imageStyles } from "../../styles/login/login";
 import {
-  isLoggedIn, authenticateUser, getUsername, getUserId, signOut
+  authenticateUser,
+  getUserId,
+  getUsername,
+  isLoggedIn,
+  signOut
 } from "./AuthenticationService";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import colors from "../../styles/colors";
 
 const Login = ( ): Node => {
@@ -58,10 +68,9 @@ const Login = ( ): Node => {
       password
     );
 
-    setLoading( false );
-
     if ( !success ) {
       setError( t( "Invalid-login" ) );
+      setLoading( false );
       return;
     }
 
@@ -69,6 +78,7 @@ const Login = ( ): Node => {
     const userId = await getUserId( );
     setUsername( userLogin );
     setLoggedIn( true );
+    setLoading( false );
     navigation.navigate( "my observations", {
       screen: "ObsList",
       params: { syncData: true, userLogin, userId }
@@ -76,7 +86,7 @@ const Login = ( ): Node => {
   };
 
   const onSignOut = async ( ) => {
-    await signOut( );
+    await signOut( { deleteRealm: true } );
     setLoggedIn( false );
   };
 
@@ -85,102 +95,97 @@ const Login = ( ): Node => {
     Linking.openURL( "https://www.inaturalist.org/users/password/new" );
   };
 
+  const logoutForm = (
+    <>
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Content>
+            <Paragraph>{t( "Are-you-sure-you-want-to-sign-out" )}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button style={viewStyles.grayButton} onPress={hideDialog} testID="Login.signOutButton">
+              {t( "Cancel" )}
+            </Button>
+            <Button style={viewStyles.greenButton} onPress={onSignOut}>
+              {t( "Sign-out" )}
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+      <View style={viewStyles.logoutForm}>
+        <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
+        <RoundGreenButton
+          style={viewStyles.button}
+          handlePress={showDialog}
+          testID="Login.signOutButton"
+          buttonText="Sign-out"
+        />
+      </View>
+    </>
+  );
+
+  const loginForm = (
+    <>
+      <Image
+        style={imageStyles.logo}
+        resizeMode="contain"
+        source={require( "../../images/inat_logo.png" )}
+      />
+      <Text style={textStyles.header}>{t( "Login-header" )}</Text>
+      <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
+      <Text style={textStyles.fieldText}>{t( "Username-or-Email" )}</Text>
+      <TextInput
+        style={viewStyles.input}
+        onChangeText={text => {
+          setError( null );
+          setEmail( text );
+        }}
+        value={email}
+        autoComplete="email"
+        testID="Login.email"
+        autoCapitalize="none"
+        keyboardType="email-address"
+        selectionColor={colors.black}
+      />
+      <Text style={textStyles.fieldText}>{t( "Password" )}</Text>
+      <TextInput
+        style={viewStyles.input}
+        onChangeText={text => {
+          setError( null );
+          setPassword( text );
+        }}
+        value={password}
+        secureTextEntry
+        testID="Login.password"
+        selectionColor={colors.black}
+      />
+      <TouchableOpacity onPress={forgotPassword}>
+        <Text style={textStyles.forgotPassword}>{t( "Forgot-Password" )}</Text>
+      </TouchableOpacity>
+      {error && <Text style={textStyles.error}>{error}</Text>}
+      <RoundGreenButton
+        style={viewStyles.button}
+        buttonText="Log-in"
+        handlePress={login}
+        disabled={!email || !password}
+        testID="Login.loginButton"
+        loading={loading}
+      />
+    </>
+  );
+
   return (
-    <ViewWithFooter>
-      <ScrollView style={viewStyles.container}>
-        {loggedIn
-          ? (
-            <>
-              <Portal>
-                <Dialog visible={visible} onDismiss={hideDialog}>
-                  <Dialog.Content>
-                    <Paragraph>{t( "Are-you-sure-you-want-to-sign-out" )}</Paragraph>
-                  </Dialog.Content>
-                  <Dialog.Actions>
-                    <Button
-                      style={viewStyles.grayButton}
-                      onPress={hideDialog}
-                      testID="Login.signOutButton"
-                    >
-                      {t( "Cancel" )}
-                    </Button>
-                    <Button style={viewStyles.greenButton} onPress={onSignOut}>
-                      {t( "Sign-out" )}
-                    </Button>
-                  </Dialog.Actions>
-                </Dialog>
-              </Portal>
-              <Text
-                style={textStyles.text}
-                testID="Login.loggedInAs"
-              >
-                {t( "Logged-in-as", { username } )}
-              </Text>
-              <Button
-                style={viewStyles.button}
-                onPress={showDialog}
-                mode="contained"
-                uppercase={false}
-                testID="Login.signOutButton"
-              >
-                {t( "Sign-out" )}
-              </Button>
-            </>
-          )
-          : (
-            <View>
-              <Image
-                style={imageStyles.logo}
-                resizeMode="contain"
-                source={require( "../../images/inat_logo.png" )}
-              />
-              <Text style={textStyles.header}>{t( "Login-header" )}</Text>
-              <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
-              <Text style={textStyles.fieldText}>{t( "Username-or-Email" )}</Text>
-              <TextInput
-                style={viewStyles.input}
-                onChangeText={text => {
-                  setError( null );
-                  setEmail( text );
-                }}
-                value={email}
-                autoComplete="email"
-                testID="Login.email"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                selectionColor={colors.black}
-              />
-              <Text style={textStyles.fieldText}>{t( "Password" )}</Text>
-              <TextInput
-                style={viewStyles.input}
-                onChangeText={text => {
-                  setError( null );
-                  setPassword( text );
-                }}
-                value={password}
-                secureTextEntry
-                testID="Login.password"
-                selectionColor={colors.black}
-              />
-              <TouchableOpacity onPress={forgotPassword}>
-                <Text style={textStyles.forgotPassword}>{t( "Forgot-Password" )}</Text>
-              </TouchableOpacity>
-              {error && <Text style={textStyles.error}>{error}</Text>}
-              <Button
-                style={viewStyles.button}
-                mode="contained"
-                uppercase={false}
-                onPress={login}
-                loading={loading}
-                disabled={!email || !password}
-                testID="Login.loginButton"
-              >
-                {t( "Log-in" )}
-              </Button>
-            </View>
-          )}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={viewStyles.container}
+    >
+      <ScrollView
+        style={[viewStyles.container]}
+        contentContainerStyle={viewStyles.paddedContainer}
+      >
+        {loggedIn ? logoutForm : loginForm}
       </ScrollView>
-    </ViewWithFooter>
+    </KeyboardAvoidingView>
   );
 };
 

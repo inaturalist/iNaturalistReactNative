@@ -1,8 +1,0 @@
-app_identifier("org.inaturalist.iNatMobileBeta") # The bundle identifier of your app
-apple_id("amanda@inaturalist.org") # Your Apple email address
-
-itc_team_id("475606") # App Store Connect Team ID
-team_id("N5J7L4P93Z") # Developer Portal Team ID
-
-# For more information about the Appfile, see:
-#     https://docs.fastlane.tools/advanced/#appfile
