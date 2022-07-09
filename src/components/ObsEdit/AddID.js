@@ -96,6 +96,8 @@ const AddID = ( { route }: Props ): React.Node => {
     </View>;
   };
 
+  const taxonSearchIcon = ( ) => <Icon style={textStyles.taxonSearchIcon} name={"magnify"} size={25} />;
+
   return (
     <BottomSheetModalProvider>
       <ViewNoFooter>
@@ -114,7 +116,7 @@ const AddID = ( { route }: Props ): React.Node => {
             <Text>{t( "Search-Taxon-ID" )}</Text>
             <TextInput
               testID={"SearchTaxon"}
-              left={<TextInput.Icon name={() => <Icon style={textStyles.taxonSearchIcon} name={"magnify"} size={25} />} />}
+              left={<TextInput.Icon name={taxonSearchIcon} />}
               style={viewStyles.taxonSearch}
               value={taxonSearch}
               onChangeText={setTaxonSearch}

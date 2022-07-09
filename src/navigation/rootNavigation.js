@@ -4,7 +4,8 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { signOut, getUserId } from "../components/LoginSignUp/AuthenticationService";
 import PlaceholderComponent from "../components/PlaceholderComponent";
@@ -43,10 +44,12 @@ const Drawer = createDrawerNavigator( );
 const theme = {
   ...DefaultTheme,
   roundness: 2,
+  version: 3,
   colors: {
     ...DefaultTheme.colors,
-    primary: colors.lightGray,
-    accent: colors.inatGreen,
+    primary: colors.inatGreen,
+    secondary: colors.secondary,
+    tertiary: colors.tertiary,
     surface: colors.white
   }
 };
@@ -55,13 +58,25 @@ const App = ( ): React.Node => {
   React.useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {
       const userId = await getUserId( );
+      // check to see if this is a fresh install of the app
+      // if it is, delete realm file when we sign the user out of the app
+      // this handles the case where a user deletes the app, then reinstalls
+      // and expects to be signed out with no previously saved data
+      const alreadyLaunched = await AsyncStorage.getItem( "alreadyLaunched" );
+      let deleteRealm = false;
+      if ( !alreadyLaunched ) {
+        deleteRealm = true;
+        await AsyncStorage.setItem( "alreadyLaunched", "true" );
+      }
       if ( !userId ) {
-        await signOut( );
+        await signOut( { deleteRealm } );
       }
     };
 
     checkForSignedInUser( );
   }, [] );
+
+  const drawerContent = ( props ) => <CustomDrawerContent {...props} />;
 
   return (
     <PaperProvider theme={theme}>
@@ -72,7 +87,7 @@ const App = ( ): React.Node => {
               <Drawer.Navigator
                 screenOptions={screenOptions}
                 name="Drawer"
-                drawerContent={( props ) => <CustomDrawerContent {...props} />}
+                drawerContent={drawerContent}
               >
                 <Drawer.Screen
                   name="my observations"

@@ -48,6 +48,8 @@ const SoundRecorderWithPermission = ( ) => (
   </PermissionGate>
 );
 
+const suggestionsTitle = ( props ) => <CustomHeaderWithTranslation {...props} headerText="IDENTIFICATION" />;
+
 const CameraStackNavigation = ( ): React.Node => (
   <Mortal>
     <PhotoGalleryProvider>
@@ -76,7 +78,7 @@ const CameraStackNavigation = ( ): React.Node => (
           name="Suggestions"
           component={CVSuggestions}
           options={{
-            headerTitle: ( props ) => <CustomHeaderWithTranslation {...props} headerText="IDENTIFICATION" />,
+            headerTitle: suggestionsTitle,
             headerShown: true
           }}
         />

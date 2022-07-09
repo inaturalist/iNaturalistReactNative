@@ -54,6 +54,7 @@
   "Community-Moderation-Settings": "Community Moderation Settings",
   "Connected-Accounts": "Connected Accounts",
   "Content-Display": "Content & Display",
+  "Create-an-iNaturalist-account-to-save-your-observations": "Create an iNaturalist account to save your observations and contribute them to science.",
   "CREATE-AN-OBSERVATION": "CREATE AN OBSERVATION",
   "Date": "Date",
   "Date-added-newest-to-oldest": "Date added - newest to oldest",
@@ -131,6 +132,7 @@
   "Licensing": "Licensing",
   "Location": "Location",
   "Log-in": "Log in",
+  "Log-in-to-iNaturalist": "Log in to iNaturalist",
   "Logged-in-as": "Logged in as: { $username }",
   "Login-header": {
     "comment": "Appears in the login screen",
@@ -374,6 +376,7 @@
     "comment": "Displays number of photos and observations a user has selected from the camera roll",
     "val": "{ $photoCount ->\n  [one] 1 photo\n *[other] { $photoCount } photos\n}, { $observationCount ->\n  [one] 1 observation\n *[other] { $observationCount } observations\n}"
   },
+  "X-unuploaded-observations": "{ $observationCount ->\n  [one] 1 unuploaded observation\n *[other] { $observationCount } unuploaded observations\n}",
   "Yes-delete-photo": "Yes, delete photo",
   "You-denied-iNaturalist-permission-to-do-that": {
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",

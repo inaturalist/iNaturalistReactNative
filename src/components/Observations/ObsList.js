@@ -2,25 +2,27 @@
 
 import React, { useEffect } from "react";
 import type { Node } from "react";
-import { Text } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
 import UserCard from "./UserCard";
 import { useCurrentUser } from "./hooks/useCurrentUser";
-import BottomModal from "../SharedComponents/BottomModal";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import uploadObservation from "../../providers/uploadHelpers/uploadObservation";
-import Observation from "../../models/Observation";
+import BottomSheet from "../SharedComponents/BottomSheet";
 import useObservations from "./hooks/useObservations";
-import { t } from "i18next";
+import LoggedOutCard from "./LoggedOutCard";
+import { useUser } from "../UserProfile/hooks/useUser";
+import LoginPrompt from "./LoginPrompt";
+import UploadPrompt from "./UploadPrompt";
 
 const ObsList = ( ): Node => {
   const { params } = useRoute( );
   const { observationList, loading, syncObservations, fetchNextObservations, obsToUpload } = useObservations( );
 
   const id = params && params.userId;
+  const userId = useCurrentUser( ) || id;
+  const { user } = useUser( userId );
+  const numObsToUpload = obsToUpload?.length;
 
   useEffect( ( ) => {
     // start fetching data immediately after successful login
@@ -32,41 +34,24 @@ const ObsList = ( ): Node => {
     }
   }, [params, syncObservations] );
 
-  const userId = useCurrentUser( );
-
-  const renderUploadModal = ( ) => {
-    const uploadObservations = ( ) => obsToUpload.forEach( obs => {
-      const mappedObs = Observation.mapObservationForUpload( obs );
-      uploadObservation( mappedObs, obs );
-    } );
-
-    return (
-      <>
-        <Text>{t( "Whenever-you-get-internet-connection-you-can-upload" )}</Text>
-        <RoundGreenButton
-          buttonText="Upload-X-Observations"
-          count={obsToUpload.length}
-          handlePress={uploadObservations}
-          testID="ObsList.uploadButton"
-        />
-      </>
-    );
-  };
-
   return (
     <ViewWithFooter>
-      <UserCard userId={userId || id} />
+      {user ? <UserCard userId={userId} user={user} /> : <LoggedOutCard numObsToUpload={numObsToUpload} />}
       <ObservationViews
         loading={loading}
         observationList={observationList}
         testID="ObsList.myObservations"
         handleEndReached={fetchNextObservations}
         syncObservations={syncObservations}
+        userId={userId}
       />
-      {( obsToUpload.length > 0 && userId !== null ) && (
-        <BottomModal height={200}>
-          {renderUploadModal( )}
-        </BottomModal>
+      {( numObsToUpload > 0 ) && (
+        <BottomSheet>
+          {!userId
+            ? <LoginPrompt />
+            : <UploadPrompt obsToUpload={obsToUpload} />
+          }
+        </BottomSheet>
       )}
     </ViewWithFooter>
   );

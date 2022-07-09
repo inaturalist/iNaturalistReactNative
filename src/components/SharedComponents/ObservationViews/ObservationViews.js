@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, View, Pressable, Text, ActivityIndicator } from "react-native";
+import { FlatList, View, Pressable, Text } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -12,7 +12,6 @@ import EmptyList from "./EmptyList";
 import ObsCard from "./ObsCard";
 import Map from "../Map";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
-// import { ObsEditContext } from "../../../providers/contexts";
 
 type Props = {
   loading: boolean,
@@ -22,7 +21,8 @@ type Props = {
   mapHeight?: number,
   totalObservations?: number,
   handleEndReached?: Function,
-  syncObservations?: Function
+  syncObservations?: Function,
+  userId?: ?number
 }
 
 const ObservationViews = ( {
@@ -33,32 +33,23 @@ const ObservationViews = ( {
   mapHeight,
   totalObservations,
   handleEndReached,
-  syncObservations
+  syncObservations,
+  userId
 }: Props ): React.Node => {
-  // const { openSavedObservation } = React.useContext( ObsEditContext );
   const [view, setView] = React.useState( "list" );
   const navigation = useNavigation( );
   const { name } = useRoute( );
 
   const navToObsDetails = async ( observation ) => {
-    // const needsUpload = observation._synced_at === null;
-    // if ( needsUpload ) {
-    //   await openSavedObservation( observation.uuid );
-    //   navigation.navigate( "camera", {
-    //     screen: "ObsEdit"
-    //   } );
-    // } else {
-      navigation.navigate( "ObsDetails", { observation } );
-      // navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
-    // }
+    navigation.navigate( "ObsDetails", { observation } );
   };
 
   const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
   const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} />;
 
   const renderEmptyState = ( ) => {
-    if ( name !== "Explore" ) {
-      return loading ? <ActivityIndicator /> : <EmptyList />;
+    if ( name !== "Explore" && !loading ) {
+      return <EmptyList />;
     }
     return null;
   };
@@ -82,7 +73,6 @@ const ObservationViews = ( {
           renderItem={view === "grid" ? renderGridItem : renderItem}
           numColumns={view === "grid" ? 2 : 1}
           testID={testID}
-          ListEmptyComponent={renderEmptyState}
           onEndReached={handleEndReached}
           ListFooterComponent={renderFooter}
         />
@@ -92,19 +82,16 @@ const ObservationViews = ( {
 
   const isExplore = name === "Explore";
 
-  return (
-    <>
-      {isExplore && (
-        <View style={[viewStyles.whiteBanner, view === "map" && viewStyles.greenBanner]}>
-          <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>{t( "X-Observations", { observationCount: totalObservations } )}</Text>
-        </View>
-      )}
+  const renderButtonsRow = ( ) => {
+    return (
       <View style={[viewStyles.toggleViewRow, isExplore && viewStyles.exploreButtons]}>
         {!isExplore && (
           <View style={viewStyles.toggleButtons}>
-            <Pressable onPress={syncObservations}>
-              <Icon name="sync" size={30} />
-            </Pressable>
+            {userId && (
+              <Pressable onPress={syncObservations}>
+                <Icon name="sync" size={30} />
+              </Pressable>
+            )}
           </View>
         )}
         <View style={viewStyles.toggleButtons}>
@@ -132,8 +119,25 @@ const ObservationViews = ( {
           </Pressable>
         </View>
       </View>
-      {renderView( )}
-    </>
+    );
+  };
+
+  return (
+    <View testID="ObservationViews.myObservations">
+      {isExplore && (
+        <View style={[viewStyles.whiteBanner, view === "map" && viewStyles.greenBanner]}>
+          <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>{t( "X-Observations", { observationCount: totalObservations } )}</Text>
+        </View>
+      )}
+      {observationList.length === 0
+        ? renderEmptyState( )
+        : (
+          <>
+            {renderButtonsRow( )}
+            {renderView( )}
+          </>
+        )}
+    </View>
   );
 };
 

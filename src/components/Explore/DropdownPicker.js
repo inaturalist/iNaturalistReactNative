@@ -48,6 +48,10 @@ const DropdownPicker = ( {
     };
   };
 
+  const taxonIcon = taxa => <Image source={{ uri: taxa.default_photo.url }} style={imageStyles.pickerIcon} />;
+  const userIcon = user => <Image source={{ uri: user.icon }} style={imageStyles.circularPickerIcon} />;
+  const projectIcon = project => <Image source={{ uri: project.icon }} style={imageStyles.pickerIcon} />;
+
   const taxonItem = taxa => {
     // console.log( taxa, "taxa in item" );
     return {
@@ -55,7 +59,7 @@ const DropdownPicker = ( {
       // linked to the search result
       label: `${taxa.preferred_common_name} (${taxa.matched_term})`,
       value: taxa.id,
-      icon: ( ) => <Image source={{ uri: taxa.default_photo.url }} style={imageStyles.pickerIcon} />
+      icon: taxonIcon( taxa )
     };
   };
 
@@ -63,7 +67,7 @@ const DropdownPicker = ( {
     return {
       label: user.login,
       value: user.id,
-      icon: ( ) => <Image source={{ uri: user.icon }} style={imageStyles.circularPickerIcon} />
+      icon: userIcon( user )
     };
   };
 
@@ -71,7 +75,7 @@ const DropdownPicker = ( {
     return {
       label: project.title,
       value: project.id,
-      icon: ( ) => <Image source={{ uri: project.icon }} style={imageStyles.pickerIcon} />
+      icon: projectIcon( project )
     };
   };
 

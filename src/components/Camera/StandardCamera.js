@@ -5,7 +5,7 @@ import { Text, View, Pressable } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import type { Node } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Avatar } from "react-native-paper";
+import { Avatar, useTheme } from "react-native-paper";
 import Realm from "realm";
 import { t } from "i18next";
 
@@ -18,6 +18,7 @@ import realmConfig from "../../models/index";
 import Photo from "../../models/Photo";
 
 const StandardCamera = ( ): Node => {
+  const { colors } = useTheme( );
   // TODO: figure out if there's a way to write location to photo metadata with RN
   const { addPhotos } = useContext( ObsEditContext );
   const navigation = useNavigation( );
@@ -71,6 +72,8 @@ const StandardCamera = ( ): Node => {
     }
   }, [photos] );
 
+  const renderCameraButton = ( icon ) => <Avatar.Icon size={40} icon={icon} style={{ backgroundColor: colors.background }} />;
+
   return (
     <View style={viewStyles.container}>
       {device && <CameraView device={device} camera={camera} />}
@@ -80,13 +83,13 @@ const StandardCamera = ( ): Node => {
           style={viewStyles.flashButton}
           onPress={toggleFlash}
         >
-          <Avatar.Icon size={40} icon="flash" />
+          {renderCameraButton( "flash" )}
         </Pressable>
         <Pressable
           style={viewStyles.cameraFlipButton}
           onPress={flipCamera}
         >
-          <Avatar.Icon size={40} icon="camera-flip" />
+          {renderCameraButton( "camera-flip" )}
         </Pressable>
         <View />
 
@@ -96,7 +99,7 @@ const StandardCamera = ( ): Node => {
           style={viewStyles.captureButton}
           onPress={takePhoto}
         >
-          <Avatar.Icon size={40} icon="circle-outline" />
+          {renderCameraButton( "circle-outline" )}
         </Pressable>
         <Pressable
           style={viewStyles.nextButton}

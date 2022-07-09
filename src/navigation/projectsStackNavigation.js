@@ -13,6 +13,8 @@ const screenOptions = {
   headerShown: true
 };
 
+const headerLeftComponent = navigation => <HeaderBackButton onPress={( ) => navigation.goBack( )} />;
+
 const ProjectsStackNavigation = ( ): React.Node => (
   <Stack.Navigator screenOptions={screenOptions}>
       <Stack.Screen
@@ -23,7 +25,7 @@ const ProjectsStackNavigation = ( ): React.Node => (
         name="ProjectDetails"
         component={ProjectDetails}
         options={( { navigation } ) => ( {
-          headerLeft: ( ) => <HeaderBackButton onPress={( ) => navigation.goBack( )} />
+          headerLeft: headerLeftComponent( navigation )
         } )}
       />
   </Stack.Navigator>

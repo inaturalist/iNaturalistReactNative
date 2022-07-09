@@ -14,6 +14,7 @@
     "translate": "node src/i18n/i18ncli.js build"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.7",
     "@gorhom/bottom-sheet": "^4.3.1",
     "@react-native-community/cameraroll": "^4.1.2",
     "@react-native-community/checkbox": "^0.5.12",
@@ -53,11 +54,11 @@
     "react-native-image-resizer": "^1.4.5",
     "react-native-jwt-io": "^1.0.3",
     "react-native-localize": "^2.2.1",
-    "react-native-maps": "^0.30.2",
+    "react-native-maps": "^0.31.1",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^13.1.0",
     "react-native-network-logger": "^1.12.0",
-    "react-native-paper": "^4.12.2",
+    "react-native-paper": "^5.0.0-rc.2",
     "react-native-permissions": "^3.3.1",
     "react-native-picker-select": "^8.0.4",
     "react-native-reanimated": "^2.7.0",
@@ -76,7 +77,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
-    "@react-native-community/eslint-config": "^3.0.1",
+    "@react-native-community/eslint-config": "^3.0.3",
     "@testing-library/react-native": "^9.0.0",
     "babel-jest": "^26.6.3",
     "eslint": "^7.32.0",
@@ -113,7 +114,7 @@
       "<rootDir>/node_modules/react-native-accessibility-engine/src/extend-expect.ts"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?@react-native|react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base)"
+      "node_modules/(?!(jest-)?@react-native|react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base||(?!react-native-redash))"
     ],
     "automock": false,
     "resetMocks": false,

@@ -102,7 +102,7 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
       // this deletes the user JWT and saved login details when a user is not actually signed in anymore
       // for example, if they installed, deleted, and reinstalled the app without logging out
       if ( response.status === 401 ) {
-        signOut( );
+        signOut( { deleteRealm: true } );
       }
       console.error(
         `Error while renewing JWT: ${response.problem} - ${response.status}`
@@ -321,9 +321,11 @@ const getUser = async (): Promise<Object | null> => {
  const getUserId = async (): Promise<string | null> => {
   const realm = await Realm.open( realmConfig );
   const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
-  const userId = currentUser?.id?.toString( );
-  realm.close( );
-  return userId;
+  const currentUserId = currentUser?.id?.toString( );
+  // TODO: still need to figure out the right way/time to close realm
+  // but omitting for now bc it interferes with a user being able to save a local observation if they're logged out
+  // realm.close( );
+  return currentUserId;
 };
 
 /**
@@ -331,8 +333,12 @@ const getUser = async (): Promise<Object | null> => {
  *
  * @returns {Promise<void>}
  */
-const signOut = async ( ) => {
-  Realm.deleteFile( realmConfig );
+const signOut = async ( options: {
+  deleteRealm: boolean
+} ) => {
+  if ( options?.deleteRealm ) {
+    Realm.deleteFile( realmConfig );
+  }
   await SInfo.deleteItem( "jwtToken", {} );
   await SInfo.deleteItem( "jwtTokenExpiration", {} );
   await SInfo.deleteItem( "username", {} );

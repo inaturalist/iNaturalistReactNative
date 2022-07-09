@@ -5,16 +5,16 @@ import { StyleSheet } from "react-native";
 import type { ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import { colors } from "../global";
 
+const borderRadius = 30;
+
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   bottomModal: {
     backgroundColor: colors.white,
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
-    borderColor: colors.gray,
-    borderWidth: 1,
-    paddingTop: 20,
+    borderTopRightRadius: borderRadius,
+    borderTopLeftRadius: borderRadius,
+    paddingTop: 22,
     paddingBottom: 70,
-    paddingHorizontal: 20
+    paddingHorizontal: 32
   }
 } );
 

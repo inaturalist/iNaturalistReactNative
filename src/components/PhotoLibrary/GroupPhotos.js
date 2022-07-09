@@ -182,6 +182,8 @@ const GroupPhotos = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
+  const loadingWheel = ( ) => <ActivityIndicator />;
+
   return (
     <ViewNoFooter>
       <GroupPhotosHeader
@@ -196,7 +198,7 @@ const GroupPhotos = ( ): Node => {
         numColumns={2}
         renderItem={renderImage}
         testID="GroupPhotos.list"
-        ListEmptyComponent={( ) => <ActivityIndicator />}
+        ListEmptyComponent={loadingWheel}
       />
       <GroupPhotosFooter
         combinePhotos={combinePhotos}

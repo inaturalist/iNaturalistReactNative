@@ -1,8 +1,8 @@
 // @flow
 
-import {Alert, Image, Text, TextInput, View} from "react-native";
+import { Alert, Image, Text, TextInput, View } from "react-native";
 import {viewStyles, textStyles} from "../../styles/settings/settings";
-import React, {useEffect} from "react";
+import React, { useEffect, useMemo, useCallback } from "react";
 import type { Node } from "react";
 import { t } from "i18next";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
@@ -119,7 +119,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
   }, [settings] );
 
 
-  const updateRelationship = async ( relationship, update ) => {
+  const updateRelationship = useCallback( async ( relationship, update ) => {
     let response;
     try {
       response = await inatjs.relationships.update(
@@ -140,9 +140,9 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     }
     console.log( response );
     setRefreshRelationships( Math.random() );
-  };
+  }, [accessToken] );
 
-  const askToRemoveRelationship = ( relationship ) => {
+  const askToRemoveRelationship = useCallback( ( relationship ) => {
     Alert.alert(
       "Remove Relationship?",
       `You will no longer be following or trusting ${relationship.friendUser.login}.`,
@@ -174,10 +174,10 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
         cancelable: true
       }
     );
-  };
+  }, [accessToken] );
 
 
-  const unblockUser = async ( user ) => {
+  const unblockUser = useCallback( async ( user ) => {
     let response;
     try {
       response = await inatjs.users.unblock(
@@ -198,7 +198,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     }
     console.log( "Unblock", response );
     onRefreshUser();
-  };
+  }, [accessToken, onRefreshUser] );
 
   const blockUser = async ( user ) => {
     if ( !user ) {return;}
@@ -225,8 +225,8 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     onRefreshUser();
   };
 
-
-  const BlockedUser = ( {user} ): Node => {
+  // $FlowFixMe
+  const BlockedUser = useMemo( ( { user } ): Node => {
     return <View style={[viewStyles.row, viewStyles.relationshipRow]}>
       <Image
         style={viewStyles.relationshipImage}
@@ -238,9 +238,9 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
       </View>
       <Pressable style={viewStyles.removeRelationship} onPress={() => unblockUser( user )}><Text>{t( "Unblock" )}</Text></Pressable>
     </View>;
-  };
+  }, [unblockUser] );
 
-  const unmuteUser = async ( user ) => {
+  const unmuteUser = useCallback( async ( user ) => {
     let response;
     try {
       response = await inatjs.users.unmute(
@@ -261,7 +261,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     }
     console.log( "Unmute", response );
     onRefreshUser();
-  };
+  }, [accessToken, onRefreshUser] );
 
 
   const muteUser = async ( user ) => {
@@ -289,8 +289,8 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     onRefreshUser();
   };
 
-
-  const MutedUser = ( {user} ): Node => {
+  // $FlowFixMe
+  const MutedUser = useMemo( ( {user} ): Node => {
     return <View style={[viewStyles.row, viewStyles.relationshipRow]}>
       <Image
         style={viewStyles.relationshipImage}
@@ -302,10 +302,10 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
       </View>
       <Pressable style={viewStyles.removeRelationship} onPress={() => unmuteUser( user )}><Text>{t( "Unmute" )}</Text></Pressable>
     </View>;
-  };
+  }, [unmuteUser] );
 
-
-  const Relationship = ( {relationship} ): Node => {
+  // $FlowFixMe
+  const Relationship = useMemo( ( {relationship} ): Node => {
     return  <View style={[viewStyles.column, viewStyles.relationshipRow]}>
       <View style={viewStyles.row}>
         <Image
@@ -338,10 +338,11 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
       <Text>{t( "Added-on-date", { date: relationship.created_at } )}</Text>
       <Pressable style={viewStyles.removeRelationship} onPress={() => askToRemoveRelationship( relationship )}><Text>{t( "Remove-Relationship" )}</Text></Pressable>
     </View>;
-  };
+  }, [askToRemoveRelationship, updateRelationship] );
 
 
   return (
+    // $FlowFixMe
     <View style={viewStyles.column}>
       <Text style={textStyles.title}>{t( "Relationships" )}</Text>
       <View style={viewStyles.row}>
@@ -423,6 +424,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
       </View>
 
       {relationshipResults.map( ( relationship ) => (
+          // $FlowFixMe
         <Relationship key={relationship.id} relationship={relationship} />
       ) )}
       { totalPages > 1 && <View style={[viewStyles.row, viewStyles.paginationContainer]}>
@@ -436,12 +438,14 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
       <Text style={textStyles.title}>{t( "Blocked-Users" )}</Text>
       <UserSearchInput userId={0} onUserChanged={( u ) => blockUser( u )} />
       {blockedUsers.map( ( user ) => (
+          // $FlowFixMe
         <BlockedUser key={user.id} user={user} />
       ) )}
 
       <Text style={textStyles.title}>{t( "Muted-Users" )}</Text>
       <UserSearchInput userId={0} onUserChanged={( u ) => muteUser( u )} />
       {mutedUsers.map( ( user ) => (
+          // $FlowFixMe
         <MutedUser key={user.id} user={user} />
       ) )}
     </View>

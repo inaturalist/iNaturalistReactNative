@@ -13,6 +13,8 @@ type Props = {
 
 // using component from Seek: https://github.com/inaturalist/SeekReactNative/blob/64ae3df185fffe751aff40ab17e3ff2dd8a74e42/components/UIComponents/DateTimePicker.js
 
+const customHeaderIOS = ( ) => <></>;
+
 const DatePicker = ( {
   datetime,
   isDateTimePickerVisible,
@@ -24,10 +26,10 @@ const DatePicker = ( {
   return (
     <DateTimePicker
       display="spinner"
-      customHeaderIOS={() => <></>}
+      customHeaderIOS={customHeaderIOS}
       isDarkModeEnabled={colorScheme === "dark"}
       isVisible={isDateTimePickerVisible}
-      maximumDate={new Date()}
+      maximumDate={new Date( )}
       mode={datetime ? "datetime" : "date"}
       onCancel={toggleDateTimePicker}
       onConfirm={onDatePicked}

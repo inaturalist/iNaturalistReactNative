@@ -5,7 +5,7 @@ import {Text, Pressable, FlatList, View} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
-import { Avatar } from "react-native-paper";
+import { Avatar, useTheme } from "react-native-paper";
 
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
@@ -21,6 +21,7 @@ const IdentificationSection = ( ): Node => {
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
+  const { colors } = useTheme( );
 
   const currentObs = observations[currentObsIndex];
   const identification = currentObs.taxon;
@@ -46,7 +47,11 @@ const IdentificationSection = ( ): Node => {
           size={54}
           label={label}
           labelStyle={textStyles.smallLabel}
-          style={[viewStyles.iconicTaxaButtons, selected && viewStyles.selected]}
+          style={[
+            { backgroundColor: colors.tertiary },
+            viewStyles.iconicTaxaButtons,
+            selected && viewStyles.selected
+          ]}
         />
       </Pressable>
     );
