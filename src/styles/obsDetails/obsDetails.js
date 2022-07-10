@@ -92,7 +92,51 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   textPadding: {
     paddingRight: 30
+  },
+  bottomModal: {
+    padding: 0,
+    backgroundColor: colors.white
+  },
+  commentInputContainer: {
+    position: "relative"
+  },
+  commentInput: {
+    backgroundColor: colors.white,
+    padding: 0,
+    marginBottom: 20
+  },
+  commentInputText: {
+    paddingTop: 8,
+    paddingBottom: 8,
+    height: "100%"
+  },
+  sendComment: {
+    position: "absolute",
+    right: -30,
+    bottom: 10,
+    zIndex: 9999,
+    width: 80,
+    height: 40
+  },
+  background: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(255,255,255,0.0)"
+  },
+  shadowContainer: {
+    width: "100%"
+  },
+  handleContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24
+  },
+  centerRow: {
+    alignItems: "center",
+    justifyContent: "center"
   }
+
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {

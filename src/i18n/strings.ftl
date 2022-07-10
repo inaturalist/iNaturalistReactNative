@@ -572,3 +572,13 @@ Yes-delete-photo = Yes, delete photo
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.
 You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
+
+Add-Comment = Add Comment
+Suggest-an-ID = Suggest an ID
+# Hint text inside the 'Add a comment' Text Input
+Add-a-comment = Add a comment...
+
+Yes = Yes
+No = No
+Discard-Comment = Discard Comment
+Are-you-sure-discard-comment = Are you sure you want to discard this comment?
