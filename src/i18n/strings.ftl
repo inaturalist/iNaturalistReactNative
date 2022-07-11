@@ -154,6 +154,12 @@ IDENTIFICATION = IDENTIFICATION
 
 Identification = Identification
 
+# Shows the number of photos a user selected from the camera roll for upload
+Import-X-photos = Import {$count ->
+    [one] 1 photo
+    *[other] {$count} photos
+}
+
 iNaturalist-Activity-Notifications = iNaturalist Activity Notifications
 
 iNaturalist-Applications = iNaturalist Applications
@@ -512,12 +518,6 @@ UPLOAD-OBSERVATION = UPLOAD OBSERVATION
 Upload-X-Observations = Upload {$count ->
     [one] 1 Observation
     *[other] {$count} Observations
-}
-
-# Shows the number of photos a user selected from the camera roll for upload
-Upload-X-photos = Upload {$count ->
-    [one] 1 photo
-    *[other] {$count} photos
 }
 
 # Shows the number of observations a user is currently uploading on my observations page

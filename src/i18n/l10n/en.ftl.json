@@ -105,6 +105,10 @@
   "IDs": "ID's",
   "IDENTIFICATION": "IDENTIFICATION",
   "Identification": "Identification",
+  "Import-X-photos": {
+    "comment": "Shows the number of photos a user selected from the camera roll for upload",
+    "val": "Import { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
+  },
   "iNaturalist-Activity-Notifications": "iNaturalist Activity Notifications",
   "iNaturalist-Applications": "iNaturalist Applications",
   "iNaturalist-Network-Affiliation": "iNaturalist Network Affiliation",
@@ -345,10 +349,6 @@
   "Upload-X-Observations": {
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "Upload { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
-  },
-  "Upload-X-photos": {
-    "comment": "Shows the number of photos a user selected from the camera roll for upload",
-    "val": "Upload { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
   },
   "Uploading-X-Observations": {
     "comment": "Shows the number of observations a user is currently uploading on my observations page",

@@ -5,8 +5,10 @@ import { Pressable, Image, FlatList, ActivityIndicator, View, Text } from "react
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { t } from "i18next";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
+import { colors } from "../../styles/global";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import { PhotoGalleryContext } from "../../providers/contexts";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
@@ -108,11 +110,9 @@ const PhotoGallery = ( ): Node => {
         <Image
           testID="PhotoGallery.photo"
           source={imageUri}
-          style={[
-            imageStyles.galleryImage,
-            isSelected ? imageStyles.selected : null
-          ]}
+          style={imageStyles.galleryImage}
         />
+        {isSelected && <Icon name="check-circle" size={30} style={imageStyles.selectedIcon} color={colors.inatGreen} />}
       </Pressable>
     );
   };
@@ -148,7 +148,7 @@ const PhotoGallery = ( ): Node => {
       { Object.keys( selectedPhotos ).length > 0 && (
         <View style={viewStyles.createObsButton}>
           <RoundGreenButton
-            buttonText="Upload-X-photos"
+            buttonText="Import-X-photos"
             count={totalSelected || 0}
             handlePress={navToGroupPhotos}
             testID="PhotoGallery.createObsButton"

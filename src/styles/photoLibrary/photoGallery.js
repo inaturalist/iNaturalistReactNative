@@ -39,14 +39,17 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
     height: galleryImageWidth,
     width: galleryImageWidth
   },
-  selected: {
-    tintColor: colors.inatGreen
-  },
   imagesForGrouping: {
     height: groupImageWidth,
     width: groupImageWidth,
     marginHorizontal: 10,
     marginVertical: 10
+  },
+  selectedIcon: {
+    zIndex: 1,
+    right: 0,
+    position: "absolute",
+    top: 0
   }
 } );
 
