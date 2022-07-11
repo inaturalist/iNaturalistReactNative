@@ -86,39 +86,48 @@ const ExploreProvider = ( { children }: Props ): Node => {
 
   const setLoading = ( ) => setLoadingExplore( true );
 
-  const resetFilters = ( ) => setExploreFilters( {
-    ...exploreFilters,
-    ...initialFilters
-  } );
-
-  const applyFilters = ( ) => {
-    setLoadingExplore( true );
-    const applied = Object.assign( exploreFilters, unappliedFilters );
-    console.log( applied, "applied" );
-    setExploreFilters( applied );
-  };
-
   const resetUnappliedFilters = ( ) => setUnappliedFilters( {
     ...initialFilters
   } );
 
-  const exploreValue = useMemo( ( ) => ( {
+  const exploreValue = useMemo( ( ) => {
+    const resetFilters = ( ) => setExploreFilters( {
+      ...exploreFilters,
+      ...initialFilters
+    } );
+
+    const applyFilters = ( ) => {
+      setLoadingExplore( true );
+      const applied = Object.assign( exploreFilters, unappliedFilters );
+      console.log( applied, "applied" );
+      setExploreFilters( applied );
+    };
+    return {
+      applyFilters,
+      exploreFilters,
+      exploreList,
+      loadingExplore,
+      location,
+      resetFilters,
+      resetUnappliedFilters,
+      setExploreFilters,
+      setLoading,
+      setLocation,
+      setTaxon,
+      setUnappliedFilters,
+      taxon,
+      totalObservations,
+      unappliedFilters
+    };
+  }, [
+    exploreFilters,
     exploreList,
     loadingExplore,
-    setLoading,
-    exploreFilters,
-    setExploreFilters,
-    resetFilters,
-    taxon,
-    setTaxon,
     location,
-    setLocation,
+    taxon,
     totalObservations,
-    unappliedFilters,
-    setUnappliedFilters,
-    applyFilters,
-    resetUnappliedFilters
-  } ), [] );
+    unappliedFilters
+  ] );
 
   return (
     <ExploreContext.Provider value={exploreValue}>

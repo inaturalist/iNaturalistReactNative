@@ -31,16 +31,6 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
   const [photoGallery, setPhotoGallery] = useState( {} );
   const [selectedPhotos, setSelectedPhotos] = useState( {} );
 
-  const totalSelected = ( ) => {
-    let total = 0;
-    const albums = Object.keys( selectedPhotos );
-
-    albums.forEach( album => {
-      total += selectedPhotos[album].length;
-    } );
-    return total;
-  };
-
   useEffect( ( ) => {
     if ( photosFetched ) {
       // $FlowFixMe
@@ -64,20 +54,38 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
     }
   }, [photosFetched, photoGallery, photoOptions, setPhotoGallery] );
 
-  const photoGalleryValue = useMemo( ( ) => ( {
-    photoGallery,
-    setPhotoGallery,
-    isScrolling,
-    setIsScrolling,
-    photoOptions,
-    setPhotoOptions,
-    selectedPhotos,
-    setSelectedPhotos,
-    fetchingPhotos,
-    totalSelected: totalSelected( ),
+  const photoGalleryValue = useMemo( ( ) => {
+    const totalSelected = ( ) => {
+      let total = 0;
+      const albums = Object.keys( selectedPhotos );
+
+      albums.forEach( album => {
+        total += selectedPhotos[album].length;
+      } );
+      return total;
+    };
+    return {
+      canRequestPhotos,
+      fetchingPhotos,
+      isScrolling,
+      photoGallery,
+      photoOptions,
+      selectedPhotos,
+      setCanRequestPhotos,
+      setIsScrolling,
+      setPhotoGallery,
+      setPhotoOptions,
+      setSelectedPhotos,
+      totalSelected: totalSelected( )
+    };
+  }, [
     canRequestPhotos,
-    setCanRequestPhotos
-  } ) );
+    fetchingPhotos,
+    isScrolling,
+    photoGallery,
+    photoOptions,
+    selectedPhotos
+  ] );
 
   return (
     <PhotoGalleryContext.Provider value={photoGalleryValue}>

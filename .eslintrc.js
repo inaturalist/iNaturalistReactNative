@@ -8,6 +8,7 @@ module.exports = {
     }
   },
   extends: ["airbnb", "plugin:i18next/recommended"],
+  plugins: ["react-hooks"],
   globals: {
     FormData: true
   },
@@ -63,7 +64,12 @@ module.exports = {
     "react/destructuring-assignment": 0,
     "react/jsx-filename-extension": 0,
     "react/function-component-definition": [2, { namedComponents: "arrow-function" }],
-    "react/require-default-props": 0
+    "react/require-default-props": 0,
+
+    // React-Hooks Plugin
+    // The following rules are made available via `eslint-plugin-react-hooks`
+    "react-hooks/rules-of-hooks": 2,
+    "react-hooks/exhaustive-deps": 2
   },
   // need this so jest doesn't show as undefined in jest.setup.js
   env: {

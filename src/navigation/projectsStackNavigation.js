@@ -1,8 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { useMemo } from "react";
+// import { useMemo } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useNavigation } from "@react-navigation/native";
 import { HeaderBackButton } from "@react-navigation/elements";
 
 import Projects from "../components/Projects/Projects";
@@ -14,6 +15,11 @@ const screenOptions = {
   headerShown: true
 };
 
+const BackButton = ( ) => {
+  const navigation = useNavigation( );
+  return ( <HeaderBackButton onPress={( ) => navigation.goBack( )} /> );
+};
+
 const ProjectsStackNavigation = ( ): React.Node => (
   <Stack.Navigator screenOptions={screenOptions}>
     <Stack.Screen
@@ -23,12 +29,7 @@ const ProjectsStackNavigation = ( ): React.Node => (
     <Stack.Screen
       name="ProjectDetails"
       component={ProjectDetails}
-      options={( { navigation } ) => ( {
-        headerLeft: useMemo(
-          HeaderBackButton( { onPress: ( ) => navigation.goBack( ) } ),
-          [navigation]
-        )
-      } )}
+      options={{ headerLeft: BackButton }}
     />
   </Stack.Navigator>
 );
