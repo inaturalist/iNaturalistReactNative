@@ -55,6 +55,16 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  caret: {
+    width: 35
+  },
+  headerBackButton: {
+    zIndex: 1,
+    position: "absolute"
+  },
+  alignCenter: {
+    alignItems: "center"
+  },
   bottomModal: {
     backgroundColor: colors.white,
     borderTopRightRadius: 30,
@@ -82,6 +92,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   row: {
     flexDirection: "row",
     flexWrap: "nowrap",
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 10
   },
   buttonRow: {

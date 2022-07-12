@@ -7,7 +7,7 @@ import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { Headline, Portal, Modal } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
@@ -63,30 +63,24 @@ const ObsEdit = ( ): Node => {
     };
 
     return (
-      <View style={viewStyles.row}>
-        <HeaderBackButton onPress={handleBackButtonPress} />
-        {observations.length === 1
-          ? <Headline>{t( "New-Observation" )}</Headline> : (
-            <View style={viewStyles.row}>
-              {currentObsIndex !== 0 && (
-                <Pressable
-                  onPress={showPrevObservation}
-                >
-                  <Icon name="arrow-left" size={35} />
+      <>
+        <HeaderBackButton onPress={handleBackButtonPress} style={viewStyles.headerBackButton} />
+        <View style={viewStyles.alignCenter}>
+          {observations.length === 1
+            ? <Headline>{t( "New-Observation" )}</Headline>
+            : (
+              <View style={viewStyles.row}>
+                <Pressable onPress={showPrevObservation} style={viewStyles.caret}>
+                  {currentObsIndex !== 0 && <Icon name="keyboard-arrow-left" size={35} />}
                 </Pressable>
-              )}
-              <Text>{`${currentObsIndex + 1} of ${observations.length}`}</Text>
-              {( currentObsIndex !== observations.length - 1 ) && (
-                <Pressable
-                  onPress={showNextObservation}
-                >
-                  <Icon name="arrow-right" size={35} />
+                <Text>{`${currentObsIndex + 1} of ${observations.length}`}</Text>
+                <Pressable onPress={showNextObservation} style={viewStyles.caret}>
+                  {( currentObsIndex !== observations.length - 1 ) && <Icon name="keyboard-arrow-right" size={35} />}
                 </Pressable>
-              )}
-            </View>
+              </View>
           )}
-        <View />
-      </View>
+        </View>
+      </>
     );
   };
 

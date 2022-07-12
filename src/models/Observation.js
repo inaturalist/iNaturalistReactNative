@@ -63,19 +63,19 @@ class Observation extends Realm.Object {
     return observation;
   }
 
-  static async formatObsPhotos( photos ) {
+  static async formatObsPhotos( photos, realm ) {
     return await Promise.all( photos.map( async photo => {
       // photo.image?.uri is for gallery photos; photo is for normal camera
       const uri = photo.image?.uri || photo;
-      return await ObservationPhoto.new( uri );
+      return await ObservationPhoto.new( uri, realm );
     } ) );
   }
 
-  static async createMutipleObsFromGalleryPhotos( obs ) {
+  static async createMutipleObsFromGalleryPhotos( obs, realm ) {
     return Promise.all( obs.map( async ( { photos } ) => {
       // take the observed_on_string time from the first photo in an observation
       const observedOn = formatDateAndTime( photos[0].timestamp );
-      const obsPhotos = await Observation.formatObsPhotos( photos );
+      const obsPhotos = await Observation.formatObsPhotos( photos, realm );
       return await Observation.createObsWithPhotos( obsPhotos, observedOn );
     } ) );
   }
