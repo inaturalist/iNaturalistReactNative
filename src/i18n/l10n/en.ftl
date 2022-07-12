@@ -49,6 +49,8 @@ Birds = Birds
 
 Blocked-Users = Blocked Users
 
+Camera-Roll = Camera Roll
+
 Cancel = Cancel
 
 Captive-Cultivated = Captive/Cultivated

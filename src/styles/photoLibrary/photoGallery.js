@@ -2,8 +2,7 @@
 
 import { StyleSheet, Dimensions } from "react-native";
 
-import type { ViewStyleProp, TextStyleProp, ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-import { colors } from "../global";
+import type { ViewStyleProp, ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 
 const { width } = Dimensions.get( "screen" );
 
@@ -15,19 +14,17 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   centerImages: {
     paddingHorizontal: 20
   },
-  multiplePhotoTextBackground: {
-    zIndex: 1
-  }
-} );
-
-const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  multiplePhotoText: {
-    color: colors.inatGreen,
-    fontSize: 20,
+  selectionIcon: {
+    zIndex: 1,
     position: "absolute",
-    right: 20,
     top: 20,
-    backgroundColor: colors.white
+    right: 10
+  },
+  numOfPhotosIcon: {
+    zIndex: 1,
+    position: "absolute",
+    bottom: 20,
+    right: 10
   }
 } );
 
@@ -55,6 +52,5 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 
 export {
   viewStyles,
-  textStyles,
   imageStyles
 };

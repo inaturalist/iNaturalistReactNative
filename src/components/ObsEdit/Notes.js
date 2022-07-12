@@ -6,7 +6,7 @@ import type { Node } from "react";
 import { t } from "i18next";
 import { TextInput } from "react-native-paper";
 
-import { textStyles } from "../../styles/obsEdit/obsEdit";
+import { textStyles } from "../../styles/obsEdit/notes";
 import { colors } from "../../styles/global";
 
 type Props = {
@@ -48,6 +48,7 @@ const Notes = ( { addNotes, description }: Props ): Node => {
       placeholder={t( "Add-optional-notes" )}
       style={[textStyles.notes, keyboardOffset > 0 && offset]}
       testID="ObsEdit.notes"
+      underlineColor={colors.white}
     />
   );
 };

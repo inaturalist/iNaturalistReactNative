@@ -49,20 +49,6 @@ const OtherDataSection = ( ): Node => {
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
   const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
 
-  // const updateProjectIds = projectId => {
-  //   const updatedObs = observations.map( ( obs, index ) => {
-  //     if ( index === currentObsIndex ) {
-  //       return {
-  //         ...obs,
-  //         project_ids: obs.project_ids.concat( [projectId] )
-  //       };
-  //     } else {
-  //       return obs;
-  //     }
-  //   } );
-  //   setObservations( updatedObs );
-  // };
-
   return (
     <>
       <View style={viewStyles.row}>

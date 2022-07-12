@@ -11,6 +11,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import SecondaryButton from "../SharedComponents/Buttons/SecondaryButton";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { ObsEditContext } from "../../providers/contexts";
 import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
@@ -142,14 +143,13 @@ const ObsEdit = ( ): Node => {
         <IdentificationSection />
         <Headline style={textStyles.headerText}>{t( "Other-Data" )}</Headline>
         <OtherDataSection />
-        <View style={viewStyles.row}>
-          <View style={viewStyles.saveButton}>
-            <RoundGreenButton
-              buttonText="save"
-              testID="ObsEdit.saveButton"
-              handlePress={saveObservation}
-            />
-          </View>
+        <View style={viewStyles.buttonRow}>
+          <SecondaryButton
+            onPress={saveObservation}
+            testID="ObsEdit.saveButton"
+          >
+            <Text>{t( "SAVE" )}</Text>
+          </SecondaryButton>
           <RoundGreenButton
             buttonText="UPLOAD-OBSERVATION"
             testID="ObsEdit.uploadButton"

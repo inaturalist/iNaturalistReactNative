@@ -29,9 +29,6 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   text: {
     marginHorizontal: 20
   },
-  notes: {
-    marginHorizontal: 20
-  },
   smallLabel: {
     fontSize: 11
   }
@@ -74,9 +71,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   noMargin: {
     margin: 0
   },
-  saveButton: {
-    width: 100
-  },
   greenSelectionBorder: {
     borderWidth: 3,
     borderColor: colors.selectionGreen
@@ -89,6 +83,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row",
     flexWrap: "nowrap",
     marginVertical: 10
+  },
+  buttonRow: {
+    paddingTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-evenly"
   },
   evidenceList: {
     marginBottom: 20

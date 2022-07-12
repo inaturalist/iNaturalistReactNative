@@ -1,17 +1,18 @@
 // @flow
 
 import React, { useContext, useState } from "react";
-import { Pressable, Image, FlatList, ActivityIndicator, Text, View } from "react-native";
+import { FlatList, ActivityIndicator } from "react-native";
 import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import { imageStyles, viewStyles, textStyles } from "../../styles/photoLibrary/photoGallery";
+import { viewStyles } from "../../styles/photoLibrary/photoGallery";
 import GroupPhotosHeader from "./GroupPhotosHeader";
 import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 import Observation from "../../models/Observation";
 import { orderByTimestamp, flattenAndOrderSelectedPhotos } from "./helpers/groupPhotoHelpers";
+import GroupPhotoImage from "./GroupPhotoImage";
 
 const GroupPhotos = ( ): Node => {
   const { addObservations } = useContext( ObsEditContext );
@@ -19,6 +20,7 @@ const GroupPhotos = ( ): Node => {
   const { selectedPhotos, setSelectedPhotos } = useContext( PhotoGalleryContext );
   const albums = Object.keys( selectedPhotos );
   const observations = orderByTimestamp( albums, selectedPhotos );
+  const [selectionMode, setSelectionMode] = useState( false );
 
   // nesting observations under observations key to be able to rerender flatlist on selections
   const [obsToEdit, setObsToEdit] = useState( { observations } );
@@ -53,35 +55,14 @@ const GroupPhotos = ( ): Node => {
 
   const clearSelection = ( ) => setSelectedObservations( [] );
 
-  const renderImage = ( { item } ) => {
-    const firstPhoto = item.photos[0];
-    const isSelected = selectedObservations.includes( item );
-    const hasMultiplePhotos = item.photos.length > 1;
-
-    const handlePress = ( ) => selectObservationPhotos( isSelected, item );
-
-    const imageUri = firstPhoto && { uri: firstPhoto.image.uri };
-    return (
-      <Pressable
-        onPress={handlePress}
-        testID={`GroupPhotos.${firstPhoto.uri}`}
-      >
-        {hasMultiplePhotos && (
-          <View style={viewStyles.multiplePhotoTextBackground}>
-            <Text style={textStyles.multiplePhotoText}>{item.photos.length}</Text>
-          </View>
-        )}
-        <Image
-          testID="GroupPhotos.photo"
-          source={imageUri}
-          style={[
-            imageStyles.imagesForGrouping,
-            isSelected ? imageStyles.selected : null
-          ]}
-        />
-      </Pressable>
-    );
-  };
+  const renderImage = ( { item } ) => (
+    <GroupPhotoImage
+      item={item}
+      selectedObservations={selectedObservations}
+      selectObservationPhotos={selectObservationPhotos}
+      selectionMode={selectionMode}
+    />
+  );
 
   const extractKey = ( item, index ) => `${item.photos[0].uri}${index}`;
 
@@ -207,6 +188,8 @@ const GroupPhotos = ( ): Node => {
         navToObsEdit={navToObsEdit}
         clearSelection={clearSelection}
         selectedObservations={selectedObservations}
+        setSelectionMode={setSelectionMode}
+        selectionMode={selectionMode}
       />
     </ViewNoFooter>
   );
