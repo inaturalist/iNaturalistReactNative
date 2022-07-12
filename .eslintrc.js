@@ -8,7 +8,11 @@ module.exports = {
     }
   },
   extends: ["airbnb", "plugin:i18next/recommended"],
-  plugins: ["react-hooks", "simple-import-sort"],
+  plugins: [
+    "react-hooks",
+    "react-native",
+    "simple-import-sort"
+  ],
   globals: {
     FormData: true
   },
@@ -70,6 +74,8 @@ module.exports = {
     // The following rules are made available via `eslint-plugin-react-hooks`
     "react-hooks/rules-of-hooks": 2,
     "react-hooks/exhaustive-deps": 2,
+
+    "react-native/no-inline-styles": "error",
 
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error"
