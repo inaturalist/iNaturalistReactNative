@@ -6,7 +6,9 @@ import React, { useContext, useState } from "react";
 import {
   ActivityIndicator, FlatList, Image, Pressable, Text, View
 } from "react-native";
+import Realm from "realm";
 
+import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
 import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
 import { imageStyles, textStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
@@ -181,7 +183,9 @@ const GroupPhotos = ( ): Node => {
 
   const navToObsEdit = async ( ) => {
     const obs = obsToEdit.observations;
-    const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs );
+    const realm = await Realm.open( realmConfig );
+    const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs, realm );
+    realm.close( );
     addObservations( obsPhotos );
     navigation.navigate( "ObsEdit" );
   };
