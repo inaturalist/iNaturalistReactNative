@@ -1,12 +1,12 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import {
-  FlatList, Pressable, Text, Image
+  FlatList, Image, Pressable, Text
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
-import { imageStyles, viewStyles, textStyles } from "../../styles/projects/projects";
+import { imageStyles, textStyles, viewStyles } from "../../styles/projects/projects";
 
 type Props = {
   data: Array<Object>

@@ -1,14 +1,14 @@
 // @flow
 
-import {
-  useEffect, useCallback, useRef, useState
-} from "react";
 import inatjs from "inaturalistjs";
+import {
+  useCallback, useEffect, useRef, useState
+} from "react";
 import Realm from "realm";
 
 import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
-import { getUsername, getUserId } from "../../LoginSignUp/AuthenticationService";
+import { getUserId, getUsername } from "../../LoginSignUp/AuthenticationService";
 
 const perPage = 6;
 

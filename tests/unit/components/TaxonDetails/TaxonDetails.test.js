@@ -1,10 +1,10 @@
+import { NavigationContainer } from "@react-navigation/native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 import { Linking } from "react-native";
-import { render, fireEvent } from "@testing-library/react-native";
-import { NavigationContainer } from "@react-navigation/native";
 
-import factory from "../../../factory";
 import TaxonDetails from "../../../../src/components/TaxonDetails/TaxonDetails";
+import factory from "../../../factory";
 
 const testTaxon = factory( "RemoteTaxon" );
 

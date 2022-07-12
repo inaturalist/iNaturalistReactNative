@@ -1,12 +1,12 @@
 // @flow
 
-import React, { useContext } from "react";
 import type { Node } from "react";
+import React, { useContext } from "react";
 import { Dimensions } from "react-native";
 
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { ExploreContext } from "../../providers/contexts";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import BottomCard from "./BottomCard";
 
 const { height } = Dimensions.get( "screen" );

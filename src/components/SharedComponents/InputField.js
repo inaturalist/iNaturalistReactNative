@@ -1,9 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { TextInput, Platform } from "react-native";
-import colors from "../../styles/colors";
+import { Platform, TextInput } from "react-native";
 
+import colors from "../../styles/colors";
 import textStyles from "../../styles/sharedComponents/inputField";
 
 type Props = {

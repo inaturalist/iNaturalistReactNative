@@ -1,5 +1,5 @@
-import Realm from "realm";
 import inatjs from "inaturalistjs";
+import Realm from "realm";
 
 // eslint-disable-next-line import/no-cycle
 import { getJWTToken } from "../components/LoginSignUp/AuthenticationService";

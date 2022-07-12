@@ -1,30 +1,31 @@
 // @flow
 
-import * as React from "react";
-import {
-  View,
-  Pressable,
-  TouchableOpacity, FlatList, Image,
-  TextInput as NativeTextInput
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useTranslation } from "react-i18next";
-import { useRef, useState } from "react";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
+import { useNavigation } from "@react-navigation/native";
+import * as React from "react";
+import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  FlatList,
+  Image,
+  Pressable, TextInput as NativeTextInput, TouchableOpacity,
+  View
+} from "react-native";
 import {
   Button, Headline, Text, TextInput
 } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import uuid from "react-native-uuid";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
-import colors from "../../styles/colors";
-import AddIDHeader from "./AddIDHeader";
-import { viewStyles, textStyles } from "../../styles/obsDetails/addID";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
+import colors from "../../styles/colors";
+import { textStyles, viewStyles } from "../../styles/obsDetails/addID";
+import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import AddIDHeader from "./AddIDHeader";
 
 type Props = {
   route: {

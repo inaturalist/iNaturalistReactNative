@@ -1,6 +1,6 @@
 import factory from "factoria";
-import path from "path";
 import fs from "fs";
+import path from "path";
 
 // Require each individual factory definition, not to use the export but just
 // to register them with factoria

@@ -1,19 +1,19 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import {
-  Pressable, Image, FlatList, ActivityIndicator, Text, View
+  ActivityIndicator, FlatList, Image, Pressable, Text, View
 } from "react-native";
-import type { Node } from "react";
-import { useNavigation } from "@react-navigation/native";
 
-import { imageStyles, viewStyles, textStyles } from "../../styles/photoLibrary/photoGallery";
-import GroupPhotosHeader from "./GroupPhotosHeader";
+import Observation from "../../models/Observation";
 import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
+import { imageStyles, textStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotosFooter from "./GroupPhotosFooter";
-import Observation from "../../models/Observation";
-import { orderByTimestamp, flattenAndOrderSelectedPhotos } from "./helpers/groupPhotoHelpers";
+import GroupPhotosHeader from "./GroupPhotosHeader";
+import { flattenAndOrderSelectedPhotos, orderByTimestamp } from "./helpers/groupPhotoHelpers";
 
 const GroupPhotos = ( ): Node => {
   const { addObservations } = useContext( ObsEditContext );

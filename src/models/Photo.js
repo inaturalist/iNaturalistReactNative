@@ -1,6 +1,6 @@
-import Realm from "realm";
-import ImageResizer from "react-native-image-resizer";
 import RNFS from "react-native-fs";
+import ImageResizer from "react-native-image-resizer";
+import Realm from "realm";
 
 class Photo extends Realm.Object {
   static PHOTO_FIELDS = {

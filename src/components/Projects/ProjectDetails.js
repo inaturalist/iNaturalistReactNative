@@ -1,11 +1,11 @@
 // @flow
 
-import * as React from "react";
-import { Text, Image, ImageBackground } from "react-native";
 import { useRoute } from "@react-navigation/native";
+import * as React from "react";
+import { Image, ImageBackground, Text } from "react-native";
 
+import { imageStyles, textStyles } from "../../styles/projects/projectDetails";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import { textStyles, imageStyles } from "../../styles/projects/projectDetails";
 import useProjectDetails from "./hooks/useProjectDetails";
 import ProjectObservations from "./ProjectObservations";
 

@@ -1,11 +1,11 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { fireEvent, render } from "@testing-library/react-native";
+import React from "react";
 
-import factory from "../../../factory";
 import ObsDetails from "../../../../src/components/ObsDetails/ObsDetails";
-import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import { ObsEditContext } from "../../../../src/providers/contexts";
+import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
+import factory from "../../../factory";
 
 const mockedNavigate = jest.fn( );
 const mockObservation = factory( "LocalObservation" );

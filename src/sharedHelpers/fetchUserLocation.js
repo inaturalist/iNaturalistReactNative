@@ -2,7 +2,8 @@
 
 import { Platform } from "react-native";
 import Geolocation from "react-native-geolocation-service";
-import { request, PERMISSIONS } from "react-native-permissions";
+import { PERMISSIONS, request } from "react-native-permissions";
+
 import fetchPlaceName from "./fetchPlaceName";
 
 const requestiOSPermissions = async ( ): Promise<?string> => {

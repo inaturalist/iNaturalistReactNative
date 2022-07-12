@@ -8,7 +8,7 @@ module.exports = {
     }
   },
   extends: ["airbnb", "plugin:i18next/recommended"],
-  plugins: ["react-hooks"],
+  plugins: ["react-hooks", "simple-import-sort"],
   globals: {
     FormData: true
   },
@@ -69,7 +69,10 @@ module.exports = {
     // React-Hooks Plugin
     // The following rules are made available via `eslint-plugin-react-hooks`
     "react-hooks/rules-of-hooks": 2,
-    "react-hooks/exhaustive-deps": 2
+    "react-hooks/exhaustive-deps": 2,
+
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
   },
   // need this so jest doesn't show as undefined in jest.setup.js
   env: {

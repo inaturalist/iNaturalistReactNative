@@ -2,6 +2,10 @@ import uuid from "react-native-uuid";
 import Realm from "realm";
 
 // eslint-disable-next-line import/no-cycle
+import { getUserId } from "../components/LoginSignUp/AuthenticationService";
+import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
+import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
+// eslint-disable-next-line import/no-cycle
 import Comment from "./Comment";
 // eslint-disable-next-line import/no-cycle
 import Identification from "./Identification";
@@ -10,10 +14,6 @@ import ObservationSound from "./ObservationSound";
 import Taxon from "./Taxon";
 // eslint-disable-next-line import/no-cycle
 import User from "./User";
-import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
-import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
-// eslint-disable-next-line import/no-cycle
-import { getUserId } from "../components/LoginSignUp/AuthenticationService";
 
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:

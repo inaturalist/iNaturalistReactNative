@@ -1,18 +1,18 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
-import { Image, Dimensions } from "react-native";
-import type { Node } from "react";
-import { Appbar, Button } from "react-native-paper";
-import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
+import type { Node } from "react";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Dimensions, Image } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
+import { Appbar, Button } from "react-native-paper";
 
+import Photo from "../../models/Photo";
 import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
+import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
-import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
-import Photo from "../../models/Photo";
 
 const { width, height } = Dimensions.get( "screen" );
 const selectedImageHeight = height - 350;

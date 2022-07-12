@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Button } from "react-native-paper";
 
-import { viewStyles, textStyles } from "../../../styles/sharedComponents/buttons/roundGreenButton";
+import { textStyles, viewStyles } from "../../../styles/sharedComponents/buttons/roundGreenButton";
 import TranslatedText from "../TranslatedText";
 
 type Props = {

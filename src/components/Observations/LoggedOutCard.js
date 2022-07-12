@@ -1,13 +1,13 @@
 // @flow
 
-import React from "react";
-import { Pressable } from "react-native";
-import type { Node } from "react";
-import { useTranslation } from "react-i18next";
-import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { Pressable } from "react-native";
+import { Text } from "react-native-paper";
 
-import { viewStyles, textStyles } from "../../styles/observations/loggedOutCard";
+import { textStyles, viewStyles } from "../../styles/observations/loggedOutCard";
 
 type Props = {
   numObsToUpload: number

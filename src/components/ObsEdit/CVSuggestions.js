@@ -1,23 +1,23 @@
 // @flow
 
-import React, { useContext, useState } from "react";
-import type { Node } from "react";
-import {
-  View, Text, FlatList, ActivityIndicator, Pressable, Image
-} from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Searchbar } from "react-native-paper";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, { useContext, useState } from "react";
+import {
+  ActivityIndicator, FlatList, Image, Pressable, Text, View
+} from "react-native";
+import { Searchbar } from "react-native-paper";
 
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import { ObsEditContext } from "../../providers/contexts";
-import useCVSuggestions from "./hooks/useCVSuggestions";
-import { viewStyles, textStyles } from "../../styles/obsEdit/cvSuggestions";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import useLoggedIn from "../../sharedHooks/useLoggedIn";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
+import { textStyles, viewStyles } from "../../styles/obsEdit/cvSuggestions";
 import PlaceholderText from "../PlaceholderText";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import useCVSuggestions from "./hooks/useCVSuggestions";
 
 const CVSuggestions = ( ): Node => {
   const {

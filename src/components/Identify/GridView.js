@@ -1,9 +1,9 @@
 // @flow
 
-import React, { useState } from "react";
-import { FlatList, ActivityIndicator } from "react-native";
 // import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
+import React, { useState } from "react";
+import { ActivityIndicator, FlatList } from "react-native";
 
 import GridItem from "./GridItem";
 

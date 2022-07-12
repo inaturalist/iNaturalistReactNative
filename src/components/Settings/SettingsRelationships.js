@@ -1,23 +1,23 @@
 // @flow
 
+import { Picker } from "@react-native-picker/picker";
+import { t } from "i18next";
+import inatjs from "inaturalistjs";
+import type { Node } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   Alert, Image, Text, TextInput, View
 } from "react-native";
-import React, { useEffect, useCallback } from "react";
-import type { Node } from "react";
-import { t } from "i18next";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import { useDebounce } from "use-debounce";
-import inatjs from "inaturalistjs";
-import { Picker } from "@react-native-picker/picker";
-import colors from "../../styles/colors";
-import { viewStyles, textStyles } from "../../styles/settings/settings";
-import UserSearchInput from "./UserSearchInput";
-import useRelationships from "./hooks/useRelationships";
 
+import colors from "../../styles/colors";
+import { textStyles, viewStyles } from "../../styles/settings/settings";
 import BlockedUser from "./BlockedUser";
+import useRelationships from "./hooks/useRelationships";
 import MutedUser from "./MutedUser";
 import Relationship from "./Relationship";
+import UserSearchInput from "./UserSearchInput";
 
 const FOLLOWING = {
   any: "All",

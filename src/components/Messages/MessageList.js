@@ -1,7 +1,8 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, Text, ActivityIndicator } from "react-native";
+import { ActivityIndicator, FlatList, Text } from "react-native";
+
 import { textStyles } from "../../styles/messages/messages";
 
 type Props = {

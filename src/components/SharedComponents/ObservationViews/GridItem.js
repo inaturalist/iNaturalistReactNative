@@ -1,19 +1,19 @@
 // @flow
 
+import type { Node } from "react";
 import React from "react";
 import {
-  Pressable, Image, Text, View
+  Image, Pressable, Text, View
 } from "react-native";
-import type { Node } from "react";
 
+import Observation from "../../../models/Observation";
+import Photo from "../../../models/Photo";
 import {
   imageStyles,
   viewStyles
 } from "../../../styles/sharedComponents/observationViews/gridItem";
-import Observation from "../../../models/Observation";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
-import Photo from "../../../models/Photo";
 
 type Props = {
   item: Object,

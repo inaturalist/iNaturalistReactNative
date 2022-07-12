@@ -1,14 +1,14 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
+import { t } from "i18next";
+import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
-import type { Node } from "react";
 import { Button } from "react-native-paper";
-import { t } from "i18next";
-import { useNavigation } from "@react-navigation/native";
 
-import { viewStyles, textStyles } from "../../styles/observations/obsList";
 import colors from "../../styles/colors";
+import { textStyles, viewStyles } from "../../styles/observations/obsList";
 
 const LoginPrompt = ( ): Node => {
   const navigation = useNavigation( );

@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
-import { useDebounce } from "use-debounce";
 import {
   Image, Text, TextInput, View
 } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
-import { textStyles, viewStyles } from "../../styles/settings/settings";
+import { useDebounce } from "use-debounce";
+
 import inatPlaceTypes from "../../dictionaries/places";
-import usePlaces from "./hooks/usePlaces";
+import { textStyles, viewStyles } from "../../styles/settings/settings";
 import usePlaceDetails from "./hooks/usePlaceDetails";
+import usePlaces from "./hooks/usePlaces";
 
 const PlaceSearchInput = ( { placeId, onPlaceChanged } ): React.Node => {
   const [hideResults, setHideResults] = React.useState( true );

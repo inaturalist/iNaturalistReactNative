@@ -1,9 +1,13 @@
 // @flow
-import React, { useState, useEffect, useMemo } from "react";
 import type { Node } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 
-import { PhotoGalleryContext } from "./contexts";
 import usePhotos from "../components/PhotoLibrary/hooks/usePhotos";
+import { PhotoGalleryContext } from "./contexts";
 
 type Props = {
   children: any

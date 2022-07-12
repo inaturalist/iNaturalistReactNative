@@ -1,17 +1,18 @@
 // @flow
 
-import * as React from "react";
+import { useRoute } from "@react-navigation/native";
 import _ from "lodash";
+import * as React from "react";
+import { useTranslation } from "react-i18next";
 import {
-  Text, View, Pressable, useWindowDimensions, Linking, ActivityIndicator, ScrollView
+  ActivityIndicator, Linking, Pressable, ScrollView, Text, useWindowDimensions,
+  View
 } from "react-native";
 import HTML from "react-native-render-html";
-import { useRoute } from "@react-navigation/native";
 
-import { useTranslation } from "react-i18next";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import { textStyles, viewStyles } from "../../styles/taxonDetails";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
-import { viewStyles, textStyles } from "../../styles/taxonDetails";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import { useTaxonDetails } from "./hooks/useTaxonDetails";
 
 const TaxonDetails = ( ): React.Node => {

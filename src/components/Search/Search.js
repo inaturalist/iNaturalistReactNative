@@ -1,16 +1,16 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import {
-  FlatList, Pressable, Text, Image, View
+  FlatList, Image, Pressable, Text, View
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import InputField from "../SharedComponents/InputField";
-import { viewStyles, imageStyles } from "../../styles/search/search";
+import { imageStyles, viewStyles } from "../../styles/search/search";
 import PlaceholderText from "../PlaceholderText";
+import InputField from "../SharedComponents/InputField";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
 const Search = ( ): React.Node => {
   const navigation = useNavigation( );

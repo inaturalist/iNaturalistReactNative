@@ -1,13 +1,14 @@
 // @flow
 
-import { Pressable, Text, View } from "react-native";
-import React from "react";
-import type { Node } from "react";
-import Switch from "react-native/Libraries/Components/Switch/Switch";
 import CheckBox from "@react-native-community/checkbox";
 import { t } from "i18next";
-import { viewStyles, textStyles } from "../../styles/settings/settings";
+import type { Node } from "react";
+import React from "react";
+import { Pressable, Text, View } from "react-native";
+import Switch from "react-native/Libraries/Components/Switch/Switch";
+
 import colors from "../../styles/colors";
+import { textStyles, viewStyles } from "../../styles/settings/settings";
 import type { SettingsProps } from "./types";
 
 const EMAIL_NOTIFICATIONS = {
@@ -99,4 +100,4 @@ const SettingsNotifications = ( { settings, onSettingsModified }: SettingsProps 
   </>
 );
 
-export { SettingsNotifications, EMAIL_NOTIFICATIONS };
+export { EMAIL_NOTIFICATIONS, SettingsNotifications };

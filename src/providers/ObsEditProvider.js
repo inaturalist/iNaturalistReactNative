@@ -1,15 +1,15 @@
 // @flow
-import React, { useState, useContext, useMemo } from "react";
-import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import Realm from "realm";
 
-import { ObsEditContext, PhotoGalleryContext } from "./contexts";
 import realmConfig from "../models/index";
-import saveLocalObservation from "./uploadHelpers/saveLocalObservation";
-import uploadObservation from "./uploadHelpers/uploadObservation";
 import Observation from "../models/Observation";
 import ObservationPhoto from "../models/ObservationPhoto";
+import { ObsEditContext, PhotoGalleryContext } from "./contexts";
+import saveLocalObservation from "./uploadHelpers/saveLocalObservation";
+import uploadObservation from "./uploadHelpers/uploadObservation";
 
 type Props = {
   children: any

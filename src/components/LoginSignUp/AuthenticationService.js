@@ -1,14 +1,15 @@
 // @flow
 import { create } from "apisauce";
-import Config from "react-native-config";
-import * as RNLocalize from "react-native-localize";
-import RNSInfo from "react-native-sensitive-info";
-import jwt from "react-native-jwt-io";
 import { Platform } from "react-native";
+import Config from "react-native-config";
 import {
   getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion
 } from "react-native-device-info";
+import jwt from "react-native-jwt-io";
+import * as RNLocalize from "react-native-localize";
+import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
+
 // eslint-disable-next-line import/no-cycle
 import realmConfig from "../../models/index";
 
@@ -350,12 +351,12 @@ const getUserId = async (): Promise<string | null> => {
 export {
   API_HOST,
   authenticateUser,
-  registerUser,
   getAPIToken,
-  isLoggedIn,
-  getUsername,
-  signOut,
   getJWTToken,
   getUser,
-  getUserId
+  getUserId,
+  getUsername,
+  isLoggedIn,
+  registerUser,
+  signOut
 };

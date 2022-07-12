@@ -1,7 +1,8 @@
-import React from "react";
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import inatjs from "inaturalistjs";
+import React from "react";
+
 import AddID from "../../../../src/components/ObsEdit/AddID";
 import factory, { makeResponse } from "../../../factory";
 // Mock inaturalistjs so we can make some fake responses

@@ -1,11 +1,11 @@
 // @flow
 
-import React, { useContext, useState, useCallback } from "react";
 import type { Node } from "react";
+import React, { useCallback, useContext, useState } from "react";
 
-import DropdownPicker from "./DropdownPicker";
 import { ExploreContext } from "../../providers/contexts";
 import TranslatedText from "../SharedComponents/TranslatedText";
+import DropdownPicker from "./DropdownPicker";
 
 const TaxonLocationSearch = ( ): Node => {
   const {

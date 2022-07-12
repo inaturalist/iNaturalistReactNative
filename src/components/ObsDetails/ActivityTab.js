@@ -1,8 +1,8 @@
 // @flow
 
-import * as React from "react";
-import { View, Text } from "react-native";
 import { t } from "i18next";
+import * as React from "react";
+import { Text, View } from "react-native";
 
 import ActivityItem from "./ActivityItem";
 

@@ -1,6 +1,9 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Image,
   KeyboardAvoidingView,
@@ -10,14 +13,13 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import type { Node } from "react";
 import {
-  Button, Paragraph, Dialog, Portal, Text, TextInput
+  Button, Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
 
-import { useTranslation } from "react-i18next";
-import { textStyles, viewStyles, imageStyles } from "../../styles/login/login";
+import colors from "../../styles/colors";
+import { imageStyles, textStyles, viewStyles } from "../../styles/login/login";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import {
   authenticateUser,
   getUserId,
@@ -25,8 +27,6 @@ import {
   isLoggedIn,
   signOut
 } from "./AuthenticationService";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import colors from "../../styles/colors";
 
 const Login = ( ): Node => {
   const { t } = useTranslation( );

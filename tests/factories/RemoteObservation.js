@@ -1,8 +1,9 @@
-import factory, { define } from "factoria";
 import "./RemotePhoto";
 import "./RemoteTaxon";
 import "./RemoteUser";
 import "./RemoteIdentification";
+
+import factory, { define } from "factoria";
 
 export default define( "RemoteObservation", faker => ( {
   id: faker.datatype.number( ),

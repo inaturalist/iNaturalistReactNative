@@ -1,10 +1,10 @@
 // @flow
 
-import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
+import { useEffect, useState } from "react";
 
-import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 import MESSAGE_FIELDS from "../../../providers/fields";
+import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 
 const useMessages = ( ): {
   messages: Array<Object>,

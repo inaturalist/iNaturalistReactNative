@@ -1,16 +1,16 @@
 // @flow
 
-import React, { useEffect, useState } from "react";
-import type { Node } from "react";
-import { useTranslation } from "react-i18next";
-import { Headline, Button } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { View } from "react-native";
 import { HeaderBackButton } from "@react-navigation/elements";
+import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { Button, Headline } from "react-native-paper";
 
 import { ObsEditContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/obsDetails/obsDetailsHeader";
 import colors from "../../styles/colors";
+import { viewStyles } from "../../styles/obsDetails/obsDetailsHeader";
 
 type Props = {
   observationUUID: string

@@ -1,10 +1,10 @@
-import React from "react";
-import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { render } from "@testing-library/react-native";
+import React from "react";
 
-import factory from "../../../factory";
 import PhotoGallery from "../../../../src/components/PhotoLibrary/PhotoGallery";
 import PhotoGalleryProvider from "../../../../src/providers/PhotoGalleryProvider";
+import factory from "../../../factory";
 
 const mockPhoto = factory( "DevicePhoto" );
 

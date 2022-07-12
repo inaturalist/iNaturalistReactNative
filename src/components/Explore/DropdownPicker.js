@@ -1,13 +1,13 @@
 // flow
 
-import React from "react";
+import { t } from "i18next";
 import type { Node } from "react";
+import React from "react";
 import { Image } from "react-native";
 // TODO: we'll probably need a custom dropdown picker which looks like a search bar
 // and allows users to input immediately instead of first tapping the dropdown
 // this is a placeholder to get functionality working
 import DropDownPicker from "react-native-dropdown-picker";
-import { t } from "i18next";
 
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import { imageStyles, viewStyles } from "../../styles/explore/explore";

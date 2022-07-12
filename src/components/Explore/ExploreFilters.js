@@ -1,22 +1,22 @@
 // @flow
 
-import React, { useState, useContext } from "react";
+import CheckBox from "@react-native-community/checkbox";
+import { t } from "i18next";
+import RadioButtonRN from "radio-buttons-react-native";
+import type { Node } from "react";
+import React, { useContext, useState } from "react";
 import { View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import type { Node } from "react";
-import CheckBox from "@react-native-community/checkbox";
-import RadioButtonRN from "radio-buttons-react-native";
-import { t } from "i18next";
 
-import { pickerSelectStyles, viewStyles } from "../../styles/explore/exploreFilters";
 import { ExploreContext } from "../../providers/contexts";
-import DropdownPicker from "./DropdownPicker";
-import TaxonLocationSearch from "./TaxonLocationSearch";
+import { pickerSelectStyles, viewStyles } from "../../styles/explore/exploreFilters";
+import InputField from "../SharedComponents/InputField";
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import TranslatedText from "../SharedComponents/TranslatedText";
+import DropdownPicker from "./DropdownPicker";
 import ExploreFooter from "./ExploreFooter";
-import InputField from "../SharedComponents/InputField";
 import ResetFiltersButton from "./ResetFiltersButton";
+import TaxonLocationSearch from "./TaxonLocationSearch";
 
 const ExploreFilters = ( ): Node => {
   const [project, setProject] = useState( "" );

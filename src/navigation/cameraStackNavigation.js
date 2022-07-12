@@ -1,21 +1,21 @@
 // @flow
 
-import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as React from "react";
 import { PermissionsAndroid } from "react-native";
 
-import GroupPhotos from "../components/PhotoLibrary/GroupPhotos";
-import ObsEdit from "../components/ObsEdit/ObsEdit";
-import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
 import StandardCamera from "../components/Camera/StandardCamera";
+import AddID from "../components/ObsEdit/AddID";
 import CVSuggestions from "../components/ObsEdit/CVSuggestions";
+import ObsEdit from "../components/ObsEdit/ObsEdit";
+import GroupPhotos from "../components/PhotoLibrary/GroupPhotos";
+import PhotoGallery from "../components/PhotoLibrary/PhotoGallery";
 import CustomHeaderWithTranslation from
   "../components/SharedComponents/CustomHeaderWithTranslation";
-import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
-import PhotoGallery from "../components/PhotoLibrary/PhotoGallery";
-import PermissionGate from "../components/SharedComponents/PermissionGate";
 import Mortal from "../components/SharedComponents/Mortal";
-import AddID from "../components/ObsEdit/AddID";
+import PermissionGate from "../components/SharedComponents/PermissionGate";
+import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
+import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 
 const Stack = createNativeStackNavigator( );
 

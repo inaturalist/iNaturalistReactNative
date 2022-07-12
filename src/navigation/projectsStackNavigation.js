@@ -1,13 +1,13 @@
 // @flow
 
-import * as React from "react";
+import { HeaderBackButton } from "@react-navigation/elements";
+import { useNavigation } from "@react-navigation/native";
 // import { useMemo } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useNavigation } from "@react-navigation/native";
-import { HeaderBackButton } from "@react-navigation/elements";
+import * as React from "react";
 
-import Projects from "../components/Projects/Projects";
 import ProjectDetails from "../components/Projects/ProjectDetails";
+import Projects from "../components/Projects/Projects";
 
 const Stack = createNativeStackNavigator( );
 

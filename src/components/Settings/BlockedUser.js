@@ -1,14 +1,15 @@
 // @flow
 
+import { t } from "i18next";
+import type { Node } from "react";
+import React from "react";
 import {
   Image,
   Pressable,
   Text,
   View
 } from "react-native";
-import React from "react";
-import { t } from "i18next";
-import type { Node } from "react";
+
 import { viewStyles } from "../../styles/settings/settings";
 
 type Props = {

@@ -1,19 +1,19 @@
 // @flow
 
-import React, { useContext } from "react";
-import {
-  Text, Pressable, FlatList, View
-} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  FlatList, Pressable, Text, View
+} from "react-native";
 import { Avatar, useTheme } from "react-native-paper";
 
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
 import { ObsEditContext } from "../../providers/contexts";
+import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import PlaceholderText from "../PlaceholderText";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 
 const IdentificationSection = ( ): Node => {
   const {

@@ -1,8 +1,9 @@
-import React from "react";
-import { render, within, fireEvent } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import factory from "../../../factory";
+import { fireEvent, render, within } from "@testing-library/react-native";
+import React from "react";
+
 import ObsList from "../../../../src/components/Observations/ObsList";
+import factory from "../../../factory";
 
 const mockObservations = [
   factory( "LocalObservation", {

@@ -1,15 +1,15 @@
 // @flow
 
-import React, { useState } from "react";
-import { Text } from "react-native";
 import type { Node } from "react";
-import { Portal, Modal } from "react-native-paper";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Text } from "react-native";
+import { Modal, Portal } from "react-native-paper";
 
-import { viewStyles, textStyles } from "../../styles/camera/standardCamera";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import { textStyles, viewStyles } from "../../styles/camera/standardCamera";
 import MediaViewer from "../MediaViewer/MediaViewer";
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
+import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
 type Props = {
   photoUris: Array<string>,

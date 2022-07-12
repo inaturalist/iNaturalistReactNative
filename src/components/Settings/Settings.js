@@ -1,7 +1,11 @@
-import React, { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import { t } from "i18next";
+import inatjs from "inaturalistjs";
+import type { Node } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
-  ActivityIndicator, Alert,
+  ActivityIndicator,
+  Alert,
   Button,
   Pressable,
   SafeAreaView,
@@ -10,22 +14,20 @@ import {
   Text,
   View
 } from "react-native";
-import type { Node } from "react";
-import inatjs from "inaturalistjs";
-import { t } from "i18next";
-import { viewStyles, textStyles } from "../../styles/settings/settings";
+
+import { textStyles, viewStyles } from "../../styles/settings/settings";
 import { getAPIToken } from "../LoginSignUp/AuthenticationService";
-import SettingsProfile from "./SettingsProfile";
-import {
-  SettingsNotifications,
-  EMAIL_NOTIFICATIONS
-} from "./SettingsNotifications";
-import SettingsAccount from "./SettingsAccount";
-import SettingsContentDisplay from "./SettingsContentDisplay";
-import SettingsApplications from "./SettingsApplications";
-import SettingsRelationships from "./SettingsRelationships";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useUserMe from "./hooks/useUserMe";
+import SettingsAccount from "./SettingsAccount";
+import SettingsApplications from "./SettingsApplications";
+import SettingsContentDisplay from "./SettingsContentDisplay";
+import {
+  EMAIL_NOTIFICATIONS,
+  SettingsNotifications
+} from "./SettingsNotifications";
+import SettingsProfile from "./SettingsProfile";
+import SettingsRelationships from "./SettingsRelationships";
 
 const TAB_TYPE_PROFILE = "profile";
 const TAB_TYPE_ACCOUNT = "account";

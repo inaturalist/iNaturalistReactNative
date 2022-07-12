@@ -1,19 +1,19 @@
 // @flow
 
-import * as React from "react";
-import {
-  FlatList, View, Pressable, Text
-} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import * as React from "react";
 import { useTranslation } from "react-i18next";
+import {
+  FlatList, Pressable, Text, View
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { viewStyles, textStyles } from "../../../styles/observations/obsList";
-import GridItem from "./GridItem";
-import EmptyList from "./EmptyList";
-import ObsCard from "./ObsCard";
+import { textStyles, viewStyles } from "../../../styles/observations/obsList";
 import Map from "../Map";
+import EmptyList from "./EmptyList";
+import GridItem from "./GridItem";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
+import ObsCard from "./ObsCard";
 
 type Props = {
   loading: boolean,

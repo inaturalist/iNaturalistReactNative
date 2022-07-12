@@ -1,14 +1,14 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
 import React, { useContext } from "react";
 import { View } from "react-native";
-import type { Node } from "react";
-import { useNavigation } from "@react-navigation/native";
 
-import { viewStyles } from "../../styles/obsEdit/obsEdit";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import { ObsEditContext } from "../../providers/contexts";
+import { viewStyles } from "../../styles/obsEdit/obsEdit";
 import PlaceholderText from "../PlaceholderText";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 
 const BottomModal = ( ): Node => {
   const navigation = useNavigation( );

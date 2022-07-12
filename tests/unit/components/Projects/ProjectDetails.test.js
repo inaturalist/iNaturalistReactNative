@@ -1,9 +1,9 @@
-import React from "react";
-import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { render } from "@testing-library/react-native";
+import React from "react";
 
-import factory from "../../../factory";
 import ProjectDetails from "../../../../src/components/Projects/ProjectDetails";
+import factory from "../../../factory";
 
 const mockProject = factory( "RemoteProject" );
 const mockObservation = factory( "RemoteObservation" );

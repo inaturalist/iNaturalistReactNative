@@ -1,7 +1,7 @@
 // @flow
 
-import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
+import { useEffect, useState } from "react";
 
 import Observation from "../../../models/Observation";
 

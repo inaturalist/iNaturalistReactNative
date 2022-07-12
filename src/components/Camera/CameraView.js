@@ -1,13 +1,13 @@
 // @flow
-import React, { useRef, useState, useEffect } from "react";
-import { StyleSheet, Animated } from "react-native";
-import { Camera } from "react-native-vision-camera";
-import type { Node } from "react";
 import { useIsFocused } from "@react-navigation/native";
+import type { Node } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, StyleSheet } from "react-native";
 import { PinchGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 import Reanimated, {
   Extrapolate, interpolate, useAnimatedGestureHandler, useAnimatedProps, useSharedValue
 } from "react-native-reanimated";
+import { Camera } from "react-native-vision-camera";
 
 import FocusSquare from "./FocusSquare";
 import useIsForeground from "./hooks/useIsForeground";

@@ -1,12 +1,12 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
-import React from "react";
-import { render, waitFor } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { render, waitFor } from "@testing-library/react-native";
+import inatjs from "inaturalistjs";
+import React from "react";
 import AccessibilityEngine from "react-native-accessibility-engine";
 
-import inatjs from "inaturalistjs";
 import ObsList from "../../src/components/Observations/ObsList";
 import factory, { makeResponse } from "../factory";
 

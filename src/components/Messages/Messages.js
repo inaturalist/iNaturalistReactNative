@@ -1,11 +1,11 @@
 // @flow
 
-import React from "react";
 import type { Node } from "react";
+import React from "react";
 
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import MessageList from "./MessageList";
 import useMessages from "./hooks/useMessages";
+import MessageList from "./MessageList";
 
 const Messages = ( ): Node => {
   // TODO: Reload when accessing again

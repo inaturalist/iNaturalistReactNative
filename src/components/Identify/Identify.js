@@ -1,16 +1,16 @@
 // @flow
 
-import React, { useState } from "react";
 import type { Node } from "react";
-import { Text, View, Pressable } from "react-native";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Pressable, Text, View } from "react-native";
 
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import useObservations from "./hooks/useObservations";
-import GridView from "./GridView";
-import DropdownPicker from "../Explore/DropdownPicker";
 import { viewStyles } from "../../styles/identify/identify";
+import DropdownPicker from "../Explore/DropdownPicker";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import CardSwipeView from "./CardSwipeView";
+import GridView from "./GridView";
+import useObservations from "./hooks/useObservations";
 
 const Identify = ( ): Node => {
   const [view, setView] = React.useState( "grid" );

@@ -1,7 +1,9 @@
 // @flow
 
-import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   PermissionsAndroid,
   Platform,
@@ -9,8 +11,6 @@ import {
   Text,
   View
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useTranslation } from "react-i18next";
 
 import { viewStyles } from "../../styles/permissionGate";
 import ViewNoFooter from "./ViewNoFooter";

@@ -1,10 +1,10 @@
 // @flow
-import React, { useState, useEffect, useMemo } from "react";
-import type { Node } from "react";
 import inatjs from "inaturalistjs";
+import type { Node } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
-import { ExploreContext } from "./contexts";
 import Observation from "../models/Observation";
+import { ExploreContext } from "./contexts";
 
 type Props = {
   children: any

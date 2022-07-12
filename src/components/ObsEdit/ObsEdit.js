@@ -1,24 +1,24 @@
 // @flow
 
-import React, { useContext, useEffect, useState } from "react";
-import { Text, Pressable, View } from "react-native";
+import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { HeaderBackButton } from "@react-navigation/elements";
-import { Headline, Portal, Modal } from "react-native-paper";
+import { Pressable, Text, View } from "react-native";
+import { Headline, Modal, Portal } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
+import Photo from "../../models/Photo";
 import { ObsEditContext } from "../../providers/contexts";
 import useLoggedIn from "../../sharedHooks/useLoggedIn";
+import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
+import MediaViewer from "../MediaViewer/MediaViewer";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
+import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
 import OtherDataSection from "./OtherDataSection";
-import EvidenceSection from "./EvidenceSection";
-import MediaViewer from "../MediaViewer/MediaViewer";
-import Photo from "../../models/Photo";
 
 const ObsEdit = ( ): Node => {
   const {

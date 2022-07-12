@@ -1,12 +1,12 @@
 // @flow
 
+import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
-import type { Node } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import { formatObsListTime } from "../../../sharedHelpers/dateAndTime";
+import { textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import checkCamelAndSnakeCase from "../../ObsDetails/helpers/checkCamelAndSnakeCase";
 
 type Props = {

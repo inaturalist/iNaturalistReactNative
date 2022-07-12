@@ -1,12 +1,12 @@
 // @flow
 
-import * as React from "react";
-import { View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as React from "react";
+import { Pressable, View } from "react-native";
 import { Avatar } from "react-native-paper";
 
-import { textStyles, viewStyles } from "../../styles/sharedComponents/modal";
 import { ObsEditContext } from "../../providers/contexts";
+import { textStyles, viewStyles } from "../../styles/sharedComponents/modal";
 import TranslatedText from "../SharedComponents/TranslatedText";
 
 type Props = {

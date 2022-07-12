@@ -1,8 +1,8 @@
 // @flow
 
+import type { Node } from "react";
 import React from "react";
 import NetworkLogger from "react-native-network-logger";
-import type { Node } from "react";
 
 import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 

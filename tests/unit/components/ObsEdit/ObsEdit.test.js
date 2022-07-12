@@ -1,11 +1,11 @@
-import React from "react";
-import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { render } from "@testing-library/react-native";
+import React from "react";
 
-import factory from "../../../factory";
 import ObsEdit from "../../../../src/components/ObsEdit/ObsEdit";
-import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import { ObsEditContext } from "../../../../src/providers/contexts";
+import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
+import factory from "../../../factory";
 
 // this resolves a test failure with the Animated library:
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.

@@ -1,11 +1,11 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { fireEvent, render } from "@testing-library/react-native";
+import React from "react";
 
-import factory from "../../../factory";
 import Explore from "../../../../src/components/Explore/Explore";
-import ExploreProvider from "../../../../src/providers/ExploreProvider";
 import { ExploreContext } from "../../../../src/providers/contexts";
+import ExploreProvider from "../../../../src/providers/ExploreProvider";
+import factory from "../../../factory";
 
 const mockLatLng = {
   latitude: 37.77,

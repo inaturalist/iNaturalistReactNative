@@ -1,8 +1,8 @@
 // @flow
 
+import type { Node } from "react";
 import React from "react";
 import { Text, View } from "react-native";
-import type { Node } from "react";
 
 import { textStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import checkCamelAndSnakeCase from "../../ObsDetails/helpers/checkCamelAndSnakeCase";

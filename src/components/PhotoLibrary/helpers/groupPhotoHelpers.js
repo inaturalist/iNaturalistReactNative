@@ -32,6 +32,6 @@ const flattenAndOrderSelectedPhotos = ( selectedObservations: ?Array<Object> ): 
 };
 
 export {
-  orderByTimestamp,
-  flattenAndOrderSelectedPhotos
+  flattenAndOrderSelectedPhotos,
+  orderByTimestamp
 };

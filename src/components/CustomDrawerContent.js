@@ -1,11 +1,11 @@
 // @flow
 
-import React from "react";
 import {
   DrawerContentScrollView,
   DrawerItem
 } from "@react-navigation/drawer";
 import type { Node } from "react";
+import React from "react";
 
 type Props = {
   state: any,

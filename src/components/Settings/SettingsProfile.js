@@ -1,13 +1,14 @@
 // @flow
 
+import { t } from "i18next";
+import type { Node } from "react";
+import React from "react";
 import {
   Button, Image, Text, TextInput, View
 } from "react-native";
-import { t } from "i18next";
 // $FlowIgnore
 import { launchImageLibrary } from "react-native-image-picker";
-import React from "react";
-import type { Node } from "react";
+
 import { viewStyles } from "../../styles/settings/settings";
 import type { SettingsProps } from "./types";
 

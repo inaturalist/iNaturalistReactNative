@@ -1,14 +1,14 @@
 // @flow
 
+import { HeaderBackButton } from "@react-navigation/elements";
+import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
 import React from "react";
 import { View } from "react-native";
-import type { Node } from "react";
 import RNPickerSelect from "react-native-picker-select";
-import { useNavigation } from "@react-navigation/native";
-import { HeaderBackButton } from "@react-navigation/elements";
 
-import usePhotoAlbums from "./hooks/usePhotoAlbums";
 import { viewStyles } from "../../styles/photoLibrary/photoGalleryHeader";
+import usePhotoAlbums from "./hooks/usePhotoAlbums";
 
 type Props = {
   updateAlbum: Function

@@ -1,8 +1,8 @@
 // @flow
 
-import React, { useState, useCallback } from "react";
-import type { Node } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import type { Node } from "react";
+import React, { useCallback, useState } from "react";
 
 type Props = {
   children: Node

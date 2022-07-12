@@ -1,7 +1,7 @@
 // @flow
 
-import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
+import { useEffect, useState } from "react";
 
 const ANCESTOR_FIELDS = {
   name: true,
@@ -96,6 +96,6 @@ const useSimilarSpecies = ( id: number ): Array<Object> => {
 };
 
 export {
-  useTaxonDetails,
-  useSimilarSpecies
+  useSimilarSpecies,
+  useTaxonDetails
 };

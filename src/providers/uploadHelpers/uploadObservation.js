@@ -3,8 +3,8 @@
 import inatjs from "inaturalistjs";
 import Realm from "realm";
 
-import realmConfig from "../../models/index";
 import { getJWTToken } from "../../components/LoginSignUp/AuthenticationService";
+import realmConfig from "../../models/index";
 import ObservationPhoto from "../../models/ObservationPhoto";
 import ObservationSound from "../../models/ObservationSound";
 

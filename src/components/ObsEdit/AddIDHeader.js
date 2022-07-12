@@ -1,13 +1,14 @@
 // @flow
 
-import React from "react";
-import type { Node } from "react";
-import { useTranslation } from "react-i18next";
-import { Headline } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { Pressable, View } from "react-native";
 import { HeaderBackButton } from "@react-navigation/elements";
+import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { Pressable, View } from "react-native";
+import { Headline } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
 import { viewStyles } from "../../styles/obsDetails/addID";
 
 type Props = {

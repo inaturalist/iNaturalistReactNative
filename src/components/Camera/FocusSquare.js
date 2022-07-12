@@ -1,8 +1,8 @@
 // @flow
 
-import React, { useEffect } from "react";
-import { View, Animated } from "react-native";
 import type { Node } from "react";
+import React, { useEffect } from "react";
+import { Animated, View } from "react-native";
 
 import { viewStyles } from "../../styles/camera/standardCamera";
 

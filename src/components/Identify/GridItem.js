@@ -1,10 +1,10 @@
 // @flow
 
+import type { Node } from "react";
 import React, { useState } from "react";
 import {
-  Pressable, Text, Image, View, ActivityIndicator
+  ActivityIndicator, Image, Pressable, Text, View
 } from "react-native";
-import type { Node } from "react";
 
 import Observation from "../../models/Observation";
 import {

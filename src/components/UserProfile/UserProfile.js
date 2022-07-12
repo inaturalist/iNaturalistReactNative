@@ -1,21 +1,21 @@
 // @flow
 
-import * as React from "react";
-import { Text, View, useWindowDimensions } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import HTML from "react-native-render-html";
 import { t } from "i18next";
+import * as React from "react";
+import { Text, useWindowDimensions, View } from "react-native";
+import HTML from "react-native-render-html";
 
-import { textStyles, viewStyles } from "../../styles/userProfile/userProfile";
-import UserIcon from "../SharedComponents/UserIcon";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import useUser from "./hooks/useUser";
 import User from "../../models/User";
-import UserProjects from "./UserProjects";
-import CustomHeader from "../SharedComponents/CustomHeader";
+import { textStyles, viewStyles } from "../../styles/userProfile/userProfile";
 // import useNetworkSite from "./hooks/useNetworkSite";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import CustomHeader from "../SharedComponents/CustomHeader";
+import UserIcon from "../SharedComponents/UserIcon";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import updateRelationship from "./helpers/updateRelationship";
+import useUser from "./hooks/useUser";
+import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );

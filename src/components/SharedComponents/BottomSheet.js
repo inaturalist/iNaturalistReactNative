@@ -1,13 +1,13 @@
 // @flow
 
-import React, { useEffect, useRef } from "react";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
-
 import type { Node } from "react";
+import React, { useEffect, useRef } from "react";
+
 import { viewStyles } from "../../styles/sharedComponents/bottomSheet";
 
 type Props = {

@@ -1,8 +1,8 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { Pressable, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { viewStyles } from "../../styles/sharedComponents/footer";

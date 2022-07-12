@@ -1,13 +1,14 @@
 // @flow
 
-import { Alert, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import type { Node } from "react";
-import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
-import inatjs from "inaturalistjs";
 import { t } from "i18next";
+import inatjs from "inaturalistjs";
+import type { Node } from "react";
+import React, { useEffect, useState } from "react";
+import { Alert, Text, View } from "react-native";
+import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+
 import inatProviders from "../../dictionaries/providers";
-import { viewStyles, textStyles } from "../../styles/settings/settings";
+import { textStyles, viewStyles } from "../../styles/settings/settings";
 import useAuthorizedApplications from "./hooks/useAuthorizedApplications";
 import useProviderAuthorizations from "./hooks/useProviderAuthorizations";
 

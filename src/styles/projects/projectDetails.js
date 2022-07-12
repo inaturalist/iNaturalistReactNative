@@ -1,7 +1,6 @@
 // @flow strict-local
 
-import { StyleSheet, Dimensions } from "react-native";
-
+import { Dimensions, StyleSheet } from "react-native";
 import type {
   ImageStyleProp,
   TextStyleProp,
@@ -34,7 +33,7 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 export {
-  viewStyles,
+  imageStyles,
   textStyles,
-  imageStyles
+  viewStyles
 };

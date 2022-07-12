@@ -1,15 +1,16 @@
 // @flow
 
-import { Pressable, Text, View } from "react-native";
-import React from "react";
-import { Picker } from "@react-native-picker/picker";
 import CheckBox from "@react-native-community/checkbox";
-import type { Node } from "react";
+import { Picker } from "@react-native-picker/picker";
 import { t } from "i18next";
-import { viewStyles, textStyles } from "../../styles/settings/settings";
-import colors from "../../styles/colors";
-import PlaceSearchInput from "./PlaceSearchInput";
+import type { Node } from "react";
+import React from "react";
+import { Pressable, Text, View } from "react-native";
+
 import inatLicenses from "../../dictionaries/licenses";
+import colors from "../../styles/colors";
+import { textStyles, viewStyles } from "../../styles/settings/settings";
+import PlaceSearchInput from "./PlaceSearchInput";
 import type { SettingsProps } from "./types";
 
 const PROJECT_SETTINGS = {

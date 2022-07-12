@@ -1,13 +1,13 @@
 // @flow
 
-import React, { useState } from "react";
-import { View, Text } from "react-native";
-import type { Node } from "react";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
 
 import { textStyles } from "../../styles/obsDetails/obsDetails";
-import Map from "../SharedComponents/Map";
 import DropdownPicker from "../Explore/DropdownPicker";
+import Map from "../SharedComponents/Map";
 import addToProject from "./helpers/addToProject";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 

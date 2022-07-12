@@ -1,19 +1,19 @@
 // @flow
 
-import React, { useEffect } from "react";
-import type { Node } from "react";
 import { useRoute } from "@react-navigation/native";
+import type { Node } from "react";
+import React, { useEffect } from "react";
 
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
-import UserCard from "./UserCard";
-import useCurrentUser from "./hooks/useCurrentUser";
 import BottomSheet from "../SharedComponents/BottomSheet";
+import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import useUser from "../UserProfile/hooks/useUser";
+import useCurrentUser from "./hooks/useCurrentUser";
 import useObservations from "./hooks/useObservations";
 import LoggedOutCard from "./LoggedOutCard";
-import useUser from "../UserProfile/hooks/useUser";
 import LoginPrompt from "./LoginPrompt";
 import UploadPrompt from "./UploadPrompt";
+import UserCard from "./UserCard";
 
 const ObsList = ( ): Node => {
   const { params } = useRoute( );

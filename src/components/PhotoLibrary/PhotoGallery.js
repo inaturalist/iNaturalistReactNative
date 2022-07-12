@@ -1,18 +1,18 @@
 // @flow
 
-import React, { useContext, useEffect } from "react";
-import {
-  Pressable, Image, FlatList, ActivityIndicator, View, Text
-} from "react-native";
-import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, { useContext, useEffect } from "react";
+import {
+  ActivityIndicator, FlatList, Image, Pressable, Text, View
+} from "react-native";
 
-import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
-import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import { PhotoGalleryContext } from "../../providers/contexts";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import PhotoGalleryHeader from "./PhotoGalleryHeader";
 
 const options = {
   first: 28,

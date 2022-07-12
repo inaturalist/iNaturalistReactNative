@@ -1,11 +1,10 @@
-import React from "react";
-import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
-
-import factory from "../../../factory";
-import Messages from "../../../../src/components/Messages/Messages";
+import { render } from "@testing-library/react-native";
+import React from "react";
 
 import * as useMessages from "../../../../src/components/Messages/hooks/useMessages";
+import Messages from "../../../../src/components/Messages/Messages";
+import factory from "../../../factory";
 
 const mockedNavigate = jest.fn( );
 const mockMessage = factory( "RemoteMessage" );

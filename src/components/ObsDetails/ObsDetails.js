@@ -1,35 +1,35 @@
 // @flow
 
-import _ from "lodash";
-import React, { useState, useContext, useEffect } from "react";
-import type { Node } from "react";
-import { formatISO } from "date-fns";
-import {
-  Text, View, Image, Pressable, ScrollView, LogBox, Alert
-} from "react-native";
-import { useTranslation } from "react-i18next";
-
 import { useNavigation, useRoute } from "@react-navigation/native";
-import ActivityTab from "./ActivityTab";
-import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
-import createComment from "./helpers/createComment";
-import createIdentification from "../Identify/helpers/createIdentification";
-import DataTab from "./DataTab";
-import faveObservation from "./helpers/faveObservation";
-import InputField from "../SharedComponents/InputField";
-import ObsDetailsHeader from "./ObsDetailsHeader";
-import PhotoScroll from "../SharedComponents/PhotoScroll";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import { formatISO } from "date-fns";
+import _ from "lodash";
+import type { Node } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Alert, Image, LogBox, Pressable, ScrollView, Text, View
+} from "react-native";
+
 import Taxon from "../../models/Taxon";
-import TranslatedText from "../SharedComponents/TranslatedText";
 import User from "../../models/User";
+import { ObsEditContext } from "../../providers/contexts";
+import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
+import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
+import createIdentification from "../Identify/helpers/createIdentification";
+import { getUser } from "../LoginSignUp/AuthenticationService";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import InputField from "../SharedComponents/InputField";
+import PhotoScroll from "../SharedComponents/PhotoScroll";
+import TranslatedText from "../SharedComponents/TranslatedText";
 import UserIcon from "../SharedComponents/UserIcon";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import { ObsEditContext } from "../../providers/contexts";
+import ActivityTab from "./ActivityTab";
+import DataTab from "./DataTab";
+import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
+import createComment from "./helpers/createComment";
+import faveObservation from "./helpers/faveObservation";
 import useRemoteObservation from "./hooks/useRemoteObservation";
-import { viewStyles, textStyles } from "../../styles/obsDetails/obsDetails";
-import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
-import { getUser } from "../LoginSignUp/AuthenticationService";
+import ObsDetailsHeader from "./ObsDetailsHeader";
 
 // this is getting triggered by passing dates, like _created_at, through
 // react navigation via the observation object. it doesn't seem to

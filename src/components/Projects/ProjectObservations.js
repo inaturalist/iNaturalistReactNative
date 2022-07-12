@@ -1,11 +1,11 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
-import useProjectObservations from "./hooks/useProjectObservations";
 import GridItem from "../SharedComponents/ObservationViews/GridItem";
+import useProjectObservations from "./hooks/useProjectObservations";
 
 type Props = {
   id: number

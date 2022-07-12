@@ -1,5 +1,5 @@
 import {
-  formatISO, fromUnixTime, formatDistanceToNow, format, getUnixTime, parseISO
+  format, formatDistanceToNow, formatISO, fromUnixTime, getUnixTime, parseISO
 } from "date-fns";
 
 // two options for observed_on_string in uploader are:
@@ -30,9 +30,9 @@ const formatObsListTime = date => {
 };
 
 export {
-  formatDateAndTime,
-  timeAgo,
-  formatObsListTime,
   createObservedOnStringForUpload,
-  displayDateTimeObsEdit
+  displayDateTimeObsEdit,
+  formatDateAndTime,
+  formatObsListTime,
+  timeAgo
 };

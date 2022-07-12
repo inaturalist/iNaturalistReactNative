@@ -1,8 +1,8 @@
 import Realm from "realm";
 
+import Taxon from "./Taxon";
 // eslint-disable-next-line import/no-cycle
 import User from "./User";
-import Taxon from "./Taxon";
 
 class Identification extends Realm.Object {
   static ID_FIELDS = {

@@ -1,8 +1,8 @@
 // @flow
 
 import * as React from "react";
-import DateTimePicker from "react-native-modal-datetime-picker";
 import { Appearance } from "react-native";
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 type Props = {
   toggleDateTimePicker: Function,

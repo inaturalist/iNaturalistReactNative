@@ -1,13 +1,13 @@
 // @flow
 
-import React, { useContext } from "react";
 import type { Node } from "react";
+import React, { useContext } from "react";
 import { View } from "react-native";
 
-import { viewStyles } from "../../styles/explore/explore";
-import DropdownPicker from "./DropdownPicker";
 import { ExploreContext } from "../../providers/contexts";
+import { viewStyles } from "../../styles/explore/explore";
 import TranslatedText from "../SharedComponents/TranslatedText";
+import DropdownPicker from "./DropdownPicker";
 import FiltersIcon from "./FiltersIcon";
 
 const Explore = ( ): Node => {

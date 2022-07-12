@@ -1,13 +1,13 @@
 // @flow
 
-import React, { useState, useCallback } from "react";
-import { View, Pressable } from "react-native";
 import type { Node } from "react";
+import React, { useCallback, useState } from "react";
+import { Pressable, View } from "react-native";
 
-import { viewStyles, textStyles } from "../../styles/photoLibrary/photoGalleryHeader";
-import TranslatedText from "../SharedComponents/TranslatedText";
-import Modal from "../SharedComponents/Modal";
+import { textStyles, viewStyles } from "../../styles/photoLibrary/photoGalleryHeader";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Modal from "../SharedComponents/Modal";
+import TranslatedText from "../SharedComponents/TranslatedText";
 
 type Props = {
   combinePhotos: Function,
