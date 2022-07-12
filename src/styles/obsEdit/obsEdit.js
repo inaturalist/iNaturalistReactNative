@@ -55,6 +55,11 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  kebab: {
+    zIndex: 1,
+    position: "absolute",
+    right: 0
+  },
   caret: {
     width: 35
   },
@@ -92,9 +97,13 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   row: {
     flexDirection: "row",
     flexWrap: "nowrap",
-    alignItems: "center",
-    justifyContent: "center",
     marginVertical: 10
+  },
+  multipleObsRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    alignItems: "center",
+    marginBottom: 25
   },
   buttonRow: {
     paddingTop: 10,

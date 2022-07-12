@@ -6,7 +6,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
-import { Headline, Portal, Modal } from "react-native-paper";
+import { Headline, Portal, Modal, Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
@@ -20,6 +20,7 @@ import OtherDataSection from "./OtherDataSection";
 import EvidenceSection from "./EvidenceSection";
 import MediaViewer from "../MediaViewer/MediaViewer";
 import Photo from "../../models/Photo";
+import KebabMenu from "../SharedComponents/KebabMenu";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -64,12 +65,22 @@ const ObsEdit = ( ): Node => {
 
     return (
       <>
+        <View style={viewStyles.kebab}>
+          {observations.length > 1 && (
+            <KebabMenu>
+              <Menu.Item
+                onPress={( ) => console.log( "handle press in kebab" ) }
+                title={t( "Delete" )}
+              />
+            </KebabMenu>
+          )}
+        </View>
         <HeaderBackButton onPress={handleBackButtonPress} style={viewStyles.headerBackButton} />
         <View style={viewStyles.alignCenter}>
           {observations.length === 1
             ? <Headline>{t( "New-Observation" )}</Headline>
             : (
-              <View style={viewStyles.row}>
+              <View style={viewStyles.multipleObsRow}>
                 <Pressable onPress={showPrevObservation} style={viewStyles.caret}>
                   {currentObsIndex !== 0 && <Icon name="keyboard-arrow-left" size={35} />}
                 </Pressable>
