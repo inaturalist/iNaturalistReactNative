@@ -1,8 +1,8 @@
 // @flow
 
+import type { Node } from "react";
 import React from "react";
 import { Text, View } from "react-native";
-import type { Node } from "react";
 
 import { textStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import checkCamelAndSnakeCase from "../../ObsDetails/helpers/checkCamelAndSnakeCase";
@@ -20,7 +20,9 @@ const ObsCardStats = ( { item, type }: Props ): Node => {
   const renderColumn = ( ) => (
     <View>
       <Text style={textStyles.text}>{numOfIds || "no ids"}</Text>
-      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">{numOfComments || 0}</Text>
+      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">
+        {numOfComments || 0}
+      </Text>
       <Text style={textStyles.text}>{qualityGrade || "no quality grade"}</Text>
     </View>
   );
@@ -28,7 +30,9 @@ const ObsCardStats = ( { item, type }: Props ): Node => {
   const renderRow = ( ) => (
     <View style={viewStyles.photoStatRow}>
       <Text style={textStyles.text}>{numOfIds || "no ids"}</Text>
-      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">{numOfComments || 0}</Text>
+      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">
+        {numOfComments || 0}
+      </Text>
       <Text style={textStyles.text}>{qualityGrade || "no quality grade"}</Text>
     </View>
   );
@@ -37,8 +41,3 @@ const ObsCardStats = ( { item, type }: Props ): Node => {
 };
 
 export default ObsCardStats;
-
-
-
-
-

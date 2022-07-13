@@ -1,14 +1,14 @@
 // @flow
 
-import React from "react";
-import { Text, View, Pressable } from "react-native";
-import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
+import React from "react";
+import { Pressable, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import UserIcon from "../SharedComponents/UserIcon";
 import User from "../../models/User";
 import { viewStyles } from "../../styles/observations/userCard";
+import UserIcon from "../SharedComponents/UserIcon";
 
 type Props = {
   userId: number,

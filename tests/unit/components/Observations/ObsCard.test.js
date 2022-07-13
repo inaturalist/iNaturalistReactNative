@@ -1,7 +1,8 @@
-import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
-import factory from "../../../factory";
+import React from "react";
+
 import ObsCard from "../../../../src/components/SharedComponents/ObservationViews/ObsCard";
+import factory from "../../../factory";
 
 const testObservation = factory( "LocalObservation" );
 
@@ -13,7 +14,8 @@ test( "renders text passed into observation card", ( ) => {
   );
 
   expect( getByTestId( `ObsList.obsCard.${testObservation.uuid}` ) ).toBeTruthy( );
-  expect( getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( { "uri": testObservation.observationPhotos[0].photo.url } );
+  expect( getByTestId( "ObsList.photo" ).props.source )
+    .toStrictEqual( { uri: testObservation.observationPhotos[0].photo.url } );
   expect( getByText( testObservation.taxon.preferredCommonName ) ).toBeTruthy( );
   expect( getByText( testObservation.placeGuess ) ).toBeTruthy( );
   expect( getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );
@@ -29,7 +31,7 @@ test( "navigates to ObsDetails on button press", ( ) => {
   const { getByTestId } = render(
     <ObsCard
       item={testObservation}
-      handlePress={item => fakeNavigation.navigate( "ObsDetails" )}
+      handlePress={( ) => fakeNavigation.navigate( "ObsDetails" )}
     />
   );
 

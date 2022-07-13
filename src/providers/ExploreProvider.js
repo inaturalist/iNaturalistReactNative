@@ -1,10 +1,10 @@
 // @flow
-import React, { useState, useEffect } from "react";
-import type { Node } from "react";
 import inatjs from "inaturalistjs";
+import type { Node } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
-import { ExploreContext } from "./contexts";
 import Observation from "../models/Observation";
+import { ExploreContext } from "./contexts";
 
 type Props = {
   children: any
@@ -51,11 +51,13 @@ const ExploreProvider = ( { children }: Props ): Node => {
   useEffect( ( ) => {
     let isCurrent = true;
 
-    if ( !loadingExplore ) { return; }
+    if ( !loadingExplore ) { return ( ) => { }; }
 
     const fetchExplore = async ( ) => {
       // create filters object excluding keys with null values
-      const filters = Object.fromEntries( Object.entries( exploreFilters ).filter( ( [_, v] ) => v != null ) );
+      const filters = Object.fromEntries(
+        Object.entries( exploreFilters ).filter( ( [_, v] ) => v != null )
+      );
       try {
         const params = {
           ...filters,
@@ -71,7 +73,7 @@ const ExploreProvider = ( { children }: Props ): Node => {
       } catch ( e ) {
         if ( !isCurrent ) { return; }
         setLoadingExplore( false );
-        console.log( "Couldn't fetch explore observations:", e.message, );
+        console.log( "Couldn't fetch explore observations:", e.message );
       }
     };
 
@@ -84,39 +86,48 @@ const ExploreProvider = ( { children }: Props ): Node => {
 
   const setLoading = ( ) => setLoadingExplore( true );
 
-  const resetFilters = ( ) => setExploreFilters( {
-    ...exploreFilters,
+  const resetUnappliedFilters = ( ) => setUnappliedFilters( {
     ...initialFilters
   } );
 
-  const applyFilters = ( ) => {
-    setLoadingExplore( true );
-    const applied = Object.assign( exploreFilters, unappliedFilters );
-    console.log( applied, "applied" );
-    setExploreFilters( applied );
-  };
+  const exploreValue = useMemo( ( ) => {
+    const resetFilters = ( ) => setExploreFilters( {
+      ...exploreFilters,
+      ...initialFilters
+    } );
 
-  const resetUnappliedFilters = ( )  => setUnappliedFilters( {
-    ...initialFilters
-  } );
-
-  const exploreValue = {
+    const applyFilters = ( ) => {
+      setLoadingExplore( true );
+      const applied = Object.assign( exploreFilters, unappliedFilters );
+      console.log( applied, "applied" );
+      setExploreFilters( applied );
+    };
+    return {
+      applyFilters,
+      exploreFilters,
+      exploreList,
+      loadingExplore,
+      location,
+      resetFilters,
+      resetUnappliedFilters,
+      setExploreFilters,
+      setLoading,
+      setLocation,
+      setTaxon,
+      setUnappliedFilters,
+      taxon,
+      totalObservations,
+      unappliedFilters
+    };
+  }, [
+    exploreFilters,
     exploreList,
     loadingExplore,
-    setLoading,
-    exploreFilters,
-    setExploreFilters,
-    resetFilters,
-    taxon,
-    setTaxon,
     location,
-    setLocation,
+    taxon,
     totalObservations,
-    unappliedFilters,
-    setUnappliedFilters,
-    applyFilters,
-    resetUnappliedFilters
-  };
+    unappliedFilters
+  ] );
 
   return (
     <ExploreContext.Provider value={exploreValue}>

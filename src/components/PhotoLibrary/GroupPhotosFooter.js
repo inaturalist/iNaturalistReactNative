@@ -1,9 +1,9 @@
 // @flow
 
-import React from "react";
-import { View, Text } from "react-native";
-import type { Node } from "react";
 import { t } from "i18next";
+import type { Node } from "react";
+import React from "react";
+import { Text, View } from "react-native";
 import { Menu } from "react-native-paper";
 
 import { viewStyles } from "../../styles/photoLibrary/photoGalleryFooter";

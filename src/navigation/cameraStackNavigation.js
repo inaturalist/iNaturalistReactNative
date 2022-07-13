@@ -1,20 +1,21 @@
 // @flow
 
-import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as React from "react";
 import { PermissionsAndroid } from "react-native";
 
-import GroupPhotos from "../components/PhotoLibrary/GroupPhotos";
-import ObsEdit from "../components/ObsEdit/ObsEdit";
-import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
 import StandardCamera from "../components/Camera/StandardCamera";
-import CVSuggestions from "../components/ObsEdit/CVSuggestions";
-import CustomHeaderWithTranslation from "../components/SharedComponents/CustomHeaderWithTranslation";
-import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
-import PhotoGallery from "../components/PhotoLibrary/PhotoGallery";
-import PermissionGate from "../components/SharedComponents/PermissionGate";
-import Mortal from "../components/SharedComponents/Mortal";
 import AddID from "../components/ObsEdit/AddID";
+import CVSuggestions from "../components/ObsEdit/CVSuggestions";
+import ObsEdit from "../components/ObsEdit/ObsEdit";
+import GroupPhotos from "../components/PhotoLibrary/GroupPhotos";
+import PhotoGallery from "../components/PhotoLibrary/PhotoGallery";
+import CustomHeaderWithTranslation from
+  "../components/SharedComponents/CustomHeaderWithTranslation";
+import Mortal from "../components/SharedComponents/Mortal";
+import PermissionGate from "../components/SharedComponents/PermissionGate";
+import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
+import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 
 const Stack = createNativeStackNavigator( );
 
@@ -48,8 +49,6 @@ const SoundRecorderWithPermission = ( ) => (
   </PermissionGate>
 );
 
-const suggestionsTitle = ( props ) => <CustomHeaderWithTranslation {...props} headerText="IDENTIFICATION" />;
-
 const CameraStackNavigation = ( ): React.Node => (
   <Mortal>
     <PhotoGalleryProvider>
@@ -78,7 +77,7 @@ const CameraStackNavigation = ( ): React.Node => (
           name="Suggestions"
           component={CVSuggestions}
           options={{
-            headerTitle: suggestionsTitle,
+            headerTitle: <CustomHeaderWithTranslation headerText="IDENTIFICATION" />,
             headerShown: true
           }}
         />

@@ -1,7 +1,8 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, Text, ActivityIndicator } from "react-native";
+import { ActivityIndicator, FlatList, Text } from "react-native";
+
 import { textStyles } from "../../styles/messages/messages";
 
 type Props = {
@@ -15,20 +16,17 @@ const MessageList = ( {
   messageList,
   testID
 }: Props ): React.Node => {
-
   if ( loading ) {
     return (
       <ActivityIndicator
-        testID={"Messages.activityIndicator"}
+        testID="Messages.activityIndicator"
       />
     );
   }
 
-  const renderMessages = ( { item } ) => {
-    return (
-        <Text style={textStyles.projectName}>{item.subject}</Text>
-    );
-  };
+  const renderMessages = ( { item } ) => (
+    <Text style={textStyles.projectName}>{item.subject}</Text>
+  );
 
   return (
     <FlatList
@@ -40,4 +38,3 @@ const MessageList = ( {
 };
 
 export default MessageList;
-

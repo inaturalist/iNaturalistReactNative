@@ -1,19 +1,23 @@
 // @flow
 
-import { useEffect, useCallback, useRef, useState } from "react";
 import inatjs from "inaturalistjs";
+import {
+  useCallback, useEffect, useRef, useState
+} from "react";
 import Realm from "realm";
 
 import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
-import { getUsername, getUserId } from "../../../components/LoginSignUp/AuthenticationService";
+import { getUserId, getUsername } from "../../LoginSignUp/AuthenticationService";
 
 const perPage = 6;
 
 const useObservations = ( ): Object => {
   const [loading, setLoading] = useState( true );
   const [observationList, setObservationList] = useState( [] );
-  const nextPageToFetch = observationList.length > 0 ? Math.ceil( observationList.length / perPage ) : 1;
+  const nextPageToFetch = observationList.length > 0
+    ? Math.ceil( observationList.length / perPage )
+    : 1;
   const [page, setPage] = useState( nextPageToFetch );
   const [userLogin, setUserLogin] = useState( null );
   const [obsToUpload, setObsToUpload] = useState( [] );
@@ -39,12 +43,14 @@ const useObservations = ( ): Object => {
     const realm = await Realm.open( realmConfig );
     realmRef.current = realm;
 
-    // When querying a realm to find objects (e.g. realm.objects('Observation')) the result we get back
-    // and the objects in it are "live" and will always reflect the latest state.
+    // When querying a realm to find objects (e.g. realm.objects
+    // ('Observation')) the result we get back and the objects in it
+    // are "live" and will always reflect the latest state.
     const obs = realm.objects( "Observation" );
     const localObservations = obs.sorted( "_created_at", true );
 
-    // includes obs which have never been synced or which have been updated locally since the last sync
+    // includes obs which have never been synced or which have been updated
+    // locally since the last sync
     const notUploadedObs = obs.filtered( "_synced_at == null || _synced_at <= _updated_at" );
 
     if ( localObservations?.length ) {
@@ -90,7 +96,7 @@ const useObservations = ( ): Object => {
     return closeRealm;
   }, [openRealm, closeRealm] );
 
-  const writeToDatabase = useCallback( ( results ) => {
+  const writeToDatabase = useCallback( results => {
     if ( results.length === 0 ) { return; }
     const realm = realmRef.current;
     results.forEach( obs => {
@@ -128,13 +134,13 @@ const useObservations = ( ): Object => {
           fields: Observation.FIELDS
         };
         const response = await inatjs.observations.search( params );
-        const results = response.results;
+        const { results } = response;
         if ( !isCurrent ) { return; }
         writeToDatabase( results );
       } catch ( e ) {
         setLoading( false );
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch observations:", e.message, );
+        console.log( "Couldn't fetch observations:", e.message );
       }
     };
 

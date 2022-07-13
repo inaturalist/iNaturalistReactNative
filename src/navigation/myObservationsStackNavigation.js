@@ -1,15 +1,15 @@
 // @flow
 
-import * as React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HeaderBackButton } from "@react-navigation/elements";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as React from "react";
 
-import ObsList from "../components/Observations/ObsList";
 import ObsDetails from "../components/ObsDetails/ObsDetails";
-import UserProfile from "../components/UserProfile/UserProfile";
-import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
-import Mortal from "../components/SharedComponents/Mortal";
 import AddID from "../components/ObsEdit/AddID";
+import ObsList from "../components/Observations/ObsList";
+import Mortal from "../components/SharedComponents/Mortal";
+import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
+import UserProfile from "../components/UserProfile/UserProfile";
 
 const Stack = createNativeStackNavigator( );
 
@@ -37,7 +37,7 @@ const MyObservationsStackNavigation = ( ): React.Node => (
         name="ObsDetails"
         component={ObsDetails}
         options={hideHeader}
-        />
+      />
       <Stack.Screen
         name="UserProfile"
         component={UserProfile}

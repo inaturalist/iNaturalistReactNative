@@ -1,9 +1,9 @@
 // @flow strict-local
 
 import { StyleSheet } from "react-native";
-
 import type { ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-import { colors } from "../global";
+
+import colors from "../colors";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   confirmButton: {
@@ -20,5 +20,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 } );
 
 export {
+  // eslint-disable-next-line import/prefer-default-export
   viewStyles
 };

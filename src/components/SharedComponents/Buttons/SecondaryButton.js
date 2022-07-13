@@ -1,10 +1,10 @@
 // @flow
 
-import React from "react";
 import type { Node } from "react";
+import React from "react";
 import { Button } from "react-native-paper";
 
-import { colors } from "../../../styles/global";
+import colors from "../../../styles/colors";
 import { viewStyles } from "../../../styles/sharedComponents/buttons/secondaryButton";
 
 type Props = {

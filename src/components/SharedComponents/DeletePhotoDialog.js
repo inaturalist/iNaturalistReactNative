@@ -1,14 +1,16 @@
 // @flow
 
-import React from "react";
 import type { Node } from "react";
-import Realm from "realm";
-import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import {
+  Button, Dialog, Paragraph, Portal
+} from "react-native-paper";
+import Realm from "realm";
 
-import { viewStyles } from "../../styles/sharedComponents/deletePhotoDialog";
-import Photo from "../../models/Photo";
 import realmConfig from "../../models/index";
+import Photo from "../../models/Photo";
+import { viewStyles } from "../../styles/sharedComponents/deletePhotoDialog";
 
 type Props = {
   deleteDialogVisible: boolean,

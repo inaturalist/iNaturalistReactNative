@@ -1,13 +1,13 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
-import { Keyboard } from "react-native";
-import type { Node } from "react";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, { useEffect, useState } from "react";
+import { Keyboard } from "react-native";
 import { TextInput } from "react-native-paper";
 
+import colors from "../../styles/colors";
 import { textStyles } from "../../styles/obsEdit/notes";
-import { colors } from "../../styles/global";
 
 type Props = {
   addNotes: Function,
@@ -18,10 +18,10 @@ const Notes = ( { addNotes, description }: Props ): Node => {
   const [keyboardOffset, setKeyboardOffset] = useState( 0 );
 
   useEffect( ( ) => {
-    const showSubscription = Keyboard.addListener( "keyboardDidShow", ( e ) => {
+    const showSubscription = Keyboard.addListener( "keyboardDidShow", e => {
       setKeyboardOffset( e.endCoordinates.height );
     } );
-    const hideSubscription = Keyboard.addListener( "keyboardDidHide", ( e ) => {
+    const hideSubscription = Keyboard.addListener( "keyboardDidHide", ( ) => {
       setKeyboardOffset( 0 );
     } );
 

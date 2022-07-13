@@ -1,8 +1,8 @@
 // @flow
 
+import type { Node } from "react";
 import React from "react";
 import { FlatList, Image, Pressable } from "react-native";
-import type { Node } from "react";
 import { Avatar, useTheme } from "react-native-paper";
 
 import { imageStyles, viewStyles } from "../../styles/sharedComponents/photoCarousel";
@@ -25,7 +25,7 @@ const PhotoCarousel = ( {
   handleDelete
 }: Props ): Node => {
   const { colors } = useTheme( );
-  const renderDeleteButton = ( photoUri ) => (
+  const renderDeleteButton = photoUri => (
     <Pressable
       onPress={( ) => {
         if ( !handleDelete ) { return; }

@@ -1,27 +1,29 @@
 // @flow
 
-import React, { useContext, useEffect, useState } from "react";
-import { Text, Pressable, View } from "react-native";
+import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { HeaderBackButton } from "@react-navigation/elements";
-import { Headline, Portal, Modal, Menu } from "react-native-paper";
+import { Pressable, Text, View } from "react-native";
+import {
+  Headline, Menu, Modal, Portal
+} from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
+import Photo from "../../models/Photo";
+import { ObsEditContext } from "../../providers/contexts";
+import useLoggedIn from "../../sharedHooks/useLoggedIn";
+import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
+import MediaViewer from "../MediaViewer/MediaViewer";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import SecondaryButton from "../SharedComponents/Buttons/SecondaryButton";
-import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
-import { ObsEditContext } from "../../providers/contexts";
-import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
+import KebabMenu from "../SharedComponents/KebabMenu";
+import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
+import DeleteObservationDialog from "./DeleteObservationDialog";
+import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
 import OtherDataSection from "./OtherDataSection";
-import EvidenceSection from "./EvidenceSection";
-import MediaViewer from "../MediaViewer/MediaViewer";
-import Photo from "../../models/Photo";
-import KebabMenu from "../SharedComponents/KebabMenu";
-import DeleteObservationDialog from "./DeleteObservationDialog";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -53,85 +55,83 @@ const ObsEdit = ( ): Node => {
   const showDialog = ( ) => setDeleteDialogVisible( true );
   const hideDialog = ( ) => setDeleteDialogVisible( false );
 
-  const renderArrowNavigation = ( ) => {
-    if ( observations.length === 0 ) { return; }
-
-    const handleBackButtonPress = ( ) => {
-      if ( lastScreen === "StandardCamera" ) {
-        navigation.navigate( "camera", {
-          screen: "StandardCamera",
-          params: { photos: photoUris }
-        } );
-      } else {
-        // show modal to dissuade user from going back
-        navigation.goBack( );
-      }
-    };
-
-    return (
-      <>
-        <View style={viewStyles.kebab}>
-          {observations.length > 1 && (
-            <>
-              <DeleteObservationDialog
-                deleteDialogVisible={deleteDialogVisible}
-                hideDialog={hideDialog}
-              />
-              <KebabMenu>
-                <Menu.Item
-                  onPress={showDialog}
-                  title={t( "Delete" )}
-                />
-              </KebabMenu>
-            </>
-          )}
-        </View>
-        <HeaderBackButton onPress={handleBackButtonPress} style={viewStyles.headerBackButton} />
-        <View style={viewStyles.alignCenter}>
-          {observations.length === 1
-            ? <Headline>{t( "New-Observation" )}</Headline>
-            : (
-              <View style={viewStyles.multipleObsRow}>
-                <Pressable onPress={showPrevObservation} style={viewStyles.caret}>
-                  {currentObsIndex !== 0 && <Icon name="keyboard-arrow-left" size={35} />}
-                </Pressable>
-                <Text>{`${currentObsIndex + 1} of ${observations.length}`}</Text>
-                <Pressable onPress={showNextObservation} style={viewStyles.caret}>
-                  {( currentObsIndex !== observations.length - 1 ) && <Icon name="keyboard-arrow-right" size={35} />}
-                </Pressable>
-              </View>
-          )}
-        </View>
-      </>
-    );
+  const handleBackButtonPress = ( ) => {
+    if ( lastScreen === "StandardCamera" ) {
+      navigation.navigate( "camera", {
+        screen: "StandardCamera",
+        params: { photos: photoUris }
+      } );
+    } else {
+      // show modal to dissuade user from going back
+      navigation.goBack( );
+    }
   };
 
-  const setPhotos = ( uris ) => {
+  const renderArrowNavigation = ( ) => (
+    <>
+      <View style={viewStyles.kebab}>
+        {observations.length > 1 && (
+          <>
+            <DeleteObservationDialog
+              deleteDialogVisible={deleteDialogVisible}
+              hideDialog={hideDialog}
+            />
+            <KebabMenu>
+              <Menu.Item
+                onPress={showDialog}
+                title={t( "Delete" )}
+              />
+            </KebabMenu>
+          </>
+        )}
+      </View>
+      <HeaderBackButton onPress={handleBackButtonPress} style={viewStyles.headerBackButton} />
+      <View style={viewStyles.alignCenter}>
+        {observations.length === 1
+          ? <Headline>{t( "New-Observation" )}</Headline>
+          : (
+            <View style={viewStyles.multipleObsRow}>
+              <Pressable onPress={showPrevObservation} style={viewStyles.caret}>
+                {currentObsIndex !== 0 && <Icon name="keyboard-arrow-left" size={35} />}
+              </Pressable>
+              <Text>{`${currentObsIndex + 1} of ${observations.length}`}</Text>
+              <Pressable onPress={showNextObservation} style={viewStyles.caret}>
+                {( currentObsIndex !== observations.length - 1 )
+                  && <Icon name="keyboard-arrow-right" size={35} />}
+              </Pressable>
+            </View>
+          )}
+      </View>
+    </>
+  );
+
+  const currentObs = observations[currentObsIndex];
+
+  const setPhotos = uris => {
     const updatedObservations = observations;
     const updatedObsPhotos = currentObs.observationPhotos.filter( obsPhoto => {
       const { photo } = obsPhoto;
       if ( uris.includes( photo.url || photo.localFilePath ) ) {
         return obsPhoto;
       }
+      return false;
     } );
     currentObs.observationPhotos = updatedObsPhotos;
     setObservations( [...updatedObservations] );
   };
 
-  const handleSelection = ( photo ) => {
+  const handleSelection = photo => {
     setInitialPhotoSelected( photo );
     showModal( );
   };
 
-  const currentObs = observations[currentObsIndex];
-
   useEffect( ( ) => {
     if ( !currentObs || !currentObs.observationPhotos ) { return; }
-    const uris = currentObs.observationPhotos.map( ( obsPhoto => {
-      return Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo );
-    } ) );
+    const uris = currentObs.observationPhotos.map(
+      obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
+    );
     setPhotoUris( uris );
-  }, [currentObs ] );
+  }, [currentObs] );
 
   if ( !currentObs ) { return null; }
 
@@ -152,7 +152,7 @@ const ObsEdit = ( ): Node => {
         </Modal>
       </Portal>
       <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
-        {renderArrowNavigation( )}
+        {observations.length > 1 && renderArrowNavigation( )}
         <Headline style={textStyles.headerText}>{t( "Evidence" )}</Headline>
         <EvidenceSection handleSelection={handleSelection} photoUris={photoUris} />
         <Headline style={textStyles.headerText}>{t( "Identification" )}</Headline>

@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import Geolocation from "react-native-geolocation-service";
-import { request, PERMISSIONS } from "react-native-permissions";
+import { PERMISSIONS, request } from "react-native-permissions";
+
 import fetchPlaceName from "../sharedHelpers/fetchPlaceName";
 
 const useUserLocation = ( ): Object => {
@@ -20,6 +21,7 @@ const useUserLocation = ( ): Object => {
         console.log( e, ": error requesting iOS permissions" );
       }
     }
+    return null;
   };
 
   useEffect( ( ) => {
@@ -42,7 +44,7 @@ const useUserLocation = ( ): Object => {
       };
 
       // TODO: set geolocation fetch error
-      const failure = ( error ) => console.log( error.code, error.message );
+      const failure = error => console.log( error.code, error.message );
 
       const options = { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
 
@@ -58,6 +60,4 @@ const useUserLocation = ( ): Object => {
   return latLng;
 };
 
-export {
-  useUserLocation
-};
+export default useUserLocation;

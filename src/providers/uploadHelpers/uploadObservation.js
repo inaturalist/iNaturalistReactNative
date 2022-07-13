@@ -3,8 +3,8 @@
 import inatjs from "inaturalistjs";
 import Realm from "realm";
 
-import realmConfig from "../../models/index";
 import { getJWTToken } from "../../components/LoginSignUp/AuthenticationService";
+import realmConfig from "../../models/index";
 import ObservationPhoto from "../../models/ObservationPhoto";
 import ObservationSound from "../../models/ObservationSound";
 
@@ -23,7 +23,12 @@ const markRecordUploaded = async ( uuid: string, type: string, response: Object 
   }
 };
 
-const uploadToServer = async ( uuid: string, type: string, params: Object, apiEndpoint: Function ) => {
+const uploadToServer = async (
+  uuid: string,
+  type: string,
+  params: Object,
+  apiEndpoint: Function
+) => {
   const apiToken = await getJWTToken( false );
   const options = { api_token: apiToken };
 

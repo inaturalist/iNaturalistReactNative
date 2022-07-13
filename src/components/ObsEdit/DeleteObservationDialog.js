@@ -1,12 +1,14 @@
 // @flow
 
-import React, { useContext } from "react";
-import type { Node } from "react";
-import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, { useContext } from "react";
+import {
+  Button, Dialog, Paragraph, Portal
+} from "react-native-paper";
 
-import { viewStyles } from "../../styles/sharedComponents/deletePhotoDialog";
 import { ObsEditContext } from "../../providers/contexts";
+import { viewStyles } from "../../styles/sharedComponents/deletePhotoDialog";
 
 type Props = {
   deleteDialogVisible: boolean,

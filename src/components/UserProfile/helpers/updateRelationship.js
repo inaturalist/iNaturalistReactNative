@@ -13,7 +13,7 @@ const updateRelationship = async ( params: Object ) => {
     const response = await inatjs.relationships.update( params, options );
     console.log( response, "response update relationship" );
   } catch ( e ) {
-    console.log( "Couldn't update relationship:", JSON.stringify( e.response ), );
+    console.log( "Couldn't update relationship:", JSON.stringify( e.response ) );
   }
 };
 

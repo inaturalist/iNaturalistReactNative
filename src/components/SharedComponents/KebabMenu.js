@@ -1,11 +1,11 @@
 // @flow
 
-import React, { useState } from "react";
 import type { Node } from "react";
+import React, { useState } from "react";
 import { Button, Menu } from "react-native-paper";
 
+import colors from "../../styles/colors";
 import { viewStyles } from "../../styles/sharedComponents/kebabMenu";
-import { colors } from "../../styles/global";
 
 type Props = {
   children: any
@@ -30,7 +30,8 @@ const KebabMenu = ( { children }: Props ): Node => {
       visible={visible}
       onDismiss={closeMenu}
       contentStyle={viewStyles.menuContentStyle}
-      anchor={anchorButton}>
+      anchor={anchorButton}
+    >
       {children}
     </Menu>
   );

@@ -1,9 +1,13 @@
 // @flow
-import React, { useState, useEffect } from "react";
 import type { Node } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 
-import { PhotoGalleryContext } from "./contexts";
 import usePhotos from "../components/PhotoLibrary/hooks/usePhotos";
+import { PhotoGalleryContext } from "./contexts";
 
 type Props = {
   children: any
@@ -26,20 +30,10 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
   const [canRequestPhotos, setCanRequestPhotos] = useState( false );
   const photoFetchStatus = usePhotos( photoOptions, isScrolling, canRequestPhotos );
   const photosFetched = photoFetchStatus.photos;
-  const fetchingPhotos = photoFetchStatus.fetchingPhotos;
+  const { fetchingPhotos } = photoFetchStatus;
 
   const [photoGallery, setPhotoGallery] = useState( {} );
   const [selectedPhotos, setSelectedPhotos] = useState( {} );
-
-  const totalSelected = ( ) => {
-    let total = 0;
-    const albums = Object.keys( selectedPhotos );
-
-    albums.forEach( album => {
-      total += selectedPhotos[album].length;
-    } );
-    return total;
-  };
 
   useEffect( ( ) => {
     if ( photosFetched ) {
@@ -64,20 +58,38 @@ const PhotoGalleryProvider = ( { children }: Props ): Node => {
     }
   }, [photosFetched, photoGallery, photoOptions, setPhotoGallery] );
 
-  const photoGalleryValue = {
-    photoGallery,
-    setPhotoGallery,
-    isScrolling,
-    setIsScrolling,
-    photoOptions,
-    setPhotoOptions,
-    selectedPhotos,
-    setSelectedPhotos,
-    fetchingPhotos,
-    totalSelected: totalSelected( ),
+  const photoGalleryValue = useMemo( ( ) => {
+    const totalSelected = ( ) => {
+      let total = 0;
+      const albums = Object.keys( selectedPhotos );
+
+      albums.forEach( album => {
+        total += selectedPhotos[album].length;
+      } );
+      return total;
+    };
+    return {
+      canRequestPhotos,
+      fetchingPhotos,
+      isScrolling,
+      photoGallery,
+      photoOptions,
+      selectedPhotos,
+      setCanRequestPhotos,
+      setIsScrolling,
+      setPhotoGallery,
+      setPhotoOptions,
+      setSelectedPhotos,
+      totalSelected: totalSelected( )
+    };
+  }, [
     canRequestPhotos,
-    setCanRequestPhotos
-  };
+    fetchingPhotos,
+    isScrolling,
+    photoGallery,
+    photoOptions,
+    selectedPhotos
+  ] );
 
   return (
     <PhotoGalleryContext.Provider value={photoGalleryValue}>

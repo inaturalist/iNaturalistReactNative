@@ -1,22 +1,22 @@
 // @flow
 
-import React, { useState, useContext } from "react";
+import CheckBox from "@react-native-community/checkbox";
+import { t } from "i18next";
+import RadioButtonRN from "radio-buttons-react-native";
+import type { Node } from "react";
+import React, { useContext, useState } from "react";
 import { View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import type { Node } from "react";
-import CheckBox from "@react-native-community/checkbox";
-import RadioButtonRN from "radio-buttons-react-native";
-import { t } from "i18next";
 
-import { pickerSelectStyles, viewStyles } from "../../styles/explore/exploreFilters";
 import { ExploreContext } from "../../providers/contexts";
-import DropdownPicker from "./DropdownPicker";
-import TaxonLocationSearch from "./TaxonLocationSearch";
+import { pickerSelectStyles, viewStyles } from "../../styles/explore/exploreFilters";
+import InputField from "../SharedComponents/InputField";
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import TranslatedText from "../SharedComponents/TranslatedText";
+import DropdownPicker from "./DropdownPicker";
 import ExploreFooter from "./ExploreFooter";
-import InputField from "../SharedComponents/InputField";
 import ResetFiltersButton from "./ResetFiltersButton";
+import TaxonLocationSearch from "./TaxonLocationSearch";
 
 const ExploreFilters = ( ): Node => {
   const [project, setProject] = useState( "" );
@@ -28,14 +28,14 @@ const ExploreFilters = ( ): Node => {
     setUnappliedFilters
   } = useContext( ExploreContext );
 
-  const setProjectId = ( getValue ) => {
+  const setProjectId = getValue => {
     setUnappliedFilters( {
       ...unappliedFilters,
       project_id: getValue( )
     } );
   };
 
-  const setUserId = ( getValue ) => {
+  const setUserId = getValue => {
     setUnappliedFilters( {
       ...unappliedFilters,
       user_id: getValue( )
@@ -97,7 +97,7 @@ const ExploreFilters = ( ): Node => {
     { label: t( "Ranks-stateofmatter" ), value: "stateofmatter" },
     { label: t( "Ranks-kingdom" ), value: "kingdom" },
     { label: t( "Ranks-subkingdom" ), value: "subkingdom" },
-    { label: t(  "Ranks-phylum" ), value: "phylum" },
+    { label: t( "Ranks-phylum" ), value: "phylum" },
     { label: t( "Ranks-subphylum" ), value: "subphylum" },
     { label: t( "Ranks-superclass" ), value: "superclass" },
     { label: t( "Ranks-class" ), value: "class" },
@@ -135,7 +135,7 @@ const ExploreFilters = ( ): Node => {
   const projectId = unappliedFilters ? unappliedFilters.project_id : null;
   const userId = unappliedFilters ? unappliedFilters.user_id : null;
 
-  const renderQualityGradeCheckbox = ( qualityGrade ) => {
+  const renderQualityGradeCheckbox = qualityGrade => {
     const filter = unappliedFilters.quality_grade;
     const hasFilter = filter.includes( qualityGrade );
 
@@ -163,7 +163,7 @@ const ExploreFilters = ( ): Node => {
     );
   };
 
-  const renderMediaCheckbox = ( mediaType ) => {
+  const renderMediaCheckbox = mediaType => {
     const { sounds, photos } = unappliedFilters;
     return (
       <CheckBox
@@ -188,8 +188,10 @@ const ExploreFilters = ( ): Node => {
     );
   };
 
-  const renderStatusCheckbox = ( status ) => {
-    const { native, captive, introduced, threatened } = unappliedFilters;
+  const renderStatusCheckbox = status => {
+    const {
+      native, captive, introduced, threatened
+    } = unappliedFilters;
 
     let value;
 
@@ -220,9 +222,9 @@ const ExploreFilters = ( ): Node => {
     );
   };
 
-  const renderRankPicker = ( rank ) => (
+  const renderRankPicker = rank => (
     <RNPickerSelect
-      onValueChange={( itemValue ) => {
+      onValueChange={itemValue => {
         setUnappliedFilters( {
           ...unappliedFilters,
           // $FlowFixMe
@@ -242,7 +244,7 @@ const ExploreFilters = ( ): Node => {
 
     const includesMonth = value => unappliedFilters.months.includes( value );
 
-    const fillInMonths = ( itemValue ) => {
+    const fillInMonths = itemValue => {
       months.forEach( ( { value } ) => {
         if ( value >= firstMonth && value <= itemValue && !includesMonth( value ) ) {
           unappliedFilters.months.push( value );
@@ -257,7 +259,7 @@ const ExploreFilters = ( ): Node => {
     return (
       <>
         <RNPickerSelect
-          onValueChange={( itemValue ) => {
+          onValueChange={itemValue => {
             unappliedFilters.months = [itemValue];
             setUnappliedFilters( { ...unappliedFilters } );
           }}
@@ -267,7 +269,7 @@ const ExploreFilters = ( ): Node => {
           value={firstMonth}
         />
         <RNPickerSelect
-          onValueChange={( itemValue ) => fillInMonths( itemValue )}
+          onValueChange={itemValue => fillInMonths( itemValue )}
           items={months}
           useNativeAndroidPickerStyle={false}
           style={pickerSelectStyles}
@@ -287,20 +289,20 @@ const ExploreFilters = ( ): Node => {
           initial={1}
           boxStyle={viewStyles.radioButtonBox}
           selectedBtn={( { type } ) => {
-          if ( type === "desc" || type === "asc" ) {
-            setExploreFilters( {
-              ...exploreFilters,
-              order: type,
-              order_by: "created_at"
-            } );
-          } else {
+            if ( type === "desc" || type === "asc" ) {
+              setExploreFilters( {
+                ...exploreFilters,
+                order: type,
+                order_by: "created_at"
+              } );
+            } else {
             // votes or observed_on only sort by most recent
-            setExploreFilters( {
-              ...exploreFilters,
-              order: "desc",
-              order_by: type
-            } );
-          }
+              setExploreFilters( {
+                ...exploreFilters,
+                order: "desc",
+                order_by: type
+              } );
+            }
           }}
         />
         <View style={viewStyles.filtersRow}>
@@ -396,7 +398,7 @@ const ExploreFilters = ( ): Node => {
         />
         <TranslatedText text="Photo-Licensing" />
         <RNPickerSelect
-          onValueChange={( itemValue ) => {
+          onValueChange={itemValue => {
             setUnappliedFilters( {
               ...unappliedFilters,
               photo_license: itemValue === "all" ? [] : [itemValue]
@@ -405,11 +407,15 @@ const ExploreFilters = ( ): Node => {
           items={photoLicenses}
           useNativeAndroidPickerStyle={false}
           style={pickerSelectStyles}
-          value={unappliedFilters.photo_license.length > 0 ? unappliedFilters.photo_license[0] : "all"}
+          value={
+            unappliedFilters.photo_license.length > 0
+              ? unappliedFilters.photo_license[0]
+              : "all"
+          }
         />
         <TranslatedText text="Description-Tags" />
         <InputField
-          handleTextChange={( q ) => {
+          handleTextChange={q => {
             setUnappliedFilters( {
               ...unappliedFilters,
               q

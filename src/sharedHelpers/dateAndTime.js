@@ -1,4 +1,6 @@
-import { formatISO, fromUnixTime, formatDistanceToNow, format, getUnixTime, parseISO } from "date-fns";
+import {
+  format, formatDistanceToNow, formatISO, fromUnixTime, getUnixTime, parseISO
+} from "date-fns";
 
 // two options for observed_on_string in uploader are:
 // 2020-03-01 00:00 or 2021-03-24T14:40:25
@@ -11,13 +13,15 @@ const formatDateAndTime = timestamp => {
   return stripTimeZone.join( "-" );
 };
 
-const createObservedOnStringForUpload = ( date ) => formatDateAndTime( getUnixTime( date || new Date( ) ) );
+const createObservedOnStringForUpload = date => formatDateAndTime(
+  getUnixTime( date || new Date( ) )
+);
 
-const displayDateTimeObsEdit = ( date ) => format( new Date( date ), "PPpp" );
+const displayDateTimeObsEdit = date => format( new Date( date ), "PPpp" );
 
 const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
 
-const formatObsListTime = ( date ) => {
+const formatObsListTime = date => {
   const dateTime = "M/d/yy HH:mm a";
   if ( typeof date === "string" ) {
     return format( parseISO( date ), dateTime );
@@ -25,11 +29,10 @@ const formatObsListTime = ( date ) => {
   return format( date, dateTime );
 };
 
-
 export {
-  formatDateAndTime,
-  timeAgo,
-  formatObsListTime,
   createObservedOnStringForUpload,
-  displayDateTimeObsEdit
+  displayDateTimeObsEdit,
+  formatDateAndTime,
+  formatObsListTime,
+  timeAgo
 };

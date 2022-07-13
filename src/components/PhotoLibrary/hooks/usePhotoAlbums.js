@@ -1,8 +1,8 @@
 // @flow
 
-import { useEffect, useState, useMemo } from "react";
 import CameraRoll from "@react-native-community/cameraroll";
 import { t } from "i18next";
+import { useEffect, useMemo, useState } from "react";
 
 const usePhotoAlbums = ( ): Array<Object> => {
   const cameraRoll = useMemo( ( ) => [{
@@ -32,7 +32,6 @@ const usePhotoAlbums = ( ): Array<Object> => {
         setPhotoAlbums( names );
       } catch ( e ) {
         console.log( e, "couldn't fetch photo albums" );
-        return;
       }
     };
 
@@ -47,5 +46,3 @@ const usePhotoAlbums = ( ): Array<Object> => {
 };
 
 export default usePhotoAlbums;
-
-

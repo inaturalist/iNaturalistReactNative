@@ -1,10 +1,12 @@
 // @flow
 
-import * as React from "react";
-import { FlatList, Pressable, Text, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as React from "react";
+import {
+  FlatList, Image, Pressable, Text
+} from "react-native";
 
-import { imageStyles, viewStyles, textStyles } from "../../styles/projects/projects";
+import { imageStyles, textStyles, viewStyles } from "../../styles/projects/projects";
 
 type Props = {
   data: Array<Object>
@@ -21,7 +23,11 @@ const ProjectList = ( { data }: Props ): React.Node => {
         style={viewStyles.row}
         testID={`Project.${item.id}`}
       >
-        <Image source={{ uri: item.icon }} style={imageStyles.projectIcon} testID={`Project.${item.id}.photo`}/>
+        <Image
+          source={{ uri: item.icon }}
+          style={imageStyles.projectIcon}
+          testID={`Project.${item.id}.photo`}
+        />
         <Text style={textStyles.projectName}>{item.title}</Text>
       </Pressable>
     );
@@ -37,4 +43,3 @@ const ProjectList = ( { data }: Props ): React.Node => {
 };
 
 export default ProjectList;
-

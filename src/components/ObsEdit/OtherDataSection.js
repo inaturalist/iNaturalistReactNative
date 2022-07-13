@@ -1,16 +1,16 @@
 // @flow
 
+import { t } from "i18next";
+import type { Node } from "react";
 import React, { useContext } from "react";
 import { View } from "react-native";
-import RNPickerSelect from "react-native-picker-select";
-import type { Node } from "react";
-import { t } from "i18next";
 import { Button } from "react-native-paper";
+import RNPickerSelect from "react-native-picker-select";
 
-import { pickerSelectStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { ObsEditContext } from "../../providers/contexts";
+import colors from "../../styles/colors";
+import { pickerSelectStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import Notes from "./Notes";
-import { colors } from "../../styles/global";
 
 const OtherDataSection = ( ): Node => {
   const {
@@ -61,8 +61,15 @@ const OtherDataSection = ( ): Node => {
           style={pickerSelectStyles}
           value={currentObs.geoprivacy}
         >
-          <Button icon="earth" mode="text" onPress={() => console.log( "Pressed" )} textColor={colors.black}>
-            {t( "Geoprivacy" )} {currentGeoprivacyStatus?.label}
+          <Button
+            icon="earth"
+            mode="text"
+            onPress={() => console.log( "Pressed" )}
+            textColor={colors.black}
+          >
+            {t( "Geoprivacy" )}
+            {" "}
+            {currentGeoprivacyStatus?.label}
           </Button>
         </RNPickerSelect>
       </View>
@@ -74,8 +81,15 @@ const OtherDataSection = ( ): Node => {
           style={pickerSelectStyles}
           value={currentObs.captive_flag}
         >
-          <Button icon="pot" mode="text" onPress={() => console.log( "Pressed" )} textColor={colors.black}>
-            {t( "Organism-is-wild" )} {currentCaptiveStatus?.label}
+          <Button
+            icon="pot"
+            mode="text"
+            onPress={() => console.log( "Pressed" )}
+            textColor={colors.black}
+          >
+            {t( "Organism-is-wild" )}
+            {" "}
+            {currentCaptiveStatus?.label}
           </Button>
         </RNPickerSelect>
       </View>

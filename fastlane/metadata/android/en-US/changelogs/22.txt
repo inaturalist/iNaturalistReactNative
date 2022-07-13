@@ -1,0 +1,6 @@
+Several updates toward basic observation functionality
+
+* Logged out state on My Observations
+* Disabled Location Picker, which isn't working yet in Android
+* Keyboard accomodations for Log In
+* Add ID UI, including remarks / comment addition

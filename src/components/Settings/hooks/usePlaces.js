@@ -1,12 +1,15 @@
 import inatjs from "inaturalistjs";
-import {useEffect, useState} from "react";
-import {Alert} from "react-native";
+import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 const usePlaces = ( q: string ): Array<Object> => {
   const [searchResults, setSearchResults] = useState( [] );
 
   useEffect( ( ) => {
     let isCurrent = true;
+    const cleanUp = ( ) => {
+      isCurrent = false;
+    };
     const fetchSearchResults = async ( ) => {
       try {
         const params = {
@@ -16,7 +19,7 @@ const usePlaces = ( q: string ): Array<Object> => {
           fields: "place,place.display_name,place.place_type"
         };
         const response = await inatjs.search( params );
-        const results = response.results;
+        const { results } = response;
         if ( !isCurrent ) { return; }
         setSearchResults( results.map( r => r.place ) );
       } catch ( e ) {
@@ -34,11 +37,9 @@ const usePlaces = ( q: string ): Array<Object> => {
     };
 
     // don't bother to fetch search results if there isn't a query
-    if ( q === "" ) { return; }
+    if ( q === "" ) { return cleanUp; }
     fetchSearchResults( );
-    return ( ) => {
-      isCurrent = false;
-    };
+    return cleanUp;
   }, [q] );
 
   return searchResults;
