@@ -18,8 +18,9 @@ const faveObservation = async ( uuid: string, endpoint: string ): Promise<?numbe
     const response = await inatjs.observations[endpoint]( params, options );
     return response.total_results;
   } catch ( e ) {
-    console.log( "Couldn't fave observation:", JSON.stringify( e.response ), );
+    console.log( "Couldn't fave observation:", JSON.stringify( e.response ) );
   }
+  return 0;
 };
 
 export default faveObservation;

@@ -1,16 +1,15 @@
 // @flow
 
+import type { Node } from "react";
 import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import type { Node } from "react";
-import { useTranslation } from "react-i18next";
 
-import { pickerSelectStyles, textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { ObsEditContext } from "../../providers/contexts";
+import { pickerSelectStyles, textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import TranslatedText from "../SharedComponents/TranslatedText";
 import Notes from "./Notes";
-
 
 const OtherDataSection = ( ): Node => {
   const {

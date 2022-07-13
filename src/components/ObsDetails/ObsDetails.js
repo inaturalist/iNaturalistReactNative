@@ -1,33 +1,35 @@
 // @flow
 
-import _ from "lodash";
-import React, {useState, useContext, useEffect} from "react";
-import type { Node } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { formatISO } from "date-fns";
-import { Text, View, Image, Pressable, ScrollView, LogBox, Alert } from "react-native";
+import _ from "lodash";
+import type { Node } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  Alert, Image, LogBox, Pressable, ScrollView, Text, View
+} from "react-native";
 
-import ActivityTab from "./ActivityTab";
-import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
-import createComment from "./helpers/createComment";
-import createIdentification from "../Identify/helpers/createIdentification";
-import DataTab from "./DataTab";
-import faveObservation from "./helpers/faveObservation";
-import InputField from "../SharedComponents/InputField";
-import ObsDetailsHeader from "./ObsDetailsHeader";
-import PhotoScroll from "../SharedComponents/PhotoScroll";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import Taxon from "../../models/Taxon";
-import TranslatedText from "../SharedComponents/TranslatedText";
 import User from "../../models/User";
+import { ObsEditContext } from "../../providers/contexts";
+import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
+import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
+import createIdentification from "../Identify/helpers/createIdentification";
+import { getUser } from "../LoginSignUp/AuthenticationService";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import InputField from "../SharedComponents/InputField";
+import PhotoScroll from "../SharedComponents/PhotoScroll";
+import TranslatedText from "../SharedComponents/TranslatedText";
 import UserIcon from "../SharedComponents/UserIcon";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import { ObsEditContext } from "../../providers/contexts";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { useRemoteObservation } from "./hooks/useRemoteObservation";
-import { viewStyles, textStyles } from "../../styles/obsDetails/obsDetails";
-import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
-import { getUser } from "../LoginSignUp/AuthenticationService";
+import ActivityTab from "./ActivityTab";
+import DataTab from "./DataTab";
+import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
+import createComment from "./helpers/createComment";
+import faveObservation from "./helpers/faveObservation";
+import useRemoteObservation from "./hooks/useRemoteObservation";
+import ObsDetailsHeader from "./ObsDetailsHeader";
 
 // this is getting triggered by passing dates, like _created_at, through
 // react navigation via the observation object. it doesn't seem to
@@ -43,7 +45,7 @@ const ObsDetails = ( ): Node => {
   const [comment, setComment] = useState( "" );
   const { addObservations } = useContext( ObsEditContext );
   const { params } = useRoute( );
-  let observation = params.observation;
+  let { observation } = params;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
   const [ids, setIds] = useState( [] );
@@ -61,19 +63,16 @@ const ObsDetails = ( ): Node => {
   const toggleRefetch = ( ) => setRefetch( !refetch );
 
   useEffect( () => {
-    if ( observation ) {setIds( observation.identifications.map( i => i ) );}
+    if ( observation ) { setIds( observation.identifications.map( i => i ) ); }
   }, [observation] );
 
   if ( !observation ) { return null; }
 
-
   const comments = observation.comments.map( c => c );
   const photos = _.compact( observation.observationPhotos.map( op => op.photo ) );
-  const user = observation.user;
-  const taxon = observation.taxon;
-  const uuid = observation.uuid;
+  const { taxon, uuid, user } = observation;
 
-  const onIDAdded = async ( identification ) => {
+  const onIDAdded = async identification => {
     console.log( "onIDAdded", identification );
 
     // Add temporary ID to observation.identifications ("ghosted" ID, while we're trying to add it)
@@ -89,20 +88,25 @@ const ObsDetails = ( ): Node => {
       created_at: formatISO( Date.now() ),
       uuid: identification.uuid,
       vision: false,
-      // This tells us to render is ghosted (since it's temporarily visible until getting a response from the server)
+      // This tells us to render is ghosted (since it's temporarily visible
+      // until getting a response from the server)
       temporary: true
     };
-    setIds( [ ...ids, newId ] );
+    setIds( [...ids, newId] );
 
     let error = null;
 
     try {
-      const results = await createIdentification( { observation_id: observation.uuid, taxon_id: newId.taxon.id, body: newId.body } );
+      const results = await createIdentification( {
+        observation_id: observation.uuid,
+        taxon_id: newId.taxon.id,
+        body: newId.body
+      } );
 
       if ( results === 1 ) {
         // Remove ghosted highlighting
         newId.temporary = false;
-        setIds( [ ...ids, newId ] );
+        setIds( [...ids, newId] );
       } else {
         // Couldn't create ID
         error = t( "Couldnt-create-identification", { error: t( "Unknown-error" ) } );
@@ -130,7 +134,7 @@ const ObsDetails = ( ): Node => {
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
   const navToAddID = ( ) => {
     addObservations( [observation] );
-    navigation.push( "AddID", { onIDAdded: onIDAdded, goBackOnSave: true } );
+    navigation.push( "AddID", { onIDAdded, goBackOnSave: true } );
   };
   const openCommentBox = ( ) => setShowCommentBox( true );
   const submitComment = async ( ) => {
@@ -146,7 +150,7 @@ const ObsDetails = ( ): Node => {
     if ( !taxon ) { return <Text>{t( "Unknown-organism" )}</Text>; }
     return (
       <>
-       <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />
+        <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />
         <Pressable
           style={viewStyles.obsDetailsColumn}
           onPress={navToTaxonDetails}
@@ -173,9 +177,9 @@ const ObsDetails = ( ): Node => {
     }
   };
 
-  const displayCreatedAt = ( ) => observation.createdAt
+  const displayCreatedAt = ( ) => ( observation.createdAt
     ? observation.createdAt
-    : formatObsListTime( observation._created_at );
+    : formatObsListTime( observation._created_at ) );
 
   return (
     <ViewWithFooter>
@@ -207,7 +211,9 @@ const ObsDetails = ( ): Node => {
           <View>
             <Text style={textStyles.text}>{observation.identifications.length}</Text>
             <Text style={textStyles.text}>{observation.comments.length}</Text>
-            <Text style={textStyles.text}>{checkCamelAndSnakeCase( observation, "qualityGrade" )}</Text>
+            <Text style={textStyles.text}>
+              {checkCamelAndSnakeCase( observation, "qualityGrade" )}
+            </Text>
           </View>
         </View>
         <Text style={textStyles.locationText}>
@@ -239,7 +245,7 @@ const ObsDetails = ( ): Node => {
             />
           )
           : <DataTab observation={observation} />}
-          <View style={viewStyles.row}>
+        <View style={viewStyles.row}>
           <View style={viewStyles.button}>
             {/* TODO: get this button working. Not sure why createIdentification isn't working here
             but it doesn't appear to be working on staging either (Mar 11, 2022) */}

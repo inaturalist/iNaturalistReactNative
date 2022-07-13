@@ -1,8 +1,8 @@
 // @flow
 
-import * as React from "react";
-import { View, Text } from "react-native";
 import { t } from "i18next";
+import * as React from "react";
+import { Text, View } from "react-native";
 
 import ActivityItem from "./ActivityItem";
 
@@ -14,7 +14,9 @@ type Props = {
   toggleRefetch: Function
 }
 
-const ActivityTab = ( { comments, ids, navToTaxonDetails, navToUserProfile, toggleRefetch }: Props ): React.Node => {
+const ActivityTab = ( {
+  comments, ids, navToTaxonDetails, navToUserProfile, toggleRefetch
+}: Props ): React.Node => {
   if ( comments.length === 0 && ids.length === 0 ) {
     return <Text>{t( "No-comments-or-ids-to-display" )}</Text>;
   }
@@ -28,7 +30,12 @@ const ActivityTab = ( { comments, ids, navToTaxonDetails, navToUserProfile, togg
     // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/components/activity_item.jsx
     return (
       <View key={item.uuid}>
-        <ActivityItem item={item} handlePress={handlePress} navToTaxonDetails={navToTaxonDetails} toggleRefetch={toggleRefetch} />
+        <ActivityItem
+          item={item}
+          handlePress={handlePress}
+          navToTaxonDetails={navToTaxonDetails}
+          toggleRefetch={toggleRefetch}
+        />
       </View>
     );
   } );

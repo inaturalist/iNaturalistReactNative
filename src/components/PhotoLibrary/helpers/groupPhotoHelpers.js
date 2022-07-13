@@ -2,7 +2,10 @@
 
 const sortByTime = array => array.sort( ( a, b ) => b.timestamp - a.timestamp );
 
-const orderByTimestamp = ( albums: Array<Object>, selectedPhotos: Array<Object> ): Array<Object> => {
+const orderByTimestamp = (
+  albums: Array<Object>,
+  selectedPhotos: Array<Object>
+): Array<Object> => {
   let unorderedPhotos = [];
   albums.forEach( album => {
     unorderedPhotos = unorderedPhotos.concat( selectedPhotos[album] );
@@ -12,11 +15,9 @@ const orderByTimestamp = ( albums: Array<Object>, selectedPhotos: Array<Object> 
   const ordered = sortByTime( unorderedPhotos );
 
   // nest under photos
-  return ordered.map( photo => {
-    return {
-      photos: [photo]
-    };
-  } );
+  return ordered.map( photo => ( {
+    photos: [photo]
+  } ) );
 };
 
 const flattenAndOrderSelectedPhotos = ( selectedObservations: ?Array<Object> ): Array<Object> => {
@@ -27,10 +28,10 @@ const flattenAndOrderSelectedPhotos = ( selectedObservations: ?Array<Object> ): 
   } );
 
   // sort selected observations by timestamp and avoid duplicates
-  return [...new Set( sortByTime( combinedPhotos ) ) ];
+  return [...new Set( sortByTime( combinedPhotos ) )];
 };
 
 export {
-  orderByTimestamp,
-  flattenAndOrderSelectedPhotos
+  flattenAndOrderSelectedPhotos,
+  orderByTimestamp
 };

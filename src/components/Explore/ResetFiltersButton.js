@@ -3,8 +3,8 @@
 import * as React from "react";
 import { Pressable } from "react-native";
 
-import { viewStyles } from "../../styles/observations/messagesIcon";
 import { ExploreContext } from "../../providers/contexts";
+import { viewStyles } from "../../styles/observations/messagesIcon";
 import TranslatedText from "../SharedComponents/TranslatedText";
 
 const ResetFiltersButton = ( ): React.Node => {

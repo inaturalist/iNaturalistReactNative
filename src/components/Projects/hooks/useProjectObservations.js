@@ -1,7 +1,7 @@
 // @flow
 
-import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
+import { useEffect, useState } from "react";
 
 const PHOTO_FIELDS = {
   id: true,
@@ -44,7 +44,7 @@ const useProjectObservations = ( id: number ): Object => {
         setProjectObservations( results );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( `Couldn't fetch project observations for project_id ${id}:`, e.message, );
+        console.log( `Couldn't fetch project observations for project_id ${id}:`, e.message );
       }
     };
 

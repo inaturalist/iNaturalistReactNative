@@ -1,13 +1,13 @@
 // @flow
 
-import React, { useState } from "react";
-import { View, Text } from "react-native";
-import type { Node } from "react";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
 
 import { textStyles } from "../../styles/obsDetails/obsDetails";
-import Map from "../SharedComponents/Map";
 import DropdownPicker from "../Explore/DropdownPicker";
+import Map from "../SharedComponents/Map";
 import addToProject from "./helpers/addToProject";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 
@@ -23,7 +23,7 @@ const DataTab = ( { observation }: Props ): Node => {
   const attribution = observation.taxon && observation.taxon.default_photo
     && observation.taxon.default_photo.attribution;
 
-  const selectProjectId = ( getValue ) => {
+  const selectProjectId = getValue => {
     addToProject( getValue( ), observation.uuid );
     setProjectId( getValue( ) );
   };
@@ -51,8 +51,12 @@ const DataTab = ( { observation }: Props ): Node => {
         {checkCamelAndSnakeCase( observation, "placeGuess" )}
       </Text>
       <Text style={textStyles.dataTabText}>{t( "Date" )}</Text>
-      <Text style={textStyles.dataTabText}>{`${t( "Date-observed-colon" )} ${displayTimeObserved( )}`}</Text>
-      <Text style={textStyles.dataTabText}>{`${t( "Date-uploaded-colon" )} ${observation._synced_at}`}</Text>
+      <Text style={textStyles.dataTabText}>
+        {`${t( "Date-observed-colon" )} ${displayTimeObserved( )}`}
+      </Text>
+      <Text style={textStyles.dataTabText}>
+        {`${t( "Date-uploaded-colon" )} ${observation._synced_at}`}
+      </Text>
       <Text style={textStyles.dataTabText}>{t( "Projects" )}</Text>
       {/* TODO: create a custom dropdown that doesn't use FlatList */}
       <DropdownPicker

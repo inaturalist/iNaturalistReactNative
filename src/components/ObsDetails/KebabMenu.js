@@ -1,16 +1,18 @@
 // @flow
 
-import React, { useState } from "react";
 import type { Node } from "react";
-import { Button, Menu, Provider, DefaultTheme } from "react-native-paper";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import Realm from "realm";
 import { View } from "react-native";
+import {
+  Button, DefaultTheme, Menu, Provider
+} from "react-native-paper";
+import Realm from "realm";
 
-import { viewStyles } from "../../styles/obsDetails/obsDetails";
 import Comment from "../../models/Comment";
 import realmConfig from "../../models/index";
-import { colors } from "../../styles/global";
+import colors from "../../styles/colors";
+import { viewStyles } from "../../styles/obsDetails/obsDetails";
 
 type Props = {
   uuid: string,
@@ -35,7 +37,8 @@ const KebabMenu = ( { uuid, toggleRefetch }: Props ): Node => {
           contentStyle={viewStyles.textPadding}
           anchor={
             <Button onPress={openMenu} icon="dots-horizontal" textColor={colors.logInGray} />
-          }>
+          }
+        >
           <Menu.Item
             onPress={async ( ) => {
               const realm = await Realm.open( realmConfig );

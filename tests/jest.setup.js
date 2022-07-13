@@ -1,11 +1,12 @@
 import "react-native-gesture-handler/jestSetup";
-import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js";
+
+import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 
 // this resolves error with importing file after Jest environment is torn down
 // https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
 jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
-  default: ( ) => ( {getInitialState: {then: jest.fn()}} ),
+  default: ( ) => ( { getInitialState: { then: jest.fn() } } ),
   __esModule: true
 } ) );
 
@@ -20,7 +21,7 @@ jest.mock( "react-native/Libraries/LogBox/LogBox" );
 jest.mock( "../src/models/index", ( ) => {
   const originalModule = jest.requireActual( "../src/models/index" );
 
-  //Mock the default export and named export 'foo'
+  // Mock the default export and named export 'foo'
   return {
     __esModule: true,
     ...originalModule,
@@ -32,18 +33,14 @@ jest.mock( "../src/models/index", ( ) => {
   };
 } );
 
-jest.mock( "react-native-localize", () => {
-  return jest.requireActual( "react-native-localize/mock" );
-} );
+jest.mock( "react-native-localize", () => jest.requireActual( "react-native-localize/mock" ) );
 
-jest.mock( "react-native-config", () => {
-  return {
-    OAUTH_CLIENT_ID: process.env.OAUTH_CLIENT_ID,
-    OAUTH_CLIENT_SECRET: process.env.OAUTH_CLIENT_SECRET,
-    JWT_ANONYMOUS_API_SECRET: process.env.JWT_ANONYMOUS_API_SECRET,
-    API_URL: process.env.API_URL
-  };
-} );
+jest.mock( "react-native-config", () => ( {
+  OAUTH_CLIENT_ID: process.env.OAUTH_CLIENT_ID,
+  OAUTH_CLIENT_SECRET: process.env.OAUTH_CLIENT_SECRET,
+  JWT_ANONYMOUS_API_SECRET: process.env.JWT_ANONYMOUS_API_SECRET,
+  API_URL: process.env.API_URL
+} ) );
 
 jest.mock( "react-native-device-info", () => mockRNDeviceInfo );
 
@@ -57,8 +54,8 @@ jest.mock( "react-native-sensitive-info", () => {
         || "default";
     }
 
-    static validateString( s ){
-      if ( typeof s !== "string" ) {throw new Error( "Invalid string:", s );}
+    static validateString( s ) {
+      if ( typeof s !== "string" ) { throw new Error( "Invalid string:", s ); }
     }
 
     static getItem = jest.fn( async ( k, o ) => {
@@ -67,18 +64,22 @@ jest.mock( "react-native-sensitive-info", () => {
       const serviceName = RNSInfo.getServiceName( o );
       const service = RNSInfo.stores.get( serviceName );
 
-      if ( service ) {return service.get( k ) || null;}
+      if ( service ) { return service.get( k ) || null; }
+      return null;
     } )
 
-    static getAllItems = jest.fn( async ( o ) => {
+    static getAllItems = jest.fn( async o => {
       const serviceName = RNSInfo.getServiceName( o );
       const service = RNSInfo.stores.get( serviceName );
-      const mappedValues = [];
+      let mappedValues = [];
 
-      if ( service?.size ){
-        for ( const [k, v] of service.entries() ){
-          mappedValues.push( {key: k, value: v, service: serviceName} );
-        }
+      if ( service?.size ) {
+        // for ( const [k, v] of service.entries() ) {
+        //   mappedValues.push( { key: k, value: v, service: serviceName } );
+        // }
+        mappedValues = service.entries( ).map(
+          ( key, value ) => ( { key, value, service: serviceName } )
+        );
       }
 
       return mappedValues;
@@ -91,7 +92,7 @@ jest.mock( "react-native-sensitive-info", () => {
       const serviceName = RNSInfo.getServiceName( o );
       let service = RNSInfo.stores.get( serviceName );
 
-      if ( !service ){
+      if ( !service ) {
         RNSInfo.stores.set( serviceName, new Map() );
         service = RNSInfo.stores.get( serviceName );
       }
@@ -107,7 +108,7 @@ jest.mock( "react-native-sensitive-info", () => {
       const serviceName = RNSInfo.getServiceName( o );
       const service = RNSInfo.stores.get( serviceName );
 
-      if ( service ) {service.delete( k );}
+      if ( service ) { service.delete( k ); }
 
       return null;
     } )
@@ -127,33 +128,36 @@ jest.mock( "react-native-sensitive-info", () => {
 jest.setTimeout( 50000 );
 
 // https://github.com/zoontek/react-native-permissions
+// eslint-disable-next-line global-require
 jest.mock( "react-native-permissions", () => require( "react-native-permissions/mock" ) );
 
 // mocking globally since this currently affects a handful of unit and integration tests
-jest.mock( "react-native-geolocation-service", ( ) => {
-  return {
-    getCurrentPosition: ( ) => jest.fn( )
-  };
-} );
+jest.mock( "react-native-geolocation-service", ( ) => ( {
+  getCurrentPosition: ( ) => jest.fn( )
+} ) );
 
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 
 jest.mock( "react-i18next", () => ( {
-  useTranslation: () => ( {t: key => key} )
+  useTranslation: () => ( { t: key => key } )
 } ) );
 
 jest.mock( "react-native-localize", () => ( {
   getTimeZone: ( ) => "Europe/Paris", // the timezone you want
   getLocales: ( ) => [
-    { countryCode: "NL", languageTag: "nl-NL", languageCode: "nl", isRTL: false },
-    { countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false }
-	]
+    {
+      countryCode: "NL", languageTag: "nl-NL", languageCode: "nl", isRTL: false
+    },
+    {
+      countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false
+    }
+  ]
 } ) );
 
 // Make apisauce work with nock
 jest.mock( "apisauce", ( ) => ( {
-  create: ( config ) => {
-    let axiosInstance = jest.requireActual( "axios" ).create( config );
+  create: config => {
+    const axiosInstance = jest.requireActual( "axios" ).create( config );
     const apisauce = jest.requireActual( "apisauce" );
     return apisauce.create( { ...config, axiosInstance } );
   }
@@ -167,9 +171,7 @@ global.FormData = FormDataMock;
 
 jest.mock( "react-native-fs", ( ) => {
   const RNFS = {
-    moveFile: async ( ) => {
-      return "testdata";
-    }
+    moveFile: async ( ) => "testdata"
   };
 
   return RNFS;

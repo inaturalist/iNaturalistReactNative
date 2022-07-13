@@ -1,17 +1,17 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
-import { Text, View, Pressable } from "react-native";
 import type { Node } from "react";
+import React, { useEffect, useState } from "react";
+import { Pressable, Text, View } from "react-native";
 
-import UserIcon from "../SharedComponents/UserIcon";
-import SmallSquareImage from "./SmallSquareImage";
-import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
-import KebabMenu from "./KebabMenu";
 import { timeAgo } from "../../sharedHelpers/dateAndTime";
+import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
 import PlaceholderText from "../PlaceholderText";
+import UserIcon from "../SharedComponents/UserIcon";
+import KebabMenu from "./KebabMenu";
+import SmallSquareImage from "./SmallSquareImage";
 
 type Props = {
   item: Object,
@@ -20,10 +20,12 @@ type Props = {
   toggleRefetch: Function
 }
 
-const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: Props ): Node => {
+const ActivityItem = ( {
+  item, navToTaxonDetails, handlePress, toggleRefetch
+}: Props ): Node => {
   const [currentUser, setCurrentUser] = useState( null );
-  const taxon = item.taxon;
-  const user = item.user;
+  const { taxon } = item;
+  const { user } = item;
 
   useEffect( ( ) => {
     const isCurrentUser = async ( ) => {
@@ -66,7 +68,11 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
           <SmallSquareImage uri={Taxon.uri( taxon )} />
           <View>
             <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
-            <Text style={textStyles.scientificNameText}>{taxon.rank} {taxon.name}</Text>
+            <Text style={textStyles.scientificNameText}>
+              {taxon.rank}
+              {" "}
+              {taxon.name}
+            </Text>
           </View>
         </Pressable>
       )}

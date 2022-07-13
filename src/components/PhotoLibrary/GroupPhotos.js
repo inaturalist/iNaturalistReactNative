@@ -1,17 +1,21 @@
 // @flow
 
-import React, { useContext, useState } from "react";
-import { Pressable, Image, FlatList, ActivityIndicator, Text, View } from "react-native";
-import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
+import React, { useContext, useState } from "react";
+import {
+  ActivityIndicator, FlatList, Image, Pressable, Text, View
+} from "react-native";
+import Realm from "realm";
 
-import { imageStyles, viewStyles, textStyles } from "../../styles/photoLibrary/photoGallery";
-import GroupPhotosHeader from "./GroupPhotosHeader";
+import realmConfig from "../../models/index";
+import Observation from "../../models/Observation";
 import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
+import { imageStyles, textStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotosFooter from "./GroupPhotosFooter";
-import Observation from "../../models/Observation";
-import { orderByTimestamp, flattenAndOrderSelectedPhotos } from "./helpers/groupPhotoHelpers";
+import GroupPhotosHeader from "./GroupPhotosHeader";
+import { flattenAndOrderSelectedPhotos, orderByTimestamp } from "./helpers/groupPhotoHelpers";
 
 const GroupPhotos = ( ): Node => {
   const { addObservations } = useContext( ObsEditContext );
@@ -24,13 +28,13 @@ const GroupPhotos = ( ): Node => {
   const [obsToEdit, setObsToEdit] = useState( { observations } );
   const [selectedObservations, setSelectedObservations] = useState( [] );
 
-  const updateFlatList = ( rerenderFlatList ) => {
+  const updateFlatList = rerenderFlatList => {
     setObsToEdit( {
       ...obsToEdit,
       // there might be a better way to do this, but adding this key forces the FlatList
       // to rerender anytime an observation is unselected
       rerenderFlatList
-     } );
+    } );
   };
 
   const selectObservationPhotos = ( isSelected, observation ) => {
@@ -128,7 +132,7 @@ const GroupPhotos = ( ): Node => {
     // make sure at least one set of combined photos is selected
     if ( maxCombinedPhotos < 2 ) { return; }
 
-    let separatedPhotos = [];
+    const separatedPhotos = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
 
     // create a list of grouped photos, with selected photos split into individual observations
@@ -148,15 +152,17 @@ const GroupPhotos = ( ): Node => {
   };
 
   const removePhotos = ( ) => {
-    let removedPhotos = {};
-    let removedFromGroup = [];
+    const removedPhotos = {};
+    const removedFromGroup = [];
 
     const orderedPhotos = flattenAndOrderSelectedPhotos( );
 
     // create a list of selected photos in each album, with selected photos removed
     albums.forEach( album => {
       const currentAlbum = selectedPhotos[album];
-      const filteredAlbum = currentAlbum && currentAlbum.filter( item => !orderedPhotos.includes( item ) );
+      const filteredAlbum = currentAlbum && currentAlbum.filter(
+        item => !orderedPhotos.includes( item )
+      );
       removedPhotos.album = filteredAlbum;
     } );
 
@@ -177,7 +183,9 @@ const GroupPhotos = ( ): Node => {
 
   const navToObsEdit = async ( ) => {
     const obs = obsToEdit.observations;
-    const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs );
+    const realm = await Realm.open( realmConfig );
+    const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs, realm );
+    realm.close( );
     addObservations( obsPhotos );
     navigation.navigate( "ObsEdit" );
   };

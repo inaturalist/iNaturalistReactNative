@@ -1,34 +1,35 @@
 // @flow
 
-import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
+import * as React from "react";
+import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { signOut, getUserId } from "../components/LoginSignUp/AuthenticationService";
-import PlaceholderComponent from "../components/PlaceholderComponent";
-import MyObservationsStackNavigator from "./myObservationsStackNavigation";
-import ExploreStackNavigator from "./exploreStackNavigation";
-import Search from "../components/Search/Search";
-import Login from "../components/LoginSignUp/Login";
-import ProjectsStackNavigation from "./projectsStackNavigation";
-import CameraStackNavigation from "./cameraStackNavigation";
-import CustomDrawerContent from "../components/CustomDrawerContent";
-import IdentifyStackNavigation from "./identifyStackNavigation";
-import ObsEditProvider from "../providers/ObsEditProvider";
-import NetworkLogging from "../components/NetworkLogging";
-import NotificationsStackNavigation from "./notificationsStackNavigation";
 import About from "../components/About";
-import Mortal from "../components/SharedComponents/Mortal";
-import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
-import { colors } from "../styles/global";
-import { viewStyles } from "../styles/navigation/rootNavigation";
+import CustomDrawerContent from "../components/CustomDrawerContent";
+import { getUserId, signOut } from "../components/LoginSignUp/AuthenticationService";
+import Login from "../components/LoginSignUp/Login";
+import NetworkLogging from "../components/NetworkLogging";
+import PlaceholderComponent from "../components/PlaceholderComponent";
+import Search from "../components/Search/Search";
 import Settings from "../components/Settings/Settings";
+import Mortal from "../components/SharedComponents/Mortal";
+import ObsEditProvider from "../providers/ObsEditProvider";
+import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
+import colors from "../styles/colors";
+import { viewStyles } from "../styles/navigation/rootNavigation";
+import CameraStackNavigation from "./cameraStackNavigation";
+import ExploreStackNavigator from "./exploreStackNavigation";
+import IdentifyStackNavigation from "./identifyStackNavigation";
+import MyObservationsStackNavigator from "./myObservationsStackNavigation";
+import NotificationsStackNavigation from "./notificationsStackNavigation";
+import ProjectsStackNavigation from "./projectsStackNavigation";
 
 // this removes the default hamburger menu from header
-const screenOptions = { headerLeft: ( ) => <></> };
+const screenOptions = { headerLeft: ( ) => <View /> };
 const hideHeader = {
   headerShown: false,
   label: "my observations"
@@ -54,6 +55,10 @@ const theme = {
   }
 };
 
+const drawerRenderer = ( { state, navigation, descriptors } ) => (
+  <CustomDrawerContent state={state} navigation={navigation} descriptors={descriptors} />
+);
+
 const App = ( ): React.Node => {
   React.useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {
@@ -76,8 +81,6 @@ const App = ( ): React.Node => {
     checkForSignedInUser( );
   }, [] );
 
-  const drawerContent = ( props ) => <CustomDrawerContent {...props} />;
-
   return (
     <PaperProvider theme={theme}>
       <GestureHandlerRootView style={viewStyles.container}>
@@ -87,7 +90,7 @@ const App = ( ): React.Node => {
               <Drawer.Navigator
                 screenOptions={screenOptions}
                 name="Drawer"
-                drawerContent={drawerContent}
+                drawerContent={drawerRenderer}
               >
                 <Drawer.Screen
                   name="my observations"
@@ -117,7 +120,7 @@ const App = ( ): React.Node => {
                   component={About}
                 />
                 <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-                <Drawer.Screen name="login" component={MortalLogin} options={hideHeader}/>
+                <Drawer.Screen name="login" component={MortalLogin} options={hideHeader} />
                 <Drawer.Screen
                   name="camera"
                   component={CameraStackNavigation}

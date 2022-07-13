@@ -1,21 +1,23 @@
 // @flow
 
-import React, { useRef, useState, useContext, useEffect } from "react";
-import { Text, View, Pressable } from "react-native";
-import { Camera, useCameraDevices } from "react-native-vision-camera";
-import type { Node } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Avatar, useTheme } from "react-native-paper";
-import Realm from "realm";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, {
+  useContext, useEffect, useRef, useState
+} from "react";
+import { Pressable, Text, View } from "react-native";
+import { Avatar, useTheme } from "react-native-paper";
+import { Camera, useCameraDevices } from "react-native-vision-camera";
+import Realm from "realm";
 
-import { viewStyles } from "../../styles/camera/standardCamera";
-import { ObsEditContext } from "../../providers/contexts";
-import CameraView from "./CameraView";
-import PhotoPreview from "./PhotoPreview";
-import { textStyles } from "../../styles/obsDetails/obsDetails";
 import realmConfig from "../../models/index";
 import Photo from "../../models/Photo";
+import { ObsEditContext } from "../../providers/contexts";
+import { viewStyles } from "../../styles/camera/standardCamera";
+import { textStyles } from "../../styles/obsDetails/obsDetails";
+import CameraView from "./CameraView";
+import PhotoPreview from "./PhotoPreview";
 
 const StandardCamera = ( ): Node => {
   const { colors } = useTheme( );
@@ -72,7 +74,9 @@ const StandardCamera = ( ): Node => {
     }
   }, [photos] );
 
-  const renderCameraButton = ( icon ) => <Avatar.Icon size={40} icon={icon} style={{ backgroundColor: colors.background }} />;
+  const renderCameraButton = icon => (
+    <Avatar.Icon size={40} icon={icon} style={{ backgroundColor: colors.background }} />
+  );
 
   return (
     <View style={viewStyles.container}>

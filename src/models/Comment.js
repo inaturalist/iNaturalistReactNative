@@ -1,8 +1,11 @@
-import Realm from "realm";
 import inatjs from "inaturalistjs";
+import Realm from "realm";
 
+// eslint-disable-next-line import/no-cycle
 import { getJWTToken } from "../components/LoginSignUp/AuthenticationService";
+// eslint-disable-next-line import/no-cycle
 import User from "./User";
+
 class Comment extends Realm.Object {
   static COMMENT_FIELDS = {
     uuid: true,
@@ -22,7 +25,7 @@ class Comment extends Realm.Object {
   static async deleteComment( id, realm ) {
     // first delete locally
     realm?.write( ( ) => {
-      const commentToDelete = realm.objects( "Comment" ).filtered( `uuid == "${id}"` )[0];
+      const commentToDelete = realm.objects( "Comment" ).filtered( `uuid == "${id}"` )[0];
       realm.delete( commentToDelete );
     } );
 

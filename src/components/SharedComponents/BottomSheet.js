@@ -1,13 +1,13 @@
 // @flow
 
-import React, { useEffect, useRef } from "react";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
-
 import type { Node } from "react";
+import React, { useEffect, useRef } from "react";
+
 import { viewStyles } from "../../styles/sharedComponents/bottomSheet";
 
 type Props = {
@@ -18,8 +18,10 @@ const BottomSheet = ( { children }: Props ): Node => {
   // ref
   const bottomSheetModalRef = useRef( null );
 
-  const renderBackdrop = ( props ) => (
-    <BottomSheetBackdrop {...props}
+  const renderBackdrop = props => (
+    <BottomSheetBackdrop
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
       pressBehavior="close"
       appearsOnIndex={0}
       disappearsOnIndex={-1}

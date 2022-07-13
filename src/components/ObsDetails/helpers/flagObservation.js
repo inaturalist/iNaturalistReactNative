@@ -27,8 +27,9 @@ const flagObservation = async ( id: number ): Promise<?number> => {
     const response = await inatjs.flags.create( params, options );
     return response.total_results;
   } catch ( e ) {
-    console.log( "Couldn't flag observation:", JSON.stringify( e.response ), );
+    console.log( "Couldn't flag observation:", JSON.stringify( e.response ) );
   }
+  return 0;
 };
 
 export default flagObservation;

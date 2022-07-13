@@ -33,6 +33,4 @@ const useLoggedIn = ( ): ?boolean => {
   return isLoggedIn;
 };
 
-export {
-  useLoggedIn
-};
+export default useLoggedIn;

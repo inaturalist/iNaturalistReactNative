@@ -1,5 +1,3 @@
-// @flow
-
 // from Seek: https://github.com/inaturalist/SeekReactNative/blob/64ae3df185fffe751aff40ab17e3ff2dd8a74e42/utility/dictionaries/taxonDict.js#L1
 const iconicTaxaIds = {
   birds: 3,
@@ -14,18 +12,22 @@ const iconicTaxaIds = {
   plants: 47126
 };
 
-const iconicTaxaNames = {
-  "3": "Birds",
-  "20978": "Amphibians",
-  "26036": "Reptiles",
-  "40151": "Mammals",
-  "47178": "Fish",
-  "47115": "Mollusks",
-  "47158": "Insects",
-  "47119": "Arachnids",
-  "47170": "Fungi",
-  "47126": "Plants"
-};
+// const iconicTaxaNames = {
+//   3: "Birds",
+//   20978: "Amphibians",
+//   26036: "Reptiles",
+//   40151: "Mammals",
+//   47178: "Fish",
+//   47115: "Mollusks",
+//   47158: "Insects",
+//   47119: "Arachnids",
+//   47170: "Fungi",
+//   47126: "Plants"
+// };
+
+const iconicTaxaNames = new Map(
+  Object.keys( iconicTaxaIds ).map( name => [iconicTaxaIds[name], name] )
+);
 
 export {
   iconicTaxaIds,

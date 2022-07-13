@@ -1,10 +1,10 @@
 // @flow
 
-import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
+import { useEffect, useState } from "react";
 
+import MESSAGE_FIELDS from "../../../providers/fields";
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
-import { MESSAGE_FIELDS } from "../../../providers/fields";
 
 const useMessages = ( ): {
   messages: Array<Object>,
@@ -37,7 +37,7 @@ const useMessages = ( ): {
         setLoading( false );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch messages:", e.message, );
+        console.log( "Couldn't fetch messages:", e.message );
         setLoading( false );
       }
     };

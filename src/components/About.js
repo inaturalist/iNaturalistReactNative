@@ -1,11 +1,11 @@
 // @flow
 
-import React from "react";
-import { getVersion, getBuildNumber } from "react-native-device-info";
-
 import type { Node } from "react";
-import ViewWithFooter from "./SharedComponents/ViewWithFooter";
+import React from "react";
+import { getBuildNumber, getVersion } from "react-native-device-info";
+
 import PlaceholderText from "./PlaceholderText";
+import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 
 const AboutScreen = ( ): Node => {
   const appVersion = getVersion( );

@@ -1,17 +1,19 @@
 // @flow
 
-import React, { useContext } from "react";
-import {Text, Pressable, FlatList, View} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  FlatList, Pressable, Text, View
+} from "react-native";
 import { Avatar, useTheme } from "react-native-paper";
 
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
 import { ObsEditContext } from "../../providers/contexts";
+import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import PlaceholderText from "../PlaceholderText";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 
 const IdentificationSection = ( ): Node => {
   const {
@@ -26,14 +28,14 @@ const IdentificationSection = ( ): Node => {
   const currentObs = observations[currentObsIndex];
   const identification = currentObs.taxon;
 
-  const onIDAdded = async ( id ) => {
+  const updateIdentification = taxon => updateTaxon( taxon );
+
+  const onIDAdded = async id => {
     console.log( "onIDAdded", id );
     updateIdentification( id.taxon );
   };
 
-  const updateIdentification = ( taxon ) => updateTaxon( taxon );
-
-  const navToAddID = ( ) => navigation.push( "AddID", { onIDAdded: onIDAdded, hideComment: true } );
+  const navToAddID = ( ) => navigation.push( "AddID", { onIDAdded, hideComment: true } );
 
   const renderIconicTaxaButton = ( { item } ) => {
     const id = iconicTaxaIds[item];
@@ -76,30 +78,29 @@ const IdentificationSection = ( ): Node => {
           </Pressable>
         </View>
       );
-    } else {
-      return (
-        <>
-          <RoundGreenButton
-            handlePress={navToAddID}
-            buttonText="View Identification Suggestions"
-            testID="ObsEdit.Suggestions"
-          />
-          <Text style={textStyles.text}>
-            {identification && identification.id && t( iconicTaxaNames[identification.id] )}
-          </Text>
-        </>
-      );
     }
+    return (
+      <>
+        <RoundGreenButton
+          handlePress={navToAddID}
+          buttonText="View Identification Suggestions"
+          testID="ObsEdit.Suggestions"
+        />
+        <Text style={textStyles.text}>
+          {identification && identification.id && t( iconicTaxaNames[identification.id] )}
+        </Text>
+      </>
+    );
   };
 
   return (
     <>
       {displayIdentification( )}
-        <FlatList
-          data={Object.keys( iconicTaxaIds )}
-          horizontal
-          renderItem={renderIconicTaxaButton}
-        />
+      <FlatList
+        data={Object.keys( iconicTaxaIds )}
+        horizontal
+        renderItem={renderIconicTaxaButton}
+      />
     </>
   );
 };

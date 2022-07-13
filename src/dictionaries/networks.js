@@ -1,5 +1,5 @@
 // Key = site_id
-const inatNetworks = {
+export default {
   1: { name: "iNaturalist" },
   2: { name: "NaturaLista" },
   3: { name: "iNaturalist NZ - Mātaki Taiao" },
@@ -20,8 +20,4 @@ const inatNetworks = {
   24: { name: "iNaturalist Guatemala" },
   21: { name: "iNaturalist Sweden" },
   28: { name: "Naturalista Uruguay" }
-};
-
-export {
-  inatNetworks
 };

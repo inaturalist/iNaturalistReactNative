@@ -1,14 +1,16 @@
 // @flow
-import React, { useRef, useState, useEffect } from "react";
-import { StyleSheet, Animated } from "react-native";
-import { Camera } from "react-native-vision-camera";
-import type { Node } from "react";
 import { useIsFocused } from "@react-navigation/native";
+import type { Node } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, StyleSheet } from "react-native";
 import { PinchGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
-import Reanimated, { Extrapolate, interpolate, useAnimatedGestureHandler, useAnimatedProps, useSharedValue } from "react-native-reanimated";
+import Reanimated, {
+  Extrapolate, interpolate, useAnimatedGestureHandler, useAnimatedProps, useSharedValue
+} from "react-native-reanimated";
+import { Camera } from "react-native-vision-camera";
 
 import FocusSquare from "./FocusSquare";
-import { useIsForeground } from "./hooks/useIsForeground";
+import useIsForeground from "./hooks/useIsForeground";
 
 // a lot of the camera functionality (pinch to zoom, etc.) is lifted from the example library:
 // https://github.com/mrousavy/react-native-vision-camera/blob/7335883969c9102b8a6d14ca7ed871f3de7e1389/example/src/CameraPage.tsx
@@ -43,11 +45,13 @@ const CameraView = ( { camera, device }: Props ): Node => {
       zoom: z
     };
   }, [maxZoom, minZoom, zoom] );
-  //#endregion
+  // #endregion
 
-  //#region Pinch to Zoom Gesture
-  // The gesture handler maps the linear pinch gesture (0 - 1) to an exponential curve since a camera's zoom
-  // function does not appear linear to the user. (aka zoom 0.1 -> 0.2 does not look equal in difference as 0.8 -> 0.9)
+  // #region Pinch to Zoom Gesture
+  // The gesture handler maps the linear pinch gesture (0 - 1) to an
+  // exponential curve since a camera's zoom function does not appear linear
+  // to the user. (aka zoom 0.1 -> 0.2 does not look equal in difference as
+  // 0.8 -> 0.9)
   const onPinchGesture = useAnimatedGestureHandler( {
     onStart: ( _, context ) => {
       context.startZoom = zoom.value;
@@ -55,13 +59,23 @@ const CameraView = ( { camera, device }: Props ): Node => {
     onActive: ( event, context ) => {
       // we're trying to map the scale gesture to a linear zoom here
       const startZoom = context.startZoom ?? 0;
-      const scale = interpolate( event.scale, [1 - 1 / SCALE_FULL_ZOOM, 1, SCALE_FULL_ZOOM], [-1, 0, 1], Extrapolate.CLAMP );
-      zoom.value = interpolate( scale, [-1, 0, 1], [minZoom, startZoom, maxZoom], Extrapolate.CLAMP );
+      const scale = interpolate(
+        event.scale,
+        [1 - 1 / SCALE_FULL_ZOOM, 1, SCALE_FULL_ZOOM],
+        [-1, 0, 1],
+        Extrapolate.CLAMP
+      );
+      zoom.value = interpolate(
+        scale,
+        [-1, 0, 1],
+        [minZoom, startZoom, maxZoom],
+        Extrapolate.CLAMP
+      );
     }
   } );
-  //#endregion
+  // #endregion
 
-  //#region Effects
+  // #region Effects
   const neutralZoom = device?.neutralZoom ?? 1;
   useEffect( ( ) => {
     // Run everytime the neutralZoomScaled value changes. (reset zoom when device changes)

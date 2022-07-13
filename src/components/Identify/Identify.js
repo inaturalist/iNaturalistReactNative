@@ -1,16 +1,16 @@
 // @flow
 
-import React, { useState } from "react";
 import type { Node } from "react";
-import { Text, View, Pressable } from "react-native";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Pressable, Text, View } from "react-native";
 
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import useObservations from "./hooks/useObservations";
-import GridView from "./GridView";
+import { viewStyles } from "../../styles/identify/identify";
 import DropdownPicker from "../Explore/DropdownPicker";
-import { viewStyles } from "./../../styles/identify/identify";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import CardSwipeView from "./CardSwipeView";
+import GridView from "./GridView";
+import useObservations from "./hooks/useObservations";
 
 const Identify = ( ): Node => {
   const [view, setView] = React.useState( "grid" );
@@ -20,8 +20,8 @@ const Identify = ( ): Node => {
   const [taxonId, setTaxonId] = useState( null );
   const { observations, loading } = useObservations( placeId, taxonId );
 
-  const updatePlaceId = ( getValue ) => setPlaceId( getValue( ) );
-  const updateTaxonId = ( getValue ) => setTaxonId( getValue( ) );
+  const updatePlaceId = getValue => setPlaceId( getValue( ) );
+  const updateTaxonId = getValue => setTaxonId( getValue( ) );
 
   const setGridView = ( ) => setView( "grid" );
   const setCardView = ( ) => setView( "card" );
@@ -29,21 +29,16 @@ const Identify = ( ): Node => {
   const renderView = ( ) => {
     if ( view === "card" ) {
       return (
-        <CardSwipeView
-          loading={loading}
-          observationList={observations}
-          testID="Identify.cardView"
-        />
-      );
-    } else {
-      return (
-        <GridView
-          loading={loading}
-          observationList={observations}
-          testID="Identify.observationGrid"
-        />
+        <CardSwipeView observationList={observations} />
       );
     }
+    return (
+      <GridView
+        loading={loading}
+        observationList={observations}
+        testID="Identify.observationGrid"
+      />
+    );
   };
 
   const { t } = useTranslation( );
@@ -51,7 +46,7 @@ const Identify = ( ): Node => {
   return (
     <ViewWithFooter>
       <View style={viewStyles.toggleViewRow}>
-              <Pressable
+        <Pressable
           onPress={setCardView}
           accessibilityRole="button"
         >
@@ -64,7 +59,7 @@ const Identify = ( ): Node => {
         >
           <Text>{ t( "Grid-View" ) }</Text>
         </Pressable>
-        </View>
+      </View>
       <DropdownPicker
         searchQuery={location}
         setSearchQuery={setLocation}
@@ -79,7 +74,7 @@ const Identify = ( ): Node => {
         sources="taxa"
         value={taxonId}
       />
-     {renderView( )}
+      {renderView( )}
     </ViewWithFooter>
   );
 };
