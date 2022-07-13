@@ -114,6 +114,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     return obs;
   };
 
+  const deleteCurrentObservation = ( ) => {
+    if ( currentObsIndex === observations.length - 1 ) {
+      setCurrentObsIndex( currentObsIndex - 1 );
+    }
+    observations.splice( currentObsIndex, 1 );
+    setObservations( observations );
+
+
+  };
+
   const obsEditValue = {
     currentObsIndex,
     setCurrentObsIndex,
@@ -127,7 +137,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     updateTaxon,
     saveObservation,
     saveAndUploadObservation,
-    openSavedObservation
+    openSavedObservation,
+    deleteCurrentObservation
   };
 
   return (

@@ -63,6 +63,7 @@
   "Date-observed-colon": "Date observed:",
   "Date-uploaded-colon": "Date uploaded:",
   "Default-Search-Place": "Default Search Place",
+  "Delete": "Delete",
   "Delete-comment": "Delete comment",
   "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}",
   "Description-Tags": "Description/Tags",
@@ -181,6 +182,7 @@
   },
   "New-Observation": "New Observation",
   "Next": "Next",
+  "No": "No",
   "No-account-found": {
     "comment": "When the user tries to reset password but enters a non-existent email",
     "val": "No account found with that email"
@@ -199,7 +201,7 @@
   "Open": "Open",
   "Organism-is-wild": {
     "comment": "Picker prompt on observation edit",
-    "val": "Organism is wild"
+    "val": "Organism is wild:"
   },
   "Other-Data": "Other Data",
   "Password": "Password",
@@ -378,6 +380,7 @@
     "val": "{ $photoCount ->\n  [one] 1 photo\n *[other] { $photoCount } photos\n}, { $observationCount ->\n  [one] 1 observation\n *[other] { $observationCount } observations\n}"
   },
   "X-unuploaded-observations": "{ $observationCount ->\n  [one] 1 unuploaded observation\n *[other] { $observationCount } unuploaded observations\n}",
+  "Yes": "Yes",
   "Yes-delete-photo": "Yes, delete photo",
   "You-denied-iNaturalist-permission-to-do-that": {
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",

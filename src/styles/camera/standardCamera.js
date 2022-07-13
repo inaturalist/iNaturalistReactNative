@@ -54,17 +54,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: colors.black,
     width,
     height: cameraCaptureRowHeight
-  },
-  confirmButton: {
-    backgroundColor: colors.inatGreen,
-    borderRadius: 40,
-    alignSelf: "center"
-  },
-  cancelButton: {
-    backgroundColor: colors.gray,
-    borderRadius: 40,
-    alignSelf: "center",
-    marginRight: 10
   }
 } );
 

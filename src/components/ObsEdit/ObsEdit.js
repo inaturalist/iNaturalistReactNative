@@ -21,6 +21,7 @@ import EvidenceSection from "./EvidenceSection";
 import MediaViewer from "../MediaViewer/MediaViewer";
 import Photo from "../../models/Photo";
 import KebabMenu from "../SharedComponents/KebabMenu";
+import DeleteObservationDialog from "./DeleteObservationDialog";
 
 const ObsEdit = ( ): Node => {
   const {
@@ -41,12 +42,16 @@ const ObsEdit = ( ): Node => {
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [photoUris, setPhotoUris] = useState( [] );
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
 
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
 
   const showNextObservation = ( ) => setCurrentObsIndex( currentObsIndex + 1 );
   const showPrevObservation = ( ) => setCurrentObsIndex( currentObsIndex - 1 );
+
+  const showDialog = ( ) => setDeleteDialogVisible( true );
+  const hideDialog = ( ) => setDeleteDialogVisible( false );
 
   const renderArrowNavigation = ( ) => {
     if ( observations.length === 0 ) { return; }
@@ -67,12 +72,18 @@ const ObsEdit = ( ): Node => {
       <>
         <View style={viewStyles.kebab}>
           {observations.length > 1 && (
-            <KebabMenu>
-              <Menu.Item
-                onPress={( ) => console.log( "handle press in kebab" ) }
-                title={t( "Delete" )}
+            <>
+              <DeleteObservationDialog
+                deleteDialogVisible={deleteDialogVisible}
+                hideDialog={hideDialog}
               />
-            </KebabMenu>
+              <KebabMenu>
+                <Menu.Item
+                  onPress={showDialog}
+                  title={t( "Delete" )}
+                />
+              </KebabMenu>
+            </>
           )}
         </View>
         <HeaderBackButton onPress={handleBackButtonPress} style={viewStyles.headerBackButton} />

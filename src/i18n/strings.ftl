@@ -261,6 +261,8 @@ New-Observation = New Observation
 
 Next = Next
 
+No = No
+
 # When the user tries to reset password but enters a non-existent email
 No-account-found = No account found with that email
 
@@ -284,7 +286,7 @@ Observations = Observations
 Open = Open
 
 # Picker prompt on observation edit
-Organism-is-wild = Organism is wild
+Organism-is-wild = Organism is wild:
 
 Other-Data = Other Data
 
@@ -570,6 +572,10 @@ X-unuploaded-observations = {$observationCount ->
     [one] 1 unuploaded observation
     *[other] {$observationCount} unuploaded observations
 }
+
+Yes = Yes
+
+Yes-delete-observation = Yes, delete observation
 
 Yes-delete-photo = Yes, delete photo
 

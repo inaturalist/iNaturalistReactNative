@@ -6,7 +6,7 @@ import Realm from "realm";
 import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
-import { viewStyles } from "../../styles/camera/standardCamera";
+import { viewStyles } from "../../styles/sharedComponents/deletePhotoDialog";
 import Photo from "../../models/Photo";
 import realmConfig from "../../models/index";
 
