@@ -67,7 +67,7 @@ const ObsEdit = ( ): Node => {
     }
   };
 
-  const renderArrowNavigation = ( ) => (
+  const renderHeader = ( ) => (
     <>
       <View style={viewStyles.kebab}>
         {observations.length > 1 && (
@@ -152,7 +152,7 @@ const ObsEdit = ( ): Node => {
         </Modal>
       </Portal>
       <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
-        {observations.length > 1 && renderArrowNavigation( )}
+        {renderHeader( )}
         <Headline style={textStyles.headerText}>{t( "Evidence" )}</Headline>
         <EvidenceSection handleSelection={handleSelection} photoUris={photoUris} />
         <Headline style={textStyles.headerText}>{t( "Identification" )}</Headline>
