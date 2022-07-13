@@ -88,6 +88,8 @@ Date-uploaded-colon = Date uploaded:
 
 Default-Search-Place = Default Search Place
 
+Delete = Delete
+
 Delete-comment = Delete comment
 
 DELETE-X-OBSERVATIONS = DELETE {$count ->

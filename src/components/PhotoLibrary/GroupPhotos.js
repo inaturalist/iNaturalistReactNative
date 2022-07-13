@@ -96,6 +96,7 @@ const GroupPhotos = ( ): Node => {
 
     setObsToEdit( { observations: newObsList } );
     setSelectedObservations( [] );
+    setSelectionMode( false );
   };
 
   const separatePhotos = ( ) => {
@@ -128,13 +129,14 @@ const GroupPhotos = ( ): Node => {
     } );
     setObsToEdit( { observations: separatedPhotos } );
     setSelectedObservations( [] );
+    setSelectionMode( false );
   };
 
   const removePhotos = ( ) => {
     let removedPhotos = {};
     let removedFromGroup = [];
 
-    const orderedPhotos = flattenAndOrderSelectedPhotos( );
+    const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
 
     // create a list of selected photos in each album, with selected photos removed
     albums.forEach( album => {
@@ -156,6 +158,7 @@ const GroupPhotos = ( ): Node => {
     } );
     // remove from group photos screen
     setObsToEdit( { observations: removedFromGroup } );
+    setSelectionMode( false );
   };
 
   const navToObsEdit = async ( ) => {

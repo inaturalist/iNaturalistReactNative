@@ -51,7 +51,7 @@ const GroupPhotoImage = ( {
         style={imageStyles.imagesForGrouping}
       />
       {selectionMode && renderIcon( )}
-      {( selectionMode && hasMultiplePhotos ) && numberOfPhotosIcon( )}
+      {hasMultiplePhotos && numberOfPhotosIcon( )}
     </Pressable>
   );
 };

@@ -1,16 +1,15 @@
 // @flow
 
-import React, { useState, useCallback } from "react";
-import { View, Pressable, Text } from "react-native";
+import React from "react";
+import { View, Text } from "react-native";
 import type { Node } from "react";
 import { t } from "i18next";
-import { Button, Menu } from "react-native-paper";
+import { Menu } from "react-native-paper";
 
-import { viewStyles, textStyles } from "../../styles/photoLibrary/photoGalleryFooter";
-import { colors } from "../../styles/global";
-import Modal from "../SharedComponents/Modal";
+import { viewStyles } from "../../styles/photoLibrary/photoGalleryFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import SecondaryCTAButton from "../SharedComponents/Buttons/SecondaryCTAButton";
+import KebabMenu from "../SharedComponents/KebabMenu";
 
 type Props = {
   combinePhotos: Function,
@@ -33,33 +32,30 @@ const GroupPhotosFooter = ( {
   setSelectionMode,
   selectionMode
 }: Props ): Node => {
-  const [showModal, setModal] = useState( false );
-
-  const openModal = useCallback( ( ) => setModal( true ), [] );
-  const closeModal = useCallback( ( ) => setModal( false ), [] );
-
   const noObsSelected = selectedObservations.length === 0;
   const oneObsSelected = selectedObservations.length === 1;
   const obsWithMultiplePhotosSelected = selectedObservations?.[0]?.photos?.length > 1;
 
-  const selectionModal = ( ) => (
-    <View style={viewStyles.selectionModal}>
-      <SecondaryCTAButton onPress={combinePhotos} disabled={noObsSelected || oneObsSelected}>
-        <Text>{t( "Combine-Photos" )}</Text>
-      </SecondaryCTAButton>
-      <SecondaryCTAButton onPress={separatePhotos} disabled={!obsWithMultiplePhotosSelected}>
-        <Text>{t( "Separate-Photos" )}</Text>
-      </SecondaryCTAButton>
-      <SecondaryCTAButton onPress={removePhotos} disabled={noObsSelected}>
-        <Text>{t( "Remove-Photos" )}</Text>
-      </SecondaryCTAButton>
-    </View>
-  );
-
   const renderSelectionModeFooter = ( ) => (
     <>
       <View style={viewStyles.selectionButtons}>
-        <Button onPress={openModal} icon="dots-horizontal" textColor={colors.logInGray} />
+        <KebabMenu>
+          <Menu.Item
+            onPress={combinePhotos}
+            disabled={noObsSelected || oneObsSelected}
+            title={t( "Combine-Photos" )}
+          />
+          <Menu.Item
+            onPress={separatePhotos}
+            disabled={!obsWithMultiplePhotosSelected}
+            title={t( "Separate-Photos" )}
+          />
+          <Menu.Item
+            onPress={removePhotos}
+            disabled={noObsSelected}
+            title={t( "Remove-Photos" )}
+          />
+        </KebabMenu>
         <SecondaryCTAButton
           onPress={( ) => {
             setSelectionMode( false );
@@ -94,12 +90,6 @@ const GroupPhotosFooter = ( {
 
   return (
     <View style={viewStyles.footer}>
-      <Modal
-        showModal={showModal}
-        closeModal={closeModal}
-        modal={selectionModal( )}
-        backdropOpacity={0}
-      />
       {selectionMode ? renderSelectionModeFooter( ) : renderFooter( )}
     </View>
   );
