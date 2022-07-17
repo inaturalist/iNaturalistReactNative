@@ -95,7 +95,17 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   bottomModal: {
     padding: 0,
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
+    shadowColor: "#000",
+    borderTopStartRadius: 24,
+    borderTopEndRadius: 24,
+    shadowOffset: {
+      width: 0,
+      height: 12
+    },
+    shadowOpacity: 0.75,
+    shadowRadius: 16.0,
+    elevation: 24
   },
   commentInputContainer: {
     position: "relative"
@@ -113,7 +123,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   sendComment: {
     position: "absolute",
     right: -30,
-    bottom: 10,
+    bottom: 20,
     zIndex: 9999,
     width: 80,
     height: 40
@@ -121,9 +131,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   background: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(255,255,255,0.0)"
-  },
-  shadowContainer: {
-    width: "100%"
   },
   handleContainer: {
     alignItems: "center",

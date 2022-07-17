@@ -13,7 +13,7 @@ import {
   LogBox,
   Alert,
   TextInput as NativeTextInput,
-  TouchableOpacity
+  TouchableOpacity, Platform
 } from "react-native";
 import { useTranslation } from "react-i18next";
 
@@ -37,11 +37,10 @@ import { viewStyles, textStyles } from "../../styles/obsDetails/obsDetails";
 import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
 import { getUser } from "../LoginSignUp/AuthenticationService";
 import RoundGrayButton from "../SharedComponents/Buttons/RoundGrayButton";
-import {BottomSheetModal, BottomSheetModalProvider} from "@gorhom/bottom-sheet";
+import {BottomSheetModal, BottomSheetModalProvider, BottomSheetTextInput} from "@gorhom/bottom-sheet";
 import {ActivityIndicator, TextInput} from "react-native-paper";
 import {colors} from "../../styles/global";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import {Shadow} from "react-native-shadow-2";
 
 // this is getting triggered by passing dates, like _created_at, through
 // react navigation via the observation object. it doesn't seem to
@@ -79,13 +78,7 @@ const ObsDetails = ( ): Node => {
   };
 
   const renderHandle = ( props ) => (
-    <Shadow
-      sides={["top"]}
-      corners={["topLeft", "topRight"]}
-      radius={24}
-      viewStyle={viewStyles.shadowContainer}>
       <View style={viewStyles.handleContainer} />
-    </Shadow>
   );
 
   const renderBackdrop = ( props ) => (
@@ -125,7 +118,7 @@ const ObsDetails = ( ): Node => {
 
 
   const comments = observation.comments.map( c => c );
-  const photos = _.compact( observation.observationPhotos.map( op => op.photo ) );
+  const photos = _.compact( observation.observationPhotos?.map( op => op.photo ) );
   const user = observation.user;
   const taxon = observation.taxon;
   const uuid = observation.uuid;
@@ -220,6 +213,43 @@ const ObsDetails = ( ): Node => {
         </Pressable>
       </>
     );
+  };
+
+  const renderBottomSheetTextView = () => {
+    if ( Platform.OS === "ios" ) {
+      return <BottomSheetTextInput
+        keyboardType="default"
+        style={[viewStyles.commentInput, viewStyles.commentInputText]}
+        value={comment}
+        selectionColor={colors.black}
+        activeUnderlineColor={colors.transparent}
+        placeholder={t( "Add-a-comment" )}
+        autoFocus
+        multiline
+        onChangeText={setComment}
+      />;
+    } else {
+      return <TextInput
+        keyboardType="default"
+        style={[viewStyles.commentInput]}
+        value={comment}
+        selectionColor={colors.black}
+        activeUnderlineColor={colors.transparent}
+        placeholder={t( "Add-a-comment" )}
+        autoFocus
+        multiline
+        onChangeText={setComment}
+        render={( innerProps ) => (
+          <NativeTextInput
+            {...innerProps}
+            style={[
+              innerProps.style,
+              viewStyles.commentInputText
+            ]}
+          />
+        )}
+      />;
+    }
   };
 
   const faveOrUnfave = async ( ) => {
@@ -333,26 +363,7 @@ const ObsDetails = ( ): Node => {
           style={viewStyles.bottomModal}
         >
           <View style={viewStyles.commentInputContainer}>
-            <TextInput
-              keyboardType="default"
-              style={viewStyles.commentInput}
-              value={comment}
-              selectionColor={colors.black}
-              activeUnderlineColor={colors.transparent}
-              placeholder={t( "Add-a-comment" )}
-              autoFocus
-              multiline
-              onChangeText={setComment}
-              render={( innerProps ) => (
-                <NativeTextInput
-                  {...innerProps}
-                  style={[
-                    innerProps.style,
-                    viewStyles.commentInputText
-                  ]}
-                />
-              )}
-            />
+            {renderBottomSheetTextView()}
             <TouchableOpacity
               style={viewStyles.sendComment}
               onPress={() => submitComment(  )}>
