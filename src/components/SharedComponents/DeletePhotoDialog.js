@@ -10,7 +10,7 @@ import Realm from "realm";
 
 import realmConfig from "../../models/index";
 import Photo from "../../models/Photo";
-import { viewStyles } from "../../styles/camera/standardCamera";
+import { viewStyles } from "../../styles/sharedComponents/deletePhotoDialog";
 
 type Props = {
   deleteDialogVisible: boolean,

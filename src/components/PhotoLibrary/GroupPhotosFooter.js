@@ -1,13 +1,15 @@
 // @flow
 
+import { t } from "i18next";
 import type { Node } from "react";
-import React, { useCallback, useState } from "react";
-import { Pressable, View } from "react-native";
+import React from "react";
+import { Text, View } from "react-native";
+import { Menu } from "react-native-paper";
 
-import { textStyles, viewStyles } from "../../styles/photoLibrary/photoGalleryHeader";
+import { viewStyles } from "../../styles/photoLibrary/photoGalleryFooter";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import Modal from "../SharedComponents/Modal";
-import TranslatedText from "../SharedComponents/TranslatedText";
+import SecondaryCTAButton from "../SharedComponents/Buttons/SecondaryCTAButton";
+import KebabMenu from "../SharedComponents/KebabMenu";
 
 type Props = {
   combinePhotos: Function,
@@ -15,7 +17,9 @@ type Props = {
   removePhotos: Function,
   navToObsEdit: Function,
   clearSelection: Function,
-  selectedObservations: Array<Object>
+  selectedObservations: Array<Object>,
+  setSelectionMode: Function,
+  selectionMode: boolean
 }
 
 const GroupPhotosFooter = ( {
@@ -24,50 +28,56 @@ const GroupPhotosFooter = ( {
   removePhotos,
   navToObsEdit,
   clearSelection,
-  selectedObservations
+  selectedObservations,
+  setSelectionMode,
+  selectionMode
 }: Props ): Node => {
-  const [showModal, setModal] = useState( false );
+  const noObsSelected = selectedObservations.length === 0;
+  const oneObsSelected = selectedObservations.length === 1;
+  const obsWithMultiplePhotosSelected = selectedObservations?.[0]?.photos?.length > 1;
 
-  const openModal = useCallback( ( ) => setModal( true ), [] );
-  const closeModal = useCallback( ( ) => setModal( false ), [] );
-
-  const multipleObsSelected = selectedObservations.length > 1;
-  const isSelected = selectedObservations.length > 0;
-
-  const combineStyle = [textStyles.selections, !multipleObsSelected && textStyles.disabled];
-  const selectionStyle = [textStyles.selections, !isSelected && textStyles.disabled];
-
-  const selectionModal = ( ) => (
-    <View style={viewStyles.selectionModal}>
-      <Pressable onPress={combinePhotos} disabled={!multipleObsSelected}>
-        <TranslatedText style={combineStyle} text="Combine-Photos" />
-      </Pressable>
-      <Pressable onPress={separatePhotos} disabled={!isSelected}>
-        <TranslatedText style={selectionStyle} text="Separate-Photos" />
-      </Pressable>
-      <Pressable onPress={removePhotos} disabled={!isSelected}>
-        <TranslatedText style={selectionStyle} text="Remove-Photos" />
-      </Pressable>
-    </View>
+  const renderSelectionModeFooter = ( ) => (
+    <>
+      <View style={viewStyles.selectionButtons}>
+        <KebabMenu>
+          <Menu.Item
+            onPress={combinePhotos}
+            disabled={noObsSelected || oneObsSelected}
+            title={t( "Combine-Photos" )}
+          />
+          <Menu.Item
+            onPress={separatePhotos}
+            disabled={!obsWithMultiplePhotosSelected}
+            title={t( "Separate-Photos" )}
+          />
+          <Menu.Item
+            onPress={removePhotos}
+            disabled={noObsSelected}
+            title={t( "Remove-Photos" )}
+          />
+        </KebabMenu>
+        <SecondaryCTAButton
+          onPress={( ) => {
+            setSelectionMode( false );
+            clearSelection( );
+          }}
+        >
+          <Text>{t( "Cancel" )}</Text>
+        </SecondaryCTAButton>
+      </View>
+      <View style={viewStyles.nextButton} />
+    </>
   );
 
-  return (
-    <View style={viewStyles.footer}>
-      <Modal
-        showModal={showModal}
-        closeModal={closeModal}
-        modal={selectionModal( )}
-      />
-      <Pressable onPress={openModal}>
-        <TranslatedText text="Select" />
-      </Pressable>
-      {isSelected && (
-        <Pressable
-          onPress={clearSelection}
+  const renderFooter = ( ) => (
+    <>
+      <View style={viewStyles.selectionButtons}>
+        <SecondaryCTAButton
+          onPress={( ) => setSelectionMode( true )}
         >
-          <TranslatedText style={textStyles.header} text="Cancel" />
-        </Pressable>
-      )}
+          <Text>{t( "Select" )}</Text>
+        </SecondaryCTAButton>
+      </View>
       <View style={viewStyles.nextButton}>
         <RoundGreenButton
           buttonText="Next"
@@ -75,6 +85,12 @@ const GroupPhotosFooter = ( {
           testID="GroupPhotos.next"
         />
       </View>
+    </>
+  );
+
+  return (
+    <View style={viewStyles.footer}>
+      {selectionMode ? renderSelectionModeFooter( ) : renderFooter( )}
     </View>
   );
 };

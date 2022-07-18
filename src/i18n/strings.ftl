@@ -49,6 +49,8 @@ Birds = Birds
 
 Blocked-Users = Blocked Users
 
+Camera-Roll = Camera Roll
+
 Cancel = Cancel
 
 Captive-Cultivated = Captive/Cultivated
@@ -85,6 +87,8 @@ Date-observed-colon = Date observed:
 Date-uploaded-colon = Date uploaded:
 
 Default-Search-Place = Default Search Place
+
+Delete = Delete
 
 Delete-comment = Delete comment
 
@@ -153,6 +157,12 @@ IDs = ID's
 IDENTIFICATION = IDENTIFICATION
 
 Identification = Identification
+
+# Shows the number of photos a user selected from the camera roll for upload
+Import-X-photos = Import {$count ->
+    [one] 1 photo
+    *[other] {$count} photos
+}
 
 iNaturalist-Activity-Notifications = iNaturalist Activity Notifications
 
@@ -251,6 +261,8 @@ New-Observation = New Observation
 
 Next = Next
 
+No = No
+
 # When the user tries to reset password but enters a non-existent email
 No-account-found = No account found with that email
 
@@ -274,7 +286,7 @@ Observations = Observations
 Open = Open
 
 # Picker prompt on observation edit
-Organism-is-wild = Organism is wild
+Organism-is-wild = Organism is wild:
 
 Other-Data = Other Data
 
@@ -514,12 +526,6 @@ Upload-X-Observations = Upload {$count ->
     *[other] {$count} Observations
 }
 
-# Shows the number of photos a user selected from the camera roll for upload
-Upload-X-photos = Upload {$count ->
-    [one] 1 photo
-    *[other] {$count} photos
-}
-
 # Shows the number of observations a user is currently uploading on my observations page
 Uploading-X-Observations = Uploading {$count ->
     [one] 1 Observation
@@ -566,6 +572,10 @@ X-unuploaded-observations = {$observationCount ->
     [one] 1 unuploaded observation
     *[other] {$observationCount} unuploaded observations
 }
+
+Yes = Yes
+
+Yes-delete-observation = Yes, delete observation
 
 Yes-delete-photo = Yes, delete photo
 

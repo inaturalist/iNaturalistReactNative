@@ -1,14 +1,15 @@
 // @flow
 
+import { t } from "i18next";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Button } from "react-native-paper";
 import RNPickerSelect from "react-native-picker-select";
 
 import { ObsEditContext } from "../../providers/contexts";
-import { pickerSelectStyles, textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
-import TranslatedText from "../SharedComponents/TranslatedText";
+import colors from "../../styles/colors";
+import { pickerSelectStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import Notes from "./Notes";
 
 const OtherDataSection = ( ): Node => {
@@ -17,7 +18,6 @@ const OtherDataSection = ( ): Node => {
     observations,
     updateObservationKey
   } = useContext( ObsEditContext );
-  const { t } = useTranslation( );
 
   const geoprivacyOptions = [{
     label: t( "Open" ),
@@ -34,11 +34,11 @@ const OtherDataSection = ( ): Node => {
 
   // opposite of Seek (asking if wild, not if captive)
   const captiveOptions = [{
-    label: "no",
+    label: t( "No" ),
     value: true
   },
   {
-    label: "yes",
+    label: t( "Yes" ),
     value: false
   }];
 
@@ -48,41 +48,50 @@ const OtherDataSection = ( ): Node => {
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
   const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
 
-  // const updateProjectIds = projectId => {
-  //   const updatedObs = observations.map( ( obs, index ) => {
-  //     if ( index === currentObsIndex ) {
-  //       return {
-  //         ...obs,
-  //         project_ids: obs.project_ids.concat( [projectId] )
-  //       };
-  //     } else {
-  //       return obs;
-  //     }
-  //   } );
-  //   setObservations( updatedObs );
-  // };
+  const currentGeoprivacyStatus = geoprivacyOptions.find( e => e.value === currentObs.geoprivacy );
+  const currentCaptiveStatus = captiveOptions.find( e => e.value === currentObs.captive_flag );
 
   return (
     <>
       <View style={viewStyles.row}>
-        <TranslatedText style={textStyles.text} text="Geoprivacy" />
         <RNPickerSelect
           onValueChange={updateGeoprivacyStatus}
           items={geoprivacyOptions}
           useNativeAndroidPickerStyle={false}
           style={pickerSelectStyles}
           value={currentObs.geoprivacy}
-        />
+        >
+          <Button
+            icon="earth"
+            mode="text"
+            onPress={() => console.log( "Pressed" )}
+            textColor={colors.black}
+          >
+            {t( "Geoprivacy" )}
+            {" "}
+            {currentGeoprivacyStatus?.label}
+          </Button>
+        </RNPickerSelect>
       </View>
       <View style={viewStyles.row}>
-        <Text style={textStyles.text}>{t( "Organism-is-wild" )}</Text>
         <RNPickerSelect
           onValueChange={updateCaptiveStatus}
           items={captiveOptions}
           useNativeAndroidPickerStyle={false}
           style={pickerSelectStyles}
           value={currentObs.captive_flag}
-        />
+        >
+          <Button
+            icon="pot"
+            mode="text"
+            onPress={() => console.log( "Pressed" )}
+            textColor={colors.black}
+          >
+            {t( "Organism-is-wild" )}
+            {" "}
+            {currentCaptiveStatus?.label}
+          </Button>
+        </RNPickerSelect>
       </View>
       <Notes addNotes={addNotes} description={currentObs.description} />
     </>

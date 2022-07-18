@@ -3,11 +3,8 @@
 import { Dimensions, StyleSheet } from "react-native";
 import type {
   ImageStyleProp,
-  TextStyleProp,
   ViewStyleProp
 } from "react-native/Libraries/StyleSheet/StyleSheet";
-
-import colors from "../colors";
 
 const { width } = Dimensions.get( "screen" );
 
@@ -19,19 +16,17 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   centerImages: {
     paddingHorizontal: 20
   },
-  multiplePhotoTextBackground: {
-    zIndex: 1
-  }
-} );
-
-const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  multiplePhotoText: {
-    color: colors.inatGreen,
-    fontSize: 20,
+  selectionIcon: {
+    zIndex: 1,
     position: "absolute",
-    right: 20,
     top: 20,
-    backgroundColor: colors.white
+    right: 10
+  },
+  numOfPhotosIcon: {
+    zIndex: 1,
+    position: "absolute",
+    bottom: 20,
+    right: 10
   }
 } );
 
@@ -43,19 +38,21 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
     height: galleryImageWidth,
     width: galleryImageWidth
   },
-  selected: {
-    tintColor: colors.inatGreen
-  },
   imagesForGrouping: {
     height: groupImageWidth,
     width: groupImageWidth,
     marginHorizontal: 10,
     marginVertical: 10
+  },
+  selectedIcon: {
+    zIndex: 1,
+    right: 0,
+    position: "absolute",
+    top: 0
   }
 } );
 
 export {
   imageStyles,
-  textStyles,
   viewStyles
 };

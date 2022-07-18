@@ -44,14 +44,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( [newObs] );
   };
 
-  const openSavedObservation = async savedUUID => {
-    const realm = await Realm.open( realmConfig );
-    const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
-    const plainObject = obs.toJSON( );
-    setObservations( [plainObject] );
-    return obs;
-  };
-
   const obsEditValue = useMemo( ( ) => {
     const updateObservationKey = ( key, value ) => {
       const updatedObs = observations.map( ( obs, index ) => {
@@ -95,6 +87,28 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
     };
 
+    const openSavedObservation = async savedUUID => {
+      const realm = await Realm.open( realmConfig );
+      const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
+      const plainObject = obs.toJSON( );
+      setObservations( [plainObject] );
+      return obs;
+    };
+
+    const deleteCurrentObservation = ( ) => {
+      if ( currentObsIndex === observations.length - 1 ) {
+        setCurrentObsIndex( currentObsIndex - 1 );
+      }
+      observations.splice( currentObsIndex, 1 );
+      setObservations( observations );
+
+      if ( observations.length === 0 ) {
+        navigation.navigate( "my observations", {
+          screen: "ObsList"
+        } );
+      }
+    };
+
     const saveObservation = async ( ) => {
       const localObs = await saveLocalObservation( currentObs );
       if ( localObs ) {
@@ -110,12 +124,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         setNextScreen( );
       }
     };
+
     return {
       addObservationNoEvidence,
       addObservations,
       addPhotos,
       addSound,
       currentObsIndex,
+      deleteCurrentObservation,
       observations,
       openSavedObservation,
       saveAndUploadObservation,

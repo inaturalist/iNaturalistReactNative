@@ -1,16 +1,21 @@
 // @flow
 
+import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
+import { Menu } from "react-native-paper";
+import Realm from "realm";
 
+import Comment from "../../models/Comment";
+import realmConfig from "../../models/index";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import { timeAgo } from "../../sharedHelpers/dateAndTime";
 import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
 import PlaceholderText from "../PlaceholderText";
+import KebabMenu from "../SharedComponents/KebabMenu";
 import UserIcon from "../SharedComponents/UserIcon";
-import KebabMenu from "./KebabMenu";
 import SmallSquareImage from "./SmallSquareImage";
 
 type Props = {
@@ -54,8 +59,18 @@ const ActivityItem = ( {
           <Text style={textStyles.labels}>{item.category}</Text>
           {item.created_at && <Text style={textStyles.labels}>{timeAgo( item.created_at )}</Text>}
           {item.body && currentUser
-            ? <KebabMenu uuid={item.uuid} toggleRefetch={toggleRefetch} />
-            : <PlaceholderText text="menu" />}
+            ? (
+              <KebabMenu>
+                <Menu.Item
+                  onPress={async ( ) => {
+                    const realm = await Realm.open( realmConfig );
+                    Comment.deleteComment( item.uuid, realm );
+                    toggleRefetch( );
+                  }}
+                  title={t( "Delete-comment" )}
+                />
+              </KebabMenu>
+            ) : <PlaceholderText text="menu" />}
         </View>
       </View>
       {taxon && (

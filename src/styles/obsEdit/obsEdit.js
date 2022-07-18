@@ -33,11 +33,11 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   text: {
     marginHorizontal: 20
   },
-  notes: {
-    marginHorizontal: 20
-  },
   smallLabel: {
     fontSize: 11
+  },
+  verticalCenter: {
+    lineHeight: 0
   }
 } );
 
@@ -62,6 +62,16 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  headerRow: {
+    height: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20
+  },
+  caret: {
+    width: 35
+  },
   bottomModal: {
     backgroundColor: colors.white,
     borderTopRightRadius: 30,
@@ -78,9 +88,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   noMargin: {
     margin: 0
   },
-  saveButton: {
-    width: 100
-  },
   greenSelectionBorder: {
     borderWidth: 3,
     borderColor: colors.selectionGreen
@@ -93,6 +100,16 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row",
     flexWrap: "nowrap",
     marginVertical: 10
+  },
+  multipleObsRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    alignItems: "center"
+  },
+  buttonRow: {
+    paddingTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-evenly"
   },
   evidenceList: {
     marginBottom: 20

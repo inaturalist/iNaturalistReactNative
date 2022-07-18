@@ -2,13 +2,12 @@
 
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
+import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 import { textStyles, viewStyles } from "../../styles/photoLibrary/photoGalleryHeader";
-import TranslatedText from "../SharedComponents/TranslatedText";
 
 type Props = {
   photos: number,
@@ -17,7 +16,6 @@ type Props = {
 
 const GroupPhotosHeader = ( { photos, observations }: Props ): Node => {
   const navigation = useNavigation( );
-  const { t } = useTranslation( );
 
   const navBack = ( ) => navigation.goBack( );
 
@@ -25,12 +23,12 @@ const GroupPhotosHeader = ( { photos, observations }: Props ): Node => {
     <>
       <View style={viewStyles.header}>
         <HeaderBackButton onPress={navBack} />
-        <TranslatedText style={textStyles.header} text="Group-Photos" />
+        <Text style={textStyles.header}>{t( "Group-Photos" )}</Text>
       </View>
       <Text style={textStyles.header}>
         {t( "X-photos-X-observations", { photoCount: photos, observationCount: observations } )}
       </Text>
-      <TranslatedText style={textStyles.text} text="Combine-photos-onboarding" />
+      <Text style={textStyles.text}>{t( "Combine-photos-onboarding" )}</Text>
     </>
   );
 };

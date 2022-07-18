@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
 import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import ObsEdit from "../../../../src/components/ObsEdit/ObsEdit";
 import { ObsEditContext } from "../../../../src/providers/contexts";
@@ -66,11 +67,13 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
 ) );
 
 const renderObsEdit = ( ) => render(
-  <NavigationContainer>
-    <ObsEditProvider>
-      <ObsEdit />
-    </ObsEditProvider>
-  </NavigationContainer>
+  <SafeAreaProvider>
+    <NavigationContainer>
+      <ObsEditProvider>
+        <ObsEdit />
+      </ObsEditProvider>
+    </NavigationContainer>
+  </SafeAreaProvider>
 );
 
 test( "renders observation photo from photo gallery", ( ) => {

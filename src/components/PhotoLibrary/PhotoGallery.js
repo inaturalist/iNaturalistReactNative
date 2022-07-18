@@ -7,8 +7,10 @@ import React, { useContext, useEffect } from "react";
 import {
   ActivityIndicator, FlatList, Image, Pressable, Text, View
 } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { PhotoGalleryContext } from "../../providers/contexts";
+import colors from "../../styles/colors";
 import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
@@ -110,11 +112,16 @@ const PhotoGallery = ( ): Node => {
         <Image
           testID="PhotoGallery.photo"
           source={imageUri}
-          style={[
-            imageStyles.galleryImage,
-            isSelected ? imageStyles.selected : null
-          ]}
+          style={imageStyles.galleryImage}
         />
+        {isSelected && (
+          <Icon
+            name="check-circle"
+            size={30}
+            style={imageStyles.selectedIcon}
+            color={colors.inatGreen}
+          />
+        )}
       </Pressable>
     );
   };
@@ -149,7 +156,7 @@ const PhotoGallery = ( ): Node => {
       { Object.keys( selectedPhotos ).length > 0 && (
         <View style={viewStyles.createObsButton}>
           <RoundGreenButton
-            buttonText="Upload-X-photos"
+            buttonText="Import-X-photos"
             count={totalSelected || 0}
             handlePress={navToGroupPhotos}
             testID="PhotoGallery.createObsButton"
