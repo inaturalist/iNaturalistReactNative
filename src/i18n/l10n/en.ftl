@@ -575,6 +575,8 @@ X-unuploaded-observations = {$observationCount ->
 
 Yes = Yes
 
+Yes-delete-observation = Yes, delete observation
+
 Yes-delete-photo = Yes, delete photo
 
 # Message shown when a permission is required to use a part of the app

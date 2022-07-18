@@ -40,7 +40,7 @@ const GroupPhotoImage = ( {
   );
   const numberOfPhotosIcon = ( ) => (
     <FilterIcon
-      // $FlowFixMe
+      // $FlowIgnore
       name={filterIconName}
       color={colors.white}
       size={35}
