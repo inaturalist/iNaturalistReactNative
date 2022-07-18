@@ -101,6 +101,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
       observations.splice( currentObsIndex, 1 );
       setObservations( observations );
+
+      if ( observations.length === 0 ) {
+        navigation.navigate( "my observations", {
+          screen: "ObsList"
+        } );
+      }
     };
 
     const saveObservation = async ( ) => {

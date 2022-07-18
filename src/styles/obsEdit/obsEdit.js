@@ -35,6 +35,9 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   },
   smallLabel: {
     fontSize: 11
+  },
+  verticalCenter: {
+    lineHeight: 0
   }
 } );
 
@@ -59,20 +62,15 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
-  kebab: {
-    zIndex: 1,
-    position: "absolute",
-    right: 0
+  headerRow: {
+    height: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20
   },
   caret: {
     width: 35
-  },
-  headerBackButton: {
-    zIndex: 1,
-    position: "absolute"
-  },
-  alignCenter: {
-    alignItems: "center"
   },
   bottomModal: {
     backgroundColor: colors.white,
@@ -106,8 +104,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   multipleObsRow: {
     flexDirection: "row",
     flexWrap: "nowrap",
-    alignItems: "center",
-    marginBottom: 25
+    alignItems: "center"
   },
   buttonRow: {
     paddingTop: 10,

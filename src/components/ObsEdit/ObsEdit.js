@@ -67,42 +67,40 @@ const ObsEdit = ( ): Node => {
     }
   };
 
-  const renderHeader = ( ) => (
+  const renderKebabMenu = ( ) => (
     <>
-      <View style={viewStyles.kebab}>
-        {observations.length > 1 && (
-          <>
-            <DeleteObservationDialog
-              deleteDialogVisible={deleteDialogVisible}
-              hideDialog={hideDialog}
-            />
-            <KebabMenu>
-              <Menu.Item
-                onPress={showDialog}
-                title={t( "Delete" )}
-              />
-            </KebabMenu>
-          </>
-        )}
-      </View>
-      <HeaderBackButton onPress={handleBackButtonPress} style={viewStyles.headerBackButton} />
-      <View style={viewStyles.alignCenter}>
-        {observations.length === 1
-          ? <Headline>{t( "New-Observation" )}</Headline>
-          : (
-            <View style={viewStyles.multipleObsRow}>
-              <Pressable onPress={showPrevObservation} style={viewStyles.caret}>
-                {currentObsIndex !== 0 && <Icon name="keyboard-arrow-left" size={35} />}
-              </Pressable>
-              <Text>{`${currentObsIndex + 1} of ${observations.length}`}</Text>
-              <Pressable onPress={showNextObservation} style={viewStyles.caret}>
-                {( currentObsIndex !== observations.length - 1 )
-                  && <Icon name="keyboard-arrow-right" size={35} />}
-              </Pressable>
-            </View>
-          )}
-      </View>
+      <DeleteObservationDialog
+        deleteDialogVisible={deleteDialogVisible}
+        hideDialog={hideDialog}
+      />
+      <KebabMenu>
+        <Menu.Item
+          onPress={showDialog}
+          title={t( "Delete" )}
+        />
+      </KebabMenu>
     </>
+  );
+
+  const renderHeader = ( ) => (
+    <View style={viewStyles.headerRow}>
+      <HeaderBackButton onPress={handleBackButtonPress} />
+      {observations.length === 1
+        ? <Headline style={textStyles.verticalCenter}>{t( "New-Observation" )}</Headline>
+        : (
+          <View style={viewStyles.multipleObsRow}>
+            <Pressable onPress={showPrevObservation} style={viewStyles.caret}>
+              {currentObsIndex !== 0 && <Icon name="keyboard-arrow-left" size={30} />}
+            </Pressable>
+            <Text>{`${currentObsIndex + 1} of ${observations.length}`}</Text>
+            <Pressable onPress={showNextObservation} style={viewStyles.caret}>
+              {( currentObsIndex !== observations.length - 1 )
+                && <Icon name="keyboard-arrow-right" size={30} />}
+            </Pressable>
+          </View>
+        )}
+      {renderKebabMenu( )}
+    </View>
   );
 
   const currentObs = observations[currentObsIndex];
