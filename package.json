@@ -8,7 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "npm run lint:eslint && npm run lint:flow",
-    "lint:eslint": "eslint .",
+    "lint:eslint": "eslint . --fix",
     "lint:flow": "flow check",
     "postinstall": "husky install",
     "translate": "node src/i18n/i18ncli.js build"

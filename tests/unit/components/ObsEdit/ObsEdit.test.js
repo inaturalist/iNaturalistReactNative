@@ -7,7 +7,6 @@ import ObsEdit from "../../../../src/components/ObsEdit/ObsEdit";
 import { ObsEditContext } from "../../../../src/providers/contexts";
 import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import factory from "../../../factory";
-import SafeAreaView from "react-native/Libraries/Components/SafeAreaView/SafeAreaView";
 
 // this resolves a test failure with the Animated library:
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.
