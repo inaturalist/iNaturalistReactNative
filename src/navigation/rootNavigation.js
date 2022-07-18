@@ -7,6 +7,7 @@ import * as React from "react";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import About from "../components/About";
 import CustomDrawerContent from "../components/CustomDrawerContent";
@@ -82,65 +83,67 @@ const App = ( ): React.Node => {
   }, [] );
 
   return (
-    <PaperProvider theme={theme}>
-      <GestureHandlerRootView style={viewStyles.container}>
-        <NavigationContainer>
-          <PhotoGalleryProvider>
-            <ObsEditProvider>
-              <Drawer.Navigator
-                screenOptions={screenOptions}
-                name="Drawer"
-                drawerContent={drawerRenderer}
-              >
-                <Drawer.Screen
-                  name="my observations"
-                  component={MyObservationsStackNavigator}
-                  options={hideHeader}
-                />
-                <Drawer.Screen
-                  name="notifications"
-                  component={NotificationsStackNavigation}
-                  options={hideHeader}
-                />
-                <Drawer.Screen
-                  name="identify"
-                  component={IdentifyStackNavigation}
-                  options={hideHeader}
-                />
-                <Drawer.Screen name="search" component={Search} />
-                <Drawer.Screen
-                  name="projects"
-                  component={ProjectsStackNavigation}
-                  options={hideHeader}
-                />
-                <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
-                <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
-                <Drawer.Screen
-                  name="about"
-                  component={About}
-                />
-                <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-                <Drawer.Screen name="login" component={MortalLogin} options={hideHeader} />
-                <Drawer.Screen
-                  name="camera"
-                  component={CameraStackNavigation}
-                  options={hideHeader}
-                />
-                <Drawer.Screen
-                  name="explore stack"
-                  component={ExploreStackNavigator}
-                  options={hideHeader}
-                />
-                <Drawer.Screen
-                  name="network"
-                  component={NetworkLogging}
-                />
-              </Drawer.Navigator>
-            </ObsEditProvider>
-          </PhotoGalleryProvider>
-        </NavigationContainer>
-      </GestureHandlerRootView>
-    </PaperProvider>
+    <SafeAreaProvider>
+      <PaperProvider theme={theme}>
+        <GestureHandlerRootView style={viewStyles.container}>
+          <NavigationContainer>
+            <PhotoGalleryProvider>
+              <ObsEditProvider>
+                <Drawer.Navigator
+                  screenOptions={screenOptions}
+                  name="Drawer"
+                  drawerContent={drawerRenderer}
+                >
+                  <Drawer.Screen
+                    name="my observations"
+                    component={MyObservationsStackNavigator}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen
+                    name="notifications"
+                    component={NotificationsStackNavigation}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen
+                    name="identify"
+                    component={IdentifyStackNavigation}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen name="search" component={Search} />
+                  <Drawer.Screen
+                    name="projects"
+                    component={ProjectsStackNavigation}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
+                  <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
+                  <Drawer.Screen
+                    name="about"
+                    component={About}
+                  />
+                  <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
+                  <Drawer.Screen name="login" component={MortalLogin} options={hideHeader} />
+                  <Drawer.Screen
+                    name="camera"
+                    component={CameraStackNavigation}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen
+                    name="explore stack"
+                    component={ExploreStackNavigator}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen
+                    name="network"
+                    component={NetworkLogging}
+                  />
+                </Drawer.Navigator>
+              </ObsEditProvider>
+            </PhotoGalleryProvider>
+          </NavigationContainer>
+        </GestureHandlerRootView>
+      </PaperProvider>
+    </SafeAreaProvider>
   );
 };
 

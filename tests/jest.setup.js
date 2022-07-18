@@ -2,6 +2,9 @@ import "react-native-gesture-handler/jestSetup";
 
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
+import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
+
+jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 
 // this resolves error with importing file after Jest environment is torn down
 // https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770

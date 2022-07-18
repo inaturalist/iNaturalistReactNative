@@ -1,11 +1,13 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
 import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import ObsEdit from "../../../../src/components/ObsEdit/ObsEdit";
 import { ObsEditContext } from "../../../../src/providers/contexts";
 import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import factory from "../../../factory";
+import SafeAreaView from "react-native/Libraries/Components/SafeAreaView/SafeAreaView";
 
 // this resolves a test failure with the Animated library:
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.
@@ -66,11 +68,13 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
 ) );
 
 const renderObsEdit = ( ) => render(
-  <NavigationContainer>
-    <ObsEditProvider>
-      <ObsEdit />
-    </ObsEditProvider>
-  </NavigationContainer>
+  <SafeAreaProvider>
+    <NavigationContainer>
+      <ObsEditProvider>
+        <ObsEdit />
+      </ObsEditProvider>
+    </NavigationContainer>
+  </SafeAreaProvider>
 );
 
 test( "renders observation photo from photo gallery", ( ) => {
