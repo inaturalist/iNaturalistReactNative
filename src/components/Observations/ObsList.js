@@ -12,19 +12,26 @@ import useCurrentUser from "./hooks/useCurrentUser";
 import useObservations from "./hooks/useObservations";
 import LoggedOutCard from "./LoggedOutCard";
 import LoginPrompt from "./LoginPrompt";
+import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
 import UserCard from "./UserCard";
 
 const ObsList = ( ): Node => {
   const { params } = useRoute( );
   const {
-    observationList, loading, syncObservations, fetchNextObservations, obsToUpload
+    observationList,
+    loading,
+    syncObservations,
+    fetchNextObservations,
+    uploadStatus,
+    updateUploadStatus
   } = useObservations( );
+  const { unuploadedObs, uploadInProgress } = uploadStatus;
 
-  const id = params && params.userId;
+  const id = ( params && params.userId ) || null;
   const userId = useCurrentUser( ) || id;
   const { user } = useUser( userId );
-  const numObsToUpload = obsToUpload?.length;
+  const numObsToUpload = unuploadedObs?.length;
 
   useEffect( ( ) => {
     // start fetching data immediately after successful login
@@ -35,6 +42,35 @@ const ObsList = ( ): Node => {
       syncObservations( );
     }
   }, [params, syncObservations] );
+
+  const renderBottomSheet = ( ) => {
+    if ( numObsToUpload === 0 ) { return null; }
+
+    // show after useCurrentUser has tried to fetch current user
+    if ( userId === null && !loading ) {
+      return (
+        <BottomSheet>
+          <LoginPrompt />
+        </BottomSheet>
+      );
+    }
+    if ( uploadInProgress ) {
+      return (
+        <UploadProgressBar
+          uploadStatus={uploadStatus}
+        />
+      );
+    }
+    return (
+      <BottomSheet>
+        <UploadPrompt
+          uploadObservations={updateUploadStatus}
+          uploadStatus={uploadStatus}
+          updateUploadStatus={updateUploadStatus}
+        />
+      </BottomSheet>
+    );
+  };
 
   return (
     <ViewWithFooter>
@@ -51,13 +87,7 @@ const ObsList = ( ): Node => {
         syncObservations={syncObservations}
         userId={userId}
       />
-      {( numObsToUpload > 0 ) && (
-        <BottomSheet>
-          {!userId
-            ? <LoginPrompt />
-            : <UploadPrompt obsToUpload={obsToUpload} />}
-        </BottomSheet>
-      )}
+      {renderBottomSheet( )}
     </ViewWithFooter>
   );
 };

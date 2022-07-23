@@ -55,7 +55,10 @@ const uploadEvidence = (
   }
 };
 
-const uploadObservation = async ( obsToUpload: Object, localObs: Object ) => {
+const uploadObservation = async (
+  obsToUpload: Object,
+  localObs: Object
+): Promise<string> => {
   try {
     const apiToken = await getJWTToken( false );
     const options = { api_token: apiToken };
@@ -68,6 +71,7 @@ const uploadObservation = async ( obsToUpload: Object, localObs: Object ) => {
     const response = await inatjs.observations.create( uploadParams, options );
     const { id } = response.results[0];
     await markRecordUploaded( obsToUpload.uuid, "Observation", response );
+
     if ( localObs.observationPhotos ) {
       uploadEvidence(
         localObs.observationPhotos,
@@ -86,8 +90,10 @@ const uploadObservation = async ( obsToUpload: Object, localObs: Object ) => {
         inatjs.observation_sounds
       );
     }
+    return "success";
   } catch ( e ) {
     console.log( "couldn't upload observation: ", e );
+    return "failure";
   }
 };
 
