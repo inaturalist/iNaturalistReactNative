@@ -6,7 +6,6 @@ import type { Node } from "react";
 import React, {
   useCallback, useEffect, useMemo, useRef, useState
 } from "react";
-import { cancel } from "react-native/Libraries/Vibration/Vibration";
 import {
   Button, ProgressBar, Text
 } from "react-native-paper";

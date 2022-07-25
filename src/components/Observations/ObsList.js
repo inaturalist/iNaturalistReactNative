@@ -29,6 +29,7 @@ const ObsList = ( ): Node => {
   const { unuploadedObs, uploadInProgress } = uploadStatus;
 
   const id = ( params && params.userId ) || null;
+
   const userId = useCurrentUser( ) || id;
   const { user } = useUser( userId );
   const numObsToUpload = unuploadedObs?.length;
