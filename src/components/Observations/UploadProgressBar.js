@@ -24,6 +24,7 @@ const UploadProgressBar = ( { uploadStatus }: Props ): Node => {
   const numOfUnuploadedObs = unuploadedObs?.length;
   const [cancelUpload, setCancelUpload] = useState( false );
   const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
+  const [status, setStatus] = useState( null );
 
   const calculateProgress = ( ) => ( totalObsToUpload - numOfUnuploadedObs ) / totalObsToUpload;
   const progressFraction = calculateProgress( );
@@ -31,7 +32,11 @@ const UploadProgressBar = ( { uploadStatus }: Props ): Node => {
   useEffect( ( ) => {
     const upload = async obs => {
       const mappedObs = Observation.mapObservationForUpload( obs );
-      await uploadObservation( mappedObs, obs );
+      const uploadSuccess = await uploadObservation( mappedObs, obs );
+      if ( uploadSuccess !== "success" ) {
+        setStatus( uploadSuccess );
+        return;
+      }
       if ( currentUploadIndex < allObsToUpload.length - 1 ) {
         setCurrentUploadIndex( currentUploadIndex + 1 );
       }
@@ -75,6 +80,11 @@ const UploadProgressBar = ( { uploadStatus }: Props ): Node => {
           style={viewStyles.progressBar}
           color={colors.white}
         />
+        {status === "failure" && (
+          <Text style={textStyles.whiteText} variant="titleMedium">
+            {t( "Error-Couldnt-Complete-Upload" )}
+          </Text>
+        )}
       </BottomSheetView>
     </BottomSheet>
   );
