@@ -6,6 +6,7 @@ import type { Node } from "react";
 import React, {
   useCallback, useEffect, useMemo, useRef, useState
 } from "react";
+import { cancel } from "react-native/Libraries/Vibration/Vibration";
 import {
   Button, ProgressBar, Text
 } from "react-native-paper";
@@ -23,25 +24,24 @@ const UploadProgressBar = ( { uploadStatus }: Props ): Node => {
   const { allObsToUpload, unuploadedObs, totalObsToUpload } = uploadStatus;
   const numOfUnuploadedObs = unuploadedObs?.length;
   const [cancelUpload, setCancelUpload] = useState( false );
+  const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
 
   const calculateProgress = ( ) => ( totalObsToUpload - numOfUnuploadedObs ) / totalObsToUpload;
-  const progressFraction = calculateProgress( ) || 0;
+  const progressFraction = calculateProgress( );
 
   useEffect( ( ) => {
     const upload = async obs => {
       const mappedObs = Observation.mapObservationForUpload( obs );
       await uploadObservation( mappedObs, obs );
+      if ( currentUploadIndex < allObsToUpload.length - 1 ) {
+        setCurrentUploadIndex( currentUploadIndex + 1 );
+      }
     };
 
-    if ( cancelUpload ) { return; }
-    for ( let i = 0; i < allObsToUpload.length; i += 1 ) {
-      if ( cancelUpload ) {
-        break;
-      } else {
-        upload( allObsToUpload[i] );
-      }
+    if ( !cancelUpload ) {
+      upload( allObsToUpload[currentUploadIndex] );
     }
-  }, [cancelUpload, allObsToUpload] );
+  }, [cancelUpload, currentUploadIndex, allObsToUpload] );
 
   const sheetRef = useRef( null );
 

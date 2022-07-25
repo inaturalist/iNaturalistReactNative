@@ -68,6 +68,18 @@ const uploadObservation = async (
       fields: { id: true }
     };
 
+    if ( !obsToUpload.taxon_id ) {
+      delete uploadParams.observation.taxon_id;
+    }
+
+    if ( !obsToUpload.species_guess ) {
+      delete uploadParams.observation.species_guess;
+    }
+
+    if ( !obsToUpload.description ) {
+      delete uploadParams.observation.description;
+    }
+
     const response = await inatjs.observations.create( uploadParams, options );
     const { id } = response.results[0];
     await markRecordUploaded( obsToUpload.uuid, "Observation", response );
@@ -92,7 +104,7 @@ const uploadObservation = async (
     }
     return "success";
   } catch ( e ) {
-    console.log( "couldn't upload observation: ", e );
+    console.log( "couldn't upload observation: ", JSON.stringify( e.response ) );
     return "failure";
   }
 };
