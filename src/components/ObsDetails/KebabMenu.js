@@ -34,7 +34,7 @@ const KebabMenu = ( { uuid, toggleRefetch }: Props ): Node => {
           style={viewStyles.kebabMenuPlacement}
           contentStyle={viewStyles.textPadding}
           anchor={
-            <Button onPress={openMenu} icon="dots-horizontal" textColor={colors.logInGray} />
+            <View style={viewStyles.kebabMenuIconContainer}><Button onPress={openMenu} icon="dots-horizontal" textColor={colors.logInGray} style={viewStyles.kebabMenuIcon} /></View>
           }>
           <Menu.Item
             onPress={async ( ) => {

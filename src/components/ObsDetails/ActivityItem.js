@@ -1,17 +1,18 @@
 // @flow
 
 import React, { useState, useEffect } from "react";
-import { Text, View, Pressable } from "react-native";
+import {Text, View, Pressable, Image} from "react-native";
 import type { Node } from "react";
 
 import UserIcon from "../SharedComponents/UserIcon";
 import SmallSquareImage from "./SmallSquareImage";
-import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
+import { textStyles, viewStyles, imageStyles } from "../../styles/obsDetails/obsDetails";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
-import KebabMenu from "./KebabMenu";
-import { timeAgo } from "../../sharedHelpers/dateAndTime";
-import PlaceholderText from "../PlaceholderText";
+import {formatIdDate} from "../../sharedHelpers/dateAndTime";
+import {Button} from "react-native-paper";
+import {colors} from "../../styles/global";
+import {useTranslation} from "react-i18next";
 
 type Props = {
   item: Object,
@@ -21,6 +22,7 @@ type Props = {
 }
 
 const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: Props ): Node => {
+  const { t } = useTranslation( );
   const [currentUser, setCurrentUser] = useState( null );
   const taxon = item.taxon;
   const user = item.user;
@@ -34,7 +36,7 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
   }, [user] );
 
   return (
-    <View style={[item.temporary ? viewStyles.temporaryRow : null]}>
+    <View style={[viewStyles.activityItem, item.temporary ? viewStyles.temporaryRow : null]}>
       <View style={[viewStyles.userProfileRow, viewStyles.rowBorder]}>
         {user && (
           <Pressable
@@ -44,16 +46,17 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
             testID={`ObsDetails.identifier.${user.id}`}
           >
             <UserIcon uri={User.uri( user )} />
-            <Text>{User.userHandle( user )}</Text>
+            <Text style={textStyles.username}>{User.userHandle( user )}</Text>
           </Pressable>
         )}
-        <View style={viewStyles.labels}>
-          {item.vision && <PlaceholderText style={[textStyles.labels]} text="vision" />}
-          <Text style={textStyles.labels}>{item.category}</Text>
-          {item.created_at && <Text style={textStyles.labels}>{timeAgo( item.created_at )}</Text>}
+        <View style={viewStyles.labelsContainer}>
+          {item.vision && <Image style={imageStyles.smallGreenIcon} source={require( "../../images/id_rg.png" )} />}
+          <Text style={[textStyles.labels, textStyles.activityCategory]}>{item.category ? t( `Category-${item.category}` ) : ""}</Text>
+          {item.created_at && <Text style={textStyles.labels}>{formatIdDate( item.updated_at || item.created_at, t )}</Text>}
           {item.body && currentUser
-            ? <KebabMenu uuid={item.uuid} toggleRefetch={toggleRefetch} />
-            : <PlaceholderText text="menu" />}
+            ? <View style={viewStyles.kebabMenuIconContainer}><Button icon="dots-horizontal" textColor={colors.logInGray} style={viewStyles.kebabMenuIcon}/></View>
+            : <View style={viewStyles.kebabMenuIconContainer}><Button icon="dots-horizontal" textColor={colors.logInGray} style={viewStyles.kebabMenuIcon}/></View>
+          }
         </View>
       </View>
       {taxon && (
@@ -65,13 +68,13 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
         >
           <SmallSquareImage uri={Taxon.uri( taxon )} />
           <View>
-            <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
+            <Text style={textStyles.commonNameText}>{taxon.preferred_common_name}</Text>
             <Text style={textStyles.scientificNameText}>{taxon.rank} {taxon.name}</Text>
           </View>
         </Pressable>
       )}
       <View style={viewStyles.speciesDetailRow}>
-        <Text>{item.body}</Text>
+        <Text style={textStyles.activityItemBody}>{item.body}</Text>
       </View>
     </View>
   );

@@ -1,4 +1,4 @@
-import { formatISO, fromUnixTime, formatDistanceToNow, format, getUnixTime, parseISO } from "date-fns";
+import { formatISO, fromUnixTime, formatDistanceToNow, format, getUnixTime, parseISO, differenceInDays, differenceInHours, differenceInMinutes, getYear } from "date-fns";
 
 // two options for observed_on_string in uploader are:
 // 2020-03-01 00:00 or 2021-03-24T14:40:25
@@ -18,11 +18,46 @@ const displayDateTimeObsEdit = ( date ) => format( new Date( date ), "PPpp" );
 const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
 
 const formatObsListTime = ( date ) => {
-  const dateTime = "M/d/yy HH:mm a";
+  const dateTime = "M/d/yy • HH:mm a";
   if ( typeof date === "string" ) {
     return format( parseISO( date ), dateTime );
   }
   return format( date, dateTime );
+};
+
+const formatIdDate = ( date, t ) => {
+  const d = typeof date === "string" ? parseISO( date ) : new Date( date );
+  const now = new Date();
+
+  const days = differenceInDays( now, d );
+
+  if ( days <= 30 ) {
+    // Less than 30 days ago - display as 3m (mins), 3h (hours), 3d (days) or 3w (weeks)
+    if ( days < 1 ) {
+      const hours = differenceInHours( now, d );
+      if ( hours < 1 ) {
+        const minutes = differenceInMinutes( now, d );
+        return t( "Date-minutes", { count: minutes } );
+      } else {
+        return t( "Date-hours", { count: hours } );
+      }
+    } else if ( days < 7 ) {
+      return t( "Date-days", { count: days } );
+    } else {
+      return t( "Date-weeks", { count: parseInt( days / 7, 10 ) } );
+    }
+  } else {
+    let dateFormatString;
+    if ( getYear( now ) !== getYear( d ) ) {
+      // Previous year(s)
+      dateFormatString = "Date-short-format";
+    } else {
+      // Current year
+      dateFormatString = "Date-this-year";
+    }
+
+    return format( d, t( dateFormatString ) );
+  }
 };
 
 
@@ -31,5 +66,6 @@ export {
   timeAgo,
   formatObsListTime,
   createObservedOnStringForUpload,
-  displayDateTimeObsEdit
+  displayDateTimeObsEdit,
+  formatIdDate
 };
