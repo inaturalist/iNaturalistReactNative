@@ -45,6 +45,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     height: 80,
     borderRadius: 10,
     borderWidth: 2,
+    zIndex: 100,
+    position: "absolute",
     borderColor: colors.white
   },
   cameraSettingsRow: {
