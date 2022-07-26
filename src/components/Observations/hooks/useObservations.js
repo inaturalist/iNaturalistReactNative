@@ -86,6 +86,16 @@ const useObservations = ( ): Object => {
     } catch ( err ) {
       console.error( "Unable to update local observations 1: ", err.message );
     }
+
+    const updates = await Observation.fetchObservationUpdates( );
+    updates.forEach( update => {
+      console.log( update.viewed, "update viewed in useObservations" );
+      const existingObs = realm?.objectForPrimaryKey( "Observation", update.resource_uuid );
+      if ( !existingObs ) { return; }
+      realm?.write( ( ) => {
+        existingObs.viewed = update.viewed;
+      } );
+    } );
     return ( ) => {
       // remember to remove listeners to avoid async updates
       localObservations.removeAllListeners( );

@@ -36,6 +36,10 @@
   },
   "Birds": "Birds",
   "Blocked-Users": "Blocked Users",
+  "C": {
+    "comment": "Quality grade option: Casual (shortened for My Observations view)",
+    "val": "C"
+  },
   "Camera-Roll": "Camera Roll",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
@@ -183,6 +187,10 @@
   },
   "New-Observation": "New Observation",
   "Next": "Next",
+  "NI": {
+    "comment": "Quality grade option: Needs ID (shortened for My Observations view)",
+    "val": "NI"
+  },
   "No": "No",
   "No-account-found": {
     "comment": "When the user tries to reset password but enters a non-existent email",
@@ -294,6 +302,10 @@
   "Reviewed": "Reviewed",
   "Reviewed-only": "Reviewed only",
   "Revoke": "Revoke",
+  "RG": {
+    "comment": "Quality grade option: Research Grade (shortened for My Observations view)",
+    "val": "RG"
+  },
   "Search-for-a-location": "Search for a location",
   "Search-for-a-project": "Search for a project",
   "Search-for-a-taxon": "Search for a taxon",

@@ -10,6 +10,7 @@ import {
   Alert, Image, LogBox, Pressable, ScrollView, Text, View
 } from "react-native";
 
+import Observation from "../../models/Observation";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import { ObsEditContext } from "../../providers/contexts";
@@ -64,6 +65,10 @@ const ObsDetails = ( ): Node => {
 
   useEffect( () => {
     if ( observation ) { setIds( observation.identifications.map( i => i ) ); }
+    if ( observation.viewed === false ) {
+      console.log( "viewed is false" );
+      Observation.markObservationUpdatesViewed( observation.id );
+    }
   }, [observation] );
 
   if ( !observation ) { return null; }
