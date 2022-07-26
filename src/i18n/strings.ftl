@@ -49,6 +49,9 @@ Birds = Birds
 
 Blocked-Users = Blocked Users
 
+# Quality grade option: Casual (shortened for My Observations view)
+C = C
+
 Camera-Roll = Camera Roll
 
 Cancel = Cancel
@@ -263,6 +266,9 @@ New-Observation = New Observation
 
 Next = Next
 
+# Quality grade option: Needs ID (shortened for My Observations view)
+NI = NI
+
 No = No
 
 # When the user tries to reset password but enters a non-existent email
@@ -439,6 +445,9 @@ Reviewed = Reviewed
 Reviewed-only = Reviewed only
 
 Revoke = Revoke
+
+# Quality grade option: Research Grade (shortened for My Observations view)
+RG = RG
 
 Search-for-a-location = Search for a location
 
