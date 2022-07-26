@@ -20,7 +20,15 @@ const useObservations = ( ): Object => {
     : 1;
   const [page, setPage] = useState( nextPageToFetch );
   const [userLogin, setUserLogin] = useState( null );
-  const [obsToUpload, setObsToUpload] = useState( [] );
+  const [uploadStatus, setUploadStatus] = useState( {
+    allObsToUpload: [],
+    unuploadedObs: [],
+    totalObsToUpload: 0,
+    uploadInProgress: false
+  } );
+
+  const { unuploadedObs } = uploadStatus;
+  const numOfUnuploadedObs = unuploadedObs?.length;
 
   const syncObservations = ( username = null ) => {
     // initial getUsername( ) fetch after login screen wasn't working without
@@ -29,8 +37,6 @@ const useObservations = ( ): Object => {
     // but there's probably a cleaner way to do this
     if ( typeof username === "string" ) {
       setUserLogin( username );
-    } else {
-      setUserLogin( null );
     }
   };
 
@@ -51,14 +57,15 @@ const useObservations = ( ): Object => {
 
     // includes obs which have never been synced or which have been updated
     // locally since the last sync
-    const notUploadedObs = obs.filtered( "_synced_at == null || _synced_at <= _updated_at" );
+    const unsyncedObs = obs.filtered( "_synced_at == null || _synced_at <= _updated_at" );
 
-    if ( localObservations?.length ) {
-      setObservationList( localObservations );
-    }
-
-    if ( notUploadedObs?.length ) {
-      setObsToUpload( notUploadedObs );
+    if ( unsyncedObs?.length && unsyncedObs?.length !== numOfUnuploadedObs ) {
+      setUploadStatus( {
+        ...uploadStatus,
+        unuploadedObs: unsyncedObs,
+        allObsToUpload: unsyncedObs,
+        totalObsToUpload: Math.max( unsyncedObs.length, uploadStatus.totalObsToUpload )
+      } );
     }
 
     // don't show activity wheel if user is logged out and API is not called
@@ -72,7 +79,9 @@ const useObservations = ( ): Object => {
         // If you just pass localObservations you end up assigning a Results
         // object to state instead of an array of observations. There's
         // probably a better way...
-        setObservationList( localObservations.map( o => o ) );
+        if ( localObservations.length !== observationList.length ) {
+          setObservationList( localObservations.map( o => o ) );
+        }
       } );
     } catch ( err ) {
       console.error( "Unable to update local observations 1: ", err.message );
@@ -80,21 +89,12 @@ const useObservations = ( ): Object => {
     return ( ) => {
       // remember to remove listeners to avoid async updates
       localObservations.removeAllListeners( );
-      realm.close( );
     };
-  }, [realmRef, setObservationList] );
-
-  const closeRealm = useCallback( ( ) => {
-    const realm = realmRef.current;
-    realm?.close( );
-    realmRef.current = null;
-    setObservationList( [] );
-  }, [realmRef] );
+  }, [realmRef, setObservationList, uploadStatus, numOfUnuploadedObs, observationList.length] );
 
   useEffect( ( ) => {
     openRealm( );
-    return closeRealm;
-  }, [openRealm, closeRealm] );
+  }, [openRealm] );
 
   const writeToDatabase = useCallback( results => {
     if ( results.length === 0 ) { return; }
@@ -152,12 +152,23 @@ const useObservations = ( ): Object => {
 
   const fetchNextObservations = ( ) => setPage( page + 1 );
 
+  const updateUploadStatus = useCallback( ( ) => {
+    if ( uploadStatus.uploadInProgress === false ) {
+      setUploadStatus( {
+        ...uploadStatus,
+        uploadInProgress: true
+      } );
+    }
+  }, [uploadStatus] );
+
   return {
     loading,
     observationList,
     syncObservations,
     fetchNextObservations,
-    obsToUpload
+    updateUploadStatus,
+    uploadStatus,
+    setUploadStatus
   };
 };
 

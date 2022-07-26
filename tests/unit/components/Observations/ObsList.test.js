@@ -22,7 +22,9 @@ jest.mock( "../../../../src/components/Observations/hooks/useObservations", ( ) 
   default: ( ) => ( {
     observationList: mockObservations,
     loading: false,
-    obsToUpload: mockObservations
+    uploadStatus: {
+      unuploadedObs: mockObservations
+    }
   } )
 } ) );
 

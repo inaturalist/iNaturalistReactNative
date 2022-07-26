@@ -110,6 +110,8 @@ Email = email
 
 Email-Notifications = Email Notifications
 
+Error-Couldnt-Complete-Upload = Error: Couldn't Complete Upload
+
 Evidence = Evidence
 
 Explore = Explore
