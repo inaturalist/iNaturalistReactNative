@@ -1,8 +1,9 @@
+import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
 import Realm from "realm";
 
 // eslint-disable-next-line import/no-cycle
-import { getUserId } from "../components/LoginSignUp/AuthenticationService";
+import { getJWTToken, getUserId } from "../components/LoginSignUp/AuthenticationService";
 import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
 import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 // eslint-disable-next-line import/no-cycle
@@ -248,6 +249,41 @@ class Observation extends Realm.Object {
     return { uri: mediumUri };
   }
 
+  static fetchObservationUpdates = async ( ) => {
+    try {
+      const apiToken = await getJWTToken( false );
+
+      const params = {
+        observations_by: "owner",
+        per_page: 200,
+        fields: "viewed,resource_uuid"
+      };
+
+      const options = { api_token: apiToken };
+      const { results } = await inatjs.observations.updates( params, options );
+      const unviewed = results.filter( result => result.viewed === false ).map( r => r );
+      return unviewed;
+    } catch ( e ) {
+      console.log( "Couldn't fetch observation updates:", JSON.stringify( e ) );
+      return null;
+    }
+  }
+
+  static markObservationUpdatesViewed = async id => {
+    try {
+      const apiToken = await getJWTToken( false );
+
+      const params = { id };
+
+      const options = { api_token: apiToken };
+      const response = await inatjs.observations.viewedUpdates( params, options );
+      return response;
+    } catch ( e ) {
+      console.log( `Couldn't mark observation ${id} viewed:`, JSON.stringify( e ) );
+      return null;
+    }
+  }
+
   static schema = {
     name: "Observation",
     primaryKey: "uuid",
@@ -282,12 +318,8 @@ class Observation extends Realm.Object {
       // datetime when the observer observed the organism; user-editable, but
       // only by changing observed_on_string
       time_observed_at: { type: "string?", mapTo: "timeObservedAt" },
-      user: "User?"
-
-      // need project ids, but skipping this for now
-      // to get rest of upload working
-      // project_ids
-      // note that taxon_id is nested under Taxon
+      user: "User?",
+      viewed: "bool?"
     }
   }
 }

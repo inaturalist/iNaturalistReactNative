@@ -9,7 +9,10 @@ import { useTranslation } from "react-i18next";
 import {
   Alert, Image, LogBox, Pressable, ScrollView, Text, View
 } from "react-native";
+import Realm from "realm";
 
+import realmConfig from "../../models/index";
+import Observation from "../../models/Observation";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import { ObsEditContext } from "../../providers/contexts";
@@ -63,7 +66,19 @@ const ObsDetails = ( ): Node => {
   const toggleRefetch = ( ) => setRefetch( !refetch );
 
   useEffect( () => {
+    const markViewedLocally = async ( ) => {
+      const realm = await Realm.open( realmConfig );
+      const existingObs = realm?.objectForPrimaryKey( "Observation", observation.uuid );
+      if ( !existingObs ) { return; }
+      realm?.write( ( ) => {
+        existingObs.viewed = true;
+      } );
+    };
     if ( observation ) { setIds( observation.identifications.map( i => i ) ); }
+    if ( observation.viewed === false ) {
+      Observation.markObservationUpdatesViewed( observation.uuid );
+      markViewedLocally( );
+    }
   }, [observation] );
 
   if ( !observation ) { return null; }

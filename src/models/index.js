@@ -22,7 +22,7 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 23,
+  schemaVersion: 24,
   path: "db.realm",
   migration: ( oldRealm, newRealm ) => {
     if ( oldRealm.schemaVersion < 21 ) {
