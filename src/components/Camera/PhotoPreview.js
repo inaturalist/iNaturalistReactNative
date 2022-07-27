@@ -13,10 +13,11 @@ import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
 type Props = {
   photoUris: Array<string>,
-  setPhotoUris: Function
+  setPhotoUris: Function,
+  savingPhoto: boolean
 }
 
-const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
+const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node => {
   const { t } = useTranslation( );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
@@ -78,6 +79,7 @@ const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
         containerStyle="camera"
         handleDelete={handleDelete}
         setSelectedPhotoIndex={handleSelection}
+        savingPhoto={savingPhoto}
       />
     </>
   );

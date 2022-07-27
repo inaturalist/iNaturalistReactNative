@@ -35,8 +35,10 @@ const StandardCamera = ( ): Node => {
     flash: "off"
   } );
   const [photoUris, setPhotoUris] = useState( [] );
+  const [savingPhoto, setSavingPhoto] = useState( false );
 
   const takePhoto = async ( ) => {
+    setSavingPhoto( true );
     try {
       const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
       const realm = await Realm.open( realmConfig );
@@ -45,9 +47,11 @@ const StandardCamera = ( ): Node => {
       // only 10 photoUris allowed
       if ( photoUris.length < 10 ) {
         setPhotoUris( photoUris.concat( [uri] ) );
+        setSavingPhoto( false );
       }
     } catch ( e ) {
       console.log( e, "couldn't take photo" );
+      setSavingPhoto( false );
     }
   };
 
@@ -81,7 +85,7 @@ const StandardCamera = ( ): Node => {
   return (
     <View style={viewStyles.container}>
       {device && <CameraView device={device} camera={camera} />}
-      <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} />
+      <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} savingPhoto={savingPhoto} />
       <View style={viewStyles.cameraSettingsRow}>
         <Pressable
           style={viewStyles.flashButton}

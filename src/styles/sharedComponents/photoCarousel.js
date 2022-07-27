@@ -26,6 +26,16 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 const heightPhotoContainerCamera = 50 + 18 + 66;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  photoLoading: {
+    backgroundColor: colors.lightGray,
+    width: imageWidth,
+    height: imageWidth,
+    borderRadius: 8,
+    marginHorizontal: 6,
+    marginVertical: 27,
+    marginTop: 50,
+    marginBottom: 18
+  },
   greenSelectionBorder: {
     borderWidth: 3,
     borderColor: colors.selectionGreen
