@@ -44,11 +44,17 @@ const ObsCardStats = ( { item, type }: Props ): Node => {
     </View>
   );
 
+  const renderQualityGrade = ( ) => (
+    <Text style={textStyles.text}>
+      {qualityGrade ? qualityGradeText[qualityGrade] : "?"}
+    </Text>
+  );
+
   const renderColumn = ( ) => (
     <View>
       {renderIdRow( )}
       {renderCommentRow( )}
-      <Text style={textStyles.text}>{qualityGrade && qualityGradeText[qualityGrade]}</Text>
+      {renderQualityGrade( )}
     </View>
   );
 
@@ -56,7 +62,7 @@ const ObsCardStats = ( { item, type }: Props ): Node => {
     <View style={viewStyles.photoStatRow}>
       {renderIdRow( )}
       {renderCommentRow( )}
-      <Text style={textStyles.text}>{qualityGrade && qualityGradeText[qualityGrade]}</Text>
+      {renderQualityGrade( )}
     </View>
   );
 

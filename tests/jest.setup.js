@@ -145,6 +145,10 @@ jest.mock( "react-i18next", () => ( {
   useTranslation: () => ( { t: key => key } )
 } ) );
 
+jest.mock( "i18next", () => ( {
+  t: k => k
+} ) );
+
 jest.mock( "react-native-localize", () => ( {
   getTimeZone: ( ) => "Europe/Paris", // the timezone you want
   getLocales: ( ) => [
