@@ -261,7 +261,8 @@ class Observation extends Realm.Object {
 
       const options = { api_token: apiToken };
       const { results } = await inatjs.observations.updates( params, options );
-      return results;
+      const unviewed = results.filter( result => result.viewed === false ).map( r => r );
+      return unviewed;
     } catch ( e ) {
       console.log( "Couldn't fetch observation updates:", JSON.stringify( e ) );
       return null;
@@ -275,8 +276,8 @@ class Observation extends Realm.Object {
       const params = { id };
 
       const options = { api_token: apiToken };
-      const { results } = await inatjs.observations.viewedUpdates( params, options );
-      return results;
+      const response = await inatjs.observations.viewedUpdates( params, options );
+      return response;
     } catch ( e ) {
       console.log( `Couldn't mark observation ${id} viewed:`, JSON.stringify( e ) );
       return null;
