@@ -86,35 +86,37 @@ const StandardCamera = ( ): Node => {
     <View style={viewStyles.container}>
       {device && <CameraView device={device} camera={camera} />}
       <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} savingPhoto={savingPhoto} />
-      <View style={viewStyles.cameraSettingsRow}>
-        <Pressable
-          style={viewStyles.flashButton}
-          onPress={toggleFlash}
-        >
-          {renderCameraButton( "flash" )}
-        </Pressable>
-        <Pressable
-          style={viewStyles.cameraFlipButton}
-          onPress={flipCamera}
-        >
-          {renderCameraButton( "camera-flip" )}
-        </Pressable>
-        <View />
+      <View style={viewStyles.bottomButtons}>
+        <View style={viewStyles.cameraSettingsRow}>
+          <Pressable
+            style={viewStyles.flashButton}
+            onPress={toggleFlash}
+          >
+            {renderCameraButton( "flash" )}
+          </Pressable>
+          <Pressable
+            style={viewStyles.cameraFlipButton}
+            onPress={flipCamera}
+          >
+            {renderCameraButton( "camera-flip" )}
+          </Pressable>
+          <View />
 
-      </View>
-      <View style={viewStyles.cameraCaptureRow}>
-        <Pressable
-          style={viewStyles.captureButton}
-          onPress={takePhoto}
-        >
-          {renderCameraButton( "circle-outline" )}
-        </Pressable>
-        <Pressable
-          style={viewStyles.nextButton}
-          onPress={navToObsEdit}
-        >
-          <Text style={textStyles.whiteText}>{t( "Next" )}</Text>
-        </Pressable>
+        </View>
+        <View style={viewStyles.cameraCaptureRow}>
+          <Pressable
+            style={viewStyles.captureButton}
+            onPress={takePhoto}
+          >
+            {renderCameraButton( "circle-outline" )}
+          </Pressable>
+          <Pressable
+            style={viewStyles.nextButton}
+            onPress={navToObsEdit}
+          >
+            <Text style={textStyles.whiteText}>{t( "Next" )}</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
