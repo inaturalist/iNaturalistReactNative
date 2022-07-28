@@ -70,7 +70,7 @@ const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node =
         <Modal
           visible={mediaViewerVisible}
           onDismiss={hideModal}
-          contentContainerStyle={viewStyles.container}
+          // contentContainerStyle={viewStyles.container}
         >
           <MediaViewer
             initialPhotoSelected={initialPhotoSelected}

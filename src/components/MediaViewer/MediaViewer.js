@@ -4,7 +4,7 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dimensions, Image } from "react-native";
+import { Dimensions, Image, View } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import { Appbar, Button } from "react-native-paper";
 
@@ -12,7 +12,7 @@ import Photo from "../../models/Photo";
 import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+// import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 
 const { width, height } = Dimensions.get( "screen" );
 const selectedImageHeight = height - 350;
@@ -50,7 +50,7 @@ const MediaViewer = ( {
   }, [numOfPhotos, selectedPhotoIndex, hideModal] );
 
   return (
-    <ViewNoFooter style={viewStyles.container}>
+    <View style={viewStyles.container}>
       <Appbar.Header style={viewStyles.container}>
         <Appbar.Content title={t( "X-Photos", { photoCount: numOfPhotos } )} />
       </Appbar.Header>
@@ -86,7 +86,7 @@ const MediaViewer = ( {
       >
         {t( "Remove-Photo" )}
       </Button>
-    </ViewNoFooter>
+    </View>
   );
 };
 
