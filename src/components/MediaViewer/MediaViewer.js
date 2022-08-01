@@ -4,12 +4,12 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dimensions, Image, View } from "react-native";
+import { Dimensions, Image, SafeAreaView } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import { Appbar, Button } from "react-native-paper";
 
 import Photo from "../../models/Photo";
-import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
+import { imageStyles, textStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
@@ -30,6 +30,7 @@ const MediaViewer = ( {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( initialPhotoSelected );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const [currentScale, setCurrentScale] = useState( 1 );
+  const [isScrolling, setIsScrolling] = useState( false );
 
   // only allow user to swipe between photos when zoomed out
   const swipingDisabled = currentScale > 1;
@@ -59,9 +60,12 @@ const MediaViewer = ( {
   };
 
   const handleHorizontalOuterRangeOffset = e => {
+    setIsScrolling( true );
     const scrollDirection = value => Math.sign( value );
 
     if ( swipingDisabled ) { return; }
+    // only update photo when user has finished scroll gesture
+    if ( isScrolling ) { return; }
 
     if ( scrollDirection( e ) === 1 ) {
       // handle left scroll
@@ -75,10 +79,15 @@ const MediaViewer = ( {
     }
   };
 
+  const handleResponderRelease = ( ) => setIsScrolling( false );
+
   return (
-    <View style={viewStyles.container}>
+    <SafeAreaView style={viewStyles.container}>
       <Appbar.Header style={viewStyles.container}>
-        <Appbar.Content title={t( "X-Photos", { photoCount: numOfPhotos } )} />
+        <Appbar.Content
+          title={t( "X-Photos", { photoCount: numOfPhotos } )}
+          titleStyle={textStyles.whiteText}
+        />
       </Appbar.Header>
       {numOfPhotos > 0 && (
         <ImageZoom
@@ -89,6 +98,7 @@ const MediaViewer = ( {
           minScale={1}
           onMove={handleMove}
           horizontalOuterRangeOffset={handleHorizontalOuterRangeOffset}
+          responderRelease={handleResponderRelease}
         >
           <Image
             style={imageStyles.selectedPhoto}
@@ -115,7 +125,7 @@ const MediaViewer = ( {
       >
         {t( "Remove-Photo" )}
       </Button>
-    </View>
+    </SafeAreaView>
   );
 };
 

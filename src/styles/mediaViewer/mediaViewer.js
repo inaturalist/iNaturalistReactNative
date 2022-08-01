@@ -1,7 +1,9 @@
 // @flow strict-local
 
 import { Dimensions, StyleSheet } from "react-native";
-import type { ImageStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import type {
+  ImageStyleProp, TextStyleProp, ViewStyleProp
+} from "react-native/Libraries/StyleSheet/StyleSheet";
 
 import colors from "../colors";
 
@@ -16,7 +18,8 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   container: {
-    backgroundColor: colors.black
+    backgroundColor: colors.black,
+    margin: 0
   },
   alignRight: {
     alignItems: "flex-end"
@@ -34,7 +37,14 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   }
 } );
 
+const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
+  whiteText: {
+    color: colors.white
+  }
+} );
+
 export {
   imageStyles,
+  textStyles,
   viewStyles
 };

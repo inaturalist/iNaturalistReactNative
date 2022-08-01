@@ -6,9 +6,7 @@ import type { Node } from "react";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
-import {
-  Headline, Menu, Modal, Portal
-} from "react-native-paper";
+import { Headline, Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import Photo from "../../models/Photo";
@@ -16,6 +14,7 @@ import { ObsEditContext } from "../../providers/contexts";
 import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import MediaViewer from "../MediaViewer/MediaViewer";
+import MediaViewerModal from "../MediaViewer/MediaViewerModal";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import SecondaryButton from "../SharedComponents/Buttons/SecondaryButton";
 import KebabMenu from "../SharedComponents/KebabMenu";
@@ -135,20 +134,17 @@ const ObsEdit = ( ): Node => {
 
   return (
     <>
-      <Portal>
-        <Modal
-          visible={mediaViewerVisible}
-          onDismiss={hideModal}
-          contentContainerStyle={viewStyles.container}
-        >
-          <MediaViewer
-            initialPhotoSelected={initialPhotoSelected}
-            photoUris={photoUris}
-            setPhotoUris={setPhotos}
-            hideModal={hideModal}
-          />
-        </Modal>
-      </Portal>
+      <MediaViewerModal
+        mediaViewerVisible={mediaViewerVisible}
+        hideModal={hideModal}
+      >
+        <MediaViewer
+          initialPhotoSelected={initialPhotoSelected}
+          photoUris={photoUris}
+          setPhotoUris={setPhotos}
+          hideModal={hideModal}
+        />
+      </MediaViewerModal>
       <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
         {renderHeader( )}
         <Headline style={textStyles.headerText}>{t( "Evidence" )}</Headline>

@@ -4,10 +4,10 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "react-native";
-import { Modal, Portal } from "react-native-paper";
 
 import { textStyles } from "../../styles/camera/standardCamera";
 import MediaViewer from "../MediaViewer/MediaViewer";
+import MediaViewerModal from "../MediaViewer/MediaViewerModal";
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
@@ -58,19 +58,17 @@ const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
         setPhotoUris={setPhotoUris}
         hideDialog={hideDialog}
       />
-      <Portal>
-        <Modal
-          visible={mediaViewerVisible}
-          onDismiss={hideModal}
-        >
-          <MediaViewer
-            initialPhotoSelected={initialPhotoSelected}
-            photoUris={photoUris}
-            setPhotoUris={setPhotoUris}
-            hideModal={hideModal}
-          />
-        </Modal>
-      </Portal>
+      <MediaViewerModal
+        mediaViewerVisible={mediaViewerVisible}
+        hideModal={hideModal}
+      >
+        <MediaViewer
+          initialPhotoSelected={initialPhotoSelected}
+          photoUris={photoUris}
+          setPhotoUris={setPhotoUris}
+          hideModal={hideModal}
+        />
+      </MediaViewerModal>
       <PhotoCarousel
         photoUris={photoUris}
         emptyComponent={emptyDescription}

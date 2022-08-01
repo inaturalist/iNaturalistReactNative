@@ -139,7 +139,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     width
   },
   container: {
-    flex: 1,
     backgroundColor: colors.black
   },
   mediaViewerSafeAreaView: {
