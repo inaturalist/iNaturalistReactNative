@@ -17,6 +17,7 @@ import { ObsEditContext } from "../../providers/contexts";
 import { viewStyles } from "../../styles/camera/standardCamera";
 import { textStyles } from "../../styles/obsDetails/obsDetails";
 import CameraView from "./CameraView";
+import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
 
 const StandardCamera = ( ): Node => {
@@ -86,6 +87,7 @@ const StandardCamera = ( ): Node => {
     <View style={viewStyles.container}>
       {device && <CameraView device={device} camera={camera} />}
       <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} savingPhoto={savingPhoto} />
+      <FadeInOutView savingPhoto={savingPhoto} />
       <View style={viewStyles.bottomButtons}>
         <View style={viewStyles.cameraSettingsRow}>
           <Pressable
