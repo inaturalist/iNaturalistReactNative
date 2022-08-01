@@ -59,54 +59,56 @@ const uploadObservation = async (
   obsToUpload: Object,
   localObs: Object
 ): Promise<string> => {
+  const apiToken = await getJWTToken( false );
+  const options = { api_token: apiToken };
+
+  const uploadParams = {
+    observation: { ...obsToUpload },
+    fields: { id: true }
+  };
+
+  if ( !obsToUpload.taxon_id ) {
+    delete uploadParams.observation.taxon_id;
+  }
+
+  if ( !obsToUpload.species_guess ) {
+    delete uploadParams.observation.species_guess;
+  }
+
+  if ( !obsToUpload.description ) {
+    delete uploadParams.observation.description;
+  }
+
+  let response;
   try {
-    const apiToken = await getJWTToken( false );
-    const options = { api_token: apiToken };
-
-    const uploadParams = {
-      observation: { ...obsToUpload },
-      fields: { id: true }
-    };
-
-    if ( !obsToUpload.taxon_id ) {
-      delete uploadParams.observation.taxon_id;
-    }
-
-    if ( !obsToUpload.species_guess ) {
-      delete uploadParams.observation.species_guess;
-    }
-
-    if ( !obsToUpload.description ) {
-      delete uploadParams.observation.description;
-    }
-
-    const response = await inatjs.observations.create( uploadParams, options );
-    const { id } = response.results[0];
-    await markRecordUploaded( obsToUpload.uuid, "Observation", response );
-
-    if ( localObs.observationPhotos ) {
-      uploadEvidence(
-        localObs.observationPhotos,
-        "ObservationPhoto",
-        ObservationPhoto.mapPhotoForUpload,
-        id,
-        inatjs.observation_photos
-      );
-    }
-    if ( localObs.observationSounds ) {
-      uploadEvidence(
-        localObs.observationSounds,
-        "ObservationSound",
-        ObservationSound.mapSoundForUpload,
-        id,
-        inatjs.observation_sounds
-      );
-    }
-    return "success";
-  } catch ( e ) {
-    console.log( "couldn't upload observation: ", JSON.stringify( e.response ) );
+    response = await inatjs.observations.create( uploadParams, options );
+  } catch ( uploadError ) {
+    const body = JSON.parse( await uploadError.response.text( ) );
+    console.error( "[ERROR] Failed to upload observation: ", JSON.stringify( body ) );
     return "failure";
   }
+  const { id } = response.results[0];
+  await markRecordUploaded( obsToUpload.uuid, "Observation", response );
+
+  if ( localObs.observationPhotos ) {
+    uploadEvidence(
+      localObs.observationPhotos,
+      "ObservationPhoto",
+      ObservationPhoto.mapPhotoForUpload,
+      id,
+      inatjs.observation_photos
+    );
+  }
+  if ( localObs.observationSounds ) {
+    uploadEvidence(
+      localObs.observationSounds,
+      "ObservationSound",
+      ObservationSound.mapSoundForUpload,
+      id,
+      inatjs.observation_sounds
+    );
+  }
+  return "success";
 };
 
 export default uploadObservation;
