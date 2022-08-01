@@ -4,7 +4,7 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dimensions, Image } from "react-native";
+import { Dimensions, Image, View } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 import { Appbar, Button } from "react-native-paper";
 
@@ -12,7 +12,6 @@ import Photo from "../../models/Photo";
 import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 
 const { width, height } = Dimensions.get( "screen" );
 const selectedImageHeight = height - 350;
@@ -30,6 +29,10 @@ const MediaViewer = ( {
   const { t } = useTranslation( );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( initialPhotoSelected );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
+  const [currentScale, setCurrentScale] = useState( 1 );
+
+  // only allow user to swipe between photos when zoomed out
+  const swipingDisabled = currentScale > 1;
 
   const numOfPhotos = photoUris.length;
 
@@ -49,8 +52,31 @@ const MediaViewer = ( {
     }
   }, [numOfPhotos, selectedPhotoIndex, hideModal] );
 
+  const handleMove = ( { scale } ) => {
+    if ( scale !== currentScale ) {
+      setCurrentScale( scale );
+    }
+  };
+
+  const handleHorizontalOuterRangeOffset = e => {
+    const scrollDirection = value => Math.sign( value );
+
+    if ( swipingDisabled ) { return; }
+
+    if ( scrollDirection( e ) === 1 ) {
+      // handle left scroll
+      if ( selectedPhotoIndex === 0 ) { return; }
+      setSelectedPhotoIndex( selectedPhotoIndex - 1 );
+    } else if ( scrollDirection( e ) === -1 ) {
+      // handle right scroll
+      const lastPhotoIndex = photoUris.length - 1;
+      if ( selectedPhotoIndex >= lastPhotoIndex ) { return; }
+      setSelectedPhotoIndex( selectedPhotoIndex + 1 );
+    }
+  };
+
   return (
-    <ViewNoFooter style={viewStyles.container}>
+    <View style={viewStyles.container}>
       <Appbar.Header style={viewStyles.container}>
         <Appbar.Content title={t( "X-Photos", { photoCount: numOfPhotos } )} />
       </Appbar.Header>
@@ -60,6 +86,9 @@ const MediaViewer = ( {
           cropHeight={selectedImageHeight}
           imageWidth={width}
           imageHeight={selectedImageHeight}
+          minScale={1}
+          onMove={handleMove}
+          horizontalOuterRangeOffset={handleHorizontalOuterRangeOffset}
         >
           <Image
             style={imageStyles.selectedPhoto}
@@ -86,7 +115,7 @@ const MediaViewer = ( {
       >
         {t( "Remove-Photo" )}
       </Button>
-    </ViewNoFooter>
+    </View>
   );
 };
 

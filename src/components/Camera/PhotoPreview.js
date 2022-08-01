@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Text } from "react-native";
 import { Modal, Portal } from "react-native-paper";
 
-import { textStyles, viewStyles } from "../../styles/camera/standardCamera";
+import { textStyles } from "../../styles/camera/standardCamera";
 import MediaViewer from "../MediaViewer/MediaViewer";
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
@@ -62,7 +62,6 @@ const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
         <Modal
           visible={mediaViewerVisible}
           onDismiss={hideModal}
-          contentContainerStyle={viewStyles.container}
         >
           <MediaViewer
             initialPhotoSelected={initialPhotoSelected}
