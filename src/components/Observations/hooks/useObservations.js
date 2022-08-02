@@ -40,21 +40,7 @@ const useObservations = ( ): Object => {
     }
   };
 
-  // We store a reference to our realm using useRef that allows us to access it via
-  // realmRef.current for the component's lifetime without causing rerenders if updated.
-  const realmRef = useRef( null );
-
-  const openRealm = useCallback( async ( ) => {
-    // Since this is a non-sync realm, realm will be opened synchronously when calling "Realm.open"
-    const realm = await Realm.open( realmConfig );
-    realmRef.current = realm;
-
-    // When querying a realm to find objects (e.g. realm.objects
-    // ('Observation')) the result we get back and the objects in it
-    // are "live" and will always reflect the latest state.
-    const obs = realm.objects( "Observation" );
-    const localObservations = obs.sorted( "_created_at", true );
-
+  const checkForUnsyncedObservations = useCallback( obs => {
     // includes obs which have never been synced or which have been updated
     // locally since the last sync
     const unsyncedObs = obs.filtered( "_synced_at == null || _synced_at <= _updated_at" );
@@ -67,43 +53,58 @@ const useObservations = ( ): Object => {
         totalObsToUpload: Math.max( unsyncedObs.length, uploadStatus.totalObsToUpload )
       } );
     }
+  }, [uploadStatus, numOfUnuploadedObs] );
 
+  const checkForLoggedOutUser = async ( ) => {
     // don't show activity wheel if user is logged out and API is not called
     const userId = await getUserId( );
     if ( !userId ) {
       setLoading( false );
     }
+  };
 
-    try {
-      localObservations.addListener( ( ) => {
-        // If you just pass localObservations you end up assigning a Results
-        // object to state instead of an array of observations. There's
-        // probably a better way...
-        if ( localObservations.length !== observationList.length ) {
-          setObservationList( localObservations.map( o => o ) );
-        }
-      } );
-    } catch ( err ) {
-      console.error( "Unable to update local observations 1: ", err.message );
-    }
-
-    const unviewedUpdates = await Observation.fetchObservationUpdates( );
-    unviewedUpdates.forEach( update => {
-      const existingObs = realm?.objectForPrimaryKey( "Observation", update.resource_uuid );
-      if ( !existingObs ) { return; }
-      realm?.write( ( ) => {
-        existingObs.viewed = update.viewed;
-      } );
-    } );
-    return ( ) => {
-      // remember to remove listeners to avoid async updates
-      localObservations.removeAllListeners( );
-    };
-  }, [realmRef, setObservationList, uploadStatus, numOfUnuploadedObs, observationList.length] );
+  // We store a reference to our realm using useRef that allows us to access it via
+  // realmRef.current for the component's lifetime without causing rerenders if updated.
+  const realmRef = useRef( null );
 
   useEffect( ( ) => {
-    openRealm( );
-  }, [openRealm] );
+    let isCurrent = true;
+    const updateObservationState = async ( realm, obs ) => {
+      checkForUnsyncedObservations( obs );
+      await checkForLoggedOutUser( );
+      await Observation.fetchObservationUpdates( realm );
+    };
+
+    Realm.open( realmConfig ).then( realm => {
+      realmRef.current = realm;
+
+      const obs = realm.objects( "Observation" );
+      const localObservations = obs.sorted( "_created_at", true );
+
+      updateObservationState( realm, obs );
+
+      try {
+        localObservations.addListener( ( ) => {
+          // If you just pass localObservations you end up assigning a Results
+          // object to state instead of an array of observations. There's
+          // probably a better way...
+          if ( localObservations.length !== observationList.length ) {
+            if ( !isCurrent ) { return; }
+            setObservationList( localObservations.map( o => o ) );
+          }
+        } );
+      } catch ( e ) {
+        console.log( `Unable to fetch local observations in addListener: ${e}` );
+      }
+      // cleanup function
+      return ( ) => {
+        isCurrent = false;
+        // remember to remove listeners to avoid async updates
+        localObservations.removeAllListeners( );
+        realm.close( );
+      };
+    } );
+  }, [checkForUnsyncedObservations, observationList.length] );
 
   const writeToDatabase = useCallback( results => {
     if ( results.length === 0 ) { return; }
