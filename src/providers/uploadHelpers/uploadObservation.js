@@ -68,17 +68,16 @@ const uploadObservation = async (
       fields: { id: true }
     };
 
-    if ( !obsToUpload.taxon_id ) {
-      delete uploadParams.observation.taxon_id;
-    }
+    const observationKeys = [
+      "taxon_id", "species_guess", "description", "captive_flag", "geoprivacy",
+      "observed_on_string", "owners_identification_from_vision", "positional_accuracy"
+    ];
 
-    if ( !obsToUpload.species_guess ) {
-      delete uploadParams.observation.species_guess;
-    }
-
-    if ( !obsToUpload.description ) {
-      delete uploadParams.observation.description;
-    }
+    observationKeys.forEach( value => {
+      if ( !obsToUpload[value] ) {
+        delete uploadParams.observation[value];
+      }
+    } );
 
     const response = await inatjs.observations.create( uploadParams, options );
     const { id } = response.results[0];

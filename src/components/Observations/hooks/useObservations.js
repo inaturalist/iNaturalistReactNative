@@ -100,6 +100,7 @@ const useObservations = ( ): Object => {
       return ( ) => {
         isCurrent = false;
         // remember to remove listeners to avoid async updates
+        realm.removeAllListeners( );
         localObservations.removeAllListeners( );
         realm.close( );
       };
