@@ -57,10 +57,7 @@ const ObsEdit = ( ): Node => {
 
   const handleBackButtonPress = ( ) => {
     if ( lastScreen === "StandardCamera" ) {
-      navigation.navigate( "observations", {
-        screen: "StandardCamera",
-        params: { photos: photoUris }
-      } );
+      navigation.navigate( "StandardCamera", { photos: photoUris } );
     } else {
       // show modal to dissuade user from going back
       navigation.goBack( );

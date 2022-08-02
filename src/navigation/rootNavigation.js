@@ -24,7 +24,6 @@ import colors from "../styles/colors";
 import { viewStyles } from "../styles/navigation/rootNavigation";
 import ExploreStackNavigator from "./exploreStackNavigation";
 import IdentifyStackNavigation from "./identifyStackNavigation";
-// import MyObservationsStackNavigator from "./myObservationsStackNavigation";
 import NotificationsStackNavigation from "./notificationsStackNavigation";
 import ObservationsStackNavigation from "./observationsStackNavigation";
 import ProjectsStackNavigation from "./projectsStackNavigation";
@@ -98,11 +97,6 @@ const App = ( ): React.Node => {
                     component={ObservationsStackNavigation}
                     options={hideHeader}
                   />
-                  {/* <Drawer.Screen
-                    name="my observations"
-                    component={MyObservationsStackNavigator}
-                    options={hideHeader}
-                  /> */}
                   <Drawer.Screen
                     name="notifications"
                     component={NotificationsStackNavigation}

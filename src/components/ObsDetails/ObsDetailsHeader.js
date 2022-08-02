@@ -23,11 +23,7 @@ const ObsDetailsHeader = ( { observationUUID }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
-  const navToObsEdit = ( ) => {
-    navigation.navigate( "observations", {
-      screen: "ObsEdit"
-    } );
-  };
+  const navToObsEdit = ( ) => navigation.navigate( "ObsEdit" );
 
   useEffect( ( ) => {
     const checkForLocalObservation = async ( ) => {
