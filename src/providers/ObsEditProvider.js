@@ -70,7 +70,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         setObservations( [] );
         setSelectedPhotos( {} );
 
-        navigation.navigate( "my observations", {
+        navigation.navigate( "observations", {
           screen: "ObsList",
           params: { savedLocalData: true }
         } );
@@ -103,7 +103,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setObservations( observations );
 
       if ( observations.length === 0 ) {
-        navigation.navigate( "my observations", {
+        navigation.navigate( "observations", {
           screen: "ObsList"
         } );
       }

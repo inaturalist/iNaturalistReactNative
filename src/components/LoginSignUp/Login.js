@@ -79,7 +79,7 @@ const Login = ( ): Node => {
     setUsername( userLogin );
     setLoggedIn( true );
     setLoading( false );
-    navigation.navigate( "my observations", {
+    navigation.navigate( "observations", {
       screen: "ObsList",
       params: { syncData: true, userLogin, userId }
     } );

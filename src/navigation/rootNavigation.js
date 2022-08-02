@@ -22,18 +22,17 @@ import ObsEditProvider from "../providers/ObsEditProvider";
 import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import colors from "../styles/colors";
 import { viewStyles } from "../styles/navigation/rootNavigation";
-import CameraStackNavigation from "./cameraStackNavigation";
 import ExploreStackNavigator from "./exploreStackNavigation";
 import IdentifyStackNavigation from "./identifyStackNavigation";
-import MyObservationsStackNavigator from "./myObservationsStackNavigation";
+// import MyObservationsStackNavigator from "./myObservationsStackNavigation";
 import NotificationsStackNavigation from "./notificationsStackNavigation";
+import ObservationsStackNavigation from "./observationsStackNavigation";
 import ProjectsStackNavigation from "./projectsStackNavigation";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <View /> };
 const hideHeader = {
-  headerShown: false,
-  label: "my observations"
+  headerShown: false
 };
 
 // The login component should be not preserve its state or effects after the
@@ -95,10 +94,15 @@ const App = ( ): React.Node => {
                   drawerContent={drawerRenderer}
                 >
                   <Drawer.Screen
+                    name="observations"
+                    component={ObservationsStackNavigation}
+                    options={hideHeader}
+                  />
+                  {/* <Drawer.Screen
                     name="my observations"
                     component={MyObservationsStackNavigator}
                     options={hideHeader}
-                  />
+                  /> */}
                   <Drawer.Screen
                     name="notifications"
                     component={NotificationsStackNavigation}
@@ -123,11 +127,6 @@ const App = ( ): React.Node => {
                   />
                   <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
                   <Drawer.Screen name="login" component={MortalLogin} options={hideHeader} />
-                  <Drawer.Screen
-                    name="camera"
-                    component={CameraStackNavigation}
-                    options={hideHeader}
-                  />
                   <Drawer.Screen
                     name="explore stack"
                     component={ExploreStackNavigator}

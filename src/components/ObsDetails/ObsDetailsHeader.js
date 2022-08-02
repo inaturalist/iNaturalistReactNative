@@ -24,7 +24,7 @@ const ObsDetailsHeader = ( { observationUUID }: Props ): Node => {
   const navigation = useNavigation( );
 
   const navToObsEdit = ( ) => {
-    navigation.navigate( "camera", {
+    navigation.navigate( "observations", {
       screen: "ObsEdit"
     } );
   };

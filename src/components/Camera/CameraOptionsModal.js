@@ -24,7 +24,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
 
   const navAndCloseModal = ( screen, params ) => {
     // access nested screen
-    navigation.navigate( "camera", { screen, params } );
+    navigation.navigate( "observations", { screen, params } );
     closeModal( );
   };
 
