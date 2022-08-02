@@ -62,22 +62,19 @@ const uploadObservation = async (
   const apiToken = await getJWTToken( false );
   const options = { api_token: apiToken };
 
+  // Remove all null values, b/c the API doesn't seem to like them for some
+  // reason (might be an error with the API as of 20220801)
+  const newObs = {};
+  Object.keys( obsToUpload ).forEach( k => {
+    if ( obsToUpload[k] !== null ) {
+      newObs[k] = obsToUpload[k];
+    }
+  } );
+
   const uploadParams = {
-    observation: { ...obsToUpload },
+    observation: { ...newObs },
     fields: { id: true }
   };
-
-  if ( !obsToUpload.taxon_id ) {
-    delete uploadParams.observation.taxon_id;
-  }
-
-  if ( !obsToUpload.species_guess ) {
-    delete uploadParams.observation.species_guess;
-  }
-
-  if ( !obsToUpload.description ) {
-    delete uploadParams.observation.description;
-  }
 
   let response;
   try {
