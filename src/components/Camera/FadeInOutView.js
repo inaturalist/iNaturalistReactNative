@@ -15,7 +15,7 @@ type Props = {
 
 const fade = value => ( {
   toValue: value,
-  duration: 100,
+  duration: 5,
   useNativeDriver: true
 } );
 
