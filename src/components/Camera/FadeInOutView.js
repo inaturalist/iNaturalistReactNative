@@ -15,7 +15,7 @@ type Props = {
 
 const fade = value => ( {
   toValue: value,
-  duration: 5,
+  duration: 100,
   useNativeDriver: true
 } );
 
@@ -25,20 +25,11 @@ const FadeInOutView = ( { savingPhoto }: Props ): Node => {
   const insets = useSafeAreaInsets( );
 
   useEffect( ( ) => {
-    const fadeIn = ( ) => Animated.timing( fadeAnimation, fade( 0 ) ).start( );
-
-    fadeAnimation.addListener( ( { value } ) => {
-      if ( value === 1 ) {
-        fadeIn( );
-      }
-    } );
-  }, [fadeAnimation] );
-
-  useEffect( ( ) => {
-    const fadeOut = ( ) => Animated.timing( fadeAnimation, fade( 1 ) ).start( );
-
     if ( savingPhoto ) {
-      fadeOut( );
+      Animated.sequence( [
+        Animated.timing( fadeAnimation, fade( 1 ) ),
+        Animated.timing( fadeAnimation, fade( 0 ) )
+      ] ).start( );
     }
   }, [savingPhoto, fadeAnimation] );
 
