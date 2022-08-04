@@ -36,7 +36,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   grayButton: {
     borderRadius: 40,
-    marginTop: 17
+    marginTop: 17,
+    minHeight: 48,
+    justifyContent: "center"
   }
 } );
 

@@ -22,7 +22,6 @@ import { imageStyles, textStyles, viewStyles } from "../../styles/login/login";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import {
   authenticateUser,
-  getUserId,
   getUsername,
   isLoggedIn,
   signOut
@@ -75,13 +74,11 @@ const Login = ( ): Node => {
     }
 
     const userLogin = await getUsername( );
-    const userId = await getUserId( );
     setUsername( userLogin );
     setLoggedIn( true );
     setLoading( false );
     navigation.navigate( "my observations", {
-      screen: "ObsList",
-      params: { syncData: true, userLogin, userId }
+      screen: "ObsList"
     } );
   };
 

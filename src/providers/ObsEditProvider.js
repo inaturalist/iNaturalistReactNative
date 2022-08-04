@@ -71,8 +71,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         setSelectedPhotos( {} );
 
         navigation.navigate( "my observations", {
-          screen: "ObsList",
-          params: { savedLocalData: true }
+          screen: "ObsList"
         } );
       } else if ( currentObsIndex === observations.length - 1 ) {
         observations.pop( );
