@@ -59,7 +59,9 @@ const useRemoteObservations = ( ): Object => {
   }, [uploadStatus] );
 
   useEffect( ( ) => {
+    let isCurrent = true;
     const fetchObservations = async ( ) => {
+      if ( !isCurrent ) { return; }
       setLoading( true );
       const realm = await Realm.open( realmConfig );
       // determine which local observations are new or modified
@@ -76,6 +78,7 @@ const useRemoteObservations = ( ): Object => {
         Observation.updateLocalObservationsFromRemote( realm, results );
       }
 
+      if ( !isCurrent ) { return; }
       setLoading( false );
     };
 
@@ -83,6 +86,9 @@ const useRemoteObservations = ( ): Object => {
       fetchObservations( );
       setFetchFromServer( false );
     }
+    return ( ) => {
+      isCurrent = false;
+    };
   }, [updateUnsyncedObs, page, fetchFromServer] );
 
   return {
