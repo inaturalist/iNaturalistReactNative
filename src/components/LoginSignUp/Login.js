@@ -129,8 +129,8 @@ const Login = ( ): Node => {
   );
 
   const loginForm = (
-    <>
 
+    <View>
       <Pressable
         onPress={() => navigation.goBack()}
         style={closeButton.close}
@@ -142,7 +142,7 @@ const Login = ( ): Node => {
         resizeMode="contain"
         source={require( "../../images/inat_logo.png" )}
       />
-      <Text style={textStyles.header}>{t( "Login-header" )}</Text>
+
       <Text style={textStyles.header}>{t( "Login-header" )}</Text>
       <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
       <Text style={textStyles.fieldText}>{t( "Username-or-Email" )}</Text>
@@ -183,7 +183,7 @@ const Login = ( ): Node => {
         testID="Login.loginButton"
         loading={loading}
       />
-    </>
+    </View>
   );
 
   return (
