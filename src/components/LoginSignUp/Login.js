@@ -129,8 +129,7 @@ const Login = ( ): Node => {
   );
 
   const loginForm = (
-
-    <View>
+    <>
       <Pressable
         onPress={() => navigation.goBack()}
         style={closeButton.close}
@@ -183,7 +182,7 @@ const Login = ( ): Node => {
         testID="Login.loginButton"
         loading={loading}
       />
-    </View>
+    </>
   );
 
   return (
