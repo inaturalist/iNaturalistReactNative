@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Linking,
   Platform,
+  Pressable,
   ScrollView,
   TouchableOpacity,
   View
@@ -16,9 +17,12 @@ import {
 import {
   Button, Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import colors from "../../styles/colors";
-import { imageStyles, textStyles, viewStyles } from "../../styles/login/login";
+import {
+  closeButton, imageStyles, textStyles, viewStyles
+} from "../../styles/login/login";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import {
   authenticateUser,
@@ -126,11 +130,19 @@ const Login = ( ): Node => {
 
   const loginForm = (
     <>
+
+      <Pressable
+        onPress={() => navigation.goBack()}
+        style={closeButton.close}
+      >
+        <Icon name="close" size={35} />
+      </Pressable>
       <Image
         style={imageStyles.logo}
         resizeMode="contain"
         source={require( "../../images/inat_logo.png" )}
       />
+      <Text style={textStyles.header}>{t( "Login-header" )}</Text>
       <Text style={textStyles.header}>{t( "Login-header" )}</Text>
       <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
       <Text style={textStyles.fieldText}>{t( "Username-or-Email" )}</Text>
