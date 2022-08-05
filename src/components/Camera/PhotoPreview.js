@@ -50,7 +50,8 @@ const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node =
   const emptyDescription = ( ) => (
     <Text style={[
       textStyles.topPhotoText, {
-        bottom: 16 + insets.top
+        // $FlowIgnore
+        bottom: textStyles.topPhotoText.bottom + insets.top
       }]}
     >
       {t( "Photos-you-take-will-appear-here" )}
@@ -70,7 +71,6 @@ const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node =
         <Modal
           visible={mediaViewerVisible}
           onDismiss={hideModal}
-          // contentContainerStyle={viewStyles.container}
         >
           <MediaViewer
             initialPhotoSelected={initialPhotoSelected}
@@ -82,7 +82,8 @@ const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node =
       </Portal>
       <View style={[
         viewStyles.photoPreviewContainer, {
-          height: 134 + insets.top
+          // $FlowIgnore
+          height: viewStyles.photoPreviewContainer.height + insets.top
         }
       ]}
       >

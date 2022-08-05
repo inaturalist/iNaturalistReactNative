@@ -10,10 +10,6 @@ const { width } = Dimensions.get( "screen" );
 const heightPhotoContainerCamera = 134;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
-  container: {
-    flex: 1,
-    backgroundColor: colors.black
-  },
   photoPreviewContainer: {
     backgroundColor: colors.black,
     position: "absolute",

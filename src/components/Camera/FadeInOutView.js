@@ -2,12 +2,10 @@
 
 import type { Node } from "react";
 import React, { useEffect, useRef } from "react";
-import { Animated, Dimensions } from "react-native";
+import { Animated } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import viewStyles from "../../styles/camera/fadeInOutView";
-
-const { height } = Dimensions.get( "screen" );
 
 type Props = {
   savingPhoto: boolean
@@ -33,8 +31,8 @@ const FadeInOutView = ( { savingPhoto }: Props ): Node => {
     }
   }, [savingPhoto, fadeAnimation] );
 
-  const heightPhotoContainerCamera = 134;
-  const bottomOfPhotoPreview = heightPhotoContainerCamera + insets.top;
+  // $FlowIgnore
+  const bottomOfPhotoPreview = viewStyles.bottomOfPhotoPreview.height + insets.top;
 
   return (
     <Animated.View
@@ -42,7 +40,8 @@ const FadeInOutView = ( { savingPhoto }: Props ): Node => {
         viewStyles.fadingContainer,
         {
           top: bottomOfPhotoPreview,
-          height: height - bottomOfPhotoPreview,
+          // $FlowIgnore
+          height: viewStyles.fadingContainer.height - bottomOfPhotoPreview,
           opacity: fadeAnimation
         }
       ]}

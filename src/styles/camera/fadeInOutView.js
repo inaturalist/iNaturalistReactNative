@@ -5,13 +5,19 @@ import type { ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet
 
 import colors from "../colors";
 
-const { width } = Dimensions.get( "screen" );
+const { width, height } = Dimensions.get( "screen" );
+
+const heightPhotoContainerCamera = 134;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   fadingContainer: {
     backgroundColor: colors.black,
     position: "absolute",
-    width
+    width,
+    height
+  },
+  bottomOfPhotoPreview: {
+    height: heightPhotoContainerCamera
   }
 } );
 

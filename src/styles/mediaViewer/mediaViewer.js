@@ -10,7 +10,7 @@ const { width, height } = Dimensions.get( "screen" );
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   selectedPhoto: {
     width,
-    height: height - 300
+    height: height - 350
   }
 } );
 

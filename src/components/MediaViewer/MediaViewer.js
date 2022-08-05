@@ -12,10 +12,10 @@ import Photo from "../../models/Photo";
 import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
-// import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 
-const { width, height } = Dimensions.get( "screen" );
-const selectedImageHeight = height - 350;
+const { width } = Dimensions.get( "screen" );
+// $FlowIgnore
+const selectedImageHeight = imageStyles.selectedPhoto.height;
 
 type Props = {
   photoUris: Array<string>,
