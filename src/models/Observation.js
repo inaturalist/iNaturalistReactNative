@@ -249,7 +249,7 @@ class Observation extends Realm.Object {
     return { uri: mediumUri };
   }
 
-  static fetchObservationUpdates = async ( ) => {
+  static fetchObservationUpdates = async realm => {
     try {
       const apiToken = await getJWTToken( false );
 
@@ -262,6 +262,13 @@ class Observation extends Realm.Object {
       const options = { api_token: apiToken };
       const { results } = await inatjs.observations.updates( params, options );
       const unviewed = results.filter( result => result.viewed === false ).map( r => r );
+      unviewed.forEach( update => {
+        const existingObs = realm?.objectForPrimaryKey( "Observation", update.resource_uuid );
+        if ( !existingObs ) { return; }
+        realm?.write( ( ) => {
+          existingObs.viewed = update.viewed;
+        } );
+      } );
       return unviewed;
     } catch ( e ) {
       console.log( "Couldn't fetch observation updates:", JSON.stringify( e ) );
