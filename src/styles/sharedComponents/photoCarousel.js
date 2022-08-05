@@ -9,6 +9,18 @@ const { width } = Dimensions.get( "screen" );
 
 const imageWidth = 66;
 
+const standardCameraImage = {
+  backgroundColor: colors.midGray,
+  width: imageWidth,
+  height: imageWidth,
+  borderRadius: 8,
+  marginHorizontal: 6,
+  marginVertical: 27,
+  marginTop: 50,
+  marginBottom: 18,
+  justifyContent: "center"
+};
+
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   photo: {
     width: imageWidth,
@@ -17,25 +29,19 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
     marginHorizontal: 6,
     marginVertical: 27
   },
-  photoStandardCamera: {
-    marginTop: 50,
-    marginBottom: 18
-  }
+  photoStandardCamera: standardCameraImage
 } );
 
-const heightPhotoContainerCamera = 50 + 18 + 66;
-
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  photoContainer: {
+    top: 50,
+    minWidth: width
+  },
+  // $FlowIgnore
+  photoLoading: standardCameraImage,
   greenSelectionBorder: {
     borderWidth: 3,
     borderColor: colors.selectionGreen
-  },
-  photoContainer: {
-    backgroundColor: colors.black,
-    position: "absolute",
-    top: 0,
-    height: heightPhotoContainerCamera,
-    width
   },
   deleteButton: {
     paddingHorizontal: 10,

@@ -5,7 +5,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { Animated, StyleSheet } from "react-native";
 import { PinchGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
 import Reanimated, {
-  Extrapolate, interpolate, useAnimatedGestureHandler, useAnimatedProps, useSharedValue
+  Extrapolate, interpolate,
+  useAnimatedGestureHandler, useAnimatedProps,
+  useSharedValue
 } from "react-native-reanimated";
 import { Camera } from "react-native-vision-camera";
 
