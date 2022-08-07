@@ -26,6 +26,18 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 const heightPhotoContainerCamera = 50 + 18 + 66;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  addEvidenceButton: {
+    width: imageWidth,
+    height: imageWidth,
+    borderWidth: 2,
+    borderColor: colors.logInGray,
+    borderRadius: 8,
+    marginHorizontal: 6,
+    marginVertical: 27,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   greenSelectionBorder: {
     borderWidth: 3,
     borderColor: colors.selectionGreen

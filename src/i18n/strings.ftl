@@ -593,3 +593,6 @@ Yes-delete-photo = Yes, delete photo
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.
 You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
+
+Add-evidence = Add evidence
+You-can-only-upload-images = You can only add 10 photos and 10 sounds to an observation

@@ -7,7 +7,7 @@ import React, {
   useContext, useEffect, useRef, useState
 } from "react";
 import { Pressable, Text, View } from "react-native";
-import { Avatar, useTheme } from "react-native-paper";
+import { Avatar, Snackbar, useTheme } from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Realm from "realm";
 
@@ -15,12 +15,15 @@ import realmConfig from "../../models/index";
 import Photo from "../../models/Photo";
 import { ObsEditContext } from "../../providers/contexts";
 import { viewStyles } from "../../styles/camera/standardCamera";
+import colors from "../../styles/colors";
 import { textStyles } from "../../styles/obsDetails/obsDetails";
 import CameraView from "./CameraView";
 import PhotoPreview from "./PhotoPreview";
 
+export const MAX_PHOTOS_ALLOWED = 10;
+
 const StandardCamera = ( ): Node => {
-  const { colors } = useTheme( );
+  const { colors: themeColors } = useTheme( );
   // TODO: figure out if there's a way to write location to photo metadata with RN
   const { addPhotos } = useContext( ObsEditContext );
   const navigation = useNavigation( );
@@ -35,17 +38,20 @@ const StandardCamera = ( ): Node => {
     flash: "off"
   } );
   const [photoUris, setPhotoUris] = useState( [] );
+  const disallowAddingPhotos = photoUris.length >= MAX_PHOTOS_ALLOWED;
+  const [showAlert, setShowAlert] = useState( false );
 
   const takePhoto = async ( ) => {
     try {
+      if ( disallowAddingPhotos ) {
+        setShowAlert( true );
+        return;
+      }
       const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
       const realm = await Realm.open( realmConfig );
       const uri = await Photo.savePhoto( realm, cameraPhoto );
 
-      // only 10 photoUris allowed
-      if ( photoUris.length < 10 ) {
-        setPhotoUris( photoUris.concat( [uri] ) );
-      }
+      setPhotoUris( photoUris.concat( [uri] ) );
     } catch ( e ) {
       console.log( e, "couldn't take photo" );
     }
@@ -74,8 +80,12 @@ const StandardCamera = ( ): Node => {
     }
   }, [photos] );
 
-  const renderCameraButton = icon => (
-    <Avatar.Icon size={40} icon={icon} style={{ backgroundColor: colors.background }} />
+  const renderCameraButton = ( icon, disabled ) => (
+    <Avatar.Icon
+      size={40}
+      icon={icon}
+      style={{ backgroundColor: disabled ? colors.gray : themeColors.background }}
+    />
   );
 
   return (
@@ -103,7 +113,7 @@ const StandardCamera = ( ): Node => {
           style={viewStyles.captureButton}
           onPress={takePhoto}
         >
-          {renderCameraButton( "circle-outline" )}
+          {renderCameraButton( "circle-outline", disallowAddingPhotos )}
         </Pressable>
         <Pressable
           style={viewStyles.nextButton}
@@ -112,6 +122,13 @@ const StandardCamera = ( ): Node => {
           <Text style={textStyles.whiteText}>{t( "Next" )}</Text>
         </Pressable>
       </View>
+
+      <Snackbar
+        visible={showAlert}
+        onDismiss={() => setShowAlert( false )}
+      >
+        {t( "You-can-only-upload-images" )}
+      </Snackbar>
     </View>
   );
 };
