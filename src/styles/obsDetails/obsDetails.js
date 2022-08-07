@@ -108,7 +108,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     elevation: 24
   },
   commentInputContainer: {
-    position: "relative"
+    position: "relative",
+    paddingLeft: 10,
+    paddingRight: 10
   },
   commentInput: {
     backgroundColor: colors.white,
@@ -118,7 +120,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   commentInputText: {
     paddingTop: 8,
     paddingBottom: 8,
-    height: "100%"
+    height: 200
   },
   sendComment: {
     position: "absolute",

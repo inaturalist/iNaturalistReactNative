@@ -62,6 +62,7 @@ const ObsDetails = ( ): Node => {
   const [ids, setIds] = useState( [] );
   const bottomSheetModalRef = useRef( null );
   const [addingComment, setAddingComment] = useState( false );
+  const [snapPoint, setSnapPoint] = useState( 200 );
 
   const onBackdropPress = () => {
     Alert.alert(
@@ -357,12 +358,21 @@ const ObsDetails = ( ): Node => {
           index={0}
           enableOverDrag={false}
           enablePanDownToClose={true}
-          snapPoints={["30%"]}
+          snapPoints={[snapPoint]}
           backdropComponent={renderBackdrop}
           handleComponent={renderHandle}
           style={viewStyles.bottomModal}
         >
-          <View style={viewStyles.commentInputContainer}>
+          <View
+            style={viewStyles.commentInputContainer}
+            onLayout={( {
+                          nativeEvent: {
+                            layout: { height }
+                          }
+                        } ) => {
+              setSnapPoint( height + ( Platform.OS === "android" ? 20 : 40 ) );
+            }}
+          >
             {renderBottomSheetTextView()}
             <TouchableOpacity
               style={viewStyles.sendComment}
