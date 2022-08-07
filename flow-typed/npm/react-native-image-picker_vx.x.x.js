@@ -13,6 +13,6 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'react-native-image-picker' {
+declare module "react-native-image-picker" {
   declare module.exports: any;
 }
