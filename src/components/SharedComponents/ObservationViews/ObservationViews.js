@@ -46,14 +46,9 @@ const ObservationViews = ( {
     navigation.navigate( "ObsDetails", { observation } );
   };
 
-  const renderItem = ( { item, index } ) => {
-    if ( index === 0 ) {
-      // console.log( item.viewed, "first item viewed status" );
-    }
-    return (
-      <ObsCard item={item} handlePress={navToObsDetails} />
-    );
-  };
+  const renderItem = ( { item } ) => (
+    <ObsCard item={item} handlePress={navToObsDetails} />
+  );
   const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} />;
 
   const renderEmptyState = ( ) => {

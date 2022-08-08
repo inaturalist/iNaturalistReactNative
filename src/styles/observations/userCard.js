@@ -16,6 +16,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   editProfile: {
     position: "absolute",
     right: 0
+  },
+  topCard: {
+    height: 100
   }
 } );
 

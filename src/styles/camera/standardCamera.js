@@ -12,12 +12,16 @@ const buttonRow = {
   bottom: 75
 };
 
-const cameraCaptureRowHeight = 69 + 36 + 54;
+const cameraCaptureRowHeight = 159;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   container: {
     flex: 1,
     backgroundColor: colors.black
+  },
+  bottomButtons: {
+    bottom: 0,
+    position: "absolute"
   },
   captureButton: {
     position: "absolute",
@@ -64,12 +68,6 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
     color: colors.white,
     zIndex: 1,
     fontSize: 24
-  },
-  topPhotoText: {
-    bottom: 10,
-    color: colors.white,
-    position: "absolute",
-    fontSize: 18
   }
 } );
 
