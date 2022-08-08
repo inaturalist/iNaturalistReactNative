@@ -70,7 +70,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         setObservations( [] );
         setSelectedPhotos( {} );
 
-        navigation.navigate( "ObsList", { savedLocalData: true } );
+        navigation.navigate( "ObsList" );
       } else if ( currentObsIndex === observations.length - 1 ) {
         observations.pop( );
         setCurrentObsIndex( observations.length - 1 );
