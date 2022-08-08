@@ -82,4 +82,12 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 
 } );
 
-export { imageStyles, textStyles, viewStyles };
+const closeButton: { [string]: ViewStyleProp } = StyleSheet.create( {
+  close: {
+    alignSelf: "flex-end"
+  }
+} );
+
+export {
+  closeButton, imageStyles, textStyles, viewStyles
+};

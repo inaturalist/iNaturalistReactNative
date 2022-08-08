@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
+import useLoggedIn from "../../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../../styles/observations/obsList";
 import Map from "../Map";
 import EmptyList from "./EmptyList";
@@ -23,8 +24,7 @@ type Props = {
   mapHeight?: number,
   totalObservations?: number,
   handleEndReached?: Function,
-  syncObservations?: Function,
-  userId?: ?number
+  syncObservations?: Function
 }
 
 const ObservationViews = ( {
@@ -35,22 +35,24 @@ const ObservationViews = ( {
   mapHeight,
   totalObservations,
   handleEndReached,
-  syncObservations,
-  userId
+  syncObservations
 }: Props ): React.Node => {
   const [view, setView] = React.useState( "list" );
   const navigation = useNavigation( );
   const { name } = useRoute( );
+  const isLoggedIn = useLoggedIn( );
 
   const navToObsDetails = async observation => {
     navigation.navigate( "ObsDetails", { observation } );
   };
 
-  const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
+  const renderItem = ( { item } ) => (
+    <ObsCard item={item} handlePress={navToObsDetails} />
+  );
   const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} />;
 
   const renderEmptyState = ( ) => {
-    if ( name !== "Explore" && !loading ) {
+    if ( name !== "Explore" && isLoggedIn === false ) {
       return <EmptyList />;
     }
     return null;
@@ -62,10 +64,12 @@ const ObservationViews = ( {
 
   const { t } = useTranslation( );
 
-  const renderFooter = ( ) => ( loading
-    ? <InfiniteScrollFooter />
-    : <View style={viewStyles.footer} />
-  );
+  const renderFooter = ( ) => {
+    if ( isLoggedIn === false ) { return null; }
+    return loading
+      ? <InfiniteScrollFooter />
+      : <View style={viewStyles.footer} />;
+  };
 
   const renderView = ( ) => {
     if ( view === "map" ) {
@@ -91,7 +95,7 @@ const ObservationViews = ( {
     <View style={[viewStyles.toggleViewRow, isExplore && viewStyles.exploreButtons]}>
       {!isExplore && (
       <View style={viewStyles.toggleButtons}>
-        {userId && (
+        {isLoggedIn && (
         <Pressable onPress={syncObservations}>
           <Icon name="sync" size={30} />
         </Pressable>

@@ -3,9 +3,10 @@
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { textStyles } from "../../styles/camera/standardCamera";
+import { textStyles, viewStyles } from "../../styles/camera/photoPreview";
 import MediaViewer from "../MediaViewer/MediaViewer";
 import MediaViewerModal from "../MediaViewer/MediaViewerModal";
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
@@ -13,15 +14,18 @@ import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
 type Props = {
   photoUris: Array<string>,
-  setPhotoUris: Function
+  setPhotoUris: Function,
+  savingPhoto: boolean
 }
 
-const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
+const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node => {
   const { t } = useTranslation( );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+
+  const insets = useSafeAreaInsets( );
 
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
@@ -44,7 +48,12 @@ const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
   };
 
   const emptyDescription = ( ) => (
-    <Text style={textStyles.topPhotoText}>
+    <Text style={[
+      textStyles.topPhotoText, {
+        // $FlowIgnore
+        bottom: textStyles.topPhotoText.bottom + insets.top
+      }]}
+    >
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
@@ -69,13 +78,22 @@ const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
           hideModal={hideModal}
         />
       </MediaViewerModal>
-      <PhotoCarousel
-        photoUris={photoUris}
-        emptyComponent={emptyDescription}
-        containerStyle="camera"
-        handleDelete={handleDelete}
-        setSelectedPhotoIndex={handleSelection}
-      />
+      <View style={[
+        viewStyles.photoPreviewContainer, {
+          // $FlowIgnore
+          height: viewStyles.photoPreviewContainer.height + insets.top
+        }
+      ]}
+      >
+        <PhotoCarousel
+          photoUris={photoUris}
+          emptyComponent={emptyDescription}
+          containerStyle="camera"
+          handleDelete={handleDelete}
+          setSelectedPhotoIndex={handleSelection}
+          savingPhoto={savingPhoto}
+        />
+      </View>
     </>
   );
 };

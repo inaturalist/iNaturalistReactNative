@@ -53,6 +53,7 @@ const UploadProgressBar = ( { uploadStatus }: Props ): Node => {
 
   const handleClosePress = useCallback( () => {
     setCancelUpload( true );
+    setStatus( null );
   }, [] );
 
   // eslint-disable-next-line react/jsx-no-useless-fragment

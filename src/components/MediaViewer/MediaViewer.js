@@ -13,8 +13,9 @@ import { imageStyles, textStyles, viewStyles } from "../../styles/mediaViewer/me
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
-const { width, height } = Dimensions.get( "screen" );
-const selectedImageHeight = height - 350;
+const { width } = Dimensions.get( "screen" );
+// $FlowIgnore
+const selectedImageHeight = imageStyles.selectedPhoto.height;
 
 type Props = {
   photoUris: Array<string>,

@@ -1,5 +1,10 @@
 # iNaturalistReactNative
 
+## Requirements
+
+* Xcode 13 or above
+* [Android and iOS environment setup](https://reactnative.dev/docs/environment-setup) described in the RN docs
+
 ## Install packages and pods
 
 1. Run `npm install`
@@ -85,6 +90,7 @@ git commit -a -m "Updated translations"
 ## Troubleshooting
 
 1. Run `react-native clean-project`. This will give you options to clean caches, clean builds, reinstall pods, and reinstall node_modules. Using this eliminates a lot of hard-to-diagnose build issues.
+1. If you're running on an M series chip, you may need to install a specific version of NDK to the app to build for Android. See `android/build.gradle`
 
 
 ## Deploying

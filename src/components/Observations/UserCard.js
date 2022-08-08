@@ -9,16 +9,16 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import User from "../../models/User";
 import { viewStyles } from "../../styles/observations/userCard";
 import UserIcon from "../SharedComponents/UserIcon";
+import useUser from "../UserProfile/hooks/useUser";
+import useCurrentUser from "./hooks/useCurrentUser";
 
-type Props = {
-  userId: number,
-  user: Object
-}
-
-const UserCard = ( { userId, user }: Props ): Node => {
+const UserCard = ( ): Node => {
+  const userId = useCurrentUser( );
+  const { user } = useUser( userId );
   // TODO: this currently doesn't show up on initial login
   // because user id can't be fetched
   const navigation = useNavigation( );
+  if ( !user ) { return <View style={viewStyles.topCard} />; }
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId } );
 
   return (

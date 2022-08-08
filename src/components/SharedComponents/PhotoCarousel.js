@@ -2,8 +2,11 @@
 
 import type { Node } from "react";
 import React from "react";
-import { FlatList, Image, Pressable } from "react-native";
+import {
+  ActivityIndicator, FlatList, Image, Pressable, View
+} from "react-native";
 import { Avatar, useTheme } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { imageStyles, viewStyles } from "../../styles/sharedComponents/photoCarousel";
 
@@ -13,7 +16,8 @@ type Props = {
   setSelectedPhotoIndex?: Function,
   selectedPhotoIndex?: number,
   containerStyle?: string,
-  handleDelete?: Function
+  handleDelete?: Function,
+  savingPhoto?: boolean
 }
 
 const PhotoCarousel = ( {
@@ -22,8 +26,10 @@ const PhotoCarousel = ( {
   setSelectedPhotoIndex,
   selectedPhotoIndex,
   containerStyle,
-  handleDelete
+  handleDelete,
+  savingPhoto
 }: Props ): Node => {
+  const insets = useSafeAreaInsets( );
   const { colors } = useTheme( );
   const renderDeleteButton = photoUri => (
     <Pressable
@@ -37,34 +43,51 @@ const PhotoCarousel = ( {
     </Pressable>
   );
 
+  const renderSkeleton = ( ) => {
+    if ( savingPhoto ) {
+      return (
+        <View style={viewStyles.photoLoading}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+    return null;
+  };
+
   const renderPhoto = ( { item, index } ) => (
-    <Pressable
-      onPress={( ) => {
-        if ( setSelectedPhotoIndex ) {
-          setSelectedPhotoIndex( index );
-        }
-      }}
-    >
-      <Image
-        source={{ uri: item }}
-        style={[
-          imageStyles.photo,
-          selectedPhotoIndex === index && viewStyles.greenSelectionBorder,
-          ( containerStyle === "camera" ) && imageStyles.photoStandardCamera
-        ]}
-        testID="ObsEdit.photo"
-      />
-      {( containerStyle === "camera" ) && renderDeleteButton( item )}
-    </Pressable>
+    <>
+      <Pressable
+        onPress={( ) => {
+          if ( setSelectedPhotoIndex ) {
+            setSelectedPhotoIndex( index );
+          }
+        }}
+      >
+        <Image
+          source={{ uri: item }}
+          style={[
+            imageStyles.photo,
+            selectedPhotoIndex === index && viewStyles.greenSelectionBorder,
+            ( containerStyle === "camera" ) && imageStyles.photoStandardCamera
+          ]}
+          testID="ObsEdit.photo"
+        />
+        {( containerStyle === "camera" ) && renderDeleteButton( item )}
+      </Pressable>
+      {index === photoUris.length - 1 && renderSkeleton( )}
+    </>
   );
 
   return (
     <FlatList
       data={photoUris}
-      contentContainerStyle={( containerStyle === "camera" ) && viewStyles.photoContainer}
+      contentContainerStyle={( containerStyle === "camera" ) && [
+        viewStyles.photoContainer, {
+          top: insets.top
+        }]}
       renderItem={renderPhoto}
       horizontal
-      ListEmptyComponent={emptyComponent}
+      ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
     />
   );
 };
