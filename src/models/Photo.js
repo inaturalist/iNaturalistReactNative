@@ -12,8 +12,15 @@ class Photo extends Realm.Object {
 
   static photoUploadPath = `${RNFS.DocumentDirectoryPath}/photoUploads`;
 
-  static mapApiToRealm( photo ) {
-    return photo;
+  static mapApiToRealm( photo, existingObsPhoto ) {
+    const localPhoto = {
+      ...photo,
+      _synced_at: new Date( )
+    };
+    if ( !existingObsPhoto ) {
+      localPhoto._created_at = new Date( );
+    }
+    return localPhoto;
   }
 
   static async resizeImageForUpload( path ) {

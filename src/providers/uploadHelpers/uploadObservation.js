@@ -14,6 +14,7 @@ const markRecordUploaded = async ( uuid: string, type: string, response: Object 
   try {
     const realm = await Realm.open( realmConfig );
     const record = realm.objectForPrimaryKey( type, uuid );
+    console.log( record, "record in upload observation" );
     realm?.write( ( ) => {
       record.id = id;
       record._synced_at = new Date( );
@@ -34,6 +35,7 @@ const uploadToServer = async (
 
   try {
     const response = await apiEndpoint.create( params, options );
+    console.log( type, "mark record type uploaded" );
     await markRecordUploaded( uuid, type, response );
   } catch ( e ) {
     console.log( JSON.stringify( e.response ), `couldn't upload ${type}` );
@@ -47,6 +49,8 @@ const uploadEvidence = (
   observationId: number,
   apiEndpoint: Function
 ) => {
+  // console.log( "upload evidence: pausing for testing" );
+  // return null;
   if ( evidence.length === 0 ) { return; }
   for ( let i = 0; i < evidence.length; i += 1 ) {
     const currentEvidence = evidence[i];

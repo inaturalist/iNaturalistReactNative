@@ -127,7 +127,8 @@ class Observation extends Realm.Object {
     return list.map( item => createFunction.mapApiToRealm( item, realm ) );
   };
 
-  static createObservationForRealm( obs, realm ) {
+  static createOrModifyLocalObservation( obs, realm ) {
+    const existingObs = realm?.objectForPrimaryKey( "Observation", obs.uuid );
     const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
     const observationPhotos = Observation.createLinkedObjects(
       obs.observation_photos,
@@ -142,10 +143,8 @@ class Observation extends Realm.Object {
     );
     const user = User.mapApiToRealm( obs.user );
 
-    const newObs = {
+    const localObs = {
       ...obs,
-      // this time is used for sorting observations in ObsList
-      _created_at: obs.created_at,
       _synced_at: new Date( ),
       comments,
       identifications,
@@ -157,7 +156,10 @@ class Observation extends Realm.Object {
       taxon,
       user
     };
-    return newObs;
+    if ( !existingObs ) {
+      localObs._created_at = new Date( );
+    }
+    return localObs;
   }
 
   static async saveLocalObservationForUpload( obs, realm ) {

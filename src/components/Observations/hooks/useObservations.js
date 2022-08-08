@@ -1,6 +1,7 @@
 // @flow
 
 import inatjs from "inaturalistjs";
+import _ from "lodash";
 import {
   useCallback, useEffect, useRef, useState
 } from "react";
@@ -58,6 +59,23 @@ const useObservations = ( ): Object => {
     // includes obs which have never been synced or which have been updated
     // locally since the last sync
     const unsyncedObs = obs.filtered( "_synced_at == null || _synced_at <= _updated_at" );
+
+    const photos = realm.objects( "ObservationPhoto" );
+    const unsyncedPhotos = photos.filtered( "_synced_at == null || _synced_at <= _updated_at" );
+    // const linkedObservation = unsyncedPhotos
+    // ?.[0]?.linkingObjects( "Observation", "observationPhotos" )[0];
+    console.log( unsyncedPhotos.length, "unsynced photos in useObs" );
+    // console.log( linkedObservation, "linked observation" );
+    const obsWithUnsyncedPhotos = _.uniq( unsyncedPhotos
+      .map( photo => photo.linkingObjects( "Observation", "observationPhotos" )[0] ) );
+    console.log( obsWithUnsyncedPhotos, "obs with unsynced photos" );
+
+    // fetch unsynced photos
+    // figure out which observation they are attached to
+    // show correct number of observations needing upload
+    // only try to upload photos, not the existing observation
+    // make sure observation photos are created with _created_at
+    // and records are correctly updated
 
     if ( unsyncedObs?.length && unsyncedObs?.length !== numOfUnuploadedObs ) {
       setUploadStatus( {
@@ -118,12 +136,12 @@ const useObservations = ( ): Object => {
           return;
         }
       }
-      const newObs = Observation.createObservationForRealm( obs, realm );
+      const localObs = Observation.createOrModifyLocalObservation( obs, realm );
       realm?.write( ( ) => {
         // To upsert an object, call Realm.create() with the update mode set
         // to modified. The operation either inserts a new object with the given primary key
         // or updates an existing object that already has that primary key.
-        realm?.create( "Observation", newObs, "modified" );
+        realm?.create( "Observation", localObs, "modified" );
       } );
     } );
     setLoading( false );
