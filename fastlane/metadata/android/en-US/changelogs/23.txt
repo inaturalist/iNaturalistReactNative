@@ -1,12 +1,10 @@
 Lots of updates!
 
-* Color ID and comment counts on My Observations when there are unviewed updates
-* Viewing an observation marks them as viewed
+* Color ID and comment counts on My Obs when there are unviewed updates
 * Camera shutter effect on Standard Camera
 * Loading effect for new photo thumbnails on Standard Camera
-* Bugfix: back nav button from Obs Edit returns to Obs Detail instead of My
-  Observations
+* Bugfix: back button from Obs Edit returns to Obs Detail instead of My Obs
 * Add close button to Login screen
-* Photo preview on Standard Camera remains flush with the top of the screen
+* Preview on Standard Camera remains flush with the top of the screen
 * Added upload progress bar to upload bottom sheet
-* Numerous updates to bring the bulk uploader closer to spec
+* Brought the bulk uploader closer to spec
