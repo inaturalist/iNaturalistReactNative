@@ -3,7 +3,9 @@
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import {
+  Image, Pressable, Text, View
+} from "react-native";
 import { Menu } from "react-native-paper";
 import Realm from "realm";
 
@@ -11,8 +13,8 @@ import Comment from "../../models/Comment";
 import realmConfig from "../../models/index";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
-import { timeAgo } from "../../sharedHelpers/dateAndTime";
-import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
+import { formatIdDate } from "../../sharedHelpers/dateAndTime";
+import { imageStyles, textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
 import PlaceholderText from "../PlaceholderText";
 import KebabMenu from "../SharedComponents/KebabMenu";
 import UserIcon from "../SharedComponents/UserIcon";
@@ -41,7 +43,7 @@ const ActivityItem = ( {
   }, [user] );
 
   return (
-    <View style={[item.temporary ? viewStyles.temporaryRow : null]}>
+    <View style={[viewStyles.activityItem, item.temporary ? viewStyles.temporaryRow : null]}>
       <View style={[viewStyles.userProfileRow, viewStyles.rowBorder]}>
         {user && (
           <Pressable
@@ -51,13 +53,26 @@ const ActivityItem = ( {
             testID={`ObsDetails.identifier.${user.id}`}
           >
             <UserIcon uri={User.uri( user )} />
-            <Text>{User.userHandle( user )}</Text>
+            <Text style={textStyles.username}>{User.userHandle( user )}</Text>
           </Pressable>
         )}
-        <View style={viewStyles.labels}>
-          {item.vision && <PlaceholderText style={[textStyles.labels]} text="vision" />}
-          <Text style={textStyles.labels}>{item.category}</Text>
-          {item.created_at && <Text style={textStyles.labels}>{timeAgo( item.created_at )}</Text>}
+        <View style={viewStyles.labelsContainer}>
+          {item.vision
+            && (
+            <Image
+              style={imageStyles.smallGreenIcon}
+              source={require( "../../images/id_rg.png" )}
+            />
+            )}
+          <Text style={[textStyles.labels, textStyles.activityCategory]}>
+            {item.category ? t( `Category-${item.category}` ) : ""}
+          </Text>
+          {item.created_at
+            && (
+            <Text style={textStyles.labels}>
+              {formatIdDate( item.updated_at || item.created_at, t )}
+            </Text>
+            )}
           {item.body && currentUser
             ? (
               <KebabMenu>
@@ -82,7 +97,7 @@ const ActivityItem = ( {
         >
           <SmallSquareImage uri={Taxon.uri( taxon )} />
           <View>
-            <Text style={textStyles.commonNameText}>{taxon.preferredCommonName}</Text>
+            <Text style={textStyles.commonNameText}>{taxon.preferred_common_name}</Text>
             <Text style={textStyles.scientificNameText}>
               {taxon.rank}
               {" "}
@@ -92,7 +107,7 @@ const ActivityItem = ( {
         </Pressable>
       )}
       <View style={viewStyles.speciesDetailRow}>
-        <Text>{item.body}</Text>
+        <Text style={textStyles.activityItemBody}>{item.body}</Text>
       </View>
     </View>
   );

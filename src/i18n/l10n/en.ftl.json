@@ -399,5 +399,57 @@
   "You-denied-iNaturalist-permission-to-do-that": {
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
     "val": "You denied iNaturalist permission to do that"
+  },
+  "Category-leading": {
+    "comment": "Identification category",
+    "val": "Leading"
+  },
+  "Category-improving": {
+    "comment": "Identification category",
+    "val": "Improving"
+  },
+  "Category-maverick": {
+    "comment": "Identification category",
+    "val": "Maverick"
+  },
+  "Category-supporting": {
+    "comment": "Identification category",
+    "val": "Supporting"
+  },
+  "Date-minutes": {
+    "comment": "Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)",
+    "val": "{ $count }m"
+  },
+  "Date-hours": {
+    "comment": "Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)",
+    "val": "{ $count }h"
+  },
+  "Date-days": {
+    "comment": "Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)",
+    "val": "{ $count }d"
+  },
+  "Date-weeks": {
+    "comment": "Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)",
+    "val": "{ $count }w"
+  },
+  "Date-short-format": {
+    "comment": "Used when displaying a relative time - in this case, shows an absolute date (e.g. 12/31/22)",
+    "val": "MM/dd/yy"
+  },
+  "Date-this-year": {
+    "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3",
+    "val": "MMM d"
+  },
+  "Quality-Grade-Badge-research_grade": {
+    "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade",
+    "val": "RG"
+  },
+  "Quality-Grade-Badge-needs_id": {
+    "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID",
+    "val": "Needs ID"
+  },
+  "Quality-Grade-Badge-casual": {
+    "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual",
+    "val": "Casual"
   }
 }

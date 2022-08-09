@@ -9,6 +9,9 @@ import { useTranslation } from "react-i18next";
 import {
   Alert, Image, LogBox, Pressable, ScrollView, Text, View
 } from "react-native";
+import { Button } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Realm from "realm";
 
 import realmConfig from "../../models/index";
@@ -17,12 +20,14 @@ import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import { ObsEditContext } from "../../providers/contexts";
 import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
-import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
+import colors from "../../styles/colors";
+import { imageStyles, textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
 import createIdentification from "../Identify/helpers/createIdentification";
 import { getUser } from "../LoginSignUp/AuthenticationService";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import InputField from "../SharedComponents/InputField";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
+import QualityBadge from "../SharedComponents/QualityBadge";
 import TranslatedText from "../SharedComponents/TranslatedText";
 import UserIcon from "../SharedComponents/UserIcon";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -213,40 +218,65 @@ const ObsDetails = ( ): Node => {
             <UserIcon uri={User.uri( user )} />
             <Text>{User.userHandle( user )}</Text>
           </Pressable>
-          <Text>{displayCreatedAt( )}</Text>
+          <Text style={textStyles.observedOn}>{displayCreatedAt( )}</Text>
         </View>
         <View style={viewStyles.photoContainer}>
-          <Pressable onPress={faveOrUnfave} style={viewStyles.pressableButton}>
-            <Text style={textStyles.whiteText}>{currentUserFaved ? "faved!" : "tap to fave"}</Text>
-          </Pressable>
           <PhotoScroll photos={photos} />
+          <Button
+            icon={currentUserFaved ? "star-outline" : "star"}
+            onPress={faveOrUnfave}
+            textColor={colors.white}
+            labelStyle={textStyles.favText}
+            style={viewStyles.favButton}
+          />
         </View>
         <View style={viewStyles.row}>
           {showTaxon( )}
           <View>
-            <Text style={textStyles.text}>{observation.identifications.length}</Text>
-            <Text style={textStyles.text}>{observation.comments.length}</Text>
-            <Text style={textStyles.text}>
-              {checkCamelAndSnakeCase( observation, "qualityGrade" )}
-            </Text>
+            <View style={viewStyles.rowWithIcon}>
+              <Image
+                style={imageStyles.smallIcon}
+                source={require( "../../images/ic_id.png" )}
+              />
+              <Text style={textStyles.idCommentCount}>{observation.identifications.length}</Text>
+            </View>
+            <View style={viewStyles.rowWithIcon}>
+              <Icon name="chat" size={15} color={colors.logInGray} />
+              <Text style={textStyles.idCommentCount}>{observation.comments.length}</Text>
+            </View>
+            <QualityBadge qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )} />
           </View>
         </View>
-        <Text style={textStyles.locationText}>
-          {checkCamelAndSnakeCase( observation, "placeGuess" )}
-        </Text>
+        <View style={[viewStyles.rowWithIcon, viewStyles.locationContainer]}>
+          <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
+          <Text style={textStyles.locationText}>
+            {checkCamelAndSnakeCase( observation, "placeGuess" )}
+          </Text>
+        </View>
+
         <View style={viewStyles.userProfileRow}>
           <Pressable
             onPress={showActivityTab}
             accessibilityRole="button"
+            style={viewStyles.tabContainer}
           >
-            <TranslatedText style={textStyles.greenButtonText} text="ACTIVITY" />
+            <TranslatedText
+              style={[textStyles.tabText, tab === 0 ? textStyles.tabTextActive : null]}
+              text="ACTIVITY"
+            />
+            { tab === 0 && <View style={viewStyles.tabContainerActive} />}
           </Pressable>
           <Pressable
             onPress={showDataTab}
             testID="ObsDetails.DataTab"
             accessibilityRole="button"
+            style={viewStyles.tabContainer}
           >
-            <TranslatedText style={textStyles.greenButtonText} text="DATA" />
+            <TranslatedText
+              style={[textStyles.tabText, tab === 1 ? textStyles.tabTextActive : null]}
+              text="DATA"
+            />
+            { tab === 1 && <View style={viewStyles.tabContainerActive} />}
           </Pressable>
         </View>
         {tab === 0
