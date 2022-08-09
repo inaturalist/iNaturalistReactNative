@@ -64,10 +64,10 @@ const DataTab = ( { observation }: Props ): Node => {
         <Icon name="clock-time-four-outline" size={15} color={colors.logInGray} />
         <Text style={textStyles.dataTabText}>{`${t( "Date-observed-colon" )} ${displayTimeObserved( )}`}</Text>
       </View>
-      <View style={[viewStyles.rowWithIcon, viewStyles.dataTabView, viewStyles.dataTabSub]}>
+      { observation._synced_at && <View style={[viewStyles.rowWithIcon, viewStyles.dataTabView, viewStyles.dataTabSub]}>
         <Icon name="clock-time-four-outline" size={15} color={colors.logInGray} />
         <Text style={textStyles.dataTabText}>{`${t( "Date-uploaded-colon" )} ${format( observation._synced_at, "M/d/yy HH:mm a" )}`}</Text>
-      </View>
+      </View> }
       <Text style={textStyles.dataTabHeader}>{t( "Projects" )}</Text>
       {/* TODO: create a custom dropdown that doesn't use FlatList */}
       <DropdownPicker
