@@ -1,58 +1,72 @@
 // @flow
 
-import React, { useEffect } from "react";
 import type { Node } from "react";
-import { useRoute } from "@react-navigation/native";
+import React from "react";
 
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
-import UserCard from "./UserCard";
-import { useCurrentUser } from "./hooks/useCurrentUser";
+import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import BottomSheet from "../SharedComponents/BottomSheet";
-import useObservations from "./hooks/useObservations";
-import LoggedOutCard from "./LoggedOutCard";
-import { useUser } from "../UserProfile/hooks/useUser";
+import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import useRemoteObservations from "./hooks/useRemoteObservations";
+import useSubscribeToLocalObservations from "./hooks/useSubscribeToLocalObservations";
 import LoginPrompt from "./LoginPrompt";
+import TopCard from "./TopCard";
+import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
 
 const ObsList = ( ): Node => {
-  const { params } = useRoute( );
-  const { observationList, loading, syncObservations, fetchNextObservations, obsToUpload } = useObservations( );
+  const observationList = useSubscribeToLocalObservations( );
+  const {
+    loading,
+    syncObservations,
+    fetchNextObservations,
+    uploadStatus,
+    updateUploadStatus
+  } = useRemoteObservations( );
+  const { unuploadedObs, uploadInProgress } = uploadStatus;
+  const numObsToUpload = unuploadedObs?.length;
 
-  const id = params && params.userId;
-  const userId = useCurrentUser( ) || id;
-  const { user } = useUser( userId );
-  const numObsToUpload = obsToUpload?.length;
+  const isLoggedIn = useLoggedIn( );
 
-  useEffect( ( ) => {
-    // start fetching data immediately after successful login
-    if ( params && params.syncData && params.userLogin ) {
-      syncObservations( params.userLogin );
-    } else if ( params && params.savedLocalData ) {
-      // from obsEdit screen
-      syncObservations( );
+  const renderBottomSheet = ( ) => {
+    if ( numObsToUpload === 0 ) { return null; }
+
+    if ( isLoggedIn === false && !loading ) {
+      return (
+        <BottomSheet>
+          <LoginPrompt />
+        </BottomSheet>
+      );
     }
-  }, [params, syncObservations] );
+    if ( uploadInProgress ) {
+      return (
+        <UploadProgressBar
+          uploadStatus={uploadStatus}
+        />
+      );
+    }
+    return (
+      <BottomSheet>
+        <UploadPrompt
+          uploadObservations={updateUploadStatus}
+          uploadStatus={uploadStatus}
+          updateUploadStatus={updateUploadStatus}
+        />
+      </BottomSheet>
+    );
+  };
 
   return (
     <ViewWithFooter>
-      {user ? <UserCard userId={userId} user={user} /> : <LoggedOutCard numObsToUpload={numObsToUpload} />}
+      <TopCard numObsToUpload={numObsToUpload} />
       <ObservationViews
         loading={loading}
         observationList={observationList}
         testID="ObsList.myObservations"
-        handleEndReached={fetchNextObservations}
+        handleEndReached={( ) => fetchNextObservations( observationList.length )}
         syncObservations={syncObservations}
-        userId={userId}
       />
-      {( numObsToUpload > 0 ) && (
-        <BottomSheet>
-          {!userId
-            ? <LoginPrompt />
-            : <UploadPrompt obsToUpload={obsToUpload} />
-          }
-        </BottomSheet>
-      )}
+      {renderBottomSheet( )}
     </ViewWithFooter>
   );
 };

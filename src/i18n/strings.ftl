@@ -49,6 +49,11 @@ Birds = Birds
 
 Blocked-Users = Blocked Users
 
+# Quality grade option: Casual (shortened for My Observations view)
+C = C
+
+Camera-Roll = Camera Roll
+
 Cancel = Cancel
 
 Captive-Cultivated = Captive/Cultivated
@@ -86,6 +91,8 @@ Date-uploaded-colon = Date uploaded:
 
 Default-Search-Place = Default Search Place
 
+Delete = Delete
+
 Delete-comment = Delete comment
 
 DELETE-X-OBSERVATIONS = DELETE {$count ->
@@ -105,6 +112,8 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 Email = email
 
 Email-Notifications = Email Notifications
+
+Error-Couldnt-Complete-Upload = Error: Couldn't Complete Upload
 
 Evidence = Evidence
 
@@ -153,6 +162,12 @@ IDs = ID's
 IDENTIFICATION = IDENTIFICATION
 
 Identification = Identification
+
+# Shows the number of photos a user selected from the camera roll for upload
+Import-X-photos = Import {$count ->
+    [one] 1 photo
+    *[other] {$count} photos
+}
 
 iNaturalist-Activity-Notifications = iNaturalist Activity Notifications
 
@@ -251,6 +266,11 @@ New-Observation = New Observation
 
 Next = Next
 
+# Quality grade option: Needs ID (shortened for My Observations view)
+NI = NI
+
+No = No
+
 # When the user tries to reset password but enters a non-existent email
 No-account-found = No account found with that email
 
@@ -274,7 +294,7 @@ Observations = Observations
 Open = Open
 
 # Picker prompt on observation edit
-Organism-is-wild = Organism is wild
+Organism-is-wild = Organism is wild:
 
 Other-Data = Other Data
 
@@ -426,6 +446,9 @@ Reviewed-only = Reviewed only
 
 Revoke = Revoke
 
+# Quality grade option: Research Grade (shortened for My Observations view)
+RG = RG
+
 Search-for-a-location = Search for a location
 
 Search-for-a-project = Search for a project
@@ -514,12 +537,6 @@ Upload-X-Observations = Upload {$count ->
     *[other] {$count} Observations
 }
 
-# Shows the number of photos a user selected from the camera roll for upload
-Upload-X-photos = Upload {$count ->
-    [one] 1 photo
-    *[other] {$count} photos
-}
-
 # Shows the number of observations a user is currently uploading on my observations page
 Uploading-X-Observations = Uploading {$count ->
     [one] 1 Observation
@@ -566,6 +583,10 @@ X-unuploaded-observations = {$observationCount ->
     [one] 1 unuploaded observation
     *[other] {$observationCount} unuploaded observations
 }
+
+Yes = Yes
+
+Yes-delete-observation = Yes, delete observation
 
 Yes-delete-photo = Yes, delete photo
 

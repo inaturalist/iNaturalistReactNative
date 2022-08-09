@@ -1,21 +1,23 @@
 // @flow
 
-import React, { useContext, useState } from "react";
-import type { Node } from "react";
-import { View, Text, FlatList, ActivityIndicator, Pressable, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Searchbar } from "react-native-paper";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, { useContext, useState } from "react";
+import {
+  ActivityIndicator, FlatList, Image, Pressable, Text, View
+} from "react-native";
+import { Searchbar } from "react-native-paper";
 
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import { ObsEditContext } from "../../providers/contexts";
-import useCVSuggestions from "./hooks/useCVSuggestions";
-import { viewStyles, textStyles } from "../../styles/obsEdit/cvSuggestions";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import { useLoggedIn } from "../../sharedHooks/useLoggedIn";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import { textStyles, viewStyles } from "../../styles/obsEdit/cvSuggestions";
 import PlaceholderText from "../PlaceholderText";
+import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import useCVSuggestions from "./hooks/useCVSuggestions";
 
 const CVSuggestions = ( ): Node => {
   const {
@@ -32,7 +34,11 @@ const CVSuggestions = ( ): Node => {
 
   const currentObs = observations[currentObsIndex];
   const hasPhotos = currentObs.observationPhotos;
-  const { suggestions, status } = useCVSuggestions( currentObs, showSeenNearby, selectedPhotoIndex );
+  const { suggestions, status } = useCVSuggestions(
+    currentObs,
+    showSeenNearby,
+    selectedPhotoIndex
+  );
 
   const renderNavButtons = ( updateIdentification, id ) => {
     const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id } );
@@ -52,7 +58,9 @@ const CVSuggestions = ( ): Node => {
   const renderSuggestions = ( { item } ) => {
     const taxon = item && item.taxon;
     // destructuring so this doesn't cause a crash
-    const mediumUrl = ( taxon && taxon.taxon_photos && taxon.taxon_photos[0].photo ) ? taxon.taxon_photos[0].photo.medium_url : null;
+    const mediumUrl = ( taxon && taxon.taxon_photos && taxon.taxon_photos[0].photo )
+      ? taxon.taxon_photos[0].photo.medium_url
+      : null;
     const uri = { uri: mediumUrl };
 
     const updateIdentification = ( ) => updateTaxon( taxon );
@@ -104,12 +112,23 @@ const CVSuggestions = ( ): Node => {
 
   const emptySuggestionsList = ( ) => {
     if ( !isLoggedIn ) {
-      return <PlaceholderText style={[textStyles.explainerText]} text="you must be logged in to see computer vision suggestions" />;
-    } else if ( status === "no_results" ) {
-      return <PlaceholderText style={[textStyles.explainerText]} text="no computervision suggestions found" />;
-    } else {
-      return <ActivityIndicator />;
+      return (
+        <PlaceholderText
+          style={[textStyles.explainerText]}
+          text="you must be logged in to see computer vision suggestions"
+        />
+      );
     }
+    if ( status === "no_results" ) {
+      return (
+        <PlaceholderText
+          style={[textStyles.explainerText]}
+          text="no computervision suggestions found"
+        />
+      );
+    }
+
+    return <ActivityIndicator />;
   };
 
   const displaySuggestions = ( ) => (
@@ -127,13 +146,9 @@ const CVSuggestions = ( ): Node => {
     />
   );
 
-  const displayPhotos = ( ) => {
-    return currentObs.observationPhotos.map( p => {
-      return {
-        uri: p.photo?.url || p?.photo?.localFilePath
-      };
-    } );
-  };
+  const displayPhotos = ( ) => currentObs.observationPhotos.map( p => ( {
+    uri: p.photo?.url || p?.photo?.localFilePath
+  } ) );
 
   return (
     <ViewNoFooter>

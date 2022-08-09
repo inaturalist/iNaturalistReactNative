@@ -2,8 +2,8 @@
 
 import * as React from "react";
 
-import useMemberProjects from "./hooks/useMemberProjects";
 import ProjectList from "../Projects/ProjectList";
+import useMemberProjects from "./hooks/useMemberProjects";
 
 type Props = {
   userId: number
@@ -18,4 +18,3 @@ const UserProjects = ( { userId }: Props ): React.Node => {
 };
 
 export default UserProjects;
-

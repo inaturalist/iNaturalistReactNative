@@ -1,20 +1,19 @@
-import React from "react";
-import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { render } from "@testing-library/react-native";
+import React from "react";
 
-import factory from "../../../factory";
 import UserProfile from "../../../../src/components/UserProfile/UserProfile";
+import factory from "../../../factory";
 
 const testUser = factory( "RemoteUser" );
 const mockExpected = testUser;
 
 jest.mock( "../../../../src/components/UserProfile/hooks/useUser", ( ) => ( {
-  useUser: ( ) => {
-    return {
-      user: mockExpected,
-      currentUser: null
-    };
-  }
+  __esModule: true,
+  default: ( ) => ( {
+    user: mockExpected,
+    currentUser: null
+  } )
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -40,7 +39,8 @@ test( "renders user profile from API call", ( ) => {
 
   expect( getByTestId( `UserProfile.${testUser.id}` ) ).toBeTruthy( );
   expect( getByText( `@${testUser.login}` ) ).toBeTruthy( );
-  expect( getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( { "uri": testUser.icon_url } );
+  expect( getByTestId( "UserIcon.photo" ).props.source )
+    .toStrictEqual( { uri: testUser.icon_url } );
 } );
 
 test.todo( "should not have accessibility errors" );

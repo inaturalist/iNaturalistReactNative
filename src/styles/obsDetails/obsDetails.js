@@ -1,9 +1,13 @@
 // @flow strict-local
 
-import { StyleSheet, Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+import type {
+  ImageStyleProp,
+  TextStyleProp,
+  ViewStyleProp
+} from "react-native/Libraries/StyleSheet/StyleSheet";
 
-import type { ViewStyleProp, TextStyleProp, ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-import { colors } from "../global";
+import colors from "../colors";
 
 const { width } = Dimensions.get( "screen" );
 
@@ -127,13 +131,15 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   tabContainer: {
     width: "50%",
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    flexDirection: "column"
   },
   tabContainerActive: {
-    borderBottomColor: colors.inatGreen,
-    borderBottomWidth: 5,
-    borderBottomStartRadius: 5,
-    borderBottomEndRadius: 5
+    borderTopColor: colors.inatGreen,
+    borderTopWidth: 5,
+    borderTopStartRadius: 5,
+    borderTopEndRadius: 5,
+    width: "100%"
   },
   locationContainer: {
     paddingLeft: 10
@@ -259,7 +265,7 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 export {
-  viewStyles,
+  imageStyles,
   textStyles,
-  imageStyles
+  viewStyles
 };

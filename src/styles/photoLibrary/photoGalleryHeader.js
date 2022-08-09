@@ -1,9 +1,12 @@
 // @flow strict-local
 
 import { StyleSheet } from "react-native";
+import type {
+  TextStyleProp,
+  ViewStyleProp
+} from "react-native/Libraries/StyleSheet/StyleSheet";
 
-import { colors } from "../global";
-import type { ViewStyleProp, TextStyleProp, ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import colors from "../colors";
 
 const pickerContainer = {
   alignItems: "center",
@@ -29,21 +32,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   // $FlowFixMe
   inputIOS: pickerText,
   // $FlowFixMe
-  inputAndroid: pickerText,
-  footer: {
-    height: 70,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  selectionModal: {
-    padding: 20,
-    backgroundColor: colors.white,
-    position: "absolute",
-    bottom: 100
-  },
-  nextButton: {
-    width: 100
-  }
+  inputAndroid: pickerText
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
@@ -53,20 +42,12 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   text: {
     margin: 10
   },
-  selections: {
-    marginVertical: 10
-  },
   disabled: {
     color: colors.lightGray
   }
 } );
 
-const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
-
-} );
-
 export {
-  viewStyles,
   textStyles,
-  imageStyles
+  viewStyles
 };

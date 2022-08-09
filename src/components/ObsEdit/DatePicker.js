@@ -1,12 +1,12 @@
 // @flow
 
-import React, { useState } from "react";
-import { Text, Pressable } from "react-native";
-import { useTranslation } from "react-i18next";
 import type { Node } from "react";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Pressable, Text } from "react-native";
 
-import { textStyles } from "../../styles/obsEdit/obsEdit";
 import { displayDateTimeObsEdit } from "../../sharedHelpers/dateAndTime";
+import { textStyles } from "../../styles/obsEdit/obsEdit";
 import DateTimePicker from "../SharedComponents/DateTimePicker";
 
 type Props = {
@@ -21,7 +21,7 @@ const DatePicker = ( { handleDatePicked, currentObs }: Props ): Node => {
   const openModal = () => setShowModal( true );
   const closeModal = () => setShowModal( false );
 
-  const handlePicked = ( value ) => {
+  const handlePicked = value => {
     handleDatePicked( value );
     closeModal();
   };
@@ -29,7 +29,7 @@ const DatePicker = ( { handleDatePicked, currentObs }: Props ): Node => {
   const displayDate = ( ) => {
     if ( currentObs.observed_on_string ) {
       return displayDateTimeObsEdit( currentObs.observed_on_string );
-    } else if ( currentObs.time_observed_at ) {
+    } if ( currentObs.time_observed_at ) {
       // this is for observations already uploaded to iNat
       return displayDateTimeObsEdit( currentObs.time_observed_at );
     }

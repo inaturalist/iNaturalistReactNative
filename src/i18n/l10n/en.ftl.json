@@ -36,6 +36,11 @@
   },
   "Birds": "Birds",
   "Blocked-Users": "Blocked Users",
+  "C": {
+    "comment": "Quality grade option: Casual (shortened for My Observations view)",
+    "val": "C"
+  },
+  "Camera-Roll": "Camera Roll",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
   "Casual": {
@@ -62,6 +67,7 @@
   "Date-observed-colon": "Date observed:",
   "Date-uploaded-colon": "Date uploaded:",
   "Default-Search-Place": "Default Search Place",
+  "Delete": "Delete",
   "Delete-comment": "Delete comment",
   "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}",
   "Description-Tags": "Description/Tags",
@@ -73,6 +79,7 @@
     "val": "email"
   },
   "Email-Notifications": "Email Notifications",
+  "Error-Couldnt-Complete-Upload": "Error: Couldn't Complete Upload",
   "Evidence": "Evidence",
   "Explore": "Explore",
   "External-Applications": "External Applications",
@@ -105,6 +112,10 @@
   "IDs": "ID's",
   "IDENTIFICATION": "IDENTIFICATION",
   "Identification": "Identification",
+  "Import-X-photos": {
+    "comment": "Shows the number of photos a user selected from the camera roll for upload",
+    "val": "Import { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
+  },
   "iNaturalist-Activity-Notifications": "iNaturalist Activity Notifications",
   "iNaturalist-Applications": "iNaturalist Applications",
   "iNaturalist-Network-Affiliation": "iNaturalist Network Affiliation",
@@ -176,6 +187,11 @@
   },
   "New-Observation": "New Observation",
   "Next": "Next",
+  "NI": {
+    "comment": "Quality grade option: Needs ID (shortened for My Observations view)",
+    "val": "NI"
+  },
+  "No": "No",
   "No-account-found": {
     "comment": "When the user tries to reset password but enters a non-existent email",
     "val": "No account found with that email"
@@ -194,7 +210,7 @@
   "Open": "Open",
   "Organism-is-wild": {
     "comment": "Picker prompt on observation edit",
-    "val": "Organism is wild"
+    "val": "Organism is wild:"
   },
   "Other-Data": "Other Data",
   "Password": "Password",
@@ -286,6 +302,10 @@
   "Reviewed": "Reviewed",
   "Reviewed-only": "Reviewed only",
   "Revoke": "Revoke",
+  "RG": {
+    "comment": "Quality grade option: Research Grade (shortened for My Observations view)",
+    "val": "RG"
+  },
   "Search-for-a-location": "Search for a location",
   "Search-for-a-project": "Search for a project",
   "Search-for-a-taxon": "Search for a taxon",
@@ -346,10 +366,6 @@
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "Upload { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
-  "Upload-X-photos": {
-    "comment": "Shows the number of photos a user selected from the camera roll for upload",
-    "val": "Upload { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
-  },
   "Uploading-X-Observations": {
     "comment": "Shows the number of observations a user is currently uploading on my observations page",
     "val": "Uploading { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
@@ -377,6 +393,8 @@
     "val": "{ $photoCount ->\n  [one] 1 photo\n *[other] { $photoCount } photos\n}, { $observationCount ->\n  [one] 1 observation\n *[other] { $observationCount } observations\n}"
   },
   "X-unuploaded-observations": "{ $observationCount ->\n  [one] 1 unuploaded observation\n *[other] { $observationCount } unuploaded observations\n}",
+  "Yes": "Yes",
+  "Yes-delete-observation": "Yes, delete observation",
   "Yes-delete-photo": "Yes, delete photo",
   "You-denied-iNaturalist-permission-to-do-that": {
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",

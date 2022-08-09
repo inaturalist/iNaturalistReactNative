@@ -1,22 +1,24 @@
 // @flow
 
-import React from "react";
 import {
   DrawerContentScrollView,
   DrawerItem
 } from "@react-navigation/drawer";
 import type { Node } from "react";
+import React from "react";
 
 type Props = {
-  props: any
+  state: any,
+  navigation: any,
+  descriptors: any
 }
 
 const CustomDrawerContent = ( { ...props }: Props ): Node => {
   // $FlowFixMe
-  const { navigation } = props;
+  const { state, navigation, descriptors } = props;
 
   return (
-    <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView state={state} navigation={navigation} descriptors={descriptors}>
       <DrawerItem
         label="identify"
         onPress={( ) => navigation.navigate( "identify" )}

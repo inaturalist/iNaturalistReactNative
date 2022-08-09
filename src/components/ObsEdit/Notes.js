@@ -1,13 +1,14 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
-import { Keyboard } from "react-native";
-import type { Node } from "react";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, { useEffect, useState } from "react";
+import { Keyboard, useWindowDimensions } from "react-native";
 import { TextInput } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { textStyles } from "../../styles/obsEdit/obsEdit";
-import { colors } from "../../styles/global";
+import colors from "../../styles/colors";
+import { textStyles } from "../../styles/obsEdit/notes";
 
 type Props = {
   addNotes: Function,
@@ -16,12 +17,14 @@ type Props = {
 
 const Notes = ( { addNotes, description }: Props ): Node => {
   const [keyboardOffset, setKeyboardOffset] = useState( 0 );
+  const { width } = useWindowDimensions( );
+  const insets = useSafeAreaInsets( );
 
   useEffect( ( ) => {
-    const showSubscription = Keyboard.addListener( "keyboardDidShow", ( e ) => {
+    const showSubscription = Keyboard.addListener( "keyboardDidShow", e => {
       setKeyboardOffset( e.endCoordinates.height );
     } );
-    const hideSubscription = Keyboard.addListener( "keyboardDidHide", ( e ) => {
+    const hideSubscription = Keyboard.addListener( "keyboardDidHide", ( ) => {
       setKeyboardOffset( 0 );
     } );
 
@@ -32,11 +35,9 @@ const Notes = ( { addNotes, description }: Props ): Node => {
   }, [] );
 
   const offset = {
-    bottom: keyboardOffset,
     position: "absolute",
-    zIndex: 1,
-    width: "90%",
-    backgroundColor: colors.white
+    width,
+    bottom: keyboardOffset - insets.bottom
   };
 
   return (
@@ -48,6 +49,7 @@ const Notes = ( { addNotes, description }: Props ): Node => {
       placeholder={t( "Add-optional-notes" )}
       style={[textStyles.notes, keyboardOffset > 0 && offset]}
       testID="ObsEdit.notes"
+      underlineColor={colors.white}
     />
   );
 };

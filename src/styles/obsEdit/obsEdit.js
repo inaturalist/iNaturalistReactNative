@@ -1,9 +1,13 @@
 // @flow strict-local
 
-import { StyleSheet, Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+import type {
+  ImageStyleProp,
+  TextStyleProp,
+  ViewStyleProp
+} from "react-native/Libraries/StyleSheet/StyleSheet";
 
-import type { TextStyleProp, ImageStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-import { colors } from "../global";
+import colors from "../colors";
 
 const { width } = Dimensions.get( "screen" );
 
@@ -29,11 +33,11 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   text: {
     marginHorizontal: 20
   },
-  notes: {
-    marginHorizontal: 20
-  },
   smallLabel: {
     fontSize: 11
+  },
+  verticalCenter: {
+    lineHeight: 0
   }
 } );
 
@@ -58,6 +62,16 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  headerRow: {
+    height: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20
+  },
+  caret: {
+    width: 35
+  },
   bottomModal: {
     backgroundColor: colors.white,
     borderTopRightRadius: 30,
@@ -74,9 +88,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   noMargin: {
     margin: 0
   },
-  saveButton: {
-    width: 100
-  },
   greenSelectionBorder: {
     borderWidth: 3,
     borderColor: colors.selectionGreen
@@ -89,6 +100,16 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row",
     flexWrap: "nowrap",
     marginVertical: 10
+  },
+  multipleObsRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    alignItems: "center"
+  },
+  buttonRow: {
+    paddingTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-evenly"
   },
   evidenceList: {
     marginBottom: 20
@@ -118,7 +139,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     width
   },
   container: {
-    flex: 1,
     backgroundColor: colors.black
   },
   mediaViewerSafeAreaView: {
@@ -127,8 +147,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 } );
 
 export {
+  imageStyles,
   pickerSelectStyles,
   textStyles,
-  imageStyles,
   viewStyles
 };

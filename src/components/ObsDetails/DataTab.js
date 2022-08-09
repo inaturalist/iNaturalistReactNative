@@ -1,18 +1,19 @@
 // @flow
 
-import React, { useState } from "react";
-import { View, Text } from "react-native";
-import type { Node } from "react";
+import { format, parseISO } from "date-fns";
 import { t } from "i18next";
-import {format, parseISO} from "date-fns";
-import {textStyles, viewStyles} from "../../styles/obsDetails/obsDetails";
-import Map from "../SharedComponents/Map";
+import type { Node } from "react";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
+
+import colors from "../../styles/colors";
+import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
 import DropdownPicker from "../Explore/DropdownPicker";
+import Map from "../SharedComponents/Map";
 import addToProject from "./helpers/addToProject";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import {colors} from "../../styles/global";
 
 type Props = {
   observation: Object
@@ -26,7 +27,7 @@ const DataTab = ( { observation }: Props ): Node => {
   const attribution = observation.taxon && observation.taxon.default_photo
     && observation.taxon.default_photo.attribution;
 
-  const selectProjectId = ( getValue ) => {
+  const selectProjectId = getValue => {
     addToProject( getValue( ), observation.uuid );
     setProjectId( getValue( ) );
   };
@@ -62,12 +63,22 @@ const DataTab = ( { observation }: Props ): Node => {
       <Text style={[textStyles.dataTabHeader, textStyles.dataTabDateHeader]}>{t( "Date" )}</Text>
       <View style={[viewStyles.rowWithIcon, viewStyles.dataTabSub]}>
         <Icon name="clock-time-four-outline" size={15} color={colors.logInGray} />
-        <Text style={textStyles.dataTabText}>{`${t( "Date-observed-colon" )} ${displayTimeObserved( )}`}</Text>
+        <Text
+          style={textStyles.dataTabText}
+        >
+          {`${t( "Date-observed-colon" )} ${displayTimeObserved( )}`}
+        </Text>
       </View>
-      { observation._synced_at && <View style={[viewStyles.rowWithIcon, viewStyles.dataTabView, viewStyles.dataTabSub]}>
+      { observation._synced_at && (
+      <View style={[viewStyles.rowWithIcon, viewStyles.dataTabView, viewStyles.dataTabSub]}>
         <Icon name="clock-time-four-outline" size={15} color={colors.logInGray} />
-        <Text style={textStyles.dataTabText}>{`${t( "Date-uploaded-colon" )} ${format( observation._synced_at, "M/d/yy HH:mm a" )}`}</Text>
-      </View> }
+        <Text
+          style={textStyles.dataTabText}
+        >
+          {`${t( "Date-uploaded-colon" )} ${format( observation._synced_at, "M/d/yy HH:mm a" )}`}
+        </Text>
+      </View>
+      ) }
       <Text style={textStyles.dataTabHeader}>{t( "Projects" )}</Text>
       {/* TODO: create a custom dropdown that doesn't use FlatList */}
       <DropdownPicker

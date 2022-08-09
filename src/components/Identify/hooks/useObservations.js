@@ -1,10 +1,9 @@
 // @flow
 
-import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
+import { useEffect, useState } from "react";
 
 import Observation from "../../../models/Observation";
-
 
 const useObservations = ( placeId: ?string, taxonId: ?number ): {
   observations: Array<Object>,
@@ -39,14 +38,14 @@ const useObservations = ( placeId: ?string, taxonId: ?number ): {
         params.fields.observation_photos.photo.medium_url = true;
 
         const response = await inatjs.observations.search( params );
-        const results = response.results;
+        const { results } = response;
         if ( !isCurrent ) { return; }
         setLoading( false );
         setObservations( results );
       } catch ( e ) {
         setLoading( false );
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch observations for identify:", JSON.stringify( e.response ), );
+        console.log( "Couldn't fetch observations for identify:", JSON.stringify( e.response ) );
       }
     };
 

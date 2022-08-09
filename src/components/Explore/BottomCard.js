@@ -1,13 +1,13 @@
 // @flow
 
-import React, { useContext } from "react";
 import type { Node } from "react";
+import React, { useContext } from "react";
 import { View } from "react-native";
 
-import { viewStyles } from "../../styles/explore/explore";
-import DropdownPicker from "./DropdownPicker";
 import { ExploreContext } from "../../providers/contexts";
+import { viewStyles } from "../../styles/explore/explore";
 import TranslatedText from "../SharedComponents/TranslatedText";
+import DropdownPicker from "./DropdownPicker";
 import FiltersIcon from "./FiltersIcon";
 
 const Explore = ( ): Node => {
@@ -19,14 +19,14 @@ const Explore = ( ): Node => {
     location,
     setLocation
   } = useContext( ExploreContext );
-  const setTaxonId = ( getValue ) => {
+  const setTaxonId = getValue => {
     setExploreFilters( {
       ...exploreFilters,
       taxon_id: getValue( )
     } );
   };
 
-  const setPlaceId = ( getValue ) => {
+  const setPlaceId = getValue => {
     setExploreFilters( {
       ...exploreFilters,
       place_id: getValue( )

@@ -1,9 +1,9 @@
 // @flow strict-local
 
-import { StyleSheet, Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 
-import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-import { colors } from "../global";
+import colors from "../colors";
 
 const { width } = Dimensions.get( "screen" );
 
@@ -12,12 +12,16 @@ const buttonRow = {
   bottom: 75
 };
 
-const cameraCaptureRowHeight = 69 + 36 + 54;
+const cameraCaptureRowHeight = 159;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   container: {
     flex: 1,
     backgroundColor: colors.black
+  },
+  bottomButtons: {
+    bottom: 0,
+    position: "absolute"
   },
   captureButton: {
     position: "absolute",
@@ -45,6 +49,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     height: 80,
     borderRadius: 10,
     borderWidth: 2,
+    zIndex: 100,
+    position: "absolute",
     borderColor: colors.white
   },
   cameraSettingsRow: {
@@ -54,17 +60,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: colors.black,
     width,
     height: cameraCaptureRowHeight
-  },
-  confirmButton: {
-    backgroundColor: colors.inatGreen,
-    borderRadius: 40,
-    alignSelf: "center"
-  },
-  cancelButton: {
-    backgroundColor: colors.gray,
-    borderRadius: 40,
-    alignSelf: "center",
-    marginRight: 10
   }
 } );
 
@@ -73,16 +68,10 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
     color: colors.white,
     zIndex: 1,
     fontSize: 24
-  },
-  topPhotoText: {
-    bottom: 10,
-    color: colors.white,
-    position: "absolute",
-    fontSize: 18
   }
 } );
 
 export {
-  viewStyles,
-  textStyles
+  textStyles,
+  viewStyles
 };

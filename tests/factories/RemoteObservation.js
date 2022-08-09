@@ -1,8 +1,9 @@
-import factory, { define } from "factoria";
 import "./RemotePhoto";
 import "./RemoteTaxon";
 import "./RemoteUser";
 import "./RemoteIdentification";
+
+import factory, { define } from "factoria";
 
 export default define( "RemoteObservation", faker => ( {
   id: faker.datatype.number( ),
@@ -17,7 +18,7 @@ export default define( "RemoteObservation", faker => ( {
   comments: [],
   taxon: factory( "RemoteTaxon" ),
   geojson: {
-    coordinates: [1,1]
+    coordinates: [1, 1]
   },
   created_at: "2021-11-09T08:28:05-08:00",
   updated_at: "2021-11-09T17:22:17-08:00",

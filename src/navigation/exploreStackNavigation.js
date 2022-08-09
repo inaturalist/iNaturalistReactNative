@@ -1,12 +1,12 @@
 // @flow
 
-import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as React from "react";
 
-import ExploreProvider from "../providers/ExploreProvider";
 import Explore from "../components/Explore/Explore";
 import ExploreFilters from "../components/Explore/ExploreFilters";
 import ExploreLanding from "../components/Explore/ExploreLanding";
+import ExploreProvider from "../providers/ExploreProvider";
 
 const Stack = createNativeStackNavigator( );
 

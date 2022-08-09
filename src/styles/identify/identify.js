@@ -1,9 +1,13 @@
 // @flow strict-local
 
 import { StyleSheet } from "react-native";
+import type {
+  ImageStyleProp,
+  TextStyleProp,
+  ViewStyleProp
+} from "react-native/Libraries/StyleSheet/StyleSheet";
 
-import type { ViewStyleProp, TextStyleProp, ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-import { colors } from "../global";
+import colors from "../colors";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   toggleViewRow: {
@@ -58,7 +62,7 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 export {
-  viewStyles,
+  imageStyles,
   textStyles,
-  imageStyles
+  viewStyles
 };

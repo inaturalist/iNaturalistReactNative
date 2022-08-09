@@ -1,7 +1,11 @@
-import React, { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import { t } from "i18next";
+import inatjs from "inaturalistjs";
+import type { Node } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
-  ActivityIndicator, Alert,
+  ActivityIndicator,
+  Alert,
   Button,
   Pressable,
   SafeAreaView,
@@ -10,22 +14,20 @@ import {
   Text,
   View
 } from "react-native";
-import type { Node } from "react";
-import inatjs from "inaturalistjs";
-import { viewStyles, textStyles } from "../../styles/settings/settings";
+
+import { textStyles, viewStyles } from "../../styles/settings/settings";
 import { getAPIToken } from "../LoginSignUp/AuthenticationService";
-import SettingsProfile from "./SettingsProfile";
-import {
-  SettingsNotifications,
-  EMAIL_NOTIFICATIONS
-} from "./SettingsNotifications";
-import SettingsAccount from "./SettingsAccount";
-import SettingsContentDisplay from "./SettingsContentDisplay";
-import SettingsApplications from "./SettingsApplications";
-import SettingsRelationships from "./SettingsRelationships";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useUserMe from "./hooks/useUserMe";
-import { t } from "i18next";
+import SettingsAccount from "./SettingsAccount";
+import SettingsApplications from "./SettingsApplications";
+import SettingsContentDisplay from "./SettingsContentDisplay";
+import {
+  EMAIL_NOTIFICATIONS,
+  SettingsNotifications
+} from "./SettingsNotifications";
+import SettingsProfile from "./SettingsProfile";
+import SettingsRelationships from "./SettingsRelationships";
 
 const TAB_TYPE_PROFILE = "profile";
 const TAB_TYPE_ACCOUNT = "account";
@@ -69,86 +71,82 @@ type Props = {
   children: React.Node,
 };
 
-const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => {
-  return (
-    <>
-      <View style={[viewStyles.tabsRow, viewStyles.shadow]}>
-        <Pressable
-          onPress={() => onTabPress( TAB_TYPE_PROFILE )}
-          accessibilityRole="link"
-        >
-          <Text
-            style={activeTab === TAB_TYPE_PROFILE ? textStyles.activeTab : null}
-          >
-            {t( "Profile" )}
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() => onTabPress( TAB_TYPE_ACCOUNT )}
-          accessibilityRole="link"
-        >
-          <Text
-            style={activeTab === TAB_TYPE_ACCOUNT ? textStyles.activeTab : null}
-          >
-            {t( "Account" )}
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() => onTabPress( TAB_TYPE_NOTIFICATIONS )}
-          accessibilityRole="link"
-        >
-          <Text
-            style={
+const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
+  <View style={[viewStyles.tabsRow, viewStyles.shadow]}>
+    <Pressable
+      onPress={() => onTabPress( TAB_TYPE_PROFILE )}
+      accessibilityRole="link"
+    >
+      <Text
+        style={activeTab === TAB_TYPE_PROFILE ? textStyles.activeTab : null}
+      >
+        {t( "Profile" )}
+      </Text>
+    </Pressable>
+    <Pressable
+      onPress={() => onTabPress( TAB_TYPE_ACCOUNT )}
+      accessibilityRole="link"
+    >
+      <Text
+        style={activeTab === TAB_TYPE_ACCOUNT ? textStyles.activeTab : null}
+      >
+        {t( "Account" )}
+      </Text>
+    </Pressable>
+    <Pressable
+      onPress={() => onTabPress( TAB_TYPE_NOTIFICATIONS )}
+      accessibilityRole="link"
+    >
+      <Text
+        style={
               activeTab === TAB_TYPE_NOTIFICATIONS ? textStyles.activeTab : null
             }
-          >
-            {t( "Notifications" )}
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() => onTabPress( TAB_TYPE_RELATIONSHIPS )}
-          accessibilityRole="link"
-        >
-          <Text
-            style={
+      >
+        {t( "Notifications" )}
+      </Text>
+    </Pressable>
+    <Pressable
+      onPress={() => onTabPress( TAB_TYPE_RELATIONSHIPS )}
+      accessibilityRole="link"
+    >
+      <Text
+        style={
               activeTab === TAB_TYPE_RELATIONSHIPS ? textStyles.activeTab : null
             }
-          >
-            {t( "Relationships" )}
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() => onTabPress( TAB_TYPE_CONTENT_DISPLAY )}
-          accessibilityRole="link"
-        >
-          <Text
-            style={
+      >
+        {t( "Relationships" )}
+      </Text>
+    </Pressable>
+    <Pressable
+      onPress={() => onTabPress( TAB_TYPE_CONTENT_DISPLAY )}
+      accessibilityRole="link"
+    >
+      <Text
+        style={
               activeTab === TAB_TYPE_CONTENT_DISPLAY
                 ? textStyles.activeTab
                 : null
             }
-          >
-            {t( "Content-Display" )}
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() => onTabPress( TAB_TYPE_APPLICATIONS )}
-          accessibilityRole="link"
-        >
-          <Text
-            style={
+      >
+        {t( "Content-Display" )}
+      </Text>
+    </Pressable>
+    <Pressable
+      onPress={() => onTabPress( TAB_TYPE_APPLICATIONS )}
+      accessibilityRole="link"
+    >
+      <Text
+        style={
               activeTab === TAB_TYPE_APPLICATIONS ? textStyles.activeTab : null
             }
-          >
-            {t( "Applications" )}
-          </Text>
-        </Pressable>
-      </View>
-    </>
-  );
-};
+      >
+        {t( "Applications" )}
+      </Text>
+    </Pressable>
+  </View>
+);
 
-const Settings = ( { children }: Props ): Node => {
+const Settings = ( { children: _children }: Props ): Node => {
   const [activeTab, setActiveTab] = useState( TAB_TYPE_PROFILE );
   const [settings, setSettings] = useState( {} );
   const [accessToken, setAccessToken] = useState( null );
@@ -223,12 +221,13 @@ const Settings = ( { children }: Props ): Node => {
   useFocusEffect(
     React.useCallback( () => {
       // Reload the settings
-      getAPIToken( true ).then( ( token ) => {
+      getAPIToken( true ).then( token => {
         setAccessToken( token );
       } );
 
       return () => {
-        // De-focused - clean up the access token (this will force a refresh later when we're re-focused)
+        // De-focused - clean up the access token (this will force a refresh
+        // later when we're re-focused)
         setAccessToken( null );
       };
     }, [] )

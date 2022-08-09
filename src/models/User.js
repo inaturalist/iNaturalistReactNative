@@ -1,5 +1,6 @@
 import Realm from "realm";
 
+// eslint-disable-next-line import/no-cycle
 import { getUsername } from "../components/LoginSignUp/AuthenticationService";
 
 class User extends Realm.Object {
@@ -10,7 +11,7 @@ class User extends Realm.Object {
     name: true
   };
 
-  static mapApiToRealm( user, realm ) {
+  static mapApiToRealm( user ) {
     return user;
   }
 

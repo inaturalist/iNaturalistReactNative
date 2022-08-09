@@ -1,14 +1,13 @@
 // @flow
 
-import React from "react";
-import { View, Text } from "react-native";
-import type { Node } from "react";
-import { useNavigation } from "@react-navigation/native";
 import { HeaderBackButton } from "@react-navigation/elements";
-import { useTranslation } from "react-i18next";
+import { useNavigation } from "@react-navigation/native";
+import { t } from "i18next";
+import type { Node } from "react";
+import React from "react";
+import { Text, View } from "react-native";
 
-import { viewStyles, textStyles } from "../../styles/photoLibrary/photoGalleryHeader";
-import TranslatedText from "../SharedComponents/TranslatedText";
+import { textStyles, viewStyles } from "../../styles/photoLibrary/photoGalleryHeader";
 
 type Props = {
   photos: number,
@@ -17,18 +16,19 @@ type Props = {
 
 const GroupPhotosHeader = ( { photos, observations }: Props ): Node => {
   const navigation = useNavigation( );
-  const { t } = useTranslation( );
 
   const navBack = ( ) => navigation.goBack( );
 
   return (
     <>
       <View style={viewStyles.header}>
-      <HeaderBackButton onPress={navBack} />
-      <TranslatedText style={textStyles.header} text="Group-Photos" />
+        <HeaderBackButton onPress={navBack} />
+        <Text style={textStyles.header}>{t( "Group-Photos" )}</Text>
       </View>
-      <Text style={textStyles.header}>{t( "X-photos-X-observations", { photoCount: photos, observationCount: observations } )}</Text>
-      <TranslatedText style={textStyles.text} text="Combine-photos-onboarding" />
+      <Text style={textStyles.header}>
+        {t( "X-photos-X-observations", { photoCount: photos, observationCount: observations } )}
+      </Text>
+      <Text style={textStyles.text}>{t( "Combine-photos-onboarding" )}</Text>
     </>
   );
 };

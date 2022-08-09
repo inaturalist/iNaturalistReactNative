@@ -1,25 +1,21 @@
-import React from "react";
-import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { render } from "@testing-library/react-native";
+import React from "react";
 
-import factory from "../../../factory";
 import ProjectDetails from "../../../../src/components/Projects/ProjectDetails";
+import factory from "../../../factory";
 
 const mockProject = factory( "RemoteProject" );
 const mockObservation = factory( "RemoteObservation" );
 
-jest.mock( "../../../../src/components/Projects/hooks/useProjectDetails" , ( ) => ( {
+jest.mock( "../../../../src/components/Projects/hooks/useProjectDetails", ( ) => ( {
   __esModule: true,
-  default: ( ) => {
-    return mockProject;
-  }
+  default: ( ) => mockProject
 } ) );
 
-jest.mock( "../../../../src/components/Projects/hooks/useProjectObservations" , ( ) => ( {
+jest.mock( "../../../../src/components/Projects/hooks/useProjectObservations", ( ) => ( {
   __esModule: true,
-  default: ( ) => {
-    return [mockObservation];
-  }
+  default: ( ) => [mockObservation]
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -47,16 +43,16 @@ test( "displays project details", ( ) => {
   expect( getByText( mockProject.description ) ).toBeTruthy( );
   expect(
     getByTestId( "ProjectDetails.headerImage" ).props.source
-  ).toStrictEqual( { "uri": mockProject.header_image_url } );
+  ).toStrictEqual( { uri: mockProject.header_image_url } );
   expect(
     getByTestId( "ProjectDetails.projectIcon" ).props.source
-  ).toStrictEqual( { "uri": mockProject.icon } );
+  ).toStrictEqual( { uri: mockProject.icon } );
 } );
 
 test( "displays project observations", ( ) => {
   const { getByTestId, getByText } = renderProjectDetails( );
 
   expect( getByText( mockObservation.taxon.preferred_common_name ) ).toBeTruthy( );
-  expect( getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( { "uri": mockObservation.observation_photos[0].photo.url } );
+  expect( getByTestId( "ObsList.photo" ).props.source )
+    .toStrictEqual( { uri: mockObservation.observation_photos[0].photo.url } );
 } );
-

@@ -1,7 +1,7 @@
 // @flow
 
-import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
+import { useEffect, useState } from "react";
 
 const useRemoteSearchResults = ( q: string, sources: string, fields: string ): Array<Object> => {
   const [searchResults, setSearchResults] = useState( [] );
@@ -16,6 +16,7 @@ const useRemoteSearchResults = ( q: string, sources: string, fields: string ): A
           sources,
           fields: fields || "all"
         };
+        console.log( "searching inat: ", params );
         const { results } = await inatjs.search( params );
         const records = results.map( result => {
           if ( sources === "taxa" ) {
@@ -30,17 +31,18 @@ const useRemoteSearchResults = ( q: string, sources: string, fields: string ): A
           if ( sources === "projects" ) {
             return result.project;
           }
+          return null;
         } );
         if ( !isCurrent ) { return; }
         setSearchResults( records );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( `Couldn't fetch search results with sources ${sources}:`, e.message, );
+        console.log( `Couldn't fetch search results with sources ${sources}:`, e.message );
       }
     };
 
     // don't bother to fetch search results if there isn't a query
-    if ( q === "" ) { return; }
+    if ( q === "" ) { return ( ) => {}; }
     fetchSearchResults( );
     return ( ) => {
       isCurrent = false;

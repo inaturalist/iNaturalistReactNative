@@ -1,12 +1,13 @@
 import nock from "nock";
+
 import {
-  isLoggedIn,
+  API_HOST,
+  authenticateUser,
   getAPIToken,
   getUsername,
+  isLoggedIn,
   registerUser,
-  authenticateUser,
-  signOut,
-  API_HOST
+  signOut
 } from "../../../../src/components/LoginSignUp/AuthenticationService";
 
 const USERNAME = "some_user";
@@ -23,10 +24,11 @@ test( "authenticates user", async ( ) => {
     .get( "/users/edit.json" )
     .reply( 200, { login: USERNAME, id: USERID } );
 
-  const scope2 = nock( API_HOST , {
+  const scope2 = nock( API_HOST, {
     reqheaders: {
       authorization: ACCESS_TOKEN_AUTHORIZATION_HEADER
-    }} )
+    }
+  } )
     .get( "/users/api_token.json" )
     .reply( 200, { api_token: JWT } );
 
@@ -50,7 +52,6 @@ test( "authenticates user", async ( ) => {
   scope.done();
   scope2.done();
 } );
-
 
 test( "registers user", async ( ) => {
   const scope = nock( API_HOST )

@@ -1,8 +1,7 @@
 // @flow strict-local
 
 import { StyleSheet } from "react-native";
-
-import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   userCard: {
@@ -17,6 +16,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   editProfile: {
     position: "absolute",
     right: 0
+  },
+  topCard: {
+    height: 100
   }
 } );
 
@@ -25,6 +27,6 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
 } );
 
 export {
-  viewStyles,
-  textStyles
+  textStyles,
+  viewStyles
 };

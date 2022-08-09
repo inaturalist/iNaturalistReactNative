@@ -1,7 +1,8 @@
 // @flow
 
-import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
+import { useEffect, useState } from "react";
+
 import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 
 const useMemberId = ( ): ?number => {

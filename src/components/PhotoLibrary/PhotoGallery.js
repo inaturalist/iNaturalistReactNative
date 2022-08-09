@@ -1,16 +1,20 @@
 // @flow
 
-import React, { useContext, useEffect } from "react";
-import { Pressable, Image, FlatList, ActivityIndicator, View, Text } from "react-native";
-import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, { useContext, useEffect } from "react";
+import {
+  ActivityIndicator, FlatList, Image, Pressable, Text, View
+} from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
-import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import { PhotoGalleryContext } from "../../providers/contexts";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import colors from "../../styles/colors";
+import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import PhotoGalleryHeader from "./PhotoGalleryHeader";
 
 const options = {
   first: 28,
@@ -63,13 +67,13 @@ const PhotoGallery = ( ): Node => {
   const photosByAlbum = photoGallery[selectedAlbum];
   const photosSelectedInAlbum = selectedPhotos[selectedAlbum] || [];
 
-  const updatePhotoGallery = ( rerenderFlatList ) => {
+  const updatePhotoGallery = rerenderFlatList => {
     setPhotoGallery( {
       ...photoGallery,
       // there might be a better way to do this, but adding this key forces the FlatList
       // to rerender anytime an image is unselected
       rerenderFlatList
-     } );
+    } );
   };
 
   const selectPhoto = ( isSelected, item ) => {
@@ -108,11 +112,16 @@ const PhotoGallery = ( ): Node => {
         <Image
           testID="PhotoGallery.photo"
           source={imageUri}
-          style={[
-            imageStyles.galleryImage,
-            isSelected ? imageStyles.selected : null
-          ]}
+          style={imageStyles.galleryImage}
         />
+        {isSelected && (
+          <Icon
+            name="check-circle"
+            size={30}
+            style={imageStyles.selectedIcon}
+            color={colors.inatGreen}
+          />
+        )}
       </Pressable>
     );
   };
@@ -126,9 +135,8 @@ const PhotoGallery = ( ): Node => {
   const renderEmptyList = ( ) => {
     if ( fetchingPhotos ) {
       return <ActivityIndicator />;
-    } else {
-      return <Text>{t( "No-photos-found" )}</Text>;
     }
+    return <Text>{t( "No-photos-found" )}</Text>;
   };
 
   return (
@@ -148,7 +156,7 @@ const PhotoGallery = ( ): Node => {
       { Object.keys( selectedPhotos ).length > 0 && (
         <View style={viewStyles.createObsButton}>
           <RoundGreenButton
-            buttonText="Upload-X-photos"
+            buttonText="Import-X-photos"
             count={totalSelected || 0}
             handlePress={navToGroupPhotos}
             testID="PhotoGallery.createObsButton"

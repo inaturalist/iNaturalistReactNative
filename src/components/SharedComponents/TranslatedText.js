@@ -1,10 +1,9 @@
 // @flow
 
-import React from "react";
-import { Text } from "react-native";
 import type { Node } from "react";
-
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { Text } from "react-native";
 
 type Props = {
   text: string,

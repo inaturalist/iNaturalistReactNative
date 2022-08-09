@@ -1,30 +1,24 @@
 // @flow
 
-import React, { useState } from "react";
-import { FlatList, ActivityIndicator } from "react-native";
 // import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
+import React, { useState } from "react";
+import { ActivityIndicator, FlatList } from "react-native";
 
 import GridItem from "./GridItem";
 
 type Props = {
   loading: boolean,
   observationList: Array<Object>,
-  testID: string,
-  taxonId?: number
+  testID: string
 }
 
 const GridView = ( {
   loading,
   observationList,
-  testID,
-  taxonId
+  testID
 }: Props ): Node => {
   const [reviewedIds, setReviewedIds] = useState( [] );
-  // const navigation = useNavigation( );
-  // const { name } = useRoute( );
-
-  // const navToObsDetails = observation => navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
 
   const renderGridItem = ( { item } ) => (
     <GridItem

@@ -1,18 +1,24 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
-import {Text, View, Pressable, Image} from "react-native";
+import { t } from "i18next";
 import type { Node } from "react";
+import React, { useEffect, useState } from "react";
+import {
+  Image, Pressable, Text, View
+} from "react-native";
+import { Menu } from "react-native-paper";
+import Realm from "realm";
 
-import UserIcon from "../SharedComponents/UserIcon";
-import SmallSquareImage from "./SmallSquareImage";
-import { textStyles, viewStyles, imageStyles } from "../../styles/obsDetails/obsDetails";
+import Comment from "../../models/Comment";
+import realmConfig from "../../models/index";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
-import {formatIdDate} from "../../sharedHelpers/dateAndTime";
-import {Button} from "react-native-paper";
-import {colors} from "../../styles/global";
-import {useTranslation} from "react-i18next";
+import { formatIdDate } from "../../sharedHelpers/dateAndTime";
+import { imageStyles, textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
+import PlaceholderText from "../PlaceholderText";
+import KebabMenu from "../SharedComponents/KebabMenu";
+import UserIcon from "../SharedComponents/UserIcon";
+import SmallSquareImage from "./SmallSquareImage";
 
 type Props = {
   item: Object,
@@ -21,11 +27,12 @@ type Props = {
   toggleRefetch: Function
 }
 
-const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: Props ): Node => {
-  const { t } = useTranslation( );
+const ActivityItem = ( {
+  item, navToTaxonDetails, handlePress, toggleRefetch
+}: Props ): Node => {
   const [currentUser, setCurrentUser] = useState( null );
-  const taxon = item.taxon;
-  const user = item.user;
+  const { taxon } = item;
+  const { user } = item;
 
   useEffect( ( ) => {
     const isCurrentUser = async ( ) => {
@@ -50,13 +57,35 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
           </Pressable>
         )}
         <View style={viewStyles.labelsContainer}>
-          {item.vision && <Image style={imageStyles.smallGreenIcon} source={require( "../../images/id_rg.png" )} />}
-          <Text style={[textStyles.labels, textStyles.activityCategory]}>{item.category ? t( `Category-${item.category}` ) : ""}</Text>
-          {item.created_at && <Text style={textStyles.labels}>{formatIdDate( item.updated_at || item.created_at, t )}</Text>}
+          {item.vision
+            && (
+            <Image
+              style={imageStyles.smallGreenIcon}
+              source={require( "../../images/id_rg.png" )}
+            />
+            )}
+          <Text style={[textStyles.labels, textStyles.activityCategory]}>
+            {item.category ? t( `Category-${item.category}` ) : ""}
+          </Text>
+          {item.created_at
+            && (
+            <Text style={textStyles.labels}>
+              {formatIdDate( item.updated_at || item.created_at, t )}
+            </Text>
+            )}
           {item.body && currentUser
-            ? <View style={viewStyles.kebabMenuIconContainer}><Button icon="dots-horizontal" textColor={colors.logInGray} style={viewStyles.kebabMenuIcon}/></View>
-            : <View style={viewStyles.kebabMenuIconContainer}><Button icon="dots-horizontal" textColor={colors.logInGray} style={viewStyles.kebabMenuIcon}/></View>
-          }
+            ? (
+              <KebabMenu>
+                <Menu.Item
+                  onPress={async ( ) => {
+                    const realm = await Realm.open( realmConfig );
+                    Comment.deleteComment( item.uuid, realm );
+                    toggleRefetch( );
+                  }}
+                  title={t( "Delete-comment" )}
+                />
+              </KebabMenu>
+            ) : <PlaceholderText text="menu" />}
         </View>
       </View>
       {taxon && (
@@ -69,7 +98,11 @@ const ActivityItem = ( { item, navToTaxonDetails, handlePress, toggleRefetch }: 
           <SmallSquareImage uri={Taxon.uri( taxon )} />
           <View>
             <Text style={textStyles.commonNameText}>{taxon.preferred_common_name}</Text>
-            <Text style={textStyles.scientificNameText}>{taxon.rank} {taxon.name}</Text>
+            <Text style={textStyles.scientificNameText}>
+              {taxon.rank}
+              {" "}
+              {taxon.name}
+            </Text>
           </View>
         </Pressable>
       )}

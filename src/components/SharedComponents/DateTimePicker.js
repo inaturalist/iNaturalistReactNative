@@ -1,8 +1,8 @@
 // @flow
 
 import * as React from "react";
-import DateTimePicker from "react-native-modal-datetime-picker";
 import { Appearance } from "react-native";
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 type Props = {
   toggleDateTimePicker: Function,
@@ -13,7 +13,7 @@ type Props = {
 
 // using component from Seek: https://github.com/inaturalist/SeekReactNative/blob/64ae3df185fffe751aff40ab17e3ff2dd8a74e42/components/UIComponents/DateTimePicker.js
 
-const customHeaderIOS = ( ) => <></>;
+const EmptyHeader = ( ) => null;
 
 const DatePicker = ( {
   datetime,
@@ -26,7 +26,7 @@ const DatePicker = ( {
   return (
     <DateTimePicker
       display="spinner"
-      customHeaderIOS={customHeaderIOS}
+      customHeaderIOS={EmptyHeader}
       isDarkModeEnabled={colorScheme === "dark"}
       isVisible={isDateTimePickerVisible}
       maximumDate={new Date( )}

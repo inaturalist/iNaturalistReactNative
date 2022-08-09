@@ -22,8 +22,9 @@ const createComment = async ( body: string, uuid: string ): Promise<?number> => 
     const response = await inatjs.comments.create( apiParams, options );
     return response.total_results;
   } catch ( e ) {
-    console.log( "Couldn't create comment:", JSON.stringify( e.response ), );
+    console.log( "Couldn't create comment:", JSON.stringify( e.response ) );
   }
+  return 0;
 };
 
 export default createComment;
