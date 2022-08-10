@@ -13,10 +13,18 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   selectedPhoto: {
     width,
     height: height - 350
+  },
+  fullSize: {
+    width: "100%",
+    height: "100%"
   }
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  fullSize: {
+    width: "100%",
+    height: "100%"
+  },
   container: {
     backgroundColor: colors.black,
     margin: 0
