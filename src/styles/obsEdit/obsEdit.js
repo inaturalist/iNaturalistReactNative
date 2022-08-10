@@ -1,6 +1,6 @@
 // @flow strict-local
 
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import type {
   ImageStyleProp,
   TextStyleProp,
@@ -37,7 +37,7 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
     fontSize: 11
   },
   verticalCenter: {
-    lineHeight: 0
+    lineHeight: Platform.OS === "ios" ? 0 : 30
   }
 } );
 
