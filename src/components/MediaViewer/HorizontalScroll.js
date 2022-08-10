@@ -26,13 +26,11 @@ const HorizontalScroll = ( {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( initialPhotoSelected );
 
   const scrollToIndex = index => {
+    // when a user taps a photo in the carousel, the UI needs to automatically
+    // scroll to the index of the photo they selected
     if ( !horizontalScroll?.current ) { return; }
-    horizontalScroll?.current.scrollToIndex( { index, animated: true } );
-  };
-
-  const handlePhotoSelection = index => {
     setSelectedPhotoIndex( index );
-    scrollToIndex( index );
+    horizontalScroll?.current.scrollToIndex( { index, animated: true } );
   };
 
   const viewConfigRef = useRef( {
@@ -45,7 +43,6 @@ const HorizontalScroll = ( {
     if ( index === null || index === undefined ) { return; }
     // when a user scrolls left or right, update the selected photo in the photo carousel
     setSelectedPhotoIndex( index );
-    // setCurrentIndex( index );
   } );
 
   const renderImage = ( { item } ) => (
@@ -77,7 +74,7 @@ const HorizontalScroll = ( {
       <PhotoCarousel
         photoUris={photoUris}
         selectedPhotoIndex={selectedPhotoIndex}
-        setSelectedPhotoIndex={handlePhotoSelection}
+        setSelectedPhotoIndex={scrollToIndex}
       />
       <DeletePhotoDialog
         deleteDialogVisible={deleteDialogVisible}
