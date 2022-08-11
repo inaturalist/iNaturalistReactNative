@@ -33,18 +33,6 @@ const HorizontalScroll = ( {
     horizontalScroll?.current.scrollToIndex( { index, animated: true } );
   };
 
-  const viewConfigRef = useRef( {
-    waitForInteraction: true,
-    viewAreaCoveragePercentThreshold: 95
-  } );
-
-  const onViewRef = useRef( ( { changed } ) => {
-    const { index } = changed[0];
-    if ( index === null || index === undefined ) { return; }
-    // when a user scrolls left or right, update the selected photo in the photo carousel
-    setSelectedPhotoIndex( index );
-  } );
-
   const renderImage = ( { item } ) => (
     <CustomImageZoom source={{ uri: Photo.displayLargePhoto( item ) }} />
   );
@@ -55,6 +43,29 @@ const HorizontalScroll = ( {
     offset: width * index,
     index
   } );
+
+  const handleScrollLeft = ( ) => {
+    if ( selectedPhotoIndex === 0 ) { return; }
+    setSelectedPhotoIndex( selectedPhotoIndex - 1 );
+  };
+
+  const handleScrollRight = ( ) => {
+    if ( selectedPhotoIndex === photoUris.length - 1 ) { return; }
+    setSelectedPhotoIndex( selectedPhotoIndex + 1 );
+  };
+
+  const handleScrollEndDrag = e => {
+    const { contentOffset } = e.nativeEvent;
+    const { x } = contentOffset;
+
+    const currentOffset = width * selectedPhotoIndex;
+
+    if ( x > currentOffset ) {
+      handleScrollRight( );
+    } else {
+      handleScrollLeft( );
+    }
+  };
 
   return (
     <>
@@ -68,8 +79,7 @@ const HorizontalScroll = ( {
         showsHorizontalScrollIndicator={false}
       // $FlowIgnore
         ref={horizontalScroll}
-        viewabilityConfig={viewConfigRef.current}
-        onViewableItemsChanged={onViewRef.current}
+        onScrollEndDrag={handleScrollEndDrag}
       />
       <PhotoCarousel
         photoUris={photoUris}
