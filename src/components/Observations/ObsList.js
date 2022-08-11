@@ -1,54 +1,37 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
 import type { Node } from "react";
-import React, { useEffect } from "react";
+import React from "react";
 
+import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import BottomSheet from "../SharedComponents/BottomSheet";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import useUser from "../UserProfile/hooks/useUser";
-import useCurrentUser from "./hooks/useCurrentUser";
-import useObservations from "./hooks/useObservations";
-import LoggedOutCard from "./LoggedOutCard";
+import useRemoteObservations from "./hooks/useRemoteObservations";
+import useSubscribeToLocalObservations from "./hooks/useSubscribeToLocalObservations";
 import LoginPrompt from "./LoginPrompt";
+import TopCard from "./TopCard";
 import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
-import UserCard from "./UserCard";
 
 const ObsList = ( ): Node => {
-  const { params } = useRoute( );
+  const observationList = useSubscribeToLocalObservations( );
   const {
-    observationList,
     loading,
     syncObservations,
     fetchNextObservations,
     uploadStatus,
     updateUploadStatus
-  } = useObservations( );
+  } = useRemoteObservations( );
   const { unuploadedObs, uploadInProgress } = uploadStatus;
-
-  const id = ( params && params.userId ) || null;
-
-  const userId = useCurrentUser( ) || id;
-  const { user } = useUser( userId );
   const numObsToUpload = unuploadedObs?.length;
 
-  useEffect( ( ) => {
-    // start fetching data immediately after successful login
-    if ( params && params.syncData && params.userLogin ) {
-      syncObservations( params.userLogin );
-    } else if ( params && params.savedLocalData ) {
-      // from obsEdit screen
-      syncObservations( );
-    }
-  }, [params, syncObservations] );
+  const isLoggedIn = useLoggedIn( );
 
   const renderBottomSheet = ( ) => {
     if ( numObsToUpload === 0 ) { return null; }
 
-    // show after useCurrentUser has tried to fetch current user
-    if ( userId === null && !loading ) {
+    if ( isLoggedIn === false && !loading ) {
       return (
         <BottomSheet>
           <LoginPrompt />
@@ -75,18 +58,13 @@ const ObsList = ( ): Node => {
 
   return (
     <ViewWithFooter>
-      {
-        user
-          ? <UserCard userId={userId} user={user} />
-          : <LoggedOutCard numObsToUpload={numObsToUpload} />
-      }
+      <TopCard numObsToUpload={numObsToUpload} />
       <ObservationViews
         loading={loading}
         observationList={observationList}
         testID="ObsList.myObservations"
-        handleEndReached={fetchNextObservations}
+        handleEndReached={( ) => fetchNextObservations( observationList.length )}
         syncObservations={syncObservations}
-        userId={userId}
       />
       {renderBottomSheet( )}
     </ViewWithFooter>

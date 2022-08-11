@@ -597,7 +597,7 @@ SPEC CHECKSUMS:
   ReactCommon: 095366164a276d91ea704ce53cb03825c487a3f2
   RealmJS: 772520fb85c19b65c2ea0c8f9aa6e790a905a377
   RNAudioRecorderPlayer: 4482e03d9336c8d8ba41825af227f74f41ba0a01
-  RNCAsyncStorage: 19af8f3e136504e0450e7f85cfb46fc38da87ec9
+  RNCAsyncStorage: d81ee5c3db1060afd49ea7045ad460eff82d2b7d
   RNCCheckbox: 934e11d33abb6b0db105cfa5a22a42bd89dfb4b9
   RNCPicker: abc646b53a3d28ccfa3232c927a0ca52e0cf024d
   RNDateTimePicker: 47ab186e06826a4af7051b8a8199fac9477f339e

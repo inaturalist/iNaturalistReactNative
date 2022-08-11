@@ -31,14 +31,14 @@ const ObsCardStats = ( { item, type }: Props ): Node => {
   const renderIdRow = ( ) => (
     <View style={viewStyles.iconRow}>
       <Icon name="shield" color={iconColor} size={14} style={viewStyles.icon} />
-      <Text style={textStyles.text}>{numOfIds || 0}</Text>
+      <Text style={[textStyles.text, { color: iconColor }]}>{numOfIds || 0}</Text>
     </View>
   );
 
   const renderCommentRow = ( ) => (
     <View style={viewStyles.iconRow}>
       <Icon name="comment" color={iconColor} size={14} style={viewStyles.icon} />
-      <Text style={textStyles.text} testID="ObsList.obsCard.commentCount">
+      <Text style={[textStyles.text, { color: iconColor }]} testID="ObsList.obsCard.commentCount">
         {numOfComments || 0}
       </Text>
     </View>

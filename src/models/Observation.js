@@ -3,7 +3,9 @@ import uuid from "react-native-uuid";
 import Realm from "realm";
 
 // eslint-disable-next-line import/no-cycle
-import { getJWTToken, getUserId } from "../components/LoginSignUp/AuthenticationService";
+import {
+  getJWTToken, getUserId, getUsername
+} from "../components/LoginSignUp/AuthenticationService";
 import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
 import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 // eslint-disable-next-line import/no-cycle
@@ -252,16 +254,17 @@ class Observation extends Realm.Object {
   }
 
   static fetchObservationUpdates = async realm => {
+    const apiToken = await getJWTToken( false );
+    if ( !apiToken ) { return null; }
+
+    const params = {
+      observations_by: "owner",
+      per_page: 200,
+      fields: "viewed,resource_uuid"
+    };
+
+    const options = { api_token: apiToken };
     try {
-      const apiToken = await getJWTToken( false );
-
-      const params = {
-        observations_by: "owner",
-        per_page: 200,
-        fields: "viewed,resource_uuid"
-      };
-
-      const options = { api_token: apiToken };
       const { results } = await inatjs.observations.updates( params, options );
       const unviewed = results.filter( result => result.viewed === false ).map( r => r );
       unviewed.forEach( update => {
@@ -279,18 +282,59 @@ class Observation extends Realm.Object {
   }
 
   static markObservationUpdatesViewed = async id => {
+    const apiToken = await getJWTToken( false );
+    if ( !apiToken ) { return null; }
+
+    const params = { id };
+    const options = { api_token: apiToken };
     try {
-      const apiToken = await getJWTToken( false );
-
-      const params = { id };
-
-      const options = { api_token: apiToken };
-      const response = await inatjs.observations.viewedUpdates( params, options );
-      return response;
+      return await inatjs.observations.viewedUpdates( params, options );
     } catch ( e ) {
       console.log( `Couldn't mark observation ${id} viewed:`, JSON.stringify( e ) );
       return null;
     }
+  }
+
+  static fetchRemoteObservations = async page => {
+    const username = await getUsername( );
+    if ( !username ) { return null; }
+
+    const params = {
+      user_id: username,
+      page,
+      per_page: 6,
+      fields: Observation.FIELDS
+    };
+
+    try {
+      const { results } = await inatjs.observations.search( params );
+      return results;
+    } catch ( e ) {
+      console.log( "Couldn't fetch observations:", JSON.stringify( e.response ) );
+      return null;
+    }
+  }
+
+  static updateLocalObservationsFromRemote = ( realm, results ) => {
+    if ( results.length === 0 ) { return; }
+    results.forEach( obs => {
+      const existingObs = realm?.objectForPrimaryKey( "Observation", obs.uuid );
+
+      if ( existingObs ) {
+        // if observation has been updated locally since the last sync, do not overwrite
+        // with observation attributes from server
+        if ( existingObs._updated_at >= existingObs._synced_at ) {
+          return;
+        }
+      }
+      const newObs = Observation.createOrModifyLocalObservation( obs, realm );
+      realm?.write( ( ) => {
+        // To upsert an object, call Realm.create() with the update mode set
+        // to modified. The operation either inserts a new object with the given primary key
+        // or updates an existing object that already has that primary key.
+        realm?.create( "Observation", newObs, "modified" );
+      } );
+    } );
   }
 
   static schema = {
