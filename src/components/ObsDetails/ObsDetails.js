@@ -13,7 +13,7 @@ import {
   LogBox,
   Alert,
   TextInput as NativeTextInput,
-  TouchableOpacity, Platform
+  TouchableOpacity, Platform, Keyboard
 } from "react-native";
 import { useTranslation } from "react-i18next";
 
@@ -37,7 +37,11 @@ import { viewStyles, textStyles } from "../../styles/obsDetails/obsDetails";
 import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
 import { getUser } from "../LoginSignUp/AuthenticationService";
 import RoundGrayButton from "../SharedComponents/Buttons/RoundGrayButton";
-import {BottomSheetModal, BottomSheetModalProvider, BottomSheetTextInput} from "@gorhom/bottom-sheet";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetTextInput
+} from "@gorhom/bottom-sheet";
 import {ActivityIndicator, TextInput} from "react-native-paper";
 import {colors} from "../../styles/global";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -62,7 +66,8 @@ const ObsDetails = ( ): Node => {
   const [ids, setIds] = useState( [] );
   const bottomSheetModalRef = useRef( null );
   const [addingComment, setAddingComment] = useState( false );
-  const [snapPoint, setSnapPoint] = useState( 200 );
+  const [snapPoint, setSnapPoint] = useState( 100 );
+
 
   const onBackdropPress = () => {
     Alert.alert(
@@ -70,6 +75,13 @@ const ObsDetails = ( ): Node => {
       t( "Are-you-sure-discard-comment" ),
       [{ text: t( "Yes" ), onPress: () => {
         setComment( "" );
+        Keyboard.dismiss();
+        bottomSheetModalRef.current?.dismiss();
+        // Annoying workaround since sometimes bottom sheet modal doesn't get dismissed
+        setTimeout( () =>  {
+            bottomSheetModalRef.current?.dismiss();
+          }
+        , 500 );
         setShowCommentBox( false );
         } }, { text: t( "No" ) }],
       {
@@ -107,16 +119,7 @@ const ObsDetails = ( ): Node => {
     if ( observation ) {setIds( observation.identifications.map( i => i ) );}
   }, [observation] );
 
-  useEffect( () => {
-    if ( showCommentBox ) {
-      bottomSheetModalRef.current?.present();
-    } else {
-      bottomSheetModalRef.current?.dismiss();
-    }
-  }, [showCommentBox] );
-
   if ( !observation ) { return null; }
-
 
   const comments = observation.comments.map( c => c );
   const photos = _.compact( observation.observationPhotos?.map( op => op.photo ) );
@@ -183,11 +186,16 @@ const ObsDetails = ( ): Node => {
     addObservations( [observation] );
     navigation.push( "AddID", { onIDAdded: onIDAdded, goBackOnSave: true } );
   };
-  const openCommentBox = ( ) => setShowCommentBox( true );
+  const openCommentBox = ( ) => {
+    bottomSheetModalRef.current?.present();
+    setShowCommentBox( true );
+  };
   const submitComment = async ( ) => {
     setAddingComment( true );
     setComment( "" );
     setShowCommentBox( false );
+    Keyboard.dismiss();
+    bottomSheetModalRef.current?.dismiss();
     const response = await createComment( comment, uuid );
     setAddingComment( false );
     if ( response ) {

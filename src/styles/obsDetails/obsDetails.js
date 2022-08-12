@@ -120,7 +120,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   commentInputText: {
     paddingTop: 8,
     paddingBottom: 8,
-    height: 200
+    height: 80
   },
   sendComment: {
     position: "absolute",
