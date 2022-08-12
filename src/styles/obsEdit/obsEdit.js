@@ -35,9 +35,6 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   },
   smallLabel: {
     fontSize: 11
-  },
-  verticalCenter: {
-    lineHeight: 0
   }
 } );
 

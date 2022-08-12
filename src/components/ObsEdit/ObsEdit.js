@@ -83,7 +83,7 @@ const ObsEdit = ( ): Node => {
     <View style={viewStyles.headerRow}>
       <HeaderBackButton onPress={handleBackButtonPress} />
       {observations.length === 1
-        ? <Headline style={textStyles.verticalCenter}>{t( "New-Observation" )}</Headline>
+        ? <Headline>{t( "New-Observation" )}</Headline>
         : (
           <View style={viewStyles.multipleObsRow}>
             <Pressable onPress={showPrevObservation} style={viewStyles.caret}>
