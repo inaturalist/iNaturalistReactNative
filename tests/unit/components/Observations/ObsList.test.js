@@ -17,10 +17,17 @@ const mockObservations = [
 ];
 
 // Mock the hooks we use on ObsList since we're not trying to test them here
-jest.mock( "../../../../src/components/Observations/hooks/useObservations", ( ) => ( {
+jest.mock(
+  "../../../../src/components/Observations/hooks/useSubscribeToLocalObservations",
+  ( ) => ( {
+    __esModule: true,
+    default: ( ) => mockObservations
+  } )
+);
+
+jest.mock( "../../../../src/components/Observations/hooks/useRemoteObservations", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
-    observationList: mockObservations,
     loading: false,
     uploadStatus: {
       unuploadedObs: mockObservations

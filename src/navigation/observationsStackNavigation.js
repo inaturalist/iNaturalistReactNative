@@ -1,13 +1,16 @@
 // @flow
 
+import { HeaderBackButton } from "@react-navigation/elements";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { PermissionsAndroid } from "react-native";
 
 import StandardCamera from "../components/Camera/StandardCamera";
+import ObsDetails from "../components/ObsDetails/ObsDetails";
 import AddID from "../components/ObsEdit/AddID";
 import CVSuggestions from "../components/ObsEdit/CVSuggestions";
 import ObsEdit from "../components/ObsEdit/ObsEdit";
+import ObsList from "../components/Observations/ObsList";
 import GroupPhotos from "../components/PhotoLibrary/GroupPhotos";
 import PhotoGallery from "../components/PhotoLibrary/PhotoGallery";
 import CustomHeaderWithTranslation from
@@ -15,6 +18,8 @@ import CustomHeaderWithTranslation from
 import Mortal from "../components/SharedComponents/Mortal";
 import PermissionGate from "../components/SharedComponents/PermissionGate";
 import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
+import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
+import UserProfile from "../components/UserProfile/UserProfile";
 import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 
 const Stack = createNativeStackNavigator( );
@@ -22,6 +27,10 @@ const Stack = createNativeStackNavigator( );
 const hideHeader = {
   headerShown: false
 };
+
+const showBackButton = ( { navigation } ) => ( {
+  headerLeft: ( ) => <HeaderBackButton onPress={( ) => navigation.goBack( )} />
+} );
 
 const PhotoGalleryWithPermission = ( ) => (
   <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
@@ -53,6 +62,23 @@ const CameraStackNavigation = ( ): React.Node => (
   <Mortal>
     <PhotoGalleryProvider>
       <Stack.Navigator screenOptions={hideHeader}>
+        <Stack.Screen
+          name="ObsList"
+          component={ObsList}
+        />
+        <Stack.Screen
+          name="ObsDetails"
+          component={ObsDetails}
+        />
+        <Stack.Screen
+          name="UserProfile"
+          component={UserProfile}
+        />
+        <Stack.Screen
+          name="TaxonDetails"
+          component={TaxonDetails}
+          options={showBackButton}
+        />
         <Stack.Screen
           name="PhotoGallery"
           component={PhotoGalleryWithPermission}

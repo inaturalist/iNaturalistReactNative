@@ -72,10 +72,7 @@ const ObsEdit = ( ): Node => {
 
   const handleBackButtonPress = ( ) => {
     if ( lastScreen === "StandardCamera" ) {
-      navigation.navigate( "camera", {
-        screen: "StandardCamera",
-        params: { photos: photoUris }
-      } );
+      navigation.navigate( "StandardCamera", { photos: photoUris } );
     } else {
       // show modal to dissuade user from going back
       navigation.goBack( );
@@ -101,7 +98,7 @@ const ObsEdit = ( ): Node => {
     <View style={viewStyles.headerRow}>
       <HeaderBackButton onPress={handleBackButtonPress} />
       {observations.length === 1
-        ? <Headline style={textStyles.verticalCenter}>{t( "New-Observation" )}</Headline>
+        ? <Headline>{t( "New-Observation" )}</Headline>
         : (
           <View style={viewStyles.multipleObsRow}>
             <Pressable onPress={showPrevObservation} style={viewStyles.caret}>
@@ -163,19 +160,13 @@ const ObsEdit = ( ): Node => {
   );
 
   const onImportPhoto = async () => {
-    navigation.navigate( "camera", {
-      screen: "PhotoGallery",
-      params: { photos: photoUris, editObs: true }
-    } );
+    navigation.navigate( "PhotoGallery", { photos: photoUris, editObs: true } );
 
     bottomSheetModalRef.current?.dismiss();
   };
 
   const onTakePhoto = async () => {
-    navigation.navigate( "camera", {
-      screen: "StandardCamera",
-      params: { photos: photoUris }
-    } );
+    navigation.navigate( "StandardCamera", { photos: photoUris } );
 
     bottomSheetModalRef.current?.dismiss();
   };

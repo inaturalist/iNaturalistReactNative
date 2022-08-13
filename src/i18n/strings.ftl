@@ -594,5 +594,35 @@ Yes-delete-photo = Yes, delete photo
 # (e.g. permission to access the camera) but the user denied the permission.
 You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
 
+# Identification category
+Category-leading = Leading
+# Identification category
+Category-improving = Improving
+# Identification category
+Category-maverick = Maverick
+# Identification category
+Category-supporting = Supporting
+
+# Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)
+Date-minutes = {$count}m
+# Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)
+Date-hours = {$count}h
+# Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
+Date-days = {$count}d
+# Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)
+Date-weeks = {$count}w
+# Used when displaying a relative time - in this case, shows an absolute date (e.g. 12/31/22)
+Date-short-format = MM/dd/yy
+# Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
+Date-this-year = MMM d
+
+# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade
+Quality-Grade-Badge-research_grade = RG
+# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID
+Quality-Grade-Badge-needs_id = Needs ID
+# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
+Quality-Grade-Badge-casual = Casual
+
 Add-evidence = Add evidence
 You-can-only-upload-20-media = You can only add 20 photos and 20 sounds to an observation
+
