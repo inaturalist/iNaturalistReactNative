@@ -95,6 +95,7 @@ const EvidenceSection = ( {
       <PhotoCarousel
         photoUris={photoUris}
         setSelectedPhotoIndex={handleSelection}
+        showAddButton
         handleAddEvidence={handleAddEvidence}
       />
       {/*

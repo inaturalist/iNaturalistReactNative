@@ -18,7 +18,8 @@ type Props = {
   selectedPhotoIndex?: number,
   containerStyle?: string,
   handleDelete?: Function,
-  handleAddEvidence?: Function
+  handleAddEvidence?: Function,
+  showAddButton?: boolean
 }
 
 const PhotoCarousel = ( {
@@ -28,7 +29,8 @@ const PhotoCarousel = ( {
   selectedPhotoIndex,
   containerStyle,
   handleDelete,
-  handleAddEvidence
+  handleAddEvidence,
+  showAddButton = false
 }: Props ): Node => {
   const { colors: themeColors } = useTheme( );
   const renderDeleteButton = photoUri => (
@@ -82,9 +84,12 @@ const PhotoCarousel = ( {
     );
   };
 
+  const data = [...photoUris];
+  if ( showAddButton ) data.push( "add" );
+
   return (
     <FlatList
-      data={[...photoUris, "add"]}
+      data={data}
       contentContainerStyle={( containerStyle === "camera" ) && viewStyles.photoContainer}
       renderItem={renderPhoto}
       horizontal

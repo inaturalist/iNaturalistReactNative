@@ -20,7 +20,7 @@ import { textStyles } from "../../styles/obsDetails/obsDetails";
 import CameraView from "./CameraView";
 import PhotoPreview from "./PhotoPreview";
 
-export const MAX_PHOTOS_ALLOWED = 10;
+export const MAX_PHOTOS_ALLOWED = 20;
 
 const StandardCamera = ( ): Node => {
   const { colors: themeColors } = useTheme( );
@@ -71,7 +71,10 @@ const StandardCamera = ( ): Node => {
 
   const navToObsEdit = ( ) => {
     addPhotos( photoUris );
-    navigation.navigate( "ObsEdit", { lastScreen: "StandardCamera" } );
+    navigation.navigate(
+      "ObsEdit",
+      { lastScreen: photos && photos.length > 0 ? null : "StandardCamera" }
+    );
   };
 
   useEffect( ( ) => {
@@ -127,7 +130,7 @@ const StandardCamera = ( ): Node => {
         visible={showAlert}
         onDismiss={() => setShowAlert( false )}
       >
-        {t( "You-can-only-upload-images" )}
+        {t( "You-can-only-upload-20-media" )}
       </Snackbar>
     </View>
   );

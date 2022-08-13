@@ -595,4 +595,4 @@ Yes-delete-photo = Yes, delete photo
 You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
 
 Add-evidence = Add evidence
-You-can-only-upload-images = You can only add 10 photos and 10 sounds to an observation
+You-can-only-upload-20-media = You can only add 20 photos and 20 sounds to an observation

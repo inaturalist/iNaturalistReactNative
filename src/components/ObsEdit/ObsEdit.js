@@ -15,7 +15,6 @@ import { useTranslation } from "react-i18next";
 import {
   Pressable, Text, View
 } from "react-native";
-import { launchImageLibrary } from "react-native-image-picker";
 import {
   Headline, Menu, Modal, Portal
 } from "react-native-paper";
@@ -44,8 +43,7 @@ const ObsEdit = ( ): Node => {
     observations,
     saveObservation,
     saveAndUploadObservation,
-    setObservations,
-    addPhotos
+    setObservations
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -165,19 +163,12 @@ const ObsEdit = ( ): Node => {
   );
 
   const onImportPhoto = async () => {
-    const response = await launchImageLibrary( {
-      mediaType: "photo",
-      includeExtra: true,
-      selectionLimit: MAX_PHOTOS_ALLOWED - photoUris.length
+    navigation.navigate( "camera", {
+      screen: "PhotoGallery",
+      params: { photos: photoUris, editObs: true }
     } );
 
     bottomSheetModalRef.current?.dismiss();
-
-    if ( response.didCancel || !response.assets ) return;
-
-    const newPhotos = [...photoUris, ...response.assets.map( x => x.uri )];
-    addPhotos( newPhotos );
-    setPhotoUris( newPhotos );
   };
 
   const onTakePhoto = async () => {
@@ -259,7 +250,7 @@ const ObsEdit = ( ): Node => {
             {disableAddingMoreEvidence
               && (
               <Text style={textStyles.evidenceWarning}>
-                {t( "You-can-only-upload-images" )}
+                {t( "You-can-only-upload-20-media" )}
               </Text>
               )}
             <View style={viewStyles.evidenceButtonsContainer}>
