@@ -13,10 +13,11 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
 import colors from "../../styles/colors";
 import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
-import { MAX_PHOTOS_ALLOWED } from "../Camera/StandardCamera";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
+
+const MAX_PHOTOS_ALLOWED = 20;
 
 const options = {
   first: 28,
