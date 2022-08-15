@@ -1,7 +1,7 @@
 // @flow
 
-import { useEffect, useState } from "react";
 import inatjs from "inaturalistjs";
+import { useEffect, useState } from "react";
 
 const ANCESTOR_FIELDS = {
   name: true,
@@ -44,14 +44,14 @@ const useTaxonDetails = ( id: number ): {
           fields: FIELDS
         };
         const response = await inatjs.taxa.fetch( id, params );
-        const results = response.results;
+        const { results } = response;
         if ( !isCurrent ) { return; }
         setTaxon( results[0] );
         setLoading( false );
       } catch ( e ) {
         setLoading( false );
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch taxon details:", e.message, );
+        console.log( "Couldn't fetch taxon details:", e.message );
       }
     };
 
@@ -77,12 +77,12 @@ const useSimilarSpecies = ( id: number ): Array<Object> => {
           // fields: FIELDS
         };
         const response = await inatjs.identifications.similar_species( params );
-        const results = response.results;
+        const { results } = response;
         if ( !isCurrent ) { return; }
         setSimilarSpecies( results );
       } catch ( e ) {
         if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch similar species:", e.message, );
+        console.log( "Couldn't fetch similar species:", e.message );
       }
     };
 
@@ -96,6 +96,6 @@ const useSimilarSpecies = ( id: number ): Array<Object> => {
 };
 
 export {
-  useTaxonDetails,
-  useSimilarSpecies
+  useSimilarSpecies,
+  useTaxonDetails
 };

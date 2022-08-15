@@ -1,11 +1,13 @@
 // @flow
 
 import * as React from "react";
-import { FlatList, Pressable, Text, Image } from "react-native";
+import {
+  FlatList, Image, Pressable, Text
+} from "react-native";
 
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
+import { imageStyles, viewStyles } from "../../styles/search/search";
 import InputField from "../SharedComponents/InputField";
-import { viewStyles, imageStyles } from "../../styles/search/search";
 
 type Props = {
   source: string,
@@ -31,26 +33,29 @@ const ObsEditSearch = ( {
           style={viewStyles.row}
           testID={`ObsEditSearch.taxa.${item.id}`}
         >
-          <Image source={imageUrl} style={imageStyles.squareImage} testID={`ObsEditSearch.taxa.${item.id}.photo`} />
+          <Image
+            source={imageUrl}
+            style={imageStyles.squareImage}
+            testID={`ObsEditSearch.taxa.${item.id}.photo`}
+          />
           <Text>{`${item.preferred_common_name} (${item.rank} ${item.name})`}</Text>
         </Pressable>
       );
-    } else {
-      return (
-        <Pressable
-          onPress={( ) => handlePress( item.id )}
-          style={viewStyles.row}
-          testID={`ObsEditSearch.project.${item.id}`}
-        >
-          <Image
-            source={{ uri: item.icon }}
-            style={imageStyles.squareImage}
-            testID={`ObsEditSearch.project.${item.id}.photo`}
-          />
-          <Text>{item.title}</Text>
-        </Pressable>
-      );
     }
+    return (
+      <Pressable
+        onPress={( ) => handlePress( item.id )}
+        style={viewStyles.row}
+        testID={`ObsEditSearch.project.${item.id}`}
+      >
+        <Image
+          source={{ uri: item.icon }}
+          style={imageStyles.squareImage}
+          testID={`ObsEditSearch.project.${item.id}.photo`}
+        />
+        <Text>{item.title}</Text>
+      </Pressable>
+    );
   };
 
   return (

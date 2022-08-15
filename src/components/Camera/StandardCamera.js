@@ -1,21 +1,24 @@
 // @flow
 
-import React, { useRef, useState, useContext, useEffect } from "react";
-import { Text, View, Pressable } from "react-native";
-import { Camera, useCameraDevices } from "react-native-vision-camera";
-import type { Node } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Avatar, useTheme } from "react-native-paper";
-import Realm from "realm";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, {
+  useContext, useEffect, useRef, useState
+} from "react";
+import { Pressable, Text, View } from "react-native";
+import { Avatar, useTheme } from "react-native-paper";
+import { Camera, useCameraDevices } from "react-native-vision-camera";
+import Realm from "realm";
 
-import { viewStyles } from "../../styles/camera/standardCamera";
-import { ObsEditContext } from "../../providers/contexts";
-import CameraView from "./CameraView";
-import PhotoPreview from "./PhotoPreview";
-import { textStyles } from "../../styles/obsDetails/obsDetails";
 import realmConfig from "../../models/index";
 import Photo from "../../models/Photo";
+import { ObsEditContext } from "../../providers/contexts";
+import { viewStyles } from "../../styles/camera/standardCamera";
+import { textStyles } from "../../styles/obsDetails/obsDetails";
+import CameraView from "./CameraView";
+import FadeInOutView from "./FadeInOutView";
+import PhotoPreview from "./PhotoPreview";
 
 const StandardCamera = ( ): Node => {
   const { colors } = useTheme( );
@@ -33,8 +36,10 @@ const StandardCamera = ( ): Node => {
     flash: "off"
   } );
   const [photoUris, setPhotoUris] = useState( [] );
+  const [savingPhoto, setSavingPhoto] = useState( false );
 
   const takePhoto = async ( ) => {
+    setSavingPhoto( true );
     try {
       const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
       const realm = await Realm.open( realmConfig );
@@ -43,9 +48,11 @@ const StandardCamera = ( ): Node => {
       // only 10 photoUris allowed
       if ( photoUris.length < 10 ) {
         setPhotoUris( photoUris.concat( [uri] ) );
+        setSavingPhoto( false );
       }
     } catch ( e ) {
       console.log( e, "couldn't take photo" );
+      setSavingPhoto( false );
     }
   };
 
@@ -72,41 +79,46 @@ const StandardCamera = ( ): Node => {
     }
   }, [photos] );
 
-  const renderCameraButton = ( icon ) => <Avatar.Icon size={40} icon={icon} style={{ backgroundColor: colors.background }} />;
+  const renderCameraButton = icon => (
+    <Avatar.Icon size={40} icon={icon} style={{ backgroundColor: colors.background }} />
+  );
 
   return (
     <View style={viewStyles.container}>
       {device && <CameraView device={device} camera={camera} />}
-      <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} />
-      <View style={viewStyles.cameraSettingsRow}>
-        <Pressable
-          style={viewStyles.flashButton}
-          onPress={toggleFlash}
-        >
-          {renderCameraButton( "flash" )}
-        </Pressable>
-        <Pressable
-          style={viewStyles.cameraFlipButton}
-          onPress={flipCamera}
-        >
-          {renderCameraButton( "camera-flip" )}
-        </Pressable>
-        <View />
+      <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} savingPhoto={savingPhoto} />
+      <FadeInOutView savingPhoto={savingPhoto} />
+      <View style={viewStyles.bottomButtons}>
+        <View style={viewStyles.cameraSettingsRow}>
+          <Pressable
+            style={viewStyles.flashButton}
+            onPress={toggleFlash}
+          >
+            {renderCameraButton( "flash" )}
+          </Pressable>
+          <Pressable
+            style={viewStyles.cameraFlipButton}
+            onPress={flipCamera}
+          >
+            {renderCameraButton( "camera-flip" )}
+          </Pressable>
+          <View />
 
-      </View>
-      <View style={viewStyles.cameraCaptureRow}>
-        <Pressable
-          style={viewStyles.captureButton}
-          onPress={takePhoto}
-        >
-          {renderCameraButton( "circle-outline" )}
-        </Pressable>
-        <Pressable
-          style={viewStyles.nextButton}
-          onPress={navToObsEdit}
-        >
-          <Text style={textStyles.whiteText}>{t( "Next" )}</Text>
-        </Pressable>
+        </View>
+        <View style={viewStyles.cameraCaptureRow}>
+          <Pressable
+            style={viewStyles.captureButton}
+            onPress={takePhoto}
+          >
+            {renderCameraButton( "circle-outline" )}
+          </Pressable>
+          <Pressable
+            style={viewStyles.nextButton}
+            onPress={navToObsEdit}
+          >
+            <Text style={textStyles.whiteText}>{t( "Next" )}</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );

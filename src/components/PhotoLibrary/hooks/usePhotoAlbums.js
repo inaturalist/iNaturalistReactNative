@@ -1,15 +1,16 @@
 // @flow
 
-import { useEffect, useState } from "react";
 import CameraRoll from "@react-native-community/cameraroll";
-
-const cameraRoll = [{
-  label: "camera roll",
-  value: "All",
-  key: "camera roll"
-}];
+import { t } from "i18next";
+import { useEffect, useMemo, useState } from "react";
 
 const usePhotoAlbums = ( ): Array<Object> => {
+  const cameraRoll = useMemo( ( ) => [{
+    label: t( "Camera-Roll" ),
+    value: "All",
+    key: "camera roll"
+  }], [] );
+
   const [photoAlbums, setPhotoAlbums] = useState( cameraRoll );
 
   useEffect( ( ) => {
@@ -23,7 +24,7 @@ const usePhotoAlbums = ( ): Array<Object> => {
         if ( albums && albums.length > 0 ) { // attempt to fix error on android
           albums.forEach( ( { count, title } ) => {
             if ( count > 0 && title !== "Screenshots" ) { // remove screenshots from gallery
-              names.push( { label: title.toLocaleUpperCase( ), value: title, key: title } );
+              names.push( { label: title, value: title, key: title } );
             }
           } );
         }
@@ -31,7 +32,6 @@ const usePhotoAlbums = ( ): Array<Object> => {
         setPhotoAlbums( names );
       } catch ( e ) {
         console.log( e, "couldn't fetch photo albums" );
-        return;
       }
     };
 
@@ -40,11 +40,9 @@ const usePhotoAlbums = ( ): Array<Object> => {
     return ( ) => {
       isCurrent = false;
     };
-  }, [] );
+  }, [cameraRoll] );
 
   return photoAlbums;
 };
 
 export default usePhotoAlbums;
-
-

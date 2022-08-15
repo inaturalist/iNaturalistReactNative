@@ -2,10 +2,10 @@
 
 import * as React from "react";
 
+import InputField from "../SharedComponents/InputField";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import ProjectSearch from "./ProjectSearch";
 import ProjectTabs from "./ProjectTabs";
-import InputField from "../SharedComponents/InputField";
 
 const Projects = ( ): React.Node => {
   const [q, setQ] = React.useState( "" );

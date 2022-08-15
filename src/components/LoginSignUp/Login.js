@@ -1,24 +1,35 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Image,
   KeyboardAvoidingView,
   Linking,
   Platform,
+  Pressable,
   ScrollView,
   TouchableOpacity,
   View
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import type { Node } from "react";
-import {Button, Paragraph, Dialog, Portal, Text, TextInput} from "react-native-paper";
+import {
+  Button, Dialog, Paragraph, Portal, Text, TextInput
+} from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { textStyles, viewStyles, imageStyles } from "../../styles/login/login";
-import { isLoggedIn, authenticateUser, getUsername, getUserId, signOut } from "./AuthenticationService";
+import colors from "../../styles/colors";
+import {
+  closeButton, imageStyles, textStyles, viewStyles
+} from "../../styles/login/login";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import { useTranslation } from "react-i18next";
-import {colors} from "../../styles/global";
+import {
+  authenticateUser,
+  getUsername,
+  isLoggedIn,
+  signOut
+} from "./AuthenticationService";
 
 const Login = ( ): Node => {
   const { t } = useTranslation( );
@@ -38,7 +49,7 @@ const Login = ( ): Node => {
     let isCurrent = true;
 
     const fetchLoggedIn = async ( ) => {
-      if ( !isCurrent ) {return;}
+      if ( !isCurrent ) { return; }
 
       setLoggedIn( await isLoggedIn( ) );
       if ( loggedIn ) {
@@ -60,7 +71,6 @@ const Login = ( ): Node => {
       password
     );
 
-
     if ( !success ) {
       setError( t( "Invalid-login" ) );
       setLoading( false );
@@ -68,13 +78,11 @@ const Login = ( ): Node => {
     }
 
     const userLogin = await getUsername( );
-    const userId = await getUserId( );
     setUsername( userLogin );
     setLoggedIn( true );
     setLoading( false );
-    navigation.navigate( "my observations", {
-      screen: "ObsList",
-      params: { syncData: true, userLogin, userId }
+    navigation.navigate( "observations", {
+      screen: "ObsList"
     } );
   };
 
@@ -119,7 +127,18 @@ const Login = ( ): Node => {
 
   const loginForm = (
     <>
-      <Image style={imageStyles.logo} resizeMode="contain" source={require( "../../images/inat_logo.png" )} />
+      <Pressable
+        onPress={() => navigation.goBack()}
+        style={closeButton.close}
+      >
+        <Icon name="close" size={35} />
+      </Pressable>
+      <Image
+        style={imageStyles.logo}
+        resizeMode="contain"
+        source={require( "../../images/inat_logo.png" )}
+      />
+
       <Text style={textStyles.header}>{t( "Login-header" )}</Text>
       <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
       <Text style={textStyles.fieldText}>{t( "Username-or-Email" )}</Text>
@@ -144,7 +163,7 @@ const Login = ( ): Node => {
           setPassword( text );
         }}
         value={password}
-        secureTextEntry={true}
+        secureTextEntry
         testID="Login.password"
         selectionColor={colors.black}
       />

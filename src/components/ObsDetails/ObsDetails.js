@@ -1,50 +1,50 @@
 // @flow
 
-import _ from "lodash";
-import React, {useState, useContext, useEffect, useRef} from "react";
-import type { Node } from "react";
-import { formatISO } from "date-fns";
 import {
-  Text,
-  View,
-  Image,
-  Pressable,
-  ScrollView,
-  LogBox,
-  Alert,
-  TextInput as NativeTextInput,
-  TouchableOpacity, Platform, Keyboard
-} from "react-native";
-import { useTranslation } from "react-i18next";
-
-import ActivityTab from "./ActivityTab";
-import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
-import createComment from "./helpers/createComment";
-import createIdentification from "../Identify/helpers/createIdentification";
-import DataTab from "./DataTab";
-import faveObservation from "./helpers/faveObservation";
-import ObsDetailsHeader from "./ObsDetailsHeader";
-import PhotoScroll from "../SharedComponents/PhotoScroll";
-import Taxon from "../../models/Taxon";
-import TranslatedText from "../SharedComponents/TranslatedText";
-import User from "../../models/User";
-import UserIcon from "../SharedComponents/UserIcon";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import { ObsEditContext } from "../../providers/contexts";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { useRemoteObservation } from "./hooks/useRemoteObservation";
-import { viewStyles, textStyles } from "../../styles/obsDetails/obsDetails";
-import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
-import { getUser } from "../LoginSignUp/AuthenticationService";
-import RoundGrayButton from "../SharedComponents/Buttons/RoundGrayButton";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
+  BottomSheetModal, BottomSheetModalProvider,
   BottomSheetTextInput
 } from "@gorhom/bottom-sheet";
-import {ActivityIndicator, TextInput} from "react-native-paper";
-import {colors} from "../../styles/global";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { formatISO } from "date-fns";
+import _ from "lodash";
+import type { Node } from "react";
+import React, {
+  useContext, useEffect, useRef, useState
+} from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Alert, Image, Keyboard,
+  LogBox, Pressable, ScrollView, Text,
+  TextInput as NativeTextInput, TouchableOpacity, View
+} from "react-native";
+import { ActivityIndicator, Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import Realm from "realm";
+
+import realmConfig from "../../models/index";
+import Observation from "../../models/Observation";
+import Taxon from "../../models/Taxon";
+import User from "../../models/User";
+import { ObsEditContext } from "../../providers/contexts";
+import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
+import colors from "../../styles/colors";
+import { imageStyles, textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
+import createIdentification from "../Identify/helpers/createIdentification";
+import { getUser } from "../LoginSignUp/AuthenticationService";
+import RoundGrayButton from "../SharedComponents/Buttons/RoundGrayButton";
+import PhotoScroll from "../SharedComponents/PhotoScroll";
+import QualityBadge from "../SharedComponents/QualityBadge";
+import TranslatedText from "../SharedComponents/TranslatedText";
+import UserIcon from "../SharedComponents/UserIcon";
+import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import ActivityTab from "./ActivityTab";
+import DataTab from "./DataTab";
+import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
+import createComment from "./helpers/createComment";
+import faveObservation from "./helpers/faveObservation";
+import useRemoteObservation from "./hooks/useRemoteObservation";
+import ObsDetailsHeader from "./ObsDetailsHeader";
 
 // this is getting triggered by passing dates, like _created_at, through
 // react navigation via the observation object. it doesn't seem to
@@ -60,7 +60,7 @@ const ObsDetails = ( ): Node => {
   const [comment, setComment] = useState( "" );
   const { addObservations } = useContext( ObsEditContext );
   const { params } = useRoute( );
-  let observation = params.observation;
+  let { observation } = params;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
   const [ids, setIds] = useState( [] );
@@ -68,45 +68,48 @@ const ObsDetails = ( ): Node => {
   const [addingComment, setAddingComment] = useState( false );
   const [snapPoint, setSnapPoint] = useState( 100 );
 
-
   const onBackdropPress = () => {
     Alert.alert(
       t( "Discard-Comment" ),
       t( "Are-you-sure-discard-comment" ),
-      [{ text: t( "Yes" ), onPress: () => {
-        setComment( "" );
-        Keyboard.dismiss();
-        bottomSheetModalRef.current?.dismiss();
-        // Annoying workaround since sometimes bottom sheet modal doesn't get dismissed
-        setTimeout( () =>  {
-            bottomSheetModalRef.current?.dismiss();
-          }
-        , 500 );
-        setShowCommentBox( false );
-        } }, { text: t( "No" ) }],
+      [{
+        text: t( "Yes" ),
+        onPress: () => {
+          setComment( "" );
+          Keyboard.dismiss();
+          bottomSheetModalRef.current?.dismiss();
+          // Annoying workaround since sometimes bottom sheet modal doesn't get dismissed
+          setTimeout(
+            () => {
+              bottomSheetModalRef.current?.dismiss();
+            },
+            500
+          );
+          setShowCommentBox( false );
+        }
+      }, { text: t( "No" ) }],
       {
         cancelable: false
       }
     );
   };
 
-  const renderHandle = ( props ) => (
-      <View style={viewStyles.handleContainer} />
+  const renderHandle = () => (
+    <View style={viewStyles.handleContainer} />
   );
 
-  const renderBackdrop = ( props ) => (
+  const renderBackdrop = () => (
     <TouchableOpacity activeOpacity={1} style={viewStyles.background} onPress={onBackdropPress}>
-      <View   />
+      <View />
     </TouchableOpacity>
   );
-
 
   // TODO: we'll probably need to redo this logic a bit now that we're
   // passing an observation via navigation instead of reopening realm
   const { remoteObservation, currentUserFaved } = useRemoteObservation( observation, refetch );
 
-  /* TODO - removed this since otherwise refreshing new comments will not work (will always use old local copy that
-  *   doesn't include new comments) */
+  /* TODO - removed this since otherwise refreshing new comments will not work (will
+      always use old local copy that doesn't include new comments) */
   if ( remoteObservation ) {
     observation = remoteObservation;
   }
@@ -116,18 +119,28 @@ const ObsDetails = ( ): Node => {
   const toggleRefetch = ( ) => setRefetch( !refetch );
 
   useEffect( () => {
-    if ( observation ) {setIds( observation.identifications.map( i => i ) );}
+    const markViewedLocally = async ( ) => {
+      const realm = await Realm.open( realmConfig );
+      const existingObs = realm?.objectForPrimaryKey( "Observation", observation.uuid );
+      if ( !existingObs ) { return; }
+      realm?.write( ( ) => {
+        existingObs.viewed = true;
+      } );
+    };
+    if ( observation ) { setIds( observation.identifications.map( i => i ) ); }
+    if ( observation.viewed === false ) {
+      Observation.markObservationUpdatesViewed( observation.uuid );
+      markViewedLocally( );
+    }
   }, [observation] );
 
   if ( !observation ) { return null; }
 
   const comments = observation.comments.map( c => c );
-  const photos = _.compact( observation.observationPhotos?.map( op => op.photo ) );
-  const user = observation.user;
-  const taxon = observation.taxon;
-  const uuid = observation.uuid;
+  const photos = _.compact( observation.observationPhotos.map( op => op.photo ) );
+  const { taxon, uuid, user } = observation;
 
-  const onIDAdded = async ( identification ) => {
+  const onIDAdded = async identification => {
     console.log( "onIDAdded", identification );
 
     // Add temporary ID to observation.identifications ("ghosted" ID, while we're trying to add it)
@@ -143,20 +156,25 @@ const ObsDetails = ( ): Node => {
       created_at: formatISO( Date.now() ),
       uuid: identification.uuid,
       vision: false,
-      // This tells us to render is ghosted (since it's temporarily visible until getting a response from the server)
+      // This tells us to render is ghosted (since it's temporarily visible
+      // until getting a response from the server)
       temporary: true
     };
-    setIds( [ ...ids, newId ] );
+    setIds( [...ids, newId] );
 
     let error = null;
 
     try {
-      const results = await createIdentification( { observation_id: observation.uuid, taxon_id: newId.taxon.id, body: newId.body } );
+      const results = await createIdentification( {
+        observation_id: observation.uuid,
+        taxon_id: newId.taxon.id,
+        body: newId.body
+      } );
 
       if ( results === 1 ) {
         // Remove ghosted highlighting
         newId.temporary = false;
-        setIds( [ ...ids, newId ] );
+        setIds( [...ids, newId] );
       } else {
         // Couldn't create ID
         error = t( "Couldnt-create-identification", { error: t( "Unknown-error" ) } );
@@ -184,7 +202,7 @@ const ObsDetails = ( ): Node => {
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
   const navToAddID = ( ) => {
     addObservations( [observation] );
-    navigation.push( "AddID", { onIDAdded: onIDAdded, goBackOnSave: true } );
+    navigation.push( "AddID", { onIDAdded, goBackOnSave: true } );
   };
   const openCommentBox = ( ) => {
     bottomSheetModalRef.current?.present();
@@ -207,7 +225,7 @@ const ObsDetails = ( ): Node => {
     if ( !taxon ) { return <Text>{t( "Unknown-organism" )}</Text>; }
     return (
       <>
-       <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />
+        <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />
         <Pressable
           style={viewStyles.obsDetailsColumn}
           onPress={navToTaxonDetails}
@@ -224,42 +242,29 @@ const ObsDetails = ( ): Node => {
     );
   };
 
-  const renderBottomSheetTextView = () => {
-    if ( Platform.OS === "ios" ) {
-      return <BottomSheetTextInput
-        keyboardType="default"
-        style={[viewStyles.commentInput, viewStyles.commentInputText]}
-        value={comment}
-        selectionColor={colors.black}
-        activeUnderlineColor={colors.transparent}
-        placeholder={t( "Add-a-comment" )}
-        autoFocus
-        multiline
-        onChangeText={setComment}
-      />;
-    } else {
-      return <TextInput
-        keyboardType="default"
-        style={[viewStyles.commentInput]}
-        value={comment}
-        selectionColor={colors.black}
-        activeUnderlineColor={colors.transparent}
-        placeholder={t( "Add-a-comment" )}
-        autoFocus
-        multiline
-        onChangeText={setComment}
-        render={( innerProps ) => (
-          <NativeTextInput
-            {...innerProps}
-            style={[
-              innerProps.style,
-              viewStyles.commentInputText
-            ]}
-          />
-        )}
-      />;
-    }
-  };
+  const renderBottomSheetTextView = () => (
+    <BottomSheetTextInput
+      keyboardType="default"
+      style={[viewStyles.commentInput, viewStyles.commentInputText, textStyles.commentTextInput]}
+      value={comment}
+      selectionColor={colors.black}
+      activeUnderlineColor={colors.transparent}
+      placeholder={t( "Add-a-comment" )}
+      autoFocus
+      multiline
+      onChangeText={setComment}
+      render={innerProps => (
+        <NativeTextInput
+              /* eslint-disable react/jsx-props-no-spreading */
+          {...innerProps}
+          style={[
+            innerProps.style,
+            viewStyles.commentInputText, textStyles.commentTextInput
+          ]}
+        />
+      )}
+    />
+  );
 
   const faveOrUnfave = async ( ) => {
     if ( currentUserFaved ) {
@@ -271,9 +276,9 @@ const ObsDetails = ( ): Node => {
     }
   };
 
-  const displayCreatedAt = ( ) => observation.createdAt
+  const displayCreatedAt = ( ) => ( observation.createdAt
     ? observation.createdAt
-    : formatObsListTime( observation._created_at );
+    : formatObsListTime( observation._created_at ) );
 
   return (
     <BottomSheetModalProvider>
@@ -293,38 +298,65 @@ const ObsDetails = ( ): Node => {
               <UserIcon uri={User.uri( user )} />
               <Text>{User.userHandle( user )}</Text>
             </Pressable>
-            <Text>{displayCreatedAt( )}</Text>
+            <Text style={textStyles.observedOn}>{displayCreatedAt( )}</Text>
           </View>
           <View style={viewStyles.photoContainer}>
-            <Pressable onPress={faveOrUnfave} style={viewStyles.pressableButton}>
-              <Text style={textStyles.whiteText}>{currentUserFaved ? "faved!" : "tap to fave"}</Text>
-            </Pressable>
             <PhotoScroll photos={photos} />
+            <Button
+              icon={currentUserFaved ? "star-outline" : "star"}
+              onPress={faveOrUnfave}
+              textColor={colors.white}
+              labelStyle={textStyles.favText}
+              style={viewStyles.favButton}
+            />
           </View>
           <View style={viewStyles.row}>
             {showTaxon( )}
             <View>
-              <Text style={textStyles.text}>{observation.identifications.length}</Text>
-              <Text style={textStyles.text}>{observation.comments.length}</Text>
-              <Text style={textStyles.text}>{checkCamelAndSnakeCase( observation, "qualityGrade" )}</Text>
+              <View style={viewStyles.rowWithIcon}>
+                <Image
+                  style={imageStyles.smallIcon}
+                  source={require( "../../images/ic_id.png" )}
+                />
+                <Text style={textStyles.idCommentCount}>{observation.identifications.length}</Text>
+              </View>
+              <View style={viewStyles.rowWithIcon}>
+                <Icon name="chat" size={15} color={colors.logInGray} />
+                <Text style={textStyles.idCommentCount}>{observation.comments.length}</Text>
+              </View>
+              <QualityBadge qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )} />
             </View>
           </View>
-          <Text style={textStyles.locationText}>
-            {checkCamelAndSnakeCase( observation, "placeGuess" )}
-          </Text>
+          <View style={[viewStyles.rowWithIcon, viewStyles.locationContainer]}>
+            <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
+            <Text style={textStyles.locationText}>
+              {checkCamelAndSnakeCase( observation, "placeGuess" )}
+            </Text>
+          </View>
+
           <View style={viewStyles.userProfileRow}>
             <Pressable
               onPress={showActivityTab}
               accessibilityRole="button"
+              style={viewStyles.tabContainer}
             >
-              <TranslatedText style={textStyles.greenButtonText} text="ACTIVITY" />
+              <TranslatedText
+                style={[textStyles.tabText, tab === 0 ? textStyles.tabTextActive : null]}
+                text="ACTIVITY"
+              />
+              { tab === 0 && <View style={viewStyles.tabContainerActive} />}
             </Pressable>
             <Pressable
               onPress={showDataTab}
               testID="ObsDetails.DataTab"
               accessibilityRole="button"
+              style={viewStyles.tabContainer}
             >
-              <TranslatedText style={textStyles.greenButtonText} text="DATA" />
+              <TranslatedText
+                style={[textStyles.tabText, tab === 1 ? textStyles.tabTextActive : null]}
+                text="DATA"
+              />
+              { tab === 1 && <View style={viewStyles.tabContainerActive} />}
             </Pressable>
           </View>
           {tab === 0
@@ -338,13 +370,16 @@ const ObsDetails = ( ): Node => {
               />
             )
             : <DataTab observation={observation} />}
-          {addingComment && <View style={[viewStyles.row, viewStyles.centerRow]}>
-            <ActivityIndicator size="large" />
-          </View>}
+          {addingComment && (
+            <View style={[viewStyles.row, viewStyles.centerRow]}>
+              <ActivityIndicator size="large" />
+            </View>
+          )}
           <View style={viewStyles.row}>
             <View style={viewStyles.button}>
-              {/* TODO: get this button working. Not sure why createIdentification isn't working here
-            but it doesn't appear to be working on staging either (Mar 11, 2022) */}
+              {/* TODO: get this button working. Not sure why createIdentification
+              isn't working here but it doesn't appear to be working on
+              staging either (Mar 11, 2022) */}
               <RoundGrayButton
                 buttonText={t( "Suggest-an-ID" )}
                 handlePress={navToAddID}
@@ -365,7 +400,7 @@ const ObsDetails = ( ): Node => {
           ref={bottomSheetModalRef}
           index={0}
           enableOverDrag={false}
-          enablePanDownToClose={true}
+          enablePanDownToClose
           snapPoints={[snapPoint]}
           backdropComponent={renderBackdrop}
           handleComponent={renderHandle}
@@ -374,17 +409,18 @@ const ObsDetails = ( ): Node => {
           <View
             style={viewStyles.commentInputContainer}
             onLayout={( {
-                          nativeEvent: {
-                            layout: { height }
-                          }
-                        } ) => {
-              setSnapPoint( height + ( Platform.OS === "android" ? 20 : 40 ) );
+              nativeEvent: {
+                layout: { height }
+              }
+            } ) => {
+              setSnapPoint( height + 20 );
             }}
           >
             {renderBottomSheetTextView()}
             <TouchableOpacity
               style={viewStyles.sendComment}
-              onPress={() => submitComment(  )}>
+              onPress={() => submitComment( )}
+            >
               <Icon name="send" size={35} color={colors.inatGreen} />
             </TouchableOpacity>
           </View>

@@ -1,4 +1,4 @@
-const inatLicenses = [
+export default [
   {
     value: "CC0",
     title: "No Copyright (CC0)"
@@ -32,7 +32,3 @@ const inatLicenses = [
     title: "No license (all rights reserved)"
   }
 ];
-
-export {
-  inatLicenses
-};

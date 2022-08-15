@@ -1,15 +1,15 @@
 // @flow
 
+import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import type { Node } from "react";
 
-import InputField from "../SharedComponents/InputField";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
-import Map from "../SharedComponents/Map";
+import useLocationName from "../../sharedHooks/useLocationName";
 import { viewStyles } from "../../styles/obsEdit/locationPicker";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import useLocationName from "../../sharedHooks/useLocationName";
+import InputField from "../SharedComponents/InputField";
+import Map from "../SharedComponents/Map";
+import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import useCoords from "./hooks/useCoords";
 
 type Props = {
@@ -44,7 +44,7 @@ const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node 
     }
   }, [newCoords, region, searchQuery] );
 
-  const updateCoords = ( newMapRegion ) => {
+  const updateCoords = newMapRegion => {
     setSearchQuery( "" );
     setRegion( newMapRegion );
   };

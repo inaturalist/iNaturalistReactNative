@@ -1,21 +1,21 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
-import { Image, Dimensions } from "react-native";
-import type { Node } from "react";
-import { Appbar, Button } from "react-native-paper";
-import { useTranslation } from "react-i18next";
 import { HeaderBackButton } from "@react-navigation/elements";
+import type { Node } from "react";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Dimensions, Image, View } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
+import { Appbar, Button } from "react-native-paper";
 
-import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
-import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 import Photo from "../../models/Photo";
+import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
+import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
+import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
-const { width, height } = Dimensions.get( "screen" );
-const selectedImageHeight = height - 350;
+const { width } = Dimensions.get( "screen" );
+// $FlowIgnore
+const selectedImageHeight = imageStyles.selectedPhoto.height;
 
 type Props = {
   photoUris: Array<string>,
@@ -24,14 +24,16 @@ type Props = {
   hideModal: Function
 }
 
-const MediaViewer = ( { photoUris, setPhotoUris, initialPhotoSelected, hideModal }: Props ): Node => {
+const MediaViewer = ( {
+  photoUris, setPhotoUris, initialPhotoSelected, hideModal
+}: Props ): Node => {
   const { t } = useTranslation( );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( initialPhotoSelected );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
 
   const numOfPhotos = photoUris.length;
 
-  const handlePhotoSelection = ( index ) => setSelectedPhotoIndex( index );
+  const handlePhotoSelection = index => setSelectedPhotoIndex( index );
 
   const showDialog = ( ) => setDeleteDialogVisible( true );
   const hideDialog = ( ) => setDeleteDialogVisible( false );
@@ -48,7 +50,7 @@ const MediaViewer = ( { photoUris, setPhotoUris, initialPhotoSelected, hideModal
   }, [numOfPhotos, selectedPhotoIndex, hideModal] );
 
   return (
-    <ViewNoFooter style={viewStyles.container}>
+    <View style={viewStyles.container}>
       <Appbar.Header style={viewStyles.container}>
         <Appbar.Content title={t( "X-Photos", { photoCount: numOfPhotos } )} />
       </Appbar.Header>
@@ -84,7 +86,7 @@ const MediaViewer = ( { photoUris, setPhotoUris, initialPhotoSelected, hideModal
       >
         {t( "Remove-Photo" )}
       </Button>
-    </ViewNoFooter>
+    </View>
   );
 };
 

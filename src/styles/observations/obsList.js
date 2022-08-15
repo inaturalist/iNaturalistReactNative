@@ -1,9 +1,9 @@
 // @flow strict-local
 
 import { StyleSheet } from "react-native";
+import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 
-import type { ViewStyleProp, TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-import { colors } from "../global";
+import colors from "../colors";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   toggleViewRow: {
@@ -36,7 +36,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   grayButton: {
     borderRadius: 40,
-    marginTop: 17
+    marginTop: 17,
+    minHeight: 48,
+    justifyContent: "center"
   }
 } );
 
@@ -53,6 +55,6 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
 } );
 
 export {
-  viewStyles,
-  textStyles
+  textStyles,
+  viewStyles
 };

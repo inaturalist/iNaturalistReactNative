@@ -1,16 +1,16 @@
 // @flow
 
-import React, { useContext } from "react";
-import { Text } from "react-native";
 import type { Node } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
+import { Text } from "react-native";
 
-import { textStyles } from "../../styles/obsEdit/obsEdit";
 // import LocationPicker from "./LocationPicker";
 import { ObsEditContext } from "../../providers/contexts";
-import DatePicker from "./DatePicker";
 import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
+import { textStyles } from "../../styles/obsEdit/obsEdit";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import DatePicker from "./DatePicker";
 
 type Props = {
   handleSelection: Function,
@@ -58,7 +58,7 @@ const EvidenceSection = ( {
   //   setObservations( updatedObs );
   // };
 
-  const handleDatePicked = ( selectedDate ) => {
+  const handleDatePicked = selectedDate => {
     if ( selectedDate ) {
       const dateString = createObservedOnStringForUpload( selectedDate );
       updateObservedOn( dateString );
@@ -95,7 +95,10 @@ const EvidenceSection = ( {
         photoUris={photoUris}
         setSelectedPhotoIndex={handleSelection}
       />
-      {/* TODO: bring back the location picker when it works on Android and allows navigation back */}
+      {/*
+        TODO: bring back the location picker when it works on Android and
+        allows navigation back
+      */}
       {/* renderLocationPickerModal( ) */}
       {/*
         <Pressable

@@ -6,5 +6,4 @@ const checkCamelAndSnakeCase = ( object: Object, camelCaseKey: string ): ?string
   return object[camelCaseKey] || object[snakeCaseKey];
 };
 
-
 export default checkCamelAndSnakeCase;

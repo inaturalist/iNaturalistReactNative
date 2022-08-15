@@ -1,10 +1,10 @@
+import { NavigationContainer } from "@react-navigation/native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 import { Linking } from "react-native";
-import { render, fireEvent } from "@testing-library/react-native";
-import { NavigationContainer } from "@react-navigation/native";
 
-import factory from "../../../factory";
 import TaxonDetails from "../../../../src/components/TaxonDetails/TaxonDetails";
+import factory from "../../../factory";
 
 const testTaxon = factory( "RemoteTaxon" );
 
@@ -12,17 +12,13 @@ const testTaxon = factory( "RemoteTaxon" );
 // https://stackoverflow.com/questions/60270013/how-to-mock-react-custom-hook-returned-value
 const mockExpected = testTaxon;
 jest.mock( "../../../../src/components/TaxonDetails/hooks/useTaxonDetails", ( ) => ( {
-  useTaxonDetails: ( ) => {
-    return {
-      taxon: mockExpected,
-      loading: false
-    };
-  },
-  useSimilarSpecies: ( ) => {
-    return {
-      similarSpecies: []
-    };
-  }
+  useTaxonDetails: ( ) => ( {
+    taxon: mockExpected,
+    loading: false
+  } ),
+  useSimilarSpecies: ( ) => ( {
+    similarSpecies: []
+  } )
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -47,7 +43,8 @@ test( "renders taxon details from API call", ( ) => {
   const { getByTestId, getByText } = renderTaxonDetails( );
 
   expect( getByTestId( `TaxonDetails.${testTaxon.id}` ) ).toBeTruthy( );
-  expect( getByTestId( "PhotoScroll.photo" ).props.source ).toStrictEqual( { "uri": testTaxon.taxonPhotos[0].photo.url } );
+  expect( getByTestId( "PhotoScroll.photo" ).props.source )
+    .toStrictEqual( { uri: testTaxon.taxonPhotos[0].photo.url } );
   expect( getByText( testTaxon.preferred_common_name ) ).toBeTruthy( );
   expect( getByText( testTaxon.wikipedia_summary ) ).toBeTruthy( );
 } );
@@ -63,7 +60,6 @@ test.todo( "should not have accessibility errors" );
 //   );
 //   expect( taxonDetails ).toBeAccessible( );
 // } );
-
 
 test( "navigates to Wikipedia on button press", ( ) => {
   const { getByTestId } = renderTaxonDetails( );

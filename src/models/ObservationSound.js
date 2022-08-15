@@ -1,8 +1,9 @@
-import { Platform } from "react-native";
 import { FileUpload } from "inaturalistjs";
+import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
 import Realm from "realm";
+
 class ObservationSound extends Realm.Object {
   static async moveFromCacheToDocumentDirectory( soundUUID ) {
     const fileExt = Platform.OS === "android" ? "mp4" : "m4a";

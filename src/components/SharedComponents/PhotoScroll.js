@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { Text, Image, Pressable } from "react-native";
+import { Image, Pressable, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 import { imageStyles, textStyles } from "../../styles/sharedComponents/photoScroll";
@@ -15,11 +15,17 @@ const PhotoScroll = ( { photos }: Props ): React.Node => {
 
   const renderImage = ( { item: photo } ) => {
     // check for local file path for unuploaded photos
-    let photoUrl = ( photo && photo.url ) ? photo.url.replace( "square", "large" ) : photo.localFilePath;
+    const photoUrl = ( photo && photo.url )
+      ? photo.url.replace( "square", "large" )
+      : photo.localFilePath;
 
     return (
       <>
-        <Image testID="PhotoScroll.photo" source={{ uri: photoUrl }} style={imageStyles.fullWidthImage} />
+        <Image
+          testID="PhotoScroll.photo"
+          source={{ uri: photoUrl }}
+          style={imageStyles.fullWidthImage}
+        />
         <Pressable accessibilityRole="button">
           <Text style={textStyles.license}>{photo.licenseCode || photo.license_code}</Text>
         </Pressable>

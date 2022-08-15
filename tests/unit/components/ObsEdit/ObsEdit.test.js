@@ -1,11 +1,12 @@
-import React from "react";
-import { render } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { render } from "@testing-library/react-native";
+import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import factory from "../../../factory";
 import ObsEdit from "../../../../src/components/ObsEdit/ObsEdit";
-import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import { ObsEditContext } from "../../../../src/providers/contexts";
+import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
+import factory from "../../../factory";
 
 // this resolves a test failure with the Animated library:
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.
@@ -20,16 +21,15 @@ jest.mock( "react-native-paper", () => {
   const RealModule = jest.requireActual( "react-native-paper" );
   const MockedModule = {
     ...RealModule,
-    Portal: ( {children} ) => <>{children}</>
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    Portal: ( { children } ) => <>{children}</>
   };
   return MockedModule;
 } );
 
-jest.mock( "../../../../src/sharedHooks/useLocationName" , ( ) => ( {
+jest.mock( "../../../../src/sharedHooks/useLocationName", ( ) => ( {
   __esModule: true,
-  default: ( ) => {
-    return mockLocationName;
-  }
+  default: ( ) => mockLocationName
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -43,7 +43,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
   __esModule: true,
-  useLoggedIn: ( ) => true
+  default: ( ) => true
 } ) );
 
 const mockCurrentUser = factory( "LocalUser" );
@@ -55,22 +55,25 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
-const mockObsEditProviderWithObs = obs =>
-  ObsEditProvider.mockImplementation( ( { children }: Props ): Node => (
-    <ObsEditContext.Provider value={{
-      observations: obs,
-      currentObsIndex: 0
-    }}>
-      {children}
-    </ObsEditContext.Provider>
-  ) );
+const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  <ObsEditContext.Provider value={{
+    observations: obs,
+    currentObsIndex: 0
+  }}
+  >
+    {children}
+  </ObsEditContext.Provider>
+) );
 
 const renderObsEdit = ( ) => render(
-  <NavigationContainer>
-    <ObsEditProvider>
-      <ObsEdit />
-    </ObsEditProvider>
-  </NavigationContainer>
+  <SafeAreaProvider>
+    <NavigationContainer>
+      <ObsEditProvider>
+        <ObsEdit />
+      </ObsEditProvider>
+    </NavigationContainer>
+  </SafeAreaProvider>
 );
 
 test( "renders observation photo from photo gallery", ( ) => {

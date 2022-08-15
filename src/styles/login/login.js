@@ -1,12 +1,12 @@
 // @flow strict-local
 
 import { StyleSheet } from "react-native";
-import { colors } from "../global";
-
 import type {
-  ViewStyleProp,
-  TextStyleProp, ImageStyleProp
+  ImageStyleProp,
+  TextStyleProp, ViewStyleProp
 } from "react-native/Libraries/StyleSheet/StyleSheet";
+
+import colors from "../colors";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   container: {
@@ -82,5 +82,12 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 
 } );
 
+const closeButton: { [string]: ViewStyleProp } = StyleSheet.create( {
+  close: {
+    alignSelf: "flex-end"
+  }
+} );
 
-export { viewStyles, textStyles, imageStyles };
+export {
+  closeButton, imageStyles, textStyles, viewStyles
+};

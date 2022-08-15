@@ -1,9 +1,13 @@
 // @flow strict-local
 
-import { StyleSheet, Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+import type {
+  ImageStyleProp,
+  TextStyleProp,
+  ViewStyleProp
+} from "react-native/Libraries/StyleSheet/StyleSheet";
 
-import type { ViewStyleProp, TextStyleProp, ImageStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-import { colors } from "../global";
+import colors from "../colors";
 
 const { width } = Dimensions.get( "screen" );
 
@@ -19,14 +23,16 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     height: 75,
     borderRadius: 10,
     backgroundColor: colors.black,
-    marginHorizontal: 20
+    marginHorizontal: 10
   },
   obsDetailsColumn: {
-    width: 200
+    width: 200,
+    justifyContent: "center"
   },
   photoContainer: {
     backgroundColor: colors.black,
-    height: 200
+    height: 200,
+    position: "relative"
   },
   row: {
     flexDirection: "row",
@@ -61,9 +67,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   button: {
     width: width / 2
   },
-  pressableButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20
+  favButton: {
+    position: "absolute",
+    top: 5,
+    right: 0
   },
   userIcon: {
     flexDirection: "row",
@@ -72,17 +79,39 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     marginHorizontal: 13,
     marginVertical: 5
   },
+  rightSide: {
+    width: 10,
+    height: 10,
+    marginLeft: "auto"
+  },
+  activityItem: {
+    paddingRight: 0
+  },
   labels: {
+    display: "flex",
     flexDirection: "row",
     flexWrap: "nowrap",
     alignItems: "center",
-    position: "absolute",
-    right: 0
+    justifyContent: "flex-end",
+    marginLeft: "auto",
+    width: 100,
+    paddingRight: 1
   },
   kebabMenuWrapper: {
-    margin: 15,
+    marginLeft: 15,
     flex: 1,
-    backgroundColor: "white"
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 30,
+    right: 0
+  },
+  kebabMenuIconContainer: {
+    width: 30
+  },
+  kebabMenuIcon: {
+    width: 30,
+    paddingRight: 30
   },
   kebabMenuPlacement: {
     top: 0,
@@ -92,6 +121,43 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   textPadding: {
     paddingRight: 30
+  },
+
+  rowWithIcon: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  tabContainer: {
+    width: "50%",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column"
+  },
+  tabContainerActive: {
+    borderTopColor: colors.inatGreen,
+    borderTopWidth: 5,
+    borderTopStartRadius: 5,
+    borderTopEndRadius: 5,
+    width: "100%"
+  },
+  locationContainer: {
+    paddingLeft: 10
+  },
+  labelsContainer: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end"
+  },
+  dataTabSub: {
+    marginLeft: 30,
+    marginVertical: 0
+  },
+  dataTabView: {
+    marginVertical: 10,
+    marginLeft: 10
   },
   bottomModal: {
     padding: 0,
@@ -118,7 +184,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     marginBottom: 20
   },
   commentInputText: {
-    paddingTop: 8,
+    paddingTop: 0,
     paddingBottom: 8,
     height: 80
   },
@@ -145,33 +211,79 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     alignItems: "center",
     justifyContent: "center"
   }
-
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  locationText: {
-    marginLeft: 20
+  commentTextInput: {
+    color: colors.black
   },
-  greenButtonText: {
-    color: colors.inatGreen,
-    fontSize: 15,
-    marginHorizontal: 40,
-    textDecorationLine: "underline"
+  idCommentCount: {
+    marginLeft: 5
+  },
+  locationText: {
+    marginLeft: 5,
+    color: colors.logInGray
+  },
+  tabText: {
+    color: colors.gray,
+    fontSize: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontWeight: "bold"
+  },
+  tabTextActive: {
+    color: colors.inatGreen
   },
   commonNameText: {
-    fontSize: 15
+    fontSize: 18
   },
   scientificNameText: {
-    color: colors.gray
+    color: colors.logInGray,
+    fontStyle: "italic"
   },
   whiteText: {
     color: colors.white
   },
   dataTabText: {
-    marginVertical: 10
+    marginVertical: 10,
+    marginLeft: 10,
+    color: colors.logInGray
+  },
+  favText: {
+    fontSize: 25
+  },
+  dataTabDateHeader: {
+    marginVertical: 10,
+    marginBottom: 0
+  },
+  dataTabSubText: {
+    marginLeft: 30,
+    marginVertical: 0
+  },
+  dataTabHeader: {
+    marginVertical: 10,
+    fontWeight: "bold",
+    fontSize: 15,
+    marginLeft: 10
   },
   labels: {
-    marginRight: 5
+    marginRight: 5,
+    fontSize: 12
+  },
+  observedOn: {
+    color: colors.logInGray,
+    fontSize: 12
+  },
+  username: {
+    color: colors.logInGray,
+    fontSize: 12
+  },
+  activityCategory: {
+    color: colors.inatGreen,
+    fontSize: 12
+  },
+  activityItemBody: {
+    color: colors.logInGray
   }
 } );
 
@@ -192,12 +304,23 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
     width: 47,
     height: 47,
     borderRadius: 10,
-    marginRight: 18
+    marginRight: 10
+  },
+  smallGreenIcon: {
+    width: 20,
+    height: 20,
+    tintColor: colors.inatGreen,
+    marginRight: 5
+  },
+  smallIcon: {
+    width: 15,
+    height: 15,
+    tintColor: colors.logInGray
   }
 } );
 
 export {
-  viewStyles,
+  imageStyles,
   textStyles,
-  imageStyles
+  viewStyles
 };

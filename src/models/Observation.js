@@ -1,18 +1,26 @@
+import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
 import Realm from "realm";
 
+// eslint-disable-next-line import/no-cycle
+import {
+  getJWTToken, getUserId, getUsername
+} from "../components/LoginSignUp/AuthenticationService";
+import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
+import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
+// eslint-disable-next-line import/no-cycle
 import Comment from "./Comment";
+// eslint-disable-next-line import/no-cycle
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
 import Taxon from "./Taxon";
+// eslint-disable-next-line import/no-cycle
 import User from "./User";
-import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
-import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
-import { getUserId } from "../components/LoginSignUp/AuthenticationService";
 
-// noting that methods like .toJSON( ) are only accessible when the model class is extended with Realm.Object
-// per this issue: https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
+// noting that methods like .toJSON( ) are only accessible when the model
+// class is extended with Realm.Object per this issue:
+// https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
 class Observation extends Realm.Object {
   static FIELDS = {
     captive: true,
@@ -35,6 +43,8 @@ class Observation extends Realm.Object {
   }
 
   static async new( obs ) {
+    // TODO remove this from the model. IMO this kind of system interaction
+    // should happen in the component
     const latLng = await fetchUserLocation( );
 
     return {
@@ -50,7 +60,7 @@ class Observation extends Realm.Object {
     };
   }
 
-  static async createObsWithPhotos( observationPhotos, observedOn ) {
+  static async createObsWithPhotos( observationPhotos ) {
     const observation = await Observation.new( );
     observation.observationPhotos = observationPhotos;
     return observation;
@@ -63,26 +73,26 @@ class Observation extends Realm.Object {
     return observation;
   }
 
-  static async formatObsPhotos( photos ) {
-    return await Promise.all( photos.map( async photo => {
+  static async formatObsPhotos( photos, realm ) {
+    return Promise.all( photos.map( async photo => {
       // photo.image?.uri is for gallery photos; photo is for normal camera
       const uri = photo.image?.uri || photo;
-      return await ObservationPhoto.new( uri );
+      return ObservationPhoto.new( uri, realm );
     } ) );
   }
 
-  static async createMutipleObsFromGalleryPhotos( obs ) {
+  static async createMutipleObsFromGalleryPhotos( obs, realm ) {
     return Promise.all( obs.map( async ( { photos } ) => {
       // take the observed_on_string time from the first photo in an observation
       const observedOn = formatDateAndTime( photos[0].timestamp );
-      const obsPhotos = await Observation.formatObsPhotos( photos );
-      return await Observation.createObsWithPhotos( obsPhotos, observedOn );
+      const obsPhotos = await Observation.formatObsPhotos( photos, realm );
+      return Observation.createObsWithPhotos( obsPhotos, observedOn );
     } ) );
   }
 
   static mimicRealmMappedPropertiesSchema( obs ) {
     const createLinkedObjects = ( list, createFunction ) => {
-      if ( list.length === 0 ) { return; }
+      if ( list.length === 0 ) { return list; }
       return list.map( item => {
         if ( createFunction === Identification ) {
           // this one requires special treatment for appending taxon objects
@@ -115,17 +125,23 @@ class Observation extends Realm.Object {
   }
 
   static createLinkedObjects = ( list, createFunction, realm ) => {
-    if ( list.length === 0 ) { return; }
-    return list.map( item => {
-      return createFunction.mapApiToRealm( item, realm );
-    } );
+    if ( list.length === 0 ) { return list; }
+    return list.map( item => createFunction.mapApiToRealm( item, realm ) );
   };
 
   static createObservationForRealm( obs, realm ) {
     const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
-    const observationPhotos = Observation.createLinkedObjects( obs.observation_photos, ObservationPhoto, realm );
+    const observationPhotos = Observation.createLinkedObjects(
+      obs.observation_photos,
+      ObservationPhoto,
+      realm
+    );
     const comments = Observation.createLinkedObjects( obs.comments, Comment, realm );
-    const identifications = Observation.createLinkedObjects( obs.identifications, Identification, realm );
+    const identifications = Observation.createLinkedObjects(
+      obs.identifications,
+      Identification,
+      realm
+    );
     const user = User.mapApiToRealm( obs.user );
 
     const newObs = {
@@ -165,16 +181,14 @@ class Observation extends Realm.Object {
       timestamps._synced_at = null;
     }
 
-    const addTimestampsToEvidence = ( evidence ) => {
+    const addTimestampsToEvidence = evidence => {
       // right now there isn't a way to edit photos or sounds via ObsEdit
       // so we only need to add timestamps on the first time a local observation is saved
-      if ( !existingObservation ) {
-        evidence && evidence.map( record => {
-          return {
-            ...timestamps,
-            ...record
-          };
-        } );
+      if ( !existingObservation && evidence ) {
+        return evidence.map( record => ( {
+          ...timestamps,
+          ...record
+        } ) );
       }
       return evidence;
     };
@@ -219,22 +233,106 @@ class Observation extends Realm.Object {
 
   static projectUri = obs => {
     const photo = obs.observation_photos[0];
-    if ( !photo ) { return; }
-    if ( !photo.photo ) { return; }
-    if ( !photo.photo.url ) { return; }
+    if ( !photo ) { return null; }
+    if ( !photo.photo ) { return null; }
+    if ( !photo.photo.url ) { return null; }
 
     return { uri: obs.observation_photos[0].photo.url };
   }
 
   static mediumUri = obs => {
     const photo = obs.observation_photos[0];
-    if ( !photo ) { return; }
-    if ( !photo.photo ) { return; }
-    if ( !photo.photo.url ) { return; }
+    if ( !photo ) { return null; }
+    if ( !photo.photo ) { return null; }
+    if ( !photo.photo.url ) { return null; }
 
     const mediumUri = obs.observation_photos[0].photo.url.replace( "square", "medium" );
 
     return { uri: mediumUri };
+  }
+
+  static fetchObservationUpdates = async realm => {
+    const apiToken = await getJWTToken( false );
+    if ( !apiToken ) { return null; }
+
+    const params = {
+      observations_by: "owner",
+      per_page: 200,
+      fields: "viewed,resource_uuid"
+    };
+
+    const options = { api_token: apiToken };
+    try {
+      const { results } = await inatjs.observations.updates( params, options );
+      const unviewed = results.filter( result => result.viewed === false ).map( r => r );
+      unviewed.forEach( update => {
+        const existingObs = realm?.objectForPrimaryKey( "Observation", update.resource_uuid );
+        if ( !existingObs ) { return; }
+        realm?.write( ( ) => {
+          existingObs.viewed = update.viewed;
+        } );
+      } );
+      return unviewed;
+    } catch ( e ) {
+      console.log( "Couldn't fetch observation updates:", JSON.stringify( e ) );
+      return null;
+    }
+  }
+
+  static markObservationUpdatesViewed = async id => {
+    const apiToken = await getJWTToken( false );
+    if ( !apiToken ) { return null; }
+
+    const params = { id };
+    const options = { api_token: apiToken };
+    try {
+      return await inatjs.observations.viewedUpdates( params, options );
+    } catch ( e ) {
+      console.log( `Couldn't mark observation ${id} viewed:`, JSON.stringify( e ) );
+      return null;
+    }
+  }
+
+  static fetchRemoteObservations = async page => {
+    const username = await getUsername( );
+    if ( !username ) { return null; }
+
+    const params = {
+      user_id: username,
+      page,
+      per_page: 6,
+      fields: Observation.FIELDS
+    };
+
+    try {
+      const { results } = await inatjs.observations.search( params );
+      return results;
+    } catch ( e ) {
+      console.log( "Couldn't fetch observations:", JSON.stringify( e.response ) );
+      return null;
+    }
+  }
+
+  static updateLocalObservationsFromRemote = ( realm, results ) => {
+    if ( results.length === 0 ) { return; }
+    results.forEach( obs => {
+      const existingObs = realm?.objectForPrimaryKey( "Observation", obs.uuid );
+
+      if ( existingObs ) {
+        // if observation has been updated locally since the last sync, do not overwrite
+        // with observation attributes from server
+        if ( existingObs._updated_at >= existingObs._synced_at ) {
+          return;
+        }
+      }
+      const newObs = Observation.createObservationForRealm( obs, realm );
+      realm?.write( ( ) => {
+        // To upsert an object, call Realm.create() with the update mode set
+        // to modified. The operation either inserts a new object with the given primary key
+        // or updates an existing object that already has that primary key.
+        realm?.create( "Observation", newObs, "modified" );
+      } );
+    } );
   }
 
   static schema = {
@@ -268,14 +366,11 @@ class Observation extends Realm.Object {
       positional_accuracy: "double?",
       quality_grade: { type: "string?", mapTo: "qualityGrade" },
       taxon: "Taxon?",
-      // datetime when the observer observed the organism; user-editable, but only by changing observed_on_string
+      // datetime when the observer observed the organism; user-editable, but
+      // only by changing observed_on_string
       time_observed_at: { type: "string?", mapTo: "timeObservedAt" },
-      user: "User?"
-
-      // need project ids, but skipping this for now
-      // to get rest of upload working
-      // project_ids
-      // note that taxon_id is nested under Taxon
+      user: "User?",
+      viewed: "bool?"
     }
   }
 }

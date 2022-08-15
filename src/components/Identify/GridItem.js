@@ -1,11 +1,17 @@
 // @flow
 
-import React, { useState } from "react";
-import { Pressable, Text, Image, View, ActivityIndicator } from "react-native";
 import type { Node } from "react";
+import React, { useState } from "react";
+import {
+  ActivityIndicator, Image, Pressable, Text, View
+} from "react-native";
 
 import Observation from "../../models/Observation";
-import { textStyles, imageStyles, viewStyles } from "../../styles/sharedComponents/observationViews/gridItem";
+import {
+  imageStyles,
+  textStyles,
+  viewStyles
+} from "../../styles/sharedComponents/observationViews/gridItem";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import createIdentification from "./helpers/createIdentification";
 
@@ -16,7 +22,9 @@ type Props = {
   setReviewedIds: Function
 }
 
-const GridItem = ( { item, handlePress, reviewedIds, setReviewedIds }: Props ): Node => {
+const GridItem = ( {
+  item, handlePress, reviewedIds, setReviewedIds
+}: Props ): Node => {
   const [showLoadingWheel, setShowLoadingWheel] = useState( false );
   const commonName = item.taxon && item.taxon.preferred_common_name;
   const name = item.taxon ? item.taxon.name : "unknown";
@@ -31,7 +39,10 @@ const GridItem = ( { item, handlePress, reviewedIds, setReviewedIds }: Props ): 
 
   const agreeWithObservation = async ( ) => {
     setShowLoadingWheel( true );
-    const results = await createIdentification( { observation_id: item.uuid, taxon_id: item.taxon.id } );
+    const results = await createIdentification( {
+      observation_id: item.uuid,
+      taxon_id: item.taxon.id
+    } );
     if ( results === 1 ) {
       const ids = Array.from( reviewedIds );
       ids.push( item.id );

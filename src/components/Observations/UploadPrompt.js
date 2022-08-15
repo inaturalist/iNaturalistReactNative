@@ -1,27 +1,23 @@
 // @flow
 
+import { t } from "i18next";
+import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
-import type { Node } from "react";
 import { Button } from "react-native-paper";
-import { t } from "i18next";
-import uploadObservation from "../../providers/uploadHelpers/uploadObservation";
-import Observation from "../../models/Observation";
 
-import { viewStyles, textStyles } from "../../styles/observations/obsList";
-import { colors } from "../../styles/global";
+import colors from "../../styles/colors";
+import { textStyles, viewStyles } from "../../styles/observations/obsList";
 
 type Props = {
-  obsToUpload: Array<Object>
+  uploadStatus: Object,
+  updateUploadStatus: Function,
+  uploadObservations: Function
 }
 
-const UploadPrompt = ( { obsToUpload }: Props ): Node => {
-  const numObsToUpload = obsToUpload?.length;
-
-  const uploadObservations = ( ) => obsToUpload.forEach( obs => {
-    const mappedObs = Observation.mapObservationForUpload( obs );
-    uploadObservation( mappedObs, obs );
-  } );
+const UploadPrompt = ( { uploadObservations, uploadStatus, updateUploadStatus }: Props ): Node => {
+  const { unuploadedObs } = uploadStatus;
+  const numOfUnuploadedObs = unuploadedObs?.length;
 
   return (
     <>
@@ -31,9 +27,12 @@ const UploadPrompt = ( { obsToUpload }: Props ): Node => {
         textColor={colors.white}
         style={viewStyles.grayButton}
         labelStyle={textStyles.grayButtonText}
-        onPress={uploadObservations}
+        onPress={( ) => {
+          updateUploadStatus( );
+          uploadObservations( );
+        }}
       >
-        {t( "Upload-X-Observations", { count: numObsToUpload } )}
+        {t( "Upload-X-Observations", { count: numOfUnuploadedObs } )}
       </Button>
     </>
   );

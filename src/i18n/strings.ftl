@@ -49,6 +49,11 @@ Birds = Birds
 
 Blocked-Users = Blocked Users
 
+# Quality grade option: Casual (shortened for My Observations view)
+C = C
+
+Camera-Roll = Camera Roll
+
 Cancel = Cancel
 
 Captive-Cultivated = Captive/Cultivated
@@ -86,6 +91,8 @@ Date-uploaded-colon = Date uploaded:
 
 Default-Search-Place = Default Search Place
 
+Delete = Delete
+
 Delete-comment = Delete comment
 
 DELETE-X-OBSERVATIONS = DELETE {$count ->
@@ -105,6 +112,8 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 Email = email
 
 Email-Notifications = Email Notifications
+
+Error-Couldnt-Complete-Upload = Error: Couldn't Complete Upload
 
 Evidence = Evidence
 
@@ -153,6 +162,12 @@ IDs = ID's
 IDENTIFICATION = IDENTIFICATION
 
 Identification = Identification
+
+# Shows the number of photos a user selected from the camera roll for upload
+Import-X-photos = Import {$count ->
+    [one] 1 photo
+    *[other] {$count} photos
+}
 
 iNaturalist-Activity-Notifications = iNaturalist Activity Notifications
 
@@ -251,6 +266,11 @@ New-Observation = New Observation
 
 Next = Next
 
+# Quality grade option: Needs ID (shortened for My Observations view)
+NI = NI
+
+No = No
+
 # When the user tries to reset password but enters a non-existent email
 No-account-found = No account found with that email
 
@@ -274,7 +294,7 @@ Observations = Observations
 Open = Open
 
 # Picker prompt on observation edit
-Organism-is-wild = Organism is wild
+Organism-is-wild = Organism is wild:
 
 Other-Data = Other Data
 
@@ -426,6 +446,9 @@ Reviewed-only = Reviewed only
 
 Revoke = Revoke
 
+# Quality grade option: Research Grade (shortened for My Observations view)
+RG = RG
+
 Search-for-a-location = Search for a location
 
 Search-for-a-project = Search for a project
@@ -514,12 +537,6 @@ Upload-X-Observations = Upload {$count ->
     *[other] {$count} Observations
 }
 
-# Shows the number of photos a user selected from the camera roll for upload
-Upload-X-photos = Upload {$count ->
-    [one] 1 photo
-    *[other] {$count} photos
-}
-
 # Shows the number of observations a user is currently uploading on my observations page
 Uploading-X-Observations = Uploading {$count ->
     [one] 1 Observation
@@ -567,11 +584,44 @@ X-unuploaded-observations = {$observationCount ->
     *[other] {$observationCount} unuploaded observations
 }
 
+Yes = Yes
+
+Yes-delete-observation = Yes, delete observation
+
 Yes-delete-photo = Yes, delete photo
 
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.
 You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
+
+# Identification category
+Category-leading = Leading
+# Identification category
+Category-improving = Improving
+# Identification category
+Category-maverick = Maverick
+# Identification category
+Category-supporting = Supporting
+
+# Used when displaying a relative time - in this case, X minutes ago (e.g. 3m = 3 minutes ago)
+Date-minutes = {$count}m
+# Used when displaying a relative time - in this case, X hours ago (e.g. 3h = 3 hours ago)
+Date-hours = {$count}h
+# Used when displaying a relative time - in this case, X days ago (e.g. 3d = 3 days ago)
+Date-days = {$count}d
+# Used when displaying a relative time - in this case, X weeks ago (e.g. 3w = 3 weeks ago)
+Date-weeks = {$count}w
+# Used when displaying a relative time - in this case, shows an absolute date (e.g. 12/31/22)
+Date-short-format = MM/dd/yy
+# Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3
+Date-this-year = MMM d
+
+# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade
+Quality-Grade-Badge-research_grade = RG
+# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID
+Quality-Grade-Badge-needs_id = Needs ID
+# Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
+Quality-Grade-Badge-casual = Casual
 
 Add-Comment = Add Comment
 Suggest-an-ID = Suggest an ID

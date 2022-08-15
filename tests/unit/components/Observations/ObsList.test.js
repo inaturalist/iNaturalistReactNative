@@ -1,28 +1,38 @@
-import React from "react";
-import { render, within, fireEvent } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import factory from "../../../factory";
+import { fireEvent, render, within } from "@testing-library/react-native";
+import React from "react";
+
 import ObsList from "../../../../src/components/Observations/ObsList";
+import factory from "../../../factory";
 
 const mockObservations = [
-  factory( "LocalObservation", { comments: [
-    factory( "LocalComment" ),
-    factory( "LocalComment" ),
-    factory( "LocalComment" )
-  ] } ),
+  factory( "LocalObservation", {
+    comments: [
+      factory( "LocalComment" ),
+      factory( "LocalComment" ),
+      factory( "LocalComment" )
+    ]
+  } ),
   factory( "LocalObservation" )
 ];
 
 // Mock the hooks we use on ObsList since we're not trying to test them here
-jest.mock( "../../../../src/components/Observations/hooks/useObservations", ( ) => ( {
+jest.mock(
+  "../../../../src/components/Observations/hooks/useSubscribeToLocalObservations",
+  ( ) => ( {
+    __esModule: true,
+    default: ( ) => mockObservations
+  } )
+);
+
+jest.mock( "../../../../src/components/Observations/hooks/useRemoteObservations", ( ) => ( {
   __esModule: true,
-  default: ( ) => {
-    return {
-      observationList: mockObservations,
-      loading: false,
-      obsToUpload: mockObservations
-    };
-  }
+  default: ( ) => ( {
+    loading: false,
+    uploadStatus: {
+      unuploadedObs: mockObservations
+    }
+  } )
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {

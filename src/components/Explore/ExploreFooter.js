@@ -1,10 +1,10 @@
 // @flow
 
-import React from "react";
-import { View } from "react-native";
-import type { Node } from "react";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
+import React from "react";
+import { View } from "react-native";
 
 import { ExploreContext } from "../../providers/contexts";
 import { viewStyles } from "../../styles/explore/exploreFilters";
@@ -26,7 +26,7 @@ const ExploreFooter = ( ): Node => {
 
   return (
     <View style={viewStyles.footer}>
-      <HeaderBackButton onPress={clearFiltersAndNavigate} style={viewStyles.element}/>
+      <HeaderBackButton onPress={clearFiltersAndNavigate} style={viewStyles.element} />
       <RoundGreenButton
         handlePress={applyFiltersAndNavigate}
         buttonText="Apply Filters"

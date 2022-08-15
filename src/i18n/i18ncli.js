@@ -1,6 +1,9 @@
+/* eslint no-console: 0 */
+
 const fluent = require( "fluent_conv" );
 const yargs = require( "yargs" );
 const fs = require( "fs" );
+
 const { readFile, writeFile } = fs.promises;
 const path = require( "path" );
 const util = require( "util" );
@@ -28,7 +31,7 @@ const jsonifyPath = async ( inPath, outPath, options = { } ) => {
   const ftl2js = util.promisify( fluent.ftl2js );
   const localizations = await ftl2js( ftlTxt.toString( ) );
   try {
-    await writeFile( outPath, JSON.stringify( localizations, null, 2 ) + "\n" );
+    await writeFile( outPath, `${JSON.stringify( localizations, null, 2 )}\n` );
   } catch ( writeFileErr ) {
     console.log( `Failed to write ${outPath} with error:` );
     console.log( writeFileErr );
@@ -57,16 +60,16 @@ const jsonifyLocalizations = async ( options = {} ) => {
     path.join( __dirname, "strings.ftl" ),
     path.join( __dirname, "l10n", "en.ftl" )
   );
-  for ( let locale of locales ) {
+  // For each locale, convert the .ftl files to .ftl.json files
+  await Promise.all( locales.map( async locale => {
     const inPath = path.join( __dirname, "l10n", `${locale}.ftl` );
     const outPath = path.join( __dirname, "l10n", `${locale}.ftl.json` );
-    // TODO use a pool and make this asynchronous
     if ( await jsonifyPath( inPath, outPath, options ) ) {
       converted.push( locale );
     } else {
       failed.push( locale );
     }
-  }
+  } ) );
   console.log( `Converted: ${converted.sort( ).join( ", " )}` );
   if ( failed.length > 0 ) {
     console.log( `Failed:    ${failed.sort( ).join( ", " )}` );
@@ -81,14 +84,18 @@ const writeLoadTranslations = async ( ) => {
   const out = fs.createWriteStream( outPath );
   out.write( "// AUTO-GENERATED. See i18ncli.js\n" );
   out.write( "export default locale => {\n" );
-  for ( let locale of locales ) {
-    out.write( `  if ( locale === "${locale}" ) { return require( "./l10n/${locale}.ftl.json" ); }\n` );
-  }
+  locales.forEach(
+    locale => out.write(
+      `  if ( locale === "${locale}" ) { return require( "./l10n/${locale}.ftl.json" ); }\n`
+    )
+  );
   out.write( "  return require( \"./l10n/en.ftl.json\" );\n" );
   out.write( "};\n" );
 };
 
-yargs.usage( "Usage: $0 <cmd> [args]" )
+// eslint-disable-next-line no-unused-expressions
+yargs
+  .usage( "Usage: $0 <cmd> [args]" )
   .command(
     "ftl2json",
     "Convert all existing Fluent localizations to Fluent JSON",

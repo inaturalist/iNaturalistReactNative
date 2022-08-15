@@ -1,37 +1,37 @@
 // @flow
 
-import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
+import * as React from "react";
+import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { signOut, getUserId } from "../components/LoginSignUp/AuthenticationService";
-import PlaceholderComponent from "../components/PlaceholderComponent";
-import MyObservationsStackNavigator from "./myObservationsStackNavigation";
-import ExploreStackNavigator from "./exploreStackNavigation";
-import Search from "../components/Search/Search";
-import Login from "../components/LoginSignUp/Login";
-import ProjectsStackNavigation from "./projectsStackNavigation";
-import CameraStackNavigation from "./cameraStackNavigation";
-import CustomDrawerContent from "../components/CustomDrawerContent";
-import IdentifyStackNavigation from "./identifyStackNavigation";
-import ObsEditProvider from "../providers/ObsEditProvider";
-import NetworkLogging from "../components/NetworkLogging";
-import NotificationsStackNavigation from "./notificationsStackNavigation";
 import About from "../components/About";
-import Mortal from "../components/SharedComponents/Mortal";
-import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
-import { colors } from "../styles/global";
-import { viewStyles } from "../styles/navigation/rootNavigation";
+import CustomDrawerContent from "../components/CustomDrawerContent";
+import { getUserId, signOut } from "../components/LoginSignUp/AuthenticationService";
+import Login from "../components/LoginSignUp/Login";
+import NetworkLogging from "../components/NetworkLogging";
+import PlaceholderComponent from "../components/PlaceholderComponent";
+import Search from "../components/Search/Search";
 import Settings from "../components/Settings/Settings";
+import Mortal from "../components/SharedComponents/Mortal";
+import ObsEditProvider from "../providers/ObsEditProvider";
+import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
+import colors from "../styles/colors";
+import { viewStyles } from "../styles/navigation/rootNavigation";
+import ExploreStackNavigator from "./exploreStackNavigation";
+import IdentifyStackNavigation from "./identifyStackNavigation";
+import NotificationsStackNavigation from "./notificationsStackNavigation";
+import ObservationsStackNavigation from "./observationsStackNavigation";
+import ProjectsStackNavigation from "./projectsStackNavigation";
 
 // this removes the default hamburger menu from header
-const screenOptions = { headerLeft: ( ) => <></> };
+const screenOptions = { headerLeft: ( ) => <View /> };
 const hideHeader = {
-  headerShown: false,
-  label: "my observations"
+  headerShown: false
 };
 
 // The login component should be not preserve its state or effects after the
@@ -53,6 +53,10 @@ const theme = {
     surface: colors.white
   }
 };
+
+const drawerRenderer = ( { state, navigation, descriptors } ) => (
+  <CustomDrawerContent state={state} navigation={navigation} descriptors={descriptors} />
+);
 
 const App = ( ): React.Node => {
   React.useEffect( ( ) => {
@@ -76,68 +80,63 @@ const App = ( ): React.Node => {
     checkForSignedInUser( );
   }, [] );
 
-  const drawerContent = ( props ) => <CustomDrawerContent {...props} />;
-
   return (
-    <PaperProvider theme={theme}>
-      <GestureHandlerRootView style={viewStyles.container}>
-        <NavigationContainer>
-          <PhotoGalleryProvider>
-            <ObsEditProvider>
-              <Drawer.Navigator
-                screenOptions={screenOptions}
-                name="Drawer"
-                drawerContent={drawerContent}
-              >
-                <Drawer.Screen
-                  name="my observations"
-                  component={MyObservationsStackNavigator}
-                  options={hideHeader}
-                />
-                <Drawer.Screen
-                  name="notifications"
-                  component={NotificationsStackNavigation}
-                  options={hideHeader}
-                />
-                <Drawer.Screen
-                  name="identify"
-                  component={IdentifyStackNavigation}
-                  options={hideHeader}
-                />
-                <Drawer.Screen name="search" component={Search} />
-                <Drawer.Screen
-                  name="projects"
-                  component={ProjectsStackNavigation}
-                  options={hideHeader}
-                />
-                <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
-                <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
-                <Drawer.Screen
-                  name="about"
-                  component={About}
-                />
-                <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
-                <Drawer.Screen name="login" component={MortalLogin} options={hideHeader}/>
-                <Drawer.Screen
-                  name="camera"
-                  component={CameraStackNavigation}
-                  options={hideHeader}
-                />
-                <Drawer.Screen
-                  name="explore stack"
-                  component={ExploreStackNavigator}
-                  options={hideHeader}
-                />
-                <Drawer.Screen
-                  name="network"
-                  component={NetworkLogging}
-                />
-              </Drawer.Navigator>
-            </ObsEditProvider>
-          </PhotoGalleryProvider>
-        </NavigationContainer>
-      </GestureHandlerRootView>
-    </PaperProvider>
+    <SafeAreaProvider>
+      <PaperProvider theme={theme}>
+        <GestureHandlerRootView style={viewStyles.container}>
+          <NavigationContainer>
+            <PhotoGalleryProvider>
+              <ObsEditProvider>
+                <Drawer.Navigator
+                  screenOptions={screenOptions}
+                  name="Drawer"
+                  drawerContent={drawerRenderer}
+                >
+                  <Drawer.Screen
+                    name="observations"
+                    component={ObservationsStackNavigation}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen
+                    name="notifications"
+                    component={NotificationsStackNavigation}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen
+                    name="identify"
+                    component={IdentifyStackNavigation}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen name="search" component={Search} />
+                  <Drawer.Screen
+                    name="projects"
+                    component={ProjectsStackNavigation}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
+                  <Drawer.Screen name="following (dashboard)" component={PlaceholderComponent} />
+                  <Drawer.Screen
+                    name="about"
+                    component={About}
+                  />
+                  <Drawer.Screen name="help/tutorials" component={PlaceholderComponent} />
+                  <Drawer.Screen name="login" component={MortalLogin} options={hideHeader} />
+                  <Drawer.Screen
+                    name="explore stack"
+                    component={ExploreStackNavigator}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen
+                    name="network"
+                    component={NetworkLogging}
+                  />
+                </Drawer.Navigator>
+              </ObsEditProvider>
+            </PhotoGalleryProvider>
+          </NavigationContainer>
+        </GestureHandlerRootView>
+      </PaperProvider>
+    </SafeAreaProvider>
   );
 };
 

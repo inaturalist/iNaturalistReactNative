@@ -1,24 +1,24 @@
 // @flow
 
-import React from "react";
-import { Text, View, Pressable } from "react-native";
-import type { Node } from "react";
 import { useNavigation } from "@react-navigation/native";
+import type { Node } from "react";
+import React from "react";
+import { Pressable, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import UserIcon from "../SharedComponents/UserIcon";
 import User from "../../models/User";
 import { viewStyles } from "../../styles/observations/userCard";
+import UserIcon from "../SharedComponents/UserIcon";
+import useUser from "../UserProfile/hooks/useUser";
+import useCurrentUser from "./hooks/useCurrentUser";
 
-type Props = {
-  userId: number,
-  user: Object
-}
-
-const UserCard = ( { userId, user }: Props ): Node => {
+const UserCard = ( ): Node => {
+  const userId = useCurrentUser( );
+  const { user } = useUser( userId );
   // TODO: this currently doesn't show up on initial login
   // because user id can't be fetched
   const navigation = useNavigation( );
+  if ( !user ) { return <View style={viewStyles.topCard} />; }
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId } );
 
   return (

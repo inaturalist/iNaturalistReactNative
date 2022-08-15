@@ -1,32 +1,36 @@
 // @flow
 
-import React, { useState } from "react";
-import { Text } from "react-native";
 import type { Node } from "react";
-import { Portal, Modal } from "react-native-paper";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Text, View } from "react-native";
+import { Modal, Portal } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { viewStyles, textStyles } from "../../styles/camera/standardCamera";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import { textStyles, viewStyles } from "../../styles/camera/photoPreview";
 import MediaViewer from "../MediaViewer/MediaViewer";
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
+import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
 type Props = {
   photoUris: Array<string>,
-  setPhotoUris: Function
+  setPhotoUris: Function,
+  savingPhoto: boolean
 }
 
-const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
+const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node => {
   const { t } = useTranslation( );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
+  const insets = useSafeAreaInsets( );
+
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
 
-  const handleSelection = ( photoUri ) => {
+  const handleSelection = photoUri => {
     setInitialPhotoSelected( photoUri );
     showModal( );
   };
@@ -38,13 +42,18 @@ const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
     setDeleteDialogVisible( false );
   };
 
-  const handleDelete = ( photoUri ) => {
+  const handleDelete = photoUri => {
     setPhotoUriToDelete( photoUri );
     showDialog( );
   };
 
   const emptyDescription = ( ) => (
-    <Text style={textStyles.topPhotoText}>
+    <Text style={[
+      textStyles.topPhotoText, {
+        // $FlowIgnore
+        bottom: textStyles.topPhotoText.bottom + insets.top
+      }]}
+    >
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
@@ -62,7 +71,6 @@ const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
         <Modal
           visible={mediaViewerVisible}
           onDismiss={hideModal}
-          contentContainerStyle={viewStyles.container}
         >
           <MediaViewer
             initialPhotoSelected={initialPhotoSelected}
@@ -72,13 +80,22 @@ const PhotoPreview = ( { photoUris, setPhotoUris }: Props ): Node => {
           />
         </Modal>
       </Portal>
-      <PhotoCarousel
-        photoUris={photoUris}
-        emptyComponent={emptyDescription}
-        containerStyle="camera"
-        handleDelete={handleDelete}
-        setSelectedPhotoIndex={handleSelection}
-      />
+      <View style={[
+        viewStyles.photoPreviewContainer, {
+          // $FlowIgnore
+          height: viewStyles.photoPreviewContainer.height + insets.top
+        }
+      ]}
+      >
+        <PhotoCarousel
+          photoUris={photoUris}
+          emptyComponent={emptyDescription}
+          containerStyle="camera"
+          handleDelete={handleDelete}
+          setSelectedPhotoIndex={handleSelection}
+          savingPhoto={savingPhoto}
+        />
+      </View>
     </>
   );
 };

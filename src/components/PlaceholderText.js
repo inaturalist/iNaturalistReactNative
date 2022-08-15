@@ -1,8 +1,8 @@
 // @flow
 
+import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
-import type { Node } from "react";
 
 type Props = {
   text: string,
@@ -14,6 +14,5 @@ const PlaceholderText = ( { text, style }: Props ): Node => (
     { text }
   </Text>
 );
-
 
 export default PlaceholderText;

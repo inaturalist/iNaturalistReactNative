@@ -1,12 +1,12 @@
 // @flow
 
-import * as React from "react";
-import { View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as React from "react";
+import { Pressable, View } from "react-native";
 import { Avatar } from "react-native-paper";
 
-import { textStyles, viewStyles } from "../../styles/sharedComponents/modal";
 import { ObsEditContext } from "../../providers/contexts";
+import { textStyles, viewStyles } from "../../styles/sharedComponents/modal";
 import TranslatedText from "../SharedComponents/TranslatedText";
 
 type Props = {
@@ -24,7 +24,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
 
   const navAndCloseModal = ( screen, params ) => {
     // access nested screen
-    navigation.navigate( "camera", { screen, params } );
+    navigation.navigate( screen, params );
     closeModal( );
   };
 
@@ -50,29 +50,21 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
         <TranslatedText text="Record-a-sound" />
         <TranslatedText text="Submit-without-evidence" />
       </View>
-       <Pressable
-        onPress={navToStandardCamera}
-      >
+      <Pressable onPress={navToStandardCamera}>
         <Avatar.Icon size={40} icon="camera" />
       </Pressable>
       {!currentObs && (
-        <Pressable
-          onPress={navToPhotoGallery}
-        >
+        <Pressable onPress={navToPhotoGallery}>
           <Avatar.Icon size={40} icon="folder-multiple-image" />
         </Pressable>
       )}
       {!hasSound && (
-        <Pressable
-          onPress={navToSoundRecorder}
-        >
+        <Pressable onPress={navToSoundRecorder}>
           <Avatar.Icon size={40} icon="microphone" />
         </Pressable>
       )}
       {!currentObs && (
-        <Pressable
-          onPress={navToObsEdit}
-        >
+        <Pressable onPress={navToObsEdit}>
           <Avatar.Icon size={40} icon="square-edit-outline" />
         </Pressable>
       )}

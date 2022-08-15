@@ -1,14 +1,14 @@
 // @flow
 
-import React from "react";
-import { Pressable, View, Image } from "react-native";
 import type { Node } from "react";
+import React from "react";
+import { Image, Pressable, View } from "react-native";
 import { Avatar } from "react-native-paper";
 
+import Photo from "../../../models/Photo";
 import { viewStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
-import Photo from "../../../models/Photo";
 
 type Props = {
   item: Object,
@@ -36,7 +36,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
       />
       <View style={viewStyles.obsDetailsColumn}>
         {/* TODO: fill in with actual empty states */}
-        <ObsCardDetails item={item} needsUpload={needsUpload} />
+        <ObsCardDetails item={item} />
       </View>
       {needsUpload
         ? <Avatar.Icon size={40} icon="arrow-up-circle-outline" />

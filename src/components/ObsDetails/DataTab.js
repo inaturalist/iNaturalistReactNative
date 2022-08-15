@@ -1,13 +1,17 @@
 // @flow
 
-import React, { useState } from "react";
-import { View, Text } from "react-native";
-import type { Node } from "react";
+import { format, parseISO } from "date-fns";
 import { t } from "i18next";
+import type { Node } from "react";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
-import { textStyles } from "../../styles/obsDetails/obsDetails";
-import Map from "../SharedComponents/Map";
+import colors from "../../styles/colors";
+import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
 import DropdownPicker from "../Explore/DropdownPicker";
+import Map from "../SharedComponents/Map";
 import addToProject from "./helpers/addToProject";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 
@@ -23,14 +27,15 @@ const DataTab = ( { observation }: Props ): Node => {
   const attribution = observation.taxon && observation.taxon.default_photo
     && observation.taxon.default_photo.attribution;
 
-  const selectProjectId = ( getValue ) => {
+  const selectProjectId = getValue => {
     addToProject( getValue( ), observation.uuid );
     setProjectId( getValue( ) );
   };
 
   const displayTimeObserved = ( ) => {
-    if ( observation.timeObservedAt ) {
-      return observation.timeObservedAt;
+    const timeObseredAt = checkCamelAndSnakeCase( observation, "timeObservedAt" );
+    if ( timeObseredAt ) {
+      return format( parseISO( timeObseredAt ), "M/d/yy HH:mm a" );
     }
     if ( observation.observed_on_string ) {
       return observation.observed_on_string;
@@ -40,20 +45,41 @@ const DataTab = ( { observation }: Props ): Node => {
 
   return (
     <View>
-      <Text style={textStyles.dataTabText}>{t( "Notes" )}</Text>
+      <Text style={textStyles.dataTabHeader}>{t( "Notes" )}</Text>
       <Text style={textStyles.dataTabText}>{observation.description || "no description"}</Text>
+      <Text style={textStyles.dataTabHeader}>{t( "Location" )}</Text>
       <Map
         obsLatitude={observation.latitude}
         obsLongitude={observation.longitude}
         mapHeight={150}
       />
-      <Text style={textStyles.dataTabText}>
-        {checkCamelAndSnakeCase( observation, "placeGuess" )}
-      </Text>
-      <Text style={textStyles.dataTabText}>{t( "Date" )}</Text>
-      <Text style={textStyles.dataTabText}>{`${t( "Date-observed-colon" )} ${displayTimeObserved( )}`}</Text>
-      <Text style={textStyles.dataTabText}>{`${t( "Date-uploaded-colon" )} ${observation._synced_at}`}</Text>
-      <Text style={textStyles.dataTabText}>{t( "Projects" )}</Text>
+      <View style={[viewStyles.rowWithIcon, viewStyles.locationContainer]}>
+        <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
+        <Text style={textStyles.dataTabText}>
+          {checkCamelAndSnakeCase( observation, "placeGuess" )}
+        </Text>
+      </View>
+
+      <Text style={[textStyles.dataTabHeader, textStyles.dataTabDateHeader]}>{t( "Date" )}</Text>
+      <View style={[viewStyles.rowWithIcon, viewStyles.dataTabSub]}>
+        <Icon name="clock-time-four-outline" size={15} color={colors.logInGray} />
+        <Text
+          style={textStyles.dataTabText}
+        >
+          {`${t( "Date-observed-colon" )} ${displayTimeObserved( )}`}
+        </Text>
+      </View>
+      { observation._synced_at && (
+      <View style={[viewStyles.rowWithIcon, viewStyles.dataTabView, viewStyles.dataTabSub]}>
+        <Icon name="clock-time-four-outline" size={15} color={colors.logInGray} />
+        <Text
+          style={textStyles.dataTabText}
+        >
+          {`${t( "Date-uploaded-colon" )} ${format( observation._synced_at, "M/d/yy HH:mm a" )}`}
+        </Text>
+      </View>
+      ) }
+      <Text style={textStyles.dataTabHeader}>{t( "Projects" )}</Text>
       {/* TODO: create a custom dropdown that doesn't use FlatList */}
       <DropdownPicker
         searchQuery={project}
@@ -62,7 +88,7 @@ const DataTab = ( { observation }: Props ): Node => {
         sources="projects"
         value={projectId}
       />
-      <Text style={textStyles.dataTabText}>{t( "Other-Data" )}</Text>
+      <Text style={textStyles.dataTabHeader}>{t( "Other-Data" )}</Text>
       {attribution && <Text style={textStyles.dataTabText}>{attribution}</Text>}
       {application && (
         <>

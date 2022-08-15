@@ -1,11 +1,11 @@
 // @flow
 
+import { t } from "i18next";
+import type { Node } from "react";
 import React from "react";
 import { Text, View } from "react-native";
-import type { Node } from "react";
-import { t } from "i18next";
 
-import { viewStyles, textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
+import { textStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 
 const EmptyList = ( ): Node => (
   <View style={viewStyles.center}>
@@ -14,5 +14,4 @@ const EmptyList = ( ): Node => (
     </Text>
   </View>
 );
-
 export default EmptyList;

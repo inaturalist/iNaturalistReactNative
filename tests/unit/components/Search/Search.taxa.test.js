@@ -1,9 +1,9 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { fireEvent, render } from "@testing-library/react-native";
+import React from "react";
 
-import factory from "../../../factory";
 import Search from "../../../../src/components/Search/Search";
+import factory from "../../../factory";
 
 const testTaxaList = [
   factory( "RemoteTaxon" ),
@@ -42,7 +42,8 @@ test( "renders taxon search results from API call", ( ) => {
 
   const commonName = taxon.preferred_common_name;
   expect( getByTestId( "Search.taxa" ) ).toBeTruthy( );
-  expect( getByTestId( `Search.${taxon.id}.photo` ).props.source ).toStrictEqual( { "uri": taxon.default_photo.square_url } );
+  expect( getByTestId( `Search.${taxon.id}.photo` ).props.source )
+    .toStrictEqual( { uri: taxon.default_photo.square_url } );
   // using RegExp to be able to search within a string
   expect( getByText( new RegExp( commonName ) ) ).toBeTruthy( );
 } );
