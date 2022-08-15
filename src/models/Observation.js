@@ -337,6 +337,85 @@ class Observation extends Realm.Object {
     } );
   }
 
+  static markRecordUploaded = async ( recordUUID, type, response, realm ) => {
+    const { id } = response.results[0];
+    try {
+      const record = realm.objectForPrimaryKey( type, recordUUID );
+      // console.log( record, "record in upload observation" );
+      realm?.write( ( ) => {
+        record.id = id;
+        record._synced_at = new Date( );
+      } );
+    } catch ( e ) {
+      console.log( e, `couldn't mark ${type} uploaded in realm` );
+    }
+  };
+
+  static uploadToServer = async (
+    evidenceUUID: string,
+    type: string,
+    params: Object,
+    apiEndpoint: Function,
+    realm: any
+  ) => {
+    const apiToken = await getJWTToken( false );
+    const options = { api_token: apiToken };
+
+    try {
+      const response = await apiEndpoint.create( params, options );
+      return await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
+    } catch ( e ) {
+      console.log( JSON.stringify( e.response ), `couldn't upload ${type}` );
+      return JSON.stringify( e.response );
+    }
+  };
+
+  static uploadEvidence = (
+    evidence: Array<Object>,
+    type: string,
+    apiSchemaMapper: Function,
+    observationId: number,
+    apiEndpoint: Function,
+    realm: any
+  ): ?string => {
+    if ( evidence.length === 0 ) { return; }
+    for ( let i = 0; i < evidence.length; i += 1 ) {
+      const currentEvidence = evidence[i];
+      const params = apiSchemaMapper( observationId, currentEvidence );
+      Observation.uploadToServer( currentEvidence.uuid, type, params, apiEndpoint, realm );
+    }
+  };
+
+  static uploadObservation = async obs => {
+    const obsToUpload = Observation.mapObservationForUpload( obs );
+    const apiToken = await getJWTToken( false );
+    const options = { api_token: apiToken };
+
+    // Remove all null values, b/c the API doesn't seem to like them for some
+    // reason (might be an error with the API as of 20220801)
+    const newObs = {};
+    Object.keys( obsToUpload ).forEach( k => {
+      if ( obsToUpload[k] !== null ) {
+        newObs[k] = obsToUpload[k];
+      }
+    } );
+
+    const uploadParams = {
+      observation: { ...newObs },
+      fields: { id: true }
+    };
+
+    let response;
+    try {
+      response = await inatjs.observations.create( uploadParams, options );
+    } catch ( uploadError ) {
+      const body = JSON.parse( await uploadError.response.text( ) );
+      console.error( "[ERROR] Failed to upload observation: ", JSON.stringify( body ) );
+      return body;
+    }
+    return response;
+  }
+
   static schema = {
     name: "Observation",
     primaryKey: "uuid",

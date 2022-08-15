@@ -30,31 +30,29 @@ const useRemoteObservations = ( ): Object => {
     const obs = realm?.objects( "Observation" );
     // includes obs which have never been synced or which have been updated
     // locally since the last sync
-    const unsyncedObs = obs.filtered( "_synced_at == null || _synced_at <= _updated_at" );
+    const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
+    const unsyncedObs = obs.filtered( unsyncedFilter );
 
-    const photos = realm.objects( "ObservationPhoto" );
-    const unsyncedPhotos = photos.filtered( "_synced_at == null || _synced_at <= _updated_at" );
-    // const linkedObservation = unsyncedPhotos
-    // ?.[0]?.linkingObjects( "Observation", "observationPhotos" )[0];
-    console.log( unsyncedPhotos.length, "unsynced photos in useObs" );
-    // console.log( linkedObservation, "linked observation" );
+    const photos = realm?.objects( "ObservationPhoto" );
+    const unsyncedPhotos = photos.filtered( unsyncedFilter );
+
+    // fetch unsynced photos & figure out which observation they are linked to
     const obsWithUnsyncedPhotos = _.uniq( unsyncedPhotos
       .map( photo => photo.linkingObjects( "Observation", "observationPhotos" )[0] ) );
-    console.log( obsWithUnsyncedPhotos, "obs with unsynced photos" );
 
-    // fetch unsynced photos
-    // figure out which observation they are attached to
-    // show correct number of observations needing upload
-    // only try to upload photos, not the existing observation
-    // make sure observation photos are created with _created_at
-    // and records are correctly updated
+    // combine all the observations & obs with photos needing upload
+    const combinedObsAndPhotos = _.concat( unsyncedObs.map( o => o ), obsWithUnsyncedPhotos );
+    const obsToUpload = _.uniqBy( combinedObsAndPhotos, "uuid" );
 
-    if ( unsyncedObs?.length && unsyncedObs?.length !== numOfUnuploadedObs ) {
+    // console.log( obsToUpload, "obs to upload, useRemoteObservations" );
+    // console.log( obsToUpload.map( o => o.uuid ), "all obs to upload length" );
+
+    if ( obsToUpload?.length && obsToUpload?.length !== numOfUnuploadedObs ) {
       setUploadStatus( {
         ...uploadStatus,
-        unuploadedObs: unsyncedObs,
-        allObsToUpload: unsyncedObs,
-        totalObsToUpload: Math.max( unsyncedObs.length, totalObsToUpload )
+        unuploadedObs: obsToUpload,
+        allObsToUpload: obsToUpload,
+        totalObsToUpload: Math.max( obsToUpload.length, totalObsToUpload )
       } );
     }
   }, [uploadStatus] );
