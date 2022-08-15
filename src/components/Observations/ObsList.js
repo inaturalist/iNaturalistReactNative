@@ -9,22 +9,24 @@ import ObservationViews from "../SharedComponents/ObservationViews/ObservationVi
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useRemoteObservations from "./hooks/useRemoteObservations";
 import useSubscribeToLocalObservations from "./hooks/useSubscribeToLocalObservations";
+import useUploadStatus from "./hooks/useUploadStatus";
 import LoginPrompt from "./LoginPrompt";
 import TopCard from "./TopCard";
 import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
 
 const ObsList = ( ): Node => {
-  const observationList = useSubscribeToLocalObservations( );
+  const { observationList, unuploadedObsList } = useSubscribeToLocalObservations( );
   const {
     loading,
     syncObservations,
-    fetchNextObservations,
-    uploadStatus,
-    updateUploadStatus
+    fetchNextObservations
   } = useRemoteObservations( );
-  const { unuploadedObs, uploadInProgress } = uploadStatus;
-  const numObsToUpload = unuploadedObs?.length;
+  const { uploadStatus, updateUploadStatus } = useUploadStatus( );
+  const { uploadInProgress } = uploadStatus;
+  const numObsToUpload = unuploadedObsList?.length;
+
+  console.log( uploadStatus, "upload status, ObsList" );
 
   const isLoggedIn = useLoggedIn( );
 
@@ -42,6 +44,7 @@ const ObsList = ( ): Node => {
       return (
         <UploadProgressBar
           uploadStatus={uploadStatus}
+          unuploadedObsList={unuploadedObsList}
         />
       );
     }
@@ -49,7 +52,7 @@ const ObsList = ( ): Node => {
       <BottomSheet>
         <UploadPrompt
           uploadObservations={updateUploadStatus}
-          uploadStatus={uploadStatus}
+          numObsToUpload={numObsToUpload}
           updateUploadStatus={updateUploadStatus}
         />
       </BottomSheet>

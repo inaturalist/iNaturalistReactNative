@@ -13,17 +13,22 @@ import { textStyles, viewStyles } from "../../styles/observations/uploadProgress
 import useUploadObservations from "./hooks/useUploadObservations";
 
 type Props = {
-  uploadStatus: Object
+  uploadStatus: Object,
+  unuploadedObsList: Array<Object>
 }
 
-const UploadProgressBar = ( { uploadStatus }: Props ): Node => {
-  const { unuploadedObs } = uploadStatus;
-  const numOfUnuploadedObs = unuploadedObs?.length;
+const UploadProgressBar = ( { uploadStatus, unuploadedObsList }: Props ): Node => {
+  const { allObsToUpload } = uploadStatus;
+  const numOfUnuploadedObs = unuploadedObsList?.length;
+  const totalObsToUpload = Math.max( allObsToUpload?.length, 0 );
+
+  const calculateProgress = ( ) => ( totalObsToUpload - numOfUnuploadedObs ) / totalObsToUpload;
+  const progressFraction = calculateProgress( );
+
   const {
     handleClosePress,
-    status,
-    progressFraction
-  } = useUploadObservations( uploadStatus );
+    status
+  } = useUploadObservations( allObsToUpload );
 
   const sheetRef = useRef( null );
 

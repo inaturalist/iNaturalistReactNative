@@ -9,6 +9,7 @@ import realmConfig from "../../../models/index";
 
 const useSubscribeToLocalObservations = ( ): Object => {
   const [observationList, setObservationList] = useState( [] );
+  const [unuploadedObsList, setUnuploadedObsList] = useState( [] );
   const [addListener, setAddListener] = useState( false );
 
   // We store a reference to our realm using useRef that allows us to access it via
@@ -30,10 +31,17 @@ const useSubscribeToLocalObservations = ( ): Object => {
         setObservationList( localObservations.map( o => o ) );
       }
     } );
+
+    const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
+    const unsyncedObs = obs.filtered( unsyncedFilter );
+    unsyncedObs.addListener( ( ) => {
+      setUnuploadedObsList( unsyncedObs.map( o => o ) );
+    } );
     // eslint-disable-next-line consistent-return
     return ( ) => {
       // remember to remove listeners to avoid async updates
       localObservations.removeAllListeners( );
+      unsyncedObs.removeAllListeners( );
     };
   }, [addListener] );
 
@@ -46,7 +54,10 @@ const useSubscribeToLocalObservations = ( ): Object => {
     openRealm( );
   }, [] );
 
-  return observationList;
+  return {
+    observationList,
+    unuploadedObsList
+  };
 };
 
 export default useSubscribeToLocalObservations;

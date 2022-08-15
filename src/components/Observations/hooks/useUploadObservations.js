@@ -4,15 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 
 import uploadObservation from "../../../providers/uploadHelpers/uploadObservation";
 
-const useUploadObservations = ( uploadStatus: Object ): Object => {
-  const { allObsToUpload, unuploadedObs, totalObsToUpload } = uploadStatus;
-  const numOfUnuploadedObs = unuploadedObs?.length;
+const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [cancelUpload, setCancelUpload] = useState( false );
   const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
   const [status, setStatus] = useState( null );
-
-  const calculateProgress = ( ) => ( totalObsToUpload - numOfUnuploadedObs ) / totalObsToUpload;
-  const progressFraction = calculateProgress( );
 
   const handleClosePress = useCallback( ( ) => {
     setCancelUpload( true );
@@ -21,7 +16,6 @@ const useUploadObservations = ( uploadStatus: Object ): Object => {
 
   useEffect( ( ) => {
     const upload = async obs => {
-      console.log( obs, "obs for upload" );
       uploadObservation( obs );
     };
     if ( currentUploadIndex < allObsToUpload.length - 1 ) {
@@ -35,8 +29,7 @@ const useUploadObservations = ( uploadStatus: Object ): Object => {
 
   return {
     handleClosePress,
-    status,
-    progressFraction
+    status
   };
 };
 

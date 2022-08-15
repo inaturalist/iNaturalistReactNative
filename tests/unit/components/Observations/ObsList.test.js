@@ -28,10 +28,7 @@ jest.mock(
 jest.mock( "../../../../src/components/Observations/hooks/useRemoteObservations", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
-    loading: false,
-    uploadStatus: {
-      unuploadedObs: mockObservations
-    }
+    loading: false
   } )
 } ) );
 
