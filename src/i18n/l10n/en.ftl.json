@@ -452,12 +452,15 @@
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual",
     "val": "Casual"
   },
+  "Add-evidence": "Add evidence",
+  "You-can-only-upload-20-media": "You can only add 20 photos and 20 sounds to an observation",
   "Add-Comment": "Add Comment",
   "Suggest-an-ID": "Suggest an ID",
   "Add-a-comment": {
-    "comment": "Hint text inside the 'Add a comment' Text Input",
-    "val": "Add a comment..."
+      "comment": "Hint text inside the 'Add a comment' Text Input",
+      "val": "Add a comment..."
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?"
+
 }

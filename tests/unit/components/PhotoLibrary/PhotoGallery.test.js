@@ -3,8 +3,13 @@ import { render } from "@testing-library/react-native";
 import React from "react";
 
 import PhotoGallery from "../../../../src/components/PhotoLibrary/PhotoGallery";
+import { ObsEditContext } from "../../../../src/providers/contexts";
 import PhotoGalleryProvider from "../../../../src/providers/PhotoGalleryProvider";
 import factory from "../../../factory";
+
+// this resolves a test failure with the Animated library:
+// Animated: `useNativeDriver` is not supported because the native animated module is missing.
+jest.useFakeTimers( );
 
 const mockPhoto = factory( "DevicePhoto" );
 
@@ -34,6 +39,15 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+jest.mock( "@react-navigation/native", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useRoute: ( ) => ( {
+    } )
+  };
+} );
+
 // const mockPhotoGalleryProviderWithPhotos = selectedPhotos =>
 //   PhotoGalleryProvider.mockImplementation( ( { children }: Props ): Node => (
 //     <PhotoGalleryContext.Provider value={{
@@ -43,10 +57,20 @@ jest.mock( "@react-navigation/native", ( ) => {
 //     </PhotoGalleryContext.Provider>
 //   ) );
 
+const fakeObs = {
+  observations: [factory( "RemoteObservation", {
+    latitude: 37.99,
+    longitude: -142.88
+  } )],
+  currentObsIndex: 0
+};
+
 const renderPhotoGallery = ( ) => render(
   <NavigationContainer>
     <PhotoGalleryProvider>
-      <PhotoGallery />
+      <ObsEditContext.Provider value={fakeObs}>
+        <PhotoGallery />
+      </ObsEditContext.Provider>
     </PhotoGalleryProvider>
   </NavigationContainer>
 );

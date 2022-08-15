@@ -623,6 +623,9 @@ Quality-Grade-Badge-needs_id = Needs ID
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
 Quality-Grade-Badge-casual = Casual
 
+Add-evidence = Add evidence
+You-can-only-upload-20-media = You can only add 20 photos and 20 sounds to an observation
+
 Add-Comment = Add Comment
 Suggest-an-ID = Suggest an ID
 # Hint text inside the 'Add a comment' Text Input

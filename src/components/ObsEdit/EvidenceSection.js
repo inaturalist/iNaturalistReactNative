@@ -5,7 +5,6 @@ import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "react-native";
 
-// import LocationPicker from "./LocationPicker";
 import { ObsEditContext } from "../../providers/contexts";
 import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
 import { textStyles } from "../../styles/obsEdit/obsEdit";
@@ -14,11 +13,13 @@ import DatePicker from "./DatePicker";
 
 type Props = {
   handleSelection: Function,
-  photoUris: Array<string>
+  photoUris: Array<string>,
+  handleAddEvidence?: Function
 }
 
 const EvidenceSection = ( {
   handleSelection,
+  handleAddEvidence,
   photoUris
 }: Props ): Node => {
   const {
@@ -94,6 +95,8 @@ const EvidenceSection = ( {
       <PhotoCarousel
         photoUris={photoUris}
         setSelectedPhotoIndex={handleSelection}
+        showAddButton
+        handleAddEvidence={handleAddEvidence}
       />
       {/*
         TODO: bring back the location picker when it works on Android and
