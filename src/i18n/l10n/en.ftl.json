@@ -451,5 +451,8 @@
   "Quality-Grade-Badge-casual": {
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual",
     "val": "Casual"
-  }
+  },
+  "Add-evidence": "Add evidence",
+  "You-can-only-upload-20-media": "You can only add 20 photos and 20 sounds to an observation"
+
 }
