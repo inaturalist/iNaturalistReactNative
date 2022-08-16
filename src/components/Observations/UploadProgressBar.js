@@ -37,6 +37,24 @@ const UploadProgressBar = ( { unuploadedObsList, allObsToUpload }: Props ): Node
   // eslint-disable-next-line react/jsx-no-useless-fragment
   const noHandle = ( ) => <></>;
 
+  const showError = ( ) => {
+    if ( status === "failure" ) {
+      return (
+        <Text style={textStyles.whiteText} variant="titleMedium">
+          {t( "Error-Couldnt-Complete-Upload" )}
+        </Text>
+      );
+    }
+    if ( status === "photoFailure" ) {
+      return (
+        <Text style={textStyles.whiteText} variant="titleMedium">
+          {t( "Error-Couldnt-Upload-Photo" )}
+        </Text>
+      );
+    }
+    return null;
+  };
+
   return (
     <BottomSheet
       ref={sheetRef}
@@ -59,11 +77,7 @@ const UploadProgressBar = ( { unuploadedObsList, allObsToUpload }: Props ): Node
           style={viewStyles.progressBar}
           color={colors.white}
         />
-        {status === "failure" && (
-          <Text style={textStyles.whiteText} variant="titleMedium">
-            {t( "Error-Couldnt-Complete-Upload" )}
-          </Text>
-        )}
+        {showError( )}
       </BottomSheetView>
     </BottomSheet>
   );

@@ -17,8 +17,14 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   useEffect( ( ) => {
     const upload = async obs => {
       const response = await uploadObservation( obs );
+      if ( response.results ) { return; }
       if ( response.status !== 200 ) {
-        setStatus( "failure" );
+        const error = JSON.parse( response );
+        if ( error.url.includes( "observation_photos" ) ) {
+          setStatus( "photoFailure" );
+        } else {
+          setStatus( "failure" );
+        }
       }
     };
     if ( currentUploadIndex < allObsToUpload.length - 1 ) {
