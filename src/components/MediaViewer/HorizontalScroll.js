@@ -44,26 +44,31 @@ const HorizontalScroll = ( {
     index
   } );
 
-  const handleScrollLeft = ( ) => {
+  const handleScrollLeft = index => {
     if ( selectedPhotoIndex === 0 ) { return; }
-    setSelectedPhotoIndex( selectedPhotoIndex - 1 );
+    setSelectedPhotoIndex( index );
   };
 
-  const handleScrollRight = ( ) => {
+  const handleScrollRight = index => {
     if ( selectedPhotoIndex === photoUris.length - 1 ) { return; }
-    setSelectedPhotoIndex( selectedPhotoIndex + 1 );
+    setSelectedPhotoIndex( index );
   };
 
   const handleScrollEndDrag = e => {
-    const { contentOffset } = e.nativeEvent;
+    const { contentOffset, layoutMeasurement } = e.nativeEvent;
     const { x } = contentOffset;
 
     const currentOffset = width * selectedPhotoIndex;
 
+    // https://gist.github.com/dozsolti/6d01d0f96d9abced3450a2e6149a2bc3?permalink_comment_id=4107663#gistcomment-4107663
+    const index = Math.floor(
+      Math.floor( x ) / Math.floor( layoutMeasurement.width )
+    );
+
     if ( x > currentOffset ) {
-      handleScrollRight( );
+      handleScrollRight( index );
     } else if ( x < currentOffset ) {
-      handleScrollLeft( );
+      handleScrollLeft( index );
     }
   };
 
@@ -79,7 +84,6 @@ const HorizontalScroll = ( {
         showsHorizontalScrollIndicator={false}
         // $FlowIgnore
         ref={horizontalScroll}
-        // https://stackoverflow.com/questions/43370807/react-native-get-current-page-in-flatlist-when-using-pagingenabled
         onMomentumScrollEnd={handleScrollEndDrag}
       />
       <PhotoCarousel
