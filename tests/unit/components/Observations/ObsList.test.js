@@ -18,10 +18,12 @@ const mockObservations = [
 
 // Mock the hooks we use on ObsList since we're not trying to test them here
 jest.mock(
-  "../../../../src/components/Observations/hooks/useSubscribeToLocalObservations",
+  "../../../../src/components/Observations/hooks/useLocalObservations",
   ( ) => ( {
     __esModule: true,
-    default: ( ) => mockObservations
+    default: ( ) => ( {
+      observationList: mockObservations
+    } )
   } )
 );
 

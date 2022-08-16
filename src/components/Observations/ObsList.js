@@ -7,8 +7,8 @@ import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import BottomSheet from "../SharedComponents/BottomSheet";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import useLocalObservations from "./hooks/useLocalObservations";
 import useRemoteObservations from "./hooks/useRemoteObservations";
-import useSubscribeToLocalObservations from "./hooks/useSubscribeToLocalObservations";
 import useUploadStatus from "./hooks/useUploadStatus";
 import LoginPrompt from "./LoginPrompt";
 import TopCard from "./TopCard";
@@ -16,7 +16,7 @@ import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
 
 const ObsList = ( ): Node => {
-  const { observationList, unuploadedObsList, allObsToUpload } = useSubscribeToLocalObservations( );
+  const { observationList, unuploadedObsList, allObsToUpload } = useLocalObservations( );
   const {
     loading,
     syncObservations,
