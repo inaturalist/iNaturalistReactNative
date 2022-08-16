@@ -24,8 +24,6 @@ const ImageViewer = ( { source }: Props ): Node => {
     scaleValue.current = scale;
   };
 
-  const onPanResponder = e => e.nativeEvent.touches.length === 2 || scaleValue.current > 1;
-
   return (
     <ImageZoom
       cropWidth={width}
@@ -33,7 +31,11 @@ const ImageViewer = ( { source }: Props ): Node => {
       imageWidth={width}
       imageHeight={selectedImageHeight}
       minScale={1}
-      onStartShouldSetPanResponder={onPanResponder}
+      onStartShouldSetPanResponder={e => {
+        const pinching = e.nativeEvent.touches.length === 2;
+        const alreadyZooming = scaleValue.current > 1;
+        return pinching || alreadyZooming;
+      }}
       onMove={handleMove}
     >
       <View

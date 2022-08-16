@@ -62,7 +62,7 @@ const HorizontalScroll = ( {
 
     if ( x > currentOffset ) {
       handleScrollRight( );
-    } else {
+    } else if ( x < currentOffset ) {
       handleScrollLeft( );
     }
   };
@@ -77,9 +77,10 @@ const HorizontalScroll = ( {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-      // $FlowIgnore
+        // $FlowIgnore
         ref={horizontalScroll}
-        onScrollEndDrag={handleScrollEndDrag}
+        // https://stackoverflow.com/questions/43370807/react-native-get-current-page-in-flatlist-when-using-pagingenabled
+        onMomentumScrollEnd={handleScrollEndDrag}
       />
       <PhotoCarousel
         photoUris={photoUris}
