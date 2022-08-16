@@ -1,20 +1,23 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ActivityIndicator, FlatList, Image, Pressable, Text, View
 } from "react-native";
+import { Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { PhotoGalleryContext } from "../../providers/contexts";
+import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
 import colors from "../../styles/colors";
 import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
+
+const MAX_PHOTOS_ALLOWED = 20;
 
 const options = {
   first: 28,
@@ -36,6 +39,18 @@ const PhotoGallery = ( ): Node => {
     canRequestPhotos,
     setCanRequestPhotos
   } = useContext( PhotoGalleryContext );
+  const { addPhotos } = useContext( ObsEditContext );
+  const [photoUris, setPhotoUris] = useState( [] );
+  const [showAlert, setShowAlert] = useState( false );
+  const { params } = useRoute( );
+  const photos = params?.photos;
+  const editObs = params?.editObs;
+
+  useEffect( ( ) => {
+    if ( photos?.length > 0 ) {
+      setPhotoUris( photos );
+    }
+  }, [photos] );
 
   // If this component is being rendered we have either already asked for
   // permissions in Android via a PermissionGate parent component, or the
@@ -49,6 +64,17 @@ const PhotoGallery = ( ): Node => {
   } );
 
   const navigation = useNavigation( );
+
+  const getSelectedPhotos = () => ( ( selectedPhotos && selectedPhotos.All )
+    ? selectedPhotos.All.map( x => x.image.uri ) : [] );
+
+  const getAllPhotos = () => [...photoUris, ...getSelectedPhotos()];
+
+  const navToObsEdit = ( ) => {
+    if ( !selectedPhotos ) return;
+    addPhotos( getAllPhotos() );
+    navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+  };
 
   const updateAlbum = album => {
     const newOptions = {
@@ -101,7 +127,14 @@ const PhotoGallery = ( ): Node => {
     const uri = item?.image?.uri;
     const isSelected = photosSelectedInAlbum.some( photo => photo.image.uri === uri );
 
-    const handlePress = ( ) => selectPhoto( isSelected, item );
+    const handlePress = ( ) => {
+      const allPhotos = getAllPhotos();
+      if ( isSelected || allPhotos.length < MAX_PHOTOS_ALLOWED ) {
+        selectPhoto( isSelected, item );
+      } else {
+        setShowAlert( true );
+      }
+    };
 
     const imageUri = { uri };
     return (
@@ -153,16 +186,23 @@ const PhotoGallery = ( ): Node => {
         testID="PhotoGallery.list"
         ListEmptyComponent={renderEmptyList( )}
       />
-      { Object.keys( selectedPhotos ).length > 0 && (
+      { getSelectedPhotos().length > 0 && (
         <View style={viewStyles.createObsButton}>
           <RoundGreenButton
             buttonText="Import-X-photos"
             count={totalSelected || 0}
-            handlePress={navToGroupPhotos}
+            handlePress={editObs ? navToObsEdit : navToGroupPhotos}
             testID="PhotoGallery.createObsButton"
           />
         </View>
       ) }
+
+      <Snackbar
+        visible={showAlert}
+        onDismiss={() => setShowAlert( false )}
+      >
+        {t( "You-can-only-upload-20-media" )}
+      </Snackbar>
     </ViewNoFooter>
   );
 };
