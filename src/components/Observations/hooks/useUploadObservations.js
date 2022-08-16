@@ -16,7 +16,10 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
 
   useEffect( ( ) => {
     const upload = async obs => {
-      uploadObservation( obs );
+      const response = await uploadObservation( obs );
+      if ( response.status !== 200 ) {
+        setStatus( "failure" );
+      }
     };
     if ( currentUploadIndex < allObsToUpload.length - 1 ) {
       setCurrentUploadIndex( currentUploadIndex + 1 );

@@ -328,6 +328,7 @@ class Observation extends Realm.Object {
         }
       }
       const newObs = Observation.createOrModifyLocalObservation( obs, realm );
+      console.log( newObs, "new obs in updateLocalObsFromRemote" );
       realm?.write( ( ) => {
         // To upsert an object, call Realm.create() with the update mode set
         // to modified. The operation either inserts a new object with the given primary key
@@ -341,11 +342,11 @@ class Observation extends Realm.Object {
     const { id } = response.results[0];
     try {
       const record = realm.objectForPrimaryKey( type, recordUUID );
-      // console.log( record, "record in upload observation" );
       realm?.write( ( ) => {
         record.id = id;
         record._synced_at = new Date( );
       } );
+      console.log( record, "record in upload observation" );
     } catch ( e ) {
       console.log( e, `couldn't mark ${type} uploaded in realm` );
     }
@@ -361,13 +362,14 @@ class Observation extends Realm.Object {
     const apiToken = await getJWTToken( false );
     const options = { api_token: apiToken };
 
+    let response;
     try {
-      const response = await apiEndpoint.create( params, options );
-      return await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
+      response = await apiEndpoint.create( params, options );
+      await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
     } catch ( e ) {
-      console.log( JSON.stringify( e.response ), `couldn't upload ${type}` );
       return JSON.stringify( e.response );
     }
+    return response;
   };
 
   static uploadEvidence = (
@@ -377,13 +379,17 @@ class Observation extends Realm.Object {
     observationId: number,
     apiEndpoint: Function,
     realm: any
-  ): ?string => {
+  ): any => {
+    let response;
     if ( evidence.length === 0 ) { return; }
     for ( let i = 0; i < evidence.length; i += 1 ) {
       const currentEvidence = evidence[i];
+      const evidenceUUID = currentEvidence.uuid;
       const params = apiSchemaMapper( observationId, currentEvidence );
-      Observation.uploadToServer( currentEvidence.uuid, type, params, apiEndpoint, realm );
+      response = Observation.uploadToServer( evidenceUUID, type, params, apiEndpoint, realm );
     }
+    // eslint-disable-next-line consistent-return
+    return response;
   };
 
   static uploadObservation = async obs => {

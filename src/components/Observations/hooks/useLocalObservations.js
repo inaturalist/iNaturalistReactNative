@@ -13,6 +13,9 @@ const useLocalObservations = ( ): Object => {
   const [allObsToUpload, setAllObsToUpload] = useState( [] );
   const [unuploadedObsList, setUnuploadedObsList] = useState( [] );
 
+  const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
+  const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
+
   // We store a reference to our realm using useRef that allows us to access it via
   // realmRef.current for the component's lifetime without causing rerenders if updated.
   const realmRef = useRef( null );
@@ -31,9 +34,9 @@ const useLocalObservations = ( ): Object => {
       if ( localObservations.length === 0 ) { return; }
       setObservationList( localObservations.map( o => o ) );
 
-      const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
-      const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
       const unsyncedObs = obs.filtered( `${unsyncedFilter} || ${photosUnsyncedFilter}` );
+      const unsyncedPhotos = obs.filtered( photosUnsyncedFilter );
+      console.log( unsyncedPhotos, "unsynced photos" );
       setUnuploadedObsList( unsyncedObs.map( o => o ) );
 
       if ( allObsToUpload.length === 0 ) {
