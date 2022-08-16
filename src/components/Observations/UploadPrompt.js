@@ -10,13 +10,13 @@ import colors from "../../styles/colors";
 import { textStyles, viewStyles } from "../../styles/observations/obsList";
 
 type Props = {
-  numObsToUpload: number,
+  numOfUnuploadedObs: number,
   updateUploadStatus: Function,
   uploadObservations: Function
 }
 
 const UploadPrompt = ( {
-  uploadObservations, numObsToUpload, updateUploadStatus
+  uploadObservations, numOfUnuploadedObs, updateUploadStatus
 }: Props ): Node => (
   <>
     <Text>{t( "Whenever-you-get-internet-connection-you-can-upload" )}</Text>
@@ -30,7 +30,7 @@ const UploadPrompt = ( {
         uploadObservations( );
       }}
     >
-      {t( "Upload-X-Observations", { count: numObsToUpload } )}
+      {t( "Upload-X-Observations", { count: numOfUnuploadedObs } )}
     </Button>
   </>
 );

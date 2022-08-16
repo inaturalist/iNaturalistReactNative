@@ -13,16 +13,16 @@ import { textStyles, viewStyles } from "../../styles/observations/uploadProgress
 import useUploadObservations from "./hooks/useUploadObservations";
 
 type Props = {
-  uploadStatus: Object,
-  unuploadedObsList: Array<Object>
+  unuploadedObsList: Array<Object>,
+  allObsToUpload: Array<Object>
 }
 
-const UploadProgressBar = ( { uploadStatus, unuploadedObsList }: Props ): Node => {
-  const { allObsToUpload } = uploadStatus;
-  const numOfUnuploadedObs = unuploadedObsList?.length;
-  const totalObsToUpload = Math.max( allObsToUpload?.length, 0 );
+const UploadProgressBar = ( { unuploadedObsList, allObsToUpload }: Props ): Node => {
+  const numOfUnuploadedObs = unuploadedObsList.length;
+  const totalObsToUpload = Math.max( allObsToUpload.length, unuploadedObsList.length );
 
   const calculateProgress = ( ) => ( totalObsToUpload - numOfUnuploadedObs ) / totalObsToUpload;
+
   const progressFraction = calculateProgress( );
 
   const {

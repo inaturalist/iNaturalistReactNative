@@ -10,10 +10,10 @@ import LoggedOutCard from "./LoggedOutCard";
 import UserCard from "./UserCard";
 
 type Props = {
-  numObsToUpload: number
+  numOfUnuploadedObs: number
 }
 
-const TopCard = ( { numObsToUpload }: Props ): Node => {
+const TopCard = ( { numOfUnuploadedObs }: Props ): Node => {
   const isLoggedIn = useLoggedIn( );
   if ( isLoggedIn === null ) {
     return <View style={viewStyles.topCard} />;
@@ -21,7 +21,7 @@ const TopCard = ( { numObsToUpload }: Props ): Node => {
 
   return isLoggedIn
     ? <UserCard />
-    : <LoggedOutCard numObsToUpload={numObsToUpload} />;
+    : <LoggedOutCard numOfUnuploadedObs={numOfUnuploadedObs} />;
 };
 
 export default TopCard;

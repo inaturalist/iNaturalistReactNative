@@ -9,6 +9,7 @@ import realmConfig from "../../../models/index";
 
 const useSubscribeToLocalObservations = ( ): Object => {
   const [observationList, setObservationList] = useState( [] );
+  const [allObsToUpload, setAllObsToUpload] = useState( [] );
   const [unuploadedObsList, setUnuploadedObsList] = useState( [] );
   const [addListener, setAddListener] = useState( false );
 
@@ -32,10 +33,16 @@ const useSubscribeToLocalObservations = ( ): Object => {
       }
     } );
 
+    // use collection operator: https://www.mongodb.com/docs/realm/sdk/react-native/examples/query-data/#collection-operators
     const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
-    const unsyncedObs = obs.filtered( unsyncedFilter );
+    const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
+    const unsyncedObs = obs.filtered( `${unsyncedFilter} || ${photosUnsyncedFilter}` );
+
     unsyncedObs.addListener( ( ) => {
       setUnuploadedObsList( unsyncedObs.map( o => o ) );
+      if ( allObsToUpload.length === 0 ) {
+        setAllObsToUpload( unsyncedObs.map( o => o ) );
+      }
     } );
     // eslint-disable-next-line consistent-return
     return ( ) => {
@@ -43,7 +50,7 @@ const useSubscribeToLocalObservations = ( ): Object => {
       localObservations.removeAllListeners( );
       unsyncedObs.removeAllListeners( );
     };
-  }, [addListener] );
+  }, [addListener, allObsToUpload] );
 
   useEffect( ( ) => {
     const openRealm = async ( ) => {
@@ -56,7 +63,8 @@ const useSubscribeToLocalObservations = ( ): Object => {
 
   return {
     observationList,
-    unuploadedObsList
+    unuploadedObsList,
+    allObsToUpload
   };
 };
 

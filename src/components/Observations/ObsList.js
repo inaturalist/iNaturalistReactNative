@@ -16,22 +16,19 @@ import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
 
 const ObsList = ( ): Node => {
-  const { observationList, unuploadedObsList } = useSubscribeToLocalObservations( );
+  const { observationList, unuploadedObsList, allObsToUpload } = useSubscribeToLocalObservations( );
   const {
     loading,
     syncObservations,
     fetchNextObservations
   } = useRemoteObservations( );
-  const { uploadStatus, updateUploadStatus } = useUploadStatus( );
-  const { uploadInProgress } = uploadStatus;
-  const numObsToUpload = unuploadedObsList?.length;
-
-  console.log( uploadStatus, "upload status, ObsList" );
+  const { uploadInProgress, updateUploadStatus } = useUploadStatus( );
+  const numOfUnuploadedObs = unuploadedObsList?.length;
 
   const isLoggedIn = useLoggedIn( );
 
   const renderBottomSheet = ( ) => {
-    if ( numObsToUpload === 0 ) { return null; }
+    if ( numOfUnuploadedObs === 0 ) { return null; }
 
     if ( isLoggedIn === false && !loading ) {
       return (
@@ -43,8 +40,8 @@ const ObsList = ( ): Node => {
     if ( uploadInProgress ) {
       return (
         <UploadProgressBar
-          uploadStatus={uploadStatus}
           unuploadedObsList={unuploadedObsList}
+          allObsToUpload={allObsToUpload}
         />
       );
     }
@@ -52,7 +49,7 @@ const ObsList = ( ): Node => {
       <BottomSheet>
         <UploadPrompt
           uploadObservations={updateUploadStatus}
-          numObsToUpload={numObsToUpload}
+          numOfUnuploadedObs={numOfUnuploadedObs}
           updateUploadStatus={updateUploadStatus}
         />
       </BottomSheet>
@@ -61,7 +58,7 @@ const ObsList = ( ): Node => {
 
   return (
     <ViewWithFooter>
-      <TopCard numObsToUpload={numObsToUpload} />
+      <TopCard numOfUnuploadedObs={numOfUnuploadedObs} />
       <ObservationViews
         loading={loading}
         observationList={observationList}
