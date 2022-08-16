@@ -315,20 +315,30 @@ class Observation extends Realm.Object {
     }
   }
 
+  static filterUnsyncedObservations = realm => {
+    const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
+    const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
+
+    const obs = realm?.objects( "Observation" );
+    const unsyncedObs = obs.filtered( `${unsyncedFilter} || ${photosUnsyncedFilter}` );
+    return unsyncedObs;
+  }
+
+  static isUnsyncedObservation = ( realm, obs ) => {
+    const obsList = Observation.filterUnsyncedObservations( realm );
+    const unsyncedObs = obsList.filtered( `uuid == "${obs.uuid}"` );
+    return unsyncedObs.length > 0;
+  }
+
   static updateLocalObservationsFromRemote = ( realm, results ) => {
     if ( results.length === 0 ) { return; }
     results.forEach( obs => {
-      const existingObs = realm?.objectForPrimaryKey( "Observation", obs.uuid );
+      // if observation has been updated locally since the last sync, do not overwrite
+      // with observation attributes from server
+      const isUnsyncedObs = Observation.isUnsyncedObservation( realm, obs );
+      if ( isUnsyncedObs ) { return; }
 
-      if ( existingObs ) {
-        // if observation has been updated locally since the last sync, do not overwrite
-        // with observation attributes from server
-        if ( existingObs._updated_at >= existingObs._synced_at ) {
-          return;
-        }
-      }
       const newObs = Observation.createOrModifyLocalObservation( obs, realm );
-      console.log( newObs, "new obs in updateLocalObsFromRemote" );
       realm?.write( ( ) => {
         // To upsert an object, call Realm.create() with the update mode set
         // to modified. The operation either inserts a new object with the given primary key
@@ -346,7 +356,6 @@ class Observation extends Realm.Object {
         record.id = id;
         record._synced_at = new Date( );
       } );
-      console.log( record, "record in upload observation" );
     } catch ( e ) {
       console.log( e, `couldn't mark ${type} uploaded in realm` );
     }
