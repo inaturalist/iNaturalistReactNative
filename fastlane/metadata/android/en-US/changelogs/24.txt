@@ -1,0 +1,6 @@
+Several UI updates
+
+* Obs Detail looks much closer to the wireframe
+* You can add photos to an existing observation
+* Title appears in Obs Edit in Android
+* Keyboard should appear when entering a description in Obs Edit
