@@ -1,9 +1,16 @@
 // @flow
 
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetModalProvider
+} from "@gorhom/bottom-sheet";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useContext, useEffect, useRef, useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import { Headline, Menu } from "react-native-paper";
@@ -13,8 +20,10 @@ import Photo from "../../models/Photo";
 import { ObsEditContext } from "../../providers/contexts";
 import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
+import { MAX_PHOTOS_ALLOWED } from "../Camera/StandardCamera";
 import MediaViewer from "../MediaViewer/MediaViewer";
 import MediaViewerModal from "../MediaViewer/MediaViewerModal";
+import EvidenceButton from "../SharedComponents/Buttons/EvidenceButton";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import SecondaryButton from "../SharedComponents/Buttons/SecondaryButton";
 import KebabMenu from "../SharedComponents/KebabMenu";
@@ -36,6 +45,7 @@ const ObsEdit = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { t } = useTranslation( );
+  const bottomSheetModalRef = useRef( null );
 
   const lastScreen = params?.lastScreen;
 
@@ -43,7 +53,10 @@ const ObsEdit = ( ): Node => {
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [photoUris, setPhotoUris] = useState( [] );
+  const [snapPoint, setSnapPoint] = useState( 150 );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
+
+  const disableAddingMoreEvidence = photoUris.length >= MAX_PHOTOS_ALLOWED;
 
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
@@ -82,7 +95,7 @@ const ObsEdit = ( ): Node => {
     <View style={viewStyles.headerRow}>
       <HeaderBackButton onPress={handleBackButtonPress} />
       {observations.length === 1
-        ? <Headline style={textStyles.verticalCenter}>{t( "New-Observation" )}</Headline>
+        ? <Headline>{t( "New-Observation" )}</Headline>
         : (
           <View style={viewStyles.multipleObsRow}>
             <Pressable onPress={showPrevObservation} style={viewStyles.caret}>
@@ -127,10 +140,41 @@ const ObsEdit = ( ): Node => {
     setPhotoUris( uris );
   }, [currentObs] );
 
+  const addEvidence = () => {
+    bottomSheetModalRef.current?.present();
+  };
+
   if ( !currentObs ) { return null; }
 
+  const renderBackdrop = props => (
+    <BottomSheetBackdrop
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+      pressBehavior="close"
+      appearsOnIndex={0}
+      disappearsOnIndex={-1}
+    />
+  );
+
+  const onImportPhoto = async () => {
+    navigation.navigate( "PhotoGallery", { photos: photoUris, editObs: true } );
+
+    bottomSheetModalRef.current?.dismiss();
+  };
+
+  const onTakePhoto = async () => {
+    navigation.navigate( "StandardCamera", { photos: photoUris } );
+
+    bottomSheetModalRef.current?.dismiss();
+  };
+
+  const onRecordSound = () => {
+    // TODO - need to implement
+    console.log( "Record sound" );
+  };
+
   return (
-    <>
+    <BottomSheetModalProvider>
       <MediaViewerModal
         mediaViewerVisible={mediaViewerVisible}
         hideModal={hideModal}
@@ -145,7 +189,11 @@ const ObsEdit = ( ): Node => {
       <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
         {renderHeader( )}
         <Headline style={textStyles.headerText}>{t( "Evidence" )}</Headline>
-        <EvidenceSection handleSelection={handleSelection} photoUris={photoUris} />
+        <EvidenceSection
+          handleSelection={handleSelection}
+          photoUris={photoUris}
+          handleAddEvidence={addEvidence}
+        />
         <Headline style={textStyles.headerText}>{t( "Identification" )}</Headline>
         <IdentificationSection />
         <Headline style={textStyles.headerText}>{t( "Other-Data" )}</Headline>
@@ -164,8 +212,59 @@ const ObsEdit = ( ): Node => {
             disabled={!isLoggedIn}
           />
         </View>
+
+        <BottomSheetModal
+          ref={bottomSheetModalRef}
+          index={0}
+          enableOverDrag={false}
+          enablePanDownToClose={false}
+          snapPoints={[snapPoint]}
+          backdropComponent={renderBackdrop}
+        >
+          <View
+            style={viewStyles.addEvidenceBottomSheet}
+            onLayout={( {
+              nativeEvent: {
+                layout: { height }
+              }
+            } ) => {
+              setSnapPoint( height + 50 );
+            }}
+          >
+            <Headline>{t( "Add-evidence" )}</Headline>
+            {disableAddingMoreEvidence
+              && (
+              <Text style={textStyles.evidenceWarning}>
+                {t( "You-can-only-upload-20-media" )}
+              </Text>
+              )}
+            <View style={viewStyles.evidenceButtonsContainer}>
+              <EvidenceButton
+                icon="file-image"
+                handlePress={onImportPhoto}
+                disabled={disableAddingMoreEvidence}
+              />
+              <EvidenceButton
+                icon="camera"
+                handlePress={onTakePhoto}
+                disabled={disableAddingMoreEvidence}
+              />
+              <EvidenceButton
+                icon="microphone"
+                handlePress={onRecordSound}
+                disabled={disableAddingMoreEvidence}
+              />
+            </View>
+            <Text
+              style={textStyles.evidenceCancel}
+              onPress={( () => bottomSheetModalRef.current?.dismiss() )}
+            >
+              {t( "Cancel" )}
+            </Text>
+          </View>
+        </BottomSheetModal>
       </ScrollNoFooter>
-    </>
+    </BottomSheetModalProvider>
   );
 };
 

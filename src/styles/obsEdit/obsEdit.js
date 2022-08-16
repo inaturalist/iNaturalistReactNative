@@ -38,6 +38,15 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   },
   verticalCenter: {
     lineHeight: 0
+  },
+  evidenceCancel: {
+    marginTop: 20,
+    textDecorationLine: "underline"
+  },
+  evidenceWarning: {
+    marginBottom: 10,
+    marginTop: 10,
+    textAlign: "center"
   }
 } );
 
@@ -62,6 +71,19 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  addEvidenceBottomSheet: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: 20
+  },
+  evidenceButtonsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: 300,
+    marginTop: 20
+  },
   headerRow: {
     height: 30,
     flexDirection: "row",
