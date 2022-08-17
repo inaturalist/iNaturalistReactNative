@@ -68,6 +68,12 @@ const ObsDetails = ( ): Node => {
   const [addingComment, setAddingComment] = useState( false );
   const [snapPoint, setSnapPoint] = useState( 100 );
 
+  // Clear the comment in a timeout so it doesn't trigger a re-render of the
+  // text input *after* the bottom sheet modal gets dismissed, b/c that seems
+  // to re-render the bottom sheet in a presented state, making it hard to
+  // actually dismiss
+  const clearComment = ( ) => setTimeout( ( ) => setComment( "" ), 100 );
+
   const onBackdropPress = () => {
     Alert.alert(
       t( "Discard-Comment" ),
@@ -75,17 +81,10 @@ const ObsDetails = ( ): Node => {
       [{
         text: t( "Yes" ),
         onPress: () => {
-          setComment( "" );
-          Keyboard.dismiss();
-          bottomSheetModalRef.current?.dismiss();
-          // Annoying workaround since sometimes bottom sheet modal doesn't get dismissed
-          setTimeout(
-            () => {
-              bottomSheetModalRef.current?.dismiss();
-            },
-            500
-          );
           setShowCommentBox( false );
+          // setComment( "" );
+          Keyboard.dismiss();
+          clearComment( );
         }
       }, { text: t( "No" ) }],
       {
@@ -93,6 +92,15 @@ const ObsDetails = ( ): Node => {
       }
     );
   };
+
+  // Make bottom sheet modal visibility reactive instead of imperative
+  useEffect( ( ) => {
+    if ( showCommentBox ) {
+      bottomSheetModalRef.current?.present( );
+    } else {
+      bottomSheetModalRef.current?.dismiss( );
+    }
+  }, [showCommentBox, bottomSheetModalRef] );
 
   const renderHandle = () => (
     <View style={viewStyles.handleContainer} />
@@ -141,8 +149,6 @@ const ObsDetails = ( ): Node => {
   const { taxon, uuid, user } = observation;
 
   const onIDAdded = async identification => {
-    console.log( "onIDAdded", identification );
-
     // Add temporary ID to observation.identifications ("ghosted" ID, while we're trying to add it)
     const currentUser = await getUser();
     const newId = {
@@ -205,15 +211,13 @@ const ObsDetails = ( ): Node => {
     navigation.push( "AddID", { onIDAdded, goBackOnSave: true } );
   };
   const openCommentBox = ( ) => {
-    bottomSheetModalRef.current?.present();
     setShowCommentBox( true );
   };
   const submitComment = async ( ) => {
     setAddingComment( true );
-    setComment( "" );
+    clearComment( );
     setShowCommentBox( false );
     Keyboard.dismiss();
-    bottomSheetModalRef.current?.dismiss();
     const response = await createComment( comment, uuid );
     setAddingComment( false );
     if ( response ) {

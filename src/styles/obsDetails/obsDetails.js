@@ -183,9 +183,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     padding: 0,
     marginBottom: 20
   },
+  // Flow will complain about the Android-only textAlignVertical style without this
+  // $FlowFixMe
   commentInputText: {
     paddingTop: 0,
-    paddingBottom: 8,
+    textAlignVertical: "top",
     height: 80
   },
   sendComment: {
