@@ -158,10 +158,67 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   dataTabView: {
     marginVertical: 10,
     marginLeft: 10
+  },
+  bottomModal: {
+    padding: 0,
+    backgroundColor: colors.white,
+    shadowColor: "#000",
+    borderTopStartRadius: 24,
+    borderTopEndRadius: 24,
+    shadowOffset: {
+      width: 0,
+      height: 12
+    },
+    shadowOpacity: 0.75,
+    shadowRadius: 16.0,
+    elevation: 24
+  },
+  commentInputContainer: {
+    position: "relative",
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  commentInput: {
+    backgroundColor: colors.white,
+    padding: 0,
+    marginBottom: 20
+  },
+  // Flow will complain about the Android-only textAlignVertical style without this
+  // $FlowFixMe
+  commentInputText: {
+    paddingTop: 0,
+    textAlignVertical: "top",
+    height: 80
+  },
+  sendComment: {
+    position: "absolute",
+    right: -30,
+    bottom: 20,
+    zIndex: 9999,
+    width: 80,
+    height: 40
+  },
+  background: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(255,255,255,0.0)"
+  },
+  handleContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24
+  },
+  centerRow: {
+    alignItems: "center",
+    justifyContent: "center"
   }
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
+  commentTextInput: {
+    color: colors.black
+  },
   idCommentCount: {
     marginLeft: 5
   },

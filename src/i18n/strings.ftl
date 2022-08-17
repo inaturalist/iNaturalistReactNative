@@ -628,3 +628,12 @@ Quality-Grade-Badge-casual = Casual
 Add-evidence = Add evidence
 You-can-only-upload-20-media = You can only add 20 photos and 20 sounds to an observation
 
+Add-Comment = Add Comment
+Suggest-an-ID = Suggest an ID
+# Hint text inside the 'Add a comment' Text Input
+Add-a-comment = Add a comment...
+
+Yes = Yes
+No = No
+Discard-Comment = Discard Comment
+Are-you-sure-discard-comment = Are you sure you want to discard this comment?
