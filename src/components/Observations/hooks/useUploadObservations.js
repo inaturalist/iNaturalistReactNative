@@ -20,7 +20,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
       if ( response.results ) { return; }
       if ( response.status !== 200 ) {
         const error = JSON.parse( response );
-        if ( error.url.includes( "observation_photos" ) ) {
+        // guard against 500 errors / server downtime errors
+        if ( error?.url?.includes( "observation_photos" ) ) {
           setStatus( "photoFailure" );
         } else {
           setStatus( "failure" );
