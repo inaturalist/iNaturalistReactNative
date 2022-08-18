@@ -457,10 +457,9 @@
   "Add-Comment": "Add Comment",
   "Suggest-an-ID": "Suggest an ID",
   "Add-a-comment": {
-      "comment": "Hint text inside the 'Add a comment' Text Input",
-      "val": "Add a comment..."
+    "comment": "Hint text inside the 'Add a comment' Text Input",
+    "val": "Add a comment..."
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?"
-
 }
