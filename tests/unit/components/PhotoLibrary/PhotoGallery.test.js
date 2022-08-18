@@ -12,7 +12,7 @@ jest.useFakeTimers( );
 
 const mockPhoto = factory( "DevicePhoto" );
 
-jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotos", ( ) => ( {
+jest.mock( "../../../../src/components/PhotoLibrary/hooks/useCameraRollPhotos", ( ) => ( {
   __esModule: true,
   default: ( ) => ( { photos: [mockPhoto] } )
 } ) );
