@@ -1,12 +1,12 @@
 // @flow
 
-import { HeaderBackButton } from "@react-navigation/elements";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native";
-import { Appbar, Button } from "react-native-paper";
+import { Appbar, Button, IconButton } from "react-native-paper";
 
+import colors from "../../styles/colors";
 import { textStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
 import HorizontalScroll from "./HorizontalScroll";
 
@@ -49,7 +49,11 @@ const MediaViewer = ( {
         setPhotoUris={setPhotoUris}
         hideDialog={hideDialog}
       />
-      <HeaderBackButton onPress={hideModal} />
+      <IconButton
+        icon="arrow-left"
+        onPress={hideModal}
+        iconColor={colors.white}
+      />
       <Button
         style={viewStyles.alignRight}
         onPress={showDialog}
