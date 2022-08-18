@@ -2,7 +2,7 @@
 
 import NetInfo from "@react-native-community/netinfo";
 import inatjs from "inaturalistjs";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Observation from "../../../models/Observation";
 import User from "../../../models/User";
@@ -12,6 +12,7 @@ const useRemoteObservation = ( observation: Object, refetch: boolean ): Object =
   const [remoteObservation, setRemoteObservation] = useState( null );
   const [isConnected, setIsConnected] = useState( null );
   const [currentUserFaved, setCurrentUserFaved] = useState( null );
+  const prevRefetch = useRef( refetch ).current;
 
   useEffect( ( ) => {
     const unsubscribe = NetInfo.addEventListener( state => {
@@ -65,14 +66,14 @@ const useRemoteObservation = ( observation: Object, refetch: boolean ): Object =
     };
 
     // TODO: probably need an error message for no connectivity
-    if ( isConnected && !observation ) {
+    if ( isConnected && ( !observation || refetch !== prevRefetch ) ) {
       fetchObservation( );
     }
 
     return ( ) => {
       isCurrent = false;
     };
-  }, [observation, isConnected, refetch] );
+  }, [observation, isConnected, refetch, prevRefetch] );
 
   return {
     remoteObservation,
