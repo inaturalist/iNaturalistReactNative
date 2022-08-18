@@ -20,7 +20,6 @@ import PermissionGate from "../components/SharedComponents/PermissionGate";
 import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
 import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
 import UserProfile from "../components/UserProfile/UserProfile";
-import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 
 const Stack = createNativeStackNavigator( );
 
@@ -60,60 +59,58 @@ const SoundRecorderWithPermission = ( ) => (
 
 const CameraStackNavigation = ( ): React.Node => (
   <Mortal>
-    <PhotoGalleryProvider>
-      <Stack.Navigator screenOptions={hideHeader}>
-        <Stack.Screen
-          name="ObsList"
-          component={ObsList}
-        />
-        <Stack.Screen
-          name="ObsDetails"
-          component={ObsDetails}
-        />
-        <Stack.Screen
-          name="UserProfile"
-          component={UserProfile}
-        />
-        <Stack.Screen
-          name="TaxonDetails"
-          component={TaxonDetails}
-          options={showBackButton}
-        />
-        <Stack.Screen
-          name="PhotoGallery"
-          component={PhotoGalleryWithPermission}
-        />
-        <Stack.Screen
-          name="GroupPhotos"
-          component={GroupPhotos}
-        />
-        <Stack.Screen
-          name="ObsEdit"
-          component={ObsEdit}
-        />
-        <Stack.Screen
-          name="SoundRecorder"
-          component={SoundRecorderWithPermission}
-        />
-        <Stack.Screen
-          name="StandardCamera"
-          component={StandardCameraWithPermission}
-        />
-        <Stack.Screen
-          name="Suggestions"
-          component={CVSuggestions}
-          options={{
-            headerTitle: <CustomHeaderWithTranslation headerText="IDENTIFICATION" />,
-            headerShown: true
-          }}
-        />
-        <Stack.Screen
-          name="AddID"
-          component={AddID}
-          options={hideHeader}
-        />
-      </Stack.Navigator>
-    </PhotoGalleryProvider>
+    <Stack.Navigator screenOptions={hideHeader}>
+      <Stack.Screen
+        name="ObsList"
+        component={ObsList}
+      />
+      <Stack.Screen
+        name="ObsDetails"
+        component={ObsDetails}
+      />
+      <Stack.Screen
+        name="UserProfile"
+        component={UserProfile}
+      />
+      <Stack.Screen
+        name="TaxonDetails"
+        component={TaxonDetails}
+        options={showBackButton}
+      />
+      <Stack.Screen
+        name="PhotoGallery"
+        component={PhotoGalleryWithPermission}
+      />
+      <Stack.Screen
+        name="GroupPhotos"
+        component={GroupPhotos}
+      />
+      <Stack.Screen
+        name="ObsEdit"
+        component={ObsEdit}
+      />
+      <Stack.Screen
+        name="SoundRecorder"
+        component={SoundRecorderWithPermission}
+      />
+      <Stack.Screen
+        name="StandardCamera"
+        component={StandardCameraWithPermission}
+      />
+      <Stack.Screen
+        name="Suggestions"
+        component={CVSuggestions}
+        options={{
+          headerTitle: <CustomHeaderWithTranslation headerText="IDENTIFICATION" />,
+          headerShown: true
+        }}
+      />
+      <Stack.Screen
+        name="AddID"
+        component={AddID}
+        options={hideHeader}
+      />
+    </Stack.Navigator>
   </Mortal>
 );
 
