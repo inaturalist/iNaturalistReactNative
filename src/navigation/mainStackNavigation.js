@@ -79,6 +79,7 @@ const MainStackNavigation = ( ): React.Node => (
           <Stack.Screen
             name="ObsList"
             component={ObsList}
+            options={hideScreenTransitionAnimation}
           />
           <Stack.Screen
             name="ObsDetails"
