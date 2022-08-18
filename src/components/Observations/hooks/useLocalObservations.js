@@ -6,10 +6,13 @@ import {
 import Realm from "realm";
 
 import realmConfig from "../../../models/index";
+import Observation from "../../../models/Observation";
 
-const useSubscribeToLocalObservations = ( ): Object => {
+const useLocalObservations = ( ): Object => {
   const [observationList, setObservationList] = useState( [] );
   const [addListener, setAddListener] = useState( false );
+  const [allObsToUpload, setAllObsToUpload] = useState( [] );
+  const [unuploadedObsList, setUnuploadedObsList] = useState( [] );
 
   // We store a reference to our realm using useRef that allows us to access it via
   // realmRef.current for the component's lifetime without causing rerenders if updated.
@@ -26,8 +29,14 @@ const useSubscribeToLocalObservations = ( ): Object => {
       // If you just pass localObservations you end up assigning a Results
       // object to state instead of an array of observations. There's
       // probably a better way...
-      if ( localObservations.length > 0 ) {
-        setObservationList( localObservations.map( o => o ) );
+      if ( localObservations.length === 0 ) { return; }
+      setObservationList( localObservations.map( o => o ) );
+
+      const unsyncedObs = Observation.filterUnsyncedObservations( realm );
+      setUnuploadedObsList( unsyncedObs.map( o => o ) );
+
+      if ( allObsToUpload.length === 0 ) {
+        setAllObsToUpload( unsyncedObs.map( o => o ) );
       }
     } );
     // eslint-disable-next-line consistent-return
@@ -35,7 +44,7 @@ const useSubscribeToLocalObservations = ( ): Object => {
       // remember to remove listeners to avoid async updates
       localObservations.removeAllListeners( );
     };
-  }, [addListener] );
+  }, [addListener, allObsToUpload.length] );
 
   useEffect( ( ) => {
     const openRealm = async ( ) => {
@@ -46,7 +55,11 @@ const useSubscribeToLocalObservations = ( ): Object => {
     openRealm( );
   }, [] );
 
-  return observationList;
+  return {
+    observationList,
+    allObsToUpload,
+    unuploadedObsList
+  };
 };
 
-export default useSubscribeToLocalObservations;
+export default useLocalObservations;

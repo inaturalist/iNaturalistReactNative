@@ -115,6 +115,8 @@ Email-Notifications = Email Notifications
 
 Error-Couldnt-Complete-Upload = Error: Couldn't Complete Upload
 
+Error-Couldnt-Upload-Photo = Error: Couldn't Upload Photo
+
 Evidence = Evidence
 
 Explore = Explore
