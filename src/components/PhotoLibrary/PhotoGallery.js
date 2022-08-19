@@ -10,17 +10,16 @@ import {
   ActivityIndicator, FlatList, Text, View
 } from "react-native";
 import { Snackbar } from "react-native-paper";
-import { useBetween } from "use-between";
 
 import { ObsEditContext } from "../../providers/contexts";
 import { viewStyles } from "../../styles/photoLibrary/photoGallery";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
-import useGalleryPermissions from "./hooks/useGalleryPermissions";
-import useSelectedPhotos from "./hooks/useSelectedPhotos";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import PhotoGalleryImage from "./PhotoGalleryImage";
+
+const MAX_PHOTOS_ALLOWED = 20;
 
 const options = {
   first: 28,
@@ -35,11 +34,14 @@ const PhotoGallery = ( ): Node => {
     All: {},
     rerenderFlatList: false
   } );
-  const useSharedSelectedPhotos = ( ) => useBetween( useSelectedPhotos );
-  const {
-    selectedPhotos, setSelectedPhotos, rerenderList, setRerenderList
-  } = useSharedSelectedPhotos( );
-  const canRequestPhotos = useGalleryPermissions( );
+  const [selectedPhotos, setSelectedPhotos] = useState( [] );
+
+  // Whether or not usePhotos can fetch photos now, e.g. if permissions have
+  // been granted (Android), or if it's ok to request permissions (iOS). This
+  // should be used by whatever component is using this context so that
+  // photos are requested (and permissions are potentially requested) when
+  // they are needed and not just when this provider initializes
+  const [canRequestPhotos, setCanRequestPhotos] = useState( false );
 
   const photoFetchStatus = useCameraRollPhotos( photoOptions, isScrolling, canRequestPhotos );
   const photosFetched = photoFetchStatus.photos;
@@ -54,15 +56,23 @@ const PhotoGallery = ( ): Node => {
   const clearSelection = params?.clearSelection;
   const updateSelection = params?.updateSelection;
 
+  // If this component is being rendered we have either already asked for
+  // permissions in Android via a PermissionGate parent component, or the
+  // user is expecting us to ask for permissions via CameraRoll in iOS.
+  // Either way, we need to inform the context that it is now ok to request
+  // photos from the operating system.
+  useEffect( ( ) => {
+    if ( !canRequestPhotos ) {
+      setCanRequestPhotos( true );
+    }
+  }, [canRequestPhotos] );
+
   useEffect( ( ) => {
     if ( clearSelection ) {
       // clear selection when opening photo gallery from camera options modal
       setSelectedPhotos( [] );
-    } else if ( updateSelection ) {
-      // update selection when opening photo gallery from group photos screen
-      setRerenderList( true );
     }
-  }, [clearSelection, setSelectedPhotos, updateSelection, setRerenderList] );
+  }, [clearSelection, setSelectedPhotos, updateSelection] );
 
   // $FlowIgnore
   const selectedAlbum = photoOptions.groupName || "All";
@@ -127,21 +137,62 @@ const PhotoGallery = ( ): Node => {
 
   const getAllPhotos = ( ) => [...photoUris, ...selectedPhotos];
 
-  const renderImage = ( { item } ) => (
-    <PhotoGalleryImage
-      item={item}
-      setShowAlert={setShowAlert}
-      selectedAlbum={selectedAlbum}
-      getAllPhotos={getAllPhotos}
-      updatePhotoGallery={updatePhotoGallery}
-    />
-  );
+  const selectPhoto = p => {
+    const newSelection = selectedPhotos.concat( p ).sort( ( a, b ) => b.timestamp - a.timestamp );
+    setSelectedPhotos( newSelection );
+  };
+
+  const unselectPhoto = item => {
+    const newSelection = selectedPhotos;
+    const selectedIndex = selectedPhotos.findIndex( p => p.image.uri === item.image.uri );
+    newSelection.splice( selectedIndex, 1 );
+    setSelectedPhotos( newSelection );
+  };
+
+  const handlePhotoSelection = ( item, selected ) => {
+    if ( !selected ) {
+      selectPhoto( item );
+      updatePhotoGallery( false );
+    } else {
+      unselectPhoto( item );
+      updatePhotoGallery( true );
+    }
+  };
+
+  const checkSelected = item => {
+    const uri = item?.image?.uri;
+    const albumGroupName = selectedAlbum === "All" ? "All Photos" : selectedAlbum;
+    const selectedInCurrentAlbum = selectedPhotos.filter( p => p.group_name === albumGroupName );
+    return selectedInCurrentAlbum.some( p => p.image.uri === uri );
+  };
+
+  const renderImage = ( { item } ) => {
+    const uri = item?.image?.uri;
+    const isSelected = checkSelected( item );
+
+    const handleImagePress = ( ) => {
+      const allPhotos = getAllPhotos( );
+      if ( isSelected || allPhotos.length < MAX_PHOTOS_ALLOWED ) {
+        handlePhotoSelection( item, isSelected );
+      } else {
+        setShowAlert( true );
+      }
+    };
+
+    return (
+      <PhotoGalleryImage
+        uri={uri}
+        handleImagePress={handleImagePress}
+        isSelected={isSelected}
+      />
+    );
+  };
 
   const extractKey = ( item, index ) => `${item}${index}`;
 
   const fetchMorePhotos = ( ) => setIsScrolling( true );
 
-  const navToGroupPhotos = ( ) => navigation.navigate( "GroupPhotos" );
+  const navToGroupPhotos = ( ) => navigation.navigate( "GroupPhotos", { selectedPhotos } );
 
   const renderEmptyList = ( ) => {
     if ( fetchingPhotos ) {
@@ -158,7 +209,6 @@ const PhotoGallery = ( ): Node => {
       <FlatList
         // $FlowIgnore
         data={photosByAlbum}
-        extraData={rerenderList}
         initialNumToRender={4}
         keyExtractor={extractKey}
         numColumns={4}

@@ -1,11 +1,10 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
 import Realm from "realm";
-import { useBetween } from "use-between";
 
 import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
@@ -16,16 +15,12 @@ import GroupPhotoImage from "./GroupPhotoImage";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 import GroupPhotosHeader from "./GroupPhotosHeader";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
-import useSelectedPhotos from "./hooks/useSelectedPhotos";
 
 const GroupPhotos = ( ): Node => {
   const { addObservations } = useContext( ObsEditContext );
   const navigation = useNavigation( );
-  const useSharedSelectedPhotos = ( ) => useBetween( useSelectedPhotos );
-  const {
-    selectedPhotos,
-    unselectPhoto
-  } = useSharedSelectedPhotos( );
+  const { params } = useRoute( );
+  const { selectedPhotos } = params;
   const observations = selectedPhotos.map( photo => ( {
     photos: [photo]
   } ) );
@@ -142,10 +137,6 @@ const GroupPhotos = ( ): Node => {
   const removePhotos = ( ) => {
     const removedFromGroup = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
-
-    orderedPhotos.forEach( p => {
-      unselectPhoto( p );
-    } );
 
     // create a list of grouped photos, with selected photos removed
     groupedPhotos.forEach( obs => {
