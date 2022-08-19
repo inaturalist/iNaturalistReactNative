@@ -15,7 +15,7 @@ import {
   View
 } from "react-native";
 import {
-  Button, Dialog, Paragraph, Portal, Text, TextInput
+  Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -23,6 +23,7 @@ import colors from "../../styles/colors";
 import {
   closeButton, imageStyles, textStyles, viewStyles
 } from "../../styles/login/login";
+import Button from "../SharedComponents/Buttons/Button";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import {
   authenticateUser,
@@ -104,10 +105,10 @@ const Login = ( ): Node => {
             <Paragraph>{t( "Are-you-sure-you-want-to-sign-out" )}</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button style={viewStyles.grayButton} onPress={hideDialog} testID="Login.signOutButton">
+            <Button level="neutral" onPress={hideDialog} testID="Login.signOutButton">
               {t( "Cancel" )}
             </Button>
-            <Button style={viewStyles.greenButton} onPress={onSignOut}>
+            <Button level="primary" onPress={onSignOut}>
               {t( "Sign-out" )}
             </Button>
           </Dialog.Actions>
@@ -171,10 +172,10 @@ const Login = ( ): Node => {
         <Text style={textStyles.forgotPassword}>{t( "Forgot-Password" )}</Text>
       </TouchableOpacity>
       {error && <Text style={textStyles.error}>{error}</Text>}
-      <RoundGreenButton
-        style={viewStyles.button}
-        buttonText="Log-in"
-        handlePress={login}
+      <Button
+        level="primary"
+        text="Log-in"
+        onPress={login}
         disabled={!email || !password}
         testID="Login.loginButton"
         loading={loading}
