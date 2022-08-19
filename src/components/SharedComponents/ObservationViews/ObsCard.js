@@ -1,10 +1,13 @@
 // @flow
 
 import type { Node } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Pressable, View } from "react-native";
 import { Avatar } from "react-native-paper";
+import Realm from "realm";
 
+import realmConfig from "../../../models/index";
+import Observation from "../../../models/Observation";
 import Photo from "../../../models/Photo";
 import { viewStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import ObsCardDetails from "./ObsCardDetails";
@@ -16,10 +19,20 @@ type Props = {
 }
 
 const ObsCard = ( { item, handlePress }: Props ): Node => {
+  const [needsUpload, setNeedsUpload] = useState( false );
   const onPress = ( ) => handlePress( item );
-  const needsUpload = item._synced_at === null;
+  // const needsUpload = item._synced_at === null;
 
   const photo = item?.observationPhotos?.[0]?.photo;
+
+  useEffect( ( ) => {
+    const openRealm = async ( ) => {
+      const realm = await Realm.open( realmConfig );
+      const isUnsyncedObs = Observation.isUnsyncedObservation( realm, item );
+      setNeedsUpload( isUnsyncedObs );
+    };
+    openRealm( );
+  }, [item] );
 
   return (
     <Pressable

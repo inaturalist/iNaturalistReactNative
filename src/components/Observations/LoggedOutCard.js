@@ -10,10 +10,10 @@ import { Text } from "react-native-paper";
 import { textStyles, viewStyles } from "../../styles/observations/loggedOutCard";
 
 type Props = {
-  numObsToUpload: number
+  numOfUnuploadedObs: number
 }
 
-const LoggedOutCard = ( { numObsToUpload }: Props ): Node => {
+const LoggedOutCard = ( { numOfUnuploadedObs }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
@@ -21,7 +21,7 @@ const LoggedOutCard = ( { numObsToUpload }: Props ): Node => {
     <Pressable style={viewStyles.loggedOutCard} onPress={( ) => navigation.navigate( "login" )}>
       <Text variant="titleLarge" style={textStyles.centerText}>{t( "Log-in-to-iNaturalist" )}</Text>
       <Text variant="bodyLarge" style={textStyles.centerText}>
-        {t( "X-unuploaded-observations", { observationCount: numObsToUpload } )}
+        {t( "X-unuploaded-observations", { observationCount: numOfUnuploadedObs } )}
       </Text>
     </Pressable>
   );

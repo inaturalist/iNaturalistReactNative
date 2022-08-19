@@ -111,8 +111,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const saveAndUploadObservation = async ( ) => {
       const localObs = await saveLocalObservation( currentObs );
-      const mappedObs = Observation.mapObservationForUpload( localObs );
-      uploadObservation( mappedObs, localObs );
+      uploadObservation( localObs );
       if ( localObs ) {
         setNextScreen( );
       }

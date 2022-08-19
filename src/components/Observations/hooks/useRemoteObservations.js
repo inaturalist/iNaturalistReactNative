@@ -11,35 +11,11 @@ import Observation from "../../../models/Observation";
 const useRemoteObservations = ( ): Object => {
   const [loading, setLoading] = useState( false );
   const [page, setPage] = useState( 1 );
-  const [uploadStatus, setUploadStatus] = useState( {
-    allObsToUpload: [],
-    unuploadedObs: [],
-    totalObsToUpload: 0,
-    uploadInProgress: false
-  } );
   const [fetchFromServer, setFetchFromServer] = useState( true );
 
   const syncObservations = useCallback( ( ) => {
     setFetchFromServer( true );
   }, [] );
-
-  const updateUnsyncedObs = useCallback( realm => {
-    const { unuploadedObs, totalObsToUpload } = uploadStatus;
-    const numOfUnuploadedObs = unuploadedObs?.length;
-    const obs = realm?.objects( "Observation" );
-    // includes obs which have never been synced or which have been updated
-    // locally since the last sync
-    const unsyncedObs = obs.filtered( "_synced_at == null || _synced_at <= _updated_at" );
-
-    if ( unsyncedObs?.length && unsyncedObs?.length !== numOfUnuploadedObs ) {
-      setUploadStatus( {
-        ...uploadStatus,
-        unuploadedObs: unsyncedObs,
-        allObsToUpload: unsyncedObs,
-        totalObsToUpload: Math.max( unsyncedObs.length, totalObsToUpload )
-      } );
-    }
-  }, [uploadStatus] );
 
   const fetchNextObservations = useCallback( numOfObs => {
     const nextPageToFetch = numOfObs > 0
@@ -49,24 +25,12 @@ const useRemoteObservations = ( ): Object => {
     setFetchFromServer( true );
   }, [] );
 
-  const updateUploadStatus = useCallback( ( ) => {
-    if ( uploadStatus.uploadInProgress === false ) {
-      setUploadStatus( {
-        ...uploadStatus,
-        uploadInProgress: true
-      } );
-    }
-  }, [uploadStatus] );
-
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchObservations = async ( ) => {
       if ( !isCurrent ) { return; }
       setLoading( true );
       const realm = await Realm.open( realmConfig );
-      // determine which local observations are new or modified
-      // and need to be uploaded
-      updateUnsyncedObs( realm );
 
       // update local observations with unviewed comment or id statuses
       await Observation.fetchObservationUpdates( realm );
@@ -89,15 +53,12 @@ const useRemoteObservations = ( ): Object => {
     return ( ) => {
       isCurrent = false;
     };
-  }, [updateUnsyncedObs, page, fetchFromServer] );
+  }, [page, fetchFromServer] );
 
   return {
     loading,
     syncObservations,
-    fetchNextObservations,
-    updateUploadStatus,
-    uploadStatus,
-    setUploadStatus
+    fetchNextObservations
   };
 };
 

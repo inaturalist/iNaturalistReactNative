@@ -12,12 +12,8 @@ import React, {
   useContext, useEffect, useRef, useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Pressable, Text, View
-} from "react-native";
-import {
-  Headline, Menu, Modal, Portal
-} from "react-native-paper";
+import { Pressable, Text, View } from "react-native";
+import { Headline, Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import Photo from "../../models/Photo";
@@ -26,6 +22,7 @@ import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { MAX_PHOTOS_ALLOWED } from "../Camera/StandardCamera";
 import MediaViewer from "../MediaViewer/MediaViewer";
+import MediaViewerModal from "../MediaViewer/MediaViewerModal";
 import EvidenceButton from "../SharedComponents/Buttons/EvidenceButton";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import SecondaryButton from "../SharedComponents/Buttons/SecondaryButton";
@@ -178,20 +175,17 @@ const ObsEdit = ( ): Node => {
 
   return (
     <BottomSheetModalProvider>
-      <Portal>
-        <Modal
-          visible={mediaViewerVisible}
-          onDismiss={hideModal}
-          contentContainerStyle={viewStyles.container}
-        >
-          <MediaViewer
-            initialPhotoSelected={initialPhotoSelected}
-            photoUris={photoUris}
-            setPhotoUris={setPhotos}
-            hideModal={hideModal}
-          />
-        </Modal>
-      </Portal>
+      <MediaViewerModal
+        mediaViewerVisible={mediaViewerVisible}
+        hideModal={hideModal}
+      >
+        <MediaViewer
+          initialPhotoSelected={initialPhotoSelected}
+          photoUris={photoUris}
+          setPhotoUris={setPhotos}
+          hideModal={hideModal}
+        />
+      </MediaViewerModal>
       <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
         {renderHeader( )}
         <Headline style={textStyles.headerText}>{t( "Evidence" )}</Headline>
