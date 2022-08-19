@@ -17,7 +17,7 @@ type Props = {
 const GroupPhotosHeader = ( { photos, observations }: Props ): Node => {
   const navigation = useNavigation( );
 
-  const navBack = ( ) => navigation.navigate( "PhotoGallery", { updateSelection: true } );
+  const navBack = ( ) => navigation.goBack( );
 
   return (
     <>
