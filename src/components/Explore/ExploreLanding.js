@@ -36,6 +36,7 @@ const Explore = ( ): Node => {
       <TaxonLocationSearch />
       <View style={viewStyles.positionBottom}>
         <Button
+          level="primary"
           text="Explore"
           onPress={navToExplore}
           testID="Explore.fetchObservations"
