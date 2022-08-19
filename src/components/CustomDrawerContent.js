@@ -20,40 +20,36 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
   return (
     <DrawerContentScrollView state={state} navigation={navigation} descriptors={descriptors}>
       <DrawerItem
-        label="identify"
-        onPress={( ) => navigation.navigate( "identify" )}
-      />
-      <DrawerItem
         label="search"
         onPress={( ) => navigation.navigate( "search" )}
       />
       <DrawerItem
-        label="settings"
-        onPress={( ) => navigation.navigate( "settings" )}
+        label="identify"
+        onPress={( ) => navigation.navigate( "identify" )}
       />
       <DrawerItem
-        label="following"
-        onPress={( ) => console.log( "nav to following" )}
+        label="projects"
+        onPress={( ) => navigation.navigate( "projects" )}
+      />
+      <DrawerItem
+        label="help"
+        onPress={( ) => console.log( "nav to help/tutorials" )}
       />
       <DrawerItem
         label="about"
         onPress={( ) => navigation.navigate( "about" )}
       />
       <DrawerItem
-        label="help/tutorials"
-        onPress={( ) => console.log( "nav to help/tutorials" )}
-      />
-      <DrawerItem
-        label="login"
-        onPress={( ) => navigation.navigate( "login" )}
+        label="settings"
+        onPress={( ) => navigation.navigate( "settings" )}
       />
       <DrawerItem
         label="network/logging"
         onPress={( ) => navigation.navigate( "network" )}
       />
       <DrawerItem
-        label="projects"
-        onPress={( ) => navigation.navigate( "projects" )}
+        label="login"
+        onPress={( ) => navigation.navigate( "login" )}
       />
     </DrawerContentScrollView>
   );

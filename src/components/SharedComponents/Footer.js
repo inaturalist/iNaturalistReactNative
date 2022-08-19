@@ -11,9 +11,9 @@ import CameraOptionsButton from "./Buttons/CameraOptionsButton";
 const Footer = ( ): React.Node => {
   const navigation = useNavigation( );
   const toggleSideMenu = ( ) => navigation.openDrawer( );
-  const navToObsList = ( ) => navigation.navigate( "observations", { screen: "ObsList" } );
-  const navToExplore = ( ) => navigation.navigate( "explore stack" );
-  const navToNotifications = ( ) => navigation.navigate( "notifications" );
+  const navToObsList = ( ) => navigation.navigate( "MainStack", { screen: "ObsList" } );
+  const navToExplore = ( ) => navigation.navigate( "MainStack", { screen: "ExploreLanding" } );
+  const navToNotifications = ( ) => navigation.navigate( "MainStack", { screen: "Messages" } );
 
   return (
     <View style={[viewStyles.row, viewStyles.shadow]}>

@@ -81,7 +81,7 @@ const Login = ( ): Node => {
     setUsername( userLogin );
     setLoggedIn( true );
     setLoading( false );
-    navigation.navigate( "observations", {
+    navigation.navigate( "MainStack", {
       screen: "ObsList"
     } );
   };
