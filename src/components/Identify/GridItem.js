@@ -12,7 +12,7 @@ import {
   textStyles,
   viewStyles
 } from "../../styles/sharedComponents/observationViews/gridItem";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 import createIdentification from "./helpers/createIdentification";
 
 type Props = {
@@ -79,9 +79,10 @@ const GridItem = ( {
           <Text style={textStyles.text}>{name}</Text>
         </View>
         {isSpecies && (
-          <RoundGreenButton
-            handlePress={agreeWithObservation}
-            buttonText="agree"
+          <Button
+            level="primary"
+            onPress={agreeWithObservation}
+            text="agree"
             testID="Identify.agree"
             disabled={wasReviewed}
           />
