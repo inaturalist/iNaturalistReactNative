@@ -24,7 +24,6 @@ import {
   closeButton, imageStyles, textStyles, viewStyles
 } from "../../styles/login/login";
 import Button from "../SharedComponents/Buttons/Button";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import {
   authenticateUser,
   getUsername,
@@ -105,22 +104,25 @@ const Login = ( ): Node => {
             <Paragraph>{t( "Are-you-sure-you-want-to-sign-out" )}</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button level="neutral" onPress={hideDialog} testID="Login.signOutButton">
-              {t( "Cancel" )}
-            </Button>
-            <Button level="primary" onPress={onSignOut}>
-              {t( "Sign-out" )}
-            </Button>
+            <Button
+              level="neutral"
+              onPress={hideDialog}
+              testID="Login.signOutButton"
+              text={t( "Cancel" )}
+            />
+
+            <Button level="primary" onPress={onSignOut} text={t( "Sign-out" )} />
+
           </Dialog.Actions>
         </Dialog>
       </Portal>
       <View style={viewStyles.logoutForm}>
         <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
-        <RoundGreenButton
-          style={viewStyles.button}
-          handlePress={showDialog}
+        <Button
+          level="primary"
+          onPress={showDialog}
           testID="Login.signOutButton"
-          buttonText="Sign-out"
+          text="Sign-out"
         />
       </View>
     </>

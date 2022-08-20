@@ -14,7 +14,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     alignItems: "center",
     paddingVertical: 10,
     borderRadius: 40,
-    marginVertical: 15
+    marginVertical: 15,
+    marginHorizontal: 10
   },
   containerPrimary: {
     backgroundColor: PRIMARY,
