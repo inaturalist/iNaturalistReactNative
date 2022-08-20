@@ -13,7 +13,7 @@ import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds
 import { ObsEditContext } from "../../providers/contexts";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import PlaceholderText from "../PlaceholderText";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 
 const IdentificationSection = ( ): Node => {
   const {
@@ -81,9 +81,10 @@ const IdentificationSection = ( ): Node => {
     }
     return (
       <>
-        <RoundGreenButton
-          handlePress={navToAddID}
-          buttonText="View Identification Suggestions"
+        <Button
+          level="primary"
+          onPress={navToAddID}
+          text="View Identification Suggestions"
           testID="ObsEdit.Suggestions"
         />
         <Text style={textStyles.text}>

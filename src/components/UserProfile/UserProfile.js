@@ -9,7 +9,7 @@ import HTML from "react-native-render-html";
 import User from "../../models/User";
 import { textStyles, viewStyles } from "../../styles/userProfile/userProfile";
 // import useNetworkSite from "./hooks/useNetworkSite";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 import CustomHeader from "../SharedComponents/CustomHeader";
 import UserIcon from "../SharedComponents/UserIcon";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -53,15 +53,17 @@ const UserProfile = ( ): React.Node => {
       {!currentUser && (
         <View style={viewStyles.buttonRow}>
           <View style={viewStyles.button}>
-            <RoundGreenButton
-              buttonText="Follow"
-              handlePress={followUser}
+            <Button
+              level="primary"
+              text="Follow"
+              onPress={followUser}
               testID="UserProfile.followButton"
             />
           </View>
           <View style={viewStyles.button}>
-            <RoundGreenButton
-              buttonText="Messages"
+            <Button
+              level="primary"
+              text="Messages"
               handlePress={( ) => console.log( "open messages" )}
               testID="UserProfile.messagesButton"
             />

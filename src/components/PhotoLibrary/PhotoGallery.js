@@ -13,7 +13,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
 import colors from "../../styles/colors";
 import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 
@@ -188,10 +188,11 @@ const PhotoGallery = ( ): Node => {
       />
       { getSelectedPhotos().length > 0 && (
         <View style={viewStyles.createObsButton}>
-          <RoundGreenButton
-            buttonText="Import-X-photos"
+          <Button
+            level="primary"
+            text="Import-X-photos"
             count={totalSelected || 0}
-            handlePress={editObs ? navToObsEdit : navToGroupPhotos}
+            onPress={editObs ? navToObsEdit : navToGroupPhotos}
             testID="PhotoGallery.createObsButton"
           />
         </View>

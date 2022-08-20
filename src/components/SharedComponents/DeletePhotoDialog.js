@@ -4,13 +4,13 @@ import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Button, Dialog, Paragraph, Portal
+  Dialog, Paragraph, Portal
 } from "react-native-paper";
 import Realm from "realm";
 
 import realmConfig from "../../models/index";
 import Photo from "../../models/Photo";
-import { viewStyles } from "../../styles/sharedComponents/deletePhotoDialog";
+import Button from "./Buttons/Button";
 
 type Props = {
   deleteDialogVisible: boolean,
@@ -51,12 +51,8 @@ const DeletePhotoDialog = ( {
           <Paragraph>{t( "Are-you-sure" )}</Paragraph>
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={hideDialog} style={viewStyles.cancelButton}>
-            {t( "Cancel" )}
-          </Button>
-          <Button onPress={deletePhoto} style={viewStyles.confirmButton}>
-            {t( "Yes-delete-photo" )}
-          </Button>
+          <Button onPress={hideDialog} text={t( "Cancel" )} level="neutral" />
+          <Button onPress={deletePhoto} text={t( "Yes-delete-photo" )} level="primary" />
         </Dialog.Actions>
       </Dialog>
     </Portal>
