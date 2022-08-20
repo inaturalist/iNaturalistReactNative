@@ -13,6 +13,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   containerDefault: {
     alignItems: "center",
     paddingVertical: 10,
+    paddingHorizontal: 10,
     borderRadius: 40,
     marginVertical: 15,
     marginHorizontal: 10
