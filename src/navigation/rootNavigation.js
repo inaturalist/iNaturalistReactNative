@@ -3,6 +3,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import * as React from "react";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -31,6 +35,10 @@ const screenOptions = { headerLeft: ( ) => <View /> };
 const hideHeader = {
   headerShown: false
 };
+
+const queryClient = new QueryClient( {
+  defaultOptions: { queries: { retry: 2 } }
+} );
 
 // The login component should be not preserve its state or effects after the
 // user navigates away from it. This will simply cause it to unmount when it
@@ -79,51 +87,53 @@ const App = ( ): React.Node => {
   }, [] );
 
   return (
-    <SafeAreaProvider>
-      <PaperProvider theme={theme}>
-        <GestureHandlerRootView style={viewStyles.container}>
-          <NavigationContainer>
-            <PhotoGalleryProvider>
-              <ObsEditProvider>
-                <Drawer.Navigator
-                  screenOptions={screenOptions}
-                  name="Drawer"
-                  drawerContent={drawerRenderer}
-                >
-                  <Drawer.Screen
-                    name="MainStack"
-                    component={MainStackNavigation}
-                    options={hideHeader}
-                  />
-                  <Drawer.Screen name="search" component={Search} />
-                  <Drawer.Screen
-                    name="identify"
-                    component={IdentifyStackNavigation}
-                    options={hideHeader}
-                  />
-                  <Drawer.Screen
-                    name="projects"
-                    component={ProjectsStackNavigation}
-                    options={hideHeader}
-                  />
-                  <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
-                  <Drawer.Screen
-                    name="about"
-                    component={About}
-                  />
-                  <Drawer.Screen name="help" component={PlaceholderComponent} />
-                  <Drawer.Screen name="login" component={MortalLogin} options={hideHeader} />
-                  <Drawer.Screen
-                    name="network"
-                    component={NetworkLogging}
-                  />
-                </Drawer.Navigator>
-              </ObsEditProvider>
-            </PhotoGalleryProvider>
-          </NavigationContainer>
-        </GestureHandlerRootView>
-      </PaperProvider>
-    </SafeAreaProvider>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <PaperProvider theme={theme}>
+          <GestureHandlerRootView style={viewStyles.container}>
+            <NavigationContainer>
+              <PhotoGalleryProvider>
+                <ObsEditProvider>
+                  <Drawer.Navigator
+                    screenOptions={screenOptions}
+                    name="Drawer"
+                    drawerContent={drawerRenderer}
+                  >
+                    <Drawer.Screen
+                      name="MainStack"
+                      component={MainStackNavigation}
+                      options={hideHeader}
+                    />
+                    <Drawer.Screen name="search" component={Search} />
+                    <Drawer.Screen
+                      name="identify"
+                      component={IdentifyStackNavigation}
+                      options={hideHeader}
+                    />
+                    <Drawer.Screen
+                      name="projects"
+                      component={ProjectsStackNavigation}
+                      options={hideHeader}
+                    />
+                    <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
+                    <Drawer.Screen
+                      name="about"
+                      component={About}
+                    />
+                    <Drawer.Screen name="help" component={PlaceholderComponent} />
+                    <Drawer.Screen name="login" component={MortalLogin} options={hideHeader} />
+                    <Drawer.Screen
+                      name="network"
+                      component={NetworkLogging}
+                    />
+                  </Drawer.Navigator>
+                </ObsEditProvider>
+              </PhotoGalleryProvider>
+            </NavigationContainer>
+          </GestureHandlerRootView>
+        </PaperProvider>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 };
 

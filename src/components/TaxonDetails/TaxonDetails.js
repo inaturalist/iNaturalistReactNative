@@ -1,6 +1,7 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
+import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -10,22 +11,24 @@ import {
 } from "react-native";
 import HTML from "react-native-render-html";
 
+import fetchTaxa from "../../lib/taxaFetchAPI";
 import { textStyles, viewStyles } from "../../styles/taxonDetails";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import { useTaxonDetails } from "./hooks/useTaxonDetails";
 
 const TaxonDetails = ( ): React.Node => {
   const { params } = useRoute( );
   const { id } = params;
-  const { taxon, loading } = useTaxonDetails( id );
-  // const similarSpecies = useSimilarSpecies( id );
+  const {
+    data, isLoading, isError
+  } = useQuery( ["taxaFetch"], ( ) => fetchTaxa( id ) );
+  const taxon = data;
   const { width } = useWindowDimensions( );
   const { t } = useTranslation();
 
   const displayTaxonomyList = React.useMemo( ( ) => {
-    if ( !taxon || taxon.ancestors.length === 0 ) { return <View />; }
-    return taxon.ancestors.map( ( ancestor, i ) => {
+    if ( !taxon || taxon?.ancestors?.length === 0 ) { return <View />; }
+    return taxon?.ancestors?.map( ( ancestor, i ) => {
       const addIndent = index => index * 5;
       const currentTaxon = `${taxon.preferred_common_name} (${taxon.name})`;
       // TODO: make sure this design accounts for undefined common names
@@ -50,40 +53,51 @@ const TaxonDetails = ( ): React.Node => {
     } );
   }, [taxon] );
 
-  if ( loading ) { return <ActivityIndicator />; }
-  if ( !taxon ) { return null; }
-
   const openWikipedia = ( ) => Linking.openURL( taxon.wikipedia_url );
+
+  const renderContent = ( ) => {
+    if ( isLoading ) { return <ActivityIndicator />; }
+
+    if ( isError || !taxon ) {
+      return <Text>{t( "Error-Could-Not-Fetch-Taxon" )}</Text>;
+    }
+
+    return (
+      <>
+        <Text>{taxon.rank}</Text>
+        <Text>{taxon.preferred_common_name}</Text>
+        <Text>{taxon.name}</Text>
+        <Text style={textStyles.header}>{ t( "ABOUT-taxon-header" ) }</Text>
+        <HTML
+          contentWidth={width}
+          source={{ html: taxon.wikipedia_summary }}
+        />
+        <Pressable
+          onPress={openWikipedia}
+          accessibilityRole="link"
+          testID="TaxonDetails.wikipedia"
+        >
+          <Text style={textStyles.header}>{ t( "Read-more-on-Wikipedia" )}</Text>
+        </Pressable>
+        <Text style={textStyles.header}>{ t( "TAXONOMY-header" ) }</Text>
+        {displayTaxonomyList}
+        <Text style={textStyles.header}>{ t( "STATUS-header" ) }</Text>
+        <Text style={textStyles.header}>{ t( "SIMILAR-SPECIES-header" ) }</Text>
+      </>
+    );
+  };
 
   return (
     <ViewWithFooter>
       <ScrollView
         contentContainerStyle={viewStyles.scrollView}
-        testID={`TaxonDetails.${taxon.id}`}
+        testID={`TaxonDetails.${taxon?.id}`}
       >
         <View style={viewStyles.photoContainer}>
-          <PhotoScroll photos={_.compact( taxon.taxonPhotos.map( tp => tp.photo ) )} />
+          {taxon && <PhotoScroll photos={_.compact( taxon?.taxonPhotos?.map( tp => tp.photo ) )} />}
         </View>
         <View style={viewStyles.textContainer}>
-          <Text>{taxon.rank}</Text>
-          <Text>{taxon.preferred_common_name}</Text>
-          <Text>{taxon.name}</Text>
-          <Text style={textStyles.header}>{ t( "ABOUT-taxon-header" ) }</Text>
-          <HTML
-            contentWidth={width}
-            source={{ html: taxon.wikipedia_summary }}
-          />
-          <Pressable
-            onPress={openWikipedia}
-            accessibilityRole="link"
-            testID="TaxonDetails.wikipedia"
-          >
-            <Text style={textStyles.header}>{ t( "Read-more-on-Wikipedia" )}</Text>
-          </Pressable>
-          <Text style={textStyles.header}>{ t( "TAXONOMY-header" ) }</Text>
-          {displayTaxonomyList}
-          <Text style={textStyles.header}>{ t( "STATUS-header" ) }</Text>
-          <Text style={textStyles.header}>{ t( "SIMILAR-SPECIES-header" ) }</Text>
+          {renderContent( )}
         </View>
       </ScrollView>
     </ViewWithFooter>
