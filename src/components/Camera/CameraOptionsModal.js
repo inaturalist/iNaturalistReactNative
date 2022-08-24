@@ -28,7 +28,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
     closeModal( );
   };
 
-  const navToPhotoGallery = ( ) => navAndCloseModal( "PhotoGallery", { clearSelection: true } );
+  const navToPhotoGallery = ( ) => navAndCloseModal( "PhotoGallery" );
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 

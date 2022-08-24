@@ -53,8 +53,6 @@ const PhotoGallery = ( ): Node => {
   const { params } = useRoute( );
   const photos = params?.photos;
   const editObs = params?.editObs;
-  const clearSelection = params?.clearSelection;
-  const updateSelection = params?.updateSelection;
 
   // If this component is being rendered we have either already asked for
   // permissions in Android via a PermissionGate parent component, or the
@@ -66,13 +64,6 @@ const PhotoGallery = ( ): Node => {
       setCanRequestPhotos( true );
     }
   }, [canRequestPhotos] );
-
-  useEffect( ( ) => {
-    if ( clearSelection ) {
-      // clear selection when opening photo gallery from camera options modal
-      setSelectedPhotos( [] );
-    }
-  }, [clearSelection, setSelectedPhotos, updateSelection] );
 
   // $FlowIgnore
   const selectedAlbum = photoOptions.groupName || "All";
