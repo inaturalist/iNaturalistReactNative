@@ -4,7 +4,6 @@ import React from "react";
 
 import PhotoGallery from "../../../../src/components/PhotoLibrary/PhotoGallery";
 import { ObsEditContext } from "../../../../src/providers/contexts";
-import PhotoGalleryProvider from "../../../../src/providers/PhotoGalleryProvider";
 import factory from "../../../factory";
 
 // this resolves a test failure with the Animated library:
@@ -13,7 +12,7 @@ jest.useFakeTimers( );
 
 const mockPhoto = factory( "DevicePhoto" );
 
-jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotos", ( ) => ( {
+jest.mock( "../../../../src/components/PhotoLibrary/hooks/useCameraRollPhotos", ( ) => ( {
   __esModule: true,
   default: ( ) => ( { photos: [mockPhoto] } )
 } ) );
@@ -48,15 +47,6 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-// const mockPhotoGalleryProviderWithPhotos = selectedPhotos =>
-//   PhotoGalleryProvider.mockImplementation( ( { children }: Props ): Node => (
-//     <PhotoGalleryContext.Provider value={{
-//       selectedPhotos
-//     }}>
-//       {children}
-//     </PhotoGalleryContext.Provider>
-//   ) );
-
 const fakeObs = {
   observations: [factory( "RemoteObservation", {
     latitude: 37.99,
@@ -67,11 +57,9 @@ const fakeObs = {
 
 const renderPhotoGallery = ( ) => render(
   <NavigationContainer>
-    <PhotoGalleryProvider>
-      <ObsEditContext.Provider value={fakeObs}>
-        <PhotoGallery />
-      </ObsEditContext.Provider>
-    </PhotoGalleryProvider>
+    <ObsEditContext.Provider value={fakeObs}>
+      <PhotoGallery />
+    </ObsEditContext.Provider>
   </NavigationContainer>
 );
 

@@ -3,19 +3,21 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useCallback, useContext, useEffect, useState
+} from "react";
 import {
-  ActivityIndicator, FlatList, Image, Pressable, Text, View
+  ActivityIndicator, FlatList, Text, View
 } from "react-native";
 import { Snackbar } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
-import colors from "../../styles/colors";
-import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
+import { ObsEditContext } from "../../providers/contexts";
+import { viewStyles } from "../../styles/photoLibrary/photoGallery";
 import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
+import PhotoGalleryImage from "./PhotoGalleryImage";
 
 const MAX_PHOTOS_ALLOWED = 20;
 
@@ -26,31 +28,31 @@ const options = {
 };
 
 const PhotoGallery = ( ): Node => {
-  const {
-    photoGallery,
-    setPhotoGallery,
-    setIsScrolling,
-    photoOptions,
-    setPhotoOptions,
-    selectedPhotos,
-    setSelectedPhotos,
-    fetchingPhotos,
-    totalSelected,
-    canRequestPhotos,
-    setCanRequestPhotos
-  } = useContext( PhotoGalleryContext );
+  const [isScrolling, setIsScrolling] = useState( false );
+  const [photoOptions, setPhotoOptions] = useState( options );
+  const [photoGallery, setPhotoGallery] = useState( {
+    All: {},
+    rerenderFlatList: false
+  } );
+  const [selectedPhotos, setSelectedPhotos] = useState( [] );
+
+  // Whether or not usePhotos can fetch photos now, e.g. if permissions have
+  // been granted (Android), or if it's ok to request permissions (iOS). This
+  // should be used by whatever component is using this context so that
+  // photos are requested (and permissions are potentially requested) when
+  // they are needed and not just when this provider initializes
+  const [canRequestPhotos, setCanRequestPhotos] = useState( false );
+
+  const photoFetchStatus = useCameraRollPhotos( photoOptions, isScrolling, canRequestPhotos );
+  const photosFetched = photoFetchStatus.photos;
+  const { fetchingPhotos } = photoFetchStatus;
+
   const { addPhotos } = useContext( ObsEditContext );
   const [photoUris, setPhotoUris] = useState( [] );
   const [showAlert, setShowAlert] = useState( false );
   const { params } = useRoute( );
   const photos = params?.photos;
   const editObs = params?.editObs;
-
-  useEffect( ( ) => {
-    if ( photos?.length > 0 ) {
-      setPhotoUris( photos );
-    }
-  }, [photos] );
 
   // If this component is being rendered we have either already asked for
   // permissions in Android via a PermissionGate parent component, or the
@@ -61,18 +63,53 @@ const PhotoGallery = ( ): Node => {
     if ( !canRequestPhotos ) {
       setCanRequestPhotos( true );
     }
-  } );
+  }, [canRequestPhotos] );
+
+  // $FlowIgnore
+  const selectedAlbum = photoOptions.groupName || "All";
+
+  const updatePhotoGallery = useCallback( rerenderFlatList => {
+    setPhotoGallery( {
+      ...photoGallery,
+      // there might be a better way to do this, but adding this key forces the FlatList
+      // to rerender anytime an image is unselected
+      rerenderFlatList
+    } );
+  }, [photoGallery] );
+
+  useEffect( ( ) => {
+    if ( photosFetched ) {
+      if ( photoGallery[selectedAlbum]
+        && photoGallery[selectedAlbum].length === photosFetched.length ) {
+        return;
+      }
+
+      // store photo details in state so it's possible
+      // to select mutiple photos across albums
+
+      const updatedPhotoGallery = {
+        ...photoGallery,
+        [selectedAlbum]: photosFetched
+      };
+
+      setPhotoGallery( updatedPhotoGallery );
+      setIsScrolling( false );
+    }
+  }, [photosFetched, photoGallery, photoOptions, setPhotoGallery, selectedAlbum] );
+
+  const totalSelected = selectedPhotos.length;
+
+  useEffect( ( ) => {
+    if ( photos?.length > 0 ) {
+      setPhotoUris( photos );
+    }
+  }, [photos] );
 
   const navigation = useNavigation( );
 
-  const getSelectedPhotos = () => ( ( selectedPhotos && selectedPhotos.All )
-    ? selectedPhotos.All.map( x => x.image.uri ) : [] );
-
-  const getAllPhotos = () => [...photoUris, ...getSelectedPhotos()];
-
   const navToObsEdit = ( ) => {
     if ( !selectedPhotos ) return;
-    addPhotos( getAllPhotos() );
+    addPhotos( selectedPhotos );
     navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
   };
 
@@ -89,73 +126,56 @@ const PhotoGallery = ( ): Node => {
     setPhotoOptions( newOptions );
   };
 
-  const selectedAlbum = photoOptions.groupName || "All";
-  const photosByAlbum = photoGallery[selectedAlbum];
-  const photosSelectedInAlbum = selectedPhotos[selectedAlbum] || [];
+  const getAllPhotos = ( ) => [...photoUris, ...selectedPhotos];
 
-  const updatePhotoGallery = rerenderFlatList => {
-    setPhotoGallery( {
-      ...photoGallery,
-      // there might be a better way to do this, but adding this key forces the FlatList
-      // to rerender anytime an image is unselected
-      rerenderFlatList
-    } );
+  const selectPhoto = p => {
+    const newSelection = selectedPhotos.concat( p ).sort( ( a, b ) => b.timestamp - a.timestamp );
+    setSelectedPhotos( newSelection );
   };
 
-  const selectPhoto = ( isSelected, item ) => {
-    if ( !isSelected ) {
-      setSelectedPhotos( {
-        ...selectedPhotos,
-        [selectedAlbum]: photosSelectedInAlbum.concat( item )
-      } );
+  const unselectPhoto = item => {
+    const newSelection = selectedPhotos;
+    const selectedIndex = selectedPhotos.findIndex( p => p.image.uri === item.image.uri );
+    newSelection.splice( selectedIndex, 1 );
+    setSelectedPhotos( newSelection );
+  };
+
+  const handlePhotoSelection = ( item, selected ) => {
+    if ( !selected ) {
+      selectPhoto( item );
       updatePhotoGallery( false );
     } else {
-      const newSelection = photosSelectedInAlbum;
-      const selectedIndex = photosSelectedInAlbum.indexOf( item );
-      newSelection.splice( selectedIndex, 1 );
-
-      setSelectedPhotos( {
-        ...selectedPhotos,
-        [selectedAlbum]: newSelection
-      } );
-
+      unselectPhoto( item );
       updatePhotoGallery( true );
     }
   };
 
+  const checkSelected = item => {
+    const uri = item?.image?.uri;
+    const albumGroupName = selectedAlbum === "All" ? "All Photos" : selectedAlbum;
+    const selectedInCurrentAlbum = selectedPhotos.filter( p => p.group_name === albumGroupName );
+    return selectedInCurrentAlbum.some( p => p.image.uri === uri );
+  };
+
   const renderImage = ( { item } ) => {
     const uri = item?.image?.uri;
-    const isSelected = photosSelectedInAlbum.some( photo => photo.image.uri === uri );
+    const isSelected = checkSelected( item );
 
-    const handlePress = ( ) => {
-      const allPhotos = getAllPhotos();
+    const handleImagePress = ( ) => {
+      const allPhotos = getAllPhotos( );
       if ( isSelected || allPhotos.length < MAX_PHOTOS_ALLOWED ) {
-        selectPhoto( isSelected, item );
+        handlePhotoSelection( item, isSelected );
       } else {
         setShowAlert( true );
       }
     };
 
-    const imageUri = { uri };
     return (
-      <Pressable
-        onPress={handlePress}
-        testID={`PhotoGallery.${uri}`}
-      >
-        <Image
-          testID="PhotoGallery.photo"
-          source={imageUri}
-          style={imageStyles.galleryImage}
-        />
-        {isSelected && (
-          <Icon
-            name="check-circle"
-            size={30}
-            style={imageStyles.selectedIcon}
-            color={colors.inatGreen}
-          />
-        )}
-      </Pressable>
+      <PhotoGalleryImage
+        uri={uri}
+        handleImagePress={handleImagePress}
+        isSelected={isSelected}
+      />
     );
   };
 
@@ -163,7 +183,7 @@ const PhotoGallery = ( ): Node => {
 
   const fetchMorePhotos = ( ) => setIsScrolling( true );
 
-  const navToGroupPhotos = ( ) => navigation.navigate( "GroupPhotos" );
+  const navToGroupPhotos = ( ) => navigation.navigate( "GroupPhotos", { selectedPhotos } );
 
   const renderEmptyList = ( ) => {
     if ( fetchingPhotos ) {
@@ -172,12 +192,14 @@ const PhotoGallery = ( ): Node => {
     return <Text>{t( "No-photos-found" )}</Text>;
   };
 
+  const photosByAlbum = photoGallery[selectedAlbum];
+
   return (
     <ViewNoFooter>
       <PhotoGalleryHeader updateAlbum={updateAlbum} />
       <FlatList
+        // $FlowIgnore
         data={photosByAlbum}
-        extraData={selectedPhotos}
         initialNumToRender={4}
         keyExtractor={extractKey}
         numColumns={4}
@@ -186,7 +208,7 @@ const PhotoGallery = ( ): Node => {
         testID="PhotoGallery.list"
         ListEmptyComponent={renderEmptyList( )}
       />
-      { getSelectedPhotos().length > 0 && (
+      { selectedPhotos.length > 0 && (
         <View style={viewStyles.createObsButton}>
           <RoundGreenButton
             buttonText="Import-X-photos"
@@ -196,7 +218,6 @@ const PhotoGallery = ( ): Node => {
           />
         </View>
       ) }
-
       <Snackbar
         visible={showAlert}
         onDismiss={() => setShowAlert( false )}

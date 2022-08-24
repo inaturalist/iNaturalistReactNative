@@ -2,9 +2,6 @@
 
 import CameraRoll from "@react-native-community/cameraroll";
 import { useCallback, useEffect, useState } from "react";
-// import uuid from "react-native-uuid";
-
-// import { formatDateAndTime } from "../../../sharedHelpers/dateAndTime";
 
 const initialStatus = {
   photos: [],
@@ -24,7 +21,7 @@ const initialStatus = {
  *  now, e.g. if permissions have been granted (Android), or if it's ok to
  *  request permissions (iOS)
  */
-const usePhotos = (
+const useCameraRollPhotos = (
   options: Object,
   isScrolling: boolean,
   canRequestPhotos: boolean = true
@@ -36,20 +33,7 @@ const usePhotos = (
       lastCursor, photos, fetchingPhotos, hasNextPage
     } = photoFetchStatus;
 
-    const mapPhotoUris = p => p.edges.map(
-      ( { node } ) => node
-      // const latitude = node.location && node.location.latitude;
-      // const longitude = node.location && node.location.longitude;
-      // return {
-      //   latitude,
-      //   longitude,
-      //   observed_on_string: formatDateAndTime( node.timestamp ),
-      //   timestamp: node.timestamp,
-      //   uri: node.image.uri,
-      //   // adding a uuid here makes it easier to prevent duplicates in uploader
-      //   uuid: uuid.v4( )
-      // };
-    );
+    const mapPhotoUris = p => p.edges.map( ( { node } ) => node );
 
     try {
       // keep track of the last photo fetched
@@ -68,7 +52,6 @@ const usePhotos = (
       const nextPage = p.page_info.has_next_page;
       const uris = mapPhotoUris( p );
 
-      // if ( !isCurrent ) { return; }
       setPhotoFetchStatus( {
         ...photoFetchStatus,
         lastCursor: endCursor,
@@ -118,4 +101,4 @@ const usePhotos = (
   return photoFetchStatus;
 };
 
-export default usePhotos;
+export default useCameraRollPhotos;
