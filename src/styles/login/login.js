@@ -84,7 +84,9 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
 
 const closeButton: { [string]: ViewStyleProp } = StyleSheet.create( {
   close: {
-    alignSelf: "flex-end"
+    position: "absolute",
+    top: 20,
+    end: 20
   }
 } );
 
