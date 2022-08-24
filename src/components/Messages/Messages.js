@@ -3,7 +3,7 @@
 import type { Node } from "react";
 import React from "react";
 
-import searchMessages from "../../lib/searchMessagesAPI";
+import searchMessages from "../../api/messages";
 import useQuery from "../../sharedHooks/useAuthenticatedQuery";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import MessageList from "./MessageList";

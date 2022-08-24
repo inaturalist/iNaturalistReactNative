@@ -3,6 +3,7 @@
 import inatjs from "inaturalistjs";
 
 import MESSAGE_FIELDS from "../providers/fields";
+import handleError from "./error";
 
 const searchMessages = async ( options: Object ): Promise<any> => {
   const params = {
@@ -14,7 +15,7 @@ const searchMessages = async ( options: Object ): Promise<any> => {
     const { results } = await inatjs.messages.search( params, options );
     return results;
   } catch ( e ) {
-    throw new Error( JSON.stringify( e.response ) );
+    return handleError( e );
   }
 };
 

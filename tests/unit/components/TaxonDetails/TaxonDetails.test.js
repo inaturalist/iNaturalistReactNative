@@ -6,8 +6,8 @@ import inatjs from "inaturalistjs";
 import React from "react";
 import { Linking } from "react-native";
 
+import fetchTaxa from "../../../../src/api/taxa";
 import TaxonDetails from "../../../../src/components/TaxonDetails/TaxonDetails";
-import fetchTaxa from "../../../../src/lib/taxaFetchAPI";
 import factory, { makeResponse } from "../../../factory";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );

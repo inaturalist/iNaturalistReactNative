@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import HTML from "react-native-render-html";
 
-import fetchTaxa from "../../lib/taxaFetchAPI";
+import fetchTaxa from "../../api/taxa";
 import { textStyles, viewStyles } from "../../styles/taxonDetails";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -21,7 +21,7 @@ const TaxonDetails = ( ): React.Node => {
   const { id } = params;
   const {
     data, isLoading, isError
-  } = useQuery( ["taxaFetch"], ( ) => fetchTaxa( id ) );
+  } = useQuery( ["taxaFetch", id], ( ) => fetchTaxa( id ) );
   const taxon = data;
   const { width } = useWindowDimensions( );
   const { t } = useTranslation();

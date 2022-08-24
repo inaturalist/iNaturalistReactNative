@@ -2,6 +2,8 @@
 
 import inatjs from "inaturalistjs";
 
+import handleError from "./error";
+
 const ANCESTOR_FIELDS = {
   name: true,
   preferred_common_name: true,
@@ -27,16 +29,16 @@ const FIELDS = {
   wikipedia_url: true
 };
 
-const fetchTaxa = async ( id: number ): Promise<any> => {
-  const params = {
-    fields: FIELDS
-  };
+const params = {
+  fields: FIELDS
+};
 
+const fetchTaxa = async ( id: number ): Promise<any> => {
   try {
     const { results } = await inatjs.taxa.fetch( id, params );
     return results[0];
   } catch ( e ) {
-    throw new Error( JSON.stringify( e.response ) );
+    return handleError( e );
   }
 };
 
