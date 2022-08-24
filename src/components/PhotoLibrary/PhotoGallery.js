@@ -43,9 +43,10 @@ const PhotoGallery = ( ): Node => {
   // they are needed and not just when this provider initializes
   const [canRequestPhotos, setCanRequestPhotos] = useState( false );
 
-  const photoFetchStatus = useCameraRollPhotos( photoOptions, isScrolling, canRequestPhotos );
-  const photosFetched = photoFetchStatus.photos;
-  const { fetchingPhotos } = photoFetchStatus;
+  const {
+    fetchingPhotos,
+    photos: galleryPhotos
+  } = useCameraRollPhotos( photoOptions, isScrolling, canRequestPhotos );
 
   const { addPhotos } = useContext( ObsEditContext );
   const [photoUris, setPhotoUris] = useState( [] );
@@ -78,9 +79,9 @@ const PhotoGallery = ( ): Node => {
   }, [photoGallery] );
 
   useEffect( ( ) => {
-    if ( photosFetched ) {
+    if ( galleryPhotos ) {
       if ( photoGallery[selectedAlbum]
-        && photoGallery[selectedAlbum].length === photosFetched.length ) {
+        && photoGallery[selectedAlbum].length === galleryPhotos.length ) {
         return;
       }
 
@@ -89,13 +90,13 @@ const PhotoGallery = ( ): Node => {
 
       const updatedPhotoGallery = {
         ...photoGallery,
-        [selectedAlbum]: photosFetched
+        [selectedAlbum]: galleryPhotos
       };
 
       setPhotoGallery( updatedPhotoGallery );
       setIsScrolling( false );
     }
-  }, [photosFetched, photoGallery, photoOptions, setPhotoGallery, selectedAlbum] );
+  }, [galleryPhotos, photoGallery, photoOptions, setPhotoGallery, selectedAlbum] );
 
   const totalSelected = selectedPhotos.length;
 
