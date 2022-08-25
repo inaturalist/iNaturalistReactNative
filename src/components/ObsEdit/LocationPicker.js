@@ -67,7 +67,7 @@ const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node 
         <Button
           level="primary"
           text="confirm location"
-          handlePress={updateLocationAndClose}
+          onPress={updateLocationAndClose}
           testID="LocationPicker.confirmButton"
         />
       </View>

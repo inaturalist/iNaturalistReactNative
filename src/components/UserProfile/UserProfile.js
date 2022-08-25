@@ -64,7 +64,7 @@ const UserProfile = ( ): React.Node => {
             <Button
               level="primary"
               text="Messages"
-              handlePress={( ) => console.log( "open messages" )}
+              onPress={( ) => console.log( "open messages" )}
               testID="UserProfile.messagesButton"
             />
           </View>

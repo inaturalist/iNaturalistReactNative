@@ -385,7 +385,6 @@ const ObsDetails = ( ): Node => {
               isn't working here but it doesn't appear to be working on
               staging either (Mar 11, 2022) */}
               <Button
-                level="neutral"
                 text={t( "Suggest-an-ID" )}
                 onPress={navToAddID}
                 testID="ObsDetail.cvSuggestionsButton"
@@ -393,9 +392,8 @@ const ObsDetails = ( ): Node => {
             </View>
             <View style={viewStyles.button}>
               <Button
-                level="neutral"
                 text={t( "Add-Comment" )}
-                handlePress={openCommentBox}
+                onPress={openCommentBox}
                 testID="ObsDetail.commentButton"
                 disabled={showCommentBox}
               />
