@@ -40,7 +40,6 @@ const Login = ( ): Node => {
   const [error, setError] = useState( null );
   const [username, setUsername] = useState( null );
   const [visible, setVisible] = useState( false );
-  const [loading, setLoading] = useState( false );
 
   const showDialog = ( ) => setVisible( true );
   const hideDialog = ( ) => setVisible( false );
@@ -65,7 +64,6 @@ const Login = ( ): Node => {
   }, [loggedIn] );
 
   const login = async ( ) => {
-    setLoading( true );
     const success = await authenticateUser(
       email.trim( ),
       password
@@ -73,14 +71,14 @@ const Login = ( ): Node => {
 
     if ( !success ) {
       setError( t( "Invalid-login" ) );
-      setLoading( false );
+
       return;
     }
 
     const userLogin = await getUsername( );
     setUsername( userLogin );
     setLoggedIn( true );
-    setLoading( false );
+
     navigation.navigate( "MainStack", {
       screen: "ObsList"
     } );
@@ -180,7 +178,6 @@ const Login = ( ): Node => {
         onPress={login}
         disabled={!email || !password}
         testID="Login.loginButton"
-        loading={loading}
       />
     </>
   );
