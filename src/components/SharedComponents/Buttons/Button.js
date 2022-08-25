@@ -1,34 +1,47 @@
-import React from "react";
-import { Text, TouchableOpacity } from "react-native";
+// @flow
+
+import * as React from "react";
+import { TouchableOpacity } from "react-native";
 
 import { textStyles, viewStyles } from "../../../styles/sharedComponents/buttons/buttonVariants";
+import TranslatedText from "../TranslatedText";
 
+type ButtonProps = {
+  text: string,
+  disabled?: boolean,
+  onPress: any,
+  level?: string,
+  count?: number,
+  testID?: string,
+
+}
 const setStyles = ( {
   level,
   disabled
 } ) => {
   const buttonContainer = [viewStyles.containerDefault];
-  const buttontext = [textStyles.textDefault];
+  const buttonText = [textStyles.textDefault];
 
   if ( level === "warning" ) {
     buttonContainer.push( viewStyles.containerWarning );
-  } else if ( level === "neutral" ) {
-    buttonContainer.push( viewStyles.containerNeutral );
-  } else {
+  } else if ( level === "primary" ) {
     buttonContainer.push( viewStyles.containerPrimary );
+  } else {
+    buttonContainer.push( viewStyles.containerNeutral );
   }
 
   if ( disabled ) {
     buttonContainer.push( viewStyles.containerDisabled );
   }
 
-  return { buttontext, buttonContainer };
+  return { buttonText, buttonContainer };
 };
 
 const Button = ( {
-  text, level, onPress, disabled, testID
-} ) => {
-  const { buttontext, buttonContainer } = setStyles( { disabled, level } );
+  text, onPress, disabled, testID, count, level
+}: ButtonProps ): React.Node => {
+  const { buttonText, buttonContainer } = setStyles( { disabled, level } );
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -36,9 +49,17 @@ const Button = ( {
       disabled={disabled}
       testID={testID}
     >
-      <Text style={buttontext}>{text}</Text>
+      <TranslatedText
+        count={count}
+        style={buttonText}
+        text={text}
+      />
     </TouchableOpacity>
   );
 };
 
+Button.defaultProps = {
+  disabled: false,
+  level: "neutral"
+};
 export default Button;
