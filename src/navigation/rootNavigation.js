@@ -23,7 +23,6 @@ import Search from "../components/Search/Search";
 import Settings from "../components/Settings/Settings";
 import Mortal from "../components/SharedComponents/Mortal";
 import ObsEditProvider from "../providers/ObsEditProvider";
-import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
 import colors from "../styles/colors";
 import { viewStyles } from "../styles/navigation/rootNavigation";
 import IdentifyStackNavigation from "./identifyStackNavigation";
@@ -92,43 +91,41 @@ const App = ( ): React.Node => {
         <PaperProvider theme={theme}>
           <GestureHandlerRootView style={viewStyles.container}>
             <NavigationContainer>
-              <PhotoGalleryProvider>
-                <ObsEditProvider>
-                  <Drawer.Navigator
-                    screenOptions={screenOptions}
-                    name="Drawer"
-                    drawerContent={drawerRenderer}
-                  >
-                    <Drawer.Screen
-                      name="MainStack"
-                      component={MainStackNavigation}
-                      options={hideHeader}
-                    />
-                    <Drawer.Screen name="search" component={Search} />
-                    <Drawer.Screen
-                      name="identify"
-                      component={IdentifyStackNavigation}
-                      options={hideHeader}
-                    />
-                    <Drawer.Screen
-                      name="projects"
-                      component={ProjectsStackNavigation}
-                      options={hideHeader}
-                    />
-                    <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
-                    <Drawer.Screen
-                      name="about"
-                      component={About}
-                    />
-                    <Drawer.Screen name="help" component={PlaceholderComponent} />
-                    <Drawer.Screen name="login" component={MortalLogin} options={hideHeader} />
-                    <Drawer.Screen
-                      name="network"
-                      component={NetworkLogging}
-                    />
-                  </Drawer.Navigator>
-                </ObsEditProvider>
-              </PhotoGalleryProvider>
+              <ObsEditProvider>
+                <Drawer.Navigator
+                  screenOptions={screenOptions}
+                  name="Drawer"
+                  drawerContent={drawerRenderer}
+                >
+                  <Drawer.Screen
+                    name="MainStack"
+                    component={MainStackNavigation}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen name="search" component={Search} />
+                  <Drawer.Screen
+                    name="identify"
+                    component={IdentifyStackNavigation}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen
+                    name="projects"
+                    component={ProjectsStackNavigation}
+                    options={hideHeader}
+                  />
+                  <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
+                  <Drawer.Screen
+                    name="about"
+                    component={About}
+                  />
+                  <Drawer.Screen name="help" component={PlaceholderComponent} />
+                  <Drawer.Screen name="login" component={MortalLogin} options={hideHeader} />
+                  <Drawer.Screen
+                    name="network"
+                    component={NetworkLogging}
+                  />
+                </Drawer.Navigator>
+              </ObsEditProvider>
             </NavigationContainer>
           </GestureHandlerRootView>
         </PaperProvider>

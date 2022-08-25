@@ -1,0 +1,7 @@
+Comment UI, swiping in media viewer, & housekeeping
+
+* Comment UI on obs detail should be closer to spec, i.e. using a bottom
+  sheet, confirmation on dimissal, loading indicator while posting
+* Swiping navigation for main area of the Media Viewer
+* Close button visible on Login regardless of login state
+* Photo upload errors should show up as unique errors
