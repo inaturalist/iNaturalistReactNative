@@ -36,7 +36,21 @@ const hideHeader = {
 };
 
 const queryClient = new QueryClient( {
-  defaultOptions: { queries: { retry: 2 } }
+  defaultOptions: {
+    queries: {
+      retry: ( failureCount, error ) => {
+        if (
+          // If this is an actual 408 Request Timeout error, we probably want to
+          // retry... but this will probably never happen
+          error.status === 408
+          // If there's just no network at the moment, definitely retry
+          || ( error instanceof TypeError && error.message.match( "Network request failed" ) )
+        ) return failureCount < 3;
+        console.error( "React Query request failed, not retrying: ", error );
+        return false;
+      }
+    }
+  }
 } );
 
 // The login component should be not preserve its state or effects after the
