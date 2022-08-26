@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
@@ -8,20 +8,22 @@ import Realm from "realm";
 
 import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
-import { ObsEditContext, PhotoGalleryContext } from "../../providers/contexts";
+import { ObsEditContext } from "../../providers/contexts";
 import { viewStyles } from "../../styles/photoLibrary/photoGallery";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotoImage from "./GroupPhotoImage";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 import GroupPhotosHeader from "./GroupPhotosHeader";
-import { flattenAndOrderSelectedPhotos, orderByTimestamp } from "./helpers/groupPhotoHelpers";
+import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
 const GroupPhotos = ( ): Node => {
   const { addObservations } = useContext( ObsEditContext );
   const navigation = useNavigation( );
-  const { selectedPhotos, setSelectedPhotos } = useContext( PhotoGalleryContext );
-  const albums = Object.keys( selectedPhotos );
-  const observations = orderByTimestamp( albums, selectedPhotos );
+  const { params } = useRoute( );
+  const { selectedPhotos } = params;
+  const observations = selectedPhotos.map( photo => ( {
+    photos: [photo]
+  } ) );
   const [selectionMode, setSelectionMode] = useState( false );
 
   // nesting observations under observations key to be able to rerender flatlist on selections
@@ -133,22 +135,8 @@ const GroupPhotos = ( ): Node => {
   };
 
   const removePhotos = ( ) => {
-    const removedPhotos = {};
     const removedFromGroup = [];
-
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
-
-    // create a list of selected photos in each album, with selected photos removed
-    albums.forEach( album => {
-      const currentAlbum = selectedPhotos[album];
-      const filteredAlbum = currentAlbum && currentAlbum.filter(
-        item => !orderedPhotos.includes( item )
-      );
-      removedPhotos.album = filteredAlbum;
-    } );
-
-    // remove from camera roll screen
-    setSelectedPhotos( removedPhotos );
 
     // create a list of grouped photos, with selected photos removed
     groupedPhotos.forEach( obs => {
