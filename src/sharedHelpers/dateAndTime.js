@@ -10,7 +10,7 @@ import {
 const formatDateAndTime = timestamp => {
   const date = fromUnixTime( timestamp );
   const formattedISODate = formatISO( date );
-  const stripTimeZone = formattedISODate.split( "-" ).slice( 0, -1 );
+  const stripTimeZone = formattedISODate.split( "+" ).slice( 0, -1 );
   return stripTimeZone.join( "-" );
 };
 

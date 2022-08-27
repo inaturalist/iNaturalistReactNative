@@ -35,7 +35,9 @@ const showBackButton = ( { navigation } ) => ( {
 const PhotoGalleryWithPermission = ( ) => (
   <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
     <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
-      <PhotoGallery />
+      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}>
+        <PhotoGallery />
+      </PermissionGate>
     </PermissionGate>
   </PermissionGate>
 );

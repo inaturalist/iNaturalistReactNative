@@ -22,6 +22,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import Photo from "../../models/Photo";
 import { ObsEditContext } from "../../providers/contexts";
+import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
 import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { MAX_PHOTOS_ALLOWED } from "../Camera/StandardCamera";
@@ -33,6 +34,7 @@ import KebabMenu from "../SharedComponents/KebabMenu";
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import DeleteObservationDialog from "./DeleteObservationDialog";
 import EvidenceSection from "./EvidenceSection";
+import usePhotoExif, { parseExifCoordinates, parseExifDateTime } from "./hooks/usePhotoExif";
 import IdentificationSection from "./IdentificationSection";
 import OtherDataSection from "./OtherDataSection";
 
@@ -43,7 +45,8 @@ const ObsEdit = ( ): Node => {
     observations,
     saveObservation,
     saveAndUploadObservation,
-    setObservations
+    setObservations,
+    updateObservationKeys
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -58,7 +61,8 @@ const ObsEdit = ( ): Node => {
   const [photoUris, setPhotoUris] = useState( [] );
   const [snapPoint, setSnapPoint] = useState( 150 );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
-
+  const firstPhotoExif = usePhotoExif( photoUris.length > 0 ? photoUris[0] : null );
+  const [exifDataImported, setExifDataImported] = useState( false );
   const disableAddingMoreEvidence = photoUris.length >= MAX_PHOTOS_ALLOWED;
 
   const showModal = ( ) => setMediaViewerVisible( true );
@@ -117,6 +121,32 @@ const ObsEdit = ( ): Node => {
 
   const currentObs = observations[currentObsIndex];
 
+  useEffect( () => {
+    if ( !currentObs.id && firstPhotoExif && !exifDataImported ) {
+      // New observation with imported photo - import EXIF data from it and
+      // use it to set location/observed_on data
+      setExifDataImported( true );
+
+      const newObsData = {};
+      const observedOnDate = parseExifDateTime( firstPhotoExif );
+
+      if ( observedOnDate ) {
+        newObsData.observed_on_string = createObservedOnStringForUpload( observedOnDate );
+      }
+
+      const locationData = parseExifCoordinates( firstPhotoExif );
+      if ( locationData ) {
+        newObsData.latitude = locationData.latitude;
+        newObsData.longitude = locationData.longitude;
+        newObsData.positional_accuracy = locationData.positionalAccuracy;
+      }
+
+      if ( Object.keys( newObsData ).length > 0 ) {
+        updateObservationKeys( newObsData );
+      }
+    }
+  }, [currentObs.id, firstPhotoExif, exifDataImported, updateObservationKeys] );
+
   const setPhotos = uris => {
     const updatedObservations = observations;
     const updatedObsPhotos = currentObs.observationPhotos.filter( obsPhoto => {
@@ -140,6 +170,7 @@ const ObsEdit = ( ): Node => {
     const uris = currentObs.observationPhotos.map(
       obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
     );
+
     setPhotoUris( uris );
   }, [currentObs] );
 
