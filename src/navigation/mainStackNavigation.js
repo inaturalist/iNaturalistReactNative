@@ -6,6 +6,10 @@ import * as React from "react";
 import { PermissionsAndroid } from "react-native";
 
 import StandardCamera from "../components/Camera/StandardCamera";
+import Explore from "../components/Explore/Explore";
+import ExploreFilters from "../components/Explore/ExploreFilters";
+import ExploreLanding from "../components/Explore/ExploreLanding";
+import Messages from "../components/Messages/Messages";
 import ObsDetails from "../components/ObsDetails/ObsDetails";
 import AddID from "../components/ObsEdit/AddID";
 import CVSuggestions from "../components/ObsEdit/CVSuggestions";
@@ -20,12 +24,20 @@ import PermissionGate from "../components/SharedComponents/PermissionGate";
 import SoundRecorder from "../components/SoundRecorder/SoundRecorder";
 import TaxonDetails from "../components/TaxonDetails/TaxonDetails";
 import UserProfile from "../components/UserProfile/UserProfile";
-import PhotoGalleryProvider from "../providers/PhotoGalleryProvider";
+import ExploreProvider from "../providers/ExploreProvider";
 
 const Stack = createNativeStackNavigator( );
 
 const hideHeader = {
   headerShown: false
+};
+
+const showHeader = {
+  headerShown: true
+};
+
+const hideScreenTransitionAnimation = {
+  animation: "none"
 };
 
 const showBackButton = ( { navigation } ) => ( {
@@ -60,13 +72,14 @@ const SoundRecorderWithPermission = ( ) => (
   </PermissionGate>
 );
 
-const CameraStackNavigation = ( ): React.Node => (
+const MainStackNavigation = ( ): React.Node => (
   <Mortal>
-    <PhotoGalleryProvider>
+    <ExploreProvider>
       <Stack.Navigator screenOptions={hideHeader}>
         <Stack.Screen
           name="ObsList"
           component={ObsList}
+          options={hideScreenTransitionAnimation}
         />
         <Stack.Screen
           name="ObsDetails"
@@ -114,9 +127,41 @@ const CameraStackNavigation = ( ): React.Node => (
           component={AddID}
           options={hideHeader}
         />
+        <Stack.Screen
+          name="Messages"
+          component={Messages}
+          options={{
+            ...showHeader,
+            ...hideScreenTransitionAnimation
+          }}
+        />
+        <Stack.Screen
+          name="ExploreLanding"
+          component={ExploreLanding}
+          options={{
+            ...hideHeader,
+            ...hideScreenTransitionAnimation
+          }}
+        />
+        <Stack.Screen
+          name="Explore"
+          component={Explore}
+          options={{
+            ...hideHeader,
+            ...hideScreenTransitionAnimation
+          }}
+        />
+        <Stack.Screen
+          name="ExploreFilters"
+          component={ExploreFilters}
+          options={{
+            ...hideHeader,
+            ...hideScreenTransitionAnimation
+          }}
+        />
       </Stack.Navigator>
-    </PhotoGalleryProvider>
+    </ExploreProvider>
   </Mortal>
 );
 
-export default CameraStackNavigation;
+export default MainStackNavigation;

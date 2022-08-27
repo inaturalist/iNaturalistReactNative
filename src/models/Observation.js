@@ -129,7 +129,8 @@ class Observation extends Realm.Object {
     return list.map( item => createFunction.mapApiToRealm( item, realm ) );
   };
 
-  static createObservationForRealm( obs, realm ) {
+  static createOrModifyLocalObservation( obs, realm ) {
+    const existingObs = realm?.objectForPrimaryKey( "Observation", obs.uuid );
     const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
     const observationPhotos = Observation.createLinkedObjects(
       obs.observation_photos,
@@ -144,10 +145,8 @@ class Observation extends Realm.Object {
     );
     const user = User.mapApiToRealm( obs.user );
 
-    const newObs = {
+    const localObs = {
       ...obs,
-      // this time is used for sorting observations in ObsList
-      _created_at: obs.created_at,
       _synced_at: new Date( ),
       comments,
       identifications,
@@ -159,7 +158,10 @@ class Observation extends Realm.Object {
       taxon,
       user
     };
-    return newObs;
+    if ( !existingObs ) {
+      localObs._created_at = new Date( );
+    }
+    return localObs;
   }
 
   static async saveLocalObservationForUpload( obs, realm ) {
@@ -313,19 +315,30 @@ class Observation extends Realm.Object {
     }
   }
 
+  static filterUnsyncedObservations = realm => {
+    const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
+    const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
+
+    const obs = realm?.objects( "Observation" );
+    const unsyncedObs = obs.filtered( `${unsyncedFilter} || ${photosUnsyncedFilter}` );
+    return unsyncedObs;
+  }
+
+  static isUnsyncedObservation = ( realm, obs ) => {
+    const obsList = Observation.filterUnsyncedObservations( realm );
+    const unsyncedObs = obsList.filtered( `uuid == "${obs.uuid}"` );
+    return unsyncedObs.length > 0;
+  }
+
   static updateLocalObservationsFromRemote = ( realm, results ) => {
     if ( results.length === 0 ) { return; }
     results.forEach( obs => {
-      const existingObs = realm?.objectForPrimaryKey( "Observation", obs.uuid );
+      // if observation has been updated locally since the last sync, do not overwrite
+      // with observation attributes from server
+      const isUnsyncedObs = Observation.isUnsyncedObservation( realm, obs );
+      if ( isUnsyncedObs ) { return; }
 
-      if ( existingObs ) {
-        // if observation has been updated locally since the last sync, do not overwrite
-        // with observation attributes from server
-        if ( existingObs._updated_at >= existingObs._synced_at ) {
-          return;
-        }
-      }
-      const newObs = Observation.createObservationForRealm( obs, realm );
+      const newObs = Observation.createOrModifyLocalObservation( obs, realm );
       realm?.write( ( ) => {
         // To upsert an object, call Realm.create() with the update mode set
         // to modified. The operation either inserts a new object with the given primary key
@@ -333,6 +346,89 @@ class Observation extends Realm.Object {
         realm?.create( "Observation", newObs, "modified" );
       } );
     } );
+  }
+
+  static markRecordUploaded = async ( recordUUID, type, response, realm ) => {
+    const { id } = response.results[0];
+    try {
+      const record = realm.objectForPrimaryKey( type, recordUUID );
+      realm?.write( ( ) => {
+        record.id = id;
+        record._synced_at = new Date( );
+      } );
+    } catch ( e ) {
+      console.log( e, `couldn't mark ${type} uploaded in realm` );
+    }
+  };
+
+  static uploadToServer = async (
+    evidenceUUID: string,
+    type: string,
+    params: Object,
+    apiEndpoint: Function,
+    realm: any
+  ) => {
+    const apiToken = await getJWTToken( false );
+    const options = { api_token: apiToken };
+
+    let response;
+    try {
+      response = await apiEndpoint.create( params, options );
+      await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
+    } catch ( e ) {
+      return JSON.stringify( e.response );
+    }
+    return response;
+  };
+
+  static uploadEvidence = (
+    evidence: Array<Object>,
+    type: string,
+    apiSchemaMapper: Function,
+    observationId: number,
+    apiEndpoint: Function,
+    realm: any
+  ): any => {
+    let response;
+    if ( evidence.length === 0 ) { return; }
+    for ( let i = 0; i < evidence.length; i += 1 ) {
+      const currentEvidence = evidence[i];
+      const evidenceUUID = currentEvidence.uuid;
+      const params = apiSchemaMapper( observationId, currentEvidence );
+      response = Observation.uploadToServer( evidenceUUID, type, params, apiEndpoint, realm );
+    }
+    // eslint-disable-next-line consistent-return
+    return response;
+  };
+
+  static uploadObservation = async obs => {
+    const obsToUpload = Observation.mapObservationForUpload( obs );
+    const apiToken = await getJWTToken( false );
+    const options = { api_token: apiToken };
+
+    // Remove all null values, b/c the API doesn't seem to like them for some
+    // reason (might be an error with the API as of 20220801)
+    const newObs = {};
+    Object.keys( obsToUpload ).forEach( k => {
+      if ( obsToUpload[k] !== null ) {
+        newObs[k] = obsToUpload[k];
+      }
+    } );
+
+    const uploadParams = {
+      observation: { ...newObs },
+      fields: { id: true }
+    };
+
+    let response;
+    try {
+      response = await inatjs.observations.create( uploadParams, options );
+    } catch ( uploadError ) {
+      const body = JSON.parse( await uploadError.response.text( ) );
+      console.error( "[ERROR] Failed to upload observation: ", JSON.stringify( body ) );
+      return body;
+    }
+    return response;
   }
 
   static schema = {

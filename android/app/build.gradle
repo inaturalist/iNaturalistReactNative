@@ -147,7 +147,7 @@ android {
         applicationId "com.inaturalistreactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 24
+        versionCode 25
         versionName "0.1.1"
         setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
     }

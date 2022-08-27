@@ -80,6 +80,7 @@
   },
   "Email-Notifications": "Email Notifications",
   "Error-Couldnt-Complete-Upload": "Error: Couldn't Complete Upload",
+  "Error-Couldnt-Upload-Photo": "Error: Couldn't Upload Photo",
   "Evidence": "Evidence",
   "Explore": "Explore",
   "External-Applications": "External Applications",
@@ -457,10 +458,9 @@
   "Add-Comment": "Add Comment",
   "Suggest-an-ID": "Suggest an ID",
   "Add-a-comment": {
-      "comment": "Hint text inside the 'Add a comment' Text Input",
-      "val": "Add a comment..."
+    "comment": "Hint text inside the 'Add a comment' Text Input",
+    "val": "Add a comment..."
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?"
-
 }

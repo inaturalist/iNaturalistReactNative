@@ -1,13 +1,13 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
-import React, { useContext, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import Realm from "realm";
 
 import realmConfig from "../models/index";
 import Observation from "../models/Observation";
 import ObservationPhoto from "../models/ObservationPhoto";
-import { ObsEditContext, PhotoGalleryContext } from "./contexts";
+import { ObsEditContext } from "./contexts";
 import saveLocalObservation from "./uploadHelpers/saveLocalObservation";
 import uploadObservation from "./uploadHelpers/uploadObservation";
 
@@ -16,7 +16,6 @@ type Props = {
 }
 
 const ObsEditProvider = ( { children }: Props ): Node => {
-  const { setSelectedPhotos } = useContext( PhotoGalleryContext );
   const navigation = useNavigation( );
   const [currentObsIndex, setCurrentObsIndex] = useState( 0 );
   const [observations, setObservations] = useState( [] );
@@ -81,7 +80,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       if ( observations.length === 1 ) {
         setCurrentObsIndex( 0 );
         setObservations( [] );
-        setSelectedPhotos( {} );
 
         navigation.navigate( "ObsList" );
       } else if ( currentObsIndex === observations.length - 1 ) {
@@ -126,8 +124,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const saveAndUploadObservation = async ( ) => {
       const localObs = await saveLocalObservation( currentObs );
-      const mappedObs = Observation.mapObservationForUpload( localObs );
-      uploadObservation( mappedObs, localObs );
+      uploadObservation( localObs );
       if ( localObs ) {
         setNextScreen( );
       }
@@ -154,8 +151,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     currentObs,
     currentObsIndex,
     navigation,
-    observations,
-    setSelectedPhotos
+    observations
   ] );
 
   return (

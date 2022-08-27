@@ -10,6 +10,7 @@ import {
   Linking,
   Platform,
   Pressable,
+  SafeAreaView,
   ScrollView,
   TouchableOpacity,
   View
@@ -81,7 +82,7 @@ const Login = ( ): Node => {
     setUsername( userLogin );
     setLoggedIn( true );
     setLoading( false );
-    navigation.navigate( "observations", {
+    navigation.navigate( "MainStack", {
       screen: "ObsList"
     } );
   };
@@ -127,12 +128,6 @@ const Login = ( ): Node => {
 
   const loginForm = (
     <>
-      <Pressable
-        onPress={() => navigation.goBack()}
-        style={closeButton.close}
-      >
-        <Icon name="close" size={35} />
-      </Pressable>
       <Image
         style={imageStyles.logo}
         resizeMode="contain"
@@ -187,12 +182,19 @@ const Login = ( ): Node => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={viewStyles.container}
     >
-      <ScrollView
-        style={[viewStyles.container]}
-        contentContainerStyle={viewStyles.paddedContainer}
-      >
-        {loggedIn ? logoutForm : loginForm}
-      </ScrollView>
+      <SafeAreaView style={[viewStyles.container]}>
+        <ScrollView
+          contentContainerStyle={viewStyles.paddedContainer}
+        >
+          <Pressable
+            onPress={() => navigation.goBack()}
+            style={closeButton.close}
+          >
+            <Icon name="close" size={35} />
+          </Pressable>
+          {loggedIn ? logoutForm : loginForm}
+        </ScrollView>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };

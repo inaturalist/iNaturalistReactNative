@@ -12,11 +12,19 @@ class ObservationPhoto extends Realm.Object {
     uuid: true
   };
 
-  static mapApiToRealm( observationPhoto ) {
-    return {
+  static mapApiToRealm( observationPhoto, realm ) {
+    const existingObsPhoto = realm
+      ?.objectForPrimaryKey( "ObservationPhoto", observationPhoto.uuid );
+
+    const localObsPhoto = {
       ...observationPhoto,
-      photo: Photo.mapApiToRealm( observationPhoto.photo )
+      _synced_at: new Date( ),
+      photo: Photo.mapApiToRealm( observationPhoto.photo, existingObsPhoto )
     };
+    if ( !existingObsPhoto ) {
+      localObsPhoto._created_at = new Date( );
+    }
+    return localObsPhoto;
   }
 
   static mapPhotoForUpload( id, observationPhoto ) {

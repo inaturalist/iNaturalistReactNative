@@ -1,21 +1,14 @@
 // @flow
 
-import { HeaderBackButton } from "@react-navigation/elements";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dimensions, Image, View } from "react-native";
-import ImageZoom from "react-native-image-pan-zoom";
-import { Appbar, Button } from "react-native-paper";
+import { SafeAreaView } from "react-native";
+import { Appbar, Button, IconButton } from "react-native-paper";
 
-import Photo from "../../models/Photo";
-import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
-import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
-
-const { width } = Dimensions.get( "screen" );
-// $FlowIgnore
-const selectedImageHeight = imageStyles.selectedPhoto.height;
+import colors from "../../styles/colors";
+import { textStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
+import HorizontalScroll from "./HorizontalScroll";
 
 type Props = {
   photoUris: Array<string>,
@@ -28,57 +21,38 @@ const MediaViewer = ( {
   photoUris, setPhotoUris, initialPhotoSelected, hideModal
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( initialPhotoSelected );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
 
   const numOfPhotos = photoUris.length;
-
-  const handlePhotoSelection = index => setSelectedPhotoIndex( index );
 
   const showDialog = ( ) => setDeleteDialogVisible( true );
   const hideDialog = ( ) => setDeleteDialogVisible( false );
 
   useEffect( ( ) => {
-    // automatically select the only photo in the media viewer
-    if ( numOfPhotos === 1 && selectedPhotoIndex !== 0 ) {
-      setSelectedPhotoIndex( 0 );
-    }
-    // close media viewer when there are no photos
     if ( numOfPhotos === 0 ) {
       hideModal( );
     }
-  }, [numOfPhotos, selectedPhotoIndex, hideModal] );
+  }, [numOfPhotos, hideModal] );
 
   return (
-    <View style={viewStyles.container}>
+    <SafeAreaView style={viewStyles.container}>
       <Appbar.Header style={viewStyles.container}>
-        <Appbar.Content title={t( "X-Photos", { photoCount: numOfPhotos } )} />
+        <Appbar.Content
+          title={t( "X-Photos", { photoCount: numOfPhotos } )}
+          titleStyle={textStyles.whiteText}
+        />
       </Appbar.Header>
-      {numOfPhotos > 0 && (
-        <ImageZoom
-          cropWidth={width}
-          cropHeight={selectedImageHeight}
-          imageWidth={width}
-          imageHeight={selectedImageHeight}
-        >
-          <Image
-            style={imageStyles.selectedPhoto}
-            source={{ uri: Photo.displayLargePhoto( photoUris[selectedPhotoIndex] ) }}
-          />
-        </ImageZoom>
-      )}
-      <PhotoCarousel
+      <HorizontalScroll
         photoUris={photoUris}
-        selectedPhotoIndex={selectedPhotoIndex}
-        setSelectedPhotoIndex={handlePhotoSelection}
-      />
-      <HeaderBackButton onPress={hideModal} />
-      <DeletePhotoDialog
+        initialPhotoSelected={initialPhotoSelected}
         deleteDialogVisible={deleteDialogVisible}
-        photoUriToDelete={photoUris[selectedPhotoIndex]}
-        photoUris={photoUris}
         setPhotoUris={setPhotoUris}
         hideDialog={hideDialog}
+      />
+      <IconButton
+        icon="arrow-left"
+        onPress={hideModal}
+        iconColor={colors.white}
       />
       <Button
         style={viewStyles.alignRight}
@@ -86,7 +60,7 @@ const MediaViewer = ( {
       >
         {t( "Remove-Photo" )}
       </Button>
-    </View>
+    </SafeAreaView>
   );
 };
 
