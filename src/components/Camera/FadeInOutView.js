@@ -1,4 +1,4 @@
-// @flow
+// @flow strict-local
 
 import type { Node } from "react";
 import React, { useEffect, useRef } from "react";
