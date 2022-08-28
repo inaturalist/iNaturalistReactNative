@@ -82,10 +82,11 @@ const getAnonymousJWTToken = () => {
  * @returns {Promise<string|*>}
  */
 const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?string> => {
-  let jwtToken = await RNSInfo.getItem( "jwtToken", {} );
-  let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration", {} );
-  if ( jwtTokenExpiration ) {
-    jwtTokenExpiration = parseInt( jwtTokenExpiration, 10 );
+  let jwtToken: string | void = await RNSInfo.getItem( "jwtToken", {} );
+  const jwtTokenExpirationString: string | void = await RNSInfo.getItem( "jwtTokenExpiration", {} );
+  let jwtTokenExpiration: number | void;
+  if ( jwtTokenExpirationString ) {
+    jwtTokenExpiration = parseInt( jwtTokenExpirationString, 10 );
   }
 
   const loggedIn = await isLoggedIn();
@@ -101,6 +102,7 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
 
   if (
     !jwtToken
+    || !jwtTokenExpiration
     || ( Date.now() - jwtTokenExpiration ) / 1000 > JWT_TOKEN_EXPIRATION_MINS * 60
   ) {
     // JWT Tokens expire after 30 mins - if the token is non-existent or older

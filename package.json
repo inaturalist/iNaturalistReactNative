@@ -97,7 +97,7 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "factoria": "^3.2.2",
     "faker": "^5.5.3",
-    "flow-bin": "^0.162.0",
+    "flow-bin": "^0.185.0",
     "fluent_conv": "^3.1.0",
     "glob": "^7.2.0",
     "husky": "^7.0.4",

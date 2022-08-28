@@ -99,7 +99,7 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
     </ViewNoFooter>
   );
 
-  let content = <Text>Requesting permission...</Text>;
+  let content: Node = <Text>Requesting permission...</Text>;
   if ( result === "granted" ) {
     content = children;
   } else if ( result !== null ) {
