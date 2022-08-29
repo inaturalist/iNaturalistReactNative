@@ -6,14 +6,15 @@ import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleS
 import colors from "../../colors";
 
 const PRIMARY = "#5D8017";
+const PRIMARY_DISABLED = "#C6DC98";
 const WARNING = "#9B1111";
+const WARNING_DISABLED = "#B95F5E";
 const NEUTRAL = "#979797";
+const NEUTRAL_DISABLED = "#D3D3D3";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   containerDefault: {
     alignItems: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 10,
     borderRadius: 40,
     marginVertical: 15,
     marginHorizontal: 10
@@ -30,8 +31,17 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: NEUTRAL,
     borderColor: NEUTRAL
   },
-  containerDisabled: {
-    opacity: 0.65
+  containerPrimaryDisabled: {
+    backgroundColor: PRIMARY_DISABLED,
+    borderColor: PRIMARY_DISABLED
+  },
+  containerNeutralDisabled: {
+    backgroundColor: NEUTRAL_DISABLED,
+    borderColor: NEUTRAL_DISABLED
+  },
+  containerWarningDisabled: {
+    backgroundColor: WARNING_DISABLED,
+    borderColor: WARNING_DISABLED
   }
 
 } );
