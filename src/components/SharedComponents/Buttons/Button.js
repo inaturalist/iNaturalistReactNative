@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { TouchableOpacity } from "react-native";
+import { Button as ButtonRNP } from "react-native-paper";
 
 import { textStyles, viewStyles } from "../../../styles/sharedComponents/buttons/buttonVariants";
 import TranslatedText from "../TranslatedText";
@@ -13,6 +13,7 @@ type ButtonProps = {
   level?: string,
   count?: number,
   testID?: string,
+  loading?: boolean,
 
 }
 const setStyles = ( {
@@ -31,30 +32,37 @@ const setStyles = ( {
   }
 
   if ( disabled ) {
-    buttonContainer.push( viewStyles.containerDisabled );
+    if ( level === "warning" ) {
+      buttonContainer.push( viewStyles.containerWarningDisabled );
+    } else if ( level === "primary" ) {
+      buttonContainer.push( viewStyles.containerPrimaryDisabled );
+    } else {
+      buttonContainer.push( viewStyles.containerNeutralDisabled );
+    }
   }
 
   return { buttonText, buttonContainer };
 };
 
 const Button = ( {
-  text, onPress, disabled, testID, count, level
+  text, onPress, disabled, testID, count, level, loading
 }: ButtonProps ): React.Node => {
   const { buttonText, buttonContainer } = setStyles( { disabled, level } );
 
   return (
-    <TouchableOpacity
+    <ButtonRNP
       onPress={onPress}
       style={buttonContainer}
       disabled={disabled}
       testID={testID}
+      loading={loading}
     >
       <TranslatedText
         count={count}
         style={buttonText}
         text={text}
       />
-    </TouchableOpacity>
+    </ButtonRNP>
   );
 };
 
