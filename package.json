@@ -42,6 +42,7 @@
     "lodash": "^4.17.21",
     "radio-buttons-react-native": "^1.0.4",
     "react": "17.0.2",
+    "react-dom": "17.0.2",
     "react-i18next": "^11.16.1",
     "react-native": "^0.68.2",
     "react-native-audio-recorder-player": "^3.3.4",
