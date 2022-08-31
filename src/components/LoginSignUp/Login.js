@@ -175,6 +175,7 @@ const Login = ( ): Node => {
         level="primary"
         text="Log-in"
         onPress={login}
+        style={viewStyles.button}
         disabled={!email || !password}
         testID="Login.loginButton"
         loading={loading}
