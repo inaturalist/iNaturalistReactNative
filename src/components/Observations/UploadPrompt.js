@@ -5,6 +5,7 @@ import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
 
+import viewStyles from "../../styles/upload/uploadPrompt";
 import Button from "../SharedComponents/Buttons/Button";
 
 type Props = {
@@ -21,6 +22,7 @@ const UploadPrompt = ( {
     <Button
       level="neutral"
       text={t( "Upload-X-Observations", { count: numOfUnuploadedObs } )}
+      style={viewStyles.button}
       onPress={( ) => {
         updateUploadStatus( );
         uploadObservations( );

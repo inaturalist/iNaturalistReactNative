@@ -12,6 +12,4 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   }
 } );
 
-export {
-  viewStyles
-};
+export default viewStyles;
