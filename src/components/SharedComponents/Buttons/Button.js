@@ -14,8 +14,9 @@ type ButtonProps = {
   count?: number,
   testID?: string,
   loading?: boolean,
-
+  style?: any,
 }
+
 const setStyles = ( {
   level,
   disabled
@@ -45,14 +46,15 @@ const setStyles = ( {
 };
 
 const Button = ( {
-  text, onPress, disabled, testID, count, level, loading
+  text, onPress, disabled, testID, count, level, loading, style
 }: ButtonProps ): React.Node => {
   const { buttonText, buttonContainer } = setStyles( { disabled, level } );
 
   return (
     <ButtonRNP
       onPress={onPress}
-      style={buttonContainer}
+      contentStyle={buttonContainer}
+      style={style}
       disabled={disabled}
       testID={testID}
       loading={loading}
