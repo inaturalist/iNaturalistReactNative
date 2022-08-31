@@ -380,20 +380,22 @@ const ObsDetails = ( ): Node => {
             </View>
           )}
           <View style={viewStyles.row}>
-            <View style={viewStyles.button}>
+            <View style={viewStyles.buttons}>
               {/* TODO: get this button working. Not sure why createIdentification
               isn't working here but it doesn't appear to be working on
               staging either (Mar 11, 2022) */}
               <Button
                 text={t( "Suggest-an-ID" )}
                 onPress={navToAddID}
+                style={viewStyles.button}
                 testID="ObsDetail.cvSuggestionsButton"
               />
             </View>
-            <View style={viewStyles.button}>
+            <View style={viewStyles.buttons}>
               <Button
                 text={t( "Add-Comment" )}
                 onPress={openCommentBox}
+                style={viewStyles.button}
                 testID="ObsDetail.commentButton"
                 disabled={showCommentBox}
               />

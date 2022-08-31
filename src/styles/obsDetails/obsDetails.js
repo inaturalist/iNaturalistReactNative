@@ -64,8 +64,11 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     marginHorizontal: 0,
     borderColor: colors.borderGray
   },
-  button: {
+  buttons: {
     width: width / 2
+  },
+  button: {
+    marginHorizontal: 5
   },
   favButton: {
     position: "absolute",
