@@ -39,6 +39,8 @@ const Explore = ( ): Node => {
           level="primary"
           text="Explore"
           onPress={navToExplore}
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={viewStyles.button}
           testID="Explore.fetchObservations"
           disabled={!taxonId}
         />
