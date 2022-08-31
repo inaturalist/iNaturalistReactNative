@@ -165,6 +165,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   mediaViewerSafeAreaView: {
     backgroundColor: colors.black
+  },
+  button: {
+    marginHorizontal: 40
   }
 } );
 

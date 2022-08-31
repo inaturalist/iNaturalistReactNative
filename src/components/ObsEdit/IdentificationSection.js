@@ -85,6 +85,7 @@ const IdentificationSection = ( ): Node => {
           level="primary"
           onPress={navToAddID}
           text="View Identification Suggestions"
+          style={viewStyles.button}
           testID="ObsEdit.Suggestions"
         />
         <Text style={textStyles.text}>
