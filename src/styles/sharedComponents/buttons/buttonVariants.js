@@ -14,10 +14,7 @@ const NEUTRAL_DISABLED = "#D3D3D3";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   containerDefault: {
-    alignItems: "center",
-    borderRadius: 40,
-    marginVertical: 15,
-    marginHorizontal: 10
+    borderRadius: 40
   },
   containerPrimary: {
     backgroundColor: PRIMARY,
