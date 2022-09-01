@@ -13,6 +13,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import handleError from "../api/error";
 import About from "../components/About";
 import CustomDrawerContent from "../components/CustomDrawerContent";
 import { getUserId, signOut } from "../components/LoginSignUp/AuthenticationService";
@@ -46,7 +47,7 @@ const queryClient = new QueryClient( {
           // If there's just no network at the moment, definitely retry
           || ( error instanceof TypeError && error.message.match( "Network request failed" ) )
         ) return failureCount < 3;
-        console.error( "React Query request failed, not retrying: ", error );
+        handleError( error, { throw: false } );
         return false;
       }
     }

@@ -29,17 +29,17 @@ const FIELDS = {
   wikipedia_url: true
 };
 
-const params = {
+const PARAMS = {
   fields: FIELDS
 };
 
-const fetchTaxa = async ( id: number ): Promise<any> => {
+async function fetchTaxon( id: number, params: Object = {}, opts: Object = {} ): Promise<any> {
   try {
-    const { results } = await inatjs.taxa.fetch( id, params );
+    const { results } = await inatjs.taxa.fetch( id, { ...PARAMS, ...params }, opts );
     return results[0];
   } catch ( e ) {
     return handleError( e );
   }
-};
+}
 
-export default fetchTaxa;
+export default fetchTaxon;

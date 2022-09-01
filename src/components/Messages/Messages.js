@@ -12,7 +12,7 @@ const Messages = ( ): Node => {
   const {
     data: messages,
     isLoading
-  } = useQuery( "searchMessages", searchMessages );
+  } = useQuery( ["searchMessages"], searchMessages );
   // TODO: Reload when accessing again
 
   return (

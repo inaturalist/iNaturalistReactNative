@@ -28,23 +28,26 @@ const renderTaxonDetails = ( ) => render(
   </NavigationContainer>
 );
 
-// Mock useQuery results
-jest.mock( "@tanstack/react-query", ( ) => ( {
-  useQuery: ( queryKey, _queryFunction ) => {
-    if ( queryKey[0] === "taxaFetch" ) {
+jest.mock(
+  "../../../../src/sharedHooks/useAuthenticatedQuery",
+  ( ) => ( {
+    __esModule: true,
+    default: ( queryKey, _queryFunction ) => {
+      if ( queryKey[0] === "fetchTaxon" ) {
+        return {
+          data: mockTaxon,
+          isLoading: false,
+          isError: false
+        };
+      }
       return {
-        data: mockTaxon,
+        data: null,
         isLoading: false,
         isError: false
       };
     }
-    return {
-      data: null,
-      isLoading: false,
-      isError: false
-    };
-  }
-} ) );
+  } )
+);
 
 test( "renders taxon details from API call", async ( ) => {
   const { getByTestId, getByText } = renderTaxonDetails( );

@@ -1,7 +1,6 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
-import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -11,7 +10,8 @@ import {
 } from "react-native";
 import HTML from "react-native-render-html";
 
-import fetchTaxa from "../../api/taxa";
+import fetchTaxon from "../../api/taxa";
+import useAuthenticatedQuery from "../../sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "../../styles/taxonDetails";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
@@ -19,9 +19,13 @@ import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 const TaxonDetails = ( ): React.Node => {
   const { params } = useRoute( );
   const { id } = params;
+  // Note that we want to authenticate this to localize names, desc language, etc.
   const {
     data, isLoading, isError
-  } = useQuery( ["taxaFetch", id], ( ) => fetchTaxa( id ) );
+  } = useAuthenticatedQuery(
+    ["fetchTaxon", id],
+    optsWithAuth => fetchTaxon( id, {}, optsWithAuth )
+  );
   const taxon = data;
   const { width } = useWindowDimensions( );
   const { t } = useTranslation();
@@ -68,10 +72,12 @@ const TaxonDetails = ( ): React.Node => {
         <Text>{taxon.preferred_common_name}</Text>
         <Text>{taxon.name}</Text>
         <Text style={textStyles.header}>{ t( "ABOUT-taxon-header" ) }</Text>
-        <HTML
-          contentWidth={width}
-          source={{ html: taxon.wikipedia_summary }}
-        />
+        { taxon.wikipedia_summary && (
+          <HTML
+            contentWidth={width}
+            source={{ html: taxon.wikipedia_summary }}
+          />
+        ) }
         <Pressable
           onPress={openWikipedia}
           accessibilityRole="link"
