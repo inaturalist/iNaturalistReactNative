@@ -31,8 +31,8 @@ const TaxonDetails = ( ): React.Node => {
   const { t } = useTranslation();
 
   const displayTaxonomyList = React.useMemo( ( ) => {
-    if ( !taxon || taxon?.ancestors?.length === 0 ) { return <View />; }
-    return taxon?.ancestors?.map( ( ancestor, i ) => {
+    if ( !taxon || taxon.ancestors?.length === 0 ) { return <View />; }
+    return taxon.ancestors?.map( ( ancestor, i ) => {
       const addIndent = index => index * 5;
       const currentTaxon = `${taxon.preferred_common_name} (${taxon.name})`;
       // TODO: make sure this design accounts for undefined common names
@@ -100,7 +100,7 @@ const TaxonDetails = ( ): React.Node => {
         testID={`TaxonDetails.${taxon?.id}`}
       >
         <View style={viewStyles.photoContainer}>
-          {taxon && <PhotoScroll photos={_.compact( taxon?.taxonPhotos?.map( tp => tp.photo ) )} />}
+          {taxon && <PhotoScroll photos={_.compact( taxon.taxonPhotos?.map( tp => tp.photo ) )} />}
         </View>
         <View style={viewStyles.textContainer}>
           {renderContent( )}
