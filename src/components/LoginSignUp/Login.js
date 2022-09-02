@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -87,8 +88,10 @@ const Login = ( ): Node => {
     } );
   };
 
+  const queryClient = useQueryClient( );
+
   const onSignOut = async ( ) => {
-    await signOut( { deleteRealm: true } );
+    await signOut( { deleteRealm: true, queryClient } );
     setLoggedIn( false );
   };
 
