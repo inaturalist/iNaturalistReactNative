@@ -6,7 +6,7 @@ import { View } from "react-native";
 
 import useLocationName from "../../sharedHooks/useLocationName";
 import { viewStyles } from "../../styles/obsEdit/locationPicker";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 import InputField from "../SharedComponents/InputField";
 import Map from "../SharedComponents/Map";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
@@ -64,9 +64,10 @@ const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node 
         mapHeight={600}
       />
       <View style={viewStyles.confirmButtonFooter}>
-        <RoundGreenButton
-          buttonText="confirm location"
-          handlePress={updateLocationAndClose}
+        <Button
+          level="primary"
+          text="confirm location"
+          onPress={updateLocationAndClose}
           testID="LocationPicker.confirmButton"
         />
       </View>

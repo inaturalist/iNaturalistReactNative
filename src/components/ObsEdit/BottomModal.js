@@ -8,7 +8,7 @@ import { View } from "react-native";
 import { ObsEditContext } from "../../providers/contexts";
 import { viewStyles } from "../../styles/obsEdit/obsEdit";
 import PlaceholderText from "../PlaceholderText";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 
 const BottomModal = ( ): Node => {
   const navigation = useNavigation( );
@@ -33,16 +33,18 @@ const BottomModal = ( ): Node => {
       <PlaceholderText text="cancel creating observations?" />
       <View style={viewStyles.row}>
         <View style={viewStyles.saveButton}>
-          <RoundGreenButton
-            buttonText="save"
+          <Button
+            level="primary"
+            text="save"
             testID="ObsEdit.saveButton"
-            handlePress={saveObsAndNavigate}
+            onPress={saveObsAndNavigate}
           />
         </View>
-        <RoundGreenButton
-          buttonText="DELETE-X-OBSERVATIONS"
+        <Button
+          level="primary"
+          text="DELETE-X-OBSERVATIONS"
           count={observations.length}
-          handlePress={deleteObsAndNavigate}
+          onPress={deleteObsAndNavigate}
           testID="ObsEdit.exitNavigation"
         />
       </View>

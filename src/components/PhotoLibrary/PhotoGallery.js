@@ -13,7 +13,7 @@ import { Snackbar } from "react-native-paper";
 
 import { ObsEditContext } from "../../providers/contexts";
 import { viewStyles } from "../../styles/photoLibrary/photoGallery";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
@@ -211,10 +211,11 @@ const PhotoGallery = ( ): Node => {
       />
       { selectedPhotos.length > 0 && (
         <View style={viewStyles.createObsButton}>
-          <RoundGreenButton
-            buttonText="Import-X-photos"
+          <Button
+            level="primary"
+            text="Import-X-photos"
             count={totalSelected || 0}
-            handlePress={editObs ? navToObsEdit : navToGroupPhotos}
+            onPress={editObs ? navToObsEdit : navToGroupPhotos}
             testID="PhotoGallery.createObsButton"
           />
         </View>

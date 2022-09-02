@@ -4,11 +4,11 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import {
-  Button, Dialog, Paragraph, Portal
+  Dialog, Paragraph, Portal
 } from "react-native-paper";
 
 import { ObsEditContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/sharedComponents/deletePhotoDialog";
+import Button from "../SharedComponents/Buttons/Button";
 
 type Props = {
   deleteDialogVisible: boolean,
@@ -34,12 +34,12 @@ const DeleteObservationDialog = ( {
           <Paragraph>{t( "Are-you-sure" )}</Paragraph>
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={hideDialog} style={viewStyles.cancelButton}>
-            {t( "Cancel" )}
-          </Button>
-          <Button onPress={deleteObservation} style={viewStyles.confirmButton}>
-            {t( "Yes-delete-observation" )}
-          </Button>
+          <Button onPress={hideDialog} text={t( "Cancel" )} level="primary" />
+          <Button
+            onPress={deleteObservation}
+            text={t( "Yes-delete-observation" )}
+            level="primary"
+          />
         </Dialog.Actions>
       </Dialog>
     </Portal>

@@ -8,7 +8,7 @@ import { View } from "react-native";
 // import DropdownPicker from "./DropdownPicker";
 import { ExploreContext } from "../../providers/contexts";
 import { textStyles, viewStyles } from "../../styles/explore/explore";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 import TranslatedText from "../SharedComponents/TranslatedText";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import FiltersIcon from "./FiltersIcon";
@@ -35,9 +35,12 @@ const Explore = ( ): Node => {
       <FiltersIcon />
       <TaxonLocationSearch />
       <View style={viewStyles.positionBottom}>
-        <RoundGreenButton
-          buttonText="Explore"
-          handlePress={navToExplore}
+        <Button
+          level="primary"
+          text="Explore"
+          onPress={navToExplore}
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={viewStyles.button}
           testID="Explore.fetchObservations"
           disabled={!taxonId}
         />

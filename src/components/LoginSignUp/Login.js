@@ -16,7 +16,7 @@ import {
   View
 } from "react-native";
 import {
-  Button, Dialog, Paragraph, Portal, Text, TextInput
+  Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -24,7 +24,7 @@ import colors from "../../styles/colors";
 import {
   closeButton, imageStyles, textStyles, viewStyles
 } from "../../styles/login/login";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 import {
   authenticateUser,
   getUsername,
@@ -75,6 +75,7 @@ const Login = ( ): Node => {
     if ( !success ) {
       setError( t( "Invalid-login" ) );
       setLoading( false );
+
       return;
     }
 
@@ -82,6 +83,7 @@ const Login = ( ): Node => {
     setUsername( userLogin );
     setLoggedIn( true );
     setLoading( false );
+
     navigation.navigate( "MainStack", {
       screen: "ObsList"
     } );
@@ -105,22 +107,25 @@ const Login = ( ): Node => {
             <Paragraph>{t( "Are-you-sure-you-want-to-sign-out" )}</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button style={viewStyles.grayButton} onPress={hideDialog} testID="Login.signOutButton">
-              {t( "Cancel" )}
-            </Button>
-            <Button style={viewStyles.greenButton} onPress={onSignOut}>
-              {t( "Sign-out" )}
-            </Button>
+            <Button
+              level="neutral"
+              onPress={hideDialog}
+              testID="Login.signOutButton"
+              text={t( "Cancel" )}
+            />
+
+            <Button level="primary" onPress={onSignOut} text={t( "Sign-out" )} />
+
           </Dialog.Actions>
         </Dialog>
       </Portal>
       <View style={viewStyles.logoutForm}>
         <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
-        <RoundGreenButton
-          style={viewStyles.button}
-          handlePress={showDialog}
+        <Button
+          level="primary"
+          onPress={showDialog}
           testID="Login.signOutButton"
-          buttonText="Sign-out"
+          text="Sign-out"
         />
       </View>
     </>
@@ -166,10 +171,11 @@ const Login = ( ): Node => {
         <Text style={textStyles.forgotPassword}>{t( "Forgot-Password" )}</Text>
       </TouchableOpacity>
       {error && <Text style={textStyles.error}>{error}</Text>}
-      <RoundGreenButton
+      <Button
+        level="primary"
+        text="Log-in"
+        onPress={login}
         style={viewStyles.button}
-        buttonText="Log-in"
-        handlePress={login}
         disabled={!email || !password}
         testID="Login.loginButton"
         loading={loading}

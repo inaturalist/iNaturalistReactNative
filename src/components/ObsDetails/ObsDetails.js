@@ -17,7 +17,7 @@ import {
   LogBox, Pressable, ScrollView, Text,
   TextInput as NativeTextInput, TouchableOpacity, View
 } from "react-native";
-import { ActivityIndicator, Button } from "react-native-paper";
+import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Realm from "realm";
@@ -32,7 +32,7 @@ import colors from "../../styles/colors";
 import { imageStyles, textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
 import createIdentification from "../Identify/helpers/createIdentification";
 import { getUser } from "../LoginSignUp/AuthenticationService";
-import RoundGrayButton from "../SharedComponents/Buttons/RoundGrayButton";
+import Button from "../SharedComponents/Buttons/Button";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import QualityBadge from "../SharedComponents/QualityBadge";
 import TranslatedText from "../SharedComponents/TranslatedText";
@@ -306,7 +306,7 @@ const ObsDetails = ( ): Node => {
           </View>
           <View style={viewStyles.photoContainer}>
             <PhotoScroll photos={photos} />
-            <Button
+            <IconButton
               icon={currentUserFaved ? "star-outline" : "star"}
               onPress={faveOrUnfave}
               textColor={colors.white}
@@ -380,20 +380,22 @@ const ObsDetails = ( ): Node => {
             </View>
           )}
           <View style={viewStyles.row}>
-            <View style={viewStyles.button}>
+            <View style={viewStyles.buttons}>
               {/* TODO: get this button working. Not sure why createIdentification
               isn't working here but it doesn't appear to be working on
               staging either (Mar 11, 2022) */}
-              <RoundGrayButton
-                buttonText={t( "Suggest-an-ID" )}
-                handlePress={navToAddID}
+              <Button
+                text={t( "Suggest-an-ID" )}
+                onPress={navToAddID}
+                style={viewStyles.button}
                 testID="ObsDetail.cvSuggestionsButton"
               />
             </View>
-            <View style={viewStyles.button}>
-              <RoundGrayButton
-                buttonText={t( "Add-Comment" )}
-                handlePress={openCommentBox}
+            <View style={viewStyles.buttons}>
+              <Button
+                text={t( "Add-Comment" )}
+                onPress={openCommentBox}
+                style={viewStyles.button}
                 testID="ObsDetail.commentButton"
                 disabled={showCommentBox}
               />
