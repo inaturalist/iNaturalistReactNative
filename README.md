@@ -27,10 +27,10 @@
 npm test
 
 # Run test paths matching a pattern
-./node_modules/.bin/jest MyObs
+npx jest MyObs
 
 # Run individual tests matching a pattern
-./node_modules/.bin/jest -t accessibility
+npx jest -t accessibility
 ```
 
 We currently have two kinds of tests:

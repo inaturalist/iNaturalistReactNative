@@ -49,11 +49,21 @@ const isLoggedIn = async (): Promise<boolean> => {
  * @returns {Promise<void>}
  */
 const signOut = async (
-  options: { deleteRealm: boolean }
+  options: {
+    deleteRealm?: boolean,
+    queryClient?: Object
+  } = {
+    deleteRealm: false,
+    queryClient: null
+  }
 ) => {
-  if ( options?.deleteRealm ) {
+  if ( options.deleteRealm ) {
     Realm.deleteFile( realmConfig );
   }
+  // Delete the React Query cache. FWIW, this should *not* be optional, but
+  // the checkForSignedInUser needs to call this and that doesn't have access
+  // to the React Query context (maybe it could...)
+  options.queryClient?.getQueryCache( ).clear( );
   await RNSInfo.deleteItem( "jwtToken", {} );
   await RNSInfo.deleteItem( "jwtTokenExpiration", {} );
   await RNSInfo.deleteItem( "username", {} );
