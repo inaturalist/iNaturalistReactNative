@@ -5,6 +5,12 @@ import piexif from "piexifjs";
 import { useEffect, useState } from "react";
 import RNFS from "react-native-fs";
 
+// How many bytes we read from the image file (first bytes), in order to
+// parse the EXIF data. Note that theoretically EXIF metadata could exist
+// anywhere in the file, but reading this many bytes from the start
+// of the file should be sufficient for the EXIF tags we're looking for.
+const MAX_EXIF_READ_BYTES = 512 * 1000; // 512KB
+
 const lpad = n => ( n > 9 ? `${n}` : `0${n}` );
 const exifTimeToString = time => (
   `${lpad( time[0][0] )}:${lpad( time[1][0] )}:${lpad( time[2][0] )}`
@@ -88,7 +94,9 @@ const usePhotoExif = ( photoUri: ?string ): Object => {
 
     const parseExif = async ( ): Promise<Object> => {
       try {
-        const data = await RNFS.readFile( photoUri, "base64" );
+        // Don't read the entire file into memory - just read a subset, since we need only
+        // partial data in order to parse the EXIF metadata.
+        const data = await RNFS.read( photoUri, MAX_EXIF_READ_BYTES, 0, "base64" );
         const rawExif = piexif.load( `data:image/jpeg;base64,${data}` );
 
         const parsedExif = {};

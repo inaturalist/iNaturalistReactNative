@@ -10,8 +10,7 @@ import {
 const formatDateAndTime = timestamp => {
   const date = fromUnixTime( timestamp );
   const formattedISODate = formatISO( date );
-  const stripTimeZone = formattedISODate.split( "+" ).slice( 0, -1 );
-  return stripTimeZone.join( "-" );
+  return formattedISODate.substring( 0, formattedISODate.length - 6 );
 };
 
 const createObservedOnStringForUpload = date => formatDateAndTime(
