@@ -32,11 +32,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     height: 50
   },
   button: {
-    width: 200,
-    height: 50,
-    alignSelf: "center",
-    marginTop: 30,
-    justifyContent: "center"
+    marginTop: 30
   },
   logoutForm: {
     alignItems: "center"

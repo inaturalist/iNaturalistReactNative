@@ -7,7 +7,7 @@ import { Text, View } from "react-native";
 import { Menu } from "react-native-paper";
 
 import { viewStyles } from "../../styles/photoLibrary/photoGalleryFooter";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 import SecondaryCTAButton from "../SharedComponents/Buttons/SecondaryCTAButton";
 import KebabMenu from "../SharedComponents/KebabMenu";
 
@@ -79,9 +79,10 @@ const GroupPhotosFooter = ( {
         </SecondaryCTAButton>
       </View>
       <View style={viewStyles.nextButton}>
-        <RoundGreenButton
-          buttonText="Next"
-          handlePress={navToObsEdit}
+        <Button
+          level="primary"
+          text="Next"
+          onPress={navToObsEdit}
           testID="GroupPhotos.next"
         />
       </View>

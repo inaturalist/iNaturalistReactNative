@@ -24,9 +24,8 @@ import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { MAX_PHOTOS_ALLOWED } from "../Camera/StandardCamera";
 import MediaViewer from "../MediaViewer/MediaViewer";
 import MediaViewerModal from "../MediaViewer/MediaViewerModal";
+import Button from "../SharedComponents/Buttons/Button";
 import EvidenceButton from "../SharedComponents/Buttons/EvidenceButton";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
-import SecondaryButton from "../SharedComponents/Buttons/SecondaryButton";
 import KebabMenu from "../SharedComponents/KebabMenu";
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import DeleteObservationDialog from "./DeleteObservationDialog";
@@ -230,16 +229,18 @@ const ObsEdit = ( ): Node => {
         <Headline style={textStyles.headerText}>{t( "Other-Data" )}</Headline>
         <OtherDataSection />
         <View style={viewStyles.buttonRow}>
-          <SecondaryButton
+          <Button
             onPress={saveObservation}
             testID="ObsEdit.saveButton"
-          >
-            <Text>{t( "SAVE" )}</Text>
-          </SecondaryButton>
-          <RoundGreenButton
-            buttonText="UPLOAD-OBSERVATION"
+            text={t( "SAVE" )}
+            level="neutral"
+
+          />
+          <Button
+            level="primary"
+            text="UPLOAD-OBSERVATION"
             testID="ObsEdit.uploadButton"
-            handlePress={saveAndUploadObservation}
+            onPress={saveAndUploadObservation}
             disabled={!isLoggedIn}
           />
         </View>

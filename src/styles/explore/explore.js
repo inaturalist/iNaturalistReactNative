@@ -33,6 +33,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     paddingTop: 20,
     paddingBottom: 70,
     paddingHorizontal: 20
+  },
+  button: {
+    marginHorizontal: 120
   }
 } );
 

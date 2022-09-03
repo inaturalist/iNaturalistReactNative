@@ -8,7 +8,7 @@ import { View } from "react-native";
 
 import { ExploreContext } from "../../providers/contexts";
 import { viewStyles } from "../../styles/explore/exploreFilters";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 
 const ExploreFooter = ( ): Node => {
   const { applyFilters, resetUnappliedFilters } = React.useContext( ExploreContext );
@@ -27,9 +27,10 @@ const ExploreFooter = ( ): Node => {
   return (
     <View style={viewStyles.footer}>
       <HeaderBackButton onPress={clearFiltersAndNavigate} style={viewStyles.element} />
-      <RoundGreenButton
-        handlePress={applyFiltersAndNavigate}
-        buttonText="Apply Filters"
+      <Button
+        level="primary"
+        onPress={applyFiltersAndNavigate}
+        text="Apply Filters"
         testID="ExploreFilters.applyFilters"
       />
     </View>

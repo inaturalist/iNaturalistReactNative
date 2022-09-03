@@ -14,7 +14,7 @@ import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import { textStyles, viewStyles } from "../../styles/obsEdit/cvSuggestions";
 import PlaceholderText from "../PlaceholderText";
-import RoundGreenButton from "../SharedComponents/Buttons/RoundGreenButton";
+import Button from "../SharedComponents/Buttons/Button";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import useCVSuggestions from "./hooks/useCVSuggestions";
@@ -168,9 +168,10 @@ const CVSuggestions = ( ): Node => {
         />
       </View>
       {list.length > 0 ? displaySearchResults( ) : displaySuggestions( )}
-      <RoundGreenButton
-        handlePress={toggleSeenNearby}
-        buttonText={showSeenNearby ? "View species not seen nearby" : "View seen nearby"}
+      <Button
+        level="primary"
+        onPress={toggleSeenNearby}
+        text={showSeenNearby ? "View species not seen nearby" : "View seen nearby"}
         testID="CVSuggestions.toggleSeenNearby"
       />
     </ViewNoFooter>
