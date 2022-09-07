@@ -1,9 +1,8 @@
 // @flow
 
 import * as React from "react";
-import { Button as ButtonRNP } from "react-native-paper";
+import { Button as ButtonRNP, useTheme } from "react-native-paper";
 
-import { textStyles, viewStyles } from "../../../styles/sharedComponents/buttons/buttonVariants";
 import TranslatedText from "../TranslatedText";
 
 type ButtonProps = {
@@ -19,26 +18,27 @@ type ButtonProps = {
 
 const setStyles = ( {
   level,
-  disabled
+  disabled,
+  theme
 } ) => {
-  const buttonContainer = [viewStyles.containerDefault];
-  const buttonText = [textStyles.textDefault];
+  const buttonContainer = [theme.buttonDefault];
+  const buttonText = [theme.text.buttonTextDefault];
 
   if ( level === "warning" ) {
-    buttonContainer.push( viewStyles.containerWarning );
+    buttonContainer.push( theme.buttonWarning );
   } else if ( level === "primary" ) {
-    buttonContainer.push( viewStyles.containerPrimary );
+    buttonContainer.push( theme.buttonPrimary );
   } else {
-    buttonContainer.push( viewStyles.containerNeutral );
+    buttonContainer.push( theme.buttonNeutral );
   }
 
   if ( disabled ) {
     if ( level === "warning" ) {
-      buttonContainer.push( viewStyles.containerWarningDisabled );
+      buttonContainer.push( theme.buttonWarningDisabled );
     } else if ( level === "primary" ) {
-      buttonContainer.push( viewStyles.containerPrimaryDisabled );
+      buttonContainer.push( theme.buttonPrimaryDisabled );
     } else {
-      buttonContainer.push( viewStyles.containerNeutralDisabled );
+      buttonContainer.push( theme.buttonNeutralDisabled );
     }
   }
 
@@ -48,7 +48,8 @@ const setStyles = ( {
 const Button = ( {
   text, onPress, disabled, testID, count, level, loading, style
 }: ButtonProps ): React.Node => {
-  const { buttonText, buttonContainer } = setStyles( { disabled, level } );
+  const theme = useTheme( );
+  const { buttonText, buttonContainer } = setStyles( { disabled, level, theme } );
 
   return (
     <ButtonRNP

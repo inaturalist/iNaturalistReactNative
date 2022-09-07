@@ -17,11 +17,11 @@ import {
   View
 } from "react-native";
 import {
-  Dialog, Paragraph, Portal, Text, TextInput
+  Dialog, Paragraph, Portal, Text, TextInput, useTheme
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import colors from "../../styles/colors";
+// import colors from "../../styles/colors";
 import {
   closeButton, imageStyles, textStyles, viewStyles
 } from "../../styles/login/login";
@@ -34,6 +34,9 @@ import {
 } from "./AuthenticationService";
 
 const Login = ( ): Node => {
+  const {
+    colors, inputField, text, buttonSecondary, container
+  } = useTheme( );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
@@ -144,36 +147,36 @@ const Login = ( ): Node => {
 
       <Text style={textStyles.header}>{t( "Login-header" )}</Text>
       <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
-      <Text style={textStyles.fieldText}>{t( "Username-or-Email" )}</Text>
+      <Text style={text.inputFieldLabel}>{t( "Username-or-Email" )}</Text>
       <TextInput
-        style={viewStyles.input}
-        onChangeText={text => {
+        style={{ backgroundColor: colors.tertiary, ...inputField }}
+        onChangeText={input => {
           setError( null );
-          setEmail( text );
+          setEmail( input );
         }}
         value={email}
         autoComplete="email"
         testID="Login.email"
         autoCapitalize="none"
         keyboardType="email-address"
-        selectionColor={colors.black}
       />
-      <Text style={textStyles.fieldText}>{t( "Password" )}</Text>
+      <Text style={text.inputFieldLabel}>{t( "Password" )}</Text>
       <TextInput
-        style={viewStyles.input}
-        onChangeText={text => {
+        style={{ backgroundColor: colors.tertiary, ...inputField }}
+        onChangeText={input => {
           setError( null );
-          setPassword( text );
+          setPassword( input );
         }}
         value={password}
         secureTextEntry
         testID="Login.password"
-        selectionColor={colors.black}
       />
       <TouchableOpacity onPress={forgotPassword}>
-        <Text style={textStyles.forgotPassword}>{t( "Forgot-Password" )}</Text>
+        <Text style={[textStyles.forgotPassword, buttonSecondary]}>
+          {t( "Forgot-Password" )}
+        </Text>
       </TouchableOpacity>
-      {error && <Text style={textStyles.error}>{error}</Text>}
+      {error && <Text style={text.errorText}>{error}</Text>}
       <Button
         level="primary"
         text="Log-in"
@@ -189,9 +192,9 @@ const Login = ( ): Node => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={viewStyles.container}
+      style={container}
     >
-      <SafeAreaView style={[viewStyles.container]}>
+      <SafeAreaView style={container}>
         <ScrollView
           contentContainerStyle={viewStyles.paddedContainer}
         >

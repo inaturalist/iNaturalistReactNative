@@ -6,27 +6,11 @@ import type {
   TextStyleProp, ViewStyleProp
 } from "react-native/Libraries/StyleSheet/StyleSheet";
 
-import colors from "../colors";
-
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
-  container: {
-    flex: 1
-  },
   paddedContainer: {
     flex: 1,
     padding: "10%",
     justifyContent: "center"
-  },
-  greenButton: {
-    backgroundColor: colors.inatGreen,
-    borderRadius: 40,
-    alignSelf: "center"
-  },
-  grayButton: {
-    backgroundColor: colors.gray,
-    borderRadius: 40,
-    alignSelf: "center",
-    marginRight: 20
   },
   input: {
     height: 50
@@ -52,20 +36,9 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
     marginBottom: 20,
     textAlign: "center"
   },
-  fieldText: {
-    fontSize: 17,
-    marginBottom: 5,
-    marginTop: 10
-  },
-  error: {
-    color: colors.red,
-    marginTop: 20,
-    textAlign: "center"
-  },
   forgotPassword: {
     alignSelf: "flex-end",
-    marginTop: 10,
-    textDecorationLine: "underline"
+    marginTop: 10
   }
 } );
 
