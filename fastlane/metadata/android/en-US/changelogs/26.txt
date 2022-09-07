@@ -1,0 +1,9 @@
+Unified button implementation around style guide
+
+There were also a number of changes that should not have affected the user
+experience:
+
+* Use React Query for API requests
+* Flow types for some more external dependencies (thanks, Corey!)
+* NPM package version conflicts resolved (thanks, Corey!)
+* Removed the PhotoGalleryProvider
