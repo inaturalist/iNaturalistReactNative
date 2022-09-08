@@ -144,7 +144,7 @@ const Login = ( ): Node => {
 
       <Text style={textStyles.header}>{t( "Login-header" )}</Text>
       <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
-      <Text style={textStyles.fieldText}>{t( "Username-or-Email" )}</Text>
+      <Text className="text-base mb-1">{t( "Username-or-Email" )}</Text>
       <TextInput
         style={viewStyles.input}
         onChangeText={text => {
@@ -158,7 +158,7 @@ const Login = ( ): Node => {
         keyboardType="email-address"
         selectionColor={colors.black}
       />
-      <Text style={textStyles.fieldText}>{t( "Password" )}</Text>
+      <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
         style={viewStyles.input}
         onChangeText={text => {
@@ -171,7 +171,9 @@ const Login = ( ): Node => {
         selectionColor={colors.black}
       />
       <TouchableOpacity onPress={forgotPassword}>
-        <Text style={textStyles.forgotPassword}>{t( "Forgot-Password" )}</Text>
+        <Text className="underline mt-4 self-end">
+          {t( "Forgot-Password" )}
+        </Text>
       </TouchableOpacity>
       {error && <Text style={textStyles.error}>{error}</Text>}
       <Button

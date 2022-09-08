@@ -52,20 +52,10 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
     marginBottom: 20,
     textAlign: "center"
   },
-  fieldText: {
-    fontSize: 17,
-    marginBottom: 5,
-    marginTop: 10
-  },
   error: {
     color: colors.red,
     marginTop: 20,
     textAlign: "center"
-  },
-  forgotPassword: {
-    alignSelf: "flex-end",
-    marginTop: 10,
-    textDecorationLine: "underline"
   }
 } );
 
