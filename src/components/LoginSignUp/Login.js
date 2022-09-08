@@ -21,10 +21,7 @@ import {
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import colors from "../../styles/colors";
-import {
-  closeButton, imageStyles, textStyles, viewStyles
-} from "../../styles/login/login";
+import viewStyles from "../../styles/login/login";
 import Button from "../SharedComponents/Buttons/Button";
 import {
   authenticateUser,
@@ -136,14 +133,15 @@ const Login = ( ): Node => {
 
   const loginForm = (
     <>
+      {/* $FlowIgnore */}
       <Image
-        style={imageStyles.logo}
+        className="self-center w-32 h-32"
         resizeMode="contain"
         source={require( "../../images/inat_logo.png" )}
       />
 
-      <Text style={textStyles.header}>{t( "Login-header" )}</Text>
-      <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
+      <Text className="text-2xl self-center mt-5">{t( "Login-header" )}</Text>
+      <Text className="text-xl self-center text-center mt-5 mb-5">{t( "Login-sub-title" )}</Text>
       <Text className="text-base mb-1">{t( "Username-or-Email" )}</Text>
       <TextInput
         className="h-10 bg-tertiary"
@@ -156,7 +154,6 @@ const Login = ( ): Node => {
         testID="Login.email"
         autoCapitalize="none"
         keyboardType="email-address"
-        selectionColor={colors.black}
       />
       <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
@@ -168,14 +165,13 @@ const Login = ( ): Node => {
         value={password}
         secureTextEntry
         testID="Login.password"
-        selectionColor={colors.black}
       />
       <TouchableOpacity onPress={forgotPassword}>
         <Text className="underline mt-4 self-end">
           {t( "Forgot-Password" )}
         </Text>
       </TouchableOpacity>
-      {error && <Text style={textStyles.error}>{error}</Text>}
+      {error && <Text className="text-red self-center mt-5">{error}</Text>}
       <Button
         level="primary"
         text="Log-in"
@@ -189,17 +185,21 @@ const Login = ( ): Node => {
   );
 
   return (
+    // $FlowIgnore
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={viewStyles.container}
+      className="flex-1"
     >
-      <SafeAreaView style={[viewStyles.container]}>
+      {/* $FlowIgnore */}
+      <SafeAreaView className="flex-1">
+        {/* $FlowIgnore */}
         <ScrollView
-          contentContainerStyle={viewStyles.paddedContainer}
+          className="flex-1 p-10"
         >
+          {/* $FlowIgnore */}
           <Pressable
             onPress={() => navigation.goBack()}
-            style={closeButton.close}
+            className="absolute top-0 right-0"
           >
             <Icon name="close" size={35} />
           </Pressable>

@@ -21,7 +21,6 @@ const setStyles = ( {
   disabled
 } ) => {
   let buttonClass = "rounded-3xl h-13";
-  const buttonText = "text-lg text-white font-semibold";
 
   if ( level === "warning" ) {
     buttonClass += buttonClass.concat( " ", "bg-buttonWarning" );
@@ -41,13 +40,13 @@ const setStyles = ( {
     }
   }
 
-  return { buttonText, buttonClass };
+  return { buttonClass };
 };
 
 const Button = ( {
   text, onPress, disabled, testID, count, level, loading, style
 }: ButtonProps ): React.Node => {
-  const { buttonText, buttonClass } = setStyles( { disabled, level } );
+  const { buttonClass } = setStyles( { disabled, level } );
 
   return (
     <ButtonRNP
@@ -60,7 +59,7 @@ const Button = ( {
     >
       <TranslatedText
         count={count}
-        textStyle={buttonText}
+        className="text-lg text-white font-semibold"
         text={text}
       />
     </ButtonRNP>

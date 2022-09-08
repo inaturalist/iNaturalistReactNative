@@ -15,6 +15,8 @@ module.exports = {
       primary: "#77b300",
       secondary: "#979797",
       tertiary: "#C4C4C4",
+      white: "#ffffff",
+      red: "#ff0000",
       buttonPrimary: PRIMARY,
       buttonPrimaryDisabled: PRIMARY_DISABLED,
       buttonWarning: WARNING,
