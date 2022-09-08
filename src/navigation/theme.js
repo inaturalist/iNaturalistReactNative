@@ -47,37 +47,39 @@ const inatTheme = {
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0
   },
-  buttonDefault: {
-    borderRadius: 40,
-    height: 48
-  },
-  buttonPrimary: {
-    backgroundColor: PRIMARY,
-    borderColor: PRIMARY
-  },
-  buttonWarning: {
-    backgroundColor: WARNING,
-    borderColor: WARNING
-  },
-  buttonNeutral: {
-    backgroundColor: NEUTRAL,
-    borderColor: NEUTRAL
-  },
-  buttonPrimaryDisabled: {
-    backgroundColor: PRIMARY_DISABLED,
-    borderColor: PRIMARY_DISABLED
-  },
-  buttonNeutralDisabled: {
-    backgroundColor: NEUTRAL_DISABLED,
-    borderColor: NEUTRAL_DISABLED
-  },
-  buttonWarningDisabled: {
-    backgroundColor: WARNING_DISABLED,
-    borderColor: WARNING_DISABLED
-  },
-  buttonSecondary: {
-    textDecorationLine: "underline",
-    fontSize: 16
+  button: {
+    buttonDefault: {
+      borderRadius: 40,
+      height: 48
+    },
+    buttonPrimary: {
+      backgroundColor: PRIMARY,
+      borderColor: PRIMARY
+    },
+    buttonWarning: {
+      backgroundColor: WARNING,
+      borderColor: WARNING
+    },
+    buttonNeutral: {
+      backgroundColor: NEUTRAL,
+      borderColor: NEUTRAL
+    },
+    buttonPrimaryDisabled: {
+      backgroundColor: PRIMARY_DISABLED,
+      borderColor: PRIMARY_DISABLED
+    },
+    buttonNeutralDisabled: {
+      backgroundColor: NEUTRAL_DISABLED,
+      borderColor: NEUTRAL_DISABLED
+    },
+    buttonWarningDisabled: {
+      backgroundColor: WARNING_DISABLED,
+      borderColor: WARNING_DISABLED
+    },
+    buttonSecondary: {
+      textDecorationLine: "underline",
+      fontSize: 16
+    }
   },
   text: {
     buttonTextDefault: {

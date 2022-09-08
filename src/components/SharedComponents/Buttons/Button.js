@@ -21,24 +21,24 @@ const setStyles = ( {
   disabled,
   theme
 } ) => {
-  const buttonContainer = [theme.buttonDefault];
+  const buttonContainer = [theme.button.buttonDefault];
   const buttonText = [theme.text.buttonTextDefault];
 
   if ( level === "warning" ) {
-    buttonContainer.push( theme.buttonWarning );
+    buttonContainer.push( theme.button.buttonWarning );
   } else if ( level === "primary" ) {
-    buttonContainer.push( theme.buttonPrimary );
+    buttonContainer.push( theme.button.buttonPrimary );
   } else {
-    buttonContainer.push( theme.buttonNeutral );
+    buttonContainer.push( theme.button.buttonNeutral );
   }
 
   if ( disabled ) {
     if ( level === "warning" ) {
-      buttonContainer.push( theme.buttonWarningDisabled );
+      buttonContainer.push( theme.button.buttonWarningDisabled );
     } else if ( level === "primary" ) {
-      buttonContainer.push( theme.buttonPrimaryDisabled );
+      buttonContainer.push( theme.button.buttonPrimaryDisabled );
     } else {
-      buttonContainer.push( theme.buttonNeutralDisabled );
+      buttonContainer.push( theme.button.buttonNeutralDisabled );
     }
   }
 
