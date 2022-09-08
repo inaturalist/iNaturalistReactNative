@@ -7,14 +7,14 @@ import { Text } from "react-native";
 
 type Props = {
   text: string,
-  style?: Object,
+  textStyle?: string,
   count?: number
 }
 
-const TranslatedText = ( { text, style, count }: Props ): Node => {
+const TranslatedText = ( { text, textStyle, count }: Props ): Node => {
   const { t } = useTranslation( );
 
-  return <Text style={style}>{t( text, { count } )}</Text>;
+  return <Text className={textStyle}>{t( text, { count } )}</Text>;
 };
 
 export default TranslatedText;

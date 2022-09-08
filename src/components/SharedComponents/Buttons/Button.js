@@ -3,7 +3,6 @@
 import * as React from "react";
 import { Button as ButtonRNP } from "react-native-paper";
 
-import { textStyles, viewStyles } from "../../../styles/sharedComponents/buttons/buttonVariants";
 import TranslatedText from "../TranslatedText";
 
 type ButtonProps = {
@@ -21,39 +20,39 @@ const setStyles = ( {
   level,
   disabled
 } ) => {
-  const buttonContainer = [viewStyles.containerDefault];
-  const buttonText = [textStyles.textDefault];
+  let buttonClass = "rounded-3xl h-13";
+  const buttonText = "text-lg text-white font-semibold";
 
   if ( level === "warning" ) {
-    buttonContainer.push( viewStyles.containerWarning );
+    buttonClass += buttonClass.concat( " ", "bg-buttonWarning" );
   } else if ( level === "primary" ) {
-    buttonContainer.push( viewStyles.containerPrimary );
+    buttonClass += buttonClass.concat( " ", "bg-buttonPrimary" );
   } else {
-    buttonContainer.push( viewStyles.containerNeutral );
+    buttonClass += buttonClass.concat( " ", "bg-buttonNeutral" );
   }
 
   if ( disabled ) {
     if ( level === "warning" ) {
-      buttonContainer.push( viewStyles.containerWarningDisabled );
+      buttonClass += buttonClass.concat( " ", "bg-buttonWarningDisabled" );
     } else if ( level === "primary" ) {
-      buttonContainer.push( viewStyles.containerPrimaryDisabled );
+      buttonClass += buttonClass.concat( " ", "bg-buttonPrimaryDisabled" );
     } else {
-      buttonContainer.push( viewStyles.containerNeutralDisabled );
+      buttonClass += buttonClass.concat( " ", "bg-buttonNeutralDisabled" );
     }
   }
 
-  return { buttonText, buttonContainer };
+  return { buttonText, buttonClass };
 };
 
 const Button = ( {
   text, onPress, disabled, testID, count, level, loading, style
 }: ButtonProps ): React.Node => {
-  const { buttonText, buttonContainer } = setStyles( { disabled, level } );
+  const { buttonText, buttonClass } = setStyles( { disabled, level } );
 
   return (
     <ButtonRNP
       onPress={onPress}
-      contentStyle={buttonContainer}
+      className={buttonClass}
       style={style}
       disabled={disabled}
       testID={testID}
@@ -61,7 +60,7 @@ const Button = ( {
     >
       <TranslatedText
         count={count}
-        style={buttonText}
+        textStyle={buttonText}
         text={text}
       />
     </ButtonRNP>

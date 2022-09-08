@@ -146,7 +146,7 @@ const Login = ( ): Node => {
       <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
       <Text className="text-base mb-1">{t( "Username-or-Email" )}</Text>
       <TextInput
-        style={viewStyles.input}
+        className="h-10 bg-tertiary"
         onChangeText={text => {
           setError( null );
           setEmail( text );
@@ -160,7 +160,7 @@ const Login = ( ): Node => {
       />
       <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
-        style={viewStyles.input}
+        className="h-10 bg-tertiary"
         onChangeText={text => {
           setError( null );
           setPassword( text );
