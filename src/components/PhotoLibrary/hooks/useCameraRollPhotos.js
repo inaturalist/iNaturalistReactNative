@@ -33,8 +33,6 @@ const useCameraRollPhotos = (
       lastCursor, photos, fetchingPhotos, hasNextPage
     } = photoFetchStatus;
 
-    const mapPhotoUris = p => p.edges.map( ( { node } ) => node );
-
     try {
       // keep track of the last photo fetched
       if ( lastCursor ) {
@@ -47,16 +45,16 @@ const useCameraRollPhotos = (
         ...photoFetchStatus,
         fetchingPhotos: true
       } );
-      const p = await CameraRoll.getPhotos( options );
-      const endCursor = p.page_info.end_cursor;
-      const nextPage = p.page_info.has_next_page;
-      const uris = mapPhotoUris( p );
+      const photosResponse = await CameraRoll.getPhotos( options );
+      const newLastCursor = photosResponse.page_info.end_cursor;
+      const newHasNextPage = photosResponse.page_info.has_next_page;
+      const newPhotos = photosResponse.edges.map( ( { node } ) => node );
 
       setPhotoFetchStatus( {
         ...photoFetchStatus,
-        lastCursor: endCursor,
-        photos: photos.concat( uris ),
-        hasNextPage: nextPage,
+        lastCursor: newLastCursor,
+        photos: photos.concat( newPhotos ),
+        hasNextPage: newHasNextPage,
         fetchingPhotos: false
       } );
     } catch ( e ) {
