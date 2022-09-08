@@ -1,8 +1,8 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 
 import ObsDetails from "../../../../src/components/ObsDetails/ObsDetails";
+import ThemeProvider from "../../../../src/navigation/theme";
 import { ObsEditContext } from "../../../../src/providers/contexts";
 import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import factory from "../../../factory";
@@ -54,11 +54,11 @@ const mockObsEditProviderWithObs = ( ) => ObsEditProvider.mockImplementation( ( 
 ) );
 
 const renderObsDetails = ( ) => render(
-  <NavigationContainer>
+  <ThemeProvider>
     <ObsEditProvider>
       <ObsDetails />
     </ObsEditProvider>
-  </NavigationContainer>
+  </ThemeProvider>
 );
 
 test( "renders obs details from remote call", ( ) => {

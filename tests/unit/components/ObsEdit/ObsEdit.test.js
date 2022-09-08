@@ -1,9 +1,9 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import ObsEdit from "../../../../src/components/ObsEdit/ObsEdit";
+import ThemeProvider from "../../../../src/navigation/theme";
 import { ObsEditContext } from "../../../../src/providers/contexts";
 import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import factory from "../../../factory";
@@ -68,11 +68,11 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
 
 const renderObsEdit = ( ) => render(
   <SafeAreaProvider>
-    <NavigationContainer>
+    <ThemeProvider>
       <ObsEditProvider>
         <ObsEdit />
       </ObsEditProvider>
-    </NavigationContainer>
+    </ThemeProvider>
   </SafeAreaProvider>
 );
 

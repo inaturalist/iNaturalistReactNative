@@ -1,8 +1,8 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
 import React from "react";
 
 import UserProfile from "../../../../src/components/UserProfile/UserProfile";
+import ThemeProvider from "../../../../src/navigation/theme";
 import factory from "../../../factory";
 
 const testUser = factory( "RemoteUser" );
@@ -29,9 +29,9 @@ jest.mock( "@react-navigation/native", ( ) => {
 } );
 
 const renderUserProfile = ( ) => render(
-  <NavigationContainer>
+  <ThemeProvider>
     <UserProfile />
-  </NavigationContainer>
+  </ThemeProvider>
 );
 
 test( "renders user profile from API call", ( ) => {
@@ -46,9 +46,9 @@ test( "renders user profile from API call", ( ) => {
 test.todo( "should not have accessibility errors" );
 // test( "should not have accessibility errors", ( ) => {
 //   const userProfile = (
-//     <NavigationContainer>
+//     <ThemeProvider>
 //       <UserProfile />
-//     </NavigationContainer>
+//     </ThemeProvider>
 //   );
 //   expect( userProfile ).toBeAccessible( );
 // } );

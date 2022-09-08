@@ -29,7 +29,18 @@ const inatTheme = {
     primary: colors.inatGreen,
     secondary: colors.secondary,
     tertiary: colors.tertiary,
-    surface: colors.white
+    surface: colors.white,
+    // elevation lifted from LightTheme rather than DefaultTheme
+    // needed level3 here to prevent a crash when opening Dialogs
+    // https://github.com/callstack/react-native-paper/blob/11686c5efb1668564ba769f49a37b4d80ce7177e/src/styles/themes/v3/LightTheme.tsx#L49
+    elevation: {
+      level0: "transparent",
+      level1: "rgb(247, 243, 249)",
+      level2: "rgb(243, 237, 246)",
+      level3: "rgb(238, 232, 244)",
+      level4: "rgb(236, 230, 243)",
+      level5: "rgb(233, 227, 241)"
+    }
   },
   inputField: {
     height: 36,

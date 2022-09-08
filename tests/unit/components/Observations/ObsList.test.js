@@ -1,8 +1,8 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render, within } from "@testing-library/react-native";
 import React from "react";
 
 import ObsList from "../../../../src/components/Observations/ObsList";
+import ThemeProvider from "../../../../src/navigation/theme";
 import factory from "../../../factory";
 
 const mockObservations = [
@@ -49,9 +49,9 @@ jest.mock( "@react-navigation/native", ( ) => {
 jest.mock( "@gorhom/bottom-sheet", () => require( "@gorhom/bottom-sheet/mock" ) );
 
 const renderObsList = ( ) => render(
-  <NavigationContainer>
+  <ThemeProvider>
     <ObsList />
-  </NavigationContainer>
+  </ThemeProvider>
 );
 
 it( "renders an observation", ( ) => {
