@@ -1,12 +1,8 @@
 // @flow
 
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetModalProvider
-} from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import type { Node } from "react";
-import React, { useEffect, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 
 import { viewStyles } from "../../styles/sharedComponents/bottomSheet";
 
@@ -14,40 +10,25 @@ type Props = {
   children: any
 }
 
-const BottomSheet = ( { children }: Props ): Node => {
-  // ref
-  const bottomSheetModalRef = useRef( null );
+const StandardBottomSheet = ( { children }: Props ): Node => {
+  const sheetRef = useRef( null );
+  const snapPoints = useMemo( () => ["30%"], [] );
 
-  const renderBackdrop = props => (
-    <BottomSheetBackdrop
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...props}
-      pressBehavior="close"
-      appearsOnIndex={0}
-      disappearsOnIndex={-1}
-    />
-  );
-
-  useEffect( ( ) => {
-    // opens bottom sheet modal once when component first loads
-    bottomSheetModalRef.current?.present( );
-  }, [] );
+  // eslint-disable-next-line
+  const noHandle = ( ) => <></>;
 
   return (
-    <BottomSheetModalProvider>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={0}
-        enableOverDrag={false}
-        enablePanDownToClose={false}
-        snapPoints={["40%"]}
-        backdropComponent={renderBackdrop}
-        style={viewStyles.bottomModal}
-      >
+    <BottomSheet
+      ref={sheetRef}
+      snapPoints={snapPoints}
+      style={viewStyles.shadow}
+      handleComponent={noHandle}
+    >
+      <BottomSheetView style={viewStyles.bottomSheet}>
         {children}
-      </BottomSheetModal>
-    </BottomSheetModalProvider>
+      </BottomSheetView>
+    </BottomSheet>
   );
 };
 
-export default BottomSheet;
+export default StandardBottomSheet;
