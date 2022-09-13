@@ -29,7 +29,9 @@ const Explore = ( ): Node => {
         <ObservationViews
           loading={loadingExplore}
           localObservations={{
-            observationList: exploreList
+            observationList: exploreList,
+            unuploadedObsList: [],
+            allObsToUpload: []
           }}
           taxonId={taxonId}
           testID="Explore.observations"

@@ -46,7 +46,25 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-jest.mock( "@gorhom/bottom-sheet", () => require( "@gorhom/bottom-sheet/mock" ) );
+jest.mock(
+  "react-native-reanimated",
+  ( ) => jest.requireActual( "../node_modules/react-native-reanimated/mock" )
+);
+
+jest.mock( "@gorhom/bottom-sheet", () => {
+  const react = require( "react-native" );
+  return {
+    __esModule: true,
+    default: react.View,
+    BottomSheet: react.View,
+    BottomSheetView: react.View,
+    useRef: ( ) => ( {
+      snapToIndex: jest.fn( )
+    } )
+  };
+} );
+
+// jest.mock( "@gorhom/bottom-sheet", () => require( "@gorhom/bottom-sheet/mock" ) );
 
 const renderObsList = ( ) => render(
   <NavigationContainer>
