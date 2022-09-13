@@ -1,24 +1,31 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import * as React from "react";
+import type { Node } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  Dimensions,
   FlatList, Pressable, Text, View
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../../styles/observations/obsList";
+import BottomSheet from "../BottomSheet";
 import Map from "../Map";
 import EmptyList from "./EmptyList";
 import GridItem from "./GridItem";
+import useUploadStatus from "./hooks/useUploadStatus";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
+import LoginPrompt from "./LoginPrompt";
 import ObsCard from "./ObsCard";
+import UploadProgressBar from "./UploadProgressBar";
+import UploadPrompt from "./UploadPrompt";
 
 type Props = {
   loading: boolean,
-  observationList: Array<Object>,
+  localObservations: Object,
   testID: string,
   taxonId?: number,
   mapHeight?: number,
@@ -29,18 +36,43 @@ type Props = {
 
 const ObservationViews = ( {
   loading,
-  observationList,
+  localObservations,
   testID,
   taxonId,
   mapHeight,
   totalObservations,
   handleEndReached,
   syncObservations
-}: Props ): React.Node => {
-  const [view, setView] = React.useState( "list" );
+}: Props ): Node => {
+  const [view, setView] = useState( "list" );
   const navigation = useNavigation( );
   const { name } = useRoute( );
   const isLoggedIn = useLoggedIn( );
+  const { uploadInProgress, updateUploadStatus } = useUploadStatus( );
+  const { observationList, unuploadedObsList, allObsToUpload } = localObservations;
+  const numOfUnuploadedObs = unuploadedObsList?.length;
+  const [hasScrolled, setHasScrolled] = useState( false );
+
+  const { height } = Dimensions.get( "screen" );
+  const FOOTER_HEIGHT = 75;
+  const HEADER_HEIGHT = 101;
+  const BUTTON_ROW_HEIGHT = 50;
+
+  // using flatListHeight to make the bottom sheet snap points work when the flatlist
+  // has only a few items and isn't scrollable
+  const flatListHeight = height - (
+    HEADER_HEIGHT + FOOTER_HEIGHT + BUTTON_ROW_HEIGHT
+  );
+
+  const onScroll = ( { nativeEvent } ) => {
+    const { y } = nativeEvent.contentOffset;
+
+    if ( y <= 0 ) {
+      setHasScrolled( false );
+    } else {
+      setHasScrolled( true );
+    }
+  };
 
   const navToObsDetails = async observation => {
     navigation.navigate( "ObsDetails", { observation } );
@@ -64,8 +96,37 @@ const ObservationViews = ( {
 
   const { t } = useTranslation( );
 
+  const renderBottomSheet = ( ) => {
+    if ( numOfUnuploadedObs === 0 ) { return null; }
+
+    if ( isLoggedIn === false ) {
+      return (
+        <BottomSheet hasScrolled={hasScrolled}>
+          <LoginPrompt />
+        </BottomSheet>
+      );
+    }
+    if ( uploadInProgress ) {
+      return (
+        <UploadProgressBar
+          unuploadedObsList={unuploadedObsList}
+          allObsToUpload={allObsToUpload}
+        />
+      );
+    }
+    return (
+      <BottomSheet hasScrolled={hasScrolled}>
+        <UploadPrompt
+          uploadObservations={updateUploadStatus}
+          numOfUnuploadedObs={numOfUnuploadedObs}
+          updateUploadStatus={updateUploadStatus}
+        />
+      </BottomSheet>
+    );
+  };
+
   const renderFooter = ( ) => {
-    if ( isLoggedIn === false ) { return null; }
+    if ( isLoggedIn === false ) { return <View />; }
     return loading
       ? <InfiniteScrollFooter />
       : <View style={viewStyles.footer} />;
@@ -76,16 +137,21 @@ const ObservationViews = ( {
       return <Map taxonId={taxonId} mapHeight={mapHeight} />;
     }
     return (
-      <FlatList
-        data={observationList}
-        key={view === "grid" ? 1 : 0}
-        renderItem={view === "grid" ? renderGridItem : renderItem}
-        numColumns={view === "grid" ? 2 : 1}
-        testID={testID}
-        ListEmptyComponent={renderEmptyState}
-        onEndReached={handleEndReached}
-        ListFooterComponent={renderFooter}
-      />
+      <>
+        <FlatList
+          data={observationList}
+          key={view === "grid" ? 1 : 0}
+          renderItem={view === "grid" ? renderGridItem : renderItem}
+          numColumns={view === "grid" ? 2 : 1}
+          testID={testID}
+          ListEmptyComponent={renderEmptyState}
+          onScroll={onScroll}
+          onEndReached={handleEndReached}
+          ListFooterComponent={renderFooter}
+          contentContainerStyle={{ minHeight: flatListHeight }}
+        />
+        {renderBottomSheet( )}
+      </>
     );
   };
 
