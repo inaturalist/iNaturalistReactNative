@@ -46,25 +46,11 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-jest.mock(
-  "react-native-reanimated",
-  ( ) => jest.requireActual( "../node_modules/react-native-reanimated/mock" )
-);
-
-jest.mock( "@gorhom/bottom-sheet", () => {
-  const react = require( "react-native" );
-  return {
-    __esModule: true,
-    default: react.View,
-    BottomSheet: react.View,
-    BottomSheetView: react.View,
-    useRef: ( ) => ( {
-      snapToIndex: jest.fn( )
-    } )
-  };
-} );
-
-// jest.mock( "@gorhom/bottom-sheet", () => require( "@gorhom/bottom-sheet/mock" ) );
+// https://github.com/gorhom/react-native-bottom-sheet/issues/932#issuecomment-1137645269
+jest.mock( "@gorhom/bottom-sheet", () => ( {
+  ...require( "@gorhom/bottom-sheet/mock" ),
+  __esModule: true
+} ) );
 
 const renderObsList = ( ) => render(
   <NavigationContainer>
@@ -76,6 +62,7 @@ it( "renders an observation", ( ) => {
   const { getByTestId } = renderObsList( );
   const obs = mockObservations[0];
   const list = getByTestId( "ObsList.myObservations" );
+
   // Test that there isn't other data lingering
   expect( list.props.data.length ).toEqual( mockObservations.length );
   // Test that a card got rendered for the our test obs
