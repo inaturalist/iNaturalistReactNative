@@ -11,8 +11,7 @@ const mockExpected = testUser;
 jest.mock( "../../../../src/components/UserProfile/hooks/useUser", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
-    user: mockExpected,
-    currentUser: null
+    user: mockExpected
   } )
 } ) );
 

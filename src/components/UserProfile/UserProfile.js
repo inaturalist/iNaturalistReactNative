@@ -7,6 +7,7 @@ import { Text, useWindowDimensions, View } from "react-native";
 import HTML from "react-native-render-html";
 
 import User from "../../models/User";
+import useCurrentUser from "../../sharedHooks/useCurrentUser";
 import { textStyles, viewStyles } from "../../styles/userProfile/userProfile";
 // import useNetworkSite from "./hooks/useNetworkSite";
 import Button from "../SharedComponents/Buttons/Button";
@@ -20,7 +21,8 @@ import UserProjects from "./UserProjects";
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
   const { userId } = params;
-  const { user, currentUser } = useUser( userId );
+  const currentUser = useCurrentUser( );
+  const { user } = useUser( userId );
   const { width } = useWindowDimensions( );
   // const site = useNetworkSite( );
 
