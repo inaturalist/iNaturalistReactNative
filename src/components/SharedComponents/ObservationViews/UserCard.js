@@ -6,10 +6,11 @@ import React from "react";
 import { Pressable, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import User from "../../models/User";
-import { viewStyles } from "../../styles/observations/userCard";
-import UserIcon from "../SharedComponents/UserIcon";
-import useUser from "../UserProfile/hooks/useUser";
+import User from "../../../models/User";
+import colors from "../../../styles/colors";
+import { textStyles, viewStyles } from "../../../styles/observations/userCard";
+import useUser from "../../UserProfile/hooks/useUser";
+import UserIcon from "../UserIcon";
 import useCurrentUser from "./hooks/useCurrentUser";
 
 const UserCard = ( ): Node => {
@@ -25,14 +26,14 @@ const UserCard = ( ): Node => {
     <View style={viewStyles.userCard}>
       <UserIcon uri={User.uri( user )} large />
       <View style={viewStyles.userDetails}>
-        <Text>{User.userHandle( user )}</Text>
-        <Text>{`${user.observations_count} Observations`}</Text>
+        <Text style={textStyles.text}>{User.userHandle( user )}</Text>
+        <Text style={textStyles.text}>{`${user.observations_count} Observations`}</Text>
       </View>
       <Pressable
         onPress={navToUserProfile}
         style={viewStyles.editProfile}
       >
-        <Icon name="pencil" size={30} />
+        <Icon name="pencil" size={30} color={colors.white} />
       </Pressable>
     </View>
   );

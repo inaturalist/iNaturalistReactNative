@@ -5,10 +5,8 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Dimensions,
-  FlatList, Pressable, Text, View
+  Dimensions, FlatList, Text, View
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../../styles/observations/obsList";
@@ -20,6 +18,8 @@ import useUploadStatus from "./hooks/useUploadStatus";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
 import LoginPrompt from "./LoginPrompt";
 import ObsCard from "./ObsCard";
+import ObsListHeader from "./ObsListHeader";
+import Toolbar from "./Toolbar";
 import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
 
@@ -64,7 +64,7 @@ const ObservationViews = ( {
     HEADER_HEIGHT + FOOTER_HEIGHT + BUTTON_ROW_HEIGHT
   );
 
-  const onScroll = ( { nativeEvent } ) => {
+  const handleScroll = ( { nativeEvent } ) => {
     const { y } = nativeEvent.contentOffset;
 
     if ( y <= 0 ) {
@@ -89,10 +89,6 @@ const ObservationViews = ( {
     }
     return null;
   };
-
-  const setGridView = ( ) => setView( "grid" );
-  const setListView = ( ) => setView( "list" );
-  const setMapView = ( ) => setView( "map" );
 
   const { t } = useTranslation( );
 
@@ -132,6 +128,29 @@ const ObservationViews = ( {
       : <View style={viewStyles.footer} />;
   };
 
+  const isExplore = name === "Explore";
+
+  const renderToolbar = ( ) => (
+    <View style={[
+      viewStyles.toggleViewRow,
+      isExplore && viewStyles.exploreButtons]}
+    >
+      <Toolbar
+        isExplore={isExplore}
+        isLoggedIn={isLoggedIn}
+        syncObservations={syncObservations}
+        setView={setView}
+      />
+    </View>
+  );
+
+  const renderHeader = ( ) => (
+    <>
+      <ObsListHeader numOfUnuploadedObs={numOfUnuploadedObs} isLoggedIn={isLoggedIn} />
+      {renderToolbar( )}
+    </>
+  );
+
   const renderView = ( ) => {
     if ( view === "map" ) {
       return <Map taxonId={taxonId} mapHeight={mapHeight} />;
@@ -145,55 +164,17 @@ const ObservationViews = ( {
           numColumns={view === "grid" ? 2 : 1}
           testID={testID}
           ListEmptyComponent={renderEmptyState}
-          onScroll={onScroll}
+          onScroll={handleScroll}
           onEndReached={handleEndReached}
           ListFooterComponent={renderFooter}
+          ListHeaderComponent={renderHeader}
           contentContainerStyle={{ minHeight: flatListHeight }}
+          stickyHeaderIndices={[0]}
         />
         {renderBottomSheet( )}
       </>
     );
   };
-
-  const isExplore = name === "Explore";
-
-  const renderButtonsRow = ( ) => (
-    <View style={[viewStyles.toggleViewRow, isExplore && viewStyles.exploreButtons]}>
-      {!isExplore && (
-      <View style={viewStyles.toggleButtons}>
-        {isLoggedIn && (
-        <Pressable onPress={syncObservations}>
-          <Icon name="sync" size={30} />
-        </Pressable>
-        )}
-      </View>
-      )}
-      <View style={viewStyles.toggleButtons}>
-        {isExplore && (
-        <Pressable
-          onPress={setMapView}
-          accessibilityRole="button"
-          testID="Explore.toggleMapView"
-        >
-          <Icon name="map-outline" size={30} />
-        </Pressable>
-        )}
-        <Pressable
-          onPress={setListView}
-          accessibilityRole="button"
-        >
-          <Icon name="format-list-bulleted" size={30} />
-        </Pressable>
-        <Pressable
-          onPress={setGridView}
-          testID="ObsList.toggleGridView"
-          accessibilityRole="button"
-        >
-          <Icon name="grid-large" size={30} />
-        </Pressable>
-      </View>
-    </View>
-  );
 
   return (
     <View testID="ObservationViews.myObservations">
@@ -206,12 +187,7 @@ const ObservationViews = ( {
       )}
       {observationList.length === 0
         ? renderEmptyState( )
-        : (
-          <>
-            {renderButtonsRow( )}
-            {renderView( )}
-          </>
-        )}
+        : renderView( )}
     </View>
   );
 };

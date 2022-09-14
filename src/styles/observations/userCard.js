@@ -3,10 +3,11 @@
 import { StyleSheet } from "react-native";
 import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 
+import colors from "../colors";
+
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   userCard: {
     flexDirection: "row",
-    height: 100,
     marginHorizontal: 20,
     alignItems: "center"
   },
@@ -23,7 +24,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  text: { }
+  text: {
+    color: colors.white,
+    marginVertical: 3
+  }
 } );
 
 export {

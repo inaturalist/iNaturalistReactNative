@@ -28,7 +28,9 @@ const Explore = ( ): Node => {
       {taxonId !== null && (
         <ObservationViews
           loading={loadingExplore}
-          observationList={exploreList}
+          localObservations={{
+            observationList: exploreList
+          }}
           taxonId={taxonId}
           testID="Explore.observations"
           mapHeight={mapHeight}
