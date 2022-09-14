@@ -9,6 +9,7 @@ import {
   registerUser,
   signOut
 } from "../../../../src/components/LoginSignUp/AuthenticationService";
+import factory from "../../../factory";
 
 const USERNAME = "some_user";
 const PASSWORD = "123456";
@@ -16,6 +17,17 @@ const ACCESS_TOKEN = "some_token";
 const ACCESS_TOKEN_AUTHORIZATION_HEADER = `Bearer ${ACCESS_TOKEN}`;
 const JWT = "jwt_token";
 const USERID = 113113;
+
+const testUser = factory( "RemoteUser" );
+const mockExpected = testUser;
+
+jest.mock( "../../../../src/components/UserProfile/hooks/useUser", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    user: mockExpected,
+    currentUser: null
+  } )
+} ) );
 
 test( "authenticates user", async ( ) => {
   const scope = nock( API_HOST )
