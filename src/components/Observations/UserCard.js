@@ -7,10 +7,10 @@ import { Pressable, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import User from "../../models/User";
+import useCurrentUser from "../../sharedHooks/useCurrentUser";
 import { viewStyles } from "../../styles/observations/userCard";
 import UserIcon from "../SharedComponents/UserIcon";
 import useUser from "../UserProfile/hooks/useUser";
-import useCurrentUser from "./hooks/useCurrentUser";
 
 const UserCard = ( ): Node => {
   const userId = useCurrentUser( );

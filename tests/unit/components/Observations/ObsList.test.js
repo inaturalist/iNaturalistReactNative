@@ -16,6 +16,11 @@ const mockObservations = [
   factory( "LocalObservation" )
 ];
 
+jest.mock( "../../../../src/sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: ( ) => true
+} ) );
+
 jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
   __esModule: true,
   default: ( ) => true
