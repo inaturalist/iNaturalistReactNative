@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import {
   Dimensions, FlatList, Text, View
 } from "react-native";
+import Collapsible from "react-native-collapsible";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../../styles/observations/obsList";
@@ -44,6 +45,7 @@ const ObservationViews = ( {
   handleEndReached,
   syncObservations
 }: Props ): Node => {
+  const [isCollapsed, setIsCollapsed] = useState( false );
   const [view, setView] = useState( "list" );
   const navigation = useNavigation( );
   const { name } = useRoute( );
@@ -69,8 +71,10 @@ const ObservationViews = ( {
 
     if ( y <= 0 ) {
       setHasScrolled( false );
+      setIsCollapsed( false );
     } else {
       setHasScrolled( true );
+      setIsCollapsed( true );
     }
   };
 
@@ -146,7 +150,9 @@ const ObservationViews = ( {
 
   const renderHeader = ( ) => (
     <>
-      <ObsListHeader numOfUnuploadedObs={numOfUnuploadedObs} isLoggedIn={isLoggedIn} />
+      <Collapsible collapsed={isCollapsed} easing="easeOutQuart">
+        <ObsListHeader numOfUnuploadedObs={numOfUnuploadedObs} isLoggedIn={isLoggedIn} />
+      </Collapsible>
       {renderToolbar( )}
     </>
   );

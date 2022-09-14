@@ -9,7 +9,6 @@ const borderRadius = 30;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   bottomSheet: {
-    flex: 1,
     paddingTop: 22,
     paddingBottom: 70,
     paddingHorizontal: 32
