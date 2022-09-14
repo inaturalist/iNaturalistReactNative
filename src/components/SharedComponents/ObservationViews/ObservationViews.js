@@ -45,7 +45,6 @@ const ObservationViews = ( {
   handleEndReached,
   syncObservations
 }: Props ): Node => {
-  const [isCollapsed, setIsCollapsed] = useState( false );
   const [view, setView] = useState( "list" );
   const navigation = useNavigation( );
   const { name } = useRoute( );
@@ -71,10 +70,8 @@ const ObservationViews = ( {
 
     if ( y <= 0 ) {
       setHasScrolled( false );
-      setIsCollapsed( false );
     } else {
       setHasScrolled( true );
-      setIsCollapsed( true );
     }
   };
 
@@ -150,7 +147,7 @@ const ObservationViews = ( {
 
   const renderHeader = ( ) => (
     <>
-      <Collapsible collapsed={isCollapsed} easing="easeOutQuart">
+      <Collapsible collapsed={hasScrolled} easing="easeOutQuart">
         <ObsListHeader numOfUnuploadedObs={numOfUnuploadedObs} isLoggedIn={isLoggedIn} />
       </Collapsible>
       {renderToolbar( )}
