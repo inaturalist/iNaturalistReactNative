@@ -10,12 +10,12 @@ import { viewStyles } from "../../styles/sharedComponents/bottomSheet";
 
 type Props = {
   children: any,
-  hideOnScroll?: boolean
+  hide?: boolean
 }
 
 const SNAP_POINTS = ["45%"];
 
-const StandardBottomSheet = ( { children, hideOnScroll }: Props ): Node => {
+const StandardBottomSheet = ( { children, hide }: Props ): Node => {
   const sheetRef = useRef( null );
 
   // eslint-disable-next-line
@@ -30,12 +30,12 @@ const StandardBottomSheet = ( { children, hideOnScroll }: Props ): Node => {
   }, [] );
 
   useEffect( ( ) => {
-    if ( hideOnScroll ) {
+    if ( hide ) {
       handleClosePress( );
     } else {
       handleSnapPress( );
     }
-  }, [hideOnScroll, handleClosePress, handleSnapPress] );
+  }, [hide, handleClosePress, handleSnapPress] );
 
   return (
     <BottomSheet
