@@ -23,8 +23,6 @@ const BottomSheet = ( { children }: Props ): Node => {
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
       pressBehavior="close"
-      appearsOnIndex={0}
-      disappearsOnIndex={-1}
     />
   );
 
@@ -38,8 +36,6 @@ const BottomSheet = ( { children }: Props ): Node => {
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={0}
-        enableOverDrag={false}
-        enablePanDownToClose={false}
         snapPoints={["40%"]}
         backdropComponent={renderBackdrop}
         style={viewStyles.bottomModal}
