@@ -5,7 +5,7 @@ import type { ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet
 
 import colors from "../colors";
 
-const borderRadius = 30;
+const borderRadius = 24;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   bottomSheet: {
@@ -15,15 +15,16 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     paddingHorizontal: 32
   },
   shadow: {
-    borderTopRightRadius: borderRadius,
-    borderTopLeftRadius: borderRadius,
     shadowColor: colors.black,
+    borderTopStartRadius: borderRadius,
+    borderTopEndRadius: borderRadius,
     shadowOffset: {
       width: 0,
-      height: -3
+      height: 12
     },
-    shadowOpacity: 0.20,
-    shadowRadius: 2
+    shadowOpacity: 0.75,
+    shadowRadius: 16.0,
+    elevation: 24
   }
 } );
 
