@@ -9,17 +9,17 @@ import React, {
 import { Pressable, Text, View } from "react-native";
 import { Avatar, Snackbar, useTheme } from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
-import Realm from "realm";
 
-import realmConfig from "../../models/index";
 import Photo from "../../models/Photo";
-import { ObsEditContext } from "../../providers/contexts";
+import { ObsEditContext, RealmContext } from "../../providers/contexts";
 import { viewStyles } from "../../styles/camera/standardCamera";
 import colors from "../../styles/colors";
 import { textStyles } from "../../styles/obsDetails/obsDetails";
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
+
+const { useRealm } = RealmContext;
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
@@ -43,6 +43,8 @@ const StandardCamera = ( ): Node => {
   const disallowAddingPhotos = photoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
 
+  const realm = useRealm( );
+
   const takePhoto = async ( ) => {
     setSavingPhoto( true );
     try {
@@ -52,7 +54,6 @@ const StandardCamera = ( ): Node => {
         return;
       }
       const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-      const realm = await Realm.open( realmConfig );
       const uri = await Photo.savePhoto( realm, cameraPhoto );
 
       setPhotoUris( photoUris.concat( [uri] ) );

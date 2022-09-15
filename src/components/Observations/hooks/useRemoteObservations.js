@@ -3,15 +3,19 @@
 import {
   useCallback, useEffect, useState
 } from "react";
-import Realm from "realm";
 
-import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
+import { RealmContext } from "../../../providers/contexts";
+import useApiToken from "../../../sharedHooks/useApiToken";
+
+const { useRealm } = RealmContext;
 
 const useRemoteObservations = ( ): Object => {
   const [loading, setLoading] = useState( false );
   const [page, setPage] = useState( 1 );
   const [fetchFromServer, setFetchFromServer] = useState( true );
+  const apiToken = useApiToken( );
+  const realm = useRealm( );
 
   const syncObservations = useCallback( ( ) => {
     setFetchFromServer( true );
@@ -28,32 +32,32 @@ const useRemoteObservations = ( ): Object => {
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchObservations = async ( ) => {
-      if ( !isCurrent ) { return; }
+      if ( !isCurrent ) return;
+      if ( !apiToken ) return;
       setLoading( true );
-      const realm = await Realm.open( realmConfig );
 
       // update local observations with unviewed comment or id statuses
-      await Observation.fetchObservationUpdates( realm );
+      await Observation.fetchObservationUpdates( realm, apiToken );
 
       // fetch remote observations
-      const results = await Observation.fetchRemoteObservations( page );
+      const results = await Observation.fetchRemoteObservations( page, realm );
       if ( results ) {
         // update realm with new or modified remote observations
         Observation.updateLocalObservationsFromRemote( realm, results );
       }
 
-      if ( !isCurrent ) { return; }
+      // if ( !isCurrent ) { return; }
       setLoading( false );
     };
 
-    if ( fetchFromServer ) {
+    if ( fetchFromServer && apiToken ) {
       fetchObservations( );
       setFetchFromServer( false );
     }
     return ( ) => {
       isCurrent = false;
     };
-  }, [page, fetchFromServer] );
+  }, [apiToken, page, fetchFromServer, realm] );
 
   return {
     loading,

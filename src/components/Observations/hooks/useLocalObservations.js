@@ -1,36 +1,37 @@
 // @flow
 
+import _ from "lodash";
 import {
-  useEffect, useRef, useState
+  useEffect, useState
 } from "react";
-import Realm from "realm";
 
-import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
+import { RealmContext } from "../../../providers/contexts";
+
+const { useRealm } = RealmContext;
 
 const useLocalObservations = ( ): Object => {
   const [observationList, setObservationList] = useState( [] );
-  const [addListener, setAddListener] = useState( false );
   const [allObsToUpload, setAllObsToUpload] = useState( [] );
   const [unuploadedObsList, setUnuploadedObsList] = useState( [] );
 
-  // We store a reference to our realm using useRef that allows us to access it via
-  // realmRef.current for the component's lifetime without causing rerenders if updated.
-  const realmRef = useRef( null );
+  const realm = useRealm( );
 
   useEffect( ( ) => {
-    // fwiw, I don't think we will need two useEffects here and with openRealm if we can
-    // access realm throughout the app via Realm Provider.
-    const realm = realmRef.current;
-    if ( realm === null || !addListener ) { return; }
-    const obs = realm?.objects( "Observation" );
+    if ( realm === null || realm.isClosed ) {
+      return;
+    }
+    const obs = realm.objects( "Observation" );
     const localObservations = obs.sorted( "_created_at", true );
-    localObservations.addListener( ( ) => {
-      // If you just pass localObservations you end up assigning a Results
-      // object to state instead of an array of observations. There's
-      // probably a better way...
+    localObservations.addListener( ( collection, _changes ) => {
       if ( localObservations.length === 0 ) { return; }
-      setObservationList( localObservations.map( o => o ) );
+      // started hitting https://github.com/realm/realm-js/issues/4484 on
+      // 2022-09-13 for no reason i can discern Note that if you
+      // setObservationsList to collection, it is a Realm.Collection, not an
+      // array, which doesn't seem to work. _.compact or Array.from will
+      // create an array of Realm objects... which will probably require some
+      // degree of pagination in the future
+      setObservationList( _.compact( collection ) );
 
       const unsyncedObs = Observation.filterUnsyncedObservations( realm );
       setUnuploadedObsList( unsyncedObs.map( o => o ) );
@@ -44,16 +45,7 @@ const useLocalObservations = ( ): Object => {
       // remember to remove listeners to avoid async updates
       localObservations.removeAllListeners( );
     };
-  }, [addListener, allObsToUpload.length] );
-
-  useEffect( ( ) => {
-    const openRealm = async ( ) => {
-      const realm = await Realm.open( realmConfig );
-      realmRef.current = realm;
-      setAddListener( true );
-    };
-    openRealm( );
-  }, [] );
+  }, [allObsToUpload.length, realm] );
 
   return {
     observationList,

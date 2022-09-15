@@ -50,6 +50,7 @@ const isLoggedIn = async (): Promise<boolean> => {
  */
 const signOut = async (
   options: {
+    realm?: Object,
     deleteRealm?: boolean,
     queryClient?: Object
   } = {
@@ -58,6 +59,21 @@ const signOut = async (
   }
 ) => {
   if ( options.deleteRealm ) {
+    if ( options.realm ) {
+      // Delete all the records in the realm db, including the ones accessible
+      // through the copy of realm provided by RealmProvider
+      options.realm.beginTransaction();
+      try {
+        // $FlowFixMe
+        options.realm.deleteAll( );
+        // $FlowFixMe
+        options.realm.commitTransaction( );
+      } catch ( realmError ) {
+        // $FlowFixMe
+        options.realm.cancelTransaction( );
+        throw realmError;
+      }
+    }
     Realm.deleteFile( realmConfig );
   }
   // Delete the React Query cache. FWIW, this should *not* be optional, but
@@ -272,7 +288,6 @@ const authenticateUser = async (
   realm.write( ( ) => {
     realm?.create( "User", currentUser, "modified" );
   } );
-  realm.close( );
 
   return true;
 };
@@ -358,6 +373,11 @@ const getUserId = async (): Promise<string | null> => {
   return currentUserId;
 };
 
+const isCurrentUser = async ( username: string ): Promise<boolean> => {
+  const currentUserLogin = await getUsername( );
+  return username === currentUserLogin;
+};
+
 export {
   API_HOST,
   authenticateUser,
@@ -366,6 +386,7 @@ export {
   getUser,
   getUserId,
   getUsername,
+  isCurrentUser,
   isLoggedIn,
   registerUser,
   signOut

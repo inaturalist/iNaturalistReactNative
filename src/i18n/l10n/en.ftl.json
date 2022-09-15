@@ -384,7 +384,7 @@
   "Who-can-add-observation-fields-to-my-observations": "Who can add observation fields to my observations?",
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
-    "val": "{ $observationCount ->\n  [one] 1 Observation\n *[other] { $observationCount } Observations\n}"
+    "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
   "X-Photos": {
     "comment": "Displays number of photos attached to an observation in the Media Viewer",

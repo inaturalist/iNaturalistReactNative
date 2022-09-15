@@ -21,7 +21,7 @@ const USER_FIELDS = {
   site: true
 };
 
-const useUser = ( userId: number ): Object => {
+const useRemoteUser = ( userId: number ): Object => {
   const [user, setUser] = useState( null );
   const [currentUser, setCurrentUser] = useState( null );
 
@@ -65,4 +65,4 @@ const useUser = ( userId: number ): Object => {
   };
 };
 
-export default useUser;
+export default useRemoteUser;

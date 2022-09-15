@@ -1,7 +1,6 @@
 import Realm from "realm";
 
 import Taxon from "./Taxon";
-// eslint-disable-next-line import/no-cycle
 import User from "./User";
 
 class Identification extends Realm.Object {

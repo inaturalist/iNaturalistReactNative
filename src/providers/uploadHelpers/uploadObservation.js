@@ -1,41 +1,40 @@
 // @flow
 
 import inatjs from "inaturalistjs";
-import Realm from "realm";
 
-import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
 import ObservationPhoto from "../../models/ObservationPhoto";
 import ObservationSound from "../../models/ObservationSound";
 
-const uploadObsSound = ( obs, id, realm ) => Observation.uploadEvidence(
+const uploadObsSound = ( obs, id, realm, apiToken ) => Observation.uploadEvidence(
   obs.observationSounds,
   "ObservationSound",
   ObservationSound.mapSoundForUpload,
   id,
   inatjs.observation_sounds,
-  realm
+  realm,
+  apiToken
 );
 
-const uploadObsPhoto = ( obs, id, realm ) => Observation.uploadEvidence(
+const uploadObsPhoto = ( obs, id, realm, apiToken ) => Observation.uploadEvidence(
   obs.observationPhotos,
   "ObservationPhoto",
   ObservationPhoto.mapPhotoForUpload,
   id,
   inatjs.observation_photos,
-  realm
+  realm,
+  apiToken
 );
 
-const uploadObservation = async ( obs: Object ): Promise<any> => {
-  const response = await Observation.uploadObservation( obs );
-  const realm = await Realm.open( realmConfig );
+const uploadObservation = async ( obs: Object, realm: Object, apiToken: string ): Promise<any> => {
+  const response = await Observation.uploadObservation( obs, realm, apiToken );
   await Observation.markRecordUploaded( obs.uuid, "Observation", response, realm );
   const { id } = response.results[0];
   if ( obs.observationPhotos ) {
-    return uploadObsPhoto( obs, id, realm );
+    return uploadObsPhoto( obs, id, realm, apiToken );
   }
   if ( obs.observationSounds ) {
-    return uploadObsSound( obs, id, realm );
+    return uploadObsSound( obs, id, realm, apiToken );
   }
   return null;
 };

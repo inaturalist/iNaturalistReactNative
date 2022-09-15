@@ -20,14 +20,13 @@ import {
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import Realm from "realm";
 
-import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
-import { ObsEditContext } from "../../providers/contexts";
+import { ObsEditContext, RealmContext } from "../../providers/contexts";
 import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
+import useApiToken from "../../sharedHooks/useApiToken";
 import colors from "../../styles/colors";
 import { imageStyles, textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
 import createIdentification from "../Identify/helpers/createIdentification";
@@ -45,6 +44,8 @@ import createComment from "./helpers/createComment";
 import faveObservation from "./helpers/faveObservation";
 import useRemoteObservation from "./hooks/useRemoteObservation";
 import ObsDetailsHeader from "./ObsDetailsHeader";
+
+const { useRealm } = RealmContext;
 
 // this is getting triggered by passing dates, like _created_at, through
 // react navigation via the observation object. it doesn't seem to
@@ -67,6 +68,9 @@ const ObsDetails = ( ): Node => {
   const bottomSheetModalRef = useRef( null );
   const [addingComment, setAddingComment] = useState( false );
   const [snapPoint, setSnapPoint] = useState( 100 );
+  const apiToken = useApiToken( );
+
+  const realm = useRealm( );
 
   // Clear the comment in a timeout so it doesn't trigger a re-render of the
   // text input *after* the bottom sheet modal gets dismissed, b/c that seems
@@ -128,24 +132,24 @@ const ObsDetails = ( ): Node => {
 
   useEffect( () => {
     const markViewedLocally = async ( ) => {
-      const realm = await Realm.open( realmConfig );
+      if ( !apiToken ) return;
       const existingObs = realm?.objectForPrimaryKey( "Observation", observation.uuid );
       if ( !existingObs ) { return; }
       realm?.write( ( ) => {
         existingObs.viewed = true;
       } );
     };
-    if ( observation ) { setIds( observation.identifications.map( i => i ) ); }
+    if ( observation ) { setIds( Array.from( observation.identifications ) ); }
     if ( observation.viewed === false ) {
-      Observation.markObservationUpdatesViewed( observation.uuid );
+      Observation.markObservationUpdatesViewed( observation.uuid, apiToken );
       markViewedLocally( );
     }
-  }, [observation] );
+  }, [apiToken, observation, realm] );
 
   if ( !observation ) { return null; }
 
-  const comments = observation.comments.map( c => c );
-  const photos = _.compact( observation.observationPhotos.map( op => op.photo ) );
+  const comments = Array.from( observation.comments );
+  const photos = _.compact( Array.from( observation.observationPhotos ).map( op => op.photo ) );
   const { taxon, uuid, user } = observation;
 
   const onIDAdded = async identification => {

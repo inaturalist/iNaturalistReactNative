@@ -10,6 +10,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../../styles/observations/obsList";
+import PlaceholderText from "../../PlaceholderText";
 import Map from "../Map";
 import EmptyList from "./EmptyList";
 import GridItem from "./GridItem";
@@ -55,7 +56,7 @@ const ObservationViews = ( {
     if ( name !== "Explore" && isLoggedIn === false ) {
       return <EmptyList />;
     }
-    return null;
+    return <PlaceholderText text="No observations yet" />;
   };
 
   const setGridView = ( ) => setView( "grid" );
@@ -134,7 +135,7 @@ const ObservationViews = ( {
       {isExplore && (
         <View style={[viewStyles.whiteBanner, view === "map" && viewStyles.greenBanner]}>
           <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>
-            {t( "X-Observations", { observationCount: totalObservations } )}
+            {t( "X-Observations", { count: totalObservations } )}
           </Text>
         </View>
       )}

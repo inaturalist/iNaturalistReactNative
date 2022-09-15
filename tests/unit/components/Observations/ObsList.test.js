@@ -48,6 +48,11 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 jest.mock( "@gorhom/bottom-sheet", () => require( "@gorhom/bottom-sheet/mock" ) );
 
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  default: ( ) => false,
+  __esModule: true
+} ) );
+
 const renderObsList = ( ) => render(
   <NavigationContainer>
     <ObsList />
