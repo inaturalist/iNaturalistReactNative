@@ -101,7 +101,7 @@ const ObservationViews = ( {
 
     if ( isLoggedIn === false ) {
       return (
-        <BottomSheet hasScrolled={hasScrolled}>
+        <BottomSheet hideOnScroll={hasScrolled}>
           <LoginPrompt />
         </BottomSheet>
       );
@@ -115,7 +115,7 @@ const ObservationViews = ( {
       );
     }
     return (
-      <BottomSheet hasScrolled={hasScrolled}>
+      <BottomSheet hideOnScroll={hasScrolled}>
         <UploadPrompt
           uploadObservations={updateUploadStatus}
           numOfUnuploadedObs={numOfUnuploadedObs}

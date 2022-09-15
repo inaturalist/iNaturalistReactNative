@@ -3,19 +3,20 @@
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect, useMemo, useRef
+  useCallback, useEffect, useRef
 } from "react";
 
 import { viewStyles } from "../../styles/sharedComponents/bottomSheet";
 
 type Props = {
   children: any,
-  hasScrolled: boolean
+  hideOnScroll?: boolean
 }
 
-const StandardBottomSheet = ( { children, hasScrolled }: Props ): Node => {
+const SNAP_POINTS = ["45%"];
+
+const StandardBottomSheet = ( { children, hideOnScroll }: Props ): Node => {
   const sheetRef = useRef( null );
-  const snapPoints = useMemo( () => ["45%"], [] );
 
   // eslint-disable-next-line
   const noHandle = ( ) => <></>;
@@ -29,17 +30,17 @@ const StandardBottomSheet = ( { children, hasScrolled }: Props ): Node => {
   }, [] );
 
   useEffect( ( ) => {
-    if ( hasScrolled ) {
+    if ( hideOnScroll ) {
       handleClosePress( );
     } else {
       handleSnapPress( );
     }
-  }, [hasScrolled, handleClosePress, handleSnapPress] );
+  }, [hideOnScroll, handleClosePress, handleSnapPress] );
 
   return (
     <BottomSheet
       ref={sheetRef}
-      snapPoints={snapPoints}
+      snapPoints={SNAP_POINTS}
       style={viewStyles.shadow}
       handleComponent={noHandle}
     >
