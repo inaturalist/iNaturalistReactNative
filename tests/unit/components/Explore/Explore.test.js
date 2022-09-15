@@ -13,6 +13,11 @@ const mockLatLng = {
 };
 
 // Mock the hooks we use on Map since we're not trying to test them here
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  __esModule: true,
+  default: ( ) => true
+} ) );
+
 jest.mock( "../../../../src/sharedHooks/useUserLocation", ( ) => ( {
   default: ( ) => mockLatLng,
   __esModule: true

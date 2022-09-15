@@ -8,7 +8,7 @@ import { Pressable, Text, View } from "react-native";
 import { viewStyles } from "../../styles/identify/identify";
 import DropdownPicker from "../Explore/DropdownPicker";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import CardSwipeView from "./CardSwipeView";
+// import CardSwipeView from "./CardSwipeView";
 import GridView from "./GridView";
 import useObservations from "./hooks/useObservations";
 
@@ -29,7 +29,8 @@ const Identify = ( ): Node => {
   const renderView = ( ) => {
     if ( view === "card" ) {
       return (
-        <CardSwipeView observationList={observations} />
+        <View />
+        // <CardSwipeView observationList={observations} />
       );
     }
     return (

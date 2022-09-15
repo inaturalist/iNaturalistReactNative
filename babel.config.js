@@ -1,9 +1,9 @@
 module.exports = {
   presets: ["module:metro-react-native-babel-preset"],
   plugins: [
+    "nativewind/babel",
     "react-native-reanimated/plugin",
-    "transform-inline-environment-variables",
-    "nativewind/babel"
+    "transform-inline-environment-variables"
   ],
   env: {
     production: {

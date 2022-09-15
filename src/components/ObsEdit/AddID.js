@@ -56,6 +56,7 @@ const AddID = ( { route }: Props ): React.Node => {
     "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url,taxon.rank"
   );
   const navigation = useNavigation( );
+  console.log( taxonSearch, "taxon search", taxonList, "taxon list" );
 
   const renderBackdrop = props => (
     <BottomSheetBackdrop
