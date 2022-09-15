@@ -6,8 +6,7 @@ import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
 
-import viewStyles from "../../../styles/upload/uploadPrompt";
-import Button from "../Buttons/Button";
+import Button from "../SharedComponents/Buttons/Button";
 
 const LoginPrompt = ( ): Node => {
   const navigation = useNavigation( );
@@ -17,8 +16,7 @@ const LoginPrompt = ( ): Node => {
       <Text>{t( "Create-an-iNaturalist-account-to-save-your-observations" )}</Text>
       <Button
         level="neutral"
-        text={t( "LOG-IN-TO-INATURALIST" )}
-        style={viewStyles.button}
+        text={t( "Log-in-to-iiNaturalist" )}
         onPress={( ) => navigation.navigate( "login" )}
       />
     </>

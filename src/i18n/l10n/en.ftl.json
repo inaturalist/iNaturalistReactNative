@@ -145,7 +145,6 @@
   "Licensing": "Licensing",
   "Location": "Location",
   "Log-in": "Log in",
-  "LOG-IN-TO-INATURALIST": "LOG IN TO INATURALIST",
   "Log-in-to-iNaturalist": "Log in to iNaturalist",
   "Logged-in-as": "Logged in as: { $username }",
   "Login-header": {
@@ -365,9 +364,9 @@
   "Unreviewed-only": "Unreviewed only",
   "Upload-a-photo-from-your-gallery": "Upload a photo from your gallery",
   "UPLOAD-OBSERVATION": "UPLOAD OBSERVATION",
-  "UPLOAD-X-OBSERVATIONS": {
+  "Upload-X-Observations": {
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
-    "val": "UPLOAD { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}"
+    "val": "Upload { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
   "Uploading-X-Observations": {
     "comment": "Shows the number of observations a user is currently uploading on my observations page",

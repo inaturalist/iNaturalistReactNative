@@ -3,19 +3,58 @@
 import type { Node } from "react";
 import React from "react";
 
+import useLoggedIn from "../../sharedHooks/useLoggedIn";
+import BottomSheet from "../SharedComponents/BottomSheet";
 import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useLocalObservations from "./hooks/useLocalObservations";
 import useRemoteObservations from "./hooks/useRemoteObservations";
+import useUploadStatus from "./hooks/useUploadStatus";
+import LoginPrompt from "./LoginPrompt";
+import UploadProgressBar from "./UploadProgressBar";
+import UploadPrompt from "./UploadPrompt";
 
 const ObsList = ( ): Node => {
   const localObservations = useLocalObservations( );
-  const { observationList } = localObservations;
+  const { observationList, unuploadedObsList, allObsToUpload } = localObservations;
   const {
     loading,
     syncObservations,
     fetchNextObservations
   } = useRemoteObservations( );
+  const { uploadInProgress, updateUploadStatus } = useUploadStatus( );
+  const numOfUnuploadedObs = unuploadedObsList?.length;
+
+  const isLoggedIn = useLoggedIn( );
+
+  const renderBottomSheet = ( ) => {
+    if ( numOfUnuploadedObs === 0 ) { return null; }
+
+    if ( isLoggedIn === false && !loading ) {
+      return (
+        <BottomSheet>
+          <LoginPrompt />
+        </BottomSheet>
+      );
+    }
+    if ( uploadInProgress ) {
+      return (
+        <UploadProgressBar
+          unuploadedObsList={unuploadedObsList}
+          allObsToUpload={allObsToUpload}
+        />
+      );
+    }
+    return (
+      <BottomSheet>
+        <UploadPrompt
+          uploadObservations={updateUploadStatus}
+          numOfUnuploadedObs={numOfUnuploadedObs}
+          updateUploadStatus={updateUploadStatus}
+        />
+      </BottomSheet>
+    );
+  };
 
   return (
     <ViewWithFooter>
@@ -26,6 +65,7 @@ const ObsList = ( ): Node => {
         handleEndReached={( ) => fetchNextObservations( observationList.length )}
         syncObservations={syncObservations}
       />
+      {renderBottomSheet( )}
     </ViewWithFooter>
   );
 };

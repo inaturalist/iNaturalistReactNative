@@ -207,8 +207,6 @@ Location = Location
 
 Log-in = Log in
 
-LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
-
 Log-in-to-iNaturalist = Log in to iNaturalist
 
 Logged-in-as = Logged in as: { $username }
@@ -538,9 +536,9 @@ Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
 
 # Shows the number of observations a user can upload to iNat from my observations page
-UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
-    [one] 1 OBSERVATION
-    *[other] {$count} OBSERVATIONS
+Upload-X-Observations = Upload {$count ->
+    [one] 1 Observation
+    *[other] {$count} Observations
 }
 
 # Shows the number of observations a user is currently uploading on my observations page

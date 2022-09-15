@@ -9,13 +9,14 @@ const borderRadius = 30;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   bottomSheet: {
-    paddingTop: 22,
-    paddingBottom: 70,
-    paddingHorizontal: 32
-  },
-  shadow: {
     borderTopRightRadius: borderRadius,
     borderTopLeftRadius: borderRadius,
+    paddingTop: 22,
+    paddingBottom: 70,
+    paddingHorizontal: 32,
+    position: "absolute"
+  },
+  shadow: {
     shadowColor: colors.black,
     shadowOffset: {
       width: 0,
