@@ -18,7 +18,12 @@ const LoggedOutCard = ( { numOfUnuploadedObs }: Props ): Node => {
   const navigation = useNavigation( );
 
   return (
-    <Pressable style={viewStyles.loggedOutCard} onPress={( ) => navigation.navigate( "login" )}>
+    <Pressable
+      style={viewStyles.loggedOutCard}
+      onPress={( ) => navigation.navigate( "login" )}
+      accessibilityRole="link"
+      accessibilityLabel={t( "Navigate-to-login-screen" )}
+    >
       <Text variant="titleLarge" style={textStyles.centerText}>{t( "Log-in-to-iNaturalist" )}</Text>
       <Text variant="bodyLarge" style={textStyles.centerText}>
         {t( "X-unuploaded-observations", { observationCount: numOfUnuploadedObs } )}
