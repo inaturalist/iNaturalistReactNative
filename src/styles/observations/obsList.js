@@ -22,20 +22,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     alignSelf: "stretch",
     flex: 1
   },
-  toggleViewRow: {
-    paddingVertical: 10,
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    justifyContent: "space-between",
-    backgroundColor: colors.white
-  },
-  exploreButtons: {
-    borderRadius: 40,
-    borderWidth: 1,
-    top: 400,
-    zIndex: 1,
-    backgroundColor: colors.white
-  },
   greenBanner: {
     paddingVertical: 20,
     backgroundColor: colors.inatGreen

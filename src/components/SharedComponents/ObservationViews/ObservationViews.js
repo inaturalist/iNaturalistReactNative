@@ -2,10 +2,11 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, Text, View } from "react-native";
-import Collapsible from "react-native-collapsible";
+import {
+  Animated, Text, View
+} from "react-native";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../../styles/observations/obsList";
@@ -15,7 +16,6 @@ import GridItem from "./GridItem";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
 import ObsCard from "./ObsCard";
 import ObsListHeader from "./ObsListHeader";
-import Toolbar from "./Toolbar";
 
 type Props = {
   loading: boolean,
@@ -44,7 +44,50 @@ const ObservationViews = ( {
   const isLoggedIn = useLoggedIn( );
   const { observationList, unuploadedObsList } = localObservations;
   const numOfUnuploadedObs = unuploadedObsList?.length;
+  // eslint-disable-next-line
   const [hasScrolled, setHasScrolled] = useState( false );
+
+  const { diffClamp } = Animated;
+  const headerHeight = 120;
+
+  // basing collapsible sticky header code off the example in this article
+  // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
+  const scrollY = useRef( new Animated.Value( 0 ) );
+  const scrollYClamped = diffClamp( scrollY.current, 0, headerHeight );
+
+  const translateY = scrollYClamped.interpolate( {
+    inputRange: [0, headerHeight],
+    // $FlowIgnore
+    outputRange: [0, -headerHeight]
+  } );
+
+  const translateYNumber = useRef();
+
+  translateY.addListener( ( { value } ) => {
+    translateYNumber.current = value;
+  } );
+
+  const handleScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: { y: scrollY.current }
+        }
+      }
+    ],
+    {
+      listener: ( { nativeEvent } ) => {
+        const { y } = nativeEvent.contentOffset;
+
+        if ( y <= 0 ) {
+          setHasScrolled( false );
+        } else {
+          setHasScrolled( true );
+        }
+      },
+      useNativeDriver: true
+    }
+  );
 
   const navToObsDetails = async observation => {
     navigation.navigate( "ObsDetails", { observation } );
@@ -73,37 +116,16 @@ const ObservationViews = ( {
 
   const isExplore = name === "Explore";
 
-  const renderToolbar = ( ) => (
-    <View style={[
-      viewStyles.toggleViewRow,
-      isExplore && viewStyles.exploreButtons]}
-    >
-      <Toolbar
-        isExplore={isExplore}
-        isLoggedIn={isLoggedIn}
-        syncObservations={syncObservations}
-        setView={setView}
-      />
-    </View>
-  );
-
-  const handleScroll = ( { nativeEvent } ) => {
-    const { y } = nativeEvent.contentOffset;
-
-    if ( y <= 0 ) {
-      setHasScrolled( false );
-    } else {
-      setHasScrolled( true );
-    }
-  };
-
   const renderHeader = ( ) => (
-    <>
-      <Collapsible collapsed={hasScrolled} easing="easeOutQuart">
-        <ObsListHeader numOfUnuploadedObs={numOfUnuploadedObs} isLoggedIn={isLoggedIn} />
-      </Collapsible>
-      {renderToolbar( )}
-    </>
+    <ObsListHeader
+      numOfUnuploadedObs={numOfUnuploadedObs}
+      isLoggedIn={isLoggedIn}
+      translateY={translateY}
+      isExplore={isExplore}
+      headerHeight={headerHeight}
+      syncObservations={syncObservations}
+      setView={setView}
+    />
   );
 
   const renderView = ( ) => {
@@ -111,7 +133,7 @@ const ObservationViews = ( {
       return <Map taxonId={taxonId} mapHeight={mapHeight} />;
     }
     return (
-      <FlatList
+      <Animated.FlatList
         data={observationList}
         key={view === "grid" ? 1 : 0}
         renderItem={view === "grid" ? renderGridItem : renderItem}
@@ -123,6 +145,7 @@ const ObservationViews = ( {
         ListFooterComponent={renderFooter}
         ListHeaderComponent={renderHeader}
         stickyHeaderIndices={[0]}
+        bounces={false}
       />
     );
   };
@@ -136,9 +159,7 @@ const ObservationViews = ( {
           </Text>
         </View>
       )}
-      {observationList.length === 0
-        ? renderEmptyState( )
-        : renderView( )}
+      {renderView( )}
     </View>
   );
 };

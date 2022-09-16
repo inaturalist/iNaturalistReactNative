@@ -19,7 +19,7 @@ const UserCard = ( ): Node => {
   // TODO: this currently doesn't show up on initial login
   // because user id can't be fetched
   const navigation = useNavigation( );
-  if ( !user ) { return <View style={viewStyles.topCard} />; }
+  if ( !user ) { return <View />; }
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId } );
 
   return (
