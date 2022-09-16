@@ -47,7 +47,6 @@
     "react-i18next": "^11.16.1",
     "react-native": "^0.68.2",
     "react-native-audio-recorder-player": "^3.5.1",
-    "react-native-collapsible": "^1.6.0",
     "react-native-config": "^1.4.5",
     "react-native-device-info": "^8.5.1",
     "react-native-dropdown-picker": "^5.3.0",
