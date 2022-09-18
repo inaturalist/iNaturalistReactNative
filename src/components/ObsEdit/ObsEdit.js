@@ -118,6 +118,14 @@ const ObsEdit = ( ): Node => {
   const currentObs = observations[currentObsIndex];
 
   useEffect( () => {
+    if ( !currentObs.id && currentObs.observed_on_string
+      && !exifDataImported && photoUris.length > 0 ) {
+      // In case of importing photos - clear out default observed_on
+      updateObservationKeys( { observed_on_string: null } );
+    }
+  }, [currentObs, exifDataImported, photoUris, updateObservationKeys] );
+
+  useEffect( () => {
     if ( !currentObs.id && firstPhotoExif && !exifDataImported ) {
       // New observation with imported photo - import EXIF data from it and
       // use it to set location/observed_on data

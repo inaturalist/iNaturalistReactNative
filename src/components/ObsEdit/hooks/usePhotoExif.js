@@ -3,6 +3,7 @@
 import { parse } from "date-fns";
 import piexif from "piexifjs";
 import { useEffect, useState } from "react";
+import Exif from "react-native-exif";
 import RNFS from "react-native-fs";
 
 // How many bytes we read from the image file (first bytes), in order to
@@ -98,6 +99,9 @@ const usePhotoExif = ( photoUri: ?string ): Object => {
         // partial data in order to parse the EXIF metadata.
         const data = await RNFS.read( photoUri, MAX_EXIF_READ_BYTES, 0, "base64" );
         const rawExif = piexif.load( `data:image/jpeg;base64,${data}` );
+        console.log( "Raw EXIF", rawExif );
+        const newExif = await Exif.getExif( photoUri );
+        console.log( "New EXIF", newExif );
 
         const parsedExif = {};
 
@@ -113,6 +117,7 @@ const usePhotoExif = ( photoUri: ?string ): Object => {
 
         if ( !isCurrent ) { return; }
 
+        console.log( "AAA PARSED EXIF", parsedExif );
         setExif( parsedExif );
       } catch ( e ) {
         console.log( e, "Couldn't parse EXIF" );

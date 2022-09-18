@@ -4,6 +4,7 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { PermissionsAndroid } from "react-native";
+import { PERMISSIONS } from "react-native-permissions";
 
 import StandardCamera from "../components/Camera/StandardCamera";
 import Explore from "../components/Explore/Explore";
@@ -48,7 +49,11 @@ const PhotoGalleryWithPermission = ( ) => (
   <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
     <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
       <PermissionGate permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}>
-        <PhotoGallery />
+        <PermissionGate permission={PERMISSIONS.IOS.PHOTO_LIBRARY} isIOS>
+          <PermissionGate permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE} isIOS>
+            <PhotoGallery />
+          </PermissionGate>
+        </PermissionGate>
       </PermissionGate>
     </PermissionGate>
   </PermissionGate>
