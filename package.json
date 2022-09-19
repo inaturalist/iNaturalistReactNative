@@ -16,6 +16,7 @@
   "dependencies": {
     "@babel/eslint-parser": "^7.18.2",
     "@babel/preset-react": "^7.18.6",
+    "@bam.tech/react-native-image-resizer": "3.0.0",
     "@gorhom/bottom-sheet": "^4.3.1",
     "@react-native-async-storage/async-storage": "^1.17.7",
     "@react-native-community/cameraroll": "^4.1.2",
@@ -56,7 +57,6 @@
     "react-native-gesture-handler": "^2.4.1",
     "react-native-image-pan-zoom": "^2.1.12",
     "react-native-image-picker": "^4.7.3",
-    "react-native-image-resizer": "^1.4.5",
     "react-native-jwt-io": "^1.0.3",
     "react-native-localize": "^2.2.1",
     "react-native-maps": "^0.31.1",

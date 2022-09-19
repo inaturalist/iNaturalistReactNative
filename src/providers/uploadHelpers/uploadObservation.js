@@ -27,7 +27,7 @@ const uploadObsPhoto = ( obs, id, realm, apiToken ) => Observation.uploadEvidenc
 );
 
 const uploadObservation = async ( obs: Object, realm: Object, apiToken: string ): Promise<any> => {
-  const response = await Observation.uploadObservation( obs, realm, apiToken );
+  const response = await Observation.uploadObservation( obs, apiToken );
   await Observation.markRecordUploaded( obs.uuid, "Observation", response, realm );
   const { id } = response.results[0];
   if ( obs.observationPhotos ) {

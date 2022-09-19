@@ -136,6 +136,15 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     const response = await api.get( "/users/api_token.json" );
 
+    // TODO this means that if the server doesn't respond with a successful
+    // token *for any reason* it just deletes the entire local database. That
+    // means if you tried to retrieve a new token during downtime, it would
+    // delete all of your unsynced observations
+    // TODO Also, I (kueda) am not really sure we want to delete all of realm
+    // just because auth failed. If you change your password on the website,
+    // you should be signed out in the app, BUT if you have unsynced
+    // observations shouldn't you have the opportunity to sign in again and
+    // upload them?
     if ( !response.ok ) {
       // this deletes the user JWT and saved login details when a user is not
       // actually signed in anymore for example, if they installed, deleted,

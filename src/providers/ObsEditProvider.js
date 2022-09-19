@@ -85,8 +85,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const openSavedObservation = async savedUUID => {
       const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
-      const plainObject = obs.toJSON( );
-      setObservations( [plainObject] );
+      setObservations( [obs] );
       return obs;
     };
 
@@ -111,8 +110,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const saveAndUploadObservation = async ( ) => {
       const localObs = await Observation.saveLocalObservationForUpload( currentObs, realm );
-      if ( !realm || !apiToken ) {
-        throw new Error( "Gack, tried to save an observation without realm or API token!" );
+      if ( !realm ) {
+        throw new Error( "Gack, tried to save an observation without realm!" );
+      }
+      if ( !apiToken ) {
+        throw new Error( "Gack, tried to save an observation without API token!" );
       }
       uploadObservation( localObs, realm, apiToken );
       if ( localObs ) {

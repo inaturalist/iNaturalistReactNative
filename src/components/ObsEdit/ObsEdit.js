@@ -115,7 +115,7 @@ const ObsEdit = ( ): Node => {
 
   const setPhotos = uris => {
     const updatedObservations = observations;
-    const updatedObsPhotos = currentObs.observationPhotos.filter( obsPhoto => {
+    const updatedObsPhotos = Array.from( currentObs.observationPhotos ).filter( obsPhoto => {
       const { photo } = obsPhoto;
       if ( uris.includes( photo.url || photo.localFilePath ) ) {
         return obsPhoto;
@@ -133,7 +133,7 @@ const ObsEdit = ( ): Node => {
 
   useEffect( ( ) => {
     if ( !currentObs || !currentObs.observationPhotos ) { return; }
-    const uris = currentObs.observationPhotos.map(
+    const uris = Array.from( currentObs.observationPhotos ).map(
       obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
     );
     setPhotoUris( uris );

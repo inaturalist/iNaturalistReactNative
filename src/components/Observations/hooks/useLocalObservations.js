@@ -34,10 +34,10 @@ const useLocalObservations = ( ): Object => {
       setObservationList( _.compact( collection ) );
 
       const unsyncedObs = Observation.filterUnsyncedObservations( realm );
-      setUnuploadedObsList( unsyncedObs.map( o => o ) );
+      setUnuploadedObsList( Array.from( unsyncedObs ) );
 
       if ( allObsToUpload.length === 0 ) {
-        setAllObsToUpload( unsyncedObs.map( o => o ) );
+        setAllObsToUpload( Array.from( unsyncedObs ) );
       }
     } );
     // eslint-disable-next-line consistent-return

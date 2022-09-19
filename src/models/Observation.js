@@ -152,14 +152,16 @@ class Observation extends Realm.Object {
       user
     };
     if ( !existingObs ) {
-      localObs._created_at = new Date( );
+      localObs._created_at = new Date( localObs.created_at );
+      if ( isNaN( localObs._created_at ) ) {
+        localObs._created_at = new Date( );
+      }
     }
     return localObs;
   }
 
   static async saveLocalObservationForUpload( obs, realm ) {
     // make sure local observations have user details for ObsDetail
-    console.log( "realm: ", realm );
     const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
     if ( currentUser ) {
       obs.user = currentUser;
@@ -418,9 +420,9 @@ class Observation extends Realm.Object {
     try {
       response = await inatjs.observations.create( uploadParams, options );
     } catch ( uploadError ) {
-      const body = JSON.parse( await uploadError.response.text( ) );
-      console.error( "[ERROR] Failed to upload observation: ", JSON.stringify( body ) );
-      return body;
+      const errorText = await uploadError.response.text( );
+      uploadError.message = errorText;
+      throw uploadError;
     }
     return response;
   }

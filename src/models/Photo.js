@@ -1,5 +1,6 @@
+import { createResizedImage } from "@bam.tech/react-native-image-resizer";
+import { Platform } from "react-native";
 import RNFS from "react-native-fs";
-import ImageResizer from "react-native-image-resizer";
 import Realm from "realm";
 
 class Photo extends Realm.Object {
@@ -23,22 +24,43 @@ class Photo extends Realm.Object {
     return localPhoto;
   }
 
-  static async resizeImageForUpload( path ) {
+  static async resizeImageForUpload( pathOrUri ) {
     const width = 2048;
     const { photoUploadPath } = Photo;
-
     await RNFS.mkdir( photoUploadPath );
+    let outFilename = pathOrUri.split( "/" ).slice( -1 ).pop( );
+
+    // If pathOrUri is an ios localIdentifier, make up a filename based on that
+    const iosLocalIdentifierMatches = pathOrUri.match( /^ph:\/\/([^/]+)/ );
+    if ( iosLocalIdentifierMatches ) {
+      outFilename = `${iosLocalIdentifierMatches[1]}.jpeg`;
+    }
+    const outPath = `${photoUploadPath}/${outFilename}`;
+
+    // If pathOrUri is an ios localIdentifier, we don't have an actual local
+    // file path that react-native-image-resizer can use, so instead we're
+    // using react-native-fs resizing. If consistency becomes a problem, we
+    // could instead use RNFS to copy the file locally and then resize it
+    // with the resizer.
+    if ( Platform.OS === "ios" && pathOrUri.match( /^ph:/ ) ) {
+      const outUri = await RNFS.copyAssetsFileIOS( pathOrUri, outPath, width, width );
+      return outUri;
+    }
+
     try {
-      const { uri } = await ImageResizer.createResizedImage(
-        path,
+      const { uri } = await createResizedImage(
+        pathOrUri,
         width,
         width, // height
         "JPEG", // compressFormat
         100, // quality
         0, // rotation
-        // $FlowFixMe
         photoUploadPath,
-        true // keep metadata
+        true, // keep metadata
+        {
+          mode: "contain",
+          onlyScaleDown: true
+        }
       );
       return uri;
     } catch ( e ) {
@@ -73,8 +95,8 @@ class Photo extends Realm.Object {
     return photo?.url || photo?.localFilePath;
   }
 
-  static deletePhotoFromDeviceStorage( path ) {
-    const fileName = path.split( "photoUploads/" )[1];
+  static deletePhotoFromDeviceStorage( photoPath ) {
+    const fileName = photoPath.split( "photoUploads/" )[1];
     RNFS.unlink( `${Photo.photoUploadPath}/${fileName}` );
   }
 

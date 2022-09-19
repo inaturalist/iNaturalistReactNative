@@ -42,7 +42,13 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     if ( !cancelUpload ) {
       upload( allObsToUpload[currentUploadIndex] );
     }
-  }, [apiToken, cancelUpload, currentUploadIndex, allObsToUpload, realm] );
+  }, [
+    allObsToUpload,
+    apiToken,
+    cancelUpload,
+    currentUploadIndex,
+    realm
+  ] );
 
   return {
     handleClosePress,
