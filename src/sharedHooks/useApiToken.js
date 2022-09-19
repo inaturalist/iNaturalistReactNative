@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { getJWTToken } from "../components/LoginSignUp/AuthenticationService";
 import useCurrentUser from "./useCurrentUser";
 
-const useApiToken = ( ): ?string => {
+const useApiToken = ( ): string | null => {
   const [apiToken, setApiToken] = useState( null );
   const [shouldFetchToken, setShouldFetchToken] = useState( true );
   const currentUser = useCurrentUser( );

@@ -3,8 +3,6 @@
 import inatjs from "inaturalistjs";
 import { useEffect, useState } from "react";
 
-import { getUsername } from "../../LoginSignUp/AuthenticationService";
-
 const USER_FIELDS = {
   name: true,
   login: true,
@@ -23,33 +21,24 @@ const USER_FIELDS = {
 
 const useRemoteUser = ( userId: number ): Object => {
   const [user, setUser] = useState( null );
-  const [currentUser, setCurrentUser] = useState( null );
 
   useEffect( ( ) => {
     let isCurrent = true;
     const fetchUserProfile = async ( ) => {
       if ( !userId ) {
-        setCurrentUser( false );
         setUser( null );
         return;
       }
-      const currentUserLogin = await getUsername( );
       let response;
       try {
         response = await inatjs.users.fetch( userId, { fields: USER_FIELDS } );
       } catch ( e ) {
-        console.warn( "Failed to fetch current user: ", JSON.stringify( e.response ) );
-        setCurrentUser( false );
+        console.log( "Failed to fetch current user: ", JSON.stringify( e.response ) );
         setUser( null );
         return;
       }
       const { results } = response;
       if ( !isCurrent ) { return; }
-      if ( currentUserLogin === results[0].login ) {
-        setCurrentUser( true );
-      } else {
-        setCurrentUser( false );
-      }
       setUser( results[0] );
     };
 
@@ -60,8 +49,7 @@ const useRemoteUser = ( userId: number ): Object => {
   }, [userId] );
 
   return {
-    user,
-    currentUser
+    user
   };
 };
 

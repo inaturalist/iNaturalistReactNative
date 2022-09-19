@@ -10,8 +10,18 @@ import AccessibilityEngine from "react-native-accessibility-engine";
 import ObsList from "../../src/components/Observations/ObsList";
 import factory, { makeResponse } from "../factory";
 
+const testUser = factory( "RemoteUser" );
+const mockExpected = testUser;
+
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
+
+jest.mock( "../../src/components/UserProfile/hooks/useRemoteUser", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    user: mockExpected
+  } )
+} ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
