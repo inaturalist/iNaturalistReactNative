@@ -39,7 +39,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const addObservations = async obs => setObservations( obs );
 
   const addObservationNoEvidence = async ( ) => {
-    const newObs = await Observation.new( );
+    const newObs = await Observation.import( );
     setObservations( [newObs] );
   };
 

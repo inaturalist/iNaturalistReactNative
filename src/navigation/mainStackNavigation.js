@@ -70,12 +70,6 @@ const SoundRecorderWithPermission = ( ) => (
   </PermissionGate>
 );
 
-const RequestLocationWithPermission = ( ) => (
-  <PermissionGate permission={PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION}>
-    <ObsEdit />
-  </PermissionGate>
-);
-
 const MainStackNavigation = ( ): React.Node => (
   <Mortal>
     <ExploreProvider>
@@ -108,7 +102,7 @@ const MainStackNavigation = ( ): React.Node => (
         />
         <Stack.Screen
           name="ObsEdit"
-          component={RequestLocationWithPermission}
+          component={ObsEdit}
         />
         <Stack.Screen
           name="SoundRecorder"
