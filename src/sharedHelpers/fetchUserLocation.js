@@ -1,6 +1,6 @@
 // @flow
 
-import { Platform } from "react-native";
+import { PermissionsAndroid, Platform } from "react-native";
 import Geolocation from "react-native-geolocation-service";
 import { PERMISSIONS, request } from "react-native-permissions";
 
@@ -19,6 +19,18 @@ const requestiOSPermissions = async ( ): Promise<?string> => {
   return null;
 };
 
+const requestAndroidPermissions = async ( ): Promise<?string> => {
+  if ( Platform.OS === "android" ) {
+    try {
+      const permission = await request( PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION );
+      return permission;
+    } catch ( e ) {
+      console.log( e, ": error requesting iOS permissions" );
+    }
+  }
+  return null;
+};
+
 const options = { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
 
 const getCurrentPosition = ( ) => new Promise(
@@ -27,8 +39,13 @@ const getCurrentPosition = ( ) => new Promise(
 
 const fetchUserLocation = async ( ): ?Object => {
   const permissions = await requestiOSPermissions( );
+  const androidPermissions = await requestAndroidPermissions( );
+
   // TODO: handle case where iOS permissions are not granted
-  if ( permissions !== "granted" ) { return null; }
+  if ( Platform.OS !== "android" && permissions !== "granted" ) { return null; }
+  if ( Platform.OS !== "ios" && androidPermissions !== "granted" ) {
+    return null;
+  }
 
   try {
     const { coords } = await getCurrentPosition( );
