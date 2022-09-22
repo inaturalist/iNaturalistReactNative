@@ -45,6 +45,7 @@ class Observation extends Realm.Object {
   static async new( obs ) {
     // TODO remove this from the model. IMO this kind of system interaction
     // should happen in the component
+
     const latLng = await fetchUserLocation( );
 
     return {
@@ -60,8 +61,20 @@ class Observation extends Realm.Object {
     };
   }
 
+  static async import( obs ) {
+    return {
+      ...obs,
+      captive_flag: false,
+      geoprivacy: "open",
+      owners_identification_from_vision: false,
+      observed_on_string: createObservedOnStringForUpload( ),
+      quality_grade: "needs_id",
+      uuid: uuid.v4( )
+    };
+  }
+
   static async createObsWithPhotos( observationPhotos ) {
-    const observation = await Observation.new( );
+    const observation = await Observation.new();
     observation.observationPhotos = observationPhotos;
     return observation;
   }
