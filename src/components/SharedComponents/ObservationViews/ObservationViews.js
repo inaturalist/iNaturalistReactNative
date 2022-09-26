@@ -2,7 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Animated, Dimensions, Text, View
@@ -163,7 +163,7 @@ const ObservationViews = ( {
 
   const isExplore = name === "Explore";
 
-  const renderHeader = ( ) => (
+  const renderHeader = useMemo( ( ) => (
     <ObsListHeader
       numOfUnuploadedObs={numOfUnuploadedObs}
       isLoggedIn={isLoggedIn}
@@ -173,7 +173,7 @@ const ObservationViews = ( {
       syncObservations={syncObservations}
       setView={setView}
     />
-  );
+  ), [isExplore, isLoggedIn, translateY, numOfUnuploadedObs, headerHeight, syncObservations] );
 
   const renderView = ( ) => {
     if ( view === "map" ) {
