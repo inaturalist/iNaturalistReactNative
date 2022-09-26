@@ -25,6 +25,11 @@ jest.mock( "../../../../src/sharedHooks/useUserLocation", ( ) => ( {
 
 jest.mock( "../../../../src/providers/ExploreProvider" );
 
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  __esModule: true,
+  default: ( ) => true
+} ) );
+
 // Mock ExploreProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations

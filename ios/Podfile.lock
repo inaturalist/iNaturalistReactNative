@@ -333,7 +333,7 @@ PODS:
     - React-Core
   - RNPermissions (3.3.1):
     - React-Core
-  - RNReanimated (2.7.0):
+  - RNReanimated (2.10.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -583,7 +583,7 @@ SPEC CHECKSUMS:
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
   react-native-geolocation-service: c0efb872258ed9240f1003a70fca9e9757e5c785
   react-native-image-picker: 9f9eb160a4f4fc0702f9d0a60fa453b413258ef8
-  react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
+  react-native-image-resizer: 506412a2bdd70dde64a61e13505ce10f61a04369
   react-native-maps: 8b8bfada2c86205a7f5a07dd1f92f29b33ea83aa
   react-native-netinfo: ebbcd8fbe1a0ce7035e43cd18c5a545dcb93dd08
   react-native-safe-area-context: a95ad1a0e18341f58c5d6f53b0e2d43efade1a67
@@ -611,7 +611,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 4f4986408310a43f1606c391f38f76e0d6e790d5
   RNLocalize: 414c99a0f6625a58dfee7f5780678d98c4ffabc2
   RNPermissions: 7ad8d93b004e6bc85c89e27a102afcde90e07efa
-  RNReanimated: e42de406edd11350af29016cf6802ef16ee364d0
+  RNReanimated: 5bdcbcc3a72aedeee7bb099604262403aa75a1e5
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
   RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b

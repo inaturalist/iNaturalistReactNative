@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { getUserId } from "../../../LoginSignUp/AuthenticationService";
+import { getUserId } from "../components/LoginSignUp/AuthenticationService";
 
 const useCurrentUser = ( ): Object => {
   const [currentUser, setCurrentUser] = useState( null );
