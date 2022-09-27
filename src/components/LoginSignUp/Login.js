@@ -6,15 +6,9 @@ import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Image,
-  KeyboardAvoidingView,
   Linking,
   Platform,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  View
+  TouchableOpacity
 } from "react-native";
 import {
   Dialog, Paragraph, Portal, Text, TextInput
@@ -24,6 +18,11 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "../../styles/colors";
 import viewStyles from "../../styles/login/login";
 import Button from "../SharedComponents/Buttons/Button";
+import {
+  Image, KeyboardAvoidingView, Pressable,
+  SafeAreaView,
+  ScrollView, View
+} from "../styledComponents";
 import {
   authenticateUser,
   getUsername,
@@ -121,7 +120,6 @@ const Login = ( ): Node => {
       {/* TODO: figure out how to account for safe area views with h-screen,
       maybe something along these lines: https://github.com/mvllow/tailwindcss-safe-area/blob/70dbef61557b07e26b07a6167e13a377ba3c4625/index.js
       */}
-      {/* $FlowIgnore */}
       <View className="self-center justify-center h-screen">
         <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
         <Button
@@ -137,7 +135,6 @@ const Login = ( ): Node => {
 
   const loginForm = (
     <>
-      {/* $FlowIgnore */}
       <Image
         className="self-center w-32 h-32"
         resizeMode="contain"
@@ -189,16 +186,12 @@ const Login = ( ): Node => {
   );
 
   return (
-    // $FlowIgnore
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       className="flex-1"
     >
-      {/* $FlowIgnore */}
       <SafeAreaView className="flex-1">
-        {/* $FlowIgnore */}
         <ScrollView className="flex-1 p-10">
-          {/* $FlowIgnore */}
           <Pressable
             onPress={() => navigation.goBack()}
             className="absolute top-0 right-0"
