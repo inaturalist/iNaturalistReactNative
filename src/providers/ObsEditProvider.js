@@ -39,7 +39,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const addObservations = async obs => setObservations( obs );
 
   const addObservationNoEvidence = async ( ) => {
-    const newObs = await Observation.import( );
+    const newObs = await Observation.new( );
     setObservations( [newObs] );
   };
 
@@ -51,6 +51,19 @@ const ObsEditProvider = ( { children }: Props ): Node => {
             ...obs,
             // $FlowFixMe
             [key]: value
+          };
+        }
+        return obs;
+      } );
+      setObservations( updatedObs );
+    };
+
+    const updateObservationKeys = keysAndValues => {
+      const updatedObs = observations.map( ( obs, index ) => {
+        if ( index === currentObsIndex ) {
+          return {
+            ...obs,
+            ...keysAndValues
           };
         }
         return obs;
@@ -131,6 +144,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setCurrentObsIndex,
       setObservations,
       updateObservationKey,
+      updateObservationKeys,
       updateTaxon
     };
   }, [

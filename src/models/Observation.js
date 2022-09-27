@@ -7,7 +7,6 @@ import {
   getJWTToken, getUserId, getUsername
 } from "../components/LoginSignUp/AuthenticationService";
 import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
-import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 // eslint-disable-next-line import/no-cycle
 import Comment from "./Comment";
 // eslint-disable-next-line import/no-cycle
@@ -43,32 +42,14 @@ class Observation extends Realm.Object {
   }
 
   static async new( obs ) {
-    // TODO remove this from the model. IMO this kind of system interaction
-    // should happen in the component
-
-    const latLng = await fetchUserLocation( );
-
     return {
       ...obs,
-      ...latLng,
       captive_flag: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
       observed_on_string: createObservedOnStringForUpload( ),
       quality_grade: "needs_id",
       // project_ids: [],
-      uuid: uuid.v4( )
-    };
-  }
-
-  static async import( obs ) {
-    return {
-      ...obs,
-      captive_flag: false,
-      geoprivacy: "open",
-      owners_identification_from_vision: false,
-      observed_on_string: createObservedOnStringForUpload( ),
-      quality_grade: "needs_id",
       uuid: uuid.v4( )
     };
   }
