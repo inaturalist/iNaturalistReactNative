@@ -2,8 +2,8 @@
 
 ## Requirements
 
-* Xcode 13 or above
-* [Android and iOS environment setup](https://reactnative.dev/docs/environment-setup) described in the RN docs
+- Xcode 13 or above
+- [Android and iOS environment setup](https://reactnative.dev/docs/environment-setup) described in the RN docs
 
 ## Install packages and pods
 
@@ -38,7 +38,7 @@ We currently have two kinds of tests:
 1. `tests/integration`: Tests the test the integration of multiple modules, e.g. a list of observation that makes requests to a mocked API, persists the response data in local storage, retrieves the data from local storage and renders components.
 1. `tests/unit`: Tests that only test specific modules, like a single component, or a hook.
 
-We're using [Jest](https://jestjs.io/) and [React Native Testing Library](https://callstack.github.io/react-native-testing-library/) for most of our tests, [factoria](https://github.com/phanan/factoria) and [faker.js](https://github.com/Marak/faker.js/) to generate test data for use with mocks. `Local*` model factories represent locally persisted data, while `Remote*` factories represent that kinds of records we get from an API or external package.
+We're using [Jest](https://jestjs.io/) and [React Native Testing Library](https://callstack.github.io/react-native-testing-library/) for most of our tests, [factoria](https://github.com/phanan/factoria) and [faker.js](https://github.com/Marak/faker.js/) to generate test data for use with mocks. `Local*` model factories represent locally persisted data, while `Remote*` factories represent the kinds of records we get from an API or external package.
 
 ## Running with Staging Environment
 
@@ -49,28 +49,28 @@ We're using [Jest](https://jestjs.io/) and [React Native Testing Library](https:
 ### Adding New Text
 
 1. Add new strings in English to `src/i18n/strings.ftl` using [Fluent syntax](https://projectfluent.org/fluent/guide/), e.g.
-    ```Fluent
-    # Header for a paragraph describing projects
-    ABOUT-PROJECTS = ABOUT
-    # Text describing what projects are
-    projects-description =
-      Projects are really great, probably iNat's best feature.
-    ```
-    Try to match case and strike a balance between specificity and reusability when choosing a key. Please add context comments to help translators understand how the text is used, avoid variables whenever possible, and try to keep `strings.ftl` alphabetized by key.
+   ```Fluent
+   # Header for a paragraph describing projects
+   ABOUT-PROJECTS = ABOUT
+   # Text describing what projects are
+   projects-description =
+     Projects are really great, probably iNat's best feature.
+   ```
+   Try to match case and strike a balance between specificity and reusability when choosing a key. Please add context comments to help translators understand how the text is used, avoid variables whenever possible, and try to keep `strings.ftl` alphabetized by key.
 1. Run `node src/i18n/i18ncli.js build` to build the JSON files i18next needs to access text in the app
 1. In a commponent, use the `useTranslation` hook to reference your new string, e.g.
-    ```jsx
-    import { useTranslation } from "react-i18next";
-    const MyComponent = ( ) => {
-      const { t } = useTranslation();
-      return (
-        <View>
-          <Text>{ t( "ABOUT-PROJECTS" ) }</Text>
-          <Text>{ t( "projects-description" ) }</Text>
-        </View>
-      );
-    };
-    ````
+   ```jsx
+   import { useTranslation } from "react-i18next";
+   const MyComponent = () => {
+     const { t } = useTranslation();
+     return (
+       <View>
+         <Text>{t("ABOUT-PROJECTS")}</Text>
+         <Text>{t("projects-description")}</Text>
+       </View>
+     );
+   };
+   ```
 
 ### Translating Text
 
@@ -92,7 +92,6 @@ git commit -a -m "Updated translations"
 1. Run `react-native clean-project`. This will give you options to clean caches, clean builds, reinstall pods, and reinstall node_modules. Using this eliminates a lot of hard-to-diagnose build issues.
 1. If you're running on an M series chip, you may need to install a specific version of NDK to the app to build for Android. See `android/build.gradle`
 
-
 ## Deploying
 
 We use [fastlane](https://docs.fastlane.tools/) to help automate parts of the deployment process, which requires some additional setup.
@@ -106,10 +105,9 @@ We use [fastlane](https://docs.fastlane.tools/) to help automate parts of the de
 1. Sign in to Xcode with your Apple ID
 1. Manage Certificates and add an Apple Distribution certificate associated with the iNaturalist team
 
-
 ### Usage
 
-The current expectation is that you we tag to freeze the code, bump the version, and describe the changes represented by the tag. Then we release to make builds and publish on Github. Later, presumably when some of the change logs have been translated, we push builds for internal testing. If that looks ok, we push to public testing, and later to production release.
+The current expectation is that you make a git tag to freeze the code, bump the version, and describe the changes represented by the tag. Then we release to make builds and publish on Github. Later, presumably when some of the change logs have been translated, we push builds for internal testing. If that looks ok, we push to public testing, and later to production release.
 
 ```zsh
 # Make a git tag. This will bump the build number and prompt you to describe
