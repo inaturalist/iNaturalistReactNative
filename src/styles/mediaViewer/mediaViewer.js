@@ -9,10 +9,13 @@ import colors from "../colors";
 
 const { width, height } = Dimensions.get( "screen" );
 
+const PHOTO_HEIGHT = height - 350;
+const ARROW_BUTTON_HEIGHT = 16 + 40;
+
 const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   selectedPhoto: {
     width,
-    height: height - 350
+    height: PHOTO_HEIGHT
   },
   fullSize: {
     width: "100%",
@@ -42,6 +45,18 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     borderRadius: 40,
     alignSelf: "center",
     marginRight: 10
+  },
+  arrow: {
+    zIndex: 1,
+    position: "absolute",
+    top: ( PHOTO_HEIGHT + ARROW_BUTTON_HEIGHT ) / 2,
+    padding: 20
+  },
+  leftArrow: {
+    left: 0
+  },
+  rightArrow: {
+    right: 0
   }
 } );
 

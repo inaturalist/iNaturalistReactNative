@@ -2,9 +2,12 @@
 
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
-import { Dimensions, FlatList } from "react-native";
+import { Dimensions, FlatList, Pressable } from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import Photo from "../../models/Photo";
+import colors from "../../styles/colors";
+import { viewStyles } from "../../styles/mediaViewer/mediaViewer";
 import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 import CustomImageZoom from "./CustomImageZoom";
@@ -24,6 +27,9 @@ const HorizontalScroll = ( {
 }: Props ): Node => {
   const horizontalScroll = useRef( null );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( initialPhotoSelected );
+
+  const FIRST_PHOTO = selectedPhotoIndex === 0;
+  const LAST_PHOTO = selectedPhotoIndex === photoUris.length - 1;
 
   const scrollToIndex = index => {
     // when a user taps a photo in the carousel, the UI needs to automatically
@@ -45,12 +51,12 @@ const HorizontalScroll = ( {
   } );
 
   const handleScrollLeft = index => {
-    if ( selectedPhotoIndex === 0 ) { return; }
+    if ( FIRST_PHOTO ) { return; }
     setSelectedPhotoIndex( index );
   };
 
   const handleScrollRight = index => {
-    if ( selectedPhotoIndex === photoUris.length - 1 ) { return; }
+    if ( LAST_PHOTO ) { return; }
     setSelectedPhotoIndex( index );
   };
 
@@ -72,6 +78,16 @@ const HorizontalScroll = ( {
     }
   };
 
+  const handleArrowPressLeft = ( ) => {
+    if ( FIRST_PHOTO ) { return; }
+    scrollToIndex( selectedPhotoIndex - 1 );
+  };
+
+  const handleArrowPressRight = ( ) => {
+    if ( LAST_PHOTO ) { return; }
+    scrollToIndex( selectedPhotoIndex + 1 );
+  };
+
   return (
     <>
       <FlatList
@@ -86,6 +102,22 @@ const HorizontalScroll = ( {
         ref={horizontalScroll}
         onMomentumScrollEnd={handleScrollEndDrag}
       />
+      {!FIRST_PHOTO && (
+        <Pressable
+          style={[viewStyles.arrow, viewStyles.leftArrow]}
+          onPress={handleArrowPressLeft}
+        >
+          <Icon name="arrow-back-ios" color={colors.white} size={16} />
+        </Pressable>
+      )}
+      {!LAST_PHOTO && (
+        <Pressable
+          style={[viewStyles.arrow, viewStyles.rightArrow]}
+          onPress={handleArrowPressRight}
+        >
+          <Icon name="arrow-forward-ios" color={colors.white} size={16} />
+        </Pressable>
+      )}
       <PhotoCarousel
         photoUris={photoUris}
         selectedPhotoIndex={selectedPhotoIndex}
