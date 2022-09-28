@@ -2,13 +2,11 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Dimensions,
-  FlatList, Pressable, Text, View
+  Animated, Dimensions, Text, View
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../../styles/observations/obsList";
@@ -20,6 +18,7 @@ import useUploadStatus from "./hooks/useUploadStatus";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
 import LoginPrompt from "./LoginPrompt";
 import ObsCard from "./ObsCard";
+import ObsListHeader from "./ObsListHeader";
 import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
 
@@ -48,10 +47,54 @@ const ObservationViews = ( {
   const navigation = useNavigation( );
   const { name } = useRoute( );
   const isLoggedIn = useLoggedIn( );
-  const { uploadInProgress, updateUploadStatus } = useUploadStatus( );
-  const { observationList, unuploadedObsList, allObsToUpload } = localObservations;
+  const { observationList, unuploadedObsList } = localObservations;
   const numOfUnuploadedObs = unuploadedObsList?.length;
+  // eslint-disable-next-line
   const [hasScrolled, setHasScrolled] = useState( false );
+
+  const { diffClamp } = Animated;
+  const headerHeight = 120;
+
+  // basing collapsible sticky header code off the example in this article
+  // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
+  const scrollY = useRef( new Animated.Value( 0 ) );
+  const scrollYClamped = diffClamp( scrollY.current, 0, headerHeight );
+
+  const translateY = scrollYClamped.interpolate( {
+    inputRange: [0, headerHeight],
+    // $FlowIgnore
+    outputRange: [0, -headerHeight]
+  } );
+
+  const translateYNumber = useRef();
+
+  translateY.addListener( ( { value } ) => {
+    translateYNumber.current = value;
+  } );
+
+  const handleScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: { y: scrollY.current }
+        }
+      }
+    ],
+    {
+      listener: ( { nativeEvent } ) => {
+        const { y } = nativeEvent.contentOffset;
+
+        if ( y <= 0 ) {
+          setHasScrolled( false );
+        } else {
+          setHasScrolled( true );
+        }
+      },
+      useNativeDriver: true
+    }
+  );
+  const { uploadInProgress, updateUploadStatus } = useUploadStatus( );
+  const { allObsToUpload } = localObservations;
 
   const { height } = Dimensions.get( "screen" );
   const FOOTER_HEIGHT = 75;
@@ -63,16 +106,6 @@ const ObservationViews = ( {
   const flatListHeight = height - (
     HEADER_HEIGHT + FOOTER_HEIGHT + BUTTON_ROW_HEIGHT
   );
-
-  const onScroll = ( { nativeEvent } ) => {
-    const { y } = nativeEvent.contentOffset;
-
-    if ( y <= 0 ) {
-      setHasScrolled( false );
-    } else {
-      setHasScrolled( true );
-    }
-  };
 
   const navToObsDetails = async observation => {
     navigation.navigate( "ObsDetails", { observation } );
@@ -89,10 +122,6 @@ const ObservationViews = ( {
     }
     return null;
   };
-
-  const setGridView = ( ) => setView( "grid" );
-  const setListView = ( ) => setView( "list" );
-  const setMapView = ( ) => setView( "map" );
 
   const { t } = useTranslation( );
 
@@ -132,68 +161,45 @@ const ObservationViews = ( {
       : <View style={viewStyles.footer} />;
   };
 
+  const isExplore = name === "Explore";
+
+  const renderHeader = useMemo( ( ) => (
+    <ObsListHeader
+      numOfUnuploadedObs={numOfUnuploadedObs}
+      isLoggedIn={isLoggedIn}
+      translateY={translateY}
+      isExplore={isExplore}
+      headerHeight={headerHeight}
+      syncObservations={syncObservations}
+      setView={setView}
+    />
+  ), [isExplore, isLoggedIn, translateY, numOfUnuploadedObs, headerHeight, syncObservations] );
+
   const renderView = ( ) => {
     if ( view === "map" ) {
       return <Map taxonId={taxonId} mapHeight={mapHeight} />;
     }
     return (
       <>
-        <FlatList
+        <Animated.FlatList
           data={observationList}
           key={view === "grid" ? 1 : 0}
           renderItem={view === "grid" ? renderGridItem : renderItem}
           numColumns={view === "grid" ? 2 : 1}
           testID={testID}
           ListEmptyComponent={renderEmptyState}
-          onScroll={onScroll}
+          onScroll={handleScroll}
           onEndReached={handleEndReached}
           ListFooterComponent={renderFooter}
+          ListHeaderComponent={renderHeader}
+          stickyHeaderIndices={[0]}
+          bounces={false}
           contentContainerStyle={{ minHeight: flatListHeight }}
         />
         {renderBottomSheet( )}
       </>
     );
   };
-
-  const isExplore = name === "Explore";
-
-  const renderButtonsRow = ( ) => (
-    <View style={[viewStyles.toggleViewRow, isExplore && viewStyles.exploreButtons]}>
-      {!isExplore && (
-      <View style={viewStyles.toggleButtons}>
-        {isLoggedIn && (
-        <Pressable onPress={syncObservations}>
-          <Icon name="sync" size={30} />
-        </Pressable>
-        )}
-      </View>
-      )}
-      <View style={viewStyles.toggleButtons}>
-        {isExplore && (
-        <Pressable
-          onPress={setMapView}
-          accessibilityRole="button"
-          testID="Explore.toggleMapView"
-        >
-          <Icon name="map-outline" size={30} />
-        </Pressable>
-        )}
-        <Pressable
-          onPress={setListView}
-          accessibilityRole="button"
-        >
-          <Icon name="format-list-bulleted" size={30} />
-        </Pressable>
-        <Pressable
-          onPress={setGridView}
-          testID="ObsList.toggleGridView"
-          accessibilityRole="button"
-        >
-          <Icon name="grid-large" size={30} />
-        </Pressable>
-      </View>
-    </View>
-  );
 
   return (
     <View testID="ObservationViews.myObservations">
@@ -204,14 +210,7 @@ const ObservationViews = ( {
           </Text>
         </View>
       )}
-      {observationList.length === 0
-        ? renderEmptyState( )
-        : (
-          <>
-            {renderButtonsRow( )}
-            {renderView( )}
-          </>
-        )}
+      {renderView( )}
     </View>
   );
 };
