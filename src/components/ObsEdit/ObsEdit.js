@@ -133,7 +133,7 @@ const ObsEdit = ( ): Node => {
         }
       };
 
-      if ( !fetchedLocation ) {
+      if ( !fetchedLocation && !currentObs._created_at ) {
         if ( positionalAccuracy >= 15 ) {
           fetchLocation();
         } else {
