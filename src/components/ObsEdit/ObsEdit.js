@@ -58,6 +58,7 @@ const ObsEdit = ( ): Node => {
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const [fetchedLocation, setFetchedLocation] = useState( false );
   const [positionalAccuracy, setPositionalAccuracy] = useState( 1000000 );
+  const [mounted, setMounted] = useState( true );
 
   const disableAddingMoreEvidence = photoUris.length >= MAX_PHOTOS_ALLOWED;
 
@@ -133,7 +134,7 @@ const ObsEdit = ( ): Node => {
         }
       };
 
-      if ( !fetchedLocation && !currentObs._created_at ) {
+      if ( !fetchedLocation && !currentObs._created_at && mounted ) {
         if ( positionalAccuracy >= 15 ) {
           fetchLocation();
         } else {
@@ -141,7 +142,9 @@ const ObsEdit = ( ): Node => {
         }
       }
     }
-  }, [updateObservationKeys, fetchedLocation, positionalAccuracy, currentObs] );
+
+    return setMounted( false );
+  }, [updateObservationKeys, fetchedLocation, positionalAccuracy, currentObs, mounted] );
 
   const setPhotos = uris => {
     const updatedObservations = observations;
