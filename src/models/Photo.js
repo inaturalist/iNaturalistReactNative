@@ -35,7 +35,6 @@ class Photo extends Realm.Object {
     if ( iosLocalIdentifierMatches ) {
       outFilename = `${iosLocalIdentifierMatches[1]}.jpeg`;
     }
-    const outPath = `${photoUploadPath}/${outFilename}`;
 
     // If pathOrUri is an ios localIdentifier, we don't have an actual local
     // file path that react-native-image-resizer can use, so instead we're
@@ -43,30 +42,32 @@ class Photo extends Realm.Object {
     // could instead use RNFS to copy the file locally and then resize it
     // with the resizer.
     if ( Platform.OS === "ios" && pathOrUri.match( /^ph:/ ) ) {
+      const outPath = `${photoUploadPath}/${outFilename}`;
       const outUri = await RNFS.copyAssetsFileIOS( pathOrUri, outPath, width, width );
       return outUri;
     }
 
-    try {
-      const { uri } = await createResizedImage(
-        pathOrUri,
-        width,
-        width, // height
-        "JPEG", // compressFormat
-        100, // quality
-        0, // rotation
-        photoUploadPath,
-        true, // keep metadata
-        {
-          mode: "contain",
-          onlyScaleDown: true
-        }
-      );
-      return uri;
-    } catch ( e ) {
-      console.log( e, "error resizing image" );
-      return "";
+    // Work around path / uri bug: https://github.com/bamlab/react-native-image-resizer/issues/328
+    let uriForResize = pathOrUri;
+    if ( Platform.OS === "ios" && uriForResize.match( /^\// ) ) {
+      uriForResize = `file://${uriForResize}`;
     }
+
+    const { uri } = await createResizedImage(
+      uriForResize,
+      width,
+      width, // height
+      "JPEG", // compressFormat
+      100, // quality
+      0, // rotation
+      photoUploadPath,
+      true, // keep metadata
+      {
+        mode: "contain",
+        onlyScaleDown: true
+      }
+    );
+    return uri;
   }
 
   static async new( uri ) {
