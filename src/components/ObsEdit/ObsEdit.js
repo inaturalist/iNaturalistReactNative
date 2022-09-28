@@ -18,6 +18,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import Photo from "../../models/Photo";
 import { ObsEditContext } from "../../providers/contexts";
+import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { MAX_PHOTOS_ALLOWED } from "../Camera/StandardCamera";
@@ -39,7 +40,8 @@ const ObsEdit = ( ): Node => {
     observations,
     saveObservation,
     saveAndUploadObservation,
-    setObservations
+    setObservations,
+    updateObservationKeys
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -54,6 +56,8 @@ const ObsEdit = ( ): Node => {
   const [photoUris, setPhotoUris] = useState( [] );
   const [snapPoint, setSnapPoint] = useState( 150 );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
+  const [fetchedLocation, setFetchedLocation] = useState( false );
+  const [positionalAccuracy, setPositionalAccuracy] = useState( 1000000 );
 
   const disableAddingMoreEvidence = photoUris.length >= MAX_PHOTOS_ALLOWED;
 
@@ -112,6 +116,32 @@ const ObsEdit = ( ): Node => {
   );
 
   const currentObs = observations[currentObsIndex];
+
+  useEffect( () => {
+    if ( currentObs ) {
+      const fetchLocation = async () => {
+        const location = await fetchUserLocation( );
+
+        updateObservationKeys( {
+          place_guess: location?.place_guess,
+          latitude: location?.latitude,
+          longitude: location?.longitude,
+          positional_accuracy: location?.positional_accuracy
+        } );
+        if ( location ) {
+          setPositionalAccuracy( location.positional_accuracy );
+        }
+      };
+
+      if ( !fetchedLocation ) {
+        if ( positionalAccuracy >= 15 ) {
+          fetchLocation();
+        } else {
+          setFetchedLocation( true );
+        }
+      }
+    }
+  }, [updateObservationKeys, fetchedLocation, positionalAccuracy, currentObs] );
 
   const setPhotos = uris => {
     const updatedObservations = observations;
