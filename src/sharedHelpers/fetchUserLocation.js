@@ -33,7 +33,14 @@ const getCurrentPosition = ( ) => new Promise(
   ( resolve, error ) => { Geolocation.getCurrentPosition( resolve, error, options ); }
 );
 
-const fetchUserLocation = async ( ): ?Object => {
+type UserLocation = {
+  latitude: number,
+  longitude: number,
+  positional_accuracy: number,
+  place_guess: ?string
+
+}
+const fetchUserLocation = async ( ): Promise<?UserLocation> => {
   const permissions = await requestLocationPermissions( );
 
   // TODO: handle case where iOS permissions are not granted
