@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next";
 import {
   Animated, Dimensions, Text, View
 } from "react-native";
+import { textStyles, viewStyles } from "styles/observations/obsList";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
-import { textStyles, viewStyles } from "../../../styles/observations/obsList";
 import BottomSheet from "../BottomSheet";
 import Map from "../Map";
 import EmptyList from "./EmptyList";

@@ -9,10 +9,10 @@ import {
   View
 } from "react-native";
 import HTML from "react-native-render-html";
+import { textStyles, viewStyles } from "styles/taxonDetails";
 
 import fetchTaxon from "../../api/taxa";
 import useAuthenticatedQuery from "../../sharedHooks/useAuthenticatedQuery";
-import { textStyles, viewStyles } from "../../styles/taxonDetails";
 import PhotoScroll from "../SharedComponents/PhotoScroll";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
