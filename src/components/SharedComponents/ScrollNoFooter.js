@@ -4,8 +4,7 @@ import * as React from "react";
 import {
   Keyboard, SafeAreaView, ScrollView, StatusBar
 } from "react-native";
-
-import viewStyles from "../../styles/sharedComponents/viewWithFooter";
+import viewStyles from "styles/sharedComponents/viewWithFooter";
 
 type Props = {
   children: React.Node,

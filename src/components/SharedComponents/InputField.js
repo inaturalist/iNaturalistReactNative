@@ -2,9 +2,8 @@
 
 import * as React from "react";
 import { Platform, TextInput } from "react-native";
-
-import colors from "../../styles/colors";
-import textStyles from "../../styles/sharedComponents/inputField";
+import colors from "styles/colors";
+import textStyles from "styles/sharedComponents/inputField";
 
 type Props = {
   handleTextChange: Function,

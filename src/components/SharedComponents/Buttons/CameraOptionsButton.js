@@ -1,12 +1,11 @@
 // @flow
 
+import CameraOptionsModal from "components/Camera/CameraOptionsModal";
+import Modal from "components/SharedComponents/Modal";
 import * as React from "react";
 import { Pressable, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
-import { viewStyles } from "../../../styles/obsEdit/obsEdit";
-import CameraOptionsModal from "../../Camera/CameraOptionsModal";
-import Modal from "../Modal";
+import { viewStyles } from "styles/obsEdit/obsEdit";
 
 type Props = {
   buttonType?: string

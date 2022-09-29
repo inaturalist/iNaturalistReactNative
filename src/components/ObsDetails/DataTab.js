@@ -1,5 +1,7 @@
 // @flow
 
+import DropdownPicker from "components/Explore/DropdownPicker";
+import Map from "components/SharedComponents/Map";
 import { format, parseISO } from "date-fns";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -7,11 +9,9 @@ import React, { useState } from "react";
 import { Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import colors from "styles/colors";
+import { textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
-import colors from "../../styles/colors";
-import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
-import DropdownPicker from "../Explore/DropdownPicker";
-import Map from "../SharedComponents/Map";
 import addToProject from "./helpers/addToProject";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 

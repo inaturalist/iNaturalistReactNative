@@ -1,14 +1,14 @@
 // @flow
 
+import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "react-native";
+import { textStyles } from "styles/obsEdit/obsEdit";
 
 import { ObsEditContext } from "../../providers/contexts";
 import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
-import { textStyles } from "../../styles/obsEdit/obsEdit";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 import DatePicker from "./DatePicker";
 
 type Props = {

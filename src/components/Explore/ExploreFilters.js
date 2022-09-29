@@ -1,18 +1,18 @@
 // @flow
 
 import CheckBox from "@react-native-community/checkbox";
+import InputField from "components/SharedComponents/InputField";
+import ScrollNoFooter from "components/SharedComponents/ScrollNoFooter";
+import TranslatedText from "components/SharedComponents/TranslatedText";
 import { t } from "i18next";
 import RadioButtonRN from "radio-buttons-react-native";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
+import { pickerSelectStyles, viewStyles } from "styles/explore/exploreFilters";
 
 import { ExploreContext } from "../../providers/contexts";
-import { pickerSelectStyles, viewStyles } from "../../styles/explore/exploreFilters";
-import InputField from "../SharedComponents/InputField";
-import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
-import TranslatedText from "../SharedComponents/TranslatedText";
 import DropdownPicker from "./DropdownPicker";
 import ExploreFooter from "./ExploreFooter";
 import ResetFiltersButton from "./ResetFiltersButton";

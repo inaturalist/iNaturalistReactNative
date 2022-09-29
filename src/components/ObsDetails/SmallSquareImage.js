@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import { Image } from "react-native";
-
-import { imageStyles } from "../../styles/obsDetails/obsDetails";
+import { imageStyles } from "styles/obsDetails/obsDetails";
 
 type Props = {
   uri: Object

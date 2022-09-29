@@ -4,8 +4,7 @@ import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "react-native";
-
-import { textStyles, viewStyles } from "../../styles/sharedComponents/customHeader";
+import { textStyles, viewStyles } from "styles/sharedComponents/customHeader";
 
 type Props = {
   headerText: string

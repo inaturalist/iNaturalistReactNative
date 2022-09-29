@@ -7,6 +7,13 @@ import {
 } from "@gorhom/bottom-sheet";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
+import MediaViewer from "components/MediaViewer/MediaViewer";
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+import Button from "components/SharedComponents/Buttons/Button";
+import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
+import KebabMenu from "components/SharedComponents/KebabMenu";
+import ScrollNoFooter from "components/SharedComponents/ScrollNoFooter";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
@@ -15,18 +22,11 @@ import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import { Headline, Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 
 import Photo from "../../models/Photo";
 import { ObsEditContext } from "../../providers/contexts";
 import useLoggedIn from "../../sharedHooks/useLoggedIn";
-import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
-import { MAX_PHOTOS_ALLOWED } from "../Camera/StandardCamera";
-import MediaViewer from "../MediaViewer/MediaViewer";
-import MediaViewerModal from "../MediaViewer/MediaViewerModal";
-import Button from "../SharedComponents/Buttons/Button";
-import EvidenceButton from "../SharedComponents/Buttons/EvidenceButton";
-import KebabMenu from "../SharedComponents/KebabMenu";
-import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
 import DeleteObservationDialog from "./DeleteObservationDialog";
 import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";

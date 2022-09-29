@@ -1,14 +1,13 @@
 // @flow
 
+import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-
-import colors from "../../../styles/colors";
-import { textStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
-import checkCamelAndSnakeCase from "../../ObsDetails/helpers/checkCamelAndSnakeCase";
+import colors from "styles/colors";
+import { textStyles, viewStyles } from "styles/sharedComponents/observationViews/obsCard";
 
 type Props = {
   item: Object,

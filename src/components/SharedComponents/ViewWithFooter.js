@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { SafeAreaView, StatusBar } from "react-native";
+import viewStyles from "styles/sharedComponents/viewWithFooter";
 
-import viewStyles from "../../styles/sharedComponents/viewWithFooter";
 import Footer from "./Footer";
 
 type Props = {

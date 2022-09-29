@@ -4,8 +4,7 @@ import type { Node } from "react";
 import React, { useEffect, useRef } from "react";
 import { Animated } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import viewStyles from "../../styles/camera/fadeInOutView";
+import viewStyles from "styles/camera/fadeInOutView";
 
 type Props = {
   savingPhoto: boolean

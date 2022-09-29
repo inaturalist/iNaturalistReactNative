@@ -8,9 +8,8 @@ import {
 import { Avatar, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialIcons";
-
-import colors from "../../styles/colors";
-import { imageStyles, viewStyles } from "../../styles/sharedComponents/photoCarousel";
+import colors from "styles/colors";
+import { imageStyles, viewStyles } from "styles/sharedComponents/photoCarousel";
 
 type Props = {
   emptyComponent?: Function,

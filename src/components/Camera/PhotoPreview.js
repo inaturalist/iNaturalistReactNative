@@ -1,16 +1,15 @@
 // @flow
 
+import MediaViewer from "components/MediaViewer/MediaViewer";
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
+import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import { textStyles, viewStyles } from "../../styles/camera/photoPreview";
-import MediaViewer from "../MediaViewer/MediaViewer";
-import MediaViewerModal from "../MediaViewer/MediaViewerModal";
-import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
+import { textStyles, viewStyles } from "styles/camera/photoPreview";
 
 type Props = {
   photoUris: Array<string>,

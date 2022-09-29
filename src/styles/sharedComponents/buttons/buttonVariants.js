@@ -2,8 +2,7 @@
 
 import { StyleSheet } from "react-native";
 import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-
-import colors from "../../colors";
+import colors from "styles/colors";
 
 const PRIMARY = "#5D8017";
 const PRIMARY_DISABLED = "#C6DC98";

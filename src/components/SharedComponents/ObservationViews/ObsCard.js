@@ -5,11 +5,11 @@ import React, { useEffect, useState } from "react";
 import { Image, Pressable, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import Realm from "realm";
+import { viewStyles } from "styles/sharedComponents/observationViews/obsCard";
 
 import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
 import Photo from "../../../models/Photo";
-import { viewStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
 

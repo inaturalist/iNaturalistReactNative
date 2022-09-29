@@ -5,9 +5,9 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native";
 import { Appbar, Button, IconButton } from "react-native-paper";
+import colors from "styles/colors";
+import { textStyles, viewStyles } from "styles/mediaViewer/mediaViewer";
 
-import colors from "../../styles/colors";
-import { textStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
 import HorizontalScroll from "./HorizontalScroll";
 
 type Props = {

@@ -5,9 +5,8 @@ import React from "react";
 import { Image, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FilterIcon from "react-native-vector-icons/MaterialIcons";
-
-import colors from "../../styles/colors";
-import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
+import colors from "styles/colors";
+import { imageStyles, viewStyles } from "styles/photoLibrary/photoGallery";
 
 type Props = {
   item: Object,

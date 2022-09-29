@@ -1,8 +1,8 @@
+// eslint-disable-next-line import/no-cycle
+import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
 import Realm from "realm";
 
-// eslint-disable-next-line import/no-cycle
-import { getJWTToken } from "../components/LoginSignUp/AuthenticationService";
 // eslint-disable-next-line import/no-cycle
 import User from "./User";
 

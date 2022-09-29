@@ -6,8 +6,8 @@ import type { Node } from "react";
 import React from "react";
 import { View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
+import { viewStyles } from "styles/photoLibrary/photoGalleryHeader";
 
-import { viewStyles } from "../../styles/photoLibrary/photoGalleryHeader";
 import usePhotoAlbums from "./hooks/usePhotoAlbums";
 
 type Props = {

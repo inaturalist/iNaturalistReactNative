@@ -4,8 +4,7 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
-
-import { textStyles, viewStyles } from "../../styles/sharedComponents/qualityBadge";
+import { textStyles, viewStyles } from "styles/sharedComponents/qualityBadge";
 
 type Props = {
   qualityGrade: ?string,

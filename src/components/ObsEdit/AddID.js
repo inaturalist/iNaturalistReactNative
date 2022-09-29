@@ -6,6 +6,7 @@ import {
   BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
+import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import * as React from "react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,11 +21,10 @@ import {
 } from "react-native-paper";
 import uuid from "react-native-uuid";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import colors from "styles/colors";
+import { textStyles, viewStyles } from "styles/obsDetails/addID";
 
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import colors from "../../styles/colors";
-import { textStyles, viewStyles } from "../../styles/obsDetails/addID";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import AddIDHeader from "./AddIDHeader";
 
 type Props = {

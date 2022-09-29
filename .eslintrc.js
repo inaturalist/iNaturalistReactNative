@@ -9,6 +9,7 @@ module.exports = {
   },
   extends: ["airbnb", "plugin:i18next/recommended"],
   plugins: [
+    "module-resolver",
     "react-hooks",
     "react-native",
     "simple-import-sort"
@@ -59,6 +60,7 @@ module.exports = {
     "prefer-destructuring": [2, { object: true, array: false }],
     quotes: [2, "double"],
     "space-in-parens": [2, "always"],
+    "module-resolver/use-alias": 2,
     "no-restricted-globals": 0,
     "no-param-reassign": 0,
     "no-var": 1,

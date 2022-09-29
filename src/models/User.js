@@ -1,7 +1,6 @@
-import Realm from "realm";
-
 // eslint-disable-next-line import/no-cycle
-import { getUsername } from "../components/LoginSignUp/AuthenticationService";
+import { getUsername } from "components/LoginSignUp/AuthenticationService";
+import Realm from "realm";
 
 class User extends Realm.Object {
   static USER_FIELDS = {

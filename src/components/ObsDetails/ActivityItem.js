@@ -1,5 +1,8 @@
 // @flow
 
+import PlaceholderText from "components/PlaceholderText";
+import KebabMenu from "components/SharedComponents/KebabMenu";
+import UserIcon from "components/SharedComponents/UserIcon";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
@@ -8,16 +11,13 @@ import {
 } from "react-native";
 import { Menu } from "react-native-paper";
 import Realm from "realm";
+import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
 import Comment from "../../models/Comment";
 import realmConfig from "../../models/index";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import { formatIdDate } from "../../sharedHelpers/dateAndTime";
-import { imageStyles, textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
-import PlaceholderText from "../PlaceholderText";
-import KebabMenu from "../SharedComponents/KebabMenu";
-import UserIcon from "../SharedComponents/UserIcon";
 import SmallSquareImage from "./SmallSquareImage";
 
 type Props = {

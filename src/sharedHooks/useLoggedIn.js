@@ -1,8 +1,7 @@
 // @flow
 
+import { getUsername } from "components/LoginSignUp/AuthenticationService";
 import { useEffect, useState } from "react";
-
-import { getUsername } from "../components/LoginSignUp/AuthenticationService";
 
 const useLoggedIn = ( ): ?boolean => {
   const [isLoggedIn, setIsLoggedIn] = useState( null );

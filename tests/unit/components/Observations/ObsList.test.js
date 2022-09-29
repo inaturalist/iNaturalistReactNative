@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render, within } from "@testing-library/react-native";
+import ObsList from "components/Observations/ObsList";
 import React from "react";
 
-import ObsList from "../../../../src/components/Observations/ObsList";
 import factory from "../../../factory";
 
 const mockObservations = [

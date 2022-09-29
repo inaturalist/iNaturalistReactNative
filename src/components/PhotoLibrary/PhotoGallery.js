@@ -1,6 +1,8 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import Button from "components/SharedComponents/Buttons/Button";
+import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, {
@@ -10,11 +12,9 @@ import {
   ActivityIndicator, FlatList, Text, View
 } from "react-native";
 import { Snackbar } from "react-native-paper";
+import { viewStyles } from "styles/photoLibrary/photoGallery";
 
 import { ObsEditContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/photoLibrary/photoGallery";
-import Button from "../SharedComponents/Buttons/Button";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import PhotoGalleryImage from "./PhotoGalleryImage";

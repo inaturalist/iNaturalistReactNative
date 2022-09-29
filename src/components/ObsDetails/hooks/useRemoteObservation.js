@@ -1,12 +1,12 @@
 // @flow
 
 import NetInfo from "@react-native-community/netinfo";
+import { getUsername } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
 import { useEffect, useRef, useState } from "react";
 
 import Observation from "../../../models/Observation";
 import User from "../../../models/User";
-import { getUsername } from "../../LoginSignUp/AuthenticationService";
 
 const useRemoteObservation = ( observation: Object, refetch: boolean ): Object => {
   const [remoteObservation, setRemoteObservation] = useState( null );

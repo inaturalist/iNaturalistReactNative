@@ -6,9 +6,9 @@ import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Alert, Text, View } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import { textStyles, viewStyles } from "styles/settings/settings";
 
 import inatProviders from "../../dictionaries/providers";
-import { textStyles, viewStyles } from "../../styles/settings/settings";
 import useAuthorizedApplications from "./hooks/useAuthorizedApplications";
 import useProviderAuthorizations from "./hooks/useProviderAuthorizations";
 

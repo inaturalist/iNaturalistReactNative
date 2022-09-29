@@ -2,8 +2,7 @@
 
 import { StyleSheet } from "react-native";
 import type { TextStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-
-import colors from "../colors";
+import colors from "styles/colors";
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   inputField: {

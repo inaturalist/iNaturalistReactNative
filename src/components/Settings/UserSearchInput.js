@@ -3,10 +3,10 @@ import {
   Image, Text, TextInput, View
 } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import { textStyles, viewStyles } from "styles/settings/settings";
 import { useDebounce } from "use-debounce";
 
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import { textStyles, viewStyles } from "../../styles/settings/settings";
 
 const UserSearchInput = ( { onUserChanged } ): React.Node => {
   const [hideResults, setHideResults] = React.useState( true );

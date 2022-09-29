@@ -1,13 +1,13 @@
 // @flow
 
+import DateTimePicker from "components/SharedComponents/DateTimePicker";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text } from "react-native";
+import { textStyles } from "styles/obsEdit/obsEdit";
 
 import { displayDateTimeObsEdit } from "../../sharedHelpers/dateAndTime";
-import { textStyles } from "../../styles/obsEdit/obsEdit";
-import DateTimePicker from "../SharedComponents/DateTimePicker";
 
 type Props = {
   handleDatePicked: ( Date ) => void,

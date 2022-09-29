@@ -4,8 +4,7 @@ import type { Node } from "react";
 import React from "react";
 import { Pressable, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
-import { viewStyles } from "../../../styles/observations/obsList";
+import { viewStyles } from "styles/observations/obsList";
 
 type Props = {
   isExplore: boolean,

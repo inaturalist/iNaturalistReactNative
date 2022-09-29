@@ -1,17 +1,17 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import UserIcon from "components/SharedComponents/UserIcon";
+import useUser from "components/UserProfile/hooks/useUser";
 import type { Node } from "react";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import colors from "styles/colors";
+import { textStyles, viewStyles } from "styles/observations/userCard";
 
 import User from "../../../models/User";
 import useCurrentUser from "../../../sharedHooks/useCurrentUser";
-import colors from "../../../styles/colors";
-import { textStyles, viewStyles } from "../../../styles/observations/userCard";
-import useUser from "../../UserProfile/hooks/useUser";
-import UserIcon from "../UserIcon";
 
 const UserCard = ( ): Node => {
   const userId = useCurrentUser( );

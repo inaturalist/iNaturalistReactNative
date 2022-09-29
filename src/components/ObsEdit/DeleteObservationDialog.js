@@ -1,5 +1,6 @@
 // @flow
 
+import Button from "components/SharedComponents/Buttons/Button";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useContext } from "react";
@@ -8,7 +9,6 @@ import {
 } from "react-native-paper";
 
 import { ObsEditContext } from "../../providers/contexts";
-import Button from "../SharedComponents/Buttons/Button";
 
 type Props = {
   deleteDialogVisible: boolean,

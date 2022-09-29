@@ -2,6 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
+import Button from "components/SharedComponents/Buttons/Button";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,12 +21,11 @@ import {
   Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
-import colors from "../../styles/colors";
+import colors from "styles/colors";
 import {
   closeButton, imageStyles, textStyles, viewStyles
-} from "../../styles/login/login";
-import Button from "../SharedComponents/Buttons/Button";
+} from "styles/login/login";
+
 import {
   authenticateUser,
   getUsername,

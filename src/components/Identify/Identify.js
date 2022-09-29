@@ -1,13 +1,13 @@
 // @flow
 
+import DropdownPicker from "components/Explore/DropdownPicker";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
+import { viewStyles } from "styles/identify/identify";
 
-import { viewStyles } from "../../styles/identify/identify";
-import DropdownPicker from "../Explore/DropdownPicker";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import CardSwipeView from "./CardSwipeView";
 import GridView from "./GridView";
 import useObservations from "./hooks/useObservations";

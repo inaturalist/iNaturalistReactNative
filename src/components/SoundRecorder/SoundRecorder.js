@@ -1,17 +1,17 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import PlaceholderText from "components/PlaceholderText";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 // $FlowFixMe
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
+import { textStyles, viewStyles } from "styles/soundRecorder/soundRecorder";
 
 import { ObsEditContext } from "../../providers/contexts";
-import { textStyles, viewStyles } from "../../styles/soundRecorder/soundRecorder";
-import PlaceholderText from "../PlaceholderText";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 
 // needs to be outside of the component for stopRecorder to work correctly
 const audioRecorderPlayer = new AudioRecorderPlayer( );

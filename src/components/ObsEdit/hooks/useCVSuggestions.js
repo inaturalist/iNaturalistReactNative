@@ -1,10 +1,10 @@
 // @flow
 
+import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
 import inatjs, { FileUpload } from "inaturalistjs";
 import { useEffect, useState } from "react";
 
 import Photo from "../../../models/Photo";
-import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 
 const TAXON_FIELDS = {
   name: true,

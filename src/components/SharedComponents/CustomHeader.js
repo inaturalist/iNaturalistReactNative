@@ -5,8 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React from "react";
 import { Text, View } from "react-native";
-
-import { textStyles, viewStyles } from "../../styles/sharedComponents/customHeader";
+import { textStyles, viewStyles } from "styles/sharedComponents/customHeader";
 
 type Props = {
   headerText: string

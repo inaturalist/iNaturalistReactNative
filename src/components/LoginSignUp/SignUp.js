@@ -6,8 +6,8 @@ import React, { useState } from "react";
 import {
   Button, Text, TextInput, View
 } from "react-native";
+import { textStyles, viewStyles } from "styles/login/login";
 
-import { textStyles, viewStyles } from "../../styles/login/login";
 import { registerUser } from "./AuthenticationService";
 
 const SignUp = (): Node => {

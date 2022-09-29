@@ -1,16 +1,16 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
 import Realm from "realm";
+import { viewStyles } from "styles/photoLibrary/photoGallery";
 
 import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
 import { ObsEditContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/photoLibrary/photoGallery";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotoImage from "./GroupPhotoImage";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 import GroupPhotosHeader from "./GroupPhotosHeader";

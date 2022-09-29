@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render } from "@testing-library/react-native";
+import Search from "components/Search/Search";
 import React from "react";
 
-import Search from "../../../../src/components/Search/Search";
 import factory from "../../../factory";
 
 // TODO: figure out how to clear jest mocks correctly or return a different

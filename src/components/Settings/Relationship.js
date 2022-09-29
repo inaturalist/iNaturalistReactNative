@@ -10,9 +10,8 @@ import {
   Text,
   View
 } from "react-native";
-
-import colors from "../../styles/colors";
-import { viewStyles } from "../../styles/settings/settings";
+import colors from "styles/colors";
+import { viewStyles } from "styles/settings/settings";
 
 type Props = {
   relationship: Object,

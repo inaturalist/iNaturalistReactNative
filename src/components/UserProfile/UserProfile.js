@@ -1,19 +1,19 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
+// import useNetworkSite from "./hooks/useNetworkSite";
+import Button from "components/SharedComponents/Buttons/Button";
+import CustomHeader from "components/SharedComponents/CustomHeader";
+import UserIcon from "components/SharedComponents/UserIcon";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { t } from "i18next";
 import * as React from "react";
 import { Text, useWindowDimensions, View } from "react-native";
 import HTML from "react-native-render-html";
+import { textStyles, viewStyles } from "styles/userProfile/userProfile";
 
 import User from "../../models/User";
 import useCurrentUser from "../../sharedHooks/useCurrentUser";
-import { textStyles, viewStyles } from "../../styles/userProfile/userProfile";
-// import useNetworkSite from "./hooks/useNetworkSite";
-import Button from "../SharedComponents/Buttons/Button";
-import CustomHeader from "../SharedComponents/CustomHeader";
-import UserIcon from "../SharedComponents/UserIcon";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import updateRelationship from "./helpers/updateRelationship";
 import useUser from "./hooks/useUser";
 import UserProjects from "./UserProjects";

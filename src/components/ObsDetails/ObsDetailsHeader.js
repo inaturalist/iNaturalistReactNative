@@ -7,10 +7,10 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Button, Headline } from "react-native-paper";
+import colors from "styles/colors";
+import { viewStyles } from "styles/obsDetails/obsDetailsHeader";
 
 import { ObsEditContext } from "../../providers/contexts";
-import colors from "../../styles/colors";
-import { viewStyles } from "../../styles/obsDetails/obsDetailsHeader";
 
 type Props = {
   observationUUID: string

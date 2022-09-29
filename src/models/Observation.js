@@ -1,11 +1,11 @@
+// eslint-disable-next-line import/no-cycle
+import {
+  getJWTToken, getUserId, getUsername
+} from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
 import Realm from "realm";
 
-// eslint-disable-next-line import/no-cycle
-import {
-  getJWTToken, getUserId, getUsername
-} from "../components/LoginSignUp/AuthenticationService";
 import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
 import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 // eslint-disable-next-line import/no-cycle

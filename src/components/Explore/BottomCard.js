@@ -1,12 +1,12 @@
 // @flow
 
+import TranslatedText from "components/SharedComponents/TranslatedText";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { View } from "react-native";
+import { viewStyles } from "styles/explore/explore";
 
 import { ExploreContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/explore/explore";
-import TranslatedText from "../SharedComponents/TranslatedText";
 import DropdownPicker from "./DropdownPicker";
 import FiltersIcon from "./FiltersIcon";
 

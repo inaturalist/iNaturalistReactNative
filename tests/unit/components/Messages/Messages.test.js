@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
+import Messages from "components/Messages/Messages";
 import React from "react";
 
-import Messages from "../../../../src/components/Messages/Messages";
 import factory from "../../../factory";
 
 const mockedNavigate = jest.fn( );

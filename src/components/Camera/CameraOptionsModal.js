@@ -1,13 +1,13 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import TranslatedText from "components/SharedComponents/TranslatedText";
 import * as React from "react";
 import { Pressable, View } from "react-native";
 import { Avatar } from "react-native-paper";
+import { textStyles, viewStyles } from "styles/sharedComponents/modal";
 
 import { ObsEditContext } from "../../providers/contexts";
-import { textStyles, viewStyles } from "../../styles/sharedComponents/modal";
-import TranslatedText from "../SharedComponents/TranslatedText";
 
 type Props = {
   closeModal: ( ) => void

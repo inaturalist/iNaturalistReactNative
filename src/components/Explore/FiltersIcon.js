@@ -4,8 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { Pressable } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
-import { viewStyles } from "../../styles/observations/messagesIcon";
+import { viewStyles } from "styles/observations/messagesIcon";
 
 const FiltersIcon = ( ): React.Node => {
   const navigation = useNavigation( );

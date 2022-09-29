@@ -1,8 +1,8 @@
 // @flow
 
+import ProjectList from "components/Projects/ProjectList";
 import * as React from "react";
 
-import ProjectList from "../Projects/ProjectList";
 import useMemberProjects from "./hooks/useMemberProjects";
 
 type Props = {
