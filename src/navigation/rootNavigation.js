@@ -25,7 +25,6 @@ import Settings from "../components/Settings/Settings";
 import Mortal from "../components/SharedComponents/Mortal";
 import ObsEditProvider from "../providers/ObsEditProvider";
 import colors from "../styles/colors";
-import { viewStyles } from "../styles/navigation/rootNavigation";
 import IdentifyStackNavigation from "./identifyStackNavigation";
 import MainStackNavigation from "./mainStackNavigation";
 import ProjectsStackNavigation from "./projectsStackNavigation";
@@ -104,7 +103,7 @@ const App = ( ): React.Node => {
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <PaperProvider theme={theme}>
-          <GestureHandlerRootView style={viewStyles.container}>
+          <GestureHandlerRootView className="flex-1">
             <NavigationContainer>
               <ObsEditProvider>
                 <Drawer.Navigator
