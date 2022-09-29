@@ -2,10 +2,10 @@
 
 import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
-import { Pressable, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { viewStyles } from "../../styles/sharedComponents/footer";
+import { Pressable, View } from "../styledComponents";
 import CameraOptionsButton from "./Buttons/CameraOptionsButton";
 
 const Footer = ( ): React.Node => {
@@ -16,7 +16,10 @@ const Footer = ( ): React.Node => {
   const navToNotifications = ( ) => navigation.navigate( "MainStack", { screen: "Messages" } );
 
   return (
-    <View style={[viewStyles.row, viewStyles.shadow]}>
+    <View
+      className="flex-row h-24 absolute bottom-0 bg-white w-screen justify-evenly pt-2"
+      style={viewStyles.shadow}
+    >
       <Pressable onPress={toggleSideMenu} accessibilityRole="link">
         <Icon name="menu" size={30} />
       </Pressable>
