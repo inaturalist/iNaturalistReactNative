@@ -129,21 +129,21 @@ const ObsEdit = ( ): Node => {
           longitude: location?.longitude,
           positional_accuracy: location?.positional_accuracy
         } );
-        if ( location ) {
+        if ( location && mounted ) {
           setPositionalAccuracy( location.positional_accuracy );
         }
       };
 
-      if ( !fetchedLocation && !currentObs._created_at && mounted ) {
+      if ( !fetchedLocation && !currentObs._created_at ) {
         if ( positionalAccuracy >= 15 ) {
           fetchLocation();
-        } else {
-          setFetchedLocation( true );
         }
+        setFetchedLocation( true );
       }
     }
-
-    return setMounted( false );
+    return () => {
+      setMounted( false );
+    };
   }, [updateObservationKeys, fetchedLocation, positionalAccuracy, currentObs, mounted] );
 
   const setPhotos = uris => {
