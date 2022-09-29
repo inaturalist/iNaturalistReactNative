@@ -7,7 +7,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { Headline } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import { viewStyles } from "../../styles/obsDetails/addID";
 
@@ -30,7 +30,7 @@ const AddIDHeader = ( { showEditComment, onEditCommentPressed }: Props ): Node =
             onPress={onEditCommentPressed}
             accessibilityRole="link"
           >
-            <Icon name="chat-processing-outline" size={25} />
+            <IconMaterial name="textsms" size={25} />
           </Pressable>
         )
         : <View />}

@@ -19,7 +19,7 @@ import {
   Button, Headline, Text, TextInput
 } from "react-native-paper";
 import uuid from "react-native-uuid";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import colors from "../../styles/colors";
@@ -39,7 +39,7 @@ type Props = {
 
 const SearchTaxonIcon = (
   <TextInput.Icon
-    name={() => <Icon style={textStyles.taxonSearchIcon} name="magnify" size={25} />}
+    name={() => <IconMaterial style={textStyles.taxonSearchIcon} name="search" size={25} />}
   />
 );
 
@@ -97,7 +97,7 @@ const AddID = ( { route }: Props ): React.Node => {
   const renderTaxonResult = ( { item } ) => {
     const taxonImage = item.default_photo
       ? { uri: item.default_photo.square_url }
-      : Icon.getImageSourceSync( "leaf", 50, colors.inatGreen );
+      : IconMaterial.getImageSourceSync( "spa", 50, colors.inatGreen );
 
     return (
       <View style={viewStyles.taxonResult} testID={`Search.taxa.${item.id}`}>
@@ -115,7 +115,7 @@ const AddID = ( { route }: Props ): React.Node => {
           onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )}
           accessibilityRole="link"
         >
-          <Icon style={textStyles.taxonResultInfoIcon} name="information-outline" size={25} />
+          <IconMaterial style={textStyles.taxonResultInfoIcon} name="info-outline" size={25} />
         </Pressable>
         <Pressable
           style={viewStyles.taxonResultSelect}
@@ -125,7 +125,7 @@ const AddID = ( { route }: Props ): React.Node => {
           }}
           accessibilityRole="link"
         >
-          <Icon style={textStyles.taxonResultSelectIcon} name="check-bold" size={25} />
+          <IconMaterial style={textStyles.taxonResultSelectIcon} name="check" size={25} />
         </Pressable>
       </View>
     );
@@ -144,14 +144,14 @@ const AddID = ( { route }: Props ): React.Node => {
             <View>
               <Text>{t( "ID-Comment" )}</Text>
               <View style={viewStyles.commentContainer}>
-                <Icon style={textStyles.commentLeftIcon} name="chat-processing-outline" size={25} />
+                <IconMaterial style={textStyles.commentLeftIcon} name="textsms" size={25} />
                 <Text style={textStyles.comment}>{comment}</Text>
                 <Pressable
                   style={viewStyles.commentRightIconContainer}
                   onPress={editComment}
                   accessibilityRole="link"
                 >
-                  <Icon style={textStyles.commentRightIcon} name="pencil" size={25} />
+                  <IconMaterial style={textStyles.commentRightIcon} name="edit" size={25} />
                 </Pressable>
               </View>
             </View>

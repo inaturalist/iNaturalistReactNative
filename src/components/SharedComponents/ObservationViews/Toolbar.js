@@ -3,7 +3,7 @@
 import type { Node } from "react";
 import React from "react";
 import { Pressable, View } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import { viewStyles } from "../../../styles/observations/obsList";
 
@@ -25,7 +25,7 @@ const Toolbar = ( {
       <View style={viewStyles.toggleButtons}>
         {isLoggedIn && (
         <Pressable onPress={syncObservations}>
-          <Icon name="sync" size={30} />
+          <IconMaterial name="sync" size={30} />
         </Pressable>
         )}
       </View>
@@ -37,21 +37,21 @@ const Toolbar = ( {
           accessibilityRole="button"
           testID="Explore.toggleMapView"
         >
-          <Icon name="map-outline" size={30} />
+          <IconMaterial name="map" size={30} />
         </Pressable>
       )}
       <Pressable
         onPress={( ) => setView( "list" )}
         accessibilityRole="button"
       >
-        <Icon name="format-list-bulleted" size={30} />
+        <IconMaterial name="format-list-bulleted" size={30} />
       </Pressable>
       <Pressable
         onPress={( ) => setView( "grid" )}
         testID="ObsList.toggleGridView"
         accessibilityRole="button"
       >
-        <Icon name="grid-large" size={30} />
+        <IconMaterial name="grid-view" size={30} />
       </Pressable>
     </View>
   </>

@@ -3,7 +3,7 @@
 import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import { formatObsListTime } from "../../../sharedHelpers/dateAndTime";
 import { textStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
@@ -32,11 +32,11 @@ const ObsCardDetails = ( { item }: Props ): Node => {
     <>
       <Text style={textStyles.text} numberOfLines={1}>{displayName( )}</Text>
       <Text style={textStyles.text} numberOfLines={1}>
-        <Icon name="map-marker" size={15} />
+        <IconMaterial name="location-pin" size={15} />
         {placeGuess || "no place guess"}
       </Text>
       <Text style={textStyles.text} numberOfLines={1}>
-        <Icon name="clock" size={15} />
+        <IconMaterial name="watch-later" size={15} />
         {displayTime( )}
       </Text>
     </>
