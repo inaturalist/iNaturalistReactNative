@@ -169,11 +169,10 @@ const ObservationViews = ( {
       isLoggedIn={isLoggedIn}
       translateY={translateY}
       isExplore={isExplore}
-      headerHeight={headerHeight}
       syncObservations={syncObservations}
       setView={setView}
     />
-  ), [isExplore, isLoggedIn, translateY, numOfUnuploadedObs, headerHeight, syncObservations] );
+  ), [isExplore, isLoggedIn, translateY, numOfUnuploadedObs, syncObservations] );
 
   const renderView = ( ) => {
     if ( view === "map" ) {

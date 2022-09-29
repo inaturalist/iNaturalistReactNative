@@ -2,9 +2,9 @@
 
 import type { Node } from "react";
 import React from "react";
-import { Animated, View } from "react-native";
+import { Animated } from "react-native";
 
-import viewStyles from "../../../styles/observations/header";
+import { View } from "../../styledComponents";
 import LoggedOutCard from "./LoggedOutCard";
 import Toolbar from "./Toolbar";
 import UserCard from "./UserCard";
@@ -14,43 +14,31 @@ type Props = {
   isLoggedIn: ?boolean,
   translateY: any,
   isExplore: boolean,
-  headerHeight: number,
   syncObservations: Function,
   setView: Function
 }
 
 const ObsListHeader = ( {
-  numOfUnuploadedObs, isLoggedIn, translateY, isExplore, headerHeight, syncObservations, setView
+  numOfUnuploadedObs, isLoggedIn, translateY, isExplore, syncObservations, setView
 }: Props ): Node => {
   if ( isLoggedIn === null ) {
-    return <View style={viewStyles.header} />;
+    return <View className="rounded-bl-3xl rounded-br-3xl bg-primary" />;
   }
 
-  const renderToolbar = ( ) => (
-    <View style={[
-      viewStyles.toolbar,
-      isExplore && viewStyles.exploreButtons,
-      { paddingTop: headerHeight }
-    ]}
-    >
+  return (
+    // $FlowIgnore
+    <Animated.View style={[{ transform: [{ translateY }] }]}>
+      <View className="rounded-bl-3xl rounded-br-3xl bg-primary">
+        {isLoggedIn
+          ? <UserCard />
+          : <LoggedOutCard numOfUnuploadedObs={numOfUnuploadedObs} />}
+      </View>
       <Toolbar
         isExplore={isExplore}
         isLoggedIn={isLoggedIn}
         syncObservations={syncObservations}
         setView={setView}
       />
-    </View>
-  );
-
-  return (
-    // $FlowIgnore
-    <Animated.View style={[{ transform: [{ translateY }] }]}>
-      <View style={viewStyles.header}>
-        {isLoggedIn
-          ? <UserCard />
-          : <LoggedOutCard numOfUnuploadedObs={numOfUnuploadedObs} />}
-      </View>
-      {renderToolbar( )}
     </Animated.View>
   );
 };

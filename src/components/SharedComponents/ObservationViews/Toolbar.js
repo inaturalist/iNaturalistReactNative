@@ -2,10 +2,9 @@
 
 import type { Node } from "react";
 import React from "react";
-import { Pressable, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { viewStyles } from "../../../styles/observations/obsList";
+import { Pressable, View } from "../../styledComponents";
 
 type Props = {
   isExplore: boolean,
@@ -20,26 +19,13 @@ const Toolbar = ( {
   syncObservations,
   setView
 }: Props ): Node => (
-  <>
-    {!isExplore && (
-      <View style={viewStyles.toggleButtons}>
-        {isLoggedIn && (
-        <Pressable onPress={syncObservations}>
-          <Icon name="sync" size={30} />
-        </Pressable>
-        )}
-      </View>
+  <View className="py-5 flex-row justify-between bg-white">
+    {!isExplore && isLoggedIn && (
+    <Pressable onPress={syncObservations} className="mx-3">
+      <Icon name="sync" size={30} />
+    </Pressable>
     )}
-    <View style={viewStyles.toggleButtons}>
-      {isExplore && (
-        <Pressable
-          onPress={( ) => setView( "map" )}
-          accessibilityRole="button"
-          testID="Explore.toggleMapView"
-        >
-          <Icon name="map-outline" size={30} />
-        </Pressable>
-      )}
+    <View className="flex flex-row flex-nowrap mx-3">
       <Pressable
         onPress={( ) => setView( "list" )}
         accessibilityRole="button"
@@ -54,7 +40,7 @@ const Toolbar = ( {
         <Icon name="grid-large" size={30} />
       </Pressable>
     </View>
-  </>
+  </View>
 );
 
 export default Toolbar;

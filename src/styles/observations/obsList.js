@@ -32,11 +32,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   footer: {
     paddingTop: 100
   },
-  toggleButtons: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    marginHorizontal: 15
-  },
   grayButton: {
     borderRadius: 40,
     marginTop: 17,
