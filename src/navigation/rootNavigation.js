@@ -30,6 +30,7 @@ import { viewStyles } from "../styles/navigation/rootNavigation";
 import IdentifyStackNavigation from "./identifyStackNavigation";
 import MainStackNavigation from "./mainStackNavigation";
 import ProjectsStackNavigation from "./projectsStackNavigation";
+import RepositoryTestStackNavigation from "./repositoryTestStackNavigation";
 
 // this removes the default hamburger menu from header
 const screenOptions = { headerLeft: ( ) => <View /> };
@@ -140,6 +141,10 @@ const App = ( ): React.Node => {
                     <Drawer.Screen
                       name="network"
                       component={NetworkLogging}
+                    />
+                    <Drawer.Screen
+                      name="RepositoryTest"
+                      component={RepositoryTestStackNavigation}
                     />
                   </Drawer.Navigator>
                 </ObsEditProvider>
