@@ -2,6 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
@@ -10,7 +11,6 @@ import { viewStyles } from "styles/photoLibrary/photoGallery";
 
 import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
-import { ObsEditContext } from "../../providers/contexts";
 import GroupPhotoImage from "./GroupPhotoImage";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 import GroupPhotosHeader from "./GroupPhotosHeader";

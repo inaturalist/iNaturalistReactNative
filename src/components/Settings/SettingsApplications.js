@@ -1,5 +1,6 @@
 // @flow
 
+import inatProviders from "dictionaries/providers";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
@@ -8,7 +9,6 @@ import { Alert, Text, View } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import { textStyles, viewStyles } from "styles/settings/settings";
 
-import inatProviders from "../../dictionaries/providers";
 import useAuthorizedApplications from "./hooks/useAuthorizedApplications";
 import useProviderAuthorizations from "./hooks/useProviderAuthorizations";
 

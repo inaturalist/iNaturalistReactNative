@@ -10,10 +10,10 @@ import { t } from "i18next";
 import * as React from "react";
 import { Text, useWindowDimensions, View } from "react-native";
 import HTML from "react-native-render-html";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import { textStyles, viewStyles } from "styles/userProfile/userProfile";
 
 import User from "../../models/User";
-import useCurrentUser from "../../sharedHooks/useCurrentUser";
 import updateRelationship from "./helpers/updateRelationship";
 import useUser from "./hooks/useUser";
 import UserProjects from "./UserProjects";

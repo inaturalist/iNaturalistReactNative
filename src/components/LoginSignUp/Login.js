@@ -139,7 +139,7 @@ const Login = ( ): Node => {
       <Image
         style={imageStyles.logo}
         resizeMode="contain"
-        source={require( "../../images/inat_logo.png" )}
+        source={require( "images/inat_logo.png" )}
       />
 
       <Text style={textStyles.header}>{t( "Login-header" )}</Text>

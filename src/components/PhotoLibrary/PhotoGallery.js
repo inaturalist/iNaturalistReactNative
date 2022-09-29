@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Button from "components/SharedComponents/Buttons/Button";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useContext, useEffect, useState
@@ -14,7 +15,6 @@ import {
 import { Snackbar } from "react-native-paper";
 import { viewStyles } from "styles/photoLibrary/photoGallery";
 
-import { ObsEditContext } from "../../providers/contexts";
 import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import PhotoGalleryImage from "./PhotoGalleryImage";

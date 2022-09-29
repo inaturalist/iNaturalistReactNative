@@ -5,9 +5,9 @@ import {
 import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
 import Realm from "realm";
+import { createObservedOnStringForUpload, formatDateAndTime } from "sharedHelpers/dateAndTime";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
-import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
-import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 // eslint-disable-next-line import/no-cycle
 import Comment from "./Comment";
 // eslint-disable-next-line import/no-cycle

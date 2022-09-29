@@ -2,6 +2,8 @@
 
 import CheckBox from "@react-native-community/checkbox";
 import { Picker } from "@react-native-picker/picker";
+import inatLanguages from "dictionaries/languages";
+import inatNetworks from "dictionaries/networks";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
@@ -10,8 +12,6 @@ import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/settings/settings";
 
-import inatLanguages from "../../dictionaries/languages";
-import inatNetworks from "../../dictionaries/networks";
 import PlaceSearchInput from "./PlaceSearchInput";
 import type { SettingsProps } from "./types";
 

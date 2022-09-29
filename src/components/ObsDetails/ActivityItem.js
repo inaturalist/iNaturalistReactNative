@@ -11,13 +11,13 @@ import {
 } from "react-native";
 import { Menu } from "react-native-paper";
 import Realm from "realm";
+import { formatIdDate } from "sharedHelpers/dateAndTime";
 import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
 import Comment from "../../models/Comment";
 import realmConfig from "../../models/index";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
-import { formatIdDate } from "../../sharedHelpers/dateAndTime";
 import SmallSquareImage from "./SmallSquareImage";
 
 type Props = {
@@ -61,7 +61,7 @@ const ActivityItem = ( {
             && (
             <Image
               style={imageStyles.smallGreenIcon}
-              source={require( "../../images/id_rg.png" )}
+              source={require( "images/id_rg.png" )}
             />
             )}
           <Text style={[textStyles.labels, textStyles.activityCategory]}>

@@ -2,6 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
@@ -16,7 +17,6 @@ import { textStyles } from "styles/obsDetails/obsDetails";
 
 import realmConfig from "../../models/index";
 import Photo from "../../models/Photo";
-import { ObsEditContext } from "../../providers/contexts";
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";

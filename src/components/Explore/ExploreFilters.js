@@ -5,6 +5,7 @@ import InputField from "components/SharedComponents/InputField";
 import ScrollNoFooter from "components/SharedComponents/ScrollNoFooter";
 import TranslatedText from "components/SharedComponents/TranslatedText";
 import { t } from "i18next";
+import { ExploreContext } from "providers/contexts";
 import RadioButtonRN from "radio-buttons-react-native";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
@@ -12,7 +13,6 @@ import { View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { pickerSelectStyles, viewStyles } from "styles/explore/exploreFilters";
 
-import { ExploreContext } from "../../providers/contexts";
 import DropdownPicker from "./DropdownPicker";
 import ExploreFooter from "./ExploreFooter";
 import ResetFiltersButton from "./ResetFiltersButton";

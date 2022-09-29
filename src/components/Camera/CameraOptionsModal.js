@@ -2,12 +2,11 @@
 
 import { useNavigation } from "@react-navigation/native";
 import TranslatedText from "components/SharedComponents/TranslatedText";
+import { ObsEditContext } from "providers/contexts";
 import * as React from "react";
 import { Pressable, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import { textStyles, viewStyles } from "styles/sharedComponents/modal";
-
-import { ObsEditContext } from "../../providers/contexts";
 
 type Props = {
   closeModal: ( ) => void

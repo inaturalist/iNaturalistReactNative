@@ -2,11 +2,11 @@
 
 import ObservationViews from "components/SharedComponents/ObservationViews/ObservationViews";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import { ExploreContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { Dimensions } from "react-native";
 
-import { ExploreContext } from "../../providers/contexts";
 import BottomCard from "./BottomCard";
 
 const { height } = Dimensions.get( "screen" );

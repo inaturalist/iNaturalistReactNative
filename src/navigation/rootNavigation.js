@@ -17,6 +17,7 @@ import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import Mortal from "components/SharedComponents/Mortal";
+import ObsEditProvider from "providers/ObsEditProvider";
 import * as React from "react";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -25,7 +26,6 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import colors from "styles/colors";
 import { viewStyles } from "styles/navigation/rootNavigation";
 
-import ObsEditProvider from "../providers/ObsEditProvider";
 import IdentifyStackNavigation from "./identifyStackNavigation";
 import MainStackNavigation from "./mainStackNavigation";
 import ProjectsStackNavigation from "./projectsStackNavigation";

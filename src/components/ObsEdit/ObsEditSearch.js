@@ -5,9 +5,8 @@ import * as React from "react";
 import {
   FlatList, Image, Pressable, Text
 } from "react-native";
+import useRemoteObsEditSearchResults from "sharedHooks/useRemoteSearchResults";
 import { imageStyles, viewStyles } from "styles/search/search";
-
-import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
 
 type Props = {
   source: string,

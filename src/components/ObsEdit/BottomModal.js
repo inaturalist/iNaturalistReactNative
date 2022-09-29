@@ -3,12 +3,11 @@
 import { useNavigation } from "@react-navigation/native";
 import PlaceholderText from "components/PlaceholderText";
 import Button from "components/SharedComponents/Buttons/Button";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { View } from "react-native";
 import { viewStyles } from "styles/obsEdit/obsEdit";
-
-import { ObsEditContext } from "../../providers/contexts";
 
 const BottomModal = ( ): Node => {
   const navigation = useNavigation( );

@@ -21,10 +21,10 @@ import {
 } from "react-native-paper";
 import uuid from "react-native-uuid";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import useRemoteSearchResults from "sharedHooks/useRemoteSearchResults";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/obsDetails/addID";
 
-import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import AddIDHeader from "./AddIDHeader";
 
 type Props = {

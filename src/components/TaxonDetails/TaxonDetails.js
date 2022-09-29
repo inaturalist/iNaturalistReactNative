@@ -12,9 +12,8 @@ import {
   View
 } from "react-native";
 import HTML from "react-native-render-html";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/taxonDetails";
-
-import useAuthenticatedQuery from "../../sharedHooks/useAuthenticatedQuery";
 
 const TaxonDetails = ( ): React.Node => {
   const { params } = useRoute( );

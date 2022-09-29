@@ -21,10 +21,9 @@ import PermissionGate from "components/SharedComponents/PermissionGate";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UserProfile from "components/UserProfile/UserProfile";
+import ExploreProvider from "providers/ExploreProvider";
 import * as React from "react";
 import { PermissionsAndroid } from "react-native";
-
-import ExploreProvider from "../providers/ExploreProvider";
 
 const Stack = createNativeStackNavigator( );
 

@@ -8,9 +8,8 @@ import * as React from "react";
 import {
   FlatList, Image, Pressable, Text, View
 } from "react-native";
+import useRemoteSearchResults from "sharedHooks/useRemoteSearchResults";
 import { imageStyles, viewStyles } from "styles/search/search";
-
-import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 
 const Search = ( ): React.Node => {
   const navigation = useNavigation( );

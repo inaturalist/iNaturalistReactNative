@@ -5,9 +5,8 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text } from "react-native";
+import { displayDateTimeObsEdit } from "sharedHelpers/dateAndTime";
 import { textStyles } from "styles/obsEdit/obsEdit";
-
-import { displayDateTimeObsEdit } from "../../sharedHelpers/dateAndTime";
 
 type Props = {
   handleDatePicked: ( Date ) => void,

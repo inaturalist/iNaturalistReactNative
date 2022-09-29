@@ -1,8 +1,7 @@
 // @flow
 
+import uploadObservation from "providers/uploadHelpers/uploadObservation";
 import { useCallback, useEffect, useState } from "react";
-
-import uploadObservation from "../../../../providers/uploadHelpers/uploadObservation";
 
 const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [cancelUpload, setCancelUpload] = useState( false );

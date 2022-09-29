@@ -1,11 +1,10 @@
 // @flow
 
 import TranslatedText from "components/SharedComponents/TranslatedText";
+import { ExploreContext } from "providers/contexts";
 import * as React from "react";
 import { Pressable } from "react-native";
 import { viewStyles } from "styles/observations/messagesIcon";
-
-import { ExploreContext } from "../../providers/contexts";
 
 const ResetFiltersButton = ( ): React.Node => {
   const { resetFilters } = React.useContext( ExploreContext );

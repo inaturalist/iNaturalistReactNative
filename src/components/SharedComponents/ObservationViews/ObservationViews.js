@@ -9,9 +9,9 @@ import { useTranslation } from "react-i18next";
 import {
   Animated, Dimensions, Text, View
 } from "react-native";
+import useLoggedIn from "sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "styles/observations/obsList";
 
-import useLoggedIn from "../../../sharedHooks/useLoggedIn";
 import EmptyList from "./EmptyList";
 import GridItem from "./GridItem";
 import useUploadStatus from "./hooks/useUploadStatus";

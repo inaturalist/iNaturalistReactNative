@@ -20,7 +20,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
     settings.icon && !settings.removeProfilePhoto ) {
     profileSource = { uri: settings.icon };
   } else {
-    profileSource = require( "../../images/profile.png" );
+    profileSource = require( "images/profile.png" );
   }
 
   const onImageSelected = response => {

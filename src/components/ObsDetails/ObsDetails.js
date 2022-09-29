@@ -15,6 +15,7 @@ import UserIcon from "components/SharedComponents/UserIcon";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { formatISO } from "date-fns";
 import _ from "lodash";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
@@ -29,6 +30,7 @@ import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Realm from "realm";
+import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import colors from "styles/colors";
 import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
@@ -36,8 +38,6 @@ import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
-import { ObsEditContext } from "../../providers/contexts";
-import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
 import ActivityTab from "./ActivityTab";
 import DataTab from "./DataTab";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
@@ -320,7 +320,7 @@ const ObsDetails = ( ): Node => {
               <View style={viewStyles.rowWithIcon}>
                 <Image
                   style={imageStyles.smallIcon}
-                  source={require( "../../images/ic_id.png" )}
+                  source={require( "images/ic_id.png" )}
                 />
                 <Text style={textStyles.idCommentCount}>{observation.identifications.length}</Text>
               </View>

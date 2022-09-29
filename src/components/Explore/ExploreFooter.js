@@ -3,12 +3,11 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import Button from "components/SharedComponents/Buttons/Button";
+import { ExploreContext } from "providers/contexts";
 import type { Node } from "react";
 import React from "react";
 import { View } from "react-native";
 import { viewStyles } from "styles/explore/exploreFilters";
-
-import { ExploreContext } from "../../providers/contexts";
 
 const ExploreFooter = ( ): Node => {
   const { applyFilters, resetUnappliedFilters } = React.useContext( ExploreContext );

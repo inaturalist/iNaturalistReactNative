@@ -8,9 +8,8 @@ import { Image } from "react-native";
 // and allows users to input immediately instead of first tapping the dropdown
 // this is a placeholder to get functionality working
 import DropDownPicker from "react-native-dropdown-picker";
+import useRemoteSearchResults from "sharedHooks/useRemoteSearchResults";
 import { imageStyles, viewStyles } from "styles/explore/explore";
-
-import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 
 type Props = {
   searchQuery: string,

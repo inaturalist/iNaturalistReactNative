@@ -4,8 +4,8 @@ import searchMessages from "api/messages";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import type { Node } from "react";
 import React from "react";
+import useQuery from "sharedHooks/useAuthenticatedQuery";
 
-import useQuery from "../../sharedHooks/useAuthenticatedQuery";
 import MessageList from "./MessageList";
 
 const Messages = ( ): Node => {

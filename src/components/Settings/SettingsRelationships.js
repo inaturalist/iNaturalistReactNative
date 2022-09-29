@@ -319,7 +319,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
           <Image
             style={viewStyles.clearSearch}
             resizeMode="contain"
-            source={require( "../../images/clear.png" )}
+            source={require( "images/clear.png" )}
           />
         </Pressable>
       </View>

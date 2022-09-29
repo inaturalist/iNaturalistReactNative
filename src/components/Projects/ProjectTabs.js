@@ -3,9 +3,9 @@
 import { t } from "i18next";
 import * as React from "react";
 import { Pressable, Text, View } from "react-native";
+import useUserLocation from "sharedHooks/useUserLocation";
 import { viewStyles } from "styles/projects/projects";
 
-import useUserLocation from "../../sharedHooks/useUserLocation";
 import useMemberId from "./hooks/useMemberId";
 import useProjects from "./hooks/useProjects";
 import ProjectList from "./ProjectList";

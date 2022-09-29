@@ -2,13 +2,12 @@
 
 import Button from "components/SharedComponents/Buttons/Button";
 import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import {
   Dialog, Paragraph, Portal
 } from "react-native-paper";
-
-import { ObsEditContext } from "../../providers/contexts";
 
 type Props = {
   deleteDialogVisible: boolean,

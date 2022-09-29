@@ -14,6 +14,7 @@ import Button from "components/SharedComponents/Buttons/Button";
 import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import ScrollNoFooter from "components/SharedComponents/ScrollNoFooter";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
@@ -22,11 +23,10 @@ import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import { Headline, Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import useLoggedIn from "sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 
 import Photo from "../../models/Photo";
-import { ObsEditContext } from "../../providers/contexts";
-import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import DeleteObservationDialog from "./DeleteObservationDialog";
 import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
