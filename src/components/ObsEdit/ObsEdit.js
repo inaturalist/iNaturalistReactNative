@@ -141,9 +141,7 @@ const ObsEdit = ( ): Node => {
         setFetchedLocation( true );
       }
     }
-    return () => {
-      setMounted( false );
-    };
+    return setMounted( false );
   }, [updateObservationKeys, fetchedLocation, positionalAccuracy, currentObs, mounted] );
 
   const setPhotos = uris => {
