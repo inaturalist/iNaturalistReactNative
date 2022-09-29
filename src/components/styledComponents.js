@@ -7,6 +7,7 @@ import {
   Pressable as StyledPressable,
   SafeAreaView as StyledSafeAreaView,
   ScrollView as StyledScrollView,
+  Text as StyledText,
   View as StyledView
 } from "react-native";
 
@@ -21,6 +22,8 @@ const SafeAreaView = styled( StyledSafeAreaView );
 // $FlowIgnore
 const ScrollView = styled( StyledScrollView );
 // $FlowIgnore
+const Text = styled( StyledText );
+// $FlowIgnore
 const Pressable = styled( StyledPressable );
 
 export {
@@ -29,5 +32,6 @@ export {
   Pressable,
   SafeAreaView,
   ScrollView,
+  Text,
   View
 };

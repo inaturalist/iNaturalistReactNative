@@ -3,13 +3,12 @@
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import User from "../../../models/User";
 import useCurrentUser from "../../../sharedHooks/useCurrentUser";
 import colors from "../../../styles/colors";
-import { textStyles, viewStyles } from "../../../styles/observations/userCard";
+import { Pressable, Text, View } from "../../styledComponents";
 import useUser from "../../UserProfile/hooks/useUser";
 import UserIcon from "../UserIcon";
 
@@ -23,15 +22,15 @@ const UserCard = ( ): Node => {
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId } );
 
   return (
-    <View style={viewStyles.userCard}>
+    <View className="flex-row mx-5 items-center">
       <UserIcon uri={User.uri( user )} large />
-      <View style={viewStyles.userDetails}>
-        <Text style={textStyles.text}>{User.userHandle( user )}</Text>
-        <Text style={textStyles.text}>{`${user.observations_count} Observations`}</Text>
+      <View className="ml-2">
+        <Text className="color-white my-1">{User.userHandle( user )}</Text>
+        <Text className="color-white my-1">{`${user.observations_count} Observations`}</Text>
       </View>
       <Pressable
         onPress={navToUserProfile}
-        style={viewStyles.editProfile}
+        className="absolute right-0"
       >
         <Icon name="pencil" size={30} color={colors.white} />
       </Pressable>
