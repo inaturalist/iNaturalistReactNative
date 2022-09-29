@@ -6,18 +6,21 @@ import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleS
 import colors from "../colors";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
-  toggleViewRow: {
-    paddingVertical: 10,
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    justifyContent: "space-between"
-  },
-  exploreButtons: {
-    borderRadius: 40,
-    borderWidth: 1,
-    top: 400,
-    zIndex: 1,
+  whiteBackground: {
     backgroundColor: colors.white
+  },
+  screenContainer: {
+    alignItems: "center",
+    alignSelf: "stretch",
+    flex: 1,
+    justifyContent: "center"
+  },
+  stretch: {
+    alignSelf: "stretch"
+  },
+  stretchContainer: {
+    alignSelf: "stretch",
+    flex: 1
   },
   greenBanner: {
     paddingVertical: 20,
