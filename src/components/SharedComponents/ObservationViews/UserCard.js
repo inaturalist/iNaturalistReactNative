@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import User from "../../../models/User";
 import useCurrentUser from "../../../sharedHooks/useCurrentUser";
@@ -33,7 +33,7 @@ const UserCard = ( ): Node => {
         onPress={navToUserProfile}
         style={viewStyles.editProfile}
       >
-        <Icon name="pencil" size={30} color={colors.white} />
+        <IconMaterial name="edit" size={30} color={colors.white} />
       </Pressable>
     </View>
   );
