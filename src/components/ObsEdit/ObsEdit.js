@@ -129,16 +129,17 @@ const ObsEdit = ( ): Node => {
           longitude: location?.longitude,
           positional_accuracy: location?.positional_accuracy
         } );
-        if ( location && mounted ) {
+        if ( location ) {
           setPositionalAccuracy( location.positional_accuracy );
         }
       };
 
-      if ( !fetchedLocation && !currentObs._created_at ) {
+      if ( !fetchedLocation && !currentObs._created_at && !mounted ) {
         if ( positionalAccuracy >= 15 ) {
           fetchLocation();
+        } else {
+          setFetchedLocation( true );
         }
-        setFetchedLocation( true );
       }
     }
     return setMounted( false );
