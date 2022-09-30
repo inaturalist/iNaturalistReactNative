@@ -22,13 +22,13 @@ const ObsListHeader = ( {
   numOfUnuploadedObs, isLoggedIn, translateY, isExplore, syncObservations, setView
 }: Props ): Node => {
   if ( isLoggedIn === null ) {
-    return <View className="rounded-bl-3xl rounded-br-3xl bg-primary" />;
+    return <View className="rounded-bl-3xl rounded-br-3xl bg-primary h-24" />;
   }
 
   return (
     // $FlowIgnore
     <Animated.View style={[{ transform: [{ translateY }] }]}>
-      <View className="rounded-bl-3xl rounded-br-3xl bg-primary">
+      <View className="rounded-bl-3xl rounded-br-3xl bg-primary h-24 justify-center">
         {isLoggedIn
           ? <UserCard />
           : <LoggedOutCard numOfUnuploadedObs={numOfUnuploadedObs} />}

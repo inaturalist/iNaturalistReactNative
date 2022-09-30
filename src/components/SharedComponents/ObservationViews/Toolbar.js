@@ -20,10 +20,12 @@ const Toolbar = ( {
   setView
 }: Props ): Node => (
   <View className="py-5 flex-row justify-between bg-white">
-    {!isExplore && isLoggedIn && (
-    <Pressable onPress={syncObservations} className="mx-3">
-      <Icon name="sync" size={30} />
-    </Pressable>
+    {!isExplore && isLoggedIn ? (
+      <Pressable onPress={syncObservations} className="mx-3">
+        <Icon name="sync" size={30} />
+      </Pressable>
+    ) : (
+      <View className="mx-3" />
     )}
     <View className="flex flex-row flex-nowrap mx-3">
       <Pressable
