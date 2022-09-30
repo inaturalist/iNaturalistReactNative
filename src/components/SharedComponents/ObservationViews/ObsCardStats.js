@@ -3,24 +3,32 @@
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import colors from "../../../styles/colors";
-import { textStyles, viewStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
 import checkCamelAndSnakeCase from "../../ObsDetails/helpers/checkCamelAndSnakeCase";
+import { Text, View } from "../../styledComponents";
 
 type Props = {
   item: Object,
-  type?: string
+  type?: string,
+  view?: string
 }
 
-const ObsCardStats = ( { item, type }: Props ): Node => {
+const ObsCardStats = ( { item, type, view }: Props ): Node => {
   const numOfIds = item.identifications?.length || 0;
   const numOfComments = item.comments?.length || 0;
   const qualityGrade = checkCamelAndSnakeCase( item, "qualityGrade" );
 
-  const iconColor = item.viewed === false ? colors.red : colors.black;
+  const setIconColor = ( ) => {
+    if ( item.viewed === false ) {
+      return colors.red;
+    }
+    if ( view === "grid" ) {
+      return colors.white;
+    }
+    return colors.black;
+  };
 
   const qualityGradeText = {
     needs_id: t( "NI" ),
@@ -29,23 +37,27 @@ const ObsCardStats = ( { item, type }: Props ): Node => {
   };
 
   const renderIdRow = ( ) => (
-    <View style={viewStyles.iconRow}>
-      <Icon name="shield" color={iconColor} size={14} style={viewStyles.icon} />
-      <Text style={[textStyles.text, { color: iconColor }]}>{numOfIds || 0}</Text>
+    <View className="flex-row items-center mr-3">
+      <Icon name="shield" color={setIconColor( )} size={14} />
+      <Text className="mx-1" style={{ color: setIconColor( ) }}>{numOfIds || 0}</Text>
     </View>
   );
 
   const renderCommentRow = ( ) => (
-    <View style={viewStyles.iconRow}>
-      <Icon name="comment" color={iconColor} size={14} style={viewStyles.icon} />
-      <Text style={[textStyles.text, { color: iconColor }]} testID="ObsList.obsCard.commentCount">
+    <View className="flex-row items-center">
+      <Icon name="comment" color={setIconColor( )} size={14} />
+      <Text
+        className="mx-1"
+        style={{ color: setIconColor( ) }}
+        testID="ObsList.obsCard.commentCount"
+      >
         {numOfComments || 0}
       </Text>
     </View>
   );
 
   const renderQualityGrade = ( ) => (
-    <Text style={textStyles.text}>
+    <Text style={{ color: setIconColor( ) }}>
       {qualityGrade ? qualityGradeText[qualityGrade] : "?"}
     </Text>
   );
@@ -59,9 +71,11 @@ const ObsCardStats = ( { item, type }: Props ): Node => {
   );
 
   const renderRow = ( ) => (
-    <View style={viewStyles.photoStatRow}>
-      {renderIdRow( )}
-      {renderCommentRow( )}
+    <View className="flex-row absolute bottom-0 justify-between w-44 mb-1">
+      <View className="flex-row mx-3">
+        {renderIdRow( )}
+        {renderCommentRow( )}
+      </View>
       {renderQualityGrade( )}
     </View>
   );

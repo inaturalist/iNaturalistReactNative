@@ -5,9 +5,7 @@ import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleS
 
 import colors from "../../colors";
 
-const { width, height } = Dimensions.get( "screen" );
-
-const imageWidth = width / 2 - 20;
+const { height } = Dimensions.get( "screen" );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   icon: {
@@ -32,23 +30,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexWrap: "nowrap",
     marginVertical: 10
   },
-  iconRow: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    alignItems: "center"
-  },
   photoContainer: {
     backgroundColor: colors.black,
     height: 200
-  },
-  photoStatRow: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    justifyContent: "space-between",
-    position: "absolute",
-    bottom: 80,
-    width: imageWidth,
-    backgroundColor: colors.white
   }
 } );
 
