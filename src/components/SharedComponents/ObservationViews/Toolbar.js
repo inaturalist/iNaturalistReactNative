@@ -5,27 +5,34 @@ import React from "react";
 import { Pressable, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
+import colors from "../../../styles/colors";
 import { viewStyles } from "../../../styles/observations/obsList";
 
 type Props = {
   isExplore: boolean,
   isLoggedIn: ?boolean,
   syncObservations: Function,
-  setView: Function
-}
+  setView: Function,
+  numOfUnuploadedObs: number,
+  }
 
 const Toolbar = ( {
   isExplore,
   isLoggedIn,
   syncObservations,
-  setView
+  setView,
+  numOfUnuploadedObs
 }: Props ): Node => (
   <>
     {!isExplore && (
       <View style={viewStyles.toggleButtons}>
-        {isLoggedIn && (
+        {!isLoggedIn && (
         <Pressable onPress={syncObservations}>
-          <Icon name="sync" size={30} />
+          <Icon
+            name="sync"
+            size={30}
+            color={numOfUnuploadedObs > 0 ? colors.inatGreen : colors.gray}
+          />
         </Pressable>
         )}
       </View>
