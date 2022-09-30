@@ -26,7 +26,7 @@ const Toolbar = ( {
   <>
     {!isExplore && (
       <View style={viewStyles.toggleButtons}>
-        {!isLoggedIn && (
+        {isLoggedIn && (
         <Pressable onPress={syncObservations}>
           <Icon
             name="sync"
