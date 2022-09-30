@@ -18,7 +18,6 @@ import {
   TextInput as NativeTextInput, TouchableOpacity, View
 } from "react-native";
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Realm from "realm";
 
@@ -325,7 +324,7 @@ const ObsDetails = ( ): Node => {
                 <Text style={textStyles.idCommentCount}>{observation.identifications.length}</Text>
               </View>
               <View style={viewStyles.rowWithIcon}>
-                <Icon name="chat" size={15} color={colors.logInGray} />
+                <IconMaterial name="chat-bubble" size={15} color={colors.logInGray} />
                 <Text style={textStyles.idCommentCount}>{observation.comments.length}</Text>
               </View>
               <QualityBadge qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )} />
@@ -427,7 +426,7 @@ const ObsDetails = ( ): Node => {
               style={viewStyles.sendComment}
               onPress={() => submitComment( )}
             >
-              <Icon name="send" size={35} color={colors.inatGreen} />
+              <IconMaterial name="send" size={35} color={colors.inatGreen} />
             </TouchableOpacity>
           </View>
         </BottomSheetModal>
