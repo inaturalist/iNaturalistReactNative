@@ -29,7 +29,7 @@ const ObsCardDetails = ( { item, view }: Props ): Node => {
   );
 
   return (
-    <View className={view === "grid" && "border-2 border-border w-44"}>
+    <View className={view === "grid" ? "border border-border w-44" : "w-2/3"}>
       <Text numberOfLines={1}>{displayName( )}</Text>
       <Text numberOfLines={1}>
         <Icon name="map-marker" size={15} />

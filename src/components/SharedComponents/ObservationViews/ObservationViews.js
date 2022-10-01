@@ -5,11 +5,12 @@ import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Animated, Dimensions, Text, View
+  Animated, Dimensions, Text
 } from "react-native";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../../styles/observations/obsList";
+import { View } from "../../styledComponents";
 import BottomSheet from "../BottomSheet";
 import Map from "../Map";
 import EmptyList from "./EmptyList";
@@ -174,6 +175,8 @@ const ObservationViews = ( {
     />
   ), [isExplore, isLoggedIn, translateY, numOfUnuploadedObs, syncObservations] );
 
+  const renderItemSeparator = ( ) => <View className="border border-border" />;
+
   const renderView = ( ) => {
     if ( view === "map" ) {
       return <Map taxonId={taxonId} mapHeight={mapHeight} />;
@@ -191,6 +194,7 @@ const ObservationViews = ( {
           onEndReached={handleEndReached}
           ListFooterComponent={renderFooter}
           ListHeaderComponent={renderHeader}
+          ItemSeparatorComponent={renderItemSeparator}
           stickyHeaderIndices={[0]}
           bounces={false}
           contentContainerStyle={{ minHeight: flatListHeight }}

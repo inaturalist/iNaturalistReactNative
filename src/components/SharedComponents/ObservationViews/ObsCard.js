@@ -2,14 +2,13 @@
 
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { Image, Pressable, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import Realm from "realm";
 
 import realmConfig from "../../../models/index";
 import Observation from "../../../models/Observation";
 import Photo from "../../../models/Photo";
-import { viewStyles } from "../../../styles/sharedComponents/observationViews/obsCard";
+import { Image, Pressable } from "../../styledComponents";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
 
@@ -21,7 +20,6 @@ type Props = {
 const ObsCard = ( { item, handlePress }: Props ): Node => {
   const [needsUpload, setNeedsUpload] = useState( false );
   const onPress = ( ) => handlePress( item );
-  // const needsUpload = item._synced_at === null;
 
   const photo = item?.observationPhotos?.[0]?.photo;
 
@@ -37,20 +35,17 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
   return (
     <Pressable
       onPress={onPress}
-      style={viewStyles.row}
+      className="flex-row my-2 mx-3"
       testID={`ObsList.obsCard.${item.uuid}`}
       accessibilityRole="link"
       accessibilityLabel="Navigate to observation details screen"
     >
       <Image
         source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
-        style={viewStyles.imageBackground}
+        className="w-16 h-16 rounded-md mr-2"
         testID="ObsList.photo"
       />
-      <View style={viewStyles.obsDetailsColumn}>
-        {/* TODO: fill in with actual empty states */}
-        <ObsCardDetails item={item} />
-      </View>
+      <ObsCardDetails item={item} />
       {needsUpload
         ? <Avatar.Icon size={40} icon="arrow-up-circle-outline" />
         : <ObsCardStats item={item} type="list" />}
