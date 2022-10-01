@@ -2,12 +2,12 @@
 
 import type { Node } from "react";
 import React from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator } from "react-native";
 
-import { viewStyles } from "../../../styles/sharedComponents/observationViews/infiniteScroll";
+import { View } from "../../styledComponents";
 
 const InfiniteScrollFooter = ( ): Node => (
-  <View style={viewStyles.infiniteScroll}>
+  <View className="h-32 border border-border pt-10">
     <ActivityIndicator />
   </View>
 );

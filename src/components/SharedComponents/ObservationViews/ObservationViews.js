@@ -3,13 +3,11 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
-  Animated, Dimensions, Text
+  Animated, Dimensions
 } from "react-native";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
-import { textStyles, viewStyles } from "../../../styles/observations/obsList";
 import { View } from "../../styledComponents";
 import BottomSheet from "../BottomSheet";
 import Map from "../Map";
@@ -29,7 +27,6 @@ type Props = {
   testID: string,
   taxonId?: number,
   mapHeight?: number,
-  totalObservations?: number,
   handleEndReached?: Function,
   syncObservations?: Function
 }
@@ -40,7 +37,6 @@ const ObservationViews = ( {
   testID,
   taxonId,
   mapHeight,
-  totalObservations,
   handleEndReached,
   syncObservations
 }: Props ): Node => {
@@ -124,8 +120,6 @@ const ObservationViews = ( {
     return null;
   };
 
-  const { t } = useTranslation( );
-
   const renderBottomSheet = ( ) => {
     if ( numOfUnuploadedObs === 0 ) { return null; }
 
@@ -159,7 +153,7 @@ const ObservationViews = ( {
     if ( isLoggedIn === false ) { return <View />; }
     return loading
       ? <InfiniteScrollFooter />
-      : <View style={viewStyles.footer} />;
+      : <View className="pt-16" />;
   };
 
   const isExplore = name === "Explore";
@@ -206,13 +200,6 @@ const ObservationViews = ( {
 
   return (
     <View testID="ObservationViews.myObservations">
-      {isExplore && (
-        <View style={[viewStyles.whiteBanner, view === "map" && viewStyles.greenBanner]}>
-          <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>
-            {t( "X-Observations", { observationCount: totalObservations } )}
-          </Text>
-        </View>
-      )}
       {renderView( )}
     </View>
   );
