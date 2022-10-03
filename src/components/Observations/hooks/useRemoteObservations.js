@@ -19,7 +19,7 @@ const useRemoteObservations = ( ): Object => {
 
   const fetchNextObservations = useCallback( numOfObs => {
     const nextPageToFetch = numOfObs > 0
-      ? Math.ceil( numOfObs / 6 )
+      ? Math.ceil( numOfObs / 5 )
       : 1;
     setPage( nextPageToFetch );
     setFetchFromServer( true );
