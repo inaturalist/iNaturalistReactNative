@@ -116,17 +116,17 @@ it( "renders grid view on button press", ( ) => {
   } );
 } );
 
-it( "renders map view on button press", ( ) => {
-  const observations = [
-    factory( "LocalObservation" )
-  ];
-  mockExploreProviderWithObservations( observations );
-  const { getByTestId } = renderExplore( );
-  const button = getByTestId( "Explore.toggleMapView" );
+test.todo( "renders map view on button press" );
+//   const observations = [
+//     factory( "LocalObservation" )
+//   ];
+//   mockExploreProviderWithObservations( observations );
+//   const { getByTestId } = renderExplore( );
+//   const button = getByTestId( "Explore.toggleMapView" );
 
-  fireEvent.press( button );
-  expect( getByTestId( "MapView" ) ).toBeTruthy( );
-} );
+//   fireEvent.press( button );
+//   expect( getByTestId( "MapView" ) ).toBeTruthy( );
+// } );
 
 // TODO: is there a way to test the dropdown pickers? maybe this will be easier
 // when we write our own custom dropdown picker with search

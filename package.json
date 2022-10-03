@@ -78,7 +78,7 @@
     "react-native-vision-camera": "^2.13.0",
     "react-spring": "^8.0.27",
     "react-tinder-card": "^1.4.5",
-    "realm": "^10.20.0-beta.1",
+    "realm": "^10.21.1",
     "use-debounce": "^7.0.1"
   },
   "devDependencies": {
