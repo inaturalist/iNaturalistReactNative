@@ -26,8 +26,19 @@ target 'iNaturalistReactNative' do
   # you should disable the next line.
   # use_flipper!()
 
-  # post_install do |installer|
-  #   react_native_post_install(installer)
-  # end
+  # code below appears to be necessary for building pods with XCode 14: https://github.com/facebook/react-native/issues/34673#issuecomment-1252114414
+  post_install do |installer|
+    react_native_post_install(installer)
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+    # Add these lines for Xcode 14 builds
+    installer.generated_projects.each do |project|
+      project.targets.each do |target|
+          target.build_configurations.each do |config|
+              config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
+          end
+      end
+    end
+    # End of added lines
+  end
 
 end
