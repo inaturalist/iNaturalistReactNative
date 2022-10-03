@@ -2,7 +2,7 @@
 
 import type { Node } from "react";
 import React from "react";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import { Pressable, View } from "../../styledComponents";
 
@@ -22,7 +22,7 @@ const Toolbar = ( {
   <View className="py-5 flex-row justify-between bg-white">
     {!isExplore && isLoggedIn ? (
       <Pressable onPress={syncObservations} className="mx-3">
-        <Icon name="sync" size={30} />
+        <IconMaterial name="sync" size={30} />
       </Pressable>
     ) : (
       <View className="mx-3" />
@@ -32,14 +32,14 @@ const Toolbar = ( {
         onPress={( ) => setView( "list" )}
         accessibilityRole="button"
       >
-        <Icon name="format-list-bulleted" size={30} />
+        <IconMaterial name="format-list-bulleted" size={30} />
       </Pressable>
       <Pressable
         onPress={( ) => setView( "grid" )}
         testID="ObsList.toggleGridView"
         accessibilityRole="button"
       >
-        <Icon name="grid-large" size={30} />
+        <IconMaterial name="grid-view" size={30} />
       </Pressable>
     </View>
   </View>

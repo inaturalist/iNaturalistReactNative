@@ -13,7 +13,7 @@ import {
 import {
   Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import colors from "../../styles/colors";
 import viewStyles from "../../styles/login/login";
@@ -196,7 +196,7 @@ const Login = ( ): Node => {
             onPress={() => navigation.goBack()}
             className="absolute top-0 right-0"
           >
-            <Icon name="close" size={35} />
+            <IconMaterial name="close" size={35} />
           </Pressable>
           {loggedIn ? logoutForm : loginForm}
         </ScrollView>

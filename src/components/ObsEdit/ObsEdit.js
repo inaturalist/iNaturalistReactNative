@@ -241,17 +241,17 @@ const ObsEdit = ( ): Node => {
               )}
             <View style={viewStyles.evidenceButtonsContainer}>
               <EvidenceButton
-                icon="file-image"
+                icon="perm-media"
                 handlePress={onImportPhoto}
                 disabled={disableAddingMoreEvidence}
               />
               <EvidenceButton
-                icon="camera"
+                icon="photo-camera"
                 handlePress={onTakePhoto}
                 disabled={disableAddingMoreEvidence}
               />
               <EvidenceButton
-                icon="microphone"
+                icon="keyboard-voice"
                 handlePress={onRecordSound}
                 disabled={disableAddingMoreEvidence}
               />

@@ -2,7 +2,7 @@
 
 import type { Node } from "react";
 import React from "react";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import { formatObsListTime } from "../../../sharedHelpers/dateAndTime";
 import checkCamelAndSnakeCase from "../../ObsDetails/helpers/checkCamelAndSnakeCase";
@@ -32,11 +32,11 @@ const ObsCardDetails = ( { item, view }: Props ): Node => {
     <View className={view === "grid" ? "border border-border w-44" : "w-2/3"}>
       <Text numberOfLines={1}>{displayName( )}</Text>
       <Text numberOfLines={1}>
-        <Icon name="map-marker" size={15} />
+        <IconMaterial name="location-pin" size={15} />
         {placeGuess || "no place guess"}
       </Text>
       <Text numberOfLines={1}>
-        <Icon name="clock" size={15} />
+        <IconMaterial name="watch-later" size={15} />
         {displayTime( )}
       </Text>
     </View>
