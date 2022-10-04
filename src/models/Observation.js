@@ -364,7 +364,7 @@ class Observation extends Realm.Object {
     return response;
   };
 
-  static uploadEvidence = (
+  static uploadEvidence = async (
     evidence: Array<Object>,
     type: string,
     apiSchemaMapper: Function,
@@ -372,7 +372,7 @@ class Observation extends Realm.Object {
     apiEndpoint: Function,
     realm: any,
     apiToken: string
-  ): any => {
+  ): Promise<any> => {
     let response;
     if ( evidence.length === 0 ) { return; }
     for ( let i = 0; i < evidence.length; i += 1 ) {
