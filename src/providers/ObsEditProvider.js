@@ -58,6 +58,19 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setObservations( updatedObs );
     };
 
+    const updateObservationKeys = keysAndValues => {
+      const updatedObs = observations.map( ( obs, index ) => {
+        if ( index === currentObsIndex ) {
+          return {
+            ...obs,
+            ...keysAndValues
+          };
+        }
+        return obs;
+      } );
+      setObservations( updatedObs );
+    };
+
     const updateTaxon = taxon => {
       updateObservationKey( "taxon", taxon );
       navigation.navigate( "ObsEdit" );
@@ -131,6 +144,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setCurrentObsIndex,
       setObservations,
       updateObservationKey,
+      updateObservationKeys,
       updateTaxon
     };
   }, [
