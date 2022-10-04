@@ -3,7 +3,6 @@ import uuid from "react-native-uuid";
 import Realm from "realm";
 
 import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
-import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
@@ -36,13 +35,8 @@ class Observation extends Realm.Object {
   }
 
   static async new( obs ) {
-    // TODO remove this from the model. IMO this kind of system interaction
-    // should happen in the component
-    const latLng = await fetchUserLocation( );
-
     return {
       ...obs,
-      ...latLng,
       captive_flag: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,

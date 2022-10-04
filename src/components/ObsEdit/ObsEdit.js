@@ -18,6 +18,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import Photo from "../../models/Photo";
 import { ObsEditContext } from "../../providers/contexts";
+import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { MAX_PHOTOS_ALLOWED } from "../Camera/StandardCamera";
@@ -32,6 +33,9 @@ import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
 import OtherDataSection from "./OtherDataSection";
 
+const INITIAL_POSITIONAL_ACCURACY = 99999;
+const TARGET_POSITIONAL_ACCURACY = 10;
+
 const ObsEdit = ( ): Node => {
   const {
     currentObsIndex,
@@ -39,8 +43,10 @@ const ObsEdit = ( ): Node => {
     observations,
     saveObservation,
     saveAndUploadObservation,
-    setObservations
+    setObservations,
+    updateObservationKeys
   } = useContext( ObsEditContext );
+  const currentObs = observations[currentObsIndex];
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { t } = useTranslation( );
@@ -54,6 +60,10 @@ const ObsEdit = ( ): Node => {
   const [photoUris, setPhotoUris] = useState( [] );
   const [snapPoint, setSnapPoint] = useState( 150 );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
+  const [shouldFetchLocation, setShouldFetchLocation] = useState( !currentObs?._created_at );
+  const [fetchingLocation, setFetchingLocation] = useState( false );
+  const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
+  const mountedRef = useRef( true );
 
   const disableAddingMoreEvidence = photoUris.length >= MAX_PHOTOS_ALLOWED;
 
@@ -111,7 +121,75 @@ const ObsEdit = ( ): Node => {
     </View>
   );
 
-  const currentObs = observations[currentObsIndex];
+  // Hook version of componentWillUnmount. We use a ref to track mounted
+  // state (not useState, which might get frozen in a closure for other
+  // useEffects), and set it to false in the cleanup cleanup function. The
+  // effect has an empty dependency array so it should only run when the
+  // component mounts and when it unmounts, unlike in the cleanup effects of
+  // other hooks, which will run when any of there dependency values change,
+  // and maybe even before other hooks execute. If we ever need to do this
+  // again we could probably wrap this into its own hook, like useMounted
+  // ( ).
+  useEffect( ( ) => {
+    mountedRef.current = true;
+    return function cleanup( ) {
+      mountedRef.current = false;
+    };
+  }, [] );
+
+  useEffect( ( ) => {
+    if ( !currentObs ) return;
+
+    if ( !shouldFetchLocation ) return;
+
+    if ( fetchingLocation ) return;
+
+    const fetchLocation = async () => {
+      // If the component is gone, you won't be able to updated it
+      if ( !mountedRef.current ) return;
+
+      if ( !shouldFetchLocation ) return;
+      setFetchingLocation( false );
+
+      const location = await fetchUserLocation( );
+
+      // If we're still receiving location updates and location is blank,
+      // then we don't know where we are any more and the obs should update
+      // to reflect that
+      updateObservationKeys( {
+        place_guess: location?.place_guess,
+        latitude: location?.latitude,
+        longitude: location?.longitude,
+        positional_accuracy: location?.positional_accuracy
+      } );
+
+      // The local state version of positionalAccuracy needs to be a number,
+      // so don't set it to
+      const newPositionalAccuracy = location?.positional_accuracy || INITIAL_POSITIONAL_ACCURACY;
+      setPositionalAccuracy( newPositionalAccuracy );
+    };
+
+    if (
+      // If we're already fetching we don't need to fetch again
+      !fetchingLocation
+      // We only need to fetch when we're above the target
+      && positionalAccuracy >= TARGET_POSITIONAL_ACCURACY
+    ) {
+      setFetchingLocation( true );
+      // No need to fetch more than once a second
+      setTimeout( fetchLocation, 1000 );
+    } else {
+      setShouldFetchLocation( false );
+    }
+  }, [
+    currentObs,
+    fetchingLocation,
+    positionalAccuracy,
+    setFetchingLocation,
+    setShouldFetchLocation,
+    shouldFetchLocation,
+    updateObservationKeys
+  ] );
 
   const setPhotos = uris => {
     const updatedObservations = observations;
@@ -241,17 +319,17 @@ const ObsEdit = ( ): Node => {
               )}
             <View style={viewStyles.evidenceButtonsContainer}>
               <EvidenceButton
-                icon="file-image"
+                icon="perm-media"
                 handlePress={onImportPhoto}
                 disabled={disableAddingMoreEvidence}
               />
               <EvidenceButton
-                icon="camera"
+                icon="photo-camera"
                 handlePress={onTakePhoto}
                 disabled={disableAddingMoreEvidence}
               />
               <EvidenceButton
-                icon="microphone"
+                icon="keyboard-voice"
                 handlePress={onRecordSound}
                 disabled={disableAddingMoreEvidence}
               />
