@@ -55,7 +55,7 @@ class Observation extends Realm.Object {
   }
 
   static async createObsWithPhotos( observationPhotos ) {
-    const observation = await Observation.new();
+    const observation = await Observation.new( );
     observation.observationPhotos = observationPhotos;
     return observation;
   }
