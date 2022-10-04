@@ -31,13 +31,13 @@ const uploadObservation = async ( obs: Object ): Promise<any> => {
   const realm = await Realm.open( realmConfig );
   await Observation.markRecordUploaded( obs.uuid, "Observation", response, realm );
   const { id } = response.results[0];
-  if ( obs.observationPhotos ) {
+  if ( obs.observationPhotos && obs.observationPhotos.length > 0 ) {
     return uploadObsPhoto( obs, id, realm );
   }
-  if ( obs.observationSounds ) {
+  if ( obs.observationSounds && obs.observationSounds.length > 0 ) {
     return uploadObsSound( obs, id, realm );
   }
-  return null;
+  return response;
 };
 
 export default uploadObservation;
