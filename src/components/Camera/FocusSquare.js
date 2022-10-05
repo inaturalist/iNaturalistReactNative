@@ -4,8 +4,6 @@ import type { Node } from "react";
 import React, { useEffect } from "react";
 import { Animated } from "react-native";
 
-import { viewStyles } from "../../styles/camera/standardCamera";
-
 type Props = {
   tappedCoordinates: Object,
   tapToFocusAnimation: any
@@ -28,12 +26,14 @@ const FocusSquare = ( { tappedCoordinates, tapToFocusAnimation }: Props ): Node 
   if ( !tappedCoordinates ) { return null; }
 
   return (
+    // $FlowIgnore
     <Animated.View
+      className="w-16 h-16 absolute border border-white rounded-lg"
       style={[{
         left: tappedCoordinates.x,
         top: tappedCoordinates.y,
         opacity: tapToFocusAnimation
-      }, viewStyles.tapToFocusSquare
+      }
       ]}
     />
   );

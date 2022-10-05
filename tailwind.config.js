@@ -17,6 +17,7 @@ module.exports = {
       tertiary: "#C4C4C4",
       white: "#ffffff",
       red: "#ff0000",
+      black: "#000000",
       border: "#DBDBDB",
       buttonPrimary: PRIMARY,
       buttonPrimaryDisabled: PRIMARY_DISABLED,

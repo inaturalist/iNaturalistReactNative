@@ -12,8 +12,6 @@ import {
 } from "react-native";
 
 // $FlowIgnore
-const Image = styled( StyledImage );
-// $FlowIgnore
 const View = styled( StyledView );
 // $FlowIgnore
 const KeyboardAvoidingView = styled( StyledKeyboardAvoidingView );
@@ -25,6 +23,8 @@ const ScrollView = styled( StyledScrollView );
 const Text = styled( StyledText );
 // $FlowIgnore
 const Pressable = styled( StyledPressable );
+// $FlowIgnore
+const Image = styled( StyledImage );
 
 export {
   Image,

@@ -6,7 +6,6 @@ import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
 } from "react";
-import { Pressable, Text, View } from "react-native";
 import { Avatar, Snackbar, useTheme } from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Realm from "realm";
@@ -14,9 +13,8 @@ import Realm from "realm";
 import realmConfig from "../../models/index";
 import Photo from "../../models/Photo";
 import { ObsEditContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/camera/standardCamera";
 import colors from "../../styles/colors";
-import { textStyles } from "../../styles/obsDetails/obsDetails";
+import { Pressable, Text, View } from "../styledComponents";
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
@@ -25,7 +23,6 @@ export const MAX_PHOTOS_ALLOWED = 20;
 
 const StandardCamera = ( ): Node => {
   const { colors: themeColors } = useTheme( );
-  // TODO: figure out if there's a way to write location to photo metadata with RN
   const { addPhotos } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -98,46 +95,32 @@ const StandardCamera = ( ): Node => {
   );
 
   return (
-    <View style={viewStyles.container}>
+    <View className="flex-1 bg-black">
       {device && <CameraView device={device} camera={camera} />}
       <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} savingPhoto={savingPhoto} />
       <FadeInOutView savingPhoto={savingPhoto} />
-      <View style={viewStyles.bottomButtons}>
-        <View style={viewStyles.cameraSettingsRow}>
-          <Pressable
-            style={viewStyles.flashButton}
-            onPress={toggleFlash}
-          >
+      <View className="absolute bottom-0">
+        <View className="flex-row justify-between w-screen mb-4 px-4">
+          <Pressable onPress={toggleFlash}>
             {renderCameraButton( "flash" )}
           </Pressable>
-          <Pressable
-            style={viewStyles.cameraFlipButton}
-            onPress={flipCamera}
-          >
+          <Pressable onPress={flipCamera}>
             {renderCameraButton( "camera-flip" )}
           </Pressable>
-          <View />
-
         </View>
-        <View style={viewStyles.cameraCaptureRow}>
-          <Pressable
-            style={viewStyles.captureButton}
-            onPress={takePhoto}
-          >
+        <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">
+          <View className="w-1/3" />
+          <Pressable onPress={takePhoto}>
             {renderCameraButton( "circle-outline", disallowAddingPhotos )}
           </Pressable>
-          <Pressable
-            style={viewStyles.nextButton}
-            onPress={navToObsEdit}
-          >
-            <Text style={textStyles.whiteText}>{t( "Next" )}</Text>
-          </Pressable>
+          <Text className="text-white text-xl w-1/3 text-center" onPress={navToObsEdit}>
+            {t( "Next" )}
+          </Text>
         </View>
       </View>
-
       <Snackbar
         visible={showAlert}
-        onDismiss={() => setShowAlert( false )}
+        onDismiss={( ) => setShowAlert( false )}
       >
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>
