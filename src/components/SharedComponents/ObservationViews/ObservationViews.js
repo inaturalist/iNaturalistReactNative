@@ -5,12 +5,11 @@ import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Animated, Dimensions, Text, View
+  ActivityIndicator, Animated, Dimensions, Text, View
 } from "react-native";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../../styles/observations/obsList";
-import PlaceholderText from "../../PlaceholderText";
 import BottomSheet from "../BottomSheet";
 import Map from "../Map";
 import EmptyList from "./EmptyList";
@@ -121,7 +120,7 @@ const ObservationViews = ( {
     if ( name !== "Explore" && isLoggedIn === false ) {
       return <EmptyList />;
     }
-    return <PlaceholderText text="No observations yet" />;
+    return <ActivityIndicator />;
   };
 
   const { t } = useTranslation( );

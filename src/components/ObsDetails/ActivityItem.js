@@ -41,11 +41,11 @@ const ActivityItem = ( {
   const realm = useRealm( );
 
   useEffect( ( ) => {
-    const isActivtyUserTheCurrentUser = async ( ) => {
+    const isActiveUserTheCurrentUser = async ( ) => {
       const current = await isCurrentUser( user.login );
       setCurrentUser( current );
     };
-    isActivtyUserTheCurrentUser( );
+    isActiveUserTheCurrentUser( );
   }, [user] );
 
   return (
