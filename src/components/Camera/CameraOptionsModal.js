@@ -3,10 +3,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { t } from "i18next";
 import * as React from "react";
-import { Avatar } from "react-native-paper";
+import { IconButton } from "react-native-paper";
 
 import { ObsEditContext } from "../../providers/contexts";
-import { Pressable, Text, View } from "../styledComponents";
+import colors from "../../styles/colors";
+import { Text, View } from "../styledComponents";
 
 type Props = {
   closeModal: ( ) => void
@@ -44,6 +45,18 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
     t( "Record-a-sound" )
   ];
 
+  const renderIconButton = ( icon, className, onPress, size = 30 ) => (
+    <IconButton
+      size={size}
+      mode="contained"
+      icon={icon}
+      containerColor={colors.inatGreen}
+      iconColor={colors.white}
+      className={`absolute ${className}`}
+      onPress={onPress}
+    />
+  );
+
   return (
     <>
       <View className="bg-white rounded-xl p-5">
@@ -56,28 +69,12 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
           </Text>
         ) )}
       </View>
-      <View className="absolute bottom-0 left-1/3 px-2">
-        <Avatar.Icon size={100} icon="plus" />
-      </View>
-      {!currentObs && (
-      <Pressable onPress={navToObsEdit} className="absolute bottom-6 left-10">
-        <Avatar.Icon size={50} icon="square-edit-outline" />
-      </Pressable>
-      )}
-      <Pressable onPress={navToStandardCamera} className="absolute bottom-24 left-20">
-        <Avatar.Icon size={50} icon="camera" />
-      </Pressable>
-      {!currentObs && (
-      <Pressable onPress={navToPhotoGallery} className="absolute bottom-24 right-20">
-        <Avatar.Icon size={50} icon="folder-multiple-image" />
-      </Pressable>
-      )}
-      {!hasSound && (
-      <Pressable onPress={navToSoundRecorder} className="absolute bottom-6 right-10">
-        <Avatar.Icon size={50} icon="microphone" />
-      </Pressable>
-      )}
-
+      {renderIconButton( "plus", "bottom-0 left-1/3 px-2", ( ) => { }, 80 )}
+      {!currentObs && renderIconButton( "square-edit-outline", "bottom-6 left-10", navToObsEdit )}
+      {renderIconButton( "camera", "bottom-24 left-20", navToStandardCamera )}
+      {!currentObs
+        && renderIconButton( "folder-multiple-image", "bottom-24 right-20", navToPhotoGallery )}
+      {!hasSound && renderIconButton( "microphone", "bottom-6 right-10", navToSoundRecorder )}
     </>
   );
 };
