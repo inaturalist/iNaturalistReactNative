@@ -1,11 +1,9 @@
 // @flow strict-local
 
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import type { ImageStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 
 import colors from "../colors";
-
-const { width } = Dimensions.get( "screen" );
 
 const imageWidth = 66;
 
@@ -44,10 +42,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     display: "flex",
     alignItems: "center",
     justifyContent: "center"
-  },
-  photoContainer: {
-    top: 50,
-    minWidth: width
   },
   // $FlowIgnore
   photoLoading: standardCameraImage,

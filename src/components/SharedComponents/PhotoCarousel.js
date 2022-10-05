@@ -6,7 +6,6 @@ import {
   ActivityIndicator, FlatList, Image, Pressable, View
 } from "react-native";
 import { Avatar, useTheme } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import colors from "../../styles/colors";
@@ -36,7 +35,6 @@ const PhotoCarousel = ( {
   showAddButton = false
 
 }: Props ): Node => {
-  const insets = useSafeAreaInsets( );
   const { colors: themeColors } = useTheme( );
   const renderDeleteButton = photoUri => (
     <Pressable
@@ -109,10 +107,6 @@ const PhotoCarousel = ( {
   return (
     <FlatList
       data={data}
-      contentContainerStyle={( containerStyle === "camera" ) && [
-        viewStyles.photoContainer, {
-          top: insets.top
-        }]}
       renderItem={renderPhoto}
       horizontal
       ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
