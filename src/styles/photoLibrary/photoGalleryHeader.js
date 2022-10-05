@@ -21,12 +21,6 @@ const pickerText = {
 };
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
-  header: {
-    height: 70,
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    alignItems: "center"
-  },
   inputIOSContainer: pickerContainer,
   inputAndroidContainer: pickerContainer,
   // $FlowFixMe

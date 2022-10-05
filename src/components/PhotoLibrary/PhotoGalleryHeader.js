@@ -4,10 +4,11 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React from "react";
-import { View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 
+import colors from "../../styles/colors";
 import { viewStyles } from "../../styles/photoLibrary/photoGalleryHeader";
+import { Text, View } from "../styledComponents";
 import usePhotoAlbums from "./hooks/usePhotoAlbums";
 
 type Props = {
@@ -30,8 +31,8 @@ const PhotoGalleryHeader = ( { updateAlbum }: Props ): Node => {
   const navBack = ( ) => navigation.goBack( );
 
   return (
-    <View style={viewStyles.header}>
-      <HeaderBackButton onPress={navBack} />
+    <View className="flex-row h-16">
+      <HeaderBackButton onPress={navBack} tintColor={colors.black} />
       <RNPickerSelect
         hideIcon
         items={albums}
@@ -41,6 +42,8 @@ const PhotoGalleryHeader = ( { updateAlbum }: Props ): Node => {
         disabled={albums.length <= 1}
         style={viewStyles}
       />
+      {/* eslint-disable-next-line i18next/no-literal-string */}
+      <Text className="text-xl mt-3">&#x2304;</Text>
     </View>
   );
 };
