@@ -22,6 +22,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
 
   useEffect( ( ) => {
     const upload = async obs => {
+      if ( !apiToken ) return;
       const response = await uploadObservation( obs, realm, apiToken );
       if ( response.results ) { return; }
       if ( response.status !== 200 ) {
