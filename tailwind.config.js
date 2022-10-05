@@ -19,6 +19,7 @@ module.exports = {
       red: "#ff0000",
       black: "#000000",
       border: "#DBDBDB",
+      grayText: "#999999",
       buttonPrimary: PRIMARY,
       buttonPrimaryDisabled: PRIMARY_DISABLED,
       buttonWarning: WARNING,

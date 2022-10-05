@@ -44,7 +44,7 @@ const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node =
   };
 
   const emptyDescription = ( ) => (
-    <Text className="text-white text-xl mt-8 ml-3">
+    <Text className="text-white text-xl mt-20 ml-3">
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
