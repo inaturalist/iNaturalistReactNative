@@ -10,24 +10,29 @@ import User from "../../../models/User";
 import useCurrentUser from "../../../sharedHooks/useCurrentUser";
 import colors from "../../../styles/colors";
 import { textStyles, viewStyles } from "../../../styles/observations/userCard";
-import useUser from "../../UserProfile/hooks/useUser";
+import useRemoteUser from "../../UserProfile/hooks/useRemoteUser";
+import TranslatedText from "../TranslatedText";
 import UserIcon from "../UserIcon";
 
 const UserCard = ( ): Node => {
-  const userId = useCurrentUser( );
-  const { user } = useUser( userId );
+  const user = useCurrentUser( );
+  const { user: remoteUser } = useRemoteUser( user?.id );
   // TODO: this currently doesn't show up on initial login
   // because user id can't be fetched
   const navigation = useNavigation( );
-  if ( !user ) { return <View />; }
-  const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId } );
+  if ( !user ) { return <View style={viewStyles.topCard} />; }
+  const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId: user.id } );
 
   return (
     <View style={viewStyles.userCard}>
-      <UserIcon uri={User.uri( user )} large />
+      <UserIcon uri={{ uri: remoteUser?.icon_url }} large />
       <View style={viewStyles.userDetails}>
         <Text style={textStyles.text}>{User.userHandle( user )}</Text>
-        <Text style={textStyles.text}>{`${user.observations_count} Observations`}</Text>
+        <TranslatedText
+          style={textStyles.text}
+          text="X-Observations"
+          count={user.observations_count || 0}
+        />
       </View>
       <Pressable
         onPress={navToUserProfile}

@@ -17,7 +17,7 @@ import { Headline, Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import Photo from "../../models/Photo";
-import { ObsEditContext } from "../../providers/contexts";
+import { ObsEditContext, RealmContext } from "../../providers/contexts";
 import fetchUserLocation from "../../sharedHelpers/fetchUserLocation";
 import useLoggedIn from "../../sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
@@ -32,6 +32,8 @@ import DeleteObservationDialog from "./DeleteObservationDialog";
 import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
 import OtherDataSection from "./OtherDataSection";
+
+const { useRealm } = RealmContext;
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
 const TARGET_POSITIONAL_ACCURACY = 10;
@@ -191,16 +193,23 @@ const ObsEdit = ( ): Node => {
     updateObservationKeys
   ] );
 
+  const realm = useRealm( );
+
   const setPhotos = uris => {
     const updatedObservations = observations;
-    const updatedObsPhotos = currentObs.observationPhotos.filter( obsPhoto => {
+    const updatedObsPhotos = Array.from( currentObs.observationPhotos ).filter( obsPhoto => {
       const { photo } = obsPhoto;
       if ( uris.includes( photo.url || photo.localFilePath ) ) {
         return obsPhoto;
       }
       return false;
     } );
-    currentObs.observationPhotos = updatedObsPhotos;
+    // when updatedObsPhotos is an empty array, Realm apparently writes to the
+    // db immediately when you assign, so if you don't do this in write
+    // callback it raises an exception
+    realm?.write( ( ) => {
+      currentObs.observationPhotos = updatedObsPhotos;
+    } );
     setObservations( [...updatedObservations] );
   };
 
@@ -211,7 +220,7 @@ const ObsEdit = ( ): Node => {
 
   useEffect( ( ) => {
     if ( !currentObs || !currentObs.observationPhotos ) { return; }
-    const uris = currentObs.observationPhotos.map(
+    const uris = Array.from( currentObs.observationPhotos ).map(
       obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
     );
     setPhotoUris( uris );

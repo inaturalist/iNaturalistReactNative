@@ -5,7 +5,7 @@ import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Animated, Dimensions, Text, View
+  ActivityIndicator, Animated, Dimensions, Text, View
 } from "react-native";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
@@ -120,7 +120,7 @@ const ObservationViews = ( {
     if ( name !== "Explore" && isLoggedIn === false ) {
       return <EmptyList />;
     }
-    return null;
+    return <ActivityIndicator />;
   };
 
   const { t } = useTranslation( );
@@ -206,7 +206,7 @@ const ObservationViews = ( {
       {isExplore && (
         <View style={[viewStyles.whiteBanner, view === "map" && viewStyles.greenBanner]}>
           <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>
-            {t( "X-Observations", { observationCount: totalObservations } )}
+            {t( "X-Observations", { count: totalObservations } )}
           </Text>
         </View>
       )}

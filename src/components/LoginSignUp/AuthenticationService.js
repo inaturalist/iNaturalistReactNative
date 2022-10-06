@@ -50,6 +50,7 @@ const isLoggedIn = async (): Promise<boolean> => {
  */
 const signOut = async (
   options: {
+    realm?: Object,
     deleteRealm?: boolean,
     queryClient?: Object
   } = {
@@ -58,6 +59,21 @@ const signOut = async (
   }
 ) => {
   if ( options.deleteRealm ) {
+    if ( options.realm ) {
+      // Delete all the records in the realm db, including the ones accessible
+      // through the copy of realm provided by RealmProvider
+      options.realm.beginTransaction();
+      try {
+        // $FlowFixMe
+        options.realm.deleteAll( );
+        // $FlowFixMe
+        options.realm.commitTransaction( );
+      } catch ( realmError ) {
+        // $FlowFixMe
+        options.realm.cancelTransaction( );
+        throw realmError;
+      }
+    }
     Realm.deleteFile( realmConfig );
   }
   // Delete the React Query cache. FWIW, this should *not* be optional, but
@@ -120,6 +136,15 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     const response = await api.get( "/users/api_token.json" );
 
+    // TODO this means that if the server doesn't respond with a successful
+    // token *for any reason* it just deletes the entire local database. That
+    // means if you tried to retrieve a new token during downtime, it would
+    // delete all of your unsynced observations
+    // TODO Also, I (kueda) am not really sure we want to delete all of realm
+    // just because auth failed. If you change your password on the website,
+    // you should be signed out in the app, BUT if you have unsynced
+    // observations shouldn't you have the opportunity to sign in again and
+    // upload them?
     if ( !response.ok ) {
       // this deletes the user JWT and saved login details when a user is not
       // actually signed in anymore for example, if they installed, deleted,
@@ -272,7 +297,6 @@ const authenticateUser = async (
   realm.write( ( ) => {
     realm?.create( "User", currentUser, "modified" );
   } );
-  realm.close( );
 
   return true;
 };
@@ -358,6 +382,11 @@ const getUserId = async (): Promise<string | null> => {
   return currentUserId;
 };
 
+const isCurrentUser = async ( username: string ): Promise<boolean> => {
+  const currentUserLogin = await getUsername( );
+  return username === currentUserLogin;
+};
+
 export {
   API_HOST,
   authenticateUser,
@@ -366,6 +395,7 @@ export {
   getUser,
   getUserId,
   getUsername,
+  isCurrentUser,
   isLoggedIn,
   registerUser,
   signOut

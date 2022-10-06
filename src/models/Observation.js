@@ -2,19 +2,12 @@ import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
 import Realm from "realm";
 
-// eslint-disable-next-line import/no-cycle
-import {
-  getJWTToken, getUserId, getUsername
-} from "../components/LoginSignUp/AuthenticationService";
 import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
-// eslint-disable-next-line import/no-cycle
 import Comment from "./Comment";
-// eslint-disable-next-line import/no-cycle
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
 import Taxon from "./Taxon";
-// eslint-disable-next-line import/no-cycle
 import User from "./User";
 
 // noting that methods like .toJSON( ) are only accessible when the model
@@ -153,17 +146,19 @@ class Observation extends Realm.Object {
       user
     };
     if ( !existingObs ) {
-      localObs._created_at = new Date( );
+      localObs._created_at = new Date( localObs.created_at );
+      if ( isNaN( localObs._created_at ) ) {
+        localObs._created_at = new Date( );
+      }
     }
     return localObs;
   }
 
   static async saveLocalObservationForUpload( obs, realm ) {
     // make sure local observations have user details for ObsDetail
-    const id = await getUserId( );
-    const user = id && realm.objectForPrimaryKey( "User", Number( id ) );
-    if ( user ) {
-      obs.user = user;
+    const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
+    if ( currentUser ) {
+      obs.user = currentUser;
     }
 
     const timestamps = {
@@ -194,7 +189,8 @@ class Observation extends Realm.Object {
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
 
     const obsToSave = {
-      ...obs,
+      // just ...obs causes problems when obs is a realm object
+      ...obs.toJSON( ),
       ...timestamps,
       taxon,
       observationPhotos,
@@ -247,8 +243,7 @@ class Observation extends Realm.Object {
     return { uri: mediumUri };
   }
 
-  static fetchObservationUpdates = async realm => {
-    const apiToken = await getJWTToken( false );
+  static fetchObservationUpdates = async ( realm, apiToken ) => {
     if ( !apiToken ) { return null; }
 
     const params = {
@@ -275,8 +270,7 @@ class Observation extends Realm.Object {
     }
   }
 
-  static markObservationUpdatesViewed = async id => {
-    const apiToken = await getJWTToken( false );
+  static markObservationUpdatesViewed = async ( id, apiToken ) => {
     if ( !apiToken ) { return null; }
 
     const params = { id };
@@ -289,12 +283,12 @@ class Observation extends Realm.Object {
     }
   }
 
-  static fetchRemoteObservations = async page => {
-    const username = await getUsername( );
-    if ( !username ) { return null; }
+  static fetchRemoteObservations = async ( page, realm ) => {
+    const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
+    if ( !currentUser ) { return null; }
 
     const params = {
-      user_id: username,
+      user_id: currentUser.id,
       page,
       per_page: 6,
       fields: Observation.FIELDS
@@ -326,18 +320,14 @@ class Observation extends Realm.Object {
 
   static updateLocalObservationsFromRemote = ( realm, results ) => {
     if ( results.length === 0 ) { return; }
-    results.forEach( obs => {
-      // if observation has been updated locally since the last sync, do not overwrite
-      // with observation attributes from server
-      const isUnsyncedObs = Observation.isUnsyncedObservation( realm, obs );
-      if ( isUnsyncedObs ) { return; }
-
-      const newObs = Observation.createOrModifyLocalObservation( obs, realm );
-      realm?.write( ( ) => {
-        // To upsert an object, call Realm.create() with the update mode set
-        // to modified. The operation either inserts a new object with the given primary key
-        // or updates an existing object that already has that primary key.
-        realm?.create( "Observation", newObs, "modified" );
+    const obsToUpsert = results.filter( obs => !Observation.isUnsyncedObservation( realm, obs ) );
+    realm.write( ( ) => {
+      obsToUpsert.forEach( obs => {
+        realm.create(
+          "Observation",
+          Observation.createOrModifyLocalObservation( obs, realm ),
+          "modified"
+        );
       } );
     } );
   }
@@ -360,9 +350,9 @@ class Observation extends Realm.Object {
     type: string,
     params: Object,
     apiEndpoint: Function,
-    realm: any
+    realm: any,
+    apiToken: string
   ) => {
-    const apiToken = await getJWTToken( false );
     const options = { api_token: apiToken };
 
     let response;
@@ -381,7 +371,8 @@ class Observation extends Realm.Object {
     apiSchemaMapper: Function,
     observationId: number,
     apiEndpoint: Function,
-    realm: any
+    realm: any,
+    apiToken: string
   ): Promise<any> => {
     let response;
     if ( evidence.length === 0 ) { return; }
@@ -389,15 +380,21 @@ class Observation extends Realm.Object {
       const currentEvidence = evidence[i];
       const evidenceUUID = currentEvidence.uuid;
       const params = apiSchemaMapper( observationId, currentEvidence );
-      response = Observation.uploadToServer( evidenceUUID, type, params, apiEndpoint, realm );
+      response = Observation.uploadToServer(
+        evidenceUUID,
+        type,
+        params,
+        apiEndpoint,
+        realm,
+        apiToken
+      );
     }
     // eslint-disable-next-line consistent-return
     return response;
   };
 
-  static uploadObservation = async obs => {
+  static uploadObservation = async ( obs, apiToken ) => {
     const obsToUpload = Observation.mapObservationForUpload( obs );
-    const apiToken = await getJWTToken( false );
     const options = { api_token: apiToken };
 
     // Remove all null values, b/c the API doesn't seem to like them for some
@@ -418,9 +415,9 @@ class Observation extends Realm.Object {
     try {
       response = await inatjs.observations.create( uploadParams, options );
     } catch ( uploadError ) {
-      const body = JSON.parse( await uploadError.response.text( ) );
-      console.error( "[ERROR] Failed to upload observation: ", JSON.stringify( body ) );
-      return body;
+      const errorText = await uploadError.response.text( );
+      uploadError.message = errorText;
+      throw uploadError;
     }
     return response;
   }
