@@ -7,7 +7,6 @@ import { Text, useWindowDimensions, View } from "react-native";
 import HTML from "react-native-render-html";
 
 import User from "../../models/User";
-import useCurrentUser from "../../sharedHooks/useCurrentUser";
 import { textStyles, viewStyles } from "../../styles/userProfile/userProfile";
 // import useNetworkSite from "./hooks/useNetworkSite";
 import Button from "../SharedComponents/Buttons/Button";
@@ -15,14 +14,13 @@ import CustomHeader from "../SharedComponents/CustomHeader";
 import UserIcon from "../SharedComponents/UserIcon";
 import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import updateRelationship from "./helpers/updateRelationship";
-import useUser from "./hooks/useUser";
+import useRemoteUser from "./hooks/useRemoteUser";
 import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
   const { userId } = params;
-  const currentUser = useCurrentUser( );
-  const { user } = useUser( userId );
+  const { user, currentUser } = useRemoteUser( userId );
   const { width } = useWindowDimensions( );
   // const site = useNetworkSite( );
 
@@ -79,7 +77,7 @@ const UserProfile = ( ): React.Node => {
         {showCount( user.journal_posts_count, t( "Journal-Posts" ) )}
       </View>
       <Text>{t( "BIO" )}</Text>
-      { user && user.description && user.description.length > 0 && (
+      { user?.description?.length > 0 && (
         <HTML
           contentWidth={width}
           source={{ html: user.description }}

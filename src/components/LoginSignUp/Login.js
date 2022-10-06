@@ -19,8 +19,9 @@ import {
 import {
   Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
+import { RealmContext } from "../../providers/contexts";
 import colors from "../../styles/colors";
 import {
   closeButton, imageStyles, textStyles, viewStyles
@@ -33,6 +34,8 @@ import {
   signOut
 } from "./AuthenticationService";
 
+const { useRealm } = RealmContext;
+
 const Login = ( ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -43,6 +46,7 @@ const Login = ( ): Node => {
   const [username, setUsername] = useState( null );
   const [visible, setVisible] = useState( false );
   const [loading, setLoading] = useState( false );
+  const realm = useRealm( );
 
   const showDialog = ( ) => setVisible( true );
   const hideDialog = ( ) => setVisible( false );
@@ -93,7 +97,10 @@ const Login = ( ): Node => {
   const queryClient = useQueryClient( );
 
   const onSignOut = async ( ) => {
-    await signOut( { deleteRealm: true, queryClient } );
+    await signOut( { realm, deleteRealm: true, queryClient } );
+    // TODO might be necessary to restart the app at this point. We just
+    // deleted the realm file on disk, but the RealmProvider may still have a
+    // copy of realm in local state
     setLoggedIn( false );
   };
 
@@ -199,7 +206,7 @@ const Login = ( ): Node => {
             onPress={() => navigation.goBack()}
             style={closeButton.close}
           >
-            <Icon name="close" size={35} />
+            <IconMaterial name="close" size={35} />
           </Pressable>
           {loggedIn ? logoutForm : loginForm}
         </ScrollView>

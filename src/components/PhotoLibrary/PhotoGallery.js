@@ -11,13 +11,16 @@ import {
 } from "react-native";
 import { Snackbar } from "react-native-paper";
 
-import { ObsEditContext } from "../../providers/contexts";
+import Observation from "../../models/Observation";
+import { ObsEditContext, RealmContext } from "../../providers/contexts";
 import { viewStyles } from "../../styles/photoLibrary/photoGallery";
 import Button from "../SharedComponents/Buttons/Button";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import PhotoGalleryImage from "./PhotoGalleryImage";
+
+const { useRealm } = RealmContext;
 
 const MAX_PHOTOS_ALLOWED = 20;
 
@@ -48,12 +51,12 @@ const PhotoGallery = ( ): Node => {
     photos: galleryPhotos
   } = useCameraRollPhotos( photoOptions, isScrolling, canRequestPhotos );
 
-  const { addPhotos } = useContext( ObsEditContext );
+  const { addPhotos, addObservations } = useContext( ObsEditContext );
   const [photoUris, setPhotoUris] = useState( [] );
   const [showAlert, setShowAlert] = useState( false );
   const { params } = useRoute( );
   const photos = params?.photos;
-  const editObs = params?.editObs;
+  const skipGroupPhotos = params?.skipGroupPhotos;
 
   // If this component is being rendered we have either already asked for
   // permissions in Android via a PermissionGate parent component, or the
@@ -108,11 +111,7 @@ const PhotoGallery = ( ): Node => {
 
   const navigation = useNavigation( );
 
-  const navToObsEdit = ( ) => {
-    if ( !selectedPhotos ) return;
-    addPhotos( selectedPhotos );
-    navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
-  };
+  const realm = useRealm( );
 
   const updateAlbum = album => {
     const newOptions = {
@@ -184,7 +183,24 @@ const PhotoGallery = ( ): Node => {
 
   const fetchMorePhotos = ( ) => setIsScrolling( true );
 
-  const navToGroupPhotos = ( ) => navigation.navigate( "GroupPhotos", { selectedPhotos } );
+  const navToNextScreen = async ( ) => {
+    if ( !selectedPhotos ) return;
+    if ( skipGroupPhotos ) {
+      addPhotos( selectedPhotos );
+      navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+      return;
+    }
+    if ( selectedPhotos.length === 1 ) {
+      const obs = selectedPhotos.map( photo => ( {
+        photos: [photo]
+      } ) );
+      const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs, realm );
+      addObservations( obsPhotos );
+      navigation.navigate( "ObsEdit" );
+      return;
+    }
+    navigation.navigate( "GroupPhotos", { selectedPhotos } );
+  };
 
   const renderEmptyList = ( ) => {
     if ( fetchingPhotos ) {
@@ -215,7 +231,7 @@ const PhotoGallery = ( ): Node => {
             level="primary"
             text="Import-X-photos"
             count={totalSelected || 0}
-            onPress={editObs ? navToObsEdit : navToGroupPhotos}
+            onPress={navToNextScreen}
             testID="PhotoGallery.createObsButton"
           />
         </View>

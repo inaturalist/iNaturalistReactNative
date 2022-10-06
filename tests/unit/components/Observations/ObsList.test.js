@@ -68,6 +68,11 @@ jest.mock( "@gorhom/bottom-sheet", () => ( {
   __esModule: true
 } ) );
 
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  default: ( ) => false,
+  __esModule: true
+} ) );
+
 const renderObsList = ( ) => render(
   <NavigationContainer>
     <ObsList />

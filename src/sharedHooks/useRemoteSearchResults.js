@@ -16,7 +16,6 @@ const useRemoteSearchResults = ( q: string, sources: string, fields: string ): A
           sources,
           fields: fields || "all"
         };
-        console.log( "searching inat: ", params );
         const { results } = await inatjs.search( params );
         const records = results.map( result => {
           if ( sources === "taxa" ) {
