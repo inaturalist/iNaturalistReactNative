@@ -26,7 +26,7 @@ const Footer = ( ): React.Node => {
       <Pressable onPress={navToExplore} accessibilityRole="link">
         <IconMaterial name="language" size={30} />
       </Pressable>
-      <CameraOptionsButton buttonType="footer" />
+      <CameraOptionsButton />
       <Pressable onPress={navToObsList} accessibilityRole="link">
         <IconMaterial name="person" size={30} />
       </Pressable>

@@ -12,13 +12,13 @@ import React, {
   useContext, useEffect, useRef, useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
-import { Headline, Menu } from "react-native-paper";
+import { Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import Photo from "../../models/Photo";
 import { ObsEditContext } from "../../providers/contexts";
 import useLoggedIn from "../../sharedHooks/useLoggedIn";
+import colors from "../../styles/colors";
 import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import { MAX_PHOTOS_ALLOWED } from "../Camera/StandardCamera";
 import MediaViewer from "../MediaViewer/MediaViewer";
@@ -27,6 +27,7 @@ import Button from "../SharedComponents/Buttons/Button";
 import EvidenceButton from "../SharedComponents/Buttons/EvidenceButton";
 import KebabMenu from "../SharedComponents/KebabMenu";
 import ScrollNoFooter from "../SharedComponents/ScrollNoFooter";
+import { Pressable, Text, View } from "../styledComponents";
 import DeleteObservationDialog from "./DeleteObservationDialog";
 import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
@@ -91,17 +92,17 @@ const ObsEdit = ( ): Node => {
   );
 
   const renderHeader = ( ) => (
-    <View style={viewStyles.headerRow}>
-      <HeaderBackButton onPress={handleBackButtonPress} />
+    <View className="flex-row justify-between">
+      <HeaderBackButton onPress={handleBackButtonPress} tintColor={colors.black} />
       {observations.length === 1
-        ? <Headline>{t( "New-Observation" )}</Headline>
+        ? <Text className="text-2xl">{t( "New-Observation" )}</Text>
         : (
-          <View style={viewStyles.multipleObsRow}>
-            <Pressable onPress={showPrevObservation} style={viewStyles.caret}>
+          <View className="flex-row items-center">
+            <Pressable onPress={showPrevObservation} className="w-16">
               {currentObsIndex !== 0 && <Icon name="keyboard-arrow-left" size={30} />}
             </Pressable>
-            <Text>{`${currentObsIndex + 1} of ${observations.length}`}</Text>
-            <Pressable onPress={showNextObservation} style={viewStyles.caret}>
+            <Text className="text-2xl">{`${currentObsIndex + 1} of ${observations.length}`}</Text>
+            <Pressable onPress={showNextObservation} className="w-16">
               {( currentObsIndex !== observations.length - 1 )
                 && <Icon name="keyboard-arrow-right" size={30} />}
             </Pressable>
@@ -187,15 +188,15 @@ const ObsEdit = ( ): Node => {
       </MediaViewerModal>
       <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
         {renderHeader( )}
-        <Headline style={textStyles.headerText}>{t( "Evidence" )}</Headline>
+        <Text className="text-2xl ml-4">{t( "Evidence" )}</Text>
         <EvidenceSection
           handleSelection={handleSelection}
           photoUris={photoUris}
           handleAddEvidence={addEvidence}
         />
-        <Headline style={textStyles.headerText}>{t( "Identification" )}</Headline>
+        <Text className="text-2xl ml-4 mt-4">{t( "Identification" )}</Text>
         <IdentificationSection />
-        <Headline style={textStyles.headerText}>{t( "Other-Data" )}</Headline>
+        <Text className="text-2xl ml-4">{t( "Other-Data" )}</Text>
         <OtherDataSection />
         <View style={viewStyles.buttonRow}>
           <Button
@@ -223,7 +224,7 @@ const ObsEdit = ( ): Node => {
           backdropComponent={renderBackdrop}
         >
           <View
-            style={viewStyles.addEvidenceBottomSheet}
+            className="items-center p-10"
             onLayout={( {
               nativeEvent: {
                 layout: { height }
@@ -232,14 +233,14 @@ const ObsEdit = ( ): Node => {
               setSnapPoint( height + 50 );
             }}
           >
-            <Headline>{t( "Add-evidence" )}</Headline>
+            <Text className="text-2xl ml-4 mb-4">{t( "Add-evidence" )}</Text>
             {disableAddingMoreEvidence
               && (
               <Text style={textStyles.evidenceWarning}>
                 {t( "You-can-only-upload-20-media" )}
               </Text>
               )}
-            <View style={viewStyles.evidenceButtonsContainer}>
+            <View className="flex-row w-full justify-around">
               <EvidenceButton
                 icon="perm-media"
                 handlePress={onImportPhoto}
@@ -257,7 +258,7 @@ const ObsEdit = ( ): Node => {
               />
             </View>
             <Text
-              style={textStyles.evidenceCancel}
+              className="underline mt-5"
               onPress={( () => bottomSheetModalRef.current?.dismiss() )}
             >
               {t( "Cancel" )}

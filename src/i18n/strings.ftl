@@ -7,6 +7,8 @@ Accept-community-identifications = Accept community identifications
 
 Account = Account
 
+Add-an-Identification = Add an Identification
+
 Add-Date-Time = Add Date/Time
 
 Add-evidence-of-an-organism = Add evidence of an organism. This helps others identify what you saw.

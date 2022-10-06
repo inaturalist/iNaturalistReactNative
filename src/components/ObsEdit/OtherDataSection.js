@@ -3,13 +3,12 @@
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { View } from "react-native";
 import { Button } from "react-native-paper";
 import RNPickerSelect from "react-native-picker-select";
 
 import { ObsEditContext } from "../../providers/contexts";
 import colors from "../../styles/colors";
-import { pickerSelectStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
+import { View } from "../styledComponents";
 import Notes from "./Notes";
 
 const OtherDataSection = ( ): Node => {
@@ -53,12 +52,11 @@ const OtherDataSection = ( ): Node => {
 
   return (
     <>
-      <View style={viewStyles.row}>
+      <View className="flex-row ml-3">
         <RNPickerSelect
           onValueChange={updateGeoprivacyStatus}
           items={geoprivacyOptions}
           useNativeAndroidPickerStyle={false}
-          style={pickerSelectStyles}
           value={currentObs.geoprivacy}
         >
           <Button
@@ -73,12 +71,11 @@ const OtherDataSection = ( ): Node => {
           </Button>
         </RNPickerSelect>
       </View>
-      <View style={viewStyles.row}>
+      <View className="flex-row ml-3">
         <RNPickerSelect
           onValueChange={updateCaptiveStatus}
           items={captiveOptions}
           useNativeAndroidPickerStyle={false}
-          style={pickerSelectStyles}
           value={currentObs.captive_flag}
         >
           <Button
