@@ -6,8 +6,6 @@ import type {
   ViewStyleProp
 } from "react-native/Libraries/StyleSheet/StyleSheet";
 
-import colors from "../colors";
-
 const pickerContainer = {
   alignItems: "center",
   flexDirection: "row",
@@ -30,15 +28,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  header: {
-    marginLeft: 10
-  },
-  text: {
-    margin: 10
-  },
-  disabled: {
-    color: colors.lightGray
-  }
+
 } );
 
 export {

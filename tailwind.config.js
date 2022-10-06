@@ -10,7 +10,11 @@ const NEUTRAL_DISABLED = "#D3D3D3";
 module.exports = {
   content: ["index.js", "./src/**/*.js"],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        22: "5.5rem"
+      }
+    },
     colors: {
       primary: "#77b300",
       secondary: "#979797",

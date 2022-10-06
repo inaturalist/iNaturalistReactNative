@@ -9,7 +9,6 @@ import Realm from "realm";
 import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
 import { ObsEditContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/photoLibrary/photoGallery";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotoImage from "./GroupPhotoImage";
 import GroupPhotosFooter from "./GroupPhotosFooter";
@@ -169,7 +168,6 @@ const GroupPhotos = ( ): Node => {
         observations={groupedPhotos.length}
       />
       <FlatList
-        contentContainerStyle={viewStyles.centerImages}
         data={groupedPhotos}
         initialNumToRender={4}
         keyExtractor={extractKey}

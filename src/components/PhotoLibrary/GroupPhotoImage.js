@@ -2,11 +2,10 @@
 
 import type { Node } from "react";
 import React from "react";
-import { Image, Pressable } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import colors from "../../styles/colors";
-import { imageStyles, viewStyles } from "../../styles/photoLibrary/photoGallery";
+import { Image, Pressable, View } from "../styledComponents";
 
 type Props = {
   item: Object,
@@ -32,29 +31,34 @@ const GroupPhotoImage = ( {
   const filterIconName = item.photos.length > 9 ? "filter-9-plus" : `filter-${item.photos.length}`;
 
   const unselectedIcon = ( ) => (
-    <IconMaterial
-      name="radio-button-off"
-      color={colors.white}
-      size={35}
-      style={viewStyles.selectionIcon}
-    />
+    <View className="absolute top-2 right-2">
+      <IconMaterial
+        name="radio-button-off"
+        color={colors.white}
+        size={35}
+      />
+    </View>
   );
+
   const selectedIcon = ( ) => (
-    <IconMaterial
-      name="check-circle"
-      color={colors.inatGreen}
-      size={35}
-      style={viewStyles.selectionIcon}
-    />
+    <View className="absolute top-2 right-2">
+      <IconMaterial
+        name="check-circle"
+        color={colors.inatGreen}
+        size={35}
+      />
+    </View>
   );
+
   const numberOfPhotosIcon = ( ) => (
-    <IconMaterial
-      // $FlowIgnore
-      name={filterIconName}
-      color={colors.white}
-      size={35}
-      style={viewStyles.numOfPhotosIcon}
-    />
+    <View className="absolute bottom-2 right-2">
+      <IconMaterial
+        // $FlowIgnore
+        name={filterIconName}
+        color={colors.white}
+        size={35}
+      />
+    </View>
   );
 
   const renderIcon = isSelected ? selectedIcon : unselectedIcon;
@@ -68,7 +72,7 @@ const GroupPhotoImage = ( {
       <Image
         testID="GroupPhotos.photo"
         source={imageUri}
-        style={imageStyles.imagesForGrouping}
+        className="h-44 w-44 mx-1"
       />
       {selectionMode && renderIcon( )}
       {hasMultiplePhotos && numberOfPhotosIcon( )}

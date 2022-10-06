@@ -7,14 +7,14 @@ import React, {
   useCallback, useContext, useEffect, useState
 } from "react";
 import {
-  ActivityIndicator, FlatList, Text, View
+  ActivityIndicator, FlatList
 } from "react-native";
 import { Snackbar } from "react-native-paper";
 
 import { ObsEditContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/photoLibrary/photoGallery";
 import Button from "../SharedComponents/Buttons/Button";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import { Text, View } from "../styledComponents";
 import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import PhotoGalleryImage from "./PhotoGalleryImage";
@@ -210,9 +210,9 @@ const PhotoGallery = ( ): Node => {
         ListEmptyComponent={renderEmptyList( )}
       />
       { selectedPhotos.length > 0 && (
-        <View style={viewStyles.createObsButton}>
+        <View className="h-16 mt-2 mx-4">
           <Button
-            level="primary"
+            level="secondary"
             text="Import-X-photos"
             count={totalSelected || 0}
             onPress={editObs ? navToObsEdit : navToGroupPhotos}
