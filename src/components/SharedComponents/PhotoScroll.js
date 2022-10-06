@@ -1,10 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { Image, Pressable, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
-import { imageStyles, textStyles } from "../../styles/sharedComponents/photoScroll";
+import { Image, Text } from "../styledComponents";
 
 type Props = {
   photos: Array<Object>
@@ -24,11 +23,11 @@ const PhotoScroll = ( { photos }: Props ): React.Node => {
         <Image
           testID="PhotoScroll.photo"
           source={{ uri: photoUrl }}
-          style={imageStyles.fullWidthImage}
+          className="object-contain w-screen h-52"
         />
-        <Pressable accessibilityRole="button">
-          <Text style={textStyles.license}>{photo.licenseCode || photo.license_code}</Text>
-        </Pressable>
+        <Text className="absolute bottom-5 right-5 text-white" accessibilityRole="button">
+          {photo.licenseCode || photo.license_code}
+        </Text>
       </>
     );
   };

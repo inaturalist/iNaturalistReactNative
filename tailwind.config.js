@@ -29,7 +29,9 @@ module.exports = {
       buttonWarning: WARNING,
       buttonWarningDisabled: WARNING_DISABLED,
       buttonNeutral: NEUTRAL,
-      buttonNeutralDisabled: NEUTRAL_DISABLED
+      buttonNeutralDisabled: NEUTRAL_DISABLED,
+      midGray: "#cccccc",
+      selectionGreen: "#C1FF00"
     }
   },
   plugins: []

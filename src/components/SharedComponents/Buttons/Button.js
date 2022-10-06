@@ -14,13 +14,19 @@ type ButtonProps = {
   testID?: string,
   loading?: boolean,
   style?: any,
+  className?: string
 }
 
 const setStyles = ( {
   level,
-  disabled
+  disabled,
+  className
 } ) => {
   let buttonClass = "rounded-3xl h-13";
+
+  if ( className ) {
+    buttonClass += ` ${className}`;
+  }
 
   if ( level === "warning" ) {
     buttonClass += buttonClass.concat( " ", "bg-buttonWarning" );
@@ -44,9 +50,9 @@ const setStyles = ( {
 };
 
 const Button = ( {
-  text, onPress, disabled, testID, count, level, loading, style
+  text, onPress, disabled, testID, count, level, loading, style, className
 }: ButtonProps ): React.Node => {
-  const { buttonClass } = setStyles( { disabled, level } );
+  const { buttonClass } = setStyles( { disabled, level, className } );
 
   return (
     <ButtonRNP

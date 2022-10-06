@@ -8,6 +8,7 @@ import {
   SafeAreaView as StyledSafeAreaView,
   ScrollView as StyledScrollView,
   Text as StyledText,
+  TextInput as StyledTextInput,
   View as StyledView
 } from "react-native";
 
@@ -22,6 +23,8 @@ const ScrollView = styled( StyledScrollView );
 // $FlowIgnore
 const Text = styled( StyledText );
 // $FlowIgnore
+const TextInput = styled( StyledTextInput );
+// $FlowIgnore
 const Pressable = styled( StyledPressable );
 // $FlowIgnore
 const Image = styled( StyledImage );
@@ -33,5 +36,6 @@ export {
   SafeAreaView,
   ScrollView,
   Text,
+  TextInput,
   View
 };

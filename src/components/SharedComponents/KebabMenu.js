@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Button, Menu } from "react-native-paper";
 
 import colors from "../../styles/colors";
-import { viewStyles } from "../../styles/sharedComponents/kebabMenu";
+import viewStyles from "../../styles/sharedComponents/kebabMenu";
 
 type Props = {
   children: any

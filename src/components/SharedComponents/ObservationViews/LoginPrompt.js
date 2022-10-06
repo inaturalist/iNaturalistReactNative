@@ -6,7 +6,6 @@ import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
 
-import viewStyles from "../../../styles/upload/uploadPrompt";
 import Button from "../Buttons/Button";
 
 const LoginPrompt = ( ): Node => {
@@ -18,7 +17,7 @@ const LoginPrompt = ( ): Node => {
       <Button
         level="neutral"
         text={t( "LOG-IN-TO-INATURALIST" )}
-        style={viewStyles.button}
+        className="mt-5"
         onPress={( ) => navigation.navigate( "login" )}
       />
     </>
