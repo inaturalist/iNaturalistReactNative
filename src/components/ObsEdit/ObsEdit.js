@@ -243,7 +243,7 @@ const ObsEdit = ( ): Node => {
   );
 
   const onImportPhoto = async () => {
-    navigation.navigate( "PhotoGallery", { photos: photoUris, editObs: true } );
+    navigation.navigate( "PhotoGallery", { photos: photoUris, skipGroupPhotos: true } );
 
     bottomSheetModalRef.current?.dismiss();
   };

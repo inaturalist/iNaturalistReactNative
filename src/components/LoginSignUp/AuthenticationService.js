@@ -10,7 +10,6 @@ import * as RNLocalize from "react-native-localize";
 import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
 
-// eslint-disable-next-line import/no-cycle
 import realmConfig from "../../models/index";
 
 // Base API domain can be overridden (in case we want to use staging URL) -
