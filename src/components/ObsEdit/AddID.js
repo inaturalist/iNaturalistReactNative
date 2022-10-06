@@ -16,7 +16,7 @@ import {
   View
 } from "react-native";
 import {
-  Button, Headline, Text, TextInput
+  Button, Headline, TextInput
 } from "react-native-paper";
 import uuid from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -25,6 +25,7 @@ import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
 import colors from "../../styles/colors";
 import { textStyles, viewStyles } from "../../styles/obsDetails/addID";
 import ViewNoFooter from "../SharedComponents/ViewNoFooter";
+import { Text } from "../styledComponents";
 import AddIDHeader from "./AddIDHeader";
 
 type Props = {
@@ -156,7 +157,9 @@ const AddID = ( { route }: Props ): React.Node => {
               </View>
             </View>
             )}
-            <Text>{t( "Search-Taxon-ID" )}</Text>
+            <Text className="color-grayText">
+              {t( "Search-for-a-taxon-to-add-an-identification" )}
+            </Text>
             <TextInput
               testID="SearchTaxon"
               left={SearchTaxonIcon}

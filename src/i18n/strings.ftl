@@ -7,6 +7,8 @@ Accept-community-identifications = Accept community identifications
 
 Account = Account
 
+Add-an-ID = Add an ID
+
 Add-an-Identification = Add an Identification
 
 Add-Date-Time = Add Date/Time
@@ -464,6 +466,8 @@ Search-for-a-location = Search for a location
 Search-for-a-project = Search for a project
 
 Search-for-a-taxon = Search for a taxon
+
+Search-for-a-taxon-to-add-an-identification = Search for a taxon to add an identification.
 
 Search-for-a-user = Search for a user
 

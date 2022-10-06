@@ -5,11 +5,10 @@ import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
-import { Headline } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
-import { viewStyles } from "../../styles/obsDetails/addID";
+import colors from "../../styles/colors";
+import { Pressable, Text, View } from "../styledComponents";
 
 type Props = {
   showEditComment: boolean,
@@ -21,9 +20,9 @@ const AddIDHeader = ( { showEditComment, onEditCommentPressed }: Props ): Node =
   const navigation = useNavigation( );
 
   return (
-    <View style={viewStyles.headerRow}>
-      <HeaderBackButton onPress={( ) => navigation.goBack( )} />
-      <Headline>{t( "Add-ID-Header" )}</Headline>
+    <View className="flex-row justify-between">
+      <HeaderBackButton onPress={( ) => navigation.goBack( )} tintColor={colors.black} />
+      <Text className="text-2xl self-center">{t( "Add-an-ID" )}</Text>
       {showEditComment
         ? (
           <Pressable
@@ -33,7 +32,7 @@ const AddIDHeader = ( { showEditComment, onEditCommentPressed }: Props ): Node =
             <IconMaterial name="textsms" size={25} />
           </Pressable>
         )
-        : <View />}
+        : <View className="w-16" />}
     </View>
   );
 };
