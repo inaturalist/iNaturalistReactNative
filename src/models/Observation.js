@@ -3,7 +3,6 @@ import uuid from "react-native-uuid";
 import Realm from "realm";
 
 import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
-import fetchUserLocation from "../sharedHelpers/fetchUserLocation";
 import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
@@ -36,13 +35,8 @@ class Observation extends Realm.Object {
   }
 
   static async new( obs ) {
-    // TODO remove this from the model. IMO this kind of system interaction
-    // should happen in the component
-    const latLng = await fetchUserLocation( );
-
     return {
       ...obs,
-      ...latLng,
       captive_flag: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
@@ -195,7 +189,8 @@ class Observation extends Realm.Object {
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
 
     const obsToSave = {
-      ...obs,
+      // just ...obs causes problems when obs is a realm object
+      ...obs.toJSON( ),
       ...timestamps,
       taxon,
       observationPhotos,
@@ -370,7 +365,7 @@ class Observation extends Realm.Object {
     return response;
   };
 
-  static uploadEvidence = (
+  static uploadEvidence = async (
     evidence: Array<Object>,
     type: string,
     apiSchemaMapper: Function,
@@ -378,7 +373,7 @@ class Observation extends Realm.Object {
     apiEndpoint: Function,
     realm: any,
     apiToken: string
-  ): any => {
+  ): Promise<any> => {
     let response;
     if ( evidence.length === 0 ) { return; }
     for ( let i = 0; i < evidence.length; i += 1 ) {

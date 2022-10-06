@@ -103,11 +103,11 @@ const App = ( ): React.Node => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <PaperProvider theme={theme}>
-          <GestureHandlerRootView style={viewStyles.container}>
-            <NavigationContainer>
-              <RealmProvider>
+      <RealmProvider>
+        <SafeAreaProvider>
+          <PaperProvider theme={theme}>
+            <GestureHandlerRootView style={viewStyles.container}>
+              <NavigationContainer>
                 <ObsEditProvider>
                   <Drawer.Navigator
                     screenOptions={screenOptions}
@@ -143,11 +143,11 @@ const App = ( ): React.Node => {
                     />
                   </Drawer.Navigator>
                 </ObsEditProvider>
-              </RealmProvider>
-            </NavigationContainer>
-          </GestureHandlerRootView>
-        </PaperProvider>
-      </SafeAreaProvider>
+              </NavigationContainer>
+            </GestureHandlerRootView>
+          </PaperProvider>
+        </SafeAreaProvider>
+      </RealmProvider>
     </QueryClientProvider>
   );
 };

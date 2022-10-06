@@ -262,6 +262,8 @@ Names = Names
 
 Native = Native
 
+Navigate-to-login-screen = Navigate to login screen
+
 # Header for nearby projects
 Nearby = Nearby
 

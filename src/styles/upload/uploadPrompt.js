@@ -7,8 +7,7 @@ import type {
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   button: {
-    marginTop: 13,
-    paddingVertical: 5
+    marginTop: 13
   }
 } );
 

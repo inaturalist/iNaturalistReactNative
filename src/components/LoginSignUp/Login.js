@@ -19,7 +19,7 @@ import {
 import {
   Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import { RealmContext } from "../../providers/contexts";
 import colors from "../../styles/colors";
@@ -206,7 +206,7 @@ const Login = ( ): Node => {
             onPress={() => navigation.goBack()}
             style={closeButton.close}
           >
-            <Icon name="close" size={35} />
+            <IconMaterial name="close" size={35} />
           </Pressable>
           {loggedIn ? logoutForm : loginForm}
         </ScrollView>

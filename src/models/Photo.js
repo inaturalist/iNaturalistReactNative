@@ -112,22 +112,23 @@ class Photo extends Realm.Object {
   static async deleteRemotePhoto( realm, uri ) {
     // right now it doesn't look like there's a way to delete a photo OR an observation photo from
     // api v2, so just going to worry about deleting locally for now
-    const photoToDelete = realm.objects( "Photo" ).filtered( `url == "${uri}"` )[0];
-
-    realm?.write( ( ) => {
-      realm?.delete( photoToDelete );
-    } );
+    const photoToDelete = Array.from( realm.objects( "Photo" ).filtered( `url == "${uri}"` ) )[0];
+    if ( photoToDelete ) {
+      realm?.write( ( ) => {
+        realm?.delete( photoToDelete );
+      } );
+    }
   }
 
   static async deleteLocalPhoto( realm, uri ) {
-    const photoToDelete = realm.objects( "Photo" ).filtered( `localFilePath == "${uri}"` )[0];
-
     // delete uri on disk
     Photo.deletePhotoFromDeviceStorage( uri );
-
-    realm?.write( ( ) => {
-      realm?.delete( photoToDelete );
-    } );
+    const photoToDelete = realm.objects( "Photo" ).filtered( `localFilePath == "${uri}"` )[0];
+    if ( photoToDelete ) {
+      realm?.write( ( ) => {
+        realm?.delete( photoToDelete );
+      } );
+    }
   }
 
   static async deletePhoto( realm, uri ) {
