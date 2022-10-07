@@ -4,7 +4,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
 import {
-  Animated, Dimensions
+  Animated,
+  Dimensions
 } from "react-native";
 
 import useLoggedIn from "../../../sharedHooks/useLoggedIn";
@@ -111,7 +112,13 @@ const ObservationViews = ( {
   const renderItem = ( { item } ) => (
     <ObsCard item={item} handlePress={navToObsDetails} />
   );
-  const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} />;
+  const renderGridItem = ( { item, index } ) => (
+    <GridItem
+      item={item}
+      index={index}
+      handlePress={navToObsDetails}
+    />
+  );
 
   const renderEmptyState = ( ) => {
     if ( name !== "Explore" && isLoggedIn === false ) {
@@ -188,7 +195,7 @@ const ObservationViews = ( {
           onEndReached={handleEndReached}
           ListFooterComponent={renderFooter}
           ListHeaderComponent={renderHeader}
-          ItemSeparatorComponent={renderItemSeparator}
+          ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
           stickyHeaderIndices={[0]}
           bounces={false}
           contentContainerStyle={{ minHeight: flatListHeight }}

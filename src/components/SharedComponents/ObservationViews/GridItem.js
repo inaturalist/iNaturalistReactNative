@@ -14,12 +14,23 @@ import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
 
 type Props = {
+  // position of this item in a list of items; not ideal, but it allows us to
+  // style grids appropriately
+  index?: number,
   item: Object,
   handlePress: Function,
+  // Number of columns in the grid; we need this to set the margins correctly
+  numColumns?: number,
   uri?: string
 }
 
-const GridItem = ( { item, handlePress, uri }: Props ): Node => {
+const GridItem = ( {
+  handlePress,
+  index,
+  item,
+  numColumns,
+  uri
+}: Props ): Node => {
   const onPress = ( ) => handlePress( item );
 
   const photo = item?.observationPhotos?.[0]?.photo;
@@ -38,17 +49,23 @@ const GridItem = ( { item, handlePress, uri }: Props ): Node => {
   return (
     <Pressable
       onPress={onPress}
-      className="px-1"
+      className={`w-1/2 px-4 py-2 ${( index || 0 ) % ( numColumns || 2 ) === 0 ? "pr-2" : "pl-2"}`}
       testID={`ObsList.gridItem.${item.uuid}`}
       accessibilityRole="link"
       accessibilityLabel="Navigate to observation details screen"
     >
       <View>
-        <Image
-          source={imageUri}
-          className="w-44 h-44"
-          testID="ObsList.photo"
-        />
+        {
+          imageUri && imageUri.uri
+            ? (
+              <Image
+                source={imageUri}
+                className="grow aspect-square"
+                testID="ObsList.photo"
+              />
+            )
+            : <View className="bg-black/50 grow aspect-square" />
+        }
         {hasMultiplePhotos && (
           <View className="z-100 absolute top-2 right-2">
             <FilterIcon
@@ -64,6 +81,10 @@ const GridItem = ( { item, handlePress, uri }: Props ): Node => {
       <ObsCardDetails item={item} view="grid" />
     </Pressable>
   );
+};
+
+GridItem.defaultProps = {
+  numColumns: 2
 };
 
 export default GridItem;
