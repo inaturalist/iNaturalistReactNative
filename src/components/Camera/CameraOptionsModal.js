@@ -1,13 +1,12 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
 import * as React from "react";
 import { IconButton } from "react-native-paper";
-
-import { ObsEditContext } from "../../providers/contexts";
-import colors from "../../styles/colors";
-import { Text, View } from "../styledComponents";
+import colors from "styles/colors";
 
 type Props = {
   closeModal: ( ) => void

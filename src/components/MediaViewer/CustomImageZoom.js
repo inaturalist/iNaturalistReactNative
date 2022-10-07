@@ -1,11 +1,10 @@
 // @flow
 
+import { Image, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef } from "react";
 import { Dimensions } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
-
-import { Image, View } from "../styledComponents";
 
 // lifted from this issue: https://github.com/ascoders/react-native-image-zoom/issues/42#issuecomment-734209924
 

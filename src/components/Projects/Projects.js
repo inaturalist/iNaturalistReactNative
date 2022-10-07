@@ -1,9 +1,9 @@
 // @flow
 
+import InputField from "components/SharedComponents/InputField";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import * as React from "react";
 
-import InputField from "../SharedComponents/InputField";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import ProjectSearch from "./ProjectSearch";
 import ProjectTabs from "./ProjectTabs";
 

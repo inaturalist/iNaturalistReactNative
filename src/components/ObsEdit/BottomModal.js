@@ -1,14 +1,13 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import PlaceholderText from "components/PlaceholderText";
+import Button from "components/SharedComponents/Buttons/Button";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { View } from "react-native";
-
-import { ObsEditContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/obsEdit/obsEdit";
-import PlaceholderText from "../PlaceholderText";
-import Button from "../SharedComponents/Buttons/Button";
+import { viewStyles } from "styles/obsEdit/obsEdit";
 
 const BottomModal = ( ): Node => {
   const navigation = useNavigation( );

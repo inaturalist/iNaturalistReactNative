@@ -1,8 +1,7 @@
 // @flow
 
+import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
-
-import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 
 const markAsReviewed = async ( id: number ) => {
   const apiToken = await getJWTToken( false );

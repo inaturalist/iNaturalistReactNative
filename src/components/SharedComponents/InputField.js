@@ -1,10 +1,9 @@
 // @flow
 
+import { TextInput } from "components/styledComponents";
 import * as React from "react";
 import { Platform } from "react-native";
-
-import colors from "../../styles/colors";
-import { TextInput } from "../styledComponents";
+import colors from "styles/colors";
 
 type Props = {
   handleTextChange: Function,

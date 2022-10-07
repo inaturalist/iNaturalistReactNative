@@ -1,13 +1,13 @@
 // @flow
 
+import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
+import { Text, View } from "components/styledComponents";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
+import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
 
-import { ObsEditContext } from "../../providers/contexts";
-import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
-import { Text, View } from "../styledComponents";
 import DatePicker from "./DatePicker";
 
 type Props = {

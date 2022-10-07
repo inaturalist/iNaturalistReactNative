@@ -5,8 +5,17 @@ import {
   BottomSheetTextInput
 } from "@gorhom/bottom-sheet";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import createIdentification from "components/Identify/helpers/createIdentification";
+import { getUser } from "components/LoginSignUp/AuthenticationService";
+import Button from "components/SharedComponents/Buttons/Button";
+import PhotoScroll from "components/SharedComponents/PhotoScroll";
+import QualityBadge from "components/SharedComponents/QualityBadge";
+import TranslatedText from "components/SharedComponents/TranslatedText";
+import UserIcon from "components/SharedComponents/UserIcon";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { formatISO } from "date-fns";
 import _ from "lodash";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
@@ -19,24 +28,14 @@ import {
 } from "react-native";
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import Realm from "realm";
+import { formatObsListTime } from "sharedHelpers/dateAndTime";
+import useApiToken from "sharedHooks/useApiToken";
+import colors from "styles/colors";
+import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
-import realmConfig from "../../models/index";
 import Observation from "../../models/Observation";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
-import { ObsEditContext } from "../../providers/contexts";
-import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
-import colors from "../../styles/colors";
-import { imageStyles, textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
-import createIdentification from "../Identify/helpers/createIdentification";
-import { getUser } from "../LoginSignUp/AuthenticationService";
-import Button from "../SharedComponents/Buttons/Button";
-import PhotoScroll from "../SharedComponents/PhotoScroll";
-import QualityBadge from "../SharedComponents/QualityBadge";
-import TranslatedText from "../SharedComponents/TranslatedText";
-import UserIcon from "../SharedComponents/UserIcon";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import ActivityTab from "./ActivityTab";
 import DataTab from "./DataTab";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
@@ -44,6 +43,8 @@ import createComment from "./helpers/createComment";
 import faveObservation from "./helpers/faveObservation";
 import useRemoteObservation from "./hooks/useRemoteObservation";
 import ObsDetailsHeader from "./ObsDetailsHeader";
+
+const { useRealm } = RealmContext;
 
 // this is getting triggered by passing dates, like _created_at, through
 // react navigation via the observation object. it doesn't seem to
@@ -66,6 +67,9 @@ const ObsDetails = ( ): Node => {
   const bottomSheetModalRef = useRef( null );
   const [addingComment, setAddingComment] = useState( false );
   const [snapPoint, setSnapPoint] = useState( 100 );
+  const apiToken = useApiToken( );
+
+  const realm = useRealm( );
 
   // Clear the comment in a timeout so it doesn't trigger a re-render of the
   // text input *after* the bottom sheet modal gets dismissed, b/c that seems
@@ -127,24 +131,24 @@ const ObsDetails = ( ): Node => {
 
   useEffect( () => {
     const markViewedLocally = async ( ) => {
-      const realm = await Realm.open( realmConfig );
+      if ( !apiToken ) return;
       const existingObs = realm?.objectForPrimaryKey( "Observation", observation.uuid );
       if ( !existingObs ) { return; }
       realm?.write( ( ) => {
         existingObs.viewed = true;
       } );
     };
-    if ( observation ) { setIds( observation.identifications.map( i => i ) ); }
+    if ( observation ) { setIds( Array.from( observation.identifications ) ); }
     if ( observation.viewed === false ) {
-      Observation.markObservationUpdatesViewed( observation.uuid );
+      Observation.markObservationUpdatesViewed( observation.uuid, apiToken );
       markViewedLocally( );
     }
-  }, [observation] );
+  }, [apiToken, observation, realm] );
 
   if ( !observation ) { return null; }
 
-  const comments = observation.comments.map( c => c );
-  const photos = _.compact( observation.observationPhotos.map( op => op.photo ) );
+  const comments = Array.from( observation.comments );
+  const photos = _.compact( Array.from( observation.observationPhotos ).map( op => op.photo ) );
   const { taxon, uuid, user } = observation;
 
   const onIDAdded = async identification => {
@@ -319,7 +323,7 @@ const ObsDetails = ( ): Node => {
               <View style={viewStyles.rowWithIcon}>
                 <Image
                   style={imageStyles.smallIcon}
-                  source={require( "../../images/ic_id.png" )}
+                  source={require( "images/ic_id.png" )}
                 />
                 <Text style={textStyles.idCommentCount}>{observation.identifications.length}</Text>
               </View>

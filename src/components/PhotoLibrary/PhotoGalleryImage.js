@@ -1,11 +1,10 @@
 // @flow
 
+import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-
-import colors from "../../styles/colors";
-import { Image, Pressable, View } from "../styledComponents";
+import colors from "styles/colors";
 
 type Props = {
   uri: string,

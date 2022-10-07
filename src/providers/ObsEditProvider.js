@@ -2,14 +2,14 @@
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useMemo, useState } from "react";
-import Realm from "realm";
+import useApiToken from "sharedHooks/useApiToken";
 
-import realmConfig from "../models/index";
 import Observation from "../models/Observation";
 import ObservationPhoto from "../models/ObservationPhoto";
-import { ObsEditContext } from "./contexts";
-import saveLocalObservation from "./uploadHelpers/saveLocalObservation";
+import { ObsEditContext, RealmContext } from "./contexts";
 import uploadObservation from "./uploadHelpers/uploadObservation";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   children: any
@@ -19,20 +19,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const [currentObsIndex, setCurrentObsIndex] = useState( 0 );
   const [observations, setObservations] = useState( [] );
+  const realm = useRealm( );
+  const apiToken = useApiToken( );
 
   const currentObs = observations[currentObsIndex];
 
   const addSound = async ( ) => {
     const newObs = await Observation.createObsWithSounds( );
-    setObservations( [newObs] );
-  };
-
-  const addPhotos = async photos => {
-    const realm = await Realm.open( realmConfig );
-    const obsPhotos = await Promise.all( photos.map(
-      async photo => ObservationPhoto.new( photo, realm )
-    ) );
-    const newObs = await Observation.createObsWithPhotos( obsPhotos );
     setObservations( [newObs] );
   };
 
@@ -44,6 +37,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const obsEditValue = useMemo( ( ) => {
+    const addPhotos = async photos => {
+      const obsPhotos = await Promise.all( photos.map(
+        async photo => ObservationPhoto.new( photo, realm )
+      ) );
+      const newObs = await Observation.createObsWithPhotos( obsPhotos );
+      setObservations( [newObs] );
+    };
+
     const updateObservationKey = ( key, value ) => {
       const updatedObs = observations.map( ( obs, index ) => {
         if ( index === currentObsIndex ) {
@@ -51,6 +52,19 @@ const ObsEditProvider = ( { children }: Props ): Node => {
             ...obs,
             // $FlowFixMe
             [key]: value
+          };
+        }
+        return obs;
+      } );
+      setObservations( updatedObs );
+    };
+
+    const updateObservationKeys = keysAndValues => {
+      const updatedObs = observations.map( ( obs, index ) => {
+        if ( index === currentObsIndex ) {
+          return {
+            ...obs,
+            ...keysAndValues
           };
         }
         return obs;
@@ -83,10 +97,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const openSavedObservation = async savedUUID => {
-      const realm = await Realm.open( realmConfig );
       const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
-      const plainObject = obs.toJSON( );
-      setObservations( [plainObject] );
+      setObservations( [obs] );
       return obs;
     };
 
@@ -103,15 +115,21 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const saveObservation = async ( ) => {
-      const localObs = await saveLocalObservation( currentObs );
+      const localObs = await Observation.saveLocalObservationForUpload( currentObs, realm );
       if ( localObs ) {
         setNextScreen( );
       }
     };
 
     const saveAndUploadObservation = async ( ) => {
-      const localObs = await saveLocalObservation( currentObs );
-      uploadObservation( localObs );
+      const localObs = await Observation.saveLocalObservationForUpload( currentObs, realm );
+      if ( !realm ) {
+        throw new Error( "Gack, tried to save an observation without realm!" );
+      }
+      if ( !apiToken ) {
+        throw new Error( "Gack, tried to save an observation without API token!" );
+      }
+      uploadObservation( localObs, realm, apiToken );
       if ( localObs ) {
         setNextScreen( );
       }
@@ -131,13 +149,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setCurrentObsIndex,
       setObservations,
       updateObservationKey,
+      updateObservationKeys,
       updateTaxon
     };
   }, [
     currentObs,
     currentObsIndex,
     navigation,
-    observations
+    observations,
+    realm,
+    apiToken
   ] );
 
   return (

@@ -1,17 +1,16 @@
 // @flow
 
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-
-import { Pressable, View } from "../../styledComponents";
 
 type Props = {
   isExplore: boolean,
   isLoggedIn: ?boolean,
   syncObservations: Function,
   setView: Function
-}
+  }
 
 const Toolbar = ( {
   isExplore,

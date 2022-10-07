@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import Geolocation from "react-native-geolocation-service";
 import { PERMISSIONS, request } from "react-native-permissions";
-
-import fetchPlaceName from "../sharedHelpers/fetchPlaceName";
+import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 
 const useUserLocation = ( ): Object => {
   const [latLng, setLatLng] = useState( null );

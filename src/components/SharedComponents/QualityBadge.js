@@ -1,9 +1,8 @@
 // @flow
 
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
-
-import { Text, View } from "../styledComponents";
 
 type Props = {
   qualityGrade: ?string,

@@ -235,7 +235,7 @@ PODS:
     - React
   - react-native-image-picker (4.8.4):
     - React-Core
-  - react-native-image-resizer (1.4.5):
+  - react-native-image-resizer (3.0.0):
     - React-Core
   - react-native-maps (0.31.1):
     - React-Core
@@ -404,7 +404,7 @@ DEPENDENCIES:
   - react-native-geocoder-reborn (from `../node_modules/react-native-geocoder-reborn`)
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
-  - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
+  - "react-native-image-resizer (from `../node_modules/@bam.tech/react-native-image-resizer`)"
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -494,7 +494,7 @@ EXTERNAL SOURCES:
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-image-resizer:
-    :path: "../node_modules/react-native-image-resizer"
+    :path: "../node_modules/@bam.tech/react-native-image-resizer"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-netinfo:
@@ -589,7 +589,7 @@ SPEC CHECKSUMS:
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
   react-native-geolocation-service: c0efb872258ed9240f1003a70fca9e9757e5c785
   react-native-image-picker: cffb727cf2f59bd5c0408e30b3dbe0b935f88835
-  react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
+  react-native-image-resizer: f96ab7c279ab896b01bee53728bd1e2cd1ba649b
   react-native-maps: 8b8bfada2c86205a7f5a07dd1f92f29b33ea83aa
   react-native-netinfo: 3671b091c4843fda5e153612866ef4024b8f5d62
   react-native-safe-area-context: f98b0b16d1546d208fc293b4661e3f81a895afd9

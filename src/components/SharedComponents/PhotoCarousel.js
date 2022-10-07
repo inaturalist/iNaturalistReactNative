@@ -1,5 +1,6 @@
 // @flow
 
+import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
@@ -7,9 +8,7 @@ import {
 } from "react-native";
 import { Avatar, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
-
-import colors from "../../styles/colors";
-import { Image, Pressable, View } from "../styledComponents";
+import colors from "styles/colors";
 
 type Props = {
   emptyComponent?: Function,

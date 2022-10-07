@@ -1,11 +1,10 @@
 // @flow
 
+import Button from "components/SharedComponents/Buttons/Button";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
-
-import Button from "../Buttons/Button";
 
 type Props = {
   numOfUnuploadedObs: number,

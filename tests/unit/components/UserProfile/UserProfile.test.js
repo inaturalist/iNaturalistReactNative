@@ -1,14 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
+import UserProfile from "components/UserProfile/UserProfile";
 import React from "react";
 
-import UserProfile from "../../../../src/components/UserProfile/UserProfile";
 import factory from "../../../factory";
 
 const testUser = factory( "RemoteUser" );
 const mockExpected = testUser;
 
-jest.mock( "../../../../src/components/UserProfile/hooks/useUser", ( ) => ( {
+jest.mock( "../../../../src/components/UserProfile/hooks/useRemoteUser", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
     user: mockExpected

@@ -1,13 +1,18 @@
 // @flow
 
+import { RealmContext } from "providers/contexts";
+import uploadObservation from "providers/uploadHelpers/uploadObservation";
 import { useCallback, useEffect, useState } from "react";
+import useApiToken from "sharedHooks/useApiToken";
 
-import uploadObservation from "../../../providers/uploadHelpers/uploadObservation";
+const { useRealm } = RealmContext;
 
 const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [cancelUpload, setCancelUpload] = useState( false );
   const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
   const [status, setStatus] = useState( null );
+  const realm = useRealm( );
+  const apiToken = useApiToken( );
 
   const handleClosePress = useCallback( ( ) => {
     setCancelUpload( true );
@@ -16,7 +21,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
 
   useEffect( ( ) => {
     const upload = async obs => {
-      const response = await uploadObservation( obs );
+      if ( !apiToken ) return;
+      const response = await uploadObservation( obs, realm, apiToken );
       if ( response.results ) { return; }
       if ( response.status !== 200 ) {
         const error = JSON.parse( response );
@@ -35,7 +41,13 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     if ( !cancelUpload ) {
       upload( allObsToUpload[currentUploadIndex] );
     }
-  }, [cancelUpload, currentUploadIndex, allObsToUpload] );
+  }, [
+    allObsToUpload,
+    apiToken,
+    cancelUpload,
+    currentUploadIndex,
+    realm
+  ] );
 
   return {
     handleClosePress,

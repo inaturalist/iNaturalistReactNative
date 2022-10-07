@@ -1,11 +1,10 @@
 // @flow
 
+import { SafeAreaView, ScrollView } from "components/styledComponents";
 import * as React from "react";
 import {
   Keyboard, StatusBar
 } from "react-native";
-
-import { SafeAreaView, ScrollView } from "../styledComponents";
 
 type Props = {
   children: React.Node,

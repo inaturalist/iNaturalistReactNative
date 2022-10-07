@@ -1,14 +1,13 @@
 // @flow
 
+import Button from "components/SharedComponents/Buttons/Button";
+import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
+import KebabMenu from "components/SharedComponents/KebabMenu";
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Menu } from "react-native-paper";
-
-import Button from "../SharedComponents/Buttons/Button";
-import SecondaryCTAButton from "../SharedComponents/Buttons/SecondaryCTAButton";
-import KebabMenu from "../SharedComponents/KebabMenu";
-import { Text, View } from "../styledComponents";
 
 type Props = {
   combinePhotos: Function,

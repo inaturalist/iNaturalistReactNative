@@ -1,9 +1,8 @@
 // @flow
 
+import { Image, Text } from "components/styledComponents";
 import * as React from "react";
 import { FlatList } from "react-native-gesture-handler";
-
-import { Image, Text } from "../styledComponents";
 
 type Props = {
   photos: Array<Object>

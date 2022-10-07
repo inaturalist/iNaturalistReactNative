@@ -1,9 +1,9 @@
 // @flow strict-local
 
+import { SafeAreaView } from "components/styledComponents";
 import * as React from "react";
 import { StatusBar } from "react-native";
 
-import { SafeAreaView } from "../styledComponents";
 import Footer from "./Footer";
 
 type Props = {

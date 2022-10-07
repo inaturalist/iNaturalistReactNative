@@ -1,11 +1,11 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import { viewStyles } from "styles/sharedComponents/footer";
 
-import { viewStyles } from "../../styles/sharedComponents/footer";
-import { Pressable, View } from "../styledComponents";
 import CameraOptionsButton from "./Buttons/CameraOptionsButton";
 
 const Footer = ( ): React.Node => {

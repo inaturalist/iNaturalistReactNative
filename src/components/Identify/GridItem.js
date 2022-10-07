@@ -1,18 +1,18 @@
 // @flow
 
+import Button from "components/SharedComponents/Buttons/Button";
 import type { Node } from "react";
 import React, { useState } from "react";
 import {
   ActivityIndicator, Image, Pressable, Text, View
 } from "react-native";
-
-import Observation from "../../models/Observation";
 import {
   imageStyles,
   textStyles,
   viewStyles
-} from "../../styles/sharedComponents/observationViews/gridItem";
-import Button from "../SharedComponents/Buttons/Button";
+} from "styles/sharedComponents/observationViews/gridItem";
+
+import Observation from "../../models/Observation";
 import createIdentification from "./helpers/createIdentification";
 
 type Props = {

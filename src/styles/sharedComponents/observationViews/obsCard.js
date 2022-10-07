@@ -4,9 +4,18 @@ import { Dimensions, StyleSheet } from "react-native";
 import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import colors from "styles/colors";
 
-const { width } = Dimensions.get( "screen" );
+const { width, height } = Dimensions.get( "screen" );
+
+const imageWidth = width / 2 - 20;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
+  icon: {
+    marginRight: 5
+  },
+  center: {
+    top: height / 3,
+    alignItems: "center"
+  },
   imageBackground: {
     width: 75,
     height: 75,
@@ -15,27 +24,34 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     marginHorizontal: 20
   },
   obsDetailsColumn: {
-    width: width / 3
+    width: 200
   },
   row: {
     flexDirection: "row",
     flexWrap: "nowrap",
     marginVertical: 10
   },
-  searchBar: {
-    marginHorizontal: 10
+  iconRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    alignItems: "center"
+  },
+  photoContainer: {
+    backgroundColor: colors.black,
+    height: 200
+  },
+  photoStatRow: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    justifyContent: "space-between",
+    position: "absolute",
+    bottom: 80,
+    width: imageWidth,
+    backgroundColor: colors.white
   }
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  text: { },
-  greenText: {
-    color: colors.inatGreen
-  },
-  explainerText: {
-    marginHorizontal: 20,
-    marginBottom: 20
-  }
 } );
 
 export {

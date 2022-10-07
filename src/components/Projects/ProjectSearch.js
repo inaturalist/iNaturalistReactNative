@@ -1,10 +1,10 @@
 // @flow
 
+import PlaceholderText from "components/PlaceholderText";
 import * as React from "react";
 import { Pressable } from "react-native";
+import useRemoteSearchResults from "sharedHooks/useRemoteSearchResults";
 
-import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import PlaceholderText from "../PlaceholderText";
 import ProjectList from "./ProjectList";
 
 type Props = {

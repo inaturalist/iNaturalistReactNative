@@ -1,9 +1,8 @@
 // @flow
 
+import { SafeAreaView } from "components/styledComponents";
 import * as React from "react";
 import { StatusBar } from "react-native";
-
-import { SafeAreaView } from "../styledComponents";
 
 type Props = {
   children: React.Node,

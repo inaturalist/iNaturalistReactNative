@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render, within } from "@testing-library/react-native";
+import ObsList from "components/Observations/ObsList";
 import React from "react";
 
-import ObsList from "../../../../src/components/Observations/ObsList";
 import factory from "../../../factory";
 
 const mockObservations = [
@@ -65,6 +65,11 @@ jest.mock( "@react-navigation/native", ( ) => {
 // https://github.com/gorhom/react-native-bottom-sheet/issues/932#issuecomment-1137645269
 jest.mock( "@gorhom/bottom-sheet", () => ( {
   ...require( "@gorhom/bottom-sheet/mock" ),
+  __esModule: true
+} ) );
+
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  default: ( ) => false,
   __esModule: true
 } ) );
 

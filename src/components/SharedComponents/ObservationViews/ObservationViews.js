@@ -1,16 +1,17 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import BottomSheet from "components/SharedComponents/BottomSheet";
+import Map from "components/SharedComponents/Map";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   Animated, Dimensions
 } from "react-native";
+import useLoggedIn from "sharedHooks/useLoggedIn";
 
-import useLoggedIn from "../../../sharedHooks/useLoggedIn";
-import { View } from "../../styledComponents";
-import BottomSheet from "../BottomSheet";
-import Map from "../Map";
 import EmptyList from "./EmptyList";
 import GridItem from "./GridItem";
 import useUploadStatus from "./hooks/useUploadStatus";
@@ -117,7 +118,7 @@ const ObservationViews = ( {
     if ( name !== "Explore" && isLoggedIn === false ) {
       return <EmptyList />;
     }
-    return null;
+    return <ActivityIndicator />;
   };
 
   const renderBottomSheet = ( ) => {

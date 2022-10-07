@@ -2,13 +2,13 @@
 
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
+import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import RNPickerSelect from "react-native-picker-select";
+import colors from "styles/colors";
+import { viewStyles } from "styles/photoLibrary/photoGalleryHeader";
 
-import colors from "../../styles/colors";
-import { viewStyles } from "../../styles/photoLibrary/photoGalleryHeader";
-import { Text, View } from "../styledComponents";
 import usePhotoAlbums from "./hooks/usePhotoAlbums";
 
 type Props = {

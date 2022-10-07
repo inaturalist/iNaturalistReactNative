@@ -1,17 +1,16 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import Button from "components/SharedComponents/Buttons/Button";
+import { Text, View } from "components/styledComponents";
+import { iconicTaxaIds, iconicTaxaNames } from "dictionaries/iconicTaxaIds";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList } from "react-native";
 import { Avatar, useTheme } from "react-native-paper";
-
-import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
-import { ObsEditContext } from "../../providers/contexts";
-import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
-import Button from "../SharedComponents/Buttons/Button";
-import { Text, View } from "../styledComponents";
+import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 
 const IdentificationSection = ( ): Node => {
   const {

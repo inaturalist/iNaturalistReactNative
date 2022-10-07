@@ -1,10 +1,10 @@
 // @flow
 
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Animated } from "react-native";
 
-import { View } from "../../styledComponents";
 import LoggedOutCard from "./LoggedOutCard";
 import Toolbar from "./Toolbar";
 import UserCard from "./UserCard";

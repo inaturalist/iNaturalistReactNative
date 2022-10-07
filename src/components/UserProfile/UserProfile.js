@@ -1,28 +1,27 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
+// import useNetworkSite from "./hooks/useNetworkSite";
+import Button from "components/SharedComponents/Buttons/Button";
+import CustomHeader from "components/SharedComponents/CustomHeader";
+import UserIcon from "components/SharedComponents/UserIcon";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+// import useNetworkSite from "./hooks/useNetworkSite";
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
 import { useWindowDimensions } from "react-native";
 import HTML from "react-native-render-html";
 
 import User from "../../models/User";
-import useCurrentUser from "../../sharedHooks/useCurrentUser";
-// import useNetworkSite from "./hooks/useNetworkSite";
-import Button from "../SharedComponents/Buttons/Button";
-import CustomHeader from "../SharedComponents/CustomHeader";
-import UserIcon from "../SharedComponents/UserIcon";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import { Text, View } from "../styledComponents";
 import updateRelationship from "./helpers/updateRelationship";
-import useUser from "./hooks/useUser";
+import useRemoteUser from "./hooks/useRemoteUser";
 import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
   const { userId } = params;
-  const currentUser = useCurrentUser( );
-  const { user } = useUser( userId );
+  const { user, currentUser } = useRemoteUser( userId );
   const { width } = useWindowDimensions( );
   // const site = useNetworkSite( );
 

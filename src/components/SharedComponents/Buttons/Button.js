@@ -1,9 +1,8 @@
 // @flow
 
+import TranslatedText from "components/SharedComponents/TranslatedText";
 import * as React from "react";
 import { Button as ButtonRNP } from "react-native-paper";
-
-import TranslatedText from "../TranslatedText";
 
 type ButtonProps = {
   text: string,

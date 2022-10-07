@@ -1,8 +1,8 @@
 // @flow
 
 import inatjs from "inaturalistjs";
+import MESSAGE_FIELDS from "providers/fields";
 
-import MESSAGE_FIELDS from "../providers/fields";
 import handleError from "./error";
 
 const searchMessages = async ( options: Object ): Promise<any> => {

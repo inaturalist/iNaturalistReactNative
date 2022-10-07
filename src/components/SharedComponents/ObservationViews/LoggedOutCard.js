@@ -1,11 +1,10 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { Pressable, Text } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
-import { Pressable, Text } from "../../styledComponents";
 
 type Props = {
   numOfUnuploadedObs: number

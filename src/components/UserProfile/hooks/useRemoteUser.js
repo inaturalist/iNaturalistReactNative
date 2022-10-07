@@ -19,7 +19,7 @@ const USER_FIELDS = {
   site: true
 };
 
-const useUser = ( userId: number ): Object => {
+const useRemoteUser = ( userId: number ): Object => {
   const [user, setUser] = useState( null );
 
   useEffect( ( ) => {
@@ -53,4 +53,4 @@ const useUser = ( userId: number ): Object => {
   };
 };
 
-export default useUser;
+export default useRemoteUser;

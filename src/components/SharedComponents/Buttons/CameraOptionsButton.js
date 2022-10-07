@@ -1,11 +1,10 @@
 // @flow
 
+import CameraOptionsModal from "components/Camera/CameraOptionsModal";
+import Modal from "components/SharedComponents/Modal";
 import * as React from "react";
 import { Pressable } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-
-import CameraOptionsModal from "../../Camera/CameraOptionsModal";
-import Modal from "../Modal";
 
 const CameraOptionsButton = ( ): React.Node => {
   const [showModal, setModal] = React.useState( false );

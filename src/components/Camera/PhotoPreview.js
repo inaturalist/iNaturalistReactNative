@@ -1,14 +1,13 @@
 // @flow
 
+import MediaViewer from "components/MediaViewer/MediaViewer";
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
+import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
+import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-
-import MediaViewer from "../MediaViewer/MediaViewer";
-import MediaViewerModal from "../MediaViewer/MediaViewerModal";
-import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
-import { Text, View } from "../styledComponents";
 
 type Props = {
   photoUris: Array<string>,

@@ -2,15 +2,14 @@
 
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Button, Headline } from "react-native-paper";
-
-import { ObsEditContext } from "../../providers/contexts";
-import colors from "../../styles/colors";
-import { viewStyles } from "../../styles/obsDetails/obsDetailsHeader";
+import colors from "styles/colors";
+import { viewStyles } from "styles/obsDetails/obsDetailsHeader";
 
 type Props = {
   observationUUID: string

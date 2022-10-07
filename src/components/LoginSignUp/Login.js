@@ -2,6 +2,13 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
+import Button from "components/SharedComponents/Buttons/Button";
+import {
+  Image, KeyboardAvoidingView, Pressable,
+  SafeAreaView,
+  ScrollView, View
+} from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,21 +21,17 @@ import {
   Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import colors from "styles/colors";
+import viewStyles from "styles/login/login";
 
-import colors from "../../styles/colors";
-import viewStyles from "../../styles/login/login";
-import Button from "../SharedComponents/Buttons/Button";
-import {
-  Image, KeyboardAvoidingView, Pressable,
-  SafeAreaView,
-  ScrollView, View
-} from "../styledComponents";
 import {
   authenticateUser,
   getUsername,
   isLoggedIn,
   signOut
 } from "./AuthenticationService";
+
+const { useRealm } = RealmContext;
 
 const Login = ( ): Node => {
   const { t } = useTranslation( );
@@ -40,6 +43,7 @@ const Login = ( ): Node => {
   const [username, setUsername] = useState( null );
   const [visible, setVisible] = useState( false );
   const [loading, setLoading] = useState( false );
+  const realm = useRealm( );
 
   const showDialog = ( ) => setVisible( true );
   const hideDialog = ( ) => setVisible( false );
@@ -90,7 +94,10 @@ const Login = ( ): Node => {
   const queryClient = useQueryClient( );
 
   const onSignOut = async ( ) => {
-    await signOut( { deleteRealm: true, queryClient } );
+    await signOut( { realm, deleteRealm: true, queryClient } );
+    // TODO might be necessary to restart the app at this point. We just
+    // deleted the realm file on disk, but the RealmProvider may still have a
+    // copy of realm in local state
     setLoggedIn( false );
   };
 
@@ -138,7 +145,7 @@ const Login = ( ): Node => {
       <Image
         className="self-center w-32 h-32"
         resizeMode="contain"
-        source={require( "../../images/inat_logo.png" )}
+        source={require( "images/inat_logo.png" )}
       />
 
       <Text className="text-2xl self-center mt-5">{t( "Login-header" )}</Text>

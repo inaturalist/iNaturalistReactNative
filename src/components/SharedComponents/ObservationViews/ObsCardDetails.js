@@ -1,12 +1,11 @@
 // @flow
 
+import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
+import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-
-import { formatObsListTime } from "../../../sharedHelpers/dateAndTime";
-import checkCamelAndSnakeCase from "../../ObsDetails/helpers/checkCamelAndSnakeCase";
-import { Text, View } from "../../styledComponents";
+import { formatObsListTime } from "sharedHelpers/dateAndTime";
 
 type Props = {
   item: Object,

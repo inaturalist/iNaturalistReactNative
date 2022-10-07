@@ -561,9 +561,9 @@ Which-traditional-projects-can-add-your-observations = Which traditional project
 Who-can-add-observation-fields-to-my-observations = Who can add observation fields to my observations?
 
 # Banner above Explore Map showing total number of results
-X-Observations = {$observationCount ->
+X-Observations = {$count ->
     [one] 1 Observation
-    *[other] {$observationCount} Observations
+    *[other] {$count} Observations
 }
 
 # Displays number of photos attached to an observation in the Media Viewer

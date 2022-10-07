@@ -5,14 +5,12 @@ import type { ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet
 import colors from "styles/colors";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
-  shadow: {
-    shadowColor: colors.black,
-    shadowOffset: {
-      width: 0,
-      height: -3
-    },
-    shadowOpacity: 0.20,
-    shadowRadius: 2
+  infiniteScroll: {
+    height: 100,
+    alignItems: "center",
+    backgroundColor: colors.white,
+    borderBottomColor: colors.lightGray,
+    borderBottomWidth: 1
   }
 } );
 

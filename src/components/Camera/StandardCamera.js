@@ -1,23 +1,23 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { Pressable, Text, View } from "components/styledComponents";
 import { t } from "i18next";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
 } from "react";
 import { Avatar, Snackbar, useTheme } from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
-import Realm from "realm";
+import colors from "styles/colors";
 
-import realmConfig from "../../models/index";
 import Photo from "../../models/Photo";
-import { ObsEditContext } from "../../providers/contexts";
-import colors from "../../styles/colors";
-import { Pressable, Text, View } from "../styledComponents";
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
+
+const { useRealm } = RealmContext;
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
@@ -40,6 +40,8 @@ const StandardCamera = ( ): Node => {
   const disallowAddingPhotos = photoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
 
+  const realm = useRealm( );
+
   const takePhoto = async ( ) => {
     setSavingPhoto( true );
     try {
@@ -49,7 +51,6 @@ const StandardCamera = ( ): Node => {
         return;
       }
       const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-      const realm = await Realm.open( realmConfig );
       const uri = await Photo.savePhoto( realm, cameraPhoto );
 
       setPhotoUris( photoUris.concat( [uri] ) );

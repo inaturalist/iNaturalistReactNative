@@ -1,22 +1,22 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import PlaceholderText from "components/PlaceholderText";
+import Button from "components/SharedComponents/Buttons/Button";
+import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
+import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import {
   ActivityIndicator, FlatList, Image, Pressable, Text, View
 } from "react-native";
 import { Searchbar } from "react-native-paper";
+import useLoggedIn from "sharedHooks/useLoggedIn";
+import useRemoteObsEditSearchResults from "sharedHooks/useRemoteSearchResults";
+import { textStyles, viewStyles } from "styles/obsEdit/cvSuggestions";
 
-import { ObsEditContext } from "../../providers/contexts";
-import useLoggedIn from "../../sharedHooks/useLoggedIn";
-import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import { textStyles, viewStyles } from "../../styles/obsEdit/cvSuggestions";
-import PlaceholderText from "../PlaceholderText";
-import Button from "../SharedComponents/Buttons/Button";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import useCVSuggestions from "./hooks/useCVSuggestions";
 
 const CVSuggestions = ( ): Node => {
