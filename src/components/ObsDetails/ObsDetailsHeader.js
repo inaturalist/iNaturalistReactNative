@@ -1,15 +1,14 @@
 // @flow
 
-import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
+import CustomHeader from "components/SharedComponents/CustomHeader";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { Button, Headline } from "react-native-paper";
+import { Button } from "react-native-paper";
 import colors from "styles/colors";
-import { viewStyles } from "styles/obsDetails/obsDetailsHeader";
 
 type Props = {
   observationUUID: string
@@ -36,11 +35,12 @@ const ObsDetailsHeader = ( { observationUUID }: Props ): Node => {
   }, [observationUUID, openSavedObservation, navigation] );
 
   return (
-    <View style={viewStyles.headerRow}>
-      <HeaderBackButton onPress={( ) => navigation.goBack( )} />
-      <Headline>{t( "Observation" )}</Headline>
-      {isLocal ? <Button icon="pencil" onPress={navToObsEdit} textColor={colors.gray} /> : <View />}
-    </View>
+    <CustomHeader
+      headerText={t( "Observation" )}
+      rightIcon={isLocal ? (
+        <Button icon="pencil" onPress={navToObsEdit} textColor={colors.gray} />
+      ) : <View />}
+    />
   );
 };
 

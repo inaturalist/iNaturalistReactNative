@@ -23,10 +23,14 @@ const UserCard = ( ): Node => {
 
   return (
     <View className="flex-row mx-5 items-center">
-      <UserIcon uri={{ uri: remoteUser?.icon_url }} large />
+      {remoteUser && <UserIcon uri={{ uri: remoteUser?.icon_url }} large />}
       <View className="ml-2">
         <Text className="color-white my-1">{User.userHandle( user )}</Text>
-        <Text className="color-white my-1">{`${user.observations_count} Observations`}</Text>
+        {remoteUser && (
+          <Text className="color-white my-1">
+            {`${remoteUser?.observations_count} Observations`}
+          </Text>
+        )}
       </View>
       <Pressable
         onPress={navToUserProfile}

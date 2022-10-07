@@ -47,9 +47,9 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
           className="w-16 h-16 rounded-md mr-2"
           testID="ObsList.photo"
         />
-      <View className="shrink">
-        <ObsCardDetails item={item} />
-      </View>
+        <View className="shrink">
+          <ObsCardDetails item={item} />
+        </View>
       </View>
       <View className="flex-row items-center justify-items-center ml-2">
         {needsUpload
