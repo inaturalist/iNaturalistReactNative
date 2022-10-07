@@ -1,12 +1,12 @@
 // @flow
 
 import _ from "lodash";
+import { RealmContext } from "providers/contexts";
 import {
   useEffect, useState
 } from "react";
 
 import Observation from "../../../models/Observation";
-import { RealmContext } from "../../../providers/contexts";
 
 const { useRealm } = RealmContext;
 

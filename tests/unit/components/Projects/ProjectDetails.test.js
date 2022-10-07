@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
+import ProjectDetails from "components/Projects/ProjectDetails";
 import React from "react";
 
-import ProjectDetails from "../../../../src/components/Projects/ProjectDetails";
 import factory from "../../../factory";
 
 const mockProject = factory( "RemoteProject" );

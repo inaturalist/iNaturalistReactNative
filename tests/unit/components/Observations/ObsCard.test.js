@@ -1,8 +1,8 @@
 import { fireEvent, render } from "@testing-library/react-native";
+import ObsCard from "components/SharedComponents/ObservationViews/ObsCard";
 import { t } from "i18next";
 import React from "react";
 
-import ObsCard from "../../../../src/components/SharedComponents/ObservationViews/ObsCard";
 import factory from "../../../factory";
 
 const testObservation = factory( "LocalObservation" );

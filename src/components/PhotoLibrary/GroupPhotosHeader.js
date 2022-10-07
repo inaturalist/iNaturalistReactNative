@@ -6,8 +6,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Text, View } from "react-native";
-
-import { textStyles, viewStyles } from "../../styles/photoLibrary/photoGalleryHeader";
+import { textStyles, viewStyles } from "styles/photoLibrary/photoGalleryHeader";
 
 type Props = {
   photos: number,

@@ -1,15 +1,15 @@
 // @flow
 
 import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { View } from "react-native";
 import { Button } from "react-native-paper";
 import RNPickerSelect from "react-native-picker-select";
+import colors from "styles/colors";
+import { pickerSelectStyles, viewStyles } from "styles/obsEdit/obsEdit";
 
-import { ObsEditContext } from "../../providers/contexts";
-import colors from "../../styles/colors";
-import { pickerSelectStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
 import Notes from "./Notes";
 
 const OtherDataSection = ( ): Node => {

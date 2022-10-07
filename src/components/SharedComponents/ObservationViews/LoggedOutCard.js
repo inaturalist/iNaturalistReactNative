@@ -6,8 +6,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable } from "react-native";
 import { Text } from "react-native-paper";
-
-import { textStyles, viewStyles } from "../../../styles/observations/loggedOutCard";
+import { textStyles, viewStyles } from "styles/observations/loggedOutCard";
 
 type Props = {
   numOfUnuploadedObs: number

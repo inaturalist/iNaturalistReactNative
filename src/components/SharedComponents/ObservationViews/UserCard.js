@@ -1,18 +1,18 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import TranslatedText from "components/SharedComponents/TranslatedText";
+import UserIcon from "components/SharedComponents/UserIcon";
+import useRemoteUser from "components/UserProfile/hooks/useRemoteUser";
 import type { Node } from "react";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import useCurrentUser from "sharedHooks/useCurrentUser";
+import colors from "styles/colors";
+import { textStyles, viewStyles } from "styles/observations/userCard";
 
 import User from "../../../models/User";
-import useCurrentUser from "../../../sharedHooks/useCurrentUser";
-import colors from "../../../styles/colors";
-import { textStyles, viewStyles } from "../../../styles/observations/userCard";
-import useRemoteUser from "../../UserProfile/hooks/useRemoteUser";
-import TranslatedText from "../TranslatedText";
-import UserIcon from "../UserIcon";
 
 const UserCard = ( ): Node => {
   const user = useCurrentUser( );

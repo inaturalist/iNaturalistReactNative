@@ -1,13 +1,12 @@
 // @flow
 
+import InputField from "components/SharedComponents/InputField";
 import * as React from "react";
 import {
   FlatList, Image, Pressable, Text
 } from "react-native";
-
-import useRemoteObsEditSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import { imageStyles, viewStyles } from "../../styles/search/search";
-import InputField from "../SharedComponents/InputField";
+import useRemoteObsEditSearchResults from "sharedHooks/useRemoteSearchResults";
+import { imageStyles, viewStyles } from "styles/search/search";
 
 type Props = {
   source: string,

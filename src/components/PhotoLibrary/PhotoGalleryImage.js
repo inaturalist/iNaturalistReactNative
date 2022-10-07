@@ -4,9 +4,8 @@ import type { Node } from "react";
 import React from "react";
 import { Image, Pressable } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-
-import colors from "../../styles/colors";
-import { imageStyles } from "../../styles/photoLibrary/photoGallery";
+import colors from "styles/colors";
+import { imageStyles } from "styles/photoLibrary/photoGallery";
 
 type Props = {
   uri: string,

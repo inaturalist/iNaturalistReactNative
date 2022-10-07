@@ -1,24 +1,24 @@
 // @flow
 
+import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
+import PlaceholderText from "components/PlaceholderText";
+import KebabMenu from "components/SharedComponents/KebabMenu";
+import UserIcon from "components/SharedComponents/UserIcon";
 import { t } from "i18next";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
   Image, Pressable, Text, View
 } from "react-native";
 import { Menu } from "react-native-paper";
+import { formatIdDate } from "sharedHelpers/dateAndTime";
+import useApiToken from "sharedHooks/useApiToken";
+import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
 import Comment from "../../models/Comment";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
-import { RealmContext } from "../../providers/contexts";
-import { formatIdDate } from "../../sharedHelpers/dateAndTime";
-import useApiToken from "../../sharedHooks/useApiToken";
-import { imageStyles, textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
-import { isCurrentUser } from "../LoginSignUp/AuthenticationService";
-import PlaceholderText from "../PlaceholderText";
-import KebabMenu from "../SharedComponents/KebabMenu";
-import UserIcon from "../SharedComponents/UserIcon";
 import SmallSquareImage from "./SmallSquareImage";
 
 const { useRealm } = RealmContext;
@@ -67,7 +67,7 @@ const ActivityItem = ( {
             && (
             <Image
               style={imageStyles.smallGreenIcon}
-              source={require( "../../images/id_rg.png" )}
+              source={require( "images/id_rg.png" )}
             />
             )}
           <Text style={[textStyles.labels, textStyles.activityCategory]}>

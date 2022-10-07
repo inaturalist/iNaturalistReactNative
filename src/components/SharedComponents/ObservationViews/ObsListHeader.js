@@ -3,8 +3,8 @@
 import type { Node } from "react";
 import React from "react";
 import { Animated, View } from "react-native";
+import viewStyles from "styles/observations/header";
 
-import viewStyles from "../../../styles/observations/header";
 import LoggedOutCard from "./LoggedOutCard";
 import Toolbar from "./Toolbar";
 import UserCard from "./UserCard";

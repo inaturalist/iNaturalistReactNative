@@ -2,8 +2,7 @@
 
 import { StyleSheet } from "react-native";
 import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-
-import colors from "../colors";
+import colors from "styles/colors";
 
 const borderRadius = 30;
 

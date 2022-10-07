@@ -1,17 +1,17 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import BottomSheet from "components/SharedComponents/BottomSheet";
+import Map from "components/SharedComponents/Map";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator, Animated, Dimensions, Text, View
 } from "react-native";
+import useLoggedIn from "sharedHooks/useLoggedIn";
+import { textStyles, viewStyles } from "styles/observations/obsList";
 
-import useLoggedIn from "../../../sharedHooks/useLoggedIn";
-import { textStyles, viewStyles } from "../../../styles/observations/obsList";
-import BottomSheet from "../BottomSheet";
-import Map from "../Map";
 import EmptyList from "./EmptyList";
 import GridItem from "./GridItem";
 import useUploadStatus from "./hooks/useUploadStatus";

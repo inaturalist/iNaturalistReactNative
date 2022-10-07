@@ -2,6 +2,8 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
+import Button from "components/SharedComponents/Buttons/Button";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,13 +22,11 @@ import {
   Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-
-import { RealmContext } from "../../providers/contexts";
-import colors from "../../styles/colors";
+import colors from "styles/colors";
 import {
   closeButton, imageStyles, textStyles, viewStyles
-} from "../../styles/login/login";
-import Button from "../SharedComponents/Buttons/Button";
+} from "styles/login/login";
+
 import {
   authenticateUser,
   getUsername,
@@ -146,7 +146,7 @@ const Login = ( ): Node => {
       <Image
         style={imageStyles.logo}
         resizeMode="contain"
-        source={require( "../../images/inat_logo.png" )}
+        source={require( "images/inat_logo.png" )}
       />
 
       <Text style={textStyles.header}>{t( "Login-header" )}</Text>

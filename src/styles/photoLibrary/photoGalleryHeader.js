@@ -5,8 +5,7 @@ import type {
   TextStyleProp,
   ViewStyleProp
 } from "react-native/Libraries/StyleSheet/StyleSheet";
-
-import colors from "../colors";
+import colors from "styles/colors";
 
 const pickerContainer = {
   alignItems: "center",

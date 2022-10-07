@@ -1,10 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render } from "@testing-library/react-native";
+import Explore from "components/Explore/Explore";
+import { ExploreContext } from "providers/contexts";
+import ExploreProvider from "providers/ExploreProvider";
 import React from "react";
 
-import Explore from "../../../../src/components/Explore/Explore";
-import { ExploreContext } from "../../../../src/providers/contexts";
-import ExploreProvider from "../../../../src/providers/ExploreProvider";
 import factory from "../../../factory";
 
 const mockLatLng = {

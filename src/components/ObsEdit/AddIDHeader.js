@@ -8,8 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { Headline } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-
-import { viewStyles } from "../../styles/obsDetails/addID";
+import { viewStyles } from "styles/obsDetails/addID";
 
 type Props = {
   showEditComment: boolean,

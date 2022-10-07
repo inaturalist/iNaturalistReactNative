@@ -4,8 +4,7 @@ import type { Node } from "react";
 import React, { useRef } from "react";
 import { Dimensions, Image, View } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
-
-import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
+import { imageStyles, viewStyles } from "styles/mediaViewer/mediaViewer";
 
 // lifted from this issue: https://github.com/ascoders/react-native-image-zoom/issues/42#issuecomment-734209924
 

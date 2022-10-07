@@ -1,6 +1,9 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
+import fetchTaxon from "api/taxa";
+import PhotoScroll from "components/SharedComponents/PhotoScroll";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import _ from "lodash";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -9,12 +12,8 @@ import {
   View
 } from "react-native";
 import HTML from "react-native-render-html";
-
-import fetchTaxon from "../../api/taxa";
-import useAuthenticatedQuery from "../../sharedHooks/useAuthenticatedQuery";
-import { textStyles, viewStyles } from "../../styles/taxonDetails";
-import PhotoScroll from "../SharedComponents/PhotoScroll";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { textStyles, viewStyles } from "styles/taxonDetails";
 
 const TaxonDetails = ( ): React.Node => {
   const { params } = useRoute( );

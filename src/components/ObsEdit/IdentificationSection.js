@@ -1,6 +1,10 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import PlaceholderText from "components/PlaceholderText";
+import Button from "components/SharedComponents/Buttons/Button";
+import { iconicTaxaIds, iconicTaxaNames } from "dictionaries/iconicTaxaIds";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,12 +12,7 @@ import {
   FlatList, Pressable, Text, View
 } from "react-native";
 import { Avatar, useTheme } from "react-native-paper";
-
-import { iconicTaxaIds, iconicTaxaNames } from "../../dictionaries/iconicTaxaIds";
-import { ObsEditContext } from "../../providers/contexts";
-import { textStyles, viewStyles } from "../../styles/obsEdit/obsEdit";
-import PlaceholderText from "../PlaceholderText";
-import Button from "../SharedComponents/Buttons/Button";
+import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 
 const IdentificationSection = ( ): Node => {
   const {

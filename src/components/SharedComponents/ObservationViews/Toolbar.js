@@ -4,9 +4,8 @@ import type { Node } from "react";
 import React from "react";
 import { Pressable, View } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-
-import colors from "../../../styles/colors";
-import { viewStyles } from "../../../styles/observations/obsList";
+import colors from "styles/colors";
+import { viewStyles } from "styles/observations/obsList";
 
 type Props = {
   isExplore: boolean,

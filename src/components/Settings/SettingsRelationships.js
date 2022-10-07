@@ -9,10 +9,10 @@ import {
   Alert, Image, Text, TextInput, View
 } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import colors from "styles/colors";
+import { textStyles, viewStyles } from "styles/settings/settings";
 import { useDebounce } from "use-debounce";
 
-import colors from "../../styles/colors";
-import { textStyles, viewStyles } from "../../styles/settings/settings";
 import BlockedUser from "./BlockedUser";
 import useRelationships from "./hooks/useRelationships";
 import MutedUser from "./MutedUser";
@@ -319,7 +319,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
           <Image
             style={viewStyles.clearSearch}
             resizeMode="contain"
-            source={require( "../../images/clear.png" )}
+            source={require( "images/clear.png" )}
           />
         </Pressable>
       </View>

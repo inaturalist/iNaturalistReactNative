@@ -1,4 +1,6 @@
 import { useFocusEffect } from "@react-navigation/native";
+import { getAPIToken } from "components/LoginSignUp/AuthenticationService";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
@@ -14,10 +16,8 @@ import {
   Text,
   View
 } from "react-native";
+import { textStyles, viewStyles } from "styles/settings/settings";
 
-import { textStyles, viewStyles } from "../../styles/settings/settings";
-import { getAPIToken } from "../LoginSignUp/AuthenticationService";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useUserMe from "./hooks/useUserMe";
 import SettingsAccount from "./SettingsAccount";
 import SettingsApplications from "./SettingsApplications";

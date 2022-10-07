@@ -1,8 +1,8 @@
 import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
 import Realm from "realm";
+import { createObservedOnStringForUpload, formatDateAndTime } from "sharedHelpers/dateAndTime";
 
-import { createObservedOnStringForUpload, formatDateAndTime } from "../sharedHelpers/dateAndTime";
 import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";

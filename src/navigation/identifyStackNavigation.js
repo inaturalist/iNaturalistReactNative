@@ -1,9 +1,8 @@
 // @flow
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Identify from "components/Identify/Identify";
 import * as React from "react";
-
-import Identify from "../components/Identify/Identify";
 
 const Stack = createNativeStackNavigator( );
 
