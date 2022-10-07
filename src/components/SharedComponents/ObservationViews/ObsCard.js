@@ -1,6 +1,6 @@
 // @flow
 
-import { Image, Pressable } from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
@@ -36,7 +36,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
   return (
     <Pressable
       onPress={onPress}
-      className="flex-row my-2 mx-3"
+      className="flex-row my-2 mx-3 justify-between"
       testID={`ObsList.obsCard.${item.uuid}`}
       accessibilityRole="link"
       accessibilityLabel="Navigate to observation details screen"
@@ -46,10 +46,14 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
         className="w-16 h-16 rounded-md mr-2"
         testID="ObsList.photo"
       />
-      <ObsCardDetails item={item} />
-      {needsUpload
-        ? <Avatar.Icon size={40} icon="arrow-up-circle-outline" />
-        : <ObsCardStats item={item} type="list" />}
+      <View className="shrink">
+        <ObsCardDetails item={item} />
+      </View>
+      <View className="flex-row items-center justify-items-center ml-2">
+        {needsUpload
+          ? <Avatar.Icon size={40} icon="arrow-up-circle-outline" />
+          : <ObsCardStats item={item} type="list" />}
+      </View>
     </Pressable>
   );
 };

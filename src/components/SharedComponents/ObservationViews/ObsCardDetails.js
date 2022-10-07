@@ -28,7 +28,7 @@ const ObsCardDetails = ( { item, view }: Props ): Node => {
   );
 
   return (
-    <View className={view === "grid" ? "border border-border w-44" : "w-2/3"}>
+    <View className={view === "grid" && "border border-border p-2"}>
       <Text numberOfLines={1}>{displayName( )}</Text>
       <Text numberOfLines={1}>
         <IconMaterial name="location-pin" size={15} />

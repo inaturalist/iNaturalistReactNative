@@ -70,8 +70,8 @@ const ObsCardStats = ( { item, type, view }: Props ): Node => {
   );
 
   const renderRow = ( ) => (
-    <View className="flex-row absolute bottom-0 justify-between w-44 mb-1">
-      <View className="flex-row mx-3">
+    <View className="flex-row absolute bottom-1 justify-between w-full px-2">
+      <View className="flex-row">
         {renderIdRow( )}
         {renderCommentRow( )}
       </View>

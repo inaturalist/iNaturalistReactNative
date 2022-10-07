@@ -112,7 +112,13 @@ const ObservationViews = ( {
   const renderItem = ( { item } ) => (
     <ObsCard item={item} handlePress={navToObsDetails} />
   );
-  const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} />;
+  const renderGridItem = ( { item, index } ) => (
+    <GridItem
+      item={item}
+      index={index}
+      handlePress={navToObsDetails}
+    />
+  );
 
   const renderEmptyState = ( ) => {
     if ( name !== "Explore" && isLoggedIn === false ) {
@@ -189,7 +195,7 @@ const ObservationViews = ( {
           onEndReached={handleEndReached}
           ListFooterComponent={renderFooter}
           ListHeaderComponent={renderHeader}
-          ItemSeparatorComponent={renderItemSeparator}
+          ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
           stickyHeaderIndices={[0]}
           bounces={false}
           contentContainerStyle={{ minHeight: flatListHeight }}
