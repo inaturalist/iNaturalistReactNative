@@ -41,13 +41,15 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
       accessibilityRole="link"
       accessibilityLabel="Navigate to observation details screen"
     >
-      <Image
-        source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
-        className="w-16 h-16 rounded-md mr-2"
-        testID="ObsList.photo"
-      />
+      <View className="flex-row shrink">
+        <Image
+          source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
+          className="w-16 h-16 rounded-md mr-2"
+          testID="ObsList.photo"
+        />
       <View className="shrink">
         <ObsCardDetails item={item} />
+      </View>
       </View>
       <View className="flex-row items-center justify-items-center ml-2">
         {needsUpload
