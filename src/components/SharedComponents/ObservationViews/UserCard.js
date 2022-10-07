@@ -1,12 +1,13 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import TranslatedText from "components/SharedComponents/TranslatedText";
 import UserIcon from "components/SharedComponents/UserIcon";
-import useUser from "components/UserProfile/hooks/useUser";
+import useRemoteUser from "components/UserProfile/hooks/useRemoteUser";
 import type { Node } from "react";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/observations/userCard";
@@ -14,26 +15,30 @@ import { textStyles, viewStyles } from "styles/observations/userCard";
 import User from "../../../models/User";
 
 const UserCard = ( ): Node => {
-  const userId = useCurrentUser( );
-  const { user } = useUser( userId );
+  const user = useCurrentUser( );
+  const { user: remoteUser } = useRemoteUser( user?.id );
   // TODO: this currently doesn't show up on initial login
   // because user id can't be fetched
   const navigation = useNavigation( );
-  if ( !user ) { return <View />; }
-  const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId } );
+  if ( !user ) { return <View style={viewStyles.topCard} />; }
+  const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId: user.id } );
 
   return (
     <View style={viewStyles.userCard}>
-      <UserIcon uri={User.uri( user )} large />
+      <UserIcon uri={{ uri: remoteUser?.icon_url }} large />
       <View style={viewStyles.userDetails}>
         <Text style={textStyles.text}>{User.userHandle( user )}</Text>
-        <Text style={textStyles.text}>{`${user.observations_count} Observations`}</Text>
+        <TranslatedText
+          style={textStyles.text}
+          text="X-Observations"
+          count={user.observations_count || 0}
+        />
       </View>
       <Pressable
         onPress={navToUserProfile}
         style={viewStyles.editProfile}
       >
-        <Icon name="pencil" size={30} color={colors.white} />
+        <IconMaterial name="edit" size={30} color={colors.white} />
       </Pressable>
     </View>
   );

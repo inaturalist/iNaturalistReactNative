@@ -1,7 +1,7 @@
 // @flow
 import * as React from "react";
 import { Pressable } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { textStyles, viewStyles } from "styles/sharedComponents/buttons/evidenceButton";
 
 type Props = {
@@ -22,7 +22,7 @@ const EvidenceButton = ( {
     onPress={handlePress}
     style={[style, viewStyles.greenButton, disabled && viewStyles.disabled]}
   >
-    <Icon name={icon} size={35} style={textStyles.greenButtonIcon} />
+    <IconMaterial name={icon} size={35} style={textStyles.greenButtonIcon} />
   </Pressable>
 );
 

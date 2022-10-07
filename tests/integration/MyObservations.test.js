@@ -16,7 +16,7 @@ const mockExpected = testUser;
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
 
-jest.mock( "../../src/components/UserProfile/hooks/useUser", ( ) => ( {
+jest.mock( "../../src/components/UserProfile/hooks/useRemoteUser", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
     user: mockExpected

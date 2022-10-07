@@ -1,24 +1,27 @@
 // @flow
 
+import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import PlaceholderText from "components/PlaceholderText";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import UserIcon from "components/SharedComponents/UserIcon";
 import { t } from "i18next";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
   Image, Pressable, Text, View
 } from "react-native";
 import { Menu } from "react-native-paper";
-import Realm from "realm";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
+import useApiToken from "sharedHooks/useApiToken";
 import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
 import Comment from "../../models/Comment";
-import realmConfig from "../../models/index";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import SmallSquareImage from "./SmallSquareImage";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   item: Object,
@@ -33,13 +36,16 @@ const ActivityItem = ( {
   const [currentUser, setCurrentUser] = useState( null );
   const { taxon } = item;
   const { user } = item;
+  const apiToken = useApiToken( );
+
+  const realm = useRealm( );
 
   useEffect( ( ) => {
-    const isCurrentUser = async ( ) => {
-      const current = await User.isCurrentUser( user.login );
+    const isActiveUserTheCurrentUser = async ( ) => {
+      const current = await isCurrentUser( user.login );
       setCurrentUser( current );
     };
-    isCurrentUser( );
+    isActiveUserTheCurrentUser( );
   }, [user] );
 
   return (
@@ -78,8 +84,7 @@ const ActivityItem = ( {
               <KebabMenu>
                 <Menu.Item
                   onPress={async ( ) => {
-                    const realm = await Realm.open( realmConfig );
-                    Comment.deleteComment( item.uuid, realm );
+                    Comment.deleteComment( item.uuid, realm, apiToken );
                     toggleRefetch( );
                   }}
                   title={t( "Delete-comment" )}

@@ -38,6 +38,7 @@ const ObsListHeader = ( {
         isLoggedIn={isLoggedIn}
         syncObservations={syncObservations}
         setView={setView}
+        numOfUnuploadedObs={numOfUnuploadedObs}
       />
     </View>
   );

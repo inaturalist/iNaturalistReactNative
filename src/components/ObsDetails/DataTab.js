@@ -7,7 +7,6 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/obsDetails/obsDetails";
@@ -62,7 +61,7 @@ const DataTab = ( { observation }: Props ): Node => {
 
       <Text style={[textStyles.dataTabHeader, textStyles.dataTabDateHeader]}>{t( "Date" )}</Text>
       <View style={[viewStyles.rowWithIcon, viewStyles.dataTabSub]}>
-        <Icon name="clock-time-four-outline" size={15} color={colors.logInGray} />
+        <IconMaterial name="schedule" size={15} color={colors.logInGray} />
         <Text
           style={textStyles.dataTabText}
         >
@@ -71,7 +70,7 @@ const DataTab = ( { observation }: Props ): Node => {
       </View>
       { observation._synced_at && (
       <View style={[viewStyles.rowWithIcon, viewStyles.dataTabView, viewStyles.dataTabSub]}>
-        <Icon name="clock-time-four-outline" size={15} color={colors.logInGray} />
+        <IconMaterial name="schedule" size={15} color={colors.logInGray} />
         <Text
           style={textStyles.dataTabText}
         >

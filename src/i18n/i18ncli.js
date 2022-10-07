@@ -76,7 +76,7 @@ const jsonifyLocalizations = async ( options = {} ) => {
   }
 };
 
-// Write loadTranslations.js, a file with a function that statically load
+// Write loadTranslations.js, a file with a function that statically loads
 // translation files given a locale
 const writeLoadTranslations = async ( ) => {
   const locales = await supportedLocales( );

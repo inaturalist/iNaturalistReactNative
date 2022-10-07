@@ -18,6 +18,7 @@ const Notes = ( { addNotes, description }: Props ): Node => {
   const [keyboardOffset, setKeyboardOffset] = useState( 0 );
   const { width } = useWindowDimensions( );
   const insets = useSafeAreaInsets( );
+  const [localDescription, setLocalDescription] = useState( description );
 
   useEffect( ( ) => {
     const showSubscription = Keyboard.addListener( "keyboardDidShow", e => {
@@ -43,8 +44,9 @@ const Notes = ( { addNotes, description }: Props ): Node => {
     <TextInput
       keyboardType="default"
       multiline
-      onChangeText={addNotes}
-      value={description}
+      onChangeText={text => setLocalDescription( text )}
+      onBlur={( ) => addNotes( localDescription )}
+      value={localDescription}
       placeholder={t( "Add-optional-notes" )}
       style={[textStyles.notes, keyboardOffset > 0 && offset]}
       testID="ObsEdit.notes"

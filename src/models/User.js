@@ -1,5 +1,3 @@
-// eslint-disable-next-line import/no-cycle
-import { getUsername } from "components/LoginSignUp/AuthenticationService";
 import Realm from "realm";
 
 class User extends Realm.Object {
@@ -17,11 +15,6 @@ class User extends Realm.Object {
   static uri = user => ( user && user.icon_url ) && { uri: user.icon_url };
 
   static userHandle = user => ( user && user.login ) && `@${user.login}`;
-
-  static async isCurrentUser( username ) {
-    const currentUserLogin = await getUsername( );
-    return username === currentUserLogin;
-  }
 
   static schema = {
     name: "User",

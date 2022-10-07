@@ -4,7 +4,7 @@ import CameraOptionsModal from "components/Camera/CameraOptionsModal";
 import Modal from "components/SharedComponents/Modal";
 import * as React from "react";
 import { Pressable, View } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { viewStyles } from "styles/obsEdit/obsEdit";
 
 type Props = {
@@ -29,7 +29,7 @@ const CameraOptionsButton = ( { buttonType }: Props ): React.Node => {
       {buttonType === "footer"
         ? (
           <Pressable onPress={navToCameraOptions} accessibilityRole="link">
-            <Icon name="plus-circle" size={35} />
+            <IconMaterial name="add-circle" size={35} />
           </Pressable>
         ) : (
           <Pressable onPress={navToCameraOptions}>

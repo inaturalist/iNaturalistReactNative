@@ -3,7 +3,7 @@
 import type { Node } from "react";
 import React from "react";
 import { Image, Pressable } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/colors";
 import { imageStyles } from "styles/photoLibrary/photoGallery";
 
@@ -28,7 +28,7 @@ const PhotoGalleryImage = ( {
       style={imageStyles.galleryImage}
     />
     {isSelected && (
-    <Icon
+    <IconMaterial
       name="check-circle"
       size={30}
       style={imageStyles.selectedIcon}

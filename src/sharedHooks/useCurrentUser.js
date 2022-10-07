@@ -1,29 +1,20 @@
-// @flow
-
-import { getUserId } from "components/LoginSignUp/AuthenticationService";
+import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 
-const useCurrentUser = ( ): Object => {
+const { useRealm } = RealmContext;
+
+const useCurrentUser = ( ) => {
   const [currentUser, setCurrentUser] = useState( null );
+  const realm = useRealm( );
 
   useEffect( ( ) => {
-    let isCurrent = true;
-    const fetchUserId = async ( ) => {
-      try {
-        const id = await getUserId( );
-        if ( !isCurrent ) { return; }
-        setCurrentUser( id );
-      } catch ( e ) {
-        if ( !isCurrent ) { return; }
-        console.log( "Couldn't fetch current user from realm:", e.message );
-      }
-    };
-
-    fetchUserId( );
-    return ( ) => {
-      isCurrent = false;
-    };
-  }, [] );
+    const signedInUsers = realm.objects( "User" ).filtered( "signedIn == true" );
+    if ( signedInUsers.length > 0 ) {
+      setCurrentUser( signedInUsers[0] );
+    } else {
+      setCurrentUser( null );
+    }
+  }, [realm] );
 
   return currentUser;
 };

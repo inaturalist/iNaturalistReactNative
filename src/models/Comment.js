@@ -1,9 +1,6 @@
-// eslint-disable-next-line import/no-cycle
-import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
 import Realm from "realm";
 
-// eslint-disable-next-line import/no-cycle
 import User from "./User";
 
 class Comment extends Realm.Object {
@@ -22,7 +19,7 @@ class Comment extends Realm.Object {
     };
   }
 
-  static async deleteComment( id, realm ) {
+  static async deleteComment( id, realm, apiToken ) {
     // first delete locally
     realm?.write( ( ) => {
       const commentToDelete = realm.objects( "Comment" ).filtered( `uuid == "${id}"` )[0];
@@ -30,7 +27,6 @@ class Comment extends Realm.Object {
     } );
 
     // then delete remotely
-    const apiToken = await getJWTToken( false );
     const options = { api_token: apiToken };
     try {
       await inatjs.comments.delete( { id }, options );
