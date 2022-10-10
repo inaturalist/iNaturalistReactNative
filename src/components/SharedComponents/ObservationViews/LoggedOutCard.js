@@ -20,7 +20,7 @@ const LoggedOutCard = ( { numOfUnuploadedObs }: Props ): Node => {
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-login-screen" )}
     >
-      <Text className="self-center color-white text-2xl">{t( "Log-in-to-iNaturalist" )}</Text>
+      <Text className="self-center color-white text-2xl" >{t( "Log-in-to-iNaturalist" )}</Text>
       <Text className="self-center color-white text-base">
         {t( "X-unuploaded-observations", { observationCount: numOfUnuploadedObs } )}
       </Text>

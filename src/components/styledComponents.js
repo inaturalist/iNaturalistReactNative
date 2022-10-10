@@ -21,7 +21,7 @@ const SafeAreaView = styled( StyledSafeAreaView );
 // $FlowIgnore
 const ScrollView = styled( StyledScrollView );
 // $FlowIgnore
-const Text = styled( StyledText );
+const Text = styled( StyledText, "font-Whitney-Medium" );
 // $FlowIgnore
 const TextInput = styled( StyledTextInput );
 // $FlowIgnore

@@ -13,6 +13,10 @@ module.exports = {
     extend: {
       height: {
         22: "5.5rem"
+      },
+      fontFamily: {
+        "Whitney-Medium": ["Whitney-Medium"],
+        "Whitney-Light": ["Whitney-Light"]
       }
     },
     colors: {
