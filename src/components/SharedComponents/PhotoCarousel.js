@@ -57,7 +57,7 @@ const PhotoCarousel = ( {
   const renderSkeleton = ( ) => {
     if ( savingPhoto ) {
       return (
-        <View className={`${imageClass} bg-midGray`}>
+        <View className={`${imageClass} bg-midGray mt-12`}>
           <ActivityIndicator />
         </View>
       );
