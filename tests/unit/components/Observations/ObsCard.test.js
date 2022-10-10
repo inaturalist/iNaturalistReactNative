@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@testing-library/react-native";
-import ObsCard from "components/SharedComponents/ObservationViews/ObsCard";
+import ObsCard from "components/Observations/ObsCard";
 import { t } from "i18next";
 import React from "react";
 

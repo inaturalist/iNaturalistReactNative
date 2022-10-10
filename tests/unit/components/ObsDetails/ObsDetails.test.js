@@ -13,7 +13,7 @@ const mockObservation = factory( "LocalObservation" );
 jest.mock( "../../../../src/providers/ObsEditProvider" );
 
 jest.mock(
-  "../../../../src/components/ObsDetails/hooks/useRemoteObservation",
+  "../../../../src/sharedHooks/useRemoteObservation",
   ( ) => ( {
     __esModule: true,
     default: ( _observation, _refetch ) => ( {

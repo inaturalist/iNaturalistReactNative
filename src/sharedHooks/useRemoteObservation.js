@@ -5,8 +5,8 @@ import { getUsername } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
 import { useEffect, useRef, useState } from "react";
 
-import Observation from "../../../models/Observation";
-import User from "../../../models/User";
+import Observation from "../models/Observation";
+import User from "../models/User";
 
 const useRemoteObservation = ( observation: Object, refetch: boolean ): Object => {
   const [remoteObservation, setRemoteObservation] = useState( null );

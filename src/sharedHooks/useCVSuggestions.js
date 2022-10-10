@@ -4,7 +4,7 @@ import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
 import inatjs, { FileUpload } from "inaturalistjs";
 import { useEffect, useState } from "react";
 
-import Photo from "../../../models/Photo";
+import Photo from "../models/Photo";
 
 const TAXON_FIELDS = {
   name: true,

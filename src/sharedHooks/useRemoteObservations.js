@@ -6,7 +6,7 @@ import {
 } from "react";
 import useApiToken from "sharedHooks/useApiToken";
 
-import Observation from "../../../models/Observation";
+import Observation from "../models/Observation";
 
 const { useRealm } = RealmContext;
 

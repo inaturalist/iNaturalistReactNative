@@ -13,11 +13,10 @@ import {
   ActivityIndicator, FlatList, Image, Pressable, Text, View
 } from "react-native";
 import { Searchbar } from "react-native-paper";
+import useCVSuggestions from "sharedHooks/useCVSuggestions";
 import useLoggedIn from "sharedHooks/useLoggedIn";
 import useRemoteObsEditSearchResults from "sharedHooks/useRemoteSearchResults";
 import { textStyles, viewStyles } from "styles/obsEdit/cvSuggestions";
-
-import useCVSuggestions from "./hooks/useCVSuggestions";
 
 const CVSuggestions = ( ): Node => {
   const {

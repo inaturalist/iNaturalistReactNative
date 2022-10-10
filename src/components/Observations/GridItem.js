@@ -8,10 +8,10 @@ import {
 import {
   imageStyles,
   viewStyles
-} from "styles/sharedComponents/observationViews/gridItem";
+} from "styles/observations/gridItem";
 
-import Observation from "../../../models/Observation";
-import Photo from "../../../models/Photo";
+import Observation from "../../models/Observation";
+import Photo from "../../models/Photo";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
 

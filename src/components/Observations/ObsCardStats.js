@@ -7,7 +7,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/colors";
-import { textStyles, viewStyles } from "styles/sharedComponents/observationViews/obsCard";
+import { textStyles, viewStyles } from "styles/observations/obsCard";
 
 type Props = {
   item: Object,

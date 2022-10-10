@@ -7,10 +7,9 @@ import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import useCoords from "sharedHooks/useCoords";
 import useLocationName from "sharedHooks/useLocationName";
 import { viewStyles } from "styles/obsEdit/locationPicker";
-
-import useCoords from "./hooks/useCoords";
 
 type Props = {
   closeLocationPicker: Function,

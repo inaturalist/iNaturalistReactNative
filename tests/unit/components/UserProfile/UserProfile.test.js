@@ -8,7 +8,7 @@ import factory from "../../../factory";
 const testUser = factory( "RemoteUser" );
 const mockExpected = testUser;
 
-jest.mock( "../../../../src/components/UserProfile/hooks/useRemoteUser", ( ) => ( {
+jest.mock( "../../../../src/sharedHooks/useRemoteUser", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
     user: mockExpected

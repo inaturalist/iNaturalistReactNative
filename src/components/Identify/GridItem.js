@@ -10,7 +10,7 @@ import {
   imageStyles,
   textStyles,
   viewStyles
-} from "styles/sharedComponents/observationViews/gridItem";
+} from "styles/observations/gridItem";
 
 import Observation from "../../models/Observation";
 import createIdentification from "./helpers/createIdentification";

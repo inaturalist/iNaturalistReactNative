@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import GridItem from "components/SharedComponents/ObservationViews/GridItem";
+import GridItem from "components/Observations/GridItem";
 import * as React from "react";
 import { FlatList } from "react-native";
 

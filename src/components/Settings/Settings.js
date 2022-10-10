@@ -16,9 +16,9 @@ import {
   Text,
   View
 } from "react-native";
+import useUserMe from "sharedHooks/useUserMe";
 import { textStyles, viewStyles } from "styles/settings/settings";
 
-import useUserMe from "./hooks/useUserMe";
 import SettingsAccount from "./SettingsAccount";
 import SettingsApplications from "./SettingsApplications";
 import SettingsContentDisplay from "./SettingsContentDisplay";

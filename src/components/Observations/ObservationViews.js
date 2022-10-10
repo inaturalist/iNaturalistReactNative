@@ -10,11 +10,11 @@ import {
   ActivityIndicator, Animated, Dimensions, Text, View
 } from "react-native";
 import useLoggedIn from "sharedHooks/useLoggedIn";
+import useUploadStatus from "sharedHooks/useUploadStatus";
 import { textStyles, viewStyles } from "styles/observations/obsList";
 
 import EmptyList from "./EmptyList";
 import GridItem from "./GridItem";
-import useUploadStatus from "./hooks/useUploadStatus";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
 import LoginPrompt from "./LoginPrompt";
 import ObsCard from "./ObsCard";

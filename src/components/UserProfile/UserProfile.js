@@ -15,7 +15,7 @@ import { textStyles, viewStyles } from "styles/userProfile/userProfile";
 import User from "../../models/User";
 // import useNetworkSite from "./hooks/useNetworkSite";
 import updateRelationship from "./helpers/updateRelationship";
-import useRemoteUser from "./hooks/useRemoteUser";
+import useRemoteUser from "sharedHooks/useRemoteUser";
 import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {

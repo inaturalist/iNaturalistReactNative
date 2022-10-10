@@ -4,11 +4,10 @@ import {
   Image, Text, TextInput, View
 } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import usePlaceDetails from "sharedHooks/usePlaceDetails";
+import usePlaces from "sharedHooks/usePlaces";
 import { textStyles, viewStyles } from "styles/settings/settings";
 import { useDebounce } from "use-debounce";
-
-import usePlaceDetails from "./hooks/usePlaceDetails";
-import usePlaces from "./hooks/usePlaces";
 
 const PlaceSearchInput = ( { placeId, onPlaceChanged } ): React.Node => {
   const [hideResults, setHideResults] = React.useState( true );

@@ -6,7 +6,7 @@ import {
   useEffect, useState
 } from "react";
 
-import Observation from "../../../models/Observation";
+import Observation from "../models/Observation";
 
 const { useRealm } = RealmContext;
 

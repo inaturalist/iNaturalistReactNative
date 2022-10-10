@@ -6,7 +6,7 @@ import React from "react";
 import { Text } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
-import { textStyles } from "styles/sharedComponents/observationViews/obsCard";
+import { textStyles } from "styles/observations/obsCard";
 
 type Props = {
   item: Object

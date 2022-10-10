@@ -30,6 +30,7 @@ import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useApiToken from "sharedHooks/useApiToken";
+import useRemoteObservation from "sharedHooks/useRemoteObservation";
 import colors from "styles/colors";
 import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
@@ -41,7 +42,6 @@ import DataTab from "./DataTab";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 import createComment from "./helpers/createComment";
 import faveObservation from "./helpers/faveObservation";
-import useRemoteObservation from "./hooks/useRemoteObservation";
 import ObsDetailsHeader from "./ObsDetailsHeader";
 
 const { useRealm } = RealmContext;
