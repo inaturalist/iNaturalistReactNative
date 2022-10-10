@@ -1,10 +1,9 @@
 // @flow
 
 import inatjs from "inaturalistjs";
-
-import Observation from "../../models/Observation";
-import ObservationPhoto from "../../models/ObservationPhoto";
-import ObservationSound from "../../models/ObservationSound";
+import Observation from "realmModels/Observation";
+import ObservationPhoto from "realmModels/ObservationPhoto";
+import ObservationSound from "realmModels/ObservationSound";
 
 const uploadObsSound = ( obs, id, realm, apiToken ) => Observation.uploadEvidence(
   obs.observationSounds,

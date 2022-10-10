@@ -5,10 +5,10 @@ import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Image, Pressable, View } from "react-native";
 import { Avatar } from "react-native-paper";
+import Observation from "realmModels/Observation";
+import Photo from "realmModels/Photo";
 import { viewStyles } from "styles/observations/obsCard";
 
-import Observation from "../../models/Observation";
-import Photo from "../../models/Photo";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
 

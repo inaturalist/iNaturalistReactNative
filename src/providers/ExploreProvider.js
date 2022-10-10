@@ -2,8 +2,8 @@
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
 import React, { useEffect, useMemo, useState } from "react";
+import Observation from "realmModels/Observation";
 
-import Observation from "../models/Observation";
 import { ExploreContext } from "./contexts";
 
 type Props = {

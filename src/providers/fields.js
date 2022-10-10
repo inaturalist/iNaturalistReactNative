@@ -1,6 +1,6 @@
 // @flow
 
-import User from "../models/User";
+import User from "realmModels/User";
 
 export default {
   subject: true,

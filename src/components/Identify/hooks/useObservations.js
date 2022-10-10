@@ -2,8 +2,7 @@
 
 import inatjs from "inaturalistjs";
 import { useEffect, useState } from "react";
-
-import Observation from "../../../models/Observation";
+import Observation from "realmModels/Observation";
 
 const useObservations = ( placeId: ?string, taxonId: ?number ): {
   observations: Array<Object>,

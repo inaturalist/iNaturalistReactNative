@@ -10,11 +10,11 @@ import React, {
 import { Pressable, Text, View } from "react-native";
 import { Avatar, Snackbar, useTheme } from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
+import Photo from "realmModels/Photo";
 import { viewStyles } from "styles/camera/standardCamera";
 import colors from "styles/colors";
 import { textStyles } from "styles/obsDetails/obsDetails";
 
-import Photo from "../../models/Photo";
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";

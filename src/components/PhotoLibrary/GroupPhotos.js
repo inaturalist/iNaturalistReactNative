@@ -6,9 +6,9 @@ import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
+import Observation from "realmModels/Observation";
 import { viewStyles } from "styles/photoLibrary/photoGallery";
 
-import Observation from "../../models/Observation";
 import GroupPhotoImage from "./GroupPhotoImage";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 import GroupPhotosHeader from "./GroupPhotosHeader";

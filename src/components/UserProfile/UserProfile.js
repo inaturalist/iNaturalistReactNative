@@ -10,12 +10,12 @@ import { t } from "i18next";
 import * as React from "react";
 import { Text, useWindowDimensions, View } from "react-native";
 import HTML from "react-native-render-html";
+import User from "realmModels/User";
+import useRemoteUser from "sharedHooks/useRemoteUser";
 import { textStyles, viewStyles } from "styles/userProfile/userProfile";
 
-import User from "../../models/User";
 // import useNetworkSite from "./hooks/useNetworkSite";
 import updateRelationship from "./helpers/updateRelationship";
-import useRemoteUser from "sharedHooks/useRemoteUser";
 import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {

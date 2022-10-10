@@ -5,13 +5,13 @@ import React from "react";
 import {
   Image, Pressable, Text, View
 } from "react-native";
+import Observation from "realmModels/Observation";
+import Photo from "realmModels/Photo";
 import {
   imageStyles,
   viewStyles
 } from "styles/observations/gridItem";
 
-import Observation from "../../models/Observation";
-import Photo from "../../models/Photo";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
 

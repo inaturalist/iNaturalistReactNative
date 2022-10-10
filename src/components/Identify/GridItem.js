@@ -6,13 +6,13 @@ import React, { useState } from "react";
 import {
   ActivityIndicator, Image, Pressable, Text, View
 } from "react-native";
+import Observation from "realmModels/Observation";
 import {
   imageStyles,
   textStyles,
   viewStyles
 } from "styles/observations/gridItem";
 
-import Observation from "../../models/Observation";
 import createIdentification from "./helpers/createIdentification";
 
 type Props = {

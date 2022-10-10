@@ -23,11 +23,11 @@ import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import { Headline, Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import Photo from "realmModels/Photo";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import useLoggedIn from "sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 
-import Photo from "../../models/Photo";
 import DeleteObservationDialog from "./DeleteObservationDialog";
 import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";

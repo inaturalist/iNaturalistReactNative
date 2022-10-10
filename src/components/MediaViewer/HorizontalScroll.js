@@ -5,8 +5,8 @@ import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Dimensions, FlatList } from "react-native";
+import Photo from "realmModels/Photo";
 
-import Photo from "../../models/Photo";
 import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {

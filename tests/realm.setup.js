@@ -1,14 +1,14 @@
 import Realm from "realm";
-
-import realmConfig from "../src/models/index";
+// eslint-disable-next-line import/extensions
+import realmConfig from "realmModels/index";
 
 // Mock the realm config so it uses an in-memory database. This means data is
 // only persisted until realm.close() gets called, so if the code under test
 // needs data to persist in Realm across opening/closing events, we will need
 // to take a different approach, e.g. writing to Realm to disk and erasing
 // those files after each test run
-jest.mock( "../src/models/index", ( ) => {
-  const originalModule = jest.requireActual( "../src/models/index" );
+jest.mock( "../src/realmModels/index", ( ) => {
+  const originalModule = jest.requireActual( "../src/realmModels/index" );
 
   // Mock the default export and named export 'foo'
   return {

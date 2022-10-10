@@ -3,16 +3,15 @@
 import { useNavigation } from "@react-navigation/native";
 import TranslatedText from "components/SharedComponents/TranslatedText";
 import UserIcon from "components/SharedComponents/UserIcon";
-import useRemoteUser from "sharedHooks/useRemoteUser";
 import type { Node } from "react";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import User from "realmModels/User";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useRemoteUser from "sharedHooks/useRemoteUser";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/observations/userCard";
-
-import User from "../../models/User";
 
 const UserCard = ( ): Node => {
   const user = useCurrentUser( );
