@@ -21,6 +21,8 @@ const SafeAreaView = styled( StyledSafeAreaView );
 // $FlowIgnore
 const ScrollView = styled( StyledScrollView );
 // $FlowIgnore
+const HeaderText = styled( StyledText, "font-Papyrus-Condensed" );
+// $FlowIgnore
 const Text = styled( StyledText, "font-Whitney-Medium" );
 // $FlowIgnore
 const TextInput = styled( StyledTextInput );
@@ -30,6 +32,7 @@ const Pressable = styled( StyledPressable );
 const Image = styled( StyledImage );
 
 export {
+  HeaderText,
   Image,
   KeyboardAvoidingView,
   Pressable,

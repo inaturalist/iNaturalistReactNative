@@ -16,7 +16,10 @@ module.exports = {
       },
       fontFamily: {
         "Whitney-Medium": ["Whitney-Medium"],
-        "Whitney-Light": ["Whitney-Light"]
+        "Whitney-Light": ["Whitney-Light"],
+        // selected from list of fonts already available in RN
+        // https://infinitbility.com/react-native-font-family-list/
+        "Papyrus-Condensed": ["Papyrus-Condensed"]
       }
     },
     colors: {

@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { Pressable, Text } from "components/styledComponents";
+import { HeaderText, Pressable, Text } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -20,7 +20,9 @@ const LoggedOutCard = ( { numOfUnuploadedObs }: Props ): Node => {
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-login-screen" )}
     >
-      <Text className="self-center color-white text-2xl" >{t( "Log-in-to-iNaturalist" )}</Text>
+      <HeaderText className="self-center color-white text-2xl">
+        {t( "Log-in-to-iNaturalist" )}
+      </HeaderText>
       <Text className="self-center color-white text-base">
         {t( "X-unuploaded-observations", { observationCount: numOfUnuploadedObs } )}
       </Text>
