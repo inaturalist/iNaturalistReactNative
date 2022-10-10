@@ -9,6 +9,7 @@ import React, {
   useContext, useEffect, useRef, useState
 } from "react";
 import { Avatar, Snackbar, useTheme } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import colors from "styles/colors";
 
@@ -16,7 +17,6 @@ import Photo from "../../models/Photo";
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
-import Icon from "react-native-vector-icons/MaterialIcons";
 
 const { useRealm } = RealmContext;
 
@@ -97,7 +97,6 @@ const StandardCamera = ( ): Node => {
       style={{ backgroundColor: colors.gray }}
     />
   );
-
 
   const renderCameraButton = ( icon, disabled ) => (
     <Avatar.Icon
