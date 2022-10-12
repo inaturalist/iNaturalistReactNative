@@ -1,15 +1,16 @@
 // @flow
 
+import fetchAuthorizedApplications from "api/authorizedApplications";
 import inatProviders from "dictionaries/providers";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Alert, Text, View } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/settings/settings";
 
-import useAuthorizedApplications from "./hooks/useAuthorizedApplications";
 import useProviderAuthorizations from "./hooks/useProviderAuthorizations";
 
 type Props = {
@@ -17,13 +18,14 @@ type Props = {
 }
 
 const SettingsApplications = ( { accessToken }: Props ): Node => {
-  const currentAuthorizedApps = useAuthorizedApplications( accessToken );
-  const [authorizedApps, setAuthorizedApps] = useState( [] );
-  const providerAuthorizations = useProviderAuthorizations( accessToken );
+  const {
+    data: authorizedApps
+  } = useAuthenticatedQuery(
+    ["fetchAuthorizedApplications"],
+    optsWithAuth => fetchAuthorizedApplications( { }, optsWithAuth )
+  );
 
-  useEffect( () => {
-    setAuthorizedApps( currentAuthorizedApps );
-  }, [currentAuthorizedApps] );
+  const providerAuthorizations = useProviderAuthorizations( accessToken );
 
   const revokeApp = async appId => {
     const response = await inatjs.authorized_applications.delete(
@@ -34,7 +36,6 @@ const SettingsApplications = ( { accessToken }: Props ): Node => {
     // Refresh authorized applications
     const apps = await inatjs.authorized_applications.search( {}, { api_token: accessToken } );
     console.log( "Authorized Applications", apps.results );
-    setAuthorizedApps( apps.results );
   };
 
   const askToRevokeApp = app => {
@@ -53,7 +54,7 @@ const SettingsApplications = ( { accessToken }: Props ): Node => {
   return (
     <View style={viewStyles.column}>
       <Text style={textStyles.title}>{t( "iNaturalist-Applications" )}</Text>
-      {authorizedApps.filter( app => app.application.official ).map( app => (
+      {authorizedApps?.filter( app => app.application.official ).map( app => (
         <Text key={app.application.id}>
           {t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}
         </Text>
@@ -76,7 +77,7 @@ const SettingsApplications = ( { accessToken }: Props ): Node => {
       } )}
 
       <Text style={[textStyles.title, textStyles.marginTop]}>{t( "External-Applications" )}</Text>
-      {authorizedApps.filter( app => !app.application.official ).map( app => (
+      {authorizedApps?.filter( app => !app.application.official ).map( app => (
         <View key={app.application.id} style={[viewStyles.row, viewStyles.applicationRow]}>
           <Text style={textStyles.applicationName}>
             {t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}
