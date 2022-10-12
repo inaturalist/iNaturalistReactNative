@@ -45,7 +45,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     width: 60
   },
   textInput: {
-    backgroundColor: "#000000",
+    backgroundColor: colors.white,
     borderWidth: 1,
     flexGrow: 1
   },
