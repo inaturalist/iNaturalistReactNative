@@ -1,4 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
+import fetchPlace from "api/places";
 import fetchSearchResults from "api/search";
 import inatPlaceTypes from "dictionaries/places";
 import React, { useEffect } from "react";
@@ -10,14 +11,11 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/settings/settings";
 import { useDebounce } from "use-debounce";
 
-import usePlaceDetails from "./hooks/usePlaceDetails";
-
 const PlaceSearchInput = ( { placeId, onPlaceChanged } ): React.Node => {
   const [hideResults, setHideResults] = React.useState( true );
   const [placeSearch, setPlaceSearch] = React.useState( "" );
   // So we'll start searching only once the user finished typing
   const [finalPlaceSearch] = useDebounce( placeSearch, 500 );
-  const placeDetails = usePlaceDetails( placeId );
 
   const queryClient = useQueryClient( );
 
@@ -33,6 +31,13 @@ const PlaceSearchInput = ( { placeId, onPlaceChanged } ): React.Node => {
       sources: "places",
       fields: "place,place.display_name,place.place_type"
     }, optsWithAuth )
+  );
+
+  const {
+    data: placeDetails
+  } = useAuthenticatedQuery(
+    ["fetchPlace", placeId],
+    optsWithAuth => fetchPlace( placeId, optsWithAuth )
   );
 
   useEffect( () => {

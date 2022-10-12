@@ -1,6 +1,7 @@
 // @flow
 
 import fetchAuthorizedApplications from "api/authorizedApplications";
+import fetchProviderAuthorizations from "api/providerAuthorizations";
 import inatProviders from "dictionaries/providers";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
@@ -10,8 +11,6 @@ import { Alert, Text, View } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/settings/settings";
-
-import useProviderAuthorizations from "./hooks/useProviderAuthorizations";
 
 type Props = {
   accessToken: string
@@ -25,7 +24,12 @@ const SettingsApplications = ( { accessToken }: Props ): Node => {
     optsWithAuth => fetchAuthorizedApplications( { }, optsWithAuth )
   );
 
-  const providerAuthorizations = useProviderAuthorizations( accessToken );
+  const {
+    data: providerAuthorizations
+  } = useAuthenticatedQuery(
+    ["fetchProviderAuthorizations"],
+    optsWithAuth => fetchProviderAuthorizations( { }, optsWithAuth )
+  );
 
   const revokeApp = async appId => {
     const response = await inatjs.authorized_applications.delete(
@@ -62,7 +66,7 @@ const SettingsApplications = ( { accessToken }: Props ): Node => {
 
       <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Connected-Accounts" )}</Text>
       {Object.keys( inatProviders ).map( providerKey => {
-        const connectedProvider = providerAuthorizations.find(
+        const connectedProvider = providerAuthorizations?.find(
           x => x.provider_name === providerKey
         );
         return (

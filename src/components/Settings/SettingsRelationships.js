@@ -1,20 +1,22 @@
 // @flow
 
 import { Picker } from "@react-native-picker/picker";
+import fetchRelationships from "api/relationships";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
 import {
-  Alert, Image, Text, TextInput, View
+  Alert, Image, ScrollView,
+  Text, TextInput, View
 } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/settings/settings";
 import { useDebounce } from "use-debounce";
 
 import BlockedUser from "./BlockedUser";
-import useRelationships from "./hooks/useRelationships";
 import MutedUser from "./MutedUser";
 import Relationship from "./Relationship";
 import UserSearchInput from "./UserSearchInput";
@@ -50,7 +52,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
   const [finalUserSearch] = useDebounce( userSearch, 500 );
   const [following, setFollowing] = React.useState( "all" );
   const [trusted, setTrusted] = React.useState( "all" );
-  const [sortBy, setSortBy] = React.useState( "desc" );
+  const [sortBy, setSortBy] = React.useState( "z_to_a" );
   const [page, setPage] = React.useState( 1 );
   const [blockedUsers, setBlockedUsers] = React.useState( [] );
   const [mutedUsers, setMutedUsers] = React.useState( [] );
@@ -77,15 +79,21 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     trusted,
     order_by: orderBy,
     order,
-    per_page: 10,
     page,
     random: refreshRelationships
   };
-  const [
-    relationshipResults,
-    perPage,
-    totalResults
-  ] = useRelationships( accessToken, relationshipParams );
+
+  const {
+    data
+  } = useAuthenticatedQuery(
+    ["fetchRelationships", finalUserSearch],
+    optsWithAuth => fetchRelationships( relationshipParams, optsWithAuth )
+  );
+
+  const relationshipResults = data?.results;
+  const perPage = data?.per_page;
+  const totalResults = data?.total_results;
+
   const totalPages = totalResults > 0 && perPage > 0 ? Math.ceil( totalResults / perPage ) : 1;
 
   useEffect( () => {
@@ -300,7 +308,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
 
   return (
     // $FlowFixMe
-    <View style={viewStyles.column}>
+    <ScrollView contentContainerStyle={viewStyles.column}>
       <Text style={textStyles.title}>{t( "Relationships" )}</Text>
       <View style={viewStyles.row}>
         <TextInput
@@ -383,7 +391,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
         </View>
       </View>
 
-      {relationshipResults.map( relationship => (
+      {relationshipResults?.map( relationship => (
         <Relationship
           key={relationship.id}
           relationship={relationship}
@@ -430,7 +438,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
       {mutedUsers.map( user => (
         <MutedUser key={user.id} user={user} unmuteUser={unmuteUser} />
       ) )}
-    </View>
+    </ScrollView>
   );
 };
 

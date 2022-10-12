@@ -163,7 +163,6 @@ const Settings = ( { children: _children }: Props ): Node => {
 
   const fetchProfile = useCallback( async () => {
     if ( user ) {
-      console.log( "User object", user );
       setSettings( user );
     }
   }, [user] );
@@ -219,7 +218,6 @@ const Settings = ( { children: _children }: Props ): Node => {
 
     console.log( "Updated user", response );
     const userResponse = await inatjs.users.me( { api_token: accessToken, fields: "all" } );
-    console.log( "User object", userResponse.results[0] );
     setSettings( userResponse.results[0] );
     setIsSaving( false );
   };

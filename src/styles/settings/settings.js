@@ -33,8 +33,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row"
   },
   column: {
-    flexDirection: "column",
-    justifyContent: "space-evenly"
+    paddingBottom: 200
   },
   profileImage: {
     height: 130,

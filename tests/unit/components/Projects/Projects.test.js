@@ -24,11 +24,6 @@ jest.mock( "../../../../src/sharedHooks/useUserLocation", ( ) => ( {
   __esModule: true
 } ) );
 
-jest.mock( "../../../../src/components/Projects/hooks/useProjects", ( ) => ( {
-  __esModule: true,
-  default: ( ) => [mockProject]
-} ) );
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
