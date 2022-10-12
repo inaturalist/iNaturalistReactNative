@@ -1,4 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
+import fetchUserMe from "api/user";
 import { getAPIToken } from "components/LoginSignUp/AuthenticationService";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { t } from "i18next";
@@ -16,9 +17,9 @@ import {
   Text,
   View
 } from "react-native";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/settings/settings";
 
-import useUserMe from "./hooks/useUserMe";
 import SettingsAccount from "./SettingsAccount";
 import SettingsApplications from "./SettingsApplications";
 import SettingsContentDisplay from "./SettingsContentDisplay";
@@ -150,15 +151,20 @@ const Settings = ( { children: _children }: Props ): Node => {
   const [activeTab, setActiveTab] = useState( TAB_TYPE_PROFILE );
   const [settings, setSettings] = useState( {} );
   const [accessToken, setAccessToken] = useState( null );
-  const [isLoading, setIsLoading] = useState( true );
   const [isSaving, setIsSaving] = useState( false );
-  const user = useUserMe( accessToken );
+
+  const {
+    data: user,
+    isLoading
+  } = useAuthenticatedQuery(
+    ["fetchUserMe"],
+    optsWithAuth => fetchUserMe( { }, optsWithAuth )
+  );
 
   const fetchProfile = useCallback( async () => {
     if ( user ) {
       console.log( "User object", user );
       setSettings( user );
-      setIsLoading( false );
     }
   }, [user] );
 
