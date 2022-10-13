@@ -8,13 +8,6 @@ import factory from "../../../factory";
 const testUser = factory( "RemoteUser" );
 const mockExpected = testUser;
 
-jest.mock( "../../../../src/components/UserProfile/hooks/useRemoteUser", ( ) => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    user: mockExpected
-  } )
-} ) );
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {

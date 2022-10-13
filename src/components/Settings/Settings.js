@@ -1,5 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
-import fetchUserMe from "api/user";
+import { fetchUserMe } from "api/users";
 import { getAPIToken } from "components/LoginSignUp/AuthenticationService";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { t } from "i18next";

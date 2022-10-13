@@ -1,6 +1,6 @@
 // @flow
 
-import fetchUserMe from "api/user";
+import { fetchUserMe } from "api/users";
 import InputField from "components/SharedComponents/InputField";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import * as React from "react";
