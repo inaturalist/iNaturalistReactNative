@@ -8,11 +8,6 @@ import factory from "../../../factory";
 const mockProject = factory( "RemoteProject" );
 const mockObservation = factory( "RemoteObservation" );
 
-jest.mock( "../../../../src/components/Projects/hooks/useProjectObservations", ( ) => ( {
-  __esModule: true,
-  default: ( ) => [mockObservation]
-} ) );
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {

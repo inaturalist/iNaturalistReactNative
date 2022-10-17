@@ -14,7 +14,6 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/userProfile/userProfile";
 
 import User from "../../models/User";
-// import useNetworkSite from "./hooks/useNetworkSite";
 import updateRelationship from "./helpers/updateRelationship";
 import UserProjects from "./UserProjects";
 
@@ -22,7 +21,6 @@ const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
   const { userId } = params;
   const { width } = useWindowDimensions( );
-  // const site = useNetworkSite( );
 
   const {
     data: remoteUser

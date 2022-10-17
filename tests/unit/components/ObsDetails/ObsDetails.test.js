@@ -12,17 +12,6 @@ const mockObservation = factory( "LocalObservation" );
 
 jest.mock( "../../../../src/providers/ObsEditProvider" );
 
-jest.mock(
-  "../../../../src/components/ObsDetails/hooks/useRemoteObservation",
-  ( ) => ( {
-    __esModule: true,
-    default: ( _observation, _refetch ) => ( {
-      remoteObservation: mockObservation,
-      currentUserFaved: false
-    } )
-  } )
-);
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {

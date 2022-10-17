@@ -11,12 +11,6 @@ const testTaxaList = [
   factory( "RemoteTaxon" )
 ];
 
-const mockExpected = testTaxaList;
-jest.mock( "../../../../src/sharedHooks/useRemoteSearchResults", ( ) => ( {
-  __esModule: true,
-  default: ( ) => mockExpected
-} ) );
-
 const mockedNavigate = jest.fn( );
 
 jest.mock( "@react-navigation/native", ( ) => {

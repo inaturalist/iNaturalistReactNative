@@ -30,12 +30,6 @@ const testUserList = [
   factory( "RemoteUser" )
 ];
 
-const mockExpectedUsers = testUserList;
-jest.mock( "../../../../src/sharedHooks/useRemoteSearchResults", ( ) => ( {
-  __esModule: true,
-  default: ( ) => mockExpectedUsers
-} ) );
-
 test( "displays user search results on button press", ( ) => {
   const { getByTestId, getByText } = renderSearch( );
 
