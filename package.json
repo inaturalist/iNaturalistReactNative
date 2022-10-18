@@ -71,7 +71,7 @@
     "react-native-reanimated": "^2.10.0",
     "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "^4.2.2",
-    "react-native-screens": "^3.8.0",
+    "react-native-screens": "^3.18.1",
     "react-native-sensitive-info": "^6.0.0-alpha.9",
     "react-native-svg": "^12.3.0",
     "react-native-uuid": "^2.0.1",
@@ -79,7 +79,7 @@
     "react-native-vision-camera": "^2.14.1",
     "react-spring": "^8.0.27",
     "react-tinder-card": "^1.5.4",
-    "realm": "^11.0.0-rc.1",
+    "realm": "^11.0.0-rc.2",
     "use-debounce": "^7.0.1"
   },
   "devDependencies": {

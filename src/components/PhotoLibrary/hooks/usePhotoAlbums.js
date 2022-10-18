@@ -1,6 +1,6 @@
 // @flow
 
-import CameraRoll from "@react-native-camera-roll/camera-roll";
+import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { t } from "i18next";
 import { useEffect, useMemo, useState } from "react";
 

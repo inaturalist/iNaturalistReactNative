@@ -23,7 +23,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     const upload = async obs => {
       if ( !apiToken ) return;
       const response = await uploadObservation( obs, realm, apiToken );
-      console.log( "obs/hooks, useUploadObservations, response: ", response );
+      console.log( "shared useUploadObservations, response: ", response );
       if ( response.results ) { return; }
       if ( response.status !== 200 ) {
         const error = JSON.parse( response );

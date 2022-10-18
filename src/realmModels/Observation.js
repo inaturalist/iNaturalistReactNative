@@ -10,6 +10,9 @@ import ObservationSound from "./ObservationSound";
 import Taxon from "./Taxon";
 import User from "./User";
 
+// noting that methods like .toJSON( ) are only accessible when the model
+// class is extended with Realm.Object per this issue:
+// https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
 class Observation extends Realm.Object {
   static FIELDS = {
     captive: true,
@@ -186,8 +189,9 @@ class Observation extends Realm.Object {
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
 
     const obsToSave = {
-      // causes problems without toJSON when obs is a realm object
-      ...( obs.toJSON ? obs.toJSON( ) : obs ),
+      // just ...obs causes problems when obs is a realm object
+      // ...obs.toJSON( ),
+      ...obs,
       ...timestamps,
       taxon,
       observationPhotos,
@@ -330,6 +334,7 @@ class Observation extends Realm.Object {
   }
 
   static markRecordUploaded = async ( recordUUID, type, response, realm ) => {
+    console.log( "Observation.markRecordUploaded, response: ", response );
     const { id } = response.results[0];
     try {
       const record = realm.objectForPrimaryKey( type, recordUUID );
@@ -352,13 +357,18 @@ class Observation extends Realm.Object {
   ) => {
     const options = { api_token: apiToken };
 
-    let response;
-    try {
-      response = await apiEndpoint.create( params, options );
-      await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
-    } catch ( e ) {
-      return JSON.stringify( e.response );
-    }
+    // let response;
+    // try {
+    console.log( "Observation.uploadToServer, apiEndpoint: ", apiEndpoint );
+    console.log( "Observation.uploadToServer, params: ", params );
+    console.log( "Observation.uploadToServer, options: ", options );
+    const response = await apiEndpoint.create( params, options );
+    console.log( "Observation.uploadToServer, response: ", response );
+    await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
+    console.log( "Observation.uploadToServer, marked as uploaded" );
+    // } catch ( e ) {
+    //   return JSON.stringify( e.response );
+    // }
     return response;
   };
 

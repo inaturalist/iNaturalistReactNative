@@ -1,6 +1,6 @@
 // @flow
 
-import CameraRoll from "@react-native-camera-roll/camera-roll";
+import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useCallback, useEffect, useState } from "react";
 
 const initialStatus = {
