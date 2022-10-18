@@ -1,6 +1,6 @@
+import { Realm } from "@realm/react";
 import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
-import Realm from "realm";
 import { createObservedOnStringForUpload, formatDateAndTime } from "sharedHelpers/dateAndTime";
 
 import Comment from "./Comment";

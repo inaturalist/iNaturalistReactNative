@@ -91,14 +91,15 @@ const DropdownPicker = ( {
     if ( finalSearch === "" ) {
       return [];
     }
+    if ( !searchResults ) { return []; }
     if ( sources === "places" ) {
-      return searchResults?.map( item => placesItem( item ) );
+      return searchResults.map( item => placesItem( item ) );
     } if ( sources === "taxa" ) {
-      return searchResults?.map( item => taxonItem( item ) );
+      return searchResults.map( item => taxonItem( item ) );
     } if ( sources === "users" ) {
-      return searchResults?.map( item => userItem( item ) );
+      return searchResults.map( item => userItem( item ) );
     } if ( sources === "projects" ) {
-      return searchResults?.map( item => projectItem( item ) );
+      return searchResults.map( item => projectItem( item ) );
     }
     return [];
   };

@@ -26,9 +26,9 @@ jest.mock( "@react-navigation/native", ( ) => {
 } );
 
 const mockTaxaList = [
-  { taxon: factory( "RemoteTaxon" ) },
-  { taxon: factory( "RemoteTaxon" ) },
-  { taxon: factory( "RemoteTaxon" ) }
+  factory( "RemoteTaxon" ),
+  factory( "RemoteTaxon" ),
+  factory( "RemoteTaxon" )
 ];
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
@@ -37,6 +37,20 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
     data: mockTaxaList
   } )
 } ) );
+
+jest.mock( "react-native-vector-icons/MaterialIcons", ( ) => {
+  const InnerReact = require( "react" );
+  class MaterialIcons extends InnerReact.Component {
+    static getImageSourceSync( _thing, _number, _color ) {
+      return { uri: "foo" };
+    }
+
+    render( ) {
+      return InnerReact.createElement( "MaterialIcons", this.props, this.props.children );
+    }
+  }
+  return MaterialIcons;
+} );
 
 const queryClient = new QueryClient( );
 
@@ -58,7 +72,7 @@ test( "renders taxon search results", async ( ) => {
     fireEvent.changeText( input, "Some taxon" );
   } );
 
-  const { taxon } = mockTaxaList[0];
+  const taxon = mockTaxaList[0];
 
   expect( getByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
   expect(

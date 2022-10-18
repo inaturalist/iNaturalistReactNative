@@ -34,6 +34,15 @@ jest.mock( "../../../../src/sharedHooks/useUserLocation", ( ) => ( {
   default: ( ) => mockLatLng
 } ) );
 
+// Some of the search inputs seem to query the API for some defaults, so this
+// tries to make sure they get nothing. It does so for all uses of
+// useAuthenticatedQuery, so watch this for unexpected behavior (but a unit
+// test really should not be making any network requests)
+jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( { data: null } )
+} ) );
+
 jest.mock( "../../../../src/providers/ExploreProvider" );
 
 // Mock ExploreProvider so it provides a specific array of observations

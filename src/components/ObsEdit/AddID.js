@@ -14,7 +14,9 @@ import { useTranslation } from "react-i18next";
 import {
   FlatList,
   Image,
-  Pressable, TextInput as NativeTextInput, TouchableOpacity,
+  Pressable,
+  TextInput as NativeTextInput,
+  TouchableOpacity,
   View
 } from "react-native";
 import {
