@@ -27,7 +27,6 @@ target 'iNaturalistReactNative' do
   # use_flipper!()
 
   post_install do |installer|
-    # react_native_post_install(installer)
     # https://github.com/Agontuk/react-native-geolocation-service/issues/287#issuecomment-980772489
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
