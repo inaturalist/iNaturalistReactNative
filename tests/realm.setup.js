@@ -1,6 +1,6 @@
-// import Realm from "realm";
+import Realm from "realm";
 
-// import realmConfig from "../src/models/index";
+import realmConfig from "../src/models/index";
 
 // Mock the realm config so it uses an in-memory database. This means data is
 // only persisted until realm.close() gets called, so if the code under test
@@ -39,9 +39,9 @@ jest.mock( "../src/providers/contexts", ( ) => {
 // Open a realm connection and stuff it in global. If there's a better way to
 // do this without having jest.mock complain about referring to variables out
 // of scope, please propose it.
-// beforeAll( async ( ) => {
-//   global.realm = await Realm.open( realmConfig );
-// } );
+beforeAll( async ( ) => {
+  global.realm = await Realm.open( realmConfig );
+} );
 
 // Ensure the realm connection gets closed
 afterAll( ( ) => {
