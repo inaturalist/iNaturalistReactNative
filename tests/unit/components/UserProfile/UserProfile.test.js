@@ -1,4 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 import UserProfile from "components/UserProfile/UserProfile";
 import React from "react";
@@ -6,7 +10,14 @@ import React from "react";
 import factory from "../../../factory";
 
 const testUser = factory( "RemoteUser" );
-const mockExpected = testUser;
+const mockUser = testUser;
+
+jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    data: [mockUser]
+  } )
+} ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -14,16 +25,20 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useRoute: ( ) => ( {
       params: {
-        userId: mockExpected.id
+        userId: mockUser.id
       }
     } )
   };
 } );
 
+const queryClient = new QueryClient( );
+
 const renderUserProfile = ( ) => render(
-  <NavigationContainer>
-    <UserProfile />
-  </NavigationContainer>
+  <QueryClientProvider client={queryClient}>
+    <NavigationContainer>
+      <UserProfile />
+    </NavigationContainer>
+  </QueryClientProvider>
 );
 
 test( "renders user profile from API call", ( ) => {

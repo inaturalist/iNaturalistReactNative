@@ -54,3 +54,32 @@ test( "navigates to TaxonDetails on button press", ( ) => {
   fireEvent.press( getByTestId( `Search.taxa.${taxon.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", { id: taxon.id } );
 } );
+
+const testUserList = [
+  factory( "RemoteUser" )
+];
+
+test( "displays user search results on button press", ( ) => {
+  const { getByTestId, getByText } = renderSearch( );
+
+  const user = testUserList[0];
+  const { login } = user;
+  const button = getByTestId( "Search.users" );
+
+  fireEvent.press( button );
+  expect( getByTestId( `Search.user.${login}` ) ).toBeTruthy( );
+  expect( getByTestId( `Search.${login}.photo` ).props.source ).toStrictEqual( { uri: user.icon } );
+  expect( getByText( new RegExp( login ) ) ).toBeTruthy( );
+} );
+
+test( "navigates to user profile on button press", ( ) => {
+  const { getByTestId } = renderSearch( );
+
+  const user = testUserList[0];
+  const { login } = user;
+  const button = getByTestId( "Search.users" );
+
+  fireEvent.press( button );
+  fireEvent.press( getByTestId( `Search.user.${login}` ) );
+  expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: user.id } );
+} );
