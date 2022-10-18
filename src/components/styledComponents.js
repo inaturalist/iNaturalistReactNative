@@ -4,6 +4,7 @@ import { styled } from "nativewind";
 import {
   Image as StyledImage,
   KeyboardAvoidingView as StyledKeyboardAvoidingView,
+  Platform,
   Pressable as StyledPressable,
   SafeAreaView as StyledSafeAreaView,
   ScrollView as StyledScrollView,
@@ -21,9 +22,15 @@ const SafeAreaView = styled( StyledSafeAreaView );
 // $FlowIgnore
 const ScrollView = styled( StyledScrollView );
 // $FlowIgnore
-const HeaderText = styled( StyledText, "font-Papyrus-Condensed" );
+const HeaderText = styled(
+  StyledText,
+  Platform.OS === "ios" ? "font-Papyrus-Condensed" : "font-Roboto"
+);
 // $FlowIgnore
-const Text = styled( StyledText, "font-Whitney-Medium" );
+const Text = styled(
+  StyledText,
+  Platform.OS === "ios" ? "font-Whitney-Medium" : "font-Whitney-Medium-Pro"
+);
 // $FlowIgnore
 const TextInput = styled( StyledTextInput );
 // $FlowIgnore
