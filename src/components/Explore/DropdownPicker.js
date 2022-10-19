@@ -1,5 +1,6 @@
 // flow
 
+import fetchSearchResults from "api/search";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
@@ -8,8 +9,9 @@ import { Image } from "react-native";
 // and allows users to input immediately instead of first tapping the dropdown
 // this is a placeholder to get functionality working
 import DropDownPicker from "react-native-dropdown-picker";
-import useRemoteSearchResults from "sharedHooks/useRemoteSearchResults";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { imageStyles, viewStyles } from "styles/explore/explore";
+import { useDebounce } from "use-debounce";
 
 type Props = {
   searchQuery: string,
@@ -38,7 +40,18 @@ const DropdownPicker = ( {
   zIndex,
   zIndexInverse
 }: Props ): Node => {
-  const searchResults = useRemoteSearchResults( searchQuery, sources );
+  // So we'll start searching only once the user finished typing
+  const [finalSearch] = useDebounce( searchQuery, 500 );
+
+  const {
+    data: searchResults
+  } = useAuthenticatedQuery(
+    ["fetchSearchResults", finalSearch],
+    optsWithAuth => fetchSearchResults( {
+      q: finalSearch,
+      sources
+    }, optsWithAuth )
+  );
 
   const placesItem = place => ( {
     label: place.name,
@@ -75,6 +88,10 @@ const DropdownPicker = ( {
   } );
 
   const displayItems = ( ) => {
+    if ( finalSearch === "" ) {
+      return [];
+    }
+    if ( !searchResults ) { return []; }
     if ( sources === "places" ) {
       return searchResults.map( item => placesItem( item ) );
     } if ( sources === "taxa" ) {
@@ -86,6 +103,9 @@ const DropdownPicker = ( {
     }
     return [];
   };
+
+  // TODO: change to the same style of dropdown as in SettingsRelationships?
+  // this should be standardized throughout the app
 
   return (
     <DropDownPicker

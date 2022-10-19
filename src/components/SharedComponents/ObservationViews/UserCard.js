@@ -1,13 +1,14 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { fetchRemoteUser } from "api/users";
 import TranslatedText from "components/SharedComponents/TranslatedText";
 import UserIcon from "components/SharedComponents/UserIcon";
-import useRemoteUser from "components/UserProfile/hooks/useRemoteUser";
 import type { Node } from "react";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/observations/userCard";
@@ -16,7 +17,15 @@ import User from "../../../models/User";
 
 const UserCard = ( ): Node => {
   const user = useCurrentUser( );
-  const { user: remoteUser } = useRemoteUser( user?.id );
+  const userId = user?.id;
+
+  const {
+    data: remoteUser
+  } = useAuthenticatedQuery(
+    ["fetchRemoteUser", userId],
+    optsWithAuth => fetchRemoteUser( userId, { }, optsWithAuth )
+  );
+
   // TODO: this currently doesn't show up on initial login
   // because user id can't be fetched
   const navigation = useNavigation( );

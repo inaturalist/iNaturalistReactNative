@@ -1,6 +1,6 @@
+import { Realm } from "@realm/react";
 import { FileUpload } from "inaturalistjs";
 import uuid from "react-native-uuid";
-import Realm from "realm";
 
 import Photo from "./Photo";
 

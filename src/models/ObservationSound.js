@@ -1,8 +1,8 @@
+import { Realm } from "@realm/react";
 import { FileUpload } from "inaturalistjs";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
-import Realm from "realm";
 
 class ObservationSound extends Realm.Object {
   static async moveFromCacheToDocumentDirectory( soundUUID ) {

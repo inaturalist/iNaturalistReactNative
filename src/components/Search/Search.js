@@ -1,22 +1,32 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import fetchSearchResults from "api/search";
 import PlaceholderText from "components/PlaceholderText";
 import InputField from "components/SharedComponents/InputField";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import * as React from "react";
 import {
+  ActivityIndicator,
   FlatList, Image, Pressable, Text, View
 } from "react-native";
-import useRemoteSearchResults from "sharedHooks/useRemoteSearchResults";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { imageStyles, viewStyles } from "styles/search/search";
 
 const Search = ( ): React.Node => {
   const navigation = useNavigation( );
   const [q, setQ] = React.useState( "" );
   const [queryType, setQueryType] = React.useState( "taxa" );
-  // choose users or taxa
-  const list = useRemoteSearchResults( q, queryType, "all" );
+
+  const {
+    data, isLoading
+  } = useAuthenticatedQuery(
+    ["fetchSearchResults", q],
+    optsWithAuth => fetchSearchResults( {
+      q,
+      sources: queryType
+    }, optsWithAuth )
+  );
 
   const renderItem = ( { item } ) => {
     // TODO: make sure TaxonDetails navigates back to Search
@@ -84,11 +94,15 @@ const Search = ( ): React.Node => {
         text={q}
         type="none"
       />
-      <FlatList
-        data={list}
-        renderItem={renderItem}
-        testID="Search.listView"
-      />
+      {isLoading
+        ? <ActivityIndicator />
+        : (
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            testID="Search.listView"
+          />
+        )}
     </ViewWithFooter>
   );
 };

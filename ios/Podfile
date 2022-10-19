@@ -26,8 +26,13 @@ target 'iNaturalistReactNative' do
   # you should disable the next line.
   # use_flipper!()
 
-  # post_install do |installer|
-  #   react_native_post_install(installer)
-  # end
+  post_install do |installer|
+    # https://github.com/Agontuk/react-native-geolocation-service/issues/287#issuecomment-980772489
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+      end
+    end
+  end
 
 end

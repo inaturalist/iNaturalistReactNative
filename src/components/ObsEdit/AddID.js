@@ -6,6 +6,7 @@ import {
   BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
+import fetchSearchResults from "api/search";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import * as React from "react";
 import { useRef, useState } from "react";
@@ -13,7 +14,9 @@ import { useTranslation } from "react-i18next";
 import {
   FlatList,
   Image,
-  Pressable, TextInput as NativeTextInput, TouchableOpacity,
+  Pressable,
+  TextInput as NativeTextInput,
+  TouchableOpacity,
   View
 } from "react-native";
 import {
@@ -21,7 +24,7 @@ import {
 } from "react-native-paper";
 import uuid from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import useRemoteSearchResults from "sharedHooks/useRemoteSearchResults";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/obsDetails/addID";
 
@@ -50,11 +53,17 @@ const AddID = ( { route }: Props ): React.Node => {
   const { onIDAdded, goBackOnSave, hideComment } = route.params;
   const bottomSheetModalRef = useRef( null );
   const [taxonSearch, setTaxonSearch] = useState( "" );
-  const taxonList = useRemoteSearchResults(
-    taxonSearch,
-    "taxa",
-    "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url,taxon.rank"
+  const {
+    data: taxonList
+  } = useAuthenticatedQuery(
+    ["fetchSearchResults", taxonSearch],
+    optsWithAuth => fetchSearchResults( {
+      q: taxonSearch,
+      sources: "taxa",
+      fields: "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url,taxon.rank"
+    }, optsWithAuth )
   );
+
   const navigation = useNavigation( );
 
   const renderBackdrop = props => (

@@ -1,7 +1,7 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
-// import useNetworkSite from "./hooks/useNetworkSite";
+import { fetchRemoteUser } from "api/users";
 import Button from "components/SharedComponents/Buttons/Button";
 import CustomHeader from "components/SharedComponents/CustomHeader";
 import UserIcon from "components/SharedComponents/UserIcon";
@@ -10,20 +10,26 @@ import { t } from "i18next";
 import * as React from "react";
 import { Text, useWindowDimensions, View } from "react-native";
 import HTML from "react-native-render-html";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/userProfile/userProfile";
 
 import User from "../../models/User";
-// import useNetworkSite from "./hooks/useNetworkSite";
 import updateRelationship from "./helpers/updateRelationship";
-import useRemoteUser from "./hooks/useRemoteUser";
 import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {
   const { params } = useRoute( );
   const { userId } = params;
-  const { user, currentUser } = useRemoteUser( userId );
   const { width } = useWindowDimensions( );
-  // const site = useNetworkSite( );
+
+  const {
+    data: remoteUser
+  } = useAuthenticatedQuery(
+    ["fetchRemoteUser", userId],
+    optsWithAuth => fetchRemoteUser( userId, { }, optsWithAuth )
+  );
+
+  const user = remoteUser ? remoteUser[0] : null;
 
   const showCount = ( count, label ) => (
     <View style={viewStyles.countBox}>
@@ -34,7 +40,7 @@ const UserProfile = ( ): React.Node => {
 
   if ( !user ) { return null; }
 
-  const showUserRole = user.roles.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
+  const showUserRole = user?.roles?.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
 
   const followUser = ( ) => updateRelationship( { id: userId, relationship: { following: true } } );
 
@@ -51,26 +57,25 @@ const UserProfile = ( ): React.Node => {
           <Text>{`${t( "Affiliation-colon" )} ${user.site_id}`}</Text>
         </View>
       </View>
-      {!currentUser && (
-        <View style={viewStyles.buttonRow}>
-          <View style={viewStyles.button}>
-            <Button
-              level="primary"
-              text="Follow"
-              onPress={followUser}
-              testID="UserProfile.followButton"
-            />
-          </View>
-          <View style={viewStyles.button}>
-            <Button
-              level="primary"
-              text="Messages"
-              onPress={( ) => console.log( "open messages" )}
-              testID="UserProfile.messagesButton"
-            />
-          </View>
+      {/* TODO: hide follow and messages for current user */}
+      <View style={viewStyles.buttonRow}>
+        <View style={viewStyles.button}>
+          <Button
+            level="primary"
+            text="Follow"
+            onPress={followUser}
+            testID="UserProfile.followButton"
+          />
         </View>
-      )}
+        <View style={viewStyles.button}>
+          <Button
+            level="primary"
+            text="Messages"
+            onPress={( ) => console.log( "open messages" )}
+            testID="UserProfile.messagesButton"
+          />
+        </View>
+      </View>
       <View style={viewStyles.countRow}>
         {showCount( user.observations_count, t( "Observations" ) )}
         {showCount( user.species_count, t( "Species" ) )}
