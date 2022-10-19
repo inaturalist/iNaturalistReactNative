@@ -1,5 +1,5 @@
+import { Realm } from "@realm/react";
 import inatjs from "inaturalistjs";
-import Realm from "realm";
 
 import User from "./User";
 

@@ -106,7 +106,7 @@ const ObservationViews = ( {
   );
 
   const navToObsDetails = async observation => {
-    navigation.navigate( "ObsDetails", { observation } );
+    navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
   };
 
   const renderItem = ( { item } ) => (

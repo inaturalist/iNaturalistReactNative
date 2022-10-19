@@ -1,7 +1,7 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
-// import useNetworkSite from "./hooks/useNetworkSite";
+import { fetchRemoteUser } from "api/users";
 import Button from "components/SharedComponents/Buttons/Button";
 import CustomHeader from "components/SharedComponents/CustomHeader";
 import UserIcon from "components/SharedComponents/UserIcon";
@@ -12,22 +12,28 @@ import * as React from "react";
 import { useWindowDimensions } from "react-native";
 import { Button as RNPaperButton } from "react-native-paper";
 import HTML from "react-native-render-html";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/colors";
 
 import User from "../../models/User";
 import updateRelationship from "./helpers/updateRelationship";
-import useRemoteUser from "./hooks/useRemoteUser";
 import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {
   const currentUser = useCurrentUser( );
   const { params } = useRoute( );
   const { userId } = params;
-  const { user } = useRemoteUser( userId );
   const { width } = useWindowDimensions( );
 
-  // const site = useNetworkSite( );
+  const {
+    data: remoteUser
+  } = useAuthenticatedQuery(
+    ["fetchRemoteUser", userId],
+    optsWithAuth => fetchRemoteUser( userId, { }, optsWithAuth )
+  );
+
+  const user = remoteUser ? remoteUser[0] : null;
 
   const showCount = ( count, label ) => (
     <View className="w-1/4 border border-border">
@@ -38,11 +44,9 @@ const UserProfile = ( ): React.Node => {
 
   if ( !user ) { return null; }
 
-  const showUserRole = user.roles.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
+  const showUserRole = user?.roles?.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
 
   const followUser = ( ) => updateRelationship( { id: userId, relationship: { following: true } } );
-
-  console.log( user, "user" );
 
   return (
     <ViewWithFooter>

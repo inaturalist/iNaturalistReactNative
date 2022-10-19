@@ -1,4 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import AddID from "components/ObsEdit/AddID";
 import inatjs from "inaturalistjs";
@@ -21,22 +25,45 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const testTaxaList = [
-  { taxon: factory( "RemoteTaxon" ) },
-  { taxon: factory( "RemoteTaxon" ) },
-  { taxon: factory( "RemoteTaxon" ) }
+const mockTaxaList = [
+  factory( "RemoteTaxon" ),
+  factory( "RemoteTaxon" ),
+  factory( "RemoteTaxon" )
 ];
 
-const mockExpected = testTaxaList;
+jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    data: mockTaxaList
+  } )
+} ) );
+
+jest.mock( "react-native-vector-icons/MaterialIcons", ( ) => {
+  const InnerReact = require( "react" );
+  class MaterialIcons extends InnerReact.Component {
+    static getImageSourceSync( _thing, _number, _color ) {
+      return { uri: "foo" };
+    }
+
+    render( ) {
+      return InnerReact.createElement( "MaterialIcons", this.props, this.props.children );
+    }
+  }
+  return MaterialIcons;
+} );
+
+const queryClient = new QueryClient( );
 
 const renderAddID = route => render(
-  <NavigationContainer>
-    <AddID route={route} />
-  </NavigationContainer>
+  <QueryClientProvider client={queryClient}>
+    <NavigationContainer>
+      <AddID route={route} />
+    </NavigationContainer>
+  </QueryClientProvider>
 );
 
 test( "renders taxon search results", async ( ) => {
-  inatjs.search.mockResolvedValue( makeResponse( mockExpected ) );
+  inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
   const route = { params: { } };
   const { getByTestId } = renderAddID( route );
 
@@ -45,7 +72,7 @@ test( "renders taxon search results", async ( ) => {
     fireEvent.changeText( input, "Some taxon" );
   } );
 
-  const { taxon } = testTaxaList[0];
+  const taxon = mockTaxaList[0];
 
   expect( getByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
   expect(
