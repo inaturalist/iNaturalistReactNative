@@ -186,7 +186,7 @@ const PhotoGallery = ( ): Node => {
   const navToNextScreen = async ( ) => {
     if ( !selectedPhotos ) return;
     if ( skipGroupPhotos ) {
-      addPhotos( selectedPhotos );
+      addPhotos( selectedPhotos.map( galleryPhoto => galleryPhoto.image.uri ) );
       navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
       return;
     }

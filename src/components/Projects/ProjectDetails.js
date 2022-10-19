@@ -10,7 +10,7 @@ import {
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { imageStyles, textStyles } from "styles/projects/projectDetails";
 
-import ProjectObservations from "./ProjectObservations";
+// import ProjectObservations from "./ProjectObservations";
 
 const ProjectDetails = ( ): React.Node => {
   const { params } = useRoute( );
@@ -42,7 +42,8 @@ const ProjectDetails = ( ): React.Node => {
       <Text style={textStyles.descriptionText}>{project.title}</Text>
       <Text style={textStyles.descriptionText}>{project.description}</Text>
       {/* TODO: support joining or leaving projects once oauth is set up */}
-      <ProjectObservations id={id} />
+      {/* TODO: replace below. FlatList is not supposed to be used inside a scrollview (?) */}
+      {/* <ProjectObservations id={id} /> */}
     </ScrollNoFooter>
   );
 };
