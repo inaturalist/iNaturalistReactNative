@@ -65,6 +65,7 @@ const fetchRemoteUser = async (
   params: Object = {},
   opts: Object = {}
 ): Promise<any> => {
+  if ( !id ) return null;
   try {
     const { results } = await inatjs.users.fetch( id, {
       ...REMOTE_USER_PARAMS,

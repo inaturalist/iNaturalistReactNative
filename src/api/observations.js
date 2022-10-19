@@ -74,7 +74,10 @@ const fetchRemoteObservation = async (
       { ...REMOTE_OBSERVATION_PARAMS, ...params },
       opts
     );
-    return Observation.mimicRealmMappedPropertiesSchema( results[0] );
+    if ( results && results.length > 0 ) {
+      return Observation.mimicRealmMappedPropertiesSchema( results[0] );
+    }
+    return null;
   } catch ( e ) {
     return handleError( e );
   }

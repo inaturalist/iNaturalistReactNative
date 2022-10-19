@@ -10,9 +10,6 @@ import ObservationSound from "./ObservationSound";
 import Taxon from "./Taxon";
 import User from "./User";
 
-// noting that methods like .toJSON( ) are only accessible when the model
-// class is extended with Realm.Object per this issue:
-// https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
 class Observation extends Realm.Object {
   static FIELDS = {
     captive: true,
@@ -155,6 +152,7 @@ class Observation extends Realm.Object {
   }
 
   static async saveLocalObservationForUpload( obs, realm ) {
+    console.log( "saveLocalObservationForUpload, obs: ", obs );
     // make sure local observations have user details for ObsDetail
     const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
     if ( currentUser ) {
@@ -189,7 +187,7 @@ class Observation extends Realm.Object {
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
 
     const obsToSave = {
-      // just ...obs causes problems when obs is a realm object
+      // causes problems without toJSON when obs is a realm object
       ...obs.toJSON( ),
       ...timestamps,
       taxon,
