@@ -155,7 +155,8 @@ const Settings = ( { children: _children }: Props ): Node => {
 
   const {
     data: user,
-    isLoading
+    isLoading,
+    refetch: refetchUserMe
   } = useAuthenticatedQuery(
     ["fetchUserMe"],
     optsWithAuth => fetchUserMe( { }, optsWithAuth )
@@ -285,7 +286,7 @@ const Settings = ( { children: _children }: Props ): Node => {
               <SettingsRelationships
                 settings={settings}
                 accessToken={accessToken}
-                onRefreshUser={fetchProfile}
+                refetchUserMe={refetchUserMe}
               />
             )}
           </ScrollView>

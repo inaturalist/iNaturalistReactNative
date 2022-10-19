@@ -96,9 +96,77 @@ const fetchRemoteUsers = async (
   }
 };
 
+const blockUser = async (
+  id: number,
+  params: Object = {},
+  opts: Object = {}
+): Promise<any> => {
+  try {
+    const response = await inatjs.users.block( { id }, {
+      ...params,
+      ...opts
+    } );
+    return response;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const muteUser = async (
+  id: number,
+  params: Object = {},
+  opts: Object = {}
+): Promise<any> => {
+  try {
+    const response = await inatjs.users.mute( { id }, {
+      ...params,
+      ...opts
+    } );
+    return response;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const unblockUser = async (
+  id: number,
+  params: Object = {},
+  opts: Object = {}
+): Promise<any> => {
+  try {
+    const response = await inatjs.users.unblock( { id }, {
+      ...params,
+      ...opts
+    } );
+    return response;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const unmuteUser = async (
+  id: number,
+  params: Object = {},
+  opts: Object = {}
+): Promise<any> => {
+  try {
+    const response = await inatjs.users.unmute( { id }, {
+      ...params,
+      ...opts
+    } );
+    return response;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
+  blockUser,
   fetchMemberProjects,
   fetchRemoteUser,
   fetchRemoteUsers,
-  fetchUserMe
+  fetchUserMe,
+  muteUser,
+  unblockUser,
+  unmuteUser
 };

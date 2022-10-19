@@ -28,7 +28,7 @@ const MutedUser = ( { user, unmuteUser }: Props ): Node => (
     </View>
     <Pressable
       style={viewStyles.removeRelationship}
-      onPress={() => unmuteUser( user )}
+      onPress={unmuteUser}
     >
       <Text>{t( "Unmute" )}</Text>
     </Pressable>

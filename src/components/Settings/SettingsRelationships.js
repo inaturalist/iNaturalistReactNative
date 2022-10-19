@@ -1,8 +1,11 @@
 // @flow
 
 import { Picker } from "@react-native-picker/picker";
+import { useQueryClient } from "@tanstack/react-query";
 import fetchRelationships from "api/relationships";
-import { fetchRemoteUsers } from "api/users";
+import {
+  blockUser, fetchRemoteUsers, muteUser, unblockUser, unmuteUser
+} from "api/users";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
@@ -12,6 +15,7 @@ import {
   Text, TextInput, View
 } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/settings/settings";
@@ -44,10 +48,10 @@ const SORT_BY = {
 type Props = {
   accessToken: string,
   settings: Object,
-  onRefreshUser: Function
+  refetchUserMe: Function
 };
 
-const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props ): Node => {
+const SettingsRelationships = ( { accessToken, settings, refetchUserMe }: Props ): Node => {
   const [userSearch, setUserSearch] = React.useState( "" );
   // So we'll start searching only once the user finished typing
   const [finalUserSearch] = useDebounce( userSearch, 500 );
@@ -101,6 +105,35 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
   } = useAuthenticatedQuery(
     ["fetchRemoteUsers", settings.muted_user_ids],
     optsWithAuth => fetchRemoteUsers( settings.muted_user_ids, { }, optsWithAuth )
+  );
+
+  const queryClient = useQueryClient();
+
+  const handleSuccess = {
+    onSuccess: ( ) => {
+      queryClient.invalidateQueries( ["fetchUserMe"] );
+      refetchUserMe( );
+    }
+  };
+
+  const blockUserMutation = useAuthenticatedMutation(
+    ( id, optsWithAuth ) => blockUser( id, { }, optsWithAuth ),
+    handleSuccess
+  );
+
+  const muteUserMutation = useAuthenticatedMutation(
+    ( id, optsWithAuth ) => muteUser( id, { }, optsWithAuth ),
+    handleSuccess
+  );
+
+  const unblockUserMutation = useAuthenticatedMutation(
+    ( id, optsWithAuth ) => unblockUser( id, { }, optsWithAuth ),
+    handleSuccess
+  );
+
+  const unmuteUserMutation = useAuthenticatedMutation(
+    ( id, optsWithAuth ) => unmuteUser( id, { }, optsWithAuth ),
+    handleSuccess
   );
 
   const relationshipResults = data?.results;
@@ -168,102 +201,6 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
       }
     );
   }, [accessToken] );
-
-  const unblockUser = useCallback( async user => {
-    let response;
-    try {
-      response = await inatjs.users.unblock(
-        { id: user.id },
-        { api_token: accessToken }
-      );
-    } catch ( e ) {
-      console.error( e );
-      Alert.alert(
-        "Error",
-        "Couldn't unblock user!",
-        [{ text: "OK" }],
-        {
-          cancelable: true
-        }
-      );
-      return;
-    }
-    console.log( "Unblock", response );
-    onRefreshUser();
-  }, [accessToken, onRefreshUser] );
-
-  const blockUser = async user => {
-    if ( !user ) { return; }
-
-    let response;
-    try {
-      response = await inatjs.users.block(
-        { id: user.id },
-        { api_token: accessToken }
-      );
-    } catch ( e ) {
-      console.error( e );
-      Alert.alert(
-        "Error",
-        "Couldn't block user!",
-        [{ text: "OK" }],
-        {
-          cancelable: true
-        }
-      );
-      return;
-    }
-    console.log( "Block", response );
-    onRefreshUser();
-  };
-
-  const unmuteUser = useCallback( async user => {
-    let response;
-    try {
-      response = await inatjs.users.unmute(
-        { id: user.id },
-        { api_token: accessToken }
-      );
-    } catch ( e ) {
-      console.error( e );
-      Alert.alert(
-        "Error",
-        "Couldn't unmute user!",
-        [{ text: "OK" }],
-        {
-          cancelable: true
-        }
-      );
-      return;
-    }
-    console.log( "Unmute", response );
-    onRefreshUser();
-  }, [accessToken, onRefreshUser] );
-
-  const muteUser = async user => {
-    if ( !user ) { return; }
-
-    let response;
-    try {
-      response = await inatjs.users.mute(
-        { id: user.id },
-        { api_token: accessToken }
-      );
-    } catch ( e ) {
-      console.error( e );
-      Alert.alert(
-        "Error",
-        "Couldn't mute user!",
-        [{ text: "OK" }],
-        {
-          cancelable: true
-        }
-      );
-      return;
-    }
-    console.log( "Mute", response );
-    onRefreshUser();
-  };
 
   return (
     // $FlowFixMe
@@ -387,15 +324,39 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
       )}
 
       <Text style={textStyles.title}>{t( "Blocked-Users" )}</Text>
-      <UserSearchInput userId={0} onUserChanged={u => blockUser( u )} />
+      <UserSearchInput
+        userId={0}
+        onUserChanged={u => {
+          if ( u === null ) { return; }
+          blockUserMutation.mutate( u.id );
+        }}
+      />
       {blockedUsers?.map( user => (
-        <BlockedUser key={user.id} user={user} unblockUser={unblockUser} />
+        <BlockedUser
+          key={user.id}
+          user={user}
+          unblockUser={( ) => {
+            unblockUserMutation.mutate( user.id );
+          }}
+        />
       ) )}
 
       <Text style={textStyles.title}>{t( "Muted-Users" )}</Text>
-      <UserSearchInput userId={0} onUserChanged={u => muteUser( u )} />
+      <UserSearchInput
+        userId={0}
+        onUserChanged={u => {
+          if ( u === null ) { return; }
+          muteUserMutation.mutate( u.id );
+        }}
+      />
       {mutedUsers?.map( user => (
-        <MutedUser key={user.id} user={user} unmuteUser={unmuteUser} />
+        <MutedUser
+          key={user.id}
+          user={user}
+          unmuteUser={( ) => {
+            unmuteUserMutation.mutate( user.id );
+          }}
+        />
       ) )}
     </ScrollView>
   );
