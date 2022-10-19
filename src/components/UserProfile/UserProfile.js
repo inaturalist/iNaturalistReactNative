@@ -29,7 +29,7 @@ const UserProfile = ( ): React.Node => {
     optsWithAuth => fetchRemoteUser( userId, { }, optsWithAuth )
   );
 
-  const user = remoteUser[0];
+  const user = remoteUser ? remoteUser[0] : null;
 
   const showCount = ( count, label ) => (
     <View style={viewStyles.countBox}>

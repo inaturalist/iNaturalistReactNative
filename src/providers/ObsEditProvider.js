@@ -46,30 +46,31 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const updateObservationKey = ( key, value ) => {
-      const updatedObs = observations.map( ( obs, index ) => {
+      const updatedObservations = observations.map( ( obs, index ) => {
         if ( index === currentObsIndex ) {
           return {
-            ...obs,
+            ...( obs.toJSON ? obs.toJSON( ) : obs ),
             // $FlowFixMe
             [key]: value
           };
         }
         return obs;
       } );
-      setObservations( updatedObs );
+      setObservations( updatedObservations );
     };
 
     const updateObservationKeys = keysAndValues => {
-      const updatedObs = observations.map( ( obs, index ) => {
+      const updatedObservations = observations.map( ( obs, index ) => {
         if ( index === currentObsIndex ) {
-          return {
-            ...obs,
+          const updatedObservation = {
+            ...( obs.toJSON ? obs.toJSON( ) : obs ),
             ...keysAndValues
           };
+          return updatedObservation;
         }
         return obs;
       } );
-      setObservations( updatedObs );
+      setObservations( updatedObservations );
     };
 
     const updateTaxon = taxon => {

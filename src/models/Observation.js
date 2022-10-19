@@ -152,7 +152,6 @@ class Observation extends Realm.Object {
   }
 
   static async saveLocalObservationForUpload( obs, realm ) {
-    console.log( "saveLocalObservationForUpload, obs: ", obs );
     // make sure local observations have user details for ObsDetail
     const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
     if ( currentUser ) {
@@ -188,7 +187,7 @@ class Observation extends Realm.Object {
 
     const obsToSave = {
       // causes problems without toJSON when obs is a realm object
-      ...obs.toJSON( ),
+      ...( obs.toJSON ? obs.toJSON( ) : obs ),
       ...timestamps,
       taxon,
       observationPhotos,
