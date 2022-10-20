@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next";
 import {
   Dialog, Paragraph, Portal
 } from "react-native-paper";
+import Photo from "realmModels/Photo";
 
-import Photo from "../../models/Photo";
 import Button from "./Buttons/Button";
 
 const { useRealm } = RealmContext;

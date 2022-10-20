@@ -16,6 +16,8 @@ const mockObservations = [
   factory( "LocalObservation" )
 ];
 
+// Mock the hooks we use on ObsList since we're not trying to test them here
+
 jest.mock( "../../../../src/sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
   default: ( ) => true
@@ -26,15 +28,8 @@ jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
   default: ( ) => true
 } ) );
 
-// Mock the hooks we use on ObsList since we're not trying to test them here
-
-jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
-  __esModule: true,
-  default: ( ) => true
-} ) );
-
 jest.mock(
-  "../../../../src/components/Observations/hooks/useLocalObservations",
+  "../../../../src/sharedHooks/useLocalObservations",
   ( ) => ( {
     __esModule: true,
     default: ( ) => ( {
@@ -43,7 +38,7 @@ jest.mock(
   } )
 );
 
-jest.mock( "../../../../src/components/Observations/hooks/useRemoteObservations", ( ) => ( {
+jest.mock( "../../../../src/sharedHooks/useRemoteObservations", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
     loading: false

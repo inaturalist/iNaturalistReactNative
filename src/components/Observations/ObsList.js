@@ -1,12 +1,11 @@
 // @flow
 
-import ObservationViews from "components/SharedComponents/ObservationViews/ObservationViews";
+import ObservationViews from "components/Observations/ObservationViews";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import type { Node } from "react";
 import React from "react";
-
-import useLocalObservations from "./hooks/useLocalObservations";
-import useRemoteObservations from "./hooks/useRemoteObservations";
+import useLocalObservations from "sharedHooks/useLocalObservations";
+import useRemoteObservations from "sharedHooks/useRemoteObservations";
 
 const ObsList = ( ): Node => {
   const localObservations = useLocalObservations( );

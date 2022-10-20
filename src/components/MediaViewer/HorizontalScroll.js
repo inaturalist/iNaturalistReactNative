@@ -7,9 +7,9 @@ import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Dimensions, FlatList } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import Photo from "realmModels/Photo";
 import colors from "tailwindcss/colors";
 
-import Photo from "../../models/Photo";
 import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {

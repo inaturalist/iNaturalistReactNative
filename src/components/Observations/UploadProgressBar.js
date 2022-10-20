@@ -7,10 +7,9 @@ import React, { useMemo, useRef } from "react";
 import {
   Button, ProgressBar, Text
 } from "react-native-paper";
+import useUploadObservations from "sharedHooks/useUploadObservations";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/observations/uploadProgressBar";
-
-import useUploadObservations from "./hooks/useUploadObservations";
 
 type Props = {
   unuploadedObsList: Array<Object>,

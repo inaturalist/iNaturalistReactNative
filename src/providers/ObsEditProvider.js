@@ -2,10 +2,10 @@
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useMemo, useState } from "react";
+import Observation from "realmModels/Observation";
+import ObservationPhoto from "realmModels/ObservationPhoto";
 import useApiToken from "sharedHooks/useApiToken";
 
-import Observation from "../models/Observation";
-import ObservationPhoto from "../models/ObservationPhoto";
 import { ObsEditContext, RealmContext } from "./contexts";
 import uploadObservation from "./uploadHelpers/uploadObservation";
 

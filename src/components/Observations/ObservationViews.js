@@ -11,10 +11,10 @@ import {
   Animated, Dimensions
 } from "react-native";
 import useLoggedIn from "sharedHooks/useLoggedIn";
+import useUploadStatus from "sharedHooks/useUploadStatus";
 
 import EmptyList from "./EmptyList";
 import GridItem from "./GridItem";
-import useUploadStatus from "./hooks/useUploadStatus";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
 import LoginPrompt from "./LoginPrompt";
 import ObsCard from "./ObsCard";

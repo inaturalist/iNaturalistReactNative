@@ -11,9 +11,9 @@ import React, {
 import { Avatar, Snackbar, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
+import Photo from "realmModels/Photo";
 import colors from "styles/colors";
 
-import Photo from "../../models/Photo";
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";

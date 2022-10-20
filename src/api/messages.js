@@ -1,8 +1,8 @@
 // @flow
 
 import inatjs from "inaturalistjs";
+import User from "realmModels/User";
 
-import User from "../models/User";
 import handleError from "./error";
 
 const MESSAGE_FIELDS = {

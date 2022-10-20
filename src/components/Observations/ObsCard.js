@@ -5,9 +5,9 @@ import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Avatar } from "react-native-paper";
+import Observation from "realmModels/Observation";
+import Photo from "realmModels/Photo";
 
-import Observation from "../../../models/Observation";
-import Photo from "../../../models/Photo";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
 

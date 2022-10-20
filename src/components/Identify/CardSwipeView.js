@@ -5,9 +5,9 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { Image, Text, View } from "react-native";
 import TinderCard from "react-tinder-card";
+import Observation from "realmModels/Observation";
 import { imageStyles, textStyles, viewStyles } from "styles/identify/identify";
 
-import Observation from "../../models/Observation";
 import createIdentification from "./helpers/createIdentification";
 import markAsReviewed from "./helpers/markAsReviewed";
 

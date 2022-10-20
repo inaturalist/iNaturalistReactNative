@@ -4,9 +4,8 @@ import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useState
 } from "react";
+import Observation from "realmModels/Observation";
 import useApiToken from "sharedHooks/useApiToken";
-
-import Observation from "../../../models/Observation";
 
 const { useRealm } = RealmContext;
 

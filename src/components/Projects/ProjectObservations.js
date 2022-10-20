@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { searchObservations } from "api/observations";
-import GridItem from "components/SharedComponents/ObservationViews/GridItem";
+import GridItem from "components/Observations/GridItem";
 import * as React from "react";
 import { FlatList } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";

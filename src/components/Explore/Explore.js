@@ -1,6 +1,6 @@
 // @flow
 
-import ObservationViews from "components/SharedComponents/ObservationViews/ObservationViews";
+import ObservationViews from "components/Observations/ObservationViews";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { ExploreContext } from "providers/contexts";
 import type { Node } from "react";
