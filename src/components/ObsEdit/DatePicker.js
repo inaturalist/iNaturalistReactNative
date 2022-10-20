@@ -1,13 +1,11 @@
 // @flow
 
+import DateTimePicker from "components/SharedComponents/DateTimePicker";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text } from "react-native";
-
-import { displayDateTimeObsEdit } from "../../sharedHelpers/dateAndTime";
-import { textStyles } from "../../styles/obsEdit/obsEdit";
-import DateTimePicker from "../SharedComponents/DateTimePicker";
+import { displayDateTimeObsEdit } from "sharedHelpers/dateAndTime";
 
 type Props = {
   handleDatePicked: ( Date ) => void,
@@ -47,7 +45,7 @@ const DatePicker = ( { handleDatePicked, currentObs }: Props ): Node => {
       <Pressable
         onPress={openModal}
       >
-        <Text style={textStyles.text} testID="ObsEdit.time">
+        <Text testID="ObsEdit.time">
           {displayDate( ) || t( "Add-Date-Time" )}
         </Text>
       </Pressable>

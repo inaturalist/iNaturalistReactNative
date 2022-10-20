@@ -1,14 +1,13 @@
 // @flow
 
+import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
+import { Text, View } from "components/styledComponents";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { Text } from "react-native";
+import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
 
-import { ObsEditContext } from "../../providers/contexts";
-import { createObservedOnStringForUpload } from "../../sharedHelpers/dateAndTime";
-import { textStyles } from "../../styles/obsEdit/obsEdit";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 import DatePicker from "./DatePicker";
 
 type Props = {
@@ -90,7 +89,7 @@ const EvidenceSection = ( {
   };
 
   return (
-    <>
+    <View className="mx-5">
       {/* TODO: allow user to tap into bigger version of photo (crop screen) */}
       <PhotoCarousel
         photoUris={photoUris}
@@ -115,14 +114,10 @@ const EvidenceSection = ( {
         </Text>
       </Pressable>
       */}
-      <Text style={textStyles.text}>
-        {currentObs.place_guess}
-      </Text>
-      <Text style={textStyles.text}>
-        {displayLocation( ) || t( "No-Location" )}
-      </Text>
+      <Text>{currentObs.place_guess}</Text>
+      <Text>{displayLocation( ) || t( "No-Location" )}</Text>
       <DatePicker currentObs={currentObs} handleDatePicked={handleDatePicked} />
-    </>
+    </View>
   );
 };
 

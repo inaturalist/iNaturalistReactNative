@@ -1,8 +1,8 @@
 // @flow
 
+import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
 import { useEffect, useState } from "react";
 
-import { getJWTToken } from "../components/LoginSignUp/AuthenticationService";
 import useCurrentUser from "./useCurrentUser";
 
 const useApiToken = ( ): string | null => {

@@ -2,17 +2,23 @@
 
 import inatjs from "inaturalistjs";
 
-import MESSAGE_FIELDS from "../providers/fields";
+import User from "../models/User";
 import handleError from "./error";
 
-const searchMessages = async ( options: Object ): Promise<any> => {
-  const params = {
-    page: 1,
-    fields: MESSAGE_FIELDS
-  };
+const MESSAGE_FIELDS = {
+  subject: true,
+  body: true,
+  from_user: User.USER_FIELDS,
+  to_user: User.USER_FIELDS
+};
 
+const PARAMS = {
+  fields: MESSAGE_FIELDS
+};
+
+const searchMessages = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
-    const { results } = await inatjs.messages.search( params, options );
+    const { results } = await inatjs.messages.search( { ...PARAMS, ...params }, opts );
     return results;
   } catch ( e ) {
     return handleError( e );

@@ -6,9 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Keyboard, useWindowDimensions } from "react-native";
 import { TextInput } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import colors from "../../styles/colors";
-import { textStyles } from "../../styles/obsEdit/notes";
+import colors from "styles/colors";
 
 type Props = {
   addNotes: Function,
@@ -49,7 +47,8 @@ const Notes = ( { addNotes, description }: Props ): Node => {
       onBlur={( ) => addNotes( localDescription )}
       value={localDescription}
       placeholder={t( "Add-optional-notes" )}
-      style={[textStyles.notes, keyboardOffset > 0 && offset]}
+      className="pl-3 bg-white"
+      style={[keyboardOffset > 0 && offset]}
       testID="ObsEdit.notes"
       underlineColor={colors.white}
     />

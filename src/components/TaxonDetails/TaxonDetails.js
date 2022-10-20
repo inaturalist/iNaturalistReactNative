@@ -1,20 +1,19 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
+import fetchTaxon from "api/taxa";
+import CustomHeader from "components/SharedComponents/CustomHeader";
+import PhotoScroll from "components/SharedComponents/PhotoScroll";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import { Pressable, Text, View } from "components/styledComponents";
 import _ from "lodash";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import {
-  ActivityIndicator, Linking, Pressable, ScrollView, Text, useWindowDimensions,
-  View
+  ActivityIndicator, Linking, ScrollView, useWindowDimensions
 } from "react-native";
 import HTML from "react-native-render-html";
-
-import fetchTaxon from "../../api/taxa";
-import useAuthenticatedQuery from "../../sharedHooks/useAuthenticatedQuery";
-import { textStyles, viewStyles } from "../../styles/taxonDetails";
-import PhotoScroll from "../SharedComponents/PhotoScroll";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 const TaxonDetails = ( ): React.Node => {
   const { params } = useRoute( );
@@ -71,7 +70,7 @@ const TaxonDetails = ( ): React.Node => {
         <Text>{taxon.rank}</Text>
         <Text>{taxon.preferred_common_name}</Text>
         <Text>{taxon.name}</Text>
-        <Text style={textStyles.header}>{ t( "ABOUT-taxon-header" ) }</Text>
+        <Text className="text-lg text-grayText my-3">{ t( "ABOUT-taxon-header" ) }</Text>
         { taxon.wikipedia_summary && (
           <HTML
             contentWidth={width}
@@ -83,26 +82,24 @@ const TaxonDetails = ( ): React.Node => {
           accessibilityRole="link"
           testID="TaxonDetails.wikipedia"
         >
-          <Text style={textStyles.header}>{ t( "Read-more-on-Wikipedia" )}</Text>
+          <Text className="my-3">{ t( "Read-more-on-Wikipedia" )}</Text>
         </Pressable>
-        <Text style={textStyles.header}>{ t( "TAXONOMY-header" ) }</Text>
+        <Text className="text-lg text-grayText my-3">{ t( "TAXONOMY-header" ) }</Text>
         {displayTaxonomyList}
-        <Text style={textStyles.header}>{ t( "STATUS-header" ) }</Text>
-        <Text style={textStyles.header}>{ t( "SIMILAR-SPECIES-header" ) }</Text>
+        <Text className="text-lg text-grayText my-3">{ t( "STATUS-header" ) }</Text>
+        <Text className="pb-32 text-lg text-grayText my-3">{ t( "SIMILAR-SPECIES-header" ) }</Text>
       </>
     );
   };
 
   return (
     <ViewWithFooter>
-      <ScrollView
-        contentContainerStyle={viewStyles.scrollView}
-        testID={`TaxonDetails.${taxon?.id}`}
-      >
-        <View style={viewStyles.photoContainer}>
+      <CustomHeader hideRightIcon />
+      <ScrollView testID={`TaxonDetails.${taxon?.id}`}>
+        <View className="bg-black">
           {taxon && <PhotoScroll photos={_.compact( taxon.taxonPhotos?.map( tp => tp.photo ) )} />}
         </View>
-        <View style={viewStyles.textContainer}>
+        <View className="m-5">
           {renderContent( )}
         </View>
       </ScrollView>

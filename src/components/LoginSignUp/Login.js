@@ -2,31 +2,28 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
+import Button from "components/SharedComponents/Buttons/Button";
+import {
+  Image, KeyboardAvoidingView, Pressable,
+  SafeAreaView,
+  ScrollView, View
+} from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Image,
-  KeyboardAvoidingView,
   Linking,
   Platform,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  View
+  TouchableOpacity
 } from "react-native";
 import {
   Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import colors from "styles/colors";
+import viewStyles from "styles/login/login";
 
-import { RealmContext } from "../../providers/contexts";
-import colors from "../../styles/colors";
-import {
-  closeButton, imageStyles, textStyles, viewStyles
-} from "../../styles/login/login";
-import Button from "../SharedComponents/Buttons/Button";
 import {
   authenticateUser,
   getUsername,
@@ -123,16 +120,18 @@ const Login = ( ): Node => {
               testID="Login.signOutButton"
               text={t( "Cancel" )}
             />
-
             <Button level="primary" onPress={onSignOut} text={t( "Sign-out" )} />
-
           </Dialog.Actions>
         </Dialog>
       </Portal>
-      <View style={viewStyles.logoutForm}>
+      {/* TODO: figure out how to account for safe area views with h-screen,
+      maybe something along these lines: https://github.com/mvllow/tailwindcss-safe-area/blob/70dbef61557b07e26b07a6167e13a377ba3c4625/index.js
+      */}
+      <View className="self-center justify-center h-screen">
         <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
         <Button
           level="primary"
+          style={viewStyles.button}
           onPress={showDialog}
           testID="Login.signOutButton"
           text="Sign-out"
@@ -144,16 +143,16 @@ const Login = ( ): Node => {
   const loginForm = (
     <>
       <Image
-        style={imageStyles.logo}
+        className="self-center w-32 h-32"
         resizeMode="contain"
-        source={require( "../../images/inat_logo.png" )}
+        source={require( "images/inat_logo.png" )}
       />
 
-      <Text style={textStyles.header}>{t( "Login-header" )}</Text>
-      <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
-      <Text style={textStyles.fieldText}>{t( "Username-or-Email" )}</Text>
+      <Text className="text-2xl self-center mt-5">{t( "Login-header" )}</Text>
+      <Text className="text-xl self-center text-center mt-5 mb-5">{t( "Login-sub-title" )}</Text>
+      <Text className="text-base mb-1">{t( "Username-or-Email" )}</Text>
       <TextInput
-        style={viewStyles.input}
+        className="h-10 bg-tertiary"
         onChangeText={text => {
           setError( null );
           setEmail( text );
@@ -165,9 +164,9 @@ const Login = ( ): Node => {
         keyboardType="email-address"
         selectionColor={colors.black}
       />
-      <Text style={textStyles.fieldText}>{t( "Password" )}</Text>
+      <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
-        style={viewStyles.input}
+        className="h-10 bg-tertiary"
         onChangeText={text => {
           setError( null );
           setPassword( text );
@@ -178,9 +177,9 @@ const Login = ( ): Node => {
         selectionColor={colors.black}
       />
       <TouchableOpacity onPress={forgotPassword}>
-        <Text style={textStyles.forgotPassword}>{t( "Forgot-Password" )}</Text>
+        <Text className="underline mt-4 self-end">{t( "Forgot-Password" )}</Text>
       </TouchableOpacity>
-      {error && <Text style={textStyles.error}>{error}</Text>}
+      {error && <Text className="text-red self-center mt-5">{error}</Text>}
       <Button
         level="primary"
         text="Log-in"
@@ -196,15 +195,13 @@ const Login = ( ): Node => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={viewStyles.container}
+      className="flex-1"
     >
-      <SafeAreaView style={[viewStyles.container]}>
-        <ScrollView
-          contentContainerStyle={viewStyles.paddedContainer}
-        >
+      <SafeAreaView className="flex-1">
+        <ScrollView className="flex-1 p-10">
           <Pressable
             onPress={() => navigation.goBack()}
-            style={closeButton.close}
+            className="absolute top-0 right-0"
           >
             <IconMaterial name="close" size={35} />
           </Pressable>

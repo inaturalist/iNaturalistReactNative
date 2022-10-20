@@ -2,8 +2,7 @@
 import * as React from "react";
 import { Pressable } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-
-import { textStyles, viewStyles } from "../../../styles/sharedComponents/buttons/evidenceButton";
+import { textStyles, viewStyles } from "styles/sharedComponents/buttons/evidenceButton";
 
 type Props = {
   icon: any,

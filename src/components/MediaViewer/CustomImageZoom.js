@@ -1,17 +1,16 @@
 // @flow
 
+import { Image, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef } from "react";
-import { Dimensions, Image, View } from "react-native";
+import { Dimensions } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
-
-import { imageStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
 
 // lifted from this issue: https://github.com/ascoders/react-native-image-zoom/issues/42#issuecomment-734209924
 
-const { width } = Dimensions.get( "screen" );
+const { width, height } = Dimensions.get( "screen" );
 // $FlowIgnore
-const selectedImageHeight = imageStyles.selectedPhoto.height;
+const SELECTED_IMAGE_HEIGHT = height - 350;
 
 type Props = {
   source: Object
@@ -27,9 +26,9 @@ const ImageViewer = ( { source }: Props ): Node => {
   return (
     <ImageZoom
       cropWidth={width}
-      cropHeight={selectedImageHeight}
+      cropHeight={SELECTED_IMAGE_HEIGHT}
       imageWidth={width}
-      imageHeight={selectedImageHeight}
+      imageHeight={SELECTED_IMAGE_HEIGHT}
       minScale={1}
       onStartShouldSetPanResponder={e => {
         const pinching = e.nativeEvent.touches.length === 2;
@@ -39,12 +38,12 @@ const ImageViewer = ( { source }: Props ): Node => {
       onMove={handleMove}
     >
       <View
-        style={viewStyles.fullSize}
+        className="w-full h-full"
         onStartShouldSetResponder={e => e.nativeEvent.touches.length < 2 && scaleValue.current <= 1}
       >
         <Image
           source={source}
-          style={imageStyles.fullSize}
+          className="w-full h-full"
         />
       </View>
     </ImageZoom>

@@ -1,15 +1,15 @@
 // @flow
 
+import Button from "components/SharedComponents/Buttons/Button";
+import InputField from "components/SharedComponents/InputField";
+import Map from "components/SharedComponents/Map";
+import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import useLocationName from "sharedHooks/useLocationName";
+import { viewStyles } from "styles/obsEdit/locationPicker";
 
-import useLocationName from "../../sharedHooks/useLocationName";
-import { viewStyles } from "../../styles/obsEdit/locationPicker";
-import Button from "../SharedComponents/Buttons/Button";
-import InputField from "../SharedComponents/InputField";
-import Map from "../SharedComponents/Map";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import useCoords from "./hooks/useCoords";
 
 type Props = {

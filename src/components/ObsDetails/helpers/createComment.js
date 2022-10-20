@@ -1,8 +1,7 @@
 // @flow
 
+import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
-
-import { getJWTToken } from "../../LoginSignUp/AuthenticationService";
 
 const createComment = async ( body: string, uuid: string ): Promise<?number> => {
   const apiToken = await getJWTToken( false );

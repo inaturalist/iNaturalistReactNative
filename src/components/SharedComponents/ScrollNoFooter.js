@@ -1,11 +1,10 @@
 // @flow
 
+import { SafeAreaView, ScrollView } from "components/styledComponents";
 import * as React from "react";
 import {
-  Keyboard, SafeAreaView, ScrollView, StatusBar
+  Keyboard, StatusBar
 } from "react-native";
-
-import viewStyles from "../../styles/sharedComponents/viewWithFooter";
 
 type Props = {
   children: React.Node,
@@ -13,14 +12,13 @@ type Props = {
   style?: Object
 }
 
-const ScrollWithFooter = ( { children, testID, style }: Props ): React.Node => {
+const ScrollNoFooter = ( { children, testID, style }: Props ): React.Node => {
   const dismissKeyboard = ( ) => Keyboard.dismiss( );
 
   return (
-    <SafeAreaView style={[viewStyles.safeAreaContainer, style]} testID={testID}>
+    <SafeAreaView className="flex-1 bg-white" style={style} testID={testID}>
       <StatusBar barStyle="dark-content" />
       <ScrollView
-        contentContainerStyle={viewStyles.scrollPadding}
         keyboardDismissMode="on-drag"
         onScroll={dismissKeyboard}
         scrollEventThrottle={16}
@@ -31,4 +29,4 @@ const ScrollWithFooter = ( { children, testID, style }: Props ): React.Node => {
   );
 };
 
-export default ScrollWithFooter;
+export default ScrollNoFooter;

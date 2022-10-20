@@ -1,15 +1,15 @@
 // @flow
 
+import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
+import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
+import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
-import { Dimensions, FlatList, Pressable } from "react-native";
+import { Dimensions, FlatList } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import colors from "tailwindcss/colors";
 
 import Photo from "../../models/Photo";
-import colors from "../../styles/colors";
-import { viewStyles } from "../../styles/mediaViewer/mediaViewer";
-import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {
@@ -104,7 +104,7 @@ const HorizontalScroll = ( {
       />
       {!FIRST_PHOTO && (
         <Pressable
-          style={[viewStyles.arrow, viewStyles.leftArrow]}
+          className="p-5 absolute top-1/2 -mt-24 left-0"
           onPress={handleArrowPressLeft}
         >
           <Icon name="arrow-back-ios" color={colors.white} size={16} />
@@ -112,7 +112,7 @@ const HorizontalScroll = ( {
       )}
       {!LAST_PHOTO && (
         <Pressable
-          style={[viewStyles.arrow, viewStyles.rightArrow]}
+          className="p-5 absolute top-1/2 -mt-24 right-0"
           onPress={handleArrowPressRight}
         >
           <Icon name="arrow-forward-ios" color={colors.white} size={16} />

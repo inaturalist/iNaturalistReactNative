@@ -1,13 +1,12 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { Text, View } from "components/styledComponents";
+import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
 import * as React from "react";
-import { Pressable, View } from "react-native";
-import { Avatar } from "react-native-paper";
-
-import { ObsEditContext } from "../../providers/contexts";
-import { textStyles, viewStyles } from "../../styles/sharedComponents/modal";
-import TranslatedText from "../SharedComponents/TranslatedText";
+import { IconButton } from "react-native-paper";
+import colors from "styles/colors";
 
 type Props = {
   closeModal: ( ) => void
@@ -39,36 +38,43 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
     navAndCloseModal( "ObsEdit" );
   };
 
+  const bulletedText = [
+    t( "Take-a-photo-with-your-camera" ),
+    t( "Upload-a-photo-from-your-gallery" ),
+    t( "Record-a-sound" )
+  ];
+
+  const renderIconButton = ( icon, className, onPress, size = 30 ) => (
+    <IconButton
+      size={size}
+      mode="contained"
+      icon={icon}
+      containerColor={colors.inatGreen}
+      iconColor={colors.white}
+      className={`absolute ${className}`}
+      onPress={onPress}
+    />
+  );
+
   return (
-    <View>
-      <TranslatedText style={textStyles.whiteText} text="CREATE-AN-OBSERVATION" />
-      <View style={viewStyles.whiteModal}>
-        <TranslatedText text="STEP-1-EVIDENCE" />
-        <TranslatedText text="The-first-thing-you-need-is-evidence" />
-        <TranslatedText text="Take-a-photo-with-your-camera" />
-        <TranslatedText text="Upload-a-photo-from-your-gallery" />
-        <TranslatedText text="Record-a-sound" />
-        <TranslatedText text="Submit-without-evidence" />
+    <>
+      <View className="bg-white rounded-xl p-5">
+        <Text className="text-2xl">{t( "Evidence" )}</Text>
+        <Text className="color-grayText my-2">{t( "Add-evidence-of-an-organism" )}</Text>
+        <Text className="color-grayText my-2">{t( "You-can" )}</Text>
+        {bulletedText.map( string => (
+          <Text className="color-grayText" key={string}>
+            {`\u2022 ${string}`}
+          </Text>
+        ) )}
       </View>
-      <Pressable onPress={navToStandardCamera}>
-        <Avatar.Icon size={40} icon="camera" />
-      </Pressable>
-      {!currentObs && (
-        <Pressable onPress={navToPhotoGallery}>
-          <Avatar.Icon size={40} icon="folder-multiple-image" />
-        </Pressable>
-      )}
-      {!hasSound && (
-        <Pressable onPress={navToSoundRecorder}>
-          <Avatar.Icon size={40} icon="microphone" />
-        </Pressable>
-      )}
-      {!currentObs && (
-        <Pressable onPress={navToObsEdit}>
-          <Avatar.Icon size={40} icon="square-edit-outline" />
-        </Pressable>
-      )}
-    </View>
+      {renderIconButton( "plus", "bottom-0 left-1/3 px-2", ( ) => { }, 80 )}
+      {!currentObs && renderIconButton( "square-edit-outline", "bottom-6 left-10", navToObsEdit )}
+      {renderIconButton( "camera", "bottom-24 left-20", navToStandardCamera )}
+      {!currentObs
+        && renderIconButton( "folder-multiple-image", "bottom-24 right-20", navToPhotoGallery )}
+      {!hasSound && renderIconButton( "microphone", "bottom-6 right-10", navToSoundRecorder )}
+    </>
   );
 };
 

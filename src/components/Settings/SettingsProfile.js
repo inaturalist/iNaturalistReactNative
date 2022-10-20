@@ -8,8 +8,8 @@ import {
 } from "react-native";
 // $FlowIgnore
 import { launchImageLibrary } from "react-native-image-picker";
+import { viewStyles } from "styles/settings/settings";
 
-import { viewStyles } from "../../styles/settings/settings";
 import type { SettingsProps } from "./types";
 
 const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Node => {
@@ -20,7 +20,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
     settings.icon && !settings.removeProfilePhoto ) {
     profileSource = { uri: settings.icon };
   } else {
-    profileSource = require( "../../images/profile.png" );
+    profileSource = require( "images/profile.png" );
   }
 
   const onImageSelected = response => {

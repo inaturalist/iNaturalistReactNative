@@ -1,16 +1,18 @@
 // @flow
 
+import { searchObservations } from "api/observations";
+import DropdownPicker from "components/Explore/DropdownPicker";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { viewStyles } from "styles/identify/identify";
 
-import { viewStyles } from "../../styles/identify/identify";
-import DropdownPicker from "../Explore/DropdownPicker";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
+import Observation from "../../models/Observation";
 import CardSwipeView from "./CardSwipeView";
 import GridView from "./GridView";
-import useObservations from "./hooks/useObservations";
 
 const Identify = ( ): Node => {
   const [view, setView] = React.useState( "grid" );
@@ -18,7 +20,28 @@ const Identify = ( ): Node => {
   const [placeId, setPlaceId] = useState( null );
   const [taxon, setTaxon] = useState( "" );
   const [taxonId, setTaxonId] = useState( null );
-  const { observations, loading } = useObservations( placeId, taxonId );
+
+  const searchParams = {
+    reviewed: false,
+    fields: Observation.FIELDS
+  };
+
+  if ( placeId ) {
+    // $FlowIgnore
+    searchParams.place_id = placeId;
+  }
+  if ( taxonId ) {
+    // $FlowIgnore
+    searchParams.taxon_id = taxonId;
+  }
+
+  const {
+    data: observations,
+    isLoading
+  } = useAuthenticatedQuery(
+    ["searchObservations"],
+    optsWithAuth => searchObservations( searchParams, optsWithAuth )
+  );
 
   const updatePlaceId = getValue => setPlaceId( getValue( ) );
   const updateTaxonId = getValue => setTaxonId( getValue( ) );
@@ -34,7 +57,7 @@ const Identify = ( ): Node => {
     }
     return (
       <GridView
-        loading={loading}
+        loading={isLoading}
         observationList={observations}
         testID="Identify.observationGrid"
       />

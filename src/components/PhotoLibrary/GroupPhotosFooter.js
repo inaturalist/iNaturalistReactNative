@@ -1,15 +1,13 @@
 // @flow
 
+import Button from "components/SharedComponents/Buttons/Button";
+import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
+import KebabMenu from "components/SharedComponents/KebabMenu";
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { Text, View } from "react-native";
 import { Menu } from "react-native-paper";
-
-import { viewStyles } from "../../styles/photoLibrary/photoGalleryFooter";
-import Button from "../SharedComponents/Buttons/Button";
-import SecondaryCTAButton from "../SharedComponents/Buttons/SecondaryCTAButton";
-import KebabMenu from "../SharedComponents/KebabMenu";
 
 type Props = {
   combinePhotos: Function,
@@ -37,50 +35,45 @@ const GroupPhotosFooter = ( {
   const obsWithMultiplePhotosSelected = selectedObservations?.[0]?.photos?.length > 1;
 
   const renderSelectionModeFooter = ( ) => (
-    <>
-      <View style={viewStyles.selectionButtons}>
-        <KebabMenu>
-          <Menu.Item
-            onPress={combinePhotos}
-            disabled={noObsSelected || oneObsSelected}
-            title={t( "Combine-Photos" )}
-          />
-          <Menu.Item
-            onPress={separatePhotos}
-            disabled={!obsWithMultiplePhotosSelected}
-            title={t( "Separate-Photos" )}
-          />
-          <Menu.Item
-            onPress={removePhotos}
-            disabled={noObsSelected}
-            title={t( "Remove-Photos" )}
-          />
-        </KebabMenu>
-        <SecondaryCTAButton
-          onPress={( ) => {
-            setSelectionMode( false );
-            clearSelection( );
-          }}
-        >
-          <Text>{t( "Cancel" )}</Text>
-        </SecondaryCTAButton>
-      </View>
-      <View style={viewStyles.nextButton} />
-    </>
+    <View className="flex-row">
+      <KebabMenu>
+        <Menu.Item
+          onPress={combinePhotos}
+          disabled={noObsSelected || oneObsSelected}
+          title={t( "Combine-Photos" )}
+        />
+        <Menu.Item
+          onPress={separatePhotos}
+          disabled={!obsWithMultiplePhotosSelected}
+          title={t( "Separate-Photos" )}
+        />
+        <Menu.Item
+          onPress={removePhotos}
+          disabled={noObsSelected}
+          title={t( "Remove-Photos" )}
+        />
+      </KebabMenu>
+      <SecondaryCTAButton
+        onPress={( ) => {
+          setSelectionMode( false );
+          clearSelection( );
+        }}
+      >
+        <Text>{t( "Cancel" )}</Text>
+      </SecondaryCTAButton>
+    </View>
   );
 
   const renderFooter = ( ) => (
     <>
-      <View style={viewStyles.selectionButtons}>
-        <SecondaryCTAButton
-          onPress={( ) => setSelectionMode( true )}
-        >
-          <Text>{t( "Select" )}</Text>
-        </SecondaryCTAButton>
-      </View>
-      <View style={viewStyles.nextButton}>
+      <SecondaryCTAButton
+        onPress={( ) => setSelectionMode( true )}
+      >
+        <Text>{t( "Select" )}</Text>
+      </SecondaryCTAButton>
+      <View className="w-28">
         <Button
-          level="primary"
+          level="secondary"
           text="Next"
           onPress={navToObsEdit}
           testID="GroupPhotos.next"
@@ -90,7 +83,7 @@ const GroupPhotosFooter = ( {
   );
 
   return (
-    <View style={viewStyles.footer}>
+    <View className="h-16 flex-row justify-between mx-2">
       {selectionMode ? renderSelectionModeFooter( ) : renderFooter( )}
     </View>
   );

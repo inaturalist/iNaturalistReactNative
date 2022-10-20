@@ -1,10 +1,9 @@
 // @flow
 
+import { RealmContext } from "providers/contexts";
+import uploadObservation from "providers/uploadHelpers/uploadObservation";
 import { useCallback, useEffect, useState } from "react";
-
-import { RealmContext } from "../../../../providers/contexts";
-import uploadObservation from "../../../../providers/uploadHelpers/uploadObservation";
-import useApiToken from "../../../../sharedHooks/useApiToken";
+import useApiToken from "sharedHooks/useApiToken";
 
 const { useRealm } = RealmContext;
 

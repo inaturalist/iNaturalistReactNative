@@ -1,52 +1,32 @@
 // @flow
 
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Pressable, View } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-
-import colors from "../../../styles/colors";
-import { viewStyles } from "../../../styles/observations/obsList";
 
 type Props = {
   isExplore: boolean,
   isLoggedIn: ?boolean,
   syncObservations: Function,
-  setView: Function,
-  numOfUnuploadedObs: number,
+  setView: Function
   }
 
 const Toolbar = ( {
   isExplore,
   isLoggedIn,
   syncObservations,
-  setView,
-  numOfUnuploadedObs
+  setView
 }: Props ): Node => (
-  <>
-    {!isExplore && (
-      <View style={viewStyles.toggleButtons}>
-        {isLoggedIn && (
-        <Pressable onPress={syncObservations}>
-          <IconMaterial
-            name="sync"
-            size={30}
-            color={numOfUnuploadedObs > 0 ? colors.inatGreen : colors.gray}
-          />
-        </Pressable>
-        )}
-      </View>
+  <View className="py-5 flex-row justify-between bg-white">
+    {!isExplore && isLoggedIn ? (
+      <Pressable onPress={syncObservations} className="mx-3">
+        <IconMaterial name="sync" size={30} />
+      </Pressable>
+    ) : (
+      <View className="mx-3" />
     )}
-    <View style={viewStyles.toggleButtons}>
-      {isExplore && (
-        <Pressable
-          onPress={( ) => setView( "map" )}
-          accessibilityRole="button"
-          testID="Explore.toggleMapView"
-        >
-          <IconMaterial name="map" size={30} />
-        </Pressable>
-      )}
+    <View className="flex flex-row flex-nowrap mx-3">
       <Pressable
         onPress={( ) => setView( "list" )}
         accessibilityRole="button"
@@ -61,7 +41,7 @@ const Toolbar = ( {
         <IconMaterial name="grid-view" size={30} />
       </Pressable>
     </View>
-  </>
+  </View>
 );
 
 export default Toolbar;

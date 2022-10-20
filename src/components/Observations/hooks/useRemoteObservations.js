@@ -1,12 +1,12 @@
 // @flow
 
+import { RealmContext } from "providers/contexts";
 import {
   useCallback, useEffect, useState
 } from "react";
+import useApiToken from "sharedHooks/useApiToken";
 
 import Observation from "../../../models/Observation";
-import { RealmContext } from "../../../providers/contexts";
-import useApiToken from "../../../sharedHooks/useApiToken";
 
 const { useRealm } = RealmContext;
 
@@ -23,7 +23,7 @@ const useRemoteObservations = ( ): Object => {
 
   const fetchNextObservations = useCallback( numOfObs => {
     const nextPageToFetch = numOfObs > 0
-      ? Math.ceil( numOfObs / 6 )
+      ? Math.ceil( numOfObs / 5 )
       : 1;
     setPage( nextPageToFetch );
     setFetchFromServer( true );

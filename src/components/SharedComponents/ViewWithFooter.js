@@ -1,9 +1,9 @@
 // @flow strict-local
 
+import { SafeAreaView } from "components/styledComponents";
 import * as React from "react";
-import { SafeAreaView, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
 
-import viewStyles from "../../styles/sharedComponents/viewWithFooter";
 import Footer from "./Footer";
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 }
 
 const ViewWithFooter = ( { children, testID }: Props ): React.Node => (
-  <SafeAreaView style={viewStyles.safeAreaContainer} testID={testID}>
+  <SafeAreaView className="flex-1 bg-white" testID={testID}>
     <StatusBar barStyle="dark-content" />
     {children}
     <Footer />

@@ -3,11 +3,9 @@
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
-import {
-  Button, Text, TextInput, View
-} from "react-native";
+import { View } from "react-native";
+import { Button, Text, TextInput } from "react-native-paper";
 
-import { textStyles, viewStyles } from "../../styles/login/login";
 import { registerUser } from "./AuthenticationService";
 
 const SignUp = (): Node => {
@@ -27,26 +25,26 @@ const SignUp = (): Node => {
 
   return (
     <View>
-      <Text style={textStyles.text}>{t( "Sign-Up" )}</Text>
+      <Text className="text-base mb-1">{t( "Sign-Up" )}</Text>
 
-      <Text style={textStyles.text}>{t( "Email" )}</Text>
+      <Text className="text-base mb-1">{t( "Email" )}</Text>
       <TextInput
-        style={viewStyles.input}
+        className="h-10 bg-tertiary"
         onChangeText={setEmail}
         value={email}
         autoComplete="email"
       />
 
-      <Text style={textStyles.text}>{t( "Username" )}</Text>
+      <Text className="text-base mb-1">{t( "Username" )}</Text>
       <TextInput
-        style={viewStyles.input}
+        className="h-10 bg-tertiary"
         onChangeText={setUsername}
         value={username}
       />
 
-      <Text style={textStyles.text}>{t( "Password" )}</Text>
+      <Text className="text-base mb-1">{t( "Password" )}</Text>
       <TextInput
-        style={viewStyles.input}
+        className="h-10 bg-tertiary"
         onChangeText={setPassword}
         value={password}
         secureTextEntry
