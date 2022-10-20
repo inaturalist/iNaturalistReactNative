@@ -1,16 +1,14 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import PlaceholderText from "components/PlaceholderText";
 import Button from "components/SharedComponents/Buttons/Button";
+import { Text, View } from "components/styledComponents";
 import { iconicTaxaIds, iconicTaxaNames } from "dictionaries/iconicTaxaIds";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  FlatList, Pressable, Text, View
-} from "react-native";
+import { FlatList } from "react-native";
 import { Avatar, useTheme } from "react-native-paper";
 import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 
@@ -30,7 +28,6 @@ const IdentificationSection = ( ): Node => {
   const updateIdentification = taxon => updateTaxon( taxon );
 
   const onIDAdded = async id => {
-    console.log( "onIDAdded", id );
     updateIdentification( id.taxon );
   };
 
@@ -41,40 +38,27 @@ const IdentificationSection = ( ): Node => {
     const label = t( iconicTaxaNames[id] );
     const selected = identification && id === identification.id;
     return (
-      <Pressable
+      <Avatar.Icon
+        size={50}
         onPress={( ) => updateIdentification( { id, preferred_common_name: label } )}
-      >
-        <Avatar.Text
-          size={54}
-          label={label}
-          labelStyle={textStyles.smallLabel}
-          style={[
-            { backgroundColor: colors.tertiary },
-            viewStyles.iconicTaxaButtons,
-            selected && viewStyles.selected
-          ]}
-        />
-      </Pressable>
+        className="mx-3 my-3"
+        style={[
+          { backgroundColor: colors.tertiary },
+          selected && viewStyles.selected
+        ]}
+      />
     );
   };
 
   const displayIdentification = ( ) => {
     if ( identification ) {
       return (
-        <View style={viewStyles.row}>
+        <View className="flex-row justify-between mx-5 mt-2">
           <View>
-            <Text style={textStyles.text}>
-              {identification.preferred_common_name}
-            </Text>
-            <Text style={textStyles.text}>
-              {identification.name}
-            </Text>
+            <Text>{identification.preferred_common_name}</Text>
+            <Text>{identification.name}</Text>
           </View>
-          <Pressable
-            onPress={navToAddID}
-          >
-            <PlaceholderText text="edit" style={[textStyles.text]} />
-          </Pressable>
+          <Avatar.Icon icon="pencil" onPress={navToAddID} size={35} style={viewStyles.editIcon} />
         </View>
       );
     }
@@ -83,7 +67,7 @@ const IdentificationSection = ( ): Node => {
         <Button
           level="primary"
           onPress={navToAddID}
-          text="View Identification Suggestions"
+          text="Add-an-Identification"
           style={viewStyles.button}
           testID="ObsEdit.Suggestions"
         />

@@ -3,15 +3,15 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import BottomSheet from "components/SharedComponents/BottomSheet";
 import Map from "components/SharedComponents/Map";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
-  ActivityIndicator, Animated, Dimensions, Text, View
+  ActivityIndicator,
+  Animated, Dimensions
 } from "react-native";
 import useLoggedIn from "sharedHooks/useLoggedIn";
 import useUploadStatus from "sharedHooks/useUploadStatus";
-import { textStyles, viewStyles } from "styles/observations/obsList";
 
 import EmptyList from "./EmptyList";
 import GridItem from "./GridItem";
@@ -28,7 +28,6 @@ type Props = {
   testID: string,
   taxonId?: number,
   mapHeight?: number,
-  totalObservations?: number,
   handleEndReached?: Function,
   syncObservations?: Function
 }
@@ -39,7 +38,6 @@ const ObservationViews = ( {
   testID,
   taxonId,
   mapHeight,
-  totalObservations,
   handleEndReached,
   syncObservations
 }: Props ): Node => {
@@ -108,13 +106,19 @@ const ObservationViews = ( {
   );
 
   const navToObsDetails = async observation => {
-    navigation.navigate( "ObsDetails", { observation } );
+    navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
   };
 
   const renderItem = ( { item } ) => (
     <ObsCard item={item} handlePress={navToObsDetails} />
   );
-  const renderGridItem = ( { item } ) => <GridItem item={item} handlePress={navToObsDetails} />;
+  const renderGridItem = ( { item, index } ) => (
+    <GridItem
+      item={item}
+      index={index}
+      handlePress={navToObsDetails}
+    />
+  );
 
   const renderEmptyState = ( ) => {
     if ( name !== "Explore" && isLoggedIn === false ) {
@@ -122,8 +126,6 @@ const ObservationViews = ( {
     }
     return <ActivityIndicator />;
   };
-
-  const { t } = useTranslation( );
 
   const renderBottomSheet = ( ) => {
     if ( numOfUnuploadedObs === 0 ) { return null; }
@@ -158,7 +160,7 @@ const ObservationViews = ( {
     if ( isLoggedIn === false ) { return <View />; }
     return loading
       ? <InfiniteScrollFooter />
-      : <View style={viewStyles.footer} />;
+      : <View className="pt-16" />;
   };
 
   const isExplore = name === "Explore";
@@ -169,11 +171,12 @@ const ObservationViews = ( {
       isLoggedIn={isLoggedIn}
       translateY={translateY}
       isExplore={isExplore}
-      headerHeight={headerHeight}
       syncObservations={syncObservations}
       setView={setView}
     />
-  ), [isExplore, isLoggedIn, translateY, numOfUnuploadedObs, headerHeight, syncObservations] );
+  ), [isExplore, isLoggedIn, translateY, numOfUnuploadedObs, syncObservations] );
+
+  const renderItemSeparator = ( ) => <View className="border border-border" />;
 
   const renderView = ( ) => {
     if ( view === "map" ) {
@@ -192,6 +195,7 @@ const ObservationViews = ( {
           onEndReached={handleEndReached}
           ListFooterComponent={renderFooter}
           ListHeaderComponent={renderHeader}
+          ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
           stickyHeaderIndices={[0]}
           bounces={false}
           contentContainerStyle={{ minHeight: flatListHeight }}
@@ -203,13 +207,6 @@ const ObservationViews = ( {
 
   return (
     <View testID="ObservationViews.myObservations">
-      {isExplore && (
-        <View style={[viewStyles.whiteBanner, view === "map" && viewStyles.greenBanner]}>
-          <Text style={[textStyles.center, view === "map" && textStyles.whiteText]}>
-            {t( "X-Observations", { count: totalObservations } )}
-          </Text>
-        </View>
-      )}
       {renderView( )}
     </View>
   );

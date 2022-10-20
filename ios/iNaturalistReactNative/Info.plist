@@ -51,6 +51,12 @@
 	<array>
 		<string>MaterialCommunityIcons.ttf</string>
 		<string>MaterialIcons.ttf</string>
+		<string>Whitney-Book-Pro.otf</string>
+		<string>Whitney-BookItalic-Pro.otf</string>
+		<string>Whitney-Light-Pro.otf</string>
+		<string>Whitney-Medium-Pro.otf</string>
+		<string>Whitney-Semibold-Pro.otf</string>
+		<string>Whitney-SemiboldItalic-Pro.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

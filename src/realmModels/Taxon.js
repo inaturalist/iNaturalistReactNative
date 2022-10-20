@@ -1,4 +1,4 @@
-import Realm from "realm";
+import { Realm } from "@realm/react";
 
 import Photo from "./Photo";
 

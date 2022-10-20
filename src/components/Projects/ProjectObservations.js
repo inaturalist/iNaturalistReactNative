@@ -1,18 +1,24 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { searchObservations } from "api/observations";
 import GridItem from "components/Observations/GridItem";
 import * as React from "react";
 import { FlatList } from "react-native";
-
-import useProjectObservations from "./hooks/useProjectObservations";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 type Props = {
   id: number
 }
 
 const ProjectObservations = ( { id }: Props ): React.Node => {
-  const observations = useProjectObservations( id );
+  const {
+    data: observations
+  } = useAuthenticatedQuery(
+    ["searchObservations", id],
+    optsWithAuth => searchObservations( { project_id: id }, optsWithAuth )
+  );
+
   const navigation = useNavigation( );
   const navToObsDetails = observation => {
     navigation.navigate( "ObsDetails", { uuid: observation.uuid } );

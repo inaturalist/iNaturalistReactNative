@@ -18,8 +18,7 @@ const Explore = ( ): Node => {
   const {
     exploreList,
     loadingExplore,
-    exploreFilters,
-    totalObservations
+    exploreFilters
   } = useContext( ExploreContext );
   const taxonId = exploreFilters ? exploreFilters.taxon_id : null;
 
@@ -36,7 +35,6 @@ const Explore = ( ): Node => {
           taxonId={taxonId}
           testID="Explore.observations"
           mapHeight={mapHeight}
-          totalObservations={totalObservations}
         />
       )}
       <BottomCard />

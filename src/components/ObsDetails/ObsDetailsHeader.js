@@ -1,46 +1,37 @@
 // @flow
 
-import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
-import { ObsEditContext } from "providers/contexts";
+import CustomHeader from "components/SharedComponents/CustomHeader";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { Button, Headline } from "react-native-paper";
+import { Button } from "react-native-paper";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/colors";
-import { viewStyles } from "styles/obsDetails/obsDetailsHeader";
 
 type Props = {
-  observationUUID: string
+  observation: ?Object
 }
 
-const ObsDetailsHeader = ( { observationUUID }: Props ): Node => {
-  const [isLocal, setIsLocal] = useState( null );
-  const { openSavedObservation } = React.useContext( ObsEditContext );
-
+const ObsDetailsHeader = ( { observation }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const currentUser = useCurrentUser( );
+  const obsCreatedLocally = observation?.id === null;
+  const obsOwnedByCurrentUser = observation?.user?.id === currentUser?.id;
 
-  const navToObsEdit = ( ) => navigation.navigate( "ObsEdit" );
-
-  useEffect( ( ) => {
-    const checkForLocalObservation = async ( ) => {
-      const isLocalObservation = await openSavedObservation( observationUUID );
-      setIsLocal( isLocalObservation );
-    };
-
-    navigation.addListener( "focus", ( ) => {
-      checkForLocalObservation( );
-    } );
-  }, [observationUUID, openSavedObservation, navigation] );
+  const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } );
 
   return (
-    <View style={viewStyles.headerRow}>
-      <HeaderBackButton onPress={( ) => navigation.goBack( )} />
-      <Headline>{t( "Observation" )}</Headline>
-      {isLocal ? <Button icon="pencil" onPress={navToObsEdit} textColor={colors.gray} /> : <View />}
-    </View>
+    <CustomHeader
+      headerText={t( "Observation" )}
+      rightIcon={
+        ( obsCreatedLocally || obsOwnedByCurrentUser )
+          ? <Button icon="pencil" onPress={navToObsEdit} textColor={colors.gray} />
+          : <View />
+      }
+    />
   );
 };
 

@@ -9,13 +9,10 @@ import ExploreLanding from "components/Explore/ExploreLanding";
 import Messages from "components/Messages/Messages";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import AddID from "components/ObsEdit/AddID";
-import CVSuggestions from "components/ObsEdit/CVSuggestions";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import ObsList from "components/Observations/ObsList";
 import GroupPhotos from "components/PhotoLibrary/GroupPhotos";
 import PhotoGallery from "components/PhotoLibrary/PhotoGallery";
-import CustomHeaderWithTranslation from
-  "components/SharedComponents/CustomHeaderWithTranslation";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGate from "components/SharedComponents/PermissionGate";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
@@ -119,14 +116,6 @@ const MainStackNavigation = ( ): React.Node => (
         <Stack.Screen
           name="StandardCamera"
           component={StandardCameraWithPermission}
-        />
-        <Stack.Screen
-          name="Suggestions"
-          component={CVSuggestions}
-          options={{
-            headerTitle: <CustomHeaderWithTranslation headerText="IDENTIFICATION" />,
-            headerShown: true
-          }}
         />
         <Stack.Screen
           name="AddID"

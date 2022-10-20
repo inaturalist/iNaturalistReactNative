@@ -25,7 +25,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import colors from "styles/colors";
-import { viewStyles } from "styles/navigation/rootNavigation";
 
 import IdentifyStackNavigation from "./identifyStackNavigation";
 import MainStackNavigation from "./mainStackNavigation";
@@ -106,7 +105,7 @@ const App = ( ): React.Node => {
       <RealmProvider>
         <SafeAreaProvider>
           <PaperProvider theme={theme}>
-            <GestureHandlerRootView style={viewStyles.container}>
+            <GestureHandlerRootView className="flex-1">
               <NavigationContainer>
                 <ObsEditProvider>
                   <Drawer.Navigator

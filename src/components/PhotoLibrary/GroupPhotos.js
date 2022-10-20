@@ -7,7 +7,6 @@ import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
 import Observation from "realmModels/Observation";
-import { viewStyles } from "styles/photoLibrary/photoGallery";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 import GroupPhotosFooter from "./GroupPhotosFooter";
@@ -168,7 +167,6 @@ const GroupPhotos = ( ): Node => {
         observations={groupedPhotos.length}
       />
       <FlatList
-        contentContainerStyle={viewStyles.centerImages}
         data={groupedPhotos}
         initialNumToRender={4}
         keyExtractor={extractKey}

@@ -1,4 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
+import { fetchUserMe } from "api/users";
 import { getAPIToken } from "components/LoginSignUp/AuthenticationService";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { t } from "i18next";
@@ -16,7 +17,7 @@ import {
   Text,
   View
 } from "react-native";
-import useUserMe from "sharedHooks/useUserMe";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/settings/settings";
 
 import SettingsAccount from "./SettingsAccount";
@@ -150,15 +151,19 @@ const Settings = ( { children: _children }: Props ): Node => {
   const [activeTab, setActiveTab] = useState( TAB_TYPE_PROFILE );
   const [settings, setSettings] = useState( {} );
   const [accessToken, setAccessToken] = useState( null );
-  const [isLoading, setIsLoading] = useState( true );
   const [isSaving, setIsSaving] = useState( false );
-  const user = useUserMe( accessToken );
+
+  const {
+    data: user,
+    isLoading
+  } = useAuthenticatedQuery(
+    ["fetchUserMe"],
+    optsWithAuth => fetchUserMe( { }, optsWithAuth )
+  );
 
   const fetchProfile = useCallback( async () => {
     if ( user ) {
-      console.log( "User object", user );
       setSettings( user );
-      setIsLoading( false );
     }
   }, [user] );
 
@@ -213,7 +218,6 @@ const Settings = ( { children: _children }: Props ): Node => {
 
     console.log( "Updated user", response );
     const userResponse = await inatjs.users.me( { api_token: accessToken, fields: "all" } );
-    console.log( "User object", userResponse.results[0] );
     setSettings( userResponse.results[0] );
     setIsSaving( false );
   };
