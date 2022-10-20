@@ -87,6 +87,9 @@ git add src/i18n/l10n/*
 git commit -a -m "Updated translations"
 ```
 
+## Styling
+We're using Nativewind, a styling system for React Native based on Tailwind CSS. Check the [Nativewind documentation](https://www.nativewind.dev/) to see what styles can be used in RN.
+
 ## Troubleshooting
 
 1. Run `react-native clean-project`. This will give you options to clean caches, clean builds, reinstall pods, and reinstall node_modules. Using this eliminates a lot of hard-to-diagnose build issues.

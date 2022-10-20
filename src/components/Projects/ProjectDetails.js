@@ -2,7 +2,7 @@
 
 import { useRoute } from "@react-navigation/native";
 import { fetchProjects } from "api/projects";
-import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
+import ScrollNoFooter from "components/SharedComponents/ScrollNoFooter";
 import * as React from "react";
 import {
   Image, ImageBackground, Text
@@ -10,7 +10,7 @@ import {
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { imageStyles, textStyles } from "styles/projects/projectDetails";
 
-import ProjectObservations from "./ProjectObservations";
+// import ProjectObservations from "./ProjectObservations";
 
 const ProjectDetails = ( ): React.Node => {
   const { params } = useRoute( );
@@ -26,7 +26,7 @@ const ProjectDetails = ( ): React.Node => {
   if ( !project ) { return null; }
 
   return (
-    <ScrollWithFooter>
+    <ScrollNoFooter>
       <ImageBackground
         source={{ uri: project.header_image_url }}
           // $FlowFixMe
@@ -42,8 +42,9 @@ const ProjectDetails = ( ): React.Node => {
       <Text style={textStyles.descriptionText}>{project.title}</Text>
       <Text style={textStyles.descriptionText}>{project.description}</Text>
       {/* TODO: support joining or leaving projects once oauth is set up */}
-      <ProjectObservations id={id} />
-    </ScrollWithFooter>
+      {/* TODO: replace below. FlatList is not supposed to be used inside a scrollview (?) */}
+      {/* <ProjectObservations id={id} /> */}
+    </ScrollNoFooter>
   );
 };
 

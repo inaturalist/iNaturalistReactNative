@@ -37,12 +37,27 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const obsEditValue = useMemo( ( ) => {
-    const addPhotos = async photos => {
-      const obsPhotos = await Promise.all( photos.map(
+    const addPhotos = async photoUris => {
+      const obsPhotos = await Promise.all( photoUris.map(
         async photo => ObservationPhoto.new( photo, realm )
       ) );
-      const newObs = await Observation.createObsWithPhotos( obsPhotos );
-      setObservations( [newObs] );
+      let targetObservation = currentObs;
+      if ( targetObservation ) {
+        targetObservation = {
+          ...(
+            targetObservation.toJSON
+              ? targetObservation.toJSON( )
+              : targetObservation
+          ),
+          observationPhotos: [
+            ...Array.from( targetObservation.observationPhotos ),
+            ...obsPhotos
+          ]
+        };
+      } else {
+        targetObservation = await Observation.createObsWithPhotos( obsPhotos );
+      }
+      setObservations( [targetObservation] );
     };
 
     const updateObservationKey = ( key, value ) => {

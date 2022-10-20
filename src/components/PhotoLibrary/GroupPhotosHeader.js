@@ -2,11 +2,11 @@
 
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { Text, View } from "react-native";
-import { textStyles, viewStyles } from "styles/photoLibrary/photoGalleryHeader";
+import colors from "styles/colors";
 
 type Props = {
   photos: number,
@@ -19,16 +19,16 @@ const GroupPhotosHeader = ( { photos, observations }: Props ): Node => {
   const navBack = ( ) => navigation.goBack( );
 
   return (
-    <>
-      <View style={viewStyles.header}>
-        <HeaderBackButton onPress={navBack} />
-        <Text style={textStyles.header}>{t( "Group-Photos" )}</Text>
+    <View className="h-32">
+      <View className="flex-row">
+        <HeaderBackButton onPress={navBack} tintColor={colors.black} />
+        <Text className="text-xl mt-3">{t( "Group-Photos" )}</Text>
       </View>
-      <Text style={textStyles.header}>
+      <Text className="text-lg ml-10">
         {t( "X-photos-X-observations", { photoCount: photos, observationCount: observations } )}
       </Text>
-      <Text style={textStyles.text}>{t( "Combine-photos-onboarding" )}</Text>
-    </>
+      <Text className="mx-3 mt-5">{t( "Combine-photos-onboarding" )}</Text>
+    </View>
   );
 };
 

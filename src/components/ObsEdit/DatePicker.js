@@ -6,7 +6,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text } from "react-native";
 import { displayDateTimeObsEdit } from "sharedHelpers/dateAndTime";
-import { textStyles } from "styles/obsEdit/obsEdit";
 
 type Props = {
   handleDatePicked: ( Date ) => void,
@@ -46,7 +45,7 @@ const DatePicker = ( { handleDatePicked, currentObs }: Props ): Node => {
       <Pressable
         onPress={openModal}
       >
-        <Text style={textStyles.text} testID="ObsEdit.time">
+        <Text testID="ObsEdit.time">
           {displayDate( ) || t( "Add-Date-Time" )}
         </Text>
       </Pressable>
