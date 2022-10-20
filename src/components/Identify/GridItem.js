@@ -68,7 +68,7 @@ const GridItem = ( {
         testID="ObsList.photo"
       />
       <Image
-        source={{ uri: item.user.icon_url }}
+        source={{ uri: item?.user?.icon_url }}
         style={imageStyles.userImage}
         testID="ObsList.identifierPhoto"
       />

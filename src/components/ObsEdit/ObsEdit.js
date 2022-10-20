@@ -44,6 +44,7 @@ const ObsEdit = ( ): Node => {
     currentObsIndex,
     setCurrentObsIndex,
     observations,
+    openSavedObservation,
     saveObservation,
     saveAndUploadObservation,
     setObservations,
@@ -226,6 +227,14 @@ const ObsEdit = ( ): Node => {
     );
     setPhotoUris( uris );
   }, [currentObs] );
+
+  useEffect( ( ) => {
+    if ( currentObs ) return;
+    if ( !params?.uuid ) return;
+
+    // This should set the current obs in the context
+    openSavedObservation( params?.uuid );
+  }, [currentObs, openSavedObservation, params?.uuid] );
 
   const addEvidence = () => {
     bottomSheetModalRef.current?.present();

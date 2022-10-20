@@ -33,8 +33,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row"
   },
   column: {
-    flexDirection: "column",
-    justifyContent: "space-evenly"
+    paddingBottom: 200
   },
   profileImage: {
     height: 130,
@@ -45,7 +44,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     width: 60
   },
   textInput: {
-    backgroundColor: "#000000",
+    backgroundColor: colors.white,
     borderWidth: 1,
     flexGrow: 1
   },

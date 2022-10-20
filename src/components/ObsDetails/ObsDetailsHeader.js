@@ -2,44 +2,35 @@
 
 import { useNavigation } from "@react-navigation/native";
 import CustomHeader from "components/SharedComponents/CustomHeader";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Button } from "react-native-paper";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/colors";
 
 type Props = {
-  observationUUID: string
+  observation: ?Object
 }
 
-const ObsDetailsHeader = ( { observationUUID }: Props ): Node => {
-  const [isLocal, setIsLocal] = useState( null );
-  const { openSavedObservation } = React.useContext( ObsEditContext );
-
+const ObsDetailsHeader = ( { observation }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const currentUser = useCurrentUser( );
+  const obsCreatedLocally = observation?.id === null;
+  const obsOwnedByCurrentUser = observation?.user?.id === currentUser?.id;
 
-  const navToObsEdit = ( ) => navigation.navigate( "ObsEdit" );
-
-  useEffect( ( ) => {
-    const checkForLocalObservation = async ( ) => {
-      const isLocalObservation = await openSavedObservation( observationUUID );
-      setIsLocal( isLocalObservation );
-    };
-
-    navigation.addListener( "focus", ( ) => {
-      checkForLocalObservation( );
-    } );
-  }, [observationUUID, openSavedObservation, navigation] );
+  const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } );
 
   return (
     <CustomHeader
       headerText={t( "Observation" )}
-      rightIcon={isLocal ? (
-        <Button icon="pencil" onPress={navToObsEdit} textColor={colors.gray} />
-      ) : <View />}
+      rightIcon={
+        ( obsCreatedLocally || obsOwnedByCurrentUser )
+          ? <Button icon="pencil" onPress={navToObsEdit} textColor={colors.gray} />
+          : <View />
+      }
     />
   );
 };

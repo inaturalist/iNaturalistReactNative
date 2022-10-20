@@ -28,7 +28,6 @@ const IdentificationSection = ( ): Node => {
   const updateIdentification = taxon => updateTaxon( taxon );
 
   const onIDAdded = async id => {
-    console.log( "onIDAdded", id );
     updateIdentification( id.taxon );
   };
 

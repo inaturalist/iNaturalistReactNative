@@ -98,11 +98,12 @@ const PhotoCarousel = ( {
               setSelectedPhotoIndex( index );
             }
           }}
+          className={setClassName( )}
         >
           <Image
             source={{ uri: item }}
-            className={setClassName( )}
             testID="ObsEdit.photo"
+            className="w-fit h-full"
           />
           {( containerStyle === "camera" ) && renderDeleteButton( item )}
         </Pressable>
