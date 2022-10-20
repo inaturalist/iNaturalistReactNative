@@ -1,11 +1,10 @@
 // @flow
 
+import { Image, Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { Image, Pressable, View } from "react-native";
 import { Avatar } from "react-native-paper";
-import { viewStyles } from "styles/sharedComponents/observationViews/obsCard";
 
 import Observation from "../../../models/Observation";
 import Photo from "../../../models/Photo";
@@ -37,23 +36,26 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
   return (
     <Pressable
       onPress={onPress}
-      style={viewStyles.row}
+      className="flex-row my-2 mx-3 justify-between"
       testID={`ObsList.obsCard.${item.uuid}`}
       accessibilityRole="link"
       accessibilityLabel="Navigate to observation details screen"
     >
-      <Image
-        source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
-        style={viewStyles.imageBackground}
-        testID="ObsList.photo"
-      />
-      <View style={viewStyles.obsDetailsColumn}>
-        {/* TODO: fill in with actual empty states */}
-        <ObsCardDetails item={item} />
+      <View className="flex-row shrink">
+        <Image
+          source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
+          className="w-16 h-16 rounded-md mr-2"
+          testID="ObsList.photo"
+        />
+        <View className="shrink">
+          <ObsCardDetails item={item} />
+        </View>
       </View>
-      {needsUpload
-        ? <Avatar.Icon size={40} icon="arrow-up-circle-outline" />
-        : <ObsCardStats item={item} type="list" />}
+      <View className="flex-row items-center justify-items-center ml-2">
+        {needsUpload
+          ? <Avatar.Icon size={40} icon="arrow-up-circle-outline" />
+          : <ObsCardStats item={item} type="list" />}
+      </View>
     </Pressable>
   );
 };

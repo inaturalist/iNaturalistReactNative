@@ -2,7 +2,7 @@
 
 import { useRoute } from "@react-navigation/native";
 import { fetchProjects } from "api/projects";
-import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import * as React from "react";
 import {
   Image, ImageBackground, Text
@@ -26,7 +26,7 @@ const ProjectDetails = ( ): React.Node => {
   if ( !project ) { return null; }
 
   return (
-    <ScrollWithFooter>
+    <ViewWithFooter>
       <ImageBackground
         source={{ uri: project.header_image_url }}
           // $FlowFixMe
@@ -43,7 +43,7 @@ const ProjectDetails = ( ): React.Node => {
       <Text style={textStyles.descriptionText}>{project.description}</Text>
       {/* TODO: support joining or leaving projects once oauth is set up */}
       <ProjectObservations id={id} />
-    </ScrollWithFooter>
+    </ViewWithFooter>
   );
 };
 

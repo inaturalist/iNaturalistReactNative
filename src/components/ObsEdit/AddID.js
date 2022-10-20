@@ -8,6 +8,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
+import { Text } from "components/styledComponents";
 import * as React from "react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,7 +21,7 @@ import {
   View
 } from "react-native";
 import {
-  Button, Headline, Text, TextInput
+  Button, Headline, TextInput
 } from "react-native-paper";
 import uuid from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -165,7 +166,9 @@ const AddID = ( { route }: Props ): React.Node => {
               </View>
             </View>
             )}
-            <Text>{t( "Search-Taxon-ID" )}</Text>
+            <Text className="color-grayText">
+              {t( "Search-for-a-taxon-to-add-an-identification" )}
+            </Text>
             <TextInput
               testID="SearchTaxon"
               left={SearchTaxonIcon}

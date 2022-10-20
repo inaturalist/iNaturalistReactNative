@@ -7,7 +7,13 @@ Accept-community-identifications = Accept community identifications
 
 Account = Account
 
+Add-an-ID = Add an ID
+
+Add-an-Identification = Add an Identification
+
 Add-Date-Time = Add Date/Time
+
+Add-evidence-of-an-organism = Add evidence of an organism. This helps others identify what you saw.
 
 Add-Location = Add Location
 
@@ -419,8 +425,6 @@ Read-more-on-Wikipedia = Read more on Wikipedia
 
 Recently-observed = Recently observed
 
-Record-a-sound = Record a sound
-
 Record-new-sound = Record new sound
 
 Recording-Sound = Recording Sound
@@ -463,6 +467,8 @@ Search-for-a-project = Search for a project
 
 Search-for-a-taxon = Search for a taxon
 
+Search-for-a-taxon-to-add-an-identification = Search for a taxon to add an identification.
+
 Search-for-a-user = Search for a user
 
 Search-for-description-tags-text = Search for description/tags text
@@ -491,13 +497,6 @@ Status = Status
 # Header for a block of text describing a taxon's conservation status
 STATUS-header = STATUS
 
-# Header in pop up explaining options for creating an observation
-STEP-1-EVIDENCE = STEP 1. EVIDENCE
-
-Submit-without-evidence = Submit without evidence
-
-Take-a-photo-with-your-camera = Take a photo with your camera
-
 Tap-to-search-for-taxa = Tap to search for taxa
 
 Taxon = Taxon
@@ -506,9 +505,6 @@ Taxon = Taxon
 TAXONOMY-header = TAXONOMY
 
 Taxonomy-Settings = Taxonomy Settings
-
-# Onboarding for users adding their first evidence of an organism
-The-first-thing-you-need-is-evidence = The first thing you need is evidence of an organism. This helps others identify what you saw.
 
 The-iNaturalist-Network-is-a-collection-of-localized-websites = The iNaturalist Network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that have signed an agreement with iNaturalist to promote local use and benefit local biodiversity. They have access to true coordinates from their countries that are automatically obscured from public view in order to protect threatened species. Your username and password works on all sites that are part of the iNaturalist Network. If you choose to affiliate with a Network site, the local institutions that operate each site will also have access to your email address (only to communicate with you about site activities) and access to the true coordinates for observations that are publicly obscured or private. Note: Please do not experimentally change your affiliation if you have more than 1000 observations.
 
@@ -534,8 +530,6 @@ Unknown-organism = Unknown organism
 Unmute = Unmute
 
 Unreviewed-only = Unreviewed only
-
-Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
 
@@ -597,6 +591,12 @@ Yes = Yes
 Yes-delete-observation = Yes, delete observation
 
 Yes-delete-photo = Yes, delete photo
+
+You-can = You can:
+Take-a-photo-with-your-camera = Take a photo with your camera
+Upload-a-photo-from-your-gallery = Upload a photo from your gallery
+Record-a-sound = Record a sound
+
 
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.

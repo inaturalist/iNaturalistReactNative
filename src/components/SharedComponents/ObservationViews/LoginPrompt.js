@@ -6,7 +6,6 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
-import viewStyles from "styles/upload/uploadPrompt";
 
 const LoginPrompt = ( ): Node => {
   const navigation = useNavigation( );
@@ -17,7 +16,7 @@ const LoginPrompt = ( ): Node => {
       <Button
         level="neutral"
         text={t( "LOG-IN-TO-INATURALIST" )}
-        style={viewStyles.button}
+        className="mt-5"
         onPress={( ) => navigation.navigate( "login" )}
       />
     </>

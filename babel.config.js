@@ -3,6 +3,7 @@ module.exports = {
   plugins: [
     "react-native-reanimated/plugin",
     "transform-inline-environment-variables",
+    "nativewind/babel",
     ["module-resolver", {
       alias: {
         api: "./src/api",

@@ -2,16 +2,14 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { fetchRemoteUser } from "api/users";
-import TranslatedText from "components/SharedComponents/TranslatedText";
 import UserIcon from "components/SharedComponents/UserIcon";
+import { Pressable, Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/colors";
-import { textStyles, viewStyles } from "styles/observations/userCard";
 
 import User from "../../../models/User";
 
@@ -29,23 +27,23 @@ const UserCard = ( ): Node => {
   // TODO: this currently doesn't show up on initial login
   // because user id can't be fetched
   const navigation = useNavigation( );
-  if ( !user ) { return <View style={viewStyles.topCard} />; }
+  if ( !user ) { return <View className="flex-row mx-5 items-center" />; }
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId: user.id } );
 
   return (
-    <View style={viewStyles.userCard}>
-      <UserIcon uri={{ uri: remoteUser?.icon_url }} large />
-      <View style={viewStyles.userDetails}>
-        <Text style={textStyles.text}>{User.userHandle( user )}</Text>
-        <TranslatedText
-          style={textStyles.text}
-          text="X-Observations"
-          count={user.observations_count || 0}
-        />
+    <View className="flex-row mx-5 items-center">
+      {remoteUser && <UserIcon uri={{ uri: remoteUser?.icon_url }} large />}
+      <View className="ml-2">
+        <Text className="color-white my-1">{User.userHandle( user )}</Text>
+        {remoteUser && (
+          <Text className="color-white my-1">
+            {`${remoteUser?.observations_count} Observations`}
+          </Text>
+        )}
       </View>
       <Pressable
         onPress={navToUserProfile}
-        style={viewStyles.editProfile}
+        className="absolute right-0"
       >
         <IconMaterial name="edit" size={30} color={colors.white} />
       </Pressable>

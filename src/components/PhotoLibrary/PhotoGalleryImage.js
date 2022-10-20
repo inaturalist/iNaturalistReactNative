@@ -1,11 +1,10 @@
 // @flow
 
+import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Image, Pressable } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/colors";
-import { imageStyles } from "styles/photoLibrary/photoGallery";
 
 type Props = {
   uri: string,
@@ -25,16 +24,17 @@ const PhotoGalleryImage = ( {
     <Image
       testID="PhotoGallery.photo"
       source={{ uri }}
-      style={imageStyles.galleryImage}
+      className="h-24 w-24"
     />
-    {isSelected && (
-    <IconMaterial
-      name="check-circle"
-      size={30}
-      style={imageStyles.selectedIcon}
-      color={colors.inatGreen}
-    />
-    )}
+    <View className="absolute top-0 right-0">
+      {isSelected && (
+        <IconMaterial
+          name="check-circle"
+          size={30}
+          color={colors.inatGreen}
+        />
+      )}
+    </View>
   </Pressable>
 );
 

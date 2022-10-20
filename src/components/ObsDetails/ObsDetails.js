@@ -73,11 +73,12 @@ const ObsDetails = ( ): Node => {
   const [addingComment, setAddingComment] = useState( false );
   const [snapPoint, setSnapPoint] = useState( 100 );
   const apiToken = useApiToken( );
+  const [localObservation, setLocalObservation] = useState( null );
 
   const queryClient = useQueryClient( );
 
   const {
-    data: observation,
+    data: remoteObservation,
     refetch: refetchRemoteObservation
   } = useAuthenticatedQuery(
     ["fetchRemoteObservation", uuid],
@@ -102,13 +103,18 @@ const ObsDetails = ( ): Node => {
     handleSuccess
   );
 
+  const realm = useRealm( );
+
+  useEffect( ( ) => {
+    setLocalObservation( realm?.objectForPrimaryKey( "Observation", uuid ) );
+  }, [realm, uuid] );
+
+  const observation = localObservation || remoteObservation;
+
   const taxon = observation?.taxon;
   const user = observation?.user;
   const faves = observation?.faves;
-
   const currentUserFaved = faves?.length > 0 ? faves.find( fave => fave.user.id === userId ) : null;
-
-  const realm = useRealm( );
 
   // Clear the comment in a timeout so it doesn't trigger a re-render of the
   // text input *after* the bottom sheet modal gets dismissed, b/c that seems
@@ -320,7 +326,7 @@ const ObsDetails = ( ): Node => {
   return (
     <BottomSheetModalProvider>
       <ViewWithFooter>
-        <ObsDetailsHeader observationUUID={uuid} />
+        <ObsDetailsHeader observation={observation} />
         <ScrollView
           testID={`ObsDetails.${uuid}`}
           contentContainerStyle={viewStyles.scrollView}
