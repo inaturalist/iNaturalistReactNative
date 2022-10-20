@@ -6,6 +6,8 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
+import { createComments } from "api/comments";
+// import createIdentifications from "api/identifications";
 import { faveObservation, fetchRemoteObservation, unfaveObservation } from "api/observations";
 import createIdentification from "components/Identify/helpers/createIdentification";
 import Button from "components/SharedComponents/Buttons/Button";
@@ -31,6 +33,7 @@ import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useApiToken from "sharedHooks/useApiToken";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/colors";
@@ -42,7 +45,6 @@ import User from "../../models/User";
 import ActivityTab from "./ActivityTab";
 import DataTab from "./DataTab";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
-import createComment from "./helpers/createComment";
 import ObsDetailsHeader from "./ObsDetailsHeader";
 
 const { useRealm } = RealmContext;
@@ -75,10 +77,29 @@ const ObsDetails = ( ): Node => {
   const queryClient = useQueryClient( );
 
   const {
-    data: observation
+    data: observation,
+    refetch: refetchRemoteObservation
   } = useAuthenticatedQuery(
     ["fetchRemoteObservation", uuid],
     optsWithAuth => fetchRemoteObservation( uuid, { }, optsWithAuth )
+  );
+
+  const handleSuccess = {
+    onSuccess: ( ) => {
+      queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
+      refetchRemoteObservation( );
+    }
+  };
+
+  const createCommentMutation = useAuthenticatedMutation(
+    ( body, optsWithAuth ) => createComments( {
+      comment: {
+        body,
+        parent_id: uuid,
+        parent_type: "Observation"
+      }
+    }, optsWithAuth ),
+    handleSuccess
   );
 
   const taxon = observation?.taxon;
@@ -228,11 +249,10 @@ const ObsDetails = ( ): Node => {
     clearComment( );
     setShowCommentBox( false );
     Keyboard.dismiss();
-    const response = await createComment( comment, uuid );
-    setAddingComment( false );
-    if ( response ) {
-      setRefetch( !refetch );
+    if ( comment.length > 0 ) {
+      createCommentMutation.mutate( comment );
     }
+    setAddingComment( false );
   };
 
   const showTaxon = ( ) => {
@@ -384,6 +404,7 @@ const ObsDetails = ( ): Node => {
                 navToTaxonDetails={navToTaxonDetails}
                 navToUserProfile={navToUserProfile}
                 toggleRefetch={toggleRefetch}
+                refetchRemoteObservation={refetchRemoteObservation}
               />
             )
             : <DataTab observation={observation} />}

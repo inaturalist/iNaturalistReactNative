@@ -1,5 +1,7 @@
 // @flow
 
+import { useQueryClient } from "@tanstack/react-query";
+import { deleteComments } from "api/comments";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import PlaceholderText from "components/PlaceholderText";
 import KebabMenu from "components/SharedComponents/KebabMenu";
@@ -13,7 +15,8 @@ import {
 } from "react-native";
 import { Menu } from "react-native-paper";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
-import useApiToken from "sharedHooks/useApiToken";
+// import useApiToken from "sharedHooks/useApiToken";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
 import Comment from "../../models/Comment";
@@ -27,18 +30,19 @@ type Props = {
   item: Object,
   navToTaxonDetails: Function,
   handlePress: Function,
-  toggleRefetch: Function
+  toggleRefetch: Function,
+  refetchRemoteObservation: Function
 }
 
 const ActivityItem = ( {
-  item, navToTaxonDetails, handlePress, toggleRefetch
+  item, navToTaxonDetails, handlePress, toggleRefetch, refetchRemoteObservation
 }: Props ): Node => {
   const [currentUser, setCurrentUser] = useState( null );
   const { taxon } = item;
   const { user } = item;
-  const apiToken = useApiToken( );
 
   const realm = useRealm( );
+  const queryClient = useQueryClient( );
 
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {
@@ -47,6 +51,19 @@ const ActivityItem = ( {
     };
     isActiveUserTheCurrentUser( );
   }, [user] );
+
+  const handleSuccess = {
+    onSuccess: ( ) => {
+      queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
+      console.log( "refetch remote obs" );
+      refetchRemoteObservation( );
+    }
+  };
+
+  const deleteCommentMutation = useAuthenticatedMutation(
+    ( uuid, optsWithAuth ) => deleteComments( uuid, optsWithAuth ),
+    handleSuccess
+  );
 
   return (
     <View style={[viewStyles.activityItem, item.temporary ? viewStyles.temporaryRow : null]}>
@@ -84,7 +101,10 @@ const ActivityItem = ( {
               <KebabMenu>
                 <Menu.Item
                   onPress={async ( ) => {
-                    Comment.deleteComment( item.uuid, realm, apiToken );
+                    // first delete locally
+                    Comment.deleteComment( item.uuid, realm );
+                    // then delete remotely
+                    deleteCommentMutation.mutate( item.uuid );
                     toggleRefetch( );
                   }}
                   title={t( "Delete-comment" )}

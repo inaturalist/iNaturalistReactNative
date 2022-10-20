@@ -11,7 +11,6 @@ import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
-import addToProject from "./helpers/addToProject";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 
 type Props = {
@@ -27,7 +26,7 @@ const DataTab = ( { observation }: Props ): Node => {
     && observation.taxon.default_photo.attribution;
 
   const selectProjectId = getValue => {
-    addToProject( getValue( ), observation.uuid );
+    // TODO: add api call for add to project
     setProjectId( getValue( ) );
   };
 

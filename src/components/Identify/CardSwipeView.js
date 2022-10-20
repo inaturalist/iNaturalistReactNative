@@ -1,15 +1,16 @@
 // @flow
 
+import { markAsReviewed } from "api/observations";
 import PlaceholderText from "components/PlaceholderText";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Image, Text, View } from "react-native";
 import TinderCard from "react-tinder-card";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import { imageStyles, textStyles, viewStyles } from "styles/identify/identify";
 
 import Observation from "../../models/Observation";
 import createIdentification from "./helpers/createIdentification";
-import markAsReviewed from "./helpers/markAsReviewed";
 
 type Props = {
   observationList: Array<Object>,
@@ -17,14 +18,17 @@ type Props = {
 
 const CardSwipeView = ( { observationList }: Props ): Node => {
   const [totalSwiped, setTotalSwiped] = useState( 0 );
+
+  const reviewMutation = useAuthenticatedMutation(
+    ( id, optsWithAuth ) => markAsReviewed( { id }, optsWithAuth )
+  );
+
   const onSwipe = async ( direction, id, isSpecies, agreeParams ) => {
     if ( direction === "left" ) {
-      markAsReviewed( id );
+      reviewMutation.mutate( id );
     } else if ( direction === "right" && isSpecies ) {
-      const agreed = await createIdentification( agreeParams );
-      console.log( agreed, "agreed in card swipe" );
+      await createIdentification( agreeParams );
     }
-    console.log( `You swiped: ${direction}` );
   };
 
   const onCardLeftScreen = ( ) => {

@@ -80,9 +80,18 @@ const fetchRemoteObservation = async (
   }
 };
 
+const markAsReviewed = async ( params: Object = {}, opts: Object = {} ): Promise<?number> => {
+  try {
+    return await inatjs.observations.review( params, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
   faveObservation,
   fetchRemoteObservation,
+  markAsReviewed,
   searchObservations,
   unfaveObservation
 };
