@@ -121,14 +121,17 @@ const StandardCamera = ( ): Node => {
           </Pressable>
         </View>
         <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">
-          <Pressable className="w-1/3" onPress={( ) => navigation.goBack( )}>
+          <Pressable
+            className="w-1/3 pt-4 pb-4 pl-3"
+            onPress={( ) => navigation.goBack( )}
+          >
             <Icon name="arrow-back-ios" size={25} color={colors.white} />
           </Pressable>
           <Pressable onPress={takePhoto}>
             {renderCameraButton( "circle-outline", disallowAddingPhotos )}
           </Pressable>
           {photosTaken ? (
-            <Text className="text-white text-xl w-1/3 text-center" onPress={navToObsEdit}>
+            <Text className="text-white text-xl w-1/3 text-center pr-4" onPress={navToObsEdit}>
               {t( "Next" )}
             </Text>
           ) : <View className="w-1/3" />}
