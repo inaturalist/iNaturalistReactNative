@@ -28,8 +28,8 @@ const HorizontalScroll = ( {
   const horizontalScroll = useRef( null );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( initialPhotoSelected );
 
-  const FIRST_PHOTO = selectedPhotoIndex === 0;
-  const LAST_PHOTO = selectedPhotoIndex === photoUris.length - 1;
+  const atFirstPhoto = selectedPhotoIndex === 0;
+  const atLastPhoto = selectedPhotoIndex === photoUris.length - 1;
 
   const scrollToIndex = index => {
     // when a user taps a photo in the carousel, the UI needs to automatically
@@ -51,12 +51,12 @@ const HorizontalScroll = ( {
   } );
 
   const handleScrollLeft = index => {
-    if ( FIRST_PHOTO ) { return; }
+    if ( atFirstPhoto ) { return; }
     setSelectedPhotoIndex( index );
   };
 
   const handleScrollRight = index => {
-    if ( LAST_PHOTO ) { return; }
+    if ( atLastPhoto ) { return; }
     setSelectedPhotoIndex( index );
   };
 
@@ -79,12 +79,12 @@ const HorizontalScroll = ( {
   };
 
   const handleArrowPressLeft = ( ) => {
-    if ( FIRST_PHOTO ) { return; }
+    if ( atFirstPhoto ) { return; }
     scrollToIndex( selectedPhotoIndex - 1 );
   };
 
   const handleArrowPressRight = ( ) => {
-    if ( LAST_PHOTO ) { return; }
+    if ( atLastPhoto ) { return; }
     scrollToIndex( selectedPhotoIndex + 1 );
   };
 
@@ -102,7 +102,7 @@ const HorizontalScroll = ( {
         ref={horizontalScroll}
         onMomentumScrollEnd={handleScrollEndDrag}
       />
-      {!FIRST_PHOTO && (
+      {!atFirstPhoto && (
         <Pressable
           className="p-5 absolute top-1/2 -mt-24 left-0"
           onPress={handleArrowPressLeft}
@@ -110,7 +110,7 @@ const HorizontalScroll = ( {
           <Icon name="arrow-back-ios" color={colors.white} size={16} />
         </Pressable>
       )}
-      {!LAST_PHOTO && (
+      {!atLastPhoto && (
         <Pressable
           className="p-5 absolute top-1/2 -mt-24 right-0"
           onPress={handleArrowPressRight}
