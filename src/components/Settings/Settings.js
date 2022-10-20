@@ -280,7 +280,7 @@ const Settings = ( { children: _children }: Props ): Node => {
               />
             )}
             {activeTab === TAB_TYPE_APPLICATIONS && (
-              <SettingsApplications accessToken={accessToken} />
+              <SettingsApplications />
             )}
             {activeTab === TAB_TYPE_RELATIONSHIPS && (
               <SettingsRelationships
