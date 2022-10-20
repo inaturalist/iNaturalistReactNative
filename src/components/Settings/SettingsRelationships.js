@@ -1,20 +1,23 @@
 // @flow
 
 import { Picker } from "@react-native-picker/picker";
+import fetchRelationships from "api/relationships";
+import { fetchRemoteUsers } from "api/users";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import {
-  Alert, Image, Text, TextInput, View
+  Alert, Image, ScrollView,
+  Text, TextInput, View
 } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/settings/settings";
 import { useDebounce } from "use-debounce";
 
 import BlockedUser from "./BlockedUser";
-import useRelationships from "./hooks/useRelationships";
 import MutedUser from "./MutedUser";
 import Relationship from "./Relationship";
 import UserSearchInput from "./UserSearchInput";
@@ -50,10 +53,8 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
   const [finalUserSearch] = useDebounce( userSearch, 500 );
   const [following, setFollowing] = React.useState( "all" );
   const [trusted, setTrusted] = React.useState( "all" );
-  const [sortBy, setSortBy] = React.useState( "desc" );
+  const [sortBy, setSortBy] = React.useState( "z_to_a" );
   const [page, setPage] = React.useState( 1 );
-  const [blockedUsers, setBlockedUsers] = React.useState( [] );
-  const [mutedUsers, setMutedUsers] = React.useState( [] );
 
   const [refreshRelationships, setRefreshRelationships] = React.useState( Math.random() );
   let orderBy;
@@ -77,70 +78,36 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
     trusted,
     order_by: orderBy,
     order,
-    per_page: 10,
     page,
     random: refreshRelationships
   };
-  const [
-    relationshipResults,
-    perPage,
-    totalResults
-  ] = useRelationships( accessToken, relationshipParams );
+
+  const {
+    data
+  } = useAuthenticatedQuery(
+    ["fetchRelationships", finalUserSearch],
+    optsWithAuth => fetchRelationships( relationshipParams, optsWithAuth )
+  );
+
+  const {
+    data: blockedUsers
+  } = useAuthenticatedQuery(
+    ["fetchRemoteUsers", settings.blocked_user_ids],
+    optsWithAuth => fetchRemoteUsers( settings.blocked_user_ids, { }, optsWithAuth )
+  );
+
+  const {
+    data: mutedUsers
+  } = useAuthenticatedQuery(
+    ["fetchRemoteUsers", settings.muted_user_ids],
+    optsWithAuth => fetchRemoteUsers( settings.muted_user_ids, { }, optsWithAuth )
+  );
+
+  const relationshipResults = data?.results;
+  const perPage = data?.per_page;
+  const totalResults = data?.total_results;
+
   const totalPages = totalResults > 0 && perPage > 0 ? Math.ceil( totalResults / perPage ) : 1;
-
-  useEffect( () => {
-    const getBlockedUsers = async () => {
-      try {
-        const responses = await Promise.all(
-          settings.blocked_user_ids.map(
-            userId => inatjs.users.fetch( userId, { fields: "icon,login,name" } )
-          )
-        );
-        setBlockedUsers( responses.map( r => r.results[0] ) );
-      } catch ( e ) {
-        console.error( e );
-        Alert.alert(
-          "Error",
-          "Couldn't retrieve blocked users!",
-          [{ text: "OK" }],
-          {
-            cancelable: true
-          }
-        );
-      }
-    };
-    if ( settings.blocked_user_ids.length > 0 ) {
-      getBlockedUsers();
-    } else {
-      setBlockedUsers( [] );
-    }
-
-    const getMutedUsers = async () => {
-      try {
-        const responses = await Promise.all(
-          settings.muted_user_ids.map(
-            userId => inatjs.users.fetch( userId, { fields: "icon,login,name" } )
-          )
-        );
-        setMutedUsers( responses.map( r => r.results[0] ) );
-      } catch ( e ) {
-        console.error( e );
-        Alert.alert(
-          "Error",
-          "Couldn't retrieve muted users!",
-          [{ text: "OK" }],
-          {
-            cancelable: true
-          }
-        );
-      }
-    };
-    if ( settings.muted_user_ids.length > 0 ) {
-      getMutedUsers();
-    } else {
-      setMutedUsers( [] );
-    }
-  }, [settings] );
 
   const updateRelationship = useCallback( async ( relationship, update ) => {
     let response;
@@ -300,7 +267,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
 
   return (
     // $FlowFixMe
-    <View style={viewStyles.column}>
+    <ScrollView contentContainerStyle={viewStyles.column}>
       <Text style={textStyles.title}>{t( "Relationships" )}</Text>
       <View style={viewStyles.row}>
         <TextInput
@@ -383,7 +350,7 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
         </View>
       </View>
 
-      {relationshipResults.map( relationship => (
+      {relationshipResults?.map( relationship => (
         <Relationship
           key={relationship.id}
           relationship={relationship}
@@ -421,16 +388,16 @@ const SettingsRelationships = ( { accessToken, settings, onRefreshUser }: Props 
 
       <Text style={textStyles.title}>{t( "Blocked-Users" )}</Text>
       <UserSearchInput userId={0} onUserChanged={u => blockUser( u )} />
-      {blockedUsers.map( user => (
+      {blockedUsers?.map( user => (
         <BlockedUser key={user.id} user={user} unblockUser={unblockUser} />
       ) )}
 
       <Text style={textStyles.title}>{t( "Muted-Users" )}</Text>
       <UserSearchInput userId={0} onUserChanged={u => muteUser( u )} />
-      {mutedUsers.map( user => (
+      {mutedUsers?.map( user => (
         <MutedUser key={user.id} user={user} unmuteUser={unmuteUser} />
       ) )}
-    </View>
+    </ScrollView>
   );
 };
 

@@ -1,0 +1,29 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Whitney-Book-Pro.otf",
+      "sha1": "639b8a8bf3e1cc3de30d0f49e666aca3999ca65a"
+    },
+    {
+      "path": "assets/fonts/Whitney-BookItalic-Pro.otf",
+      "sha1": "15854f60175a0e82b794c259431ec45ea4b40103"
+    },
+    {
+      "path": "assets/fonts/Whitney-Light-Pro.otf",
+      "sha1": "d15560faea2b18aef9867a1d2b9e2efb54b17b5b"
+    },
+    {
+      "path": "assets/fonts/Whitney-Medium-Pro.otf",
+      "sha1": "33ca073c11f46dc266a7dc1adeaa102891bd76d1"
+    },
+    {
+      "path": "assets/fonts/Whitney-Semibold-Pro.otf",
+      "sha1": "7a107095a453c8cd8046d9ccded5d88e6809e89f"
+    },
+    {
+      "path": "assets/fonts/Whitney-SemiboldItalic-Pro.otf",
+      "sha1": "53e8a56ceb630b63316db41017125c52fbf0e845"
+    }
+  ]
+}

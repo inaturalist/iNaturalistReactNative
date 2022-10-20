@@ -39,6 +39,11 @@ target 'iNaturalistReactNative' do
       end
     end
     # End of added lines
+    # https://github.com/Agontuk/react-native-geolocation-service/issues/287#issuecomment-980772489
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+      end
+    end
   end
-
 end

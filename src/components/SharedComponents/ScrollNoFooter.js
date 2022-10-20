@@ -12,7 +12,7 @@ type Props = {
   style?: Object
 }
 
-const ScrollWithFooter = ( { children, testID, style }: Props ): React.Node => {
+const ScrollNoFooter = ( { children, testID, style }: Props ): React.Node => {
   const dismissKeyboard = ( ) => Keyboard.dismiss( );
 
   return (
@@ -29,4 +29,4 @@ const ScrollWithFooter = ( { children, testID, style }: Props ): React.Node => {
   );
 };
 
-export default ScrollWithFooter;
+export default ScrollNoFooter;

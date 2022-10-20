@@ -1,4 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
 import Search from "components/Search/Search";
 import React from "react";
@@ -10,6 +14,15 @@ import factory from "../../../factory";
 
 const mockedNavigate = jest.fn( );
 
+const mockUser = factory( "RemoteUser" );
+
+jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    data: [mockUser]
+  } )
+} ) );
+
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -20,43 +33,35 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+const queryClient = new QueryClient( );
+
 const renderSearch = ( ) => render(
-  <NavigationContainer>
-    <Search />
-  </NavigationContainer>
+  <QueryClientProvider client={queryClient}>
+    <NavigationContainer>
+      <Search />
+    </NavigationContainer>
+  </QueryClientProvider>
 );
 
-const testUserList = [
-  factory( "RemoteUser" )
-];
-
-const mockExpectedUsers = testUserList;
-jest.mock( "../../../../src/sharedHooks/useRemoteSearchResults", ( ) => ( {
-  __esModule: true,
-  default: ( ) => mockExpectedUsers
-} ) );
+const { login } = mockUser;
 
 test( "displays user search results on button press", ( ) => {
   const { getByTestId, getByText } = renderSearch( );
-
-  const user = testUserList[0];
-  const { login } = user;
   const button = getByTestId( "Search.users" );
 
   fireEvent.press( button );
   expect( getByTestId( `Search.user.${login}` ) ).toBeTruthy( );
-  expect( getByTestId( `Search.${login}.photo` ).props.source ).toStrictEqual( { uri: user.icon } );
+  expect( getByTestId( `Search.${login}.photo` ).props.source ).toStrictEqual( {
+    uri: mockUser.icon
+  } );
   expect( getByText( new RegExp( login ) ) ).toBeTruthy( );
 } );
 
 test( "navigates to user profile on button press", ( ) => {
   const { getByTestId } = renderSearch( );
-
-  const user = testUserList[0];
-  const { login } = user;
   const button = getByTestId( "Search.users" );
 
   fireEvent.press( button );
   fireEvent.press( getByTestId( `Search.user.${login}` ) );
-  expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: user.id } );
+  expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: mockUser.id } );
 } );

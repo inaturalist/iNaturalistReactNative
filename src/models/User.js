@@ -1,4 +1,4 @@
-import Realm from "realm";
+import { Realm } from "@realm/react";
 
 class User extends Realm.Object {
   static USER_FIELDS = {
