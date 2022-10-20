@@ -2,12 +2,11 @@
 
 import { Picker } from "@react-native-picker/picker";
 import { useQueryClient } from "@tanstack/react-query";
-import fetchRelationships from "api/relationships";
+import { deleteRelationships, fetchRelationships, updateRelationships } from "api/relationships";
 import {
   blockUser, fetchRemoteUsers, muteUser, unblockUser, unmuteUser
 } from "api/users";
 import { t } from "i18next";
-import inatjs from "inaturalistjs";
 import type { Node } from "react";
 import React, { useCallback } from "react";
 import {
@@ -46,17 +45,16 @@ const SORT_BY = {
 };
 
 type Props = {
-  accessToken: string,
   settings: Object,
   refetchUserMe: Function
 };
 
-const SettingsRelationships = ( { accessToken, settings, refetchUserMe }: Props ): Node => {
+const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
   const [userSearch, setUserSearch] = React.useState( "" );
   // So we'll start searching only once the user finished typing
   const [finalUserSearch] = useDebounce( userSearch, 500 );
-  const [following, setFollowing] = React.useState( "all" );
-  const [trusted, setTrusted] = React.useState( "all" );
+  const [following, setFollowing] = React.useState( "any" );
+  const [trusted, setTrusted] = React.useState( "any" );
   const [sortBy, setSortBy] = React.useState( "z_to_a" );
   const [page, setPage] = React.useState( 1 );
 
@@ -70,10 +68,10 @@ const SettingsRelationships = ( { accessToken, settings, refetchUserMe }: Props 
     orderBy = "date";
     order = "asc";
   } else if ( sortBy === "a_to_z" ) {
-    orderBy = "user";
+    orderBy = "users.login";
     order = "asc";
   } else if ( sortBy === "z_to_a" ) {
-    orderBy = "user";
+    orderBy = "users.login";
     order = "desc";
   }
   const relationshipParams = {
@@ -83,15 +81,18 @@ const SettingsRelationships = ( { accessToken, settings, refetchUserMe }: Props 
     order_by: orderBy,
     order,
     page,
-    random: refreshRelationships
+    random: refreshRelationships,
+    per_page: 10
   };
 
   const {
     data
   } = useAuthenticatedQuery(
-    ["fetchRelationships", finalUserSearch],
+    ["fetchRelationships"],
     optsWithAuth => fetchRelationships( relationshipParams, optsWithAuth )
   );
+
+  const relationshipResults = data?.results;
 
   const {
     data: blockedUsers
@@ -136,34 +137,25 @@ const SettingsRelationships = ( { accessToken, settings, refetchUserMe }: Props 
     handleSuccess
   );
 
-  const relationshipResults = data?.results;
+  const updateRelationshipsMutation = useAuthenticatedMutation(
+    ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth ),
+    handleSuccess
+  );
+
+  const deleteRelationshipsMutation = useAuthenticatedMutation(
+    ( id, optsWithAuth ) => deleteRelationships( id, optsWithAuth ),
+    handleSuccess
+  );
+
   const perPage = data?.per_page;
   const totalResults = data?.total_results;
 
   const totalPages = totalResults > 0 && perPage > 0 ? Math.ceil( totalResults / perPage ) : 1;
 
   const updateRelationship = useCallback( async ( relationship, update ) => {
-    let response;
-    try {
-      response = await inatjs.relationships.update(
-        { id: relationship.id, relationship: update },
-        { api_token: accessToken }
-      );
-    } catch ( e ) {
-      console.error( e );
-      Alert.alert(
-        "Error",
-        "Couldn't update relationship!",
-        [{ text: "OK" }],
-        {
-          cancelable: true
-        }
-      );
-      return;
-    }
-    console.log( response );
-    setRefreshRelationships( Math.random() );
-  }, [accessToken] );
+    updateRelationshipsMutation.mutate( { id: relationship.id, relationship: update } );
+    setRefreshRelationships( Math.random( ) );
+  }, [updateRelationshipsMutation] );
 
   const askToRemoveRelationship = useCallback( relationship => {
     Alert.alert(
@@ -172,26 +164,8 @@ const SettingsRelationships = ( { accessToken, settings, refetchUserMe }: Props 
       [
         {
           text: "Remove Relationship",
-          onPress: async () => {
-            let response;
-            try {
-              response = await inatjs.relationships.delete(
-                { id: relationship.id },
-                { api_token: accessToken }
-              );
-            } catch ( e ) {
-              console.error( e );
-              Alert.alert(
-                "Error",
-                "Couldn't delete relationship!",
-                [{ text: "OK" }],
-                {
-                  cancelable: true
-                }
-              );
-              return;
-            }
-            console.log( response );
+          onPress: ( ) => {
+            deleteRelationshipsMutation.mutate( { id: relationship.id } );
             setRefreshRelationships( Math.random() );
           }
         }
@@ -200,7 +174,7 @@ const SettingsRelationships = ( { accessToken, settings, refetchUserMe }: Props 
         cancelable: true
       }
     );
-  }, [accessToken] );
+  }, [deleteRelationshipsMutation] );
 
   return (
     // $FlowFixMe
@@ -227,6 +201,42 @@ const SettingsRelationships = ( { accessToken, settings, refetchUserMe }: Props 
           />
         </Pressable>
       </View>
+
+      {relationshipResults?.map( relationship => (
+        <Relationship
+          key={relationship.id}
+          relationship={relationship}
+          updateRelationship={updateRelationship}
+          askToRemoveRelationship={askToRemoveRelationship}
+        />
+      ) )}
+      { totalPages > 1 && (
+      <View style={[viewStyles.row, viewStyles.paginationContainer]}>
+        <Pressable
+          disabled={page === 1}
+          style={viewStyles.pageButton}
+          onPress={() => setPage( page - 1 )}
+        >
+          <Text>&lt;</Text>
+        </Pressable>
+        {[...Array( totalPages ).keys()].map( x => (
+          <Pressable
+            key={x}
+            style={viewStyles.pageButton}
+            onPress={() => setPage( x + 1 )}
+          >
+            <Text style={x + 1 === page ? textStyles.currentPage : null}>{x + 1}</Text>
+          </Pressable>
+        ) )}
+        <Pressable
+          disabled={page === totalPages}
+          style={viewStyles.pageButton}
+          onPress={() => setPage( page + 1 )}
+        >
+          <Text>&gt;</Text>
+        </Pressable>
+      </View>
+      )}
       <Text>{t( "Following" )}</Text>
       <View style={viewStyles.row}>
         <View style={viewStyles.selectorContainer}>
@@ -286,42 +296,6 @@ const SettingsRelationships = ( { accessToken, settings, refetchUserMe }: Props 
           </Picker>
         </View>
       </View>
-
-      {relationshipResults?.map( relationship => (
-        <Relationship
-          key={relationship.id}
-          relationship={relationship}
-          updateRelationship={updateRelationship}
-          askToRemoveRelationship={askToRemoveRelationship}
-        />
-      ) )}
-      { totalPages > 1 && (
-      <View style={[viewStyles.row, viewStyles.paginationContainer]}>
-        <Pressable
-          disabled={page === 1}
-          style={viewStyles.pageButton}
-          onPress={() => setPage( page - 1 )}
-        >
-          <Text>&lt;</Text>
-        </Pressable>
-        {[...Array( totalPages ).keys()].map( x => (
-          <Pressable
-            key={x}
-            style={viewStyles.pageButton}
-            onPress={() => setPage( x + 1 )}
-          >
-            <Text style={x + 1 === page ? textStyles.currentPage : null}>{x + 1}</Text>
-          </Pressable>
-        ) )}
-        <Pressable
-          disabled={page === totalPages}
-          style={viewStyles.pageButton}
-          onPress={() => setPage( page + 1 )}
-        >
-          <Text>&gt;</Text>
-        </Pressable>
-      </View>
-      )}
 
       <Text style={textStyles.title}>{t( "Blocked-Users" )}</Text>
       <UserSearchInput

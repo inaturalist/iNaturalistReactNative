@@ -285,7 +285,6 @@ const Settings = ( { children: _children }: Props ): Node => {
             {activeTab === TAB_TYPE_RELATIONSHIPS && (
               <SettingsRelationships
                 settings={settings}
-                accessToken={accessToken}
                 refetchUserMe={refetchUserMe}
               />
             )}
