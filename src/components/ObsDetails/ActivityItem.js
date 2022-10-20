@@ -55,7 +55,6 @@ const ActivityItem = ( {
   const handleSuccess = {
     onSuccess: ( ) => {
       queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
-      console.log( "refetch remote obs" );
       refetchRemoteObservation( );
     }
   };

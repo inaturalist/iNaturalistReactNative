@@ -7,9 +7,8 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComments } from "api/comments";
-// import createIdentifications from "api/identifications";
+import createIdentifications from "api/identifications";
 import { faveObservation, fetchRemoteObservation, unfaveObservation } from "api/observations";
-import createIdentification from "components/Identify/helpers/createIdentification";
 import Button from "components/SharedComponents/Buttons/Button";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import QualityBadge from "components/SharedComponents/QualityBadge";
@@ -85,6 +84,14 @@ const ObsDetails = ( ): Node => {
     optsWithAuth => fetchRemoteObservation( uuid, { }, optsWithAuth )
   );
 
+  const realm = useRealm( );
+
+  useEffect( ( ) => {
+    setLocalObservation( realm?.objectForPrimaryKey( "Observation", uuid ) );
+  }, [realm, uuid] );
+
+  const observation = localObservation || remoteObservation;
+
   const handleSuccess = {
     onSuccess: ( ) => {
       queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
@@ -103,13 +110,33 @@ const ObsDetails = ( ): Node => {
     handleSuccess
   );
 
-  const realm = useRealm( );
+  const handleIdentificationMutation = {
+    onSuccess: data => setIds( [...ids, data[0]] ),
+    onError: e => {
+      let error = null;
+      if ( e ) {
+        error = t( "Couldnt-create-identification", { error: e.message } );
+      } else {
+        error = t( "Couldnt-create-identification", { error: t( "Unknown-error" ) } );
+      }
 
-  useEffect( ( ) => {
-    setLocalObservation( realm?.objectForPrimaryKey( "Observation", uuid ) );
-  }, [realm, uuid] );
+      // Remove temporary ID and show error
+      setIds( [...ids] );
+      Alert.alert(
+        "Error",
+        error,
+        [{ text: t( "OK" ) }],
+        {
+          cancelable: true
+        }
+      );
+    }
+  };
 
-  const observation = localObservation || remoteObservation;
+  const createIdentificationMutation = useAuthenticatedMutation(
+    ( idParams, optsWithAuth ) => createIdentifications( idParams, optsWithAuth ),
+    handleIdentificationMutation
+  );
 
   const taxon = observation?.taxon;
   const user = observation?.user;
@@ -205,40 +232,13 @@ const ObsDetails = ( ): Node => {
     };
     setIds( [...ids, newId] );
 
-    let error = null;
-
-    try {
-      const results = await createIdentification( {
+    createIdentificationMutation.mutate( {
+      identification: {
         observation_id: uuid,
         taxon_id: newId.taxon.id,
         body: newId.body
-      } );
-
-      if ( results === 1 ) {
-        // Remove ghosted highlighting
-        newId.temporary = false;
-        setIds( [...ids, newId] );
-      } else {
-        // Couldn't create ID
-        error = t( "Couldnt-create-identification", { error: t( "Unknown-error" ) } );
       }
-    } catch ( e ) {
-      error = t( "Couldnt-create-identification", { error: e.message } );
-    }
-
-    if ( error ) {
-      // Remove temporary ID and show error
-      setIds( [...ids] );
-
-      Alert.alert(
-        "Error",
-        error,
-        [{ text: t( "OK" ) }],
-        {
-          cancelable: true
-        }
-      );
-    }
+    } );
   };
 
   const navToUserProfile = id => navigation.navigate( "UserProfile", { userId: id } );
@@ -421,9 +421,6 @@ const ObsDetails = ( ): Node => {
           )}
           <View style={viewStyles.row}>
             <View style={viewStyles.buttons}>
-              {/* TODO: get this button working. Not sure why createIdentification
-              isn't working here but it doesn't appear to be working on
-              staging either (Mar 11, 2022) */}
               <Button
                 text={t( "Suggest-an-ID" )}
                 onPress={navToAddID}

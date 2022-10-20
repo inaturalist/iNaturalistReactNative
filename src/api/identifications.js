@@ -4,12 +4,17 @@ import inatjs from "inaturalistjs";
 
 import handleError from "./error";
 
+const PARAMS = {
+  fields: "all"
+};
+
 const createIdentifications = async (
   params: Object = {},
   opts: Object = {}
 ): Promise<any> => {
   try {
-    return await inatjs.identifications.create( params, opts );
+    const { results } = await inatjs.identifications.create( { ...PARAMS, ...params }, opts );
+    return results;
   } catch ( e ) {
     return handleError( e );
   }

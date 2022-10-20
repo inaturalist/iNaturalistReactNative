@@ -1,11 +1,13 @@
 // @flow
 
+import createIdentifications from "api/identifications";
 import Button from "components/SharedComponents/Buttons/Button";
 import type { Node } from "react";
 import React, { useState } from "react";
 import {
   ActivityIndicator, Image, Pressable, Text, View
 } from "react-native";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import {
   imageStyles,
   textStyles,
@@ -13,7 +15,6 @@ import {
 } from "styles/sharedComponents/observationViews/gridItem";
 
 import Observation from "../../models/Observation";
-import createIdentification from "./helpers/createIdentification";
 
 type Props = {
   item: Object,
@@ -37,17 +38,27 @@ const GridItem = ( {
   // TODO: add fallback image when there is no uri
   const imageUri = Observation.projectUri( item );
 
-  const agreeWithObservation = async ( ) => {
-    setShowLoadingWheel( true );
-    const results = await createIdentification( {
-      observation_id: item.uuid,
-      taxon_id: item.taxon.id
-    } );
-    if ( results === 1 ) {
+  const handleSuccess = {
+    onSuccess: ( ) => {
       const ids = Array.from( reviewedIds );
       ids.push( item.id );
       setReviewedIds( ids );
     }
+  };
+
+  const createIdentificationMutation = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => createIdentifications( params, optsWithAuth ),
+    handleSuccess
+  );
+
+  const agreeWithObservation = async ( ) => {
+    setShowLoadingWheel( true );
+    createIdentificationMutation.mutate( {
+      identification: {
+        observation_id: item.uuid,
+        taxon_id: item.taxon.id
+      }
+    } );
     setShowLoadingWheel( false );
   };
 
