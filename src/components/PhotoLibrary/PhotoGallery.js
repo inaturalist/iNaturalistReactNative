@@ -14,8 +14,8 @@ import {
   ActivityIndicator, FlatList
 } from "react-native";
 import { Snackbar } from "react-native-paper";
+import Observation from "realmModels/Observation";
 
-import Observation from "../../models/Observation";
 import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import PhotoGalleryImage from "./PhotoGalleryImage";

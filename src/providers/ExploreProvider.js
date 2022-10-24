@@ -2,9 +2,9 @@
 import { searchObservations } from "api/observations";
 import type { Node } from "react";
 import React, { useMemo, useState } from "react";
+import Observation from "realmModels/Observation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
-import Observation from "../models/Observation";
 import { ExploreContext } from "./contexts";
 
 type Props = {

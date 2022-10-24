@@ -1,8 +1,8 @@
 // @flow
 
 import inatjs from "inaturalistjs";
+import Observation from "realmModels/Observation";
 
-import Observation from "../models/Observation";
 import handleError from "./error";
 
 const PHOTO_FIELDS = {

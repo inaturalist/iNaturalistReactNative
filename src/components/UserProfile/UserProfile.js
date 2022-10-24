@@ -13,12 +13,12 @@ import * as React from "react";
 import { useWindowDimensions } from "react-native";
 import { Button as RNPaperButton } from "react-native-paper";
 import HTML from "react-native-render-html";
+import User from "realmModels/User";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/colors";
 
-import User from "../../models/User";
 import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {

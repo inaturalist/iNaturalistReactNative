@@ -7,14 +7,13 @@ import React, { useState } from "react";
 import {
   ActivityIndicator, Image, Pressable, Text, View
 } from "react-native";
+import Observation from "realmModels/Observation";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import {
   imageStyles,
   textStyles,
   viewStyles
-} from "styles/sharedComponents/observationViews/gridItem";
-
-import Observation from "../../models/Observation";
+} from "styles/observations/gridItem";
 
 type Props = {
   item: Object,

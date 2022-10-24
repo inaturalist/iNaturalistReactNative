@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@testing-library/react-native";
-import ObsCard from "components/SharedComponents/ObservationViews/ObsCard";
+import ObsCard from "components/Observations/ObsCard";
 import { t } from "i18next";
 import React from "react";
 
@@ -10,8 +10,8 @@ const testObservation = factory( "LocalObservation" );
 const qualityGradeText = t( "RG" );
 
 // this probably isn't the right approach, but it does allow the test to pass
-jest.mock( "../../../../src/models/index", ( ) => {
-  const originalModule = jest.requireActual( "../../../../src/models/index" );
+jest.mock( "../../../../src/realmModels/index", ( ) => {
+  const originalModule = jest.requireActual( "../../../../src/realmModels/index" );
 
   // Mock the default export and named export 'foo'
   return {

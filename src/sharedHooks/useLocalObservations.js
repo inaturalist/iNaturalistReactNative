@@ -5,8 +5,7 @@ import { RealmContext } from "providers/contexts";
 import {
   useEffect, useState
 } from "react";
-
-import Observation from "../../../models/Observation";
+import Observation from "realmModels/Observation";
 
 const { useRealm } = RealmContext;
 

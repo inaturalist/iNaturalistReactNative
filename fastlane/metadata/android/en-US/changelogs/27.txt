@@ -1,0 +1,10 @@
+Numerous updates to observation flow
+
+* Added back button to camera
+* Added prev/next buttons to Media Viewer
+* Camera flow skips group photos when there's only one photo
+* Added support for custom fonts (currently Whitney)
+* Sync button in toolbar on My Obs turns green when obs to sync
+* ObsEdit fetches location until good enough for new obs
+* Bottom sheet hides when you scroll My Observations
+* Toolbar on My Observations sticks on scroll

@@ -14,14 +14,14 @@ import {
   Image, Pressable, Text, View
 } from "react-native";
 import { Menu } from "react-native-paper";
+import Comment from "realmModels/Comment";
+import Taxon from "realmModels/Taxon";
+import User from "realmModels/User";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 // import useApiToken from "sharedHooks/useApiToken";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
-import Comment from "../../models/Comment";
-import Taxon from "../../models/Taxon";
-import User from "../../models/User";
 import SmallSquareImage from "./SmallSquareImage";
 
 const { useRealm } = RealmContext;

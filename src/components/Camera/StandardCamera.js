@@ -9,10 +9,11 @@ import React, {
   useContext, useEffect, useRef, useState
 } from "react";
 import { Avatar, Snackbar, useTheme } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
+import Photo from "realmModels/Photo";
 import colors from "styles/colors";
 
-import Photo from "../../models/Photo";
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
@@ -39,6 +40,8 @@ const StandardCamera = ( ): Node => {
   const [savingPhoto, setSavingPhoto] = useState( false );
   const disallowAddingPhotos = photoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
+
+  const photosTaken = photoUris.length > 0;
 
   const realm = useRealm( );
 
@@ -87,9 +90,17 @@ const StandardCamera = ( ): Node => {
     }
   }, [photos] );
 
-  const renderCameraButton = ( icon, disabled ) => (
+  const renderCameraOptionsButtons = icon => (
     <Avatar.Icon
       size={40}
+      icon={icon}
+      style={{ backgroundColor: colors.gray }}
+    />
+  );
+
+  const renderCameraButton = ( icon, disabled ) => (
+    <Avatar.Icon
+      size={60}
       icon={icon}
       style={{ backgroundColor: disabled ? colors.gray : themeColors.background }}
     />
@@ -103,20 +114,27 @@ const StandardCamera = ( ): Node => {
       <View className="absolute bottom-0">
         <View className="flex-row justify-between w-screen mb-4 px-4">
           <Pressable onPress={toggleFlash}>
-            {renderCameraButton( "flash" )}
+            {renderCameraOptionsButtons( "flash" )}
           </Pressable>
           <Pressable onPress={flipCamera}>
-            {renderCameraButton( "camera-flip" )}
+            {renderCameraOptionsButtons( "camera-flip" )}
           </Pressable>
         </View>
         <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">
-          <View className="w-1/3" />
+          <Pressable
+            className="w-1/3 pt-4 pb-4 pl-3"
+            onPress={( ) => navigation.goBack( )}
+          >
+            <Icon name="arrow-back-ios" size={25} color={colors.white} />
+          </Pressable>
           <Pressable onPress={takePhoto}>
             {renderCameraButton( "circle-outline", disallowAddingPhotos )}
           </Pressable>
-          <Text className="text-white text-xl w-1/3 text-center" onPress={navToObsEdit}>
-            {t( "Next" )}
-          </Text>
+          {photosTaken ? (
+            <Text className="text-white text-xl w-1/3 text-center pr-4" onPress={navToObsEdit}>
+              {t( "Next" )}
+            </Text>
+          ) : <View className="w-1/3" />}
         </View>
       </View>
       <Snackbar

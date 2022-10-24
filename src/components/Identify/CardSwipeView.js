@@ -7,10 +7,9 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { Image, Text, View } from "react-native";
 import TinderCard from "react-tinder-card";
+import Observation from "realmModels/Observation";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import { imageStyles, textStyles, viewStyles } from "styles/identify/identify";
-
-import Observation from "../../models/Observation";
 
 type Props = {
   observationList: Array<Object>,

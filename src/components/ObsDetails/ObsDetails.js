@@ -32,6 +32,8 @@ import {
 } from "react-native";
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import Taxon from "realmModels/Taxon";
+import User from "realmModels/User";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
@@ -39,8 +41,6 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/colors";
 import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
-import Taxon from "../../models/Taxon";
-import User from "../../models/User";
 import ActivityTab from "./ActivityTab";
 import DataTab from "./DataTab";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";

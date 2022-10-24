@@ -13,6 +13,15 @@ module.exports = {
     extend: {
       height: {
         22: "5.5rem"
+      },
+      fontFamily: {
+        "Whitney-Medium": ["Whitney-Medium"],
+        "Whitney-Medium-Pro": ["Whitney-Medium-Pro"], // Android naming convention
+        "Whitney-Light": ["Whitney-Light"],
+        // selected from list of fonts already available in RN
+        // https://infinitbility.com/react-native-font-family-list/
+        "Papyrus-Condensed": ["Papyrus-Condensed"],
+        Roboto: ["Roboto"]
       }
     },
     colors: {

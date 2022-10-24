@@ -7,10 +7,10 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
+import Observation from "realmModels/Observation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { viewStyles } from "styles/identify/identify";
 
-import Observation from "../../models/Observation";
 import CardSwipeView from "./CardSwipeView";
 import GridView from "./GridView";
 
