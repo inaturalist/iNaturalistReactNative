@@ -161,6 +161,14 @@ const unmuteUser = async (
   }
 };
 
+const updateUsers = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+  try {
+    return await inatjs.users.update( params, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
   blockUser,
   fetchMemberProjects,
@@ -169,5 +177,6 @@ export {
   fetchUserMe,
   muteUser,
   unblockUser,
-  unmuteUser
+  unmuteUser,
+  updateUsers
 };
