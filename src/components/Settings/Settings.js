@@ -201,7 +201,6 @@ const Settings = ( { children: _children }: Props ): Node => {
         }
       };
     }
-    console.log( payload, "payload in settings" );
     updateUserMutation.mutate( payload );
     setIsSaving( false );
   };

@@ -267,19 +267,6 @@ class Observation extends Realm.Object {
     }
   }
 
-  static markObservationUpdatesViewed = async ( id, apiToken ) => {
-    if ( !apiToken ) { return null; }
-
-    const params = { id };
-    const options = { api_token: apiToken };
-    try {
-      return await inatjs.observations.viewedUpdates( params, options );
-    } catch ( e ) {
-      console.log( `Couldn't mark observation ${id} viewed:`, JSON.stringify( e ) );
-      return null;
-    }
-  }
-
   static fetchRemoteObservations = async ( page, realm ) => {
     const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
     if ( !currentUser ) { return null; }

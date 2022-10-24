@@ -91,10 +91,22 @@ const markAsReviewed = async ( params: Object = {}, opts: Object = {} ): Promise
   }
 };
 
+const markObservationUpdatesViewed = async (
+  params: Object = {},
+  opts: Object = {}
+): Promise<?any> => {
+  try {
+    return await inatjs.observations.viewedUpdates( params, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
   faveObservation,
   fetchRemoteObservation,
   markAsReviewed,
+  markObservationUpdatesViewed,
   searchObservations,
   unfaveObservation
 };

@@ -8,13 +8,15 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComments } from "api/comments";
 import createIdentifications from "api/identifications";
-import { faveObservation, fetchRemoteObservation, unfaveObservation } from "api/observations";
+import {
+  faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
+} from "api/observations";
 import Button from "components/SharedComponents/Buttons/Button";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import QualityBadge from "components/SharedComponents/QualityBadge";
+import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
 import TranslatedText from "components/SharedComponents/TranslatedText";
 import UserIcon from "components/SharedComponents/UserIcon";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { formatISO } from "date-fns";
 import _ from "lodash";
 import { ObsEditContext, RealmContext } from "providers/contexts";
@@ -25,20 +27,18 @@ import React, {
 import { useTranslation } from "react-i18next";
 import {
   Alert, Image, Keyboard,
-  LogBox, Pressable, ScrollView, Text,
+  LogBox, Pressable, Text,
   TextInput as NativeTextInput, TouchableOpacity, View
 } from "react-native";
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
-import useApiToken from "sharedHooks/useApiToken";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/colors";
 import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
-import Observation from "../../models/Observation";
 import Taxon from "../../models/Taxon";
 import User from "../../models/User";
 import ActivityTab from "./ActivityTab";
@@ -71,8 +71,8 @@ const ObsDetails = ( ): Node => {
   const bottomSheetModalRef = useRef( null );
   const [addingComment, setAddingComment] = useState( false );
   const [snapPoint, setSnapPoint] = useState( 100 );
-  const apiToken = useApiToken( );
-  const [localObservation, setLocalObservation] = useState( null );
+  const realm = useRealm( );
+  const localObservation = realm?.objectForPrimaryKey( "Observation", uuid );
 
   const queryClient = useQueryClient( );
 
@@ -83,12 +83,6 @@ const ObsDetails = ( ): Node => {
     ["fetchRemoteObservation", uuid],
     optsWithAuth => fetchRemoteObservation( uuid, { }, optsWithAuth )
   );
-
-  const realm = useRealm( );
-
-  useEffect( ( ) => {
-    setLocalObservation( realm?.objectForPrimaryKey( "Observation", uuid ) );
-  }, [realm, uuid] );
 
   const observation = localObservation || remoteObservation;
 
@@ -138,10 +132,22 @@ const ObsDetails = ( ): Node => {
     handleIdentificationMutation
   );
 
+  const markViewedMutation = useAuthenticatedMutation(
+    ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
+    handleSuccess
+  );
+
   const taxon = observation?.taxon;
   const user = observation?.user;
   const faves = observation?.faves;
   const currentUserFaved = faves?.length > 0 ? faves.find( fave => fave.user.id === userId ) : null;
+
+  useEffect( ( ) => {
+    // set initial ids for activity tab
+    if ( observation && ids.length === 0 ) {
+      setIds( observation.identifications );
+    }
+  }, [observation, ids] );
 
   // Clear the comment in a timeout so it doesn't trigger a re-render of the
   // text input *after* the bottom sheet modal gets dismissed, b/c that seems
@@ -194,19 +200,17 @@ const ObsDetails = ( ): Node => {
 
   useEffect( () => {
     const markViewedLocally = async ( ) => {
-      if ( !apiToken ) return;
-      const existingObs = realm?.objectForPrimaryKey( "Observation", uuid );
-      if ( !existingObs ) { return; }
+      if ( !localObservation ) { return; }
       realm?.write( ( ) => {
-        existingObs.viewed = true;
+        localObservation.viewed = true;
       } );
     };
-    if ( observation ) { setIds( Array.from( observation.identifications ) ); }
-    if ( observation?.viewed === false ) {
-      Observation.markObservationUpdatesViewed( uuid, apiToken );
+
+    if ( !observation?.viewed ) {
+      markViewedMutation.mutate( { id: uuid } );
       markViewedLocally( );
     }
-  }, [apiToken, observation, uuid, realm] );
+  }, [observation, localObservation, realm, markViewedMutation, uuid] );
 
   if ( !observation ) { return null; }
 
@@ -325,150 +329,145 @@ const ObsDetails = ( ): Node => {
 
   return (
     <BottomSheetModalProvider>
-      <ViewWithFooter>
+      <ScrollWithFooter testID={`ObsDetails.${uuid}`}>
         <ObsDetailsHeader observation={observation} />
-        <ScrollView
-          testID={`ObsDetails.${uuid}`}
-          contentContainerStyle={viewStyles.scrollView}
-        >
-          <View style={viewStyles.userProfileRow}>
-            <Pressable
-              style={viewStyles.userProfileRow}
-              onPress={( ) => navToUserProfile( user.id )}
-              testID="ObsDetails.currentUser"
-              accessibilityRole="link"
-            >
-              <UserIcon uri={User.uri( user )} />
-              <Text>{User.userHandle( user )}</Text>
-            </Pressable>
-            <Text style={textStyles.observedOn}>{displayCreatedAt( )}</Text>
+        <View style={viewStyles.userProfileRow}>
+          <Pressable
+            style={viewStyles.userProfileRow}
+            onPress={( ) => navToUserProfile( user.id )}
+            testID="ObsDetails.currentUser"
+            accessibilityRole="link"
+          >
+            <UserIcon uri={User.uri( user )} />
+            <Text>{User.userHandle( user )}</Text>
+          </Pressable>
+          <Text style={textStyles.observedOn}>{displayCreatedAt( )}</Text>
+        </View>
+        <View style={viewStyles.photoContainer}>
+          <PhotoScroll photos={photos} />
+          <IconButton
+            icon={currentUserFaved ? "star-outline" : "star"}
+            onPress={faveOrUnfave}
+            textColor={colors.white}
+            labelStyle={textStyles.favText}
+            style={viewStyles.favButton}
+          />
+        </View>
+        <View style={viewStyles.row}>
+          {showTaxon( )}
+          <View>
+            <View style={viewStyles.rowWithIcon}>
+              <Image
+                style={imageStyles.smallIcon}
+                source={require( "images/ic_id.png" )}
+              />
+              <Text style={textStyles.idCommentCount}>{observation.identifications.length}</Text>
+            </View>
+            <View style={viewStyles.rowWithIcon}>
+              <IconMaterial name="chat-bubble" size={15} color={colors.logInGray} />
+              <Text style={textStyles.idCommentCount}>{observation.comments.length}</Text>
+            </View>
+            <QualityBadge qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )} />
           </View>
-          <View style={viewStyles.photoContainer}>
-            <PhotoScroll photos={photos} />
-            <IconButton
-              icon={currentUserFaved ? "star-outline" : "star"}
-              onPress={faveOrUnfave}
-              textColor={colors.white}
-              labelStyle={textStyles.favText}
-              style={viewStyles.favButton}
+        </View>
+        <View style={[viewStyles.rowWithIcon, viewStyles.locationContainer]}>
+          <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
+          <Text style={textStyles.locationText}>
+            {checkCamelAndSnakeCase( observation, "placeGuess" )}
+          </Text>
+        </View>
+
+        <View style={viewStyles.userProfileRow}>
+          <Pressable
+            onPress={showActivityTab}
+            accessibilityRole="button"
+            style={viewStyles.tabContainer}
+          >
+            <TranslatedText
+              style={[textStyles.tabText, tab === 0 ? textStyles.tabTextActive : null]}
+              text="ACTIVITY"
+            />
+            { tab === 0 && <View style={viewStyles.tabContainerActive} />}
+          </Pressable>
+          <Pressable
+            onPress={showDataTab}
+            testID="ObsDetails.DataTab"
+            accessibilityRole="button"
+            style={viewStyles.tabContainer}
+          >
+            <TranslatedText
+              style={[textStyles.tabText, tab === 1 ? textStyles.tabTextActive : null]}
+              text="DATA"
+            />
+            { tab === 1 && <View style={viewStyles.tabContainerActive} />}
+          </Pressable>
+        </View>
+        {tab === 0
+          ? (
+            <ActivityTab
+              ids={ids}
+              comments={comments}
+              navToTaxonDetails={navToTaxonDetails}
+              navToUserProfile={navToUserProfile}
+              toggleRefetch={toggleRefetch}
+              refetchRemoteObservation={refetchRemoteObservation}
+            />
+          )
+          : <DataTab observation={observation} />}
+        {addingComment && (
+        <View style={[viewStyles.row, viewStyles.centerRow]}>
+          <ActivityIndicator size="large" />
+        </View>
+        )}
+        <View style={viewStyles.row}>
+          <View style={viewStyles.buttons}>
+            <Button
+              text={t( "Suggest-an-ID" )}
+              onPress={navToAddID}
+              style={viewStyles.button}
+              testID="ObsDetail.cvSuggestionsButton"
             />
           </View>
-          <View style={viewStyles.row}>
-            {showTaxon( )}
-            <View>
-              <View style={viewStyles.rowWithIcon}>
-                <Image
-                  style={imageStyles.smallIcon}
-                  source={require( "images/ic_id.png" )}
-                />
-                <Text style={textStyles.idCommentCount}>{observation.identifications.length}</Text>
-              </View>
-              <View style={viewStyles.rowWithIcon}>
-                <IconMaterial name="chat-bubble" size={15} color={colors.logInGray} />
-                <Text style={textStyles.idCommentCount}>{observation.comments.length}</Text>
-              </View>
-              <QualityBadge qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )} />
-            </View>
+          <View style={viewStyles.buttons}>
+            <Button
+              text={t( "Add-Comment" )}
+              onPress={openCommentBox}
+              style={viewStyles.button}
+              testID="ObsDetail.commentButton"
+              disabled={showCommentBox}
+            />
           </View>
-          <View style={[viewStyles.rowWithIcon, viewStyles.locationContainer]}>
-            <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
-            <Text style={textStyles.locationText}>
-              {checkCamelAndSnakeCase( observation, "placeGuess" )}
-            </Text>
-          </View>
-
-          <View style={viewStyles.userProfileRow}>
-            <Pressable
-              onPress={showActivityTab}
-              accessibilityRole="button"
-              style={viewStyles.tabContainer}
-            >
-              <TranslatedText
-                style={[textStyles.tabText, tab === 0 ? textStyles.tabTextActive : null]}
-                text="ACTIVITY"
-              />
-              { tab === 0 && <View style={viewStyles.tabContainerActive} />}
-            </Pressable>
-            <Pressable
-              onPress={showDataTab}
-              testID="ObsDetails.DataTab"
-              accessibilityRole="button"
-              style={viewStyles.tabContainer}
-            >
-              <TranslatedText
-                style={[textStyles.tabText, tab === 1 ? textStyles.tabTextActive : null]}
-                text="DATA"
-              />
-              { tab === 1 && <View style={viewStyles.tabContainerActive} />}
-            </Pressable>
-          </View>
-          {tab === 0
-            ? (
-              <ActivityTab
-                ids={ids}
-                comments={comments}
-                navToTaxonDetails={navToTaxonDetails}
-                navToUserProfile={navToUserProfile}
-                toggleRefetch={toggleRefetch}
-                refetchRemoteObservation={refetchRemoteObservation}
-              />
-            )
-            : <DataTab observation={observation} />}
-          {addingComment && (
-            <View style={[viewStyles.row, viewStyles.centerRow]}>
-              <ActivityIndicator size="large" />
-            </View>
-          )}
-          <View style={viewStyles.row}>
-            <View style={viewStyles.buttons}>
-              <Button
-                text={t( "Suggest-an-ID" )}
-                onPress={navToAddID}
-                style={viewStyles.button}
-                testID="ObsDetail.cvSuggestionsButton"
-              />
-            </View>
-            <View style={viewStyles.buttons}>
-              <Button
-                text={t( "Add-Comment" )}
-                onPress={openCommentBox}
-                style={viewStyles.button}
-                testID="ObsDetail.commentButton"
-                disabled={showCommentBox}
-              />
-            </View>
-          </View>
-        </ScrollView>
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={0}
-          enableOverDrag={false}
-          enablePanDownToClose
-          snapPoints={[snapPoint]}
-          backdropComponent={renderBackdrop}
-          handleComponent={renderHandle}
-          style={viewStyles.bottomModal}
+        </View>
+      </ScrollWithFooter>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={0}
+        enableOverDrag={false}
+        enablePanDownToClose
+        snapPoints={[snapPoint]}
+        backdropComponent={renderBackdrop}
+        handleComponent={renderHandle}
+        style={viewStyles.bottomModal}
+      >
+        <View
+          style={viewStyles.commentInputContainer}
+          onLayout={( {
+            nativeEvent: {
+              layout: { height }
+            }
+          } ) => {
+            setSnapPoint( height + 20 );
+          }}
         >
-          <View
-            style={viewStyles.commentInputContainer}
-            onLayout={( {
-              nativeEvent: {
-                layout: { height }
-              }
-            } ) => {
-              setSnapPoint( height + 20 );
-            }}
+          {renderBottomSheetTextView()}
+          <TouchableOpacity
+            style={viewStyles.sendComment}
+            onPress={() => submitComment( )}
           >
-            {renderBottomSheetTextView()}
-            <TouchableOpacity
-              style={viewStyles.sendComment}
-              onPress={() => submitComment( )}
-            >
-              <IconMaterial name="send" size={35} color={colors.inatGreen} />
-            </TouchableOpacity>
-          </View>
-        </BottomSheetModal>
-      </ViewWithFooter>
+            <IconMaterial name="send" size={35} color={colors.inatGreen} />
+          </TouchableOpacity>
+        </View>
+      </BottomSheetModal>
     </BottomSheetModalProvider>
   );
 };
