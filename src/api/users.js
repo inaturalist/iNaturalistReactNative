@@ -72,7 +72,7 @@ const fetchRemoteUser = async (
       ...params,
       ...opts
     } );
-    return results;
+    return results[0];
   } catch ( e ) {
     return handleError( e );
   }

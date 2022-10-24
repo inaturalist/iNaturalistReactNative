@@ -34,7 +34,7 @@ const UserProfile = ( ): React.Node => {
     optsWithAuth => fetchRemoteUser( userId, { }, optsWithAuth )
   );
 
-  const user = remoteUser ? remoteUser[0] : null;
+  const user = remoteUser || null;
 
   const updateRelationshipsMutation = useAuthenticatedMutation(
     ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth )

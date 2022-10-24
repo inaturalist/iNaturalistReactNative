@@ -1,6 +1,7 @@
 // @flow
 
 import inatjs from "inaturalistjs";
+// eslint-disable-next-line import/no-cycle
 import Observation from "realmModels/Observation";
 
 import handleError from "./error";
@@ -40,7 +41,7 @@ const REMOTE_OBSERVATION_PARAMS = {
 
 const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
-    const { results } = await inatjs.observations.search( { ...PARAMS, ...params, ...opts } );
+    const { results } = await inatjs.observations.search( { ...PARAMS, ...params }, opts );
     return results;
   } catch ( e ) {
     return handleError( e );
@@ -102,7 +103,32 @@ const markObservationUpdatesViewed = async (
   }
 };
 
+const createObservation = async (
+  params: Object = {},
+  opts: Object = {}
+): Promise<?any> => {
+  try {
+    return await inatjs.observations.create( params, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const createEvidence = async (
+  apiEndpoint: Function,
+  params: Object = {},
+  opts: Object = {}
+): Promise<?any> => {
+  try {
+    return await apiEndpoint.create( params, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
+  createEvidence,
+  createObservation,
   faveObservation,
   fetchRemoteObservation,
   markAsReviewed,
