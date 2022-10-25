@@ -9,9 +9,8 @@ import jwt from "react-native-jwt-io";
 import * as RNLocalize from "react-native-localize";
 import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
-
-// eslint-disable-next-line import/no-cycle
-import realmConfig from "../../models/index";
+// eslint-disable-next-line import/extensions
+import realmConfig from "realmModels/index";
 
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.

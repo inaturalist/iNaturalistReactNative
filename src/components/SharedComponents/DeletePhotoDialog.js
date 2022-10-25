@@ -1,14 +1,14 @@
 // @flow
 
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   Dialog, Paragraph, Portal
 } from "react-native-paper";
+import Photo from "realmModels/Photo";
 
-import Photo from "../../models/Photo";
-import { RealmContext } from "../../providers/contexts";
 import Button from "./Buttons/Button";
 
 const { useRealm } = RealmContext;

@@ -1,12 +1,15 @@
 // @flow
 
+import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
+import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
+import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Dimensions, FlatList } from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import Photo from "realmModels/Photo";
+import colors from "tailwindcss/colors";
 
-import Photo from "../../models/Photo";
-import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {
@@ -24,6 +27,9 @@ const HorizontalScroll = ( {
 }: Props ): Node => {
   const horizontalScroll = useRef( null );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( initialPhotoSelected );
+
+  const atFirstPhoto = selectedPhotoIndex === 0;
+  const atLastPhoto = selectedPhotoIndex === photoUris.length - 1;
 
   const scrollToIndex = index => {
     // when a user taps a photo in the carousel, the UI needs to automatically
@@ -45,12 +51,12 @@ const HorizontalScroll = ( {
   } );
 
   const handleScrollLeft = index => {
-    if ( selectedPhotoIndex === 0 ) { return; }
+    if ( atFirstPhoto ) { return; }
     setSelectedPhotoIndex( index );
   };
 
   const handleScrollRight = index => {
-    if ( selectedPhotoIndex === photoUris.length - 1 ) { return; }
+    if ( atLastPhoto ) { return; }
     setSelectedPhotoIndex( index );
   };
 
@@ -72,6 +78,16 @@ const HorizontalScroll = ( {
     }
   };
 
+  const handleArrowPressLeft = ( ) => {
+    if ( atFirstPhoto ) { return; }
+    scrollToIndex( selectedPhotoIndex - 1 );
+  };
+
+  const handleArrowPressRight = ( ) => {
+    if ( atLastPhoto ) { return; }
+    scrollToIndex( selectedPhotoIndex + 1 );
+  };
+
   return (
     <>
       <FlatList
@@ -86,6 +102,22 @@ const HorizontalScroll = ( {
         ref={horizontalScroll}
         onMomentumScrollEnd={handleScrollEndDrag}
       />
+      {!atFirstPhoto && (
+        <Pressable
+          className="p-5 absolute top-1/2 -mt-24 left-0"
+          onPress={handleArrowPressLeft}
+        >
+          <Icon name="arrow-back-ios" color={colors.white} size={16} />
+        </Pressable>
+      )}
+      {!atLastPhoto && (
+        <Pressable
+          className="p-5 absolute top-1/2 -mt-24 right-0"
+          onPress={handleArrowPressRight}
+        >
+          <Icon name="arrow-forward-ios" color={colors.white} size={16} />
+        </Pressable>
+      )}
       <PhotoCarousel
         photoUris={photoUris}
         selectedPhotoIndex={selectedPhotoIndex}

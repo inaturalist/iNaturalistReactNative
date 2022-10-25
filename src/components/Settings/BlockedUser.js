@@ -9,8 +9,7 @@ import {
   Text,
   View
 } from "react-native";
-
-import { viewStyles } from "../../styles/settings/settings";
+import { viewStyles } from "styles/settings/settings";
 
 type Props = {
   unblockUser: Function,

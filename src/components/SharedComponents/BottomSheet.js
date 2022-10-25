@@ -5,8 +5,7 @@ import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef
 } from "react";
-
-import { viewStyles } from "../../styles/sharedComponents/bottomSheet";
+import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
 type Props = {
   children: any,

@@ -1,4 +1,5 @@
-import Observation from "../../models/Observation";
+import Observation from "realmModels/Observation";
+
 import RepositoryNeedsRealmError from "./errors/RepositoryNeedsRealmError";
 
 const MODELS = { Observation };

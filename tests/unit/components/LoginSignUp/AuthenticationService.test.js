@@ -1,5 +1,3 @@
-import nock from "nock";
-
 import {
   API_HOST,
   authenticateUser,
@@ -8,7 +6,8 @@ import {
   isLoggedIn,
   registerUser,
   signOut
-} from "../../../../src/components/LoginSignUp/AuthenticationService";
+} from "components/LoginSignUp/AuthenticationService";
+import nock from "nock";
 
 const USERNAME = "some_user";
 const PASSWORD = "123456";

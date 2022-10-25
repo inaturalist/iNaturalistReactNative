@@ -1,23 +1,28 @@
+import fetchSearchResults from "api/search";
 import React, { useEffect } from "react";
 import {
   Image, Text, TextInput, View
 } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { textStyles, viewStyles } from "styles/settings/settings";
 import { useDebounce } from "use-debounce";
-
-import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import { textStyles, viewStyles } from "../../styles/settings/settings";
 
 const UserSearchInput = ( { onUserChanged } ): React.Node => {
   const [hideResults, setHideResults] = React.useState( true );
   const [userSearch, setUserSearch] = React.useState( "" );
   // So we'll start searching only once the user finished typing
   const [finalUserSearch] = useDebounce( userSearch, 500 );
-  const userResults = useRemoteSearchResults(
-    finalUserSearch,
-    "users",
-    "user.login,user.name,user.icon"
-  ).map( r => r.user );
+  const {
+    data: userResults
+  } = useAuthenticatedQuery(
+    ["fetchSearchResults", finalUserSearch],
+    optsWithAuth => fetchSearchResults( {
+      q: finalUserSearch,
+      sources: "users",
+      fields: "user.login,user.name,user.icon"
+    }, optsWithAuth )
+  );
 
   useEffect( () => {
     if ( finalUserSearch.length === 0 ) {
@@ -47,11 +52,11 @@ const UserSearchInput = ( { onUserChanged } ): React.Node => {
           <Image
             style={viewStyles.clearSearch}
             resizeMode="contain"
-            source={require( "../../images/clear.png" )}
+            source={require( "images/clear.png" )}
           />
         </Pressable>
       </View>
-      {!hideResults && finalUserSearch.length > 0 && userResults.map( result => (
+      {!hideResults && finalUserSearch.length > 0 && userResults?.map( result => (
         <Pressable
           key={result.id}
           style={[viewStyles.row, viewStyles.placeResultContainer]}

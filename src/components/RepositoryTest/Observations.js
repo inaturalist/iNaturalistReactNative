@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -7,7 +8,6 @@ import {
   Text
 } from "react-native";
 
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import useRepository from "./useRepository";
 
 const Observations = ( ) => {

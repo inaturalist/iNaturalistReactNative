@@ -2,8 +2,7 @@
 
 import { StyleSheet } from "react-native";
 import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-
-import colors from "../colors";
+import colors from "styles/colors";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   container: {
@@ -34,8 +33,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexDirection: "row"
   },
   column: {
-    flexDirection: "column",
-    justifyContent: "space-evenly"
+    paddingBottom: 200
   },
   profileImage: {
     height: 130,
@@ -46,7 +44,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     width: 60
   },
   textInput: {
-    backgroundColor: "#000000",
+    backgroundColor: colors.white,
     borderWidth: 1,
     flexGrow: 1
   },

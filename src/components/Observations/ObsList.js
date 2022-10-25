@@ -1,28 +1,23 @@
 // @flow
 
+import ObservationViews from "components/Observations/ObservationViews";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import type { Node } from "react";
 import React from "react";
-
-import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import useLocalObservations from "./hooks/useLocalObservations";
-import useRemoteObservations from "./hooks/useRemoteObservations";
-import TopCard from "./TopCard";
+import useLocalObservations from "sharedHooks/useLocalObservations";
+import useRemoteObservations from "sharedHooks/useRemoteObservations";
 
 const ObsList = ( ): Node => {
   const localObservations = useLocalObservations( );
-  const { observationList, unuploadedObsList } = localObservations;
+  const { observationList } = localObservations;
   const {
     loading,
     syncObservations,
     fetchNextObservations
   } = useRemoteObservations( );
 
-  const numOfUnuploadedObs = unuploadedObsList?.length;
-
   return (
     <ViewWithFooter>
-      <TopCard numOfUnuploadedObs={numOfUnuploadedObs} />
       <ObservationViews
         loading={loading}
         localObservations={localObservations}

@@ -70,3 +70,6 @@ android/keystore.properties
 # Apple signing and auth files that fastlane might download
 *.cer
 *.mobileprovision
+
+# Might be used to customize the path to node that xcode uses
+ios/.xcode.env

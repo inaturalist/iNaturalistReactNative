@@ -1,46 +1,60 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
+import { fetchRemoteUser } from "api/users";
+import Button from "components/SharedComponents/Buttons/Button";
+import CustomHeader from "components/SharedComponents/CustomHeader";
+import UserIcon from "components/SharedComponents/UserIcon";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
-import { Text, useWindowDimensions, View } from "react-native";
+import { useWindowDimensions } from "react-native";
+import { Button as RNPaperButton } from "react-native-paper";
 import HTML from "react-native-render-html";
+import User from "realmModels/User";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useCurrentUser from "sharedHooks/useCurrentUser";
+import colors from "styles/colors";
 
-import User from "../../models/User";
-import { textStyles, viewStyles } from "../../styles/userProfile/userProfile";
-// import useNetworkSite from "./hooks/useNetworkSite";
-import Button from "../SharedComponents/Buttons/Button";
-import CustomHeader from "../SharedComponents/CustomHeader";
-import UserIcon from "../SharedComponents/UserIcon";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import updateRelationship from "./helpers/updateRelationship";
-import useRemoteUser from "./hooks/useRemoteUser";
 import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {
+  const currentUser = useCurrentUser( );
   const { params } = useRoute( );
   const { userId } = params;
-  const { user, currentUser } = useRemoteUser( userId );
   const { width } = useWindowDimensions( );
-  // const site = useNetworkSite( );
+
+  const {
+    data: remoteUser
+  } = useAuthenticatedQuery(
+    ["fetchRemoteUser", userId],
+    optsWithAuth => fetchRemoteUser( userId, { }, optsWithAuth )
+  );
+
+  const user = remoteUser ? remoteUser[0] : null;
 
   const showCount = ( count, label ) => (
-    <View style={viewStyles.countBox}>
-      <Text style={textStyles.text}>{count}</Text>
-      <Text style={textStyles.text}>{label}</Text>
+    <View className="w-1/4 border border-border">
+      <Text className="self-center">{count}</Text>
+      <Text className="self-center">{label}</Text>
     </View>
   );
 
   if ( !user ) { return null; }
 
-  const showUserRole = user.roles.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
+  const showUserRole = user?.roles?.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
 
   const followUser = ( ) => updateRelationship( { id: userId, relationship: { following: true } } );
 
   return (
     <ViewWithFooter>
-      <CustomHeader headerText={User.userHandle( user )} />
-      <View style={viewStyles.row} testID={`UserProfile.${userId}`}>
+      <CustomHeader
+        headerText={User.userHandle( user )}
+        rightIcon={<RNPaperButton icon="pencil" textColor={colors.gray} />}
+      />
+      <View className="flex-row m-3" testID={`UserProfile.${userId}`}>
         <UserIcon uri={User.uri( user )} large />
         <View>
           <Text>{user.name}</Text>
@@ -50,9 +64,26 @@ const UserProfile = ( ): React.Node => {
           <Text>{`${t( "Affiliation-colon" )} ${user.site_id}`}</Text>
         </View>
       </View>
+      <View className="flex-row">
+        {showCount( user.observations_count, t( "Observations" ) )}
+        {showCount( user.species_count, t( "Species" ) )}
+        {showCount( user.identifications_count, t( "IDs" ) )}
+        {showCount( user.journal_posts_count, t( "Journal-Posts" ) )}
+      </View>
+      <View className="mx-3 mt-5">
+        <Text>{t( "BIO" )}</Text>
+        { user && user.description && user.description.length > 0 && (
+        <HTML
+          contentWidth={width}
+          source={{ html: user.description }}
+        />
+        ) }
+        <Text className="mt-5">{t( "PROJECTS" )}</Text>
+        <UserProjects userId={userId} />
+      </View>
       {!currentUser && (
-        <View style={viewStyles.buttonRow}>
-          <View style={viewStyles.button}>
+        <View className="flex-row">
+          <View className="w-1/2">
             <Button
               level="primary"
               text="Follow"
@@ -60,7 +91,7 @@ const UserProfile = ( ): React.Node => {
               testID="UserProfile.followButton"
             />
           </View>
-          <View style={viewStyles.button}>
+          <View className="w-1/2">
             <Button
               level="primary"
               text="Messages"
@@ -70,21 +101,6 @@ const UserProfile = ( ): React.Node => {
           </View>
         </View>
       )}
-      <View style={viewStyles.countRow}>
-        {showCount( user.observations_count, t( "Observations" ) )}
-        {showCount( user.species_count, t( "Species" ) )}
-        {showCount( user.identifications_count, t( "IDs" ) )}
-        {showCount( user.journal_posts_count, t( "Journal-Posts" ) )}
-      </View>
-      <Text>{t( "BIO" )}</Text>
-      { user?.description?.length > 0 && (
-        <HTML
-          contentWidth={width}
-          source={{ html: user.description }}
-        />
-      ) }
-      <Text>{t( "PROJECTS" )}</Text>
-      <UserProjects userId={userId} />
     </ViewWithFooter>
   );
 };

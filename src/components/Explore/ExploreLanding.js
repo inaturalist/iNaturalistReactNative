@@ -1,16 +1,16 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import Button from "components/SharedComponents/Buttons/Button";
+import TranslatedText from "components/SharedComponents/TranslatedText";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+// import DropdownPicker from "./DropdownPicker";
+import { ExploreContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { View } from "react-native";
+import { textStyles, viewStyles } from "styles/explore/explore";
 
-// import DropdownPicker from "./DropdownPicker";
-import { ExploreContext } from "../../providers/contexts";
-import { textStyles, viewStyles } from "../../styles/explore/explore";
-import Button from "../SharedComponents/Buttons/Button";
-import TranslatedText from "../SharedComponents/TranslatedText";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import FiltersIcon from "./FiltersIcon";
 import TaxonLocationSearch from "./TaxonLocationSearch";
 

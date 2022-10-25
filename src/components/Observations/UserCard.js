@@ -1,39 +1,50 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { fetchRemoteUser } from "api/users";
+import UserIcon from "components/SharedComponents/UserIcon";
+import { Pressable, Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
-import User from "../../models/User";
-import useCurrentUser from "../../sharedHooks/useCurrentUser";
-import { viewStyles } from "../../styles/observations/userCard";
-import TranslatedText from "../SharedComponents/TranslatedText";
-import UserIcon from "../SharedComponents/UserIcon";
-import useRemoteUser from "../UserProfile/hooks/useRemoteUser";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import User from "realmModels/User";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useCurrentUser from "sharedHooks/useCurrentUser";
+import colors from "styles/colors";
 
 const UserCard = ( ): Node => {
   const user = useCurrentUser( );
-  const { user: remoteUser } = useRemoteUser( user?.id );
+  const userId = user?.id;
+
+  const {
+    data: remoteUser
+  } = useAuthenticatedQuery(
+    ["fetchRemoteUser", userId],
+    optsWithAuth => fetchRemoteUser( userId, { }, optsWithAuth )
+  );
+
   // TODO: this currently doesn't show up on initial login
   // because user id can't be fetched
   const navigation = useNavigation( );
-  if ( !user ) { return <View style={viewStyles.topCard} />; }
-  const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { user: user.id } );
+  if ( !user ) { return <View className="flex-row mx-5 items-center" />; }
+  const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId: user.id } );
 
   return (
-    <View style={viewStyles.userCard}>
-      <UserIcon uri={{ uri: remoteUser?.icon_url }} large />
-      <View style={viewStyles.userDetails}>
-        <Text>{User.userHandle( user )}</Text>
-        <TranslatedText text="X-Observations" count={user.observations_count || 0} />
+    <View className="flex-row mx-5 items-center">
+      {remoteUser && <UserIcon uri={{ uri: remoteUser?.icon_url }} large />}
+      <View className="ml-2">
+        <Text className="color-white my-1">{User.userHandle( user )}</Text>
+        {remoteUser && (
+          <Text className="color-white my-1">
+            {`${remoteUser?.observations_count} Observations`}
+          </Text>
+        )}
       </View>
       <Pressable
         onPress={navToUserProfile}
-        style={viewStyles.editProfile}
+        className="absolute right-0"
       >
-        <Icon name="pencil" size={30} />
+        <IconMaterial name="edit" size={30} color={colors.white} />
       </Pressable>
     </View>
   );

@@ -5,8 +5,7 @@ import * as React from "react";
 import {
   FlatList, Image, Pressable, Text
 } from "react-native";
-
-import { imageStyles, textStyles, viewStyles } from "../../styles/projects/projects";
+import { imageStyles, textStyles, viewStyles } from "styles/projects/projects";
 
 type Props = {
   data: Array<Object>

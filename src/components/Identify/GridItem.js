@@ -1,18 +1,18 @@
 // @flow
 
+import Button from "components/SharedComponents/Buttons/Button";
 import type { Node } from "react";
 import React, { useState } from "react";
 import {
   ActivityIndicator, Image, Pressable, Text, View
 } from "react-native";
-
-import Observation from "../../models/Observation";
+import Observation from "realmModels/Observation";
 import {
   imageStyles,
   textStyles,
   viewStyles
-} from "../../styles/sharedComponents/observationViews/gridItem";
-import Button from "../SharedComponents/Buttons/Button";
+} from "styles/observations/gridItem";
+
 import createIdentification from "./helpers/createIdentification";
 
 type Props = {
@@ -68,7 +68,7 @@ const GridItem = ( {
         testID="ObsList.photo"
       />
       <Image
-        source={{ uri: item.user.icon_url }}
+        source={{ uri: item?.user?.icon_url }}
         style={imageStyles.userImage}
         testID="ObsList.identifierPhoto"
       />

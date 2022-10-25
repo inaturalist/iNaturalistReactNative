@@ -5,8 +5,18 @@ import {
   BottomSheetTextInput
 } from "@gorhom/bottom-sheet";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
+import { faveObservation, fetchRemoteObservation, unfaveObservation } from "api/observations";
+import createIdentification from "components/Identify/helpers/createIdentification";
+import Button from "components/SharedComponents/Buttons/Button";
+import PhotoScroll from "components/SharedComponents/PhotoScroll";
+import QualityBadge from "components/SharedComponents/QualityBadge";
+import TranslatedText from "components/SharedComponents/TranslatedText";
+import UserIcon from "components/SharedComponents/UserIcon";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { formatISO } from "date-fns";
 import _ from "lodash";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
@@ -18,31 +28,21 @@ import {
   TextInput as NativeTextInput, TouchableOpacity, View
 } from "react-native";
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import Observation from "realmModels/Observation";
+import Taxon from "realmModels/Taxon";
+import User from "realmModels/User";
+import { formatObsListTime } from "sharedHelpers/dateAndTime";
+import useApiToken from "sharedHooks/useApiToken";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useCurrentUser from "sharedHooks/useCurrentUser";
+import colors from "styles/colors";
+import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
-import Observation from "../../models/Observation";
-import Taxon from "../../models/Taxon";
-import User from "../../models/User";
-import { ObsEditContext, RealmContext } from "../../providers/contexts";
-import { formatObsListTime } from "../../sharedHelpers/dateAndTime";
-import useApiToken from "../../sharedHooks/useApiToken";
-import colors from "../../styles/colors";
-import { imageStyles, textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
-import createIdentification from "../Identify/helpers/createIdentification";
-import { getUser } from "../LoginSignUp/AuthenticationService";
-import Button from "../SharedComponents/Buttons/Button";
-import PhotoScroll from "../SharedComponents/PhotoScroll";
-import QualityBadge from "../SharedComponents/QualityBadge";
-import TranslatedText from "../SharedComponents/TranslatedText";
-import UserIcon from "../SharedComponents/UserIcon";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import ActivityTab from "./ActivityTab";
 import DataTab from "./DataTab";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 import createComment from "./helpers/createComment";
-import faveObservation from "./helpers/faveObservation";
-import useRemoteObservation from "./hooks/useRemoteObservation";
 import ObsDetailsHeader from "./ObsDetailsHeader";
 
 const { useRealm } = RealmContext;
@@ -55,13 +55,15 @@ LogBox.ignoreLogs( [
 ] );
 
 const ObsDetails = ( ): Node => {
+  const currentUser = useCurrentUser( );
+  const userId = currentUser?.id;
   const { t } = useTranslation( );
   const [refetch, setRefetch] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
   const { addObservations } = useContext( ObsEditContext );
   const { params } = useRoute( );
-  let { observation } = params;
+  const { uuid } = params;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
   const [ids, setIds] = useState( [] );
@@ -69,8 +71,29 @@ const ObsDetails = ( ): Node => {
   const [addingComment, setAddingComment] = useState( false );
   const [snapPoint, setSnapPoint] = useState( 100 );
   const apiToken = useApiToken( );
+  const [localObservation, setLocalObservation] = useState( null );
+
+  const queryClient = useQueryClient( );
+
+  const {
+    data: remoteObservation
+  } = useAuthenticatedQuery(
+    ["fetchRemoteObservation", uuid],
+    optsWithAuth => fetchRemoteObservation( uuid, { }, optsWithAuth )
+  );
 
   const realm = useRealm( );
+
+  useEffect( ( ) => {
+    setLocalObservation( realm?.objectForPrimaryKey( "Observation", uuid ) );
+  }, [realm, uuid] );
+
+  const observation = localObservation || remoteObservation;
+
+  const taxon = observation?.taxon;
+  const user = observation?.user;
+  const faves = observation?.faves;
+  const currentUserFaved = faves?.length > 0 ? faves.find( fave => fave.user.id === userId ) : null;
 
   // Clear the comment in a timeout so it doesn't trigger a re-render of the
   // text input *after* the bottom sheet modal gets dismissed, b/c that seems
@@ -116,15 +139,6 @@ const ObsDetails = ( ): Node => {
     </TouchableOpacity>
   );
 
-  // TODO: we'll probably need to redo this logic a bit now that we're
-  // passing an observation via navigation instead of reopening realm
-  const { remoteObservation, currentUserFaved } = useRemoteObservation( observation, refetch );
-
-  /* TODO - removed this since otherwise refreshing new comments will not work (will
-      always use old local copy that doesn't include new comments) */
-  if ( remoteObservation ) {
-    observation = remoteObservation;
-  }
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
 
@@ -133,33 +147,31 @@ const ObsDetails = ( ): Node => {
   useEffect( () => {
     const markViewedLocally = async ( ) => {
       if ( !apiToken ) return;
-      const existingObs = realm?.objectForPrimaryKey( "Observation", observation.uuid );
+      const existingObs = realm?.objectForPrimaryKey( "Observation", uuid );
       if ( !existingObs ) { return; }
       realm?.write( ( ) => {
         existingObs.viewed = true;
       } );
     };
     if ( observation ) { setIds( Array.from( observation.identifications ) ); }
-    if ( observation.viewed === false ) {
-      Observation.markObservationUpdatesViewed( observation.uuid, apiToken );
+    if ( observation?.viewed === false ) {
+      Observation.markObservationUpdatesViewed( uuid, apiToken );
       markViewedLocally( );
     }
-  }, [apiToken, observation, realm] );
+  }, [apiToken, observation, uuid, realm] );
 
   if ( !observation ) { return null; }
 
   const comments = Array.from( observation.comments );
   const photos = _.compact( Array.from( observation.observationPhotos ).map( op => op.photo ) );
-  const { taxon, uuid, user } = observation;
 
   const onIDAdded = async identification => {
     // Add temporary ID to observation.identifications ("ghosted" ID, while we're trying to add it)
-    const currentUser = await getUser();
     const newId = {
       body: identification.body,
       taxon: identification.taxon,
       user: {
-        id: currentUser?.id,
+        id: userId,
         login: currentUser?.login,
         signedIn: true
       },
@@ -176,7 +188,7 @@ const ObsDetails = ( ): Node => {
 
     try {
       const results = await createIdentification( {
-        observation_id: observation.uuid,
+        observation_id: uuid,
         taxon_id: newId.taxon.id,
         body: newId.body
       } );
@@ -208,7 +220,7 @@ const ObsDetails = ( ): Node => {
     }
   };
 
-  const navToUserProfile = userId => navigation.navigate( "UserProfile", { userId } );
+  const navToUserProfile = id => navigation.navigate( "UserProfile", { userId: id } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
   const navToAddID = ( ) => {
     addObservations( [observation] );
@@ -275,12 +287,15 @@ const ObsDetails = ( ): Node => {
   );
 
   const faveOrUnfave = async ( ) => {
+    // TODO: fix fave/unfave functionality with useMutation
     if ( currentUserFaved ) {
-      await faveObservation( uuid, "unfave" );
-      setRefetch( !refetch );
+      await unfaveObservation( { uuid } );
+      setRefetch( true );
+      queryClient.invalidateQueries( ["fetchRemoteObservation"] );
     } else {
-      await faveObservation( uuid, "fave" );
-      setRefetch( !refetch );
+      await faveObservation( { uuid } );
+      setRefetch( true );
+      queryClient.invalidateQueries( ["fetchRemoteObservation"] );
     }
   };
 
@@ -291,7 +306,7 @@ const ObsDetails = ( ): Node => {
   return (
     <BottomSheetModalProvider>
       <ViewWithFooter>
-        <ObsDetailsHeader observationUUID={uuid} />
+        <ObsDetailsHeader observation={observation} />
         <ScrollView
           testID={`ObsDetails.${uuid}`}
           contentContainerStyle={viewStyles.scrollView}
@@ -324,12 +339,12 @@ const ObsDetails = ( ): Node => {
               <View style={viewStyles.rowWithIcon}>
                 <Image
                   style={imageStyles.smallIcon}
-                  source={require( "../../images/ic_id.png" )}
+                  source={require( "images/ic_id.png" )}
                 />
                 <Text style={textStyles.idCommentCount}>{observation.identifications.length}</Text>
               </View>
               <View style={viewStyles.rowWithIcon}>
-                <Icon name="chat" size={15} color={colors.logInGray} />
+                <IconMaterial name="chat-bubble" size={15} color={colors.logInGray} />
                 <Text style={textStyles.idCommentCount}>{observation.comments.length}</Text>
               </View>
               <QualityBadge qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )} />
@@ -431,7 +446,7 @@ const ObsDetails = ( ): Node => {
               style={viewStyles.sendComment}
               onPress={() => submitComment( )}
             >
-              <Icon name="send" size={35} color={colors.inatGreen} />
+              <IconMaterial name="send" size={35} color={colors.inatGreen} />
             </TouchableOpacity>
           </View>
         </BottomSheetModal>

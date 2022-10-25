@@ -1,16 +1,13 @@
 // @flow
 
+import MediaViewer from "components/MediaViewer/MediaViewer";
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
+import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
+import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import { textStyles, viewStyles } from "../../styles/camera/photoPreview";
-import MediaViewer from "../MediaViewer/MediaViewer";
-import MediaViewerModal from "../MediaViewer/MediaViewerModal";
-import DeletePhotoDialog from "../SharedComponents/DeletePhotoDialog";
-import PhotoCarousel from "../SharedComponents/PhotoCarousel";
 
 type Props = {
   photoUris: Array<string>,
@@ -24,8 +21,6 @@ const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node =
   const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-
-  const insets = useSafeAreaInsets( );
 
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
@@ -48,12 +43,7 @@ const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node =
   };
 
   const emptyDescription = ( ) => (
-    <Text style={[
-      textStyles.topPhotoText, {
-        // $FlowIgnore
-        bottom: textStyles.topPhotoText.bottom + insets.top
-      }]}
-    >
+    <Text className="text-white text-xl mt-20 ml-3">
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
@@ -78,13 +68,7 @@ const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node =
           hideModal={hideModal}
         />
       </MediaViewerModal>
-      <View style={[
-        viewStyles.photoPreviewContainer, {
-          // $FlowIgnore
-          height: viewStyles.photoPreviewContainer.height + insets.top
-        }
-      ]}
-      >
+      <View className="bg-black h-32">
         <PhotoCarousel
           photoUris={photoUris}
           emptyComponent={emptyDescription}

@@ -1,4 +1,5 @@
-import Repository from "../../src/components/RepositoryTest/Repository";
+import Repository from "components/RepositoryTest/Repository";
+
 import factory from "../factory";
 
 describe( "Repository", ( ) => {
