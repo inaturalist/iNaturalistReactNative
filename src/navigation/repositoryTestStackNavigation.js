@@ -1,8 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import RepositoryTestDetail from "components/RepositoryTest/Detail";
+import RepositoryTestObservations from "components/RepositoryTest/Observations";
 import * as React from "react";
-
-import RepositoryTestDetail from "../components/RepositoryTest/Detail";
-import RepositoryTestObservations from "../components/RepositoryTest/Observations";
 
 const Stack = createNativeStackNavigator( );
 
