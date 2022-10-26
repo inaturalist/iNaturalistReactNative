@@ -10,6 +10,7 @@
 1. Run `npm install`
 1. Run `npx pod-install ios` or `cd ios && pod install` from the root directory
 1. `cp env.example .env` and fill in appropriate values. This is not part of the code repo (contains secrets, such as OAuth client ID).
+1. To run on Android, do this `cp android/example-keystore.properties android/keystore.properties`. Fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff. 
 
 ## Set up pre-commit hooks
 
