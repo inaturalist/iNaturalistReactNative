@@ -14,7 +14,7 @@
 
 ## Set up pre-commit hooks
 
-1. We're using [Husky](https://typicode.github.io/husky/#/) to automatically run `eslint` before each commit. Run `npm run prepare` to install Husky locally.
+1. We're using [Husky](https://typicode.github.io/husky/#/) to automatically run `eslint` before each commit. Run `npm run postinstall` to install Husky locally.
 
 ## Run build
 
