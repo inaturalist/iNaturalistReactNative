@@ -161,16 +161,14 @@ const Settings = ( { children: _children }: Props ): Node => {
 
   const queryClient = useQueryClient( );
 
-  const handleSuccess = {
-    onSuccess: ( ) => {
-      queryClient.invalidateQueries( ["fetchUserMe"] );
-      refetchUserMe( );
-    }
-  };
-
   const updateUserMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
-    handleSuccess
+    {
+      onSuccess: ( ) => {
+        queryClient.invalidateQueries( ["fetchUserMe"] );
+        refetchUserMe( );
+      }
+    }
   );
 
   useEffect( () => {

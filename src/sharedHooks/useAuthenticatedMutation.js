@@ -7,7 +7,7 @@ import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
 // with an object that includes the JWT
 const useAuthenticatedMutation = (
   queryFunction: Function,
-  handleCallback: Function,
+  mutationOptions: Object,
   queryOptions: Object = {}
 ): any => useMutation( async id => {
   // Note, getJWTToken() takes care of fetching a new token if the existing
@@ -19,6 +19,6 @@ const useAuthenticatedMutation = (
     api_token: apiToken
   };
   return queryFunction( id, options );
-}, handleCallback );
+}, mutationOptions );
 
 export default useAuthenticatedMutation;

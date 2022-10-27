@@ -4,7 +4,7 @@ import inatjs from "inaturalistjs";
 
 import handleError from "./error";
 
-const createComments = async (
+const createComment = async (
   params: Object = {},
   opts: Object = {}
 ): Promise<any> => {
@@ -27,6 +27,6 @@ const deleteComments = async (
 };
 
 export {
-  createComments,
+  createComment,
   deleteComments
 };

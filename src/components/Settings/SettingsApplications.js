@@ -33,16 +33,14 @@ const SettingsApplications = ( ): Node => {
 
   const queryClient = useQueryClient( );
 
-  const handleSuccess = {
-    onSuccess: ( ) => {
-      queryClient.invalidateQueries( ["fetchAuthorizedApplications"] );
-      refetch( );
-    }
-  };
-
   const revokeAppMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => revokeAuthorizedApplications( params, optsWithAuth ),
-    handleSuccess
+    {
+      onSuccess: ( ) => {
+        queryClient.invalidateQueries( ["fetchAuthorizedApplications"] );
+        refetch( );
+      }
+    }
   );
 
   const revokeApp = async appId => {

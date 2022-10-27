@@ -8,7 +8,7 @@ const PARAMS = {
   fields: "all"
 };
 
-const createIdentifications = async (
+const createIdentification = async (
   params: Object = {},
   opts: Object = {}
 ): Promise<any> => {
@@ -20,4 +20,4 @@ const createIdentifications = async (
   }
 };
 
-export default createIdentifications;
+export default createIdentification;

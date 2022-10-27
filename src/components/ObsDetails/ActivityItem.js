@@ -52,16 +52,14 @@ const ActivityItem = ( {
     isActiveUserTheCurrentUser( );
   }, [user] );
 
-  const handleSuccess = {
-    onSuccess: ( ) => {
-      queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
-      refetchRemoteObservation( );
-    }
-  };
-
   const deleteCommentMutation = useAuthenticatedMutation(
     ( uuid, optsWithAuth ) => deleteComments( uuid, optsWithAuth ),
-    handleSuccess
+    {
+      onSuccess: ( ) => {
+        queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
+        refetchRemoteObservation( );
+      }
+    }
   );
 
   return (

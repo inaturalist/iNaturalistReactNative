@@ -6,8 +6,8 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-import { createComments } from "api/comments";
-import createIdentifications from "api/identifications";
+import { createComment } from "api/comments";
+import createIdentification from "api/identifications";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
@@ -86,7 +86,7 @@ const ObsDetails = ( ): Node => {
 
   const observation = localObservation || remoteObservation;
 
-  const handleSuccess = {
+  const mutationOptions = {
     onSuccess: ( ) => {
       queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
       refetchRemoteObservation( );
@@ -94,47 +94,45 @@ const ObsDetails = ( ): Node => {
   };
 
   const createCommentMutation = useAuthenticatedMutation(
-    ( body, optsWithAuth ) => createComments( {
+    ( body, optsWithAuth ) => createComment( {
       comment: {
         body,
         parent_id: uuid,
         parent_type: "Observation"
       }
     }, optsWithAuth ),
-    handleSuccess
+    mutationOptions
   );
 
-  const handleIdentificationMutation = {
-    onSuccess: data => setIds( [...ids, data[0]] ),
-    onError: e => {
-      let error = null;
-      if ( e ) {
-        error = t( "Couldnt-create-identification", { error: e.message } );
-      } else {
-        error = t( "Couldnt-create-identification", { error: t( "Unknown-error" ) } );
-      }
-
-      // Remove temporary ID and show error
-      setIds( [...ids] );
-      Alert.alert(
-        "Error",
-        error,
-        [{ text: t( "OK" ) }],
-        {
-          cancelable: true
-        }
-      );
-    }
-  };
-
   const createIdentificationMutation = useAuthenticatedMutation(
-    ( idParams, optsWithAuth ) => createIdentifications( idParams, optsWithAuth ),
-    handleIdentificationMutation
+    ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
+    {
+      onSuccess: data => setIds( [...ids, data[0]] ),
+      onError: e => {
+        let error = null;
+        if ( e ) {
+          error = t( "Couldnt-create-identification", { error: e.message } );
+        } else {
+          error = t( "Couldnt-create-identification", { error: t( "Unknown-error" ) } );
+        }
+
+        // Remove temporary ID and show error
+        setIds( [...ids] );
+        Alert.alert(
+          "Error",
+          error,
+          [{ text: t( "OK" ) }],
+          {
+            cancelable: true
+          }
+        );
+      }
+    }
   );
 
   const markViewedMutation = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
-    handleSuccess
+    mutationOptions
   );
 
   const taxon = observation?.taxon;

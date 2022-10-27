@@ -1,6 +1,6 @@
 // @flow
 
-import createIdentifications from "api/identifications";
+import createIdentification from "api/identifications";
 import { markAsReviewed } from "api/observations";
 import PlaceholderText from "components/PlaceholderText";
 import type { Node } from "react";
@@ -23,7 +23,7 @@ const CardSwipeView = ( { observationList }: Props ): Node => {
   );
 
   const createIdentificationMutation = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => createIdentifications( params, optsWithAuth )
+    ( params, optsWithAuth ) => createIdentification( params, optsWithAuth )
   );
 
   const onSwipe = async ( direction, id, isSpecies, agreeParams ) => {

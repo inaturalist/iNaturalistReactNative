@@ -110,7 +110,7 @@ const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
 
   const queryClient = useQueryClient();
 
-  const handleSuccess = {
+  const mutationOptions = {
     onSuccess: ( ) => {
       queryClient.invalidateQueries( ["fetchUserMe"] );
       refetchUserMe( );
@@ -119,32 +119,32 @@ const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
 
   const blockUserMutation = useAuthenticatedMutation(
     ( id, optsWithAuth ) => blockUser( id, { }, optsWithAuth ),
-    handleSuccess
+    mutationOptions
   );
 
   const muteUserMutation = useAuthenticatedMutation(
     ( id, optsWithAuth ) => muteUser( id, { }, optsWithAuth ),
-    handleSuccess
+    mutationOptions
   );
 
   const unblockUserMutation = useAuthenticatedMutation(
     ( id, optsWithAuth ) => unblockUser( id, { }, optsWithAuth ),
-    handleSuccess
+    mutationOptions
   );
 
   const unmuteUserMutation = useAuthenticatedMutation(
     ( id, optsWithAuth ) => unmuteUser( id, { }, optsWithAuth ),
-    handleSuccess
+    mutationOptions
   );
 
   const updateRelationshipsMutation = useAuthenticatedMutation(
     ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth ),
-    handleSuccess
+    mutationOptions
   );
 
   const deleteRelationshipsMutation = useAuthenticatedMutation(
     ( id, optsWithAuth ) => deleteRelationships( id, optsWithAuth ),
-    handleSuccess
+    mutationOptions
   );
 
   const perPage = data?.per_page;

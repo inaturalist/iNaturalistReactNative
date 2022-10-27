@@ -1,6 +1,6 @@
 // @flow
 
-import createIdentifications from "api/identifications";
+import createIdentification from "api/identifications";
 import Button from "components/SharedComponents/Buttons/Button";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -37,17 +37,15 @@ const GridItem = ( {
   // TODO: add fallback image when there is no uri
   const imageUri = Observation.projectUri( item );
 
-  const handleSuccess = {
-    onSuccess: ( ) => {
-      const ids = Array.from( reviewedIds );
-      ids.push( item.id );
-      setReviewedIds( ids );
-    }
-  };
-
   const createIdentificationMutation = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => createIdentifications( params, optsWithAuth ),
-    handleSuccess
+    ( params, optsWithAuth ) => createIdentification( params, optsWithAuth ),
+    {
+      onSuccess: ( ) => {
+        const ids = Array.from( reviewedIds );
+        ids.push( item.id );
+        setReviewedIds( ids );
+      }
+    }
   );
 
   const agreeWithObservation = async ( ) => {
