@@ -38,7 +38,7 @@ jobs:
     if: ${{ success() || failure() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: iRoachie/slack-github-actions@v2.0.1
+      - uses: iRoachie/slack-github-actions@v2.3.0
         if: env.SLACK_WEBHOOK_URL != null
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
