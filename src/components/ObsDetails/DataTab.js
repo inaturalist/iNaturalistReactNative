@@ -21,9 +21,8 @@ const DataTab = ( { observation }: Props ): Node => {
   const [project, setProject] = useState( "" );
   const [projectId, setProjectId] = useState( null );
 
-  const application = observation.application && observation.application.name;
-  const attribution = observation.taxon && observation.taxon.default_photo
-    && observation.taxon.default_photo.attribution;
+  const application = observation?.application?.name;
+  const attribution = observation?.taxon?.default_photo?.attribution;
 
   const selectProjectId = getValue => {
     // TODO: add api call for add to project
@@ -31,9 +30,9 @@ const DataTab = ( { observation }: Props ): Node => {
   };
 
   const displayTimeObserved = ( ) => {
-    const timeObseredAt = checkCamelAndSnakeCase( observation, "timeObservedAt" );
-    if ( timeObseredAt ) {
-      return format( parseISO( timeObseredAt ), "M/d/yy HH:mm a" );
+    const timeObservedAt = checkCamelAndSnakeCase( observation, "timeObservedAt" );
+    if ( timeObservedAt ) {
+      return format( parseISO( timeObservedAt ), "M/d/yy HH:mm a" );
     }
     if ( observation.observed_on_string ) {
       return observation.observed_on_string;

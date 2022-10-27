@@ -93,16 +93,13 @@ const ObsDetails = ( ): Node => {
     }
   };
 
-  const createCommentMutation = useAuthenticatedMutation(
-    ( body, optsWithAuth ) => createComment( {
-      comment: {
-        body,
-        parent_id: uuid,
-        parent_type: "Observation"
-      }
-    }, optsWithAuth ),
-    mutationOptions
-  );
+  const createCommentMutation = useAuthenticatedMutation( ( body, optsWithAuth ) => createComment( {
+    comment: {
+      body,
+      parent_id: uuid,
+      parent_type: "Observation"
+    }
+  }, optsWithAuth ), mutationOptions );
 
   const createIdentificationMutation = useAuthenticatedMutation(
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),

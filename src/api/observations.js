@@ -1,8 +1,11 @@
 // @flow
 
 import inatjs from "inaturalistjs";
+import Comment from "realmModels/Comment";
+import Identification from "realmModels/Identification";
 // eslint-disable-next-line import/no-cycle
 import Observation from "realmModels/Observation";
+import User from "realmModels/User";
 
 import handleError from "./error";
 
@@ -36,7 +39,38 @@ const PARAMS = {
 };
 
 const REMOTE_OBSERVATION_PARAMS = {
-  fields: "all"
+  fields: {
+    created_at: true,
+    uuid: true,
+    identifications: Identification.ID_FIELDS,
+    comments: Comment.COMMENT_FIELDS,
+    category: true,
+    updated_at: true,
+    observation_photos: OBSERVATION_PHOTOS_FIELDS,
+    taxon: {
+      default_photo: {
+        url: true,
+        attribution: true,
+        license_code: true
+      },
+      iconic_taxon_name: true,
+      name: true,
+      preferred_common_name: true,
+      rank: true,
+      rank_level: true
+    },
+    observed_on_string: true,
+    latitude: true,
+    longitude: true,
+    description: true,
+    application: {
+      name: true
+    },
+    place_guess: true,
+    quality_grade: true,
+    time_observed_at: true,
+    user: User.USER_FIELDS
+  }
 };
 
 const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
@@ -75,7 +109,7 @@ const fetchRemoteObservation = async (
       { ...REMOTE_OBSERVATION_PARAMS, ...params },
       opts
     );
-    if ( results && results.length > 0 ) {
+    if ( results?.length > 0 ) {
       return Observation.mimicRealmMappedPropertiesSchema( results[0] );
     }
     return null;
