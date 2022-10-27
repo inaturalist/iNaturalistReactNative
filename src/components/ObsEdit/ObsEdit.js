@@ -81,6 +81,7 @@ const ObsEdit = ( ): Node => {
   const hideDialog = ( ) => setDeleteDialogVisible( false );
 
   const handleBackButtonPress = ( ) => {
+    setObservations( [] );
     if ( lastScreen === "StandardCamera" ) {
       navigation.navigate( "StandardCamera", { photos: photoUris } );
     } else {
