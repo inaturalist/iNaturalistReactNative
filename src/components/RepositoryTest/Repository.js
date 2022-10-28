@@ -22,10 +22,7 @@ class Repository {
   }
 
   async search( ) {
-    return Array.from( this.realm.objects( this.modelName ) ).map( o => ( {
-      ...o.toJSON( ),
-      observationPhotos: Array.from( o.observationPhotos )
-    } ) );
+    return Array.from( this.realm.objects( this.modelName ) );
   }
 
   // new( options = {} ) {
@@ -44,7 +41,7 @@ class Repository {
       insert into realm
       repeat
     */
-    return record.toJSON( );
+    return Array.from( [record] )[0];
   }
 
   /* Pseudocode
