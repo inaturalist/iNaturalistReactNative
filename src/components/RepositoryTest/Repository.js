@@ -24,7 +24,7 @@ class Repository {
 
   async search( ) {
     return Array.from( this.realm.objects( this.modelName ) ).map( o => ( {
-      ...o.toJSON( ),
+      ...o,
       observationPhotos: Array.from( o.observationPhotos )
     } ) );
   }
@@ -37,8 +37,13 @@ class Repository {
     // fetch from realm
     const record = this.realm.objectForPrimaryKey( this.modelName, uuid );
     if ( !record ) {
-      return fetchRemoteObservation( uuid );
+      const newRecord = await fetchRemoteObservation( uuid );
+      this.post( newRecord );
+      return this.realm.objectForPrimaryKey( this.modelName, uuid );
     }
+    const updatedRecord = await fetchRemoteObservation( uuid );
+    this.patch( updatedRecord );
+    return this.realm.objectForPrimaryKey( this.modelName, uuid );
     /* Pseudocode
     if in realm
       deep convert to pojo
@@ -47,7 +52,6 @@ class Repository {
       insert into realm
       repeat
     */
-    return record.toJSON( );
   }
 
   post( newRecord ) {
