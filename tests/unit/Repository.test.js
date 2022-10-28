@@ -1,6 +1,10 @@
 import Repository from "components/RepositoryTest/Repository";
+import inatjs from "inaturalistjs";
 
-import factory from "../factory";
+import factory, { makeResponse } from "../factory";
+
+// Mock inaturalistjs so we can make some fake responses
+jest.mock( "inaturalistjs" );
 
 describe( "Repository", ( ) => {
   it( "should throw an error without Realm", ( ) => {
@@ -75,9 +79,64 @@ describe( "Repository", ( ) => {
 
   describe( "with remote data", ( ) => {
     describe( "get", ( ) => {
-      it.todo( "should make a network request to retrieve the record" );
-      it.todo( "should insert the data into realm if not already present" );
-      it.todo( "should update the data into realm if already present" );
+      it( "should make a network request to retrieve the record", async ( ) => {
+        const repo = new Repository( "Observation", global.realm );
+        const uuid = "animals";
+        const obs = await global.realm.objectForPrimaryKey( "Observation", uuid );
+        expect( obs ).toBeUndefined( );
+        const observations = [factory( "RemoteObservation" )];
+        inatjs.observations.fetch.mockResolvedValue( makeResponse( observations ) );
+        await repo.get( uuid );
+        expect( inatjs.observations.fetch.mock.calls.length ).toEqual( 1 );
+      } );
+      it( "should insert the data into realm if not already present", async ( ) => {
+        // check to see if data is already in realm
+        const observations = [factory( "RemoteObservation" )];
+        const repo = new Repository( "Observation", global.realm );
+        const { uuid } = observations[0];
+        const obs = await global.realm.objectForPrimaryKey( "Observation", uuid );
+        expect( obs ).toBeUndefined( );
+        // if undefined, fetch remote data
+        const response = makeResponse( observations );
+        inatjs.observations.fetch.mockResolvedValue( response );
+        const { results } = response;
+        // save remote data to realm
+        await repo.post( results[0] );
+        // check realm to see if record was saved
+        const savedObs = await global.realm.objectForPrimaryKey( "Observation", uuid );
+        expect( savedObs.uuid ).toBe( uuid );
+      } );
+      it( "should update the data into realm if already present", async ( ) => {
+        // check to see if data is already in realm
+        const observations = [factory( "RemoteObservation" )];
+        const repo = new Repository( "Observation", global.realm );
+        const { uuid } = observations[0];
+        const obs = await global.realm.objectForPrimaryKey( "Observation", uuid );
+        expect( obs ).toBeUndefined( );
+        // if undefined, fetch remote data
+        const response = makeResponse( observations );
+        inatjs.observations.fetch.mockResolvedValue( response );
+        const { results } = response;
+        // save remote data to realm
+        await repo.post( results[0] );
+        // check realm to see if record was saved
+        const savedObs = await global.realm.objectForPrimaryKey( "Observation", uuid );
+        const originalLocalDescription = savedObs.description;
+        expect( savedObs.uuid ).toBe( uuid );
+        // update description for RemoteObservation
+        const updatedDescription = "This obs was updated on the server";
+        observations[0].description = updatedDescription;
+        // fetch updated remote data
+        const updatedResponse = makeResponse( observations );
+        inatjs.observations.fetch.mockResolvedValue( updatedResponse );
+        const updatedRecord = updatedResponse.results[0];
+        // update data in realm
+        await repo.patch( updatedRecord );
+        // check description of updated record
+        const updatedObs = await global.realm.objectForPrimaryKey( "Observation", uuid );
+        expect( updatedObs.description ).toBe( updatedDescription );
+        expect( originalLocalDescription ).not.toMatch( updatedObs.description );
+      } );
     } );
   } );
 } );
