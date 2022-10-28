@@ -12,11 +12,14 @@ const Detail = ( ) => {
   const { uuid } = params;
 
   useEffect( ( ) => {
-    if ( uuid ) {
-      setObservation( repo?.get( uuid ) );
-    } else {
-      setObservation( null );
+    async function getObservation( ) {
+      if ( uuid ) {
+        setObservation( await repo?.get( uuid ) );
+      } else {
+        setObservation( null );
+      }
     }
+    getObservation( );
   }, [uuid, repo] );
 
   return (

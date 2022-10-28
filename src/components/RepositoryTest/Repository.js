@@ -1,3 +1,4 @@
+import { fetchRemoteObservation } from "api/observations";
 import Observation from "realmModels/Observation";
 
 import RepositoryNeedsRealmError from "./errors/RepositoryNeedsRealmError";
@@ -29,10 +30,15 @@ class Repository {
   //   return this.model.new( options );
   // }
 
-  get( uuid ) {
+  async get( uuid ) {
     // fetch from realm
     const record = this.realm.objectForPrimaryKey( this.modelName, uuid );
-    if ( !record ) return null;
+    if ( !record ) {
+      const newRecord = await fetchRemoteObservation( uuid );
+      return this.post( newRecord );
+    }
+    const updatedRemoteRecord = await fetchRemoteObservation( uuid );
+    return this.patch( updatedRemoteRecord );
     /* Pseudocode
     if in realm
       deep convert to pojo
@@ -41,14 +47,23 @@ class Repository {
       insert into realm
       repeat
     */
-    return Array.from( [record] )[0];
+  }
+
+  post( newRecord ) {
+    // insert into realm
+    return this.realm.write( ( ) => this.realm.create( this.modelName, newRecord ) );
+  }
+
+  patch( updatedRecord ) {
+    // using realm upsert function, which will automatically create
+    // a new record with given primary key if it doesn't exist already
+    // and update in realm if the record exists
+    return this.realm.write(
+      ( ) => this.realm.create( this.modelName, updatedRecord, "modified" )
+    );
   }
 
   /* Pseudocode
-  post( modelInstance ) {
-   // insert into realm
-  }
-
   patch( modelInstance ) {
     raise error if not in realm
     udpate in realm

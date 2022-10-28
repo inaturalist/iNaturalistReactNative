@@ -1,6 +1,10 @@
 import Repository from "components/RepositoryTest/Repository";
+import inatjs from "inaturalistjs";
 
-import factory from "../factory";
+import factory, { makeResponse } from "../factory";
+
+// Mock inaturalistjs so we can make some fake responses
+jest.mock( "inaturalistjs" );
 
 describe( "Repository", ( ) => {
   it( "should throw an error without Realm", ( ) => {
@@ -32,7 +36,9 @@ describe( "Repository", ( ) => {
     describe( "get", ( ) => {
       it( "should return an object", async ( ) => {
         const repo = new Repository( "Observation", global.realm );
-        const testObs = observations[0];
+        const remoteObservations = [factory( "RemoteObservation" )];
+        const testObs = remoteObservations[0];
+        inatjs.observations.fetch.mockResolvedValue( makeResponse( remoteObservations ) );
         const obs = await repo.get( testObs.uuid );
         expect( obs.uuid ).toEqual( testObs.uuid );
       } );
@@ -75,9 +81,63 @@ describe( "Repository", ( ) => {
 
   describe( "with remote data", ( ) => {
     describe( "get", ( ) => {
-      it.todo( "should make a network request to retrieve the record" );
-      it.todo( "should insert the data into realm if not already present" );
-      it.todo( "should update the data into realm if already present" );
+      const remoteObservation = factory( "RemoteObservation" );
+      const mockObsResponse = makeResponse( [remoteObservation] );
+
+      beforeEach( ( ) => {
+        global.realm.write( ( ) => {
+          global.realm.deleteAll( );
+        } );
+        jest.clearAllMocks( );
+        inatjs.observations.fetch.mockResolvedValue( mockObsResponse );
+      } );
+
+      it( "should make a network request to retrieve the record", async ( ) => {
+        const repo = new Repository( "Observation", global.realm );
+        const existingObs = await global.realm.objectForPrimaryKey(
+          "Observation",
+          remoteObservation.uuid
+        );
+        expect( existingObs ).toBeUndefined( );
+        await repo.get( remoteObservation.uuid );
+        expect( inatjs.observations.fetch.mock.calls.length ).toEqual( 1 );
+      } );
+
+      it( "should insert the data into realm if not already present", async ( ) => {
+        const repo = new Repository( "Observation", global.realm );
+        // check to see if data is already in realm
+        const existingObservation = await global.realm.objectForPrimaryKey(
+          "Observation",
+          remoteObservation.uuid
+        );
+        expect( existingObservation ).toBeUndefined( );
+        // make sure get( ) is fetching a remote observation and storing in realm
+        const localObservation = await repo.get( remoteObservation.uuid );
+        expect( inatjs.observations.fetch.mock.calls.length ).toEqual( 1 );
+        expect( localObservation.uuid ).toBe( remoteObservation.uuid );
+      } );
+
+      // TODO this should probably update the data in realm *after* returning the local value
+      it( "should update the data into realm if already present", async ( ) => {
+        const repo = new Repository( "Observation", global.realm );
+        const remoteDescription = remoteObservation.description;
+        const localObservation = await repo.get( remoteObservation.uuid );
+        expect( inatjs.observations.fetch.mock.calls.length ).toEqual( 1 );
+        expect( localObservation.description ).toBe( remoteDescription );
+        // update description of observation on server
+        const updatedDescription = "This obs was updated on the server";
+        const updatedRemoteObservation = factory( "RemoteObservation", {
+          uuid: remoteObservation.uuid,
+          description: updatedDescription
+        } );
+        const updatedResponse = makeResponse( [updatedRemoteObservation] );
+        jest.clearAllMocks( );
+        inatjs.observations.fetch.mockResolvedValue( updatedResponse );
+        // fetch record from realm and make sure it's updated with latest remote data
+        const updatedRecord = await repo.get( remoteObservation.uuid );
+        expect( inatjs.observations.fetch.mock.calls.length ).toEqual( 1 );
+        expect( updatedRecord.description ).toBe( updatedDescription );
+      } );
     } );
   } );
 } );
