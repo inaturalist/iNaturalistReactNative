@@ -15,8 +15,8 @@ import HTML from "react-native-render-html";
 import User from "realmModels/User";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import colors from "styles/colors";
 
+import colors from "../../../tailwind-colors";
 import updateRelationship from "./helpers/updateRelationship";
 import UserProjects from "./UserProjects";
 
@@ -52,7 +52,7 @@ const UserProfile = ( ): React.Node => {
     <ViewWithFooter>
       <CustomHeader
         headerText={User.userHandle( user )}
-        rightIcon={<RNPaperButton icon="pencil" textColor={colors.gray} />}
+        rightIcon={<RNPaperButton icon="pencil" textColor={colors.tertiary} />}
       />
       <View className="flex-row m-3" testID={`UserProfile.${userId}`}>
         <UserIcon uri={User.uri( user )} large />

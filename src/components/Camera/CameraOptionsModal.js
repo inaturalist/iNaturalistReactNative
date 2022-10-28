@@ -6,7 +6,8 @@ import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import * as React from "react";
 import { IconButton } from "react-native-paper";
-import colors from "styles/colors";
+
+import colors from "../../../tailwind-colors";
 
 type Props = {
   closeModal: ( ) => void

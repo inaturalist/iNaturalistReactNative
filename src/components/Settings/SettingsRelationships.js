@@ -13,10 +13,10 @@ import {
 } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/settings/settings";
 import { useDebounce } from "use-debounce";
 
+import colors from "../../../tailwind-colors";
 import BlockedUser from "./BlockedUser";
 import MutedUser from "./MutedUser";
 import Relationship from "./Relationship";

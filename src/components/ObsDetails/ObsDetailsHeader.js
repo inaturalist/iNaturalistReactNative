@@ -8,7 +8,8 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Button } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import colors from "styles/colors";
+
+import colors from "../../../tailwind-colors";
 
 type Props = {
   observation: ?Object

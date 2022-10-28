@@ -4,7 +4,8 @@ import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/colors";
+
+import colors from "../../../tailwind-colors";
 
 type Props = {
   item: Object,

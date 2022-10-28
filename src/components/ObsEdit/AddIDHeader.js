@@ -7,7 +7,8 @@ import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/colors";
+
+import colors from "../../../tailwind-colors";
 
 type Props = {
   showEditComment: boolean,

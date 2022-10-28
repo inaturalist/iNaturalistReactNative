@@ -26,9 +26,9 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import Photo from "realmModels/Photo";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import useLoggedIn from "sharedHooks/useLoggedIn";
-import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 
+import colors from "../../../tailwind-colors";
 import DeleteObservationDialog from "./DeleteObservationDialog";
 import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";

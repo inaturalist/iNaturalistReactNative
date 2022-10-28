@@ -6,9 +6,9 @@ import type { Node } from "react";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 import Switch from "react-native/Libraries/Components/Switch/Switch";
-import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/settings/settings";
 
+import colors from "../../../tailwind-colors";
 import type { SettingsProps } from "./types";
 
 const EMAIL_NOTIFICATIONS = {

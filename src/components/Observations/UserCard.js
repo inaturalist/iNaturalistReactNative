@@ -10,7 +10,8 @@ import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import User from "realmModels/User";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import colors from "styles/colors";
+
+import colors from "../../../tailwind-colors";
 
 const UserCard = ( ): Node => {
   const user = useCurrentUser( );

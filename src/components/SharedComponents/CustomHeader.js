@@ -5,7 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import colors from "styles/colors";
+
+import colors from "../../../tailwind-colors";
 
 type Props = {
   headerText?: string,

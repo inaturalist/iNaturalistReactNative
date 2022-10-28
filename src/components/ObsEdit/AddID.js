@@ -26,9 +26,9 @@ import {
 import uuid from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/obsDetails/addID";
 
+import colors from "../../../tailwind-colors";
 import AddIDHeader from "./AddIDHeader";
 
 type Props = {

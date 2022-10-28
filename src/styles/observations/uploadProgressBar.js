@@ -2,7 +2,8 @@
 
 import { Dimensions, StyleSheet } from "react-native";
 import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-import colors from "styles/colors";
+
+import colors from "../../../tailwind-colors";
 
 const { width } = Dimensions.get( "screen" );
 

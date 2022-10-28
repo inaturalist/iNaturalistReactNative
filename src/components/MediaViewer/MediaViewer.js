@@ -5,8 +5,8 @@ import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, IconButton } from "react-native-paper";
-import colors from "styles/colors";
 
+import colors from "../../../tailwind-colors";
 import HorizontalScroll from "./HorizontalScroll";
 
 type Props = {
