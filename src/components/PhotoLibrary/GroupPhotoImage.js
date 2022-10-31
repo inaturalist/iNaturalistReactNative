@@ -1,11 +1,10 @@
 // @flow
 
+import colors from "colors";
 import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-
-import colors from "../../../tailwind-colors";
 
 type Props = {
   item: Object,

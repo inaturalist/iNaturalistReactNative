@@ -1,12 +1,12 @@
 // @flow
 
+import colors from "colors";
 import { SafeAreaView, Text } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, IconButton } from "react-native-paper";
 
-import colors from "../../../tailwind-colors";
 import HorizontalScroll from "./HorizontalScroll";
 
 type Props = {

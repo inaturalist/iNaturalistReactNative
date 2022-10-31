@@ -1,5 +1,6 @@
 // @flow
 
+import colors from "colors";
 import {
   Image, Pressable, View
 } from "components/styledComponents";
@@ -9,7 +10,6 @@ import FilterIcon from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
 
-import colors from "../../../tailwind-colors";
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
 

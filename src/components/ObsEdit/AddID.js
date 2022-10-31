@@ -7,6 +7,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
+import colors from "colors";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { Text } from "components/styledComponents";
 import * as React from "react";
@@ -28,7 +29,6 @@ import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/obsDetails/addID";
 
-import colors from "../../../tailwind-colors";
 import AddIDHeader from "./AddIDHeader";
 
 type Props = {

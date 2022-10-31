@@ -1,5 +1,6 @@
 // @flow
 
+import colors from "colors";
 import DropdownPicker from "components/Explore/DropdownPicker";
 import Map from "components/SharedComponents/Map";
 import { format, parseISO } from "date-fns";
@@ -10,7 +11,6 @@ import { Text, View } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
-import colors from "../../../tailwind-colors";
 import addToProject from "./helpers/addToProject";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 

@@ -3,6 +3,7 @@
 import { Picker } from "@react-native-picker/picker";
 import fetchRelationships from "api/relationships";
 import { fetchRemoteUsers } from "api/users";
+import colors from "colors";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
@@ -16,7 +17,6 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/settings/settings";
 import { useDebounce } from "use-debounce";
 
-import colors from "../../../tailwind-colors";
 import BlockedUser from "./BlockedUser";
 import MutedUser from "./MutedUser";
 import Relationship from "./Relationship";

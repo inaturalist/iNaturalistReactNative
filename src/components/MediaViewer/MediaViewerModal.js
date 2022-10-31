@@ -1,11 +1,10 @@
 // @flow
 
+import colors from "colors";
 import type { Node } from "react";
 import React from "react";
 import { Modal, Portal } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import colors from "../../../tailwind-colors";
 
 type Props = {
   children: any,

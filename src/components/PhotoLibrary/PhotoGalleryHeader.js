@@ -2,12 +2,12 @@
 
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
+import colors from "colors";
 import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import RNPickerSelect from "react-native-picker-select";
 
-import colors from "../../../tailwind-colors";
 import usePhotoAlbums from "./hooks/usePhotoAlbums";
 
 type Props = {

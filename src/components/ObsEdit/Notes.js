@@ -1,13 +1,12 @@
 // @flow
 
+import colors from "colors";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Keyboard, useWindowDimensions } from "react-native";
 import { TextInput } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import colors from "../../../tailwind-colors";
 
 type Props = {
   addNotes: Function,

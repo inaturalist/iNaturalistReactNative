@@ -1,9 +1,8 @@
-// @flow strict-local
+// @flow
 
+import colors from "colors";
 import { StyleSheet } from "react-native";
 import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-
-import colors from "../../../../tailwind-colors";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   grayButton: {

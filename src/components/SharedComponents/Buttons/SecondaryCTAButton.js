@@ -1,10 +1,9 @@
 // @flow
 
+import colors from "colors";
 import type { Node } from "react";
 import React from "react";
 import { Button } from "react-native-paper";
-
-import colors from "../../../../tailwind-colors";
 
 type Props = {
   children: any,

@@ -8,6 +8,7 @@ import {
   QueryClientProvider
 } from "@tanstack/react-query";
 import handleError from "api/error";
+import colors from "colors";
 import About from "components/About";
 import CustomDrawerContent from "components/CustomDrawerContent";
 import { getUserId, signOut } from "components/LoginSignUp/AuthenticationService";
@@ -25,7 +26,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import colors from "../../tailwind-colors";
 import IdentifyStackNavigation from "./identifyStackNavigation";
 import MainStackNavigation from "./mainStackNavigation";
 import ProjectsStackNavigation from "./projectsStackNavigation";

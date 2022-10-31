@@ -1,6 +1,7 @@
 // @flow
 
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import colors from "colors";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useMemo, useRef } from "react";
@@ -9,8 +10,6 @@ import {
 } from "react-native-paper";
 import useUploadObservations from "sharedHooks/useUploadObservations";
 import { textStyles, viewStyles } from "styles/observations/uploadProgressBar";
-
-import colors from "../../../tailwind-colors";
 
 type Props = {
   unuploadedObsList: Array<Object>,

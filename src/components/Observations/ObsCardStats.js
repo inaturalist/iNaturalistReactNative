@@ -1,13 +1,12 @@
 // @flow
 
+import colors from "colors";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
-
-import colors from "../../../tailwind-colors";
 
 type Props = {
   item: Object,

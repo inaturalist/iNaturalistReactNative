@@ -1,13 +1,11 @@
+import colors from "colors";
 // @flow strict-local
-
 import { Dimensions, StyleSheet } from "react-native";
 import type {
   ImageStyleProp,
   TextStyleProp,
   ViewStyleProp
 } from "react-native/Libraries/StyleSheet/StyleSheet";
-
-import colors from "../../../tailwind-colors";
 
 const { width } = Dimensions.get( "screen" );
 
