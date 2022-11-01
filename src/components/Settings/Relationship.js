@@ -10,8 +10,8 @@ import {
   Text,
   View
 } from "react-native";
-import colors from "styles/colors";
 import { viewStyles } from "styles/settings/settings";
+import colors from "styles/tailwindColors";
 
 type Props = {
   relationship: Object,

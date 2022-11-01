@@ -8,7 +8,7 @@ import React from "react";
 import FilterIcon from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
-import colors from "styles/colors";
+import colors from "styles/tailwindColors";
 
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";

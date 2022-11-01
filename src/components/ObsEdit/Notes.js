@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Keyboard, useWindowDimensions } from "react-native";
 import { TextInput } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import colors from "styles/colors";
+import colors from "styles/tailwindColors";
 
 type Props = {
   addNotes: Function,

@@ -1,5 +1,4 @@
 import { Realm } from "@realm/react";
-import inatjs from "inaturalistjs";
 
 import User from "./User";
 
@@ -19,20 +18,11 @@ class Comment extends Realm.Object {
     };
   }
 
-  static async deleteComment( id, realm, apiToken ) {
-    // first delete locally
+  static async deleteComment( id, realm ) {
     realm?.write( ( ) => {
       const commentToDelete = realm.objects( "Comment" ).filtered( `uuid == "${id}"` )[0];
       realm.delete( commentToDelete );
     } );
-
-    // then delete remotely
-    const options = { api_token: apiToken };
-    try {
-      await inatjs.comments.delete( { id }, options );
-    } catch ( e ) {
-      console.log( JSON.stringify( e ), "couldn't delete comment" );
-    }
   }
 
   static schema = {

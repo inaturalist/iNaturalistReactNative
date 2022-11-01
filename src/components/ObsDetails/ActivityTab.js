@@ -11,11 +11,12 @@ type Props = {
   comments: Array<Object>,
   navToTaxonDetails: Function,
   navToUserProfile: number => { },
-  toggleRefetch: Function
+  toggleRefetch: Function,
+  refetchRemoteObservation: Function
 }
 
 const ActivityTab = ( {
-  comments, ids, navToTaxonDetails, navToUserProfile, toggleRefetch
+  comments, ids, navToTaxonDetails, navToUserProfile, toggleRefetch, refetchRemoteObservation
 }: Props ): React.Node => {
   if ( comments.length === 0 && ids.length === 0 ) {
     return <Text>{t( "No-comments-or-ids-to-display" )}</Text>;
@@ -35,6 +36,7 @@ const ActivityTab = ( {
           handlePress={handlePress}
           navToTaxonDetails={navToTaxonDetails}
           toggleRefetch={toggleRefetch}
+          refetchRemoteObservation={refetchRemoteObservation}
         />
       </View>
     );

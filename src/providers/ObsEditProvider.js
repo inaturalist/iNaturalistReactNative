@@ -7,7 +7,6 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import useApiToken from "sharedHooks/useApiToken";
 
 import { ObsEditContext, RealmContext } from "./contexts";
-import uploadObservation from "./uploadHelpers/uploadObservation";
 
 const { useRealm } = RealmContext;
 
@@ -145,7 +144,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       if ( !apiToken ) {
         throw new Error( "Gack, tried to save an observation without API token!" );
       }
-      uploadObservation( localObs, realm, apiToken );
+      Observation.uploadObservation( localObs, apiToken, realm );
       if ( localObs ) {
         setNextScreen( );
       }

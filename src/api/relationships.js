@@ -5,8 +5,7 @@ import inatjs from "inaturalistjs";
 import handleError from "./error";
 
 const PARAMS = {
-  fields: "all",
-  per_page: 10
+  fields: "all"
 };
 
 const fetchRelationships = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
@@ -18,4 +17,26 @@ const fetchRelationships = async ( params: Object = {}, opts: Object = {} ): Pro
   }
 };
 
-export default fetchRelationships;
+const updateRelationships = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+  try {
+    const response = await inatjs.relationships.update( { ...PARAMS, ...params }, opts );
+    return response;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const deleteRelationships = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+  try {
+    const response = await inatjs.relationships.delete( params, opts );
+    return response;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+export {
+  deleteRelationships,
+  fetchRelationships,
+  updateRelationships
+};

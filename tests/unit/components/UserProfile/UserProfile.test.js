@@ -9,13 +9,12 @@ import React from "react";
 
 import factory from "../../../factory";
 
-const testUser = factory( "RemoteUser" );
-const mockUser = testUser;
+const mockUser = factory( "RemoteUser" );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
-    data: [mockUser]
+    data: mockUser
   } )
 } ) );
 
@@ -44,10 +43,10 @@ const renderUserProfile = ( ) => render(
 test( "renders user profile from API call", ( ) => {
   const { getByTestId, getByText } = renderUserProfile( );
 
-  expect( getByTestId( `UserProfile.${testUser.id}` ) ).toBeTruthy( );
-  expect( getByText( `@${testUser.login}` ) ).toBeTruthy( );
+  expect( getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy( );
+  expect( getByText( `@${mockUser.login}` ) ).toBeTruthy( );
   expect( getByTestId( "UserIcon.photo" ).props.source )
-    .toStrictEqual( { uri: testUser.icon_url } );
+    .toStrictEqual( { uri: mockUser.icon_url } );
 } );
 
 test.todo( "should not have accessibility errors" );
