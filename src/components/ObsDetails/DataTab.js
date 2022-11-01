@@ -8,8 +8,8 @@ import type { Node } from "react";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/obsDetails/obsDetails";
+import colors from "styles/tailwindColors";
 
 import addToProject from "./helpers/addToProject";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";

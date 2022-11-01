@@ -6,7 +6,7 @@ import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import colors from "styles/colors";
+import colors from "styles/tailwindColors";
 
 type Props = {
   photos: number,

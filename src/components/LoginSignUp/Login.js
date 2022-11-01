@@ -21,8 +21,8 @@ import {
   Dialog, Paragraph, Portal, Text, TextInput
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/colors";
 import viewStyles from "styles/login/login";
+import colors from "styles/tailwindColors";
 
 import {
   authenticateUser,

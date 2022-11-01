@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Avatar, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/colors";
+import colors from "styles/tailwindColors";
 
 type Props = {
   emptyComponent?: Function,

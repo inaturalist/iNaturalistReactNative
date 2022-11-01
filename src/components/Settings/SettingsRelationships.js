@@ -13,8 +13,8 @@ import {
 } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/settings/settings";
+import colors from "styles/tailwindColors";
 import { useDebounce } from "use-debounce";
 
 import BlockedUser from "./BlockedUser";

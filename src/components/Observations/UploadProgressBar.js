@@ -8,8 +8,8 @@ import {
   Button, ProgressBar, Text
 } from "react-native-paper";
 import useUploadObservations from "sharedHooks/useUploadObservations";
-import colors from "styles/colors";
 import { textStyles, viewStyles } from "styles/observations/uploadProgressBar";
+import colors from "styles/tailwindColors";
 
 type Props = {
   unuploadedObsList: Array<Object>,

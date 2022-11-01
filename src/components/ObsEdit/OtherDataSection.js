@@ -7,7 +7,7 @@ import type { Node } from "react";
 import React, { useContext } from "react";
 import { Button } from "react-native-paper";
 import RNPickerSelect from "react-native-picker-select";
-import colors from "styles/colors";
+import colors from "styles/tailwindColors";
 
 import Notes from "./Notes";
 
