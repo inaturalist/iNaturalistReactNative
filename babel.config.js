@@ -17,8 +17,7 @@ module.exports = {
         realmModels: "./src/realmModels",
         sharedHelpers: "./src/sharedHelpers",
         sharedHooks: "./src/sharedHooks",
-        styles: "./src/styles",
-        colors: "./tailwindColors"
+        styles: "./src/styles"
       }
     }]],
   env: {

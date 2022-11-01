@@ -1,6 +1,5 @@
 // @flow
 
-import colors from "colors";
 import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Pressable } from "components/styledComponents";
@@ -9,6 +8,7 @@ import React, { useRef, useState } from "react";
 import { Dimensions, FlatList } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Photo from "realmModels/Photo";
+import colors from "styles/tailwindColors";
 
 import CustomImageZoom from "./CustomImageZoom";
 

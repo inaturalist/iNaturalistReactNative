@@ -1,7 +1,6 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import colors from "colors";
 import CustomHeader from "components/SharedComponents/CustomHeader";
 import type { Node } from "react";
 import React from "react";
@@ -9,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Button } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import colors from "styles/tailwindColors";
 
 type Props = {
   observation: ?Object

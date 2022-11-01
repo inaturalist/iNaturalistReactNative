@@ -2,11 +2,11 @@
 
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
-import colors from "colors";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
+import colors from "styles/tailwindColors";
 
 type Props = {
   photos: number,

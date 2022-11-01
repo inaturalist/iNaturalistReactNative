@@ -1,7 +1,6 @@
 // @flow
 
 import CheckBox from "@react-native-community/checkbox";
-import colors from "colors";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
@@ -12,6 +11,7 @@ import {
   View
 } from "react-native";
 import { viewStyles } from "styles/settings/settings";
+import colors from "styles/tailwindColors";
 
 type Props = {
   relationship: Object,

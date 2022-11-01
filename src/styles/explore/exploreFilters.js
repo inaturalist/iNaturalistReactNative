@@ -1,7 +1,7 @@
-import colors from "colors";
 // @flow strict-local
 import { StyleSheet } from "react-native";
 import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import colors from "styles/tailwindColors";
 
 const pickerSelectStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   inputIOS: {

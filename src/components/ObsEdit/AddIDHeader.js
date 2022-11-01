@@ -2,12 +2,12 @@
 
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
-import colors from "colors";
 import { Pressable, Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import colors from "styles/tailwindColors";
 
 type Props = {
   showEditComment: boolean,

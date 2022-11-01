@@ -2,7 +2,6 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { fetchRemoteUser } from "api/users";
-import colors from "colors";
 import UserIcon from "components/SharedComponents/UserIcon";
 import { Pressable, Text, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -11,6 +10,7 @@ import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import User from "realmModels/User";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import colors from "styles/tailwindColors";
 
 const UserCard = ( ): Node => {
   const user = useCurrentUser( );

@@ -2,7 +2,6 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-import colors from "colors";
 import Button from "components/SharedComponents/Buttons/Button";
 import {
   Image, KeyboardAvoidingView, Pressable,
@@ -23,6 +22,7 @@ import {
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import viewStyles from "styles/login/login";
+import colors from "styles/tailwindColors";
 
 import {
   authenticateUser,

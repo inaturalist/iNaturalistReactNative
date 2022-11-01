@@ -7,7 +7,6 @@ import {
 } from "@gorhom/bottom-sheet";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import colors from "colors";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
@@ -28,6 +27,7 @@ import Photo from "realmModels/Photo";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import useLoggedIn from "sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
+import colors from "styles/tailwindColors";
 
 import DeleteObservationDialog from "./DeleteObservationDialog";
 import EvidenceSection from "./EvidenceSection";

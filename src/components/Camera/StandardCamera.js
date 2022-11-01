@@ -1,7 +1,6 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import colors from "colors";
 import { Pressable, Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext, RealmContext } from "providers/contexts";
@@ -13,6 +12,7 @@ import { Avatar, Snackbar, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
+import colors from "styles/tailwindColors";
 
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";

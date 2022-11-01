@@ -3,7 +3,6 @@
 import { Picker } from "@react-native-picker/picker";
 import fetchRelationships from "api/relationships";
 import { fetchRemoteUsers } from "api/users";
-import colors from "colors";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
@@ -15,6 +14,7 @@ import {
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/settings/settings";
+import colors from "styles/tailwindColors";
 import { useDebounce } from "use-debounce";
 
 import BlockedUser from "./BlockedUser";

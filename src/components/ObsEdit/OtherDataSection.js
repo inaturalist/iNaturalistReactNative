@@ -1,6 +1,5 @@
 // @flow
 
-import colors from "colors";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
@@ -8,6 +7,7 @@ import type { Node } from "react";
 import React, { useContext } from "react";
 import { Button } from "react-native-paper";
 import RNPickerSelect from "react-native-picker-select";
+import colors from "styles/tailwindColors";
 
 import Notes from "./Notes";
 

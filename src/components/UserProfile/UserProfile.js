@@ -2,7 +2,6 @@
 
 import { useRoute } from "@react-navigation/native";
 import { fetchRemoteUser } from "api/users";
-import colors from "colors";
 import Button from "components/SharedComponents/Buttons/Button";
 import CustomHeader from "components/SharedComponents/CustomHeader";
 import UserIcon from "components/SharedComponents/UserIcon";
@@ -16,6 +15,7 @@ import HTML from "react-native-render-html";
 import User from "realmModels/User";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import colors from "styles/tailwindColors";
 
 import updateRelationship from "./helpers/updateRelationship";
 import UserProjects from "./UserProjects";

@@ -7,7 +7,6 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { faveObservation, fetchRemoteObservation, unfaveObservation } from "api/observations";
-import colors from "colors";
 import createIdentification from "components/Identify/helpers/createIdentification";
 import Button from "components/SharedComponents/Buttons/Button";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
@@ -38,6 +37,7 @@ import useApiToken from "sharedHooks/useApiToken";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
+import colors from "styles/tailwindColors";
 
 import ActivityTab from "./ActivityTab";
 import DataTab from "./DataTab";

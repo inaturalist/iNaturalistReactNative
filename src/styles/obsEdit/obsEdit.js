@@ -1,11 +1,11 @@
 // @flow
 
-import colors from "colors";
 import { Dimensions, StyleSheet } from "react-native";
 import type {
   TextStyleProp,
   ViewStyleProp
 } from "react-native/Libraries/StyleSheet/StyleSheet";
+import colors from "styles/tailwindColors";
 
 const { width } = Dimensions.get( "screen" );
 
