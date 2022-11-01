@@ -40,6 +40,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       const obsPhotos = await Promise.all( photoUris.map(
         async photo => ObservationPhoto.new( photo, realm )
       ) );
+      console.log( obsPhotos, "obs photos" );
       let targetObservation = currentObs;
       if ( targetObservation ) {
         targetObservation = {
@@ -56,6 +57,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       } else {
         targetObservation = await Observation.createObsWithPhotos( obsPhotos );
       }
+      console.log( targetObservation, "target obs" );
       setObservations( [targetObservation] );
     };
 
