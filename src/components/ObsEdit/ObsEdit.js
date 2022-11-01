@@ -27,6 +27,7 @@ import { Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Photo from "realmModels/Photo";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+import useLocalObservation from "sharedHooks/useLocalObservation";
 import useLoggedIn from "sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 import colors from "styles/tailwindColors";
@@ -46,7 +47,6 @@ const ObsEdit = ( ): Node => {
     currentObsIndex,
     setCurrentObsIndex,
     observations,
-    openSavedObservation,
     saveObservation,
     saveAndUploadObservation,
     setObservations,
@@ -57,6 +57,15 @@ const ObsEdit = ( ): Node => {
   const { params } = useRoute( );
   const { t } = useTranslation( );
   const bottomSheetModalRef = useRef( null );
+  const localObservation = useLocalObservation( params?.uuid );
+
+  useEffect( ( ) => {
+    // when opening an observation from ObsDetails, fetch the local
+    // observation from realm
+    if ( localObservation ) {
+      setObservations( [localObservation] );
+    }
+  }, [localObservation, observations.length, setObservations] );
 
   const lastScreen = params?.lastScreen;
 
@@ -245,14 +254,6 @@ const ObsEdit = ( ): Node => {
     );
     setPhotoUris( uris );
   }, [currentObs] );
-
-  useEffect( ( ) => {
-    if ( currentObs ) return;
-    if ( !params?.uuid ) return;
-
-    // This should set the current obs in the context
-    openSavedObservation( params?.uuid );
-  }, [currentObs, openSavedObservation, params?.uuid] );
 
   const addEvidence = () => {
     bottomSheetModalRef.current?.present();
