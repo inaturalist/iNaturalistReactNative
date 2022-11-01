@@ -76,7 +76,7 @@
     "react-native-svg": "^12.3.0",
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.1.0",
-    "react-native-vision-camera": "^2.15.1",
+    "react-native-vision-camera": "^2.15.2",
     "react-spring": "^8.0.27",
     "react-tinder-card": "^1.6.1",
     "realm": "^11.0.0",
