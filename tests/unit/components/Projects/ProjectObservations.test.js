@@ -42,11 +42,9 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
 } ) );
 
 test( "displays project observations", ( ) => {
-  renderProjectDetails( );
-  // TODO restore these when we figure out why a FlatList can be inside a scrollview
-  // const { getByTestId, getByText } = renderProjectDetails( );
+  const { getByTestId, getByText } = renderProjectDetails( );
 
-  // expect( getByText( mockObservation.taxon.preferred_common_name ) ).toBeTruthy( );
-  // expect( getByTestId( "ObsList.photo" ).props.source )
-  //   .toStrictEqual( { uri: mockObservation.observation_photos[0].photo.url } );
+  expect( getByText( mockObservation.taxon.preferred_common_name ) ).toBeTruthy( );
+  expect( getByTestId( "ObsList.photo" ).props.source )
+    .toStrictEqual( { uri: mockObservation.observation_photos[0].photo.url } );
 } );

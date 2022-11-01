@@ -1,6 +1,7 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
+import { updateRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
 import Button from "components/SharedComponents/Buttons/Button";
 import CustomHeader from "components/SharedComponents/CustomHeader";
@@ -13,11 +14,11 @@ import { useWindowDimensions } from "react-native";
 import { Button as RNPaperButton } from "react-native-paper";
 import HTML from "react-native-render-html";
 import User from "realmModels/User";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/tailwindColors";
 
-import updateRelationship from "./helpers/updateRelationship";
 import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {
@@ -33,7 +34,11 @@ const UserProfile = ( ): React.Node => {
     optsWithAuth => fetchRemoteUser( userId, { }, optsWithAuth )
   );
 
-  const user = remoteUser ? remoteUser[0] : null;
+  const user = remoteUser || null;
+
+  const updateRelationshipsMutation = useAuthenticatedMutation(
+    ( id, optsWithAuth ) => updateRelationships( id, optsWithAuth )
+  );
 
   const showCount = ( count, label ) => (
     <View className="w-1/4 border border-border">
@@ -46,7 +51,10 @@ const UserProfile = ( ): React.Node => {
 
   const showUserRole = user?.roles?.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
 
-  const followUser = ( ) => updateRelationship( { id: userId, relationship: { following: true } } );
+  const followUser = ( ) => updateRelationshipsMutation.mutate( {
+    id: userId,
+    relationship: { following: true }
+  } );
 
   return (
     <ViewWithFooter>
