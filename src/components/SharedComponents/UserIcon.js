@@ -1,21 +1,17 @@
 // @flow
 
+import { Image } from "components/styledComponents";
 import * as React from "react";
-import { Image } from "react-native";
-import { imageStyles } from "styles/obsDetails/obsDetails";
 
 type Props = {
   uri: Object,
-  large?: boolean
+  // large?: boolean
 }
 
-const UserIcon = ( { uri, large }: Props ): React.Node => (
+const UserIcon = ( { uri }: Props ): React.Node => (
   <Image
+    className="w-12 h-12 rounded-full"
     source={uri}
-    style={[
-      imageStyles.userProfileIcon,
-      large && imageStyles.largeIcon
-    ]}
     testID="UserIcon.photo"
   />
 );

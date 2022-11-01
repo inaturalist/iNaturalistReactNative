@@ -29,9 +29,14 @@ const UserCard = ( ): Node => {
   if ( !user ) { return <View className="flex-row mx-5 items-center" />; }
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId: user.id } );
 
+  const productionIcon = remoteUser?.icon_url.replace( "staticdev", "static" );
+  const icon = {
+    uri: productionIcon
+  };
+
   return (
     <View className="flex-row mx-5 items-center">
-      {remoteUser && <UserIcon uri={{ uri: remoteUser?.icon_url }} large />}
+      {remoteUser && <UserIcon uri={icon} />}
       <View className="ml-2">
         <Text className="color-white my-1">{User.userHandle( user )}</Text>
         {remoteUser && (

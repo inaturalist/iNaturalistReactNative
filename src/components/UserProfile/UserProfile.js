@@ -33,7 +33,7 @@ const UserProfile = ( ): React.Node => {
     optsWithAuth => fetchRemoteUser( userId, { }, optsWithAuth )
   );
 
-  const user = remoteUser ? remoteUser[0] : null;
+  const user = remoteUser || null;
 
   const showCount = ( count, label ) => (
     <View className="w-1/4 border border-border">
@@ -55,7 +55,7 @@ const UserProfile = ( ): React.Node => {
         rightIcon={<RNPaperButton icon="pencil" textColor={colors.gray} />}
       />
       <View className="flex-row m-3" testID={`UserProfile.${userId}`}>
-        <UserIcon uri={User.uri( user )} large />
+        <UserIcon uri={User.uri( user )} />
         <View>
           <Text>{user.name}</Text>
           {showUserRole}
