@@ -28,7 +28,7 @@ const BlockedUser = ( { user, unblockUser }:Props ): Node => (
     </View>
     <Pressable
       style={viewStyles.removeRelationship}
-      onPress={() => unblockUser( user )}
+      onPress={unblockUser}
     >
       <Text>{t( "Unblock" )}</Text>
     </Pressable>

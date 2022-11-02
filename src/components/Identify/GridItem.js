@@ -1,5 +1,6 @@
 // @flow
 
+import createIdentification from "api/identifications";
 import Button from "components/SharedComponents/Buttons/Button";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -7,13 +8,12 @@ import {
   ActivityIndicator, Image, Pressable, Text, View
 } from "react-native";
 import Observation from "realmModels/Observation";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import {
   imageStyles,
   textStyles,
   viewStyles
 } from "styles/observations/gridItem";
-
-import createIdentification from "./helpers/createIdentification";
 
 type Props = {
   item: Object,
@@ -37,17 +37,25 @@ const GridItem = ( {
   // TODO: add fallback image when there is no uri
   const imageUri = Observation.projectUri( item );
 
+  const createIdentificationMutation = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => createIdentification( params, optsWithAuth ),
+    {
+      onSuccess: ( ) => {
+        const ids = Array.from( reviewedIds );
+        ids.push( item.id );
+        setReviewedIds( ids );
+      }
+    }
+  );
+
   const agreeWithObservation = async ( ) => {
     setShowLoadingWheel( true );
-    const results = await createIdentification( {
-      observation_id: item.uuid,
-      taxon_id: item.taxon.id
+    createIdentificationMutation.mutate( {
+      identification: {
+        observation_id: item.uuid,
+        taxon_id: item.taxon.id
+      }
     } );
-    if ( results === 1 ) {
-      const ids = Array.from( reviewedIds );
-      ids.push( item.id );
-      setReviewedIds( ids );
-    }
     setShowLoadingWheel( false );
   };
 

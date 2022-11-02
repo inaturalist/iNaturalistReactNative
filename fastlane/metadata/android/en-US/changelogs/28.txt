@@ -1,0 +1,4 @@
+Mostly backend changes
+
+* Changed many API requests to use React Query
+* Using Tailwind theme colors throughout

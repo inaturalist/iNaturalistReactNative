@@ -7,9 +7,9 @@ import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
 // with an object that includes the JWT
 const useAuthenticatedMutation = (
   queryFunction: Function,
-  handleCallback: Function,
+  mutationOptions: Object,
   queryOptions: Object = {}
-): any => useMutation( async ( ) => {
+): any => useMutation( async id => {
   // Note, getJWTToken() takes care of fetching a new token if the existing
   // one is expired. We *could* store the token in state with useState if
   // fetching from RNSInfo becomes a performance issue
@@ -18,7 +18,7 @@ const useAuthenticatedMutation = (
     ...queryOptions,
     api_token: apiToken
   };
-  return queryFunction( options );
-}, handleCallback );
+  return queryFunction( id, options );
+}, mutationOptions );
 
 export default useAuthenticatedMutation;
