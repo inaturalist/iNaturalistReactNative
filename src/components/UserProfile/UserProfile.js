@@ -54,7 +54,7 @@ const UserProfile = ( ): React.Node => {
         headerText={User.userHandle( user )}
         rightIcon={<RNPaperButton icon="pencil" textColor={colors.gray} />}
       />
-      <View className="flex-row m-3" testID={`UserProfile.${userId}`}>
+      <View className="flex-row justify-evenly items-center m-3" testID={`UserProfile.${userId}`}>
         <UserIcon uri={User.uri( user )} />
         <View>
           <Text>{user.name}</Text>

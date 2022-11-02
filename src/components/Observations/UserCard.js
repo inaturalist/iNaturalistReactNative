@@ -37,7 +37,7 @@ const UserCard = ( ): Node => {
   return (
     <View className="flex-row mx-5 items-center">
       {remoteUser && <UserIcon uri={icon} />}
-      <View className="ml-2">
+      <View className="ml-3">
         <Text className="color-white my-1">{User.userHandle( user )}</Text>
         {remoteUser && (
           <Text className="color-white my-1">
