@@ -20,6 +20,9 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+ios/.xcode.env.local
+# Might be used to customize the path to node that xcode uses
+ios/.xcode.env
 
 # Android/IntelliJ
 #
@@ -28,6 +31,8 @@ build/
 .gradle
 local.properties
 *.iml
+*.hprof
+.cxx/
 
 # node.js
 #
@@ -44,11 +49,9 @@ buck-out/
 # Bundle artifact
 *.jsbundle
 
-# CocoaPods
+# Ruby / CocoaPods
 /ios/Pods/
-
-# Ruby gems
-vendor/
+/vendor/bundle/
 
 # Realm
 *.realm*
@@ -64,12 +67,10 @@ vendor/
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
+fastlane/test_output
 fastlane/Appfile
 android/keystore.properties
 
 # Apple signing and auth files that fastlane might download
 *.cer
 *.mobileprovision
-
-# Might be used to customize the path to node that xcode uses
-ios/.xcode.env
