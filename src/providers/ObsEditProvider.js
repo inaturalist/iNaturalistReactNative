@@ -111,12 +111,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
     };
 
-    const openSavedObservation = async savedUUID => {
-      const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
-      setObservations( [obs] );
-      return obs;
-    };
-
     const deleteCurrentObservation = ( ) => {
       if ( currentObsIndex === observations.length - 1 ) {
         setCurrentObsIndex( currentObsIndex - 1 );
@@ -158,7 +152,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       currentObsIndex,
       deleteCurrentObservation,
       observations,
-      openSavedObservation,
       saveAndUploadObservation,
       saveObservation,
       setCurrentObsIndex,

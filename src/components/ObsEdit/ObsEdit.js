@@ -6,7 +6,7 @@ import {
   BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
 import { HeaderBackButton } from "@react-navigation/elements";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
@@ -18,13 +18,16 @@ import { Pressable, Text, View } from "components/styledComponents";
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useContext, useEffect, useRef, useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Photo from "realmModels/Photo";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+import useLocalObservation from "sharedHooks/useLocalObservation";
 import useLoggedIn from "sharedHooks/useLoggedIn";
 import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 import colors from "styles/tailwindColors";
@@ -44,7 +47,6 @@ const ObsEdit = ( ): Node => {
     currentObsIndex,
     setCurrentObsIndex,
     observations,
-    openSavedObservation,
     saveObservation,
     saveAndUploadObservation,
     setObservations,
@@ -55,6 +57,15 @@ const ObsEdit = ( ): Node => {
   const { params } = useRoute( );
   const { t } = useTranslation( );
   const bottomSheetModalRef = useRef( null );
+  const localObservation = useLocalObservation( params?.uuid );
+
+  useEffect( ( ) => {
+    // when opening an observation from ObsDetails, fetch the local
+    // observation from realm
+    if ( localObservation ) {
+      setObservations( [localObservation] );
+    }
+  }, [localObservation, observations.length, setObservations] );
 
   const lastScreen = params?.lastScreen;
 
@@ -80,14 +91,30 @@ const ObsEdit = ( ): Node => {
   const showDialog = ( ) => setDeleteDialogVisible( true );
   const hideDialog = ( ) => setDeleteDialogVisible( false );
 
-  const handleBackButtonPress = ( ) => {
+  const handleBackButtonPress = useCallback( async ( ) => {
+    setObservations( [] );
     if ( lastScreen === "StandardCamera" ) {
       navigation.navigate( "StandardCamera", { photos: photoUris } );
     } else {
       // show modal to dissuade user from going back
       navigation.goBack( );
     }
-  };
+  }, [lastScreen, navigation, photoUris, setObservations] );
+
+  useFocusEffect(
+    useCallback( ( ) => {
+      // make sure an Android user cannot back out to MyObservations with the back arrow
+      // and see a stale observation context state
+      const onBackPress = ( ) => {
+        handleBackButtonPress( );
+        return true;
+      };
+
+      BackHandler.addEventListener( "hardwareBackPress", onBackPress );
+
+      return ( ) => BackHandler.removeEventListener( "hardwareBackPress", onBackPress );
+    }, [handleBackButtonPress] )
+  );
 
   const renderKebabMenu = ( ) => (
     <>
@@ -227,14 +254,6 @@ const ObsEdit = ( ): Node => {
     );
     setPhotoUris( uris );
   }, [currentObs] );
-
-  useEffect( ( ) => {
-    if ( currentObs ) return;
-    if ( !params?.uuid ) return;
-
-    // This should set the current obs in the context
-    openSavedObservation( params?.uuid );
-  }, [currentObs, openSavedObservation, params?.uuid] );
 
   const addEvidence = () => {
     bottomSheetModalRef.current?.present();
