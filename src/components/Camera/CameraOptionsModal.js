@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
+import { UploadContext } from "providers/contexts";
 import * as React from "react";
 import { IconButton } from "react-native-paper";
 import colors from "styles/tailwindColors";
@@ -13,19 +13,22 @@ type Props = {
 }
 
 const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
-  // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
-  const obsEdit = React.useContext( ObsEditContext );
-  const currentObs = obsEdit?.currentObs;
-  const addObservationNoEvidence = obsEdit?.addObservationNoEvidence;
+  // Destructuring obsEdit means that we don't have to wrap every Jest test in UploadProvider
+  const uploadContext = React.useContext( UploadContext );
+  const currentObs = uploadContext?.currentObs;
+  const createObservationNoEvidence = uploadContext?.createObservationNoEvidence;
   const navigation = useNavigation( );
 
   const hasSound = currentObs?.observationSounds?.uri;
 
   const navAndCloseModal = ( screen, params ) => {
-    const setObservations = obsEdit?.setObservations;
+    const setObservations = uploadContext?.setObservations;
     // clear any previous observations before navigating
     if ( setObservations ) {
       setObservations( [] );
+    }
+    if ( screen === "ObsEdit" ) {
+      createObservationNoEvidence( );
     }
     // access nested screen
     navigation.navigate( screen, params );
@@ -38,10 +41,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
 
   const navToStandardCamera = ( ) => navAndCloseModal( "StandardCamera" );
 
-  const navToObsEdit = ( ) => {
-    addObservationNoEvidence( );
-    navAndCloseModal( "ObsEdit" );
-  };
+  const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
 
   const bulletedText = [
     t( "Take-a-photo-with-your-camera" ),

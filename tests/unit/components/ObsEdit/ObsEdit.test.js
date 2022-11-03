@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import { ObsEditContext } from "providers/contexts";
-import ObsEditProvider from "providers/ObsEditProvider";
+import { UploadContext } from "providers/contexts";
+import UploadProvider from "providers/UploadProvider";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -14,7 +14,7 @@ jest.useFakeTimers( );
 
 const mockLocationName = "San Francisco, CA";
 
-jest.mock( "../../../../src/providers/ObsEditProvider" );
+jest.mock( "../../../../src/providers/UploadProvider" );
 
 // mock Portal with a Modal component inside of it (MediaViewer)
 jest.mock( "react-native-paper", () => {
@@ -55,23 +55,23 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
-const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
+const mockUploadProviderWithObs = obs => UploadProvider.mockImplementation( ( { children } ) => (
   // eslint-disable-next-line react/jsx-no-constructed-context-values
-  <ObsEditContext.Provider value={{
+  <UploadContext.Provider value={{
     observations: obs,
     currentObsIndex: 0
   }}
   >
     {children}
-  </ObsEditContext.Provider>
+  </UploadContext.Provider>
 ) );
 
 const renderObsEdit = ( ) => render(
   <SafeAreaProvider>
     <NavigationContainer>
-      <ObsEditProvider>
+      <UploadProvider>
         <ObsEdit />
-      </ObsEditProvider>
+      </UploadProvider>
     </NavigationContainer>
   </SafeAreaProvider>
 );
@@ -82,7 +82,7 @@ test( "renders observation photo from photo gallery", ( ) => {
     longitude: -142.88,
     user: mockCurrentUser
   } )];
-  mockObsEditProviderWithObs( observations );
+  mockUploadProviderWithObs( observations );
 
   const { getByText } = renderObsEdit( );
 

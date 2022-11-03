@@ -9,32 +9,25 @@ import { useNavigation } from "@react-navigation/native";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
 import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
 import { Text, View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback,
-  useContext, useEffect,
+  useCallback, useEffect,
   useRef, useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import Photo from "realmModels/Photo";
 import { textStyles } from "styles/obsEdit/obsEdit";
 
 type Props = {
   showAddEvidenceModal: boolean,
+  photoUris: Array<string>,
   setShowAddEvidenceModal: Function
 }
 
-const AddEvidenceModal = ( { showAddEvidenceModal, setShowAddEvidenceModal }: Props ): Node => {
-  const {
-    currentObsIndex,
-    observations
-  } = useContext( ObsEditContext );
-  const currentObs = observations[currentObsIndex];
-  const obsPhotos = currentObs?.observationPhotos;
-  const photoUris = obsPhotos && Array.from( obsPhotos ).map(
-    obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
-  );
+const AddEvidenceModal = ( {
+  showAddEvidenceModal,
+  setShowAddEvidenceModal,
+  photoUris
+}: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const bottomSheetModalRef = useRef( null );
@@ -69,13 +62,13 @@ const AddEvidenceModal = ( { showAddEvidenceModal, setShowAddEvidenceModal }: Pr
   );
 
   const onImportPhoto = async () => {
-    navigation.navigate( "PhotoGallery", { photos: photoUris, skipGroupPhotos: true } );
+    navigation.navigate( "PhotoGallery", { skipGroupPhotos: true } );
 
     bottomSheetModalRef.current?.dismiss();
   };
 
   const onTakePhoto = async () => {
-    navigation.navigate( "StandardCamera", { photos: photoUris } );
+    navigation.navigate( "StandardCamera", { addEvidence: true } );
 
     bottomSheetModalRef.current?.dismiss();
   };

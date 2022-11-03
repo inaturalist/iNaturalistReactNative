@@ -2,21 +2,18 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { UploadContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
-import Observation from "realmModels/Observation";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 import GroupPhotosHeader from "./GroupPhotosHeader";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
-const { useRealm } = RealmContext;
-
 const GroupPhotos = ( ): Node => {
-  const { addObservations } = useContext( ObsEditContext );
+  const { createObservationsFromGroupedPhotos } = useContext( UploadContext );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { selectedPhotos } = params;
@@ -24,7 +21,6 @@ const GroupPhotos = ( ): Node => {
     photos: [photo]
   } ) );
   const [selectionMode, setSelectionMode] = useState( false );
-  const realm = useRealm( );
 
   // nesting observations under observations key to be able to rerender flatlist on selections
   const [obsToEdit, setObsToEdit] = useState( { observations } );
@@ -152,9 +148,7 @@ const GroupPhotos = ( ): Node => {
   };
 
   const navToObsEdit = async ( ) => {
-    const obs = obsToEdit.observations;
-    const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs, realm );
-    addObservations( obsPhotos );
+    createObservationsFromGroupedPhotos( obsToEdit.observations );
     navigation.navigate( "ObsEdit" );
   };
 

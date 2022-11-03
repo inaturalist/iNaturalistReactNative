@@ -2,7 +2,7 @@
 
 import Button from "components/SharedComponents/Buttons/Button";
 import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
+import { UploadContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import {
@@ -20,7 +20,7 @@ const DeleteObservationDialog = ( {
 }: Props ): Node => {
   const {
     deleteCurrentObservation
-  } = useContext( ObsEditContext );
+  } = useContext( UploadContext );
   const deleteObservation = async ( ) => {
     deleteCurrentObservation( );
     hideDialog( );

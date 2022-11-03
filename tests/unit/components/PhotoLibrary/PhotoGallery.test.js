@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
 import PhotoGallery from "components/PhotoLibrary/PhotoGallery";
-import { ObsEditContext } from "providers/contexts";
+import { UploadContext } from "providers/contexts";
 import React from "react";
 
 import factory from "../../../factory";
@@ -57,9 +57,9 @@ const fakeObs = {
 
 const renderPhotoGallery = ( ) => render(
   <NavigationContainer>
-    <ObsEditContext.Provider value={fakeObs}>
+    <UploadContext.Provider value={fakeObs}>
       <PhotoGallery />
-    </ObsEditContext.Provider>
+    </UploadContext.Provider>
   </NavigationContainer>
 );
 

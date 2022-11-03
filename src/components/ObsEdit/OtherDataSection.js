@@ -2,7 +2,7 @@
 
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
+import { UploadContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { Button } from "react-native-paper";
@@ -16,7 +16,7 @@ const OtherDataSection = ( ): Node => {
     currentObsIndex,
     observations,
     updateObservationKey
-  } = useContext( ObsEditContext );
+  } = useContext( UploadContext );
 
   const geoprivacyOptions = [{
     label: t( "Open" ),

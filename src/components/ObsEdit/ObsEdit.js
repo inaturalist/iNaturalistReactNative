@@ -6,7 +6,7 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import Button from "components/SharedComponents/Buttons/Button";
 import ScrollNoFooter from "components/SharedComponents/ScrollNoFooter";
 import { Text, View } from "components/styledComponents";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { RealmContext, UploadContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -39,12 +39,13 @@ const ObsEdit = ( ): Node => {
     saveAndUploadObservation,
     setObservations,
     updateObservationKeys
-  } = useContext( ObsEditContext );
+  } = useContext( UploadContext );
   const currentObs = observations[currentObsIndex];
   const obsPhotos = currentObs?.observationPhotos;
-  const photoUris = obsPhotos && Array.from( obsPhotos ).map(
+  const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
     obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
-  );
+  ) : [];
+
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { t } = useTranslation( );
@@ -57,8 +58,6 @@ const ObsEdit = ( ): Node => {
       setObservations( [localObservation] );
     }
   }, [localObservation, observations.length, setObservations] );
-
-  const lastScreen = params?.lastScreen;
 
   const isLoggedIn = useLoggedIn( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -74,13 +73,8 @@ const ObsEdit = ( ): Node => {
 
   const handleBackButtonPress = useCallback( async ( ) => {
     setObservations( [] );
-    if ( lastScreen === "StandardCamera" ) {
-      navigation.navigate( "StandardCamera", { photos: photoUris } );
-    } else {
-      // show modal to dissuade user from going back
-      navigation.goBack( );
-    }
-  }, [lastScreen, navigation, photoUris, setObservations] );
+    navigation.goBack( );
+  }, [navigation, setObservations] );
 
   useFocusEffect(
     useCallback( ( ) => {
@@ -240,6 +234,7 @@ const ObsEdit = ( ): Node => {
         <AddEvidenceModal
           showAddEvidenceModal={showAddEvidenceModal}
           setShowAddEvidenceModal={setShowAddEvidenceModal}
+          photoUris={photoUris}
         />
       </ScrollNoFooter>
     </>

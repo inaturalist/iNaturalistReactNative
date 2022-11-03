@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import Button from "components/SharedComponents/Buttons/Button";
 import { Text, View } from "components/styledComponents";
 import { iconicTaxaIds, iconicTaxaNames } from "dictionaries/iconicTaxaIds";
-import { ObsEditContext } from "providers/contexts";
+import { UploadContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,7 +17,7 @@ const IdentificationSection = ( ): Node => {
     currentObsIndex,
     observations,
     updateTaxon
-  } = useContext( ObsEditContext );
+  } = useContext( UploadContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const { colors } = useTheme( );

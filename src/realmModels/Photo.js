@@ -24,6 +24,17 @@ class Photo extends Realm.Object {
     return localPhoto;
   }
 
+  static photoUniqueIdentifier( pathOrUri ) {
+    let identifier = pathOrUri.split( "/" ).slice( -1 ).pop( );
+
+    // If pathOrUri is an ios localIdentifier, make up a filename based on that
+    const iosLocalIdentifierMatches = pathOrUri.match( /^ph:\/\/([^/]+)/ );
+    if ( iosLocalIdentifierMatches ) {
+      identifier = iosLocalIdentifierMatches[1];
+    }
+    return identifier.split( "." )[0];
+  }
+
   static async resizeImageForUpload( pathOrUri ) {
     const width = 2048;
     const { photoUploadPath } = Photo;
@@ -99,14 +110,6 @@ class Photo extends Realm.Object {
   static deletePhotoFromDeviceStorage( photoPath ) {
     const fileName = photoPath.split( "photoUploads/" )[1];
     RNFS.unlink( `${Photo.photoUploadPath}/${fileName}` );
-  }
-
-  static async savePhoto( realm, cameraPhoto ) {
-    const photo = await Photo.new( cameraPhoto.path );
-    realm?.write( ( ) => {
-      realm?.create( "Photo", photo );
-    } );
-    return photo.localFilePath;
   }
 
   static async deleteRemotePhoto( realm, uri ) {

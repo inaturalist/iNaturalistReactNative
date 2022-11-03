@@ -3,10 +3,10 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Pressable, Text, View } from "components/styledComponents";
 import { t } from "i18next";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { UploadContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useContext, useEffect, useRef, useState
+  useContext, useRef, useState
 } from "react";
 import { Avatar, Snackbar, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -18,16 +18,19 @@ import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
 
-const { useRealm } = RealmContext;
-
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const StandardCamera = ( ): Node => {
   const { colors: themeColors } = useTheme( );
-  const { addPhotos } = useContext( ObsEditContext );
+  const {
+    addCameraPhotosToCurrentObs,
+    createObsWithCameraPhotos, cameraPreviewUris, setCameraPreviewUris, allObsPhotoUris,
+    evidenceToAdd,
+    setEvidenceToAdd
+  } = useContext( UploadContext );
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const photos = params?.photos;
+  const addEvidence = params?.addEvidence;
   // $FlowFixMe
   const camera = useRef<Camera>( null );
   const [cameraPosition, setCameraPosition] = useState( "back" );
@@ -36,14 +39,11 @@ const StandardCamera = ( ): Node => {
   const [takePhotoOptions, setTakePhotoOptions] = useState( {
     flash: "off"
   } );
-  const [photoUris, setPhotoUris] = useState( [] );
   const [savingPhoto, setSavingPhoto] = useState( false );
-  const disallowAddingPhotos = photoUris.length >= MAX_PHOTOS_ALLOWED;
+  const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
 
-  const photosTaken = photoUris.length > 0;
-
-  const realm = useRealm( );
+  const photosTaken = allObsPhotoUris.length > 0;
 
   const takePhoto = async ( ) => {
     setSavingPhoto( true );
@@ -54,9 +54,13 @@ const StandardCamera = ( ): Node => {
         return;
       }
       const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-      const uri = await Photo.savePhoto( realm, cameraPhoto );
+      const newPhoto = await Photo.new( cameraPhoto.path );
+      const uri = newPhoto.localFilePath;
 
-      setPhotoUris( photoUris.concat( [uri] ) );
+      setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
+      if ( addEvidence ) {
+        setEvidenceToAdd( [...evidenceToAdd, uri] );
+      }
       setSavingPhoto( false );
     } catch ( e ) {
       console.log( e, "couldn't take photo" );
@@ -77,18 +81,14 @@ const StandardCamera = ( ): Node => {
   };
 
   const navToObsEdit = ( ) => {
-    addPhotos( photoUris );
-    navigation.navigate(
-      "ObsEdit",
-      { lastScreen: photos && photos.length > 0 ? null : "StandardCamera" }
-    );
-  };
-
-  useEffect( ( ) => {
-    if ( photos?.length > 0 ) {
-      setPhotoUris( photos );
+    if ( addEvidence ) {
+      addCameraPhotosToCurrentObs( evidenceToAdd );
+      navigation.navigate( "ObsEdit" );
+      return;
     }
-  }, [photos] );
+    createObsWithCameraPhotos( cameraPreviewUris );
+    navigation.navigate( "ObsEdit" );
+  };
 
   const renderCameraOptionsButtons = icon => (
     <Avatar.Icon
@@ -109,7 +109,11 @@ const StandardCamera = ( ): Node => {
   return (
     <View className="flex-1 bg-black">
       {device && <CameraView device={device} camera={camera} />}
-      <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} savingPhoto={savingPhoto} />
+      <PhotoPreview
+        photoUris={cameraPreviewUris}
+        setPhotoUris={setCameraPreviewUris}
+        savingPhoto={savingPhoto}
+      />
       <FadeInOutView savingPhoto={savingPhoto} />
       <View className="absolute bottom-0">
         <View className="flex-row justify-between w-screen mb-4 px-4">

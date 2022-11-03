@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import PlaceholderText from "components/PlaceholderText";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
-import { ObsEditContext } from "providers/contexts";
+import { UploadContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,7 +16,7 @@ import { textStyles, viewStyles } from "styles/soundRecorder/soundRecorder";
 const audioRecorderPlayer = new AudioRecorderPlayer( );
 
 const SoundRecorder = ( ): Node => {
-  const { addSound } = useContext( ObsEditContext );
+  const { addSound } = useContext( UploadContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   // https://www.npmjs.com/package/react-native-audio-recorder-player

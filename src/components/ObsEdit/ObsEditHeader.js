@@ -3,7 +3,7 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import { Pressable, Text, View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
+import { UploadContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useState
@@ -24,7 +24,7 @@ const ObsEditHeader = ( { handleBackButtonPress }: Props ): Node => {
     currentObsIndex,
     setCurrentObsIndex,
     observations
-  } = useContext( ObsEditContext );
+  } = useContext( UploadContext );
 
   const { t } = useTranslation( );
 
