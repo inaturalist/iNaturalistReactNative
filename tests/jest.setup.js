@@ -8,6 +8,8 @@ import { mockCamera, mockSortDevices } from "./vision-camera/vision-camera";
 
 require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
 
+jest.useFakeTimers();
+
 jest.mock( "react-native-vision-camera", ( ) => ( {
   Camera: mockCamera,
   sortDevices: mockSortDevices
