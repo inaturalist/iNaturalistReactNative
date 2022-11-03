@@ -18,6 +18,8 @@ export class mockCamera extends React.PureComponent {
     return "authorized";
   }
 
+  // I (johannes) did not use this function in the tests,
+  // but it's here as in documentation in case someone needs it
   // async takePhoto() {
   //   const writePath = `${RNFS.DocumentDirectoryPath}/simulated_camera_photo.png`;
 
