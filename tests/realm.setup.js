@@ -40,10 +40,10 @@ jest.mock( "../src/providers/contexts", ( ) => {
 // do this without having jest.mock complain about referring to variables out
 // of scope, please propose it.
 beforeAll( async ( ) => {
-  // console.log(
-  //   "realmConfig.schema[0].prototype instanceof Realm.Object: ",
-  //   realmConfig.schema[0].prototype instanceof Realm.Object
-  // );
+  console.log(
+    "realmConfig.schema[0].prototype instanceof Realm.Object: ",
+    realmConfig.schema[0].prototype instanceof Realm.Object
+  );
   global.realm = await Realm.open( realmConfig );
 } );
 
