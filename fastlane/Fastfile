@@ -25,6 +25,9 @@ EDITOR = editor_cmd_needs_to_wait ? "#{editor_cmd} -w" : editor_cmd
 XCODEPROJ = "ios/iNaturalistReactNative.xcodeproj"
 PACKAGE_ID = CredentialsManager::AppfileConfig.try_fetch_value( :package_name )
 
+# https://github.com/fastlane/fastlane/issues/20741#issuecomment-1280687500
+ENV["ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD"] = "true"
+
 def set_android_version_code( new_version_code )
   build_gradle_path = "../android/app/build.gradle"
   new_gradle = File.read( build_gradle_path ).sub( /versionCode\s+\d+/, "versionCode #{new_version_code}" )
@@ -317,9 +320,12 @@ lane :internal do
     release_status: "draft",
     version_name: last_tag
   )
+
   upload_to_testflight(
     ipa: get_ipa_path,
-    changelog: ( File.read( changelog_path ) rescue nil )
+    changelog: ( File.read( changelog_path ) rescue nil ),
+    # https://github.com/fastlane/fastlane/issues/20756
+    itc_provider: CredentialsManager::AppfileConfig.try_fetch_value( :itc_provider )
   )
 end
 

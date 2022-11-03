@@ -45,6 +45,15 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   } )
 } ) );
 
+// TODO if/when we test mutation behavior, the mutation will need to be mocked
+// so it actually does something, or we need to take a different approach
+jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    mutate: ( ) => null
+  } )
+} ) );
+
 jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
   getUserId: ( ) => mockObservation.user.id
 } ) );
