@@ -22,7 +22,6 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   const hasSound = currentObs?.observationSounds?.uri;
 
   const navAndCloseModal = ( screen, params ) => {
-    console.log( uploadContext, "upload context" );
     const resetUploadContext = uploadContext?.resetUploadContext;
     // clear previous upload context before navigating
     if ( resetUploadContext ) {

@@ -10,12 +10,11 @@ import { RealmContext, UploadContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useContext, useEffect, useRef, useState
+  useContext, useEffect, useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler } from "react-native";
 import Photo from "realmModels/Photo";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import useLoggedIn from "sharedHooks/useLoggedIn";
 import { viewStyles } from "styles/obsEdit/obsEdit";
@@ -28,9 +27,6 @@ import OtherDataSection from "./OtherDataSection";
 
 const { useRealm } = RealmContext;
 
-const INITIAL_POSITIONAL_ACCURACY = 99999;
-const TARGET_POSITIONAL_ACCURACY = 10;
-
 const ObsEdit = ( ): Node => {
   const {
     currentObs,
@@ -38,7 +34,6 @@ const ObsEdit = ( ): Node => {
     saveObservation,
     saveAndUploadObservation,
     setObservations,
-    updateObservationKeys,
     resetUploadContext
   } = useContext( UploadContext );
   const obsPhotos = currentObs?.observationPhotos;
@@ -63,10 +58,7 @@ const ObsEdit = ( ): Node => {
   const isLoggedIn = useLoggedIn( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
-  const [shouldFetchLocation, setShouldFetchLocation] = useState( !currentObs?._created_at );
-  const [fetchingLocation, setFetchingLocation] = useState( false );
-  const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
-  const mountedRef = useRef( true );
+
   const [showAddEvidenceModal, setShowAddEvidenceModal] = useState( false );
 
   const showModal = ( ) => setMediaViewerVisible( true );
@@ -91,76 +83,6 @@ const ObsEdit = ( ): Node => {
       return ( ) => BackHandler.removeEventListener( "hardwareBackPress", onBackPress );
     }, [handleBackButtonPress] )
   );
-
-  // Hook version of componentWillUnmount. We use a ref to track mounted
-  // state (not useState, which might get frozen in a closure for other
-  // useEffects), and set it to false in the cleanup cleanup function. The
-  // effect has an empty dependency array so it should only run when the
-  // component mounts and when it unmounts, unlike in the cleanup effects of
-  // other hooks, which will run when any of there dependency values change,
-  // and maybe even before other hooks execute. If we ever need to do this
-  // again we could probably wrap this into its own hook, like useMounted
-  // ( ).
-  useEffect( ( ) => {
-    mountedRef.current = true;
-    return function cleanup( ) {
-      mountedRef.current = false;
-    };
-  }, [] );
-
-  useEffect( ( ) => {
-    if ( !currentObs ) return;
-
-    if ( !shouldFetchLocation ) return;
-
-    if ( fetchingLocation ) return;
-
-    const fetchLocation = async () => {
-      // If the component is gone, you won't be able to updated it
-      if ( !mountedRef.current ) return;
-
-      if ( !shouldFetchLocation ) return;
-      setFetchingLocation( false );
-
-      const location = await fetchUserLocation( );
-
-      // If we're still receiving location updates and location is blank,
-      // then we don't know where we are any more and the obs should update
-      // to reflect that
-      updateObservationKeys( {
-        place_guess: location?.place_guess,
-        latitude: location?.latitude,
-        longitude: location?.longitude,
-        positional_accuracy: location?.positional_accuracy
-      } );
-
-      // The local state version of positionalAccuracy needs to be a number,
-      // so don't set it to
-      const newPositionalAccuracy = location?.positional_accuracy || INITIAL_POSITIONAL_ACCURACY;
-      setPositionalAccuracy( newPositionalAccuracy );
-    };
-
-    if (
-      // If we're already fetching we don't need to fetch again
-      !fetchingLocation
-      // We only need to fetch when we're above the target
-      && positionalAccuracy >= TARGET_POSITIONAL_ACCURACY
-    ) {
-      setFetchingLocation( true );
-      // No need to fetch more than once a second
-      setTimeout( fetchLocation, 1000 );
-    } else {
-      setShouldFetchLocation( false );
-    }
-  }, [
-    currentObs,
-    fetchingLocation,
-    positionalAccuracy,
-    setFetchingLocation,
-    setShouldFetchLocation,
-    shouldFetchLocation,
-    updateObservationKeys
-  ] );
 
   const realm = useRealm( );
 
