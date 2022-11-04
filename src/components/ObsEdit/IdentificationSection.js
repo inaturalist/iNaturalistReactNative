@@ -14,15 +14,13 @@ import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 
 const IdentificationSection = ( ): Node => {
   const {
-    currentObsIndex,
-    observations,
+    currentObs,
     updateTaxon
   } = useContext( UploadContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const { colors } = useTheme( );
 
-  const currentObs = observations[currentObsIndex];
   const identification = currentObs.taxon;
 
   const updateIdentification = taxon => updateTaxon( taxon );

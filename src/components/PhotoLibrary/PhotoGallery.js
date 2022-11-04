@@ -58,9 +58,9 @@ const PhotoGallery = ( ): Node => {
   const { params } = useRoute( );
   const skipGroupPhotos = params?.skipGroupPhotos;
 
-  const selectedPhotos = galleryPhotos.filter( photo => galleryUris.includes( photo.image.uri ) );
+  const selectedPhotos = galleryPhotos.filter( photo => galleryUris?.includes( photo.image.uri ) );
   const selectedEvidenceToAdd = galleryPhotos.filter(
-    photo => evidenceToAdd.includes( photo.image.uri )
+    photo => evidenceToAdd?.includes( photo.image.uri )
   );
 
   // If this component is being rendered we have either already asked for
@@ -130,7 +130,7 @@ const PhotoGallery = ( ): Node => {
 
   const unselectPhoto = item => {
     const newGalleryUris = galleryUris;
-    const i = galleryUris.findIndex( uri => uri === item.image.uri );
+    const i = galleryUris?.findIndex( uri => uri === item.image.uri );
     newGalleryUris.splice( i, 1 );
     setGalleryUris( newGalleryUris );
     if ( skipGroupPhotos ) {
@@ -151,7 +151,7 @@ const PhotoGallery = ( ): Node => {
     }
   };
 
-  const checkSelected = uri => galleryUris.find( u => u === uri );
+  const checkSelected = uri => galleryUris?.find( u => u === uri );
 
   const renderImage = ( { item } ) => {
     const uri = item?.image?.uri;

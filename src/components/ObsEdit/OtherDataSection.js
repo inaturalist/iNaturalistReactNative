@@ -13,8 +13,7 @@ import Notes from "./Notes";
 
 const OtherDataSection = ( ): Node => {
   const {
-    currentObsIndex,
-    observations,
+    currentObs,
     updateObservationKey
   } = useContext( UploadContext );
 
@@ -40,8 +39,6 @@ const OtherDataSection = ( ): Node => {
     label: t( "Yes" ),
     value: false
   }];
-
-  const currentObs = observations[currentObsIndex];
 
   const addNotes = text => updateObservationKey( "description", text );
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );

@@ -12,9 +12,7 @@ import factory from "../../../factory";
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.
 jest.useFakeTimers( );
 
-const mockLocationName = "San Francisco, CA";
-
-jest.mock( "../../../../src/providers/UploadProvider" );
+jest.mock( "providers/UploadProvider" );
 
 // mock Portal with a Modal component inside of it (MediaViewer)
 jest.mock( "react-native-paper", () => {
@@ -27,9 +25,16 @@ jest.mock( "react-native-paper", () => {
   return MockedModule;
 } );
 
-jest.mock( "../../../../src/sharedHooks/useLocationName", ( ) => ( {
+const mockLocationName = "San Francisco, CA";
+
+jest.mock( "sharedHooks/useLocationName", ( ) => ( {
   __esModule: true,
   default: ( ) => mockLocationName
+} ) );
+
+jest.mock( "sharedHooks/useLoggedIn", ( ) => ( {
+  __esModule: true,
+  default: ( ) => true
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -41,17 +46,6 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
-  __esModule: true,
-  default: ( ) => true
-} ) );
-
-const mockCurrentUser = factory( "LocalUser" );
-
-jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
-  getUserId: ( ) => mockCurrentUser.id
-} ) );
-
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
@@ -59,7 +53,7 @@ const mockUploadProviderWithObs = obs => UploadProvider.mockImplementation( ( { 
   // eslint-disable-next-line react/jsx-no-constructed-context-values
   <UploadContext.Provider value={{
     observations: obs,
-    currentObsIndex: 0
+    currentObs: obs[0]
   }}
   >
     {children}
@@ -76,20 +70,23 @@ const renderObsEdit = ( ) => render(
   </SafeAreaProvider>
 );
 
+const mockCurrentUser = factory( "LocalUser" );
+
 test( "renders observation photo from photo gallery", ( ) => {
   const observations = [factory( "RemoteObservation", {
     latitude: 37.99,
     longitude: -142.88,
-    user: mockCurrentUser
+    user: mockCurrentUser,
+    place_guess: mockLocationName
   } )];
   mockUploadProviderWithObs( observations );
 
   const { getByText } = renderObsEdit( );
 
   const obs = observations[0];
-  const { longitude } = obs;
 
-  expect( getByText( new RegExp( longitude ) ) ).toBeTruthy( );
+  expect( getByText( obs.place_guess ) ).toBeTruthy( );
+  expect( getByText( new RegExp( obs.longitude ) ) ).toBeTruthy( );
 } );
 
 // right now this is failing on react-native-modal, since there's a TouchableWithFeedback

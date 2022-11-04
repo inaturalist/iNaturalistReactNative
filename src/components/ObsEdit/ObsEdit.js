@@ -33,14 +33,13 @@ const TARGET_POSITIONAL_ACCURACY = 10;
 
 const ObsEdit = ( ): Node => {
   const {
-    currentObsIndex,
+    currentObs,
     observations,
     saveObservation,
     saveAndUploadObservation,
     setObservations,
     updateObservationKeys
   } = useContext( UploadContext );
-  const currentObs = observations[currentObsIndex];
   const obsPhotos = currentObs?.observationPhotos;
   const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
     obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )

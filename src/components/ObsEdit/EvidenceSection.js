@@ -31,8 +31,8 @@ const EvidenceSection = ( {
 
   const updateObservedOn = value => updateObservationKey( "observed_on_string", value );
 
-  const latitude = currentObs && currentObs.latitude;
-  const longitude = currentObs && currentObs.longitude;
+  const latitude = currentObs?.latitude;
+  const longitude = currentObs?.longitude;
 
   const handleDatePicked = selectedDate => {
     if ( selectedDate ) {
