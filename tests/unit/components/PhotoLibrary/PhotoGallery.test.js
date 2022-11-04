@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
-import PhotoGallery from "components/PhotoLibrary/PhotoGallery";
+import PhotoGallery from "components/BulkUploader/PhotoGallery";
 import { UploadContext } from "providers/contexts";
 import React from "react";
 
@@ -12,12 +12,12 @@ jest.useFakeTimers( );
 
 const mockPhoto = factory( "DevicePhoto" );
 
-jest.mock( "../../../../src/components/PhotoLibrary/hooks/useCameraRollPhotos", ( ) => ( {
+jest.mock( "../../../../src/components/BulkUploader/hooks/useCameraRollPhotos", ( ) => ( {
   __esModule: true,
   default: ( ) => ( { photos: [mockPhoto] } )
 } ) );
 
-jest.mock( "../../../../src/components/PhotoLibrary/hooks/usePhotoAlbums", ( ) => ( {
+jest.mock( "../../../../src/components/BulkUploader/hooks/usePhotoAlbums", ( ) => ( {
   __esModule: true,
   default: ( ) => [{
     label: "camera roll",

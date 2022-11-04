@@ -38,7 +38,8 @@ const ObsEdit = ( ): Node => {
     saveObservation,
     saveAndUploadObservation,
     setObservations,
-    updateObservationKeys
+    updateObservationKeys,
+    resetUploadContext
   } = useContext( UploadContext );
   const obsPhotos = currentObs?.observationPhotos;
   const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
@@ -54,9 +55,10 @@ const ObsEdit = ( ): Node => {
     // when opening an observation from ObsDetails, fetch the local
     // observation from realm
     if ( localObservation ) {
+      resetUploadContext( );
       setObservations( [localObservation] );
     }
-  }, [localObservation, observations.length, setObservations] );
+  }, [localObservation, setObservations, resetUploadContext] );
 
   const isLoggedIn = useLoggedIn( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );

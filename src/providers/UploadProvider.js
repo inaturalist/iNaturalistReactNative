@@ -21,6 +21,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [galleryUris, setGalleryUris] = useState( [] );
   const [evidenceToAdd, setEvidenceToAdd] = useState( [] );
 
+  const resetUploadContext = useCallback( ( ) => {
+    setObservations( [] );
+    setCurrentObsIndex( 0 );
+    setCameraPreviewUris( [] );
+    setGalleryUris( [] );
+    setEvidenceToAdd( [] );
+  }, [] );
+
   const allObsPhotoUris = useMemo(
     ( ) => [...cameraPreviewUris, ...galleryUris],
     [cameraPreviewUris, galleryUris]
@@ -178,7 +186,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       createObservationFromGallery,
       evidenceToAdd,
       setEvidenceToAdd,
-      addCameraPhotosToCurrentObs
+      addCameraPhotosToCurrentObs,
+      resetUploadContext
     };
   }, [
     currentObs,
@@ -194,7 +203,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     createObservationFromGallery,
     evidenceToAdd,
     setEvidenceToAdd,
-    addCameraPhotosToCurrentObs
+    addCameraPhotosToCurrentObs,
+    resetUploadContext
   ] );
 
   return (

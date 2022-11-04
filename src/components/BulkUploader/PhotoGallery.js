@@ -153,9 +153,12 @@ const PhotoGallery = ( ): Node => {
 
   const checkSelected = uri => galleryUris?.find( u => u === uri );
 
+  const checkPreviouslySelected = uri => !evidenceToAdd?.includes( uri );
+
   const renderImage = ( { item } ) => {
     const uri = item?.image?.uri;
     const isSelected = checkSelected( uri );
+    const isDisabled = skipGroupPhotos && isSelected && checkPreviouslySelected( uri );
 
     const handleImagePress = ( ) => {
       if ( isSelected || allObsPhotoUris.length < MAX_PHOTOS_ALLOWED ) {
@@ -170,6 +173,7 @@ const PhotoGallery = ( ): Node => {
         uri={uri}
         handleImagePress={handleImagePress}
         isSelected={isSelected}
+        isDisabled={isDisabled}
       />
     );
   };
@@ -207,7 +211,7 @@ const PhotoGallery = ( ): Node => {
 
   const photosByAlbum = photoGallery[selectedAlbum];
 
-  const totalSelected = selectedPhotos.length;
+  const totalSelected = skipGroupPhotos ? evidenceToAdd.length : selectedPhotos.length;
 
   return (
     <ViewNoFooter>

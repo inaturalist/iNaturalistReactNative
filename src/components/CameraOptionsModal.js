@@ -22,10 +22,11 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   const hasSound = currentObs?.observationSounds?.uri;
 
   const navAndCloseModal = ( screen, params ) => {
-    const setObservations = uploadContext?.setObservations;
-    // clear any previous observations before navigating
-    if ( setObservations ) {
-      setObservations( [] );
+    console.log( uploadContext, "upload context" );
+    const resetUploadContext = uploadContext?.resetUploadContext;
+    // clear previous upload context before navigating
+    if ( resetUploadContext ) {
+      resetUploadContext( );
     }
     if ( screen === "ObsEdit" ) {
       createObservationNoEvidence( );
