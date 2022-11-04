@@ -1,7 +1,6 @@
 // @flow
 
 import {
-  BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
@@ -10,6 +9,7 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
+import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
 import Button from "components/SharedComponents/Buttons/Button";
 import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
 import KebabMenu from "components/SharedComponents/KebabMenu";
@@ -262,13 +262,7 @@ const ObsEdit = ( ): Node => {
   if ( !currentObs ) { return null; }
 
   const renderBackdrop = props => (
-    <BottomSheetBackdrop
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...props}
-      pressBehavior="close"
-      appearsOnIndex={0}
-      disappearsOnIndex={-1}
-    />
+    <BottomSheetStandardBackdrop props={props} />
   );
 
   const onImportPhoto = async () => {

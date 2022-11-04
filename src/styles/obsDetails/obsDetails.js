@@ -175,11 +175,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     shadowRadius: 16.0,
     elevation: 24
   },
-  commentInputContainer: {
-    position: "relative",
-    paddingLeft: 10,
-    paddingRight: 10
-  },
   commentInput: {
     backgroundColor: colors.white,
     padding: 0,
@@ -191,14 +186,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     paddingTop: 0,
     textAlignVertical: "top",
     height: 80
-  },
-  sendComment: {
-    position: "absolute",
-    right: -30,
-    bottom: 20,
-    zIndex: 9999,
-    width: 80,
-    height: 40
   },
   background: {
     ...StyleSheet.absoluteFillObject,

@@ -4,14 +4,16 @@ import {
   BottomSheetModal, BottomSheetModalProvider,
   BottomSheetTextInput
 } from "@gorhom/bottom-sheet";
+import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useEffect, useRef, useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Alert, Keyboard,
-  TextInput as NativeTextInput, TouchableOpacity, View
+  Keyboard
 } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { textStyles, viewStyles } from "styles/obsDetails/obsDetails";
@@ -41,25 +43,6 @@ const AddCommentModal = ( {
   // actually dismiss
   const clearComment = ( ) => setTimeout( ( ) => setComment( "" ), 100 );
 
-  const onBackdropPress = () => {
-    Alert.alert(
-      t( "Discard-Comment" ),
-      t( "Are-you-sure-discard-comment" ),
-      [{
-        text: t( "Yes" ),
-        onPress: () => {
-          setShowCommentBox( false );
-          // setComment( "" );
-          Keyboard.dismiss();
-          clearComment( );
-        }
-      }, { text: t( "No" ) }],
-      {
-        cancelable: false
-      }
-    );
-  };
-
   // Make bottom sheet modal visibility reactive instead of imperative
   useEffect( ( ) => {
     if ( showCommentBox ) {
@@ -73,10 +56,8 @@ const AddCommentModal = ( {
     <View style={viewStyles.handleContainer} />
   );
 
-  const renderBackdrop = () => (
-    <TouchableOpacity activeOpacity={1} style={viewStyles.background} onPress={onBackdropPress}>
-      <View />
-    </TouchableOpacity>
+  const renderBackdrop = props => (
+    <BottomSheetStandardBackdrop props={props} />
   );
 
   const submitComment = async ( ) => {
@@ -85,32 +66,30 @@ const AddCommentModal = ( {
     setShowCommentBox( false );
     Keyboard.dismiss();
     if ( comment.length > 0 ) {
+      console.log( comment, "comment in add comment modal" );
       createCommentMutation.mutate( comment );
     }
     setAddingComment( false );
   };
 
-  const renderBottomSheetTextView = () => (
+  const handleSheetChanges = useCallback( index => {
+    // re-enable Add Comment button when backdrop is tapped to close modal
+    if ( index === -1 ) {
+      setShowCommentBox( false );
+    }
+  }, [setShowCommentBox] );
+
+  const renderTextInput = () => (
     <BottomSheetTextInput
       keyboardType="default"
       style={[viewStyles.commentInput, viewStyles.commentInputText, textStyles.commentTextInput]}
-      value={comment}
+      defaultValue={comment}
       selectionColor={colors.black}
       activeUnderlineColor={colors.transparent}
       placeholder={t( "Add-a-comment" )}
       autoFocus
       multiline
       onChangeText={setComment}
-      render={innerProps => (
-        <NativeTextInput
-              /* eslint-disable react/jsx-props-no-spreading */
-          {...innerProps}
-          style={[
-            innerProps.style,
-            viewStyles.commentInputText, textStyles.commentTextInput
-          ]}
-        />
-      )}
     />
   );
 
@@ -125,9 +104,10 @@ const AddCommentModal = ( {
         backdropComponent={renderBackdrop}
         handleComponent={renderHandle}
         style={viewStyles.bottomModal}
+        onChange={handleSheetChanges}
       >
         <View
-          style={viewStyles.commentInputContainer}
+          className="p-3"
           onLayout={( {
             nativeEvent: {
               layout: { height }
@@ -136,13 +116,13 @@ const AddCommentModal = ( {
             setSnapPoint( height + 20 );
           }}
         >
-          {renderBottomSheetTextView()}
-          <TouchableOpacity
-            style={viewStyles.sendComment}
+          {renderTextInput()}
+          <Pressable
+            className="absolute right-4 bottom-4"
             onPress={() => submitComment( )}
           >
             <IconMaterial name="send" size={35} color={colors.inatGreen} />
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </BottomSheetModal>
     </BottomSheetModalProvider>
