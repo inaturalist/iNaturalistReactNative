@@ -24,17 +24,6 @@ class Photo extends Realm.Object {
     return localPhoto;
   }
 
-  static photoUniqueIdentifier( pathOrUri ) {
-    let identifier = pathOrUri.split( "/" ).slice( -1 ).pop( );
-
-    // If pathOrUri is an ios localIdentifier, make up a filename based on that
-    const iosLocalIdentifierMatches = pathOrUri.match( /^ph:\/\/([^/]+)/ );
-    if ( iosLocalIdentifierMatches ) {
-      identifier = iosLocalIdentifierMatches[1];
-    }
-    return identifier.split( "." )[0];
-  }
-
   static async resizeImageForUpload( pathOrUri ) {
     const width = 2048;
     const { photoUploadPath } = Photo;
