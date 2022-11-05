@@ -323,7 +323,6 @@ class Observation extends Realm.Object {
   }
 
   static markRecordUploaded = async ( recordUUID, type, response, realm ) => {
-    console.log( "Observation.markRecordUploaded, response: ", response );
     const { id } = response.results[0];
     try {
       const record = realm.objectForPrimaryKey( type, recordUUID );
