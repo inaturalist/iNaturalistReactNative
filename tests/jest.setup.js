@@ -2,8 +2,10 @@ import "react-native-gesture-handler/jestSetup";
 
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
+import mockRNLocalize from "react-native-localize/mock";
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
+jest.mock( "react-native-localize", () => mockRNLocalize );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 
 // this resolves error with importing file after Jest environment is torn down
@@ -127,18 +129,6 @@ jest.mock( "react-i18next", () => ( {
 
 jest.mock( "i18next", () => ( {
   t: k => k
-} ) );
-
-jest.mock( "react-native-localize", () => ( {
-  getTimeZone: ( ) => "Europe/Paris", // the timezone you want
-  getLocales: ( ) => [
-    {
-      countryCode: "NL", languageTag: "nl-NL", languageCode: "nl", isRTL: false
-    },
-    {
-      countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false
-    }
-  ]
 } ) );
 
 // Make apisauce work with nock
