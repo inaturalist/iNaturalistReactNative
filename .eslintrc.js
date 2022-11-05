@@ -61,6 +61,8 @@ module.exports = {
     quotes: [2, "double"],
     "space-in-parens": [2, "always"],
     "module-resolver/use-alias": 2,
+    // At least before we start making production builds
+    "no-console": 0,
     "no-restricted-globals": 0,
     "no-param-reassign": 0,
     "no-var": 1,

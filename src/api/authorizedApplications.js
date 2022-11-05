@@ -23,4 +23,21 @@ const fetchAuthorizedApplications = async (
   }
 };
 
-export default fetchAuthorizedApplications;
+const revokeAuthorizedApplications = async (
+  params: Object = {},
+  opts: Object = {}
+): Promise<any> => {
+  try {
+    return await inatjs.authorized_applications.delete(
+      params,
+      opts
+    );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+export {
+  fetchAuthorizedApplications,
+  revokeAuthorizedApplications
+};

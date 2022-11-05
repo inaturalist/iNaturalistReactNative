@@ -24,6 +24,8 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+jest.mock( "sharedHooks/useApiToken" );
+
 const renderObsList = ( ) => render(
   <NavigationContainer>
     <ObsList />

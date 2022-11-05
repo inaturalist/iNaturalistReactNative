@@ -3,8 +3,8 @@
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Button, Menu } from "react-native-paper";
-import colors from "styles/colors";
 import viewStyles from "styles/sharedComponents/kebabMenu";
+import colors from "styles/tailwindColors";
 
 type Props = {
   children: any

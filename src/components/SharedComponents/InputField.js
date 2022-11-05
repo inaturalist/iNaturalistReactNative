@@ -3,7 +3,7 @@
 import { TextInput } from "components/styledComponents";
 import * as React from "react";
 import { Platform } from "react-native";
-import colors from "styles/colors";
+import colors from "styles/tailwindColors";
 
 type Props = {
   handleTextChange: Function,

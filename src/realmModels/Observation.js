@@ -1,4 +1,6 @@
 import { Realm } from "@realm/react";
+// eslint-disable-next-line import/no-cycle
+import { createEvidence, createObservation } from "api/observations";
 import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload, formatDateAndTime } from "sharedHelpers/dateAndTime";
@@ -271,19 +273,6 @@ class Observation extends Realm.Object {
     }
   }
 
-  static markObservationUpdatesViewed = async ( id, apiToken ) => {
-    if ( !apiToken ) { return null; }
-
-    const params = { id };
-    const options = { api_token: apiToken };
-    try {
-      return await inatjs.observations.viewedUpdates( params, options );
-    } catch ( e ) {
-      console.log( `Couldn't mark observation ${id} viewed:`, JSON.stringify( e ) );
-      return null;
-    }
-  }
-
   static fetchRemoteObservations = async ( page, realm ) => {
     const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
     if ( !currentUser ) { return null; }
@@ -353,22 +342,10 @@ class Observation extends Realm.Object {
     params: Object,
     apiEndpoint: Function,
     realm: any,
-    apiToken: string
+    options: Object
   ) => {
-    const options = { api_token: apiToken };
-
-    // let response;
-    // try {
-    console.log( "Observation.uploadToServer, apiEndpoint: ", apiEndpoint );
-    console.log( "Observation.uploadToServer, params: ", params );
-    console.log( "Observation.uploadToServer, options: ", options );
-    const response = await apiEndpoint.create( params, options );
-    console.log( "Observation.uploadToServer, response: ", response );
+    const response = await createEvidence( apiEndpoint, params, options );
     await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
-    console.log( "Observation.uploadToServer, marked as uploaded" );
-    // } catch ( e ) {
-    //   return JSON.stringify( e.response );
-    // }
     return response;
   };
 
@@ -379,7 +356,7 @@ class Observation extends Realm.Object {
     observationId: number,
     apiEndpoint: Function,
     realm: any,
-    apiToken: string
+    options: Object
   ): Promise<any> => {
     let response;
     if ( evidence.length === 0 ) { return; }
@@ -393,14 +370,14 @@ class Observation extends Realm.Object {
         params,
         apiEndpoint,
         realm,
-        apiToken
+        options
       );
     }
     // eslint-disable-next-line consistent-return
     return response;
   };
 
-  static uploadObservation = async ( obs, apiToken ) => {
+  static uploadObservation = async ( obs, apiToken, realm ) => {
     const obsToUpload = Observation.mapObservationForUpload( obs );
     const options = { api_token: apiToken };
 
@@ -418,13 +395,30 @@ class Observation extends Realm.Object {
       fields: { id: true }
     };
 
-    let response;
-    try {
-      response = await inatjs.observations.create( uploadParams, options );
-    } catch ( uploadError ) {
-      const errorText = await uploadError.response.text( );
-      uploadError.message = errorText;
-      throw uploadError;
+    const response = await createObservation( uploadParams, options );
+    await Observation.markRecordUploaded( obs.uuid, "Observation", response, realm );
+    const { id } = response.results[0];
+    if ( obs?.observationPhotos?.length > 0 ) {
+      return Observation.uploadEvidence(
+        obs.observationPhotos,
+        "ObservationPhoto",
+        ObservationPhoto.mapPhotoForUpload,
+        id,
+        inatjs.observation_photos,
+        realm,
+        options
+      );
+    }
+    if ( obs?.observationSounds?.length > 0 ) {
+      return Observation.uploadEvidence(
+        obs.observationSounds,
+        "ObservationSound",
+        ObservationSound.mapSoundForUpload,
+        id,
+        inatjs.observation_sounds,
+        realm,
+        options
+      );
     }
     return response;
   }

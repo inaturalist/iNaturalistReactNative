@@ -7,7 +7,6 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import useApiToken from "sharedHooks/useApiToken";
 
 import { ObsEditContext, RealmContext } from "./contexts";
-import uploadObservation from "./uploadHelpers/uploadObservation";
 
 const { useRealm } = RealmContext;
 
@@ -112,12 +111,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
     };
 
-    const openSavedObservation = async savedUUID => {
-      const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
-      setObservations( [obs] );
-      return obs;
-    };
-
     const deleteCurrentObservation = ( ) => {
       if ( currentObsIndex === observations.length - 1 ) {
         setCurrentObsIndex( currentObsIndex - 1 );
@@ -145,7 +138,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       if ( !apiToken ) {
         throw new Error( "Gack, tried to save an observation without API token!" );
       }
-      uploadObservation( localObs, realm, apiToken );
+      Observation.uploadObservation( localObs, apiToken, realm );
       if ( localObs ) {
         setNextScreen( );
       }
@@ -159,7 +152,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       currentObsIndex,
       deleteCurrentObservation,
       observations,
-      openSavedObservation,
       saveAndUploadObservation,
       saveObservation,
       setCurrentObsIndex,

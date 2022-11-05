@@ -1,8 +1,8 @@
 // @flow
 
 import { RealmContext } from "providers/contexts";
-import uploadObservation from "providers/uploadHelpers/uploadObservation";
 import { useCallback, useEffect, useState } from "react";
+import Observation from "realmModels/Observation";
 import useApiToken from "sharedHooks/useApiToken";
 
 const { useRealm } = RealmContext;
@@ -22,8 +22,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   useEffect( ( ) => {
     const upload = async obs => {
       if ( !apiToken ) return;
-      const response = await uploadObservation( obs, realm, apiToken );
-      console.log( "obs/hooks, useUploadObservations, response: ", response );
+      const response = await Observation.uploadObservation( obs, apiToken, realm );
       if ( response.results ) { return; }
       if ( response.status !== 200 ) {
         const error = JSON.parse( response );

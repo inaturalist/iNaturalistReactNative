@@ -24,7 +24,7 @@ import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import colors from "styles/colors";
+import colors from "styles/tailwindColors";
 
 import IdentifyStackNavigation from "./identifyStackNavigation";
 import MainStackNavigation from "./mainStackNavigation";

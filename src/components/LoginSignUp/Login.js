@@ -1,14 +1,12 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { useQueryClient } from "@tanstack/react-query";
 import Button from "components/SharedComponents/Buttons/Button";
 import {
   Image, KeyboardAvoidingView, Pressable,
   SafeAreaView,
-  ScrollView, View
+  ScrollView
 } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -18,20 +16,17 @@ import {
   TouchableOpacity
 } from "react-native";
 import {
-  Dialog, Paragraph, Portal, Text, TextInput
+  Text, TextInput
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/colors";
 import viewStyles from "styles/login/login";
+import colors from "styles/tailwindColors";
 
 import {
   authenticateUser,
-  getUsername,
-  isLoggedIn,
-  signOut
+  isLoggedIn
 } from "./AuthenticationService";
-
-const { useRealm } = RealmContext;
+import Logout from "./Logout";
 
 const Login = ( ): Node => {
   const { t } = useTranslation( );
@@ -40,24 +35,15 @@ const Login = ( ): Node => {
   const [password, setPassword] = useState( "" );
   const [loggedIn, setLoggedIn] = useState( false );
   const [error, setError] = useState( null );
-  const [username, setUsername] = useState( null );
-  const [visible, setVisible] = useState( false );
   const [loading, setLoading] = useState( false );
-  const realm = useRealm( );
-
-  const showDialog = ( ) => setVisible( true );
-  const hideDialog = ( ) => setVisible( false );
 
   useEffect( ( ) => {
     let isCurrent = true;
 
     const fetchLoggedIn = async ( ) => {
+      const login = await isLoggedIn( );
       if ( !isCurrent ) { return; }
-
-      setLoggedIn( await isLoggedIn( ) );
-      if ( loggedIn ) {
-        setUsername( await getUsername( ) );
-      }
+      setLoggedIn( login );
     };
 
     fetchLoggedIn( );
@@ -77,12 +63,8 @@ const Login = ( ): Node => {
     if ( !success ) {
       setError( t( "Invalid-login" ) );
       setLoading( false );
-
       return;
     }
-
-    const userLogin = await getUsername( );
-    setUsername( userLogin );
     setLoggedIn( true );
     setLoading( false );
 
@@ -91,54 +73,10 @@ const Login = ( ): Node => {
     } );
   };
 
-  const queryClient = useQueryClient( );
-
-  const onSignOut = async ( ) => {
-    await signOut( { realm, deleteRealm: true, queryClient } );
-    // TODO might be necessary to restart the app at this point. We just
-    // deleted the realm file on disk, but the RealmProvider may still have a
-    // copy of realm in local state
-    setLoggedIn( false );
-  };
-
   const forgotPassword = () => {
     // TODO - should be put in a constant somewhere?
     Linking.openURL( "https://www.inaturalist.org/users/password/new" );
   };
-
-  const logoutForm = (
-    <>
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Content>
-            <Paragraph>{t( "Are-you-sure-you-want-to-sign-out" )}</Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              level="neutral"
-              onPress={hideDialog}
-              testID="Login.signOutButton"
-              text={t( "Cancel" )}
-            />
-            <Button level="primary" onPress={onSignOut} text={t( "Sign-out" )} />
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-      {/* TODO: figure out how to account for safe area views with h-screen,
-      maybe something along these lines: https://github.com/mvllow/tailwindcss-safe-area/blob/70dbef61557b07e26b07a6167e13a377ba3c4625/index.js
-      */}
-      <View className="self-center justify-center h-screen">
-        <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
-        <Button
-          level="primary"
-          style={viewStyles.button}
-          onPress={showDialog}
-          testID="Login.signOutButton"
-          text="Sign-out"
-        />
-      </View>
-    </>
-  );
 
   const loginForm = (
     <>
@@ -205,7 +143,7 @@ const Login = ( ): Node => {
           >
             <IconMaterial name="close" size={35} />
           </Pressable>
-          {loggedIn ? logoutForm : loginForm}
+          {loggedIn ? <Logout /> : loginForm}
         </ScrollView>
       </SafeAreaView>
     </KeyboardAvoidingView>

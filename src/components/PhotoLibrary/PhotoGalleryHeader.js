@@ -6,7 +6,7 @@ import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import RNPickerSelect from "react-native-picker-select";
-import colors from "styles/colors";
+import colors from "styles/tailwindColors";
 
 import usePhotoAlbums from "./hooks/usePhotoAlbums";
 

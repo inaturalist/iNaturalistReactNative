@@ -6,7 +6,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/colors";
+import colors from "styles/tailwindColors";
 
 type Props = {
   item: Object,
