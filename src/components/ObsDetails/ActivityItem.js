@@ -7,13 +7,15 @@ import PlaceholderText from "components/PlaceholderText";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import UserIcon from "components/SharedComponents/UserIcon";
 import { t } from "i18next";
+import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
-  Image, Pressable, Text, View
+  Image, Pressable, Text, useWindowDimensions, View
 } from "react-native";
 import { Menu } from "react-native-paper";
+import HTML from "react-native-render-html";
 import Comment from "realmModels/Comment";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
@@ -43,6 +45,7 @@ const ActivityItem = ( {
 
   const realm = useRealm( );
   const queryClient = useQueryClient( );
+  const { width } = useWindowDimensions( );
 
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {
@@ -128,9 +131,15 @@ const ActivityItem = ( {
           </View>
         </Pressable>
       )}
-      <View style={viewStyles.speciesDetailRow}>
-        <Text style={textStyles.activityItemBody}>{item.body}</Text>
-      </View>
+      { !_.isEmpty( item?.body ) && (
+        <View style={viewStyles.speciesDetailRow}>
+          <HTML
+            contentWidth={width}
+            baseStyle={textStyles.activityItemBody}
+            source={{ html: item.body }}
+          />
+        </View>
+      )}
     </View>
   );
 };
