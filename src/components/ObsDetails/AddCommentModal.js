@@ -1,11 +1,10 @@
 // @flow
 
 import {
-  BottomSheetModal, BottomSheetModalProvider,
-  BottomSheetTextInput
+  BottomSheetModal, BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
 import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
-import { Pressable, View } from "components/styledComponents";
+import { BottomSheetTextInput, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -16,7 +15,7 @@ import {
   Keyboard
 } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import { textStyles, viewStyles } from "styles/obsDetails/obsDetails";
+import { viewStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -52,9 +51,7 @@ const AddCommentModal = ( {
     }
   }, [showCommentBox, bottomSheetModalRef] );
 
-  const renderHandle = () => (
-    <View style={viewStyles.handleContainer} />
-  );
+  const renderHandle = () => <View />;
 
   const renderBackdrop = props => (
     <BottomSheetStandardBackdrop props={props} />
@@ -66,7 +63,6 @@ const AddCommentModal = ( {
     setShowCommentBox( false );
     Keyboard.dismiss();
     if ( comment.length > 0 ) {
-      console.log( comment, "comment in add comment modal" );
       createCommentMutation.mutate( comment );
     }
     setAddingComment( false );
@@ -82,7 +78,7 @@ const AddCommentModal = ( {
   const renderTextInput = () => (
     <BottomSheetTextInput
       keyboardType="default"
-      style={[viewStyles.commentInput, viewStyles.commentInputText, textStyles.commentTextInput]}
+      className="mb-16 h-16 mt-4"
       defaultValue={comment}
       selectionColor={colors.black}
       activeUnderlineColor={colors.transparent}
@@ -103,6 +99,7 @@ const AddCommentModal = ( {
         snapPoints={[snapPoint]}
         backdropComponent={renderBackdrop}
         handleComponent={renderHandle}
+        // TODO: figure out how to style shadows/elevation using Tailwind
         style={viewStyles.bottomModal}
         onChange={handleSheetChanges}
       >

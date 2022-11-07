@@ -175,28 +175,9 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     shadowRadius: 16.0,
     elevation: 24
   },
-  commentInput: {
-    backgroundColor: colors.white,
-    padding: 0,
-    marginBottom: 20
-  },
-  // Flow will complain about the Android-only textAlignVertical style without this
-  // $FlowFixMe
-  commentInputText: {
-    paddingTop: 0,
-    textAlignVertical: "top",
-    height: 80
-  },
   background: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(255,255,255,0.0)"
-  },
-  handleContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24
   },
   centerRow: {
     alignItems: "center",
@@ -205,9 +186,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  commentTextInput: {
-    color: colors.black
-  },
   idCommentCount: {
     marginLeft: 5
   },
