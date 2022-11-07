@@ -37,7 +37,6 @@ target 'iNaturalistReactNative' do
         # code below appears to be necessary for building pods with XCode 14:
         # https://github.com/facebook/react-native/issues/34673#issuecomment-1252114414
         config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
-        config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = IPHONEOS_DEPLOYMENT_TARGET
       end
     end
   end
