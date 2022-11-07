@@ -5,6 +5,17 @@ import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-
 import mockRNLocalize from "react-native-localize/mock";
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
+import { mockCamera, mockSortDevices } from "./vision-camera/vision-camera";
+
+require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
+
+jest.useFakeTimers();
+
+jest.mock( "react-native-vision-camera", ( ) => ( {
+  Camera: mockCamera,
+  sortDevices: mockSortDevices
+} ) );
+
 jest.mock( "react-native-localize", () => mockRNLocalize );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 
