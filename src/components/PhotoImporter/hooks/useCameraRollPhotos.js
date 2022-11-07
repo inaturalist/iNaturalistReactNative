@@ -1,6 +1,6 @@
 // @flow
 
-import CameraRoll from "@react-native-community/cameraroll";
+import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useCallback, useEffect, useState } from "react";
 
 const initialStatus = {
@@ -13,7 +13,7 @@ const initialStatus = {
 
 /**
  * Hook that manages access to photos from the operating system.
- * @param {object} options Options passed to @react-native-community/cameraroll; @see
+ * @param {object} options Options passed to @react-native-camera-roll/camera-roll; @see
  *  https://github.com/react-native-cameraroll/react-native-cameraroll#getphotos
  * @param {boolean} isSrolling Whether or not the user is scrolling; generally
  *  we need to fetch more photos when scrolling.
