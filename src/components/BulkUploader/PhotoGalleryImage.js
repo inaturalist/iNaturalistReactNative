@@ -41,6 +41,7 @@ const PhotoGalleryImage = ( {
   };
   return (
     <Pressable
+      className="w-1/4 px-0.5 py-0.5"
       onPress={handleImagePress}
       testID={`PhotoGallery.${uri}`}
       disabled={isDisabled}
@@ -48,7 +49,7 @@ const PhotoGalleryImage = ( {
       <Image
         testID="PhotoGallery.photo"
         source={{ uri }}
-        className="h-24 w-24"
+        className="grow aspect-square"
       />
       <View className="absolute top-0 right-0">
         {showIcon( )}
