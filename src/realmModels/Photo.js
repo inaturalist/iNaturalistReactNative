@@ -101,14 +101,6 @@ class Photo extends Realm.Object {
     RNFS.unlink( `${Photo.photoUploadPath}/${fileName}` );
   }
 
-  static async savePhoto( realm, cameraPhoto ) {
-    const photo = await Photo.new( cameraPhoto.path );
-    realm?.write( ( ) => {
-      realm?.create( "Photo", photo );
-    } );
-    return photo.localFilePath;
-  }
-
   static async deleteRemotePhoto( realm, uri ) {
     // right now it doesn't look like there's a way to delete a photo OR an observation photo from
     // api v2, so just going to worry about deleting locally for now

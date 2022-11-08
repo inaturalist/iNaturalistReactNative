@@ -13,8 +13,7 @@ import Notes from "./Notes";
 
 const OtherDataSection = ( ): Node => {
   const {
-    currentObsIndex,
-    observations,
+    currentObservation,
     updateObservationKey
   } = useContext( ObsEditContext );
 
@@ -41,14 +40,14 @@ const OtherDataSection = ( ): Node => {
     value: false
   }];
 
-  const currentObs = observations[currentObsIndex];
-
   const addNotes = text => updateObservationKey( "description", text );
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
   const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
 
-  const currentGeoprivacyStatus = geoprivacyOptions.find( e => e.value === currentObs.geoprivacy );
-  const currentCaptiveStatus = captiveOptions.find( e => e.value === currentObs.captive_flag );
+  const currentGeoprivacyStatus = geoprivacyOptions
+    .find( e => e.value === currentObservation.geoprivacy );
+  const currentCaptiveStatus = captiveOptions
+    .find( e => e.value === currentObservation.captive_flag );
 
   return (
     <>
@@ -57,7 +56,7 @@ const OtherDataSection = ( ): Node => {
           onValueChange={updateGeoprivacyStatus}
           items={geoprivacyOptions}
           useNativeAndroidPickerStyle={false}
-          value={currentObs.geoprivacy}
+          value={currentObservation.geoprivacy}
         >
           <Button
             icon="earth"
@@ -76,7 +75,7 @@ const OtherDataSection = ( ): Node => {
           onValueChange={updateCaptiveStatus}
           items={captiveOptions}
           useNativeAndroidPickerStyle={false}
-          value={currentObs.captive_flag}
+          value={currentObservation.captive_flag}
         >
           <Button
             icon="pot"
@@ -90,7 +89,7 @@ const OtherDataSection = ( ): Node => {
           </Button>
         </RNPickerSelect>
       </View>
-      <Notes addNotes={addNotes} description={currentObs.description} />
+      <Notes addNotes={addNotes} description={currentObservation.description} />
     </>
   );
 };
