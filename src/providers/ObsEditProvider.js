@@ -1,18 +1,25 @@
 // @flow
+import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import { formatDateAndTime } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
+import useApiToken from "sharedHooks/useApiToken";
 
-import { ObsEditContext } from "./contexts";
+import { ObsEditContext, RealmContext } from "./contexts";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   children: any
 }
 
 const ObsEditProvider = ( { children }: Props ): Node => {
+  const navigation = useNavigation( );
+  const realm = useRealm( );
+  const apiToken = useApiToken( );
   const [currentObservationIndex, setCurrentObservationIndex] = useState( 0 );
   const [observations, setObservations] = useState( [] );
   const [cameraPreviewUris, setCameraPreviewUris] = useState( [] );
@@ -144,6 +151,58 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setObservations( updatedObservations );
     };
 
+    const setNextScreen = ( ) => {
+      if ( observations.length === 1 ) {
+        setCurrentObservationIndex( 0 );
+        setObservations( [] );
+
+        navigation.navigate( "ObsList" );
+      } else if ( currentObservationIndex === observations.length - 1 ) {
+        observations.pop( );
+        setCurrentObservationIndex( observations.length - 1 );
+        setObservations( observations );
+      } else {
+        observations.splice( currentObservationIndex, 1 );
+        setCurrentObservationIndex( currentObservationIndex );
+        // this seems necessary for rerendering the ObsEdit screen
+        setObservations( [] );
+        setObservations( observations );
+      }
+    };
+
+    const deleteCurrentObservation = ( ) => {
+      if ( currentObservationIndex === observations.length - 1 ) {
+        setCurrentObservationIndex( currentObservationIndex - 1 );
+      }
+      observations.splice( currentObservationIndex, 1 );
+      setObservations( observations );
+
+      if ( observations.length === 0 ) {
+        navigation.navigate( "ObsList" );
+      }
+    };
+
+    const saveObservation = async ( ) => {
+      const localObs = await Observation.saveLocalObservationForUpload( currentObservation, realm );
+      if ( localObs ) {
+        setNextScreen( );
+      }
+    };
+
+    const saveAndUploadObservation = async ( ) => {
+      const localObs = await Observation.saveLocalObservationForUpload( currentObservation, realm );
+      if ( !realm ) {
+        throw new Error( "Gack, tried to save an observation without realm!" );
+      }
+      if ( !apiToken ) {
+        throw new Error( "Gack, tried to save an observation without API token!" );
+      }
+      Observation.uploadObservation( localObs, apiToken, realm );
+      if ( localObs ) {
+        setNextScreen( );
+      }
+    };
+
     return {
       createObservationNoEvidence,
       addObservations,
@@ -167,7 +226,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       evidenceToAdd,
       setEvidenceToAdd,
       addCameraPhotosToCurrentObservation,
-      resetObsEditContext
+      resetObsEditContext,
+      saveObservation,
+      saveAndUploadObservation,
+      deleteCurrentObservation
     };
   }, [
     currentObservation,
@@ -183,7 +245,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     evidenceToAdd,
     setEvidenceToAdd,
     addCameraPhotosToCurrentObservation,
-    resetObsEditContext
+    resetObsEditContext,
+    apiToken,
+    navigation,
+    realm
   ] );
 
   return (
