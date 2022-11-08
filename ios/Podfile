@@ -1,20 +1,32 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-IPHONEOS_DEPLOYMENT_TARGET = "11.0"
-
-platform :ios, IPHONEOS_DEPLOYMENT_TARGET
+platform :ios, '12.4'
+install! 'cocoapods', :deterministic_uuids => false
 
 target 'iNaturalistReactNative' do
   config = use_native_modules!
+
+  # Flags change depending on the env values.
+  flags = get_default_flags()
 
   permissions_path = '../node_modules/react-native-permissions/ios'
 
   use_react_native!(
     :path => config[:reactNativePath],
-    # to enable hermes on iOS, change `false` to `true` and then install pods
-    :hermes_enabled => false
-    )
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    # Upcoming versions of React Native may rely on get_default_flags(), but
+    # we make it explicit here to aid in the React Native upgrade process.
+    :hermes_enabled => false,
+    :fabric_enabled => flags[:fabric_enabled],
+    # Enables Flipper.
+    #
+    # Note that if you have use_frameworks! enabled, Flipper will not work and
+    # you should disable the next line.
+    # :flipper_configuration => FlipperConfiguration.enabled,
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
 
@@ -22,13 +34,23 @@ target 'iNaturalistReactNative' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  # Enables Flipper.
-  #
-  # Note that if you have use_frameworks! enabled, Flipper will not work and
-  # you should disable the next line.
-  # use_flipper!()
-
+  # code below appears to be necessary for building pods with XCode 14: https://github.com/facebook/react-native/issues/34673#issuecomment-1252114414
   post_install do |installer|
+    react_native_post_install(
+      installer,
+      # Set `mac_catalyst_enabled` to `true` in order to apply patches
+      # necessary for Mac Catalyst builds
+      :mac_catalyst_enabled => false
+    )
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+    # Add these lines for Xcode 14 builds
+    installer.generated_projects.each do |project|
+      project.targets.each do |target|
+          target.build_configurations.each do |config|
+              config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
+          end
+      end
+    end
     # End of added lines
     # https://github.com/Agontuk/react-native-geolocation-service/issues/287#issuecomment-980772489
     installer.pods_project.targets.each do |target|
@@ -37,8 +59,17 @@ target 'iNaturalistReactNative' do
         # code below appears to be necessary for building pods with XCode 14:
         # https://github.com/facebook/react-native/issues/34673#issuecomment-1252114414
         config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
-        config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = IPHONEOS_DEPLOYMENT_TARGET
+      end
+    end
+
+    installer.target_installation_results.pod_target_installation_results.each do |pod_name, target_installation_result|
+      target_installation_result.native_target.build_configurations.each do |config|
+        # For third party modules who have React-bridging dependency to search correct headers
+        config.build_settings['HEADER_SEARCH_PATHS'] ||= '$(inherited) '
+        config.build_settings['HEADER_SEARCH_PATHS'] << '"$(PODS_ROOT)/Headers/Private/React-bridging/react/bridging" '
+        config.build_settings['HEADER_SEARCH_PATHS'] << '"$(PODS_CONFIGURATION_BUILD_DIR)/React-bridging/react_bridging.framework/Headers" '
       end
     end
   end
+
 end

@@ -36,18 +36,13 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
     // constants for the result states and no abstraction of this method for
     // requesting permissions
     const requestAndroidPermissions = async ( ) => {
-      try {
-        const r = await PermissionsAndroid.request( permission );
-        if ( r === PermissionsAndroid.RESULTS.GRANTED ) {
-          setResult( "granted" );
-        } else if ( r === PermissionsAndroid.RESULTS.DENIED ) {
-          setResult( "denied" );
-        } else {
-          setResult( "never_ask_again" );
-        }
-      } catch ( e ) {
-        // eslint-disable-next-line max-len
-        console.warn( `[DEBUG ${Platform.OS}] PermissionGate: Failed to request permission (${permission}): ${e}` );
+      const r = await PermissionsAndroid.request( permission );
+      if ( r === PermissionsAndroid.RESULTS.GRANTED ) {
+        setResult( "granted" );
+      } else if ( r === PermissionsAndroid.RESULTS.DENIED ) {
+        setResult( "denied" );
+      } else {
+        setResult( "never_ask_again" );
       }
     };
     // If this is Android and we haven't even checked the permissions, do it now
