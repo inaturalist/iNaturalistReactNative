@@ -18,13 +18,14 @@ Object.defineProperty( INatApiError.prototype, "name", {
   value: "INatApiError"
 } );
 
-const handleError = async ( e: Object, options: Object = {} ) => {
+const handleError = async ( e: Object, options: Object = {} ): Object => {
   if ( !e.response ) { throw e; }
   const errorJson = await e.response.json( );
   const error = new INatApiError( errorJson );
   if ( options.throw ) {
     throw error;
   }
+  return error;
 };
 
 export default handleError;
