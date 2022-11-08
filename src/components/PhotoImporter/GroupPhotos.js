@@ -2,7 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
-import { UploadContext } from "providers/contexts";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
@@ -13,7 +13,7 @@ import GroupPhotosHeader from "./GroupPhotosHeader";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
 const GroupPhotos = ( ): Node => {
-  const { createObservationsFromGroupedPhotos } = useContext( UploadContext );
+  const { createObservationsFromGroupedPhotos } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { selectedPhotos } = params;

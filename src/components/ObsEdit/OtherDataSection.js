@@ -2,7 +2,7 @@
 
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import { UploadContext } from "providers/contexts";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { Button } from "react-native-paper";
@@ -13,9 +13,9 @@ import Notes from "./Notes";
 
 const OtherDataSection = ( ): Node => {
   const {
-    currentObs,
+    currentObservation,
     updateObservationKey
-  } = useContext( UploadContext );
+  } = useContext( ObsEditContext );
 
   const geoprivacyOptions = [{
     label: t( "Open" ),
@@ -44,8 +44,10 @@ const OtherDataSection = ( ): Node => {
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
   const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
 
-  const currentGeoprivacyStatus = geoprivacyOptions.find( e => e.value === currentObs.geoprivacy );
-  const currentCaptiveStatus = captiveOptions.find( e => e.value === currentObs.captive_flag );
+  const currentGeoprivacyStatus = geoprivacyOptions
+    .find( e => e.value === currentObservation.geoprivacy );
+  const currentCaptiveStatus = captiveOptions
+    .find( e => e.value === currentObservation.captive_flag );
 
   return (
     <>
@@ -54,7 +56,7 @@ const OtherDataSection = ( ): Node => {
           onValueChange={updateGeoprivacyStatus}
           items={geoprivacyOptions}
           useNativeAndroidPickerStyle={false}
-          value={currentObs.geoprivacy}
+          value={currentObservation.geoprivacy}
         >
           <Button
             icon="earth"
@@ -73,7 +75,7 @@ const OtherDataSection = ( ): Node => {
           onValueChange={updateCaptiveStatus}
           items={captiveOptions}
           useNativeAndroidPickerStyle={false}
-          value={currentObs.captive_flag}
+          value={currentObservation.captive_flag}
         >
           <Button
             icon="pot"
@@ -87,7 +89,7 @@ const OtherDataSection = ( ): Node => {
           </Button>
         </RNPickerSelect>
       </View>
-      <Notes addNotes={addNotes} description={currentObs.description} />
+      <Notes addNotes={addNotes} description={currentObservation.description} />
     </>
   );
 };

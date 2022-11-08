@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
-import PhotoGallery from "components/BulkUploader/PhotoGallery";
-import { UploadContext } from "providers/contexts";
+import PhotoGallery from "components/PhotoImporter/PhotoGallery";
+import { ObsEditContext } from "providers/contexts";
 import React from "react";
 
 import factory from "../../../factory";
@@ -12,12 +12,12 @@ jest.useFakeTimers( );
 
 const mockPhoto = factory( "DevicePhoto" );
 
-jest.mock( "../../../../src/components/BulkUploader/hooks/useCameraRollPhotos", ( ) => ( {
+jest.mock( "../../../../src/components/PhotoImporter/hooks/useCameraRollPhotos", ( ) => ( {
   __esModule: true,
   default: ( ) => ( { photos: [mockPhoto] } )
 } ) );
 
-jest.mock( "../../../../src/components/BulkUploader/hooks/usePhotoAlbums", ( ) => ( {
+jest.mock( "../../../../src/components/PhotoImporter/hooks/usePhotoAlbums", ( ) => ( {
   __esModule: true,
   default: ( ) => [{
     label: "camera roll",
@@ -52,14 +52,14 @@ const fakeObs = {
     latitude: 37.99,
     longitude: -142.88
   } )],
-  currentObsIndex: 0
+  currentObservationIndex: 0
 };
 
 const renderPhotoGallery = ( ) => render(
   <NavigationContainer>
-    <UploadContext.Provider value={fakeObs}>
+    <ObsEditContext.Provider value={fakeObs}>
       <PhotoGallery />
-    </UploadContext.Provider>
+    </ObsEditContext.Provider>
   </NavigationContainer>
 );
 

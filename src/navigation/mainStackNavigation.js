@@ -2,8 +2,6 @@
 
 import { HeaderBackButton } from "@react-navigation/elements";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import GroupPhotos from "components/BulkUploader/GroupPhotos";
-import PhotoGallery from "components/BulkUploader/PhotoGallery";
 import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
 import ExploreFilters from "components/Explore/ExploreFilters";
@@ -13,6 +11,8 @@ import ObsDetails from "components/ObsDetails/ObsDetails";
 import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import ObsList from "components/Observations/ObsList";
+import GroupPhotos from "components/PhotoImporter/GroupPhotos";
+import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGate from "components/SharedComponents/PermissionGate";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";

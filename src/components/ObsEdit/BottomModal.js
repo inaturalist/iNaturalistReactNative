@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import PlaceholderText from "components/PlaceholderText";
 import Button from "components/SharedComponents/Buttons/Button";
-import { UploadContext } from "providers/contexts";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { View } from "react-native";
@@ -14,7 +14,7 @@ const BottomModal = ( ): Node => {
   const {
     observations,
     setObservations
-  } = useContext( UploadContext );
+  } = useContext( ObsEditContext );
 
   const deleteObsAndNavigate = ( ) => {
     setObservations( [] );

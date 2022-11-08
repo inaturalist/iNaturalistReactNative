@@ -17,8 +17,8 @@ import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import Mortal from "components/SharedComponents/Mortal";
+import ObsEditProvider from "providers/ObsEditProvider";
 import RealmProvider from "providers/RealmProvider";
-import UploadProvider from "providers/UploadProvider";
 import * as React from "react";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -107,7 +107,7 @@ const App = ( ): React.Node => {
           <PaperProvider theme={theme}>
             <GestureHandlerRootView className="flex-1">
               <NavigationContainer>
-                <UploadProvider>
+                <ObsEditProvider>
                   <Drawer.Navigator
                     screenOptions={screenOptions}
                     name="Drawer"
@@ -141,7 +141,7 @@ const App = ( ): React.Node => {
                       component={NetworkLogging}
                     />
                   </Drawer.Navigator>
-                </UploadProvider>
+                </ObsEditProvider>
               </NavigationContainer>
             </GestureHandlerRootView>
           </PaperProvider>

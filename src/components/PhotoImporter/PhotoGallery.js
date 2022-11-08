@@ -5,7 +5,7 @@ import Button from "components/SharedComponents/Buttons/Button";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
-import { UploadContext } from "providers/contexts";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useContext, useEffect, useState
@@ -50,10 +50,10 @@ const PhotoGallery = ( ): Node => {
   const {
     createObservationFromGallery,
     galleryUris, setGalleryUris, allObsPhotoUris,
-    addGalleryPhotosToCurrentObs,
+    addGalleryPhotosToCurrentObservation,
     evidenceToAdd,
     setEvidenceToAdd
-  } = useContext( UploadContext );
+  } = useContext( ObsEditContext );
   const [showAlert, setShowAlert] = useState( false );
   const { params } = useRoute( );
   const skipGroupPhotos = params?.skipGroupPhotos;
@@ -189,7 +189,7 @@ const PhotoGallery = ( ): Node => {
     if ( skipGroupPhotos ) {
       // add any newly selected photos
       // to an existing observation after navigating from ObsEdit
-      addGalleryPhotosToCurrentObs( selectedEvidenceToAdd );
+      addGalleryPhotosToCurrentObservation( selectedEvidenceToAdd );
       navigation.navigate( "ObsEdit" );
       return;
     }

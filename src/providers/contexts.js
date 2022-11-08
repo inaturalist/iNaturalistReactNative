@@ -5,11 +5,11 @@ import { createContext } from "react";
 import realmConfig from "realmModels/index";
 
 const ExploreContext: Object = createContext<Function>( );
-const UploadContext: Object = createContext<Function>( );
+const ObsEditContext: Object = createContext<Function>( );
 const RealmContext: Object = createRealmContext( realmConfig );
 
 export {
   ExploreContext,
-  RealmContext,
-  UploadContext
+  ObsEditContext,
+  RealmContext
 };

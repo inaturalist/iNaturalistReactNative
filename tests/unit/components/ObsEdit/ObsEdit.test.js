@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { render } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import { UploadContext } from "providers/contexts";
-import UploadProvider from "providers/UploadProvider";
+import { ObsEditContext } from "providers/contexts";
+import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -12,7 +12,7 @@ import factory from "../../../factory";
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.
 jest.useFakeTimers( );
 
-jest.mock( "providers/UploadProvider" );
+jest.mock( "providers/ObsEditProvider" );
 
 // mock Portal with a Modal component inside of it (MediaViewer)
 jest.mock( "react-native-paper", () => {
@@ -49,23 +49,23 @@ jest.mock( "@react-navigation/native", ( ) => {
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
-const mockUploadProviderWithObs = obs => UploadProvider.mockImplementation( ( { children } ) => (
+const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
   // eslint-disable-next-line react/jsx-no-constructed-context-values
-  <UploadContext.Provider value={{
+  <ObsEditContext.Provider value={{
     observations: obs,
-    currentObs: obs[0]
+    currentObservation: obs[0]
   }}
   >
     {children}
-  </UploadContext.Provider>
+  </ObsEditContext.Provider>
 ) );
 
 const renderObsEdit = ( ) => render(
   <SafeAreaProvider>
     <NavigationContainer>
-      <UploadProvider>
+      <ObsEditProvider>
         <ObsEdit />
-      </UploadProvider>
+      </ObsEditProvider>
     </NavigationContainer>
   </SafeAreaProvider>
 );
@@ -79,7 +79,7 @@ test( "renders observation photo from photo gallery", ( ) => {
     user: mockCurrentUser,
     place_guess: mockLocationName
   } )];
-  mockUploadProviderWithObs( observations );
+  mockObsEditProviderWithObs( observations );
 
   const { getByText } = renderObsEdit( );
 

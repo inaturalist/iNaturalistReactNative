@@ -5,8 +5,8 @@ import {
 } from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
-import { UploadContext } from "providers/contexts";
-import UploadProvider from "providers/UploadProvider";
+import { ObsEditContext } from "providers/contexts";
+import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
 import factory from "../../../factory";
@@ -15,7 +15,7 @@ const mockedNavigate = jest.fn( );
 const mockObservation = factory( "LocalObservation" );
 const mockUser = factory( "LocalUser" );
 
-jest.mock( "../../../../src/providers/UploadProvider" );
+jest.mock( "../../../../src/providers/ObsEditProvider" );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
@@ -58,14 +58,14 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
   getUserId: ( ) => mockObservation.user.id
 } ) );
 
-const mockUploadProviderWithObs = ( ) => UploadProvider.mockImplementation( ( { children } ) => (
+const mockObsEditProviderWithObs = ( ) => ObsEditProvider.mockImplementation( ( { children } ) => (
   // eslint-disable-next-line react/jsx-no-constructed-context-values
-  <UploadContext.Provider value={{
+  <ObsEditContext.Provider value={{
     addObservations: ( ) => { }
   }}
   >
     {children}
-  </UploadContext.Provider>
+  </ObsEditContext.Provider>
 ) );
 
 const queryClient = new QueryClient( );
@@ -73,15 +73,15 @@ const queryClient = new QueryClient( );
 const renderObsDetails = ( ) => render(
   <QueryClientProvider client={queryClient}>
     <NavigationContainer>
-      <UploadProvider>
+      <ObsEditProvider>
         <ObsDetails />
-      </UploadProvider>
+      </ObsEditProvider>
     </NavigationContainer>
   </QueryClientProvider>
 );
 
 test( "renders obs details from remote call", ( ) => {
-  mockUploadProviderWithObs( );
+  mockObsEditProviderWithObs( );
 
   const { getByTestId, getByText } = renderObsDetails( );
 

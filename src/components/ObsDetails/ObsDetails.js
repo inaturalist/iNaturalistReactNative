@@ -62,7 +62,6 @@ const ObsDetails = ( ): Node => {
   const [refetch, setRefetch] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
-  // const { addObservations } = useContext( UploadContext );
   const { params } = useRoute( );
   const { uuid } = params;
   const [tab, setTab] = useState( 0 );

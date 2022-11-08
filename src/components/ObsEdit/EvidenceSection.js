@@ -2,7 +2,7 @@
 
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
-import { UploadContext } from "providers/contexts";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
@@ -28,12 +28,14 @@ const EvidenceSection = ( {
   photoUris
 }: Props ): Node => {
   const {
-    currentObs,
+    currentObservation,
     updateObservationKey,
     updateObservationKeys
-  } = useContext( UploadContext );
+  } = useContext( ObsEditContext );
   const mountedRef = useRef( true );
-  const [shouldFetchLocation, setShouldFetchLocation] = useState( !currentObs?._created_at );
+  const [shouldFetchLocation, setShouldFetchLocation] = useState(
+    !currentObservation?._created_at
+  );
   const [fetchingLocation, setFetchingLocation] = useState( false );
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
 
@@ -43,8 +45,8 @@ const EvidenceSection = ( {
 
   const updateObservedOn = value => updateObservationKey( "observed_on_string", value );
 
-  const latitude = currentObs?.latitude;
-  const longitude = currentObs?.longitude;
+  const latitude = currentObservation?.latitude;
+  const longitude = currentObservation?.longitude;
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
@@ -63,7 +65,7 @@ const EvidenceSection = ( {
   }, [] );
 
   useEffect( ( ) => {
-    if ( !currentObs ) return;
+    if ( !currentObservation ) return;
 
     if ( !shouldFetchLocation ) return;
 
@@ -107,7 +109,7 @@ const EvidenceSection = ( {
       setShouldFetchLocation( false );
     }
   }, [
-    currentObs,
+    currentObservation,
     fetchingLocation,
     positionalAccuracy,
     setFetchingLocation,
@@ -131,8 +133,8 @@ const EvidenceSection = ( {
     if ( longitude ) {
       location += `, Lon: ${formatDecimal( longitude )}`;
     }
-    if ( currentObs.positional_accuracy ) {
-      location += `, Acc: ${formatDecimal( currentObs.positional_accuracy )}`;
+    if ( currentObservation.positional_accuracy ) {
+      location += `, Acc: ${formatDecimal( currentObservation.positional_accuracy )}`;
     }
     return location;
   };
@@ -145,9 +147,9 @@ const EvidenceSection = ( {
         showAddButton
         handleAddEvidence={handleAddEvidence}
       />
-      <Text>{currentObs.place_guess}</Text>
+      <Text>{currentObservation.place_guess}</Text>
       <Text>{displayLocation( ) || t( "No-Location" )}</Text>
-      <DatePicker currentObs={currentObs} handleDatePicked={handleDatePicked} />
+      <DatePicker currentObservation={currentObservation} handleDatePicked={handleDatePicked} />
     </View>
   );
 };

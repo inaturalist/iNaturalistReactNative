@@ -3,7 +3,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Pressable, Text, View } from "components/styledComponents";
 import { t } from "i18next";
-import { UploadContext } from "providers/contexts";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useRef, useState
@@ -23,11 +23,11 @@ export const MAX_PHOTOS_ALLOWED = 20;
 const StandardCamera = ( ): Node => {
   const { colors: themeColors } = useTheme( );
   const {
-    addCameraPhotosToCurrentObs,
+    addCameraPhotosToCurrentObservation,
     createObsWithCameraPhotos, cameraPreviewUris, setCameraPreviewUris, allObsPhotoUris,
     evidenceToAdd,
     setEvidenceToAdd
-  } = useContext( UploadContext );
+  } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
@@ -82,7 +82,7 @@ const StandardCamera = ( ): Node => {
 
   const navToObsEdit = ( ) => {
     if ( addEvidence ) {
-      addCameraPhotosToCurrentObs( evidenceToAdd );
+      addCameraPhotosToCurrentObservation( evidenceToAdd );
       navigation.navigate( "ObsEdit" );
       return;
     }

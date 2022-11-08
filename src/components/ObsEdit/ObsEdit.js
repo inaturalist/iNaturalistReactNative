@@ -6,7 +6,7 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import Button from "components/SharedComponents/Buttons/Button";
 import ScrollNoFooter from "components/SharedComponents/ScrollNoFooter";
 import { Text, View } from "components/styledComponents";
-import { RealmContext, UploadContext } from "providers/contexts";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -29,14 +29,14 @@ const { useRealm } = RealmContext;
 
 const ObsEdit = ( ): Node => {
   const {
-    currentObs,
+    currentObservation,
     observations,
     saveObservation,
     saveAndUploadObservation,
     setObservations,
-    resetUploadContext
-  } = useContext( UploadContext );
-  const obsPhotos = currentObs?.observationPhotos;
+    resetObsEditContext
+  } = useContext( ObsEditContext );
+  const obsPhotos = currentObservation?.observationPhotos;
   const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
     obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
   ) : [];
@@ -50,10 +50,10 @@ const ObsEdit = ( ): Node => {
     // when opening an observation from ObsDetails, fetch the local
     // observation from realm
     if ( localObservation ) {
-      resetUploadContext( );
+      resetObsEditContext( );
       setObservations( [localObservation] );
     }
-  }, [localObservation, setObservations, resetUploadContext] );
+  }, [localObservation, setObservations, resetObsEditContext] );
 
   const isLoggedIn = useLoggedIn( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -88,18 +88,19 @@ const ObsEdit = ( ): Node => {
 
   const setPhotos = uris => {
     const updatedObservations = observations;
-    const updatedObsPhotos = Array.from( currentObs.observationPhotos ).filter( obsPhoto => {
-      const { photo } = obsPhoto;
-      if ( uris.includes( photo.url || photo.localFilePath ) ) {
-        return obsPhoto;
-      }
-      return false;
-    } );
+    const updatedObsPhotos = Array.from( currentObservation.observationPhotos )
+      .filter( obsPhoto => {
+        const { photo } = obsPhoto;
+        if ( uris.includes( photo.url || photo.localFilePath ) ) {
+          return obsPhoto;
+        }
+        return false;
+      } );
     // when updatedObsPhotos is an empty array, Realm apparently writes to the
     // db immediately when you assign, so if you don't do this in write
     // callback it raises an exception
     realm?.write( ( ) => {
-      currentObs.observationPhotos = updatedObsPhotos;
+      currentObservation.observationPhotos = updatedObsPhotos;
     } );
     setObservations( [...updatedObservations] );
   };
@@ -111,7 +112,7 @@ const ObsEdit = ( ): Node => {
 
   const addEvidence = ( ) => setShowAddEvidenceModal( true );
 
-  if ( !currentObs ) { return null; }
+  if ( !currentObservation ) { return null; }
 
   return (
     <>

@@ -28,7 +28,8 @@ const PhotoGalleryImage = ( {
           color={colors.gray}
         />
       );
-    } if ( isSelected ) {
+    }
+    if ( isSelected ) {
       return (
         <IconMaterial
           name="check-circle"

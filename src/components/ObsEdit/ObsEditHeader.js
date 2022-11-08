@@ -3,7 +3,7 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import { Pressable, Text, View } from "components/styledComponents";
-import { UploadContext } from "providers/contexts";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useState
@@ -21,17 +21,17 @@ type Props = {
 
 const ObsEditHeader = ( { handleBackButtonPress }: Props ): Node => {
   const {
-    currentObsIndex,
-    setCurrentObsIndex,
+    currentObservationIndex,
+    setCurrentObservationIndex,
     observations
-  } = useContext( UploadContext );
+  } = useContext( ObsEditContext );
 
   const { t } = useTranslation( );
 
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
 
-  const showNextObservation = ( ) => setCurrentObsIndex( currentObsIndex + 1 );
-  const showPrevObservation = ( ) => setCurrentObsIndex( currentObsIndex - 1 );
+  const showNextObservation = ( ) => setCurrentObservationIndex( currentObservationIndex + 1 );
+  const showPrevObservation = ( ) => setCurrentObservationIndex( currentObservationIndex - 1 );
 
   const showDialog = ( ) => setDeleteDialogVisible( true );
   const hideDialog = ( ) => setDeleteDialogVisible( false );
@@ -59,11 +59,13 @@ const ObsEditHeader = ( { handleBackButtonPress }: Props ): Node => {
         : (
           <View className="flex-row items-center">
             <Pressable onPress={showPrevObservation} className="w-16">
-              {currentObsIndex !== 0 && <Icon name="keyboard-arrow-left" size={30} />}
+              {currentObservationIndex !== 0 && <Icon name="keyboard-arrow-left" size={30} />}
             </Pressable>
-            <Text className="text-2xl">{`${currentObsIndex + 1} of ${observations.length}`}</Text>
+            <Text className="text-2xl">
+              {`${currentObservationIndex + 1} of ${observations.length}`}
+            </Text>
             <Pressable onPress={showNextObservation} className="w-16">
-              {( currentObsIndex !== observations.length - 1 )
+              {( currentObservationIndex !== observations.length - 1 )
                 && <Icon name="keyboard-arrow-right" size={30} />}
             </Pressable>
           </View>
