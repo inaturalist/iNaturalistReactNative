@@ -17,7 +17,7 @@ type Props = {
 const FONT_SIZE = 20;
 
 const inputStyle = {
-  fontSize: FONT_SIZE, padding: 20, paddingRight: 45
+  fontSize: FONT_SIZE, padding: 20, paddingRight: 45, color: colors.black
 };
 
 const pickerTextStyle = {
