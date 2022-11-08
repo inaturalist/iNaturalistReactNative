@@ -1,6 +1,6 @@
 // @flow
 
-import CameraOptionsModal from "components/Camera/CameraOptionsModal";
+import CameraOptionsModal from "components/CameraOptionsModal";
 import Modal from "components/SharedComponents/Modal";
 import * as React from "react";
 import { Pressable } from "react-native";

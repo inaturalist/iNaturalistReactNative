@@ -15,10 +15,10 @@ import TranslatedText from "components/SharedComponents/TranslatedText";
 import UserIcon from "components/SharedComponents/UserIcon";
 import { formatISO } from "date-fns";
 import _ from "lodash";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useContext, useEffect, useState
+  useEffect, useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -58,7 +58,6 @@ const ObsDetails = ( ): Node => {
   const { t } = useTranslation( );
   const [refetch, setRefetch] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
-  const { addObservations } = useContext( ObsEditContext );
   const { params } = useRoute( );
   const { uuid } = params;
   const [tab, setTab] = useState( 0 );
@@ -193,7 +192,6 @@ const ObsDetails = ( ): Node => {
   const navToUserProfile = id => navigation.navigate( "UserProfile", { userId: id } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
   const navToAddID = ( ) => {
-    addObservations( [observation] );
     navigation.push( "AddID", { onIDAdded, goBackOnSave: true } );
   };
   const openCommentBox = ( ) => setShowCommentBox( true );
