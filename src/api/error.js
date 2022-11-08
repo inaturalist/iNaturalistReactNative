@@ -25,7 +25,6 @@ const handleError = async ( e: Object, options: Object = {} ): Object => {
   if ( options.throw ) {
     throw error;
   }
-  return error;
 };
 
 export default handleError;
