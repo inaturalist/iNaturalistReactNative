@@ -132,8 +132,11 @@ const ObsDetails = ( ): Node => {
 
   useEffect( ( ) => {
     // set initial ids for activity tab
-    if ( observation && ids.length === 0 ) {
-      setIds( observation.identifications );
+    const currentIds = observation?.identifications;
+    if ( currentIds
+        && ids.length === 0
+        && currentIds.length !== ids.length ) {
+      setIds( currentIds );
     }
   }, [observation, ids] );
 
