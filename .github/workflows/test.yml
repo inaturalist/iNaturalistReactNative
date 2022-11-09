@@ -19,8 +19,16 @@ jobs:
     needs: pre_build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - run: npm install --legacy-peer-deps
+    - name: Check out Git repository
+      uses: actions/checkout@v3
+
+    - name: Install Node.js, NPM and Yarn
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Install deps
+      run: npm install --legacy-peer-deps
     - run: npm run lint
     - run: npm test
 

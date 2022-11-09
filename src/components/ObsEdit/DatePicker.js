@@ -9,10 +9,10 @@ import { displayDateTimeObsEdit } from "sharedHelpers/dateAndTime";
 
 type Props = {
   handleDatePicked: ( Date ) => void,
-  currentObs: Object
+  currentObservation: Object
 }
 
-const DatePicker = ( { handleDatePicked, currentObs }: Props ): Node => {
+const DatePicker = ( { handleDatePicked, currentObservation }: Props ): Node => {
   const { t } = useTranslation( );
   const [showModal, setShowModal] = useState( false );
 
@@ -25,11 +25,11 @@ const DatePicker = ( { handleDatePicked, currentObs }: Props ): Node => {
   };
 
   const displayDate = ( ) => {
-    if ( currentObs.observed_on_string ) {
-      return displayDateTimeObsEdit( currentObs.observed_on_string );
-    } if ( currentObs.time_observed_at ) {
+    if ( currentObservation.observed_on_string ) {
+      return displayDateTimeObsEdit( currentObservation.observed_on_string );
+    } if ( currentObservation.time_observed_at ) {
       // this is for observations already uploaded to iNat
-      return displayDateTimeObsEdit( currentObs.time_observed_at );
+      return displayDateTimeObsEdit( currentObservation.time_observed_at );
     }
     return "";
   };

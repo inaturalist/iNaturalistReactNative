@@ -1,9 +1,24 @@
 import "react-native-gesture-handler/jestSetup";
 
+import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
+import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
+import mockRNLocalize from "react-native-localize/mock";
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
+import { mockCamera, mockSortDevices } from "./vision-camera/vision-camera";
+
+require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
+
+jest.useFakeTimers();
+
+jest.mock( "react-native-vision-camera", ( ) => ( {
+  Camera: mockCamera,
+  sortDevices: mockSortDevices
+} ) );
+
+jest.mock( "react-native-localize", () => mockRNLocalize );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 
 // this resolves error with importing file after Jest environment is torn down
@@ -129,18 +144,6 @@ jest.mock( "i18next", () => ( {
   t: k => k
 } ) );
 
-jest.mock( "react-native-localize", () => ( {
-  getTimeZone: ( ) => "Europe/Paris", // the timezone you want
-  getLocales: ( ) => [
-    {
-      countryCode: "NL", languageTag: "nl-NL", languageCode: "nl", isRTL: false
-    },
-    {
-      countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false
-    }
-  ]
-} ) );
-
 // Make apisauce work with nock
 jest.mock( "apisauce", ( ) => ( {
   create: config => {
@@ -170,3 +173,10 @@ require( "react-native" ).NativeModules.MMKVNative = {
 
 // Mock native animation for all tests
 jest.mock( "react-native/Libraries/Animated/NativeAnimatedHelper" );
+
+jest.mock( "@gorhom/bottom-sheet", ( ) => ( {
+  ...mockBottomSheet,
+  __esModule: true,
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  BottomSheetTextInput: ( ) => <></>
+} ) );
