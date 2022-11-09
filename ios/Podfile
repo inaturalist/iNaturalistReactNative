@@ -40,5 +40,7 @@ target 'iNaturalistReactNative' do
         config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = IPHONEOS_DEPLOYMENT_TARGET
       end
     end
+    #react_native_post_install(installer)
+    `sed -i -e  $'s/__IPHONE_10_0/__IPHONE_12_0/' Pods/RCT-Folly/folly/portability/Time.h`
   end
 end
