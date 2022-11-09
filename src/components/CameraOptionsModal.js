@@ -14,18 +14,21 @@ type Props = {
 
 const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
-  const obsEdit = React.useContext( ObsEditContext );
-  const currentObs = obsEdit?.currentObs;
-  const addObservationNoEvidence = obsEdit?.addObservationNoEvidence;
+  const obsEditContext = React.useContext( ObsEditContext );
+  const currentObservation = obsEditContext?.currentObservation;
+  const createObservationNoEvidence = obsEditContext?.createObservationNoEvidence;
   const navigation = useNavigation( );
 
-  const hasSound = currentObs?.observationSounds?.uri;
+  const hasSound = currentObservation?.observationSounds?.uri;
 
   const navAndCloseModal = ( screen, params ) => {
-    const setObservations = obsEdit?.setObservations;
-    // clear any previous observations before navigating
-    if ( setObservations ) {
-      setObservations( [] );
+    const resetObsEditContext = obsEditContext?.resetObsEditContext;
+    // clear previous upload context before navigating
+    if ( resetObsEditContext ) {
+      resetObsEditContext( );
+    }
+    if ( screen === "ObsEdit" ) {
+      createObservationNoEvidence( );
     }
     // access nested screen
     navigation.navigate( screen, params );
@@ -38,10 +41,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
 
   const navToStandardCamera = ( ) => navAndCloseModal( "StandardCamera" );
 
-  const navToObsEdit = ( ) => {
-    addObservationNoEvidence( );
-    navAndCloseModal( "ObsEdit" );
-  };
+  const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
 
   const bulletedText = [
     t( "Take-a-photo-with-your-camera" ),
@@ -74,9 +74,10 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
         ) )}
       </View>
       {renderIconButton( "plus", "bottom-0 left-1/3 px-2", ( ) => { }, 80 )}
-      {!currentObs && renderIconButton( "square-edit-outline", "bottom-6 left-10", navToObsEdit )}
+      {!currentObservation
+        && renderIconButton( "square-edit-outline", "bottom-6 left-10", navToObsEdit )}
       {renderIconButton( "camera", "bottom-24 left-20", navToStandardCamera )}
-      {!currentObs
+      {!currentObservation
         && renderIconButton( "folder-multiple-image", "bottom-24 right-20", navToPhotoGallery )}
       {!hasSound && renderIconButton( "microphone", "bottom-6 right-10", navToSoundRecorder )}
     </>
