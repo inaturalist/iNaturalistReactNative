@@ -3,8 +3,9 @@
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { Keyboard, Platform } from "react-native";
+import { Keyboard, useWindowDimensions } from "react-native";
 import { TextInput } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -14,6 +15,8 @@ type Props = {
 
 const Notes = ( { addNotes, description }: Props ): Node => {
   const [keyboardOffset, setKeyboardOffset] = useState( 0 );
+  const { width } = useWindowDimensions( );
+  const insets = useSafeAreaInsets( );
   const [localDescription, setLocalDescription] = useState( description );
 
   useEffect( ( ) => {
@@ -30,12 +33,11 @@ const Notes = ( { addNotes, description }: Props ): Node => {
     };
   }, [] );
 
-  let textInputStyle = "pl-3 bg-white";
-
-  // TODO: Figure out how to position element exactly above keyboard with Tailwind
-  if ( keyboardOffset > 0 ) {
-    textInputStyle += ` absolute w-full ${Platform.OS === "ios" ? "bottom-28" : "bottom-36"}`;
-  }
+  const offset = {
+    position: "absolute",
+    width,
+    bottom: keyboardOffset - insets.bottom
+  };
 
   return (
     <TextInput
@@ -45,7 +47,8 @@ const Notes = ( { addNotes, description }: Props ): Node => {
       onBlur={( ) => addNotes( localDescription )}
       value={localDescription}
       placeholder={t( "Add-optional-notes" )}
-      className={textInputStyle}
+      className="pl-3 bg-white"
+      style={[keyboardOffset > 0 && offset]}
       testID="ObsEdit.notes"
       underlineColor={colors.white}
     />
