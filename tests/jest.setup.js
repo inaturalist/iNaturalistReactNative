@@ -174,8 +174,6 @@ require( "react-native" ).NativeModules.MMKVNative = {
 // Mock native animation for all tests
 jest.mock( "react-native/Libraries/Animated/NativeAnimatedHelper" );
 
-console.log( mockBottomSheet, "mock bottom sheet" );
-
 jest.mock( "@gorhom/bottom-sheet", ( ) => ( {
   ...mockBottomSheet,
   __esModule: true,
