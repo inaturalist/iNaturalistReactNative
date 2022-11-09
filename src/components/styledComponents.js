@@ -1,5 +1,8 @@
 // @flow
 
+import {
+  BottomSheetTextInput as StyledBottomSheetTextInput
+} from "@gorhom/bottom-sheet";
 import { styled } from "nativewind";
 import {
   Image as StyledImage,
@@ -37,8 +40,11 @@ const TextInput = styled( StyledTextInput );
 const Pressable = styled( StyledPressable );
 // $FlowIgnore
 const Image = styled( StyledImage );
+// $FlowIgnore
+const BottomSheetTextInput = styled( StyledBottomSheetTextInput );
 
 export {
+  BottomSheetTextInput,
   HeaderText,
   Image,
   KeyboardAvoidingView,
