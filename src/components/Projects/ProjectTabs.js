@@ -1,22 +1,31 @@
 // @flow
 
+import { searchProjects } from "api/projects";
 import { t } from "i18next";
 import * as React from "react";
 import { Pressable, Text, View } from "react-native";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useUserLocation from "sharedHooks/useUserLocation";
+import { viewStyles } from "styles/projects/projects";
 
-import useUserLocation from "../../sharedHooks/useUserLocation";
-import { viewStyles } from "../../styles/projects/projects";
-import useMemberId from "./hooks/useMemberId";
-import useProjects from "./hooks/useProjects";
 import ProjectList from "./ProjectList";
 
-const ProjectTabs = ( ): React.Node => {
-  const memberId = useMemberId( );
+type Props = {
+  memberId: number
+}
+
+const ProjectTabs = ( { memberId }: Props ): React.Node => {
   const userJoined = { member_id: memberId };
   const [apiParams, setApiParams] = React.useState( userJoined );
 
   const latLng = useUserLocation( );
-  const projects = useProjects( apiParams );
+
+  const {
+    data: projects
+  } = useAuthenticatedQuery(
+    ["searchProjects", apiParams],
+    optsWithAuth => searchProjects( apiParams, optsWithAuth )
+  );
 
   const fetchProjectsByLatLng = ( ) => {
     setApiParams( {

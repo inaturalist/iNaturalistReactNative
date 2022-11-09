@@ -1,18 +1,29 @@
 // @flow
 
 import { useRoute } from "@react-navigation/native";
+import { fetchProjects } from "api/projects";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import * as React from "react";
-import { Image, ImageBackground, Text } from "react-native";
+import {
+  Image, ImageBackground, Text
+} from "react-native";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { imageStyles, textStyles } from "styles/projects/projectDetails";
 
-import { imageStyles, textStyles } from "../../styles/projects/projectDetails";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import useProjectDetails from "./hooks/useProjectDetails";
 import ProjectObservations from "./ProjectObservations";
 
 const ProjectDetails = ( ): React.Node => {
   const { params } = useRoute( );
   const { id } = params;
-  const project = useProjectDetails( id );
+
+  const {
+    data: project
+  } = useAuthenticatedQuery(
+    ["fetchProjects", id],
+    optsWithAuth => fetchProjects( id, { }, optsWithAuth )
+  );
+
+  if ( !project ) { return null; }
 
   return (
     <ViewWithFooter>

@@ -1,37 +1,32 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { useQueryClient } from "@tanstack/react-query";
+import Button from "components/SharedComponents/Buttons/Button";
+import {
+  Image, KeyboardAvoidingView, Pressable,
+  SafeAreaView,
+  ScrollView
+} from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Image,
-  KeyboardAvoidingView,
   Linking,
   Platform,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  View
+  TouchableOpacity
 } from "react-native";
 import {
-  Dialog, Paragraph, Portal, Text, TextInput
+  Text, TextInput
 } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import viewStyles from "styles/login/login";
+import colors from "styles/tailwindColors";
 
-import colors from "../../styles/colors";
-import {
-  closeButton, imageStyles, textStyles, viewStyles
-} from "../../styles/login/login";
-import Button from "../SharedComponents/Buttons/Button";
 import {
   authenticateUser,
-  getUsername,
-  isLoggedIn,
-  signOut
+  isLoggedIn
 } from "./AuthenticationService";
+import Logout from "./Logout";
 
 const Login = ( ): Node => {
   const { t } = useTranslation( );
@@ -40,23 +35,15 @@ const Login = ( ): Node => {
   const [password, setPassword] = useState( "" );
   const [loggedIn, setLoggedIn] = useState( false );
   const [error, setError] = useState( null );
-  const [username, setUsername] = useState( null );
-  const [visible, setVisible] = useState( false );
   const [loading, setLoading] = useState( false );
-
-  const showDialog = ( ) => setVisible( true );
-  const hideDialog = ( ) => setVisible( false );
 
   useEffect( ( ) => {
     let isCurrent = true;
 
     const fetchLoggedIn = async ( ) => {
+      const login = await isLoggedIn( );
       if ( !isCurrent ) { return; }
-
-      setLoggedIn( await isLoggedIn( ) );
-      if ( loggedIn ) {
-        setUsername( await getUsername( ) );
-      }
+      setLoggedIn( login );
     };
 
     fetchLoggedIn( );
@@ -76,12 +63,8 @@ const Login = ( ): Node => {
     if ( !success ) {
       setError( t( "Invalid-login" ) );
       setLoading( false );
-
       return;
     }
-
-    const userLogin = await getUsername( );
-    setUsername( userLogin );
     setLoggedIn( true );
     setLoading( false );
 
@@ -90,63 +73,24 @@ const Login = ( ): Node => {
     } );
   };
 
-  const queryClient = useQueryClient( );
-
-  const onSignOut = async ( ) => {
-    await signOut( { deleteRealm: true, queryClient } );
-    setLoggedIn( false );
-  };
-
   const forgotPassword = () => {
     // TODO - should be put in a constant somewhere?
     Linking.openURL( "https://www.inaturalist.org/users/password/new" );
   };
 
-  const logoutForm = (
-    <>
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Content>
-            <Paragraph>{t( "Are-you-sure-you-want-to-sign-out" )}</Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              level="neutral"
-              onPress={hideDialog}
-              testID="Login.signOutButton"
-              text={t( "Cancel" )}
-            />
-
-            <Button level="primary" onPress={onSignOut} text={t( "Sign-out" )} />
-
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-      <View style={viewStyles.logoutForm}>
-        <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
-        <Button
-          level="primary"
-          onPress={showDialog}
-          testID="Login.signOutButton"
-          text="Sign-out"
-        />
-      </View>
-    </>
-  );
-
   const loginForm = (
     <>
       <Image
-        style={imageStyles.logo}
+        className="self-center w-32 h-32"
         resizeMode="contain"
-        source={require( "../../images/inat_logo.png" )}
+        source={require( "images/inat_logo.png" )}
       />
 
-      <Text style={textStyles.header}>{t( "Login-header" )}</Text>
-      <Text style={textStyles.subtitle}>{t( "Login-sub-title" )}</Text>
-      <Text style={textStyles.fieldText}>{t( "Username-or-Email" )}</Text>
+      <Text className="text-2xl self-center mt-5">{t( "Login-header" )}</Text>
+      <Text className="text-xl self-center text-center mt-5 mb-5">{t( "Login-sub-title" )}</Text>
+      <Text className="text-base mb-1">{t( "Username-or-Email" )}</Text>
       <TextInput
-        style={viewStyles.input}
+        className="h-10 bg-tertiary"
         onChangeText={text => {
           setError( null );
           setEmail( text );
@@ -158,9 +102,9 @@ const Login = ( ): Node => {
         keyboardType="email-address"
         selectionColor={colors.black}
       />
-      <Text style={textStyles.fieldText}>{t( "Password" )}</Text>
+      <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
-        style={viewStyles.input}
+        className="h-10 bg-tertiary"
         onChangeText={text => {
           setError( null );
           setPassword( text );
@@ -171,9 +115,9 @@ const Login = ( ): Node => {
         selectionColor={colors.black}
       />
       <TouchableOpacity onPress={forgotPassword}>
-        <Text style={textStyles.forgotPassword}>{t( "Forgot-Password" )}</Text>
+        <Text className="underline mt-4 self-end">{t( "Forgot-Password" )}</Text>
       </TouchableOpacity>
-      {error && <Text style={textStyles.error}>{error}</Text>}
+      {error && <Text className="text-red self-center mt-5">{error}</Text>}
       <Button
         level="primary"
         text="Log-in"
@@ -189,19 +133,17 @@ const Login = ( ): Node => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={viewStyles.container}
+      className="flex-1"
     >
-      <SafeAreaView style={[viewStyles.container]}>
-        <ScrollView
-          contentContainerStyle={viewStyles.paddedContainer}
-        >
+      <SafeAreaView className="flex-1">
+        <ScrollView className="flex-1 p-10">
           <Pressable
             onPress={() => navigation.goBack()}
-            style={closeButton.close}
+            className="absolute top-0 right-0"
           >
-            <Icon name="close" size={35} />
+            <IconMaterial name="close" size={35} />
           </Pressable>
-          {loggedIn ? logoutForm : loginForm}
+          {loggedIn ? <Logout /> : loginForm}
         </ScrollView>
       </SafeAreaView>
     </KeyboardAvoidingView>

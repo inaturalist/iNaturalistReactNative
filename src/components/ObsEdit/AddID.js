@@ -6,25 +6,29 @@ import {
   BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
+import fetchSearchResults from "api/search";
+import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
+import { Text } from "components/styledComponents";
 import * as React from "react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
   Image,
-  Pressable, TextInput as NativeTextInput, TouchableOpacity,
+  Pressable,
+  TextInput as NativeTextInput,
+  TouchableOpacity,
   View
 } from "react-native";
 import {
-  Button, Headline, Text, TextInput
+  Button, Headline, TextInput
 } from "react-native-paper";
 import uuid from "react-native-uuid";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { textStyles, viewStyles } from "styles/obsDetails/addID";
+import colors from "styles/tailwindColors";
 
-import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import colors from "../../styles/colors";
-import { textStyles, viewStyles } from "../../styles/obsDetails/addID";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import AddIDHeader from "./AddIDHeader";
 
 type Props = {
@@ -39,7 +43,7 @@ type Props = {
 
 const SearchTaxonIcon = (
   <TextInput.Icon
-    name={() => <Icon style={textStyles.taxonSearchIcon} name="magnify" size={25} />}
+    name={() => <IconMaterial style={textStyles.taxonSearchIcon} name="search" size={25} />}
   />
 );
 
@@ -50,11 +54,17 @@ const AddID = ( { route }: Props ): React.Node => {
   const { onIDAdded, goBackOnSave, hideComment } = route.params;
   const bottomSheetModalRef = useRef( null );
   const [taxonSearch, setTaxonSearch] = useState( "" );
-  const taxonList = useRemoteSearchResults(
-    taxonSearch,
-    "taxa",
-    "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url,taxon.rank"
+  const {
+    data: taxonList
+  } = useAuthenticatedQuery(
+    ["fetchSearchResults", taxonSearch],
+    optsWithAuth => fetchSearchResults( {
+      q: taxonSearch,
+      sources: "taxa",
+      fields: "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url,taxon.rank"
+    }, optsWithAuth )
   );
+
   const navigation = useNavigation( );
 
   const renderBackdrop = props => (
@@ -97,7 +107,7 @@ const AddID = ( { route }: Props ): React.Node => {
   const renderTaxonResult = ( { item } ) => {
     const taxonImage = item.default_photo
       ? { uri: item.default_photo.square_url }
-      : Icon.getImageSourceSync( "leaf", 50, colors.inatGreen );
+      : IconMaterial.getImageSourceSync( "spa", 50, colors.inatGreen );
 
     return (
       <View style={viewStyles.taxonResult} testID={`Search.taxa.${item.id}`}>
@@ -115,7 +125,7 @@ const AddID = ( { route }: Props ): React.Node => {
           onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )}
           accessibilityRole="link"
         >
-          <Icon style={textStyles.taxonResultInfoIcon} name="information-outline" size={25} />
+          <IconMaterial style={textStyles.taxonResultInfoIcon} name="info-outline" size={25} />
         </Pressable>
         <Pressable
           style={viewStyles.taxonResultSelect}
@@ -125,7 +135,7 @@ const AddID = ( { route }: Props ): React.Node => {
           }}
           accessibilityRole="link"
         >
-          <Icon style={textStyles.taxonResultSelectIcon} name="check-bold" size={25} />
+          <IconMaterial style={textStyles.taxonResultSelectIcon} name="check" size={25} />
         </Pressable>
       </View>
     );
@@ -144,19 +154,21 @@ const AddID = ( { route }: Props ): React.Node => {
             <View>
               <Text>{t( "ID-Comment" )}</Text>
               <View style={viewStyles.commentContainer}>
-                <Icon style={textStyles.commentLeftIcon} name="chat-processing-outline" size={25} />
+                <IconMaterial style={textStyles.commentLeftIcon} name="textsms" size={25} />
                 <Text style={textStyles.comment}>{comment}</Text>
                 <Pressable
                   style={viewStyles.commentRightIconContainer}
                   onPress={editComment}
                   accessibilityRole="link"
                 >
-                  <Icon style={textStyles.commentRightIcon} name="pencil" size={25} />
+                  <IconMaterial style={textStyles.commentRightIcon} name="edit" size={25} />
                 </Pressable>
               </View>
             </View>
             )}
-            <Text>{t( "Search-Taxon-ID" )}</Text>
+            <Text className="color-grayText">
+              {t( "Search-for-a-taxon-to-add-an-identification" )}
+            </Text>
             <TextInput
               testID="SearchTaxon"
               left={SearchTaxonIcon}

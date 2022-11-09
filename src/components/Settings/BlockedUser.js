@@ -9,8 +9,7 @@ import {
   Text,
   View
 } from "react-native";
-
-import { viewStyles } from "../../styles/settings/settings";
+import { viewStyles } from "styles/settings/settings";
 
 type Props = {
   unblockUser: Function,
@@ -29,7 +28,7 @@ const BlockedUser = ( { user, unblockUser }:Props ): Node => (
     </View>
     <Pressable
       style={viewStyles.removeRelationship}
-      onPress={() => unblockUser( user )}
+      onPress={unblockUser}
     >
       <Text>{t( "Unblock" )}</Text>
     </Pressable>

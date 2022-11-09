@@ -1,25 +1,28 @@
 // @flow
 
+import searchMessages from "api/messages";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import type { Node } from "react";
 import React from "react";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
-import searchMessages from "../../api/messages";
-import useQuery from "../../sharedHooks/useAuthenticatedQuery";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import MessageList from "./MessageList";
 
 const Messages = ( ): Node => {
   const {
-    data: messages,
+    data,
     isLoading
-  } = useQuery( ["searchMessages"], searchMessages );
+  } = useAuthenticatedQuery(
+    ["searchMessages"],
+    optsWithAuth => searchMessages( { page: 1 }, optsWithAuth )
+  );
   // TODO: Reload when accessing again
 
   return (
     <ViewWithFooter>
       <MessageList
         loading={isLoading}
-        messageList={messages}
+        messageList={data}
         testID="Messages.messages"
       />
     </ViewWithFooter>

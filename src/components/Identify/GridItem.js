@@ -1,19 +1,19 @@
 // @flow
 
+import createIdentification from "api/identifications";
+import Button from "components/SharedComponents/Buttons/Button";
 import type { Node } from "react";
 import React, { useState } from "react";
 import {
   ActivityIndicator, Image, Pressable, Text, View
 } from "react-native";
-
-import Observation from "../../models/Observation";
+import Observation from "realmModels/Observation";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import {
   imageStyles,
   textStyles,
   viewStyles
-} from "../../styles/sharedComponents/observationViews/gridItem";
-import Button from "../SharedComponents/Buttons/Button";
-import createIdentification from "./helpers/createIdentification";
+} from "styles/observations/gridItem";
 
 type Props = {
   item: Object,
@@ -37,17 +37,25 @@ const GridItem = ( {
   // TODO: add fallback image when there is no uri
   const imageUri = Observation.projectUri( item );
 
+  const createIdentificationMutation = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => createIdentification( params, optsWithAuth ),
+    {
+      onSuccess: ( ) => {
+        const ids = Array.from( reviewedIds );
+        ids.push( item.id );
+        setReviewedIds( ids );
+      }
+    }
+  );
+
   const agreeWithObservation = async ( ) => {
     setShowLoadingWheel( true );
-    const results = await createIdentification( {
-      observation_id: item.uuid,
-      taxon_id: item.taxon.id
+    createIdentificationMutation.mutate( {
+      identification: {
+        observation_id: item.uuid,
+        taxon_id: item.taxon.id
+      }
     } );
-    if ( results === 1 ) {
-      const ids = Array.from( reviewedIds );
-      ids.push( item.id );
-      setReviewedIds( ids );
-    }
     setShowLoadingWheel( false );
   };
 
@@ -68,7 +76,7 @@ const GridItem = ( {
         testID="ObsList.photo"
       />
       <Image
-        source={{ uri: item.user.icon_url }}
+        source={{ uri: item?.user?.icon_url }}
         style={imageStyles.userImage}
         testID="ObsList.identifierPhoto"
       />

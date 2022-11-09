@@ -1,11 +1,11 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
-import { Pressable, View } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import { viewStyles } from "styles/sharedComponents/footer";
 
-import { viewStyles } from "../../styles/sharedComponents/footer";
 import CameraOptionsButton from "./Buttons/CameraOptionsButton";
 
 const Footer = ( ): React.Node => {
@@ -16,19 +16,22 @@ const Footer = ( ): React.Node => {
   const navToNotifications = ( ) => navigation.navigate( "MainStack", { screen: "Messages" } );
 
   return (
-    <View style={[viewStyles.row, viewStyles.shadow]}>
+    <View
+      className="flex-row h-24 absolute bottom-0 bg-white w-screen justify-evenly pt-2"
+      style={viewStyles.shadow}
+    >
       <Pressable onPress={toggleSideMenu} accessibilityRole="link">
-        <Icon name="menu" size={30} />
+        <IconMaterial name="menu" size={30} />
       </Pressable>
       <Pressable onPress={navToExplore} accessibilityRole="link">
-        <Icon name="web" size={30} />
+        <IconMaterial name="language" size={30} />
       </Pressable>
-      <CameraOptionsButton buttonType="footer" />
+      <CameraOptionsButton />
       <Pressable onPress={navToObsList} accessibilityRole="link">
-        <Icon name="account" size={30} />
+        <IconMaterial name="person" size={30} />
       </Pressable>
       <Pressable onPress={navToNotifications} accessibilityRole="link">
-        <Icon name="bell" size={30} />
+        <IconMaterial name="notifications" size={30} />
       </Pressable>
     </View>
   );

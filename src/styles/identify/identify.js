@@ -1,4 +1,4 @@
-// @flow strict-local
+// @flow
 
 import { StyleSheet } from "react-native";
 import type {
@@ -6,8 +6,7 @@ import type {
   TextStyleProp,
   ViewStyleProp
 } from "react-native/Libraries/StyleSheet/StyleSheet";
-
-import colors from "../colors";
+import colors from "styles/tailwindColors";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   toggleViewRow: {

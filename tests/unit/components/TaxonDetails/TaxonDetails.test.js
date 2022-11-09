@@ -1,14 +1,19 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render } from "@testing-library/react-native";
+import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import React from "react";
 import { Linking } from "react-native";
 
-import TaxonDetails from "../../../../src/components/TaxonDetails/TaxonDetails";
 import factory from "../../../factory";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
 
 const mockTaxon = factory( "RemoteTaxon" );
+
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  __esModule: true,
+  default: ( ) => true
+} ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );

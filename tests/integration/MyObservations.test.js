@@ -3,11 +3,11 @@
 
 import { NavigationContainer } from "@react-navigation/native";
 import { render, waitFor } from "@testing-library/react-native";
+import ObsList from "components/Observations/ObsList";
 import inatjs from "inaturalistjs";
 import React from "react";
 import AccessibilityEngine from "react-native-accessibility-engine";
 
-import ObsList from "../../src/components/Observations/ObsList";
 import factory, { makeResponse } from "../factory";
 
 // Mock inaturalistjs so we can make some fake responses
@@ -24,6 +24,8 @@ jest.mock( "@react-navigation/native", ( ) => {
     } )
   };
 } );
+
+jest.mock( "sharedHooks/useApiToken" );
 
 const renderObsList = ( ) => render(
   <NavigationContainer>

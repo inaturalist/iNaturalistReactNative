@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render, within } from "@testing-library/react-native";
+import ObsList from "components/Observations/ObsList";
 import React from "react";
 
-import ObsList from "../../../../src/components/Observations/ObsList";
 import factory from "../../../factory";
 
 const mockObservations = [
@@ -17,8 +17,19 @@ const mockObservations = [
 ];
 
 // Mock the hooks we use on ObsList since we're not trying to test them here
+
+jest.mock( "../../../../src/sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: ( ) => true
+} ) );
+
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  __esModule: true,
+  default: ( ) => true
+} ) );
+
 jest.mock(
-  "../../../../src/components/Observations/hooks/useLocalObservations",
+  "../../../../src/sharedHooks/useLocalObservations",
   ( ) => ( {
     __esModule: true,
     default: ( ) => ( {
@@ -27,7 +38,7 @@ jest.mock(
   } )
 );
 
-jest.mock( "../../../../src/components/Observations/hooks/useRemoteObservations", ( ) => ( {
+jest.mock( "../../../../src/sharedHooks/useRemoteObservations", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
     loading: false
@@ -46,7 +57,16 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-jest.mock( "@gorhom/bottom-sheet", () => require( "@gorhom/bottom-sheet/mock" ) );
+// https://github.com/gorhom/react-native-bottom-sheet/issues/932#issuecomment-1137645269
+jest.mock( "@gorhom/bottom-sheet", () => ( {
+  ...require( "@gorhom/bottom-sheet/mock" ),
+  __esModule: true
+} ) );
+
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  default: ( ) => false,
+  __esModule: true
+} ) );
 
 const renderObsList = ( ) => render(
   <NavigationContainer>
@@ -58,6 +78,7 @@ it( "renders an observation", ( ) => {
   const { getByTestId } = renderObsList( );
   const obs = mockObservations[0];
   const list = getByTestId( "ObsList.myObservations" );
+
   // Test that there isn't other data lingering
   expect( list.props.data.length ).toEqual( mockObservations.length );
   // Test that a card got rendered for the our test obs

@@ -1,9 +1,8 @@
-// @flow strict-local
+// @flow
 
 import { StyleSheet } from "react-native";
-import type { TextStyleProp, ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-
-import colors from "../colors";
+import type { ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import colors from "styles/tailwindColors";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   menuContentStyle: {
@@ -11,13 +10,4 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   }
 } );
 
-const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  title: {
-    color: colors.black
-  }
-} );
-
-export {
-  textStyles,
-  viewStyles
-};
+export default viewStyles;

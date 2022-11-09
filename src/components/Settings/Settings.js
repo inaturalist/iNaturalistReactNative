@@ -1,11 +1,11 @@
-import { useFocusEffect } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
+import { fetchUserMe, updateUsers } from "api/users";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { t } from "i18next";
-import inatjs from "inaturalistjs";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Alert,
   Button,
   Pressable,
   SafeAreaView,
@@ -14,11 +14,10 @@ import {
   Text,
   View
 } from "react-native";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { textStyles, viewStyles } from "styles/settings/settings";
 
-import { textStyles, viewStyles } from "../../styles/settings/settings";
-import { getAPIToken } from "../LoginSignUp/AuthenticationService";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
-import useUserMe from "./hooks/useUserMe";
 import SettingsAccount from "./SettingsAccount";
 import SettingsApplications from "./SettingsApplications";
 import SettingsContentDisplay from "./SettingsContentDisplay";
@@ -149,24 +148,34 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
 const Settings = ( { children: _children }: Props ): Node => {
   const [activeTab, setActiveTab] = useState( TAB_TYPE_PROFILE );
   const [settings, setSettings] = useState( {} );
-  const [accessToken, setAccessToken] = useState( null );
-  const [isLoading, setIsLoading] = useState( true );
   const [isSaving, setIsSaving] = useState( false );
-  const user = useUserMe( accessToken );
 
-  const fetchProfile = useCallback( async () => {
-    if ( user ) {
-      console.log( "User object", user );
-      setSettings( user );
-      setIsLoading( false );
+  const {
+    data: user,
+    isLoading,
+    refetch: refetchUserMe
+  } = useAuthenticatedQuery(
+    ["fetchUserMe"],
+    optsWithAuth => fetchUserMe( { }, optsWithAuth )
+  );
+
+  const queryClient = useQueryClient( );
+
+  const updateUserMutation = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
+    {
+      onSuccess: ( ) => {
+        queryClient.invalidateQueries( ["fetchUserMe"] );
+        refetchUserMe( );
+      }
     }
-  }, [user] );
+  );
 
   useEffect( () => {
-    if ( accessToken !== null ) {
-      fetchProfile();
+    if ( user ) {
+      setSettings( user );
     }
-  }, [accessToken, fetchProfile] );
+  }, [user] );
 
   const saveSettings = async () => {
     setIsSaving( true );
@@ -190,48 +199,9 @@ const Settings = ( { children: _children }: Props ): Node => {
         }
       };
     }
-
-    console.log( "Payload", payload );
-    let response;
-    try {
-      response = await inatjs.users.update( payload, {
-        api_token: accessToken
-      } );
-    } catch ( e ) {
-      console.error( e );
-      Alert.alert(
-        "Error",
-        "Couldn't save settings!",
-        [{ text: "OK" }],
-        {
-          cancelable: true
-        }
-      );
-      setIsSaving( false );
-      return;
-    }
-
-    console.log( "Updated user", response );
-    const userResponse = await inatjs.users.me( { api_token: accessToken, fields: "all" } );
-    console.log( "User object", userResponse.results[0] );
-    setSettings( userResponse.results[0] );
+    updateUserMutation.mutate( payload );
     setIsSaving( false );
   };
-
-  useFocusEffect(
-    React.useCallback( () => {
-      // Reload the settings
-      getAPIToken( true ).then( token => {
-        setAccessToken( token );
-      } );
-
-      return () => {
-        // De-focused - clean up the access token (this will force a refresh
-        // later when we're re-focused)
-        setAccessToken( null );
-      };
-    }, [] )
-  );
 
   return (
     <ViewWithFooter>
@@ -275,13 +245,12 @@ const Settings = ( { children: _children }: Props ): Node => {
               />
             )}
             {activeTab === TAB_TYPE_APPLICATIONS && (
-              <SettingsApplications accessToken={accessToken} />
+              <SettingsApplications />
             )}
             {activeTab === TAB_TYPE_RELATIONSHIPS && (
               <SettingsRelationships
                 settings={settings}
-                accessToken={accessToken}
-                onRefreshUser={fetchProfile}
+                refetchUserMe={refetchUserMe}
               />
             )}
           </ScrollView>

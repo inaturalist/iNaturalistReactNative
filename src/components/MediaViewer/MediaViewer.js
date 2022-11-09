@@ -1,13 +1,12 @@
 // @flow
 
+import { SafeAreaView, Text } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SafeAreaView } from "react-native";
-import { Appbar, Button, IconButton } from "react-native-paper";
+import { Button, IconButton } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
-import colors from "../../styles/colors";
-import { textStyles, viewStyles } from "../../styles/mediaViewer/mediaViewer";
 import HorizontalScroll from "./HorizontalScroll";
 
 type Props = {
@@ -35,13 +34,10 @@ const MediaViewer = ( {
   }, [numOfPhotos, hideModal] );
 
   return (
-    <SafeAreaView style={viewStyles.container}>
-      <Appbar.Header style={viewStyles.container}>
-        <Appbar.Content
-          title={t( "X-Photos", { photoCount: numOfPhotos } )}
-          titleStyle={textStyles.whiteText}
-        />
-      </Appbar.Header>
+    <SafeAreaView>
+      <Text className="text-2xl text-white self-center mb-2">
+        {t( "X-Photos", { photoCount: numOfPhotos } )}
+      </Text>
       <HorizontalScroll
         photoUris={photoUris}
         initialPhotoSelected={initialPhotoSelected}
@@ -55,7 +51,7 @@ const MediaViewer = ( {
         iconColor={colors.white}
       />
       <Button
-        style={viewStyles.alignRight}
+        className="flex-row justify-end"
         onPress={showDialog}
       >
         {t( "Remove-Photo" )}

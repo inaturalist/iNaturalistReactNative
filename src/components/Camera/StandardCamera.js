@@ -1,31 +1,29 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { Pressable, Text, View } from "components/styledComponents";
 import { t } from "i18next";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
 } from "react";
-import { Pressable, Text, View } from "react-native";
 import { Avatar, Snackbar, useTheme } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
-import Realm from "realm";
+import Photo from "realmModels/Photo";
+import colors from "styles/tailwindColors";
 
-import realmConfig from "../../models/index";
-import Photo from "../../models/Photo";
-import { ObsEditContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/camera/standardCamera";
-import colors from "../../styles/colors";
-import { textStyles } from "../../styles/obsDetails/obsDetails";
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
+
+const { useRealm } = RealmContext;
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const StandardCamera = ( ): Node => {
   const { colors: themeColors } = useTheme( );
-  // TODO: figure out if there's a way to write location to photo metadata with RN
   const { addPhotos } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { params } = useRoute( );
@@ -43,6 +41,10 @@ const StandardCamera = ( ): Node => {
   const disallowAddingPhotos = photoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
 
+  const photosTaken = photoUris.length > 0;
+
+  const realm = useRealm( );
+
   const takePhoto = async ( ) => {
     setSavingPhoto( true );
     try {
@@ -52,7 +54,6 @@ const StandardCamera = ( ): Node => {
         return;
       }
       const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-      const realm = await Realm.open( realmConfig );
       const uri = await Photo.savePhoto( realm, cameraPhoto );
 
       setPhotoUris( photoUris.concat( [uri] ) );
@@ -89,55 +90,56 @@ const StandardCamera = ( ): Node => {
     }
   }, [photos] );
 
-  const renderCameraButton = ( icon, disabled ) => (
+  const renderCameraOptionsButtons = icon => (
     <Avatar.Icon
       size={40}
+      icon={icon}
+      style={{ backgroundColor: colors.gray }}
+    />
+  );
+
+  const renderCameraButton = ( icon, disabled ) => (
+    <Avatar.Icon
+      size={60}
       icon={icon}
       style={{ backgroundColor: disabled ? colors.gray : themeColors.background }}
     />
   );
 
   return (
-    <View style={viewStyles.container}>
+    <View className="flex-1 bg-black">
       {device && <CameraView device={device} camera={camera} />}
       <PhotoPreview photoUris={photoUris} setPhotoUris={setPhotoUris} savingPhoto={savingPhoto} />
       <FadeInOutView savingPhoto={savingPhoto} />
-      <View style={viewStyles.bottomButtons}>
-        <View style={viewStyles.cameraSettingsRow}>
-          <Pressable
-            style={viewStyles.flashButton}
-            onPress={toggleFlash}
-          >
-            {renderCameraButton( "flash" )}
+      <View className="absolute bottom-0">
+        <View className="flex-row justify-between w-screen mb-4 px-4">
+          <Pressable onPress={toggleFlash}>
+            {renderCameraOptionsButtons( "flash" )}
           </Pressable>
-          <Pressable
-            style={viewStyles.cameraFlipButton}
-            onPress={flipCamera}
-          >
-            {renderCameraButton( "camera-flip" )}
+          <Pressable onPress={flipCamera}>
+            {renderCameraOptionsButtons( "camera-flip" )}
           </Pressable>
-          <View />
-
         </View>
-        <View style={viewStyles.cameraCaptureRow}>
+        <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">
           <Pressable
-            style={viewStyles.captureButton}
-            onPress={takePhoto}
+            className="w-1/3 pt-4 pb-4 pl-3"
+            onPress={( ) => navigation.goBack( )}
           >
+            <Icon name="arrow-back-ios" size={25} color={colors.white} />
+          </Pressable>
+          <Pressable onPress={takePhoto}>
             {renderCameraButton( "circle-outline", disallowAddingPhotos )}
           </Pressable>
-          <Pressable
-            style={viewStyles.nextButton}
-            onPress={navToObsEdit}
-          >
-            <Text style={textStyles.whiteText}>{t( "Next" )}</Text>
-          </Pressable>
+          {photosTaken ? (
+            <Text className="text-white text-xl w-1/3 text-center pr-4" onPress={navToObsEdit}>
+              {t( "Next" )}
+            </Text>
+          ) : <View className="w-1/3" />}
         </View>
       </View>
-
       <Snackbar
         visible={showAlert}
-        onDismiss={() => setShowAlert( false )}
+        onDismiss={( ) => setShowAlert( false )}
       >
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>

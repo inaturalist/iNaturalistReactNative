@@ -1,10 +1,11 @@
 // @flow
 
+import fetchSearchResults from "api/search";
+import PlaceholderText from "components/PlaceholderText";
 import * as React from "react";
 import { Pressable } from "react-native";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
-import useRemoteSearchResults from "../../sharedHooks/useRemoteSearchResults";
-import PlaceholderText from "../PlaceholderText";
 import ProjectList from "./ProjectList";
 
 type Props = {
@@ -13,7 +14,15 @@ type Props = {
 }
 
 const ProjectSearch = ( { q, clearSearch }: Props ): React.Node => {
-  const projectSearchResults = useRemoteSearchResults( q, "projects", "all" );
+  const {
+    data: projectSearchResults
+  } = useAuthenticatedQuery(
+    ["fetchSearchResults", q],
+    optsWithAuth => fetchSearchResults( {
+      q,
+      sources: "projects"
+    }, optsWithAuth )
+  );
 
   if ( q === "" ) {
     return null;

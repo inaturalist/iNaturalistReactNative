@@ -1,21 +1,21 @@
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
+import ProjectDetails from "components/Projects/ProjectDetails";
 import React from "react";
 
-import ProjectDetails from "../../../../src/components/Projects/ProjectDetails";
 import factory from "../../../factory";
 
 const mockProject = factory( "RemoteProject" );
-const mockObservation = factory( "RemoteObservation" );
 
-jest.mock( "../../../../src/components/Projects/hooks/useProjectDetails", ( ) => ( {
+jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
-  default: ( ) => mockProject
-} ) );
-
-jest.mock( "../../../../src/components/Projects/hooks/useProjectObservations", ( ) => ( {
-  __esModule: true,
-  default: ( ) => [mockObservation]
+  default: ( ) => ( {
+    data: mockProject
+  } )
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -30,10 +30,14 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+const queryClient = new QueryClient( );
+
 const renderProjectDetails = ( ) => render(
-  <NavigationContainer>
-    <ProjectDetails />
-  </NavigationContainer>
+  <QueryClientProvider client={queryClient}>
+    <NavigationContainer>
+      <ProjectDetails />
+    </NavigationContainer>
+  </QueryClientProvider>
 );
 
 test( "displays project details", ( ) => {
@@ -47,12 +51,4 @@ test( "displays project details", ( ) => {
   expect(
     getByTestId( "ProjectDetails.projectIcon" ).props.source
   ).toStrictEqual( { uri: mockProject.icon } );
-} );
-
-test( "displays project observations", ( ) => {
-  const { getByTestId, getByText } = renderProjectDetails( );
-
-  expect( getByText( mockObservation.taxon.preferred_common_name ) ).toBeTruthy( );
-  expect( getByTestId( "ObsList.photo" ).props.source )
-    .toStrictEqual( { uri: mockObservation.observation_photos[0].photo.url } );
 } );

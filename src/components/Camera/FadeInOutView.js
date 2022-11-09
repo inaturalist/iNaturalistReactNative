@@ -3,9 +3,6 @@
 import type { Node } from "react";
 import React, { useEffect, useRef } from "react";
 import { Animated } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import viewStyles from "../../styles/camera/fadeInOutView";
 
 type Props = {
   savingPhoto: boolean
@@ -20,8 +17,6 @@ const fade = value => ( {
 const FadeInOutView = ( { savingPhoto }: Props ): Node => {
   const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
 
-  const insets = useSafeAreaInsets( );
-
   useEffect( ( ) => {
     if ( savingPhoto ) {
       Animated.sequence( [
@@ -31,20 +26,11 @@ const FadeInOutView = ( { savingPhoto }: Props ): Node => {
     }
   }, [savingPhoto, fadeAnimation] );
 
-  // $FlowIgnore
-  const bottomOfPhotoPreview = viewStyles.bottomOfPhotoPreview.height + insets.top;
-
   return (
     <Animated.View
-      style={[
-        viewStyles.fadingContainer,
-        {
-          top: bottomOfPhotoPreview,
-          // $FlowIgnore
-          height: viewStyles.fadingContainer.height - bottomOfPhotoPreview,
-          opacity: fadeAnimation
-        }
-      ]}
+      style={{
+        opacity: fadeAnimation
+      }}
     />
   );
 };

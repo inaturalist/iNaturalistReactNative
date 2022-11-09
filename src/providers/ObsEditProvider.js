@@ -2,14 +2,13 @@
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useMemo, useState } from "react";
-import Realm from "realm";
+import Observation from "realmModels/Observation";
+import ObservationPhoto from "realmModels/ObservationPhoto";
+import useApiToken from "sharedHooks/useApiToken";
 
-import realmConfig from "../models/index";
-import Observation from "../models/Observation";
-import ObservationPhoto from "../models/ObservationPhoto";
-import { ObsEditContext } from "./contexts";
-import saveLocalObservation from "./uploadHelpers/saveLocalObservation";
-import uploadObservation from "./uploadHelpers/uploadObservation";
+import { ObsEditContext, RealmContext } from "./contexts";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   children: any
@@ -19,20 +18,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const [currentObsIndex, setCurrentObsIndex] = useState( 0 );
   const [observations, setObservations] = useState( [] );
+  const realm = useRealm( );
+  const apiToken = useApiToken( );
 
   const currentObs = observations[currentObsIndex];
 
   const addSound = async ( ) => {
     const newObs = await Observation.createObsWithSounds( );
-    setObservations( [newObs] );
-  };
-
-  const addPhotos = async photos => {
-    const realm = await Realm.open( realmConfig );
-    const obsPhotos = await Promise.all( photos.map(
-      async photo => ObservationPhoto.new( photo, realm )
-    ) );
-    const newObs = await Observation.createObsWithPhotos( obsPhotos );
     setObservations( [newObs] );
   };
 
@@ -44,31 +36,56 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const obsEditValue = useMemo( ( ) => {
+    const addPhotos = async photoUris => {
+      const obsPhotos = await Promise.all( photoUris.map(
+        async photo => ObservationPhoto.new( photo, realm )
+      ) );
+      let targetObservation = currentObs;
+      if ( targetObservation ) {
+        targetObservation = {
+          ...(
+            targetObservation.toJSON
+              ? targetObservation.toJSON( )
+              : targetObservation
+          ),
+          observationPhotos: [
+            ...Array.from( targetObservation.observationPhotos ),
+            ...obsPhotos
+          ]
+        };
+      } else {
+        targetObservation = await Observation.createObsWithPhotos( obsPhotos );
+      }
+      setObservations( [targetObservation] );
+    };
+
     const updateObservationKey = ( key, value ) => {
-      const updatedObs = observations.map( ( obs, index ) => {
+      const updatedObservations = observations.map( ( obs, index ) => {
         if ( index === currentObsIndex ) {
           return {
-            ...obs,
+            ...( obs.toJSON ? obs.toJSON( ) : obs ),
             // $FlowFixMe
             [key]: value
           };
         }
         return obs;
       } );
-      setObservations( updatedObs );
+      setObservations( updatedObservations );
     };
 
     const updateObservationKeys = keysAndValues => {
-      const updatedObs = observations.map( ( obs, index ) => {
+      const updatedObservations = observations.map( ( obs, index ) => {
         if ( index === currentObsIndex ) {
-          return {
-            ...obs,
+          const updatedObservation = {
+            ...( obs.toJSON ? obs.toJSON( ) : obs ),
             ...keysAndValues
           };
+          return updatedObservation;
         }
         return obs;
       } );
-      setObservations( updatedObs );
+      console.log( "AAA setObservations 1", updatedObservations );
+      setObservations( updatedObservations );
     };
 
     const updateTaxon = taxon => {
@@ -95,14 +112,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
     };
 
-    const openSavedObservation = async savedUUID => {
-      const realm = await Realm.open( realmConfig );
-      const obs = realm.objectForPrimaryKey( "Observation", savedUUID );
-      const plainObject = obs.toJSON( );
-      setObservations( [plainObject] );
-      return obs;
-    };
-
     const deleteCurrentObservation = ( ) => {
       if ( currentObsIndex === observations.length - 1 ) {
         setCurrentObsIndex( currentObsIndex - 1 );
@@ -116,15 +125,21 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const saveObservation = async ( ) => {
-      const localObs = await saveLocalObservation( currentObs );
+      const localObs = await Observation.saveLocalObservationForUpload( currentObs, realm );
       if ( localObs ) {
         setNextScreen( );
       }
     };
 
     const saveAndUploadObservation = async ( ) => {
-      const localObs = await saveLocalObservation( currentObs );
-      uploadObservation( localObs );
+      const localObs = await Observation.saveLocalObservationForUpload( currentObs, realm );
+      if ( !realm ) {
+        throw new Error( "Gack, tried to save an observation without realm!" );
+      }
+      if ( !apiToken ) {
+        throw new Error( "Gack, tried to save an observation without API token!" );
+      }
+      Observation.uploadObservation( localObs, apiToken, realm );
       if ( localObs ) {
         setNextScreen( );
       }
@@ -138,20 +153,21 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       currentObsIndex,
       deleteCurrentObservation,
       observations,
-      openSavedObservation,
       saveAndUploadObservation,
       saveObservation,
       setCurrentObsIndex,
       setObservations,
       updateObservationKey,
-      updateTaxon,
-      updateObservationKeys
+      updateObservationKeys,
+      updateTaxon
     };
   }, [
     currentObs,
     currentObsIndex,
     navigation,
-    observations
+    observations,
+    realm,
+    apiToken
   ] );
 
   return (

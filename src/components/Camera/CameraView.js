@@ -10,9 +10,9 @@ import Reanimated, {
   useSharedValue
 } from "react-native-reanimated";
 import { Camera } from "react-native-vision-camera";
+import useIsForeground from "sharedHooks/useIsForeground";
 
 import FocusSquare from "./FocusSquare";
-import useIsForeground from "./hooks/useIsForeground";
 
 // a lot of the camera functionality (pinch to zoom, etc.) is lifted from the example library:
 // https://github.com/mrousavy/react-native-vision-camera/blob/7335883969c9102b8a6d14ca7ed871f3de7e1389/example/src/CameraPage.tsx

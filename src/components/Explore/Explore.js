@@ -1,12 +1,12 @@
 // @flow
 
+import ObservationViews from "components/Observations/ObservationViews";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import { ExploreContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { Dimensions } from "react-native";
 
-import { ExploreContext } from "../../providers/contexts";
-import ObservationViews from "../SharedComponents/ObservationViews/ObservationViews";
-import ViewWithFooter from "../SharedComponents/ViewWithFooter";
 import BottomCard from "./BottomCard";
 
 const { height } = Dimensions.get( "screen" );
@@ -18,8 +18,7 @@ const Explore = ( ): Node => {
   const {
     exploreList,
     loadingExplore,
-    exploreFilters,
-    totalObservations
+    exploreFilters
   } = useContext( ExploreContext );
   const taxonId = exploreFilters ? exploreFilters.taxon_id : null;
 
@@ -28,11 +27,14 @@ const Explore = ( ): Node => {
       {taxonId !== null && (
         <ObservationViews
           loading={loadingExplore}
-          observationList={exploreList}
+          localObservations={{
+            observationList: exploreList,
+            unuploadedObsList: [],
+            allObsToUpload: []
+          }}
           taxonId={taxonId}
           testID="Explore.observations"
           mapHeight={mapHeight}
-          totalObservations={totalObservations}
         />
       )}
       <BottomCard />

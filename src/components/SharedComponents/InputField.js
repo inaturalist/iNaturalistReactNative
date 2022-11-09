@@ -1,10 +1,9 @@
 // @flow
 
+import { TextInput } from "components/styledComponents";
 import * as React from "react";
-import { Platform, TextInput } from "react-native";
-
-import colors from "../../styles/colors";
-import textStyles from "../../styles/sharedComponents/inputField";
+import { Platform } from "react-native";
+import colors from "styles/tailwindColors";
 
 type Props = {
   handleTextChange: Function,
@@ -49,7 +48,7 @@ const InputField = ( {
       placeholderTextColor={colors.black}
       secureTextEntry={type === "password"}
       selectTextOnFocus={Platform.OS === "android"}
-      style={textStyles.inputField}
+      className="border border-border h-8 mx-5 rounded-xl pl-3"
       textContentType={type} // iOS only
       value={text}
       testID={testID}

@@ -2,14 +2,14 @@
 
 import CheckBox from "@react-native-community/checkbox";
 import { Picker } from "@react-native-picker/picker";
+import inatLicenses from "dictionaries/licenses";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
+import { textStyles, viewStyles } from "styles/settings/settings";
+import colors from "styles/tailwindColors";
 
-import inatLicenses from "../../dictionaries/licenses";
-import colors from "../../styles/colors";
-import { textStyles, viewStyles } from "../../styles/settings/settings";
 import PlaceSearchInput from "./PlaceSearchInput";
 import type { SettingsProps } from "./types";
 

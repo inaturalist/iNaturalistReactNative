@@ -1,13 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  render
-} from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
+import ObsEdit from "components/ObsEdit/ObsEdit";
+import { ObsEditContext } from "providers/contexts";
+import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import ObsEdit from "../../../../src/components/ObsEdit/ObsEdit";
-import { ObsEditContext } from "../../../../src/providers/contexts";
-import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import factory from "../../../factory";
 
 // this resolves a test failure with the Animated library:

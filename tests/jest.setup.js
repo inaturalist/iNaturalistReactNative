@@ -2,8 +2,10 @@ import "react-native-gesture-handler/jestSetup";
 
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
+import mockRNLocalize from "react-native-localize/mock";
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
+jest.mock( "react-native-localize", () => mockRNLocalize );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 
 // this resolves error with importing file after Jest environment is torn down
@@ -15,26 +17,6 @@ jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
 
 // https://github.com/callstack/react-native-testing-library/issues/658#issuecomment-766886514
 jest.mock( "react-native/Libraries/LogBox/LogBox" );
-
-// Mock the realm config so it uses an in-memory database. This means data is
-// only persisted until realm.close() gets called, so if the code under test
-// needs data to persist in Realm across opening/closing events, we will need
-// to take a different approach, e.g. writing to Realm to disk and erasing
-// those files after each test run
-jest.mock( "../src/models/index", ( ) => {
-  const originalModule = jest.requireActual( "../src/models/index" );
-
-  // Mock the default export and named export 'foo'
-  return {
-    __esModule: true,
-    ...originalModule,
-    default: {
-      schema: originalModule.default.schema,
-      schemaVersion: originalModule.default.schemaVersion,
-      inMemory: true
-    }
-  };
-} );
 
 jest.mock( "react-native-localize", () => jest.requireActual( "react-native-localize/mock" ) );
 
@@ -147,18 +129,6 @@ jest.mock( "react-i18next", () => ( {
 
 jest.mock( "i18next", () => ( {
   t: k => k
-} ) );
-
-jest.mock( "react-native-localize", () => ( {
-  getTimeZone: ( ) => "Europe/Paris", // the timezone you want
-  getLocales: ( ) => [
-    {
-      countryCode: "NL", languageTag: "nl-NL", languageCode: "nl", isRTL: false
-    },
-    {
-      countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false
-    }
-  ]
 } ) );
 
 // Make apisauce work with nock

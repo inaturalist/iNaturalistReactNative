@@ -1,27 +1,26 @@
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
+import ObsDetails from "components/ObsDetails/ObsDetails";
+import { ObsEditContext } from "providers/contexts";
+import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
-import ObsDetails from "../../../../src/components/ObsDetails/ObsDetails";
-import { ObsEditContext } from "../../../../src/providers/contexts";
-import ObsEditProvider from "../../../../src/providers/ObsEditProvider";
 import factory from "../../../factory";
 
 const mockedNavigate = jest.fn( );
 const mockObservation = factory( "LocalObservation" );
+const mockUser = factory( "LocalUser" );
 
 jest.mock( "../../../../src/providers/ObsEditProvider" );
 
-jest.mock(
-  "../../../../src/components/ObsDetails/hooks/useRemoteObservation",
-  ( ) => ( {
-    __esModule: true,
-    default: ( _observation, _refetch ) => ( {
-      remoteObservation: mockObservation,
-      currentUserFaved: false
-    } )
-  } )
-);
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: ( ) => mockUser
+} ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -39,6 +38,22 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    data: mockObservation
+  } )
+} ) );
+
+// TODO if/when we test mutation behavior, the mutation will need to be mocked
+// so it actually does something, or we need to take a different approach
+jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    mutate: ( ) => null
+  } )
+} ) );
+
 jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
   getUserId: ( ) => mockObservation.user.id
 } ) );
@@ -53,12 +68,16 @@ const mockObsEditProviderWithObs = ( ) => ObsEditProvider.mockImplementation( ( 
   </ObsEditContext.Provider>
 ) );
 
+const queryClient = new QueryClient( );
+
 const renderObsDetails = ( ) => render(
-  <NavigationContainer>
-    <ObsEditProvider>
-      <ObsDetails />
-    </ObsEditProvider>
-  </NavigationContainer>
+  <QueryClientProvider client={queryClient}>
+    <NavigationContainer>
+      <ObsEditProvider>
+        <ObsDetails />
+      </ObsEditProvider>
+    </NavigationContainer>
+  </QueryClientProvider>
 );
 
 test( "renders obs details from remote call", ( ) => {

@@ -1,18 +1,16 @@
 // @flow
 
+import DropdownPicker from "components/Explore/DropdownPicker";
+import Map from "components/SharedComponents/Map";
 import { format, parseISO } from "date-fns";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import { textStyles, viewStyles } from "styles/obsDetails/obsDetails";
+import colors from "styles/tailwindColors";
 
-import colors from "../../styles/colors";
-import { textStyles, viewStyles } from "../../styles/obsDetails/obsDetails";
-import DropdownPicker from "../Explore/DropdownPicker";
-import Map from "../SharedComponents/Map";
-import addToProject from "./helpers/addToProject";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 
 type Props = {
@@ -23,19 +21,18 @@ const DataTab = ( { observation }: Props ): Node => {
   const [project, setProject] = useState( "" );
   const [projectId, setProjectId] = useState( null );
 
-  const application = observation.application && observation.application.name;
-  const attribution = observation.taxon && observation.taxon.default_photo
-    && observation.taxon.default_photo.attribution;
+  const application = observation?.application?.name;
+  const attribution = observation?.taxon?.default_photo?.attribution;
 
   const selectProjectId = getValue => {
-    addToProject( getValue( ), observation.uuid );
+    // TODO: add api call for add to project
     setProjectId( getValue( ) );
   };
 
   const displayTimeObserved = ( ) => {
-    const timeObseredAt = checkCamelAndSnakeCase( observation, "timeObservedAt" );
-    if ( timeObseredAt ) {
-      return format( parseISO( timeObseredAt ), "M/d/yy HH:mm a" );
+    const timeObservedAt = checkCamelAndSnakeCase( observation, "timeObservedAt" );
+    if ( timeObservedAt ) {
+      return format( parseISO( timeObservedAt ), "M/d/yy HH:mm a" );
     }
     if ( observation.observed_on_string ) {
       return observation.observed_on_string;
@@ -62,7 +59,7 @@ const DataTab = ( { observation }: Props ): Node => {
 
       <Text style={[textStyles.dataTabHeader, textStyles.dataTabDateHeader]}>{t( "Date" )}</Text>
       <View style={[viewStyles.rowWithIcon, viewStyles.dataTabSub]}>
-        <Icon name="clock-time-four-outline" size={15} color={colors.logInGray} />
+        <IconMaterial name="schedule" size={15} color={colors.logInGray} />
         <Text
           style={textStyles.dataTabText}
         >
@@ -71,7 +68,7 @@ const DataTab = ( { observation }: Props ): Node => {
       </View>
       { observation._synced_at && (
       <View style={[viewStyles.rowWithIcon, viewStyles.dataTabView, viewStyles.dataTabSub]}>
-        <Icon name="clock-time-four-outline" size={15} color={colors.logInGray} />
+        <IconMaterial name="schedule" size={15} color={colors.logInGray} />
         <Text
           style={textStyles.dataTabText}
         >

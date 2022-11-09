@@ -1,8 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
+import Projects from "components/Projects/Projects";
 import React from "react";
 
-import Projects from "../../../../src/components/Projects/Projects";
 import factory from "../../../factory";
 
 const mockedNavigate = jest.fn( );
@@ -13,15 +17,22 @@ const mockLatLng = {
   longitude: -122.42
 };
 
+jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    data: [mockProject]
+  } )
+} ) );
+
+jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+  __esModule: true,
+  default: ( ) => true
+} ) );
+
 // Mock the hooks we use on Map since we're not trying to test them here
 jest.mock( "../../../../src/sharedHooks/useUserLocation", ( ) => ( {
   default: ( ) => mockLatLng,
   __esModule: true
-} ) );
-
-jest.mock( "../../../../src/components/Projects/hooks/useProjects", ( ) => ( {
-  __esModule: true,
-  default: ( ) => [mockProject]
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -34,10 +45,14 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+const queryClient = new QueryClient( );
+
 const renderProjects = () => render(
-  <NavigationContainer>
-    <Projects />
-  </NavigationContainer>
+  <QueryClientProvider client={queryClient}>
+    <NavigationContainer>
+      <Projects />
+    </NavigationContainer>
+  </QueryClientProvider>
 );
 
 test( "displays project search results", ( ) => {

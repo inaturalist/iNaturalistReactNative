@@ -1,16 +1,17 @@
 // @flow
 
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   Dialog, Paragraph, Portal
 } from "react-native-paper";
-import Realm from "realm";
+import Photo from "realmModels/Photo";
 
-import realmConfig from "../../models/index";
-import Photo from "../../models/Photo";
 import Button from "./Buttons/Button";
+
+const { useRealm } = RealmContext;
 
 type Props = {
   deleteDialogVisible: boolean,
@@ -28,6 +29,7 @@ const DeletePhotoDialog = ( {
   hideDialog
 }: Props ): Node => {
   const { t } = useTranslation( );
+  const realm = useRealm( );
 
   const deletePhoto = async ( ) => {
     if ( !photoUriToDelete ) { return; }
@@ -38,7 +40,6 @@ const DeletePhotoDialog = ( {
     // spreading the array forces DeletePhotoDialog to rerender on each photo deletion
     setPhotoUris( [...updatedPhotos] );
 
-    const realm = await Realm.open( realmConfig );
     await Photo.deletePhoto( realm, photoUriToDelete );
 
     hideDialog( );

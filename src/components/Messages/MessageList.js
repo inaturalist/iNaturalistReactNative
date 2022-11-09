@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import { ActivityIndicator, FlatList, Text } from "react-native";
-
-import { textStyles } from "../../styles/messages/messages";
+import { textStyles } from "styles/messages/messages";
 
 type Props = {
   loading: boolean,

@@ -1,20 +1,19 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
-import Realm from "realm";
+import Observation from "realmModels/Observation";
 
-import realmConfig from "../../models/index";
-import Observation from "../../models/Observation";
-import { ObsEditContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/photoLibrary/photoGallery";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import GroupPhotoImage from "./GroupPhotoImage";
 import GroupPhotosFooter from "./GroupPhotosFooter";
 import GroupPhotosHeader from "./GroupPhotosHeader";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
+
+const { useRealm } = RealmContext;
 
 const GroupPhotos = ( ): Node => {
   const { addObservations } = useContext( ObsEditContext );
@@ -25,6 +24,7 @@ const GroupPhotos = ( ): Node => {
     photos: [photo]
   } ) );
   const [selectionMode, setSelectionMode] = useState( false );
+  const realm = useRealm( );
 
   // nesting observations under observations key to be able to rerender flatlist on selections
   const [obsToEdit, setObsToEdit] = useState( { observations } );
@@ -152,10 +152,8 @@ const GroupPhotos = ( ): Node => {
   };
 
   const navToObsEdit = async ( ) => {
-    const realm = await Realm.open( realmConfig );
     const obs = obsToEdit.observations;
     const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs, realm );
-    realm.close( );
     addObservations( obsPhotos );
     navigation.navigate( "ObsEdit" );
   };
@@ -169,7 +167,6 @@ const GroupPhotos = ( ): Node => {
         observations={groupedPhotos.length}
       />
       <FlatList
-        contentContainerStyle={viewStyles.centerImages}
         data={groupedPhotos}
         initialNumToRender={4}
         keyExtractor={extractKey}

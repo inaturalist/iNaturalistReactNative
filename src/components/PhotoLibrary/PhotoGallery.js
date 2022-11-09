@@ -1,23 +1,26 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import Button from "components/SharedComponents/Buttons/Button";
+import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useContext, useEffect, useState
 } from "react";
 import {
-  ActivityIndicator, FlatList, Text, View
+  ActivityIndicator, FlatList
 } from "react-native";
 import { Snackbar } from "react-native-paper";
+import Observation from "realmModels/Observation";
 
-import { ObsEditContext } from "../../providers/contexts";
-import { viewStyles } from "../../styles/photoLibrary/photoGallery";
-import Button from "../SharedComponents/Buttons/Button";
-import ViewNoFooter from "../SharedComponents/ViewNoFooter";
 import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import PhotoGalleryImage from "./PhotoGalleryImage";
+
+const { useRealm } = RealmContext;
 
 const MAX_PHOTOS_ALLOWED = 20;
 
@@ -48,12 +51,12 @@ const PhotoGallery = ( ): Node => {
     photos: galleryPhotos
   } = useCameraRollPhotos( photoOptions, isScrolling, canRequestPhotos );
 
-  const { addPhotos } = useContext( ObsEditContext );
+  const { addPhotos, addObservations } = useContext( ObsEditContext );
   const [photoUris, setPhotoUris] = useState( [] );
   const [showAlert, setShowAlert] = useState( false );
   const { params } = useRoute( );
   const photos = params?.photos;
-  const editObs = params?.editObs;
+  const skipGroupPhotos = params?.skipGroupPhotos;
 
   // If this component is being rendered we have either already asked for
   // permissions in Android via a PermissionGate parent component, or the
@@ -108,11 +111,7 @@ const PhotoGallery = ( ): Node => {
 
   const navigation = useNavigation( );
 
-  const navToObsEdit = ( ) => {
-    if ( !selectedPhotos ) return;
-    addPhotos( selectedPhotos );
-    navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
-  };
+  const realm = useRealm( );
 
   const updateAlbum = album => {
     const newOptions = {
@@ -184,7 +183,24 @@ const PhotoGallery = ( ): Node => {
 
   const fetchMorePhotos = ( ) => setIsScrolling( true );
 
-  const navToGroupPhotos = ( ) => navigation.navigate( "GroupPhotos", { selectedPhotos } );
+  const navToNextScreen = async ( ) => {
+    if ( !selectedPhotos ) return;
+    if ( skipGroupPhotos ) {
+      addPhotos( selectedPhotos.map( galleryPhoto => galleryPhoto.image.uri ) );
+      navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+      return;
+    }
+    if ( selectedPhotos.length === 1 ) {
+      const obs = selectedPhotos.map( photo => ( {
+        photos: [photo]
+      } ) );
+      const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs, realm );
+      addObservations( obsPhotos );
+      navigation.navigate( "ObsEdit" );
+      return;
+    }
+    navigation.navigate( "GroupPhotos", { selectedPhotos } );
+  };
 
   const renderEmptyList = ( ) => {
     if ( fetchingPhotos ) {
@@ -210,12 +226,12 @@ const PhotoGallery = ( ): Node => {
         ListEmptyComponent={renderEmptyList( )}
       />
       { selectedPhotos.length > 0 && (
-        <View style={viewStyles.createObsButton}>
+        <View className="h-16 mt-2 mx-4">
           <Button
-            level="primary"
+            level="secondary"
             text="Import-X-photos"
             count={totalSelected || 0}
-            onPress={editObs ? navToObsEdit : navToGroupPhotos}
+            onPress={navToNextScreen}
             testID="PhotoGallery.createObsButton"
           />
         </View>

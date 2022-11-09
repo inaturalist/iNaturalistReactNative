@@ -1,40 +1,50 @@
 // @flow
 
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  fetchAuthorizedApplications, revokeAuthorizedApplications
+} from "api/authorizedApplications";
+import fetchProviderAuthorizations from "api/providerAuthorizations";
+import inatProviders from "dictionaries/providers";
 import { t } from "i18next";
-import inatjs from "inaturalistjs";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Alert, Text, View } from "react-native";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { textStyles, viewStyles } from "styles/settings/settings";
 
-import inatProviders from "../../dictionaries/providers";
-import { textStyles, viewStyles } from "../../styles/settings/settings";
-import useAuthorizedApplications from "./hooks/useAuthorizedApplications";
-import useProviderAuthorizations from "./hooks/useProviderAuthorizations";
+const SettingsApplications = ( ): Node => {
+  const {
+    data: authorizedApps,
+    refetch
+  } = useAuthenticatedQuery(
+    ["fetchAuthorizedApplications"],
+    optsWithAuth => fetchAuthorizedApplications( { }, optsWithAuth )
+  );
 
-type Props = {
-  accessToken: string
-}
+  const {
+    data: providerAuthorizations
+  } = useAuthenticatedQuery(
+    ["fetchProviderAuthorizations"],
+    optsWithAuth => fetchProviderAuthorizations( { }, optsWithAuth )
+  );
 
-const SettingsApplications = ( { accessToken }: Props ): Node => {
-  const currentAuthorizedApps = useAuthorizedApplications( accessToken );
-  const [authorizedApps, setAuthorizedApps] = useState( [] );
-  const providerAuthorizations = useProviderAuthorizations( accessToken );
+  const queryClient = useQueryClient( );
 
-  useEffect( () => {
-    setAuthorizedApps( currentAuthorizedApps );
-  }, [currentAuthorizedApps] );
+  const revokeAppMutation = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => revokeAuthorizedApplications( params, optsWithAuth ),
+    {
+      onSuccess: ( ) => {
+        queryClient.invalidateQueries( ["fetchAuthorizedApplications"] );
+        refetch( );
+      }
+    }
+  );
 
   const revokeApp = async appId => {
-    const response = await inatjs.authorized_applications.delete(
-      { id: appId },
-      { api_token: accessToken }
-    );
-    console.log( "Revoked app", response );
-    // Refresh authorized applications
-    const apps = await inatjs.authorized_applications.search( {}, { api_token: accessToken } );
-    console.log( "Authorized Applications", apps.results );
-    setAuthorizedApps( apps.results );
+    revokeAppMutation.mutate( { id: appId } );
   };
 
   const askToRevokeApp = app => {
@@ -51,17 +61,22 @@ const SettingsApplications = ( { accessToken }: Props ): Node => {
   };
 
   return (
-    <View style={viewStyles.column}>
+    <View>
       <Text style={textStyles.title}>{t( "iNaturalist-Applications" )}</Text>
-      {authorizedApps.filter( app => app.application.official ).map( app => (
-        <Text key={app.application.id}>
-          {t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}
-        </Text>
+      {authorizedApps?.filter( app => app.application.official ).map( app => (
+        <View key={app.application.id}>
+          <Text>
+            {app.application.name}
+          </Text>
+          <Pressable style={viewStyles.revokeAccess} onPress={() => askToRevokeApp( app )}>
+            <Text>{t( "Revoke" )}</Text>
+          </Pressable>
+        </View>
       ) )}
 
       <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Connected-Accounts" )}</Text>
       {Object.keys( inatProviders ).map( providerKey => {
-        const connectedProvider = providerAuthorizations.find(
+        const connectedProvider = providerAuthorizations?.find(
           x => x.provider_name === providerKey
         );
         return (
@@ -76,7 +91,7 @@ const SettingsApplications = ( { accessToken }: Props ): Node => {
       } )}
 
       <Text style={[textStyles.title, textStyles.marginTop]}>{t( "External-Applications" )}</Text>
-      {authorizedApps.filter( app => !app.application.official ).map( app => (
+      {authorizedApps?.filter( app => !app.application.official ).map( app => (
         <View key={app.application.id} style={[viewStyles.row, viewStyles.applicationRow]}>
           <Text style={textStyles.applicationName}>
             {t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}

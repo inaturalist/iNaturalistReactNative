@@ -9,8 +9,7 @@ import {
   Text,
   View
 } from "react-native";
-
-import { viewStyles } from "../../styles/settings/settings";
+import { viewStyles } from "styles/settings/settings";
 
 type Props = {
   unmuteUser: Function,
@@ -29,7 +28,7 @@ const MutedUser = ( { user, unmuteUser }: Props ): Node => (
     </View>
     <Pressable
       style={viewStyles.removeRelationship}
-      onPress={() => unmuteUser( user )}
+      onPress={unmuteUser}
     >
       <Text>{t( "Unmute" )}</Text>
     </Pressable>
