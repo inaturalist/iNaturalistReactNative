@@ -155,7 +155,7 @@ const GroupPhotos = ( ): Node => {
     const obs = obsToEdit.observations;
     const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs, realm );
     addObservations( obsPhotos );
-    navigation.navigate( "ObsEdit" );
+    navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
   };
 
   const loadingWheel = ( ) => <ActivityIndicator />;

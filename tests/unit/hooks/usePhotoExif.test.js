@@ -4,11 +4,7 @@ import { renderHook, waitFor } from "@testing-library/react-native";
 import { parse } from "date-fns";
 import fs from "fs";
 import { useState } from "react";
-
-import usePhotoExif, {
-  parseExifCoordinates,
-  parseExifDateTime
-} from "../../../src/components/ObsEdit/hooks/usePhotoExif";
+import { usePhotoExif } from "sharedHooks/usePhotoExif";
 
 // Expected EXIF metadata of the above file
 const EXPECTED_EXIF_DATE = parse(
@@ -54,12 +50,10 @@ test( "reads and parses EXIF data from photo", async ( ) => {
 
   if ( result.current.exif ) {
     const { exif } = result.current;
-    const observedOnDate = parseExifDateTime( exif );
-    const locationData = parseExifCoordinates( exif );
+    const observedOnDate = exif.date;
     expect( observedOnDate ).toEqual( EXPECTED_EXIF_DATE );
-    expect( locationData ).toBeTruthy();
-    expect( locationData.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
-    expect( locationData.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
-    expect( locationData.positionalAccuracy ).toEqual( EXPECTED_EXIF_POSITIONAL_ACCURACY );
+    expect( exif.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
+    expect( exif.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
+    expect( exif.positionalAccuracy ).toEqual( EXPECTED_EXIF_POSITIONAL_ACCURACY );
   }
 } );

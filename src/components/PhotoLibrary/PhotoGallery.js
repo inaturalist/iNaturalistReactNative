@@ -196,7 +196,7 @@ const PhotoGallery = ( ): Node => {
       } ) );
       const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs, realm );
       addObservations( obsPhotos );
-      navigation.navigate( "ObsEdit" );
+      navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
       return;
     }
     navigation.navigate( "GroupPhotos", { selectedPhotos } );

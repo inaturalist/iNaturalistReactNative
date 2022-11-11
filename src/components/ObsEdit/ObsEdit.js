@@ -26,10 +26,11 @@ import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Photo from "realmModels/Photo";
+import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import useLoggedIn from "sharedHooks/useLoggedIn";
-import usePhotoExif, { parseExifCoordinates, parseExifDateTime } from "sharedHooks/usePhotoExif";
+import { parseExifDateTime, usePhotoExif } from "sharedHooks/usePhotoExif";
 import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 import colors from "styles/tailwindColors";
 
@@ -70,17 +71,24 @@ const ObsEdit = ( ): Node => {
 
   const lastScreen = params?.lastScreen;
 
+  const isNewObservation = currentObs && !currentObs.id;
+  const isNewObservationCameraPhoto = isNewObservation && lastScreen === "StandardCamera";
+  const isNewObservationsWithoutPhotos = isNewObservation && lastScreen !== "StandardCamera"
+    && lastScreen !== "PhotoGallery";
   const isLoggedIn = useLoggedIn( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [photoUris, setPhotoUris] = useState( [] );
+  const [photoOriginalUris, setPhotoOriginalUris] = useState( [] );
   const [snapPoint, setSnapPoint] = useState( 150 );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
-  const [shouldFetchLocation, setShouldFetchLocation] = useState( !currentObs?._created_at );
+  const [shouldFetchLocation, setShouldFetchLocation] = useState( currentObs
+      && ( isNewObservationCameraPhoto || isNewObservationsWithoutPhotos ) );
   const [fetchingLocation, setFetchingLocation] = useState( false );
+  const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
   const mountedRef = useRef( true );
-  const firstPhotoExif = usePhotoExif( photoUris.length > 0 ? photoUris[0] : null );
+  const firstPhotoExif = usePhotoExif( photoOriginalUris.length > 0 ? photoOriginalUris[0] : null );
   const [exifDataImported, setExifDataImported] = useState( false );
   const disableAddingMoreEvidence = photoUris.length >= MAX_PHOTOS_ALLOWED;
 
@@ -182,6 +190,7 @@ const ObsEdit = ( ): Node => {
       if ( !mountedRef.current ) return;
 
       if ( !shouldFetchLocation ) return;
+      if ( exifDataImported ) return;
       setFetchingLocation( false );
 
       const location = await fetchUserLocation( );
@@ -207,26 +216,35 @@ const ObsEdit = ( ): Node => {
       !fetchingLocation
       // We only need to fetch when we're above the target
       && positionalAccuracy >= TARGET_POSITIONAL_ACCURACY
+      // Don't fetch location more than once a second
+      && Date.now() - lastLocationFetchTime >= 1000
+      // Don't retrieve current location if EXIF data for the photo was imported
+      && !exifDataImported
     ) {
       setFetchingLocation( true );
-      // No need to fetch more than once a second
-      setTimeout( fetchLocation, 1000 );
+      setLastLocationFetchTime( Date.now() );
+      fetchLocation();
     } else {
       setShouldFetchLocation( false );
     }
   }, [
+    exifDataImported,
     currentObs,
     fetchingLocation,
     positionalAccuracy,
     setFetchingLocation,
     setShouldFetchLocation,
     shouldFetchLocation,
-    updateObservationKeys
+    updateObservationKeys,
+    lastLocationFetchTime,
+    setLastLocationFetchTime
   ] );
 
   const realm = useRealm( );
 
   useEffect( () => {
+    if ( !currentObs ) return;
+
     if ( !currentObs.id && currentObs.observed_on_string
       && !exifDataImported && photoUris.length > 0 ) {
       // In case of importing photos - clear out default observed_on
@@ -234,34 +252,34 @@ const ObsEdit = ( ): Node => {
     }
   }, [currentObs, exifDataImported, photoUris, updateObservationKeys] );
 
-  console.log( "AAA CURRENT OBS INDEX", currentObsIndex );
-  console.log( "AAA CURRENT OBS", observations );
-
   useEffect( () => {
+    if ( !currentObs ) return;
+
     if ( !currentObs.id && firstPhotoExif && !exifDataImported ) {
       // New observation with imported photo - import EXIF data from it and
       // use it to set location/observed_on data
       setExifDataImported( true );
 
       const newObsData = {};
-      const observedOnDate = parseExifDateTime( firstPhotoExif );
+      const observedOnDate = parseExifDateTime( firstPhotoExif.date );
 
       if ( observedOnDate ) {
         newObsData.observed_on_string = createObservedOnStringForUpload( observedOnDate );
       }
 
-      const locationData = parseExifCoordinates( firstPhotoExif );
-      if ( locationData ) {
-        newObsData.latitude = locationData.latitude;
-        newObsData.longitude = locationData.longitude;
-        newObsData.positional_accuracy = locationData.positionalAccuracy;
+      if ( firstPhotoExif.latitude && firstPhotoExif.longitude ) {
+        newObsData.latitude = firstPhotoExif.latitude;
+        newObsData.longitude = firstPhotoExif.longitude;
+        if ( firstPhotoExif.positional_accuracy ) {
+          newObsData.positional_accuracy = firstPhotoExif.positional_accuracy;
+        }
       }
 
       if ( Object.keys( newObsData ).length > 0 ) {
         updateObservationKeys( newObsData );
       }
     }
-  }, [currentObs.id, firstPhotoExif, exifDataImported, updateObservationKeys] );
+  }, [currentObs, firstPhotoExif, exifDataImported, updateObservationKeys] );
 
   const setPhotos = uris => {
     const updatedObservations = observations;
@@ -293,6 +311,9 @@ const ObsEdit = ( ): Node => {
     );
 
     setPhotoUris( uris );
+    setPhotoOriginalUris( Array.from( currentObs.observationPhotos ).map(
+      obsPhoto => obsPhoto.photo.originalUri
+    ) );
   }, [currentObs] );
 
   const addEvidence = () => {

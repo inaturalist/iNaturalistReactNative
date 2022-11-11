@@ -84,7 +84,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         }
         return obs;
       } );
-      console.log( "AAA setObservations 1", updatedObservations );
       setObservations( updatedObservations );
     };
 
