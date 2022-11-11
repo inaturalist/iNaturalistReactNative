@@ -1,10 +1,9 @@
+import MarkdownIt from "markdown-it";
 import * as React from "react";
 import {
-  Linking,
   useWindowDimensions,
   View
 } from "react-native";
-import Markdown from "react-native-markdown-package";
 import HTML from "react-native-render-html";
 import sanitizeHtml from "sanitize-html";
 
@@ -68,42 +67,32 @@ const CONFIG = {
   allowedSchemes: ["http", "https"]
 };
 
-// Markdown component style. Render error if style prop isnt set.
-const markdownStyle = {
-  singleLineMd: {
-    color: "black"
-  }
-};
-
 type Props = {
   text:String,
-  markdown?:Boolean,
+  baseStyle?:Object,
 }
 
-const UserText = ( { text, markdown } : Props ): React.Node => {
+const UserText = ( {
+  text, baseStyle
+} : Props ): React.Node => {
   const { width } = useWindowDimensions( );
   let html = text;
+
+  const md = new MarkdownIt( {
+    html: true,
+    breaks: true
+  } );
+  html = md.render( html );
 
   html = sanitizeHtml( html, CONFIG );
 
   return (
     <View>
-      {markdown
-        ? (
-          <Markdown
-            styles={markdownStyle}
-            onLink={url => Linking.openURL( url )}
-          >
-            {html}
-
-          </Markdown>
-        )
-        : (
-          <HTML
-            contentWidth={width}
-            source={{ html }}
-          />
-        )}
+      <HTML
+        baseStyle={baseStyle}
+        contentWidth={width}
+        source={{ html }}
+      />
     </View>
   );
 };
