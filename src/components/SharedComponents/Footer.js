@@ -17,7 +17,7 @@ const Footer = ( ): React.Node => {
 
   return (
     <View
-      className="flex-row h-24 absolute bottom-0 bg-white w-screen justify-evenly pt-2"
+      className="flex-row h-24 absolute bottom-0 bg-white w-full justify-evenly pt-2"
       style={viewStyles.shadow}
     >
       <Pressable onPress={toggleSideMenu} accessibilityRole="link">
