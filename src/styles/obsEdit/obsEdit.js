@@ -21,9 +21,6 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
-  editIcon: {
-    backgroundColor: colors.white
-  },
   headerRow: {
     height: 30,
     flexDirection: "row",

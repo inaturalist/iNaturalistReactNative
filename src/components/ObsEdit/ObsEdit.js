@@ -49,11 +49,11 @@ const ObsEdit = ( ): Node => {
   useEffect( ( ) => {
     // when opening an observation from ObsDetails, fetch the local
     // observation from realm
-    if ( localObservation ) {
+    if ( localObservation && !currentObservation ) {
       resetObsEditContext( );
       setObservations( [localObservation] );
     }
-  }, [localObservation, setObservations, resetObsEditContext] );
+  }, [localObservation, setObservations, resetObsEditContext, currentObservation] );
 
   const isLoggedIn = useLoggedIn( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
