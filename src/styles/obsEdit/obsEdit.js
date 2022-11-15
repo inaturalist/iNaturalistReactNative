@@ -1,13 +1,11 @@
 // @flow
 
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import type {
   TextStyleProp,
   ViewStyleProp
 } from "react-native/Libraries/StyleSheet/StyleSheet";
 import colors from "styles/tailwindColors";
-
-const { width } = Dimensions.get( "screen" );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   evidenceWarning: {
@@ -18,13 +16,6 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
 } );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
-  headerRow: {
-    height: 30,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20
-  },
   bottomModal: {
     backgroundColor: colors.white,
     borderTopRightRadius: 30,
@@ -38,36 +29,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     bottom: 0,
     width: "100%"
   },
-  greenSelectionBorder: {
-    borderWidth: 3,
-    borderColor: colors.selectionGreen
-  },
   row: {
     flexDirection: "row",
     flexWrap: "nowrap",
     marginVertical: 10
-  },
-  buttonRow: {
-    paddingTop: 10,
-    flexDirection: "row",
-    justifyContent: "space-evenly"
-  },
-  evidenceList: {
-    marginBottom: 20
-  },
-  selected: {
-    backgroundColor: colors.inatGreen
-  },
-  photoContainer: {
-    backgroundColor: colors.black,
-    height: 125,
-    width
-  },
-  container: {
-    backgroundColor: colors.black
-  },
-  mediaViewerSafeAreaView: {
-    backgroundColor: colors.black
   }
 } );
 

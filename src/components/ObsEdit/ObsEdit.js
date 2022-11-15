@@ -17,7 +17,6 @@ import { BackHandler } from "react-native";
 import Photo from "realmModels/Photo";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import useLoggedIn from "sharedHooks/useLoggedIn";
-import { viewStyles } from "styles/obsEdit/obsEdit";
 
 import AddEvidenceModal from "./AddEvidenceModal";
 import EvidenceSection from "./EvidenceSection";
@@ -127,7 +126,7 @@ const ObsEdit = ( ): Node => {
           hideModal={hideModal}
         />
       </MediaViewerModal>
-      <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
+      <ScrollNoFooter>
         <ObsEditHeader handleBackButtonPress={handleBackButtonPress} />
         <Text className="text-2xl ml-4">{t( "Evidence" )}</Text>
         <EvidenceSection
@@ -139,7 +138,7 @@ const ObsEdit = ( ): Node => {
         <IdentificationSection />
         <Text className="text-2xl ml-4">{t( "Other-Data" )}</Text>
         <OtherDataSection />
-        <View style={viewStyles.buttonRow}>
+        <View className="flex-row justify-evenly">
           <Button
             onPress={saveObservation}
             testID="ObsEdit.saveButton"
