@@ -10,9 +10,6 @@ import colors from "styles/tailwindColors";
 const { width } = Dimensions.get( "screen" );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  text: {
-    marginHorizontal: 20
-  },
   evidenceWarning: {
     marginBottom: 10,
     marginTop: 10,
@@ -71,9 +68,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   mediaViewerSafeAreaView: {
     backgroundColor: colors.black
-  },
-  button: {
-    marginHorizontal: 40
   }
 } );
 

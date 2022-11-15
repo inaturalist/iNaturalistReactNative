@@ -3,13 +3,10 @@
 import { useNavigation } from "@react-navigation/native";
 import Button from "components/SharedComponents/Buttons/Button";
 import { Text, View } from "components/styledComponents";
-import { iconicTaxaNames } from "dictionaries/iconicTaxaIds";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { useTranslation } from "react-i18next";
 import { IconButton } from "react-native-paper";
-import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
 
 const IdentificationSection = ( ): Node => {
   const {
@@ -17,7 +14,6 @@ const IdentificationSection = ( ): Node => {
     updateObservationKey
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
-  const { t } = useTranslation( );
 
   const identification = currentObservation.taxon;
 
@@ -41,18 +37,13 @@ const IdentificationSection = ( ): Node => {
     );
   }
   return (
-    <>
-      <Button
-        level="primary"
-        onPress={navToAddID}
-        text="Add-an-Identification"
-        style={viewStyles.button}
-        testID="ObsEdit.Suggestions"
-      />
-      <Text style={textStyles.text}>
-        {identification && identification.id && t( iconicTaxaNames[identification.id] )}
-      </Text>
-    </>
+    <Button
+      level="primary"
+      onPress={navToAddID}
+      text="Add-an-Identification"
+      className="mx-10 my-3"
+      testID="ObsEdit.Suggestions"
+    />
   );
 };
 
