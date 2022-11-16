@@ -16,7 +16,6 @@ import {
 import { Snackbar } from "react-native-paper";
 
 import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
-import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import PhotoGalleryImage from "./PhotoGalleryImage";
 
 const MAX_PHOTOS_ALLOWED = 20;
@@ -24,7 +23,8 @@ const MAX_PHOTOS_ALLOWED = 20;
 const options = {
   first: 28,
   assetType: "Photos",
-  include: ["location"]
+  include: ["location"],
+  groupTypes: "All"
 };
 
 const PhotoGallery = ( ): Node => {
@@ -52,7 +52,8 @@ const PhotoGallery = ( ): Node => {
     galleryUris, setGalleryUris, allObsPhotoUris,
     addGalleryPhotosToCurrentObservation,
     evidenceToAdd,
-    setEvidenceToAdd
+    setEvidenceToAdd,
+    album
   } = useContext( ObsEditContext );
   const [showAlert, setShowAlert] = useState( false );
   const { params } = useRoute( );
@@ -107,19 +108,6 @@ const PhotoGallery = ( ): Node => {
   }, [galleryPhotos, photoGallery, photoOptions, setPhotoGallery, selectedAlbum] );
 
   const navigation = useNavigation( );
-
-  const updateAlbum = album => {
-    const newOptions = {
-      ...options,
-      groupTypes: ( album === null ) ? "All" : "Album"
-    };
-
-    if ( album !== null ) {
-      // $FlowFixMe
-      newOptions.groupName = album;
-    }
-    setPhotoOptions( newOptions );
-  };
 
   const selectPhoto = p => {
     setGalleryUris( [...galleryUris, p.image.uri] );
@@ -213,9 +201,22 @@ const PhotoGallery = ( ): Node => {
 
   const totalSelected = skipGroupPhotos ? evidenceToAdd.length : selectedPhotos.length;
 
+  useEffect( ( ) => {
+    // update photo album
+    const newOptions = {
+      ...options,
+      groupTypes: ( album === null ) ? "All" : "Album"
+    };
+
+    if ( album !== null ) {
+      // $FlowFixMe
+      newOptions.groupName = album;
+    }
+    setPhotoOptions( newOptions );
+  }, [album] );
+
   return (
     <ViewNoFooter>
-      <PhotoGalleryHeader updateAlbum={updateAlbum} />
       <FlatList
         // $FlowIgnore
         data={photosByAlbum}

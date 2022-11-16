@@ -12,6 +12,7 @@ import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import ObsList from "components/Observations/ObsList";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
+import PhotoAlbumPicker from "components/PhotoImporter/PhotoAlbumPicker";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGate from "components/SharedComponents/PermissionGate";
@@ -21,6 +22,7 @@ import UserProfile from "components/UserProfile/UserProfile";
 import ExploreProvider from "providers/ExploreProvider";
 import * as React from "react";
 import { PermissionsAndroid } from "react-native";
+import colors from "styles/tailwindColors";
 
 const Stack = createNativeStackNavigator( );
 
@@ -29,7 +31,14 @@ const hideHeader = {
 };
 
 const showHeader = {
-  headerShown: true
+  headerShown: true,
+  headerBackTitleVisible: false,
+  headerShadowVisible: false,
+  headerTintColor: colors.black,
+  // left header is not supported on iOS
+  // so we would need to build a custom header for this:
+  // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
+  headerTitleAlign: "left"
 };
 
 const hideScreenTransitionAnimation = {
@@ -72,13 +81,14 @@ const ObsEditWithPermission = () => (
       <ObsEdit />
     </PermissionGate>
   </Mortal>
-
 );
+
+const photoGalleryHeaderTitle = ( ) => <PhotoAlbumPicker />;
 
 const MainStackNavigation = ( ): React.Node => (
   <Mortal>
     <ExploreProvider>
-      <Stack.Navigator screenOptions={hideHeader}>
+      <Stack.Navigator screenOptions={showHeader}>
         <Stack.Screen
           name="ObsList"
           component={ObsList}
@@ -100,6 +110,9 @@ const MainStackNavigation = ( ): React.Node => (
         <Stack.Screen
           name="PhotoGallery"
           component={PhotoGalleryWithPermission}
+          options={{
+            headerTitle: photoGalleryHeaderTitle
+          }}
         />
         <Stack.Screen
           name="GroupPhotos"
