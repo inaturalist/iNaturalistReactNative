@@ -1,6 +1,5 @@
 // @flow
 
-import { HeaderBackButton } from "@react-navigation/elements";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
@@ -48,10 +47,6 @@ const showHeader = {
 const hideScreenTransitionAnimation = {
   animation: "none"
 };
-
-const showBackButton = ( { navigation } ) => ( {
-  headerLeft: ( ) => <HeaderBackButton onPress={( ) => navigation.goBack( )} />
-} );
 
 const PhotoGalleryWithPermission = ( ) => (
   <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
@@ -102,17 +97,8 @@ const MainStackNavigation = ( ): React.Node => (
           }}
         />
         <Stack.Screen
-          name="ObsDetails"
-          component={ObsDetails}
-        />
-        <Stack.Screen
-          name="UserProfile"
-          component={UserProfile}
-        />
-        <Stack.Screen
-          name="TaxonDetails"
-          component={TaxonDetails}
-          options={showBackButton}
+          name="StandardCamera"
+          component={StandardCameraWithPermission}
         />
         <Stack.Screen
           name="PhotoGallery"
@@ -129,22 +115,42 @@ const MainStackNavigation = ( ): React.Node => (
           }}
         />
         <Stack.Screen
-          name="ObsEdit"
-          component={ObsEditWithPermission}
-        />
-        <Stack.Screen
           name="SoundRecorder"
           component={SoundRecorderWithPermission}
+          options={{
+            title: t( "Record-new-sound" )
+          }}
         />
         <Stack.Screen
-          name="StandardCamera"
-          component={StandardCameraWithPermission}
+          name="ObsEdit"
+          component={ObsEditWithPermission}
         />
         <Stack.Screen
           name="AddID"
           component={AddID}
           options={{
             title: t( "Add-an-ID" )
+          }}
+        />
+        <Stack.Screen
+          name="ObsDetails"
+          component={ObsDetails}
+          options={{
+            headerTitle: t( "Observation" )
+          }}
+        />
+        <Stack.Screen
+          name="TaxonDetails"
+          component={TaxonDetails}
+          options={{
+            headerTitle: ""
+          }}
+        />
+        <Stack.Screen
+          name="UserProfile"
+          component={UserProfile}
+          options={{
+            headerTitle: ""
           }}
         />
         <Stack.Screen
