@@ -1,3 +1,4 @@
+import linkifyHtml from "linkify-html";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
 import {
@@ -67,6 +68,10 @@ const CONFIG = {
   allowedSchemes: ["http", "https"]
 };
 
+function hyperlinkMentions( text ) {
+  return text.replace( /(\B)@([A-z][\\\w\\\-_]*)/g, "$1<a href=\"/people/$2\">@$2</a>" );
+}
+
 type Props = {
   text:String,
   baseStyle?:Object,
@@ -77,6 +82,7 @@ const UserText = ( {
 } : Props ): React.Node => {
   const { width } = useWindowDimensions( );
   let html = text;
+  html = html.replace( /&(\w+=)/g, "&amp;$1" );
 
   const md = new MarkdownIt( {
     html: true,
@@ -84,8 +90,13 @@ const UserText = ( {
   } );
   html = md.render( html );
 
-  html = sanitizeHtml( html, CONFIG );
+  html = sanitizeHtml( hyperlinkMentions( html ), CONFIG );
 
+  html = linkifyHtml( html, {
+    className: null,
+    attributes: { rel: "nofollow" },
+    ignoreTags: ["a", "code", "pre"]
+  } );
   return (
     <View>
       <HTML
