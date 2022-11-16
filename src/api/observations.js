@@ -160,9 +160,19 @@ const createEvidence = async (
   }
 };
 
+const deleteObservation = async ( params: Object = {}, opts: Object = {} ) : Promise<?any> => {
+  console.log( params, "params in delete obs" );
+  try {
+    return await inatjs.observations.delete( params, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
   createEvidence,
   createObservation,
+  deleteObservation,
   faveObservation,
   fetchRemoteObservation,
   markAsReviewed,

@@ -1,5 +1,6 @@
 // @flow
 
+import { deleteObservation } from "api/observations";
 import Button from "components/SharedComponents/Buttons/Button";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
@@ -8,6 +9,7 @@ import React, { useContext } from "react";
 import {
   Dialog, Paragraph, Portal
 } from "react-native-paper";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
 type Props = {
   deleteDialogVisible: boolean,
@@ -19,12 +21,24 @@ const DeleteObservationDialog = ( {
   hideDialog
 }: Props ): Node => {
   const {
-    deleteCurrentObservation
+    // deleteCurrentObservation,
+    currentObservation
   } = useContext( ObsEditContext );
-  const deleteObservation = async ( ) => {
-    deleteCurrentObservation( );
-    hideDialog( );
-  };
+
+  const deleteObservationMutation = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => deleteObservation( params, optsWithAuth ),
+    {
+      onSuccess: ( ) => {
+        // delete from realm
+        hideDialog( );
+      }
+    }
+  );
+
+  // const deleteObservation = async ( ) => {
+  //   deleteCurrentObservation( );
+  //   hideDialog( );
+  // };
 
   return (
     <Portal>
@@ -35,7 +49,7 @@ const DeleteObservationDialog = ( {
         <Dialog.Actions>
           <Button onPress={hideDialog} text={t( "Cancel" )} level="primary" />
           <Button
-            onPress={deleteObservation}
+            onPress={( ) => deleteObservationMutation.mutate( { uuid: currentObservation.uuid } )}
             text={t( "Yes-delete-observation" )}
             level="primary"
           />
