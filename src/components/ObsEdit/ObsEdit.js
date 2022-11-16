@@ -128,7 +128,10 @@ const ObsEdit = ( ): Node => {
         />
       </MediaViewerModal>
       <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
-        <ObsEditHeader handleBackButtonPress={handleBackButtonPress} />
+        <ObsEditHeader
+          handleBackButtonPress={handleBackButtonPress}
+          localObservation={localObservation}
+        />
         <Text className="text-2xl ml-4">{t( "Evidence" )}</Text>
         <EvidenceSection
           handleSelection={handleSelection}

@@ -16,10 +16,11 @@ import colors from "styles/tailwindColors";
 import DeleteObservationDialog from "./DeleteObservationDialog";
 
 type Props = {
-  handleBackButtonPress: Function
+  handleBackButtonPress: Function,
+  localObservation?: Object
 }
 
-const ObsEditHeader = ( { handleBackButtonPress }: Props ): Node => {
+const ObsEditHeader = ( { handleBackButtonPress, localObservation }: Props ): Node => {
   const {
     currentObservationIndex,
     setCurrentObservationIndex,
@@ -70,7 +71,7 @@ const ObsEditHeader = ( { handleBackButtonPress }: Props ): Node => {
             </Pressable>
           </View>
         )}
-      {renderKebabMenu( )}
+      {localObservation ? renderKebabMenu( ) : <View className="w-16" />}
     </View>
   );
 };
