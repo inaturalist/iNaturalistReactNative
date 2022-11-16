@@ -19,9 +19,10 @@ import PermissionGate from "components/SharedComponents/PermissionGate";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UserProfile from "components/UserProfile/UserProfile";
+import { t } from "i18next";
 import ExploreProvider from "providers/ExploreProvider";
 import * as React from "react";
-import { PermissionsAndroid } from "react-native";
+import { PermissionsAndroid, Platform } from "react-native";
 import colors from "styles/tailwindColors";
 
 const Stack = createNativeStackNavigator( );
@@ -35,10 +36,13 @@ const showHeader = {
   headerBackTitleVisible: false,
   headerShadowVisible: false,
   headerTintColor: colors.black,
-  // left header is not supported on iOS
+  // Note: left header is not supported on iOS
   // so we would need to build a custom header for this:
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
-  headerTitleAlign: "left"
+  headerTitleStyle: {
+    fontSize: 20,
+    fontFamily: Platform.OS === "ios" ? "Whitney-Medium" : "Whitney-Medium-Pro"
+  }
 };
 
 const hideScreenTransitionAnimation = {
@@ -92,7 +96,10 @@ const MainStackNavigation = ( ): React.Node => (
         <Stack.Screen
           name="ObsList"
           component={ObsList}
-          options={hideScreenTransitionAnimation}
+          options={{
+            ...hideScreenTransitionAnimation,
+            ...hideHeader
+          }}
         />
         <Stack.Screen
           name="ObsDetails"
@@ -117,6 +124,9 @@ const MainStackNavigation = ( ): React.Node => (
         <Stack.Screen
           name="GroupPhotos"
           component={GroupPhotos}
+          options={{
+            title: t( "Group-Photos" )
+          }}
         />
         <Stack.Screen
           name="ObsEdit"
