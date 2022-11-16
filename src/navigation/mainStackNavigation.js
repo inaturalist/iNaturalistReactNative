@@ -143,7 +143,9 @@ const MainStackNavigation = ( ): React.Node => (
         <Stack.Screen
           name="AddID"
           component={AddID}
-          options={hideHeader}
+          options={{
+            title: t( "Add-an-ID" )
+          }}
         />
         <Stack.Screen
           name="Messages"
