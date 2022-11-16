@@ -1,0 +1,10 @@
+Many bug fixes for the observations loop
+
+* Ensure previously-edited observation data doesn't appear when editing a new
+  observation
+* Parse HTML in comment and identification bodies
+* Show user profile pic while testing
+* Upgraded to latest Realm database
+* Fixed hang when editing existing observations
+* Restore album selection functionality
+* Support for tablets
