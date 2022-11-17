@@ -3,6 +3,7 @@
     "comment": "Header for a block of text describing a taxon",
     "val": "ABOUT"
   },
+  "About-iNaturalist": "About iNaturalist",
   "Accept-community-identifications": "Accept community identifications",
   "Account": "Account",
   "Add-an-ID": "Add an ID",

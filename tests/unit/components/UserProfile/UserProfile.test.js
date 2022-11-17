@@ -26,6 +26,11 @@ jest.mock( "@react-navigation/native", ( ) => {
       params: {
         userId: mockUser.id
       }
+    } ),
+    useNavigation: ( ) => ( {
+      setOptions: ( ) => ( {
+        headerTitle: `@${mockUser.login}`
+      } )
     } )
   };
 } );
@@ -40,11 +45,11 @@ const renderUserProfile = ( ) => render(
   </QueryClientProvider>
 );
 
-test( "renders user profile from API call", ( ) => {
+test( "renders user profile from API call", async ( ) => {
   const { getByTestId, getByText } = renderUserProfile( );
 
   expect( getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy( );
-  expect( getByText( `@${mockUser.login}` ) ).toBeTruthy( );
+  expect( getByText( `iNaturalist ${mockUser.roles[0]}` ) ).toBeTruthy( );
   expect( getByTestId( "UserIcon.photo" ).props.source )
     .toStrictEqual( { uri: mockUser.icon_url } );
 } );
