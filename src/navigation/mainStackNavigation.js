@@ -84,6 +84,10 @@ const ObsEditWithPermission = () => (
 
 const photoGalleryHeaderTitle = ( ) => <PhotoAlbumPicker />;
 
+const blankHeaderTitle = {
+  headerTitle: ""
+};
+
 const MainStackNavigation = ( ): React.Node => (
   <Mortal>
     <ExploreProvider>
@@ -124,6 +128,7 @@ const MainStackNavigation = ( ): React.Node => (
         <Stack.Screen
           name="ObsEdit"
           component={ObsEditWithPermission}
+          options={blankHeaderTitle}
         />
         <Stack.Screen
           name="AddID"
@@ -142,16 +147,12 @@ const MainStackNavigation = ( ): React.Node => (
         <Stack.Screen
           name="TaxonDetails"
           component={TaxonDetails}
-          options={{
-            headerTitle: ""
-          }}
+          options={blankHeaderTitle}
         />
         <Stack.Screen
           name="UserProfile"
           component={UserProfile}
-          options={{
-            headerTitle: ""
-          }}
+          options={blankHeaderTitle}
         />
         <Stack.Screen
           name="Messages"
