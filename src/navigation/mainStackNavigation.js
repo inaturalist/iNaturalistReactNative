@@ -19,34 +19,17 @@ import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
+import {
+  blankHeaderTitle,
+  hideHeader,
+  hideScreenTransitionAnimation,
+  showHeader
+} from "navigation/navigationOptions";
 import ExploreProvider from "providers/ExploreProvider";
 import * as React from "react";
-import { PermissionsAndroid, Platform } from "react-native";
-import colors from "styles/tailwindColors";
+import { PermissionsAndroid } from "react-native";
 
 const Stack = createNativeStackNavigator( );
-
-const hideHeader = {
-  headerShown: false
-};
-
-const showHeader = {
-  headerShown: true,
-  headerBackTitleVisible: false,
-  headerShadowVisible: false,
-  headerTintColor: colors.black,
-  // Note: left header is not supported on iOS
-  // so we would need to build a custom header for this:
-  // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
-  headerTitleStyle: {
-    fontSize: 20,
-    fontFamily: Platform.OS === "ios" ? "Whitney-Medium" : "Whitney-Medium-Pro"
-  }
-};
-
-const hideScreenTransitionAnimation = {
-  animation: "none"
-};
 
 const PhotoGalleryWithPermission = ( ) => (
   <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
@@ -83,10 +66,6 @@ const ObsEditWithPermission = () => (
 );
 
 const photoGalleryHeaderTitle = ( ) => <PhotoAlbumPicker />;
-
-const blankHeaderTitle = {
-  headerTitle: ""
-};
 
 const MainStackNavigation = ( ): React.Node => (
   <Mortal>
@@ -166,8 +145,9 @@ const MainStackNavigation = ( ): React.Node => (
           name="ExploreLanding"
           component={ExploreLanding}
           options={{
-            ...hideHeader,
-            ...hideScreenTransitionAnimation
+            ...showHeader,
+            ...hideScreenTransitionAnimation,
+            headerTitle: t( "Explore" )
           }}
         />
         <Stack.Screen
