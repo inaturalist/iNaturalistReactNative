@@ -45,7 +45,8 @@ class ObservationPhoto extends Realm.Object {
       _created_at: new Date( ),
       _updated_at: new Date( ),
       uuid: uuid.v4( ),
-      photo: photo || await Photo.new( uri )
+      photo: photo || await Photo.new( uri ),
+      originalPhotoUri: uri
     };
   }
 

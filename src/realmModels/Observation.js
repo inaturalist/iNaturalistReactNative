@@ -72,6 +72,7 @@ class Observation extends Realm.Object {
       // take the observed_on_string time from the first photo in an observation
       const observedOn = formatDateAndTime( photos[0].timestamp );
       const obsPhotos = await Observation.formatObsPhotos( photos, realm );
+
       return Observation.createObsWithPhotos( obsPhotos, observedOn );
     } ) );
   }

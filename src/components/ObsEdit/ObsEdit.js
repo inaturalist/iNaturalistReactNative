@@ -312,7 +312,7 @@ const ObsEdit = ( ): Node => {
 
     setPhotoUris( uris );
     setPhotoOriginalUris( Array.from( currentObs.observationPhotos ).map(
-      obsPhoto => obsPhoto.photo.originalUri
+      obsPhoto => obsPhoto.originalPhotoUri
     ) );
   }, [currentObs] );
 

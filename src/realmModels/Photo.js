@@ -76,8 +76,7 @@ class Photo extends Realm.Object {
     return {
       _created_at: new Date( ),
       _updated_at: new Date( ),
-      localFilePath,
-      originalUri: uri
+      localFilePath
     };
   }
 
@@ -154,8 +153,7 @@ class Photo extends Realm.Object {
       attribution: "string?",
       license_code: { type: "string?", mapTo: "licenseCode" },
       url: "string?",
-      localFilePath: "string?",
-      originalUri: "string?"
+      localFilePath: "string?"
     }
   }
 }
