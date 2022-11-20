@@ -1,14 +1,10 @@
-// eslint-disable-next-line import/no-cycle
 import Comment from "./Comment";
-// eslint-disable-next-line import/no-cycle
 import Identification from "./Identification";
-// eslint-disable-next-line import/no-cycle
 import Observation from "./Observation";
 import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
 import Photo from "./Photo";
 import Taxon from "./Taxon";
-// eslint-disable-next-line import/no-cycle
 import User from "./User";
 
 export default {
