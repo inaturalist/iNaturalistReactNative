@@ -2,6 +2,7 @@
 
 import CameraRoll from "@react-native-community/cameraroll";
 import { useCallback, useEffect, useState } from "react";
+import { Platform } from "react-native";
 
 const initialStatus = {
   photos: [],
@@ -27,7 +28,6 @@ const useCameraRollPhotos = (
   canRequestPhotos: boolean = true
 ): Object => {
   const [photoFetchStatus, setPhotoFetchStatus] = useState( initialStatus );
-
   const fetchPhotos = useCallback( async ( ) => {
     const {
       lastCursor, photos, fetchingPhotos, hasNextPage
@@ -35,17 +35,26 @@ const useCameraRollPhotos = (
 
     try {
       // keep track of the last photo fetched
-      if ( lastCursor ) {
-        options.after = lastCursor;
-      }
+      const newOptions = { ...options };
 
+      if ( lastCursor ) {
+        newOptions.after = lastCursor;
+        if ( Platform.OS === "android" ) {
+          // CameraRoll on Android has an open issue for SDK 30+ - so we have to use the
+          // `first` param in an undocumented way as a workaround, until an official fix is out:
+          // https://github.com/react-native-cameraroll/react-native-cameraroll/issues/359
+          newOptions.first = parseInt( lastCursor, 10 ) + options.first;
+        }
+      }
       // don't fetch more photos in the middle of a fetch
       if ( fetchingPhotos || !hasNextPage ) { return; }
+
       setPhotoFetchStatus( {
         ...photoFetchStatus,
         fetchingPhotos: true
       } );
-      const photosResponse = await CameraRoll.getPhotos( options );
+
+      const photosResponse = await CameraRoll.getPhotos( newOptions );
       const newLastCursor = photosResponse.page_info.end_cursor;
       const newHasNextPage = photosResponse.page_info.has_next_page;
       const newPhotos = photosResponse.edges.map( ( { node } ) => node );
@@ -53,7 +62,11 @@ const useCameraRollPhotos = (
       setPhotoFetchStatus( {
         ...photoFetchStatus,
         lastCursor: newLastCursor,
-        photos: photos.concat( newPhotos ),
+        // On Android, sometimes the response returns photos that we already received in the
+        // past - this prevents us from saving those same photos again.
+        photos: photos.concat(
+          newPhotos.filter( img => !photos.find( x => x.image.uri === img.image.uri ) )
+        ),
         hasNextPage: newHasNextPage,
         fetchingPhotos: false
       } );
