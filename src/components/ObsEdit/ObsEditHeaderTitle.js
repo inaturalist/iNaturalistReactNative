@@ -17,6 +17,11 @@ const ObsEditHeaderTitle = ( ): Node => {
   const showNextObservation = ( ) => setCurrentObservationIndex( currentObservationIndex + 1 );
   const showPrevObservation = ( ) => setCurrentObservationIndex( currentObservationIndex - 1 );
 
+  // prevent header from flickering if observations haven't loaded yet
+  if ( observations.length === 0 ) {
+    return null;
+  }
+
   return observations.length === 1
     ? <Text className="text-2xl">{t( "New-Observation" )}</Text>
     : (
