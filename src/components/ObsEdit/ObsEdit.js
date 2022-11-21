@@ -46,11 +46,18 @@ const ObsEdit = ( ): Node => {
   const localObservation = useLocalObservation( params?.uuid );
 
   useEffect( ( ) => {
-    // when opening an observation from ObsDetails, fetch the local
-    // observation from realm
-    if ( localObservation && !currentObservation ) {
+    // when first opening an observation from ObsDetails, fetch local observation from realm
+    // and set this in obsEditContext
+
+    // need to check that current observation hasn't yet been set in obsEditContext
+    // to make sure this effect doesn't overwrite the current observation
+    // when a user leaves the screen, like when a user tries to set a new ID on an observation
+    const initialOpenLocalObservation = localObservation && !currentObservation;
+    if ( initialOpenLocalObservation ) {
       resetObsEditContext( );
-      setObservations( [localObservation] );
+      // need .toJSON( ) to be able to add evidence to an existing local observation
+      // otherwise, get a realm error about modifying managed objects outside of a write transaction
+      setObservations( [localObservation.toJSON( )] );
     }
   }, [localObservation, setObservations, resetObsEditContext, currentObservation] );
 
