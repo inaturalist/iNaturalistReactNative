@@ -9,8 +9,6 @@ const PARAMS = {
   fields: Comment.COMMENT_FIELDS
 };
 
-console.log( PARAMS, "params in comments" );
-
 const createComment = async (
   params: Object = {},
   opts: Object = {}
