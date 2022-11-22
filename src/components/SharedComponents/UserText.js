@@ -1,11 +1,12 @@
+import TableRenderer, { tableModel } from "@native-html/table-plugin";
 import linkifyHtml from "linkify-html";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
 import {
-  useWindowDimensions,
-  View
+  ScrollView, useWindowDimensions
 } from "react-native";
 import HTML from "react-native-render-html";
+import WebView from "react-native-webview";
 import sanitizeHtml from "sanitize-html";
 
 const ALLOWED_TAGS = ( `
@@ -62,49 +63,71 @@ const ALLOWED_ATTRIBUTES = { a: ["href"] };
 ALLOWED_TAGS.filter( tag => tag !== "a" )
   .forEach( tag => { ALLOWED_ATTRIBUTES[tag] = ALLOWED_ATTRIBUTES_NAMES; } );
 
-const CONFIG = {
+const SANITIZE_HTML_CONFIG = {
   allowedTags: ALLOWED_TAGS,
   allowedAttributes: ALLOWED_ATTRIBUTES,
   allowedSchemes: ["http", "https"]
 };
 
+const LINKIFY_OPTIONS = {
+  className: null,
+  attributes: { rel: "nofollow" },
+  ignoreTags: ["a", "code", "pre"]
+};
+
+// html table props, can use the table plugin to customize the table in the future
+const tableRenderer = { table: TableRenderer };
+const customHTMLElementModel = {
+  table: tableModel
+};
+
 function hyperlinkMentions( text ) {
-  return text.replace( /(\B)@([A-z][\\\w\\\-_]*)/g, "$1<a href=\"/people/$2\">@$2</a>" );
+  return text.replace( /(\B)@([A-z][\\\w\\\-_]*)/g, "$1<a href='https://www.inaturalist.org/people/$2'>@$2</a>" );
 }
 
 type Props = {
   text:String,
-  baseStyle?:Object,
+  htmlStyle?:Object,
 }
 
 const UserText = ( {
-  text, baseStyle
+  text, htmlStyle
 } : Props ): React.Node => {
   const { width } = useWindowDimensions( );
   let html = text;
+
+  // replace ampersands in URL params with entities so they don't get
+  // interpretted by safeHtml
   html = html.replace( /&(\w+=)/g, "&amp;$1" );
 
   const md = new MarkdownIt( {
     html: true,
     breaks: true
   } );
+
+  md.renderer.rules.table_open = ( ) => "<table class=\"table\">\n";
+
   html = md.render( html );
 
-  html = sanitizeHtml( hyperlinkMentions( html ), CONFIG );
+  html = sanitizeHtml( hyperlinkMentions( html ), SANITIZE_HTML_CONFIG );
+  // Note: markdown-it has a linkifier option too, but it does not allow you
+  // to specify attributes like nofollow, so we're using linkifyjs, but we
+  // are ignoring URLs in the existing tags that might have them like <a> and
+  // <code>
 
-  html = linkifyHtml( html, {
-    className: null,
-    attributes: { rel: "nofollow" },
-    ignoreTags: ["a", "code", "pre"]
-  } );
+  html = linkifyHtml( html, LINKIFY_OPTIONS );
+
   return (
-    <View>
+    <ScrollView>
       <HTML
-        baseStyle={baseStyle}
+        baseStyle={htmlStyle}
         contentWidth={width}
         source={{ html }}
+        WebView={WebView}
+        renderers={tableRenderer}
+        customHTMLElementModels={customHTMLElementModel}
       />
-    </View>
+    </ScrollView>
   );
 };
 

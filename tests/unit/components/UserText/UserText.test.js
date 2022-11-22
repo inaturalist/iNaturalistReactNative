@@ -1,58 +1,66 @@
-import { render, waitFor } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import UserText from "components/SharedComponents/UserText";
 import React from "react";
 import { inspect } from "sharedHelpers/logging";
 
 describe( "Sanitization", () => {
-  it( "HTML tags we don't support are not rendered", () => {
+  it( "does not render HTML tags we don't support", () => {
+    const paragraphTagContent = "Welcome to iNaturalist";
+    const quoteTagContent = "quote tag";
+    const scriptTagContent = "javascript tag";
+
     const testText = `<div>
-    <p>Welcome to iNaturalist</p>
-    <p>Welcome to iNat <q>I should not be here</q></p>
-    <script>I should also not be here</script>
-    <body>Body</body>
+    <p>${paragraphTagContent}</p>
+    <p>They said <q>${quoteTagContent}</q></p>
+    <script>${scriptTagContent}</script>
     </div>`;
+
     const {
       queryByText
     } = render(
       <UserText text={testText} />
     );
-
-    expect( queryByText( "Welcome to iNaturalist" ) ).toBeTruthy();
-    // this test passes but it renders but since its in a p tag its ok?
-    expect( queryByText( "I should not be here" ) ).toBeFalsy();
-    expect( queryByText( "I should also not be here" ) ).toBeFalsy();
+    expect( queryByText( paragraphTagContent ) ).toBeTruthy();
+    expect( queryByText( quoteTagContent ) ).toBeFalsy();
+    expect( queryByText( scriptTagContent ) ).toBeFalsy();
   } );
 
-  it( "Allow all the HTML attributes we support on the web, but not the ones we don't", () => {
+  it( "only allows the HTML attributes we support on the web", () => {
+    const pTagText = "Welcome to iNaturalist";
+    const altText = "Girl in a jacket";
     const testText = `<div>
-    <p style="font-size:100px">Welcome to iNaturalist</p>
-    <img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">
-    </div>`;
-    const { getByLabelText, toJSON } = render(
+      <p style="font-size:100px">${pTagText}</p>
+      <img src="img_girl.jpg" alt=${altText} width="500" height="600">
+      <p>fontSize</p>
+      </div>`;
+    const { queryByText, findByLabelText } = render(
       <UserText text={testText} />
     );
-    const json = toJSON( { inspect } );
-    const { fontSize } = json.children[0].children[0]
-      .children[0].children[0].children[0].props.style[0];
+
     // alt text renders as accessibilityLabel
-    // waitFor gets rid of a warning relating to wrapping in act()
-    waitFor( () => expect( getByLabelText( "Girl in a jacket" ) ).toBeTruthy() );
+    expect( findByLabelText( altText ) ).toBeTruthy();
 
     // default font size is 14, check if no change
-    expect( fontSize ).toEqual( 14 );
+    expect( queryByText( pTagText ) ).toHaveProperty( "props.style.0.fontSize", 14 );
   } );
 
-  it( "Link all @ mentions", () => {
-    const testText = "@anglantis";
-    const { getByRole, queryByText } = render(
+  it( "links all @ mentions", () => {
+    const testMention = "@anglantis";
+    const testText = `<a href='not a URL'>${testMention}</a>`;
+    const {
+      getByRole, queryByText, toJSON
+    } = render(
       <UserText text={testText} />
     );
 
+    console.log( inspect( toJSON() ) );
+
     expect( getByRole( "link" ) ).toBeTruthy();
-    expect( queryByText( testText ) ).toBeTruthy();
+    expect( queryByText( testMention ) ).toBeTruthy();
+    expect( queryByText( testMention ) ).toHaveProperty( "props.accessibilityRole", "link" );
   } );
 
-  it( "Link all URLs", () => {
+  it( "links all URLs", () => {
     const testText = "https://www.inaturalist.org";
     const { getByRole, queryByText } = render(
       <UserText text={testText} />
@@ -62,7 +70,7 @@ describe( "Sanitization", () => {
     expect( queryByText( testText ) ).toBeTruthy();
   } );
 
-  it( "Sanitize HTML, e.g. close unclosed tags", () => {
+  it( "closes unclosed tags", () => {
     const testText = "<p>Welcome to iNat";
     const { queryByText } = render(
       <UserText text={testText} />
@@ -71,14 +79,14 @@ describe( "Sanitization", () => {
     expect( queryByText( "Welcome to iNat" ) ).toBeTruthy();
   } );
 
-  it( "Strip leading and trailing whitespace", () => {
-    const testText = "<p>\n\nWelcome to iNat\n\n</p>";
+  it( "strips leading and trailing whitespace", () => {
+    const testText = " This is a single line with a lloooooot of whitespace   \n\n\n\n\n\n\n      ";
     const { queryByText } = render(
       <UserText text={testText} />
     );
 
-    expect( queryByText( "Welcome to iNat" ) ).toBeTruthy();
-    expect( queryByText( "\n\nWelcome to iNat\n\n" ) ).toBeFalsy();
+    expect( queryByText( "This is a single line with a lloooooot of whitespace" ) ).toBeTruthy();
+    expect( queryByText( testText ) ).toBeFalsy();
   } );
 } );
 
@@ -101,15 +109,21 @@ describe( "Basic Rendering", () => {
 
     expect( queryByText( testText ) ).toBeFalsy();
     expect( queryByText( "This is Heading 1" ) ).toBeTruthy();
+    // eslint-disable-next-line max-len
+    expect( queryByText( "This is Heading 1" ) ).toHaveProperty( "props.style.0.fontWeight", "bold" );
   } );
 
   it( "renders html", () => {
-    const testText = "<p>Google Chrome is a web browser developed by Google </p>";
+    const testText = "<p>Welcome to <b>iNaturalist</b></p>";
     const { queryByText } = render(
       <UserText text={testText} />
     );
 
     expect( queryByText( testText ) ).toBeFalsy();
+    expect( queryByText( "Welcome to" ) ).toBeTruthy();
+    expect( queryByText( "iNaturalist" ) ).toBeTruthy();
+    expect( queryByText( "Welcome to" ) ).not.toHaveProperty( "props.style.0.fontWeight", "bold" );
+    expect( queryByText( "iNaturalist" ) ).toHaveProperty( "props.style.0.fontWeight", "bold" );
   } );
 
   it( "Parse Markdown, tables", () => {
@@ -123,22 +137,18 @@ describe( "Basic Rendering", () => {
     );
 
     expect( queryByText( testText ) ).toBeFalsy();
+    expect( queryByText( "| # | Name | Age" ) ).toBeTruthy();
   } );
 
   it( "Parse Markdown, lists", () => {
-    const testText = ( `# This is Heading 1
-    ## This is Heading 2
+    const testText = ( `
     1. List1
     2. List2
-      This is a \`description\`  for List2 .\n
-      * test
-      * test
     3. List3
     4. List4.` );
     const { queryByText } = render(
       <UserText text={testText} />
     );
-
     expect( queryByText( testText ) ).toBeFalsy();
   } );
 } );
