@@ -11,8 +11,10 @@ import Button from "components/SharedComponents/Buttons/Button";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import QualityBadge from "components/SharedComponents/QualityBadge";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
-import TranslatedText from "components/SharedComponents/TranslatedText";
 import UserIcon from "components/SharedComponents/UserIcon";
+import {
+  Image, Pressable, Text, View
+} from "components/styledComponents";
 import { formatISO } from "date-fns";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
@@ -22,9 +24,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Alert, Image,
-  LogBox, Pressable, Text,
-  View
+  Alert, LogBox
 } from "react-native";
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import createUUID from "react-native-uuid";
@@ -290,19 +290,41 @@ const ObsDetails = ( ): Node => {
     ? observation.createdAt
     : formatObsListTime( observation._created_at ) );
 
+  const displayTab = ( handlePress, testID, tabText, active ) => {
+    let textClassName = "color-gray text-xl font-bold";
+
+    if ( active ) {
+      textClassName += " color-inatGreen";
+    }
+
+    return (
+      <Pressable
+        onPress={handlePress}
+        testID={testID}
+        accessibilityRole="button"
+        className="w-1/2 items-center"
+      >
+        <Text className={textClassName}>
+          {tabText}
+        </Text>
+        { active && <View className="border border-inatGreen w-full" />}
+      </Pressable>
+    );
+  };
+
   return (
     <>
       <ScrollWithFooter testID={`ObsDetails.${uuid}`}>
         <ObsDetailsHeader observation={observation} />
-        <View style={viewStyles.userProfileRow}>
+        <View className="flex-row justify-between items-center m-3">
           <Pressable
-            style={viewStyles.userProfileRow}
+            className="flex-row items-center"
             onPress={( ) => navToUserProfile( user.id )}
             testID="ObsDetails.currentUser"
             accessibilityRole="link"
           >
             <UserIcon uri={User.uri( user )} small />
-            <Text>{User.userHandle( user )}</Text>
+            <Text className="ml-3">{User.userHandle( user )}</Text>
           </Pressable>
           <Text style={textStyles.observedOn}>{displayCreatedAt( )}</Text>
         </View>
@@ -316,54 +338,32 @@ const ObsDetails = ( ): Node => {
             style={viewStyles.favButton}
           />
         </View>
-        <View style={viewStyles.row}>
+        <View className="flex-row my-5">
           {showTaxon( )}
           <View>
-            <View style={viewStyles.rowWithIcon}>
+            <View className="flex-row my-1">
               <Image
                 style={imageStyles.smallIcon}
                 source={require( "images/ic_id.png" )}
               />
-              <Text style={textStyles.idCommentCount}>{observation.identifications.length}</Text>
+              <Text className="ml-1">{observation.identifications.length}</Text>
             </View>
-            <View style={viewStyles.rowWithIcon}>
+            <View className="flex-row my-1">
               <IconMaterial name="chat-bubble" size={15} color={colors.logInGray} />
-              <Text style={textStyles.idCommentCount}>{observation.comments.length}</Text>
+              <Text className="ml-1">{observation.comments.length}</Text>
             </View>
             <QualityBadge qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )} />
           </View>
         </View>
-        <View style={[viewStyles.rowWithIcon, viewStyles.locationContainer]}>
+        <View className="flex-row ml-3">
           <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
-          <Text style={textStyles.locationText}>
+          <Text className="color-logInGray ml-2">
             {checkCamelAndSnakeCase( observation, "placeGuess" )}
           </Text>
         </View>
-
-        <View style={viewStyles.userProfileRow}>
-          <Pressable
-            onPress={showActivityTab}
-            accessibilityRole="button"
-            style={viewStyles.tabContainer}
-          >
-            <TranslatedText
-              style={[textStyles.tabText, tab === 0 ? textStyles.tabTextActive : null]}
-              text="ACTIVITY"
-            />
-            { tab === 0 && <View style={viewStyles.tabContainerActive} />}
-          </Pressable>
-          <Pressable
-            onPress={showDataTab}
-            testID="ObsDetails.DataTab"
-            accessibilityRole="button"
-            style={viewStyles.tabContainer}
-          >
-            <TranslatedText
-              style={[textStyles.tabText, tab === 1 ? textStyles.tabTextActive : null]}
-              text="DATA"
-            />
-            { tab === 1 && <View style={viewStyles.tabContainerActive} />}
-          </Pressable>
+        <View className="flex-row mt-6">
+          {displayTab( showActivityTab, "ObsDetails.ActivityTab", t( "ACTIVITY" ), tab === 0 )}
+          {displayTab( showDataTab, "ObsDetails.DataTab", t( "DATA" ), tab === 1 )}
         </View>
         {tab === 0
           ? (

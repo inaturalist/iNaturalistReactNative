@@ -38,14 +38,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   scrollView: {
     paddingBottom: 400
   },
-  userProfileRow: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginHorizontal: 13,
-    marginVertical: 5
-  },
   rowBorder: {
     borderTopWidth: 1,
     borderBottomWidth: 1,
@@ -93,28 +85,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   textPadding: {
     paddingRight: 30
   },
-
-  rowWithIcon: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  tabContainer: {
-    width: "50%",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column"
-  },
-  tabContainerActive: {
-    borderTopColor: colors.inatGreen,
-    borderTopWidth: 5,
-    borderTopStartRadius: 5,
-    borderTopEndRadius: 5,
-    width: "100%"
-  },
-  locationContainer: {
-    paddingLeft: 10
-  },
   dataTabSub: {
     marginLeft: 30,
     marginVertical: 0
@@ -148,13 +118,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 } );
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
-  idCommentCount: {
-    marginLeft: 5
-  },
-  locationText: {
-    marginLeft: 5,
-    color: colors.logInGray
-  },
   tabText: {
     color: colors.gray,
     fontSize: 20,
