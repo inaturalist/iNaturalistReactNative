@@ -19,14 +19,14 @@ import { viewStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  createCommentMutation: Function,
+  onCommentAdded: Function,
   showCommentBox: boolean,
   setShowCommentBox: Function,
   setAddingComment: Function
 }
 
 const AddCommentModal = ( {
-  createCommentMutation,
+  onCommentAdded,
   showCommentBox,
   setShowCommentBox,
   setAddingComment
@@ -63,7 +63,8 @@ const AddCommentModal = ( {
     setShowCommentBox( false );
     Keyboard.dismiss();
     if ( comment.length > 0 ) {
-      createCommentMutation.mutate( comment );
+      onCommentAdded( comment );
+      // createCommentMutation.mutate( comment );
     }
     setAddingComment( false );
   };

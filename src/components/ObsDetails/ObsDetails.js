@@ -27,6 +27,7 @@ import {
   View
 } from "react-native";
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
+import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
@@ -66,6 +67,7 @@ const ObsDetails = ( ): Node => {
   const [addingComment, setAddingComment] = useState( false );
   const realm = useRealm( );
   const localObservation = realm?.objectForPrimaryKey( "Observation", uuid );
+  const [comments, setComments] = useState( [] );
 
   const queryClient = useQueryClient( );
 
@@ -86,13 +88,33 @@ const ObsDetails = ( ): Node => {
     }
   };
 
-  const createCommentMutation = useAuthenticatedMutation( ( body, optsWithAuth ) => createComment( {
-    comment: {
-      body,
-      parent_id: uuid,
-      parent_type: "Observation"
+  const showErrorAlert = error => Alert.alert(
+    "Error",
+    error,
+    [{ text: t( "OK" ) }],
+    {
+      cancelable: true
     }
-  }, optsWithAuth ), mutationOptions );
+  );
+
+  const createCommentMutation = useAuthenticatedMutation(
+    ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
+    {
+      onSuccess: data => setComments( [...comments, data[0]] ),
+      onError: e => {
+        let error = null;
+        if ( e ) {
+          error = t( "Couldnt-create-comment", { error: e.message } );
+        } else {
+          error = t( "Couldnt-create-comment", { error: t( "Unknown-error" ) } );
+        }
+
+        // Remove temporary comment and show error
+        setComments( [...comments] );
+        showErrorAlert( error );
+      }
+    }
+  );
 
   const createIdentificationMutation = useAuthenticatedMutation(
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
@@ -108,14 +130,7 @@ const ObsDetails = ( ): Node => {
 
         // Remove temporary ID and show error
         setIds( [...ids] );
-        Alert.alert(
-          "Error",
-          error,
-          [{ text: t( "OK" ) }],
-          {
-            cancelable: true
-          }
-        );
+        showErrorAlert( error );
       }
     }
   );
@@ -140,6 +155,16 @@ const ObsDetails = ( ): Node => {
     }
   }, [observation, ids] );
 
+  useEffect( ( ) => {
+    // set initial comments for activity tab
+    const currentComments = observation?.comments;
+    if ( currentComments
+        && comments.length === 0
+        && currentComments.length !== comments.length ) {
+      setComments( currentComments );
+    }
+  }, [observation, comments] );
+
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
 
@@ -161,7 +186,6 @@ const ObsDetails = ( ): Node => {
 
   if ( !observation ) { return null; }
 
-  const comments = Array.from( observation.comments );
   const photos = _.compact( Array.from( observation.observationPhotos ).map( op => op.photo ) );
 
   const onIDAdded = async identification => {
@@ -188,6 +212,35 @@ const ObsDetails = ( ): Node => {
         observation_id: uuid,
         taxon_id: newId.taxon.id,
         body: newId.body
+      }
+    } );
+  };
+
+  console.log( comments, "comments list" );
+
+  const onCommentAdded = async commentBody => {
+    // Add temporary comment to observation.comments ("ghosted" comment,
+    // while we're trying to add it)
+    const newComment = {
+      body: commentBody,
+      user: {
+        id: userId,
+        login: currentUser?.login,
+        signedIn: true
+      },
+      created_at: formatISO( Date.now() ),
+      uuid: createUUID.v4( ),
+      // This tells us to render is ghosted (since it's temporarily visible
+      // until getting a response from the server)
+      temporary: true
+    };
+    setComments( [...comments, newComment] );
+
+    createCommentMutation.mutate( {
+      comment: {
+        body: commentBody,
+        parent_id: uuid,
+        parent_type: "Observation"
       }
     } );
   };
@@ -248,7 +301,7 @@ const ObsDetails = ( ): Node => {
             testID="ObsDetails.currentUser"
             accessibilityRole="link"
           >
-            <UserIcon uri={User.uri( user )} />
+            <UserIcon uri={User.uri( user )} small />
             <Text>{User.userHandle( user )}</Text>
           </Pressable>
           <Text style={textStyles.observedOn}>{displayCreatedAt( )}</Text>
@@ -350,7 +403,7 @@ const ObsDetails = ( ): Node => {
         </View>
       </ScrollWithFooter>
       <AddCommentModal
-        createCommentMutation={createCommentMutation}
+        onCommentAdded={onCommentAdded}
         showCommentBox={showCommentBox}
         setShowCommentBox={setShowCommentBox}
         setAddingComment={setAddingComment}

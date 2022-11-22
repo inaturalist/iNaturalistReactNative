@@ -20,7 +20,6 @@ import Comment from "realmModels/Comment";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
-// import useApiToken from "sharedHooks/useApiToken";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
 
@@ -49,7 +48,7 @@ const ActivityItem = ( {
 
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {
-      const current = await isCurrentUser( user.login );
+      const current = await isCurrentUser( user?.login );
       setCurrentUser( current );
     };
     isActiveUserTheCurrentUser( );
@@ -75,7 +74,7 @@ const ActivityItem = ( {
             style={viewStyles.userIcon}
             testID={`ObsDetails.identifier.${user.id}`}
           >
-            <UserIcon uri={User.uri( user )} />
+            <UserIcon uri={User.uri( user )} small />
             <Text style={textStyles.username}>{User.userHandle( user )}</Text>
           </Pressable>
         )}
