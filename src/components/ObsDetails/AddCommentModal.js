@@ -64,7 +64,6 @@ const AddCommentModal = ( {
     Keyboard.dismiss();
     if ( comment.length > 0 ) {
       onCommentAdded( comment );
-      // createCommentMutation.mutate( comment );
     }
     setAddingComment( false );
   };
@@ -117,7 +116,7 @@ const AddCommentModal = ( {
           {renderTextInput()}
           <Pressable
             className="absolute right-4 bottom-4"
-            onPress={() => submitComment( )}
+            onPress={( ) => submitComment( )}
           >
             <IconMaterial name="send" size={35} color={colors.inatGreen} />
           </Pressable>

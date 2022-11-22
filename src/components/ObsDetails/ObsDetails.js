@@ -35,7 +35,7 @@ import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
+import { imageStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
 
 import ActivityTab from "./ActivityTab";
@@ -216,8 +216,6 @@ const ObsDetails = ( ): Node => {
     } );
   };
 
-  console.log( comments, "comments list" );
-
   const onCommentAdded = async commentBody => {
     // Add temporary comment to observation.comments ("ghosted" comment,
     // while we're trying to add it)
@@ -255,21 +253,21 @@ const ObsDetails = ( ): Node => {
   const showTaxon = ( ) => {
     if ( !taxon ) { return <Text>{t( "Unknown-organism" )}</Text>; }
     return (
-      <>
-        <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />
+      <View className="flex-row">
+        <Image source={Taxon.uri( taxon )} className="w-16 h-16 rounded-xl mr-3" />
         <Pressable
-          style={viewStyles.obsDetailsColumn}
+          className="justify-center"
           onPress={navToTaxonDetails}
           testID={`ObsDetails.taxon.${taxon.id}`}
           accessibilityRole="link"
           accessibilityLabel="go to taxon details"
         >
-          <Text style={textStyles.commonNameText}>
+          <Text>
             {checkCamelAndSnakeCase( taxon, "preferredCommonName" )}
           </Text>
-          <Text style={textStyles.scientificNameText}>{taxon.name}</Text>
+          <Text>{taxon.name}</Text>
         </Pressable>
-      </>
+      </View>
     );
   };
 
@@ -326,22 +324,22 @@ const ObsDetails = ( ): Node => {
             <UserIcon uri={User.uri( user )} small />
             <Text className="ml-3">{User.userHandle( user )}</Text>
           </Pressable>
-          <Text style={textStyles.observedOn}>{displayCreatedAt( )}</Text>
+          <Text className="color-logInGray">{displayCreatedAt( )}</Text>
         </View>
-        <View style={viewStyles.photoContainer}>
+        <View className="bg-black">
           <PhotoScroll photos={photos} />
           <IconButton
             icon={currentUserFaved ? "star-outline" : "star"}
             onPress={faveOrUnfave}
             textColor={colors.white}
-            labelStyle={textStyles.favText}
-            style={viewStyles.favButton}
+            className="absolute top-3 right-0"
           />
         </View>
-        <View className="flex-row my-5">
+        <View className="flex-row my-5 justify-between mx-3">
           {showTaxon( )}
           <View>
             <View className="flex-row my-1">
+              {/* TODO: figure out how to change icon tint color with Tailwind */}
               <Image
                 style={imageStyles.smallIcon}
                 source={require( "images/ic_id.png" )}
@@ -378,28 +376,24 @@ const ObsDetails = ( ): Node => {
           )
           : <DataTab observation={observation} />}
         {addingComment && (
-          <View style={[viewStyles.row, viewStyles.centerRow]}>
+          <View className="flex-row items-center justify-center">
             <ActivityIndicator size="large" />
           </View>
         )}
-        <View style={viewStyles.row}>
-          <View style={viewStyles.buttons}>
-            <Button
-              text={t( "Suggest-an-ID" )}
-              onPress={navToAddID}
-              style={viewStyles.button}
-              testID="ObsDetail.cvSuggestionsButton"
-            />
-          </View>
-          <View style={viewStyles.buttons}>
-            <Button
-              text={t( "Add-Comment" )}
-              onPress={openCommentBox}
-              style={viewStyles.button}
-              testID="ObsDetail.commentButton"
-              disabled={showCommentBox}
-            />
-          </View>
+        <View className="flex-row my-10 justify-evenly">
+          <Button
+            text={t( "Suggest-an-ID" )}
+            onPress={navToAddID}
+            className="mx-3"
+            testID="ObsDetail.cvSuggestionsButton"
+          />
+          <Button
+            text={t( "Add-Comment" )}
+            onPress={openCommentBox}
+            className="mx-3"
+            testID="ObsDetail.commentButton"
+            disabled={showCommentBox}
+          />
         </View>
       </ScrollWithFooter>
       <AddCommentModal
