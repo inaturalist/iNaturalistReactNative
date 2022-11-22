@@ -57,23 +57,26 @@ const AddCommentModal = ( {
     <BottomSheetStandardBackdrop props={props} />
   );
 
-  const submitComment = async ( ) => {
-    setAddingComment( true );
+  const clearAndCloseCommentBox = useCallback( ( ) => {
     clearComment( );
     setShowCommentBox( false );
     Keyboard.dismiss();
+  }, [setShowCommentBox] );
+
+  const submitComment = async ( ) => {
+    setAddingComment( true );
     if ( comment.length > 0 ) {
       onCommentAdded( comment );
     }
-    setAddingComment( false );
+    clearAndCloseCommentBox( );
   };
 
   const handleSheetChanges = useCallback( index => {
     // re-enable Add Comment button when backdrop is tapped to close modal
     if ( index === -1 ) {
-      setShowCommentBox( false );
+      clearAndCloseCommentBox( );
     }
-  }, [setShowCommentBox] );
+  }, [clearAndCloseCommentBox] );
 
   const renderTextInput = () => (
     <BottomSheetTextInput

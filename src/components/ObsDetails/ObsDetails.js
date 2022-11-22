@@ -112,7 +112,8 @@ const ObsDetails = ( ): Node => {
         // Remove temporary comment and show error
         setComments( [...comments] );
         showErrorAlert( error );
-      }
+      },
+      onSettled: ( ) => setAddingComment( false )
     }
   );
 
