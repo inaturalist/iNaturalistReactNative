@@ -3,17 +3,17 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments } from "api/comments";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
-import PlaceholderText from "components/PlaceholderText";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import UserIcon from "components/SharedComponents/UserIcon";
+import {
+  Image, Pressable, Text, View
+} from "components/styledComponents";
 import { t } from "i18next";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import {
-  Image, Pressable, Text, useWindowDimensions, View
-} from "react-native";
+import { useWindowDimensions } from "react-native";
 import { Menu } from "react-native-paper";
 import HTML from "react-native-render-html";
 import Comment from "realmModels/Comment";
@@ -21,7 +21,7 @@ import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
+import { textStyles } from "styles/obsDetails/obsDetails";
 
 import SmallSquareImage from "./SmallSquareImage";
 
@@ -65,33 +65,33 @@ const ActivityItem = ( {
   );
 
   return (
-    <View style={[viewStyles.activityItem, item.temporary ? viewStyles.temporaryRow : null]}>
-      <View style={[viewStyles.userProfileRow, viewStyles.rowBorder]}>
+    <View className={item.temporary && "opacity-50"}>
+      <View className="flex-row border border-borderGray py-1 justify-between">
         {user && (
           <Pressable
             onPress={handlePress}
             accessibilityRole="link"
-            style={viewStyles.userIcon}
+            className="flex-row items-center ml-3"
             testID={`ObsDetails.identifier.${user.id}`}
           >
             <UserIcon uri={User.uri( user )} small />
-            <Text style={textStyles.username}>{User.userHandle( user )}</Text>
+            <Text className="color-logInGray ml-3">{User.userHandle( user )}</Text>
           </Pressable>
         )}
-        <View style={viewStyles.labelsContainer}>
+        <View className="flex-row items-center">
           {item.vision
             && (
             <Image
-              style={imageStyles.smallGreenIcon}
+              className="w-6 h-6"
               source={require( "images/id_rg.png" )}
             />
             )}
-          <Text style={[textStyles.labels, textStyles.activityCategory]}>
+          <Text className="color-inatGreen mr-2">
             {item.category ? t( `Category-${item.category}` ) : ""}
           </Text>
           {item.created_at
             && (
-            <Text style={textStyles.labels}>
+            <Text>
               {formatIdDate( item.updated_at || item.created_at, t )}
             </Text>
             )}
@@ -109,20 +109,25 @@ const ActivityItem = ( {
                   title={t( "Delete-comment" )}
                 />
               </KebabMenu>
-            ) : <PlaceholderText text="menu" />}
+            ) : (
+              <KebabMenu>
+                {/* TODO: build out this menu */}
+                <View />
+              </KebabMenu>
+            )}
         </View>
       </View>
       {taxon && (
         <Pressable
-          style={viewStyles.speciesDetailRow}
+          className="flex-row my-3 ml-3 items-center"
           onPress={navToTaxonDetails}
           accessibilityRole="link"
           accessibilityLabel="go to taxon details"
         >
           <SmallSquareImage uri={Taxon.uri( taxon )} />
           <View>
-            <Text style={textStyles.commonNameText}>{taxon.preferred_common_name}</Text>
-            <Text style={textStyles.scientificNameText}>
+            <Text className="text-lg">{taxon.preferred_common_name}</Text>
+            <Text className="color-logInGray">
               {taxon.rank}
               {" "}
               {taxon.name}
@@ -131,7 +136,7 @@ const ActivityItem = ( {
         </Pressable>
       )}
       { !_.isEmpty( item?.body ) && (
-        <View style={viewStyles.speciesDetailRow}>
+        <View className="flex-row my-3 ml-3">
           <HTML
             contentWidth={width}
             baseStyle={textStyles.activityItemBody}

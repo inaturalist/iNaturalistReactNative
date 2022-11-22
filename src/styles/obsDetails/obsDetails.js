@@ -11,9 +11,6 @@ import colors from "styles/tailwindColors";
 const { width } = Dimensions.get( "screen" );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
-  temporaryRow: {
-    opacity: 0.5
-  },
   hoverCommentBox: {
     zIndex: 1
   },
@@ -41,14 +38,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   scrollView: {
     paddingBottom: 400
   },
-  speciesDetailRow: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    marginHorizontal: 10,
-    marginVertical: 5
-  },
   userProfileRow: {
     flexDirection: "row",
     flexWrap: "nowrap",
@@ -74,30 +63,10 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     top: 5,
     right: 0
   },
-  userIcon: {
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    alignItems: "center",
-    marginHorizontal: 13,
-    marginVertical: 5
-  },
   rightSide: {
     width: 10,
     height: 10,
     marginLeft: "auto"
-  },
-  activityItem: {
-    paddingRight: 0
-  },
-  labels: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    marginLeft: "auto",
-    width: 100,
-    paddingRight: 1
   },
   kebabMenuWrapper: {
     marginLeft: 15,
@@ -145,13 +114,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   locationContainer: {
     paddingLeft: 10
-  },
-  labelsContainer: {
-    display: "flex",
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end"
   },
   dataTabSub: {
     marginLeft: 30,
@@ -203,13 +165,6 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   tabTextActive: {
     color: colors.inatGreen
   },
-  commonNameText: {
-    fontSize: 18
-  },
-  scientificNameText: {
-    color: colors.logInGray,
-    fontStyle: "italic"
-  },
   whiteText: {
     color: colors.white
   },
@@ -243,14 +198,6 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
     color: colors.logInGray,
     fontSize: 12
   },
-  username: {
-    color: colors.logInGray,
-    fontSize: 12
-  },
-  activityCategory: {
-    color: colors.inatGreen,
-    fontSize: 12
-  },
   activityItemBody: {
     color: colors.logInGray
   }
@@ -268,18 +215,6 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   largeIcon: {
     width: 100,
     height: 100
-  },
-  squareImage: {
-    width: 47,
-    height: 47,
-    borderRadius: 10,
-    marginRight: 10
-  },
-  smallGreenIcon: {
-    width: 20,
-    height: 20,
-    tintColor: colors.inatGreen,
-    marginRight: 5
   },
   smallIcon: {
     width: 15,
