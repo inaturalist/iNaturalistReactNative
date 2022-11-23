@@ -180,3 +180,11 @@ jest.mock( "@gorhom/bottom-sheet", ( ) => ( {
   // eslint-disable-next-line react/jsx-no-useless-fragment
   BottomSheetTextInput: ( ) => <></>
 } ) );
+
+jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
+  nativeInterface: jest.fn( ),
+  CameraRoll: {
+    getPhotos: jest.fn( ),
+    getAlbums: jest.fn( )
+  }
+} ) );
