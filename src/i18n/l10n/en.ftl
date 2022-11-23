@@ -3,6 +3,8 @@
 # Header for a block of text describing a taxon
 ABOUT-taxon-header = ABOUT
 
+About-iNaturalist = About iNaturalist
+
 Accept-community-identifications = Accept community identifications
 
 Account = Account

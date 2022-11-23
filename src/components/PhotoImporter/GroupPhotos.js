@@ -2,6 +2,8 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
+import { Text } from "components/styledComponents";
+import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
@@ -9,7 +11,6 @@ import { ActivityIndicator, FlatList } from "react-native";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 import GroupPhotosFooter from "./GroupPhotosFooter";
-import GroupPhotosHeader from "./GroupPhotosHeader";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
 const GroupPhotos = ( ): Node => {
@@ -156,10 +157,13 @@ const GroupPhotos = ( ): Node => {
 
   return (
     <ViewNoFooter>
-      <GroupPhotosHeader
-        photos={observations.length}
-        observations={groupedPhotos.length}
-      />
+      <Text className="text-lg ml-10">
+        {t( "X-photos-X-observations", {
+          photoCount: groupedPhotos.length,
+          observationCount: observations.length
+        } )}
+      </Text>
+      <Text className="mx-3 my-5">{t( "Combine-photos-onboarding" )}</Text>
       <FlatList
         data={groupedPhotos}
         initialNumToRender={4}
