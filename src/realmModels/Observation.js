@@ -1,6 +1,6 @@
 import { Realm } from "@realm/react";
 // eslint-disable-next-line import/no-cycle
-import { createEvidence, createObservation } from "api/observations";
+import { createObservation, createOrUpdateEvidence, updateObservation } from "api/observations";
 import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
@@ -285,6 +285,13 @@ class Observation extends Realm.Object {
     return unsyncedObs.length > 0;
   }
 
+  static wasPreviouslySyncedObservation = ( realm, obs ) => {
+    const previouslySyncedFilter = "_synced_at != null && _synced_at <= _updated_at";
+
+    const observationList = realm?.objects( "Observation" );
+    return observationList.filtered( `${previouslySyncedFilter} && uuid == "${obs.uuid}"` );
+  }
+
   static updateLocalObservationsFromRemote = ( realm, results ) => {
     if ( results.length === 0 ) { return; }
     const obsToUpsert = results.filter( obs => !Observation.isUnsyncedObservation( realm, obs ) );
@@ -320,7 +327,7 @@ class Observation extends Realm.Object {
     realm: any,
     options: Object
   ) => {
-    const response = await createEvidence( apiEndpoint, params, options );
+    const response = await createOrUpdateEvidence( apiEndpoint, params, options );
     await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
     return response;
   };
@@ -371,27 +378,45 @@ class Observation extends Realm.Object {
       fields: { id: true }
     };
 
-    const response = await createObservation( uploadParams, options );
+    let response;
+
+    const wasPreviouslySynced = Observation.wasPreviouslySyncedObservation( realm, obs );
+
+    if ( wasPreviouslySynced ) {
+      response = await updateObservation( {
+        id: newObs.uuid,
+        ignore_photos: true,
+        observation: { ...newObs },
+        fields: { id: true }
+      }, options );
+    } else {
+      response = await createObservation( uploadParams, options );
+    }
+
     await Observation.markRecordUploaded( obs.uuid, "Observation", response, realm );
     const { id } = response.results[0];
-    if ( obs?.observationPhotos?.length > 0 ) {
+
+    // skip updating evidence for already synced observations
+    // since these .update API calls aren't yet available in v2
+
+    if ( obs?.observationPhotos?.length > 0 && !wasPreviouslySynced ) {
       return Observation.uploadEvidence(
         obs.observationPhotos,
         "ObservationPhoto",
         ObservationPhoto.mapPhotoForUpload,
         id,
-        inatjs.observation_photos,
+        wasPreviouslySynced ? inatjs.observation_photos.update : inatjs.observation_photos.create,
         realm,
         options
       );
     }
-    if ( obs?.observationSounds?.length > 0 ) {
+    if ( obs?.observationSounds?.length > 0 && !wasPreviouslySynced ) {
       return Observation.uploadEvidence(
         obs.observationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForUpload,
         id,
-        inatjs.observation_sounds,
+        wasPreviouslySynced ? inatjs.observation_sounds.update : inatjs.observation_sounds.create,
         realm,
         options
       );
