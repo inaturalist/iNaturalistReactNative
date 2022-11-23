@@ -42,7 +42,6 @@ import ActivityTab from "./ActivityTab";
 import AddCommentModal from "./AddCommentModal";
 import DataTab from "./DataTab";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
-import ObsDetailsHeader from "./ObsDetailsHeader";
 
 const { useRealm } = RealmContext;
 
@@ -185,6 +184,19 @@ const ObsDetails = ( ): Node => {
     }
   }, [observation, localObservation, realm, markViewedMutation, uuid] );
 
+  useEffect( ( ) => {
+    const obsCreatedLocally = observation?.id === null;
+    const obsOwnedByCurrentUser = observation?.user?.id === currentUser?.id;
+
+    const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } );
+    const editIcon = ( ) => ( obsCreatedLocally || obsOwnedByCurrentUser )
+    && <IconButton icon="pencil" onPress={navToObsEdit} textColor={colors.gray} />;
+
+    navigation.setOptions( {
+      headerRight: editIcon
+    } );
+  }, [navigation, observation, currentUser] );
+
   if ( !observation ) { return null; }
 
   const photos = _.compact( Array.from( observation.observationPhotos ).map( op => op.photo ) );
@@ -314,7 +326,6 @@ const ObsDetails = ( ): Node => {
   return (
     <>
       <ScrollWithFooter testID={`ObsDetails.${uuid}`}>
-        <ObsDetailsHeader observation={observation} />
         <View className="flex-row justify-between items-center m-3">
           <Pressable
             className="flex-row items-center"

@@ -15,11 +15,8 @@ type Props = {
 const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
   const obsEditContext = React.useContext( ObsEditContext );
-  const currentObservation = obsEditContext?.currentObservation;
   const createObservationNoEvidence = obsEditContext?.createObservationNoEvidence;
   const navigation = useNavigation( );
-
-  const hasSound = currentObservation?.observationSounds?.uri;
 
   const navAndCloseModal = ( screen, params ) => {
     const resetObsEditContext = obsEditContext?.resetObsEditContext;
@@ -74,12 +71,10 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
         ) )}
       </View>
       {renderIconButton( "plus", "bottom-0 left-1/3 px-2", ( ) => { }, 80 )}
-      {!currentObservation
-        && renderIconButton( "square-edit-outline", "bottom-6 left-10", navToObsEdit )}
+      {renderIconButton( "square-edit-outline", "bottom-6 left-10", navToObsEdit )}
       {renderIconButton( "camera", "bottom-24 left-20", navToStandardCamera )}
-      {!currentObservation
-        && renderIconButton( "folder-multiple-image", "bottom-24 right-20", navToPhotoGallery )}
-      {!hasSound && renderIconButton( "microphone", "bottom-6 right-10", navToSoundRecorder )}
+      {renderIconButton( "folder-multiple-image", "bottom-24 right-20", navToPhotoGallery )}
+      {renderIconButton( "microphone", "bottom-6 right-10", navToSoundRecorder )}
     </>
   );
 };
