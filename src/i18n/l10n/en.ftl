@@ -83,6 +83,10 @@ Connected-Accounts = Connected Accounts
 
 Content-Display = Content & Display
 
+Couldnt-create-comment = Couldn't create comment
+
+Couldnt-create-identification = Couldn't create identification
+
 Create-an-iNaturalist-account-to-save-your-observations = Create an iNaturalist account to save your observations and contribute them to science.
 
 CREATE-AN-OBSERVATION = CREATE AN OBSERVATION

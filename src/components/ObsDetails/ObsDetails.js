@@ -11,8 +11,10 @@ import Button from "components/SharedComponents/Buttons/Button";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import QualityBadge from "components/SharedComponents/QualityBadge";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
-import TranslatedText from "components/SharedComponents/TranslatedText";
 import UserIcon from "components/SharedComponents/UserIcon";
+import {
+  Image, Pressable, Text, View
+} from "components/styledComponents";
 import { formatISO } from "date-fns";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
@@ -22,11 +24,10 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Alert, Image,
-  LogBox, Pressable, Text,
-  View
+  Alert, LogBox
 } from "react-native";
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
+import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
@@ -34,7 +35,7 @@ import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import { imageStyles, textStyles, viewStyles } from "styles/obsDetails/obsDetails";
+import { imageStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
 
 import ActivityTab from "./ActivityTab";
@@ -65,6 +66,7 @@ const ObsDetails = ( ): Node => {
   const [addingComment, setAddingComment] = useState( false );
   const realm = useRealm( );
   const localObservation = realm?.objectForPrimaryKey( "Observation", uuid );
+  const [comments, setComments] = useState( [] );
 
   const queryClient = useQueryClient( );
 
@@ -85,13 +87,34 @@ const ObsDetails = ( ): Node => {
     }
   };
 
-  const createCommentMutation = useAuthenticatedMutation( ( body, optsWithAuth ) => createComment( {
-    comment: {
-      body,
-      parent_id: uuid,
-      parent_type: "Observation"
+  const showErrorAlert = error => Alert.alert(
+    "Error",
+    error,
+    [{ text: t( "OK" ) }],
+    {
+      cancelable: true
     }
-  }, optsWithAuth ), mutationOptions );
+  );
+
+  const createCommentMutation = useAuthenticatedMutation(
+    ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
+    {
+      onSuccess: data => setComments( [...comments, data[0]] ),
+      onError: e => {
+        let error = null;
+        if ( e ) {
+          error = t( "Couldnt-create-comment", { error: e.message } );
+        } else {
+          error = t( "Couldnt-create-comment", { error: t( "Unknown-error" ) } );
+        }
+
+        // Remove temporary comment and show error
+        setComments( [...comments] );
+        showErrorAlert( error );
+      },
+      onSettled: ( ) => setAddingComment( false )
+    }
+  );
 
   const createIdentificationMutation = useAuthenticatedMutation(
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
@@ -107,14 +130,7 @@ const ObsDetails = ( ): Node => {
 
         // Remove temporary ID and show error
         setIds( [...ids] );
-        Alert.alert(
-          "Error",
-          error,
-          [{ text: t( "OK" ) }],
-          {
-            cancelable: true
-          }
-        );
+        showErrorAlert( error );
       }
     }
   );
@@ -138,6 +154,16 @@ const ObsDetails = ( ): Node => {
       setIds( currentIds );
     }
   }, [observation, ids] );
+
+  useEffect( ( ) => {
+    // set initial comments for activity tab
+    const currentComments = observation?.comments;
+    if ( currentComments
+        && comments.length === 0
+        && currentComments.length !== comments.length ) {
+      setComments( currentComments );
+    }
+  }, [observation, comments] );
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
@@ -173,7 +199,6 @@ const ObsDetails = ( ): Node => {
 
   if ( !observation ) { return null; }
 
-  const comments = Array.from( observation.comments );
   const photos = _.compact( Array.from( observation.observationPhotos ).map( op => op.photo ) );
 
   const onIDAdded = async identification => {
@@ -204,6 +229,33 @@ const ObsDetails = ( ): Node => {
     } );
   };
 
+  const onCommentAdded = async commentBody => {
+    // Add temporary comment to observation.comments ("ghosted" comment,
+    // while we're trying to add it)
+    const newComment = {
+      body: commentBody,
+      user: {
+        id: userId,
+        login: currentUser?.login,
+        signedIn: true
+      },
+      created_at: formatISO( Date.now() ),
+      uuid: createUUID.v4( ),
+      // This tells us to render is ghosted (since it's temporarily visible
+      // until getting a response from the server)
+      temporary: true
+    };
+    setComments( [...comments, newComment] );
+
+    createCommentMutation.mutate( {
+      comment: {
+        body: commentBody,
+        parent_id: uuid,
+        parent_type: "Observation"
+      }
+    } );
+  };
+
   const navToUserProfile = id => navigation.navigate( "UserProfile", { userId: id } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
   const navToAddID = ( ) => {
@@ -214,21 +266,21 @@ const ObsDetails = ( ): Node => {
   const showTaxon = ( ) => {
     if ( !taxon ) { return <Text>{t( "Unknown-organism" )}</Text>; }
     return (
-      <>
-        <Image source={Taxon.uri( taxon )} style={viewStyles.imageBackground} />
+      <View className="flex-row">
+        <Image source={Taxon.uri( taxon )} className="w-16 h-16 rounded-xl mr-3" />
         <Pressable
-          style={viewStyles.obsDetailsColumn}
+          className="justify-center"
           onPress={navToTaxonDetails}
           testID={`ObsDetails.taxon.${taxon.id}`}
           accessibilityRole="link"
           accessibilityLabel="go to taxon details"
         >
-          <Text style={textStyles.commonNameText}>
+          <Text>
             {checkCamelAndSnakeCase( taxon, "preferredCommonName" )}
           </Text>
-          <Text style={textStyles.scientificNameText}>{taxon.name}</Text>
+          <Text>{taxon.name}</Text>
         </Pressable>
-      </>
+      </View>
     );
   };
 
@@ -249,79 +301,79 @@ const ObsDetails = ( ): Node => {
     ? observation.createdAt
     : formatObsListTime( observation._created_at ) );
 
+  const displayTab = ( handlePress, testID, tabText, active ) => {
+    let textClassName = "color-gray text-xl font-bold";
+
+    if ( active ) {
+      textClassName += " color-inatGreen";
+    }
+
+    return (
+      <Pressable
+        onPress={handlePress}
+        testID={testID}
+        accessibilityRole="button"
+        className="w-1/2 items-center"
+      >
+        <Text className={textClassName}>
+          {tabText}
+        </Text>
+        { active && <View className="border border-inatGreen w-full" />}
+      </Pressable>
+    );
+  };
+
   return (
     <>
       <ScrollWithFooter testID={`ObsDetails.${uuid}`}>
-        <View style={viewStyles.userProfileRow}>
+        <View className="flex-row justify-between items-center m-3">
           <Pressable
-            style={viewStyles.userProfileRow}
+            className="flex-row items-center"
             onPress={( ) => navToUserProfile( user.id )}
             testID="ObsDetails.currentUser"
             accessibilityRole="link"
           >
-            <UserIcon uri={User.uri( user )} />
-            <Text>{User.userHandle( user )}</Text>
+            <UserIcon uri={User.uri( user )} small />
+            <Text className="ml-3">{User.userHandle( user )}</Text>
           </Pressable>
-          <Text style={textStyles.observedOn}>{displayCreatedAt( )}</Text>
+          <Text className="color-logInGray">{displayCreatedAt( )}</Text>
         </View>
-        <View style={viewStyles.photoContainer}>
+        <View className="bg-black">
           <PhotoScroll photos={photos} />
           <IconButton
             icon={currentUserFaved ? "star-outline" : "star"}
             onPress={faveOrUnfave}
             textColor={colors.white}
-            labelStyle={textStyles.favText}
-            style={viewStyles.favButton}
+            className="absolute top-3 right-0"
           />
         </View>
-        <View style={viewStyles.row}>
+        <View className="flex-row my-5 justify-between mx-3">
           {showTaxon( )}
           <View>
-            <View style={viewStyles.rowWithIcon}>
+            <View className="flex-row my-1">
+              {/* TODO: figure out how to change icon tint color with Tailwind */}
               <Image
                 style={imageStyles.smallIcon}
                 source={require( "images/ic_id.png" )}
               />
-              <Text style={textStyles.idCommentCount}>{observation.identifications.length}</Text>
+              <Text className="ml-1">{observation.identifications.length}</Text>
             </View>
-            <View style={viewStyles.rowWithIcon}>
+            <View className="flex-row my-1">
               <IconMaterial name="chat-bubble" size={15} color={colors.logInGray} />
-              <Text style={textStyles.idCommentCount}>{observation.comments.length}</Text>
+              <Text className="ml-1">{observation.comments.length}</Text>
             </View>
             <QualityBadge qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )} />
           </View>
         </View>
-        <View style={[viewStyles.rowWithIcon, viewStyles.locationContainer]}>
+        <View className="flex-row ml-3">
           <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
-          <Text style={textStyles.locationText}>
+          <Text className="color-logInGray ml-2">
             {checkCamelAndSnakeCase( observation, "placeGuess" )}
           </Text>
         </View>
-
-        <View style={viewStyles.userProfileRow}>
-          <Pressable
-            onPress={showActivityTab}
-            accessibilityRole="button"
-            style={viewStyles.tabContainer}
-          >
-            <TranslatedText
-              style={[textStyles.tabText, tab === 0 ? textStyles.tabTextActive : null]}
-              text="ACTIVITY"
-            />
-            { tab === 0 && <View style={viewStyles.tabContainerActive} />}
-          </Pressable>
-          <Pressable
-            onPress={showDataTab}
-            testID="ObsDetails.DataTab"
-            accessibilityRole="button"
-            style={viewStyles.tabContainer}
-          >
-            <TranslatedText
-              style={[textStyles.tabText, tab === 1 ? textStyles.tabTextActive : null]}
-              text="DATA"
-            />
-            { tab === 1 && <View style={viewStyles.tabContainerActive} />}
-          </Pressable>
+        <View className="flex-row mt-6">
+          {displayTab( showActivityTab, "ObsDetails.ActivityTab", t( "ACTIVITY" ), tab === 0 )}
+          {displayTab( showDataTab, "ObsDetails.DataTab", t( "DATA" ), tab === 1 )}
         </View>
         {tab === 0
           ? (
@@ -336,32 +388,28 @@ const ObsDetails = ( ): Node => {
           )
           : <DataTab observation={observation} />}
         {addingComment && (
-          <View style={[viewStyles.row, viewStyles.centerRow]}>
+          <View className="flex-row items-center justify-center">
             <ActivityIndicator size="large" />
           </View>
         )}
-        <View style={viewStyles.row}>
-          <View style={viewStyles.buttons}>
-            <Button
-              text={t( "Suggest-an-ID" )}
-              onPress={navToAddID}
-              style={viewStyles.button}
-              testID="ObsDetail.cvSuggestionsButton"
-            />
-          </View>
-          <View style={viewStyles.buttons}>
-            <Button
-              text={t( "Add-Comment" )}
-              onPress={openCommentBox}
-              style={viewStyles.button}
-              testID="ObsDetail.commentButton"
-              disabled={showCommentBox}
-            />
-          </View>
+        <View className="flex-row my-10 justify-evenly">
+          <Button
+            text={t( "Suggest-an-ID" )}
+            onPress={navToAddID}
+            className="mx-3"
+            testID="ObsDetail.cvSuggestionsButton"
+          />
+          <Button
+            text={t( "Add-Comment" )}
+            onPress={openCommentBox}
+            className="mx-3"
+            testID="ObsDetail.commentButton"
+            disabled={showCommentBox}
+          />
         </View>
       </ScrollWithFooter>
       <AddCommentModal
-        createCommentMutation={createCommentMutation}
+        onCommentAdded={onCommentAdded}
         showCommentBox={showCommentBox}
         setShowCommentBox={setShowCommentBox}
         setAddingComment={setAddingComment}

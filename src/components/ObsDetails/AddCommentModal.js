@@ -19,14 +19,14 @@ import { viewStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  createCommentMutation: Function,
+  onCommentAdded: Function,
   showCommentBox: boolean,
   setShowCommentBox: Function,
   setAddingComment: Function
 }
 
 const AddCommentModal = ( {
-  createCommentMutation,
+  onCommentAdded,
   showCommentBox,
   setShowCommentBox,
   setAddingComment
@@ -57,23 +57,26 @@ const AddCommentModal = ( {
     <BottomSheetStandardBackdrop props={props} />
   );
 
-  const submitComment = async ( ) => {
-    setAddingComment( true );
+  const clearAndCloseCommentBox = useCallback( ( ) => {
     clearComment( );
     setShowCommentBox( false );
     Keyboard.dismiss();
+  }, [setShowCommentBox] );
+
+  const submitComment = async ( ) => {
+    setAddingComment( true );
     if ( comment.length > 0 ) {
-      createCommentMutation.mutate( comment );
+      onCommentAdded( comment );
     }
-    setAddingComment( false );
+    clearAndCloseCommentBox( );
   };
 
   const handleSheetChanges = useCallback( index => {
     // re-enable Add Comment button when backdrop is tapped to close modal
     if ( index === -1 ) {
-      setShowCommentBox( false );
+      clearAndCloseCommentBox( );
     }
-  }, [setShowCommentBox] );
+  }, [clearAndCloseCommentBox] );
 
   const renderTextInput = () => (
     <BottomSheetTextInput
@@ -116,7 +119,7 @@ const AddCommentModal = ( {
           {renderTextInput()}
           <Pressable
             className="absolute right-4 bottom-4"
-            onPress={() => submitComment( )}
+            onPress={( ) => submitComment( )}
           >
             <IconMaterial name="send" size={35} color={colors.inatGreen} />
           </Pressable>
