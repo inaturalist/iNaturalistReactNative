@@ -8,7 +8,7 @@ import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useContext, useEffect, useState
+  useContext, useEffect, useState
 } from "react";
 import {
   ActivityIndicator, FlatList
@@ -30,9 +30,9 @@ const options = {
 const PhotoGallery = ( ): Node => {
   const [isScrolling, setIsScrolling] = useState( false );
   const [photoOptions, setPhotoOptions] = useState( options );
+  const [rerenderList, setRerenderList] = useState( false );
   const [photoGallery, setPhotoGallery] = useState( {
-    All: {},
-    rerenderFlatList: false
+    All: []
   } );
 
   // Whether or not usePhotos can fetch photos now, e.g. if permissions have
@@ -47,6 +47,9 @@ const PhotoGallery = ( ): Node => {
     photos: galleryPhotos
   } = useCameraRollPhotos( photoOptions, isScrolling, canRequestPhotos );
 
+  // $FlowIgnore
+  const selectedAlbum = photoOptions.groupName || "All";
+
   const {
     createObservationFromGallery,
     galleryUris, setGalleryUris, allObsPhotoUris,
@@ -59,9 +62,11 @@ const PhotoGallery = ( ): Node => {
   const { params } = useRoute( );
   const skipGroupPhotos = params?.skipGroupPhotos;
 
-  const selectedPhotos = galleryPhotos.filter( photo => galleryUris?.includes( photo.image.uri ) );
+  const selectedPhotos = galleryPhotos.filter( photo => galleryUris?.includes(
+    photo?.image?.uri
+  ) );
   const selectedEvidenceToAdd = galleryPhotos.filter(
-    photo => evidenceToAdd?.includes( photo.image.uri )
+    photo => evidenceToAdd?.includes( photo?.image?.uri )
   );
 
   // If this component is being rendered we have either already asked for
@@ -74,18 +79,6 @@ const PhotoGallery = ( ): Node => {
       setCanRequestPhotos( true );
     }
   }, [canRequestPhotos] );
-
-  // $FlowIgnore
-  const selectedAlbum = photoOptions.groupName || "All";
-
-  const updatePhotoGallery = useCallback( rerenderFlatList => {
-    setPhotoGallery( {
-      ...photoGallery,
-      // there might be a better way to do this, but adding this key forces the FlatList
-      // to rerender anytime an image is unselected
-      rerenderFlatList
-    } );
-  }, [photoGallery] );
 
   useEffect( ( ) => {
     if ( galleryPhotos ) {
@@ -105,14 +98,14 @@ const PhotoGallery = ( ): Node => {
       setPhotoGallery( updatedPhotoGallery );
       setIsScrolling( false );
     }
-  }, [galleryPhotos, photoGallery, photoOptions, setPhotoGallery, selectedAlbum] );
+  }, [galleryPhotos, photoGallery, setPhotoGallery, selectedAlbum] );
 
   const navigation = useNavigation( );
 
   const selectPhoto = p => {
-    setGalleryUris( [...galleryUris, p.image.uri] );
+    setGalleryUris( [...galleryUris, p?.image?.uri] );
     if ( skipGroupPhotos ) {
-      setEvidenceToAdd( [...evidenceToAdd, p.image.uri] );
+      setEvidenceToAdd( [...evidenceToAdd, p?.image?.uri] );
     }
   };
 
@@ -132,10 +125,10 @@ const PhotoGallery = ( ): Node => {
   const handlePhotoSelection = ( item, selected ) => {
     if ( !selected ) {
       selectPhoto( item );
-      updatePhotoGallery( false );
+      setRerenderList( false );
     } else {
       unselectPhoto( item );
-      updatePhotoGallery( true );
+      setRerenderList( true );
     }
   };
 
@@ -227,6 +220,7 @@ const PhotoGallery = ( ): Node => {
         onEndReached={fetchMorePhotos}
         testID="PhotoGallery.list"
         ListEmptyComponent={renderEmptyList( )}
+        extraData={rerenderList}
       />
       { totalSelected > 0 && (
         <View className="h-16 mt-2 mx-4">
