@@ -184,7 +184,19 @@ jest.mock( "@gorhom/bottom-sheet", ( ) => ( {
 jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
   nativeInterface: jest.fn( ),
   CameraRoll: {
-    getPhotos: jest.fn( ),
-    getAlbums: jest.fn( )
+    getPhotos: jest.fn( ( ) => ( {
+      page_info: {
+        end_cursor: jest.fn( ),
+        has_next_page: false
+      },
+      edges: [
+        // This expexcts something like
+        // { node: photo }
+      ]
+    } ) ),
+    getAlbums: jest.fn( ( ) => ( {
+      // Expecting album titles as keys and photo counts as values
+      // "My Amazing album": 12
+    } ) )
   }
 } ) );

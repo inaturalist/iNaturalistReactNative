@@ -15,6 +15,7 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+// This tests both the PhotoGallery component *and* the ObsEditProvider
 test( "shows a selected checkmark when a photo is tapped", async ( ) => {
   const photo = factory( "DevicePhoto" );
   // Mock CameraRoll.getPhotos so it returns our test photo

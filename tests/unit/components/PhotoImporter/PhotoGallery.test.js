@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { fireEvent, render } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import { ObsEditContext } from "providers/contexts";
 import React from "react";
@@ -79,28 +79,3 @@ test( "renders photos from photo gallery", ( ) => {
 test.todo( "should not have accessibility errors" );
 
 test.todo( "navigates to GroupPhotos when photo is selected" );
-
-test( "shows a selected checkmark when a photo is tapped", async ( ) => {
-  const { getByTestId, update } = renderPhotoGallery( );
-
-  const { uri } = mockPhoto.image;
-
-  const useStateMock: any = ( useState: any ) => [useState, setStateMocked];
-  jest.spyOn( React, "useState" ).mockImplementation( useStateMock );
-
-  fireEvent.press( getByTestId( `PhotoGallery.${uri}` ) );
-  expect( obsEditValue.setGalleryUris ).toHaveBeenCalledTimes( 1 );
-  obsEditValue.galleryUris.push( uri );
-  expect( obsEditValue.galleryUris.length ).toBe( 1 );
-  expect( setStateMocked ).toHaveBeenCalledWith( [uri] );
-
-  update(
-    <NavigationContainer>
-      <ObsEditContext.Provider value={obsEditValue}>
-        <PhotoGallery />
-      </ObsEditContext.Provider>
-    </NavigationContainer>
-  );
-
-  expect( getByTestId( `PhotoGallery.selected.${uri}` ) ).toBeTruthy( );
-} );
