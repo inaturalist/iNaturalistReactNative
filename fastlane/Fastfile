@@ -317,13 +317,16 @@ lane :internal do
   upload_to_play_store(
     aab: aab_path,
     track: "internal",
-    release_status: "draft",
+    # I don't actually want it to be a draft for internal releases... but I
+    # seem to remember this being a requirement. I guess I'll see the next
+    # time around.
+    # release_status: "draft",
     version_name: last_tag
   )
 
   upload_to_testflight(
     ipa: get_ipa_path,
-    changelog: ( File.read( changelog_path ) rescue nil ),
+    changelog: File.read( changelog_path ),
     # https://github.com/fastlane/fastlane/issues/20756
     itc_provider: CredentialsManager::AppfileConfig.try_fetch_value( :itc_provider )
   )

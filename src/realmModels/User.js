@@ -12,7 +12,9 @@ class User extends Realm.Object {
     return user;
   }
 
-  static uri = user => ( user && user.icon_url ) && { uri: user.icon_url };
+  // getting user icon data from production instead of staging
+  static uri = user => ( user && user.icon_url )
+               && { uri: user.icon_url.replace( "staticdev", "static" ) };
 
   static userHandle = user => ( user && user.login ) && `@${user.login}`;
 

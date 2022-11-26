@@ -114,7 +114,7 @@ const fetchRemoteObservation = async (
     }
     return null;
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { throw: true } );
   }
 };
 

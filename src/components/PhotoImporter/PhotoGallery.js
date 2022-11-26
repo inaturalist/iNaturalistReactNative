@@ -5,7 +5,7 @@ import Button from "components/SharedComponents/Buttons/Button";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useContext, useEffect, useState
@@ -14,13 +14,10 @@ import {
   ActivityIndicator, FlatList
 } from "react-native";
 import { Snackbar } from "react-native-paper";
-import Observation from "realmModels/Observation";
 
 import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
 import PhotoGalleryHeader from "./PhotoGalleryHeader";
 import PhotoGalleryImage from "./PhotoGalleryImage";
-
-const { useRealm } = RealmContext;
 
 const MAX_PHOTOS_ALLOWED = 20;
 
@@ -37,7 +34,6 @@ const PhotoGallery = ( ): Node => {
     All: {},
     rerenderFlatList: false
   } );
-  const [selectedPhotos, setSelectedPhotos] = useState( [] );
 
   // Whether or not usePhotos can fetch photos now, e.g. if permissions have
   // been granted (Android), or if it's ok to request permissions (iOS). This
@@ -51,12 +47,21 @@ const PhotoGallery = ( ): Node => {
     photos: galleryPhotos
   } = useCameraRollPhotos( photoOptions, isScrolling, canRequestPhotos );
 
-  const { addPhotos, addObservations } = useContext( ObsEditContext );
-  const [photoUris, setPhotoUris] = useState( [] );
+  const {
+    createObservationFromGallery,
+    galleryUris, setGalleryUris, allObsPhotoUris,
+    addGalleryPhotosToCurrentObservation,
+    evidenceToAdd,
+    setEvidenceToAdd
+  } = useContext( ObsEditContext );
   const [showAlert, setShowAlert] = useState( false );
   const { params } = useRoute( );
-  const photos = params?.photos;
   const skipGroupPhotos = params?.skipGroupPhotos;
+
+  const selectedPhotos = galleryPhotos.filter( photo => galleryUris?.includes( photo.image.uri ) );
+  const selectedEvidenceToAdd = galleryPhotos.filter(
+    photo => evidenceToAdd?.includes( photo.image.uri )
+  );
 
   // If this component is being rendered we have either already asked for
   // permissions in Android via a PermissionGate parent component, or the
@@ -101,17 +106,7 @@ const PhotoGallery = ( ): Node => {
     }
   }, [galleryPhotos, photoGallery, photoOptions, setPhotoGallery, selectedAlbum] );
 
-  const totalSelected = selectedPhotos.length;
-
-  useEffect( ( ) => {
-    if ( photos?.length > 0 ) {
-      setPhotoUris( photos );
-    }
-  }, [photos] );
-
   const navigation = useNavigation( );
-
-  const realm = useRealm( );
 
   const updateAlbum = album => {
     const newOptions = {
@@ -126,18 +121,24 @@ const PhotoGallery = ( ): Node => {
     setPhotoOptions( newOptions );
   };
 
-  const getAllPhotos = ( ) => [...photoUris, ...selectedPhotos];
-
   const selectPhoto = p => {
-    const newSelection = selectedPhotos.concat( p ).sort( ( a, b ) => b.timestamp - a.timestamp );
-    setSelectedPhotos( newSelection );
+    setGalleryUris( [...galleryUris, p.image.uri] );
+    if ( skipGroupPhotos ) {
+      setEvidenceToAdd( [...evidenceToAdd, p.image.uri] );
+    }
   };
 
   const unselectPhoto = item => {
-    const newSelection = selectedPhotos;
-    const selectedIndex = selectedPhotos.findIndex( p => p.image.uri === item.image.uri );
-    newSelection.splice( selectedIndex, 1 );
-    setSelectedPhotos( newSelection );
+    const newGalleryUris = galleryUris;
+    const i = galleryUris?.findIndex( uri => uri === item.image.uri );
+    newGalleryUris.splice( i, 1 );
+    setGalleryUris( newGalleryUris );
+    if ( skipGroupPhotos ) {
+      const newEvidenceToAdd = evidenceToAdd;
+      const index = evidenceToAdd.findIndex( uri => uri === item.image.uri );
+      newEvidenceToAdd.splice( index, 1 );
+      setEvidenceToAdd( newEvidenceToAdd );
+    }
   };
 
   const handlePhotoSelection = ( item, selected ) => {
@@ -150,20 +151,17 @@ const PhotoGallery = ( ): Node => {
     }
   };
 
-  const checkSelected = item => {
-    const uri = item?.image?.uri;
-    const albumGroupName = selectedAlbum === "All" ? "All Photos" : selectedAlbum;
-    const selectedInCurrentAlbum = selectedPhotos.filter( p => p.group_name === albumGroupName );
-    return selectedInCurrentAlbum.some( p => p.image.uri === uri );
-  };
+  const checkSelected = uri => galleryUris?.find( u => u === uri );
+
+  const checkPreviouslySelected = uri => !evidenceToAdd?.includes( uri );
 
   const renderImage = ( { item } ) => {
     const uri = item?.image?.uri;
-    const isSelected = checkSelected( item );
+    const isSelected = checkSelected( uri );
+    const isDisabled = skipGroupPhotos && isSelected && checkPreviouslySelected( uri );
 
     const handleImagePress = ( ) => {
-      const allPhotos = getAllPhotos( );
-      if ( isSelected || allPhotos.length < MAX_PHOTOS_ALLOWED ) {
+      if ( isSelected || allObsPhotoUris.length < MAX_PHOTOS_ALLOWED ) {
         handlePhotoSelection( item, isSelected );
       } else {
         setShowAlert( true );
@@ -175,6 +173,7 @@ const PhotoGallery = ( ): Node => {
         uri={uri}
         handleImagePress={handleImagePress}
         isSelected={isSelected}
+        isDisabled={isDisabled}
       />
     );
   };
@@ -185,17 +184,18 @@ const PhotoGallery = ( ): Node => {
 
   const navToNextScreen = async ( ) => {
     if ( !selectedPhotos ) return;
+    const uris = selectedPhotos.map( galleryPhoto => galleryPhoto.image.uri );
+    setGalleryUris( uris );
     if ( skipGroupPhotos ) {
-      addPhotos( selectedPhotos.map( galleryPhoto => galleryPhoto.image.uri ) );
+      // add any newly selected photos
+      // to an existing observation after navigating from ObsEdit
+      addGalleryPhotosToCurrentObservation( selectedEvidenceToAdd );
       navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
       return;
     }
     if ( selectedPhotos.length === 1 ) {
-      const obs = selectedPhotos.map( photo => ( {
-        photos: [photo]
-      } ) );
-      const obsPhotos = await Observation.createMutipleObsFromGalleryPhotos( obs, realm );
-      addObservations( obsPhotos );
+      // create a new observation and skip group photos screen
+      createObservationFromGallery( selectedPhotos[0] );
       navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
       return;
     }
@@ -211,6 +211,8 @@ const PhotoGallery = ( ): Node => {
 
   const photosByAlbum = photoGallery[selectedAlbum];
 
+  const totalSelected = skipGroupPhotos ? evidenceToAdd.length : selectedPhotos.length;
+
   return (
     <ViewNoFooter>
       <PhotoGalleryHeader updateAlbum={updateAlbum} />
@@ -225,7 +227,7 @@ const PhotoGallery = ( ): Node => {
         testID="PhotoGallery.list"
         ListEmptyComponent={renderEmptyList( )}
       />
-      { selectedPhotos.length > 0 && (
+      { totalSelected > 0 && (
         <View className="h-16 mt-2 mx-4">
           <Button
             level="secondary"

@@ -3,7 +3,7 @@ import { Realm } from "@realm/react";
 import { createEvidence, createObservation } from "api/observations";
 import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
-import { createObservedOnStringForUpload, formatDateAndTime } from "sharedHelpers/dateAndTime";
+import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
 
 import Comment from "./Comment";
 import Identification from "./Identification";
@@ -12,6 +12,9 @@ import ObservationSound from "./ObservationSound";
 import Taxon from "./Taxon";
 import User from "./User";
 
+// noting that methods like .toJSON( ) are only accessible when the model
+// class is extended with Realm.Object per this issue:
+// https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
 class Observation extends Realm.Object {
   static FIELDS = {
     captive: true,
@@ -46,35 +49,11 @@ class Observation extends Realm.Object {
     };
   }
 
-  static async createObsWithPhotos( observationPhotos ) {
-    const observation = await Observation.new( );
-    observation.observationPhotos = observationPhotos;
-    return observation;
-  }
-
   static async createObsWithSounds( ) {
     const observation = await Observation.new( );
     const sound = await ObservationSound.new( );
     observation.observationSounds = [sound];
     return observation;
-  }
-
-  static async formatObsPhotos( photos, realm ) {
-    return Promise.all( photos.map( async photo => {
-      // photo.image?.uri is for gallery photos; photo is for normal camera
-      const uri = photo.image?.uri || photo;
-      return ObservationPhoto.new( uri, realm );
-    } ) );
-  }
-
-  static async createMutipleObsFromGalleryPhotos( obs, realm ) {
-    return Promise.all( obs.map( async ( { photos } ) => {
-      // take the observed_on_string time from the first photo in an observation
-      const observedOn = formatDateAndTime( photos[0].timestamp );
-      const obsPhotos = await Observation.formatObsPhotos( photos, realm );
-
-      return Observation.createObsWithPhotos( obsPhotos, observedOn );
-    } ) );
   }
 
   static mimicRealmMappedPropertiesSchema( obs ) {
@@ -189,8 +168,9 @@ class Observation extends Realm.Object {
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
 
     const obsToSave = {
-      // causes problems without toJSON when obs is a realm object
-      ...( obs.toJSON ? obs.toJSON( ) : obs ),
+      // just ...obs causes problems when obs is a realm object
+      // ...obs.toJSON( ),
+      ...obs,
       ...timestamps,
       taxon,
       observationPhotos,

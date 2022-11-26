@@ -1,12 +1,12 @@
 // @flow
 
 import {
-  BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
+import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { Text } from "components/styledComponents";
 import * as React from "react";
@@ -68,13 +68,7 @@ const AddID = ( { route }: Props ): React.Node => {
   const navigation = useNavigation( );
 
   const renderBackdrop = props => (
-    <BottomSheetBackdrop
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...props}
-      pressBehavior="close"
-      appearsOnIndex={0}
-      disappearsOnIndex={-1}
-    />
+    <BottomSheetStandardBackdrop props={props} />
   );
 
   const editComment = ( ) => {

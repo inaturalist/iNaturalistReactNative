@@ -57,12 +57,6 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-// https://github.com/gorhom/react-native-bottom-sheet/issues/932#issuecomment-1137645269
-jest.mock( "@gorhom/bottom-sheet", () => ( {
-  ...require( "@gorhom/bottom-sheet/mock" ),
-  __esModule: true
-} ) );
-
 jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
   default: ( ) => false,
   __esModule: true
