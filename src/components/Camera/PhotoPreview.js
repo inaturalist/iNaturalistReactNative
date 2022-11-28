@@ -5,18 +5,25 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 type Props = {
   photoUris: Array<string>,
   setPhotoUris: Function,
-  savingPhoto: boolean
+  savingPhoto: boolean,
+  evidenceToAdd: Array<string>,
+  setEvidenceToAdd: Function,
 }
 
-const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node => {
-  const { t } = useTranslation( );
+const PhotoPreview = ( {
+  photoUris,
+  setPhotoUris,
+  savingPhoto,
+  evidenceToAdd,
+  setEvidenceToAdd
+}: Props ): Node => {
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
@@ -56,6 +63,8 @@ const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node =
         photoUris={photoUris}
         setPhotoUris={setPhotoUris}
         hideDialog={hideDialog}
+        evidenceToAdd={evidenceToAdd}
+        setEvidenceToAdd={setEvidenceToAdd}
       />
       <MediaViewerModal
         mediaViewerVisible={mediaViewerVisible}

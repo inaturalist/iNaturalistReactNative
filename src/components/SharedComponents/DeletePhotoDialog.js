@@ -18,7 +18,9 @@ type Props = {
   photoUriToDelete: ?string,
   photoUris: Array<string>,
   setPhotoUris: Function,
-  hideDialog: Function
+  hideDialog: Function,
+  evidenceToAdd?: Array<string>,
+  setEvidenceToAdd?: Function
 }
 
 const DeletePhotoDialog = ( {
@@ -26,19 +28,33 @@ const DeletePhotoDialog = ( {
   photoUriToDelete,
   photoUris,
   setPhotoUris,
-  hideDialog
+  hideDialog,
+  evidenceToAdd,
+  setEvidenceToAdd
 }: Props ): Node => {
   const { t } = useTranslation( );
   const realm = useRealm( );
 
+  const removePhotoFromList = ( list, photo ) => {
+    const updatedPhotoList = list;
+    const photoIndex = list.findIndex( p => p === photo );
+    updatedPhotoList.splice( photoIndex, 1 );
+    return updatedPhotoList || list;
+  };
+
   const deletePhoto = async ( ) => {
     if ( !photoUriToDelete ) { return; }
-    const updatedPhotos = photoUris;
-    const photoIndex = photoUris.findIndex( p => p === photoUriToDelete );
-    updatedPhotos.splice( photoIndex, 1 );
+    const updatedPhotos = removePhotoFromList( photoUris, photoUriToDelete );
 
     // spreading the array forces DeletePhotoDialog to rerender on each photo deletion
     setPhotoUris( [...updatedPhotos] );
+
+    // when deleting photo from StandardCamera while adding new evidence, remember to clear
+    // the list of new evidence to add
+    if ( evidenceToAdd && evidenceToAdd.length > 0 && setEvidenceToAdd ) {
+      const updatedEvidence = removePhotoFromList( evidenceToAdd, photoUriToDelete );
+      setEvidenceToAdd( [...updatedEvidence] );
+    }
 
     await Photo.deletePhoto( realm, photoUriToDelete );
 
