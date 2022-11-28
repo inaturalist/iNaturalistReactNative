@@ -1,6 +1,6 @@
 // @flow
 
-import TranslatedText from "components/SharedComponents/TranslatedText";
+import { Text } from "components/styledComponents";
 import * as React from "react";
 import { Button as ButtonRNP } from "react-native-paper";
 
@@ -9,7 +9,6 @@ type ButtonProps = {
   disabled?: boolean,
   onPress: any,
   level?: string,
-  count?: number,
   testID?: string,
   loading?: boolean,
   style?: any,
@@ -49,7 +48,7 @@ const setStyles = ( {
 };
 
 const Button = ( {
-  text, onPress, disabled, testID, count, level, loading, style, className
+  text, onPress, disabled, testID, level, loading, style, className
 }: ButtonProps ): React.Node => {
   const { buttonClass } = setStyles( { disabled, level, className } );
 
@@ -62,11 +61,9 @@ const Button = ( {
       testID={testID}
       loading={loading}
     >
-      <TranslatedText
-        count={count}
-        className="text-lg text-white font-semibold"
-        text={text}
-      />
+      <Text className="text-lg text-white font-semibold">
+        {text}
+      </Text>
     </ButtonRNP>
   );
 };

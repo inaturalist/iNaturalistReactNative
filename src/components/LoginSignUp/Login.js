@@ -7,9 +7,9 @@ import {
   SafeAreaView,
   ScrollView
 } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Linking,
   Platform,
@@ -29,7 +29,6 @@ import {
 import Logout from "./Logout";
 
 const Login = ( ): Node => {
-  const { t } = useTranslation( );
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
   const [password, setPassword] = useState( "" );
@@ -120,7 +119,7 @@ const Login = ( ): Node => {
       {error && <Text className="text-red self-center mt-5">{error}</Text>}
       <Button
         level="primary"
-        text="Log-in"
+        text={t( "Log-in" )}
         onPress={login}
         style={viewStyles.button}
         disabled={!email || !password}

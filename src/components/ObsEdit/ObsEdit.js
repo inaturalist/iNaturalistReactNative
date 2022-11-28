@@ -7,13 +7,13 @@ import Button from "components/SharedComponents/Buttons/Button";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import ScrollNoFooter from "components/SharedComponents/ScrollNoFooter";
 import { Text, View } from "components/styledComponents";
+import { t } from "i18next";
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
   useContext, useEffect, useState
 } from "react";
-import { useTranslation } from "react-i18next";
 import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
 import Photo from "realmModels/Photo";
@@ -47,7 +47,6 @@ const ObsEdit = ( ): Node => {
 
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { t } = useTranslation( );
   const localObservation = useLocalObservation( params?.uuid );
 
   useEffect( ( ) => {
@@ -103,7 +102,7 @@ const ObsEdit = ( ): Node => {
         />
       </KebabMenu>
     </>
-  ), [deleteDialogVisible, t] );
+  ), [deleteDialogVisible] );
 
   useEffect( ( ) => {
     const renderHeaderTitle = ( ) => <ObsEditHeaderTitle />;
@@ -178,7 +177,7 @@ const ObsEdit = ( ): Node => {
           />
           <Button
             level="primary"
-            text="UPLOAD-OBSERVATION"
+            text={t( "UPLOAD-OBSERVATION" )}
             testID="ObsEdit.uploadButton"
             onPress={saveAndUploadObservation}
             disabled={!isLoggedIn}
