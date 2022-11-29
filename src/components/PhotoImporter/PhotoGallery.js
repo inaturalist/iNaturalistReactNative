@@ -171,13 +171,13 @@ const PhotoGallery = ( ): Node => {
       // add any newly selected photos
       // to an existing observation after navigating from ObsEdit
       addGalleryPhotosToCurrentObservation( selectedEvidenceToAdd );
-      navigation.navigate( "ObsEdit" );
+      navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
       return;
     }
     if ( selectedPhotos.length === 1 ) {
       // create a new observation and skip group photos screen
       createObservationFromGallery( selectedPhotos[0] );
-      navigation.navigate( "ObsEdit" );
+      navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
       return;
     }
     navigation.navigate( "GroupPhotos", { selectedPhotos } );

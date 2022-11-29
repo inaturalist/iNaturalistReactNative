@@ -53,6 +53,8 @@
     "react-native-config": "^1.4.5",
     "react-native-device-info": "^8.5.1",
     "react-native-dropdown-picker": "^5.3.0",
+    "react-native-exif": "^0.5.0",
+    "react-native-exif-reader": "github:inaturalist/react-native-exif-reader",
     "react-native-fs": "^2.19.0",
     "react-native-geocoder-reborn": "^0.9.0",
     "react-native-geolocation-service": "^5.3.0-beta.4",
@@ -85,7 +87,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
-    "@testing-library/react-native": "^9.0.0",
+    "@testing-library/react-native": "^10.0.0",
     "babel-jest": "^26.6.3",
     "babel-plugin-module-resolver": "^4.1.0",
     "eslint": "^7.32.0",

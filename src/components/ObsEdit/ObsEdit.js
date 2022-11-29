@@ -44,11 +44,14 @@ const ObsEdit = ( ): Node => {
   const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
     obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
   ) : [];
-
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { t } = useTranslation( );
   const localObservation = useLocalObservation( params?.uuid );
+  const isLoggedIn = useLoggedIn( );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
+  const [showAddEvidenceModal, setShowAddEvidenceModal] = useState( false );
 
   useEffect( ( ) => {
     // when opening an observation from ObsDetails, fetch the local
@@ -58,12 +61,6 @@ const ObsEdit = ( ): Node => {
       setObservations( [localObservation] );
     }
   }, [localObservation, setObservations, resetObsEditContext] );
-
-  const isLoggedIn = useLoggedIn( );
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
-
-  const [showAddEvidenceModal, setShowAddEvidenceModal] = useState( false );
 
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
