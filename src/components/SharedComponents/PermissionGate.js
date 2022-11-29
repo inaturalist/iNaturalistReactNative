@@ -11,9 +11,8 @@ import {
   Text,
   View
 } from "react-native";
-import { viewStyles } from "styles/permissionGate";
 import { request, RESULTS } from "react-native-permissions";
-
+import { viewStyles } from "styles/permissionGate";
 
 import ViewNoFooter from "./ViewNoFooter";
 

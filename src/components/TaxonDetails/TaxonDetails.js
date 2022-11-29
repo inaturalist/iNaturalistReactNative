@@ -2,15 +2,14 @@
 
 import { useRoute } from "@react-navigation/native";
 import fetchTaxon from "api/taxa";
-import CustomHeader from "components/SharedComponents/CustomHeader";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
 import { Pressable, Text, View } from "components/styledComponents";
 import _ from "lodash";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import {
-  ActivityIndicator, Linking, ScrollView, useWindowDimensions
+  ActivityIndicator, Linking, useWindowDimensions
 } from "react-native";
 import HTML from "react-native-render-html";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
@@ -93,17 +92,14 @@ const TaxonDetails = ( ): React.Node => {
   };
 
   return (
-    <ViewWithFooter>
-      <CustomHeader hideRightIcon />
-      <ScrollView testID={`TaxonDetails.${taxon?.id}`}>
-        <View className="bg-black">
-          {taxon && <PhotoScroll photos={_.compact( taxon.taxonPhotos?.map( tp => tp.photo ) )} />}
-        </View>
-        <View className="m-5">
-          {renderContent( )}
-        </View>
-      </ScrollView>
-    </ViewWithFooter>
+    <ScrollWithFooter testID={`TaxonDetails.${taxon?.id}`}>
+      <View className="bg-black">
+        {taxon && <PhotoScroll photos={_.compact( taxon.taxonPhotos?.map( tp => tp.photo ) )} />}
+      </View>
+      <View className="m-5">
+        {renderContent( )}
+      </View>
+    </ScrollWithFooter>
   );
 };
 

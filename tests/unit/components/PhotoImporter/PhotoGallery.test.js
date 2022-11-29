@@ -14,7 +14,9 @@ const mockPhoto = factory( "DevicePhoto" );
 
 jest.mock( "../../../../src/components/PhotoImporter/hooks/useCameraRollPhotos", ( ) => ( {
   __esModule: true,
-  default: ( ) => ( { photos: [mockPhoto] } )
+  default: ( ) => ( {
+    photos: [mockPhoto]
+  } )
 } ) );
 
 jest.mock( "../../../../src/components/PhotoImporter/hooks/usePhotoAlbums", ( ) => ( {
@@ -34,30 +36,28 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useNavigation: ( ) => ( {
       navigate: mockedNavigate
-    } )
-  };
-} );
-
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
+    } ),
     useRoute: ( ) => ( {
     } )
   };
 } );
 
-const fakeObs = {
+const setStateMocked = jest.fn( );
+
+const obsEditValue = {
   observations: [factory( "RemoteObservation", {
     latitude: 37.99,
     longitude: -142.88
   } )],
-  currentObservationIndex: 0
+  currentObservationIndex: 0,
+  allObsPhotoUris: [],
+  galleryUris: [],
+  setGalleryUris: setStateMocked
 };
 
 const renderPhotoGallery = ( ) => render(
   <NavigationContainer>
-    <ObsEditContext.Provider value={fakeObs}>
+    <ObsEditContext.Provider value={obsEditValue}>
       <PhotoGallery />
     </ObsEditContext.Provider>
   </NavigationContainer>
@@ -66,12 +66,12 @@ const renderPhotoGallery = ( ) => render(
 test( "renders photos from photo gallery", ( ) => {
   const { getByTestId } = renderPhotoGallery( );
 
-  // console.log( mockPhoto, "mock photo in test" );
+  const { uri } = mockPhoto.image;
 
   expect( getByTestId( "PhotoGallery.list" ) ).toBeTruthy( );
-  expect( getByTestId( `PhotoGallery.${mockPhoto.uri}` ) ).toBeTruthy( );
+  expect( getByTestId( `PhotoGallery.${uri}` ) ).toBeTruthy( );
   expect( getByTestId( "PhotoGallery.photo" ).props.source )
-    .toStrictEqual( { uri: mockPhoto.uri } );
+    .toStrictEqual( { uri } );
 } );
 
 // right now this is failing on react-native-modal, since there's a TouchableWithFeedback
