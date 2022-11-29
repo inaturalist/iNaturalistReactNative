@@ -16,13 +16,13 @@ import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
 import { formatISO } from "date-fns";
+import { t } from "i18next";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useEffect, useState
 } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Alert, LogBox
 } from "react-native";
@@ -55,7 +55,6 @@ LogBox.ignoreLogs( [
 const ObsDetails = ( ): Node => {
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
-  const { t } = useTranslation( );
   const [refetch, setRefetch] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const { params } = useRoute( );

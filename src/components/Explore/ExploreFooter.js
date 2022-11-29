@@ -3,6 +3,7 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import Button from "components/SharedComponents/Buttons/Button";
+import { t } from "i18next";
 import { ExploreContext } from "providers/contexts";
 import type { Node } from "react";
 import React from "react";
@@ -29,7 +30,7 @@ const ExploreFooter = ( ): Node => {
       <Button
         level="primary"
         onPress={applyFiltersAndNavigate}
-        text="Apply Filters"
+        text={t( "Apply Filters" )}
         testID="ExploreFilters.applyFilters"
       />
     </View>
