@@ -193,6 +193,8 @@ platform :android do
   end
 
   lane :clean do
+    sh "rm -rf ../android/build", step_name: "Deleting Android build folder"
+    sh "(cd ../android && ./gradlew clean)", step_name: "Cleaning Android build environment"
     Dir.glob( File.join( File.dirname( get_aab_path ), "*.aab" ) ).each do | aab_path |
       UI.message "Deleting #{aab_path}"
       File.delete aab_path
@@ -224,6 +226,7 @@ platform :ios do
   end
 
   lane :clean do
+    sh "rm -rf ios/build", step_name: "Deleting iOS build folder"
     Dir.glob( File.join( File.dirname( get_ipa_path ), "*.ipa" ) ).each do | ipa_path |
       UI.message "Deleting #{ipa_path}"
       File.delete ipa_path
@@ -239,6 +242,9 @@ end
 
 lane :clean do
   desc "Delete build artifacts"
+  sh "rm -rf $TMPDIR/react-*", step_name: "Deleting React Native cache"
+  sh "rm -rf $TMPDIR/metro-*", step_name: "Deleting Metro cache"
+  sh "watchman watch-del-all", step_name: "Deleting watchman cache"
   Fastlane::LaneManager.cruise_lane "ios", "clean"
   Fastlane::LaneManager.cruise_lane "android", "clean"
 end
@@ -317,10 +323,9 @@ lane :internal do
   upload_to_play_store(
     aab: aab_path,
     track: "internal",
-    # I don't actually want it to be a draft for internal releases... but I
-    # seem to remember this being a requirement. I guess I'll see the next
-    # time around.
-    # release_status: "draft",
+    # As long as the app is a draft, we can't automatically make non-draft
+    # releases with Fastlane
+    release_status: "draft",
     version_name: last_tag
   )
 
