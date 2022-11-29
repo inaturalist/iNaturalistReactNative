@@ -11,13 +11,15 @@ import {
   Text,
   View
 } from "react-native";
+import { request, RESULTS } from "react-native-permissions";
 import { viewStyles } from "styles/permissionGate";
 
 import ViewNoFooter from "./ViewNoFooter";
 
 type Props = {
   children: Node,
-  permission: string
+  permission: string,
+  isIOS?: boolean
 }
 
 // Prompts the user for an Android permission and renders children if granted.
@@ -25,11 +27,15 @@ type Props = {
 // to grant it if the user hasn't asked not to be bothered again. In the
 // future we might want to extend this to always show a custom view before
 // asking the user for a permission.
-const PermissionGate = ( { children, permission }: Props ): Node => {
+const PermissionGate = ( { children, permission, isIOS }: Props ): Node => {
   console.log( "PermissionGate" );
   const navigation = useNavigation( );
   const { t } = useTranslation();
-  const [result, setResult] = useState( Platform.OS === "android" ? null : "granted" );
+  const [result, setResult] = useState(
+    ( ( isIOS && Platform.OS === "ios" )
+    || ( !isIOS && Platform.OS === "android" ) )
+      ? null : "granted"
+  );
   useEffect( ( ) => {
     // kueda 20220422: for reasons I don't understand, the app crashes if this
     // effect refers to anything defined outside of this function, hence no
@@ -45,9 +51,26 @@ const PermissionGate = ( { children, permission }: Props ): Node => {
         setResult( "never_ask_again" );
       }
     };
-    // If this is Android and we haven't even checked the permissions, do it now
+
+    const requestiOSPermissions = async () => {
+      const r = await request( permission );
+      console.log( "iOS permission", permission, r );
+
+      if ( r === RESULTS.GRANTED ) {
+        setResult( "granted" );
+      } else if ( r === RESULTS.DENIED ) {
+        setResult( "denied" );
+      } else {
+        setResult( "never_ask_again" );
+      }
+    };
+
     if ( result === null ) {
-      requestAndroidPermissions( );
+      if ( Platform.OS === "android" ) {
+        requestAndroidPermissions();
+      } else {
+        requestiOSPermissions();
+      }
     }
 
     // If this component has already been rendered but was just returned to in

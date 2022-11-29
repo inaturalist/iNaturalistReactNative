@@ -17,6 +17,8 @@ import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import Mortal from "components/SharedComponents/Mortal";
+import { t } from "i18next";
+import { hideHeader, showHeader } from "navigation/navigationOptions";
 import ObsEditProvider from "providers/ObsEditProvider";
 import RealmProvider from "providers/RealmProvider";
 import * as React from "react";
@@ -30,10 +32,10 @@ import IdentifyStackNavigation from "./identifyStackNavigation";
 import MainStackNavigation from "./mainStackNavigation";
 import ProjectsStackNavigation from "./projectsStackNavigation";
 
-// this removes the default hamburger menu from header
-const screenOptions = { headerLeft: ( ) => <View /> };
-const hideHeader = {
-  headerShown: false
+const drawerOptions = {
+  ...showHeader,
+  // this removes the default hamburger menu from header
+  headerLeft: ( ) => <View />
 };
 
 const queryClient = new QueryClient( {
@@ -109,7 +111,7 @@ const App = ( ): React.Node => {
               <NavigationContainer>
                 <ObsEditProvider>
                   <Drawer.Navigator
-                    screenOptions={screenOptions}
+                    screenOptions={drawerOptions}
                     name="Drawer"
                     drawerContent={drawerRenderer}
                   >
@@ -118,7 +120,11 @@ const App = ( ): React.Node => {
                       component={MainStackNavigation}
                       options={hideHeader}
                     />
-                    <Drawer.Screen name="search" component={Search} />
+                    <Drawer.Screen
+                      name="search"
+                      component={Search}
+                      options={{ headerTitle: t( "Search" ) }}
+                    />
                     <Drawer.Screen
                       name="identify"
                       component={IdentifyStackNavigation}
@@ -129,10 +135,15 @@ const App = ( ): React.Node => {
                       component={ProjectsStackNavigation}
                       options={hideHeader}
                     />
-                    <Drawer.Screen name="settings" component={Settings} options={hideHeader} />
+                    <Drawer.Screen
+                      name="settings"
+                      component={Settings}
+                      options={{ headerTitle: t( "Settings" ) }}
+                    />
                     <Drawer.Screen
                       name="about"
                       component={About}
+                      options={{ headerTitle: t( "About-iNaturalist" ) }}
                     />
                     <Drawer.Screen name="help" component={PlaceholderComponent} />
                     <Drawer.Screen name="login" component={MortalLogin} options={hideHeader} />

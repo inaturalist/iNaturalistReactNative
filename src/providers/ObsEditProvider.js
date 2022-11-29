@@ -25,6 +25,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [cameraPreviewUris, setCameraPreviewUris] = useState( [] );
   const [galleryUris, setGalleryUris] = useState( [] );
   const [evidenceToAdd, setEvidenceToAdd] = useState( [] );
+  const [album, setAlbum] = useState( null );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -229,7 +230,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       resetObsEditContext,
       saveObservation,
       saveAndUploadObservation,
-      deleteCurrentObservation
+      deleteCurrentObservation,
+      album,
+      setAlbum
     };
   }, [
     currentObservation,
@@ -248,7 +251,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     resetObsEditContext,
     apiToken,
     navigation,
-    realm
+    realm,
+    album,
+    setAlbum
   ] );
 
   return (

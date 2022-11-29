@@ -1,15 +1,14 @@
 // @flow
 
+import { Image } from "components/styledComponents";
 import * as React from "react";
-import { Image } from "react-native";
-import { imageStyles } from "styles/obsDetails/obsDetails";
 
 type Props = {
   uri: Object
 }
 
 const UserIcon = ( { uri }: Props ): React.Node => (
-  <Image source={uri} style={imageStyles.squareImage} />
+  <Image source={uri} className="w-12 h-12 rounded-xl mr-3" />
 );
 
 export default UserIcon;
