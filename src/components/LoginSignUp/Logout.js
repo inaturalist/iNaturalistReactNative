@@ -11,7 +11,6 @@ import React, { useEffect, useState } from "react";
 import {
   Dialog, Paragraph, Portal, Text
 } from "react-native-paper";
-import viewStyles from "styles/login/login";
 
 import {
   getUsername,
@@ -82,7 +81,7 @@ const Logout = ( ): Node => {
         <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
         <Button
           level="primary"
-          style={viewStyles.button}
+          className="mt-5"
           onPress={showDialog}
           testID="Login.signOutButton"
           text={t( "Sign-out" )}
