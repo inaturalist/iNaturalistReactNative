@@ -56,7 +56,6 @@ const ALLOWED_TAGS = ( `
 
 const ALLOWED_ATTRIBUTES_NAMES = (
   "href src width height alt cite title class name abbr value align target rel"
-  // + "xml:lang style controls preload"
 ).split( " " );
 
 const ALLOWED_ATTRIBUTES = { a: ["href"] };
@@ -75,7 +74,8 @@ const LINKIFY_OPTIONS = {
   ignoreTags: ["a", "code", "pre"]
 };
 
-// html table props, can use the table plugin to customize the table in the future
+// html table props to customize the table in the future
+// https://github.com/native-html/plugins/tree/master/packages/table-plugin#readme
 const tableRenderer = { table: TableRenderer };
 const customHTMLElementModel = {
   table: tableModel
@@ -123,6 +123,9 @@ const UserText = ( {
         baseStyle={htmlStyle}
         contentWidth={width}
         source={{ html }}
+        // props for custom table styling
+        // https://meliorence.github.io/react-native-render-html/docs/faq#arent-there-better-renderers-for-tables
+        // https://www.npmjs.com/package/@native-html/table-plugin?activeTab=readme
         WebView={WebView}
         renderers={tableRenderer}
         customHTMLElementModels={customHTMLElementModel}
