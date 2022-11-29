@@ -14,7 +14,6 @@
 		7EBBE0515B6D88FD724A5C47 /* libPods-iNaturalistReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD42FAECED8C66268DDB37F /* libPods-iNaturalistReactNative.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		829672AB5DD3412FB120DE40 /* Whitney-BookItalic-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = B5359D98B3384738A8ED6C74 /* Whitney-BookItalic-Pro.otf */; };
-		A0B578BB32D8EC1725AC85D2 /* libPods-iNaturalistReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC1494F651442DA707C5CB28 /* libPods-iNaturalistReactNative.a */; };
 		A252B2AEA64E47C9AC1D20E8 /* Whitney-Light-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = BA9D41ECEBFA4C38B74009B3 /* Whitney-Light-Pro.otf */; };
 		B5241D089ADB4290B5566898 /* Whitney-Semibold-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6C5CABEB9CB44B5ABF940A8 /* Whitney-Semibold-Pro.otf */; };
 		BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */; };

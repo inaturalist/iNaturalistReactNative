@@ -180,3 +180,7 @@ jest.mock( "@gorhom/bottom-sheet", ( ) => ( {
   // eslint-disable-next-line react/jsx-no-useless-fragment
   BottomSheetTextInput: ( ) => <></>
 } ) );
+
+jest.mock( "react-native-exif-reader", ( ) => ( {
+  readExif: jest.fn( )
+} ) );
