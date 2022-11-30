@@ -285,11 +285,8 @@ class Observation extends Realm.Object {
     return unsyncedObs.length > 0;
   }
 
-  static wasPreviouslySyncedObservation = ( realm, obs ) => {
-    const previouslySyncedFilter = "_synced_at != null && _synced_at <= _updated_at";
-
-    const observationList = realm?.objects( "Observation" );
-    return observationList.filtered( `${previouslySyncedFilter} && uuid == "${obs.uuid}"` );
+  wasSynced( ) {
+    return this._synced_at !== null;
   }
 
   static updateLocalObservationsFromRemote = ( realm, results ) => {
@@ -342,10 +339,25 @@ class Observation extends Realm.Object {
     options: Object
   ): Promise<any> => {
     let response;
-    if ( evidence.length === 0 ) { return; }
-    for ( let i = 0; i < evidence.length; i += 1 ) {
-      const currentEvidence = evidence[i];
+
+    // only try to upload evidence which is not yet on the server
+    const unsyncedEvidence = evidence.filter( item => !item.wasSynced( ) );
+
+    for ( let i = 0; i < unsyncedEvidence.length; i += 1 ) {
+      const currentEvidence = unsyncedEvidence[i].toJSON( );
       const evidenceUUID = currentEvidence.uuid;
+
+      // Remove all null values, b/c the API doesn't seem to like them
+      const newPhoto = {};
+      const photo = currentEvidence?.photo;
+      Object.keys( photo ).forEach( k => {
+        if ( photo[k] !== null ) {
+          newPhoto[k] = photo[k];
+        }
+      } );
+
+      currentEvidence.photo = newPhoto;
+
       const params = apiSchemaMapper( observationId, currentEvidence );
       response = Observation.uploadToServer(
         evidenceUUID,
@@ -380,7 +392,7 @@ class Observation extends Realm.Object {
 
     let response;
 
-    const wasPreviouslySynced = Observation.wasPreviouslySyncedObservation( realm, obs );
+    const wasPreviouslySynced = obs.wasSynced( );
 
     if ( wasPreviouslySynced ) {
       response = await updateObservation( {
@@ -396,27 +408,24 @@ class Observation extends Realm.Object {
     await Observation.markRecordUploaded( obs.uuid, "Observation", response, realm );
     const { id } = response.results[0];
 
-    // skip updating evidence for already synced observations
-    // since these .update API calls aren't yet available in v2
-
-    if ( obs?.observationPhotos?.length > 0 && !wasPreviouslySynced ) {
+    if ( obs?.observationPhotos?.length > 0 ) {
       return Observation.uploadEvidence(
         obs.observationPhotos,
         "ObservationPhoto",
         ObservationPhoto.mapPhotoForUpload,
         id,
-        wasPreviouslySynced ? inatjs.observation_photos.update : inatjs.observation_photos.create,
+        inatjs.observation_photos.create,
         realm,
         options
       );
     }
-    if ( obs?.observationSounds?.length > 0 && !wasPreviouslySynced ) {
+    if ( obs?.observationSounds?.length > 0 ) {
       return Observation.uploadEvidence(
         obs.observationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForUpload,
         id,
-        wasPreviouslySynced ? inatjs.observation_sounds.update : inatjs.observation_sounds.create,
+        inatjs.observation_sounds.create,
         realm,
         options
       );
