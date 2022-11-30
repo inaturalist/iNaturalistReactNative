@@ -51,7 +51,6 @@ describe( "Sanitization", () => {
       <UserText text={testText} />
     );
 
-    expect( queryByText( testText ) ).toBeTruthy();
     expect( queryByText( testText ) ).toHaveProperty( "props.accessibilityRole", "link" );
   } );
 
@@ -103,7 +102,6 @@ describe( "Basic Rendering", () => {
     );
 
     expect( queryByText( testText ) ).toBeFalsy();
-    expect( queryByText( "This is Heading 1" ) ).toBeTruthy();
     expect( queryByText( "This is Heading 1" ) )
       .toHaveProperty( "props.style.0.fontWeight", "bold" );
   } );
@@ -115,8 +113,6 @@ describe( "Basic Rendering", () => {
     );
 
     expect( queryByText( testText ) ).toBeFalsy();
-    expect( queryByText( "Welcome to" ) ).toBeTruthy();
-    expect( queryByText( "iNaturalist" ) ).toBeTruthy();
     expect( queryByText( "Welcome to" ) ).not.toHaveProperty( "props.style.0.fontWeight", "bold" );
     expect( queryByText( "iNaturalist" ) ).toHaveProperty( "props.style.0.fontWeight", "bold" );
   } );

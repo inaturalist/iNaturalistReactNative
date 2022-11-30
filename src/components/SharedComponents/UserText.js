@@ -1,10 +1,7 @@
-import TableRenderer, { tableModel } from "@native-html/table-plugin";
 import linkifyHtml from "linkify-html";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
-import {
-  ScrollView, useWindowDimensions
-} from "react-native";
+import { useWindowDimensions } from "react-native";
 import HTML from "react-native-render-html";
 import WebView from "react-native-webview";
 import sanitizeHtml from "sanitize-html";
@@ -70,15 +67,8 @@ const SANITIZE_HTML_CONFIG = {
 
 const LINKIFY_OPTIONS = {
   className: null,
-  attributes: { rel: "nofollow" },
+  attributes: { rel: "nofollow noopener" },
   ignoreTags: ["a", "code", "pre"]
-};
-
-// html table props to customize the table in the future
-// https://github.com/native-html/plugins/tree/master/packages/table-plugin#readme
-const tableRenderer = { table: TableRenderer };
-const customHTMLElementModel = {
-  table: tableModel
 };
 
 function hyperlinkMentions( text ) {
@@ -118,19 +108,12 @@ const UserText = ( {
   html = linkifyHtml( html, LINKIFY_OPTIONS );
 
   return (
-    <ScrollView>
-      <HTML
-        baseStyle={htmlStyle}
-        contentWidth={width}
-        source={{ html }}
-        // props for custom table styling
-        // https://meliorence.github.io/react-native-render-html/docs/faq#arent-there-better-renderers-for-tables
-        // https://www.npmjs.com/package/@native-html/table-plugin?activeTab=readme
-        WebView={WebView}
-        renderers={tableRenderer}
-        customHTMLElementModels={customHTMLElementModel}
-      />
-    </ScrollView>
+    <HTML
+      baseStyle={htmlStyle}
+      contentWidth={width}
+      source={{ html }}
+      WebView={WebView}
+    />
   );
 };
 
