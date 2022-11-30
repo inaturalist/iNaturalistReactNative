@@ -5,6 +5,7 @@ import { deleteComments } from "api/comments";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import UserIcon from "components/SharedComponents/UserIcon";
+import UserText from "components/SharedComponents/UserText";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
@@ -13,9 +14,7 @@ import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useWindowDimensions } from "react-native";
 import { Menu } from "react-native-paper";
-import HTML from "react-native-render-html";
 import Comment from "realmModels/Comment";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
@@ -44,7 +43,6 @@ const ActivityItem = ( {
 
   const realm = useRealm( );
   const queryClient = useQueryClient( );
-  const { width } = useWindowDimensions( );
 
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {
@@ -137,11 +135,7 @@ const ActivityItem = ( {
       )}
       { !_.isEmpty( item?.body ) && (
         <View className="flex-row my-3 ml-3">
-          <HTML
-            contentWidth={width}
-            baseStyle={textStyles.activityItemBody}
-            source={{ html: item.body }}
-          />
+          <UserText baseStyle={textStyles.activityItemBody} text={item.body} />
         </View>
       )}
     </View>

@@ -36,6 +36,7 @@ const IdentificationSection = ( ): Node => {
       </View>
     );
   }
+
   return (
     <Button
       level="primary"

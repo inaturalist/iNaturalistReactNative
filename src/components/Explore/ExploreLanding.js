@@ -2,13 +2,12 @@
 
 import { useNavigation } from "@react-navigation/native";
 import Button from "components/SharedComponents/Buttons/Button";
-import TranslatedText from "components/SharedComponents/TranslatedText";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
-// import DropdownPicker from "./DropdownPicker";
+import { Text, View } from "components/styledComponents";
+import { t } from "i18next";
 import { ExploreContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { View } from "react-native";
 import { textStyles, viewStyles } from "styles/explore/explore";
 
 import FiltersIcon from "./FiltersIcon";
@@ -30,13 +29,15 @@ const Explore = ( ): Node => {
 
   return (
     <ViewWithFooter>
-      <TranslatedText style={textStyles.explanation} text="Visually-search-iNaturalist-data" />
+      <Text style={textStyles.explanation}>
+        {t( "Visually-search-iNaturalist-data" )}
+      </Text>
       <FiltersIcon />
       <TaxonLocationSearch />
       <View style={viewStyles.positionBottom}>
         <Button
           level="primary"
-          text="Explore"
+          text={t( "Explore" )}
           onPress={navToExplore}
           // eslint-disable-next-line react-native/no-inline-styles
           style={viewStyles.button}

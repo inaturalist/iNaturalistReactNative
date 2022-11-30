@@ -102,7 +102,7 @@ const UserProfile = ( ): React.Node => {
           <View className="w-1/2">
             <Button
               level="primary"
-              text="Follow"
+              text={t( "Follow" )}
               onPress={followUser}
               testID="UserProfile.followButton"
             />
@@ -110,7 +110,7 @@ const UserProfile = ( ): React.Node => {
           <View className="w-1/2">
             <Button
               level="primary"
-              text="Messages"
+              text={t( "Messages" )}
               onPress={( ) => console.log( "open messages" )}
               testID="UserProfile.messagesButton"
             />
