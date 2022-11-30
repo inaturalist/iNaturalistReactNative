@@ -4,10 +4,10 @@ import { useNavigation } from "@react-navigation/native";
 import Button from "components/SharedComponents/Buttons/Button";
 import { Text, View } from "components/styledComponents";
 import { iconicTaxaIds, iconicTaxaNames } from "dictionaries/iconicTaxaIds";
+import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { useTranslation } from "react-i18next";
 import { FlatList } from "react-native";
 import { Avatar, useTheme } from "react-native-paper";
 import { textStyles, viewStyles } from "styles/obsEdit/obsEdit";
@@ -18,7 +18,6 @@ const IdentificationSection = ( ): Node => {
     updateTaxon
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
-  const { t } = useTranslation( );
   const { colors } = useTheme( );
 
   const identification = currentObservation.taxon;
@@ -65,7 +64,7 @@ const IdentificationSection = ( ): Node => {
         <Button
           level="primary"
           onPress={navToAddID}
-          text="Add-an-Identification"
+          text={t( "Add-an-Identification" )}
           style={viewStyles.button}
           testID="ObsEdit.Suggestions"
         />

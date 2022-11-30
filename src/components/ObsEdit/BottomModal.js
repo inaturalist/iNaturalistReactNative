@@ -3,6 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import PlaceholderText from "components/PlaceholderText";
 import Button from "components/SharedComponents/Buttons/Button";
+import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
@@ -34,15 +35,14 @@ const BottomModal = ( ): Node => {
         <View style={viewStyles.saveButton}>
           <Button
             level="primary"
-            text="save"
+            text={t( "save" )}
             testID="ObsEdit.saveButton"
             onPress={saveObsAndNavigate}
           />
         </View>
         <Button
           level="primary"
-          text="DELETE-X-OBSERVATIONS"
-          count={observations.length}
+          text={t( "DELETE-X-OBSERVATIONS", { count: observations.length } )}
           onPress={deleteObsAndNavigate}
           testID="ObsEdit.exitNavigation"
         />

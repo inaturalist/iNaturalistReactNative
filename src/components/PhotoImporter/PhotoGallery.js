@@ -226,8 +226,7 @@ const PhotoGallery = ( ): Node => {
         <View className="h-16 mt-2 mx-4">
           <Button
             level="secondary"
-            text="Import-X-photos"
-            count={totalSelected || 0}
+            text={t( "Import-X-photos", { count: totalSelected || 0 } )}
             onPress={navToNextScreen}
             testID="PhotoGallery.createObsButton"
           />

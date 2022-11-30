@@ -6,13 +6,13 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import Button from "components/SharedComponents/Buttons/Button";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import { Text, View } from "components/styledComponents";
+import { t } from "i18next";
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useContext, useEffect, useRef,
   useState
 } from "react";
-import { useTranslation } from "react-i18next";
 import { BackHandler } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Menu } from "react-native-paper";
@@ -47,7 +47,6 @@ const ObsEdit = ( ): Node => {
   ) : [];
   const navigation = useNavigation( );
   const { params } = useRoute( );
-  const { t } = useTranslation( );
   const localObservation = useLocalObservation( params?.uuid );
   const isLoggedIn = useLoggedIn( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -106,7 +105,7 @@ const ObsEdit = ( ): Node => {
         />
       </KebabMenu>
     </>
-  ), [deleteDialogVisible, t] );
+  ), [deleteDialogVisible] );
 
   useEffect( ( ) => {
     const renderHeaderTitle = ( ) => <ObsEditHeaderTitle />;
@@ -181,7 +180,7 @@ const ObsEdit = ( ): Node => {
           />
           <Button
             level="primary"
-            text="UPLOAD-OBSERVATION"
+            text={t( "UPLOAD-OBSERVATION" )}
             testID="ObsEdit.uploadButton"
             onPress={saveAndUploadObservation}
             disabled={!isLoggedIn}

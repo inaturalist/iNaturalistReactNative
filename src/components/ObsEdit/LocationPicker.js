@@ -4,6 +4,7 @@ import Button from "components/SharedComponents/Buttons/Button";
 import InputField from "components/SharedComponents/InputField";
 import Map from "components/SharedComponents/Map";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
+import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
@@ -65,7 +66,7 @@ const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node 
       <View style={viewStyles.confirmButtonFooter}>
         <Button
           level="primary"
-          text="confirm location"
+          text={t( "confirm location" )}
           onPress={updateLocationAndClose}
           testID="LocationPicker.confirmButton"
         />
