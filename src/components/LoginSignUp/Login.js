@@ -77,8 +77,6 @@ const Login = ( ): Node => {
   };
 
   const scrollToInput = node => {
-    // Add a 'scroll' ref to your ScrollView
-    console.log( keyboardScrollRef?.current?.scrollToFocusedInput, "current ref", node );
     keyboardScrollRef?.current?.scrollToFocusedInput( node );
   };
 
