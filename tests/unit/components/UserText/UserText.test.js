@@ -1,5 +1,6 @@
-import { render } from "@testing-library/react-native";
+import { getDefaultNormalizer, render } from "@testing-library/react-native";
 import UserText from "components/SharedComponents/UserText";
+import { trim } from "lodash";
 import React from "react";
 
 describe( "Sanitization", () => {
@@ -79,8 +80,14 @@ describe( "Sanitization", () => {
       <UserText text={testText} />
     );
 
-    expect( queryByText( "This is a single line with a lloooooot of whitespace" ) ).toBeTruthy();
-    expect( queryByText( testText ) ).toBeFalsy();
+    // By default, the ByText queries will strip the text used to find
+    // elements, so since we want to test that UserText is performing that
+    // stripping, we need to tell the query methods not to do that.
+    // https://callstack.github.io/react-native-testing-library/docs/api-queries/#normalization
+    const normalizer = getDefaultNormalizer( { trim: false } );
+
+    expect( queryByText( trim( testText ), { normalizer } ) ).toBeTruthy();
+    expect( queryByText( testText, { normalizer } ) ).toBeFalsy();
   } );
 } );
 

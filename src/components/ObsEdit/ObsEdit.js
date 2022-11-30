@@ -4,6 +4,7 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import Button from "components/SharedComponents/Buttons/Button";
+import KebabMenu from "components/SharedComponents/KebabMenu";
 import ScrollNoFooter from "components/SharedComponents/ScrollNoFooter";
 import { Text, View } from "components/styledComponents";
 import { ObsEditContext, RealmContext } from "providers/contexts";
@@ -14,20 +15,23 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler } from "react-native";
+import { Menu } from "react-native-paper";
 import Photo from "realmModels/Photo";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import useLoggedIn from "sharedHooks/useLoggedIn";
 import { viewStyles } from "styles/obsEdit/obsEdit";
 
 import AddEvidenceModal from "./AddEvidenceModal";
+import DeleteObservationDialog from "./DeleteObservationDialog";
 import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
-import ObsEditHeader from "./ObsEditHeader";
+import ObsEditHeaderTitle from "./ObsEditHeaderTitle";
 import OtherDataSection from "./OtherDataSection";
 
 const { useRealm } = RealmContext;
 
 const ObsEdit = ( ): Node => {
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const {
     currentObservation,
     observations,
@@ -40,11 +44,14 @@ const ObsEdit = ( ): Node => {
   const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
     obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
   ) : [];
-
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { t } = useTranslation( );
   const localObservation = useLocalObservation( params?.uuid );
+  const isLoggedIn = useLoggedIn( );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
+  const [showAddEvidenceModal, setShowAddEvidenceModal] = useState( false );
 
   useEffect( ( ) => {
     // when opening an observation from ObsDetails, fetch the local
@@ -54,12 +61,6 @@ const ObsEdit = ( ): Node => {
       setObservations( [localObservation] );
     }
   }, [localObservation, setObservations, resetObsEditContext] );
-
-  const isLoggedIn = useLoggedIn( );
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
-
-  const [showAddEvidenceModal, setShowAddEvidenceModal] = useState( false );
 
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
@@ -83,6 +84,32 @@ const ObsEdit = ( ): Node => {
       return ( ) => BackHandler.removeEventListener( "hardwareBackPress", onBackPress );
     }, [handleBackButtonPress] )
   );
+
+  const showDialog = ( ) => setDeleteDialogVisible( true );
+  const hideDialog = ( ) => setDeleteDialogVisible( false );
+  const renderKebabMenu = useCallback( ( ) => (
+    <>
+      <DeleteObservationDialog
+        deleteDialogVisible={deleteDialogVisible}
+        hideDialog={hideDialog}
+      />
+      <KebabMenu>
+        <Menu.Item
+          onPress={showDialog}
+          title={t( "Delete" )}
+        />
+      </KebabMenu>
+    </>
+  ), [deleteDialogVisible, t] );
+
+  useEffect( ( ) => {
+    const renderHeaderTitle = ( ) => <ObsEditHeaderTitle />;
+
+    navigation.setOptions( {
+      headerTitle: renderHeaderTitle,
+      headerRight: renderKebabMenu
+    } );
+  }, [observations, navigation, renderKebabMenu] );
 
   const realm = useRealm( );
 
@@ -128,7 +155,6 @@ const ObsEdit = ( ): Node => {
         />
       </MediaViewerModal>
       <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
-        <ObsEditHeader handleBackButtonPress={handleBackButtonPress} />
         <Text className="text-2xl ml-4">{t( "Evidence" )}</Text>
         <EvidenceSection
           handleSelection={handleSelection}

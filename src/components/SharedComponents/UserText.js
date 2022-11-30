@@ -1,4 +1,5 @@
 import linkifyHtml from "linkify-html";
+import { trim } from "lodash";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
 import { useWindowDimensions } from "react-native";
@@ -84,7 +85,7 @@ const UserText = ( {
   text, htmlStyle
 } : Props ): React.Node => {
   const { width } = useWindowDimensions( );
-  let html = text;
+  let html = trim( text );
 
   // replace ampersands in URL params with entities so they don't get
   // interpretted by safeHtml

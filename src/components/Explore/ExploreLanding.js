@@ -30,7 +30,6 @@ const Explore = ( ): Node => {
 
   return (
     <ViewWithFooter>
-      <TranslatedText text="Explore" />
       <TranslatedText style={textStyles.explanation} text="Visually-search-iNaturalist-data" />
       <FiltersIcon />
       <TaxonLocationSearch />
