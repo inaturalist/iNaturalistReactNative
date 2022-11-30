@@ -65,6 +65,7 @@
     "react-native-image-pan-zoom": "^2.1.12",
     "react-native-image-picker": "^4.7.3",
     "react-native-jwt-io": "^1.0.3",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-localize": "^2.2.1",
     "react-native-maps": "^0.31.1",
     "react-native-modal": "^13.0.1",
