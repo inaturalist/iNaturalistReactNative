@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import Button from "components/SharedComponents/Buttons/Button";
-import { View } from "components/styledComponents";
+import { Pressable, SafeAreaView, View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import {
   Dialog, Paragraph, Portal, Text
 } from "react-native-paper";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import {
   getUsername,
@@ -56,6 +57,15 @@ const Logout = ( ): Node => {
     } );
   };
 
+  const renderBackButton = ( ) => (
+    <Pressable
+      onPress={( ) => navigation.goBack( )}
+      className="absolute top-8 right-8"
+    >
+      <IconMaterial name="close" size={35} />
+    </Pressable>
+  );
+
   return (
     <>
       <Portal>
@@ -77,16 +87,19 @@ const Logout = ( ): Node => {
       {/* TODO: figure out how to account for safe area views with h-screen,
       maybe something along these lines: https://github.com/mvllow/tailwindcss-safe-area/blob/70dbef61557b07e26b07a6167e13a377ba3c4625/index.js
       */}
-      <View className="self-center justify-center h-screen">
-        <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
-        <Button
-          level="primary"
-          className="mt-5"
-          onPress={showDialog}
-          testID="Login.signOutButton"
-          text={t( "Sign-out" )}
-        />
-      </View>
+      <SafeAreaView>
+        {renderBackButton( )}
+        <View className="self-center justify-center h-screen">
+          <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
+          <Button
+            level="primary"
+            className="mt-5"
+            onPress={showDialog}
+            testID="Login.signOutButton"
+            text={t( "Sign-out" )}
+          />
+        </View>
+      </SafeAreaView>
     </>
   );
 };

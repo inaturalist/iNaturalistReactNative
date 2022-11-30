@@ -134,21 +134,28 @@ const Login = ( ): Node => {
     </>
   );
 
+  const renderBackButton = ( ) => (
+    <Pressable
+      onPress={( ) => navigation.goBack( )}
+      className="absolute top-0 right-0"
+    >
+      <IconMaterial name="close" size={35} />
+    </Pressable>
+  );
+
   return (
-    <SafeAreaView className="m-8 flex-1">
-      <KeyboardAwareScrollView
-        ref={keyboardScrollRef}
-        enableOnAndroid
-        extraHeight={290}
-      >
-        <Pressable
-          onPress={( ) => navigation.goBack( )}
-          className="absolute top-0 right-0"
+    <SafeAreaView className="flex-1">
+      {loggedIn ? <Logout /> : (
+        <KeyboardAwareScrollView
+          ref={keyboardScrollRef}
+          enableOnAndroid
+          extraHeight={290}
+          className="p-8"
         >
-          <IconMaterial name="close" size={35} />
-        </Pressable>
-        {loggedIn ? <Logout /> : loginForm}
-      </KeyboardAwareScrollView>
+          {renderBackButton( )}
+          {loginForm}
+        </KeyboardAwareScrollView>
+      )}
     </SafeAreaView>
   );
 };
