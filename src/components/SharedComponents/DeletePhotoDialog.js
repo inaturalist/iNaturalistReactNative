@@ -1,8 +1,8 @@
 // @flow
 
-import { RealmContext } from "providers/contexts";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Dialog, Paragraph, Portal
@@ -18,9 +18,7 @@ type Props = {
   photoUriToDelete: ?string,
   photoUris: Array<string>,
   setPhotoUris: Function,
-  hideDialog: Function,
-  evidenceToAdd?: Array<string>,
-  setEvidenceToAdd?: Function
+  hideDialog: Function
 }
 
 const DeletePhotoDialog = ( {
@@ -28,10 +26,12 @@ const DeletePhotoDialog = ( {
   photoUriToDelete,
   photoUris,
   setPhotoUris,
-  hideDialog,
-  evidenceToAdd,
-  setEvidenceToAdd
+  hideDialog
 }: Props ): Node => {
+  const {
+    evidenceToAdd,
+    setEvidenceToAdd
+  } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const realm = useRealm( );
 
