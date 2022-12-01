@@ -9,6 +9,9 @@ import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
 import { mockCamera, mockSortDevices } from "./vision-camera/vision-camera";
 
+// eslint-disable-next-line max-len
+jest.mock( "@react-native-async-storage/async-storage", () => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" ) );
+
 require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
 
 jest.useFakeTimers();

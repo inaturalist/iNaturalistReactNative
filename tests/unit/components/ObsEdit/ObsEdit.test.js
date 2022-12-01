@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { render } from "@testing-library/react-native";
+import { render, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import { ObsEditContext } from "providers/contexts";
 import ObsEditProvider from "providers/ObsEditProvider";
@@ -46,6 +46,13 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+const mockCurrentUser = factory( "LocalUser" );
+const mockFetchUserLocation = jest.fn( () => ( { latitude: 37, longitude: 34 } ) );
+jest.mock( "sharedHelpers/fetchUserLocation", ( ) => ( {
+  __esModule: true,
+  default: () => mockFetchUserLocation()
+} ) );
+
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
@@ -70,8 +77,6 @@ const renderObsEdit = ( ) => render(
   </SafeAreaProvider>
 );
 
-const mockCurrentUser = factory( "LocalUser" );
-
 test( "renders observation photo from photo gallery", ( ) => {
   const observations = [factory( "RemoteObservation", {
     latitude: 37.99,
@@ -89,6 +94,50 @@ test( "renders observation photo from photo gallery", ( ) => {
   expect( getByText( new RegExp( obs.longitude ) ) ).toBeTruthy( );
 } );
 
+describe( "Fetch User Location", () => {
+  beforeEach( () => {
+    // resets mock back to original state
+    mockFetchUserLocation.mockReset();
+  } );
+
+  test( "fetch location when new observation user hasn't saved", async ( ) => {
+    const observations = [{}];
+    mockObsEditProviderWithObs( observations );
+    expect( mockFetchUserLocation ).not.toHaveBeenCalled();
+
+    const { findByText } = renderObsEdit( );
+
+    await waitFor( () => {
+      expect( mockFetchUserLocation ).toHaveBeenCalled();
+    } );
+    expect( findByText( /Lat:/ ) ).toBeTruthy();
+  } );
+
+  // eslint-disable-next-line max-len
+  test( "don't fetch location for existing obs created on device that hasn't been uploaded", async ( ) => {
+    const observations = [factory( "LocalObservation" )];
+    mockObsEditProviderWithObs( observations );
+    const { queryByText } = renderObsEdit( );
+    const obs = observations[0];
+    const lat = obs.latitude;
+
+    expect( queryByText( `Lat: ${lat}` ) );
+    expect( mockFetchUserLocation ).not.toHaveBeenCalled();
+    expect( queryByText( `Lat: ${lat}` ) );
+  } );
+
+  test( "don't fetch location for existing observation created elsewhere:", async ( ) => {
+    const observations = [factory( "RemoteObservation" )];
+    mockObsEditProviderWithObs( observations );
+    const { queryByText } = renderObsEdit( );
+    const obs = observations[0];
+    const lat = obs.latitude;
+
+    expect( queryByText( `Lat: ${lat}` ) );
+    expect( mockFetchUserLocation ).not.toHaveBeenCalled();
+    expect( queryByText( `Lat: ${lat}` ) );
+  } );
+} );
 // right now this is failing on react-native-modal, since there's a TouchableWithFeedback
 // that allows the user to tap the backdrop and exit the modal
 test.todo( "should not have accessibility errors" );
