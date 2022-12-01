@@ -5,7 +5,8 @@ class User extends Realm.Object {
     icon_url: true,
     id: true,
     login: true,
-    name: true
+    name: true,
+    locale: true
   };
 
   static mapApiToRealm( user ) {
@@ -26,7 +27,8 @@ class User extends Realm.Object {
       icon_url: { type: "string?", mapTo: "iconUrl" },
       login: "string?",
       name: "string?",
-      signedIn: "bool?"
+      signedIn: "bool?",
+      locale: "string?"
     }
   }
 }
