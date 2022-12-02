@@ -12,13 +12,17 @@ import React, { useState } from "react";
 type Props = {
   photoUris: Array<string>,
   setPhotoUris: Function,
-  savingPhoto: boolean
+  savingPhoto: boolean,
+  evidenceToAdd: Array<string>,
+  setEvidenceToAdd: Function,
 }
 
 const PhotoPreview = ( {
   photoUris,
   setPhotoUris,
-  savingPhoto
+  savingPhoto,
+  evidenceToAdd,
+  setEvidenceToAdd
 }: Props ): Node => {
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
@@ -59,6 +63,8 @@ const PhotoPreview = ( {
         photoUris={photoUris}
         setPhotoUris={setPhotoUris}
         hideDialog={hideDialog}
+        evidenceToAdd={evidenceToAdd}
+        setEvidenceToAdd={setEvidenceToAdd}
       />
       <MediaViewerModal
         mediaViewerVisible={mediaViewerVisible}
