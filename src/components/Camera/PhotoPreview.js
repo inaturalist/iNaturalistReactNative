@@ -5,8 +5,9 @@ import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 type Props = {
   photoUris: Array<string>,
@@ -19,6 +20,7 @@ const PhotoPreview = ( {
   setPhotoUris,
   savingPhoto
 }: Props ): Node => {
+  const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
@@ -50,13 +52,16 @@ const PhotoPreview = ( {
     </Text>
   );
 
+  const deletePhoto = ( ) => {
+    deletePhotoFromObservation( photoUriToDelete, photoUris, setPhotoUris );
+    hideDialog( );
+  };
+
   return (
     <>
       <DeletePhotoDialog
         deleteDialogVisible={deleteDialogVisible}
-        photoUriToDelete={photoUriToDelete}
-        photoUris={photoUris}
-        setPhotoUris={setPhotoUris}
+        deletePhoto={deletePhoto}
         hideDialog={hideDialog}
       />
       <MediaViewerModal
