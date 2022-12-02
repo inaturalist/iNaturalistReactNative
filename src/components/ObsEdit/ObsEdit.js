@@ -1,7 +1,6 @@
 // @flow
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import MediaViewer from "components/MediaViewer/MediaViewer";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import Button from "components/SharedComponents/Buttons/Button";
 import KebabMenu from "components/SharedComponents/KebabMenu";
@@ -149,14 +148,10 @@ const ObsEdit = ( ): Node => {
       <MediaViewerModal
         mediaViewerVisible={mediaViewerVisible}
         hideModal={hideModal}
-      >
-        <MediaViewer
-          initialPhotoSelected={initialPhotoSelected}
-          photoUris={photoUris}
-          setPhotoUris={setPhotos}
-          hideModal={hideModal}
-        />
-      </MediaViewerModal>
+        initialPhotoSelected={initialPhotoSelected}
+        photoUris={photoUris}
+        setPhotoUris={setPhotos}
+      />
       <ScrollNoFooter style={mediaViewerVisible && viewStyles.mediaViewerSafeAreaView}>
         <Text className="text-2xl ml-4">{t( "Evidence" )}</Text>
         <EvidenceSection

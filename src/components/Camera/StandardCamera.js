@@ -113,8 +113,6 @@ const StandardCamera = ( ): Node => {
         photoUris={cameraPreviewUris}
         setPhotoUris={setCameraPreviewUris}
         savingPhoto={savingPhoto}
-        evidenceToAdd={evidenceToAdd}
-        setEvidenceToAdd={setEvidenceToAdd}
       />
       <FadeInOutView savingPhoto={savingPhoto} />
       <View className="absolute bottom-0">

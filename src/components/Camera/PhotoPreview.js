@@ -1,6 +1,5 @@
 // @flow
 
-import MediaViewer from "components/MediaViewer/MediaViewer";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
@@ -12,17 +11,13 @@ import React, { useState } from "react";
 type Props = {
   photoUris: Array<string>,
   setPhotoUris: Function,
-  savingPhoto: boolean,
-  evidenceToAdd: Array<string>,
-  setEvidenceToAdd: Function,
+  savingPhoto: boolean
 }
 
 const PhotoPreview = ( {
   photoUris,
   setPhotoUris,
-  savingPhoto,
-  evidenceToAdd,
-  setEvidenceToAdd
+  savingPhoto
 }: Props ): Node => {
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
@@ -63,20 +58,14 @@ const PhotoPreview = ( {
         photoUris={photoUris}
         setPhotoUris={setPhotoUris}
         hideDialog={hideDialog}
-        evidenceToAdd={evidenceToAdd}
-        setEvidenceToAdd={setEvidenceToAdd}
       />
       <MediaViewerModal
         mediaViewerVisible={mediaViewerVisible}
         hideModal={hideModal}
-      >
-        <MediaViewer
-          initialPhotoSelected={initialPhotoSelected}
-          photoUris={photoUris}
-          setPhotoUris={setPhotoUris}
-          hideModal={hideModal}
-        />
-      </MediaViewerModal>
+        initialPhotoSelected={initialPhotoSelected}
+        photoUris={photoUris}
+        setPhotoUris={setPhotoUris}
+      />
       <View className="bg-black h-32">
         <PhotoCarousel
           photoUris={photoUris}
