@@ -4,10 +4,10 @@ import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import Button from "components/SharedComponents/Buttons/Button";
 import { View } from "components/styledComponents";
+import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Dialog, Paragraph, Portal, Text
 } from "react-native-paper";
@@ -22,7 +22,6 @@ const { useRealm } = RealmContext;
 
 const Logout = ( ): Node => {
   const navigation = useNavigation( );
-  const { t } = useTranslation( );
   const [username, setUsername] = useState( null );
   const [visible, setVisible] = useState( false );
   const realm = useRealm( );
@@ -86,7 +85,7 @@ const Logout = ( ): Node => {
           style={viewStyles.button}
           onPress={showDialog}
           testID="Login.signOutButton"
-          text="Sign-out"
+          text={t( "Sign-out" )}
         />
       </View>
     </>

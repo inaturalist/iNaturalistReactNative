@@ -28,13 +28,20 @@ import {
 import ExploreProvider from "providers/ExploreProvider";
 import * as React from "react";
 import { PermissionsAndroid } from "react-native";
+import { PERMISSIONS } from "react-native-permissions";
 
 const Stack = createNativeStackNavigator( );
 
 const PhotoGalleryWithPermission = ( ) => (
   <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
     <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
-      <PhotoGallery />
+      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}>
+        <PermissionGate permission={PERMISSIONS.IOS.PHOTO_LIBRARY} isIOS>
+          <PermissionGate permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE} isIOS>
+            <PhotoGallery />
+          </PermissionGate>
+        </PermissionGate>
+      </PermissionGate>
     </PermissionGate>
   </PermissionGate>
 );

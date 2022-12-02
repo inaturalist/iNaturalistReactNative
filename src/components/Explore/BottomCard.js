@@ -1,10 +1,10 @@
 // @flow
 
-import TranslatedText from "components/SharedComponents/TranslatedText";
+import { Text, View } from "components/styledComponents";
+import { t } from "i18next";
 import { ExploreContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { View } from "react-native";
 import { viewStyles } from "styles/explore/explore";
 
 import DropdownPicker from "./DropdownPicker";
@@ -38,7 +38,7 @@ const Explore = ( ): Node => {
 
   return (
     <View style={viewStyles.bottomCard}>
-      <TranslatedText text="Explore" />
+      <Text>{t( "Explore" )}</Text>
       <FiltersIcon />
       <DropdownPicker
         searchQuery={taxon}

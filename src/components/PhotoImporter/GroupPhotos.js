@@ -150,7 +150,7 @@ const GroupPhotos = ( ): Node => {
 
   const navToObsEdit = async ( ) => {
     createObservationsFromGroupedPhotos( obsToEdit.observations );
-    navigation.navigate( "ObsEdit" );
+    navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
   };
 
   const loadingWheel = ( ) => <ActivityIndicator />;

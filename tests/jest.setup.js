@@ -200,3 +200,7 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
     } ) )
   }
 } ) );
+
+jest.mock( "react-native-exif-reader", ( ) => ( {
+  readExif: jest.fn( )
+} ) );

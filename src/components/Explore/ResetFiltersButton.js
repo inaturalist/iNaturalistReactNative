@@ -1,9 +1,9 @@
 // @flow
 
-import TranslatedText from "components/SharedComponents/TranslatedText";
+import { Pressable, Text } from "components/styledComponents";
+import { t } from "i18next";
 import { ExploreContext } from "providers/contexts";
 import * as React from "react";
-import { Pressable } from "react-native";
 import { viewStyles } from "styles/observations/messagesIcon";
 
 const ResetFiltersButton = ( ): React.Node => {
@@ -14,7 +14,7 @@ const ResetFiltersButton = ( ): React.Node => {
       onPress={resetFilters}
       style={viewStyles.messages}
     >
-      <TranslatedText text="Reset" />
+      <Text>{t( "Reset" )}</Text>
     </Pressable>
   );
 };

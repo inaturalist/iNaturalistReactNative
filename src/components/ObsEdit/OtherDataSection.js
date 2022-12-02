@@ -11,7 +11,11 @@ import colors from "styles/tailwindColors";
 
 import Notes from "./Notes";
 
-const OtherDataSection = ( ): Node => {
+type Props = {
+  scrollToInput: Function
+}
+
+const OtherDataSection = ( { scrollToInput }: Props ): Node => {
   const {
     currentObservation,
     updateObservationKey
@@ -89,7 +93,11 @@ const OtherDataSection = ( ): Node => {
           </Button>
         </RNPickerSelect>
       </View>
-      <Notes addNotes={addNotes} description={currentObservation.description} />
+      <Notes
+        addNotes={addNotes}
+        description={currentObservation.description}
+        scrollToInput={scrollToInput}
+      />
     </>
   );
 };

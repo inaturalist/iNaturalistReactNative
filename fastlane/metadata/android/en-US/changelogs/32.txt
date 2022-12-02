@@ -1,0 +1,6 @@
+A few more steps foward in the observations flow
+
+* Enable Hermes for iOS
+* Show skeleton UI when adding a comment on Obs Detail
+* Make sure checkmark is shown when photo is selected in Photo Gallery
+* Import data from EXIF using our own native EXIF package
