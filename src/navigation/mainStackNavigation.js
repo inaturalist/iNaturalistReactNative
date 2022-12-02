@@ -1,6 +1,5 @@
 // @flow
 
-import { HeaderBackButton } from "@react-navigation/elements";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
@@ -12,38 +11,37 @@ import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import ObsList from "components/Observations/ObsList";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
+import PhotoAlbumPicker from "components/PhotoImporter/PhotoAlbumPicker";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGate from "components/SharedComponents/PermissionGate";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UserProfile from "components/UserProfile/UserProfile";
+import { t } from "i18next";
+import {
+  blankHeaderTitle,
+  hideHeader,
+  hideScreenTransitionAnimation,
+  showHeader
+} from "navigation/navigationOptions";
 import ExploreProvider from "providers/ExploreProvider";
 import * as React from "react";
 import { PermissionsAndroid } from "react-native";
+import { PERMISSIONS } from "react-native-permissions";
 
 const Stack = createNativeStackNavigator( );
-
-const hideHeader = {
-  headerShown: false
-};
-
-const showHeader = {
-  headerShown: true
-};
-
-const hideScreenTransitionAnimation = {
-  animation: "none"
-};
-
-const showBackButton = ( { navigation } ) => ( {
-  headerLeft: ( ) => <HeaderBackButton onPress={( ) => navigation.goBack( )} />
-} );
 
 const PhotoGalleryWithPermission = ( ) => (
   <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
     <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
-      <PhotoGallery />
+      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}>
+        <PermissionGate permission={PERMISSIONS.IOS.PHOTO_LIBRARY} isIOS>
+          <PermissionGate permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE} isIOS>
+            <PhotoGallery />
+          </PermissionGate>
+        </PermissionGate>
+      </PermissionGate>
     </PermissionGate>
   </PermissionGate>
 );
@@ -72,55 +70,76 @@ const ObsEditWithPermission = () => (
       <ObsEdit />
     </PermissionGate>
   </Mortal>
-
 );
+
+const photoGalleryHeaderTitle = ( ) => <PhotoAlbumPicker />;
 
 const MainStackNavigation = ( ): React.Node => (
   <Mortal>
     <ExploreProvider>
-      <Stack.Navigator screenOptions={hideHeader}>
+      <Stack.Navigator screenOptions={showHeader}>
         <Stack.Screen
           name="ObsList"
           component={ObsList}
-          options={hideScreenTransitionAnimation}
-        />
-        <Stack.Screen
-          name="ObsDetails"
-          component={ObsDetails}
-        />
-        <Stack.Screen
-          name="UserProfile"
-          component={UserProfile}
-        />
-        <Stack.Screen
-          name="TaxonDetails"
-          component={TaxonDetails}
-          options={showBackButton}
-        />
-        <Stack.Screen
-          name="PhotoGallery"
-          component={PhotoGalleryWithPermission}
-        />
-        <Stack.Screen
-          name="GroupPhotos"
-          component={GroupPhotos}
-        />
-        <Stack.Screen
-          name="ObsEdit"
-          component={ObsEditWithPermission}
-        />
-        <Stack.Screen
-          name="SoundRecorder"
-          component={SoundRecorderWithPermission}
+          options={{
+            ...hideScreenTransitionAnimation,
+            ...hideHeader
+          }}
         />
         <Stack.Screen
           name="StandardCamera"
           component={StandardCameraWithPermission}
+          options={hideHeader}
+        />
+        <Stack.Screen
+          name="PhotoGallery"
+          component={PhotoGalleryWithPermission}
+          options={{
+            headerTitle: photoGalleryHeaderTitle
+          }}
+        />
+        <Stack.Screen
+          name="GroupPhotos"
+          component={GroupPhotos}
+          options={{
+            title: t( "Group-Photos" )
+          }}
+        />
+        <Stack.Screen
+          name="SoundRecorder"
+          component={SoundRecorderWithPermission}
+          options={{
+            title: t( "Record-new-sound" )
+          }}
+        />
+        <Stack.Screen
+          name="ObsEdit"
+          component={ObsEditWithPermission}
+          options={blankHeaderTitle}
         />
         <Stack.Screen
           name="AddID"
           component={AddID}
-          options={hideHeader}
+          options={{
+            title: t( "Add-an-ID" )
+          }}
+        />
+        <Stack.Screen
+          name="ObsDetails"
+          component={ObsDetails}
+          options={{
+            headerTitle: t( "Observation" )
+          }}
+        />
+        <Stack.Screen
+          name="TaxonDetails"
+          component={TaxonDetails}
+          options={blankHeaderTitle}
+        />
+        <Stack.Screen
+          name="UserProfile"
+          component={UserProfile}
+          options={blankHeaderTitle}
         />
         <Stack.Screen
           name="Messages"
@@ -134,8 +153,9 @@ const MainStackNavigation = ( ): React.Node => (
           name="ExploreLanding"
           component={ExploreLanding}
           options={{
-            ...hideHeader,
-            ...hideScreenTransitionAnimation
+            ...showHeader,
+            ...hideScreenTransitionAnimation,
+            headerTitle: t( "Explore" )
           }}
         />
         <Stack.Screen

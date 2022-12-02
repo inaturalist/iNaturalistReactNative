@@ -128,8 +128,6 @@ const ObservationViews = ( {
   };
 
   const renderBottomSheet = ( ) => {
-    if ( numOfUnuploadedObs === 0 ) { return null; }
-
     if ( isLoggedIn === false ) {
       return (
         <BottomSheet hide={hasScrolled}>
@@ -145,15 +143,18 @@ const ObservationViews = ( {
         />
       );
     }
-    return (
-      <BottomSheet hide={hasScrolled}>
-        <UploadPrompt
-          uploadObservations={updateUploadStatus}
-          numOfUnuploadedObs={numOfUnuploadedObs}
-          updateUploadStatus={updateUploadStatus}
-        />
-      </BottomSheet>
-    );
+    if ( numOfUnuploadedObs > 0 && isLoggedIn ) {
+      return (
+        <BottomSheet hide={hasScrolled}>
+          <UploadPrompt
+            uploadObservations={updateUploadStatus}
+            numOfUnuploadedObs={numOfUnuploadedObs}
+            updateUploadStatus={updateUploadStatus}
+          />
+        </BottomSheet>
+      );
+    }
+    return null;
   };
 
   const renderFooter = ( ) => {
@@ -200,7 +201,7 @@ const ObservationViews = ( {
           bounces={false}
           contentContainerStyle={{ minHeight: flatListHeight }}
         />
-        {renderBottomSheet( )}
+        {numOfUnuploadedObs > 0 && renderBottomSheet( )}
       </>
     );
   };

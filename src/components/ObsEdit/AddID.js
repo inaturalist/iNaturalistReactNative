@@ -9,8 +9,10 @@ import fetchSearchResults from "api/search";
 import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { Text } from "components/styledComponents";
-import * as React from "react";
-import { useRef, useState } from "react";
+import type { Node } from "react";
+import React, {
+  useCallback, useEffect, useRef, useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
@@ -21,15 +23,13 @@ import {
   View
 } from "react-native";
 import {
-  Button, Headline, TextInput
+  Button, Headline, IconButton, TextInput
 } from "react-native-paper";
 import uuid from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/obsDetails/addID";
 import colors from "styles/tailwindColors";
-
-import AddIDHeader from "./AddIDHeader";
 
 type Props = {
   route: {
@@ -47,7 +47,7 @@ const SearchTaxonIcon = (
   />
 );
 
-const AddID = ( { route }: Props ): React.Node => {
+const AddID = ( { route }: Props ): Node => {
   const { t } = useTranslation( );
   const [comment, setComment] = useState( "" );
   const [commentDraft, setCommentDraft] = useState( "" );
@@ -71,10 +71,10 @@ const AddID = ( { route }: Props ): React.Node => {
     <BottomSheetStandardBackdrop props={props} />
   );
 
-  const editComment = ( ) => {
+  const editComment = useCallback( ( ) => {
     setCommentDraft( comment );
     bottomSheetModalRef.current?.present();
-  };
+  }, [comment] );
 
   const createPhoto = photo => ( {
     id: photo.id,
@@ -135,16 +135,23 @@ const AddID = ( { route }: Props ): React.Node => {
     );
   };
 
+  const showEditComment = !hideComment && comment.length === 0;
+
+  useEffect( ( ) => {
+    const editCommentIcon = ( ) => <IconButton icon="message-processing" onPress={editComment} />;
+
+    if ( showEditComment ) {
+      navigation.setOptions( {
+        headerRight: editCommentIcon
+      } );
+    }
+  }, [showEditComment, editComment, navigation] );
+
   return (
     <BottomSheetModalProvider>
       <ViewNoFooter>
-        <AddIDHeader
-          showEditComment={!hideComment && comment.length === 0}
-          onEditCommentPressed={editComment}
-        />
-        <View>
-          <View style={viewStyles.scrollView}>
-            {comment.length > 0 && (
+        <View style={viewStyles.scrollView}>
+          {comment.length > 0 && (
             <View>
               <Text>{t( "ID-Comment" )}</Text>
               <View style={viewStyles.commentContainer}>
@@ -159,27 +166,25 @@ const AddID = ( { route }: Props ): React.Node => {
                 </Pressable>
               </View>
             </View>
-            )}
-            <Text className="color-grayText">
-              {t( "Search-for-a-taxon-to-add-an-identification" )}
-            </Text>
-            <TextInput
-              testID="SearchTaxon"
-              left={SearchTaxonIcon}
-              style={viewStyles.taxonSearch}
-              value={taxonSearch}
-              onChangeText={setTaxonSearch}
-              selectionColor={colors.black}
-            />
-            <FlatList
-              data={taxonList}
-              renderItem={renderTaxonResult}
-              keyExtractor={item => item.id}
-              style={viewStyles.taxonList}
-            />
-          </View>
+          )}
+          <Text className="color-grayText">
+            {t( "Search-for-a-taxon-to-add-an-identification" )}
+          </Text>
+          <TextInput
+            testID="SearchTaxon"
+            left={SearchTaxonIcon}
+            style={viewStyles.taxonSearch}
+            value={taxonSearch}
+            onChangeText={setTaxonSearch}
+            selectionColor={colors.black}
+          />
+          <FlatList
+            data={taxonList}
+            renderItem={renderTaxonResult}
+            keyExtractor={item => item.id}
+            style={viewStyles.taxonList}
+          />
         </View>
-
         <BottomSheetModal
           ref={bottomSheetModalRef}
           index={0}

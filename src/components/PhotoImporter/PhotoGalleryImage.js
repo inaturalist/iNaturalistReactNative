@@ -35,6 +35,7 @@ const PhotoGalleryImage = ( {
           name="check-circle"
           size={30}
           color={colors.inatGreen}
+          testID={`PhotoGallery.selected.${uri}`}
         />
       );
     }

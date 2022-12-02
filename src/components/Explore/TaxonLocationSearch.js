@@ -1,6 +1,7 @@
 // @flow
 
-import TranslatedText from "components/SharedComponents/TranslatedText";
+import { Text } from "components/styledComponents";
+import { t } from "i18next";
 import { ExploreContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useContext, useState } from "react";
@@ -54,7 +55,7 @@ const TaxonLocationSearch = ( ): Node => {
 
   return (
     <>
-      <TranslatedText text="Taxon" />
+      <Text>{t( "Taxon" )}</Text>
       <DropdownPicker
         zIndex={3000}
         zIndexInverse={1000}
@@ -68,7 +69,7 @@ const TaxonLocationSearch = ( ): Node => {
         onOpen={onTaxonOpen}
         onClose={onClose}
       />
-      <TranslatedText text="Location" />
+      <Text>{t( "Location" )}</Text>
       <DropdownPicker
         zIndex={2000}
         zIndexInverse={2000}

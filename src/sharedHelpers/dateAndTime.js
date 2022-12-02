@@ -10,8 +10,9 @@ import {
 const formatDateAndTime = timestamp => {
   const date = fromUnixTime( timestamp );
   const formattedISODate = formatISO( date );
-  const stripTimeZone = formattedISODate.split( "-" ).slice( 0, -1 );
-  return stripTimeZone.join( "-" );
+  // Always take the first part of the time/date string,
+  // without any extra timezone, etc (just "2022-12-31T23:59:59")
+  return formattedISODate.substring( 0, 19 );
 };
 
 const createObservedOnStringForUpload = date => formatDateAndTime(

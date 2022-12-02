@@ -2,6 +2,7 @@
 
 import createIdentification from "api/identifications";
 import Button from "components/SharedComponents/Buttons/Button";
+import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
 import {
@@ -90,7 +91,7 @@ const GridItem = ( {
           <Button
             level="primary"
             onPress={agreeWithObservation}
-            text="agree"
+            text={t( "agree" )}
             testID="Identify.agree"
             disabled={wasReviewed}
           />

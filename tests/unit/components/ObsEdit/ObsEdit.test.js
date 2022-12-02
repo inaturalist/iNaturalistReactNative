@@ -42,6 +42,9 @@ jest.mock( "@react-navigation/native", ( ) => {
   return {
     ...actualNav,
     useRoute: ( ) => ( {
+    } ),
+    useNavigation: ( ) => ( {
+      setOptions: jest.fn( )
     } )
   };
 } );
@@ -51,6 +54,13 @@ const mockFetchUserLocation = jest.fn( () => ( { latitude: 37, longitude: 34 } )
 jest.mock( "sharedHelpers/fetchUserLocation", ( ) => ( {
   __esModule: true,
   default: () => mockFetchUserLocation()
+} ) );
+
+// https://github.com/APSL/react-native-keyboard-aware-scroll-view/issues/493#issuecomment-861711442
+jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
+  KeyboardAwareScrollView: jest
+    .fn( )
+    .mockImplementation( ( { children } ) => children )
 } ) );
 
 // Mock ObservationProvider so it provides a specific array of observations
