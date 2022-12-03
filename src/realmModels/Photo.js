@@ -24,7 +24,7 @@ class Photo extends Realm.Object {
     return localPhoto;
   }
 
-  static async resizeImageForUpload( pathOrUri ) {
+  static async resizeImageForUpload( pathOrUri, options = {} ) {
     const width = 2048;
     const { photoUploadPath } = Photo;
     await RNFS.mkdir( photoUploadPath );
@@ -59,7 +59,7 @@ class Photo extends Realm.Object {
       width, // height
       "JPEG", // compressFormat
       100, // quality
-      0, // rotation
+      options.rotation || 0, // rotation
       photoUploadPath,
       true, // keep metadata
       {
@@ -70,8 +70,8 @@ class Photo extends Realm.Object {
     return uri;
   }
 
-  static async new( uri ) {
-    const localFilePath = await Photo.resizeImageForUpload( uri );
+  static async new( uri, resizeOptions = {} ) {
+    const localFilePath = await Photo.resizeImageForUpload( uri, resizeOptions );
 
     return {
       _created_at: new Date( ),
