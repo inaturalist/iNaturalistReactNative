@@ -409,7 +409,7 @@ class Observation extends Realm.Object {
     const { id } = response.results[0];
 
     if ( obs?.observationPhotos?.length > 0 ) {
-      return Observation.uploadEvidence(
+      await Observation.uploadEvidence(
         obs.observationPhotos,
         "ObservationPhoto",
         ObservationPhoto.mapPhotoForUpload,
@@ -420,7 +420,7 @@ class Observation extends Realm.Object {
       );
     }
     if ( obs?.observationSounds?.length > 0 ) {
-      return Observation.uploadEvidence(
+      await Observation.uploadEvidence(
         obs.observationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForUpload,
