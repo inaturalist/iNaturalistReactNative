@@ -48,7 +48,6 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
 
   const renderIconButton = ( icon, className, onPress, size = 30 ) => (
     <IconButton
-      testID={`camera-options-button-${icon}`}
       size={size}
       mode="contained"
       icon={icon}
