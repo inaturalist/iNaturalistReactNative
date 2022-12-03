@@ -202,3 +202,10 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
 jest.mock( "react-native-exif-reader", ( ) => ( {
   readExif: jest.fn( )
 } ) );
+
+// https://github.com/APSL/react-native-keyboard-aware-scroll-view/issues/493#issuecomment-861711442
+jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
+  KeyboardAwareScrollView: jest
+    .fn( )
+    .mockImplementation( ( { children } ) => children )
+} ) );

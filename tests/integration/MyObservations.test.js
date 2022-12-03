@@ -2,6 +2,10 @@
 // remote data retrieval and local data persistence
 
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { render, waitFor } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
 import inatjs from "inaturalistjs";
@@ -26,10 +30,19 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 jest.mock( "sharedHooks/useApiToken" );
 
+jest.mock( "sharedHooks/useLoggedIn", ( ) => ( {
+  __esModule: true,
+  default: ( ) => true
+} ) );
+
+const queryClient = new QueryClient( );
+
 const renderObsList = ( ) => render(
-  <NavigationContainer>
-    <ObsList />
-  </NavigationContainer>
+  <QueryClientProvider client={queryClient}>
+    <NavigationContainer>
+      <ObsList />
+    </NavigationContainer>
+  </QueryClientProvider>
 );
 // TODO: mock.calls.length started returning 0, need to figure out why this isn't working
 test.todo( "renders the number of comments from remote response" );
@@ -49,14 +62,14 @@ test.todo( "renders the number of comments from remote response" );
 // } );
 
 test.todo( "only makes one concurrent request for observations at a time" );
-// test( "only makes one concurrent request for observations at a time", async( ) => {
+// test( "only makes one concurrent request for observations at a time", async ( ) => {
 //   const observations = [factory( "RemoteObservation" )];
 //   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
 //   await waitFor( ( ) => render( <NavigationContainer><ObsList /></NavigationContainer> ) );
 //   // this doesn't pass b/c useObservations() gets called a lot; we
 //   // probably need a way to ensure that only one request is in flight at a
 //   // time
-//   expect( inatjs.observations.search.mock.calls.length ).toEqual( 1 );
+//   expect( inatjs.observations.search ).toHaveBeenCalledOnce( );
 // } );
 
 test( "should not have accessibility errors", async ( ) => {
