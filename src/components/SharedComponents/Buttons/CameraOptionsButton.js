@@ -21,7 +21,11 @@ const CameraOptionsButton = ( ): React.Node => {
         closeModal={closeModal}
         modal={<CameraOptionsModal closeModal={closeModal} />}
       />
-      <Pressable onPress={navToCameraOptions} accessibilityRole="link">
+      <Pressable
+        testID="camera-options-button"
+        onPress={navToCameraOptions}
+        accessibilityRole="link"
+      >
         <IconMaterial name="add-circle" size={30} />
       </Pressable>
     </>
