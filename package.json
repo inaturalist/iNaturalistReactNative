@@ -142,8 +142,7 @@
     ],
     "automock": false,
     "resetMocks": false,
-    "verbose": true,
-    "testRunner": "jest-circus/runner"
+    "verbose": true
   },
   "husky": {
     "hooks": {
