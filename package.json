@@ -13,7 +13,7 @@
     "postinstall": "husky install",
     "translate": "node src/i18n/i18ncli.js build",
     "e2e:build:ios": "npx detox build --configuration ios",
-    "e2e:test:ios": "npx detox test --configuration ios",
+    "e2e:test:ios": "npx detox test --configuration ios"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.2",

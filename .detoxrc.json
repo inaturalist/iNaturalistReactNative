@@ -7,11 +7,6 @@
       "type": "ios.app",
       "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app",
       "build": "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build"
-    },
-    "android": {
-      "type": "android.apk",
-      "binaryPath": "android/app/build/outputs/apk/debug/com.inaturalistreactnative-v0.1.1+32-debug.apk",
-      "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd .." 
     }
   },
   "devices": {
@@ -20,22 +15,12 @@
       "device": {
         "type": "iPhone 13"
       }
-    },
-    "emulator": {
-      "type": "android.emulator",
-      "device": {
-        "avdName": "Pixel_4_API_33"
-      }
     }
   },
   "configurations": {
     "ios": {
       "device": "simulator",
       "app": "ios"
-    },
-    "android": {
-      "device": "emulator",
-      "app": "android"
     }
   }
 }
