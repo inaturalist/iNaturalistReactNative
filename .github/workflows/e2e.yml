@@ -4,6 +4,7 @@
 name: e2e
 on:
   pull_request:
+  push:
 
 jobs:
   pre_build:
