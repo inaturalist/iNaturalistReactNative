@@ -84,7 +84,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     backgroundColor: colors.lightGray
   },
   taxonResultNameContainer: {
-    flexDirection: "column"
+    flexDirection: "column",
+    flexShrink: 1
   },
   taxonResultInfo: {
     marginLeft: "auto",
@@ -109,7 +110,8 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   },
   taxonResultScientificName: {
     color: colors.gray,
-    fontStyle: "italic"
+    fontStyle: "italic",
+    flexShrink: 1
   },
   commentHeader: {
     fontSize: 22,
