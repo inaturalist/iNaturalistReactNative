@@ -14,12 +14,11 @@ type Props = {
   isLoggedIn: ?boolean,
   translateY: any,
   isExplore: boolean,
-  syncObservations: Function,
   setView: Function
 }
 
 const ObsListHeader = ( {
-  numOfUnuploadedObs, isLoggedIn, translateY, isExplore, syncObservations, setView
+  numOfUnuploadedObs, isLoggedIn, translateY, isExplore, setView
 }: Props ): Node => {
   if ( isLoggedIn === null ) {
     return <View className="rounded-bl-3xl rounded-br-3xl bg-primary h-24" />;
@@ -36,7 +35,6 @@ const ObsListHeader = ( {
       <Toolbar
         isExplore={isExplore}
         isLoggedIn={isLoggedIn}
-        syncObservations={syncObservations}
         setView={setView}
       />
     </Animated.View>

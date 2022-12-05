@@ -28,8 +28,7 @@ type Props = {
   testID: string,
   taxonId?: number,
   mapHeight?: number,
-  handleEndReached?: Function,
-  syncObservations?: Function
+  handleEndReached?: Function
 }
 
 const ObservationViews = ( {
@@ -38,13 +37,13 @@ const ObservationViews = ( {
   testID,
   taxonId,
   mapHeight,
-  handleEndReached,
-  syncObservations
+  handleEndReached
 }: Props ): Node => {
   const [view, setView] = useState( "list" );
   const navigation = useNavigation( );
   const { name } = useRoute( );
   const isLoggedIn = useLoggedIn( );
+  const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState( false );
   const { observationList, unuploadedObsList } = localObservations;
   const numOfUnuploadedObs = unuploadedObsList?.length;
   // eslint-disable-next-line
@@ -112,6 +111,7 @@ const ObservationViews = ( {
   const renderItem = ( { item } ) => (
     <ObsCard item={item} handlePress={navToObsDetails} />
   );
+
   const renderGridItem = ( { item, index } ) => (
     <GridItem
       item={item}
@@ -121,7 +121,8 @@ const ObservationViews = ( {
   );
 
   const renderEmptyState = ( ) => {
-    if ( name !== "Explore" && isLoggedIn === false ) {
+    if ( ( name !== "Explore" && isLoggedIn === false )
+      || ( !loading && observationList.length === 0 ) ) {
       return <EmptyList />;
     }
     return <ActivityIndicator />;
@@ -172,12 +173,25 @@ const ObservationViews = ( {
       isLoggedIn={isLoggedIn}
       translateY={translateY}
       isExplore={isExplore}
-      syncObservations={syncObservations}
       setView={setView}
     />
-  ), [isExplore, isLoggedIn, translateY, numOfUnuploadedObs, syncObservations] );
+  ), [isExplore, isLoggedIn, translateY, numOfUnuploadedObs] );
 
   const renderItemSeparator = ( ) => <View className="border border-border" />;
+
+  const onMomentumScrollBegin = ( ) => {
+    // this and onEndReached are used to make sure onEndReached
+    // only gets called once instead of getting called multiple times
+    setOnEndReachedCalledDuringMomentum( false );
+  };
+
+  const onEndReached = ( ) => {
+    if ( !handleEndReached ) { return; }
+    if ( !onEndReachedCalledDuringMomentum ) {
+      handleEndReached( observationList[observationList.length - 1].id );
+      setOnEndReachedCalledDuringMomentum( true );
+    }
+  };
 
   const renderView = ( ) => {
     if ( view === "map" ) {
@@ -193,13 +207,16 @@ const ObservationViews = ( {
           testID={testID}
           ListEmptyComponent={renderEmptyState}
           onScroll={handleScroll}
-          onEndReached={handleEndReached}
+          onEndReached={onEndReached}
           ListFooterComponent={renderFooter}
           ListHeaderComponent={renderHeader}
           ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
           stickyHeaderIndices={[0]}
           bounces={false}
           contentContainerStyle={{ minHeight: flatListHeight }}
+          initialNumToRender={10}
+          onEndReachedThreshold={0.1}
+          onMomentumScrollBegin={onMomentumScrollBegin}
         />
         {numOfUnuploadedObs > 0 && renderBottomSheet( )}
       </>

@@ -38,13 +38,6 @@ jest.mock(
   } )
 );
 
-jest.mock( "../../../../src/sharedHooks/useRemoteObservations", ( ) => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    loading: false
-  } )
-} ) );
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
