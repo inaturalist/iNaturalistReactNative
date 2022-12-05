@@ -9,7 +9,7 @@ import React from "react";
 
 import factory from "../../../factory";
 
-const mockedNavigate = jest.fn( );
+const mockNavigate = jest.fn( );
 const mockObservation = factory( "LocalObservation" );
 const mockUser = factory( "LocalUser" );
 
@@ -28,7 +28,7 @@ jest.mock( "@react-navigation/native", ( ) => {
       }
     } ),
     useNavigation: ( ) => ( {
-      navigate: mockedNavigate,
+      navigate: mockNavigate,
       addListener: jest.fn( ),
       setOptions: jest.fn( )
     } )
@@ -65,10 +65,10 @@ const renderObsDetails = ( ) => render(
   </QueryClientProvider>
 );
 
-test( "renders obs details from remote call", ( ) => {
-  const { getByTestId, getByText } = renderObsDetails( );
+test( "renders obs details from remote call", async ( ) => {
+  const { getByTestId, getByText, findByTestId } = renderObsDetails();
 
-  expect( getByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
+  expect( await findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
   expect(
     getByTestId( "PhotoScroll.photo" ).props.source
   ).toStrictEqual( { uri: mockObservation.observationPhotos[0].photo.url } );
@@ -77,38 +77,40 @@ test( "renders obs details from remote call", ( ) => {
   // right now, these elements are not rendering in renderObsDetails( ).debug( ) at all
 } );
 
-test( "renders data tab on button press", ( ) => {
-  const { getByTestId, getByText } = renderObsDetails( );
-  const button = getByTestId( "ObsDetails.DataTab" );
+test( "renders data tab on button press", async ( ) => {
+  const { getByText, findByTestId } = renderObsDetails();
+  const button = await findByTestId( "ObsDetails.DataTab" );
 
   fireEvent.press( button );
   expect( getByText( mockObservation.description ) ).toBeTruthy( );
 } );
 
-test( "navigates to observer profile on button press", ( ) => {
-  const { getByTestId } = renderObsDetails( );
+test( "navigates to observer profile on button press", async ( ) => {
+  const { findByTestId } = renderObsDetails( );
 
-  fireEvent.press( getByTestId( "ObsDetails.currentUser" ) );
-  expect( mockedNavigate )
+  fireEvent.press( await findByTestId( "ObsDetails.currentUser" ) );
+  expect( mockNavigate )
     .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
 } );
 
-test( "navigates to identifier profile on button press", ( ) => {
-  const { getByTestId } = renderObsDetails( );
+test( "navigates to identifier profile on button press", async ( ) => {
+  const { findByTestId } = renderObsDetails( );
 
   fireEvent.press(
-    getByTestId( `ObsDetails.identifier.${mockObservation.identifications[0].user.id}` )
+    await findByTestId(
+      `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
+    )
   );
-  expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", {
+  expect( mockNavigate ).toHaveBeenCalledWith( "UserProfile", {
     userId: mockObservation.identifications[0].user.id
   } );
 } );
 
-test( "navigates to taxon details on button press", ( ) => {
-  const { getByTestId } = renderObsDetails( );
+test( "navigates to taxon details on button press", async ( ) => {
+  const { findByTestId } = renderObsDetails( );
 
-  fireEvent.press( getByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
-  expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
+  fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
+  expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
     id: mockObservation.taxon.id
   } );
 } );

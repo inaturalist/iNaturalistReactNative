@@ -19,7 +19,6 @@ import { Menu } from "react-native-paper";
 import Photo from "realmModels/Photo";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import useLoggedIn from "sharedHooks/useLoggedIn";
-import { viewStyles } from "styles/obsEdit/obsEdit";
 
 import AddEvidenceModal from "./AddEvidenceModal";
 import DeleteObservationDialog from "./DeleteObservationDialog";
@@ -59,13 +58,20 @@ const ObsEdit = ( ): Node => {
   };
 
   useEffect( ( ) => {
-    // when opening an observation from ObsDetails, fetch the local
-    // observation from realm
-    if ( localObservation ) {
+    // when first opening an observation from ObsDetails, fetch local observation from realm
+    // and set this in obsEditContext
+
+    // If the obs requested in params is not the observation in context, clear
+    // the context and set the obs requested in params as the current
+    // observation
+    const obsChanged = localObservation && localObservation?.uuid !== currentObservation?.uuid;
+    if ( obsChanged ) {
       resetObsEditContext( );
-      setObservations( [localObservation] );
+      // need .toJSON( ) to be able to add evidence to an existing local observation
+      // otherwise, get a realm error about modifying managed objects outside of a write transaction
+      setObservations( [localObservation.toJSON( )] );
     }
-  }, [localObservation, setObservations, resetObsEditContext] );
+  }, [localObservation, setObservations, resetObsEditContext, currentObservation] );
 
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
@@ -170,7 +176,7 @@ const ObsEdit = ( ): Node => {
         <IdentificationSection />
         <Text className="text-2xl ml-4">{t( "Other-Data" )}</Text>
         <OtherDataSection scrollToInput={scrollToInput} />
-        <View style={viewStyles.buttonRow}>
+        <View className="flex-row justify-evenly">
           <Button
             onPress={saveObservation}
             testID="ObsEdit.saveButton"

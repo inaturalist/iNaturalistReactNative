@@ -49,13 +49,6 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-// https://github.com/APSL/react-native-keyboard-aware-scroll-view/issues/493#issuecomment-861711442
-jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
-  KeyboardAwareScrollView: jest
-    .fn( )
-    .mockImplementation( ( { children } ) => children )
-} ) );
-
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
 // observations
