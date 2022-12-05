@@ -8,7 +8,7 @@ on:
 
 jobs:
   pre_build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: fkirc/skip-duplicate-actions@master
         with:
@@ -58,19 +58,17 @@ jobs:
         gem update cocoapods xcodeproj
         cd ios && pod install && cd ..
 
-    # Install prerequisites for detox and build app
+    # Install prerequisites for detox and build app, and test
     - run: brew tap wix/brew
     - run: brew install applesimutils
     - run: npm run e2e:build
-
-  test:
     - run: npm run e2e:test -- --cleanup --debug-synchronization 200
 
   notify:
     name: Notify Slack
     needs: test
     if: ${{ success() || failure() }}
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: iRoachie/slack-github-actions@v2.3.0
         if: env.SLACK_WEBHOOK_URL != null
