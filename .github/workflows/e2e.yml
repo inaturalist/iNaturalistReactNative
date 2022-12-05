@@ -4,7 +4,6 @@
 name: e2e
 on:
   pull_request:
-  push:
 
 jobs:
   pre_build:
@@ -17,8 +16,8 @@ jobs:
 
   build:
     runs-on: macos-latest
-    # Kill the task if not finished after 45 minutes
-    timeout-minutes: 45
+    # Kill the task if not finished after 60 minutes
+    timeout-minutes: 60
 
     steps:
     - name: Check out Git repository
