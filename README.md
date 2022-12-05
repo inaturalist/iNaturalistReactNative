@@ -43,7 +43,7 @@ npx jest -t accessibility
 ```
 
 ### E2E tests
-We're using [Detox](https://wix.github.io/Detox/docs/19.x/) for E2E tests. If you want to run the e2e tests on your local machine (MacOS only), make sure you fulfill the general requirements, see above, and also follow the test-specific [environment setup](https://wix.github.io/Detox/docs/19.x/introduction/ios-dev-env/).
+We're using [Detox](https://wix.github.io/Detox/docs/19.x/) for E2E tests. If you want to run the e2e tests on your local machine (MacOS only), make sure you fulfill the RN development requirements, see above, and also follow the test-specific [environment setup](https://wix.github.io/Detox/docs/19.x/introduction/ios-dev-env/).
 
 ```bash
 # Build the app and run the tests
