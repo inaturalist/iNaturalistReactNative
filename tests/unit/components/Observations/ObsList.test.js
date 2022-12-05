@@ -1,4 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { fireEvent, render, within } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
 import React from "react";
@@ -55,10 +59,14 @@ jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
   __esModule: true
 } ) );
 
+const queryClient = new QueryClient( );
+
 const renderObsList = ( ) => render(
-  <NavigationContainer>
-    <ObsList />
-  </NavigationContainer>
+  <QueryClientProvider client={queryClient}>
+    <NavigationContainer>
+      <ObsList />
+    </NavigationContainer>
+  </QueryClientProvider>
 );
 
 it( "renders an observation", ( ) => {
