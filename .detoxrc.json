@@ -3,7 +3,12 @@
   "runnerConfig": "e2e/config.json",
   "skipLegacyWorkersInjection": true,
   "apps": {
-    "ios": {
+    "ios.debug": {
+      "type": "ios.app",
+      "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/iNaturalistReactNative.app",
+      "build": "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
+    },
+    "ios.release": {
       "type": "ios.app",
       "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app",
       "build": "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build"
@@ -18,9 +23,13 @@
     }
   },
   "configurations": {
-    "ios": {
+    "ios.debug": {
       "device": "simulator",
-      "app": "ios"
+      "app": "ios.debug"
+    },
+    "ios.release": {
+      "device": "simulator",
+      "app": "ios.release"
     }
   }
 }
