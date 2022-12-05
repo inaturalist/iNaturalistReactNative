@@ -17,8 +17,8 @@ jobs:
 
   build:
     runs-on: macos-latest
-    # Kill the task if not finished after 5 minutes
-    timeout-minutes: 5
+    # Kill the task if not finished after 15 minutes
+    timeout-minutes: 15
 
     steps:
     - name: Check out Git repository
@@ -31,23 +31,23 @@ jobs:
       with:
         node-version: 16
 
-    # - name: Cache node modules
-    #   uses: actions/cache@v1
-    #   id: cache
-    #   with:
-    #     path: node_modules
-    #     key: node-modules-${{ hashFiles('**/yarn.lock') }}
+    - name: Cache node modules
+      uses: actions/cache@v3
+      id: cache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
-    # - name: Rebuild detox from cache
-    #   if: steps.cache.outputs.cache-hit == 'true'
-    #   run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+    - name: Rebuild detox from cache
+      if: steps.cache.outputs.cache-hit == 'true'
+      run: npx detox clean-framework-cache && npx detox build-framework-cache
 
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: npm install --legacy-peer-deps
 
     - name: Cache Pods
-      uses: actions/cache@v1
+      uses: actions/cache@v3
       id: podcache
       with:
         path: ios/Pods
