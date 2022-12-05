@@ -1,0 +1,78 @@
+##
+# Run e2e tests
+##
+name: e2e
+on:
+  pull_request:
+
+jobs:
+  pre_build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: fkirc/skip-duplicate-actions@master
+        with:
+          github_token: ${{ github.token }}
+          cancel_others: true
+
+  build:
+    runs-on: macos-latest
+    # Kill the task if not finished after 5 minutes
+    timeout-minutes: 5
+
+    steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+
+    - name: Install Node.js, NPM and Yarn
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    # - name: Cache node modules
+    #   uses: actions/cache@v1
+    #   id: cache
+    #   with:
+    #     path: node_modules
+    #     key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+    # - name: Rebuild detox from cache
+    #   if: steps.cache.outputs.cache-hit == 'true'
+    #   run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm install --legacy-peer-deps
+
+    - name: Cache Pods
+      uses: actions/cache@v1
+      id: podcache
+      with:
+        path: ios/Pods
+        key: pods-${{ hashFiles('**/Podfile.lock') }}
+
+    - name: Update Pods
+      run: |
+        gem update cocoapods xcodeproj
+        cd ios && pod install && cd ..
+
+    # Install prerequisites for detox and build app
+    - run: brew tap wix/brew
+    - run: brew install applesimutils
+    - run: npm run e2e:build
+
+  test:
+    - run: npm run e2e:test -- --cleanup --debug-synchronization 200
+
+  notify:
+    name: Notify Slack
+    needs: test
+    if: ${{ success() || failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: iRoachie/slack-github-actions@v2.3.0
+        if: env.SLACK_WEBHOOK_URL != null
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
