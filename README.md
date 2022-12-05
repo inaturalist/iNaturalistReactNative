@@ -4,7 +4,6 @@
 
 * Xcode 13 or above
 * [Android and iOS environment setup](https://reactnative.dev/docs/environment-setup) described in the RN docs
-* Be nice to each other
 
 ## Install packages and pods
 
