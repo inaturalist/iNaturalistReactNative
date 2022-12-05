@@ -1,6 +1,4 @@
-This is a GitHub Actions workflow. It would work as of now (5. Dec 2022), however, it would consume 35 min on a MacOS runner which is calculated as using 10x the minutes of a Ubuntu runner.
-
-The e2e tests were passing with this workflow on the CI machine.
+This is a GitHub Actions workflow that had passing tests on the CI pipeline. It would work as of now (5. Dec 2022), however, it would consume 350 min on a MacOS runner per run (35 min actual runtime *10 because of MacOS).
 
 ##
 # Run e2e tests
