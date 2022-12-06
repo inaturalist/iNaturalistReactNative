@@ -104,13 +104,13 @@ test( "renders observation photo from photo gallery", ( ) => {
   expect( getByText( new RegExp( obs.longitude ) ) ).toBeTruthy( );
 } );
 
-describe( "Fetch User Location", () => {
+describe( "location fetching", () => {
   beforeEach( () => {
     // resets mock back to original state
     mockFetchUserLocation.mockReset();
   } );
 
-  test( "fetch location when new observation user hasn't saved", async ( ) => {
+  test( "should fetch location when new observation hasn't saved", async ( ) => {
     const observations = [{}];
     mockObsEditProviderWithObs( observations );
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
@@ -124,20 +124,24 @@ describe( "Fetch User Location", () => {
   } );
 
   // test fails,  potentially indicating a bug
-  // eslint-disable-next-line max-len
-  // test( "don't fetch location for existing obs created on device that hasn't been uploaded", async ( ) => {
-  //   const observations = [factory( "LocalObservation" )];
-  //   mockObsEditProviderWithObs( observations );
-  //   const { queryByText } = renderObsEdit( );
-  //   const obs = observations[0];
-  //   const lat = obs.latitude;
+  test( "shouldn't fetch location for existing obs on device that hasn't been saved", async ( ) => {
+    console.log( "TESTING" );
+    const observations = [{
+      id: 63604,
+      latitude: 56.1396,
+      longitude: -91.2888
+    }];
+    mockObsEditProviderWithObs( observations );
+    const { queryByText } = renderObsEdit( );
+    const obs = observations[0];
+    const lat = obs.latitude;
 
-  //   expect( queryByText( `Lat: ${lat}` ) );
-  //   expect( mockFetchUserLocation ).not.toHaveBeenCalled();
-  //   expect( queryByText( `Lat: ${lat}` ) );
-  // } );
+    expect( queryByText( `Lat: ${lat}` ) );
+    expect( mockFetchUserLocation ).not.toHaveBeenCalled();
+    expect( queryByText( `Lat: ${lat}` ) );
+  } );
 
-  test( "don't fetch location for existing observation created elsewhere:", async ( ) => {
+  test( "shouldn't fetch location for existing observation created elsewhere", async ( ) => {
     const observations = [factory( "RemoteObservation" )];
     mockObsEditProviderWithObs( observations );
     const { queryByText } = renderObsEdit( );
