@@ -28,9 +28,12 @@ const ObsList = ( ): Node => {
     optsWithAuth => fetchObservationUpdates( updateParams, optsWithAuth )
   );
 
+  console.log( updates, "updates in api call" );
+
   useEffect( ( ) => {
     if ( !updates ) { return; }
     updates.forEach( update => {
+      console.log( update.viewed, "viewed from api call" );
       const existingObs = realm?.objectForPrimaryKey( "Observation", update.resource_uuid );
       if ( !existingObs ) { return; }
       realm?.write( ( ) => {
