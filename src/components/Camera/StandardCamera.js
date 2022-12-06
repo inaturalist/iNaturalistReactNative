@@ -24,7 +24,10 @@ const StandardCamera = ( ): Node => {
   const { colors: themeColors } = useTheme( );
   const {
     addCameraPhotosToCurrentObservation,
-    createObsWithCameraPhotos, cameraPreviewUris, setCameraPreviewUris, allObsPhotoUris,
+    createObsWithCameraPhotos,
+    cameraPreviewUris,
+    setCameraPreviewUris,
+    allObsPhotoUris,
     evidenceToAdd,
     setEvidenceToAdd
   } = useContext( ObsEditContext );
@@ -90,13 +93,30 @@ const StandardCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const renderCameraOptionsButtons = icon => (
-    <Avatar.Icon
-      size={40}
-      icon={icon}
-      style={{ backgroundColor: colors.gray }}
-    />
-  );
+  const renderCameraOptionsButtons = icon => {
+    let accessibilityLabel = "";
+    switch ( icon ) {
+      case "flash":
+        accessibilityLabel = "The flash is turned on. Press here to disable it.";
+        break;
+      case "flash-off":
+        accessibilityLabel = "The flash is turned off. Press here to enable it.";
+        break;
+      case "camera-flip":
+        accessibilityLabel = "Use the device's other camera.";
+        break;
+      default:
+        break;
+    }
+    return (
+      <Avatar.Icon
+        accessibilityLabel={accessibilityLabel}
+        size={40}
+        icon={icon}
+        style={{ backgroundColor: colors.gray }}
+      />
+    );
+  };
 
   const renderCameraButton = ( icon, disabled ) => (
     <Avatar.Icon
@@ -118,7 +138,9 @@ const StandardCamera = ( ): Node => {
       <View className="absolute bottom-0">
         <View className="flex-row justify-between w-screen mb-4 px-4">
           <Pressable onPress={toggleFlash}>
-            {renderCameraOptionsButtons( "flash" )}
+            {takePhotoOptions.flash === "on"
+              ? renderCameraOptionsButtons( "flash" )
+              : renderCameraOptionsButtons( "flash-off" )}
           </Pressable>
           <Pressable onPress={flipCamera}>
             {renderCameraOptionsButtons( "camera-flip" )}
