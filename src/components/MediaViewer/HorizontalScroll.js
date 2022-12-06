@@ -3,8 +3,9 @@
 import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Pressable } from "components/styledComponents";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Dimensions, FlatList } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Photo from "realmModels/Photo";
@@ -25,6 +26,7 @@ const { width } = Dimensions.get( "screen" );
 const HorizontalScroll = ( {
   photoUris, initialPhotoSelected, deleteDialogVisible, setPhotoUris, hideDialog
 }: Props ): Node => {
+  const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const horizontalScroll = useRef( null );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( initialPhotoSelected );
 
@@ -88,6 +90,11 @@ const HorizontalScroll = ( {
     scrollToIndex( selectedPhotoIndex + 1 );
   };
 
+  const deletePhoto = ( ) => {
+    deletePhotoFromObservation( photoUris[selectedPhotoIndex], photoUris, setPhotoUris );
+    hideDialog( );
+  };
+
   return (
     <>
       <FlatList
@@ -125,9 +132,7 @@ const HorizontalScroll = ( {
       />
       <DeletePhotoDialog
         deleteDialogVisible={deleteDialogVisible}
-        photoUriToDelete={photoUris[selectedPhotoIndex]}
-        photoUris={photoUris}
-        setPhotoUris={setPhotoUris}
+        deletePhoto={deletePhoto}
         hideDialog={hideDialog}
       />
     </>
