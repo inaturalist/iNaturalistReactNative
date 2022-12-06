@@ -30,6 +30,11 @@ const renderStandardCamera = () => render(
 
 describe( "StandardCamera", ( ) => {
   test( "should first render with flash disabled", async () => {
+    renderStandardCamera();
+
+    await screen.findByLabelText(
+      "The flash is turned off. Press here to enable it."
+    );
   } );
 
   test( "should change to flash enabled on button press", async () => {
@@ -41,3 +46,7 @@ describe( "StandardCamera", ( ) => {
     fireEvent.press( flashButton );
 
     await screen.findByLabelText(
+      "The flash is turned on. Press here to disable it."
+    );
+  } );
+} );
