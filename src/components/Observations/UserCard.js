@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { fetchRemoteUser } from "api/users";
 import UserIcon from "components/SharedComponents/UserIcon";
 import { Pressable, Text, View } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -41,7 +42,7 @@ const UserCard = ( ): Node => {
         <Text className="color-white my-1">{User.userHandle( user )}</Text>
         {remoteUser && (
           <Text className="color-white my-1">
-            {`${remoteUser?.observations_count} Observations`}
+            { t( "X-Observations", { count: remoteUser?.observations_count || 0 } )}
           </Text>
         )}
       </View>
