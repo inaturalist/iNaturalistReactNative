@@ -17,6 +17,8 @@ const UserCard = ( ): Node => {
   const user = useCurrentUser( );
   const userId = user?.id;
 
+  console.log( "user card getting rendered" );
+
   const {
     data: remoteUser
   } = useAuthenticatedQuery(

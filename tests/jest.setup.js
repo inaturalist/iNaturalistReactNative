@@ -204,3 +204,8 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
 jest.mock( "react-native-exif-reader", ( ) => ( {
   readExif: jest.fn( )
 } ) );
+
+jest.mock(
+  "@react-native-async-storage/async-storage",
+  ( ) => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" )
+);

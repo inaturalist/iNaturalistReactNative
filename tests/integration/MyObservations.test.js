@@ -2,10 +2,15 @@
 // remote data retrieval and local data persistence
 
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { render, waitFor } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
 import inatjs from "inaturalistjs";
 import React from "react";
+import RNSInfo from "react-native-sensitive-info";
 
 import factory, { makeResponse } from "../factory";
 
@@ -26,10 +31,14 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 jest.mock( "sharedHooks/useApiToken" );
 
+const queryClient = new QueryClient( );
+
 const renderObsList = ( ) => render(
-  <NavigationContainer>
-    <ObsList />
-  </NavigationContainer>
+  <QueryClientProvider client={queryClient}>
+    <NavigationContainer>
+      <ObsList />
+    </NavigationContainer>
+  </QueryClientProvider>
 );
 // TODO: mock.calls.length started returning 0, need to figure out why this isn't working
 test.todo( "renders the number of comments from remote response" );
@@ -65,4 +74,32 @@ test( "should not have accessibility errors", async ( ) => {
   const { getByTestId } = await waitFor( ( ) => renderObsList( ) );
   const obsList = getByTestId( "ObservationViews.myObservations" );
   expect( obsList ).toBeAccessible( );
+} );
+
+const mockUser = factory( "LocalUser" );
+
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: ( ) => {
+    console.log( "returning mock user" );
+    return mockUser;
+  }
+} ) );
+
+describe( "localization for current user", ( ) => {
+  // we should be rendering App.js but haven't gotten that working yet
+  const signInUser = async user => {
+    await RNSInfo.setItem( "username", user.login );
+    inatjs.users.fetch.mockResolvedValue( makeResponse( [user] ) );
+  };
+
+  it( "should be english by default", async ( ) => {
+    signInUser( mockUser );
+    const { findByText } = renderObsList( );
+    const observationText = await findByText( /Observations/ );
+    // console.log( observationText, "obs text" );
+    expect( observationText ).toBeTruthy( );
+  } );
+
+  it.todo( "should be spanish if signed in user's locale is spanish" );
 } );

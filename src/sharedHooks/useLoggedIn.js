@@ -10,6 +10,7 @@ const useLoggedIn = ( ): ?boolean => {
     let isCurrent = true;
     const fetchLoggedInUser = async ( ) => {
       try {
+        console.log( "useLoggedIn is running" );
         const currentUserLogin = await getUsername( );
         if ( !isCurrent ) { return; }
         if ( currentUserLogin ) {

@@ -45,6 +45,7 @@ const ObservationViews = ( {
   const navigation = useNavigation( );
   const { name } = useRoute( );
   const isLoggedIn = useLoggedIn( );
+  console.log( "use logged in, obs views", isLoggedIn );
   const { observationList, unuploadedObsList } = localObservations;
   const numOfUnuploadedObs = unuploadedObsList?.length;
   // eslint-disable-next-line
