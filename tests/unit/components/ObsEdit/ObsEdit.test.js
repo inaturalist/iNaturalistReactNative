@@ -123,9 +123,7 @@ describe( "location fetching", () => {
     expect( findByText( /Lat:/ ) ).toBeTruthy();
   } );
 
-  // test fails,  potentially indicating a bug
-  test( "shouldn't fetch location for existing obs on device that hasn't been saved", async ( ) => {
-    console.log( "TESTING" );
+  test( "shouldn't fetch location for existing obs on device that hasn't uploaded", async ( ) => {
     const observations = [{
       id: 63604,
       latitude: 56.1396,
