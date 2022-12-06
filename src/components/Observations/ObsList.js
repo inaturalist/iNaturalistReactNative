@@ -25,6 +25,7 @@ const ObsList = ( ): Node => {
     fields: "viewed,resource_uuid"
   };
 
+  // TODO: does this make more sense to put in an App.js component?
   const {
     data: updates
   } = useAuthenticatedQuery(

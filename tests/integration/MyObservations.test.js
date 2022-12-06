@@ -2,6 +2,10 @@
 // remote data retrieval and local data persistence
 
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { render, waitFor } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
 import inatjs from "inaturalistjs";
@@ -16,20 +20,18 @@ jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
-    useRoute: ( ) => ( {
-      params: {
-        name: ""
-      }
-    } )
+    useRoute: ( ) => ( { } )
   };
 } );
 
-jest.mock( "sharedHooks/useApiToken" );
+const queryClient = new QueryClient( );
 
 const renderObsList = ( ) => render(
-  <NavigationContainer>
-    <ObsList />
-  </NavigationContainer>
+  <QueryClientProvider client={queryClient}>
+    <NavigationContainer>
+      <ObsList />
+    </NavigationContainer>
+  </QueryClientProvider>
 );
 // TODO: mock.calls.length started returning 0, need to figure out why this isn't working
 test.todo( "renders the number of comments from remote response" );
@@ -61,8 +63,12 @@ test.todo( "only makes one concurrent request for observations at a time" );
 
 test( "should not have accessibility errors", async ( ) => {
   const observations = [factory( "RemoteObservation" )];
+  const updates = [factory( "RemoteUpdate" )];
+  inatjs.observations.updates.mockResolvedValue( makeResponse( updates ) );
   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
-  const { getByTestId } = await waitFor( ( ) => renderObsList( ) );
-  const obsList = getByTestId( "ObservationViews.myObservations" );
-  expect( obsList ).toBeAccessible( );
+  const { getByTestId } = renderObsList( );
+  await waitFor( ( ) => {
+    const obsList = getByTestId( "ObservationViews.myObservations" );
+    expect( obsList ).toBeAccessible( );
+  } );
 } );
