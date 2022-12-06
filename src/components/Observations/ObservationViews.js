@@ -1,15 +1,22 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { searchObservations } from "api/observations";
 import BottomSheet from "components/SharedComponents/BottomSheet";
 import Map from "components/SharedComponents/Map";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useMemo, useRef, useState } from "react";
+import React, {
+  useEffect, useMemo, useRef, useState
+} from "react";
 import {
   ActivityIndicator,
   Animated, Dimensions
 } from "react-native";
+import Observation from "realmModels/Observation";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useLocalObservations from "sharedHooks/useLocalObservations";
 import useLoggedIn from "sharedHooks/useLoggedIn";
 import useUploadStatus from "sharedHooks/useUploadStatus";
 
@@ -22,23 +29,21 @@ import ObsListHeader from "./ObsListHeader";
 import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
 
+const { useRealm } = RealmContext;
+
 type Props = {
-  loading: boolean,
-  localObservations: Object,
-  testID: string,
+  testID?: string,
   taxonId?: number,
-  mapHeight?: number,
-  handleEndReached?: Function
+  mapHeight?: number
 }
 
 const ObservationViews = ( {
-  loading,
-  localObservations,
   testID,
   taxonId,
-  mapHeight,
-  handleEndReached
+  mapHeight
 }: Props ): Node => {
+  const localObservations = useLocalObservations( );
+  const realm = useRealm( );
   const [view, setView] = useState( "list" );
   const navigation = useNavigation( );
   const { name } = useRoute( );
@@ -46,6 +51,43 @@ const ObservationViews = ( {
   const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState( false );
   const { observationList, unuploadedObsList } = localObservations;
   const numOfUnuploadedObs = unuploadedObsList?.length;
+
+  const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
+  const [idBelow, setIdBelow] = useState( null );
+
+  const params = {
+    user_id: currentUser?.id,
+    per_page: 10,
+    fields: Observation.FIELDS
+  };
+
+  if ( idBelow ) {
+    // $FlowIgnore
+    params.id_below = idBelow;
+  } else {
+    // $FlowIgnore
+    params.page = 1;
+  }
+
+  const {
+    data: observations,
+    isLoading
+  } = useAuthenticatedQuery(
+    ["searchObservations", idBelow],
+    optsWithAuth => searchObservations( params, optsWithAuth ),
+    {
+      keepPreviousData: true
+    }
+  );
+
+  const handleEndReached = oldestId => setIdBelow( oldestId );
+
+  useEffect( ( ) => {
+    if ( observations ) {
+      Observation.updateLocalObservationsFromRemote( realm, observations );
+    }
+  }, [realm, observations] );
+
   // eslint-disable-next-line
   const [hasScrolled, setHasScrolled] = useState( false );
 
@@ -122,7 +164,7 @@ const ObservationViews = ( {
 
   const renderEmptyState = ( ) => {
     if ( ( name !== "Explore" && isLoggedIn === false )
-      || ( !loading && observationList.length === 0 ) ) {
+      || ( !isLoading && observationList.length === 0 ) ) {
       return <EmptyList />;
     }
     return <ActivityIndicator />;
@@ -160,9 +202,9 @@ const ObservationViews = ( {
 
   const renderFooter = ( ) => {
     if ( isLoggedIn === false ) { return <View />; }
-    return loading
+    return isLoading
       ? <InfiniteScrollFooter />
-      : <View className="pt-16" />;
+      : <View className="h-32 border border-border py-16" />;
   };
 
   const isExplore = name === "Explore";

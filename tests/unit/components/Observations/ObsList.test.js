@@ -72,7 +72,7 @@ const renderObsList = ( ) => render(
 it( "renders an observation", ( ) => {
   const { getByTestId } = renderObsList( );
   const obs = mockObservations[0];
-  const list = getByTestId( "ObsList.myObservations" );
+  const list = getByTestId( "ObservationViews.myObservations" );
 
   // Test that there isn't other data lingering
   expect( list.props.data.length ).toEqual( mockObservations.length );
