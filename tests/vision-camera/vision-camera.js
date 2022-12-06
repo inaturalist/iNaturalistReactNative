@@ -35,3 +35,12 @@ export class mockCamera extends React.PureComponent {
 }
 
 export const mockSortDevices = ( _left, _right ) => 1;
+
+export const mockUseCameraDevices = _deviceType => {
+  const devices = [
+    {
+      position: "back"
+    }
+  ];
+  return devices;
+};
