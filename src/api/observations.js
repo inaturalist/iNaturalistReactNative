@@ -165,9 +165,7 @@ const fetchObservationUpdates = async (
   opts: Object = {}
 ): Promise<?any> => {
   try {
-    console.log( params, opts, "params and opts in updates" );
     const { results } = await inatjs.observations.updates( params, opts );
-    console.log( results, "response results in updates" );
     return results;
   } catch ( e ) {
     return handleError( e, { throw: true } );

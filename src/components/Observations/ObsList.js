@@ -14,9 +14,11 @@ const ObsList = ( ): Node => {
   const realm = useRealm( );
 
   const updateParams = {
+    // TODO: viewed = false is a param in the API v2 docs
+    // but it's currently not returning any results
+    // so filtering in useEffect instead
     observations_by: "owner",
     per_page: 100,
-    viewed: false,
     fields: "viewed,resource_uuid"
   };
 
@@ -28,12 +30,10 @@ const ObsList = ( ): Node => {
     optsWithAuth => fetchObservationUpdates( updateParams, optsWithAuth )
   );
 
-  console.log( updates, "updates in api call" );
-
   useEffect( ( ) => {
     if ( !updates ) { return; }
-    updates.forEach( update => {
-      console.log( update.viewed, "viewed from api call" );
+    const unviewed = updates.filter( result => result.viewed === false ).map( r => r );
+    unviewed.forEach( update => {
       const existingObs = realm?.objectForPrimaryKey( "Observation", update.resource_uuid );
       if ( !existingObs ) { return; }
       realm?.write( ( ) => {

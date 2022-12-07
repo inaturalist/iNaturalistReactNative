@@ -48,7 +48,6 @@ const ObservationViews = ( {
   const navigation = useNavigation( );
   const { name } = useRoute( );
   const isLoggedIn = useLoggedIn( );
-  const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState( false );
   const { observationList, unuploadedObsList } = localObservations;
   const numOfUnuploadedObs = unuploadedObsList?.length;
 
@@ -202,9 +201,7 @@ const ObservationViews = ( {
 
   const renderFooter = ( ) => {
     if ( isLoggedIn === false ) { return <View />; }
-    return isLoading
-      ? <InfiniteScrollFooter />
-      : <View className="h-32 border border-border py-16" />;
+    return <InfiniteScrollFooter view={view} isLoading={isLoading} />;
   };
 
   const isExplore = name === "Explore";
@@ -221,17 +218,9 @@ const ObservationViews = ( {
 
   const renderItemSeparator = ( ) => <View className="border border-border" />;
 
-  const onMomentumScrollBegin = ( ) => {
-    // this and onEndReached are used to make sure onEndReached
-    // only gets called once instead of getting called multiple times
-    setOnEndReachedCalledDuringMomentum( false );
-  };
-
   const onEndReached = ( ) => {
-    if ( !handleEndReached ) { return; }
-    if ( !onEndReachedCalledDuringMomentum ) {
+    if ( !isLoading ) {
       handleEndReached( observationList[observationList.length - 1].id );
-      setOnEndReachedCalledDuringMomentum( true );
     }
   };
 
@@ -249,7 +238,6 @@ const ObservationViews = ( {
           testID={testID}
           ListEmptyComponent={renderEmptyState}
           onScroll={handleScroll}
-          onEndReached={onEndReached}
           ListFooterComponent={renderFooter}
           ListHeaderComponent={renderHeader}
           ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
@@ -257,8 +245,8 @@ const ObservationViews = ( {
           bounces={false}
           contentContainerStyle={{ minHeight: flatListHeight }}
           initialNumToRender={10}
+          onEndReached={onEndReached}
           onEndReachedThreshold={0.1}
-          onMomentumScrollBegin={onMomentumScrollBegin}
         />
         {numOfUnuploadedObs > 0 && renderBottomSheet( )}
       </>

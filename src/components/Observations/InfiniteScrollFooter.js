@@ -5,10 +5,21 @@ import type { Node } from "react";
 import React from "react";
 import { ActivityIndicator } from "react-native";
 
-const InfiniteScrollFooter = ( ): Node => (
-  <View className="h-32 border border-border py-16">
-    <ActivityIndicator />
-  </View>
-);
+type Props = {
+  view: string,
+  isLoading: boolean
+}
+
+const InfiniteScrollFooter = ( { view, isLoading }: Props ): Node => {
+  const className = `${view === "grid" ? "h-64" : "h-48"} border border-border py-16`;
+  if ( isLoading ) {
+    return (
+      <View className={className}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+  return <View className={className} />;
+};
 
 export default InfiniteScrollFooter;

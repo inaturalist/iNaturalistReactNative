@@ -18,6 +18,8 @@ const Toolbar = ( {
 }: Props ): Node => (
   <View className="py-5 flex-row justify-between bg-white">
     {!isExplore && isLoggedIn ? (
+      // TODO: syncing observations probably involves uploading, then downloading
+      // but not entirely sure what this button is supposed to do in what order
       <Pressable onPress={( ) => console.log( "sync observations" )} className="mx-3">
         <IconMaterial name="sync" size={30} />
       </Pressable>
