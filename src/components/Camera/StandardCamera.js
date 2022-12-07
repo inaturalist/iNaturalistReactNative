@@ -90,7 +90,7 @@ const StandardCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const renderCameraOptionsButtons = icon => (
+  const renderAddObsButtons = icon => (
     <Avatar.Icon
       size={40}
       icon={icon}
@@ -118,10 +118,10 @@ const StandardCamera = ( ): Node => {
       <View className="absolute bottom-0">
         <View className="flex-row justify-between w-screen mb-4 px-4">
           <Pressable onPress={toggleFlash}>
-            {renderCameraOptionsButtons( "flash" )}
+            {renderAddObsButtons( "flash" )}
           </Pressable>
           <Pressable onPress={flipCamera}>
-            {renderCameraOptionsButtons( "camera-flip" )}
+            {renderAddObsButtons( "camera-flip" )}
           </Pressable>
         </View>
         <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">
