@@ -11,7 +11,7 @@ type Props = {
 }
 
 const InfiniteScrollFooter = ( { view, isLoading }: Props ): Node => {
-  const className = `${view === "grid" ? "h-64" : "h-48"} border border-border py-16`;
+  const className = `${view === "grid" ? "h-64" : "h-32"} border-t border-border py-16`;
   if ( isLoading ) {
     return (
       <View className={className}>

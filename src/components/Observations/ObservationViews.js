@@ -4,16 +4,14 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { searchObservations } from "api/observations";
 import BottomSheet from "components/SharedComponents/BottomSheet";
 import Map from "components/SharedComponents/Map";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useEffect, useMemo, useRef, useState
 } from "react";
-import {
-  ActivityIndicator,
-  Animated, Dimensions
-} from "react-native";
+import { Animated, Dimensions } from "react-native";
 import Observation from "realmModels/Observation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useLocalObservations from "sharedHooks/useLocalObservations";
@@ -166,7 +164,7 @@ const ObservationViews = ( {
       || ( !isLoading && observationList.length === 0 ) ) {
       return <EmptyList />;
     }
-    return <ActivityIndicator />;
+    return <View />;
   };
 
   const renderBottomSheet = ( ) => {
@@ -201,7 +199,12 @@ const ObservationViews = ( {
 
   const renderFooter = ( ) => {
     if ( isLoggedIn === false ) { return <View />; }
-    return <InfiniteScrollFooter view={view} isLoading={isLoading} />;
+    return (
+      <InfiniteScrollFooter
+        view={view}
+        isLoading={isLoading}
+      />
+    );
   };
 
   const isExplore = name === "Explore";
@@ -233,18 +236,22 @@ const ObservationViews = ( {
         <Animated.FlatList
           data={observationList}
           key={view === "grid" ? 1 : 0}
-          renderItem={view === "grid" ? renderGridItem : renderItem}
-          numColumns={view === "grid" ? 2 : 1}
+          contentContainerStyle={{
+            // add extra height to make lists scrollable when there are less
+            // items than can fill the screen
+            minHeight: flatListHeight + 400
+          }}
           testID={testID}
+          numColumns={view === "grid" ? 2 : 1}
+          renderItem={view === "grid" ? renderGridItem : renderItem}
           ListEmptyComponent={renderEmptyState}
-          onScroll={handleScroll}
-          ListFooterComponent={renderFooter}
           ListHeaderComponent={renderHeader}
+          ListFooterComponent={renderFooter}
           ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
           stickyHeaderIndices={[0]}
           bounces={false}
-          contentContainerStyle={{ minHeight: flatListHeight }}
           initialNumToRender={10}
+          onScroll={handleScroll}
           onEndReached={onEndReached}
           onEndReachedThreshold={0.1}
         />
@@ -254,9 +261,9 @@ const ObservationViews = ( {
   };
 
   return (
-    <View testID="ObservationViews.myObservations">
+    <ViewWithFooter testID="ObservationViews.myObservations">
       {renderView( )}
-    </View>
+    </ViewWithFooter>
   );
 };
 

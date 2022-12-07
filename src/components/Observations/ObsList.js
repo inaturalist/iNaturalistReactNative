@@ -2,7 +2,6 @@
 
 import { fetchObservationUpdates } from "api/observations";
 import ObservationViews from "components/Observations/ObservationViews";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect } from "react";
@@ -42,11 +41,7 @@ const ObsList = ( ): Node => {
     } );
   }, [realm, updates] );
 
-  return (
-    <ViewWithFooter>
-      <ObservationViews />
-    </ViewWithFooter>
-  );
+  return <ObservationViews />;
 };
 
 export default ObsList;
