@@ -31,6 +31,11 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 jest.mock( "sharedHooks/useApiToken" );
 
+// jest.mock( "sharedHooks/useLoggedIn", ( ) => ( {
+//   __esModule: true,
+//   default: ( ) => true
+// } ) );
+
 const queryClient = new QueryClient( );
 
 const renderObsList = ( ) => render(
@@ -58,14 +63,14 @@ test.todo( "renders the number of comments from remote response" );
 // } );
 
 test.todo( "only makes one concurrent request for observations at a time" );
-// test( "only makes one concurrent request for observations at a time", async( ) => {
+// test( "only makes one concurrent request for observations at a time", async ( ) => {
 //   const observations = [factory( "RemoteObservation" )];
 //   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
 //   await waitFor( ( ) => render( <NavigationContainer><ObsList /></NavigationContainer> ) );
 //   // this doesn't pass b/c useObservations() gets called a lot; we
 //   // probably need a way to ensure that only one request is in flight at a
 //   // time
-//   expect( inatjs.observations.search.mock.calls.length ).toEqual( 1 );
+//   expect( inatjs.observations.search ).toHaveBeenCalledOnce( );
 // } );
 
 test( "should not have accessibility errors", async ( ) => {

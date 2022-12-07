@@ -1,13 +1,13 @@
 // @flow
 
-import MediaViewer from "components/MediaViewer/MediaViewer";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
+import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useContext, useState } from "react";
 
 type Props = {
   photoUris: Array<string>,
@@ -15,8 +15,12 @@ type Props = {
   savingPhoto: boolean
 }
 
-const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node => {
-  const { t } = useTranslation( );
+const PhotoPreview = ( {
+  photoUris,
+  setPhotoUris,
+  savingPhoto
+}: Props ): Node => {
+  const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
@@ -48,26 +52,25 @@ const PhotoPreview = ( { photoUris, setPhotoUris, savingPhoto }: Props ): Node =
     </Text>
   );
 
+  const deletePhoto = ( ) => {
+    deletePhotoFromObservation( photoUriToDelete, photoUris, setPhotoUris );
+    hideDialog( );
+  };
+
   return (
     <>
       <DeletePhotoDialog
         deleteDialogVisible={deleteDialogVisible}
-        photoUriToDelete={photoUriToDelete}
-        photoUris={photoUris}
-        setPhotoUris={setPhotoUris}
+        deletePhoto={deletePhoto}
         hideDialog={hideDialog}
       />
       <MediaViewerModal
         mediaViewerVisible={mediaViewerVisible}
         hideModal={hideModal}
-      >
-        <MediaViewer
-          initialPhotoSelected={initialPhotoSelected}
-          photoUris={photoUris}
-          setPhotoUris={setPhotoUris}
-          hideModal={hideModal}
-        />
-      </MediaViewerModal>
+        initialPhotoSelected={initialPhotoSelected}
+        photoUris={photoUris}
+        setPhotoUris={setPhotoUris}
+      />
       <View className="bg-black h-32">
         <PhotoCarousel
           photoUris={photoUris}

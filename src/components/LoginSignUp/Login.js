@@ -3,23 +3,21 @@
 import { useNavigation } from "@react-navigation/native";
 import Button from "components/SharedComponents/Buttons/Button";
 import {
-  Image, KeyboardAvoidingView, Pressable,
-  SafeAreaView,
-  ScrollView
+  Image, Pressable, SafeAreaView
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
+  findNodeHandle,
   Linking,
-  Platform,
   TouchableOpacity
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   Text, TextInput
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import viewStyles from "styles/login/login";
 import colors from "styles/tailwindColors";
 
 import {
@@ -29,6 +27,7 @@ import {
 import Logout from "./Logout";
 
 const Login = ( ): Node => {
+  const keyboardScrollRef = useRef( null );
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
   const [password, setPassword] = useState( "" );
@@ -72,9 +71,13 @@ const Login = ( ): Node => {
     } );
   };
 
-  const forgotPassword = () => {
+  const forgotPassword = ( ) => {
     // TODO - should be put in a constant somewhere?
     Linking.openURL( "https://www.inaturalist.org/users/password/new" );
+  };
+
+  const scrollToInput = node => {
+    keyboardScrollRef?.current?.scrollToFocusedInput( node );
   };
 
   const loginForm = (
@@ -100,6 +103,7 @@ const Login = ( ): Node => {
         autoCapitalize="none"
         keyboardType="email-address"
         selectionColor={colors.black}
+        onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
       />
       <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
@@ -112,6 +116,7 @@ const Login = ( ): Node => {
         secureTextEntry
         testID="Login.password"
         selectionColor={colors.black}
+        onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
       />
       <TouchableOpacity onPress={forgotPassword}>
         <Text className="underline mt-4 self-end">{t( "Forgot-Password" )}</Text>
@@ -121,7 +126,7 @@ const Login = ( ): Node => {
         level="primary"
         text={t( "Log-in" )}
         onPress={login}
-        style={viewStyles.button}
+        className="mt-5"
         disabled={!email || !password}
         testID="Login.loginButton"
         loading={loading}
@@ -129,23 +134,29 @@ const Login = ( ): Node => {
     </>
   );
 
-  return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1"
+  const renderBackButton = ( ) => (
+    <Pressable
+      onPress={( ) => navigation.goBack( )}
+      className="absolute top-0 right-0"
     >
-      <SafeAreaView className="flex-1">
-        <ScrollView className="flex-1 p-10">
-          <Pressable
-            onPress={() => navigation.goBack()}
-            className="absolute top-0 right-0"
-          >
-            <IconMaterial name="close" size={35} />
-          </Pressable>
-          {loggedIn ? <Logout /> : loginForm}
-        </ScrollView>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+      <IconMaterial name="close" size={35} />
+    </Pressable>
+  );
+
+  return (
+    <SafeAreaView className="flex-1">
+      {loggedIn ? <Logout /> : (
+        <KeyboardAwareScrollView
+          ref={keyboardScrollRef}
+          enableOnAndroid
+          extraHeight={290}
+          className="p-8"
+        >
+          {renderBackButton( )}
+          {loginForm}
+        </KeyboardAwareScrollView>
+      )}
+    </SafeAreaView>
   );
 };
 

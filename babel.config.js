@@ -1,7 +1,6 @@
 module.exports = {
   presets: ["module:metro-react-native-babel-preset"],
   plugins: [
-    "react-native-reanimated/plugin",
     "transform-inline-environment-variables",
     "nativewind/babel",
     ["module-resolver", {
@@ -19,7 +18,9 @@ module.exports = {
         sharedHooks: "./src/sharedHooks",
         styles: "./src/styles"
       }
-    }]],
+    }],
+    "react-native-reanimated/plugin" // Reanimated 2 plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
+  ],
   env: {
     production: {
       plugins: ["react-native-paper/babel"]
