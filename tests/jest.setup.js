@@ -9,6 +9,11 @@ import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
 import { mockCamera, mockSortDevices } from "./vision-camera/vision-camera";
 
+jest.mock(
+  "@react-native-async-storage/async-storage",
+  () => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" )
+);
+
 require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
 
 jest.mock( "react-native-vision-camera", ( ) => ( {
@@ -201,4 +206,11 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
 
 jest.mock( "react-native-exif-reader", ( ) => ( {
   readExif: jest.fn( )
+} ) );
+
+// https://github.com/APSL/react-native-keyboard-aware-scroll-view/issues/493#issuecomment-861711442
+jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
+  KeyboardAwareScrollView: jest
+    .fn( )
+    .mockImplementation( ( { children } ) => children )
 } ) );
