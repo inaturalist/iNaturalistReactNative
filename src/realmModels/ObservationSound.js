@@ -5,6 +5,10 @@ import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
 
 class ObservationSound extends Realm.Object {
+  wasSynced( ) {
+    return this._synced_at !== null;
+  }
+
   static async moveFromCacheToDocumentDirectory( soundUUID ) {
     const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
     const soundPath = `${soundUUID}.${fileExt}`;

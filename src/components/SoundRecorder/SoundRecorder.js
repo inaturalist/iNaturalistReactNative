@@ -172,10 +172,7 @@ const SoundRecorder = ( ): Node => {
   return (
     <ViewWithFooter>
       <View style={viewStyles.center}>
-        <View>
-          <Text style={textStyles.alignCenter}>{ t( "Record-new-sound" ) }</Text>
-          <Text style={[textStyles.alignCenter, textStyles.duration]}>{sound.recordTime}</Text>
-        </View>
+        <Text style={[textStyles.alignCenter, textStyles.duration]}>{sound.recordTime}</Text>
         <View>
           {/* TODO: add visualization for sound recording */}
         </View>

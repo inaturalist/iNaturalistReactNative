@@ -1,15 +1,15 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { updateRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
 import Button from "components/SharedComponents/Buttons/Button";
-import CustomHeader from "components/SharedComponents/CustomHeader";
 import UserIcon from "components/SharedComponents/UserIcon";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
+import { useEffect } from "react";
 import { useWindowDimensions } from "react-native";
 import { Button as RNPaperButton } from "react-native-paper";
 import HTML from "react-native-render-html";
@@ -22,6 +22,7 @@ import colors from "styles/tailwindColors";
 import UserProjects from "./UserProjects";
 
 const UserProfile = ( ): React.Node => {
+  const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute( );
   const { userId } = params;
@@ -47,6 +48,17 @@ const UserProfile = ( ): React.Node => {
     </View>
   );
 
+  useEffect( ( ) => {
+    const headerTitle = ( ) => <Text className="text-xl pb-2">{User.userHandle( user )}</Text>;
+    const headerRight = ( ) => currentUser?.login === user?.login
+      && <RNPaperButton icon="pencil" textColor={colors.tertiary} />;
+
+    navigation.setOptions( {
+      headerTitle,
+      headerRight
+    } );
+  }, [navigation, user, currentUser] );
+
   if ( !user ) { return null; }
 
   const showUserRole = user?.roles?.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
@@ -58,10 +70,6 @@ const UserProfile = ( ): React.Node => {
 
   return (
     <ViewWithFooter>
-      <CustomHeader
-        headerText={User.userHandle( user )}
-        rightIcon={<RNPaperButton icon="pencil" textColor={colors.tertiary} />}
-      />
       <View className="flex-row justify-evenly items-center m-3" testID={`UserProfile.${userId}`}>
         <UserIcon uri={User.uri( user )} />
         <View>
@@ -94,7 +102,7 @@ const UserProfile = ( ): React.Node => {
           <View className="w-1/2">
             <Button
               level="primary"
-              text="Follow"
+              text={t( "Follow" )}
               onPress={followUser}
               testID="UserProfile.followButton"
             />
@@ -102,7 +110,7 @@ const UserProfile = ( ): React.Node => {
           <View className="w-1/2">
             <Button
               level="primary"
-              text="Messages"
+              text={t( "Messages" )}
               onPress={( ) => console.log( "open messages" )}
               testID="UserProfile.messagesButton"
             />

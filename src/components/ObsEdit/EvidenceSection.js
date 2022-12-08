@@ -1,5 +1,6 @@
 // @flow
 
+import { useRoute } from "@react-navigation/native";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
@@ -10,6 +11,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+import { parseExifDateTime, usePhotoExif } from "sharedHooks/usePhotoExif";
 
 import DatePicker from "./DatePicker";
 
@@ -32,12 +34,32 @@ const EvidenceSection = ( {
     updateObservationKey,
     updateObservationKeys
   } = useContext( ObsEditContext );
+  const { params } = useRoute( );
+  const lastScreen = params?.lastScreen;
   const mountedRef = useRef( true );
+  // TODO move this logic to the model
+  const isNewObservation = currentObservation && !currentObservation._created_at;
+  const isNewObservationCameraPhoto = isNewObservation && lastScreen === "StandardCamera";
+  const isNewObservationsWithoutPhotos = (
+    isNewObservation
+    && lastScreen !== "StandardCamera"
+    && lastScreen !== "PhotoGallery"
+  );
+  const isNewObservationImportingPhotos = isNewObservation && lastScreen === "PhotoGallery";
   const [shouldFetchLocation, setShouldFetchLocation] = useState(
-    !currentObservation?._created_at
+    currentObservation
+    && !currentObservation._synced_at
+    && (
+      isNewObservationCameraPhoto
+      || isNewObservationsWithoutPhotos
+    )
   );
   const [fetchingLocation, setFetchingLocation] = useState( false );
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
+  const [photoOriginalUris, setPhotoOriginalUris] = useState( [] );
+  const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
+  const firstPhotoExif = usePhotoExif( photoOriginalUris.length > 0 ? photoOriginalUris[0] : null );
+  const [exifDataImported, setExifDataImported] = useState( false );
 
   const { t } = useTranslation( );
 
@@ -76,6 +98,8 @@ const EvidenceSection = ( {
       if ( !mountedRef.current ) return;
 
       if ( !shouldFetchLocation ) return;
+      if ( exifDataImported ) return;
+
       setFetchingLocation( false );
 
       const location = await fetchUserLocation( );
@@ -101,10 +125,14 @@ const EvidenceSection = ( {
       !fetchingLocation
       // We only need to fetch when we're above the target
       && positionalAccuracy >= TARGET_POSITIONAL_ACCURACY
+      // Don't fetch location more than once a second
+      && Date.now() - lastLocationFetchTime >= 1000
+      // Don't retrieve current location if EXIF data for the photo was imported
+      && !exifDataImported
     ) {
       setFetchingLocation( true );
-      // No need to fetch more than once a second
-      setTimeout( fetchLocation, 1000 );
+      setLastLocationFetchTime( Date.now() );
+      fetchLocation();
     } else {
       setShouldFetchLocation( false );
     }
@@ -115,8 +143,58 @@ const EvidenceSection = ( {
     setFetchingLocation,
     setShouldFetchLocation,
     shouldFetchLocation,
-    updateObservationKeys
+    updateObservationKeys,
+    lastLocationFetchTime,
+    setLastLocationFetchTime,
+    exifDataImported
   ] );
+
+  useEffect( () => {
+    if ( !currentObservation ) return;
+
+    if ( isNewObservationImportingPhotos && currentObservation.observed_on_string
+      && !exifDataImported && photoUris.length > 0 ) {
+      // In case of importing photos - clear out default observed_on
+      updateObservationKeys( { observed_on_string: null } );
+    }
+  }, [currentObservation, exifDataImported,
+    photoUris, updateObservationKeys, isNewObservationImportingPhotos] );
+
+  useEffect( () => {
+    if ( !currentObservation ) return;
+
+    if ( !currentObservation.id && firstPhotoExif && !exifDataImported ) {
+      // New observation with imported photo - import EXIF data from it and
+      // use it to set location/observed_on data
+      setExifDataImported( true );
+
+      const newObsData = {};
+      const observedOnDate = parseExifDateTime( firstPhotoExif.date );
+
+      if ( observedOnDate ) {
+        newObsData.observed_on_string = createObservedOnStringForUpload( observedOnDate );
+      }
+
+      if ( firstPhotoExif.latitude && firstPhotoExif.longitude ) {
+        newObsData.latitude = firstPhotoExif.latitude;
+        newObsData.longitude = firstPhotoExif.longitude;
+        if ( firstPhotoExif.positional_accuracy ) {
+          newObsData.positional_accuracy = firstPhotoExif.positional_accuracy;
+        }
+      }
+
+      if ( Object.keys( newObsData ).length > 0 ) {
+        updateObservationKeys( newObsData );
+      }
+    }
+  }, [currentObservation, firstPhotoExif, exifDataImported, updateObservationKeys] );
+
+  useEffect( ( ) => {
+    if ( !currentObservation || !currentObservation.observationPhotos ) { return; }
+    setPhotoOriginalUris( Array.from( currentObservation.observationPhotos ).map(
+      obsPhoto => obsPhoto.originalPhotoUri
+    ) );
+  }, [currentObservation] );
 
   const handleDatePicked = selectedDate => {
     if ( selectedDate ) {

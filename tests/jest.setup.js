@@ -9,9 +9,12 @@ import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
 import { mockCamera, mockSortDevices } from "./vision-camera/vision-camera";
 
-require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
+jest.mock(
+  "@react-native-async-storage/async-storage",
+  () => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" )
+);
 
-jest.useFakeTimers();
+require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
 
 jest.mock( "react-native-vision-camera", ( ) => ( {
   Camera: mockCamera,
@@ -179,4 +182,35 @@ jest.mock( "@gorhom/bottom-sheet", ( ) => ( {
   __esModule: true,
   // eslint-disable-next-line react/jsx-no-useless-fragment
   BottomSheetTextInput: ( ) => <></>
+} ) );
+
+jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
+  nativeInterface: jest.fn( ),
+  CameraRoll: {
+    getPhotos: jest.fn( ( ) => ( {
+      page_info: {
+        end_cursor: jest.fn( ),
+        has_next_page: false
+      },
+      edges: [
+        // This expexcts something like
+        // { node: photo }
+      ]
+    } ) ),
+    getAlbums: jest.fn( ( ) => ( {
+      // Expecting album titles as keys and photo counts as values
+      // "My Amazing album": 12
+    } ) )
+  }
+} ) );
+
+jest.mock( "react-native-exif-reader", ( ) => ( {
+  readExif: jest.fn( )
+} ) );
+
+// https://github.com/APSL/react-native-keyboard-aware-scroll-view/issues/493#issuecomment-861711442
+jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
+  KeyboardAwareScrollView: jest
+    .fn( )
+    .mockImplementation( ( { children } ) => children )
 } ) );

@@ -3,13 +3,12 @@
 import CheckBox from "@react-native-community/checkbox";
 import InputField from "components/SharedComponents/InputField";
 import ScrollNoFooter from "components/SharedComponents/ScrollNoFooter";
-import TranslatedText from "components/SharedComponents/TranslatedText";
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ExploreContext } from "providers/contexts";
 import RadioButtonRN from "radio-buttons-react-native";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
-import { View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { pickerSelectStyles, viewStyles } from "styles/explore/exploreFilters";
 
@@ -283,7 +282,7 @@ const ExploreFilters = ( ): Node => {
     <>
       <ScrollNoFooter>
         <TaxonLocationSearch />
-        <TranslatedText text="Sort-by" />
+        <Text>{t( "Sort-by" )}</Text>
         <RadioButtonRN
           data={sortByRadioButtons}
           initial={1}
@@ -306,24 +305,24 @@ const ExploreFilters = ( ): Node => {
           }}
         />
         <View style={viewStyles.filtersRow}>
-          <TranslatedText text="Filters" />
+          <Text>{t( "Filters" )}</Text>
           <ResetFiltersButton />
         </View>
-        <TranslatedText text="Quality-Grade" />
+        <Text>{t( "Quality-Grade" )}</Text>
         <View style={viewStyles.checkboxRow}>
           {renderQualityGradeCheckbox( "research" )}
-          <TranslatedText text="Research-Grade" />
+          <Text>{t( "Research-Grade" )}</Text>
         </View>
         <View style={viewStyles.checkboxRow}>
           {renderQualityGradeCheckbox( "needs_id" )}
-          <TranslatedText text="Needs-ID" />
+          <Text>{t( "Needs-ID" )}</Text>
         </View>
         <View style={viewStyles.checkboxRow}>
           {renderQualityGradeCheckbox( "casual" )}
-          <TranslatedText text="Casual" />
+          <Text>{t( "Casual" )}</Text>
         </View>
-        <TranslatedText text="User" />
-        <TranslatedText text="Search-for-a-user" />
+        <Text>{t( "User" )}</Text>
+        <Text>{t( "Search-for-a-user" )}</Text>
         <DropdownPicker
           searchQuery={user}
           setSearchQuery={setUser}
@@ -331,8 +330,8 @@ const ExploreFilters = ( ): Node => {
           sources="users"
           value={userId}
         />
-        <TranslatedText text="Projects" />
-        <TranslatedText text="Search-for-a-project" />
+        <Text>{t( "Projects" )}</Text>
+        <Text>{t( "Search-for-a-project" )}</Text>
         <DropdownPicker
           searchQuery={project}
           setSearchQuery={setProject}
@@ -340,41 +339,41 @@ const ExploreFilters = ( ): Node => {
           sources="projects"
           value={projectId}
         />
-        <TranslatedText text="Rank" />
-        <TranslatedText text="Low" />
+        <Text>{t( "Rank" )}</Text>
+        <Text>{t( "Low" )}</Text>
         {renderRankPicker( "lrank" )}
-        <TranslatedText text="High" />
+        <Text>{t( "High" )}</Text>
         {renderRankPicker( "hrank" )}
-        <TranslatedText text="Date" />
-        <TranslatedText text="Months" />
+        <Text>{t( "Date" )}</Text>
+        <Text>{t( "Months" )}</Text>
         {renderMonthsPicker( )}
-        <TranslatedText text="Media" />
+        <Text>{t( "Media" )}</Text>
         <View style={viewStyles.checkboxRow}>
           {renderMediaCheckbox( "photos" )}
-          <TranslatedText text="Has-Photos" />
+          <Text>{t( "Has-Photos" )}</Text>
         </View>
         <View style={viewStyles.checkboxRow}>
           {renderMediaCheckbox( "sounds" )}
-          <TranslatedText text="Has-Sounds" />
+          <Text>{t( "Has-Sounds" )}</Text>
         </View>
-        <TranslatedText text="Status" />
+        <Text>{t( "Status" )}</Text>
         <View style={viewStyles.checkboxRow}>
           {renderStatusCheckbox( "introduced" )}
-          <TranslatedText text="Introduced" />
+          <Text>{t( "Introduced" )}</Text>
         </View>
         <View style={viewStyles.checkboxRow}>
           {renderStatusCheckbox( "native" )}
-          <TranslatedText text="Native" />
+          <Text>{t( "Native" )}</Text>
         </View>
         <View style={viewStyles.checkboxRow}>
           {renderStatusCheckbox( "threatened" )}
-          <TranslatedText text="Threatened" />
+          <Text>{t( "Threatened" )}</Text>
         </View>
         <View style={viewStyles.checkboxRow}>
           {renderStatusCheckbox( "captive" )}
-          <TranslatedText text="Captive-Cultivated" />
+          <Text>{t( "Captive-Cultivated" )}</Text>
         </View>
-        <TranslatedText text="Reviewed" />
+        <Text>{t( "Reviewed" )}</Text>
         <RadioButtonRN
           data={reviewedRadioButtons}
           initial={1}
@@ -396,7 +395,7 @@ const ExploreFilters = ( ): Node => {
             }
           }}
         />
-        <TranslatedText text="Photo-Licensing" />
+        <Text>{t( "Photo-Licensing" )}</Text>
         <RNPickerSelect
           onValueChange={itemValue => {
             setUnappliedFilters( {
@@ -413,7 +412,7 @@ const ExploreFilters = ( ): Node => {
               : "all"
           }
         />
-        <TranslatedText text="Description-Tags" />
+        <Text>{t( "Description-Tags" )}</Text>
         <InputField
           handleTextChange={q => {
             setUnappliedFilters( {

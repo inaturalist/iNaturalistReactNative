@@ -20,7 +20,7 @@ const Toolbar = ( {
 }: Props ): Node => (
   <View className="py-5 flex-row justify-between bg-white">
     {!isExplore && isLoggedIn ? (
-      <Pressable onPress={syncObservations} className="mx-3">
+      <Pressable onPress={syncObservations} className="mx-3" accessibilityRole="button">
         <IconMaterial name="sync" size={30} />
       </Pressable>
     ) : (

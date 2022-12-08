@@ -22,6 +22,7 @@ const ObsList = ( ): Node => {
         loading={loading}
         localObservations={localObservations}
         testID="ObsList.myObservations"
+        // needs to be refactøred, fetches forever once all observations are fetched
         handleEndReached={( ) => fetchNextObservations( observationList.length )}
         syncObservations={syncObservations}
       />

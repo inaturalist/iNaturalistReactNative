@@ -148,20 +148,31 @@ const createObservation = async (
   }
 };
 
-const createEvidence = async (
+const updateObservation = async (
+  params: Object = {},
+  opts: Object = {}
+): Promise<?any> => {
+  try {
+    return await inatjs.observations.update( params, opts );
+  } catch ( e ) {
+    console.log( e, "error in update obs" );
+    return handleError( e );
+  }
+};
+
+const createOrUpdateEvidence = async (
   apiEndpoint: Function,
   params: Object = {},
   opts: Object = {}
 ): Promise<?any> => {
   try {
-    return await apiEndpoint.create( params, opts );
+    return await apiEndpoint( params, opts );
   } catch ( e ) {
     return handleError( e );
   }
 };
 
 const deleteObservation = async ( params: Object = {}, opts: Object = {} ) : Promise<?any> => {
-  console.log( params, "params in delete obs" );
   try {
     return await inatjs.observations.delete( params, opts );
   } catch ( e ) {
@@ -170,13 +181,14 @@ const deleteObservation = async ( params: Object = {}, opts: Object = {} ) : Pro
 };
 
 export {
-  createEvidence,
   createObservation,
+  createOrUpdateEvidence,
   deleteObservation,
   faveObservation,
   fetchRemoteObservation,
   markAsReviewed,
   markObservationUpdatesViewed,
   searchObservations,
-  unfaveObservation
+  unfaveObservation,
+  updateObservation
 };

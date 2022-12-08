@@ -1,35 +1,72 @@
 // @flow
 
+import { Modal, SafeAreaView, Text } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
-import { Modal, Portal } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button, IconButton } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
+import HorizontalScroll from "./HorizontalScroll";
+
 type Props = {
-  children: any,
+  photoUris: Array<string>,
+  setPhotoUris: Function,
+  initialPhotoSelected: Object,
   mediaViewerVisible: boolean,
   hideModal: Function
 }
 
-const MediaViewerModal = ( { children, mediaViewerVisible, hideModal }: Props ): Node => {
-  const insets = useSafeAreaInsets( );
+const MediaViewerModal = ( {
+  photoUris,
+  setPhotoUris,
+  initialPhotoSelected,
+  mediaViewerVisible,
+  hideModal
+}: Props ): Node => {
+  const { t } = useTranslation( );
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
+
+  const numOfPhotos = photoUris.length;
+
+  const showDialog = ( ) => setDeleteDialogVisible( true );
+  const hideDialog = ( ) => setDeleteDialogVisible( false );
+
+  useEffect( ( ) => {
+    if ( numOfPhotos === 0 ) {
+      hideModal( );
+    }
+  }, [numOfPhotos, hideModal] );
+
   return (
-    <Portal>
-      <Modal
-        visible={mediaViewerVisible}
-        onDismiss={hideModal}
-        style={{
-          backgroundColor: colors.black,
-          marginTop: -insets.top,
-          paddingTop: insets.top,
-          marginBottom: -insets.bottom,
-          paddingBottom: insets.bottom
-        }}
-      >
-        {children}
-      </Modal>
-    </Portal>
+    <Modal
+      visible={mediaViewerVisible}
+      onDismiss={hideModal}
+    >
+      <SafeAreaView className="bg-black h-full">
+        <Text className="text-2xl text-white self-center mb-2">
+          {t( "X-Photos", { photoCount: numOfPhotos } )}
+        </Text>
+        <HorizontalScroll
+          photoUris={photoUris}
+          initialPhotoSelected={initialPhotoSelected}
+          deleteDialogVisible={deleteDialogVisible}
+          setPhotoUris={setPhotoUris}
+          hideDialog={hideDialog}
+        />
+        <IconButton
+          icon="arrow-left"
+          onPress={hideModal}
+          iconColor={colors.white}
+        />
+        <Button
+          className="flex-row justify-end p-5"
+          onPress={showDialog}
+        >
+          {t( "Remove-Photo" )}
+        </Button>
+      </SafeAreaView>
+    </Modal>
   );
 };
 

@@ -207,14 +207,11 @@ const Settings = ( { children: _children }: Props ): Node => {
     <ViewWithFooter>
       <SafeAreaView style={viewStyles.container}>
         <StatusBar barStyle="dark-content" />
-        <View style={viewStyles.headerRow}>
-          <Text style={textStyles.header}>{t( "Settings" )}</Text>
-          <Button
-            title="Save"
-            onPress={saveSettings}
-            disabled={isLoading || isSaving}
-          />
-        </View>
+        <Button
+          title="Save"
+          onPress={saveSettings}
+          disabled={isLoading || isSaving}
+        />
         <SettingsTabs activeTab={activeTab} onTabPress={setActiveTab} />
         {isLoading ? (
           <ActivityIndicator size="large" />

@@ -5,17 +5,13 @@ import {
 } from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
-import { ObsEditContext } from "providers/contexts";
-import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
 import factory from "../../../factory";
 
-const mockedNavigate = jest.fn( );
+const mockNavigate = jest.fn( );
 const mockObservation = factory( "LocalObservation" );
 const mockUser = factory( "LocalUser" );
-
-jest.mock( "../../../../src/providers/ObsEditProvider" );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
@@ -32,8 +28,9 @@ jest.mock( "@react-navigation/native", ( ) => {
       }
     } ),
     useNavigation: ( ) => ( {
-      navigate: mockedNavigate,
-      addListener: jest.fn( )
+      navigate: mockNavigate,
+      addListener: jest.fn( ),
+      setOptions: jest.fn( )
     } )
   };
 } );
@@ -58,34 +55,20 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
   getUserId: ( ) => mockObservation.user.id
 } ) );
 
-const mockObsEditProviderWithObs = ( ) => ObsEditProvider.mockImplementation( ( { children } ) => (
-  // eslint-disable-next-line react/jsx-no-constructed-context-values
-  <ObsEditContext.Provider value={{
-    addObservations: ( ) => { }
-  }}
-  >
-    {children}
-  </ObsEditContext.Provider>
-) );
-
 const queryClient = new QueryClient( );
 
 const renderObsDetails = ( ) => render(
   <QueryClientProvider client={queryClient}>
     <NavigationContainer>
-      <ObsEditProvider>
-        <ObsDetails />
-      </ObsEditProvider>
+      <ObsDetails />
     </NavigationContainer>
   </QueryClientProvider>
 );
 
-test( "renders obs details from remote call", ( ) => {
-  mockObsEditProviderWithObs( );
+test( "renders obs details from remote call", async ( ) => {
+  const { getByTestId, getByText, findByTestId } = renderObsDetails();
 
-  const { getByTestId, getByText } = renderObsDetails( );
-
-  expect( getByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
+  expect( await findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
   expect(
     getByTestId( "PhotoScroll.photo" ).props.source
   ).toStrictEqual( { uri: mockObservation.observationPhotos[0].photo.url } );
@@ -94,38 +77,40 @@ test( "renders obs details from remote call", ( ) => {
   // right now, these elements are not rendering in renderObsDetails( ).debug( ) at all
 } );
 
-test( "renders data tab on button press", ( ) => {
-  const { getByTestId, getByText } = renderObsDetails( );
-  const button = getByTestId( "ObsDetails.DataTab" );
+test( "renders data tab on button press", async ( ) => {
+  const { getByText, findByTestId } = renderObsDetails();
+  const button = await findByTestId( "ObsDetails.DataTab" );
 
   fireEvent.press( button );
   expect( getByText( mockObservation.description ) ).toBeTruthy( );
 } );
 
-test( "navigates to observer profile on button press", ( ) => {
-  const { getByTestId } = renderObsDetails( );
+test( "navigates to observer profile on button press", async ( ) => {
+  const { findByTestId } = renderObsDetails( );
 
-  fireEvent.press( getByTestId( "ObsDetails.currentUser" ) );
-  expect( mockedNavigate )
+  fireEvent.press( await findByTestId( "ObsDetails.currentUser" ) );
+  expect( mockNavigate )
     .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
 } );
 
-test( "navigates to identifier profile on button press", ( ) => {
-  const { getByTestId } = renderObsDetails( );
+test( "navigates to identifier profile on button press", async ( ) => {
+  const { findByTestId } = renderObsDetails( );
 
   fireEvent.press(
-    getByTestId( `ObsDetails.identifier.${mockObservation.identifications[0].user.id}` )
+    await findByTestId(
+      `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
+    )
   );
-  expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", {
+  expect( mockNavigate ).toHaveBeenCalledWith( "UserProfile", {
     userId: mockObservation.identifications[0].user.id
   } );
 } );
 
-test( "navigates to taxon details on button press", ( ) => {
-  const { getByTestId } = renderObsDetails( );
+test( "navigates to taxon details on button press", async ( ) => {
+  const { findByTestId } = renderObsDetails( );
 
-  fireEvent.press( getByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
-  expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
+  fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
+  expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
     id: mockObservation.taxon.id
   } );
 } );
