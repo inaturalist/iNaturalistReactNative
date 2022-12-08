@@ -11,7 +11,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   findNodeHandle,
   Linking,
-  TouchableOpacity
+  TouchableOpacity, View
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
@@ -81,7 +81,7 @@ const Login = ( ): Node => {
   };
 
   const loginForm = (
-    <>
+    <View>
       <Image
         className="self-center w-32 h-32"
         resizeMode="contain"
@@ -119,7 +119,7 @@ const Login = ( ): Node => {
         onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
       />
       <TouchableOpacity onPress={forgotPassword}>
-        <Text className="underline mt-4 self-end">{t( "Forgot-Password" )}</Text>
+        <Text className="underline mt-2 self-end">{t( "Forgot-Password" )}</Text>
       </TouchableOpacity>
       {error && <Text className="text-red self-center mt-5">{error}</Text>}
       <Button
@@ -131,7 +131,7 @@ const Login = ( ): Node => {
         testID="Login.loginButton"
         loading={loading}
       />
-    </>
+    </View>
   );
 
   const renderBackButton = ( ) => (
@@ -147,9 +147,10 @@ const Login = ( ): Node => {
     <SafeAreaView className="flex-1">
       {loggedIn ? <Logout /> : (
         <KeyboardAwareScrollView
+          keyboardShouldPersistTaps="always"
           ref={keyboardScrollRef}
           enableOnAndroid
-          extraHeight={290}
+          extraScrollHeight={30}
           className="p-8"
         >
           {renderBackButton( )}
