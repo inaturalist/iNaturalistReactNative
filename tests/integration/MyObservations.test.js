@@ -1,13 +1,17 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
+import "i18n";
+
 import { NavigationContainer } from "@react-navigation/native";
 import {
   QueryClient,
   QueryClientProvider
 } from "@tanstack/react-query";
-import { render, waitFor } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
+import App from "components/App";
 import ObsList from "components/Observations/ObsList";
+import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 import RNSInfo from "react-native-sensitive-info";
@@ -31,17 +35,14 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 jest.mock( "sharedHooks/useApiToken" );
 
-// jest.mock( "sharedHooks/useLoggedIn", ( ) => ( {
-//   __esModule: true,
-//   default: ( ) => true
-// } ) );
-
 const queryClient = new QueryClient( );
 
 const renderObsList = ( ) => render(
   <QueryClientProvider client={queryClient}>
     <NavigationContainer>
-      <ObsList />
+      <App>
+        <ObsList />
+      </App>
     </NavigationContainer>
   </QueryClientProvider>
 );
@@ -72,39 +73,58 @@ test.todo( "only makes one concurrent request for observations at a time" );
 //   // time
 //   expect( inatjs.observations.search ).toHaveBeenCalledOnce( );
 // } );
+const mockUseCurrentUser = jest.fn( );
 
 test( "should not have accessibility errors", async ( ) => {
+  const signInUser = async user => {
+    mockUseCurrentUser.mockImplementation( ( ) => user );
+    await RNSInfo.setItem( "username", user.login );
+    inatjs.users.me.mockResolvedValue( makeResponse( [user] ) );
+  };
+  const mockUser = factory( "LocalUser", {
+    locale: "de"
+  } );
+  await signInUser( mockUser );
   const observations = [factory( "RemoteObservation" )];
   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
-  const { getByTestId } = await waitFor( ( ) => renderObsList( ) );
-  const obsList = getByTestId( "ObservationViews.myObservations" );
+  const { findByTestId } = renderObsList( );
+  const obsList = await findByTestId( "ObservationViews.myObservations" );
   expect( obsList ).toBeAccessible( );
 } );
 
-const mockUser = factory( "LocalUser" );
-
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
-  default: ( ) => {
-    console.log( "returning mock user" );
-    return mockUser;
-  }
+  default: ( ) => mockUseCurrentUser( )
 } ) );
 
 describe( "localization for current user", ( ) => {
-  // we should be rendering App.js but haven't gotten that working yet
   const signInUser = async user => {
+    mockUseCurrentUser.mockImplementation( ( ) => user );
     await RNSInfo.setItem( "username", user.login );
-    inatjs.users.fetch.mockResolvedValue( makeResponse( [user] ) );
+    inatjs.users.me.mockResolvedValue( makeResponse( [user] ) );
   };
-
   it( "should be english by default", async ( ) => {
-    signInUser( mockUser );
+    const mockUser = factory( "LocalUser", {
+      locale: "en"
+    } );
+    await signInUser( mockUser );
     const { findByText } = renderObsList( );
+    // note: this might include X-Observations, which is the non-translated version
+    // and means english is not actually getting set as the default
     const observationText = await findByText( /Observations/ );
-    // console.log( observationText, "obs text" );
     expect( observationText ).toBeTruthy( );
   } );
 
-  it.todo( "should be spanish if signed in user's locale is spanish" );
+  it( "should be spanish if signed in user's locale is spanish", async ( ) => {
+    const mockSpanishUser = factory( "LocalUser", {
+      locale: "es"
+    } );
+    await signInUser( mockSpanishUser );
+    // added this line because it didn't look like i18next.changeLanguage was actually
+    // getting called without this... probably not how we want to test
+    i18next.changeLanguage( mockSpanishUser.locale );
+    const { findByText } = renderObsList( );
+    const observationText = await findByText( /Observaciones/ );
+    expect( observationText ).toBeTruthy( );
+  } );
 } );

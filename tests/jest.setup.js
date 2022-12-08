@@ -34,8 +34,6 @@ jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
 // https://github.com/callstack/react-native-testing-library/issues/658#issuecomment-766886514
 jest.mock( "react-native/Libraries/LogBox/LogBox" );
 
-jest.mock( "react-native-localize", () => jest.requireActual( "react-native-localize/mock" ) );
-
 jest.mock( "react-native-config", () => ( {
   OAUTH_CLIENT_ID: process.env.OAUTH_CLIENT_ID,
   OAUTH_CLIENT_SECRET: process.env.OAUTH_CLIENT_SECRET,
@@ -139,14 +137,6 @@ jest.mock( "react-native-geolocation-service", ( ) => ( {
 
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 
-jest.mock( "react-i18next", () => ( {
-  useTranslation: () => ( { t: key => key } )
-} ) );
-
-jest.mock( "i18next", () => ( {
-  t: k => k
-} ) );
-
 // Make apisauce work with nock
 jest.mock( "apisauce", ( ) => ( {
   create: config => {
@@ -170,9 +160,7 @@ jest.mock( "react-native-fs", ( ) => {
   return RNFS;
 } );
 
-require( "react-native" ).NativeModules.MMKVNative = {
-  install: jest.fn( ( ) => true )
-};
+require( "react-native" ).NativeModules.FileReaderModule = { };
 
 // Mock native animation for all tests
 jest.mock( "react-native/Libraries/Animated/NativeAnimatedHelper" );
@@ -207,11 +195,6 @@ jest.mock( "@react-native-camera-roll/camera-roll", ( ) => ( {
 jest.mock( "react-native-exif-reader", ( ) => ( {
   readExif: jest.fn( )
 } ) );
-
-jest.mock(
-  "@react-native-async-storage/async-storage",
-  ( ) => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" )
-);
 
 // https://github.com/APSL/react-native-keyboard-aware-scroll-view/issues/493#issuecomment-861711442
 jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {

@@ -7,19 +7,19 @@ import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 type Props = {
   isExplore: boolean,
-  isLoggedIn: ?boolean,
+  currentUser: ?Object,
   syncObservations: Function,
   setView: Function
   }
 
 const Toolbar = ( {
   isExplore,
-  isLoggedIn,
+  currentUser,
   syncObservations,
   setView
 }: Props ): Node => (
   <View className="py-5 flex-row justify-between bg-white">
-    {!isExplore && isLoggedIn ? (
+    {!isExplore && currentUser ? (
       <Pressable onPress={syncObservations} className="mx-3" accessibilityRole="button">
         <IconMaterial name="sync" size={30} />
       </Pressable>

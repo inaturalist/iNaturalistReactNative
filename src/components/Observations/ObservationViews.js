@@ -45,7 +45,6 @@ const ObservationViews = ( {
   const navigation = useNavigation( );
   const { name } = useRoute( );
   const isLoggedIn = useLoggedIn( );
-  console.log( "use logged in, obs views", isLoggedIn );
   const { observationList, unuploadedObsList } = localObservations;
   const numOfUnuploadedObs = unuploadedObsList?.length;
   // eslint-disable-next-line
@@ -170,13 +169,12 @@ const ObservationViews = ( {
   const renderHeader = useMemo( ( ) => (
     <ObsListHeader
       numOfUnuploadedObs={numOfUnuploadedObs}
-      isLoggedIn={isLoggedIn}
       translateY={translateY}
       isExplore={isExplore}
       syncObservations={syncObservations}
       setView={setView}
     />
-  ), [isExplore, isLoggedIn, translateY, numOfUnuploadedObs, syncObservations] );
+  ), [isExplore, translateY, numOfUnuploadedObs, syncObservations] );
 
   const renderItemSeparator = ( ) => <View className="border border-border" />;
 

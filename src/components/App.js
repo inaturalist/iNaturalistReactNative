@@ -13,12 +13,18 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 
 const { useRealm } = RealmContext;
 
-const App = ( ): Node => {
+type Props = {
+  children?: any
+}
+
+// this children prop is here for the sake of testing with jest
+// normally we would never do this in code
+const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
 
   // fetch current user from server and save to realm in useEffect
-  // this is used for changing locale
+  // this is used for changing locale and also for showing UserCard
   const {
     data: user
   } = useAuthenticatedQuery(
@@ -59,9 +65,9 @@ const App = ( ): Node => {
     }
   }, [user, realm, currentUser] );
 
-  return (
-    <RootDrawerNavigator />
-  );
+  // this children prop is here for the sake of testing with jest
+  // normally we would never do this in code
+  return children || <RootDrawerNavigator />;
 };
 
 export default App;
