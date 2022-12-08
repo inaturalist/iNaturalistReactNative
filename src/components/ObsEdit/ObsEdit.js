@@ -97,6 +97,7 @@ const ObsEdit = ( ): Node => {
 
   const showDialog = ( ) => setDeleteDialogVisible( true );
   const hideDialog = ( ) => setDeleteDialogVisible( false );
+
   const renderKebabMenu = useCallback( ( ) => (
     <>
       <DeleteObservationDialog
@@ -114,12 +115,18 @@ const ObsEdit = ( ): Node => {
 
   useEffect( ( ) => {
     const renderHeaderTitle = ( ) => <ObsEditHeaderTitle />;
+    const headerOptions = {
+      headerTitle: renderHeaderTitle
+    };
 
-    navigation.setOptions( {
-      headerTitle: renderHeaderTitle,
-      headerRight: renderKebabMenu
-    } );
-  }, [observations, navigation, renderKebabMenu] );
+    // only show delete kebab menu for observations persisted to realm
+    if ( localObservation ) {
+      // $FlowIgnore
+      headerOptions.headerRight = renderKebabMenu;
+    }
+
+    navigation.setOptions( headerOptions );
+  }, [observations, navigation, renderKebabMenu, localObservation] );
 
   const realm = useRealm( );
 
