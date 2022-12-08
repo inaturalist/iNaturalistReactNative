@@ -50,6 +50,7 @@ const ObsEdit = ( ): Node => {
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [showAddEvidenceModal, setShowAddEvidenceModal] = useState( false );
+  const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
 
   const scrollToInput = node => {
     // Add a 'scroll' ref to your ScrollView
@@ -95,23 +96,22 @@ const ObsEdit = ( ): Node => {
     }, [handleBackButtonPress] )
   );
 
-  const showDialog = ( ) => setDeleteDialogVisible( true );
   const hideDialog = ( ) => setDeleteDialogVisible( false );
 
   const renderKebabMenu = useCallback( ( ) => (
-    <>
-      <DeleteObservationDialog
-        deleteDialogVisible={deleteDialogVisible}
-        hideDialog={hideDialog}
+    <KebabMenu
+      visible={kebabMenuVisible}
+      setVisible={setKebabMenuVisible}
+    >
+      <Menu.Item
+        onPress={( ) => {
+          setDeleteDialogVisible( true );
+          setKebabMenuVisible( false );
+        }}
+        title={t( "Delete" )}
       />
-      <KebabMenu>
-        <Menu.Item
-          onPress={showDialog}
-          title={t( "Delete" )}
-        />
-      </KebabMenu>
-    </>
-  ), [deleteDialogVisible] );
+    </KebabMenu>
+  ), [kebabMenuVisible] );
 
   useEffect( ( ) => {
     const renderHeaderTitle = ( ) => <ObsEditHeaderTitle />;
@@ -160,6 +160,10 @@ const ObsEdit = ( ): Node => {
 
   return (
     <>
+      <DeleteObservationDialog
+        deleteDialogVisible={deleteDialogVisible}
+        hideDialog={hideDialog}
+      />
       <MediaViewerModal
         mediaViewerVisible={mediaViewerVisible}
         hideModal={hideModal}
