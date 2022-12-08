@@ -65,8 +65,6 @@ const ObservationViews = ( ): Node => {
     }
   );
 
-  const handleEndReached = oldestId => setIdBelow( oldestId );
-
   useEffect( ( ) => {
     if ( observations ) {
       Observation.updateLocalObservationsFromRemote( realm, observations );
@@ -208,7 +206,7 @@ const ObservationViews = ( ): Node => {
 
   const onEndReached = ( ) => {
     if ( !isLoading ) {
-      handleEndReached( observationList[observationList.length - 1].id );
+      setIdBelow( observationList[observationList.length - 1].id );
     }
   };
 
