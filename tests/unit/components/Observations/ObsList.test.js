@@ -22,18 +22,18 @@ const mockObservations = [
 
 // Mock the hooks we use on ObsList since we're not trying to test them here
 
-jest.mock( "../../../../src/sharedHooks/useCurrentUser", ( ) => ( {
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
   default: ( ) => true
 } ) );
 
-jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+jest.mock( "sharedHooks/useLoggedIn", ( ) => ( {
   __esModule: true,
   default: ( ) => true
 } ) );
 
 jest.mock(
-  "../../../../src/sharedHooks/useLocalObservations",
+  "sharedHooks/useLocalObservations",
   ( ) => ( {
     __esModule: true,
     default: ( ) => ( {
@@ -53,11 +53,6 @@ jest.mock( "@react-navigation/native", ( ) => {
     } )
   };
 } );
-
-jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
-  default: ( ) => false,
-  __esModule: true
-} ) );
 
 const queryClient = new QueryClient( );
 

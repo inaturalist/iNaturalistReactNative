@@ -1,9 +1,8 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { searchObservations } from "api/observations";
 import BottomSheet from "components/SharedComponents/BottomSheet";
-import Map from "components/SharedComponents/Map";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
@@ -29,22 +28,11 @@ import UploadPrompt from "./UploadPrompt";
 
 const { useRealm } = RealmContext;
 
-type Props = {
-  testID?: string,
-  taxonId?: number,
-  mapHeight?: number
-}
-
-const ObservationViews = ( {
-  testID,
-  taxonId,
-  mapHeight
-}: Props ): Node => {
+const ObservationViews = ( ): Node => {
   const localObservations = useLocalObservations( );
   const realm = useRealm( );
   const [view, setView] = useState( "list" );
   const navigation = useNavigation( );
-  const { name } = useRoute( );
   const isLoggedIn = useLoggedIn( );
   const { observationList, unuploadedObsList } = localObservations;
   const numOfUnuploadedObs = unuploadedObsList?.length;
@@ -160,7 +148,7 @@ const ObservationViews = ( {
   );
 
   const renderEmptyState = ( ) => {
-    if ( ( name !== "Explore" && isLoggedIn === false )
+    if ( ( isLoggedIn === false )
       || ( !isLoading && observationList.length === 0 ) ) {
       return <EmptyList />;
     }
@@ -207,17 +195,14 @@ const ObservationViews = ( {
     );
   };
 
-  const isExplore = name === "Explore";
-
   const renderHeader = useMemo( ( ) => (
     <ObsListHeader
       numOfUnuploadedObs={numOfUnuploadedObs}
       isLoggedIn={isLoggedIn}
       translateY={translateY}
-      isExplore={isExplore}
       setView={setView}
     />
-  ), [isExplore, isLoggedIn, translateY, numOfUnuploadedObs] );
+  ), [isLoggedIn, translateY, numOfUnuploadedObs] );
 
   const renderItemSeparator = ( ) => <View className="border border-border" />;
 
@@ -227,42 +212,31 @@ const ObservationViews = ( {
     }
   };
 
-  const renderView = ( ) => {
-    if ( view === "map" ) {
-      return <Map taxonId={taxonId} mapHeight={mapHeight} />;
-    }
-    return (
-      <>
-        <Animated.FlatList
-          data={observationList}
-          key={view === "grid" ? 1 : 0}
-          contentContainerStyle={{
-            // add extra height to make lists scrollable when there are less
-            // items than can fill the screen
-            minHeight: flatListHeight + 400
-          }}
-          testID={testID}
-          numColumns={view === "grid" ? 2 : 1}
-          renderItem={view === "grid" ? renderGridItem : renderItem}
-          ListEmptyComponent={renderEmptyState}
-          ListHeaderComponent={renderHeader}
-          ListFooterComponent={renderFooter}
-          ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
-          stickyHeaderIndices={[0]}
-          bounces={false}
-          initialNumToRender={10}
-          onScroll={handleScroll}
-          onEndReached={onEndReached}
-          onEndReachedThreshold={0.1}
-        />
-        {numOfUnuploadedObs > 0 && renderBottomSheet( )}
-      </>
-    );
-  };
-
   return (
-    <ViewWithFooter testID="ObservationViews.myObservations">
-      {renderView( )}
+    <ViewWithFooter>
+      <Animated.FlatList
+        data={observationList}
+        key={view === "grid" ? 1 : 0}
+        contentContainerStyle={{
+          // add extra height to make lists scrollable when there are less
+          // items than can fill the screen
+          minHeight: flatListHeight + 400
+        }}
+        testID="ObservationViews.myObservations"
+        numColumns={view === "grid" ? 2 : 1}
+        renderItem={view === "grid" ? renderGridItem : renderItem}
+        ListEmptyComponent={renderEmptyState}
+        ListHeaderComponent={renderHeader}
+        ListFooterComponent={renderFooter}
+        ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
+        stickyHeaderIndices={[0]}
+        bounces={false}
+        initialNumToRender={10}
+        onScroll={handleScroll}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.1}
+      />
+      {numOfUnuploadedObs > 0 && renderBottomSheet( )}
     </ViewWithFooter>
   );
 };

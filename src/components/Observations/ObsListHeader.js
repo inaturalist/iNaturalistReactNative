@@ -13,12 +13,11 @@ type Props = {
   numOfUnuploadedObs: number,
   isLoggedIn: ?boolean,
   translateY: any,
-  isExplore: boolean,
   setView: Function
 }
 
 const ObsListHeader = ( {
-  numOfUnuploadedObs, isLoggedIn, translateY, isExplore, setView
+  numOfUnuploadedObs, isLoggedIn, translateY, setView
 }: Props ): Node => {
   if ( isLoggedIn === null ) {
     return <View className="rounded-bl-3xl rounded-br-3xl bg-primary h-24" />;
@@ -33,7 +32,6 @@ const ObsListHeader = ( {
           : <LoggedOutCard numOfUnuploadedObs={numOfUnuploadedObs} />}
       </View>
       <Toolbar
-        isExplore={isExplore}
         isLoggedIn={isLoggedIn}
         setView={setView}
       />
