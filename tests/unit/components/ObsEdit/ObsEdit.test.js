@@ -1,4 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { render, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import faker from "faker";
@@ -72,14 +76,18 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
   </ObsEditContext.Provider>
 ) );
 
+const queryClient = new QueryClient( );
+
 const renderObsEdit = ( ) => render(
-  <SafeAreaProvider>
-    <NavigationContainer>
-      <ObsEditProvider>
-        <ObsEdit />
-      </ObsEditProvider>
-    </NavigationContainer>
-  </SafeAreaProvider>
+  <QueryClientProvider client={queryClient}>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <ObsEditProvider>
+          <ObsEdit />
+        </ObsEditProvider>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  </QueryClientProvider>
 );
 
 test( "renders observation photo from photo gallery", ( ) => {

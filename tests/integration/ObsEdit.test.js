@@ -1,4 +1,8 @@
 import { NavigationContainer, useRoute } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { render, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import ObsEditProvider from "providers/ObsEditProvider";
@@ -32,16 +36,20 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+const queryClient = new QueryClient( );
+
 const renderObsEdit = ( update = null ) => {
   const renderMethod = update || render;
   return renderMethod(
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <ObsEditProvider>
-          <ObsEdit />
-        </ObsEditProvider>
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <ObsEditProvider>
+            <ObsEdit />
+          </ObsEditProvider>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 };
 
