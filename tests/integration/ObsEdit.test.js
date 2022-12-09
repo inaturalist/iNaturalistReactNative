@@ -10,28 +10,6 @@ import factory from "../factory";
 
 jest.useFakeTimers( );
 
-// mock Portal with a Modal component inside of it (MediaViewer)
-jest.mock( "react-native-paper", () => {
-  const RealModule = jest.requireActual( "react-native-paper" );
-  const MockedModule = {
-    ...RealModule,
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    Portal: ( { children } ) => <>{children}</>
-  };
-  return MockedModule;
-} );
-
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useRoute: jest.fn( ( ) => ( { } ) ),
-    useNavigation: ( ) => ( {
-      setOptions: jest.fn( )
-    } )
-  };
-} );
-
 const renderObsEdit = ( update = null ) => {
   const renderMethod = update || render;
   return renderMethod(

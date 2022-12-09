@@ -1,13 +1,9 @@
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  QueryClient,
-  QueryClientProvider
-} from "@tanstack/react-query";
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent } from "@testing-library/react-native";
 import Search from "components/Search/Search";
 import React from "react";
 
 import factory from "../../../factory";
+import { renderComponent } from "../../../helpers/render";
 
 const mockedNavigate = jest.fn( );
 
@@ -30,28 +26,8 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const queryClient = new QueryClient( {
-  defaultOptions: {
-    queries: {
-      // No need to do default retries in tests
-      retry: false,
-      // Prevent `Jest did not exit one second after the test run has completed.` error
-      // https://react-query-v3.tanstack.com/guides/testing#set-cachetime-to-infinity-with-jest
-      cacheTime: Infinity
-    }
-  }
-} );
-
-const renderSearch = ( ) => render(
-  <QueryClientProvider client={queryClient}>
-    <NavigationContainer>
-      <Search />
-    </NavigationContainer>
-  </QueryClientProvider>
-);
-
 test( "renders taxon search results from API call", ( ) => {
-  const { getByTestId, getByText } = renderSearch( );
+  const { getByTestId, getByText } = renderComponent( <Search /> );
 
   const commonName = mockTaxon.preferred_common_name;
   expect( getByTestId( "Search.taxa" ) ).toBeTruthy( );
@@ -66,7 +42,7 @@ test( "renders taxon search results from API call", ( ) => {
 test.todo( "should not have accessibility errors" );
 
 test( "navigates to TaxonDetails on button press", ( ) => {
-  const { getByTestId } = renderSearch( );
+  const { getByTestId } = renderComponent( <Search /> );
 
   fireEvent.press( getByTestId( `Search.taxa.${mockTaxon.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", { id: mockTaxon.id } );

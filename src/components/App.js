@@ -26,7 +26,7 @@ const App = ( { children }: Props ): Node => {
   // fetch current user from server and save to realm in useEffect
   // this is used for changing locale and also for showing UserCard
   const {
-    data: user
+    data: remoteUser
   } = useAuthenticatedQuery(
     ["fetchUserMe"],
     optsWithAuth => fetchUserMe( { }, optsWithAuth )
@@ -53,17 +53,24 @@ const App = ( { children }: Props ): Node => {
     checkForSignedInUser( );
   }, [] );
 
+  // When we get the updated current user, update the record in the database
   useEffect( ( ) => {
-    if ( user ) {
+    if ( remoteUser ) {
       realm?.write( ( ) => {
-        realm?.create( "User", user, "modified" );
-      } );
-      if ( !user.locale ) { return; }
-      i18next.changeLanguage( user.locale, err => {
-        if ( err ) { throw new Error( err ); }
+        realm?.create( "User", remoteUser, "modified" );
       } );
     }
-  }, [user, realm, currentUser] );
+  }, [realm, remoteUser] );
+
+  // If the current user's locale has changed, change the language
+  useEffect( ( ) => {
+    async function changeLanguageToLocale( locale ) {
+      await i18next.changeLanguage( locale );
+    }
+    if ( currentUser?.locale ) {
+      changeLanguageToLocale( currentUser.locale );
+    }
+  }, [currentUser?.locale] );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

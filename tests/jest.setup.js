@@ -27,6 +27,28 @@ jest.mock( "react-native-vision-camera", ( ) => ( {
 jest.mock( "react-native-localize", () => mockRNLocalize );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 
+// mock Portal with a Modal component inside of it (MediaViewer)
+jest.mock( "react-native-paper", () => {
+  const RealModule = jest.requireActual( "react-native-paper" );
+  const MockedModule = {
+    ...RealModule,
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    Portal: ( { children } ) => <>{children}</>
+  };
+  return MockedModule;
+} );
+
+jest.mock( "@react-navigation/native", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useRoute: jest.fn( ( ) => ( { } ) ),
+    useNavigation: ( ) => ( {
+      setOptions: jest.fn( )
+    } )
+  };
+} );
+
 // this resolves error with importing file after Jest environment is torn down
 // https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
 jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {

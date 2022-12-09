@@ -1,13 +1,8 @@
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  QueryClient,
-  QueryClientProvider
-} from "@tanstack/react-query";
-import { render } from "@testing-library/react-native";
 import ProjectDetails from "components/Projects/ProjectDetails";
 import React from "react";
 
 import factory from "../../../factory";
+import { renderComponent } from "../../../helpers/render";
 
 const mockProject = factory( "RemoteProject" );
 const mockObservation = factory( "RemoteObservation" );
@@ -24,26 +19,6 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const queryClient = new QueryClient( {
-  defaultOptions: {
-    queries: {
-      // No need to do default retries in tests
-      retry: false,
-      // Prevent `Jest did not exit one second after the test run has completed.` error
-      // https://react-query-v3.tanstack.com/guides/testing#set-cachetime-to-infinity-with-jest
-      cacheTime: Infinity
-    }
-  }
-} );
-
-const renderProjectDetails = ( ) => render(
-  <QueryClientProvider client={queryClient}>
-    <NavigationContainer>
-      <ProjectDetails />
-    </NavigationContainer>
-  </QueryClientProvider>
-);
-
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
@@ -52,7 +27,7 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
 } ) );
 
 test( "displays project observations", ( ) => {
-  const { getByTestId, getByText } = renderProjectDetails( );
+  const { getByTestId, getByText } = renderComponent( <ProjectDetails /> );
 
   expect( getByText( mockObservation.taxon.preferred_common_name ) ).toBeTruthy( );
   expect( getByTestId( "ObsList.photo" ).props.source )

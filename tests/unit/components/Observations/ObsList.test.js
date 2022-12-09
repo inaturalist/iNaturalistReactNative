@@ -1,13 +1,11 @@
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  QueryClient,
-  QueryClientProvider
-} from "@tanstack/react-query";
-import { fireEvent, render, within } from "@testing-library/react-native";
+import { fireEvent, waitFor, within } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
 import React from "react";
 
 import factory from "../../../factory";
+import { renderComponent } from "../../../helpers/render";
+
+jest.useFakeTimers( );
 
 const mockObservations = [
   factory( "LocalObservation", {
@@ -54,45 +52,40 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const queryClient = new QueryClient( );
+it( "renders an observation", async ( ) => {
+  await waitFor( ( ) => {
+    const { getByTestId } = renderComponent( <ObsList /> );
+    const obs = mockObservations[0];
+    const list = getByTestId( "ObservationViews.myObservations" );
 
-const renderObsList = ( ) => render(
-  <QueryClientProvider client={queryClient}>
-    <NavigationContainer>
-      <ObsList />
-    </NavigationContainer>
-  </QueryClientProvider>
-);
-
-it( "renders an observation", ( ) => {
-  const { getByTestId } = renderObsList( );
-  const obs = mockObservations[0];
-  const list = getByTestId( "ObservationViews.myObservations" );
-
-  // Test that there isn't other data lingering
-  expect( list.props.data.length ).toEqual( mockObservations.length );
-  // Test that a card got rendered for the our test obs
-  const card = getByTestId( `ObsList.obsCard.${obs.uuid}` );
-  expect( card ).toBeTruthy( );
-  // Test that the card has the correct comment count
-  const commentCount = within( card ).getByTestId( "ObsList.obsCard.commentCount" );
-  expect( commentCount.children[0] ).toEqual( obs.comments.length.toString( ) );
-} );
-
-it( "renders multiple observations", async ( ) => {
-  const { getByTestId } = renderObsList( );
-  mockObservations.forEach( obs => {
-    expect( getByTestId( `ObsList.obsCard.${obs.uuid}` ) ).toBeTruthy( );
+    // Test that there isn't other data lingering
+    expect( list.props.data.length ).toEqual( mockObservations.length );
+    // Test that a card got rendered for the our test obs
+    const card = getByTestId( `ObsList.obsCard.${obs.uuid}` );
+    expect( card ).toBeTruthy( );
+    // Test that the card has the correct comment count
+    const commentCount = within( card ).getByTestId( "ObsList.obsCard.commentCount" );
+    expect( commentCount.children[0] ).toEqual( obs.comments.length.toString( ) );
   } );
 } );
 
-it( "renders grid view on button press", ( ) => {
-  const { getByTestId } = renderObsList( );
-  const button = getByTestId( "ObsList.toggleGridView" );
+it( "renders multiple observations", async ( ) => {
+  await waitFor( ( ) => {
+    const { getByTestId } = renderComponent( <ObsList /> );
+    mockObservations.forEach( obs => {
+      expect( getByTestId( `ObsList.obsCard.${obs.uuid}` ) ).toBeTruthy( );
+    } );
+  } );
+} );
 
-  fireEvent.press( button );
-  mockObservations.forEach( obs => {
-    expect( getByTestId( `ObsList.gridItem.${obs.uuid}` ) ).toBeTruthy( );
+it( "renders grid view on button press", async ( ) => {
+  await waitFor( ( ) => {
+    const { getByTestId } = renderComponent( <ObsList /> );
+    const button = getByTestId( "ObsList.toggleGridView" );
+    fireEvent.press( button );
+    mockObservations.forEach( obs => {
+      expect( getByTestId( `ObsList.gridItem.${obs.uuid}` ) ).toBeTruthy( );
+    } );
   } );
 } );
 
