@@ -20,5 +20,6 @@ export default define( "LocalObservation", faker => ( {
   qualityGrade: "research",
   latitude: Number( faker.address.latitude( ) ),
   longitude: Number( faker.address.longitude( ) ),
-  description: faker.lorem.paragraph( )
+  description: faker.lorem.paragraph( ),
+  observed_on_string: "2022-12-03T11:14:16"
 } ) );
