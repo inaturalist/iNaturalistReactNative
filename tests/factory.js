@@ -12,7 +12,7 @@ fs.readdirSync( pathToFactories ).forEach( file => {
 } );
 
 // Makes a basic API response from an array of results
-export const makeResponse = results => ( {
+export const makeResponse = ( results = [] ) => ( {
   total_results: results.length,
   page: 1,
   per_page: 30,
