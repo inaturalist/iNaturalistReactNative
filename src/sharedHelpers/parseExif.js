@@ -25,8 +25,7 @@ export const parseExifDateTime = ( datetime: string ): ?Date => {
 // Parses EXIF date time into a date object
 export const parseExif = async ( photoUri: ?string ): Promise<Object> => {
   try {
-    const rawExif = await readExif( photoUri );
-    return rawExif;
+    return await readExif( photoUri );
   } catch ( e ) {
     console.error( e, "Couldn't parse EXIF" );
     return null;
