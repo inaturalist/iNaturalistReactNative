@@ -1,15 +1,19 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { searchObservations } from "api/observations";
 import BottomSheet from "components/SharedComponents/BottomSheet";
-import Map from "components/SharedComponents/Map";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useMemo, useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  Animated, Dimensions
-} from "react-native";
+import React, {
+  useEffect, useMemo, useRef, useState
+} from "react";
+import { Animated, Dimensions } from "react-native";
+import Observation from "realmModels/Observation";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useLocalObservations from "sharedHooks/useLocalObservations";
 import useLoggedIn from "sharedHooks/useLoggedIn";
 import useUploadStatus from "sharedHooks/useUploadStatus";
 
@@ -22,31 +26,51 @@ import ObsListHeader from "./ObsListHeader";
 import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
 
-type Props = {
-  loading: boolean,
-  localObservations: Object,
-  testID: string,
-  taxonId?: number,
-  mapHeight?: number,
-  handleEndReached?: Function,
-  syncObservations?: Function
-}
+const { useRealm } = RealmContext;
 
-const ObservationViews = ( {
-  loading,
-  localObservations,
-  testID,
-  taxonId,
-  mapHeight,
-  handleEndReached,
-  syncObservations
-}: Props ): Node => {
+const ObservationViews = ( ): Node => {
+  const localObservations = useLocalObservations( );
+  const realm = useRealm( );
   const [view, setView] = useState( "list" );
   const navigation = useNavigation( );
-  const { name } = useRoute( );
   const isLoggedIn = useLoggedIn( );
   const { observationList, unuploadedObsList } = localObservations;
   const numOfUnuploadedObs = unuploadedObsList?.length;
+
+  const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
+  const [idBelow, setIdBelow] = useState( null );
+
+  const params = {
+    user_id: currentUser?.id,
+    per_page: 10,
+    fields: Observation.FIELDS
+  };
+
+  if ( idBelow ) {
+    // $FlowIgnore
+    params.id_below = idBelow;
+  } else {
+    // $FlowIgnore
+    params.page = 1;
+  }
+
+  const {
+    data: observations,
+    isLoading
+  } = useAuthenticatedQuery(
+    ["searchObservations", idBelow],
+    optsWithAuth => searchObservations( params, optsWithAuth ),
+    {
+      keepPreviousData: true
+    }
+  );
+
+  useEffect( ( ) => {
+    if ( observations ) {
+      Observation.updateLocalObservationsFromRemote( realm, observations );
+    }
+  }, [realm, observations] );
+
   // eslint-disable-next-line
   const [hasScrolled, setHasScrolled] = useState( false );
 
@@ -112,6 +136,7 @@ const ObservationViews = ( {
   const renderItem = ( { item } ) => (
     <ObsCard item={item} handlePress={navToObsDetails} />
   );
+
   const renderGridItem = ( { item, index } ) => (
     <GridItem
       item={item}
@@ -121,10 +146,11 @@ const ObservationViews = ( {
   );
 
   const renderEmptyState = ( ) => {
-    if ( name !== "Explore" && isLoggedIn === false ) {
+    if ( ( isLoggedIn === false )
+      || ( !isLoading && observationList.length === 0 ) ) {
       return <EmptyList />;
     }
-    return <ActivityIndicator />;
+    return <View />;
   };
 
   const renderBottomSheet = ( ) => {
@@ -159,56 +185,57 @@ const ObservationViews = ( {
 
   const renderFooter = ( ) => {
     if ( isLoggedIn === false ) { return <View />; }
-    return loading
-      ? <InfiniteScrollFooter />
-      : <View className="pt-16" />;
+    return (
+      <InfiniteScrollFooter
+        view={view}
+        isLoading={isLoading}
+      />
+    );
   };
-
-  const isExplore = name === "Explore";
 
   const renderHeader = useMemo( ( ) => (
     <ObsListHeader
       numOfUnuploadedObs={numOfUnuploadedObs}
+      isLoggedIn={isLoggedIn}
       translateY={translateY}
-      isExplore={isExplore}
-      syncObservations={syncObservations}
       setView={setView}
     />
-  ), [isExplore, translateY, numOfUnuploadedObs, syncObservations] );
+  ), [isLoggedIn, translateY, numOfUnuploadedObs] );
 
   const renderItemSeparator = ( ) => <View className="border border-border" />;
 
-  const renderView = ( ) => {
-    if ( view === "map" ) {
-      return <Map taxonId={taxonId} mapHeight={mapHeight} />;
+  const onEndReached = ( ) => {
+    if ( !isLoading ) {
+      setIdBelow( observationList[observationList.length - 1].id );
     }
-    return (
-      <>
-        <Animated.FlatList
-          data={observationList}
-          key={view === "grid" ? 1 : 0}
-          renderItem={view === "grid" ? renderGridItem : renderItem}
-          numColumns={view === "grid" ? 2 : 1}
-          testID={testID}
-          ListEmptyComponent={renderEmptyState}
-          onScroll={handleScroll}
-          onEndReached={handleEndReached}
-          ListFooterComponent={renderFooter}
-          ListHeaderComponent={renderHeader}
-          ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
-          stickyHeaderIndices={[0]}
-          bounces={false}
-          contentContainerStyle={{ minHeight: flatListHeight }}
-        />
-        {numOfUnuploadedObs > 0 && renderBottomSheet( )}
-      </>
-    );
   };
 
   return (
-    <View testID="ObservationViews.myObservations">
-      {renderView( )}
-    </View>
+    <ViewWithFooter>
+      <Animated.FlatList
+        data={observationList}
+        key={view === "grid" ? 1 : 0}
+        contentContainerStyle={{
+          // add extra height to make lists scrollable when there are less
+          // items than can fill the screen
+          minHeight: flatListHeight + 400
+        }}
+        testID="ObservationViews.myObservations"
+        numColumns={view === "grid" ? 2 : 1}
+        renderItem={view === "grid" ? renderGridItem : renderItem}
+        ListEmptyComponent={renderEmptyState}
+        ListHeaderComponent={renderHeader}
+        ListFooterComponent={renderFooter}
+        ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
+        stickyHeaderIndices={[0]}
+        bounces={false}
+        initialNumToRender={10}
+        onScroll={handleScroll}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.1}
+      />
+      {numOfUnuploadedObs > 0 && renderBottomSheet( )}
+    </ViewWithFooter>
   );
 };
 

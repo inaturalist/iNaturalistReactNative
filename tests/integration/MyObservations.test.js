@@ -17,9 +17,6 @@ import factory, { makeResponse } from "../factory";
 
 jest.useFakeTimers( );
 
-// Mock inaturalistjs so we can make some fake responses
-jest.mock( "inaturalistjs" );
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -55,6 +52,7 @@ const renderObsList = ( ) => render(
 const signInUser = async user => {
   await RNSInfo.setItem( "username", user.login );
   await RNSInfo.setItem( "jwtToken", "yaddayadda" );
+  await RNSInfo.setItem( "jwtTokenExpiration", Date.now( ).toString( ), {} );
   await RNSInfo.setItem( "accessToken", "yaddayadda" );
   inatjs.users.me.mockResolvedValue( makeResponse( [user] ) );
   user.signedIn = true;
@@ -82,7 +80,7 @@ describe( "localization for current user", ( ) => {
     const { queryByText } = renderObsList( );
     await waitFor( ( ) => {
       expect( queryByText( /X-Observations/ ) ).toBeFalsy( );
-      expect( queryByText( /Observations/ ) ).toBeTruthy( );
+      expect( queryByText( / Observations/ ) ).toBeTruthy( );
     } );
   } );
 

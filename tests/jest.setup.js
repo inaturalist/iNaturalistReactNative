@@ -3,11 +3,13 @@ import "react-native-gesture-handler/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
+import inatjs from "inaturalistjs";
 import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 import mockRNLocalize from "react-native-localize/mock";
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
+import { makeResponse } from "./factory";
 import { mockCamera, mockSortDevices } from "./vision-camera/vision-camera";
 
 jest.mock(
@@ -203,3 +205,8 @@ jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
     .fn( )
     .mockImplementation( ( { children } ) => children )
 } ) );
+
+// Mock inaturalistjs so we can make some fake responses
+jest.mock( "inaturalistjs" );
+inatjs.observations.search.mockResolvedValue( makeResponse( ) );
+inatjs.observations.updates.mockResolvedValue( makeResponse( ) );

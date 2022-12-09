@@ -8,14 +8,12 @@ import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import User from "realmModels/User";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import colors from "styles/tailwindColors";
 
-type Props = {
-  currentUser: ?Object
-}
-
-const UserCard = ( { currentUser }: Props ): Node => {
+const UserCard = ( ): Node => {
   const navigation = useNavigation( );
+  const currentUser = useCurrentUser( );
   if ( !currentUser ) { return <View className="flex-row mx-5 items-center" />; }
   const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId: currentUser?.id } );
 

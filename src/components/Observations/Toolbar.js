@@ -6,21 +6,23 @@ import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 type Props = {
-  isExplore: boolean,
-  currentUser: ?Object,
-  syncObservations: Function,
+  isLoggedIn: ?boolean,
   setView: Function
   }
 
 const Toolbar = ( {
-  isExplore,
-  currentUser,
-  syncObservations,
+  isLoggedIn,
   setView
 }: Props ): Node => (
   <View className="py-5 flex-row justify-between bg-white">
-    {!isExplore && currentUser ? (
-      <Pressable onPress={syncObservations} className="mx-3" accessibilityRole="button">
+    {isLoggedIn ? (
+      // TODO: syncing observations probably involves uploading, then downloading
+      // but not entirely sure what this button is supposed to do in what order
+      <Pressable
+        onPress={( ) => console.log( "sync observations" )}
+        className="mx-3"
+        accessibilityRole="button"
+      >
         <IconMaterial name="sync" size={30} />
       </Pressable>
     ) : (
