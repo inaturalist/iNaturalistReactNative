@@ -1,8 +1,6 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
-import "i18n";
-
 import { NavigationContainer } from "@react-navigation/native";
 import {
   QueryClient,

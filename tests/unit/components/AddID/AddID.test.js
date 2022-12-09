@@ -55,7 +55,17 @@ jest.mock( "react-native-vector-icons/MaterialIcons", ( ) => {
   return MaterialIcons;
 } );
 
-const queryClient = new QueryClient( );
+const queryClient = new QueryClient( {
+  defaultOptions: {
+    queries: {
+      // No need to do default retries in tests
+      retry: false,
+      // Prevent `Jest did not exit one second after the test run has completed.` error
+      // https://react-query-v3.tanstack.com/guides/testing#set-cachetime-to-infinity-with-jest
+      cacheTime: Infinity
+    }
+  }
+} );
 
 const renderAddID = route => render(
   <QueryClientProvider client={queryClient}>
@@ -69,15 +79,12 @@ test( "renders taxon search results", async ( ) => {
   inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
   const route = { params: { } };
   const { getByTestId } = renderAddID( route );
-
   const input = getByTestId( "SearchTaxon" );
+  const taxon = mockTaxaList[0];
   await waitFor( () => {
     fireEvent.changeText( input, "Some taxon" );
+    expect( getByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
   } );
-
-  const taxon = mockTaxaList[0];
-
-  expect( getByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
   expect(
     getByTestId( `Search.taxa.${taxon.id}.photo` ).props.source
   ).toStrictEqual( { uri: taxon.default_photo.square_url } );

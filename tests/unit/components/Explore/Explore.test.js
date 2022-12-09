@@ -76,7 +76,17 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const queryClient = new QueryClient( );
+const queryClient = new QueryClient( {
+  defaultOptions: {
+    queries: {
+      // No need to do default retries in tests
+      retry: false,
+      // Prevent `Jest did not exit one second after the test run has completed.` error
+      // https://react-query-v3.tanstack.com/guides/testing#set-cachetime-to-infinity-with-jest
+      cacheTime: Infinity
+    }
+  }
+} );
 
 const renderExplore = ( ) => render(
   <QueryClientProvider client={queryClient}>

@@ -9,11 +9,11 @@ import fetchSearchResults from "api/search";
 import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { Text } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef, useState
 } from "react";
-import { useTranslation } from "react-i18next";
 import {
   FlatList,
   Image,
@@ -48,7 +48,6 @@ const SearchTaxonIcon = (
 );
 
 const AddID = ( { route }: Props ): Node => {
-  const { t } = useTranslation( );
   const [comment, setComment] = useState( "" );
   const [commentDraft, setCommentDraft] = useState( "" );
   const { onIDAdded, goBackOnSave, hideComment } = route.params;

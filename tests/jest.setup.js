@@ -1,3 +1,4 @@
+import "i18n";
 import "react-native-gesture-handler/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
