@@ -8,7 +8,9 @@ import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
-import { Text } from "components/styledComponents";
+import {
+  Image, Pressable, Text, View
+} from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef, useState
@@ -16,11 +18,8 @@ import React, {
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
-  Image,
-  Pressable,
   TextInput as NativeTextInput,
-  TouchableOpacity,
-  View
+  TouchableOpacity
 } from "react-native";
 import {
   Button, Headline, IconButton, TextInput
@@ -104,33 +103,40 @@ const AddID = ( { route }: Props ): Node => {
       : IconMaterial.getImageSourceSync( "spa", 50, colors.inatGreen );
 
     return (
-      <View style={viewStyles.taxonResult} testID={`Search.taxa.${item.id}`}>
-        <Image
-          style={viewStyles.taxonResultIcon}
-          source={taxonImage}
-          testID={`Search.taxa.${item.id}.photo`}
-        />
-        <View style={viewStyles.taxonResultNameContainer}>
-          <Text style={textStyles.taxonResultName}>{item.name}</Text>
-          <Text style={textStyles.taxonResultScientificName}>{item.preferred_common_name}</Text>
-        </View>
+      <View
+        className="flex-row my-1 items-center justify-between"
+        testID={`Search.taxa.${item.id}`}
+      >
         <Pressable
-          style={viewStyles.taxonResultInfo}
+          className="flex-row items-center w-16 grow"
           onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )}
-          accessibilityRole="link"
         >
-          <IconMaterial style={textStyles.taxonResultInfoIcon} name="info-outline" size={25} />
+          <Image
+            className="w-12 h-12 mr-1 bg-lightGray"
+            source={taxonImage}
+            testID={`Search.taxa.${item.id}.photo`}
+          />
+          <View className="shrink">
+            <Text>{item.name}</Text>
+            <Text>{item.preferred_common_name}</Text>
+          </View>
         </Pressable>
-        <Pressable
-          style={viewStyles.taxonResultSelect}
-          onPress={( ) => {
-            onIDAdded( createID( item ) );
-            if ( goBackOnSave ) { navigation.goBack(); }
-          }}
-          accessibilityRole="link"
-        >
-          <IconMaterial style={textStyles.taxonResultSelectIcon} name="check" size={25} />
-        </Pressable>
+        <View className="flex-row">
+          <IconButton
+            icon="information-outline"
+            size={25}
+            onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )}
+          />
+          <IconButton
+            icon="check"
+            size={25}
+            iconColor={colors.inatGreen}
+            onPress={( ) => {
+              onIDAdded( createID( item ) );
+              if ( goBackOnSave ) { navigation.goBack( ); }
+            }}
+          />
+        </View>
       </View>
     );
   };
@@ -150,7 +156,7 @@ const AddID = ( { route }: Props ): Node => {
   return (
     <BottomSheetModalProvider>
       <ViewNoFooter>
-        <View style={viewStyles.scrollView}>
+        <View className="p-3">
           {comment.length > 0 && (
             <View>
               <Text>{t( "ID-Comment" )}</Text>
@@ -182,7 +188,6 @@ const AddID = ( { route }: Props ): Node => {
             data={taxonList}
             renderItem={renderTaxonResult}
             keyExtractor={item => item.id}
-            style={viewStyles.taxonList}
           />
         </View>
         <BottomSheetModal
