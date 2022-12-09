@@ -1,4 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { fireEvent, render, within } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
 import React from "react";
@@ -18,18 +22,18 @@ const mockObservations = [
 
 // Mock the hooks we use on ObsList since we're not trying to test them here
 
-jest.mock( "../../../../src/sharedHooks/useCurrentUser", ( ) => ( {
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
   default: ( ) => true
 } ) );
 
-jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
+jest.mock( "sharedHooks/useLoggedIn", ( ) => ( {
   __esModule: true,
   default: ( ) => true
 } ) );
 
 jest.mock(
-  "../../../../src/sharedHooks/useLocalObservations",
+  "sharedHooks/useLocalObservations",
   ( ) => ( {
     __esModule: true,
     default: ( ) => ( {
@@ -37,13 +41,6 @@ jest.mock(
     } )
   } )
 );
-
-jest.mock( "../../../../src/sharedHooks/useRemoteObservations", ( ) => ( {
-  __esModule: true,
-  default: ( ) => ( {
-    loading: false
-  } )
-} ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -57,21 +54,20 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
-  default: ( ) => false,
-  __esModule: true
-} ) );
+const queryClient = new QueryClient( );
 
 const renderObsList = ( ) => render(
-  <NavigationContainer>
-    <ObsList />
-  </NavigationContainer>
+  <QueryClientProvider client={queryClient}>
+    <NavigationContainer>
+      <ObsList />
+    </NavigationContainer>
+  </QueryClientProvider>
 );
 
 it( "renders an observation", ( ) => {
   const { getByTestId } = renderObsList( );
   const obs = mockObservations[0];
-  const list = getByTestId( "ObsList.myObservations" );
+  const list = getByTestId( "ObservationViews.myObservations" );
 
   // Test that there isn't other data lingering
   expect( list.props.data.length ).toEqual( mockObservations.length );
