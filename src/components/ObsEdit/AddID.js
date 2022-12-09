@@ -107,7 +107,10 @@ const AddID = ( { route }: Props ): Node => {
         className="flex-row my-1 items-center justify-between"
         testID={`Search.taxa.${item.id}`}
       >
-        <View className="flex-row items-center w-16 grow">
+        <Pressable
+          className="flex-row items-center w-16 grow"
+          onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )}
+        >
           <Image
             className="w-12 h-12 mr-1 bg-lightGray"
             source={taxonImage}
@@ -117,7 +120,7 @@ const AddID = ( { route }: Props ): Node => {
             <Text>{item.name}</Text>
             <Text>{item.preferred_common_name}</Text>
           </View>
-        </View>
+        </Pressable>
         <View className="flex-row">
           <IconButton
             icon="information-outline"
