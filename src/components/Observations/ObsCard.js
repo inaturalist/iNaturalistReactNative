@@ -1,18 +1,14 @@
 // @flow
 
 import { Image, Pressable, View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
-import { Avatar } from "react-native-paper";
+import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
 
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
-
-const { useRealm } = RealmContext;
+import UploadButton from "./UploadButton";
 
 type Props = {
   item: Object,
@@ -20,19 +16,9 @@ type Props = {
 }
 
 const ObsCard = ( { item, handlePress }: Props ): Node => {
-  const [needsUpload, setNeedsUpload] = useState( false );
   const onPress = ( ) => handlePress( item );
-  const realm = useRealm( );
 
   const photo = item?.observationPhotos?.[0]?.photo;
-
-  useEffect( ( ) => {
-    const markAsNeedsUpload = async ( ) => {
-      const isUnsyncedObs = Observation.isUnsyncedObservation( realm, item );
-      setNeedsUpload( isUnsyncedObs );
-    };
-    markAsNeedsUpload( );
-  }, [item, realm] );
 
   const obsListPhoto = photo ? (
     <Image
@@ -59,8 +45,8 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
         </View>
       </View>
       <View className="flex-row items-center justify-items-center ml-2">
-        {needsUpload
-          ? <Avatar.Icon size={40} icon="arrow-up-circle-outline" />
+        {!item.wasSynced( )
+          ? <UploadButton observation={item} />
           : <ObsCardStats item={item} type="list" />}
       </View>
     </Pressable>

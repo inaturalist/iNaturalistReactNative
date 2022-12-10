@@ -27,6 +27,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [galleryUris, setGalleryUris] = useState( [] );
   const [evidenceToAdd, setEvidenceToAdd] = useState( [] );
   const [album, setAlbum] = useState( null );
+  const [loading, setLoading] = useState( );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -185,24 +186,22 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const saveObservation = async ( ) => {
-      const localObs = await Observation.saveLocalObservationForUpload( currentObservation, realm );
-      if ( localObs ) {
-        setNextScreen( );
-      }
-    };
-
-    const saveAndUploadObservation = async ( ) => {
-      const localObs = await Observation.saveLocalObservationForUpload( currentObservation, realm );
       if ( !realm ) {
         throw new Error( "Gack, tried to save an observation without realm!" );
       }
+      return Observation.saveLocalObservationForUpload( currentObservation, realm );
+    };
+
+    const uploadObservation = async observation => {
       if ( !apiToken ) {
-        throw new Error( "Gack, tried to save an observation without API token!" );
+        throw new Error( "Gack, tried to upload an observation without API token!" );
       }
-      Observation.uploadObservation( localObs, apiToken, realm );
-      if ( localObs ) {
-        setNextScreen( );
-      }
+      return Observation.uploadObservation( observation, apiToken, realm );
+    };
+
+    const saveAndUploadObservation = async ( ) => {
+      const savedObservation = await saveObservation( );
+      return uploadObservation( savedObservation );
     };
 
     const removePhotoFromList = ( list, photo ) => {
@@ -258,7 +257,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       deleteCurrentObservation,
       album,
       setAlbum,
-      deletePhotoFromObservation
+      deletePhotoFromObservation,
+      uploadObservation,
+      setNextScreen,
+      loading,
+      setLoading
     };
   }, [
     currentObservation,
@@ -279,7 +282,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     navigation,
     realm,
     album,
-    setAlbum
+    setAlbum,
+    loading,
+    setLoading
   ] );
 
   return (
