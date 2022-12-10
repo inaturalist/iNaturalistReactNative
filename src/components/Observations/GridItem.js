@@ -80,7 +80,7 @@ const GridItem = ( {
             />
           </View>
         )}
-        {!item.wasSynced( )
+        {!item._synced_at
           ? (
             <View className="absolute bottom-0 right-0">
               <UploadButton observation={item} />

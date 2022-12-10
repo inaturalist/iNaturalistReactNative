@@ -16,7 +16,8 @@ const Toolbar = ( {
   isLoggedIn,
   setView
 }: Props ): Node => {
-  const { loading } = useContext( ObsEditContext );
+  const obsEditContext = useContext( ObsEditContext );
+  const loading = obsEditContext?.loading;
   return (
     <View className="py-5 flex-row justify-between bg-white">
       {isLoggedIn ? (

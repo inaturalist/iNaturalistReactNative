@@ -11,7 +11,9 @@ type Props = {
 }
 
 const UploadButton = ( { observation }: Props ): Node => {
-  const { uploadObservation, setLoading } = useContext( ObsEditContext );
+  const obsEditContext = useContext( ObsEditContext );
+  const uploadObservation = obsEditContext?.uploadObservation;
+  const setLoading = obsEditContext?.setLoading;
 
   return (
     <IconButton

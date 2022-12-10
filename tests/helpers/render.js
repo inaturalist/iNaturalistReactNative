@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 import App from "components/App";
+import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
 const queryClient = new QueryClient( {
@@ -33,7 +34,12 @@ function renderAppWithComponent( component ) {
   return renderComponent( <App>{ component }</App> );
 }
 
+function renderComponentWithObsEditProvider( component ) {
+  return renderComponent( <ObsEditProvider>{ component }</ObsEditProvider> );
+}
+
 export {
   renderAppWithComponent,
-  renderComponent
+  renderComponent,
+  renderComponentWithObsEditProvider
 };

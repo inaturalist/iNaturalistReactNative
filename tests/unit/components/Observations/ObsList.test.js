@@ -3,7 +3,7 @@ import ObsList from "components/Observations/ObsList";
 import React from "react";
 
 import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import { renderComponentWithObsEditProvider } from "../../../helpers/render";
 
 jest.useFakeTimers( );
 
@@ -19,6 +19,8 @@ const mockObservations = [
 ];
 
 // Mock the hooks we use on ObsList since we're not trying to test them here
+
+jest.mock( "sharedHooks/useApiToken" );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
@@ -54,7 +56,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 it( "renders an observation", async ( ) => {
   await waitFor( ( ) => {
-    const { getByTestId } = renderComponent( <ObsList /> );
+    const { getByTestId } = renderComponentWithObsEditProvider( <ObsList /> );
     const obs = mockObservations[0];
     const list = getByTestId( "ObservationViews.myObservations" );
 
@@ -71,7 +73,7 @@ it( "renders an observation", async ( ) => {
 
 it( "renders multiple observations", async ( ) => {
   await waitFor( ( ) => {
-    const { getByTestId } = renderComponent( <ObsList /> );
+    const { getByTestId } = renderComponentWithObsEditProvider( <ObsList /> );
     mockObservations.forEach( obs => {
       expect( getByTestId( `ObsList.obsCard.${obs.uuid}` ) ).toBeTruthy( );
     } );
@@ -80,7 +82,7 @@ it( "renders multiple observations", async ( ) => {
 
 it( "renders grid view on button press", async ( ) => {
   await waitFor( ( ) => {
-    const { getByTestId } = renderComponent( <ObsList /> );
+    const { getByTestId } = renderComponentWithObsEditProvider( <ObsList /> );
     const button = getByTestId( "ObsList.toggleGridView" );
     fireEvent.press( button );
     mockObservations.forEach( obs => {

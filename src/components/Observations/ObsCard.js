@@ -45,7 +45,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
         </View>
       </View>
       <View className="flex-row items-center justify-items-center ml-2">
-        {!item.wasSynced( )
+        {!item._synced_at
           ? <UploadButton observation={item} />
           : <ObsCardStats item={item} type="list" />}
       </View>

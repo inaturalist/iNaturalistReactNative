@@ -1,6 +1,7 @@
 import factory, { define } from "factoria";
 
 export default define( "LocalObservation", faker => ( {
+  _synced_at: faker.date.past( ),
   _created_at: faker.date.past( ),
   uuid: faker.datatype.uuid( ),
   comments: [
