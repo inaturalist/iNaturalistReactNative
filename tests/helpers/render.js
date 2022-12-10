@@ -19,8 +19,9 @@ const queryClient = new QueryClient( {
   }
 } );
 
-function renderComponent( component ) {
-  return render(
+function renderComponent( component, update = null ) {
+  const renderMethod = update || render;
+  return renderMethod(
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         { component }
@@ -29,8 +30,8 @@ function renderComponent( component ) {
   );
 }
 
-function renderAppWithComponent( component ) {
-  return renderComponent( <App>{ component }</App> );
+function renderAppWithComponent( component, update = null ) {
+  return renderComponent( <App>{ component }</App>, update );
 }
 
 export {
