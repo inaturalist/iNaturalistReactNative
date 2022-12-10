@@ -1,81 +1,62 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  QueryClient,
-  QueryClientProvider
-} from "@tanstack/react-query";
-import { render, waitFor } from "@testing-library/react-native";
+import { waitFor } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
 import inatjs from "inaturalistjs";
 import React from "react";
 
+// import RNSInfo from "react-native-sensitive-info";
 import factory, { makeResponse } from "../factory";
+import { renderAppWithComponent } from "../helpers/render";
+import { signInUser } from "../helpers/user";
 
-// Mock inaturalistjs so we can make some fake responses
-jest.mock( "inaturalistjs" );
+jest.useFakeTimers( );
 
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useRoute: ( ) => ( {
-      params: {
-        name: ""
-      }
-    } )
-  };
+beforeEach( ( ) => {
+  global.realm.write( ( ) => {
+    global.realm.deleteAll( );
+  } );
 } );
 
-jest.mock( "sharedHooks/useApiToken" );
+afterEach( ( ) => {
+  jest.clearAllMocks( );
+} );
 
-jest.mock( "sharedHooks/useLoggedIn", ( ) => ( {
-  __esModule: true,
-  default: ( ) => true
-} ) );
-
-const queryClient = new QueryClient( );
-
-const renderObsList = ( ) => render(
-  <QueryClientProvider client={queryClient}>
-    <NavigationContainer>
-      <ObsList />
-    </NavigationContainer>
-  </QueryClientProvider>
-);
-// TODO: mock.calls.length started returning 0, need to figure out why this isn't working
-test.todo( "renders the number of comments from remote response" );
-// test( "renders the number of comments from remote response", async ( ) => {
-//   const observations = [factory( "RemoteObservation", { place_guess: "foo", comments: [
-//     factory( "LocalComment" )
-//   ] } )];
-//   console.log( observations, "observaiotns" );
-//   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
-//   const { getByTestId } = await renderObsList( );
-//   expect( inatjs.observations.search.mock.calls.length ).toBeGreaterThan( 0 );
-//   const obs = observations[0];
-//   const card = getByTestId( `ObsList.obsCard.${obs.uuid}` );
-//   expect( card ).toBeTruthy( );
-//   const commentCount = within( card ).getByTestId( "ObsList.obsCard.commentCount" );
-//   expect( commentCount.children[0] ).toEqual( obs.comments.length.toString( ) );
-// } );
-
-test.todo( "only makes one concurrent request for observations at a time" );
-// test( "only makes one concurrent request for observations at a time", async ( ) => {
-//   const observations = [factory( "RemoteObservation" )];
-//   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
-//   await waitFor( ( ) => render( <NavigationContainer><ObsList /></NavigationContainer> ) );
-//   // this doesn't pass b/c useObservations() gets called a lot; we
-//   // probably need a way to ensure that only one request is in flight at a
-//   // time
-//   expect( inatjs.observations.search ).toHaveBeenCalledOnce( );
-// } );
-
-test( "should not have accessibility errors", async ( ) => {
+it( "should not have accessibility errors", async ( ) => {
+  const mockUser = factory( "LocalUser" );
+  await signInUser( mockUser );
   const observations = [factory( "RemoteObservation" )];
   inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
-  const { getByTestId } = await waitFor( ( ) => renderObsList( ) );
-  const obsList = getByTestId( "ObservationViews.myObservations" );
-  expect( obsList ).toBeAccessible( );
+  const { queryByTestId } = renderAppWithComponent( <ObsList /> );
+  await waitFor( ( ) => {
+    expect( queryByTestId( "ObservationViews.myObservations" ) ).toBeAccessible( );
+  } );
+} );
+
+describe( "localization for current user", ( ) => {
+  it( "should be English by default", async ( ) => {
+    const mockUser = factory( "LocalUser" );
+    expect( mockUser.locale ).toEqual( "en" );
+    await signInUser( mockUser );
+    const { queryByText } = renderAppWithComponent( <ObsList /> );
+    await waitFor( ( ) => {
+      expect( queryByText( /X-Observations/ ) ).toBeFalsy( );
+      expect( queryByText( / Observations/ ) ).toBeTruthy( );
+    } );
+  } );
+
+  it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
+    const mockSpanishUser = factory( "LocalUser", {
+      locale: "es"
+    } );
+    expect( mockSpanishUser.locale ).toEqual( "es" );
+    await signInUser( mockSpanishUser );
+    const { queryByText } = renderAppWithComponent( <ObsList /> );
+    await waitFor( ( ) => {
+      expect( queryByText( /X-Observations/ ) ).toBeFalsy( );
+      expect( queryByText( / Observaciones/ ) ).toBeTruthy( );
+    } );
+  } );
+  it.todo( "should change to es when local user locale is en but remote user locale is es" );
 } );

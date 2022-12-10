@@ -76,9 +76,9 @@ const REMOTE_OBSERVATION_PARAMS = {
 const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
     const { results } = await inatjs.observations.search( { ...PARAMS, ...params }, opts );
-    return results;
+    return results || [];
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { throw: true } );
   }
 };
 
@@ -172,6 +172,18 @@ const createOrUpdateEvidence = async (
   }
 };
 
+const fetchObservationUpdates = async (
+  params: Object = {},
+  opts: Object = {}
+): Promise<?any> => {
+  try {
+    const { results } = await inatjs.observations.updates( params, opts );
+    return results;
+  } catch ( e ) {
+    return handleError( e, { throw: true } );
+  }
+};
+
 const deleteObservation = async ( params: Object = {}, opts: Object = {} ) : Promise<?any> => {
   try {
     return await inatjs.observations.delete( params, opts );
@@ -185,6 +197,7 @@ export {
   createOrUpdateEvidence,
   deleteObservation,
   faveObservation,
+  fetchObservationUpdates,
   fetchRemoteObservation,
   markAsReviewed,
   markObservationUpdatesViewed,

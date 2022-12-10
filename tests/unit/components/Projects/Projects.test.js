@@ -1,13 +1,9 @@
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  QueryClient,
-  QueryClientProvider
-} from "@tanstack/react-query";
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent } from "@testing-library/react-native";
 import Projects from "components/Projects/Projects";
 import React from "react";
 
 import factory from "../../../factory";
+import { renderComponent } from "../../../helpers/render";
 
 const mockedNavigate = jest.fn( );
 const mockProject = factory( "RemoteProject" );
@@ -45,18 +41,8 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const queryClient = new QueryClient( );
-
-const renderProjects = () => render(
-  <QueryClientProvider client={queryClient}>
-    <NavigationContainer>
-      <Projects />
-    </NavigationContainer>
-  </QueryClientProvider>
-);
-
 test( "displays project search results", ( ) => {
-  const { getByTestId, getByText } = renderProjects( );
+  const { getByTestId, getByText } = renderComponent( <Projects /> );
 
   const input = getByTestId( "ProjectSearch.input" );
   fireEvent.changeText( input, "butterflies" );
