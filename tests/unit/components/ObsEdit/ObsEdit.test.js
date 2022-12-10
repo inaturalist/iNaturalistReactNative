@@ -1,17 +1,12 @@
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  QueryClient,
-  QueryClientProvider
-} from "@tanstack/react-query";
-import { render, waitFor } from "@testing-library/react-native";
+import { waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import faker from "faker";
 import { ObsEditContext } from "providers/contexts";
 import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import factory from "../../../factory";
+import { renderComponent } from "../../../helpers/render";
 
 // this resolves a test failure with the Animated library:
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.
@@ -76,18 +71,10 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
   </ObsEditContext.Provider>
 ) );
 
-const queryClient = new QueryClient( );
-
-const renderObsEdit = ( ) => render(
-  <QueryClientProvider client={queryClient}>
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <ObsEditProvider>
-          <ObsEdit />
-        </ObsEditProvider>
-      </NavigationContainer>
-    </SafeAreaProvider>
-  </QueryClientProvider>
+const renderObsEdit = ( ) => renderComponent(
+  <ObsEditProvider>
+    <ObsEdit />
+  </ObsEditProvider>
 );
 
 test( "renders observation photo from photo gallery", ( ) => {
