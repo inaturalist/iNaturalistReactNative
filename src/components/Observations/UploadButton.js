@@ -18,9 +18,10 @@ const UploadButton = ( { observation }: Props ): Node => {
       size={40}
       icon="arrow-up-circle-outline"
       iconColor={colors.borderGray}
-      onPress={( ) => {
+      onPress={async ( ) => {
         setLoading( true );
-        uploadObservation( observation );
+        await uploadObservation( observation );
+        setLoading( false );
       }}
     />
   );
