@@ -6,13 +6,9 @@ import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
 import factory from "../factory";
-import { signInUser } from "../helpers/user";
+import { signIn, signOut } from "../helpers/user";
 
-beforeEach( ( ) => {
-  global.realm.write( ( ) => {
-    global.realm.deleteAll( );
-  } );
-} );
+beforeEach( signOut );
 
 afterEach( ( ) => {
   jest.clearAllMocks( );
@@ -20,7 +16,7 @@ afterEach( ( ) => {
 
 // This tests both the PhotoGallery component *and* the ObsEditProvider
 test( "shows a selected checkmark when a photo is tapped", async ( ) => {
-  signInUser( factory( "LocalUser" ) );
+  signIn( factory( "LocalUser" ) );
   const photo = factory( "DevicePhoto" );
   // Mock CameraRoll.getPhotos so it returns our test photo
   CameraRoll.getPhotos.mockImplementation( ( ) => ( {

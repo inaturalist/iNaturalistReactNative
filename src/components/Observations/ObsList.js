@@ -6,11 +6,13 @@ import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useLoggedIn from "sharedHooks/useLoggedIn";
 
 const { useRealm } = RealmContext;
 
 const ObsList = ( ): Node => {
   const realm = useRealm( );
+  const loggedIn = useLoggedIn( );
 
   const updateParams = {
     // TODO: viewed = false is a param in the API v2 docs
@@ -26,7 +28,9 @@ const ObsList = ( ): Node => {
     data: updates
   } = useAuthenticatedQuery(
     ["fetchObservationUpdates"],
-    optsWithAuth => fetchObservationUpdates( updateParams, optsWithAuth )
+    optsWithAuth => fetchObservationUpdates( updateParams, optsWithAuth ),
+    {},
+    { enabled: !!loggedIn }
   );
 
   useEffect( ( ) => {

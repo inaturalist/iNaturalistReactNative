@@ -7,7 +7,7 @@ import Observation from "realmModels/Observation";
 
 import factory from "../factory";
 import { renderComponent } from "../helpers/render";
-import { signInUser } from "../helpers/user";
+import { signIn, signOut } from "../helpers/user";
 
 jest.useFakeTimers( );
 
@@ -16,10 +16,11 @@ beforeEach( async ( ) => {
     global.realm.deleteAll( );
   } );
   const mockUser = factory( "LocalUser" );
-  await signInUser( mockUser );
+  await signIn( mockUser );
 } );
 
 afterEach( ( ) => {
+  signOut( );
   jest.clearAllMocks( );
 } );
 

@@ -60,8 +60,10 @@ const ObservationViews = ( ): Node => {
   } = useAuthenticatedQuery(
     ["searchObservations", idBelow],
     optsWithAuth => searchObservations( params, optsWithAuth ),
+    {},
     {
-      keepPreviousData: true
+      keepPreviousData: true,
+      enabled: !!isLoggedIn
     }
   );
 

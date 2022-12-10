@@ -29,7 +29,11 @@ const App = ( { children }: Props ): Node => {
     data: remoteUser
   } = useAuthenticatedQuery(
     ["fetchUserMe"],
-    optsWithAuth => fetchUserMe( { }, optsWithAuth )
+    optsWithAuth => fetchUserMe( { }, optsWithAuth ),
+    {},
+    {
+      enabled: !!currentUser
+    }
   );
 
   useEffect( ( ) => {
