@@ -3,6 +3,7 @@
 import {
   Image, Pressable, View
 } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import FilterIcon from "react-native-vector-icons/MaterialIcons";
@@ -52,7 +53,7 @@ const GridItem = ( {
       className={`w-1/2 px-4 py-2 ${( index || 0 ) % ( numColumns || 2 ) === 0 ? "pr-2" : "pl-2"}`}
       testID={`ObsList.gridItem.${item.uuid}`}
       accessibilityRole="link"
-      accessibilityLabel="Navigate to observation details screen"
+      accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
       <View>
         {
@@ -69,7 +70,7 @@ const GridItem = ( {
         {hasMultiplePhotos && (
           <View className="z-100 absolute top-2 right-2">
             <FilterIcon
-                // $FlowIgnore
+              // $FlowIgnore
               name={filterIconName}
               color={colors.white}
               size={22}

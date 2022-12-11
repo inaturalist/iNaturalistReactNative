@@ -120,7 +120,7 @@ const ActivityItem = ( {
           className="flex-row my-3 ml-3 items-center"
           onPress={navToTaxonDetails}
           accessibilityRole="link"
-          accessibilityLabel="go to taxon details"
+          accessibilityLabel={t( "Navigate-to-taxon-details" )}
         >
           <SmallSquareImage uri={Taxon.uri( taxon )} />
           <View>
