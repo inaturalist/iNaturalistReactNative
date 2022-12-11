@@ -1,49 +1,37 @@
-import { NavigationContainer, useRoute } from "@react-navigation/native";
-import { render, waitFor } from "@testing-library/react-native";
+import { useRoute } from "@react-navigation/native";
+import { waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import Observation from "realmModels/Observation";
 
 import factory from "../factory";
+import { renderComponent } from "../helpers/render";
+import { signIn, signOut } from "../helpers/user";
 
 jest.useFakeTimers( );
 
-// mock Portal with a Modal component inside of it (MediaViewer)
-jest.mock( "react-native-paper", () => {
-  const RealModule = jest.requireActual( "react-native-paper" );
-  const MockedModule = {
-    ...RealModule,
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    Portal: ( { children } ) => <>{children}</>
-  };
-  return MockedModule;
+beforeEach( async ( ) => {
+  global.realm.write( ( ) => {
+    global.realm.deleteAll( );
+  } );
+  const mockUser = factory( "LocalUser" );
+  await signIn( mockUser );
 } );
 
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useRoute: jest.fn( ( ) => ( { } ) ),
-    useNavigation: ( ) => ( {
-      setOptions: jest.fn( )
-    } )
-  };
+afterEach( ( ) => {
+  signOut( );
+  jest.clearAllMocks( );
 } );
 
-const renderObsEdit = ( update = null ) => {
-  const renderMethod = update || render;
-  return renderMethod(
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <ObsEditProvider>
-          <ObsEdit />
-        </ObsEditProvider>
-      </NavigationContainer>
-    </SafeAreaProvider>
+function renderObsEdit( update ) {
+  return renderComponent(
+    <ObsEditProvider>
+      <ObsEdit />
+    </ObsEditProvider>,
+    update
   );
-};
+}
 
 describe( "UUID in params", ( ) => {
   it( "should set the observation in context when context is blank", async ( ) => {

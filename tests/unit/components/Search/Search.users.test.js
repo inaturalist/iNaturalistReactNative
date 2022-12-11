@@ -1,13 +1,9 @@
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  QueryClient,
-  QueryClientProvider
-} from "@tanstack/react-query";
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent } from "@testing-library/react-native";
 import Search from "components/Search/Search";
 import React from "react";
 
 import factory from "../../../factory";
+import { renderComponent } from "../../../helpers/render";
 
 // TODO: figure out how to clear jest mocks correctly or return a different
 // value from jest mocks so these can all live in a single file?
@@ -33,20 +29,10 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const queryClient = new QueryClient( );
-
-const renderSearch = ( ) => render(
-  <QueryClientProvider client={queryClient}>
-    <NavigationContainer>
-      <Search />
-    </NavigationContainer>
-  </QueryClientProvider>
-);
-
 const { login } = mockUser;
 
 test( "displays user search results on button press", ( ) => {
-  const { getByTestId, getByText } = renderSearch( );
+  const { getByTestId, getByText } = renderComponent( <Search /> );
   const button = getByTestId( "Search.users" );
 
   fireEvent.press( button );
@@ -58,7 +44,7 @@ test( "displays user search results on button press", ( ) => {
 } );
 
 test( "navigates to user profile on button press", ( ) => {
-  const { getByTestId } = renderSearch( );
+  const { getByTestId } = renderComponent( <Search /> );
   const button = getByTestId( "Search.users" );
 
   fireEvent.press( button );

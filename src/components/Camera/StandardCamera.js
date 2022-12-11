@@ -5,10 +5,8 @@ import { Pressable, Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, {
-  useContext, useRef, useState
-} from "react";
-import { Avatar, Snackbar, useTheme } from "react-native-paper";
+import React, { useContext, useRef, useState } from "react";
+import { Avatar, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
@@ -21,7 +19,6 @@ import PhotoPreview from "./PhotoPreview";
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const StandardCamera = ( ): Node => {
-  const { colors: themeColors } = useTheme( );
   const {
     addCameraPhotosToCurrentObservation,
     createObsWithCameraPhotos,
@@ -39,9 +36,9 @@ const StandardCamera = ( ): Node => {
   const [cameraPosition, setCameraPosition] = useState( "back" );
   const devices = useCameraDevices( "wide-angle-camera" );
   const device = devices[cameraPosition];
-  const [takePhotoOptions, setTakePhotoOptions] = useState( {
-    flash: "off"
-  } );
+  const hasFlash = device?.hasFlash;
+  const initialPhotoOptions = hasFlash ? { flash: "off" } : { };
+  const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
   const [savingPhoto, setSavingPhoto] = useState( false );
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
@@ -66,7 +63,6 @@ const StandardCamera = ( ): Node => {
       }
       setSavingPhoto( false );
     } catch ( e ) {
-      console.log( e, "couldn't take photo" );
       setSavingPhoto( false );
     }
   };
@@ -127,7 +123,7 @@ const StandardCamera = ( ): Node => {
     <Avatar.Icon
       size={60}
       icon={icon}
-      style={{ backgroundColor: disabled ? colors.gray : themeColors.background }}
+      style={{ backgroundColor: disabled ? colors.gray : colors.white }}
     />
   );
 
@@ -142,11 +138,13 @@ const StandardCamera = ( ): Node => {
       <FadeInOutView savingPhoto={savingPhoto} />
       <View className="absolute bottom-0">
         <View className="flex-row justify-between w-screen mb-4 px-4">
-          <Pressable onPress={toggleFlash}>
-            {takePhotoOptions.flash === "on"
-              ? renderCameraOptionsButtons( "flash" )
-              : renderCameraOptionsButtons( "flash-off" )}
-          </Pressable>
+          {hasFlash ? (
+            <Pressable onPress={toggleFlash}>
+              {takePhotoOptions.flash === "on"
+                ? renderCameraOptionsButtons( "flash" )
+                : renderCameraOptionsButtons( "flash-off" )}
+            </Pressable>
+          ) : <View />}
           <Pressable onPress={flipCamera}>
             {renderCameraOptionsButtons( "camera-flip" )}
           </Pressable>

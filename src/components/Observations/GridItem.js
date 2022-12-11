@@ -6,7 +6,7 @@ import {
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import FilterIcon from "react-native-vector-icons/MaterialIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
@@ -42,7 +42,6 @@ const GridItem = ( {
     ? "filter-9-plus"
     : `filter-${totalObsPhotos}`;
 
-  // TODO: add fallback image when there is no uri
   const imageUri = uri === "project"
     ? Observation.projectUri( item )
     : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
@@ -65,12 +64,16 @@ const GridItem = ( {
                 testID="ObsList.photo"
               />
             )
-            : <View className="bg-black/50 grow aspect-square" />
-        }
+            : (
+              <View className="grow aspect-square justify-center items-center">
+                <IconMaterial name="image-not-supported" size={150} />
+              </View>
+            )
+          }
         {hasMultiplePhotos && (
           <View className="z-100 absolute top-2 right-2">
-            <FilterIcon
-              // $FlowIgnore
+            <IconMaterial
+                // $FlowIgnore
               name={filterIconName}
               color={colors.white}
               size={22}

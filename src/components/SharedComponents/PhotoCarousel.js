@@ -6,7 +6,7 @@ import React from "react";
 import {
   ActivityIndicator, FlatList
 } from "react-native";
-import { Avatar, useTheme } from "react-native-paper";
+import { Avatar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/tailwindColors";
 
@@ -34,8 +34,6 @@ const PhotoCarousel = ( {
   showAddButton = false
 
 }: Props ): Node => {
-  const { colors: themeColors } = useTheme( );
-
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
 
   const renderDeleteButton = photoUri => (
@@ -49,7 +47,7 @@ const PhotoCarousel = ( {
       <Avatar.Icon
         icon="delete-forever"
         size={30}
-        style={{ backgroundColor: themeColors.background }}
+        style={{ backgroundColor: colors.white }}
       />
     </Pressable>
   );

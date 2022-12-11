@@ -1,11 +1,10 @@
 // @flow
 
-import DropdownPicker from "components/Explore/DropdownPicker";
 import Map from "components/SharedComponents/Map";
 import { format, parseISO } from "date-fns";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import { Text, View } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { textStyles, viewStyles } from "styles/obsDetails/obsDetails";
@@ -18,16 +17,8 @@ type Props = {
 }
 
 const DataTab = ( { observation }: Props ): Node => {
-  const [project, setProject] = useState( "" );
-  const [projectId, setProjectId] = useState( null );
-
   const application = observation?.application?.name;
   const attribution = observation?.taxon?.default_photo?.attribution;
-
-  const selectProjectId = getValue => {
-    // TODO: add api call for add to project
-    setProjectId( getValue( ) );
-  };
 
   const displayTimeObserved = ( ) => {
     const timeObservedAt = checkCamelAndSnakeCase( observation, "timeObservedAt" );
@@ -77,14 +68,6 @@ const DataTab = ( { observation }: Props ): Node => {
       </View>
       ) }
       <Text style={textStyles.dataTabHeader}>{t( "Projects" )}</Text>
-      {/* TODO: create a custom dropdown that doesn't use FlatList */}
-      <DropdownPicker
-        searchQuery={project}
-        setSearchQuery={setProject}
-        setValue={selectProjectId}
-        sources="projects"
-        value={projectId}
-      />
       <Text style={textStyles.dataTabHeader}>{t( "Other-Data" )}</Text>
       {attribution && <Text style={textStyles.dataTabText}>{attribution}</Text>}
       {application && (
