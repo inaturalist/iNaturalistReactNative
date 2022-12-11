@@ -32,21 +32,20 @@ describe( "StandardCamera", ( ) => {
   test( "should first render with flash disabled", async () => {
     renderStandardCamera();
 
-    await screen.findByLabelText(
-      "The flash is turned off. Press here to enable it."
-    );
+    // TODO: Allow i18n to work on tests, then we can find by the actual label and note the key
+    await screen.findByLabelText( "flash-button-label-flash-off" );
   } );
 
   test( "should change to flash enabled on button press", async () => {
     renderStandardCamera();
 
+    // TODO: Allow i18n to work on tests, then we can find by the actual label and note the key
     const flashButton = await screen.findByLabelText(
-      "The flash is turned off. Press here to enable it."
+      "flash-button-label-flash-off"
     );
     fireEvent.press( flashButton );
 
-    await screen.findByLabelText(
-      "The flash is turned on. Press here to disable it."
-    );
+    // TODO: Allow i18n to work on tests, then we can find by the actual label and note the key
+    await screen.findByLabelText( "flash-button-label-flash" );
   } );
 } );
