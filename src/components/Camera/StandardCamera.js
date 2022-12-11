@@ -94,15 +94,19 @@ const StandardCamera = ( ): Node => {
   };
 
   const renderCameraOptionsButtons = icon => {
+    let testID = "";
     let accessibilityLabel = "";
     switch ( icon ) {
       case "flash":
+        testID = "flash-button-label-flash";
         accessibilityLabel = t( "flash-button-label-flash" );
         break;
       case "flash-off":
+        testID = "flash-button-label-flash-off";
         accessibilityLabel = t( "flash-button-label-flash-off" );
         break;
       case "camera-flip":
+        testID = "camera-button-label-switch-camera";
         accessibilityLabel = t( "camera-button-label-switch-camera" );
         break;
       default:
@@ -110,6 +114,7 @@ const StandardCamera = ( ): Node => {
     }
     return (
       <Avatar.Icon
+        testID={testID}
         accessibilityLabel={accessibilityLabel}
         size={40}
         icon={icon}
