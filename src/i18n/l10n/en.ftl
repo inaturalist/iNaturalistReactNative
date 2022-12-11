@@ -285,6 +285,10 @@ Native = Native
 
 Navigate-to-login-screen = Navigate to login screen
 
+Navigate-to-observation-details = Navigate to observation details screen
+
+Navigate-to-taxon-details = Navigate to taxon details
+
 # Header for nearby projects
 Nearby = Nearby
 
