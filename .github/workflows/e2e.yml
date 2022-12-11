@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  pre_build:
+  setup:
     runs-on: macos-latest
     steps:
       - uses: fkirc/skip-duplicate-actions@master
@@ -14,7 +14,8 @@ jobs:
           github_token: ${{ github.token }}
           cancel_others: true
 
-  build:
+  test:
+    needs: setup
     runs-on: macos-latest
     # Kill the task if not finished after 60 minutes
     timeout-minutes: 60
@@ -65,7 +66,7 @@ jobs:
 
   notify:
     name: Notify Slack
-    needs: build
+    needs: test
     if: ${{ success() || failure() }}
     runs-on: macos-latest
     steps:
