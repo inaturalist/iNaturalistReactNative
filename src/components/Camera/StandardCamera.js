@@ -97,13 +97,13 @@ const StandardCamera = ( ): Node => {
     let accessibilityLabel = "";
     switch ( icon ) {
       case "flash":
-        accessibilityLabel = "The flash is turned on. Press here to disable it.";
+        accessibilityLabel = t( "flash-button-label-flash" );
         break;
       case "flash-off":
-        accessibilityLabel = "The flash is turned off. Press here to enable it.";
+        accessibilityLabel = t( "flash-button-label-flash-off" );
         break;
       case "camera-flip":
-        accessibilityLabel = "Use the device's other camera.";
+        accessibilityLabel = t( "camera-button-label-switch-camera" );
         break;
       default:
         break;

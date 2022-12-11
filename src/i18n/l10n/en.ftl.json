@@ -44,6 +44,10 @@
     "comment": "Quality grade option: Casual (shortened for My Observations view)",
     "val": "C"
   },
+  "camera-button-label-switch-camera": {
+    "comment": "Accessible label for the camera button",
+    "val": "Use the device's other camera."
+  },
   "Camera-Roll": "Camera Roll",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
@@ -98,6 +102,14 @@
   "Filters": "Filters",
   "Finish": "Finish",
   "Fish": "Fish",
+  "flash-button-label-flash": {
+    "comment": "Accessible label for the flash button, when flas is turned on",
+    "val": "The flash is turned on. Press here to disable it."
+  },
+  "flash-button-label-flash-off": {
+    "comment": "Accessible label for the flash button, when flas is turned off",
+    "val": "The flash is turned off. Press here to enable it."
+  },
   "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
