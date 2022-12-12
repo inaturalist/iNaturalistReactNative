@@ -22,6 +22,7 @@ const handleError = async ( e: Object, options: Object = {} ): Object => {
   if ( !e.response ) { throw e; }
   const errorJson = await e.response.json( );
   const error = new INatApiError( errorJson );
+  console.error( `Error requesting ${e.response.url}` );
   if ( options.throw ) {
     throw error;
   }

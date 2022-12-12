@@ -5,6 +5,7 @@ import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Avatar } from "react-native-paper";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
 
@@ -33,6 +34,16 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
     markAsNeedsUpload( );
   }, [item, realm] );
 
+  const obsListPhoto = photo ? (
+    <Image
+      source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
+      className="w-16 h-16 rounded-md mr-2"
+      testID="ObsList.photo"
+    />
+  )
+    // eslint-disable-next-line react-native/no-inline-styles
+    : <IconMaterial name="image-not-supported" size={70} style={{ marginRight: 2 }} />;
+
   return (
     <Pressable
       onPress={onPress}
@@ -42,11 +53,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
       accessibilityLabel="Navigate to observation details screen"
     >
       <View className="flex-row shrink">
-        <Image
-          source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
-          className="w-16 h-16 rounded-md mr-2"
-          testID="ObsList.photo"
-        />
+        {obsListPhoto}
         <View className="shrink">
           <ObsCardDetails item={item} />
         </View>

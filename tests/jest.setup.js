@@ -1,12 +1,15 @@
+import "i18n";
 import "react-native-gesture-handler/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
+import inatjs from "inaturalistjs";
 import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 import mockRNLocalize from "react-native-localize/mock";
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
+import { makeResponse } from "./factory";
 import { mockCamera, mockSortDevices } from "./vision-camera/vision-camera";
 
 jest.mock(
@@ -24,6 +27,28 @@ jest.mock( "react-native-vision-camera", ( ) => ( {
 jest.mock( "react-native-localize", () => mockRNLocalize );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
 
+// mock Portal with a Modal component inside of it (MediaViewer)
+jest.mock( "react-native-paper", () => {
+  const RealModule = jest.requireActual( "react-native-paper" );
+  const MockedModule = {
+    ...RealModule,
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    Portal: ( { children } ) => <>{children}</>
+  };
+  return MockedModule;
+} );
+
+jest.mock( "@react-navigation/native", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useRoute: jest.fn( ( ) => ( { } ) ),
+    useNavigation: ( ) => ( {
+      setOptions: jest.fn( )
+    } )
+  };
+} );
+
 // this resolves error with importing file after Jest environment is torn down
 // https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
 jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
@@ -33,8 +58,6 @@ jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
 
 // https://github.com/callstack/react-native-testing-library/issues/658#issuecomment-766886514
 jest.mock( "react-native/Libraries/LogBox/LogBox" );
-
-jest.mock( "react-native-localize", () => jest.requireActual( "react-native-localize/mock" ) );
 
 jest.mock( "react-native-config", () => ( {
   OAUTH_CLIENT_ID: process.env.OAUTH_CLIENT_ID,
@@ -139,14 +162,6 @@ jest.mock( "react-native-geolocation-service", ( ) => ( {
 
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 
-jest.mock( "react-i18next", () => ( {
-  useTranslation: () => ( { t: key => key } )
-} ) );
-
-jest.mock( "i18next", () => ( {
-  t: k => k
-} ) );
-
 // Make apisauce work with nock
 jest.mock( "apisauce", ( ) => ( {
   create: config => {
@@ -170,9 +185,7 @@ jest.mock( "react-native-fs", ( ) => {
   return RNFS;
 } );
 
-require( "react-native" ).NativeModules.MMKVNative = {
-  install: jest.fn( ( ) => true )
-};
+require( "react-native" ).NativeModules.FileReaderModule = { };
 
 // Mock native animation for all tests
 jest.mock( "react-native/Libraries/Animated/NativeAnimatedHelper" );
@@ -214,3 +227,8 @@ jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
     .fn( )
     .mockImplementation( ( { children } ) => children )
 } ) );
+
+// Mock inaturalistjs so we can make some fake responses
+jest.mock( "inaturalistjs" );
+inatjs.observations.search.mockResolvedValue( makeResponse( ) );
+inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
