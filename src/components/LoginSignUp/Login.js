@@ -85,7 +85,7 @@ const Login = ( ): Node => {
         source={require( "images/inat_logo.png" )}
       />
 
-      <Text className="text-2xl self-center mt-5">{t( "Login-header" )}</Text>
+      <Text testID="login-header" className="text-2xl self-center mt-5">{t( "Login-header" )}</Text>
       <Text className="text-xl self-center text-center mt-5 mb-5">{t( "Login-sub-title" )}</Text>
       <Text className="text-base mb-1">{t( "Username-or-Email" )}</Text>
       <TextInput
