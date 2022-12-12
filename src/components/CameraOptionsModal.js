@@ -62,7 +62,7 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   return (
     <>
       <View className="bg-white rounded-xl p-5">
-        <Text className="text-2xl">{t( "Evidence" )}</Text>
+        <Text testID="evidence-text" className="text-2xl">{t( "Evidence" )}</Text>
         <Text className="color-grayText my-2">{t( "Add-evidence-of-an-organism" )}</Text>
         <Text className="color-grayText my-2">{t( "You-can" )}</Text>
         {bulletedText.map( string => (
