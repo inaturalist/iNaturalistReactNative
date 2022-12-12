@@ -22,7 +22,7 @@ describe( "Add observation without evidence", () => {
   } );
 
   it( "should navigate to observation add screen on add evidence button pressed", async () => {
-    await waitFor( element( by.id( "log-in-to-iNaturalist-text" ) ) )
+    await waitFor( element( by.id( "camera-options-button" ) ) )
       .toBeVisible()
       .withTimeout( 2000 );
     await element( by.id( "camera-options-button" ) ).tap();

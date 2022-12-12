@@ -14,7 +14,9 @@ describe( "Log in to use iNaturalist", () => {
   it( "should navigate to login screen", async () => {
     const loginText = element( by.id( "log-in-to-iNaturalist-text" ) );
     await waitFor( loginText ).toBeVisible().withTimeout( 2000 );
+
     await loginText.tap();
+
     const loginUseText = element( by.id( "login-header" ) );
     await expect( loginUseText ).toBeVisible();
   } );
