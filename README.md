@@ -54,7 +54,7 @@ If you have built the app already for a previous test, and just want to run an u
 
 If you are running into some issues after the tests have been working for some time, try updating `applesimutils` with `brew update && brew upgrade applesimutils`.
 
-If you want to run the Android tests make sure your emulator has the same name as in the .detoxrc.json file = "Pixel_4_API_33". You can then run `npm run e2e:build:android && npm run e2e:test:android`.
+If you want to run the Android tests make sure you have the correct [emulator setup](https://wix.github.io/Detox/docs/19.x/introduction/android-dev-env), and the emulator has the same name as in the .detoxrc.json file. You can then run `npm run e2e:build:android && npm run e2e:test:android`.
 
 ## Running with Staging Environment
 
