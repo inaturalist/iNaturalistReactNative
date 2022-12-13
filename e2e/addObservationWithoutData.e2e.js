@@ -1,3 +1,5 @@
+import "i18n";
+
 import {
   by,
   device,
@@ -5,6 +7,7 @@ import {
   expect,
   waitFor
 } from "detox";
+import { t } from "i18next";
 
 describe( "Add observation without evidence", () => {
   beforeAll( async () => {
@@ -22,10 +25,11 @@ describe( "Add observation without evidence", () => {
   } );
 
   it( "should navigate to observation add screen on add evidence button pressed", async () => {
-    await waitFor( element( by.id( "camera-options-button" ) ) )
+    const buttonLabel = t( "Show-new-observation-options" );
+    await waitFor( element( by.label( buttonLabel ) ) )
       .toBeVisible()
       .withTimeout( 2000 );
-    await element( by.id( "camera-options-button" ) ).tap();
+    await element( by.label( buttonLabel ) ).tap( );
     await expect( element( by.id( "evidence-text" ) ) ).toBeVisible();
     await expect(
       element( by.id( "camera-options-button-square-edit-outline" ) )
