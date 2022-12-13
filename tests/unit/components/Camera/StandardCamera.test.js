@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react-native";
 import StandardCamera from "components/Camera/StandardCamera";
 import { ObsEditContext } from "providers/contexts";
 import React from "react";
+import { View } from "react-native";
 
 const mockedNavigate = jest.fn();
 
@@ -21,6 +22,22 @@ const mockValue = {
   allObsPhotoUris: [],
   cameraPreviewUris: []
 };
+
+const mockView = <View />;
+jest.mock( "components/Camera/CameraView", () => ( {
+  __esModule: true,
+  default: ( ) => mockView
+} ) );
+
+jest.mock( "components/Camera/FadeInOutView", () => ( {
+  __esModule: true,
+  default: () => mockView
+} ) );
+
+jest.mock( "components/Camera/PhotoPreview", () => ( {
+  __esModule: true,
+  default: () => mockView
+} ) );
 
 const renderStandardCamera = () => render(
   <ObsEditContext.Provider value={mockValue}>
