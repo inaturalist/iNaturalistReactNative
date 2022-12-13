@@ -6,17 +6,17 @@ import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
 import factory from "../factory";
+import { signIn, signOut } from "../helpers/user";
 
-jest.mock( "@react-navigation/native", ( ) => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useRoute: ( ) => ( { } )
-  };
+beforeEach( signOut );
+
+afterEach( ( ) => {
+  jest.clearAllMocks( );
 } );
 
 // This tests both the PhotoGallery component *and* the ObsEditProvider
 test( "shows a selected checkmark when a photo is tapped", async ( ) => {
+  signIn( factory( "LocalUser" ) );
   const photo = factory( "DevicePhoto" );
   // Mock CameraRoll.getPhotos so it returns our test photo
   CameraRoll.getPhotos.mockImplementation( ( ) => ( {

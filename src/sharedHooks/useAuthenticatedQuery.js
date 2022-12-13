@@ -8,7 +8,8 @@ import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
 const useAuthenticatedQuery = (
   queryKey: Array<mixed>,
   queryFunction: Function,
-  queryOptions: Object = {}
+  queryOptions: Object = {},
+  useQueryOptions: Object = {}
 ): any => useQuery( [queryKey], async ( ) => {
   // Note, getJWTToken() takes care of fetching a new token if the existing
   // one is expired. We *could* store the token in state with useState if
@@ -19,6 +20,6 @@ const useAuthenticatedQuery = (
     api_token: apiToken
   };
   return queryFunction( options );
-} );
+}, useQueryOptions );
 
 export default useAuthenticatedQuery;

@@ -12,6 +12,10 @@ class ObservationPhoto extends Realm.Object {
     uuid: true
   };
 
+  wasSynced( ) {
+    return this._synced_at !== null;
+  }
+
   static mapApiToRealm( observationPhoto, realm ) {
     const existingObsPhoto = realm
       ?.objectForPrimaryKey( "ObservationPhoto", observationPhoto.uuid );
