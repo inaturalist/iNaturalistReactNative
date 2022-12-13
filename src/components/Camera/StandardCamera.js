@@ -1,11 +1,14 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Pressable, Text, View } from "components/styledComponents";
+import {
+  Pressable, Text, View
+} from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useRef, useState } from "react";
+import { StatusBar } from "react-native";
 import { Avatar, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
@@ -104,6 +107,7 @@ const StandardCamera = ( ): Node => {
 
   return (
     <View className="flex-1 bg-black">
+      <StatusBar barStyle="light-content" />
       {device && <CameraView device={device} camera={camera} />}
       <PhotoPreview
         photoUris={cameraPreviewUris}
