@@ -61,7 +61,6 @@
     "react-native-config": "^1.4.5",
     "react-native-device-info": "^8.5.1",
     "react-native-dropdown-picker": "^5.3.0",
-    "react-native-exif": "^0.5.0",
     "react-native-exif-reader": "github:inaturalist/react-native-exif-reader",
     "react-native-fs": "^2.19.0",
     "react-native-geocoder-reborn": "^0.9.0",
