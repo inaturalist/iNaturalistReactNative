@@ -77,6 +77,24 @@ describe( "MyObservations", ( ) => {
         expect( queryByText( / Observaciones/ ) ).toBeTruthy( );
       } );
     } );
-    it.todo( "should change to es when local user locale is en but remote user locale is es" );
+    it(
+      "should change to es when local user locale is en but remote user locale is es",
+      async ( ) => {
+        const mockUser = factory( "LocalUser" );
+        expect( mockUser.locale ).toEqual( "en" );
+        await signIn( mockUser );
+
+        const mockSpanishUser = factory( "LocalUser", {
+          locale: "es"
+        } );
+        inatjs.users.me.mockResolvedValue( makeResponse( [mockSpanishUser] ) );
+
+        const { queryByText } = renderAppWithComponent( <ObsList /> );
+        await waitFor( ( ) => {
+          expect( queryByText( /X-Observations/ ) ).toBeFalsy( );
+          expect( queryByText( / Observaciones/ ) ).toBeTruthy( );
+        } );
+      }
+    );
   } );
 } );

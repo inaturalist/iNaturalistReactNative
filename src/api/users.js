@@ -4,10 +4,6 @@ import inatjs from "inaturalistjs";
 
 import handleError from "./error";
 
-const PARAMS = {
-  fields: "all"
-};
-
 const MEMBER_PROJECT_FIELDS = {
   title: true,
   icon: true
@@ -31,7 +27,9 @@ const REMOTE_USER_FIELDS = {
   observations_count: true,
   identifications_count: true,
   journal_posts_count: true,
-  site: true
+  site: true,
+  locale: true,
+  id: true
 };
 
 const REMOTE_USER_PARAMS = {
@@ -40,7 +38,7 @@ const REMOTE_USER_PARAMS = {
 
 const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
-    const { results } = await inatjs.users.me( { ...PARAMS, ...params, ...opts } );
+    const { results } = await inatjs.users.me( { ...REMOTE_USER_PARAMS, ...params, ...opts } );
     return results[0];
   } catch ( e ) {
     return handleError( e );
