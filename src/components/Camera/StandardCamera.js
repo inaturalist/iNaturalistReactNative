@@ -24,7 +24,10 @@ export const MAX_PHOTOS_ALLOWED = 20;
 const StandardCamera = ( ): Node => {
   const {
     addCameraPhotosToCurrentObservation,
-    createObsWithCameraPhotos, cameraPreviewUris, setCameraPreviewUris, allObsPhotoUris,
+    createObsWithCameraPhotos,
+    cameraPreviewUris,
+    setCameraPreviewUris,
+    allObsPhotoUris,
     evidenceToAdd,
     setEvidenceToAdd
   } = useContext( ObsEditContext );
@@ -89,13 +92,35 @@ const StandardCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const renderCameraOptionsButtons = icon => (
-    <Avatar.Icon
-      size={40}
-      icon={icon}
-      style={{ backgroundColor: colors.gray }}
-    />
-  );
+  const renderCameraOptionsButtons = icon => {
+    let testID = "";
+    let accessibilityLabel = "";
+    switch ( icon ) {
+      case "flash":
+        testID = "flash-button-label-flash";
+        accessibilityLabel = t( "flash-button-label-flash" );
+        break;
+      case "flash-off":
+        testID = "flash-button-label-flash-off";
+        accessibilityLabel = t( "flash-button-label-flash-off" );
+        break;
+      case "camera-flip":
+        testID = "camera-button-label-switch-camera";
+        accessibilityLabel = t( "camera-button-label-switch-camera" );
+        break;
+      default:
+        break;
+    }
+    return (
+      <Avatar.Icon
+        testID={testID}
+        accessibilityLabel={accessibilityLabel}
+        size={40}
+        icon={icon}
+        style={{ backgroundColor: colors.gray }}
+      />
+    );
+  };
 
   const renderCameraButton = ( icon, disabled ) => (
     <Avatar.Icon
@@ -119,7 +144,9 @@ const StandardCamera = ( ): Node => {
         <View className="flex-row justify-between w-screen mb-4 px-4">
           {hasFlash ? (
             <Pressable onPress={toggleFlash}>
-              {renderCameraOptionsButtons( "flash" )}
+              {takePhotoOptions.flash === "on"
+                ? renderCameraOptionsButtons( "flash" )
+                : renderCameraOptionsButtons( "flash-off" )}
             </Pressable>
           ) : <View />}
           <Pressable onPress={flipCamera}>
