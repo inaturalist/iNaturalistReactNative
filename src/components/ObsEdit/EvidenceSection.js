@@ -37,13 +37,23 @@ const EvidenceSection = ( {
   const { params } = useRoute( );
   const lastScreen = params?.lastScreen;
   const mountedRef = useRef( true );
-  const isNewObservation = currentObservation && !currentObservation.id;
+  // TODO move this logic to the model
+  const isNewObservation = currentObservation && !currentObservation._created_at;
   const isNewObservationCameraPhoto = isNewObservation && lastScreen === "StandardCamera";
-  const isNewObservationsWithoutPhotos = isNewObservation && lastScreen !== "StandardCamera"
-    && lastScreen !== "PhotoGallery";
+  const isNewObservationsWithoutPhotos = (
+    isNewObservation
+    && lastScreen !== "StandardCamera"
+    && lastScreen !== "PhotoGallery"
+  );
   const isNewObservationImportingPhotos = isNewObservation && lastScreen === "PhotoGallery";
-  const [shouldFetchLocation, setShouldFetchLocation] = useState( currentObservation
-    && ( isNewObservationCameraPhoto || isNewObservationsWithoutPhotos ) );
+  const [shouldFetchLocation, setShouldFetchLocation] = useState(
+    currentObservation
+    && !currentObservation._synced_at
+    && (
+      isNewObservationCameraPhoto
+      || isNewObservationsWithoutPhotos
+    )
+  );
   const [fetchingLocation, setFetchingLocation] = useState( false );
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
   const [photoOriginalUris, setPhotoOriginalUris] = useState( [] );

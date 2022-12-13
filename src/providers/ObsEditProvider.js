@@ -4,6 +4,7 @@ import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
+import Photo from "realmModels/Photo";
 import { formatDateAndTime } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useApiToken from "sharedHooks/useApiToken";
@@ -171,16 +172,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
     };
 
-    const deleteCurrentObservation = ( ) => {
-      if ( currentObservationIndex === observations.length - 1 ) {
-        setCurrentObservationIndex( currentObservationIndex - 1 );
-      }
-      observations.splice( currentObservationIndex, 1 );
-      setObservations( observations );
-
-      if ( observations.length === 0 ) {
-        navigation.navigate( "ObsList" );
-      }
+    const deleteLocalObservation = uuid => {
+      realm?.write( ( ) => {
+        realm?.delete( realm.objectForPrimaryKey( "Observation", uuid ) );
+      } );
     };
 
     const saveObservation = async ( ) => {
@@ -202,6 +197,30 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       if ( localObs ) {
         setNextScreen( );
       }
+    };
+
+    const removePhotoFromList = ( list, photo ) => {
+      const updatedPhotoList = list;
+      const photoIndex = list.findIndex( p => p === photo );
+      updatedPhotoList.splice( photoIndex, 1 );
+      return updatedPhotoList || list;
+    };
+
+    const deletePhotoFromObservation = async ( photoUriToDelete, photoUris, setPhotoUris ) => {
+      if ( !photoUriToDelete ) { return; }
+      const updatedPhotos = removePhotoFromList( photoUris, photoUriToDelete );
+
+      // spreading the array forces DeletePhotoDialog to rerender on each photo deletion
+      setPhotoUris( [...updatedPhotos] );
+
+      // when deleting photo from StandardCamera while adding new evidence, remember to clear
+      // the list of new evidence to add
+      if ( evidenceToAdd.length > 0 ) {
+        const updatedEvidence = removePhotoFromList( evidenceToAdd, photoUriToDelete );
+        setEvidenceToAdd( [...updatedEvidence] );
+      }
+
+      await Photo.deletePhoto( realm, photoUriToDelete );
     };
 
     return {
@@ -230,9 +249,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       resetObsEditContext,
       saveObservation,
       saveAndUploadObservation,
-      deleteCurrentObservation,
+      deleteLocalObservation,
       album,
-      setAlbum
+      setAlbum,
+      deletePhotoFromObservation
     };
   }, [
     currentObservation,

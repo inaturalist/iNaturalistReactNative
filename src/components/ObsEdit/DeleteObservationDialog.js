@@ -1,13 +1,15 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
+import { deleteObservation } from "api/observations";
 import Button from "components/SharedComponents/Buttons/Button";
+import { Text } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import {
-  Dialog, Paragraph, Portal
-} from "react-native-paper";
+import { Dialog, Portal } from "react-native-paper";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
 type Props = {
   deleteDialogVisible: boolean,
@@ -19,25 +21,36 @@ const DeleteObservationDialog = ( {
   hideDialog
 }: Props ): Node => {
   const {
-    deleteCurrentObservation
+    deleteLocalObservation,
+    currentObservation
   } = useContext( ObsEditContext );
-  const deleteObservation = async ( ) => {
-    deleteCurrentObservation( );
-    hideDialog( );
-  };
+  const navigation = useNavigation( );
+  const { uuid } = currentObservation;
+
+  const deleteObservationMutation = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => deleteObservation( params, optsWithAuth ),
+    {
+      onSuccess: ( ) => {
+        deleteLocalObservation( uuid );
+        hideDialog( );
+        navigation.navigate( "ObsList" );
+      }
+    }
+  );
 
   return (
     <Portal>
       <Dialog visible={deleteDialogVisible} onDismiss={hideDialog}>
         <Dialog.Content>
-          <Paragraph>{t( "Are-you-sure" )}</Paragraph>
+          <Text>{t( "Are-you-sure" )}</Text>
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={hideDialog} text={t( "Cancel" )} level="primary" />
+          <Button onPress={hideDialog} text={t( "Cancel" )} level="primary" className="m-0.5" />
           <Button
-            onPress={deleteObservation}
+            onPress={( ) => deleteObservationMutation.mutate( { uuid } )}
             text={t( "Yes-delete-observation" )}
             level="primary"
+            className="m-0.5"
           />
         </Dialog.Actions>
       </Dialog>

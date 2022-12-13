@@ -1,6 +1,5 @@
 import factory, { define } from "factoria";
 
-// TODO use faker for more of these dynamic values.
 export default define( "LocalObservation", faker => ( {
   _created_at: faker.date.past( ),
   uuid: faker.datatype.uuid( ),
@@ -17,7 +16,6 @@ export default define( "LocalObservation", faker => ( {
   ],
   placeGuess: "SF",
   taxon: factory( "LocalTaxon" ),
-  timeObservedAt: "2021-05-09T07:27:05-06:00",
   user: factory( "LocalUser" ),
   qualityGrade: "research",
   latitude: Number( faker.address.latitude( ) ),

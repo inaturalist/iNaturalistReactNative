@@ -16,12 +16,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     justifyContent: "space-between",
     padding: 10
   },
-  scrollView: {
-    paddingTop: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 60
-  },
   commentInputContainer: {
     position: "relative"
   },
@@ -68,28 +62,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   taxonSearch: {
     marginTop: 10
   },
-  taxonList: {
-    marginBottom: "auto",
-    marginTop: 20
-  },
-  taxonResult: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10
-  },
-  taxonResultIcon: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
-    backgroundColor: colors.lightGray
-  },
-  taxonResultNameContainer: {
-    flexDirection: "column"
-  },
-  taxonResultInfo: {
-    marginLeft: "auto",
-    marginRight: 10
-  },
   commentClear: {
     position: "absolute",
     right: 20,
@@ -103,13 +75,6 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   disabled: {
     color: colors.lightGray
-  },
-  taxonResultName: {
-    fontWeight: "bold"
-  },
-  taxonResultScientificName: {
-    color: colors.gray,
-    fontStyle: "italic"
   },
   commentHeader: {
     fontSize: 22,

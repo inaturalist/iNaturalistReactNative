@@ -1,6 +1,6 @@
 import { Realm } from "@realm/react";
 // eslint-disable-next-line import/no-cycle
-import { createEvidence, createObservation } from "api/observations";
+import { createObservation, createOrUpdateEvidence, updateObservation } from "api/observations";
 import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
@@ -223,53 +223,6 @@ class Observation extends Realm.Object {
     return { uri: mediumUri };
   }
 
-  static fetchObservationUpdates = async ( realm, apiToken ) => {
-    if ( !apiToken ) { return null; }
-
-    const params = {
-      observations_by: "owner",
-      per_page: 200,
-      fields: "viewed,resource_uuid"
-    };
-
-    const options = { api_token: apiToken };
-    try {
-      const { results } = await inatjs.observations.updates( params, options );
-      const unviewed = results.filter( result => result.viewed === false ).map( r => r );
-      unviewed.forEach( update => {
-        const existingObs = realm?.objectForPrimaryKey( "Observation", update.resource_uuid );
-        if ( !existingObs ) { return; }
-        realm?.write( ( ) => {
-          existingObs.viewed = update.viewed;
-        } );
-      } );
-      return unviewed;
-    } catch ( e ) {
-      console.log( "Couldn't fetch observation updates:", JSON.stringify( e ) );
-      return null;
-    }
-  }
-
-  static fetchRemoteObservations = async ( page, realm ) => {
-    const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
-    if ( !currentUser ) { return null; }
-
-    const params = {
-      user_id: currentUser.id,
-      page,
-      per_page: 6,
-      fields: Observation.FIELDS
-    };
-
-    try {
-      const { results } = await inatjs.observations.search( params );
-      return results;
-    } catch ( e ) {
-      console.log( "Couldn't fetch observations:", JSON.stringify( e.response ) );
-      return null;
-    }
-  }
-
   static filterUnsyncedObservations = realm => {
     const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
     const photosUnsyncedFilter = "ANY observationPhotos._synced_at == null";
@@ -283,6 +236,10 @@ class Observation extends Realm.Object {
     const obsList = Observation.filterUnsyncedObservations( realm );
     const unsyncedObs = obsList.filtered( `uuid == "${obs.uuid}"` );
     return unsyncedObs.length > 0;
+  }
+
+  wasSynced( ) {
+    return this._synced_at !== null;
   }
 
   static updateLocalObservationsFromRemote = ( realm, results ) => {
@@ -320,7 +277,7 @@ class Observation extends Realm.Object {
     realm: any,
     options: Object
   ) => {
-    const response = await createEvidence( apiEndpoint, params, options );
+    const response = await createOrUpdateEvidence( apiEndpoint, params, options );
     await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
     return response;
   };
@@ -335,10 +292,25 @@ class Observation extends Realm.Object {
     options: Object
   ): Promise<any> => {
     let response;
-    if ( evidence.length === 0 ) { return; }
-    for ( let i = 0; i < evidence.length; i += 1 ) {
-      const currentEvidence = evidence[i];
+
+    // only try to upload evidence which is not yet on the server
+    const unsyncedEvidence = evidence.filter( item => !item.wasSynced( ) );
+
+    for ( let i = 0; i < unsyncedEvidence.length; i += 1 ) {
+      const currentEvidence = unsyncedEvidence[i].toJSON( );
       const evidenceUUID = currentEvidence.uuid;
+
+      // Remove all null values, b/c the API doesn't seem to like them
+      const newPhoto = {};
+      const photo = currentEvidence?.photo;
+      Object.keys( photo ).forEach( k => {
+        if ( photo[k] !== null ) {
+          newPhoto[k] = photo[k];
+        }
+      } );
+
+      currentEvidence.photo = newPhoto;
+
       const params = apiSchemaMapper( observationId, currentEvidence );
       response = Observation.uploadToServer(
         evidenceUUID,
@@ -371,27 +343,42 @@ class Observation extends Realm.Object {
       fields: { id: true }
     };
 
-    const response = await createObservation( uploadParams, options );
+    let response;
+
+    const wasPreviouslySynced = obs.wasSynced( );
+
+    if ( wasPreviouslySynced ) {
+      response = await updateObservation( {
+        id: newObs.uuid,
+        ignore_photos: true,
+        observation: { ...newObs },
+        fields: { id: true }
+      }, options );
+    } else {
+      response = await createObservation( uploadParams, options );
+    }
+
     await Observation.markRecordUploaded( obs.uuid, "Observation", response, realm );
     const { id } = response.results[0];
+
     if ( obs?.observationPhotos?.length > 0 ) {
-      return Observation.uploadEvidence(
+      await Observation.uploadEvidence(
         obs.observationPhotos,
         "ObservationPhoto",
         ObservationPhoto.mapPhotoForUpload,
         id,
-        inatjs.observation_photos,
+        inatjs.observation_photos.create,
         realm,
         options
       );
     }
     if ( obs?.observationSounds?.length > 0 ) {
-      return Observation.uploadEvidence(
+      await Observation.uploadEvidence(
         obs.observationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForUpload,
         id,
-        inatjs.observation_sounds,
+        inatjs.observation_sounds.create,
         realm,
         options
       );

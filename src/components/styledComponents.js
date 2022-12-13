@@ -7,6 +7,7 @@ import { styled } from "nativewind";
 import {
   Image as StyledImage,
   KeyboardAvoidingView as StyledKeyboardAvoidingView,
+  Modal as StyledModal,
   Platform,
   Pressable as StyledPressable,
   SafeAreaView as StyledSafeAreaView,
@@ -42,12 +43,15 @@ const Pressable = styled( StyledPressable );
 const Image = styled( StyledImage );
 // $FlowIgnore
 const BottomSheetTextInput = styled( StyledBottomSheetTextInput );
+// $FlowIgnore
+const Modal = styled( StyledModal );
 
 export {
   BottomSheetTextInput,
   HeaderText,
   Image,
   KeyboardAvoidingView,
+  Modal,
   Pressable,
   SafeAreaView,
   ScrollView,
