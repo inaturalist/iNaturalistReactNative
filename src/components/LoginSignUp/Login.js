@@ -9,7 +9,6 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  findNodeHandle,
   Linking,
   TouchableOpacity, View
 } from "react-native";
@@ -34,6 +33,7 @@ const Login = ( ): Node => {
   const [loggedIn, setLoggedIn] = useState( false );
   const [error, setError] = useState( null );
   const [loading, setLoading] = useState( false );
+  const [extraScrollHeight, setExtraScrollHeight] = useState( 0 );
 
   useEffect( ( ) => {
     let isCurrent = true;
@@ -76,10 +76,6 @@ const Login = ( ): Node => {
     Linking.openURL( "https://www.inaturalist.org/users/password/new" );
   };
 
-  const scrollToInput = node => {
-    keyboardScrollRef?.current?.scrollToFocusedInput( node );
-  };
-
   const loginForm = (
     <View>
       <Image
@@ -103,7 +99,7 @@ const Login = ( ): Node => {
         autoCapitalize="none"
         keyboardType="email-address"
         selectionColor={colors.black}
-        onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
+        onFocus={() => setExtraScrollHeight( 200 )}
       />
       <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
@@ -116,7 +112,7 @@ const Login = ( ): Node => {
         secureTextEntry
         testID="Login.password"
         selectionColor={colors.black}
-        onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
+        onFocus={() => setExtraScrollHeight( 200 )}
       />
       <TouchableOpacity onPress={forgotPassword}>
         <Text className="underline mt-2 self-end">{t( "Forgot-Password" )}</Text>
@@ -150,7 +146,8 @@ const Login = ( ): Node => {
           keyboardShouldPersistTaps="always"
           ref={keyboardScrollRef}
           enableOnAndroid
-          extraScrollHeight={30}
+          enableAutomaticScroll
+          extraScrollHeight={extraScrollHeight}
           className="p-8"
         >
           {renderBackButton( )}
