@@ -1,6 +1,10 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import useCameraRollPhotos from "components/PhotoImporter/hooks/useCameraRollPhotos";
+import usePhotoAlbums from "components/PhotoImporter/hooks/usePhotoAlbums";
+import PhotoAlbumPicker from "components/PhotoImporter/PhotoAlbumPicker";
+import PhotoGalleryImage from "components/PhotoImporter/PhotoGalleryImage";
 import Button from "components/SharedComponents/Buttons/Button";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { Text, View } from "components/styledComponents";
@@ -14,9 +18,6 @@ import {
   ActivityIndicator, FlatList
 } from "react-native";
 import { Snackbar } from "react-native-paper";
-
-import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
-import PhotoGalleryImage from "./PhotoGalleryImage";
 
 const MAX_PHOTOS_ALLOWED = 20;
 
@@ -41,6 +42,8 @@ const PhotoGallery = ( ): Node => {
   // photos are requested (and permissions are potentially requested) when
   // they are needed and not just when this provider initializes
   const [canRequestPhotos, setCanRequestPhotos] = useState( false );
+
+  const albums = usePhotoAlbums( );
 
   const {
     fetchingPhotos,
@@ -207,6 +210,14 @@ const PhotoGallery = ( ): Node => {
     }
     setPhotoOptions( newOptions );
   }, [album] );
+
+  useEffect( ( ) => {
+    const headerTitle = ( ) => <PhotoAlbumPicker albums={albums} />;
+
+    navigation.setOptions( {
+      headerTitle
+    } );
+  }, [navigation, albums] );
 
   return (
     <ViewNoFooter>
