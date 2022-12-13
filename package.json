@@ -10,7 +10,7 @@
     "lint": "npm run lint:eslint && npm run lint:flow",
     "lint:eslint": "eslint . --fix",
     "lint:flow": "flow check",
-    "postinstall": "husky install",
+    "postinstall": "patch-package && husky install",
     "translate": "node src/i18n/i18ncli.js build",
     "e2e:build:android": "npx detox build --configuration android.release",
     "e2e:build": "npx detox build --configuration ios.release",
