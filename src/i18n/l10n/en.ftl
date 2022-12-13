@@ -485,6 +485,10 @@ Separate-Photos = Separate Photos
 
 Settings = Settings
 
+Show-new-observation-options = Show new observation options
+
+Show-new-observation-options-desc = Show options for adding a new observation, including different kinds of media evidence or the option to create an observation without evidence.
+
 Sign-out = Sign out
 
 Sign-Up = Sign Up
