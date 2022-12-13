@@ -76,3 +76,4 @@ fastlane/Appfile
 
 # Detox e2e test artifacts
 artifacts/
+*.log
