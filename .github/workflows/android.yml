@@ -31,7 +31,7 @@ jobs:
     - name: Download Android Emulator Image
       run: |
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-28;default;x86"
-        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name emu --device "Pixel 5 API 31 AOSP" -k 'system-images;android-28;default;x86'
+        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_31_AOSP --device "Pixel 2" -k 'system-images;android-28;default;x86'
         $ANDROID_HOME/emulator/emulator -list-avds
 
     - name: Cache node modules
