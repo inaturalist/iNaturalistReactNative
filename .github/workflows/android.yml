@@ -1,0 +1,84 @@
+name: e2e-Android
+on:
+  pull_request:
+
+jobs:
+  setup:
+    runs-on: macos-latest
+    steps:
+      - uses: fkirc/skip-duplicate-actions@master
+        with:
+          github_token: ${{ github.token }}
+          cancel_others: true
+
+  test:
+    needs: setup
+    runs-on: macos-latest
+    # Kill the task if not finished after 60 minutes
+    timeout-minutes: 60
+
+    steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+
+    - name: Install Node.js, NPM and Yarn
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Use specific Java version for sdkmanager to work
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+
+    - name: Download Android Emulator Image
+      run: |
+        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-29;google_apis;x86"
+        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name emu --device "Nexus 5X" -k 'system-images;android-29;google_apis;x86'
+        $ANDROID_HOME/emulator/emulator -list-avds
+
+    - name: Cache node modules
+      uses: actions/cache@v3
+      id: cache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Rebuild detox from cache
+      if: steps.cache.outputs.cache-hit == 'true'
+      run: npx detox clean-framework-cache && npx detox build-framework-cache
+
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm install --legacy-peer-deps
+    
+    - name: Build for detox
+      run: npm run e2e:build:android
+
+    - name: Android Emulator
+      timeout-minutes: 10
+      continue-on-error: true
+      run: |
+        echo "Starting emulator"
+        nohup $ANDROID_HOME/emulator/emulator -avd emu -no-audio -no-snapshot -no-window &
+        $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
+        $ANDROID_HOME/platform-tools/adb devices
+        echo "Emulator started"
+
+    - name: Android Detox
+      run: npm run e2e:test:android -- --cleanup --debug-synchronization 200
+
+  notify:
+    name: Notify Slack
+    needs: test
+    if: ${{ success() || failure() }}
+    runs-on: macos-latest
+    steps:
+      - uses: iRoachie/slack-github-actions@v2.3.0
+        if: env.SLACK_WEBHOOK_URL != null
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
