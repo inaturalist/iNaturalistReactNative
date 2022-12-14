@@ -3,7 +3,7 @@ import ObsList from "components/Observations/ObsList";
 import React from "react";
 
 import factory from "../../../factory";
-import { renderComponentWithObsEditProvider } from "../../../helpers/render";
+import { renderComponent } from "../../../helpers/render";
 
 jest.useFakeTimers( );
 
@@ -56,7 +56,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 it( "renders an observation", async ( ) => {
   await waitFor( ( ) => {
-    const { getByTestId } = renderComponentWithObsEditProvider( <ObsList /> );
+    const { getByTestId } = renderComponent( <ObsList /> );
     const obs = mockObservations[0];
     const list = getByTestId( "ObservationViews.myObservations" );
 
@@ -73,7 +73,7 @@ it( "renders an observation", async ( ) => {
 
 it( "renders multiple observations", async ( ) => {
   await waitFor( ( ) => {
-    const { getByTestId } = renderComponentWithObsEditProvider( <ObsList /> );
+    const { getByTestId } = renderComponent( <ObsList /> );
     mockObservations.forEach( obs => {
       expect( getByTestId( `ObsList.obsCard.${obs.uuid}` ) ).toBeTruthy( );
     } );
@@ -82,7 +82,7 @@ it( "renders multiple observations", async ( ) => {
 
 it( "renders grid view on button press", async ( ) => {
   await waitFor( ( ) => {
-    const { getByTestId } = renderComponentWithObsEditProvider( <ObsList /> );
+    const { getByTestId } = renderComponent( <ObsList /> );
     const button = getByTestId( "ObsList.toggleGridView" );
     fireEvent.press( button );
     mockObservations.forEach( obs => {
