@@ -173,16 +173,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
     };
 
-    const deleteCurrentObservation = ( ) => {
-      if ( currentObservationIndex === observations.length - 1 ) {
-        setCurrentObservationIndex( currentObservationIndex - 1 );
-      }
-      observations.splice( currentObservationIndex, 1 );
-      setObservations( observations );
-
-      if ( observations.length === 0 ) {
-        navigation.navigate( "ObsList" );
-      }
+    const deleteLocalObservation = uuid => {
+      realm?.write( ( ) => {
+        realm?.delete( realm.objectForPrimaryKey( "Observation", uuid ) );
+      } );
     };
 
     const saveObservation = async ( ) => {
@@ -254,7 +248,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       resetObsEditContext,
       saveObservation,
       saveAndUploadObservation,
-      deleteCurrentObservation,
+      deleteLocalObservation,
       album,
       setAlbum,
       deletePhotoFromObservation,

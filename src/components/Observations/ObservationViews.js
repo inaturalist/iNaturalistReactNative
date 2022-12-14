@@ -60,8 +60,10 @@ const ObservationViews = ( ): Node => {
   } = useAuthenticatedQuery(
     ["searchObservations", idBelow],
     optsWithAuth => searchObservations( params, optsWithAuth ),
+    {},
     {
-      keepPreviousData: true
+      keepPreviousData: true,
+      enabled: !!isLoggedIn
     }
   );
 
@@ -130,7 +132,12 @@ const ObservationViews = ( ): Node => {
   );
 
   const navToObsDetails = async observation => {
-    navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
+    const { uuid } = observation;
+    if ( !observation.wasSynced( ) ) {
+      navigation.navigate( "ObsEdit", { uuid } );
+    } else {
+      navigation.navigate( "ObsDetails", { uuid } );
+    }
   };
 
   const renderItem = ( { item } ) => (

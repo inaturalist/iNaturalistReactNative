@@ -1,27 +1,37 @@
-import { NavigationContainer, useRoute } from "@react-navigation/native";
-import { render, waitFor } from "@testing-library/react-native";
+import { useRoute } from "@react-navigation/native";
+import { waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import Observation from "realmModels/Observation";
 
 import factory from "../factory";
+import { renderComponent } from "../helpers/render";
+import { signIn, signOut } from "../helpers/user";
 
 jest.useFakeTimers( );
 
-const renderObsEdit = ( update = null ) => {
-  const renderMethod = update || render;
-  return renderMethod(
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <ObsEditProvider>
-          <ObsEdit />
-        </ObsEditProvider>
-      </NavigationContainer>
-    </SafeAreaProvider>
+beforeEach( async ( ) => {
+  global.realm.write( ( ) => {
+    global.realm.deleteAll( );
+  } );
+  const mockUser = factory( "LocalUser" );
+  await signIn( mockUser );
+} );
+
+afterEach( ( ) => {
+  signOut( );
+  jest.clearAllMocks( );
+} );
+
+function renderObsEdit( update ) {
+  return renderComponent(
+    <ObsEditProvider>
+      <ObsEdit />
+    </ObsEditProvider>,
+    update
   );
-};
+}
 
 describe( "UUID in params", ( ) => {
   it( "should set the observation in context when context is blank", async ( ) => {

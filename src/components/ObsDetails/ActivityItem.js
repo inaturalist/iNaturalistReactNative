@@ -38,6 +38,7 @@ const ActivityItem = ( {
   item, navToTaxonDetails, handlePress, toggleRefetch, refetchRemoteObservation
 }: Props ): Node => {
   const [currentUser, setCurrentUser] = useState( null );
+  const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const { taxon } = item;
   const { user } = item;
 
@@ -95,7 +96,10 @@ const ActivityItem = ( {
             )}
           {item.body && currentUser
             ? (
-              <KebabMenu>
+              <KebabMenu
+                visible={kebabMenuVisible}
+                setVisible={setKebabMenuVisible}
+              >
                 <Menu.Item
                   onPress={async ( ) => {
                     // first delete locally
@@ -103,12 +107,16 @@ const ActivityItem = ( {
                     // then delete remotely
                     deleteCommentMutation.mutate( item.uuid );
                     toggleRefetch( );
+                    setKebabMenuVisible( false );
                   }}
                   title={t( "Delete-comment" )}
                 />
               </KebabMenu>
             ) : (
-              <KebabMenu>
+              <KebabMenu
+                visible={kebabMenuVisible}
+                setVisible={setKebabMenuVisible}
+              >
                 {/* TODO: build out this menu */}
                 <View />
               </KebabMenu>
@@ -120,7 +128,7 @@ const ActivityItem = ( {
           className="flex-row my-3 ml-3 items-center"
           onPress={navToTaxonDetails}
           accessibilityRole="link"
-          accessibilityLabel="go to taxon details"
+          accessibilityLabel={t( "Navigate-to-taxon-details" )}
         >
           <SmallSquareImage uri={Taxon.uri( taxon )} />
           <View>

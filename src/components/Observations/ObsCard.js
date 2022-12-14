@@ -1,6 +1,7 @@
 // @flow
 
 import { Image, Pressable, View } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -36,7 +37,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
       className="flex-row my-2 mx-3 justify-between"
       testID={`ObsList.obsCard.${item.uuid}`}
       accessibilityRole="link"
-      accessibilityLabel="Navigate to observation details screen"
+      accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
       <View className="flex-row shrink">
         {obsListPhoto}

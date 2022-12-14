@@ -184,9 +184,18 @@ const fetchObservationUpdates = async (
   }
 };
 
+const deleteObservation = async ( params: Object = {}, opts: Object = {} ) : Promise<?any> => {
+  try {
+    return await inatjs.observations.delete( params, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
   createObservation,
   createOrUpdateEvidence,
+  deleteObservation,
   faveObservation,
   fetchObservationUpdates,
   fetchRemoteObservation,

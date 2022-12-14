@@ -10,7 +10,11 @@ import mockRNLocalize from "react-native-localize/mock";
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
 import { makeResponse } from "./factory";
-import { mockCamera, mockSortDevices } from "./vision-camera/vision-camera";
+import {
+  mockCamera,
+  mockSortDevices,
+  mockUseCameraDevices
+} from "./vision-camera/vision-camera";
 
 jest.mock(
   "@react-native-async-storage/async-storage",
@@ -21,7 +25,8 @@ require( "react-native-reanimated/lib/reanimated2/jestUtils" ).setUpTests();
 
 jest.mock( "react-native-vision-camera", ( ) => ( {
   Camera: mockCamera,
-  sortDevices: mockSortDevices
+  sortDevices: mockSortDevices,
+  useCameraDevices: mockUseCameraDevices
 } ) );
 
 jest.mock( "react-native-localize", () => mockRNLocalize );
