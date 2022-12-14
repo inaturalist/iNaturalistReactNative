@@ -33,7 +33,7 @@ jobs:
       with:
         java-version: 'openjdk8'
         architecture: 'x64'
-  
+
     - name: Download Android Emulator Image
       run: |
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-28;default;x86"
