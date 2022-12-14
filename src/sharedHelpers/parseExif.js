@@ -1,7 +1,8 @@
 // @flow
 
-import { parse } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 import { readExif } from "react-native-exif-reader";
+import * as RNLocalize from "react-native-localize";
 
 class UsePhotoExifDateFormatError extends Error {}
 
@@ -11,15 +12,19 @@ Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
 } );
 
 // Parses EXIF date time into a date object
-export const parseExifDateTime = ( datetime: string ): ?Date => {
+export const parseExifDateToLocalTimezone = ( datetime: string ): ?Date => {
   if ( !datetime ) return null;
 
-  // Assume local timezone
-  const parsedDate = parse( datetime, "yyyy-MM-dd'T'HH:mm:ss.SSS", new Date() );
-  if ( !parsedDate || parsedDate.toString( ).match( /invalid/i ) ) {
+  const isoDate = `${datetime}Z`;
+
+  // Use local timezone from device
+  const timeZone = RNLocalize.getTimeZone( );
+  const zonedDate = utcToZonedTime( isoDate, timeZone );
+
+  if ( !zonedDate || zonedDate.toString( ).match( /invalid/i ) ) {
     throw new UsePhotoExifDateFormatError( "Date was not formatted correctly" );
   }
-  return parsedDate;
+  return zonedDate;
 };
 
 // Parses EXIF date time into a date object

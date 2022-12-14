@@ -1,6 +1,6 @@
 import faker from "faker";
 import { readExif } from "react-native-exif-reader";
-import { parseExif, parseExifDateTime } from "sharedHelpers/parseExif";
+import { parseExif, parseExifDateToLocalTimezone } from "sharedHelpers/parseExif";
 
 // Expected EXIF metadata of the above file
 
@@ -20,9 +20,9 @@ const mockReadExif = jest.fn( async _photoUri => ( {
 } ) );
 readExif.mockImplementation( mockReadExif );
 
-describe( "parseExifDateTime", ( ) => {
+describe( "parseExifDateToLocalTimezone", ( ) => {
   it( "should parse a date string in the format react-native-exif-reader returns", ( ) => {
-    const date = parseExifDateTime( EXPECTED_EXIF_DATE );
+    const date = parseExifDateToLocalTimezone( EXPECTED_EXIF_DATE );
     expect( date ).toBeInstanceOf( Date );
     expect( date.getFullYear( ) ).toEqual( 2018 );
     expect( date.getMonth( ) ).toEqual( 2 );

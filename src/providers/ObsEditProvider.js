@@ -5,9 +5,9 @@ import React, { useCallback, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
-import { createObservedOnStringForUpload, formatDateAndTime } from "sharedHelpers/dateAndTime";
+import { formatDateAndTime } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import { parseExif, parseExifDateTime } from "sharedHelpers/parseExif";
+import { parseExif, parseExifDateToLocalTimezone } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
 
 import { ObsEditContext, RealmContext } from "./contexts";
@@ -63,10 +63,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const createObservationFromGalleryPhoto = useCallback( async photo => {
     const originalPhotoUri = photo?.image?.uri;
     const firstPhotoExif = await parseExif( originalPhotoUri );
-    const exifDate = parseExifDateTime( firstPhotoExif.date );
+    const exifDate = parseExifDateToLocalTimezone( firstPhotoExif.date );
 
-    const observedOnDate = exifDate ? createObservedOnStringForUpload( exifDate )
-      : formatDateAndTime( photo.timestamp );
+    const observedOnDate = exifDate || formatDateAndTime( photo.timestamp );
     const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
     const longitude = firstPhotoExif.longitude || photo?.location?.longitude;
     const placeGuess = await fetchPlaceName( latitude, longitude );
