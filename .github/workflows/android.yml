@@ -28,6 +28,9 @@ jobs:
       with:
         node-version: 16
 
+    - name: Specify Java
+      run: JAVA_HOME=JAVA_HOME_11_X64
+
     - name: Download Android Emulator Image
       run: |
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-28;default;x86"
