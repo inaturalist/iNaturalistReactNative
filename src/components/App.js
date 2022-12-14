@@ -57,12 +57,12 @@ const App = ( { children }: Props ): Node => {
     checkForSignedInUser( );
   }, [] );
 
+  async function changeLanguageToLocale( locale ) {
+    await i18next.changeLanguage( locale );
+  }
+
   // When we get the updated current user, update the record in the database
   useEffect( ( ) => {
-    async function changeLanguageToLocale( locale ) {
-      await i18next.changeLanguage( locale );
-    }
-
     if ( remoteUser ) {
       realm?.write( ( ) => {
         realm?.create( "User", remoteUser, "modified" );
@@ -74,6 +74,13 @@ const App = ( { children }: Props ): Node => {
       }
     }
   }, [realm, remoteUser] );
+
+  // If the current user's locale is not set, change the language
+  useEffect( ( ) => {
+    if ( currentUser?.locale && currentUser?.locale !== i18next.language ) {
+      changeLanguageToLocale( currentUser.locale );
+    }
+  }, [currentUser?.locale] );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

@@ -77,12 +77,14 @@ describe( "MyObservations", ( ) => {
         expect( queryByText( / Observaciones/ ) ).toBeTruthy( );
       } );
     } );
+
     it(
       "should change to es when local user locale is en but remote user locale is es",
       async ( ) => {
         const mockUser = factory( "LocalUser" );
         expect( mockUser.locale ).toEqual( "en" );
         await signIn( mockUser );
+        renderAppWithComponent( <ObsList /> );
 
         const mockSpanishUser = factory( "LocalUser", {
           locale: "es"
