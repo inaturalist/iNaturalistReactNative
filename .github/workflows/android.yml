@@ -28,8 +28,11 @@ jobs:
       with:
         node-version: 16
 
-    - name: Specify Java
-      run: JAVA_HOME=JAVA_HOME_11_X64
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'adopt'
 
     - name: Download Android Emulator Image
       run: |
