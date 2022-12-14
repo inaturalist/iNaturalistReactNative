@@ -1,13 +1,8 @@
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  QueryClient,
-  QueryClientProvider
-} from "@tanstack/react-query";
-import { render } from "@testing-library/react-native";
 import UserProfile from "components/UserProfile/UserProfile";
 import React from "react";
 
 import factory from "../../../factory";
+import { renderComponent } from "../../../helpers/render";
 
 const mockUser = factory( "RemoteUser" );
 
@@ -35,18 +30,8 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-const queryClient = new QueryClient( );
-
-const renderUserProfile = ( ) => render(
-  <QueryClientProvider client={queryClient}>
-    <NavigationContainer>
-      <UserProfile />
-    </NavigationContainer>
-  </QueryClientProvider>
-);
-
 test( "renders user profile from API call", async ( ) => {
-  const { getByTestId, getByText } = renderUserProfile( );
+  const { getByTestId, getByText } = renderComponent( <UserProfile /> );
 
   expect( getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy( );
   expect( getByText( `iNaturalist ${mockUser.roles[0]}` ) ).toBeTruthy( );

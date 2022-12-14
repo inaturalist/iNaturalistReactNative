@@ -2,8 +2,6 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-// import { createComment } from "api/comments";
-// import createIdentification from "api/identifications";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
@@ -14,7 +12,6 @@ import UserIcon from "components/SharedComponents/UserIcon";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
-// import { formatISO } from "date-fns";
 import { t } from "i18next";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
@@ -26,7 +23,6 @@ import {
   LogBox
 } from "react-native";
 import { Button as IconButton } from "react-native-paper";
-// import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
@@ -54,13 +50,10 @@ const ObsDetails = ( ): Node => {
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
   const [refetch, setRefetch] = useState( false );
-  // const [showCommentBox, setShowCommentBox] = useState( false );
   const { params } = useRoute( );
   const { uuid } = params;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
-  // const [ids, setIds] = useState( [] );
-  // const [addingComment, setAddingComment] = useState( false );
   const realm = useRealm( );
   const localObservation = realm?.objectForPrimaryKey( "Observation", uuid );
 
@@ -142,7 +135,7 @@ const ObsDetails = ( ): Node => {
           onPress={navToTaxonDetails}
           testID={`ObsDetails.taxon.${taxon.id}`}
           accessibilityRole="link"
-          accessibilityLabel="go to taxon details"
+          accessibilityLabel={t( "Navigate-to-taxon-details" )}
         >
           <Text>
             {checkCamelAndSnakeCase( taxon, "preferredCommonName" )}
@@ -191,7 +184,26 @@ const ObsDetails = ( ): Node => {
       </Pressable>
     );
   };
-
+  const displayPhoto = () => {
+    if ( photos.length > 0 || observation.observationSounds.length > 0 ) {
+      return (
+        <View className="bg-black">
+          <PhotoScroll photos={photos} />
+          <IconButton
+            icon={currentUserFaved ? "star-outline" : "star"}
+            onPress={faveOrUnfave}
+            textColor={colors.white}
+            className="absolute top-3 right-0"
+          />
+        </View>
+      );
+    }
+    return (
+      <View className="bg-white flex-row justify-center">
+        <IconMaterial name="image-not-supported" size={100} />
+      </View>
+    );
+  };
   return (
     <ScrollWithFooter testID={`ObsDetails.${uuid}`}>
       <View className="flex-row justify-between items-center m-3">
@@ -206,15 +218,7 @@ const ObsDetails = ( ): Node => {
         </Pressable>
         <Text className="color-logInGray">{displayCreatedAt( )}</Text>
       </View>
-      <View className="bg-black">
-        <PhotoScroll photos={photos} />
-        <IconButton
-          icon={currentUserFaved ? "star-outline" : "star"}
-          onPress={faveOrUnfave}
-          textColor={colors.white}
-          className="absolute top-3 right-0"
-        />
-      </View>
+      {displayPhoto()}
       <View className="flex-row my-5 justify-between mx-3">
         {showTaxon( )}
         <View>

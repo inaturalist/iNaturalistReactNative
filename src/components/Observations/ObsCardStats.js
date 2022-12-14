@@ -35,6 +35,7 @@ const ObsCardStats = ( { item, type, view }: Props ): Node => {
     casual: t( "C" )
   };
 
+  // console.log( item.viewed, "viewed" );
   const renderIdRow = ( ) => (
     <View className="flex-row items-center mr-3">
       <Icon name="shield" color={setIconColor( )} size={14} />

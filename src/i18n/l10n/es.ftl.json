@@ -1,17 +1,18 @@
 {
-  "count-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
-  "date-observed": "Date observed: { $date }",
-  "date-uploaded": "Date uploaded: { $date }",
+  "date-observed": "Fecha de observación: { $date }",
+  "date-uploaded": "Fecha de subido: { $date }",
   "Grid-View": {
     "comment": "Label for a view that shows observations as a grid of photos",
-    "val": "Grid View"
+    "val": "Ver rejilla"
   },
   "List-View": {
     "comment": "Label for a view that shows observations a list",
-    "val": "List View"
+    "val": "Ver lista"
   },
-  "OBSERVATIONS": "OBSERVATIONS",
-  "Observations": "Observations",
+  "Observation": "Observación",
+  "OBSERVATIONS": "OBSERVACIONES",
+  "Observations": "Observaciones",
   "Your-Observations": "Sus observaciones",
-  "TAXONOMY-header": "TAXONOMIE es bueno"
+  "TAXONOMY-header": "TAXONOMIE es bueno",
+  "X-Observations": "{ $count ->\n  [one] 1 Observación\n *[other] { $count } Observaciones\n}"
 }
