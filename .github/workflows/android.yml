@@ -28,12 +28,6 @@ jobs:
       with:
         node-version: 16
 
-    - name: Use specific Java version for sdkmanager to work
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'zulu'
-        java-version: '11'
-
     - name: Download Android Emulator Image
       run: |
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-28;default;x86"
