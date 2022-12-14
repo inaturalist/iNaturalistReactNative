@@ -12,6 +12,10 @@ class ObservationPhoto extends Realm.Object {
     uuid: true
   };
 
+  needsSync( ) {
+    return !this._synced_at || this._synced_at <= this._updated_at;
+  }
+
   wasSynced( ) {
     return this._synced_at !== null;
   }

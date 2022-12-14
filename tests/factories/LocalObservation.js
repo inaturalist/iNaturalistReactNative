@@ -21,5 +21,7 @@ export default define( "LocalObservation", faker => ( {
   qualityGrade: "research",
   latitude: Number( faker.address.latitude( ) ),
   longitude: Number( faker.address.longitude( ) ),
-  description: faker.lorem.paragraph( )
+  description: faker.lorem.paragraph( ),
+  // is this the right way to test this?
+  needsSync: jest.fn( )
 } ) );

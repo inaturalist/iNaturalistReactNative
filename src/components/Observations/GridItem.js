@@ -47,6 +47,17 @@ const GridItem = ( {
     ? Observation.projectUri( item )
     : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
 
+  const showStats = ( ) => {
+    if ( uri !== "project" && item.needsSync( ) ) {
+      return (
+        <View className="absolute bottom-0 right-0">
+          <UploadButton observation={item} />
+        </View>
+      );
+    }
+    return <ObsCardStats item={item} view="grid" />;
+  };
+
   return (
     <Pressable
       onPress={onPress}
@@ -81,13 +92,7 @@ const GridItem = ( {
             />
           </View>
         )}
-        {!item._synced_at
-          ? (
-            <View className="absolute bottom-0 right-0">
-              <UploadButton observation={item} />
-            </View>
-          )
-          : <ObsCardStats item={item} view="grid" />}
+        {showStats( )}
       </View>
       <ObsCardDetails item={item} view="grid" />
     </Pressable>
