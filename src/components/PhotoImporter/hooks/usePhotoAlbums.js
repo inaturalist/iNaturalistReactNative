@@ -4,42 +4,34 @@ import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { t } from "i18next";
 import { useEffect, useMemo, useState } from "react";
 
-const usePhotoAlbums = ( ): Array<Object> => {
+const usePhotoAlbums = ( ): ?Array<Object> => {
   const cameraRoll = useMemo( ( ) => [{
     label: t( "Camera-Roll" ),
     value: "All",
     key: "camera roll"
   }], [] );
 
-  const [photoAlbums, setPhotoAlbums] = useState( cameraRoll );
+  const [photoAlbums, setPhotoAlbums] = useState( null );
 
   useEffect( ( ) => {
-    let isCurrent = true;
-
     const fetchAlbums = async ( ) => {
+      const albumsToDisplay = cameraRoll;
+
       try {
-        const names = cameraRoll;
         const albums = await CameraRoll.getAlbums( { assetType: "Photos" } );
 
-        if ( albums && albums.length > 0 ) { // attempt to fix error on android
-          albums.forEach( ( { count, title } ) => {
-            if ( count > 0 && title !== "Screenshots" ) { // remove screenshots from gallery
-              names.push( { label: title, value: title, key: title } );
-            }
-          } );
-        }
-        if ( !isCurrent ) { return; }
-        setPhotoAlbums( names );
+        const filteredAlbums = albums.filter( a => a.title !== "Screenshots" && a.count > 0 );
+        filteredAlbums.forEach( ( { title } ) => {
+          albumsToDisplay.push( { label: title, value: title, key: title } );
+        } );
+
+        setPhotoAlbums( albumsToDisplay );
       } catch ( e ) {
-        console.log( e, "couldn't fetch photo albums" );
+        setPhotoAlbums( albumsToDisplay );
       }
     };
 
     fetchAlbums( );
-
-    return ( ) => {
-      isCurrent = false;
-    };
   }, [cameraRoll] );
 
   return photoAlbums;

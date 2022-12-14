@@ -12,14 +12,14 @@ jest.useFakeTimers( );
 
 const mockPhoto = factory( "DevicePhoto" );
 
-jest.mock( "../../../../src/components/PhotoImporter/hooks/useCameraRollPhotos", ( ) => ( {
+jest.mock( "components/PhotoImporter/hooks/useCameraRollPhotos", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
     photos: [mockPhoto]
   } )
 } ) );
 
-jest.mock( "../../../../src/components/PhotoImporter/hooks/usePhotoAlbums", ( ) => ( {
+jest.mock( "components/PhotoImporter/hooks/usePhotoAlbums", ( ) => ( {
   __esModule: true,
   default: ( ) => [{
     label: "camera roll",
@@ -35,7 +35,8 @@ jest.mock( "@react-navigation/native", ( ) => {
   return {
     ...actualNav,
     useNavigation: ( ) => ( {
-      navigate: mockedNavigate
+      navigate: mockedNavigate,
+      setOptions: jest.fn( )
     } ),
     useRoute: ( ) => ( {
     } )
