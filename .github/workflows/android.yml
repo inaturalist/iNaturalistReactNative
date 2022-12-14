@@ -34,6 +34,9 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+
     - name: Download Android Emulator Image
       run: |
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-28;default;x86"
