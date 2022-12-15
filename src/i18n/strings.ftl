@@ -119,7 +119,10 @@ Description-Tags = Description/Tags
 
 Discard-Changes = Discard Changes
 
-Discard-Observations = Discard Observation(s)
+Discard-X-Observations = {$count ->
+    [one] Discard Observation
+    *[other] Discard Observations
+}
 
 Display = Display
 
@@ -629,7 +632,12 @@ You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission
 
 You-have-unsaved-changes = You have unsaved changes. Would you like to save this observation?
 
-You-will-lose-all-existing-observations = You will lose all existing observations. Would you like to discard # observations?
+You-will-lose-all-existing-observations = {$count ->
+    [one] You will lose all existing observations. Would you like to discard 1 observation?
+    *[other] You will lose all existing observations. Would you like to discard {$count} observations?
+}
+
+You will lose all existing observations. Would you like to discard # observations?
 
 # Identification category
 Category-leading = Leading
