@@ -11,13 +11,6 @@ jobs:
           github_token: ${{ github.token }}
           cancel_others: true
 
-  test:
-    needs: setup
-    runs-on: macos-latest
-    # Kill the task if not finished after 60 minutes
-    timeout-minutes: 60
-
-    steps:
     - name: Check out Git repository
       uses: actions/checkout@v3
       with:
@@ -28,6 +21,23 @@ jobs:
       with:
         node-version: 16
 
+  bundle:
+    needs: setup
+    runs-on: macos-latest
+    # Kill the task if not finished after 60 minutes
+    timeout-minutes: 60
+
+    steps:
+    - name: Run Metro bundler
+      run: npm start
+
+  test:
+    needs: setup
+    runs-on: macos-latest
+    # Kill the task if not finished after 60 minutes
+    timeout-minutes: 60
+
+    steps:
     - name: Download Android Emulator Image
       run: |
         echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-28;default;x86"
@@ -60,11 +70,8 @@ jobs:
         java-version: '11'
         distribution: 'zulu'
 
-    - name: Build for detox
-      run: npm run e2e:build:android
-
-    - name: Run Metro bundler
-      run: npm start
+    # - name: Build for detox
+    #   run: npm run e2e:build:android
 
     - name: Android Emulator
       timeout-minutes: 10
