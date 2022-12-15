@@ -106,7 +106,10 @@ const MainStackNavigation = ( ): React.Node => (
       <Stack.Screen
         name="ObsEdit"
         component={ObsEditWithPermission}
-        options={blankHeaderTitle}
+        options={{
+          ...blankHeaderTitle,
+          headerBackVisible: false
+        }}
       />
       <Stack.Screen
         name="AddID"

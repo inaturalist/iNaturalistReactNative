@@ -27,6 +27,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [galleryUris, setGalleryUris] = useState( [] );
   const [evidenceToAdd, setEvidenceToAdd] = useState( [] );
   const [album, setAlbum] = useState( null );
+  const [unsavedChanges, setUnsavedChanges] = useState( false );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -101,6 +102,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( [updatedObs] );
     // clear additional evidence
     setEvidenceToAdd( [] );
+    setUnsavedChanges( true );
   }, [currentObservation] );
 
   const addGalleryPhotosToCurrentObservation = useCallback( async photos => {
@@ -130,13 +132,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         if ( index === currentObservationIndex ) {
           return {
             ...( observation.toJSON ? observation.toJSON( ) : observation ),
-            // $FlowFixMe
             [key]: value
           };
         }
         return observation;
       } );
       setObservations( updatedObservations );
+      setUnsavedChanges( true );
     };
 
     const updateObservationKeys = keysAndValues => {
@@ -151,6 +153,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         return observation;
       } );
       setObservations( updatedObservations );
+      setUnsavedChanges( true );
     };
 
     const setNextScreen = ( ) => {
@@ -252,7 +255,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       deleteLocalObservation,
       album,
       setAlbum,
-      deletePhotoFromObservation
+      deletePhotoFromObservation,
+      unsavedChanges
     };
   }, [
     currentObservation,
@@ -273,7 +277,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     navigation,
     realm,
     album,
-    setAlbum
+    setAlbum,
+    unsavedChanges
   ] );
 
   return (
