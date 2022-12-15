@@ -73,6 +73,9 @@ jobs:
         $ANDROID_HOME/platform-tools/adb devices
         echo "Emulator started"
 
+    - name: Reverse ADB
+      run: adb reverse tcp:8081 tcp:8081
+
     - name: Android Detox
       run: npx concurrently --kill-others "npm start" "npm run e2e:test:android -- --cleanup --debug-synchronization 200"
 
