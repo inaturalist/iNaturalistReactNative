@@ -12,7 +12,7 @@ jobs:
           cancel_others: true
 
   test:
-    needs: setup
+    needs: deduplicate
     runs-on: macos-latest
     # Kill the task if not finished after 60 minutes
     timeout-minutes: 60
