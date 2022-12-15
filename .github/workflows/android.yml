@@ -60,8 +60,8 @@ jobs:
         java-version: '11'
         distribution: 'zulu'
 
-    - name: Build for detox
-      run: npm run e2e:build:android
+    # - name: Build for detox
+    #   run: npm run e2e:build:android
 
     - name: Android Emulator
       timeout-minutes: 10
@@ -74,7 +74,7 @@ jobs:
         echo "Emulator started"
 
     - name: Android Detox
-      run: npm run e2e:test:android -- --cleanup --debug-synchronization 200
+      run: npx concurrently --kill-others "npm start" "npm run e2e:test:android -- --cleanup --debug-synchronization 200"
 
   notify:
     name: Notify Slack
