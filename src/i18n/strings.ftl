@@ -60,6 +60,9 @@ Blocked-Users = Blocked Users
 # Quality grade option: Casual (shortened for My Observations view)
 C = C
 
+# Accessible label for the camera button
+camera-button-label-switch-camera = Use the device's other camera.
+
 Camera-Roll = Camera Roll
 
 Cancel = Cancel
@@ -145,6 +148,12 @@ Filters = Filters
 Finish = Finish
 
 Fish = Fish
+
+# Accessible label for the flash button, when flas is turned on
+flash-button-label-flash = The flash is turned on. Press here to disable it.
+
+# Accessible label for the flash button, when flas is turned off
+flash-button-label-flash-off = The flash is turned off. Press here to enable it.
 
 Following = Following
 
@@ -275,6 +284,10 @@ Names = Names
 Native = Native
 
 Navigate-to-login-screen = Navigate to login screen
+
+Navigate-to-observation-details = Navigate to observation details screen
+
+Navigate-to-taxon-details = Navigate to taxon details
 
 # Header for nearby projects
 Nearby = Nearby

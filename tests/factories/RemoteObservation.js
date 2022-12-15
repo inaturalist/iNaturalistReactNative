@@ -6,7 +6,7 @@ import "./RemoteIdentification";
 import factory, { define } from "factoria";
 
 export default define( "RemoteObservation", faker => {
-  const createdAt = faker.date.past( );
+  const createdAt = faker.date.past( ).toString( );
   return {
     id: faker.datatype.number( ),
     uuid: faker.datatype.uuid( ),

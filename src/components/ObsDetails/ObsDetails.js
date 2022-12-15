@@ -272,7 +272,7 @@ const ObsDetails = ( ): Node => {
           onPress={navToTaxonDetails}
           testID={`ObsDetails.taxon.${taxon.id}`}
           accessibilityRole="link"
-          accessibilityLabel="go to taxon details"
+          accessibilityLabel={t( "Navigate-to-taxon-details" )}
         >
           <Text>
             {checkCamelAndSnakeCase( taxon, "preferredCommonName" )}
@@ -322,6 +322,27 @@ const ObsDetails = ( ): Node => {
     );
   };
 
+  const displayPhoto = () => {
+    if ( photos.length > 0 || observation.observationSounds.length > 0 ) {
+      return (
+        <View className="bg-black">
+          <PhotoScroll photos={photos} />
+          <IconButton
+            icon={currentUserFaved ? "star-outline" : "star"}
+            onPress={faveOrUnfave}
+            textColor={colors.white}
+            className="absolute top-3 right-0"
+          />
+        </View>
+      );
+    }
+    return (
+      <View className="bg-white flex-row justify-center">
+        <IconMaterial name="image-not-supported" size={100} />
+      </View>
+    );
+  };
+
   return (
     <>
       <ScrollWithFooter testID={`ObsDetails.${uuid}`}>
@@ -337,15 +358,7 @@ const ObsDetails = ( ): Node => {
           </Pressable>
           <Text className="color-logInGray">{displayCreatedAt( )}</Text>
         </View>
-        <View className="bg-black">
-          <PhotoScroll photos={photos} />
-          <IconButton
-            icon={currentUserFaved ? "star-outline" : "star"}
-            onPress={faveOrUnfave}
-            textColor={colors.white}
-            className="absolute top-3 right-0"
-          />
-        </View>
+        {displayPhoto()}
         <View className="flex-row my-5 justify-between mx-3">
           {showTaxon( )}
           <View>
