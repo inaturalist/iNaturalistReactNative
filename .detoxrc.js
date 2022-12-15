@@ -25,11 +25,17 @@ module.exports = {
       build:
         "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
     },
+    "android.debug": {
+      type: "android.apk",
+      binaryPath: `android/app/build/outputs/apk/debug/${apkFilenamePrefix}-debug.apk`,
+      testBinaryPath: `android/app/build/outputs/apk/androidTest/debug/${apkFilenamePrefix}-debug-androidTest.apk`,
+      build:
+        "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
+    },
     "android.release": {
       type: "android.apk",
       binaryPath: `android/app/build/outputs/apk/release/${apkFilenamePrefix}-release.apk`,
-      testBinaryPath:
-        `android/app/build/outputs/apk/androidTest/release/${apkFilenamePrefix}-release-androidTest.apk`,
+      testBinaryPath: `android/app/build/outputs/apk/androidTest/release/${apkFilenamePrefix}-release-androidTest.apk`,
       build:
         "cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..",
     },
@@ -56,6 +62,10 @@ module.exports = {
     "ios.release": {
       device: "simulator",
       app: "ios.release",
+    },
+    "android.debug": {
+      device: "emulator",
+      app: "android.debug",
     },
     "android.release": {
       device: "emulator",
