@@ -10,7 +10,7 @@ import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Linking,
-  TouchableOpacity, View
+  TouchableOpacity
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
@@ -77,7 +77,7 @@ const Login = ( ): Node => {
   };
 
   const loginForm = (
-    <View>
+    <>
       <Image
         className="self-center w-32 h-32"
         resizeMode="contain"
@@ -127,7 +127,7 @@ const Login = ( ): Node => {
         testID="Login.loginButton"
         loading={loading}
       />
-    </View>
+    </>
   );
 
   const renderBackButton = ( ) => (
