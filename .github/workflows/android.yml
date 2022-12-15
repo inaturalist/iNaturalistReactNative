@@ -92,7 +92,7 @@ jobs:
       run: adb reverse tcp:8081 tcp:8081
 
     - name: Android Detox
-      run: npx concurrently --kill-others "npm start" "npm run e2e:test:android -- --cleanup --debug-synchronization 200"
+      run: npm start & npm run e2e:test:android -- --cleanup --debug-synchronization 200
 
   notify:
     name: Notify Slack
