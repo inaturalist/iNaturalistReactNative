@@ -4,7 +4,7 @@ on:
 
 jobs:
   deduplicate:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: fkirc/skip-duplicate-actions@master
         with:
@@ -13,7 +13,7 @@ jobs:
 
   test:
     needs: deduplicate
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     # Kill the task if not finished after 60 minutes
     timeout-minutes: 60
 
@@ -80,7 +80,7 @@ jobs:
     name: Notify Slack
     needs: test
     if: ${{ success() || failure() }}
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: iRoachie/slack-github-actions@v2.3.0
         if: env.SLACK_WEBHOOK_URL != null
