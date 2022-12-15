@@ -60,8 +60,8 @@ jobs:
         java-version: '11'
         distribution: 'zulu'
 
-    # - name: Build for detox
-    #   run: npm run e2e:build:android
+    - name: Build for detox
+      run: npm run e2e:build:android
 
     - name: Android Emulator
       timeout-minutes: 10
