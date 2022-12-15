@@ -3,7 +3,7 @@ on:
   pull_request:
 
 jobs:
-  setup:
+  deduplicate:
     runs-on: macos-latest
     steps:
       - uses: fkirc/skip-duplicate-actions@master
@@ -11,6 +11,13 @@ jobs:
           github_token: ${{ github.token }}
           cancel_others: true
 
+  setup:
+    needs: deduplicate
+    runs-on: macos-latest
+    # Kill the task if not finished after 60 minutes
+    timeout-minutes: 60
+
+    steps:
     - name: Check out Git repository
       uses: actions/checkout@v3
       with:
