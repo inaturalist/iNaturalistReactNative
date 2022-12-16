@@ -19,7 +19,7 @@ const createObservedOnStringForUpload = date => formatDateAndTime(
   getUnixTime( date || new Date( ) )
 );
 
-const displayDateTimeObsEdit = date => format( new Date( date ), "PPpp" );
+const displayDateTimeObsEdit = date => date && format( new Date( date ), "PPpp" );
 
 const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
 

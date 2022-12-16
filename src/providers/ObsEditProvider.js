@@ -7,6 +7,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import { formatDateAndTime } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
+import { parseExif, parseExifDateToLocalTimezone } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
 
 import { ObsEditContext, RealmContext } from "./contexts";
@@ -28,6 +29,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [evidenceToAdd, setEvidenceToAdd] = useState( [] );
   const [album, setAlbum] = useState( null );
   const [loading, setLoading] = useState( );
+  const [unsavedChanges, setUnsavedChanges] = useState( false );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -61,18 +63,26 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   ), [] );
 
   const createObservationFromGalleryPhoto = useCallback( async photo => {
-    const latitude = photo?.location?.latitude || null;
-    const longitude = photo?.location?.longitude || null;
+    const originalPhotoUri = photo?.image?.uri;
+    const firstPhotoExif = await parseExif( originalPhotoUri );
+    const exifDate = parseExifDateToLocalTimezone( firstPhotoExif.date );
+
+    const observedOnDate = exifDate || formatDateAndTime( photo.timestamp );
+    const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
+    const longitude = firstPhotoExif.longitude || photo?.location?.longitude;
     const placeGuess = await fetchPlaceName( latitude, longitude );
-    // create a new observation using the data in the first grouped photo
-    // TODO: figure out if we want to loop through observations, looking for one
-    // with lat/lng, if the first photo lat/lng is blank
+
     const newObservation = {
       latitude,
       longitude,
-      time_observed_at: formatDateAndTime( photo.timestamp ),
-      place_guess: placeGuess
+      place_guess: placeGuess,
+      observed_on_string: observedOnDate
     };
+
+    if ( firstPhotoExif.positional_accuracy ) {
+      // $FlowIgnore
+      newObservation.positional_accuracy = firstPhotoExif.positional_accuracy;
+    }
     return Observation.new( newObservation );
   }, [] );
 
@@ -102,6 +112,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( [updatedObs] );
     // clear additional evidence
     setEvidenceToAdd( [] );
+    setUnsavedChanges( true );
   }, [currentObservation] );
 
   const addGalleryPhotosToCurrentObservation = useCallback( async photos => {
@@ -131,13 +142,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         if ( index === currentObservationIndex ) {
           return {
             ...( observation.toJSON ? observation.toJSON( ) : observation ),
-            // $FlowFixMe
             [key]: value
           };
         }
         return observation;
       } );
       setObservations( updatedObservations );
+      setUnsavedChanges( true );
     };
 
     const updateObservationKeys = keysAndValues => {
@@ -152,6 +163,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         return observation;
       } );
       setObservations( updatedObservations );
+      setUnsavedChanges( true );
     };
 
     const setNextScreen = ( ) => {
@@ -255,7 +267,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       uploadObservation,
       setNextScreen,
       loading,
-      setLoading
+      setLoading,
+      unsavedChanges
     };
   }, [
     currentObservation,
@@ -278,7 +291,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     album,
     setAlbum,
     loading,
-    setLoading
+    setLoading,
+    unsavedChanges
   ] );
 
   return (

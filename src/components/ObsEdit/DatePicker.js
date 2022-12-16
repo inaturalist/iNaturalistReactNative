@@ -1,18 +1,19 @@
 // @flow
 
 import DateTimePicker from "components/SharedComponents/DateTimePicker";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text } from "react-native";
-import { displayDateTimeObsEdit } from "sharedHelpers/dateAndTime";
+import { createObservedOnStringForUpload, displayDateTimeObsEdit } from "sharedHelpers/dateAndTime";
 
 type Props = {
-  handleDatePicked: ( Date ) => void,
   currentObservation: Object
 }
 
-const DatePicker = ( { handleDatePicked, currentObservation }: Props ): Node => {
+const DatePicker = ( { currentObservation }: Props ): Node => {
+  const { updateObservationKey } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const [showModal, setShowModal] = useState( false );
 
@@ -20,19 +21,12 @@ const DatePicker = ( { handleDatePicked, currentObservation }: Props ): Node => 
   const closeModal = () => setShowModal( false );
 
   const handlePicked = value => {
-    handleDatePicked( value );
+    const dateString = createObservedOnStringForUpload( value );
+    updateObservationKey( "observed_on_string", dateString );
     closeModal();
   };
 
-  const displayDate = ( ) => {
-    if ( currentObservation.observed_on_string ) {
-      return displayDateTimeObsEdit( currentObservation.observed_on_string );
-    } if ( currentObservation.time_observed_at ) {
-      // this is for observations already uploaded to iNat
-      return displayDateTimeObsEdit( currentObservation.time_observed_at );
-    }
-    return "";
-  };
+  const displayDate = ( ) => displayDateTimeObsEdit( currentObservation?.observed_on_string ) || "";
 
   return (
     <>

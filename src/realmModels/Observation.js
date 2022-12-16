@@ -42,9 +42,8 @@ class Observation extends Realm.Object {
       captive_flag: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
-      observed_on_string: createObservedOnStringForUpload( ),
+      observed_on_string: obs?.observed_on_string || createObservedOnStringForUpload( ),
       quality_grade: "needs_id",
-      // project_ids: [],
       uuid: uuid.v4( )
     };
   }
