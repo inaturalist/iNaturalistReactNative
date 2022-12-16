@@ -1,7 +1,7 @@
 ##
 # Run e2e tests
 ##
-name: e2e
+name: e2e-iOS
 on:
   pull_request:
 
