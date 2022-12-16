@@ -62,7 +62,7 @@ jobs:
     - run: brew tap wix/brew
     - run: brew install applesimutils
     - run: npm run e2e:build
-    - run: npm run e2e:test -- --cleanup --debug-synchronization 200
+    - run: npm start & npm run e2e:test -- --cleanup --debug-synchronization 200
 
   notify:
     name: Notify Slack
