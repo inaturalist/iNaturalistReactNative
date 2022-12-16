@@ -65,10 +65,12 @@ const PhotoGallery = ( ): Node => {
   const { params } = useRoute( );
   const skipGroupPhotos = params?.skipGroupPhotos;
 
-  const selectedPhotos = galleryPhotos.filter( photo => galleryUris?.includes(
+  const allPhotos: Array<Object> = Object.values( photoGallery ).flat( );
+
+  const selectedPhotos = allPhotos.filter( photo => galleryUris?.includes(
     photo?.image?.uri
   ) );
-  const selectedEvidenceToAdd = galleryPhotos.filter(
+  const selectedEvidenceToAdd = allPhotos.filter(
     photo => evidenceToAdd?.includes( photo?.image?.uri )
   );
 
@@ -167,20 +169,19 @@ const PhotoGallery = ( ): Node => {
   const fetchMorePhotos = ( ) => setIsScrolling( true );
 
   const navToNextScreen = async ( ) => {
+    const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
     if ( !selectedPhotos ) return;
-    const uris = selectedPhotos.map( galleryPhoto => galleryPhoto.image.uri );
-    setGalleryUris( uris );
     if ( skipGroupPhotos ) {
       // add any newly selected photos
       // to an existing observation after navigating from ObsEdit
       addGalleryPhotosToCurrentObservation( selectedEvidenceToAdd );
-      navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+      navToObsEdit( );
       return;
     }
     if ( selectedPhotos.length === 1 ) {
       // create a new observation and skip group photos screen
       createObservationFromGallery( selectedPhotos[0] );
-      navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+      navToObsEdit( );
       return;
     }
     navigation.navigate( "GroupPhotos", { selectedPhotos } );
@@ -230,7 +231,7 @@ const PhotoGallery = ( ): Node => {
         renderItem={renderImage}
         onEndReached={fetchMorePhotos}
         testID="PhotoGallery.list"
-        ListEmptyComponent={renderEmptyList( )}
+        ListEmptyComponent={renderEmptyList}
         extraData={rerenderList}
       />
       { totalSelected > 0 && (
