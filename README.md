@@ -54,7 +54,8 @@ If you have built the app already for a previous test, and just want to run an u
 
 If you are running into some issues after the tests have been working for some time, try updating `applesimutils` with `brew update && brew upgrade applesimutils`.
 
-If you want to run the Android tests make sure you have the correct [emulator setup](https://wix.github.io/Detox/docs/19.x/introduction/android-dev-env), and the emulator has the same name as in the .detoxrc.json file. You can then run `npm run e2e:build:android && npm run e2e:test:android`.
+If you want to run the Android tests you need to prepare your environment. Before you dive into the [emulator setup](https://wix.github.io/Detox/docs/19.x/introduction/android-dev-env), know that alternatively you might find it easier setting up the required local emulator, preferrably an AOSP (Android Open Source Project) version, using Android Studio. Make sure the emulator has the same name as in the .detoxrc.js file.
+Run `npm run e2e:build:android && npm run e2e:test:android` to build the .apk for testing purposes and install and run it on the emulator with the name as stated in the detoxrc.js file.
 
 ## Running with Staging Environment
 
