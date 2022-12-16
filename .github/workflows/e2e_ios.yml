@@ -62,7 +62,7 @@ jobs:
     - run: brew tap wix/brew
     - run: brew install applesimutils
     - run: npm run e2e:build
-    - run: npm start & npm run e2e:test -- --cleanup --debug-synchronization 200 --take-screenshots failing --record-videos failing -l trace
+    - run: npm start & sleep 2 && npm run e2e:test -- --cleanup --debug-synchronization 200 --take-screenshots failing --record-videos failing -l trace
     
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
