@@ -13,7 +13,7 @@ import React, {
   useCallback, useContext, useEffect, useRef,
   useState
 } from "react";
-import { BackHandler } from "react-native";
+import { ActivityIndicator, BackHandler } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Menu } from "react-native-paper";
 import Photo from "realmModels/Photo";
@@ -41,6 +41,9 @@ const ObsEdit = ( ): Node => {
     saveAndUploadObservation,
     setObservations,
     resetObsEditContext,
+    setNextScreen,
+    loading,
+    setLoading,
     unsavedChanges
   } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
@@ -209,9 +212,15 @@ const ObsEdit = ( ): Node => {
         <IdentificationSection />
         <Text className="text-2xl ml-4">{t( "Other-Data" )}</Text>
         <OtherDataSection scrollToInput={scrollToInput} />
+        {loading && <ActivityIndicator />}
         <View className="flex-row justify-evenly">
           <Button
-            onPress={saveObservation}
+            onPress={async ( ) => {
+              setLoading( true );
+              await saveObservation( );
+              setLoading( false );
+              setNextScreen( );
+            }}
             testID="ObsEdit.saveButton"
             text={t( "SAVE" )}
             level="neutral"
@@ -221,7 +230,12 @@ const ObsEdit = ( ): Node => {
             level="primary"
             text={t( "UPLOAD-OBSERVATION" )}
             testID="ObsEdit.uploadButton"
-            onPress={saveAndUploadObservation}
+            onPress={async ( ) => {
+              setLoading( true );
+              await saveAndUploadObservation( );
+              setLoading( false );
+              setNextScreen( );
+            }}
             disabled={!isLoggedIn}
           />
         </View>

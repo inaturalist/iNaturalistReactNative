@@ -237,6 +237,12 @@ class Observation extends Realm.Object {
     return unsyncedObs.length > 0;
   }
 
+  needsSync( ) {
+    const obsPhotosNeedSync = this.observationPhotos
+      .filter( obsPhoto => obsPhoto.needsSync( ) ).length > 0;
+    return !this._synced_at || this._synced_at <= this._updated_at || obsPhotosNeedSync;
+  }
+
   wasSynced( ) {
     return this._synced_at !== null;
   }
