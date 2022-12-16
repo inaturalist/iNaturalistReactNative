@@ -17,14 +17,14 @@ describe( "Add observation without evidence", () => {
 
   it( "should open app with the observation list screen", async () => {
     const loginText = element( by.id( "log-in-to-iNaturalist-text" ) );
-    await waitFor( loginText ).toBeVisible().withTimeout( 2000 );
+    await waitFor( loginText ).toBeVisible().withTimeout( 10000 );
     await expect( loginText ).toBeVisible();
   } );
 
   it( "should navigate to observation add screen on add evidence button pressed", async () => {
     await waitFor( element( by.id( "camera-options-button" ) ) )
       .toBeVisible()
-      .withTimeout( 2000 );
+      .withTimeout( 10000 );
     await element( by.id( "camera-options-button" ) ).tap();
     await expect( element( by.id( "evidence-text" ) ) ).toBeVisible();
     await expect(

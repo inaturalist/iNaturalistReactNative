@@ -34,21 +34,6 @@ jobs:
         echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_31_AOSP --device "Nexus 5X" -k 'system-images;android-28;default;x86'
         $ANDROID_HOME/emulator/emulator -list-avds
 
-    ## configure cash for gradle : will help to reduce build time
-    - name: Cache Gradle Wrapper
-      uses: actions/cache@v3
-      with:
-        path: ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-
-    - name: Cache Gradle Dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-caches-
-
     - name: Cache node modules
       uses: actions/cache@v3
       id: cache
