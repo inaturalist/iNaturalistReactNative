@@ -7,6 +7,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import { formatDateAndTime } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
+import { parseExif, parseExifDateToLocalTimezone } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
 
 import { ObsEditContext, RealmContext } from "./contexts";
@@ -61,18 +62,26 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   ), [] );
 
   const createObservationFromGalleryPhoto = useCallback( async photo => {
-    const latitude = photo?.location?.latitude || null;
-    const longitude = photo?.location?.longitude || null;
+    const originalPhotoUri = photo?.image?.uri;
+    const firstPhotoExif = await parseExif( originalPhotoUri );
+    const exifDate = parseExifDateToLocalTimezone( firstPhotoExif.date );
+
+    const observedOnDate = exifDate || formatDateAndTime( photo.timestamp );
+    const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
+    const longitude = firstPhotoExif.longitude || photo?.location?.longitude;
     const placeGuess = await fetchPlaceName( latitude, longitude );
-    // create a new observation using the data in the first grouped photo
-    // TODO: figure out if we want to loop through observations, looking for one
-    // with lat/lng, if the first photo lat/lng is blank
+
     const newObservation = {
       latitude,
       longitude,
-      time_observed_at: formatDateAndTime( photo.timestamp ),
-      place_guess: placeGuess
+      place_guess: placeGuess,
+      observed_on_string: observedOnDate
     };
+
+    if ( firstPhotoExif.positional_accuracy ) {
+      // $FlowIgnore
+      newObservation.positional_accuracy = firstPhotoExif.positional_accuracy;
+    }
     return Observation.new( newObservation );
   }, [] );
 
