@@ -344,6 +344,8 @@ const ObsDetails = ( ): Node => {
         )}
       </ScrollWithFooter>
       <AddCommentModal
+      //  potential to move this modal to ActivityTab and have it handle comments
+      //  and ids but there were issues with presenting the modal in a scrollview.
         onCommentAdded={onCommentAdded}
         showCommentBox={showCommentBox}
         setShowCommentBox={setShowCommentBox}
