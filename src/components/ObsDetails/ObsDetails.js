@@ -2,6 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
+import { createComment } from "api/comments";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
@@ -12,6 +13,7 @@ import UserIcon from "components/SharedComponents/UserIcon";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
+import { formatISO } from "date-fns";
 import { t } from "i18next";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
@@ -20,9 +22,11 @@ import React, {
   useEffect, useState
 } from "react";
 import {
+  Alert,
   LogBox
 } from "react-native";
-import { Button as IconButton } from "react-native-paper";
+import { ActivityIndicator, Button as IconButton } from "react-native-paper";
+import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
@@ -34,6 +38,7 @@ import { imageStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
 
 import ActivityTab from "./ActivityTab";
+import AddCommentModal from "./AddCommentModal";
 import DataTab from "./DataTab";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 
@@ -56,6 +61,9 @@ const ObsDetails = ( ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
   const localObservation = realm?.objectForPrimaryKey( "Observation", uuid );
+  const [showCommentBox, setShowCommentBox] = useState( false );
+  const [addingComment, setAddingComment] = useState( false );
+  const [comments, setComments] = useState( [] );
 
   const queryClient = useQueryClient( );
 
@@ -88,8 +96,63 @@ const ObsDetails = ( ): Node => {
 
   const showActivityTab = ( ) => setTab( 0 );
   const showDataTab = ( ) => setTab( 1 );
+  const showErrorAlert = error => Alert.alert(
+    "Error",
+    error,
+    [{ text: t( "OK" ) }],
+    {
+      cancelable: true
+    }
+  );
 
   const toggleRefetch = ( ) => setRefetch( !refetch );
+  const openCommentBox = ( ) => setShowCommentBox( true );
+  const createCommentMutation = useAuthenticatedMutation(
+    ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
+    {
+      onSuccess: data => setComments( [...comments, data[0]] ),
+      onError: e => {
+        let error = null;
+        if ( e ) {
+          error = t( "Couldnt-create-comment", { error: e.message } );
+        } else {
+          error = t( "Couldnt-create-comment", { error: t( "Unknown-error" ) } );
+        }
+
+        // Remove temporary comment and show error
+        setComments( [...comments] );
+        showErrorAlert( error );
+      },
+      onSettled: ( ) => setAddingComment( false )
+    }
+  );
+  const onCommentAdded = async commentBody => {
+    // Add temporary comment to observation.comments ("ghosted" comment,
+    // while we're trying to add it)
+    console.log( "on comment added" );
+    const newComment = {
+      body: commentBody,
+      user: {
+        id: userId,
+        login: currentUser?.login,
+        signedIn: true
+      },
+      created_at: formatISO( Date.now() ),
+      uuid: createUUID.v4( ),
+      // This tells us to render is ghosted (since it's temporarily visible
+      // until getting a response from the server)
+      temporary: true
+    };
+    setComments( [...comments, newComment] );
+
+    createCommentMutation.mutate( {
+      comment: {
+        body: commentBody,
+        parent_id: uuid,
+        parent_type: "Observation"
+      }
+    } );
+  };
 
   useEffect( () => {
     const markViewedLocally = async ( ) => {
@@ -117,6 +180,16 @@ const ObsDetails = ( ): Node => {
       headerRight: editIcon
     } );
   }, [navigation, observation, currentUser] );
+
+  useEffect( ( ) => {
+    // set initial comments for activity tab
+    const currentComments = observation?.comments;
+    if ( currentComments
+        && comments.length === 0
+        && currentComments.length !== comments.length ) {
+      setComments( currentComments );
+    }
+  }, [observation, comments] );
 
   if ( !observation ) { return null; }
 
@@ -204,62 +277,79 @@ const ObsDetails = ( ): Node => {
       </View>
     );
   };
+
   return (
-    <ScrollWithFooter testID={`ObsDetails.${uuid}`}>
-      <View className="flex-row justify-between items-center m-3">
-        <Pressable
-          className="flex-row items-center"
-          onPress={( ) => navToUserProfile( user.id )}
-          testID="ObsDetails.currentUser"
-          accessibilityRole="link"
-        >
-          <UserIcon uri={User.uri( user )} small />
-          <Text className="ml-3">{User.userHandle( user )}</Text>
-        </Pressable>
-        <Text className="color-logInGray">{displayCreatedAt( )}</Text>
-      </View>
-      {displayPhoto()}
-      <View className="flex-row my-5 justify-between mx-3">
-        {showTaxon( )}
-        <View>
-          <View className="flex-row my-1">
-            {/* TODO: figure out how to change icon tint color with Tailwind */}
-            <Image
-              style={imageStyles.smallIcon}
-              source={require( "images/ic_id.png" )}
-            />
-            <Text className="ml-1">{observation.identifications.length}</Text>
-          </View>
-          <View className="flex-row my-1">
-            <IconMaterial name="chat-bubble" size={15} color={colors.logInGray} />
-            <Text className="ml-1">{observation.comments.length}</Text>
-          </View>
-          <QualityBadge qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )} />
+    <>
+      <ScrollWithFooter testID={`ObsDetails.${uuid}`}>
+        <View className="flex-row justify-between items-center m-3">
+          <Pressable
+            className="flex-row items-center"
+            onPress={( ) => navToUserProfile( user.id )}
+            testID="ObsDetails.currentUser"
+            accessibilityRole="link"
+          >
+            <UserIcon uri={User.uri( user )} small />
+            <Text className="ml-3">{User.userHandle( user )}</Text>
+          </Pressable>
+          <Text className="color-logInGray">{displayCreatedAt( )}</Text>
         </View>
-      </View>
-      <View className="flex-row ml-3">
-        <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
-        <Text className="color-logInGray ml-2">
-          {checkCamelAndSnakeCase( observation, "placeGuess" )}
-        </Text>
-      </View>
-      <View className="flex-row mt-6">
-        {displayTab( showActivityTab, "ObsDetails.ActivityTab", t( "ACTIVITY" ), tab === 0 )}
-        {displayTab( showDataTab, "ObsDetails.DataTab", t( "DATA" ), tab === 1 )}
-      </View>
-      {tab === 0
-        ? (
-          <ActivityTab
-            uuid={uuid}
-            observation={observation}
-            navToTaxonDetails={navToTaxonDetails}
-            navToUserProfile={navToUserProfile}
-            toggleRefetch={toggleRefetch}
-            refetchRemoteObservation={refetchRemoteObservation}
-          />
-        )
-        : <DataTab observation={observation} />}
-    </ScrollWithFooter>
+        {displayPhoto()}
+        <View className="flex-row my-5 justify-between mx-3">
+          {showTaxon( )}
+          <View>
+            <View className="flex-row my-1">
+              {/* TODO: figure out how to change icon tint color with Tailwind */}
+              <Image
+                style={imageStyles.smallIcon}
+                source={require( "images/ic_id.png" )}
+              />
+              <Text className="ml-1">{observation.identifications.length}</Text>
+            </View>
+            <View className="flex-row my-1">
+              <IconMaterial name="chat-bubble" size={15} color={colors.logInGray} />
+              <Text className="ml-1">{observation.comments.length}</Text>
+            </View>
+            <QualityBadge qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )} />
+          </View>
+        </View>
+        <View className="flex-row ml-3">
+          <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
+          <Text className="color-logInGray ml-2">
+            {checkCamelAndSnakeCase( observation, "placeGuess" )}
+          </Text>
+        </View>
+        <View className="flex-row mt-6">
+          {displayTab( showActivityTab, "ObsDetails.ActivityTab", t( "ACTIVITY" ), tab === 0 )}
+          {displayTab( showDataTab, "ObsDetails.DataTab", t( "DATA" ), tab === 1 )}
+        </View>
+        {tab === 0
+          ? (
+            <ActivityTab
+              uuid={uuid}
+              observation={observation}
+              comments={comments}
+              navToTaxonDetails={navToTaxonDetails}
+              navToUserProfile={navToUserProfile}
+              toggleRefetch={toggleRefetch}
+              refetchRemoteObservation={refetchRemoteObservation}
+              openCommentBox={openCommentBox}
+              showCommentBox={showCommentBox}
+            />
+          )
+          : <DataTab observation={observation} />}
+        {addingComment && (
+        <View className="flex-row items-center justify-center">
+          <ActivityIndicator size="large" />
+        </View>
+        )}
+      </ScrollWithFooter>
+      <AddCommentModal
+        onCommentAdded={onCommentAdded}
+        showCommentBox={showCommentBox}
+        setShowCommentBox={setShowCommentBox}
+        setAddingComment={setAddingComment}
+      />
+    </>
   );
 };
 
