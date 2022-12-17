@@ -38,6 +38,13 @@ jobs:
         path: node_modules
         key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
+    - name: Cache build folder
+      uses: actions/cache@v3
+      id: buildcache
+      with:
+        path: ios/build/Build
+        key: ios-build-${{ hashFiles('**/ci-cache-timestamp.txt') }}
+
     - name: Rebuild detox from cache
       if: steps.cache.outputs.cache-hit == 'true'
       run: npx detox clean-framework-cache && npx detox build-framework-cache
@@ -61,8 +68,14 @@ jobs:
     # Install prerequisites for detox and build app, and test
     - run: brew tap wix/brew
     - run: brew install applesimutils
-    - run: npm run e2e:build
-    - run: npm start & sleep 2 && npm run e2e:test -- --cleanup --debug-synchronization 200 --take-screenshots failing --record-videos failing -l trace
+    
+    - name: Build test app
+      if: steps.buildcache.outputs.cache-hit != 'true'
+      run: npm run e2e:build
+    
+    - name: Run packager and test debug app build
+      if: steps.buildcache.outputs.cache-hit == 'true'
+      run: npm start & sleep 2 && npm run e2e:test -- --cleanup --debug-synchronization 200 --take-screenshots failing --record-videos failing -l trace
     
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
