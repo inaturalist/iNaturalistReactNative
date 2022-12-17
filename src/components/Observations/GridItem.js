@@ -3,15 +3,17 @@
 import {
   Image, Pressable, View
 } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import FilterIcon from "react-native-vector-icons/MaterialIcons";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
 
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
+import UploadButton from "./UploadButton";
 
 type Props = {
   // position of this item in a list of items; not ideal, but it allows us to
@@ -41,10 +43,20 @@ const GridItem = ( {
     ? "filter-9-plus"
     : `filter-${totalObsPhotos}`;
 
-  // TODO: add fallback image when there is no uri
   const imageUri = uri === "project"
     ? Observation.projectUri( item )
     : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
+
+  const showStats = ( ) => {
+    if ( uri !== "project" && item.needsSync( ) ) {
+      return (
+        <View className="absolute bottom-0 right-0">
+          <UploadButton observation={item} />
+        </View>
+      );
+    }
+    return <ObsCardStats item={item} view="grid" />;
+  };
 
   return (
     <Pressable
@@ -52,7 +64,7 @@ const GridItem = ( {
       className={`w-1/2 px-4 py-2 ${( index || 0 ) % ( numColumns || 2 ) === 0 ? "pr-2" : "pl-2"}`}
       testID={`ObsList.gridItem.${item.uuid}`}
       accessibilityRole="link"
-      accessibilityLabel="Navigate to observation details screen"
+      accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
       <View>
         {
@@ -64,11 +76,15 @@ const GridItem = ( {
                 testID="ObsList.photo"
               />
             )
-            : <View className="bg-black/50 grow aspect-square" />
-        }
+            : (
+              <View className="grow aspect-square justify-center items-center">
+                <IconMaterial name="image-not-supported" size={150} />
+              </View>
+            )
+          }
         {hasMultiplePhotos && (
           <View className="z-100 absolute top-2 right-2">
-            <FilterIcon
+            <IconMaterial
                 // $FlowIgnore
               name={filterIconName}
               color={colors.white}
@@ -76,7 +92,7 @@ const GridItem = ( {
             />
           </View>
         )}
-        <ObsCardStats item={item} view="grid" />
+        {showStats( )}
       </View>
       <ObsCardDetails item={item} view="grid" />
     </Pressable>

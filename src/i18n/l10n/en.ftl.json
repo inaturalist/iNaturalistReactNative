@@ -44,6 +44,10 @@
     "comment": "Quality grade option: Casual (shortened for My Observations view)",
     "val": "C"
   },
+  "camera-button-label-switch-camera": {
+    "comment": "Accessible label for the camera button",
+    "val": "Use the device's other camera."
+  },
   "Camera-Roll": "Camera Roll",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
@@ -77,6 +81,8 @@
   "Delete-comment": "Delete comment",
   "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}",
   "Description-Tags": "Description/Tags",
+  "Discard-Changes": "Discard Changes",
+  "Discard-X-Observations": "{ $count ->\n  [one] Discard Observation\n *[other] Discard Observations\n}",
   "Display": "Display",
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
@@ -98,6 +104,14 @@
   "Filters": "Filters",
   "Finish": "Finish",
   "Fish": "Fish",
+  "flash-button-label-flash": {
+    "comment": "Accessible label for the flash button, when flas is turned on",
+    "val": "The flash is turned on. Press here to disable it."
+  },
+  "flash-button-label-flash-off": {
+    "comment": "Accessible label for the flash button, when flas is turned off",
+    "val": "The flash is turned off. Press here to enable it."
+  },
   "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
@@ -187,6 +201,8 @@
   "Names": "Names",
   "Native": "Native",
   "Navigate-to-login-screen": "Navigate to login screen",
+  "Navigate-to-observation-details": "Navigate to observation details screen",
+  "Navigate-to-taxon-details": "Navigate to taxon details",
   "Nearby": {
     "comment": "Header for nearby projects",
     "val": "Nearby"
@@ -315,6 +331,7 @@
     "comment": "Quality grade option: Research Grade (shortened for My Observations view)",
     "val": "RG"
   },
+  "Save": "Save",
   "Search-for-a-location": "Search for a location",
   "Search-for-a-project": "Search for a project",
   "Search-for-a-taxon": "Search for a taxon",
@@ -403,6 +420,9 @@
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
     "val": "You denied iNaturalist permission to do that"
   },
+  "You-have-unsaved-changes": "You have unsaved changes. Would you like to save this observation?",
+  "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
+  "You will lose all existing observations. Would you like to discard # observations?": "",
   "Category-leading": {
     "comment": "Identification category",
     "val": "Leading"

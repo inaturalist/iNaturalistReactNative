@@ -1,17 +1,14 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
+import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
 } from "react";
-import { useTranslation } from "react-i18next";
-import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
-import { parseExifDateTime, usePhotoExif } from "sharedHooks/usePhotoExif";
 
 import DatePicker from "./DatePicker";
 
@@ -31,34 +28,25 @@ const EvidenceSection = ( {
 }: Props ): Node => {
   const {
     currentObservation,
-    updateObservationKey,
     updateObservationKeys
   } = useContext( ObsEditContext );
-  const { params } = useRoute( );
-  const lastScreen = params?.lastScreen;
   const mountedRef = useRef( true );
-  const isNewObservation = currentObservation && !currentObservation.id;
-  const isNewObservationCameraPhoto = isNewObservation && lastScreen === "StandardCamera";
-  const isNewObservationsWithoutPhotos = isNewObservation && lastScreen !== "StandardCamera"
-    && lastScreen !== "PhotoGallery";
-  const isNewObservationImportingPhotos = isNewObservation && lastScreen === "PhotoGallery";
-  const [shouldFetchLocation, setShouldFetchLocation] = useState( currentObservation
-    && ( isNewObservationCameraPhoto || isNewObservationsWithoutPhotos ) );
-  const [fetchingLocation, setFetchingLocation] = useState( false );
-  const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
-  const [photoOriginalUris, setPhotoOriginalUris] = useState( [] );
-  const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
-  const firstPhotoExif = usePhotoExif( photoOriginalUris.length > 0 ? photoOriginalUris[0] : null );
-  const [exifDataImported, setExifDataImported] = useState( false );
-
-  const { t } = useTranslation( );
-
-  const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
-
-  const updateObservedOn = value => updateObservationKey( "observed_on_string", value );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
+  const hasLocation = latitude || longitude;
+
+  const [shouldFetchLocation, setShouldFetchLocation] = useState(
+    currentObservation
+    && !currentObservation._created_at
+    && !currentObservation._synced_at
+    && !hasLocation
+  );
+  const [fetchingLocation, setFetchingLocation] = useState( false );
+  const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
+  const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
+
+  const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
@@ -78,17 +66,13 @@ const EvidenceSection = ( {
 
   useEffect( ( ) => {
     if ( !currentObservation ) return;
-
     if ( !shouldFetchLocation ) return;
-
     if ( fetchingLocation ) return;
 
     const fetchLocation = async () => {
       // If the component is gone, you won't be able to updated it
       if ( !mountedRef.current ) return;
-
       if ( !shouldFetchLocation ) return;
-      if ( exifDataImported ) return;
 
       setFetchingLocation( false );
 
@@ -117,8 +101,6 @@ const EvidenceSection = ( {
       && positionalAccuracy >= TARGET_POSITIONAL_ACCURACY
       // Don't fetch location more than once a second
       && Date.now() - lastLocationFetchTime >= 1000
-      // Don't retrieve current location if EXIF data for the photo was imported
-      && !exifDataImported
     ) {
       setFetchingLocation( true );
       setLastLocationFetchTime( Date.now() );
@@ -135,63 +117,8 @@ const EvidenceSection = ( {
     shouldFetchLocation,
     updateObservationKeys,
     lastLocationFetchTime,
-    setLastLocationFetchTime,
-    exifDataImported
+    setLastLocationFetchTime
   ] );
-
-  useEffect( () => {
-    if ( !currentObservation ) return;
-
-    if ( isNewObservationImportingPhotos && currentObservation.observed_on_string
-      && !exifDataImported && photoUris.length > 0 ) {
-      // In case of importing photos - clear out default observed_on
-      updateObservationKeys( { observed_on_string: null } );
-    }
-  }, [currentObservation, exifDataImported,
-    photoUris, updateObservationKeys, isNewObservationImportingPhotos] );
-
-  useEffect( () => {
-    if ( !currentObservation ) return;
-
-    if ( !currentObservation.id && firstPhotoExif && !exifDataImported ) {
-      // New observation with imported photo - import EXIF data from it and
-      // use it to set location/observed_on data
-      setExifDataImported( true );
-
-      const newObsData = {};
-      const observedOnDate = parseExifDateTime( firstPhotoExif.date );
-
-      if ( observedOnDate ) {
-        newObsData.observed_on_string = createObservedOnStringForUpload( observedOnDate );
-      }
-
-      if ( firstPhotoExif.latitude && firstPhotoExif.longitude ) {
-        newObsData.latitude = firstPhotoExif.latitude;
-        newObsData.longitude = firstPhotoExif.longitude;
-        if ( firstPhotoExif.positional_accuracy ) {
-          newObsData.positional_accuracy = firstPhotoExif.positional_accuracy;
-        }
-      }
-
-      if ( Object.keys( newObsData ).length > 0 ) {
-        updateObservationKeys( newObsData );
-      }
-    }
-  }, [currentObservation, firstPhotoExif, exifDataImported, updateObservationKeys] );
-
-  useEffect( ( ) => {
-    if ( !currentObservation || !currentObservation.observationPhotos ) { return; }
-    setPhotoOriginalUris( Array.from( currentObservation.observationPhotos ).map(
-      obsPhoto => obsPhoto.originalPhotoUri
-    ) );
-  }, [currentObservation] );
-
-  const handleDatePicked = selectedDate => {
-    if ( selectedDate ) {
-      const dateString = createObservedOnStringForUpload( selectedDate );
-      updateObservedOn( dateString );
-    }
-  };
 
   const displayLocation = ( ) => {
     let location = "";
@@ -217,7 +144,7 @@ const EvidenceSection = ( {
       />
       <Text>{currentObservation.place_guess}</Text>
       <Text>{displayLocation( ) || t( "No-Location" )}</Text>
-      <DatePicker currentObservation={currentObservation} handleDatePicked={handleDatePicked} />
+      <DatePicker currentObservation={currentObservation} />
     </View>
   );
 };

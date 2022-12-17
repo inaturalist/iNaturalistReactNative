@@ -6,7 +6,7 @@ import KebabMenu from "components/SharedComponents/KebabMenu";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { Menu } from "react-native-paper";
 
 type Props = {
@@ -30,25 +30,38 @@ const GroupPhotosFooter = ( {
   setSelectionMode,
   selectionMode
 }: Props ): Node => {
+  const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const noObsSelected = selectedObservations.length === 0;
   const oneObsSelected = selectedObservations.length === 1;
   const obsWithMultiplePhotosSelected = selectedObservations?.[0]?.photos?.length > 1;
 
   const renderSelectionModeFooter = ( ) => (
     <View className="flex-row">
-      <KebabMenu>
+      <KebabMenu
+        visible={kebabMenuVisible}
+        setVisible={setKebabMenuVisible}
+      >
         <Menu.Item
-          onPress={combinePhotos}
+          onPress={( ) => {
+            combinePhotos( );
+            setKebabMenuVisible( false );
+          }}
           disabled={noObsSelected || oneObsSelected}
           title={t( "Combine-Photos" )}
         />
         <Menu.Item
-          onPress={separatePhotos}
+          onPress={( ) => {
+            separatePhotos( );
+            setKebabMenuVisible( false );
+          }}
           disabled={!obsWithMultiplePhotosSelected}
           title={t( "Separate-Photos" )}
         />
         <Menu.Item
-          onPress={removePhotos}
+          onPress={( ) => {
+            removePhotos( );
+            setKebabMenuVisible( false );
+          }}
           disabled={noObsSelected}
           title={t( "Remove-Photos" )}
         />

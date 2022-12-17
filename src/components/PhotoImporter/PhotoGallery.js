@@ -1,6 +1,10 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import useCameraRollPhotos from "components/PhotoImporter/hooks/useCameraRollPhotos";
+import usePhotoAlbums from "components/PhotoImporter/hooks/usePhotoAlbums";
+import PhotoAlbumPicker from "components/PhotoImporter/PhotoAlbumPicker";
+import PhotoGalleryImage from "components/PhotoImporter/PhotoGalleryImage";
 import Button from "components/SharedComponents/Buttons/Button";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { Text, View } from "components/styledComponents";
@@ -14,9 +18,6 @@ import {
   ActivityIndicator, FlatList
 } from "react-native";
 import { Snackbar } from "react-native-paper";
-
-import useCameraRollPhotos from "./hooks/useCameraRollPhotos";
-import PhotoGalleryImage from "./PhotoGalleryImage";
 
 const MAX_PHOTOS_ALLOWED = 20;
 
@@ -42,6 +43,8 @@ const PhotoGallery = ( ): Node => {
   // they are needed and not just when this provider initializes
   const [canRequestPhotos, setCanRequestPhotos] = useState( false );
 
+  const albums = usePhotoAlbums( );
+
   const {
     fetchingPhotos,
     photos: galleryPhotos
@@ -62,10 +65,12 @@ const PhotoGallery = ( ): Node => {
   const { params } = useRoute( );
   const skipGroupPhotos = params?.skipGroupPhotos;
 
-  const selectedPhotos = galleryPhotos.filter( photo => galleryUris?.includes(
+  const allPhotos: Array<Object> = Object.values( photoGallery ).flat( );
+
+  const selectedPhotos = allPhotos.filter( photo => galleryUris?.includes(
     photo?.image?.uri
   ) );
-  const selectedEvidenceToAdd = galleryPhotos.filter(
+  const selectedEvidenceToAdd = allPhotos.filter(
     photo => evidenceToAdd?.includes( photo?.image?.uri )
   );
 
@@ -164,20 +169,19 @@ const PhotoGallery = ( ): Node => {
   const fetchMorePhotos = ( ) => setIsScrolling( true );
 
   const navToNextScreen = async ( ) => {
+    const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
     if ( !selectedPhotos ) return;
-    const uris = selectedPhotos.map( galleryPhoto => galleryPhoto.image.uri );
-    setGalleryUris( uris );
     if ( skipGroupPhotos ) {
       // add any newly selected photos
       // to an existing observation after navigating from ObsEdit
       addGalleryPhotosToCurrentObservation( selectedEvidenceToAdd );
-      navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+      navToObsEdit( );
       return;
     }
     if ( selectedPhotos.length === 1 ) {
       // create a new observation and skip group photos screen
       createObservationFromGallery( selectedPhotos[0] );
-      navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+      navToObsEdit( );
       return;
     }
     navigation.navigate( "GroupPhotos", { selectedPhotos } );
@@ -208,6 +212,14 @@ const PhotoGallery = ( ): Node => {
     setPhotoOptions( newOptions );
   }, [album] );
 
+  useEffect( ( ) => {
+    const headerTitle = ( ) => <PhotoAlbumPicker albums={albums} />;
+
+    navigation.setOptions( {
+      headerTitle
+    } );
+  }, [navigation, albums] );
+
   return (
     <ViewNoFooter>
       <FlatList
@@ -219,7 +231,7 @@ const PhotoGallery = ( ): Node => {
         renderItem={renderImage}
         onEndReached={fetchMorePhotos}
         testID="PhotoGallery.list"
-        ListEmptyComponent={renderEmptyList( )}
+        ListEmptyComponent={renderEmptyList}
         extraData={rerenderList}
       />
       { totalSelected > 0 && (

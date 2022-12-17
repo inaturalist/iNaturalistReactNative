@@ -69,7 +69,7 @@ const GridItem = ( {
       ]}
       testID={`ObsList.gridItem.${item.uuid}`}
       accessibilityRole="link"
-      accessibilityLabel="Navigate to observation details screen"
+      accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
       <Image
         source={imageUri}
