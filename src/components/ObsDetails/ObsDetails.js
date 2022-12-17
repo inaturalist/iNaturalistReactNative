@@ -129,7 +129,6 @@ const ObsDetails = ( ): Node => {
   const onCommentAdded = async commentBody => {
     // Add temporary comment to observation.comments ("ghosted" comment,
     // while we're trying to add it)
-    console.log( "on comment added" );
     const newComment = {
       body: commentBody,
       user: {
