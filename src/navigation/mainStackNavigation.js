@@ -9,7 +9,6 @@ import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import ObsList from "components/Observations/ObsList";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
-import PhotoAlbumPicker from "components/PhotoImporter/PhotoAlbumPicker";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGate from "components/SharedComponents/PermissionGate";
@@ -69,8 +68,6 @@ const ObsEditWithPermission = () => (
   </Mortal>
 );
 
-const photoGalleryHeaderTitle = ( ) => <PhotoAlbumPicker />;
-
 const MainStackNavigation = ( ): React.Node => (
   <Mortal>
     <Stack.Navigator screenOptions={showHeader}>
@@ -90,9 +87,7 @@ const MainStackNavigation = ( ): React.Node => (
       <Stack.Screen
         name="PhotoGallery"
         component={PhotoGalleryWithPermission}
-        options={{
-          headerTitle: photoGalleryHeaderTitle
-        }}
+        options={blankHeaderTitle}
       />
       <Stack.Screen
         name="GroupPhotos"
@@ -111,7 +106,10 @@ const MainStackNavigation = ( ): React.Node => (
       <Stack.Screen
         name="ObsEdit"
         component={ObsEditWithPermission}
-        options={blankHeaderTitle}
+        options={{
+          ...blankHeaderTitle,
+          headerBackVisible: false
+        }}
       />
       <Stack.Screen
         name="AddID"

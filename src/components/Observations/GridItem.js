@@ -13,6 +13,7 @@ import colors from "styles/tailwindColors";
 
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
+import UploadButton from "./UploadButton";
 
 type Props = {
   // position of this item in a list of items; not ideal, but it allows us to
@@ -45,6 +46,17 @@ const GridItem = ( {
   const imageUri = uri === "project"
     ? Observation.projectUri( item )
     : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
+
+  const showStats = ( ) => {
+    if ( uri !== "project" && item.needsSync( ) ) {
+      return (
+        <View className="absolute bottom-0 right-0">
+          <UploadButton observation={item} />
+        </View>
+      );
+    }
+    return <ObsCardStats item={item} view="grid" />;
+  };
 
   return (
     <Pressable
@@ -80,7 +92,7 @@ const GridItem = ( {
             />
           </View>
         )}
-        <ObsCardStats item={item} view="grid" />
+        {showStats( )}
       </View>
       <ObsCardDetails item={item} view="grid" />
     </Pressable>

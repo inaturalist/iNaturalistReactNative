@@ -42,9 +42,8 @@ class Observation extends Realm.Object {
       captive_flag: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
-      observed_on_string: createObservedOnStringForUpload( ),
+      observed_on_string: obs?.observed_on_string || createObservedOnStringForUpload( ),
       quality_grade: "needs_id",
-      // project_ids: [],
       uuid: uuid.v4( )
     };
   }
@@ -236,6 +235,12 @@ class Observation extends Realm.Object {
     const obsList = Observation.filterUnsyncedObservations( realm );
     const unsyncedObs = obsList.filtered( `uuid == "${obs.uuid}"` );
     return unsyncedObs.length > 0;
+  }
+
+  needsSync( ) {
+    const obsPhotosNeedSync = this.observationPhotos
+      .filter( obsPhoto => obsPhoto.needsSync( ) ).length > 0;
+    return !this._synced_at || this._synced_at <= this._updated_at || obsPhotosNeedSync;
   }
 
   wasSynced( ) {

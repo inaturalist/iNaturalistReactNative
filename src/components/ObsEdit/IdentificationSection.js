@@ -3,6 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import Button from "components/SharedComponents/Buttons/Button";
 import { Text, View } from "components/styledComponents";
+import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
@@ -41,7 +42,7 @@ const IdentificationSection = ( ): Node => {
     <Button
       level="primary"
       onPress={navToAddID}
-      text="Add-an-Identification"
+      text={t( "Add-an-Identification" )}
       className="mx-10 my-3"
       testID="ObsEdit.Suggestions"
     />

@@ -117,6 +117,13 @@ DELETE-X-OBSERVATIONS = DELETE {$count ->
 
 Description-Tags = Description/Tags
 
+Discard-Changes = Discard Changes
+
+Discard-X-Observations = {$count ->
+    [one] Discard Observation
+    *[other] Discard Observations
+}
+
 Display = Display
 
 Display-Name = Display Name
@@ -480,6 +487,8 @@ Revoke = Revoke
 # Quality grade option: Research Grade (shortened for My Observations view)
 RG = RG
 
+Save = Save
+
 Search-for-a-location = Search for a location
 
 Search-for-a-project = Search for a project
@@ -620,6 +629,15 @@ Record-a-sound = Record a sound
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.
 You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
+
+You-have-unsaved-changes = You have unsaved changes. Would you like to save this observation?
+
+You-will-lose-all-existing-observations = {$count ->
+    [one] You will lose all existing observations. Would you like to discard 1 observation?
+    *[other] You will lose all existing observations. Would you like to discard {$count} observations?
+}
+
+You will lose all existing observations. Would you like to discard # observations?
 
 # Identification category
 Category-leading = Leading
