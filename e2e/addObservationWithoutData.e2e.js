@@ -31,6 +31,6 @@ describe( "Add observation without evidence", () => {
       element( by.id( "camera-options-button-square-edit-outline" ) )
     ).toBeVisible();
     await element( by.id( "camera-options-button-square-edit-outline" ) ).tap();
-    await expect( element( by.id( "new-observation-text" ) ) ).toBeVisible();
+    await waitFor( element( by.id( "new-observation-text" ) ) ).toBeVisible().withTimeout( 10000 );
   } );
 } );
