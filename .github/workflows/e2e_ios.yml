@@ -73,9 +73,9 @@ jobs:
       if: steps.buildcache.outputs.cache-hit != 'true'
       run: npm run e2e:build
     
-    - name: Run packager and test debug app build
+    - name: Run e2e test
       if: steps.buildcache.outputs.cache-hit == 'true'
-      run: npm start & sleep 2 && npm run e2e:test -- --cleanup --debug-synchronization 200 --take-screenshots failing --record-videos failing -l trace
+      run: npm run e2e:test -- --cleanup --debug-synchronization 200 --take-screenshots failing --record-videos failing -l trace
     
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
