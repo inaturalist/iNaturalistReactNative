@@ -8,11 +8,21 @@ import {
 
 describe( "Add observation without evidence", () => {
   beforeAll( async () => {
-    await device.launchApp( );
+    await device.launchApp( {
+      newInstance: true,
+      permissions: { location: "always" }
+    } );
   } );
 
   beforeEach( async () => {
-    await device.launchApp( { newInstance: true, permissions: { location: "always" } } );
+    if ( device.getPlatform( ) === "android" ) {
+      await device.reloadReactNative( );
+    } else {
+      await device.launchApp( {
+        newInstance: true,
+        permissions: { location: "always" }
+      } );
+    }
   } );
 
   it( "should open app with the observation list screen", async () => {
