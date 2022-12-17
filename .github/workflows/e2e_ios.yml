@@ -42,7 +42,7 @@ jobs:
       uses: actions/cache@v3
       id: buildcache
       with:
-        path: ios/build/Build
+        path: ios/build
         key: ios-build-${{ hashFiles('**/ci-cache-timestamp.txt') }}
 
     - name: Rebuild detox from cache
