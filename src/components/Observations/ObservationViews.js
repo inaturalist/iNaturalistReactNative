@@ -68,8 +68,19 @@ const ObservationViews = ( ): Node => {
   );
 
   useEffect( ( ) => {
-    if ( observations ) {
-      Observation.updateLocalObservationsFromRemote( realm, observations );
+    if ( observations && observations.length > 0 ) {
+      const obsToUpsert = observations.filter(
+        obs => !Observation.isUnsyncedObservation( realm, obs )
+      );
+      realm.write( ( ) => {
+        obsToUpsert.forEach( obs => {
+          realm.create(
+            "Observation",
+            Observation.createOrModifyLocalObservation( obs, realm ),
+            "modified"
+          );
+        } );
+      } );
     }
   }, [realm, observations] );
 

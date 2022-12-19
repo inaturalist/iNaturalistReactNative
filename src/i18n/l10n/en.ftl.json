@@ -23,6 +23,10 @@
   },
   "All": "All",
   "All-observations": "All observations",
+  "all-rights-reserved": {
+    "comment": "license code",
+    "val": "all rights reserved"
+  },
   "Amphibians": "Amphibians",
   "Arachnids": "Arachnids",
   "Are-you-sure": "Are you sure?",
@@ -225,6 +229,10 @@
   "No-comments-or-ids-to-display": "No comments or ids to display",
   "No-Location": "No Location",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
+  "no-rights-reserved": {
+    "comment": "license code",
+    "val": "no rights reserved"
+  },
   "Notes": {
     "comment": "Header for observation description on observation detail",
     "val": "Notes"
@@ -232,6 +240,7 @@
   "Notifications": "Notifications",
   "Obscured": "Obscured",
   "Observation": "Observation",
+  "Observation-Attribution": "Observation © { $attribution } · { $licenseCode }",
   "Observations": "Observations",
   "Open": "Open",
   "Organism-is-wild": {
@@ -346,6 +355,10 @@
   "SIMILAR-SPECIES-header": {
     "comment": "Header for a section showing taxa similar to a single taxon",
     "val": "SIMILAR SPECIES"
+  },
+  "some-rights-reserved": {
+    "comment": "license code",
+    "val": "some rights reserved"
   },
   "Sort-By": "Sort By",
   "Sort-by": "Sort by",
