@@ -1,111 +1,48 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { searchObservations } from "api/observations";
-import BottomSheet from "components/SharedComponents/BottomSheet";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useEffect, useMemo, useRef, useState
+  useMemo, useRef, useState
 } from "react";
 import { Animated, Dimensions } from "react-native";
-import Observation from "realmModels/Observation";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useLocalObservations from "sharedHooks/useLocalObservations";
 import useLoggedIn from "sharedHooks/useLoggedIn";
-import useUploadStatus from "sharedHooks/useUploadStatus";
 
 import EmptyList from "./EmptyList";
 import GridItem from "./GridItem";
+import useInfiniteScroll from "./hooks/useInfiniteScroll";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
-import LoginPrompt from "./LoginPrompt";
 import ObsCard from "./ObsCard";
+import ObsListBottomSheet from "./ObsListBottomSheet";
 import ObsListHeader from "./ObsListHeader";
-import UploadProgressBar from "./UploadProgressBar";
-import UploadPrompt from "./UploadPrompt";
 
-const { useRealm } = RealmContext;
+const { height } = Dimensions.get( "screen" );
+const FOOTER_HEIGHT = 75;
+const HEADER_HEIGHT = 101;
+const BUTTON_ROW_HEIGHT = 50;
+
+// using flatListHeight to make the bottom sheet snap points work when the flatlist
+// has only a few items and isn't scrollable
+const flatListHeight = height - (
+  HEADER_HEIGHT + FOOTER_HEIGHT + BUTTON_ROW_HEIGHT
+);
 
 const ObservationViews = ( ): Node => {
   const localObservations = useLocalObservations( );
-  const realm = useRealm( );
   const [view, setView] = useState( "list" );
   const navigation = useNavigation( );
   const isLoggedIn = useLoggedIn( );
-  const { observationList, unuploadedObsList } = localObservations;
-  const numOfUnuploadedObs = unuploadedObsList?.length;
-
-  const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
-  const [idBelow, setIdBelow] = useState( null );
-
-  const params = {
-    user_id: currentUser?.id,
-    per_page: 10,
-    fields: Observation.FIELDS
-  };
-
-  if ( idBelow ) {
-    // $FlowIgnore
-    params.id_below = idBelow;
-  } else {
-    // $FlowIgnore
-    params.page = 1;
-  }
-
-  const {
-    data: observations,
-    isLoading
-  } = useAuthenticatedQuery(
-    ["searchObservations", idBelow],
-    optsWithAuth => searchObservations( params, optsWithAuth ),
-    {},
-    {
-      keepPreviousData: true,
-      enabled: !!isLoggedIn
-    }
-  );
-
-  useEffect( ( ) => {
-    if ( observations && observations.length > 0 ) {
-      const obsToUpsert = observations.filter(
-        obs => !Observation.isUnsyncedObservation( realm, obs )
-      );
-      realm.write( ( ) => {
-        obsToUpsert.forEach( obs => {
-          realm.create(
-            "Observation",
-            Observation.createOrModifyLocalObservation( obs, realm ),
-            "modified"
-          );
-        } );
-      } );
-    }
-  }, [realm, observations] );
-
-  // eslint-disable-next-line
+  const { observationList } = localObservations;
   const [hasScrolled, setHasScrolled] = useState( false );
-
-  const { diffClamp } = Animated;
-  const headerHeight = 120;
+  const [idBelow, setIdBelow] = useState( null );
+  const isLoading = useInfiniteScroll( idBelow );
 
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
-  const scrollYClamped = diffClamp( scrollY.current, 0, headerHeight );
-
-  const translateY = scrollYClamped.interpolate( {
-    inputRange: [0, headerHeight],
-    // $FlowIgnore
-    outputRange: [0, -headerHeight]
-  } );
-
-  const translateYNumber = useRef();
-
-  translateY.addListener( ( { value } ) => {
-    translateYNumber.current = value;
-  } );
 
   const handleScroll = Animated.event(
     [
@@ -128,19 +65,6 @@ const ObservationViews = ( ): Node => {
       useNativeDriver: true
     }
   );
-  const { uploadInProgress, updateUploadStatus } = useUploadStatus( );
-  const { allObsToUpload } = localObservations;
-
-  const { height } = Dimensions.get( "screen" );
-  const FOOTER_HEIGHT = 75;
-  const HEADER_HEIGHT = 101;
-  const BUTTON_ROW_HEIGHT = 50;
-
-  // using flatListHeight to make the bottom sheet snap points work when the flatlist
-  // has only a few items and isn't scrollable
-  const flatListHeight = height - (
-    HEADER_HEIGHT + FOOTER_HEIGHT + BUTTON_ROW_HEIGHT
-  );
 
   const navToObsDetails = async observation => {
     const { uuid } = observation;
@@ -151,9 +75,15 @@ const ObservationViews = ( ): Node => {
     }
   };
 
-  const renderItem = ( { item } ) => (
-    <ObsCard item={item} handlePress={navToObsDetails} />
-  );
+  const renderEmptyState = ( ) => {
+    if ( ( isLoggedIn === false )
+      || ( !isLoading && observationList.length === 0 ) ) {
+      return <EmptyList />;
+    }
+    return <View />;
+  };
+
+  const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
 
   const renderGridItem = ( { item, index } ) => (
     <GridItem
@@ -163,43 +93,13 @@ const ObservationViews = ( ): Node => {
     />
   );
 
-  const renderEmptyState = ( ) => {
-    if ( ( isLoggedIn === false )
-      || ( !isLoading && observationList.length === 0 ) ) {
-      return <EmptyList />;
-    }
-    return <View />;
-  };
-
-  const renderBottomSheet = ( ) => {
-    if ( isLoggedIn === false ) {
-      return (
-        <BottomSheet hide={hasScrolled}>
-          <LoginPrompt />
-        </BottomSheet>
-      );
-    }
-    if ( uploadInProgress ) {
-      return (
-        <UploadProgressBar
-          unuploadedObsList={unuploadedObsList}
-          allObsToUpload={allObsToUpload}
-        />
-      );
-    }
-    if ( numOfUnuploadedObs > 0 && isLoggedIn ) {
-      return (
-        <BottomSheet hide={hasScrolled}>
-          <UploadPrompt
-            uploadObservations={updateUploadStatus}
-            numOfUnuploadedObs={numOfUnuploadedObs}
-            updateUploadStatus={updateUploadStatus}
-          />
-        </BottomSheet>
-      );
-    }
-    return null;
-  };
+  const renderHeader = useMemo( ( ) => (
+    <ObsListHeader
+      isLoggedIn={isLoggedIn}
+      scrollY={scrollY}
+      setView={setView}
+    />
+  ), [isLoggedIn, scrollY] );
 
   const renderFooter = ( ) => {
     if ( isLoggedIn === false ) { return <View />; }
@@ -211,14 +111,12 @@ const ObservationViews = ( ): Node => {
     );
   };
 
-  const renderHeader = useMemo( ( ) => (
-    <ObsListHeader
-      numOfUnuploadedObs={numOfUnuploadedObs}
+  const renderBottomSheet = ( ) => (
+    <ObsListBottomSheet
+      hasScrolled={hasScrolled}
       isLoggedIn={isLoggedIn}
-      translateY={translateY}
-      setView={setView}
     />
-  ), [isLoggedIn, translateY, numOfUnuploadedObs] );
+  );
 
   const renderItemSeparator = ( ) => <View className="border border-border" />;
 
@@ -252,7 +150,7 @@ const ObservationViews = ( ): Node => {
         onEndReached={onEndReached}
         onEndReachedThreshold={0.1}
       />
-      {numOfUnuploadedObs > 0 && renderBottomSheet( )}
+      {renderBottomSheet( )}
     </ViewWithFooter>
   );
 };
