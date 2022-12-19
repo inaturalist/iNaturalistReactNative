@@ -138,6 +138,8 @@ class Observation extends Realm.Object {
     const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
 
+    console.log( obs, "observation" );
+
     const obsToSave = {
       // just ...obs causes problems when obs is a realm object
       // ...obs.toJSON( ),

@@ -30,6 +30,7 @@ import {
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
@@ -71,12 +72,16 @@ const ObsDetails = ( ): Node => {
 
   const queryClient = useQueryClient( );
 
+  const remoteObservationParams = {
+    fields: Observation.FIELDS
+  };
+
   const {
     data: remoteObservation,
     refetch: refetchRemoteObservation
   } = useAuthenticatedQuery(
     ["fetchRemoteObservation", uuid],
-    optsWithAuth => fetchRemoteObservation( uuid, { }, optsWithAuth )
+    optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth )
   );
 
   const observation = localObservation || remoteObservation;
@@ -299,9 +304,8 @@ const ObsDetails = ( ): Node => {
     }
   };
 
-  const displayCreatedAt = ( ) => ( observation.createdAt
-    ? observation.createdAt
-    : formatObsListTime( observation.created_at ) );
+  const displayCreatedAt = ( ) => ( observation?.created_at
+    ? formatObsListTime( observation.created_at ) : "" );
 
   const displayTab = ( handlePress, testID, tabText, active ) => {
     let textClassName = "color-gray text-xl font-bold";

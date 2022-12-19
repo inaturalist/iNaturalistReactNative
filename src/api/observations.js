@@ -1,14 +1,8 @@
 // @flow
 
 import inatjs from "inaturalistjs";
-// eslint-disable-next-line import/no-cycle
-import Observation from "realmModels/Observation";
 
 import handleError from "./error";
-
-const REMOTE_OBSERVATION_PARAMS = {
-  fields: Observation.FIELDS
-};
 
 const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
@@ -43,7 +37,7 @@ const fetchRemoteObservation = async (
   try {
     const { results } = await inatjs.observations.fetch(
       uuid,
-      { ...REMOTE_OBSERVATION_PARAMS, ...params },
+      params,
       opts
     );
     if ( results?.length > 0 ) {
@@ -92,7 +86,6 @@ const updateObservation = async (
   try {
     return await inatjs.observations.update( params, opts );
   } catch ( e ) {
-    console.log( e, "error in update obs" );
     return handleError( e );
   }
 };

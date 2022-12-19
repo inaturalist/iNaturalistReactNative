@@ -22,7 +22,7 @@ export default define( "RemoteObservation", faker => {
     geojson: {
       coordinates: [1, 1]
     },
-    created_at: createdAt,
+    created_at: "2022-11-27T19:07:41-08:00",
     updated_at: createdAt,
     time_observed_at: createdAt,
     location: "1,1",
