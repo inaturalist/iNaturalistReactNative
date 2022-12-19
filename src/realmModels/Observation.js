@@ -94,7 +94,7 @@ class Observation extends Realm.Object {
       taxon,
       user
     };
-    // console.log( localObs, "local lobs with new things" );
+
     if ( !existingObs ) {
       localObs._created_at = new Date( localObs.created_at );
       if ( isNaN( localObs._created_at ) ) {
@@ -137,8 +137,6 @@ class Observation extends Realm.Object {
     const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
     const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
-
-    console.log( obs, "observation" );
 
     const obsToSave = {
       // just ...obs causes problems when obs is a realm object
