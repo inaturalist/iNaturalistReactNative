@@ -34,7 +34,7 @@ const Toolbar = ( {
         <View className="mx-3" />
       )}
       {loading && <ActivityIndicator />}
-      <View className="flex flex-row flex-nowrap mx-3">
+      <View className="flex-row mx-3">
         <Pressable
           onPress={( ) => setView( "list" )}
           accessibilityRole="button"

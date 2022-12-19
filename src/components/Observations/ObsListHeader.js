@@ -9,28 +9,37 @@ import LoggedOutCard from "./LoggedOutCard";
 import Toolbar from "./Toolbar";
 import UserCard from "./UserCard";
 
+const { diffClamp } = Animated;
+
+const HEADER_HEIGHT = 101;
+
 type Props = {
-  numOfUnuploadedObs: number,
   isLoggedIn: ?boolean,
-  translateY: any,
+  scrollY: any,
   setView: Function
 }
 
 const ObsListHeader = ( {
-  numOfUnuploadedObs, isLoggedIn, translateY, setView
+  isLoggedIn, scrollY, setView
 }: Props ): Node => {
+  const scrollYClamped = diffClamp( scrollY.current, 0, HEADER_HEIGHT );
+
   if ( isLoggedIn === null ) {
     return <View className="rounded-bl-3xl rounded-br-3xl bg-primary h-24" />;
   }
 
+  const translateY = scrollYClamped.interpolate( {
+    inputRange: [0, HEADER_HEIGHT],
+    // $FlowIgnore
+    outputRange: [0, -HEADER_HEIGHT]
+  } );
+
   return (
     // $FlowIgnore
     <Animated.View style={[{ transform: [{ translateY }] }]}>
-      <View className="rounded-bl-3xl rounded-br-3xl bg-primary h-24 justify-center">
-        {isLoggedIn
-          ? <UserCard />
-          : <LoggedOutCard numOfUnuploadedObs={numOfUnuploadedObs} />}
-      </View>
+      {isLoggedIn
+        ? <UserCard />
+        : <LoggedOutCard />}
       <Toolbar
         isLoggedIn={isLoggedIn}
         setView={setView}
