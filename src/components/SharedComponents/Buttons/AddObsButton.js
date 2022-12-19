@@ -1,31 +1,31 @@
 // @flow
 
-import CameraOptionsModal from "components/CameraOptionsModal";
+import AddObsModal from "components/AddObsModal";
 import Modal from "components/SharedComponents/Modal";
 import * as React from "react";
 import { Pressable } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
-const CameraOptionsButton = ( ): React.Node => {
+const AddObsButton = ( ): React.Node => {
   const [showModal, setModal] = React.useState( false );
 
   const openModal = React.useCallback( ( ) => setModal( true ), [] );
   const closeModal = React.useCallback( ( ) => setModal( false ), [] );
 
-  const navToCameraOptions = ( ) => openModal( );
+  const navToAddObs = ( ) => openModal( );
 
   return (
     <>
       <Modal
         showModal={showModal}
         closeModal={closeModal}
-        modal={<CameraOptionsModal closeModal={closeModal} />}
+        modal={<AddObsModal closeModal={closeModal} />}
       />
-      <Pressable onPress={navToCameraOptions} accessibilityRole="link">
+      <Pressable onPress={navToAddObs} accessibilityRole="link">
         <IconMaterial name="add-circle" size={30} />
       </Pressable>
     </>
   );
 };
 
-export default CameraOptionsButton;
+export default AddObsButton;
