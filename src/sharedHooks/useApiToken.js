@@ -2,8 +2,7 @@
 
 import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
 import { useEffect, useState } from "react";
-
-import useCurrentUser from "./useCurrentUser";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
 const useApiToken = ( ): string | null => {
   const [apiToken, setApiToken] = useState( null );
