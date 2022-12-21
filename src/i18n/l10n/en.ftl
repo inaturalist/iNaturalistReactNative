@@ -33,6 +33,9 @@ All = All
 
 All-observations = All observations
 
+# license code
+all-rights-reserved = all rights reserved
+
 Amphibians = Amphibians
 
 Arachnids = Arachnids
@@ -320,6 +323,9 @@ No-Location = No Location
 
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
+# license code
+no-rights-reserved = no rights reserved
+
 # Header for observation description on observation detail
 Notes = Notes
 
@@ -328,6 +334,8 @@ Notifications = Notifications
 Obscured = Obscured
 
 Observation = Observation
+
+Observation-Attribution = Observation © {$attribution} · {$licenseCode}
 
 Observations = Observations
 
@@ -513,6 +521,9 @@ Sign-Up = Sign Up
 
 # Header for a section showing taxa similar to a single taxon
 SIMILAR-SPECIES-header = SIMILAR SPECIES
+
+# license code
+some-rights-reserved = some rights reserved
 
 Sort-By = Sort By
 

@@ -92,7 +92,7 @@ const StandardCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const renderCameraOptionsButtons = icon => {
+  const renderAddObsButtons = icon => {
     let testID = "";
     let accessibilityLabel = "";
     switch ( icon ) {
@@ -145,12 +145,12 @@ const StandardCamera = ( ): Node => {
           {hasFlash ? (
             <Pressable onPress={toggleFlash}>
               {takePhotoOptions.flash === "on"
-                ? renderCameraOptionsButtons( "flash" )
-                : renderCameraOptionsButtons( "flash-off" )}
+                ? renderAddObsButtons( "flash" )
+                : renderAddObsButtons( "flash-off" )}
             </Pressable>
           ) : <View />}
           <Pressable onPress={flipCamera}>
-            {renderCameraOptionsButtons( "camera-flip" )}
+            {renderAddObsButtons( "camera-flip" )}
           </Pressable>
         </View>
         <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">

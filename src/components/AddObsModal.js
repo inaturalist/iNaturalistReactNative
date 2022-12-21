@@ -12,7 +12,7 @@ type Props = {
   closeModal: ( ) => void
 }
 
-const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
+const AddObsModal = ( { closeModal }: Props ): React.Node => {
   // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
   const obsEditContext = React.useContext( ObsEditContext );
   const createObservationNoEvidence = obsEditContext?.createObservationNoEvidence;
@@ -79,4 +79,4 @@ const CameraOptionsModal = ( { closeModal }: Props ): React.Node => {
   );
 };
 
-export default CameraOptionsModal;
+export default AddObsModal;

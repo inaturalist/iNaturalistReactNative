@@ -19,7 +19,8 @@ import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useEffect, useState
+  useEffect,
+  useState
 } from "react";
 import {
   Alert,
@@ -28,12 +29,14 @@ import {
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useLocalObservation from "sharedHooks/useLocalObservation";
 import { imageStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
 
@@ -60,22 +63,27 @@ const ObsDetails = ( ): Node => {
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
   const realm = useRealm( );
-  const localObservation = realm?.objectForPrimaryKey( "Observation", uuid );
+  const localObservation = useLocalObservation( uuid );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [addingComment, setAddingComment] = useState( false );
   const [comments, setComments] = useState( [] );
 
   const queryClient = useQueryClient( );
 
+  const remoteObservationParams = {
+    fields: Observation.FIELDS
+  };
+
   const {
     data: remoteObservation,
     refetch: refetchRemoteObservation
   } = useAuthenticatedQuery(
     ["fetchRemoteObservation", uuid],
-    optsWithAuth => fetchRemoteObservation( uuid, { }, optsWithAuth )
+    optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth )
   );
 
   const observation = localObservation || remoteObservation;
+  // const observation = remoteObservation;
 
   const mutationOptions = {
     onSuccess: ( ) => {
@@ -92,6 +100,7 @@ const ObsDetails = ( ): Node => {
   const taxon = observation?.taxon;
   const user = observation?.user;
   const faves = observation?.faves;
+  const observationPhotos = observation?.observationPhotos || observation?.observation_photos;
   const currentUserFaved = faves?.length > 0 ? faves.find( fave => fave.user.id === userId ) : null;
 
   const showActivityTab = ( ) => setTab( 0 );
@@ -153,15 +162,14 @@ const ObsDetails = ( ): Node => {
     } );
   };
 
-  useEffect( () => {
+  useEffect( ( ) => {
     const markViewedLocally = async ( ) => {
-      if ( !localObservation ) { return; }
       realm?.write( ( ) => {
         localObservation.viewed = true;
       } );
     };
 
-    if ( !observation?.viewed ) {
+    if ( localObservation && !localObservation?.viewed ) {
       markViewedMutation.mutate( { id: uuid } );
       markViewedLocally( );
     }
@@ -192,7 +200,7 @@ const ObsDetails = ( ): Node => {
 
   if ( !observation ) { return null; }
 
-  const photos = _.compact( Array.from( observation.observationPhotos ).map( op => op.photo ) );
+  const photos = _.compact( Array.from( observationPhotos ).map( op => op.photo ) );
 
   const navToUserProfile = id => navigation.navigate( "UserProfile", { userId: id } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
@@ -231,9 +239,8 @@ const ObsDetails = ( ): Node => {
     }
   };
 
-  const displayCreatedAt = ( ) => ( observation.createdAt
-    ? observation.createdAt
-    : formatObsListTime( observation._created_at ) );
+  const displayCreatedAt = ( ) => ( observation?.created_at
+    ? formatObsListTime( observation.created_at ) : "" );
 
   const displayTab = ( handlePress, testID, tabText, active ) => {
     let textClassName = "color-gray text-xl font-bold";
@@ -297,7 +304,6 @@ const ObsDetails = ( ): Node => {
           {showTaxon( )}
           <View>
             <View className="flex-row my-1">
-              {/* TODO: figure out how to change icon tint color with Tailwind */}
               <Image
                 style={imageStyles.smallIcon}
                 source={require( "images/ic_id.png" )}
