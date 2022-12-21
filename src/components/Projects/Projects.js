@@ -2,15 +2,25 @@
 
 import InputField from "components/SharedComponents/InputField";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
-import * as React from "react";
+import type { Node } from "react";
+import React, { useEffect, useState } from "react";
 
 import ProjectSearch from "./ProjectSearch";
 import ProjectTabs from "./ProjectTabs";
 
-const Projects = ( ): React.Node => {
-  const [q, setQ] = React.useState( "" );
+const Projects = ( ): Node => {
+  const [q, setQ] = useState( "" );
+  const [view, setView] = useState( "tabs" );
 
   const clearSearch = ( ) => setQ( "" );
+
+  useEffect( ( ) => {
+    if ( q.length > 0 ) {
+      setView( "search" );
+    } else {
+      setView( "tabs" );
+    }
+  }, [q] );
 
   return (
     <ViewWithFooter testID="Projects">
@@ -21,11 +31,9 @@ const Projects = ( ): React.Node => {
         type="none"
         testID="ProjectSearch.input"
       />
-      {/* TODO: make project search a separate screen or a modal?
-      not sure what the final designs will look like but unlikely
-      tabs and search will both be on the same screen */}
-      <ProjectTabs />
-      <ProjectSearch q={q} clearSearch={clearSearch} />
+      {view === "tabs"
+        ? <ProjectTabs />
+        : <ProjectSearch q={q} clearSearch={clearSearch} />}
     </ViewWithFooter>
   );
 };
