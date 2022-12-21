@@ -9,8 +9,6 @@ const useApiToken = ( ): string | null => {
   const [shouldFetchToken, setShouldFetchToken] = useState( true );
   const currentUser = useCurrentUser( );
 
-  console.log( shouldFetchToken, currentUser, "should fetch current user" );
-
   useEffect( ( ) => {
     const fetchApiToken = async ( ) => {
       if ( !currentUser ) {
