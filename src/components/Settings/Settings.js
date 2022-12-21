@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { fetchUserMe, updateUsers } from "api/users";
+import { updateUsers } from "api/users";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -15,7 +15,7 @@ import {
   View
 } from "react-native";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useUserMe from "sharedHooks/useUserMe";
 import { textStyles, viewStyles } from "styles/settings/settings";
 
 import SettingsAccount from "./SettingsAccount";
@@ -150,14 +150,7 @@ const Settings = ( { children: _children }: Props ): Node => {
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
 
-  const {
-    data: user,
-    isLoading,
-    refetch: refetchUserMe
-  } = useAuthenticatedQuery(
-    ["fetchUserMe"],
-    optsWithAuth => fetchUserMe( { }, optsWithAuth )
-  );
+  const { remoteUser: user, isLoading, refetchUserMe } = useUserMe( );
 
   const queryClient = useQueryClient( );
 
