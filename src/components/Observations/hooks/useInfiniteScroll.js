@@ -41,20 +41,7 @@ const useInfiniteScroll = ( idBelow: ?number ): boolean => {
   );
 
   useEffect( ( ) => {
-    if ( observations && observations.length > 0 ) {
-      const obsToUpsert = observations.filter(
-        obs => !Observation.isUnsyncedObservation( realm, obs )
-      );
-      realm.write( ( ) => {
-        obsToUpsert.forEach( obs => {
-          realm.create(
-            "Observation",
-            Observation.createOrModifyLocalObservation( obs, realm ),
-            "modified"
-          );
-        } );
-      } );
-    }
+    Observation.upsertRemoteObservations( observations, realm );
   }, [realm, observations] );
 
   return isLoading;

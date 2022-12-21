@@ -252,25 +252,15 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       };
       const results = await searchObservations( params, { api_token: apiToken } );
 
-      if ( results && results.length > 0 ) {
-        const obsToUpsert = results.filter(
-          obs => !Observation.isUnsyncedObservation( realm, obs )
-        );
-        realm.write( ( ) => {
-          obsToUpsert.forEach( obs => {
-            realm.create(
-              "Observation",
-              Observation.createOrModifyLocalObservation( obs, realm ),
-              "modified"
-            );
-          } );
-        } );
-      }
+      Observation.upsertRemoteObservations( results, realm );
     };
 
     const syncObservations = async ( ) => {
-      uploadLocalObservationsToServer( );
-      downloadRemoteObservationsFromServer( );
+      // TODO: GET observation/deletions once this is enabled in API v2
+      setLoading( true );
+      await uploadLocalObservationsToServer( );
+      await downloadRemoteObservationsFromServer( );
+      setLoading( false );
     };
 
     return {
