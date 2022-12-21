@@ -1,5 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
+import { searchObservations } from "api/observations";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
@@ -234,6 +235,34 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       await Photo.deletePhoto( realm, photoUriToDelete );
     };
 
+    const uploadLocalObservationsToServer = ( ) => {
+      const unsyncedObservations = Observation.filterUnsyncedObservations( realm );
+      unsyncedObservations.forEach( async observation => {
+        await Observation.uploadObservation( observation, apiToken, realm );
+      } );
+    };
+
+    const downloadRemoteObservationsFromServer = async ( ) => {
+      const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
+
+      const params = {
+        user_id: currentUser?.id,
+        per_page: 50,
+        fields: Observation.FIELDS
+      };
+      const results = await searchObservations( params, { api_token: apiToken } );
+
+      Observation.upsertRemoteObservations( results, realm );
+    };
+
+    const syncObservations = async ( ) => {
+      // TODO: GET observation/deletions once this is enabled in API v2
+      setLoading( true );
+      await uploadLocalObservationsToServer( );
+      await downloadRemoteObservationsFromServer( );
+      setLoading( false );
+    };
+
     return {
       createObservationNoEvidence,
       addObservations,
@@ -268,7 +297,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setNextScreen,
       loading,
       setLoading,
-      unsavedChanges
+      unsavedChanges,
+      syncObservations
     };
   }, [
     currentObservation,
