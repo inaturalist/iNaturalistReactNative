@@ -10,6 +10,7 @@ import { formatDateAndTime } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { parseExif, parseExifDateToLocalTimezone } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import { ObsEditContext, RealmContext } from "./contexts";
 
@@ -23,6 +24,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
   const apiToken = useApiToken( );
+  const currentUser = useCurrentUser( );
   const [currentObservationIndex, setCurrentObservationIndex] = useState( 0 );
   const [observations, setObservations] = useState( [] );
   const [cameraPreviewUris, setCameraPreviewUris] = useState( [] );
@@ -243,8 +245,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const downloadRemoteObservationsFromServer = async ( ) => {
-      const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
-
       const params = {
         user_id: currentUser?.id,
         per_page: 50,
@@ -322,7 +322,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setAlbum,
     loading,
     setLoading,
-    unsavedChanges
+    unsavedChanges,
+    currentUser?.id
   ] );
 
   return (
