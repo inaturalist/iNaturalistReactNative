@@ -17,10 +17,9 @@ const PARAMS = {
 };
 
 const searchMessages = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
-  console.log( opts, "options in search messages" );
   try {
     const { results } = await inatjs.messages.search( { ...PARAMS, ...params }, opts );
-    return results || [];
+    return results;
   } catch ( e ) {
     return handleError( e, { throw: true } );
   }
