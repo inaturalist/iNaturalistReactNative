@@ -63,6 +63,23 @@ class Observation extends Realm.Object {
     return list.map( item => createFunction.mapApiToRealm( item, realm ) );
   };
 
+  static upsertRemoteObservations( observations, realm ) {
+    if ( observations && observations.length > 0 ) {
+      const obsToUpsert = observations.filter(
+        obs => !Observation.isUnsyncedObservation( realm, obs )
+      );
+      realm.write( ( ) => {
+        obsToUpsert.forEach( obs => {
+          realm.create(
+            "Observation",
+            Observation.createOrModifyLocalObservation( obs, realm ),
+            "modified"
+          );
+        } );
+      } );
+    }
+  }
+
   static createOrModifyLocalObservation( obs, realm ) {
     const existingObs = realm?.objectForPrimaryKey( "Observation", obs.uuid );
     const taxon = obs.taxon ? Taxon.mapApiToRealm( obs.taxon ) : null;
