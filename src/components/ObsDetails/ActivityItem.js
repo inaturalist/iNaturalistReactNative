@@ -3,11 +3,13 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments } from "api/comments";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
+import FlagItemModal from "components/ObsDetails/FlagItemModal";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import UserIcon from "components/SharedComponents/UserIcon";
 import UserText from "components/SharedComponents/UserText";
 import {
-  Image, Pressable, Text, View
+  Image,
+  Pressable, Text, View
 } from "components/styledComponents";
 import { t } from "i18next";
 import _ from "lodash";
@@ -39,6 +41,7 @@ const ActivityItem = ( {
 }: Props ): Node => {
   const [currentUser, setCurrentUser] = useState( null );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
+  const [flagModalVisible, setFlagModalVisible] = useState( false );
   const { taxon } = item;
   const { user } = item;
 
@@ -62,6 +65,10 @@ const ActivityItem = ( {
       }
     }
   );
+
+  const closeFlagItemModal = () => {
+    setFlagModalVisible( false );
+  };
 
   return (
     <View className={item.temporary && "opacity-50"}>
@@ -118,6 +125,10 @@ const ActivityItem = ( {
                 setVisible={setKebabMenuVisible}
               >
                 {/* TODO: build out this menu */}
+                <Menu.Item
+                  onPress={() => setFlagModalVisible( true )}
+                  title={t( "Flag" )}
+                />
                 <View />
               </KebabMenu>
             )}
@@ -146,6 +157,7 @@ const ActivityItem = ( {
           <UserText baseStyle={textStyles.activityItemBody} text={item.body} />
         </View>
       )}
+      <FlagItemModal showFlagItemModal={flagModalVisible} closeFlagItemModal={closeFlagItemModal} />
     </View>
   );
 };

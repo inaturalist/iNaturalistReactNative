@@ -159,6 +159,14 @@ Finish = Finish
 
 Fish = Fish
 
+Flag-An-Item = Flag An Item
+
+Flag-Item-Description =  Flagging brings something to the attention of volunteer site curators. Please don't flag problems you can address with identifications, the Data Quality Assessment, or by talking to the person who made the content.
+
+Flag-Item-Other-Description = Some other reason you can explain below.
+
+Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
+
 # Accessible label for the flash button, when flas is turned on
 flash-button-label-flash = The flash is turned on. Press here to disable it.
 
@@ -338,6 +346,10 @@ Observation = Observation
 Observation-Attribution = Observation © {$attribution} · {$licenseCode}
 
 Observations = Observations
+
+Offensive-Inappropriate = Offensive/Inappropriate
+
+Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of "appropriate," see the FAQ.
 
 Open = Open
 
@@ -528,6 +540,10 @@ some-rights-reserved = some rights reserved
 Sort-By = Sort By
 
 Sort-by = Sort by
+
+Spam = Spam
+
+Spam-Examples = Commercial solicitation, links to nowhere, etc.
 
 Species = Species
 
