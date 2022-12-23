@@ -6,12 +6,10 @@ import { useEffect } from "react";
 import Observation from "realmModels/Observation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import useLoggedIn from "sharedHooks/useLoggedIn";
 
 const { useRealm } = RealmContext;
 
 const useInfiniteScroll = ( idBelow: ?number ): boolean => {
-  const isLoggedIn = useLoggedIn( );
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
 
@@ -37,7 +35,7 @@ const useInfiniteScroll = ( idBelow: ?number ): boolean => {
     optsWithAuth => searchObservations( params, optsWithAuth ),
     {},
     {
-      enabled: !!isLoggedIn
+      enabled: !!currentUser
     }
   );
 
@@ -45,7 +43,7 @@ const useInfiniteScroll = ( idBelow: ?number ): boolean => {
     Observation.upsertRemoteObservations( observations, realm );
   }, [realm, observations] );
 
-  return isLoading;
+  return currentUser ? isLoading : false;
 };
 
 export default useInfiniteScroll;

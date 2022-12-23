@@ -6,6 +6,7 @@ import {
 } from "@react-navigation/drawer";
 import type { Node } from "react";
 import React from "react";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
 type Props = {
   state: any,
@@ -16,6 +17,7 @@ type Props = {
 const CustomDrawerContent = ( { ...props }: Props ): Node => {
   // $FlowFixMe
   const { state, navigation, descriptors } = props;
+  const currentUser = useCurrentUser( );
 
   return (
     <DrawerContentScrollView state={state} navigation={navigation} descriptors={descriptors}>
@@ -32,10 +34,6 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         onPress={( ) => navigation.navigate( "projects" )}
       />
       <DrawerItem
-        label="help"
-        onPress={( ) => console.log( "nav to help/tutorials" )}
-      />
-      <DrawerItem
         label="about"
         onPress={( ) => navigation.navigate( "about" )}
       />
@@ -48,7 +46,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         onPress={( ) => navigation.navigate( "network" )}
       />
       <DrawerItem
-        label="login"
+        label={currentUser ? "logout" : "login"}
         onPress={( ) => navigation.navigate( "login" )}
       />
     </DrawerContentScrollView>
