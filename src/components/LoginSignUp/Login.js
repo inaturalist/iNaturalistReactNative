@@ -9,7 +9,6 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  findNodeHandle,
   Linking,
   TouchableOpacity
 } from "react-native";
@@ -34,6 +33,7 @@ const Login = ( ): Node => {
   const [loggedIn, setLoggedIn] = useState( false );
   const [error, setError] = useState( null );
   const [loading, setLoading] = useState( false );
+  const [extraScrollHeight, setExtraScrollHeight] = useState( 0 );
 
   useEffect( ( ) => {
     let isCurrent = true;
@@ -76,10 +76,6 @@ const Login = ( ): Node => {
     Linking.openURL( "https://www.inaturalist.org/users/password/new" );
   };
 
-  const scrollToInput = node => {
-    keyboardScrollRef?.current?.scrollToFocusedInput( node );
-  };
-
   const loginForm = (
     <>
       <Image
@@ -103,7 +99,7 @@ const Login = ( ): Node => {
         autoCapitalize="none"
         keyboardType="email-address"
         selectionColor={colors.black}
-        onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
+        onFocus={() => setExtraScrollHeight( 200 )}
       />
       <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
@@ -116,10 +112,10 @@ const Login = ( ): Node => {
         secureTextEntry
         testID="Login.password"
         selectionColor={colors.black}
-        onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
+        onFocus={() => setExtraScrollHeight( 200 )}
       />
       <TouchableOpacity onPress={forgotPassword}>
-        <Text className="underline mt-4 self-end">{t( "Forgot-Password" )}</Text>
+        <Text className="underline mt-2 self-end">{t( "Forgot-Password" )}</Text>
       </TouchableOpacity>
       {error && <Text className="text-red self-center mt-5">{error}</Text>}
       <Button
@@ -147,9 +143,11 @@ const Login = ( ): Node => {
     <SafeAreaView className="flex-1">
       {loggedIn ? <Logout /> : (
         <KeyboardAwareScrollView
+          keyboardShouldPersistTaps="always"
           ref={keyboardScrollRef}
           enableOnAndroid
-          extraHeight={290}
+          enableAutomaticScroll
+          extraScrollHeight={extraScrollHeight}
           className="p-8"
         >
           {renderBackButton( )}

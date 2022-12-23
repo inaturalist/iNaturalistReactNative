@@ -3,11 +3,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
-import createIdentification from "api/identifications";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
-import Button from "components/SharedComponents/Buttons/Button";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import QualityBadge from "components/SharedComponents/QualityBadge";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
@@ -21,20 +19,24 @@ import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useEffect, useState
+  useEffect,
+  useState
 } from "react";
 import {
-  Alert, LogBox
+  Alert,
+  LogBox
 } from "react-native";
 import { ActivityIndicator, Button as IconButton } from "react-native-paper";
 import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useLocalObservation from "sharedHooks/useLocalObservation";
 import { imageStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
 
@@ -56,28 +58,32 @@ const ObsDetails = ( ): Node => {
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
   const [refetch, setRefetch] = useState( false );
-  const [showCommentBox, setShowCommentBox] = useState( false );
   const { params } = useRoute( );
   const { uuid } = params;
   const [tab, setTab] = useState( 0 );
   const navigation = useNavigation( );
-  const [ids, setIds] = useState( [] );
-  const [addingComment, setAddingComment] = useState( false );
   const realm = useRealm( );
-  const localObservation = realm?.objectForPrimaryKey( "Observation", uuid );
+  const localObservation = useLocalObservation( uuid );
+  const [showCommentBox, setShowCommentBox] = useState( false );
+  const [addingComment, setAddingComment] = useState( false );
   const [comments, setComments] = useState( [] );
 
   const queryClient = useQueryClient( );
+
+  const remoteObservationParams = {
+    fields: Observation.FIELDS
+  };
 
   const {
     data: remoteObservation,
     refetch: refetchRemoteObservation
   } = useAuthenticatedQuery(
     ["fetchRemoteObservation", uuid],
-    optsWithAuth => fetchRemoteObservation( uuid, { }, optsWithAuth )
+    optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth )
   );
 
   const observation = localObservation || remoteObservation;
+  // const observation = remoteObservation;
 
   const mutationOptions = {
     onSuccess: ( ) => {
@@ -86,6 +92,19 @@ const ObsDetails = ( ): Node => {
     }
   };
 
+  const markViewedMutation = useAuthenticatedMutation(
+    ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
+    mutationOptions
+  );
+
+  const taxon = observation?.taxon;
+  const user = observation?.user;
+  const faves = observation?.faves;
+  const observationPhotos = observation?.observationPhotos || observation?.observation_photos;
+  const currentUserFaved = faves?.length > 0 ? faves.find( fave => fave.user.id === userId ) : null;
+
+  const showActivityTab = ( ) => setTab( 0 );
+  const showDataTab = ( ) => setTab( 1 );
   const showErrorAlert = error => Alert.alert(
     "Error",
     error,
@@ -95,6 +114,8 @@ const ObsDetails = ( ): Node => {
     }
   );
 
+  const toggleRefetch = ( ) => setRefetch( !refetch );
+  const openCommentBox = ( ) => setShowCommentBox( true );
   const createCommentMutation = useAuthenticatedMutation(
     ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
     {
@@ -114,120 +135,6 @@ const ObsDetails = ( ): Node => {
       onSettled: ( ) => setAddingComment( false )
     }
   );
-
-  const createIdentificationMutation = useAuthenticatedMutation(
-    ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
-    {
-      onSuccess: data => setIds( [...ids, data[0]] ),
-      onError: e => {
-        let error = null;
-        if ( e ) {
-          error = t( "Couldnt-create-identification", { error: e.message } );
-        } else {
-          error = t( "Couldnt-create-identification", { error: t( "Unknown-error" ) } );
-        }
-
-        // Remove temporary ID and show error
-        setIds( [...ids] );
-        showErrorAlert( error );
-      }
-    }
-  );
-
-  const markViewedMutation = useAuthenticatedMutation(
-    ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
-    mutationOptions
-  );
-
-  const taxon = observation?.taxon;
-  const user = observation?.user;
-  const faves = observation?.faves;
-  const currentUserFaved = faves?.length > 0 ? faves.find( fave => fave.user.id === userId ) : null;
-
-  useEffect( ( ) => {
-    // set initial ids for activity tab
-    const currentIds = observation?.identifications;
-    if ( currentIds
-        && ids.length === 0
-        && currentIds.length !== ids.length ) {
-      setIds( currentIds );
-    }
-  }, [observation, ids] );
-
-  useEffect( ( ) => {
-    // set initial comments for activity tab
-    const currentComments = observation?.comments;
-    if ( currentComments
-        && comments.length === 0
-        && currentComments.length !== comments.length ) {
-      setComments( currentComments );
-    }
-  }, [observation, comments] );
-
-  const showActivityTab = ( ) => setTab( 0 );
-  const showDataTab = ( ) => setTab( 1 );
-
-  const toggleRefetch = ( ) => setRefetch( !refetch );
-
-  useEffect( () => {
-    const markViewedLocally = async ( ) => {
-      if ( !localObservation ) { return; }
-      realm?.write( ( ) => {
-        localObservation.viewed = true;
-      } );
-    };
-
-    if ( !observation?.viewed ) {
-      markViewedMutation.mutate( { id: uuid } );
-      markViewedLocally( );
-    }
-  }, [observation, localObservation, realm, markViewedMutation, uuid] );
-
-  useEffect( ( ) => {
-    const obsCreatedLocally = observation?.id === null;
-    const obsOwnedByCurrentUser = observation?.user?.id === currentUser?.id;
-
-    const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } );
-    const editIcon = ( ) => ( obsCreatedLocally || obsOwnedByCurrentUser )
-    && <IconButton icon="pencil" onPress={navToObsEdit} textColor={colors.gray} />;
-
-    navigation.setOptions( {
-      headerRight: editIcon
-    } );
-  }, [navigation, observation, currentUser] );
-
-  if ( !observation ) { return null; }
-
-  const photos = _.compact( Array.from( observation.observationPhotos ).map( op => op.photo ) );
-
-  const onIDAdded = async identification => {
-    // Add temporary ID to observation.identifications ("ghosted" ID, while we're trying to add it)
-    const newId = {
-      body: identification.body,
-      taxon: identification.taxon,
-      user: {
-        id: userId,
-        login: currentUser?.login,
-        signedIn: true
-      },
-      created_at: formatISO( Date.now() ),
-      uuid: identification.uuid,
-      vision: false,
-      // This tells us to render is ghosted (since it's temporarily visible
-      // until getting a response from the server)
-      temporary: true
-    };
-    setIds( [...ids, newId] );
-
-    createIdentificationMutation.mutate( {
-      identification: {
-        observation_id: uuid,
-        taxon_id: newId.taxon.id,
-        body: newId.body
-      }
-    } );
-  };
-
   const onCommentAdded = async commentBody => {
     // Add temporary comment to observation.comments ("ghosted" comment,
     // while we're trying to add it)
@@ -255,12 +162,48 @@ const ObsDetails = ( ): Node => {
     } );
   };
 
+  useEffect( ( ) => {
+    const markViewedLocally = async ( ) => {
+      realm?.write( ( ) => {
+        localObservation.viewed = true;
+      } );
+    };
+
+    if ( localObservation && !localObservation?.viewed ) {
+      markViewedMutation.mutate( { id: uuid } );
+      markViewedLocally( );
+    }
+  }, [observation, localObservation, realm, markViewedMutation, uuid] );
+
+  useEffect( ( ) => {
+    const obsCreatedLocally = observation?.id === null;
+    const obsOwnedByCurrentUser = observation?.user?.id === currentUser?.id;
+
+    const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } );
+    const editIcon = ( ) => ( obsCreatedLocally || obsOwnedByCurrentUser )
+    && <IconButton icon="pencil" onPress={navToObsEdit} textColor={colors.gray} />;
+
+    navigation.setOptions( {
+      headerRight: editIcon
+    } );
+  }, [navigation, observation, currentUser] );
+
+  useEffect( ( ) => {
+    // set initial comments for activity tab
+    const currentComments = observation?.comments;
+    if ( currentComments
+        && comments.length === 0
+        && currentComments.length !== comments.length ) {
+      setComments( currentComments );
+    }
+  }, [observation, comments] );
+
+  if ( !observation ) { return null; }
+
+  const photos = _.compact( Array.from( observationPhotos ).map( op => op.photo ) );
+
   const navToUserProfile = id => navigation.navigate( "UserProfile", { userId: id } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
-  const navToAddID = ( ) => {
-    navigation.push( "AddID", { onIDAdded, goBackOnSave: true } );
-  };
-  const openCommentBox = ( ) => setShowCommentBox( true );
 
   const showTaxon = ( ) => {
     if ( !taxon ) { return <Text>{t( "Unknown-organism" )}</Text>; }
@@ -272,7 +215,7 @@ const ObsDetails = ( ): Node => {
           onPress={navToTaxonDetails}
           testID={`ObsDetails.taxon.${taxon.id}`}
           accessibilityRole="link"
-          accessibilityLabel="go to taxon details"
+          accessibilityLabel={t( "Navigate-to-taxon-details" )}
         >
           <Text>
             {checkCamelAndSnakeCase( taxon, "preferredCommonName" )}
@@ -296,9 +239,8 @@ const ObsDetails = ( ): Node => {
     }
   };
 
-  const displayCreatedAt = ( ) => ( observation.createdAt
-    ? observation.createdAt
-    : formatObsListTime( observation._created_at ) );
+  const displayCreatedAt = ( ) => ( observation?.created_at
+    ? formatObsListTime( observation.created_at ) : "" );
 
   const displayTab = ( handlePress, testID, tabText, active ) => {
     let textClassName = "color-gray text-xl font-bold";
@@ -321,7 +263,6 @@ const ObsDetails = ( ): Node => {
       </Pressable>
     );
   };
-
   const displayPhoto = () => {
     if ( photos.length > 0 || observation.observationSounds.length > 0 ) {
       return (
@@ -363,7 +304,6 @@ const ObsDetails = ( ): Node => {
           {showTaxon( )}
           <View>
             <View className="flex-row my-1">
-              {/* TODO: figure out how to change icon tint color with Tailwind */}
               <Image
                 style={imageStyles.smallIcon}
                 source={require( "images/ic_id.png" )}
@@ -390,37 +330,27 @@ const ObsDetails = ( ): Node => {
         {tab === 0
           ? (
             <ActivityTab
-              ids={ids}
+              uuid={uuid}
+              observation={observation}
               comments={comments}
               navToTaxonDetails={navToTaxonDetails}
               navToUserProfile={navToUserProfile}
               toggleRefetch={toggleRefetch}
               refetchRemoteObservation={refetchRemoteObservation}
+              openCommentBox={openCommentBox}
+              showCommentBox={showCommentBox}
             />
           )
           : <DataTab observation={observation} />}
         {addingComment && (
-          <View className="flex-row items-center justify-center">
-            <ActivityIndicator size="large" />
-          </View>
-        )}
-        <View className="flex-row my-10 justify-evenly">
-          <Button
-            text={t( "Suggest-an-ID" )}
-            onPress={navToAddID}
-            className="mx-3"
-            testID="ObsDetail.cvSuggestionsButton"
-          />
-          <Button
-            text={t( "Add-Comment" )}
-            onPress={openCommentBox}
-            className="mx-3"
-            testID="ObsDetail.commentButton"
-            disabled={showCommentBox}
-          />
+        <View className="flex-row items-center justify-center">
+          <ActivityIndicator size="large" />
         </View>
+        )}
       </ScrollWithFooter>
       <AddCommentModal
+      //  potential to move this modal to ActivityTab and have it handle comments
+      //  and ids but there were issues with presenting the modal in a scrollview.
         onCommentAdded={onCommentAdded}
         showCommentBox={showCommentBox}
         setShowCommentBox={setShowCommentBox}

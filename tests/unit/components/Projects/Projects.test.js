@@ -8,27 +8,11 @@ import { renderComponent } from "../../../helpers/render";
 const mockedNavigate = jest.fn( );
 const mockProject = factory( "RemoteProject" );
 
-const mockLatLng = {
-  latitude: 37.77,
-  longitude: -122.42
-};
-
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
     data: [mockProject]
   } )
-} ) );
-
-jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
-  __esModule: true,
-  default: ( ) => true
-} ) );
-
-// Mock the hooks we use on Map since we're not trying to test them here
-jest.mock( "../../../../src/sharedHooks/useUserLocation", ( ) => ( {
-  default: ( ) => mockLatLng,
-  __esModule: true
 } ) );
 
 jest.mock( "@react-navigation/native", ( ) => {

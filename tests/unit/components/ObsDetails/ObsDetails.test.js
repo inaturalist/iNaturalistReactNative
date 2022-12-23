@@ -6,7 +6,10 @@ import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
 const mockNavigate = jest.fn( );
-const mockObservation = factory( "LocalObservation" );
+const mockObservation = factory( "LocalObservation", {
+  created_at: "2022-11-27T19:07:41-08:00",
+  time_observed_at: "2023-12-14T21:07:41-09:30"
+} );
 const mockUser = factory( "LocalUser" );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {

@@ -3,6 +3,7 @@
 import {
   Image, Pressable, View
 } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -12,6 +13,7 @@ import colors from "styles/tailwindColors";
 
 import ObsCardDetails from "./ObsCardDetails";
 import ObsCardStats from "./ObsCardStats";
+import UploadButton from "./UploadButton";
 
 type Props = {
   // position of this item in a list of items; not ideal, but it allows us to
@@ -45,13 +47,24 @@ const GridItem = ( {
     ? Observation.projectUri( item )
     : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
 
+  const showStats = ( ) => {
+    if ( uri !== "project" && item.needsSync( ) ) {
+      return (
+        <View className="absolute bottom-0 right-0">
+          <UploadButton observation={item} />
+        </View>
+      );
+    }
+    return <ObsCardStats item={item} view="grid" />;
+  };
+
   return (
     <Pressable
       onPress={onPress}
       className={`w-1/2 px-4 py-2 ${( index || 0 ) % ( numColumns || 2 ) === 0 ? "pr-2" : "pl-2"}`}
       testID={`ObsList.gridItem.${item.uuid}`}
       accessibilityRole="link"
-      accessibilityLabel="Navigate to observation details screen"
+      accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
       <View>
         {
@@ -79,7 +92,7 @@ const GridItem = ( {
             />
           </View>
         )}
-        <ObsCardStats item={item} view="grid" />
+        {showStats( )}
       </View>
       <ObsCardDetails item={item} view="grid" />
     </Pressable>

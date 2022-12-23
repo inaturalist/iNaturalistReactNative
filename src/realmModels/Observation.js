@@ -5,6 +5,7 @@ import inatjs from "inaturalistjs";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
 
+import Application from "./Application";
 import Comment from "./Comment";
 import Identification from "./Identification";
 import ObservationPhoto from "./ObservationPhoto";
@@ -17,6 +18,7 @@ import User from "./User";
 // https://github.com/realm/realm-js/issues/3600#issuecomment-785828614
 class Observation extends Realm.Object {
   static FIELDS = {
+    application: Application.APPLICATION_FIELDS,
     captive: true,
     comments: Comment.COMMENT_FIELDS,
     created_at: true,
@@ -26,6 +28,7 @@ class Observation extends Realm.Object {
     id: true,
     identifications: Identification.ID_FIELDS,
     latitude: true,
+    license_code: true,
     location: true,
     longitude: true,
     observation_photos: ObservationPhoto.OBSERVATION_PHOTOS_FIELDS,
@@ -42,9 +45,8 @@ class Observation extends Realm.Object {
       captive_flag: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
-      observed_on_string: createObservedOnStringForUpload( ),
+      observed_on_string: obs?.observed_on_string || createObservedOnStringForUpload( ),
       quality_grade: "needs_id",
-      // project_ids: [],
       uuid: uuid.v4( )
     };
   }
@@ -56,44 +58,27 @@ class Observation extends Realm.Object {
     return observation;
   }
 
-  static mimicRealmMappedPropertiesSchema( obs ) {
-    const createLinkedObjects = ( list, createFunction ) => {
-      if ( list.length === 0 ) { return list; }
-      return list.map( item => {
-        if ( createFunction === Identification ) {
-          // this one requires special treatment for appending taxon objects
-          return createFunction.mimicRealmMappedPropertiesSchema( item );
-        }
-        return createFunction.mapApiToRealm( item );
-      } );
-    };
-
-    const taxon = obs.taxon ? Taxon.mimicRealmMappedPropertiesSchema( obs.taxon ) : null;
-    const observationPhotos = createLinkedObjects( obs.observation_photos, ObservationPhoto );
-    const comments = createLinkedObjects( obs.comments, Comment );
-    const identifications = createLinkedObjects( obs.identifications, Identification );
-    const user = User.mapApiToRealm( obs.user );
-
-    return {
-      ...obs,
-      comments: comments || [],
-      createdAt: obs.created_at,
-      identifications: identifications || [],
-      latitude: obs.geojson ? obs.geojson.coordinates[1] : null,
-      longitude: obs.geojson ? obs.geojson.coordinates[0] : null,
-      observationPhotos,
-      placeGuess: obs.place_guess,
-      qualityGrade: obs.quality_grade,
-      taxon,
-      timeObservedAt: obs.time_observed_at,
-      user
-    };
-  }
-
   static createLinkedObjects = ( list, createFunction, realm ) => {
     if ( list.length === 0 ) { return list; }
     return list.map( item => createFunction.mapApiToRealm( item, realm ) );
   };
+
+  static upsertRemoteObservations( observations, realm ) {
+    if ( observations && observations.length > 0 ) {
+      const obsToUpsert = observations.filter(
+        obs => !Observation.isUnsyncedObservation( realm, obs )
+      );
+      realm.write( ( ) => {
+        obsToUpsert.forEach( obs => {
+          realm.create(
+            "Observation",
+            Observation.createOrModifyLocalObservation( obs, realm ),
+            "modified"
+          );
+        } );
+      } );
+    }
+  }
 
   static createOrModifyLocalObservation( obs, realm ) {
     const existingObs = realm?.objectForPrimaryKey( "Observation", obs.uuid );
@@ -110,10 +95,12 @@ class Observation extends Realm.Object {
       realm
     );
     const user = User.mapApiToRealm( obs.user );
+    const application = Application.mapApiToRealm( obs.application );
 
     const localObs = {
       ...obs,
       _synced_at: new Date( ),
+      application,
       comments,
       identifications,
       // obs detail on web says geojson coords are preferred over lat/long
@@ -124,6 +111,7 @@ class Observation extends Realm.Object {
       taxon,
       user
     };
+
     if ( !existingObs ) {
       localObs._created_at = new Date( localObs.created_at );
       if ( isNaN( localObs._created_at ) ) {
@@ -238,22 +226,14 @@ class Observation extends Realm.Object {
     return unsyncedObs.length > 0;
   }
 
-  wasSynced( ) {
-    return this._synced_at !== null;
+  needsSync( ) {
+    const obsPhotosNeedSync = this.observationPhotos
+      .filter( obsPhoto => obsPhoto.needsSync( ) ).length > 0;
+    return !this._synced_at || this._synced_at <= this._updated_at || obsPhotosNeedSync;
   }
 
-  static updateLocalObservationsFromRemote = ( realm, results ) => {
-    if ( results.length === 0 ) { return; }
-    const obsToUpsert = results.filter( obs => !Observation.isUnsyncedObservation( realm, obs ) );
-    realm.write( ( ) => {
-      obsToUpsert.forEach( obs => {
-        realm.create(
-          "Observation",
-          Observation.createOrModifyLocalObservation( obs, realm ),
-          "modified"
-        );
-      } );
-    } );
+  wasSynced( ) {
+    return this._synced_at !== null;
   }
 
   static markRecordUploaded = async ( recordUUID, type, response, realm ) => {
@@ -397,6 +377,7 @@ class Observation extends Realm.Object {
       // datetime the observation was updated on the device (i.e. edited locally)
       _updated_at: "date?",
       uuid: "string",
+      application: "Application?",
       captive_flag: "bool?",
       comments: "Comment[]",
       // timestamp of when observation was created on the server; not editable
@@ -406,6 +387,7 @@ class Observation extends Realm.Object {
       id: "int?",
       identifications: "Identification[]",
       latitude: "double?",
+      license_code: { type: "string?", mapTo: "licenseCode" },
       longitude: "double?",
       observationPhotos: "ObservationPhoto[]",
       observationSounds: "ObservationSound[]",
