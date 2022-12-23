@@ -15,6 +15,8 @@ describe( "Add observation without evidence", () => {
   } );
 
   beforeEach( async () => {
+    // device.launchApp is preferred for an app of our complexity. It does work locally for both,
+    // but on CI for Android it does not work. So we use reloadReactNative for Android.
     if ( device.getPlatform( ) === "android" ) {
       await device.reloadReactNative( );
     } else {
