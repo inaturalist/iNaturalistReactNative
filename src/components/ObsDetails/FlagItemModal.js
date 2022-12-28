@@ -1,6 +1,7 @@
 // @flow
 
 import CheckBox from "@react-native-community/checkbox";
+// import { createFlag } from "api/flags";
 import Button from "components/SharedComponents/Buttons/Button";
 import {
   Modal, SafeAreaView,
@@ -28,10 +29,28 @@ const FlagItemModal = ( {
 }: Props ): Node => {
   const [value, setValue] = useState( "none" );
 
-  // radio button
+  // Checkbox element supports clicking again to uncheck.
+  // This function is to reflect that change in state.
   const toggleValue = ( toggle, checkbox ) => {
     if ( toggle ) { setValue( checkbox ); } else { setValue( "none" ); }
   };
+
+  const submitFlag = async () => {
+    // if ( value !== "none" ) {
+    //   const params = {
+    //     flag: {
+    //       flaggable_type: "Taxon",
+    //       flaggable_id: 0,
+    //       flag: value
+
+    //     },
+    //     flag_explaination: "", // only if other
+    //     fields: "all"
+    //   };
+    //   const { response } = await createFlag( params );
+    // }
+  };
+  console.log( value );
   return (
     <Modal
       visible={showFlagItemModal}
@@ -61,8 +80,8 @@ const FlagItemModal = ( {
           <View className="flex-row my-2">
             <CheckBox
               disabled={false}
-              value={value === "offensive"}
-              onValueChange={newValue => toggleValue( newValue, "offensive" )}
+              value={value === "inappropriate"}
+              onValueChange={newValue => toggleValue( newValue, "inappropriate" )}
             />
             <Text className="font-bold text-lg ml-5">{t( "Offensive-Inappropriate" )}</Text>
           </View>
@@ -90,7 +109,7 @@ const FlagItemModal = ( {
           <Button
             className="rounded m-2"
             text={t( "Save" )}
-            onPress={closeFlagItemModal}
+            onPress={submitFlag}
           />
         </View>
       </SafeAreaView>
