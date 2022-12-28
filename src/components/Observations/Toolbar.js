@@ -18,15 +18,16 @@ const Toolbar = ( {
 }: Props ): Node => {
   const obsEditContext = useContext( ObsEditContext );
   const loading = obsEditContext?.loading;
+  const syncObservations = obsEditContext?.syncObservations;
+
   return (
     <View className="py-5 flex-row justify-between bg-white">
       {isLoggedIn ? (
-      // TODO: syncing observations probably involves uploading, then downloading
-      // but not entirely sure what this button is supposed to do in what order
         <Pressable
-          onPress={( ) => console.log( "sync observations" )}
+          onPress={syncObservations}
           className="mx-3"
           accessibilityRole="button"
+          disabled={loading}
         >
           <IconMaterial name="sync" size={30} />
         </Pressable>

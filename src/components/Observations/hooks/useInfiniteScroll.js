@@ -5,6 +5,7 @@ import { RealmContext } from "providers/contexts";
 import { useEffect } from "react";
 import Observation from "realmModels/Observation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLoggedIn from "sharedHooks/useLoggedIn";
 
 const { useRealm } = RealmContext;
@@ -12,7 +13,7 @@ const { useRealm } = RealmContext;
 const useInfiniteScroll = ( idBelow: ?number ): boolean => {
   const isLoggedIn = useLoggedIn( );
   const realm = useRealm( );
-  const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
+  const currentUser = useCurrentUser( );
 
   const params = {
     user_id: currentUser?.id,
@@ -41,20 +42,7 @@ const useInfiniteScroll = ( idBelow: ?number ): boolean => {
   );
 
   useEffect( ( ) => {
-    if ( observations && observations.length > 0 ) {
-      const obsToUpsert = observations.filter(
-        obs => !Observation.isUnsyncedObservation( realm, obs )
-      );
-      realm.write( ( ) => {
-        obsToUpsert.forEach( obs => {
-          realm.create(
-            "Observation",
-            Observation.createOrModifyLocalObservation( obs, realm ),
-            "modified"
-          );
-        } );
-      } );
-    }
+    Observation.upsertRemoteObservations( observations, realm );
   }, [realm, observations] );
 
   return isLoading;

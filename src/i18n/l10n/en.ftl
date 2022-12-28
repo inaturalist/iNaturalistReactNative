@@ -659,6 +659,8 @@ You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission
 
 You-have-unsaved-changes = You have unsaved changes. Would you like to save this observation?
 
+You-must-be-logged-in-to-view-messages = You must be logged in to view messages
+
 You-will-lose-all-existing-observations = {$count ->
     [one] You will lose all existing observations. Would you like to discard 1 observation?
     *[other] You will lose all existing observations. Would you like to discard {$count} observations?
