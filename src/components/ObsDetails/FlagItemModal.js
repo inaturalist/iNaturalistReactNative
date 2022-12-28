@@ -1,20 +1,22 @@
 // @flow
 
+import CheckBox from "@react-native-community/checkbox";
+import Button from "components/SharedComponents/Buttons/Button";
 import {
   Modal, SafeAreaView,
   ScrollView,
-  Text
+  Text, View
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
+// import colors from "styles/tailwindColors";
 // import { useTranslation } from "react-i18next";
 // import {
 //   Keyboard
 // } from "react-native";
-import { Checkbox, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-// import colors from "styles/tailwindColors";
 
 type Props = {
   showFlagItemModal: boolean,
@@ -24,64 +26,73 @@ type Props = {
 const FlagItemModal = ( {
   showFlagItemModal, closeFlagItemModal
 }: Props ): Node => {
-// Clear the comment in a timeout so it doesn't trigger a re-render of the
-// text input *after* the bottom sheet modal gets dismissed, b/c that seems
-// to re-render the bottom sheet in a presented state, making it hard to
-// actually dismiss
-// const clearForm = ( ) => setTimeout( ( ) => setComment( "" ), 100 );
+  const [value, setValue] = useState( "none" );
 
-  // const renderBackdrop = props => (
-  //   <BottomSheetStandardBackdrop props={props} />
-  // );
-
-  // const clearAndCloseForm = useCallback( ( ) => {
-  //   clearComment( );
-  //   setShowCommentBox( false );
-  //   Keyboard.dismiss();
-  // }, [setShowCommentBox] );
-
-  // const submitForm = async ( ) => {
-  // };
-
-  const [spamChecked, setSpamChecked] = useState( false );
-  const [offensiveChecked, setOffensiveChecked] = useState( false );
-  const [otherChecked, setOtherChecked] = useState( false );
-
+  // radio button
+  const toggleValue = ( toggle, checkbox ) => {
+    if ( toggle ) { setValue( checkbox ); } else { setValue( "none" ); }
+  };
   return (
-    <Modal visible={showFlagItemModal}>
+    <Modal
+      visible={showFlagItemModal}
+      animationType="slide"
+    >
       <SafeAreaView>
-        <IconMaterial name="close" onPress={closeFlagItemModal} />
-        <Text>
-          {t( "Flag-An-Item" )}
-        </Text>
-        <ScrollView>
-          <Text>
+        <View className="flex-row-reverse justify-between p-6 border-b">
+          <IconMaterial name="close" onPress={closeFlagItemModal} size={30} />
+          <Text className="text-xl">
+            {t( "Flag-An-Item" )}
+          </Text>
+        </View>
+        <ScrollView className="p-6">
+          <Text className="text-base">
             {t( "Flag-Item-Description" )}
           </Text>
-          <Checkbox.Item
-            label={t( "Spam" )}
-            status={spamChecked ? "checked" : "unchecked"}
-            onPress={() => {
-              setSpamChecked( !spamChecked );
-            }}
-          />
-          <Checkbox.Item
-            label={t( "Offensive-Inappropriate" )}
-            status={offensiveChecked ? "checked" : "unchecked"}
-            onPress={() => {
-              setOffensiveChecked( !offensiveChecked );
-            }}
-          />
-          <Checkbox.Item
-            label={t( "Other" )}
-            status={otherChecked ? "checked" : "unchecked"}
-            onPress={() => {
-              setOtherChecked( !otherChecked );
-            }}
-          />
-          <TextInput />
+          <View className="flex-row my-2">
+            <CheckBox
+              disabled={false}
+              value={value === "spam"}
+              onValueChange={newValue => toggleValue( newValue, "spam" )}
+            />
+            <Text className="font-bold text-lg ml-5">{t( "Spam" )}</Text>
+          </View>
+          <Text className="mb-2 text-base" style>{t( "Spam-Examples" )}</Text>
 
+          <View className="flex-row my-2">
+            <CheckBox
+              disabled={false}
+              value={value === "offensive"}
+              onValueChange={newValue => toggleValue( newValue, "offensive" )}
+            />
+            <Text className="font-bold text-lg ml-5">{t( "Offensive-Inappropriate" )}</Text>
+          </View>
+          <Text className="mb-2 text-base">{t( "Offensive-Inappropriate-Examples" )}</Text>
+
+          <View className="flex-row my-2">
+            <CheckBox
+              disabled={false}
+              value={value === "other"}
+              onValueChange={newValue => toggleValue( newValue, "other" )}
+            />
+            <Text className="font-bold text-lg ml-5">{t( "Other" )}</Text>
+          </View>
+          <Text className="mb-2 text-base">{t( "Flag-Item-Other-Description" )}</Text>
+          {( value === "other" )
+            ? <TextInput className="text-sm" placeholder={t( "Flag-Item-Other-Input-Hint" )} />
+            : undefined}
         </ScrollView>
+        <View className="flex-row justify-center border-t">
+          <Button
+            className="rounded m-2"
+            text={t( "Cancel" )}
+            onPress={closeFlagItemModal}
+          />
+          <Button
+            className="rounded m-2"
+            text={t( "Save" )}
+            onPress={closeFlagItemModal}
+          />
+        </View>
       </SafeAreaView>
     </Modal>
 
