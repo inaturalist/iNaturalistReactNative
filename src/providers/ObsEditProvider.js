@@ -6,7 +6,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
-import { formatDateAndTime } from "sharedHelpers/dateAndTime";
+import { formatDateStringFromTimestamp } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { parseExif, parseExifDateToLocalTimezone } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
@@ -70,7 +70,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     const firstPhotoExif = await parseExif( originalPhotoUri );
     const exifDate = parseExifDateToLocalTimezone( firstPhotoExif.date );
 
-    const observedOnDate = exifDate || formatDateAndTime( photo.timestamp );
+    const observedOnDate = exifDate || formatDateStringFromTimestamp( photo.timestamp );
     const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
     const longitude = firstPhotoExif.longitude || photo?.location?.longitude;
     const placeGuess = await fetchPlaceName( latitude, longitude );
