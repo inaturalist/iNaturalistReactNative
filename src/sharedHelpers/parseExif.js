@@ -26,9 +26,7 @@ export const parseExifDateToLocalTimezone = ( datetime: string ): ?Date => {
     throw new UsePhotoExifDateFormatError( "Date was not formatted correctly" );
   }
 
-  // this returns a string, in the same format as photos which fall back to the
-  // photo timestamp instead of exif data
-  return formatISONoTimezone( zonedDate );
+  return zonedDate;
 };
 
 // Parses EXIF date time into a date object
@@ -39,4 +37,11 @@ export const parseExif = async ( photoUri: ?string ): Promise<Object> => {
     console.error( e, "Couldn't parse EXIF" );
     return null;
   }
+};
+
+export const formatExifDateAsString = ( datetime: string ): string => {
+  const zonedDate = parseExifDateToLocalTimezone( datetime );
+  // this returns a string, in the same format as photos which fall back to the
+  // photo timestamp instead of exif data
+  return formatISONoTimezone( zonedDate );
 };

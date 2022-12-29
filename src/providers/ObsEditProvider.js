@@ -8,7 +8,7 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import { formatDateStringFromTimestamp } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import { parseExif, parseExifDateToLocalTimezone } from "sharedHelpers/parseExif";
+import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
@@ -68,7 +68,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const createObservationFromGalleryPhoto = useCallback( async photo => {
     const originalPhotoUri = photo?.image?.uri;
     const firstPhotoExif = await parseExif( originalPhotoUri );
-    const exifDate = parseExifDateToLocalTimezone( firstPhotoExif.date );
+    const exifDate = formatExifDateAsString( firstPhotoExif.date );
 
     const observedOnDate = exifDate || formatDateStringFromTimestamp( photo.timestamp );
     const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
