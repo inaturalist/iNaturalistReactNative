@@ -85,13 +85,9 @@ const CameraView = ( { camera, device }: Props ): Node => {
   }, [neutralZoom, zoom] );
 
   const tapToFocus = async ( { nativeEvent } ) => {
-    try {
-      await camera.current.focus( { x: nativeEvent.x, y: nativeEvent.y } );
-      tapToFocusAnimation.setValue( 1 );
-      setTappedCoordinates( nativeEvent );
-    } catch ( e ) {
-      console.log( e, "couldn't tap to focus" );
-    }
+    await camera.current.focus( { x: nativeEvent.x, y: nativeEvent.y } );
+    tapToFocusAnimation.setValue( 1 );
+    setTappedCoordinates( nativeEvent );
   };
 
   return (

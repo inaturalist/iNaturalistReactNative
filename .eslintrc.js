@@ -62,7 +62,7 @@ module.exports = {
     "space-in-parens": [2, "always"],
     "module-resolver/use-alias": 2,
     // At least before we start making production builds
-    "no-console": 0,
+    "no-console": ["error", { allow: ["warn", "error"] }],
     "no-restricted-globals": 0,
     "no-param-reassign": 0,
     "no-var": 1,

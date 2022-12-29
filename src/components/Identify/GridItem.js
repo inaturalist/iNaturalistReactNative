@@ -18,20 +18,18 @@ import {
 
 type Props = {
   item: Object,
-  handlePress: Function,
   reviewedIds: Array<number>,
   setReviewedIds: Function
 }
 
 const GridItem = ( {
-  item, handlePress, reviewedIds, setReviewedIds
+  item, reviewedIds, setReviewedIds
 }: Props ): Node => {
   const [showLoadingWheel, setShowLoadingWheel] = useState( false );
   const commonName = item.taxon && item.taxon.preferred_common_name;
   const name = item.taxon ? item.taxon.name : "unknown";
   const isSpecies = item.taxon && item.taxon.rank === "species";
   const wasReviewed = reviewedIds.includes( item.id );
-  const onPress = ( ) => handlePress( item );
   // TODO: fix whatever funkiness is preventing realm mapTo from correctly
   // displaying camelcased item keys on ObservationList
 
@@ -62,7 +60,6 @@ const GridItem = ( {
 
   return (
     <Pressable
-      onPress={onPress}
       style={[
         viewStyles.gridItem,
         wasReviewed && viewStyles.markReviewed

@@ -3,6 +3,7 @@
 import BottomSheet from "components/SharedComponents/BottomSheet";
 import type { Node } from "react";
 import React from "react";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
 import useUploadStatus from "sharedHooks/useUploadStatus";
 
@@ -11,13 +12,11 @@ import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
 
 type Props = {
-  isLoggedIn: ?boolean,
   hasScrolled: boolean
 }
 
-const ObsListBottomSheet = ( {
-  isLoggedIn, hasScrolled
-}: Props ): Node => {
+const ObsListBottomSheet = ( { hasScrolled }: Props ): Node => {
+  const currentUser = useCurrentUser( );
   const localObservations = useLocalObservations( );
   const { unuploadedObsList, allObsToUpload } = localObservations;
   const numOfUnuploadedObs = unuploadedObsList?.length;
@@ -27,7 +26,7 @@ const ObsListBottomSheet = ( {
     return null;
   }
 
-  if ( isLoggedIn === false ) {
+  if ( !currentUser ) {
     return (
       <BottomSheet hide={hasScrolled}>
         <LoginPrompt />
@@ -42,7 +41,7 @@ const ObsListBottomSheet = ( {
       />
     );
   }
-  if ( numOfUnuploadedObs > 0 && isLoggedIn ) {
+  if ( numOfUnuploadedObs > 0 && currentUser ) {
     return (
       <BottomSheet hide={hasScrolled}>
         <UploadPrompt

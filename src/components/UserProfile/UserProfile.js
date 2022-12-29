@@ -111,7 +111,7 @@ const UserProfile = ( ): React.Node => {
             <Button
               level="primary"
               text={t( "Messages" )}
-              onPress={( ) => console.log( "open messages" )}
+              onPress={( ) => navigation.navigate( "Messages" )}
               testID="UserProfile.messagesButton"
             />
           </View>

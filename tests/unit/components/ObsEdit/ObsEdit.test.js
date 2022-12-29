@@ -32,11 +32,6 @@ jest.mock( "sharedHooks/useLocationName", ( ) => ( {
   default: ( ) => mockLocationName
 } ) );
 
-jest.mock( "sharedHooks/useLoggedIn", ( ) => ( {
-  __esModule: true,
-  default: ( ) => true
-} ) );
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {

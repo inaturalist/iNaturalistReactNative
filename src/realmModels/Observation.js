@@ -238,15 +238,12 @@ class Observation extends Realm.Object {
 
   static markRecordUploaded = async ( recordUUID, type, response, realm ) => {
     const { id } = response.results[0];
-    try {
-      const record = realm.objectForPrimaryKey( type, recordUUID );
-      realm?.write( ( ) => {
-        record.id = id;
-        record._synced_at = new Date( );
-      } );
-    } catch ( e ) {
-      console.log( e, `couldn't mark ${type} uploaded in realm` );
-    }
+
+    const record = realm.objectForPrimaryKey( type, recordUUID );
+    realm?.write( ( ) => {
+      record.id = id;
+      record._synced_at = new Date( );
+    } );
   };
 
   static uploadToServer = async (
