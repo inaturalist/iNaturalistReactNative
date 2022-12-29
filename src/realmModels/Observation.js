@@ -255,8 +255,9 @@ class Observation extends Realm.Object {
     options: Object
   ) => {
     const response = await createOrUpdateEvidence( apiEndpoint, params, options );
-    await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
-    return response;
+    if ( response ) {
+      await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
+    }
   };
 
   static uploadEvidence = async (

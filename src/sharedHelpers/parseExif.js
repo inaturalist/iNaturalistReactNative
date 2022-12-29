@@ -3,6 +3,7 @@
 import { utcToZonedTime } from "date-fns-tz";
 import { readExif } from "react-native-exif-reader";
 import * as RNLocalize from "react-native-localize";
+import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 
 class UsePhotoExifDateFormatError extends Error {}
 
@@ -24,6 +25,7 @@ export const parseExifDateToLocalTimezone = ( datetime: string ): ?Date => {
   if ( !zonedDate || zonedDate.toString( ).match( /invalid/i ) ) {
     throw new UsePhotoExifDateFormatError( "Date was not formatted correctly" );
   }
+
   return zonedDate;
 };
 
@@ -35,4 +37,11 @@ export const parseExif = async ( photoUri: ?string ): Promise<Object> => {
     console.error( e, "Couldn't parse EXIF" );
     return null;
   }
+};
+
+export const formatExifDateAsString = ( datetime: string ): string => {
+  const zonedDate = parseExifDateToLocalTimezone( datetime );
+  // this returns a string, in the same format as photos which fall back to the
+  // photo timestamp instead of exif data
+  return formatISONoTimezone( zonedDate );
 };
