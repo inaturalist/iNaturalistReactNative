@@ -10,6 +10,7 @@ class Identification extends Realm.Object {
     created_at: true,
     current: true,
     disagreement: true,
+    id: true,
     taxon: Taxon.TAXON_FIELDS,
     updated_at: true,
     // $FlowFixMe
@@ -22,6 +23,7 @@ class Identification extends Realm.Object {
     return {
       ...id,
       createdAt: id.created_at,
+      id: id.id,
       taxon: Taxon.mapApiToRealm( id.taxon ),
       user: User.mapApiToRealm( id.user )
     };
@@ -44,6 +46,7 @@ class Identification extends Realm.Object {
       body: "string?",
       category: "string?",
       created_at: { type: "string?", mapTo: "createdAt" },
+      id: "int?",
       taxon: "Taxon?",
       user: "User?",
       vision: "bool?",

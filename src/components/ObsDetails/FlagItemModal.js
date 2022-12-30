@@ -1,7 +1,7 @@
 // @flow
 
 import CheckBox from "@react-native-community/checkbox";
-// import { createFlag } from "api/flags";
+import createFlag from "api/flags";
 import Button from "components/SharedComponents/Buttons/Button";
 import {
   Modal, SafeAreaView,
@@ -18,16 +18,19 @@ import React, { useState } from "react";
 // } from "react-native";
 import { TextInput } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
 type Props = {
+  id:number,
   showFlagItemModal: boolean,
   closeFlagItemModal: Function
 }
 
 const FlagItemModal = ( {
-  showFlagItemModal, closeFlagItemModal
+  id, showFlagItemModal, closeFlagItemModal
 }: Props ): Node => {
   const [value, setValue] = useState( "none" );
+  const [explanation, setExplanation] = React.useState( "" );
 
   // Checkbox element supports clicking again to uncheck.
   // This function is to reflect that change in state.
@@ -35,22 +38,27 @@ const FlagItemModal = ( {
     if ( toggle ) { setValue( checkbox ); } else { setValue( "none" ); }
   };
 
-  const submitFlag = async () => {
-    // if ( value !== "none" ) {
-    //   const params = {
-    //     flag: {
-    //       flaggable_type: "Taxon",
-    //       flaggable_id: 0,
-    //       flag: value
+  const createFlagMutation = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => createFlag( params, optsWithAuth )
+  );
 
-    //     },
-    //     flag_explaination: "", // only if other
-    //     fields: "all"
-    //   };
-    //   const { response } = await createFlag( params );
-    // }
+  const submitFlag = async () => {
+    if ( value !== "none" ) {
+      let params = {
+        flag: {
+          flaggable_type: "Identification",
+          flaggable_id: id,
+          flag: value
+
+        }
+      };
+      if ( value === "other" ) {
+        params = { ...params, flag_explanation: explanation };
+      }
+      console.log( "params", params );
+      createFlagMutation.mutate( params );
+    }
   };
-  console.log( value );
   return (
     <Modal
       visible={showFlagItemModal}
@@ -97,7 +105,14 @@ const FlagItemModal = ( {
           </View>
           <Text className="mb-2 text-base">{t( "Flag-Item-Other-Description" )}</Text>
           {( value === "other" )
-            ? <TextInput className="text-sm" placeholder={t( "Flag-Item-Other-Input-Hint" )} />
+            ? (
+              <TextInput
+                className="text-sm"
+                placeholder={t( "Flag-Item-Other-Input-Hint" )}
+                value={explanation}
+                onChangeText={text => setExplanation( text )}
+              />
+            )
             : undefined}
         </ScrollView>
         <View className="flex-row justify-center border-t">

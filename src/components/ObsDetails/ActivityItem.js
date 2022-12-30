@@ -69,7 +69,8 @@ const ActivityItem = ( {
   const closeFlagItemModal = () => {
     setFlagModalVisible( false );
   };
-
+  console.log( "currentUser", currentUser );
+  console.log( "currentUseritem", item );
   return (
     <View className={item.temporary && "opacity-50"}>
       <View className="flex-row border border-borderGray py-1 justify-between">
@@ -125,10 +126,12 @@ const ActivityItem = ( {
                 setVisible={setKebabMenuVisible}
               >
                 {/* TODO: build out this menu */}
-                <Menu.Item
-                  onPress={() => setFlagModalVisible( true )}
-                  title={t( "Flag" )}
-                />
+                {!currentUser ? (
+                  <Menu.Item
+                    onPress={() => setFlagModalVisible( true )}
+                    title={t( "Flag" )}
+                  />
+                ) : undefined}
                 <View />
               </KebabMenu>
             )}
@@ -157,7 +160,13 @@ const ActivityItem = ( {
           <UserText baseStyle={textStyles.activityItemBody} text={item.body} />
         </View>
       )}
-      <FlagItemModal showFlagItemModal={flagModalVisible} closeFlagItemModal={closeFlagItemModal} />
+      {!currentUser ? (
+        <FlagItemModal
+          id={item.id}
+          showFlagItemModal={flagModalVisible}
+          closeFlagItemModal={closeFlagItemModal}
+        />
+      ) : undefined}
     </View>
   );
 };
