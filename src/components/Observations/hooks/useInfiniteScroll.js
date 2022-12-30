@@ -33,7 +33,6 @@ const useInfiniteScroll = ( idBelow: ?number ): boolean => {
   } = useAuthenticatedQuery(
     ["searchObservations", idBelow],
     optsWithAuth => searchObservations( params, optsWithAuth ),
-    {},
     {
       enabled: !!currentUser
     }

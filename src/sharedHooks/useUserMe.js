@@ -13,7 +13,6 @@ const useUserMe = ( ): Object => {
   } = useAuthenticatedQuery(
     ["fetchUserMe"],
     optsWithAuth => fetchUserMe( { }, optsWithAuth ),
-    {},
     {
       enabled: !!currentUser
     }

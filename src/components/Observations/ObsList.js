@@ -29,7 +29,6 @@ const ObsList = ( ): Node => {
   } = useAuthenticatedQuery(
     ["fetchObservationUpdates"],
     optsWithAuth => fetchObservationUpdates( updateParams, optsWithAuth ),
-    {},
     { enabled: !!currentUser }
   );
 

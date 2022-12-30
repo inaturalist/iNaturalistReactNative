@@ -10,6 +10,16 @@ import { renderComponent } from "../../../helpers/render";
 
 jest.useFakeTimers( );
 
+beforeEach( async ( ) => {
+  global.realm.write( ( ) => {
+    global.realm.deleteAll( );
+  } );
+} );
+
+afterEach( ( ) => {
+  jest.clearAllMocks( );
+} );
+
 jest.mock( "providers/ObsEditProvider" );
 
 jest.mock( "@react-navigation/native", ( ) => {
