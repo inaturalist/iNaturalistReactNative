@@ -76,5 +76,3 @@ fastlane/Appfile
 
 # VisualStudioCode #
 .vscode
-.vscode/
-settings.json
