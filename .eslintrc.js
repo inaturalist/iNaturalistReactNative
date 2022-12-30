@@ -7,12 +7,17 @@ module.exports = {
       presets: ["@babel/preset-react"]
     }
   },
-  extends: ["airbnb", "plugin:i18next/recommended"],
+  extends: [
+    "airbnb",
+    "plugin:i18next/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended"
+  ],
   plugins: [
     "module-resolver",
     "react-hooks",
     "react-native",
-    "simple-import-sort"
+    "simple-import-sort",
+    "@tanstack/query"
   ],
   globals: {
     FormData: true
