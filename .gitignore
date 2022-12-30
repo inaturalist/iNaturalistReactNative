@@ -73,3 +73,6 @@ fastlane/Appfile
 # Apple signing and auth files that fastlane might download
 *.cer
 *.mobileprovision
+
+# VisualStudioCode #
+.vscode
