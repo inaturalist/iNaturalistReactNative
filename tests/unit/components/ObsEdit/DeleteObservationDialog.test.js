@@ -97,4 +97,22 @@ describe( "delete observation", ( ) => {
       } );
     } );
   } );
+
+  describe( "cancel deletion", ( ) => {
+    it( "should not delete the observation from realm", ( ) => {
+      const observations = [factory( "LocalObservation" )];
+      global.realm.write( ( ) => {
+        global.realm.create( "Observation", observations[0] );
+      } );
+      const localObservation = getLocalObservation( observations[0].uuid );
+      expect( localObservation ).toBeTruthy( );
+      mockObsEditProviderWithObs( observations );
+      const { queryByText } = renderDeleteDialog( );
+
+      const cancelButton = queryByText( /Cancel/ );
+      expect( cancelButton ).toBeTruthy( );
+      fireEvent.press( cancelButton );
+      expect( getLocalObservation( observations[0].uuid ) ).toBeTruthy( );
+    } );
+  } );
 } );
