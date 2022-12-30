@@ -7,12 +7,17 @@ module.exports = {
       presets: ["@babel/preset-react"]
     }
   },
-  extends: ["airbnb", "plugin:i18next/recommended"],
+  extends: [
+    "airbnb",
+    "plugin:i18next/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended"
+  ],
   plugins: [
     "module-resolver",
     "react-hooks",
     "react-native",
-    "simple-import-sort"
+    "simple-import-sort",
+    "@tanstack/query"
   ],
   globals: {
     FormData: true
@@ -62,7 +67,7 @@ module.exports = {
     "space-in-parens": [2, "always"],
     "module-resolver/use-alias": 2,
     // At least before we start making production builds
-    "no-console": 0,
+    "no-console": ["error", { allow: ["warn", "error"] }],
     "no-restricted-globals": 0,
     "no-param-reassign": 0,
     "no-var": 1,

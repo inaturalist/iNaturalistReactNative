@@ -24,7 +24,7 @@ const useCoords = ( location: string ): Object => {
           longitude: position.lng
         } );
       } catch ( e ) {
-        console.log( e, "couldn't fetch coords by location name" );
+        console.warn( e, "couldn't fetch coords by location name" );
       }
     };
 

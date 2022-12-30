@@ -2,21 +2,20 @@
 
 import { searchProjects } from "api/projects";
 import { t } from "i18next";
-import * as React from "react";
+import type { Node } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useUserLocation from "sharedHooks/useUserLocation";
 import { viewStyles } from "styles/projects/projects";
 
 import ProjectList from "./ProjectList";
 
-type Props = {
-  memberId: number
-}
-
-const ProjectTabs = ( { memberId }: Props ): React.Node => {
-  const userJoined = { member_id: memberId };
-  const [apiParams, setApiParams] = React.useState( userJoined );
+const ProjectTabs = ( ): Node => {
+  const currentUser = useCurrentUser( );
+  const memberId = currentUser?.id;
+  const [apiParams, setApiParams] = React.useState( { } );
 
   const latLng = useUserLocation( );
 
@@ -35,7 +34,15 @@ const ProjectTabs = ( { memberId }: Props ): React.Node => {
   };
 
   const fetchFeaturedProjects = ( ) => setApiParams( { features: true } );
-  const fetchUserJoinedProjects = ( ) => setApiParams( userJoined );
+  const fetchUserJoinedProjects = useCallback( ( ) => setApiParams(
+    { member_id: memberId }
+  ), [memberId] );
+
+  useEffect( ( ) => {
+    if ( memberId ) {
+      fetchUserJoinedProjects( );
+    }
+  }, [memberId, fetchUserJoinedProjects] );
 
   return (
     <>

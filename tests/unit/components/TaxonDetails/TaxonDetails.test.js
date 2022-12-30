@@ -10,11 +10,6 @@ jest.mock( "inaturalistjs" );
 
 const mockTaxon = factory( "RemoteTaxon" );
 
-jest.mock( "../../../../src/sharedHooks/useLoggedIn", ( ) => ( {
-  __esModule: true,
-  default: ( ) => true
-} ) );
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {

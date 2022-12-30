@@ -1,15 +1,15 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Pressable, Text, View } from "components/styledComponents";
+import {
+  Pressable, Text, View
+} from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, {
-  useContext, useRef, useState
-} from "react";
-import { Platform } from "react-native";
-import { Avatar, Snackbar, useTheme } from "react-native-paper";
+import React, { useContext, useRef, useState } from "react";
+import { StatusBar, Platform } from "react-native";
+import { Avatar, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
@@ -40,10 +40,12 @@ const orientationToRotation = orientation => {
 };
 
 const StandardCamera = ( ): Node => {
-  const { colors: themeColors } = useTheme( );
   const {
     addCameraPhotosToCurrentObservation,
-    createObsWithCameraPhotos, cameraPreviewUris, setCameraPreviewUris, allObsPhotoUris,
+    createObsWithCameraPhotos,
+    cameraPreviewUris,
+    setCameraPreviewUris,
+    allObsPhotoUris,
     evidenceToAdd,
     setEvidenceToAdd
   } = useContext( ObsEditContext );
@@ -55,9 +57,9 @@ const StandardCamera = ( ): Node => {
   const [cameraPosition, setCameraPosition] = useState( "back" );
   const devices = useCameraDevices( "wide-angle-camera" );
   const device = devices[cameraPosition];
-  const [takePhotoOptions, setTakePhotoOptions] = useState( {
-    flash: "off"
-  } );
+  const hasFlash = device?.hasFlash;
+  const initialPhotoOptions = hasFlash ? { flash: "off" } : { };
+  const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
   const [savingPhoto, setSavingPhoto] = useState( false );
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
@@ -85,7 +87,6 @@ const StandardCamera = ( ): Node => {
       }
       setSavingPhoto( false );
     } catch ( e ) {
-      console.log( e, "couldn't take photo" );
       setSavingPhoto( false );
     }
   };
@@ -112,24 +113,47 @@ const StandardCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const renderCameraOptionsButtons = icon => (
-    <Avatar.Icon
-      size={40}
-      icon={icon}
-      style={{ backgroundColor: colors.gray }}
-    />
-  );
+  const renderAddObsButtons = icon => {
+    let testID = "";
+    let accessibilityLabel = "";
+    switch ( icon ) {
+      case "flash":
+        testID = "flash-button-label-flash";
+        accessibilityLabel = t( "flash-button-label-flash" );
+        break;
+      case "flash-off":
+        testID = "flash-button-label-flash-off";
+        accessibilityLabel = t( "flash-button-label-flash-off" );
+        break;
+      case "camera-flip":
+        testID = "camera-button-label-switch-camera";
+        accessibilityLabel = t( "camera-button-label-switch-camera" );
+        break;
+      default:
+        break;
+    }
+    return (
+      <Avatar.Icon
+        testID={testID}
+        accessibilityLabel={accessibilityLabel}
+        size={40}
+        icon={icon}
+        style={{ backgroundColor: colors.gray }}
+      />
+    );
+  };
 
   const renderCameraButton = ( icon, disabled ) => (
     <Avatar.Icon
       size={60}
       icon={icon}
-      style={{ backgroundColor: disabled ? colors.gray : themeColors.background }}
+      style={{ backgroundColor: disabled ? colors.gray : colors.white }}
     />
   );
 
   return (
     <View className="flex-1 bg-black">
+      <StatusBar barStyle="light-content" />
       {device && <CameraView device={device} camera={camera} />}
       <PhotoPreview
         photoUris={cameraPreviewUris}
@@ -139,11 +163,15 @@ const StandardCamera = ( ): Node => {
       <FadeInOutView savingPhoto={savingPhoto} />
       <View className="absolute bottom-0">
         <View className="flex-row justify-between w-screen mb-4 px-4">
-          <Pressable onPress={toggleFlash}>
-            {renderCameraOptionsButtons( "flash" )}
-          </Pressable>
+          {hasFlash ? (
+            <Pressable onPress={toggleFlash}>
+              {takePhotoOptions.flash === "on"
+                ? renderAddObsButtons( "flash" )
+                : renderAddObsButtons( "flash-off" )}
+            </Pressable>
+          ) : <View />}
           <Pressable onPress={flipCamera}>
-            {renderCameraOptionsButtons( "camera-flip" )}
+            {renderAddObsButtons( "camera-flip" )}
           </Pressable>
         </View>
         <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">

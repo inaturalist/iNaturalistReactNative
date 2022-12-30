@@ -13,14 +13,12 @@ const SignUp = (): Node => {
   const [username, setUsername] = useState( "" );
   const [password, setPassword] = useState( "" );
 
-  const register = async () => {
-    const error = await registerUser(
+  const register = async ( ) => {
+    await registerUser(
       email,
       username,
       password
     );
-
-    console.log( "Register", error );
   };
 
   return (

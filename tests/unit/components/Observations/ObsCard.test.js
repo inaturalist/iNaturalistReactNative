@@ -9,20 +9,6 @@ const testObservation = factory( "LocalObservation" );
 
 const qualityGradeText = t( "RG" );
 
-// this probably isn't the right approach, but it does allow the test to pass
-jest.mock( "../../../../src/realmModels/index", ( ) => {
-  const originalModule = jest.requireActual( "../../../../src/realmModels/index" );
-
-  // Mock the default export and named export 'foo'
-  return {
-    __esModule: true,
-    ...originalModule,
-    default: {
-      inMemory: true
-    }
-  };
-} );
-
 test( "renders text passed into observation card", ( ) => {
   const { getByTestId, getByText } = render(
     <ObsCard

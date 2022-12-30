@@ -1,16 +1,15 @@
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  QueryClient,
-  QueryClientProvider
-} from "@tanstack/react-query";
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import React from "react";
 
 import factory from "../../../factory";
+import { renderComponent } from "../../../helpers/render";
 
 const mockNavigate = jest.fn( );
-const mockObservation = factory( "LocalObservation" );
+const mockObservation = factory( "LocalObservation", {
+  created_at: "2022-11-27T19:07:41-08:00",
+  time_observed_at: "2023-12-14T21:07:41-09:30"
+} );
 const mockUser = factory( "LocalUser" );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
@@ -55,30 +54,23 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
   getUserId: ( ) => mockObservation.user.id
 } ) );
 
-const queryClient = new QueryClient( );
-
-const renderObsDetails = ( ) => render(
-  <QueryClientProvider client={queryClient}>
-    <NavigationContainer>
-      <ObsDetails />
-    </NavigationContainer>
-  </QueryClientProvider>
-);
+jest.mock( "components/ObsDetails/AddCommentModal" );
 
 test( "renders obs details from remote call", async ( ) => {
-  const { getByTestId, getByText, findByTestId } = renderObsDetails();
+  const { getByTestId, getByText, findByTestId } = renderComponent( <ObsDetails /> );
 
   expect( await findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
   expect(
     getByTestId( "PhotoScroll.photo" ).props.source
   ).toStrictEqual( { uri: mockObservation.observationPhotos[0].photo.url } );
   expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
-  // TODO: figure out how to test elements which are mapped to camelCase via Observation model
-  // right now, these elements are not rendering in renderObsDetails( ).debug( ) at all
+  // TODO: figure out how to test elements which are mapped to camelCase via
+  // Observation model right now, these elements are not rendering in
+  // renderComponent( <ObsDetails />  ).debug( ) at all
 } );
 
 test( "renders data tab on button press", async ( ) => {
-  const { getByText, findByTestId } = renderObsDetails();
+  const { getByText, findByTestId } = renderComponent( <ObsDetails /> );
   const button = await findByTestId( "ObsDetails.DataTab" );
 
   fireEvent.press( button );
@@ -86,7 +78,7 @@ test( "renders data tab on button press", async ( ) => {
 } );
 
 test( "navigates to observer profile on button press", async ( ) => {
-  const { findByTestId } = renderObsDetails( );
+  const { findByTestId } = renderComponent( <ObsDetails /> );
 
   fireEvent.press( await findByTestId( "ObsDetails.currentUser" ) );
   expect( mockNavigate )
@@ -94,7 +86,7 @@ test( "navigates to observer profile on button press", async ( ) => {
 } );
 
 test( "navigates to identifier profile on button press", async ( ) => {
-  const { findByTestId } = renderObsDetails( );
+  const { findByTestId } = renderComponent( <ObsDetails /> );
 
   fireEvent.press(
     await findByTestId(
@@ -107,7 +99,7 @@ test( "navigates to identifier profile on button press", async ( ) => {
 } );
 
 test( "navigates to taxon details on button press", async ( ) => {
-  const { findByTestId } = renderObsDetails( );
+  const { findByTestId } = renderComponent( <ObsDetails /> );
 
   fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
   expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {

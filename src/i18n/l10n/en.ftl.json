@@ -23,6 +23,10 @@
   },
   "All": "All",
   "All-observations": "All observations",
+  "all-rights-reserved": {
+    "comment": "license code",
+    "val": "all rights reserved"
+  },
   "Amphibians": "Amphibians",
   "Arachnids": "Arachnids",
   "Are-you-sure": "Are you sure?",
@@ -43,6 +47,10 @@
   "C": {
     "comment": "Quality grade option: Casual (shortened for My Observations view)",
     "val": "C"
+  },
+  "camera-button-label-switch-camera": {
+    "comment": "Accessible label for the camera button",
+    "val": "Use the device's other camera."
   },
   "Camera-Roll": "Camera Roll",
   "Cancel": "Cancel",
@@ -77,6 +85,8 @@
   "Delete-comment": "Delete comment",
   "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}",
   "Description-Tags": "Description/Tags",
+  "Discard-Changes": "Discard Changes",
+  "Discard-X-Observations": "{ $count ->\n  [one] Discard Observation\n *[other] Discard Observations\n}",
   "Display": "Display",
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
@@ -98,6 +108,14 @@
   "Filters": "Filters",
   "Finish": "Finish",
   "Fish": "Fish",
+  "flash-button-label-flash": {
+    "comment": "Accessible label for the flash button, when flas is turned on",
+    "val": "The flash is turned on. Press here to disable it."
+  },
+  "flash-button-label-flash-off": {
+    "comment": "Accessible label for the flash button, when flas is turned off",
+    "val": "The flash is turned off. Press here to enable it."
+  },
   "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
@@ -187,6 +205,8 @@
   "Names": "Names",
   "Native": "Native",
   "Navigate-to-login-screen": "Navigate to login screen",
+  "Navigate-to-observation-details": "Navigate to observation details screen",
+  "Navigate-to-taxon-details": "Navigate to taxon details",
   "Nearby": {
     "comment": "Header for nearby projects",
     "val": "Nearby"
@@ -209,6 +229,10 @@
   "No-comments-or-ids-to-display": "No comments or ids to display",
   "No-Location": "No Location",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
+  "no-rights-reserved": {
+    "comment": "license code",
+    "val": "no rights reserved"
+  },
   "Notes": {
     "comment": "Header for observation description on observation detail",
     "val": "Notes"
@@ -216,6 +240,7 @@
   "Notifications": "Notifications",
   "Obscured": "Obscured",
   "Observation": "Observation",
+  "Observation-Attribution": "Observation © { $attribution } · { $licenseCode }",
   "Observations": "Observations",
   "Open": "Open",
   "Organism-is-wild": {
@@ -315,6 +340,7 @@
     "comment": "Quality grade option: Research Grade (shortened for My Observations view)",
     "val": "RG"
   },
+  "Save": "Save",
   "Search-for-a-location": "Search for a location",
   "Search-for-a-project": "Search for a project",
   "Search-for-a-taxon": "Search for a taxon",
@@ -329,6 +355,10 @@
   "SIMILAR-SPECIES-header": {
     "comment": "Header for a section showing taxa similar to a single taxon",
     "val": "SIMILAR SPECIES"
+  },
+  "some-rights-reserved": {
+    "comment": "license code",
+    "val": "some rights reserved"
   },
   "Sort-By": "Sort By",
   "Sort-by": "Sort by",
@@ -403,6 +433,10 @@
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
     "val": "You denied iNaturalist permission to do that"
   },
+  "You-have-unsaved-changes": "You have unsaved changes. Would you like to save this observation?",
+  "You-must-be-logged-in-to-view-messages": "You must be logged in to view messages",
+  "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
+  "You will lose all existing observations. Would you like to discard # observations?": "",
   "Category-leading": {
     "comment": "Identification category",
     "val": "Leading"

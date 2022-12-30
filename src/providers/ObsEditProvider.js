@@ -1,12 +1,16 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
+import { searchObservations } from "api/observations";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
-import { formatDateAndTime } from "sharedHelpers/dateAndTime";
+import Photo from "realmModels/Photo";
+import { formatDateStringFromTimestamp } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
+import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import { ObsEditContext, RealmContext } from "./contexts";
 
@@ -20,12 +24,15 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
   const apiToken = useApiToken( );
+  const currentUser = useCurrentUser( );
   const [currentObservationIndex, setCurrentObservationIndex] = useState( 0 );
   const [observations, setObservations] = useState( [] );
   const [cameraPreviewUris, setCameraPreviewUris] = useState( [] );
   const [galleryUris, setGalleryUris] = useState( [] );
   const [evidenceToAdd, setEvidenceToAdd] = useState( [] );
   const [album, setAlbum] = useState( null );
+  const [loading, setLoading] = useState( );
+  const [unsavedChanges, setUnsavedChanges] = useState( false );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -59,18 +66,26 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   ), [] );
 
   const createObservationFromGalleryPhoto = useCallback( async photo => {
-    const latitude = photo?.location?.latitude || null;
-    const longitude = photo?.location?.longitude || null;
+    const originalPhotoUri = photo?.image?.uri;
+    const firstPhotoExif = await parseExif( originalPhotoUri );
+    const exifDate = formatExifDateAsString( firstPhotoExif.date );
+
+    const observedOnDate = exifDate || formatDateStringFromTimestamp( photo.timestamp );
+    const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
+    const longitude = firstPhotoExif.longitude || photo?.location?.longitude;
     const placeGuess = await fetchPlaceName( latitude, longitude );
-    // create a new observation using the data in the first grouped photo
-    // TODO: figure out if we want to loop through observations, looking for one
-    // with lat/lng, if the first photo lat/lng is blank
+
     const newObservation = {
       latitude,
       longitude,
-      time_observed_at: formatDateAndTime( photo.timestamp ),
-      place_guess: placeGuess
+      place_guess: placeGuess,
+      observed_on_string: observedOnDate
     };
+
+    if ( firstPhotoExif.positional_accuracy ) {
+      // $FlowIgnore
+      newObservation.positional_accuracy = firstPhotoExif.positional_accuracy;
+    }
     return Observation.new( newObservation );
   }, [] );
 
@@ -100,6 +115,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( [updatedObs] );
     // clear additional evidence
     setEvidenceToAdd( [] );
+    setUnsavedChanges( true );
   }, [currentObservation] );
 
   const addGalleryPhotosToCurrentObservation = useCallback( async photos => {
@@ -129,13 +145,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         if ( index === currentObservationIndex ) {
           return {
             ...( observation.toJSON ? observation.toJSON( ) : observation ),
-            // $FlowFixMe
             [key]: value
           };
         }
         return observation;
       } );
       setObservations( updatedObservations );
+      setUnsavedChanges( true );
     };
 
     const updateObservationKeys = keysAndValues => {
@@ -150,6 +166,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         return observation;
       } );
       setObservations( updatedObservations );
+      setUnsavedChanges( true );
     };
 
     const setNextScreen = ( ) => {
@@ -171,37 +188,79 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
     };
 
-    const deleteCurrentObservation = ( ) => {
-      if ( currentObservationIndex === observations.length - 1 ) {
-        setCurrentObservationIndex( currentObservationIndex - 1 );
-      }
-      observations.splice( currentObservationIndex, 1 );
-      setObservations( observations );
-
-      if ( observations.length === 0 ) {
-        navigation.navigate( "ObsList" );
-      }
+    const deleteLocalObservation = uuid => {
+      realm?.write( ( ) => {
+        realm?.delete( realm.objectForPrimaryKey( "Observation", uuid ) );
+      } );
     };
 
     const saveObservation = async ( ) => {
-      const localObs = await Observation.saveLocalObservationForUpload( currentObservation, realm );
-      if ( localObs ) {
-        setNextScreen( );
-      }
-    };
-
-    const saveAndUploadObservation = async ( ) => {
-      const localObs = await Observation.saveLocalObservationForUpload( currentObservation, realm );
       if ( !realm ) {
         throw new Error( "Gack, tried to save an observation without realm!" );
       }
+      return Observation.saveLocalObservationForUpload( currentObservation, realm );
+    };
+
+    const uploadObservation = async observation => {
       if ( !apiToken ) {
-        throw new Error( "Gack, tried to save an observation without API token!" );
+        throw new Error( "Gack, tried to upload an observation without API token!" );
       }
-      Observation.uploadObservation( localObs, apiToken, realm );
-      if ( localObs ) {
-        setNextScreen( );
+      return Observation.uploadObservation( observation, apiToken, realm );
+    };
+
+    const saveAndUploadObservation = async ( ) => {
+      const savedObservation = await saveObservation( );
+      return uploadObservation( savedObservation );
+    };
+
+    const removePhotoFromList = ( list, photo ) => {
+      const updatedPhotoList = list;
+      const photoIndex = list.findIndex( p => p === photo );
+      updatedPhotoList.splice( photoIndex, 1 );
+      return updatedPhotoList || list;
+    };
+
+    const deletePhotoFromObservation = async ( photoUriToDelete, photoUris, setPhotoUris ) => {
+      if ( !photoUriToDelete ) { return; }
+      const updatedPhotos = removePhotoFromList( photoUris, photoUriToDelete );
+
+      // spreading the array forces DeletePhotoDialog to rerender on each photo deletion
+      setPhotoUris( [...updatedPhotos] );
+
+      // when deleting photo from StandardCamera while adding new evidence, remember to clear
+      // the list of new evidence to add
+      if ( evidenceToAdd.length > 0 ) {
+        const updatedEvidence = removePhotoFromList( evidenceToAdd, photoUriToDelete );
+        setEvidenceToAdd( [...updatedEvidence] );
       }
+
+      await Photo.deletePhoto( realm, photoUriToDelete );
+    };
+
+    const uploadLocalObservationsToServer = ( ) => {
+      const unsyncedObservations = Observation.filterUnsyncedObservations( realm );
+      unsyncedObservations.forEach( async observation => {
+        await Observation.uploadObservation( observation, apiToken, realm );
+      } );
+    };
+
+    const downloadRemoteObservationsFromServer = async ( ) => {
+      const params = {
+        user_id: currentUser?.id,
+        per_page: 50,
+        fields: Observation.FIELDS
+      };
+      const results = await searchObservations( params, { api_token: apiToken } );
+
+      Observation.upsertRemoteObservations( results, realm );
+    };
+
+    const syncObservations = async ( ) => {
+      // TODO: GET observation/deletions once this is enabled in API v2
+      setLoading( true );
+      await uploadLocalObservationsToServer( );
+      await downloadRemoteObservationsFromServer( );
+      setLoading( false );
     };
 
     return {
@@ -230,9 +289,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       resetObsEditContext,
       saveObservation,
       saveAndUploadObservation,
-      deleteCurrentObservation,
+      deleteLocalObservation,
       album,
-      setAlbum
+      setAlbum,
+      deletePhotoFromObservation,
+      uploadObservation,
+      setNextScreen,
+      loading,
+      setLoading,
+      unsavedChanges,
+      syncObservations
     };
   }, [
     currentObservation,
@@ -253,7 +319,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     navigation,
     realm,
     album,
-    setAlbum
+    setAlbum,
+    loading,
+    setLoading,
+    unsavedChanges,
+    currentUser?.id
   ] );
 
   return (

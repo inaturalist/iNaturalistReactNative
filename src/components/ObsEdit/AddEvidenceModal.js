@@ -15,7 +15,6 @@ import React, {
   useRef, useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { textStyles } from "styles/obsEdit/obsEdit";
 
 type Props = {
   showAddEvidenceModal: boolean,
@@ -75,7 +74,6 @@ const AddEvidenceModal = ( {
 
   const onRecordSound = () => {
     // TODO - need to implement
-    console.log( "Record sound" );
   };
 
   return (
@@ -102,7 +100,7 @@ const AddEvidenceModal = ( {
           <Text className="text-2xl ml-4 mb-4">{t( "Add-evidence" )}</Text>
           {disableAddingMoreEvidence
           && (
-          <Text style={textStyles.evidenceWarning}>
+          <Text className="m-3">
             {t( "You-can-only-upload-20-media" )}
           </Text>
           )}

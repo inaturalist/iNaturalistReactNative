@@ -1,3 +1,4 @@
+import Application from "./Application";
 import Comment from "./Comment";
 import Identification from "./Identification";
 import Observation from "./Observation";
@@ -9,6 +10,7 @@ import User from "./User";
 
 export default {
   schema: [
+    Application,
     Comment,
     Identification,
     Observation,
@@ -18,7 +20,7 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 24,
+  schemaVersion: 28,
   path: "db.realm",
   migration: ( oldRealm, newRealm ) => {
     if ( oldRealm.schemaVersion < 21 ) {

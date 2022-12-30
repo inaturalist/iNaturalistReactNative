@@ -1,18 +1,18 @@
 // @flow
 
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import { Button, Menu } from "react-native-paper";
 import viewStyles from "styles/sharedComponents/kebabMenu";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  children: any
+  children: any,
+  visible: boolean,
+  setVisible: Function
 }
 
-const KebabMenu = ( { children }: Props ): Node => {
-  const [visible, setVisible] = useState( false );
-
+const KebabMenu = ( { children, visible, setVisible }: Props ): Node => {
   const openMenu = ( ) => setVisible( true );
   const closeMenu = ( ) => setVisible( false );
 
@@ -21,6 +21,7 @@ const KebabMenu = ( { children }: Props ): Node => {
       onPress={openMenu}
       icon="dots-horizontal"
       textColor={colors.logInGray}
+      testID="KebabMenu.Button"
     />
   );
 

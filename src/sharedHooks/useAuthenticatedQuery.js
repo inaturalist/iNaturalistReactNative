@@ -9,16 +9,19 @@ const useAuthenticatedQuery = (
   queryKey: Array<mixed>,
   queryFunction: Function,
   queryOptions: Object = {}
-): any => useQuery( [queryKey], async ( ) => {
-  // Note, getJWTToken() takes care of fetching a new token if the existing
-  // one is expired. We *could* store the token in state with useState if
-  // fetching from RNSInfo becomes a performance issue
-  const apiToken = await getJWTToken( );
-  const options = {
-    ...queryOptions,
-    api_token: apiToken
-  };
-  return queryFunction( options );
+): any => useQuery( {
+  queryKey,
+  queryFn: async ( ) => {
+    // Note, getJWTToken() takes care of fetching a new token if the existing
+    // one is expired. We *could* store the token in state with useState if
+    // fetching from RNSInfo becomes a performance issue
+    const apiToken = await getJWTToken( );
+    const options = {
+      api_token: apiToken
+    };
+    return queryFunction( options );
+  },
+  ...queryOptions
 } );
 
 export default useAuthenticatedQuery;
