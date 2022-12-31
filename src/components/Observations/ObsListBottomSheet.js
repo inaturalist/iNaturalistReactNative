@@ -17,8 +17,7 @@ type Props = {
 
 const ObsListBottomSheet = ( { hasScrolled }: Props ): Node => {
   const currentUser = useCurrentUser( );
-  const localObservations = useLocalObservations( );
-  const { unuploadedObsList, allObsToUpload } = localObservations;
+  const { unuploadedObsList, allObsToUpload } = useLocalObservations( );
   const numOfUnuploadedObs = unuploadedObsList?.length;
   const { uploadInProgress, updateUploadStatus } = useUploadStatus( );
 
@@ -33,6 +32,9 @@ const ObsListBottomSheet = ( { hasScrolled }: Props ): Node => {
       </BottomSheet>
     );
   }
+  // FYI, this actually controls uploading, because the UploadProgressBar
+  // calls useUploadObservations which immediately tries to upload, so just
+  // rendering UploadProgressBar kicks off the upload
   if ( uploadInProgress ) {
     return (
       <UploadProgressBar

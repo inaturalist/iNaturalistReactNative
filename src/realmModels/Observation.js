@@ -226,16 +226,6 @@ class Observation extends Realm.Object {
     return unsyncedObs.length > 0;
   }
 
-  needsSync( ) {
-    const obsPhotosNeedSync = this.observationPhotos
-      .filter( obsPhoto => obsPhoto.needsSync( ) ).length > 0;
-    return !this._synced_at || this._synced_at <= this._updated_at || obsPhotosNeedSync;
-  }
-
-  wasSynced( ) {
-    return this._synced_at !== null;
-  }
-
   static markRecordUploaded = async ( recordUUID, type, response, realm ) => {
     const { id } = response.results[0];
 
@@ -269,13 +259,11 @@ class Observation extends Realm.Object {
     realm: any,
     options: Object
   ): Promise<any> => {
-    let response;
-
     // only try to upload evidence which is not yet on the server
     const unsyncedEvidence = evidence.filter( item => !item.wasSynced( ) );
 
-    for ( let i = 0; i < unsyncedEvidence.length; i += 1 ) {
-      const currentEvidence = unsyncedEvidence[i].toJSON( );
+    const responses = await Promise.all( unsyncedEvidence.map( item => {
+      const currentEvidence = item.toJSON( );
       const evidenceUUID = currentEvidence.uuid;
 
       // Remove all null values, b/c the API doesn't seem to like them
@@ -290,7 +278,7 @@ class Observation extends Realm.Object {
       currentEvidence.photo = newPhoto;
 
       const params = apiSchemaMapper( observationId, currentEvidence );
-      response = Observation.uploadToServer(
+      return Observation.uploadToServer(
         evidenceUUID,
         type,
         params,
@@ -298,9 +286,9 @@ class Observation extends Realm.Object {
         realm,
         options
       );
-    }
+    } ) );
     // eslint-disable-next-line consistent-return
-    return response;
+    return responses[0];
   };
 
   static uploadObservation = async ( obs, apiToken, realm ) => {
@@ -337,14 +325,14 @@ class Observation extends Realm.Object {
     }
 
     await Observation.markRecordUploaded( obs.uuid, "Observation", response, realm );
-    const { id } = response.results[0];
+    const { uuid: obsUUID } = response.results[0];
 
     if ( obs?.observationPhotos?.length > 0 ) {
       await Observation.uploadEvidence(
         obs.observationPhotos,
         "ObservationPhoto",
         ObservationPhoto.mapPhotoForUpload,
-        id,
+        obsUUID,
         inatjs.observation_photos.create,
         realm,
         options
@@ -355,7 +343,7 @@ class Observation extends Realm.Object {
         obs.observationSounds,
         "ObservationSound",
         ObservationSound.mapSoundForUpload,
-        id,
+        obsUUID,
         inatjs.observation_sounds.create,
         realm,
         options
@@ -403,6 +391,16 @@ class Observation extends Realm.Object {
       user: "User?",
       viewed: "bool?"
     }
+  }
+
+  needsSync( ) {
+    const obsPhotosNeedSync = this.observationPhotos
+      .filter( obsPhoto => obsPhoto.needsSync( ) ).length > 0;
+    return !this._synced_at || this._synced_at <= this._updated_at || obsPhotosNeedSync;
+  }
+
+  wasSynced( ) {
+    return this._synced_at !== null;
   }
 }
 
