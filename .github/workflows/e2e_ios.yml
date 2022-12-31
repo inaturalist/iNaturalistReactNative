@@ -38,13 +38,6 @@ jobs:
         path: node_modules
         key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
-    - name: Cache build folder
-      uses: actions/cache@v3
-      id: buildcache
-      with:
-        path: ios/build
-        key: ios-build-${{ hashFiles('**/ci-cache-timestamp.txt') }}
-
     - name: Rebuild detox from cache
       if: steps.cache.outputs.cache-hit == 'true'
       run: npx detox clean-framework-cache && npx detox build-framework-cache
