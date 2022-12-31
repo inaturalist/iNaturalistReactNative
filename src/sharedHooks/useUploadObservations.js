@@ -21,12 +21,10 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     const upload = async obs => {
       if ( !apiToken ) return;
       await Observation.uploadObservation( obs, apiToken, realm );
-    };
-    if ( currentUploadIndex < allObsToUpload.length - 1 ) {
       setCurrentUploadIndex( currentUploadIndex + 1 );
-    }
+    };
 
-    if ( !cancelUpload ) {
+    if ( !cancelUpload && allObsToUpload[currentUploadIndex] ) {
       upload( allObsToUpload[currentUploadIndex] );
     }
   }, [
