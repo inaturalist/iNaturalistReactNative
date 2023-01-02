@@ -264,7 +264,7 @@ const ObsDetails = ( ): Node => {
     );
   };
   const displayPhoto = () => {
-    if ( photos.length > 0 || observation.observationSounds.length > 0 ) {
+    if ( photos?.length > 0 || observation?.observationSounds?.length > 0 ) {
       return (
         <View className="bg-black">
           <PhotoScroll photos={photos} />
