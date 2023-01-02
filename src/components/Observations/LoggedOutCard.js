@@ -20,7 +20,12 @@ const LoggedOutCard = ( ): Node => {
       accessibilityLabel={t( "Navigate-to-login-screen" )}
       className="rounded-bl-3xl rounded-br-3xl bg-primary h-24 justify-center"
     >
-      <Text className="self-center color-white text-2xl">{t( "Log-in-to-iNaturalist" )}</Text>
+      <Text
+        testID="log-in-to-iNaturalist-text"
+        className="self-center color-white text-2xl"
+      >
+        {t( "Log-in-to-iNaturalist" )}
+      </Text>
       <Text className="self-center color-white text-base">
         {t( "X-unuploaded-observations", { observationCount: numOfUnuploadedObs } )}
       </Text>

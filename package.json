@@ -12,7 +12,12 @@
     "lint:eslint": "eslint . --fix",
     "lint:flow": "flow check",
     "postinstall": "husky install",
-    "translate": "node src/i18n/i18ncli.js build"
+    "translate": "node src/i18n/i18ncli.js build",
+    "e2e:build:android": "npx detox build --configuration android.release",
+    "e2e:build": "npx detox build --configuration ios.release",
+    "e2e:test:android": "npx detox test --configuration android.release",
+    "e2e:test": "npx detox test --configuration ios.release",
+    "e2e": "npm run e2e:build && npm run e2e:test"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.2",
@@ -57,7 +62,6 @@
     "react-native-config": "^1.4.5",
     "react-native-device-info": "^8.5.1",
     "react-native-dropdown-picker": "^5.3.0",
-    "react-native-exif": "^0.5.0",
     "react-native-exif-reader": "github:inaturalist/react-native-exif-reader",
     "react-native-fs": "^2.19.0",
     "react-native-geocoder-reborn": "^0.9.0",
@@ -98,6 +102,7 @@
     "@testing-library/react-native": "^10.0.0",
     "babel-jest": "^26.6.3",
     "babel-plugin-module-resolver": "^4.1.0",
+    "detox": "^19.13.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-import-resolver-babel-module": "^5.3.1",
@@ -119,6 +124,7 @@
     "glob": "^7.2.0",
     "husky": "^7.0.4",
     "jest": "^26.6.3",
+    "jest-circus": "^26.6.3",
     "metro-react-native-babel-preset": "^0.66.2",
     "nock": "^13.2.2",
     "react-native-accessibility-engine": "^3.0.0",

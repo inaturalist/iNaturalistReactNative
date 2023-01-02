@@ -8,7 +8,7 @@ import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useRef, useState } from "react";
-import { StatusBar, Platform } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import { Avatar, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";

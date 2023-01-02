@@ -74,5 +74,9 @@ fastlane/Appfile
 *.cer
 *.mobileprovision
 
+# Detox e2e test artifacts
+artifacts/
+*.log
+
 # VisualStudioCode #
 .vscode

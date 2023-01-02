@@ -21,7 +21,7 @@ const AddObsButton = ( ): React.Node => {
         closeModal={closeModal}
         modal={<AddObsModal closeModal={closeModal} />}
       />
-      <Pressable onPress={navToAddObs} accessibilityRole="link">
+      <Pressable testID="camera-options-button" onPress={navToAddObs} accessibilityRole="link">
         <IconMaterial name="add-circle" size={30} />
       </Pressable>
     </>
