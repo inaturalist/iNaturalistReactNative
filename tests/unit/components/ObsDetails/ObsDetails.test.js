@@ -1,6 +1,7 @@
-import { fireEvent } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import React from "react";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
@@ -10,6 +11,12 @@ const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
   time_observed_at: "2023-12-14T21:07:41-09:30"
 } );
+const mockNoEvidenceObservation = factory( "LocalObservation", {
+  created_at: "2022-11-27T19:07:41-08:00",
+  time_observed_at: "2023-12-14T21:07:41-09:30"
+} );
+mockNoEvidenceObservation.observationPhotos = [];
+mockNoEvidenceObservation.observationSounds = [];
 const mockUser = factory( "LocalUser" );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
@@ -36,9 +43,9 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
-  default: ( ) => ( {
+  default: jest.fn( ( ) => ( {
     data: mockObservation
-  } )
+  } ) )
 } ) );
 
 // TODO if/when we test mutation behavior, the mutation will need to be mocked
@@ -67,6 +74,21 @@ test( "renders obs details from remote call", async ( ) => {
   // TODO: figure out how to test elements which are mapped to camelCase via
   // Observation model right now, these elements are not rendering in
   // renderComponent( <ObsDetails />  ).debug( ) at all
+} );
+
+test( "renders fallback image icon for observation with no evidence", async ( ) => {
+  useAuthenticatedQuery.mockReturnValue( {
+    data: mockNoEvidenceObservation
+  } );
+
+  renderComponent( <ObsDetails /> );
+
+  const fallbackImage = await screen.findByTestId( "ObsDetails.noImage" );
+  expect( fallbackImage ).toBeTruthy();
+
+  useAuthenticatedQuery.mockReturnValue( {
+    data: mockObservation
+  } );
 } );
 
 test( "renders data tab on button press", async ( ) => {
