@@ -27,6 +27,7 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
   const renderGridItem = ( { item } ) => (
     <GridItem item={item} handlePress={navToObsDetails} uri="project" />
   );
+
   return (
     <FlatList
       data={observations}

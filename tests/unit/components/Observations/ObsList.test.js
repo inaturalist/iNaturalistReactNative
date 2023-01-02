@@ -20,12 +20,9 @@ const mockObservations = [
 
 // Mock the hooks we use on ObsList since we're not trying to test them here
 
-jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
-  __esModule: true,
-  default: ( ) => true
-} ) );
+jest.mock( "sharedHooks/useApiToken" );
 
-jest.mock( "sharedHooks/useLoggedIn", ( ) => ( {
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   __esModule: true,
   default: ( ) => true
 } ) );

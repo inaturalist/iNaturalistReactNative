@@ -24,10 +24,7 @@ const UploadProgressBar = ( { unuploadedObsList, allObsToUpload }: Props ): Node
 
   const progressFraction = calculateProgress( );
 
-  const {
-    handleClosePress,
-    status
-  } = useUploadObservations( allObsToUpload );
+  const { handleClosePress } = useUploadObservations( allObsToUpload );
 
   const sheetRef = useRef( null );
 
@@ -35,24 +32,6 @@ const UploadProgressBar = ( { unuploadedObsList, allObsToUpload }: Props ): Node
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
   const noHandle = ( ) => <></>;
-
-  const showError = ( ) => {
-    if ( status === "failure" ) {
-      return (
-        <Text style={textStyles.whiteText} variant="titleMedium">
-          {t( "Error-Couldnt-Complete-Upload" )}
-        </Text>
-      );
-    }
-    if ( status === "photoFailure" ) {
-      return (
-        <Text style={textStyles.whiteText} variant="titleMedium">
-          {t( "Error-Couldnt-Upload-Photo" )}
-        </Text>
-      );
-    }
-    return null;
-  };
 
   return (
     <BottomSheet
@@ -76,7 +55,6 @@ const UploadProgressBar = ( { unuploadedObsList, allObsToUpload }: Props ): Node
           style={viewStyles.progressBar}
           color={colors.white}
         />
-        {showError( )}
       </BottomSheetView>
     </BottomSheet>
   );

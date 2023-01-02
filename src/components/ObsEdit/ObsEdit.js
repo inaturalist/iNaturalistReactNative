@@ -1,5 +1,6 @@
 // @flow
 
+import { HeaderBackButton } from "@react-navigation/elements";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import Button from "components/SharedComponents/Buttons/Button";
@@ -12,12 +13,13 @@ import React, {
   useCallback, useContext, useEffect, useRef,
   useState
 } from "react";
-import { BackHandler } from "react-native";
+import { ActivityIndicator, BackHandler } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Menu } from "react-native-paper";
 import Photo from "realmModels/Photo";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservation from "sharedHooks/useLocalObservation";
-import useLoggedIn from "sharedHooks/useLoggedIn";
+import colors from "styles/tailwindColors";
 
 import AddEvidenceModal from "./AddEvidenceModal";
 import DeleteObservationDialog from "./DeleteObservationDialog";
@@ -25,6 +27,7 @@ import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
 import ObsEditHeaderTitle from "./ObsEditHeaderTitle";
 import OtherDataSection from "./OtherDataSection";
+import SaveDialog from "./SaveDialog";
 
 const { useRealm } = RealmContext;
 
@@ -37,7 +40,11 @@ const ObsEdit = ( ): Node => {
     saveObservation,
     saveAndUploadObservation,
     setObservations,
-    resetObsEditContext
+    resetObsEditContext,
+    setNextScreen,
+    loading,
+    setLoading,
+    unsavedChanges
   } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
   const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
@@ -46,11 +53,12 @@ const ObsEdit = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const localObservation = useLocalObservation( params?.uuid );
-  const isLoggedIn = useLoggedIn( );
+  const currentUser = useCurrentUser( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [showAddEvidenceModal, setShowAddEvidenceModal] = useState( false );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
+  const [showSaveDialog, setShowSaveDialog] = useState( false );
 
   const scrollToInput = node => {
     // Add a 'scroll' ref to your ScrollView
@@ -76,10 +84,27 @@ const ObsEdit = ( ): Node => {
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
 
-  const handleBackButtonPress = useCallback( async ( ) => {
+  const discardChanges = useCallback( ( ) => {
     setObservations( [] );
     navigation.goBack( );
   }, [navigation, setObservations] );
+
+  const handleBackButtonPress = useCallback( ( ) => {
+    if ( unsavedChanges ) {
+      setShowSaveDialog( true );
+    } else {
+      discardChanges( );
+    }
+  }, [unsavedChanges, discardChanges] );
+
+  const renderBackButton = useCallback( ( ) => (
+    <HeaderBackButton
+      tintColor={colors.black}
+      onPress={handleBackButtonPress}
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={{ left: -15 }}
+    />
+  ), [handleBackButtonPress] );
 
   useFocusEffect(
     useCallback( ( ) => {
@@ -116,7 +141,8 @@ const ObsEdit = ( ): Node => {
   useEffect( ( ) => {
     const renderHeaderTitle = ( ) => <ObsEditHeaderTitle />;
     const headerOptions = {
-      headerTitle: renderHeaderTitle
+      headerTitle: renderHeaderTitle,
+      headerLeft: renderBackButton
     };
 
     // only show delete kebab menu for observations persisted to realm
@@ -126,7 +152,7 @@ const ObsEdit = ( ): Node => {
     }
 
     navigation.setOptions( headerOptions );
-  }, [observations, navigation, renderKebabMenu, localObservation] );
+  }, [observations, navigation, renderKebabMenu, localObservation, renderBackButton] );
 
   const realm = useRealm( );
 
@@ -164,6 +190,10 @@ const ObsEdit = ( ): Node => {
         deleteDialogVisible={deleteDialogVisible}
         hideDialog={hideDialog}
       />
+      <SaveDialog
+        showSaveDialog={showSaveDialog}
+        discardChanges={discardChanges}
+      />
       <MediaViewerModal
         mediaViewerVisible={mediaViewerVisible}
         hideModal={hideModal}
@@ -182,9 +212,15 @@ const ObsEdit = ( ): Node => {
         <IdentificationSection />
         <Text className="text-2xl ml-4">{t( "Other-Data" )}</Text>
         <OtherDataSection scrollToInput={scrollToInput} />
+        {loading && <ActivityIndicator />}
         <View className="flex-row justify-evenly">
           <Button
-            onPress={saveObservation}
+            onPress={async ( ) => {
+              setLoading( true );
+              await saveObservation( );
+              setLoading( false );
+              setNextScreen( );
+            }}
             testID="ObsEdit.saveButton"
             text={t( "SAVE" )}
             level="neutral"
@@ -194,8 +230,13 @@ const ObsEdit = ( ): Node => {
             level="primary"
             text={t( "UPLOAD-OBSERVATION" )}
             testID="ObsEdit.uploadButton"
-            onPress={saveAndUploadObservation}
-            disabled={!isLoggedIn}
+            onPress={async ( ) => {
+              setLoading( true );
+              await saveAndUploadObservation( );
+              setLoading( false );
+              setNextScreen( );
+            }}
+            disabled={!currentUser}
           />
         </View>
         <AddEvidenceModal

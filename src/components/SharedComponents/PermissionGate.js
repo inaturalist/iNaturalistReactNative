@@ -28,7 +28,6 @@ type Props = {
 // future we might want to extend this to always show a custom view before
 // asking the user for a permission.
 const PermissionGate = ( { children, permission, isIOS }: Props ): Node => {
-  console.log( "PermissionGate" );
   const navigation = useNavigation( );
   const { t } = useTranslation();
   const [result, setResult] = useState(
@@ -54,7 +53,6 @@ const PermissionGate = ( { children, permission, isIOS }: Props ): Node => {
 
     const requestiOSPermissions = async () => {
       const r = await request( permission );
-      console.log( "iOS permission", permission, r );
 
       if ( r === RESULTS.GRANTED ) {
         setResult( "granted" );

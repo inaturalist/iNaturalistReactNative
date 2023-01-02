@@ -21,6 +21,7 @@ const KebabMenu = ( { children, visible, setVisible }: Props ): Node => {
       onPress={openMenu}
       icon="dots-horizontal"
       textColor={colors.logInGray}
+      testID="KebabMenu.Button"
     />
   );
 

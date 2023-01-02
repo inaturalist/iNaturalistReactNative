@@ -6,7 +6,7 @@ import { Platform } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { viewStyles } from "styles/sharedComponents/footer";
 
-import CameraOptionsButton from "./Buttons/CameraOptionsButton";
+import AddObsButton from "./Buttons/AddObsButton";
 
 const Footer = ( ): React.Node => {
   const navigation = useNavigation( );
@@ -30,7 +30,7 @@ const Footer = ( ): React.Node => {
       <Pressable onPress={navToExplore} accessibilityRole="link">
         <IconMaterial name="language" size={30} />
       </Pressable>
-      <CameraOptionsButton />
+      <AddObsButton />
       <Pressable onPress={navToObsList} accessibilityRole="link">
         <IconMaterial name="person" size={30} />
       </Pressable>

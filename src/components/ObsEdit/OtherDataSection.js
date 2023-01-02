@@ -65,7 +65,6 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
           <Button
             icon="earth"
             mode="text"
-            onPress={() => console.log( "Pressed" )}
             textColor={colors.black}
           >
             {t( "Geoprivacy" )}
@@ -84,7 +83,6 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
           <Button
             icon="pot"
             mode="text"
-            onPress={() => console.log( "Pressed" )}
             textColor={colors.black}
           >
             {t( "Organism-is-wild" )}

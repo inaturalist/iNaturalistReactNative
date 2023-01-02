@@ -45,7 +45,7 @@ const useLocationName = ( latitude: ?number, longitude: ?number ): ?string => {
         if ( results.length === 0 || !isCurrent ) { return; }
         setLocation( setPlaceName( results ) );
       } catch ( e ) {
-        console.log(
+        console.warn(
           e,
           "couldn't fetch geocoded position with coordinates: ",
           latitude,

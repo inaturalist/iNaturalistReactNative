@@ -35,7 +35,7 @@ const useLocalObservations = ( ): Object => {
       const unsyncedObs = Observation.filterUnsyncedObservations( realm );
       setUnuploadedObsList( Array.from( unsyncedObs ) );
 
-      if ( allObsToUpload.length === 0 ) {
+      if ( allObsToUpload.length < unsyncedObs.length ) {
         setAllObsToUpload( Array.from( unsyncedObs ) );
       }
     } );

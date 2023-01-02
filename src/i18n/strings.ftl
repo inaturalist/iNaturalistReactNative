@@ -33,6 +33,9 @@ All = All
 
 All-observations = All observations
 
+# license code
+all-rights-reserved = all rights reserved
+
 Amphibians = Amphibians
 
 Arachnids = Arachnids
@@ -59,6 +62,9 @@ Blocked-Users = Blocked Users
 
 # Quality grade option: Casual (shortened for My Observations view)
 C = C
+
+# Accessible label for the camera button
+camera-button-label-switch-camera = Use the device's other camera.
 
 Camera-Roll = Camera Roll
 
@@ -114,6 +120,13 @@ DELETE-X-OBSERVATIONS = DELETE {$count ->
 
 Description-Tags = Description/Tags
 
+Discard-Changes = Discard Changes
+
+Discard-X-Observations = {$count ->
+    [one] Discard Observation
+    *[other] Discard Observations
+}
+
 Display = Display
 
 Display-Name = Display Name
@@ -145,6 +158,12 @@ Filters = Filters
 Finish = Finish
 
 Fish = Fish
+
+# Accessible label for the flash button, when flas is turned on
+flash-button-label-flash = The flash is turned on. Press here to disable it.
+
+# Accessible label for the flash button, when flas is turned off
+flash-button-label-flash-off = The flash is turned off. Press here to enable it.
 
 Following = Following
 
@@ -276,6 +295,10 @@ Native = Native
 
 Navigate-to-login-screen = Navigate to login screen
 
+Navigate-to-observation-details = Navigate to observation details screen
+
+Navigate-to-taxon-details = Navigate to taxon details
+
 # Header for nearby projects
 Nearby = Nearby
 
@@ -300,6 +323,9 @@ No-Location = No Location
 
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
+# license code
+no-rights-reserved = no rights reserved
+
 # Header for observation description on observation detail
 Notes = Notes
 
@@ -308,6 +334,8 @@ Notifications = Notifications
 Obscured = Obscured
 
 Observation = Observation
+
+Observation-Attribution = Observation © {$attribution} · {$licenseCode}
 
 Observations = Observations
 
@@ -467,6 +495,8 @@ Revoke = Revoke
 # Quality grade option: Research Grade (shortened for My Observations view)
 RG = RG
 
+Save = Save
+
 Search-for-a-location = Search for a location
 
 Search-for-a-project = Search for a project
@@ -491,6 +521,9 @@ Sign-Up = Sign Up
 
 # Header for a section showing taxa similar to a single taxon
 SIMILAR-SPECIES-header = SIMILAR SPECIES
+
+# license code
+some-rights-reserved = some rights reserved
 
 Sort-By = Sort By
 
@@ -607,6 +640,17 @@ Record-a-sound = Record a sound
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.
 You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
+
+You-have-unsaved-changes = You have unsaved changes. Would you like to save this observation?
+
+You-must-be-logged-in-to-view-messages = You must be logged in to view messages
+
+You-will-lose-all-existing-observations = {$count ->
+    [one] You will lose all existing observations. Would you like to discard 1 observation?
+    *[other] You will lose all existing observations. Would you like to discard {$count} observations?
+}
+
+You will lose all existing observations. Would you like to discard # observations?
 
 # Identification category
 Category-leading = Leading

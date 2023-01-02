@@ -38,7 +38,7 @@ const fetchPlaceName = async ( lat: number, lng: number ): Promise<?string> => {
     if ( results.length === 0 ) { return null; }
     return setPlaceName( results );
   } catch ( e ) {
-    console.log( e, "couldn't fetch geocoded position with coordinates: ", lat, lng );
+    console.warn( e, "couldn't fetch geocoded position with coordinates: ", lat, lng );
     return null;
   }
 };
