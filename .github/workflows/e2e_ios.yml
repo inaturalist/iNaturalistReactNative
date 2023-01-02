@@ -63,11 +63,9 @@ jobs:
     - run: brew install applesimutils
     
     - name: Build test app
-      if: steps.buildcache.outputs.cache-hit != 'true'
       run: npm run e2e:build
     
     - name: Run e2e test
-      if: steps.buildcache.outputs.cache-hit == 'true'
       run: npm run e2e:test -- --cleanup --debug-synchronization 200 --take-screenshots failing --record-videos failing -l trace
     
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
