@@ -26,7 +26,7 @@ XCODEPROJ = "ios/iNaturalistReactNative.xcodeproj"
 PACKAGE_ID = CredentialsManager::AppfileConfig.try_fetch_value( :package_name )
 
 # https://github.com/fastlane/fastlane/issues/20741#issuecomment-1280687500
-ENV["ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD"] = "true"
+# ENV["ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD"] = "true"
 
 def set_android_version_code( new_version_code )
   build_gradle_path = "../android/app/build.gradle"
