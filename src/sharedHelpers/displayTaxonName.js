@@ -1,8 +1,8 @@
-import _ from "lodash";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
+import _ from "lodash";
 
-const displayTaxonName = ({ taxon, user }) => {
-  let title = ""
+const displayTaxonName = ( { taxon, user } ) => {
+  let title = "";
 
   if ( taxon ) {
     title = taxon.name;
@@ -10,16 +10,16 @@ const displayTaxonName = ({ taxon, user }) => {
       title = `${taxon.rank.toLowerCase( )} ${title}`;
     }
 
-    const commonName = checkCamelAndSnakeCase( taxon, "preferredCommonName" )
+    const commonName = checkCamelAndSnakeCase( taxon, "preferredCommonName" );
     if ( commonName ) {
       const comName = _.startCase( taxon.preferred_common_name );
-      title = user && user.prefers_scientific_name_first ?
-        `${title} (${_.trim( comName )})` :
-        `${comName} (${_.trim( title )})`;
+      title = user && user.prefers_scientific_name_first
+        ? `${title} (${_.trim( comName )})`
+        : `${comName} (${_.trim( title )})`;
     }
   }
 
-  return title
+  return title;
 };
 
 export default displayTaxonName;

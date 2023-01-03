@@ -6,7 +6,7 @@ import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
-import displayTaxonName from "sharedHelpers/displayTaxonName"
+import displayTaxonName from "sharedHelpers/displayTaxonName";
 
 type Props = {
   item: Object,
