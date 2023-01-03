@@ -76,18 +76,26 @@ test( "renders obs details from remote call", async ( ) => {
   // renderComponent( <ObsDetails />  ).debug( ) at all
 } );
 
-test( "renders fallback image icon for observation with no evidence", async ( ) => {
-  useAuthenticatedQuery.mockReturnValue( {
-    data: mockNoEvidenceObservation
+describe( "Observation with no evidence", () => {
+  beforeEach( () => {
+    useAuthenticatedQuery.mockReturnValue( {
+      data: mockNoEvidenceObservation
+    } );
   } );
 
-  renderComponent( <ObsDetails /> );
+  test( "should render fallback image icon instead of photos", async () => {
+    renderComponent( <ObsDetails /> );
 
-  const fallbackImage = await screen.findByTestId( "ObsDetails.noImage" );
-  expect( fallbackImage ).toBeTruthy();
+    const fallbackImage = await screen.findByLabelText(
+      "No image available for this observation"
+    );
+    expect( fallbackImage ).toBeTruthy();
+  } );
 
-  useAuthenticatedQuery.mockReturnValue( {
-    data: mockObservation
+  afterEach( () => {
+    useAuthenticatedQuery.mockReturnValue( {
+      data: mockObservation
+    } );
   } );
 } );
 
