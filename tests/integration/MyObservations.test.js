@@ -57,6 +57,7 @@ describe( "MyObservations", ( ) => {
     it( "should be English by default", async ( ) => {
       const mockUser = factory( "LocalUser" );
       expect( mockUser.locale ).toEqual( "en" );
+      inatjs.users.me.mockResolvedValue( makeResponse( [mockUser] ) );
       await signIn( mockUser );
       const { queryByText } = renderAppWithComponent( <ObsList /> );
       await waitFor( ( ) => {
