@@ -1,22 +1,22 @@
 // @flow
 
+import DisplayTaxonName from "components/DisplayTaxonName";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
-import displayTaxonName from "sharedHelpers/displayTaxonName";
 
 type Props = {
   item: Object,
-  view?: string
-}
+  view?: string,
+};
 
 const ObsCardDetails = ( { item, view }: Props ): Node => {
   const placeGuess = checkCamelAndSnakeCase( item, "placeGuess" );
 
-  const displayTime = ( ) => {
+  const displayTime = () => {
     if ( item._created_at ) {
       return formatObsListTime( item._created_at );
     }
@@ -25,14 +25,14 @@ const ObsCardDetails = ( { item, view }: Props ): Node => {
 
   return (
     <View className={view === "grid" && "border border-border p-2"}>
-      <Text numberOfLines={1}>{displayTaxonName( item ) || "no name"}</Text>
+      <DisplayTaxonName item={item} />
       <Text numberOfLines={1}>
         <IconMaterial name="location-pin" size={15} />
         {placeGuess || "no place guess"}
       </Text>
       <Text numberOfLines={1}>
         <IconMaterial name="watch-later" size={15} />
-        {displayTime( )}
+        {displayTime()}
       </Text>
     </View>
   );
