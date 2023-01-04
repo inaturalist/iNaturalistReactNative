@@ -35,8 +35,23 @@ target 'iNaturalistReactNative' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  ENVFILES = {
+  'Debug' => '$(PODS_ROOT)/../../.env.staging',
+  'Release' => '$(PODS_ROOT)/../../.env.production',
+}
+
   # code below appears to be necessary for building pods with XCode 14: https://github.com/facebook/react-native/issues/34673#issuecomment-1252114414
   post_install do |installer|
+    # use different .env files for staging and production
+    # https://github.com/luggit/react-native-config#ios-1
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        if target.name == 'react-native-config'
+          config.build_settings['ENVFILE'] = ENVFILES[config.name]
+        end
+      end
+    end
+  
     react_native_post_install(
       installer,
       # Set `mac_catalyst_enabled` to `true` in order to apply patches
