@@ -65,7 +65,6 @@ const ActivityTab = ( {
   useEffect( ( ) => {
     // set initial ids for activity tab
     const currentIds = observation?.identifications;
-    console.log( "current", currentIds );
     if ( currentIds
         && ids.length === 0
         && currentIds.length !== ids.length ) {

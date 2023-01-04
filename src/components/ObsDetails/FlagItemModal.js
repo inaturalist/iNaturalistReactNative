@@ -4,18 +4,17 @@ import CheckBox from "@react-native-community/checkbox";
 import createFlag from "api/flags";
 import Button from "components/SharedComponents/Buttons/Button";
 import {
-  Modal, SafeAreaView,
-  ScrollView,
+  Modal, Pressable,
+  SafeAreaView,
   Text, View
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useState } from "react";
-// import colors from "styles/tailwindColors";
-// import { useTranslation } from "react-i18next";
-// import {
-//   Keyboard
-// } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  findNodeHandle
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TextInput } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
@@ -29,17 +28,31 @@ type Props = {
 const FlagItemModal = ( {
   id, showFlagItemModal, closeFlagItemModal
 }: Props ): Node => {
+  const keyboardScrollRef = useRef( null );
   const [value, setValue] = useState( "none" );
-  const [explanation, setExplanation] = React.useState( "" );
+  const [explanation, setExplanation] = useState( "" );
 
-  // Checkbox element supports clicking again to uncheck.
-  // This function is to reflect that change in state.
-  const toggleValue = ( toggle, checkbox ) => {
-    if ( toggle ) { setValue( checkbox ); } else { setValue( "none" ); }
+  const scrollToInput = node => {
+    keyboardScrollRef?.current?.scrollToFocusedInput( node );
+  };
+
+  const toggleValue = checkbox => {
+    if ( value === checkbox ) { setValue( "none" ); } else { setValue( checkbox ); }
+  };
+
+  const clearForm = () => {
+    setValue( "none" );
+    setExplanation( "" );
+    closeFlagItemModal();
   };
 
   const createFlagMutation = useAuthenticatedMutation(
-    ( params, optsWithAuth ) => createFlag( params, optsWithAuth )
+    ( params, optsWithAuth ) => createFlag( params, optsWithAuth ),
+    {
+      onSuccess: ( ) => {
+        // waiting for final designs
+      }
+    }
   );
 
   const submitFlag = async () => {
@@ -55,78 +68,92 @@ const FlagItemModal = ( {
       if ( value === "other" ) {
         params = { ...params, flag_explanation: explanation };
       }
-      console.log( "params", params );
       createFlagMutation.mutate( params );
     }
   };
+
   return (
     <Modal
       visible={showFlagItemModal}
       animationType="slide"
+      className="flex-1"
     >
-      <SafeAreaView>
+      <SafeAreaView className="flex-1">
         <View className="flex-row-reverse justify-between p-6 border-b">
           <IconMaterial name="close" onPress={closeFlagItemModal} size={30} />
           <Text className="text-xl">
             {t( "Flag-An-Item" )}
           </Text>
         </View>
-        <ScrollView className="p-6">
+        <KeyboardAwareScrollView
+          ref={keyboardScrollRef}
+          enableOnAndroid
+          enableAutomaticScroll
+          extraHeight={200}
+          className="p-6"
+        >
           <Text className="text-base">
             {t( "Flag-Item-Description" )}
           </Text>
-          <View className="flex-row my-2">
+          <Pressable className="flex-row my-2" onPress={() => toggleValue( "spam" )}>
             <CheckBox
               disabled={false}
               value={value === "spam"}
-              onValueChange={newValue => toggleValue( newValue, "spam" )}
             />
             <Text className="font-bold text-lg ml-5">{t( "Spam" )}</Text>
-          </View>
+          </Pressable>
           <Text className="mb-2 text-base" style>{t( "Spam-Examples" )}</Text>
 
-          <View className="flex-row my-2">
+          <Pressable className="flex-row my-2" onPress={() => toggleValue( "inappropriate" )}>
             <CheckBox
               disabled={false}
               value={value === "inappropriate"}
-              onValueChange={newValue => toggleValue( newValue, "inappropriate" )}
             />
             <Text className="font-bold text-lg ml-5">{t( "Offensive-Inappropriate" )}</Text>
-          </View>
+          </Pressable>
           <Text className="mb-2 text-base">{t( "Offensive-Inappropriate-Examples" )}</Text>
 
-          <View className="flex-row my-2">
+          <Pressable className="flex-row my-2" onPress={() => toggleValue( "other" )}>
             <CheckBox
               disabled={false}
               value={value === "other"}
-              onValueChange={newValue => toggleValue( newValue, "other" )}
             />
-            <Text className="font-bold text-lg ml-5">{t( "Other" )}</Text>
-          </View>
+            <Text
+              className="font-bold text-lg ml-5"
+            >
+              {t( "Other" )}
+
+            </Text>
+          </Pressable>
           <Text className="mb-2 text-base">{t( "Flag-Item-Other-Description" )}</Text>
           {( value === "other" )
             ? (
-              <TextInput
-                className="text-sm"
-                placeholder={t( "Flag-Item-Other-Input-Hint" )}
-                value={explanation}
-                onChangeText={text => setExplanation( text )}
-              />
+              <>
+                <TextInput
+                  className="text-sm"
+                  placeholder={t( "Flag-Item-Other-Input-Hint" )}
+                  value={explanation}
+                  onChangeText={text => setExplanation( text )}
+                  onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
+                />
+                <Text>{`${explanation.length}/255`}</Text>
+              </>
             )
             : undefined}
-        </ScrollView>
-        <View className="flex-row justify-center border-t">
-          <Button
-            className="rounded m-2"
-            text={t( "Cancel" )}
-            onPress={closeFlagItemModal}
-          />
-          <Button
-            className="rounded m-2"
-            text={t( "Save" )}
-            onPress={submitFlag}
-          />
-        </View>
+          <View className="flex-row justify-center m-4">
+            <Button
+              className="rounded m-2"
+              text={t( "Cancel" )}
+              onPress={() => clearForm()}
+            />
+            <Button
+              className="rounded m-2"
+              text={t( "Save" )}
+              onPress={submitFlag}
+              level="primary"
+            />
+          </View>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </Modal>
 

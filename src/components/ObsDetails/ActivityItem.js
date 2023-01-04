@@ -69,8 +69,7 @@ const ActivityItem = ( {
   const closeFlagItemModal = () => {
     setFlagModalVisible( false );
   };
-  console.log( "currentUser", currentUser );
-  console.log( "currentUseritem", item );
+
   return (
     <View className={item.temporary && "opacity-50"}>
       <View className="flex-row border border-borderGray py-1 justify-between">
