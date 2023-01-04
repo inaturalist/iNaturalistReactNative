@@ -1,0 +1,11 @@
+More fixes/features for the observations flow:
+
+- Fix bug with uploading photos
+- Rotate camera photos to the correct direction, Android
+- Make sure observed_on_string uses correct timezone
+- Remove id and comment buttons from data tab
+- Allow user to delete observations; add save dialog; fix updating ids in ObsEdit
+- Allow individual uploads & add sync functionality to ObsList
+- Hide camera flash if device doesn't have flash
+- Update user locale
+- Fix repeating photo gallery results on Android
