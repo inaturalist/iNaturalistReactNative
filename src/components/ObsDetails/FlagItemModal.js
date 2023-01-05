@@ -95,31 +95,47 @@ const FlagItemModal = ( {
           <Text className="text-base">
             {t( "Flag-Item-Description" )}
           </Text>
-          <Pressable className="flex-row my-2" onPress={() => toggleValue( "spam" )}>
+          <Pressable className="flex-row my-2">
             <CheckBox
               disabled={false}
               value={value === "spam"}
-            />
-            <Text className="font-bold text-lg ml-5">{t( "Spam" )}</Text>
-          </Pressable>
-          <Text className="mb-2 text-base" style>{t( "Spam-Examples" )}</Text>
-
-          <Pressable className="flex-row my-2" onPress={() => toggleValue( "inappropriate" )}>
-            <CheckBox
-              disabled={false}
-              value={value === "inappropriate"}
-            />
-            <Text className="font-bold text-lg ml-5">{t( "Offensive-Inappropriate" )}</Text>
-          </Pressable>
-          <Text className="mb-2 text-base">{t( "Offensive-Inappropriate-Examples" )}</Text>
-
-          <Pressable className="flex-row my-2" onPress={() => toggleValue( "other" )}>
-            <CheckBox
-              disabled={false}
-              value={value === "other"}
+              onValueChange={() => toggleValue( "spam" )}
             />
             <Text
               className="font-bold text-lg ml-5"
+              onPress={() => toggleValue( "spam" )}
+            >
+              {t( "Spam" )}
+
+            </Text>
+          </Pressable>
+          <Text className="mb-2 text-base" style>{t( "Spam-Examples" )}</Text>
+
+          <Pressable className="flex-row my-2">
+            <CheckBox
+              disabled={false}
+              value={value === "inappropriate"}
+              onValueChange={() => toggleValue( "inappropriate" )}
+            />
+            <Text
+              className="font-bold text-lg ml-5"
+              onPress={() => toggleValue( "inappropriate" )}
+            >
+              {t( "Offensive-Inappropriate" )}
+
+            </Text>
+          </Pressable>
+          <Text className="mb-2 text-base">{t( "Offensive-Inappropriate-Examples" )}</Text>
+
+          <Pressable className="flex-row my-2">
+            <CheckBox
+              disabled={false}
+              value={value === "other"}
+              onValueChange={() => toggleValue( "other" )}
+            />
+            <Text
+              className="font-bold text-lg ml-5"
+              onPress={() => toggleValue( "other" )}
             >
               {t( "Other" )}
 
