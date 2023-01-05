@@ -48,10 +48,6 @@
     "comment": "Quality grade option: Casual (shortened for My Observations view)",
     "val": "C"
   },
-  "camera-button-label-switch-camera": {
-    "comment": "Accessible label for the camera button",
-    "val": "Use the device's other camera."
-  },
   "Camera-Roll": "Camera Roll",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
@@ -108,14 +104,6 @@
   "Filters": "Filters",
   "Finish": "Finish",
   "Fish": "Fish",
-  "flash-button-label-flash": {
-    "comment": "Accessible label for the flash button, when flas is turned on",
-    "val": "The flash is turned on. Press here to disable it."
-  },
-  "flash-button-label-flash-off": {
-    "comment": "Accessible label for the flash button, when flas is turned off",
-    "val": "The flash is turned off. Press here to enable it."
-  },
   "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
@@ -204,9 +192,6 @@
   "Muted-Users": "Muted Users",
   "Names": "Names",
   "Native": "Native",
-  "Navigate-to-login-screen": "Navigate to login screen",
-  "Navigate-to-observation-details": "Navigate to observation details screen",
-  "Navigate-to-taxon-details": "Navigate to taxon details",
   "Nearby": {
     "comment": "Header for nearby projects",
     "val": "Nearby"
@@ -498,5 +483,27 @@
     "val": "Add a comment..."
   },
   "Discard-Comment": "Discard Comment",
-  "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?"
+  "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
+  "Add-this-ID": "Add this identification",
+  "Camera-button-label-switch-camera": {
+    "comment": "Accessible label for the camera button",
+    "val": "Use the device's other camera."
+  },
+  "Camera-button-value-back": "The back camera is being used.",
+  "Camera-button-value-front": "The front camera is being used.",
+  "Flash-button-label-flash": {
+    "comment": "Accessible label for the flash button, when flash is turned on",
+    "val": "Disable flash."
+  },
+  "Flash-button-label-flash-off": {
+    "comment": "Accessible label for the flash button, when flash is turned off",
+    "val": "Enable flash."
+  },
+  "Flash-button-value-flash": "The flash is turned on.",
+  "Flash-button-value-flash-off": "The flash is turned off.",
+  "Navigate-back": "Navigate back",
+  "Navigate-to-login-screen": "Navigate to login screen",
+  "Navigate-to-observation-details": "Navigate to observation details screen",
+  "Navigate-to-taxon-details": "Navigate to taxon details",
+  "Take-photo": "Take photo"
 }

@@ -63,9 +63,6 @@ Blocked-Users = Blocked Users
 # Quality grade option: Casual (shortened for My Observations view)
 C = C
 
-# Accessible label for the camera button
-camera-button-label-switch-camera = Use the device's other camera.
-
 Camera-Roll = Camera Roll
 
 Cancel = Cancel
@@ -158,12 +155,6 @@ Filters = Filters
 Finish = Finish
 
 Fish = Fish
-
-# Accessible label for the flash button, when flas is turned on
-flash-button-label-flash = The flash is turned on. Press here to disable it.
-
-# Accessible label for the flash button, when flas is turned off
-flash-button-label-flash-off = The flash is turned off. Press here to enable it.
 
 Following = Following
 
@@ -292,12 +283,6 @@ Muted-Users = Muted Users
 Names = Names
 
 Native = Native
-
-Navigate-to-login-screen = Navigate to login screen
-
-Navigate-to-observation-details = Navigate to observation details screen
-
-Navigate-to-taxon-details = Navigate to taxon details
 
 # Header for nearby projects
 Nearby = Nearby
@@ -693,3 +678,21 @@ Yes = Yes
 No = No
 Discard-Comment = Discard Comment
 Are-you-sure-discard-comment = Are you sure you want to discard this comment?
+
+## Accessibility labels: these are used by screen readers to describe actionable elements
+Add-this-ID = Add this identification
+# Accessible label for the camera button
+Camera-button-label-switch-camera = Use the device's other camera.
+Camera-button-value-back = The back camera is being used.
+Camera-button-value-front = The front camera is being used.
+# Accessible label for the flash button, when flash is turned on
+Flash-button-label-flash = Disable flash.
+# Accessible label for the flash button, when flash is turned off
+Flash-button-label-flash-off = Enable flash.
+Flash-button-value-flash = The flash is turned on.
+Flash-button-value-flash-off = The flash is turned off.
+Navigate-back = Navigate back
+Navigate-to-login-screen = Navigate to login screen
+Navigate-to-observation-details = Navigate to observation details screen
+Navigate-to-taxon-details = Navigate to taxon details
+Take-photo = Take photo
