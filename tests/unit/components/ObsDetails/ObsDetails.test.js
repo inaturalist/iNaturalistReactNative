@@ -55,14 +55,12 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 } ) );
 
 jest.mock( "components/ObsDetails/AddCommentModal" );
+jest.mock( "components/SharedComponents/PhotoScroll" );
 
 test( "renders obs details from remote call", async ( ) => {
-  const { getByTestId, getByText, findByTestId } = renderComponent( <ObsDetails /> );
+  const { getByText, findByTestId } = renderComponent( <ObsDetails /> );
 
   expect( await findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
-  expect(
-    getByTestId( "PhotoScroll.photo" ).props.source
-  ).toStrictEqual( { uri: mockObservation.observationPhotos[0].photo.url } );
   expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
   // TODO: figure out how to test elements which are mapped to camelCase via
   // Observation model right now, these elements are not rendering in

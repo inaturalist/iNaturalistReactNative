@@ -35,6 +35,7 @@ const PhotoScroll = ( { photos }: Props ): React.Node => {
 
   return (
     <FlatList
+      testID="photo-scroll"
       horizontal
       keyExtractor={extractKey}
       data={photos}
