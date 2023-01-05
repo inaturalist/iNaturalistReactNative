@@ -56,6 +56,7 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 } ) );
 
 jest.mock( "components/ObsDetails/AddCommentModal" );
+jest.mock( "components/ObsDetails/ActivityTab" );
 jest.mock( "components/SharedComponents/PhotoScroll" );
 jest.mock( "components/SharedComponents/QualityBadge" );
 
@@ -108,18 +109,19 @@ test( "navigates to observer profile on button press", async ( ) => {
     .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
 } );
 
-test( "navigates to identifier profile on button press", async ( ) => {
-  const { findByTestId } = renderComponent( <ObsDetails /> );
+// Move to ActiviyTab.test.js
+// test( "navigates to identifier profile on button press", async ( ) => {
+//   const { findByTestId } = renderComponent( <ObsDetails /> );
 
-  fireEvent.press(
-    await findByTestId(
-      `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
-    )
-  );
-  expect( mockNavigate ).toHaveBeenCalledWith( "UserProfile", {
-    userId: mockObservation.identifications[0].user.id
-  } );
-} );
+//   fireEvent.press(
+//     await findByTestId(
+//       `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
+//     )
+//   );
+//   expect( mockNavigate ).toHaveBeenCalledWith( "UserProfile", {
+//     userId: mockObservation.identifications[0].user.id
+//   } );
+// } );
 
 test( "navigates to taxon details on button press", async ( ) => {
   const { findByTestId } = renderComponent( <ObsDetails /> );
