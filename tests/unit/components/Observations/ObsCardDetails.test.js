@@ -11,6 +11,10 @@ test( "renders correct taxon and observation details", () => {
     <ObsCardDetails view="list" item={testObservation} />
   );
 
-  expect( getByText( testObservation.taxon.preferredCommonName ) ).toBeTruthy();
+  expect(
+    getByText(
+      `${testObservation.taxon.preferred_common_name} (${testObservation.taxon.name})`
+    )
+  ).toBeTruthy();
   expect( getByText( testObservation.placeGuess ) ).toBeTruthy();
 } );
