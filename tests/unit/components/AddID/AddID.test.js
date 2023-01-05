@@ -44,6 +44,7 @@ const mockRoute = { params: {} };
 describe( "AddID", ( ) => {
   test( "should not have accessibility errors", ( ) => {
     const addID = <AddID route={mockRoute} />;
+
     expect( addID ).toBeAccessible( );
   } );
 

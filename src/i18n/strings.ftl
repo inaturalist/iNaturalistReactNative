@@ -680,6 +680,7 @@ Discard-Comment = Discard Comment
 Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
 ## Accessibility labels: these are used by screen readers to describe actionable elements
+Add-this-ID = Add this identification
 # Accessible label for the camera button
 Camera-button-label-switch-camera = Use the device's other camera.
 # Accessible label for the flash button, when flash is turned on

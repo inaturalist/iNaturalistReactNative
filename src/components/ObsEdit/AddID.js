@@ -109,6 +109,10 @@ const AddID = ( { route }: Props ): Node => {
         <Pressable
           className="flex-row items-center w-16 grow"
           onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )}
+          accessible
+          accessibilityRole="link"
+          accessibilityLabel={t( "Navigate-to-taxon-details" )}
+          accessibilityValue={{ text: item.name }}
         >
           <Image
             className="w-12 h-12 mr-1 bg-lightGray"
@@ -125,15 +129,25 @@ const AddID = ( { route }: Props ): Node => {
             icon="information-outline"
             size={25}
             onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )}
+            accessible
+            accessibilityRole="link"
+            accessibilityLabel={t( "Navigate-to-taxon-details" )}
+            accessibilityValue={{ text: item.name }}
           />
           <IconButton
             icon="check"
             size={25}
             iconColor={colors.inatGreen}
-            onPress={( ) => {
+            onPress={() => {
               onIDAdded( createID( item ) );
-              if ( goBackOnSave ) { navigation.goBack( ); }
+              if ( goBackOnSave ) {
+                navigation.goBack();
+              }
             }}
+            accessible
+            accessibilityRole="button"
+            accessibilityLabel={t( "Add-this-ID" )}
+            accessibilityValue={{ text: item.name }}
           />
         </View>
       </View>
@@ -160,14 +174,22 @@ const AddID = ( { route }: Props ): Node => {
             <View>
               <Text>{t( "ID-Comment" )}</Text>
               <View style={viewStyles.commentContainer}>
-                <IconMaterial style={textStyles.commentLeftIcon} name="textsms" size={25} />
+                <IconMaterial
+                  style={textStyles.commentLeftIcon}
+                  name="textsms"
+                  size={25}
+                />
                 <Text style={textStyles.comment}>{comment}</Text>
                 <Pressable
                   style={viewStyles.commentRightIconContainer}
                   onPress={editComment}
                   accessibilityRole="link"
                 >
-                  <IconMaterial style={textStyles.commentRightIcon} name="edit" size={25} />
+                  <IconMaterial
+                    style={textStyles.commentRightIcon}
+                    name="edit"
+                    size={25}
+                  />
                 </Pressable>
               </View>
             </View>
@@ -182,6 +204,11 @@ const AddID = ( { route }: Props ): Node => {
             value={taxonSearch}
             onChangeText={setTaxonSearch}
             selectionColor={colors.black}
+            accessible
+            accessibilityLabel={t(
+              "Search-for-a-taxon-to-add-an-identification"
+            )}
+            accessibilityRole="search"
           />
           <FlatList
             data={taxonList}
@@ -215,10 +242,7 @@ const AddID = ( { route }: Props ): Node => {
                 <NativeTextInput
                   // eslint-disable-next-line react/jsx-props-no-spreading
                   {...innerProps}
-                  style={[
-                    innerProps.style,
-                    viewStyles.commentInputText
-                  ]}
+                  style={[innerProps.style, viewStyles.commentInputText]}
                 />
               )}
             />
@@ -258,6 +282,9 @@ const AddID = ( { route }: Props ): Node => {
                 setComment( commentDraft );
                 bottomSheetModalRef.current?.dismiss();
               }}
+              accessible
+              accessibilityRole="button"
+              accessibilityLabel={t( "Save-comment" )}
             >
               {comment.length > 0 ? t( "Edit-comment" ) : t( "Add-comment" )}
             </Button>
