@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import React from "react";
+import { View } from "react-native";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
@@ -57,6 +58,12 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 jest.mock( "components/ObsDetails/AddCommentModal" );
 jest.mock( "components/SharedComponents/PhotoScroll" );
 
+const mockView = <View testID="mock-view" />;
+jest.mock( "components/ObsDetails/DataTab", () => ( {
+  __esModule: true,
+  default: () => mockView
+} ) );
+
 describe( "ObsDetails", () => {
   test( "should not have accessibility errors", async () => {
     renderComponent( <ObsDetails /> );
@@ -76,11 +83,12 @@ test( "renders obs details from remote call", async ( ) => {
 } );
 
 test( "renders data tab on button press", async ( ) => {
-  const { getByText, findByTestId } = renderComponent( <ObsDetails /> );
-  const button = await findByTestId( "ObsDetails.DataTab" );
+  renderComponent( <ObsDetails /> );
+  const button = await screen.findByTestId( "ObsDetails.DataTab" );
+  expect( screen.queryByTestId( "mock-view" ) ).not.toBeTruthy( );
 
   fireEvent.press( button );
-  expect( getByText( mockObservation.description ) ).toBeTruthy( );
+  expect( await screen.findByTestId( "mock-view" ) ).toBeTruthy( );
 } );
 
 test( "navigates to observer profile on button press", async ( ) => {
