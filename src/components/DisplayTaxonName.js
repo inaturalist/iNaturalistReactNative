@@ -55,7 +55,7 @@ const DisplayTaxonName = ( { item: { user, taxon } }: Props ): Node => {
   } else if ( taxonData.commonName ) {
     title = `${taxonData.commonName} (${title})`;
   }
-
+console.log(title)
   return <Text numberOfLines={1}>{title || "no name"}</Text>;
 };
 
