@@ -683,10 +683,16 @@ Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 Add-this-ID = Add this identification
 # Accessible label for the camera button
 Camera-button-label-switch-camera = Use the device's other camera.
+Camera-button-value-back = The back camera is being used.
+Camera-button-value-front = The front camera is being used.
 # Accessible label for the flash button, when flash is turned on
-Flash-button-label-flash = The flash is turned on. Press here to disable it.
+Flash-button-label-flash = Disable flash.
 # Accessible label for the flash button, when flash is turned off
-Flash-button-label-flash-off = The flash is turned off. Press here to enable it.
+Flash-button-label-flash-off = Enable flash.
+Flash-button-value-flash = The flash is turned on.
+Flash-button-value-flash-off = The flash is turned off.
+Navigate-back = Navigate back
 Navigate-to-login-screen = Navigate to login screen
 Navigate-to-observation-details = Navigate to observation details screen
 Navigate-to-taxon-details = Navigate to taxon details
+Take-photo = Take photo
