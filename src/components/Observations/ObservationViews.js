@@ -8,8 +8,8 @@ import React, {
   useMemo, useRef, useState
 } from "react";
 import { Animated, Dimensions } from "react-native";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
-import useLoggedIn from "sharedHooks/useLoggedIn";
 
 import EmptyList from "./EmptyList";
 import GridItem from "./GridItem";
@@ -34,7 +34,7 @@ const ObservationViews = ( ): Node => {
   const localObservations = useLocalObservations( );
   const [view, setView] = useState( "list" );
   const navigation = useNavigation( );
-  const isLoggedIn = useLoggedIn( );
+  const currentUser = useCurrentUser( );
   const { observationList } = localObservations;
   const [hasScrolled, setHasScrolled] = useState( false );
   const [idBelow, setIdBelow] = useState( null );
@@ -76,7 +76,7 @@ const ObservationViews = ( ): Node => {
   };
 
   const renderEmptyState = ( ) => {
-    if ( ( isLoggedIn === false )
+    if ( ( currentUser === false )
       || ( !isLoading && observationList.length === 0 ) ) {
       return <EmptyList />;
     }
@@ -95,14 +95,13 @@ const ObservationViews = ( ): Node => {
 
   const renderHeader = useMemo( ( ) => (
     <ObsListHeader
-      isLoggedIn={isLoggedIn}
       scrollY={scrollY}
       setView={setView}
     />
-  ), [isLoggedIn, scrollY] );
+  ), [scrollY] );
 
   const renderFooter = ( ) => {
-    if ( isLoggedIn === false ) { return <View />; }
+    if ( currentUser === false ) { return <View />; }
     return (
       <InfiniteScrollFooter
         view={view}
@@ -111,12 +110,7 @@ const ObservationViews = ( ): Node => {
     );
   };
 
-  const renderBottomSheet = ( ) => (
-    <ObsListBottomSheet
-      hasScrolled={hasScrolled}
-      isLoggedIn={isLoggedIn}
-    />
-  );
+  const renderBottomSheet = ( ) => <ObsListBottomSheet hasScrolled={hasScrolled} />;
 
   const renderItemSeparator = ( ) => <View className="border border-border" />;
 

@@ -71,7 +71,7 @@ const useCameraRollPhotos = (
         fetchingPhotos: false
       } );
     } catch ( e ) {
-      console.log( e, "couldn't get photos from gallery" );
+      console.warn( e, "couldn't get photos from gallery" );
     }
   }, [photoFetchStatus, options] );
 

@@ -1,5 +1,6 @@
 // @flow
 
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import NetworkLogger from "react-native-network-logger";
@@ -10,6 +11,7 @@ import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 const NetworkLogging = ( ): Node => (
   <ViewWithFooter>
     <NetworkLogger />
+    <View className="pb-40" />
   </ViewWithFooter>
 );
 

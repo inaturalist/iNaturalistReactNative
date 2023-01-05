@@ -41,7 +41,7 @@ const fetchUserMe = async ( params: Object = {}, opts: Object = {} ): Promise<an
     const { results } = await inatjs.users.me( { ...REMOTE_USER_PARAMS, ...params, ...opts } );
     return results[0];
   } catch ( e ) {
-    return handleError( e );
+    return handleError( e, { throw: true } );
   }
 };
 

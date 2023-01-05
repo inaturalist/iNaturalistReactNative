@@ -1,0 +1,89 @@
+##
+# Run e2e tests
+##
+name: e2e-iOS
+on:
+  pull_request:
+
+jobs:
+  setup:
+    runs-on: macos-latest
+    steps:
+      - uses: fkirc/skip-duplicate-actions@master
+        with:
+          github_token: ${{ github.token }}
+          cancel_others: true
+
+  test:
+    needs: setup
+    runs-on: macos-latest
+    # Kill the task if not finished after 60 minutes
+    timeout-minutes: 60
+
+    steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+
+    - name: Install Node.js, NPM and Yarn
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Cache node modules
+      uses: actions/cache@v3
+      id: cache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Rebuild detox from cache
+      if: steps.cache.outputs.cache-hit == 'true'
+      run: npx detox clean-framework-cache && npx detox build-framework-cache
+
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm install --legacy-peer-deps
+
+    - name: Cache Pods
+      uses: actions/cache@v3
+      id: podcache
+      with:
+        path: ios/Pods
+        key: pods-${{ hashFiles('**/Podfile.lock') }}
+
+    - name: Update Pods
+      run: |
+        gem update cocoapods xcodeproj
+        cd ios && pod install && cd ..
+
+    # Install prerequisites for detox and build app, and test
+    - run: brew tap wix/brew
+    - run: brew install applesimutils
+    
+    - name: Build test app
+      run: npm run e2e:build
+    
+    - name: Run e2e test
+      run: npm run e2e:test -- --cleanup --debug-synchronization 200 --take-screenshots failing --record-videos failing -l trace
+    
+    # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
+    - name: Store Detox artifacts on test failure
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: detox-artifacts
+        path: artifacts
+
+  notify:
+    name: Notify Slack
+    needs: test
+    if: ${{ success() || failure() }}
+    runs-on: macos-latest
+    steps:
+      - uses: iRoachie/slack-github-actions@v2.3.0
+        if: env.SLACK_WEBHOOK_URL != null
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

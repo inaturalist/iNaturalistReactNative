@@ -249,8 +249,6 @@ PODS:
     - react-native-config/App (= 1.4.11)
   - react-native-config/App (1.4.11):
     - React-Core
-  - react-native-exif (0.5.0):
-    - React
   - react-native-exif-reader (0.1.0):
     - React-Core
   - react-native-geocoder-reborn (0.9.0):
@@ -433,7 +431,6 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - react-native-config (from `../node_modules/react-native-config`)
-  - react-native-exif (from `../node_modules/react-native-exif`)
   - react-native-exif-reader (from `../node_modules/react-native-exif-reader`)
   - react-native-geocoder-reborn (from `../node_modules/react-native-geocoder-reborn`)
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
@@ -531,8 +528,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-config:
     :path: "../node_modules/react-native-config"
-  react-native-exif:
-    :path: "../node_modules/react-native-exif"
   react-native-exif-reader:
     :path: "../node_modules/react-native-exif-reader"
   react-native-geocoder-reborn:
@@ -642,7 +637,6 @@ SPEC CHECKSUMS:
   React-logger: f8071ad48248781d5afdb8a07f778758529d3019
   react-native-cameraroll: 38b40d9033e4077b6c603f92f95c6d05fa7907df
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
-  react-native-exif: c43e7c18af8bfa133c79145671a0f036e413468e
   react-native-exif-reader: 3839c5a77c8c9cd2d05becb9f51e6ba0f2b13a65
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
