@@ -20,9 +20,11 @@ Object.defineProperty( INatApiError.prototype, "name", {
 
 const handleError = async ( e: Object, options: Object = {} ): Object => {
   if ( !e.response ) { throw e; }
-  const errorJson = await e.response.json( );
-  const error = new INatApiError( errorJson );
-  console.error( `Error requesting ${e.response.url}` );
+  const errorText = await e.response.text( );
+  const error = new INatApiError( errorText );
+  console.error(
+    `Error requesting ${e.response.url} (status: ${e.response.status}): ${errorText}`
+  );
   if ( options.throw ) {
     throw error;
   }

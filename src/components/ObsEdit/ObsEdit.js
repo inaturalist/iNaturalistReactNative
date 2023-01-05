@@ -17,8 +17,8 @@ import { ActivityIndicator, BackHandler } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Menu } from "react-native-paper";
 import Photo from "realmModels/Photo";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservation from "sharedHooks/useLocalObservation";
-import useLoggedIn from "sharedHooks/useLoggedIn";
 import colors from "styles/tailwindColors";
 
 import AddEvidenceModal from "./AddEvidenceModal";
@@ -53,7 +53,7 @@ const ObsEdit = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const localObservation = useLocalObservation( params?.uuid );
-  const isLoggedIn = useLoggedIn( );
+  const currentUser = useCurrentUser( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [showAddEvidenceModal, setShowAddEvidenceModal] = useState( false );
@@ -236,7 +236,7 @@ const ObsEdit = ( ): Node => {
               setLoading( false );
               setNextScreen( );
             }}
-            disabled={!isLoggedIn}
+            disabled={!currentUser}
           />
         </View>
         <AddEvidenceModal

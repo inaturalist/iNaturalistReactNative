@@ -19,7 +19,6 @@ const Messages = ( ): Node => {
   } = useAuthenticatedQuery(
     ["searchMessages"],
     optsWithAuth => searchMessages( { page: 1 }, optsWithAuth ),
-    { },
     {
       enabled: !!currentUser
     }

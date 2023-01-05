@@ -61,10 +61,11 @@ const App = ( { children }: Props ): Node => {
     async function changeLanguageToLocale( locale ) {
       await i18next.changeLanguage( locale );
     }
+    if ( !currentUser ) { return; }
     if ( currentUser?.locale ) {
       changeLanguageToLocale( currentUser.locale );
     }
-  }, [currentUser?.locale] );
+  }, [currentUser] );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

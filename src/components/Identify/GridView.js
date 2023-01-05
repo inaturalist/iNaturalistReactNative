@@ -23,7 +23,6 @@ const GridView = ( {
   const renderGridItem = ( { item } ) => (
     <GridItem
       item={item}
-      handlePress={( ) => console.log( "press in identify" )}
       reviewedIds={reviewedIds}
       setReviewedIds={setReviewedIds}
     />

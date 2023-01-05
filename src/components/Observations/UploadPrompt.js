@@ -20,7 +20,7 @@ const UploadPrompt = ( {
     <Button
       level="neutral"
       text={t( "UPLOAD-X-OBSERVATIONS", { count: numOfUnuploadedObs } )}
-      className="mt-5"
+      className="py-1 mt-5"
       onPress={( ) => {
         updateUploadStatus( );
         uploadObservations( );

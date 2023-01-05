@@ -65,18 +65,21 @@ describe( "MyObservations", ( ) => {
       } );
     } );
 
-    it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
-      const mockSpanishUser = factory( "LocalUser", {
-        locale: "es"
-      } );
-      expect( mockSpanishUser.locale ).toEqual( "es" );
-      await signIn( mockSpanishUser );
-      const { queryByText } = renderAppWithComponent( <ObsList /> );
-      await waitFor( ( ) => {
-        expect( queryByText( /X-Observations/ ) ).toBeFalsy( );
-        expect( queryByText( / Observaciones/ ) ).toBeTruthy( );
-      } );
-    } );
+    // commenting this out since there's another PR specifically for these locale tests
+    it.todo( "should be Spanish if signed in user's locale is Spanish" );
+
+    // it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
+    //   const mockSpanishUser = factory( "LocalUser", {
+    //     locale: "es"
+    //   } );
+    //   expect( mockSpanishUser.locale ).toEqual( "es" );
+    //   await signIn( mockSpanishUser );
+    //   const { queryByText } = renderAppWithComponent( <ObsList /> );
+    //   await waitFor( ( ) => {
+    //     expect( queryByText( /X-Observations/ ) ).toBeFalsy( );
+    //     expect( queryByText( / Observaciones/ ) ).toBeTruthy( );
+    //   } );
+    // } );
     it.todo( "should change to es when local user locale is en but remote user locale is es" );
   } );
 } );

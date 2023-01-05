@@ -73,3 +73,10 @@ fastlane/Appfile
 # Apple signing and auth files that fastlane might download
 *.cer
 *.mobileprovision
+
+# Detox e2e test artifacts
+artifacts/
+*.log
+
+# VisualStudioCode #
+.vscode

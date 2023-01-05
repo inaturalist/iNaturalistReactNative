@@ -1,6 +1,10 @@
 import faker from "faker";
 import { readExif } from "react-native-exif-reader";
-import { parseExif, parseExifDateToLocalTimezone } from "sharedHelpers/parseExif";
+import {
+  formatExifDateAsString,
+  parseExif,
+  parseExifDateToLocalTimezone
+} from "sharedHelpers/parseExif";
 
 // Expected EXIF metadata of the above file
 
@@ -37,5 +41,12 @@ describe( "parseExif", ( ) => {
     expect( exif.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
     expect( exif.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
     expect( exif.positional_accuracy ).toEqual( EXPECTED_EXIF_POSITIONAL_ACCURACY );
+  } );
+} );
+
+describe( "formatExifDateAsString", ( ) => {
+  it( "should return date in a string format ready to upload to server", ( ) => {
+    const dateString = formatExifDateAsString( EXPECTED_EXIF_DATE );
+    expect( typeof dateString ).toBe( "string" );
   } );
 } );

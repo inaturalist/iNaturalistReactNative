@@ -17,7 +17,7 @@ const useUserLocation = ( ): Object => {
         const permission = await request( PERMISSIONS.IOS.LOCATION_WHEN_IN_USE );
         return permission;
       } catch ( e ) {
-        console.log( e, ": error requesting iOS permissions" );
+        console.warn( e, ": error requesting iOS permissions" );
       }
     }
     return null;
@@ -43,7 +43,7 @@ const useUserLocation = ( ): Object => {
       };
 
       // TODO: set geolocation fetch error
-      const failure = error => console.log( error.code, error.message );
+      const failure = error => console.warn( error.code, error.message );
 
       const options = { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
 

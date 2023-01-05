@@ -15,8 +15,8 @@ type Props = {
 }
 
 const ObsCardStats = ( { item, type, view }: Props ): Node => {
-  const numOfIds = item.identifications?.length || 0;
-  const numOfComments = item.comments?.length || 0;
+  const numOfIds = item.identifications?.length || "0";
+  const numOfComments = item.comments?.length || "0";
   const qualityGrade = checkCamelAndSnakeCase( item, "qualityGrade" );
 
   const setIconColor = ( ) => {
@@ -35,11 +35,10 @@ const ObsCardStats = ( { item, type, view }: Props ): Node => {
     casual: t( "C" )
   };
 
-  // console.log( item.viewed, "viewed" );
   const renderIdRow = ( ) => (
     <View className="flex-row items-center mr-3">
       <Icon name="shield" color={setIconColor( )} size={14} />
-      <Text className="mx-1" style={{ color: setIconColor( ) }}>{numOfIds || 0}</Text>
+      <Text className="mx-1" style={{ color: setIconColor( ) }}>{numOfIds}</Text>
     </View>
   );
 
@@ -51,7 +50,7 @@ const ObsCardStats = ( { item, type, view }: Props ): Node => {
         style={{ color: setIconColor( ) }}
         testID="ObsList.obsCard.commentCount"
       >
-        {numOfComments || 0}
+        {numOfComments}
       </Text>
     </View>
   );

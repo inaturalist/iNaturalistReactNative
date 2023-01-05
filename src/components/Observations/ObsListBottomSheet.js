@@ -3,6 +3,7 @@
 import BottomSheet from "components/SharedComponents/BottomSheet";
 import type { Node } from "react";
 import React from "react";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
 import useUploadStatus from "sharedHooks/useUploadStatus";
 
@@ -11,15 +12,12 @@ import UploadProgressBar from "./UploadProgressBar";
 import UploadPrompt from "./UploadPrompt";
 
 type Props = {
-  isLoggedIn: ?boolean,
   hasScrolled: boolean
 }
 
-const ObsListBottomSheet = ( {
-  isLoggedIn, hasScrolled
-}: Props ): Node => {
-  const localObservations = useLocalObservations( );
-  const { unuploadedObsList, allObsToUpload } = localObservations;
+const ObsListBottomSheet = ( { hasScrolled }: Props ): Node => {
+  const currentUser = useCurrentUser( );
+  const { unuploadedObsList, allObsToUpload } = useLocalObservations( );
   const numOfUnuploadedObs = unuploadedObsList?.length;
   const { uploadInProgress, updateUploadStatus } = useUploadStatus( );
 
@@ -27,13 +25,16 @@ const ObsListBottomSheet = ( {
     return null;
   }
 
-  if ( isLoggedIn === false ) {
+  if ( !currentUser ) {
     return (
       <BottomSheet hide={hasScrolled}>
         <LoginPrompt />
       </BottomSheet>
     );
   }
+  // FYI, this actually controls uploading, because the UploadProgressBar
+  // calls useUploadObservations which immediately tries to upload, so just
+  // rendering UploadProgressBar kicks off the upload
   if ( uploadInProgress ) {
     return (
       <UploadProgressBar
@@ -42,7 +43,7 @@ const ObsListBottomSheet = ( {
       />
     );
   }
-  if ( numOfUnuploadedObs > 0 && isLoggedIn ) {
+  if ( numOfUnuploadedObs > 0 && currentUser ) {
     return (
       <BottomSheet hide={hasScrolled}>
         <UploadPrompt
