@@ -4,7 +4,7 @@ import CheckBox from "@react-native-community/checkbox";
 import createFlag from "api/flags";
 import Button from "components/SharedComponents/Buttons/Button";
 import {
-  Modal, Pressable,
+  Modal,
   SafeAreaView,
   Text, View
 } from "components/styledComponents";
@@ -95,7 +95,7 @@ const FlagItemModal = ( {
           <Text className="text-base">
             {t( "Flag-Item-Description" )}
           </Text>
-          <Pressable className="flex-row my-2">
+          <View className="flex-row my-2">
             <CheckBox
               disabled={false}
               value={value === "spam"}
@@ -108,10 +108,10 @@ const FlagItemModal = ( {
               {t( "Spam" )}
 
             </Text>
-          </Pressable>
+          </View>
           <Text className="mb-2 text-base" style>{t( "Spam-Examples" )}</Text>
 
-          <Pressable className="flex-row my-2">
+          <View className="flex-row my-2">
             <CheckBox
               disabled={false}
               value={value === "inappropriate"}
@@ -124,10 +124,10 @@ const FlagItemModal = ( {
               {t( "Offensive-Inappropriate" )}
 
             </Text>
-          </Pressable>
+          </View>
           <Text className="mb-2 text-base">{t( "Offensive-Inappropriate-Examples" )}</Text>
 
-          <Pressable className="flex-row my-2">
+          <View className="flex-row my-2">
             <CheckBox
               disabled={false}
               value={value === "other"}
@@ -140,7 +140,7 @@ const FlagItemModal = ( {
               {t( "Other" )}
 
             </Text>
-          </Pressable>
+          </View>
           <Text className="mb-2 text-base">{t( "Flag-Item-Other-Description" )}</Text>
           {( value === "other" )
             ? (
