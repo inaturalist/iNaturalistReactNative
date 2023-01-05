@@ -20,17 +20,25 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 29,
+  schemaVersion: 30,
   path: "db.realm",
   migration: ( oldRealm, newRealm ) => {
+    if ( oldRealm.schemaVersion < 30 ) {
+      const oldUsers = oldRealm.objects( "User" );
+      const newUsers = newRealm.objects( "User" );
+      // loop through all objects and set the new property in the new schema
+      oldUsers.keys( ).forEach( objectIndex => {
+        const newUser = newUsers[objectIndex];
+        newUser.prefers_scientific_name_first = false;
+      } );
+    }
+
     if ( oldRealm.schemaVersion < 29 ) {
       const oldTaxa = oldRealm.objects( "Taxon" );
       const newTaxa = newRealm.objects( "Taxon" );
       // loop through all objects and set the new property in the new schema
       oldTaxa.keys( ).forEach( objectIndex => {
-        const oldTaxon = oldTaxa[objectIndex];
         const newTaxon = newTaxa[objectIndex];
-        newTaxon.preferred_common_name = oldTaxon.preferredCommonName;
         newTaxon.rank_level = 0;
       } );
     }
