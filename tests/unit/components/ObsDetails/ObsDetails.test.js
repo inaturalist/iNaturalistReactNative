@@ -57,6 +57,7 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 
 jest.mock( "components/ObsDetails/AddCommentModal" );
 jest.mock( "components/SharedComponents/PhotoScroll" );
+jest.mock( "components/SharedComponents/QualityBadge" );
 
 const mockView = <View testID="mock-view" />;
 jest.mock( "components/ObsDetails/DataTab", () => ( {
