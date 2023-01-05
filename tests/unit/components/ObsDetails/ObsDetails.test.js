@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import React from "react";
 
@@ -57,6 +57,14 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 jest.mock( "components/ObsDetails/AddCommentModal" );
 jest.mock( "components/SharedComponents/PhotoScroll" );
 
+describe( "ObsDetails", () => {
+  test( "should not have accessibility errors", async () => {
+    renderComponent( <ObsDetails /> );
+    const obsDetails = await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` );
+    expect( obsDetails ).toBeAccessible();
+  } );
+} );
+
 test( "renders obs details from remote call", async ( ) => {
   const { getByText, findByTestId } = renderComponent( <ObsDetails /> );
 
@@ -104,13 +112,3 @@ test( "navigates to taxon details on button press", async ( ) => {
     id: mockObservation.taxon.id
   } );
 } );
-
-test.todo( "should not have accessibility errors" );
-// test( "should not have accessibility errors", ( ) => {
-//   const obsDetails = (
-//     <NavigationContainer>
-//       <ObsDetails />
-//     </NavigationContainer>
-//   );
-//   expect( obsDetails ).toBeAccessible( );
-// } );
