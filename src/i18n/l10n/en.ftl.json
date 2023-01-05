@@ -491,6 +491,14 @@
   },
   "Camera-button-value-back": "The back camera is being used.",
   "Camera-button-value-front": "The front camera is being used.",
+  "Fave-button-label-unfave": {
+    "comment": "Accessible label for the favorite button, when the observation is favorited",
+    "val": "Unfavorite this observation."
+  },
+  "Fave-button-label-fave": {
+    "comment": "Accessible label for the favorite button, when the observation is not favorited",
+    "val": "Favorite this observation."
+  },
   "Flash-button-label-flash": {
     "comment": "Accessible label for the flash button, when flash is turned on",
     "val": "Disable flash."
@@ -502,8 +510,13 @@
   "Flash-button-value-flash": "The flash is turned on.",
   "Flash-button-value-flash-off": "The flash is turned off.",
   "Navigate-back": "Navigate back",
+  "Navigate-to-edit-observation": "Navigate to edit observation screen",
   "Navigate-to-login-screen": "Navigate to login screen",
   "Navigate-to-observation-details": "Navigate to observation details screen",
   "Navigate-to-taxon-details": "Navigate to taxon details",
+  "Navigate-to-user-profile": "Navigate to user profile",
+  "Number-of-comments": "Number of comments",
+  "Number-of-identifications": "Number of identifications",
+  "Observation-has-no-photos-and-no-sounds": "This observation has no photos and no sounds.",
   "Take-photo": "Take photo"
 }

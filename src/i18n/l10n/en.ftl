@@ -685,6 +685,10 @@ Add-this-ID = Add this identification
 Camera-button-label-switch-camera = Use the device's other camera.
 Camera-button-value-back = The back camera is being used.
 Camera-button-value-front = The front camera is being used.
+# Accessible label for the favorite button, when the observation is favorited
+Fave-button-label-unfave = Unfavorite this observation.
+# Accessible label for the favorite button, when the observation is not favorited
+Fave-button-label-fave = Favorite this observation.
 # Accessible label for the flash button, when flash is turned on
 Flash-button-label-flash = Disable flash.
 # Accessible label for the flash button, when flash is turned off
@@ -692,7 +696,12 @@ Flash-button-label-flash-off = Enable flash.
 Flash-button-value-flash = The flash is turned on.
 Flash-button-value-flash-off = The flash is turned off.
 Navigate-back = Navigate back
+Navigate-to-edit-observation = Navigate to edit observation screen
 Navigate-to-login-screen = Navigate to login screen
 Navigate-to-observation-details = Navigate to observation details screen
 Navigate-to-taxon-details = Navigate to taxon details
+Navigate-to-user-profile = Navigate to user profile
+Number-of-comments = Number of comments
+Number-of-identifications = Number of identifications
+Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Take-photo = Take photo
