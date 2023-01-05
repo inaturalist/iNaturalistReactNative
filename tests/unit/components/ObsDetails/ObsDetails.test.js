@@ -65,6 +65,14 @@ jest.mock( "components/ObsDetails/DataTab", () => ( {
   default: () => mockDataTab
 } ) );
 
+jest.mock(
+  "components/SharedComponents/ScrollWithFooter",
+  () => function MockContainer( props ) {
+    // eslint-disable-next-line
+    return <mock-container {...props}>{props.children}</mock-container>;
+  }
+);
+
 describe( "ObsDetails", () => {
   test( "should not have accessibility errors", async () => {
     renderComponent( <ObsDetails /> );
