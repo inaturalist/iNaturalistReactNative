@@ -59,10 +59,10 @@ jest.mock( "components/ObsDetails/AddCommentModal" );
 jest.mock( "components/SharedComponents/PhotoScroll" );
 jest.mock( "components/SharedComponents/QualityBadge" );
 
-const mockView = <View testID="mock-view" />;
+const mockDataTab = <View testID="mock-data-tab" />;
 jest.mock( "components/ObsDetails/DataTab", () => ( {
   __esModule: true,
-  default: () => mockView
+  default: () => mockDataTab
 } ) );
 
 describe( "ObsDetails", () => {
@@ -86,10 +86,10 @@ test( "renders obs details from remote call", async ( ) => {
 test( "renders data tab on button press", async ( ) => {
   renderComponent( <ObsDetails /> );
   const button = await screen.findByTestId( "ObsDetails.DataTab" );
-  expect( screen.queryByTestId( "mock-view" ) ).not.toBeTruthy( );
+  expect( screen.queryByTestId( "mock-data-tab" ) ).not.toBeTruthy( );
 
   fireEvent.press( button );
-  expect( await screen.findByTestId( "mock-view" ) ).toBeTruthy( );
+  expect( await screen.findByTestId( "mock-data-tab" ) ).toBeTruthy();
 } );
 
 test( "navigates to observer profile on button press", async ( ) => {
