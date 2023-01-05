@@ -184,7 +184,7 @@ const AddID = ( { route }: Props ): Node => {
             selectionColor={colors.black}
           />
           <FlatList
-            keyboardShouldPersistTaps='always'
+            keyboardShouldPersistTaps="always"
             data={taxonList}
             renderItem={renderTaxonResult}
             keyExtractor={item => item.id}
