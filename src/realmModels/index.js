@@ -29,7 +29,9 @@ export default {
       // loop through all objects and set the new property in the new schema
       oldUsers.keys( ).forEach( objectIndex => {
         const newUser = newUsers[objectIndex];
-        newUser.prefers_scientific_name_first = false;
+        const oldUser = oldUsers[objectIndex];
+        newUser.prefers_scientific_name_first = Boolean( oldUser.prefers_scientific_name_first );
+        oldUser.prefers_scientific_name_first = Boolean( oldUser.prefers_scientific_name_first );
       } );
     }
 
@@ -38,8 +40,10 @@ export default {
       const newTaxa = newRealm.objects( "Taxon" );
       // loop through all objects and set the new property in the new schema
       oldTaxa.keys( ).forEach( objectIndex => {
+        const oldTaxon = oldTaxa[objectIndex];
         const newTaxon = newTaxa[objectIndex];
-        newTaxon.rank_level = 0;
+        newTaxon.rank_level = oldTaxon.rank_level || 0;
+        oldTaxon.rank_level = oldTaxon.rank_level || 0;
       } );
     }
 

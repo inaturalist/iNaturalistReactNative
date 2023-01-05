@@ -32,7 +32,7 @@ class User extends Realm.Object {
       signedIn: "bool?",
       locale: "string?",
       observations_count: "int?",
-      prefers_scientific_name_first: "bool"
+      prefers_scientific_name_first: "bool?"
     }
   }
 }
