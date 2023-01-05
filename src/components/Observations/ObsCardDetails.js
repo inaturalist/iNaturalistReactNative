@@ -10,13 +10,13 @@ import { formatObsListTime } from "sharedHelpers/dateAndTime";
 
 type Props = {
   item: Object,
-  view?: string,
-};
+  view?: string
+}
 
 const ObsCardDetails = ( { item, view }: Props ): Node => {
   const placeGuess = checkCamelAndSnakeCase( item, "placeGuess" );
 
-  const displayTime = () => {
+  const displayTime = ( ) => {
     if ( item._created_at ) {
       return formatObsListTime( item._created_at );
     }
@@ -32,7 +32,7 @@ const ObsCardDetails = ( { item, view }: Props ): Node => {
       </Text>
       <Text numberOfLines={1}>
         <IconMaterial name="watch-later" size={15} />
-        {displayTime()}
+        {displayTime( )}
       </Text>
     </View>
   );
