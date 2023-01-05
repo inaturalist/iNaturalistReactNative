@@ -78,6 +78,15 @@ import org.apache.tools.ant.taskdefs.condition.Os
  * ]
  */
 
+// set up different .env files so fastlane will automatically build using .env.production
+// https://github.com/luggit/react-native-config#android-1
+ project.ext.envConfigFiles = [
+    debug: ".env.staging",
+    release: ".env.production"
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 project.ext.react = [
     enableHermes: true,  // clean and rebuild if changing
 ]

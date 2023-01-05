@@ -8,8 +8,8 @@
 ## Install packages and pods
 
 1. Run `npm install`
-1. Run `npx pod-install ios` or `cd ios && pod install` from the root directory
-1. `cp env.example .env` and fill in appropriate values. This is not part of the code repo (contains secrets, such as OAuth client ID).
+1. Run `npx pod-install` or `cd ios && pod install` from the root directory
+1. `cp env.example .env.staging` and `cp env.example .env.production` and fill in appropriate values. This is not part of the code repo (contains secrets, such as OAuth client ID).
 1. To run on Android, do this `cp android/example-keystore.properties android/keystore.properties`. Fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff. 
 
 ## Set up pre-commit hooks
@@ -59,7 +59,7 @@ Run `npm run e2e:build:android && npm run e2e:test:android` to build the .apk fo
 
 ## Running with Staging Environment
 
-1. Override `API_URL` to a staging API domain - either using a local `.env` file, or overriding the environment variable when calling `npm start` - e.g. `API_URL=http://example.com npm start -- --reset-cache`
+1. Override `API_URL` to a staging API domain - either using local `.env.staging` file, or overriding the environment variable when calling `npm start` - e.g. `API_URL=http://example.com npm start -- --reset-cache`
 
 ## Translations
 
@@ -109,7 +109,7 @@ We're using Nativewind, a styling system for React Native based on Tailwind CSS.
 
 ## Troubleshooting
 
-1. Run `react-native clean-project`. This will give you options to clean caches, clean builds, reinstall pods, and reinstall node_modules. Using this eliminates a lot of hard-to-diagnose build issues.
+1. Run `npx react-native clean-project`. This will give you options to clean caches, clean builds, reinstall pods, and reinstall node_modules. Using this eliminates a lot of hard-to-diagnose build issues.
 1. If you're running on an M series chip, you may need to install a specific version of NDK to the app to build for Android. See `android/build.gradle`
 
 
@@ -119,7 +119,7 @@ We use [fastlane](https://docs.fastlane.tools/) to help automate parts of the de
 
 ### Setting up fastlane
 
-1. Make a [Github personal access token](https://github.com/settings/tokens/) with repo access in the `GITHUB_TOKEN` environmental variable.
+1. Make a [Github personal access token](https://github.com/settings/tokens/) with repo access in the `GITHUB_API_TOKEN` environmental variable.
 1. `cp android/example-keystore.properties android/keystore.properties` and fill in the relevant values provided by another member of iNat staff.
 1. `cp fastlane/example-Appfile fastlane/Appfile` and fill in the relevant values provided by another member of iNat staff.
 1. Work with iNat staff to either get a new Apple ID or associate an existing one with the iNat Apple development team
