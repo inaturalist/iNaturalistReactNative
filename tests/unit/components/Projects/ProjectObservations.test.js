@@ -29,7 +29,9 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
 test( "displays project observations", ( ) => {
   const { getByTestId, getByText } = renderComponent( <ProjectDetails /> );
 
-  expect( getByText( mockObservation.taxon.preferred_common_name ) ).toBeTruthy( );
+  expect( getByText(
+    `${mockObservation.taxon.preferred_common_name} (${mockObservation.taxon.name})`
+  ) ).toBeTruthy( );
   expect( getByTestId( "ObsList.photo" ).props.source )
     .toStrictEqual( { uri: mockObservation.observation_photos[0].photo.url } );
 } );
