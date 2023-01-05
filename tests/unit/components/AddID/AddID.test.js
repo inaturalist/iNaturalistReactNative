@@ -39,17 +39,27 @@ jest.mock( "react-native-vector-icons/MaterialIcons", ( ) => {
   return MaterialIcons;
 } );
 
-test( "renders taxon search results", async ( ) => {
-  inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
-  const route = { params: { } };
-  const { getByTestId } = renderComponent( <AddID route={route} /> );
-  const input = getByTestId( "SearchTaxon" );
-  const taxon = mockTaxaList[0];
-  await waitFor( () => {
-    fireEvent.changeText( input, "Some taxon" );
-    expect( getByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
+const mockRoute = { params: {} };
+
+describe( "AddID", ( ) => {
+  test( "should not have accessibility errors", ( ) => {
+    const addID = <AddID route={mockRoute} />;
+    expect( addID ).toBeAccessible( );
   } );
-  expect(
-    getByTestId( `Search.taxa.${taxon.id}.photo` ).props.source
-  ).toStrictEqual( { uri: taxon.default_photo.square_url } );
+
+  test( "should render taxon search results", async ( ) => {
+    inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
+    const { getByTestId } = renderComponent( <AddID route={mockRoute} /> );
+
+    const input = getByTestId( "SearchTaxon" );
+    const taxon = mockTaxaList[0];
+    await waitFor( () => {
+      fireEvent.changeText( input, "Some taxon" );
+      expect( getByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
+    } );
+
+    expect(
+      getByTestId( `Search.taxa.${taxon.id}.photo` ).props.source
+    ).toStrictEqual( { uri: taxon.default_photo.square_url } );
+  } );
 } );
