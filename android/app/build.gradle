@@ -78,11 +78,12 @@ import org.apache.tools.ant.taskdefs.condition.Os
  * ]
  */
 
-// set up different .env files so fastlane will automatically build using .env.production
+// set up different .env files so fastlane will automatically build using .env
+// and dev builds will use .env.staging
 // https://github.com/luggit/react-native-config#android-1
  project.ext.envConfigFiles = [
     debug: ".env.staging",
-    release: ".env.production"
+    release: ".env"
 ]
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -354,7 +355,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 def isNewArchitectureEnabled() {
     // To opt-in for the New Architecture, you can either:

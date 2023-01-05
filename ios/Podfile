@@ -37,7 +37,7 @@ target 'iNaturalistReactNative' do
 
   ENVFILES = {
     'Debug' => '$(PODS_ROOT)/../../.env.staging',
-    'Release' => '$(PODS_ROOT)/../../.env.production',
+    'Release' => '$(PODS_ROOT)/../../.env',
   }
 
   post_install do |installer|
