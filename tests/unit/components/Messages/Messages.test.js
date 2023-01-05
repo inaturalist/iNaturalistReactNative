@@ -48,6 +48,13 @@ jest.mock( "@tanstack/react-query", ( ) => ( {
   useQuery: ( ) => ( MockData.useQueryResponse )
 } ) );
 
+describe( "Messages", ( ) => {
+  test( "should be accessible", () => {
+    const messages = <Messages />;
+    expect( messages ).toBeAccessible();
+  } );
+} );
+
 describe( "when loading", ( ) => {
   beforeAll( ( ) => {
     MockData.useQueryResponse = {
@@ -56,6 +63,7 @@ describe( "when loading", ( ) => {
       isError: false
     };
   } );
+
   it( "displays activity indicator when loading", ( ) => {
     const { getByTestId } = renderMessages( );
     expect( getByTestId( "Messages.activityIndicator" ) ).toBeTruthy( );
@@ -70,6 +78,7 @@ describe( "when loading complete", ( ) => {
       isError: false
     };
   } );
+
   it( "displays message subject and not activity indicator when loading complete", ( ) => {
     const { getByText, queryByTestId } = renderMessages( );
     expect( getByText( mockMessage.subject ) ).toBeTruthy( );
