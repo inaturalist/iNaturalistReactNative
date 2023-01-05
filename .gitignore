@@ -60,7 +60,7 @@ buck-out/
 /coverage/
 
 # Secrets file
-.env
+.env*
 
 # Fastlane files
 *.zip
