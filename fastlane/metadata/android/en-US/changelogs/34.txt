@@ -1,0 +1,3 @@
+- Point release builds to production API
+- Enforce 500 character limit in release notes
+- Add testing groups to TestFlight; rollout without draft status in Google Play
