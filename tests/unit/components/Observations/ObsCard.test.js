@@ -5,7 +5,9 @@ import React from "react";
 
 import factory from "../../../factory";
 
-const testObservation = factory( "LocalObservation" );
+const testObservation = factory( "LocalObservation", {
+  taxon: { preferred_common_name: "Foo", name: "bar" }
+} );
 
 const qualityGradeText = t( "RG" );
 
