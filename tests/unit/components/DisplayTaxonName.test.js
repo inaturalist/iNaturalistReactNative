@@ -29,6 +29,13 @@ const subspeciesTaxon = factory( "LocalTaxon", {
   rank_level: 9
 } );
 
+const uncapitalizedTaxon = factory( "LocalTaxon", {
+  name: "Acanthaster planci",
+  preferred_common_name: "cRoWn-Of-ThOrNs blue sEa-StarS",
+  rank: "species",
+  rank_level: 10
+} );
+
 describe( "when common name is first", () => {
   const user = { prefers_scientific_name_first: false };
 
@@ -77,6 +84,16 @@ describe( "when common name is first", () => {
 
     expect(
       getByText( "Silver Lupine (Lupinus albifrons var. collinus)" )
+    ).toBeTruthy();
+  } );
+
+  test( "renders correct taxon for improperly capitalized common name", () => {
+    const { getByText } = render(
+      <DisplayTaxonName item={{ taxon: uncapitalizedTaxon, user }} />
+    );
+
+    expect(
+      getByText( "Crown-of-thorns Blue Sea-Stars (Acanthaster planci)" )
     ).toBeTruthy();
   } );
 } );
