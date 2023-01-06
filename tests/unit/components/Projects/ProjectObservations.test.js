@@ -7,7 +7,7 @@ import { renderComponent } from "../../../helpers/render";
 const mockProject = factory( "RemoteProject" );
 const mockObservation = factory( "RemoteObservation", {
   taxon: { preferred_common_name: "Foo", name: "bar" }
-} );;
+} );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
