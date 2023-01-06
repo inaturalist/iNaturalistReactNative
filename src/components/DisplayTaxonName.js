@@ -16,16 +16,19 @@ const DisplayTaxonName = ( { item: { user, taxon } }: Props ): Node => {
   }
   const taxonData = {};
 
+
   taxonData.rank = taxon.rank;
 
+  // Logic follows the SplitTaxon component from web
+  // https://github.com/inaturalist/inaturalist/blob/main/app/webpack/shared/components/split_taxon.jsx
   if ( taxon.preferred_common_name ) {
     taxonData.commonName = _.trim( taxon.preferred_common_name );
   }
 
-  let { name: sciName } = taxon;
+  let { name: scientificName } = taxon;
   if ( taxon.rank === "stateofmatter" ) {
     // @todo translation
-    sciName = "stateofmatter";
+    scientificName = "stateofmatter";
   }
   if ( taxon.rank_level < 10 ) {
     let rankPiece;
@@ -38,25 +41,27 @@ const DisplayTaxonName = ( { item: { user, taxon } }: Props ): Node => {
     }
 
     if ( rankPiece ) {
-      sciName = sciName.split( " " ).splice( -1, 0, rankPiece ).join( " " );
+      scientificName = scientificName.split( " " );
+      scientificName.splice( -1, 0, rankPiece );
+      scientificName = scientificName.join( " " );
     }
   } else if ( taxon.rank_level > 10 ) {
-    sciName = sciName.split( " " );
-    sciName.unshift( taxon.rank );
-    sciName = sciName.join( " " );
+    scientificName = scientificName.split( " " );
+    scientificName.unshift( taxon.rank );
+    scientificName = scientificName.join( " " );
   }
 
-  taxonData.sciName = _.trim( sciName );
+  taxonData.scientificName = _.trim( scientificName );
 
-  let title = taxonData.sciName;
+  let title = taxonData.scientificName;
 
   if ( user.prefers_scientific_name_first && taxonData.commonName ) {
     title = `${title} (${taxonData.commonName})`;
   } else if ( taxonData.commonName ) {
     title = `${taxonData.commonName} (${title})`;
   }
-
-  return <Text numberOfLines={1}>{title || "no name"}</Text>;
+console.log(title)
+  return <Text numberOfLines={1}>{title}</Text>;
 };
 
 export default DisplayTaxonName;

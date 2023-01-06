@@ -8,7 +8,7 @@ class User extends Realm.Object {
     name: true,
     locale: true,
     observations_count: true,
-    prefers_scientific_name_first: false
+    prefers_scientific_name_first: true
   };
 
   static mapApiToRealm( user ) {
