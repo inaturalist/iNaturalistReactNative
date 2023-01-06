@@ -16,7 +16,6 @@ const DisplayTaxonName = ( { item: { user, taxon } }: Props ): Node => {
   }
   const taxonData = {};
 
-
   taxonData.rank = taxon.rank;
 
   // Logic follows the SplitTaxon component from web
@@ -60,7 +59,7 @@ const DisplayTaxonName = ( { item: { user, taxon } }: Props ): Node => {
   } else if ( taxonData.commonName ) {
     title = `${taxonData.commonName} (${title})`;
   }
-console.log(title)
+
   return <Text numberOfLines={1}>{title}</Text>;
 };
 
