@@ -54,29 +54,35 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
       icon={icon}
       containerColor={colors.inatGreen}
       iconColor={colors.white}
-      className={`absolute ${className}`}
+      className={className}
       onPress={onPress}
     />
   );
 
   return (
-    <>
-      <View className="bg-white rounded-xl p-5">
-        <Text testID="evidence-text" className="text-2xl">{t( "Evidence" )}</Text>
-        <Text className="color-grayText my-2">{t( "Add-evidence-of-an-organism" )}</Text>
-        <Text className="color-grayText my-2">{t( "You-can" )}</Text>
-        {bulletedText.map( string => (
-          <Text className="color-grayText" key={string}>
-            {`\u2022 ${string}`}
-          </Text>
-        ) )}
+    <View className="flex-1 justify-end">
+      <View className="flex-row justify-center">
+        <View className="bg-white rounded-xl p-5 mb-12 max-w-sm">
+          <Text testID="evidence-text" className="text-2xl">{t( "Evidence" )}</Text>
+          <Text className="color-grayText my-2">{t( "Add-evidence-of-an-organism" )}</Text>
+          <Text className="color-grayText my-2">{t( "You-can" )}</Text>
+          {bulletedText.map( string => (
+            <Text className="color-grayText" key={string}>
+              {`\u2022 ${string}`}
+            </Text>
+          ) )}
+        </View>
       </View>
-      {renderIconButton( "plus", "bottom-0 left-1/3 px-2", ( ) => { }, 80 )}
-      {renderIconButton( "square-edit-outline", "bottom-6 left-10", navToObsEdit )}
-      {renderIconButton( "camera", "bottom-24 left-20", navToStandardCamera )}
-      {renderIconButton( "folder-multiple-image", "bottom-24 right-20", navToPhotoGallery )}
-      {renderIconButton( "microphone", "bottom-6 right-10", navToSoundRecorder )}
-    </>
+      <View className="flex-row items-center justify-center">
+        {renderIconButton( "camera", "mx-5", navToStandardCamera )}
+        {renderIconButton( "folder-multiple-image", "mx-5", navToPhotoGallery )}
+      </View>
+      <View className="flex-row justify-center">
+        {renderIconButton( "square-edit-outline", "mx-2", navToObsEdit )}
+        {renderIconButton( "plus", "self-center", ( ) => { }, 80 )}
+        {renderIconButton( "microphone", "mx-2", navToSoundRecorder )}
+      </View>
+    </View>
   );
 };
 
