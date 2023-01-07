@@ -5,7 +5,7 @@ import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useMemo, useRef, useState
+  useRef, useState
 } from "react";
 import { Animated, Dimensions } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -93,13 +93,12 @@ const ObservationViews = ( ): Node => {
     />
   );
 
-  const renderHeader = useMemo( ( ) => (
+  const renderHeader = ( ) => (
     <ObsListHeader
       scrollY={scrollY}
       setView={setView}
     />
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  ), [scrollY, currentUser] );
+  );
 
   const renderFooter = ( ) => {
     if ( currentUser === false ) { return <View />; }
