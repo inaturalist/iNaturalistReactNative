@@ -1,6 +1,7 @@
 name: e2e-Android
 on:
-  pull_request:
+  release:
+    types: [published]
 
 jobs:
   # This might be refactored to use concurrency from GitHub Actions directly?
