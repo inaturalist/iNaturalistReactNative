@@ -43,14 +43,13 @@ describe( "MyObservations", ( ) => {
     async function testApiMethodNotCalled( apiMethod ) {
       const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
-
       const { getByText } = renderAppWithComponent( <ObsList /> );
       await waitFor( ( ) => {
         expect( getByText( "Log-in-to-iNaturalist" ) ).toBeTruthy( );
       } );
       // Unpleasant, but without adjusting the timeout it doesn't seem like
       // all of these requests get caught
-      await waitFor(( ) => {
+      await waitFor( ( ) => {
         expect( apiMethod ).not.toHaveBeenCalled( );
       }, { timeout: 3000, interval: 500 } );
     }
