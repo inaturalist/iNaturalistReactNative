@@ -45,17 +45,14 @@ describe( "MyObservations", ( ) => {
       expect( signedInUsers.length ).toEqual( 0 );
 
       const { getByText } = renderAppWithComponent( <ObsList /> );
-      await waitFor( () => {
+      await waitFor( ( ) => {
         expect( getByText( "Log-in-to-iNaturalist" ) ).toBeTruthy( );
       } );
       // Unpleasant, but without adjusting the timeout it doesn't seem like
       // all of these requests get caught
-      await waitFor(
-        () => {
-          expect( apiMethod ).not.toHaveBeenCalled( );
-        },
-        { timeout: 3000, interval: 500 }
-      );
+      await waitFor(( ) => {
+        expect( apiMethod ).not.toHaveBeenCalled( );
+      }, { timeout: 3000, interval: 500 } );
     }
     it( "should not make a request to users/me", async ( ) => {
       await testApiMethodNotCalled( inatjs.users.me );
