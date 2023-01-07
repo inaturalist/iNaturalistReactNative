@@ -98,7 +98,8 @@ const ObservationViews = ( ): Node => {
       scrollY={scrollY}
       setView={setView}
     />
-  ), [scrollY] );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  ), [scrollY, currentUser] );
 
   const renderFooter = ( ) => {
     if ( currentUser === false ) { return <View />; }
