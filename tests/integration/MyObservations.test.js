@@ -11,9 +11,9 @@ import factory, { makeResponse } from "../factory";
 import { renderAppWithComponent } from "../helpers/render";
 import { signIn, signOut } from "../helpers/user";
 
-jest.useFakeTimers();
+jest.useFakeTimers( );
 
-jest.mock( "i18next", () => {
+jest.mock( "i18next", ( ) => {
   const originalModule = jest.requireActual( "i18next" );
 
   return {
@@ -28,56 +28,56 @@ jest.mock( "i18next", () => {
   };
 } );
 
-describe( "MyObservations", () => {
+describe( "MyObservations", ( ) => {
   beforeEach( signOut );
 
   afterEach( () => {
-    jest.clearAllMocks();
+    jest.clearAllMocks( );
   } );
 
   // Hacky solution, but making the test for signed out users first
   // signIn has some side-effects that aren't getting properly cleaned up
   // Users persist somehow while the test is running, despite being removed
   // from the global realm instance
-  describe( "when signed out", () => {
-    async function testApiMethodNotCalled( apiMethod, realm ) {
-      const signedInUsers = realm.objects( "User" );
+  describe( "when signed out", ( ) => {
+    async function testApiMethodNotCalled( apiMethod ) {
+      const signedInUsers = global.realm.objects( "User" );
       expect( signedInUsers.length ).toEqual( 0 );
 
       const { getByText } = renderAppWithComponent( <ObsList /> );
       await waitFor( () => {
-        expect( getByText( "Log-in-to-iNaturalist" ) ).toBeTruthy();
+        expect( getByText( "Log-in-to-iNaturalist" ) ).toBeTruthy( );
       } );
       // Unpleasant, but without adjusting the timeout it doesn't seem like
       // all of these requests get caught
       await waitFor(
         () => {
-          expect( apiMethod ).not.toHaveBeenCalled();
+          expect( apiMethod ).not.toHaveBeenCalled( );
         },
         { timeout: 3000, interval: 500 }
       );
     }
-    it( "should not make a request to users/me", async () => {
-      await testApiMethodNotCalled( inatjs.users.me, global.realm );
+    it( "should not make a request to users/me", async ( ) => {
+      await testApiMethodNotCalled( inatjs.users.me );
     } );
-    it( "should not make a request to observations/updates", async () => {
-      await testApiMethodNotCalled( inatjs.observations.updates, global.realm );
+    it( "should not make a request to observations/updates", async ( ) => {
+      await testApiMethodNotCalled( inatjs.observations.updates );
     } );
   } );
 
-  it( "should not have accessibility errors", async () => {
+  it( "should not have accessibility errors", async ( ) => {
     const mockUser = factory( "LocalUser" );
     await signIn( mockUser );
     const observations = [factory( "RemoteObservation" )];
     inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
     const { queryByTestId } = renderAppWithComponent( <ObsList /> );
-    await waitFor( () => {
-      expect( queryByTestId( "ObservationViews.myObservations" ) ).toBeAccessible();
+    await waitFor( ( ) => {
+      expect( queryByTestId( "ObservationViews.myObservations" ) ).toBeAccessible( );
     } );
   } );
 
-  describe( "localization for current user", () => {
-    it( "should be English by default", async () => {
+  describe( "localization for current user", ( ) => {
+    it( "should be English by default", async ( ) => {
       const mockUser = factory( "LocalUser" );
       expect( mockUser.locale ).toEqual( "en" );
       await signIn( mockUser );
