@@ -31,7 +31,7 @@ jest.mock( "i18next", ( ) => {
 describe( "MyObservations", ( ) => {
   beforeEach( signOut );
 
-  afterEach( () => {
+  afterEach( ( ) => {
     jest.clearAllMocks( );
   } );
 
@@ -41,7 +41,7 @@ describe( "MyObservations", ( ) => {
   // from the global realm instance
   describe( "when signed out", ( ) => {
     async function testApiMethodNotCalled( apiMethod ) {
-      const signedInUsers = global.realm.objects( "User" );
+      const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
 
       const { getByText } = renderAppWithComponent( <ObsList /> );
