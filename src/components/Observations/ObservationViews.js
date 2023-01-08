@@ -120,36 +120,37 @@ const ObservationViews = ( ): Node => {
   const translateY = scrollYClamped.interpolate( {
     inputRange: [0, HEADER_HEIGHT],
     // $FlowIgnore
-    outputRange: [0, -HEADER_HEIGHT - 42]
+    outputRange: [0, -HEADER_HEIGHT]
   } );
 
   return (
     <ViewWithFooter>
-      <Animated.View style={[{ transform: [{ translateY }] }]}>
-        <ObsListHeader setView={setView} />
-        <Animated.FlatList
-          data={observationList}
-          key={view === "grid" ? 1 : 0}
-          contentContainerStyle={{
-          // add extra height to make lists scrollable when there are less
-          // items than can fill the screen
-            minHeight: flatListHeight + 400
-          }}
-          testID="ObservationViews.myObservations"
-          numColumns={view === "grid" ? 2 : 1}
-          renderItem={view === "grid" ? renderGridItem : renderItem}
-          ListEmptyComponent={renderEmptyState}
-          ListFooterComponent={renderFooter}
-          ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
-          bounces={false}
-          initialNumToRender={10}
-          onScroll={handleScroll}
-          onEndReached={onEndReached}
-          onEndReachedThreshold={0.1}
-        />
-        {renderBottomSheet( )}
-      </Animated.View>
-
+      <View className="overflow-hidden">
+        <Animated.View style={[{ transform: [{ translateY }] }]}>
+          <ObsListHeader setView={setView} />
+          <Animated.FlatList
+            data={observationList}
+            key={view === "grid" ? 1 : 0}
+            contentContainerStyle={{
+            // add extra height to make lists scrollable when there are less
+            // items than can fill the screen
+              minHeight: flatListHeight + 400
+            }}
+            testID="ObservationViews.myObservations"
+            numColumns={view === "grid" ? 2 : 1}
+            renderItem={view === "grid" ? renderGridItem : renderItem}
+            ListEmptyComponent={renderEmptyState}
+            ListFooterComponent={renderFooter}
+            ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
+            bounces={false}
+            initialNumToRender={10}
+            onScroll={handleScroll}
+            onEndReached={onEndReached}
+            onEndReachedThreshold={0.1}
+          />
+          {renderBottomSheet( )}
+        </Animated.View>
+      </View>
     </ViewWithFooter>
   );
 };
