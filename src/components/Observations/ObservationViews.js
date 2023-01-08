@@ -127,21 +127,22 @@ const ObservationViews = ( ): Node => {
     <ViewWithFooter>
       <View className="overflow-hidden">
         <Animated.View style={[{ transform: [{ translateY }] }]}>
-          <ObsListHeader setView={setView} />
           <Animated.FlatList
             data={observationList}
             key={view === "grid" ? 1 : 0}
             contentContainerStyle={{
-            // add extra height to make lists scrollable when there are less
-            // items than can fill the screen
+              // add extra height to make lists scrollable when there are less
+              // items than can fill the screen
               minHeight: flatListHeight + 400
             }}
             testID="ObservationViews.myObservations"
             numColumns={view === "grid" ? 2 : 1}
             renderItem={view === "grid" ? renderGridItem : renderItem}
             ListEmptyComponent={renderEmptyState}
+            ListHeaderComponent={<ObsListHeader setView={setView} />}
             ListFooterComponent={renderFooter}
             ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
+            stickyHeaderIndices={[0]}
             bounces={false}
             initialNumToRender={10}
             onScroll={handleScroll}
