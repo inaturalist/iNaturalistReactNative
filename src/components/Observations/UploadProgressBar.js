@@ -7,24 +7,26 @@ import React, { useMemo, useRef } from "react";
 import {
   Button, ProgressBar, Text
 } from "react-native-paper";
-import useUploadObservations from "sharedHooks/useUploadObservations";
 import { textStyles, viewStyles } from "styles/observations/uploadProgressBar";
 import colors from "styles/tailwindColors";
 
 type Props = {
   unuploadedObsList: Array<Object>,
-  allObsToUpload: Array<Object>
+  allObsToUpload: Array<Object>,
+  handleClosePress: () => void
 }
 
-const UploadProgressBar = ( { unuploadedObsList, allObsToUpload }: Props ): Node => {
+const UploadProgressBar = ( {
+  unuploadedObsList,
+  allObsToUpload,
+  handleClosePress
+}: Props ): Node => {
   const numOfUnuploadedObs = unuploadedObsList.length;
   const totalObsToUpload = Math.max( allObsToUpload.length, unuploadedObsList.length );
 
   const calculateProgress = ( ) => ( totalObsToUpload - numOfUnuploadedObs ) / totalObsToUpload;
 
   const progressFraction = calculateProgress( );
-
-  const { handleClosePress } = useUploadObservations( allObsToUpload );
 
   const sheetRef = useRef( null );
 

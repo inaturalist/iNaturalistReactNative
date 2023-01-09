@@ -8,12 +8,11 @@ import { Text } from "react-native";
 
 type Props = {
   numOfUnuploadedObs: number,
-  updateUploadStatus: Function,
   uploadObservations: Function
 }
 
 const UploadPrompt = ( {
-  uploadObservations, numOfUnuploadedObs, updateUploadStatus
+  uploadObservations, numOfUnuploadedObs
 }: Props ): Node => (
   <>
     <Text>{t( "Whenever-you-get-internet-connection-you-can-upload" )}</Text>
@@ -22,7 +21,6 @@ const UploadPrompt = ( {
       text={t( "UPLOAD-X-OBSERVATIONS", { count: numOfUnuploadedObs } )}
       className="py-1 mt-5"
       onPress={( ) => {
-        updateUploadStatus( );
         uploadObservations( );
       }}
     />
