@@ -23,7 +23,7 @@ const Messages = ( ): Node => {
       enabled: !!currentUser
     }
   );
-
+  console.log( JSON.stringify( data, null, 2 ) );
   return (
     <ViewWithFooter>
       {currentUser ? (
