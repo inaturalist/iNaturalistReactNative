@@ -45,7 +45,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
 
   return {
     uploadInProgress,
-    handleClosePress: () => setShouldUpload( false ),
+    handleClosePress: cleanup,
     startUpload: () => setShouldUpload( true )
   };
 };
