@@ -13,21 +13,6 @@ import { signIn, signOut } from "../helpers/user";
 
 jest.useFakeTimers( );
 
-jest.mock( "i18next", ( ) => {
-  const originalModule = jest.requireActual( "i18next" );
-
-  return {
-    // Ideally we shouldn't have to test i18next itself
-    // just need to test that the correct keys/opts are being fed to i18next
-    t: ( key, options ) => {
-      if ( !options ) {
-        return key;
-      }
-      return originalModule.t( key, options );
-    }
-  };
-} );
-
 describe( "MyObservations", ( ) => {
   beforeEach( signOut );
 
@@ -45,7 +30,7 @@ describe( "MyObservations", ( ) => {
       expect( signedInUsers.length ).toEqual( 0 );
       const { getByText } = renderAppWithComponent( <ObsList /> );
       await waitFor( ( ) => {
-        expect( getByText( "Log-in-to-iNaturalist" ) ).toBeTruthy( );
+        expect( getByText( "Log in to iNaturalist" ) ).toBeTruthy( );
       } );
       // Unpleasant, but without adjusting the timeout it doesn't seem like
       // all of these requests get caught
