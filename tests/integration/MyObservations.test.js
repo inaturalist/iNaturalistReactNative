@@ -20,10 +20,6 @@ describe( "MyObservations", ( ) => {
     jest.clearAllMocks( );
   } );
 
-  // Hacky solution, but making the test for signed out users first
-  // signIn has some side-effects that aren't getting properly cleaned up
-  // Users persist somehow while the test is running, despite being removed
-  // from the global realm instance
   describe( "when signed out", ( ) => {
     async function testApiMethodNotCalled( apiMethod ) {
       const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
