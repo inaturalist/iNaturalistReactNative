@@ -145,6 +145,3 @@ describe( "location fetching", () => {
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
   } );
 } );
-// right now this is failing on react-native-modal, since there's a TouchableWithFeedback
-// that allows the user to tap the backdrop and exit the modal
-test.todo( "should not have accessibility errors" );
