@@ -11,16 +11,16 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [uploadInProgress, setUploadInProgress] = useState( false );
   const [shouldUpload, setShouldUpload] = useState( false );
   const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
-  const realm = useRealm();
-  const apiToken = useApiToken();
+  const realm = useRealm( );
+  const apiToken = useApiToken( );
 
-  const cleanup = () => {
+  const cleanup = ( ) => {
     setUploadInProgress( false );
     setShouldUpload( false );
     setCurrentUploadIndex( 0 );
   };
 
-  useEffect( () => {
+  useEffect( ( ) => {
     const upload = async obs => {
       await Observation.uploadObservation( obs, apiToken, realm );
       setCurrentUploadIndex( currentIndex => currentIndex + 1 );
@@ -30,7 +30,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     const continueUpload = shouldUpload && obs && !!apiToken;
 
     if ( !continueUpload ) {
-      cleanup();
+      cleanup( );
       return;
     }
     setUploadInProgress( true );
@@ -45,8 +45,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
 
   return {
     uploadInProgress,
-    handleClosePress: cleanup,
-    startUpload: () => setShouldUpload( true )
+    stopUpload: cleanup,
+    startUpload: ( ) => setShouldUpload( true )
   };
 };
 

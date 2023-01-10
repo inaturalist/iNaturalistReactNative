@@ -5,6 +5,7 @@ import type { Node } from "react";
 import React from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
+import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 import useUploadObservations from "sharedHooks/useUploadObservations";
 
 import LoginPrompt from "./LoginPrompt";
@@ -17,10 +18,11 @@ type Props = {
 
 const ObsListBottomSheet = ( { hasScrolled }: Props ): Node => {
   const currentUser = useCurrentUser( );
-  const { unuploadedObsList, allObsToUpload } = useLocalObservations( );
-  const numOfUnuploadedObs = unuploadedObsList?.length;
+  const { allObsToUpload } = useLocalObservations( );
+  const numUnuploadedObs = useNumUnuploadedObservations( );
+
   const {
-    handleClosePress,
+    stopUpload,
     uploadInProgress,
     startUpload
   } = useUploadObservations( allObsToUpload );
@@ -36,18 +38,16 @@ const ObsListBottomSheet = ( { hasScrolled }: Props ): Node => {
   if ( uploadInProgress ) {
     return (
       <UploadProgressBar
-        handleClosePress={handleClosePress}
-        unuploadedObsList={unuploadedObsList}
+        stopUpload={stopUpload}
         allObsToUpload={allObsToUpload}
       />
     );
   }
-  if ( numOfUnuploadedObs > 0 && currentUser ) {
+  if ( numUnuploadedObs > 0 && currentUser ) {
     return (
       <BottomSheet hide={hasScrolled}>
         <UploadPrompt
           uploadObservations={startUpload}
-          numOfUnuploadedObs={numOfUnuploadedObs}
         />
       </BottomSheet>
     );

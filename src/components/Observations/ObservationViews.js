@@ -10,6 +10,7 @@ import React, {
 import { Animated, Dimensions } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
+import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 
 import EmptyList from "./EmptyList";
 import GridItem from "./GridItem";
@@ -35,11 +36,12 @@ const ObservationViews = ( ): Node => {
   const [view, setView] = useState( "list" );
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
-  const { observationList, unuploadedObsList } = localObservations;
+  const { observationList } = localObservations;
   const [hasScrolled, setHasScrolled] = useState( false );
   const [idBelow, setIdBelow] = useState( null );
   const isLoading = useInfiniteScroll( idBelow );
-  const hasUnuploadedObservations = ( unuploadedObsList?.length || 0 ) > 0;
+  const numUnuploadedObs = useNumUnuploadedObservations( );
+  const hasUnuploadedObservations = ( numUnuploadedObs || 0 ) > 0;
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
