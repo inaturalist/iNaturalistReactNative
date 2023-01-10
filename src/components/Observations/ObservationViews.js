@@ -5,7 +5,7 @@ import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
-  useMemo, useRef, useState
+  useRef, useState
 } from "react";
 import { Animated, Dimensions } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -18,6 +18,8 @@ import InfiniteScrollFooter from "./InfiniteScrollFooter";
 import ObsCard from "./ObsCard";
 import ObsListBottomSheet from "./ObsListBottomSheet";
 import ObsListHeader from "./ObsListHeader";
+
+const { diffClamp } = Animated;
 
 const { height } = Dimensions.get( "screen" );
 const FOOTER_HEIGHT = 75;
@@ -93,13 +95,6 @@ const ObservationViews = ( ): Node => {
     />
   );
 
-  const renderHeader = useMemo( ( ) => (
-    <ObsListHeader
-      scrollY={scrollY}
-      setView={setView}
-    />
-  ), [scrollY] );
-
   const renderFooter = ( ) => {
     if ( currentUser === false ) { return <View />; }
     return (
@@ -120,31 +115,43 @@ const ObservationViews = ( ): Node => {
     }
   };
 
+  const scrollYClamped = diffClamp( scrollY.current, 0, HEADER_HEIGHT );
+
+  const translateY = scrollYClamped.interpolate( {
+    inputRange: [0, HEADER_HEIGHT],
+    // $FlowIgnore
+    outputRange: [0, -HEADER_HEIGHT]
+  } );
+
   return (
     <ViewWithFooter>
-      <Animated.FlatList
-        data={observationList}
-        key={view === "grid" ? 1 : 0}
-        contentContainerStyle={{
-          // add extra height to make lists scrollable when there are less
-          // items than can fill the screen
-          minHeight: flatListHeight + 400
-        }}
-        testID="ObservationViews.myObservations"
-        numColumns={view === "grid" ? 2 : 1}
-        renderItem={view === "grid" ? renderGridItem : renderItem}
-        ListEmptyComponent={renderEmptyState}
-        ListHeaderComponent={renderHeader}
-        ListFooterComponent={renderFooter}
-        ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
-        stickyHeaderIndices={[0]}
-        bounces={false}
-        initialNumToRender={10}
-        onScroll={handleScroll}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={0.1}
-      />
-      {renderBottomSheet( )}
+      <View className="overflow-hidden">
+        <Animated.View style={[{ transform: [{ translateY }] }]}>
+          <Animated.FlatList
+            data={observationList}
+            key={view === "grid" ? 1 : 0}
+            contentContainerStyle={{
+              // add extra height to make lists scrollable when there are less
+              // items than can fill the screen
+              minHeight: flatListHeight + 400
+            }}
+            testID="ObservationViews.myObservations"
+            numColumns={view === "grid" ? 2 : 1}
+            renderItem={view === "grid" ? renderGridItem : renderItem}
+            ListEmptyComponent={renderEmptyState}
+            ListHeaderComponent={<ObsListHeader setView={setView} />}
+            ListFooterComponent={renderFooter}
+            ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
+            stickyHeaderIndices={[0]}
+            bounces={false}
+            initialNumToRender={10}
+            onScroll={handleScroll}
+            onEndReached={onEndReached}
+            onEndReachedThreshold={0.1}
+          />
+          {renderBottomSheet( )}
+        </Animated.View>
+      </View>
     </ViewWithFooter>
   );
 };
