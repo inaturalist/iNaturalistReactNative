@@ -21,10 +21,13 @@ const MessagePreview = ( { message }: Props ): Node => {
     >
       <UserIcon uri={{ uri: message?.from_user?.icon_url }} />
       <View className="flex mx-2 w-6/12">
-        <Text className="color-black text-xl font-bold">{message.from_user.login}</Text>
+        <Text className="color-black text-xl font-bold">{message?.from_user?.login}</Text>
         <Text numberOfLines={1}>{message.subject}</Text>
         <Text className="text-xs mt-2 color-gray">
-          {format( parseISO( message.created_at ), "M/d/yy HH:mm a" )}
+          {
+            message?.created_at &&
+              format( parseISO( message?.created_at ), "M/d/yy HH:mm a" ) 
+          }
         </Text>
       </View>
     </View>
