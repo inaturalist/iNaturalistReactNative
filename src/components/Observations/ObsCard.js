@@ -19,7 +19,9 @@ type Props = {
 const ObsCard = ( { item, handlePress }: Props ): Node => {
   const onPress = ( ) => handlePress( item );
 
-  const photo = item?.observationPhotos?.[0]?.photo;
+  const photo = item?.observationPhotos && item.observationPhotos[0]
+    ? item.observationPhotos[0].photo
+    : null;
 
   const obsListPhoto = photo ? (
     <Image
