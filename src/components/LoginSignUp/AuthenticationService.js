@@ -221,12 +221,13 @@ const verifyCredentials = async (
   formData.append( "client_secret", Config.OAUTH_CLIENT_SECRET );
   formData.append( "password", password );
   formData.append( "username", username );
+  formData.append( "locale", i18next.language );
 
   const api = createAPI();
-  let response = await api.post( "/oauth/token", { locale: i18next.language }, formData );
+  let response = await api.post( "/oauth/token", formData );
 
   if ( !response.ok ) {
-    showErrorAlert( response.data.error );
+    showErrorAlert( response.data.error_description );
 
     if ( response.problem !== "CLIENT_ERROR" ) {
       console.error(
@@ -254,7 +255,7 @@ const verifyCredentials = async (
   );
 
   if ( !response.ok ) {
-    showErrorAlert( response.data.error );
+    showErrorAlert( response.data.error_description );
     if ( response.problem !== "CLIENT_ERROR" ) {
       console.error(
         "verifyCredentials failed when calling /users/edit.json - ",
