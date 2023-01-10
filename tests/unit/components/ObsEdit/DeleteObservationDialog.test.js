@@ -41,7 +41,10 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
     currentObservation: obs[0],
     deleteLocalObservation: ( ) => {
       global.realm.write( ( ) => {
-        global.realm.delete( global.realm.objectForPrimaryKey( "Observation", obs[0].uuid ) );
+        const observation = global.realm.objectForPrimaryKey( "Observation", obs[0].uuid );
+        if ( observation ) {
+          global.realm.delete( observation );
+        }
       } );
     }
   }}
