@@ -71,8 +71,6 @@ describe( "ObsEdit", () => {
     mockObsEditProviderWithObs( observations );
     renderObsEdit();
 
-    screen.debug( );
-
     const obsEdit = await screen.findByTestId( "obs-edit" );
     expect( obsEdit ).toBeAccessible();
   } );
