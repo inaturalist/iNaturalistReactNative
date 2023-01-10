@@ -8,10 +8,10 @@ import { Text } from "react-native";
 import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 
 type Props = {
-  uploadObservations: Function
+  startUpload: Function
 }
 
-const UploadPrompt = ( { uploadObservations }: Props ): Node => {
+const UploadPrompt = ( { startUpload }: Props ): Node => {
   const numUnuploadedObs = useNumUnuploadedObservations( );
   return (
     <>
@@ -20,11 +20,8 @@ const UploadPrompt = ( { uploadObservations }: Props ): Node => {
         level="neutral"
         text={t( "UPLOAD-X-OBSERVATIONS", { count: numUnuploadedObs } )}
         className="py-1 mt-5"
-        onPress={( ) => {
-          uploadObservations( );
-        }}
+        onPress={startUpload}
       />
-
     </>
   );
 };

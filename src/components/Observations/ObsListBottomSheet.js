@@ -46,9 +46,7 @@ const ObsListBottomSheet = ( { hasScrolled }: Props ): Node => {
   if ( numUnuploadedObs > 0 && currentUser ) {
     return (
       <BottomSheet hide={hasScrolled}>
-        <UploadPrompt
-          uploadObservations={startUpload}
-        />
+        <UploadPrompt startUpload={startUpload} />
       </BottomSheet>
     );
   }
