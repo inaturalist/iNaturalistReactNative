@@ -1,8 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { ActivityIndicator, FlatList, Text } from "react-native";
-import { textStyles } from "styles/messages/messages";
+import { ActivityIndicator, FlatList } from "react-native";
+
+import MessagePreview from "./MessagePreview";
 
 type Props = {
   loading: boolean,
@@ -24,7 +25,7 @@ const MessageList = ( {
   }
 
   const renderMessages = ( { item } ) => (
-    <Text style={textStyles.projectName}>{item.subject}</Text>
+    <MessagePreview message={item} />
   );
 
   return (
