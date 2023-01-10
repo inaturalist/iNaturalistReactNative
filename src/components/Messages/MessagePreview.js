@@ -25,8 +25,8 @@ const MessagePreview = ( { message }: Props ): Node => {
         <Text numberOfLines={1}>{message.subject}</Text>
         <Text className="text-xs mt-2 color-gray">
           {
-            message?.created_at &&
-              format( parseISO( message?.created_at ), "M/d/yy HH:mm a" ) 
+            message?.created_at
+              && format( parseISO( message?.created_at ), "M/d/yy HH:mm a" )
           }
         </Text>
       </View>
