@@ -47,6 +47,8 @@ const PhotoGalleryImage = ( {
       onPress={handleImagePress}
       testID={`PhotoGallery.${uri}`}
       disabled={isDisabled}
+      accessible
+      accessibilityRole="button"
     >
       <Image
         testID="PhotoGallery.photo"

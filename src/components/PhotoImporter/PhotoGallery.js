@@ -221,7 +221,7 @@ const PhotoGallery = ( ): Node => {
   }, [navigation, albums] );
 
   return (
-    <ViewNoFooter>
+    <ViewNoFooter testID="photo-gallery">
       <FlatList
         // $FlowIgnore
         data={photosByAlbum}
