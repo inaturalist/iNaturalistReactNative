@@ -1,25 +1,41 @@
 # iNaturalistReactNative
 
-## Requirements
+This is an official iNaturalist client written in React Native that will eventually replace our existing iOS and Android apps. Achieving parity with those established apps is taking some time, but we're getting there!
+
+## Contributing
+
+We welcome volunteer contributions! This app is still early in its development and a lot of things are in flux, but there's usually something to work on. Please keep the following in mind:
+
+1. Work on [existing issues](https://github.com/inaturalist/iNaturalistReactNative/issues) (though if you have ideas for improvement that aren't directly related to features, let us know). If you'd like to work on something, please leave a comment on that issue and we'll try and assign you.
+1. Name your branch starting with the issue number and then something descriptive, e.g. `123-login-with-locale-crash`
+1. We try to review pull requests as soon as we can, but that might be up to a week or two
+
+## Setup
+
+### Requirements
 
 * Xcode 13 or above
 * [Android and iOS environment setup](https://reactnative.dev/docs/environment-setup) described in the RN docs
 
-## Install packages and pods
+### Install packages and pods
 
 1. Run `npm install`
 1. Run `npx pod-install` or `cd ios && pod install` from the root directory
 1. `cp env.example .env.staging` for staging and `cp env.example .env` for production and fill in appropriate values. This is not part of the code repo (contains secrets, such as OAuth client ID).
 1. To run on Android, do this `cp android/example-keystore.properties android/keystore.properties`. Fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff. 
 
-## Set up pre-commit hooks
+### Set up pre-commit hooks
 
 1. We're using [Husky](https://typicode.github.io/husky/#/) to automatically run `eslint` before each commit. Run `npm run postinstall` to install Husky locally.
 
-## Run build
+### Run build
 
 1. Run `npm start -- --reset-cache` (`npm start` works too, but resetting the cache each time makes for a lot less build issues)
 2. Run `npm run ios` or `npm run android`
+
+### Running with staging environment
+
+If you're on staff you can configure the app to read from and write to our staging server. Override `API_URL` to a staging API domain, either using local `.env.staging` file, or overriding the environment variable when calling `npm start`, e.g. `API_URL=http://example.com npm start -- --reset-cache`.
 
 ## Tests
 We currently have three kinds of tests:
@@ -57,13 +73,9 @@ If you are running into some issues after the tests have been working for some t
 If you want to run the Android tests you need to prepare your environment. Before you dive into the [setup](https://wix.github.io/Detox/docs/19.x/introduction/android-dev-env), know that alternatively you might find it easier setting up the required local emulator, preferrably an AOSP (Android Open Source Project) version, using Android Studio. Make sure the emulator has the same name as in the .detoxrc.js file.
 Run `npm run e2e:build:android && npm run e2e:test:android` to build the .apk for testing purposes and install and run it on the emulator with the name as stated in the detoxrc.js file.
 
-## Running with Staging Environment
-
-1. Override `API_URL` to a staging API domain - either using local `.env.staging` file, or overriding the environment variable when calling `npm start` - e.g. `API_URL=http://example.com npm start -- --reset-cache`
-
 ## Translations
 
-### Adding New Text
+### Adding new text
 
 1. Add new strings in English to `src/i18n/strings.ftl` using [Fluent syntax](https://projectfluent.org/fluent/guide/), e.g.
     ```Fluent
@@ -89,7 +101,7 @@ Run `npm run e2e:build:android && npm run e2e:test:android` to build the .apk fo
     };
     ````
 
-### Translating Text
+### Translating text
 
 We manage translations through Crowdin. Actually updating the translation files should be largely automated, but this is what it looks like to do it manually (you must have the [Crowdin CLI](https://github.com/crowdin/crowdin-cli) installed and have an [access token](https://crowdin.com/settings#api-key) associated with a Crowdin user that can post files to the specified project):
 
