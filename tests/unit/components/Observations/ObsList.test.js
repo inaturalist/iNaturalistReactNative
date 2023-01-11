@@ -1,4 +1,6 @@
-import { fireEvent, waitFor, within } from "@testing-library/react-native";
+import {
+  fireEvent, screen, waitFor, within
+} from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
 import React from "react";
 
@@ -22,9 +24,11 @@ const mockObservations = [
 
 jest.mock( "sharedHooks/useApiToken" );
 
-jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+const mockUser = factory( "LocalUser" );
+
+jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
-  default: ( ) => true
+  default: () => mockUser
 } ) );
 
 jest.mock(
@@ -86,12 +90,10 @@ it( "renders grid view on button press", async ( ) => {
   } );
 } );
 
-test.todo( "should not have accessibility errors" );
-// test( "should not have accessibility errors", ( ) => {
-//   const obsList = (
-//     <NavigationContainer>
-//        <ObsList />
-//     </NavigationContainer>
-//   );
-//   expect( obsList ).toBeAccessible( );
-// } );
+describe( "ObsList", () => {
+  test( "should not have accessibility errors", () => {
+    renderComponent( <ObsList /> );
+    const obsList = screen.getByTestId( "ObservationViews.myObservations" );
+    expect( obsList ).toBeAccessible( );
+  } );
+} );
