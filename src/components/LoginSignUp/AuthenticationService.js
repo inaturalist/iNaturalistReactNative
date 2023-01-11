@@ -1,6 +1,7 @@
 // @flow
 import { create } from "apisauce";
-import { Platform } from "react-native";
+import i18next from "i18next";
+import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import {
   getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion
@@ -194,6 +195,13 @@ const getAPIToken = async (
   return `Bearer ${accessToken}`;
 };
 
+const showErrorAlert = errorText => {
+  Alert.alert(
+    "",
+    errorText
+  );
+};
+
 /**
  * Verifies login credentials
  *
@@ -213,16 +221,21 @@ const verifyCredentials = async (
   formData.append( "client_secret", Config.OAUTH_CLIENT_SECRET );
   formData.append( "password", password );
   formData.append( "username", username );
+  formData.append( "locale", i18next.language );
 
   const api = createAPI();
   let response = await api.post( "/oauth/token", formData );
 
   if ( !response.ok ) {
-    console.error(
-      "verifyCredentials failed when calling /oauth/token - ",
-      response.problem,
-      response.status
-    );
+    showErrorAlert( response.data.error_description );
+
+    if ( response.problem !== "CLIENT_ERROR" ) {
+      console.error(
+        "verifyCredentials failed when calling /oauth/token - ",
+        response.problem,
+        response.status
+      );
+    }
     return null;
   }
 
@@ -242,18 +255,20 @@ const verifyCredentials = async (
   );
 
   if ( !response.ok ) {
-    console.error(
-      "verifyCredentials failed when calling /users/edit.json - ",
-      response.problem,
-      response.status
-    );
+    showErrorAlert( response.data.error_description );
+    if ( response.problem !== "CLIENT_ERROR" ) {
+      console.error(
+        "verifyCredentials failed when calling /users/edit.json - ",
+        response.problem,
+        response.status
+      );
+    }
 
     return null;
   }
 
   const iNatUsername = response.data.login;
   const iNatID = response.data.id;
-  // console.log( "verifyCredentials - logged in username ", iNatUsername );
 
   return {
     accessToken,
@@ -288,7 +303,6 @@ const authenticateUser = async (
   // Save authentication details to secure storage
   await RNSInfo.setItem( "username", remoteUsername, {} );
   await RNSInfo.setItem( "accessToken", accessToken, {} );
-  // await SInfo.setItem( "userId", userId, {} );
 
   // Save userId to local, encrypted storage
   const currentUser = { id: userId, login: remoteUsername, signedIn: true };
