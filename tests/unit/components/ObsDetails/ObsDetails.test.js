@@ -109,7 +109,7 @@ test( "navigates to observer profile on button press", async ( ) => {
     .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
 } );
 
-// Move to ActiviyTab.test.js
+// TODO: Move to ActiviyTab.test.js
 // test( "navigates to identifier profile on button press", async ( ) => {
 //   const { findByTestId } = renderComponent( <ObsDetails /> );
 
