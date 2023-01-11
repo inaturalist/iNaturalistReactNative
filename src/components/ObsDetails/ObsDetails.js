@@ -264,7 +264,7 @@ const ObsDetails = ( ): Node => {
     );
   };
   const displayPhoto = () => {
-    if ( photos.length > 0 || observation.observationSounds.length > 0 ) {
+    if ( photos?.length > 0 || observation?.observationSounds?.length > 0 ) {
       return (
         <View className="bg-black">
           <PhotoScroll photos={photos} />
@@ -279,7 +279,13 @@ const ObsDetails = ( ): Node => {
     }
     return (
       <View className="bg-white flex-row justify-center">
-        <IconMaterial name="image-not-supported" size={100} />
+        <IconMaterial
+          testID="ObsDetails.noImage"
+          name="image-not-supported"
+          size={100}
+          accessible
+          accessibilityLabel={t( "No-image-available-for-this-observation" )}
+        />
       </View>
     );
   };

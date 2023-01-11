@@ -322,6 +322,8 @@ No-account-found = No account found with that email
 
 No-comments-or-ids-to-display = No comments or ids to display
 
+No-image-available-for-this-observation = No image available for this observation
+
 No-Location = No Location
 
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
