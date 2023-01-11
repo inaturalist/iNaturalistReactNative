@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useQueryClient } from "@tanstack/react-query";
+import { onlineManager, useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
@@ -67,6 +67,7 @@ const ObsDetails = ( ): Node => {
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [addingComment, setAddingComment] = useState( false );
   const [comments, setComments] = useState( [] );
+  const isOnline = onlineManager.isOnline( );
 
   const queryClient = useQueryClient( );
 
@@ -83,7 +84,6 @@ const ObsDetails = ( ): Node => {
   );
 
   const observation = localObservation || remoteObservation;
-  // const observation = remoteObservation;
 
   const mutationOptions = {
     onSuccess: ( ) => {
@@ -263,7 +263,14 @@ const ObsDetails = ( ): Node => {
       </Pressable>
     );
   };
-  const displayPhoto = () => {
+  const displayPhoto = ( ) => {
+    if ( !isOnline ) {
+      return (
+        <View className="bg-white flex-row justify-center">
+          <IconMaterial name="network-check" size={100} />
+        </View>
+      );
+    }
     if ( photos.length > 0 || observation.observationSounds.length > 0 ) {
       return (
         <View className="bg-black">

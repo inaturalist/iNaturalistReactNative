@@ -1,5 +1,6 @@
 // @flow
 
+import { onlineManager } from "@tanstack/react-query";
 import Map from "components/SharedComponents/Map";
 import { Text, View } from "components/styledComponents";
 import { format, parseISO } from "date-fns";
@@ -17,6 +18,7 @@ type Props = {
 }
 
 const DataTab = ( { observation }: Props ): Node => {
+  const isOnline = onlineManager.isOnline( );
   const application = observation?.application?.name;
 
   const displayTime = datetime => {
@@ -35,11 +37,18 @@ const DataTab = ( { observation }: Props ): Node => {
         )}
         <Text className="text-lg my-3">{t( "Location" )}</Text>
       </View>
-      <Map
-        obsLatitude={observation.latitude}
-        obsLongitude={observation.longitude}
-        mapHeight={150}
-      />
+      {isOnline
+        ? (
+          <Map
+            obsLatitude={observation.latitude}
+            obsLongitude={observation.longitude}
+            mapHeight={150}
+          />
+        ) : (
+          <View className="h-16 items-center justify-center">
+            <IconMaterial name="network-check" size={30} />
+          </View>
+        )}
       <View className="px-5">
         <View className="flex-row my-3">
           <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
