@@ -1,10 +1,10 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { render } from "@testing-library/react-native";
+import { screen } from "@testing-library/react-native";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import { ObsEditContext } from "providers/contexts";
 import React from "react";
 
 import factory from "../../../factory";
+import { renderComponent } from "../../../helpers/render";
 
 // this resolves a test failure with the Animated library:
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.
@@ -56,12 +56,10 @@ const obsEditValue = {
   setGalleryUris: setStateMocked
 };
 
-const renderPhotoGallery = ( ) => render(
-  <NavigationContainer>
-    <ObsEditContext.Provider value={obsEditValue}>
-      <PhotoGallery />
-    </ObsEditContext.Provider>
-  </NavigationContainer>
+const renderPhotoGallery = ( ) => renderComponent(
+  <ObsEditContext.Provider value={obsEditValue}>
+    <PhotoGallery />
+  </ObsEditContext.Provider>
 );
 
 test( "renders photos from photo gallery", ( ) => {
@@ -75,8 +73,12 @@ test( "renders photos from photo gallery", ( ) => {
     .toStrictEqual( { uri } );
 } );
 
-// right now this is failing on react-native-modal, since there's a TouchableWithFeedback
-// that allows the user to tap the backdrop and exit the modal
-test.todo( "should not have accessibility errors" );
+describe( "PhotoGallery", () => {
+  test( "should not have accessibility errors", () => {
+    renderPhotoGallery( );
+    const photoGallery = screen.getByTestId( "photo-gallery" );
+    expect( photoGallery ).toBeAccessible();
+  } );
+} );
 
 test.todo( "navigates to GroupPhotos when photo is selected" );
