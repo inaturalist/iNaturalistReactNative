@@ -2,14 +2,15 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { Pressable, Text } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import useLocalObservations from "sharedHooks/useLocalObservations";
 
 const LoggedOutCard = ( ): Node => {
   const navigation = useNavigation( );
   const localObservations = useLocalObservations( );
+  const { t } = useTranslation( );
   const { unuploadedObsList } = localObservations;
   const numOfUnuploadedObs = unuploadedObsList?.length;
 

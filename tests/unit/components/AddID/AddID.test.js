@@ -1,5 +1,6 @@
-import { fireEvent, waitFor } from "@testing-library/react-native";
+import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import AddID from "components/ObsEdit/AddID";
+import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 
@@ -39,17 +40,44 @@ jest.mock( "react-native-vector-icons/MaterialIcons", ( ) => {
   return MaterialIcons;
 } );
 
-test( "renders taxon search results", async ( ) => {
-  inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
-  const route = { params: { } };
-  const { getByTestId } = renderComponent( <AddID route={route} /> );
-  const input = getByTestId( "SearchTaxon" );
-  const taxon = mockTaxaList[0];
-  await waitFor( () => {
-    fireEvent.changeText( input, "Some taxon" );
-    expect( getByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
+describe( "rendering", ( ) => {
+  it( "show taxon search results", async ( ) => {
+    inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
+    const route = { params: { } };
+    const { getByTestId } = renderComponent( <AddID route={route} /> );
+    const input = getByTestId( "SearchTaxon" );
+    const taxon = mockTaxaList[0];
+    await waitFor( () => {
+      fireEvent.changeText( input, "Some taxon" );
+      expect( getByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
+    } );
+    expect(
+      getByTestId( `Search.taxa.${taxon.id}.photo` ).props.source
+    ).toStrictEqual( { uri: taxon.default_photo.square_url } );
   } );
-  expect(
-    getByTestId( `Search.taxa.${taxon.id}.photo` ).props.source
-  ).toStrictEqual( { uri: taxon.default_photo.square_url } );
+
+  it( "calls callback with a taxon that can be saved to Realm", async ( ) => {
+    const mockCallback = jest.fn( ident => {
+      global.realm.write( ( ) => {
+        global.realm.create( "Taxon", ident.taxon );
+      } );
+    } );
+    renderComponent( (
+      <AddID
+        route={{
+          params: {
+            onIDAdded: mockCallback
+          }
+        }}
+      />
+    ) );
+    const input = screen.getByTestId( "SearchTaxon" );
+    const taxon = mockTaxaList[0];
+    fireEvent.changeText( input, "Some taxon" );
+    expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
+    const labelText = t( "Choose-Taxon" );
+    const chooseButton = ( await screen.findAllByLabelText( labelText ) )[0];
+    fireEvent.press( chooseButton );
+    expect( mockCallback ).toHaveBeenCalled( );
+  } );
 } );

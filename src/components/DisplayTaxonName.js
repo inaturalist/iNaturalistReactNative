@@ -44,18 +44,27 @@ const capitalize = s => {
   // just these patterns for use outside of React
   // eslint-disable-next-line max-len
   const lowerCaseChars = "µßàáâãäåæçèéêëìíîïðñòóôõöøØùúûüýþÿāăąćĉċčďēĕėęěĝğġģĥĩīĭįĵķĺļľłńņňōŏőŒœŕŗřśŝşšţťũūŭůűųŵŷźżžơưǎǐǒǔǖǘǚǜǟǡǣǧǩǫǭǯǰǵǹǻǽǿȁȃȅȇȉȋȍȏȑȓȕȗșțȟȧȩȫȭȯȱȳΩḁḃḅḇḉḋḍḏḑḓḕḗḙḛḝḟḡḣḥḧḩḫḭḯḱḳḵḷḹḻḽḿṁṃṅṇṉṋṍṏṑṓṕṗṙṛṝṟṡṣṥṧṩṫṭṯṱṳṵṷṹṻṽṿẁẃẅẇẉẋẍẏẑẓẕẖẗẘẙẛạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ∂∆∑ﬁﬂ";
+  // On the web, we use toUpperCase to generate this at runtime, but that
+  // seems to be causing a bug in the Android JS engine as of 20230110, so
+  // we're hard-coding it here. ~~~kueda 20220110
+  // eslint-disable-next-line max-len
+  const upperCaseChars = "ΜSSÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØØÙÚÛÜÝÞŸĀĂĄĆĈĊČĎĒĔĖĘĚĜĞĠĢĤĨĪĬĮĴĶĹĻĽŁŃŅŇŌŎŐŒŒŔŖŘŚŜŞŠŢŤŨŪŬŮŰŲŴŶŹŻŽƠƯǍǏǑǓǕǗǙǛǞǠǢǦǨǪǬǮJ̌ǴǸǺǼǾȀȂȄȆȈȊȌȎȐȒȔȖȘȚȞȦȨȪȬȮȰȲΩḀḂḄḆḈḊḌḎḐḒḔḖḘḚḜḞḠḢḤḦḨḪḬḮḰḲḴḶḸḺḼḾṀṂṄṆṈṊṌṎṐṒṔṖṘṚṜṞṠṢṤṦṨṪṬṮṰṲṴṶṸṺṼṾẀẂẄẆẈẊẌẎẐẒẔH̱T̈W̊Y̊ṠẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼẾỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴỶỸ∂∆∑FIFL";
+  // I don't feel great about disabling this eslint check, but the this
+  // approach does prevent the crash on Android. We should keep in mind that
+  // there may be capitalization issues down the road ~~~kueda 20230110
+  // eslint-disable-next-line no-misleading-character-class
   const allCasePattern = new RegExp(
-    `[A-z${lowerCaseChars}${lowerCaseChars.toUpperCase()}]`
+    `[A-z${lowerCaseChars}${upperCaseChars}]`
   );
   const firstLetterMatch = s.match( allCasePattern );
   let firstLetterIndex = firstLetterMatch ? firstLetterMatch.index : 0;
+  // eslint-disable-next-line no-misleading-character-class
   const leadingContractionPattern = new RegExp(
     `^[a-z${
       lowerCaseChars
     }][’']([A-z${
       lowerCaseChars
-    }${lowerCaseChars.toUpperCase()
-    }]+)`
+    }${upperCaseChars}]+)`
   );
   const leadingContractionMatch = s.match( leadingContractionPattern );
   if ( leadingContractionMatch ) {
@@ -145,7 +154,7 @@ const DisplayTaxonName = ( { item: { user, taxon } }: Props ): Node => {
 
   let title = taxonData.scientificName;
 
-  if ( user.prefers_scientific_name_first && taxonData.commonName ) {
+  if ( user?.prefers_scientific_name_first && taxonData.commonName ) {
     title = `${title} (${taxonData.commonName})`;
   } else if ( taxonData.commonName ) {
     title = `${taxonData.commonName} (${title})`;
