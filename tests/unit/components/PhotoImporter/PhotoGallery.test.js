@@ -74,9 +74,9 @@ test( "renders photos from photo gallery", ( ) => {
 } );
 
 describe( "PhotoGallery", () => {
-  test( "should not have accessibility errors", () => {
+  test( "should not have accessibility errors", async () => {
     renderPhotoGallery( );
-    const photoGallery = screen.getByTestId( "photo-gallery" );
+    const photoGallery = await screen.findByTestId( "photo-gallery" );
     expect( photoGallery ).toBeAccessible();
   } );
 } );
