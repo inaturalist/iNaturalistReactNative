@@ -47,7 +47,9 @@ module.exports = {
       buttonWarningDisabled: WARNING_DISABLED,
       buttonNeutral: NEUTRAL,
       buttonNeutralDisabled: NEUTRAL_DISABLED,
-      selectionGreen: "#C1FF00"
+      selectionGreen: "#C1FF00",
+      flaggedBackground: "#fcf8e3",
+      flaggedText: "#8a6d3a"
     }
   },
   plugins: []

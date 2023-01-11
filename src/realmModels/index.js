@@ -1,5 +1,6 @@
 import Application from "./Application";
 import Comment from "./Comment";
+import Flag from "./Flag";
 import Identification from "./Identification";
 import Observation from "./Observation";
 import ObservationPhoto from "./ObservationPhoto";
@@ -12,6 +13,7 @@ export default {
   schema: [
     Application,
     Comment,
+    Flag,
     Identification,
     Observation,
     ObservationPhoto,

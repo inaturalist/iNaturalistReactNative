@@ -18,6 +18,7 @@ import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Menu } from "react-native-paper";
 import Comment from "realmModels/Comment";
+// import Flag from "realmModels/Flag";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
@@ -47,6 +48,10 @@ const ActivityItem = ( {
 
   const realm = useRealm( );
   const queryClient = useQueryClient( );
+  const itemType = item.category ? "Identification" : "Comment";
+  const activityItemClassName = item.flags.length > 0
+    ? "flex-row border border-borderGray py-1 justify-between bg-flaggedBackground"
+    : "flex-row border border-borderGray py-1 justify-between";
 
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {
@@ -70,9 +75,13 @@ const ActivityItem = ( {
     setFlagModalVisible( false );
   };
 
+  // const showItemFlagged = () => {
+
+  // };
+
   return (
     <View className={item.temporary && "opacity-50"}>
-      <View className="flex-row border border-borderGray py-1 justify-between">
+      <View className={activityItemClassName}>
         {user && (
           <Pressable
             onPress={handlePress}
@@ -92,9 +101,19 @@ const ActivityItem = ( {
               source={require( "images/id_rg.png" )}
             />
             )}
-          <Text className="color-inatGreen mr-2">
-            {item.category ? t( `Category-${item.category}` ) : ""}
-          </Text>
+          {
+              item.flags.length > 0
+                ? (
+                  <Text className="color-flaggedText mr-2">
+                    {t( "Flagged" )}
+                  </Text>
+                )
+                : (
+                  <Text className="color-inatGreen mr-2">
+                    {item.category ? t( `Category-${item.category}` ) : ""}
+                  </Text>
+                )
+            }
           {item.created_at
             && (
             <Text>
@@ -124,7 +143,6 @@ const ActivityItem = ( {
                 visible={kebabMenuVisible}
                 setVisible={setKebabMenuVisible}
               >
-                {/* TODO: build out this menu */}
                 {!currentUser ? (
                   <Menu.Item
                     onPress={() => setFlagModalVisible( true )}
@@ -159,13 +177,15 @@ const ActivityItem = ( {
           <UserText baseStyle={textStyles.activityItemBody} text={item.body} />
         </View>
       )}
-      {!currentUser ? (
+      {!currentUser
+        && (
         <FlagItemModal
           id={item.id}
           showFlagItemModal={flagModalVisible}
           closeFlagItemModal={closeFlagItemModal}
+          itemType={itemType}
         />
-      ) : undefined}
+        )}
     </View>
   );
 };

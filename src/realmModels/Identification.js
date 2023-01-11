@@ -1,5 +1,6 @@
 import { Realm } from "@realm/react";
 
+import Flag from "./Flag";
 import Taxon from "./Taxon";
 import User from "./User";
 
@@ -11,6 +12,7 @@ class Identification extends Realm.Object {
     current: true,
     disagreement: true,
     id: true,
+    flags: Flag.FLAG_FIELDS,
     taxon: Taxon.TAXON_FIELDS,
     updated_at: true,
     // $FlowFixMe
@@ -23,15 +25,19 @@ class Identification extends Realm.Object {
     return {
       ...id,
       createdAt: id.created_at,
-      id: id.id,
+      flags: id.flags.length > 0 ? Flag.mapApiToRealm( id.flags ) : [],
       taxon: Taxon.mapApiToRealm( id.taxon ),
       user: User.mapApiToRealm( id.user )
     };
   }
 
   static mapApiToRealm( id, realm ) {
+    if ( id.flags.length > 0 ) {
+      console.log( "map api tp realm identifications", id );
+    }
     const newId = {
       ...id,
+      flags: Flag.mapApiToRealm( id.flags ),
       taxon: Taxon.mapApiToRealm( id.taxon ),
       user: User.mapApiToRealm( id.user, realm )
     };
@@ -46,6 +52,7 @@ class Identification extends Realm.Object {
       body: "string?",
       category: "string?",
       created_at: { type: "string?", mapTo: "createdAt" },
+      flags: "Flag[]",
       id: "int?",
       taxon: "Taxon?",
       user: "User?",

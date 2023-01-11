@@ -13,8 +13,6 @@ const createFlag = async (
   opts: Object = {}
 ): Promise<any> => {
   try {
-    console.log( "create flag api call entered", opts );
-    console.log( "create flag api call entered", { ...PARAMS, ...params } );
     const { results } = await inatjs.flags.create( { ...PARAMS, ...params }, opts );
     console.log( "create flag api call finished", results );
     return results;

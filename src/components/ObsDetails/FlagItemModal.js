@@ -1,5 +1,4 @@
 // @flow
-
 import CheckBox from "@react-native-community/checkbox";
 import createFlag from "api/flags";
 import Button from "components/SharedComponents/Buttons/Button";
@@ -21,27 +20,30 @@ import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
 type Props = {
   id:number,
+  itemType:string,
   showFlagItemModal: boolean,
   closeFlagItemModal: Function
 }
 
 const FlagItemModal = ( {
-  id, showFlagItemModal, closeFlagItemModal
+  id, itemType, showFlagItemModal, closeFlagItemModal
 }: Props ): Node => {
   const keyboardScrollRef = useRef( null );
-  const [value, setValue] = useState( "none" );
+  const [checkBoxValue, setCheckBoxValue] = useState( "none" );
   const [explanation, setExplanation] = useState( "" );
 
   const scrollToInput = node => {
     keyboardScrollRef?.current?.scrollToFocusedInput( node );
   };
 
-  const toggleValue = checkbox => {
-    if ( value === checkbox ) { setValue( "none" ); } else { setValue( checkbox ); }
+  const toggleCheckBoxValue = checkbox => {
+    if ( checkBoxValue === checkbox ) {
+      setCheckBoxValue( "none" );
+    } else { setCheckBoxValue( checkbox ); }
   };
 
-  const clearForm = () => {
-    setValue( "none" );
+  const resetFlagModal = () => {
+    setCheckBoxValue( "none" );
     setExplanation( "" );
     closeFlagItemModal();
   };
@@ -50,22 +52,23 @@ const FlagItemModal = ( {
     ( params, optsWithAuth ) => createFlag( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        // waiting for final designs
+        closeFlagItemModal();
+        // rerender and update to show current item flagged
       }
     }
   );
 
-  const submitFlag = async () => {
-    if ( value !== "none" ) {
+  const submitFlag = () => {
+    if ( checkBoxValue !== "none" ) {
       let params = {
         flag: {
-          flaggable_type: "Identification",
+          flaggable_type: itemType,
           flaggable_id: id,
-          flag: value
+          flag: checkBoxValue
 
         }
       };
-      if ( value === "other" ) {
+      if ( checkBoxValue === "other" ) {
         params = { ...params, flag_explanation: explanation };
       }
       createFlagMutation.mutate( params );
@@ -98,12 +101,12 @@ const FlagItemModal = ( {
           <View className="flex-row my-2">
             <CheckBox
               disabled={false}
-              value={value === "spam"}
-              onValueChange={() => toggleValue( "spam" )}
+              value={checkBoxValue === "spam"}
+              onValueChange={() => toggleCheckBoxValue( "spam" )}
             />
             <Text
               className="font-bold text-lg ml-5"
-              onPress={() => toggleValue( "spam" )}
+              onPress={() => toggleCheckBoxValue( "spam" )}
             >
               {t( "Spam" )}
 
@@ -114,12 +117,12 @@ const FlagItemModal = ( {
           <View className="flex-row my-2">
             <CheckBox
               disabled={false}
-              value={value === "inappropriate"}
-              onValueChange={() => toggleValue( "inappropriate" )}
+              value={checkBoxValue === "inappropriate"}
+              onValueChange={() => toggleCheckBoxValue( "inappropriate" )}
             />
             <Text
               className="font-bold text-lg ml-5"
-              onPress={() => toggleValue( "inappropriate" )}
+              onPress={() => toggleCheckBoxValue( "inappropriate" )}
             >
               {t( "Offensive-Inappropriate" )}
 
@@ -130,37 +133,36 @@ const FlagItemModal = ( {
           <View className="flex-row my-2">
             <CheckBox
               disabled={false}
-              value={value === "other"}
-              onValueChange={() => toggleValue( "other" )}
+              value={checkBoxValue === "other"}
+              onValueChange={() => toggleCheckBoxValue( "other" )}
             />
             <Text
               className="font-bold text-lg ml-5"
-              onPress={() => toggleValue( "other" )}
+              onPress={() => toggleCheckBoxValue( "other" )}
             >
               {t( "Other" )}
 
             </Text>
           </View>
           <Text className="mb-2 text-base">{t( "Flag-Item-Other-Description" )}</Text>
-          {( value === "other" )
-            ? (
-              <>
-                <TextInput
-                  className="text-sm"
-                  placeholder={t( "Flag-Item-Other-Input-Hint" )}
-                  value={explanation}
-                  onChangeText={text => setExplanation( text )}
-                  onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
-                />
-                <Text>{`${explanation.length}/255`}</Text>
-              </>
-            )
-            : undefined}
+          {( checkBoxValue === "other" )
+           && (
+           <>
+             <TextInput
+               className="text-sm"
+               placeholder={t( "Flag-Item-Other-Input-Hint" )}
+               value={explanation}
+               onChangeText={text => setExplanation( text )}
+               onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
+             />
+             <Text>{`${explanation.length}/255`}</Text>
+           </>
+           )}
           <View className="flex-row justify-center m-4">
             <Button
               className="rounded m-2"
               text={t( "Cancel" )}
-              onPress={() => clearForm()}
+              onPress={() => resetFlagModal()}
             />
             <Button
               className="rounded m-2"
