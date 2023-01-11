@@ -47,18 +47,15 @@ const ProjectTabs = ( ): Node => {
   return (
     <>
       <View style={viewStyles.buttonRow}>
-        <Pressable
-          onPress={fetchUserJoinedProjects}
-        >
+        <Pressable onPress={fetchUserJoinedProjects} accessibilityRole="tab">
           <Text>{t( "Joined" )}</Text>
         </Pressable>
-        <Pressable
-          onPress={fetchFeaturedProjects}
-        >
+        <Pressable onPress={fetchFeaturedProjects} accessibilityRole="tab">
           <Text>{t( "Featured" )}</Text>
         </Pressable>
         <Pressable
           onPress={fetchProjectsByLatLng}
+          accessibilityRole="tab"
           testID="ProjectTabs.featured"
         >
           <Text>{t( "Nearby" )}</Text>
