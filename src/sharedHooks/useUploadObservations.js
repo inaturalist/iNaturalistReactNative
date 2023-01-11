@@ -11,8 +11,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [uploadInProgress, setUploadInProgress] = useState( false );
   const [shouldUpload, setShouldUpload] = useState( false );
   const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
-  const realm = useRealm( );
-  const apiToken = useApiToken( );
+  const realm = useRealm();
+  const apiToken = useApiToken();
 
   const cleanup = ( ) => {
     setUploadInProgress( false );
@@ -21,20 +21,20 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   };
 
   useEffect( ( ) => {
-    const upload = async obs => {
-      await Observation.uploadObservation( obs, apiToken, realm );
+    const upload = async observationToUpload => {
+      await Observation.uploadObservation( observationToUpload, apiToken, realm );
       setCurrentUploadIndex( currentIndex => currentIndex + 1 );
     };
 
-    const obs = allObsToUpload[currentUploadIndex];
-    const continueUpload = shouldUpload && obs && !!apiToken;
+    const observationToUpload = allObsToUpload[currentUploadIndex];
+    const continueUpload = shouldUpload && observationToUpload && !!apiToken;
 
     if ( !continueUpload ) {
       cleanup( );
       return;
     }
     setUploadInProgress( true );
-    upload( obs );
+    upload( observationToUpload );
   }, [
     allObsToUpload,
     apiToken,

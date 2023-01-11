@@ -104,8 +104,6 @@ const ObservationViews = ( ): Node => {
     );
   };
 
-  const renderBottomSheet = ( ) => <ObsListBottomSheet hasScrolled={hasScrolled} />;
-
   const renderItemSeparator = ( ) => <View className="border border-border" />;
 
   const onEndReached = ( ) => {
@@ -148,7 +146,7 @@ const ObservationViews = ( ): Node => {
             onEndReached={onEndReached}
             onEndReachedThreshold={0.1}
           />
-          {renderBottomSheet( )}
+          <ObsListBottomSheet hasScrolled={hasScrolled} />
         </Animated.View>
       </View>
     </ViewWithFooter>

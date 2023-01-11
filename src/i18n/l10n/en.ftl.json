@@ -63,6 +63,10 @@
     "comment": "After pressing the reset password button",
     "val": "Check your email! We've sent password reset instructions."
   },
+  "Choose-Taxon": {
+    "comment": "Label for a button to choose a taxon",
+    "val": "Choose Taxon"
+  },
   "Combine-Photos": "Combine Photos",
   "Combine-photos-onboarding": {
     "comment": "Onboarding for users learning to group photos in the camera roll",
@@ -227,6 +231,7 @@
     "val": "No account found with that email"
   },
   "No-comments-or-ids-to-display": "No comments or ids to display",
+  "No-image-available-for-this-observation": "No image available for this observation",
   "No-Location": "No Location",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
   "no-rights-reserved": {
