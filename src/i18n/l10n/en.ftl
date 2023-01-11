@@ -699,6 +699,7 @@ Navigate-back = Navigate back
 Navigate-to-edit-observation = Navigate to edit observation screen
 Navigate-to-login-screen = Navigate to login screen
 Navigate-to-observation-details = Navigate to observation details screen
+Navigate-to-project-details = Navigate to project details
 Navigate-to-taxon-details = Navigate to taxon details
 Navigate-to-user-profile = Navigate to user profile
 Number-of-comments = Number of comments
