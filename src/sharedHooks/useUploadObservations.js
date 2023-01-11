@@ -21,20 +21,20 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   };
 
   useEffect( () => {
-    const upload = async obs => {
-      await Observation.uploadObservation( obs, apiToken, realm );
+    const upload = async observationToUpload => {
+      await Observation.uploadObservation( observationToUpload, apiToken, realm );
       setCurrentUploadIndex( currentIndex => currentIndex + 1 );
     };
 
-    const obs = allObsToUpload[currentUploadIndex];
-    const continueUpload = shouldUpload && obs && !!apiToken;
+    const observationToUpload = allObsToUpload[currentUploadIndex];
+    const continueUpload = shouldUpload && observationToUpload && !!apiToken;
 
     if ( !continueUpload ) {
       cleanup();
       return;
     }
     setUploadInProgress( true );
-    upload( obs );
+    upload( observationToUpload );
   }, [
     allObsToUpload,
     apiToken,
