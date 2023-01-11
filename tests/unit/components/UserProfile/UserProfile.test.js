@@ -31,19 +31,20 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-test( "renders user profile from API call", async ( ) => {
-  const { getByTestId, getByText } = renderComponent( <UserProfile /> );
-
-  expect( getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy( );
-  expect( getByText( `iNaturalist ${mockUser.roles[0]}` ) ).toBeTruthy( );
-  expect( getByTestId( "UserIcon.photo" ).props.source )
-    .toStrictEqual( { uri: mockUser.icon_url } );
-} );
-
 describe( "UserProfile", () => {
   test( "should not have accessibility errors", async () => {
     renderComponent( <UserProfile /> );
     const userProfile = await screen.findByTestId( "UserProfile" );
     expect( userProfile ).toBeAccessible();
+  } );
+
+  test( "renders user profile from API call", async () => {
+    const { getByTestId, getByText } = renderComponent( <UserProfile /> );
+
+    expect( getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy();
+    expect( getByText( `iNaturalist ${mockUser.roles[0]}` ) ).toBeTruthy();
+    expect( getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( {
+      uri: mockUser.icon_url
+    } );
   } );
 } );
