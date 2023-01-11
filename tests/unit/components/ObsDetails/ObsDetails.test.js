@@ -1,4 +1,5 @@
-import { fireEvent } from "@testing-library/react-native";
+import { onlineManager } from "@tanstack/react-query";
+import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import React from "react";
 
@@ -56,6 +57,16 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 
 jest.mock( "components/ObsDetails/AddCommentModal" );
 
+const mockLatLng = {
+  latitude: "91",
+  longitude: "-121"
+};
+
+jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
+  __esModule: true,
+  default: ( ) => mockLatLng
+} ) );
+
 test( "renders obs details from remote call", async ( ) => {
   const { getByTestId, getByText, findByTestId } = renderComponent( <ObsDetails /> );
 
@@ -69,41 +80,62 @@ test( "renders obs details from remote call", async ( ) => {
   // renderComponent( <ObsDetails />  ).debug( ) at all
 } );
 
-test( "renders data tab on button press", async ( ) => {
-  const { getByText, findByTestId } = renderComponent( <ObsDetails /> );
-  const button = await findByTestId( "ObsDetails.DataTab" );
+describe( "activity tab", ( ) => {
+  test( "navigates to observer profile on button press", async ( ) => {
+    const { findByTestId } = renderComponent( <ObsDetails /> );
 
-  fireEvent.press( button );
-  expect( getByText( mockObservation.description ) ).toBeTruthy( );
-} );
+    fireEvent.press( await findByTestId( "ObsDetails.currentUser" ) );
+    expect( mockNavigate )
+      .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
+  } );
 
-test( "navigates to observer profile on button press", async ( ) => {
-  const { findByTestId } = renderComponent( <ObsDetails /> );
+  test( "navigates to identifier profile on button press", async ( ) => {
+    const { findByTestId } = renderComponent( <ObsDetails /> );
 
-  fireEvent.press( await findByTestId( "ObsDetails.currentUser" ) );
-  expect( mockNavigate )
-    .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
-} );
+    fireEvent.press(
+      await findByTestId(
+        `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
+      )
+    );
+    expect( mockNavigate ).toHaveBeenCalledWith( "UserProfile", {
+      userId: mockObservation.identifications[0].user.id
+    } );
+  } );
 
-test( "navigates to identifier profile on button press", async ( ) => {
-  const { findByTestId } = renderComponent( <ObsDetails /> );
+  test( "navigates to taxon details on button press", async ( ) => {
+    const { findByTestId } = renderComponent( <ObsDetails /> );
 
-  fireEvent.press(
-    await findByTestId(
-      `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
-    )
-  );
-  expect( mockNavigate ).toHaveBeenCalledWith( "UserProfile", {
-    userId: mockObservation.identifications[0].user.id
+    fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
+    expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
+      id: mockObservation.taxon.id
+    } );
+  } );
+  test( "shows network error image if user is offline", ( ) => {
+    onlineManager.setOnline( false );
+    renderComponent( <ObsDetails /> );
+    const noInternet = screen.queryByRole( "image", { name: "network-check" } );
+    expect( noInternet ).toBeTruthy( );
+    expect( screen.queryByTestId( "PhotoScroll.photo" ) ).toBeNull( );
   } );
 } );
 
-test( "navigates to taxon details on button press", async ( ) => {
-  const { findByTestId } = renderComponent( <ObsDetails /> );
+describe( "data tab", ( ) => {
+  test( "renders data tab content when DATA tab is pressed", ( ) => {
+    const { getByText } = renderComponent( <ObsDetails /> );
+    const dataTab = screen.getByText( /DATA/ );
+    fireEvent.press( dataTab );
+    expect( getByText( mockObservation.description ) ).toBeTruthy( );
+  } );
 
-  fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
-  expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
-    id: mockObservation.taxon.id
+  test( "displays map in data tab if user is online", ( ) => {
+    onlineManager.setOnline( true );
+    renderComponent( <ObsDetails /> );
+    const dataTab = screen.queryByText( /DATA/ );
+    fireEvent.press( dataTab );
+    const map = screen.queryByTestId( "MapView" );
+    expect( map ).toBeTruthy( );
+    const noInternet = screen.queryByRole( "image", { name: "network-check" } );
+    expect( noInternet ).toBeNull( );
   } );
 } );
 

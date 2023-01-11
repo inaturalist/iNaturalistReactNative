@@ -46,7 +46,7 @@ const DataTab = ( { observation }: Props ): Node => {
           />
         ) : (
           <View className="h-16 items-center justify-center">
-            <IconMaterial name="network-check" size={30} />
+            <IconMaterial name="network-check" size={30} accessibilityRole="image" />
           </View>
         )}
       <View className="px-5">
