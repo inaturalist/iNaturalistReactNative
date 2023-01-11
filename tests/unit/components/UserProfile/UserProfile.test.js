@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native";
 import UserProfile from "components/UserProfile/UserProfile";
 import React from "react";
 
@@ -39,12 +40,10 @@ test( "renders user profile from API call", async ( ) => {
     .toStrictEqual( { uri: mockUser.icon_url } );
 } );
 
-test.todo( "should not have accessibility errors" );
-// test( "should not have accessibility errors", ( ) => {
-//   const userProfile = (
-//     <NavigationContainer>
-//       <UserProfile />
-//     </NavigationContainer>
-//   );
-//   expect( userProfile ).toBeAccessible( );
-// } );
+describe( "UserProfile", () => {
+  test( "should not have accessibility errors", async () => {
+    renderComponent( <UserProfile /> );
+    const userProfile = await screen.findByTestId( "UserProfile" );
+    expect( userProfile ).toBeAccessible();
+  } );
+} );

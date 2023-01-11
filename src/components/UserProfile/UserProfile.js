@@ -69,7 +69,7 @@ const UserProfile = ( ): React.Node => {
   } );
 
   return (
-    <ViewWithFooter>
+    <ViewWithFooter testID="UserProfile">
       <View className="flex-row justify-evenly items-center m-3" testID={`UserProfile.${userId}`}>
         <UserIcon uri={User.uri( user )} />
         <View>
