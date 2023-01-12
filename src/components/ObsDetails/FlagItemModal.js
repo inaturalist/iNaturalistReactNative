@@ -22,11 +22,12 @@ type Props = {
   id:number,
   itemType:string,
   showFlagItemModal: boolean,
-  closeFlagItemModal: Function
+  closeFlagItemModal: Function,
+  onItemFlagged: Function
 }
 
 const FlagItemModal = ( {
-  id, itemType, showFlagItemModal, closeFlagItemModal
+  id, itemType, showFlagItemModal, closeFlagItemModal, onItemFlagged
 }: Props ): Node => {
   const keyboardScrollRef = useRef( null );
   const [checkBoxValue, setCheckBoxValue] = useState( "none" );
@@ -51,9 +52,10 @@ const FlagItemModal = ( {
   const createFlagMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => createFlag( params, optsWithAuth ),
     {
-      onSuccess: ( ) => {
+      onSuccess: data => {
         closeFlagItemModal();
-        // rerender and update to show current item flagged
+        onItemFlagged( data );
+        // update identification in realm
       }
     }
   );

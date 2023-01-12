@@ -43,13 +43,14 @@ const ActivityItem = ( {
   const [currentUser, setCurrentUser] = useState( null );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [flagModalVisible, setFlagModalVisible] = useState( false );
+  const [flaggedStatus, setFlaggedStatus] = useState( false );
   const { taxon } = item;
   const { user } = item;
 
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const itemType = item.category ? "Identification" : "Comment";
-  const activityItemClassName = item.flags.length > 0
+  const activityItemClassName = flaggedStatus
     ? "flex-row border border-borderGray py-1 justify-between bg-flaggedBackground"
     : "flex-row border border-borderGray py-1 justify-between";
 
@@ -59,7 +60,12 @@ const ActivityItem = ( {
       setCurrentUser( current );
     };
     isActiveUserTheCurrentUser( );
-  }, [user] );
+
+    // show flagged activity item right after flag item modal closes
+    if ( item.flags?.length > 0 ) {
+      setFlaggedStatus( true );
+    }
+  }, [user, item] );
 
   const deleteCommentMutation = useAuthenticatedMutation(
     ( uuid, optsWithAuth ) => deleteComments( uuid, optsWithAuth ),
@@ -75,9 +81,12 @@ const ActivityItem = ( {
     setFlagModalVisible( false );
   };
 
-  // const showItemFlagged = () => {
-
-  // };
+  const onItemFlagged = () => {
+    setFlaggedStatus( true );
+    // console.log("item flagged");
+    refetchRemoteObservation();
+    // console.log("completed refetch");
+  };
 
   return (
     <View className={item.temporary && "opacity-50"}>
@@ -102,7 +111,7 @@ const ActivityItem = ( {
             />
             )}
           {
-              item.flags.length > 0
+              flaggedStatus
                 ? (
                   <Text className="color-flaggedText mr-2">
                     {t( "Flagged" )}
@@ -184,6 +193,7 @@ const ActivityItem = ( {
           showFlagItemModal={flagModalVisible}
           closeFlagItemModal={closeFlagItemModal}
           itemType={itemType}
+          onItemFlagged={onItemFlagged}
         />
         )}
     </View>

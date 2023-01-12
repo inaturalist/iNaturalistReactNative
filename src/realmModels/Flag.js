@@ -12,26 +12,8 @@ class Flag extends Realm.Object {
     flaggable_id: true,
     flaggable_type: true,
     resolved: true,
-    // $FlowFixMe
-    // user: User && ( { ...User.USER_FIELDS, id: true } ),
     uuid: true
   };
-
-  //   static mimicRealmMappedPropertiesSchema( flags ) {
-  //     return {
-  //       ...flags,
-  //       user: User.mapApiToRealm( flag.user, realm )
-  //     };
-  //   }
-
-  //   static mapApiToRealm( flag, realm ) {
-  //     const newFlag = {
-  //       ...flag,
-  //       user: User.mapApiToRealm( flag.user, realm )
-  //     };
-  //     // const newFlag = []
-  //     return newFlag;
-  //   }
 
   static mapApiToRealm( flag ) {
     return flag;
@@ -50,7 +32,6 @@ class Flag extends Realm.Object {
       flaggable_type: "string?",
       resolved: "bool",
       uuid: "string?"
-    //   user: "User?",
     }
   }
 }

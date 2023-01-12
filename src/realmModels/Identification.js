@@ -32,9 +32,9 @@ class Identification extends Realm.Object {
   }
 
   static mapApiToRealm( id, realm ) {
-    if ( id.flags.length > 0 ) {
-      console.log( "map api tp realm identifications", id );
-    }
+    // if ( id.flags.length > 0 ) {
+    //   console.log( "map api to realm identifications", id );
+    // }
     const newId = {
       ...id,
       flags: Flag.mapApiToRealm( id.flags ),

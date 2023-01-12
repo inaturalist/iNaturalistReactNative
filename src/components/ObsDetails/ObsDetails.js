@@ -162,6 +162,26 @@ const ObsDetails = ( ): Node => {
     } );
   };
 
+  // update local observation if there is a remote change(ie. flags, id, comment)
+  // currently put on hold until flags etc. change the updated_at value server side
+  useEffect( () => {
+    // console.log( "upsert useEffect running" );
+    // console.log( "local Observation uuid", localObservation?.uuid );
+    // console.log( "remote Observation uuid", remoteObservation?.uuid );
+    // console.log( "local Observation updated at", localObservation?.updated_at );
+    // console.log( "remote Observation updated at", remoteObservation?.updated_at );
+    // console.log( "remote Observation updated at type", typeof remoteObservation?.updated_at );
+    if ( localObservation && remoteObservation ) {
+      const remoteUpdatedAt = new Date( remoteObservation?.updated_at );
+      // console.log( "remote updated at type", typeof remoteUpdatedAt );
+      // console.log( "remote updated at", remoteUpdatedAt );
+      if ( remoteUpdatedAt > localObservation?.updated_at ) {
+        // console.log( "about to upsert" );
+        Observation.upsertRemoteObservations( [remoteObservation], realm );
+      }
+    }
+  }, [localObservation, remoteObservation, realm] );
+
   useEffect( ( ) => {
     const markViewedLocally = async ( ) => {
       realm?.write( ( ) => {
