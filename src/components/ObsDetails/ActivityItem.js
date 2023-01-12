@@ -1,6 +1,6 @@
 // @flow
 
-import { onlineManager, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments } from "api/comments";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import KebabMenu from "components/SharedComponents/KebabMenu";
@@ -21,6 +21,7 @@ import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import useIsOnline from "sharedHooks/useIsOnline";
 import { textStyles } from "styles/obsDetails/obsDetails";
 
 import TaxonImage from "./TaxonImage";
@@ -45,7 +46,7 @@ const ActivityItem = ( {
 
   const realm = useRealm( );
   const queryClient = useQueryClient( );
-  const isOnline = onlineManager.isOnline( );
+  const isOnline = useIsOnline( );
 
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {

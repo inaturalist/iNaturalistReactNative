@@ -1,7 +1,7 @@
-import { onlineManager } from "@tanstack/react-query";
 import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import React from "react";
+import useIsOnline from "sharedHooks/useIsOnline";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
@@ -57,6 +57,8 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 
 jest.mock( "components/ObsDetails/AddCommentModal" );
 
+jest.mock( "sharedHooks/useIsOnline" );
+
 const mockLatLng = {
   latitude: "91",
   longitude: "-121"
@@ -68,6 +70,7 @@ jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
 } ) );
 
 test( "renders obs details from remote call", async ( ) => {
+  useIsOnline.mockImplementation( ( ) => true );
   const { getByTestId, getByText, findByTestId } = renderComponent( <ObsDetails /> );
 
   expect( await findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
@@ -75,9 +78,6 @@ test( "renders obs details from remote call", async ( ) => {
     getByTestId( "PhotoScroll.photo" ).props.source
   ).toStrictEqual( { uri: mockObservation.observationPhotos[0].photo.url } );
   expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
-  // TODO: figure out how to test elements which are mapped to camelCase via
-  // Observation model right now, these elements are not rendering in
-  // renderComponent( <ObsDetails />  ).debug( ) at all
 } );
 
 describe( "activity tab", ( ) => {
@@ -111,7 +111,7 @@ describe( "activity tab", ( ) => {
     } );
   } );
   test( "shows network error image if user is offline", ( ) => {
-    onlineManager.setOnline( false );
+    useIsOnline.mockImplementation( ( ) => false );
     renderComponent( <ObsDetails /> );
     const noInternet = screen.queryByRole( "image", { name: "network-check" } );
     expect( noInternet ).toBeTruthy( );
@@ -128,7 +128,7 @@ describe( "data tab", ( ) => {
   } );
 
   test( "displays map in data tab if user is online", ( ) => {
-    onlineManager.setOnline( true );
+    useIsOnline.mockImplementation( ( ) => true );
     renderComponent( <ObsDetails /> );
     const dataTab = screen.queryByText( /DATA/ );
     fireEvent.press( dataTab );

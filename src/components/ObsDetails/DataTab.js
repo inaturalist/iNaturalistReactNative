@@ -1,6 +1,5 @@
 // @flow
 
-import { onlineManager } from "@tanstack/react-query";
 import Map from "components/SharedComponents/Map";
 import { Text, View } from "components/styledComponents";
 import { format, parseISO } from "date-fns";
@@ -8,6 +7,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import useIsOnline from "sharedHooks/useIsOnline";
 import colors from "styles/tailwindColors";
 
 import Attribution from "./Attribution";
@@ -18,7 +18,7 @@ type Props = {
 }
 
 const DataTab = ( { observation }: Props ): Node => {
-  const isOnline = onlineManager.isOnline( );
+  const isOnline = useIsOnline( );
   const application = observation?.application?.name;
 
   const displayTime = datetime => {

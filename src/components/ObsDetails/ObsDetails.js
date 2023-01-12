@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { onlineManager, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
@@ -36,6 +36,7 @@ import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useIsOnline from "sharedHooks/useIsOnline";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import { imageStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
@@ -55,6 +56,7 @@ LogBox.ignoreLogs( [
 ] );
 
 const ObsDetails = ( ): Node => {
+  const isOnline = useIsOnline( );
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
   const [refetch, setRefetch] = useState( false );
@@ -67,7 +69,6 @@ const ObsDetails = ( ): Node => {
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [addingComment, setAddingComment] = useState( false );
   const [comments, setComments] = useState( [] );
-  const isOnline = onlineManager.isOnline( );
 
   const queryClient = useQueryClient( );
 
@@ -85,16 +86,21 @@ const ObsDetails = ( ): Node => {
 
   const observation = localObservation || remoteObservation;
 
-  const mutationOptions = {
-    onSuccess: ( ) => {
-      queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
-      refetchRemoteObservation( );
-    }
+  const markViewedLocally = async ( ) => {
+    realm?.write( ( ) => {
+      localObservation.viewed = true;
+    } );
   };
 
   const markViewedMutation = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
-    mutationOptions
+    {
+      onSuccess: ( ) => {
+        markViewedLocally( );
+        queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
+        refetchRemoteObservation( );
+      }
+    }
   );
 
   const taxon = observation?.taxon;
@@ -163,17 +169,10 @@ const ObsDetails = ( ): Node => {
   };
 
   useEffect( ( ) => {
-    const markViewedLocally = async ( ) => {
-      realm?.write( ( ) => {
-        localObservation.viewed = true;
-      } );
-    };
-
     if ( localObservation && !localObservation?.viewed ) {
       markViewedMutation.mutate( { id: uuid } );
-      markViewedLocally( );
     }
-  }, [observation, localObservation, realm, markViewedMutation, uuid] );
+  }, [localObservation, markViewedMutation, uuid] );
 
   useEffect( ( ) => {
     const obsCreatedLocally = observation?.id === null;
