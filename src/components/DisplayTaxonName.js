@@ -154,7 +154,7 @@ const DisplayTaxonName = ( { item: { user, taxon } }: Props ): Node => {
 
   let title = taxonData.scientificName;
 
-  if ( user.prefers_scientific_name_first && taxonData.commonName ) {
+  if ( user?.prefers_scientific_name_first && taxonData.commonName ) {
     title = `${title} (${taxonData.commonName})`;
   } else if ( taxonData.commonName ) {
     title = `${taxonData.commonName} (${title})`;

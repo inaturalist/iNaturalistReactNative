@@ -285,7 +285,13 @@ const ObsDetails = ( ): Node => {
     }
     return (
       <View className="bg-white flex-row justify-center">
-        <IconMaterial name="image-not-supported" size={100} />
+        <IconMaterial
+          testID="ObsDetails.noImage"
+          name="image-not-supported"
+          size={100}
+          accessible
+          accessibilityLabel={t( "No-image-available-for-this-observation" )}
+        />
       </View>
     );
   };

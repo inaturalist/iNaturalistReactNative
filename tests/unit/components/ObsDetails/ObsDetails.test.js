@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import React from "react";
+import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useIsOnline from "sharedHooks/useIsOnline";
 
 import factory from "../../../factory";
@@ -11,6 +12,12 @@ const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
   time_observed_at: "2023-12-14T21:07:41-09:30"
 } );
+const mockNoEvidenceObservation = factory( "LocalObservation", {
+  created_at: "2022-11-27T19:07:41-08:00",
+  time_observed_at: "2023-12-14T21:07:41-09:30"
+} );
+mockNoEvidenceObservation.observationPhotos = [];
+mockNoEvidenceObservation.observationSounds = [];
 const mockUser = factory( "LocalUser" );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
@@ -37,9 +44,9 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
-  default: ( ) => ( {
+  default: jest.fn( ( ) => ( {
     data: mockObservation
-  } )
+  } ) )
 } ) );
 
 // TODO if/when we test mutation behavior, the mutation will need to be mocked
@@ -78,6 +85,29 @@ test( "renders obs details from remote call", async ( ) => {
     getByTestId( "PhotoScroll.photo" ).props.source
   ).toStrictEqual( { uri: mockObservation.observationPhotos[0].photo.url } );
   expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
+} );
+
+describe( "Observation with no evidence", () => {
+  beforeEach( () => {
+    useAuthenticatedQuery.mockReturnValue( {
+      data: mockNoEvidenceObservation
+    } );
+  } );
+
+  test( "should render fallback image icon instead of photos", async () => {
+    renderComponent( <ObsDetails /> );
+
+    const fallbackImage = await screen.findByLabelText(
+      "No image available for this observation"
+    );
+    expect( fallbackImage ).toBeTruthy();
+  } );
+
+  afterEach( () => {
+    useAuthenticatedQuery.mockReturnValue( {
+      data: mockObservation
+    } );
+  } );
 } );
 
 describe( "activity tab", ( ) => {

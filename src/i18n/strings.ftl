@@ -78,6 +78,9 @@ Casual = Casual
 # After pressing the reset password button
 Check-your-email = Check your email! We've sent password reset instructions.
 
+# Label for a button to choose a taxon
+Choose-Taxon = Choose Taxon
+
 Combine-Photos = Combine Photos
 
 # Onboarding for users learning to group photos in the camera roll
@@ -318,6 +321,8 @@ No = No
 No-account-found = No account found with that email
 
 No-comments-or-ids-to-display = No comments or ids to display
+
+No-image-available-for-this-observation = No image available for this observation
 
 No-Location = No Location
 

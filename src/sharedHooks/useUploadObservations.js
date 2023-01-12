@@ -1,42 +1,52 @@
 // @flow
 
 import { RealmContext } from "providers/contexts";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import useApiToken from "sharedHooks/useApiToken";
 
 const { useRealm } = RealmContext;
 
 const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
-  const [cancelUpload, setCancelUpload] = useState( false );
+  const [uploadInProgress, setUploadInProgress] = useState( false );
+  const [shouldUpload, setShouldUpload] = useState( false );
   const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
-  const realm = useRealm( );
-  const apiToken = useApiToken( );
+  const realm = useRealm();
+  const apiToken = useApiToken();
 
-  const handleClosePress = useCallback( ( ) => {
-    setCancelUpload( true );
-  }, [] );
+  const cleanup = () => {
+    setUploadInProgress( false );
+    setShouldUpload( false );
+    setCurrentUploadIndex( 0 );
+  };
 
-  useEffect( ( ) => {
-    const upload = async obs => {
-      if ( !apiToken ) return;
-      await Observation.uploadObservation( obs, apiToken, realm );
-      setCurrentUploadIndex( currentUploadIndex + 1 );
+  useEffect( () => {
+    const upload = async observationToUpload => {
+      await Observation.uploadObservation( observationToUpload, apiToken, realm );
+      setCurrentUploadIndex( currentIndex => currentIndex + 1 );
     };
 
-    if ( !cancelUpload && allObsToUpload[currentUploadIndex] ) {
-      upload( allObsToUpload[currentUploadIndex] );
+    const observationToUpload = allObsToUpload[currentUploadIndex];
+    const continueUpload = shouldUpload && observationToUpload && !!apiToken;
+
+    if ( !continueUpload ) {
+      cleanup();
+      return;
     }
+    setUploadInProgress( true );
+    upload( observationToUpload );
   }, [
     allObsToUpload,
     apiToken,
-    cancelUpload,
+    shouldUpload,
     currentUploadIndex,
     realm
   ] );
 
   return {
-    handleClosePress
+    uploadInProgress,
+    handleClosePress: cleanup,
+    startUpload: () => setShouldUpload( true )
   };
 };
 
