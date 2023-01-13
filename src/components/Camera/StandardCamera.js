@@ -80,6 +80,7 @@ const StandardCamera = ( ): Node => {
   }, [] );
 
   const takePhoto = async ( ) => {
+    console.log( "pressed" );
     setSavingPhoto( true );
     try {
       if ( disallowAddingPhotos ) {
@@ -194,9 +195,11 @@ const StandardCamera = ( ): Node => {
           >
             <Icon name="arrow-back-ios" size={25} color={colors.white} />
           </Pressable>
-          <Pressable onPress={takePhoto} className="w-1/3 items-center">
-            {renderCameraButton( "circle-outline", disallowAddingPhotos )}
-          </Pressable>
+          <View className="w-1/3">
+            <Pressable onPress={takePhoto} className="items-center">
+              {renderCameraButton( "circle-outline", disallowAddingPhotos )}
+            </Pressable>
+          </View>
           {photosTaken ? (
             <Text className="text-white text-xl w-1/3 text-center pr-4" onPress={navToObsEdit}>
               {t( "Next" )}
