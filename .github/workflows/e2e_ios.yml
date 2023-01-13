@@ -4,6 +4,9 @@
 name: e2e-iOS
 on:
   pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   setup:
