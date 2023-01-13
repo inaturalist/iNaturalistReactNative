@@ -2,13 +2,18 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  Pressable, Text, View
+  Pressable, SafeAreaView,
+  Text, View
 } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useRef, useState } from "react";
-import { Platform, StatusBar } from "react-native";
+import React, {
+  useContext, useEffect, useRef, useState
+} from "react";
+import {
+  Dimensions, Platform, StatusBar
+} from "react-native";
 import { Avatar, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
@@ -63,8 +68,16 @@ const StandardCamera = ( ): Node => {
   const [savingPhoto, setSavingPhoto] = useState( false );
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
+  const initialWidth = Dimensions.get( "screen" ).height;
+  const [footerWidth, setFooterWidth] = useState( initialWidth );
 
   const photosTaken = allObsPhotoUris.length > 0;
+
+  useEffect( () => {
+    Dimensions.addEventListener( "change", ( { window: { width } } ) => {
+      setFooterWidth( width );
+    } );
+  }, [] );
 
   const takePhoto = async ( ) => {
     setSavingPhoto( true );
@@ -152,7 +165,7 @@ const StandardCamera = ( ): Node => {
   );
 
   return (
-    <View className="flex-1 bg-black">
+    <SafeAreaView className="flex-1 bg-black">
       <StatusBar barStyle="light-content" />
       {device && <CameraView device={device} camera={camera} />}
       <PhotoPreview
@@ -162,7 +175,7 @@ const StandardCamera = ( ): Node => {
       />
       <FadeInOutView savingPhoto={savingPhoto} />
       <View className="absolute bottom-0">
-        <View className="flex-row justify-between w-screen mb-4 px-4">
+        <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4`}>
           {hasFlash ? (
             <Pressable onPress={toggleFlash}>
               {takePhotoOptions.flash === "on"
@@ -174,14 +187,14 @@ const StandardCamera = ( ): Node => {
             {renderAddObsButtons( "camera-flip" )}
           </Pressable>
         </View>
-        <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">
+        <View className={`bg-black h-32 w-${footerWidth} flex-row justify-between`}>
           <Pressable
             className="w-1/3 pt-4 pb-4 pl-3"
             onPress={( ) => navigation.goBack( )}
           >
             <Icon name="arrow-back-ios" size={25} color={colors.white} />
           </Pressable>
-          <Pressable onPress={takePhoto}>
+          <Pressable onPress={takePhoto} className="w-1/3 items-center">
             {renderCameraButton( "circle-outline", disallowAddingPhotos )}
           </Pressable>
           {photosTaken ? (
@@ -197,7 +210,7 @@ const StandardCamera = ( ): Node => {
       >
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>
-    </View>
+    </SafeAreaView>
   );
 };
 
