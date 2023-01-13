@@ -36,7 +36,7 @@ import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import useIsOnline from "sharedHooks/useIsOnline";
+import useIsConnected from "sharedHooks/useIsConnected";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import { imageStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
@@ -56,7 +56,7 @@ LogBox.ignoreLogs( [
 ] );
 
 const ObsDetails = ( ): Node => {
-  const isOnline = useIsOnline( );
+  const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
   const [refetch, setRefetch] = useState( false );

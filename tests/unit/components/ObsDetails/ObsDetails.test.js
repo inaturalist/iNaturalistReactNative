@@ -2,7 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import React from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import useIsOnline from "sharedHooks/useIsOnline";
+import useIsConnected from "sharedHooks/useIsConnected";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
@@ -64,7 +64,7 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 
 jest.mock( "components/ObsDetails/AddCommentModal" );
 
-jest.mock( "sharedHooks/useIsOnline" );
+jest.mock( "sharedHooks/useIsConnected" );
 
 const mockLatLng = {
   latitude: "91",
@@ -77,7 +77,7 @@ jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
 } ) );
 
 test( "renders obs details from remote call", async ( ) => {
-  useIsOnline.mockImplementation( ( ) => true );
+  useIsConnected.mockImplementation( ( ) => true );
   const { getByTestId, getByText, findByTestId } = renderComponent( <ObsDetails /> );
 
   expect( await findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
@@ -141,7 +141,7 @@ describe( "activity tab", ( ) => {
     } );
   } );
   test( "shows network error image if user is offline", ( ) => {
-    useIsOnline.mockImplementation( ( ) => false );
+    useIsConnected.mockImplementation( ( ) => false );
     renderComponent( <ObsDetails /> );
     const noInternet = screen.queryByRole( "image", { name: "network-check" } );
     expect( noInternet ).toBeTruthy( );
@@ -158,7 +158,7 @@ describe( "data tab", ( ) => {
   } );
 
   test( "displays map in data tab if user is online", ( ) => {
-    useIsOnline.mockImplementation( ( ) => true );
+    useIsConnected.mockImplementation( ( ) => true );
     renderComponent( <ObsDetails /> );
     const dataTab = screen.queryByText( /DATA/ );
     fireEvent.press( dataTab );

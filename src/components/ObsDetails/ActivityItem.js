@@ -21,7 +21,7 @@ import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-import useIsOnline from "sharedHooks/useIsOnline";
+import useIsConnected from "sharedHooks/useIsConnected";
 import { textStyles } from "styles/obsDetails/obsDetails";
 
 import TaxonImage from "./TaxonImage";
@@ -46,7 +46,7 @@ const ActivityItem = ( {
 
   const realm = useRealm( );
   const queryClient = useQueryClient( );
-  const isOnline = useIsOnline( );
+  const isOnline = useIsConnected( );
 
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {

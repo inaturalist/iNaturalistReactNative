@@ -7,7 +7,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import useIsOnline from "sharedHooks/useIsOnline";
+import useIsConnected from "sharedHooks/useIsConnected";
 import colors from "styles/tailwindColors";
 
 import Attribution from "./Attribution";
@@ -18,7 +18,7 @@ type Props = {
 }
 
 const DataTab = ( { observation }: Props ): Node => {
-  const isOnline = useIsOnline( );
+  const isOnline = useIsConnected( );
   const application = observation?.application?.name;
 
   const displayTime = datetime => {

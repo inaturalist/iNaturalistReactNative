@@ -1,6 +1,6 @@
 import { useNetInfo } from "@react-native-community/netinfo";
 
-const useIsOnline = ( ): boolean => {
+const useIsConnected = ( ): boolean => {
   const netInfo = useNetInfo( );
   // assume there is network connectivity until proven otherwise
   // this should prevent the UI from flickering while isConnected
@@ -8,4 +8,4 @@ const useIsOnline = ( ): boolean => {
   return netInfo.isConnected === null ? true : netInfo.isConnected;
 };
 
-export default useIsOnline;
+export default useIsConnected;
