@@ -150,7 +150,8 @@ describe( "activity tab", ( ) => {
 
 describe( "data tab", ( ) => {
   test( "renders data tab content when DATA tab is pressed", ( ) => {
-    const { getByText } = renderComponent( <ObsDetails /> );
+    const { getByText, queryByText } = renderComponent( <ObsDetails /> );
+    expect( queryByText( mockObservation.description ) ).not.toBeTruthy( );
     const dataTab = screen.getByText( /DATA/ );
     fireEvent.press( dataTab );
     expect( getByText( mockObservation.description ) ).toBeTruthy( );
