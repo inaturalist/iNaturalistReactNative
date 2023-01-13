@@ -7,6 +7,8 @@ import useIsConnected from "sharedHooks/useIsConnected";
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
+jest.useFakeTimers( );
+
 const mockNavigate = jest.fn( );
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
@@ -66,10 +68,7 @@ jest.mock( "components/ObsDetails/AddCommentModal" );
 
 jest.mock( "sharedHooks/useIsConnected" );
 
-const mockLatLng = {
-  latitude: "91",
-  longitude: "-121"
-};
+const mockLatLng = factory( "DeviceLocation" );
 
 jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
   __esModule: true,
@@ -140,10 +139,10 @@ describe( "activity tab", ( ) => {
       id: mockObservation.taxon.id
     } );
   } );
-  test( "shows network error image if user is offline", ( ) => {
+  test( "shows network error image instead of observation photos if user is offline", ( ) => {
     useIsConnected.mockImplementation( ( ) => false );
     renderComponent( <ObsDetails /> );
-    const noInternet = screen.queryByRole( "image", { name: "wifi-off" } );
+    const noInternet = screen.queryByLabelText( /Observation photos unavailable without internet/ );
     expect( noInternet ).toBeTruthy( );
     expect( screen.queryByTestId( "PhotoScroll.photo" ) ).toBeNull( );
   } );
