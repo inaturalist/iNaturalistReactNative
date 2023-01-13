@@ -50,6 +50,5 @@ describe( "Sign into app as logged-in user", () => {
     const username = element( by.text( `@${Config.E2E_TEST_USERNAME}` ) );
     await waitFor( username ).toBeVisible().withTimeout( 10000 );
     await expect( username ).toBeVisible();
-    // check if this works on android with running emulator
   } );
 } );
