@@ -2,7 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  Pressable, SafeAreaView,
+  Pressable,
   Text, View
 } from "components/styledComponents";
 import { t } from "i18next";
@@ -165,7 +165,7 @@ const StandardCamera = ( ): Node => {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
+    <View className="flex-1 bg-black">
       <StatusBar barStyle="light-content" />
       {device && <CameraView device={device} camera={camera} />}
       <PhotoPreview
@@ -210,7 +210,7 @@ const StandardCamera = ( ): Node => {
       >
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>
-    </SafeAreaView>
+    </View>
   );
 };
 
