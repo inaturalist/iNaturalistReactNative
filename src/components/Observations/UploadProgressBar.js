@@ -7,24 +7,23 @@ import React, { useMemo, useRef } from "react";
 import {
   Button, ProgressBar, Text
 } from "react-native-paper";
+import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 import { textStyles, viewStyles } from "styles/observations/uploadProgressBar";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  unuploadedObsList: Array<Object>,
   allObsToUpload: Array<Object>,
-  handleClosePress: () => void
+  stopUpload: () => void
 }
 
 const UploadProgressBar = ( {
-  unuploadedObsList,
   allObsToUpload,
-  handleClosePress
+  stopUpload
 }: Props ): Node => {
-  const numOfUnuploadedObs = unuploadedObsList.length;
-  const totalObsToUpload = Math.max( allObsToUpload.length, unuploadedObsList.length );
+  const numUnuploadedObs = useNumUnuploadedObservations( );
+  const totalObsToUpload = Math.max( allObsToUpload.length, numUnuploadedObs );
 
-  const calculateProgress = ( ) => ( totalObsToUpload - numOfUnuploadedObs ) / totalObsToUpload;
+  const calculateProgress = ( ) => ( totalObsToUpload - numUnuploadedObs ) / totalObsToUpload;
 
   const progressFraction = calculateProgress( );
 
@@ -45,12 +44,12 @@ const UploadProgressBar = ( {
       <BottomSheetView style={viewStyles.grayContainer}>
         <Button
           icon="close-circle"
-          onPress={handleClosePress}
+          onPress={stopUpload}
           textColor={colors.white}
           style={viewStyles.closeButton}
         />
         <Text style={textStyles.whiteText} variant="titleMedium">
-          {t( "Uploading-X-Observations", { count: numOfUnuploadedObs } )}
+          {t( "Uploading-X-Observations", { count: numUnuploadedObs } )}
         </Text>
         <ProgressBar
           progress={progressFraction}
