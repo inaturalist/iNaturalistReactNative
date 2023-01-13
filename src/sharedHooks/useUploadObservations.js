@@ -1,5 +1,6 @@
 // @flow
 
+import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
@@ -18,6 +19,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     setUploadInProgress( false );
     setShouldUpload( false );
     setCurrentUploadIndex( 0 );
+    deactivateKeepAwake( );
   };
 
   useEffect( ( ) => {
@@ -33,6 +35,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
       cleanup( );
       return;
     }
+    activateKeepAwake( );
     setUploadInProgress( true );
     upload( observationToUpload );
   }, [

@@ -1,5 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
+import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { searchObservations } from "api/observations";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
@@ -205,7 +206,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       if ( !apiToken ) {
         throw new Error( "Gack, tried to upload an observation without API token!" );
       }
-      return Observation.uploadObservation( observation, apiToken, realm );
+      activateKeepAwake( );
+      const response = Observation.uploadObservation( observation, apiToken, realm );
+      deactivateKeepAwake( );
+      return response;
     };
 
     const saveAndUploadObservation = async ( ) => {
@@ -257,9 +261,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const syncObservations = async ( ) => {
       // TODO: GET observation/deletions once this is enabled in API v2
+      activateKeepAwake( );
       setLoading( true );
       await uploadLocalObservationsToServer( );
       await downloadRemoteObservationsFromServer( );
+      // we at least want to keep the device awake while uploads are happening
+      // not sure about downloads/deletions
+      deactivateKeepAwake( );
       setLoading( false );
     };
 
