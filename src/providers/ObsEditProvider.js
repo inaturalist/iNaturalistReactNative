@@ -40,6 +40,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setCameraPreviewUris( [] );
     setGalleryUris( [] );
     setEvidenceToAdd( [] );
+    setUnsavedChanges( false );
   }, [] );
 
   const allObsPhotoUris = useMemo(
