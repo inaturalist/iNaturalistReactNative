@@ -266,7 +266,12 @@ const ObsDetails = ( ): Node => {
     if ( !isOnline ) {
       return (
         <View className="bg-white flex-row justify-center">
-          <IconMaterial name="network-check" size={100} accessibilityRole="image" />
+          <IconMaterial
+            name="wifi-off"
+            size={100}
+            accessibilityRole="image"
+            accessibilityLabel={t( "Observation-photos-unavailable-without-internet" )}
+          />
         </View>
       );
     }

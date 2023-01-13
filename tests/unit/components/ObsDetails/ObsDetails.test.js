@@ -143,7 +143,7 @@ describe( "activity tab", ( ) => {
   test( "shows network error image if user is offline", ( ) => {
     useIsConnected.mockImplementation( ( ) => false );
     renderComponent( <ObsDetails /> );
-    const noInternet = screen.queryByRole( "image", { name: "network-check" } );
+    const noInternet = screen.queryByRole( "image", { name: "wifi-off" } );
     expect( noInternet ).toBeTruthy( );
     expect( screen.queryByTestId( "PhotoScroll.photo" ) ).toBeNull( );
   } );
@@ -164,7 +164,7 @@ describe( "data tab", ( ) => {
     fireEvent.press( dataTab );
     const map = screen.queryByTestId( "MapView" );
     expect( map ).toBeTruthy( );
-    const noInternet = screen.queryByRole( "image", { name: "network-check" } );
+    const noInternet = screen.queryByRole( "image", { name: "wifi-off" } );
     expect( noInternet ).toBeNull( );
   } );
 } );

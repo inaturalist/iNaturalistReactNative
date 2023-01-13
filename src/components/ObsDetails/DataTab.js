@@ -46,7 +46,12 @@ const DataTab = ( { observation }: Props ): Node => {
           />
         ) : (
           <View className="h-16 items-center justify-center">
-            <IconMaterial name="network-check" size={30} accessibilityRole="image" />
+            <IconMaterial
+              name="wifi-off"
+              size={30}
+              accessibilityRole="image"
+              accessibilityLabel={t( "Location-map-unavailable-without-internet" )}
+            />
           </View>
         )}
       <View className="px-5">

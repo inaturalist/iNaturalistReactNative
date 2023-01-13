@@ -66,15 +66,20 @@ const ActivityItem = ( {
     }
   );
 
-  const showNoInternetIcon = ( ) => (
+  const showNoInternetIcon = accessibilityLabel => (
     <View className="mr-3">
-      <IconMaterial name="network-check" size={30} />
+      <IconMaterial
+        name="wifi-off"
+        size={30}
+        accessibilityRole="image"
+        accessibilityLabel={accessibilityLabel}
+      />
     </View>
   );
 
   const displayUserIcon = ( ) => {
     if ( !currentUser && !isOnline ) {
-      return showNoInternetIcon( );
+      return showNoInternetIcon( t( "User-photo-unavailable-without-internet" ) );
     }
     return <UserIcon uri={User.uri( user )} small />;
   };
@@ -148,7 +153,7 @@ const ActivityItem = ( {
         >
           {isOnline
             ? <TaxonImage uri={Taxon.uri( taxon )} />
-            : showNoInternetIcon( )}
+            : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
           <View>
             <Text className="text-lg">{taxon.preferred_common_name}</Text>
             <Text className="color-logInGray">
