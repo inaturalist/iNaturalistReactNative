@@ -69,7 +69,6 @@ class Observation extends Realm.Object {
       const obsToUpsert = observations.filter(
         obs => !Observation.isUnsyncedObservation( realm, obs )
       );
-      console.log( "obsToUpsert length", obsToUpsert.length );
       realm.write( ( ) => {
         obsToUpsert.forEach( obs => {
           realm.create(

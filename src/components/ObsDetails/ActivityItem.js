@@ -83,9 +83,7 @@ const ActivityItem = ( {
 
   const onItemFlagged = () => {
     setFlaggedStatus( true );
-    // console.log("item flagged");
     refetchRemoteObservation();
-    // console.log("completed refetch");
   };
 
   return (

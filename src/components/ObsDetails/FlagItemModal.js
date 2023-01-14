@@ -11,6 +11,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import {
+  Alert,
   findNodeHandle
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -32,6 +33,15 @@ const FlagItemModal = ( {
   const keyboardScrollRef = useRef( null );
   const [checkBoxValue, setCheckBoxValue] = useState( "none" );
   const [explanation, setExplanation] = useState( "" );
+
+  const showErrorAlert = error => Alert.alert(
+    "Error",
+    error,
+    [{ text: t( "OK" ) }],
+    {
+      cancelable: true
+    }
+  );
 
   const scrollToInput = node => {
     keyboardScrollRef?.current?.scrollToFocusedInput( node );
@@ -55,7 +65,9 @@ const FlagItemModal = ( {
       onSuccess: data => {
         closeFlagItemModal();
         onItemFlagged( data );
-        // update identification in realm
+      },
+      onError: error => {
+        showErrorAlert( error );
       }
     }
   );
