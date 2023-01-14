@@ -139,6 +139,8 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 # Appears above the email text field
 Email = email
 
+EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
+
 Email-Notifications = Email Notifications
 
 Error-Couldnt-Complete-Upload = Error: Couldn't Complete Upload

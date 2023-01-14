@@ -13,7 +13,7 @@ import Realm from "realm";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
 
-import log from "../../../react-native-logs.config";
+import { log } from "../../../react-native-logs.config";
 
 const userLog = log.extend( "user" );
 

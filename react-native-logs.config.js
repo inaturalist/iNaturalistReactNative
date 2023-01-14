@@ -1,29 +1,34 @@
+import RNFS from "react-native-fs";
 import {
-  consoleTransport,
+  fileAsyncTransport,
   logger
 } from "react-native-logs";
 
-const config = {
-  levels: {
-    debug: 0,
-    info: 1,
-    warn: 2,
-    error: 3
-  },
-  transport: consoleTransport,
-  transportOptions: {
-    colors: {
-      info: "blueBright",
-      warn: "yellowBright",
-      error: "redBright"
-    },
-    extensionColors: {
-      // can use this to create different log colors for different workflows
-      user: "blue"
+const fileName = "inaturalist-rn-log.txt";
+const logFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+
+RNFS.readDir( RNFS.DocumentDirectoryPath ).then( ( results => {
+  results.forEach( result => {
+    if ( result.name === fileName ) {
+      RNFS.readFile( logFilePath ).then( fileContent => {
+        console.log( fileContent, "content" );
+      } );
     }
+  } );
+} ) );
+
+const config = {
+  // severity: "info",
+  transport: fileAsyncTransport,
+  transportOptions: {
+    FS: RNFS,
+    fileName
   }
 };
 
 const log = logger.createLogger( config );
 
-export default log;
+export {
+  log,
+  logFilePath
+};
