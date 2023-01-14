@@ -39,9 +39,9 @@ const App = ( { children }: Props ): Node => {
       if ( !alreadyLaunched ) {
         deleteRealm = true;
         await AsyncStorage.setItem( "alreadyLaunched", "true" );
-      }
-      if ( !userId ) {
-        await signOut( { deleteRealm } );
+        if ( !userId ) {
+          await signOut( { deleteRealm } );
+        }
       }
     };
 
