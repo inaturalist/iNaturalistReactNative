@@ -33,6 +33,7 @@ const FlagItemModal = ( {
   const keyboardScrollRef = useRef( null );
   const [checkBoxValue, setCheckBoxValue] = useState( "none" );
   const [explanation, setExplanation] = useState( "" );
+  const [loading, setLoading] = useState( false );
 
   const showErrorAlert = error => Alert.alert(
     "Error",
@@ -57,16 +58,18 @@ const FlagItemModal = ( {
     setCheckBoxValue( "none" );
     setExplanation( "" );
     closeFlagItemModal();
+    setLoading( false );
   };
 
   const createFlagMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => createFlag( params, optsWithAuth ),
     {
       onSuccess: data => {
-        closeFlagItemModal();
+        resetFlagModal();
         onItemFlagged( data );
       },
       onError: error => {
+        setLoading( false );
         showErrorAlert( error );
       }
     }
@@ -85,6 +88,7 @@ const FlagItemModal = ( {
       if ( checkBoxValue === "other" ) {
         params = { ...params, flag_explanation: explanation };
       }
+      setLoading( true );
       createFlagMutation.mutate( params );
     }
   };
@@ -183,7 +187,9 @@ const FlagItemModal = ( {
               text={t( "Save" )}
               onPress={submitFlag}
               level="primary"
+              loading={loading}
             />
+
           </View>
         </KeyboardAwareScrollView>
       </SafeAreaView>
