@@ -20,8 +20,7 @@ const AboutScreen = ( ): Node => {
 
   const emailParams = {
     subject: `iNat RN ${device} Logs (version ${appVersion} - ${buildVersion})`,
-    // recipients: ["help+mobile@inaturalist.org"]
-    recipients: ["albullington@gmail.com"]
+    recipients: ["help+mobile@inaturalist.org"]
   };
 
   const setAttachment = ( ) => ( {
