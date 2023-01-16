@@ -1,9 +1,11 @@
+import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import RNSInfo from "react-native-sensitive-info";
 
 import { makeResponse } from "../factory";
 
 async function signOut( ) {
+  i18next.language = undefined;
   // This is the nuclear option, maybe revisit if it's a source of bugs
   global.realm.write( ( ) => {
     global.realm.deleteAll( );

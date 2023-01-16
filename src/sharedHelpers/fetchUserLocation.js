@@ -27,10 +27,18 @@ const requestLocationPermissions = async ( ): Promise<?string> => {
   return null;
 };
 
-const options = { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
+const options = {
+  enableHighAccuracy: true,
+  timeout: 0,
+  maximumAge: 0,
+  distanceFilter: 0,
+  forceLocationManager: true
+};
 
 const getCurrentPosition = ( ) => new Promise(
-  ( resolve, error ) => { Geolocation.getCurrentPosition( resolve, error, options ); }
+  ( resolve, error ) => {
+    Geolocation.getCurrentPosition( resolve, error, options );
+  }
 );
 
 type UserLocation = {

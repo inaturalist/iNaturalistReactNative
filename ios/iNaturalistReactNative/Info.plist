@@ -39,6 +39,10 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>${PRODUCT_NAME} uses the camera to add photos to your observations of nature.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Add GPS coordinates to observations, show your location on maps, and more.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Add GPS coordinates to observations, show your location on maps, and more.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Add GPS coordinates to observations, show your location on maps, and more.</string>
 	<key>NSMicrophoneUsageDescription</key>

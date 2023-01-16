@@ -5,7 +5,8 @@ import type { Node } from "react";
 import React from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
-import useUploadStatus from "sharedHooks/useUploadStatus";
+import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
+import useUploadObservations from "sharedHooks/useUploadObservations";
 
 import LoginPrompt from "./LoginPrompt";
 import UploadProgressBar from "./UploadProgressBar";
@@ -17,13 +18,14 @@ type Props = {
 
 const ObsListBottomSheet = ( { hasScrolled }: Props ): Node => {
   const currentUser = useCurrentUser( );
-  const { unuploadedObsList, allObsToUpload } = useLocalObservations( );
-  const numOfUnuploadedObs = unuploadedObsList?.length;
-  const { uploadInProgress, updateUploadStatus } = useUploadStatus( );
+  const { allObsToUpload } = useLocalObservations( );
+  const numUnuploadedObs = useNumUnuploadedObservations( );
 
-  if ( numOfUnuploadedObs === 0 ) {
-    return null;
-  }
+  const {
+    stopUpload,
+    uploadInProgress,
+    startUpload
+  } = useUploadObservations( allObsToUpload );
 
   if ( !currentUser ) {
     return (
@@ -32,25 +34,19 @@ const ObsListBottomSheet = ( { hasScrolled }: Props ): Node => {
       </BottomSheet>
     );
   }
-  // FYI, this actually controls uploading, because the UploadProgressBar
-  // calls useUploadObservations which immediately tries to upload, so just
-  // rendering UploadProgressBar kicks off the upload
+
   if ( uploadInProgress ) {
     return (
       <UploadProgressBar
-        unuploadedObsList={unuploadedObsList}
+        stopUpload={stopUpload}
         allObsToUpload={allObsToUpload}
       />
     );
   }
-  if ( numOfUnuploadedObs > 0 && currentUser ) {
+  if ( numUnuploadedObs > 0 && currentUser ) {
     return (
       <BottomSheet hide={hasScrolled}>
-        <UploadPrompt
-          uploadObservations={updateUploadStatus}
-          numOfUnuploadedObs={numOfUnuploadedObs}
-          updateUploadStatus={updateUploadStatus}
-        />
+        <UploadPrompt startUpload={startUpload} />
       </BottomSheet>
     );
   }

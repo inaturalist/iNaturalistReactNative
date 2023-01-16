@@ -63,6 +63,10 @@
     "comment": "After pressing the reset password button",
     "val": "Check your email! We've sent password reset instructions."
   },
+  "Choose-Taxon": {
+    "comment": "Label for a button to choose a taxon",
+    "val": "Choose Taxon"
+  },
   "Combine-Photos": "Combine Photos",
   "Combine-photos-onboarding": {
     "comment": "Onboarding for users learning to group photos in the camera roll",
@@ -231,6 +235,7 @@
     "val": "No account found with that email"
   },
   "No-comments-or-ids-to-display": "No comments or ids to display",
+  "No-image-available-for-this-observation": "No image available for this observation",
   "No-Location": "No Location",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
   "no-rights-reserved": {
@@ -506,5 +511,12 @@
     "val": "Add a comment..."
   },
   "Discard-Comment": "Discard Comment",
-  "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?"
+  "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
+  "Location-map-unavailable-without-internet": {
+    "comment": "Accessibility labels for no internet state in ObsDetails",
+    "val": "Location map unavailable without internet"
+  },
+  "Observation-photos-unavailable-without-internet": "Observation photos unavailable without internet",
+  "Taxon-photo-unavailable-without-internet": "Taxon photo unavailable without internet",
+  "User-photo-unavailable-without-internet": "User photo unavailable without internet"
 }
