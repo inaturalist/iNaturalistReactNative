@@ -20,9 +20,24 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 30,
+  schemaVersion: 31,
   path: "db.realm",
   migration: ( oldRealm, newRealm ) => {
+    // Apparently you need to migrate when making a property optional
+    if ( oldRealm.schemaVersion < 31 ) {
+      const oldTaxa = oldRealm.objects( "Taxon" );
+      const newTaxa = newRealm.objects( "Taxon" );
+      oldTaxa.keys( ).forEach( objectIndex => {
+        const newTaxon = newTaxa[objectIndex];
+        const oldTaxon = oldTaxa[objectIndex];
+        if ( oldTaxon.rank_level === 0 ) {
+          newTaxon.rank_level = null;
+        } else {
+          newTaxon.rank_level = oldTaxon.rank_level;
+        }
+      } );
+    }
+
     if ( oldRealm.schemaVersion < 30 ) {
       const oldUsers = oldRealm.objects( "User" );
       const newUsers = newRealm.objects( "User" );
