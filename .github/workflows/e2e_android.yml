@@ -1,8 +1,12 @@
 name: e2e-Android
 on:
   push:
+    # Android builds require access to several secrets, so Github won't run
+    # those jobs when triggered by pull requests by external developers.
+    # Instead, we're just running these jobs when staff decides to merge a PR
+    # into main
     branches:
-      - 'main'
+      - main
 
 jobs:
   # This might be refactored to use concurrency from GitHub Actions directly?

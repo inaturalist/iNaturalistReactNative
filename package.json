@@ -36,6 +36,7 @@
     "@react-navigation/native-stack": "^6.5.2",
     "@react-spring/native": "^9.5.5",
     "@realm/react": "^0.4.0",
+    "@sayem314/react-native-keep-awake": "^1.1.0",
     "@tanstack/react-query": "^4.2.1",
     "apisauce": "^2.1.2",
     "axios": "^0.25.0",

@@ -1,7 +1,7 @@
 // @flow
 
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
-import { Text, View } from "components/styledComponents";
+import { ActivityIndicator, Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -20,6 +20,7 @@ type Props = {
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
 const TARGET_POSITIONAL_ACCURACY = 10;
+const LOCATION_FETCH_INTERVAL = 1000;
 
 const EvidenceSection = ( {
   handleSelection,
@@ -42,6 +43,7 @@ const EvidenceSection = ( {
     && !currentObservation._synced_at
     && !hasLocation
   );
+  const [numLocationFetches, setNumLocationFetches] = useState( 0 );
   const [fetchingLocation, setFetchingLocation] = useState( false );
   const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
   const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
@@ -92,6 +94,13 @@ const EvidenceSection = ( {
       // so don't set it to
       const newPositionalAccuracy = location?.positional_accuracy || INITIAL_POSITIONAL_ACCURACY;
       setPositionalAccuracy( newPositionalAccuracy );
+      if ( newPositionalAccuracy > TARGET_POSITIONAL_ACCURACY ) {
+        // This is just here to make absolutely sure the effect runs again in a second
+        setTimeout(
+          ( ) => setNumLocationFetches( numFetches => numFetches + 1 ),
+          LOCATION_FETCH_INTERVAL
+        );
+      }
     };
 
     if (
@@ -100,24 +109,26 @@ const EvidenceSection = ( {
       // We only need to fetch when we're above the target
       && positionalAccuracy >= TARGET_POSITIONAL_ACCURACY
       // Don't fetch location more than once a second
-      && Date.now() - lastLocationFetchTime >= 1000
+      && Date.now() - lastLocationFetchTime >= LOCATION_FETCH_INTERVAL
     ) {
       setFetchingLocation( true );
       setLastLocationFetchTime( Date.now() );
-      fetchLocation();
-    } else {
+      fetchLocation( );
+    } else if ( positionalAccuracy < TARGET_POSITIONAL_ACCURACY ) {
       setShouldFetchLocation( false );
     }
   }, [
     currentObservation,
     fetchingLocation,
+    lastLocationFetchTime,
+    numLocationFetches,
     positionalAccuracy,
     setFetchingLocation,
+    setLastLocationFetchTime,
+    setNumLocationFetches,
     setShouldFetchLocation,
     shouldFetchLocation,
-    updateObservationKeys,
-    lastLocationFetchTime,
-    setLastLocationFetchTime
+    updateObservationKeys
   ] );
 
   const displayLocation = ( ) => {
@@ -143,7 +154,11 @@ const EvidenceSection = ( {
         handleAddEvidence={handleAddEvidence}
       />
       <Text>{currentObservation.place_guess}</Text>
-      <Text>{displayLocation( ) || t( "No-Location" )}</Text>
+      <View className="flex flex-row flex-nowrap">
+        {shouldFetchLocation && <ActivityIndicator className="mx-1" />}
+        {shouldFetchLocation && <Text className="mx-1">{`(${numLocationFetches})`}</Text>}
+        <Text>{displayLocation( ) || t( "No-Location" )}</Text>
+      </View>
       <DatePicker currentObservation={currentObservation} />
     </View>
   );

@@ -5,14 +5,12 @@ import { Pressable, Text } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import useLocalObservations from "sharedHooks/useLocalObservations";
+import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 
 const LoggedOutCard = ( ): Node => {
   const navigation = useNavigation( );
-  const localObservations = useLocalObservations( );
+  const numUnuploadedObs = useNumUnuploadedObservations( );
   const { t } = useTranslation( );
-  const { unuploadedObsList } = localObservations;
-  const numOfUnuploadedObs = unuploadedObsList?.length;
 
   return (
     <Pressable
@@ -28,7 +26,7 @@ const LoggedOutCard = ( ): Node => {
         {t( "Log-in-to-iNaturalist" )}
       </Text>
       <Text className="self-center color-white text-base">
-        {t( "X-unuploaded-observations", { observationCount: numOfUnuploadedObs } )}
+        {t( "X-unuploaded-observations", { observationCount: numUnuploadedObs } )}
       </Text>
     </Pressable>
   );

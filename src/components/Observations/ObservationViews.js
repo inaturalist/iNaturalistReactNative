@@ -37,11 +37,10 @@ const ObservationViews = ( ): Node => {
   const [view, setView] = useState( "list" );
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
-  const { observationList, unuploadedObsList } = localObservations;
+  const { observationList } = localObservations;
   const [hasScrolled, setHasScrolled] = useState( false );
   const [idBelow, setIdBelow] = useState( null );
   const isLoading = useInfiniteScroll( idBelow );
-  const hasUnuploadedObservations = ( unuploadedObsList?.length || 0 ) > 0;
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
@@ -147,7 +146,7 @@ const ObservationViews = ( ): Node => {
             onEndReached={onEndReached}
             onEndReachedThreshold={0.1}
           />
-          {hasUnuploadedObservations && <ObsListBottomSheet hasScrolled={hasScrolled} /> }
+          <ObsListBottomSheet hasScrolled={hasScrolled} />
         </Animated.View>
       </View>
     </ViewWithFooter>
