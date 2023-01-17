@@ -1,6 +1,6 @@
 // @flow
 
-import { getJWTToken } from "components/LoginSignUp/AuthenticationService";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import { useEffect, useState } from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
@@ -16,7 +16,7 @@ const useApiToken = ( ): string | null => {
         // setShouldFetchToken( false );
         return;
       }
-      const token = await getJWTToken( );
+      const token = await getJWT( );
       if ( token ) {
         if ( token !== apiToken ) {
           setApiToken( token );
