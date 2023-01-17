@@ -7,6 +7,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import useIsConnected from "sharedHooks/useIsConnected";
 import colors from "styles/tailwindColors";
 
 import Attribution from "./Attribution";
@@ -17,6 +18,7 @@ type Props = {
 }
 
 const DataTab = ( { observation }: Props ): Node => {
+  const isOnline = useIsConnected( );
   const application = observation?.application?.name;
 
   const displayTime = datetime => {
@@ -35,11 +37,23 @@ const DataTab = ( { observation }: Props ): Node => {
         )}
         <Text className="text-lg my-3">{t( "Location" )}</Text>
       </View>
-      <Map
-        obsLatitude={observation.latitude}
-        obsLongitude={observation.longitude}
-        mapHeight={150}
-      />
+      {isOnline
+        ? (
+          <Map
+            obsLatitude={observation.latitude}
+            obsLongitude={observation.longitude}
+            mapHeight={150}
+          />
+        ) : (
+          <View className="h-16 items-center justify-center">
+            <IconMaterial
+              name="wifi-off"
+              size={30}
+              accessibilityRole="image"
+              accessibilityLabel={t( "Location-map-unavailable-without-internet" )}
+            />
+          </View>
+        )}
       <View className="px-5">
         <View className="flex-row my-3">
           <IconMaterial name="location-pin" size={15} color={colors.logInGray} />

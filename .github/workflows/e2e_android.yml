@@ -1,8 +1,12 @@
 name: e2e-Android
 on:
   push:
+    # Android builds require access to several secrets, so Github won't run
+    # those jobs when triggered by pull requests by external developers.
+    # Instead, we're just running these jobs when staff decides to merge a PR
+    # into main
     branches:
-      - 'main'
+      - main
 
 jobs:
   # This might be refactored to use concurrency from GitHub Actions directly?
@@ -61,7 +65,9 @@ jobs:
       env:
         OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
         OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
-      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=some-secret\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\n' "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" > .env
+        E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+        E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=some-secret\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\n' "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" > .env
     - name: Create keystore.properties file
       env:
         ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}

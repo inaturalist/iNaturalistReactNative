@@ -7,8 +7,8 @@ type Props = {
   uri: Object
 }
 
-const UserIcon = ( { uri }: Props ): React.Node => (
+const TaxonImage = ( { uri }: Props ): React.Node => (
   <Image source={uri} className="w-12 h-12 rounded-xl mr-3" />
 );
 
-export default UserIcon;
+export default TaxonImage;
