@@ -16,6 +16,8 @@ import {
   mockUseCameraDevices
 } from "./vision-camera/vision-camera";
 
+jest.mock( "@sayem314/react-native-keep-awake" );
+
 jest.mock(
   "@react-native-async-storage/async-storage",
   () => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" )

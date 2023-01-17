@@ -700,3 +700,9 @@ Yes = Yes
 No = No
 Discard-Comment = Discard Comment
 Are-you-sure-discard-comment = Are you sure you want to discard this comment?
+
+# Accessibility labels for no internet state in ObsDetails
+Location-map-unavailable-without-internet = Location map unavailable without internet
+Observation-photos-unavailable-without-internet = Observation photos unavailable without internet
+Taxon-photo-unavailable-without-internet = Taxon photo unavailable without internet
+User-photo-unavailable-without-internet = User photo unavailable without internet

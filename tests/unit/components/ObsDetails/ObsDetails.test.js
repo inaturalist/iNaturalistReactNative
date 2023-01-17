@@ -2,9 +2,12 @@ import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import React from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useIsConnected from "sharedHooks/useIsConnected";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
+
+jest.useFakeTimers( );
 
 const mockNavigate = jest.fn( );
 const mockObservation = factory( "LocalObservation", {
@@ -63,7 +66,17 @@ jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) =
 
 jest.mock( "components/ObsDetails/AddCommentModal" );
 
+jest.mock( "sharedHooks/useIsConnected" );
+
+const mockLatLng = factory( "DeviceLocation" );
+
+jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
+  __esModule: true,
+  default: ( ) => mockLatLng
+} ) );
+
 test( "renders obs details from remote call", async ( ) => {
+  useIsConnected.mockImplementation( ( ) => true );
   const { getByTestId, getByText, findByTestId } = renderComponent( <ObsDetails /> );
 
   expect( await findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
@@ -71,9 +84,6 @@ test( "renders obs details from remote call", async ( ) => {
     getByTestId( "PhotoScroll.photo" ).props.source
   ).toStrictEqual( { uri: mockObservation.observationPhotos[0].photo.url } );
   expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
-  // TODO: figure out how to test elements which are mapped to camelCase via
-  // Observation model right now, these elements are not rendering in
-  // renderComponent( <ObsDetails />  ).debug( ) at all
 } );
 
 describe( "Observation with no evidence", () => {
@@ -99,41 +109,63 @@ describe( "Observation with no evidence", () => {
   } );
 } );
 
-test( "renders data tab on button press", async ( ) => {
-  const { getByText, findByTestId } = renderComponent( <ObsDetails /> );
-  const button = await findByTestId( "ObsDetails.DataTab" );
+describe( "activity tab", ( ) => {
+  test( "navigates to observer profile on button press", async ( ) => {
+    const { findByTestId } = renderComponent( <ObsDetails /> );
 
-  fireEvent.press( button );
-  expect( getByText( mockObservation.description ) ).toBeTruthy( );
-} );
+    fireEvent.press( await findByTestId( "ObsDetails.currentUser" ) );
+    expect( mockNavigate )
+      .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
+  } );
 
-test( "navigates to observer profile on button press", async ( ) => {
-  const { findByTestId } = renderComponent( <ObsDetails /> );
+  test( "navigates to identifier profile on button press", async ( ) => {
+    const { findByTestId } = renderComponent( <ObsDetails /> );
 
-  fireEvent.press( await findByTestId( "ObsDetails.currentUser" ) );
-  expect( mockNavigate )
-    .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
-} );
+    fireEvent.press(
+      await findByTestId(
+        `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
+      )
+    );
+    expect( mockNavigate ).toHaveBeenCalledWith( "UserProfile", {
+      userId: mockObservation.identifications[0].user.id
+    } );
+  } );
 
-test( "navigates to identifier profile on button press", async ( ) => {
-  const { findByTestId } = renderComponent( <ObsDetails /> );
+  test( "navigates to taxon details on button press", async ( ) => {
+    const { findByTestId } = renderComponent( <ObsDetails /> );
 
-  fireEvent.press(
-    await findByTestId(
-      `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
-    )
-  );
-  expect( mockNavigate ).toHaveBeenCalledWith( "UserProfile", {
-    userId: mockObservation.identifications[0].user.id
+    fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
+    expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
+      id: mockObservation.taxon.id
+    } );
+  } );
+  test( "shows network error image instead of observation photos if user is offline", ( ) => {
+    useIsConnected.mockImplementation( ( ) => false );
+    renderComponent( <ObsDetails /> );
+    const noInternet = screen.queryByLabelText( /Observation photos unavailable without internet/ );
+    expect( noInternet ).toBeTruthy( );
+    expect( screen.queryByTestId( "PhotoScroll.photo" ) ).toBeNull( );
   } );
 } );
 
-test( "navigates to taxon details on button press", async ( ) => {
-  const { findByTestId } = renderComponent( <ObsDetails /> );
+describe( "data tab", ( ) => {
+  test( "renders data tab content when DATA tab is pressed", ( ) => {
+    const { getByText, queryByText } = renderComponent( <ObsDetails /> );
+    expect( queryByText( mockObservation.description ) ).not.toBeTruthy( );
+    const dataTab = screen.getByText( /DATA/ );
+    fireEvent.press( dataTab );
+    expect( getByText( mockObservation.description ) ).toBeTruthy( );
+  } );
 
-  fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
-  expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
-    id: mockObservation.taxon.id
+  test( "displays map in data tab if user is online", ( ) => {
+    useIsConnected.mockImplementation( ( ) => true );
+    renderComponent( <ObsDetails /> );
+    const dataTab = screen.queryByText( /DATA/ );
+    fireEvent.press( dataTab );
+    const map = screen.queryByTestId( "MapView" );
+    expect( map ).toBeTruthy( );
+    const noInternet = screen.queryByRole( "image", { name: "wifi-off" } );
+    expect( noInternet ).toBeNull( );
   } );
 } );
 
