@@ -28,7 +28,8 @@ const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "h
 const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
 
 // JWT Tokens expire after 30 mins - consider 25 mins as the max time (safe margin)
-const JWT_TOKEN_EXPIRATION_MINS = 25;
+// const JWT_EXPIRATION_MINS = 25;
+const JWT_EXPIRATION_MINS = 2;
 
 /**
  * Creates base API client for all requests
@@ -104,7 +105,7 @@ const signOut = async (
   const username = await getUsername( );
   logger.debug( "signed out user with username:", username );
   await RNSInfo.deleteItem( "jwtToken", {} );
-  await RNSInfo.deleteItem( "jwtTokenExpiration", {} );
+  await RNSInfo.deleteItem( "jwtGeneratedAt", {} );
   await RNSInfo.deleteItem( "username", {} );
   await RNSInfo.deleteItem( "accessToken", {} );
 };
@@ -114,7 +115,7 @@ const signOut = async (
  * when getting taxon suggestions)
  * @returns encoded anonymous JWT
  */
-const getAnonymousJWTToken = () => {
+const getAnonymousJWT = () => {
   const claims = {
     application: Platform.OS,
     exp: Date.now() / 1000 + 300
@@ -126,22 +127,22 @@ const getAnonymousJWTToken = () => {
 /**
  * Returns most recent JWT (JSON Web Token) for API authentication - renews the token if necessary
  *
- * @param allowAnonymousJWTToken (optional=false) if true and user is not
+ * @param allowAnonymousJWT (optional=false) if true and user is not
  *  logged-in, use anonymous JWT
  * @returns {Promise<string|*>}
  */
-const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?string> => {
+const getJWTToken = async ( allowAnonymousJWT: boolean = false ): Promise<?string> => {
   let jwtToken = await RNSInfo.getItem( "jwtToken", {} );
-  let jwtTokenExpiration = await RNSInfo.getItem( "jwtTokenExpiration", {} );
-  if ( jwtTokenExpiration ) {
-    jwtTokenExpiration = parseInt( jwtTokenExpiration, 10 );
+  let jwtGeneratedAt = await RNSInfo.getItem( "jwtGeneratedAt", {} );
+  if ( jwtGeneratedAt ) {
+    jwtGeneratedAt = parseInt( jwtGeneratedAt, 10 );
   }
 
   const loggedIn = await isLoggedIn();
 
-  if ( !loggedIn && allowAnonymousJWTToken ) {
+  if ( !loggedIn && allowAnonymousJWT ) {
     // User not logged in, and anonymous JWT is allowed - return it
-    return getAnonymousJWTToken();
+    return getAnonymousJWT();
   }
 
   if ( !loggedIn ) {
@@ -150,7 +151,7 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
 
   if (
     !jwtToken
-    || ( Date.now() - jwtTokenExpiration ) / 1000 > JWT_TOKEN_EXPIRATION_MINS * 60
+    || ( Date.now() - jwtGeneratedAt ) / 1000 > JWT_EXPIRATION_MINS * 60
   ) {
     // JWT Tokens expire after 30 mins - if the token is non-existent or older
     // than 25 mins (safe margin) - ask for a new one
@@ -159,11 +160,11 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
     const api = createAPI( { Authorization: `Bearer ${accessToken}` } );
     const response = await api.get( "/users/api_token.json" );
 
-    // TODO this means that if the server doesn't respond with a successful
+    // TODO: this means that if the server doesn't respond with a successful
     // token *for any reason* it just deletes the entire local database. That
     // means if you tried to retrieve a new token during downtime, it would
     // delete all of your unsynced observations
-    // TODO Also, I (kueda) am not really sure we want to delete all of realm
+    // TODO: Also, I (kueda) am not really sure we want to delete all of realm
     // just because auth failed. If you change your password on the website,
     // you should be signed out in the app, BUT if you have unsynced
     // observations shouldn't you have the opportunity to sign in again and
@@ -183,10 +184,10 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
 
     // Get newest JWT Token
     jwtToken = response.data.api_token;
-    jwtTokenExpiration = Date.now();
+    jwtGeneratedAt = Date.now();
 
     await RNSInfo.setItem( "jwtToken", jwtToken, {} );
-    await RNSInfo.setItem( "jwtTokenExpiration", jwtTokenExpiration.toString(), {} );
+    await RNSInfo.setItem( "jwtGeneratedAt", jwtGeneratedAt.toString(), {} );
 
     return jwtToken;
   }
@@ -198,13 +199,13 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
  * Returns the API access token to be used with all iNaturalist API calls
  *
  * @param useJWT if true, we'll use JSON Web Token instead of the "regular" access token
- * @param allowAnonymousJWTToken (optional=false) if true and user is not
+ * @param allowAnonymousJWT (optional=false) if true and user is not
  *  logged-in, use anonymous JWT
  * @returns {Promise<string|*>} access token, null if not logged in
  */
 const getAPIToken = async (
   useJWT: boolean = false,
-  allowAnonymousJWTToken: boolean = false
+  allowAnonymousJWT: boolean = false
 ): Promise<?string> => {
   const loggedIn = await isLoggedIn();
   if ( !loggedIn ) {
@@ -212,7 +213,7 @@ const getAPIToken = async (
   }
 
   if ( useJWT ) {
-    return getJWTToken( allowAnonymousJWTToken );
+    return getJWTToken( allowAnonymousJWT );
   }
   const accessToken = await RNSInfo.getItem( "accessToken", {} );
   return `Bearer ${accessToken}`;
