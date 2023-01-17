@@ -22,9 +22,19 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 30,
+  schemaVersion: 31,
   path: "db.realm",
   migration: ( oldRealm, newRealm ) => {
+    if ( oldRealm.schemaVersion < 31 ) {
+      const oldObservations = oldRealm.objects( "Observation" );
+      const newObservations = newRealm.objects( "Observation" );
+
+      oldObservations.keys( ).forEach( objectIndex => {
+        const oldObservation = oldObservations[objectIndex];
+        const newObservation = newObservations[objectIndex];
+        newObservation.updated_at = oldObservation.created_at;
+      } );
+    }
     if ( oldRealm.schemaVersion < 30 ) {
       const oldUsers = oldRealm.objects( "User" );
       const newUsers = newRealm.objects( "User" );
@@ -47,15 +57,6 @@ export default {
         const newTaxon = newTaxa[objectIndex];
         newTaxon.rank_level = oldTaxon.rank_level || 0;
         oldTaxon.rank_level = oldTaxon.rank_level || 0;
-      } );
-
-      const oldObservations = oldRealm.objects( "Observation" );
-      const newObservations = newRealm.objects( "Observation" );
-
-      oldObservations.keys( ).forEach( objectIndex => {
-        const oldObservation = oldObservations[objectIndex];
-        const newObservation = newObservations[objectIndex];
-        newObservation.updated_at = oldObservation.created_at;
       } );
     }
 
