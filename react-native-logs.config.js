@@ -1,4 +1,4 @@
-import userAgent from "api/userAgent";
+import { getUserAgent } from "api/userAgent";
 import { create } from "apisauce";
 import Config from "react-native-config";
 import RNFS from "react-native-fs";
@@ -13,13 +13,12 @@ const logFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
 
 const API_HOST: string = Config.API_URL || process.env.API_URL || "https://api.inaturalist.org/v2";
 
-const api = create( {
-  baseURL: API_HOST,
-  headers: { "User-Agent": userAgent }
-} );
-
 // Custom transport for posting to iNat API logging
 const iNatLogstashTransport = props => {
+  const api = create( {
+    baseURL: API_HOST,
+    headers: { "User-Agent": getUserAgent( ) }
+  } );
   const msg = typeof ( props.rawMsg ) === "string"
     ? props.rawMsg
     : props.rawMsg.join( " " );
