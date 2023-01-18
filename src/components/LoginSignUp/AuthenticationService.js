@@ -1,11 +1,9 @@
 // @flow
+import userAgent from "api/userAgent";
 import { create } from "apisauce";
 import i18next from "i18next";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
-import {
-  getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion
-} from "react-native-device-info";
 import jwt from "react-native-jwt-io";
 import * as RNLocalize from "react-native-localize";
 import RNSInfo from "react-native-sensitive-info";
@@ -21,10 +19,6 @@ const userLog = log.extend( "AuthenticationService" );
 // either by placing it in .env file, or in an environment variable.
 const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "https://www.inaturalist.org";
 
-// User agent being used, when calling the iNat APIs
-// eslint-disable-next-line max-len
-const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
-
 // JWT Tokens expire after 30 mins - consider 25 mins as the max time (safe margin)
 const JWT_TOKEN_EXPIRATION_MINS = 25;
 
@@ -34,7 +28,7 @@ const JWT_TOKEN_EXPIRATION_MINS = 25;
  */
 const createAPI = ( additionalHeaders: any ) => create( {
   baseURL: API_HOST,
-  headers: { "User-Agent": USER_AGENT, ...additionalHeaders }
+  headers: { "User-Agent": userAgent, ...additionalHeaders }
 } );
 
 /**
@@ -263,7 +257,7 @@ const verifyCredentials = async (
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        "User-Agent": USER_AGENT
+        "User-Agent": userAgent
       }
     }
   );
