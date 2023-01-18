@@ -186,7 +186,9 @@ global.FormData = FormDataMock;
 
 jest.mock( "react-native-fs", ( ) => {
   const RNFS = {
-    moveFile: async ( ) => "testdata"
+    moveFile: async ( ) => "testdata",
+    appendFile: jest.fn( ),
+    DocumentDirectoryPath: jest.fn( )
   };
 
   return RNFS;

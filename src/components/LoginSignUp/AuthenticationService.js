@@ -13,6 +13,10 @@ import Realm from "realm";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
 
+import { log } from "../../../react-native-logs.config";
+
+const userLog = log.extend( "AuthenticationService" );
+
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.
 const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "https://www.inaturalist.org";
@@ -42,6 +46,13 @@ const isLoggedIn = async (): Promise<boolean> => {
   const accessToken = await RNSInfo.getItem( "accessToken", {} );
   return typeof accessToken === "string";
 };
+
+/**
+ * Returns the logged-in username
+ *
+ * @returns {Promise<boolean>}
+ */
+const getUsername = async (): Promise<string> => RNSInfo.getItem( "username", {} );
 
 /**
  * Signs out the user
@@ -80,6 +91,9 @@ const signOut = async (
   // the checkForSignedInUser needs to call this and that doesn't have access
   // to the React Query context (maybe it could...)
   options.queryClient?.getQueryCache( ).clear( );
+
+  const username = await getUsername( );
+  userLog.info( "signed out user with username:", username );
   await RNSInfo.deleteItem( "jwtToken", {} );
   await RNSInfo.deleteItem( "jwtTokenExpiration", {} );
   await RNSInfo.deleteItem( "username", {} );
@@ -299,6 +313,8 @@ const authenticateUser = async (
   if ( !userId ) {
     return false;
   }
+  // Log sign in
+  userLog.info( "signed in user with username:", remoteUsername );
 
   // Save authentication details to secure storage
   await RNSInfo.setItem( "username", remoteUsername, {} );
@@ -362,13 +378,6 @@ const registerUser = async (
   // console.info( "registerUser - success" );
   return null;
 };
-
-/**
- * Returns the logged-in username
- *
- * @returns {Promise<boolean>}
- */
-const getUsername = async (): Promise<string> => RNSInfo.getItem( "username", {} );
 
 /**
  * Returns the logged-in user
