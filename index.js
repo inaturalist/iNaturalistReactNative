@@ -25,10 +25,10 @@ import colors from "styles/tailwindColors";
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
 
-const rootLog = log.extend( "root" );
+const logger = log.extend( "index.js" );
 
 const jsErrorHandler = ( e, isFatal ) => {
-  rootLog.error( `JS Error: ${isFatal ? "Fatal:" : ""} ${e.name} ${e.message}` );
+  logger.error( `JS Error: ${isFatal ? "Fatal:" : ""} ${e.name} ${e.message}` );
 };
 
 // record JS exceptions; second parameter allows this to work in DEV mode
@@ -37,7 +37,7 @@ setJSExceptionHandler( jsErrorHandler, true );
 // record native exceptions
 // only works in bundled mode; will show red screen in dev mode
 setNativeExceptionHandler( exceptionString => {
-  rootLog.error( `Native Error: ${exceptionString}` );
+  logger.error( `Native Error: ${exceptionString}` );
 } );
 
 startNetworkLogging();

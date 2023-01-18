@@ -15,7 +15,7 @@ import realmConfig from "realmModels/index";
 
 import { log } from "../../../react-native-logs.config";
 
-const userLog = log.extend( "user" );
+const userLog = log.extend( "AuthenticationService" );
 
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.
