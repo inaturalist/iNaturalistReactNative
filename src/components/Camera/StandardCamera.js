@@ -188,7 +188,7 @@ const StandardCamera = ( ): Node => {
             {renderAddObsButtons( "camera-flip" )}
           </Pressable>
         </View>
-        <View className={`bg-black h-32 w-${footerWidth} flex-row justify-between`}>
+        <View className={`bg-black h-32 w-${footerWidth} flex-row justify-between pt-4`}>
           <Pressable
             className="w-1/3 pt-4 pb-4 pl-3"
             onPress={( ) => navigation.goBack( )}
