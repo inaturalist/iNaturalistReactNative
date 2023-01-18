@@ -5,7 +5,7 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { Alert } from "react-native";
+import { Alert, Platform, Share } from "react-native";
 import { getBuildNumber, getSystemName, getVersion } from "react-native-device-info";
 import Mailer from "react-native-mail";
 
@@ -34,6 +34,26 @@ const AboutScreen = ( ): Node => {
       isHTML: true,
       attachments: [setAttachment( )]
     }, ( error, event ) => {
+      if ( Platform.OS === "ios" && error === "not_available" ) {
+        Alert.alert(
+          t( "Looks-like-youre-not-using-Apple-Mail" ),
+          t( "You-can-still-share-the-file", { email: emailParams.recipients[0] } ),
+          [
+            {
+              text: t( "Cancel" ),
+              style: "cancel"
+            },
+            {
+              text: t( "Share" ),
+              onPress: ( ) => Share.share( {
+                title: emailParams.subject,
+                url: logFilePath
+              }, emailParams )
+            }
+          ]
+        );
+        return;
+      }
       Alert.alert(
         error,
         event

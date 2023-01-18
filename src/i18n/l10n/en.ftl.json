@@ -185,6 +185,10 @@
     "comment": "Appears in the login screen",
     "val": "Document living things, identify organisms & contribute to science"
   },
+  "Looks-like-youre-not-using-Apple-Mail": {
+    "comment": "Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed",
+    "val": "Looks like you're not using Apple Mail"
+  },
   "Low": "Low",
   "Mammals": "Mammals",
   "Media": "Media",
@@ -442,7 +446,7 @@
   "You-have-unsaved-changes": "You have unsaved changes. Would you like to save this observation?",
   "You-must-be-logged-in-to-view-messages": "You must be logged in to view messages",
   "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
-  "You will lose all existing observations. Would you like to discard # observations?": "",
+  "You-can-still-share-the-file": "You can still share the file with another app. If you can email it, please send it to { $email }",
   "Category-leading": {
     "comment": "Identification category",
     "val": "Leading"

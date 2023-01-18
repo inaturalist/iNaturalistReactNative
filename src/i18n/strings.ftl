@@ -255,6 +255,9 @@ Login-header = Log in to use iNaturalist
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
 
+# Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed
+Looks-like-youre-not-using-Apple-Mail = Looks like you're not using Apple Mail
+
 Low = Low
 
 Mammals = Mammals
@@ -657,7 +660,8 @@ You-will-lose-all-existing-observations = {$count ->
     *[other] You will lose all existing observations. Would you like to discard {$count} observations?
 }
 
-You will lose all existing observations. Would you like to discard # observations?
+You-can-still-share-the-file =
+    You can still share the file with another app. If you can email it, please send it to { $email }
 
 # Identification category
 Category-leading = Leading
