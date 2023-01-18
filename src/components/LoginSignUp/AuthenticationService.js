@@ -1,5 +1,5 @@
 // @flow
-import userAgent from "api/userAgent";
+import { getUserAgent } from "api/userAgent";
 import { create } from "apisauce";
 import i18next from "i18next";
 import { Alert, Platform } from "react-native";
@@ -28,7 +28,7 @@ const JWT_TOKEN_EXPIRATION_MINS = 25;
  */
 const createAPI = ( additionalHeaders: any ) => create( {
   baseURL: API_HOST,
-  headers: { "User-Agent": userAgent, ...additionalHeaders }
+  headers: { "User-Agent": getUserAgent( ), ...additionalHeaders }
 } );
 
 /**
@@ -257,7 +257,7 @@ const verifyCredentials = async (
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        "User-Agent": userAgent
+        "User-Agent": getUserAgent( )
       }
     }
   );

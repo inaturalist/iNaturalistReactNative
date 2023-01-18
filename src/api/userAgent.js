@@ -1,9 +1,37 @@
+import { Platform } from "react-native";
 import {
-  getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion
+  getApiLevel,
+  getBrand,
+  getBuildNumber,
+  getDeviceId,
+  getDeviceName,
+  getDeviceType,
+  getSystemName,
+  getSystemVersion,
+  getVersion
 } from "react-native-device-info";
 
-// User agent being used, when calling the iNat APIs
-// eslint-disable-next-line max-len
-const userAgent = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
+const DETAILS = [
+  `Build ${getBuildNumber()}`,
+  `${getSystemName()} ${getSystemVersion()}`,
+  getDeviceId( ),
+  getDeviceType( )
+];
 
-export default userAgent;
+async function getOtherDetails( ) {
+  DETAILS.push( `${getBrand( )} ${await getDeviceName( )}` );
+  if ( Platform.OS === "android" ) {
+    DETAILS.push( `SDK ${await getApiLevel( )}` );
+  }
+}
+getOtherDetails( );
+
+// User agent being used, when calling the iNat APIs
+function getUserAgent( ) {
+  return `iNaturalistRN/${getVersion()} (${DETAILS.join( "; " )})`;
+}
+
+export {
+  DETAILS,
+  getUserAgent
+};
