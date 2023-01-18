@@ -1,4 +1,5 @@
 // @flow
+import userAgent from "api/userAgent";
 import { create } from "apisauce";
 import axios from "axios";
 import i18next from "i18next";
@@ -40,8 +41,8 @@ const axiosInstance = axios.create( {
  * @param additionalHeaders any additional headers that will be passed to the API
  */
 const createAPI = ( additionalHeaders: any ) => create( {
-  axiosInstance,
-  headers: { "User-Agent": USER_AGENT, ...additionalHeaders }
+  baseURL: API_HOST,
+  headers: { "User-Agent": userAgent, ...additionalHeaders }
 } );
 
 /**
@@ -290,7 +291,7 @@ const verifyCredentials = async (
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        "User-Agent": USER_AGENT
+        "User-Agent": userAgent
       }
     }
   );
