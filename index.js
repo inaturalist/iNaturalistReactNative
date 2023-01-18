@@ -15,6 +15,7 @@ import RealmProvider from "providers/RealmProvider";
 import React from "react";
 import { AppRegistry } from "react-native";
 import Config from "react-native-config";
+import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { startNetworkLogging } from "react-native-network-logger";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
@@ -22,6 +23,22 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import colors from "styles/tailwindColors";
 
 import { name as appName } from "./app.json";
+import { log } from "./react-native-logs.config";
+
+const rootLog = log.extend( "root" );
+
+const jsErrorHandler = ( e, isFatal ) => {
+  rootLog.error( `JS Error: ${isFatal ? "Fatal:" : ""} ${e.name} ${e.message}` );
+};
+
+// record JS exceptions; second parameter allows this to work in DEV mode
+setJSExceptionHandler( jsErrorHandler, true );
+
+// record native exceptions
+// only works in bundled mode; will show red screen in dev mode
+setNativeExceptionHandler( exceptionString => {
+  rootLog.error( `Native Error: ${exceptionString}` );
+} );
 
 startNetworkLogging();
 
