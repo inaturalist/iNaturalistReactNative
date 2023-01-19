@@ -1,9 +1,13 @@
 // @flow
 import { useIsFocused } from "@react-navigation/native";
 import type { Node } from "react";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useEffect, useRef, useState
+} from "react";
 import { Animated, StyleSheet } from "react-native";
-import { PinchGestureHandler, TapGestureHandler } from "react-native-gesture-handler";
+import {
+  Gesture, GestureDetector, PinchGestureHandler
+} from "react-native-gesture-handler";
 import Reanimated, {
   Extrapolate, interpolate,
   useAnimatedGestureHandler, useAnimatedProps,
@@ -32,7 +36,7 @@ type Props = {
 const CameraView = ( { camera, device }: Props ): Node => {
   const zoom = useSharedValue( 0 );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
-  const tapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
+  const singleTapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
   // check if camera page is active
   const isFocused = useIsFocused( );
   const isForeground = useIsForeground( );
@@ -41,7 +45,7 @@ const CameraView = ( { camera, device }: Props ): Node => {
   const minZoom = device?.minZoom ?? 1;
   const maxZoom = Math.min( device?.maxZoom ?? 1, 5 );
 
-  const cameraAnimatedProps = useAnimatedProps( () => {
+  const cameraAnimatedProps = useAnimatedProps( ( ) => {
     const z = Math.max( Math.min( zoom.value, maxZoom ), minZoom );
     return {
       zoom: z
@@ -84,17 +88,39 @@ const CameraView = ( { camera, device }: Props ): Node => {
     zoom.value = neutralZoom;
   }, [neutralZoom, zoom] );
 
-  const tapToFocus = async ( { nativeEvent } ) => {
-    await camera.current.focus( { x: nativeEvent.x, y: nativeEvent.y } );
-    tapToFocusAnimation.setValue( 1 );
-    setTappedCoordinates( nativeEvent );
+  const singleTapToFocus = async event => {
+    await camera.current.focus( { x: event.x, y: event.y } );
+    singleTapToFocusAnimation.setValue( 1 );
+    setTappedCoordinates( event );
   };
+
+  const doubleTapToZoom = ( ) => {
+    if ( zoom.value < SCALE_FULL_ZOOM ) {
+      zoom.value += 1;
+    }
+  };
+
+  const singleTap = Gesture.Tap( )
+    .runOnJS( true )
+    .maxDuration( 250 )
+    .numberOfTaps( 1 )
+    .onStart( e => {
+      singleTapToFocus( e );
+    } );
+
+  const doubleTap = Gesture.Tap( )
+    .runOnJS( true )
+    .maxDuration( 250 )
+    .numberOfTaps( 2 )
+    .onStart( ( ) => {
+      doubleTapToZoom( );
+    } );
 
   return (
     <>
       <PinchGestureHandler onGestureEvent={onPinchGesture} enabled={isActive}>
         <Reanimated.View style={StyleSheet.absoluteFill}>
-          <TapGestureHandler onHandlerStateChange={tapToFocus} numberOfTaps={1}>
+          <GestureDetector gesture={Gesture.Exclusive( doubleTap, singleTap )}>
             <ReanimatedCamera
               ref={camera}
               style={StyleSheet.absoluteFill}
@@ -103,11 +129,11 @@ const CameraView = ( { camera, device }: Props ): Node => {
               photo
               animatedProps={cameraAnimatedProps}
             />
-          </TapGestureHandler>
+          </GestureDetector>
         </Reanimated.View>
       </PinchGestureHandler>
       <FocusSquare
-        tapToFocusAnimation={tapToFocusAnimation}
+        singleTapToFocusAnimation={singleTapToFocusAnimation}
         tappedCoordinates={tappedCoordinates}
       />
     </>

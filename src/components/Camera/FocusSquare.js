@@ -6,14 +6,14 @@ import { Animated } from "react-native";
 
 type Props = {
   tappedCoordinates: Object,
-  tapToFocusAnimation: any
+  singleTapToFocusAnimation: any
 }
 
-const FocusSquare = ( { tappedCoordinates, tapToFocusAnimation }: Props ): Node => {
+const FocusSquare = ( { tappedCoordinates, singleTapToFocusAnimation }: Props ): Node => {
   useEffect( ( ) => {
     if ( tappedCoordinates ) {
       Animated.timing(
-        tapToFocusAnimation,
+        singleTapToFocusAnimation,
         {
           toValue: 0,
           duration: 2000,
@@ -21,7 +21,7 @@ const FocusSquare = ( { tappedCoordinates, tapToFocusAnimation }: Props ): Node 
         }
       ).start( );
     }
-  }, [tapToFocusAnimation, tappedCoordinates] );
+  }, [singleTapToFocusAnimation, tappedCoordinates] );
 
   if ( !tappedCoordinates ) { return null; }
 
@@ -32,7 +32,7 @@ const FocusSquare = ( { tappedCoordinates, tapToFocusAnimation }: Props ): Node 
       style={[{
         left: tappedCoordinates.x,
         top: tappedCoordinates.y,
-        opacity: tapToFocusAnimation
+        opacity: singleTapToFocusAnimation
       }
       ]}
     />
