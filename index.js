@@ -42,6 +42,8 @@ setJSExceptionHandler( jsErrorHandler, true );
 
 // record native exceptions
 // only works in bundled mode; will show red screen in dev mode
+// tested this by raising an exception in RNGestureHandler.m
+// https://stackoverflow.com/questions/63270492/how-to-raise-native-error-in-react-native-app
 setNativeExceptionHandler( exceptionString => {
   logger.error( `Native Error: ${exceptionString}` );
 } );
