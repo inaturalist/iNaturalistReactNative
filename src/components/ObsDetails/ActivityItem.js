@@ -175,6 +175,7 @@ const ActivityItem = ( {
                   <Menu.Item
                     onPress={() => setFlagModalVisible( true )}
                     title={t( "Flag" )}
+                    testID="MenuItem.Flag"
                   />
                 ) : undefined}
                 <View />
