@@ -14,6 +14,8 @@ import React, {
 import {
   Dimensions, Platform, StatusBar
 } from "react-native";
+import DeviceInfo from "react-native-device-info";
+import Orientation, { OrientationLocker, PORTRAIT } from "react-native-orientation-locker";
 import { Avatar, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
@@ -25,6 +27,8 @@ import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
 
 export const MAX_PHOTOS_ALLOWED = 20;
+
+const isTablet = DeviceInfo.isTablet();
 
 // Taken from:
 // https://developer.android.com/reference/androidx/exifinterface/media/ExifInterface#ORIENTATION_ROTATE_180()
@@ -73,9 +77,12 @@ const StandardCamera = ( ): Node => {
 
   const photosTaken = allObsPhotoUris.length > 0;
 
+  Orientation.lockToPortrait();
+
   useEffect( () => {
-    Dimensions.addEventListener( "change", ( { window: { width } } ) => {
-      setFooterWidth( width );
+    Dimensions.addEventListener( "change", ( { window: { width, height } } ) => {
+      console.log( height, width );
+      if ( isTablet ) setFooterWidth( width );
     } );
   }, [] );
 
@@ -169,6 +176,11 @@ const StandardCamera = ( ): Node => {
     <View className="flex-1 bg-black">
       <StatusBar barStyle="light-content" />
       {device && <CameraView device={device} camera={camera} />}
+      <OrientationLocker
+        orientation={PORTRAIT}
+        onChange={orientation => console.log( "onChange", orientation )}
+        onDeviceChange={orientation => console.log( "onDeviceChange", orientation )}
+      />
       <PhotoPreview
         photoUris={cameraPreviewUris}
         setPhotoUris={setCameraPreviewUris}

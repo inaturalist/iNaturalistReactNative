@@ -57,6 +57,22 @@ const PhotoPreview = ( {
     hideDialog( );
   };
 
+  // const [rotation, setRotation] = useState( false );
+
+  // useEffect( () => {
+  //   Dimensions.addEventListener( "change", ( { window: { width, height } } ) => {
+  //     if ( !isTablet && width > height ) {
+  //       // change image rotation
+  //       setRotation( true );
+  //       console.log( "rotation true" );
+  //     } else if ( !isTablet && width < height ) {
+  //       // change image rotation
+  //       setRotation( false );
+  //       console.log( "rotation false" );
+  //     }
+  //   } );
+  // }, [] );
+
   return (
     <>
       <DeletePhotoDialog
@@ -79,6 +95,7 @@ const PhotoPreview = ( {
           handleDelete={handleDelete}
           setSelectedPhotoIndex={handleSelection}
           savingPhoto={savingPhoto}
+          // rotation={rotation}
         />
       </View>
     </>

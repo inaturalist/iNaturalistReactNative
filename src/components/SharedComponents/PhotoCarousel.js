@@ -4,7 +4,8 @@ import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
-  ActivityIndicator, FlatList
+  ActivityIndicator,
+  FlatList
 } from "react-native";
 import { Avatar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -19,7 +20,8 @@ type Props = {
   handleDelete?: Function,
   savingPhoto?: boolean,
   handleAddEvidence?: Function,
-  showAddButton?: boolean
+  showAddButton?: boolean,
+
 }
 
 const PhotoCarousel = ( {
@@ -88,6 +90,13 @@ const PhotoCarousel = ( {
       return className;
     };
 
+    // const imageClassName = () => {
+    //   if ( rotation ) {
+    //     return "w-fit h-full rotate-90";
+    //   }
+    //   return "w-fit h-full";
+    // };
+
     return (
       <>
         <Pressable
@@ -101,7 +110,7 @@ const PhotoCarousel = ( {
           <Image
             source={{ uri: item }}
             testID="ObsEdit.photo"
-            className="w-fit h-full"
+            className="w-fit h-full rotate-180"
           />
           {( containerStyle === "camera" ) && renderDeleteButton( item )}
         </Pressable>
