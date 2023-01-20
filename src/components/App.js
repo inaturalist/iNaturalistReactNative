@@ -44,7 +44,7 @@ const App = ( { children }: Props ): Node => {
           logger.debug(
             "Signing out and deleting Realm because no signed in user found in the database"
           );
-          await signOut( { deleteRealm: true } );
+          await signOut( { clearRealm: true } );
         }
       }
     };

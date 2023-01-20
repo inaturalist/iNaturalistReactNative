@@ -63,15 +63,15 @@ const getUsername = async (): Promise<string> => RNSInfo.getItem( "username", {}
 const signOut = async (
   options: {
     realm?: Object,
-    deleteRealm?: boolean,
+    clearRealm?: boolean,
     queryClient?: Object
   } = {
-    deleteRealm: false,
+    clearRealm: false,
     queryClient: null
   }
 ) => {
   logger.debug( "signOut" );
-  if ( options.deleteRealm ) {
+  if ( options.clearRealm ) {
     if ( options.realm ) {
       // Delete all the records in the realm db, including the ones accessible
       // through the copy of realm provided by RealmProvider
@@ -172,7 +172,7 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
       // actually signed in anymore for example, if they installed, deleted,
       // and reinstalled the app without logging out
       if ( response.status === 401 ) {
-        signOut( { deleteRealm: true } );
+        signOut( { clearRealm: true } );
       }
       console.error(
         `Error while renewing JWT: ${response.problem} - ${response.status}`
