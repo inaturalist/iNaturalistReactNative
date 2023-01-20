@@ -61,6 +61,10 @@ npx jest -t accessibility
 ### E2E tests
 We're using [Detox](https://wix.github.io/Detox/docs/19.x/) for E2E tests. If you want to run the e2e tests on your local machine, make sure you fulfill the RN development requirements, see above, and also follow the iOS specific [environment setup](https://wix.github.io/Detox/docs/19.x/introduction/ios-dev-env/).
 
+Then you have to populate `E2E_TEST_USERNAME` and `E2E_TEST_PASSWORD` in `.env` with real iNaturalist login credentials so the e2e test can actually authenticate.
+
+Then you can run the tests:
+
 ```bash
 # Build the app and run the tests
 npm run e2e
