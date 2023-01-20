@@ -42,10 +42,16 @@ const CameraView = ( { camera, device }: Props ): Node => {
     transform: [{ scale: scale.value }]
   } ) );
 
-  const singleTapToFocus = async event => {
-    await camera.current.focus( { x: event.x, y: event.y } );
-    singleTapToFocusAnimation.setValue( 1 );
-    setTappedCoordinates( event );
+  const singleTapToFocus = async ( { x, y } ) => {
+    try {
+      singleTapToFocusAnimation.setValue( 1 );
+      setTappedCoordinates( { x, y } );
+      await camera.current.focus( { x, y } );
+    } catch ( e ) {
+      // Android often catches the following error from the Camera X library
+      // but it doesn't seem to affect functionality
+      // [unknown/unknown] Cancelled by another startFocusAndMetering()] error focusing camera
+    }
   };
 
   const doubleTapToZoom = ( ) => {

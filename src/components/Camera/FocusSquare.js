@@ -25,13 +25,15 @@ const FocusSquare = ( { tappedCoordinates, singleTapToFocusAnimation }: Props ):
 
   if ( !tappedCoordinates ) { return null; }
 
+  const HALF_SIZE_FOCUS_BOX = 40;
+
   return (
     // $FlowIgnore
     <Animated.View
       className="w-16 h-16 absolute border border-white rounded-lg"
       style={[{
-        left: tappedCoordinates.x,
-        top: tappedCoordinates.y,
+        left: tappedCoordinates.x - HALF_SIZE_FOCUS_BOX,
+        top: tappedCoordinates.y - HALF_SIZE_FOCUS_BOX,
         opacity: singleTapToFocusAnimation
       }
       ]}
