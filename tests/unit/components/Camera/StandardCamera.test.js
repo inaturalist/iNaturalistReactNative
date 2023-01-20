@@ -17,6 +17,17 @@ jest.mock( "@react-navigation/native", () => {
   };
 } );
 
+jest.mock( "react-native-orientation-locker", () => ( {
+  addEventListener: jest.fn(),
+  addDeviceOrientationListener: jest.fn(),
+  removeEventListener: jest.fn(),
+  lockToPortrait: jest.fn(),
+  lockToLandscapeLeft: jest.fn(),
+  lockToLandscapeRight: jest.fn(),
+  unlockAllOrientations: jest.fn(),
+  removeOrientationListener: jest.fn()
+} ) );
+
 const mockValue = {
   addCameraPhotosToCurrentObservation: jest.fn(),
   allObsPhotoUris: [],

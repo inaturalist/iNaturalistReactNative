@@ -15,7 +15,7 @@ import {
   Dimensions, Platform, StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import Orientation, { OrientationLocker, PORTRAIT } from "react-native-orientation-locker";
+import Orientation from "react-native-orientation-locker";
 import { Avatar, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
@@ -74,16 +74,28 @@ const StandardCamera = ( ): Node => {
   const [showAlert, setShowAlert] = useState( false );
   const initialWidth = Dimensions.get( "screen" ).height;
   const [footerWidth, setFooterWidth] = useState( initialWidth );
+  const [deviceRotation, setDeviceRotation] = useState( "PORTRAIT" );
 
   const photosTaken = allObsPhotoUris.length > 0;
-
   Orientation.lockToPortrait();
 
+  const onDeviceRotation = orientation => {
+    console.log( "onDeviceChange", orientation );
+    setDeviceRotation( orientation );
+  };
+
   useEffect( () => {
+    Orientation.addDeviceOrientationListener( onDeviceRotation );
+
     Dimensions.addEventListener( "change", ( { window: { width, height } } ) => {
       console.log( height, width );
       if ( isTablet ) setFooterWidth( width );
     } );
+
+    return () => {
+      // Remember to remove listener
+      Orientation.removeOrientationListener( onDeviceRotation );
+    };
   }, [] );
 
   const takePhoto = async ( ) => {
@@ -176,15 +188,15 @@ const StandardCamera = ( ): Node => {
     <View className="flex-1 bg-black">
       <StatusBar barStyle="light-content" />
       {device && <CameraView device={device} camera={camera} />}
-      <OrientationLocker
-        orientation={PORTRAIT}
-        onChange={orientation => console.log( "onChange", orientation )}
-        onDeviceChange={orientation => console.log( "onDeviceChange", orientation )}
-      />
+      {/* <OrientationLocker
+        orientation="PORTRAIT"
+        onDeviceChange={orientation => onDeviceRotation( orientation )}
+      /> */}
       <PhotoPreview
         photoUris={cameraPreviewUris}
         setPhotoUris={setCameraPreviewUris}
         savingPhoto={savingPhoto}
+        deviceOrientation={deviceRotation}
       />
       <FadeInOutView savingPhoto={savingPhoto} />
       <View className="absolute bottom-0">

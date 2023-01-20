@@ -17,6 +17,7 @@ import {
 } from "./vision-camera/vision-camera";
 
 jest.mock( "@sayem314/react-native-keep-awake" );
+jest.mock( "react-native/Libraries/EventEmitter/NativeEventEmitter" );
 
 jest.mock(
   "@react-native-async-storage/async-storage",

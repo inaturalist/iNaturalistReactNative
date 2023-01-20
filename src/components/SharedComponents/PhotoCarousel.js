@@ -21,6 +21,7 @@ type Props = {
   savingPhoto?: boolean,
   handleAddEvidence?: Function,
   showAddButton?: boolean,
+  deviceOrientation?: string
 
 }
 
@@ -33,7 +34,8 @@ const PhotoCarousel = ( {
   handleDelete,
   savingPhoto,
   handleAddEvidence,
-  showAddButton = false
+  showAddButton = false,
+  deviceOrientation
 
 }: Props ): Node => {
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
@@ -90,12 +92,17 @@ const PhotoCarousel = ( {
       return className;
     };
 
-    // const imageClassName = () => {
-    //   if ( rotation ) {
-    //     return "w-fit h-full rotate-90";
-    //   }
-    //   return "w-fit h-full";
-    // };
+    const imageClassName = () => {
+      if ( deviceOrientation ) {
+        if ( deviceOrientation === "LANDSCAPE-LEFT" ) {
+          return "w-fit h-full rotate-90";
+        }
+        if ( deviceOrientation === "LANDSCAPE-RIGHT" ) {
+          return "w-fit h-full -rotate-90";
+        }
+      }
+      return "w-fit h-full";
+    };
 
     return (
       <>
@@ -110,7 +117,7 @@ const PhotoCarousel = ( {
           <Image
             source={{ uri: item }}
             testID="ObsEdit.photo"
-            className="w-fit h-full rotate-180"
+            className={imageClassName()}
           />
           {( containerStyle === "camera" ) && renderDeleteButton( item )}
         </Pressable>
