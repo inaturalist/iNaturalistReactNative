@@ -85,7 +85,7 @@ const MainStackNavigation = ( ): React.Node => (
       <Stack.Screen
         name="StandardCamera"
         component={StandardCameraWithPermission}
-        options={hideHeader}
+        options={{ ...hideHeader, orientation: isTablet ? "all" : "portrait" }}
       />
       <Stack.Screen
         name="PhotoGallery"
