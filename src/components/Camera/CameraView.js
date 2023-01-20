@@ -52,6 +52,7 @@ const CameraView = ( { camera, device }: Props ): Node => {
     if ( scale.value < SCALE_MAX_ZOOM ) {
       scale.value = Math.min( SCALE_MAX_ZOOM, scale.value += 1 );
     }
+    savedScale.value = scale.value;
   };
 
   const singleTap = Gesture.Tap( )
@@ -75,11 +76,11 @@ const CameraView = ( { camera, device }: Props ): Node => {
     .withTestId( "PinchGestureHandler" )
     .requireExternalGestureToFail( singleTap, doubleTap )
     .onUpdate( e => {
-      const minScaleValue = Math.max( SCALE_MIN_ZOOM, savedScale.value * e.scale );
-      const maxScaleValue = Math.min( SCALE_MAX_ZOOM, savedScale.value * e.scale );
-      const isZoomingIn = Math.sign( e.velocity ) >= 0;
+      const newValue = savedScale.value * e.scale;
+      const minScaleValue = Math.max( SCALE_MIN_ZOOM, newValue );
+      const maxScaleValue = Math.min( SCALE_MAX_ZOOM, newValue );
 
-      if ( isZoomingIn ) {
+      if ( newValue > savedScale.value ) {
         scale.value = maxScaleValue;
       } else {
         scale.value = minScaleValue;
