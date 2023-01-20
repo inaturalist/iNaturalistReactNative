@@ -17,7 +17,6 @@ const ObsListHeader = ( {
   setView
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
-
   if ( currentUser === null ) {
     return <View className="rounded-bl-3xl rounded-br-3xl bg-primary h-24" />;
   }

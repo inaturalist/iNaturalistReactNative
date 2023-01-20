@@ -1,22 +1,32 @@
 // @flow
 
 import Button from "components/SharedComponents/Buttons/Button";
-import { View } from "components/styledComponents";
+import {
+  fontMonoClass, Text, View
+} from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Platform, Share } from "react-native";
 import { getBuildNumber, getSystemName, getVersion } from "react-native-device-info";
+import RNFS from "react-native-fs";
 import Mailer from "react-native-mail";
 
 import { logFilePath } from "../../react-native-logs.config";
-import PlaceholderText from "./PlaceholderText";
-import ViewWithFooter from "./SharedComponents/ViewWithFooter";
+import ScrollWithFooter from "./SharedComponents/ScrollWithFooter";
+
+const TextHeader = ( { level, children } ) => {
+  let sizeClass = "text-2xl";
+  if ( level === 2 ) sizeClass = "text-xl";
+  if ( level === 3 ) sizeClass = "text-lg";
+  return <Text className={`${sizeClass} mt-1 mb-2`}>{ children }</Text>;
+};
 
 const AboutScreen = ( ): Node => {
   const appVersion = getVersion( );
   const buildVersion = getBuildNumber( );
   const device = getSystemName( );
+  const [logContents, setLogContents] = useState( "" );
 
   const emailParams = {
     subject: `iNat RN ${device} Logs (version ${appVersion} - ${buildVersion})`,
@@ -27,6 +37,11 @@ const AboutScreen = ( ): Node => {
     path: logFilePath,
     mimeType: "txt"
   } );
+
+  const shareLogFile = ( ) => Share.share( {
+    title: emailParams.subject,
+    url: logFilePath
+  }, emailParams );
 
   const openEmailWithLogsAttached = ( ) => {
     Mailer.mail( {
@@ -45,10 +60,7 @@ const AboutScreen = ( ): Node => {
             },
             {
               text: t( "Share" ),
-              onPress: ( ) => Share.share( {
-                title: emailParams.subject,
-                url: logFilePath
-              }, emailParams )
+              onPress: ( ) => shareLogFile
             }
           ]
         );
@@ -61,17 +73,48 @@ const AboutScreen = ( ): Node => {
     } );
   };
 
+  const { mtime: logFileMtime } = RNFS.stat( logFilePath );
+
+  useEffect( ( ) => {
+    async function fetchLogContents( ) {
+      const contents = await RNFS.readFile( logFilePath );
+      setLogContents( contents.split( "\n" ).slice( -100 ).join( "\n" ) );
+    }
+    fetchLogContents( );
+  }, [logFileMtime] );
+
+  /* eslint-disable i18next/no-literal-string */
   return (
-    <ViewWithFooter>
-      <PlaceholderText text={`app version: ${appVersion} (${buildVersion})`} />
-      <View className="mt-16 mx-5">
+    <ScrollWithFooter>
+      <View className="p-4">
+        <Text>
+          This is an app under development! Right now this page just shows
+          some details for developers.
+        </Text>
+        <TextHeader>Version</TextHeader>
+        <Text selectable>{`${appVersion} (${buildVersion})`}</Text>
+        <TextHeader>Logs</TextHeader>
+        <Text>Last 100 lines</Text>
+        <Text className={`text-xs h-fit mb-5 ${fontMonoClass}`}>{logContents}</Text>
         <Button
           level="primary"
           onPress={openEmailWithLogsAttached}
           text={t( "EMAIL-DEBUG-LOGS" )}
+          className="mb-5"
         />
+        { Platform.OS === "ios" && (
+          <Button
+            onPress={shareLogFile}
+            text={t( "SHARE-DEBUG-LOGS" )}
+          />
+        ) }
+        <TextHeader>Paths</TextHeader>
+        <TextHeader level={2}>Documents</TextHeader>
+        <Text selectable className={fontMonoClass}>{ RNFS.DocumentDirectoryPath }</Text>
+        <TextHeader level={2}>Caches</TextHeader>
+        <Text selectable className={fontMonoClass}>{ RNFS.CachesDirectoryPath }</Text>
       </View>
-    </ViewWithFooter>
+    </ScrollWithFooter>
   );
 };
 
