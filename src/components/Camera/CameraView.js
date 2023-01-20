@@ -72,6 +72,7 @@ const CameraView = ( { camera, device }: Props ): Node => {
 
   const pinch = Gesture.Pinch( )
     .runOnJS( true )
+    .withTestId( "PinchGestureHandler" )
     .requireExternalGestureToFail( singleTap, doubleTap )
     .onUpdate( e => {
       const minScaleValue = Math.max( SCALE_MIN_ZOOM, savedScale.value * e.scale );
@@ -90,17 +91,15 @@ const CameraView = ( { camera, device }: Props ): Node => {
 
   return (
     <>
-      <Reanimated.View style={StyleSheet.absoluteFill}>
-        <GestureDetector gesture={Gesture.Exclusive( doubleTap, singleTap, pinch )}>
-          <ReanimatedCamera
-            ref={camera}
-            style={[StyleSheet.absoluteFill, animatedStyle]}
-            device={device}
-            isActive={isActive}
-            photo
-          />
-        </GestureDetector>
-      </Reanimated.View>
+      <GestureDetector gesture={Gesture.Exclusive( doubleTap, singleTap, pinch )}>
+        <ReanimatedCamera
+          ref={camera}
+          style={[StyleSheet.absoluteFill, animatedStyle]}
+          device={device}
+          isActive={isActive}
+          photo
+        />
+      </GestureDetector>
       <FocusSquare
         singleTapToFocusAnimation={singleTapToFocusAnimation}
         tappedCoordinates={tappedCoordinates}
