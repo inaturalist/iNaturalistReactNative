@@ -1,7 +1,7 @@
 // @flow
 
+import Geolocation from "@react-native-community/geolocation";
 import { PermissionsAndroid, Platform } from "react-native";
-import Geolocation from "react-native-geolocation-service";
 import { PERMISSIONS, request } from "react-native-permissions";
 
 import fetchPlaceName from "./fetchPlaceName";
@@ -29,10 +29,8 @@ const requestLocationPermissions = async ( ): Promise<?string> => {
 
 const options = {
   enableHighAccuracy: true,
-  timeout: 0,
   maximumAge: 0,
-  distanceFilter: 0,
-  forceLocationManager: true
+  distanceFilter: 0
 };
 
 const getCurrentPosition = ( ) => new Promise(
