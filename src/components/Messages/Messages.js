@@ -33,14 +33,14 @@ const Messages = ( ): Node => {
     {
       id: NOTIFICATIONS_ID,
       text: "Notifications",
-      onClick: () => {
+      onPress: () => {
         setActiveTab( NOTIFICATIONS_ID );
       }
     },
     {
       id: MESSAGES_ID,
       text: "Messages",
-      onClick: () => {
+      onPress: () => {
         setActiveTab( MESSAGES_ID );
       }
     }
