@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
-import Geolocation from "react-native-geolocation-service";
+import Geolocation from "@react-native-community/geolocation";
 import { PERMISSIONS, request } from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 
@@ -45,7 +45,7 @@ const useUserLocation = ( ): Object => {
       // TODO: set geolocation fetch error
       const failure = error => console.warn( error.code, error.message );
 
-      const options = { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
+      const options = { enableHighAccuracy: true, maximumAge: 0 };
 
       Geolocation.getCurrentPosition( success, failure, options );
     };

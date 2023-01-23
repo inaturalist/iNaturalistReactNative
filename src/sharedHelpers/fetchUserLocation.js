@@ -29,8 +29,7 @@ const requestLocationPermissions = async ( ): Promise<?string> => {
 
 const options = {
   enableHighAccuracy: true,
-  maximumAge: 0,
-  distanceFilter: 0
+  maximumAge: 0
 };
 
 const getCurrentPosition = ( ) => new Promise(
