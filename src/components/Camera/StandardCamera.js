@@ -6,6 +6,7 @@ import {
   Text, View
 } from "components/styledComponents";
 import { t } from "i18next";
+import _ from "lodash";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -74,26 +75,44 @@ const StandardCamera = ( ): Node => {
   const [showAlert, setShowAlert] = useState( false );
   const initialWidth = Dimensions.get( "screen" ).height;
   const [footerWidth, setFooterWidth] = useState( initialWidth );
-  const [deviceRotation, setDeviceRotation] = useState( "PORTRAIT" );
+  const [imageOrientation, setImageOrientation] = useState( "portrait" );
 
   const photosTaken = allObsPhotoUris.length > 0;
-  Orientation.lockToPortrait();
 
+  // screen orientation locked to portrait on small devices
+  if ( !isTablet ) {
+    Orientation.lockToPortrait();
+  }
+
+  // detect device rotation instead of using screen orientation change
   const onDeviceRotation = orientation => {
-    console.log( "onDeviceChange", orientation );
-    setDeviceRotation( orientation );
+    if ( !isTablet ) {
+      // console.log( "onDeviceChange", orientation );
+      // setDeviceRotation( orientation );
+      console.log( "onDeviceChange image", _.camelCase( orientation ) );
+
+      // react-native-orientation-locker and react-native-vision-camera
+      // have opposite definitions for landscape right/left
+      setImageOrientation( _.camelCase( orientation ) );
+
+      // if ( _.camelCase( orientation ) === "landscapeRight" ) {
+      //   setImageOrientation( _.camelCase( "landscapeLeft" ) );
+      // } else if ( _.camelCase( orientation ) === "landscapeLeft" ) {
+      //   setImageOrientation( _.camelCase( "landscapeRight" ) );
+      // }
+    }
   };
 
   useEffect( () => {
     Orientation.addDeviceOrientationListener( onDeviceRotation );
 
+    // allows bottom buttons bar to fill entire width of screen on rotation
     Dimensions.addEventListener( "change", ( { window: { width, height } } ) => {
       console.log( height, width );
       if ( isTablet ) setFooterWidth( width );
     } );
 
     return () => {
-      // Remember to remove listener
       Orientation.removeOrientationListener( onDeviceRotation );
     };
   }, [] );
@@ -187,16 +206,12 @@ const StandardCamera = ( ): Node => {
   return (
     <View className="flex-1 bg-black">
       <StatusBar barStyle="light-content" />
-      {device && <CameraView device={device} camera={camera} />}
-      {/* <OrientationLocker
-        orientation="PORTRAIT"
-        onDeviceChange={orientation => onDeviceRotation( orientation )}
-      /> */}
+      {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
       <PhotoPreview
         photoUris={cameraPreviewUris}
         setPhotoUris={setCameraPreviewUris}
         savingPhoto={savingPhoto}
-        deviceOrientation={deviceRotation}
+        deviceOrientation={imageOrientation}
       />
       <FadeInOutView savingPhoto={savingPhoto} />
       <View className="absolute bottom-0">
@@ -217,7 +232,7 @@ const StandardCamera = ( ): Node => {
             className="w-1/3 pt-4 pb-4 pl-3"
             onPress={( ) => navigation.goBack( )}
           >
-            <Icon name="arrow-back-ios" size={25} color={colors.white} />
+            <Icon name="close" size={35} color={colors.white} />
           </Pressable>
           <View className="w-1/3">
             <Pressable onPress={takePhoto} className="items-center">

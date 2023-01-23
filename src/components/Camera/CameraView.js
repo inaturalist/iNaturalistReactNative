@@ -26,10 +26,11 @@ Reanimated.addWhitelistedNativeProps( {
 
 type Props = {
   camera: Object,
-  device: Object
+  device: Object,
+  orientation: string
 }
 
-const CameraView = ( { camera, device }: Props ): Node => {
+const CameraView = ( { camera, device, orientation }: Props ): Node => {
   const zoom = useSharedValue( 0 );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
   const tapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
@@ -102,6 +103,7 @@ const CameraView = ( { camera, device }: Props ): Node => {
               isActive={isActive}
               photo
               animatedProps={cameraAnimatedProps}
+              orientation={orientation}
             />
           </TapGestureHandler>
         </Reanimated.View>

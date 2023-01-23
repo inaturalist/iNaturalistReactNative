@@ -93,15 +93,19 @@ const PhotoCarousel = ( {
     };
 
     const imageClassName = () => {
+      let className = "w-fit h-full ";
       if ( deviceOrientation ) {
-        if ( deviceOrientation === "LANDSCAPE-LEFT" ) {
-          return "w-fit h-full rotate-90";
+        if ( deviceOrientation === "portrait" ) {
+          className += "rotate-180";
         }
-        if ( deviceOrientation === "LANDSCAPE-RIGHT" ) {
-          return "w-fit h-full -rotate-90";
+        if ( deviceOrientation === "landscapeLeft" ) {
+          className += "-rotate-90";
+        }
+        if ( deviceOrientation === "landscapeRight" ) {
+          className += "rotate-90";
         }
       }
-      return "w-fit h-full";
+      return className;
     };
 
     return (
