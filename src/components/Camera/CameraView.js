@@ -4,7 +4,7 @@ import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Animated, StyleSheet } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Reanimated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+import Reanimated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { Camera } from "react-native-vision-camera";
 import useIsForeground from "sharedHooks/useIsForeground";
 
@@ -36,10 +36,15 @@ const CameraView = ( { camera, device }: Props ): Node => {
   const isActive = isFocused && isForeground;
 
   // used for pinch and double tap to zoom
+  const [tap, setTap] = useState( true );
   const scale = useSharedValue( SCALE_MIN_ZOOM );
   const savedScale = useSharedValue( SCALE_MIN_ZOOM );
   const animatedStyle = useAnimatedStyle( ( ) => ( {
-    transform: [{ scale: scale.value }]
+    transform: [{
+      scale: withTiming( scale.value, {
+        duration: tap ? 300 : 0
+      } )
+    }]
   } ) );
 
   const singleTapToFocus = async ( { x, y } ) => {
@@ -74,6 +79,7 @@ const CameraView = ( { camera, device }: Props ): Node => {
     .maxDuration( 250 )
     .numberOfTaps( 2 )
     .onStart( ( ) => {
+      setTap( true );
       doubleTapToZoom( );
     } );
 
@@ -81,6 +87,7 @@ const CameraView = ( { camera, device }: Props ): Node => {
     .runOnJS( true )
     .withTestId( "PinchGestureHandler" )
     .requireExternalGestureToFail( singleTap, doubleTap )
+    .onStart( ( ) => setTap( false ) )
     .onUpdate( e => {
       const newValue = savedScale.value * e.scale;
       const minScaleValue = Math.max( SCALE_MIN_ZOOM, newValue );
