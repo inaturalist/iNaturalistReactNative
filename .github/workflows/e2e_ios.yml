@@ -3,7 +3,9 @@
 ##
 name: e2e-iOS
 on:
-  pull_request:
+  push:
+    branches:
+      - 'main'
 
 jobs:
   setup:
@@ -44,7 +46,7 @@ jobs:
 
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
-      run: npm install --legacy-peer-deps
+      run: npm install
 
     - name: Cache Pods
       uses: actions/cache@v3
@@ -57,6 +59,16 @@ jobs:
       run: |
         gem update cocoapods xcodeproj
         cd ios && pod install && cd ..
+
+    # Generate the secret files needed for a release build
+    - name: Create .env file
+      env:
+        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+        E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+        E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+        JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
+      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\n' "JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" > .env
 
     # Install prerequisites for detox and build app, and test
     - run: brew tap wix/brew

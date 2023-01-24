@@ -1,3 +1,5 @@
+import RNFS from "react-native-fs";
+
 import Application from "./Application";
 import Comment from "./Comment";
 import Identification from "./Identification";
@@ -20,9 +22,48 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 28,
-  path: "db.realm",
+  schemaVersion: 31,
+  path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   migration: ( oldRealm, newRealm ) => {
+    // Apparently you need to migrate when making a property optional
+    if ( oldRealm.schemaVersion < 31 ) {
+      const oldTaxa = oldRealm.objects( "Taxon" );
+      const newTaxa = newRealm.objects( "Taxon" );
+      oldTaxa.keys( ).forEach( objectIndex => {
+        const newTaxon = newTaxa[objectIndex];
+        const oldTaxon = oldTaxa[objectIndex];
+        if ( oldTaxon.rank_level === 0 ) {
+          newTaxon.rank_level = null;
+        } else {
+          newTaxon.rank_level = oldTaxon.rank_level;
+        }
+      } );
+    }
+
+    if ( oldRealm.schemaVersion < 30 ) {
+      const oldUsers = oldRealm.objects( "User" );
+      const newUsers = newRealm.objects( "User" );
+      // loop through all objects and set the new property in the new schema
+      oldUsers.keys( ).forEach( objectIndex => {
+        const newUser = newUsers[objectIndex];
+        const oldUser = oldUsers[objectIndex];
+        newUser.prefers_scientific_name_first = Boolean( oldUser.prefers_scientific_name_first );
+        oldUser.prefers_scientific_name_first = Boolean( oldUser.prefers_scientific_name_first );
+      } );
+    }
+
+    if ( oldRealm.schemaVersion < 29 ) {
+      const oldTaxa = oldRealm.objects( "Taxon" );
+      const newTaxa = newRealm.objects( "Taxon" );
+      // loop through all objects and set the new property in the new schema
+      oldTaxa.keys( ).forEach( objectIndex => {
+        const oldTaxon = oldTaxa[objectIndex];
+        const newTaxon = newTaxa[objectIndex];
+        newTaxon.rank_level = oldTaxon.rank_level || 0;
+        oldTaxon.rank_level = oldTaxon.rank_level || 0;
+      } );
+    }
+
     if ( oldRealm.schemaVersion < 21 ) {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );
@@ -88,6 +129,7 @@ export default {
         const oldTaxon = oldTaxa[objectIndex];
         const newTaxon = newTaxa[objectIndex];
         newTaxon.preferred_common_name = oldTaxon.preferredCommonName;
+        newTaxon.rank_level = null;
       } );
 
       const oldObservations = oldRealm.objects( "Observation" );

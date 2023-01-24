@@ -6,7 +6,9 @@ import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
 const mockProject = factory( "RemoteProject" );
-const mockObservation = factory( "RemoteObservation" );
+const mockObservation = factory( "RemoteObservation", {
+  taxon: { preferred_common_name: "Foo", name: "bar" }
+} );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -38,7 +40,15 @@ describe( "ProjectObservations", () => {
 test( "displays project observations", ( ) => {
   const { getByTestId, getByText } = renderComponent( <ProjectObservations /> );
 
-  expect( getByText( mockObservation.taxon.preferred_common_name ) ).toBeTruthy( );
+  expect( getByText(
+    `${
+      mockObservation.taxon.preferred_common_name
+    } (${
+      mockObservation.taxon.rank
+    } ${
+      mockObservation.taxon.name
+    })`
+  ) ).toBeTruthy( );
   expect( getByTestId( "ObsList.photo" ).props.source )
     .toStrictEqual( { uri: mockObservation.observation_photos[0].photo.url } );
 } );

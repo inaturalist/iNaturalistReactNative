@@ -36,7 +36,8 @@ jest.mock(
   ( ) => ( {
     __esModule: true,
     default: ( ) => ( {
-      observationList: mockObservations
+      observationList: mockObservations,
+      allObsToUpload: []
     } )
   } )
 );

@@ -1,7 +1,7 @@
 // @flow
 
+import Geolocation from "@react-native-community/geolocation";
 import { PermissionsAndroid, Platform } from "react-native";
-import Geolocation from "react-native-geolocation-service";
 import { PERMISSIONS, request } from "react-native-permissions";
 
 import fetchPlaceName from "./fetchPlaceName";
@@ -27,10 +27,15 @@ const requestLocationPermissions = async ( ): Promise<?string> => {
   return null;
 };
 
-const options = { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
+const options = {
+  enableHighAccuracy: true,
+  maximumAge: 0
+};
 
 const getCurrentPosition = ( ) => new Promise(
-  ( resolve, error ) => { Geolocation.getCurrentPosition( resolve, error, options ); }
+  ( resolve, error ) => {
+    Geolocation.getCurrentPosition( resolve, error, options );
+  }
 );
 
 type UserLocation = {

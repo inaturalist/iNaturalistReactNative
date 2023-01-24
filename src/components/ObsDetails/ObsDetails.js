@@ -36,6 +36,7 @@ import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useIsConnected from "sharedHooks/useIsConnected";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import { imageStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
@@ -55,6 +56,7 @@ LogBox.ignoreLogs( [
 ] );
 
 const ObsDetails = ( ): Node => {
+  const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
   const [refetch, setRefetch] = useState( false );
@@ -83,18 +85,22 @@ const ObsDetails = ( ): Node => {
   );
 
   const observation = localObservation || remoteObservation;
-  // const observation = remoteObservation;
 
-  const mutationOptions = {
-    onSuccess: ( ) => {
-      queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
-      refetchRemoteObservation( );
-    }
+  const markViewedLocally = async ( ) => {
+    realm?.write( ( ) => {
+      localObservation.viewed = true;
+    } );
   };
 
   const markViewedMutation = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
-    mutationOptions
+    {
+      onSuccess: ( ) => {
+        markViewedLocally( );
+        queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
+        refetchRemoteObservation( );
+      }
+    }
   );
 
   const taxon = observation?.taxon;
@@ -163,17 +169,10 @@ const ObsDetails = ( ): Node => {
   };
 
   useEffect( ( ) => {
-    const markViewedLocally = async ( ) => {
-      realm?.write( ( ) => {
-        localObservation.viewed = true;
-      } );
-    };
-
-    if ( localObservation && !localObservation?.viewed ) {
+    if ( localObservation && !localObservation.viewed && !markViewedMutation.isLoading ) {
       markViewedMutation.mutate( { id: uuid } );
-      markViewedLocally( );
     }
-  }, [observation, localObservation, realm, markViewedMutation, uuid] );
+  }, [localObservation, markViewedMutation, uuid] );
 
   useEffect( ( ) => {
     const obsCreatedLocally = observation?.id === null;
@@ -275,8 +274,21 @@ const ObsDetails = ( ): Node => {
       </Pressable>
     );
   };
-  const displayPhoto = () => {
-    if ( photos.length > 0 || observation.observationSounds.length > 0 ) {
+  const displayPhoto = ( ) => {
+    if ( !isOnline ) {
+      // TODO show photos that are available offline
+      return (
+        <View className="bg-white flex-row justify-center">
+          <IconMaterial
+            name="wifi-off"
+            size={100}
+            accessibilityRole="image"
+            accessibilityLabel={t( "Observation-photos-unavailable-without-internet" )}
+          />
+        </View>
+      );
+    }
+    if ( photos.length > 0 || observation?.observationSounds?.length > 0 ) {
       return (
         <View className="bg-black">
           <PhotoScroll photos={photos} />
@@ -303,7 +315,11 @@ const ObsDetails = ( ): Node => {
         accessible
         accessibilityLabel={t( "Observation-has-no-photos-and-no-sounds" )}
       >
-        <IconMaterial name="image-not-supported" size={100} />
+        <IconMaterial
+          testID="ObsDetails.noImage"
+          name="image-not-supported"
+          size={100}
+        />
       </View>
     );
   };

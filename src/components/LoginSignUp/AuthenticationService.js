@@ -1,16 +1,23 @@
 // @flow
 import { create } from "apisauce";
-import { Platform } from "react-native";
+import i18next from "i18next";
+import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
 import {
   getBuildNumber, getDeviceType, getSystemName, getSystemVersion, getVersion
 } from "react-native-device-info";
+import RNFS from "react-native-fs";
 import jwt from "react-native-jwt-io";
 import * as RNLocalize from "react-native-localize";
 import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
+import User from "realmModels/User";
+
+import { log } from "../../../react-native-logs.config";
+
+const logger = log.extend( "AuthenticationService" );
 
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.
@@ -43,6 +50,13 @@ const isLoggedIn = async (): Promise<boolean> => {
 };
 
 /**
+ * Returns the logged-in username
+ *
+ * @returns {Promise<boolean>}
+ */
+const getUsername = async (): Promise<string> => RNSInfo.getItem( "username", {} );
+
+/**
  * Signs out the user
  *
  * @returns {Promise<void>}
@@ -50,35 +64,45 @@ const isLoggedIn = async (): Promise<boolean> => {
 const signOut = async (
   options: {
     realm?: Object,
-    deleteRealm?: boolean,
+    clearRealm?: boolean,
     queryClient?: Object
   } = {
-    deleteRealm: false,
+    clearRealm: false,
     queryClient: null
   }
 ) => {
-  if ( options.deleteRealm ) {
+  logger.debug( "signOut" );
+  if ( options.clearRealm ) {
     if ( options.realm ) {
       // Delete all the records in the realm db, including the ones accessible
       // through the copy of realm provided by RealmProvider
       options.realm.beginTransaction();
       try {
+        logger.debug( "signOut, deleting all records in realm" );
         // $FlowFixMe
         options.realm.deleteAll( );
         // $FlowFixMe
         options.realm.commitTransaction( );
       } catch ( realmError ) {
+        logger.debug( "signOut, failed to delete all records in realm" );
         // $FlowFixMe
         options.realm.cancelTransaction( );
-        throw realmError;
+        // If we failed to wipe all the data in realm, delete the realm file.
+        // Note that deleting the realm file *all* the time seems to cause
+        // problems in Android when the app is force quit, as in sometimes it
+        // seems to just delete the file even if you didn't sign out
+        logger.debug( "signOut, deleting realm" );
+        Realm.deleteFile( realmConfig );
       }
     }
-    Realm.deleteFile( realmConfig );
   }
   // Delete the React Query cache. FWIW, this should *not* be optional, but
   // the checkForSignedInUser needs to call this and that doesn't have access
   // to the React Query context (maybe it could...)
   options.queryClient?.getQueryCache( ).clear( );
+
+  const username = await getUsername( );
+  logger.debug( "signed out user with username:", username );
   await RNSInfo.deleteItem( "jwtToken", {} );
   await RNSInfo.deleteItem( "jwtTokenExpiration", {} );
   await RNSInfo.deleteItem( "username", {} );
@@ -149,7 +173,7 @@ const getJWTToken = async ( allowAnonymousJWTToken: boolean = false ): Promise<?
       // actually signed in anymore for example, if they installed, deleted,
       // and reinstalled the app without logging out
       if ( response.status === 401 ) {
-        signOut( { deleteRealm: true } );
+        signOut( { clearRealm: true } );
       }
       console.error(
         `Error while renewing JWT: ${response.problem} - ${response.status}`
@@ -194,6 +218,13 @@ const getAPIToken = async (
   return `Bearer ${accessToken}`;
 };
 
+const showErrorAlert = errorText => {
+  Alert.alert(
+    "",
+    errorText
+  );
+};
+
 /**
  * Verifies login credentials
  *
@@ -213,16 +244,21 @@ const verifyCredentials = async (
   formData.append( "client_secret", Config.OAUTH_CLIENT_SECRET );
   formData.append( "password", password );
   formData.append( "username", username );
+  formData.append( "locale", i18next.language );
 
   const api = createAPI();
   let response = await api.post( "/oauth/token", formData );
 
   if ( !response.ok ) {
-    console.error(
-      "verifyCredentials failed when calling /oauth/token - ",
-      response.problem,
-      response.status
-    );
+    showErrorAlert( response.data.error_description );
+
+    if ( response.problem !== "CLIENT_ERROR" ) {
+      console.error(
+        "verifyCredentials failed when calling /oauth/token - ",
+        response.problem,
+        response.status
+      );
+    }
     return null;
   }
 
@@ -242,18 +278,20 @@ const verifyCredentials = async (
   );
 
   if ( !response.ok ) {
-    console.error(
-      "verifyCredentials failed when calling /users/edit.json - ",
-      response.problem,
-      response.status
-    );
+    showErrorAlert( response.data.error_description );
+    if ( response.problem !== "CLIENT_ERROR" ) {
+      console.error(
+        "verifyCredentials failed when calling /users/edit.json - ",
+        response.problem,
+        response.status
+      );
+    }
 
     return null;
   }
 
   const iNatUsername = response.data.login;
   const iNatID = response.data.id;
-  // console.log( "verifyCredentials - logged in username ", iNatUsername );
 
   return {
     accessToken,
@@ -272,7 +310,8 @@ const verifyCredentials = async (
  */
 const authenticateUser = async (
   username: string,
-  password: string
+  password: string,
+  realm: Object
 ): Promise<boolean> => {
   const userDetails = await verifyCredentials( username, password );
 
@@ -288,14 +327,16 @@ const authenticateUser = async (
   // Save authentication details to secure storage
   await RNSInfo.setItem( "username", remoteUsername, {} );
   await RNSInfo.setItem( "accessToken", accessToken, {} );
-  // await SInfo.setItem( "userId", userId, {} );
 
   // Save userId to local, encrypted storage
   const currentUser = { id: userId, login: remoteUsername, signedIn: true };
-  const realm = await Realm.open( realmConfig );
   realm.write( ( ) => {
-    realm?.create( "User", currentUser, "modified" );
+    realm.create( "User", currentUser, "modified" );
   } );
+  const currentRealmUser = User.currentUser( realm );
+  logger.debug( "Signed in", currentRealmUser.login, currentRealmUser.id, currentRealmUser );
+  const realmPathExists = await RNFS.exists( realm.path );
+  logger.debug( `realm.path exists after sign in: ${realmPathExists}` );
 
   return true;
 };
@@ -345,45 +386,12 @@ const registerUser = async (
     return response.data.errors[0];
   }
 
-  // console.info( "registerUser - success" );
   return null;
 };
 
-/**
- * Returns the logged-in username
- *
- * @returns {Promise<boolean>}
- */
-const getUsername = async (): Promise<string> => RNSInfo.getItem( "username", {} );
-
-/**
- * Returns the logged-in user
- *
- * @returns {Promise<boolean>}
- */
-const getUser = async (): Promise<Object | null> => {
-  const realm = await Realm.open( realmConfig );
-  return realm.objects( "User" ).filtered( "signedIn == true" )[0];
-};
-
-/**
- * Returns the logged-in userId
- *
- * @returns {Promise<boolean>}
- */
-const getUserId = async (): Promise<string | null> => {
-  const realm = await Realm.open( realmConfig );
-  const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
-  const currentUserId = currentUser?.id?.toString( );
-  // TODO: still need to figure out the right way/time to close realm but
-  // omitting for now bc it interferes with a user being able to save a local
-  // observation if they're logged out realm.close( );
-  return currentUserId;
-};
-
 const isCurrentUser = async ( username: string ): Promise<boolean> => {
-  const currentUserLogin = await getUsername( );
-  return username === currentUserLogin;
+  const currentUsername = await getUsername( );
+  return username === currentUsername;
 };
 
 export {
@@ -391,8 +399,6 @@ export {
   authenticateUser,
   getAPIToken,
   getJWTToken,
-  getUser,
-  getUserId,
   getUsername,
   isCurrentUser,
   isLoggedIn,

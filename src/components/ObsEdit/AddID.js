@@ -26,6 +26,7 @@ import {
 } from "react-native-paper";
 import uuid from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import Taxon from "realmModels/Taxon";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { textStyles, viewStyles } from "styles/obsDetails/addID";
 import colors from "styles/tailwindColors";
@@ -59,7 +60,9 @@ const AddID = ( { route }: Props ): Node => {
     optsWithAuth => fetchSearchResults( {
       q: taxonSearch,
       sources: "taxa",
-      fields: "taxon.name,taxon.preferred_common_name,taxon.default_photo.square_url,taxon.rank"
+      fields: {
+        taxon: Taxon.TAXON_FIELDS
+      }
     }, optsWithAuth )
   );
 
@@ -79,75 +82,70 @@ const AddID = ( { route }: Props ): Node => {
     url: photo.square_url
   } );
 
-  const createID = taxon => {
+  const createIdentification = taxon => {
     const newTaxon = {
-      id: taxon.id,
-      default_photo: taxon.default_photo ? createPhoto( taxon.default_photo ) : null,
-      name: taxon.name,
-      preferred_common_name: taxon.preferred_common_name,
-      rank: taxon.rank
+      ...taxon,
+      default_photo: taxon.default_photo ? createPhoto( taxon.default_photo ) : null
     };
-    const newID = {
+    const newIdent = {
       uuid: uuid.v4( ),
       body: comment,
       taxon: newTaxon
     };
 
-    return newID;
+    return newIdent;
   };
 
-  const renderTaxonResult = ( { item } ) => {
-    const taxonImage = item.default_photo
-      ? { uri: item.default_photo.square_url }
+  const renderTaxonResult = ( { item: taxon } ) => {
+    const taxonImage = taxon.default_photo
+      ? { uri: taxon.default_photo.square_url }
       : IconMaterial.getImageSourceSync( "spa", 50, colors.inatGreen );
 
     return (
       <View
         className="flex-row my-1 items-center justify-between"
-        testID={`Search.taxa.${item.id}`}
+        testID={`Search.taxa.${taxon.id}`}
       >
         <Pressable
           className="flex-row items-center w-16 grow"
-          onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )}
+          onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
           accessible
           accessibilityRole="link"
           accessibilityLabel={t( "Navigate-to-taxon-details" )}
-          accessibilityValue={{ text: item.name }}
+          accessibilityValue={{ text: taxon.name }}
         >
           <Image
             className="w-12 h-12 mr-1 bg-lightGray"
             source={taxonImage}
-            testID={`Search.taxa.${item.id}.photo`}
+            testID={`Search.taxa.${taxon.id}.photo`}
           />
           <View className="shrink">
-            <Text>{item.name}</Text>
-            <Text>{item.preferred_common_name}</Text>
+            <Text>{taxon.name}</Text>
+            <Text>{taxon.preferred_common_name}</Text>
           </View>
         </Pressable>
         <View className="flex-row">
           <IconButton
             icon="information-outline"
             size={25}
-            onPress={() => navigation.navigate( "TaxonDetails", { id: item.id } )}
+            onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
             accessible
             accessibilityRole="link"
             accessibilityLabel={t( "Navigate-to-taxon-details" )}
-            accessibilityValue={{ text: item.name }}
+            accessibilityValue={{ text: taxon.name }}
           />
           <IconButton
             icon="check"
             size={25}
             iconColor={colors.inatGreen}
-            onPress={() => {
-              onIDAdded( createID( item ) );
-              if ( goBackOnSave ) {
-                navigation.goBack();
-              }
+            onPress={( ) => {
+              onIDAdded( createIdentification( taxon ) );
+              if ( goBackOnSave ) { navigation.goBack( ); }
             }}
             accessible
             accessibilityRole="button"
             accessibilityLabel={t( "Add-this-ID" )}
-            accessibilityValue={{ text: item.name }}
+            accessibilityValue={{ text: taxon.name }}
           />
         </View>
       </View>
@@ -211,6 +209,7 @@ const AddID = ( { route }: Props ): Node => {
             accessibilityRole="search"
           />
           <FlatList
+            keyboardShouldPersistTaps="always"
             data={taxonList}
             renderItem={renderTaxonResult}
             keyExtractor={item => item.id}
