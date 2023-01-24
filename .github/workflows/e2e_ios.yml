@@ -46,7 +46,7 @@ jobs:
 
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
-      run: npm install --legacy-peer-deps
+      run: npm install
 
     - name: Cache Pods
       uses: actions/cache@v3
