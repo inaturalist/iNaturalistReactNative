@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import handleError from "api/error";
 import App from "components/App";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
 import ObsEditProvider from "providers/ObsEditProvider";
 import RealmProvider from "providers/RealmProvider";
@@ -60,7 +61,7 @@ inatjs.setConfig( {
 const queryClient = new QueryClient( {
   defaultOptions: {
     queries: {
-      retry: ( failureCount, error ) => {
+      retry: async ( failureCount, error ) => {
         if (
           // If this is an actual 408 Request Timeout error, we probably want to
           // retry... but this will probably never happen
@@ -69,6 +70,12 @@ const queryClient = new QueryClient( {
           || ( error instanceof TypeError && error.message.match( "Network request failed" ) )
         ) return failureCount < 3;
         handleError( error, { throw: false } );
+        if ( error.status === 401 || error.status === 403 ) {
+          // If we get a 401 or 403, call getJWT
+          // which has a timestamp check if we need to refresh the token
+          const token = await getJWT( );
+          if ( token ) return failureCount < 2;
+        }
         return false;
       }
     }
