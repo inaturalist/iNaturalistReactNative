@@ -22,7 +22,10 @@ const Tabs = ( { tabs = [], activeId }: Props ): Node => {
   const { t } = useTranslation();
 
   return (
-    <View className="bg-white flex flex-row mb-2">
+    <View
+      className="bg-white flex flex-row mb-2"
+      accessibilityRole="tablist"
+    >
       {
         tabs.map( ( { id, text, onPress } ) => {
           const title = t( text );
@@ -40,11 +43,8 @@ const Tabs = ( { tabs = [], activeId }: Props ): Node => {
                 accessibilityLabel={text}
                 accessibilityRole="tab"
                 accessibilityState={{
-                  disabled: false,
                   selected: active,
-                  checked: false,
-                  busy: false,
-                  expanded: false
+                  expanded: active
                 }}
               >
                 <Text
