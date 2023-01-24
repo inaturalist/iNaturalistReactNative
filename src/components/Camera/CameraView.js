@@ -54,8 +54,12 @@ const CameraView = ( { camera, device }: Props ): Node => {
       await camera.current.focus( { x, y } );
     } catch ( e ) {
       // Android often catches the following error from the Camera X library
-      // but it doesn't seem to affect functionality
-      // [unknown/unknown] Cancelled by another startFocusAndMetering()] error focusing camera
+      // but it doesn't seem to affect functionality, so we're ignoring this error
+      // and throwing other errors
+      const startFocusError = e?.message?.includes( "Cancelled by another startFocusAndMetering" );
+      if ( !startFocusError ) {
+        throw e;
+      }
     }
   };
 
