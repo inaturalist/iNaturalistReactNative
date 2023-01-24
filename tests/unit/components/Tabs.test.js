@@ -32,8 +32,8 @@ test( "Tabs can be clicked and display proper text", ( ) => {
 
   expect( tab1 ).toBeTruthy( );
   expect( tab2 ).toBeTruthy( );
-  expect( tab1 ).toHaveAccessibilityState( { selected: false } );
-  expect( tab2 ).toHaveAccessibilityState( { selected: true } );
+  expect( tab1 ).toHaveAccessibilityState( { selected: false, expanded: false } );
+  expect( tab2 ).toHaveAccessibilityState( { selected: true, expanded: true } );
   expect( tab1Click ).toHaveBeenCalled();
   expect( tab2Click ).not.toHaveBeenCalled();
 } );
