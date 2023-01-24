@@ -169,7 +169,7 @@ const ObsDetails = ( ): Node => {
   };
 
   useEffect( ( ) => {
-    if ( localObservation && !localObservation?.viewed ) {
+    if ( localObservation && !localObservation.viewed && !markViewedMutation.isLoading ) {
       markViewedMutation.mutate( { id: uuid } );
     }
   }, [localObservation, markViewedMutation, uuid] );
@@ -275,7 +275,7 @@ const ObsDetails = ( ): Node => {
         </View>
       );
     }
-    if ( photos.length > 0 || observation.observationSounds.length > 0 ) {
+    if ( photos.length > 0 || observation?.observationSounds?.length > 0 ) {
       return (
         <View className="bg-black">
           <PhotoScroll photos={photos} />
