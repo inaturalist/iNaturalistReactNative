@@ -253,8 +253,8 @@ PODS:
     - React-Core
   - react-native-geocoder-reborn (0.9.0):
     - React
-  - react-native-geolocation-service (5.3.1):
-    - React
+  - react-native-geolocation (3.0.5):
+    - React-Core
   - react-native-image-picker (4.10.0):
     - React-Core
   - react-native-image-resizer (3.0.0):
@@ -439,7 +439,7 @@ DEPENDENCIES:
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-exif-reader (from `../node_modules/react-native-exif-reader`)
   - react-native-geocoder-reborn (from `../node_modules/react-native-geocoder-reborn`)
-  - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
+  - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-image-resizer (from `../node_modules/@bam.tech/react-native-image-resizer`)"
   - "react-native-keep-awake (from `../node_modules/@sayem314/react-native-keep-awake`)"
@@ -541,8 +541,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-exif-reader"
   react-native-geocoder-reborn:
     :path: "../node_modules/react-native-geocoder-reborn"
-  react-native-geolocation-service:
-    :path: "../node_modules/react-native-geolocation-service"
+  react-native-geolocation:
+    :path: "../node_modules/@react-native-community/geolocation"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-image-resizer:
@@ -654,7 +654,7 @@ SPEC CHECKSUMS:
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
   react-native-exif-reader: 3839c5a77c8c9cd2d05becb9f51e6ba0f2b13a65
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
-  react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
+  react-native-geolocation: 7383cbe9fa75b168bbbe40b566070fd0b44d30d6
   react-native-image-picker: 4bc9ed38c8be255b515d8c88babbaf74973f91a8
   react-native-image-resizer: f96ab7c279ab896b01bee53728bd1e2cd1ba649b
   react-native-keep-awake: acbee258db16483744910f0da3ace39eb9ab47fd
