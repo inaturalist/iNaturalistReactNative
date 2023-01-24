@@ -264,6 +264,7 @@ const ObsDetails = ( ): Node => {
   };
   const displayPhoto = ( ) => {
     if ( !isOnline ) {
+      // TODO show photos that are available offline
       return (
         <View className="bg-white flex-row justify-center">
           <IconMaterial

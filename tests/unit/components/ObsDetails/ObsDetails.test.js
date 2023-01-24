@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
+import { t } from "i18next";
 import React from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useIsConnected from "sharedHooks/useIsConnected";
@@ -90,12 +91,11 @@ describe( "Observation with no evidence", () => {
   } );
 
   test( "should render fallback image icon instead of photos", async () => {
+    useIsConnected.mockImplementation( ( ) => true );
     renderComponent( <ObsDetails /> );
-
-    const fallbackImage = await screen.findByLabelText(
-      "No image available for this observation"
-    );
-    expect( fallbackImage ).toBeTruthy();
+    const labelText = t( "No-image-available-for-this-observation" );
+    const fallbackImage = await screen.findByLabelText( labelText );
+    expect( fallbackImage ).toBeTruthy( );
   } );
 
   afterEach( () => {
@@ -108,7 +108,6 @@ describe( "Observation with no evidence", () => {
 describe( "activity tab", ( ) => {
   test( "navigates to observer profile on button press", async ( ) => {
     const { findByTestId } = renderComponent( <ObsDetails /> );
-
     fireEvent.press( await findByTestId( "ObsDetails.currentUser" ) );
     expect( mockNavigate )
       .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
@@ -116,7 +115,6 @@ describe( "activity tab", ( ) => {
 
   test( "navigates to identifier profile on button press", async ( ) => {
     const { findByTestId } = renderComponent( <ObsDetails /> );
-
     fireEvent.press(
       await findByTestId(
         `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
@@ -129,16 +127,17 @@ describe( "activity tab", ( ) => {
 
   test( "navigates to taxon details on button press", async ( ) => {
     const { findByTestId } = renderComponent( <ObsDetails /> );
-
     fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
     expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
       id: mockObservation.taxon.id
     } );
   } );
-  test( "shows network error image instead of observation photos if user is offline", ( ) => {
+
+  test( "shows network error image instead of observation photos if user is offline", async ( ) => {
     useIsConnected.mockImplementation( ( ) => false );
     renderComponent( <ObsDetails /> );
-    const noInternet = screen.queryByLabelText( /Observation photos unavailable without internet/ );
+    const labelText = t( "Observation-photos-unavailable-without-internet" );
+    const noInternet = await screen.findByLabelText( labelText );
     expect( noInternet ).toBeTruthy( );
     expect( screen.queryByTestId( "PhotoScroll.photo" ) ).toBeNull( );
   } );
