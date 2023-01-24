@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   FlatList
 } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { Avatar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/tailwindColors";
@@ -39,6 +40,7 @@ const PhotoCarousel = ( {
 
 }: Props ): Node => {
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
+  const isTablet = DeviceInfo.isTablet();
 
   const renderDeleteButton = photoUri => (
     <Pressable
@@ -94,9 +96,9 @@ const PhotoCarousel = ( {
 
     const imageClassName = () => {
       let className = "w-fit h-full ";
-      if ( deviceOrientation ) {
+      if ( deviceOrientation && !isTablet ) {
         if ( deviceOrientation === "portrait" ) {
-          className += "rotate-180";
+          className += "rotate-0";
         }
         if ( deviceOrientation === "landscapeLeft" ) {
           className += "-rotate-90";

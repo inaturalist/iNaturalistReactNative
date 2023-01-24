@@ -3,7 +3,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Pressable,
-  Text, View
+  View
 } from "components/styledComponents";
 import { t } from "i18next";
 import _ from "lodash";
@@ -13,7 +13,7 @@ import React, {
   useContext, useEffect, useRef, useState
 } from "react";
 import {
-  Dimensions, Platform, StatusBar
+  Dimensions, StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
@@ -29,25 +29,23 @@ import PhotoPreview from "./PhotoPreview";
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
-const isTablet = DeviceInfo.isTablet();
-
 // Taken from:
 // https://developer.android.com/reference/androidx/exifinterface/media/ExifInterface#ORIENTATION_ROTATE_180()
-const ORIENTATION_ROTATE_90 = 6;
-const ORIENTATION_ROTATE_180 = 3;
-const ORIENTATION_ROTATE_270 = 8;
+// const ORIENTATION_ROTATE_90 = 6;
+// const ORIENTATION_ROTATE_180 = 3;
+// const ORIENTATION_ROTATE_270 = 8;
 
 // Calculates by how much we should rotate our image according to the detected orientation
-const orientationToRotation = orientation => {
-  // This issue only occurs on Android
-  if ( Platform.OS !== "android" ) return 0;
+// const orientationToRotation = orientation => {
+//   // This issue only occurs on Android
+//   if ( Platform.OS !== "android" ) return 0;
+//   console.log( "orientationtorotation", orientation );
+//   if ( orientation === ORIENTATION_ROTATE_90 ) return 90;
+//   if ( orientation === ORIENTATION_ROTATE_180 ) return 180;
+//   if ( orientation === ORIENTATION_ROTATE_270 ) return 270;
 
-  if ( orientation === ORIENTATION_ROTATE_90 ) return 90;
-  if ( orientation === ORIENTATION_ROTATE_180 ) return 180;
-  if ( orientation === ORIENTATION_ROTATE_270 ) return 270;
-
-  return 0;
-};
+//   return 0;
+// };
 
 const StandardCamera = ( ): Node => {
   const {
@@ -73,9 +71,11 @@ const StandardCamera = ( ): Node => {
   const [savingPhoto, setSavingPhoto] = useState( false );
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
-  const initialWidth = Dimensions.get( "screen" ).height;
+  const initialWidth = Dimensions.get( "screen" ).width;
   const [footerWidth, setFooterWidth] = useState( initialWidth );
   const [imageOrientation, setImageOrientation] = useState( "portrait" );
+
+  const isTablet = DeviceInfo.isTablet();
 
   const photosTaken = allObsPhotoUris.length > 0;
 
@@ -86,20 +86,14 @@ const StandardCamera = ( ): Node => {
 
   // detect device rotation instead of using screen orientation change
   const onDeviceRotation = orientation => {
-    if ( !isTablet ) {
-      // console.log( "onDeviceChange", orientation );
-      // setDeviceRotation( orientation );
-      console.log( "onDeviceChange image", _.camelCase( orientation ) );
-
-      // react-native-orientation-locker and react-native-vision-camera
-      // have opposite definitions for landscape right/left
-      setImageOrientation( _.camelCase( orientation ) );
-
-      // if ( _.camelCase( orientation ) === "landscapeRight" ) {
-      //   setImageOrientation( _.camelCase( "landscapeLeft" ) );
-      // } else if ( _.camelCase( orientation ) === "landscapeLeft" ) {
-      //   setImageOrientation( _.camelCase( "landscapeRight" ) );
-      // }
+    // react-native-orientation-locker and react-native-vision-camera
+    // have opposite definitions for landscape right/left
+    if ( _.camelCase( orientation ) === "landscapeRight" ) {
+      setImageOrientation( "landscapeLeft" );
+    } else if ( _.camelCase( orientation ) === "landscapeLeft" ) {
+      setImageOrientation( "landscapeRight" );
+    } else {
+      setImageOrientation( orientation );
     }
   };
 
@@ -107,15 +101,14 @@ const StandardCamera = ( ): Node => {
     Orientation.addDeviceOrientationListener( onDeviceRotation );
 
     // allows bottom buttons bar to fill entire width of screen on rotation
-    Dimensions.addEventListener( "change", ( { window: { width, height } } ) => {
-      console.log( height, width );
+    Dimensions.addEventListener( "change", ( { window: { width } } ) => {
       if ( isTablet ) setFooterWidth( width );
     } );
 
     return () => {
       Orientation.removeOrientationListener( onDeviceRotation );
     };
-  }, [] );
+  }, [isTablet, footerWidth] );
 
   const takePhoto = async ( ) => {
     console.log( "pressed" );
@@ -127,10 +120,14 @@ const StandardCamera = ( ): Node => {
         return;
       }
       const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-      const newPhoto = await Photo.new( cameraPhoto.path, {
-        rotation:
-          orientationToRotation( cameraPhoto.metadata.Orientation )
-      } );
+
+      // Issue doesn't seem to be appearing anymore but I cannot test on real tablet
+      // so i'll leave these here just in case
+      // const newPhoto = await Photo.new( cameraPhoto.path, {
+      //   rotation:
+      //     orientationToRotation( cameraPhoto.metadata.Orientation )
+      // } );
+      const newPhoto = await Photo.new( cameraPhoto.path );
       const uri = newPhoto.localFilePath;
 
       setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
@@ -214,8 +211,8 @@ const StandardCamera = ( ): Node => {
         deviceOrientation={imageOrientation}
       />
       <FadeInOutView savingPhoto={savingPhoto} />
-      <View className="absolute bottom-0">
-        <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4`}>
+      <View className="absolute bottom-0 bg-red w-full">
+        <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4 `}>
           {hasFlash ? (
             <Pressable onPress={toggleFlash}>
               {takePhotoOptions.flash === "on"
@@ -227,23 +224,30 @@ const StandardCamera = ( ): Node => {
             {renderAddObsButtons( "camera-flip" )}
           </Pressable>
         </View>
-        <View className={`bg-black h-32 w-${footerWidth} flex-row justify-between pt-4`}>
+        <View className="bg-black h-32 flex-row justify-between p-6">
           <Pressable
-            className="w-1/3 pt-4 pb-4 pl-3"
+            className="pt-2 pb-4"
             onPress={( ) => navigation.goBack( )}
           >
             <Icon name="close" size={35} color={colors.white} />
           </Pressable>
-          <View className="w-1/3">
+          <View className="">
             <Pressable onPress={takePhoto} className="items-center">
               {renderCameraButton( "circle-outline", disallowAddingPhotos )}
             </Pressable>
           </View>
           {photosTaken ? (
-            <Text className="text-white text-xl w-1/3 text-center pr-4" onPress={navToObsEdit}>
-              {t( "Next" )}
-            </Text>
-          ) : <View className="w-1/3" />}
+            <Pressable
+              className="pt-2 pb-4 flex-row"
+              onPress={navToObsEdit}
+            >
+              <Icon name="check-circle" size={45} color={colors.inatGreen} />
+            </Pressable>
+          ) : (
+            <View className="pt-2 pb-4 flex-row">
+              <Icon name="check-circle" size={45} color={colors.black} />
+            </View>
+          )}
         </View>
       </View>
       <Snackbar
