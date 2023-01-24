@@ -1,4 +1,7 @@
 // @flow
+import { log } from "../../react-native-logs.config";
+
+const logger = log.extend( "INatApiError" );
 
 class INatApiError extends Error {
   // Object literal of the JSON body returned by the server
@@ -22,7 +25,7 @@ const handleError = async ( e: Object, options: Object = {} ): Object => {
   if ( !e.response ) { throw e; }
   const errorText = await e.response.text( );
   const error = new INatApiError( errorText );
-  console.error(
+  logger.error(
     `Error requesting ${e.response.url} (status: ${e.response.status}): ${errorText}`
   );
   if ( options.throw ) {
