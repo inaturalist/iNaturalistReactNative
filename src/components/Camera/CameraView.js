@@ -36,13 +36,13 @@ const CameraView = ( { camera, device }: Props ): Node => {
   const isActive = isFocused && isForeground;
 
   // used for pinch and double tap to zoom
-  const [tap, setTap] = useState( true );
+  const [doubleTapping, setDoubleTapping] = useState( true );
   const scale = useSharedValue( SCALE_MIN_ZOOM );
   const savedScale = useSharedValue( SCALE_MIN_ZOOM );
   const animatedStyle = useAnimatedStyle( ( ) => ( {
     transform: [{
       scale: withTiming( scale.value, {
-        duration: tap ? 300 : 0
+        duration: doubleTapping ? 300 : 0
       } )
     }]
   } ) );
@@ -79,7 +79,7 @@ const CameraView = ( { camera, device }: Props ): Node => {
     .maxDuration( 250 )
     .numberOfTaps( 2 )
     .onStart( ( ) => {
-      setTap( true );
+      setDoubleTapping( true );
       doubleTapToZoom( );
     } );
 
@@ -87,7 +87,7 @@ const CameraView = ( { camera, device }: Props ): Node => {
     .runOnJS( true )
     .withTestId( "PinchGestureHandler" )
     .requireExternalGestureToFail( singleTap, doubleTap )
-    .onStart( ( ) => setTap( false ) )
+    .onStart( ( ) => setDoubleTapping( false ) )
     .onUpdate( e => {
       const newValue = savedScale.value * e.scale;
       const minScaleValue = Math.max( SCALE_MIN_ZOOM, newValue );
