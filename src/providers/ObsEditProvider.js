@@ -110,7 +110,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   }, [createObsPhotos, createObservationFromGalleryPhoto] );
 
   const appendObsPhotos = useCallback( obsPhotos => {
-    const currentObservationPhotos = currentObservation?.observationPhotos;
+    // need empty case for when a user creates an observation with no photos,
+    // then tries to add photos to observation later
+    const currentObservationPhotos = currentObservation?.observationPhotos || [];
 
     const updatedObs = currentObservation;
     updatedObs.observationPhotos = [...currentObservationPhotos, ...obsPhotos];
