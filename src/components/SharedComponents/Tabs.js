@@ -18,7 +18,8 @@ type Props = {
   activeId: string,
 }
 
-const Tabs = ( { tabs = [], activeId }: Props ): Node => {
+const DEFAULT_TABS = [];
+const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => {
   const { t } = useTranslation();
 
   return (
