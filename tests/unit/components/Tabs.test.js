@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import Tabs from "components/SharedComponents/Tabs";
 import React from "react";
 
@@ -23,17 +23,16 @@ const tabs = [
 ];
 
 test( "Tabs can be clicked and display proper text", ( ) => {
-  const { getByTestId } = renderComponent( <Tabs tabs={tabs} activeId={TAB_2} /> );
-  const tab1 = getByTestId( `${TAB_1}-tab` );
-  const tab2 = getByTestId( `${TAB_2}-tab` );
-
-  fireEvent.press( tab1 );
-  fireEvent.press( tab2 );
+  renderComponent( <Tabs tabs={tabs} activeId={TAB_1} /> );
+  const tab1 = screen.getByLabelText( TAB_1 );
+  const tab2 = screen.getByLabelText( TAB_2 );
 
   expect( tab1 ).toBeTruthy( );
   expect( tab2 ).toBeTruthy( );
-  expect( tab1 ).toHaveAccessibilityState( { selected: false, expanded: false } );
-  expect( tab2 ).toHaveAccessibilityState( { selected: true, expanded: true } );
-  expect( tab1Click ).toHaveBeenCalled();
-  expect( tab2Click ).not.toHaveBeenCalled();
+  expect( tab1 ).toHaveAccessibilityState( { selected: true, expanded: true } );
+  expect( tab2 ).toHaveAccessibilityState( { selected: false, expanded: false } );
+
+  fireEvent.press( tab2 );
+  expect( tab1Click ).not.toHaveBeenCalled();
+  expect( tab2Click ).toHaveBeenCalled();
 } );
