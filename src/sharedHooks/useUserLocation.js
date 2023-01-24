@@ -1,8 +1,8 @@
 // @flow
 
+import Geolocation from "@react-native-community/geolocation";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
-import Geolocation from "@react-native-community/geolocation";
 import { PERMISSIONS, request } from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 
