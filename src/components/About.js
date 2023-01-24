@@ -60,7 +60,7 @@ const AboutScreen = ( ): Node => {
             },
             {
               text: t( "Share" ),
-              onPress: ( ) => shareLogFile
+              onPress: shareLogFile
             }
           ]
         );

@@ -13,6 +13,7 @@ import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
 // eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
+import User from "realmModels/User";
 
 import { log } from "../../../react-native-logs.config";
 
@@ -329,11 +330,10 @@ const authenticateUser = async (
 
   // Save userId to local, encrypted storage
   const currentUser = { id: userId, login: remoteUsername, signedIn: true };
-  // const realm = await Realm.open( realmConfig );
   realm.write( ( ) => {
     realm.create( "User", currentUser, "modified" );
   } );
-  const currentRealmUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
+  const currentRealmUser = User.currentUser( realm );
   logger.debug( "Signed in", currentRealmUser.login, currentRealmUser.id, currentRealmUser );
   const realmPathExists = await RNFS.exists( realm.path );
   logger.debug( `realm.path exists after sign in: ${realmPathExists}` );
