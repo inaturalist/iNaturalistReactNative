@@ -14,7 +14,6 @@ const useApiToken = ( ): string | null => {
     const fetchApiToken = async ( ) => {
       if ( !currentUser ) {
         setApiToken( null );
-        // setShouldFetchToken( false );
         return;
       }
       const token = await getJWT( );
