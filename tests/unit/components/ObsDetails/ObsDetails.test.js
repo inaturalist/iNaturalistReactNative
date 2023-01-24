@@ -60,10 +60,6 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
   } )
 } ) );
 
-jest.mock( "../../../../src/components/LoginSignUp/AuthenticationService", ( ) => ( {
-  getUserId: ( ) => mockObservation.user.id
-} ) );
-
 jest.mock( "components/ObsDetails/AddCommentModal" );
 
 jest.mock( "sharedHooks/useIsConnected" );

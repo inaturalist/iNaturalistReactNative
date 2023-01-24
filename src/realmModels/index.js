@@ -1,3 +1,5 @@
+import RNFS from "react-native-fs";
+
 import Application from "./Application";
 import Comment from "./Comment";
 import Identification from "./Identification";
@@ -21,7 +23,7 @@ export default {
     User
   ],
   schemaVersion: 31,
-  path: "db.realm",
+  path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   migration: ( oldRealm, newRealm ) => {
     // Apparently you need to migrate when making a property optional
     if ( oldRealm.schemaVersion < 31 ) {

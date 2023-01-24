@@ -49,9 +49,12 @@ const BottomSheetTextInput = styled( StyledBottomSheetTextInput );
 // $FlowIgnore
 const Modal = styled( StyledModal );
 
+const fontMonoClass: string = ( Platform.OS === "ios" ? "font-Menlo" : "font-monospace" );
+
 export {
   ActivityIndicator,
   BottomSheetTextInput,
+  fontMonoClass,
   HeaderText,
   Image,
   KeyboardAvoidingView,

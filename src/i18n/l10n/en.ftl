@@ -525,6 +525,8 @@ Separate-Photos = Separate Photos
 
 Settings = Settings
 
+SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
+
 Sign-out = Sign out
 
 Sign-Up = Sign Up
