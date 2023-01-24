@@ -28,8 +28,7 @@ const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "h
 const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${getBuildNumber()}) ${getSystemName()}/${getSystemVersion()}`;
 
 // JWT Tokens expire after 30 mins - consider 25 mins as the max time (safe margin)
-// const JWT_EXPIRATION_MINS = 25;
-const JWT_EXPIRATION_MINS = 2;
+const JWT_EXPIRATION_MINS = 25;
 
 /**
  * Creates base API client for all requests
