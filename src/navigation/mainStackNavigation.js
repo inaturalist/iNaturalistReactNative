@@ -142,7 +142,7 @@ const MainStackNavigation = ( ): React.Node => (
         name="Messages"
         component={Messages}
         options={{
-          ...showHeader,
+          ...hideHeader,
           ...hideScreenTransitionAnimation
         }}
       />

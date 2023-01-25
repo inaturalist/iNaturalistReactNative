@@ -58,7 +58,7 @@ jobs:
 
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
-      run: npm install --legacy-peer-deps
+      run: npm install
 
     # Generate the secret files needed for a release build
     - name: Create .env file
