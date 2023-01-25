@@ -52,7 +52,9 @@ const PhotoGalleryImage = ( {
       disabled={isDisabled}
       accessible
       accessibilityRole="button"
-      accessibilityLabel={t( "Photo-taken-at", { date: new Date( timestamp ).toLocaleString() } )}
+      accessibilityLabel={t( "Photo-taken-at", {
+        date: new Date( timestamp * 1000 ).toLocaleString()
+      } )}
     >
       <Image
         testID="PhotoGallery.photo"
