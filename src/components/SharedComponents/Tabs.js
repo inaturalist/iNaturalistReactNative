@@ -10,6 +10,7 @@ import colors from "styles/tailwindColors";
 type Tab = {
   id: string,
   text: string,
+  testID?: string,
   onPress: ( any ) => void
 }
 
@@ -24,11 +25,13 @@ const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => {
 
   return (
     <View
-      className="bg-white flex flex-row mb-2"
+      className="bg-white flex flex-row"
       accessibilityRole="tablist"
     >
       {
-        tabs.map( ( { id, text, onPress } ) => {
+        tabs.map( ( {
+          id, text, onPress, testID
+        } ) => {
           const title = t( text );
           const active = activeId === id;
           const borderClass = `${active ? "bg-primary" : "bg-white"} h-1 rounded-t-lg`;
@@ -40,7 +43,7 @@ const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => {
                     onPress( ...args );
                   }
                 }}
-                testID={`${title}-tab`}
+                testID={testID || `${title}-tab`}
                 accessibilityLabel={text}
                 accessibilityRole="tab"
                 accessibilityState={{
