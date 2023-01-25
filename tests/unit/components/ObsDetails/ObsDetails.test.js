@@ -149,19 +149,6 @@ describe( "activity tab", ( ) => {
       .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
   } );
 
-  // TODO: Move to ActiviyTab.test.js
-  // test( "navigates to identifier profile on button press", async ( ) => {
-  //   const { findByTestId } = renderComponent( <ObsDetails /> );
-  //   fireEvent.press(
-  //     await findByTestId(
-  //       `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
-  //     )
-  //   );
-  //   expect( mockNavigate ).toHaveBeenCalledWith( "UserProfile", {
-  //     userId: mockObservation.identifications[0].user.id
-  //   } );
-  // } );
-
   test( "navigates to taxon details on button press", async ( ) => {
     const { findByTestId } = renderComponent( <ObsDetails /> );
     fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
