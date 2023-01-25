@@ -100,7 +100,7 @@ jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
 
 test( "renders obs details from remote call", async ( ) => {
   useIsConnected.mockImplementation( ( ) => true );
-  const { getByTestId, getByText, findByTestId } = renderComponent( <ObsDetails /> );
+  const { getByText, findByTestId } = renderComponent( <ObsDetails /> );
 
   expect( await findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
   expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
