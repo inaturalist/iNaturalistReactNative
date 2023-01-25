@@ -21,7 +21,9 @@ module.exports = {
         // selected from list of fonts already available in RN
         // https://infinitbility.com/react-native-font-family-list/
         "Papyrus-Condensed": ["Papyrus-Condensed"],
-        Roboto: ["Roboto"]
+        Roboto: ["Roboto"],
+        monospace: ["monospace"],
+        Menlo: ["Menlo"]
       }
     },
     colors: {

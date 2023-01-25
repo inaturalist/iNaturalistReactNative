@@ -1,7 +1,7 @@
 // @flow
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getUserId, signOut } from "components/LoginSignUp/AuthenticationService";
+import { signOut } from "components/LoginSignUp/AuthenticationService";
 import RootDrawerNavigator from "navigation/rootDrawerNavigation";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -9,6 +9,10 @@ import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useUserMe from "sharedHooks/useUserMe";
+
+import { log } from "../../react-native-logs.config";
+
+const logger = log.extend( "App" );
 
 const { useRealm } = RealmContext;
 
@@ -29,24 +33,24 @@ const App = ( { children }: Props ): Node => {
 
   useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {
-      const userId = await getUserId( );
       // check to see if this is a fresh install of the app
       // if it is, delete realm file when we sign the user out of the app
       // this handles the case where a user deletes the app, then reinstalls
       // and expects to be signed out with no previously saved data
       const alreadyLaunched = await AsyncStorage.getItem( "alreadyLaunched" );
-      let deleteRealm = false;
       if ( !alreadyLaunched ) {
-        deleteRealm = true;
         await AsyncStorage.setItem( "alreadyLaunched", "true" );
-      }
-      if ( !userId ) {
-        await signOut( { deleteRealm } );
+        if ( !currentUser ) {
+          logger.debug(
+            "Signing out and deleting Realm because no signed in user found in the database"
+          );
+          await signOut( { clearRealm: true } );
+        }
       }
     };
 
     checkForSignedInUser( );
-  }, [] );
+  }, [currentUser] );
 
   const changeLanguageToLocale = useCallback(
     locale => i18n.changeLanguage( locale ),
