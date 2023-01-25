@@ -125,7 +125,8 @@ describe( "Observation with no evidence", () => {
   test( "should render fallback image icon instead of photos", async () => {
     useIsConnected.mockImplementation( ( ) => true );
     renderComponent( <ObsDetails /> );
-    const labelText = t( "No-image-available-for-this-observation" );
+
+    const labelText = t( "Observation-has-no-photos-and-no-sounds" );
     const fallbackImage = await screen.findByLabelText( labelText );
     expect( fallbackImage ).toBeTruthy( );
   } );

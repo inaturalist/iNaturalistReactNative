@@ -256,8 +256,6 @@ const ObsDetails = ( ): Node => {
       textClassName += " color-inatGreen";
     }
 
-    // TODO: a11y test complaining that this has no role of button, is it though?
-    // Check: how is tab defined?
     return (
       <Pressable
         onPress={handlePress}
