@@ -1,5 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
+import INatIcon from "components/INatIcon";
 import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
 import { Platform } from "react-native";
@@ -12,7 +13,7 @@ const Footer = ( ): React.Node => {
   const navigation = useNavigation( );
   const toggleSideMenu = ( ) => navigation.openDrawer( );
   const navToObsList = ( ) => navigation.navigate( "MainStack", { screen: "ObsList" } );
-  const navToExplore = ( ) => navigation.navigate( "MainStack", { screen: "ExploreLanding" } );
+  const navToExplore = ( ) => navigation.navigate( "MainStack", { screen: "Explore" } );
   const navToNotifications = ( ) => navigation.navigate( "MainStack", { screen: "Messages" } );
 
   const footerClassName = ( Platform.OS === "ios" )
@@ -27,9 +28,7 @@ const Footer = ( ): React.Node => {
       <Pressable onPress={toggleSideMenu} accessibilityRole="link">
         <IconMaterial name="menu" size={30} />
       </Pressable>
-      <Pressable onPress={navToExplore} accessibilityRole="link">
-        <IconMaterial name="language" size={30} />
-      </Pressable>
+      <INatIcon name="compass-rose" size={30} onPress={navToExplore} accessibilityRole="link" />
       <AddObsButton />
       <Pressable onPress={navToObsList} accessibilityRole="link">
         <IconMaterial name="person" size={30} />
