@@ -157,6 +157,7 @@ const PhotoGallery = ( ): Node => {
     return (
       <PhotoGalleryImage
         uri={uri}
+        timestamp={item.timestamp}
         handleImagePress={handleImagePress}
         isSelected={isSelected}
         isDisabled={isDisabled}

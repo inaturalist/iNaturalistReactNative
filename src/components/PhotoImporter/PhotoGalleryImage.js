@@ -1,6 +1,7 @@
 // @flow
 
 import { Image, Pressable, View } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -8,6 +9,7 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   uri: string,
+  timestamp: number,
   handleImagePress: Function,
   isSelected: boolean,
   isDisabled: boolean
@@ -15,6 +17,7 @@ type Props = {
 
 const PhotoGalleryImage = ( {
   uri,
+  timestamp,
   handleImagePress,
   isSelected,
   isDisabled
@@ -49,6 +52,7 @@ const PhotoGalleryImage = ( {
       disabled={isDisabled}
       accessible
       accessibilityRole="button"
+      accessibilityLabel={t( "Photo-taken-at", { date: new Date( timestamp ).toLocaleString() } )}
     >
       <Image
         testID="PhotoGallery.photo"

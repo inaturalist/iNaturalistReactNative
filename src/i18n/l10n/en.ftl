@@ -719,6 +719,7 @@ Number-of-comments = Number of comments
 Number-of-identifications = Number of identifications
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Take-photo = Take photo
+Photo-taken-at = Photo taken at { $date }
 # Accessibility labels for no internet state in ObsDetails
 Location-map-unavailable-without-internet = Location map unavailable without internet
 Observation-photos-unavailable-without-internet = Observation photos unavailable without internet
