@@ -20,18 +20,22 @@ const setStyles = ( {
   disabled,
   className
 } ) => {
-  let buttonClass = "rounded-3xl h-13";
+  let buttonClass = "rounded";
+  let textClass = "text-lg text-white font-semibold";
 
   if ( className ) {
     buttonClass += ` ${className}`;
   }
 
   if ( level === "warning" ) {
-    buttonClass += buttonClass.concat( " ", "bg-buttonWarning" );
+    buttonClass += buttonClass.concat( " ", "bg-warningRed" );
   } else if ( level === "primary" ) {
-    buttonClass += buttonClass.concat( " ", "bg-buttonPrimary" );
+    buttonClass += buttonClass.concat( " ", "bg-darkGray" );
+  } else if ( level === "focus" ) {
+    buttonClass += buttonClass.concat( " ", "bg-accessibleGreen" );
   } else {
-    buttonClass += buttonClass.concat( " ", "bg-buttonNeutral" );
+    buttonClass += buttonClass.concat( " ", "border border-darkGray border-[2.6px]" );
+    textClass += textClass.concat( " ", "color-darkGray" );
   }
 
   if ( disabled ) {
@@ -44,13 +48,13 @@ const setStyles = ( {
     }
   }
 
-  return { buttonClass };
+  return { buttonClass, textClass };
 };
 
 const Button = ( {
   text, onPress, disabled, testID, level, loading, style, className
 }: ButtonProps ): React.Node => {
-  const { buttonClass } = setStyles( { disabled, level, className } );
+  const { buttonClass, textClass } = setStyles( { disabled, level, className } );
 
   return (
     <ButtonRNP
@@ -61,7 +65,7 @@ const Button = ( {
       testID={testID}
       loading={loading}
     >
-      <Text className="text-lg text-white font-semibold">
+      <Text className={textClass}>
         {text}
       </Text>
     </ButtonRNP>

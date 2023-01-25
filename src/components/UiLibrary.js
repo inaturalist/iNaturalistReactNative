@@ -27,9 +27,10 @@ const UiLibrary = ( ) => (
       <Text className="text-xl">Buttons</Text>
 
       <Text className="text-lg">Button</Text>
-      <Button className="mb-2" text="Default Button" />
-      <Button className="mb-2" level="warning" text="Warning Button" />
       <Button className="mb-2" level="primary" text="Primary Button" />
+      <Button className="mb-2" text="Neutral Button" />
+      <Button className="mb-2" level="focus" text="Focus Button" />
+      <Button className="mb-2" level="warning" text="Warning Button" />
       <Button className="mb-2" disabled text="Disabled Button" />
       <Button className="mb-2" loading text="Loading Button" />
       <Button

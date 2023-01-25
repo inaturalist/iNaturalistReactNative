@@ -1,10 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
-const PRIMARY = "#5D8017";
 const PRIMARY_DISABLED = "#C6DC98";
-const WARNING = "#9B1111";
 const WARNING_DISABLED = "#B95F5E";
-const NEUTRAL = "#979797";
 const NEUTRAL_DISABLED = "#D3D3D3";
 
 module.exports = {
@@ -26,6 +23,9 @@ module.exports = {
         Menlo: ["Menlo"]
       }
     },
+    borderRadius: {
+      DEFAULT: "0.444rem"
+    },
     colors: {
       primary: "#77b300",
       secondary: "#979797",
@@ -43,11 +43,11 @@ module.exports = {
       grayText: "#999999",
       logInGray: "#999999",
       border: "#DBDBDB",
-      buttonPrimary: PRIMARY,
+      accessibleGreen: "#5D8017",
+      darkGray: "#454545",
+      warningRed: "#9B1010",
       buttonPrimaryDisabled: PRIMARY_DISABLED,
-      buttonWarning: WARNING,
       buttonWarningDisabled: WARNING_DISABLED,
-      buttonNeutral: NEUTRAL,
       buttonNeutralDisabled: NEUTRAL_DISABLED,
       selectionGreen: "#C1FF00"
     }
