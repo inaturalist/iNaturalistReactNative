@@ -59,10 +59,6 @@
     "comment": "After pressing the reset password button",
     "val": "Check your email! We've sent password reset instructions."
   },
-  "Choose-Taxon": {
-    "comment": "Label for a button to choose a taxon",
-    "val": "Choose Taxon"
-  },
   "Combine-Photos": "Combine Photos",
   "Combine-photos-onboarding": {
     "comment": "Onboarding for users learning to group photos in the camera roll",

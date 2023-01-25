@@ -101,7 +101,7 @@ describe( "AddID", ( ) => {
     fireEvent.changeText( input, "Some taxon" );
 
     expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
-    const labelText = t( "Choose-Taxon" );
+    const labelText = t( "Add-this-ID" );
     const chooseButton = ( await screen.findAllByLabelText( labelText ) )[0];
     fireEvent.press( chooseButton );
     expect( mockCallback ).toHaveBeenCalled( );
