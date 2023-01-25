@@ -1,22 +1,24 @@
 // @flow
 
 import { searchProjects } from "api/projects";
-import { t } from "i18next";
+import Tabs from "components/SharedComponents/Tabs";
 import type { Node } from "react";
-import React, { useCallback, useEffect } from "react";
-import { Pressable, Text, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useUserLocation from "sharedHooks/useUserLocation";
-import { viewStyles } from "styles/projects/projects";
 
 import ProjectList from "./ProjectList";
+
+const JOINED_TAB = "JOINED";
+const FEATURED_TAB = "FEATURED";
+const NEARBY_TAB = "NEARBY";
 
 const ProjectTabs = ( ): Node => {
   const currentUser = useCurrentUser( );
   const memberId = currentUser?.id;
-  const [apiParams, setApiParams] = React.useState( { } );
-
+  const [apiParams, setApiParams] = useState( { } );
+  const [tab, setTab] = useState( JOINED_TAB );
   const latLng = useUserLocation( );
 
   const {
@@ -44,26 +46,36 @@ const ProjectTabs = ( ): Node => {
     }
   }, [memberId, fetchUserJoinedProjects] );
 
+  const tabs = [
+    {
+      id: JOINED_TAB,
+      text: "Joined",
+      onPress: () => {
+        setTab( JOINED_TAB );
+        fetchUserJoinedProjects();
+      }
+    },
+    {
+      id: FEATURED_TAB,
+      text: "Featured",
+      onPress: () => {
+        setTab( FEATURED_TAB );
+        fetchFeaturedProjects();
+      }
+    },
+    {
+      id: NEARBY_TAB,
+      text: "Nearby",
+      onPress: () => {
+        setTab( NEARBY_TAB );
+        fetchProjectsByLatLng();
+      }
+    }
+  ];
+
   return (
     <>
-      <View style={viewStyles.buttonRow}>
-        <Pressable
-          onPress={fetchUserJoinedProjects}
-        >
-          <Text>{t( "Joined" )}</Text>
-        </Pressable>
-        <Pressable
-          onPress={fetchFeaturedProjects}
-        >
-          <Text>{t( "Featured" )}</Text>
-        </Pressable>
-        <Pressable
-          onPress={fetchProjectsByLatLng}
-          testID="ProjectTabs.featured"
-        >
-          <Text>{t( "Nearby" )}</Text>
-        </Pressable>
-      </View>
+      <Tabs tabs={tabs} activeId={tab} />
       <ProjectList data={projects} />
     </>
   );
