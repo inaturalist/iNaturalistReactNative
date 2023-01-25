@@ -81,14 +81,6 @@ jest.mock(
   }
 );
 
-describe( "ObsDetails", () => {
-  test( "should not have accessibility errors", async () => {
-    renderComponent( <ObsDetails /> );
-    const obsDetails = await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` );
-    expect( obsDetails ).toBeAccessible();
-  } );
-} );
-
 jest.mock( "sharedHooks/useIsConnected" );
 
 const mockLatLng = factory( "DeviceLocation" );
@@ -97,6 +89,16 @@ jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
   __esModule: true,
   default: ( ) => mockLatLng
 } ) );
+
+describe( "ObsDetails", () => {
+  test( "should not have accessibility errors", async () => {
+    renderComponent( <ObsDetails /> );
+    const obsDetails = await screen.findByTestId(
+      `ObsDetails.${mockObservation.uuid}`
+    );
+    expect( obsDetails ).toBeAccessible();
+  } );
+} );
 
 test( "renders obs details from remote call", async ( ) => {
   useIsConnected.mockImplementation( ( ) => true );
