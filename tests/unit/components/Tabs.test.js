@@ -22,17 +22,25 @@ const tabs = [
   }
 ];
 
-test( "Tabs can be clicked and display proper text", ( ) => {
-  renderComponent( <Tabs tabs={tabs} activeId={TAB_1} /> );
-  const tab1 = screen.getByLabelText( TAB_1 );
-  const tab2 = screen.getByLabelText( TAB_2 );
+describe( "Tabs", () => {
+  it( "should not have accessibility errors", () => {
+    const tabComp = <Tabs tabs={tabs} activeId={TAB_1} />;
 
-  expect( tab1 ).toBeTruthy( );
-  expect( tab2 ).toBeTruthy( );
-  expect( tab1 ).toHaveAccessibilityState( { selected: true, expanded: true } );
-  expect( tab2 ).toHaveAccessibilityState( { selected: false, expanded: false } );
+    expect( tabComp ).toBeAccessible();
+  } );
 
-  fireEvent.press( tab2 );
-  expect( tab1Click ).not.toHaveBeenCalled();
-  expect( tab2Click ).toHaveBeenCalled();
+  it( "should be clicked and display proper text", async () => {
+    renderComponent( <Tabs tabs={tabs} activeId={TAB_1} /> );
+    const tab1 = await screen.findByLabelText( TAB_1 );
+    const tab2 = await screen.findByLabelText( TAB_2 );
+
+    expect( tab1 ).toBeTruthy();
+    expect( tab2 ).toBeTruthy();
+    expect( tab1 ).toHaveAccessibilityState( { selected: true, expanded: true } );
+    expect( tab2 ).toHaveAccessibilityState( { selected: false, expanded: false } );
+
+    fireEvent.press( tab2 );
+    expect( tab1Click ).not.toHaveBeenCalled();
+    expect( tab2Click ).toHaveBeenCalled();
+  } );
 } );
