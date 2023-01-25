@@ -64,6 +64,7 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
 
 jest.mock( "components/ObsDetails/AddCommentModal" );
 jest.mock( "components/ObsDetails/ActivityTab" );
+jest.mock( "components/ObsDetails/DataTab" );
 jest.mock( "components/SharedComponents/PhotoScroll" );
 jest.mock( "components/SharedComponents/QualityBadge" );
 
