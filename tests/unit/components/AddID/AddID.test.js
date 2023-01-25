@@ -68,8 +68,7 @@ describe( "AddID", ( ) => {
 
   it( "show taxon search results", async ( ) => {
     inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
-    const route = { params: { } };
-    const { getByTestId } = renderComponent( <AddID route={route} /> );
+    const { getByTestId } = renderComponent( <AddID route={mockRoute} /> );
     const input = getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
     await waitFor( () => {
@@ -98,7 +97,9 @@ describe( "AddID", ( ) => {
     ) );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
+
     fireEvent.changeText( input, "Some taxon" );
+
     expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
     const labelText = t( "Choose-Taxon" );
     const chooseButton = ( await screen.findAllByLabelText( labelText ) )[0];
