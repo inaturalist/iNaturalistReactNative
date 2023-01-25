@@ -179,28 +179,3 @@ describe( "activity tab", ( ) => {
     expect( screen.queryByTestId( "PhotoScroll.photo" ) ).toBeNull( );
   } );
 } );
-
-// TODO: Move to DataTab.test.js
-// describe( "data tab", ( ) => {
-//   test( "renders data tab content when DATA tab is pressed", ( ) => {
-//     const { getByText, queryByText } = renderComponent( <ObsDetails /> );
-//     expect( queryByText( mockObservation.description ) ).not.toBeTruthy( );
-//     const dataTab = screen.getByText( /DATA/ );
-//     expect( dataTab ).toBeTruthy();
-//     console.log( "dataTab", dataTab );
-//     fireEvent.press( dataTab );
-//     screen.debug();
-//     expect( getByText( mockObservation.description ) ).toBeTruthy( );
-//   } );
-
-//   test( "displays map in data tab if user is online", ( ) => {
-//     useIsConnected.mockImplementation( ( ) => true );
-//     renderComponent( <ObsDetails /> );
-//     const dataTab = screen.queryByText( /DATA/ );
-//     fireEvent.press( dataTab );
-//     const map = screen.queryByTestId( "MapView" );
-//     expect( map ).toBeTruthy( );
-//     const noInternet = screen.queryByRole( "image", { name: "wifi-off" } );
-//     expect( noInternet ).toBeNull( );
-//   } );
-// } );
