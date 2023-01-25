@@ -1,3 +1,4 @@
+import INatIcon from "components/INatIcon";
 import {
   ScrollView,
   Text,
@@ -71,7 +72,16 @@ const UiLibrary = ( ) => (
       <SecondaryCTAButton disabled>
         <Text>Disabled SecondaryCTAButton</Text>
       </SecondaryCTAButton>
-
+      <Text className="text-lg">Custom iNaturalist Icons</Text>
+      <INatIcon
+        name="compass-rose"
+        size={30}
+        className="my-2"
+        onPress={( ) => Alert.alert(
+          "You tapped!",
+          "Since these are text-based icons, you can turn them into buttons by adding onPress"
+        )}
+      />
       <Text className="text-lg">More Stuff!</Text>
       <Text className="h-[100px]">
         Useless spacer at the end because height in NativeWind is confusing.
