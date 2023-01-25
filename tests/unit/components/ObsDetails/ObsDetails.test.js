@@ -64,7 +64,6 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
 
 jest.mock( "components/ObsDetails/AddCommentModal" );
 jest.mock( "components/ObsDetails/ActivityTab" );
-jest.mock( "components/ObsDetails/DataTab" );
 jest.mock( "components/SharedComponents/PhotoScroll" );
 jest.mock( "components/SharedComponents/QualityBadge" );
 
@@ -109,6 +108,7 @@ test( "renders obs details from remote call", async ( ) => {
   expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
 } );
 
+// TODO: this will be refactored out into a seperate Tab component in the future
 test( "renders data tab on button press", async ( ) => {
   renderComponent( <ObsDetails /> );
   const button = await screen.findByTestId( "ObsDetails.DataTab" );
