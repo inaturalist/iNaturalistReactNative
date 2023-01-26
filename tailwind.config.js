@@ -24,7 +24,7 @@ module.exports = {
       }
     },
     borderRadius: {
-      DEFAULT: "0.444rem"
+      DEFAULT: "7px"
     },
     colors: {
       primary: "#77b300",
