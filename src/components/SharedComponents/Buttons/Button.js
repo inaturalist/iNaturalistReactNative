@@ -20,7 +20,7 @@ const setStyles = ( {
   disabled,
   className
 } ) => {
-  let buttonClass = "rounded flex-row justify-center p-1";
+  let buttonClass = "rounded flex-row justify-center p-2";
   let textClass = "text-lg text-white font-semibold";
 
   if ( className ) {
@@ -39,13 +39,7 @@ const setStyles = ( {
   }
 
   if ( disabled ) {
-    if ( level === "warning" ) {
-      buttonClass = buttonClass.concat( " ", "bg-buttonWarningDisabled" );
-    } else if ( level === "primary" ) {
-      buttonClass = buttonClass.concat( " ", "bg-buttonPrimaryDisabled" );
-    } else {
-      buttonClass = buttonClass.concat( " ", "bg-buttonNeutralDisabled" );
-    }
+    buttonClass = buttonClass.concat( " ", "opacity-[0.5]" );
   }
 
   return { buttonClass, textClass };
