@@ -23,7 +23,7 @@ const UiLibrary = ( ) => {
   }, [] );
 
   return (
-    <ViewWithFooter>
+    <ViewWithFooter testID="ui-container">
       <ScrollView className="px-5">
         {/* TODO replace these text components with our typography header components */}
         <Text>
