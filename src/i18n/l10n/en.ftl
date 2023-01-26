@@ -33,6 +33,9 @@ All = All
 
 All-observations = All observations
 
+# license code
+all-rights-reserved = all rights reserved
+
 Amphibians = Amphibians
 
 Arachnids = Arachnids
@@ -74,6 +77,9 @@ Casual = Casual
 
 # After pressing the reset password button
 Check-your-email = Check your email! We've sent password reset instructions.
+
+# Label for a button to choose a taxon
+Choose-Taxon = Choose Taxon
 
 Combine-Photos = Combine Photos
 
@@ -132,6 +138,8 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 
 # Appears above the email text field
 Email = email
+
+EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
 
 Email-Notifications = Email Notifications
 
@@ -247,6 +255,9 @@ Login-header = Log in to use iNaturalist
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
 
+# Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed
+Looks-like-youre-not-using-Apple-Mail = Looks like you're not using Apple Mail
+
 Low = Low
 
 Mammals = Mammals
@@ -316,9 +327,14 @@ No-account-found = No account found with that email
 
 No-comments-or-ids-to-display = No comments or ids to display
 
+No-image-available-for-this-observation = No image available for this observation
+
 No-Location = No Location
 
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
+
+# license code
+no-rights-reserved = no rights reserved
 
 # Header for observation description on observation detail
 Notes = Notes
@@ -328,6 +344,8 @@ Notifications = Notifications
 Obscured = Obscured
 
 Observation = Observation
+
+Observation-Attribution = Observation © {$attribution} · {$licenseCode}
 
 Observations = Observations
 
@@ -507,12 +525,17 @@ Separate-Photos = Separate Photos
 
 Settings = Settings
 
+SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
+
 Sign-out = Sign out
 
 Sign-Up = Sign Up
 
 # Header for a section showing taxa similar to a single taxon
 SIMILAR-SPECIES-header = SIMILAR SPECIES
+
+# license code
+some-rights-reserved = some rights reserved
 
 Sort-By = Sort By
 
@@ -632,12 +655,15 @@ You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission
 
 You-have-unsaved-changes = You have unsaved changes. Would you like to save this observation?
 
+You-must-be-logged-in-to-view-messages = You must be logged in to view messages
+
 You-will-lose-all-existing-observations = {$count ->
     [one] You will lose all existing observations. Would you like to discard 1 observation?
     *[other] You will lose all existing observations. Would you like to discard {$count} observations?
 }
 
-You will lose all existing observations. Would you like to discard # observations?
+You-can-still-share-the-file =
+    You can still share the file with another app. If you can email it, please send it to { $email }
 
 # Identification category
 Category-leading = Leading
@@ -680,3 +706,9 @@ Yes = Yes
 No = No
 Discard-Comment = Discard Comment
 Are-you-sure-discard-comment = Are you sure you want to discard this comment?
+
+# Accessibility labels for no internet state in ObsDetails
+Location-map-unavailable-without-internet = Location map unavailable without internet
+Observation-photos-unavailable-without-internet = Observation photos unavailable without internet
+Taxon-photo-unavailable-without-internet = Taxon photo unavailable without internet
+User-photo-unavailable-without-internet = User photo unavailable without internet

@@ -27,17 +27,13 @@ jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
   default: ( ) => true
 } ) );
 
-jest.mock( "sharedHooks/useLoggedIn", ( ) => ( {
-  __esModule: true,
-  default: ( ) => true
-} ) );
-
 jest.mock(
   "sharedHooks/useLocalObservations",
   ( ) => ( {
     __esModule: true,
     default: ( ) => ( {
-      observationList: mockObservations
+      observationList: mockObservations,
+      allObsToUpload: []
     } )
   } )
 );

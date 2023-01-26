@@ -42,6 +42,8 @@ const MediaViewerModal = ( {
     <Modal
       visible={mediaViewerVisible}
       onDismiss={hideModal}
+      // onRequestClose is used to trigger system back button on Android
+      onRequestClose={hideModal}
     >
       <SafeAreaView className="bg-black h-full">
         <Text className="text-2xl text-white self-center mb-2">

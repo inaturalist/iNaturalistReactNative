@@ -35,7 +35,7 @@ class ObservationPhoto extends Realm.Object {
     return localObsPhoto;
   }
 
-  static mapPhotoForUpload( id, observationPhoto ) {
+  static mapPhotoForUpload( observtionID, observationPhoto ) {
     return {
       "photo[uuid]": observationPhoto.uuid,
       file: new FileUpload( {

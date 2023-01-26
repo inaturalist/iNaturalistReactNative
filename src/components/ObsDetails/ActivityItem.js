@@ -15,14 +15,16 @@ import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Menu } from "react-native-paper";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Comment from "realmModels/Comment";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import useIsConnected from "sharedHooks/useIsConnected";
 import { textStyles } from "styles/obsDetails/obsDetails";
 
-import SmallSquareImage from "./SmallSquareImage";
+import TaxonImage from "./TaxonImage";
 
 const { useRealm } = RealmContext;
 
@@ -44,6 +46,7 @@ const ActivityItem = ( {
 
   const realm = useRealm( );
   const queryClient = useQueryClient( );
+  const isOnline = useIsConnected( );
 
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {
@@ -63,6 +66,24 @@ const ActivityItem = ( {
     }
   );
 
+  const showNoInternetIcon = accessibilityLabel => (
+    <View className="mr-3">
+      <IconMaterial
+        name="wifi-off"
+        size={30}
+        accessibilityRole="image"
+        accessibilityLabel={accessibilityLabel}
+      />
+    </View>
+  );
+
+  const displayUserIcon = ( ) => {
+    if ( !currentUser && !isOnline ) {
+      return showNoInternetIcon( t( "User-photo-unavailable-without-internet" ) );
+    }
+    return <UserIcon uri={User.uri( user )} small />;
+  };
+
   return (
     <View className={item.temporary && "opacity-50"}>
       <View className="flex-row border border-borderGray py-1 justify-between">
@@ -73,7 +94,7 @@ const ActivityItem = ( {
             className="flex-row items-center ml-3"
             testID={`ObsDetails.identifier.${user.id}`}
           >
-            <UserIcon uri={User.uri( user )} small />
+            {displayUserIcon( )}
             <Text className="color-logInGray ml-3">{User.userHandle( user )}</Text>
           </Pressable>
         )}
@@ -130,7 +151,9 @@ const ActivityItem = ( {
           accessibilityRole="link"
           accessibilityLabel={t( "Navigate-to-taxon-details" )}
         >
-          <SmallSquareImage uri={Taxon.uri( taxon )} />
+          {isOnline
+            ? <TaxonImage uri={Taxon.uri( taxon )} />
+            : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
           <View>
             <Text className="text-lg">{taxon.preferred_common_name}</Text>
             <Text className="color-logInGray">

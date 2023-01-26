@@ -7,6 +7,12 @@ import factory from "../../../factory";
 
 const mockedNavigate = jest.fn( );
 const mockMessage = factory( "RemoteMessage" );
+const mockUser = factory( "LocalUser" );
+
+jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {
+  __esModule: true,
+  default: ( ) => mockUser
+} ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );

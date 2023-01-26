@@ -1,7 +1,7 @@
 // @flow
 
+import Geolocation from "@react-native-community/geolocation";
 import { PermissionsAndroid, Platform } from "react-native";
-import Geolocation from "react-native-geolocation-service";
 import { PERMISSIONS, request } from "react-native-permissions";
 
 import fetchPlaceName from "./fetchPlaceName";
@@ -13,7 +13,7 @@ const requestLocationPermissions = async ( ): Promise<?string> => {
       const permission = await request( PERMISSIONS.IOS.LOCATION_WHEN_IN_USE );
       return permission;
     } catch ( e ) {
-      console.log( e, ": error requesting iOS permissions" );
+      console.warn( e, ": error requesting iOS permissions" );
     }
   }
   if ( Platform.OS === "android" ) {
@@ -21,16 +21,21 @@ const requestLocationPermissions = async ( ): Promise<?string> => {
       const permission = await request( PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION );
       return permission;
     } catch ( e ) {
-      console.log( e, ": error requesting android permissions" );
+      console.warn( e, ": error requesting android permissions" );
     }
   }
   return null;
 };
 
-const options = { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
+const options = {
+  enableHighAccuracy: true,
+  maximumAge: 0
+};
 
 const getCurrentPosition = ( ) => new Promise(
-  ( resolve, error ) => { Geolocation.getCurrentPosition( resolve, error, options ); }
+  ( resolve, error ) => {
+    Geolocation.getCurrentPosition( resolve, error, options );
+  }
 );
 
 type UserLocation = {
@@ -59,7 +64,7 @@ const fetchUserLocation = async ( ): Promise<?UserLocation> => {
       positional_accuracy: coords.accuracy
     };
   } catch ( e ) {
-    console.log( e, "couldn't get latLng" );
+    console.warn( e, "couldn't get latLng" );
   }
   return null;
 };

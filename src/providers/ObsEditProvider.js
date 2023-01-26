@@ -1,14 +1,17 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
+import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import { searchObservations } from "api/observations";
 import type { Node } from "react";
 import React, { useCallback, useMemo, useState } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
-import { formatDateAndTime } from "sharedHelpers/dateAndTime";
+import { formatDateStringFromTimestamp } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import { parseExif, parseExifDateToLocalTimezone } from "sharedHelpers/parseExif";
+import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import { ObsEditContext, RealmContext } from "./contexts";
 
@@ -22,6 +25,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
   const apiToken = useApiToken( );
+  const currentUser = useCurrentUser( );
   const [currentObservationIndex, setCurrentObservationIndex] = useState( 0 );
   const [observations, setObservations] = useState( [] );
   const [cameraPreviewUris, setCameraPreviewUris] = useState( [] );
@@ -37,6 +41,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setCameraPreviewUris( [] );
     setGalleryUris( [] );
     setEvidenceToAdd( [] );
+    setUnsavedChanges( false );
   }, [] );
 
   const allObsPhotoUris = useMemo(
@@ -65,9 +70,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const createObservationFromGalleryPhoto = useCallback( async photo => {
     const originalPhotoUri = photo?.image?.uri;
     const firstPhotoExif = await parseExif( originalPhotoUri );
-    const exifDate = parseExifDateToLocalTimezone( firstPhotoExif.date );
+    const exifDate = formatExifDateAsString( firstPhotoExif.date );
 
-    const observedOnDate = exifDate || formatDateAndTime( photo.timestamp );
+    const observedOnDate = exifDate || formatDateStringFromTimestamp( photo.timestamp );
     const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
     const longitude = firstPhotoExif.longitude || photo?.location?.longitude;
     const placeGuess = await fetchPlaceName( latitude, longitude );
@@ -105,7 +110,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   }, [createObsPhotos, createObservationFromGalleryPhoto] );
 
   const appendObsPhotos = useCallback( obsPhotos => {
-    const currentObservationPhotos = currentObservation?.observationPhotos;
+    // need empty case for when a user creates an observation with no photos,
+    // then tries to add photos to observation later
+    const currentObservationPhotos = currentObservation?.observationPhotos || [];
 
     const updatedObs = currentObservation;
     updatedObs.observationPhotos = [...currentObservationPhotos, ...obsPhotos];
@@ -202,7 +209,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       if ( !apiToken ) {
         throw new Error( "Gack, tried to upload an observation without API token!" );
       }
-      return Observation.uploadObservation( observation, apiToken, realm );
+      activateKeepAwake( );
+      const response = Observation.uploadObservation( observation, apiToken, realm );
+      deactivateKeepAwake( );
+      return response;
     };
 
     const saveAndUploadObservation = async ( ) => {
@@ -232,6 +242,36 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
 
       await Photo.deletePhoto( realm, photoUriToDelete );
+    };
+
+    const uploadLocalObservationsToServer = ( ) => {
+      const unsyncedObservations = Observation.filterUnsyncedObservations( realm );
+      unsyncedObservations.forEach( async observation => {
+        await Observation.uploadObservation( observation, apiToken, realm );
+      } );
+    };
+
+    const downloadRemoteObservationsFromServer = async ( ) => {
+      const params = {
+        user_id: currentUser?.id,
+        per_page: 50,
+        fields: Observation.FIELDS
+      };
+      const results = await searchObservations( params, { api_token: apiToken } );
+
+      Observation.upsertRemoteObservations( results, realm );
+    };
+
+    const syncObservations = async ( ) => {
+      // TODO: GET observation/deletions once this is enabled in API v2
+      activateKeepAwake( );
+      setLoading( true );
+      await uploadLocalObservationsToServer( );
+      await downloadRemoteObservationsFromServer( );
+      // we at least want to keep the device awake while uploads are happening
+      // not sure about downloads/deletions
+      deactivateKeepAwake( );
+      setLoading( false );
     };
 
     return {
@@ -268,7 +308,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setNextScreen,
       loading,
       setLoading,
-      unsavedChanges
+      unsavedChanges,
+      syncObservations
     };
   }, [
     currentObservation,
@@ -292,7 +333,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setAlbum,
     loading,
     setLoading,
-    unsavedChanges
+    unsavedChanges,
+    currentUser?.id
   ] );
 
   return (

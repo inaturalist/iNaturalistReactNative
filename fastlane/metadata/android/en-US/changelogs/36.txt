@@ -1,0 +1,1 @@
+Try again to get Android working with production API & other env variables.

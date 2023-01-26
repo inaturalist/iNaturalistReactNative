@@ -13,10 +13,13 @@ import {
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
+import { log } from "../../../react-native-logs.config";
 import {
   getUsername,
   signOut
 } from "./AuthenticationService";
+
+const logger = log.extend( "Logout" );
 
 const { useRealm } = RealmContext;
 
@@ -48,7 +51,8 @@ const Logout = ( ): Node => {
   const queryClient = useQueryClient( );
 
   const onSignOut = async ( ) => {
-    await signOut( { realm, deleteRealm: true, queryClient } );
+    logger.info( `Signing out ${username || ""} at the request of the user` );
+    await signOut( { realm, clearRealm: true, queryClient } );
     // TODO might be necessary to restart the app at this point. We just
     // deleted the realm file on disk, but the RealmProvider may still have a
     // copy of realm in local state

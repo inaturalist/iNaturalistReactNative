@@ -7,27 +7,25 @@ import React, { useMemo, useRef } from "react";
 import {
   Button, ProgressBar, Text
 } from "react-native-paper";
-import useUploadObservations from "sharedHooks/useUploadObservations";
+import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 import { textStyles, viewStyles } from "styles/observations/uploadProgressBar";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  unuploadedObsList: Array<Object>,
-  allObsToUpload: Array<Object>
+  allObsToUpload: Array<Object>,
+  stopUpload: () => void
 }
 
-const UploadProgressBar = ( { unuploadedObsList, allObsToUpload }: Props ): Node => {
-  const numOfUnuploadedObs = unuploadedObsList.length;
-  const totalObsToUpload = Math.max( allObsToUpload.length, unuploadedObsList.length );
+const UploadProgressBar = ( {
+  allObsToUpload,
+  stopUpload
+}: Props ): Node => {
+  const numUnuploadedObs = useNumUnuploadedObservations( );
+  const totalObsToUpload = Math.max( allObsToUpload.length, numUnuploadedObs );
 
-  const calculateProgress = ( ) => ( totalObsToUpload - numOfUnuploadedObs ) / totalObsToUpload;
+  const calculateProgress = ( ) => ( totalObsToUpload - numUnuploadedObs ) / totalObsToUpload;
 
   const progressFraction = calculateProgress( );
-
-  const {
-    handleClosePress,
-    status
-  } = useUploadObservations( allObsToUpload );
 
   const sheetRef = useRef( null );
 
@@ -35,24 +33,6 @@ const UploadProgressBar = ( { unuploadedObsList, allObsToUpload }: Props ): Node
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
   const noHandle = ( ) => <></>;
-
-  const showError = ( ) => {
-    if ( status === "failure" ) {
-      return (
-        <Text style={textStyles.whiteText} variant="titleMedium">
-          {t( "Error-Couldnt-Complete-Upload" )}
-        </Text>
-      );
-    }
-    if ( status === "photoFailure" ) {
-      return (
-        <Text style={textStyles.whiteText} variant="titleMedium">
-          {t( "Error-Couldnt-Upload-Photo" )}
-        </Text>
-      );
-    }
-    return null;
-  };
 
   return (
     <BottomSheet
@@ -64,19 +44,18 @@ const UploadProgressBar = ( { unuploadedObsList, allObsToUpload }: Props ): Node
       <BottomSheetView style={viewStyles.grayContainer}>
         <Button
           icon="close-circle"
-          onPress={handleClosePress}
+          onPress={stopUpload}
           textColor={colors.white}
           style={viewStyles.closeButton}
         />
         <Text style={textStyles.whiteText} variant="titleMedium">
-          {t( "Uploading-X-Observations", { count: numOfUnuploadedObs } )}
+          {t( "Uploading-X-Observations", { count: numUnuploadedObs } )}
         </Text>
         <ProgressBar
           progress={progressFraction}
           style={viewStyles.progressBar}
           color={colors.white}
         />
-        {showError( )}
       </BottomSheetView>
     </BottomSheet>
   );

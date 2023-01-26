@@ -8,7 +8,7 @@ import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useRef, useState } from "react";
-import { StatusBar } from "react-native";
+import { Platform, StatusBar } from "react-native";
 import { Avatar, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
@@ -20,6 +20,24 @@ import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
 
 export const MAX_PHOTOS_ALLOWED = 20;
+
+// Taken from:
+// https://developer.android.com/reference/androidx/exifinterface/media/ExifInterface#ORIENTATION_ROTATE_180()
+const ORIENTATION_ROTATE_90 = 6;
+const ORIENTATION_ROTATE_180 = 3;
+const ORIENTATION_ROTATE_270 = 8;
+
+// Calculates by how much we should rotate our image according to the detected orientation
+const orientationToRotation = orientation => {
+  // This issue only occurs on Android
+  if ( Platform.OS !== "android" ) return 0;
+
+  if ( orientation === ORIENTATION_ROTATE_90 ) return 90;
+  if ( orientation === ORIENTATION_ROTATE_180 ) return 180;
+  if ( orientation === ORIENTATION_ROTATE_270 ) return 270;
+
+  return 0;
+};
 
 const StandardCamera = ( ): Node => {
   const {
@@ -57,7 +75,10 @@ const StandardCamera = ( ): Node => {
         return;
       }
       const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-      const newPhoto = await Photo.new( cameraPhoto.path );
+      const newPhoto = await Photo.new( cameraPhoto.path, {
+        rotation:
+          orientationToRotation( cameraPhoto.metadata.Orientation )
+      } );
       const uri = newPhoto.localFilePath;
 
       setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
@@ -92,7 +113,7 @@ const StandardCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const renderCameraOptionsButtons = icon => {
+  const renderAddObsButtons = icon => {
     let testID = "";
     let accessibilityLabel = "";
     switch ( icon ) {
@@ -145,12 +166,12 @@ const StandardCamera = ( ): Node => {
           {hasFlash ? (
             <Pressable onPress={toggleFlash}>
               {takePhotoOptions.flash === "on"
-                ? renderCameraOptionsButtons( "flash" )
-                : renderCameraOptionsButtons( "flash-off" )}
+                ? renderAddObsButtons( "flash" )
+                : renderAddObsButtons( "flash-off" )}
             </Pressable>
           ) : <View />}
           <Pressable onPress={flipCamera}>
-            {renderCameraOptionsButtons( "camera-flip" )}
+            {renderAddObsButtons( "camera-flip" )}
           </Pressable>
         </View>
         <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">

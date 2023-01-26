@@ -74,7 +74,6 @@ const AddEvidenceModal = ( {
 
   const onRecordSound = () => {
     // TODO - need to implement
-    console.log( "Record sound" );
   };
 
   return (

@@ -6,27 +6,26 @@ import type { Node } from "react";
 import React, { useContext } from "react";
 import { ActivityIndicator } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
 type Props = {
-  isLoggedIn: ?boolean,
   setView: Function
   }
 
-const Toolbar = ( {
-  isLoggedIn,
-  setView
-}: Props ): Node => {
+const Toolbar = ( { setView }: Props ): Node => {
+  const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const loading = obsEditContext?.loading;
+  const syncObservations = obsEditContext?.syncObservations;
+
   return (
     <View className="py-5 flex-row justify-between bg-white">
-      {isLoggedIn ? (
-      // TODO: syncing observations probably involves uploading, then downloading
-      // but not entirely sure what this button is supposed to do in what order
+      {currentUser ? (
         <Pressable
-          onPress={( ) => console.log( "sync observations" )}
+          onPress={syncObservations}
           className="mx-3"
           accessibilityRole="button"
+          disabled={loading}
         >
           <IconMaterial name="sync" size={30} />
         </Pressable>
@@ -34,7 +33,7 @@ const Toolbar = ( {
         <View className="mx-3" />
       )}
       {loading && <ActivityIndicator />}
-      <View className="flex flex-row flex-nowrap mx-3">
+      <View className="flex-row mx-3">
         <Pressable
           onPress={( ) => setView( "list" )}
           accessibilityRole="button"

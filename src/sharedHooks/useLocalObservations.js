@@ -12,7 +12,6 @@ const { useRealm } = RealmContext;
 const useLocalObservations = ( ): Object => {
   const [observationList, setObservationList] = useState( [] );
   const [allObsToUpload, setAllObsToUpload] = useState( [] );
-  const [unuploadedObsList, setUnuploadedObsList] = useState( [] );
 
   const realm = useRealm( );
 
@@ -33,9 +32,8 @@ const useLocalObservations = ( ): Object => {
       setObservationList( _.compact( collection ) );
 
       const unsyncedObs = Observation.filterUnsyncedObservations( realm );
-      setUnuploadedObsList( Array.from( unsyncedObs ) );
 
-      if ( allObsToUpload.length === 0 ) {
+      if ( allObsToUpload.length < unsyncedObs.length ) {
         setAllObsToUpload( Array.from( unsyncedObs ) );
       }
     } );
@@ -48,8 +46,7 @@ const useLocalObservations = ( ): Object => {
 
   return {
     observationList,
-    allObsToUpload,
-    unuploadedObsList
+    allObsToUpload
   };
 };
 

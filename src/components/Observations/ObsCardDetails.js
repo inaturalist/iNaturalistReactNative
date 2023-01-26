@@ -1,5 +1,6 @@
 // @flow
 
+import DisplayTaxonName from "components/DisplayTaxonName";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -22,14 +23,9 @@ const ObsCardDetails = ( { item, view }: Props ): Node => {
     return "no time given";
   };
 
-  const displayName = ( ) => ( item.taxon
-    ? checkCamelAndSnakeCase( item.taxon, "preferredCommonName" )
-    : "no name"
-  );
-
   return (
     <View className={view === "grid" && "border border-border p-2"}>
-      <Text numberOfLines={1}>{displayName( )}</Text>
+      <DisplayTaxonName item={item} />
       <Text numberOfLines={1}>
         <IconMaterial name="location-pin" size={15} />
         {placeGuess || "no place guess"}

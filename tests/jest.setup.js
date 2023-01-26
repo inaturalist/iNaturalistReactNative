@@ -16,6 +16,8 @@ import {
   mockUseCameraDevices
 } from "./vision-camera/vision-camera";
 
+jest.mock( "@sayem314/react-native-keep-awake" );
+
 jest.mock(
   "@react-native-async-storage/async-storage",
   () => require( "@react-native-async-storage/async-storage/jest/async-storage-mock" )
@@ -161,9 +163,10 @@ jest.setTimeout( 50000 );
 jest.mock( "react-native-permissions", () => require( "react-native-permissions/mock" ) );
 
 // mocking globally since this currently affects a handful of unit and integration tests
-jest.mock( "react-native-geolocation-service", ( ) => ( {
+jest.mock( "@react-native-community/geolocation", ( ) => ( {
   getCurrentPosition: ( ) => jest.fn( )
 } ) );
+require( "react-native" ).NativeModules.RNCGeolocation = { };
 
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 
@@ -184,7 +187,13 @@ global.FormData = FormDataMock;
 
 jest.mock( "react-native-fs", ( ) => {
   const RNFS = {
-    moveFile: async ( ) => "testdata"
+    appendFile: jest.fn( ),
+    DocumentDirectoryPath: jest.fn( ),
+    exists: jest.fn( async ( ) => true ),
+    moveFile: async ( ) => "testdata",
+    stat: jest.fn( ( ) => ( {
+      mtime: 123
+    } ) )
   };
 
   return RNFS;

@@ -54,7 +54,7 @@ const SoundRecorder = ( ): Node => {
       } );
       setUri( cachedFile );
     } catch ( e ) {
-      console.log( "couldn't start sound recorder:", e );
+      console.warn( "couldn't start sound recorder:", e );
     }
   };
 
@@ -63,7 +63,7 @@ const SoundRecorder = ( ): Node => {
       await audioRecorderPlayer.resumeRecorder( );
       setStatus( "recording" );
     } catch ( e ) {
-      console.log( "couldn't resume sound recorder:", e );
+      console.warn( "couldn't resume sound recorder:", e );
     }
   };
 
@@ -77,7 +77,7 @@ const SoundRecorder = ( ): Node => {
         recordSecs: 0
       } );
     } catch ( e ) {
-      console.log( "couldn't stop sound recorder:", e );
+      console.warn( "couldn't stop sound recorder:", e );
     }
   };
 
@@ -95,7 +95,7 @@ const SoundRecorder = ( ): Node => {
         } );
       } );
     } catch ( e ) {
-      console.log( "can't play recording: ", e );
+      console.warn( "can't play recording: ", e );
     }
   };
 

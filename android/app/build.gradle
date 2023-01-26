@@ -78,6 +78,16 @@ import org.apache.tools.ant.taskdefs.condition.Os
  * ]
  */
 
+// set up different .env files so fastlane will automatically build using .env
+// and dev builds will use .env.staging
+// https://github.com/luggit/react-native-config#android-1
+ project.ext.envConfigFiles = [
+    debug: ".env.staging",
+    release: ".env"
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 project.ext.react = [
     enableHermes: true,  // clean and rebuild if changing
 ]
@@ -156,10 +166,14 @@ android {
         applicationId "com.inaturalistreactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 32
+        versionCode 38
         versionName "0.1.1"
         setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+        // Detox Android setup
+        testBuildType System.getProperty('testBuildType', 'debug')
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        // Detox end
 
         if (isNewArchitectureEnabled()) {
             // We configure the CMake build only if you decide to opt-in for the New Architecture.
@@ -255,6 +269,8 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            // Detox Android setup
+            proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
         }
     }
 
@@ -276,6 +292,11 @@ android {
 }
 
 dependencies {
+    // Detox Android setup
+    androidTestImplementation('com.wix:detox:+')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    // Detox end
+    
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     //noinspection GradleDynamicVersion
@@ -334,7 +355,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 def isNewArchitectureEnabled() {
     // To opt-in for the New Architecture, you can either:

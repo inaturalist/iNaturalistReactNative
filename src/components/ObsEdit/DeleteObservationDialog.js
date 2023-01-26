@@ -27,13 +27,17 @@ const DeleteObservationDialog = ( {
   const navigation = useNavigation( );
   const { uuid } = currentObservation;
 
+  const handleLocalDeletion = ( ) => {
+    deleteLocalObservation( uuid );
+    hideDialog( );
+    navigation.navigate( "ObsList" );
+  };
+
   const deleteObservationMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteObservation( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        deleteLocalObservation( uuid );
-        hideDialog( );
-        navigation.navigate( "ObsList" );
+        handleLocalDeletion( );
       }
     }
   );
@@ -47,7 +51,13 @@ const DeleteObservationDialog = ( {
         <Dialog.Actions>
           <Button onPress={hideDialog} text={t( "Cancel" )} level="primary" className="m-0.5" />
           <Button
-            onPress={( ) => deleteObservationMutation.mutate( { uuid } )}
+            onPress={( ) => {
+              if ( !currentObservation._synced_at ) {
+                handleLocalDeletion( );
+              } else {
+                deleteObservationMutation.mutate( { uuid } );
+              }
+            }}
             text={t( "Yes-delete-observation" )}
             level="primary"
             className="m-0.5"

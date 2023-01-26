@@ -7,7 +7,8 @@ class User extends Realm.Object {
     login: true,
     name: true,
     locale: true,
-    observation_count: true
+    observations_count: true,
+    prefers_scientific_name_first: true
   };
 
   static mapApiToRealm( user ) {
@@ -20,6 +21,8 @@ class User extends Realm.Object {
 
   static userHandle = user => ( user && user.login ) && `@${user.login}`;
 
+  static currentUser = realm => realm.objects( "User" ).filtered( "signedIn == true" )[0]
+
   static schema = {
     name: "User",
     primaryKey: "id",
@@ -30,7 +33,8 @@ class User extends Realm.Object {
       name: "string?",
       signedIn: "bool?",
       locale: "string?",
-      observation_count: "int?"
+      observations_count: "int?",
+      prefers_scientific_name_first: "bool?"
     }
   }
 }

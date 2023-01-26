@@ -6,6 +6,7 @@ import {
   Image, Pressable, SafeAreaView
 } from "components/styledComponents";
 import { t } from "i18next";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -25,6 +26,8 @@ import {
 } from "./AuthenticationService";
 import Logout from "./Logout";
 
+const { useRealm } = RealmContext;
+
 const Login = ( ): Node => {
   const keyboardScrollRef = useRef( null );
   const navigation = useNavigation( );
@@ -34,6 +37,7 @@ const Login = ( ): Node => {
   const [error, setError] = useState( null );
   const [loading, setLoading] = useState( false );
   const [extraScrollHeight, setExtraScrollHeight] = useState( 0 );
+  const realm = useRealm( );
 
   useEffect( ( ) => {
     let isCurrent = true;
@@ -55,7 +59,8 @@ const Login = ( ): Node => {
     setLoading( true );
     const success = await authenticateUser(
       email.trim( ),
-      password
+      password,
+      realm
     );
 
     if ( !success ) {
@@ -84,7 +89,7 @@ const Login = ( ): Node => {
         source={require( "images/inat_logo.png" )}
       />
 
-      <Text className="text-2xl self-center mt-5">{t( "Login-header" )}</Text>
+      <Text testID="login-header" className="text-2xl self-center mt-5">{t( "Login-header" )}</Text>
       <Text className="text-xl self-center text-center mt-5 mb-5">{t( "Login-sub-title" )}</Text>
       <Text className="text-base mb-1">{t( "Username-or-Email" )}</Text>
       <TextInput

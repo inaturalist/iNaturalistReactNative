@@ -9,6 +9,7 @@ import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import Mortal from "components/SharedComponents/Mortal";
+import UiLibrary from "components/UiLibrary";
 import { t } from "i18next";
 import { hideHeader, showHeader } from "navigation/navigationOptions";
 import type { Node } from "react";
@@ -77,6 +78,10 @@ const RootDrawerNavigator = ( ): Node => (
     <Drawer.Screen
       name="network"
       component={NetworkLogging}
+    />
+    <Drawer.Screen
+      name="UI Library"
+      component={UiLibrary}
     />
   </Drawer.Navigator>
 );

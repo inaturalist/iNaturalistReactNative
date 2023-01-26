@@ -5,24 +5,28 @@ import { Pressable, Text } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 
-type Props = {
-  numOfUnuploadedObs: number
-}
-
-const LoggedOutCard = ( { numOfUnuploadedObs }: Props ): Node => {
-  const { t } = useTranslation( );
+const LoggedOutCard = ( ): Node => {
   const navigation = useNavigation( );
+  const numUnuploadedObs = useNumUnuploadedObservations( );
+  const { t } = useTranslation( );
 
   return (
     <Pressable
       onPress={( ) => navigation.navigate( "login" )}
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-login-screen" )}
+      className="rounded-bl-3xl rounded-br-3xl bg-primary h-24 justify-center"
     >
-      <Text className="self-center color-white text-2xl">{t( "Log-in-to-iNaturalist" )}</Text>
+      <Text
+        testID="log-in-to-iNaturalist-text"
+        className="self-center color-white text-2xl"
+      >
+        {t( "Log-in-to-iNaturalist" )}
+      </Text>
       <Text className="self-center color-white text-base">
-        {t( "X-unuploaded-observations", { observationCount: numOfUnuploadedObs } )}
+        {t( "X-unuploaded-observations", { observationCount: numUnuploadedObs } )}
       </Text>
     </Pressable>
   );

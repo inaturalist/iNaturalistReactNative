@@ -5,6 +5,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { styled } from "nativewind";
 import {
+  ActivityIndicator as StyledActivityIndicator,
   Image as StyledImage,
   KeyboardAvoidingView as StyledKeyboardAvoidingView,
   Modal as StyledModal,
@@ -17,6 +18,8 @@ import {
   View as StyledView
 } from "react-native";
 
+// $FlowIgnore
+const ActivityIndicator = styled( StyledActivityIndicator );
 // $FlowIgnore
 const View = styled( StyledView );
 // $FlowIgnore
@@ -46,8 +49,12 @@ const BottomSheetTextInput = styled( StyledBottomSheetTextInput );
 // $FlowIgnore
 const Modal = styled( StyledModal );
 
+const fontMonoClass: string = ( Platform.OS === "ios" ? "font-Menlo" : "font-monospace" );
+
 export {
+  ActivityIndicator,
   BottomSheetTextInput,
+  fontMonoClass,
   HeaderText,
   Image,
   KeyboardAvoidingView,
