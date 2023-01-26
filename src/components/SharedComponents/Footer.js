@@ -24,7 +24,7 @@ const Footer = ( ): React.Node => {
       className={footerClassName}
       style={viewStyles.shadow}
     >
-      <Pressable onPress={toggleSideMenu} accessibilityRole="link">
+      <Pressable testID="footer-menu-button" onPress={toggleSideMenu} accessibilityRole="link">
         <IconMaterial name="menu" size={30} />
       </Pressable>
       <Pressable onPress={navToExplore} accessibilityRole="link">

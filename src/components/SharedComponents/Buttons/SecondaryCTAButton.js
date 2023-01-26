@@ -6,22 +6,22 @@ import { Button } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
+  testID?: string,
   children: any,
   onPress: Function,
-  testID?: string,
   disabled?: boolean
 }
 
 const SecondaryCTAButton = ( {
+  testID,
   children,
   onPress,
-  testID,
   disabled
 }: Props ): Node => (
   <Button
+    testID={testID}
     onPress={onPress}
     mode="text"
-    testID={testID}
     textColor={colors.black}
     disabled={disabled}
   >

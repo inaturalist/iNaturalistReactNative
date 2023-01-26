@@ -46,6 +46,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         onPress={( ) => navigation.navigate( "network" )}
       />
       <DrawerItem
+        testID="drawer-item-ui-library"
         label="UI library"
         onPress={( ) => navigation.navigate( "UI Library" )}
       />
