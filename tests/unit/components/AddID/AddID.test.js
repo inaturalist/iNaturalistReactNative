@@ -3,7 +3,6 @@ import AddID from "components/ObsEdit/AddID";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
-import { View } from "react-native";
 
 import factory, { makeResponse } from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
@@ -17,16 +16,16 @@ jest.useFakeTimers( );
 jest.mock(
   "components/SharedComponents/ViewNoFooter",
   () => function MockContainer( props ) {
+      return <mock-container {...props}>{props.children}</mock-container>;
     // eslint-disable-next-line react/jsx-props-no-spreading
-    return <View {...props}>{props.children}</View>;
   }
 );
 
 jest.mock(
   "components/SharedComponents/BottomSheetStandardBackdrop",
   () => function MockContainer( props ) {
+      return <mock-container {...props}>{props.children}</mock-container>;
     // eslint-disable-next-line react/jsx-props-no-spreading
-    return <View {...props}>{props.children}</View>;
   }
 );
 
