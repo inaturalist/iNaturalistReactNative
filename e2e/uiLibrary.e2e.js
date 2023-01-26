@@ -48,10 +48,8 @@ describe( "Using the UiLibrary", () => {
     await element( by.id( "ui-button-4" ) ).tap();
     await element( by.id( "ui-button-5" ) ).tap();
     await element( by.id( "ui-button-6" ) ).tap();
-    // Dismiss the alert
-    await element(
-      by.label( "OK" ).and( by.type( "_UIAlertControllerActionView" ) )
-    ).tap();
+    // Dismiss the native alert
+    await element( by.text( "OK" ) ).tap();
 
     // Tap the AddObsButton
     // For some reason it does not find the button, so I commented it out
