@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import handleError from "api/error";
 import App from "components/App";
+import INatIcon from "components/INatIcon";
 import inatjs from "inaturalistjs";
 import ObsEditProvider from "providers/ObsEditProvider";
 import RealmProvider from "providers/RealmProvider";
@@ -78,22 +79,32 @@ const queryClient = new QueryClient( {
 // TODO: remove paper themes from app in favor of Tailwind
 const theme = {
   ...DefaultTheme,
-  roundness: 2,
   version: 3,
   colors: {
     ...DefaultTheme.colors,
-    primary: colors.inatGreen,
-    secondary: colors.secondary,
-    tertiary: colors.tertiary,
-    surface: colors.white
+    primary: colors.darkGray,
+    onPrimary: colors.white,
+    secondary: colors.focusGreen,
+    onSecondary: colors.white,
+    background: colors.white,
+    error: colors.warningRed,
+    onError: colors.white
   }
 };
+
+// eslint-disable-next-line react/jsx-props-no-spreading
+const renderCustomIcon = props => <INatIcon {...props} />;
 
 const AppWithProviders = ( ) => (
   <QueryClientProvider client={queryClient}>
     <RealmProvider>
       <SafeAreaProvider>
-        <PaperProvider theme={theme}>
+        <PaperProvider
+          settings={{
+            icon: renderCustomIcon
+          }}
+          theme={theme}
+        >
           <GestureHandlerRootView className="flex-1">
             {/* NavigationContainer needs to be nested above ObsEditProvider */}
             <NavigationContainer>

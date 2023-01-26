@@ -50,7 +50,7 @@ const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => {
               >
                 <Text
                   className="text-xl self-center py-2"
-                  style={{ color: active ? colors.primary : colors.grayText }}
+                  style={{ color: active ? colors.focus : colors.grayText }}
                 >
                   {title}
                 </Text>

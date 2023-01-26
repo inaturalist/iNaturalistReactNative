@@ -27,7 +27,9 @@ module.exports = {
       }
     },
     colors: {
-      primary: "#77b300",
+      darkGray: "#454545",
+      warningRed: "#9B1010",
+      focusGreen: "#74AC00",
       secondary: "#979797",
       tertiary: "#C4C4C4",
       white: "#ffffff",

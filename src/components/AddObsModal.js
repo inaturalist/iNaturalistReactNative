@@ -5,14 +5,14 @@ import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import * as React from "react";
-import { IconButton } from "react-native-paper";
-import colors from "styles/tailwindColors";
+import { IconButton, useTheme } from "react-native-paper";
 
 type Props = {
   closeModal: ( ) => void
 }
 
 const AddObsModal = ( { closeModal }: Props ): React.Node => {
+  const theme = useTheme( );
   // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
   const obsEditContext = React.useContext( ObsEditContext );
   const createObservationNoEvidence = obsEditContext?.createObservationNoEvidence;
@@ -46,16 +46,17 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     t( "Record-a-sound" )
   ];
 
-  const renderIconButton = ( icon, className, onPress, size = 30 ) => (
+  const renderIconButton = ( icon, className, onPress, accessibilityLabel, size = 30 ) => (
     <IconButton
       testID={`camera-options-button-${icon}`}
       size={size}
-      mode="contained"
       icon={icon}
-      containerColor={colors.inatGreen}
-      iconColor={colors.white}
+      mode="contained"
+      containerColor={theme.colors.secondary}
+      iconColor={theme.colors.onSecondary}
       className={className}
       onPress={onPress}
+      accessibilityLabel={accessibilityLabel}
     />
   );
 
@@ -74,13 +75,34 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
         </View>
       </View>
       <View className="flex-row items-center justify-center">
-        {renderIconButton( "camera", "mx-5", navToStandardCamera )}
-        {renderIconButton( "folder-multiple-image", "mx-5", navToPhotoGallery )}
+        {renderIconButton( "icon-camera", "mx-5", navToStandardCamera, t( "Navigate-to-camera" ) )}
+        {renderIconButton(
+          "icon-gallery",
+          "mx-5",
+          navToPhotoGallery,
+          t( "Navigate-to-photo-importer" )
+        )}
       </View>
       <View className="flex-row justify-center">
-        {renderIconButton( "square-edit-outline", "mx-2", navToObsEdit )}
-        {renderIconButton( "plus", "self-center", ( ) => { }, 80 )}
-        {renderIconButton( "microphone", "mx-2", navToSoundRecorder )}
+        {renderIconButton(
+          "icon-noevidence",
+          "mx-2",
+          navToObsEdit,
+          t( "Navigate-to-observation-edit-screen" )
+        )}
+        {renderIconButton(
+          "icon-close",
+          "self-center",
+          ( ) => closeModal( ),
+          t( "Close-camera-options-modal" ),
+          80
+        )}
+        {renderIconButton(
+          "icon-sound",
+          "mx-2",
+          navToSoundRecorder,
+          t( "Navigate-to-sound-recorder" )
+        )}
       </View>
     </View>
   );

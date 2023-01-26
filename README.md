@@ -123,6 +123,24 @@ git commit -a -m "Updated translations"
 ## Styling
 We're using Nativewind, a styling system for React Native based on Tailwind CSS. Check the [Nativewind documentation](https://www.nativewind.dev/) to see what styles can be used in RN.
 
+## Creating custom icons
+
+1. Download custom icon from Figma as an SVG file.
+2. Add new icon to the iNaturalist icon set in Fontastic. Select all relevant iNaturalist icons, tap the Publish tab, and download the zip of icons.
+3. Create a glpyh file from the CSS file you just downloaded, using the following command (be sure to replace /path/to/styles with your path):
+
+```
+./node_modules/.bin/generate-icon '/path/to/styles.css' --componentName=INatIcon --fontFamily=inaturalisticons > 'src/components/INatIcon.js'
+```
+
+4. Go to `src/components/INatIcon.js` and change the name of the .ttf file to `inaturalisticons.ttf` to match the name of the .ttf file you downloaded
+5. Add the .ttf file you downloaded, `inaturalisticons.ttf`, to /assets/fonts
+6. Clean build folders for iOS/Android with `rm -rf ios/build` and `rm -rf android/app/build`
+7. Add your icon somewhere in the app using `<INatIcon name="compass-rose" />` where name is set to the name of your new custom icon.
+8. Build the app on either platform, and you should see your custom icons
+
+If anything goes wrong, check the [troubleshooting steps](https://github.com/oblador/react-native-vector-icons#troubleshooting) from react-native-vector-icons instructions on creating a glyph map. You can use `npx react-native-asset` to automatically link fonts in iOS/Android, but you shouldn't need to do this unless you're adding a .ttf file with a different name.
+
 ## Troubleshooting
 
 1. Run `npx react-native clean-project`. This will give you options to clean caches, clean builds, reinstall pods, and reinstall node_modules. Using this eliminates a lot of hard-to-diagnose build issues.

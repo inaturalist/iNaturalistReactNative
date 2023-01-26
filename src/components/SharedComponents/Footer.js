@@ -1,10 +1,10 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import INatIcon from "components/INatIcon";
-import { Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
+import { t } from "i18next";
 import * as React from "react";
 import { Platform } from "react-native";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import { IconButton } from "react-native-paper";
 import { viewStyles } from "styles/sharedComponents/footer";
 
 import AddObsButton from "./Buttons/AddObsButton";
@@ -25,17 +25,27 @@ const Footer = ( ): React.Node => {
       className={footerClassName}
       style={viewStyles.shadow}
     >
-      <Pressable onPress={toggleSideMenu} accessibilityRole="link">
-        <IconMaterial name="menu" size={30} />
-      </Pressable>
-      <INatIcon name="compass-rose" size={30} onPress={navToExplore} accessibilityRole="link" />
+      <IconButton
+        icon="icon-menu"
+        onPress={toggleSideMenu}
+        accessibilityLabel={t( "Open-side-menu" )}
+      />
+      <IconButton
+        icon="compass-rose"
+        onPress={navToExplore}
+        accessibilityLabel={t( "Navigate-to-explore-screen" )}
+      />
       <AddObsButton />
-      <Pressable onPress={navToObsList} accessibilityRole="link">
-        <IconMaterial name="person" size={30} />
-      </Pressable>
-      <Pressable onPress={navToNotifications} accessibilityRole="link">
-        <IconMaterial name="notifications" size={30} />
-      </Pressable>
+      <IconButton
+        icon="ios-people-updated-2"
+        onPress={navToObsList}
+        accessibilityLabel={t( "Navigate-to-observation-list" )}
+      />
+      <IconButton
+        icon="tab-notifications"
+        onPress={navToNotifications}
+        accessibilityLabel={t( "Navigate-to-notifications-screen" )}
+      />
     </View>
   );
 };
