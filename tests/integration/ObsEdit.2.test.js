@@ -5,8 +5,8 @@ import { ObsEditContext } from "providers/contexts";
 import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
-import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import factory from "../factory";
+import { renderComponent } from "../helpers/render";
 
 // this resolves a test failure with the Animated library:
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.
