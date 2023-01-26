@@ -36,6 +36,7 @@ const UiLibrary = ( ) => (
       <Button className="mb-2" level="focus" text="FOCUS DISABLED" disabled />
       <Button className="mb-2" level="warning" text="WARNING DISABLED" disabled />
       <Button className="mb-2" loading text="LOADING BUTTON" />
+
       <Button
         className="mb-2"
         text="Tap to show alert"
@@ -44,6 +45,17 @@ const UiLibrary = ( ) => (
           "Or did you click it? Fight me."
         )}
       />
+      <Text className="text-xl">Multiple Buttons With Focus</Text>
+      <View className="flex-row justify-between">
+        <Button className="my-2" text="LEFT" />
+        <Button className="my-2 grow ml-3" level="focus" text="RIGHT" />
+      </View>
+
+      <Text className="text-xl">Multiple Buttons Without Focus</Text>
+      <View className="flex-row">
+        <Button className="my-2 grow" text="LEFT" />
+        <Button className="my-2 ml-3 grow" text="RIGHT" />
+      </View>
 
       <Text className="text-lg">AddObsButton</Text>
       <Text>

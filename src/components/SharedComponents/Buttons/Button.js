@@ -20,7 +20,7 @@ const setStyles = ( {
   disabled,
   className
 } ) => {
-  let buttonClass = "rounded flex-row justify-center p-2";
+  let buttonClass = "rounded flex-row justify-center items-center py-1.5 px-8";
   let textClass = "text-lg text-white font-semibold";
 
   if ( className ) {
