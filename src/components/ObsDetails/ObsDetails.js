@@ -56,8 +56,8 @@ LogBox.ignoreLogs( [
   "Non-serializable values were found in the navigation state"
 ] );
 
-const ACTIVITY_TAB = "ACTIVITY";
-const DATA_TAB = "DATA";
+const ACTIVITY_TAB_ID = "ACTIVITY";
+const DATA_TAB_ID = "DATA";
 
 const ObsDetails = ( ): Node => {
   const isOnline = useIsConnected( );
@@ -66,7 +66,7 @@ const ObsDetails = ( ): Node => {
   const [refetch, setRefetch] = useState( false );
   const { params } = useRoute( );
   const { uuid } = params;
-  const [tab, setTab] = useState( ACTIVITY_TAB );
+  const [currentTabId, setCurrentTabId] = useState( ACTIVITY_TAB_ID );
   const navigation = useNavigation( );
   const realm = useRealm( );
   const localObservation = useLocalObservation( uuid );
@@ -190,7 +190,7 @@ const ObsDetails = ( ): Node => {
   }, [navigation, observation, currentUser] );
 
   useEffect( ( ) => {
-    // set initial comments for activity tab
+    // set initial comments for activity currentTabId
     const currentComments = observation?.comments;
     if ( currentComments
         && comments.length === 0
@@ -245,16 +245,16 @@ const ObsDetails = ( ): Node => {
 
   const tabs = [
     {
-      id: ACTIVITY_TAB,
+      id: ACTIVITY_TAB_ID,
       testID: "ObsDetails.ActivityTab",
-      onPress: ( ) => setTab( ACTIVITY_TAB ),
-      text: "ACTIVITY"
+      onPress: ( ) => setCurrentTabId( ACTIVITY_TAB_ID ),
+      text: t( "ACTIVITY" )
     },
     {
-      id: DATA_TAB,
+      id: DATA_TAB_ID,
       testID: "ObsDetails.ActivityTab",
-      onPress: ( ) => setTab( DATA_TAB ),
-      text: "DATA"
+      onPress: ( ) => setCurrentTabId( DATA_TAB_ID ),
+      text: t( "DATA" )
     }
   ];
 
@@ -337,8 +337,8 @@ const ObsDetails = ( ): Node => {
             {checkCamelAndSnakeCase( observation, "placeGuess" )}
           </Text>
         </View>
-        <Tabs tabs={tabs} activeId={tab} />
-        {tab === ACTIVITY_TAB
+        <Tabs tabs={tabs} activeId={currentTabId} />
+        {currentTabId === ACTIVITY_TAB_ID
           ? (
             <ActivityTab
               uuid={uuid}
