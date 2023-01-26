@@ -29,7 +29,15 @@ const UiLibrary = ( ) => (
       <Text className="text-lg">Button</Text>
       <Button className="mb-2" level="primary" text="PRIMARY BUTTON" />
       <Button className="mb-2" text="NEUTRAL BUTTON" />
-      <Button className="mb-2" level="focus" text="FOCUS BUTTON" />
+      <Button
+        className="mb-2"
+        level="focus"
+        text="FOCUS BUTTON"
+        onPress={( ) => Alert.alert(
+          "You Tapped a Button",
+          "Or did you click it? Fight me."
+        )}
+      />
       <Button className="mb-2" level="warning" text="WARNING BUTTON" />
       <Button className="mb-2" level="primary" text="PRIMARY DISABLED" disabled />
       <Button className="mb-2" text="NEUTRAL DISABLED" disabled />
