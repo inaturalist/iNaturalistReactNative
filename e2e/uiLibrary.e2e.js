@@ -36,35 +36,17 @@ describe( "Using the UiLibrary", () => {
       .withTimeout( 10000 );
     await element( by.id( "drawer-item-ui-library" ) ).tap();
 
+    // Wait for screen container
+    await waitFor( element( by.id( "ui-container" ) ) )
+      .toBeVisible()
+      .withTimeout( 10000 );
+
     // Tap the buttons
-    await waitFor( element( by.id( "ui-button-1" ) ) )
-      .toBeVisible()
-      .withTimeout( 10000 );
     await element( by.id( "ui-button-1" ) ).tap();
-
-    await waitFor( element( by.id( "ui-button-2" ) ) )
-      .toBeVisible()
-      .withTimeout( 10000 );
     await element( by.id( "ui-button-2" ) ).tap();
-
-    await waitFor( element( by.id( "ui-button-3" ) ) )
-      .toBeVisible()
-      .withTimeout( 10000 );
     await element( by.id( "ui-button-3" ) ).tap();
-
-    await waitFor( element( by.id( "ui-button-4" ) ) )
-      .toBeVisible()
-      .withTimeout( 10000 );
     await element( by.id( "ui-button-4" ) ).tap();
-
-    await waitFor( element( by.id( "ui-button-5" ) ) )
-      .toBeVisible()
-      .withTimeout( 10000 );
     await element( by.id( "ui-button-5" ) ).tap();
-
-    await waitFor( element( by.id( "ui-button-6" ) ) )
-      .toBeVisible()
-      .withTimeout( 10000 );
     await element( by.id( "ui-button-6" ) ).tap();
     // Dismiss the alert
     await element(
@@ -72,38 +54,26 @@ describe( "Using the UiLibrary", () => {
     ).tap();
 
     // Tap the AddObsButton
+    // For some reason it does not find the button, so I commented it out
     // await waitFor( element( by.id( "camera-options-button" ) ) )
     //   .toBeVisible()
     //   .withTimeout( 10000 );
     // await element( by.id( "camera-options-button" ) ).tap();
 
+    // Swipe to scroll
+    // For some reason I could not find the ScrollView element, so I used the container
+    await element( by.id( "ui-container" ) ).swipe( "up", "slow", 0.1, 0.5, 0.1 );
+
     // Tap the evidence buttons
-    await waitFor( element( by.id( "ui-evidence-button-1" ) ) )
-      .toBeVisible()
-      .withTimeout( 10000 );
     await element( by.id( "ui-evidence-button-1" ) ).tap();
-
-    await waitFor( element( by.id( "ui-evidence-button-2" ) ) )
-      .toBeVisible()
-      .withTimeout( 10000 );
     await element( by.id( "ui-evidence-button-2" ) ).tap();
-
-    await waitFor( element( by.id( "ui-evidence-button-3" ) ) )
-      .toBeVisible()
-      .withTimeout( 10000 );
     await element( by.id( "ui-evidence-button-3" ) ).tap();
 
-    // await element( by.id( "ui-scroll" ) ).scroll( 200, "down" );
+    // Swipe to scroll
+    await element( by.id( "ui-container" ) ).swipe( "up", "slow", 0.1, 0.5, 0.1 );
 
-    // // Tap the secondary cta buttons
-    // await waitFor( element( by.id( "ui-secondary-cta-button-1" ) ) )
-    //   .toBeVisible()
-    //   .withTimeout( 10000 );
-    // await element( by.id( "ui-secondary-cta-button-1" ) ).tap();
-
-    // await waitFor( element( by.id( "ui-secondary-cta-button-2" ) ) )
-    //   .toBeVisible()
-    //   .withTimeout( 10000 );
-    // await element( by.id( "ui-secondary-cta-button-2" ) ).tap();
+    // Tap the secondary cta buttons
+    await element( by.id( "ui-secondary-cta-button-1" ) ).tap();
+    await element( by.id( "ui-secondary-cta-button-2" ) ).tap();
   } );
 } );
