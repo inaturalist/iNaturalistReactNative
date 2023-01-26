@@ -16,16 +16,16 @@ jest.useFakeTimers( );
 jest.mock(
   "components/SharedComponents/ViewNoFooter",
   () => function MockContainer( props ) {
-    // eslint-disable-next-line
       return <mock-container {...props}>{props.children}</mock-container>;
+    // eslint-disable-next-line react/jsx-props-no-spreading
   }
 );
 
 jest.mock(
   "components/SharedComponents/BottomSheetStandardBackdrop",
   () => function MockContainer( props ) {
-    // eslint-disable-next-line
       return <mock-container {...props}>{props.children}</mock-container>;
+    // eslint-disable-next-line react/jsx-props-no-spreading
   }
 );
 
