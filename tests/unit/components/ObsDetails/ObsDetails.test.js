@@ -109,7 +109,6 @@ test( "renders obs details from remote call", async ( ) => {
   expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
 } );
 
-// TODO: this will be refactored out into a seperate Tab component in the future
 test( "renders data tab on button press", async ( ) => {
   renderComponent( <ObsDetails /> );
   const button = await screen.findByTestId( "ObsDetails.DataTab" );
