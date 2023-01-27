@@ -43,7 +43,19 @@ type Props = {
 
 const SearchTaxonIcon = (
   <TextInput.Icon
-    name={() => <IconMaterial style={textStyles.taxonSearchIcon} name="search" size={25} />}
+    name={() => (
+      <IconMaterial
+        style={textStyles.taxonSearchIcon}
+        name="search"
+        size={25}
+      />
+    )}
+    accessible
+    // TODO: this uses a Pressable under the hood, but we want this actually not to be pressable,
+    // but overriding this with a role of "none" errors out the a11y test matcher
+    accessibilityRole="button"
+    accessibilityLabel={t( "None" )}
+    accessibilityState={{ disabled: true }}
   />
 );
 
