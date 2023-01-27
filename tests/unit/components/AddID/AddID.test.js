@@ -68,6 +68,11 @@ describe( "AddID", ( ) => {
   //   expect( addID ).toBeAccessible( );
   // } );
 
+  it( "should render inside mocked container", ( ) => {
+    renderComponent( <AddID route={mockRoute} /> );
+    expect( screen.queryByTestId( "mock-view-no-footer" ) ).toBeTruthy( );
+  } );
+
   it( "show taxon search results", async ( ) => {
     inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
     const { getByTestId } = renderComponent( <AddID route={mockRoute} /> );
