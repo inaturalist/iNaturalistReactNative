@@ -27,13 +27,17 @@ const useUserLocation = ( ): Object => {
     let isCurrent = true;
 
     const fetchLocation = async ( ) => {
-      const permissions = await requestiOSPermissions( );
-      // TODO: handle case where iOS permissions are not granted
-      if ( permissions !== "granted" ) { return; }
+      if ( Platform.OS === "ios" ) {
+        const permissions = await requestiOSPermissions( );
+        // TODO: handle case where iOS permissions are not granted
+        if ( permissions !== "granted" ) { return; }
+      }
 
       const success = async ( { coords } ) => {
+        console.log( isCurrent );
         if ( !isCurrent ) { return; }
         const placeGuess = await fetchPlaceName( coords.latitude, coords.longitude );
+        console.log( coords );
         setLatLng( {
           place_guess: placeGuess,
           latitude: coords.latitude,
