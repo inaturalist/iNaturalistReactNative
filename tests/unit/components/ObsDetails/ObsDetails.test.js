@@ -78,7 +78,7 @@ jest.mock(
   () => function MockContainer( props ) {
     const MockName = "mock-scroll-with-footer";
     // eslint-disable-next-line
-    return <MockName {...props}>{props.children}</MockName>;
+    return <MockName {...props} testID={MockName}>{props.children}</MockName>;
   }
 );
 

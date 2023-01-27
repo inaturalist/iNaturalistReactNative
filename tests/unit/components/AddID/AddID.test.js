@@ -18,7 +18,7 @@ jest.mock(
   () => function MockContainer( props ) {
     const MockName = "mock-view-no-footer";
     // eslint-disable-next-line react/jsx-props-no-spreading
-    return <MockName {...props}>{props.children}</MockName>;
+    return <MockName {...props} testID={MockName}>{props.children}</MockName>;
   }
 );
 
@@ -27,7 +27,7 @@ jest.mock(
   () => function MockContainer( props ) {
     const MockName = "mock-bottom-sheet-standard-backdrop";
     // eslint-disable-next-line react/jsx-props-no-spreading
-    return <MockName {...props}>{props.children}</MockName>;
+    return <MockName {...props} testID={MockName}>{props.children}</MockName>;
   }
 );
 
