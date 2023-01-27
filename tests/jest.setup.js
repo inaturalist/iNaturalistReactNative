@@ -247,3 +247,11 @@ jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
 jest.mock( "inaturalistjs" );
 inatjs.observations.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
+
+jest.mock( "react-native-orientation-locker", () => ( {
+  addEventListener: jest.fn(),
+  addDeviceOrientationListener: jest.fn(),
+  removeEventListener: jest.fn(),
+  lockToPortrait: jest.fn(),
+  removeOrientationListener: jest.fn()
+} ) );

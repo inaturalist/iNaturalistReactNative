@@ -23,7 +23,6 @@ type Props = {
   handleAddEvidence?: Function,
   showAddButton?: boolean,
   deviceOrientation?: string
-
 }
 
 const PhotoCarousel = ( {
@@ -99,11 +98,9 @@ const PhotoCarousel = ( {
       if ( deviceOrientation && !isTablet ) {
         if ( deviceOrientation === "portrait" ) {
           className += "rotate-0";
-        }
-        if ( deviceOrientation === "landscapeLeft" ) {
+        } else if ( deviceOrientation === "landscapeLeft" ) {
           className += "-rotate-90";
-        }
-        if ( deviceOrientation === "landscapeRight" ) {
+        } else if ( deviceOrientation === "landscapeRight" ) {
           className += "rotate-90";
         }
       }

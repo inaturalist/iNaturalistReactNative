@@ -19,7 +19,8 @@ type Props = {
 const PhotoPreview = ( {
   photoUris,
   setPhotoUris,
-  savingPhoto, deviceOrientation
+  savingPhoto,
+  deviceOrientation
 }: Props ): Node => {
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
@@ -57,22 +58,6 @@ const PhotoPreview = ( {
     deletePhotoFromObservation( photoUriToDelete, photoUris, setPhotoUris );
     hideDialog( );
   };
-
-  // const [rotation, setRotation] = useState( false );
-
-  // useEffect( () => {
-  //   Dimensions.addEventListener( "change", ( { window: { width, height } } ) => {
-  //     if ( !isTablet && width > height ) {
-  //       // change image rotation
-  //       setRotation( true );
-  //       console.log( "rotation true" );
-  //     } else if ( !isTablet && width < height ) {
-  //       // change image rotation
-  //       setRotation( false );
-  //       console.log( "rotation false" );
-  //     }
-  //   } );
-  // }, [] );
 
   return (
     <>
