@@ -15,7 +15,7 @@ jest.useFakeTimers( );
 
 jest.mock(
   "components/SharedComponents/ViewNoFooter",
-  () => function MockContainer( props ) {
+  () => function MockViewNoFooter( props ) {
     const MockName = "mock-view-no-footer";
     // eslint-disable-next-line react/jsx-props-no-spreading
     return <MockName {...props} testID={MockName}>{props.children}</MockName>;
@@ -24,7 +24,7 @@ jest.mock(
 
 jest.mock(
   "components/SharedComponents/BottomSheetStandardBackdrop",
-  () => function MockContainer( props ) {
+  () => function MockBottomSheetStandardBackdrop( props ) {
     const MockName = "mock-bottom-sheet-standard-backdrop";
     // eslint-disable-next-line react/jsx-props-no-spreading
     return <MockName {...props} testID={MockName}>{props.children}</MockName>;
