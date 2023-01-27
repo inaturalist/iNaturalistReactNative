@@ -40,7 +40,7 @@ const IdentificationSection = ( ): Node => {
 
   return (
     <Button
-      level="primary"
+      level="focus"
       onPress={navToAddID}
       text={t( "Add-an-Identification" )}
       className="mx-10 my-3"
