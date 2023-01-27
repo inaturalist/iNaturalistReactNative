@@ -14,7 +14,7 @@ type Props = {
 const Body3 = ( {
   children, testID, style, className
 }: Props ): Node => {
-  let textClass = "text-sm leading-4";
+  let textClass = "text-sm";
 
   if ( className ) {
     textClass = textClass.concat( " ", className );

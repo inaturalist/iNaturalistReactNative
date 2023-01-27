@@ -14,7 +14,7 @@ type Props = {
 const Subheading1 = ( {
   children, testID, style, className
 }: Props ): Node => {
-  let textClass = "text-xl leading-6";
+  let textClass = "text-xl";
 
   if ( className ) {
     textClass = textClass.concat( " ", className );

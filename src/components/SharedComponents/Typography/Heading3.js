@@ -14,7 +14,7 @@ type Props = {
 const Heading3 = ( {
   children, testID, style, className
 }: Props ): Node => {
-  let textClass = "text-lg leading-5";
+  let textClass = "text-lg";
 
   if ( className ) {
     textClass = textClass.concat( " ", className );

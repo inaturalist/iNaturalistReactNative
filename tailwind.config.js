@@ -8,6 +8,40 @@ module.exports = {
   content: ["index.js", "./src/**/*.js"],
   theme: {
     extend: {
+      fontSize: {
+        "3xl": ["23px", {
+          lineHeight: "27.7px"
+        }
+        ],
+        "2xl": ["19.5px", {
+          lineHeight: "23.4px"
+        }
+        ],
+        xl: ["18.6px", {
+          lineHeight: "22.4px"
+        }
+        ],
+        lg: ["16.9px", {
+          lineHeight: "20.2px"
+        }
+        ],
+        base: ["16px", {
+          lineHeight: "19.2px"
+        }
+        ],
+        md: ["14.2px", {
+          lineHeight: "17.1px"
+        }
+        ],
+        sm: ["12.4px", {
+          lineHeight: "16px"
+        }
+        ],
+        xs: ["10.7px", {
+          lineHeight: "12.8px"
+        }
+        ]
+      },
       height: {
         22: "5.5rem"
       },
@@ -15,6 +49,7 @@ module.exports = {
         "Whitney-Medium": ["Whitney-Medium"],
         "Whitney-Medium-Pro": ["Whitney-Medium-Pro"], // Android naming convention
         "Whitney-Light": ["Whitney-Light"],
+        "Whitney-Light-Pro": ["Whitney-Light-Pro"], // Android naming convention
         // selected from list of fonts already available in RN
         // https://infinitbility.com/react-native-font-family-list/
         "Papyrus-Condensed": ["Papyrus-Condensed"],

@@ -14,7 +14,7 @@ type Props = {
 const List2 = ( {
   children, testID, style, className
 }: Props ): Node => {
-  let textClass = "sm leading-6";
+  let textClass = "sm leading-4";
 
   if ( className ) {
     textClass = textClass.concat( " ", className );
