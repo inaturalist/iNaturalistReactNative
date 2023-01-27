@@ -185,7 +185,7 @@ const ObsEdit = ( ): Node => {
   if ( !currentObservation ) { return null; }
 
   return (
-    <>
+    <View testID="obs-edit" className="flex-1">
       <DeleteObservationDialog
         deleteDialogVisible={deleteDialogVisible}
         hideDialog={hideDialog}
@@ -227,7 +227,7 @@ const ObsEdit = ( ): Node => {
 
           />
           <Button
-            level="primary"
+            level="focus"
             text={t( "UPLOAD-OBSERVATION" )}
             testID="ObsEdit.uploadButton"
             onPress={async ( ) => {
@@ -245,7 +245,7 @@ const ObsEdit = ( ): Node => {
           photoUris={photoUris}
         />
       </KeyboardAwareScrollView>
-    </>
+    </View>
   );
 };
 

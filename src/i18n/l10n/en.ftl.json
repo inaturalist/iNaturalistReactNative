@@ -48,10 +48,6 @@
     "comment": "Quality grade option: Casual (shortened for My Observations view)",
     "val": "C"
   },
-  "camera-button-label-switch-camera": {
-    "comment": "Accessible label for the camera button",
-    "val": "Use the device's other camera."
-  },
   "Camera-Roll": "Camera Roll",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
@@ -62,10 +58,6 @@
   "Check-your-email": {
     "comment": "After pressing the reset password button",
     "val": "Check your email! We've sent password reset instructions."
-  },
-  "Choose-Taxon": {
-    "comment": "Label for a button to choose a taxon",
-    "val": "Choose Taxon"
   },
   "Combine-Photos": "Combine Photos",
   "Combine-photos-onboarding": {
@@ -113,14 +105,6 @@
   "Filters": "Filters",
   "Finish": "Finish",
   "Fish": "Fish",
-  "flash-button-label-flash": {
-    "comment": "Accessible label for the flash button, when flas is turned on",
-    "val": "The flash is turned on. Press here to disable it."
-  },
-  "flash-button-label-flash-off": {
-    "comment": "Accessible label for the flash button, when flas is turned off",
-    "val": "The flash is turned off. Press here to enable it."
-  },
   "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
@@ -213,9 +197,6 @@
   "Muted-Users": "Muted Users",
   "Names": "Names",
   "Native": "Native",
-  "Navigate-to-login-screen": "Navigate to login screen",
-  "Navigate-to-observation-details": "Navigate to observation details screen",
-  "Navigate-to-taxon-details": "Navigate to taxon details",
   "Nearby": {
     "comment": "Header for nearby projects",
     "val": "Nearby"
@@ -236,7 +217,6 @@
     "val": "No account found with that email"
   },
   "No-comments-or-ids-to-display": "No comments or ids to display",
-  "No-image-available-for-this-observation": "No image available for this observation",
   "No-Location": "No Location",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
   "no-rights-reserved": {
@@ -510,6 +490,46 @@
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
+  "Add-this-ID": "Add this identification",
+  "Camera-button-label-switch-camera": {
+    "comment": "Accessible label for the camera button",
+    "val": "Use the device's other camera."
+  },
+  "Camera-button-value-back": "The back camera is being used.",
+  "Camera-button-value-front": "The front camera is being used.",
+  "Cancel-comment": "Cancel comment",
+  "Clear-comment": "Clear comment",
+  "Edit-comment": "Edit comment",
+  "Fave-button-label-unfave": {
+    "comment": "Accessible label for the favorite button, when the observation is favorited",
+    "val": "Unfavorite this observation."
+  },
+  "Fave-button-label-fave": {
+    "comment": "Accessible label for the favorite button, when the observation is not favorited",
+    "val": "Favorite this observation."
+  },
+  "Flash-button-label-flash": {
+    "comment": "Accessible label for the flash button, when flash is turned on",
+    "val": "Disable flash."
+  },
+  "Flash-button-label-flash-off": {
+    "comment": "Accessible label for the flash button, when flash is turned off",
+    "val": "Enable flash."
+  },
+  "Flash-button-value-flash": "The flash is turned on.",
+  "Flash-button-value-flash-off": "The flash is turned off.",
+  "Navigate-back": "Navigate back",
+  "Navigate-to-edit-observation": "Navigate to edit observation screen",
+  "Navigate-to-login-screen": "Navigate to login screen",
+  "Navigate-to-observation-details": "Navigate to observation details screen",
+  "Navigate-to-project-details": "Navigate to project details",
+  "Navigate-to-taxon-details": "Navigate to taxon details",
+  "Navigate-to-user-profile": "Navigate to user profile",
+  "Number-of-comments": "Number of comments",
+  "Number-of-identifications": "Number of identifications",
+  "Observation-has-no-photos-and-no-sounds": "This observation has no photos and no sounds.",
+  "Take-photo": "Take photo",
+  "Photo-taken-at": "Photo taken at { $date }",
   "Location-map-unavailable-without-internet": {
     "comment": "Accessibility labels for no internet state in ObsDetails",
     "val": "Location map unavailable without internet"

@@ -1,8 +1,8 @@
 // @flow
 
-import { Text } from "components/styledComponents";
+import { Pressable, Text } from "components/styledComponents";
 import * as React from "react";
-import { Button as ButtonRNP } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 
 type ButtonProps = {
   text: string,
@@ -12,7 +12,8 @@ type ButtonProps = {
   testID?: string,
   loading?: boolean,
   style?: any,
-  className?: string
+  className?: string,
+  accessibilityRole?: string
 }
 
 const setStyles = ( {
@@ -20,51 +21,57 @@ const setStyles = ( {
   disabled,
   className
 } ) => {
-  let buttonClass = "rounded-3xl h-13";
+  let buttonClass = "rounded flex-row justify-center items-center py-1.5 px-8";
+  let textClass = "text-lg text-white font-semibold";
 
   if ( className ) {
-    buttonClass += ` ${className}`;
+    buttonClass = buttonClass.concat( " ", className );
   }
 
   if ( level === "warning" ) {
-    buttonClass += buttonClass.concat( " ", "bg-buttonWarning" );
+    buttonClass = buttonClass.concat( " ", "bg-warningRed" );
   } else if ( level === "primary" ) {
-    buttonClass += buttonClass.concat( " ", "bg-buttonPrimary" );
+    buttonClass = buttonClass.concat( " ", "bg-darkGray" );
+  } else if ( level === "focus" ) {
+    buttonClass = buttonClass.concat( " ", "bg-inatGreen" );
   } else {
-    buttonClass += buttonClass.concat( " ", "bg-buttonNeutral" );
+    buttonClass = buttonClass.concat( " ", "border border-darkGray border-[2.6px]" );
+    textClass = textClass.concat( " ", "color-darkGray" );
   }
 
   if ( disabled ) {
-    if ( level === "warning" ) {
-      buttonClass += buttonClass.concat( " ", "bg-buttonWarningDisabled" );
-    } else if ( level === "primary" ) {
-      buttonClass += buttonClass.concat( " ", "bg-buttonPrimaryDisabled" );
-    } else {
-      buttonClass += buttonClass.concat( " ", "bg-buttonNeutralDisabled" );
-    }
+    buttonClass = buttonClass.concat( " ", "opacity-[0.5]" );
   }
 
-  return { buttonClass };
+  return { buttonClass, textClass };
 };
 
 const Button = ( {
-  text, onPress, disabled, testID, level, loading, style, className
+  text,
+  onPress,
+  disabled,
+  testID,
+  level,
+  loading,
+  style,
+  className,
+  accessibilityRole
 }: ButtonProps ): React.Node => {
-  const { buttonClass } = setStyles( { disabled, level, className } );
+  const { buttonClass, textClass } = setStyles( { disabled, level, className } );
 
   return (
-    <ButtonRNP
+    <Pressable
       onPress={onPress}
       className={buttonClass}
       style={style}
       disabled={disabled}
       testID={testID}
-      loading={loading}
+      accessibilityRole={accessibilityRole || "button"}
+      accessibilityState={{ disabled }}
     >
-      <Text className="text-lg text-white font-semibold">
-        {text}
-      </Text>
-    </ButtonRNP>
+      {loading && <ActivityIndicator size={18} className="mr-2" />}
+      <Text className={textClass}>{text}</Text>
+    </Pressable>
   );
 };
 

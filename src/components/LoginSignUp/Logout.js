@@ -84,7 +84,7 @@ const Logout = ( ): Node => {
               testID="Login.signOutButton"
               text={t( "Cancel" )}
             />
-            <Button level="primary" onPress={onSignOut} text={t( "Sign-out" )} />
+            <Button level="focus" onPress={onSignOut} text={t( "Sign-out" )} />
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -96,7 +96,7 @@ const Logout = ( ): Node => {
         <View className="self-center justify-center h-screen">
           <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
           <Button
-            level="primary"
+            level="focus"
             className="mt-5"
             onPress={showDialog}
             testID="Login.signOutButton"

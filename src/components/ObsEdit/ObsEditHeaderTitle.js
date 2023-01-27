@@ -23,7 +23,16 @@ const ObsEditHeaderTitle = ( ): Node => {
   }
 
   return observations.length === 1
-    ? <Text testID="new-observation-text" className="text-2xl">{t( "New-Observation" )}</Text>
+    ? (
+      <Text
+        testID="new-observation-text"
+        className="text-2xl"
+        accessible
+        accessibilityRole="header"
+      >
+        {t( "New-Observation" )}
+      </Text>
+    )
     : (
       <View className="flex-row items-center">
         <Pressable onPress={showPrevObservation} className="w-16">

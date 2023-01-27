@@ -37,7 +37,7 @@ const SaveDialog = ( {
         <Button
           onPress={saveObservation}
           text={t( "Save" )}
-          level="primary"
+          level="focus"
           className="m-0.5"
         />
       </Dialog.Actions>
@@ -61,7 +61,7 @@ const SaveDialog = ( {
         <Button
           onPress={saveObservation}
           text={t( "Cancel" )}
-          level="primary"
+          level="focus"
           className="m-0.5"
         />
       </Dialog.Actions>
