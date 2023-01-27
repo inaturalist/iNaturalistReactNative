@@ -58,15 +58,20 @@ jest.mock( "react-native-vector-icons/MaterialIcons", ( ) => {
   return MaterialIcons;
 } );
 
+jest.mock( "@gorhom/bottom-sheet", () => {
+  const actualBottomSheet = jest.requireActual( "@gorhom/bottom-sheet" );
+  return {
+    ...actualBottomSheet
+  };
+} );
+
 const mockRoute = { params: {} };
 
 describe( "AddID", ( ) => {
-  // Does currently not pass because IconButton does not pass down a11y props
-  // test( "should not have accessibility errors", ( ) => {
-  //   const addID = <AddID route={mockRoute} />;
-
-  //   expect( addID ).toBeAccessible( );
-  // } );
+  test( "should not have accessibility errors", ( ) => {
+    const addID = <AddID route={mockRoute} />;
+    expect( addID ).toBeAccessible( );
+  } );
 
   it( "should render inside mocked container", ( ) => {
     renderComponent( <AddID route={mockRoute} /> );
