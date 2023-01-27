@@ -693,6 +693,9 @@ Add-this-ID = Add this identification
 Camera-button-label-switch-camera = Use the device's other camera.
 Camera-button-value-back = The back camera is being used.
 Camera-button-value-front = The front camera is being used.
+Cancel-comment = Cancel comment
+Clear-comment = Clear comment
+Edit-comment = Edit comment
 # Accessible label for the favorite button, when the observation is favorited
 Fave-button-label-unfave = Unfavorite this observation.
 # Accessible label for the favorite button, when the observation is not favorited
