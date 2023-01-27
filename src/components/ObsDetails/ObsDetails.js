@@ -252,7 +252,7 @@ const ObsDetails = ( ): Node => {
     },
     {
       id: DATA_TAB_ID,
-      testID: "ObsDetails.ActivityTab",
+      testID: "ObsDetails.DataTab",
       onPress: ( ) => setCurrentTabId( DATA_TAB_ID ),
       text: t( "DATA" )
     }
