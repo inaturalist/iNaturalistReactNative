@@ -93,7 +93,6 @@ const StandardCamera = ( ): Node => {
   }, [isTablet, footerWidth] );
 
   const takePhoto = async ( ) => {
-    console.log( "pressed" );
     setSavingPhoto( true );
     try {
       if ( disallowAddingPhotos ) {
@@ -187,7 +186,7 @@ const StandardCamera = ( ): Node => {
       />
       <FadeInOutView savingPhoto={savingPhoto} />
       <View className="absolute bottom-0 w-full">
-        <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4 `}>
+        <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4`}>
           {hasFlash ? (
             <Pressable onPress={toggleFlash} accessibilityRole="button">
               {takePhotoOptions.flash === "on"
