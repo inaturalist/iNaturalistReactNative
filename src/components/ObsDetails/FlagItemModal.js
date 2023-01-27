@@ -98,6 +98,7 @@ const FlagItemModal = ( {
       visible={showFlagItemModal}
       animationType="slide"
       className="flex-1"
+      testID="FlagItemModal"
     >
       <SafeAreaView className="flex-1">
         <View className="flex-row-reverse justify-between p-6 border-b">

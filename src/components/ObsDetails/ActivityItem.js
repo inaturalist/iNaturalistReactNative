@@ -19,7 +19,6 @@ import React, { useEffect, useState } from "react";
 import { Menu } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Comment from "realmModels/Comment";
-// import Flag from "realmModels/Flag";
 import Taxon from "realmModels/Taxon";
 import User from "realmModels/User";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
