@@ -1,3 +1,12 @@
+import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
+import Button from "components/SharedComponents/Buttons/Button";
+import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
+import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
+import Heading1 from "components/SharedComponents/Typography/Heading1";
+import Heading2 from "components/SharedComponents/Typography/Heading2";
+import Heading3 from "components/SharedComponents/Typography/Heading3";
+import Heading4 from "components/SharedComponents/Typography/Heading4";
+import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import {
   ScrollView,
   Text,
@@ -5,12 +14,6 @@ import {
 } from "components/styledComponents";
 import React from "react";
 import { Alert } from "react-native";
-
-import AddObsButton from "./SharedComponents/Buttons/AddObsButton";
-import Button from "./SharedComponents/Buttons/Button";
-import EvidenceButton from "./SharedComponents/Buttons/EvidenceButton";
-import SecondaryCTAButton from "./SharedComponents/Buttons/SecondaryCTAButton";
-import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
@@ -95,6 +98,11 @@ const UiLibrary = ( ) => (
       <SecondaryCTAButton disabled>
         <Text>Disabled SecondaryCTAButton</Text>
       </SecondaryCTAButton>
+      <Text className="text-xl">Typography</Text>
+      <Heading1 className="my-2">Heading1</Heading1>
+      <Heading2 className="my-2">Heading2</Heading2>
+      <Heading3 className="my-2">Heading3</Heading3>
+      <Heading4 className="my-2">Heading4</Heading4>
 
       <Text className="text-lg">More Stuff!</Text>
       <Text className="h-[100px]">
