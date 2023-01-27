@@ -76,8 +76,9 @@ jest.mock( "components/ObsDetails/DataTab", () => ( {
 jest.mock(
   "components/SharedComponents/ScrollWithFooter",
   () => function MockContainer( props ) {
+    const MockName = "mock-scroll-with-footer";
     // eslint-disable-next-line
-    return <mock-container {...props}>{props.children}</mock-container>;
+    return <MockName {...props}>{props.children}</MockName>;
   }
 );
 
