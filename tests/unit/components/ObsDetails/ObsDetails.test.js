@@ -77,7 +77,7 @@ jest.mock(
   "components/SharedComponents/ScrollWithFooter",
   () => function MockContainer( props ) {
     const MockName = "mock-scroll-with-footer";
-    // eslint-disable-next-line
+    // eslint-disable-next-line react/jsx-props-no-spreading
     return <MockName {...props} testID={MockName}>{props.children}</MockName>;
   }
 );
