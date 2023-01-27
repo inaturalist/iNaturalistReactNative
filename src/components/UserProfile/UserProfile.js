@@ -69,7 +69,7 @@ const UserProfile = ( ): React.Node => {
   } );
 
   return (
-    <ViewWithFooter>
+    <ViewWithFooter testID="UserProfile">
       <View className="flex-row justify-evenly items-center m-3" testID={`UserProfile.${userId}`}>
         <UserIcon uri={User.uri( user )} />
         <View>
@@ -101,7 +101,7 @@ const UserProfile = ( ): React.Node => {
         <View className="flex-row">
           <View className="w-1/2">
             <Button
-              level="primary"
+              level="focus"
               text={t( "Follow" )}
               onPress={followUser}
               testID="UserProfile.followButton"
@@ -109,7 +109,7 @@ const UserProfile = ( ): React.Node => {
           </View>
           <View className="w-1/2">
             <Button
-              level="primary"
+              level="focus"
               text={t( "Messages" )}
               onPress={( ) => navigation.navigate( "Messages" )}
               testID="UserProfile.messagesButton"

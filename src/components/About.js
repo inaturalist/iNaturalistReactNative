@@ -97,7 +97,7 @@ const AboutScreen = ( ): Node => {
         <Text>Last 100 lines</Text>
         <Text className={`text-xs h-fit mb-5 ${fontMonoClass}`}>{logContents}</Text>
         <Button
-          level="primary"
+          level="focus"
           onPress={openEmailWithLogsAttached}
           text={t( "EMAIL-DEBUG-LOGS" )}
           className="mb-5"
