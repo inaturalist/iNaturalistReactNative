@@ -1,6 +1,7 @@
 // @flow
 
-import { Pressable, Text } from "components/styledComponents";
+import Heading4 from "components/SharedComponents/Typography/Heading4";
+import { Pressable } from "components/styledComponents";
 import * as React from "react";
 import { ActivityIndicator } from "react-native-paper";
 
@@ -21,7 +22,7 @@ const setStyles = ( {
   className
 } ) => {
   let buttonClass = "rounded flex-row justify-center items-center py-1.5 px-8";
-  let textClass = "text-lg text-white font-semibold";
+  let textClass = "text-white tracking-widest";
 
   if ( className ) {
     buttonClass = buttonClass.concat( " ", className );
@@ -59,9 +60,9 @@ const Button = ( {
       testID={testID}
     >
       {loading && <ActivityIndicator size={18} className="mr-2" />}
-      <Text className={textClass}>
+      <Heading4 className={textClass}>
         {text}
-      </Text>
+      </Heading4>
     </Pressable>
   );
 };
