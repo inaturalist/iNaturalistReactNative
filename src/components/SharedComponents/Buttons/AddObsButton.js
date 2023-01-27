@@ -21,7 +21,7 @@ const AddObsButton = ( ): React.Node => {
         modal={<AddObsModal closeModal={closeModal} />}
       />
       <IconButton
-        icon="icon-createobservation"
+        icon="plus-sign"
         onPress={( ) => openModal( )}
         size={40}
         mode="contained"

@@ -30,11 +30,24 @@ const UiLibrary = ( ) => {
         <Text className="text-xl">Buttons</Text>
 
         <Text className="text-lg">Button</Text>
-        <Button className="mb-2" text="Default Button" />
-        <Button className="mb-2" level="warning" text="Warning Button" />
-        <Button className="mb-2" level="primary" text="Primary Button" />
-        <Button className="mb-2" disabled text="Disabled Button" />
-        <Button className="mb-2" loading text="Loading Button" />
+        <Button className="mb-2" level="primary" text="PRIMARY BUTTON" />
+        <Button className="mb-2" text="NEUTRAL BUTTON" />
+        <Button
+          className="mb-2"
+          level="focus"
+          text="FOCUS BUTTON"
+          onPress={( ) => Alert.alert(
+            "You Tapped a Button",
+            "Or did you click it? Fight me."
+          )}
+        />
+        <Button className="mb-2" level="warning" text="WARNING BUTTON" />
+        <Button className="mb-2" level="primary" text="PRIMARY DISABLED" disabled />
+        <Button className="mb-2" text="NEUTRAL DISABLED" disabled />
+        <Button className="mb-2" level="focus" text="FOCUS DISABLED" disabled />
+        <Button className="mb-2" level="warning" text="WARNING DISABLED" disabled />
+        <Button className="mb-2" loading text="LOADING BUTTON" />
+
         <Button
           className="mb-2"
           text="Tap to show alert"
@@ -43,6 +56,17 @@ const UiLibrary = ( ) => {
             "Or did you click it? Fight me."
           )}
         />
+        <Text className="text-xl">Multiple Buttons With Focus</Text>
+        <View className="flex-row justify-between">
+          <Button className="my-2" text="LEFT" />
+          <Button className="my-2 grow ml-3" level="focus" text="RIGHT" />
+        </View>
+
+        <Text className="text-xl">Multiple Buttons Without Focus</Text>
+        <View className="flex-row">
+          <Button className="my-2 grow" text="LEFT" />
+          <Button className="my-2 ml-3 grow" text="RIGHT" />
+        </View>
 
         <Text className="text-lg">AddObsButton</Text>
         <Text>

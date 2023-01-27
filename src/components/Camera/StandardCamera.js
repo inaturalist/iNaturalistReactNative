@@ -1,16 +1,18 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import CloseButton from "components/SharedComponents/Buttons/CloseButton";
 import {
-  Pressable, Text, View
+  Pressable, View
 } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useRef, useState } from "react";
 import { Platform, StatusBar } from "react-native";
-import { Avatar, Snackbar } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import {
+  Avatar, IconButton, Snackbar, useTheme
+} from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
@@ -49,6 +51,7 @@ const StandardCamera = ( ): Node => {
     evidenceToAdd,
     setEvidenceToAdd
   } = useContext( ObsEditContext );
+  const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
@@ -166,7 +169,7 @@ const StandardCamera = ( ): Node => {
           {hasFlash ? (
             <Pressable onPress={toggleFlash}>
               {takePhotoOptions.flash === "on"
-                ? renderAddObsButtons( "flash" )
+                ? renderAddObsButtons( "flash-on-circle" )
                 : renderAddObsButtons( "flash-off" )}
             </Pressable>
           ) : <View />}
@@ -175,20 +178,19 @@ const StandardCamera = ( ): Node => {
           </Pressable>
         </View>
         <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">
-          <Pressable
-            className="w-1/3 pt-4 pb-4 pl-3"
-            onPress={( ) => navigation.goBack( )}
-          >
-            <Icon name="arrow-back-ios" size={25} color={colors.white} />
-          </Pressable>
+          <CloseButton className="w-24" />
           <Pressable onPress={takePhoto}>
-            {renderCameraButton( "circle-outline", disallowAddingPhotos )}
+            {renderCameraButton( "camera", disallowAddingPhotos )}
           </Pressable>
           {photosTaken ? (
-            <Text className="text-white text-xl w-1/3 text-center pr-4" onPress={navToObsEdit}>
-              {t( "Next" )}
-            </Text>
-          ) : <View className="w-1/3" />}
+            <IconButton
+              icon="checkmark"
+              iconColor={theme.colors.onSecondary}
+              containerColor={theme.colors.secondary}
+              onPress={navToObsEdit}
+              accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+            />
+          ) : <IconButton disabled />}
         </View>
       </View>
       <Snackbar

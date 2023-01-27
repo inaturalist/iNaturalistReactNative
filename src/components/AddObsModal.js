@@ -51,7 +51,6 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
       testID={`camera-options-button-${icon}`}
       size={size}
       icon={icon}
-      mode="contained"
       containerColor={theme.colors.secondary}
       iconColor={theme.colors.onSecondary}
       className={className}
@@ -75,7 +74,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
         </View>
       </View>
       <View className="flex-row items-center justify-center">
-        {renderIconButton( "icon-camera", "mx-5", navToStandardCamera, t( "Navigate-to-camera" ) )}
+        {renderIconButton( "camera", "mx-5", navToStandardCamera, t( "Navigate-to-camera" ) )}
         {renderIconButton(
           "icon-gallery",
           "mx-5",
@@ -85,20 +84,19 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
       </View>
       <View className="flex-row justify-center">
         {renderIconButton(
-          "icon-noevidence",
+          "pen-and-paper",
           "mx-2",
           navToObsEdit,
           t( "Navigate-to-observation-edit-screen" )
         )}
         {renderIconButton(
-          "icon-close",
-          "self-center",
+          "close-button-x",
+          "self-center h-24 w-24 rounded-[99px]",
           ( ) => closeModal( ),
-          t( "Close-camera-options-modal" ),
-          80
+          t( "Close-camera-options-modal" )
         )}
         {renderIconButton(
-          "icon-sound",
+          "microphone",
           "mx-2",
           navToSoundRecorder,
           t( "Navigate-to-sound-recorder" )

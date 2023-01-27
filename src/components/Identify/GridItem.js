@@ -86,7 +86,7 @@ const GridItem = ( {
         </View>
         {isSpecies && (
           <Button
-            level="primary"
+            level="focus"
             onPress={agreeWithObservation}
             text={t( "agree" )}
             testID="Identify.agree"

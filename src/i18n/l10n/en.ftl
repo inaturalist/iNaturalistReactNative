@@ -724,3 +724,4 @@ Navigate-to-photo-importer = Navigate to photo importer
 Navigate-to-sound-recorder = Navigate to sound recorder
 Open-add-evidence-modal = Open add evidence modal
 Open-side-menu = Open side menu
+Return-to-previous-screen = Return to previous screen

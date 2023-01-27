@@ -65,7 +65,7 @@ const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node 
       />
       <View style={viewStyles.confirmButtonFooter}>
         <Button
-          level="primary"
+          level="focus"
           text={t( "confirm location" )}
           onPress={updateLocationAndClose}
           testID="LocationPicker.confirmButton"

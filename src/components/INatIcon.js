@@ -6,15 +6,27 @@
 import createIconSet from "react-native-vector-icons/lib/create-icon-set";
 
 const glyphMap = {
-  "tab-notifications": 57344,
-  "icon-menu": 57345,
-  "icon-createobservation": 57346,
+  "notifications-bell": 57344,
+  "hamburger-menu": 57345,
+  "plus-sign": 57346,
   "compass-rose": 57347,
-  "icon-noevidence": 57348,
-  "icon-close": 57349,
-  "icon-sound": 57350,
-  "icon-camera": 57351,
-  "ios-people-updated-2": 57352
+  "pen-and-paper": 57348,
+  microphone: 57350,
+  "icon-kebabmenu": 57354,
+  camera: 57355,
+  "triple-dots": 57352,
+  "close-button-x": 57351,
+  "comments-filled-in": 57353,
+  checkmark: 57354,
+  pencil: 57356,
+  "ios-people-updated-2": 57357,
+  "cv-sparklylabel": 57358,
+  "close-button-circle": 57349,
+  "flash-on-circle": 57360,
+  "copyright-circle": 57361,
+  "crop-photo-circle": 57362,
+  "trash-can-circle": 57359,
+  "close-button-x-small": 57363
 };
 
 const iconSet = createIconSet( glyphMap, "inaturalisticons", "inaturalisticons.ttf" );

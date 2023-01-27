@@ -26,7 +26,7 @@ const Footer = ( ): React.Node => {
       style={viewStyles.shadow}
     >
       <IconButton
-        icon="icon-menu"
+        icon="hamburger-menu"
         onPress={toggleSideMenu}
         accessibilityLabel={t( "Open-side-menu" )}
       />
@@ -42,7 +42,7 @@ const Footer = ( ): React.Node => {
         accessibilityLabel={t( "Navigate-to-observation-list" )}
       />
       <IconButton
-        icon="tab-notifications"
+        icon="notifications-bell"
         onPress={navToNotifications}
         accessibilityLabel={t( "Navigate-to-notifications-screen" )}
       />
