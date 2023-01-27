@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native";
 import UserProfile from "components/UserProfile/UserProfile";
 import React from "react";
 
@@ -30,21 +31,20 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-test( "renders user profile from API call", async ( ) => {
-  const { getByTestId, getByText } = renderComponent( <UserProfile /> );
+describe( "UserProfile", () => {
+  test( "should not have accessibility errors", async () => {
+    renderComponent( <UserProfile /> );
+    const userProfile = await screen.findByTestId( "UserProfile" );
+    expect( userProfile ).toBeAccessible();
+  } );
 
-  expect( getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy( );
-  expect( getByText( `iNaturalist ${mockUser.roles[0]}` ) ).toBeTruthy( );
-  expect( getByTestId( "UserIcon.photo" ).props.source )
-    .toStrictEqual( { uri: mockUser.icon_url } );
+  test( "renders user profile from API call", async () => {
+    const { getByTestId, getByText } = renderComponent( <UserProfile /> );
+
+    expect( getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy();
+    expect( getByText( `iNaturalist ${mockUser.roles[0]}` ) ).toBeTruthy();
+    expect( getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( {
+      uri: mockUser.icon_url
+    } );
+  } );
 } );
-
-test.todo( "should not have accessibility errors" );
-// test( "should not have accessibility errors", ( ) => {
-//   const userProfile = (
-//     <NavigationContainer>
-//       <UserProfile />
-//     </NavigationContainer>
-//   );
-//   expect( userProfile ).toBeAccessible( );
-// } );

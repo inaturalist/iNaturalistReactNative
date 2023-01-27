@@ -182,7 +182,14 @@ const ObsDetails = ( ): Node => {
 
     const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } );
     const editIcon = ( ) => ( obsCreatedLocally || obsOwnedByCurrentUser )
-    && <IconButton icon="pencil" onPress={navToObsEdit} textColor={colors.gray} />;
+    && (
+      <IconButton
+        icon="pencil"
+        onPress={navToObsEdit}
+        textColor={colors.gray}
+        accessibilityLabel={t( "Navigate-to-edit-observation" )}
+      />
+    );
 
     navigation.setOptions( {
       headerRight: editIcon
@@ -217,6 +224,7 @@ const ObsDetails = ( ): Node => {
           testID={`ObsDetails.taxon.${taxon.id}`}
           accessibilityRole="link"
           accessibilityLabel={t( "Navigate-to-taxon-details" )}
+          accessibilityValue={{ text: taxon.name }}
         >
           <Text>
             {checkCamelAndSnakeCase( taxon, "preferredCommonName" )}
@@ -276,23 +284,33 @@ const ObsDetails = ( ): Node => {
       return (
         <View className="bg-black">
           <PhotoScroll photos={photos} />
+          {/* TODO: a11y props are not passed down into this 3.party */}
           <IconButton
             icon={currentUserFaved ? "star-outline" : "star"}
             onPress={faveOrUnfave}
             textColor={colors.white}
             className="absolute top-3 right-0"
+            accessible
+            accessibilityRole="button"
+            accessibilityLabel={
+              currentUserFaved
+                ? t( "Fave-button-label-unfave" )
+                : t( "Fave-button-label-fave" )
+            }
           />
         </View>
       );
     }
     return (
-      <View className="bg-white flex-row justify-center">
+      <View
+        className="bg-white flex-row justify-center"
+        accessible
+        accessibilityLabel={t( "Observation-has-no-photos-and-no-sounds" )}
+      >
         <IconMaterial
           testID="ObsDetails.noImage"
           name="image-not-supported"
           size={100}
-          accessible
-          accessibilityLabel={t( "No-image-available-for-this-observation" )}
         />
       </View>
     );
@@ -304,35 +322,64 @@ const ObsDetails = ( ): Node => {
         <View className="flex-row justify-between items-center m-3">
           <Pressable
             className="flex-row items-center"
-            onPress={( ) => navToUserProfile( user.id )}
+            onPress={() => navToUserProfile( user.id )}
             testID="ObsDetails.currentUser"
             accessibilityRole="link"
+            accessibilityLabel={t( "Navigate-to-user-profile" )}
+            accessibilityValue={{ text: User.userHandle( user ) }}
           >
             <UserIcon uri={User.uri( user )} small />
             <Text className="ml-3">{User.userHandle( user )}</Text>
           </Pressable>
-          <Text className="color-logInGray">{displayCreatedAt( )}</Text>
+          <Text className="color-logInGray">{displayCreatedAt()}</Text>
         </View>
         {displayPhoto()}
         <View className="flex-row my-5 justify-between mx-3">
-          {showTaxon( )}
+          {showTaxon()}
           <View>
-            <View className="flex-row my-1">
+            <View
+              className="flex-row my-1"
+              accessible
+              accessibilityLabel={t( "Number-of-identifications" )}
+              accessibilityValue={{ text: observation.identifications.length.toString() }}
+            >
               <Image
                 style={imageStyles.smallIcon}
                 source={require( "images/ic_id.png" )}
               />
               <Text className="ml-1">{observation.identifications.length}</Text>
             </View>
-            <View className="flex-row my-1">
-              <IconMaterial name="chat-bubble" size={15} color={colors.logInGray} />
+            <View
+              className="flex-row my-1"
+              accessible
+              accessibilityLabel={t( "Number-of-comments" )}
+              accessibilityValue={{ text: observation.comments.length.toString() }}
+            >
+              <IconMaterial
+                name="chat-bubble"
+                size={15}
+                color={colors.logInGray}
+              />
               <Text className="ml-1">{observation.comments.length}</Text>
             </View>
-            <QualityBadge qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )} />
+            <QualityBadge
+              qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )}
+            />
           </View>
         </View>
-        <View className="flex-row ml-3">
-          <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
+        <View
+          className="flex-row ml-3"
+          accessible
+          accessibilityLabel={t( "Location" )}
+          accessibilityValue={{
+            text: checkCamelAndSnakeCase( observation, "placeGuess" )
+          }}
+        >
+          <IconMaterial
+            name="location-pin"
+            size={15}
+            color={colors.logInGray}
+          />
           <Text className="color-logInGray ml-2">
             {checkCamelAndSnakeCase( observation, "placeGuess" )}
           </Text>
@@ -354,14 +401,14 @@ const ObsDetails = ( ): Node => {
           )
           : <DataTab observation={observation} />}
         {addingComment && (
-        <View className="flex-row items-center justify-center">
-          <ActivityIndicator size="large" />
-        </View>
+          <View className="flex-row items-center justify-center">
+            <ActivityIndicator size="large" />
+          </View>
         )}
       </ScrollWithFooter>
       <AddCommentModal
-      //  potential to move this modal to ActivityTab and have it handle comments
-      //  and ids but there were issues with presenting the modal in a scrollview.
+        //  potential to move this modal to ActivityTab and have it handle comments
+        //  and ids but there were issues with presenting the modal in a scrollview.
         onCommentAdded={onCommentAdded}
         showCommentBox={showCommentBox}
         setShowCommentBox={setShowCommentBox}

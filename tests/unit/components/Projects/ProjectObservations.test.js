@@ -1,4 +1,5 @@
-import ProjectDetails from "components/Projects/ProjectDetails";
+import { screen } from "@testing-library/react-native";
+import ProjectObservations from "components/Projects/ProjectObservations";
 import React from "react";
 
 import factory from "../../../factory";
@@ -28,8 +29,16 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   } )
 } ) );
 
+describe( "ProjectObservations", () => {
+  test( "should not have accessibility errors", async ( ) => {
+    renderComponent( <ProjectObservations /> );
+    const projectObservations = await screen.findByTestId( "ProjectObservations.grid" );
+    expect( projectObservations ).toBeAccessible();
+  } );
+} );
+
 test( "displays project observations", ( ) => {
-  const { getByTestId, getByText } = renderComponent( <ProjectDetails /> );
+  const { getByTestId, getByText } = renderComponent( <ProjectObservations /> );
 
   expect( getByText(
     `${

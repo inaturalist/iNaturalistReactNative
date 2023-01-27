@@ -71,7 +71,7 @@ const Search = ( ): React.Node => {
   const setUserSearch = ( ) => setQueryType( "users" );
 
   return (
-    <ViewWithFooter>
+    <ViewWithFooter testID="Search">
       <View style={viewStyles.toggleRow}>
         <Pressable
           onPress={setTaxaSearch}

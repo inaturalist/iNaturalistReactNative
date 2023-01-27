@@ -46,6 +46,16 @@ const renderStandardCamera = () => render(
 );
 
 describe( "StandardCamera", ( ) => {
+  test( "should not have accessibility errors", () => {
+    const standardCamera = (
+      <ObsEditContext.Provider value={mockValue}>
+        <StandardCamera />
+      </ObsEditContext.Provider>
+    );
+
+    expect( standardCamera ).toBeAccessible();
+  } );
+
   test( "should first render with flash disabled", async () => {
     renderStandardCamera();
 

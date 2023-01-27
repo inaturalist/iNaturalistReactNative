@@ -116,18 +116,17 @@ const StandardCamera = ( ): Node => {
   const renderAddObsButtons = icon => {
     let testID = "";
     let accessibilityLabel = "";
+    let accessibilityValue = "";
     switch ( icon ) {
       case "flash":
         testID = "flash-button-label-flash";
-        accessibilityLabel = t( "flash-button-label-flash" );
+        accessibilityLabel = t( "Flash-button-label-flash" );
+        accessibilityValue = t( "Flash-button-value-flash" );
         break;
       case "flash-off":
         testID = "flash-button-label-flash-off";
-        accessibilityLabel = t( "flash-button-label-flash-off" );
-        break;
-      case "camera-flip":
-        testID = "camera-button-label-switch-camera";
-        accessibilityLabel = t( "camera-button-label-switch-camera" );
+        accessibilityLabel = t( "Flash-button-label-flash-off" );
+        accessibilityValue = t( "Flash-button-value-flash-off" );
         break;
       default:
         break;
@@ -136,6 +135,7 @@ const StandardCamera = ( ): Node => {
       <Avatar.Icon
         testID={testID}
         accessibilityLabel={accessibilityLabel}
+        accessibilityValue={accessibilityValue}
         size={40}
         icon={icon}
         style={{ backgroundColor: colors.gray }}
@@ -164,37 +164,61 @@ const StandardCamera = ( ): Node => {
       <View className="absolute bottom-0">
         <View className="flex-row justify-between w-screen mb-4 px-4">
           {hasFlash ? (
-            <Pressable onPress={toggleFlash}>
+            <Pressable onPress={toggleFlash} accessibilityRole="button">
               {takePhotoOptions.flash === "on"
                 ? renderAddObsButtons( "flash" )
                 : renderAddObsButtons( "flash-off" )}
             </Pressable>
-          ) : <View />}
-          <Pressable onPress={flipCamera}>
-            {renderAddObsButtons( "camera-flip" )}
+          ) : (
+            <View />
+          )}
+          <Pressable
+            onPress={flipCamera}
+            accessibilityLabel={t( "Camera-button-label-switch-camera" )}
+            accessibilityValue={{
+              text: cameraPosition === "back"
+                ? t( "Camera-button-value-back" )
+                : t( "Camera-button-value-front" )
+            }}
+            accessibilityRole="button"
+          >
+            <Avatar.Icon
+              testID="camera-button-label-switch-camera"
+              size={40}
+              icon="camera-flip"
+              style={{ backgroundColor: colors.gray }}
+            />
           </Pressable>
         </View>
         <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">
           <Pressable
             className="w-1/3 pt-4 pb-4 pl-3"
-            onPress={( ) => navigation.goBack( )}
+            onPress={() => navigation.goBack()}
+            accessibilityLabel={t( "Navigate-back" )}
+            accessibilityRole="button"
           >
             <Icon name="arrow-back-ios" size={25} color={colors.white} />
           </Pressable>
-          <Pressable onPress={takePhoto}>
+          <Pressable
+            onPress={takePhoto}
+            accessibilityLabel={t( "Take-photo" )}
+            accessibilityRole="button"
+          >
             {renderCameraButton( "circle-outline", disallowAddingPhotos )}
           </Pressable>
           {photosTaken ? (
-            <Text className="text-white text-xl w-1/3 text-center pr-4" onPress={navToObsEdit}>
+            <Text
+              className="text-white text-xl w-1/3 text-center pr-4"
+              onPress={navToObsEdit}
+            >
               {t( "Next" )}
             </Text>
-          ) : <View className="w-1/3" />}
+          ) : (
+            <View className="w-1/3" />
+          )}
         </View>
       </View>
-      <Snackbar
-        visible={showAlert}
-        onDismiss={( ) => setShowAlert( false )}
-      >
+      <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>
     </View>

@@ -92,6 +92,13 @@ describe( "Sanitization", () => {
 } );
 
 describe( "Basic Rendering", () => {
+  it( "should not have accessibility errors", () => {
+    const testText = "foo bar baz";
+    const userText = <UserText text={testText} />;
+
+    expect( userText ).toBeAccessible();
+  } );
+
   it( "renders text", () => {
     const testText = "foo bar baz";
     const { queryByText, getByText } = render(

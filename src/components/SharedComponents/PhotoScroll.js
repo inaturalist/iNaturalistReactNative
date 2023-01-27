@@ -26,7 +26,7 @@ const PhotoScroll = ( { photos }: Props ): React.Node => {
           source={{ uri: photoUrl }}
           className="object-contain w-screen h-52"
         />
-        <Text className="absolute bottom-5 right-5 text-white" accessibilityRole="button">
+        <Text className="absolute bottom-5 right-5 text-white">
           {photo.licenseCode || photo.license_code}
         </Text>
       </>
@@ -35,6 +35,7 @@ const PhotoScroll = ( { photos }: Props ): React.Node => {
 
   return (
     <FlatList
+      testID="photo-scroll"
       horizontal
       keyExtractor={extractKey}
       data={photos}
