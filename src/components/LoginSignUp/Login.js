@@ -124,7 +124,7 @@ const Login = ( ): Node => {
       </TouchableOpacity>
       {error && <Text className="text-red self-center mt-5">{error}</Text>}
       <Button
-        level="primary"
+        level="focus"
         text={t( "Log-in" )}
         onPress={login}
         className="mt-5"

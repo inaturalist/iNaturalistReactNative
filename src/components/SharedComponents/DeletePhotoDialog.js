@@ -25,7 +25,7 @@ const DeletePhotoDialog = ( {
     </Dialog.Content>
     <Dialog.Actions>
       <Button onPress={hideDialog} text={t( "Cancel" )} level="neutral" />
-      <Button onPress={deletePhoto} text={t( "Yes-delete-photo" )} level="primary" />
+      <Button onPress={deletePhoto} text={t( "Yes-delete-photo" )} level="focus" />
     </Dialog.Actions>
   </Dialog>
 );

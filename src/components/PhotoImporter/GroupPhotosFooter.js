@@ -86,7 +86,7 @@ const GroupPhotosFooter = ( {
       </SecondaryCTAButton>
       <View className="w-28">
         <Button
-          level="secondary"
+          level="focus"
           text={t( "Next" )}
           onPress={navToObsEdit}
           testID="GroupPhotos.next"
