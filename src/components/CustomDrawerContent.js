@@ -46,6 +46,10 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         onPress={( ) => navigation.navigate( "network" )}
       />
       <DrawerItem
+        label="UI library"
+        onPress={( ) => navigation.navigate( "UI Library" )}
+      />
+      <DrawerItem
         label={currentUser ? "logout" : "login"}
         onPress={( ) => navigation.navigate( "login" )}
       />

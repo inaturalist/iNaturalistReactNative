@@ -9,6 +9,7 @@ import {
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import QualityBadge from "components/SharedComponents/QualityBadge";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
+import Tabs from "components/SharedComponents/Tabs";
 import UserIcon from "components/SharedComponents/UserIcon";
 import {
   Image, Pressable, Text, View
@@ -55,6 +56,9 @@ LogBox.ignoreLogs( [
   "Non-serializable values were found in the navigation state"
 ] );
 
+const ACTIVITY_TAB_ID = "ACTIVITY";
+const DATA_TAB_ID = "DATA";
+
 const ObsDetails = ( ): Node => {
   const isOnline = useIsConnected( );
   const currentUser = useCurrentUser( );
@@ -62,7 +66,7 @@ const ObsDetails = ( ): Node => {
   const [refetch, setRefetch] = useState( false );
   const { params } = useRoute( );
   const { uuid } = params;
-  const [tab, setTab] = useState( 0 );
+  const [currentTabId, setCurrentTabId] = useState( ACTIVITY_TAB_ID );
   const navigation = useNavigation( );
   const realm = useRealm( );
   const localObservation = useLocalObservation( uuid );
@@ -109,8 +113,6 @@ const ObsDetails = ( ): Node => {
   const observationPhotos = observation?.observationPhotos || observation?.observation_photos;
   const currentUserFaved = faves?.length > 0 ? faves.find( fave => fave.user.id === userId ) : null;
 
-  const showActivityTab = ( ) => setTab( 0 );
-  const showDataTab = ( ) => setTab( 1 );
   const showErrorAlert = error => Alert.alert(
     "Error",
     error,
@@ -195,7 +197,7 @@ const ObsDetails = ( ): Node => {
   }, [navigation, observation, currentUser] );
 
   useEffect( ( ) => {
-    // set initial comments for activity tab
+    // set initial comments for activity currentTabId
     const currentComments = observation?.comments;
     if ( currentComments
         && comments.length === 0
@@ -249,29 +251,21 @@ const ObsDetails = ( ): Node => {
   const displayCreatedAt = ( ) => ( observation?.created_at
     ? formatObsListTime( observation.created_at ) : "" );
 
-  const displayTab = ( handlePress, testID, tabText, active ) => {
-    let textClassName = "color-gray text-xl font-bold";
-
-    if ( active ) {
-      textClassName += " color-inatGreen";
+  const tabs = [
+    {
+      id: ACTIVITY_TAB_ID,
+      testID: "ObsDetails.ActivityTab",
+      onPress: ( ) => setCurrentTabId( ACTIVITY_TAB_ID ),
+      text: t( "ACTIVITY" )
+    },
+    {
+      id: DATA_TAB_ID,
+      testID: "ObsDetails.ActivityTab",
+      onPress: ( ) => setCurrentTabId( DATA_TAB_ID ),
+      text: t( "DATA" )
     }
+  ];
 
-    return (
-      <Pressable
-        onPress={handlePress}
-        testID={testID}
-        className="w-1/2 items-center"
-        accessibilityRole="tab"
-        accessibilityState={{ selected: !!active }}
-        accessibilityLabel={tabText}
-      >
-        <Text className={textClassName}>
-          {tabText}
-        </Text>
-        { active && <View className="border border-inatGreen w-full" />}
-      </Pressable>
-    );
-  };
   const displayPhoto = ( ) => {
     if ( !isOnline ) {
       // TODO show photos that are available offline
@@ -390,30 +384,22 @@ const ObsDetails = ( ): Node => {
             {checkCamelAndSnakeCase( observation, "placeGuess" )}
           </Text>
         </View>
-        <View className="flex-row mt-6">
-          {displayTab(
-            showActivityTab,
-            "ObsDetails.ActivityTab",
-            t( "ACTIVITY" ),
-            tab === 0
-          )}
-          {displayTab( showDataTab, "ObsDetails.DataTab", t( "DATA" ), tab === 1 )}
-        </View>
-        {tab === 0 ? (
-          <ActivityTab
-            uuid={uuid}
-            observation={observation}
-            comments={comments}
-            navToTaxonDetails={navToTaxonDetails}
-            navToUserProfile={navToUserProfile}
-            toggleRefetch={toggleRefetch}
-            refetchRemoteObservation={refetchRemoteObservation}
-            openCommentBox={openCommentBox}
-            showCommentBox={showCommentBox}
-          />
-        ) : (
-          <DataTab observation={observation} />
-        )}
+        <Tabs tabs={tabs} activeId={currentTabId} />
+        {currentTabId === ACTIVITY_TAB_ID
+          ? (
+            <ActivityTab
+              uuid={uuid}
+              observation={observation}
+              comments={comments}
+              navToTaxonDetails={navToTaxonDetails}
+              navToUserProfile={navToUserProfile}
+              toggleRefetch={toggleRefetch}
+              refetchRemoteObservation={refetchRemoteObservation}
+              openCommentBox={openCommentBox}
+              showCommentBox={showCommentBox}
+            />
+          )
+          : <DataTab observation={observation} />}
         {addingComment && (
           <View className="flex-row items-center justify-center">
             <ActivityIndicator size="large" />

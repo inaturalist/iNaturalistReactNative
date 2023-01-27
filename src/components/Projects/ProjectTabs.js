@@ -1,22 +1,25 @@
 // @flow
 
 import { searchProjects } from "api/projects";
+import Tabs from "components/SharedComponents/Tabs";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useCallback, useEffect } from "react";
-import { Pressable, Text, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useUserLocation from "sharedHooks/useUserLocation";
-import { viewStyles } from "styles/projects/projects";
 
 import ProjectList from "./ProjectList";
+
+const JOINED_TAB_ID = "JOINED";
+const FEATURED_TAB_ID = "FEATURED";
+const NEARBY_TAB_ID = "NEARBY";
 
 const ProjectTabs = ( ): Node => {
   const currentUser = useCurrentUser( );
   const memberId = currentUser?.id;
-  const [apiParams, setApiParams] = React.useState( { } );
-
+  const [apiParams, setApiParams] = useState( { } );
+  const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
   const latLng = useUserLocation( );
 
   const {
@@ -44,23 +47,36 @@ const ProjectTabs = ( ): Node => {
     }
   }, [memberId, fetchUserJoinedProjects] );
 
+  const tabs = [
+    {
+      id: JOINED_TAB_ID,
+      text: t( "Joined" ),
+      onPress: () => {
+        setCurrentTabId( JOINED_TAB_ID );
+        fetchUserJoinedProjects();
+      }
+    },
+    {
+      id: FEATURED_TAB_ID,
+      text: t( "Featured" ),
+      onPress: () => {
+        setCurrentTabId( FEATURED_TAB_ID );
+        fetchFeaturedProjects();
+      }
+    },
+    {
+      id: NEARBY_TAB_ID,
+      text: t( "Nearby" ),
+      onPress: () => {
+        setCurrentTabId( NEARBY_TAB_ID );
+        fetchProjectsByLatLng();
+      }
+    }
+  ];
+
   return (
     <>
-      <View style={viewStyles.buttonRow}>
-        <Pressable onPress={fetchUserJoinedProjects} accessibilityRole="tab">
-          <Text>{t( "Joined" )}</Text>
-        </Pressable>
-        <Pressable onPress={fetchFeaturedProjects} accessibilityRole="tab">
-          <Text>{t( "Featured" )}</Text>
-        </Pressable>
-        <Pressable
-          onPress={fetchProjectsByLatLng}
-          accessibilityRole="tab"
-          testID="ProjectTabs.featured"
-        >
-          <Text>{t( "Nearby" )}</Text>
-        </Pressable>
-      </View>
+      <Tabs tabs={tabs} activeId={currentTabId} />
       <ProjectList data={projects} />
     </>
   );

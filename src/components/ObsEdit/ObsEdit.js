@@ -227,7 +227,7 @@ const ObsEdit = ( ): Node => {
 
           />
           <Button
-            level="primary"
+            level="focus"
             text={t( "UPLOAD-OBSERVATION" )}
             testID="ObsEdit.uploadButton"
             onPress={async ( ) => {
