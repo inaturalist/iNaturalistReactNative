@@ -48,10 +48,6 @@
     "comment": "Quality grade option: Casual (shortened for My Observations view)",
     "val": "C"
   },
-  "camera-button-label-switch-camera": {
-    "comment": "Accessible label for the camera button",
-    "val": "Use the device's other camera."
-  },
   "Camera-Roll": "Camera Roll",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
@@ -62,10 +58,6 @@
   "Check-your-email": {
     "comment": "After pressing the reset password button",
     "val": "Check your email! We've sent password reset instructions."
-  },
-  "Choose-Taxon": {
-    "comment": "Label for a button to choose a taxon",
-    "val": "Choose Taxon"
   },
   "Combine-Photos": "Combine Photos",
   "Combine-photos-onboarding": {
@@ -98,6 +90,7 @@
     "comment": "Appears above the email text field",
     "val": "email"
   },
+  "EMAIL-DEBUG-LOGS": "EMAIL DEBUG LOGS",
   "Email-Notifications": "Email Notifications",
   "Error-Couldnt-Complete-Upload": "Error: Couldn't Complete Upload",
   "Error-Couldnt-Upload-Photo": "Error: Couldn't Upload Photo",
@@ -116,14 +109,6 @@
   "Flag-Item-Description": "Flagging brings something to the attention of volunteer site curators. Please don't flag problems you can address with identifications, the Data Quality Assessment, or by talking to the person who made the content.",
   "Flag-Item-Other-Description": "Some other reason you can explain below.",
   "Flag-Item-Other-Input-Hint": "Specify the reason you're flagging this item",
-  "flash-button-label-flash": {
-    "comment": "Accessible label for the flash button, when flas is turned on",
-    "val": "The flash is turned on. Press here to disable it."
-  },
-  "flash-button-label-flash-off": {
-    "comment": "Accessible label for the flash button, when flas is turned off",
-    "val": "The flash is turned off. Press here to enable it."
-  },
   "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
@@ -188,6 +173,10 @@
     "comment": "Appears in the login screen",
     "val": "Document living things, identify organisms & contribute to science"
   },
+  "Looks-like-youre-not-using-Apple-Mail": {
+    "comment": "Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed",
+    "val": "Looks like you're not using Apple Mail"
+  },
   "Low": "Low",
   "Mammals": "Mammals",
   "Media": "Media",
@@ -212,9 +201,6 @@
   "Muted-Users": "Muted Users",
   "Names": "Names",
   "Native": "Native",
-  "Navigate-to-login-screen": "Navigate to login screen",
-  "Navigate-to-observation-details": "Navigate to observation details screen",
-  "Navigate-to-taxon-details": "Navigate to taxon details",
   "Nearby": {
     "comment": "Header for nearby projects",
     "val": "Nearby"
@@ -235,7 +221,6 @@
     "val": "No account found with that email"
   },
   "No-comments-or-ids-to-display": "No comments or ids to display",
-  "No-image-available-for-this-observation": "No image available for this observation",
   "No-Location": "No Location",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
   "no-rights-reserved": {
@@ -361,6 +346,7 @@
   "Select": "Select",
   "Separate-Photos": "Separate Photos",
   "Settings": "Settings",
+  "SHARE-DEBUG-LOGS": "SHARE DEBUG LOGS",
   "Sign-out": "Sign out",
   "Sign-Up": "Sign Up",
   "SIMILAR-SPECIES-header": {
@@ -449,7 +435,7 @@
   "You-have-unsaved-changes": "You have unsaved changes. Would you like to save this observation?",
   "You-must-be-logged-in-to-view-messages": "You must be logged in to view messages",
   "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
-  "You will lose all existing observations. Would you like to discard # observations?": "",
+  "You-can-still-share-the-file": "You can still share the file with another app. If you can email it, please send it to { $email }",
   "Category-leading": {
     "comment": "Identification category",
     "val": "Leading"
@@ -512,6 +498,46 @@
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
+  "Add-this-ID": "Add this identification",
+  "Camera-button-label-switch-camera": {
+    "comment": "Accessible label for the camera button",
+    "val": "Use the device's other camera."
+  },
+  "Camera-button-value-back": "The back camera is being used.",
+  "Camera-button-value-front": "The front camera is being used.",
+  "Cancel-comment": "Cancel comment",
+  "Clear-comment": "Clear comment",
+  "Edit-comment": "Edit comment",
+  "Fave-button-label-unfave": {
+    "comment": "Accessible label for the favorite button, when the observation is favorited",
+    "val": "Unfavorite this observation."
+  },
+  "Fave-button-label-fave": {
+    "comment": "Accessible label for the favorite button, when the observation is not favorited",
+    "val": "Favorite this observation."
+  },
+  "Flash-button-label-flash": {
+    "comment": "Accessible label for the flash button, when flash is turned on",
+    "val": "Disable flash."
+  },
+  "Flash-button-label-flash-off": {
+    "comment": "Accessible label for the flash button, when flash is turned off",
+    "val": "Enable flash."
+  },
+  "Flash-button-value-flash": "The flash is turned on.",
+  "Flash-button-value-flash-off": "The flash is turned off.",
+  "Navigate-back": "Navigate back",
+  "Navigate-to-edit-observation": "Navigate to edit observation screen",
+  "Navigate-to-login-screen": "Navigate to login screen",
+  "Navigate-to-observation-details": "Navigate to observation details screen",
+  "Navigate-to-project-details": "Navigate to project details",
+  "Navigate-to-taxon-details": "Navigate to taxon details",
+  "Navigate-to-user-profile": "Navigate to user profile",
+  "Number-of-comments": "Number of comments",
+  "Number-of-identifications": "Number of identifications",
+  "Observation-has-no-photos-and-no-sounds": "This observation has no photos and no sounds.",
+  "Take-photo": "Take photo",
+  "Photo-taken-at": "Photo taken at { $date }",
   "Location-map-unavailable-without-internet": {
     "comment": "Accessibility labels for no internet state in ObsDetails",
     "val": "Location map unavailable without internet"

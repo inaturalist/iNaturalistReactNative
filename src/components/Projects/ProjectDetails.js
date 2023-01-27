@@ -26,7 +26,7 @@ const ProjectDetails = ( ): React.Node => {
   if ( !project ) { return null; }
 
   return (
-    <ViewWithFooter>
+    <ViewWithFooter testID="project-details">
       <ImageBackground
         source={{ uri: project.header_image_url }}
           // $FlowFixMe

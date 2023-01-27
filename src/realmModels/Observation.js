@@ -124,7 +124,7 @@ class Observation extends Realm.Object {
 
   static async saveLocalObservationForUpload( obs, realm ) {
     // make sure local observations have user details for ObsDetail
-    const currentUser = realm.objects( "User" ).filtered( "signedIn == true" )[0];
+    const currentUser = User.currentUser( realm );
     if ( currentUser ) {
       obs.user = currentUser;
     }

@@ -1,0 +1,8 @@
+Many updates and improvements, mostly in stability, performance, and testing
+
+* Double-tap to zoom the camera
+* More accessibility labels
+* Improved location fetching on Android
+* Keep phone awake during uploads
+* Tablet styles for add obs modal
+* Many bug fixes

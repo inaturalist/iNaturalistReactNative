@@ -13,6 +13,24 @@ jest.mock( "inaturalistjs" );
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.
 jest.useFakeTimers( );
 
+jest.mock(
+  "components/SharedComponents/ViewNoFooter",
+  () => function MockViewNoFooter( props ) {
+    const MockName = "mock-view-no-footer";
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <MockName {...props} testID={MockName}>{props.children}</MockName>;
+  }
+);
+
+jest.mock(
+  "components/SharedComponents/BottomSheetStandardBackdrop",
+  () => function MockBottomSheetStandardBackdrop( props ) {
+    const MockName = "mock-bottom-sheet-standard-backdrop";
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <MockName {...props} testID={MockName}>{props.children}</MockName>;
+  }
+);
+
 const mockTaxaList = [
   factory( "RemoteTaxon" ),
   factory( "RemoteTaxon" ),
@@ -40,11 +58,29 @@ jest.mock( "react-native-vector-icons/MaterialIcons", ( ) => {
   return MaterialIcons;
 } );
 
-describe( "rendering", ( ) => {
+jest.mock( "@gorhom/bottom-sheet", () => {
+  const actualBottomSheet = jest.requireActual( "@gorhom/bottom-sheet" );
+  return {
+    ...actualBottomSheet
+  };
+} );
+
+const mockRoute = { params: {} };
+
+describe( "AddID", ( ) => {
+  test( "should not have accessibility errors", ( ) => {
+    const addID = <AddID route={mockRoute} />;
+    expect( addID ).toBeAccessible( );
+  } );
+
+  it( "should render inside mocked container", ( ) => {
+    renderComponent( <AddID route={mockRoute} /> );
+    expect( screen.queryByTestId( "mock-view-no-footer" ) ).toBeTruthy( );
+  } );
+
   it( "show taxon search results", async ( ) => {
     inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
-    const route = { params: { } };
-    const { getByTestId } = renderComponent( <AddID route={route} /> );
+    const { getByTestId } = renderComponent( <AddID route={mockRoute} /> );
     const input = getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
     await waitFor( () => {
@@ -73,9 +109,11 @@ describe( "rendering", ( ) => {
     ) );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
+
     fireEvent.changeText( input, "Some taxon" );
+
     expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
-    const labelText = t( "Choose-Taxon" );
+    const labelText = t( "Add-this-ID" );
     const chooseButton = ( await screen.findAllByLabelText( labelText ) )[0];
     fireEvent.press( chooseButton );
     expect( mockCallback ).toHaveBeenCalled( );

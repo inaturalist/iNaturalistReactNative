@@ -63,9 +63,6 @@ Blocked-Users = Blocked Users
 # Quality grade option: Casual (shortened for My Observations view)
 C = C
 
-# Accessible label for the camera button
-camera-button-label-switch-camera = Use the device's other camera.
-
 Camera-Roll = Camera Roll
 
 Cancel = Cancel
@@ -77,9 +74,6 @@ Casual = Casual
 
 # After pressing the reset password button
 Check-your-email = Check your email! We've sent password reset instructions.
-
-# Label for a button to choose a taxon
-Choose-Taxon = Choose Taxon
 
 Combine-Photos = Combine Photos
 
@@ -139,6 +133,8 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 # Appears above the email text field
 Email = email
 
+EMAIL-DEBUG-LOGS = EMAIL DEBUG LOGS
+
 Email-Notifications = Email Notifications
 
 Error-Couldnt-Complete-Upload = Error: Couldn't Complete Upload
@@ -169,12 +165,6 @@ Flag-Item-Description =  Flagging brings something to the attention of volunteer
 Flag-Item-Other-Description = Some other reason you can explain below.
 
 Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
-
-# Accessible label for the flash button, when flas is turned on
-flash-button-label-flash = The flash is turned on. Press here to disable it.
-
-# Accessible label for the flash button, when flas is turned off
-flash-button-label-flash-off = The flash is turned off. Press here to enable it.
 
 Following = Following
 
@@ -261,6 +251,9 @@ Login-header = Log in to use iNaturalist
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
 
+# Alert dialog title when attempting to send email on an iOS device but Apple Mail is not installed
+Looks-like-youre-not-using-Apple-Mail = Looks like you're not using Apple Mail
+
 Low = Low
 
 Mammals = Mammals
@@ -304,12 +297,6 @@ Names = Names
 
 Native = Native
 
-Navigate-to-login-screen = Navigate to login screen
-
-Navigate-to-observation-details = Navigate to observation details screen
-
-Navigate-to-taxon-details = Navigate to taxon details
-
 # Header for nearby projects
 Nearby = Nearby
 
@@ -329,8 +316,6 @@ No = No
 No-account-found = No account found with that email
 
 No-comments-or-ids-to-display = No comments or ids to display
-
-No-image-available-for-this-observation = No image available for this observation
 
 No-Location = No Location
 
@@ -532,6 +517,8 @@ Separate-Photos = Separate Photos
 
 Settings = Settings
 
+SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
+
 Sign-out = Sign out
 
 Sign-Up = Sign Up
@@ -671,7 +658,8 @@ You-will-lose-all-existing-observations = {$count ->
     *[other] You will lose all existing observations. Would you like to discard {$count} observations?
 }
 
-You will lose all existing observations. Would you like to discard # observations?
+You-can-still-share-the-file =
+    You can still share the file with another app. If you can email it, please send it to { $email }
 
 # Identification category
 Category-leading = Leading
@@ -715,6 +703,37 @@ No = No
 Discard-Comment = Discard Comment
 Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
+## Accessibility labels: these are used by screen readers to describe actionable elements
+Add-this-ID = Add this identification
+# Accessible label for the camera button
+Camera-button-label-switch-camera = Use the device's other camera.
+Camera-button-value-back = The back camera is being used.
+Camera-button-value-front = The front camera is being used.
+Cancel-comment = Cancel comment
+Clear-comment = Clear comment
+Edit-comment = Edit comment
+# Accessible label for the favorite button, when the observation is favorited
+Fave-button-label-unfave = Unfavorite this observation.
+# Accessible label for the favorite button, when the observation is not favorited
+Fave-button-label-fave = Favorite this observation.
+# Accessible label for the flash button, when flash is turned on
+Flash-button-label-flash = Disable flash.
+# Accessible label for the flash button, when flash is turned off
+Flash-button-label-flash-off = Enable flash.
+Flash-button-value-flash = The flash is turned on.
+Flash-button-value-flash-off = The flash is turned off.
+Navigate-back = Navigate back
+Navigate-to-edit-observation = Navigate to edit observation screen
+Navigate-to-login-screen = Navigate to login screen
+Navigate-to-observation-details = Navigate to observation details screen
+Navigate-to-project-details = Navigate to project details
+Navigate-to-taxon-details = Navigate to taxon details
+Navigate-to-user-profile = Navigate to user profile
+Number-of-comments = Number of comments
+Number-of-identifications = Number of identifications
+Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
+Take-photo = Take photo
+Photo-taken-at = Photo taken at { $date }
 # Accessibility labels for no internet state in ObsDetails
 Location-map-unavailable-without-internet = Location map unavailable without internet
 Observation-photos-unavailable-without-internet = Observation photos unavailable without internet

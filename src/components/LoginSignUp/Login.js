@@ -6,6 +6,7 @@ import {
   Image, Pressable, SafeAreaView
 } from "components/styledComponents";
 import { t } from "i18next";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -25,6 +26,8 @@ import {
 } from "./AuthenticationService";
 import Logout from "./Logout";
 
+const { useRealm } = RealmContext;
+
 const Login = ( ): Node => {
   const keyboardScrollRef = useRef( null );
   const navigation = useNavigation( );
@@ -34,6 +37,7 @@ const Login = ( ): Node => {
   const [error, setError] = useState( null );
   const [loading, setLoading] = useState( false );
   const [extraScrollHeight, setExtraScrollHeight] = useState( 0 );
+  const realm = useRealm( );
 
   useEffect( ( ) => {
     let isCurrent = true;
@@ -55,7 +59,8 @@ const Login = ( ): Node => {
     setLoading( true );
     const success = await authenticateUser(
       email.trim( ),
-      password
+      password,
+      realm
     );
 
     if ( !success ) {
@@ -119,7 +124,7 @@ const Login = ( ): Node => {
       </TouchableOpacity>
       {error && <Text className="text-red self-center mt-5">{error}</Text>}
       <Button
-        level="primary"
+        level="focus"
         text={t( "Log-in" )}
         onPress={login}
         className="mt-5"

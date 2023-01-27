@@ -49,7 +49,7 @@ const DeleteObservationDialog = ( {
           <Text>{t( "Are-you-sure" )}</Text>
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={hideDialog} text={t( "Cancel" )} level="primary" className="m-0.5" />
+          <Button onPress={hideDialog} text={t( "Cancel" )} level="focus" className="m-0.5" />
           <Button
             onPress={( ) => {
               if ( !currentObservation._synced_at ) {
@@ -59,7 +59,7 @@ const DeleteObservationDialog = ( {
               }
             }}
             text={t( "Yes-delete-observation" )}
-            level="primary"
+            level="focus"
             className="m-0.5"
           />
         </Dialog.Actions>

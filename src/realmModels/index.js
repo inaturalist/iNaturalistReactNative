@@ -1,3 +1,5 @@
+import RNFS from "react-native-fs";
+
 import Application from "./Application";
 import Comment from "./Comment";
 import Flag from "./Flag";
@@ -23,7 +25,7 @@ export default {
     User
   ],
   schemaVersion: 32,
-  path: "db.realm",
+  path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   migration: ( oldRealm, newRealm ) => {
     if ( oldRealm.schemaVersion < 32 ) {
       const oldObservations = oldRealm.objects( "Observation" );

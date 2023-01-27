@@ -43,7 +43,19 @@ type Props = {
 
 const SearchTaxonIcon = (
   <TextInput.Icon
-    name={() => <IconMaterial style={textStyles.taxonSearchIcon} name="search" size={25} />}
+    name={() => (
+      <IconMaterial
+        style={textStyles.taxonSearchIcon}
+        name="search"
+        size={25}
+      />
+    )}
+    accessible
+    // TODO: this uses a Pressable under the hood, but we want this actually not to be pressable,
+    // but overriding this with a role of "none" errors out the a11y test matcher
+    accessibilityRole="button"
+    accessibilityLabel={t( "None" )}
+    accessibilityState={{ disabled: true }}
   />
 );
 
@@ -109,6 +121,11 @@ const AddID = ( { route }: Props ): Node => {
         <Pressable
           className="flex-row items-center w-16 grow"
           onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
+          accessible
+          accessibilityRole="link"
+          accessibilityLabel={t( "Navigate-to-taxon-details" )}
+          accessibilityValue={{ text: taxon.name }}
+          accessibilityState={{ disabled: false }}
         >
           <Image
             className="w-12 h-12 mr-1 bg-lightGray"
@@ -125,17 +142,25 @@ const AddID = ( { route }: Props ): Node => {
             icon="information-outline"
             size={25}
             onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
+            accessible
+            accessibilityRole="link"
+            accessibilityLabel={t( "Navigate-to-taxon-details" )}
+            accessibilityValue={{ text: taxon.name }}
+            accessibilityState={{ disabled: false }}
           />
           <IconButton
             icon="check"
             size={25}
             iconColor={colors.inatGreen}
-            accessible
-            accessibilityLabel={t( "Choose-Taxon" )}
             onPress={( ) => {
               onIDAdded( createIdentification( taxon ) );
               if ( goBackOnSave ) { navigation.goBack( ); }
             }}
+            accessible
+            accessibilityRole="button"
+            accessibilityLabel={t( "Add-this-ID" )}
+            accessibilityValue={{ text: taxon.name }}
+            accessibilityState={{ disabled: false }}
           />
         </View>
       </View>
@@ -145,7 +170,16 @@ const AddID = ( { route }: Props ): Node => {
   const showEditComment = !hideComment && comment.length === 0;
 
   useEffect( ( ) => {
-    const editCommentIcon = ( ) => <IconButton icon="message-processing" onPress={editComment} />;
+    const editCommentIcon = () => (
+      <IconButton
+        icon="message-processing"
+        onPress={editComment}
+        accessible
+        accessibilityRole="button"
+        accessibilityLabel={t( "Edit-comment" )}
+        accessibilityState={{ disabled: false }}
+      />
+    );
 
     if ( showEditComment ) {
       navigation.setOptions( {
@@ -162,14 +196,25 @@ const AddID = ( { route }: Props ): Node => {
             <View>
               <Text>{t( "ID-Comment" )}</Text>
               <View style={viewStyles.commentContainer}>
-                <IconMaterial style={textStyles.commentLeftIcon} name="textsms" size={25} />
+                <IconMaterial
+                  style={textStyles.commentLeftIcon}
+                  name="textsms"
+                  size={25}
+                />
                 <Text style={textStyles.comment}>{comment}</Text>
                 <Pressable
                   style={viewStyles.commentRightIconContainer}
                   onPress={editComment}
+                  accessible
                   accessibilityRole="link"
+                  accessibilityLabel={t( "Edit-comment" )}
+                  accessibilityState={{ disabled: false }}
                 >
-                  <IconMaterial style={textStyles.commentRightIcon} name="edit" size={25} />
+                  <IconMaterial
+                    style={textStyles.commentRightIcon}
+                    name="edit"
+                    size={25}
+                  />
                 </Pressable>
               </View>
             </View>
@@ -184,6 +229,11 @@ const AddID = ( { route }: Props ): Node => {
             value={taxonSearch}
             onChangeText={setTaxonSearch}
             selectionColor={colors.black}
+            accessible
+            accessibilityLabel={t(
+              "Search-for-a-taxon-to-add-an-identification"
+            )}
+            accessibilityRole="search"
           />
           <FlatList
             keyboardShouldPersistTaps="always"
@@ -200,6 +250,7 @@ const AddID = ( { route }: Props ): Node => {
           snapPoints={["50%"]}
           backdropComponent={renderBackdrop}
           style={viewStyles.bottomModal}
+          accessibilityState={{ disabled: false }}
         >
           <Headline style={textStyles.commentHeader}>
             {comment.length > 0 ? t( "Edit-comment" ) : t( "Add-optional-comment" )}
@@ -218,16 +269,21 @@ const AddID = ( { route }: Props ): Node => {
                 <NativeTextInput
                   // eslint-disable-next-line react/jsx-props-no-spreading
                   {...innerProps}
-                  style={[
-                    innerProps.style,
-                    viewStyles.commentInputText
-                  ]}
+                  style={[innerProps.style, viewStyles.commentInputText]}
                 />
               )}
+              accessible
+              accessibilityLabel={t( "Add-optional-comment" )}
+              accessibilityState={{ disabled: false }}
             />
             <TouchableOpacity
               style={viewStyles.commentClear}
+              disabled={commentDraft.length === 0}
               onPress={() => setCommentDraft( "" )}
+              accessible
+              accessibilityRole="button"
+              accessibilityLabel={t( "Clear-comment" )}
+              accessibilityState={{ disabled: commentDraft.length === 0 }}
             >
               <Text
                 style={[
@@ -248,6 +304,10 @@ const AddID = ( { route }: Props ): Node => {
               onPress={() => {
                 bottomSheetModalRef.current?.dismiss();
               }}
+              accessible
+              accessibilityRole="button"
+              accessibilityLabel={t( "Cancel-comment" )}
+              accessibilityState={{ disabled: false }}
             >
               {t( "Cancel" )}
             </Button>
@@ -261,6 +321,10 @@ const AddID = ( { route }: Props ): Node => {
                 setComment( commentDraft );
                 bottomSheetModalRef.current?.dismiss();
               }}
+              accessible
+              accessibilityRole="button"
+              accessibilityLabel={t( "Save-comment" )}
+              accessibilityState={{ disabled: commentDraft.length === 0 }}
             >
               {comment.length > 0 ? t( "Edit-comment" ) : t( "Add-comment" )}
             </Button>
