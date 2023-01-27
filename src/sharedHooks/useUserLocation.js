@@ -31,10 +31,8 @@ const useUserLocation = ( ): Object => {
       }
 
       const success = async ( { coords } ) => {
-        console.log( isCurrent );
         if ( !isCurrent ) { return; }
         const placeGuess = await fetchPlaceName( coords.latitude, coords.longitude );
-        console.log( coords );
         setLatLng( {
           place_guess: placeGuess,
           latitude: coords.latitude,
