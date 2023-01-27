@@ -10,15 +10,12 @@ const useUserLocation = ( ): Object => {
   const [latLng, setLatLng] = useState( null );
 
   // TODO: wrap this in PermissionsGate so permissions aren't requested at odd times
-  const requestiOSPermissions = async ( ): Promise<?string> => {
+  const requestiOSPermissions = ( ): string | null => {
     // TODO: test this on a real device
-    if ( Platform.OS === "ios" ) {
-      try {
-        const permission = await request( PERMISSIONS.IOS.LOCATION_WHEN_IN_USE );
-        return permission;
-      } catch ( e ) {
-        console.warn( e, ": error requesting iOS permissions" );
-      }
+    try {
+      return request( PERMISSIONS.IOS.LOCATION_WHEN_IN_USE );
+    } catch ( e ) {
+      console.warn( e, ": error requesting iOS permissions" );
     }
     return null;
   };
