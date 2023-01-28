@@ -17,9 +17,9 @@ const InlineUser = ( { user }: Props ): Node => {
   return (
     <View className="flex flex-row items-center">
       {userImgUri ? (
-        <Image className="w-8 h-8 rounded-full mr-1.5" source={userImgUri} />
+        <Image className="w-6 h-6 rounded-full mr-1.5" source={userImgUri} />
       ) : (
-        <IconMaterial name="person" size={32} color={colors.logInGray} />
+        <IconMaterial name="person" size={24} color={colors.logInGray} />
       )}
       <Text>{username}</Text>
     </View>
