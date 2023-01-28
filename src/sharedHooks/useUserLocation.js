@@ -77,7 +77,7 @@ const useUserLocation = ( { skipPlaceGuess = false }: Props ): Object => {
       fetchPlaceGuess();
     }
     setIsLoading( false );
-  }, [latLng, fetchPlaceGuess, skipPlaceGuess] );
+  }, [fetchPlaceGuess, skipPlaceGuess] );
 
   return {
     latLng,
