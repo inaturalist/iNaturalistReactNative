@@ -88,7 +88,7 @@ const mockLatLng = factory( "DeviceLocation" );
 
 jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
   __esModule: true,
-  default: ( ) => mockLatLng
+  default: ( ) => ( { latLng: mockLatLng } )
 } ) );
 
 describe( "ObsDetails", () => {

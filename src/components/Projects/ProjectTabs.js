@@ -5,6 +5,7 @@ import Tabs from "components/SharedComponents/Tabs";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
+import { Text } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useUserLocation from "sharedHooks/useUserLocation";
@@ -20,10 +21,11 @@ const ProjectTabs = ( ): Node => {
   const memberId = currentUser?.id;
   const [apiParams, setApiParams] = useState( { } );
   const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
-  const latLng = useUserLocation( );
+  const { latLng, isLoading: isLoadingLocation } = useUserLocation( { skipPlaceGuess: true } );
 
   const {
-    data: projects
+    data: projects,
+    isLoading
   } = useAuthenticatedQuery(
     ["searchProjects", apiParams],
     optsWithAuth => searchProjects( apiParams, optsWithAuth )
@@ -35,10 +37,12 @@ const ProjectTabs = ( ): Node => {
     } else if ( currentTabId === FEATURED_TAB_ID ) {
       setApiParams( { features: true } );
     } else if ( currentTabId === NEARBY_TAB_ID ) {
-      setApiParams( {
-        lat: latLng.latitude,
-        lng: latLng.longitude
-      } );
+      if ( latLng ) {
+        setApiParams( {
+          lat: latLng.latitude,
+          lng: latLng.longitude
+        } );
+      }
     }
   }, [
     memberId,
@@ -65,17 +69,17 @@ const ProjectTabs = ( ): Node => {
       id: NEARBY_TAB_ID,
       text: t( "Nearby" ),
       onPress: () => {
-        if ( latLng ) {
-          setCurrentTabId( NEARBY_TAB_ID );
-        }
+        setCurrentTabId( NEARBY_TAB_ID );
       }
     }
   ];
 
+  const loading = isLoading || ( currentTabId === NEARBY_TAB_ID && isLoadingLocation );
+  /* eslint-disable i18next/no-literal-string */
   return (
     <>
       <Tabs tabs={tabs} activeId={currentTabId} />
-      <ProjectList data={projects} />
+      { loading ? <Text>Loading</Text> : <ProjectList data={projects} />}
     </>
   );
 };
