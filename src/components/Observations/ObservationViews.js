@@ -69,7 +69,7 @@ const ObservationViews = ( ): Node => {
   };
 
   const renderEmptyState = ( ) => {
-    if ( currentUser === false
+    if ( ( currentUser === false )
       || ( !isLoading && observationList.length === 0 ) ) {
       return <EmptyList />;
     }
