@@ -13,7 +13,6 @@ type Props = {
 
 const InlineUser = ( { user }: Props ): Node => {
   const userImgUri = User.uri( user );
-  const username = `@${user.login}`;
   return (
     <View className="flex flex-row items-center">
       {userImgUri ? (
@@ -21,7 +20,7 @@ const InlineUser = ( { user }: Props ): Node => {
       ) : (
         <IconMaterial name="person" size={24} color={colors.logInGray} />
       )}
-      <Text>{username}</Text>
+      <Text>{User.userHandle( user )}</Text>
     </View>
   );
 };
