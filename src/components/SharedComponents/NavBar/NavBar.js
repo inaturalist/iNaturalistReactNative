@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import cx from "classnames";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import { View } from "components/styledComponents";
+import { t } from "i18next";
 import * as React from "react";
 import { Platform } from "react-native";
 import User from "realmModels/User";
@@ -17,10 +18,7 @@ const MESSAGES_SCREEN_ID = "Messages";
 
 const NavBar = (): React.Node => {
   const navigation = useNavigation();
-  const toggleSideMenu = () => {
-    console.log( "wtf" );
-    navigation.openDrawer();
-  };
+  const toggleSideMenu = () => navigation.openDrawer();
   const navToObsList = () => navigation.navigate( "MainStack", { screen: OBS_LIST_SCREEN_ID } );
   const navToExplore = () => navigation.navigate( "MainStack", { screen: EXPLORE_SCREEN_ID } );
   const navToNotifications = () => navigation.navigate( "MainStack", {
@@ -38,11 +36,16 @@ const NavBar = (): React.Node => {
       )}
       style={viewStyles.shadow}
     >
-      <NavButton onPress={toggleSideMenu} icon="menu" />
+      <NavButton
+        onPress={toggleSideMenu}
+        icon="menu"
+        accessibilityLabel={t( "Navigate-to-observations" )}
+      />
       <NavButton
         onPress={navToExplore}
         icon="language"
         id={EXPLORE_SCREEN_ID}
+        accessibilityLabel={t( "Navigate-to-notifications" )}
       />
       <AddObsButton />
       <NavButton
@@ -50,11 +53,13 @@ const NavBar = (): React.Node => {
         icon="person"
         img={User.uri( user )}
         id={OBS_LIST_SCREEN_ID}
+        accessibilityLabel={t( "Open-sidebar" )}
       />
       <NavButton
         onPress={navToNotifications}
         icon="notifications"
         id={MESSAGES_SCREEN_ID}
+        accessibilityLabel={t( "Navigate-to-map" )}
       />
     </View>
   );

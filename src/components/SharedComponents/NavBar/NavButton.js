@@ -10,17 +10,27 @@ type Props = {
   onPress: any,
   id?: string,
   img?: string,
+  accessibilityLabel: string,
 };
 
 const NavButton = ( {
-  icon, onPress, id, img
+  icon,
+  onPress,
+  id,
+  img,
+  accessibilityLabel
 }: Props ): React.Node => {
   const { name } = useRoute();
   const backgroundColor = {
     backgroundColor: name === id ? colors.primary : "transparent"
   };
   return (
-    <Pressable className="h-9 bg" onPress={onPress} accessibilityRole="link">
+    <Pressable
+      className="h-9 bg"
+      onPress={onPress}
+      accessibilityRole="link"
+      accessibilityLabel={accessibilityLabel}
+    >
       {img ? (
         <View className="w-9 h-9 rounded-full" style={backgroundColor}>
           <Image className="w-8 h-8 rounded-full m-auto" source={img} />
