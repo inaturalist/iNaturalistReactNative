@@ -12,13 +12,15 @@ import React, { useContext, useState } from "react";
 type Props = {
   photoUris: Array<string>,
   setPhotoUris: Function,
-  savingPhoto: boolean
+  savingPhoto: boolean,
+  deviceOrientation: string
 }
 
 const PhotoPreview = ( {
   photoUris,
   setPhotoUris,
-  savingPhoto
+  savingPhoto,
+  deviceOrientation
 }: Props ): Node => {
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
@@ -79,6 +81,7 @@ const PhotoPreview = ( {
           handleDelete={handleDelete}
           setSelectedPhotoIndex={handleSelection}
           savingPhoto={savingPhoto}
+          deviceOrientation={deviceOrientation}
         />
       </View>
     </>
