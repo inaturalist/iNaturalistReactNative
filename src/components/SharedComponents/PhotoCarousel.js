@@ -6,7 +6,7 @@ import React from "react";
 import {
   ActivityIndicator, FlatList
 } from "react-native";
-import { Avatar } from "react-native-paper";
+import { IconButton, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/tailwindColors";
 
@@ -34,22 +34,21 @@ const PhotoCarousel = ( {
   showAddButton = false
 
 }: Props ): Node => {
+  const theme = useTheme( );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
 
   const renderDeleteButton = photoUri => (
-    <Pressable
+    <IconButton
+      icon="trash-can"
+      iconColor={theme.colors.onPrimary}
+      containerColor={theme.colors.primary}
+      size={30}
       onPress={( ) => {
         if ( !handleDelete ) { return; }
         handleDelete( photoUri );
       }}
       className="absolute top-10 right-0"
-    >
-      <Avatar.Icon
-        icon="delete-forever"
-        size={30}
-        style={{ backgroundColor: colors.white }}
-      />
-    </Pressable>
+    />
   );
 
   const renderSkeleton = ( ) => {
