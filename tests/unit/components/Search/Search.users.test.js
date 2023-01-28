@@ -1,9 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import Search from "components/Search/Search";
-import React from "react";
 
 import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import { renderScreen } from "../../../helpers/render";
 
 // TODO: figure out how to clear jest mocks correctly or return a different
 // value from jest mocks so these can all live in a single file?
@@ -32,7 +31,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 const { login } = mockUser;
 
 test( "displays user search results on button press", ( ) => {
-  renderComponent( <Search /> );
+  renderScreen( Search, "Search" );
   const button = screen.getByTestId( "Search.users" );
 
   fireEvent.press( button );
@@ -44,7 +43,7 @@ test( "displays user search results on button press", ( ) => {
 } );
 
 test( "navigates to user profile on button press", ( ) => {
-  renderComponent( <Search /> );
+  enderScreen( Search, "Search" );
   const button = screen.getByTestId( "Search.users" );
 
   fireEvent.press( button );
