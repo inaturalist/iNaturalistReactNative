@@ -1,9 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import Projects from "components/Projects/Projects";
-import React from "react";
 
 import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
+import { renderScreen } from "../../../helpers/render";
 
 const mockedNavigate = jest.fn( );
 const mockProject = factory( "RemoteProject" );
@@ -26,7 +25,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 } );
 
 test( "displays project search results", ( ) => {
-  const { getByTestId, getByText } = renderComponent( <Projects /> );
+  const { getByTestId, getByText } = renderScreen( Projects, "Projects" );
 
   const input = getByTestId( "ProjectSearch.input" );
   fireEvent.changeText( input, "butterflies" );
@@ -42,7 +41,7 @@ test( "displays project search results", ( ) => {
 
 describe( "Projects", () => {
   test( "should not have accessibility errors", async ( ) => {
-    renderComponent( <Projects /> );
+    renderScreen( Projects, "Projects" );
     const projectObservations = await screen.findByTestId( "Projects" );
     expect( projectObservations ).toBeAccessible();
   } );

@@ -1,4 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   QueryClient,
   QueryClientProvider
@@ -6,6 +7,8 @@ import {
 import { render } from "@testing-library/react-native";
 import App from "components/App";
 import React from "react";
+
+const Stack = createNativeStackNavigator( );
 
 const queryClient = new QueryClient( {
   defaultOptions: {
@@ -30,11 +33,21 @@ function renderComponent( component, update = null ) {
   );
 }
 
+function renderScreen( component, name, update ) {
+  return renderComponent(
+    <Stack.Navigator>
+      <Stack.Screen component={component} name={name} />
+    </Stack.Navigator>,
+    update
+  );
+}
+
 function renderAppWithComponent( component, update = null ) {
   return renderComponent( <App>{ component }</App>, update );
 }
 
 export {
   renderAppWithComponent,
-  renderComponent
+  renderComponent,
+  renderScreen
 };
