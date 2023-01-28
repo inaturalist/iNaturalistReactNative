@@ -28,7 +28,7 @@ import DeviceInfo from "react-native-device-info";
 import { PERMISSIONS } from "react-native-permissions";
 
 const isTablet = DeviceInfo.isTablet();
-console.log( "is tablet", isTablet );
+
 const Stack = createNativeStackNavigator( );
 
 const PhotoGalleryWithPermission = ( ) => (
