@@ -22,10 +22,6 @@ const { diffClamp } = Animated;
 const { height } = Dimensions.get( "screen" );
 const HEADER_HEIGHT = 101;
 
-// using flatListHeight to make the bottom sheet snap points work when the flatlist
-// has only a few items and isn't scrollable
-const flatListHeight = height;
-
 const ObservationViews = (): Node => {
   const localObservations = useLocalObservations();
   const [view, setView] = useState( "list" );
@@ -115,7 +111,7 @@ const ObservationViews = (): Node => {
           <Animated.FlatList
             data={observationList}
             key={view === "grid" ? 1 : 0}
-            style={{ height: flatListHeight }}
+            style={{ height }}
             testID="ObservationViews.myObservations"
             numColumns={view === "grid" ? 2 : 1}
             renderItem={view === "grid" ? renderGridItem : renderItem}
