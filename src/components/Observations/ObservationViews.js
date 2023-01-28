@@ -4,9 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, {
-  useRef, useState
-} from "react";
+import React, { useRef, useState } from "react";
 import { Animated, Dimensions } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
@@ -22,21 +20,17 @@ import ObsListHeader from "./ObsListHeader";
 const { diffClamp } = Animated;
 
 const { height } = Dimensions.get( "screen" );
-const FOOTER_HEIGHT = 75;
 const HEADER_HEIGHT = 101;
-const BUTTON_ROW_HEIGHT = 50;
 
 // using flatListHeight to make the bottom sheet snap points work when the flatlist
 // has only a few items and isn't scrollable
-const flatListHeight = height - (
-  HEADER_HEIGHT + FOOTER_HEIGHT + BUTTON_ROW_HEIGHT
-);
+const flatListHeight = height;
 
-const ObservationViews = ( ): Node => {
-  const localObservations = useLocalObservations( );
+const ObservationViews = (): Node => {
+  const localObservations = useLocalObservations();
   const [view, setView] = useState( "list" );
-  const navigation = useNavigation( );
-  const currentUser = useCurrentUser( );
+  const navigation = useNavigation();
+  const currentUser = useCurrentUser();
   const { observationList } = localObservations;
   const [hasScrolled, setHasScrolled] = useState( false );
   const [idBelow, setIdBelow] = useState( null );
@@ -69,44 +63,38 @@ const ObservationViews = ( ): Node => {
 
   const navToObsDetails = async observation => {
     const { uuid } = observation;
-    if ( !observation.wasSynced( ) ) {
+    if ( !observation.wasSynced() ) {
       navigation.navigate( "ObsEdit", { uuid } );
     } else {
       navigation.navigate( "ObsDetails", { uuid } );
     }
   };
 
-  const renderEmptyState = ( ) => {
-    if ( ( currentUser === false )
-      || ( !isLoading && observationList.length === 0 ) ) {
+  const renderEmptyState = () => {
+    if ( currentUser === false || ( !isLoading && observationList.length === 0 ) ) {
       return <EmptyList />;
     }
     return <View />;
   };
 
-  const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
-
-  const renderGridItem = ( { item, index } ) => (
-    <GridItem
-      item={item}
-      index={index}
-      handlePress={navToObsDetails}
-    />
+  const renderItem = ( { item } ) => (
+    <ObsCard item={item} handlePress={navToObsDetails} />
   );
 
-  const renderFooter = ( ) => {
-    if ( currentUser === false ) { return <View />; }
-    return (
-      <InfiniteScrollFooter
-        view={view}
-        isLoading={isLoading}
-      />
-    );
+  const renderGridItem = ( { item, index } ) => (
+    <GridItem item={item} index={index} handlePress={navToObsDetails} />
+  );
+
+  const renderFooter = () => {
+    if ( currentUser === false ) {
+      return <View />;
+    }
+    return <InfiniteScrollFooter view={view} isLoading={isLoading} />;
   };
 
-  const renderItemSeparator = ( ) => <View className="border border-border" />;
+  const renderItemSeparator = () => <View className="border border-border" />;
 
-  const onEndReached = ( ) => {
+  const onEndReached = () => {
     if ( !isLoading ) {
       setIdBelow( observationList[observationList.length - 1].id );
     }
@@ -127,11 +115,7 @@ const ObservationViews = ( ): Node => {
           <Animated.FlatList
             data={observationList}
             key={view === "grid" ? 1 : 0}
-            contentContainerStyle={{
-              // add extra height to make lists scrollable when there are less
-              // items than can fill the screen
-              minHeight: flatListHeight + 400
-            }}
+            style={{ height: flatListHeight }}
             testID="ObservationViews.myObservations"
             numColumns={view === "grid" ? 2 : 1}
             renderItem={view === "grid" ? renderGridItem : renderItem}
