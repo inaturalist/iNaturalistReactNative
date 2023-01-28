@@ -124,7 +124,7 @@ const ObservationViews = ( ): Node => {
             numColumns={view === "grid" ? 2 : 1}
             renderItem={view === "grid" ? renderGridItem : renderItem}
             ListEmptyComponent={renderEmptyState}
-            ListHeaderComponent={<ObsListHeader setView={setView} />}
+            ListHeaderComponent={<ObsListHeader setView={setView} view={view} />}
             ListFooterComponent={renderFooter}
             ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
             stickyHeaderIndices={[0]}
