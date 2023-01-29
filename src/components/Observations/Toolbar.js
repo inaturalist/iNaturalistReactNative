@@ -1,11 +1,10 @@
 // @flow
 
-import { Text, View } from "components/styledComponents";
+import { Text, TouchableOpacity, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { TouchableOpacity } from "react-native";
 import { ProgressBar } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -15,9 +14,9 @@ import useUploadObservations from "sharedHooks/useUploadObservations";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  setView: Function;
-  view: string
-}
+  setView: Function,
+  view: string,
+};
 
 const Toolbar = ( { setView, view }: Props ): Node => {
   const currentUser = useCurrentUser( );
@@ -25,9 +24,10 @@ const Toolbar = ( { setView, view }: Props ): Node => {
   const { allObsToUpload } = useLocalObservations( );
   const numUnuploadedObs = useNumUnuploadedObservations( );
   const {
-    // stopUpload,
+    stopUpload,
     uploadInProgress,
-    startUpload
+    startUpload,
+    error: uploadError
   } = useUploadObservations( allObsToUpload );
 
   const loading = obsEditContext?.loading;
@@ -36,7 +36,7 @@ const Toolbar = ( { setView, view }: Props ): Node => {
   const totalObsToUpload = Math.max( allObsToUpload.length, numUnuploadedObs );
   const progress = ( totalObsToUpload - numUnuploadedObs + 1 ) / ( totalObsToUpload + 1 );
 
-  const getSyncClick = () => {
+  const getSyncClick = ( ) => {
     if ( numUnuploadedObs > 0 ) {
       return startUpload;
     }
@@ -44,7 +44,7 @@ const Toolbar = ( { setView, view }: Props ): Node => {
   };
 
   const cleanProgress = ( progressToClean: number ) => {
-    if ( Number.isNaN( progressToClean ) || ( progressToClean < 0 ) ) {
+    if ( Number.isNaN( progressToClean ) || progressToClean < 0 ) {
       return 0;
     }
 
@@ -54,44 +54,74 @@ const Toolbar = ( { setView, view }: Props ): Node => {
   const getStatusText = ( ) => {
     if ( !uploadInProgress && totalObsToUpload > 0 ) {
       return t( "UPLOAD-X-OBSERVATIONS", { count: numUnuploadedObs } );
-    } if ( totalObsToUpload > 0 ) {
+    }
+    if ( totalObsToUpload > 0 ) {
       return t( "Uploading-X-Observations", { count: numUnuploadedObs } );
     }
     return null;
   };
 
-  const statusText = getStatusText();
+  const getSyncIconColor = ( ) => {
+    if ( uploadInProgress || totalObsToUpload > 0 ) {
+      return colors.primary;
+    }
+    return colors.darkGray;
+  };
+
+  const statusText = getStatusText( );
 
   /* eslint-disable react-native/no-inline-styles */
   return (
     <View className="bg-white border-b" style={{ borderColor: "#E8e8e8" }}>
-      <View className="py-5 flex-row justify-between px-3">
-        <View className="flex justify-center items-center flex-row">
-          { currentUser && <IconMaterial name="language" size={30} /> }
-          <TouchableOpacity
-            onPress={getSyncClick()}
-            accessibilityRole="button"
-            disabled={loading}
-          >
-            <IconMaterial name="sync" size={30} />
-          </TouchableOpacity>
+      <View className="py-5 flex flex-row px-3">
+        <View className="flex justify-between items-center flex-row grow">
+          <View className="flex items-center flex-row">
+            {currentUser && (
+              <TouchableOpacity className="mr-3">
+                <IconMaterial name="language" size={30} />
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              onPress={getSyncClick( )}
+              accessibilityRole="button"
+              disabled={loading || uploadInProgress}
+            >
+              <IconMaterial name="sync" size={30} color={getSyncIconColor( )} />
+            </TouchableOpacity>
 
-          { statusText && <Text>{statusText}</Text> }
+            {statusText && (
+              <View>
+                <Text className="ml-1">{statusText}</Text>
+                {uploadError && (
+                  <Text className="ml-1" style={{ color: colors.warningRed }}>
+                    {uploadError}
+                  </Text>
+                )}
+              </View>
+            )}
+          </View>
+          {uploadInProgress && (
+            <TouchableOpacity onPress={stopUpload} accessibilityRole="button">
+              <IconMaterial name="close" size={20} color={colors.darkGray} />
+            </TouchableOpacity>
+          )}
         </View>
 
-        <View className="flex-row mx-3">
-          <TouchableOpacity
-            onPress={( ) => setView( currentView => {
-              if ( currentView === "list" ) {
-                return "grid";
-              }
-              return "list";
-            } )}
-            accessibilityRole="button"
-          >
-            <IconMaterial name={view === "grid" ? "format-list-bulleted" : "grid-view"} size={30} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          className="ml-2"
+          onPress={( ) => setView( currentView => {
+            if ( currentView === "list" ) {
+              return "grid";
+            }
+            return "list";
+          } )}
+          accessibilityRole="button"
+        >
+          <IconMaterial
+            name={view === "grid" ? "format-list-bulleted" : "grid-view"}
+            size={30}
+          />
+        </TouchableOpacity>
       </View>
       <ProgressBar
         progress={uploadInProgress ? cleanProgress( progress ) : 0}

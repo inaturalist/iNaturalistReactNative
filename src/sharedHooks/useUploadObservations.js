@@ -1,6 +1,9 @@
 // @flow
 
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import {
+  activateKeepAwake,
+  deactivateKeepAwake
+} from "@sayem314/react-native-keep-awake";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
@@ -12,8 +15,9 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [uploadInProgress, setUploadInProgress] = useState( false );
   const [shouldUpload, setShouldUpload] = useState( false );
   const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
-  const realm = useRealm();
-  const apiToken = useApiToken();
+  const [error, setError] = useState( null );
+  const realm = useRealm( );
+  const apiToken = useApiToken( );
 
   const cleanup = ( ) => {
     setUploadInProgress( false );
@@ -24,7 +28,16 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
 
   useEffect( ( ) => {
     const upload = async observationToUpload => {
-      await Observation.uploadObservation( observationToUpload, apiToken, realm );
+      try {
+        await Observation.uploadObservation(
+          observationToUpload,
+          apiToken,
+          realm
+        );
+      } catch ( e ) {
+        console.warn( e );
+        setError( e.message );
+      }
       setCurrentUploadIndex( currentIndex => currentIndex + 1 );
     };
 
@@ -38,16 +51,11 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     activateKeepAwake( );
     setUploadInProgress( true );
     upload( observationToUpload );
-  }, [
-    allObsToUpload,
-    apiToken,
-    shouldUpload,
-    currentUploadIndex,
-    realm
-  ] );
+  }, [allObsToUpload, apiToken, shouldUpload, currentUploadIndex, realm] );
 
   return {
     uploadInProgress,
+    error,
     stopUpload: cleanup,
     startUpload: ( ) => setShouldUpload( true )
   };

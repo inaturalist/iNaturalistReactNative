@@ -15,6 +15,7 @@ import {
   ScrollView as StyledScrollView,
   Text as StyledText,
   TextInput as StyledTextInput,
+  TouchableOpacity as StyledTouchableOpacity,
   View as StyledView
 } from "react-native";
 
@@ -48,6 +49,8 @@ const Image = styled( StyledImage );
 const BottomSheetTextInput = styled( StyledBottomSheetTextInput );
 // $FlowIgnore
 const Modal = styled( StyledModal );
+// $FlowIgnore
+const TouchableOpacity = styled( StyledTouchableOpacity );
 
 const fontMonoClass: string = ( Platform.OS === "ios" ? "font-Menlo" : "font-monospace" );
 
@@ -64,5 +67,6 @@ export {
   ScrollView,
   Text,
   TextInput,
+  TouchableOpacity,
   View
 };
