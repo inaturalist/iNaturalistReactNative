@@ -25,7 +25,7 @@ module.exports = {
       borderRadius: {
         // tried using rem value here, but it wouldn't load on iOS or Android
         DEFAULT: "7px"
-      },
+      }
     },
     colors: {
       primary: "#77b300",
