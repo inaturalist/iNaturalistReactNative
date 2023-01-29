@@ -23,6 +23,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     setUploadInProgress( false );
     setShouldUpload( false );
     setCurrentUploadIndex( 0 );
+    setError( null );
     deactivateKeepAwake( );
   };
 
@@ -51,7 +52,13 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     activateKeepAwake( );
     setUploadInProgress( true );
     upload( observationToUpload );
-  }, [allObsToUpload, apiToken, shouldUpload, currentUploadIndex, realm] );
+  }, [
+    allObsToUpload,
+    apiToken,
+    shouldUpload,
+    currentUploadIndex,
+    realm
+  ] );
 
   return {
     uploadInProgress,

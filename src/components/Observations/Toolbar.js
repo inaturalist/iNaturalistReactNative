@@ -111,9 +111,9 @@ const Toolbar = ( { setView, view }: Props ): Node => {
         <TouchableOpacity
           className="ml-2"
           testID={
-            view === "list" ?
-              "ObsList.toggleGridView" :
-              "ObsList.toggleListView"
+            view === "list"
+              ? "ObsList.toggleGridView"
+              : "ObsList.toggleListView"
           }
           onPress={( ) => setView( currentView => {
             if ( currentView === "list" ) {
