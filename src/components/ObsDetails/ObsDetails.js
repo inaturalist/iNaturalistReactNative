@@ -386,7 +386,7 @@ const ObsDetails = ( ): Node => {
           </Text>
         </View>
         <Tabs tabs={tabs} activeId={currentTabId} />
-        <HideView hidden={currentTabId === ACTIVITY_TAB_ID}>
+        <HideView show={currentTabId === ACTIVITY_TAB_ID}>
           <ActivityTab
             uuid={uuid}
             observation={observation}
@@ -399,7 +399,7 @@ const ObsDetails = ( ): Node => {
             showCommentBox={showCommentBox}
           />
         </HideView>
-        <HideView noInitialRender hidden={currentTabId === DATA_TAB_ID}>
+        <HideView noInitialRender show={currentTabId === DATA_TAB_ID}>
           <DataTab observation={observation} />
         </HideView>
         {addingComment && (
