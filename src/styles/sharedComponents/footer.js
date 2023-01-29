@@ -12,7 +12,8 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
       height: -3
     },
     shadowOpacity: 0.20,
-    shadowRadius: 2
+    shadowRadius: 2,
+    elevation: 5,
   }
 } );
 
