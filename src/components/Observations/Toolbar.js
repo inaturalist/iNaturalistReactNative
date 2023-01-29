@@ -77,7 +77,7 @@ const Toolbar = ( { setView, view }: Props ): Node => {
         <View className="flex justify-between items-center flex-row grow">
           <View className="flex items-center flex-row">
             {currentUser && (
-              <TouchableOpacity className="mr-3">
+              <TouchableOpacity className="mr-3" accessibilityRole="button">
                 <IconMaterial name="language" size={30} />
               </TouchableOpacity>
             )}
@@ -85,6 +85,7 @@ const Toolbar = ( { setView, view }: Props ): Node => {
               onPress={getSyncClick( )}
               accessibilityRole="button"
               disabled={loading || uploadInProgress}
+              accessibilityState={{ disabled: loading || uploadInProgress }}
             >
               <IconMaterial name="sync" size={30} color={getSyncIconColor( )} />
             </TouchableOpacity>
@@ -109,6 +110,11 @@ const Toolbar = ( { setView, view }: Props ): Node => {
 
         <TouchableOpacity
           className="ml-2"
+          testID={
+            view === "list" ?
+              "ObsList.toggleGridView" :
+              "ObsList.toggleListView"
+          }
           onPress={( ) => setView( currentView => {
             if ( currentView === "list" ) {
               return "grid";

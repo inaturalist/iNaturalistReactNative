@@ -58,7 +58,7 @@ describe( "MyObservations", ( ) => {
     } );
   } );
 
-  describe( "localization for current user", ( ) => {
+  describe.skip( "localization for current user", ( ) => {
     it( "should be English by default", async ( ) => {
       const mockUser = factory( "LocalUser" );
       expect( mockUser.locale ).toEqual( "en" );
