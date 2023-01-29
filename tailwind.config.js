@@ -21,11 +21,11 @@ module.exports = {
         Roboto: ["Roboto"],
         monospace: ["monospace"],
         Menlo: ["Menlo"]
-      }
-    },
-    borderRadius: {
-      // tried using rem value here, but it wouldn't load on iOS or Android
-      DEFAULT: "7px"
+      },
+      borderRadius: {
+        // tried using rem value here, but it wouldn't load on iOS or Android
+        DEFAULT: "7px"
+      },
     },
     colors: {
       primary: "#77b300",
