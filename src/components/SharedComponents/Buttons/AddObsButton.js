@@ -10,8 +10,8 @@ const AddObsButton = ( ): React.Node => {
   const theme = useTheme( );
   const [showModal, setModal] = React.useState( false );
 
-  const openModal = React.useCallback( () => setModal( true ), [] );
-  const closeModal = React.useCallback( () => setModal( false ), [] );
+  const openModal = React.useCallback( ( ) => setModal( true ), [] );
+  const closeModal = React.useCallback( ( ) => setModal( false ), [] );
 
   return (
     <>
