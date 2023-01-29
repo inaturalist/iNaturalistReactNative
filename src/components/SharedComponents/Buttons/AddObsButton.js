@@ -7,13 +7,13 @@ import { Pressable } from "react-native";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/tailwindColors";
 
-const AddObsButton = (): React.Node => {
+const AddObsButton = ( ): React.Node => {
   const [showModal, setModal] = React.useState( false );
 
-  const openModal = React.useCallback( () => setModal( true ), [] );
-  const closeModal = React.useCallback( () => setModal( false ), [] );
+  const openModal = React.useCallback( ( ) => setModal( true ), [] );
+  const closeModal = React.useCallback( ( ) => setModal( false ), [] );
 
-  const navToAddObs = () => openModal();
+  const navToAddObs = ( ) => openModal( );
 
   return (
     <>
