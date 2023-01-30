@@ -19,7 +19,7 @@ const InlineUser = ( { user }: Props ): Node => {
         <Image
           testID="InlineUser.ProfilePicture"
           className="w-6 h-6 rounded-full mr-1.5"
-          accessibilityRole="img"
+          accessibilityRole="image"
           source={userImgUri}
         />
       ) : (
@@ -27,7 +27,7 @@ const InlineUser = ( { user }: Props ): Node => {
           <IconMaterial
             testID="InlineUser.FallbackPicture"
             name="person"
-            role="img"
+            accessibilityRole="image"
             size={24}
             color={colors.logInGray}
           />
