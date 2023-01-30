@@ -29,6 +29,7 @@ const AddObsButton = ( ): React.Node => {
         iconColor={theme.colors.onSecondary}
         accessibilityLabel={t( "Open-add-evidence-modal" )}
         className="m-0"
+        disabled={false}
       />
     </>
   );

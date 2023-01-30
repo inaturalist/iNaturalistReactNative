@@ -143,7 +143,7 @@ const StandardCamera = ( ): Node => {
     let accessibilityLabel = "";
     let accessibilityValue = "";
     switch ( icon ) {
-      case "flash":
+      case "flash-on-circle":
         testID = "flash-button-label-flash";
         accessibilityLabel = t( "Flash-button-label-flash" );
         accessibilityValue = t( "Flash-button-value-flash" );
@@ -167,14 +167,6 @@ const StandardCamera = ( ): Node => {
       />
     );
   };
-
-  const renderCameraButton = ( icon, disabled ) => (
-    <Avatar.Icon
-      size={60}
-      icon={icon}
-      style={{ backgroundColor: disabled ? colors.gray : colors.white }}
-    />
-  );
 
   return (
     <View className="flex-1 bg-black">
@@ -216,20 +208,28 @@ const StandardCamera = ( ): Node => {
             />
           </Pressable>
         </View>
-        <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">
-          <CloseButton className="w-24" />
-          <Pressable onPress={takePhoto}>
-            {renderCameraButton( "camera", disallowAddingPhotos )}
-          </Pressable>
-          {photosTaken ? (
-            <IconButton
-              icon="checkmark"
-              iconColor={theme.colors.onSecondary}
-              containerColor={theme.colors.secondary}
-              onPress={navToObsEdit}
-              accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-            />
-          ) : <IconButton disabled />}
+        <View className="bg-black h-32 flex-row justify-between items-center">
+          <View className="w-1/3">
+            <CloseButton />
+          </View>
+          <IconButton
+            icon="camera"
+            onPress={takePhoto}
+            disabled={disallowAddingPhotos}
+            containerColor={theme.colors.surface}
+          />
+          <View className="w-1/3">
+            {photosTaken && (
+              <IconButton
+                icon="checkmark"
+                iconColor={theme.colors.onSecondary}
+                containerColor={theme.colors.secondary}
+                onPress={navToObsEdit}
+                accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+                disabled={false}
+              />
+            )}
+          </View>
         </View>
       </View>
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>

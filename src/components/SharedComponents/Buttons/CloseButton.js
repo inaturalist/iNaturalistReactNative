@@ -21,6 +21,7 @@ const CloseButton = ( { className }: Props ): Node => {
       iconColor={theme.colors.background}
       onPress={( ) => navigation.goBack( )}
       accessibilityLabel={t( "Return-to-previous-screen" )}
+      disabled={false}
     />
   );
 };

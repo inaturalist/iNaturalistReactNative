@@ -29,22 +29,26 @@ const Footer = ( ): React.Node => {
         icon="hamburger-menu"
         onPress={toggleSideMenu}
         accessibilityLabel={t( "Open-side-menu" )}
+        disabled={false}
       />
       <IconButton
         icon="compass-rose"
         onPress={navToExplore}
         accessibilityLabel={t( "Navigate-to-explore-screen" )}
+        disabled={false}
       />
       <AddObsButton />
       <IconButton
         icon="ios-people-updated-2"
         onPress={navToObsList}
         accessibilityLabel={t( "Navigate-to-observation-list" )}
+        disabled={false}
       />
       <IconButton
         icon="notifications-bell"
         onPress={navToNotifications}
         accessibilityLabel={t( "Navigate-to-notifications-screen" )}
+        disabled={false}
       />
     </View>
   );
