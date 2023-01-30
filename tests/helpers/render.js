@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
   QueryClient,
   QueryClientProvider
@@ -8,7 +8,7 @@ import { render } from "@testing-library/react-native";
 import App from "components/App";
 import React from "react";
 
-const Stack = createNativeStackNavigator( );
+const Drawer = createDrawerNavigator( );
 
 const queryClient = new QueryClient( {
   defaultOptions: {
@@ -35,9 +35,9 @@ function renderComponent( component, update = null ) {
 
 function renderScreen( component, name, update ) {
   return renderComponent(
-    <Stack.Navigator>
-      <Stack.Screen component={component} name={name} />
-    </Stack.Navigator>,
+    <Drawer.Navigator>
+      <Drawer.Screen component={component} name={name} />
+    </Drawer.Navigator>,
     update
   );
 }
