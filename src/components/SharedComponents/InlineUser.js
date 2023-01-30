@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
@@ -11,11 +12,11 @@ import useIsConnected from "sharedHooks/useIsConnected";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  user: any,
-  onPress: Function
+  user: any
 };
 
-const InlineUser = ( { user, onPress }: Props ): Node => {
+const InlineUser = ( { user }: Props ): Node => {
+  const navigation = useNavigation();
   const isOnline = useIsConnected( );
   const userImgUri = User.uri( user );
   const userHandle = User.userHandle( user );
@@ -23,7 +24,9 @@ const InlineUser = ( { user, onPress }: Props ): Node => {
     <Pressable
       className="flex flex-row items-center"
       accessibilityRole="link"
-      onPress={onPress}
+      onPress={() => {
+        navigation.navigate( "UserProfile", { userId: user.id } );
+      }}
     >
       {userImgUri && isOnline ? (
         <Image

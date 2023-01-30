@@ -6,6 +6,16 @@ import useIsConnected from "sharedHooks/useIsConnected";
 import factory from "../../../factory";
 
 jest.mock( "sharedHooks/useIsConnected" );
+const mockNavigate = jest.fn( );
+jest.mock( "@react-navigation/native", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useNavigation: ( ) => ( {
+      navigate: mockNavigate
+    } )
+  };
+} );
 
 const mockUser = factory( "RemoteUser" );
 const mockUser2 = factory( "RemoteUser", { icon_url: null } );
@@ -14,7 +24,7 @@ describe( "InlineUser", ( ) => {
   it( "displays user handle and image correctly", ( ) => {
     useIsConnected.mockImplementation( ( ) => true );
     render(
-      <InlineUser user={mockUser} onPress={jest.fn()} />
+      <InlineUser user={mockUser} />
     );
     const profilePicture = screen.getByTestId( "InlineUser.ProfilePicture" );
     expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy( );
@@ -26,7 +36,7 @@ describe( "InlineUser", ( ) => {
   it( "displays user handle and and fallback image correctly", ( ) => {
     useIsConnected.mockImplementation( ( ) => true );
     render(
-      <InlineUser user={mockUser2} onPress={jest.fn()} />
+      <InlineUser user={mockUser2} />
     );
     expect( screen.getByText( `@${mockUser2.login}` ) ).toBeTruthy( );
     expect( screen.queryByTestId( "InlineUser.ProfilePicture" ) ).not.toBeTruthy( );
@@ -36,7 +46,7 @@ describe( "InlineUser", ( ) => {
   it( "displays user handle and and fallback image correctly when offline", ( ) => {
     useIsConnected.mockImplementation( ( ) => false );
     render(
-      <InlineUser user={mockUser} onPress={jest.fn()} />
+      <InlineUser user={mockUser} />
     );
     expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy( );
     expect( screen.queryByTestId( "InlineUser.ProfilePicture" ) ).not.toBeTruthy( );
@@ -45,12 +55,12 @@ describe( "InlineUser", ( ) => {
 
   it( "fires onPress handler", ( ) => {
     useIsConnected.mockImplementation( ( ) => true );
-    const pressFunc = jest.fn();
     render(
-      <InlineUser user={mockUser} onPress={pressFunc} />
+      <InlineUser user={mockUser} />
     );
     const inlineUserComponent = screen.getByRole( "link" );
     fireEvent.press( inlineUserComponent );
-    expect( pressFunc ).toHaveBeenCalledTimes( 1 );
+    expect( mockNavigate )
+      .toHaveBeenCalledWith( "UserProfile", { userId: mockUser.id } );
   } );
 } );
