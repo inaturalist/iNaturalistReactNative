@@ -1,12 +1,14 @@
 // @flow
 
-import { Image, Text, View, Pressable} from "components/styledComponents";
+import {
+  Image, Pressable, Text, View
+} from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import User from "realmModels/User";
-import colors from "styles/tailwindColors";
 import useIsConnected from "sharedHooks/useIsConnected";
+import colors from "styles/tailwindColors";
 
 type Props = {
   user: any,

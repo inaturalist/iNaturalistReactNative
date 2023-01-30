@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import InlineUser from "components/SharedComponents/InlineUser";
 import React from "react";
 import useIsConnected from "sharedHooks/useIsConnected";
@@ -45,13 +45,12 @@ describe( "InlineUser", ( ) => {
 
   it( "fires onPress handler", ( ) => {
     useIsConnected.mockImplementation( ( ) => true );
-    const pressFunc = jest.fn()
+    const pressFunc = jest.fn();
     render(
       <InlineUser user={mockUser} onPress={pressFunc} />
     );
-    const inlineUserComponent = screen.getByRole( "link" )
+    const inlineUserComponent = screen.getByRole( "link" );
     fireEvent.press( inlineUserComponent );
     expect( pressFunc ).toHaveBeenCalledTimes( 1 );
-
   } );
 } );
