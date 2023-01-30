@@ -13,7 +13,6 @@ type Props = {
 
 const InlineUser = ( { user }: Props ): Node => {
   const userImgUri = User.uri( user );
-  console.log(userImgUri)
   return (
     <View className="flex flex-row items-center">
       {userImgUri ? (
