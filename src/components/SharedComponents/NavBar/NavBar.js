@@ -1,5 +1,6 @@
 // @flow
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useIsDrawerOpen } from '@react-navigation/drawer'
 import cx from "classnames";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import { View } from "components/styledComponents";
@@ -18,6 +19,8 @@ const MESSAGES_SCREEN_ID = "Messages";
 
 const NavBar = ( ): React.Node => {
   const navigation = useNavigation( );
+  const { name } = useRoute();
+  const isDrawerOpen = useIsDrawerOpen()
   const toggleSideMenu = ( ) => navigation.openDrawer( );
   const navToObsList = ( ) => navigation.navigate( "MainStack", { screen: OBS_LIST_SCREEN_ID } );
   const navToExplore = ( ) => navigation.navigate( "MainStack", { screen: EXPLORE_SCREEN_ID } );
@@ -41,11 +44,14 @@ const NavBar = ( ): React.Node => {
         icon="menu"
         accessibilityLabel={t( "Navigate-to-observations" )}
         accessibilityRole="button"
+        id="OPEN_DRAWER"
+        active={isDrawerOpen}
       />
       <NavButton
         onPress={navToExplore}
         icon="language"
         id={EXPLORE_SCREEN_ID}
+        active={name === EXPLORE_SCREEN_ID}
         accessibilityLabel={t( "Navigate-to-notifications" )}
       />
       <AddObsButton />
@@ -54,11 +60,13 @@ const NavBar = ( ): React.Node => {
         icon="person"
         img={User.uri( user )}
         id={OBS_LIST_SCREEN_ID}
+        active={name === OBS_LIST_SCREEN_ID}
         accessibilityLabel={t( "Open-sidebar" )}
       />
       <NavButton
         onPress={navToNotifications}
         icon="notifications"
+        active={name === MESSAGES_SCREEN_ID}
         id={MESSAGES_SCREEN_ID}
         accessibilityLabel={t( "Navigate-to-map" )}
       />
