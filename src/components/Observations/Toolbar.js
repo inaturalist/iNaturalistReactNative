@@ -63,7 +63,7 @@ const Toolbar = ( { setView, view }: Props ): Node => {
 
   const getSyncIconColor = ( ) => {
     if ( uploadInProgress || totalObsToUpload > 0 ) {
-      return colors.primary;
+      return colors.inatGreen;
     }
     return colors.darkGray;
   };
@@ -72,8 +72,8 @@ const Toolbar = ( { setView, view }: Props ): Node => {
 
   /* eslint-disable react-native/no-inline-styles */
   return (
-    <View className="bg-white border-b" style={{ borderColor: "#E8e8e8" }}>
-      <View className="py-5 flex flex-row px-3">
+    <View className="bg-white border-b border-[#e8e8e8]">
+      <View className="py-5 flex flex-row px-[15px]">
         <View className="flex justify-between items-center flex-row grow">
           <View className="flex items-center flex-row">
             {currentUser && (
@@ -87,14 +87,14 @@ const Toolbar = ( { setView, view }: Props ): Node => {
               disabled={loading || uploadInProgress}
               accessibilityState={{ disabled: loading || uploadInProgress }}
             >
-              <IconMaterial name="sync" size={30} color={getSyncIconColor( )} />
+              <IconMaterial name="sync" size={26} color={getSyncIconColor( )} />
             </TouchableOpacity>
 
             {statusText && (
               <View>
                 <Text className="ml-1">{statusText}</Text>
                 {uploadError && (
-                  <Text className="ml-1" style={{ color: colors.warningRed }}>
+                  <Text className="ml-1 mt-[3px]" style={{ color: colors.warningRed }}>
                     {uploadError}
                   </Text>
                 )}
