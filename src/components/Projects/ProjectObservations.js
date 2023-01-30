@@ -30,11 +30,11 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
 
   return (
     <FlatList
+      testID="ProjectObservations.grid"
       data={observations}
       key={1}
       renderItem={renderGridItem}
       numColumns={4}
-      testID="ProjectObservations.grid"
     />
   );
 };

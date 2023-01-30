@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { t } from "i18next";
 import * as React from "react";
 import {
   FlatList, Image, Pressable, Text
@@ -21,6 +22,9 @@ const ProjectList = ( { data }: Props ): React.Node => {
         onPress={navToProjectDetails}
         style={viewStyles.row}
         testID={`Project.${item.id}`}
+        accessible
+        accessibilityRole="button"
+        accessibilityLabel={t( "Navigate-to-project-details" )}
       >
         <Image
           source={{ uri: item.icon }}
