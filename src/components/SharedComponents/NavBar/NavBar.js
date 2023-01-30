@@ -40,6 +40,7 @@ const NavBar = ( ): React.Node => {
         onPress={toggleSideMenu}
         icon="menu"
         accessibilityLabel={t( "Navigate-to-observations" )}
+        accessibilityRole="button"
       />
       <NavButton
         onPress={navToExplore}

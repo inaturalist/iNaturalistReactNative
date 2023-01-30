@@ -11,6 +11,7 @@ type Props = {
   id?: string,
   img?: string,
   accessibilityLabel: string,
+  accessibilityRole?: string
 };
 
 const NavButton = ( {
@@ -18,7 +19,8 @@ const NavButton = ( {
   onPress,
   id,
   img,
-  accessibilityLabel
+  accessibilityLabel,
+  accessibilityRole = "link"
 }: Props ): React.Node => {
   const { name } = useRoute();
   const backgroundColor = {
@@ -28,15 +30,20 @@ const NavButton = ( {
     <Pressable
       className="h-9 bg"
       onPress={onPress}
-      accessibilityRole="link"
+      accessibilityRole={accessibilityRole}
       accessibilityLabel={accessibilityLabel}
     >
       {img ? (
         <View className="w-9 h-9 rounded-full" style={backgroundColor}>
-          <Image className="w-8 h-8 rounded-full m-auto" source={img} />
+          <Image
+            accessibilityRole="img"
+            className="w-8 h-8 rounded-full m-auto"
+            source={img}
+          />
         </View>
       ) : (
         <IconMaterial
+          accessibilityRole="img"
           name={icon}
           size={35}
           color={name === id ? colors.primary : colors.logInGray}
