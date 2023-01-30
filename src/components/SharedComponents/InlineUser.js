@@ -13,12 +13,26 @@ type Props = {
 
 const InlineUser = ( { user }: Props ): Node => {
   const userImgUri = User.uri( user );
+  console.log(userImgUri)
   return (
     <View className="flex flex-row items-center">
       {userImgUri ? (
-        <Image className="w-6 h-6 rounded-full mr-1.5" source={userImgUri} />
+        <Image
+          testID="InlineUser.ProfilePicture"
+          className="w-6 h-6 rounded-full mr-1.5"
+          accessibilityRole="img"
+          source={userImgUri}
+        />
       ) : (
-        <IconMaterial name="person" size={24} color={colors.logInGray} />
+        <View className="mr-1.5">
+          <IconMaterial
+            testID="InlineUser.FallbackPicture"
+            name="person"
+            role="img"
+            size={24}
+            color={colors.logInGray}
+          />
+        </View>
       )}
       <Text>{User.userHandle( user )}</Text>
     </View>
