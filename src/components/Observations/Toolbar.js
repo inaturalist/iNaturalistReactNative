@@ -27,14 +27,12 @@ const Toolbar = ( { setView, view }: Props ): Node => {
     stopUpload,
     uploadInProgress,
     startUpload,
+    progress,
     error: uploadError
   } = useUploadObservations( allObsToUpload );
 
   const loading = obsEditContext?.loading;
   const syncObservations = obsEditContext?.syncObservations;
-
-  const totalObsToUpload = Math.max( allObsToUpload.length, numUnuploadedObs );
-  const progress = ( totalObsToUpload - numUnuploadedObs + 1 ) / ( totalObsToUpload + 1 );
 
   const getSyncClick = ( ) => {
     if ( numUnuploadedObs > 0 ) {
@@ -43,33 +41,24 @@ const Toolbar = ( { setView, view }: Props ): Node => {
     return syncObservations;
   };
 
-  const cleanProgress = ( progressToClean: number ) => {
-    if ( Number.isNaN( progressToClean ) || progressToClean < 0 ) {
-      return 0;
-    }
-
-    return progressToClean;
-  };
-
   const getStatusText = ( ) => {
-    if ( !uploadInProgress && totalObsToUpload > 0 ) {
+    if ( !uploadInProgress && numUnuploadedObs > 0 ) {
       return t( "UPLOAD-X-OBSERVATIONS", { count: numUnuploadedObs } );
     }
-    if ( totalObsToUpload > 0 ) {
+    if ( numUnuploadedObs > 0 ) {
       return t( "Uploading-X-Observations", { count: numUnuploadedObs } );
     }
     return null;
   };
 
   const getSyncIconColor = ( ) => {
-    if ( uploadInProgress || totalObsToUpload > 0 ) {
+    if ( uploadInProgress || numUnuploadedObs > 0 ) {
       return colors.inatGreen;
     }
     return colors.darkGray;
   };
 
   const statusText = getStatusText( );
-
   /* eslint-disable react-native/no-inline-styles */
   return (
     <View className="bg-white border-b border-[#e8e8e8]">
@@ -130,9 +119,10 @@ const Toolbar = ( { setView, view }: Props ): Node => {
         </TouchableOpacity>
       </View>
       <ProgressBar
-        progress={uploadInProgress ? cleanProgress( progress ) : 0}
+        progress={progress}
         color={colors.primary}
         style={{ backgroundColor: "transparent" }}
+        visible={uploadInProgress && progress !== 0}
       />
     </View>
   );
