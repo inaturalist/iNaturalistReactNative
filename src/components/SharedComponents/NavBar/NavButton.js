@@ -1,37 +1,42 @@
 // @flow
-import { useRoute } from "@react-navigation/native";
 import { Image, Pressable, View } from "components/styledComponents";
 import * as React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/tailwindColors";
 
 type Props = {
+  id: string,
   icon: any,
   onPress: any,
-  id?: string,
   img?: string,
   accessibilityLabel: string,
-  accessibilityRole?: string
+  accessibilityRole?: string,
+  active: bool
 };
 
 const NavButton = ( {
+  id,
   icon,
   onPress,
-  id,
   img,
+  active,
   accessibilityLabel,
   accessibilityRole = "link"
 }: Props ): React.Node => {
-  const { name } = useRoute();
   const backgroundColor = {
-    backgroundColor: name === id ? colors.primary : "transparent"
+    backgroundColor: active ? colors.primary : "transparent"
   };
   return (
     <Pressable
       className="h-9 bg"
       onPress={onPress}
+      testID={id}
       accessibilityRole={accessibilityRole}
       accessibilityLabel={accessibilityLabel}
+      accessibilityState={{
+        selected: active,
+        expanded: active
+      }}
     >
       {img ? (
         <View className="w-9 h-9 rounded-full" style={backgroundColor}>
@@ -46,7 +51,7 @@ const NavButton = ( {
           accessibilityRole="img"
           name={icon}
           size={35}
-          color={name === id ? colors.primary : colors.logInGray}
+          color={active ? colors.primary : colors.logInGray}
         />
       )}
     </Pressable>
