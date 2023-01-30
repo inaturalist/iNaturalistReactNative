@@ -1,7 +1,7 @@
 // @flow
 import { useDrawerStatus } from "@react-navigation/drawer";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import cx from "classnames";
+import classNames from "classnames";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -33,7 +33,7 @@ const NavBar = ( ): React.Node => {
 
   return (
     <View
-      className={cx(
+      className={classNames(
         "flex flex-row absolute bottom-0 bg-white w-full justify-evenly items-center pb-2",
         footerHeight
       )}
@@ -46,6 +46,7 @@ const NavBar = ( ): React.Node => {
         accessibilityRole="button"
         id="OPEN_DRAWER"
         active={isDrawerOpen}
+        size={32}
       />
       <NavButton
         onPress={navToExplore}
@@ -53,6 +54,7 @@ const NavBar = ( ): React.Node => {
         id={EXPLORE_SCREEN_ID}
         active={name === EXPLORE_SCREEN_ID}
         accessibilityLabel={t( "Navigate-to-notifications" )}
+        size={40}
       />
       <AddObsButton />
       <NavButton
@@ -62,6 +64,7 @@ const NavBar = ( ): React.Node => {
         id={OBS_LIST_SCREEN_ID}
         active={name === OBS_LIST_SCREEN_ID}
         accessibilityLabel={t( "Open-sidebar" )}
+        size={40}
       />
       <NavButton
         onPress={navToNotifications}
@@ -69,6 +72,7 @@ const NavBar = ( ): React.Node => {
         active={name === MESSAGES_SCREEN_ID}
         id={MESSAGES_SCREEN_ID}
         accessibilityLabel={t( "Navigate-to-map" )}
+        size={32}
       />
     </View>
   );
