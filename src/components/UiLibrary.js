@@ -18,13 +18,20 @@ import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 const UiLibrary = ( ) => (
   <ViewWithFooter>
     <ScrollView className="px-5">
-      {/* fallback w/ no user img */ }
-      <InlineUser user={{ login: "frogfinder23" }} />
-      <InlineUser user={{
-        icon_url: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
-        login: "turtletamer74"
-      }}
+      <Text>
+        InlineUser component
+      </Text>
+      <InlineUser
+        user={{
+          icon_url: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
+          login: "turtletamer74"
+        }}
+        onPress={( ) => {}}
       />
+      <Text>
+        InlineUser component w/ fallback image
+      </Text>
+      <InlineUser user={{ login: "frogfinder23" }} onPress={( ) => {}} />
       {/* TODO replace these text components with our typography header components */}
       <Text>
         All the re-usable UI components we've got. If you're making a new UI
