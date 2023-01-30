@@ -61,7 +61,7 @@ jest.mock( "@react-navigation/drawer", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/drawer" );
   return {
     ...actualNav,
-    useDrawerStatus: jest.fn( ( ) => false ),
+    useDrawerStatus: jest.fn( ( ) => false )
   };
 } );
 
