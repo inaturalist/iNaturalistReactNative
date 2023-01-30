@@ -185,6 +185,9 @@ function FormDataMock() {
   this.append = jest.fn();
 }
 global.FormData = FormDataMock;
+global.ReanimatedDataMock = {
+  now: () => 0
+};
 
 jest.mock( "react-native-fs", ( ) => {
   const RNFS = {

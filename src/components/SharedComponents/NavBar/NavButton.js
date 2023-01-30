@@ -33,22 +33,24 @@ const NavButton = ( {
       testID={id}
       accessibilityRole={accessibilityRole}
       accessibilityLabel={accessibilityLabel}
+      disabled={active}
       accessibilityState={{
         selected: active,
-        expanded: active
+        expanded: active,
+        disabled: active
       }}
     >
       {img ? (
         <View className="w-9 h-9 rounded-full" style={backgroundColor}>
           <Image
-            accessibilityRole="img"
+            accessibilityRole="image"
             className="w-8 h-8 rounded-full m-auto"
             source={img}
           />
         </View>
       ) : (
         <IconMaterial
-          accessibilityRole="img"
+          accessibilityRole="image"
           name={icon}
           size={35}
           color={active ? colors.primary : colors.logInGray}
