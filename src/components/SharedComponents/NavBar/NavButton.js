@@ -24,7 +24,7 @@ const NavButton = ( {
   accessibilityRole = "link"
 }: Props ): React.Node => {
   const backgroundColor = {
-    backgroundColor: active ? colors.primary : "transparent"
+    backgroundColor: active ? colors.inatGreen : "transparent"
   };
   return (
     <Pressable
@@ -53,7 +53,7 @@ const NavButton = ( {
           accessibilityRole="image"
           name={icon}
           size={35}
-          color={active ? colors.primary : colors.logInGray}
+          color={active ? colors.inatGreen : colors.darkGray}
         />
       )}
     </Pressable>
