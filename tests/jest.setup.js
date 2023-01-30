@@ -57,6 +57,14 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+jest.mock( "@react-navigation/drawer", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/drawer" );
+  return {
+    ...actualNav,
+    useDrawerStatus: jest.fn( ( ) => false ),
+  };
+} );
+
 // this resolves error with importing file after Jest environment is torn down
 // https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
 jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
