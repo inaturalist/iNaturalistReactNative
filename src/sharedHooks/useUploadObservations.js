@@ -44,11 +44,11 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
         setError( e.message );
       }
       setProgress( currentProgress => {
-        if (currentUploadIndex === allObsToUpload.length - 1) {
+        if ( currentUploadIndex === allObsToUpload.length - 1 ) {
           return 1;
         }
         return currentProgress + increment;
-      });
+      } );
       setCurrentUploadIndex( currentIndex => currentIndex + 1 );
     };
 
