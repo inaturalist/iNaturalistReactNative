@@ -36,12 +36,10 @@ describe( "InlineUser", ( ) => {
     expect( screen.queryByTestId( "InlineUser.FallbackPicture" ) ).not.toBeTruthy( );
   } );
 
-    render(
-      <InlineUser user={mockUserWithoutImage} />
-    );
-    expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy( );
-    expect( screen.queryByTestId( "InlineUser.ProfilePicture" ) ).not.toBeTruthy( );
   it( "displays user handle and and fallback image correctly", async ( ) => {
+    render( <InlineUser user={mockUserWithoutImage} /> );
+    expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy();
+    expect( screen.queryByTestId( "InlineUser.ProfilePicture" ) ).not.toBeTruthy();
     // This icon appears after useIsConnected returns true
     // so we have to use await and findByTestId
     expect( await screen.findByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy();
