@@ -23,24 +23,28 @@ const mockUser = factory( "RemoteUser" );
 const mockUserWithoutImage = factory( "RemoteUser", { icon_url: null } );
 
 describe( "InlineUser", ( ) => {
-  it( "displays user handle and image correctly", ( ) => {
+  it( "displays user handle and image correctly", async ( ) => {
     render(
       <InlineUser user={mockUser} />
     );
-    const profilePicture = screen.getByTestId( "InlineUser.ProfilePicture" );
     expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy( );
+    // This image appears after useIsConnected returns true
+    // so we have to use await and findByTestId
+    const profilePicture = await screen.findByTestId( "InlineUser.ProfilePicture" );
     expect( profilePicture ).toBeTruthy( );
     expect( profilePicture.props.source ).toEqual( { uri: mockUser.icon_url } );
     expect( screen.queryByTestId( "InlineUser.FallbackPicture" ) ).not.toBeTruthy( );
   } );
 
-  it( "displays user handle and and fallback image correctly", ( ) => {
     render(
       <InlineUser user={mockUserWithoutImage} />
     );
     expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy( );
     expect( screen.queryByTestId( "InlineUser.ProfilePicture" ) ).not.toBeTruthy( );
-    expect( screen.getByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy( );
+  it( "displays user handle and and fallback image correctly", async ( ) => {
+    // This icon appears after useIsConnected returns true
+    // so we have to use await and findByTestId
+    expect( await screen.findByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy();
   } );
 
   it( "fires onPress handler", ( ) => {
