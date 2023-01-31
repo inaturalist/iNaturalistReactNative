@@ -7,17 +7,20 @@ import {
 import React from "react";
 import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import AddObsButton from "./SharedComponents/Buttons/AddObsButton";
 import Button from "./SharedComponents/Buttons/Button";
 import EvidenceButton from "./SharedComponents/Buttons/EvidenceButton";
 import SecondaryCTAButton from "./SharedComponents/Buttons/SecondaryCTAButton";
+import InlineUser from "./SharedComponents/InlineUser";
 import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
 const UiLibrary = ( ) => {
   const theme = useTheme( );
+  const currentUser = useCurrentUser();
   return (
     <ViewWithFooter>
       <ScrollView className="px-5">
@@ -148,6 +151,7 @@ const UiLibrary = ( ) => {
             <INatIcon
               name={iconName}
               className="p-3"
+              key={iconName}
               onPress={( ) => Alert.alert(
                 "",
                 `You tapped on the ${iconName} icon`
@@ -156,6 +160,18 @@ const UiLibrary = ( ) => {
             />
           ) )}
         </View>
+        <Text className="text-lg">InlineUser</Text>
+        <Text>InlineUser component</Text>
+        <InlineUser
+          user={currentUser || {
+            icon_url:
+            "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
+            login: "turtletamer74"
+          }}
+        />
+        <Text>InlineUser component for a user that has no icon set</Text>
+        <InlineUser user={{ login: "frogfinder23" }} />
+
         <Text className="text-lg">More Stuff!</Text>
         <Text className="h-[100px]">
           Useless spacer at the end because height in NativeWind is confusing.

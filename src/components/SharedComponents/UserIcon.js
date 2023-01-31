@@ -9,12 +9,14 @@ type Props = {
 }
 
 const UserIcon = ( { uri, small }: Props ): React.Node => {
-  const className = small ? "w-10 h-10 rounded-full" : "w-14 h-14 rounded-full";
+  const className = small
+    ? "w-[22px] h-[22px] rounded-full"
+    : "w-[40px] h-[40px] rounded-full";
   return (
     <Image
+      testID="UserIcon.photo"
       className={className}
       source={uri}
-      testID="UserIcon.photo"
     />
   );
 };
