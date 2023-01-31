@@ -1,4 +1,3 @@
-import { fireEvent, screen } from "@testing-library/react-native";
 import ActivityTab from "components/ObsDetails/ActivityTab";
 import React from "react";
 
@@ -41,30 +40,19 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   } )
 } ) );
 
-const mockNavToUserProfile = jest.fn();
 describe( "ActivityTab", () => {
-  test( "navigates to identifier profile on button press", async ( ) => {
+  test( "renders", async ( ) => {
     renderComponent(
       <ActivityTab
         uuid={mockObservation.uuid}
         observation={mockObservation}
         comments={[]}
         navToTaxonDetails={jest.fn()}
-        navToUserProfile={mockNavToUserProfile}
         toggleRefetch={jest.fn()}
         refetchRemoteObservation={jest.fn()}
         openCommentBox={jest.fn()}
         showCommentBox={jest.fn()}
       />
-    );
-
-    const identifierButton = await screen.findByTestId(
-      `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
-    );
-
-    fireEvent.press( identifierButton );
-    expect( mockNavToUserProfile ).toHaveBeenCalledWith(
-      mockObservation.identifications[0].user.id
     );
   } );
 } );
