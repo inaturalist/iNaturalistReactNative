@@ -8,13 +8,13 @@ import ObsListToolbar from "./ObsListToolbar";
 import UserCard from "./UserCard";
 
 type Props = {
-  setView: Function;
-  view: string
+  setLayout: Function;
+  layout: string
 }
 
 const ObsListHeader = ( {
-  setView,
-  view
+  setLayout,
+  layout
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
 
@@ -24,7 +24,7 @@ const ObsListHeader = ( {
       {currentUser
         ? <UserCard />
         : <LoggedOutCard />}
-      <ObsListToolbar setView={setView} view={view} />
+      <ObsListToolbar setLayout={setLayout} layout={layout} />
     </>
   );
 };

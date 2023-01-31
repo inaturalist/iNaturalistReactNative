@@ -565,7 +565,7 @@ Unreviewed-only = Unreviewed only
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
 
 # Shows the number of observations a user can upload to iNat from my observations page
-UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
+Upload-x-observations = UPLOAD {$count ->
     [one] 1 OBSERVATION
     *[other] {$count} OBSERVATIONS
 }

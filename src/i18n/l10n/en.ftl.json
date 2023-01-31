@@ -382,7 +382,7 @@
   "Unmute": "Unmute",
   "Unreviewed-only": "Unreviewed only",
   "UPLOAD-OBSERVATION": "UPLOAD OBSERVATION",
-  "UPLOAD-X-OBSERVATIONS": {
+  "Upload-x-observations": {
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "UPLOAD { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}"
   },
