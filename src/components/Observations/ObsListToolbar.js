@@ -21,11 +21,11 @@ type Props = {
 };
 
 const Toolbar = ( { setLayout, layout }: Props ): Node => {
-  const currentUser = useCurrentUser();
+  const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
-  const { allObsToUpload } = useLocalObservations();
-  const numUnuploadedObs = useNumUnuploadedObservations();
-  const navigation = useNavigation();
+  const { allObsToUpload } = useLocalObservations( );
+  const numUnuploadedObs = useNumUnuploadedObservations( );
+  const navigation = useNavigation( );
   const {
     stopUpload,
     uploadInProgress,
@@ -41,7 +41,7 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
     duration: 3000,
     easing: Easing.linear,
     useNativeDriver: true
-  } ).start();
+  } ).start( );
 
   const spin = spinValue.interpolate( {
     inputRange: [0, 1],
@@ -51,7 +51,7 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
   const loading = obsEditContext?.loading;
   const syncObservations = obsEditContext?.syncObservations;
 
-  const getSyncClick = () => {
+  const getSyncClick = ( ) => {
     if ( numUnuploadedObs > 0 ) {
       return startUpload;
     }
@@ -59,7 +59,7 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
     return syncObservations;
   };
 
-  const getStatusText = () => {
+  const getStatusText = ( ) => {
     if ( !uploadInProgress && numUnuploadedObs > 0 ) {
       return t( "Upload-x-observations", { count: numUnuploadedObs } );
     }
@@ -69,14 +69,14 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
     return null;
   };
 
-  const getSyncIconColor = () => {
+  const getSyncIconColor = ( ) => {
     if ( uploadInProgress || numUnuploadedObs > 0 ) {
       return colors.inatGreen;
     }
     return colors.darkGray;
   };
 
-  const statusText = getStatusText();
+  const statusText = getStatusText( );
   /* eslint-disable react-native/no-inline-styles */
   return (
     <View className="bg-white border-b border-[#e8e8e8]">
@@ -85,13 +85,13 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
           <Pressable
             className="mr-3"
             accessibilityRole="button"
-            onPress={() => navigation.navigate( "MainStack", { screen: "ExploreLanding" } )}
+            onPress={( ) => navigation.navigate( "MainStack", { screen: "ExploreLanding" } )}
           >
             <IconMaterial name="language" size={30} />
           </Pressable>
         )}
         <Pressable
-          onPress={getSyncClick()}
+          onPress={getSyncClick( )}
           accessibilityRole="button"
           disabled={loading || uploadInProgress}
           accessibilityState={{ disabled: loading || uploadInProgress }}
@@ -99,7 +99,7 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
           <Animated.View
             style={uploadInProgress ? { transform: [{ rotate: spin }] } : {}}
           >
-            <IconMaterial name="sync" size={26} color={getSyncIconColor()} />
+            <IconMaterial name="sync" size={26} color={getSyncIconColor( )} />
           </Animated.View>
         </Pressable>
 
@@ -131,7 +131,7 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
                 ? "ObsList.toggleGridView"
                 : "ObsList.toggleListView"
             }
-            onPress={() => setLayout( currentView => {
+            onPress={( ) => setLayout( currentView => {
               if ( currentView === "list" ) {
                 return "grid";
               }
