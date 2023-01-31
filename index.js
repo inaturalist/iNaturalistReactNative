@@ -9,9 +9,9 @@ import {
 } from "@tanstack/react-query";
 import handleError from "api/error";
 import App from "components/App";
-import INatIcon from "components/INatIcon";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
+import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
 import RealmProvider from "providers/RealmProvider";
 import React from "react";
@@ -20,9 +20,7 @@ import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { startNetworkLogging } from "react-native-network-logger";
-import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import colors from "styles/tailwindColors";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -83,35 +81,11 @@ const queryClient = new QueryClient( {
   }
 } );
 
-// TODO: remove paper themes from app in favor of Tailwind
-const theme = {
-  ...DefaultTheme,
-  version: 3,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: colors.darkGray,
-    onPrimary: colors.white,
-    secondary: colors.focusGreen,
-    onSecondary: colors.white,
-    background: colors.white,
-    error: colors.warningRed,
-    onError: colors.white
-  }
-};
-
-// eslint-disable-next-line react/jsx-props-no-spreading
-const renderCustomIcon = props => <INatIcon {...props} />;
-
 const AppWithProviders = ( ) => (
   <QueryClientProvider client={queryClient}>
     <RealmProvider>
       <SafeAreaProvider>
-        <PaperProvider
-          settings={{
-            icon: renderCustomIcon
-          }}
-          theme={theme}
-        >
+        <INatPaperProvider>
           <GestureHandlerRootView className="flex-1">
             {/* NavigationContainer needs to be nested above ObsEditProvider */}
             <NavigationContainer>
@@ -120,7 +94,7 @@ const AppWithProviders = ( ) => (
               </ObsEditProvider>
             </NavigationContainer>
           </GestureHandlerRootView>
-        </PaperProvider>
+        </INatPaperProvider>
       </SafeAreaProvider>
     </RealmProvider>
   </QueryClientProvider>

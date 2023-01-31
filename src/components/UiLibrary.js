@@ -1,3 +1,4 @@
+import INatIcon from "components/INatIcon";
 import {
   ScrollView,
   Text,
@@ -12,6 +13,8 @@ import Button from "./SharedComponents/Buttons/Button";
 import EvidenceButton from "./SharedComponents/Buttons/EvidenceButton";
 import SecondaryCTAButton from "./SharedComponents/Buttons/SecondaryCTAButton";
 import ViewWithFooter from "./SharedComponents/ViewWithFooter";
+
+console.log( INatIcon, "inat icon" );
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
@@ -98,7 +101,7 @@ const UiLibrary = ( ) => {
         <SecondaryCTAButton disabled>
           <Text>Disabled SecondaryCTAButton</Text>
         </SecondaryCTAButton>
-        <Text className="text-lg">Custom iNaturalist Icons</Text>
+        <Text className="text-lg">Icon Button w/ Custom iNaturalist Icons</Text>
         <View className="flex flex-row justify-between">
           <View>
             <Text className="text-center">Primary</Text>
@@ -114,7 +117,7 @@ const UiLibrary = ( ) => {
           <View>
             <Text className="text-center">Focused</Text>
             <IconButton
-              icon="icon-createobservation"
+              icon="plus-sign"
               className="my-2"
               onPress={( ) => Alert.alert(
                 "",
@@ -128,7 +131,7 @@ const UiLibrary = ( ) => {
           <View>
             <Text className="text-center">Warning</Text>
             <IconButton
-              icon="tab-notifications"
+              icon="notifications-bell"
               className="my-2"
               onPress={( ) => Alert.alert(
                 "",
