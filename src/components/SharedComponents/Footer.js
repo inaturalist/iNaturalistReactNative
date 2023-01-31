@@ -18,7 +18,7 @@ const Footer = ( ): React.Node => {
 
   const footerClassName = ( Platform.OS === "ios" )
     ? "flex-row h-20 absolute bottom-0 bg-white w-full justify-evenly pt-2"
-    : "flex-row h-14 absolute bottom-0 bg-white w-full justify-evenly pt-2";
+    : "flex-row h-16 absolute bottom-0 bg-white w-full justify-evenly pt-1";
 
   return (
     <View

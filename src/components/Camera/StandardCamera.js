@@ -141,17 +141,14 @@ const StandardCamera = ( ): Node => {
   const renderAddObsButtons = icon => {
     let testID = "";
     let accessibilityLabel = "";
-    let accessibilityValue = "";
     switch ( icon ) {
       case "flash-on-circle":
         testID = "flash-button-label-flash";
         accessibilityLabel = t( "Flash-button-label-flash" );
-        accessibilityValue = t( "Flash-button-value-flash" );
         break;
       case "flash-off":
         testID = "flash-button-label-flash-off";
         accessibilityLabel = t( "Flash-button-label-flash-off" );
-        accessibilityValue = t( "Flash-button-value-flash-off" );
         break;
       default:
         break;
@@ -160,7 +157,6 @@ const StandardCamera = ( ): Node => {
       <Avatar.Icon
         testID={testID}
         accessibilityLabel={accessibilityLabel}
-        accessibilityValue={accessibilityValue}
         size={40}
         icon={icon}
         style={{ backgroundColor: colors.gray }}
@@ -193,11 +189,6 @@ const StandardCamera = ( ): Node => {
           <Pressable
             onPress={flipCamera}
             accessibilityLabel={t( "Camera-button-label-switch-camera" )}
-            accessibilityValue={{
-              text: cameraPosition === "back"
-                ? t( "Camera-button-value-back" )
-                : t( "Camera-button-value-front" )
-            }}
             accessibilityRole="button"
           >
             <Avatar.Icon

@@ -1,4 +1,4 @@
-import INatIcon from "components/INatIcon";
+import INatIcon, { glyphMap } from "components/INatIcon";
 import {
   ScrollView,
   Text,
@@ -13,8 +13,6 @@ import Button from "./SharedComponents/Buttons/Button";
 import EvidenceButton from "./SharedComponents/Buttons/EvidenceButton";
 import SecondaryCTAButton from "./SharedComponents/Buttons/SecondaryCTAButton";
 import ViewWithFooter from "./SharedComponents/ViewWithFooter";
-
-console.log( INatIcon, "inat icon" );
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
@@ -82,15 +80,15 @@ const UiLibrary = ( ) => {
         <View className="flex flex-row justify-between">
           <View>
             <Text className="text-center">Default</Text>
-            <EvidenceButton />
+            <EvidenceButton icon="camera" />
           </View>
           <View>
             <Text className="text-center">Disabled</Text>
-            <EvidenceButton disabled />
+            <EvidenceButton icon="microphone" disabled />
           </View>
           <View>
             <Text className="text-center">With Icon</Text>
-            <EvidenceButton icon="photo-camera" />
+            <EvidenceButton icon="microphone" />
           </View>
         </View>
 
@@ -140,6 +138,23 @@ const UiLibrary = ( ) => {
               iconColor={theme.colors.error}
             />
           </View>
+        </View>
+        <Text className="text-lg">Custom iNaturalist Icons</Text>
+        <Text>
+          Make sure you're exporting glyphMap from components/INatIcon.js to see all custom icons
+        </Text>
+        <View className="flex flex-row flex-wrap justify-center">
+          {Object.keys( glyphMap ).map( iconName => (
+            <INatIcon
+              name={iconName}
+              className="p-3"
+              onPress={( ) => Alert.alert(
+                "",
+                `You tapped on the ${iconName} icon`
+              )}
+              size={20}
+            />
+          ) )}
         </View>
         <Text className="text-lg">More Stuff!</Text>
         <Text className="h-[100px]">

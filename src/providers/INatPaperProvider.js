@@ -6,7 +6,6 @@ import * as React from "react";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
-// TODO: remove paper themes from app in favor of Tailwind
 const theme = {
   ...DefaultTheme,
   version: 3,

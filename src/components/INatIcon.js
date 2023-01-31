@@ -12,7 +12,6 @@ const glyphMap = {
   "compass-rose": 57347,
   "pen-and-paper": 57348,
   microphone: 57350,
-  "icon-kebabmenu": 57354,
   camera: 57355,
   "triple-dots": 57352,
   "close-button-x": 57351,
@@ -25,8 +24,7 @@ const glyphMap = {
   "flash-on-circle": 57360,
   "copyright-circle": 57361,
   "crop-photo-circle": 57362,
-  "trash-can-circle": 57359,
-  "close-button-x-small": 57363
+  "trash-can": 57364
 };
 
 const iconSet = createIconSet( glyphMap, "inaturalisticons", "inaturalisticons.ttf" );
@@ -37,3 +35,7 @@ export const {
   getImageSource,
   getImageSourceSync
 } = iconSet;
+
+export {
+  glyphMap
+};
