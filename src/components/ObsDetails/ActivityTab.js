@@ -18,7 +18,6 @@ type Props = {
   observation:Object,
   comments:Array<Object>,
   navToTaxonDetails: Function,
-  navToUserProfile: number => { },
   toggleRefetch: Function,
   refetchRemoteObservation: Function,
   openCommentBox: Function,
@@ -26,7 +25,7 @@ type Props = {
 }
 
 const ActivityTab = ( {
-  uuid, observation, comments, navToTaxonDetails, navToUserProfile,
+  uuid, observation, comments, navToTaxonDetails,
   toggleRefetch, refetchRemoteObservation, openCommentBox, showCommentBox
 }: Props ): React.Node => {
   const currentUser = useCurrentUser( );
@@ -111,21 +110,17 @@ const ActivityTab = ( {
   const activityItems = ids.concat( [...comments] )
     .sort( ( a, b ) => ( new Date( a.created_at ) - new Date( b.created_at ) ) );
 
-  const activitytemsList = activityItems.map( item => {
-    const handlePress = ( ) => navToUserProfile( item?.user?.id );
-    // this should all perform similarly to the activity tab on web
-    // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/components/activity_item.jsx
-    return (
-      <ActivityItem
-        key={item.uuid}
-        item={item}
-        handlePress={handlePress}
-        navToTaxonDetails={navToTaxonDetails}
-        toggleRefetch={toggleRefetch}
-        refetchRemoteObservation={refetchRemoteObservation}
-      />
-    );
-  } );
+  // this should all perform similarly to the activity tab on web
+  // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/components/activity_item.jsx
+  const activitytemsList = activityItems.map( item => (
+    <ActivityItem
+      key={item.uuid}
+      item={item}
+      navToTaxonDetails={navToTaxonDetails}
+      toggleRefetch={toggleRefetch}
+      refetchRemoteObservation={refetchRemoteObservation}
+    />
+  ) );
 
   return (
     <View>
