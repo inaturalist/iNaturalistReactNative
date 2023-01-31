@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -22,8 +23,11 @@ const InlineUser = ( { user }: Props ): Node => {
   const userHandle = User.userHandle( user );
   return (
     <Pressable
+      testID="InlineUser"
       className="flex flex-row items-center"
       accessibilityRole="link"
+      accessibilityLabel={t( "Navigate-to-user-profile" )}
+      accessibilityValue={{ text: userHandle }}
       onPress={() => {
         navigation.navigate( "UserProfile", { userId: user.id } );
       }}
