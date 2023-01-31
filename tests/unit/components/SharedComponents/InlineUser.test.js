@@ -20,7 +20,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 } );
 
 const mockUser = factory( "RemoteUser" );
-const mockUser2 = factory( "RemoteUser", { icon_url: null } );
+const mockUserWithoutImage = factory( "RemoteUser", { icon_url: null } );
 
 describe( "InlineUser", ( ) => {
   it( "displays user handle and image correctly", ( ) => {
@@ -36,9 +36,9 @@ describe( "InlineUser", ( ) => {
 
   it( "displays user handle and and fallback image correctly", ( ) => {
     render(
-      <InlineUser user={mockUser2} />
+      <InlineUser user={mockUserWithoutImage} />
     );
-    expect( screen.getByText( `@${mockUser2.login}` ) ).toBeTruthy( );
+    expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy( );
     expect( screen.queryByTestId( "InlineUser.ProfilePicture" ) ).not.toBeTruthy( );
     expect( screen.getByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy( );
   } );
