@@ -5,6 +5,7 @@ import {
 } from "components/styledComponents";
 import React from "react";
 import { Alert } from "react-native";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import AddObsButton from "./SharedComponents/Buttons/AddObsButton";
 import Button from "./SharedComponents/Buttons/Button";
@@ -18,19 +19,6 @@ import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 const UiLibrary = ( ) => (
   <ViewWithFooter>
     <ScrollView className="px-5">
-      <Text>
-        InlineUser component
-      </Text>
-      <InlineUser
-        user={{
-          icon_url: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
-          login: "turtletamer74"
-        }}
-      />
-      <Text>
-        InlineUser component w/ fallback image
-      </Text>
-      <InlineUser user={{ login: "frogfinder23" }} />
       {/* TODO replace these text components with our typography header components */}
       <Text>
         All the re-usable UI components we've got. If you're making a new UI
@@ -109,6 +97,17 @@ const UiLibrary = ( ) => (
       <SecondaryCTAButton disabled>
         <Text>Disabled SecondaryCTAButton</Text>
       </SecondaryCTAButton>
+        <Text className="text-lg">InlineUser</Text>
+        <Text>InlineUser component</Text>
+        <InlineUser
+          user={currentUser || {
+            icon_url:
+            "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
+            login: "turtletamer74"
+          }}
+        />
+        <Text>InlineUser component w/ fallback image</Text>
+        <InlineUser user={{ login: "frogfinder23" }} />
 
       <Text className="text-lg">More Stuff!</Text>
       <Text className="h-[100px]">
