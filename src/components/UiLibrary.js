@@ -108,7 +108,7 @@ const UiLibrary = ( ) => {
             login: "turtletamer74"
           }}
         />
-        <Text>InlineUser component w/ fallback image</Text>
+        <Text>InlineUser component for a user that has no icon set</Text>
         <InlineUser user={{ login: "frogfinder23" }} />
 
         <Text className="text-lg">More Stuff!</Text>
