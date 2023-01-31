@@ -4,6 +4,7 @@ import { Text, TouchableOpacity, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
+import { useNavigation } from "@react-navigation/native";
 import React, { useContext } from "react";
 import { ProgressBar } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -23,6 +24,7 @@ const Toolbar = ( { setView, view }: Props ): Node => {
   const obsEditContext = useContext( ObsEditContext );
   const { allObsToUpload } = useLocalObservations( );
   const numUnuploadedObs = useNumUnuploadedObservations( );
+  const navigation = useNavigation( );
   const {
     stopUpload,
     uploadInProgress,
@@ -66,7 +68,11 @@ const Toolbar = ( { setView, view }: Props ): Node => {
         <View className="flex justify-between items-center flex-row grow">
           <View className="flex items-center flex-row">
             {currentUser && (
-              <TouchableOpacity className="mr-3" accessibilityRole="button">
+              <TouchableOpacity
+                className="mr-3" 
+                accessibilityRole="button"
+                onPress={() => navigation.navigate( "MainStack", { screen: "ExploreLanding" } )}
+              >
                 <IconMaterial name="language" size={30} />
               </TouchableOpacity>
             )}

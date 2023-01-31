@@ -4,7 +4,7 @@ import React from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import LoggedOutCard from "./LoggedOutCard";
-import Toolbar from "./Toolbar";
+import ObsListToolbar from "./ObsListToolbar";
 import UserCard from "./UserCard";
 
 type Props = {
@@ -24,7 +24,7 @@ const ObsListHeader = ( {
       {currentUser
         ? <UserCard />
         : <LoggedOutCard />}
-      <Toolbar setView={setView} view={view} />
+      <ObsListToolbar setView={setView} view={view} />
     </>
   );
 };
