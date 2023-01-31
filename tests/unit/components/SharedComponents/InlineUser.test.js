@@ -6,6 +6,8 @@ import useIsConnected from "sharedHooks/useIsConnected";
 import factory from "../../../factory";
 
 jest.mock( "sharedHooks/useIsConnected" );
+useIsConnected.mockReturnValue( true );
+
 const mockNavigate = jest.fn( );
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -22,7 +24,6 @@ const mockUser2 = factory( "RemoteUser", { icon_url: null } );
 
 describe( "InlineUser", ( ) => {
   it( "displays user handle and image correctly", ( ) => {
-    useIsConnected.mockImplementation( ( ) => true );
     render(
       <InlineUser user={mockUser} />
     );
@@ -34,7 +35,6 @@ describe( "InlineUser", ( ) => {
   } );
 
   it( "displays user handle and and fallback image correctly", ( ) => {
-    useIsConnected.mockImplementation( ( ) => true );
     render(
       <InlineUser user={mockUser2} />
     );
@@ -54,7 +54,6 @@ describe( "InlineUser", ( ) => {
   } );
 
   it( "fires onPress handler", ( ) => {
-    useIsConnected.mockImplementation( ( ) => true );
     render(
       <InlineUser user={mockUser} />
     );
