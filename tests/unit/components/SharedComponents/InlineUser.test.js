@@ -43,16 +43,6 @@ describe( "InlineUser", ( ) => {
     expect( screen.getByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy( );
   } );
 
-  it( "displays user handle and and fallback image correctly when offline", ( ) => {
-    useIsConnected.mockImplementation( ( ) => false );
-    render(
-      <InlineUser user={mockUser} />
-    );
-    expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy( );
-    expect( screen.queryByTestId( "InlineUser.ProfilePicture" ) ).not.toBeTruthy( );
-    expect( screen.getByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy( );
-  } );
-
   it( "fires onPress handler", ( ) => {
     render(
       <InlineUser user={mockUser} />
@@ -61,5 +51,24 @@ describe( "InlineUser", ( ) => {
     fireEvent.press( inlineUserComponent );
     expect( mockNavigate )
       .toHaveBeenCalledWith( "UserProfile", { userId: mockUser.id } );
+  } );
+
+  describe( "when offline", () => {
+    beforeEach( () => {
+      useIsConnected.mockReturnValue( false );
+    } );
+
+    afterEach( () => {
+      useIsConnected.mockReturnValue( true );
+    } );
+
+    it( "displays no internet fallback image correctly", () => {
+      render( <InlineUser user={mockUser} /> );
+      expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy();
+      expect(
+        screen.queryByTestId( "InlineUser.ProfilePicture" )
+      ).not.toBeTruthy();
+      expect( screen.getByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy();
+    } );
   } );
 } );
