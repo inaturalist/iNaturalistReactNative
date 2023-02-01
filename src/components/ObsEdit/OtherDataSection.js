@@ -1,13 +1,12 @@
 // @flow
 
-import { View } from "components/styledComponents";
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { Button } from "react-native-paper";
+import { IconButton } from "react-native-paper";
 import RNPickerSelect from "react-native-picker-select";
-import colors from "styles/tailwindColors";
 
 import Notes from "./Notes";
 
@@ -55,42 +54,42 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
 
   return (
     <>
-      <View className="flex-row ml-3">
-        <RNPickerSelect
-          onValueChange={updateGeoprivacyStatus}
-          items={geoprivacyOptions}
-          useNativeAndroidPickerStyle={false}
-          value={currentObservation.geoprivacy}
-        >
-          <Button
-            icon="earth"
-            mode="text"
-            textColor={colors.black}
-          >
+      <RNPickerSelect
+        onValueChange={updateGeoprivacyStatus}
+        items={geoprivacyOptions}
+        useNativeAndroidPickerStyle={false}
+        value={currentObservation.geoprivacy}
+      >
+        <View className="flex-row ml-3 flex-nowrap items-center">
+          <IconButton
+            icon="pencil"
+            size={14}
+          />
+          <Text>
             {t( "Geoprivacy" )}
             {" "}
             {currentGeoprivacyStatus?.label}
-          </Button>
-        </RNPickerSelect>
-      </View>
-      <View className="flex-row ml-3">
-        <RNPickerSelect
-          onValueChange={updateCaptiveStatus}
-          items={captiveOptions}
-          useNativeAndroidPickerStyle={false}
-          value={currentObservation.captive_flag}
-        >
-          <Button
-            icon="pot"
-            mode="text"
-            textColor={colors.black}
-          >
+          </Text>
+        </View>
+      </RNPickerSelect>
+      <RNPickerSelect
+        onValueChange={updateCaptiveStatus}
+        items={captiveOptions}
+        useNativeAndroidPickerStyle={false}
+        value={currentObservation.captive_flag}
+      >
+        <View className="flex-row ml-3 flex-nowrap items-center">
+          <IconButton
+            icon="pencil"
+            size={14}
+          />
+          <Text>
             {t( "Organism-is-wild" )}
             {" "}
             {currentCaptiveStatus?.label}
-          </Button>
-        </RNPickerSelect>
-      </View>
+          </Text>
+        </View>
+      </RNPickerSelect>
       <Notes
         addNotes={addNotes}
         description={currentObservation.description}

@@ -723,3 +723,17 @@ Location-map-unavailable-without-internet = Location map unavailable without int
 Observation-photos-unavailable-without-internet = Observation photos unavailable without internet
 Taxon-photo-unavailable-without-internet = Taxon photo unavailable without internet
 User-photo-unavailable-without-internet = User photo unavailable without internet
+
+# Accessibility labels for icons
+Close-camera-options-modal = Close camera options modal
+Navigate-to-camera = Navigate to camera
+Navigate-to-explore-screen = Navigate to explore screen
+Navigate-to-notifications-screen = Navigate to notifications screen
+Navigate-to-observation-edit-screen = Navigate to observation edit screen
+Navigate-to-observation-list = Navigate to observation list
+Navigate-to-photo-importer = Navigate to photo importer
+Navigate-to-sound-recorder = Navigate to sound recorder
+Open-add-evidence-modal = Open add evidence modal
+Open-side-menu = Open side menu
+Return-to-previous-screen = Return to previous screen
+Take-photo = Take photo

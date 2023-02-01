@@ -21,7 +21,7 @@ const UserCard = ( ): Node => {
   const uri = User.uri( currentUser );
 
   return (
-    <View className="flex-row px-5 items-center rounded-bl-3xl rounded-br-3xl bg-primary h-24">
+    <View className="flex-row px-5 items-center rounded-bl-3xl rounded-br-3xl bg-focusGreen h-24">
       {uri && <UserIcon uri={uri} />}
       <View className="ml-3">
         <Text className="color-white my-1">{User.userHandle( currentUser )}</Text>

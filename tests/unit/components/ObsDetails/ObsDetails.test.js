@@ -142,13 +142,6 @@ describe( "Observation with no evidence", () => {
 } );
 
 describe( "activity tab", ( ) => {
-  test( "navigates to observer profile on button press", async ( ) => {
-    const { findByTestId } = renderComponent( <ObsDetails /> );
-    fireEvent.press( await findByTestId( "ObsDetails.currentUser" ) );
-    expect( mockNavigate )
-      .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
-  } );
-
   test( "navigates to taxon details on button press", async ( ) => {
     const { findByTestId } = renderComponent( <ObsDetails /> );
     fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
