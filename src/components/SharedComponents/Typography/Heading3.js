@@ -1,34 +1,11 @@
 // @flow
 
-import { Text } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 
-type Props = {
-  children: any,
-  testID?: string,
-  style?: any,
-  className?: string
-}
+import INatText from "./INatText";
 
-const Heading3 = ( {
-  children, testID, style, className
-}: Props ): Node => {
-  let textClass = "text-lg";
-
-  if ( className ) {
-    textClass = textClass.concat( " ", className );
-  }
-
-  return (
-    <Text
-      className={textClass}
-      style={style}
-      testID={testID}
-    >
-      {children}
-    </Text>
-  );
-};
+// eslint-disable-next-line react/jsx-props-no-spreading
+const Heading3 = ( props: any ): Node => <INatText className="text-lg" {...props} />;
 
 export default Heading3;

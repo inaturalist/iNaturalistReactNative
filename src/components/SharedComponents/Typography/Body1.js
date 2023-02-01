@@ -1,34 +1,11 @@
 // @flow
 
-import { LightText } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 
-type Props = {
-  children: any,
-  testID?: string,
-  style?: any,
-  className?: string
-}
+import INatTextLight from "./INatTextLight";
 
-const Body1 = ( {
-  children, testID, style, className
-}: Props ): Node => {
-  let textClass = "text-base";
-
-  if ( className ) {
-    textClass = textClass.concat( " ", className );
-  }
-
-  return (
-    <LightText
-      className={textClass}
-      style={style}
-      testID={testID}
-    >
-      {children}
-    </LightText>
-  );
-};
+// eslint-disable-next-line react/jsx-props-no-spreading
+const Body1 = ( props: any ): Node => <INatTextLight className="text-base" {...props} />;
 
 export default Body1;

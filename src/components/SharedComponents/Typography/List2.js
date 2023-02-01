@@ -1,34 +1,11 @@
 // @flow
 
-import { LightText } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 
-type Props = {
-  children: any,
-  testID?: string,
-  style?: any,
-  className?: string
-}
+import INatTextLight from "./INatTextLight";
 
-const List2 = ( {
-  children, testID, style, className
-}: Props ): Node => {
-  let textClass = "sm leading-4";
-
-  if ( className ) {
-    textClass = textClass.concat( " ", className );
-  }
-
-  return (
-    <LightText
-      className={textClass}
-      style={style}
-      testID={testID}
-    >
-      {children}
-    </LightText>
-  );
-};
+// eslint-disable-next-line react/jsx-props-no-spreading
+const List2 = ( props: any ): Node => <INatTextLight className="text-sm leading-4" {...props} />;
 
 export default List2;
