@@ -127,7 +127,7 @@ We're using Nativewind, a styling system for React Native based on Tailwind CSS.
 
 1. Download custom icon from Figma as an SVG file.
 2. Add new icon to the iNaturalist icon set in Fontastic. Select all relevant iNaturalist icons, tap the Publish tab, and download the zip of icons.
-3. Create a glpyh file from the CSS file you just downloaded, using the following command (be sure to replace /path/to/styles with your path):
+3. Create a glyph file from the CSS file you just downloaded, using the following command (be sure to replace /path/to/styles with your path):
 
 ```
 ./node_modules/.bin/generate-icon '/path/to/styles.css' --componentName=INatIcon --fontFamily=inaturalisticons > 'src/components/INatIcon.js'

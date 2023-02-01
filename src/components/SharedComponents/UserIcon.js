@@ -17,6 +17,7 @@ const UserIcon = ( { uri, small }: Props ): React.Node => {
       testID="UserIcon.photo"
       className={className}
       source={uri}
+      accessibilityIgnoresInvertColors
     />
   );
 };
