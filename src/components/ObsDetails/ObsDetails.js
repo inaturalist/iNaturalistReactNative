@@ -96,7 +96,7 @@ const ObsDetails = ( ): Node => {
     } );
   };
 
-  const markViewedMutation = useAuthenticatedMutation
+  const markViewedMutation = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
     {
       onSuccess: ( ) => {
