@@ -140,7 +140,7 @@ const ActivityTab = ( {
           className="mx-3"
           testID="ObsDetail.commentButton"
           disabled={showCommentBox}
-          accessibilityHint={t( "Opens-add-comment-view" )}
+          accessibilityHint={t( "Opens-add-comment-modal" )}
         />
       </View>
     </View>

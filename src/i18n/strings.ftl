@@ -691,6 +691,7 @@ Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
 ## Accessibility labels: these are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 ## iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
+Add-observation = Add observation
 Bulk-importer = Bulk importer
 Camera = Camera
 Close = Close
@@ -705,7 +706,7 @@ Navigates-to-camera = Navigate to camera.
 Navigates-to-sound-recorder = Navigates to sound recorder.
 Navigates-to-suggest-identification = Navigates to suggest identification.
 Navigates-to-user-profile = Navigates to user profile.
-Opens-add-comment-view = Opens add comment view.
+Opens-add-comment-modal = Opens add comment modal.
 Returns-to-previous-screen = Returns to previous screen.
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
@@ -752,6 +753,5 @@ Navigate-to-notifications-screen = Navigate to notifications screen
 Navigate-to-observation-edit-screen = Navigate to observation edit screen
 Navigate-to-observation-list = Navigate to observation list
 Navigate-to-photo-importer = Navigate to photo importer
-Open-add-evidence-modal = Open add evidence modal
 Open-side-menu = Open side menu
 Take-photo = Take photo
