@@ -46,10 +46,10 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     t( "Record-a-sound" )
   ];
 
-  const renderIconButton = ( icon, className, onPress, accessibilityLabel, size = 30 ) => (
+  const renderIconButton = ( icon, className, onPress, accessibilityLabel, testID ) => (
     <IconButton
-      testID={`camera-options-button-${icon}`}
-      size={size}
+      testID={testID}
+      size={30}
       icon={icon}
       containerColor={theme.colors.secondary}
       iconColor={theme.colors.onSecondary}
@@ -74,12 +74,19 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
         </View>
       </View>
       <View className="flex-row items-center justify-center">
-        {renderIconButton( "camera", "mx-5", navToStandardCamera, t( "Navigate-to-camera" ) )}
+        {renderIconButton(
+          "camera",
+          "mx-5",
+          navToStandardCamera,
+          t( "Navigate-to-camera" ),
+          "camera-button"
+        )}
         {renderIconButton(
           "icon-gallery",
           "mx-5",
           navToPhotoGallery,
-          t( "Navigate-to-photo-importer" )
+          t( "Navigate-to-photo-importer" ),
+          "import-media-button"
         )}
       </View>
       <View className="flex-row justify-center">
@@ -87,19 +94,22 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
           "pen-and-paper",
           "mx-2",
           navToObsEdit,
-          t( "Navigate-to-observation-edit-screen" )
+          t( "Navigate-to-observation-edit-screen" ),
+          "observe-without-evidence-button"
         )}
         {renderIconButton(
           "close-button-x",
           "self-center h-24 w-24 rounded-[99px]",
           ( ) => closeModal( ),
-          t( "Close-camera-options-modal" )
+          t( "Close-camera-options-modal" ),
+          "close-camera-options-button"
         )}
         {renderIconButton(
           "microphone",
           "mx-2",
           navToSoundRecorder,
-          t( "Navigate-to-sound-recorder" )
+          t( "Navigate-to-sound-recorder" ),
+          "record-sound-button"
         )}
       </View>
     </View>

@@ -1,11 +1,14 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
-import { NavigationContainer } from "@react-navigation/native";
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
+import {
+  fireEvent,
+  screen
+} from "@testing-library/react-native";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
 import factory from "../factory";
+import { renderComponent } from "../helpers/render";
 import { signIn, signOut } from "../helpers/user";
 
 beforeEach( signOut );
@@ -26,17 +29,13 @@ test( "shows a selected checkmark when a photo is tapped", async ( ) => {
     },
     edges: [{ node: photo }]
   } ) );
-  const { queryByTestId } = render(
-    <NavigationContainer>
-      <ObsEditProvider>
-        <PhotoGallery />
-      </ObsEditProvider>
-    </NavigationContainer>
+  renderComponent(
+    <ObsEditProvider>
+      <PhotoGallery />
+    </ObsEditProvider>
   );
-  await waitFor( ( ) => {
-    const renderedPhoto = queryByTestId( `PhotoGallery.${photo.image.uri}` );
-    expect( queryByTestId( `PhotoGallery.selected.${photo.image.uri}` ) ).toBeFalsy( );
-    fireEvent.press( renderedPhoto );
-    expect( queryByTestId( `PhotoGallery.selected.${photo.image.uri}` ) ).toBeTruthy( );
-  } );
+  const renderedPhoto = await screen.findByTestId( `PhotoGallery.${photo.image.uri}` );
+  expect( screen.queryByTestId( `PhotoGallery.selected.${photo.image.uri}` ) ).toBeFalsy( );
+  fireEvent.press( renderedPhoto );
+  expect( await screen.findByTestId( `PhotoGallery.selected.${photo.image.uri}` ) ).toBeTruthy( );
 } );

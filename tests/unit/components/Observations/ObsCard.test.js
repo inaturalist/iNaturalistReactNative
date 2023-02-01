@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import ObsCard from "components/Observations/ObsCard";
 import React from "react";
 
@@ -9,23 +9,22 @@ const testObservation = factory( "LocalObservation", {
 } );
 
 test( "renders text passed into observation card", ( ) => {
-  const { getByTestId, getByText } = render(
+  render(
     <ObsCard
       item={testObservation}
       handlePress={( ) => jest.fn()}
     />
   );
 
-  expect( getByTestId( `ObsList.obsCard.${testObservation.uuid}` ) ).toBeTruthy( );
-  expect( getByTestId( "ObsList.photo" ).props.source )
+  expect( screen.getByTestId( `ObsList.obsCard.${testObservation.uuid}` ) ).toBeTruthy( );
+  expect( screen.getByTestId( "ObsList.photo" ).props.source )
     .toStrictEqual( { uri: testObservation.observationPhotos[0].photo.url } );
-  expect( getByText(
+  expect( screen.getByText(
     `${testObservation.taxon.preferred_common_name} (${testObservation.taxon.name})`
   ) ).toBeTruthy( );
-  expect( getByText( testObservation.placeGuess ) ).toBeTruthy( );
-  expect( getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );
-  expect( getByText( testObservation.identifications.length.toString( ) ) ).toBeTruthy( );
-  // add grade tests
+  expect( screen.getByText( testObservation.placeGuess ) ).toBeTruthy( );
+  expect( screen.getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );
+  expect( screen.getByText( testObservation.identifications.length.toString( ) ) ).toBeTruthy( );
 } );
 
 test( "navigates to ObsDetails on button press", ( ) => {
@@ -33,14 +32,14 @@ test( "navigates to ObsDetails on button press", ( ) => {
     navigate: jest.fn( )
   };
 
-  const { getByTestId } = render(
+  render(
     <ObsCard
       item={testObservation}
       handlePress={( ) => fakeNavigation.navigate( "ObsDetails" )}
     />
   );
 
-  const button = getByTestId( `ObsList.obsCard.${testObservation.uuid}` );
+  const button = screen.getByTestId( `ObsList.obsCard.${testObservation.uuid}` );
 
   fireEvent.press( button );
   expect( fakeNavigation.navigate ).toBeCalledWith( "ObsDetails" );

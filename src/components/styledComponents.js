@@ -39,6 +39,11 @@ const Text = styled(
   Platform.OS === "ios" ? "font-Whitney-Medium" : "font-Whitney-Medium-Pro"
 );
 // $FlowIgnore
+const LightText = styled(
+  StyledText,
+  Platform.OS === "ios" ? "font-Whitney-Light" : "font-Whitney-Light-Pro"
+);
+// $FlowIgnore
 const TextInput = styled( StyledTextInput );
 // $FlowIgnore
 const Pressable = styled( StyledPressable );
@@ -58,6 +63,7 @@ export {
   HeaderText,
   Image,
   KeyboardAvoidingView,
+  LightText,
   Modal,
   Pressable,
   SafeAreaView,
