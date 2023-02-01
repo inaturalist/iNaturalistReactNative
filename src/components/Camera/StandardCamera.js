@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import CloseButton from "components/SharedComponents/Buttons/CloseButton";
+import { CloseButton } from "components/SharedComponents";
 import {
   Pressable, View
 } from "components/styledComponents";

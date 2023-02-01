@@ -9,7 +9,7 @@ import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
-import { Button, EvidenceButton } from "./SharedComponents";
+import { Button, CloseButton, EvidenceButton } from "./SharedComponents";
 import AddObsButton from "./SharedComponents/Buttons/AddObsButton";
 import SecondaryCTAButton from "./SharedComponents/Buttons/SecondaryCTAButton";
 import InlineUser from "./SharedComponents/InlineUser";
@@ -146,6 +146,15 @@ const UiLibrary = ( ) => {
             />
           </View>
         </View>
+
+        <Text className="text-lg">Special Icon buttons</Text>
+        <View className="flex flex-row justify-between">
+          <View className="bg-secondary">
+            <Text className="text-center">CloseButton</Text>
+            <CloseButton />
+          </View>
+        </View>
+
         <Text className="text-lg">Custom iNaturalist Icons</Text>
         <Text>
           Make sure you're exporting glyphMap from components/INatIcon.js to see all custom icons
