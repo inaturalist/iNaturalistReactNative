@@ -26,7 +26,7 @@ const HEADER_HEIGHT = 101;
 
 const ObservationViews = ( ): Node => {
   const localObservations = useLocalObservations( );
-  const [view, setView] = useState( "list" );
+  const [layout, setLayout] = useState( "list" );
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const { observationList } = localObservations;
@@ -90,7 +90,7 @@ const ObservationViews = ( ): Node => {
     if ( currentUser === false ) { return <View />; }
     return (
       <InfiniteScrollFooter
-        view={view}
+        view={layout}
         isLoading={isLoading}
       />
     );
@@ -118,15 +118,15 @@ const ObservationViews = ( ): Node => {
         <Animated.View style={[{ transform: [{ translateY }] }]}>
           <Animated.FlatList
             data={observationList}
-            key={view === "grid" ? 1 : 0}
+            key={layout === "grid" ? 1 : 0}
             style={{ height }}
             testID="ObservationViews.myObservations"
-            numColumns={view === "grid" ? 2 : 1}
-            renderItem={view === "grid" ? renderGridItem : renderItem}
+            numColumns={layout === "grid" ? 2 : 1}
+            renderItem={layout === "grid" ? renderGridItem : renderItem}
             ListEmptyComponent={renderEmptyState}
-            ListHeaderComponent={<ObsListHeader setView={setView} />}
+            ListHeaderComponent={<ObsListHeader setLayout={setLayout} layout={layout} />}
             ListFooterComponent={renderFooter}
-            ItemSeparatorComponent={view !== "grid" && renderItemSeparator}
+            ItemSeparatorComponent={layout !== "grid" && renderItemSeparator}
             stickyHeaderIndices={[0]}
             bounces={false}
             initialNumToRender={10}

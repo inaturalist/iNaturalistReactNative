@@ -17,15 +17,15 @@ const LoggedOutCard = ( ): Node => {
       onPress={( ) => navigation.navigate( "login" )}
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-login-screen" )}
-      className="rounded-bl-3xl rounded-br-3xl bg-primary h-24 justify-center"
+      className="rounded-bl-3xl rounded-br-3xl h-24 justify-center"
     >
       <Text
         testID="log-in-to-iNaturalist-text"
-        className="self-center color-white text-2xl"
+        className="self-center text-2xl"
       >
         {t( "Log-in-to-iNaturalist" )}
       </Text>
-      <Text className="self-center color-white text-base">
+      <Text className="self-center text-base">
         {t( "X-unuploaded-observations", { observationCount: numUnuploadedObs } )}
       </Text>
     </Pressable>

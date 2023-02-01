@@ -565,7 +565,7 @@ Unreviewed-only = Unreviewed only
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
 
 # Shows the number of observations a user can upload to iNat from my observations page
-UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
+Upload-x-observations = UPLOAD {$count ->
     [one] 1 OBSERVATION
     *[other] {$count} OBSERVATIONS
 }
@@ -584,6 +584,8 @@ Username = Username
 Username-or-Email = Username or Email
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
+
+Welcome-back = Welcome back,
 
 Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
