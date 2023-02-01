@@ -490,7 +490,10 @@
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
-  "Add-this-ID": "Add this identification",
+  "Add-this-ID": {
+    "comment": "The following are actually more like \"accessibility hints\" than labels we should probably refactor",
+    "val": "Add this identification"
+  },
   "Camera-button-label-switch-camera": {
     "comment": "Accessible label for the camera button",
     "val": "Use the device's other camera."

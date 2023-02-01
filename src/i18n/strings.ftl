@@ -688,6 +688,9 @@ Discard-Comment = Discard Comment
 Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
 ## Accessibility labels: these are used by screen readers to describe actionable elements
+User = User
+
+# The following are actually more like "accessibility hints" than labels we should probably refactor
 Add-this-ID = Add this identification
 # Accessible label for the camera button
 Camera-button-label-switch-camera = Use the device's other camera.
