@@ -138,7 +138,7 @@ const StandardCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const renderAddObsButtons = icon => {
+  const renderFlashButton = icon => {
     let testID = "";
     let accessibilityLabel = "";
     switch ( icon ) {
@@ -180,8 +180,8 @@ const StandardCamera = ( ): Node => {
           {hasFlash ? (
             <Pressable onPress={toggleFlash} accessibilityRole="button">
               {takePhotoOptions.flash === "on"
-                ? renderAddObsButtons( "flash-on-circle" )
-                : renderAddObsButtons( "flash-off" )}
+                ? renderFlashButton( "flash-on-circle" )
+                : renderFlashButton( "flash-off" )}
             </Pressable>
           ) : (
             <View />

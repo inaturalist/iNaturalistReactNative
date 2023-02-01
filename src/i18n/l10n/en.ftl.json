@@ -491,6 +491,7 @@
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
+  "Add-observation": "Add observation",
   "Bulk-importer": "Bulk importer",
   "Camera": "Camera",
   "Close": "Close",
@@ -501,7 +502,8 @@
   "Navigates-to-sound-recorder": "Navigates to sound recorder.",
   "Navigates-to-suggest-identification": "Navigates to suggest identification.",
   "Navigates-to-user-profile": "Navigates to user profile.",
-  "Opens-add-comment-view": "Opens add comment view.",
+  "Opens-add-comment-modal": "Opens add comment modal.",
+  "Opens-add-evidence-modal": "Opens add evidence modal.",
   "Returns-to-previous-screen": "Returns to previous screen.",
   "Add-this-ID": "Add this identification",
   "Camera-button-label-switch-camera": {
@@ -559,6 +561,5 @@
   "Navigate-to-observation-edit-screen": "Navigate to observation edit screen",
   "Navigate-to-observation-list": "Navigate to observation list",
   "Navigate-to-photo-importer": "Navigate to photo importer",
-  "Open-add-evidence-modal": "Open add evidence modal",
   "Open-side-menu": "Open side menu"
 }
