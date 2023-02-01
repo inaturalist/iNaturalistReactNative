@@ -19,6 +19,7 @@
 		BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */; };
 		C8EEAD27B69C424BAB2EB23F /* Whitney-SemiboldItalic-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = A788948E590442F385C5FD6C /* Whitney-SemiboldItalic-Pro.otf */; };
 		CF25D941972D42BDBBD309E0 /* Whitney-Book-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8860EC2616494880B36297C2 /* Whitney-Book-Pro.otf */; };
+		0085E50460D749DB8D818C1F /* inaturalisticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81076C08FFF24C36A0725EEE /* inaturalisticons.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		C6C5CABEB9CB44B5ABF940A8 /* Whitney-Semibold-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Semibold-Pro.otf"; path = "../assets/fonts/Whitney-Semibold-Pro.otf"; sourceTree = "<group>"; };
 		D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Medium-Pro.otf"; path = "../assets/fonts/Whitney-Medium-Pro.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		81076C08FFF24C36A0725EEE /* inaturalisticons.ttf */ = {isa = PBXFileReference; name = "inaturalisticons.ttf"; path = "../assets/fonts/inaturalisticons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +166,7 @@
 				D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */,
 				C6C5CABEB9CB44B5ABF940A8 /* Whitney-Semibold-Pro.otf */,
 				A788948E590442F385C5FD6C /* Whitney-SemiboldItalic-Pro.otf */,
+				81076C08FFF24C36A0725EEE /* inaturalisticons.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 				BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */,
 				B5241D089ADB4290B5566898 /* Whitney-Semibold-Pro.otf in Resources */,
 				C8EEAD27B69C424BAB2EB23F /* Whitney-SemiboldItalic-Pro.otf in Resources */,
+				0085E50460D749DB8D818C1F /* inaturalisticons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
