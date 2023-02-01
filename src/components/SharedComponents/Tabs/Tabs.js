@@ -42,7 +42,7 @@ const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => (
               testID={testID || `${id}-tab`}
               accessibilityRole="tab"
               accessibilityLabel={text}
-              accessibilityHint={t( "Switch-to-tab", { tab: text } )}
+              accessibilityHint={t( "Switches-to-tab", { tab: text } )}
               accessibilityState={{
                 selected: active,
                 expanded: active

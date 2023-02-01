@@ -9,7 +9,9 @@ import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
-import { Button, CloseButton, EvidenceButton } from "./SharedComponents";
+import {
+  Button, CloseButton, EvidenceButton, Tabs
+} from "./SharedComponents";
 import AddObsButton from "./SharedComponents/Buttons/AddObsButton";
 import SecondaryCTAButton from "./SharedComponents/Buttons/SecondaryCTAButton";
 import InlineUser from "./SharedComponents/InlineUser";
@@ -184,6 +186,27 @@ const UiLibrary = ( ) => {
         />
         <Text>InlineUser component for a user that has no icon set</Text>
         <InlineUser user={{ login: "frogfinder23" }} />
+
+        <Text>Tabs component</Text>
+        <Tabs
+          tabs={[
+            {
+              id: "TAB1",
+              text: "Tab1",
+              onPress: () => {
+                console.log( "Tab1" );
+              }
+            },
+            {
+              id: "TAB2",
+              text: "Tab2",
+              onPress: () => {
+                console.log( "Tab2" );
+              }
+            }
+          ]}
+          activeId="TAB1"
+        />
 
         <Text className="text-lg">More Stuff!</Text>
         <Text className="h-[100px]">

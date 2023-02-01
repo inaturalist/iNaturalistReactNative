@@ -6,11 +6,11 @@ import { createComment } from "api/comments";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
+import { Tabs } from "components/SharedComponents";
 import InlineUser from "components/SharedComponents/InlineUser";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import QualityBadge from "components/SharedComponents/QualityBadge";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
-import Tabs from "components/SharedComponents/Tabs";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";

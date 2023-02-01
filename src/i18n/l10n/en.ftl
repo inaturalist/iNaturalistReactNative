@@ -709,6 +709,7 @@ Navigates-to-user-profile = Navigates to user profile.
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-evidence-modal = Opens add evidence modal.
 Returns-to-previous-screen = Returns to previous screen.
+Switches-to-tab = Switches to { $tab } tab.
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
 Add-this-ID = Add this identification
@@ -739,7 +740,6 @@ Number-of-comments = Number of comments
 Number-of-identifications = Number of identifications
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Photo-taken-at = Photo taken at { $date }
-Switch-to-tab = Switch to { $tab } tab
 Take-photo = Take photo
 # Accessibility labels for no internet state in ObsDetails
 Location-map-unavailable-without-internet = Location map unavailable without internet

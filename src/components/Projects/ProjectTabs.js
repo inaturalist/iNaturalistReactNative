@@ -1,7 +1,7 @@
 // @flow
 
 import { searchProjects } from "api/projects";
-import Tabs from "components/SharedComponents/Tabs";
+import { Tabs } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
