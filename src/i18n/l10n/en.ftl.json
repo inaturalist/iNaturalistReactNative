@@ -390,7 +390,7 @@
     "comment": "Shows the number of observations a user is currently uploading on my observations page",
     "val": "Uploading { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
-  "User": "User",
+  "User": "User { $userHandle }",
   "Username": "Username",
   "Username-or-Email": {
     "comment": "Appears above the text fields",
@@ -490,10 +490,8 @@
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
-  "Add-this-ID": {
-    "comment": "The following are actually more like \"accessibility hints\" than labels we should probably refactor",
-    "val": "Add this identification"
-  },
+  "Navigates-to-user-profile": "Navigates to user profile.",
+  "Add-this-ID": "Add this identification",
   "Camera-button-label-switch-camera": {
     "comment": "Accessible label for the camera button",
     "val": "Use the device's other camera."
@@ -553,6 +551,5 @@
   "Navigate-to-sound-recorder": "Navigate to sound recorder",
   "Open-add-evidence-modal": "Open add evidence modal",
   "Open-side-menu": "Open side menu",
-  "Return-to-previous-screen": "Return to previous screen",
-  "Navigates-to-user-profile": "Navigates to user profile."
+  "Return-to-previous-screen": "Return to previous screen"
 }

@@ -687,10 +687,13 @@ No = No
 Discard-Comment = Discard Comment
 Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
-## Accessibility labels: these are used by screen readers to describe actionable elements
-User = User
+## Accessibility labels: these are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
+User = User { $userHandle }
 
-# The following are actually more like "accessibility hints" than labels we should probably refactor
+## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
+Navigates-to-user-profile = Navigates to user profile.
+
+## The following are actually more like "accessibility hints" than labels we should probably refactor
 Add-this-ID = Add this identification
 # Accessible label for the camera button
 Camera-button-label-switch-camera = Use the device's other camera.
@@ -740,6 +743,3 @@ Open-add-evidence-modal = Open add evidence modal
 Open-side-menu = Open side menu
 Return-to-previous-screen = Return to previous screen
 Take-photo = Take photo
-
-## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element
-Navigates-to-user-profile = Navigates to user profile.
