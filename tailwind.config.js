@@ -17,12 +17,12 @@ module.exports = {
           lineHeight: "26px"
         }
         ],
-        xl: ["19px", {
-          lineHeight: "23px"
+        xl: ["21px", {
+          lineHeight: "25px"
         }
         ],
-        lg: ["16px", {
-          lineHeight: "19px"
+        lg: ["19px", {
+          lineHeight: "23px"
         }
         ],
         base: ["18px", {
