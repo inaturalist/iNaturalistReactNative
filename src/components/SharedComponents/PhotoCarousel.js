@@ -4,8 +4,10 @@ import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
-  ActivityIndicator, FlatList
+  ActivityIndicator,
+  FlatList
 } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { Avatar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/tailwindColors";
@@ -19,7 +21,8 @@ type Props = {
   handleDelete?: Function,
   savingPhoto?: boolean,
   handleAddEvidence?: Function,
-  showAddButton?: boolean
+  showAddButton?: boolean,
+  deviceOrientation?: string
 }
 
 const PhotoCarousel = ( {
@@ -31,10 +34,12 @@ const PhotoCarousel = ( {
   handleDelete,
   savingPhoto,
   handleAddEvidence,
-  showAddButton = false
+  showAddButton = false,
+  deviceOrientation
 
 }: Props ): Node => {
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
+  const isTablet = DeviceInfo.isTablet();
 
   const renderDeleteButton = photoUri => (
     <Pressable
@@ -88,6 +93,20 @@ const PhotoCarousel = ( {
       return className;
     };
 
+    const imageClassName = () => {
+      let className = "w-fit h-full ";
+      if ( deviceOrientation && !isTablet ) {
+        if ( deviceOrientation === "portrait" ) {
+          className += "rotate-0";
+        } else if ( deviceOrientation === "landscapeLeft" ) {
+          className += "-rotate-90";
+        } else if ( deviceOrientation === "landscapeRight" ) {
+          className += "rotate-90";
+        }
+      }
+      return className;
+    };
+
     return (
       <>
         <Pressable
@@ -101,7 +120,7 @@ const PhotoCarousel = ( {
           <Image
             source={{ uri: item }}
             testID="ObsEdit.photo"
-            className="w-fit h-full"
+            className={imageClassName()}
           />
           {( containerStyle === "camera" ) && renderDeleteButton( item )}
         </Pressable>

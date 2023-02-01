@@ -17,6 +17,7 @@ import {
 } from "./vision-camera/vision-camera";
 
 jest.mock( "@sayem314/react-native-keep-awake" );
+jest.mock( "react-native/Libraries/EventEmitter/NativeEventEmitter" );
 
 jest.mock(
   "@react-native-async-storage/async-storage",
@@ -246,3 +247,11 @@ jest.mock( "react-native-keyboard-aware-scroll-view", ( ) => ( {
 jest.mock( "inaturalistjs" );
 inatjs.observations.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
+
+jest.mock( "react-native-orientation-locker", () => ( {
+  addEventListener: jest.fn(),
+  addDeviceOrientationListener: jest.fn(),
+  removeEventListener: jest.fn(),
+  lockToPortrait: jest.fn(),
+  removeOrientationListener: jest.fn()
+} ) );

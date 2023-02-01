@@ -157,6 +157,7 @@ const PhotoGallery = ( ): Node => {
     return (
       <PhotoGalleryImage
         uri={uri}
+        timestamp={item.timestamp}
         handleImagePress={handleImagePress}
         isSelected={isSelected}
         isDisabled={isDisabled}
@@ -221,7 +222,7 @@ const PhotoGallery = ( ): Node => {
   }, [navigation, albums] );
 
   return (
-    <ViewNoFooter>
+    <ViewNoFooter testID="photo-gallery">
       <FlatList
         // $FlowIgnore
         data={photosByAlbum}

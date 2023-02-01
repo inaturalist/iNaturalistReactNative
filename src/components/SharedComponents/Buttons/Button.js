@@ -13,7 +13,8 @@ type ButtonProps = {
   testID?: string,
   loading?: boolean,
   style?: any,
-  className?: string
+  className?: string,
+  accessibilityRole?: string
 }
 
 const setStyles = ( {
@@ -47,7 +48,15 @@ const setStyles = ( {
 };
 
 const Button = ( {
-  text, onPress, disabled, testID, level, loading, style, className
+  text,
+  onPress,
+  disabled,
+  testID,
+  level,
+  loading,
+  style,
+  className,
+  accessibilityRole
 }: ButtonProps ): React.Node => {
   const { buttonClass, textClass } = setStyles( { disabled, level, className } );
 
@@ -58,6 +67,8 @@ const Button = ( {
       style={style}
       disabled={disabled}
       testID={testID}
+      accessibilityRole={accessibilityRole || "button"}
+      accessibilityState={{ disabled }}
     >
       {loading && <ActivityIndicator size={18} className="mr-2" />}
       <Heading4 className={textClass}>

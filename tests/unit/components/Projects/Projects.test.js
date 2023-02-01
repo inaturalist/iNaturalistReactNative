@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import Projects from "components/Projects/Projects";
 import React from "react";
 
@@ -37,5 +37,13 @@ test( "displays project search results", ( ) => {
   fireEvent.press( getByTestId( `Project.${mockProject.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", {
     id: mockProject.id
+  } );
+} );
+
+describe( "Projects", () => {
+  test( "should not have accessibility errors", async ( ) => {
+    renderComponent( <Projects /> );
+    const projectObservations = await screen.findByTestId( "Projects" );
+    expect( projectObservations ).toBeAccessible();
   } );
 } );

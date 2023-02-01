@@ -2,6 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import { t } from "i18next";
 import React from "react";
+import { View } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useIsConnected from "sharedHooks/useIsConnected";
 
@@ -62,6 +63,24 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
 } ) );
 
 jest.mock( "components/ObsDetails/AddCommentModal" );
+jest.mock( "components/ObsDetails/ActivityTab" );
+jest.mock( "components/SharedComponents/PhotoScroll" );
+jest.mock( "components/SharedComponents/QualityBadge" );
+
+const mockDataTab = <View testID="mock-data-tab" />;
+jest.mock( "components/ObsDetails/DataTab", () => ( {
+  __esModule: true,
+  default: () => mockDataTab
+} ) );
+
+jest.mock(
+  "components/SharedComponents/ScrollWithFooter",
+  () => function MockContainer( props ) {
+    const MockName = "mock-scroll-with-footer";
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <MockName {...props}>{props.children}</MockName>;
+  }
+);
 
 jest.mock( "sharedHooks/useIsConnected" );
 
@@ -72,15 +91,31 @@ jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
   default: ( ) => mockLatLng
 } ) );
 
+describe( "ObsDetails", () => {
+  test( "should not have accessibility errors", async () => {
+    renderComponent( <ObsDetails /> );
+    const obsDetails = await screen.findByTestId(
+      `ObsDetails.${mockObservation.uuid}`
+    );
+    expect( obsDetails ).toBeAccessible();
+  } );
+} );
+
 test( "renders obs details from remote call", async ( ) => {
   useIsConnected.mockImplementation( ( ) => true );
-  const { getByTestId, getByText, findByTestId } = renderComponent( <ObsDetails /> );
+  const { getByText, findByTestId } = renderComponent( <ObsDetails /> );
 
   expect( await findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
-  expect(
-    getByTestId( "PhotoScroll.photo" ).props.source
-  ).toStrictEqual( { uri: mockObservation.observationPhotos[0].photo.url } );
   expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
+} );
+
+test( "renders data tab on button press", async ( ) => {
+  renderComponent( <ObsDetails /> );
+  const button = await screen.findByTestId( "ObsDetails.DataTab" );
+  expect( screen.queryByTestId( "mock-data-tab" ) ).not.toBeTruthy( );
+
+  fireEvent.press( button );
+  expect( await screen.findByTestId( "mock-data-tab" ) ).toBeTruthy();
 } );
 
 describe( "Observation with no evidence", () => {
@@ -93,7 +128,8 @@ describe( "Observation with no evidence", () => {
   test( "should render fallback image icon instead of photos", async () => {
     useIsConnected.mockImplementation( ( ) => true );
     renderComponent( <ObsDetails /> );
-    const labelText = t( "No-image-available-for-this-observation" );
+
+    const labelText = t( "Observation-has-no-photos-and-no-sounds" );
     const fallbackImage = await screen.findByLabelText( labelText );
     expect( fallbackImage ).toBeTruthy( );
   } );
@@ -106,25 +142,6 @@ describe( "Observation with no evidence", () => {
 } );
 
 describe( "activity tab", ( ) => {
-  test( "navigates to observer profile on button press", async ( ) => {
-    const { findByTestId } = renderComponent( <ObsDetails /> );
-    fireEvent.press( await findByTestId( "ObsDetails.currentUser" ) );
-    expect( mockNavigate )
-      .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
-  } );
-
-  test( "navigates to identifier profile on button press", async ( ) => {
-    const { findByTestId } = renderComponent( <ObsDetails /> );
-    fireEvent.press(
-      await findByTestId(
-        `ObsDetails.identifier.${mockObservation.identifications[0].user.id}`
-      )
-    );
-    expect( mockNavigate ).toHaveBeenCalledWith( "UserProfile", {
-      userId: mockObservation.identifications[0].user.id
-    } );
-  } );
-
   test( "navigates to taxon details on button press", async ( ) => {
     const { findByTestId } = renderComponent( <ObsDetails /> );
     fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
@@ -142,34 +159,3 @@ describe( "activity tab", ( ) => {
     expect( screen.queryByTestId( "PhotoScroll.photo" ) ).toBeNull( );
   } );
 } );
-
-describe( "data tab", ( ) => {
-  test( "renders data tab content when DATA tab is pressed", ( ) => {
-    const { getByText, queryByText } = renderComponent( <ObsDetails /> );
-    expect( queryByText( mockObservation.description ) ).not.toBeTruthy( );
-    const dataTab = screen.getByText( /DATA/ );
-    fireEvent.press( dataTab );
-    expect( getByText( mockObservation.description ) ).toBeTruthy( );
-  } );
-
-  test( "displays map in data tab if user is online", ( ) => {
-    useIsConnected.mockImplementation( ( ) => true );
-    renderComponent( <ObsDetails /> );
-    const dataTab = screen.queryByText( /DATA/ );
-    fireEvent.press( dataTab );
-    const map = screen.queryByTestId( "MapView" );
-    expect( map ).toBeTruthy( );
-    const noInternet = screen.queryByRole( "image", { name: "wifi-off" } );
-    expect( noInternet ).toBeNull( );
-  } );
-} );
-
-test.todo( "should not have accessibility errors" );
-// test( "should not have accessibility errors", ( ) => {
-//   const obsDetails = (
-//     <NavigationContainer>
-//       <ObsDetails />
-//     </NavigationContainer>
-//   );
-//   expect( obsDetails ).toBeAccessible( );
-// } );
