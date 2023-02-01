@@ -6,6 +6,7 @@ import { createComment } from "api/comments";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
+import HideView from "components/SharedComponents/HideView";
 import InlineUser from "components/SharedComponents/InlineUser";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import QualityBadge from "components/SharedComponents/QualityBadge";
@@ -373,20 +374,21 @@ const ObsDetails = ( ): Node => {
           </Text>
         </View>
         <Tabs tabs={tabs} activeId={currentTabId} />
-        {currentTabId === ACTIVITY_TAB_ID
-          ? (
-            <ActivityTab
-              uuid={uuid}
-              observation={observation}
-              comments={comments}
-              navToTaxonDetails={navToTaxonDetails}
-              toggleRefetch={toggleRefetch}
-              refetchRemoteObservation={refetchRemoteObservation}
-              openCommentBox={openCommentBox}
-              showCommentBox={showCommentBox}
-            />
-          )
-          : <DataTab observation={observation} />}
+        <HideView show={currentTabId === ACTIVITY_TAB_ID}>
+          <ActivityTab
+            uuid={uuid}
+            observation={observation}
+            comments={comments}
+            navToTaxonDetails={navToTaxonDetails}
+            toggleRefetch={toggleRefetch}
+            refetchRemoteObservation={refetchRemoteObservation}
+            openCommentBox={openCommentBox}
+            showCommentBox={showCommentBox}
+          />
+        </HideView>
+        <HideView noInitialRender show={currentTabId === DATA_TAB_ID}>
+          <DataTab observation={observation} />
+        </HideView>
         {addingComment && (
           <View className="flex-row items-center justify-center">
             <ActivityIndicator size="large" />
