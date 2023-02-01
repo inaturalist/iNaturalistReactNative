@@ -3,6 +3,8 @@ import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import Button from "components/SharedComponents/Buttons/Button";
 import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
+import InlineUser from "components/SharedComponents/InlineUser";
+import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
 import Body1 from "components/SharedComponents/Typography/Body1";
 import Body2 from "components/SharedComponents/Typography/Body2";
 import Body3 from "components/SharedComponents/Typography/Body3";
@@ -15,8 +17,6 @@ import List1 from "components/SharedComponents/Typography/List1";
 import List2 from "components/SharedComponents/Typography/List2";
 import Subheading1 from "components/SharedComponents/Typography/Subheading1";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
-import InlineUser from "components/SharedComponents/InlineUser";
-import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
 import {
   ScrollView,
   View
@@ -25,8 +25,6 @@ import React from "react";
 import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-
-
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
