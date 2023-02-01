@@ -1,3 +1,4 @@
+import INatIcon, { glyphMap } from "components/INatIcon";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import Button from "components/SharedComponents/Buttons/Button";
 import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
@@ -20,6 +21,7 @@ import {
 } from "components/styledComponents";
 import React from "react";
 import { Alert } from "react-native";
+import { IconButton, useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import InlineUser from "./SharedComponents/InlineUser";
@@ -27,7 +29,8 @@ import InlineUser from "./SharedComponents/InlineUser";
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
 const UiLibrary = ( ) => {
-  const currentUser = useCurrentUser( );
+  const theme = useTheme( );
+  const currentUser = useCurrentUser();
   return (
     <ViewWithFooter>
       <ScrollView className="px-5">
@@ -88,15 +91,15 @@ const UiLibrary = ( ) => {
         <View className="flex flex-row justify-between">
           <View>
             <Body2>Default</Body2>
-            <EvidenceButton />
+            <EvidenceButton icon="camera" />
           </View>
           <View>
             <Body2>Disabled</Body2>
-            <EvidenceButton disabled />
+            <EvidenceButton icon="microphone" disabled />
           </View>
           <View>
             <Body2>With Icon</Body2>
-            <EvidenceButton icon="photo-camera" />
+            <EvidenceButton icon="microphone" />
           </View>
         </View>
 
@@ -121,6 +124,64 @@ const UiLibrary = ( ) => {
         <List1 className="my-2">List1</List1>
         <List2 className="my-2">List2</List2>
 
+        <Heading2>Icon Button w/ Custom iNaturalist Icons</Heading2>
+        <View className="flex flex-row justify-between">
+          <View>
+            <Body2>Primary</Body2>
+            <IconButton
+              icon="compass-rose"
+              className="my-2"
+              onPress={( ) => Alert.alert(
+                "",
+                "You tapped!"
+              )}
+            />
+          </View>
+          <View>
+            <Body2>Focused</Body2>
+            <IconButton
+              icon="plus-sign"
+              className="my-2"
+              onPress={( ) => Alert.alert(
+                "",
+                "You tapped!"
+              )}
+              mode="contained"
+              containerColor={theme.colors.secondary}
+              iconColor={theme.colors.onSecondary}
+            />
+          </View>
+          <View>
+            <Body2>Warning</Body2>
+            <IconButton
+              icon="notifications-bell"
+              className="my-2"
+              onPress={( ) => Alert.alert(
+                "",
+                "You tapped!"
+              )}
+              iconColor={theme.colors.error}
+            />
+          </View>
+        </View>
+        <Heading2>Custom iNaturalist Icons</Heading2>
+        <Body1>
+          Make sure you're exporting glyphMap from components/INatIcon.js to see all custom icons
+        </Body1>
+        <View className="flex flex-row flex-wrap justify-center">
+          {Object.keys( glyphMap ).map( iconName => (
+            <INatIcon
+              name={iconName}
+              className="p-3"
+              key={iconName}
+              onPress={( ) => Alert.alert(
+                "",
+                `You tapped on the ${iconName} icon`
+              )}
+              size={20}
+            />
+          ) )}
+        </View>
         <Heading2 className="my-2">InlineUser</Heading2>
         <Body2 className="my-2">InlineUser component</Body2>
         <InlineUser

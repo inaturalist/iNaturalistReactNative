@@ -8,6 +8,7 @@ import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
 } from "react";
+import { IconButton } from "react-native-paper";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
 import DatePicker from "./DatePicker";
@@ -153,11 +154,14 @@ const EvidenceSection = ( {
         showAddButton
         handleAddEvidence={handleAddEvidence}
       />
-      <Text>{currentObservation.place_guess}</Text>
-      <View className="flex flex-row flex-nowrap">
-        {shouldFetchLocation && <ActivityIndicator className="mx-1" />}
-        {shouldFetchLocation && <Text className="mx-1">{`(${numLocationFetches})`}</Text>}
-        <Text>{displayLocation( ) || t( "No-Location" )}</Text>
+      <View className="flex-row flex-nowrap items-center">
+        <IconButton size={14} icon="pencil" />
+        <View>
+          <Text>{currentObservation.place_guess}</Text>
+          {shouldFetchLocation && <ActivityIndicator className="mx-1" />}
+          {shouldFetchLocation && <Text className="mx-1">{`(${numLocationFetches})`}</Text>}
+          <Text>{displayLocation( ) || t( "No-Location" )}</Text>
+        </View>
       </View>
       <DatePicker currentObservation={currentObservation} />
     </View>

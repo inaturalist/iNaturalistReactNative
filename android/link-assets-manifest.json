@@ -8,6 +8,10 @@
     {
       "path": "assets/fonts/Whitney-Medium-Pro.otf",
       "sha1": "33ca073c11f46dc266a7dc1adeaa102891bd76d1"
+    },
+    {
+      "path": "assets/fonts/inaturalisticons.ttf",
+      "sha1": "76435d11edb09f7914ebf9cb388db461c50d7fda"
     }
   ]
 }
