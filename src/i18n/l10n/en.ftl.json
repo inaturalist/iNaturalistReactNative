@@ -21,6 +21,7 @@
     "comment": "Shows user network affiliation on user profile",
     "val": "Affiliation:"
   },
+  "Agree": "Agree",
   "All": "All",
   "All-observations": "All observations",
   "all-rights-reserved": {
@@ -490,6 +491,7 @@
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
+  "Agrees-with-identification": "Agrees with this identification.",
   "Navigates-to-user-profile": "Navigates to user profile.",
   "Add-this-ID": "Add this identification",
   "Camera-button-label-switch-camera": {

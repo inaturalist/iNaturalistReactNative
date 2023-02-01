@@ -29,6 +29,8 @@ Added-on-date = Added on { $date }
 # Shows user network affiliation on user profile
 Affiliation-colon = Affiliation:
 
+Agree = Agree
+
 All = All
 
 All-observations = All observations
@@ -693,6 +695,7 @@ User = User { $userHandle }
 
 ## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
 ## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
+Agrees-with-identification = Agrees with this identification.
 Navigates-to-user-profile = Navigates to user profile.
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
