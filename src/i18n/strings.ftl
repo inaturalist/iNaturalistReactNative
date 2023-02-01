@@ -707,6 +707,7 @@ Navigates-to-sound-recorder = Navigates to sound recorder.
 Navigates-to-suggest-identification = Navigates to suggest identification.
 Navigates-to-user-profile = Navigates to user profile.
 Opens-add-comment-modal = Opens add comment modal.
+Opens-add-evidence-modal = Opens add evidence modal.
 Returns-to-previous-screen = Returns to previous screen.
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
