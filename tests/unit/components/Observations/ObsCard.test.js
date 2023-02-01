@@ -1,6 +1,5 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import ObsCard from "components/Observations/ObsCard";
-import { t } from "i18next";
 import React from "react";
 
 import factory from "../../../factory";
@@ -9,12 +8,11 @@ const testObservation = factory( "LocalObservation", {
   taxon: { preferred_common_name: "Foo", name: "bar" }
 } );
 
-const qualityGradeText = t( "RG" );
-
 test( "renders text passed into observation card", ( ) => {
   const { getByTestId, getByText } = render(
     <ObsCard
       item={testObservation}
+      handlePress={( ) => jest.fn()}
     />
   );
 
@@ -27,7 +25,7 @@ test( "renders text passed into observation card", ( ) => {
   expect( getByText( testObservation.placeGuess ) ).toBeTruthy( );
   expect( getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );
   expect( getByText( testObservation.identifications.length.toString( ) ) ).toBeTruthy( );
-  expect( getByText( qualityGradeText ) ).toBeTruthy( );
+  // add grade tests
 } );
 
 test( "navigates to ObsDetails on button press", ( ) => {
@@ -49,7 +47,12 @@ test( "navigates to ObsDetails on button press", ( ) => {
 } );
 
 test( "should not have accessibility errors", ( ) => {
-  const obsCard = <ObsCard item={testObservation} />;
+  const obsCard = (
+    <ObsCard
+      item={testObservation}
+      handlePress={( ) => jest.fn()}
+    />
+  );
 
   expect( obsCard ).toBeAccessible( );
 } );

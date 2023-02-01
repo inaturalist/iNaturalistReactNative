@@ -54,6 +54,7 @@
     "linkifyjs": "^4.0.2",
     "lodash": "^4.17.21",
     "markdown-it": "^13.0.1",
+    "metro-config": "^0.74.1",
     "nativewind": "^2.0.11",
     "radio-buttons-react-native": "^1.0.4",
     "react": "18.1.0",
@@ -90,6 +91,7 @@
     "react-native-screens": "^3.18.2",
     "react-native-sensitive-info": "^6.0.0-alpha.9",
     "react-native-svg": "^12.3.0",
+    "react-native-svg-transformer": "^1.0.0",
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.1.0",
     "react-native-vision-camera": "^2.15.2",
@@ -157,7 +159,10 @@
     ],
     "automock": false,
     "resetMocks": false,
-    "verbose": true
+    "verbose": true,
+    "moduleNameMapper": {
+      "\\.svg": "<rootDir>/tests/mocks/svgMock.js"
+    }
   },
   "husky": {
     "hooks": {

@@ -10,6 +10,7 @@ import AddObsButton from "./SharedComponents/Buttons/AddObsButton";
 import Button from "./SharedComponents/Buttons/Button";
 import EvidenceButton from "./SharedComponents/Buttons/EvidenceButton";
 import SecondaryCTAButton from "./SharedComponents/Buttons/SecondaryCTAButton";
+import QualityGradeStatus from "./SharedComponents/QualityGradeStatus";
 import ViewWithFooter from "./SharedComponents/ViewWithFooter";
 
 /* eslint-disable i18next/no-literal-string */
@@ -95,6 +96,33 @@ const UiLibrary = ( ) => (
       <SecondaryCTAButton disabled>
         <Text>Disabled SecondaryCTAButton</Text>
       </SecondaryCTAButton>
+
+      <Text className="text-lg">Quality Grade Status</Text>
+      <View className="flex flex-row justify-between">
+        <View>
+          <Text className="text-center">Research</Text>
+          <QualityGradeStatus qualityGrade="research" color="black" />
+        </View>
+        <View>
+          <Text className="text-center">Needs Id</Text>
+          <QualityGradeStatus qualityGrade="needs_id" color="black" />
+        </View>
+        <View>
+          <Text className="text-center">Casual</Text>
+          <QualityGradeStatus qualityGrade="casual" color="black" />
+        </View>
+      </View>
+      <View className="flex flex-row justify-between">
+        <View>
+          <QualityGradeStatus qualityGrade="research" color="green" />
+        </View>
+        <View>
+          <QualityGradeStatus qualityGrade="needs_id" color="green" />
+        </View>
+        <View>
+          <QualityGradeStatus qualityGrade="casual" color="green" />
+        </View>
+      </View>
 
       <Text className="text-lg">More Stuff!</Text>
       <Text className="h-[100px]">
