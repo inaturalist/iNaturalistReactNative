@@ -85,7 +85,7 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
           <Pressable
             className="mr-3"
             accessibilityRole="button"
-            onPress={( ) => navigation.navigate( "MainStack", { screen: "ExploreLanding" } )}
+            onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
           >
             <IconMaterial name="language" size={30} />
           </Pressable>
