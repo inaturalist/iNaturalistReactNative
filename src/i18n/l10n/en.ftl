@@ -712,7 +712,6 @@ Navigate-to-login-screen = Navigate to login screen
 Navigate-to-observation-details = Navigate to observation details screen
 Navigate-to-project-details = Navigate to project details
 Navigate-to-taxon-details = Navigate to taxon details
-Navigate-to-user-profile = Navigate to user profile
 Number-of-comments = Number of comments
 Number-of-identifications = Number of identifications
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
@@ -738,3 +737,6 @@ Open-add-evidence-modal = Open add evidence modal
 Open-side-menu = Open side menu
 Return-to-previous-screen = Return to previous screen
 Take-photo = Take photo
+
+## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element
+Navigates-to-user-profile = Navigates to user profile.
