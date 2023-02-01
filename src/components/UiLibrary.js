@@ -33,7 +33,12 @@ const UiLibrary = ( ) => {
         <Text className="text-xl">Buttons</Text>
 
         <Text className="text-lg">Button</Text>
-        <Button className="mb-2" level="primary" text="PRIMARY BUTTON" />
+        <Button
+          className="mb-2"
+          level="primary"
+          text="PRIMARY BUTTON"
+          accessibilityHint="Describes the result of performing the tap action on this element."
+        />
         <Button className="mb-2" text="NEUTRAL BUTTON" />
         <Button
           className="mb-2"
