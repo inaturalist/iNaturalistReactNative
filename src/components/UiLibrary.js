@@ -9,9 +9,8 @@ import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
+import { Button, EvidenceButton } from "./SharedComponents";
 import AddObsButton from "./SharedComponents/Buttons/AddObsButton";
-import Button from "./SharedComponents/Buttons/Button";
-import EvidenceButton from "./SharedComponents/Buttons/EvidenceButton";
 import SecondaryCTAButton from "./SharedComponents/Buttons/SecondaryCTAButton";
 import InlineUser from "./SharedComponents/InlineUser";
 import ViewWithFooter from "./SharedComponents/ViewWithFooter";

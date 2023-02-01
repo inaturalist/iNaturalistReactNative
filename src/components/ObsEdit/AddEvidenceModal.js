@@ -7,7 +7,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
-import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
+import { EvidenceButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
