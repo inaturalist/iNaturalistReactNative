@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import About from "components/About";
 import React from "react";
 import Mailer from "react-native-mail";
@@ -10,8 +10,8 @@ jest.mock( "react-native-mail", ( ) => ( {
 } ) );
 
 test( "native email client is opened on button press", ( ) => {
-  const { getByText } = renderComponent( <About /> );
-  const debugLogButton = getByText( /EMAIL-DEBUG-LOGS/ );
+  renderComponent( <About /> );
+  const debugLogButton = screen.getByText( /EMAIL-DEBUG-LOGS/ );
   expect( debugLogButton ).toBeTruthy( );
   fireEvent.press( debugLogButton );
   expect( Mailer.mail ).toHaveBeenCalled( );

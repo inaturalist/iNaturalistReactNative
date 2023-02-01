@@ -39,11 +39,11 @@ describe( "UserProfile", () => {
   } );
 
   test( "renders user profile from API call", async () => {
-    const { getByTestId, getByText } = renderComponent( <UserProfile /> );
+    renderComponent( <UserProfile /> );
 
-    expect( getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy();
-    expect( getByText( `iNaturalist ${mockUser.roles[0]}` ) ).toBeTruthy();
-    expect( getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( {
+    expect( screen.getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy();
+    expect( screen.getByText( `iNaturalist ${mockUser.roles[0]}` ) ).toBeTruthy();
+    expect( screen.getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( {
       uri: mockUser.icon_url
     } );
   } );

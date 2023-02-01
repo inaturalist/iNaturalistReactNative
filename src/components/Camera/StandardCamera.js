@@ -1,16 +1,25 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import CloseButton from "components/SharedComponents/Buttons/CloseButton";
 import {
-  Pressable, Text, View
+  Pressable, View
 } from "components/styledComponents";
 import { t } from "i18next";
+import _ from "lodash";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useRef, useState } from "react";
-import { Platform, StatusBar } from "react-native";
-import { Avatar, Snackbar } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import React, {
+  useContext, useEffect, useRef, useState
+} from "react";
+import {
+  Dimensions, StatusBar
+} from "react-native";
+import DeviceInfo from "react-native-device-info";
+import Orientation from "react-native-orientation-locker";
+import {
+  Avatar, IconButton, Snackbar, useTheme
+} from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
@@ -20,24 +29,6 @@ import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
 
 export const MAX_PHOTOS_ALLOWED = 20;
-
-// Taken from:
-// https://developer.android.com/reference/androidx/exifinterface/media/ExifInterface#ORIENTATION_ROTATE_180()
-const ORIENTATION_ROTATE_90 = 6;
-const ORIENTATION_ROTATE_180 = 3;
-const ORIENTATION_ROTATE_270 = 8;
-
-// Calculates by how much we should rotate our image according to the detected orientation
-const orientationToRotation = orientation => {
-  // This issue only occurs on Android
-  if ( Platform.OS !== "android" ) return 0;
-
-  if ( orientation === ORIENTATION_ROTATE_90 ) return 90;
-  if ( orientation === ORIENTATION_ROTATE_180 ) return 180;
-  if ( orientation === ORIENTATION_ROTATE_270 ) return 270;
-
-  return 0;
-};
 
 const StandardCamera = ( ): Node => {
   const {
@@ -49,6 +40,7 @@ const StandardCamera = ( ): Node => {
     evidenceToAdd,
     setEvidenceToAdd
   } = useContext( ObsEditContext );
+  const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
@@ -63,8 +55,44 @@ const StandardCamera = ( ): Node => {
   const [savingPhoto, setSavingPhoto] = useState( false );
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
+  const initialWidth = Dimensions.get( "screen" ).width;
+  const [footerWidth, setFooterWidth] = useState( initialWidth );
+  const [imageOrientation, setImageOrientation] = useState( "portrait" );
+
+  const isTablet = DeviceInfo.isTablet();
 
   const photosTaken = allObsPhotoUris.length > 0;
+
+  // screen orientation locked to portrait on small devices
+  if ( !isTablet ) {
+    Orientation.lockToPortrait();
+  }
+
+  // detect device rotation instead of using screen orientation change
+  const onDeviceRotation = orientation => {
+    // react-native-orientation-locker and react-native-vision-camera
+    // have opposite definitions for landscape right/left
+    if ( _.camelCase( orientation ) === "landscapeRight" ) {
+      setImageOrientation( "landscapeLeft" );
+    } else if ( _.camelCase( orientation ) === "landscapeLeft" ) {
+      setImageOrientation( "landscapeRight" );
+    } else {
+      setImageOrientation( orientation );
+    }
+  };
+
+  useEffect( () => {
+    Orientation.addDeviceOrientationListener( onDeviceRotation );
+
+    // allows bottom buttons bar to fill entire width of screen on rotation
+    Dimensions.addEventListener( "change", ( { window: { width } } ) => {
+      if ( isTablet ) setFooterWidth( width );
+    } );
+
+    return () => {
+      Orientation.removeOrientationListener( onDeviceRotation );
+    };
+  }, [isTablet, footerWidth] );
 
   const takePhoto = async ( ) => {
     setSavingPhoto( true );
@@ -75,10 +103,7 @@ const StandardCamera = ( ): Node => {
         return;
       }
       const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-      const newPhoto = await Photo.new( cameraPhoto.path, {
-        rotation:
-          orientationToRotation( cameraPhoto.metadata.Orientation )
-      } );
+      const newPhoto = await Photo.new( cameraPhoto.path );
       const uri = newPhoto.localFilePath;
 
       setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
@@ -116,17 +141,14 @@ const StandardCamera = ( ): Node => {
   const renderAddObsButtons = icon => {
     let testID = "";
     let accessibilityLabel = "";
-    let accessibilityValue = "";
     switch ( icon ) {
-      case "flash":
+      case "flash-on-circle":
         testID = "flash-button-label-flash";
         accessibilityLabel = t( "Flash-button-label-flash" );
-        accessibilityValue = t( "Flash-button-value-flash" );
         break;
       case "flash-off":
         testID = "flash-button-label-flash-off";
         accessibilityLabel = t( "Flash-button-label-flash-off" );
-        accessibilityValue = t( "Flash-button-value-flash-off" );
         break;
       default:
         break;
@@ -135,7 +157,6 @@ const StandardCamera = ( ): Node => {
       <Avatar.Icon
         testID={testID}
         accessibilityLabel={accessibilityLabel}
-        accessibilityValue={accessibilityValue}
         size={40}
         icon={icon}
         style={{ backgroundColor: colors.gray }}
@@ -143,30 +164,23 @@ const StandardCamera = ( ): Node => {
     );
   };
 
-  const renderCameraButton = ( icon, disabled ) => (
-    <Avatar.Icon
-      size={60}
-      icon={icon}
-      style={{ backgroundColor: disabled ? colors.gray : colors.white }}
-    />
-  );
-
   return (
     <View className="flex-1 bg-black">
       <StatusBar barStyle="light-content" />
-      {device && <CameraView device={device} camera={camera} />}
+      {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
       <PhotoPreview
         photoUris={cameraPreviewUris}
         setPhotoUris={setCameraPreviewUris}
         savingPhoto={savingPhoto}
+        deviceOrientation={imageOrientation}
       />
       <FadeInOutView savingPhoto={savingPhoto} />
-      <View className="absolute bottom-0">
-        <View className="flex-row justify-between w-screen mb-4 px-4">
+      <View className="absolute bottom-0 w-full">
+        <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4`}>
           {hasFlash ? (
             <Pressable onPress={toggleFlash} accessibilityRole="button">
               {takePhotoOptions.flash === "on"
-                ? renderAddObsButtons( "flash" )
+                ? renderAddObsButtons( "flash-on-circle" )
                 : renderAddObsButtons( "flash-off" )}
             </Pressable>
           ) : (
@@ -175,11 +189,6 @@ const StandardCamera = ( ): Node => {
           <Pressable
             onPress={flipCamera}
             accessibilityLabel={t( "Camera-button-label-switch-camera" )}
-            accessibilityValue={{
-              text: cameraPosition === "back"
-                ? t( "Camera-button-value-back" )
-                : t( "Camera-button-value-front" )
-            }}
             accessibilityRole="button"
           >
             <Avatar.Icon
@@ -190,32 +199,28 @@ const StandardCamera = ( ): Node => {
             />
           </Pressable>
         </View>
-        <View className="bg-black w-screen h-32 flex-row justify-between items-center px-4">
-          <Pressable
-            className="w-1/3 pt-4 pb-4 pl-3"
-            onPress={() => navigation.goBack()}
-            accessibilityLabel={t( "Navigate-back" )}
-            accessibilityRole="button"
-          >
-            <Icon name="arrow-back-ios" size={25} color={colors.white} />
-          </Pressable>
-          <Pressable
+        <View className="bg-black h-32 flex-row justify-between items-center">
+          <View className="w-1/3">
+            <CloseButton />
+          </View>
+          <IconButton
+            icon="camera"
             onPress={takePhoto}
-            accessibilityLabel={t( "Take-photo" )}
-            accessibilityRole="button"
-          >
-            {renderCameraButton( "circle-outline", disallowAddingPhotos )}
-          </Pressable>
-          {photosTaken ? (
-            <Text
-              className="text-white text-xl w-1/3 text-center pr-4"
-              onPress={navToObsEdit}
-            >
-              {t( "Next" )}
-            </Text>
-          ) : (
-            <View className="w-1/3" />
-          )}
+            disabled={disallowAddingPhotos}
+            containerColor={theme.colors.surface}
+          />
+          <View className="w-1/3">
+            {photosTaken && (
+              <IconButton
+                icon="checkmark"
+                iconColor={theme.colors.onSecondary}
+                containerColor={theme.colors.secondary}
+                onPress={navToObsEdit}
+                accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+                disabled={false}
+              />
+            )}
+          </View>
         </View>
       </View>
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
