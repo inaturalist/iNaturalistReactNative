@@ -26,6 +26,7 @@ const EvidenceButton = ( {
       iconColor={theme.colors.onSecondary}
       size={35}
       icon={icon}
+      accessibilityRole="link"
       accessibilityLabel={accessibilityLabel}
       accessibilityHint={accessibilityHint}
     />

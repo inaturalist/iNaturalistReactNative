@@ -109,19 +109,22 @@ const AddEvidenceModal = ( {
               icon="camera"
               handlePress={onTakePhoto}
               disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Navigate-to-camera" )}
+              accessibilityLabel={t( "Camera" )}
+              accessibilityHint={t( "Navigates-to-camera" )}
             />
             <EvidenceButton
               icon="photo-gallery"
               handlePress={onImportPhoto}
               disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Navigate-to-bulk-importer" )}
+              accessibilityLabel={t( "Bulk-importer" )}
+              accessibilityHint={t( "Navigates-to-bulk-importer" )}
             />
             <EvidenceButton
               icon="microphone"
               handlePress={onRecordSound}
               disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Navigate-to-sound-recorder" )}
+              accessibilityLabel={t( "Sound-recorder" )}
+              accessibilityHint={t( "Navigates-to-sound-recorder" )}
             />
           </View>
           <Text

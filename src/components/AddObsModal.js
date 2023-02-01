@@ -74,7 +74,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
         </View>
       </View>
       <View className="flex-row items-center justify-center">
-        {renderIconButton( "camera", "mx-5", navToStandardCamera, t( "Navigate-to-camera" ) )}
+        {renderIconButton( "camera", "mx-5", navToStandardCamera, t( "Navigates-to-camera" ) )}
         {renderIconButton(
           "icon-gallery",
           "mx-5",
@@ -99,7 +99,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
           "microphone",
           "mx-2",
           navToSoundRecorder,
-          t( "Navigate-to-sound-recorder" )
+          t( "Navigates-to-sound-recorder" )
         )}
       </View>
     </View>

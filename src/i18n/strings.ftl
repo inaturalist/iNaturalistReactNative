@@ -691,14 +691,21 @@ Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
 ## Accessibility labels: these are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 ## iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
+Bulk-importer = Bulk importer
+Camera = Camera
+Sound-recorder = Sound recorder
 User = User { $userHandle }
 
 ## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
 ## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
 Agrees-with-identification = Agrees with this identification.
+Navigates-to-bulk-importer = Navigates to bulk importer.
+Navigates-to-camera = Navigate to camera.
+Navigates-to-sound-recorder = Navigates to sound recorder.
 Navigates-to-suggest-identification = Navigates to suggest identification.
 Navigates-to-user-profile = Navigates to user profile.
 Opens-add-comment-view = Opens add comment view.
+
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
 Add-this-ID = Add this identification
 # Accessible label for the camera button
@@ -738,13 +745,11 @@ User-photo-unavailable-without-internet = User photo unavailable without interne
 
 # Accessibility labels for icons
 Close-camera-options-modal = Close camera options modal
-Navigate-to-camera = Navigate to camera
 Navigate-to-explore-screen = Navigate to explore screen
 Navigate-to-notifications-screen = Navigate to notifications screen
 Navigate-to-observation-edit-screen = Navigate to observation edit screen
 Navigate-to-observation-list = Navigate to observation list
 Navigate-to-photo-importer = Navigate to photo importer
-Navigate-to-sound-recorder = Navigate to sound recorder
 Open-add-evidence-modal = Open add evidence modal
 Open-side-menu = Open side menu
 Return-to-previous-screen = Return to previous screen
