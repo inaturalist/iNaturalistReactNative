@@ -9,36 +9,36 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        "3xl": ["23px", {
-          lineHeight: "27.7px"
+        "3xl": ["26px", {
+          lineHeight: "31px"
         }
         ],
-        "2xl": ["19.5px", {
-          lineHeight: "23.4px"
+        "2xl": ["22px", {
+          lineHeight: "26px"
         }
         ],
-        xl: ["18.6px", {
-          lineHeight: "22.4px"
+        xl: ["19px", {
+          lineHeight: "23px"
         }
         ],
-        lg: ["16.9px", {
-          lineHeight: "20.2px"
+        lg: ["16px", {
+          lineHeight: "19px"
         }
         ],
-        base: ["16px", {
-          lineHeight: "19.2px"
+        base: ["18px", {
+          lineHeight: "22px"
         }
         ],
-        md: ["14.2px", {
-          lineHeight: "17.1px"
+        md: ["16px", {
+          lineHeight: "18px"
         }
         ],
-        sm: ["12.4px", {
-          lineHeight: "16px"
+        sm: ["14px", {
+          lineHeight: "18px"
         }
         ],
-        xs: ["10.7px", {
-          lineHeight: "12.8px"
+        xs: ["12px", {
+          lineHeight: "14px"
         }
         ]
       },

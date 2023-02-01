@@ -33,7 +33,7 @@ const UiLibrary = ( ) => (
         like with different property configurations.
       </Body1>
       <Heading1>Buttons</Heading1>
-      <Subheading1>Button</Subheading1>
+      <Heading2>Button</Heading2>
       <Button className="mb-2" level="primary" text="PRIMARY BUTTON" />
       <Button className="mb-2" text="NEUTRAL BUTTON" />
       <Button
@@ -60,26 +60,26 @@ const UiLibrary = ( ) => (
         )}
       />
 
-      <Subheading1>Multiple Buttons With Focus</Subheading1>
+      <Heading2>Multiple Buttons With Focus</Heading2>
       <View className="flex-row justify-between">
         <Button className="my-2" text="LEFT" />
         <Button className="my-2 grow ml-3" level="focus" text="RIGHT" />
       </View>
 
-      <Subheading1>Multiple Buttons Without Focus</Subheading1>
+      <Heading2>Multiple Buttons Without Focus</Heading2>
       <View className="flex-row">
         <Button className="my-2 grow" text="LEFT" />
         <Button className="my-2 ml-3 grow" text="RIGHT" />
       </View>
 
-      <Subheading1>AddObsButton</Subheading1>
+      <Heading2>AddObsButton</Heading2>
       <Body1 className="my-2">
         You probably don't want to tap this because you can't escape the
         modal. Probably need to refactor to separate form from function.
       </Body1>
       <AddObsButton />
 
-      <Subheading1 className="my-2">EvidenceButton</Subheading1>
+      <Heading2 className="my-2">EvidenceButton</Heading2>
       <View className="flex flex-row justify-between">
         <View>
           <Body2>Default</Body2>
@@ -95,7 +95,7 @@ const UiLibrary = ( ) => (
         </View>
       </View>
 
-      <Subheading1 className="my-2">SecondaryCTAButton</Subheading1>
+      <Heading2 className="my-2">SecondaryCTAButton</Heading2>
       <SecondaryCTAButton>
         <Body1>SecondaryCTAButton</Body1>
       </SecondaryCTAButton>
@@ -103,7 +103,7 @@ const UiLibrary = ( ) => (
         <Body1>Disabled SecondaryCTAButton</Body1>
       </SecondaryCTAButton>
 
-      <Subheading1 className="my-2">Typography</Subheading1>
+      <Heading2 className="my-2">Typography</Heading2>
       <Heading1 className="my-2">Heading1</Heading1>
       <Heading2 className="my-2">Heading2</Heading2>
       <Heading3 className="my-2">Heading3</Heading3>
@@ -116,7 +116,7 @@ const UiLibrary = ( ) => (
       <List1 className="my-2">List1</List1>
       <List2 className="my-2">List2</List2>
 
-      <Subheading1 className="my-2">More Stuff!</Subheading1>
+      <Heading2 className="my-2">More Stuff!</Heading2>
       <Body1 className="h-[400px]">
         Useless spacer at the end because height in NativeWind is confusing.
       </Body1>
