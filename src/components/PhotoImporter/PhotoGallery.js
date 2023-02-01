@@ -5,7 +5,7 @@ import useCameraRollPhotos from "components/PhotoImporter/hooks/useCameraRollPho
 import usePhotoAlbums from "components/PhotoImporter/hooks/usePhotoAlbums";
 import PhotoAlbumPicker from "components/PhotoImporter/PhotoAlbumPicker";
 import PhotoGalleryImage from "components/PhotoImporter/PhotoGalleryImage";
-import Button from "components/SharedComponents/Buttons/Button";
+import { Button } from "components/SharedComponents";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";

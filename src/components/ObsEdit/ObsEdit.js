@@ -3,7 +3,7 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import Button from "components/SharedComponents/Buttons/Button";
+import { Button } from "components/SharedComponents";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";

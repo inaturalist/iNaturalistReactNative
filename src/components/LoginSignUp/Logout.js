@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-import Button from "components/SharedComponents/Buttons/Button";
+import { Button } from "components/SharedComponents";
 import { Pressable, SafeAreaView, View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts";

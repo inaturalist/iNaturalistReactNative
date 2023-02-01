@@ -1,6 +1,6 @@
 // @flow
 
-import Button from "components/SharedComponents/Buttons/Button";
+import { Button } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";

@@ -1,6 +1,6 @@
 // @flow
 
-import Button from "components/SharedComponents/Buttons/Button";
+import { Button } from "components/SharedComponents";
 import InputField from "components/SharedComponents/InputField";
 import Map from "components/SharedComponents/Map";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";

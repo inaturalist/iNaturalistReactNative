@@ -3,7 +3,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { updateRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
-import Button from "components/SharedComponents/Buttons/Button";
+import { Button } from "components/SharedComponents";
 import UserIcon from "components/SharedComponents/UserIcon";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { Text, View } from "components/styledComponents";
