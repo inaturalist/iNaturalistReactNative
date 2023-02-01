@@ -668,11 +668,11 @@ Date-short-format = MM/dd/yy
 Date-this-year = MMM d
 
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade
-Quality-Grade-Badge-research_grade = RG
+Quality-Grade-research = Quality Grade Research Grade
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID
-Quality-Grade-Badge-needs_id = Needs ID
+Quality-Grade-needs_id = Quality Grade Needs ID
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
-Quality-Grade-Badge-casual = Casual
+Quality-Grade-casual = Quality Grade Casual
 
 Add-evidence = Add evidence
 You-can-only-upload-20-media = You can only add 20 photos and 20 sounds to an observation
