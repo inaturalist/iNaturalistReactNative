@@ -12,7 +12,7 @@ const UserCard = ( ): Node => {
   const { t } = useTranslation( );
 
   return (
-    <View className="flex-row px-5 items-center rounded-bl-3xl rounded-br-3xl bg-focusGreen h-24">
+    <View className="flex-row px-5 items-center rounded-bl-3xl rounded-br-3xl bg-white h-24">
       <View className="ml-3">
         <Text className="mt-1 text-3xl font-light">{t( "Welcome back," )}</Text>
         <Text className="mb-1 text-3xl font-semibold">{User.userHandle( currentUser )}</Text>
