@@ -585,6 +585,8 @@ Username-or-Email = Username or Email
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
 
+Welcome-back = Welcome back,
+
 Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
 Which-traditional-projects-can-add-your-observations = Which traditional projects can add your observations?
