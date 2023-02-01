@@ -14,10 +14,12 @@
     "postinstall": "husky install",
     "translate": "node src/i18n/i18ncli.js build",
     "e2e:build:android": "npx detox build --configuration android.release",
-    "e2e:build": "npx detox build --configuration ios.release",
+    "e2e:build:ios": "npx detox build --configuration ios.release",
+    "e2e:build": "npm run e2e:build:ios && npm run e2e:build:android",
     "e2e:test:android": "npx detox test --configuration android.release",
-    "e2e:test": "npx detox test --configuration ios.release",
-    "e2e": "npm run e2e:build && npm run e2e:test"
+    "e2e:test:ios": "npx detox test --configuration ios.release",
+    "e2e:test": "npm run e2e:test:ios && npm run e2e:test:android",
+    "e2e": "npm run e2e:build && npm run e2e:test "
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.2",
