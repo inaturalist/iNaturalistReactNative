@@ -122,6 +122,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-native": "^4.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-testing-library": "^5.10.0",
     "factoria": "^3.2.2",
     "faker": "^5.5.3",
     "flow-bin": "^0.182.0",

@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import React from "react";
 import { Linking } from "react-native";
@@ -50,12 +50,12 @@ jest.mock(
 );
 
 test( "renders taxon details from API call", async ( ) => {
-  const { getByTestId, getByText } = renderTaxonDetails( );
-  expect( getByTestId( `TaxonDetails.${mockTaxon.id}` ) ).toBeTruthy( );
-  expect( getByTestId( "PhotoScroll.photo" ).props.source )
+  renderTaxonDetails( );
+  expect( screen.getByTestId( `TaxonDetails.${mockTaxon.id}` ) ).toBeTruthy( );
+  expect( screen.getByTestId( "PhotoScroll.photo" ).props.source )
     .toStrictEqual( { uri: mockTaxon.taxonPhotos[0].photo.url } );
-  expect( getByText( mockTaxon.preferred_common_name ) ).toBeTruthy( );
-  expect( getByText( mockTaxon.wikipedia_summary ) ).toBeTruthy( );
+  expect( screen.getByText( mockTaxon.preferred_common_name ) ).toBeTruthy( );
+  expect( screen.getByText( mockTaxon.wikipedia_summary ) ).toBeTruthy( );
 } );
 
 test( "should not have accessibility errors", ( ) => {
@@ -68,8 +68,8 @@ test( "should not have accessibility errors", ( ) => {
 } );
 
 test( "navigates to Wikipedia on button press", async ( ) => {
-  const { getByTestId } = renderTaxonDetails( );
-  fireEvent.press( getByTestId( "TaxonDetails.wikipedia" ) );
+  renderTaxonDetails( );
+  fireEvent.press( screen.getByTestId( "TaxonDetails.wikipedia" ) );
   expect( Linking.openURL ).toHaveBeenCalledTimes( 1 );
   expect( Linking.openURL ).toHaveBeenCalledWith( mockTaxon.wikipedia_url );
 } );

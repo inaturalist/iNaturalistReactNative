@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import Search from "components/Search/Search";
 import React from "react";
 
@@ -32,22 +32,22 @@ jest.mock( "@react-navigation/native", ( ) => {
 const { login } = mockUser;
 
 test( "displays user search results on button press", ( ) => {
-  const { getByTestId, getByText } = renderComponent( <Search /> );
-  const button = getByTestId( "Search.users" );
+  renderComponent( <Search /> );
+  const button = screen.getByTestId( "Search.users" );
 
   fireEvent.press( button );
-  expect( getByTestId( `Search.user.${login}` ) ).toBeTruthy( );
-  expect( getByTestId( `Search.${login}.photo` ).props.source ).toStrictEqual( {
+  expect( screen.getByTestId( `Search.user.${login}` ) ).toBeTruthy( );
+  expect( screen.getByTestId( `Search.${login}.photo` ).props.source ).toStrictEqual( {
     uri: mockUser.icon
   } );
-  expect( getByText( new RegExp( login ) ) ).toBeTruthy( );
+  expect( screen.getByText( new RegExp( login ) ) ).toBeTruthy();
 } );
 
 test( "navigates to user profile on button press", ( ) => {
-  const { getByTestId } = renderComponent( <Search /> );
-  const button = getByTestId( "Search.users" );
+  renderComponent( <Search /> );
+  const button = screen.getByTestId( "Search.users" );
 
   fireEvent.press( button );
-  fireEvent.press( getByTestId( `Search.user.${login}` ) );
+  fireEvent.press( screen.getByTestId( `Search.user.${login}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "UserProfile", { userId: mockUser.id } );
 } );

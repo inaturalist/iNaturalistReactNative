@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from "@testing-library/react-native";
+import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import DeleteObservationDialog from "components/ObsEdit/DeleteObservationDialog";
 import inatjs from "inaturalistjs";
 import { ObsEditContext } from "providers/contexts";
@@ -74,8 +74,8 @@ describe( "delete observation", ( ) => {
       const localObservation = getLocalObservation( observations[0].uuid );
       expect( localObservation ).toBeTruthy( );
       mockObsEditProviderWithObs( observations );
-      const { queryByText } = renderDeleteDialog( );
-      const deleteButton = queryByText( /Yes-delete-observation/ );
+      renderDeleteDialog( );
+      const deleteButton = screen.queryByText( /Yes-delete-observation/ );
       expect( deleteButton ).toBeTruthy( );
       fireEvent.press( deleteButton );
       expect( getLocalObservation( observations[0].uuid ) ).toBeFalsy( );
@@ -97,17 +97,17 @@ describe( "delete observation", ( ) => {
       const localObservation = getLocalObservation( observations[0].uuid );
       expect( localObservation ).toBeTruthy( );
       mockObsEditProviderWithObs( observations );
-      const { queryByText } = renderDeleteDialog( );
+      renderDeleteDialog( );
       // TODO: figure out why this needs English text and why the one above needs
       // the generic text. Probably has to do with User object still being stored in global realm
       // between tests
-      const deleteButton = queryByText( /delete/ );
+      const deleteButton = screen.queryByText( /delete/ );
       expect( deleteButton ).toBeTruthy( );
       fireEvent.press( deleteButton );
       await waitFor( ( ) => {
         expect( inatjs.observations.delete ).toHaveBeenCalledTimes( 1 );
-        expect( getLocalObservation( observations[0].uuid ) ).toBeFalsy( );
       } );
+      expect( getLocalObservation( observations[0].uuid ) ).toBeFalsy( );
     } );
   } );
 
@@ -120,9 +120,9 @@ describe( "delete observation", ( ) => {
       const localObservation = getLocalObservation( observations[0].uuid );
       expect( localObservation ).toBeTruthy( );
       mockObsEditProviderWithObs( observations );
-      const { queryByText } = renderDeleteDialog( );
+      renderDeleteDialog( );
 
-      const cancelButton = queryByText( /Cancel/ );
+      const cancelButton = screen.queryByText( /Cancel/ );
       expect( cancelButton ).toBeTruthy( );
       fireEvent.press( cancelButton );
       expect( getLocalObservation( observations[0].uuid ) ).toBeTruthy( );
