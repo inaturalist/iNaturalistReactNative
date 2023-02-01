@@ -693,6 +693,7 @@ Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 ## iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
 Bulk-importer = Bulk importer
 Camera = Camera
+Close = Close
 Sound-recorder = Sound recorder
 User = User { $userHandle }
 
@@ -705,6 +706,7 @@ Navigates-to-sound-recorder = Navigates to sound recorder.
 Navigates-to-suggest-identification = Navigates to suggest identification.
 Navigates-to-user-profile = Navigates to user profile.
 Opens-add-comment-view = Opens add comment view.
+Returns-to-previous-screen = Returns to previous screen.
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
 Add-this-ID = Add this identification
@@ -752,5 +754,4 @@ Navigate-to-observation-list = Navigate to observation list
 Navigate-to-photo-importer = Navigate to photo importer
 Open-add-evidence-modal = Open add evidence modal
 Open-side-menu = Open side menu
-Return-to-previous-screen = Return to previous screen
 Take-photo = Take photo

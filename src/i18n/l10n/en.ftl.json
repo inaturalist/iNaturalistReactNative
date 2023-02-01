@@ -493,6 +493,7 @@
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
   "Bulk-importer": "Bulk importer",
   "Camera": "Camera",
+  "Close": "Close",
   "Sound-recorder": "Sound recorder",
   "Agrees-with-identification": "Agrees with this identification.",
   "Navigates-to-bulk-importer": "Navigates to bulk importer.",
@@ -501,6 +502,7 @@
   "Navigates-to-suggest-identification": "Navigates to suggest identification.",
   "Navigates-to-user-profile": "Navigates to user profile.",
   "Opens-add-comment-view": "Opens add comment view.",
+  "Returns-to-previous-screen": "Returns to previous screen.",
   "Add-this-ID": "Add this identification",
   "Camera-button-label-switch-camera": {
     "comment": "Accessible label for the camera button",
@@ -558,6 +560,5 @@
   "Navigate-to-observation-list": "Navigate to observation list",
   "Navigate-to-photo-importer": "Navigate to photo importer",
   "Open-add-evidence-modal": "Open add evidence modal",
-  "Open-side-menu": "Open side menu",
-  "Return-to-previous-screen": "Return to previous screen"
+  "Open-side-menu": "Open side menu"
 }
