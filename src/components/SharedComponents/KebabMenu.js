@@ -2,9 +2,8 @@
 
 import type { Node } from "react";
 import React from "react";
-import { Button, Menu } from "react-native-paper";
+import { IconButton, Menu } from "react-native-paper";
 import viewStyles from "styles/sharedComponents/kebabMenu";
-import colors from "styles/tailwindColors";
 
 type Props = {
   children: any,
@@ -17,10 +16,9 @@ const KebabMenu = ( { children, visible, setVisible }: Props ): Node => {
   const closeMenu = ( ) => setVisible( false );
 
   const anchorButton = (
-    <Button
+    <IconButton
       onPress={openMenu}
-      icon="dots-horizontal"
-      textColor={colors.logInGray}
+      icon="triple-dots"
       testID="KebabMenu.Button"
     />
   );

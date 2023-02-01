@@ -1,6 +1,7 @@
 // @flow
 
 import { Text, View } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { TouchableOpacity } from "react-native";
@@ -39,8 +40,9 @@ const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => (
                 }
               }}
               testID={testID || `${id}-tab`}
-              accessibilityLabel={text}
               accessibilityRole="tab"
+              accessibilityLabel={text}
+              accessibilityHint={t( "Switch-to-tab", { tab: text } )}
               accessibilityState={{
                 selected: active,
                 expanded: active
@@ -48,7 +50,7 @@ const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => (
             >
               <Text
                 className="text-xl self-center py-2"
-                style={{ color: active ? colors.primary : colors.grayText }}
+                style={{ color: active ? colors.focus : colors.grayText }}
               >
                 {text}
               </Text>
@@ -57,7 +59,7 @@ const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => (
           </View>
         );
       } )
-    }
+      }
   </View>
 );
 

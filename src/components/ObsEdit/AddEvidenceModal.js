@@ -106,19 +106,22 @@ const AddEvidenceModal = ( {
           )}
           <View className="flex-row w-full justify-around">
             <EvidenceButton
-              icon="perm-media"
-              handlePress={onImportPhoto}
-              disabled={disableAddingMoreEvidence}
-            />
-            <EvidenceButton
-              icon="photo-camera"
+              icon="camera"
               handlePress={onTakePhoto}
               disabled={disableAddingMoreEvidence}
+              accessibilityLabel={t( "Navigate-to-camera" )}
             />
             <EvidenceButton
-              icon="keyboard-voice"
+              icon="photo-gallery"
+              handlePress={onImportPhoto}
+              disabled={disableAddingMoreEvidence}
+              accessibilityLabel={t( "Navigate-to-bulk-importer" )}
+            />
+            <EvidenceButton
+              icon="microphone"
               handlePress={onRecordSound}
               disabled={disableAddingMoreEvidence}
+              accessibilityLabel={t( "Navigate-to-sound-recorder" )}
             />
           </View>
           <Text

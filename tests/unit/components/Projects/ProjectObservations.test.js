@@ -38,9 +38,9 @@ describe( "ProjectObservations", () => {
 } );
 
 test( "displays project observations", ( ) => {
-  const { getByTestId, getByText } = renderComponent( <ProjectObservations /> );
+  renderComponent( <ProjectObservations /> );
 
-  expect( getByText(
+  expect( screen.getByText(
     `${
       mockObservation.taxon.preferred_common_name
     } (${
@@ -49,6 +49,7 @@ test( "displays project observations", ( ) => {
       mockObservation.taxon.name
     })`
   ) ).toBeTruthy( );
-  expect( getByTestId( "ObsList.photo" ).props.source )
-    .toStrictEqual( { uri: mockObservation.observation_photos[0].photo.url } );
+  expect( screen.getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( {
+    uri: mockObservation.observation_photos[0].photo.url
+  } );
 } );

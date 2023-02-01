@@ -28,7 +28,9 @@ module.exports = {
       }
     },
     colors: {
-      primary: "#77b300",
+      darkGray: "#454545",
+      warningRed: "#9B1010",
+      focusGreen: "#74AC00",
       secondary: "#979797",
       tertiary: "#C4C4C4",
       white: "#ffffff",
@@ -45,8 +47,6 @@ module.exports = {
       logInGray: "#999999",
       border: "#DBDBDB",
       accessibleGreen: "#5D8017",
-      darkGray: "#454545",
-      warningRed: "#9B1010",
       buttonPrimaryDisabled: PRIMARY_DISABLED,
       buttonWarningDisabled: WARNING_DISABLED,
       buttonNeutralDisabled: NEUTRAL_DISABLED,

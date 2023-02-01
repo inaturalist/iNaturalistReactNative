@@ -15,7 +15,6 @@ async function checkOnRealmPath( context ) {
 }
 checkOnRealmPath( "before creating realm context" );
 
-const ExploreContext: Object = createContext<Function>( );
 const ObsEditContext: Object = createContext<Function>( );
 const RealmContext: Object = createRealmContext( realmConfig );
 checkOnRealmPath( "after creating realm context" );
@@ -24,7 +23,6 @@ setTimeout( ( ) => {
 }, 5000 );
 
 export {
-  ExploreContext,
   ObsEditContext,
   RealmContext
 };

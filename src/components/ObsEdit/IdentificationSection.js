@@ -28,10 +28,13 @@ const IdentificationSection = ( ): Node => {
 
   if ( identification ) {
     return (
-      <View className="flex-row justify-between items-center mx-5 mt-2">
-        <View>
-          <Text>{identification.preferred_common_name}</Text>
-          <Text>{identification.name}</Text>
+      <View className="flex-row justify-between items-center ml-3 mt-2">
+        <View className="flex-row items-center">
+          <IconButton icon="pencil" size={14} />
+          <View>
+            <Text>{identification.preferred_common_name}</Text>
+            <Text>{identification.name}</Text>
+          </View>
         </View>
         <IconButton icon="pencil" onPress={navToAddID} />
       </View>

@@ -53,15 +53,13 @@ const InlineUser = ( { user }: Props ): Node => {
       testID="InlineUser"
       className="flex flex-row items-center"
       accessibilityRole="link"
-      accessibilityLabel={t( "Navigate-to-user-profile" )}
-      accessibilityValue={{ text: userHandle }}
+      accessibilityLabel={t( "User", { userHandle } )}
+      accessibilityHint={t( "Navigates-to-user-profile" )}
       onPress={() => {
         navigation.navigate( "UserProfile", { userId: user.id } );
       }}
     >
-      <View className="mr-[7px]">
-        {renderUserIcon()}
-      </View>
+      <View className="mr-[7px]">{renderUserIcon()}</View>
       <Text>{userHandle}</Text>
     </Pressable>
   );

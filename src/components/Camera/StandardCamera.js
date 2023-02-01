@@ -1,9 +1,9 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import CloseButton from "components/SharedComponents/Buttons/CloseButton";
 import {
-  Pressable,
-  View
+  Pressable, View
 } from "components/styledComponents";
 import { t } from "i18next";
 import _ from "lodash";
@@ -17,8 +17,9 @@ import {
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
-import { Avatar, Snackbar } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import {
+  Avatar, IconButton, Snackbar, useTheme
+} from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
@@ -39,6 +40,7 @@ const StandardCamera = ( ): Node => {
     evidenceToAdd,
     setEvidenceToAdd
   } = useContext( ObsEditContext );
+  const theme = useTheme( );
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
@@ -139,17 +141,14 @@ const StandardCamera = ( ): Node => {
   const renderAddObsButtons = icon => {
     let testID = "";
     let accessibilityLabel = "";
-    let accessibilityValue = "";
     switch ( icon ) {
-      case "flash":
+      case "flash-on-circle":
         testID = "flash-button-label-flash";
         accessibilityLabel = t( "Flash-button-label-flash" );
-        accessibilityValue = t( "Flash-button-value-flash" );
         break;
       case "flash-off":
         testID = "flash-button-label-flash-off";
         accessibilityLabel = t( "Flash-button-label-flash-off" );
-        accessibilityValue = t( "Flash-button-value-flash-off" );
         break;
       default:
         break;
@@ -158,21 +157,12 @@ const StandardCamera = ( ): Node => {
       <Avatar.Icon
         testID={testID}
         accessibilityLabel={accessibilityLabel}
-        accessibilityValue={accessibilityValue}
         size={40}
         icon={icon}
         style={{ backgroundColor: colors.gray }}
       />
     );
   };
-
-  const renderCameraButton = ( icon, disabled ) => (
-    <Avatar.Icon
-      size={60}
-      icon={icon}
-      style={{ backgroundColor: disabled ? colors.gray : colors.white }}
-    />
-  );
 
   return (
     <View className="flex-1 bg-black">
@@ -190,7 +180,7 @@ const StandardCamera = ( ): Node => {
           {hasFlash ? (
             <Pressable onPress={toggleFlash} accessibilityRole="button">
               {takePhotoOptions.flash === "on"
-                ? renderAddObsButtons( "flash" )
+                ? renderAddObsButtons( "flash-on-circle" )
                 : renderAddObsButtons( "flash-off" )}
             </Pressable>
           ) : (
@@ -199,11 +189,6 @@ const StandardCamera = ( ): Node => {
           <Pressable
             onPress={flipCamera}
             accessibilityLabel={t( "Camera-button-label-switch-camera" )}
-            accessibilityValue={{
-              text: cameraPosition === "back"
-                ? t( "Camera-button-value-back" )
-                : t( "Camera-button-value-front" )
-            }}
             accessibilityRole="button"
           >
             <Avatar.Icon
@@ -214,34 +199,28 @@ const StandardCamera = ( ): Node => {
             />
           </Pressable>
         </View>
-        <View className="bg-black h-32 flex-row justify-between p-6">
-          <Pressable
-            className="pt-2 pb-4"
-            onPress={() => navigation.goBack()}
-            accessibilityLabel={t( "Navigate-back" )}
-            accessibilityRole="button"
-          >
-            <Icon name="close" size={35} color={colors.white} />
-          </Pressable>
-          <Pressable
+        <View className="bg-black h-32 flex-row justify-between items-center">
+          <View className="w-1/3">
+            <CloseButton />
+          </View>
+          <IconButton
+            icon="camera"
             onPress={takePhoto}
-            accessibilityLabel={t( "Take-photo" )}
-            accessibilityRole="button"
-          >
-            {renderCameraButton( "circle-outline", disallowAddingPhotos )}
-          </Pressable>
-          {photosTaken ? (
-            <Pressable
-              className="pt-2 pb-4 flex-row"
-              onPress={navToObsEdit}
-            >
-              <Icon name="check-circle" size={45} color={colors.inatGreen} />
-            </Pressable>
-          ) : (
-            <View className="pt-2 pb-4 flex-row">
-              <Icon name="check-circle" size={45} color={colors.black} />
-            </View>
-          )}
+            disabled={disallowAddingPhotos}
+            containerColor={theme.colors.surface}
+          />
+          <View className="w-1/3">
+            {photosTaken && (
+              <IconButton
+                icon="checkmark"
+                iconColor={theme.colors.onSecondary}
+                containerColor={theme.colors.secondary}
+                onPress={navToObsEdit}
+                accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+                disabled={false}
+              />
+            )}
+          </View>
         </View>
       </View>
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>

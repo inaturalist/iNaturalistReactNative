@@ -24,6 +24,10 @@
     {
       "path": "assets/fonts/Whitney-SemiboldItalic-Pro.otf",
       "sha1": "53e8a56ceb630b63316db41017125c52fbf0e845"
+    },
+    {
+      "path": "assets/fonts/inaturalisticons.ttf",
+      "sha1": "76435d11edb09f7914ebf9cb388db461c50d7fda"
     }
   ]
 }

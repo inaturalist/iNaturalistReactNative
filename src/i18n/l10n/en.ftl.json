@@ -390,7 +390,7 @@
     "comment": "Shows the number of observations a user is currently uploading on my observations page",
     "val": "Uploading { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
-  "User": "User",
+  "User": "User { $userHandle }",
   "Username": "Username",
   "Username-or-Email": {
     "comment": "Appears above the text fields",
@@ -490,6 +490,7 @@
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
+  "Navigates-to-user-profile": "Navigates to user profile.",
   "Add-this-ID": "Add this identification",
   "Camera-button-label-switch-camera": {
     "comment": "Accessible label for the camera button",
@@ -524,17 +525,31 @@
   "Navigate-to-observation-details": "Navigate to observation details screen",
   "Navigate-to-project-details": "Navigate to project details",
   "Navigate-to-taxon-details": "Navigate to taxon details",
-  "Navigate-to-user-profile": "Navigate to user profile",
   "Number-of-comments": "Number of comments",
   "Number-of-identifications": "Number of identifications",
   "Observation-has-no-photos-and-no-sounds": "This observation has no photos and no sounds.",
-  "Take-photo": "Take photo",
   "Photo-taken-at": "Photo taken at { $date }",
+  "Switch-to-tab": "Switch to { $tab } tab",
+  "Take-photo": "Take photo",
   "Location-map-unavailable-without-internet": {
     "comment": "Accessibility labels for no internet state in ObsDetails",
     "val": "Location map unavailable without internet"
   },
   "Observation-photos-unavailable-without-internet": "Observation photos unavailable without internet",
   "Taxon-photo-unavailable-without-internet": "Taxon photo unavailable without internet",
-  "User-photo-unavailable-without-internet": "User photo unavailable without internet"
+  "User-photo-unavailable-without-internet": "User photo unavailable without internet",
+  "Close-camera-options-modal": {
+    "comment": "Accessibility labels for icons",
+    "val": "Close camera options modal"
+  },
+  "Navigate-to-camera": "Navigate to camera",
+  "Navigate-to-explore-screen": "Navigate to explore screen",
+  "Navigate-to-notifications-screen": "Navigate to notifications screen",
+  "Navigate-to-observation-edit-screen": "Navigate to observation edit screen",
+  "Navigate-to-observation-list": "Navigate to observation list",
+  "Navigate-to-photo-importer": "Navigate to photo importer",
+  "Navigate-to-sound-recorder": "Navigate to sound recorder",
+  "Open-add-evidence-modal": "Open add evidence modal",
+  "Open-side-menu": "Open side menu",
+  "Return-to-previous-screen": "Return to previous screen"
 }

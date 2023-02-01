@@ -38,13 +38,19 @@ class ObservationSound extends Realm.Object {
     const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
 
     return {
-      "observation_sound[observation_id]": id,
-      "observation_sound[uuid]": observationSound.uuid,
+      "sound[uuid]": observationSound.uuid,
       file: new FileUpload( {
         uri: observationSound.file_url,
         name: `${observationSound.uuid}.${fileExt}`,
         type: `audio/${fileExt}`
       } )
+    };
+  }
+
+  static mapSoundForAttachingToObs( id, observationSound ) {
+    return {
+      "observation_sound[observation_id]": id,
+      "observation_sound[sound_id]": observationSound.id
     };
   }
 
