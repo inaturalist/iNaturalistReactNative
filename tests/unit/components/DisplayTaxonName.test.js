@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react-native";
+import { render, screen } from "@testing-library/react-native";
 import DisplayTaxonName from "components/DisplayTaxonName";
 import React from "react";
 
@@ -40,60 +40,60 @@ describe( "when common name is first", () => {
   const user = { prefers_scientific_name_first: false };
 
   test( "renders correct taxon for species", () => {
-    const { getByText } = render(
+    render(
       <DisplayTaxonName item={{ taxon: speciesTaxon, user }} />
     );
 
     expect(
-      getByText( `${speciesTaxon.preferred_common_name} (${speciesTaxon.name})` )
+      screen.getByText( `${speciesTaxon.preferred_common_name} (${speciesTaxon.name})` )
     ).toBeTruthy();
   } );
 
   test( "renders correct taxon w/o common name", () => {
-    const { getByText } = render(
+    render(
       <DisplayTaxonName item={{ taxon: noCommonNameTaxon, user }} />
     );
 
-    expect( getByText( noCommonNameTaxon.name ) ).toBeTruthy();
+    expect( screen.getByText( noCommonNameTaxon.name ) ).toBeTruthy();
   } );
 
   test( "renders correct taxon w/o common name and no species", () => {
-    const { getByText } = render(
+    render(
       <DisplayTaxonName item={{ taxon: highRankTaxon, user }} />
     );
 
     expect(
-      getByText( `${highRankTaxon.rank} ${highRankTaxon.name}` )
+      screen.getByText( `${highRankTaxon.rank} ${highRankTaxon.name}` )
     ).toBeTruthy();
   } );
 
   test( "renders correct taxon for a subspecies", () => {
-    const { getByText } = render(
+    render(
       <DisplayTaxonName item={{ taxon: highRankTaxon, user }} />
     );
 
     expect(
-      getByText( `${highRankTaxon.rank} ${highRankTaxon.name}` )
+      screen.getByText( `${highRankTaxon.rank} ${highRankTaxon.name}` )
     ).toBeTruthy();
   } );
 
   test( "renders correct taxon for species", () => {
-    const { getByText } = render(
+    render(
       <DisplayTaxonName item={{ taxon: subspeciesTaxon, user }} />
     );
 
     expect(
-      getByText( "Silver Lupine (Lupinus albifrons var. collinus)" )
+      screen.getByText( "Silver Lupine (Lupinus albifrons var. collinus)" )
     ).toBeTruthy();
   } );
 
   test( "renders correct taxon for improperly capitalized common name", () => {
-    const { getByText } = render(
+    render(
       <DisplayTaxonName item={{ taxon: uncapitalizedTaxon, user }} />
     );
 
     expect(
-      getByText( "Crown-of-thorns Blue Sea-Stars (Acanthaster planci)" )
+      screen.getByText( "Crown-of-thorns Blue Sea-Stars (Acanthaster planci)" )
     ).toBeTruthy();
   } );
 } );
@@ -102,40 +102,40 @@ describe( "when scientific name is first", () => {
   const user = { prefers_scientific_name_first: true };
 
   test( "renders correct taxon for species", () => {
-    const { getByText } = render(
+    render(
       <DisplayTaxonName item={{ taxon: speciesTaxon, user }} />
     );
 
     expect(
-      getByText( `${speciesTaxon.name} (${speciesTaxon.preferred_common_name})` )
+      screen.getByText( `${speciesTaxon.name} (${speciesTaxon.preferred_common_name})` )
     ).toBeTruthy();
   } );
 
   test( "renders correct taxon w/o common name", () => {
-    const { getByText } = render(
+    render(
       <DisplayTaxonName item={{ taxon: noCommonNameTaxon, user }} />
     );
 
-    expect( getByText( noCommonNameTaxon.name ) ).toBeTruthy();
+    expect( screen.getByText( noCommonNameTaxon.name ) ).toBeTruthy();
   } );
 
   test( "renders correct taxon w/o common name and no species", () => {
-    const { getByText } = render(
+    render(
       <DisplayTaxonName item={{ taxon: highRankTaxon, user }} />
     );
 
     expect(
-      getByText( `${highRankTaxon.rank} ${highRankTaxon.name}` )
+      screen.getByText( `${highRankTaxon.rank} ${highRankTaxon.name}` )
     ).toBeTruthy();
   } );
 
   test( "renders correct taxon for species", () => {
-    const { getByText } = render(
+    render(
       <DisplayTaxonName item={{ taxon: subspeciesTaxon, user }} />
     );
 
     expect(
-      getByText( "Lupinus albifrons var. collinus (Silver Lupine)" )
+      screen.getByText( "Lupinus albifrons var. collinus (Silver Lupine)" )
     ).toBeTruthy();
   } );
 } );

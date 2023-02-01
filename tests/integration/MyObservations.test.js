@@ -1,7 +1,7 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
-import { waitFor } from "@testing-library/react-native";
+import { screen, waitFor } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
 import inatjs from "inaturalistjs";
 import React from "react";
@@ -28,9 +28,9 @@ describe( "MyObservations", ( ) => {
   //     await signIn( mockUser );
   //     const observations = [factory( "RemoteObservation" )];
   //     inatjs.observations.search.mockResolvedValue( makeResponse( observations ) );
-  //     const { queryByTestId } = renderAppWithComponent( <ObsList /> );
+  //     renderAppWithComponent( <ObsList /> );
   //     const { findByTestId } = renderAppWithComponent( <ObsList /> );
-  //     expect( await findByTestId( "ObservationViews.myObservations" ) ).toBeAccessible( );
+  //     expect( await screen.findByTestId( "ObservationViews.myObservations" ) ).toBeAccessible( );
   //   } );
   // } );
 
@@ -40,9 +40,9 @@ describe( "MyObservations", ( ) => {
       expect( apiMethod ).not.toHaveBeenCalled( );
       const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
-      const { getByText } = renderAppWithComponent( <ObsList /> );
+      renderAppWithComponent( <ObsList /> );
       await waitFor( ( ) => {
-        expect( getByText( "Log in to iNaturalist" ) ).toBeTruthy( );
+        expect( screen.getByText( "Log in to iNaturalist" ) ).toBeTruthy( );
       } );
       // Unpleasant, but without adjusting the timeout it doesn't seem like
       // all of these requests get caught
@@ -63,11 +63,11 @@ describe( "MyObservations", ( ) => {
       const mockUser = factory( "LocalUser" );
       expect( mockUser.locale ).toEqual( "en" );
       await signIn( mockUser );
-      const { queryByText } = renderAppWithComponent( <ObsList /> );
+      renderAppWithComponent( <ObsList /> );
       await waitFor( ( ) => {
-        expect( queryByText( / Observations/ ) ).toBeTruthy( );
+        expect( screen.getByText( / Observations/ ) ).toBeTruthy( );
       } );
-      expect( queryByText( /X-Observations/ ) ).toBeFalsy( );
+      expect( screen.queryByText( /X-Observations/ ) ).toBeFalsy( );
     } );
 
     it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
@@ -76,11 +76,11 @@ describe( "MyObservations", ( ) => {
       } );
       expect( mockSpanishUser.locale ).toEqual( "es" );
       await signIn( mockSpanishUser );
-      const { queryByText } = renderAppWithComponent( <ObsList /> );
+      renderAppWithComponent( <ObsList /> );
       await waitFor( ( ) => {
-        expect( queryByText( / Observaciones/ ) ).toBeTruthy( );
+        expect( screen.getByText( / Observaciones/ ) ).toBeTruthy();
       } );
-      expect( queryByText( /X-Observations/ ) ).toBeFalsy( );
+      expect( screen.queryByText( /X-Observations/ ) ).toBeFalsy( );
     } );
 
     it(
@@ -95,15 +95,15 @@ describe( "MyObservations", ( ) => {
         } );
         inatjs.users.me.mockResolvedValue( makeResponse( [mockSpanishUser] ) );
 
-        const { findByText, queryByText } = renderAppWithComponent( <ObsList /> );
+        renderAppWithComponent( <ObsList /> );
         // I'd prefer to wait for the Spanish text to appear, but that never
         // seems to wait long enough. This waits for the relevant API call to
         // have been made
         await waitFor( ( ) => {
           expect( inatjs.users.me ).toHaveBeenCalled( );
         } );
-        expect( await findByText( / Observaciones/ ) ).toBeTruthy( );
-        expect( queryByText( /X-Observations/ ) ).toBeFalsy( );
+        expect( await screen.findByText( / Observaciones/ ) ).toBeTruthy( );
+        expect( screen.queryByText( /X-Observations/ ) ).toBeFalsy( );
       }
     );
   } );

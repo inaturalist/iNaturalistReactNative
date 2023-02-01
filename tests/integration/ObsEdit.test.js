@@ -1,5 +1,5 @@
 import { useRoute } from "@react-navigation/native";
-import { waitFor } from "@testing-library/react-native";
+import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
@@ -40,9 +40,9 @@ describe( "UUID in params", ( ) => {
       global.realm
     );
     useRoute.mockImplementation( ( ) => ( { params: { uuid: observation.uuid } } ) );
-    const { queryByText } = renderObsEdit( );
+    renderObsEdit( );
     await waitFor( ( ) => {
-      expect( queryByText( observation.taxon.name ) ).toBeTruthy( );
+      expect( screen.getByText( observation.taxon.name ) ).toBeTruthy( );
     } );
   } );
 
@@ -55,23 +55,23 @@ describe( "UUID in params", ( ) => {
       factory( "LocalObservation" ),
       global.realm
     );
-    useRoute.mockImplementation( ( ) => ( { params: { uuid: observation.uuid } } ) );
-    const { queryByText, update } = renderObsEdit( );
-    await waitFor( async ( ) => {
-      expect( queryByText( observation.taxon.name ) ).toBeTruthy( );
-      // Up to this point we're just repeating the prior test to ensure that the
-      // observation in the params gets inserted into the context
+    useRoute.mockImplementation( () => ( { params: { uuid: observation.uuid } } ) );
+    const { update } = renderObsEdit();
+    expect( await screen.findByText( observation.taxon.name ) ).toBeTruthy();
+    // Up to this point we're just repeating the prior test to ensure that the
+    // observation in the params gets inserted into the context
 
-      // Now we alter the params so they specify a different observation
-      const newObservation = await Observation.saveLocalObservationForUpload(
-        factory( "LocalObservation" ),
-        global.realm
-      );
-      useRoute.mockImplementation( ( ) => ( { params: { uuid: newObservation.uuid } } ) );
-      await renderObsEdit( update );
-      expect( queryByText( newObservation.taxon.name ) ).toBeTruthy( );
-      expect( queryByText( observation.taxon.name ) ).toBeFalsy( );
-    } );
+    // Now we alter the params so they specify a different observation
+    const newObservation = await Observation.saveLocalObservationForUpload(
+      factory( "LocalObservation" ),
+      global.realm
+    );
+    useRoute.mockImplementation( () => ( {
+      params: { uuid: newObservation.uuid }
+    } ) );
+    await renderObsEdit( update );
+    expect( screen.getByText( newObservation.taxon.name ) ).toBeTruthy();
+    expect( screen.queryByText( observation.taxon.name ) ).toBeFalsy();
   } );
 
   it( "should not reset the observation in context when context has "
@@ -81,12 +81,10 @@ describe( "UUID in params", ( ) => {
       global.realm
     );
     useRoute.mockImplementation( ( ) => ( { params: { uuid: observation.uuid } } ) );
-    const { queryByText, update } = renderObsEdit( );
-    await waitFor( async ( ) => {
-      expect( queryByText( observation.taxon.name ) ).toBeTruthy( );
-      useRoute.mockImplementation( ( ) => ( { params: { uuid: observation.uuid } } ) );
-      await renderObsEdit( update );
-      expect( queryByText( observation.taxon.name ) ).toBeTruthy( );
-    } );
+    const { update } = renderObsEdit( );
+    expect( await screen.findByText( observation.taxon.name ) ).toBeTruthy( );
+    useRoute.mockImplementation( ( ) => ( { params: { uuid: observation.uuid } } ) );
+    await renderObsEdit( update );
+    expect( await screen.findByText( observation.taxon.name ) ).toBeTruthy( );
   } );
 } );

@@ -1,4 +1,4 @@
-import { waitFor } from "@testing-library/react-native";
+import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import faker from "faker";
 import { ObsEditContext } from "providers/contexts";
@@ -90,12 +90,12 @@ test( "renders observation photo from photo gallery", ( ) => {
   } )];
   mockObsEditProviderWithObs( observations );
 
-  const { getByText } = renderObsEdit( );
+  renderObsEdit( );
 
   const obs = observations[0];
 
-  expect( getByText( obs.place_guess ) ).toBeTruthy( );
-  expect( getByText( new RegExp( obs.longitude ) ) ).toBeTruthy( );
+  expect( screen.getByText( obs.place_guess ) ).toBeTruthy( );
+  expect( screen.getByText( new RegExp( obs.longitude ) ) ).toBeTruthy( );
 } );
 
 describe( "location fetching", () => {
@@ -124,9 +124,9 @@ describe( "location fetching", () => {
     expect( observation.created_at ).toBeFalsy( );
     expect( observation._created_at ).toBeTruthy( );
     mockObsEditProviderWithObs( [observation] );
-    const { queryByText } = renderObsEdit( );
+    renderObsEdit( );
 
-    expect( queryByText( new RegExp( `Lat: ${observation.latitude}` ) ) ).toBeTruthy( );
+    expect( screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) ) ).toBeTruthy( );
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
   } );
 
@@ -139,9 +139,9 @@ describe( "location fetching", () => {
     expect( observation.id ).toBeTruthy( );
     expect( observation.created_at ).toBeTruthy( );
     mockObsEditProviderWithObs( [observation] );
-    const { queryByText } = renderObsEdit( );
+    renderObsEdit( );
 
-    expect( queryByText( new RegExp( `Lat: ${observation.latitude}` ) ) ).toBeTruthy( );
+    expect( screen.getByText( new RegExp( `Lat: ${observation.latitude}` ) ) ).toBeTruthy( );
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
   } );
 } );
