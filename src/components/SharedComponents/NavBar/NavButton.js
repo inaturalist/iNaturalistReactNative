@@ -2,9 +2,9 @@
 import { Image, Pressable } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
+import { StyleSheet } from "react-native";
 import { IconButton } from "react-native-paper";
 import colors from "styles/tailwindColors";
-import { StyleSheet } from "react-native";
 
 type Props = {
   id: string,
