@@ -14,13 +14,13 @@ import {
   InlineUser,
   List1,
   List2,
+  QualityGradeStatus,
   Subheading1,
   Tabs,
   UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
-import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import {
   ScrollView,
@@ -257,6 +257,7 @@ const UiLibrary = ( ) => {
         <View className="flex flex-row justify-between">
           <View>
             <Body2 className="text-center">Research</Body2>
+            { /* TODO: refactor to not have color prop because we only need black and white */}
             <QualityGradeStatus qualityGrade="research" color="black" />
           </View>
           <View>
