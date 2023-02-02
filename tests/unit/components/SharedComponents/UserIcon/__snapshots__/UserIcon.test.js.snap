@@ -5,7 +5,7 @@ exports[`UserIcon displays small user image correctly 1`] = `
   accessibilityIgnoresInvertColors={true}
   source={
     Object {
-      "uri": "http://placeimg.com/640/480",
+      "uri": "some_uri",
     }
   }
   style={
@@ -35,7 +35,7 @@ exports[`UserIcon displays user image correctly 1`] = `
   accessibilityIgnoresInvertColors={true}
   source={
     Object {
-      "uri": "http://placeimg.com/640/480",
+      "uri": "some_uri",
     }
   }
   style={

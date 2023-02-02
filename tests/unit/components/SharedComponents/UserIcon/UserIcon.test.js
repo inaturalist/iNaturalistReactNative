@@ -2,10 +2,7 @@ import { render, screen } from "@testing-library/react-native";
 import { UserIcon } from "components/SharedComponents";
 import React from "react";
 
-import factory from "../../../../factory";
-
-const mockUser = factory( "RemoteUser" );
-const mockUri = { uri: mockUser.icon_url };
+const mockUri = { uri: "some_uri" };
 
 describe( "UserIcon", () => {
   it( "displays user image correctly", async () => {
