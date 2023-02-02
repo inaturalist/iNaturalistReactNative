@@ -693,10 +693,10 @@ Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
 ## Accessibility labels: these are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 ## iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
-Add-observation = Add observation
 Bulk-importer = Bulk importer
 Camera = Camera
 Close = Close
+Observe = Observe
 Sound-recorder = Sound recorder
 User = User { $userHandle }
 
@@ -709,7 +709,7 @@ Navigates-to-sound-recorder = Navigates to sound recorder.
 Navigates-to-suggest-identification = Navigates to suggest identification.
 Navigates-to-user-profile = Navigates to user profile.
 Opens-add-comment-modal = Opens add comment modal.
-Opens-add-evidence-modal = Opens add evidence modal.
+Opens-add-evidence-modal = Opens add observation modal.
 Returns-to-previous-screen = Returns to previous screen.
 Switches-to-tab = Switches to { $tab } tab.
 

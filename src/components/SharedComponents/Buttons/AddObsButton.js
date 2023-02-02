@@ -27,7 +27,7 @@ const AddObsButton = ( ): React.Node => {
         mode="contained"
         containerColor={theme.colors.secondary}
         iconColor={theme.colors.onSecondary}
-        accessibilityLabel={t( "Add-observation" )}
+        accessibilityLabel={t( "Observe" )}
         accessibilityHint={t( "Opens-add-evidence-modal" )}
         className="m-0"
         disabled={false}
