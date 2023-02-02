@@ -43,7 +43,12 @@ const UiLibrary = ( ) => {
         </Body1>
         <Heading1>Buttons</Heading1>
         <Heading2>Button</Heading2>
-        <Button className="mb-2" level="primary" text="PRIMARY BUTTON" accessibilityHint="Describes the result of performing the tap action on this element." />
+        <Button
+          className="mb-2"
+          level="primary"
+          text="PRIMARY BUTTON"
+          accessibilityHint="Describes the result of performing the tap action on this element."
+        />
         <Button className="mb-2" text="NEUTRAL BUTTON" />
         <Button
           className="mb-2"
