@@ -34,6 +34,7 @@ const ObsCardStats = ( { item, type, layout }: Props ): Node => {
       count={item.identifications?.length}
       color={setIconColor( )}
       accessibilityLabel={t( "Number-of-identifications" )}
+      testID="ActivityCount.identificationCount"
     />
   );
 
@@ -42,6 +43,7 @@ const ObsCardStats = ( { item, type, layout }: Props ): Node => {
       count={item.comments?.length}
       color={setIconColor( )}
       accessibilityLabel={t( "Number-of-comments" )}
+      testID="ActivityCount.commentCount"
     />
   );
 

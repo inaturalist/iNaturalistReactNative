@@ -12,11 +12,12 @@ type Props = {
   count: number,
   color: string,
   icon?: string,
-  accessibilityLabel: string
+  accessibilityLabel: string,
+  testID?: string
 }
 
 const ActivityCount = ( {
-  count, color, icon, accessibilityLabel
+  count, color, icon, accessibilityLabel, testID
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -35,7 +36,7 @@ const ActivityCount = ( {
       />
       <Body3
         className="ml-1.5"
-        testID="ActivityCount.commentCount"
+        testID={testID}
         style={{ color: color || defaultColor }}
       >
         {t( "Intl-number", { val: count || 0 } )}
