@@ -1,22 +1,25 @@
 import INatIcon, { glyphMap } from "components/INatIcon";
 import {
-  Button, CloseButton, EvidenceButton, Tabs
+  Body1,
+  Body2,
+  Body3,
+  Body4,
+  Button,
+  CloseButton,
+  EvidenceButton,
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  List1,
+  List2,
+  Subheading1,
+  Tabs
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
 import InlineUser from "components/SharedComponents/InlineUser";
 import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
-import Body1 from "components/SharedComponents/Typography/Body1";
-import Body2 from "components/SharedComponents/Typography/Body2";
-import Body3 from "components/SharedComponents/Typography/Body3";
-import Body4 from "components/SharedComponents/Typography/Body4";
-import Heading1 from "components/SharedComponents/Typography/Heading1";
-import Heading2 from "components/SharedComponents/Typography/Heading2";
-import Heading3 from "components/SharedComponents/Typography/Heading3";
-import Heading4 from "components/SharedComponents/Typography/Heading4";
-import List1 from "components/SharedComponents/Typography/List1";
-import List2 from "components/SharedComponents/Typography/List2";
-import Subheading1 from "components/SharedComponents/Typography/Subheading1";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import {
   ScrollView,
