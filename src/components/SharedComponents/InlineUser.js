@@ -12,7 +12,7 @@ import User from "realmModels/User";
 import useIsConnected from "sharedHooks/useIsConnected";
 import colors from "styles/tailwindColors";
 
-import UserIcon from "./UserIcon";
+import UserIcon from "./UserIcon/UserIcon";
 
 type Props = {
   user: any
