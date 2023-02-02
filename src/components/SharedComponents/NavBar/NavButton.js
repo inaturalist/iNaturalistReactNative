@@ -1,8 +1,8 @@
 // @flow
-import { Image, Pressable } from "components/styledComponents";
+import UserIcon from "components/SharedComponents/UserIcon";
+import { Pressable } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
-import { StyleSheet } from "react-native";
 import { IconButton } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
@@ -16,15 +16,6 @@ type Props = {
   active: boolean,
   size: number,
 };
-
-const imgStyle = ( size, active ) => StyleSheet.create( {
-  img: {
-    borderWidth: active ? 3 : 0,
-    height: size,
-    width: size,
-    borderColor: colors.inatGreen
-  }
-} );
 
 const NavButton = ( {
   id,
@@ -52,12 +43,7 @@ const NavButton = ( {
   if ( img ) {
     return (
       <Pressable {...sharedProps}>
-        <Image
-          accessibilityRole="image"
-          className="rounded-full"
-          style={imgStyle( size, active ).img}
-          source={img}
-        />
+        <UserIcon uri={userIconUri} active={active} />
       </Pressable>
     );
   }
