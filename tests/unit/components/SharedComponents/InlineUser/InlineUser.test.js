@@ -3,7 +3,7 @@ import { InlineUser } from "components/SharedComponents";
 import React from "react";
 import useIsConnected from "sharedHooks/useIsConnected";
 
-import factory from "../../../factory";
+import factory from "../../../../factory";
 
 jest.mock( "sharedHooks/useIsConnected" );
 useIsConnected.mockReturnValue( true );
@@ -22,6 +22,8 @@ jest.mock( "@react-navigation/native", ( ) => {
 const mockUser = factory( "RemoteUser" );
 const mockUserWithoutImage = factory( "RemoteUser", { icon_url: null } );
 
+const consistentUser = { login: "some_login", iconUrl: "some_icon_url" };
+
 jest.mock(
   "components/SharedComponents/UserIcon/UserIcon",
   () => function MockUserIcon( ) {
@@ -31,6 +33,12 @@ jest.mock(
 );
 
 describe( "InlineUser", ( ) => {
+  it( "renders reliably", () => {
+    // Snapshot test
+    render( <InlineUser user={consistentUser} /> );
+    expect( screen ).toMatchSnapshot();
+  } );
+
   it( "displays user handle and image correctly", async ( ) => {
     render( <InlineUser user={mockUser} /> );
     // Check for user name text
@@ -82,6 +90,12 @@ describe( "InlineUser", ( ) => {
       expect( await screen.findByTestId( "InlineUser.NoInternetPicture" ) ).toBeTruthy();
       expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();
       expect( screen.queryByTestId( "InlineUser.FallbackPicture" ) ).not.toBeTruthy( );
+    } );
+
+    it( "renders reliably", ( ) => {
+      // Snapshot test
+      render( <InlineUser user={consistentUser} /> );
+      expect( screen ).toMatchSnapshot();
     } );
   } );
 } );
