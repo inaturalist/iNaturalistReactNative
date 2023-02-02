@@ -1,4 +1,5 @@
 import INatIcon, { glyphMap } from "components/INatIcon";
+import ActivityCount from "components/SharedComponents/ActivityCount";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import Button from "components/SharedComponents/Buttons/Button";
 import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
@@ -220,6 +221,9 @@ const UiLibrary = ( ) => {
             <QualityGradeStatus qualityGrade="casual" color="green" />
           </View>
         </View>
+
+        <Heading2 className="my-2">ActivityCount</Heading2>
+        <ActivityCount numOfComments={10} color={theme.colors.primary} />
 
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
