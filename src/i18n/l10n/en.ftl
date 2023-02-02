@@ -567,7 +567,7 @@ Unreviewed-only = Unreviewed only
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
 
 # Shows the number of observations a user can upload to iNat from my observations page
-UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
+Upload-x-observations = UPLOAD {$count ->
     [one] 1 OBSERVATION
     *[other] {$count} OBSERVATIONS
 }
@@ -586,6 +586,8 @@ Username = Username
 Username-or-Email = Username or Email
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
+
+Welcome-back = Welcome back,
 
 Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
@@ -670,11 +672,11 @@ Date-short-format = MM/dd/yy
 Date-this-year = MMM d
 
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade
-Quality-Grade-Badge-research_grade = RG
+Quality-Grade-research = Quality Grade Research Grade
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID
-Quality-Grade-Badge-needs_id = Needs ID
+Quality-Grade-needs_id = Quality Grade Needs ID
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
-Quality-Grade-Badge-casual = Casual
+Quality-Grade-casual = Quality Grade Casual
 
 Add-evidence = Add evidence
 You-can-only-upload-20-media = You can only add 20 photos and 20 sounds to an observation

@@ -1,6 +1,9 @@
 // @flow
 
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import {
+  activateKeepAwake,
+  deactivateKeepAwake
+} from "@sayem314/react-native-keep-awake";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
@@ -12,19 +15,40 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [uploadInProgress, setUploadInProgress] = useState( false );
   const [shouldUpload, setShouldUpload] = useState( false );
   const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
-  const realm = useRealm();
-  const apiToken = useApiToken();
+  const [progress, setProgress] = useState( 0 );
+  const [error, setError] = useState( null );
+  const realm = useRealm( );
+  const apiToken = useApiToken( );
 
   const cleanup = ( ) => {
     setUploadInProgress( false );
     setShouldUpload( false );
     setCurrentUploadIndex( 0 );
+    setError( null );
     deactivateKeepAwake( );
+    setProgress( 0 );
   };
 
   useEffect( ( ) => {
     const upload = async observationToUpload => {
-      await Observation.uploadObservation( observationToUpload, apiToken, realm );
+      const increment = ( 1 / allObsToUpload.length ) / 2;
+      setProgress( currentProgress => currentProgress + increment );
+      try {
+        await Observation.uploadObservation(
+          observationToUpload,
+          apiToken,
+          realm
+        );
+      } catch ( e ) {
+        console.warn( e );
+        setError( e.message );
+      }
+      setProgress( currentProgress => {
+        if ( currentUploadIndex === allObsToUpload.length - 1 ) {
+          return 1;
+        }
+        return currentProgress + increment;
+      } );
       setCurrentUploadIndex( currentIndex => currentIndex + 1 );
     };
 
@@ -35,6 +59,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
       cleanup( );
       return;
     }
+
     activateKeepAwake( );
     setUploadInProgress( true );
     upload( observationToUpload );
@@ -48,6 +73,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
 
   return {
     uploadInProgress,
+    error,
+    progress,
     stopUpload: cleanup,
     startUpload: ( ) => setShouldUpload( true )
   };

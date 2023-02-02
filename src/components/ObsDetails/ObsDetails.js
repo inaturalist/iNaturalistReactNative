@@ -1,5 +1,4 @@
 // @flow
-
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
@@ -7,9 +6,10 @@ import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
 import { Tabs } from "components/SharedComponents";
+import HideView from "components/SharedComponents/HideView";
 import InlineUser from "components/SharedComponents/InlineUser";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
-import QualityBadge from "components/SharedComponents/QualityBadge";
+import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
 import {
   Image, Pressable, Text, View
@@ -350,8 +350,9 @@ const ObsDetails = ( ): Node => {
               />
               <Text className="ml-1">{observation.comments.length}</Text>
             </View>
-            <QualityBadge
+            <QualityGradeStatus
               qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )}
+              color={colors.darkGray}
             />
           </View>
         </View>
@@ -373,20 +374,21 @@ const ObsDetails = ( ): Node => {
           </Text>
         </View>
         <Tabs tabs={tabs} activeId={currentTabId} />
-        {currentTabId === ACTIVITY_TAB_ID
-          ? (
-            <ActivityTab
-              uuid={uuid}
-              observation={observation}
-              comments={comments}
-              navToTaxonDetails={navToTaxonDetails}
-              toggleRefetch={toggleRefetch}
-              refetchRemoteObservation={refetchRemoteObservation}
-              openCommentBox={openCommentBox}
-              showCommentBox={showCommentBox}
-            />
-          )
-          : <DataTab observation={observation} />}
+        <HideView show={currentTabId === ACTIVITY_TAB_ID}>
+          <ActivityTab
+            uuid={uuid}
+            observation={observation}
+            comments={comments}
+            navToTaxonDetails={navToTaxonDetails}
+            toggleRefetch={toggleRefetch}
+            refetchRemoteObservation={refetchRemoteObservation}
+            openCommentBox={openCommentBox}
+            showCommentBox={showCommentBox}
+          />
+        </HideView>
+        <HideView noInitialRender show={currentTabId === DATA_TAB_ID}>
+          <DataTab observation={observation} />
+        </HideView>
         {addingComment && (
           <View className="flex-row items-center justify-center">
             <ActivityIndicator size="large" />

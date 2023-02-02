@@ -31,6 +31,7 @@ const AddObsButton = ( ): React.Node => {
         accessibilityHint={t( "Opens-add-evidence-modal" )}
         className="m-0"
         disabled={false}
+        testID="add-obs-button"
       />
     </>
   );

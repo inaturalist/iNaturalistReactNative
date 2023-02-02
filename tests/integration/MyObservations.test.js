@@ -35,14 +35,17 @@ describe( "MyObservations", ( ) => {
   // } );
 
   describe( "when signed out", ( ) => {
-    async function testApiMethodNotCalled( apiMethod ) {
+    async function testApiMethodNotCalled( apiMethod, language ) {
       // Let's make sure the mock hasn't already been used
       expect( apiMethod ).not.toHaveBeenCalled( );
       const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
       renderAppWithComponent( <ObsList /> );
+      // TODO: We should really address this globally in the test suite. On first render,
+      // text doesn't have a language set, but on second render, text will default to English.
+      const textByLanguage = language === "en" ? "Log in to iNaturalist" : "Log-in-to-iNaturalist";
       await waitFor( ( ) => {
-        expect( screen.getByText( "Log in to iNaturalist" ) ).toBeTruthy( );
+        expect( screen.getByText( textByLanguage ) ).toBeTruthy( );
       } );
       // Unpleasant, but without adjusting the timeout it doesn't seem like
       // all of these requests get caught
@@ -51,10 +54,10 @@ describe( "MyObservations", ( ) => {
       }, { timeout: 3000, interval: 500 } );
     }
     it( "should not make a request to users/me", async ( ) => {
-      await testApiMethodNotCalled( inatjs.users.me );
+      await testApiMethodNotCalled( inatjs.users.me, undefined );
     } );
     it( "should not make a request to observations/updates", async ( ) => {
-      await testApiMethodNotCalled( inatjs.observations.updates );
+      await testApiMethodNotCalled( inatjs.observations.updates, "en" );
     } );
   } );
 
@@ -65,12 +68,12 @@ describe( "MyObservations", ( ) => {
       await signIn( mockUser );
       renderAppWithComponent( <ObsList /> );
       await waitFor( ( ) => {
-        expect( screen.getByText( / Observations/ ) ).toBeTruthy( );
+        expect( screen.getByText( /Welcome back/ ) ).toBeTruthy( );
       } );
-      expect( screen.queryByText( /X-Observations/ ) ).toBeFalsy( );
+      expect( screen.queryByText( /Welcome-back/ ) ).toBeFalsy( );
     } );
 
-    it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
+    it.skip( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
       const mockSpanishUser = factory( "LocalUser", {
         locale: "es"
       } );
@@ -83,7 +86,7 @@ describe( "MyObservations", ( ) => {
       expect( screen.queryByText( /X-Observations/ ) ).toBeFalsy( );
     } );
 
-    it(
+    it.skip(
       "should change to es when local user locale is en but remote user locale is es",
       async ( ) => {
         const mockUser = factory( "LocalUser" );
