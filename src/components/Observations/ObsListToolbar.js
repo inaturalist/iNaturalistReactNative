@@ -148,7 +148,7 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
       </View>
       <ProgressBar
         progress={progress}
-        color={colors.primary}
+        color={colors.inatGreen}
         style={{ backgroundColor: "transparent" }}
         visible={uploadInProgress && progress !== 0}
       />
