@@ -5,6 +5,7 @@ import Body3 from "components/SharedComponents/Typography/Body3";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
 
 type Props = {
@@ -18,6 +19,7 @@ const ActivityCount = ( {
   count, color, icon, accessibilityLabel
 }: Props ): Node => {
   const theme = useTheme( );
+  const { t } = useTranslation( );
   const defaultColor = theme.colors.primary;
   return (
     <View
@@ -36,7 +38,7 @@ const ActivityCount = ( {
         testID="ActivityCount.commentCount"
         style={{ color: color || defaultColor }}
       >
-        {count || 0}
+        {t( "Intl-number", { val: count || 0 } )}
       </Body3>
     </View>
   );

@@ -225,11 +225,24 @@ const UiLibrary = ( ) => {
         </View>
 
         <Heading2 className="my-2">ActivityCount</Heading2>
-        <ActivityCount
-          count={10}
-          color={theme.colors.primary}
-          accessibilityLabel={t( "Number-of-comments" )}
-        />
+        <View className="flex flex-row justify-evenly">
+          <View>
+            <Body2>Small Number</Body2>
+            <ActivityCount
+              count={10}
+              color={theme.colors.primary}
+              accessibilityLabel={t( "Number-of-comments" )}
+            />
+          </View>
+          <View>
+            <Body2>Large Number</Body2>
+            <ActivityCount
+              count={20000}
+              color={theme.colors.error}
+              accessibilityLabel={t( "Number-of-comments" )}
+            />
+          </View>
+        </View>
 
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
