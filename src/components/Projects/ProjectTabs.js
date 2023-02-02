@@ -36,13 +36,11 @@ const ProjectTabs = ( ): Node => {
       setApiParams( { member_id: memberId } );
     } else if ( currentTabId === FEATURED_TAB_ID ) {
       setApiParams( { features: true } );
-    } else if ( currentTabId === NEARBY_TAB_ID ) {
-      if ( latLng ) {
+    } else if ( currentTabId === NEARBY_TAB_ID && latLng ) {
         setApiParams( {
           lat: latLng.latitude,
           lng: latLng.longitude
         } );
-      }
     }
   }, [
     memberId,
