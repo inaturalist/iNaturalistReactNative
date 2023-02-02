@@ -11,6 +11,7 @@ import {
   Heading2,
   Heading3,
   Heading4,
+  InlineUser,
   List1,
   List2,
   Subheading1,
@@ -19,7 +20,6 @@ import {
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
-import InlineUser from "components/SharedComponents/InlineUser";
 import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import {

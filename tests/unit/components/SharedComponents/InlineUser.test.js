@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import InlineUser from "components/SharedComponents/InlineUser";
+import { InlineUser } from "components/SharedComponents";
 import React from "react";
 import useIsConnected from "sharedHooks/useIsConnected";
 

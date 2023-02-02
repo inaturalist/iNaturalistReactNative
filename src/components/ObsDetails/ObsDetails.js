@@ -5,9 +5,11 @@ import { createComment } from "api/comments";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
-import { Tabs } from "components/SharedComponents";
+import {
+  InlineUser,
+  Tabs
+} from "components/SharedComponents";
 import HideView from "components/SharedComponents/HideView";
-import InlineUser from "components/SharedComponents/InlineUser";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";

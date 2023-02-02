@@ -3,7 +3,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments } from "api/comments";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
-import InlineUser from "components/SharedComponents/InlineUser";
+import { InlineUser } from "components/SharedComponents";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import UserText from "components/SharedComponents/UserText";
 import {
