@@ -14,7 +14,7 @@ import { viewStyles } from "styles/sharedComponents/footer";
 import NavButton from "./NavButton";
 
 const OBS_LIST_SCREEN_ID = "ObsList";
-const EXPLORE_SCREEN_ID = "ExploreLanding";
+const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
 
 const NavBar = ( ): React.Node => {
