@@ -6,11 +6,12 @@ import { createComment } from "api/comments";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
+import HideView from "components/SharedComponents/HideView";
+import InlineUser from "components/SharedComponents/InlineUser";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import QualityBadge from "components/SharedComponents/QualityBadge";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
 import Tabs from "components/SharedComponents/Tabs";
-import UserIcon from "components/SharedComponents/UserIcon";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
@@ -32,7 +33,6 @@ import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
-import User from "realmModels/User";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
@@ -210,7 +210,6 @@ const ObsDetails = ( ): Node => {
 
   const photos = _.compact( Array.from( observationPhotos ).map( op => op.photo ) );
 
-  const navToUserProfile = id => navigation.navigate( "UserProfile", { userId: id } );
   const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: taxon.id } );
 
   const showTaxon = ( ) => {
@@ -320,17 +319,7 @@ const ObsDetails = ( ): Node => {
     <>
       <ScrollWithFooter testID={`ObsDetails.${uuid}`}>
         <View className="flex-row justify-between items-center m-3">
-          <Pressable
-            className="flex-row items-center"
-            onPress={() => navToUserProfile( user.id )}
-            testID="ObsDetails.currentUser"
-            accessibilityRole="link"
-            accessibilityLabel={t( "Navigate-to-user-profile" )}
-            accessibilityValue={{ text: User.userHandle( user ) }}
-          >
-            <UserIcon uri={User.uri( user )} small />
-            <Text className="ml-3">{User.userHandle( user )}</Text>
-          </Pressable>
+          <InlineUser user={user} />
           <Text className="color-logInGray">{displayCreatedAt()}</Text>
         </View>
         {displayPhoto()}
@@ -385,21 +374,21 @@ const ObsDetails = ( ): Node => {
           </Text>
         </View>
         <Tabs tabs={tabs} activeId={currentTabId} />
-        {currentTabId === ACTIVITY_TAB_ID
-          ? (
-            <ActivityTab
-              uuid={uuid}
-              observation={observation}
-              comments={comments}
-              navToTaxonDetails={navToTaxonDetails}
-              navToUserProfile={navToUserProfile}
-              toggleRefetch={toggleRefetch}
-              refetchRemoteObservation={refetchRemoteObservation}
-              openCommentBox={openCommentBox}
-              showCommentBox={showCommentBox}
-            />
-          )
-          : <DataTab observation={observation} />}
+        <HideView show={currentTabId === ACTIVITY_TAB_ID}>
+          <ActivityTab
+            uuid={uuid}
+            observation={observation}
+            comments={comments}
+            navToTaxonDetails={navToTaxonDetails}
+            toggleRefetch={toggleRefetch}
+            refetchRemoteObservation={refetchRemoteObservation}
+            openCommentBox={openCommentBox}
+            showCommentBox={showCommentBox}
+          />
+        </HideView>
+        <HideView noInitialRender show={currentTabId === DATA_TAB_ID}>
+          <DataTab observation={observation} />
+        </HideView>
         {addingComment && (
           <View className="flex-row items-center justify-center">
             <ActivityIndicator size="large" />

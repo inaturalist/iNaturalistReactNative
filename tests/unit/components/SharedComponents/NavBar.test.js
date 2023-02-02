@@ -36,11 +36,15 @@ describe( "NavBar", ( ) => {
 
     const navToObsList = screen.getByTestId( "ObsList" );
     expect( navToObsList ).toHaveAccessibilityState(
-      { selected: true, expanded: true, disabled: true }
+      {
+        busy: false, disabled: false, expanded: true, selected: true
+      }
     );
     const navToMessages = screen.getByTestId( "Messages" );
     expect( navToMessages ).toHaveAccessibilityState(
-      { selected: false, expanded: false, disabled: false }
+      {
+        busy: false, disabled: false, expanded: false, selected: false
+      }
     );
     expect( screen.getByText( "Obs List" ) ).toBeTruthy();
   } );

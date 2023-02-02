@@ -149,7 +149,7 @@ const AddID = ( { route }: Props ): Node => {
             accessibilityState={{ disabled: false }}
           />
           <IconButton
-            icon="check"
+            icon="checkmark"
             size={25}
             iconColor={colors.inatGreen}
             onPress={( ) => {

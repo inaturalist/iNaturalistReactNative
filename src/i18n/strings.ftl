@@ -565,7 +565,7 @@ Unreviewed-only = Unreviewed only
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
 
 # Shows the number of observations a user can upload to iNat from my observations page
-UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
+Upload-x-observations = UPLOAD {$count ->
     [one] 1 OBSERVATION
     *[other] {$count} OBSERVATIONS
 }
@@ -584,6 +584,8 @@ Username = Username
 Username-or-Email = Username or Email
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
+
+Welcome-back = Welcome back,
 
 Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
@@ -687,7 +689,15 @@ No = No
 Discard-Comment = Discard Comment
 Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
-## Accessibility labels: these are used by screen readers to describe actionable elements
+## Accessibility labels: these are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
+## iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
+User = User { $userHandle }
+
+## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
+## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
+Navigates-to-user-profile = Navigates to user profile.
+
+## The following are actually more like "accessibility hints" than labels we should probably refactor
 Add-this-ID = Add this identification
 # Accessible label for the camera button
 Camera-button-label-switch-camera = Use the device's other camera.
@@ -712,18 +722,28 @@ Navigate-to-login-screen = Navigate to login screen
 Navigate-to-observation-details = Navigate to observation details screen
 Navigate-to-project-details = Navigate to project details
 Navigate-to-taxon-details = Navigate to taxon details
-Navigate-to-user-profile = Navigate to user profile
-Navigate-to-observations = Navigate to observations screen
-Navigate-to-notifications = Navigate to notifications screen
-Open-sidebar = Open sidebar drawer
-Navigate-to-map = Navigate to map screen
 Number-of-comments = Number of comments
 Number-of-identifications = Number of identifications
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
-Take-photo = Take photo
 Photo-taken-at = Photo taken at { $date }
+Switch-to-tab = Switch to { $tab } tab
+Take-photo = Take photo
 # Accessibility labels for no internet state in ObsDetails
 Location-map-unavailable-without-internet = Location map unavailable without internet
 Observation-photos-unavailable-without-internet = Observation photos unavailable without internet
 Taxon-photo-unavailable-without-internet = Taxon photo unavailable without internet
 User-photo-unavailable-without-internet = User photo unavailable without internet
+
+# Accessibility labels for icons
+Close-camera-options-modal = Close camera options modal
+Navigate-to-camera = Navigate to camera
+Navigate-to-explore-screen = Navigate to explore screen
+Navigate-to-notifications-screen = Navigate to notifications screen
+Navigate-to-observation-edit-screen = Navigate to observation edit screen
+Navigate-to-observation-list = Navigate to observation list
+Navigate-to-photo-importer = Navigate to photo importer
+Navigate-to-sound-recorder = Navigate to sound recorder
+Open-add-evidence-modal = Open add evidence modal
+Open-side-menu = Open side menu
+Return-to-previous-screen = Return to previous screen
+Take-photo = Take photo

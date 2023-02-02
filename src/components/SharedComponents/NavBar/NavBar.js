@@ -14,7 +14,7 @@ import { viewStyles } from "styles/sharedComponents/footer";
 import NavButton from "./NavButton";
 
 const OBS_LIST_SCREEN_ID = "ObsList";
-const EXPLORE_SCREEN_ID = "ExploreLanding";
+const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
 
 const NavBar = ( ): React.Node => {
@@ -41,7 +41,7 @@ const NavBar = ( ): React.Node => {
     >
       <NavButton
         onPress={toggleSideMenu}
-        icon="menu"
+        icon="hamburger-menu"
         accessibilityLabel={t( "Navigate-to-observations" )}
         accessibilityRole="button"
         id="OPEN_DRAWER"
@@ -50,7 +50,7 @@ const NavBar = ( ): React.Node => {
       />
       <NavButton
         onPress={navToExplore}
-        icon="language"
+        icon="compass-rose"
         id={EXPLORE_SCREEN_ID}
         active={name === EXPLORE_SCREEN_ID}
         accessibilityLabel={t( "Navigate-to-notifications" )}
@@ -59,7 +59,7 @@ const NavBar = ( ): React.Node => {
       <AddObsButton />
       <NavButton
         onPress={navToObsList}
-        icon="person"
+        icon="ios-people-updated-2"
         img={User.uri( user )}
         id={OBS_LIST_SCREEN_ID}
         active={name === OBS_LIST_SCREEN_ID}
@@ -68,7 +68,7 @@ const NavBar = ( ): React.Node => {
       />
       <NavButton
         onPress={navToNotifications}
-        icon="notifications"
+        icon="notifications-bell"
         active={name === MESSAGES_SCREEN_ID}
         id={MESSAGES_SCREEN_ID}
         accessibilityLabel={t( "Navigate-to-map" )}

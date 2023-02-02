@@ -34,15 +34,15 @@ describe( "Add observation without evidence", () => {
   } );
 
   it( "should navigate to observation add screen on add evidence button pressed", async () => {
-    await waitFor( element( by.id( "camera-options-button" ) ) )
+    await waitFor( element( by.id( "add-obs-button" ) ) )
       .toBeVisible()
       .withTimeout( 10000 );
-    await element( by.id( "camera-options-button" ) ).tap();
+    await element( by.id( "add-obs-button" ) ).tap();
     await expect( element( by.id( "evidence-text" ) ) ).toBeVisible();
     await expect(
-      element( by.id( "camera-options-button-square-edit-outline" ) )
+      element( by.id( "observe-without-evidence-button" ) )
     ).toBeVisible();
-    await element( by.id( "camera-options-button-square-edit-outline" ) ).tap();
+    await element( by.id( "observe-without-evidence-button" ) ).tap();
     await waitFor( element( by.id( "new-observation-text" ) ) ).toBeVisible().withTimeout( 10000 );
   } );
 } );

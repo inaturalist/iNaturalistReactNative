@@ -25,15 +25,15 @@ jest.mock( "@react-navigation/native", ( ) => {
 } );
 
 test( "displays project search results", ( ) => {
-  const { getByTestId, getByText } = renderScreen( Projects, "Projects" );
+  renderScreen( Projects, "Projects" );
 
-  const input = getByTestId( "ProjectSearch.input" );
+  const input = screen.getByTestId( "ProjectSearch.input" );
   fireEvent.changeText( input, "butterflies" );
 
-  expect( getByText( mockProject.title ) ).toBeTruthy( );
-  expect( getByTestId( `Project.${mockProject.id}.photo` ).props.source )
+  expect( screen.getByText( mockProject.title ) ).toBeTruthy( );
+  expect( screen.getByTestId( `Project.${mockProject.id}.photo` ).props.source )
     .toStrictEqual( { uri: mockProject.icon } );
-  fireEvent.press( getByTestId( `Project.${mockProject.id}` ) );
+  fireEvent.press( screen.getByTestId( `Project.${mockProject.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", {
     id: mockProject.id
   } );
