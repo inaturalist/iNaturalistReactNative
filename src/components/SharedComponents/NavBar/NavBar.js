@@ -44,14 +44,14 @@ const NavBar = ( ): React.Node => {
         icon="hamburger-menu"
         accessibilityLabel={t( "Navigate-to-observations" )}
         accessibilityRole="button"
-        id="OPEN_DRAWER"
+        testID="OPEN_DRAWER"
         active={isDrawerOpen}
         size={32}
       />
       <NavButton
         onPress={navToExplore}
         icon="compass-rose"
-        id={EXPLORE_SCREEN_ID}
+        testID={EXPLORE_SCREEN_ID}
         active={name === EXPLORE_SCREEN_ID}
         accessibilityLabel={t( "Navigate-to-notifications" )}
         size={40}
@@ -60,8 +60,8 @@ const NavBar = ( ): React.Node => {
       <NavButton
         onPress={navToObsList}
         icon="ios-people-updated-2"
-        img={User.uri( user )}
-        id={OBS_LIST_SCREEN_ID}
+        userIconUri={User.uri( user )}
+        testID={OBS_LIST_SCREEN_ID}
         active={name === OBS_LIST_SCREEN_ID}
         accessibilityLabel={t( "Open-sidebar" )}
         size={40}
@@ -70,7 +70,7 @@ const NavBar = ( ): React.Node => {
         onPress={navToNotifications}
         icon="notifications-bell"
         active={name === MESSAGES_SCREEN_ID}
-        id={MESSAGES_SCREEN_ID}
+        testID={MESSAGES_SCREEN_ID}
         accessibilityLabel={t( "Navigate-to-map" )}
         size={32}
       />

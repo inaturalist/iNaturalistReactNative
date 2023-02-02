@@ -7,10 +7,10 @@ import { IconButton } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  id: string,
+  testID: string,
   icon: any,
   onPress: any,
-  img?: string,
+  userIconUri?: string,
   accessibilityLabel: string,
   accessibilityRole?: string,
   active: boolean,
@@ -18,10 +18,10 @@ type Props = {
 };
 
 const NavButton = ( {
-  id,
+  testID,
   icon,
   onPress,
-  img,
+  userIconUri,
   active,
   accessibilityLabel,
   accessibilityRole = "link",
@@ -30,7 +30,7 @@ const NavButton = ( {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {
     onPress,
-    testID: id,
+    testID,
     accessibilityRole,
     accessibilityLabel: t( accessibilityLabel ),
     accessibilityState: {
@@ -40,7 +40,7 @@ const NavButton = ( {
     }
   };
 
-  if ( img ) {
+  if ( userIconUri ) {
     return (
       <Pressable {...sharedProps}>
         <UserIcon uri={userIconUri} active={active} />
