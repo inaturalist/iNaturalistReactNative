@@ -14,7 +14,8 @@ import {
   List1,
   List2,
   Subheading1,
-  Tabs
+  Tabs,
+  UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
@@ -200,17 +201,36 @@ const UiLibrary = ( ) => {
             />
           ) )}
         </View>
-        <Heading2 className="my-2">InlineUser</Heading2>
-        <Body2 className="my-2">InlineUser component</Body2>
-        <InlineUser
-          user={currentUser || {
-            icon_url:
-            "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
-            login: "turtletamer74"
-          }}
-        />
-        <Body2 className="my-2">InlineUser component for a user that has no icon set</Body2>
-        <InlineUser user={{ login: "frogfinder23" }} />
+
+        <Heading2 className="my-2">User Icons</Heading2>
+        <View className="flex flex-row justify-between">
+          <View>
+            <Body2 className="my-2">UserIcon</Body2>
+            <UserIcon
+              uri={{
+                uri: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
+              }}
+            />
+          </View>
+          <View>
+            <Body2 className="my-2">InlineUser</Body2>
+            <InlineUser
+              user={
+                currentUser || {
+                  icon_url:
+                    "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
+                  login: "turtletamer74"
+                }
+              }
+            />
+          </View>
+          <View>
+            <Body2 className="my-2">
+              InlineUser for a user that has no icon set
+            </Body2>
+            <InlineUser user={{ login: "frogfinder23" }} />
+          </View>
+        </View>
 
         <Heading2>Tabs component</Heading2>
         <Tabs
