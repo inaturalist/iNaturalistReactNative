@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserIcon displays small user image correctly 1`] = `
+<Image
+  accessibilityIgnoresInvertColors={true}
+  source={
+    Object {
+      "uri": "http://placeimg.com/640/480",
+    }
+  }
+  style={
+    Array [
+      Array [
+        Object {
+          "width": 22,
+        },
+        Object {
+          "height": 22,
+        },
+        Object {
+          "borderBottomLeftRadius": 9999,
+          "borderBottomRightRadius": 9999,
+          "borderTopLeftRadius": 9999,
+          "borderTopRightRadius": 9999,
+        },
+      ],
+    ]
+  }
+  testID="UserIcon.photo"
+/>
+`;
+
+exports[`UserIcon displays user image correctly 1`] = `
+<Image
+  accessibilityIgnoresInvertColors={true}
+  source={
+    Object {
+      "uri": "http://placeimg.com/640/480",
+    }
+  }
+  style={
+    Array [
+      Array [
+        Object {
+          "width": 40,
+        },
+        Object {
+          "height": 40,
+        },
+        Object {
+          "borderBottomLeftRadius": 9999,
+          "borderBottomRightRadius": 9999,
+          "borderTopLeftRadius": 9999,
+          "borderTopRightRadius": 9999,
+        },
+      ],
+    ]
+  }
+  testID="UserIcon.photo"
+/>
+`;

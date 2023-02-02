@@ -22,6 +22,14 @@ jest.mock( "@react-navigation/native", ( ) => {
 const mockUser = factory( "RemoteUser" );
 const mockUserWithoutImage = factory( "RemoteUser", { icon_url: null } );
 
+jest.mock(
+  "components/SharedComponents/UserIcon/UserIcon",
+  () => function MockUserIcon( ) {
+    const MockName = "mockUserIcon";
+    return <MockName testID={MockName} />;
+  }
+);
+
 describe( "InlineUser", ( ) => {
   it( "displays user handle and image correctly", async ( ) => {
     render( <InlineUser user={mockUser} /> );
@@ -29,9 +37,8 @@ describe( "InlineUser", ( ) => {
     expect( screen.getByText( `@${mockUser.login}` ) ).toBeTruthy( );
     // This image appears after useIsConnected returns true
     // so we have to use await and findByTestId
-    const profilePicture = await screen.findByTestId( "UserIcon.photo" );
+    const profilePicture = await screen.findByTestId( "mockUserIcon" );
     expect( profilePicture ).toBeTruthy( );
-    expect( profilePicture.props.source ).toEqual( { uri: mockUser.icon_url } );
     expect( screen.queryByTestId( "InlineUser.FallbackPicture" ) ).not.toBeTruthy( );
     expect( screen.queryByTestId( "InlineUser.NoInternetPicture" ) ).not.toBeTruthy( );
   } );
@@ -43,7 +50,7 @@ describe( "InlineUser", ( ) => {
     // This icon appears after useIsConnected returns true
     // so we have to use await and findByTestId
     expect( await screen.findByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy();
-    expect( screen.queryByTestId( "UserIcon.photo" ) ).not.toBeTruthy();
+    expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();
     expect( screen.queryByTestId( "InlineUser.NoInternetPicture" ) ).not.toBeTruthy();
   } );
 
@@ -73,7 +80,7 @@ describe( "InlineUser", ( ) => {
       // This icon appears after useIsConnected returns false
       // so we have to use await and findByTestId
       expect( await screen.findByTestId( "InlineUser.NoInternetPicture" ) ).toBeTruthy();
-      expect( screen.queryByTestId( "UserIcon.photo" ) ).not.toBeTruthy();
+      expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();
       expect( screen.queryByTestId( "InlineUser.FallbackPicture" ) ).not.toBeTruthy( );
     } );
   } );
