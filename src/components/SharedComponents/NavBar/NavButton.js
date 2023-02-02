@@ -1,7 +1,6 @@
 // @flow
 import UserIcon from "components/SharedComponents/UserIcon";
 import { Pressable } from "components/styledComponents";
-import { t } from "i18next";
 import * as React from "react";
 import { IconButton } from "react-native-paper";
 import colors from "styles/tailwindColors";
@@ -32,7 +31,7 @@ const NavButton = ( {
     onPress,
     testID,
     accessibilityRole,
-    accessibilityLabel: t( accessibilityLabel ),
+    accessibilityLabel,
     accessibilityState: {
       selected: active,
       expanded: active,
