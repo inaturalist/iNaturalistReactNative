@@ -112,7 +112,7 @@ const AddEvidenceModal = ( {
               accessibilityLabel={t( "Navigate-to-camera" )}
             />
             <EvidenceButton
-              icon="photo-gallery"
+              icon="pencil"
               handlePress={onImportPhoto}
               disabled={disableAddingMoreEvidence}
               accessibilityLabel={t( "Navigate-to-bulk-importer" )}

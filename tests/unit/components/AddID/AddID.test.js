@@ -2,6 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native";
 import AddID from "components/ObsEdit/AddID";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
+import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 
 import factory, { makeResponse } from "../../../factory";
@@ -12,15 +13,6 @@ jest.mock( "inaturalistjs" );
 // this resolves a test failure with the Animated library:
 // Animated: `useNativeDriver` is not supported because the native animated module is missing.
 jest.useFakeTimers( );
-
-jest.mock(
-  "components/SharedComponents/ViewNoFooter",
-  () => function MockViewNoFooter( props ) {
-    const MockName = "mock-view-no-footer";
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    return <MockName {...props} testID={MockName}>{props.children}</MockName>;
-  }
-);
 
 jest.mock(
   "components/SharedComponents/BottomSheetStandardBackdrop",
@@ -71,13 +63,12 @@ const mockRoute = { params: {} };
 
 describe( "AddID", ( ) => {
   test( "should not have accessibility errors", ( ) => {
-    const addID = <AddID route={mockRoute} />;
+    const addID = (
+      <INatPaperProvider>
+        <AddID route={mockRoute} />
+      </INatPaperProvider>
+    );
     expect( addID ).toBeAccessible( );
-  } );
-
-  it( "should render inside mocked container", ( ) => {
-    renderComponent( <AddID route={mockRoute} /> );
-    expect( screen.getByTestId( "mock-view-no-footer" ) ).toBeTruthy( );
   } );
 
   it( "show taxon search results", async ( ) => {

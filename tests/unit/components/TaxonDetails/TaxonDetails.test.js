@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
+import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { Linking } from "react-native";
 
@@ -23,9 +24,11 @@ jest.mock( "@react-navigation/native", ( ) => {
 } );
 
 const renderTaxonDetails = ( ) => render(
-  <NavigationContainer>
-    <TaxonDetails />
-  </NavigationContainer>
+  <INatPaperProvider>
+    <NavigationContainer>
+      <TaxonDetails />
+    </NavigationContainer>
+  </INatPaperProvider>
 );
 
 jest.mock(
@@ -60,9 +63,11 @@ test( "renders taxon details from API call", async ( ) => {
 
 test( "should not have accessibility errors", ( ) => {
   const taxonDetails = (
-    <NavigationContainer>
-      <TaxonDetails />
-    </NavigationContainer>
+    <INatPaperProvider>
+      <NavigationContainer>
+        <TaxonDetails />
+      </NavigationContainer>
+    </INatPaperProvider>
   );
   expect( taxonDetails ).toBeAccessible( );
 } );

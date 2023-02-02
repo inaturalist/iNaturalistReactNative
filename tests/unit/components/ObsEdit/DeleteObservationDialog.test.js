@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import DeleteObservationDialog from "components/ObsEdit/DeleteObservationDialog";
 import inatjs from "inaturalistjs";
 import { ObsEditContext } from "providers/contexts";
+import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
@@ -37,20 +38,22 @@ jest.mock( "@react-navigation/native", ( ) => {
 // observations
 const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
   // eslint-disable-next-line react/jsx-no-constructed-context-values
-  <ObsEditContext.Provider value={{
-    currentObservation: obs[0],
-    deleteLocalObservation: ( ) => {
-      global.realm.write( ( ) => {
-        const observation = global.realm.objectForPrimaryKey( "Observation", obs[0].uuid );
-        if ( observation ) {
-          global.realm.delete( observation );
-        }
-      } );
-    }
-  }}
-  >
-    {children}
-  </ObsEditContext.Provider>
+  <INatPaperProvider>
+    <ObsEditContext.Provider value={{
+      currentObservation: obs[0],
+      deleteLocalObservation: ( ) => {
+        global.realm.write( ( ) => {
+          const observation = global.realm.objectForPrimaryKey( "Observation", obs[0].uuid );
+          if ( observation ) {
+            global.realm.delete( observation );
+          }
+        } );
+      }
+    }}
+    >
+      {children}
+    </ObsEditContext.Provider>
+  </INatPaperProvider>
 ) );
 
 const renderDeleteDialog = ( ) => renderComponent(

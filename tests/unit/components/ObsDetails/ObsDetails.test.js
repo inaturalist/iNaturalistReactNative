@@ -73,15 +73,6 @@ jest.mock( "components/ObsDetails/DataTab", () => ( {
   default: () => mockDataTab
 } ) );
 
-jest.mock(
-  "components/SharedComponents/ScrollWithFooter",
-  () => function MockContainer( props ) {
-    const MockName = "mock-scroll-with-footer";
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    return <MockName {...props}>{props.children}</MockName>;
-  }
-);
-
 jest.mock( "sharedHooks/useIsConnected" );
 
 const mockLatLng = factory( "DeviceLocation" );
