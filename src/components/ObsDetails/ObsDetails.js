@@ -1,5 +1,4 @@
 // @flow
-
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
@@ -9,7 +8,7 @@ import {
 import HideView from "components/SharedComponents/HideView";
 import InlineUser from "components/SharedComponents/InlineUser";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
-import QualityBadge from "components/SharedComponents/QualityBadge";
+import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
 import Tabs from "components/SharedComponents/Tabs";
 import {
@@ -351,8 +350,9 @@ const ObsDetails = ( ): Node => {
               />
               <Text className="ml-1">{observation.comments.length}</Text>
             </View>
-            <QualityBadge
+            <QualityGradeStatus
               qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )}
+              color={colors.darkGray}
             />
           </View>
         </View>

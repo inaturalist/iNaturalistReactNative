@@ -3,6 +3,8 @@ import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import Button from "components/SharedComponents/Buttons/Button";
 import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
+import InlineUser from "components/SharedComponents/InlineUser";
+import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
 import Body1 from "components/SharedComponents/Typography/Body1";
 import Body2 from "components/SharedComponents/Typography/Body2";
 import Body3 from "components/SharedComponents/Typography/Body3";
@@ -23,8 +25,6 @@ import React from "react";
 import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-
-import InlineUser from "./SharedComponents/InlineUser";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
@@ -193,6 +193,34 @@ const UiLibrary = ( ) => {
         />
         <Body2 className="my-2">InlineUser component for a user that has no icon set</Body2>
         <InlineUser user={{ login: "frogfinder23" }} />
+
+        <Heading2 className="my-2">Quality Grade Status</Heading2>
+        <View className="flex flex-row justify-between">
+          <View>
+            <Body2 className="text-center">Research</Body2>
+            <QualityGradeStatus qualityGrade="research" color="black" />
+          </View>
+          <View>
+            <Body2 className="text-center">Needs Id</Body2>
+            <QualityGradeStatus qualityGrade="needs_id" color="black" />
+          </View>
+          <View>
+            <Body2 className="text-center">Casual</Body2>
+            <QualityGradeStatus qualityGrade="casual" color="black" />
+          </View>
+        </View>
+        <View className="flex flex-row justify-between">
+          <View>
+            <QualityGradeStatus qualityGrade="research" color="green" />
+          </View>
+          <View>
+            <QualityGradeStatus qualityGrade="needs_id" color="green" />
+          </View>
+          <View>
+            <QualityGradeStatus qualityGrade="casual" color="green" />
+          </View>
+        </View>
+
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
           Useless spacer at the end because height in NativeWind is confusing.

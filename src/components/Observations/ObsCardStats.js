@@ -1,8 +1,8 @@
 // @flow
 
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
+import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
 import { Text, View } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -29,12 +29,6 @@ const ObsCardStats = ( { item, type, view }: Props ): Node => {
     return colors.black;
   };
 
-  const qualityGradeText = {
-    needs_id: t( "NI" ),
-    research: t( "RG" ),
-    casual: t( "C" )
-  };
-
   const renderIdRow = ( ) => (
     <View className="flex-row items-center mr-3">
       <Icon name="shield" color={setIconColor( )} size={14} />
@@ -56,9 +50,7 @@ const ObsCardStats = ( { item, type, view }: Props ): Node => {
   );
 
   const renderQualityGrade = ( ) => (
-    <Text style={{ color: setIconColor( ) }}>
-      {qualityGrade ? qualityGradeText[qualityGrade] : "?"}
-    </Text>
+    <QualityGradeStatus qualityGrade={qualityGrade} color={setIconColor( )} />
   );
 
   const renderColumn = ( ) => (

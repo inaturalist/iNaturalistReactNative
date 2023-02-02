@@ -469,17 +469,17 @@
     "comment": "Used when displaying a relative time - in this case, shows only month+year (same year) - e.g. Jul 3",
     "val": "MMM d"
   },
-  "Quality-Grade-Badge-research_grade": {
+  "Quality-Grade-research": {
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Research Grade",
-    "val": "RG"
+    "val": "Quality Grade Research Grade"
   },
-  "Quality-Grade-Badge-needs_id": {
+  "Quality-Grade-needs_id": {
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Needs ID",
-    "val": "Needs ID"
+    "val": "Quality Grade Needs ID"
   },
-  "Quality-Grade-Badge-casual": {
+  "Quality-Grade-casual": {
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual",
-    "val": "Casual"
+    "val": "Quality Grade Casual"
   },
   "Add-evidence": "Add evidence",
   "You-can-only-upload-20-media": "You can only add 20 photos and 20 sounds to an observation",
