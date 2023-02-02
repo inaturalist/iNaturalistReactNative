@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import useCameraRollPhotos from "components/PhotoImporter/hooks/useCameraRollPhotos";
 import usePhotoAlbums from "components/PhotoImporter/hooks/usePhotoAlbums";
 import PhotoAlbumPicker from "components/PhotoImporter/PhotoAlbumPicker";
@@ -14,9 +15,7 @@ import type { Node } from "react";
 import React, {
   useContext, useEffect, useState
 } from "react";
-import {
-  ActivityIndicator, FlatList
-} from "react-native";
+import { ActivityIndicator } from "react-native";
 import { Snackbar } from "react-native-paper";
 
 const MAX_PHOTOS_ALLOWED = 20;
@@ -93,7 +92,7 @@ const PhotoGallery = ( ): Node => {
       }
 
       // store photo details in state so it's possible
-      // to select mutiple photos across albums
+      // to select multiple photos across albums
 
       const updatedPhotoGallery = {
         ...photoGallery,
@@ -128,12 +127,11 @@ const PhotoGallery = ( ): Node => {
   };
 
   const handlePhotoSelection = ( item, selected ) => {
+    setRerenderList( !rerenderList );
     if ( !selected ) {
       selectPhoto( item );
-      setRerenderList( false );
     } else {
       unselectPhoto( item );
-      setRerenderList( true );
     }
   };
 
@@ -166,7 +164,9 @@ const PhotoGallery = ( ): Node => {
 
   const extractKey = ( item, index ) => `${item}${index}`;
 
-  const fetchMorePhotos = ( ) => setIsScrolling( true );
+  const fetchMorePhotos = ( ) => {
+    setIsScrolling( true );
+  };
 
   const navToNextScreen = async ( ) => {
     const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
@@ -222,14 +222,16 @@ const PhotoGallery = ( ): Node => {
 
   return (
     <ViewNoFooter>
-      <FlatList
+      <FlashList
         // $FlowIgnore
         data={photosByAlbum}
         initialNumToRender={4}
         keyExtractor={extractKey}
         numColumns={4}
         renderItem={renderImage}
+        estimatedItemSize={200}
         onEndReached={fetchMorePhotos}
+        onEndReachedThreshold={0.1}
         testID="PhotoGallery.list"
         ListEmptyComponent={renderEmptyList}
         extraData={rerenderList}

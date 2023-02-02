@@ -43,7 +43,7 @@ const PhotoGalleryImage = ( {
   };
   return (
     <Pressable
-      className="w-1/4 px-0.5 py-0.5"
+      className="w-full px-0.5 py-0.5"
       onPress={handleImagePress}
       testID={`PhotoGallery.${uri}`}
       disabled={isDisabled}
