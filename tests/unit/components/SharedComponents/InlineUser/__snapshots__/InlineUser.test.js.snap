@@ -45,28 +45,9 @@ exports[`InlineUser renders reliably 1`] = `
       ]
     }
   >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        Array [
-          Object {
-            "color": "#999999",
-            "fontSize": 22,
-          },
-          undefined,
-          Object {
-            "fontFamily": "Material Icons",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          Object {},
-        ]
-      }
-      testID="InlineUser.FallbackPicture"
-    >
-      
-    </Text>
+    <mockUserIcon
+      testID="mockUserIcon"
+    />
   </View>
   <Text
     style={

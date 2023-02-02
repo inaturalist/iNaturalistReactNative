@@ -22,7 +22,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 const mockUser = factory( "RemoteUser" );
 const mockUserWithoutImage = factory( "RemoteUser", { icon_url: null } );
 
-const consistentUser = { login: "some_login", iconUrl: "some_icon_url" };
+const consistentUser = { login: "some_login", icon_url: "some_icon_url" };
 
 jest.mock(
   "components/SharedComponents/UserIcon/UserIcon",
