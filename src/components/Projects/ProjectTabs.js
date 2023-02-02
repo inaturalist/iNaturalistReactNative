@@ -37,10 +37,10 @@ const ProjectTabs = ( ): Node => {
     } else if ( currentTabId === FEATURED_TAB_ID ) {
       setApiParams( { features: true } );
     } else if ( currentTabId === NEARBY_TAB_ID && latLng ) {
-        setApiParams( {
-          lat: latLng.latitude,
-          lng: latLng.longitude
-        } );
+      setApiParams( {
+        lat: latLng.latitude,
+        lng: latLng.longitude
+      } );
     }
   }, [
     memberId,
