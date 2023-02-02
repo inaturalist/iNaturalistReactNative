@@ -5,34 +5,41 @@ import Body3 from "components/SharedComponents/Typography/Body3";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { t } from "i18next";
+import { useTheme } from "react-native-paper";
 
 type Props = {
-  numOfComments: number,
+  count: number,
   color: string,
-  icon?: string
+  icon?: string,
+  accessibilityLabel: string
 }
 
-const ActivityCount = ( { numOfComments, color, icon }: Props ): Node => (
-  <View
-    className="flex-row items-center"
-    accessible
-    accessibilityLabel={t( "Number-of-comments" )}
-    accessibilityValue={{ text: numOfComments.toString() }}
-  >
-    <INatIcon
-      name={icon || "comments-filled-in"}
-      color={color}
-      size={14}
-    />
-    <Body3
-      className="ml-1.5"
-      testID="ActivityCount.commentCount"
-      style={{ color }}
+const ActivityCount = ( {
+  count, color, icon, accessibilityLabel
+}: Props ): Node => {
+  const theme = useTheme( );
+  const defaultColor = theme.colors.primary;
+  return (
+    <View
+      className="flex-row items-center"
+      accessible
+      accessibilityLabel={accessibilityLabel}
+      accessibilityValue={{ now: count }}
     >
-      {numOfComments}
-    </Body3>
-  </View>
-);
+      <INatIcon
+        name={icon || "comments-filled-in"}
+        color={color || defaultColor}
+        size={14}
+      />
+      <Body3
+        className="ml-1.5"
+        testID="ActivityCount.commentCount"
+        style={{ color: color || defaultColor }}
+      >
+        {count || 0}
+      </Body3>
+    </View>
+  );
+};
 
 export default ActivityCount;

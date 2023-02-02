@@ -23,6 +23,7 @@ import {
   View
 } from "components/styledComponents";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -30,6 +31,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
 const UiLibrary = ( ) => {
+  const { t } = useTranslation( );
   const theme = useTheme( );
   const currentUser = useCurrentUser();
   return (
@@ -223,7 +225,11 @@ const UiLibrary = ( ) => {
         </View>
 
         <Heading2 className="my-2">ActivityCount</Heading2>
-        <ActivityCount numOfComments={10} color={theme.colors.primary} />
+        <ActivityCount
+          count={10}
+          color={theme.colors.primary}
+          accessibilityLabel={t( "Number-of-comments" )}
+        />
 
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
