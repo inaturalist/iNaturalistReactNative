@@ -1,8 +1,9 @@
 // @flow
 import classNames from "classnames";
 import { Image, Pressable } from "components/styledComponents";
+import { t } from "i18next";
 import * as React from "react";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import { IconButton } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -12,8 +13,8 @@ type Props = {
   img?: string,
   accessibilityLabel: string,
   accessibilityRole?: string,
-  active: bool,
-  size: number
+  active: boolean,
+  size: number,
 };
 
 const NavButton = ( {
@@ -25,44 +26,47 @@ const NavButton = ( {
   accessibilityLabel,
   accessibilityRole = "link",
   size
-}: Props ): React.Node => (
-  <Pressable
-    onPress={onPress}
-    testID={id}
-    accessibilityRole={accessibilityRole}
-    accessibilityLabel={accessibilityLabel}
-    disabled={active}
-    accessibilityState={{
+}: Props ): React.Node => {
+  /* eslint-disable react/jsx-props-no-spreading */
+  const sharedProps = {
+    onPress,
+    testID: id,
+    accessibilityRole,
+    accessibilityLabel: t( accessibilityLabel ),
+    accessibilityState: {
       selected: active,
       expanded: active,
-      disabled: active
-    }}
-  >
-    {img ? (
-      <Image
-        accessibilityRole="image"
-        className={classNames(
-          "rounded-full",
-          {
+      disabled: false
+    }
+  };
+
+  if ( img ) {
+    return (
+      <Pressable {...sharedProps}>
+        <Image
+          accessibilityRole="image"
+          className={classNames( "rounded-full", {
             "border-[3px]": active
-          }
-        )}
-        style={{
-          height: size,
-          width: size,
-          borderColor: colors.inatGreen
-        }}
-        source={img}
-      />
-    ) : (
-      <IconMaterial
-        accessibilityRole="image"
-        name={icon}
-        size={size}
-        color={active ? colors.inatGreen : colors.darkGray}
-      />
-    )}
-  </Pressable>
-);
+          } )}
+          style={{
+            height: size,
+            width: size,
+            borderColor: colors.inatGreen
+          }}
+          source={img}
+        />
+      </Pressable>
+    );
+  }
+
+  return (
+    <IconButton
+      icon={icon}
+      iconColor={active ? colors.inatGreen : colors.darkGray}
+      size={size}
+      {...sharedProps}
+    />
+  );
+};
 
 export default NavButton;

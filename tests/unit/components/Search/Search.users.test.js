@@ -43,7 +43,7 @@ test( "displays user search results on button press", ( ) => {
 } );
 
 test( "navigates to user profile on button press", ( ) => {
-  enderScreen( Search, "Search" );
+  renderScreen( Search, "Search" );
   const button = screen.getByTestId( "Search.users" );
 
   fireEvent.press( button );
