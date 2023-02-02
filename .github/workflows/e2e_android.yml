@@ -1,5 +1,6 @@
 name: e2e-Android
 on:
+  workflow_dispatch:
   push:
     # Android builds require access to several secrets, so Github won't run
     # those jobs when triggered by pull requests by external developers.
