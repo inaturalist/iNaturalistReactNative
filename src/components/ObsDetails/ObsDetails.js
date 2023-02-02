@@ -7,11 +7,11 @@ import {
 } from "api/observations";
 import {
   InlineUser,
+  QualityGradeStatus,
   Tabs
 } from "components/SharedComponents";
 import HideView from "components/SharedComponents/HideView";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
-import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
 import {
   Image, Pressable, Text, View

@@ -2,6 +2,7 @@ export { default as Button } from "./Buttons/Button";
 export { default as CloseButton } from "./Buttons/CloseButton";
 export { default as EvidenceButton } from "./Buttons/EvidenceButton";
 export { default as InlineUser } from "./InlineUser/InlineUser";
+export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
 export { default as Tabs } from "./Tabs/Tabs";
 export { default as Body1 } from "./Typography/Body1";
 export { default as Body2 } from "./Typography/Body2";
