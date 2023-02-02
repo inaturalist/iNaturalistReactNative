@@ -709,7 +709,7 @@ Navigates-to-sound-recorder = Navigates to sound recorder.
 Navigates-to-suggest-identification = Navigates to suggest identification.
 Navigates-to-user-profile = Navigates to user profile.
 Opens-add-comment-modal = Opens add comment modal.
-Opens-add-evidence-modal = Opens add observation modal.
+Opens-add-observation-modal = Opens add observation modal.
 Returns-to-previous-screen = Returns to previous screen.
 Switches-to-tab = Switches to { $tab } tab.
 
