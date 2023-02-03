@@ -31,7 +31,22 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+jest.mock(
+  "components/SharedComponents/ViewWithFooter",
+  () => function MockContainer( props ) {
+    const MockName = "mock-view-with-footer";
+    // No testID here because the component needs the correct one to work
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <MockName {...props}>{props.children}</MockName>;
+  }
+);
+
 describe( "UserProfile", () => {
+  it( "should render inside mocked container for testing", () => {
+    renderComponent( <UserProfile /> );
+    expect( screen.getByTestId( "UserProfile" ) ).toBeTruthy();
+  } );
+
   test( "should not have accessibility errors", async () => {
     renderComponent( <UserProfile /> );
     const userProfile = await screen.findByTestId( "UserProfile" );

@@ -106,6 +106,7 @@ const DisplayTaxonName = ( { item: { user, taxon } }: Props ): Node => {
     const text = "unknown";
     return <Text numberOfLines={1}>{text}</Text>;
   }
+
   const taxonData = {};
 
   taxonData.rank = taxon.rank;

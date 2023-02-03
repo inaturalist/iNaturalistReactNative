@@ -703,11 +703,19 @@ Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
 ## Accessibility labels: these are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 ## iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
+Explore = Explore
+Messages = Messages
+Observations = Observations
+Open-drawer = Open drawer
 User = User { $userHandle }
 
 ## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
 ## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
+Navigates-to-explore = Navigates to explore.
+Navigates-to-messages = Navigates to messages.
+Navigates-to-observations = Navigates to observations.
 Navigates-to-user-profile = Navigates to user profile.
+Opens-the-side-drawer-menu = Opens the side drawer menu.
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
 Add-this-ID = Add this identification

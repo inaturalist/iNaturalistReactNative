@@ -77,6 +77,7 @@ jest.mock(
   "components/SharedComponents/ScrollWithFooter",
   () => function MockContainer( props ) {
     const MockName = "mock-scroll-with-footer";
+    // No testID here because the component needs the correct one to work‚
     // eslint-disable-next-line react/jsx-props-no-spreading
     return <MockName {...props}>{props.children}</MockName>;
   }
@@ -88,7 +89,7 @@ const mockLatLng = factory( "DeviceLocation" );
 
 jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
   __esModule: true,
-  default: ( ) => mockLatLng
+  default: ( ) => ( { latLng: mockLatLng } )
 } ) );
 
 describe( "ObsDetails", () => {
