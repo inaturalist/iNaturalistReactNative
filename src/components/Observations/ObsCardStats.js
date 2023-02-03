@@ -1,52 +1,50 @@
 // @flow
 
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
+import ActivityCount from "components/SharedComponents/ActivityCount";
 import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
-import { Text, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/tailwindColors";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "react-native-paper";
 
 type Props = {
   item: Object,
   type?: string,
-  view?: string
+  layout?: string
 }
 
-const ObsCardStats = ( { item, type, view }: Props ): Node => {
-  const numOfIds = item.identifications?.length || "0";
-  const numOfComments = item.comments?.length || "0";
+const ObsCardStats = ( { item, type, layout }: Props ): Node => {
+  const { t } = useTranslation( );
+  const theme = useTheme( );
   const qualityGrade = checkCamelAndSnakeCase( item, "qualityGrade" );
 
   const setIconColor = ( ) => {
     if ( item.viewed === false ) {
-      return colors.red;
+      return theme.colors.error;
+    } if ( layout === "grid" ) {
+      return theme.colors.onPrimary;
     }
-    if ( view === "grid" ) {
-      return colors.white;
-    }
-    return colors.black;
+    return theme.colors.primary;
   };
 
   const renderIdRow = ( ) => (
-    <View className="flex-row items-center mr-3">
-      <Icon name="shield" color={setIconColor( )} size={14} />
-      <Text className="mx-1" style={{ color: setIconColor( ) }}>{numOfIds}</Text>
-    </View>
+    <ActivityCount
+      count={item.identifications?.length}
+      color={setIconColor( )}
+      accessibilityLabel={t( "Number-of-identifications" )}
+      testID="ActivityCount.identificationCount"
+    />
   );
 
   const renderCommentRow = ( ) => (
-    <View className="flex-row items-center">
-      <Icon name="comment" color={setIconColor( )} size={14} />
-      <Text
-        className="mx-1"
-        style={{ color: setIconColor( ) }}
-        testID="ObsList.obsCard.commentCount"
-      >
-        {numOfComments}
-      </Text>
-    </View>
+    <ActivityCount
+      count={item.comments?.length}
+      color={setIconColor( )}
+      accessibilityLabel={t( "Number-of-comments" )}
+      testID="ActivityCount.commentCount"
+    />
   );
 
   const renderQualityGrade = ( ) => (

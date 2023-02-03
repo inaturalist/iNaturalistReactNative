@@ -1,4 +1,6 @@
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import {
+  fireEvent, render, screen, waitFor
+} from "@testing-library/react-native";
 import ObsCard from "components/Observations/ObsCard";
 import React from "react";
 
@@ -8,7 +10,7 @@ const testObservation = factory( "LocalObservation", {
   taxon: { preferred_common_name: "Foo", name: "bar" }
 } );
 
-test( "renders text passed into observation card", ( ) => {
+test( "renders text passed into observation card", async ( ) => {
   render(
     <ObsCard
       item={testObservation}
@@ -23,8 +25,12 @@ test( "renders text passed into observation card", ( ) => {
     `${testObservation.taxon.preferred_common_name} (${testObservation.taxon.name})`
   ) ).toBeTruthy( );
   expect( screen.getByText( testObservation.placeGuess ) ).toBeTruthy( );
-  expect( screen.getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );
-  expect( screen.getByText( testObservation.identifications.length.toString( ) ) ).toBeTruthy( );
+  await waitFor( ( ) => {
+    expect( screen.getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );
+  } );
+  await waitFor( ( ) => {
+    expect( screen.getByText( testObservation.identifications.length.toString( ) ) ).toBeTruthy( );
+  } );
 } );
 
 test( "navigates to ObsDetails on button press", ( ) => {

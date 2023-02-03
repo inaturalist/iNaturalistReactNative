@@ -1,4 +1,5 @@
 import INatIcon, { glyphMap } from "components/INatIcon";
+import ActivityCount from "components/SharedComponents/ActivityCount";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import Button from "components/SharedComponents/Buttons/Button";
 import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
@@ -22,6 +23,7 @@ import {
   View
 } from "components/styledComponents";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -29,6 +31,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
 const UiLibrary = ( ) => {
+  const { t } = useTranslation( );
   const theme = useTheme( );
   const currentUser = useCurrentUser();
   return (
@@ -218,6 +221,26 @@ const UiLibrary = ( ) => {
           </View>
           <View>
             <QualityGradeStatus qualityGrade="casual" color="green" />
+          </View>
+        </View>
+
+        <Heading2 className="my-2">ActivityCount</Heading2>
+        <View className="flex flex-row justify-evenly">
+          <View>
+            <Body2>Small Number</Body2>
+            <ActivityCount
+              count={10}
+              color={theme.colors.primary}
+              accessibilityLabel={t( "Number-of-comments" )}
+            />
+          </View>
+          <View>
+            <Body2>Large Number</Body2>
+            <ActivityCount
+              count={20000}
+              color={theme.colors.error}
+              accessibilityLabel={t( "Number-of-comments" )}
+            />
           </View>
         </View>
 

@@ -755,3 +755,6 @@ Open-add-evidence-modal = Open add evidence modal
 Open-side-menu = Open side menu
 Return-to-previous-screen = Return to previous screen
 Take-photo = Take photo
+
+
+Intl-number = { $val }
