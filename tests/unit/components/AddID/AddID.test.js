@@ -15,6 +15,15 @@ jest.mock( "inaturalistjs" );
 jest.useFakeTimers( );
 
 jest.mock(
+  "components/SharedComponents/ViewNoFooter",
+  () => function MockViewNoFooter( props ) {
+    const MockName = "mock-view-no-footer";
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <MockName {...props} testID={MockName}>{props.children}</MockName>;
+  }
+);
+
+jest.mock(
   "components/SharedComponents/BottomSheetStandardBackdrop",
   () => function MockBottomSheetStandardBackdrop( props ) {
     const MockName = "mock-bottom-sheet-standard-backdrop";
@@ -69,6 +78,11 @@ describe( "AddID", ( ) => {
       </INatPaperProvider>
     );
     expect( addID ).toBeAccessible( );
+  } );
+
+  it( "should render inside mocked container", ( ) => {
+    renderComponent( <AddID route={mockRoute} /> );
+    expect( screen.getByTestId( "mock-view-no-footer" ) ).toBeTruthy( );
   } );
 
   it( "show taxon search results", async ( ) => {
