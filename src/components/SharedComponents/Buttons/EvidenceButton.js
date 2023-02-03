@@ -1,29 +1,32 @@
 // @flow
 import * as React from "react";
-import { Pressable } from "react-native";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import { textStyles, viewStyles } from "styles/sharedComponents/buttons/evidenceButton";
+import { IconButton, useTheme } from "react-native-paper";
 
 type Props = {
   icon: any,
   disabled?: boolean,
   handlePress: any,
-  style?: any
+  accessibilityLabel: string
 }
 
 const EvidenceButton = ( {
   icon,
   disabled,
   handlePress,
-  style
-}: Props ): React.Node => (
-  <Pressable
-    disabled={disabled}
-    onPress={handlePress}
-    style={[style, viewStyles.greenButton, disabled && viewStyles.disabled]}
-  >
-    <IconMaterial name={icon} size={35} style={textStyles.greenButtonIcon} />
-  </Pressable>
-);
+  accessibilityLabel
+}: Props ): React.Node => {
+  const theme = useTheme( );
+  return (
+    <IconButton
+      disabled={disabled}
+      onPress={handlePress}
+      containerColor={theme.colors.secondary}
+      iconColor={theme.colors.onSecondary}
+      size={35}
+      icon={icon}
+      accessibilityLabel={accessibilityLabel}
+    />
+  );
+};
 
 export default EvidenceButton;

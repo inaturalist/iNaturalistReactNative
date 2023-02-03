@@ -9,7 +9,9 @@ import {
 } from "@tanstack/react-query";
 import handleError from "api/error";
 import App from "components/App";
+import { getJWT } from "components/LoginSignUp/AuthenticationService";
 import inatjs from "inaturalistjs";
+import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
 import RealmProvider from "providers/RealmProvider";
 import React from "react";
@@ -18,9 +20,7 @@ import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { startNetworkLogging } from "react-native-network-logger";
-import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import colors from "styles/tailwindColors";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -60,7 +60,7 @@ inatjs.setConfig( {
 const queryClient = new QueryClient( {
   defaultOptions: {
     queries: {
-      retry: ( failureCount, error ) => {
+      retry: async ( failureCount, error ) => {
         if (
           // If this is an actual 408 Request Timeout error, we probably want to
           // retry... but this will probably never happen
@@ -69,31 +69,23 @@ const queryClient = new QueryClient( {
           || ( error instanceof TypeError && error.message.match( "Network request failed" ) )
         ) return failureCount < 3;
         handleError( error, { throw: false } );
+        if ( error.status === 401 || error.status === 403 ) {
+          // If we get a 401 or 403, call getJWT
+          // which has a timestamp check if we need to refresh the token
+          const token = await getJWT( );
+          if ( token ) return failureCount < 2;
+        }
         return false;
       }
     }
   }
 } );
 
-// TODO: remove paper themes from app in favor of Tailwind
-const theme = {
-  ...DefaultTheme,
-  roundness: 2,
-  version: 3,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: colors.inatGreen,
-    secondary: colors.secondary,
-    tertiary: colors.tertiary,
-    surface: colors.white
-  }
-};
-
 const AppWithProviders = ( ) => (
   <QueryClientProvider client={queryClient}>
     <RealmProvider>
       <SafeAreaProvider>
-        <PaperProvider theme={theme}>
+        <INatPaperProvider>
           <GestureHandlerRootView className="flex-1">
             {/* NavigationContainer needs to be nested above ObsEditProvider */}
             <NavigationContainer>
@@ -102,7 +94,7 @@ const AppWithProviders = ( ) => (
               </ObsEditProvider>
             </NavigationContainer>
           </GestureHandlerRootView>
-        </PaperProvider>
+        </INatPaperProvider>
       </SafeAreaProvider>
     </RealmProvider>
   </QueryClientProvider>

@@ -139,7 +139,7 @@ const AddID = ( { route }: Props ): Node => {
         </Pressable>
         <View className="flex-row">
           <IconButton
-            icon="information-outline"
+            icon="pencil"
             size={25}
             onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
             accessible
@@ -149,7 +149,7 @@ const AddID = ( { route }: Props ): Node => {
             accessibilityState={{ disabled: false }}
           />
           <IconButton
-            icon="check"
+            icon="checkmark"
             size={25}
             iconColor={colors.inatGreen}
             onPress={( ) => {

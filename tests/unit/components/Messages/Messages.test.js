@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { render } from "@testing-library/react-native";
+import { render, screen } from "@testing-library/react-native";
 import Messages from "components/Messages/Messages";
+import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 
 import factory from "../../../factory";
@@ -20,16 +21,19 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useNavigation: ( ) => ( {
       navigate: mockedNavigate
-    } )
+    } ),
+    useRoute: ( ) => ( { } )
   };
 } );
 
 jest.useFakeTimers();
 
 const renderMessages = ( ) => render(
-  <NavigationContainer>
-    <Messages />
-  </NavigationContainer>
+  <INatPaperProvider>
+    <NavigationContainer>
+      <Messages />
+    </NavigationContainer>
+  </INatPaperProvider>
 );
 
 // We need to do some weird stuff to test results that vary based on useQuery
@@ -50,7 +54,11 @@ jest.mock( "@tanstack/react-query", ( ) => ( {
 
 describe( "Messages", ( ) => {
   test( "should not have accessibility errors", () => {
-    const messages = <Messages />;
+    const messages = (
+      <INatPaperProvider>
+        <Messages />
+      </INatPaperProvider>
+    );
     expect( messages ).toBeAccessible();
   } );
 } );
@@ -65,8 +73,8 @@ describe( "when loading", ( ) => {
   } );
 
   it( "displays activity indicator when loading", ( ) => {
-    const { getByTestId } = renderMessages( );
-    expect( getByTestId( "Messages.activityIndicator" ) ).toBeTruthy( );
+    renderMessages( );
+    expect( screen.getByTestId( "Messages.activityIndicator" ) ).toBeTruthy( );
   } );
 } );
 
@@ -80,8 +88,8 @@ describe( "when loading complete", ( ) => {
   } );
 
   it( "displays message subject and not activity indicator when loading complete", ( ) => {
-    const { getByText, queryByTestId } = renderMessages( );
-    expect( getByText( mockMessage.subject ) ).toBeTruthy( );
-    expect( queryByTestId( "Messages.activityIndicator" ) ).toBeNull( );
+    renderMessages( );
+    expect( screen.getByText( mockMessage.subject ) ).toBeTruthy( );
+    expect( screen.queryByTestId( "Messages.activityIndicator" ) ).toBeNull( );
   } );
 } );

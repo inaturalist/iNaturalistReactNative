@@ -31,7 +31,22 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
+jest.mock(
+  "components/SharedComponents/ViewWithFooter",
+  () => function MockContainer( props ) {
+    const MockName = "mock-view-with-footer";
+    // No testID here because the component needs the correct one to work
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <MockName {...props}>{props.children}</MockName>;
+  }
+);
+
 describe( "UserProfile", () => {
+  it( "should render inside mocked container for testing", () => {
+    renderComponent( <UserProfile /> );
+    expect( screen.getByTestId( "UserProfile" ) ).toBeTruthy();
+  } );
+
   test( "should not have accessibility errors", async () => {
     renderComponent( <UserProfile /> );
     const userProfile = await screen.findByTestId( "UserProfile" );
@@ -39,11 +54,11 @@ describe( "UserProfile", () => {
   } );
 
   test( "renders user profile from API call", async () => {
-    const { getByTestId, getByText } = renderComponent( <UserProfile /> );
+    renderComponent( <UserProfile /> );
 
-    expect( getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy();
-    expect( getByText( `iNaturalist ${mockUser.roles[0]}` ) ).toBeTruthy();
-    expect( getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( {
+    expect( screen.getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy();
+    expect( screen.getByText( `iNaturalist ${mockUser.roles[0]}` ) ).toBeTruthy();
+    expect( screen.getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( {
       uri: mockUser.icon_url
     } );
   } );

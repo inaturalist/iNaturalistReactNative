@@ -77,6 +77,7 @@ jest.mock(
   "components/SharedComponents/ScrollWithFooter",
   () => function MockContainer( props ) {
     const MockName = "mock-scroll-with-footer";
+    // No testID here because the component needs the correct one to work‚
     // eslint-disable-next-line react/jsx-props-no-spreading
     return <MockName {...props}>{props.children}</MockName>;
   }
@@ -88,7 +89,7 @@ const mockLatLng = factory( "DeviceLocation" );
 
 jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
   __esModule: true,
-  default: ( ) => mockLatLng
+  default: ( ) => ( { latLng: mockLatLng } )
 } ) );
 
 describe( "ObsDetails", () => {
@@ -103,10 +104,10 @@ describe( "ObsDetails", () => {
 
 test( "renders obs details from remote call", async ( ) => {
   useIsConnected.mockImplementation( ( ) => true );
-  const { getByText, findByTestId } = renderComponent( <ObsDetails /> );
+  renderComponent( <ObsDetails /> );
 
-  expect( await findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
-  expect( getByText( mockObservation.taxon.name ) ).toBeTruthy( );
+  expect( await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
+  expect( screen.getByText( mockObservation.taxon.name ) ).toBeTruthy( );
 } );
 
 test( "renders data tab on button press", async ( ) => {
@@ -142,16 +143,9 @@ describe( "Observation with no evidence", () => {
 } );
 
 describe( "activity tab", ( ) => {
-  test( "navigates to observer profile on button press", async ( ) => {
-    const { findByTestId } = renderComponent( <ObsDetails /> );
-    fireEvent.press( await findByTestId( "ObsDetails.currentUser" ) );
-    expect( mockNavigate )
-      .toHaveBeenCalledWith( "UserProfile", { userId: mockObservation.user.id } );
-  } );
-
   test( "navigates to taxon details on button press", async ( ) => {
-    const { findByTestId } = renderComponent( <ObsDetails /> );
-    fireEvent.press( await findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
+    renderComponent( <ObsDetails /> );
+    fireEvent.press( await screen.findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
     expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
       id: mockObservation.taxon.id
     } );

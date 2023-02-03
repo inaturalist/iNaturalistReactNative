@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import ActivityItem from "components/ObsDetails/ActivityItem";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
 import React from "react";
@@ -51,47 +51,41 @@ jest.mock( "react-native-keyboard-aware-scroll-view", () => {
 } );
 
 test( "renders activity item with Flag Button", async ( ) => {
-  const {
-    findByTestId, queryByTestId, queryByText
-  } = renderComponent(
+  renderComponent(
     <PaperProvider>
       <ActivityItem item={mockIdentification} />
     </PaperProvider>
   );
 
-  expect( await findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
-  expect( await findByTestId( "FlagItemModal" ) ).toBeTruthy();
-  expect( await findByTestId( "FlagItemModal" ) ).toHaveProperty( "props.visible", false );
+  expect( await screen.findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
+  expect( await screen.findByTestId( "FlagItemModal" ) ).toBeTruthy();
+  expect( await screen.findByTestId( "FlagItemModal" ) ).toHaveProperty( "props.visible", false );
 
-  fireEvent.press( await findByTestId( "KebabMenu.Button" ) );
-  expect( queryByTestId( "MenuItem.Flag" ) ).toBeTruthy( );
-  expect( queryByText( "Flag" ) ).toBeTruthy( );
+  fireEvent.press( await screen.findByTestId( "KebabMenu.Button" ) );
+  expect( screen.getByTestId( "MenuItem.Flag" ) ).toBeTruthy( );
+  expect( screen.getByText( "Flag" ) ).toBeTruthy( );
 } );
 
 test( "renders Flag Modal when Flag button pressed", async ( ) => {
-  const {
-    findByTestId, queryByText, queryByTestId
-  } = renderComponent(
+  renderComponent(
     <PaperProvider>
       <ActivityItem item={mockIdentification} />
     </PaperProvider>
   );
 
-  expect( await findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
-  expect( await findByTestId( "FlagItemModal" ) ).toBeTruthy();
-  expect( await findByTestId( "FlagItemModal" ) ).toHaveProperty( "props.visible", false );
+  expect( await screen.findByTestId( "KebabMenu.Button" ) ).toBeTruthy( );
+  expect( await screen.findByTestId( "FlagItemModal" ) ).toBeTruthy();
+  expect( await screen.findByTestId( "FlagItemModal" ) ).toHaveProperty( "props.visible", false );
 
-  fireEvent.press( await findByTestId( "KebabMenu.Button" ) );
-  expect( await findByTestId( "MenuItem.Flag" ) ).toBeTruthy( );
-  fireEvent.press( await findByTestId( "MenuItem.Flag" ) );
-  expect( await queryByTestId( "FlagItemModal" ) ).toHaveProperty( "props.visible", true );
-  expect( await queryByText( "Flag An Item" ) ).toBeTruthy( );
+  fireEvent.press( await screen.findByTestId( "KebabMenu.Button" ) );
+  expect( await screen.findByTestId( "MenuItem.Flag" ) ).toBeTruthy( );
+  fireEvent.press( await screen.findByTestId( "MenuItem.Flag" ) );
+  expect( screen.queryByTestId( "FlagItemModal" ) ).toHaveProperty( "props.visible", true );
+  expect( screen.getByText( "Flag An Item" ) ).toBeTruthy( );
 } );
 
 test( "renders Flag Modal content", async ( ) => {
-  const {
-    getByText, getAllByRole
-  } = renderComponent(
+  renderComponent(
     <FlagItemModal
       id="000"
       itemType="foo"
@@ -100,17 +94,15 @@ test( "renders Flag Modal content", async ( ) => {
       onItemFlagged={mockCallback}
     />
   );
-  expect( getByText( "Flag An Item" ) ).toBeTruthy( );
-  expect( getByText( "Spam" ) ).toBeTruthy( );
-  expect( getByText( "Offensive/Inappropriate" ) ).toBeTruthy( );
-  expect( getByText( "Other" ) ).toBeTruthy( );
-  expect( getAllByRole( "checkbox" ) ).toHaveLength( 3 );
+  expect( screen.getByText( "Flag An Item" ) ).toBeTruthy( );
+  expect( screen.getByText( "Spam" ) ).toBeTruthy( );
+  expect( screen.getByText( "Offensive/Inappropriate" ) ).toBeTruthy( );
+  expect( screen.getByText( "Other" ) ).toBeTruthy( );
+  expect( screen.getAllByRole( "checkbox" ) ).toHaveLength( 3 );
 } );
 
 test( "calls flag api when save button pressed", async ( ) => {
-  const {
-    queryByText, queryAllByRole
-  } = renderComponent(
+  renderComponent(
     <FlagItemModal
       id="000"
       itemType="foo"
@@ -119,11 +111,11 @@ test( "calls flag api when save button pressed", async ( ) => {
       onItemFlagged={mockCallback}
     />
   );
-  expect( queryByText( "Flag An Item" ) ).toBeTruthy( );
-  expect( queryByText( "Spam" ) ).toBeTruthy( );
-  expect( queryAllByRole( "checkbox" ) ).toHaveLength( 3 );
-  fireEvent.press( queryByText( "Spam" ) );
-  expect( queryByText( "Save" ) ).toBeTruthy( );
-  fireEvent.press( queryByText( "Save" ) );
+  expect( screen.getByText( "Flag An Item" ) ).toBeTruthy( );
+  expect( screen.getByText( "Spam" ) ).toBeTruthy( );
+  expect( screen.queryAllByRole( "checkbox" ) ).toHaveLength( 3 );
+  fireEvent.press( screen.queryByText( "Spam" ) );
+  expect( screen.getByText( "Save" ) ).toBeTruthy( );
+  fireEvent.press( screen.queryByText( "Save" ) );
   expect( await mockMutate ).toHaveBeenCalled();
 } );

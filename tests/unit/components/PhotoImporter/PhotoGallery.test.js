@@ -63,13 +63,13 @@ const renderPhotoGallery = ( ) => renderComponent(
 );
 
 test( "renders photos from photo gallery", ( ) => {
-  const { getByTestId } = renderPhotoGallery( );
+  renderPhotoGallery( );
 
   const { uri } = mockPhoto.image;
 
-  expect( getByTestId( "PhotoGallery.list" ) ).toBeTruthy( );
-  expect( getByTestId( `PhotoGallery.${uri}` ) ).toBeTruthy( );
-  expect( getByTestId( "PhotoGallery.photo" ).props.source )
+  expect( screen.getByTestId( "PhotoGallery.list" ) ).toBeTruthy( );
+  expect( screen.getByTestId( `PhotoGallery.${uri}` ) ).toBeTruthy( );
+  expect( screen.getByTestId( "PhotoGallery.photo" ).props.source )
     .toStrictEqual( { uri } );
 } );
 

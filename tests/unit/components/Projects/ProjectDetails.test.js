@@ -34,15 +34,15 @@ describe( "ProjectDetails", () => {
   } );
 
   test( "displays project details", ( ) => {
-    const { getByTestId, getByText } = renderComponent( <ProjectDetails /> );
+    renderComponent( <ProjectDetails /> );
 
-    expect( getByText( mockProject.title ) ).toBeTruthy( );
-    expect( getByText( mockProject.description ) ).toBeTruthy( );
+    expect( screen.getByText( mockProject.title ) ).toBeTruthy( );
+    expect( screen.getByText( mockProject.description ) ).toBeTruthy( );
     expect(
-      getByTestId( "ProjectDetails.headerImage" ).props.source
+      screen.getByTestId( "ProjectDetails.headerImage" ).props.source
     ).toStrictEqual( { uri: mockProject.header_image_url } );
     expect(
-      getByTestId( "ProjectDetails.projectIcon" ).props.source
+      screen.getByTestId( "ProjectDetails.projectIcon" ).props.source
     ).toStrictEqual( { uri: mockProject.icon } );
   } );
 } );

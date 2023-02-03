@@ -1,7 +1,8 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import AddID from "components/ObsEdit/AddID";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
+import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 
 import factory, { makeResponse } from "../../../factory";
@@ -52,6 +53,8 @@ jest.mock( "react-native-vector-icons/MaterialIcons", ( ) => {
     }
 
     render( ) {
+      // I have disabled the eslint rule here because it is about a mock and not the test
+      // eslint-disable-next-line testing-library/no-node-access
       return InnerReact.createElement( "MaterialIcons", this.props, this.props.children );
     }
   }
@@ -69,26 +72,28 @@ const mockRoute = { params: {} };
 
 describe( "AddID", ( ) => {
   test( "should not have accessibility errors", ( ) => {
-    const addID = <AddID route={mockRoute} />;
+    const addID = (
+      <INatPaperProvider>
+        <AddID route={mockRoute} />
+      </INatPaperProvider>
+    );
     expect( addID ).toBeAccessible( );
   } );
 
   it( "should render inside mocked container", ( ) => {
     renderComponent( <AddID route={mockRoute} /> );
-    expect( screen.queryByTestId( "mock-view-no-footer" ) ).toBeTruthy( );
+    expect( screen.getByTestId( "mock-view-no-footer" ) ).toBeTruthy( );
   } );
 
   it( "show taxon search results", async ( ) => {
     inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
-    const { getByTestId } = renderComponent( <AddID route={mockRoute} /> );
-    const input = getByTestId( "SearchTaxon" );
+    renderComponent( <AddID route={mockRoute} /> );
+    const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
-    await waitFor( () => {
-      fireEvent.changeText( input, "Some taxon" );
-      expect( getByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
-    } );
+    fireEvent.changeText( input, "Some taxon" );
+    expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
     expect(
-      getByTestId( `Search.taxa.${taxon.id}.photo` ).props.source
+      screen.getByTestId( `Search.taxa.${taxon.id}.photo` ).props.source
     ).toStrictEqual( { uri: taxon.default_photo.square_url } );
   } );
 

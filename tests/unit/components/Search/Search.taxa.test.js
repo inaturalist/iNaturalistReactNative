@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import Search from "components/Search/Search";
 import React from "react";
 
@@ -22,19 +22,20 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useNavigation: ( ) => ( {
       navigate: mockedNavigate
-    } )
+    } ),
+    useRoute: ( ) => ( { } )
   };
 } );
 
 test( "renders taxon search results from API call", ( ) => {
-  const { getByTestId, getByText } = renderComponent( <Search /> );
+  renderComponent( <Search /> );
 
   const commonName = mockTaxon.preferred_common_name;
-  expect( getByTestId( "Search.taxa" ) ).toBeTruthy( );
-  expect( getByTestId( `Search.${mockTaxon.id}.photo` ).props.source )
+  expect( screen.getByTestId( "Search.taxa" ) ).toBeTruthy( );
+  expect( screen.getByTestId( `Search.${mockTaxon.id}.photo` ).props.source )
     .toStrictEqual( { uri: mockTaxon.default_photo.square_url } );
   // using RegExp to be able to search within a string
-  expect( getByText( new RegExp( commonName ) ) ).toBeTruthy( );
+  expect( screen.getByText( new RegExp( commonName ) ) ).toBeTruthy();
 } );
 
 // right now this is failing on react-native-modal, since there's a TouchableWithFeedback
@@ -42,8 +43,8 @@ test( "renders taxon search results from API call", ( ) => {
 test.todo( "should not have accessibility errors" );
 
 test( "navigates to TaxonDetails on button press", ( ) => {
-  const { getByTestId } = renderComponent( <Search /> );
+  renderComponent( <Search /> );
 
-  fireEvent.press( getByTestId( `Search.taxa.${mockTaxon.id}` ) );
+  fireEvent.press( screen.getByTestId( `Search.taxa.${mockTaxon.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", { id: mockTaxon.id } );
 } );

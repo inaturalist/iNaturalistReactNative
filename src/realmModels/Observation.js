@@ -193,7 +193,7 @@ class Observation extends Realm.Object {
   }
 
   static projectUri = obs => {
-    const photo = obs.observation_photos[0];
+    const photo = obs?.observation_photos?.[0];
     if ( !photo ) { return null; }
     if ( !photo.photo ) { return null; }
     if ( !photo.photo.url ) { return null; }
@@ -258,10 +258,11 @@ class Observation extends Realm.Object {
     observationId: number,
     apiEndpoint: Function,
     realm: any,
-    options: Object
+    options: Object,
+    forceUpload: boolean
   ): Promise<any> => {
     // only try to upload evidence which is not yet on the server
-    const unsyncedEvidence = evidence.filter( item => !item.wasSynced( ) );
+    const unsyncedEvidence = forceUpload ? evidence : evidence.filter( item => !item.wasSynced( ) );
 
     const responses = await Promise.all( unsyncedEvidence.map( item => {
       const currentEvidence = item.toJSON( );
@@ -312,6 +313,32 @@ class Observation extends Realm.Object {
 
     let response;
 
+    // First upload the photos/sounds (before uploading the observation itself)
+
+    if ( obs?.observationPhotos?.length > 0 ) {
+      await Observation.uploadEvidence(
+        obs.observationPhotos,
+        "ObservationPhoto",
+        ObservationPhoto.mapPhotoForUpload,
+        null,
+        inatjs.photos.create,
+        realm,
+        options
+      );
+    }
+    if ( obs?.observationSounds?.length > 0 ) {
+      await Observation.uploadEvidence(
+        obs.observationSounds,
+        "ObservationSound",
+        ObservationSound.mapSoundForUpload,
+        null,
+        inatjs.sounds.create,
+        realm,
+        options
+      );
+    }
+    // TODO
+
     const wasPreviouslySynced = obs.wasSynced( );
 
     if ( wasPreviouslySynced ) {
@@ -322,34 +349,40 @@ class Observation extends Realm.Object {
         fields: { id: true }
       }, options );
     } else {
+      // TODO - before creating observation, POST /v2/photos or POST /v2/sounds
       response = await createObservation( uploadParams, options );
     }
 
     await Observation.markRecordUploaded( obs.uuid, "Observation", response, realm );
     const { uuid: obsUUID } = response.results[0];
 
+    // Next, attach the uploaded photos/sounds to the uploaded observation
+
     if ( obs?.observationPhotos?.length > 0 ) {
       await Observation.uploadEvidence(
         obs.observationPhotos,
         "ObservationPhoto",
-        ObservationPhoto.mapPhotoForUpload,
+        ObservationPhoto.mapPhotoForAttachingToObs,
         obsUUID,
         inatjs.observation_photos.create,
         realm,
-        options
+        options,
+        true
       );
     }
     if ( obs?.observationSounds?.length > 0 ) {
       await Observation.uploadEvidence(
         obs.observationSounds,
         "ObservationSound",
-        ObservationSound.mapSoundForUpload,
+        ObservationSound.mapSoundForAttachingToObs,
         obsUUID,
         inatjs.observation_sounds.create,
         realm,
-        options
+        options,
+        true
       );
     }
+
     return response;
   }
 

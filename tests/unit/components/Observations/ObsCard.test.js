@@ -1,6 +1,7 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import {
+  fireEvent, render, screen, waitFor
+} from "@testing-library/react-native";
 import ObsCard from "components/Observations/ObsCard";
-import { t } from "i18next";
 import React from "react";
 
 import factory from "../../../factory";
@@ -9,25 +10,27 @@ const testObservation = factory( "LocalObservation", {
   taxon: { preferred_common_name: "Foo", name: "bar" }
 } );
 
-const qualityGradeText = t( "RG" );
-
-test( "renders text passed into observation card", ( ) => {
-  const { getByTestId, getByText } = render(
+test( "renders text passed into observation card", async ( ) => {
+  render(
     <ObsCard
       item={testObservation}
+      handlePress={( ) => jest.fn()}
     />
   );
 
-  expect( getByTestId( `ObsList.obsCard.${testObservation.uuid}` ) ).toBeTruthy( );
-  expect( getByTestId( "ObsList.photo" ).props.source )
+  expect( screen.getByTestId( `ObsList.obsCard.${testObservation.uuid}` ) ).toBeTruthy( );
+  expect( screen.getByTestId( "ObsList.photo" ).props.source )
     .toStrictEqual( { uri: testObservation.observationPhotos[0].photo.url } );
-  expect( getByText(
+  expect( screen.getByText(
     `${testObservation.taxon.preferred_common_name} (${testObservation.taxon.name})`
   ) ).toBeTruthy( );
-  expect( getByText( testObservation.placeGuess ) ).toBeTruthy( );
-  expect( getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );
-  expect( getByText( testObservation.identifications.length.toString( ) ) ).toBeTruthy( );
-  expect( getByText( qualityGradeText ) ).toBeTruthy( );
+  expect( screen.getByText( testObservation.placeGuess ) ).toBeTruthy( );
+  await waitFor( ( ) => {
+    expect( screen.getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );
+  } );
+  await waitFor( ( ) => {
+    expect( screen.getByText( testObservation.identifications.length.toString( ) ) ).toBeTruthy( );
+  } );
 } );
 
 test( "navigates to ObsDetails on button press", ( ) => {
@@ -35,21 +38,26 @@ test( "navigates to ObsDetails on button press", ( ) => {
     navigate: jest.fn( )
   };
 
-  const { getByTestId } = render(
+  render(
     <ObsCard
       item={testObservation}
       handlePress={( ) => fakeNavigation.navigate( "ObsDetails" )}
     />
   );
 
-  const button = getByTestId( `ObsList.obsCard.${testObservation.uuid}` );
+  const button = screen.getByTestId( `ObsList.obsCard.${testObservation.uuid}` );
 
   fireEvent.press( button );
   expect( fakeNavigation.navigate ).toBeCalledWith( "ObsDetails" );
 } );
 
 test( "should not have accessibility errors", ( ) => {
-  const obsCard = <ObsCard item={testObservation} />;
+  const obsCard = (
+    <ObsCard
+      item={testObservation}
+      handlePress={( ) => jest.fn()}
+    />
+  );
 
   expect( obsCard ).toBeAccessible( );
 } );

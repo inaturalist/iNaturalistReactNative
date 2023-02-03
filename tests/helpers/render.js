@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 import App from "components/App";
+import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 
 const queryClient = new QueryClient( {
@@ -23,9 +24,11 @@ function renderComponent( component, update = null ) {
   const renderMethod = update || render;
   return renderMethod(
     <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        { component }
-      </NavigationContainer>
+      <INatPaperProvider>
+        <NavigationContainer>
+          { component }
+        </NavigationContainer>
+      </INatPaperProvider>
     </QueryClientProvider>
   );
 }

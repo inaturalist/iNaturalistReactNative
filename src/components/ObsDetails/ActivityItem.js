@@ -4,8 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments } from "api/comments";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
+import InlineUser from "components/SharedComponents/InlineUser";
 import KebabMenu from "components/SharedComponents/KebabMenu";
-import UserIcon from "components/SharedComponents/UserIcon";
 import UserText from "components/SharedComponents/UserText";
 import {
   Image,
@@ -20,7 +20,6 @@ import { Menu } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Comment from "realmModels/Comment";
 import Taxon from "realmModels/Taxon";
-import User from "realmModels/User";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useIsConnected from "sharedHooks/useIsConnected";
@@ -33,13 +32,12 @@ const { useRealm } = RealmContext;
 type Props = {
   item: Object,
   navToTaxonDetails: Function,
-  handlePress: Function,
   toggleRefetch: Function,
   refetchRemoteObservation: Function
 }
 
 const ActivityItem = ( {
-  item, navToTaxonDetails, handlePress, toggleRefetch, refetchRemoteObservation
+  item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation
 }: Props ): Node => {
   const [currentUser, setCurrentUser] = useState( null );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
@@ -99,27 +97,10 @@ const ActivityItem = ( {
     </View>
   );
 
-  const displayUserIcon = ( ) => {
-    if ( !currentUser && !isOnline ) {
-      return showNoInternetIcon( t( "User-photo-unavailable-without-internet" ) );
-    }
-    return <UserIcon uri={User.uri( user )} small />;
-  };
-
   return (
     <View className={item.temporary && "opacity-50"}>
       <View className={activityItemClassName}>
-        {user && (
-          <Pressable
-            onPress={handlePress}
-            accessibilityRole="link"
-            className="flex-row items-center ml-3"
-            testID={`ObsDetails.identifier.${user.id}`}
-          >
-            {displayUserIcon( )}
-            <Text className="color-logInGray ml-3">{User.userHandle( user )}</Text>
-          </Pressable>
-        )}
+        {user && <InlineUser user={user} />}
         <View className="flex-row items-center">
           {item.vision
             && (
