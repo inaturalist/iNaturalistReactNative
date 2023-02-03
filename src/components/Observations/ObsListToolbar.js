@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import {
   Animated, Dimensions, Easing, PixelRatio
 } from "react-native";
-import { ProgressBar, IconButton } from "react-native-paper";
+import { IconButton, ProgressBar } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
