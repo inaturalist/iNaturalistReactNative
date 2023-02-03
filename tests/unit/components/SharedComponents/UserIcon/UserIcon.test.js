@@ -23,4 +23,11 @@ describe( "UserIcon", () => {
     // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );
+
+  it( "displays active user image correctly", async () => {
+    render( <UserIcon uri={mockUri} active /> );
+
+    // Snapshot test
+    expect( screen ).toMatchSnapshot();
+  } );
 } );
