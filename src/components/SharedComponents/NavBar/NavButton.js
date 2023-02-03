@@ -1,5 +1,5 @@
 // @flow
-import UserIcon from "components/SharedComponents/UserIcon";
+import { UserIcon } from "components/SharedComponents";
 import { Pressable } from "components/styledComponents";
 import * as React from "react";
 import { IconButton } from "react-native-paper";
