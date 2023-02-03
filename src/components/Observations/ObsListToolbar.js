@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import {
   Animated, Dimensions, Easing, PixelRatio
 } from "react-native";
-import { ProgressBar } from "react-native-paper";
+import { ProgressBar, IconButton } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
@@ -97,15 +97,14 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
   /* eslint-disable react-native/no-inline-styles */
   return (
     <View className="bg-white border-b border-[#e8e8e8]">
-      <View className="py-5 flex flex-row items-center px-[15px]">
+      <View className="pt-5 flex flex-row items-center px-[15px]">
         {currentUser && (
-          <Pressable
-            className="mr-3"
-            accessibilityRole="button"
+          <IconButton
+            icon="compass-rose"
             onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
-          >
-            <IconMaterial name="language" size={30} />
-          </Pressable>
+            accessibilityLabel={t( "Navigate-to-explore-screen" )}
+            size={30}
+          />
         )}
         <Pressable
           onPress={getSyncClick( )}
