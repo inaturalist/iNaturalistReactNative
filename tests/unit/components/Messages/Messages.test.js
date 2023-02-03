@@ -1,12 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { render, screen } from "@testing-library/react-native";
 import Messages from "components/Messages/Messages";
 import React from "react";
 
 import factory from "../../../factory";
 
-const Stack = createNativeStackNavigator( );
 const mockedNavigate = jest.fn( );
 const mockMessage = factory( "RemoteMessage" );
 const mockUser = factory( "LocalUser" );
@@ -22,7 +20,8 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useNavigation: ( ) => ( {
       navigate: mockedNavigate
-    } )
+    } ),
+    useRoute: ( ) => ( { } )
   };
 } );
 
@@ -30,9 +29,7 @@ jest.useFakeTimers();
 
 const renderMessages = ( ) => render(
   <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen component={Messages} name="Messages" />
-    </Stack.Navigator>
+    <Messages />
   </NavigationContainer>
 );
 
@@ -53,9 +50,8 @@ jest.mock( "@tanstack/react-query", ( ) => ( {
 } ) );
 
 describe( "Messages", ( ) => {
-  test( "should not have accessibility errors", async () => {
-    renderMessages( );
-    const messages = await screen.findByTestId( "Messages.messages" );
+  test( "should not have accessibility errors", () => {
+    const messages = <Messages />;
     expect( messages ).toBeAccessible();
   } );
 } );
