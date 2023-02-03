@@ -26,7 +26,7 @@ const NavButton = ( {
   active,
   accessibilityLabel,
   accessibilityHint,
-  accessibilityRole = "link"
+  accessibilityRole = "tab"
 }: Props ): React.Node => {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {

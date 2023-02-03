@@ -38,6 +38,7 @@ const NavBar = ( ): React.Node => {
         footerHeight
       )}
       style={viewStyles.shadow}
+      accessibilityRole="tablist"
     >
       <NavButton
         onPress={toggleSideMenu}
