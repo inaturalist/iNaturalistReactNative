@@ -491,7 +491,13 @@
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
+  "Messages": "Messages",
+  "Open-drawer": "Open drawer",
+  "Navigates-to-explore": "Navigates to explore.",
+  "Navigates-to-messages": "Navigates to messages.",
+  "Navigates-to-observations": "Navigates to observations.",
   "Navigates-to-user-profile": "Navigates to user profile.",
+  "Opens-the-side-drawer-menu": "Opens the side drawer menu.",
   "Add-this-ID": "Add this identification",
   "Camera-button-label-switch-camera": {
     "comment": "Accessible label for the camera button",
