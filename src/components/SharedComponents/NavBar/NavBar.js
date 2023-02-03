@@ -13,6 +13,7 @@ import { viewStyles } from "styles/sharedComponents/footer";
 
 import NavButton from "./NavButton";
 
+// TODO: This is not future proof, if changed in main navigation it breaks here
 const OBS_LIST_SCREEN_ID = "ObsList";
 const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
@@ -27,6 +28,7 @@ const NavBar = ( ): React.Node => {
   const navToNotifications = ( ) => navigation.navigate( "MainStack", {
     screen: MESSAGES_SCREEN_ID
   } );
+
   const { remoteUser: user } = useUserMe( );
 
   const footerHeight = Platform.OS === "ios" ? "h-20" : "h-15";
