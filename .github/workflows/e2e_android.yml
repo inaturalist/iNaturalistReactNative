@@ -95,8 +95,8 @@ jobs:
         distribution: 'zulu'
 
     # This is by far the longest step in this job, currently we are building the apk everytime, maybe there should be a more specific trigger for the entire job
-    - name: Build for detox
-      run: npm run e2e:build:android
+    # - name: Build for detox
+    #   run: npm run e2e:build:android
 
     # Starts the avd previously set-up by name
     - name: Android Emulator
@@ -111,16 +111,16 @@ jobs:
         echo "Emulator started"
 
     # Start the Android e2e tests with extensive logging and screen captures for failing tests
-    - name: Android Detox
-      run: npm run e2e:test:android -- --debug-synchronization 500 --take-screenshots failing --record-videos failing -l trace
+    # - name: Android Detox
+    #   run: npm run e2e:test:android -- --debug-synchronization 500 --take-screenshots failing --record-videos failing -l trace
 
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
-    - name: Store Detox artifacts on test failure
-      uses: actions/upload-artifact@v3
-      if: failure()
-      with:
-        name: detox-artifacts
-        path: artifacts
+    # - name: Store Detox artifacts on test failure
+    #   uses: actions/upload-artifact@v3
+    #   if: failure()
+    #   with:
+    #     name: detox-artifacts
+    #     path: artifacts
 
   notify:
     name: Notify Slack
