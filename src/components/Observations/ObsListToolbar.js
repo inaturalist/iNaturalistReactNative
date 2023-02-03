@@ -102,7 +102,8 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
           <IconButton
             icon="compass-rose"
             onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
-            accessibilityLabel={t( "Navigate-to-explore-screen" )}
+            accessibilityLabel={t( "Explore" )}
+            accessibilityHint={t( "Navigates-to-explore" )}
             accessibilityRole="button"
             disabled={false}
             size={30}
