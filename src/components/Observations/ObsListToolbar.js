@@ -6,7 +6,7 @@ import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { Animated, Easing } from "react-native";
+import { Animated, Easing, Dimensions, PixelRatio } from "react-native";
 import { ProgressBar } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -31,9 +31,12 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
     uploadInProgress,
     startUpload,
     progress,
-    error: uploadError
+    error: uploadError,
+    currentUploadIndex,
+    totalUploadCount
   } = useUploadObservations( allObsToUpload );
 
+  const screenWidth = Dimensions.get('window').width * PixelRatio.get()
   const spinValue = new Animated.Value( 1 );
 
   Animated.timing( spinValue, {
@@ -60,13 +63,25 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
   };
 
   const getStatusText = ( ) => {
-    if ( !uploadInProgress && numUnuploadedObs > 0 ) {
+    if ( numUnuploadedObs <= 0 ) {
+      return null
+    }
+
+    if ( !uploadInProgress) {
       return t( "Upload-x-observations", { count: numUnuploadedObs } );
     }
-    if ( numUnuploadedObs > 0 ) {
-      return t( "Uploading-X-Observations", { count: numUnuploadedObs } );
+
+    const translationParams = {
+      total: totalUploadCount,
+      uploadedCount: currentUploadIndex + 1
     }
-    return null;
+    
+    // iPhone 4 pixel width
+    if ( screenWidth <= 640 ) {
+      return t( "Uploading-x-of-y", translationParams );
+    }
+    
+    return t( "Uploading-x-of-y-observations", translationParams );
   };
 
   const getSyncIconColor = ( ) => {

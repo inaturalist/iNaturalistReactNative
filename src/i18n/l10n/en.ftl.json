@@ -390,6 +390,14 @@
     "comment": "Shows the number of observations a user is currently uploading on my observations page",
     "val": "Uploading { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
+  "Uploading-x-of-y-observations": {
+    "comment": "Shows the number of observations a user is currently uploading out of total on my observations page",
+    "val": "Uploading { $uploadedCount } of { $total ->\n  [one] 1 observation\n *[other] { $total } observations\n}"
+  },
+  "Uploading-x-of-y": {
+    "comment": "Shows the progress of uploads for X of Y",
+    "val": "Uploading { $uploadedCount } of { $total ->\n  [one] 1\n *[other] { $total }\n}"
+  },
   "User": "User { $userHandle }",
   "Username": "Username",
   "Username-or-Email": {
