@@ -169,6 +169,16 @@ const ObsDetails = ( ): Node => {
     } );
   };
 
+  // reload if change to observation
+  useEffect( () => {
+    if ( localObservation && remoteObservation ) {
+      const remoteUpdatedAt = new Date( remoteObservation?.updated_at );
+      if ( remoteUpdatedAt > localObservation?.updated_at ) {
+        Observation.upsertRemoteObservations( [remoteObservation], realm );
+      }
+    }
+  }, [localObservation, remoteObservation, realm] );
+
   useEffect( ( ) => {
     if ( localObservation && !localObservation.viewed && !markViewedMutation.isLoading ) {
       markViewedMutation.mutate( { id: uuid } );
