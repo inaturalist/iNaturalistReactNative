@@ -19,7 +19,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [error, setError] = useState( null );
   const realm = useRealm( );
   const apiToken = useApiToken( );
-  const [totalUploadCount, setTotalUploadCount] = useState(0);
+  const [totalUploadCount, setTotalUploadCount] = useState( 0 );
 
   const cleanup = ( ) => {
     setUploadInProgress( false );

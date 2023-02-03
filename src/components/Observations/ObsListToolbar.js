@@ -6,7 +6,9 @@ import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { Animated, Easing, Dimensions, PixelRatio } from "react-native";
+import {
+  Animated, Dimensions, Easing, PixelRatio
+} from "react-native";
 import { ProgressBar } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -36,7 +38,7 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
     totalUploadCount
   } = useUploadObservations( allObsToUpload );
 
-  const screenWidth = Dimensions.get('window').width * PixelRatio.get()
+  const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
   const spinValue = new Animated.Value( 1 );
 
   Animated.timing( spinValue, {
@@ -64,23 +66,23 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
 
   const getStatusText = ( ) => {
     if ( numUnuploadedObs <= 0 ) {
-      return null
+      return null;
     }
 
-    if ( !uploadInProgress) {
+    if ( !uploadInProgress ) {
       return t( "Upload-x-observations", { count: numUnuploadedObs } );
     }
 
     const translationParams = {
       total: totalUploadCount,
       uploadedCount: currentUploadIndex + 1
-    }
-    
+    };
+
     // iPhone 4 pixel width
     if ( screenWidth <= 640 ) {
       return t( "Uploading-x-of-y", translationParams );
     }
-    
+
     return t( "Uploading-x-of-y-observations", translationParams );
   };
 
