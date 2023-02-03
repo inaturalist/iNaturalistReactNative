@@ -42,8 +42,8 @@ jobs:
     # I am assuming (but haven't tested) it uses 8 and then this step works
     - name: Download Android Emulator Image
       run: |
-        # echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_31_AOSP --device "Nexus 5X" -k 'system-images;android-31;default;x86_64'
-        # $ANDROID_HOME/emulator/emulator -list-avds
+        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_31_AOSP --device "Nexus 5X" -k 'system-images;android-31;default;x86_64'
+        $ANDROID_HOME/emulator/emulator -list-avds
 
     - name: Cache node modules
       uses: actions/cache@v3
