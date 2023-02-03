@@ -1,5 +1,6 @@
 import "i18n";
 import "react-native-gesture-handler/jestSetup";
+import "@shopify/flash-list/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
