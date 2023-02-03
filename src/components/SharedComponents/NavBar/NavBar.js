@@ -42,8 +42,9 @@ const NavBar = ( ): React.Node => {
       <NavButton
         onPress={toggleSideMenu}
         icon="hamburger-menu"
-        accessibilityLabel={t( "Navigate-to-observations" )}
         accessibilityRole="button"
+        accessibilityLabel={t( "Open-drawer" )}
+        accessibilityHint={t( "Opens-the-side-drawer-menu" )}
         testID="OPEN_DRAWER"
         active={isDrawerOpen}
         size={32}
@@ -53,7 +54,8 @@ const NavBar = ( ): React.Node => {
         icon="compass-rose"
         testID={EXPLORE_SCREEN_ID}
         active={name === EXPLORE_SCREEN_ID}
-        accessibilityLabel={t( "Navigate-to-notifications" )}
+        accessibilityLabel={t( "Explore" )}
+        accessibilityHint={t( "Navigates-to-explore" )}
         size={40}
       />
       <AddObsButton />
@@ -63,7 +65,8 @@ const NavBar = ( ): React.Node => {
         userIconUri={User.uri( user )}
         testID={OBS_LIST_SCREEN_ID}
         active={name === OBS_LIST_SCREEN_ID}
-        accessibilityLabel={t( "Open-sidebar" )}
+        accessibilityLabel={t( "Observations" )}
+        accessibilityHint={t( "Navigates-to-observations" )}
         size={40}
       />
       <NavButton
@@ -71,7 +74,8 @@ const NavBar = ( ): React.Node => {
         icon="notifications-bell"
         active={name === MESSAGES_SCREEN_ID}
         testID={MESSAGES_SCREEN_ID}
-        accessibilityLabel={t( "Navigate-to-map" )}
+        accessibilityLabel={t( "Messages" )}
+        accessibilityHint={t( "Navigates-to-messages" )}
         size={32}
       />
     </View>

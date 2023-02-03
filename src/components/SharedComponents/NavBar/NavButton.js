@@ -12,26 +12,29 @@ type Props = {
   userIconUri?: string,
   accessibilityLabel: string,
   accessibilityRole?: string,
+  accessibilityHint?: string,
   active: boolean,
   size: number,
 };
 
 const NavButton = ( {
   testID,
+  size,
   icon,
   onPress,
   userIconUri,
   active,
   accessibilityLabel,
-  accessibilityRole = "link",
-  size
+  accessibilityHint,
+  accessibilityRole = "link"
 }: Props ): React.Node => {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {
-    onPress,
     testID,
+    onPress,
     accessibilityRole,
     accessibilityLabel,
+    accessibilityHint,
     accessibilityState: {
       selected: active,
       expanded: active,
