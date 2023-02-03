@@ -1,8 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import Search from "components/Search/Search";
+import React from "react";
 
 import factory from "../../../factory";
-import { renderScreen } from "../../../helpers/render";
+import { renderComponent } from "../../../helpers/render";
 
 const mockedNavigate = jest.fn( );
 
@@ -21,12 +22,13 @@ jest.mock( "@react-navigation/native", ( ) => {
     ...actualNav,
     useNavigation: ( ) => ( {
       navigate: mockedNavigate
-    } )
+    } ),
+    useRoute: ( ) => ( { } )
   };
 } );
 
 test( "renders taxon search results from API call", ( ) => {
-  renderScreen( Search, "Search" );
+  renderComponent( <Search /> );
 
   const commonName = mockTaxon.preferred_common_name;
   expect( screen.getByTestId( "Search.taxa" ) ).toBeTruthy( );
@@ -41,7 +43,7 @@ test( "renders taxon search results from API call", ( ) => {
 test.todo( "should not have accessibility errors" );
 
 test( "navigates to TaxonDetails on button press", ( ) => {
-  renderScreen( Search, "Search" );
+  renderComponent( <Search /> );
 
   fireEvent.press( screen.getByTestId( `Search.taxa.${mockTaxon.id}` ) );
   expect( mockedNavigate ).toHaveBeenCalledWith( "TaxonDetails", { id: mockTaxon.id } );
