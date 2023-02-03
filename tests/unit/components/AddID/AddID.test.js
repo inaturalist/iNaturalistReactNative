@@ -2,6 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native";
 import AddID from "components/ObsEdit/AddID";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
+import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 
 import factory, { makeResponse } from "../../../factory";
@@ -71,7 +72,11 @@ const mockRoute = { params: {} };
 
 describe( "AddID", ( ) => {
   test( "should not have accessibility errors", ( ) => {
-    const addID = <AddID route={mockRoute} />;
+    const addID = (
+      <INatPaperProvider>
+        <AddID route={mockRoute} />
+      </INatPaperProvider>
+    );
     expect( addID ).toBeAccessible( );
   } );
 

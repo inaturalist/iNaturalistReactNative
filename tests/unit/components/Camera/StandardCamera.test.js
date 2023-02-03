@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import StandardCamera from "components/Camera/StandardCamera";
 import { ObsEditContext } from "providers/contexts";
+import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { View } from "react-native";
 
@@ -40,17 +41,21 @@ jest.mock( "components/Camera/PhotoPreview", () => ( {
 } ) );
 
 const renderStandardCamera = () => render(
-  <ObsEditContext.Provider value={mockValue}>
-    <StandardCamera />
-  </ObsEditContext.Provider>
+  <INatPaperProvider>
+    <ObsEditContext.Provider value={mockValue}>
+      <StandardCamera />
+    </ObsEditContext.Provider>
+  </INatPaperProvider>
 );
 
 describe( "StandardCamera", ( ) => {
   test( "should not have accessibility errors", () => {
     const standardCamera = (
-      <ObsEditContext.Provider value={mockValue}>
-        <StandardCamera />
-      </ObsEditContext.Provider>
+      <INatPaperProvider>
+        <ObsEditContext.Provider value={mockValue}>
+          <StandardCamera />
+        </ObsEditContext.Provider>
+      </INatPaperProvider>
     );
 
     expect( standardCamera ).toBeAccessible();
