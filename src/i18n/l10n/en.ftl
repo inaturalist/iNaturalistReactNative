@@ -696,7 +696,11 @@ Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 Bulk-importer = Bulk importer
 Camera = Camera
 Close = Close
+Explore = Explore
+Messages = Messages
+Observations = Observations
 Observe = Observe
+Open-drawer = Open drawer
 Sound-recorder = Sound recorder
 User = User { $userHandle }
 
@@ -705,11 +709,15 @@ User = User { $userHandle }
 Agrees-with-identification = Agrees with this identification.
 Navigates-to-bulk-importer = Navigates to bulk importer.
 Navigates-to-camera = Navigate to camera.
+Navigates-to-explore = Navigates to explore.
+Navigates-to-messages = Navigates to messages.
+Navigates-to-observations = Navigates to observations.
 Navigates-to-sound-recorder = Navigates to sound recorder.
 Navigates-to-suggest-identification = Navigates to suggest identification.
 Navigates-to-user-profile = Navigates to user profile.
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
+Opens-the-side-drawer-menu = Opens the side drawer menu.
 Returns-to-previous-screen = Returns to previous screen.
 Switches-to-tab = Switches to { $tab } tab.
 

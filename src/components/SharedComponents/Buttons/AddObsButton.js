@@ -22,7 +22,7 @@ const AddObsButton = ( ): React.Node => {
       />
       <IconButton
         icon="plus-sign"
-        onPress={( ) => openModal( )}
+        onPress={openModal}
         size={40}
         mode="contained"
         containerColor={theme.colors.secondary}
