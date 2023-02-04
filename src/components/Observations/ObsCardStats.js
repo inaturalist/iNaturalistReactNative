@@ -1,8 +1,7 @@
 // @flow
 
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
-import { QualityGradeStatus } from "components/SharedComponents";
-import ActivityCount from "components/SharedComponents/ActivityCount";
+import { ActivityCount, QualityGradeStatus } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";

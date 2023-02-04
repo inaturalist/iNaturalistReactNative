@@ -1,5 +1,6 @@
 import INatIcon, { glyphMap } from "components/INatIcon";
 import {
+  ActivityCount,
   Body1,
   Body2,
   Body3,
@@ -19,7 +20,6 @@ import {
   Tabs,
   UserIcon
 } from "components/SharedComponents";
-import ActivityCount from "components/SharedComponents/ActivityCount";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
