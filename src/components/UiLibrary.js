@@ -261,6 +261,7 @@ const UiLibrary = ( ) => {
           <View>
             <Body2 className="text-center">Research</Body2>
             { /* TODO: refactor to not have color prop because we only need black and white */}
+            { /* TODO: better to access the color from theme here */}
             <QualityGradeStatus qualityGrade="research" color="black" />
           </View>
           <View>
