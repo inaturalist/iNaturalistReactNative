@@ -583,10 +583,8 @@ Uploading-x-of-y-observations = Uploading {$uploadedCount} of {$total ->
 }
 
 # Shows the progress of uploads for X of Y
-Uploading-x-of-y = Uploading {$uploadedCount} of {$total ->
-    [one] 1
-    *[other] {$total}
-}
+Uploading-x-of-y = Uploading {$uploadedCount} of {$total}
+
 
 User = User
 

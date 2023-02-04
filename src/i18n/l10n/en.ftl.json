@@ -396,7 +396,7 @@
   },
   "Uploading-x-of-y": {
     "comment": "Shows the progress of uploads for X of Y",
-    "val": "Uploading { $uploadedCount } of { $total ->\n  [one] 1\n *[other] { $total }\n}"
+    "val": "Uploading { $uploadedCount } of { $total }"
   },
   "User": "User { $userHandle }",
   "Username": "Username",
