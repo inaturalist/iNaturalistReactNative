@@ -34,7 +34,7 @@ jest.mock(
 
 describe( "InlineUser", ( ) => {
   it( "should not have accessibility erros", () => {
-    const inlineUser = <InlineUser user={snapshotUser} />;
+    const inlineUser = <InlineUser user={mockUser} />;
     expect( inlineUser ).toBeAccessible();
   } );
 
