@@ -1,9 +1,10 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import Body3 from "components/SharedComponents/Typography/Body3";
 import UserIcon from "components/SharedComponents/UserIcon/UserIcon";
 import {
-  Pressable, Text, View
+  Pressable, View
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -59,7 +60,7 @@ const InlineUser = ( { user }: Props ): Node => {
       }}
     >
       <View className="mr-[7px]">{renderUserIcon()}</View>
-      <Text>{userHandle}</Text>
+      <Body3>{userHandle}</Body3>
     </Pressable>
   );
 };
