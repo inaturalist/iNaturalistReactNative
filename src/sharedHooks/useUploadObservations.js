@@ -19,6 +19,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [error, setError] = useState( null );
   const realm = useRealm( );
   const apiToken = useApiToken( );
+  const [totalUploadCount, setTotalUploadCount] = useState( 0 );
 
   const cleanup = ( ) => {
     setUploadInProgress( false );
@@ -27,6 +28,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     setError( null );
     deactivateKeepAwake( );
     setProgress( 0 );
+    setTotalUploadCount( 0 );
   };
 
   useEffect( ( ) => {
@@ -60,6 +62,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
       return;
     }
 
+    setTotalUploadCount( allObsToUpload.length );
     activateKeepAwake( );
     setUploadInProgress( true );
     upload( observationToUpload );
@@ -76,6 +79,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     error,
     progress,
     stopUpload: cleanup,
+    currentUploadIndex,
+    totalUploadCount,
     startUpload: ( ) => setShouldUpload( true )
   };
 };

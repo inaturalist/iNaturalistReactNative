@@ -6,8 +6,10 @@ import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { Animated, Easing } from "react-native";
-import { ProgressBar } from "react-native-paper";
+import {
+  Animated, Dimensions, Easing, PixelRatio
+} from "react-native";
+import { IconButton, ProgressBar } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
@@ -31,9 +33,12 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
     uploadInProgress,
     startUpload,
     progress,
-    error: uploadError
+    error: uploadError,
+    currentUploadIndex,
+    totalUploadCount
   } = useUploadObservations( allObsToUpload );
 
+  const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
   const spinValue = new Animated.Value( 1 );
 
   Animated.timing( spinValue, {
@@ -60,13 +65,25 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
   };
 
   const getStatusText = ( ) => {
-    if ( !uploadInProgress && numUnuploadedObs > 0 ) {
+    if ( numUnuploadedObs <= 0 ) {
+      return null;
+    }
+
+    if ( !uploadInProgress ) {
       return t( "Upload-x-observations", { count: numUnuploadedObs } );
     }
-    if ( numUnuploadedObs > 0 ) {
-      return t( "Uploading-X-Observations", { count: numUnuploadedObs } );
+
+    const translationParams = {
+      total: totalUploadCount,
+      uploadedCount: currentUploadIndex + 1
+    };
+
+    // iPhone 4 pixel width
+    if ( screenWidth <= 640 ) {
+      return t( "Uploading-x-of-y", translationParams );
     }
-    return null;
+
+    return t( "Uploading-x-of-y-observations", translationParams );
   };
 
   const getSyncIconColor = ( ) => {
@@ -80,15 +97,17 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
   /* eslint-disable react-native/no-inline-styles */
   return (
     <View className="bg-white border-b border-[#e8e8e8]">
-      <View className="py-5 flex flex-row items-center px-[15px]">
+      <View className="pt-5 flex flex-row items-center px-[15px]">
         {currentUser && (
-          <Pressable
-            className="mr-3"
-            accessibilityRole="button"
+          <IconButton
+            icon="compass-rose"
             onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
-          >
-            <IconMaterial name="language" size={30} />
-          </Pressable>
+            accessibilityLabel={t( "Explore" )}
+            accessibilityHint={t( "Navigates-to-explore" )}
+            accessibilityRole="button"
+            disabled={false}
+            size={30}
+          />
         )}
         <Pressable
           onPress={getSyncClick( )}
