@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import CloseButton from "components/SharedComponents/Buttons/CloseButton";
+import { CloseButton } from "components/SharedComponents";
 import {
   Pressable, View
 } from "components/styledComponents";
@@ -138,7 +138,7 @@ const StandardCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const renderAddObsButtons = icon => {
+  const renderFlashButton = icon => {
     let testID = "";
     let accessibilityLabel = "";
     switch ( icon ) {
@@ -180,8 +180,8 @@ const StandardCamera = ( ): Node => {
           {hasFlash ? (
             <Pressable onPress={toggleFlash} accessibilityRole="button">
               {takePhotoOptions.flash === "on"
-                ? renderAddObsButtons( "flash-on-circle" )
-                : renderAddObsButtons( "camera" )}
+                ? renderFlashButton( "flash-on-circle" )
+                : renderFlashButton( "camera" )}
             </Pressable>
           ) : (
             <View />

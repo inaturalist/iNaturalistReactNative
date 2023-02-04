@@ -29,11 +29,6 @@ const SafeAreaView = styled( StyledSafeAreaView );
 // $FlowIgnore
 const ScrollView = styled( StyledScrollView );
 // $FlowIgnore
-const HeaderText = styled(
-  StyledText,
-  Platform.OS === "ios" ? "font-Papyrus-Condensed" : "font-Roboto"
-);
-// $FlowIgnore
 const Text = styled(
   StyledText,
   Platform.OS === "ios" ? "font-Whitney-Medium" : "font-Whitney-Medium-Pro"
@@ -60,7 +55,6 @@ export {
   ActivityIndicator,
   BottomSheetTextInput,
   fontMonoClass,
-  HeaderText,
   Image,
   KeyboardAvoidingView,
   LightText,

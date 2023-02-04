@@ -49,6 +49,11 @@ module.exports = {
     // raise alarms when you try to import things not declared in
     // package.json.
     "import/no-extraneous-dependencies": ["error", {}],
+    "import/extensions": [2, {
+      js: "never",
+      jsx: "never",
+      json: "always"
+    }],
     "max-len": [
       "error",
       100,

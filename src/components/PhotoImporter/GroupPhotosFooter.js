@@ -1,6 +1,6 @@
 // @flow
 
-import Button from "components/SharedComponents/Buttons/Button";
+import { Button } from "components/SharedComponents";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import { Text, View } from "components/styledComponents";

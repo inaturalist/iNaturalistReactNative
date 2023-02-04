@@ -7,7 +7,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
-import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
+import { EvidenceButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -109,19 +109,22 @@ const AddEvidenceModal = ( {
               icon="camera"
               handlePress={onTakePhoto}
               disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Navigate-to-camera" )}
+              accessibilityLabel={t( "Camera" )}
+              accessibilityHint={t( "Navigates-to-camera" )}
             />
             <EvidenceButton
               icon="pencil"
               handlePress={onImportPhoto}
               disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Navigate-to-bulk-importer" )}
+              accessibilityLabel={t( "Bulk-importer" )}
+              accessibilityHint={t( "Navigates-to-bulk-importer" )}
             />
             <EvidenceButton
               icon="microphone"
               handlePress={onRecordSound}
               disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Navigate-to-sound-recorder" )}
+              accessibilityLabel={t( "Sound-recorder" )}
+              accessibilityHint={t( "Navigates-to-sound-recorder" )}
             />
           </View>
           <Text

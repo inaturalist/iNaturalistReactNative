@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserIcon displays active user image correctly 1`] = `
+<Image
+  accessibilityIgnoresInvertColors={true}
+  source={
+    Object {
+      "uri": "some_uri",
+    }
+  }
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 9999,
+          "borderBottomRightRadius": 9999,
+          "borderTopLeftRadius": 9999,
+          "borderTopRightRadius": 9999,
+        },
+        Object {
+          "width": 40,
+        },
+        Object {
+          "height": 40,
+        },
+        Object {
+          "borderBottomWidth": 3,
+          "borderLeftWidth": 3,
+          "borderRightWidth": 3,
+          "borderTopWidth": 3,
+        },
+        Object {
+          "borderBottomColor": "#77b300",
+          "borderLeftColor": "#77b300",
+          "borderRightColor": "#77b300",
+          "borderTopColor": "#77b300",
+        },
+        Object {
+          "borderColor": "#77b300",
+          "borderWidth": 3,
+        },
+      ],
+    ]
+  }
+  testID="UserIcon.photo"
+/>
+`;
+
+exports[`UserIcon displays small user image correctly 1`] = `
+<Image
+  accessibilityIgnoresInvertColors={true}
+  source={
+    Object {
+      "uri": "some_uri",
+    }
+  }
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 9999,
+          "borderBottomRightRadius": 9999,
+          "borderTopLeftRadius": 9999,
+          "borderTopRightRadius": 9999,
+        },
+        Object {
+          "width": 22,
+        },
+        Object {
+          "height": 22,
+        },
+      ],
+    ]
+  }
+  testID="UserIcon.photo"
+/>
+`;
+
+exports[`UserIcon displays user image correctly 1`] = `
+<Image
+  accessibilityIgnoresInvertColors={true}
+  source={
+    Object {
+      "uri": "some_uri",
+    }
+  }
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 9999,
+          "borderBottomRightRadius": 9999,
+          "borderTopLeftRadius": 9999,
+          "borderTopRightRadius": 9999,
+        },
+        Object {
+          "width": 40,
+        },
+        Object {
+          "height": 40,
+        },
+      ],
+    ]
+  }
+  testID="UserIcon.photo"
+/>
+`;

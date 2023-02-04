@@ -43,10 +43,7 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
 };
 
 const QualityGradeStatus = ( { qualityGrade, color }: Props ): React.Node => (
-  <View>
-    { qualityGradeSVG( qualityGrade, color )}
-  </View>
-
+  <View>{qualityGradeSVG( qualityGrade, color )}</View>
 );
 
 export default QualityGradeStatus;

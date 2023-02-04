@@ -1,22 +1,27 @@
 import INatIcon, { glyphMap } from "components/INatIcon";
-import ActivityCount from "components/SharedComponents/ActivityCount";
+import {
+  ActivityCount,
+  Body1,
+  Body2,
+  Body3,
+  Body4,
+  Button,
+  CloseButton,
+  EvidenceButton,
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  InlineUser,
+  List1,
+  List2,
+  QualityGradeStatus,
+  Subheading1,
+  Tabs,
+  UserIcon
+} from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
-import Button from "components/SharedComponents/Buttons/Button";
-import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
-import InlineUser from "components/SharedComponents/InlineUser";
-import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
-import Body1 from "components/SharedComponents/Typography/Body1";
-import Body2 from "components/SharedComponents/Typography/Body2";
-import Body3 from "components/SharedComponents/Typography/Body3";
-import Body4 from "components/SharedComponents/Typography/Body4";
-import Heading1 from "components/SharedComponents/Typography/Heading1";
-import Heading2 from "components/SharedComponents/Typography/Heading2";
-import Heading3 from "components/SharedComponents/Typography/Heading3";
-import Heading4 from "components/SharedComponents/Typography/Heading4";
-import List1 from "components/SharedComponents/Typography/List1";
-import List2 from "components/SharedComponents/Typography/List2";
-import Subheading1 from "components/SharedComponents/Typography/Subheading1";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import {
   ScrollView,
@@ -45,7 +50,12 @@ const UiLibrary = ( ) => {
         </Body1>
         <Heading1>Buttons</Heading1>
         <Heading2>Button</Heading2>
-        <Button className="mb-2" level="primary" text="PRIMARY BUTTON" />
+        <Button
+          className="mb-2"
+          level="primary"
+          text="PRIMARY BUTTON"
+          accessibilityHint="Describes the result of performing the tap action on this element."
+        />
         <Button className="mb-2" text="NEUTRAL BUTTON" />
         <Button
           className="mb-2"
@@ -167,6 +177,15 @@ const UiLibrary = ( ) => {
             />
           </View>
         </View>
+
+        <Heading2>Special Icon buttons</Heading2>
+        <View className="flex flex-row justify-between">
+          <View className="bg-secondary">
+            <Body2>CloseButton</Body2>
+            <CloseButton />
+          </View>
+        </View>
+
         <Heading2>Custom iNaturalist Icons</Heading2>
         <Body1>
           Make sure you're exporting glyphMap from components/INatIcon.js to see all custom icons
@@ -185,22 +204,64 @@ const UiLibrary = ( ) => {
             />
           ) )}
         </View>
-        <Heading2 className="my-2">InlineUser</Heading2>
-        <Body2 className="my-2">InlineUser component</Body2>
-        <InlineUser
-          user={currentUser || {
-            icon_url:
-            "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
-            login: "turtletamer74"
-          }}
+
+        <Heading2 className="my-2">User Icons</Heading2>
+        <View className="flex flex-row justify-between">
+          <View>
+            <Body2 className="my-2">UserIcon</Body2>
+            <UserIcon
+              uri={{
+                uri: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
+              }}
+            />
+          </View>
+          <View>
+            <Body2 className="my-2">InlineUser</Body2>
+            <InlineUser
+              user={
+                currentUser || {
+                  icon_url:
+                    "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
+                  login: "turtletamer74"
+                }
+              }
+            />
+          </View>
+          <View>
+            <Body2 className="my-2">
+              InlineUser for a user that has no icon set
+            </Body2>
+            <InlineUser user={{ login: "frogfinder23" }} />
+          </View>
+        </View>
+
+        <Heading2>Tabs component</Heading2>
+        <Tabs
+          tabs={[
+            {
+              id: "TAB1",
+              text: "Tab1",
+              onPress: () => {
+                console.log( "Tab1" );
+              }
+            },
+            {
+              id: "TAB2",
+              text: "Tab2",
+              onPress: () => {
+                console.log( "Tab2" );
+              }
+            }
+          ]}
+          activeId="TAB1"
         />
-        <Body2 className="my-2">InlineUser component for a user that has no icon set</Body2>
-        <InlineUser user={{ login: "frogfinder23" }} />
 
         <Heading2 className="my-2">Quality Grade Status</Heading2>
         <View className="flex flex-row justify-between">
           <View>
             <Body2 className="text-center">Research</Body2>
+            { /* TODO: refactor to not have color prop because we only need black and white */}
+            { /* TODO: better to access the color from theme here */}
             <QualityGradeStatus qualityGrade="research" color="black" />
           </View>
           <View>

@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import UserIcon from "components/SharedComponents/UserIcon/UserIcon";
 import {
   Pressable, Text, View
 } from "components/styledComponents";
@@ -11,8 +12,6 @@ import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import User from "realmModels/User";
 import useIsConnected from "sharedHooks/useIsConnected";
 import colors from "styles/tailwindColors";
-
-import UserIcon from "./UserIcon";
 
 type Props = {
   user: any
