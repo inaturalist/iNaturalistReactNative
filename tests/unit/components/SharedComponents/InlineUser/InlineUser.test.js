@@ -22,7 +22,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 const mockUser = factory( "RemoteUser" );
 const mockUserWithoutImage = factory( "RemoteUser", { icon_url: null } );
 
-const consistentUser = { login: "some_login", icon_url: "some_icon_url" };
+const snapshotUser = { login: "some_login", icon_url: "some_icon_url" };
 
 jest.mock(
   "components/SharedComponents/UserIcon/UserIcon",
@@ -40,9 +40,8 @@ describe( "InlineUser", ( ) => {
 
   it( "renders reliably", () => {
     // Snapshot test
-    render( <InlineUser user={consistentUser} /> );
-    // TODO: Enable this test when Typography is used instead of Text
-    // expect( screen ).toMatchSnapshot();
+    render( <InlineUser user={snapshotUser} /> );
+    expect( screen ).toMatchSnapshot();
   } );
 
   it( "displays user handle and image correctly", async ( ) => {
@@ -101,7 +100,7 @@ describe( "InlineUser", ( ) => {
     // TODO: Enable this test when the offline icon is from our icon design font
     // it( "renders reliably", ( ) => {
     //   // Snapshot test
-    //   render( <InlineUser user={consistentUser} /> );
+    //   render( <InlineUser user={snapshotUser} /> );
     //   expect( screen ).toMatchSnapshot();
     // } );
   } );

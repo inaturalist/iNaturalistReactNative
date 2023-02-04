@@ -1,7 +1,9 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+// Directly imported, not from index.js to avoid circular dependency
 import Body3 from "components/SharedComponents/Typography/Body3";
+// Directly imported, not from index.js to avoid circular dependency
 import UserIcon from "components/SharedComponents/UserIcon/UserIcon";
 import {
   Pressable, View
