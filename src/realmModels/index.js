@@ -2,6 +2,7 @@ import RNFS from "react-native-fs";
 
 import Application from "./Application";
 import Comment from "./Comment";
+import Flag from "./Flag";
 import Identification from "./Identification";
 import Observation from "./Observation";
 import ObservationPhoto from "./ObservationPhoto";
@@ -14,6 +15,7 @@ export default {
   schema: [
     Application,
     Comment,
+    Flag,
     Identification,
     Observation,
     ObservationPhoto,
@@ -22,9 +24,19 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 31,
+  schemaVersion: 32,
   path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   migration: ( oldRealm, newRealm ) => {
+    if ( oldRealm.schemaVersion < 32 ) {
+      const oldObservations = oldRealm.objects( "Observation" );
+      const newObservations = newRealm.objects( "Observation" );
+      oldObservations.keys( ).forEach( objectIndex => {
+        const oldObservation = oldObservations[objectIndex];
+        const newObservation = newObservations[objectIndex];
+        newObservation.updated_at = oldObservation.created_at;
+      } );
+    }
+
     // Apparently you need to migrate when making a property optional
     if ( oldRealm.schemaVersion < 31 ) {
       const oldTaxa = oldRealm.objects( "Taxon" );
@@ -55,6 +67,7 @@ export default {
     if ( oldRealm.schemaVersion < 29 ) {
       const oldTaxa = oldRealm.objects( "Taxon" );
       const newTaxa = newRealm.objects( "Taxon" );
+
       // loop through all objects and set the new property in the new schema
       oldTaxa.keys( ).forEach( objectIndex => {
         const oldTaxon = oldTaxa[objectIndex];

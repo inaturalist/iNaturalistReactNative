@@ -1,5 +1,6 @@
 import { Realm } from "@realm/react";
 
+import Flag from "./Flag";
 import User from "./User";
 
 class Comment extends Realm.Object {
@@ -7,6 +8,7 @@ class Comment extends Realm.Object {
     uuid: true,
     body: true,
     created_at: true,
+    flags: Flag.FLAG_FIELDS,
     id: true,
     user: User && User.USER_FIELDS
   };
@@ -31,6 +33,7 @@ class Comment extends Realm.Object {
       uuid: "string",
       body: "string?",
       created_at: { type: "string?", mapTo: "createdAt" },
+      flags: "Flag[]",
       id: "int?",
       user: "User?",
       // this creates an inverse relationship so comments

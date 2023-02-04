@@ -171,6 +171,16 @@ const ObsDetails = ( ): Node => {
     } );
   };
 
+  // reload if change to observation
+  useEffect( () => {
+    if ( localObservation && remoteObservation ) {
+      const remoteUpdatedAt = new Date( remoteObservation?.updated_at );
+      if ( remoteUpdatedAt > localObservation?.updated_at ) {
+        Observation.upsertRemoteObservations( [remoteObservation], realm );
+      }
+    }
+  }, [localObservation, remoteObservation, realm] );
+
   useEffect( ( ) => {
     if ( localObservation && !localObservation.viewed && !markViewedMutation.isLoading ) {
       markViewedMutation.mutate( { id: uuid } );
@@ -286,7 +296,7 @@ const ObsDetails = ( ): Node => {
           <PhotoScroll photos={photos} />
           {/* TODO: a11y props are not passed down into this 3.party */}
           <IconButton
-            icon={currentUserFaved ? "star-outline" : "star"}
+            icon={currentUserFaved ? "star-outline" : "pencil"}
             onPress={faveOrUnfave}
             textColor={colors.white}
             className="absolute top-3 right-0"
