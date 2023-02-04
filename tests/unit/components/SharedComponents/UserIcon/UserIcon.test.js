@@ -9,7 +9,7 @@ describe( "UserIcon", () => {
     render( <UserIcon uri={mockUri} /> );
 
     // Check for image source
-    const profilePicture = await screen.findByTestId( "UserIcon.photo" );
+    const profilePicture = await screen.findByRole( "image" );
     expect( profilePicture ).toBeTruthy();
     expect( profilePicture.props.source ).toEqual( mockUri );
 

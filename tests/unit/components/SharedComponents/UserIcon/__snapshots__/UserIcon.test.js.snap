@@ -3,6 +3,7 @@
 exports[`UserIcon displays active user image correctly 1`] = `
 <Image
   accessibilityIgnoresInvertColors={true}
+  accessibilityRole="image"
   source={
     Object {
       "uri": "some_uri",
@@ -49,6 +50,7 @@ exports[`UserIcon displays active user image correctly 1`] = `
 exports[`UserIcon displays small user image correctly 1`] = `
 <Image
   accessibilityIgnoresInvertColors={true}
+  accessibilityRole="image"
   source={
     Object {
       "uri": "some_uri",
@@ -79,6 +81,7 @@ exports[`UserIcon displays small user image correctly 1`] = `
 exports[`UserIcon displays user image correctly 1`] = `
 <Image
   accessibilityIgnoresInvertColors={true}
+  accessibilityRole="image"
   source={
     Object {
       "uri": "some_uri",
