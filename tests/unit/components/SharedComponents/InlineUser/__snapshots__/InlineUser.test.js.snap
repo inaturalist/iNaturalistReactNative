@@ -2,8 +2,8 @@
 
 exports[`InlineUser renders reliably 1`] = `
 <View
-  accessibilityHint="Navigates-to-user-profile"
-  accessibilityLabel="User"
+  accessibilityHint="Navigates to user profile."
+  accessibilityLabel="User @some_login"
   accessibilityRole="link"
   accessible={true}
   collapsable={false}
