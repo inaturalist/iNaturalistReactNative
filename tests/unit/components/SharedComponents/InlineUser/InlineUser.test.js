@@ -56,17 +56,6 @@ describe( "InlineUser", ( ) => {
     expect( screen.queryByTestId( "InlineUser.NoInternetPicture" ) ).not.toBeTruthy( );
   } );
 
-  it( "displays user handle and and fallback image correctly", async ( ) => {
-    render( <InlineUser user={mockUserWithoutImage} /> );
-
-    expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy();
-    // This icon appears after useIsConnected returns true
-    // so we have to use await and findByTestId
-    expect( await screen.findByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy();
-    expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();
-    expect( screen.queryByTestId( "InlineUser.NoInternetPicture" ) ).not.toBeTruthy();
-  } );
-
   it( "fires onPress handler", ( ) => {
     render( <InlineUser user={mockUser} /> );
 
@@ -75,6 +64,19 @@ describe( "InlineUser", ( ) => {
 
     expect( mockNavigate )
       .toHaveBeenCalledWith( "UserProfile", { userId: mockUser.id } );
+  } );
+
+  describe( "when user has no icon set", () => {
+    it( "displays user handle and fallback image correctly", async ( ) => {
+      render( <InlineUser user={mockUserWithoutImage} /> );
+
+      expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy();
+      // This icon appears after useIsConnected returns true
+      // so we have to use await and findByTestId
+      expect( await screen.findByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy();
+      expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();
+      expect( screen.queryByTestId( "InlineUser.NoInternetPicture" ) ).not.toBeTruthy();
+    } );
   } );
 
   describe( "when offline", () => {
