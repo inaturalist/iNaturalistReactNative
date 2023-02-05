@@ -1,5 +1,6 @@
 // @flow
 
+import classnames from "classnames";
 import INatIcon from "components/INatIcon";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import { View } from "components/styledComponents";
@@ -7,7 +8,6 @@ import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
-import classnames from 'classnames'
 
 type Props = {
   accessibilityHint?: string,
@@ -32,7 +32,7 @@ const ActivityCount = ( {
   const defaultColor = theme.colors.primary;
   return (
     <View
-      className={classnames("flex-row items-center", marginClass)}
+      className={classnames( "flex-row items-center", marginClass )}
       accessible
       accessibilityLabel={accessibilityLabel || t( "Intl-number", { val: count || 0 } )}
       accessibilityHint={accessibilityHint}

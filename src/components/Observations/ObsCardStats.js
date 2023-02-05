@@ -1,5 +1,6 @@
 // @flow
 
+import classnames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import { ActivityCount, QualityGradeStatus } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -7,7 +8,6 @@ import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
-import classnames from 'classnames'
 
 type Props = {
   item: Object,
@@ -29,13 +29,14 @@ const ObsCardStats = ( { item, layout }: Props ): Node => {
     return theme.colors.primary;
   };
 
-  const margin = layout === "list" ? "mb-2.5" : "mr-2.5"
-  const flexDirection = layout === "list" ? "flex-column" : "flex-row"
+  const margin = layout === "list" ? "mb-2.5" : "mr-2.5";
+  const flexDirection = layout === "list" ? "flex-column" : "flex-row";
   return (
     <View className={classnames(
       "flex px-2",
       flexDirection
-    )}>
+    )}
+    >
       <ActivityCount
         marginClass={margin}
         count={item.identifications?.length}
@@ -52,8 +53,7 @@ const ObsCardStats = ( { item, layout }: Props ): Node => {
       />
       <QualityGradeStatus qualityGrade={qualityGrade} color={getIconColor( )} />
     </View>
-  )
-
+  );
 };
 
 export default ObsCardStats;

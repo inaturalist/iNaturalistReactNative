@@ -1,5 +1,6 @@
 // @flow
 
+import classnames from "classnames";
 import {
   Image, Pressable, View
 } from "components/styledComponents";
@@ -7,7 +8,6 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import classnames from 'classnames'
 import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
@@ -56,20 +56,20 @@ const GridItem = ( {
         </View>
       );
     }
-    const showUpload = uri !== "project" && item.needsSync( )
+    const showUpload = uri !== "project" && item.needsSync( );
     return (
       <View className={classnames(
         "absolute bottom-0",
         {
           "right-0": showUpload
         }
-      )}>
-        { showUpload ?
-            <UploadButton observation={item} /> :
-            <ObsCardStats item={item} layout="grid" />
-        }
+      )}
+      >
+        { showUpload
+          ? <UploadButton observation={item} />
+          : <ObsCardStats item={item} layout="grid" />}
       </View>
-    )
+    );
   };
 
   return (
