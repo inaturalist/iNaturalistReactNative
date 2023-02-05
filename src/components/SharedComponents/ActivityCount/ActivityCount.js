@@ -7,6 +7,7 @@ import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
+import classnames from 'classnames'
 
 type Props = {
   accessibilityHint?: string,
@@ -23,14 +24,15 @@ const ActivityCount = ( {
   color,
   count,
   icon,
-  testID
+  testID,
+  marginClass
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
   const defaultColor = theme.colors.primary;
   return (
     <View
-      className="flex-row items-center"
+      className={classnames("flex-row items-center", marginClass)}
       accessible
       accessibilityLabel={accessibilityLabel || t( "Intl-number", { val: count || 0 } )}
       accessibilityHint={accessibilityHint}

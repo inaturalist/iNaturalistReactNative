@@ -7,6 +7,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import classnames from 'classnames'
 import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
@@ -55,7 +56,20 @@ const GridItem = ( {
         </View>
       );
     }
-    return <ObsCardStats item={item} layout="grid" />;
+    const showUpload = uri !== "project" && item.needsSync( )
+    return (
+      <View className={classnames(
+        "absolute bottom-0",
+        {
+          "right-0": showUpload
+        }
+      )}>
+        { showUpload ?
+            <UploadButton observation={item} /> :
+            <ObsCardStats item={item} layout="grid" />
+        }
+      </View>
+    )
   };
 
   return (
@@ -66,7 +80,7 @@ const GridItem = ( {
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
-      <View>
+      <View className="relative">
         {
           imageUri && imageUri.uri
             ? (

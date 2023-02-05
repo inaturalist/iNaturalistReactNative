@@ -7,74 +7,53 @@ import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
+import classnames from 'classnames'
 
 type Props = {
   item: Object,
-  type?: string,
   layout?: string
 }
 
-const ObsCardStats = ( { item, type, layout }: Props ): Node => {
+const ObsCardStats = ( { item, layout }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
   const qualityGrade = checkCamelAndSnakeCase( item, "qualityGrade" );
 
-  const setIconColor = ( ) => {
+  const getIconColor = ( ) => {
+    if ( layout === "grid" ) {
+      return theme.colors.onSecondary;
+    }
     if ( item.viewed === false ) {
       return theme.colors.error;
-    } if ( layout === "grid" ) {
-      return theme.colors.onPrimary;
     }
     return theme.colors.primary;
   };
 
-  const renderIdRow = ( ) => {
-    const numIdents = item.identifications?.length || 0;
-    return (
+  const margin = layout === "list" ? "mb-2.5" : "mr-2.5"
+  const flexDirection = layout === "list" ? "flex-column" : "flex-row"
+  return (
+    <View className={classnames(
+      "flex px-2",
+      flexDirection
+    )}>
       <ActivityCount
-        count={numIdents}
-        color={setIconColor( )}
-        accessibilityLabel={t( "x-identifications", { count: numIdents } )}
+        marginClass={margin}
+        count={item.identifications?.length}
+        color={getIconColor( )}
+        accessibilityLabel={t( "Number-of-identifications" )}
         testID="ActivityCount.identificationCount"
       />
-    );
-  };
-
-  const renderCommentRow = ( ) => {
-    const numComments = item.comments?.length || 0;
-    return (
       <ActivityCount
+        marginClass={margin}
         count={item.comments?.length}
-        color={setIconColor( )}
-        accessibilityLabel={t( "x-comments", { count: numComments } )}
+        color={getIconColor( )}
+        accessibilityLabel={t( "Number-of-comments" )}
         testID="ActivityCount.commentCount"
       />
-    );
-  };
-
-  const renderQualityGrade = ( ) => (
-    <QualityGradeStatus qualityGrade={qualityGrade} color={setIconColor( )} />
-  );
-
-  const renderColumn = ( ) => (
-    <View>
-      {renderIdRow( )}
-      {renderCommentRow( )}
-      {renderQualityGrade( )}
+      <QualityGradeStatus qualityGrade={qualityGrade} color={getIconColor( )} />
     </View>
-  );
+  )
 
-  const renderRow = ( ) => (
-    <View className="flex-row absolute bottom-1 justify-between w-full px-2">
-      <View className="flex-row">
-        {renderIdRow( )}
-        {renderCommentRow( )}
-      </View>
-      {renderQualityGrade( )}
-    </View>
-  );
-
-  return type === "list" ? renderColumn( ) : renderRow( );
 };
 
 export default ObsCardStats;
