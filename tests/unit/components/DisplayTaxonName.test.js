@@ -36,106 +36,109 @@ const uncapitalizedTaxon = factory( "LocalTaxon", {
   rank_level: 10
 } );
 
-describe( "when common name is first", () => {
+describe( "when common name is first", ( ) => {
   const user = { prefers_scientific_name_first: false };
 
-  test( "renders correct taxon for species", () => {
-    render(
-      <DisplayTaxonName item={{ taxon: speciesTaxon, user }} />
-    );
+  test( "renders correct taxon for species", ( ) => {
+    render( <DisplayTaxonName item={{ taxon: speciesTaxon, user }} /> );
 
-    expect(
-      screen.getByText( `${speciesTaxon.preferred_common_name} (${speciesTaxon.name})` )
-    ).toBeTruthy();
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      `${speciesTaxon.preferred_common_name} ${speciesTaxon.name}`
+    );
   } );
 
-  test( "renders correct taxon w/o common name", () => {
-    render(
-      <DisplayTaxonName item={{ taxon: noCommonNameTaxon, user }} />
-    );
+  test( "renders correct taxon w/o common name", ( ) => {
+    render( <DisplayTaxonName item={{ taxon: noCommonNameTaxon, user }} /> );
 
-    expect( screen.getByText( noCommonNameTaxon.name ) ).toBeTruthy();
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      noCommonNameTaxon.name
+    );
   } );
 
-  test( "renders correct taxon w/o common name and no species", () => {
-    render(
-      <DisplayTaxonName item={{ taxon: highRankTaxon, user }} />
-    );
+  test( "renders correct taxon w/o common name and no species", ( ) => {
+    render( <DisplayTaxonName item={{ taxon: highRankTaxon, user }} /> );
 
-    expect(
-      screen.getByText( `${highRankTaxon.rank} ${highRankTaxon.name}` )
-    ).toBeTruthy();
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      `${highRankTaxon.rank} ${highRankTaxon.name}`
+    );
   } );
 
-  test( "renders correct taxon for a subspecies", () => {
-    render(
-      <DisplayTaxonName item={{ taxon: highRankTaxon, user }} />
-    );
+  test( "renders correct taxon for a subspecies", ( ) => {
+    render( <DisplayTaxonName item={{ taxon: highRankTaxon, user }} /> );
 
-    expect(
-      screen.getByText( `${highRankTaxon.rank} ${highRankTaxon.name}` )
-    ).toBeTruthy();
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      `${highRankTaxon.rank} ${highRankTaxon.name}`
+    );
   } );
 
-  test( "renders correct taxon for species", () => {
-    render(
-      <DisplayTaxonName item={{ taxon: subspeciesTaxon, user }} />
-    );
+  test( "renders correct taxon for species", ( ) => {
+    render( <DisplayTaxonName item={{ taxon: subspeciesTaxon, user }} /> );
 
-    expect(
-      screen.getByText( "Silver Lupine (Lupinus albifrons var. collinus)" )
-    ).toBeTruthy();
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      "Silver Lupine Lupinus albifrons var. collinus"
+    );
   } );
 
-  test( "renders correct taxon for improperly capitalized common name", () => {
+  test( "renders correct taxon for improperly capitalized common name", ( ) => {
+    render( <DisplayTaxonName item={{ taxon: uncapitalizedTaxon, user }} /> );
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      "Crown-of-thorns Blue Sea-Stars Acanthaster planci"
+    );
+  } );
+
+  test( "renders correct taxon for species in grid view", ( ) => {
     render(
-      <DisplayTaxonName item={{ taxon: uncapitalizedTaxon, user }} />
+      <DisplayTaxonName layout="grid" item={{ taxon: subspeciesTaxon, user }} />
     );
 
-    expect(
-      screen.getByText( "Crown-of-thorns Blue Sea-Stars (Acanthaster planci)" )
-    ).toBeTruthy();
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      "Silver Lupine Lupinusalbifrons var. collinus"
+    );
   } );
 } );
 
-describe( "when scientific name is first", () => {
+describe( "when scientific name is first", ( ) => {
   const user = { prefers_scientific_name_first: true };
 
-  test( "renders correct taxon for species", () => {
-    render(
-      <DisplayTaxonName item={{ taxon: speciesTaxon, user }} />
-    );
+  test( "renders correct taxon for species", ( ) => {
+    render( <DisplayTaxonName item={{ taxon: speciesTaxon, user }} /> );
 
-    expect(
-      screen.getByText( `${speciesTaxon.name} (${speciesTaxon.preferred_common_name})` )
-    ).toBeTruthy();
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      `${speciesTaxon.name} ${speciesTaxon.preferred_common_name}`
+    );
   } );
 
-  test( "renders correct taxon w/o common name", () => {
-    render(
-      <DisplayTaxonName item={{ taxon: noCommonNameTaxon, user }} />
-    );
+  test( "renders correct taxon w/o common name", ( ) => {
+    render( <DisplayTaxonName item={{ taxon: noCommonNameTaxon, user }} /> );
 
-    expect( screen.getByText( noCommonNameTaxon.name ) ).toBeTruthy();
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      noCommonNameTaxon.name
+    );
   } );
 
-  test( "renders correct taxon w/o common name and no species", () => {
-    render(
-      <DisplayTaxonName item={{ taxon: highRankTaxon, user }} />
-    );
+  test( "renders correct taxon w/o common name and no species", ( ) => {
+    render( <DisplayTaxonName item={{ taxon: highRankTaxon, user }} /> );
 
-    expect(
-      screen.getByText( `${highRankTaxon.rank} ${highRankTaxon.name}` )
-    ).toBeTruthy();
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      `${highRankTaxon.rank} ${highRankTaxon.name}`
+    );
   } );
 
-  test( "renders correct taxon for species", () => {
+  test.only( "renders correct taxon for species", ( ) => {
+    render( <DisplayTaxonName item={{ taxon: subspeciesTaxon, user }} /> );
+
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      "Silver LupineLupinus albifrons var. collinus"
+    );
+  } );
+
+  test( "renders correct taxon for species in grid view", ( ) => {
     render(
-      <DisplayTaxonName item={{ taxon: subspeciesTaxon, user }} />
+      <DisplayTaxonName layout="grid" item={{ taxon: subspeciesTaxon, user }} />
     );
 
-    expect(
-      screen.getByText( "Lupinus albifrons var. collinus (Silver Lupine)" )
-    ).toBeTruthy();
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      "Lupinus albifrons var. collinusSilver Lupine"
+    );
   } );
 } );

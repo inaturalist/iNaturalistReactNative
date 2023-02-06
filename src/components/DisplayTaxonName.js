@@ -14,10 +14,10 @@ type Props = {
 };
 
 const styles = StyleSheet.create( {
-  maxWidth: {
+  commonName: {
     maxWidth: "100%"
   },
-  italic: {
+  scientificName: {
     fontStyle: "italic"
   }
 } );
@@ -39,22 +39,23 @@ const DisplayTaxonName = ( {
 
   return (
     <View
-      className={classnames( "flex flex-wrap", {
-        "flex-row-reverse": isListView && scientificNameFirst,
-        "justify-end": isListView && scientificNameFirst,
-        "flex-row items-end": isListView,
+      testID="display-taxon-name"
+      className={classnames( "flex", {
+        "flex-row-reverse flex-wrap-reverse justify-end items-start":
+          scientificNameFirst && isListView,
+        "flex-row items-end flex-wrap": isListView && !scientificNameFirst,
         "w-11/12": isListView,
         "flex-col-reverse": !isListView && scientificNameFirst
       } )}
     >
       {taxonData.commonName && (
-        <Body1 numberOfLines={3} style={styles.maxWidth}>
+        <Body1 numberOfLines={3} style={styles.commonName}>
           {`${taxonData.commonName}${
             !scientificNameFirst && isListView ? " " : ""
           }`}
         </Body1>
       )}
-      <Body3 style={styles.italic}>
+      <Body3 style={styles.scientificName}>
         {`${taxonData.scientificName}${
           scientificNameFirst && isListView ? " " : ""
         }`}
