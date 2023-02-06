@@ -13,7 +13,7 @@ type Props = {
   view?: string
 }
 
-const ObsCardDetails = ( { item, view }: Props ): Node => {
+const ObsCardDetails = ( { item = "list", view }: Props ): Node => {
   const placeGuess = checkCamelAndSnakeCase( item, "placeGuess" );
 
   const displayTime = ( ) => {
@@ -25,7 +25,7 @@ const ObsCardDetails = ( { item, view }: Props ): Node => {
 
   return (
     <View className={view === "grid" && "border border-border p-2"}>
-      <DisplayTaxonName item={item} />
+      <DisplayTaxonName item={item} layout={view} />
       <Text numberOfLines={1}>
         <IconMaterial name="location-pin" size={15} />
         {placeGuess || "no place guess"}
