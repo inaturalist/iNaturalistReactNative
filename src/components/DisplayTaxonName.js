@@ -5,12 +5,22 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 
 type Props = {
   item: Object,
-  layout: String,
+  layout?: string,
 };
+
+const styles = StyleSheet.create( {
+  maxWidth: {
+    maxWidth: "100%"
+  },
+  italic: {
+    fontStyle: "italic"
+  }
+} );
 
 const DisplayTaxonName = ( {
   layout = "list",
@@ -34,18 +44,17 @@ const DisplayTaxonName = ( {
         "justify-end": isListView && scientificNameFirst,
         "flex-row items-end": isListView,
         "w-11/12": isListView,
-        "flex-col-reverse": !isListView && scientificNameFirst,
-        "w-10/12": !isListView
+        "flex-col-reverse": !isListView && scientificNameFirst
       } )}
     >
       {taxonData.commonName && (
-        <Body1 numberOfLines={3} ellipsizeMode="tail">
+        <Body1 numberOfLines={3} style={styles.maxWidth}>
           {`${taxonData.commonName}${
             !scientificNameFirst && isListView ? " " : ""
           }`}
         </Body1>
       )}
-      <Body3>
+      <Body3 style={styles.italic}>
         {`${taxonData.scientificName}${
           scientificNameFirst && isListView ? " " : ""
         }`}
