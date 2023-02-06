@@ -21,9 +21,10 @@ test( "renders text passed into observation card", async ( ) => {
   expect( screen.getByTestId( `ObsList.obsCard.${testObservation.uuid}` ) ).toBeTruthy( );
   expect( screen.getByTestId( "ObsList.photo" ).props.source )
     .toStrictEqual( { uri: testObservation.observationPhotos[0].photo.url } );
-  expect( screen.getByText(
-    `${testObservation.taxon.preferred_common_name} (${testObservation.taxon.name})`
-  ) ).toBeTruthy( );
+
+  expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+    `${testObservation.taxon.preferred_common_name} ${testObservation.taxon.name}`
+  );
   expect( screen.getByText( testObservation.placeGuess ) ).toBeTruthy( );
   await waitFor( ( ) => {
     expect( screen.getByText( testObservation.comments.length.toString( ) ) ).toBeTruthy( );

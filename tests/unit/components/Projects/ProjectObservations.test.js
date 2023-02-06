@@ -40,15 +40,15 @@ describe( "ProjectObservations", () => {
 test( "displays project observations", ( ) => {
   renderComponent( <ProjectObservations /> );
 
-  expect( screen.getByText(
+  expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
     `${
       mockObservation.taxon.preferred_common_name
-    } (${
+    }${
       mockObservation.taxon.rank
     } ${
       mockObservation.taxon.name
-    })`
-  ) ).toBeTruthy( );
+    }`
+  );
   expect( screen.getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( {
     uri: mockObservation.observation_photos[0].photo.url
   } );
