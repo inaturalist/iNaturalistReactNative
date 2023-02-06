@@ -90,9 +90,9 @@ describe( "when common name is first", ( ) => {
     render(
       <DisplayTaxonName layout="grid" item={{ taxon: subspeciesTaxon, user }} />
     );
-
+    // Grid view should not have a space between text
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-      "Silver Lupine Lupinusalbifrons var. collinus"
+      "Silver LupineLupinus albifrons var. collinus"
     );
   } );
 } );
@@ -124,11 +124,11 @@ describe( "when scientific name is first", ( ) => {
     );
   } );
 
-  test.only( "renders correct taxon for species", ( ) => {
+  test( "renders correct taxon for species", ( ) => {
     render( <DisplayTaxonName item={{ taxon: subspeciesTaxon, user }} /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-      "Silver LupineLupinus albifrons var. collinus"
+      "Lupinus albifrons var. collinus Silver Lupine"
     );
   } );
 
@@ -137,6 +137,7 @@ describe( "when scientific name is first", ( ) => {
       <DisplayTaxonName layout="grid" item={{ taxon: subspeciesTaxon, user }} />
     );
 
+    // Grid view should not have a space between text
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       "Lupinus albifrons var. collinusSilver Lupine"
     );
