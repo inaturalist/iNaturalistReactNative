@@ -36,12 +36,12 @@ const DisplayTaxonName = ( {
 
   const isListView = layout === "list";
   const scientificNameFirst = user?.prefers_scientific_name_first;
-  const getSpaceChar = ( showSpace ) => showSpace && isListView ? " " : ""
+  const getSpaceChar = showSpace => ( showSpace && isListView ? " " : "" );
 
   const renderCommonName = ( ) => taxonData.commonName && (
     <Body1 numberOfLines={3} style={styles.commonName}>
       {`${taxonData.commonName}${
-        getSpaceChar(!scientificNameFirst)
+        getSpaceChar( !scientificNameFirst )
       }`}
     </Body1>
   );
@@ -56,7 +56,7 @@ const DisplayTaxonName = ( {
       {!scientificNameFirst && renderCommonName( )}
       <Body3 style={styles.scientificName}>
         {`${taxonData.scientificName}${
-          getSpaceChar(scientificNameFirst)
+          getSpaceChar( scientificNameFirst )
         }`}
       </Body3>
       {scientificNameFirst && renderCommonName( )}
