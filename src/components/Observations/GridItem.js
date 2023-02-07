@@ -32,7 +32,7 @@ const GridItem = ( {
   numColumns,
   uri
 }: Props ): Node => {
-  const onPress = () => handlePress( item );
+  const onPress = ( ) => handlePress( item );
 
   const photo = item?.observationPhotos?.[0]?.photo;
 
@@ -44,15 +44,15 @@ const GridItem = ( {
     ? Observation.projectUri( item )
     : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
 
-  const showStats = () => {
-    if ( uri !== "project" && item.needsSync() ) {
+  const showStats = ( ) => {
+    if ( uri !== "project" && item.needsSync( ) ) {
       return (
         <View className="absolute bottom-0 right-0">
           <UploadButton observation={item} />
         </View>
       );
     }
-    const showUpload = uri !== "project" && item.needsSync();
+    const showUpload = uri !== "project" && item.needsSync( );
     return (
       <View
         className={classnames( "absolute bottom-0", {
@@ -100,7 +100,7 @@ const GridItem = ( {
             />
           </View>
         )}
-        {showStats()}
+        {showStats( )}
       </View>
       <ObsCardDetails item={item} view="grid" />
     </Pressable>
