@@ -117,6 +117,7 @@ export const generateTaxonPieces = taxon => {
     }
 
     if ( taxon.rankPiece ) {
+      taxonData.rankPiece = taxon.rankPiece
       scientificName.splice( -1, 0, taxon.rankPiece );
     }
   }
