@@ -29,7 +29,7 @@ const DisplayTaxonName = ( {
   const getSpaceChar = showSpace => ( showSpace && isListView ? " " : "" );
 
   const renderCommonName = ( ) => taxonData.commonName && (
-    <Body1 className="w-full" numberOfLines={3}>
+    <Body1 numberOfLines={3}>
       {`${taxonData.commonName}${
         getSpaceChar( !scientificNameFirst )
       }`}
