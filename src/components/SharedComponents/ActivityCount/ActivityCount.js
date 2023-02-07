@@ -9,15 +9,21 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
 
 type Props = {
-  count: number,
+  accessibilityHint?: string,
+  accessibilityLabel?: string,
   color: string,
+  count: number,
   icon?: string,
-  accessibilityLabel: string,
   testID?: string
 }
 
 const ActivityCount = ( {
-  count, color, icon, accessibilityLabel, testID
+  accessibilityHint,
+  accessibilityLabel,
+  color,
+  count,
+  icon,
+  testID
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -26,8 +32,8 @@ const ActivityCount = ( {
     <View
       className="flex-row items-center"
       accessible
-      accessibilityLabel={accessibilityLabel}
-      accessibilityValue={{ now: count }}
+      accessibilityLabel={accessibilityLabel || t( "Intl-number", { val: count || 0 } )}
+      accessibilityHint={accessibilityHint}
     >
       <INatIcon
         name={icon || "comments-filled-in"}

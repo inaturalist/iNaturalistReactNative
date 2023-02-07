@@ -190,8 +190,8 @@ const UiLibrary = ( ) => {
         <Body1>
           Make sure you're exporting glyphMap from components/INatIcon.js to see all custom icons
         </Body1>
-        <View className="flex flex-row flex-wrap justify-center">
-          {Object.keys( glyphMap ).map( iconName => (
+        {Object.keys( glyphMap ).sort().map( iconName => (
+          <Body1 key={`icons-${iconName}`}>
             <INatIcon
               name={iconName}
               className="p-3"
@@ -202,13 +202,15 @@ const UiLibrary = ( ) => {
               )}
               size={20}
             />
-          ) )}
-        </View>
+            { " " }
+            {iconName}
+          </Body1>
+        ) )}
 
         <Heading2 className="my-2">User Icons</Heading2>
-        <View className="flex flex-row justify-between">
+        <View className="flex flex-row justify-between mb-3">
           <View>
-            <Body2 className="my-2">UserIcon</Body2>
+            <Body2 className="my-2 text-center flex-grow">UserIcon</Body2>
             <UserIcon
               uri={{
                 uri: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155"
@@ -227,7 +229,7 @@ const UiLibrary = ( ) => {
               }
             />
           </View>
-          <View>
+          <View className="w-[33%]">
             <Body2 className="my-2">
               InlineUser for a user that has no icon set
             </Body2>
@@ -292,7 +294,7 @@ const UiLibrary = ( ) => {
             <ActivityCount
               count={10}
               color={theme.colors.primary}
-              accessibilityLabel={t( "Number-of-comments" )}
+              accessibilityLabel={t( "x-comments", { count: 10 } )}
             />
           </View>
           <View>
@@ -300,7 +302,7 @@ const UiLibrary = ( ) => {
             <ActivityCount
               count={20000}
               color={theme.colors.error}
-              accessibilityLabel={t( "Number-of-comments" )}
+              accessibilityLabel={t( "x-comments", { count: 10 } )}
             />
           </View>
         </View>

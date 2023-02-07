@@ -126,14 +126,14 @@ We're using Nativewind, a styling system for React Native based on Tailwind CSS.
 ## Creating custom icons
 
 1. Download custom icon from Figma as an SVG file.
-2. Add new icon to the iNaturalist icon set in Fontastic. Select all relevant iNaturalist icons, tap the Publish tab, and download the zip of icons.
+2. Add new icon to the iNaturalist icon set in Fontastic. Select all relevant iNaturalist icons and download the zip of icons.
 3. Create a glyph file from the CSS file you just downloaded, using the following command (be sure to replace /path/to/styles with your path):
 
 ```
-./node_modules/.bin/generate-icon '/path/to/styles.css' --componentName=INatIcon --fontFamily=inaturalisticons > 'src/components/INatIcon.js'
+npx generate-icon /path/to/styles.css --componentName=INatIcon --fontFamily=inaturalisticons > src/components/INatIcon.js
 ```
 
-4. When adding new icons, go to `src/components/INatIcon.js` and make two manual changes. First, edit the line `const iconSet = createIconSet( glyphMap, "inaturalisticons", "INatIcon.ttf" );` to `inaturalisticons.ttf` to match the name of the .ttf file you downloaded. There's a descrepency here because the `./node_modules/.bin/generate-icon` script makes an assumption that the name of the .ttf file is the same as the name of the component. Components need to start with a capital letter, and `inaturalisticons.tff` is likely not a name we want to change, since we're using it on the web too. We'll probably want to write our own `generate-icon` script to do this automatically. Second, add the following to your exports to make sure a user can see all custom iNat icons in the UI library:
+4. When adding new icons, go to `src/components/INatIcon.js` and make two manual changes. First, edit the line `const iconSet = createIconSet( glyphMap, "inaturalisticons", "INatIcon.ttf" );` to `inaturalisticons.ttf` to match the name of the .ttf file you downloaded. There's a discrepency here because the `generate-icon` script makes an assumption that the name of the .ttf file is the same as the name of the component. Components need to start with a capital letter, and `inaturalisticons.tff` is likely not a name we want to change, since we're using it on the web too. We'll probably want to write our own `generate-icon` script to do this automatically. Second, add the following to your exports to make sure a user can see all custom iNat icons in the UI library:
 
 ```
 export {
@@ -141,8 +141,8 @@ export {
 };
 ```
 
-5. Add the .ttf file you downloaded, `inaturalisticons.ttf`, to /assets/fonts
-6. Clean build folders for iOS/Android with `rm -rf ios/build` and `rm -rf android/app/build`
+5. Add the .ttf file you downloaded, `inaturalisticons.ttf`, to assets/fonts
+6. Clean build folders for iOS/Android with `rm -rf ios/build && rm -rf android/app/build`
 7. Add your icon somewhere in the app using `<INatIcon name="compass-rose" />` where name is set to the name of your new custom icon.
 8. Build the app on either platform, and you should see your custom icons
 

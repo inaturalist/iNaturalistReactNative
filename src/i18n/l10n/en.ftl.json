@@ -585,5 +585,7 @@
   "Navigate-to-observation-list": "Navigate to observation list",
   "Navigate-to-photo-importer": "Navigate to photo importer",
   "Open-side-menu": "Open side menu",
-  "Intl-number": "{ $val }"
+  "Intl-number": "{ $val }",
+  "x-comments": "{ $count ->\n  [one] { $count } comment\n *[other] { $count } comments\n}",
+  "x-identifications": "{ $count ->\n  [one] { $count } identification\n *[other] { $count } identifications\n}"
 }

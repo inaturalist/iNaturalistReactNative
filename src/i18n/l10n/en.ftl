@@ -795,3 +795,13 @@ Take-photo = Take photo
 
 
 Intl-number = { $val }
+
+x-comments = {$count ->
+    [one] {$count} comment
+    *[other] {$count} comments
+}
+
+x-identifications = {$count ->
+    [one] {$count} identification
+   *[other] {$count} identifications
+}

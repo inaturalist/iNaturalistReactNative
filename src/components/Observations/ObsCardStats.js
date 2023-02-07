@@ -28,23 +28,29 @@ const ObsCardStats = ( { item, type, layout }: Props ): Node => {
     return theme.colors.primary;
   };
 
-  const renderIdRow = ( ) => (
-    <ActivityCount
-      count={item.identifications?.length}
-      color={setIconColor( )}
-      accessibilityLabel={t( "Number-of-identifications" )}
-      testID="ActivityCount.identificationCount"
-    />
-  );
+  const renderIdRow = ( ) => {
+    const numIdents = item.identifications?.length || 0;
+    return (
+      <ActivityCount
+        count={numIdents}
+        color={setIconColor( )}
+        accessibilityLabel={t( "x-identifications", { count: numIdents } )}
+        testID="ActivityCount.identificationCount"
+      />
+    );
+  };
 
-  const renderCommentRow = ( ) => (
-    <ActivityCount
-      count={item.comments?.length}
-      color={setIconColor( )}
-      accessibilityLabel={t( "Number-of-comments" )}
-      testID="ActivityCount.commentCount"
-    />
-  );
+  const renderCommentRow = ( ) => {
+    const numComments = item.comments?.length || 0;
+    return (
+      <ActivityCount
+        count={item.comments?.length}
+        color={setIconColor( )}
+        accessibilityLabel={t( "x-comments", { count: numComments } )}
+        testID="ActivityCount.commentCount"
+      />
+    );
+  };
 
   const renderQualityGrade = ( ) => (
     <QualityGradeStatus qualityGrade={qualityGrade} color={setIconColor( )} />
