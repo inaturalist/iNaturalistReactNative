@@ -24,7 +24,9 @@ const glyphMap = {
   "flash-on-circle": 57360,
   "copyright-circle": 57361,
   "crop-photo-circle": 57362,
-  "trash-can": 57364
+  "trash-can": 57364,
+  "status-saved": 57363,
+  "upload-arrow": 57359
 };
 
 const iconSet = createIconSet( glyphMap, "inaturalisticons", "inaturalisticons.ttf" );

@@ -16,6 +16,7 @@ import Heading4 from "components/SharedComponents/Typography/Heading4";
 import List1 from "components/SharedComponents/Typography/List1";
 import List2 from "components/SharedComponents/Typography/List2";
 import Subheading1 from "components/SharedComponents/Typography/Subheading1";
+import UploadStatus from "components/SharedComponents/UploadStatus";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import {
   ScrollView,
@@ -219,6 +220,42 @@ const UiLibrary = ( ) => {
           <View>
             <QualityGradeStatus qualityGrade="casual" color="green" />
           </View>
+        </View>
+        <Heading2 className="my-2">Upload Status</Heading2>
+        <View className="flex flex-row justify-between">
+          <View>
+            <Body2 className="text-center">Progress &lt; 5%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.04}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">40%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.4}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">60%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.6}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">100%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={1}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+
         </View>
 
         <Heading2 className="my-2">More Stuff!</Heading2>
