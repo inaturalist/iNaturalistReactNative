@@ -4,6 +4,13 @@ import React from "react";
 
 import { renderComponent } from "../../../helpers/render";
 
+const mockLocationName = "San Francisco, CA";
+
+jest.mock( "sharedHooks/useLocationName", ( ) => ( {
+  __esModule: true,
+  default: ( ) => mockLocationName
+} ) );
+
 describe( "DateDisplay", () => {
   it( "should be accessible", () => {
     expect( <LocationDisplay latitude={30.181830} longitude={-85.760449} /> ).toBeAccessible( );
