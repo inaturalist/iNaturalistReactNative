@@ -16,6 +16,7 @@ import {
   InlineUser,
   List1,
   List2,
+  LocationDisplay,
   QualityGradeStatus,
   Subheading1,
   Tabs,
@@ -259,9 +260,14 @@ const UiLibrary = ( ) => {
           activeId="TAB1"
         />
 
+<<<<<<< HEAD
         <Heading2 className="my-2">Date Display Component</Heading2>
         <DateDisplay dateTime="2023-12-14T21:07:41-09:30" />
 
+=======
+        <Heading2 className="my-2">LocationDisplay Component</Heading2>
+        <LocationDisplay latitude={30.181830} longitude={-85.760449} />
+>>>>>>> c547d4d (Add LocationDisplay component)
         <Heading2 className="my-2">Quality Grade Status</Heading2>
         <View className="flex flex-row justify-between">
           <View>
