@@ -18,7 +18,8 @@ import {
   QualityGradeStatus,
   Subheading1,
   Tabs,
-  UserIcon
+  UserIcon,
+  DateDisplay
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
@@ -255,6 +256,9 @@ const UiLibrary = ( ) => {
           ]}
           activeId="TAB1"
         />
+        
+        <Heading2 className="my-2">Date Display Component</Heading2>
+        <DateDisplay dateTime="2023-12-14T21:07:41-09:30" />
 
         <Heading2 className="my-2">Quality Grade Status</Heading2>
         <View className="flex flex-row justify-between">
