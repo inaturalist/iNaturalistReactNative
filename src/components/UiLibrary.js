@@ -1,4 +1,5 @@
 import INatIcon, { glyphMap } from "components/INatIcon";
+import ObsStatus from "components/Observations/ObsStatus";
 import {
   ActivityCount,
   Body1,
@@ -306,6 +307,18 @@ const UiLibrary = ( ) => {
             />
           </View>
         </View>
+
+        <Heading2 className="my-2">Obs status!</Heading2>
+        <View className="bg-darkGray mb-2">
+          <ObsStatus
+            layout="horizontal"
+            item={{ comments: [1, 2, 3, 4], identifications: [1, 2, 3] }}
+          />
+        </View>
+        <ObsStatus
+          layout="vertical"
+          item={{ comments: [1, 2, 3], identifications: [1, 2, 3, 4, 5, 6] }}
+        />
 
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">

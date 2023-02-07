@@ -1,9 +1,7 @@
 // @flow
 
 import classnames from "classnames";
-import {
-  Image, Pressable, View
-} from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
@@ -13,7 +11,7 @@ import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
 
 import ObsCardDetails from "./ObsCardDetails";
-import ObsCardStats from "./ObsCardStats";
+import ObsStatus from "./ObsStatus";
 import UploadButton from "./UploadButton";
 
 type Props = {
@@ -24,8 +22,8 @@ type Props = {
   handlePress: Function,
   // Number of columns in the grid; we need this to set the margins correctly
   numColumns?: number,
-  uri?: string
-}
+  uri?: string,
+};
 
 const GridItem = ( {
   handlePress,
@@ -34,40 +32,38 @@ const GridItem = ( {
   numColumns,
   uri
 }: Props ): Node => {
-  const onPress = ( ) => handlePress( item );
+  const onPress = () => handlePress( item );
 
   const photo = item?.observationPhotos?.[0]?.photo;
 
   const totalObsPhotos = item?.observationPhotos?.length;
   const hasMultiplePhotos = totalObsPhotos > 1;
-  const filterIconName = totalObsPhotos > 9
-    ? "filter-9-plus"
-    : `filter-${totalObsPhotos}`;
+  const filterIconName = totalObsPhotos > 9 ? "filter-9-plus" : `filter-${totalObsPhotos}`;
 
   const imageUri = uri === "project"
     ? Observation.projectUri( item )
     : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
 
-  const showStats = ( ) => {
-    if ( uri !== "project" && item.needsSync( ) ) {
+  const showStats = () => {
+    if ( uri !== "project" && item.needsSync() ) {
       return (
         <View className="absolute bottom-0 right-0">
           <UploadButton observation={item} />
         </View>
       );
     }
-    const showUpload = uri !== "project" && item.needsSync( );
+    const showUpload = uri !== "project" && item.needsSync();
     return (
-      <View className={classnames(
-        "absolute bottom-0",
-        {
+      <View
+        className={classnames( "absolute bottom-0", {
           "right-0": showUpload
-        }
-      )}
+        } )}
       >
-        { showUpload
-          ? <UploadButton observation={item} />
-          : <ObsCardStats item={item} layout="grid" />}
+        {showUpload ? (
+          <UploadButton observation={item} />
+        ) : (
+          <ObsStatus item={item} layout="horizontal" />
+        )}
       </View>
     );
   };
@@ -75,38 +71,36 @@ const GridItem = ( {
   return (
     <Pressable
       onPress={onPress}
-      className={`w-1/2 px-4 py-2 ${( index || 0 ) % ( numColumns || 2 ) === 0 ? "pr-2" : "pl-2"}`}
+      className={`w-1/2 px-4 py-2 ${
+        ( index || 0 ) % ( numColumns || 2 ) === 0 ? "pr-2" : "pl-2"
+      }`}
       testID={`ObsList.gridItem.${item.uuid}`}
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
       <View className="relative">
-        {
-          imageUri && imageUri.uri
-            ? (
-              <Image
-                source={imageUri}
-                className="grow aspect-square"
-                testID="ObsList.photo"
-              />
-            )
-            : (
-              <View className="grow aspect-square justify-center items-center">
-                <IconMaterial name="image-not-supported" size={150} />
-              </View>
-            )
-          }
+        {imageUri && imageUri.uri ? (
+          <Image
+            source={imageUri}
+            className="grow aspect-square"
+            testID="ObsList.photo"
+          />
+        ) : (
+          <View className="grow aspect-square justify-center items-center">
+            <IconMaterial name="image-not-supported" size={150} />
+          </View>
+        )}
         {hasMultiplePhotos && (
           <View className="z-100 absolute top-2 right-2">
             <IconMaterial
-                // $FlowIgnore
+              // $FlowIgnore
               name={filterIconName}
               color={colors.white}
               size={22}
             />
           </View>
         )}
-        {showStats( )}
+        {showStats()}
       </View>
       <ObsCardDetails item={item} view="grid" />
     </Pressable>
