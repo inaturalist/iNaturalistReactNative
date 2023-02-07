@@ -20,7 +20,7 @@ type Props = {
 const Map = ( {
   obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region
 }: Props ): React.Node => {
-  const latLng = useUserLocation( );
+  const { latLng } = useUserLocation( { skipPlaceGuess: true } );
 
   const initialLatitude = obsLatitude || ( latLng && latLng.latitude );
   const initialLongitude = obsLongitude || ( latLng && latLng.longitude );

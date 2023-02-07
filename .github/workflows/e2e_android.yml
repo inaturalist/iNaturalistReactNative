@@ -42,8 +42,8 @@ jobs:
     # I am assuming (but haven't tested) it uses 8 and then this step works
     - name: Download Android Emulator Image
       run: |
-        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-28;default;x86"
-        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_31_AOSP --device "Nexus 5X" -k 'system-images;android-28;default;x86'
+        echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;default;x86_64"
+        echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_5_API_31_AOSP --device "Nexus 5X" -k 'system-images;android-31;default;x86_64'
         $ANDROID_HOME/emulator/emulator -list-avds
 
     - name: Cache node modules
@@ -104,9 +104,10 @@ jobs:
       continue-on-error: true
       run: |
         echo "Starting emulator"
-        nohup $ANDROID_HOME/emulator/emulator -avd Pixel_5_API_31_AOSP -no-audio -no-snapshot -no-window &
+        nohup $ANDROID_HOME/emulator/emulator -avd Pixel_5_API_31_AOSP -no-audio -no-snapshot -no-window -no-boot-anim -timezone America/Los_Angeles &
         $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
         $ANDROID_HOME/platform-tools/adb devices
+        $ANDROID_HOME/platform-tools/adb emu geo fix -121.45356 46.51119 4392 12
         echo "Emulator started"
 
     # Start the Android e2e tests with extensive logging and screen captures for failing tests

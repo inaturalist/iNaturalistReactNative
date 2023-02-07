@@ -29,6 +29,8 @@ Added-on-date = Added on { $date }
 # Shows user network affiliation on user profile
 Affiliation-colon = Affiliation:
 
+Agree = Agree
+
 All = All
 
 All-observations = All observations
@@ -157,6 +159,14 @@ Filters = Filters
 Finish = Finish
 
 Fish = Fish
+
+Flag-An-Item = Flag An Item
+
+Flag-Item-Description =  Flagging brings something to the attention of volunteer site curators. Please don't flag problems you can address with identifications, the Data Quality Assessment, or by talking to the person who made the content.
+
+Flag-Item-Other-Description = Some other reason you can explain below.
+
+Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
 
 Following = Following
 
@@ -328,6 +338,10 @@ Observation = Observation
 Observation-Attribution = Observation © {$attribution} · {$licenseCode}
 
 Observations = Observations
+
+Offensive-Inappropriate = Offensive/Inappropriate
+
+Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of "appropriate," see the FAQ.
 
 Open = Open
 
@@ -521,6 +535,10 @@ Sort-By = Sort By
 
 Sort-by = Sort by
 
+Spam = Spam
+
+Spam-Examples = Commercial solicitation, links to nowhere, etc.
+
 Species = Species
 
 Status = Status
@@ -575,6 +593,16 @@ Uploading-X-Observations = Uploading {$count ->
     [one] 1 Observation
     *[other] {$count} Observations
 }
+
+# Shows the number of observations a user is currently uploading out of total on my observations page
+Uploading-x-of-y-observations = Uploading {$uploadedCount} of {$total ->
+    [one] 1 observation
+    *[other] {$total} observations
+}
+
+# Shows the progress of uploads for X of Y
+Uploading-x-of-y = Uploading {$uploadedCount} of {$total}
+
 
 User = User
 
@@ -691,11 +719,33 @@ Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
 ## Accessibility labels: these are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
 ## iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
+Bulk-importer = Bulk importer
+Camera = Camera
+Close = Close
+Explore = Explore
+Messages = Messages
+Observations = Observations
+Observe = Observe
+Open-drawer = Open drawer
+Sound-recorder = Sound recorder
 User = User { $userHandle }
 
 ## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
 ## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
+Agrees-with-identification = Agrees with this identification.
+Navigates-to-bulk-importer = Navigates to bulk importer.
+Navigates-to-camera = Navigate to camera.
+Navigates-to-explore = Navigates to explore.
+Navigates-to-messages = Navigates to messages.
+Navigates-to-observations = Navigates to observations.
+Navigates-to-sound-recorder = Navigates to sound recorder.
+Navigates-to-suggest-identification = Navigates to suggest identification.
 Navigates-to-user-profile = Navigates to user profile.
+Opens-add-comment-modal = Opens add comment modal.
+Opens-add-observation-modal = Opens add observation modal.
+Opens-the-side-drawer-menu = Opens the side drawer menu.
+Returns-to-previous-screen = Returns to previous screen.
+Switches-to-tab = Switches to { $tab } tab.
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
 Add-this-ID = Add this identification
@@ -726,7 +776,6 @@ Number-of-comments = Number of comments
 Number-of-identifications = Number of identifications
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Photo-taken-at = Photo taken at { $date }
-Switch-to-tab = Switch to { $tab } tab
 Take-photo = Take photo
 # Accessibility labels for no internet state in ObsDetails
 Location-map-unavailable-without-internet = Location map unavailable without internet
@@ -736,14 +785,13 @@ User-photo-unavailable-without-internet = User photo unavailable without interne
 
 # Accessibility labels for icons
 Close-camera-options-modal = Close camera options modal
-Navigate-to-camera = Navigate to camera
 Navigate-to-explore-screen = Navigate to explore screen
 Navigate-to-notifications-screen = Navigate to notifications screen
 Navigate-to-observation-edit-screen = Navigate to observation edit screen
 Navigate-to-observation-list = Navigate to observation list
 Navigate-to-photo-importer = Navigate to photo importer
-Navigate-to-sound-recorder = Navigate to sound recorder
-Open-add-evidence-modal = Open add evidence modal
 Open-side-menu = Open side menu
-Return-to-previous-screen = Return to previous screen
 Take-photo = Take photo
+
+
+Intl-number = { $val }

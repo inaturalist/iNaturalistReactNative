@@ -22,12 +22,13 @@ const AddObsButton = ( ): React.Node => {
       />
       <IconButton
         icon="plus-sign"
-        onPress={( ) => openModal( )}
+        onPress={openModal}
         size={40}
         mode="contained"
         containerColor={theme.colors.secondary}
         iconColor={theme.colors.onSecondary}
-        accessibilityLabel={t( "Open-add-evidence-modal" )}
+        accessibilityLabel={t( "Observe" )}
+        accessibilityHint={t( "Opens-add-observation-modal" )}
         className="m-0"
         disabled={false}
         testID="add-obs-button"

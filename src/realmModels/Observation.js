@@ -36,7 +36,8 @@ class Observation extends Realm.Object {
     quality_grade: true,
     taxon: Taxon.TAXON_FIELDS,
     time_observed_at: true,
-    user: User && User.USER_FIELDS
+    user: User && User.USER_FIELDS,
+    updated_at: true
   }
 
   static async new( obs ) {
@@ -192,7 +193,7 @@ class Observation extends Realm.Object {
   }
 
   static projectUri = obs => {
-    const photo = obs.observation_photos[0];
+    const photo = obs?.observation_photos?.[0];
     if ( !photo ) { return null; }
     if ( !photo.photo ) { return null; }
     if ( !photo.photo.url ) { return null; }
@@ -422,6 +423,7 @@ class Observation extends Realm.Object {
       // only by changing observed_on_string
       time_observed_at: { type: "string?", mapTo: "timeObservedAt" },
       user: "User?",
+      updated_at: "date?",
       viewed: "bool?"
     }
   }

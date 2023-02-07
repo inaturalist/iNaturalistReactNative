@@ -20,7 +20,9 @@ const CloseButton = ( { className }: Props ): Node => {
       className={className}
       iconColor={theme.colors.background}
       onPress={( ) => navigation.goBack( )}
-      accessibilityLabel={t( "Return-to-previous-screen" )}
+      accessibilityRole="button"
+      accessibilityLabel={t( "Close" )}
+      accessibilityHint={t( "Returns-to-previous-screen" )}
       disabled={false}
     />
   );

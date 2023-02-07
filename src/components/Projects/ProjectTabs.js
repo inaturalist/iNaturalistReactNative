@@ -1,10 +1,11 @@
 // @flow
 
 import { searchProjects } from "api/projects";
-import Tabs from "components/SharedComponents/Tabs";
+import { Tabs } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Text } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useUserLocation from "sharedHooks/useUserLocation";
@@ -20,32 +21,32 @@ const ProjectTabs = ( ): Node => {
   const memberId = currentUser?.id;
   const [apiParams, setApiParams] = useState( { } );
   const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
-  const latLng = useUserLocation( );
+  const { latLng, isLoading: isLoadingLocation } = useUserLocation( { skipPlaceGuess: true } );
 
   const {
-    data: projects
+    data: projects,
+    isLoading
   } = useAuthenticatedQuery(
     ["searchProjects", apiParams],
     optsWithAuth => searchProjects( apiParams, optsWithAuth )
   );
 
-  const fetchProjectsByLatLng = ( ) => {
-    setApiParams( {
-      lat: latLng.latitude,
-      lng: latLng.longitude
-    } );
-  };
-
-  const fetchFeaturedProjects = ( ) => setApiParams( { features: true } );
-  const fetchUserJoinedProjects = useCallback( ( ) => setApiParams(
-    { member_id: memberId }
-  ), [memberId] );
-
   useEffect( ( ) => {
-    if ( memberId ) {
-      fetchUserJoinedProjects( );
+    if ( memberId && currentTabId === JOINED_TAB_ID ) {
+      setApiParams( { member_id: memberId } );
+    } else if ( currentTabId === FEATURED_TAB_ID ) {
+      setApiParams( { features: true } );
+    } else if ( currentTabId === NEARBY_TAB_ID && latLng ) {
+      setApiParams( {
+        lat: latLng.latitude,
+        lng: latLng.longitude
+      } );
     }
-  }, [memberId, fetchUserJoinedProjects] );
+  }, [
+    memberId,
+    currentTabId,
+    latLng
+  ] );
 
   const tabs = [
     {
@@ -53,7 +54,6 @@ const ProjectTabs = ( ): Node => {
       text: t( "Joined" ),
       onPress: () => {
         setCurrentTabId( JOINED_TAB_ID );
-        fetchUserJoinedProjects();
       }
     },
     {
@@ -61,7 +61,6 @@ const ProjectTabs = ( ): Node => {
       text: t( "Featured" ),
       onPress: () => {
         setCurrentTabId( FEATURED_TAB_ID );
-        fetchFeaturedProjects();
       }
     },
     {
@@ -69,15 +68,16 @@ const ProjectTabs = ( ): Node => {
       text: t( "Nearby" ),
       onPress: () => {
         setCurrentTabId( NEARBY_TAB_ID );
-        fetchProjectsByLatLng();
       }
     }
   ];
 
+  const loading = isLoading || ( currentTabId === NEARBY_TAB_ID && isLoadingLocation );
+  /* eslint-disable i18next/no-literal-string */
   return (
     <>
       <Tabs tabs={tabs} activeId={currentTabId} />
-      <ProjectList data={projects} />
+      { loading ? <Text>Loading</Text> : <ProjectList data={projects} />}
     </>
   );
 };

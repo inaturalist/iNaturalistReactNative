@@ -65,7 +65,6 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", ( ) => ( {
 jest.mock( "components/ObsDetails/AddCommentModal" );
 jest.mock( "components/ObsDetails/ActivityTab" );
 jest.mock( "components/SharedComponents/PhotoScroll" );
-jest.mock( "components/SharedComponents/QualityBadge" );
 
 const mockDataTab = <View testID="mock-data-tab" />;
 jest.mock( "components/ObsDetails/DataTab", () => ( {
@@ -77,6 +76,7 @@ jest.mock(
   "components/SharedComponents/ScrollWithFooter",
   () => function MockContainer( props ) {
     const MockName = "mock-scroll-with-footer";
+    // No testID here because the component needs the correct one to work‚
     // eslint-disable-next-line react/jsx-props-no-spreading
     return <MockName {...props}>{props.children}</MockName>;
   }
@@ -88,7 +88,7 @@ const mockLatLng = factory( "DeviceLocation" );
 
 jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
   __esModule: true,
-  default: ( ) => mockLatLng
+  default: ( ) => ( { latLng: mockLatLng } )
 } ) );
 
 describe( "ObsDetails", () => {

@@ -1,7 +1,7 @@
 // @flow
 
 import searchMessages from "api/messages";
-import Tabs from "components/SharedComponents/Tabs";
+import { Tabs } from "components/SharedComponents";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { Text } from "components/styledComponents";
 import { t } from "i18next";

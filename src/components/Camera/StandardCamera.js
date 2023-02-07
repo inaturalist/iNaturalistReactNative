@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import CloseButton from "components/SharedComponents/Buttons/CloseButton";
+import { CloseButton } from "components/SharedComponents";
 import {
   Pressable, View
 } from "components/styledComponents";
@@ -138,7 +138,7 @@ const StandardCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const renderAddObsButtons = icon => {
+  const renderFlashButton = icon => {
     let testID = "";
     let accessibilityLabel = "";
     switch ( icon ) {
@@ -146,7 +146,7 @@ const StandardCamera = ( ): Node => {
         testID = "flash-button-label-flash";
         accessibilityLabel = t( "Flash-button-label-flash" );
         break;
-      case "flash-off":
+      case "camera":
         testID = "flash-button-label-flash-off";
         accessibilityLabel = t( "Flash-button-label-flash-off" );
         break;
@@ -180,8 +180,8 @@ const StandardCamera = ( ): Node => {
           {hasFlash ? (
             <Pressable onPress={toggleFlash} accessibilityRole="button">
               {takePhotoOptions.flash === "on"
-                ? renderAddObsButtons( "flash-on-circle" )
-                : renderAddObsButtons( "flash-off" )}
+                ? renderFlashButton( "flash-on-circle" )
+                : renderFlashButton( "camera" )}
             </Pressable>
           ) : (
             <View />
@@ -194,7 +194,7 @@ const StandardCamera = ( ): Node => {
             <Avatar.Icon
               testID="camera-button-label-switch-camera"
               size={40}
-              icon="camera-flip"
+              icon="camera"
               style={{ backgroundColor: colors.gray }}
             />
           </Pressable>

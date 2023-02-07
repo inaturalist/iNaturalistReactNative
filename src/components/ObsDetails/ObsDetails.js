@@ -5,12 +5,14 @@ import { createComment } from "api/comments";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
+import {
+  InlineUser,
+  QualityGradeStatus,
+  Tabs
+} from "components/SharedComponents";
 import HideView from "components/SharedComponents/HideView";
-import InlineUser from "components/SharedComponents/InlineUser";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
-import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
-import Tabs from "components/SharedComponents/Tabs";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
@@ -169,6 +171,16 @@ const ObsDetails = ( ): Node => {
     } );
   };
 
+  // reload if change to observation
+  useEffect( () => {
+    if ( localObservation && remoteObservation ) {
+      const remoteUpdatedAt = new Date( remoteObservation?.updated_at );
+      if ( remoteUpdatedAt > localObservation?.updated_at ) {
+        Observation.upsertRemoteObservations( [remoteObservation], realm );
+      }
+    }
+  }, [localObservation, remoteObservation, realm] );
+
   useEffect( ( ) => {
     if ( localObservation && !localObservation.viewed && !markViewedMutation.isLoading ) {
       markViewedMutation.mutate( { id: uuid } );
@@ -284,7 +296,7 @@ const ObsDetails = ( ): Node => {
           <PhotoScroll photos={photos} />
           {/* TODO: a11y props are not passed down into this 3.party */}
           <IconButton
-            icon={currentUserFaved ? "star-outline" : "star"}
+            icon={currentUserFaved ? "star-outline" : "pencil"}
             onPress={faveOrUnfave}
             textColor={colors.white}
             className="absolute top-3 right-0"

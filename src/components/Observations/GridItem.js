@@ -55,7 +55,7 @@ const GridItem = ( {
         </View>
       );
     }
-    return <ObsCardStats item={item} view="grid" />;
+    return <ObsCardStats item={item} layout="grid" />;
   };
 
   return (

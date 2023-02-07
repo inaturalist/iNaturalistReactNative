@@ -2,6 +2,7 @@ import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import faker from "faker";
 import { ObsEditContext } from "providers/contexts";
+import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
@@ -66,13 +67,15 @@ jest.mock( "components/ObsEdit/AddEvidenceModal" );
 // observations
 const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
   // eslint-disable-next-line react/jsx-no-constructed-context-values
-  <ObsEditContext.Provider value={{
-    observations: obs,
-    currentObservation: obs[0]
-  }}
-  >
-    {children}
-  </ObsEditContext.Provider>
+  <INatPaperProvider>
+    <ObsEditContext.Provider value={{
+      observations: obs,
+      currentObservation: obs[0]
+    }}
+    >
+      {children}
+    </ObsEditContext.Provider>
+  </INatPaperProvider>
 ) );
 
 const renderObsEdit = ( ) => renderComponent(

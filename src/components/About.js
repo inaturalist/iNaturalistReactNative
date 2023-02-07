@@ -1,6 +1,6 @@
 // @flow
 
-import Button from "components/SharedComponents/Buttons/Button";
+import { Button } from "components/SharedComponents";
 import {
   fontMonoClass, Text, View
 } from "components/styledComponents";

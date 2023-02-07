@@ -21,6 +21,7 @@
     "comment": "Shows user network affiliation on user profile",
     "val": "Affiliation:"
   },
+  "Agree": "Agree",
   "All": "All",
   "All-observations": "All observations",
   "all-rights-reserved": {
@@ -105,6 +106,10 @@
   "Filters": "Filters",
   "Finish": "Finish",
   "Fish": "Fish",
+  "Flag-An-Item": "Flag An Item",
+  "Flag-Item-Description": "Flagging brings something to the attention of volunteer site curators. Please don't flag problems you can address with identifications, the Data Quality Assessment, or by talking to the person who made the content.",
+  "Flag-Item-Other-Description": "Some other reason you can explain below.",
+  "Flag-Item-Other-Input-Hint": "Specify the reason you're flagging this item",
   "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
@@ -232,6 +237,8 @@
   "Observation": "Observation",
   "Observation-Attribution": "Observation © { $attribution } · { $licenseCode }",
   "Observations": "Observations",
+  "Offensive-Inappropriate": "Offensive/Inappropriate",
+  "Offensive-Inappropriate-Examples": "Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of \"appropriate,\" see the FAQ.",
   "Open": "Open",
   "Organism-is-wild": {
     "comment": "Picker prompt on observation edit",
@@ -353,6 +360,8 @@
   },
   "Sort-By": "Sort By",
   "Sort-by": "Sort by",
+  "Spam": "Spam",
+  "Spam-Examples": "Commercial solicitation, links to nowhere, etc.",
   "Species": "Species",
   "Status": "Status",
   "STATUS-header": {
@@ -389,6 +398,14 @@
   "Uploading-X-Observations": {
     "comment": "Shows the number of observations a user is currently uploading on my observations page",
     "val": "Uploading { $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
+  },
+  "Uploading-x-of-y-observations": {
+    "comment": "Shows the number of observations a user is currently uploading out of total on my observations page",
+    "val": "Uploading { $uploadedCount } of { $total ->\n  [one] 1 observation\n *[other] { $total } observations\n}"
+  },
+  "Uploading-x-of-y": {
+    "comment": "Shows the progress of uploads for X of Y",
+    "val": "Uploading { $uploadedCount } of { $total }"
   },
   "User": "User { $userHandle }",
   "Username": "Username",
@@ -491,7 +508,27 @@
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
+  "Bulk-importer": "Bulk importer",
+  "Camera": "Camera",
+  "Close": "Close",
+  "Messages": "Messages",
+  "Observe": "Observe",
+  "Open-drawer": "Open drawer",
+  "Sound-recorder": "Sound recorder",
+  "Agrees-with-identification": "Agrees with this identification.",
+  "Navigates-to-bulk-importer": "Navigates to bulk importer.",
+  "Navigates-to-camera": "Navigate to camera.",
+  "Navigates-to-explore": "Navigates to explore.",
+  "Navigates-to-messages": "Navigates to messages.",
+  "Navigates-to-observations": "Navigates to observations.",
+  "Navigates-to-sound-recorder": "Navigates to sound recorder.",
+  "Navigates-to-suggest-identification": "Navigates to suggest identification.",
   "Navigates-to-user-profile": "Navigates to user profile.",
+  "Opens-add-comment-modal": "Opens add comment modal.",
+  "Opens-add-observation-modal": "Opens add observation modal.",
+  "Opens-the-side-drawer-menu": "Opens the side drawer menu.",
+  "Returns-to-previous-screen": "Returns to previous screen.",
+  "Switches-to-tab": "Switches to { $tab } tab.",
   "Add-this-ID": "Add this identification",
   "Camera-button-label-switch-camera": {
     "comment": "Accessible label for the camera button",
@@ -530,7 +567,6 @@
   "Number-of-identifications": "Number of identifications",
   "Observation-has-no-photos-and-no-sounds": "This observation has no photos and no sounds.",
   "Photo-taken-at": "Photo taken at { $date }",
-  "Switch-to-tab": "Switch to { $tab } tab",
   "Take-photo": "Take photo",
   "Location-map-unavailable-without-internet": {
     "comment": "Accessibility labels for no internet state in ObsDetails",
@@ -543,14 +579,11 @@
     "comment": "Accessibility labels for icons",
     "val": "Close camera options modal"
   },
-  "Navigate-to-camera": "Navigate to camera",
   "Navigate-to-explore-screen": "Navigate to explore screen",
   "Navigate-to-notifications-screen": "Navigate to notifications screen",
   "Navigate-to-observation-edit-screen": "Navigate to observation edit screen",
   "Navigate-to-observation-list": "Navigate to observation list",
   "Navigate-to-photo-importer": "Navigate to photo importer",
-  "Navigate-to-sound-recorder": "Navigate to sound recorder",
-  "Open-add-evidence-modal": "Open add evidence modal",
   "Open-side-menu": "Open side menu",
-  "Return-to-previous-screen": "Return to previous screen"
+  "Intl-number": "{ $val }"
 }

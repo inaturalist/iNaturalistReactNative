@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import Tabs from "components/SharedComponents/Tabs";
+import { Tabs } from "components/SharedComponents";
 import React from "react";
 
 import { renderComponent } from "../../helpers/render";
