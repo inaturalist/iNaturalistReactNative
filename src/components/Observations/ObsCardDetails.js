@@ -25,7 +25,7 @@ const ObsCardDetails = ( { item = "list", view }: Props ): Node => {
 
   return (
     <View className={view === "grid" && "border border-border p-2"}>
-      <DisplayTaxonName item={item} layout={view} />
+      <DisplayTaxonName item={item} layout={view === "list" ? "horizontal" : "vertical"} />
       <Text numberOfLines={1}>
         <IconMaterial name="location-pin" size={15} />
         {placeGuess || "no place guess"}

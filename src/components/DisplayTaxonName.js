@@ -9,11 +9,11 @@ import { generateTaxonPieces } from "sharedHelpers/taxon";
 
 type Props = {
   item: Object,
-  layout?: string,
+  layout?: "horizontal" | "vertical",
 };
 
 const DisplayTaxonName = ( {
-  layout = "list",
+  layout = "horizontal",
   item: { user, taxon }
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -22,34 +22,57 @@ const DisplayTaxonName = ( {
     return <Body1 numberOfLines={1}>{t( "unknown" )}</Body1>;
   }
 
-  const taxonData = generateTaxonPieces( taxon );
-
-  const isListView = layout === "list";
+  const {
+    commonName,
+    scientificNamePieces,
+    rankPiece,
+    rankLevel,
+    rank
+  } = generateTaxonPieces( taxon );
+  const isHorizontal = layout === "horizontal";
   const scientificNameFirst = user?.prefers_scientific_name_first;
-  const getSpaceChar = showSpace => ( showSpace && isListView ? " " : "" );
+  const getSpaceChar = showSpace => ( showSpace && isHorizontal ? " " : "" );
 
-  const renderCommonName = ( ) => taxonData.commonName && (
-    <Body1 numberOfLines={3}>
-      {`${taxonData.commonName}${
-        getSpaceChar( !scientificNameFirst )
-      }`}
-    </Body1>
-  );
+  const scientificNameComponent = scientificNamePieces.map( ( piece, index ) => {
+    const isItalics = rankLevel <= 10 && piece !== rankPiece;
+    const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal ) ? " " : "";
+    const text = piece + spaceChar;
+    const TextComponent = scientificNameFirst || !commonName ? Body1 : Body3;
+    return (
+      isItalics ? <TextComponent className="italic">{text}</TextComponent> : text
+    );
+  } );
+
+  if ( rankLevel > 10 ) {
+    scientificNameComponent.unshift( `${rank} ` );
+  }
 
   return (
     <View
       testID="display-taxon-name"
-      className={classnames( "flex", {
-        "flex-row items-end flex-wrap w-111/12": isListView
+      className={classnames( "flex", null, {
+        "flex-row items-end flex-wrap w-11/12": isHorizontal
       } )}
     >
-      {!scientificNameFirst && renderCommonName( )}
-      <Body3 className="italic">
-        {`${taxonData.scientificName}${
-          getSpaceChar( scientificNameFirst )
-        }`}
-      </Body3>
-      {scientificNameFirst && renderCommonName( )}
+      <Body1
+        numberOfLines={scientificNameFirst ? 1 : 3}
+      >
+        {
+          ( scientificNameFirst || !commonName )
+            ? scientificNameComponent
+            : `${commonName}${
+              getSpaceChar( !scientificNameFirst )
+            }`
+        }
+      </Body1>
+
+      {
+       commonName && (
+       <Body3>
+         {scientificNameFirst ? commonName : scientificNameComponent}
+       </Body3>
+       )
+      }
     </View>
   );
 };

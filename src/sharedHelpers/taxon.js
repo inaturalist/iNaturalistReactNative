@@ -95,7 +95,8 @@ export const capitalizeCommonName = name => {
 export const generateTaxonPieces = taxon => {
   const taxonData = {};
 
-  taxonData.rank = taxon.rank;
+  taxonData.rank = capitalize( taxon.rank );
+  taxonData.rankLevel = taxon.rank_level;
 
   // Logic follows the SplitTaxon component from web
   // https://github.com/inaturalist/inaturalist/blob/main/app/webpack/shared/components/split_taxon.jsx
@@ -104,32 +105,24 @@ export const generateTaxonPieces = taxon => {
   }
 
   let { name: scientificName } = taxon;
-  if ( taxon.rank === "stateofmatter" ) {
-    // @todo translation
-    scientificName = "stateofmatter";
-  }
+
+  scientificName = scientificName.split( " " );
   if ( taxon.rank_level < 10 ) {
-    let rankPiece;
     if ( taxon.rank === "variety" ) {
-      rankPiece = "var.";
+      taxon.rankPiece = "var.";
     } else if ( taxon.rank === "subspecies" ) {
-      rankPiece = "ssp.";
+      taxon.rankPiece = "ssp.";
     } else if ( taxon.rank === "form" ) {
-      rankPiece = "f.";
+      taxon.rankPiece = "f.";
     }
 
-    if ( rankPiece ) {
-      scientificName = scientificName.split( " " );
-      scientificName.splice( -1, 0, rankPiece );
-      scientificName = scientificName.join( " " );
+    if ( taxon.rankPiece ) {
+      scientificName.splice( -1, 0, taxon.rankPiece );
     }
-  } else if ( taxon.rank_level > 10 ) {
-    scientificName = scientificName.split( " " );
-    scientificName.unshift( taxon.rank );
-    scientificName = scientificName.join( " " );
   }
 
-  taxonData.scientificName = _.trim( scientificName );
+  taxonData.scientificNamePieces = scientificName;
+  scientificName = scientificName.join( " " );
 
   return taxonData;
 };

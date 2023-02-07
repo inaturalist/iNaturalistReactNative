@@ -44,7 +44,8 @@ test( "displays project observations", ( ) => {
     `${
       mockObservation.taxon.preferred_common_name
     }${
-      mockObservation.taxon.rank
+      mockObservation.taxon.rank.charAt( 0 ).toUpperCase()
+      + mockObservation.taxon.rank.slice( 1 )
     } ${
       mockObservation.taxon.name
     }`

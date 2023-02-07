@@ -4,6 +4,8 @@ import React from "react";
 
 import factory from "../../factory";
 
+const capitalizeFirstLetter = s => s.charAt( 0 ).toUpperCase( ) + s.slice( 1 );
+
 const speciesTaxon = factory( "LocalTaxon", {
   name: "Chelonia mydas",
   preferred_common_name: "Green Sea Turtle",
@@ -59,19 +61,19 @@ describe( "when common name is first", ( ) => {
     render( <DisplayTaxonName item={{ taxon: highRankTaxon, user }} /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-      `${highRankTaxon.rank} ${highRankTaxon.name}`
+      `${capitalizeFirstLetter( highRankTaxon.rank )} ${highRankTaxon.name}`
     );
   } );
 
-  test( "renders correct taxon for a subspecies", ( ) => {
+  test( "renders correct taxon for a subfamily", ( ) => {
     render( <DisplayTaxonName item={{ taxon: highRankTaxon, user }} /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-      `${highRankTaxon.rank} ${highRankTaxon.name}`
+      `${capitalizeFirstLetter( highRankTaxon.rank )} ${highRankTaxon.name}`
     );
   } );
 
-  test( "renders correct taxon for species", ( ) => {
+  test( "renders correct taxon for subspecies", ( ) => {
     render( <DisplayTaxonName item={{ taxon: subspeciesTaxon, user }} /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
@@ -88,7 +90,7 @@ describe( "when common name is first", ( ) => {
 
   test( "renders correct taxon for species in grid view", ( ) => {
     render(
-      <DisplayTaxonName layout="grid" item={{ taxon: subspeciesTaxon, user }} />
+      <DisplayTaxonName layout="vertical" item={{ taxon: subspeciesTaxon, user }} />
     );
     // Grid view should not have a space between text
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
@@ -120,7 +122,7 @@ describe( "when scientific name is first", ( ) => {
     render( <DisplayTaxonName item={{ taxon: highRankTaxon, user }} /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-      `${highRankTaxon.rank} ${highRankTaxon.name}`
+      `${capitalizeFirstLetter( highRankTaxon.rank )} ${highRankTaxon.name}`
     );
   } );
 
@@ -134,7 +136,7 @@ describe( "when scientific name is first", ( ) => {
 
   test( "renders correct taxon for species in grid view", ( ) => {
     render(
-      <DisplayTaxonName layout="grid" item={{ taxon: subspeciesTaxon, user }} />
+      <DisplayTaxonName layout="vertical" item={{ taxon: subspeciesTaxon, user }} />
     );
 
     // Grid view should not have a space between text

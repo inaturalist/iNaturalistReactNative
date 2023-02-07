@@ -10,7 +10,7 @@ const testObservation = factory( "LocalObservation", {
   taxon: { preferred_common_name: "Foo", name: "bar" }
 } );
 
-test( "renders text passed into observation card", async ( ) => {
+test.only( "renders text passed into observation card", async ( ) => {
   render(
     <ObsCard
       item={testObservation}
@@ -23,7 +23,7 @@ test( "renders text passed into observation card", async ( ) => {
     .toStrictEqual( { uri: testObservation.observationPhotos[0].photo.url } );
 
   expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-    `${testObservation.taxon.preferred_common_name} ${testObservation.taxon.name}`
+    `${testObservation.taxon.preferred_common_name}${testObservation.taxon.name}`
   );
   expect( screen.getByText( testObservation.placeGuess ) ).toBeTruthy( );
   await waitFor( ( ) => {
