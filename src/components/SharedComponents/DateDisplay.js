@@ -1,11 +1,11 @@
 // @flow
 
+import { Body4 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import * as React from "react";
-import { View } from 'components/styledComponents'
-import { Body4 } from 'components/SharedComponents'
+import { useTranslation } from "react-i18next";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   dateTime: string | typeof undefined
@@ -14,14 +14,14 @@ type Props = {
 const DateDisplay = ( {
   dateTime
 }: Props ): React.Node => {
-  const { t } = useTranslation( )
+  const { t } = useTranslation( );
   const displayTime = ( ) => {
     if ( dateTime ) {
       return formatObsListTime( dateTime );
     }
-    return t("no time given");
+    return t( "no time given" );
   };
-console.log(displayTime())
+  console.log( displayTime() );
   return (
     <View className="flex flex-row items-center">
       <IconMaterial name="watch-later" size={15} />
