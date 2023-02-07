@@ -5,22 +5,12 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet } from "react-native";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 
 type Props = {
   item: Object,
   layout?: string,
 };
-
-const styles = StyleSheet.create( {
-  commonName: {
-    maxWidth: "100%"
-  },
-  scientificName: {
-    fontStyle: "italic"
-  }
-} );
 
 const DisplayTaxonName = ( {
   layout = "list",
@@ -39,7 +29,7 @@ const DisplayTaxonName = ( {
   const getSpaceChar = showSpace => ( showSpace && isListView ? " " : "" );
 
   const renderCommonName = ( ) => taxonData.commonName && (
-    <Body1 numberOfLines={3} style={styles.commonName}>
+    <Body1 className="w-full" numberOfLines={3}>
       {`${taxonData.commonName}${
         getSpaceChar( !scientificNameFirst )
       }`}
@@ -54,7 +44,7 @@ const DisplayTaxonName = ( {
       } )}
     >
       {!scientificNameFirst && renderCommonName( )}
-      <Body3 style={styles.scientificName}>
+      <Body3 className="italic">
         {`${taxonData.scientificName}${
           getSpaceChar( scientificNameFirst )
         }`}
