@@ -15,7 +15,8 @@ type Props = {
   color: string,
   count: number,
   icon?: string,
-  testID?: string
+  testID?: string,
+  margin?: string
 }
 
 const ActivityCount = ( {
@@ -25,14 +26,14 @@ const ActivityCount = ( {
   count,
   icon,
   testID,
-  marginClass
+  margin
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
   const defaultColor = theme.colors.primary;
   return (
     <View
-      className={classnames( "flex-row items-center", marginClass )}
+      className={classnames("flex-row items-center", margin)}
       accessible
       accessibilityLabel={accessibilityLabel || t( "Intl-number", { val: count || 0 } )}
       accessibilityHint={accessibilityHint}

@@ -26,22 +26,23 @@ const ObsStatus = ( { observation, color, layout = "vertical" }: Props ): Node =
   const margin = layout === "vertical" ? "mb-1" : "mr-1";
   const flexDirection = layout === "vertical" ? "flex-column" : "flex-row";
   const iconColor = color || theme.colors.primary;
+  const numIdents = observation.identifications?.length || 0;
+  const numComments = observation.comments?.length || 0;
 
   return (
     <View className={classnames( "flex px-2", flexDirection )}>
       <ActivityCount
-        marginClass={margin}
-        count={observation.identifications?.length}
-        icon="cv-sparklylabel"
+        margin={margin}
+        count={numIdents}
         color={iconColor}
-        accessibilityLabel={t( "Number-of-identifications" )}
+        accessibilityLabel={t( "x-identifications", { count: numIdents } )}
         testID="ActivityCount.identificationCount"
       />
       <ActivityCount
-        marginClass={margin}
+        margin={margin}
         count={observation.comments?.length}
         color={iconColor}
-        accessibilityLabel={t( "Number-of-comments" )}
+        accessibilityLabel={t( "x-comments", { count: numComments } )}
         testID="ActivityCount.commentCount"
       />
       <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />
