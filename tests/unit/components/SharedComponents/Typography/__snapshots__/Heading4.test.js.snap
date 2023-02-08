@@ -18,6 +18,9 @@ exports[`Heading4 renders correctly 1`] = `
         Object {
           "fontWeight": "600",
         },
+        Object {
+          "letterSpacing": 2,
+        },
       ],
     ]
   }

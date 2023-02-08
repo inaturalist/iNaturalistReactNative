@@ -6,8 +6,11 @@ import React from "react";
 import INatText from "./INatText";
 
 const Heading4 = ( props: any ): Node => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <INatText className="text-md leading-[19px] font-semibold" {...props} />
+  <INatText
+    className="text-md leading-[19px] font-semibold tracking-[2px]"
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    {...props}
+  />
 );
 
 export default Heading4;
