@@ -16,7 +16,7 @@ type Props = {
 const ObsCardDetails = ( { item = "list", view }: Props ): Node => {
   const placeGuess = checkCamelAndSnakeCase( item, "placeGuess" );
 
-  const displayTime = () => {
+  const displayTime = ( ) => {
     if ( item._created_at ) {
       return formatObsListTime( item._created_at );
     }
@@ -35,7 +35,7 @@ const ObsCardDetails = ( { item = "list", view }: Props ): Node => {
       </Text>
       <Text numberOfLines={1}>
         <IconMaterial name="watch-later" size={15} />
-        {displayTime()}
+        {displayTime( )}
       </Text>
     </View>
   );

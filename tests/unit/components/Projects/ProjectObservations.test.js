@@ -43,7 +43,7 @@ test( "displays project observations", ( ) => {
   expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
     `${
       mockObservation.taxon.preferred_common_name
-    }${
+    } ${
       mockObservation.taxon.rank.charAt( 0 ).toUpperCase()
       + mockObservation.taxon.rank.slice( 1 )
     } ${

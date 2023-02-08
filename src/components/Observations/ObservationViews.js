@@ -22,11 +22,11 @@ const { diffClamp } = Animated;
 const { height } = Dimensions.get( "screen" );
 const HEADER_HEIGHT = 101;
 
-const ObservationViews = (): Node => {
-  const localObservations = useLocalObservations();
-  const [layout, setLayout] = useState( "grid" );
-  const navigation = useNavigation();
-  const currentUser = useCurrentUser();
+const ObservationViews = ( ): Node => {
+  const localObservations = useLocalObservations( );
+  const [layout, setLayout] = useState( "list" );
+  const navigation = useNavigation( );
+  const currentUser = useCurrentUser( );
   const { observationList } = localObservations;
   const [hasScrolled, setHasScrolled] = useState( false );
   const [idBelow, setIdBelow] = useState( null );
@@ -59,14 +59,14 @@ const ObservationViews = (): Node => {
 
   const navToObsDetails = async observation => {
     const { uuid } = observation;
-    if ( !observation.wasSynced() ) {
+    if ( !observation.wasSynced( ) ) {
       navigation.navigate( "ObsEdit", { uuid } );
     } else {
       navigation.navigate( "ObsDetails", { uuid } );
     }
   };
 
-  const renderEmptyState = () => {
+  const renderEmptyState = ( ) => {
     if ( currentUser === false || ( !isLoading && observationList.length === 0 ) ) {
       return <EmptyList />;
     }
@@ -81,16 +81,16 @@ const ObservationViews = (): Node => {
     <GridItem observation={item} handlePress={navToObsDetails} />
   );
 
-  const renderFooter = () => {
+  const renderFooter = ( ) => {
     if ( currentUser === false ) {
       return <View />;
     }
     return <InfiniteScrollFooter view={layout} isLoading={isLoading} />;
   };
 
-  const renderItemSeparator = () => <View className="border border-border" />;
+  const renderItemSeparator = ( ) => <View className="border border-border" />;
 
-  const onEndReached = () => {
+  const onEndReached = ( ) => {
     if ( !isLoading ) {
       setIdBelow( observationList[observationList.length - 1].id );
     }
