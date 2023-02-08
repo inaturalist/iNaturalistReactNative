@@ -285,6 +285,7 @@ const UiLibrary = ( ) => {
             <QualityGradeStatus qualityGrade="casual" color="green" />
           </View>
         </View>
+
         <Heading2 className="my-2">Upload Status</Heading2>
         <View className="flex flex-row justify-between">
           <View>
@@ -296,10 +297,10 @@ const UiLibrary = ( ) => {
             />
           </View>
           <View>
-            <Body2 className="text-center">40%</Body2>
+            <Body2 className="text-center">10%</Body2>
             <UploadStatus
               color={theme.colors.primary}
-              progress={0.4}
+              progress={0.1}
               completeColor={theme.colors.secondary}
             />
           </View>
