@@ -253,11 +253,23 @@ const UiLibrary = () => {
         <Heading2 className="my-2">Date Display Component</Heading2>
         <DateDisplay dateTime="2023-12-14T21:07:41-09:30" />
 
-        <Heading2 className="my-2">LocationDisplay Component</Heading2>
-        <LocationDisplay latitude={30.181830} longitude={-85.760449} />
-
         <Heading2 className="my-2">ObservationLocation Component</Heading2>
-        <ObservationLocation latitude={30.18183} longitude={-85.760449} />
+        <ObservationLocation
+          observation={{
+            latitude: 30.18183,
+            longitude: -85.760449
+          }}
+        />
+
+        <ObservationLocation
+          observation={{
+            latitude: 30.18183,
+            longitude: -85.760449,
+            place_guess: "Panama City Beach, Florida"
+          }}
+        />
+
+        <ObservationLocation observation={{}} />
 
         <Heading2 className="my-2">Quality Grade Status</Heading2>
         <View className="flex flex-row justify-between">

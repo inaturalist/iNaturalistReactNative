@@ -13,12 +13,13 @@ type Props = {
 const ObservationLocation = ( { observation }: Props ): React.Node => {
   const { t } = useTranslation();
 
-  let locationName = observation.place_guess;
+  let locationName = observation?.place_guess;
 
   if (
     !locationName
-    && observation.latitude !== null
-    && observation.longitude !== null
+    // Check for undefined or null, Not 0
+    && observation?.latitude != null
+    && observation?.longitude != null
   ) {
     locationName = `${observation.latitude}, ${observation.longitude}`;
   } else if ( !locationName ) {
