@@ -33,7 +33,7 @@ const ActivityCount = ( {
   const defaultColor = theme.colors.primary;
   return (
     <View
-      className={classnames("flex-row items-center", margin)}
+      className={classnames( "flex-row items-center", margin )}
       accessible
       accessibilityLabel={accessibilityLabel || t( "Intl-number", { val: count || 0 } )}
       accessibilityHint={accessibilityHint}
