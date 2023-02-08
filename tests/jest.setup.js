@@ -266,3 +266,15 @@ jest.mock( "react-native-orientation-locker", () => ( {
   lockToPortrait: jest.fn(),
   removeOrientationListener: jest.fn()
 } ) );
+
+const mockErrorHandler = error => {
+  console.log( error );
+};
+jest.mock( "react-native-exception-handler", () => ( {
+  setJSExceptionHandler: jest
+    .fn()
+    .mockImplementation( () => mockErrorHandler() ),
+  setNativeExceptionHandler: jest
+    .fn()
+    .mockImplementation( () => mockErrorHandler() )
+} ) );
