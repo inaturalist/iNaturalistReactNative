@@ -19,12 +19,16 @@ type Props = {
   observation: Object,
   handlePress: Function,
   uri?: string,
+  height?: string,
+  width?: string
 };
 
-const GridItem = ( {
+const ObsGridItem = ( {
   handlePress,
   observation,
-  uri
+  uri,
+  width = "w-full",
+  height = "h-[172px]"
 }: Props ): Node => {
   const onPress = () => handlePress( observation );
 
@@ -55,7 +59,11 @@ const GridItem = ( {
   return (
     <Pressable
       onPress={onPress}
-      className="h-[172px] w-[172px] rounded-[17px] overflow-hidden"
+      className={classnames(
+        "rounded-[17px] overflow-hidden",
+        height,
+        width
+      )}
       testID={`ObsList.gridItem.${observation.uuid}`}
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-observation-details" )}
@@ -76,9 +84,7 @@ const GridItem = ( {
           <LinearGradient
             colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
           >
-            <View className="grow aspect-square justify-center items-center">
-              <IconMaterial name="image-not-supported" size={150} />
-            </View>
+            <View className="grow aspect-square" />
           </LinearGradient>
         )}
 
@@ -111,4 +117,4 @@ const GridItem = ( {
   );
 };
 
-export default GridItem;
+export default ObsGridItem;

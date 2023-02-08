@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { searchObservations } from "api/observations";
-import GridItem from "components/Observations/GridItem";
+import ObsGridItem from "components/Observations/ObsGridItem";
 import * as React from "react";
 import { FlatList } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
@@ -25,7 +25,12 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
   };
 
   const renderGridItem = ( { item } ) => (
-    <GridItem observation={item} handlePress={navToObsDetails} uri="project" />
+    <ObsGridItem
+      observation={item}
+      handlePress={navToObsDetails}
+      uri="project"
+      width="w-6/12"
+    />
   );
 
   return (

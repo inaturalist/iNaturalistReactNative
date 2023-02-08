@@ -10,7 +10,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
 
 import EmptyList from "./EmptyList";
-import GridItem from "./GridItem";
+import ObsGridItem from "./ObsGridItem";
 import useInfiniteScroll from "./hooks/useInfiniteScroll";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
 import ObsCard from "./ObsCard";
@@ -78,7 +78,11 @@ const ObservationViews = ( ): Node => {
   );
 
   const renderGridItem = ( { item } ) => (
-    <GridItem observation={item} handlePress={navToObsDetails} />
+    <ObsGridItem
+      observation={item}
+      handlePress={navToObsDetails}
+      width="w-6/12"
+    />
   );
 
   const renderFooter = ( ) => {
