@@ -1,5 +1,6 @@
 // @flow
 
+import classnames from "classnames";
 import INatIcon from "components/INatIcon";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import { View } from "components/styledComponents";
@@ -14,7 +15,8 @@ type Props = {
   color: string,
   count: number,
   icon?: string,
-  testID?: string
+  testID?: string,
+  margin?: string
 }
 
 const ActivityCount = ( {
@@ -23,14 +25,15 @@ const ActivityCount = ( {
   color,
   count,
   icon,
-  testID
+  testID,
+  margin
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
   const defaultColor = theme.colors.primary;
   return (
     <View
-      className="flex-row items-center"
+      className={classnames( "flex-row items-center", margin )}
       accessible
       accessibilityLabel={accessibilityLabel || t( "Intl-number", { val: count || 0 } )}
       accessibilityHint={accessibilityHint}

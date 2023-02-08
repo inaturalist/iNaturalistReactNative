@@ -8,16 +8,16 @@ import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Photo from "realmModels/Photo";
 
 import ObsCardDetails from "./ObsCardDetails";
-import ObsCardStats from "./ObsCardStats";
+import ObsStatus from "./ObsStatus";
 import UploadButton from "./UploadButton";
 
 type Props = {
   item: Object,
-  handlePress: Function
-}
+  handlePress: Function,
+};
 
 const ObsCard = ( { item, handlePress }: Props ): Node => {
-  const onPress = ( ) => handlePress( item );
+  const onPress = () => handlePress( item );
 
   const photo = item?.observationPhotos && item.observationPhotos[0]
     ? item.observationPhotos[0].photo
@@ -29,9 +29,14 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
       className="w-16 h-16 rounded-md mr-2"
       testID="ObsList.photo"
     />
-  )
-    // eslint-disable-next-line react-native/no-inline-styles
-    : <IconMaterial name="image-not-supported" size={70} style={{ marginRight: 2 }} />;
+  ) : (
+    /* eslint-disable react-native/no-inline-styles */
+    <IconMaterial
+      name="image-not-supported"
+      size={70}
+      style={{ marginRight: 2 }}
+    />
+  );
 
   return (
     <Pressable
@@ -48,9 +53,14 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
         </View>
       </View>
       <View className="flex-row items-center justify-items-center ml-2">
-        {item.needsSync( )
-          ? <UploadButton observation={item} />
-          : <ObsCardStats item={item} type="list" />}
+        {item.needsSync() ? (
+          <UploadButton observation={item} />
+        ) : (
+          <ObsStatus
+            observation={item}
+            layout="vertical"
+          />
+        )}
       </View>
     </Pressable>
   );

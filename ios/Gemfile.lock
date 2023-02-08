@@ -209,10 +209,6 @@ GEM
       xcpretty (~> 0.2, >= 0.0.7)
 
 PLATFORMS
-<<<<<<< HEAD
-=======
-  ruby
->>>>>>> a0f5779a6f509d3a54046c17c19d7e5e7e8355c1
   x86_64-darwin-21
 
 DEPENDENCIES
