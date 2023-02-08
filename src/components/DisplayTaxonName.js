@@ -8,14 +8,16 @@ import { useTranslation } from "react-i18next";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 
 type Props = {
-  observation: Object,
+  scientificNameFirst: boolean,
+  taxon: Object,
   layout?: "horizontal" | "vertical",
   color?: string
 };
 
 const DisplayTaxonName = ( {
   layout = "horizontal",
-  observation: { user, taxon },
+  scientificNameFirst = false,
+  taxon,
   color
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -38,7 +40,6 @@ const DisplayTaxonName = ( {
     rank
   } = generateTaxonPieces( taxon );
   const isHorizontal = layout === "horizontal";
-  const scientificNameFirst = user?.prefers_scientific_name_first;
   const getSpaceChar = showSpace => ( showSpace && isHorizontal ? " " : "" );
 
   const scientificNameComponent = scientificNamePieces.map( ( piece, index ) => {

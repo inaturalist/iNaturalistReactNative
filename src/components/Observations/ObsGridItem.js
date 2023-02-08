@@ -20,31 +20,33 @@ type Props = {
   handlePress: Function,
   uri?: string,
   height?: string,
-  width?: string
+  width?: string,
 };
 
-const ObsGridItem = ( {
+const ObsGridItem = ({
   handlePress,
   observation,
   uri,
   width = "w-full",
-  height = "h-[172px]"
-}: Props ): Node => {
-  const onPress = () => handlePress( observation );
+  height = "h-[172px]",
+}: Props): Node => {
+  const onPress = () => handlePress(observation);
 
   const photo = observation?.observationPhotos?.[0]?.photo;
 
   const totalObsPhotos = observation?.observationPhotos?.length;
   const hasMultiplePhotos = totalObsPhotos > 1;
   const hasSound = !!observation?.observationSounds?.length;
-  const filterIconName = totalObsPhotos > 9 ? "filter-9-plus" : `filter-${totalObsPhotos || 2}`;
+  const filterIconName =
+    totalObsPhotos > 9 ? "filter-9-plus" : `filter-${totalObsPhotos || 2}`;
 
-  const imageUri = uri === "project"
-    ? Observation.projectUri( observation )
-    : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
+  const imageUri =
+    uri === "project"
+      ? Observation.projectUri(observation)
+      : { uri: Photo.displayLocalOrRemoteMediumPhoto(photo) };
 
   const showStats = () => {
-    if ( uri !== "project" && observation.needsSync() ) {
+    if (uri !== "project" && observation.needsSync()) {
       return (
         <View className="absolute bottom-0 right-0">
           <UploadButton observation={observation} />
@@ -52,21 +54,21 @@ const ObsGridItem = ( {
       );
     }
     return (
-      <ObsStatus observation={observation} layout="horizontal" color={colors.white} />
+      <ObsStatus
+        observation={observation}
+        layout="horizontal"
+        color={colors.white}
+      />
     );
   };
 
   return (
     <Pressable
       onPress={onPress}
-      className={classnames(
-        "rounded-[17px] overflow-hidden",
-        height,
-        width
-      )}
+      className={classnames("rounded-[17px] overflow-hidden", height, width)}
       testID={`ObsList.gridItem.${observation.uuid}`}
       accessibilityRole="link"
-      accessibilityLabel={t( "Navigate-to-observation-details" )}
+      accessibilityLabel={t("Navigate-to-observation-details")}
     >
       <View className="rounded-[17px] overflow-hidden relative">
         {imageUri && imageUri.uri ? (
@@ -90,9 +92,9 @@ const ObsGridItem = ( {
 
         <View className="z-100 h-[172px] w-[172px] absolute flex justify-between p-2">
           <View
-            className={classnames( "flex justify-between", {
-              "flex-row-reverse": hasMultiplePhotos
-            } )}
+            className={classnames("flex justify-between", {
+              "flex-row-reverse": hasMultiplePhotos,
+            })}
           >
             {hasMultiplePhotos && (
               <IconMaterial
@@ -102,14 +104,20 @@ const ObsGridItem = ( {
                 size={22}
               />
             )}
-            {( hasSound || true ) && (
+            {(hasSound || true) && (
               <IconMaterial name="volume-up" color={colors.white} size={22} />
             )}
           </View>
 
           <View>
             {showStats()}
-            <DisplayTaxonName observation={observation} color="text-white" />
+            <DisplayTaxonName
+              taxon={observation?.taxon}
+              scientificNameFirst={
+                observation?.user?.prefers_scientific_name_first
+              }
+              color="text-white"
+            />
           </View>
         </View>
       </View>

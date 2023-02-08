@@ -26,7 +26,8 @@ const ObsCardDetails = ( { item = "list", view }: Props ): Node => {
   return (
     <View className={view === "grid" && "border border-border p-2"}>
       <DisplayTaxonName
-        observation={item}
+        taxon={item.taxon}
+        scientificNameFirst={item?.user?.prefers_scientific_name_first}
         layout={view === "list" ? "horizontal" : "vertical"}
       />
       <Text numberOfLines={1}>

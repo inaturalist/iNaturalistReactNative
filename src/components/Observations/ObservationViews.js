@@ -10,10 +10,10 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
 
 import EmptyList from "./EmptyList";
-import ObsGridItem from "./ObsGridItem";
 import useInfiniteScroll from "./hooks/useInfiniteScroll";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
 import ObsCard from "./ObsCard";
+import ObsGridItem from "./ObsGridItem";
 import ObsListBottomSheet from "./ObsListBottomSheet";
 import ObsListHeader from "./ObsListHeader";
 
