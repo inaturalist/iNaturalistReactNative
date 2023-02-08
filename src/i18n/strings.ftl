@@ -578,6 +578,8 @@ Unknown-organism = Unknown organism
 
 Unmute = Unmute
 
+Missing-Location = Missing Location
+
 Unreviewed-only = Unreviewed only
 
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
