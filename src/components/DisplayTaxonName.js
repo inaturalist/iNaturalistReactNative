@@ -8,18 +8,26 @@ import { useTranslation } from "react-i18next";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 
 type Props = {
-  item: Object,
+  observation: Object,
   layout?: "horizontal" | "vertical",
+  color?: string
 };
 
 const DisplayTaxonName = ( {
   layout = "horizontal",
-  item: { user, taxon }
+  observation: { user, taxon },
+  color
 }: Props ): Node => {
   const { t } = useTranslation( );
 
+  const textColorClass = color || "text-darkGray";
+
   if ( !taxon ) {
-    return <Body1 numberOfLines={1}>{t( "unknown" )}</Body1>;
+    return (
+      <Body1 className={textColorClass} numberOfLines={1}>
+        {t( "unknown" )}
+      </Body1>
+    );
   }
 
   const {
@@ -64,6 +72,7 @@ const DisplayTaxonName = ( {
       } )}
     >
       <Body1
+        className={textColorClass}
         numberOfLines={scientificNameFirst ? 1 : 3}
       >
         {
@@ -77,7 +86,7 @@ const DisplayTaxonName = ( {
 
       {
        commonName && (
-       <Body3>
+       <Body3 className={textColorClass}>
          {scientificNameFirst ? commonName : scientificNameComponent}
        </Body3>
        )

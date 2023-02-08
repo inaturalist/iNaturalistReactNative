@@ -77,8 +77,8 @@ const ObservationViews = (): Node => {
     <ObsCard item={item} handlePress={navToObsDetails} />
   );
 
-  const renderGridItem = ( { item, index } ) => (
-    <GridItem item={item} index={index} handlePress={navToObsDetails} />
+  const renderGridItem = ( { item } ) => (
+    <GridItem observation={item} handlePress={navToObsDetails} />
   );
 
   const renderFooter = () => {

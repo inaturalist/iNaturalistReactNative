@@ -30,7 +30,7 @@ const ObsStatus = ( { observation, color, layout = "vertical" }: Props ): Node =
   const numComments = observation.comments?.length || 0;
 
   return (
-    <View className={classnames( "flex px-2", flexDirection )}>
+    <View className={classnames( "flex", flexDirection )}>
       <ActivityCount
         margin={margin}
         count={numIdents}
