@@ -96,7 +96,12 @@ apply from: "../../node_modules/react-native/react.gradle"
 
 // add vector icons to project
 project.ext.vectoricons = [
-    iconFontNames: [ 'MaterialCommunityIcons.ttf', 'MaterialIcons.ttf' ]
+    iconFontsDir: "../../assets/fonts/",
+    iconFontNames: [
+        'MaterialCommunityIcons.ttf',
+        'MaterialIcons.ttf',
+        'inaturalisticons.ttf'
+    ]
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
