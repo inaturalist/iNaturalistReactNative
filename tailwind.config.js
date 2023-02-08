@@ -9,41 +9,59 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        "3xl": ["26px", {
-          lineHeight: "31px"
-        }
+        "3xl": [
+          "26px",
+          {
+            lineHeight: "31px"
+          }
         ],
-        "2xl": ["22px", {
-          lineHeight: "26px"
-        }
+        "2xl": [
+          "22px",
+          {
+            lineHeight: "26px"
+          }
         ],
-        xl: ["21px", {
-          lineHeight: "25px"
-        }
+        xl: [
+          "21px",
+          {
+            lineHeight: "25px"
+          }
         ],
-        lg: ["19px", {
-          lineHeight: "23px"
-        }
+        lg: [
+          "19px",
+          {
+            lineHeight: "23px"
+          }
         ],
-        base: ["18px", {
-          lineHeight: "22px"
-        }
+        base: [
+          "18px",
+          {
+            lineHeight: "22px"
+          }
         ],
-        md: ["16px", {
-          lineHeight: "18px"
-        }
+        md: [
+          "16px",
+          {
+            lineHeight: "18px"
+          }
         ],
-        sm: ["14px", {
-          lineHeight: "18px"
-        }
+        sm: [
+          "14px",
+          {
+            lineHeight: "18px"
+          }
         ],
-        xs: ["12px", {
-          lineHeight: "14px"
-        }
+        xs: [
+          "12px",
+          {
+            lineHeight: "14px"
+          }
         ],
-        "2xs": ["8px", {
-          lineHeight: "10px"
-        }
+        "2xs": [
+          "8px",
+          {
+            lineHeight: "10px"
+          }
         ]
       },
       height: {

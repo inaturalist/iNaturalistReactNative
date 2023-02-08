@@ -62,7 +62,6 @@ const UiLibrary = () => {
           className="mb-2"
           level="focus"
           text="FOCUS BUTTON"
-          onPress={() => Alert.alert( "You Tapped a Button", "Or did you click it? Fight me." )}
         />
         <Button className="mb-2" level="warning" text="WARNING BUTTON" />
         <Button
