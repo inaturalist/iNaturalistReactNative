@@ -2,6 +2,7 @@ export { default as ActivityCount } from "./ActivityCount/ActivityCount";
 export { default as Button } from "./Buttons/Button";
 export { default as CloseButton } from "./Buttons/CloseButton";
 export { default as EvidenceButton } from "./Buttons/EvidenceButton";
+export { default as DateDisplay } from "./DateDisplay";
 export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
 export { default as Tabs } from "./Tabs/Tabs";

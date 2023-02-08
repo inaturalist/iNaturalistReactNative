@@ -7,6 +7,7 @@ import {
   Body4,
   Button,
   CloseButton,
+  DateDisplay,
   EvidenceButton,
   Heading1,
   Heading2,
@@ -257,6 +258,9 @@ const UiLibrary = ( ) => {
           ]}
           activeId="TAB1"
         />
+
+        <Heading2 className="my-2">Date Display Component</Heading2>
+        <DateDisplay dateTime="2023-12-14T21:07:41-09:30" />
 
         <Heading2 className="my-2">Quality Grade Status</Heading2>
         <View className="flex flex-row justify-between">

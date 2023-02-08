@@ -28,7 +28,7 @@ const displayDateTimeObsEdit = date => date && format( new Date( date ), "PPpp" 
 const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
 
 const formatObsListTime = date => {
-  const dateTime = "M/d/yy • HH:mm a";
+  const dateTime = "M/d/yy h:mm a";
   if ( typeof date === "string" ) {
     return format( parseISO( date ), dateTime );
   }

@@ -7,7 +7,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "clean-start": "npx react-native clean-project-auto && npx pod-install && npm start",
-    "test": "jest",
+    "test": "TZ=UTC jest",
     "lint": "npm run lint:eslint && npm run lint:flow",
     "lint:eslint": "eslint . --fix --quiet",
     "lint:flow": "flow check",
