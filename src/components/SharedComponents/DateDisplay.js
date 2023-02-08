@@ -21,7 +21,7 @@ const DateDisplay = ( {
     }
     return t( "no time given" );
   };
-  console.log( displayTime() );
+
   return (
     <View className="flex flex-row items-center">
       <IconMaterial name="watch-later" size={15} />
