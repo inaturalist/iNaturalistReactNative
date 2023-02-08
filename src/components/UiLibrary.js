@@ -16,7 +16,7 @@ import {
   InlineUser,
   List1,
   List2,
-  LocationDisplay,
+  ObservationLocation,
   QualityGradeStatus,
   Subheading1,
   Tabs,
@@ -25,10 +25,7 @@ import {
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
-import {
-  ScrollView,
-  View
-} from "components/styledComponents";
+import { ScrollView, View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
@@ -37,9 +34,9 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
-const UiLibrary = ( ) => {
-  const { t } = useTranslation( );
-  const theme = useTheme( );
+const UiLibrary = () => {
+  const { t } = useTranslation();
+  const theme = useTheme();
   const currentUser = useCurrentUser();
   return (
     <ViewWithFooter>
@@ -47,8 +44,8 @@ const UiLibrary = ( ) => {
         {/* TODO replace these text components with our typography header components */}
         <Body1>
           All the re-usable UI components we've got. If you're making a new UI
-          component, please put it here first and try to show what it looks
-          like with different property configurations.
+          component, please put it here first and try to show what it looks like
+          with different property configurations.
         </Body1>
         <Heading1>Buttons</Heading1>
         <Heading2>Button</Heading2>
@@ -63,24 +60,28 @@ const UiLibrary = ( ) => {
           className="mb-2"
           level="focus"
           text="FOCUS BUTTON"
-          onPress={( ) => Alert.alert(
-            "You Tapped a Button",
-            "Or did you click it? Fight me."
-          )}
+          onPress={() => Alert.alert( "You Tapped a Button", "Or did you click it? Fight me." )}
         />
         <Button className="mb-2" level="warning" text="WARNING BUTTON" />
-        <Button className="mb-2" level="primary" text="PRIMARY DISABLED" disabled />
+        <Button
+          className="mb-2"
+          level="primary"
+          text="PRIMARY DISABLED"
+          disabled
+        />
         <Button className="mb-2" text="NEUTRAL DISABLED" disabled />
         <Button className="mb-2" level="focus" text="FOCUS DISABLED" disabled />
-        <Button className="mb-2" level="warning" text="WARNING DISABLED" disabled />
+        <Button
+          className="mb-2"
+          level="warning"
+          text="WARNING DISABLED"
+          disabled
+        />
         <Button className="mb-2" loading text="LOADING BUTTON" />
         <Button
           className="mb-2"
           text="Tap to show alert"
-          onPress={( ) => Alert.alert(
-            "You Tapped a Button",
-            "Or did you click it? Fight me."
-          )}
+          onPress={() => Alert.alert( "You Tapped a Button", "Or did you click it? Fight me." )}
         />
 
         <Heading2>Multiple Buttons With Focus</Heading2>
@@ -146,10 +147,7 @@ const UiLibrary = ( ) => {
             <IconButton
               icon="compass-rose"
               className="my-2"
-              onPress={( ) => Alert.alert(
-                "",
-                "You tapped!"
-              )}
+              onPress={() => Alert.alert( "", "You tapped!" )}
             />
           </View>
           <View>
@@ -157,10 +155,7 @@ const UiLibrary = ( ) => {
             <IconButton
               icon="plus-sign"
               className="my-2"
-              onPress={( ) => Alert.alert(
-                "",
-                "You tapped!"
-              )}
+              onPress={() => Alert.alert( "", "You tapped!" )}
               mode="contained"
               containerColor={theme.colors.secondary}
               iconColor={theme.colors.onSecondary}
@@ -171,10 +166,7 @@ const UiLibrary = ( ) => {
             <IconButton
               icon="notifications-bell"
               className="my-2"
-              onPress={( ) => Alert.alert(
-                "",
-                "You tapped!"
-              )}
+              onPress={() => Alert.alert( "", "You tapped!" )}
               iconColor={theme.colors.error}
             />
           </View>
@@ -190,7 +182,8 @@ const UiLibrary = ( ) => {
 
         <Heading2>Custom iNaturalist Icons</Heading2>
         <Body1>
-          Make sure you're exporting glyphMap from components/INatIcon.js to see all custom icons
+          Make sure you're exporting glyphMap from components/INatIcon.js to see
+          all custom icons
         </Body1>
         {Object.keys( glyphMap ).sort().map( iconName => (
           <Body1 key={`icons-${iconName}`}>
@@ -198,10 +191,7 @@ const UiLibrary = ( ) => {
               name={iconName}
               className="p-3"
               key={iconName}
-              onPress={( ) => Alert.alert(
-                "",
-                `You tapped on the ${iconName} icon`
-              )}
+              onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
               size={20}
             />
             { " " }
@@ -260,20 +250,21 @@ const UiLibrary = ( ) => {
           activeId="TAB1"
         />
 
-<<<<<<< HEAD
         <Heading2 className="my-2">Date Display Component</Heading2>
         <DateDisplay dateTime="2023-12-14T21:07:41-09:30" />
 
-=======
         <Heading2 className="my-2">LocationDisplay Component</Heading2>
         <LocationDisplay latitude={30.181830} longitude={-85.760449} />
->>>>>>> c547d4d (Add LocationDisplay component)
+
+        <Heading2 className="my-2">ObservationLocation Component</Heading2>
+        <ObservationLocation latitude={30.18183} longitude={-85.760449} />
+
         <Heading2 className="my-2">Quality Grade Status</Heading2>
         <View className="flex flex-row justify-between">
           <View>
             <Body2 className="text-center">Research</Body2>
-            { /* TODO: refactor to not have color prop because we only need black and white */}
-            { /* TODO: better to access the color from theme here */}
+            {/* TODO: refactor to not have color prop because we only need black and white */}
+            {/* TODO: better to access the color from theme here */}
             <QualityGradeStatus qualityGrade="research" color="black" />
           </View>
           <View>
