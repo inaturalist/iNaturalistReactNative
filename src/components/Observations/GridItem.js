@@ -62,7 +62,11 @@ const GridItem = ( {
         {showUpload ? (
           <UploadButton observation={item} />
         ) : (
-          <ObsStatus item={item} layout="horizontal" />
+          <ObsStatus
+            observation={item}
+            layout="horizontal"
+            color={colors.white}
+          />
         )}
       </View>
     );

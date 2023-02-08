@@ -56,7 +56,10 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
         {item.needsSync() ? (
           <UploadButton observation={item} />
         ) : (
-          <ObsStatus item={item} layout="vertical" />
+          <ObsStatus
+            observation={item}
+            layout="vertical"
+          />
         )}
       </View>
     </Pressable>

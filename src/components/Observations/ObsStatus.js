@@ -14,33 +14,24 @@ import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
 
 type Props = {
-  item: typeof Observation,
+  observation: typeof Observation,
   layout?: "horizontal" | "vertical",
+  color?: "string"
 };
 /* eslint-disable react-native/no-inline-styles */
-const ObsStatus = ( { item, layout = "vertical" }: Props ): Node => {
+const ObsStatus = ( { observation, color, layout = "vertical" }: Props ): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const qualityGrade = checkCamelAndSnakeCase( item, "qualityGrade" );
-
-  const getIconColor = () => {
-    if ( layout === "horizontal" ) {
-      return theme.colors.onSecondary;
-    }
-    if ( item.viewed === false ) {
-      return theme.colors.error;
-    }
-    return theme.colors.primary;
-  };
-
-  const iconColor = getIconColor();
+  const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
   const margin = layout === "vertical" ? "mb-1" : "mr-1";
   const flexDirection = layout === "vertical" ? "flex-column" : "flex-row";
+  const iconColor = color || theme.colors.primary;
+
   return (
     <View className={classnames( "flex px-2", flexDirection )}>
       <ActivityCount
         marginClass={margin}
-        count={item.identifications?.length}
+        count={observation.identifications?.length}
         icon="cv-sparklylabel"
         color={iconColor}
         accessibilityLabel={t( "Number-of-identifications" )}
@@ -48,7 +39,7 @@ const ObsStatus = ( { item, layout = "vertical" }: Props ): Node => {
       />
       <ActivityCount
         marginClass={margin}
-        count={item.comments?.length}
+        count={observation.comments?.length}
         color={iconColor}
         accessibilityLabel={t( "Number-of-comments" )}
         testID="ActivityCount.commentCount"

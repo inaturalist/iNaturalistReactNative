@@ -309,15 +309,17 @@ const UiLibrary = ( ) => {
         </View>
 
         <Heading2 className="my-2">Obs status!</Heading2>
-        <View className="bg-darkGray mb-2">
-          <ObsStatus
-            layout="horizontal"
-            item={{ comments: [1, 2, 3, 4], identifications: [1, 2, 3] }}
-          />
-        </View>
+
+        <ObsStatus
+          layout="horizontal"
+          observation={{ comments: [1, 2, 3, 4], identifications: [1, 2, 3] }}
+          color={theme.colors.primary}
+        />
+
         <ObsStatus
           layout="vertical"
-          item={{ comments: [1, 2, 3], identifications: [1, 2, 3, 4, 5, 6] }}
+          observation={{ comments: [1, 2, 3], identifications: [1, 2, 3, 4, 5, 6] }}
+          color={theme.colors.primary}
         />
 
         <Heading2 className="my-2">More Stuff!</Heading2>
