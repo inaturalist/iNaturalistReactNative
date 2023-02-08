@@ -59,7 +59,7 @@ const ObsGridItem = ( {
       />
     );
   };
-
+console.log(width)
   return (
     <Pressable
       onPress={onPress}
@@ -68,7 +68,7 @@ const ObsGridItem = ( {
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
-      <View className="rounded-[17px] overflow-hidden relative">
+      <View className={classnames("rounded-[17px] overflow-hidden relative w-full", height)}>
         {imageUri && imageUri.uri ? (
           <ImageBackground
             source={imageUri}
@@ -88,7 +88,9 @@ const ObsGridItem = ( {
           </LinearGradient>
         )}
 
-        <View className="z-100 h-[172px] w-[172px] absolute flex justify-between p-2">
+        <View className={classnames(
+          "z-100 absolute flex justify-between p-2 w-full", height
+        )}>
           <View
             className={classnames( "flex justify-between", {
               "flex-row-reverse": hasMultiplePhotos
@@ -114,6 +116,7 @@ const ObsGridItem = ( {
               scientificNameFirst={
                 observation?.user?.prefers_scientific_name_first
               }
+              layout="vertical"
               color="text-white"
             />
           </View>
