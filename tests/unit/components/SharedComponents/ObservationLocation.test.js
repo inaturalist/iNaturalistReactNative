@@ -3,14 +3,7 @@ import { ObservationLocation } from "components/SharedComponents";
 import React from "react";
 
 import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
-
-const mockLocationName = "San Francisco, CA";
-
-jest.mock( "sharedHooks/useLocationName", () => ( {
-  __esModule: true,
-  default: () => mockLocationName
-} ) );
+import { renderAppWithComponent } from "../../../helpers/render";
 
 describe( "ObservationLocation", () => {
   it( "should be accessible", () => {
@@ -20,45 +13,45 @@ describe( "ObservationLocation", () => {
     ).toBeAccessible();
   } );
 
-  it( "should format location correctly from place_guess", () => {
+  it( "should format location correctly from place_guess", async ( ) => {
     const mockObservation = factory( "RemoteObservation", {
       latitude: 30.18183,
       longitude: -85.760449,
       place_guess: "Panama City Beach, Florida"
     } );
 
-    renderComponent(
+    renderAppWithComponent(
       <ObservationLocation observation={mockObservation} />
     );
-    expect( screen.getByText( mockObservation.place_guess ) ).toBeTruthy();
+    expect( await screen.findByText( mockObservation.place_guess ) ).toBeTruthy();
   } );
 
-  it( "should format location correctly from latitude/longitude", () => {
+  it( "should format location correctly from latitude/longitude", async ( ) => {
     const mockObservation = factory( "RemoteObservation", {
       latitude: 30.18183,
       longitude: -85.760449,
       place_guess: null
     } );
 
-    renderComponent(
+    renderAppWithComponent(
       <ObservationLocation observation={mockObservation} />
     );
-    expect( screen.getByText(
+    expect( await screen.findByText(
       `${mockObservation.latitude}, ${mockObservation.longitude}`
     ) ).toBeTruthy();
   } );
 
-  it( "should show no location if unknown", () => {
+  it( "should show no location if unknown", async ( ) => {
     const mockObservation = factory( "RemoteObservation", {
       latitude: null,
       longitude: null,
       place_guess: null
     } );
 
-    renderComponent(
+    renderAppWithComponent(
       <ObservationLocation observation={mockObservation} />
     );
-    expect( screen.getByText(
+    expect( await screen.findByText(
       "Missing Location"
     ) ).toBeTruthy();
   } );

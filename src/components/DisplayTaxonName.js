@@ -39,7 +39,16 @@ const DisplayTaxonName = ( {
     const text = piece + spaceChar;
     const TextComponent = scientificNameFirst || !commonName ? Body1 : Body3;
     return (
-      isItalics ? <TextComponent className="italic">{text}</TextComponent> : text
+      isItalics
+        ? (
+          <TextComponent
+            key={`DisplayTaxonName-${taxon.id}-${piece}`}
+            className="italic"
+          >
+            {text}
+          </TextComponent>
+        )
+        : text
     );
   } );
 
