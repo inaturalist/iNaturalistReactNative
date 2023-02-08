@@ -40,6 +40,10 @@ module.exports = {
         xs: ["12px", {
           lineHeight: "14px"
         }
+        ],
+        "2xs": ["8px", {
+          lineHeight: "10px"
+        }
         ]
       },
       height: {

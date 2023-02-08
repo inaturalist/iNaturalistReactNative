@@ -14,6 +14,7 @@ import {
   Heading2,
   Heading3,
   Heading4,
+  Heading5,
   InlineUser,
   List1,
   List2,
@@ -133,6 +134,7 @@ const UiLibrary = () => {
         <Heading2 className="my-2">Heading2</Heading2>
         <Heading3 className="my-2">Heading3</Heading3>
         <Heading4 className="my-2">Heading4</Heading4>
+        <Heading5 className="my-2">Heading5</Heading5>
         <Subheading1 className="my-2">Subheading1</Subheading1>
         <Body1 className="my-2">Body1</Body1>
         <Body2 className="my-2">Body2</Body2>
