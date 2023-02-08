@@ -59,7 +59,7 @@ const ObsGridItem = ( {
       />
     );
   };
-  console.log( width );
+
   return (
     <Pressable
       onPress={onPress}
