@@ -23,8 +23,8 @@ const setStyles = ( {
   disabled,
   className
 } ) => {
-  let buttonClass = "rounded flex-row justify-center items-center py-1.5 px-8";
-  let textClass = "text-white tracking-widest";
+  let buttonClass = "rounded flex-row justify-center items-center py-[13px] px-[10px]";
+  let textClass = "text-white";
 
   if ( className ) {
     buttonClass = buttonClass.concat( " ", className );
