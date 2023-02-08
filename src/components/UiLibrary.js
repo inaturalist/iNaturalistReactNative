@@ -28,7 +28,7 @@ import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { ScrollView, View } from "components/styledComponents";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
@@ -40,6 +40,7 @@ const UiLibrary = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const currentUser = useCurrentUser();
+  const [loading, setLoading] = useState( false );
   return (
     <ViewWithFooter>
       <ScrollView className="px-5">
@@ -55,15 +56,30 @@ const UiLibrary = () => {
           className="mb-2"
           level="primary"
           text="PRIMARY BUTTON"
+          loading={loading}
+          onPress={() => setLoading( !loading )}
           accessibilityHint="Describes the result of performing the tap action on this element."
         />
-        <Button className="mb-2" text="NEUTRAL BUTTON" />
+        <Button
+          className="mb-2"
+          text="NEUTRAL BUTTON"
+          loading={loading}
+          onPress={() => setLoading( !loading )}
+        />
         <Button
           className="mb-2"
           level="focus"
           text="FOCUS BUTTON"
+          loading={loading}
+          onPress={() => setLoading( !loading )}
         />
-        <Button className="mb-2" level="warning" text="WARNING BUTTON" />
+        <Button
+          className="mb-2"
+          level="warning"
+          text="WARNING BUTTON"
+          loading={loading}
+          onPress={() => setLoading( !loading )}
+        />
         <Button
           className="mb-2"
           level="primary"
@@ -187,19 +203,21 @@ const UiLibrary = () => {
           Make sure you're exporting glyphMap from components/INatIcon.js to see
           all custom icons
         </Body1>
-        {Object.keys( glyphMap ).sort().map( iconName => (
-          <Body1 key={`icons-${iconName}`}>
-            <INatIcon
-              name={iconName}
-              className="p-3"
-              key={iconName}
-              onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
-              size={20}
-            />
-            { " " }
-            {iconName}
-          </Body1>
-        ) )}
+        {Object.keys( glyphMap )
+          .sort()
+          .map( iconName => (
+            <Body1 key={`icons-${iconName}`}>
+              <INatIcon
+                name={iconName}
+                className="p-3"
+                key={iconName}
+                onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
+                size={20}
+              />
+              {" "}
+              {iconName}
+            </Body1>
+          ) )}
 
         <Heading2 className="my-2">User Icons</Heading2>
         <View className="flex flex-row justify-between mb-3">
@@ -332,7 +350,10 @@ const UiLibrary = () => {
 
         <ObsStatus
           layout="vertical"
-          observation={{ comments: [1, 2, 3], identifications: [1, 2, 3, 4, 5, 6] }}
+          observation={{
+            comments: [1, 2, 3],
+            identifications: [1, 2, 3, 4, 5, 6]
+          }}
           color={theme.colors.primary}
         />
 

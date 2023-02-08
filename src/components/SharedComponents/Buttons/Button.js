@@ -4,6 +4,7 @@ import Heading4 from "components/SharedComponents/Typography/Heading4";
 import { Pressable } from "components/styledComponents";
 import * as React from "react";
 import { ActivityIndicator } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 type ButtonProps = {
   text: string,
@@ -60,6 +61,10 @@ const Button = ( {
   accessibilityRole,
   accessibilityHint
 }: ButtonProps ): React.Node => {
+  const isPrimary = level === "primary";
+  const isWarning = level === "warning";
+  const isFocus = level === "focus";
+  const isNeutral = !isPrimary && !isWarning && !isFocus;
   const { buttonClass, textClass } = setStyles( { disabled, level, className } );
 
   return (
@@ -74,10 +79,14 @@ const Button = ( {
       accessibilityState={{ disabled }}
       accessibilityHint={accessibilityHint}
     >
-      {loading && <ActivityIndicator size={18} className="mr-2" />}
-      <Heading4 className={textClass}>
-        {text}
-      </Heading4>
+      {loading && (
+        <ActivityIndicator
+          size={18}
+          className="mr-2"
+          color={isNeutral ? colors.darkGray : colors.white}
+        />
+      )}
+      <Heading4 className={textClass}>{text}</Heading4>
     </Pressable>
   );
 };
