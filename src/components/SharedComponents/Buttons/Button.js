@@ -23,7 +23,7 @@ const setStyles = ( {
   disabled,
   className
 } ) => {
-  let buttonClass = "rounded flex-row justify-center items-center py-[13px] px-[10px]";
+  let buttonClass = "rounded-lg flex-row justify-center items-center py-[13px] px-[10px]";
   let textClass = "text-white";
 
   if ( className ) {
@@ -35,9 +35,9 @@ const setStyles = ( {
   } else if ( level === "primary" ) {
     buttonClass = buttonClass.concat( " ", "bg-darkGray" );
   } else if ( level === "focus" ) {
-    buttonClass = buttonClass.concat( " ", "bg-inatGreen" );
+    buttonClass = buttonClass.concat( " ", "bg-focusGreen" );
   } else {
-    buttonClass = buttonClass.concat( " ", "border border-darkGray border-[2.6px]" );
+    buttonClass = buttonClass.concat( " ", "border border-darkGray border-[3px]" );
     textClass = textClass.concat( " ", "color-darkGray" );
   }
 
@@ -69,6 +69,7 @@ const Button = ( {
       style={style}
       disabled={disabled}
       testID={testID}
+      // has no accessibilityLabel prop because then the button text is read as label
       accessibilityRole={accessibilityRole || "button"}
       accessibilityState={{ disabled }}
       accessibilityHint={accessibilityHint}
