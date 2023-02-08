@@ -5,6 +5,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { Platform } from "react-native";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 
 type Props = {
@@ -43,7 +44,9 @@ const DisplayTaxonName = ( {
         ? (
           <TextComponent
             key={`DisplayTaxonName-${taxon.id}-${piece}`}
-            className="italic"
+            className={
+              Platform.OS === "ios" ? "font-Whitney-BookItalic" : "font-Whitney-BookItalic-Pro"
+            }
           >
             {text}
           </TextComponent>
