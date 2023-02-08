@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List2 renders correctly 1`] = `
+<Text
+  style={
+    Array [
+      Object {
+        "fontFamily": "Whitney-Light",
+      },
+      Array [
+        Object {
+          "fontSize": 14,
+          "lineHeight": 18,
+        },
+        Object {
+          "lineHeight": 17,
+        },
+        Object {
+          "fontWeight": "300",
+        },
+      ],
+    ]
+  }
+>
+  List2
+</Text>
+`;

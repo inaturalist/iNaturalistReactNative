@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Body1 renders correctly 1`] = `
+<Text
+  style={
+    Array [
+      Object {
+        "fontFamily": "Whitney-Light",
+      },
+      Array [
+        Object {
+          "fontSize": 18,
+          "lineHeight": 22,
+        },
+        Object {
+          "fontWeight": "500",
+        },
+      ],
+    ]
+  }
+>
+  Body1/List1
+</Text>
+`;
