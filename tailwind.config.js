@@ -98,7 +98,7 @@ module.exports = {
       inatGreen: "#77b300",
       inatGreenDisabled: "#cce2a4",
       gray: "#393939",
-      lightGray: "#f5f5f5",
+      lightGray: "#e8e8e8",
       midGray: "#cccccc",
       borderGray: "#d1d1d1",
       grayText: "#999999",
