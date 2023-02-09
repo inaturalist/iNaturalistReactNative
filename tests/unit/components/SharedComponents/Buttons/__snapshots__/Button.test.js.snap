@@ -76,6 +76,9 @@ exports[`Button focus disabled renders correctly 1`] = `
           Object {
             "letterSpacing": 2,
           },
+          Object {
+            "color": "#454545",
+          },
           Array [
             Object {
               "color": "#ffffff",
@@ -162,6 +165,9 @@ exports[`Button focus renders correctly 1`] = `
           },
           Object {
             "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
           },
           Array [
             Object {
@@ -268,6 +274,9 @@ exports[`Button neutral disabled renders correctly 1`] = `
           Object {
             "letterSpacing": 2,
           },
+          Object {
+            "color": "#454545",
+          },
           Array [
             Object {
               "color": "#ffffff",
@@ -373,6 +382,9 @@ exports[`Button neutral renders correctly 1`] = `
           Object {
             "letterSpacing": 2,
           },
+          Object {
+            "color": "#454545",
+          },
           Array [
             Object {
               "color": "#ffffff",
@@ -466,6 +478,9 @@ exports[`Button primary disabled renders correctly 1`] = `
           Object {
             "letterSpacing": 2,
           },
+          Object {
+            "color": "#454545",
+          },
           Array [
             Object {
               "color": "#ffffff",
@@ -552,6 +567,9 @@ exports[`Button primary renders correctly 1`] = `
           },
           Object {
             "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
           },
           Array [
             Object {
@@ -643,6 +661,9 @@ exports[`Button warning disabled renders correctly 1`] = `
           Object {
             "letterSpacing": 2,
           },
+          Object {
+            "color": "#454545",
+          },
           Array [
             Object {
               "color": "#ffffff",
@@ -729,6 +750,9 @@ exports[`Button warning renders correctly 1`] = `
           },
           Object {
             "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
           },
           Array [
             Object {
