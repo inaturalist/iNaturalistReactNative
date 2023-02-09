@@ -14,12 +14,12 @@ const testObservation = factory( "LocalObservation", {
   place_guess: "SF"
 } );
 
-test.only( "renders text passed into observation card", async () => {
-  render( <ObsListItem observation={testObservation} onPress={() => jest.fn()} /> );
+test.only( "renders text passed into observation card", async ( ) => {
+  render( <ObsListItem observation={testObservation} onPress={( ) => jest.fn( )} /> );
 
   expect(
     screen.getByTestId( `ObsList.obsListItem.${testObservation.uuid}` )
-  ).toBeTruthy();
+  ).toBeTruthy( );
   expect( screen.getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( {
     uri: testObservation.observationPhotos[0].photo.url
   } );
@@ -27,28 +27,28 @@ test.only( "renders text passed into observation card", async () => {
   expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
     `${testObservation.taxon.preferred_common_name}${testObservation.taxon.name}`
   );
-  expect( screen.getByText( testObservation.placeGuess ) ).toBeTruthy();
-  await waitFor( () => {
+  expect( screen.getByText( testObservation.placeGuess ) ).toBeTruthy( );
+  await waitFor( ( ) => {
     expect(
-      screen.getByText( testObservation.comments.length.toString() )
-    ).toBeTruthy();
+      screen.getByText( testObservation.comments.length.toString( ) )
+    ).toBeTruthy( );
   } );
-  await waitFor( () => {
+  await waitFor( ( ) => {
     expect(
-      screen.getByText( testObservation.identifications.length.toString() )
-    ).toBeTruthy();
+      screen.getByText( testObservation.identifications.length.toString( ) )
+    ).toBeTruthy( );
   } );
 } );
 
-test( "navigates to ObsDetails on button press", () => {
+test( "navigates to ObsDetails on button press", ( ) => {
   const fakeNavigation = {
-    navigate: jest.fn()
+    navigate: jest.fn( )
   };
 
   render(
     <ObsListItem
       item={testObservation}
-      handlePress={() => fakeNavigation.navigate( "ObsDetails" )}
+      handlePress={( ) => fakeNavigation.navigate( "ObsDetails" )}
     />
   );
 
@@ -60,10 +60,10 @@ test( "navigates to ObsDetails on button press", () => {
   expect( fakeNavigation.navigate ).toBeCalledWith( "ObsDetails" );
 } );
 
-test( "should not have accessibility errors", () => {
+test( "should not have accessibility errors", ( ) => {
   const obsListItem = (
-    <ObsListItem observation={testObservation} onPress={() => jest.fn()} />
+    <ObsListItem observation={testObservation} onPress={( ) => jest.fn( )} />
   );
 
-  expect( obsListItem ).toBeAccessible();
+  expect( obsListItem ).toBeAccessible( );
 } );
