@@ -9,6 +9,7 @@ import {
   Button,
   CloseButton,
   DateDisplay,
+  Divider,
   EvidenceButton,
   Heading1,
   Heading2,
@@ -146,10 +147,12 @@ const UiLibrary = () => {
 
         <Heading2 className="my-2">Typography</Heading2>
         <Heading1 className="my-2">Heading1</Heading1>
-        <Heading1 className="my-2 text-focusGreen">Heading1 (non-default color)</Heading1>
         <Heading2 className="my-2">Heading2</Heading2>
         <Heading3 className="my-2">Heading3</Heading3>
         <Heading4 className="my-2">Heading4</Heading4>
+        <Heading4 className="my-2 text-focusGreen">
+          Heading4 (non-default color)
+        </Heading4>
         <Heading5 className="my-2">Heading5</Heading5>
         <Subheading1 className="my-2">Subheading1</Subheading1>
         <Body1 className="my-2">Body1</Body1>
@@ -250,26 +253,29 @@ const UiLibrary = () => {
           </View>
         </View>
 
-        <Heading2>Tabs component</Heading2>
+        <Heading2 className="my-2">Tabs component</Heading2>
         <Tabs
           tabs={[
             {
               id: "TAB1",
-              text: "Tab1",
+              text: "TAB1",
               onPress: () => {
-                console.log( "Tab1" );
+                console.log( "TAB1" );
               }
             },
             {
               id: "TAB2",
-              text: "Tab2",
+              text: "TAB2",
               onPress: () => {
-                console.log( "Tab2" );
+                console.log( "TAB2" );
               }
             }
           ]}
           activeId="TAB1"
         />
+
+        <Heading2 className="my-2">Divider component</Heading2>
+        <Divider />
 
         <Heading2 className="my-2">Date Display Component</Heading2>
         <DateDisplay dateTime="2023-12-14T21:07:41-09:30" />

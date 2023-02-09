@@ -3,6 +3,7 @@ export { default as Button } from "./Buttons/Button";
 export { default as CloseButton } from "./Buttons/CloseButton";
 export { default as EvidenceButton } from "./Buttons/EvidenceButton";
 export { default as DateDisplay } from "./DateDisplay";
+export { default as Divider } from "./Divider/Divider";
 export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as ObservationLocation } from "./ObservationLocation";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
