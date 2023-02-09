@@ -7,7 +7,7 @@ import INatTextLight from "./INatTextLight";
 
 const Body4 = ( props: any ): Node => (
   // eslint-disable-next-line react/jsx-props-no-spreading
-  <INatTextLight className="text-xs font-light" {...props} />
+  <INatTextLight className="text-xs font-light color-darkGray" {...props} />
 );
 
 export default Body4;

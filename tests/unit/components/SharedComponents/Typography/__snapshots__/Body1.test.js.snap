@@ -15,6 +15,9 @@ exports[`Body1 renders correctly 1`] = `
         Object {
           "fontWeight": "500",
         },
+        Object {
+          "color": "#454545",
+        },
       ],
     ]
   }

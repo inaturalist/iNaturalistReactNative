@@ -18,6 +18,9 @@ exports[`Heading5 renders correctly 1`] = `
         Object {
           "letterSpacing": 1,
         },
+        Object {
+          "color": "#454545",
+        },
       ],
     ]
   }

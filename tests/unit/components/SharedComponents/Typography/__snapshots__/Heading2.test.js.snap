@@ -15,6 +15,9 @@ exports[`Heading2 renders correctly 1`] = `
         Object {
           "fontWeight": "600",
         },
+        Object {
+          "color": "#454545",
+        },
       ],
     ]
   }
