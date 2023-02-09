@@ -1,6 +1,5 @@
 // @flow
 
-import classNames from "classnames";
 import Divider from "components/SharedComponents/Divider/Divider";
 import Heading4 from "components/SharedComponents/Typography/Heading4";
 import { View } from "components/styledComponents";
@@ -47,12 +46,7 @@ const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => (
               }}
             >
               <Heading4 className="self-center py-[4px]">{text}</Heading4>
-              <View
-                className={classNames(
-                  " h-[4px] rounded-t",
-                  active && "bg-darkGray"
-                )}
-              />
+              { active && <View className="h-[4px] rounded-t bg-darkGray" /> }
             </TouchableOpacity>
           </View>
         );
