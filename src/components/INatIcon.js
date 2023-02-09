@@ -1,6 +1,7 @@
 /**
  * INatIcon icon set component.
  * Usage: <INatIcon name="icon-name" size={20} color="#4F8EF7" />
+ * If no color is specified, the default color is #000000.
  */
 
 import createIconSet from "react-native-vector-icons/lib/create-icon-set";
