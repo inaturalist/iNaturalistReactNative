@@ -22,6 +22,6 @@ exports[`Body1 renders correctly 1`] = `
     ]
   }
 >
-  Body1/List1
+  Body1
 </Text>
 `;

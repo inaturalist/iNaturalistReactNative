@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react-native";
 import { Body1 } from "components/SharedComponents";
 import React from "react";
 
-const text = "Body1/List1";
+const text = "Body1";
 
 describe( "Body1", () => {
   it( "renders correctly", async () => {
