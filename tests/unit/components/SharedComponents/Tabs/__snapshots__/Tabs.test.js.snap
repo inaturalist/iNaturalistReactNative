@@ -1,0 +1,214 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tabs should render correctly 1`] = `
+Array [
+  <View
+    accessibilityRole="tablist"
+    style={
+      Array [
+        Array [
+          Object {
+            "display": "flex",
+          },
+          Object {
+            "flexDirection": "row",
+          },
+        ],
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Array [
+            Object {
+              "flexBasis": "0%",
+              "flexGrow": 1,
+              "flexShrink": 1,
+            },
+          ],
+        ]
+      }
+    >
+      <View
+        accessibilityHint="Switches-to-tab"
+        accessibilityLabel="TAB_1"
+        accessibilityRole="tab"
+        accessibilityState={
+          Object {
+            "expanded": true,
+            "selected": true,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="TAB_1-tab"
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "fontFamily": "Whitney-Medium",
+              },
+              Array [
+                Object {
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                Object {
+                  "lineHeight": 19,
+                },
+                Object {
+                  "fontWeight": "600",
+                },
+                Object {
+                  "letterSpacing": 2,
+                },
+                Object {
+                  "color": "#454545",
+                },
+                Array [
+                  Object {
+                    "alignSelf": "center",
+                  },
+                  Object {
+                    "paddingBottom": 4,
+                    "paddingTop": 4,
+                  },
+                ],
+              ],
+            ]
+          }
+        >
+          TAB_1
+        </Text>
+        <View
+          style={
+            Array [
+              Array [
+                Object {
+                  "height": 4,
+                },
+                Object {
+                  "borderTopLeftRadius": 7,
+                  "borderTopRightRadius": 7,
+                },
+                Object {
+                  "backgroundColor": "#454545",
+                },
+              ],
+            ]
+          }
+        />
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Array [
+            Object {
+              "flexBasis": "0%",
+              "flexGrow": 1,
+              "flexShrink": 1,
+            },
+          ],
+        ]
+      }
+    >
+      <View
+        accessibilityHint="Switches-to-tab"
+        accessibilityLabel="TAB_2"
+        accessibilityRole="tab"
+        accessibilityState={
+          Object {
+            "expanded": false,
+            "selected": false,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="TAB_2-tab"
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "fontFamily": "Whitney-Medium",
+              },
+              Array [
+                Object {
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                Object {
+                  "lineHeight": 19,
+                },
+                Object {
+                  "fontWeight": "600",
+                },
+                Object {
+                  "letterSpacing": 2,
+                },
+                Object {
+                  "color": "#454545",
+                },
+                Array [
+                  Object {
+                    "alignSelf": "center",
+                  },
+                  Object {
+                    "paddingBottom": 4,
+                    "paddingTop": 4,
+                  },
+                ],
+              ],
+            ]
+          }
+        >
+          TAB_2
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Array [
+          Object {
+            "height": 1,
+          },
+          Object {
+            "backgroundColor": "#e8e8e8",
+          },
+        ],
+      ]
+    }
+  />,
+]
+`;
