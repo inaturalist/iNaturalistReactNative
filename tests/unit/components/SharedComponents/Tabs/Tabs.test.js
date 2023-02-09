@@ -2,7 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native";
 import { Tabs } from "components/SharedComponents";
 import React from "react";
 
-import { renderComponent } from "../../helpers/render";
+import { renderComponent } from "../../../../helpers/render";
 
 const TAB_1 = "TAB_1";
 const TAB_2 = "TAB_2";
@@ -23,6 +23,12 @@ const tabs = [
 ];
 
 describe( "Tabs", () => {
+  it( "should render correctly", () => {
+    renderComponent( <Tabs tabs={tabs} activeId={TAB_1} /> );
+
+    expect( screen ).toMatchSnapshot();
+  } );
+
   it( "should not have accessibility errors", () => {
     const tabComp = <Tabs tabs={tabs} activeId={TAB_1} />;
 
