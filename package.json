@@ -77,6 +77,7 @@
     "react-native-image-picker": "^4.7.3",
     "react-native-jwt-io": "^1.0.3",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-linear-gradient": "^2.6.2",
     "react-native-localize": "^2.2.1",
     "react-native-logs": "^5.0.1",
     "react-native-mail": "github:chirag04/react-native-mail",
