@@ -146,6 +146,7 @@ const UiLibrary = () => {
 
         <Heading2 className="my-2">Typography</Heading2>
         <Heading1 className="my-2">Heading1</Heading1>
+        <Heading1 className="my-2 text-focusGreen">Heading1 (non-default color)</Heading1>
         <Heading2 className="my-2">Heading2</Heading2>
         <Heading3 className="my-2">Heading3</Heading3>
         <Heading4 className="my-2">Heading4</Heading4>
