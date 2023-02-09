@@ -24,7 +24,7 @@ const DateDisplay = ( {
 
   return (
     <View className="flex flex-row items-center mt-1">
-      <IconMaterial name="watch-later" size={15} />
+      <IconMaterial name="schedule" size={15} />
       <Body4 className="text-darkGray ml-[5px]">
         {displayTime( )}
       </Body4>
