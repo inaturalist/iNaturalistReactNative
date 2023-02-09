@@ -18,7 +18,7 @@ type Props = {
 };
 
 const ObsListItem = ( { observation, onPress }: Props ): Node => {
-  const photo = observation?.observationPhotos?.[0]?.photo || null
+  const photo = observation?.observationPhotos?.[0]?.photo || null;
   const needsSync = observation.needsSync( );
 
   const obsListPhoto = photo ? (
@@ -46,21 +46,20 @@ const ObsListItem = ( { observation, onPress }: Props ): Node => {
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
+      {obsListPhoto}
+      <View className="shrink">
+        <DisplayTaxonName layout="vertical" item={observation} />
+        <ObservationLocation observation={observation} />
+        <DateDisplay dateTime={observation?._created_at} />
+      </View>
 
-    {obsListPhoto}
-    <View className="shrink">
-      <DisplayTaxonName layout="vertical" item={observation} />
-      <ObservationLocation observation={observation} />
-      <DateDisplay dateTime={observation?._created_at} />
-    </View>
-
-    <View className="items-center justify-center ml-auto">
-      {needsSync ? (
-        <UploadButton observation={observation} />
-      ) : (
-        <ObsStatus observation={observation} layout="vertical" />
-      )}
-    </View>
+      <View className="items-center justify-center ml-auto">
+        {needsSync ? (
+          <UploadButton observation={observation} />
+        ) : (
+          <ObsStatus observation={observation} layout="vertical" />
+        )}
+      </View>
     </Pressable>
   );
 };
