@@ -4,18 +4,16 @@ import { useNavigation } from "@react-navigation/native";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, {
-  useRef, useState
-} from "react";
+import React, { useRef, useState } from "react";
 import { Animated, Dimensions } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
 
 import EmptyList from "./EmptyList";
-import GridItem from "./GridItem";
 import useInfiniteScroll from "./hooks/useInfiniteScroll";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
 import ObsCard from "./ObsCard";
+import ObsGridItem from "./ObsGridItem";
 import ObsListBottomSheet from "./ObsListBottomSheet";
 import ObsListHeader from "./ObsListHeader";
 
@@ -69,31 +67,29 @@ const ObservationViews = ( ): Node => {
   };
 
   const renderEmptyState = ( ) => {
-    if ( ( currentUser === false )
-      || ( !isLoading && observationList.length === 0 ) ) {
+    if ( currentUser === false || ( !isLoading && observationList.length === 0 ) ) {
       return <EmptyList />;
     }
     return <View />;
   };
 
-  const renderItem = ( { item } ) => <ObsCard item={item} handlePress={navToObsDetails} />;
+  const renderItem = ( { item } ) => (
+    <ObsCard item={item} handlePress={navToObsDetails} />
+  );
 
-  const renderGridItem = ( { item, index } ) => (
-    <GridItem
-      item={item}
-      index={index}
+  const renderGridItem = ( { item } ) => (
+    <ObsGridItem
+      observation={item}
       handlePress={navToObsDetails}
+      width="w-6/12"
     />
   );
 
   const renderFooter = ( ) => {
-    if ( currentUser === false ) { return <View />; }
-    return (
-      <InfiniteScrollFooter
-        view={layout}
-        isLoading={isLoading}
-      />
-    );
+    if ( currentUser === false ) {
+      return <View />;
+    }
+    return <InfiniteScrollFooter view={layout} isLoading={isLoading} />;
   };
 
   const renderItemSeparator = ( ) => <View className="border border-border" />;
@@ -124,7 +120,9 @@ const ObservationViews = ( ): Node => {
             numColumns={layout === "grid" ? 2 : 1}
             renderItem={layout === "grid" ? renderGridItem : renderItem}
             ListEmptyComponent={renderEmptyState}
-            ListHeaderComponent={<ObsListHeader setLayout={setLayout} layout={layout} />}
+            ListHeaderComponent={
+              <ObsListHeader setLayout={setLayout} layout={layout} />
+            }
             ListFooterComponent={renderFooter}
             ItemSeparatorComponent={layout !== "grid" && renderItemSeparator}
             stickyHeaderIndices={[0]}
