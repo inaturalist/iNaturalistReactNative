@@ -1,7 +1,9 @@
 import {
   differenceInDays, differenceInHours, differenceInMinutes,
-  format, formatDistanceToNow, formatISO, fromUnixTime, getUnixTime, getYear, parseISO
+  format, formatDistanceToNow, formatISO, fromUnixTime, getUnixTime, getYear,
+  parseISO
 } from "date-fns";
+import i18next from "i18n/index";
 
 const formatISONoTimezone = date => {
   const formattedISODate = formatISO( date );
@@ -26,6 +28,30 @@ const createObservedOnStringForUpload = date => formatDateStringFromTimestamp(
 const displayDateTimeObsEdit = date => date && format( new Date( date ), "PPpp" );
 
 const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
+
+const formatApiDatetime = date => {
+  if ( !date || date === "" ) {
+    return i18next.t( "Missing-Date" );
+  }
+  const dateString = formatISONoTimezone( date );
+  const time = dateString.split( "T" );
+
+  if ( time ) {
+    return i18next.t( "datetime-format-short", {
+      month: format( date, "M" ),
+      day: format( date, "d" ),
+      year: format( date, "yy" ),
+      hour: format( date, "h" ),
+      minutes: format( date, "mm" ),
+      meridiem: format( date, "a" )
+    } );
+  }
+  return i18next.t( "date-format-short", {
+    month: format( date, "M" ),
+    day: format( date, "d" ),
+    year: format( date, "yy" )
+  } );
+};
 
 const formatObsListTime = date => {
   const dateTime = "M/d/yy h:mm a";
@@ -70,6 +96,7 @@ const formatIdDate = ( date, t ) => {
 export {
   createObservedOnStringForUpload,
   displayDateTimeObsEdit,
+  formatApiDatetime,
   formatDateStringFromTimestamp,
   formatIdDate,
   formatISONoTimezone,

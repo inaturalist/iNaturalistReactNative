@@ -181,6 +181,7 @@
   "Low": "Low",
   "Mammals": "Mammals",
   "Media": "Media",
+  "Missing-Date": "Missing Date",
   "Mollusks": "Mollusks",
   "Month-January": {
     "comment": "The following Month- strings are the months of the year (in month order, not alphabetical order)",
@@ -588,5 +589,10 @@
   "Open-side-menu": "Open side menu",
   "Intl-number": "{ $val }",
   "x-comments": "{ $count ->\n  [one] { $count } comment\n *[other] { $count } comments\n}",
-  "x-identifications": "{ $count ->\n  [one] { $count } identification\n *[other] { $count } identifications\n}"
+  "x-identifications": "{ $count ->\n  [one] { $count } identification\n *[other] { $count } identifications\n}",
+  "date-format-short": {
+    "comment": "Date formatting",
+    "val": "{ $month }/{ $day }/{ $year }"
+  },
+  "datetime-format-short": "{ $month }/{ $day }/{ $year } { $hour }:{ $minutes } { $meridiem }"
 }

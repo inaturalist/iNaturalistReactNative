@@ -262,6 +262,8 @@ Mammals = Mammals
 
 Media = Media
 
+Missing-Date = Missing Date
+
 Mollusks = Mollusks
 
 # The following Month- strings are the months of the year (in month order, not alphabetical order)
@@ -807,3 +809,8 @@ x-identifications = {$count ->
     [one] {$count} identification
    *[other] {$count} identifications
 }
+
+# Date formatting
+date-format-short = {$month}/{$day}/{$year}
+
+datetime-format-short = {$month}/{$day}/{$year} {$hour}:{$minutes} {$meridiem}
