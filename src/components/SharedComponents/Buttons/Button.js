@@ -39,7 +39,7 @@ const setStyles = ( {
     buttonClass = buttonClass.concat( " ", "bg-focusGreen" );
   } else {
     buttonClass = buttonClass.concat( " ", "border border-darkGray border-[3px]" );
-    textClass = textClass.concat( " ", "color-darkGray" );
+    textClass = textClass.concat( " ", "text-darkGray" );
   }
 
   if ( disabled ) {
