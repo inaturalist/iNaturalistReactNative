@@ -12,21 +12,21 @@ import useLocalObservations from "sharedHooks/useLocalObservations";
 import EmptyList from "./EmptyList";
 import useInfiniteScroll from "./hooks/useInfiniteScroll";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
+import ObsGridItem from "./ObsGridItem";
 import ObsListBottomSheet from "./ObsListBottomSheet";
 import ObsListHeader from "./ObsListHeader";
 import ObsListItem from "./ObsListItem";
-import ObsGridItem from "./ObsGridItem";
 
 const { diffClamp } = Animated;
 
 const { height } = Dimensions.get( "screen" );
 const HEADER_HEIGHT = 101;
 
-const ObservationViews = (): Node => {
-  const localObservations = useLocalObservations();
+const ObservationViews = ( ): Node => {
+  const localObservations = useLocalObservations( );
   const [layout, setLayout] = useState( "list" );
-  const navigation = useNavigation();
-  const currentUser = useCurrentUser();
+  const navigation = useNavigation( );
+  const currentUser = useCurrentUser( );
   const { observationList } = localObservations;
   const [hasScrolled, setHasScrolled] = useState( false );
   const [idBelow, setIdBelow] = useState( null );
@@ -59,7 +59,7 @@ const ObservationViews = (): Node => {
 
   const navToObsDetails = async observation => {
     const { uuid } = observation;
-    if ( !observation.wasSynced() ) {
+    if ( !observation.wasSynced( ) ) {
       navigation.navigate( "ObsEdit", { uuid } );
     } else {
       navigation.navigate( "ObsDetails", { uuid } );
@@ -77,7 +77,7 @@ const ObservationViews = (): Node => {
     <ObsListItem observation={item} onPress={navToObsDetails} />
   );
 
-  const renderGridItem = ( { item, index } ) => (
+  const renderGridItem = ( { item } ) => (
     <ObsGridItem
       observation={item}
       handlePress={navToObsDetails}

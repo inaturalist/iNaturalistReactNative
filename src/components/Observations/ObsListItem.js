@@ -48,7 +48,13 @@ const ObsListItem = ( { observation, onPress }: Props ): Node => {
     >
       {obsListPhoto}
       <View className="shrink">
-        <DisplayTaxonName layout="vertical" item={observation} />
+        <DisplayTaxonName
+          taxon={observation?.taxon}
+          scientificNameFirst={
+            observation?.user?.prefers_scientific_name_first
+          }
+          layout="vertical"
+        />
         <ObservationLocation observation={observation} />
         <DateDisplay dateTime={observation?._created_at} />
       </View>

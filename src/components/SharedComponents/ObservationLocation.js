@@ -30,7 +30,7 @@ const ObservationLocation = ( { observation }: Props ): React.Node => {
     <View className="flex flex-row items-center mt-1">
       <IconMaterial name="location-pin" size={15} />
       <Body4 className="text-darkGray ml-[5px]">
-        {locationName || t( "Missing-Location" )}
+        {locationName}
       </Body4>
     </View>
   );

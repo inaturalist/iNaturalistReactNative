@@ -10,7 +10,8 @@ import React from "react";
 import factory from "../../../factory";
 
 const testObservation = factory( "LocalObservation", {
-  taxon: { preferred_common_name: "Foo", name: "bar" }
+  taxon: { preferred_common_name: "Foo", name: "bar" },
+  place_guess: "SF"
 } );
 
 test.only( "renders text passed into observation card", async () => {
