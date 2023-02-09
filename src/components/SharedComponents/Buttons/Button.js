@@ -3,8 +3,7 @@
 import Heading4 from "components/SharedComponents/Typography/Heading4";
 import { Pressable } from "components/styledComponents";
 import * as React from "react";
-import { ActivityIndicator } from "react-native-paper";
-import colors from "styles/tailwindColors";
+import { ActivityIndicator, useTheme } from "react-native-paper";
 
 type ButtonProps = {
   text: string,
@@ -67,6 +66,8 @@ const Button = ( {
   const isNeutral = !isPrimary && !isWarning && !isFocus;
   const { buttonClass, textClass } = setStyles( { disabled, level, className } );
 
+  const theme = useTheme( );
+
   return (
     <Pressable
       onPress={onPress}
@@ -83,7 +84,7 @@ const Button = ( {
         <ActivityIndicator
           size={18}
           className="mr-2"
-          color={isNeutral ? colors.darkGray : colors.white}
+          color={isNeutral ? theme.colors.darkGray : theme.colors.white}
         />
       )}
       <Heading4 className={textClass}>{text}</Heading4>
