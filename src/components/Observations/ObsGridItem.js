@@ -2,16 +2,16 @@
 
 import classnames from "classnames";
 import DisplayTaxonName from "components/DisplayTaxonName";
-import { ImageBackground, Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import LinearGradient from "react-native-linear-gradient";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
 
+import ObsPreviewImage from "./ObsPreviewImage";
 import ObsStatus from "./ObsStatus";
 import UploadButton from "./UploadButton";
 
@@ -69,25 +69,7 @@ const ObsGridItem = ( {
       accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
       <View className={classnames( "rounded-[17px] overflow-hidden relative w-full", height )}>
-        {imageUri && imageUri.uri ? (
-          <ImageBackground
-            source={imageUri}
-            className="grow aspect-square"
-            testID="ObsList.photo"
-          >
-            <LinearGradient
-              className="bg-transparent absolute inset-0"
-              colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-            />
-          </ImageBackground>
-        ) : (
-          <LinearGradient
-            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-          >
-            <View className="grow aspect-square" />
-          </LinearGradient>
-        )}
-
+        <ObsPreviewImage uri={imageUri} />
         <View className={classnames( "z-100 absolute flex justify-between p-2 w-full", height )}>
           <View
             className={classnames( "flex justify-between", {
