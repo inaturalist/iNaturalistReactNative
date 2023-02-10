@@ -34,7 +34,7 @@ const ObsListItem = ( { observation, onPress }: Props ): Node => {
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
-      <View className="relative w-[62px] h-[62px] rounded-lg mr-2 overflow-hidden">
+      <View className="relative w-[62px] h-[62px] rounded-lg mr-[10px] overflow-hidden">
         <ObsPreviewImage
           uri={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
           opaque={needsSync}
