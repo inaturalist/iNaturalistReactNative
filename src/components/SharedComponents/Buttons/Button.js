@@ -19,7 +19,9 @@ type ButtonProps = {
 }
 
 const setStyles = ( {
-  level,
+  isPrimary,
+  isFocus,
+  isWarning,
   disabled,
   className
 } ) => {
@@ -30,14 +32,17 @@ const setStyles = ( {
     buttonClass = buttonClass.concat( " ", className );
   }
 
-  if ( level === "warning" ) {
+  if ( isWarning ) {
     buttonClass = buttonClass.concat( " ", "bg-warningRed" );
-  } else if ( level === "primary" ) {
+  } else if ( isPrimary ) {
     buttonClass = buttonClass.concat( " ", "bg-darkGray" );
-  } else if ( level === "focus" ) {
+  } else if ( isFocus ) {
     buttonClass = buttonClass.concat( " ", "bg-focusGreen" );
   } else {
-    buttonClass = buttonClass.concat( " ", "border border-darkGray border-[3px]" );
+    buttonClass = buttonClass.concat(
+      " ",
+      "border border-darkGray border-[3px]"
+    );
     textClass = textClass.concat( " ", "text-darkGray" );
   }
 
@@ -80,7 +85,13 @@ const Button = ( {
   const isWarning = level === "warning";
   const isFocus = level === "focus";
   const isNeutral = !isPrimary && !isWarning && !isFocus;
-  const { buttonClass, textClass } = setStyles( { disabled, level, className } );
+  const { buttonClass, textClass } = setStyles( {
+    disabled,
+    isPrimary,
+    isFocus,
+    isWarning,
+    className
+  } );
 
   const theme = useTheme();
 
