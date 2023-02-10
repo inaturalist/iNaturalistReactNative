@@ -5,8 +5,8 @@ import { createComment } from "api/comments";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
+import ActivityHeader from "components/ObsDetails/ActivityHeader";
 import {
-  InlineUser,
   QualityGradeStatus,
   Tabs
 } from "components/SharedComponents";
@@ -35,7 +35,6 @@ import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
-import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -111,7 +110,6 @@ const ObsDetails = ( ): Node => {
   );
 
   const taxon = observation?.taxon;
-  const user = observation?.user;
   const faves = observation?.faves;
   const observationPhotos = observation?.observationPhotos || observation?.observation_photos;
   const currentUserFaved = faves?.length > 0 ? faves.find( fave => fave.user.id === userId ) : null;
@@ -260,9 +258,6 @@ const ObsDetails = ( ): Node => {
     }
   };
 
-  const displayCreatedAt = ( ) => ( observation?.created_at
-    ? formatObsListTime( observation.created_at ) : "" );
-
   const tabs = [
     {
       id: ACTIVITY_TAB_ID,
@@ -331,10 +326,7 @@ const ObsDetails = ( ): Node => {
   return (
     <>
       <ScrollWithFooter testID={`ObsDetails.${uuid}`}>
-        <View className="flex-row justify-between items-center m-3">
-          <InlineUser user={user} />
-          <Text className="color-logInGray">{displayCreatedAt()}</Text>
-        </View>
+        <ActivityHeader item={observation} />
         {displayPhoto()}
         <View className="flex-row my-5 justify-between mx-3">
           {showTaxon()}
