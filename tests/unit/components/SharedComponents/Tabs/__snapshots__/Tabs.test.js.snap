@@ -31,7 +31,7 @@ Array [
       }
     >
       <View
-        accessibilityHint="Switches-to-tab"
+        accessibilityHint="Switches to TAB_1 tab"
         accessibilityLabel="TAB_1"
         accessibilityRole="tab"
         accessibilityState={
@@ -129,7 +129,7 @@ Array [
       }
     >
       <View
-        accessibilityHint="Switches-to-tab"
+        accessibilityHint="Switches to TAB_2 tab"
         accessibilityLabel="TAB_2"
         accessibilityRole="tab"
         accessibilityState={
