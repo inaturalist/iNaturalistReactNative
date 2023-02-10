@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import ProjectObservations from "components/Projects/ProjectObservations";
+import initializeI18next from "i18n";
 import React from "react";
 
 import factory from "../../../factory";
@@ -30,6 +31,10 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
 } ) );
 
 describe( "ProjectObservations", () => {
+  beforeAll( async ( ) => {
+    await initializeI18next( );
+  } );
+
   test( "should not have accessibility errors", async ( ) => {
     renderComponent( <ProjectObservations /> );
     const projectObservations = await screen.findByTestId( "ProjectObservations.grid" );

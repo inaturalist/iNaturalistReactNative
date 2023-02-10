@@ -1,11 +1,16 @@
 import { screen } from "@testing-library/react-native";
 import { ObservationLocation } from "components/SharedComponents";
+import initializeI18next from "i18n";
 import React from "react";
 
 import factory from "../../../factory";
 import { renderAppWithComponent } from "../../../helpers/render";
 
 describe( "ObservationLocation", () => {
+  beforeAll( async ( ) => {
+    await initializeI18next( );
+  } );
+
   it( "should be accessible", () => {
     const mockObservation = factory( "RemoteObservation" );
     expect(

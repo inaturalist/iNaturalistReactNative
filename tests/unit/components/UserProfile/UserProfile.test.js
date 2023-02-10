@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import UserProfile from "components/UserProfile/UserProfile";
+import initializeI18next from "i18n";
 import React from "react";
 
 import factory from "../../../factory";
@@ -42,6 +43,10 @@ jest.mock(
 );
 
 describe( "UserProfile", () => {
+  beforeAll( async ( ) => {
+    await initializeI18next( );
+  } );
+
   it( "should render inside mocked container for testing", () => {
     renderComponent( <UserProfile /> );
     expect( screen.getByTestId( "UserProfile" ) ).toBeTruthy();

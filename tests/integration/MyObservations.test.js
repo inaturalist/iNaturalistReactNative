@@ -3,6 +3,8 @@
 
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
+import initializeI18next from "i18n";
+import i18n from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 
@@ -11,9 +13,11 @@ import factory, { makeResponse } from "../factory";
 import { renderAppWithComponent } from "../helpers/render";
 import { signIn, signOut } from "../helpers/user";
 
-jest.useFakeTimers( );
-
 describe( "MyObservations", ( ) => {
+  beforeAll( async ( ) => {
+    await initializeI18next( );
+  } );
+
   beforeEach( signOut );
 
   afterEach( ( ) => {
@@ -35,17 +39,15 @@ describe( "MyObservations", ( ) => {
   // } );
 
   describe( "when signed out", ( ) => {
-    async function testApiMethodNotCalled( apiMethod, language ) {
+    async function testApiMethodNotCalled( apiMethod ) {
       // Let's make sure the mock hasn't already been used
       expect( apiMethod ).not.toHaveBeenCalled( );
       const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
       renderAppWithComponent( <ObsList /> );
-      // TODO: We should really address this globally in the test suite. On first render,
-      // text doesn't have a language set, but on second render, text will default to English.
-      const textByLanguage = language === "en" ? "Log in to iNaturalist" : "Log-in-to-iNaturalist";
+      const loginText = i18n.t( "Log-in-to-iNaturalist" );
       await waitFor( ( ) => {
-        expect( screen.getByText( textByLanguage ) ).toBeTruthy( );
+        expect( screen.getByText( loginText ) ).toBeTruthy( );
       } );
       // Unpleasant, but without adjusting the timeout it doesn't seem like
       // all of these requests get caught
@@ -54,10 +56,10 @@ describe( "MyObservations", ( ) => {
       }, { timeout: 3000, interval: 500 } );
     }
     it( "should not make a request to users/me", async ( ) => {
-      await testApiMethodNotCalled( inatjs.users.me, undefined );
+      await testApiMethodNotCalled( inatjs.users.me );
     } );
     it( "should not make a request to observations/updates", async ( ) => {
-      await testApiMethodNotCalled( inatjs.observations.updates, "en" );
+      await testApiMethodNotCalled( inatjs.observations.updates );
     } );
   } );
 

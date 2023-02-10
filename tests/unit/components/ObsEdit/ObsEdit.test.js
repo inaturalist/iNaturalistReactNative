@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
+import initializeI18next from "i18n";
 import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
@@ -62,7 +63,11 @@ const renderObsEdit = ( ) => renderComponent(
 );
 
 describe( "ObsEdit", () => {
-  test( "should not have accessibility errors", async () => {
+  beforeAll( async ( ) => {
+    await initializeI18next( );
+  } );
+
+  it( "should not have accessibility errors", async () => {
     const observations = [
       factory( "RemoteObservation", {
         latitude: 37.99,

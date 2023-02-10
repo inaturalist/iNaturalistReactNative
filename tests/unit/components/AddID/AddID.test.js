@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import AddID from "components/ObsEdit/AddID";
+import initializeI18next from "i18n";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import INatPaperProvider from "providers/INatPaperProvider";
@@ -10,9 +11,9 @@ import { renderComponent } from "../../../helpers/render";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
 
-// this resolves a test failure with the Animated library:
-// Animated: `useNativeDriver` is not supported because the native animated module is missing.
-jest.useFakeTimers( );
+// // this resolves a test failure with the Animated library:
+// // Animated: `useNativeDriver` is not supported because the native animated module is missing.
+// jest.useFakeTimers( );
 
 jest.mock(
   "components/SharedComponents/ViewNoFooter",
@@ -71,6 +72,10 @@ jest.mock( "@gorhom/bottom-sheet", () => {
 const mockRoute = { params: {} };
 
 describe( "AddID", ( ) => {
+  beforeAll( async ( ) => {
+    await initializeI18next( );
+  } );
+
   test( "should not have accessibility errors", ( ) => {
     const addID = (
       <INatPaperProvider>

@@ -3,7 +3,6 @@ import {
   format, formatDistanceToNow, formatISO, fromUnixTime, getUnixTime, getYear,
   parseISO
 } from "date-fns";
-import i18next from "i18n/index";
 
 const formatISONoTimezone = date => {
   const formattedISODate = formatISO( date );
@@ -29,17 +28,17 @@ const displayDateTimeObsEdit = date => date && format( new Date( date ), "PPpp" 
 
 const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
 
-const formatApiDatetime = dateString => {
+const formatApiDatetime = ( dateString, t ) => {
   if ( !dateString || dateString === "" ) {
-    return i18next.t( "Missing-Date" );
+    return t( "Missing-Date" );
   }
   const hasTime = dateString.includes( "T" );
   const date = parseISO( dateString );
 
   if ( hasTime ) {
-    return format( date, i18next.t( "datetime-format-short" ) );
+    return format( date, t( "datetime-format-short" ) );
   }
-  return format( date, i18next.t( "date-format-short" ) );
+  return format( date, t( "date-format-short" ) );
 };
 
 const formatObsListTime = date => {

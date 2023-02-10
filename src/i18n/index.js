@@ -23,25 +23,25 @@ import { initReactI18next } from "react-i18next";
 // generate before building the app
 import loadTranslations from "./loadTranslations";
 
-// Initialize and configure i18next
-i18next
-  .use( initReactI18next )
-  .use( Fluent )
-  .use( resourcesToBackend( ( locale, namespace, callback ) => {
-    // Note that we're not using i18next namespaces at present
-    callback( null, loadTranslations( locale ) );
-  } ) )
-  .init( {
-    // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
-    lng: "en",
-    // debug: true,
-    interpolation: {
-      escapeValue: false // react already safes from xss
-    },
-    react: {
+export default async function initializeI18next( ) {
+  // Initialize and configure i18next
+  return i18next
+    .use( initReactI18next )
+    .use( Fluent )
+    .use( resourcesToBackend( ( locale, namespace, callback ) => {
+      // Note that we're not using i18next namespaces at present
+      callback( null, loadTranslations( locale ) );
+    } ) )
+    .init( {
       // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
-      useSuspense: false
-    }
-  } );
-
-export default i18next;
+      lng: "en",
+      // debug: true,
+      interpolation: {
+        escapeValue: false // react already safes from xss
+      },
+      react: {
+        // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
+        useSuspense: false
+      }
+    } );
+}
