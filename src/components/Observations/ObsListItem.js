@@ -29,7 +29,7 @@ const ObsListItem = ( { observation, onPress }: Props ): Node => {
   return (
     <Pressable
       onPress={( ) => onPress( observation )}
-      className="flex-row my-2 mx-3"
+      className="flex-row my-2 px-[10px]"
       testID={`ObsList.obsListItem.${observation.uuid}`}
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-observation-details" )}
