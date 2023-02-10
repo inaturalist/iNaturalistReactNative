@@ -158,7 +158,7 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
     <View className="flex-row ml-4 justify-between">
       <InlineUser user={user} />
       {( item._created_at )
-        ? <DateDisplay dateTime={item.created_at} />
+        ? <DateDisplay dateTime={item._created_at} />
         : ifCommentOrID()}
     </View>
   );
