@@ -23,7 +23,7 @@ const ObsCardDetails = ( { item = "list", view }: Props ): Node => {
         <IconMaterial name="location-pin" size={15} />
         {placeGuess || "no place guess"}
       </Text>
-      <DateDisplay dateTime={item._created_at} />
+      <DateDisplay dateTime={item.created_at} />
     </View>
   );
 };

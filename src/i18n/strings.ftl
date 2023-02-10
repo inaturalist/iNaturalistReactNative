@@ -810,7 +810,7 @@ x-identifications = {$count ->
    *[other] {$count} identifications
 }
 
-# Date formatting
-date-format-short = {$month}/{$day}/{$year}
-
-datetime-format-short = {$month}/{$day}/{$year} {$hour}:{$minutes} {$meridiem}
+# Date formatting using date-fns
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+date-format-short = M/d/yy
+datetime-format-short = M/d/yy h:mm a

@@ -115,6 +115,8 @@ class Observation extends Realm.Object {
 
     if ( !existingObs ) {
       localObs._created_at = new Date( localObs.created_at );
+      console.log( typeof localObs.created_at, "created at date from server" );
+      console.log( typeof new Date( localObs.created_at ), "new Date created at" );
       if ( isNaN( localObs._created_at ) ) {
         localObs._created_at = new Date( );
       }
