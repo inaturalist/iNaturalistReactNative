@@ -24,7 +24,6 @@ import {
   UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
-import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
 import UserText from "components/SharedComponents/UserText";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
@@ -123,14 +122,6 @@ const UiLibrary = () => {
             <EvidenceButton icon="microphone" />
           </View>
         </View>
-
-        <Heading2 className="my-2">SecondaryCTAButton</Heading2>
-        <SecondaryCTAButton>
-          <Body1>SecondaryCTAButton</Body1>
-        </SecondaryCTAButton>
-        <SecondaryCTAButton disabled>
-          <Body1>Disabled SecondaryCTAButton</Body1>
-        </SecondaryCTAButton>
 
         <Heading2 className="my-2">Typography</Heading2>
         <Heading1 className="my-2">Heading1</Heading1>
