@@ -22,6 +22,7 @@ import { Menu } from "react-native-paper";
 import Comment from "realmModels/Comment";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import colors from "styles/tailwindColors";
 
 const { useRealm } = RealmContext;
 
@@ -77,15 +78,15 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
     }
   );
 
-  const ifIcon = () => {
-    if ( item.vision ) return <INatIcon name="pencil" />;
-    if ( flaggedStatus ) return <INatIcon name="pencil" />;
+  const renderIcon = () => {
+    if ( item.vision ) return <INatIcon name="cv" size={22} />;
+    if ( flaggedStatus ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
   };
 
   const ifCommentOrID = () => (
     <View className="flex-row items-center space-x-[15px]">
-      {ifIcon()}
+      {renderIcon()}
       {
             flaggedStatus
               ? (
