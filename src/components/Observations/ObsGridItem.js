@@ -30,7 +30,7 @@ const ObsGridItem = ( {
   width = "w-full",
   height = "h-[172px]"
 }: Props ): Node => {
-  const onPress = () => handlePress( observation );
+  const onPress = ( ) => handlePress( observation );
 
   const photo = observation?.observationPhotos?.[0]?.photo;
 
@@ -43,8 +43,8 @@ const ObsGridItem = ( {
     ? Observation.projectUri( observation )
     : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
 
-  const showStats = () => {
-    if ( uri !== "project" && observation.needsSync() ) {
+  const showStats = ( ) => {
+    if ( uri !== "project" && observation.needsSync( ) ) {
       return (
         <View className="absolute bottom-0 right-0">
           <UploadButton observation={observation} />
@@ -90,7 +90,7 @@ const ObsGridItem = ( {
           </View>
 
           <View>
-            {showStats()}
+            {showStats( )}
             <DisplayTaxonName
               taxon={observation?.taxon}
               scientificNameFirst={
