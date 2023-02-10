@@ -102,7 +102,7 @@ const ObsGridItem = ( {
                 size={22}
               />
             )}
-            {( hasSound || true ) && (
+            {hasSound && (
               <IconMaterial name="volume-up" color={colors.white} size={22} />
             )}
           </View>
