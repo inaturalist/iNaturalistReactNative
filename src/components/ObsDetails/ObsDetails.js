@@ -227,7 +227,11 @@ const ObsDetails = ( ): Node => {
     if ( !taxon ) { return <Text>{t( "Unknown-organism" )}</Text>; }
     return (
       <View className="flex-row">
-        <Image source={Taxon.uri( taxon )} className="w-16 h-16 rounded-xl mr-3" />
+        <Image
+          source={Taxon.uri( taxon )}
+          className="w-16 h-16 rounded-xl mr-3"
+          accessibilityIgnoresInvertColors
+        />
         <Pressable
           className="justify-center"
           onPress={navToTaxonDetails}
