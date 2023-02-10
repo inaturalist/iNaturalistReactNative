@@ -39,10 +39,8 @@ const uncapitalizedTaxon = factory( "LocalTaxon", {
 } );
 
 describe( "when common name is first", ( ) => {
-  const user = { prefers_scientific_name_first: false };
-
   test( "renders correct taxon for species", ( ) => {
-    render( <DisplayTaxonName item={{ taxon: speciesTaxon, user }} /> );
+    render( <DisplayTaxonName taxon={speciesTaxon} /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       `${speciesTaxon.preferred_common_name} ${speciesTaxon.name}`
@@ -50,7 +48,7 @@ describe( "when common name is first", ( ) => {
   } );
 
   test( "renders correct taxon w/o common name", ( ) => {
-    render( <DisplayTaxonName item={{ taxon: noCommonNameTaxon, user }} /> );
+    render( <DisplayTaxonName taxon={noCommonNameTaxon} /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       noCommonNameTaxon.name
@@ -58,7 +56,7 @@ describe( "when common name is first", ( ) => {
   } );
 
   test( "renders correct taxon w/o common name and no species", ( ) => {
-    render( <DisplayTaxonName item={{ taxon: highRankTaxon, user }} /> );
+    render( <DisplayTaxonName taxon={highRankTaxon} /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       `${capitalizeFirstLetter( highRankTaxon.rank )} ${highRankTaxon.name}`
@@ -66,7 +64,7 @@ describe( "when common name is first", ( ) => {
   } );
 
   test( "renders correct taxon for a subfamily", ( ) => {
-    render( <DisplayTaxonName item={{ taxon: highRankTaxon, user }} /> );
+    render( <DisplayTaxonName taxon={highRankTaxon} /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       `${capitalizeFirstLetter( highRankTaxon.rank )} ${highRankTaxon.name}`
@@ -74,7 +72,7 @@ describe( "when common name is first", ( ) => {
   } );
 
   test( "renders correct taxon for subspecies", ( ) => {
-    render( <DisplayTaxonName item={{ taxon: subspeciesTaxon, user }} /> );
+    render( <DisplayTaxonName taxon={subspeciesTaxon} /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       "Silver Lupine Lupinus albifrons var. collinus"
@@ -82,16 +80,14 @@ describe( "when common name is first", ( ) => {
   } );
 
   test( "renders correct taxon for improperly capitalized common name", ( ) => {
-    render( <DisplayTaxonName item={{ taxon: uncapitalizedTaxon, user }} /> );
+    render( <DisplayTaxonName taxon={uncapitalizedTaxon} /> );
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       "Crown-of-thorns Blue Sea-Stars Acanthaster planci"
     );
   } );
 
   test( "renders correct taxon for species in grid view", ( ) => {
-    render(
-      <DisplayTaxonName layout="vertical" item={{ taxon: subspeciesTaxon, user }} />
-    );
+    render( <DisplayTaxonName layout="vertical" taxon={subspeciesTaxon} /> );
     // Grid view should not have a space between text
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       "Silver LupineLupinus albifrons var. collinus"
@@ -100,10 +96,8 @@ describe( "when common name is first", ( ) => {
 } );
 
 describe( "when scientific name is first", ( ) => {
-  const user = { prefers_scientific_name_first: true };
-
   test( "renders correct taxon for species", ( ) => {
-    render( <DisplayTaxonName item={{ taxon: speciesTaxon, user }} /> );
+    render( <DisplayTaxonName taxon={speciesTaxon} scientificNameFirst /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       `${speciesTaxon.name} ${speciesTaxon.preferred_common_name}`
@@ -111,7 +105,7 @@ describe( "when scientific name is first", ( ) => {
   } );
 
   test( "renders correct taxon w/o common name", ( ) => {
-    render( <DisplayTaxonName item={{ taxon: noCommonNameTaxon, user }} /> );
+    render( <DisplayTaxonName taxon={noCommonNameTaxon} scientificNameFirst /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       noCommonNameTaxon.name
@@ -119,7 +113,7 @@ describe( "when scientific name is first", ( ) => {
   } );
 
   test( "renders correct taxon w/o common name and no species", ( ) => {
-    render( <DisplayTaxonName item={{ taxon: highRankTaxon, user }} /> );
+    render( <DisplayTaxonName taxon={highRankTaxon} scientificNameFirst /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       `${capitalizeFirstLetter( highRankTaxon.rank )} ${highRankTaxon.name}`
@@ -127,7 +121,7 @@ describe( "when scientific name is first", ( ) => {
   } );
 
   test( "renders correct taxon for species", ( ) => {
-    render( <DisplayTaxonName item={{ taxon: subspeciesTaxon, user }} /> );
+    render( <DisplayTaxonName taxon={subspeciesTaxon} scientificNameFirst /> );
 
     expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
       "Lupinus albifrons var. collinus Silver Lupine"
@@ -136,7 +130,11 @@ describe( "when scientific name is first", ( ) => {
 
   test( "renders correct taxon for species in grid view", ( ) => {
     render(
-      <DisplayTaxonName layout="vertical" item={{ taxon: subspeciesTaxon, user }} />
+      <DisplayTaxonName
+        layout="vertical"
+        taxon={subspeciesTaxon}
+        scientificNameFirst
+      />
     );
 
     // Grid view should not have a space between text
