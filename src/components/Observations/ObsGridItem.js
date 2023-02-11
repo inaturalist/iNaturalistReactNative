@@ -22,29 +22,27 @@ type Props = {
   width?: string,
 };
 
-const ObsGridItem = ({
+const ObsGridItem = ( {
   onPress,
   observation,
   displayType = "observation",
   width = "w-full",
-  height = "h-[172px]",
-}: Props): Node => {
+  height = "h-[172px]"
+}: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo;
-
-  const imageUri =
-    displayType === "project"
-      ? Observation.projectUri(observation)
-      : { uri: Photo.displayLocalOrRemoteMediumPhoto(photo) };
-
   const showUploadButton = displayType !== "project" && observation.needsSync( );
+
+  const imageUri = displayType === "project"
+    ? Observation.projectUri( observation )
+    : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
 
   return (
     <Pressable
-      onPress={( ) => onPress(observation)}
-      className={classnames("rounded-[17px] overflow-hidden", height, width)}
+      onPress={( ) => onPress( observation )}
+      className={classnames( "rounded-[17px] overflow-hidden", height, width )}
       testID={`ObsList.gridItem.${observation.uuid}`}
       accessibilityRole="link"
-      accessibilityLabel={t("Navigate-to-observation-details")}
+      accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
       <ObsPreviewImage
         uri={imageUri}
