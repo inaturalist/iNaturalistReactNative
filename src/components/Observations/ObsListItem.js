@@ -16,20 +16,20 @@ type Props = {
   onPress: Function,
 };
 
-const ObsListItem = ({ observation, onPress }: Props): Node => {
+const ObsListItem = ( { observation, onPress }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo || null;
-  const needsSync = observation.needsSync();
+  const needsSync = observation.needsSync( );
 
   return (
     <Pressable
-      onPress={() => onPress(observation)}
+      onPress={( ) => onPress( observation )}
       className="flex-row my-2 px-[10px]"
       testID={`ObsListItem.${observation.uuid}`}
       accessibilityRole="link"
-      accessibilityLabel={t("Navigate-to-observation-details")}
+      accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
       <ObsPreviewImage
-        uri={{ uri: Photo.displayLocalOrRemoteSquarePhoto(photo) }}
+        uri={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
         observation={observation}
         opaque={needsSync}
         disableGradient
