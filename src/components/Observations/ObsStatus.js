@@ -16,16 +16,16 @@ type Props = {
   color?: string,
   margin?: string,
 };
-/* eslint-disable react-native/no-inline-styles */
-const ObsStatus = ({
+
+const ObsStatus = ( {
   observation,
   color,
   margin: wrapperMargin,
-  layout = "vertical",
-}: Props): Node => {
+  layout = "vertical"
+}: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
-  const qualityGrade = checkCamelAndSnakeCase(observation, "qualityGrade");
+  const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
   const margin = layout === "vertical" ? "mb-1" : "mr-1";
   const flexDirection = layout === "vertical" ? "flex-column" : "flex-row";
   const iconColor = color || theme.colors.primary;
@@ -33,19 +33,19 @@ const ObsStatus = ({
   const numComments = observation.comments?.length || 0;
 
   return (
-    <View className={classnames("flex", flexDirection, wrapperMargin)}>
+    <View className={classnames( "flex", flexDirection, wrapperMargin )}>
       <ActivityCount
         margin={margin}
         count={numIdents}
         color={iconColor}
-        accessibilityLabel={t("x-identifications", { count: numIdents })}
+        accessibilityLabel={t( "x-identifications", { count: numIdents } )}
         testID="ActivityCount.identificationCount"
       />
       <ActivityCount
         margin={margin}
         count={observation.comments?.length}
         color={iconColor}
-        accessibilityLabel={t("x-comments", { count: numComments })}
+        accessibilityLabel={t( "x-comments", { count: numComments } )}
         testID="ActivityCount.commentCount"
       />
       <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />

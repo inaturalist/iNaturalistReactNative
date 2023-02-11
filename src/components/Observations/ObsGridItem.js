@@ -22,44 +22,29 @@ type Props = {
   width?: string,
 };
 
-const ObsGridItem = ( {
+const ObsGridItem = ({
   onPress,
   observation,
   displayType = "observation",
   width = "w-full",
-  height = "h-[172px]"
-}: Props ): Node => {
+  height = "h-[172px]",
+}: Props): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo;
 
-  const imageUri = displayType === "project"
-    ? Observation.projectUri( observation )
-    : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
+  const imageUri =
+    displayType === "project"
+      ? Observation.projectUri(observation)
+      : { uri: Photo.displayLocalOrRemoteMediumPhoto(photo) };
 
-  const showStats = ( ) => {
-    if ( displayType !== "project" && observation.needsSync( ) ) {
-      return (
-        <View className="absolute bottom-0 right-0">
-          <UploadButton observation={observation} />
-        </View>
-      );
-    }
-    return (
-      <ObsStatus
-        observation={observation}
-        layout="horizontal"
-        color={colors.white}
-        margin="mb-1"
-      />
-    );
-  };
+  const showUploadButton = displayType !== "project" && observation.needsSync( );
 
   return (
     <Pressable
-      onPress={( ) => onPress( observation )}
-      className={classnames( "rounded-[17px] overflow-hidden", height, width )}
+      onPress={( ) => onPress(observation)}
+      className={classnames("rounded-[17px] overflow-hidden", height, width)}
       testID={`ObsList.gridItem.${observation.uuid}`}
       accessibilityRole="link"
-      accessibilityLabel={t( "Navigate-to-observation-details" )}
+      accessibilityLabel={t("Navigate-to-observation-details")}
     >
       <ObsPreviewImage
         uri={imageUri}
@@ -68,8 +53,17 @@ const ObsGridItem = ( {
         observation={observation}
         multiplePhotosLocation="top"
       >
-        <View className={classnames( "absolute bottom-0 flex p-2 w-full" )}>
-          {showStats( )}
+        <View className={classnames("absolute bottom-0 flex p-2 w-full")}>
+          {showUploadButton ? (
+            <UploadButton observation={observation} />
+          ) : (
+            <ObsStatus
+              observation={observation}
+              layout="horizontal"
+              color={colors.white}
+              margin="mb-1"
+            />
+          )}
           <DisplayTaxonName
             taxon={observation?.taxon}
             scientificNameFirst={
