@@ -53,7 +53,7 @@ const ObsGridItem = ({
         observation={observation}
         multiplePhotosLocation="top"
       >
-        <View className={classnames("absolute bottom-0 flex p-2 w-full")}>
+        <View className="absolute bottom-0 flex p-2 w-full">
           {showUploadButton ? (
             <UploadButton observation={observation} />
           ) : (
