@@ -630,7 +630,7 @@ Which-traditional-projects-can-add-your-observations = Which traditional project
 Who-can-add-observation-fields-to-my-observations = Who can add observation fields to my observations?
 
 # Welcome user back to app
-Welcome-user = Welcome back, {$userHandle}
+Welcome-user = <0>Welcome back,</0><1>{$userHandle}</1>
 
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->

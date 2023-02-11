@@ -425,7 +425,7 @@
   "Who-can-add-observation-fields-to-my-observations": "Who can add observation fields to my observations?",
   "Welcome-user": {
     "comment": "Welcome user back to app",
-    "val": "Welcome back, { $userHandle }"
+    "val": "<0>Welcome back,</0><1>{ $userHandle }</1>"
   },
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
