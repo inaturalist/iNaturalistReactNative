@@ -623,13 +623,14 @@ Username-or-Email = Username or Email
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
 
-Welcome-back = Welcome back,
-
 Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
 Which-traditional-projects-can-add-your-observations = Which traditional projects can add your observations?
 
 Who-can-add-observation-fields-to-my-observations = Who can add observation fields to my observations?
+
+# Welcome user back to app
+Welcome-user = Welcome back, {$userHandle}
 
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->
