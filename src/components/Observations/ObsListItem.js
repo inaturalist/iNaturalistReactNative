@@ -38,7 +38,7 @@ const ObsListItem = ( { observation, onPress }: Props ): Node => {
         <DisplayTaxonName
           taxon={observation?.taxon}
           scientificNameFirst={observation?.user?.prefers_scientific_name_first}
-          layout="vertical"
+          layout="horizontal"
         />
         <ObservationLocation observation={observation} margin="mt-1" />
         <DateDisplay dateTime={observation?._created_at} margin="mt-1" />
