@@ -82,7 +82,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
           "camera-button"
         )}
         {renderIconButton(
-          "photos",
+          "gallery",
           "mx-5",
           navToPhotoGallery,
           t( "Navigate-to-photo-importer" ),
