@@ -6,7 +6,6 @@ import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
@@ -17,27 +16,20 @@ import UploadButton from "./UploadButton";
 
 type Props = {
   observation: Object,
-  handlePress: Function,
+  onPress: Function,
   uri?: string,
   height?: string,
   width?: string,
 };
 
 const ObsGridItem = ( {
-  handlePress,
+  onPress,
   observation,
   uri,
   width = "w-full",
   height = "h-[172px]"
 }: Props ): Node => {
-  const onPress = ( ) => handlePress( observation );
-
   const photo = observation?.observationPhotos?.[0]?.photo;
-
-  const totalObsPhotos = observation?.observationPhotos?.length;
-  const hasMultiplePhotos = totalObsPhotos > 1;
-  const hasSound = !!observation?.observationSounds?.length;
-  const filterIconName = totalObsPhotos > 9 ? "filter-9-plus" : `filter-${totalObsPhotos || 2}`;
 
   const imageUri = uri === "project"
     ? Observation.projectUri( observation )
@@ -62,46 +54,31 @@ const ObsGridItem = ( {
 
   return (
     <Pressable
-      onPress={onPress}
+      onPress={( ) => onPress( observation )}
       className={classnames( "rounded-[17px] overflow-hidden", height, width )}
       testID={`ObsList.gridItem.${observation.uuid}`}
       accessibilityRole="link"
       accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
-      <View className={classnames( "rounded-[17px] overflow-hidden relative w-full", height )}>
-        <ObsPreviewImage uri={imageUri} />
-        <View className={classnames( "z-100 absolute flex justify-between p-2 w-full", height )}>
-          <View
-            className={classnames( "flex justify-between", {
-              "flex-row-reverse": hasMultiplePhotos
-            } )}
-          >
-            {hasMultiplePhotos && (
-              <IconMaterial
-                // $FlowIgnore
-                name={filterIconName}
-                color={colors.white}
-                size={22}
-              />
-            )}
-            {hasSound && (
-              <IconMaterial name="volume-up" color={colors.white} size={22} />
-            )}
-          </View>
-
-          <View>
-            {showStats( )}
-            <DisplayTaxonName
-              taxon={observation?.taxon}
-              scientificNameFirst={
-                observation?.user?.prefers_scientific_name_first
-              }
-              layout="vertical"
-              color="text-white"
-            />
-          </View>
+      <ObsPreviewImage
+        uri={imageUri}
+        height="h-[172px]"
+        width="w-full"
+        observation={observation}
+        multiplePhotosLocation="top"
+      >
+        <View className={classnames( "absolute bottom-0 flex p-2 w-full" )}>
+          {showStats( )}
+          <DisplayTaxonName
+            taxon={observation?.taxon}
+            scientificNameFirst={
+              observation?.user?.prefers_scientific_name_first
+            }
+            layout="vertical"
+            color="text-white"
+          />
         </View>
-      </View>
+      </ObsPreviewImage>
     </Pressable>
   );
 };
