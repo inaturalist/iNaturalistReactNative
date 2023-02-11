@@ -17,7 +17,7 @@ import UploadButton from "./UploadButton";
 type Props = {
   observation: Object,
   onPress: Function,
-  uri?: string,
+  displayType?: "project" | "observation",
   height?: string,
   width?: string,
 };
@@ -25,18 +25,18 @@ type Props = {
 const ObsGridItem = ( {
   onPress,
   observation,
-  uri,
+  displayType = "observation",
   width = "w-full",
   height = "h-[172px]"
 }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo;
 
-  const imageUri = uri === "project"
+  const imageUri = displayType === "project"
     ? Observation.projectUri( observation )
     : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
 
   const showStats = ( ) => {
-    if ( uri !== "project" && observation.needsSync( ) ) {
+    if ( displayType !== "project" && observation.needsSync( ) ) {
       return (
         <View className="absolute bottom-0 right-0">
           <UploadButton observation={observation} />

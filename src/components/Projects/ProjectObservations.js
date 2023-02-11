@@ -28,7 +28,7 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
     <ObsGridItem
       observation={item}
       onPress={navToObsDetails}
-      uri="project"
+      displayType="project"
       width="w-6/12"
     />
   );
