@@ -108,7 +108,7 @@ module.exports = {
 
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "react-native-a11y/has-accessibility-hint": 1,
+    "react-native-a11y/has-accessibility-hint": 0,
     "react-native-a11y/has-accessibility-props": 1,
     "react-native-a11y/has-valid-accessibility-actions": 1,
     "react-native-a11y/has-valid-accessibility-role": 1,

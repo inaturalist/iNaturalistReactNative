@@ -1,5 +1,5 @@
 // @flow
-import { View } from "components/styledComponents";
+import { Pressable } from "components/styledComponents";
 import { t } from "i18next";
 import CasualGrade from "images/svg/casualGrade.svg";
 import NeedsIdGrade from "images/svg/needsIdGrade.svg";
@@ -43,7 +43,7 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
 };
 
 const QualityGradeStatus = ( { qualityGrade, color }: Props ): React.Node => (
-  <View>{qualityGradeSVG( qualityGrade, color )}</View>
+  <Pressable accessibilityRole="button">{qualityGradeSVG( qualityGrade, color )}</Pressable>
 );
 
 export default QualityGradeStatus;

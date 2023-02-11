@@ -2,8 +2,8 @@ import linkifyHtml from "linkify-html";
 import { trim } from "lodash";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
-import { useWindowDimensions } from "react-native";
-import HTML from "react-native-render-html";
+import { Platform, useWindowDimensions } from "react-native";
+import HTML, { defaultSystemFonts } from "react-native-render-html";
 import WebView from "react-native-webview";
 import sanitizeHtml from "sanitize-html";
 
@@ -107,13 +107,21 @@ const UserText = ( {
   // <code>
 
   html = linkifyHtml( html, LINKIFY_OPTIONS );
+  const baseStyle = {
+    fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`,
+    fontSize: 16,
+    lineHeight: 22,
+    ...htmlStyle
+  };
+  const fonts = ["Whitney-Light", "Whitney-Light-Pro", ...defaultSystemFonts];
 
   return (
     <HTML
-      baseStyle={htmlStyle}
+      baseStyle={baseStyle}
       contentWidth={width}
       source={{ html }}
       WebView={WebView}
+      systemFonts={fonts}
     />
   );
 };

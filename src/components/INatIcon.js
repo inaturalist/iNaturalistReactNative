@@ -5,7 +5,7 @@
 
 import createIconSet from "react-native-vector-icons/lib/create-icon-set";
 
-const glyphMap = {
+export const glyphMap = {
   "notifications-bell": 57344,
   "hamburger-menu": 57345,
   "plus-sign": 57346,
@@ -26,7 +26,9 @@ const glyphMap = {
   "crop-photo-circle": 57362,
   "trash-can": 57364,
   "status-saved": 57363,
-  "upload-arrow": 57359
+  "upload-arrow": 57359,
+  "icn-id2": 57365,
+  "identification-solid": 57366
 };
 
 const iconSet = createIconSet( glyphMap, "inaturalisticons", "inaturalisticons.ttf" );
@@ -37,7 +39,3 @@ export const {
   getImageSource,
   getImageSourceSync
 } = iconSet;
-
-export {
-  glyphMap
-};

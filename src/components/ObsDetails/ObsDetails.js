@@ -10,6 +10,7 @@ import {
   QualityGradeStatus,
   Tabs
 } from "components/SharedComponents";
+import ActivityCount from "components/SharedComponents/ActivityCount/ActivityCount";
 import HideView from "components/SharedComponents/HideView";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
@@ -17,7 +18,6 @@ import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
 import { formatISO } from "date-fns";
-import { t } from "i18next";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -25,6 +25,7 @@ import React, {
   useEffect,
   useState
 } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
   LogBox
@@ -40,7 +41,6 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import useLocalObservation from "sharedHooks/useLocalObservation";
-import { imageStyles } from "styles/obsDetails/obsDetails";
 import colors from "styles/tailwindColors";
 
 import ActivityTab from "./ActivityTab";
@@ -76,6 +76,8 @@ const ObsDetails = ( ): Node => {
   const [comments, setComments] = useState( [] );
 
   const queryClient = useQueryClient( );
+
+  const { t } = useTranslation( );
 
   const remoteObservationParams = {
     fields: Observation.FIELDS
@@ -205,7 +207,7 @@ const ObsDetails = ( ): Node => {
     navigation.setOptions( {
       headerRight: editIcon
     } );
-  }, [navigation, observation, currentUser] );
+  }, [navigation, observation, currentUser, t] );
 
   useEffect( ( ) => {
     // set initial comments for activity currentTabId
@@ -337,31 +339,22 @@ const ObsDetails = ( ): Node => {
         <View className="flex-row my-5 justify-between mx-3">
           {showTaxon()}
           <View>
-            <View
-              className="flex-row my-1"
-              accessible
-              accessibilityLabel={t( "Number-of-identifications" )}
-              accessibilityValue={{ text: observation.identifications.length.toString() }}
-            >
-              <Image
-                style={imageStyles.smallIcon}
-                source={require( "images/ic_id.png" )}
-              />
-              <Text className="ml-1">{observation.identifications.length}</Text>
-            </View>
-            <View
-              className="flex-row my-1"
-              accessible
-              accessibilityLabel={t( "Number-of-comments" )}
-              accessibilityValue={{ text: observation.comments.length.toString() }}
-            >
-              <IconMaterial
-                name="chat-bubble"
-                size={15}
-                color={colors.logInGray}
-              />
-              <Text className="ml-1">{observation.comments.length}</Text>
-            </View>
+            <ActivityCount
+              color={colors.darkGray}
+              count={observation.identifications.length}
+              icon="identification-solid"
+              accessibilityLabel={
+                t( "x-identifications", { count: observation.identifications.length } )
+              }
+            />
+            <ActivityCount
+              color={colors.darkGray}
+              count={observation.comments.length}
+              icon="comments-filled-in"
+              accessibilityLabel={
+                t( "x-comments", { count: observation.comments.length } )
+              }
+            />
             <QualityGradeStatus
               qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )}
               color={colors.darkGray}

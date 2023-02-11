@@ -39,7 +39,7 @@ describe( "Sanitization", () => {
     expect( await screen.findByLabelText( altText ) ).toBeTruthy();
 
     // default font size is 14, check if no change
-    expect( screen.queryByText( pTagText ) ).toHaveProperty( "props.style.0.fontSize", 14 );
+    expect( screen.queryByText( pTagText ) ).toHaveProperty( "props.style.0.fontSize", 16 );
   } );
 
   it( "links all @ mentions", () => {

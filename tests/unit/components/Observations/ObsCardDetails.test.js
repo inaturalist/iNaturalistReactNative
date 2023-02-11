@@ -13,10 +13,8 @@ test( "renders correct taxon and observation details", () => {
     <ObsCardDetails view="list" item={testObservation} />
   );
 
-  expect(
-    screen.getByText(
-      `${testObservation.taxon.preferred_common_name} (${testObservation.taxon.name})`
-    )
-  ).toBeTruthy();
+  expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+    `${testObservation.taxon.preferred_common_name} ${testObservation.taxon.name}`
+  );
   expect( screen.getByText( testObservation.placeGuess ) ).toBeTruthy();
 } );
