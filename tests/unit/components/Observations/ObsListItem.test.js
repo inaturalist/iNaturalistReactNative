@@ -27,7 +27,7 @@ test.only( "renders text passed into observation card", async () => {
   } );
 
   expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-    `${testObservation.taxon.preferred_common_name}${testObservation.taxon.name}`
+    `${testObservation.taxon.preferred_common_name} ${testObservation.taxon.name}`
   );
   expect( screen.getByText( testObservation.placeGuess ) ).toBeTruthy();
   await waitFor( () => {
