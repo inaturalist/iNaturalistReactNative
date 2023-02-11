@@ -48,6 +48,7 @@ const ObsGridItem = ( {
         observation={observation}
         layout="horizontal"
         color={colors.white}
+        margin="mb-1"
       />
     );
   };

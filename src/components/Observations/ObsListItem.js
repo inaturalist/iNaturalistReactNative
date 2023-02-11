@@ -41,8 +41,8 @@ const ObsListItem = ( { observation, onPress }: Props ): Node => {
           scientificNameFirst={observation?.user?.prefers_scientific_name_first}
           layout="vertical"
         />
-        <ObservationLocation observation={observation} />
-        <DateDisplay dateTime={observation?._created_at} />
+        <ObservationLocation observation={observation} margin="mt-1" />
+        <DateDisplay dateTime={observation?._created_at} margin="mt-1" />
       </View>
 
       <View className="items-center justify-center ml-auto">
