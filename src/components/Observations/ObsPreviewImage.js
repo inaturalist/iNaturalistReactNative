@@ -18,23 +18,26 @@ type Props = {
   width?: string,
   height?: string,
   multiplePhotosLocation?: "bottom" | "top",
-  children?: Node
+  children?: Node,
+  disableGradient?: boolean,
 };
 
-const ObsPreviewImage = ( {
+const ObsPreviewImage = ({
   uri,
   observation,
   height = "h-[62px]",
   width = "w-[62px]",
   opaque = false,
   multiplePhotosLocation = "bottom",
-  children
-}: Props ): Node => {
+  children,
+  disableGradient = false,
+}: Props): Node => {
   const theme = useTheme( );
   const obsPhotosCount = observation?.observationPhotos?.length ?? 0;
   const hasMultiplePhotos = obsPhotosCount > 1;
   const hasSound = !!observation?.observationSounds?.length;
-  const filterIconName = obsPhotosCount > 9 ? "filter-9-plus" : `filter-${obsPhotosCount || 2}`;
+  const filterIconName =
+    obsPhotosCount > 9 ? "filter-9-plus" : `filter-${obsPhotosCount || 2}`;
 
   return (
     <View
@@ -47,13 +50,15 @@ const ObsPreviewImage = ( {
       {uri ? (
         <ImageBackground
           source={uri}
-          className={classnames( "grow aspect-square", { "opacity-50": opaque } )}
+          className={classnames("grow aspect-square", { "opacity-50": opaque })}
           testID="ObsList.photo"
         >
-          <LinearGradient
-            className="bg-transparent absolute inset-0"
-            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
-          />
+          {!disableGradient && (
+            <LinearGradient
+              className="bg-transparent absolute inset-0"
+              colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+            />
+          )}
         </ImageBackground>
       ) : (
         <LinearGradient
@@ -64,10 +69,10 @@ const ObsPreviewImage = ( {
       )}
       {hasMultiplePhotos && (
         <View
-          className={classnames( "absolute right-0", {
+          className={classnames("absolute right-0", {
             "bottom-0 p-1": multiplePhotosLocation === "bottom",
-            "top-0 p-2": multiplePhotosLocation === "top"
-          } )}
+            "top-0 p-2": multiplePhotosLocation === "top",
+          })}
         >
           <IconMaterial
             // $FlowIgnore
