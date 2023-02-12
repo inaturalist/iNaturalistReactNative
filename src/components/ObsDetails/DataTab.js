@@ -24,7 +24,7 @@ const DataTab = ( { observation }: Props ): Node => {
   const application = observation?.application?.name;
 
   return (
-    <View>
+    <>
       <View className="px-5">
         {observation.description && (
         <>
@@ -73,7 +73,7 @@ const DataTab = ( { observation }: Props ): Node => {
         </>
         )}
       </View>
-    </View>
+    </>
   );
 };
 
