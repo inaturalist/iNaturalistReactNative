@@ -34,7 +34,8 @@ const ObsListItem = ( { observation, onPress }: Props ): Node => {
         opaque={needsSync}
         disableGradient
       />
-      <View className="shrink">
+
+      <View>
         <DisplayTaxonName
           taxon={observation?.taxon}
           scientificNameFirst={observation?.user?.prefers_scientific_name_first}
