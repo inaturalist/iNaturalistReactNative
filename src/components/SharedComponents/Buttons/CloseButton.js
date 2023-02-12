@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import useINatNavigation from "sharedHooks/useINatNavigation";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
@@ -11,7 +11,7 @@ type Props = {
 }
 
 const CloseButton = ( { className }: Props ): Node => {
-  const navigation = useNavigation( );
+  const navigation = useINatNavigation( );
   const theme = useTheme( );
 
   return (
