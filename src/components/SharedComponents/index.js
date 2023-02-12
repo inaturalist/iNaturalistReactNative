@@ -4,6 +4,7 @@ export { default as CloseButton } from "./Buttons/CloseButton";
 export { default as EvidenceButton } from "./Buttons/EvidenceButton";
 export { default as DateDisplay } from "./DateDisplay";
 export { default as InlineUser } from "./InlineUser/InlineUser";
+export { default as Map } from "./Map";
 export { default as ObservationLocation } from "./ObservationLocation";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
 export { default as Tabs } from "./Tabs/Tabs";
@@ -19,4 +20,3 @@ export { default as List1 } from "./Typography/List1";
 export { default as List2 } from "./Typography/List2";
 export { default as Subheading1 } from "./Typography/Subheading1";
 export { default as UserIcon } from "./UserIcon/UserIcon";
-export { default as Map } from "./Map"
