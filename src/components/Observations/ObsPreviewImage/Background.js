@@ -15,12 +15,12 @@ type Props = {
   opaque?: boolean
 };
 
-const ObsPreviewImage = ({
+const ObsPreviewImage = ( {
   uri,
   disableGradient = false,
   opaque = false
-}: Props): Node => {
-  const noImg = !uri?.uri
+}: Props ): Node => {
+  const noImg = !uri?.uri;
   const gradient = (
     <LinearGradient colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}>
       { noImg && <View className="grow aspect-square" /> }
@@ -28,13 +28,13 @@ const ObsPreviewImage = ({
   );
 
   if ( noImg ) {
-    return gradient
+    return gradient;
   }
 
   return (
     <ImageBackground
       source={uri}
-      className={classnames("grow aspect-square", { "opacity-50": opaque })}
+      className={classnames( "grow aspect-square", { "opacity-50": opaque } )}
       testID="ObsList.photo"
     >
       {!disableGradient && gradient}
