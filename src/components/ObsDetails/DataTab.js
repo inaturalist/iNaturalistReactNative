@@ -1,14 +1,16 @@
 // @flow
 
-import Map from "components/SharedComponents/Map";
+import {
+  DateDisplay,
+  Map,
+  ObservationLocation
+} from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
-import { format, parseISO } from "date-fns";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useIsConnected from "sharedHooks/useIsConnected";
-import colors from "styles/tailwindColors";
 
 import Attribution from "./Attribution";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
@@ -20,11 +22,6 @@ type Props = {
 const DataTab = ( { observation }: Props ): Node => {
   const isOnline = useIsConnected( );
   const application = observation?.application?.name;
-
-  const displayTime = datetime => {
-    const time = checkCamelAndSnakeCase( observation, datetime );
-    return time ? format( parseISO( time ), "M/d/yy HH:mm a" ) : "";
-  };
 
   return (
     <View>
@@ -55,25 +52,18 @@ const DataTab = ( { observation }: Props ): Node => {
           </View>
         )}
       <View className="px-5">
-        <View className="flex-row my-3">
-          <IconMaterial name="location-pin" size={15} color={colors.logInGray} />
-          <Text className="ml-2">
-            {checkCamelAndSnakeCase( observation, "placeGuess" )}
-          </Text>
+        <View className="my-3">
+          <ObservationLocation observation={observation} />
         </View>
         <Text className="text-lg my-3">{t( "Date" )}</Text>
-        <View className="flex-row">
-          <IconMaterial name="schedule" size={15} color={colors.logInGray} />
-          <Text className="ml-2">
-            {`${t( "Date-observed-colon" )} ${displayTime( "timeObservedAt" )}`}
-          </Text>
-        </View>
-        <View className="flex-row">
-          <IconMaterial name="schedule" size={15} color={colors.logInGray} />
-          <Text className="ml-2">
-            {`${t( "Date-uploaded-colon" )} ${displayTime( "createdAt" )}`}
-          </Text>
-        </View>
+        <DateDisplay
+          pretext={t( "Date-observed-colon" )}
+          dateTime={checkCamelAndSnakeCase( observation, "timeObservedAt" )}
+        />
+        <DateDisplay
+          pretext={t( "Date-observed-colon" )}
+          dateTime={checkCamelAndSnakeCase( observation, "createdAt" )}
+        />
         <Text className="text-lg my-3">{t( "Other-Data" )}</Text>
         <Attribution observation={observation} />
         {application && (
