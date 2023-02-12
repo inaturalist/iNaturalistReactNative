@@ -1,5 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { MAIN_STACK } from "navigation/navigationIds";
+import {
+  IDENTIFY_STACK,
+  MAIN_STACK,
+  PROJECTS_STACK
+} from "navigation/navigationIds";
 
 const useINatNavigation = () => {
   const navigation = useNavigation();
@@ -9,6 +13,10 @@ const useINatNavigation = () => {
     let parentScreen = screen;
     if ( MAIN_STACK.has( screen ) ) {
       parentScreen = "MainStack";
+    } else if ( IDENTIFY_STACK.has( screen ) ) {
+      parentScreen = "identify";
+    } else if ( PROJECTS_STACK.has( screen ) ) {
+      parentScreen = "projects";
     }
 
     if ( parentScreen === screen ) {

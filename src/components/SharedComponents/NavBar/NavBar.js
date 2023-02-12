@@ -29,7 +29,6 @@ const NavBar = ( ): React.Node => {
   const navToNotifications = ( ) => navigation.navigate(
     MESSAGES_SCREEN_ID
   );
-
   const { remoteUser: user } = useUserMe( );
 
   const footerHeight = Platform.OS === "ios" ? "h-20" : "h-15";
