@@ -1,11 +1,11 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import * as React from "react";
 import { IconButton, useTheme } from "react-native-paper";
+import useINatNavigation from "sharedHooks/useINatNavigation";
 
 type Props = {
   closeModal: ( ) => void
@@ -16,7 +16,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   // Destructuring obsEdit means that we don't have to wrap every Jest test in ObsEditProvider
   const obsEditContext = React.useContext( ObsEditContext );
   const createObservationNoEvidence = obsEditContext?.createObservationNoEvidence;
-  const navigation = useNavigation( );
+  const navigation = useINatNavigation( );
 
   const navAndCloseModal = ( screen, params ) => {
     const resetObsEditContext = obsEditContext?.resetObsEditContext;

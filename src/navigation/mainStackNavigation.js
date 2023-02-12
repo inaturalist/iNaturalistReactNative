@@ -27,6 +27,21 @@ import { PermissionsAndroid } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { PERMISSIONS } from "react-native-permissions";
 
+import {
+  ADD_ID_NAME,
+  EXPLORE_NAME,
+  GROUP_PHOTO_NAME,
+  MESSAGES_NAME,
+  OBS_DETAILS_NAME,
+  OBS_EDIT_NAME,
+  OBS_LIST_NAME,
+  PHOTO_GALLERY_NAME,
+  SOUND_RECORDER_NAME,
+  STANDARD_CAMERA_NAME,
+  TAXON_DETAILS_NAME,
+  USER_PROFILE_NAME
+} from "./navigationIds";
+
 const isTablet = DeviceInfo.isTablet();
 
 const Stack = createNativeStackNavigator( );
@@ -75,7 +90,7 @@ const MainStackNavigation = ( ): React.Node => (
   <Mortal>
     <Stack.Navigator screenOptions={showHeader}>
       <Stack.Screen
-        name="ObsList"
+        name={OBS_LIST_NAME}
         component={ObsList}
         options={{
           ...hideScreenTransitionAnimation,
@@ -83,31 +98,31 @@ const MainStackNavigation = ( ): React.Node => (
         }}
       />
       <Stack.Screen
-        name="StandardCamera"
+        name={STANDARD_CAMERA_NAME}
         component={StandardCameraWithPermission}
         options={{ ...hideHeader, orientation: isTablet ? "all" : "portrait" }}
       />
       <Stack.Screen
-        name="PhotoGallery"
+        name={PHOTO_GALLERY_NAME}
         component={PhotoGalleryWithPermission}
         options={blankHeaderTitle}
       />
       <Stack.Screen
-        name="GroupPhotos"
+        name={GROUP_PHOTO_NAME}
         component={GroupPhotos}
         options={{
           title: t( "Group-Photos" )
         }}
       />
       <Stack.Screen
-        name="SoundRecorder"
+        name={SOUND_RECORDER_NAME}
         component={SoundRecorderWithPermission}
         options={{
           title: t( "Record-new-sound" )
         }}
       />
       <Stack.Screen
-        name="ObsEdit"
+        name={OBS_EDIT_NAME}
         component={ObsEditWithPermission}
         options={{
           ...blankHeaderTitle,
@@ -115,31 +130,31 @@ const MainStackNavigation = ( ): React.Node => (
         }}
       />
       <Stack.Screen
-        name="AddID"
+        name={ADD_ID_NAME}
         component={AddID}
         options={{
           title: t( "Add-an-ID" )
         }}
       />
       <Stack.Screen
-        name="ObsDetails"
+        name={OBS_DETAILS_NAME}
         component={ObsDetails}
         options={{
           headerTitle: t( "Observation" )
         }}
       />
       <Stack.Screen
-        name="TaxonDetails"
+        name={TAXON_DETAILS_NAME}
         component={TaxonDetails}
         options={blankHeaderTitle}
       />
       <Stack.Screen
-        name="UserProfile"
+        name={USER_PROFILE_NAME}
         component={UserProfile}
         options={blankHeaderTitle}
       />
       <Stack.Screen
-        name="Messages"
+        name={MESSAGES_NAME}
         component={Messages}
         options={{
           ...hideHeader,
@@ -147,7 +162,7 @@ const MainStackNavigation = ( ): React.Node => (
         }}
       />
       <Stack.Screen
-        name="Explore"
+        name={EXPLORE_NAME}
         component={Explore}
         options={{
           ...hideHeader,

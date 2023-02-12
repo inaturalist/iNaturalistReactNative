@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { CloseButton } from "components/SharedComponents";
 import {
   Pressable, View
@@ -22,6 +22,7 @@ import {
 } from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
+import useINatNavigation from "sharedHooks/useINatNavigation";
 import colors from "styles/tailwindColors";
 
 import CameraView from "./CameraView";
@@ -41,7 +42,7 @@ const StandardCamera = ( ): Node => {
     setEvidenceToAdd
   } = useContext( ObsEditContext );
   const theme = useTheme( );
-  const navigation = useNavigation( );
+  const navigation = useINatNavigation( );
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
   // $FlowFixMe
@@ -59,13 +60,13 @@ const StandardCamera = ( ): Node => {
   const [footerWidth, setFooterWidth] = useState( initialWidth );
   const [imageOrientation, setImageOrientation] = useState( "portrait" );
 
-  const isTablet = DeviceInfo.isTablet();
+  const isTablet = DeviceInfo.isTablet( );
 
   const photosTaken = allObsPhotoUris.length > 0;
 
   // screen orientation locked to portrait on small devices
   if ( !isTablet ) {
-    Orientation.lockToPortrait();
+    Orientation.lockToPortrait( );
   }
 
   // detect device rotation instead of using screen orientation change
@@ -81,7 +82,7 @@ const StandardCamera = ( ): Node => {
     }
   };
 
-  useEffect( () => {
+  useEffect( ( ) => {
     Orientation.addDeviceOrientationListener( onDeviceRotation );
 
     // allows bottom buttons bar to fill entire width of screen on rotation
@@ -89,7 +90,7 @@ const StandardCamera = ( ): Node => {
       if ( isTablet ) setFooterWidth( width );
     } );
 
-    return () => {
+    return ( ) => {
       Orientation.removeOrientationListener( onDeviceRotation );
     };
   }, [isTablet, footerWidth] );
@@ -223,7 +224,7 @@ const StandardCamera = ( ): Node => {
           </View>
         </View>
       </View>
-      <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
+      <Snackbar visible={showAlert} onDismiss={( ) => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>
     </View>

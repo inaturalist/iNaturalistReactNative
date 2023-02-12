@@ -26,7 +26,7 @@ const TestMessages = ( ): React.Node => (
 
 describe( "NavBar", () => {
   it( "handles active pages correctly", async () => {
-    useRoute.mockReturnValueOnce( { name: "ObsList" } );
+    useRoute.mockReturnValue( { name: "ObsList" } );
     renderComponent(
       <Drawer.Navigator>
         <Drawer.Screen name="ObsList" component={TestObsList} />

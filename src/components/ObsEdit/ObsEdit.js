@@ -1,7 +1,7 @@
 // @flow
 
 import { HeaderBackButton } from "@react-navigation/elements";
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import { Button } from "components/SharedComponents";
 import KebabMenu from "components/SharedComponents/KebabMenu";
@@ -18,6 +18,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { Menu } from "react-native-paper";
 import Photo from "realmModels/Photo";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useINatNavigation from "sharedHooks/useINatNavigation";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import colors from "styles/tailwindColors";
 
@@ -50,7 +51,6 @@ const ObsEdit = ( ): Node => {
   const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
     obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
   ) : [];
-  const navigation = useNavigation( );
   const { params } = useRoute( );
   const localObservation = useLocalObservation( params?.uuid );
   const currentUser = useCurrentUser( );
@@ -59,7 +59,7 @@ const ObsEdit = ( ): Node => {
   const [showAddEvidenceModal, setShowAddEvidenceModal] = useState( false );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [showSaveDialog, setShowSaveDialog] = useState( false );
-
+  const navigation = useINatNavigation( );
   const scrollToInput = node => {
     // Add a 'scroll' ref to your ScrollView
     keyboardScrollRef?.current?.scrollToFocusedInput( node );
