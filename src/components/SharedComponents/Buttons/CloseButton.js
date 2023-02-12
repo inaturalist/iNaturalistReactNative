@@ -1,10 +1,10 @@
 // @flow
 
-import useINatNavigation from "sharedHooks/useINatNavigation";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { IconButton, useTheme } from "react-native-paper";
+import useINatNavigation from "sharedHooks/useINatNavigation";
 
 type Props = {
   className?: string
