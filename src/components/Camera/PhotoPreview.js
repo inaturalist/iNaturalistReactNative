@@ -2,7 +2,7 @@
 
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
-import { Text } from "components/styledComponents";
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -46,18 +46,18 @@ const PhotoPreview = ( {
         photoUris={photoUris}
         setPhotoUris={setPhotoUris}
       />
-      <PhotoCarousel
-        canDeletePhotos
-        containerClass="bg-black h-32"
-        photoUris={photoUris}
-        emptyComponent={emptyDescription}
-        containerStyle="camera"
-        setSelectedPhotoIndex={handleSelection}
-        savingPhoto={savingPhoto}
-        deviceOrientation={deviceOrientation}
-        setPhotoUris={setPhotoUris}
-      />
-
+      <View className="bg-black h-32">
+        <PhotoCarousel
+          canDeletePhotos
+          photoUris={photoUris}
+          emptyComponent={emptyDescription}
+          containerStyle="camera"
+          setSelectedPhotoIndex={handleSelection}
+          savingPhoto={savingPhoto}
+          setPhotoUris={setPhotoUris}
+          deviceOrientation={deviceOrientation}
+        />
+      </View>
     </>
   );
 };

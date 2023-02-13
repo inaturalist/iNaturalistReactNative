@@ -1,12 +1,16 @@
 // @flow
 
 import classnames from "classnames";
-import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useState } from "react";
-import { ActivityIndicator, FlatList } from "react-native";
+import React, {
+  useContext, useEffect, useState
+} from "react";
+import {
+  ActivityIndicator,
+  FlatList
+} from "react-native";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import Modal from "react-native-modal";
@@ -24,10 +28,9 @@ type Props = {
   handleAddEvidence?: Function,
   showAddButton?: boolean,
   deviceOrientation?: string,
-  containerClass?: string,
   canDeletePhotos?: boolean,
   setPhotoUris?: Function
-};
+}
 
 const PhotoCarousel = ( {
   photoUris,
@@ -39,34 +42,24 @@ const PhotoCarousel = ( {
   handleAddEvidence,
   showAddButton = false,
   deviceOrientation,
-  containerClass,
-  canDeletePhotos = false,
-  setPhotoUris
+  setPhotoUris,
+  canDeletePhotos = false
 }: Props ): Node => {
   const theme = useTheme( );
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
-  const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
-  const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
-  const isTablet = DeviceInfo.isTablet( );
+  const isTablet = DeviceInfo.isTablet();
 
-  const hideDialog = ( ) => {
-    setPhotoUriToDelete( null );
-    setDeleteDialogVisible( false );
+  const deletePhoto = photoUri => {
+    deletePhotoFromObservation( photoUri, photoUris, setPhotoUris );
   };
 
-  const deletePhoto = ( ) => {
-    if ( canDeletePhotos ) {
-      deletePhotoFromObservation( photoUriToDelete, photoUris, setPhotoUris );
-      hideDialog( );
+  useEffect( () => {
+    if ( photoUris.length === 0 && deletePhotoMode ) {
+      setDeletePhotoMode( false );
     }
-  };
-
-  const handleDelete = photoUri => {
-    setPhotoUriToDelete( photoUri );
-    setDeleteDialogVisible( true );
-  };
+  }, [photoUris.length, deletePhotoMode] );
 
   const renderSkeleton = ( ) => {
     if ( savingPhoto ) {
@@ -101,7 +94,7 @@ const PhotoCarousel = ( {
           }}
           onPress={( ) => {
             if ( deletePhotoMode === true && canDeletePhotos ) {
-              handleDelete( item );
+              deletePhoto( item );
             } else if ( setSelectedPhotoIndex ) {
               setSelectedPhotoIndex( index );
             }
@@ -117,24 +110,21 @@ const PhotoCarousel = ( {
             <ImageBackground
               source={{ uri: item }}
               testID="ObsEdit.photo"
-              className={classnames(
-                "w-fit h-full flex items-center justify-center",
-                {
-                  "rotate-0": deviceOrientation === "portrait" && !isTablet,
-                  "-rotate-90":
-                    deviceOrientation === "landscapeLeft" && !isTablet,
-                  "rotate-90":
-                    deviceOrientation === "landscapeRight" && !isTablet
-                }
-              )}
+              className={classnames( "w-fit h-full flex items-center justify-center", {
+                "rotate-0": deviceOrientation === "portrait" && !isTablet,
+                "-rotate-90": deviceOrientation === "landscapeLeft" && !isTablet,
+                "rotate-90": deviceOrientation === "landscapeRight" && !isTablet
+              } )}
             >
               {deletePhotoMode && (
-                <LinearGradient
-                  className="bg-transparent absolute inset-0"
-                  colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
-                />
+              <LinearGradient
+                className="bg-transparent absolute inset-0"
+                colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
+              />
               )}
-              {containerStyle === "camera" && deletePhotoMode && (
+              {
+              ( containerStyle === "camera" && deletePhotoMode )
+                && (
                 <IconButton
                   icon="trash-can"
                   mode="contained-tonal"
@@ -142,7 +132,9 @@ const PhotoCarousel = ( {
                   containerColor="rgba(0, 0, 0, 0.5)"
                   size={30}
                 />
-              )}
+                )
+            }
+
             </ImageBackground>
           </View>
         </Pressable>
@@ -162,32 +154,24 @@ const PhotoCarousel = ( {
       ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
     />
   );
-  if ( deletePhotoMode && !deleteDialogVisible ) {
+
+  if ( deletePhotoMode ) {
     return (
-      <View className={classnames( containerClass )}>
-        <Modal
-          visible
-          onBackdropPress={( ) => setDeletePhotoMode( false )}
-          backdropOpacity={0}
-          // eslint-disable-next-line react-native/no-inline-styles
-          style={{ margin: 0 }}
-        >
-          <View className="absolute top-0">{photoPreviewsList}</View>
-        </Modal>
-      </View>
+      <Modal
+        visible
+        onBackdropPress={() => setDeletePhotoMode( false )}
+        backdropOpacity={0}
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{ margin: 0 }}
+      >
+        <View className="absolute top-0">
+          {photoPreviewsList}
+        </View>
+      </Modal>
     );
   }
 
-  return (
-    <>
-      <DeletePhotoDialog
-        deleteDialogVisible={deleteDialogVisible}
-        deletePhoto={deletePhoto}
-        hideDialog={hideDialog}
-      />
-      <View className={classnames( containerClass )}>{photoPreviewsList}</View>
-    </>
-  );
+  return photoPreviewsList;
 };
 
 export default PhotoCarousel;
