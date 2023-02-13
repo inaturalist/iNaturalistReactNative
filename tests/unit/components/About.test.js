@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import About from "components/About";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import React from "react";
 import Mailer from "react-native-mail";
 
@@ -12,7 +12,7 @@ jest.mock( "react-native-mail", ( ) => ( {
 
 describe( "email logs button", ( ) => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   it( "should open the native email client", ( ) => {

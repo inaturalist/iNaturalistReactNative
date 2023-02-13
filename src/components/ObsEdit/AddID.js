@@ -50,12 +50,7 @@ const SearchTaxonIcon = (
         size={25}
       />
     )}
-    accessible
-    // TODO: this uses a Pressable under the hood, but we want this actually not to be pressable,
-    // but overriding this with a role of "none" errors out the a11y test matcher
-    accessibilityRole="button"
-    accessibilityLabel={t( "None" )}
-    accessibilityState={{ disabled: true }}
+    accessibilityElementsHidden
   />
 );
 
@@ -142,10 +137,10 @@ const AddID = ( { route }: Props ): Node => {
             icon="pencil"
             size={25}
             onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
-            accessible
+            // accessible
             accessibilityRole="link"
             accessibilityLabel={t( "Navigate-to-taxon-details" )}
-            accessibilityValue={{ text: taxon.name }}
+            // accessibilityValue={{ text: taxon.name }}
             accessibilityState={{ disabled: false }}
           />
           <IconButton
@@ -156,10 +151,10 @@ const AddID = ( { route }: Props ): Node => {
               onIDAdded( createIdentification( taxon ) );
               if ( goBackOnSave ) { navigation.goBack( ); }
             }}
-            accessible
+            // accessible
             accessibilityRole="button"
             accessibilityLabel={t( "Add-this-ID" )}
-            accessibilityValue={{ text: taxon.name }}
+            // accessibilityValue={{ text: taxon.name }}
             accessibilityState={{ disabled: false }}
           />
         </View>
@@ -234,6 +229,7 @@ const AddID = ( { route }: Props ): Node => {
               "Search-for-a-taxon-to-add-an-identification"
             )}
             accessibilityRole="search"
+            accessibilityState={{ disabled: false }}
           />
           <FlatList
             keyboardShouldPersistTaps="always"

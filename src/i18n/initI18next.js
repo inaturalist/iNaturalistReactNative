@@ -23,7 +23,20 @@ import { initReactI18next } from "react-i18next";
 // generate before building the app
 import loadTranslations from "./loadTranslations";
 
-export default async function initializeI18next( ) {
+export const I18NEXT_CONFIG = {
+  // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
+  lng: "en",
+  // debug: true,
+  interpolation: {
+    escapeValue: false // react already safes from xss
+  },
+  react: {
+    // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
+    useSuspense: false
+  }
+};
+
+export default async function initI18next( config = {} ) {
   // Initialize and configure i18next
   return i18next
     .use( initReactI18next )
@@ -32,16 +45,5 @@ export default async function initializeI18next( ) {
       // Note that we're not using i18next namespaces at present
       callback( null, loadTranslations( locale ) );
     } ) )
-    .init( {
-      // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
-      lng: "en",
-      // debug: true,
-      interpolation: {
-        escapeValue: false // react already safes from xss
-      },
-      react: {
-        // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
-        useSuspense: false
-      }
-    } );
+    .init( { ...I18NEXT_CONFIG, ...config } );
 }

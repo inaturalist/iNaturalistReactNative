@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
 import React from "react";
 
@@ -72,7 +72,7 @@ test( "renders photos from photo gallery", ( ) => {
 
 describe( "PhotoGallery", () => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   test( "should not have accessibility errors", async () => {

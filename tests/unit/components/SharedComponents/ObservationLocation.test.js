@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import { ObservationLocation } from "components/SharedComponents";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import React from "react";
 
 import factory from "../../../factory";
@@ -8,7 +8,7 @@ import { renderAppWithComponent } from "../../../helpers/render";
 
 describe( "ObservationLocation", () => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   it( "should be accessible", () => {

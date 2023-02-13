@@ -1,10 +1,10 @@
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 
 describe( "formatApiDatetime", ( ) => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   it( "should return missing date string if no date is present", async ( ) => {
@@ -22,7 +22,7 @@ describe( "formatApiDatetime", ( ) => {
   } );
 
   it( "should return a localized datetime when a datetime string is passed in", ( ) => {
-    const date = "2022-11-02T18:43:00-08:00";
+    const date = "2022-11-02T18:43:00+00:00";
     expect( formatApiDatetime( date, i18next.t ) ).toEqual( "11/2/22 6:43 PM" );
   } );
 } );

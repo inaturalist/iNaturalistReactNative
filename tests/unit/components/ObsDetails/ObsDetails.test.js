@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import React from "react";
 import { View } from "react-native";
@@ -92,7 +92,7 @@ jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
 
 describe( "ObsDetails", () => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   it( "should not have accessibility errors", async () => {

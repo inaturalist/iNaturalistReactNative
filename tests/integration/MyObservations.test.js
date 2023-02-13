@@ -3,7 +3,7 @@
 
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import i18n from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
@@ -15,7 +15,7 @@ import { signIn, signOut } from "../helpers/user";
 
 describe( "MyObservations", ( ) => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   beforeEach( signOut );

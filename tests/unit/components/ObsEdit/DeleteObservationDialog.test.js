@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import DeleteObservationDialog from "components/ObsEdit/DeleteObservationDialog";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import i18n from "i18next";
 import inatjs from "inaturalistjs";
 import { ObsEditContext } from "providers/contexts";
@@ -64,7 +64,7 @@ const getLocalObservation = uuid => global.realm
 
 describe( "delete observation", ( ) => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   describe( "delete an unsynced observation", ( ) => {

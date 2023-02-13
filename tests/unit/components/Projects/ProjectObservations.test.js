@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import ProjectObservations from "components/Projects/ProjectObservations";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import React from "react";
 
 import factory from "../../../factory";
@@ -32,7 +32,7 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
 
 describe( "ProjectObservations", () => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   test( "should not have accessibility errors", async ( ) => {

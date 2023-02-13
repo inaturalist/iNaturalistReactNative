@@ -2,7 +2,7 @@ import "react-native-gesture-handler/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
-// import initializeI18next from "i18n";
+// import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";

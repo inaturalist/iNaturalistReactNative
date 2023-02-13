@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
@@ -64,7 +64,7 @@ const renderObsEdit = ( ) => renderComponent(
 
 describe( "ObsEdit", () => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   it( "should not have accessibility errors", async () => {

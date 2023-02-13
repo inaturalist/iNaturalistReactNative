@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import AddID from "components/ObsEdit/AddID";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import INatPaperProvider from "providers/INatPaperProvider";
@@ -69,11 +69,30 @@ jest.mock( "@gorhom/bottom-sheet", () => {
   };
 } );
 
+// react-native-paper's TextInput does a bunch of async stuff that's hard to
+// control in a test, so we're just mocking it here.
+jest.mock( "react-native-paper", () => {
+  const RealModule = jest.requireActual( "react-native-paper" );
+  const MockTextInput = props => {
+    const MockName = "mock-text-input";
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <MockName {...props}>{props.children}</MockName>;
+  };
+  MockTextInput.Icon = RealModule.TextInput.Icon;
+  const MockedModule = {
+    ...RealModule,
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    // TextInput: props => <View {...props}>{props.children}</View>
+    TextInput: MockTextInput
+  };
+  return MockedModule;
+} );
+
 const mockRoute = { params: {} };
 
 describe( "AddID", ( ) => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   test( "should not have accessibility errors", ( ) => {

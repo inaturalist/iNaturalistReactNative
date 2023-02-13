@@ -2,7 +2,7 @@ import {
   fireEvent, render, screen, waitFor
 } from "@testing-library/react-native";
 import ObsCard from "components/Observations/ObsCard";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import React from "react";
 
 import factory from "../../../factory";
@@ -13,7 +13,7 @@ const testObservation = factory( "LocalObservation", {
 
 describe( "ObsCard", ( ) => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   it( "renders text passed into observation card", async ( ) => {

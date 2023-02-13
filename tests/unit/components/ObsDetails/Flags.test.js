@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import ActivityItem from "components/ObsDetails/ActivityItem";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import React from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 
@@ -52,7 +52,7 @@ jest.mock( "react-native-keyboard-aware-scroll-view", () => {
 
 describe( "Flags", ( ) => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   it( "renders activity item with Flag Button", async ( ) => {

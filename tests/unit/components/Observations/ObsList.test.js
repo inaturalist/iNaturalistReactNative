@@ -2,7 +2,7 @@ import {
   fireEvent, screen, within
 } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
-import initializeI18next from "i18n";
+import initI18next from "i18n/initI18next";
 import React from "react";
 
 import factory from "../../../factory";
@@ -55,7 +55,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 describe( "ObsList", () => {
   beforeAll( async ( ) => {
-    await initializeI18next( );
+    await initI18next( );
   } );
 
   it( "should not have accessibility errors", () => {
