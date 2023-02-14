@@ -26,6 +26,15 @@ describe( "formatApiDatetime", ( ) => {
       const date = "2022-11-02T18:43:00+00:00";
       expect( formatApiDatetime( date, i18next.t ) ).toEqual( "11/2/22 6:43 PM" );
     } );
+
+    it( "should return the date in the local time zone by default", () => {
+      expect( process.env.TZ ).toEqual( "UTC" );
+      expect(
+        formatApiDatetime( "2023-01-02T08:00:00+01:00", i18next.t )
+      ).toEqual( "1/2/23 7:00 AM" );
+    } );
+
+    it.todo( "should optionally show the date in the original time zone" );
   } );
 
   describe( "in es-MX", ( ) => {
