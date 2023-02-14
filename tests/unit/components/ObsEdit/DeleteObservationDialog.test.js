@@ -1,7 +1,7 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import DeleteObservationDialog from "components/ObsEdit/DeleteObservationDialog";
 import initI18next from "i18n/initI18next";
-import i18n from "i18next";
+import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import { ObsEditContext } from "providers/contexts";
 import ObsEditProvider from "providers/ObsEditProvider";
@@ -79,7 +79,7 @@ describe( "delete observation", ( ) => {
       expect( localObservation ).toBeTruthy( );
       mockObsEditProviderWithObs( observations );
       renderDeleteDialog( );
-      const deleteButtonText = i18n.t( "Yes-delete-observation" );
+      const deleteButtonText = i18next.t( "Yes-delete-observation" );
       const deleteButton = screen.queryByText( deleteButtonText );
       expect( deleteButton ).toBeTruthy( );
       fireEvent.press( deleteButton );

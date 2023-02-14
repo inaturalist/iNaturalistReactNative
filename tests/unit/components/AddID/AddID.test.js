@@ -11,10 +11,6 @@ import { renderComponent } from "../../../helpers/render";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
 
-// // this resolves a test failure with the Animated library:
-// // Animated: `useNativeDriver` is not supported because the native animated module is missing.
-// jest.useFakeTimers( );
-
 jest.mock(
   "components/SharedComponents/ViewNoFooter",
   () => function MockViewNoFooter( props ) {

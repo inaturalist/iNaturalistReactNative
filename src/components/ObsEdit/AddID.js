@@ -137,10 +137,8 @@ const AddID = ( { route }: Props ): Node => {
             icon="pencil"
             size={25}
             onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
-            // accessible
             accessibilityRole="link"
             accessibilityLabel={t( "Navigate-to-taxon-details" )}
-            // accessibilityValue={{ text: taxon.name }}
             accessibilityState={{ disabled: false }}
           />
           <IconButton
@@ -151,10 +149,8 @@ const AddID = ( { route }: Props ): Node => {
               onIDAdded( createIdentification( taxon ) );
               if ( goBackOnSave ) { navigation.goBack( ); }
             }}
-            // accessible
             accessibilityRole="button"
             accessibilityLabel={t( "Add-this-ID" )}
-            // accessibilityValue={{ text: taxon.name }}
             accessibilityState={{ disabled: false }}
           />
         </View>
