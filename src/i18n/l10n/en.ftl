@@ -262,6 +262,8 @@ Mammals = Mammals
 
 Media = Media
 
+Missing-Date = Missing Date
+
 Mollusks = Mollusks
 
 # The following Month- strings are the months of the year (in month order, not alphabetical order)
@@ -578,6 +580,8 @@ Unknown-organism = Unknown organism
 
 Unmute = Unmute
 
+Missing-Location = Missing Location
+
 Unreviewed-only = Unreviewed only
 
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
@@ -723,6 +727,7 @@ Bulk-importer = Bulk importer
 Camera = Camera
 Close = Close
 Explore = Explore
+Flag-Item-Other = Flagged as Other Description Box
 Messages = Messages
 Observations = Observations
 Observe = Observe
@@ -746,6 +751,7 @@ Opens-add-observation-modal = Opens add observation modal.
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 Returns-to-previous-screen = Returns to previous screen.
 Switches-to-tab = Switches to { $tab } tab.
+Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
 Add-this-ID = Add this identification
@@ -795,3 +801,18 @@ Take-photo = Take photo
 
 
 Intl-number = { $val }
+
+x-comments = {$count ->
+    [one] {$count} comment
+    *[other] {$count} comments
+}
+
+x-identifications = {$count ->
+    [one] {$count} identification
+   *[other] {$count} identifications
+}
+
+# Date formatting using date-fns
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+date-format-short = M/d/yy
+datetime-format-short = M/d/yy h:mm a

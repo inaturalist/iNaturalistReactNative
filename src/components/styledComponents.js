@@ -7,6 +7,7 @@ import { styled } from "nativewind";
 import {
   ActivityIndicator as StyledActivityIndicator,
   Image as StyledImage,
+  ImageBackground as StyledImageBackground,
   KeyboardAvoidingView as StyledKeyboardAvoidingView,
   Modal as StyledModal,
   Platform,
@@ -48,6 +49,8 @@ const Image = styled( StyledImage );
 const BottomSheetTextInput = styled( StyledBottomSheetTextInput );
 // $FlowIgnore
 const Modal = styled( StyledModal );
+// $FlowIgnore
+const ImageBackground = styled( StyledImageBackground );
 
 const fontMonoClass: string = ( Platform.OS === "ios" ? "font-Menlo" : "font-monospace" );
 
@@ -56,6 +59,7 @@ export {
   BottomSheetTextInput,
   fontMonoClass,
   Image,
+  ImageBackground,
   KeyboardAvoidingView,
   LightText,
   Modal,

@@ -14,3 +14,4 @@ X-Observations =
         [one] 1 Observación
        *[other] { $count } Observaciones
     }
+Welcome-back = Bienvenido de nuevo,

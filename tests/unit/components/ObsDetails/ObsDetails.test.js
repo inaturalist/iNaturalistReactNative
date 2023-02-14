@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
+import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import React from "react";
 import { View } from "react-native";
@@ -8,8 +9,6 @@ import useIsConnected from "sharedHooks/useIsConnected";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
-
-jest.useFakeTimers( );
 
 const mockNavigate = jest.fn( );
 const mockObservation = factory( "LocalObservation", {
@@ -92,70 +91,76 @@ jest.mock( "sharedHooks/useUserLocation", ( ) => ( {
 } ) );
 
 describe( "ObsDetails", () => {
-  test( "should not have accessibility errors", async () => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+
+  it( "should not have accessibility errors", async () => {
     renderComponent( <ObsDetails /> );
     const obsDetails = await screen.findByTestId(
       `ObsDetails.${mockObservation.uuid}`
     );
     expect( obsDetails ).toBeAccessible();
   } );
-} );
 
-test( "renders obs details from remote call", async ( ) => {
-  useIsConnected.mockImplementation( ( ) => true );
-  renderComponent( <ObsDetails /> );
-
-  expect( await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
-  expect( screen.getByText( mockObservation.taxon.name ) ).toBeTruthy( );
-} );
-
-test( "renders data tab on button press", async ( ) => {
-  renderComponent( <ObsDetails /> );
-  const button = await screen.findByTestId( "ObsDetails.DataTab" );
-  expect( screen.queryByTestId( "mock-data-tab" ) ).not.toBeTruthy( );
-
-  fireEvent.press( button );
-  expect( await screen.findByTestId( "mock-data-tab" ) ).toBeTruthy();
-} );
-
-describe( "Observation with no evidence", () => {
-  beforeEach( () => {
-    useAuthenticatedQuery.mockReturnValue( {
-      data: mockNoEvidenceObservation
-    } );
-  } );
-
-  test( "should render fallback image icon instead of photos", async () => {
+  it( "renders obs details from remote call", async ( ) => {
     useIsConnected.mockImplementation( ( ) => true );
     renderComponent( <ObsDetails /> );
 
-    const labelText = t( "Observation-has-no-photos-and-no-sounds" );
-    const fallbackImage = await screen.findByLabelText( labelText );
-    expect( fallbackImage ).toBeTruthy( );
+    expect( await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` ) ).toBeTruthy( );
+    expect( screen.getByText( mockObservation.taxon.name ) ).toBeTruthy( );
   } );
 
-  afterEach( () => {
-    useAuthenticatedQuery.mockReturnValue( {
-      data: mockObservation
+  it( "renders data tab on button press", async ( ) => {
+    renderComponent( <ObsDetails /> );
+    const button = await screen.findByTestId( "ObsDetails.DataTab" );
+    expect( screen.queryByTestId( "mock-data-tab" ) ).not.toBeTruthy( );
+
+    fireEvent.press( button );
+    expect( await screen.findByTestId( "mock-data-tab" ) ).toBeTruthy();
+  } );
+
+  describe( "Observation with no evidence", () => {
+    beforeEach( () => {
+      useAuthenticatedQuery.mockReturnValue( {
+        data: mockNoEvidenceObservation
+      } );
+    } );
+
+    it( "should render fallback image icon instead of photos", async () => {
+      useIsConnected.mockImplementation( ( ) => true );
+      renderComponent( <ObsDetails /> );
+
+      const labelText = t( "Observation-has-no-photos-and-no-sounds" );
+      const fallbackImage = await screen.findByLabelText( labelText );
+      expect( fallbackImage ).toBeTruthy( );
+    } );
+
+    afterEach( () => {
+      useAuthenticatedQuery.mockReturnValue( {
+        data: mockObservation
+      } );
     } );
   } );
-} );
 
-describe( "activity tab", ( ) => {
-  test( "navigates to taxon details on button press", async ( ) => {
-    renderComponent( <ObsDetails /> );
-    fireEvent.press( await screen.findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` ) );
-    expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
-      id: mockObservation.taxon.id
+  describe( "activity tab", ( ) => {
+    it( "navigates to taxon details on button press", async ( ) => {
+      renderComponent( <ObsDetails /> );
+      fireEvent.press(
+        await screen.findByTestId( `ObsDetails.taxon.${mockObservation.taxon.id}` )
+      );
+      expect( mockNavigate ).toHaveBeenCalledWith( "TaxonDetails", {
+        id: mockObservation.taxon.id
+      } );
     } );
-  } );
 
-  test( "shows network error image instead of observation photos if user is offline", async ( ) => {
-    useIsConnected.mockImplementation( ( ) => false );
-    renderComponent( <ObsDetails /> );
-    const labelText = t( "Observation-photos-unavailable-without-internet" );
-    const noInternet = await screen.findByLabelText( labelText );
-    expect( noInternet ).toBeTruthy( );
-    expect( screen.queryByTestId( "PhotoScroll.photo" ) ).toBeNull( );
+    it( "shows network error image instead of observation photos if user is offline", async ( ) => {
+      useIsConnected.mockImplementation( ( ) => false );
+      renderComponent( <ObsDetails /> );
+      const labelText = t( "Observation-photos-unavailable-without-internet" );
+      const noInternet = await screen.findByLabelText( labelText );
+      expect( noInternet ).toBeTruthy( );
+      expect( screen.queryByTestId( "PhotoScroll.photo" ) ).toBeNull( );
+    } );
   } );
 } );

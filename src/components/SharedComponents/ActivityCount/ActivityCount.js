@@ -1,5 +1,6 @@
 // @flow
 
+import classnames from "classnames";
 import INatIcon from "components/INatIcon";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import { View } from "components/styledComponents";
@@ -9,25 +10,33 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
 
 type Props = {
-  count: number,
+  accessibilityHint?: string,
+  accessibilityLabel?: string,
   color: string,
+  count: number,
   icon?: string,
-  accessibilityLabel: string,
-  testID?: string
+  testID?: string,
+  margin?: string
 }
 
 const ActivityCount = ( {
-  count, color, icon, accessibilityLabel, testID
+  accessibilityHint,
+  accessibilityLabel,
+  color,
+  count,
+  icon,
+  testID,
+  margin
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
   const defaultColor = theme.colors.primary;
   return (
     <View
-      className="flex-row items-center"
+      className={classnames( "flex-row items-center", margin )}
       accessible
-      accessibilityLabel={accessibilityLabel}
-      accessibilityValue={{ now: count }}
+      accessibilityLabel={accessibilityLabel || t( "Intl-number", { val: count || 0 } )}
+      accessibilityHint={accessibilityHint}
     >
       <INatIcon
         name={icon || "comments-filled-in"}

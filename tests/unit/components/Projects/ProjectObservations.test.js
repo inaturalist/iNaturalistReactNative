@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import ProjectObservations from "components/Projects/ProjectObservations";
+import initI18next from "i18n/initI18next";
 import React from "react";
 
 import factory from "../../../factory";
@@ -30,6 +31,10 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
 } ) );
 
 describe( "ProjectObservations", () => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+
   test( "should not have accessibility errors", async ( ) => {
     renderComponent( <ProjectObservations /> );
     const projectObservations = await screen.findByTestId( "ProjectObservations.grid" );
@@ -40,15 +45,16 @@ describe( "ProjectObservations", () => {
 test( "displays project observations", ( ) => {
   renderComponent( <ProjectObservations /> );
 
-  expect( screen.getByText(
+  expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
     `${
       mockObservation.taxon.preferred_common_name
-    } (${
-      mockObservation.taxon.rank
+    }${
+      mockObservation.taxon.rank.charAt( 0 ).toUpperCase()
+      + mockObservation.taxon.rank.slice( 1 )
     } ${
       mockObservation.taxon.name
-    })`
-  ) ).toBeTruthy( );
+    }`
+  );
   expect( screen.getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( {
     uri: mockObservation.observation_photos[0].photo.url
   } );

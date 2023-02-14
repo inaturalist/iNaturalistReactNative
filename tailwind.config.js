@@ -50,6 +50,8 @@ module.exports = {
         "Whitney-Medium-Pro": ["Whitney-Medium-Pro"], // Android naming convention
         "Whitney-Light": ["Whitney-Light"],
         "Whitney-Light-Pro": ["Whitney-Light-Pro"], // Android naming convention
+        "Whitney-BookItalic": ["Whitney-BookItalic"],
+        "Whitney-BookItalic-Pro": ["Whitney-BookItalic-Pro"], // Android naming convention
         // selected from list of fonts already available in RN
         // https://infinitbility.com/react-native-font-family-list/
         "Papyrus-Condensed": ["Papyrus-Condensed"],
@@ -86,8 +88,7 @@ module.exports = {
       buttonWarningDisabled: WARNING_DISABLED,
       buttonNeutralDisabled: NEUTRAL_DISABLED,
       selectionGreen: "#C1FF00",
-      flaggedBackground: "#fcf8e3",
-      flaggedText: "#8a6d3a"
+      warningYellow: "#E6A939"
     }
   },
   plugins: []
