@@ -1,5 +1,5 @@
 // @flow
-
+import classnames from "classnames";
 import { Body4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
@@ -8,11 +8,13 @@ import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { formatObsListTime } from "sharedHelpers/dateAndTime";
 
 type Props = {
-  dateTime: string | typeof undefined
+  dateTime: string | typeof undefined,
+  margin?: string
 };
 
 const DateDisplay = ( {
-  dateTime
+  dateTime,
+  margin
 }: Props ): React.Node => {
   const { t } = useTranslation( );
   const displayTime = ( ) => {
@@ -23,7 +25,7 @@ const DateDisplay = ( {
   };
 
   return (
-    <View className="flex flex-row items-center mt-1">
+    <View className={classnames( "flex flex-row items-center", margin )}>
       <IconMaterial name="schedule" size={15} />
       <Body4 className="text-darkGray ml-[5px]">
         {displayTime( )}

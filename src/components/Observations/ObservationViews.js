@@ -80,7 +80,7 @@ const ObservationViews = ( ): Node => {
   const renderGridItem = ( { item } ) => (
     <ObsGridItem
       observation={item}
-      handlePress={navToObsDetails}
+      onPress={navToObsDetails}
       width="w-6/12"
     />
   );
