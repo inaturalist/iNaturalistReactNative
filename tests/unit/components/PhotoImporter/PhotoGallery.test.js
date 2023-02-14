@@ -1,14 +1,11 @@
 import { screen } from "@testing-library/react-native";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
+import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
 import React from "react";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
-
-// this resolves a test failure with the Animated library:
-// Animated: `useNativeDriver` is not supported because the native animated module is missing.
-jest.useFakeTimers( );
 
 const mockPhoto = factory( "DevicePhoto" );
 
@@ -74,6 +71,10 @@ test( "renders photos from photo gallery", ( ) => {
 } );
 
 describe( "PhotoGallery", () => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+
   test( "should not have accessibility errors", async () => {
     renderPhotoGallery( );
     const photoGallery = await screen.findByTestId( "photo-gallery" );

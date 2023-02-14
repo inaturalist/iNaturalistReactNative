@@ -288,7 +288,7 @@ const UiLibrary = () => {
         <Divider />
 
         <Heading2 className="my-2">Date Display Component</Heading2>
-        <DateDisplay dateTime="2023-12-14T21:07:41-09:30" />
+        <DateDisplay dateString="2023-12-14T21:07:41-09:30" />
 
         <Heading2 className="my-2">ObservationLocation Component</Heading2>
         <ObservationLocation

@@ -1,5 +1,7 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import DeleteObservationDialog from "components/ObsEdit/DeleteObservationDialog";
+import initI18next from "i18n/initI18next";
+import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import { ObsEditContext } from "providers/contexts";
 import ObsEditProvider from "providers/ObsEditProvider";
@@ -7,8 +9,6 @@ import React from "react";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
-
-jest.useFakeTimers( );
 
 beforeEach( async ( ) => {
   global.realm.write( ( ) => {
@@ -63,6 +63,10 @@ const getLocalObservation = uuid => global.realm
   .objectForPrimaryKey( "Observation", uuid );
 
 describe( "delete observation", ( ) => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+
   describe( "delete an unsynced observation", ( ) => {
     it( "should delete an observation from realm", async ( ) => {
       const observations = [factory( "LocalObservation", {
@@ -75,7 +79,8 @@ describe( "delete observation", ( ) => {
       expect( localObservation ).toBeTruthy( );
       mockObsEditProviderWithObs( observations );
       renderDeleteDialog( );
-      const deleteButton = screen.queryByText( /Yes-delete-observation/ );
+      const deleteButtonText = i18next.t( "Yes-delete-observation" );
+      const deleteButton = screen.queryByText( deleteButtonText );
       expect( deleteButton ).toBeTruthy( );
       fireEvent.press( deleteButton );
       expect( getLocalObservation( observations[0].uuid ) ).toBeFalsy( );
