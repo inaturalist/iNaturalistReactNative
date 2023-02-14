@@ -4,7 +4,7 @@
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
 import initI18next from "i18n/initI18next";
-import i18n from "i18next";
+import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 
@@ -45,7 +45,7 @@ describe( "MyObservations", ( ) => {
       const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
       renderAppWithComponent( <ObsList /> );
-      const loginText = i18n.t( "Log-in-to-iNaturalist" );
+      const loginText = i18next.t( "Log-in-to-iNaturalist" );
       await waitFor( ( ) => {
         expect( screen.getByText( loginText ) ).toBeTruthy( );
       } );
@@ -75,7 +75,7 @@ describe( "MyObservations", ( ) => {
       expect( screen.queryByText( /Welcome-back/ ) ).toBeFalsy( );
     } );
 
-    it.skip( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
+    it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
       const mockSpanishUser = factory( "LocalUser", {
         locale: "es"
       } );
@@ -83,12 +83,12 @@ describe( "MyObservations", ( ) => {
       await signIn( mockSpanishUser );
       renderAppWithComponent( <ObsList /> );
       await waitFor( ( ) => {
-        expect( screen.getByText( / Observaciones/ ) ).toBeTruthy();
+        expect( screen.getByText( /Bienvenido/ ) ).toBeTruthy();
       } );
-      expect( screen.queryByText( /X-Observations/ ) ).toBeFalsy( );
+      expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
     } );
 
-    it.skip(
+    it(
       "should change to es when local user locale is en but remote user locale is es",
       async ( ) => {
         const mockUser = factory( "LocalUser" );
@@ -107,8 +107,8 @@ describe( "MyObservations", ( ) => {
         await waitFor( ( ) => {
           expect( inatjs.users.me ).toHaveBeenCalled( );
         } );
-        expect( await screen.findByText( / Observaciones/ ) ).toBeTruthy( );
-        expect( screen.queryByText( /X-Observations/ ) ).toBeFalsy( );
+        expect( await screen.findByText( /Bienvenido/ ) ).toBeTruthy( );
+        expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
       }
     );
   } );
