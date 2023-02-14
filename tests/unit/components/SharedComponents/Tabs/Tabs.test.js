@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { Tabs } from "components/SharedComponents";
+import initI18next from "i18n/initI18next";
 import React from "react";
 
 const TAB_1 = "TAB_1";
@@ -21,6 +22,10 @@ const tabs = [
 ];
 
 describe( "Tabs", () => {
+  beforeAll( async () => {
+    await initI18next();
+  } );
+
   it( "should render correctly", () => {
     render( <Tabs tabs={tabs} activeId={TAB_1} /> );
 

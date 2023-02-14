@@ -3,9 +3,9 @@
 import Divider from "components/SharedComponents/Divider/Divider";
 import Heading4 from "components/SharedComponents/Typography/Heading4";
 import { View } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
 
 type Tab = {
@@ -21,39 +21,42 @@ type Props = {
 }
 
 const DEFAULT_TABS = [];
-const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => (
-  <>
-    <View className="flex flex-row" accessibilityRole="tablist">
-      {tabs.map( ( {
-        id, text, onPress, testID
-      } ) => {
-        const active = activeId === id;
-        return (
-          <View key={id} className="flex-1">
-            <TouchableOpacity
-              onPress={( ...args ) => {
-                if ( !active ) {
-                  onPress( ...args );
-                }
-              }}
-              testID={testID || `${id}-tab`}
-              accessibilityRole="tab"
-              accessibilityLabel={text}
-              accessibilityHint={t( "Switches-to-tab", { tab: text } )}
-              accessibilityState={{
-                selected: active,
-                expanded: active
-              }}
-            >
-              <Heading4 className="self-center py-[4px]">{text}</Heading4>
-              { active && <View className="h-[4px] rounded-t bg-darkGray" /> }
-            </TouchableOpacity>
-          </View>
-        );
-      } )}
-    </View>
-    <Divider />
-  </>
-);
+const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <View className="flex flex-row" accessibilityRole="tablist">
+        {tabs.map( ( {
+          id, text, onPress, testID
+        } ) => {
+          const active = activeId === id;
+          return (
+            <View key={id} className="flex-1">
+              <TouchableOpacity
+                onPress={( ...args ) => {
+                  if ( !active ) {
+                    onPress( ...args );
+                  }
+                }}
+                testID={testID || `${id}-tab`}
+                accessibilityRole="tab"
+                accessibilityLabel={text}
+                accessibilityHint={t( "Switches-to-tab", { tab: text } )}
+                accessibilityState={{
+                  selected: active,
+                  expanded: active
+                }}
+              >
+                <Heading4 className="self-center py-[4px]">{text}</Heading4>
+                { active && <View className="h-[4px] rounded-t bg-darkGray" /> }
+              </TouchableOpacity>
+            </View>
+          );
+        } )}
+      </View>
+      <Divider />
+    </>
+  );
+};
 
 export default Tabs;
