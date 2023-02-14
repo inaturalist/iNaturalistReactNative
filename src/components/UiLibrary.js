@@ -25,8 +25,9 @@ import {
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
+import UserText from "components/SharedComponents/UserText";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
-import { ScrollView, View } from "components/styledComponents";
+import { fontMonoClass, ScrollView, View } from "components/styledComponents";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
@@ -39,6 +40,9 @@ const UiLibrary = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const currentUser = useCurrentUser();
+  const userText = `
+    User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalistorg).
+  `.trim();
   return (
     <ViewWithFooter>
       <ScrollView className="px-5">
@@ -140,6 +144,12 @@ const UiLibrary = () => {
         <Body4 className="my-2">Body4</Body4>
         <List1 className="my-2">List1</List1>
         <List2 className="my-2">List2</List2>
+
+        <Heading3 className="my-2">UserText</Heading3>
+        <Heading4 className="my-2">Source</Heading4>
+        <Body2 className={fontMonoClass}>{userText}</Body2>
+        <Heading4 className="mt-2">Result</Heading4>
+        <UserText text={userText} />
 
         <Heading2>Icon Button w/ Custom iNaturalist Icons</Heading2>
         <View className="flex flex-row justify-between">
