@@ -513,6 +513,7 @@
   "Bulk-importer": "Bulk importer",
   "Camera": "Camera",
   "Close": "Close",
+  "Flag-Item-Other": "Flagged as Other Description Box",
   "Messages": "Messages",
   "Observe": "Observe",
   "Open-drawer": "Open drawer",
@@ -531,6 +532,7 @@
   "Opens-the-side-drawer-menu": "Opens the side drawer menu.",
   "Returns-to-previous-screen": "Returns to previous screen.",
   "Switches-to-tab": "Switches to { $tab } tab.",
+  "Text-Box-to-Describe-Reason-for-Flag": "Text box to describe reason for flag.",
   "Add-this-ID": "Add this identification",
   "Camera-button-label-switch-camera": {
     "comment": "Accessible label for the camera button",

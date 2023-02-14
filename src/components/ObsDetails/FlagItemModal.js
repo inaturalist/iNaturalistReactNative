@@ -173,6 +173,8 @@ const FlagItemModal = ( {
                value={explanation}
                onChangeText={text => setExplanation( text )}
                onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
+               accessibilityLabel={t( "Flag-Item-Other" )}
+               accessibilityHint={t( "Text-Box-to-Describe-Reason-for-Flag" )}
              />
              <Text>{`${explanation.length}/255`}</Text>
            </>
