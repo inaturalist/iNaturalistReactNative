@@ -49,7 +49,7 @@ const ObsCard = ( { item, handlePress }: Props ): Node => {
       <View className="flex-row shrink">
         {obsListPhoto}
         <View className="shrink">
-          <ObsCardDetails item={item} />
+          <ObsCardDetails observation={item} />
         </View>
       </View>
       <View className="flex-row items-center justify-items-center ml-2">
