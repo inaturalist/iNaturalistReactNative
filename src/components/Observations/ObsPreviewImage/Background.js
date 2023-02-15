@@ -24,7 +24,7 @@ const Background = ( {
 
   const gradient = (
     <LinearGradient colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}>
-      { noImg && <View className="grow aspect-square" /> }
+      <View className="grow aspect-square" />
     </LinearGradient>
   );
 

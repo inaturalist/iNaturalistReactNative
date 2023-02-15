@@ -24,8 +24,8 @@ const ObsStatus = ( {
   observation,
   white,
   layout = "vertical",
-  margin: wrapperMargin,
- }: Props ): Node => {
+  margin: wrapperMargin
+}: Props ): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
