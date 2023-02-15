@@ -1,6 +1,7 @@
 import {
   differenceInDays, differenceInHours, differenceInMinutes,
-  format, formatDistanceToNow, formatISO, fromUnixTime, getUnixTime, getYear, parseISO
+  format, formatDistanceToNow, formatISO, fromUnixTime, getUnixTime, getYear,
+  parseISO
 } from "date-fns";
 
 const formatISONoTimezone = date => {
@@ -26,6 +27,19 @@ const createObservedOnStringForUpload = date => formatDateStringFromTimestamp(
 const displayDateTimeObsEdit = date => date && format( new Date( date ), "PPpp" );
 
 const timeAgo = pastTime => formatDistanceToNow( new Date( pastTime ) );
+
+const formatApiDatetime = ( dateString, t ) => {
+  if ( !dateString || dateString === "" ) {
+    return t( "Missing-Date" );
+  }
+  const hasTime = dateString.includes( "T" );
+  const date = parseISO( dateString );
+
+  if ( hasTime ) {
+    return format( date, t( "datetime-format-short" ) );
+  }
+  return format( date, t( "date-format-short" ) );
+};
 
 const formatObsListTime = date => {
   const dateTime = "M/d/yy h:mm a";
@@ -70,6 +84,7 @@ const formatIdDate = ( date, t ) => {
 export {
   createObservedOnStringForUpload,
   displayDateTimeObsEdit,
+  formatApiDatetime,
   formatDateStringFromTimestamp,
   formatIdDate,
   formatISONoTimezone,

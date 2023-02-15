@@ -3,6 +3,8 @@
 
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsList from "components/Observations/ObsList";
+import initI18next from "i18n/initI18next";
+import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 
@@ -11,9 +13,11 @@ import factory, { makeResponse } from "../factory";
 import { renderAppWithComponent } from "../helpers/render";
 import { signIn, signOut } from "../helpers/user";
 
-jest.useFakeTimers( );
-
 describe( "MyObservations", ( ) => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+
   beforeEach( signOut );
 
   afterEach( ( ) => {
@@ -35,17 +39,15 @@ describe( "MyObservations", ( ) => {
   // } );
 
   describe( "when signed out", ( ) => {
-    async function testApiMethodNotCalled( apiMethod, language ) {
+    async function testApiMethodNotCalled( apiMethod ) {
       // Let's make sure the mock hasn't already been used
       expect( apiMethod ).not.toHaveBeenCalled( );
       const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
       renderAppWithComponent( <ObsList /> );
-      // TODO: We should really address this globally in the test suite. On first render,
-      // text doesn't have a language set, but on second render, text will default to English.
-      const textByLanguage = language === "en" ? "Log in to iNaturalist" : "Log-in-to-iNaturalist";
+      const loginText = i18next.t( "Log-in-to-iNaturalist" );
       await waitFor( ( ) => {
-        expect( screen.getByText( textByLanguage ) ).toBeTruthy( );
+        expect( screen.getByText( loginText ) ).toBeTruthy( );
       } );
       // Unpleasant, but without adjusting the timeout it doesn't seem like
       // all of these requests get caught
@@ -54,10 +56,10 @@ describe( "MyObservations", ( ) => {
       }, { timeout: 3000, interval: 500 } );
     }
     it( "should not make a request to users/me", async ( ) => {
-      await testApiMethodNotCalled( inatjs.users.me, undefined );
+      await testApiMethodNotCalled( inatjs.users.me );
     } );
     it( "should not make a request to observations/updates", async ( ) => {
-      await testApiMethodNotCalled( inatjs.observations.updates, "en" );
+      await testApiMethodNotCalled( inatjs.observations.updates );
     } );
   } );
 
@@ -73,7 +75,7 @@ describe( "MyObservations", ( ) => {
       expect( screen.queryByText( /Welcome-back/ ) ).toBeFalsy( );
     } );
 
-    it.skip( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
+    it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
       const mockSpanishUser = factory( "LocalUser", {
         locale: "es"
       } );
@@ -81,12 +83,12 @@ describe( "MyObservations", ( ) => {
       await signIn( mockSpanishUser );
       renderAppWithComponent( <ObsList /> );
       await waitFor( ( ) => {
-        expect( screen.getByText( / Observaciones/ ) ).toBeTruthy();
+        expect( screen.getByText( /Bienvenido/ ) ).toBeTruthy();
       } );
-      expect( screen.queryByText( /X-Observations/ ) ).toBeFalsy( );
+      expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
     } );
 
-    it.skip(
+    it(
       "should change to es when local user locale is en but remote user locale is es",
       async ( ) => {
         const mockUser = factory( "LocalUser" );
@@ -105,8 +107,8 @@ describe( "MyObservations", ( ) => {
         await waitFor( ( ) => {
           expect( inatjs.users.me ).toHaveBeenCalled( );
         } );
-        expect( await screen.findByText( / Observaciones/ ) ).toBeTruthy( );
-        expect( screen.queryByText( /X-Observations/ ) ).toBeFalsy( );
+        expect( await screen.findByText( /Bienvenido/ ) ).toBeTruthy( );
+        expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
       }
     );
   } );

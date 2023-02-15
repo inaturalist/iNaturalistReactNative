@@ -5,7 +5,9 @@ import React from "react";
 
 import INatTextLight from "./INatTextLight";
 
-// eslint-disable-next-line react/jsx-props-no-spreading
-const Body3 = ( props: any ): Node => <INatTextLight className="text-sm" {...props} />;
+const Body3 = ( props: any ): Node => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <INatTextLight className="text-sm font-normal text-darkGray" {...props} />
+);
 
 export default Body3;

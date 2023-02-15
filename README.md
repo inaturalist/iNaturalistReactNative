@@ -52,11 +52,15 @@ We're using [Jest](https://jestjs.io/) and [React Native Testing Library](https:
 npm test
 
 # Run test paths matching a pattern
-npx jest MyObs
+npm test MyObs
 
-# Run individual tests matching a pattern
-npx jest -t accessibility
+# Run individual tests matching a pattern. Note the `--` to pass arguments to jest
+npm test -- -t accessibility
 ```
+
+Note that you can run `npx jest` as well, but that will omit some environment variables we need to set for the test environment, so for consistent test runs please use `npm test`.
+
+Also note that `i18next` needs to be initialized in individual test files (haven't figured out a way to await initialization before *all* tests, plus allowing tests to control initialization helps when testing different locales). Add `beforeAll( async ( ) => { await initI18next( ); } );` to a test file if it depends on localized text.
 
 ### E2E tests
 We're using [Detox](https://wix.github.io/Detox/docs/19.x/) for E2E tests. If you want to run the e2e tests on your local machine, make sure you fulfill the RN development requirements, see above, and also follow the iOS specific [environment setup](https://wix.github.io/Detox/docs/19.x/introduction/ios-dev-env/).

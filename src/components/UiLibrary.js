@@ -9,11 +9,13 @@ import {
   Button,
   CloseButton,
   DateDisplay,
+  Divider,
   EvidenceButton,
   Heading1,
   Heading2,
   Heading3,
   Heading4,
+  Heading5,
   InlineUser,
   List1,
   List2,
@@ -27,7 +29,7 @@ import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import UserText from "components/SharedComponents/UserText";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
@@ -39,6 +41,7 @@ const UiLibrary = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const currentUser = useCurrentUser();
+  const [loading, setLoading] = useState( false );
   const userText = `
     User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalistorg).
   `.trim();
@@ -57,16 +60,30 @@ const UiLibrary = () => {
           className="mb-2"
           level="primary"
           text="PRIMARY BUTTON"
+          loading={loading}
+          onPress={() => setLoading( !loading )}
           accessibilityHint="Describes the result of performing the tap action on this element."
         />
-        <Button className="mb-2" text="NEUTRAL BUTTON" />
+        <Button
+          className="mb-2"
+          text="NEUTRAL BUTTON"
+          loading={loading}
+          onPress={() => setLoading( !loading )}
+        />
         <Button
           className="mb-2"
           level="focus"
           text="FOCUS BUTTON"
-          onPress={() => Alert.alert( "You Tapped a Button", "Or did you click it? Fight me." )}
+          loading={loading}
+          onPress={() => setLoading( !loading )}
         />
-        <Button className="mb-2" level="warning" text="WARNING BUTTON" />
+        <Button
+          className="mb-2"
+          level="warning"
+          text="WARNING BUTTON"
+          loading={loading}
+          onPress={() => setLoading( !loading )}
+        />
         <Button
           className="mb-2"
           level="primary"
@@ -128,6 +145,10 @@ const UiLibrary = () => {
         <Heading2 className="my-2">Heading2</Heading2>
         <Heading3 className="my-2">Heading3</Heading3>
         <Heading4 className="my-2">Heading4</Heading4>
+        <Heading4 className="my-2 text-focusGreen">
+          Heading4 (non-default color)
+        </Heading4>
+        <Heading5 className="my-2">Heading5</Heading5>
         <Subheading1 className="my-2">Subheading1</Subheading1>
         <Body1 className="my-2">Body1</Body1>
         <Body2 className="my-2">Body2</Body2>
@@ -187,19 +208,21 @@ const UiLibrary = () => {
           Make sure you're exporting glyphMap from components/INatIcon.js to see
           all custom icons
         </Body1>
-        {Object.keys( glyphMap ).sort().map( iconName => (
-          <Body1 key={`icons-${iconName}`}>
-            <INatIcon
-              name={iconName}
-              className="p-3"
-              key={iconName}
-              onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
-              size={20}
-            />
-            { " " }
-            {iconName}
-          </Body1>
-        ) )}
+        {Object.keys( glyphMap )
+          .sort()
+          .map( iconName => (
+            <Body1 key={`icons-${iconName}`}>
+              <INatIcon
+                name={iconName}
+                className="p-3"
+                key={iconName}
+                onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
+                size={20}
+              />
+              {" "}
+              {iconName}
+            </Body1>
+          ) )}
 
         <Heading2 className="my-2">User Icons</Heading2>
         <View className="flex flex-row justify-between mb-3">
@@ -231,29 +254,32 @@ const UiLibrary = () => {
           </View>
         </View>
 
-        <Heading2>Tabs component</Heading2>
+        <Heading2 className="my-2">Tabs component</Heading2>
         <Tabs
           tabs={[
             {
               id: "TAB1",
-              text: "Tab1",
+              text: "TAB1",
               onPress: () => {
-                console.log( "Tab1" );
+                console.log( "TAB1" );
               }
             },
             {
               id: "TAB2",
-              text: "Tab2",
+              text: "TAB2",
               onPress: () => {
-                console.log( "Tab2" );
+                console.log( "TAB2" );
               }
             }
           ]}
           activeId="TAB1"
         />
 
+        <Heading2 className="my-2">Divider component</Heading2>
+        <Divider />
+
         <Heading2 className="my-2">Date Display Component</Heading2>
-        <DateDisplay dateTime="2023-12-14T21:07:41-09:30" />
+        <DateDisplay dateString="2023-12-14T21:07:41-09:30" />
 
         <Heading2 className="my-2">ObservationLocation Component</Heading2>
         <ObservationLocation
@@ -332,7 +358,10 @@ const UiLibrary = () => {
 
         <ObsStatus
           layout="vertical"
-          observation={{ comments: [1, 2, 3], identifications: [1, 2, 3, 4, 5, 6] }}
+          observation={{
+            comments: [1, 2, 3],
+            identifications: [1, 2, 3, 4, 5, 6]
+          }}
           color={theme.colors.primary}
         />
 

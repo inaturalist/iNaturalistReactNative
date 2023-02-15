@@ -14,5 +14,6 @@
   "Observations": "Observaciones",
   "Your-Observations": "Sus observaciones",
   "TAXONOMY-header": "TAXONOMIE es bueno",
-  "X-Observations": "{ $count ->\n  [one] 1 Observación\n *[other] { $count } Observaciones\n}"
+  "X-Observations": "{ $count ->\n  [one] 1 Observación\n *[other] { $count } Observaciones\n}",
+  "Welcome-back": "Bienvenido de nuevo,"
 }
