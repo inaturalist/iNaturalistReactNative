@@ -5,8 +5,9 @@ import React from "react";
 const text = "Body1";
 
 describe( "Body1", () => {
-  it( "renders correctly", async () => {
+  it( "renders correctly", () => {
     render( <Body1>{text}</Body1> );
+
     // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );

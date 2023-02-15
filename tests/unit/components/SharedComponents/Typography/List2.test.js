@@ -5,8 +5,9 @@ import React from "react";
 const text = "List2";
 
 describe( "List2", () => {
-  it( "renders correctly", async () => {
+  it( "renders correctly", () => {
     render( <List2>{text}</List2> );
+
     // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );
