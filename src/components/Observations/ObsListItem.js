@@ -36,7 +36,12 @@ const ObsListItem = ( { observation }: Props ): Node => {
           layout="horizontal"
         />
         <ObservationLocation observation={observation} margin="mt-1" />
-        <DateDisplay dateTime={observation?._created_at} margin="mt-1" />
+        <DateDisplay
+          dateString={
+            observation.time_observed_at || observation.observed_on_string
+          }
+          margin="mt-1"
+        />
       </View>
       <View className="items-center justify-center ml-auto">
         {needsSync ? (
