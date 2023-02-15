@@ -7,6 +7,7 @@ const mockUri = { uri: "some_uri" };
 describe( "UserIcon", () => {
   it( "should not have accessibility erros", () => {
     const userIcon = <UserIcon uri={mockUri} />;
+
     expect( userIcon ).toBeAccessible();
   } );
 
