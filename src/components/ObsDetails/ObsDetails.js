@@ -337,6 +337,7 @@ const ObsDetails = ( ): Node => {
           <ObsStatus
             layout="vertical"
             observation={observation}
+            color={colors.darkGray}
           />
         </View>
         <View
