@@ -88,8 +88,7 @@ module.exports = {
       buttonWarningDisabled: WARNING_DISABLED,
       buttonNeutralDisabled: NEUTRAL_DISABLED,
       selectionGreen: "#C1FF00",
-      flaggedBackground: "#fcf8e3",
-      flaggedText: "#8a6d3a"
+      warningYellow: "#E6A939"
     }
   },
   plugins: []

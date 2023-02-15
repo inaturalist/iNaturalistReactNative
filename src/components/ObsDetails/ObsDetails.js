@@ -7,8 +7,10 @@ import {
 } from "api/observations";
 import DisplayTaxonName from "components/DisplayTaxonName";
 import ObsStatus from "components/Observations/ObsStatus";
+import ActivityHeader from "components/ObsDetails/ActivityHeader";
 import {
   InlineUser,
+  QualityGradeStatus,
   Tabs
 } from "components/SharedComponents";
 import HideView from "components/SharedComponents/HideView";
@@ -35,7 +37,6 @@ import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
-import { formatObsListTime } from "sharedHelpers/dateAndTime";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -111,7 +112,6 @@ const ObsDetails = ( ): Node => {
   );
 
   const taxon = observation?.taxon;
-  const user = observation?.user;
   const faves = observation?.faves;
   const observationPhotos = observation?.observationPhotos || observation?.observation_photos;
   const currentUserFaved = faves?.length > 0 ? faves.find( fave => fave.user.id === userId ) : null;
@@ -229,7 +229,11 @@ const ObsDetails = ( ): Node => {
     if ( !taxon ) { return <Text>{t( "Unknown-organism" )}</Text>; }
     return (
       <View className="flex-row">
-        <Image source={Taxon.uri( taxon )} className="w-16 h-16 rounded-xl mr-3" />
+        <Image
+          source={Taxon.uri( taxon )}
+          className="w-16 h-16 rounded-xl mr-3"
+          accessibilityIgnoresInvertColors
+        />
         <Pressable
           className="justify-center"
           onPress={navToTaxonDetails}
@@ -259,9 +263,6 @@ const ObsDetails = ( ): Node => {
       queryClient.invalidateQueries( ["fetchRemoteObservation"] );
     }
   };
-
-  const displayCreatedAt = ( ) => ( observation?.created_at
-    ? formatObsListTime( observation.created_at ) : "" );
 
   const tabs = [
     {
@@ -331,10 +332,7 @@ const ObsDetails = ( ): Node => {
   return (
     <>
       <ScrollWithFooter testID={`ObsDetails.${uuid}`}>
-        <View className="flex-row justify-between items-center m-3">
-          <InlineUser user={user} />
-          <Text className="color-logInGray">{displayCreatedAt()}</Text>
-        </View>
+        <ActivityHeader item={observation} />
         {displayPhoto()}
         <View className="flex-row my-5 justify-between mx-3">
           {showTaxon()}
