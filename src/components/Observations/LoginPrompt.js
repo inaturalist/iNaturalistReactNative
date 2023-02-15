@@ -16,7 +16,7 @@ const LoginPrompt = ( ): Node => {
       <Button
         level="neutral"
         text={t( "LOG-IN-TO-INATURALIST" )}
-        className="py-1 mt-5"
+        className="mt-5"
         onPress={( ) => navigation.navigate( "login" )}
       />
     </>

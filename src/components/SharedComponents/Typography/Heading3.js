@@ -5,7 +5,9 @@ import React from "react";
 
 import INatText from "./INatText";
 
-// eslint-disable-next-line react/jsx-props-no-spreading
-const Heading3 = ( props: any ): Node => <INatText className="text-lg" {...props} />;
+const Heading3 = ( props: any ): Node => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <INatText className="text-lg font-semibold text-darkGray" {...props} />
+);
 
 export default Heading3;

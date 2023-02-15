@@ -9,37 +9,59 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        "3xl": ["26px", {
-          lineHeight: "31px"
-        }
+        "3xl": [
+          "26px",
+          {
+            lineHeight: "31px"
+          }
         ],
-        "2xl": ["22px", {
-          lineHeight: "26px"
-        }
+        "2xl": [
+          "22px",
+          {
+            lineHeight: "26px"
+          }
         ],
-        xl: ["21px", {
-          lineHeight: "25px"
-        }
+        xl: [
+          "21px",
+          {
+            lineHeight: "25px"
+          }
         ],
-        lg: ["19px", {
-          lineHeight: "23px"
-        }
+        lg: [
+          "19px",
+          {
+            lineHeight: "23px"
+          }
         ],
-        base: ["18px", {
-          lineHeight: "22px"
-        }
+        base: [
+          "18px",
+          {
+            lineHeight: "22px"
+          }
         ],
-        md: ["16px", {
-          lineHeight: "18px"
-        }
+        md: [
+          "16px",
+          {
+            lineHeight: "18px"
+          }
         ],
-        sm: ["14px", {
-          lineHeight: "18px"
-        }
+        sm: [
+          "14px",
+          {
+            lineHeight: "18px"
+          }
         ],
-        xs: ["12px", {
-          lineHeight: "14px"
-        }
+        xs: [
+          "12px",
+          {
+            lineHeight: "14px"
+          }
+        ],
+        "2xs": [
+          "8px",
+          {
+            lineHeight: "10px"
+          }
         ]
       },
       height: {
@@ -61,7 +83,8 @@ module.exports = {
       },
       borderRadius: {
         // tried using rem value here, but it wouldn't load on iOS or Android
-        DEFAULT: "7px"
+        DEFAULT: "7px",
+        lg: "8px"
       }
     },
     colors: {
@@ -77,7 +100,7 @@ module.exports = {
       inatGreen: "#77b300",
       inatGreenDisabled: "#cce2a4",
       gray: "#393939",
-      lightGray: "#f5f5f5",
+      lightGray: "#e8e8e8",
       midGray: "#cccccc",
       borderGray: "#d1d1d1",
       grayText: "#999999",
