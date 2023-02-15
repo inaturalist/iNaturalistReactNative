@@ -29,6 +29,10 @@ const NavBar = ( ): React.Node => {
     screen: MESSAGES_SCREEN_ID
   } );
 
+  // TODO this renders A LOT and should not constantly be fetching the curret
+  // user. Also adds an async effect that messes with tests. We should have
+  // everything we need to know about the current user cached locally
+  // ~~~kueda 2023-02-14
   const { remoteUser: user } = useUserMe( );
 
   const footerHeight = Platform.OS === "ios" ? "h-20" : "h-15";

@@ -79,9 +79,6 @@ Check-your-email = Check your email! We've sent password reset instructions.
 
 Combine-Photos = Combine Photos
 
-# Onboarding for users learning to group photos in the camera roll
-Combine-photos-onboarding = Combine photos into observations – make sure there is only one species per observation
-
 Community-Moderation-Settings = Community Moderation Settings
 
 Connected-Accounts = Connected Accounts
@@ -189,6 +186,9 @@ Grant-Permission = Grant Permission
 
 Group-Photos = Group Photos
 
+# Onboarding for users learning to group photos in the camera roll
+Group-photos-onboarding = Group photos into observations– make sure there is only one species per observation
+
 Has-Photos = Has Photos
 
 Has-Sounds = Has Sounds
@@ -261,6 +261,8 @@ Low = Low
 Mammals = Mammals
 
 Media = Media
+
+Missing-Date = Missing Date
 
 Mollusks = Mollusks
 
@@ -585,7 +587,13 @@ Unreviewed-only = Unreviewed only
 UPLOAD-OBSERVATION = UPLOAD OBSERVATION
 
 # Shows the number of observations a user can upload to iNat from my observations page
-Upload-x-observations = UPLOAD {$count ->
+Upload-x-observations = Upload {$count ->
+    [one] 1 observation
+    *[other] {$count} observations
+}
+
+# Shows the number of observations a user can upload to iNat from my observations page
+UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
     [one] 1 OBSERVATION
     *[other] {$count} OBSERVATIONS
 }
@@ -636,12 +644,12 @@ X-Photos = {$photoCount ->
 }
 
 # Displays number of photos and observations a user has selected from the camera roll
-X-photos-X-observations = {$photoCount ->
-    [one] 1 photo
-    *[other] {$photoCount} photos
+X-PHOTOS-X-OBSERVATIONS = {$photoCount ->
+    [one] 1 PHOTO
+    *[other] {$photoCount} PHOTOS
 }, {$observationCount ->
-    [one] 1 observation
-    *[other] {$observationCount} observations
+    [one] 1 OBSERVATION
+    *[other] {$observationCount} OBSERVATIONS
 }
 
 X-unuploaded-observations = {$observationCount ->
@@ -725,6 +733,7 @@ Bulk-importer = Bulk importer
 Camera = Camera
 Close = Close
 Explore = Explore
+Flag-Item-Other = Flagged as Other Description Box
 Messages = Messages
 Observations = Observations
 Observe = Observe
@@ -748,6 +757,7 @@ Opens-add-observation-modal = Opens add observation modal.
 Opens-the-side-drawer-menu = Opens the side drawer menu.
 Returns-to-previous-screen = Returns to previous screen.
 Switches-to-tab = Switches to { $tab } tab.
+Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
 Add-this-ID = Add this identification
@@ -807,3 +817,8 @@ x-identifications = {$count ->
     [one] {$count} identification
    *[other] {$count} identifications
 }
+
+# Date formatting using date-fns
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+date-format-short = M/d/yy
+datetime-format-short = M/d/yy h:mm a

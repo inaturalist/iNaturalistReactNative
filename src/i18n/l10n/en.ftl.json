@@ -61,10 +61,6 @@
     "val": "Check your email! We've sent password reset instructions."
   },
   "Combine-Photos": "Combine Photos",
-  "Combine-photos-onboarding": {
-    "comment": "Onboarding for users learning to group photos in the camera roll",
-    "val": "Combine photos into observations – make sure there is only one species per observation"
-  },
   "Community-Moderation-Settings": "Community Moderation Settings",
   "Connected-Accounts": "Connected Accounts",
   "Content-Display": "Content & Display",
@@ -126,6 +122,10 @@
     "val": "Grant Permission"
   },
   "Group-Photos": "Group Photos",
+  "Group-photos-onboarding": {
+    "comment": "Onboarding for users learning to group photos in the camera roll",
+    "val": "Group photos into observations– make sure there is only one species per observation"
+  },
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
   "High": "High",
@@ -181,6 +181,7 @@
   "Low": "Low",
   "Mammals": "Mammals",
   "Media": "Media",
+  "Missing-Date": "Missing Date",
   "Mollusks": "Mollusks",
   "Month-January": {
     "comment": "The following Month- strings are the months of the year (in month order, not alphabetical order)",
@@ -394,6 +395,10 @@
   "UPLOAD-OBSERVATION": "UPLOAD OBSERVATION",
   "Upload-x-observations": {
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
+    "val": "Upload { $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}"
+  },
+  "UPLOAD-X-OBSERVATIONS": {
+    "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "UPLOAD { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}"
   },
   "Uploading-X-Observations": {
@@ -427,9 +432,9 @@
     "comment": "Displays number of photos attached to an observation in the Media Viewer",
     "val": "{ $photoCount ->\n  [one] 1 Photo\n *[other] { $photoCount } Photos\n}"
   },
-  "X-photos-X-observations": {
+  "X-PHOTOS-X-OBSERVATIONS": {
     "comment": "Displays number of photos and observations a user has selected from the camera roll",
-    "val": "{ $photoCount ->\n  [one] 1 photo\n *[other] { $photoCount } photos\n}, { $observationCount ->\n  [one] 1 observation\n *[other] { $observationCount } observations\n}"
+    "val": "{ $photoCount ->\n  [one] 1 PHOTO\n *[other] { $photoCount } PHOTOS\n}, { $observationCount ->\n  [one] 1 OBSERVATION\n *[other] { $observationCount } OBSERVATIONS\n}"
   },
   "X-unuploaded-observations": "{ $observationCount ->\n  [one] 1 unuploaded observation\n *[other] { $observationCount } unuploaded observations\n}",
   "Yes": "Yes",
@@ -512,6 +517,7 @@
   "Bulk-importer": "Bulk importer",
   "Camera": "Camera",
   "Close": "Close",
+  "Flag-Item-Other": "Flagged as Other Description Box",
   "Messages": "Messages",
   "Observe": "Observe",
   "Open-drawer": "Open drawer",
@@ -530,6 +536,7 @@
   "Opens-the-side-drawer-menu": "Opens the side drawer menu.",
   "Returns-to-previous-screen": "Returns to previous screen.",
   "Switches-to-tab": "Switches to { $tab } tab.",
+  "Text-Box-to-Describe-Reason-for-Flag": "Text box to describe reason for flag.",
   "Add-this-ID": "Add this identification",
   "Camera-button-label-switch-camera": {
     "comment": "Accessible label for the camera button",
@@ -588,5 +595,10 @@
   "Open-side-menu": "Open side menu",
   "Intl-number": "{ $val }",
   "x-comments": "{ $count ->\n  [one] { $count } comment\n *[other] { $count } comments\n}",
-  "x-identifications": "{ $count ->\n  [one] { $count } identification\n *[other] { $count } identifications\n}"
+  "x-identifications": "{ $count ->\n  [one] { $count } identification\n *[other] { $count } identifications\n}",
+  "date-format-short": {
+    "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "M/d/yy"
+  },
+  "datetime-format-short": "M/d/yy h:mm a"
 }

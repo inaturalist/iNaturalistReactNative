@@ -12,3 +12,5 @@ List-View = List View
 OBSERVATIONS = OBSERVATIONS
 Observations = Observations
 Your-Observations = Tus observaciones
+date-format-short = d/M/yy
+datetime-format-short = d/M/yy h:mm a

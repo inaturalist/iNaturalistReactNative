@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 import AddID from "components/ObsEdit/AddID";
+import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
 import INatPaperProvider from "providers/INatPaperProvider";
@@ -9,10 +10,6 @@ import factory, { makeResponse } from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
-
-// this resolves a test failure with the Animated library:
-// Animated: `useNativeDriver` is not supported because the native animated module is missing.
-jest.useFakeTimers( );
 
 jest.mock(
   "components/SharedComponents/ViewNoFooter",
@@ -68,9 +65,32 @@ jest.mock( "@gorhom/bottom-sheet", () => {
   };
 } );
 
+// react-native-paper's TextInput does a bunch of async stuff that's hard to
+// control in a test, so we're just mocking it here.
+jest.mock( "react-native-paper", () => {
+  const RealModule = jest.requireActual( "react-native-paper" );
+  const MockTextInput = props => {
+    const MockName = "mock-text-input";
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <MockName {...props}>{props.children}</MockName>;
+  };
+  MockTextInput.Icon = RealModule.TextInput.Icon;
+  const MockedModule = {
+    ...RealModule,
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    // TextInput: props => <View {...props}>{props.children}</View>
+    TextInput: MockTextInput
+  };
+  return MockedModule;
+} );
+
 const mockRoute = { params: {} };
 
 describe( "AddID", ( ) => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+
   test( "should not have accessibility errors", ( ) => {
     const addID = (
       <INatPaperProvider>

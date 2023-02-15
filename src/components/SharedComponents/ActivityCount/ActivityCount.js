@@ -1,6 +1,6 @@
 // @flow
 
-import classnames from "classnames";
+import classNames from "classnames";
 import INatIcon from "components/INatIcon";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import { View } from "components/styledComponents";
@@ -33,7 +33,7 @@ const ActivityCount = ( {
   const defaultColor = theme.colors.primary;
   return (
     <View
-      className={classnames( "flex-row items-center", margin )}
+      className={classNames( "flex-row items-center", margin )}
       accessible
       accessibilityLabel={accessibilityLabel || t( "Intl-number", { val: count || 0 } )}
       accessibilityHint={accessibilityHint}
