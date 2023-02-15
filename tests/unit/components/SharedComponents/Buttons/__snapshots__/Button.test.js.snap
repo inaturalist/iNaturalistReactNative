@@ -1,6 +1,96 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Button focus disabled renders correctly 1`] = `
+exports[`Button focus should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    Object {
+      "disabled": false,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        Object {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        Object {
+          "backgroundColor": "#74AC00",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontFamily": "Whitney-Medium",
+        },
+        Array [
+          Object {
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          Object {
+            "lineHeight": 19,
+          },
+          Object {
+            "fontWeight": "600",
+          },
+          Object {
+            "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
+          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    FOCUS BUTTON
+  </Text>
+</View>
+`;
+
+exports[`Button focus when disabled should render correctly 1`] = `
 <View
   accessibilityRole="button"
   accessibilityState={
@@ -93,7 +183,7 @@ exports[`Button focus disabled renders correctly 1`] = `
 </View>
 `;
 
-exports[`Button focus renders correctly 1`] = `
+exports[`Button neutral should render correctly 1`] = `
 <View
   accessibilityRole="button"
   accessibilityState={
@@ -140,7 +230,22 @@ exports[`Button focus renders correctly 1`] = `
           "paddingRight": 10,
         },
         Object {
-          "backgroundColor": "#74AC00",
+          "borderBottomWidth": 1,
+          "borderLeftWidth": 1,
+          "borderRightWidth": 1,
+          "borderTopWidth": 1,
+        },
+        Object {
+          "borderBottomColor": "#454545",
+          "borderLeftColor": "#454545",
+          "borderRightColor": "#454545",
+          "borderTopColor": "#454545",
+        },
+        Object {
+          "borderBottomWidth": 3,
+          "borderLeftWidth": 3,
+          "borderRightWidth": 3,
+          "borderTopWidth": 3,
         },
       ],
     ]
@@ -173,17 +278,20 @@ exports[`Button focus renders correctly 1`] = `
             Object {
               "color": "#ffffff",
             },
+            Object {
+              "color": "#454545",
+            },
           ],
         ],
       ]
     }
   >
-    FOCUS BUTTON
+    NEUTRAL BUTTON
   </Text>
 </View>
 `;
 
-exports[`Button neutral disabled renders correctly 1`] = `
+exports[`Button neutral when disabled should render correctly 1`] = `
 <View
   accessibilityRole="button"
   accessibilityState={
@@ -294,7 +402,7 @@ exports[`Button neutral disabled renders correctly 1`] = `
 </View>
 `;
 
-exports[`Button neutral renders correctly 1`] = `
+exports[`Button primary should render correctly 1`] = `
 <View
   accessibilityRole="button"
   accessibilityState={
@@ -341,22 +449,7 @@ exports[`Button neutral renders correctly 1`] = `
           "paddingRight": 10,
         },
         Object {
-          "borderBottomWidth": 1,
-          "borderLeftWidth": 1,
-          "borderRightWidth": 1,
-          "borderTopWidth": 1,
-        },
-        Object {
-          "borderBottomColor": "#454545",
-          "borderLeftColor": "#454545",
-          "borderRightColor": "#454545",
-          "borderTopColor": "#454545",
-        },
-        Object {
-          "borderBottomWidth": 3,
-          "borderLeftWidth": 3,
-          "borderRightWidth": 3,
-          "borderTopWidth": 3,
+          "backgroundColor": "#454545",
         },
       ],
     ]
@@ -389,20 +482,17 @@ exports[`Button neutral renders correctly 1`] = `
             Object {
               "color": "#ffffff",
             },
-            Object {
-              "color": "#454545",
-            },
           ],
         ],
       ]
     }
   >
-    NEUTRAL BUTTON
+    PRIMARY BUTTON
   </Text>
 </View>
 `;
 
-exports[`Button primary disabled renders correctly 1`] = `
+exports[`Button primary when disabled should render correctly 1`] = `
 <View
   accessibilityRole="button"
   accessibilityState={
@@ -495,7 +585,7 @@ exports[`Button primary disabled renders correctly 1`] = `
 </View>
 `;
 
-exports[`Button primary renders correctly 1`] = `
+exports[`Button warning should render correctly 1`] = `
 <View
   accessibilityRole="button"
   accessibilityState={
@@ -542,7 +632,7 @@ exports[`Button primary renders correctly 1`] = `
           "paddingRight": 10,
         },
         Object {
-          "backgroundColor": "#454545",
+          "backgroundColor": "#9B1010",
         },
       ],
     ]
@@ -580,12 +670,12 @@ exports[`Button primary renders correctly 1`] = `
       ]
     }
   >
-    PRIMARY BUTTON
+    WARNING BUTTON
   </Text>
 </View>
 `;
 
-exports[`Button warning disabled renders correctly 1`] = `
+exports[`Button warning when disabled should render correctly 1`] = `
 <View
   accessibilityRole="button"
   accessibilityState={
@@ -674,96 +764,6 @@ exports[`Button warning disabled renders correctly 1`] = `
     }
   >
     WARNING DISABLED
-  </Text>
-</View>
-`;
-
-exports[`Button warning renders correctly 1`] = `
-<View
-  accessibilityRole="button"
-  accessibilityState={
-    Object {
-      "disabled": false,
-    }
-  }
-  accessible={true}
-  collapsable={false}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
-  style={
-    Array [
-      Array [
-        Object {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        Object {
-          "flexDirection": "row",
-        },
-        Object {
-          "justifyContent": "center",
-        },
-        Object {
-          "alignItems": "center",
-        },
-        Object {
-          "paddingBottom": 13,
-          "paddingTop": 13,
-        },
-        Object {
-          "paddingLeft": 10,
-          "paddingRight": 10,
-        },
-        Object {
-          "backgroundColor": "#9B1010",
-        },
-      ],
-    ]
-  }
->
-  <Text
-    style={
-      Array [
-        Object {
-          "fontFamily": "Whitney-Medium",
-        },
-        Array [
-          Object {
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          Object {
-            "lineHeight": 19,
-          },
-          Object {
-            "fontWeight": "600",
-          },
-          Object {
-            "letterSpacing": 2,
-          },
-          Object {
-            "color": "#454545",
-          },
-          Array [
-            Object {
-              "color": "#ffffff",
-            },
-          ],
-        ],
-      ]
-    }
-  >
-    WARNING BUTTON
   </Text>
 </View>
 `;
