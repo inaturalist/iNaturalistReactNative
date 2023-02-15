@@ -1,5 +1,6 @@
 // @flow
 import classnames from "classnames";
+import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import { Body4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
@@ -14,25 +15,18 @@ type Props = {
 const ObservationLocation = ( { observation, margin }: Props ): React.Node => {
   const { t } = useTranslation();
 
-  let locationName = observation?.place_guess;
-
-  if (
-    !locationName
-    // Check for undefined or null, Not 0
-    && observation?.latitude != null
-    && observation?.longitude != null
-  ) {
-    locationName = `${observation.latitude}, ${observation.longitude}`;
-  } else if ( !locationName ) {
-    locationName = t( "Missing-Location" );
+  let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
+  if ( !displayLocation && observation.latitude ) {
+    displayLocation = `${observation.latitude}, ${observation.longitude}`;
+  }
+  if ( !displayLocation ) {
+    displayLocation = t( "Missing-Location" );
   }
 
   return (
     <View className={classnames( "flex flex-row items-center", margin )}>
       <IconMaterial name="location-pin" size={15} />
-      <Body4 className="text-darkGray ml-[5px]">
-        {locationName}
-      </Body4>
+      <Body4 className="text-darkGray ml-[5px]">{displayLocation}</Body4>
     </View>
   );
 };
