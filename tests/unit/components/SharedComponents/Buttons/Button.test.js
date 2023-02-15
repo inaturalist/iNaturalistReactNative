@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react-native";
 import { Button } from "components/SharedComponents";
 import React from "react";
 
-// Create the above tests with a descirbe.each loop
 describe.each( [["primary"], ["warning"], ["focus"], ["neutral"]] )(
   "Button %s",
   level => {
