@@ -13,13 +13,14 @@ type Props = {
 }
 
 const UploadStatus = ( { color, completeColor, progress }: Props ): React.Node => (
-
   <View className="relative justify-center items-center">
     {( progress < 0.05 )
       ? <INatIcon className="m-1" name="status-saved" color={colors.darkGray} size={50} />
       : (
         <>
-          <INatIcon className="absolute" name="upload-arrow" color="black" size={25} />
+          {( progress < 1 )
+            ? <INatIcon className="absolute" name="upload-arrow" color={color} size={25} />
+            : <INatIcon className="absolute" name="checkmark" color={completeColor} size={25} />}
           <CircularProgressBase
             value={progress}
             radius={29}
