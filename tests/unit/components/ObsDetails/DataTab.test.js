@@ -2,12 +2,25 @@ import { screen } from "@testing-library/react-native";
 import DataTab from "components/ObsDetails/DataTab";
 import React from "react";
 import { View } from "react-native";
-import useIsConnected from "sharedHooks/useIsConnected";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-jest.mock( "sharedHooks/useIsConnected" );
+jest.mock( "react-i18next", () => ( {
+  useTranslation: () => ( {
+    t: str => {
+      if ( str === "datetime-format-short" ) {
+        return "M/d/yy h:mm a";
+      }
+      return str;
+    }
+  } )
+} ) );
+
+jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
+  __esModule: true,
+  default: ( ) => true
+} ) );
 
 jest.useFakeTimers();
 
@@ -37,7 +50,6 @@ describe( "DataTab", ( ) => {
   } );
 
   test( "should display map if user is online", ( ) => {
-    useIsConnected.mockImplementation( ( ) => true );
     renderComponent( <DataTab observation={mockObservation} /> );
 
     const map = screen.queryByTestId( "mock-map" );

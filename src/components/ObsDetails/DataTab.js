@@ -2,9 +2,9 @@
 
 import {
   DateDisplay,
-  Map,
   ObservationLocation
 } from "components/SharedComponents";
+import Map from "components/SharedComponents/Map";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -57,11 +57,11 @@ const DataTab = ( { observation }: Props ): Node => {
         </View>
         <Text className="text-lg my-3">{t( "Date" )}</Text>
         <DateDisplay
-          pretext={t( "Date-observed-colon" )}
+          label={t( "Date-observed-colon" )}
           dateString={checkCamelAndSnakeCase( observation, "timeObservedAt" )}
         />
         <DateDisplay
-          pretext={t( "Date-observed-colon" )}
+          label={t( "Date-uploaded-colon" )}
           dateString={checkCamelAndSnakeCase( observation, "createdAt" )}
         />
         <Text className="text-lg my-3">{t( "Other-Data" )}</Text>
