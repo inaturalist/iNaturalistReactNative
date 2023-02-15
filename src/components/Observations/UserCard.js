@@ -4,12 +4,13 @@ import { Body1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import User from "realmModels/User";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
 const UserCard = ( ): Node => {
   const currentUser = useCurrentUser( );
+  useTranslation( );
 
   return (
     <View className="flex-row px-5 items-center bg-white h-24 ml-3">
