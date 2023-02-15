@@ -5,7 +5,7 @@ import React from "react";
 const iconName = "camera";
 
 describe( "INatIcon", () => {
-  it( "renders correctly", async () => {
+  it( "renders correctly", () => {
     render(
       <INatIcon
         name={iconName}
