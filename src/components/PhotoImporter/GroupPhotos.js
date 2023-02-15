@@ -1,16 +1,17 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { Body2, Button, Heading4 } from "components/SharedComponents";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
-import { Text } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
+import { Appbar } from "react-native-paper";
 
 import GroupPhotoImage from "./GroupPhotoImage";
-import GroupPhotosFooter from "./GroupPhotosFooter";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
 const GroupPhotos = ( ): Node => {
@@ -21,7 +22,6 @@ const GroupPhotos = ( ): Node => {
   const observations = selectedPhotos.map( photo => ( {
     photos: [photo]
   } ) );
-  const [selectionMode, setSelectionMode] = useState( false );
 
   // nesting observations under observations key to be able to rerender flatlist on selections
   const [obsToEdit, setObsToEdit] = useState( { observations } );
@@ -54,14 +54,11 @@ const GroupPhotos = ( ): Node => {
     }
   };
 
-  const clearSelection = ( ) => setSelectedObservations( [] );
-
   const renderImage = ( { item } ) => (
     <GroupPhotoImage
       item={item}
       selectedObservations={selectedObservations}
       selectObservationPhotos={selectObservationPhotos}
-      selectionMode={selectionMode}
     />
   );
 
@@ -95,7 +92,6 @@ const GroupPhotos = ( ): Node => {
 
     setObsToEdit( { observations: newObsList } );
     setSelectedObservations( [] );
-    setSelectionMode( false );
   };
 
   const separatePhotos = ( ) => {
@@ -128,7 +124,6 @@ const GroupPhotos = ( ): Node => {
     } );
     setObsToEdit( { observations: separatedPhotos } );
     setSelectedObservations( [] );
-    setSelectionMode( false );
   };
 
   const removePhotos = ( ) => {
@@ -145,7 +140,6 @@ const GroupPhotos = ( ): Node => {
     } );
     // remove from group photos screen
     setObsToEdit( { observations: removedFromGroup } );
-    setSelectionMode( false );
   };
 
   const navToObsEdit = async ( ) => {
@@ -155,16 +149,23 @@ const GroupPhotos = ( ): Node => {
 
   const loadingWheel = ( ) => <ActivityIndicator />;
 
+  const noObsSelected = selectedObservations.length === 0;
+  const oneObsSelected = selectedObservations.length === 1;
+  const obsWithMultiplePhotosSelected = selectedObservations?.[0]?.photos?.length > 1;
+
   return (
     <ViewNoFooter>
-      <Text className="text-lg ml-10">
-        {t( "X-photos-X-observations", {
-          photoCount: groupedPhotos.length,
-          observationCount: observations.length
-        } )}
-      </Text>
-      <Text className="mx-3 my-5">{t( "Combine-photos-onboarding" )}</Text>
+      <View className="mx-5">
+        <Heading4 className="self-center">
+          {t( "X-PHOTOS-X-OBSERVATIONS", {
+            photoCount: groupedPhotos.length,
+            observationCount: observations.length
+          } )}
+        </Heading4>
+        <Body2 className="mt-5">{t( "Group-photos-onboarding" )}</Body2>
+      </View>
       <FlatList
+        className="mt-5"
         data={groupedPhotos}
         initialNumToRender={4}
         keyExtractor={extractKey}
@@ -173,15 +174,34 @@ const GroupPhotos = ( ): Node => {
         testID="GroupPhotos.list"
         ListEmptyComponent={loadingWheel}
       />
-      <GroupPhotosFooter
-        combinePhotos={combinePhotos}
-        separatePhotos={separatePhotos}
-        removePhotos={removePhotos}
-        navToObsEdit={navToObsEdit}
-        clearSelection={clearSelection}
-        selectedObservations={selectedObservations}
-        setSelectionMode={setSelectionMode}
-        selectionMode={selectionMode}
+      {selectedObservations.length > 0 && (
+        <Appbar.Header className="bg-white m-5">
+          <Appbar.Action
+            icon="combine-photos"
+            onPress={( ) => combinePhotos( )}
+            disabled={noObsSelected || oneObsSelected}
+            accessibilityLabel={t( "Combine-Photos" )}
+          />
+          <Appbar.Action
+            icon="separate-photos"
+            onPress={( ) => separatePhotos( )}
+            disabled={!obsWithMultiplePhotosSelected}
+            accessibilityLabel={t( "Separate-Photos" )}
+          />
+          <Appbar.Action
+            icon="trash-can"
+            onPress={( ) => removePhotos( )}
+            disabled={noObsSelected}
+            accessibilityLabel={t( "Remove-Photos" )}
+          />
+        </Appbar.Header>
+      )}
+      <Button
+        className="mx-5"
+        level="focus"
+        text={t( "UPLOAD-X-OBSERVATIONS", { count: observations.length } )}
+        onPress={navToObsEdit}
+        testID="GroupPhotos.next"
       />
     </ViewNoFooter>
   );

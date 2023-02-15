@@ -61,10 +61,6 @@
     "val": "Check your email! We've sent password reset instructions."
   },
   "Combine-Photos": "Combine Photos",
-  "Combine-photos-onboarding": {
-    "comment": "Onboarding for users learning to group photos in the camera roll",
-    "val": "Combine photos into observations – make sure there is only one species per observation"
-  },
   "Community-Moderation-Settings": "Community Moderation Settings",
   "Connected-Accounts": "Connected Accounts",
   "Content-Display": "Content & Display",
@@ -126,6 +122,10 @@
     "val": "Grant Permission"
   },
   "Group-Photos": "Group Photos",
+  "Group-photos-onboarding": {
+    "comment": "Onboarding for users learning to group photos in the camera roll",
+    "val": "Group photos into observations– make sure there is only one species per observation"
+  },
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
   "High": "High",
@@ -395,6 +395,10 @@
   "UPLOAD-OBSERVATION": "UPLOAD OBSERVATION",
   "Upload-x-observations": {
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
+    "val": "Upload { $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}"
+  },
+  "UPLOAD-X-OBSERVATIONS": {
+    "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "UPLOAD { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}"
   },
   "Uploading-X-Observations": {
@@ -428,9 +432,9 @@
     "comment": "Displays number of photos attached to an observation in the Media Viewer",
     "val": "{ $photoCount ->\n  [one] 1 Photo\n *[other] { $photoCount } Photos\n}"
   },
-  "X-photos-X-observations": {
+  "X-PHOTOS-X-OBSERVATIONS": {
     "comment": "Displays number of photos and observations a user has selected from the camera roll",
-    "val": "{ $photoCount ->\n  [one] 1 photo\n *[other] { $photoCount } photos\n}, { $observationCount ->\n  [one] 1 observation\n *[other] { $observationCount } observations\n}"
+    "val": "{ $photoCount ->\n  [one] 1 PHOTO\n *[other] { $photoCount } PHOTOS\n}, { $observationCount ->\n  [one] 1 OBSERVATION\n *[other] { $observationCount } OBSERVATIONS\n}"
   },
   "X-unuploaded-observations": "{ $observationCount ->\n  [one] 1 unuploaded observation\n *[other] { $observationCount } unuploaded observations\n}",
   "Yes": "Yes",

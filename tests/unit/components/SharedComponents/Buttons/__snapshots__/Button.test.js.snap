@@ -1,0 +1,769 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button focus should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    Object {
+      "disabled": false,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        Object {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        Object {
+          "backgroundColor": "#74AC00",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontFamily": "Whitney-Medium",
+        },
+        Array [
+          Object {
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          Object {
+            "lineHeight": 19,
+          },
+          Object {
+            "fontWeight": "600",
+          },
+          Object {
+            "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
+          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    FOCUS BUTTON
+  </Text>
+</View>
+`;
+
+exports[`Button focus when disabled should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        Object {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        Object {
+          "backgroundColor": "#74AC00",
+        },
+        Object {
+          "opacity": 0.5,
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontFamily": "Whitney-Medium",
+        },
+        Array [
+          Object {
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          Object {
+            "lineHeight": 19,
+          },
+          Object {
+            "fontWeight": "600",
+          },
+          Object {
+            "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
+          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    FOCUS DISABLED
+  </Text>
+</View>
+`;
+
+exports[`Button neutral should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    Object {
+      "disabled": false,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        Object {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        Object {
+          "borderBottomWidth": 1,
+          "borderLeftWidth": 1,
+          "borderRightWidth": 1,
+          "borderTopWidth": 1,
+        },
+        Object {
+          "borderBottomColor": "#454545",
+          "borderLeftColor": "#454545",
+          "borderRightColor": "#454545",
+          "borderTopColor": "#454545",
+        },
+        Object {
+          "borderBottomWidth": 3,
+          "borderLeftWidth": 3,
+          "borderRightWidth": 3,
+          "borderTopWidth": 3,
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontFamily": "Whitney-Medium",
+        },
+        Array [
+          Object {
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          Object {
+            "lineHeight": 19,
+          },
+          Object {
+            "fontWeight": "600",
+          },
+          Object {
+            "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
+          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+            Object {
+              "color": "#454545",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    NEUTRAL BUTTON
+  </Text>
+</View>
+`;
+
+exports[`Button neutral when disabled should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        Object {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        Object {
+          "borderBottomWidth": 1,
+          "borderLeftWidth": 1,
+          "borderRightWidth": 1,
+          "borderTopWidth": 1,
+        },
+        Object {
+          "borderBottomColor": "#454545",
+          "borderLeftColor": "#454545",
+          "borderRightColor": "#454545",
+          "borderTopColor": "#454545",
+        },
+        Object {
+          "borderBottomWidth": 3,
+          "borderLeftWidth": 3,
+          "borderRightWidth": 3,
+          "borderTopWidth": 3,
+        },
+        Object {
+          "opacity": 0.5,
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontFamily": "Whitney-Medium",
+        },
+        Array [
+          Object {
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          Object {
+            "lineHeight": 19,
+          },
+          Object {
+            "fontWeight": "600",
+          },
+          Object {
+            "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
+          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+            Object {
+              "color": "#454545",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    NEUTRAL DISABLED
+  </Text>
+</View>
+`;
+
+exports[`Button primary should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    Object {
+      "disabled": false,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        Object {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        Object {
+          "backgroundColor": "#454545",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontFamily": "Whitney-Medium",
+        },
+        Array [
+          Object {
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          Object {
+            "lineHeight": 19,
+          },
+          Object {
+            "fontWeight": "600",
+          },
+          Object {
+            "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
+          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    PRIMARY BUTTON
+  </Text>
+</View>
+`;
+
+exports[`Button primary when disabled should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        Object {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        Object {
+          "backgroundColor": "#454545",
+        },
+        Object {
+          "opacity": 0.5,
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontFamily": "Whitney-Medium",
+        },
+        Array [
+          Object {
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          Object {
+            "lineHeight": 19,
+          },
+          Object {
+            "fontWeight": "600",
+          },
+          Object {
+            "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
+          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    PRIMARY DISABLED
+  </Text>
+</View>
+`;
+
+exports[`Button warning should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    Object {
+      "disabled": false,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        Object {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        Object {
+          "backgroundColor": "#9B1010",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontFamily": "Whitney-Medium",
+        },
+        Array [
+          Object {
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          Object {
+            "lineHeight": 19,
+          },
+          Object {
+            "fontWeight": "600",
+          },
+          Object {
+            "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
+          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    WARNING BUTTON
+  </Text>
+</View>
+`;
+
+exports[`Button warning when disabled should render correctly 1`] = `
+<View
+  accessibilityRole="button"
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Array [
+        Object {
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        Object {
+          "flexDirection": "row",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "paddingBottom": 13,
+          "paddingTop": 13,
+        },
+        Object {
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        Object {
+          "backgroundColor": "#9B1010",
+        },
+        Object {
+          "opacity": 0.5,
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    style={
+      Array [
+        Object {
+          "fontFamily": "Whitney-Medium",
+        },
+        Array [
+          Object {
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          Object {
+            "lineHeight": 19,
+          },
+          Object {
+            "fontWeight": "600",
+          },
+          Object {
+            "letterSpacing": 2,
+          },
+          Object {
+            "color": "#454545",
+          },
+          Array [
+            Object {
+              "color": "#ffffff",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    WARNING DISABLED
+  </Text>
+</View>
+`;

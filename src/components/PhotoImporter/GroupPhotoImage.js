@@ -1,5 +1,6 @@
 // @flow
 
+import classnames from "classnames";
 import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -9,15 +10,13 @@ import colors from "styles/tailwindColors";
 type Props = {
   item: Object,
   selectedObservations: Array<Object>,
-  selectObservationPhotos: Function,
-  selectionMode: boolean
+  selectObservationPhotos: Function
 }
 
 const GroupPhotoImage = ( {
   item,
   selectedObservations,
-  selectObservationPhotos,
-  selectionMode
+  selectObservationPhotos
 }: Props ): Node => {
   const firstPhoto = item.photos[0];
   const isSelected = selectedObservations.includes( item );
@@ -29,21 +28,11 @@ const GroupPhotoImage = ( {
 
   const filterIconName = item.photos.length > 9 ? "filter-9-plus" : `filter-${item.photos.length}`;
 
-  const unselectedIcon = ( ) => (
+  const renderIcon = ( ) => (
     <View className="absolute top-2 right-2">
       <IconMaterial
-        name="radio-button-off"
+        name={isSelected ? "check-circle" : "radio-button-off"}
         color={colors.white}
-        size={35}
-      />
-    </View>
-  );
-
-  const selectedIcon = ( ) => (
-    <View className="absolute top-2 right-2">
-      <IconMaterial
-        name="check-circle"
-        color={colors.inatGreen}
         size={35}
       />
     </View>
@@ -60,20 +49,19 @@ const GroupPhotoImage = ( {
     </View>
   );
 
-  const renderIcon = isSelected ? selectedIcon : unselectedIcon;
-
   return (
     <Pressable
+      accessibilityRole="button"
       onPress={handlePress}
       testID={`GroupPhotos.${firstPhoto.uri}`}
-      disabled={!selectionMode}
+      className={classnames( "rounded-[17px] overflow-hidden mx-1" )}
     >
       <Image
         testID="GroupPhotos.photo"
         source={imageUri}
-        className="h-44 w-44 mx-1"
+        className="h-44 w-44"
       />
-      {selectionMode && renderIcon( )}
+      {renderIcon( )}
       {hasMultiplePhotos && numberOfPhotosIcon( )}
     </Pressable>
   );
