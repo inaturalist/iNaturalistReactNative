@@ -93,7 +93,7 @@ const PhotoCarousel = ( {
             }
           }}
           onPress={( ) => {
-            if ( deletePhotoMode === true && canDeletePhotos ) {
+            if ( deletePhotoMode && canDeletePhotos ) {
               deletePhoto( item );
             } else if ( setSelectedPhotoIndex ) {
               setSelectedPhotoIndex( index );
@@ -122,9 +122,7 @@ const PhotoCarousel = ( {
                 colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
               />
               )}
-              {
-              ( containerStyle === "camera" && deletePhotoMode )
-                && (
+              {( containerStyle === "camera" && deletePhotoMode ) && (
                 <IconButton
                   icon="trash-can"
                   mode="contained-tonal"
@@ -132,9 +130,7 @@ const PhotoCarousel = ( {
                   containerColor="rgba(0, 0, 0, 0.5)"
                   size={30}
                 />
-                )
-            }
-
+              )}
             </ImageBackground>
           </View>
         </Pressable>
@@ -155,23 +151,19 @@ const PhotoCarousel = ( {
     />
   );
 
-  if ( deletePhotoMode ) {
-    return (
-      <Modal
-        visible
-        onBackdropPress={() => setDeletePhotoMode( false )}
-        backdropOpacity={0}
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{ margin: 0 }}
-      >
-        <View className="absolute top-0">
-          {photoPreviewsList}
-        </View>
-      </Modal>
-    );
-  }
-
-  return photoPreviewsList;
+  return deletePhotoMode ? (
+    <Modal
+      visible
+      onBackdropPress={() => setDeletePhotoMode( false )}
+      backdropOpacity={0}
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={{ margin: 0 }}
+    >
+      <View className="absolute top-0">
+        {photoPreviewsList}
+      </View>
+    </Modal>
+  ) : photoPreviewsList;
 };
 
 export default PhotoCarousel;
