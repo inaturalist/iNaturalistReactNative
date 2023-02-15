@@ -17,11 +17,17 @@ type Props = {
   observation: typeof Observation,
   layout?: "horizontal" | "vertical",
   white?: boolean
+  margin?: string
 };
 /* eslint-disable react-native/no-inline-styles */
-const ObsStatus = ( { observation, white, layout = "vertical" }: Props ): Node => {
-  const { t } = useTranslation( );
-  const theme = useTheme( );
+const ObsStatus = ( {
+  observation,
+  white,
+  layout = "vertical",
+  margin: wrapperMargin,
+ }: Props ): Node => {
+  const { t } = useTranslation();
+  const theme = useTheme();
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
   const margin = layout === "vertical" ? "mb-1" : "mr-1";
   const flexDirection = layout === "vertical" ? "flex-column" : "flex-row";
@@ -30,7 +36,7 @@ const ObsStatus = ( { observation, white, layout = "vertical" }: Props ): Node =
   const numComments = observation.comments?.length || 0;
 
   return (
-    <View className={classnames( "flex", flexDirection )}>
+    <View className={classnames( "flex", flexDirection, wrapperMargin )}>
       <ActivityCount
         margin={margin}
         count={numIdents}
