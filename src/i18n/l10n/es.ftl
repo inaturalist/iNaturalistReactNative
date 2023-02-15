@@ -15,3 +15,4 @@ X-Observations =
        *[other] { $count } Observaciones
     }
 Welcome-back = Bienvenido de nuevo,
+Welcome-user = <0>Bienvenido de nuevo,</0><1>{$userHandle}</1>
