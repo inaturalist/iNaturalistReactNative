@@ -6,11 +6,9 @@ import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
 import DisplayTaxonName from "components/DisplayTaxonName";
-import ObsStatus from "components/Observations/ObsStatus";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
+import ObsStatus from "components/Observations/ObsStatus";
 import {
-  InlineUser,
-  QualityGradeStatus,
   Tabs
 } from "components/SharedComponents";
 import HideView from "components/SharedComponents/HideView";

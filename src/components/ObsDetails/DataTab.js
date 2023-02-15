@@ -58,11 +58,11 @@ const DataTab = ( { observation }: Props ): Node => {
         <Text className="text-lg my-3">{t( "Date" )}</Text>
         <DateDisplay
           pretext={t( "Date-observed-colon" )}
-          dateTime={checkCamelAndSnakeCase( observation, "timeObservedAt" )}
+          dateString={checkCamelAndSnakeCase( observation, "timeObservedAt" )}
         />
         <DateDisplay
           pretext={t( "Date-observed-colon" )}
-          dateTime={checkCamelAndSnakeCase( observation, "createdAt" )}
+          dateString={checkCamelAndSnakeCase( observation, "createdAt" )}
         />
         <Text className="text-lg my-3">{t( "Other-Data" )}</Text>
         <Attribution observation={observation} />
