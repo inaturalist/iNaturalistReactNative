@@ -12,7 +12,7 @@ import {
 import DateDisplay from "components/SharedComponents/DateDisplay";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import {
-  Text, View
+  View
 } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
@@ -102,9 +102,9 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
         }
       {item.created_at
             && (
-            <Text>
+            <Body4>
               {formatIdDate( item.updated_at || item.created_at, t )}
-            </Text>
+            </Body4>
             )}
       {item.body && currentUser
         ? (
@@ -155,7 +155,7 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
   );
 
   return (
-    <View className="flex-row ml-4 justify-between">
+    <View className="flex-row justify-between">
       <InlineUser user={user} />
       {( item._created_at )
         ? <DateDisplay dateTime={item._created_at} />
