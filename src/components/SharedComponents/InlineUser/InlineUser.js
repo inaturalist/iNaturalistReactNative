@@ -8,9 +8,9 @@ import UserIcon from "components/SharedComponents/UserIcon/UserIcon";
 import {
   Pressable, View
 } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import User from "realmModels/User";
 import useIsConnected from "sharedHooks/useIsConnected";
@@ -25,6 +25,8 @@ const InlineUser = ( { user }: Props ): Node => {
   const isOnline = useIsConnected( );
   const userImgUri = User.uri( user );
   const userHandle = User.userHandle( user );
+
+  const { t } = useTranslation( );
 
   const renderUserIcon = () => {
     if ( !isOnline ) {

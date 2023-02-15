@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { InlineUser } from "components/SharedComponents";
+import initI18next from "i18n/initI18next";
 import React from "react";
 import useIsConnected from "sharedHooks/useIsConnected";
 
@@ -33,6 +34,10 @@ jest.mock(
 );
 
 describe( "InlineUser", ( ) => {
+  beforeAll( async () => {
+    await initI18next();
+  } );
+
   it( "should not have accessibility erros", () => {
     const inlineUser = <InlineUser user={mockUser} />;
     expect( inlineUser ).toBeAccessible();
@@ -41,6 +46,7 @@ describe( "InlineUser", ( ) => {
   it( "renders reliably", () => {
     // Snapshot test
     render( <InlineUser user={snapshotUser} /> );
+
     expect( screen ).toMatchSnapshot();
   } );
 
