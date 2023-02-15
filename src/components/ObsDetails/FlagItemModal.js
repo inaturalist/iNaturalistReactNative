@@ -1,7 +1,7 @@
 // @flow
 import CheckBox from "@react-native-community/checkbox";
 import createFlag from "api/flags";
-import Button from "components/SharedComponents/Buttons/Button";
+import { Button } from "components/SharedComponents";
 import {
   Modal,
   SafeAreaView,
@@ -181,12 +181,12 @@ const FlagItemModal = ( {
            )}
           <View className="flex-row justify-center m-4">
             <Button
-              className="rounded m-2"
+              className="m-2"
               text={t( "Cancel" )}
               onPress={() => resetFlagModal()}
             />
             <Button
-              className="rounded m-2"
+              className="m-2"
               text={t( "Save" )}
               onPress={submitFlag}
               level="primary"
