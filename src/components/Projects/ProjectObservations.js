@@ -1,11 +1,11 @@
 // @flow
 
-import useINatNavigation from "sharedHooks/useINatNavigation";
 import { searchObservations } from "api/observations";
 import ObsGridItem from "components/Observations/ObsGridItem";
 import * as React from "react";
 import { FlatList } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useINatNavigation from "sharedHooks/useINatNavigation";
 
 type Props = {
   id: number

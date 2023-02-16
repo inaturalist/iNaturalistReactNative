@@ -12,22 +12,23 @@ import useINatNavigation from "sharedHooks/useINatNavigation";
 import useUserMe from "sharedHooks/useUserMe";
 import { viewStyles } from "styles/sharedComponents/footer";
 
-import NavButton from "./NavButton";
+import {
+  EXPLORE_NAME,
+  MESSAGES_NAME,
+  OBS_LIST_NAME,
+} from "navigation/navigationIds";
 
-// TODO: This is not future proof, if changed in main navigation it breaks here
-const OBS_LIST_SCREEN_ID = "ObsList";
-const EXPLORE_SCREEN_ID = "Explore";
-const MESSAGES_SCREEN_ID = "Messages";
+import NavButton from "./NavButton";
 
 const NavBar = ( ): React.Node => {
   const navigation = useINatNavigation( );
   const { name } = useRoute( );
   const isDrawerOpen = useDrawerStatus( ) === "open";
   const toggleSideMenu = ( ) => navigation.openDrawer( );
-  const navToObsList = ( ) => navigation.navigate( OBS_LIST_SCREEN_ID );
-  const navToExplore = ( ) => navigation.navigate( EXPLORE_SCREEN_ID );
+  const navToObsList = ( ) => navigation.navigate( OBS_LIST_NAME );
+  const navToExplore = ( ) => navigation.navigate( EXPLORE_NAME );
   const navToNotifications = ( ) => navigation.navigate(
-    MESSAGES_SCREEN_ID
+    MESSAGES_NAME
   );
   const { remoteUser: user } = useUserMe( );
 
@@ -55,8 +56,8 @@ const NavBar = ( ): React.Node => {
       <NavButton
         onPress={navToExplore}
         icon="compass-rose"
-        testID={EXPLORE_SCREEN_ID}
-        active={name === EXPLORE_SCREEN_ID}
+        testID={EXPLORE_NAME}
+        active={name === EXPLORE_NAME}
         accessibilityLabel={t( "Explore" )}
         accessibilityHint={t( "Navigates-to-explore" )}
         size={40}
@@ -66,8 +67,8 @@ const NavBar = ( ): React.Node => {
         onPress={navToObsList}
         icon="ios-people-updated-2"
         userIconUri={User.uri( user )}
-        testID={OBS_LIST_SCREEN_ID}
-        active={name === OBS_LIST_SCREEN_ID}
+        testID={OBS_LIST_NAME}
+        active={name === OBS_LIST_NAME}
         accessibilityLabel={t( "Observations" )}
         accessibilityHint={t( "Navigates-to-observations" )}
         size={40}
@@ -75,8 +76,8 @@ const NavBar = ( ): React.Node => {
       <NavButton
         onPress={navToNotifications}
         icon="notifications-bell"
-        active={name === MESSAGES_SCREEN_ID}
-        testID={MESSAGES_SCREEN_ID}
+        active={name === MESSAGES_NAME}
+        testID={MESSAGES_NAME}
         accessibilityLabel={t( "Messages" )}
         accessibilityHint={t( "Navigates-to-messages" )}
         size={32}
