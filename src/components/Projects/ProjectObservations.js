@@ -5,7 +5,8 @@ import { searchObservations } from "api/observations";
 import ObsGridItem from "components/Observations/ObsGridItem";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, Pressable } from "react-native";
+import { FlatList } from "react-native";
+import { Pressable } from "components/styledComponents";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 type Props = {
@@ -28,6 +29,7 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
 
   const renderGridItem = ( { item } ) => (
     <Pressable
+      className="w-6/12"
       onPress={() => navToObsDetails( item )}
       accessibilityRole="link"
       accessibilityHint={t( "Navigate-to-observation-details" )}
