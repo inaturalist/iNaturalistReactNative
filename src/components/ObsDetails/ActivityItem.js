@@ -31,7 +31,6 @@ const ActivityItem = ( {
 }: Props ): Node => {
   const { taxon } = item;
   const isOnline = useIsConnected( );
-  console.log( "item", item );
 
   const showNoInternetIcon = accessibilityLabel => (
     <View className="mr-3">
@@ -64,7 +63,10 @@ const ActivityItem = ( {
               : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
             <DisplayTaxonName scientificNameFirst={false} taxon={taxon} layout="vertical" />
           </Pressable>
-          <Pressable className="m-4" accessibilityRole="button">
+          <Pressable
+            className="m-4"
+            accessibilityRole="button"
+          >
             <INatIcon name="id-agree" size={33} />
           </Pressable>
         </View>
