@@ -5,12 +5,12 @@ import { createComment } from "api/comments";
 import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
+import DisplayTaxonName from "components/DisplayTaxonName";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
+import ObsStatus from "components/Observations/ObsStatus";
 import {
-  QualityGradeStatus,
   Tabs
 } from "components/SharedComponents";
-import ActivityCount from "components/SharedComponents/ActivityCount/ActivityCount";
 import HideView from "components/SharedComponents/HideView";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import ScrollWithFooter from "components/SharedComponents/ScrollWithFooter";
@@ -240,10 +240,10 @@ const ObsDetails = ( ): Node => {
           accessibilityLabel={t( "Navigate-to-taxon-details" )}
           accessibilityValue={{ text: taxon.name }}
         >
-          <Text>
-            {checkCamelAndSnakeCase( taxon, "preferredCommonName" )}
-          </Text>
-          <Text>{taxon.name}</Text>
+          <DisplayTaxonName
+            taxon={taxon}
+            layout="vertical"
+          />
         </Pressable>
       </View>
     );
@@ -334,28 +334,10 @@ const ObsDetails = ( ): Node => {
         {displayPhoto()}
         <View className="flex-row my-5 justify-between mx-3">
           {showTaxon()}
-          <View>
-            <ActivityCount
-              color={colors.darkGray}
-              count={observation.identifications.length}
-              icon="identification-solid"
-              accessibilityLabel={
-                t( "x-identifications", { count: observation.identifications.length } )
-              }
-            />
-            <ActivityCount
-              color={colors.darkGray}
-              count={observation.comments.length}
-              icon="comments-filled-in"
-              accessibilityLabel={
-                t( "x-comments", { count: observation.comments.length } )
-              }
-            />
-            <QualityGradeStatus
-              qualityGrade={checkCamelAndSnakeCase( observation, "qualityGrade" )}
-              color={colors.darkGray}
-            />
-          </View>
+          <ObsStatus
+            layout="vertical"
+            observation={observation}
+          />
         </View>
         <View
           className="flex-row ml-3"

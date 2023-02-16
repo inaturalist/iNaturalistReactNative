@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 
 type Props = {
-  scientificNameFirst: boolean,
+  scientificNameFirst?: boolean,
   taxon: Object,
   layout?: "horizontal" | "vertical",
   color?: string
