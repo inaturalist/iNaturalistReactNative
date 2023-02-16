@@ -5,7 +5,6 @@ export { default as EvidenceButton } from "./Buttons/EvidenceButton";
 export { default as DateDisplay } from "./DateDisplay";
 export { default as Divider } from "./Divider/Divider";
 export { default as InlineUser } from "./InlineUser/InlineUser";
-export { default as Map } from "./Map";
 export { default as ObservationLocation } from "./ObservationLocation";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
 export { default as Tabs } from "./Tabs/Tabs";

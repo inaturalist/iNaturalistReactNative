@@ -55,7 +55,7 @@ const ObsGridItem = ( {
       <ObsStatus
         observation={observation}
         layout="horizontal"
-        color={colors.white}
+        white
       />
     );
   };
