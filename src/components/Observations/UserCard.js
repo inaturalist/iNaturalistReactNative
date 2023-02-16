@@ -10,6 +10,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 
 const UserCard = ( ): Node => {
   const currentUser = useCurrentUser( );
+  // useTranslation fixes unit test.
   useTranslation( );
 
   return (
