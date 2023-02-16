@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import useINatNavigation from "sharedHooks/useINatNavigation";
 import { searchObservations } from "api/observations";
 import ObsGridItem from "components/Observations/ObsGridItem";
 import * as React from "react";
@@ -19,7 +19,7 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
     optsWithAuth => searchObservations( { project_id: id }, optsWithAuth )
   );
 
-  const navigation = useNavigation( );
+  const navigation = useINatNavigation( );
   const navToObsDetails = observation => {
     navigation.navigate( "ObsDetails", { uuid: observation.uuid } );
   };
