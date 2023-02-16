@@ -13,7 +13,7 @@ type Props = {
 };
 
 const ObservationLocation = ( { observation, classNameMargin }: Props ): React.Node => {
-  const { t } = useTranslation();
+  const { t } = useTranslation( );
 
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
   if (
