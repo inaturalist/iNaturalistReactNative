@@ -79,7 +79,7 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
   );
 
   const renderIcon = () => {
-    if ( item.vision ) return <INatIcon name="cv" size={22} />;
+    if ( item.vision ) return <INatIcon name="computervision" size={22} />;
     if ( flaggedStatus ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
   };
