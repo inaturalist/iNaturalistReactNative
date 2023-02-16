@@ -3,10 +3,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { searchObservations } from "api/observations";
 import ObsGridItem from "components/Observations/ObsGridItem";
+import { Pressable } from "components/styledComponents";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList } from "react-native";
-import { Pressable } from "components/styledComponents";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 type Props = {
