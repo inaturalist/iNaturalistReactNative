@@ -5,18 +5,17 @@ import classNames from "classnames";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
+import {
+  EXPLORE_NAME,
+  MESSAGES_NAME,
+  OBS_LIST_NAME
+} from "navigation/navigationIds";
 import * as React from "react";
 import { Platform } from "react-native";
 import User from "realmModels/User";
 import useINatNavigation from "sharedHooks/useINatNavigation";
 import useUserMe from "sharedHooks/useUserMe";
 import { viewStyles } from "styles/sharedComponents/footer";
-
-import {
-  EXPLORE_NAME,
-  MESSAGES_NAME,
-  OBS_LIST_NAME,
-} from "navigation/navigationIds";
 
 import NavButton from "./NavButton";
 
