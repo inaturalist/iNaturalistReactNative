@@ -46,6 +46,21 @@ describe( "ObservationLocation", () => {
     ) ).toBeTruthy();
   } );
 
+  it( "should handle latitude/longitude w/ zero", async ( ) => {
+    const mockObservation = factory( "RemoteObservation", {
+      latitude: 0,
+      longitude: 0,
+      place_guess: null
+    } );
+
+    renderAppWithComponent(
+      <ObservationLocation observation={mockObservation} />
+    );
+    expect( await screen.findByText(
+      `${0}, ${0}`
+    ) ).toBeTruthy();
+  } );
+
   it( "should show no location if unknown", async ( ) => {
     const mockObservation = factory( "RemoteObservation", {
       latitude: null,

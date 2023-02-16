@@ -16,10 +16,13 @@ const ObservationLocation = ( { observation, margin }: Props ): React.Node => {
   const { t } = useTranslation();
 
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
-  if ( !displayLocation && observation.latitude ) {
+  if (
+    !displayLocation &&
+    observation.latitude != null &&
+    observation.longitude != null
+  ) {
     displayLocation = `${observation.latitude}, ${observation.longitude}`;
-  }
-  if ( !displayLocation ) {
+  } else if ( !displayLocation ) {
     displayLocation = t( "Missing-Location" );
   }
 
