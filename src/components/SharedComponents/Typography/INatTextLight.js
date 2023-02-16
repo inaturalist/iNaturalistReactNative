@@ -10,10 +10,14 @@ type Props = {
   style?: any
 }
 
-const INatTextLight = ( { children, testID, style }: Props ): Node => (
+/* eslint-disable react/jsx-props-no-spreading */
+const INatTextLight = ( {
+  children, testID, style, ...props
+}: Props ): Node => (
   <LightText
     style={style}
     testID={testID}
+    {...props}
   >
     {children}
   </LightText>

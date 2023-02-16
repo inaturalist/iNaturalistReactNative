@@ -1,10 +1,9 @@
-import { screen } from "@testing-library/react-native";
+import { render, screen } from "@testing-library/react-native";
 import { ObservationLocation } from "components/SharedComponents";
 import initI18next from "i18n/initI18next";
 import React from "react";
 
 import factory from "../../../factory";
-import { renderAppWithComponent } from "../../../helpers/render";
 
 describe( "ObservationLocation", () => {
   beforeAll( async ( ) => {
@@ -25,7 +24,7 @@ describe( "ObservationLocation", () => {
       place_guess: "Panama City Beach, Florida"
     } );
 
-    renderAppWithComponent(
+    render(
       <ObservationLocation observation={mockObservation} />
     );
     expect( await screen.findByText( mockObservation.place_guess ) ).toBeTruthy();
@@ -38,7 +37,7 @@ describe( "ObservationLocation", () => {
       place_guess: null
     } );
 
-    renderAppWithComponent(
+    render(
       <ObservationLocation observation={mockObservation} />
     );
     expect( await screen.findByText(
@@ -53,7 +52,7 @@ describe( "ObservationLocation", () => {
       place_guess: null
     } );
 
-    renderAppWithComponent(
+    render(
       <ObservationLocation observation={mockObservation} />
     );
     expect( await screen.findByText(
@@ -68,7 +67,7 @@ describe( "ObservationLocation", () => {
       place_guess: null
     } );
 
-    renderAppWithComponent(
+    render(
       <ObservationLocation observation={mockObservation} />
     );
     expect( await screen.findByText(

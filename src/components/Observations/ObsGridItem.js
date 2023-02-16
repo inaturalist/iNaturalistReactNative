@@ -1,14 +1,12 @@
 // @flow
 
-import classnames from "classnames";
+import classNames from "classnames";
 import DisplayTaxonName from "components/DisplayTaxonName";
-import { Pressable, View } from "components/styledComponents";
-import { t } from "i18next";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
-import colors from "styles/tailwindColors";
 
 import ObsPreviewImage from "./ObsPreviewImage";
 import ObsStatus from "./ObsStatus";
@@ -16,40 +14,35 @@ import UploadButton from "./UploadButton";
 
 type Props = {
   observation: Object,
-  onPress: Function,
-  displayType?: "project" | "observation",
+  isProject?: boolean,
   height?: string,
   width?: string,
 };
 
 const ObsGridItem = ( {
-  onPress,
   observation,
-  displayType = "observation",
+  isProject = false,
   width = "w-full",
   height = "h-[172px]"
 }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo;
-  const showUploadButton = displayType !== "project" && observation.needsSync?.( );
+  const showUploadButton = !isProject && observation.needsSync?.( );
 
-  const imageUri = displayType === "project"
+  const imageSource = isProject
     ? Observation.projectUri( observation )
     : { uri: Photo.displayLocalOrRemoteMediumPhoto( photo ) };
 
   return (
-    <Pressable
-      onPress={( ) => onPress( observation )}
-      className={classnames( "rounded-[17px] overflow-hidden", height, width )}
+    <View
+      className={classNames( "rounded-[17px] overflow-hidden", height, width )}
       testID={`ObsList.gridItem.${observation.uuid}`}
-      accessibilityRole="link"
-      accessibilityLabel={t( "Navigate-to-observation-details" )}
     >
       <ObsPreviewImage
-        uri={imageUri}
+        source={imageSource}
         height="h-[172px]"
         width="w-full"
         observation={observation}
-        multiplePhotosLocation="top"
+        isMultiplePhotosTop
       >
         <View className="absolute bottom-0 flex p-2 w-full">
           {showUploadButton ? (
@@ -58,7 +51,7 @@ const ObsGridItem = ( {
             <ObsStatus
               observation={observation}
               layout="horizontal"
-              color={colors.white}
+              white
               margin="mb-1"
             />
           )}
@@ -72,7 +65,7 @@ const ObsGridItem = ( {
           />
         </View>
       </ObsPreviewImage>
-    </Pressable>
+    </View>
   );
 };
 

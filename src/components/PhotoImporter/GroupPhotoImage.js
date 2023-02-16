@@ -1,6 +1,6 @@
 // @flow
 
-import classnames from "classnames";
+import classNames from "classnames";
 import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -54,7 +54,7 @@ const GroupPhotoImage = ( {
       accessibilityRole="button"
       onPress={handlePress}
       testID={`GroupPhotos.${firstPhoto.uri}`}
-      className={classnames( "rounded-[17px] overflow-hidden mx-1" )}
+      className={classNames( "rounded-[17px] overflow-hidden mx-1" )}
     >
       <Image
         testID="GroupPhotos.photo"

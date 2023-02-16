@@ -1,5 +1,5 @@
 // @flow
-import classnames from "classnames";
+import classNames from "classnames";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -8,28 +8,28 @@ import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 import Background from "./Background";
 
-type URI = {
+type SOURCE = {
   uri: string,
 };
 
 type Props = {
-  uri?: URI,
+  source: SOURCE,
   observation?: Object,
   opaque?: boolean,
   width?: string,
   height?: string,
-  multiplePhotosLocation?: "bottom" | "top",
+  isMultiplePhotosTop?: boolean,
   children?: Node,
   disableGradient?: boolean,
 };
 
 const ObsPreviewImage = ( {
-  uri,
+  source,
   observation,
   height = "h-[62px]",
   width = "w-[62px]",
   opaque = false,
-  multiplePhotosLocation = "bottom",
+  isMultiplePhotosTop = false,
   children,
   disableGradient = false
 }: Props ): Node => {
@@ -41,22 +41,22 @@ const ObsPreviewImage = ( {
 
   return (
     <View
-      className={classnames(
-        "relative w-[62px] h-[62px] rounded-lg mr-[10px] overflow-hidden",
+      className={classNames(
+        "relative rounded-lg mr-[10px] overflow-hidden",
         height,
         width
       )}
     >
       <Background
-        uri={uri}
+        uri={source}
         opaque={opaque}
         disableGradient={disableGradient}
       />
       {hasMultiplePhotos && (
         <View
-          className={classnames( "absolute right-0", {
-            "bottom-0 p-1": multiplePhotosLocation === "bottom",
-            "top-0 p-2": multiplePhotosLocation === "top"
+          className={classNames( "absolute right-0", {
+            "bottom-0 p-1": !isMultiplePhotosTop,
+            "top-0 p-2": isMultiplePhotosTop
           } )}
         >
           <IconMaterial

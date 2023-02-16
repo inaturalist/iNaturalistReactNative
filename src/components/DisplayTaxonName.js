@@ -1,5 +1,5 @@
 // @flow
-import classnames from "classnames";
+import classNames from "classnames";
 import { Body1, Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -52,7 +52,7 @@ const DisplayTaxonName = ( {
         ? (
           <TextComponent
             key={`DisplayTaxonName-${taxon.id}-${piece}`}
-            className="italic"
+            className={classNames( "italic", textColorClass )}
           >
             {text}
           </TextComponent>
@@ -68,7 +68,7 @@ const DisplayTaxonName = ( {
   return (
     <View
       testID="display-taxon-name"
-      className={classnames( "flex", null, {
+      className={classNames( "flex", null, {
         "flex-row items-end flex-wrap w-11/12": isHorizontal
       } )}
     >

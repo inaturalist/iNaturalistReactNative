@@ -79,18 +79,22 @@ const ObservationViews = (): Node => {
     <Pressable
       onPress={() => navToObsDetails( item )}
       accessibilityRole="link"
-      accessibilityLabel={t( "Navigate-to-observation-details" )}
+      accessibilityHint={t( "Navigate-to-observation-details" )}
+      accessibilityLabel={t( "Observation-details", {
+        scientificName: item.name
+      } )}
     >
-      <ObsListItem observation={item} />
-    </Pressable>
-  );
+      {
+        layout === "grid"
+          ? (
+            <ObsGridItem
+              observation={item}
+            />
+          )
+          : <ObsListItem observation={item} />
+      }
 
-  const renderGridItem = ( { item } ) => (
-    <ObsGridItem
-      observation={item}
-      onPress={navToObsDetails}
-      width="w-6/12"
-    />
+    </Pressable>
   );
 
   const renderFooter = () => {
@@ -126,7 +130,7 @@ const ObservationViews = (): Node => {
             style={{ height }}
             testID="ObservationViews.myObservations"
             numColumns={layout === "grid" ? 2 : 1}
-            renderItem={layout === "grid" ? renderGridItem : renderItem}
+            renderItem={renderItem}
             ListEmptyComponent={renderEmptyState}
             ListHeaderComponent={
               <ObsListHeader setLayout={setLayout} layout={layout} />

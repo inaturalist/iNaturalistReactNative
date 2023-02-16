@@ -1,5 +1,5 @@
 // @flow
-import classnames from "classnames";
+import classNames from "classnames";
 import { ImageBackground, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -35,7 +35,7 @@ const Background = ( {
   return (
     <ImageBackground
       source={uri}
-      className={classnames( "grow aspect-square", { "opacity-50": opaque } )}
+      className={classNames( "grow aspect-square", { "opacity-50": opaque } )}
       testID="ObsList.photo"
     >
       {!disableGradient && gradient}

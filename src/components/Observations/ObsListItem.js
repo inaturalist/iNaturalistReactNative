@@ -21,29 +21,29 @@ const ObsListItem = ( { observation }: Props ): Node => {
   return (
     <View
       testID={`ObsList.obsListItem.${observation.uuid}`}
-      className="flex-row my-2 px-[10px]"
+      className="flex-row px-[15px] my-[11px]"
     >
       <ObsPreviewImage
-        uri={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
+        source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
         observation={observation}
         opaque={needsSync}
         disableGradient
       />
-      <View>
+      <View className="pr-[25px] flex-1">
         <DisplayTaxonName
           taxon={observation?.taxon}
           scientificNameFirst={observation?.user?.prefers_scientific_name_first}
           layout="horizontal"
         />
-        <ObservationLocation observation={observation} margin="mt-1" />
+        <ObservationLocation observation={observation} classNameMargin="mt-1" />
         <DateDisplay
           dateString={
             observation.time_observed_at || observation.observed_on_string
           }
-          margin="mt-1"
+          classNameMargin="mt-1"
         />
       </View>
-      <View className="items-center justify-center ml-auto">
+      <View className="items-center ml-auto">
         {needsSync ? (
           <UploadButton observation={observation} />
         ) : (
