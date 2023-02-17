@@ -43,7 +43,7 @@ const UiLibrary = () => {
   const currentUser = useCurrentUser();
   const [loading, setLoading] = useState( false );
   const userText = `
-    User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalistorg).
+    User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalist.org).
   `.trim();
   return (
     <ViewWithFooter>
