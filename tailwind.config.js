@@ -112,6 +112,13 @@ module.exports = {
       buttonNeutralDisabled: NEUTRAL_DISABLED,
       selectionGreen: "#C1FF00",
       warningYellow: "#E6A939"
+    },
+    screens: {
+      sm: "240px",
+      md: "320px",
+      lg: "390px",
+      xl: "744px",
+      "2xl": "1366px"
     }
   },
   plugins: []
