@@ -17,14 +17,14 @@ type Props = {
   observation: typeof Observation,
   layout?: "horizontal" | "vertical",
   white?: boolean,
-  margin?: string
+  classNameMargin?: string
 };
 /* eslint-disable react-native/no-inline-styles */
 const ObsStatus = ( {
   observation,
   white,
   layout = "vertical",
-  margin: wrapperMargin
+  classNameMargin
 }: Props ): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -36,7 +36,7 @@ const ObsStatus = ( {
   const numComments = observation.comments?.length || 0;
 
   return (
-    <View className={classNames( "flex", flexDirection, wrapperMargin )}>
+    <View className={classNames( "flex", flexDirection, classNameMargin )}>
       <ActivityCount
         margin={margin}
         count={numIdents}

@@ -52,7 +52,7 @@ const ObsGridItem = ( {
               observation={observation}
               layout="horizontal"
               white
-              margin="mb-1"
+              classNameMargin="mb-1"
             />
           )}
           <DisplayTaxonName

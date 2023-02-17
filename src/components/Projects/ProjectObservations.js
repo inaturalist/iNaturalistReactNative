@@ -33,7 +33,7 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
       onPress={() => navToObsDetails( item )}
       accessibilityRole="link"
       accessibilityHint={t( "Navigate-to-observation-details" )}
-      accessibilityLabel={t( "Observation-details", {
+      accessibilityLabel={t( "Observation", {
         scientificName: item.name
       } )}
     >

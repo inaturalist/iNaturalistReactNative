@@ -18,8 +18,8 @@ const ObservationLocation = ( { observation, classNameMargin }: Props ): React.N
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
   if (
     !displayLocation
-    && ( observation.latitude !== null && observation.latitude !== undefined )
-    && ( observation.longitude != null && observation.longitude !== undefined )
+    && ( observation?.latitude !== null && observation?.latitude !== undefined )
+    && ( observation?.longitude != null && observation?.longitude !== undefined )
   ) {
     displayLocation = `${observation.latitude}, ${observation.longitude}`;
   } else if ( !displayLocation ) {
