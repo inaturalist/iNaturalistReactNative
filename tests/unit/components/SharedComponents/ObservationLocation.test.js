@@ -5,8 +5,8 @@ import React from "react";
 
 import factory from "../../../factory";
 
-const latitude = 30.18183
-const longitude = -85.760449
+const latitude = 30.18183;
+const longitude = -85.760449;
 
 const testData = [
   [
@@ -45,7 +45,7 @@ const testData = [
     },
     "Missing Location"
   ]
-]
+];
 
 describe( "ObservationLocation", () => {
   beforeAll( async ( ) => {
@@ -59,12 +59,12 @@ describe( "ObservationLocation", () => {
     ).toBeAccessible();
   } );
 
-  it.each(testData)('%s', async (a, obsData, expectedResult) => {
+  it.each( testData )( "%s", async ( a, obsData, expectedResult ) => {
     const mockObservation = factory( "RemoteObservation", obsData );
 
     render(
       <ObservationLocation observation={mockObservation} />
     );
     expect( await screen.findByText( expectedResult ) ).toBeTruthy();
-  });
-});
+  } );
+} );
