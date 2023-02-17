@@ -53,11 +53,11 @@ const PhotoCarousel = ( {
     }
   }, [photoUris.length, deletePhotoMode] );
 
-  const renderSkeleton = ( ) => savingPhoto ? (
+  const renderSkeleton = ( ) => ( savingPhoto ? (
     <View className={`${imageClass} bg-midGray mt-12`}>
       <ActivityIndicator />
     </View>
-  ) : null;
+  ) : null );
 
   const renderPhotoOrEvidenceButton = ( { item, index } ) => {
     if ( index === photoUris.length ) {
