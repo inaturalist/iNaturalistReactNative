@@ -2,10 +2,9 @@
 
 import classnames from "classnames";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useContext, useEffect, useState
+  useEffect, useState
 } from "react";
 import {
   ActivityIndicator,
@@ -28,8 +27,7 @@ type Props = {
   handleAddEvidence?: Function,
   showAddButton?: boolean,
   deviceOrientation?: string,
-  canDeletePhotos?: boolean,
-  setPhotoUris?: Function
+  deletePhoto?: Function
 }
 
 const PhotoCarousel = ( {
@@ -42,18 +40,12 @@ const PhotoCarousel = ( {
   handleAddEvidence,
   showAddButton = false,
   deviceOrientation,
-  setPhotoUris,
-  canDeletePhotos = false
+  deletePhoto
 }: Props ): Node => {
   const theme = useTheme( );
-  const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
   const isTablet = DeviceInfo.isTablet();
-
-  const deletePhoto = photoUri => {
-    deletePhotoFromObservation( photoUri, photoUris, setPhotoUris );
-  };
 
   useEffect( () => {
     if ( photoUris.length === 0 && deletePhotoMode ) {
@@ -61,16 +53,11 @@ const PhotoCarousel = ( {
     }
   }, [photoUris.length, deletePhotoMode] );
 
-  const renderSkeleton = ( ) => {
-    if ( savingPhoto ) {
-      return (
-        <View className={`${imageClass} bg-midGray mt-12`}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-    return null;
-  };
+  const renderSkeleton = ( ) => savingPhoto ? (
+    <View className={`${imageClass} bg-midGray mt-12`}>
+      <ActivityIndicator />
+    </View>
+  ) : null;
 
   const renderPhotoOrEvidenceButton = ( { item, index } ) => {
     if ( index === photoUris.length ) {
@@ -88,12 +75,12 @@ const PhotoCarousel = ( {
       <>
         <Pressable
           onLongPress={( ) => {
-            if ( canDeletePhotos ) {
+            if ( deletePhoto ) {
               setDeletePhotoMode( mode => !mode );
             }
           }}
           onPress={( ) => {
-            if ( deletePhotoMode && canDeletePhotos ) {
+            if ( deletePhotoMode && deletePhoto ) {
               deletePhoto( item );
             } else if ( setSelectedPhotoIndex ) {
               setSelectedPhotoIndex( index );

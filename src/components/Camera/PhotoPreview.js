@@ -1,11 +1,11 @@
 // @flow
-
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 type Props = {
   photoUris: Array<string>,
@@ -20,6 +20,7 @@ const PhotoPreview = ( {
   savingPhoto,
   deviceOrientation
 }: Props ): Node => {
+  const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
@@ -29,6 +30,10 @@ const PhotoPreview = ( {
   const handleSelection = photoUri => {
     setInitialPhotoSelected( photoUri );
     showModal( );
+  };
+
+  const deletePhoto = photoUri => {
+    deletePhotoFromObservation( photoUri, photoUris, setPhotoUris );
   };
 
   const emptyDescription = ( ) => (
@@ -48,13 +53,12 @@ const PhotoPreview = ( {
       />
       <View className="bg-black h-32">
         <PhotoCarousel
-          canDeletePhotos
+          deletePhoto={deletePhoto}
           photoUris={photoUris}
           emptyComponent={emptyDescription}
           containerStyle="camera"
           setSelectedPhotoIndex={handleSelection}
           savingPhoto={savingPhoto}
-          setPhotoUris={setPhotoUris}
           deviceOrientation={deviceOrientation}
         />
       </View>
