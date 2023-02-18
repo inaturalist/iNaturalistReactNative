@@ -41,7 +41,8 @@ const ObsGridItem = ( {
         source={imageSource}
         height="h-[172px]"
         width="w-full"
-        observation={observation}
+        obsPhotosCount={observation?.observationPhotos?.length ?? 0}
+        hasSound={!!observation?.observationSounds?.length}
         isMultiplePhotosTop
       >
         <View className="absolute bottom-0 flex p-2 w-full">

@@ -14,37 +14,45 @@ type SOURCE = {
 
 type Props = {
   source: SOURCE,
-  observation?: Object,
+  children?: Node,
+  obsPhotosCount?: number,
+  selectable?: boolean,
+  selected?: boolean,
+  hasSound?: boolean,
   opaque?: boolean,
   width?: string,
   height?: string,
   isMultiplePhotosTop?: boolean,
-  children?: Node,
   disableGradient?: boolean,
+  hasSmallBorderRadius?: boolean
 };
 
 const ObsPreviewImage = ( {
   source,
-  observation,
+  children,
+  hasSound = false,
+  obsPhotosCount = 0,
+  selectable = false,
+  selected = false,
   height = "h-[62px]",
   width = "w-[62px]",
   opaque = false,
   isMultiplePhotosTop = false,
-  children,
-  disableGradient = false
+  disableGradient = false,
+  hasSmallBorderRadius = false
 }: Props ): Node => {
   const theme = useTheme( );
-  const obsPhotosCount = observation?.observationPhotos?.length ?? 0;
   const hasMultiplePhotos = obsPhotosCount > 1;
-  const hasSound = !!observation?.observationSounds?.length;
   const filterIconName = obsPhotosCount > 9 ? "filter-9-plus" : `filter-${obsPhotosCount || 2}`;
+  const borderRadius = hasSmallBorderRadius ? "rounded-[8px]" : "rounded-[15px]";
 
   return (
     <View
       className={classNames(
-        "relative rounded-lg mr-[10px] overflow-hidden",
+        "relative overflow-hidden",
         height,
-        width
+        width,
+        borderRadius
       )}
     >
       <Background
@@ -52,6 +60,29 @@ const ObsPreviewImage = ( {
         opaque={opaque}
         disableGradient={disableGradient}
       />
+      {selectable && (
+        <View
+          className={
+            classNames(
+              "flex items-center justify-center",
+              "border-4 border-white rounded-full",
+              "absolute m-1 right-0",
+              "w-[28px] h-[28px]"
+            )
+          }
+        >
+          {selected && (
+            <View className="w-[25px] h-[25px]">
+              <IconMaterial
+                // $FlowIgnore
+                name="check-circle"
+                color={theme.colors.onPrimary}
+                size={25}
+              />
+            </View>
+          )}
+        </View>
+      )}
       {hasMultiplePhotos && (
         <View
           className={classNames( "absolute right-0", {
