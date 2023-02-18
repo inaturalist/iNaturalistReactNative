@@ -80,7 +80,7 @@ const ObsPreviewImage = ( {
           <INatIcon
             name="checkmark"
             color={theme.colors.primary}
-            size={20}
+            size={15}
           />
 
           )}
