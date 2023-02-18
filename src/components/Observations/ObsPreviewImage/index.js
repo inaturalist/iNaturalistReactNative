@@ -1,11 +1,11 @@
 // @flow
 import classNames from "classnames";
+import INatIcon from "components/INatIcon";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import INatIcon from "components/INatIcon"
 
 import Background from "./Background";
 
@@ -77,11 +77,11 @@ const ObsPreviewImage = ( {
         >
           {selected && (
 
-              <INatIcon
-                name="checkmark"
-                color={theme.colors.primary}
-                size={20}
-              />
+          <INatIcon
+            name="checkmark"
+            color={theme.colors.primary}
+            size={20}
+          />
 
           )}
         </View>
