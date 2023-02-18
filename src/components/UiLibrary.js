@@ -1,4 +1,5 @@
 import INatIcon, { glyphMap } from "components/INatIcon";
+import ObsPreviewImage from "components/Observations/ObsPreviewImage";
 import ObsStatus from "components/Observations/ObsStatus";
 import {
   ActivityCount,
@@ -362,6 +363,23 @@ const UiLibrary = () => {
             identifications: [1, 2, 3, 4, 5, 6]
           }}
         />
+        <Heading2 className="my-2">GroupPhotosObservation</Heading2>
+        <View className="flex flex-row">
+          <ObsPreviewImage
+            source={{ uri: "https://static.inaturalist.org/photos/251062236/square.jpg" }}
+            height="h-[172px]"
+            width="w-[180px]"
+            selectable
+          />
+          <ObsPreviewImage
+            source={{ uri: "https://static.inaturalist.org/photos/251062236/square.jpg" }}
+            height="h-[172px]"
+            width="w-[180px]"
+            obsPhotosCount={3}
+            selectable
+            selected
+          />
+        </View>
 
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
