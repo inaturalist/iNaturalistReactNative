@@ -5,6 +5,7 @@ import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import INatIcon from "components/INatIcon"
 
 import Background from "./Background";
 
@@ -67,19 +68,21 @@ const ObsPreviewImage = ( {
               "flex items-center justify-center",
               "border-4 border-white rounded-full",
               "absolute m-1 right-0",
-              "w-[28px] h-[28px]"
+              "w-[28px] h-[28px]",
+              {
+                "bg-white": selected
+              }
             )
           }
         >
           {selected && (
-            <View className="w-[25px] h-[25px]">
-              <IconMaterial
-                // $FlowIgnore
-                name="check-circle"
-                color={theme.colors.onPrimary}
-                size={25}
+
+              <INatIcon
+                name="checkmark"
+                color={theme.colors.primary}
+                size={20}
               />
-            </View>
+
           )}
         </View>
       )}
