@@ -43,7 +43,7 @@ const UiLibrary = () => {
   const currentUser = useCurrentUser();
   const [loading, setLoading] = useState( false );
   const userText = `
-    User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalistorg).
+    User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalist.org).
   `.trim();
   return (
     <ViewWithFooter>
@@ -353,7 +353,6 @@ const UiLibrary = () => {
         <ObsStatus
           layout="horizontal"
           observation={{ comments: [1, 2, 3, 4], identifications: [1, 2, 3] }}
-          color={theme.colors.primary}
         />
 
         <ObsStatus
@@ -362,7 +361,6 @@ const UiLibrary = () => {
             comments: [1, 2, 3],
             identifications: [1, 2, 3, 4, 5, 6]
           }}
-          color={theme.colors.primary}
         />
 
         <Heading2 className="my-2">More Stuff!</Heading2>

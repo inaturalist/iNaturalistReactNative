@@ -1,6 +1,6 @@
 // @flow
 
-import classnames from "classnames";
+import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
   ActivityCount,
@@ -16,21 +16,27 @@ import Observation from "realmModels/Observation";
 type Props = {
   observation: typeof Observation,
   layout?: "horizontal" | "vertical",
-  color?: "string"
+  white?: boolean,
+  classNameMargin?: string
 };
 /* eslint-disable react-native/no-inline-styles */
-const ObsStatus = ( { observation, color, layout = "vertical" }: Props ): Node => {
+const ObsStatus = ( {
+  observation,
+  white,
+  layout = "vertical",
+  classNameMargin
+}: Props ): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
   const margin = layout === "vertical" ? "mb-1" : "mr-1";
   const flexDirection = layout === "vertical" ? "flex-column" : "flex-row";
-  const iconColor = color || theme.colors.primary;
+  const iconColor = white ? theme.colors.onPrimary : theme.colors.primary;
   const numIdents = observation.identifications?.length || 0;
   const numComments = observation.comments?.length || 0;
 
   return (
-    <View className={classnames( "flex", flexDirection )}>
+    <View className={classNames( "flex", flexDirection, classNameMargin )}>
       <ActivityCount
         margin={margin}
         count={numIdents}
