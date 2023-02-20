@@ -136,9 +136,9 @@ We manage our custom font with Fontastic, so these steps can probably only be do
 1. Add new icon to the iNaturalist icon set in Fontastic. Select all iNaturalist icons and download the zip of icons.
 1. Create a glyph file from the CSS file you just downloaded, using the following command (be sure to replace /path/to/styles with your path):
     ```
-    npx generate-icon /path/to/styles.css --componentName=INatIcon --fontFamily=inaturalisticons > src/components/INatIcon.js
+    npx generate-icon /path/to/styles.css --componentName=INatIcon --fontFamily=inaturalisticons > src/components/SharedComponents/INatIcon/INatIcon.js
     ```
-1. When adding new icons, go to `src/components/INatIcon.js` and make two manual changes. First, edit the line `const iconSet = createIconSet( glyphMap, "inaturalisticons", "INatIcon.ttf" );` to `inaturalisticons.ttf` to match the name of the `.ttf` file you downloaded. There's a discrepency here because the `generate-icon` script makes an assumption that the name of the .ttf file is the same as the name of the component. Components need to start with a capital letter, and `inaturalisticons.tff` is likely not a name we want to change, since we're using it on the web too. We'll probably want to write our own `generate-icon` script to do this automatically. Second, add the following to your exports to make sure a user can see all custom iNat icons in the UI library:
+1. When adding new icons, go to `src/components/SharedComponents/INatIcon/INatIcon.js` and make two manual changes. First, edit the line `const iconSet = createIconSet( glyphMap, "inaturalisticons", "INatIcon.ttf" );` to `inaturalisticons.ttf` to match the name of the `.ttf` file you downloaded. There's a discrepency here because the `generate-icon` script makes an assumption that the name of the .ttf file is the same as the name of the component. Components need to start with a capital letter, and `inaturalisticons.tff` is likely not a name we want to change, since we're using it on the web too. We'll probably want to write our own `generate-icon` script to do this automatically. Second, add the following to your exports to make sure a user can see all custom iNat icons in the UI library:
     ```
     export {
       glyphMap
