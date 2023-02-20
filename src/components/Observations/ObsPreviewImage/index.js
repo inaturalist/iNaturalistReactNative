@@ -45,7 +45,7 @@ const ObsPreviewImage = ( {
   const theme = useTheme( );
   const hasMultiplePhotos = obsPhotosCount > 1;
   const filterIconName = obsPhotosCount > 9 ? "filter-9-plus" : `filter-${obsPhotosCount || 2}`;
-  const borderRadius = hasSmallBorderRadius ? "rounded-[8px]" : "rounded-[15px]";
+  const borderRadius = hasSmallBorderRadius ? "rounded-lg" : "rounded-2xl";
 
   return (
     <View
