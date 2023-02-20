@@ -76,13 +76,11 @@ const ObsPreviewImage = ( {
           }
         >
           {selected && (
-
-          <INatIcon
-            name="checkmark"
-            color={theme.colors.primary}
-            size={15}
-          />
-
+            <INatIcon
+              name="checkmark"
+              color={theme.colors.primary}
+              size={15}
+            />
           )}
         </View>
       )}
