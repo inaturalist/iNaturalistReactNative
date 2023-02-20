@@ -37,20 +37,20 @@ const FloatingActionBar = ( {
 }: Props ): React.Node => {
   const theme = useTheme( );
   const [keyboardHeight, setKeyboardHeight] = useState( 0 );
-  const [keyboardOpen, setKeyboardOpen] = useState( Keyboard.isVisible( ) );
+  const [keyboardOpen, setKeyboardOpen] = useState( false );
 
-  useEffect( () => {
+  useEffect( ( ) => {
     const showSubscription = Keyboard.addListener( "keyboardDidShow", event => {
       setKeyboardHeight( event.endCoordinates.height );
       setKeyboardOpen( true );
     } );
-    const hideSubscription = Keyboard.addListener( "keyboardDidHide", () => {
+    const hideSubscription = Keyboard.addListener( "keyboardDidHide", ( ) => {
       setKeyboardOpen( false );
     } );
 
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
+    return ( ) => {
+      showSubscription.remove( );
+      hideSubscription.remove( );
     };
   }, [] );
 
