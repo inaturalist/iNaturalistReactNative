@@ -5,6 +5,7 @@ export { default as EvidenceButton } from "./Buttons/EvidenceButton";
 export { default as DateDisplay } from "./DateDisplay";
 export { default as Divider } from "./Divider/Divider";
 export { default as INatIcon } from "./INatIcon";
+export { default as FloatingActionBar } from "./FloatingActionBar";
 export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as ObservationLocation } from "./ObservationLocation";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";

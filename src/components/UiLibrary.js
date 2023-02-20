@@ -10,6 +10,7 @@ import {
   DateDisplay,
   Divider,
   EvidenceButton,
+  FloatingActionBar,
   Heading1,
   Heading2,
   Heading3,
@@ -48,6 +49,22 @@ const UiLibrary = () => {
   `.trim();
   return (
     <ViewWithFooter>
+      <FloatingActionBar position="bottomStart" marginX="mx-4" marginY="my-11">
+        <View className="m-1 flex flex-row">
+          <IconButton
+            icon="pencil"
+            mode="contained"
+          />
+          <IconButton
+            icon="plus-sign"
+            mode="contained"
+          />
+          <IconButton
+            icon="icon-fave"
+            mode="contained"
+          />
+        </View>
+      </FloatingActionBar>
       <ScrollView className="px-5">
         {/* TODO replace these text components with our typography header components */}
         <Body1>
