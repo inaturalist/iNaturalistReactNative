@@ -1,5 +1,6 @@
 // @flow
 import classNames from "classnames";
+import INatIcon from "components/INatIcon";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -14,37 +15,45 @@ type SOURCE = {
 
 type Props = {
   source: SOURCE,
-  observation?: Object,
+  children?: Node,
+  obsPhotosCount?: number,
+  selectable?: boolean,
+  selected?: boolean,
+  hasSound?: boolean,
   opaque?: boolean,
   width?: string,
   height?: string,
   isMultiplePhotosTop?: boolean,
-  children?: Node,
   disableGradient?: boolean,
+  hasSmallBorderRadius?: boolean
 };
 
 const ObsPreviewImage = ( {
   source,
-  observation,
+  children,
+  hasSound = false,
+  obsPhotosCount = 0,
+  selectable = false,
+  selected = false,
   height = "h-[62px]",
   width = "w-[62px]",
   opaque = false,
   isMultiplePhotosTop = false,
-  children,
-  disableGradient = false
+  disableGradient = false,
+  hasSmallBorderRadius = false
 }: Props ): Node => {
   const theme = useTheme( );
-  const obsPhotosCount = observation?.observationPhotos?.length ?? 0;
   const hasMultiplePhotos = obsPhotosCount > 1;
-  const hasSound = !!observation?.observationSounds?.length;
   const filterIconName = obsPhotosCount > 9 ? "filter-9-plus" : `filter-${obsPhotosCount || 2}`;
+  const borderRadius = hasSmallBorderRadius ? "rounded-lg" : "rounded-2xl";
 
   return (
     <View
       className={classNames(
-        "relative rounded-lg mr-[10px] overflow-hidden",
+        "relative overflow-hidden",
         height,
-        width
+        width,
+        borderRadius
       )}
     >
       <Background
@@ -52,6 +61,29 @@ const ObsPreviewImage = ( {
         opaque={opaque}
         disableGradient={disableGradient}
       />
+      {selectable && (
+        <View
+          className={
+            classNames(
+              "flex items-center justify-center",
+              "border-2 border-white rounded-full",
+              "absolute m-2.5 right-0",
+              "w-[24px] h-[24px]",
+              {
+                "bg-white": selected
+              }
+            )
+          }
+        >
+          {selected && (
+            <INatIcon
+              name="checkmark"
+              color={theme.colors.primary}
+              size={12}
+            />
+          )}
+        </View>
+      )}
       {hasMultiplePhotos && (
         <View
           className={classNames( "absolute right-0", {

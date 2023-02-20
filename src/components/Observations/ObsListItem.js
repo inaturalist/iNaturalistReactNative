@@ -25,11 +25,13 @@ const ObsListItem = ( { observation }: Props ): Node => {
     >
       <ObsPreviewImage
         source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
-        observation={observation}
+        obsPhotosCount={observation?.observationPhotos?.length ?? 0}
+        hasSound={!!observation?.observationSounds?.length}
         opaque={needsSync}
         disableGradient
+        hasSmallBorderRadius
       />
-      <View className="pr-[25px] flex-1">
+      <View className="pr-[25px] flex-1 ml-[10px]">
         <DisplayTaxonName
           taxon={observation?.taxon}
           scientificNameFirst={observation?.user?.prefers_scientific_name_first}
