@@ -66,9 +66,9 @@ const ObsPreviewImage = ( {
           className={
             classNames(
               "flex items-center justify-center",
-              "border-4 border-white rounded-full",
-              "absolute m-1 right-0",
-              "w-[28px] h-[28px]",
+              "border-2 border-white rounded-full",
+              "absolute m-2.5 right-0",
+              "w-[24px] h-[24px]",
               {
                 "bg-white": selected
               }
@@ -76,13 +76,11 @@ const ObsPreviewImage = ( {
           }
         >
           {selected && (
-
-          <INatIcon
-            name="checkmark"
-            color={theme.colors.primary}
-            size={15}
-          />
-
+            <INatIcon
+              name="checkmark"
+              color={theme.colors.primary}
+              size={12}
+            />
           )}
         </View>
       )}
