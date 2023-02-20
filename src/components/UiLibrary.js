@@ -1,4 +1,3 @@
-import INatIcon, { glyphMap } from "components/INatIcon";
 import ObsStatus from "components/Observations/ObsStatus";
 import {
   ActivityCount,
@@ -16,6 +15,7 @@ import {
   Heading3,
   Heading4,
   Heading5,
+  INatIcon,
   InlineUser,
   List1,
   List2,
@@ -26,6 +26,7 @@ import {
   UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
+import { glyphMap } from "components/SharedComponents/INatIcon/INatIcon";
 import UserText from "components/SharedComponents/UserText";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
