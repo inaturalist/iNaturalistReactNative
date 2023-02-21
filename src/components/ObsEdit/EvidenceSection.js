@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import { IconButton } from "react-native-paper";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+import { writeExifToFile } from "sharedHelpers/parseExif";
 
 import DatePicker from "./DatePicker";
 
@@ -30,8 +31,11 @@ const EvidenceSection = ( {
 }: Props ): Node => {
   const {
     currentObservation,
-    updateObservationKeys
+    updateObservationKeys,
+    cameraRollUris
   } = useContext( ObsEditContext );
+  const cameraRollUrisRef = useRef( cameraRollUris );
+  cameraRollUrisRef.current = cameraRollUris;
   const mountedRef = useRef( true );
 
   const latitude = currentObservation?.latitude;
@@ -90,6 +94,19 @@ const EvidenceSection = ( {
         longitude: location?.longitude,
         positional_accuracy: location?.positional_accuracy
       } );
+
+      // Update all photos taken via the app with the new fetched location.
+      // We wrap this in a setTimeout since sometimes the location gets returned quickly, before
+      // the background code in ObsEditProvider finished writing the photos into the camera roll
+      // (and in this case, we don't mind updating the photos a little later, since it's all done
+      // in the background anyhow).
+      if ( location ) {
+        setTimeout( () => {
+          cameraRollUrisRef.current.forEach( uri => {
+            writeExifToFile( uri, { latitude: location.latitude, longitude: location.longitude } );
+          } );
+        }, 3000 );
+      }
 
       // The local state version of positionalAccuracy needs to be a number,
       // so don't set it to
