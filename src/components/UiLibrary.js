@@ -8,6 +8,7 @@ import {
   Body4,
   Button,
   CloseButton,
+  CommentsCount,
   DateDisplay,
   Divider,
   EvidenceButton,
@@ -350,6 +351,37 @@ const UiLibrary = () => {
               count={3}
               white
               accessibilityLabel={t( "x-comments", { count: 3 } )}
+            />
+          </View>
+        </View>
+
+        <Heading2 className="my-2">CommentsCount</Heading2>
+        <View className="flex flex-row justify-evenly">
+          <View>
+            <Body2>Basic</Body2>
+            <CommentsCount
+              count={10}
+            />
+          </View>
+          <View>
+            <Body2>Filled</Body2>
+            <CommentsCount
+              count={10}
+              filled
+            />
+          </View>
+          <View>
+            <Body2>Margin</Body2>
+            <CommentsCount
+              count={10}
+              classNameMargin="m-2"
+            />
+          </View>
+          <View className="bg-secondary">
+            <Body2 className="text-white">White</Body2>
+            <CommentsCount
+              count={10}
+              white
             />
           </View>
         </View>
