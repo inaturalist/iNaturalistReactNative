@@ -40,14 +40,14 @@ const ObsStatus = ( {
       <ActivityCount
         margin={margin}
         count={numIdents}
-        color={iconColor}
+        white={white}
         accessibilityLabel={t( "x-identifications", { count: numIdents } )}
         testID="ActivityCount.identificationCount"
       />
       <ActivityCount
         margin={margin}
         count={observation.comments?.length}
-        color={iconColor}
+        white={white}
         accessibilityLabel={t( "x-comments", { count: numComments } )}
         testID="ActivityCount.commentCount"
       />

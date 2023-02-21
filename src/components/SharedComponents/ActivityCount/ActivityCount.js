@@ -12,7 +12,7 @@ import { useTheme } from "react-native-paper";
 type Props = {
   accessibilityHint?: string,
   accessibilityLabel?: string,
-  color: string,
+  white: Boolean,
   count: number,
   icon?: string,
   testID?: string,
@@ -22,7 +22,7 @@ type Props = {
 const ActivityCount = ( {
   accessibilityHint,
   accessibilityLabel,
-  color,
+  white,
   count,
   icon,
   testID,
@@ -30,23 +30,24 @@ const ActivityCount = ( {
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
-  const defaultColor = theme.colors.primary;
+
   return (
     <View
       className={classNames( "flex-row items-center", margin )}
       accessible
-      accessibilityLabel={accessibilityLabel || t( "Intl-number", { val: count || 0 } )}
+      accessibilityLabel={
+        accessibilityLabel || t( "Intl-number", { val: count || 0 } )
+      }
       accessibilityHint={accessibilityHint}
     >
       <INatIcon
         name={icon || "comments-filled-in"}
-        color={color || defaultColor}
+        color={white ? theme.colors.onPrimary : theme.colors.primary}
         size={14}
       />
       <Body3
-        className="ml-1.5"
+        className={classNames( "ml-1.5", white && "text-white" )}
         testID={testID}
-        style={{ color: color || defaultColor }}
       >
         {t( "Intl-number", { val: count || 0 } )}
       </Body3>

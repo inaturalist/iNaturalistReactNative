@@ -334,7 +334,6 @@ const UiLibrary = () => {
             <Body2>Small Number</Body2>
             <ActivityCount
               count={10}
-              color={theme.colors.primary}
               accessibilityLabel={t( "x-comments", { count: 10 } )}
             />
           </View>
@@ -342,8 +341,15 @@ const UiLibrary = () => {
             <Body2>Large Number</Body2>
             <ActivityCount
               count={20000}
-              color={theme.colors.error}
               accessibilityLabel={t( "x-comments", { count: 10 } )}
+            />
+          </View>
+          <View className="bg-darkGray">
+            <Body2 className="text-white">White</Body2>
+            <ActivityCount
+              count={3}
+              white
+              accessibilityLabel={t( "x-comments", { count: 3 } )}
             />
           </View>
         </View>
