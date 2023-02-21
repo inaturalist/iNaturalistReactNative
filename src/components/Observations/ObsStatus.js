@@ -38,15 +38,15 @@ const ObsStatus = ( {
   return (
     <View className={classNames( "flex", flexDirection, classNameMargin )}>
       <ActivityCount
-        margin={margin}
+        classNameMargin={margin}
         count={numIdents}
         white={white}
         accessibilityLabel={t( "x-identifications", { count: numIdents } )}
         testID="ActivityCount.identificationCount"
       />
       <ActivityCount
-        margin={margin}
         count={observation.comments?.length}
+        classNameMargin={margin}
         white={white}
         accessibilityLabel={t( "x-comments", { count: numComments } )}
         testID="ActivityCount.commentCount"

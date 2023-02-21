@@ -523,6 +523,7 @@
   "Open-drawer": "Open drawer",
   "Sound-recorder": "Sound recorder",
   "Observation-Name": "Observation { $scientificName }",
+  "x-comments": "{ $count ->\n  [one] { $count } comment\n *[other] { $count } comments\n}",
   "Agrees-with-identification": "Agrees with this identification.",
   "Navigates-to-bulk-importer": "Navigates to bulk importer.",
   "Navigates-to-camera": "Navigate to camera.",
@@ -572,7 +573,6 @@
   "Navigate-to-observation-details": "Navigates to observation details screen.",
   "Navigate-to-project-details": "Navigate to project details",
   "Navigate-to-taxon-details": "Navigate to taxon details",
-  "Number-of-comments": "Number of comments",
   "Number-of-identifications": "Number of identifications",
   "Observation-has-no-photos-and-no-sounds": "This observation has no photos and no sounds.",
   "Photo-taken-at": "Photo taken at { $date }",
@@ -595,7 +595,6 @@
   "Navigate-to-photo-importer": "Navigate to photo importer",
   "Open-side-menu": "Open side menu",
   "Intl-number": "{ $val }",
-  "x-comments": "{ $count ->\n  [one] { $count } comment\n *[other] { $count } comments\n}",
   "x-identifications": "{ $count ->\n  [one] { $count } identification\n *[other] { $count } identifications\n}",
   "date-format-short": {
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",

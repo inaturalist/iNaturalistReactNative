@@ -10,35 +10,32 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
 
 type Props = {
-  accessibilityHint?: string,
   accessibilityLabel?: string,
-  white: Boolean,
+  white?: boolean,
   count: number,
   icon?: string,
   testID?: string,
-  margin?: string
+  classNameMargin?: string
 }
 
 const ActivityCount = ( {
-  accessibilityHint,
   accessibilityLabel,
   white,
   count,
   icon,
   testID,
-  margin
+  classNameMargin
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
 
   return (
     <View
-      className={classNames( "flex-row items-center", margin )}
+      className={classNames( "flex-row items-center", classNameMargin )}
       accessible
       accessibilityLabel={
         accessibilityLabel || t( "Intl-number", { val: count || 0 } )
       }
-      accessibilityHint={accessibilityHint}
     >
       <INatIcon
         name={icon || "comments-filled-in"}
