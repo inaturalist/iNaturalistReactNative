@@ -4,6 +4,7 @@ import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
   ActivityCount,
+  CommentsCount,
   QualityGradeStatus
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -44,11 +45,10 @@ const ObsStatus = ( {
         accessibilityLabel={t( "x-identifications", { count: numIdents } )}
         testID="ActivityCount.identificationCount"
       />
-      <ActivityCount
-        count={observation.comments?.length}
+      <CommentsCount
         classNameMargin={margin}
+        count={numComments}
         white={white}
-        accessibilityLabel={t( "x-comments", { count: numComments } )}
         testID="ActivityCount.commentCount"
       />
       <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />
