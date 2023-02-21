@@ -734,6 +734,7 @@ Camera = Camera
 Close = Close
 Explore = Explore
 Flag-Item-Other = Flagged as Other Description Box
+Intl-number = { $val }
 Messages = Messages
 Observations = Observations
 Observe = Observe
@@ -744,6 +745,10 @@ Observation-Name = Observation { $scientificName }
 x-comments = {$count ->
     [one] {$count} comment
     *[other] {$count} comments
+}
+x-identifications = {$count ->
+    [one] {$count} identification
+   *[other] {$count} identifications
 }
 
 ## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
@@ -789,7 +794,6 @@ Navigate-to-login-screen = Navigate to login screen
 Navigate-to-observation-details = Navigates to observation details screen.
 Navigate-to-project-details = Navigate to project details
 Navigate-to-taxon-details = Navigate to taxon details
-Number-of-identifications = Number of identifications
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Photo-taken-at = Photo taken at { $date }
 Take-photo = Take photo
@@ -809,13 +813,6 @@ Navigate-to-photo-importer = Navigate to photo importer
 Open-side-menu = Open side menu
 Take-photo = Take photo
 
-
-Intl-number = { $val }
-
-x-identifications = {$count ->
-    [one] {$count} identification
-   *[other] {$count} identifications
-}
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format

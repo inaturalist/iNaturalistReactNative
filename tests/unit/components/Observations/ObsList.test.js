@@ -70,7 +70,7 @@ describe( "ObsList", () => {
     const card = await screen.findByTestId( `ObsList.obsListItem.${obs.uuid}` );
     expect( card ).toBeTruthy();
     // Test that the card has the correct comment count
-    const commentCount = within( card ).getByTestId( "ActivityCount.commentCount" );
+    const commentCount = within( card ).getByTestId( "ObsStatus.commentsCount" );
     // TODO: I disabled node eslint rule here because we will soon have to refactor this
     // test into it's own unit test, because the comment count will be a component
     // after the refactor we should change this line to be in compliance with the eslint rule

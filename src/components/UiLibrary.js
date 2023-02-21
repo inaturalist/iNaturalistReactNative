@@ -17,6 +17,7 @@ import {
   Heading3,
   Heading4,
   Heading5,
+  IdentificationsCount,
   InlineUser,
   List1,
   List2,
@@ -359,30 +360,39 @@ const UiLibrary = () => {
         <View className="flex flex-row justify-evenly">
           <View>
             <Body2>Basic</Body2>
-            <CommentsCount
-              count={10}
-            />
+            <CommentsCount count={10} />
           </View>
           <View>
             <Body2>Filled</Body2>
-            <CommentsCount
-              count={10}
-              filled
-            />
+            <CommentsCount count={10} filled />
           </View>
           <View>
             <Body2>Margin</Body2>
-            <CommentsCount
-              count={10}
-              classNameMargin="m-2"
-            />
+            <CommentsCount count={10} classNameMargin="m-2" />
           </View>
           <View className="bg-secondary">
             <Body2 className="text-white">White</Body2>
-            <CommentsCount
-              count={10}
-              white
-            />
+            <CommentsCount count={10} white />
+          </View>
+        </View>
+
+        <Heading2 className="my-2">IdentificationsCount</Heading2>
+        <View className="flex flex-row justify-evenly">
+          <View>
+            <Body2>Basic</Body2>
+            <IdentificationsCount count={10} />
+          </View>
+          <View>
+            <Body2>Filled</Body2>
+            <IdentificationsCount count={10} filled />
+          </View>
+          <View>
+            <Body2>Margin</Body2>
+            <IdentificationsCount count={10} classNameMargin="m-2" />
+          </View>
+          <View className="bg-secondary">
+            <Body2 className="text-white">White</Body2>
+            <IdentificationsCount count={10} white />
           </View>
         </View>
 

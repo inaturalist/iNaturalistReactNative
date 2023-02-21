@@ -3,14 +3,13 @@
 import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
-  ActivityCount,
   CommentsCount,
+  IdentificationsCount,
   QualityGradeStatus
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
 
@@ -27,7 +26,6 @@ const ObsStatus = ( {
   layout = "vertical",
   classNameMargin
 }: Props ): Node => {
-  const { t } = useTranslation();
   const theme = useTheme();
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
   const margin = layout === "vertical" ? "mb-1" : "mr-1";
@@ -38,18 +36,17 @@ const ObsStatus = ( {
 
   return (
     <View className={classNames( "flex", flexDirection, classNameMargin )}>
-      <ActivityCount
+      <IdentificationsCount
         classNameMargin={margin}
         count={numIdents}
         white={white}
-        accessibilityLabel={t( "x-identifications", { count: numIdents } )}
-        testID="ActivityCount.identificationCount"
+        testID="ObsStatus.identificationsCount"
       />
       <CommentsCount
         classNameMargin={margin}
         count={numComments}
         white={white}
-        testID="ActivityCount.commentCount"
+        testID="ObsStatus.commentsCount"
       />
       <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />
     </View>
