@@ -72,7 +72,7 @@ describe( "MyObservations", ( ) => {
       await waitFor( ( ) => {
         expect( screen.getByText( /Welcome back/ ) ).toBeTruthy( );
       } );
-      expect( screen.queryByText( /Welcome-back/ ) ).toBeFalsy( );
+      expect( screen.queryByText( /Welcome-user/ ) ).toBeFalsy( );
     } );
 
     it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {

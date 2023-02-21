@@ -15,6 +15,7 @@ import Fluent from "i18next-fluent";
 import resourcesToBackend from "i18next-resources-to-backend";
 // React tooling for i18next
 import { initReactI18next } from "react-i18next";
+import { Text } from "react-native";
 
 // Function to load translations given a locale code. Given that we cannot
 // dynamically import/require files in a React Native JS environment
@@ -31,7 +32,8 @@ export const I18NEXT_CONFIG = {
   },
   react: {
     // Added since otherwise Android would crash - see here: https://stackoverflow.com/a/70521614 and https://www.i18next.com/misc/migration-guide
-    useSuspense: false
+    useSuspense: false,
+    defaultTransParent: Text
   }
 };
 
