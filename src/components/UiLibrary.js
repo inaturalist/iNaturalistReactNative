@@ -20,6 +20,7 @@ import {
   List1,
   List2,
   ObservationLocation,
+  PhotoCount,
   QualityGradeStatus,
   Subheading1,
   Tabs,
@@ -219,7 +220,6 @@ const UiLibrary = () => {
                 onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
                 size={20}
               />
-              {" "}
               {iconName}
             </Body1>
           ) )}
@@ -362,7 +362,18 @@ const UiLibrary = () => {
             identifications: [1, 2, 3, 4, 5, 6]
           }}
         />
-
+        <View className="my-2 bg-lightGray p-2 rounded-lg flex-row justify-evenly">
+          <PhotoCount
+            count={9}
+            size={50}
+            shadow
+          />
+          <PhotoCount
+            count={10}
+            size={50}
+            shadow={false}
+          />
+        </View>
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
           Useless spacer at the end because height in NativeWind is confusing.

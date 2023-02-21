@@ -6,6 +6,7 @@ export { default as DateDisplay } from "./DateDisplay";
 export { default as Divider } from "./Divider/Divider";
 export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as ObservationLocation } from "./ObservationLocation";
+export { default as PhotoCount } from "./PhotoCount";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
 export { default as Tabs } from "./Tabs/Tabs";
 export { default as Body1 } from "./Typography/Body1";
