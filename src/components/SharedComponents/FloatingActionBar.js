@@ -31,7 +31,7 @@ const getShadow = shadowColor => StyleSheet.create( {
 const FloatingActionBar = ( {
   position = "bottomEnd",
   containerClass,
-  children,
+  children
 }: Props ): React.Node => {
   const theme = useTheme( );
   const [keyboardHeight, setKeyboardHeight] = useState( 0 );
