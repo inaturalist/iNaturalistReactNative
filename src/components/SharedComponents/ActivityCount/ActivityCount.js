@@ -1,7 +1,7 @@
 // @flow
 
 import classNames from "classnames";
-import INatIcon from "components/INatIcon";
+import INatIcon from "components/SharedComponents/INatIcon";
 import Body3 from "components/SharedComponents/Typography/Body3";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
