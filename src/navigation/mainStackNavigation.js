@@ -4,10 +4,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
 import Messages from "components/Messages/Messages";
+import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import ObsList from "components/Observations/ObsList";
+// import ObsList from "components/Observations/ObsList";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import Mortal from "components/SharedComponents/Mortal";
@@ -75,8 +76,8 @@ const MainStackNavigation = ( ): React.Node => (
   <Mortal>
     <Stack.Navigator screenOptions={showHeader}>
       <Stack.Screen
-        name="ObsList"
-        component={ObsList}
+        name="MyObservations"
+        component={MyObservationsContainer}
         options={{
           ...hideScreenTransitionAnimation,
           ...hideHeader
