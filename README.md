@@ -3,12 +3,7 @@
 This is an official iNaturalist client written in React Native that will eventually replace our existing iOS and Android apps. Achieving parity with those established apps is taking some time, but we're getting there!
 
 ## Contributing
-
-We welcome volunteer contributions! This app is still early in its development and a lot of things are in flux, but there's usually something to work on. Please keep the following in mind:
-
-1. Work on [existing issues](https://github.com/inaturalist/iNaturalistReactNative/issues) (though if you have ideas for improvement that aren't directly related to features, let us know). If you'd like to work on something, please leave a comment on that issue and we'll try and assign you.
-1. Name your branch starting with the issue number and then something descriptive, e.g. `123-login-with-locale-crash`
-1. We try to review pull requests as soon as we can, but that might be up to a week or two
+See CONTRIBUTION.md for guidelines on contributing to this project.
 
 ## Setup
 
