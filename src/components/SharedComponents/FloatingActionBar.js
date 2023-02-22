@@ -5,16 +5,15 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Keyboard } from "react-native";
 import { useTheme } from "react-native-paper";
-
 import getShadowStyle from "sharedHelpers/getShadowStyle";
 
-const getShadow = (shadowColor) => getShadowStyle({
+const getShadow = shadowColor => getShadowStyle( {
   shadowColor,
   offsetWidth: 0,
   offsetHeight: 4,
   opacity: 0.4,
   radius: 4
-});
+} );
 
 type Props = {
   position: "topStart" | "topEnd" | "bottomStart" | "bottomEnd",

@@ -1,13 +1,13 @@
 import { StyleSheet } from "react-native";
 
-const getShadowStyle = ({
+const getShadowStyle = ( {
   shadowColor,
   offsetWidth,
   offsetHeight,
   opacity,
   radius,
   elevation = 5
-}) => StyleSheet.create( {
+} ) => StyleSheet.create( {
   shadowColor,
   shadowOffset: {
     width: offsetWidth,
@@ -21,4 +21,4 @@ const getShadowStyle = ({
   elevation
 } );
 
-export default getShadowStyle
+export default getShadowStyle;
