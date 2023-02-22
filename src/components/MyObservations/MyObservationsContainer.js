@@ -3,13 +3,11 @@
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useState } from "react";
-import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
 
 import MyObservations from "./MyObservations";
 
 const MyObservationsContainer = ( ): Node => {
-  const currentUser = useCurrentUser( );
   const { observationList: observations } = useLocalObservations( );
   const [layout, setLayout] = useState( "list" );
   const navigation = useNavigation( );
@@ -25,7 +23,6 @@ const MyObservationsContainer = ( ): Node => {
 
   return (
     <MyObservations
-      currentUser={currentUser}
       observations={observations}
       layout={layout}
       setLayout={setLayout}

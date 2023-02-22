@@ -213,7 +213,7 @@ iNaturalist-Applications = iNaturalist Applications
 
 iNaturalist-Network-Affiliation = iNaturalist Network Affiliation
 
-iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists.
+iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
 
 Insects = Insects
 
@@ -243,7 +243,7 @@ Log-in = Log in
 
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 
-Log-in-to-iNaturalist = Log in to iNaturalist
+Log-in-to-contribute-and-sync = Log in to contribute & sync
 
 Logged-in-as = Logged in as: { $username }
 
@@ -340,6 +340,8 @@ Observation = Observation
 Observation-Attribution = Observation © {$attribution} · {$licenseCode}
 
 Observations = Observations
+
+Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
 
 Offensive-Inappropriate = Offensive/Inappropriate
 
@@ -623,6 +625,8 @@ Username-or-Email = Username or Email
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
 
+Welcome-to-iNaturalist = Welcome to iNaturalist!
+
 Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
 Which-traditional-projects-can-add-your-observations = Which traditional projects can add your observations?
@@ -638,6 +642,11 @@ X-Observations = {$count ->
     *[other] {$count} Observations
 }
 
+X-observations = {$count ->
+    [one] 1 observation
+    *[other] {$count} observations
+}
+
 # Displays number of photos attached to an observation in the Media Viewer
 X-Photos = {$photoCount ->
     [one] 1 Photo
@@ -651,11 +660,6 @@ X-PHOTOS-X-OBSERVATIONS = {$photoCount ->
 }, {$observationCount ->
     [one] 1 OBSERVATION
     *[other] {$observationCount} OBSERVATIONS
-}
-
-X-unuploaded-observations = {$observationCount ->
-    [one] 1 unuploaded observation
-    *[other] {$observationCount} unuploaded observations
 }
 
 Yes = Yes

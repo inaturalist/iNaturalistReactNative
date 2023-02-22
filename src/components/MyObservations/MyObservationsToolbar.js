@@ -1,7 +1,8 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { Pressable, Text, View } from "components/styledComponents";
+import { Body2, Body4 } from "components/SharedComponents";
+import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -22,7 +23,7 @@ type Props = {
   layout: string,
 };
 
-const Toolbar = ( { setLayout, layout }: Props ): Node => {
+const MyObservationsToolbar = ( { setLayout, layout }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const { allObsToUpload } = useLocalObservations( );
@@ -96,74 +97,72 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
   const statusText = getStatusText( );
   /* eslint-disable react-native/no-inline-styles */
   return (
-    <View className="bg-white border-b border-[#e8e8e8]">
-      <View className="flex flex-row items-center px-[15px]">
-        {currentUser && (
-          <IconButton
-            icon="compass-rose"
-            onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
-            accessibilityLabel={t( "Explore" )}
-            accessibilityHint={t( "Navigates-to-explore" )}
-            accessibilityRole="button"
-            disabled={false}
-            size={30}
-          />
-        )}
-        <Pressable
-          onPress={getSyncClick( )}
-          accessibilityRole="button"
-          disabled={loading || uploadInProgress}
-          accessibilityState={{ disabled: loading || uploadInProgress }}
+    <View className="border-b border-[#e8e8e8] flex-row items-center px-3">
+      {currentUser && (
+      <IconButton
+        icon="compass-rose"
+        onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
+        accessibilityLabel={t( "Explore" )}
+        accessibilityHint={t( "Navigates-to-explore" )}
+        accessibilityRole="button"
+        disabled={false}
+        size={26}
+      />
+      )}
+      <Pressable
+        onPress={getSyncClick( )}
+        accessibilityRole="button"
+        disabled={loading || uploadInProgress}
+        accessibilityState={{ disabled: loading || uploadInProgress }}
+      >
+        <Animated.View
+          style={uploadInProgress ? { transform: [{ rotate: spin }] } : {}}
         >
-          <Animated.View
-            style={uploadInProgress ? { transform: [{ rotate: spin }] } : {}}
-          >
-            <IconMaterial name="sync" size={26} color={getSyncIconColor( )} />
-          </Animated.View>
-        </Pressable>
+          <IconMaterial name="sync" size={26} color={getSyncIconColor( )} />
+        </Animated.View>
+      </Pressable>
 
-        {statusText && (
-          <View>
-            <Text className="ml-1">{statusText}</Text>
-            {uploadError && (
-              <Text
-                className="ml-1 mt-[3px]"
-                style={{ color: colors.warningRed }}
-              >
-                {uploadError}
-              </Text>
-            )}
-          </View>
+      {statusText && (
+        <View>
+          <Body2 className="ml-1">{statusText}</Body2>
+          {uploadError && (
+          <Body4
+            className="ml-1 mt-[3px]"
+            style={{ color: colors.warningRed }}
+          >
+            {uploadError}
+          </Body4>
+          )}
+        </View>
+      )}
+
+      <View className="ml-auto flex flex-row items-center">
+        {uploadInProgress && (
+          <Pressable onPress={stopUpload} accessibilityRole="button">
+            <IconMaterial name="close" size={11} color={colors.darkGray} />
+          </Pressable>
         )}
 
-        <View className="ml-auto flex flex-row items-center">
-          {uploadInProgress && (
-            <Pressable onPress={stopUpload} accessibilityRole="button">
-              <IconMaterial name="close" size={20} color={colors.darkGray} />
-            </Pressable>
-          )}
-
-          <Pressable
-            className="ml-2"
-            testID={
+        <Pressable
+          className="ml-2"
+          testID={
               layout === "list"
                 ? "ObsList.toggleGridView"
                 : "ObsList.toggleListView"
             }
-            onPress={( ) => setLayout( currentView => {
-              if ( currentView === "list" ) {
-                return "grid";
-              }
-              return "list";
-            } )}
-            accessibilityRole="button"
-          >
-            <IconMaterial
-              name={layout === "grid" ? "format-list-bulleted" : "grid-view"}
-              size={30}
-            />
-          </Pressable>
-        </View>
+          onPress={( ) => setLayout( currentView => {
+            if ( currentView === "list" ) {
+              return "grid";
+            }
+            return "list";
+          } )}
+          accessibilityRole="button"
+        >
+          <IconMaterial
+            name={layout === "grid" ? "format-list-bulleted" : "grid-view"}
+            size={30}
+          />
+        </Pressable>
       </View>
       <ProgressBar
         progress={progress}
@@ -175,4 +174,4 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
   );
 };
 
-export default Toolbar;
+export default MyObservationsToolbar;

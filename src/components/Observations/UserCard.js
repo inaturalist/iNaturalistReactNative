@@ -1,6 +1,6 @@
 // @flow
 
-import { Body1 } from "components/SharedComponents";
+import { Heading1, Subheading1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -14,14 +14,14 @@ const UserCard = ( ): Node => {
   useTranslation( );
 
   return (
-    <View className="flex-row px-5 items-center bg-white h-24 ml-3">
+    <View className="px-5 bg-white">
       <Trans
         i18nKey="Welcome-user"
         parent={View}
         values={{ userHandle: User.userHandle( currentUser ) }}
         components={[
-          <Body1 className="mt-1 text-3xl" />,
-          <Body1 className="mb-1 text-3xl font-semibold" />
+          <Subheading1 className="mt-5" />,
+          <Heading1 />
         ]}
       />
     </View>

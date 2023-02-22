@@ -1,6 +1,6 @@
 // @flow
+import MyObservationsHeader from "components/MyObservations/MyObservationsHeader";
 import ObsGridItem from "components/Observations/ObsGridItem";
-import ObsListHeader from "components/Observations/ObsListHeader";
 import ObsListItem from "components/Observations/ObsListItem";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import type { Node } from "react";
@@ -13,7 +13,6 @@ import MyObservationsEmpty from "./MyObservationsEmpty";
 const { diffClamp } = Animated;
 
 type Props = {
-  currentUser: Object,
   isLoading?: bool,
   layout: "list" | "grid",
   observations: Array<Object>,
@@ -30,7 +29,6 @@ const GUTTER = 5;
 const HEADER_HEIGHT = 101;
 
 const MyObservations = ( {
-  currentUser,
   isLoading,
   layout,
   navToObsDetails,
@@ -84,10 +82,10 @@ const MyObservations = ( {
             </Pressable>
           )}
           ListEmptyComponent={
-            <MyObservationsEmpty currentUser={currentUser} isLoading={isLoading} />
+            <MyObservationsEmpty isLoading={isLoading} />
           }
           ListHeaderComponent={
-            <ObsListHeader setLayout={setLayout} layout={layout} />
+            <MyObservationsHeader setLayout={setLayout} layout={layout} />
           }
           // ItemSeparatorComponent={layout !== "grid" && renderItemSeparator}
           stickyHeaderIndices={[0]}

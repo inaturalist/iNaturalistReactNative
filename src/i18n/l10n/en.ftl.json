@@ -139,7 +139,7 @@
   "iNaturalist-Activity-Notifications": "iNaturalist Activity Notifications",
   "iNaturalist-Applications": "iNaturalist Applications",
   "iNaturalist-Network-Affiliation": "iNaturalist Network Affiliation",
-  "iNaturalist-is-a-community-of-naturalists": "iNaturalist is a community of naturalists.",
+  "iNaturalist-is-a-community-of-naturalists": "iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.",
   "Insects": "Insects",
   "Introduced": "Introduced",
   "Invalid-login": {
@@ -164,7 +164,7 @@
   "Location": "Location",
   "Log-in": "Log in",
   "LOG-IN-TO-INATURALIST": "LOG IN TO INATURALIST",
-  "Log-in-to-iNaturalist": "Log in to iNaturalist",
+  "Log-in-to-contribute-and-sync": "Log in to contribute & sync",
   "Logged-in-as": "Logged in as: { $username }",
   "Login-header": {
     "comment": "Appears in the login screen",
@@ -238,6 +238,7 @@
   "Observation": "Observation",
   "Observation-Attribution": "Observation © { $attribution } · { $licenseCode }",
   "Observations": "Observations",
+  "Observations-created-on-iNaturalist": "Observations created on iNaturalist are used by scientists around the world.",
   "Offensive-Inappropriate": "Offensive/Inappropriate",
   "Offensive-Inappropriate-Examples": "Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of \"appropriate,\" see the FAQ.",
   "Open": "Open",
@@ -420,6 +421,7 @@
     "val": "Username or Email"
   },
   "Visually-search-iNaturalist-data": "Visually search iNaturalist’s wealth of data. Search by a taxon in a location",
+  "Welcome-to-iNaturalist": "Welcome to iNaturalist!",
   "Whenever-you-get-internet-connection-you-can-upload": "Whenever you get internet connection, you can upload your observations to iNaturalist.",
   "Which-traditional-projects-can-add-your-observations": "Which traditional projects can add your observations?",
   "Who-can-add-observation-fields-to-my-observations": "Who can add observation fields to my observations?",
@@ -431,6 +433,7 @@
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
+  "X-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
   "X-Photos": {
     "comment": "Displays number of photos attached to an observation in the Media Viewer",
     "val": "{ $photoCount ->\n  [one] 1 Photo\n *[other] { $photoCount } Photos\n}"
@@ -439,7 +442,6 @@
     "comment": "Displays number of photos and observations a user has selected from the camera roll",
     "val": "{ $photoCount ->\n  [one] 1 PHOTO\n *[other] { $photoCount } PHOTOS\n}, { $observationCount ->\n  [one] 1 OBSERVATION\n *[other] { $observationCount } OBSERVATIONS\n}"
   },
-  "X-unuploaded-observations": "{ $observationCount ->\n  [one] 1 unuploaded observation\n *[other] { $observationCount } unuploaded observations\n}",
   "Yes": "Yes",
   "Yes-delete-observation": "Yes, delete observation",
   "Yes-delete-photo": "Yes, delete photo",

@@ -45,7 +45,7 @@ describe( "MyObservations", ( ) => {
       const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
       renderAppWithComponent( <ObsList /> );
-      const loginText = i18next.t( "Log-in-to-iNaturalist" );
+      const loginText = i18next.t( "Log-in-to-contribute-and-sync" );
       await waitFor( ( ) => {
         expect( screen.getByText( loginText ) ).toBeTruthy( );
       } );

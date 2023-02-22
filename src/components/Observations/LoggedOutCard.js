@@ -1,7 +1,8 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { Pressable, Text } from "components/styledComponents";
+import { Button, Heading1, Subheading1 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -13,22 +14,24 @@ const LoggedOutCard = ( ): Node => {
   const { t } = useTranslation( );
 
   return (
-    <Pressable
-      onPress={( ) => navigation.navigate( "login" )}
-      accessibilityRole="link"
-      accessibilityLabel={t( "Navigate-to-login-screen" )}
-      className="rounded-bl-3xl rounded-br-3xl h-24 justify-center"
-    >
-      <Text
+    <View className="mx-5">
+      <Subheading1
+        className="mt-5"
         testID="log-in-to-iNaturalist-text"
-        className="self-center text-2xl"
       >
-        {t( "Log-in-to-iNaturalist" )}
-      </Text>
-      <Text className="self-center text-base">
-        {t( "X-unuploaded-observations", { observationCount: numUnuploadedObs } )}
-      </Text>
-    </Pressable>
+        {t( "Log-in-to-contribute-and-sync" )}
+      </Subheading1>
+      <Heading1 className="mb-5">
+        {t( "X-observations", { count: numUnuploadedObs } )}
+      </Heading1>
+      <Button
+        onPress={( ) => navigation.navigate( "login" )}
+        accessibilityRole="link"
+        accessibilityLabel={t( "Navigate-to-login-screen" )}
+        text={t( "LOG-IN-TO-INATURALIST" )}
+        level="focus"
+      />
+    </View>
   );
 };
 
