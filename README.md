@@ -3,7 +3,7 @@
 This is an official iNaturalist client written in React Native that will eventually replace our existing iOS and Android apps. Achieving parity with those established apps is taking some time, but we're getting there!
 
 ## Contributing
-See CONTRIBUTION.md for guidelines on contributing to this project.
+See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this project.
 
 ## Setup
 

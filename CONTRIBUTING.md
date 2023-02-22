@@ -10,7 +10,7 @@ We welcome volunteer contributions! This app is still early in its development a
 ## Getting Started
 1. Fork the repository.
 2. Clone the forked repository to your local machine.
-3. Follow README.md to setup your local repository.
+3. Follow [the README](README.md) to setup your local repository.
 4. Make changes to the codebase.
 6. Push your changes to your forked repository.
 
