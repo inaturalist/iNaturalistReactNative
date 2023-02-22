@@ -3,28 +3,24 @@ import classNames from "classnames";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Keyboard, StyleSheet } from "react-native";
+import { Keyboard } from "react-native";
 import { useTheme } from "react-native-paper";
+
+import getShadowStyle from "sharedHelpers/getShadowStyle";
+
+const getShadow = (shadowColor) => getShadowStyle({
+  shadowColor,
+  offsetWidth: 0,
+  offsetHeight: 4,
+  opacity: 0.4,
+  radius: 4
+});
 
 type Props = {
   position: "topStart" | "topEnd" | "bottomStart" | "bottomEnd",
   containerClass?: string,
   children: React.Node
 }
-
-const getShadow = shadowColor => StyleSheet.create( {
-  shadowColor,
-  shadowOffset: {
-    width: 0,
-    height: 4
-  },
-  // $FlowIssue[incompatible-shape]
-  shadowOpacity: 0.4,
-  // $FlowIssue[incompatible-shape]
-  shadowRadius: 4,
-  // $FlowIssue[incompatible-shape]
-  elevation: 5
-} );
 
 // Ensure this component is placed outside of scroll views
 
