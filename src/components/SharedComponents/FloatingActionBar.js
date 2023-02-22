@@ -8,8 +8,7 @@ import { useTheme } from "react-native-paper";
 
 type Props = {
   position: "topStart" | "topEnd" | "bottomStart" | "bottomEnd",
-  marginX: string,
-  marginY: string,
+  containerClass?: string,
   children: React.Node
 }
 
@@ -31,9 +30,8 @@ const getShadow = shadowColor => StyleSheet.create( {
 
 const FloatingActionBar = ( {
   position = "bottomEnd",
-  marginX,
-  marginY,
-  children
+  containerClass,
+  children,
 }: Props ): React.Node => {
   const theme = useTheme( );
   const [keyboardHeight, setKeyboardHeight] = useState( 0 );
@@ -60,8 +58,7 @@ const FloatingActionBar = ( {
     <View
       className={classNames(
         "absolute z-50 bg-white rounded-lg",
-        marginX,
-        marginY,
+        containerClass,
         {
           "top-0 left-0": position === "topStart",
           "top-0 right-0": position === "topEnd",
