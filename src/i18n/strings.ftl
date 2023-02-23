@@ -735,15 +735,11 @@ Camera = Camera
 Close = Close
 Explore = Explore
 Flag-Item-Other = Flagged as Other Description Box
-Login-Password = Login Password
-Login-Username = Login Username
 Messages = Messages
 Observations = Observations
 Observe = Observe
 Open-drawer = Open drawer
-Signup-email= Sign Up Email
-Signup-password= Sign Up Password
-Signup-username= Sign Up Username
+
 Sound-recorder = Sound recorder
 User = User { $userHandle }
 Observation-Name = Observation { $scientificName }

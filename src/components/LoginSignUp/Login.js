@@ -94,7 +94,7 @@ const Login = ( ): Node => {
       <Text className="text-xl self-center text-center mt-5 mb-5">{t( "Login-sub-title" )}</Text>
       <Text className="text-base mb-1">{t( "Username-or-Email" )}</Text>
       <TextInput
-        accessibilityLabel={t( "Login-Username" )}
+        accessibilityLabel={t( "Username-or-Email" )}
         className="h-10 bg-lightGray"
         onChangeText={text => {
           setError( null );
@@ -110,7 +110,7 @@ const Login = ( ): Node => {
       />
       <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
-        accessibilityLabel={t( "Login-Password" )}
+        accessibilityLabel={t( "Password" )}
         className="h-10 bg-lightGray"
         onChangeText={text => {
           setError( null );
