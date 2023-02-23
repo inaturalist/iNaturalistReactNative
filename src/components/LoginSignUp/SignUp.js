@@ -27,7 +27,7 @@ const SignUp = (): Node => {
 
       <Text className="text-base mb-1">{t( "Email" )}</Text>
       <TextInput
-        accessibilityLabel="Text input field"
+        accessibilityLabel={t( "Signup-email" )}
         className="h-10 bg-lightGray"
         onChangeText={setEmail}
         value={email}
@@ -36,7 +36,7 @@ const SignUp = (): Node => {
 
       <Text className="text-base mb-1">{t( "Username" )}</Text>
       <TextInput
-        accessibilityLabel="Text input field"
+        accessibilityLabel={t( "Signup-username" )}
         className="h-10 bg-lightGray"
         onChangeText={setUsername}
         value={username}
@@ -44,7 +44,7 @@ const SignUp = (): Node => {
 
       <Text className="text-base mb-1">{t( "Password" )}</Text>
       <TextInput
-        accessibilityLabel="Text input field"
+        accessibilityLabel={t( "Signup-password" )}
         className="h-10 bg-lightGray"
         onChangeText={setPassword}
         value={password}

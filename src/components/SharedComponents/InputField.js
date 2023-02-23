@@ -33,8 +33,8 @@ const InputField = ( {
 
   return (
     // $FlowFixMe
+    // eslint-disable-next-line react-native-a11y/has-valid-accessibility-descriptors
     <TextInput
-      accessibilityLabel="Text input field"
       // don't use accessibility label here because screen reader
       // should read the text value (editable content) instead
       autoCapitalize="none"
