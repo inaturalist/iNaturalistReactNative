@@ -1,5 +1,6 @@
 // @flow
 
+import classNames from "classnames";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import Svg, { Path, Text } from "react-native-svg";
@@ -7,19 +8,24 @@ import Svg, { Path, Text } from "react-native-svg";
 type Props = {
   count: number,
   size?: number,
-  shadow: boolean,
+  shadow?: boolean,
 };
 
 const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
-  if ( count <= 0 || count > 99 ) {
+  if ( count === 0 ) {
     return null;
+  }
+
+  let photoCount = count;
+  if ( count > 99 ) {
+    photoCount = 99;
   }
 
   return (
     <View
-      className={`drop-shadow-md w-[${String( size )}px] h-[${String( size )}px] ${String(
-        shadow && "shadow"
-      )}`}
+      // eslint-disable-next-line
+      className={classNames( `w-[${String( size )}px] h-[${String( size )}px]`, { shadow }, "shadow" )}
+      testID="photo-count"
     >
       <Svg
         height={size}
@@ -44,7 +50,7 @@ const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
           filter="url(#drop-shadow)"
         />
         <Text x="38%" y="77%" textAnchor="middle" fontSize="10" fill="gray">
-          {count}
+          {photoCount}
         </Text>
       </Svg>
     </View>
@@ -54,5 +60,6 @@ const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
 export default PhotoCount;
 
 PhotoCount.defaultProps = {
-  size: 24
+  size: 24,
+  shadow: false
 };
