@@ -34,6 +34,7 @@ const InputField = ( {
   return (
     // $FlowFixMe
     <TextInput
+      accessibilityLabel="Text input field"
       // don't use accessibility label here because screen reader
       // should read the text value (editable content) instead
       autoCapitalize="none"
@@ -48,7 +49,7 @@ const InputField = ( {
       placeholderTextColor={colors.black}
       secureTextEntry={type === "password"}
       selectTextOnFocus={Platform.OS === "android"}
-      className="border border-border h-8 mx-5 rounded-xl pl-3"
+      className="border border-lightGray h-8 mx-5 rounded-xl pl-3"
       textContentType={type} // iOS only
       value={text}
       testID={testID}

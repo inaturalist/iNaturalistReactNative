@@ -6,7 +6,7 @@ import colors from "styles/tailwindColors";
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   grayButton: {
-    backgroundColor: colors.midGray,
+    backgroundColor: colors.darkGray,
     borderRadius: 40,
     alignSelf: "center",
     padding: 5
@@ -22,7 +22,7 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
     alignSelf: "center"
   },
   disabled: {
-    color: colors.midGray
+    color: colors.lightGray
   }
 } );
 

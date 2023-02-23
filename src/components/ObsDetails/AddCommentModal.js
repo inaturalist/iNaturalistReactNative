@@ -84,7 +84,7 @@ const AddCommentModal = ( {
       className="mb-16 h-16 mt-4"
       defaultValue={comment}
       selectionColor={colors.black}
-      activeUnderlineColor={colors.transparent}
+      activeUnderlineColor={colors.background}
       placeholder={t( "Add-a-comment" )}
       autoFocus
       multiline
@@ -118,6 +118,7 @@ const AddCommentModal = ( {
         >
           {renderTextInput()}
           <Pressable
+            accessibilityRole="button"
             className="absolute right-4 bottom-4"
             onPress={( ) => submitComment( )}
           >

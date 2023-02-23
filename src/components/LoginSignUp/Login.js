@@ -87,13 +87,15 @@ const Login = ( ): Node => {
         className="self-center w-32 h-32"
         resizeMode="contain"
         source={require( "images/inat_logo.png" )}
+        accessibilityIgnoresInvertColors
       />
 
       <Text testID="login-header" className="text-2xl self-center mt-5">{t( "Login-header" )}</Text>
       <Text className="text-xl self-center text-center mt-5 mb-5">{t( "Login-sub-title" )}</Text>
       <Text className="text-base mb-1">{t( "Username-or-Email" )}</Text>
       <TextInput
-        className="h-10 bg-tertiary"
+        accessibilityLabel={t( "Login-Username" )}
+        className="h-10 bg-lightGray"
         onChangeText={text => {
           setError( null );
           setEmail( text );
@@ -108,7 +110,8 @@ const Login = ( ): Node => {
       />
       <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
-        className="h-10 bg-tertiary"
+        accessibilityLabel={t( "Login-Password" )}
+        className="h-10 bg-lightGray"
         onChangeText={text => {
           setError( null );
           setPassword( text );
@@ -119,10 +122,10 @@ const Login = ( ): Node => {
         selectionColor={colors.black}
         onFocus={() => setExtraScrollHeight( 200 )}
       />
-      <TouchableOpacity onPress={forgotPassword}>
+      <TouchableOpacity accessibilityRole="button" onPress={forgotPassword}>
         <Text className="underline mt-2 self-end">{t( "Forgot-Password" )}</Text>
       </TouchableOpacity>
-      {error && <Text className="text-red self-center mt-5">{error}</Text>}
+      {error && <Text className="text-warningRed self-center mt-5">{error}</Text>}
       <Button
         level="focus"
         text={t( "Log-in" )}
@@ -137,6 +140,7 @@ const Login = ( ): Node => {
 
   const renderBackButton = ( ) => (
     <Pressable
+      accessibilityRole="button"
       onPress={( ) => navigation.goBack( )}
       className="absolute top-0 right-0"
     >

@@ -41,7 +41,7 @@ const UserProfile = ( ): React.Node => {
   );
 
   const showCount = ( count, label ) => (
-    <View className="w-1/4 border border-border">
+    <View className="w-1/4 border border-lightGray">
       <Text className="self-center">{count}</Text>
       <Text className="self-center">{label}</Text>
     </View>
@@ -50,7 +50,7 @@ const UserProfile = ( ): React.Node => {
   useEffect( ( ) => {
     const headerTitle = ( ) => <Text className="text-xl pb-2">{User.userHandle( user )}</Text>;
     const headerRight = ( ) => currentUser?.login === user?.login
-      && <RNPaperButton icon="pencil" textColor={colors.tertiary} />;
+      && <RNPaperButton icon="pencil" textColor={colors.lightGray} />;
 
     navigation.setOptions( {
       headerTitle,

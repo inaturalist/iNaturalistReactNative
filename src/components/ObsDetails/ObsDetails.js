@@ -197,7 +197,7 @@ const ObsDetails = ( ): Node => {
       <IconButton
         icon="pencil"
         onPress={navToObsEdit}
-        textColor={colors.gray}
+        textColor={colors.darkGray}
         accessibilityLabel={t( "Navigate-to-edit-observation" )}
       />
     );
@@ -350,9 +350,9 @@ const ObsDetails = ( ): Node => {
           <IconMaterial
             name="location-pin"
             size={15}
-            color={colors.logInGray}
+            color={colors.darkGray}
           />
-          <Text className="color-logInGray ml-2">
+          <Text className="color-darkGray ml-2">
             {checkCamelAndSnakeCase( observation, "placeGuess" )}
           </Text>
         </View>

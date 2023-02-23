@@ -210,7 +210,7 @@ const AddID = ( { route }: Props ): Node => {
               </View>
             </View>
           )}
-          <Text className="color-grayText">
+          <Text className="color-darkGray">
             {t( "Search-for-a-taxon-to-add-an-identification" )}
           </Text>
           <TextInput
@@ -253,7 +253,7 @@ const AddID = ( { route }: Props ): Node => {
               style={viewStyles.commentInput}
               value={commentDraft}
               selectionColor={colors.black}
-              activeUnderlineColor={colors.transparent}
+              activeUnderlineColor={colors.background}
               autoFocus
               multiline
               onChangeText={setCommentDraft}
@@ -292,7 +292,7 @@ const AddID = ( { route }: Props ): Node => {
             <Button
               style={viewStyles.commentButton}
               uppercase={false}
-              color={colors.midGray}
+              color={colors.lightGray}
               onPress={() => {
                 bottomSheetModalRef.current?.dismiss();
               }}
@@ -307,7 +307,7 @@ const AddID = ( { route }: Props ): Node => {
               style={viewStyles.commentButton}
               uppercase={false}
               disabled={commentDraft.length === 0}
-              color={colors.midGray}
+              color={colors.lightGray}
               mode="contained"
               onPress={() => {
                 setComment( commentDraft );

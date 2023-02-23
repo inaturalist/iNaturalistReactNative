@@ -13,11 +13,15 @@ const theme = {
     ...DefaultTheme.colors,
     primary: colors.darkGray,
     onPrimary: colors.white,
-    secondary: colors.focusGreen,
+    secondary: colors.inatGreen, // TODO: cahnge to accessibleGreen for accessibility
     onSecondary: colors.white,
     background: colors.white,
+    surface: colors.white,
+    onSurface: colors.darkGray,
+    outline: colors.lightGray,
     error: colors.warningRed,
-    onError: colors.white
+    onError: colors.white,
+    disabled: colors.white
   }
 };
 

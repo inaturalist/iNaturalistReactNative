@@ -159,7 +159,7 @@ const StandardCamera = ( ): Node => {
         accessibilityLabel={accessibilityLabel}
         size={40}
         icon={icon}
-        style={{ backgroundColor: colors.gray }}
+        style={{ backgroundColor: colors.darkGray }}
       />
     );
   };
@@ -195,7 +195,7 @@ const StandardCamera = ( ): Node => {
               testID="camera-button-label-switch-camera"
               size={40}
               icon="camera"
-              style={{ backgroundColor: colors.gray }}
+              style={{ backgroundColor: colors.darkGray }}
             />
           </Pressable>
         </View>

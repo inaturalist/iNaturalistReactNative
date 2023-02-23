@@ -69,7 +69,7 @@ const TaxonDetails = ( ): React.Node => {
         <Text>{taxon.rank}</Text>
         <Text>{taxon.preferred_common_name}</Text>
         <Text>{taxon.name}</Text>
-        <Text className="text-lg text-grayText my-3">{ t( "ABOUT-taxon-header" ) }</Text>
+        <Text className="text-lg text-darkGray my-3">{ t( "ABOUT-taxon-header" ) }</Text>
         { taxon.wikipedia_summary && (
           <HTML
             contentWidth={width}
@@ -83,10 +83,10 @@ const TaxonDetails = ( ): React.Node => {
         >
           <Text className="my-3">{ t( "Read-more-on-Wikipedia" )}</Text>
         </Pressable>
-        <Text className="text-lg text-grayText my-3">{ t( "TAXONOMY-header" ) }</Text>
+        <Text className="text-lg text-darkGray my-3">{ t( "TAXONOMY-header" ) }</Text>
         {displayTaxonomyList}
-        <Text className="text-lg text-grayText my-3">{ t( "STATUS-header" ) }</Text>
-        <Text className="pb-32 text-lg text-grayText my-3">{ t( "SIMILAR-SPECIES-header" ) }</Text>
+        <Text className="text-lg text-darkGray my-3">{ t( "STATUS-header" ) }</Text>
+        <Text className="pb-32 text-lg text-darkGray my-3">{ t( "SIMILAR-SPECIES-header" ) }</Text>
       </>
     );
   };
