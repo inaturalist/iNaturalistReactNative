@@ -2,8 +2,8 @@
 
 import AddObsModal from "components/AddObsModal";
 import { INatIcon } from "components/SharedComponents";
-import { View } from "components/styledComponents";
 import Modal from "components/SharedComponents/Modal";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
 import { Pressable, StyleSheet } from "react-native";
