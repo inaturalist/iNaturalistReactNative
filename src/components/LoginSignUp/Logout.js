@@ -57,7 +57,7 @@ const Logout = ( ): Node => {
     // deleted the realm file on disk, but the RealmProvider may still have a
     // copy of realm in local state
     navigation.navigate( "MainStack", {
-      screen: "ObsList"
+      screen: "MyObservations"
     } );
   };
 

@@ -367,6 +367,8 @@ Plants = Plants
 # Help text for playing back a sound recording
 Playing-Sound = Playing Sound
 
+PLEASE-LOG-IN = PLEASE LOG IN
+
 # Help text for beginning a sound recording
 Press-Record-to-Start = Press Record to Start
 
@@ -571,6 +573,8 @@ This-sets-your-language-and-date-formatting-preferences-across-iNaturalist = Thi
 This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify = This will be your default place for all searches in Explore and Identify.
 
 Threatened = Threatened
+
+To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
 
 Trust-with-hidden-coordinates = Trust with hidden coordinates
 

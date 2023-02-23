@@ -30,7 +30,7 @@ const DeleteObservationDialog = ( {
   const handleLocalDeletion = ( ) => {
     deleteLocalObservation( uuid );
     hideDialog( );
-    navigation.navigate( "ObsList" );
+    navigation.navigate( "MyObservations" );
   };
 
   const deleteObservationMutation = useAuthenticatedMutation(

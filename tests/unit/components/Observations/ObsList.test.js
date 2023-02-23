@@ -48,7 +48,7 @@ jest.mock( "@react-navigation/native", () => {
   };
 } );
 
-describe( "ObsList", () => {
+describe( "MyObservations", () => {
   beforeAll( async () => {
     await initI18next();
   } );

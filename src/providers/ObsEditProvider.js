@@ -178,7 +178,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         setCurrentObservationIndex( 0 );
         setObservations( [] );
 
-        navigation.navigate( "ObsList" );
+        navigation.navigate( "MyObservations" );
       } else if ( currentObservationIndex === observations.length - 1 ) {
         observations.pop( );
         setCurrentObservationIndex( observations.length - 1 );

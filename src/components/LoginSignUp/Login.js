@@ -72,7 +72,7 @@ const Login = ( ): Node => {
     setLoading( false );
 
     navigation.navigate( "MainStack", {
-      screen: "ObsList"
+      screen: "MyObservations"
     } );
   };
 

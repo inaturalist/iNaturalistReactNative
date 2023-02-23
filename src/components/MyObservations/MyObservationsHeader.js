@@ -25,7 +25,6 @@ const MyObservationsHeader = ( {
   const { t } = useTranslation( );
 
   return (
-    // $FlowIgnore
     <>
       {currentUser
         ? (
@@ -60,7 +59,11 @@ const MyObservationsHeader = ( {
             />
           </View>
         )}
-      <MyObservationsToolbar setLayout={setLayout} layout={layout} />
+      <MyObservationsToolbar
+        setLayout={setLayout}
+        layout={layout}
+        numUnuploadedObs={numUnuploadedObs}
+      />
     </>
   );
 };

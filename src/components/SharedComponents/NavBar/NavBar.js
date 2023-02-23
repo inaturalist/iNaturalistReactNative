@@ -14,7 +14,7 @@ import { viewStyles } from "styles/sharedComponents/footer";
 import NavButton from "./NavButton";
 
 // TODO: This is not future proof, if changed in main navigation it breaks here
-const OBS_LIST_SCREEN_ID = "ObsList";
+const OBS_LIST_SCREEN_ID = "MyObservations";
 const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
 

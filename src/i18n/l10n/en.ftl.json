@@ -256,6 +256,7 @@
     "comment": "Help text for playing back a sound recording",
     "val": "Playing Sound"
   },
+  "PLEASE-LOG-IN": "PLEASE LOG IN",
   "Press-Record-to-Start": {
     "comment": "Help text for beginning a sound recording",
     "val": "Press Record to Start"
@@ -386,6 +387,7 @@
   "This-sets-your-language-and-date-formatting-preferences-across-iNaturalist": "This sets your language and date formatting preferences across iNaturalist based on your locale.",
   "This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify": "This will be your default place for all searches in Explore and Identify.",
   "Threatened": "Threatened",
+  "To-sync-your-observations-to-iNaturalist": "To sync your observations to iNaturalist, please log in.",
   "Trust-with-hidden-coordinates": "Trust with hidden coordinates",
   "Trusted": "Trusted",
   "Unblock": "Unblock",

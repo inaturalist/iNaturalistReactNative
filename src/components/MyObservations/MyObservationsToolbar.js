@@ -14,20 +14,19 @@ import { IconButton, ProgressBar } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
-import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 import useUploadObservations from "sharedHooks/useUploadObservations";
 import colors from "styles/tailwindColors";
 
 type Props = {
   setLayout: Function,
   layout: string,
+  numUnuploadedObs: number
 };
 
-const MyObservationsToolbar = ( { setLayout, layout }: Props ): Node => {
+const MyObservationsToolbar = ( { setLayout, layout, numUnuploadedObs }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const { allObsToUpload } = useLocalObservations( );
-  const numUnuploadedObs = useNumUnuploadedObservations( );
   const navigation = useNavigation( );
   const {
     stopUpload,
@@ -97,7 +96,7 @@ const MyObservationsToolbar = ( { setLayout, layout }: Props ): Node => {
   const statusText = getStatusText( );
   /* eslint-disable react-native/no-inline-styles */
   return (
-    <View className="border-b border-[#e8e8e8] flex-row items-center px-3">
+    <View className="border-b border-lightGray flex-row items-center px-3 py-5">
       {currentUser && (
       <IconButton
         icon="compass-rose"

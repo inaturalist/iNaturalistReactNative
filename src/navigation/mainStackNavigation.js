@@ -8,7 +8,6 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-// import ObsList from "components/Observations/ObsList";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import Mortal from "components/SharedComponents/Mortal";

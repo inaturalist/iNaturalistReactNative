@@ -26,15 +26,15 @@ const TestMessages = ( ): React.Node => (
 
 describe( "NavBar", () => {
   it( "handles active pages correctly", async () => {
-    useRoute.mockReturnValueOnce( { name: "ObsList" } );
+    useRoute.mockReturnValueOnce( { name: "MyObservations" } );
     renderComponent(
       <Drawer.Navigator>
-        <Drawer.Screen name="ObsList" component={TestObsList} />
+        <Drawer.Screen name="MyObservations" component={TestObsList} />
         <Drawer.Screen name="Messages" component={TestMessages} />
       </Drawer.Navigator>
     );
 
-    const navToObsList = screen.getByTestId( "ObsList" );
+    const navToObsList = screen.getByTestId( "MyObservations" );
     expect( navToObsList ).toHaveAccessibilityState( {
       busy: false,
       disabled: false,

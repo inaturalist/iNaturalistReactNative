@@ -3,12 +3,14 @@ import MyObservationsHeader from "components/MyObservations/MyObservationsHeader
 import ObsGridItem from "components/Observations/ObsGridItem";
 import ObsListItem from "components/Observations/ObsListItem";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { Animated, Dimensions, Pressable } from "react-native";
+import { Animated, Dimensions } from "react-native";
 
 import MyObservationsEmpty from "./MyObservationsEmpty";
+import MyObservationsLoginSheet from "./MyObservationsLoginSheet";
+import MyObservationsPressable from "./MyObservationsPressable";
 
 const { diffClamp } = Animated;
 
@@ -17,8 +19,7 @@ type Props = {
   layout: "list" | "grid",
   observations: Array<Object>,
   onEndReached: Function,
-  setLayout: Function,
-  navToObsDetails: Function
+  setLayout: Function
 }
 
 const {
@@ -31,12 +32,10 @@ const HEADER_HEIGHT = 101;
 const MyObservations = ( {
   isLoading,
   layout,
-  navToObsDetails,
   observations,
   onEndReached,
   setLayout
 }: Props ): Node => {
-  const { t } = useTranslation( );
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
@@ -53,24 +52,18 @@ const MyObservations = ( {
   const gridItemWidth = Math.round( ( screenWidth - combinedGutterWidth ) / numColumns );
 
   return (
-    <ViewWithFooter>
-      <Animated.View style={[{ transform: [{ translateY: offsetForHeader }] }]}>
-        <Animated.FlatList
-          data={observations}
-          key={layout === "grid" ? 1 : 0}
-          style={{ height: screenHeight }}
-          testID="MyObservations"
-          numColumns={numColumns}
-          renderItem={( { item } ) => (
-            <Pressable
-              onPress={() => navToObsDetails( item )}
-              accessibilityRole="link"
-              accessibilityHint={t( "Navigate-to-observation-details" )}
-              accessibilityLabel={t( "Observation-Name", {
-                scientificName: item.name
-              } )}
-            >
-              {
+    <>
+      <ViewWithFooter>
+        <Animated.View style={[{ transform: [{ translateY: offsetForHeader }] }]}>
+          <Animated.FlatList
+            data={observations}
+            key={layout === "grid" ? 1 : 0}
+            style={{ height: screenHeight }}
+            testID="MyObservations"
+            numColumns={numColumns}
+            renderItem={( { item } ) => (
+              <MyObservationsPressable observation={item}>
+                {
                 layout === "grid"
                   // TODO: this doesn't actually work, I think b/c this style
                   // needs to be static; haven't come up with a good way
@@ -79,23 +72,27 @@ const MyObservations = ( {
                   ? <ObsGridItem observation={item} width={`w-[${gridItemWidth}px]`} />
                   : <ObsListItem observation={item} />
               }
-            </Pressable>
-          )}
-          ListEmptyComponent={
-            <MyObservationsEmpty isLoading={isLoading} />
+              </MyObservationsPressable>
+            )}
+            ListEmptyComponent={
+              <MyObservationsEmpty isLoading={isLoading} />
           }
-          ListHeaderComponent={
-            <MyObservationsHeader setLayout={setLayout} layout={layout} />
+            ListHeaderComponent={
+              <MyObservationsHeader setLayout={setLayout} layout={layout} />
           }
-          // ItemSeparatorComponent={layout !== "grid" && renderItemSeparator}
-          stickyHeaderIndices={[0]}
-          bounces={false}
-          initialNumToRender={10}
-          onEndReached={onEndReached}
-          onEndReachedThreshold={0.1}
-        />
-      </Animated.View>
-    </ViewWithFooter>
+            ItemSeparatorComponent={
+            layout !== "grid" && <View className="border-b border-lightGray" />
+          }
+            stickyHeaderIndices={[0]}
+            bounces={false}
+            initialNumToRender={10}
+            onEndReached={onEndReached}
+            onEndReachedThreshold={0.1}
+          />
+        </Animated.View>
+      </ViewWithFooter>
+      <MyObservationsLoginSheet />
+    </>
   );
 };
 
