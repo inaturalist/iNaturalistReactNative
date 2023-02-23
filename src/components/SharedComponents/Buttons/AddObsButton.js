@@ -43,6 +43,10 @@ const AddObsButton = (): React.Node => {
         disabled={false}
         accessibilityLabel={t( "Observe" )}
         accessibilityHint={t( "Opens-add-observation-modal" )}
+        accessibilityRole="button"
+        accessibilityState={{
+          disabled: false
+        }}
         style={shadow}
       >
         <View className="w-[69px] h-[69px] rounded-full overflow-hidden">
@@ -52,7 +56,7 @@ const AddObsButton = (): React.Node => {
             useAngle
           >
             <View className="grow aspect-square flex items-center justify-center">
-              <INatIcon name="plus-sign" size={69} color={colors.white} />
+              <INatIcon name="plus-sign" size={31} color={colors.white} />
             </View>
           </LinearGradient>
         </View>
