@@ -5,9 +5,11 @@ import ObsListItem from "components/Observations/ObsListItem";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Animated, Dimensions } from "react-native";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
+import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
 import MyObservationsEmpty from "./MyObservationsEmpty";
 import MyObservationsLoginSheet from "./MyObservationsLoginSheet";
 import MyObservationsPressable from "./MyObservationsPressable";
@@ -27,7 +29,6 @@ const {
   height: screenHeight
 } = Dimensions.get( "screen" );
 const GUTTER = 5;
-const HEADER_HEIGHT = 101;
 
 const MyObservations = ( {
   isLoading,
@@ -36,6 +37,11 @@ const MyObservations = ( {
   onEndReached,
   setLayout
 }: Props ): Node => {
+  const currentUser = useCurrentUser( );
+  const HEADER_HEIGHT = currentUser ? 101 : 154;
+
+  const [hideHeaderCard, setHideHeaderCard] = useState( false );
+  const [yValue, setYValue] = useState( 0 );
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
@@ -50,6 +56,27 @@ const MyObservations = ( {
   const numColumns = layout === "grid" ? 2 : 1;
   const combinedGutterWidth = ( numColumns + 1 ) * GUTTER;
   const gridItemWidth = Math.round( ( screenWidth - combinedGutterWidth ) / numColumns );
+
+  const handleScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: { y: scrollY.current }
+        }
+      }
+    ],
+    {
+      listener: ( { nativeEvent } ) => {
+        const { y } = nativeEvent.contentOffset;
+        const hide = yValue < y;
+        if ( hide !== hideHeaderCard ) {
+          setHideHeaderCard( hide );
+          setYValue( y );
+        }
+      },
+      useNativeDriver: true
+    }
+  );
 
   return (
     <>
@@ -76,18 +103,27 @@ const MyObservations = ( {
             )}
             ListEmptyComponent={
               <MyObservationsEmpty isLoading={isLoading} />
-          }
-            ListHeaderComponent={
-              <MyObservationsHeader setLayout={setLayout} layout={layout} />
-          }
+            }
+            ListHeaderComponent={(
+              <MyObservationsHeader
+                setLayout={setLayout}
+                layout={layout}
+                hideHeaderCard={hideHeaderCard}
+                currentUser={currentUser}
+              />
+            )}
             ItemSeparatorComponent={
-            layout !== "grid" && <View className="border-b border-lightGray" />
-          }
+              layout !== "grid" && <View className="border-b border-lightGray" />
+            }
+            ListFooterComponent={
+              <InfiniteScrollLoadingWheel isLoading={isLoading} currentUser={currentUser} />
+            }
             stickyHeaderIndices={[0]}
             bounces={false}
             initialNumToRender={10}
             onEndReached={onEndReached}
             onEndReachedThreshold={0.1}
+            onScroll={handleScroll}
           />
         </Animated.View>
       </ViewWithFooter>

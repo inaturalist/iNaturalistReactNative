@@ -32,7 +32,7 @@ const MyObservationsToolbar = ( { setLayout, layout, numUnuploadedObs }: Props )
     stopUpload,
     uploadInProgress,
     startUpload,
-    progress,
+    // progress,
     error: uploadError,
     currentUploadIndex,
     totalUploadCount
@@ -93,75 +93,79 @@ const MyObservationsToolbar = ( { setLayout, layout, numUnuploadedObs }: Props )
     return colors.darkGray;
   };
 
+  const progress = 0.5;
+
   const statusText = getStatusText( );
   /* eslint-disable react-native/no-inline-styles */
   return (
-    <View className="border-b border-lightGray flex-row items-center px-3 py-5">
-      {currentUser && (
-      <IconButton
-        icon="compass-rose"
-        onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
-        accessibilityLabel={t( "Explore" )}
-        accessibilityHint={t( "Navigates-to-explore" )}
-        accessibilityRole="button"
-        disabled={false}
-        size={26}
-      />
-      )}
-      <Pressable
-        onPress={getSyncClick( )}
-        accessibilityRole="button"
-        disabled={loading || uploadInProgress}
-        accessibilityState={{ disabled: loading || uploadInProgress }}
-      >
-        <Animated.View
-          style={uploadInProgress ? { transform: [{ rotate: spin }] } : {}}
+    <View className="bg-white justify-center border-b border-lightGray h-[78px]">
+      <View className="flex-row items-center px-[15px]">
+        {currentUser && (
+          <IconButton
+            icon="compass-rose"
+            onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
+            accessibilityLabel={t( "Explore" )}
+            accessibilityHint={t( "Navigates-to-explore" )}
+            accessibilityRole="button"
+            disabled={false}
+            size={26}
+          />
+        )}
+        <Pressable
+          onPress={getSyncClick( )}
+          accessibilityRole="button"
+          disabled={loading || uploadInProgress}
+          accessibilityState={{ disabled: loading || uploadInProgress }}
         >
-          <IconMaterial name="sync" size={26} color={getSyncIconColor( )} />
-        </Animated.View>
-      </Pressable>
-
-      {statusText && (
-        <View>
-          <Body2 className="ml-1">{statusText}</Body2>
-          {uploadError && (
-          <Body4
-            className="ml-1 mt-[3px]"
-            style={{ color: colors.warningRed }}
+          <Animated.View
+            style={uploadInProgress ? { transform: [{ rotate: spin }] } : {}}
           >
-            {uploadError}
-          </Body4>
-          )}
-        </View>
-      )}
+            <IconMaterial name="sync" size={26} color={getSyncIconColor( )} />
+          </Animated.View>
+        </Pressable>
 
-      <View className="ml-auto flex flex-row items-center">
-        {uploadInProgress && (
-          <Pressable onPress={stopUpload} accessibilityRole="button">
-            <IconMaterial name="close" size={11} color={colors.darkGray} />
-          </Pressable>
+        {statusText && (
+          <View>
+            <Body2 className="ml-1">{statusText}</Body2>
+            {uploadError && (
+            <Body4
+              className="ml-1 mt-[3px]"
+              style={{ color: colors.warningRed }}
+            >
+              {uploadError}
+            </Body4>
+            )}
+          </View>
         )}
 
-        <Pressable
-          className="ml-2"
-          testID={
+        <View className="ml-auto flex flex-row items-center">
+          {uploadInProgress && (
+            <Pressable onPress={stopUpload} accessibilityRole="button">
+              <IconMaterial name="close" size={11} color={colors.darkGray} />
+            </Pressable>
+          )}
+
+          <Pressable
+            className="ml-2"
+            testID={
               layout === "list"
                 ? "ObsList.toggleGridView"
                 : "ObsList.toggleListView"
             }
-          onPress={( ) => setLayout( currentView => {
-            if ( currentView === "list" ) {
-              return "grid";
-            }
-            return "list";
-          } )}
-          accessibilityRole="button"
-        >
-          <IconMaterial
-            name={layout === "grid" ? "format-list-bulleted" : "grid-view"}
-            size={30}
-          />
-        </Pressable>
+            onPress={( ) => setLayout( currentView => {
+              if ( currentView === "list" ) {
+                return "grid";
+              }
+              return "list";
+            } )}
+            accessibilityRole="button"
+          >
+            <IconMaterial
+              name={layout === "grid" ? "format-list-bulleted" : "grid-view"}
+              size={30}
+            />
+          </Pressable>
+        </View>
       </View>
       <ProgressBar
         progress={progress}

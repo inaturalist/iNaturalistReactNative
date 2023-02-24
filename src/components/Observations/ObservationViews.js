@@ -8,10 +8,10 @@ import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, Dimensions, Pressable } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useInfiniteScroll from "sharedHooks/useInfiniteScroll";
 import useLocalObservations from "sharedHooks/useLocalObservations";
 
 import EmptyList from "./EmptyList";
-import useInfiniteScroll from "./hooks/useInfiniteScroll";
 import InfiniteScrollFooter from "./InfiniteScrollFooter";
 import ObsGridItem from "./ObsGridItem";
 import ObsListBottomSheet from "./ObsListBottomSheet";
