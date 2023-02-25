@@ -23,8 +23,11 @@ const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
 
   return (
     <View
-      // eslint-disable-next-line
-      className={classNames( `w-[${String( size )}px] h-[${String( size )}px]`, { shadow }, "shadow" )}
+      className={classNames(
+        `w-[${String( size )}px] h-[${String( size )}px]`,
+        { shadow },
+        "shadow"
+      )}
       testID="photo-count"
     >
       <Svg
