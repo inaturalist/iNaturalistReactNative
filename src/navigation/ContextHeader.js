@@ -14,20 +14,22 @@ type Props = {
   back: boolean,
 };
 
-const ContextHeader = ({ navigation, route, options, back }: Props): Node => {
-  const title = options.title || getHeaderTitle(options, route.name);
+const ContextHeader = ( {
+  navigation, route, options, back
+}: Props ): Node => {
+  const title = options.title || getHeaderTitle( options, route.name );
   const subtitle = options.headerSubtitle;
 
   return (
     <View
       className="flex flex-row items-start bg-white pt-[60px] pb-[10px] px-[24px]"
-      style={getShadowStyle({
+      style={getShadowStyle( {
         shadowColor: colors.black,
         offsetWidth: 0,
         offsetHeight: 2,
         opacity: 0.25,
-        radius: 2,
-      })}
+        radius: 2
+      } )}
     >
       {back && (
         <HeaderBackButton
