@@ -1,4 +1,5 @@
 // @flow
+import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
@@ -203,8 +204,16 @@ const ObsDetails = ( ): Node => {
       />
     );
 
+    const backButton = ( ) => (
+      <HeaderBackButton
+        tintColor={colors.black}
+        onPress={navigation.goBack}
+      />
+    )
+
     navigation.setOptions( {
-      headerRight: editIcon
+      headerRight: editIcon,
+      headerLeft: backButton
     } );
   }, [navigation, observation, currentUser, t, theme] );
 

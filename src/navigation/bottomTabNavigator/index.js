@@ -37,6 +37,7 @@ const BottomTabs = ( ) => {
     <Tab.Navigator
       initialRouteName={OBS_LIST_SCREEN_ID}
       tabBar={renderTabBar}
+      backBehavior="history"
     >
       <Tab.Screen
         name="Explore"
@@ -55,6 +56,7 @@ const BottomTabs = ( ) => {
         name="ObsList"
         component={ObsList}
         options={{
+          ...hideHeader,
           meta: {
             icon: "ios-people-updated-2",
             userIconUri: User.uri( user ),
