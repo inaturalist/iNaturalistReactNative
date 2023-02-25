@@ -8,11 +8,11 @@ import { t } from "i18next";
 import * as React from "react";
 import { Pressable } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import colors from "styles/tailwindColors";
 import getShadowStyle from "sharedHelpers/getShadowStyle";
+import colors from "styles/tailwindColors";
 
 const shadow = getShadowStyle( {
-  shadowColor: colors.darkGray,
+  shadowColor: colors.black,
   offsetWidth: 0,
   offsetHeight: 2,
   radius: 2,
