@@ -2,21 +2,15 @@
 import classNames from "classnames";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import { StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
+import getShadowStyle from "sharedHelpers/getShadowStyle";
 
-const getShadow = shadowColor => StyleSheet.create( {
+const getShadow = shadowColor => getShadowStyle( {
   shadowColor,
-  shadowOffset: {
-    width: 0,
-    height: -2
-  },
-  // $FlowIssue[incompatible-shape]
-  shadowOpacity: 0.25,
-  // $FlowIssue[incompatible-shape]
-  shadowRadius: 2,
-  // $FlowIssue[incompatible-shape]
-  elevation: 5
+  offsetWidth: 0,
+  offsetHeight: -2,
+  opacity: 0.25,
+  radius: 2
 } );
 
 type Props = {
