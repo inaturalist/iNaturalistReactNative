@@ -2,7 +2,8 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
-import RootDrawerNavigator from "navigation/rootDrawerNavigation";
+// import RootDrawerNavigator from "navigation/rootDrawerNavigation";
+import RootTabNavigator from "navigation/rootTabNavigator";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
@@ -80,7 +81,7 @@ const App = ( { children }: Props ): Node => {
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code
-  return children || <RootDrawerNavigator />;
+  return children || <RootTabNavigator />;
 };
 
 export default App;

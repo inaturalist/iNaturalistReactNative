@@ -1,5 +1,5 @@
 // @flow
-import { useDrawerStatus } from "@react-navigation/drawer";
+// import { useDrawerStatus } from "@react-navigation/drawer";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import classNames from "classnames";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
@@ -21,7 +21,7 @@ const MESSAGES_SCREEN_ID = "Messages";
 const NavBar = ( ): React.Node => {
   const navigation = useNavigation( );
   const { name } = useRoute();
-  const isDrawerOpen = useDrawerStatus() === "open";
+  const isDrawerOpen = false;// useDrawerStatus() === "open";
   const toggleSideMenu = ( ) => navigation.openDrawer( );
   const navToObsList = ( ) => navigation.navigate( "MainStack", { screen: OBS_LIST_SCREEN_ID } );
   const navToExplore = ( ) => navigation.navigate( "MainStack", { screen: EXPLORE_SCREEN_ID } );

@@ -6,8 +6,6 @@ import {
   Keyboard, StatusBar
 } from "react-native";
 
-import NavBar from "./NavBar/NavBar";
-
 type Props = {
   children: React.Node,
   testID?: string,
@@ -28,7 +26,6 @@ const ScrollWithFooter = ( { children, testID, style }: Props ): React.Node => {
         {children}
         <View className="pb-64" />
       </ScrollView>
-      <NavBar />
     </SafeAreaView>
   );
 };
