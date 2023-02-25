@@ -3,7 +3,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StandardCamera from "components/Camera/StandardCamera";
 import Login from "components/LoginSignUp/Login";
-import ObsDetails from "components/ObsDetails/ObsDetails";
 import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
@@ -11,7 +10,6 @@ import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGate from "components/SharedComponents/PermissionGate";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
-import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import {
@@ -148,18 +146,6 @@ const MainStackNavigation = ( ): React.Node => (
         options={{
           title: t( "Add-an-ID" )
         }}
-      />
-      <Stack.Screen
-        name="ObsDetails"
-        component={ObsDetails}
-        options={{
-          headerTitle: t( "Observation" )
-        }}
-      />
-      <Stack.Screen
-        name="TaxonDetails"
-        component={TaxonDetails}
-        options={blankHeaderTitle}
       />
       <Stack.Screen
         name="UserProfile"

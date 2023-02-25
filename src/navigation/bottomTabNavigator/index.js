@@ -5,12 +5,14 @@ import Messages from "components/Messages/Messages";
 import NetworkLogging from "components/NetworkLogging";
 import ObsList from "components/Observations/ObsList";
 import PlaceholderComponent from "components/PlaceholderComponent";
+import ObsDetails from "components/ObsDetails/ObsDetails";
+import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import UiLibrary from "components/UiLibrary";
 import { t } from "i18next";
 import IdentifyStackNavigation from "navigation/identifyStackNavigation";
-import { hideHeader } from "navigation/navigationOptions";
+import { hideHeader, blankHeaderTitle } from "navigation/navigationOptions";
 import ProjectsStackNavigation from "navigation/projectsStackNavigation";
 import React from "react";
 import User from "realmModels/User";
@@ -105,6 +107,18 @@ const BottomTabs = ( ) => {
       <Tab.Screen name="help" component={PlaceholderComponent} />
       <Tab.Screen name="network" component={NetworkLogging} />
       <Tab.Screen name="UI Library" component={UiLibrary} />
+      <Tab.Screen
+        name="ObsDetails"
+        component={ObsDetails}
+        options={{
+          headerTitle: t( "Observation" )
+        }}
+      />
+      <Tab.Screen
+        name="TaxonDetails"
+        component={TaxonDetails}
+        options={blankHeaderTitle}
+      />
     </Tab.Navigator>
   );
 };
