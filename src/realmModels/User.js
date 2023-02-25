@@ -23,6 +23,8 @@ class User extends Realm.Object {
 
   static currentUser = realm => realm.objects( "User" ).filtered( "signedIn == true" )[0]
 
+  static firstSignedInUser = realmObjects => realmObjects.filtered( "signedIn == true" )[0]
+
   static schema = {
     name: "User",
     primaryKey: "id",
