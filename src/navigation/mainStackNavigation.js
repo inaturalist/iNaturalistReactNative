@@ -24,6 +24,7 @@ import * as React from "react";
 import { PermissionsAndroid } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { PERMISSIONS } from "react-native-permissions";
+
 import BottomTabNavigator from "./bottomTabNavigator";
 
 const isTablet = DeviceInfo.isTablet();
@@ -95,7 +96,7 @@ const MainStackNavigation = (): React.Node => (
         component={BottomTabNavigator}
         options={{
           ...hideScreenTransitionAnimation,
-          ...hideHeader,
+          ...hideHeader
         }}
       />
       <Stack.Screen
@@ -120,7 +121,7 @@ const MainStackNavigation = (): React.Node => (
         name="SoundRecorder"
         component={SoundRecorderWithPermission}
         options={{
-          title: t("Record-new-sound"),
+          title: t( "Record-new-sound" )
         }}
       />
       <Stack.Screen
@@ -128,21 +129,21 @@ const MainStackNavigation = (): React.Node => (
         component={ObsEditWithPermission}
         options={{
           ...blankHeaderTitle,
-          headerBackVisible: false,
+          headerBackVisible: false
         }}
       />
       <Stack.Screen
         name="AddID"
         component={AddID}
         options={{
-          title: t("Add-an-ID"),
+          title: t( "Add-an-ID" )
         }}
       />
       <Stack.Screen
         name="ObsDetails"
         component={ObsDetails}
         options={{
-          headerTitle: t("Observation"),
+          headerTitle: t( "Observation" )
         }}
       />
       <Stack.Screen
