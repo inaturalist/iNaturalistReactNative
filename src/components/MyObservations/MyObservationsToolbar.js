@@ -34,7 +34,7 @@ const MyObservationsToolbar = ( {
     stopUpload,
     uploadInProgress,
     startUpload,
-    // progress,
+    progress,
     error: uploadError,
     currentUploadIndex,
     totalUploadCount
@@ -57,14 +57,7 @@ const MyObservationsToolbar = ( {
 
   const loading = obsEditContext?.loading;
   const syncObservations = obsEditContext?.syncObservations;
-
-  const getSyncClick = ( ) => {
-    if ( numUnuploadedObs > 0 ) {
-      return startUpload;
-    }
-
-    return syncObservations;
-  };
+  const setShowLoginSheet = obsEditContext?.setShowLoginSheet;
 
   const getStatusText = ( ) => {
     if ( numUnuploadedObs <= 0 ) {
@@ -95,8 +88,6 @@ const MyObservationsToolbar = ( {
     return colors.darkGray;
   };
 
-  const progress = 0.5;
-
   const statusText = getStatusText( );
   /* eslint-disable react-native/no-inline-styles */
   return (
@@ -114,7 +105,18 @@ const MyObservationsToolbar = ( {
           />
         )}
         <Pressable
-          onPress={getSyncClick( )}
+          onPress={( ) => {
+            if ( !currentUser ) {
+              setShowLoginSheet( true );
+              return;
+            }
+
+            if ( numUnuploadedObs > 0 ) {
+              startUpload( );
+            } else {
+              syncObservations( );
+            }
+          }}
           accessibilityRole="button"
           disabled={loading || uploadInProgress}
           accessibilityState={{ disabled: loading || uploadInProgress }}
