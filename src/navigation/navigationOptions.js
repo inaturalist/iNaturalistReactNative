@@ -1,20 +1,11 @@
 // @flow
-
-import { Platform } from "react-native";
-import colors from "styles/tailwindColors";
+import ContextHeader from "./ContextHeader";
 
 const showHeader: Object = {
   headerShown: true,
   headerBackTitleVisible: false,
   headerShadowVisible: false,
-  headerTintColor: colors.black,
-  // Note: left header is not supported on iOS
-  // so we would need to build a custom header for this:
-  // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
-  headerTitleStyle: {
-    fontSize: 24,
-    fontFamily: Platform.OS === "ios" ? "Whitney-Medium" : "Whitney-Medium-Pro"
-  }
+  header: ContextHeader
 };
 
 const hideHeader = {
