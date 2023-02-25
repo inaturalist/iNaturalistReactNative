@@ -623,13 +623,14 @@ Username-or-Email = Username or Email
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
 
-Welcome-back = Welcome back,
-
 Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
 Which-traditional-projects-can-add-your-observations = Which traditional projects can add your observations?
 
 Who-can-add-observation-fields-to-my-observations = Who can add observation fields to my observations?
+
+# Welcome user back to app
+Welcome-user = <0>Welcome back,</0><1>{$userHandle}</1>
 
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->
@@ -740,6 +741,7 @@ Observe = Observe
 Open-drawer = Open drawer
 Sound-recorder = Sound recorder
 User = User { $userHandle }
+Observation-Name = Observation { $scientificName }
 
 ## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
 ## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
@@ -781,7 +783,7 @@ Flash-button-value-flash-off = The flash is turned off.
 Navigate-back = Navigate back
 Navigate-to-edit-observation = Navigate to edit observation screen
 Navigate-to-login-screen = Navigate to login screen
-Navigate-to-observation-details = Navigate to observation details screen
+Navigate-to-observation-details = Navigates to observation details screen.
 Navigate-to-project-details = Navigate to project details
 Navigate-to-taxon-details = Navigate to taxon details
 Number-of-comments = Number of comments

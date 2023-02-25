@@ -2,13 +2,9 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments } from "api/comments";
-import INatIcon from "components/INatIcon";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
-import {
-  Body4,
-  InlineUser
-} from "components/SharedComponents";
+import { Body4, INatIcon, InlineUser } from "components/SharedComponents";
 import DateDisplay from "components/SharedComponents/DateDisplay";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import {

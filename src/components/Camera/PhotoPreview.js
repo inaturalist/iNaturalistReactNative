@@ -1,7 +1,5 @@
 // @flow
-
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
@@ -23,8 +21,6 @@ const PhotoPreview = ( {
   deviceOrientation
 }: Props ): Node => {
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
-  const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
-  const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
@@ -36,16 +32,8 @@ const PhotoPreview = ( {
     showModal( );
   };
 
-  const showDialog = ( ) => setDeleteDialogVisible( true );
-
-  const hideDialog = ( ) => {
-    setPhotoUriToDelete( null );
-    setDeleteDialogVisible( false );
-  };
-
-  const handleDelete = photoUri => {
-    setPhotoUriToDelete( photoUri );
-    showDialog( );
+  const deletePhoto = photoUri => {
+    deletePhotoFromObservation( photoUri, photoUris, setPhotoUris );
   };
 
   const emptyDescription = ( ) => (
@@ -54,18 +42,8 @@ const PhotoPreview = ( {
     </Text>
   );
 
-  const deletePhoto = ( ) => {
-    deletePhotoFromObservation( photoUriToDelete, photoUris, setPhotoUris );
-    hideDialog( );
-  };
-
   return (
     <>
-      <DeletePhotoDialog
-        deleteDialogVisible={deleteDialogVisible}
-        deletePhoto={deletePhoto}
-        hideDialog={hideDialog}
-      />
       <MediaViewerModal
         mediaViewerVisible={mediaViewerVisible}
         hideModal={hideModal}
@@ -75,10 +53,10 @@ const PhotoPreview = ( {
       />
       <View className="bg-black h-32">
         <PhotoCarousel
+          deletePhoto={deletePhoto}
           photoUris={photoUris}
           emptyComponent={emptyDescription}
           containerStyle="camera"
-          handleDelete={handleDelete}
           setSelectedPhotoIndex={handleSelection}
           savingPhoto={savingPhoto}
           deviceOrientation={deviceOrientation}
