@@ -24,10 +24,10 @@ import MainStackNavigation from "./mainStackNavigation";
 const drawerOptions = {
   ...showHeader,
   // this removes the default hamburger menu from header
-  headerLeft: () => <View />
+  headerLeft: ( ) => <View />
 };
 
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator( );
 
 const drawerRenderer = ( { state, navigation, descriptors } ) => (
   <CustomDrawerContent
@@ -37,7 +37,7 @@ const drawerRenderer = ( { state, navigation, descriptors } ) => (
   />
 );
 
-const RootDrawerNavigator = (): Node => (
+const RootDrawerNavigator = ( ): Node => (
   <Drawer.Navigator
     screenOptions={drawerOptions}
     name="Drawer"

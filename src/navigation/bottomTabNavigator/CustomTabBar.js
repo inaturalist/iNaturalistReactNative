@@ -21,12 +21,12 @@ type Props = {
 /* eslint-disable react/jsx-props-no-spreading */
 
 const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
-  const isDrawerOpen = useDrawerStatus() === "open";
+  const isDrawerOpen = useDrawerStatus( ) === "open";
 
   const tabs = state.routes.reduce( ( tabList, route ) => {
     const { options } = descriptors[route.key];
 
-    const onPress = () => {
+    const onPress = ( ) => {
       navigation.navigate( { name: route.name, merge: true } );
     };
     const { history } = state;
@@ -48,7 +48,7 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
   tabs.splice( -2, 0, <AddObsButton key="AddObsButton" /> );
   tabs.unshift(
     <NavButton
-      onPress={() => navigation.openDrawer()}
+      onPress={( ) => navigation.openDrawer( )}
       icon="hamburger-menu"
       accessibilityRole="button"
       accessibilityLabel={t( "Open-drawer" )}

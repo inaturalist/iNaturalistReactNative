@@ -18,7 +18,7 @@ import useUserMe from "sharedHooks/useUserMe";
 
 import CustomTabBar from "./CustomTabBar";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator( );
 
 const OBS_LIST_SCREEN_ID = "ObsList";
 const EXPLORE_SCREEN_ID = "Explore";
@@ -26,8 +26,8 @@ const MESSAGES_SCREEN_ID = "Messages";
 
 /* eslint-disable react/jsx-props-no-spreading */
 
-const BottomTabs = () => {
-  const { remoteUser: user } = useUserMe();
+const BottomTabs = ( ) => {
+  const { remoteUser: user } = useUserMe( );
 
   const renderTabBar = props => <CustomTabBar {...props} />;
 

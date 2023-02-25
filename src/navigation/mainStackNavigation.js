@@ -28,11 +28,11 @@ import { PERMISSIONS } from "react-native-permissions";
 
 import BottomTabNavigator from "./bottomTabNavigator";
 
-const isTablet = DeviceInfo.isTablet();
+const isTablet = DeviceInfo.isTablet( );
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator( );
 
-const PhotoGalleryWithPermission = () => (
+const PhotoGalleryWithPermission = ( ) => (
   <PermissionGate
     permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}
   >
@@ -55,7 +55,7 @@ const PhotoGalleryWithPermission = () => (
   </PermissionGate>
 );
 
-const StandardCameraWithPermission = () => (
+const StandardCameraWithPermission = ( ) => (
   <PermissionGate
     permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
   >
@@ -65,7 +65,7 @@ const StandardCameraWithPermission = () => (
   </PermissionGate>
 );
 
-const SoundRecorderWithPermission = () => (
+const SoundRecorderWithPermission = ( ) => (
   <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
     <PermissionGate
       permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
@@ -82,13 +82,13 @@ const SoundRecorderWithPermission = () => (
 // The login component should be not preserve its state or effects after the
 // user navigates away from it. This will simply cause it to unmount when it
 // loses focus
-const MortalLogin = () => (
+const MortalLogin = ( ) => (
   <Mortal>
     <Login />
   </Mortal>
 );
 
-const ObsEditWithPermission = () => (
+const ObsEditWithPermission = ( ) => (
   <Mortal>
     <PermissionGate
       permission={PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION}
@@ -98,7 +98,7 @@ const ObsEditWithPermission = () => (
   </Mortal>
 );
 
-const MainStackNavigation = (): React.Node => (
+const MainStackNavigation = ( ): React.Node => (
   <Mortal>
     <Stack.Navigator screenOptions={showHeader}>
       <Stack.Screen
