@@ -56,9 +56,7 @@ const Logout = ( ): Node => {
     // TODO might be necessary to restart the app at this point. We just
     // deleted the realm file on disk, but the RealmProvider may still have a
     // copy of realm in local state
-    navigation.navigate( "MainStack", {
-      screen: "ObsList"
-    } );
+    navigation.navigate( "ObsList" );
   };
 
   const renderBackButton = ( ) => (

@@ -72,9 +72,7 @@ const Login = ( ): Node => {
     setLoggedIn( true );
     setLoading( false );
 
-    navigation.navigate( "MainStack", {
-      screen: "ObsList"
-    } );
+    navigation.navigate( "ObsList" );
   };
 
   const forgotPassword = ( ) => {

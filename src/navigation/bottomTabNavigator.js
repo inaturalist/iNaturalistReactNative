@@ -3,6 +3,7 @@ import classNames from "classnames";
 import Explore from "components/Explore/Explore";
 import Messages from "components/Messages/Messages";
 import ObsList from "components/Observations/ObsList";
+import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import NavButton from "components/SharedComponents/NavBar/NavButton";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -21,6 +22,7 @@ const MESSAGES_SCREEN_ID = "Messages";
 
 // @todo fix this....
 /* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/jsx-props-no-spreading */
 
 const CustomTabBar = ( { state, descriptors, navigation } ) => {
   const tabs = state.routes.map( route => {
@@ -33,13 +35,14 @@ const CustomTabBar = ( { state, descriptors, navigation } ) => {
     const currentRoute = history[history.length - 1]?.key || "";
     return (
       <NavButton
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...options.meta}
         onPress={onPress}
         active={currentRoute.includes( route.name )}
       />
     );
   } );
+
+  tabs.splice( -2, 0, <AddObsButton /> );
 
   const footerHeight = Platform.OS === "ios" ? "h-20" : "h-15";
 
@@ -67,8 +70,10 @@ const BottomTabs = () => {
   const { remoteUser: user } = useUserMe();
 
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <Tab.Navigator tabBar={props => <CustomTabBar {...props} />}>
+    <Tab.Navigator
+      initialRouteName={OBS_LIST_SCREEN_ID}
+      tabBar={props => <CustomTabBar {...props} />}
+    >
       <Tab.Screen
         name="Explore"
         component={Explore}
