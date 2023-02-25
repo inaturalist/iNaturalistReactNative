@@ -91,7 +91,7 @@ Couldnt-create-identification = Couldn't create identification
 
 Create-an-iNaturalist-account-to-save-your-observations = Create an iNaturalist account to save your observations and contribute them to science.
 
-CREATE-AN-OBSERVATION = CREATE AN OBSERVATION
+CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
 
 Date = Date
 
@@ -145,6 +145,8 @@ Error-Could-Not-Fetch-Taxon = Error: Could Not Fetch Taxon
 Evidence = Evidence
 
 Explore = Explore
+
+EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
 
 External-Applications = External Applications
 
@@ -676,6 +678,8 @@ You-can = You can:
 Take-a-photo-with-your-camera = Take a photo with your camera
 Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 Record-a-sound = Record a sound
+
+You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what’s around you.
 
 
 # Message shown when a permission is required to use a part of the app

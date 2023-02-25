@@ -3,7 +3,9 @@ import { useNavigation } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { searchObservations } from "api/observations";
 import type { Node } from "react";
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback, useEffect, useMemo, useState
+} from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
@@ -34,6 +36,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [album, setAlbum] = useState( null );
   const [loading, setLoading] = useState( );
   const [unsavedChanges, setUnsavedChanges] = useState( false );
+  const [showLoginSheet, setShowLoginSheet] = useState( false );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -42,6 +45,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setGalleryUris( [] );
     setEvidenceToAdd( [] );
     setUnsavedChanges( false );
+    setShowLoginSheet( false );
   }, [] );
 
   const allObsPhotoUris = useMemo(
@@ -206,6 +210,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const uploadObservation = async observation => {
+      // don't bother trying to upload unless there's a logged in user
+      if ( !currentUser ) { return {}; }
       if ( !apiToken ) {
         throw new Error( "Gack, tried to upload an observation without API token!" );
       }
@@ -309,7 +315,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       loading,
       setLoading,
       unsavedChanges,
-      syncObservations
+      syncObservations,
+      showLoginSheet,
+      setShowLoginSheet
     };
   }, [
     currentObservation,
@@ -334,8 +342,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     loading,
     setLoading,
     unsavedChanges,
-    currentUser?.id
+    currentUser,
+    showLoginSheet,
+    setShowLoginSheet
   ] );
+
+  useEffect( ( ) => {
+    if ( loading && !currentUser ) {
+      setShowLoginSheet( true );
+    }
+  }, [loading, currentUser] );
 
   return (
     <ObsEditContext.Provider value={uploadValue}>

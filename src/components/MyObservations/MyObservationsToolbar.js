@@ -21,9 +21,11 @@ type Props = {
   setLayout: Function,
   layout: string,
   numUnuploadedObs: number
-};
+}
 
-const MyObservationsToolbar = ( { setLayout, layout, numUnuploadedObs }: Props ): Node => {
+const MyObservationsToolbar = ( {
+  setLayout, layout, numUnuploadedObs
+}: Props ): Node => {
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const { allObsToUpload } = useLocalObservations( );

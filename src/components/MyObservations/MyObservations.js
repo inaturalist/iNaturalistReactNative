@@ -110,6 +110,7 @@ const MyObservations = ( {
                 layout={layout}
                 hideHeaderCard={hideHeaderCard}
                 currentUser={currentUser}
+                hideToolbar={observations.length === 0}
               />
             )}
             ItemSeparatorComponent={

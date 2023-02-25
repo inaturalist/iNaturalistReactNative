@@ -14,7 +14,8 @@ type Props = {
   setLayout: Function;
   layout: string,
   hideHeaderCard: boolean,
-  currentUser: ?Object
+  currentUser: ?Object,
+  hideToolbar: boolean
 }
 
 const fade = ( value, duration ) => ( {
@@ -27,7 +28,8 @@ const MyObservationsHeader = ( {
   setLayout,
   layout,
   hideHeaderCard,
-  currentUser
+  currentUser,
+  hideToolbar
 }: Props ): Node => {
   const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
 
@@ -91,11 +93,13 @@ const MyObservationsHeader = ( {
           {displayHeaderCard( )}
         </Animated.View>
       </View>
-      <MyObservationsToolbar
-        setLayout={setLayout}
-        layout={layout}
-        numUnuploadedObs={numUnuploadedObs}
-      />
+      {!hideToolbar && (
+        <MyObservationsToolbar
+          setLayout={setLayout}
+          layout={layout}
+          numUnuploadedObs={numUnuploadedObs}
+        />
+      )}
     </>
   );
 };
