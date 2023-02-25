@@ -19,7 +19,7 @@ const InfiniteScrollLoadingWheel = ( { isLoading, currentUser }: Props ): Node =
       </View>
     );
   }
-  return <View className={className} />;
+  return <View className="h-64 py-16" />;
 };
 
 export default InfiniteScrollLoadingWheel;

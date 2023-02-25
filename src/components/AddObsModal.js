@@ -60,7 +60,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   );
 
   return (
-    <View className="flex-1 justify-end">
+    <>
       <View className="flex-row justify-center">
         <View className="bg-white rounded-xl p-5 mb-12 max-w-sm">
           <Text testID="evidence-text" className="text-2xl">{t( "Evidence" )}</Text>
@@ -112,7 +112,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
           "record-sound-button"
         )}
       </View>
-    </View>
+    </>
   );
 };
 

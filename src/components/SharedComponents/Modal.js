@@ -8,15 +8,19 @@ type Props = {
   showModal: boolean,
   closeModal: Function,
   modal: any,
-  style?: Object,
   backdropOpacity?: number
 }
+
+const modalStyle = {
+  flex: 1,
+  justifyContent: "flex-end"
+};
 
 // accessibility might not work on Android because of backdrop
 // https://github.com/react-native-modal/react-native-modal/issues/525
 
 const Modal = ( {
-  showModal, closeModal, modal, style, backdropOpacity
+  showModal, closeModal, modal, backdropOpacity
 }: Props ): React.Node => (
   <RNModal
     isVisible={showModal}
@@ -25,7 +29,7 @@ const Modal = ( {
     swipeDirection="down"
     useNativeDriverForBackdrop
     useNativeDriver
-    style={style}
+    style={modalStyle}
     backdropOpacity={backdropOpacity}
   >
     {modal}
