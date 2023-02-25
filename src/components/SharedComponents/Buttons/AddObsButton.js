@@ -6,21 +6,17 @@ import Modal from "components/SharedComponents/Modal";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import colors from "styles/tailwindColors";
+import getShadowStyle from "sharedHelpers/getShadowStyle";
 
-const shadow = StyleSheet.create( {
+const shadow = getShadowStyle( {
   shadowColor: colors.darkGray,
-  shadowOffset: {
-    width: 0,
-    height: 2
-  },
-  // $FlowIssue[incompatible-shape]
-  shadowOpacity: 0.25,
-  // $FlowIssue[incompatible-shape]
-  shadowRadius: 2,
-  // $FlowIssue[incompatible-shape]
+  offsetWidth: 0,
+  offsetHeight: 2,
+  radius: 2,
+  opacity: 0.25,
   elevation: 5
 } );
 
