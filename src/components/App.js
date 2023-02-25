@@ -2,8 +2,7 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
-// import RootDrawerNavigator from "navigation/rootDrawerNavigation";
-import MainStackNavigator from "navigation/mainStackNavigation";
+import RootDrawerNavigator from "navigation/rootDrawerNavigation";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
@@ -18,22 +17,22 @@ const logger = log.extend( "App" );
 const { useRealm } = RealmContext;
 
 type Props = {
-  children?: any
-}
+  children?: any,
+};
 
 // this children prop is here for the sake of testing with jest
 // normally we would never do this in code
 const App = ( { children }: Props ): Node => {
-  const realm = useRealm( );
-  const currentUser = useCurrentUser( );
-  const { i18n } = useTranslation( );
+  const realm = useRealm();
+  const currentUser = useCurrentUser();
+  const { i18n } = useTranslation();
 
   // fetch current user from server and save to realm in useEffect
   // this is used for changing locale and also for showing UserCard
-  const { remoteUser } = useUserMe( );
+  const { remoteUser } = useUserMe();
 
-  useEffect( ( ) => {
-    const checkForSignedInUser = async ( ) => {
+  useEffect( () => {
+    const checkForSignedInUser = async () => {
       // check to see if this is a fresh install of the app
       // if it is, delete realm file when we sign the user out of the app
       // this handles the case where a user deletes the app, then reinstalls
@@ -50,7 +49,7 @@ const App = ( { children }: Props ): Node => {
       }
     };
 
-    checkForSignedInUser( );
+    checkForSignedInUser();
   }, [currentUser] );
 
   const changeLanguageToLocale = useCallback(
@@ -59,9 +58,9 @@ const App = ( { children }: Props ): Node => {
   );
 
   // When we get the updated current user, update the record in the database
-  useEffect( ( ) => {
+  useEffect( () => {
     if ( remoteUser ) {
-      realm?.write( ( ) => {
+      realm?.write( () => {
         realm?.create( "User", remoteUser, "modified" );
       } );
 
@@ -73,7 +72,7 @@ const App = ( { children }: Props ): Node => {
   }, [changeLanguageToLocale, i18n, realm, remoteUser] );
 
   // If the current user's locale is not set, change the language
-  useEffect( ( ) => {
+  useEffect( () => {
     if ( currentUser?.locale && currentUser?.locale !== i18n.language ) {
       changeLanguageToLocale( currentUser.locale );
     }
@@ -81,7 +80,7 @@ const App = ( { children }: Props ): Node => {
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code
-  return children || <MainStackNavigator />;
+  return children || <RootDrawerNavigator />;
 };
 
 export default App;

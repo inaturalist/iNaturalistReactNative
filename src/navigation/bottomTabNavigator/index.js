@@ -1,18 +1,22 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import classNames from "classnames";
+import About from "components/About";
 import Explore from "components/Explore/Explore";
 import Messages from "components/Messages/Messages";
+import NetworkLogging from "components/NetworkLogging";
 import ObsList from "components/Observations/ObsList";
-import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
-import NavButton from "components/SharedComponents/NavBar/NavButton";
-import { View } from "components/styledComponents";
+import PlaceholderComponent from "components/PlaceholderComponent";
+import Search from "components/Search/Search";
+import Settings from "components/Settings/Settings";
+import UiLibrary from "components/UiLibrary";
 import { t } from "i18next";
+import IdentifyStackNavigation from "navigation/identifyStackNavigation";
+import { hideHeader } from "navigation/navigationOptions";
+import ProjectsStackNavigation from "navigation/projectsStackNavigation";
 import React from "react";
-import { Platform } from "react-native";
 import User from "realmModels/User";
-import getShadowStyle from "sharedHelpers/getShadowStyle";
 import useUserMe from "sharedHooks/useUserMe";
-import colors from "styles/tailwindColors";
+
+import CustomTabBar from "./CustomTabBar";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,59 +24,17 @@ const OBS_LIST_SCREEN_ID = "ObsList";
 const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
 
-// @todo fix this....
-/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-props-no-spreading */
-
-const CustomTabBar = ( { state, descriptors, navigation } ) => {
-  const tabs = state.routes.map( route => {
-    const { options } = descriptors[route.key];
-
-    const onPress = () => {
-      navigation.navigate( { name: route.name, merge: true } );
-    };
-    const { history } = state;
-    const currentRoute = history[history.length - 1]?.key || "";
-    return (
-      <NavButton
-        {...options.meta}
-        onPress={onPress}
-        active={currentRoute.includes( route.name )}
-      />
-    );
-  } );
-
-  tabs.splice( -2, 0, <AddObsButton /> );
-
-  const footerHeight = Platform.OS === "ios" ? "h-20" : "h-15";
-
-  return (
-    <View
-      className={classNames(
-        "flex flex-row absolute bottom-0 bg-white w-full justify-evenly items-center pb-2",
-        footerHeight
-      )}
-      style={getShadowStyle( {
-        shadowColor: colors.black,
-        offsetWidth: 0,
-        offsetHeight: -3,
-        opacity: 0.2,
-        radius: 5
-      } )}
-      accessibilityRole="tablist"
-    >
-      {tabs}
-    </View>
-  );
-};
 
 const BottomTabs = () => {
   const { remoteUser: user } = useUserMe();
 
+  const renderTabBar = props => <CustomTabBar {...props} />;
+
   return (
     <Tab.Navigator
       initialRouteName={OBS_LIST_SCREEN_ID}
-      tabBar={props => <CustomTabBar {...props} />}
+      tabBar={renderTabBar}
     >
       <Tab.Screen
         name="Explore"
@@ -114,6 +76,35 @@ const BottomTabs = () => {
           }
         }}
       />
+
+      <Tab.Screen
+        name="search"
+        component={Search}
+        options={{ headerTitle: t( "Search" ) }}
+      />
+      <Tab.Screen
+        name="identify"
+        component={IdentifyStackNavigation}
+        options={hideHeader}
+      />
+      <Tab.Screen
+        name="projects"
+        component={ProjectsStackNavigation}
+        options={hideHeader}
+      />
+      <Tab.Screen
+        name="settings"
+        component={Settings}
+        options={{ headerTitle: t( "Settings" ) }}
+      />
+      <Tab.Screen
+        name="about"
+        component={About}
+        options={{ headerTitle: t( "About-iNaturalist" ) }}
+      />
+      <Tab.Screen name="help" component={PlaceholderComponent} />
+      <Tab.Screen name="network" component={NetworkLogging} />
+      <Tab.Screen name="UI Library" component={UiLibrary} />
     </Tab.Navigator>
   );
 };

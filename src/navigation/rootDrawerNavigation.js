@@ -1,8 +1,8 @@
 // @flow
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import About from "components/About";
 import CustomDrawerContent from "components/CustomDrawerContent";
+<<<<<<< HEAD
 import Login from "components/LoginSignUp/Login";
 import NetworkLogging from "components/NetworkLogging";
 import PlaceholderComponent from "components/PlaceholderComponent";
@@ -12,32 +12,32 @@ import Mortal from "components/SharedComponents/Mortal";
 import UiLibrary from "components/UiLibrary";
 import { t } from "i18next";
 import { hideHeader, showCustomHeader, showHeader } from "navigation/navigationOptions";
+=======
+import { hideHeader, showHeader } from "navigation/navigationOptions";
+>>>>>>> b3268903 (Wire up routes)
 import type { Node } from "react";
 import * as React from "react";
 import { View } from "react-native";
 
-import IdentifyStackNavigation from "./identifyStackNavigation";
 import MainStackNavigation from "./mainStackNavigation";
-import ProjectsStackNavigation from "./projectsStackNavigation";
 
 const drawerOptions = {
   ...showHeader,
   // this removes the default hamburger menu from header
-  headerLeft: ( ) => <View />
+  headerLeft: () => <View />
 };
 
-// The login component should be not preserve its state or effects after the
-// user navigates away from it. This will simply cause it to unmount when it
-// loses focus
-const MortalLogin = ( ) => <Mortal><Login /></Mortal>;
-
-const Drawer = createDrawerNavigator( );
+const Drawer = createDrawerNavigator();
 
 const drawerRenderer = ( { state, navigation, descriptors } ) => (
-  <CustomDrawerContent state={state} navigation={navigation} descriptors={descriptors} />
+  <CustomDrawerContent
+    state={state}
+    navigation={navigation}
+    descriptors={descriptors}
+  />
 );
 
-const RootDrawerNavigator = ( ): Node => (
+const RootDrawerNavigator = (): Node => (
   <Drawer.Navigator
     screenOptions={drawerOptions}
     name="Drawer"
@@ -48,6 +48,7 @@ const RootDrawerNavigator = ( ): Node => (
       component={MainStackNavigation}
       options={hideHeader}
     />
+<<<<<<< HEAD
     <Drawer.Screen
       name="search"
       component={Search}
@@ -84,6 +85,8 @@ const RootDrawerNavigator = ( ): Node => (
       component={UiLibrary}
       options={showCustomHeader}
     />
+=======
+>>>>>>> b3268903 (Wire up routes)
   </Drawer.Navigator>
 );
 

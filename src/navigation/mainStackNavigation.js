@@ -2,6 +2,7 @@
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StandardCamera from "components/Camera/StandardCamera";
+import Login from "components/LoginSignUp/Login";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
@@ -76,6 +77,15 @@ const SoundRecorderWithPermission = () => (
       </PermissionGate>
     </PermissionGate>
   </PermissionGate>
+);
+
+// The login component should be not preserve its state or effects after the
+// user navigates away from it. This will simply cause it to unmount when it
+// loses focus
+const MortalLogin = () => (
+  <Mortal>
+    <Login />
+  </Mortal>
 );
 
 const ObsEditWithPermission = () => (
@@ -156,6 +166,7 @@ const MainStackNavigation = (): React.Node => (
         component={UserProfile}
         options={blankHeaderTitle}
       />
+      <Stack.Screen name="Login" component={MortalLogin} options={hideHeader} />
     </Stack.Navigator>
   </Mortal>
 );
