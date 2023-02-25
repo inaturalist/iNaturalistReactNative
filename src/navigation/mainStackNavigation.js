@@ -166,7 +166,7 @@ const MainStackNavigation = (): React.Node => (
         component={UserProfile}
         options={blankHeaderTitle}
       />
-      <Stack.Screen name="Login" component={MortalLogin} options={hideHeader} />
+      <Stack.Screen name="login" component={MortalLogin} options={hideHeader} />
     </Stack.Navigator>
   </Mortal>
 );
