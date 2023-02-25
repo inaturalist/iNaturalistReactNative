@@ -20,46 +20,43 @@ type Props = {
 
 /* eslint-disable react/jsx-props-no-spreading */
 
-const CustomTabBar = ( {
-  state,
-  descriptors,
-  navigation
-}: Props ): Node => {
+const CustomTabBar = ({ state, descriptors, navigation }: Props): Node => {
   const isDrawerOpen = useDrawerStatus() === "open";
 
-  const tabs = state.routes.reduce( ( tabList, route ) => {
+  const tabs = state.routes.reduce((tabList, route) => {
     const { options } = descriptors[route.key];
 
     const onPress = () => {
-      navigation.navigate( { name: route.name, merge: true } );
+      navigation.navigate({ name: route.name, merge: true });
     };
     const { history } = state;
     const currentRoute = history[history.length - 1]?.key || "";
-    if ( options.meta ) {
+    if (options.meta) {
       tabList.push(
         <NavButton
           {...options.meta}
           key={route.name}
           onPress={onPress}
-          active={currentRoute.includes( route.name )}
+          active={currentRoute.includes(route.name)}
         />
       );
     }
 
     return tabList;
-  }, [] );
+  }, []);
 
-  tabs.splice( -2, 0, <AddObsButton /> );
+  tabs.splice(-2, 0, <AddObsButton key="AddObsButton" />);
   tabs.unshift(
     <NavButton
       onPress={() => navigation.openDrawer()}
       icon="hamburger-menu"
       accessibilityRole="button"
-      accessibilityLabel={t( "Open-drawer" )}
-      accessibilityHint={t( "Opens-the-side-drawer-menu" )}
+      accessibilityLabel={t("Open-drawer")}
+      accessibilityHint={t("Opens-the-side-drawer-menu")}
       testID="OPEN_DRAWER"
       active={isDrawerOpen}
       size={32}
+      key="DrawerToggle"
     />
   );
 
@@ -71,13 +68,13 @@ const CustomTabBar = ( {
         "flex flex-row absolute bottom-0 bg-white w-full justify-evenly items-center pb-2",
         footerHeight
       )}
-      style={getShadowStyle( {
+      style={getShadowStyle({
         shadowColor: colors.black,
         offsetWidth: 0,
         offsetHeight: -3,
         opacity: 0.2,
-        radius: 5
-      } )}
+        radius: 5,
+      })}
       accessibilityRole="tablist"
     >
       {tabs}
