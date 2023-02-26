@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react-native";
-import INatIcon, { glyphMap } from "components/INatIcon";
+import { INatIcon } from "components/SharedComponents";
+import { glyphMap } from "components/SharedComponents/INatIcon/INatIcon";
 import React from "react";
 
 const iconName = "camera";

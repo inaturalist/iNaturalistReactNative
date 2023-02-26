@@ -1,5 +1,4 @@
 // @flow
-import INatIcon, { glyphMap } from "components/INatIcon";
 import ObsStatus from "components/Observations/ObsStatus";
 import {
   ActivityCount,
@@ -12,11 +11,13 @@ import {
   DateDisplay,
   Divider,
   EvidenceButton,
+  FloatingActionBar,
   Heading1,
   Heading2,
   Heading3,
   Heading4,
   Heading5,
+  INatIcon,
   InlineUser,
   List1,
   List2,
@@ -28,6 +29,7 @@ import {
   UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
+import { glyphMap } from "components/SharedComponents/INatIcon/INatIcon";
 import UserText from "components/SharedComponents/UserText";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
@@ -50,6 +52,14 @@ const UiLibrary = (): Node => {
   `.trim();
   return (
     <ViewWithFooter>
+      <FloatingActionBar position="bottomStart" containerClass="mx-4 px-2 my-[100px]">
+        <Heading2 className="my-2">Floating Action Bar</Heading2>
+        <IconButton
+          className="mx-auto"
+          icon="icon-fave"
+          mode="contained"
+        />
+      </FloatingActionBar>
       <ScrollView className="px-5">
         {/* TODO replace these text components with our typography header components */}
         <Body1>
