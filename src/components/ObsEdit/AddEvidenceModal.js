@@ -9,12 +9,15 @@ import { useNavigation } from "@react-navigation/native";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
 import { EvidenceButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect,
+  useCallback, useContext,
+  useEffect,
   useRef, useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import selectImagesFromGallery from "sharedHelpers/selectImagesFromGallery";
 
 type Props = {
   showAddEvidenceModal: boolean,
@@ -30,6 +33,7 @@ const AddEvidenceModal = ( {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const bottomSheetModalRef = useRef( null );
+  const { addGalleryPhotosToCurrentObservation } = useContext( ObsEditContext );
 
   const [snapPoint, setSnapPoint] = useState( 150 );
 
@@ -61,7 +65,8 @@ const AddEvidenceModal = ( {
   );
 
   const onImportPhoto = async () => {
-    navigation.navigate( "PhotoGallery", { skipGroupPhotos: true } );
+    const selectedPhotos = await selectImagesFromGallery( { resize: true } );
+    addGalleryPhotosToCurrentObservation( selectedPhotos );
 
     bottomSheetModalRef.current?.dismiss();
   };

@@ -13,7 +13,6 @@ import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import { formatDateStringFromTimestamp } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
@@ -87,14 +86,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const createObsPhotos = useCallback( async photos => Promise.all(
-    photos.map( async photo => ObservationPhoto.new( photo?.image?.uri ) )
+    photos.map( async photo => ObservationPhoto.new( photo?.image?.uri, undefined, true ) )
   ), [] );
-
-  const createObservationFromGallery = useCallback( async photo => {
-    const newLocalObs = await createObservationFromGalleryPhoto( photo );
-    newLocalObs.observationPhotos = await createObsPhotos( [photo] );
-    setObservations( [newLocalObs] );
-  }, [createObsPhotos, createObservationFromGalleryPhoto] );
 
   const createObservationFromGalleryPhoto = useCallback( async photo => {
     const latitude = photo?.location?.latitude;
@@ -122,6 +115,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( newObservations );
   }, [createObsPhotos, createObservationFromGalleryPhoto] );
 
+  const createObservationFromGallery = useCallback( async photo => {
+    const newLocalObs = await createObservationFromGalleryPhoto( photo );
+    newLocalObs.observationPhotos = await createObsPhotos( [photo] );
+    setObservations( [newLocalObs] );
+  }, [createObsPhotos, createObservationFromGalleryPhoto] );
 
   const appendObsPhotos = useCallback( obsPhotos => {
     // need empty case for when a user creates an observation with no photos,
@@ -308,7 +306,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     return {
-      createObservationFromGallery,
       createObservationFromGalleryPhoto,
       createObservationNoEvidence,
       addObservations,
@@ -350,6 +347,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setUploadProgress
     };
   }, [
+    createObservationFromGalleryPhoto,
     currentObservation,
     currentObservationIndex,
     observations,

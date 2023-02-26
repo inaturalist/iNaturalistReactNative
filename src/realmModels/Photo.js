@@ -70,7 +70,7 @@ class Photo extends Realm.Object {
     return uri;
   }
 
-  static async new( uri, resizeOptions = {}, skipResize ) {
+  static async new( uri, resizeOptions = {}, skipResize = false ) {
     const localFilePath = skipResize ? uri : await Photo.resizeImageForUpload( uri, resizeOptions );
 
     return {

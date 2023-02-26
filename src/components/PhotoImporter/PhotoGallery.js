@@ -183,6 +183,8 @@ const PhotoGallery = (): Node => {
       navToObsEdit();
       return;
     }
+
+    console.log( JSON.stringify( selectedPhotos, null, 2 ) );
     navigation.navigate( "GroupPhotos", { selectedPhotos } );
   };
 
