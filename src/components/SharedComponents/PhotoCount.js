@@ -1,9 +1,10 @@
 // @flow
 
-import classNames from "classnames";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import Svg, { Path, Text } from "react-native-svg";
+import { viewStyles } from "styles/sharedComponents/photoCount";
+import colors from "styles/tailwindColors";
 
 type Props = {
   count: number,
@@ -23,11 +24,7 @@ const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
 
   return (
     <View
-      className={classNames(
-        `w-[${String( size )}px] h-[${String( size )}px]`,
-        { shadow },
-        "shadow"
-      )}
+      style={[{ height: size, width: size }, shadow && viewStyles.shadow]}
       testID="photo-count"
     >
       <Svg
@@ -41,18 +38,22 @@ const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
           fillRule="nonzero"
           clipRule="evenodd"
           d="M4 5.818a4 4 0 00-4 4V20a4 4 0 004 4h10.182a4 4 0 004-4V9.818a4 4 0 00-4-4z"
-          fill="#fff"
-          filter="url(#drop-shadow)"
+          fill={colors.white}
         />
         <Path
           // eslint-disable-next-line
           d="M15.364 3.636h-9.53A4 4 0 019.818 0H20a4 4 0 014 4v10.182a4 4 0 01-3.636 3.984v-9.53a5 5 0 00-5-5z"
-          fill="#fff"
+          fill={colors.white}
           clipRule="evenodd"
           fillRule="nonzero"
-          filter="url(#drop-shadow)"
         />
-        <Text x="38%" y="77%" textAnchor="middle" fontSize="10" fill="gray">
+        <Text
+          x="38%"
+          y="77%"
+          textAnchor="middle"
+          fontSize="10"
+          fill={colors.darkGray}
+        >
           {photoCount}
         </Text>
       </Svg>

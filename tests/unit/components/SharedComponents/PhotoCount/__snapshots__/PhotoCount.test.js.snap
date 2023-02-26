@@ -6,14 +6,10 @@ exports[`PhotosCount should show photo count value equal to 99 1`] = `
     Array [
       Array [
         Object {
-          "shadowColor": "rgba(0, 0, 0, 0.1)",
-          "shadowOffset": Object {
-            "height": 2,
-            "width": 0,
-          },
-          "shadowOpacity": 1,
-          "shadowRadius": 6,
+          "height": 24,
+          "width": 24,
         },
+        false,
       ],
     ]
   }
@@ -83,7 +79,7 @@ exports[`PhotosCount should show photo count value equal to 99 1`] = `
         content={null}
         dx={Array []}
         dy={Array []}
-        fill={4286611584}
+        fill={4282729797}
         font={
           Object {
             "fontSize": "10",
@@ -128,14 +124,10 @@ exports[`PhotosCount should show the correct value 1`] = `
     Array [
       Array [
         Object {
-          "shadowColor": "rgba(0, 0, 0, 0.1)",
-          "shadowOffset": Object {
-            "height": 2,
-            "width": 0,
-          },
-          "shadowOpacity": 1,
-          "shadowRadius": 6,
+          "height": 24,
+          "width": 24,
         },
+        false,
       ],
     ]
   }
@@ -205,7 +197,7 @@ exports[`PhotosCount should show the correct value 1`] = `
         content={null}
         dx={Array []}
         dy={Array []}
-        fill={4286611584}
+        fill={4282729797}
         font={
           Object {
             "fontSize": "10",
