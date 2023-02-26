@@ -90,6 +90,26 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     photos.map( async photo => ObservationPhoto.new( photo?.image?.uri ) )
   ), [] );
 
+  const createObservationFromCleanGallery = useCallback( async photo => {
+    const newLocalObs = await createObservationFromCleanGalleryPhoto( photo );
+    newLocalObs.observationPhotos = await createObsPhotos( [photo] );
+    setObservations( [newLocalObs] );
+  }, [createObsPhotos, createObservationFromGalleryPhoto] );
+
+  const createObservationFromCleanGalleryPhoto = useCallback( async photo => {
+    const latitude = photo?.location?.latitude;
+    const longitude = photo?.location?.longitude;
+    const placeGuess = await fetchPlaceName( latitude, longitude );
+
+    const newObservation = {
+      latitude,
+      longitude,
+      place_guess: placeGuess,
+      observed_on_string: formatDateStringFromTimestamp( photo.timestamp )
+    };
+    return Observation.new( newObservation );
+  }, [] );
+
   const createObservationFromGalleryPhoto = useCallback( async photo => {
     const originalPhotoUri = photo?.image?.uri;
     const firstPhotoExif = await parseExif( originalPhotoUri );
@@ -317,6 +337,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     return {
+      createObservationFromCleanGallery,
+      createObservationFromCleanGalleryPhoto,
       createObservationNoEvidence,
       addObservations,
       createObsWithCameraPhotos,
@@ -357,6 +379,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setUploadProgress
     };
   }, [
+    createObservationFromCleanGallery,
+    createObservationFromCleanGalleryPhoto,
     currentObservation,
     currentObservationIndex,
     observations,

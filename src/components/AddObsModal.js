@@ -6,6 +6,7 @@ import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import * as React from "react";
 import { IconButton, useTheme } from "react-native-paper";
+import ImagePicker from 'react-native-image-crop-picker';
 
 type Props = {
   closeModal: ( ) => void
@@ -32,7 +33,36 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     closeModal( );
   };
 
-  const navToPhotoGallery = ( ) => navAndCloseModal( "PhotoGallery" );
+  const navToPhotoGallery = async ( ) => {
+    const result = await ImagePicker.openPicker({
+      mediaType: "photo",
+      multiple: true,
+      maxFiles: 20,
+      includeExif: true,
+      loadingLabelText: ""
+    }).then(images => images.map(image => ({
+        timestamp: parseInt(image.creationDate),
+        type: "image",
+        location: {
+          altitude: image.exif["{GPS}"].Altitude || 0,
+          longitude: image.exif["{GPS}"].Longitude || null,
+          latitude: image.exif["{GPS}"].Latitude || null,
+          heading: image.exif["{GPS}"].ImgDirection || 0,
+          speed: image.exif["{GPS}"].Speed || 0
+        },
+        image: {
+          width: image.width,
+          height: image.height,
+          filename: image.filename,
+          fileSize: image.size,
+          playableDuration: null,
+          uri: `file://${image.path}`
+        }
+    })));
+
+    const foo = await obsEditContext.createObservationFromCleanGallery(result[0])
+    navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+  };
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 
