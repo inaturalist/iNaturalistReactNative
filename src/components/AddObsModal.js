@@ -5,8 +5,8 @@ import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import * as React from "react";
+import ImagePicker from "react-native-image-crop-picker";
 import { IconButton, useTheme } from "react-native-paper";
-import ImagePicker from 'react-native-image-crop-picker';
 
 type Props = {
   closeModal: ( ) => void
@@ -33,35 +33,59 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     closeModal( );
   };
 
-  const navToPhotoGallery = async ( ) => {
-    const result = await ImagePicker.openPicker({
+  const navToPhotoGallery = async () => {
+    const selectedImages = await ImagePicker.openPicker({
       mediaType: "photo",
       multiple: true,
       maxFiles: 20,
       includeExif: true,
-      loadingLabelText: ""
-    }).then(images => images.map(image => ({
-        timestamp: parseInt(image.creationDate),
-        type: "image",
-        location: {
-          altitude: image.exif["{GPS}"].Altitude || 0,
-          longitude: image.exif["{GPS}"].Longitude || null,
-          latitude: image.exif["{GPS}"].Latitude || null,
-          heading: image.exif["{GPS}"].ImgDirection || 0,
-          speed: image.exif["{GPS}"].Speed || 0
-        },
-        image: {
-          width: image.width,
-          height: image.height,
-          filename: image.filename,
-          fileSize: image.size,
-          playableDuration: null,
-          uri: `file://${image.path}`
-        }
-    })));
+      loadingLabelText: "",
+    }).then((images) =>
+      images.map((image) => {
+        const gpsData = image.exif["{GPS}"];
+        const latitudeNegative = gpsData.LatitudeRef === "S";
+        const longitudeNegative = gpsData.LongitudeRef === "W";
 
-    const foo = await obsEditContext.createObservationFromCleanGallery(result[0])
-    navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+        let latitude = gpsData.Latitude ?? null;
+        let longitude = gpsData.Longitude ?? null;
+
+        if (latitude && latitudeNegative) {
+          latitude *= -1;
+        }
+
+        if (longitude && longitudeNegative) {
+          longitude *= -1;
+        }
+
+        return {
+          timestamp: parseInt(image.creationDate, 10),
+          type: "image",
+          location: {
+            altitude: gpsData.Altitude || 0,
+            longitude,
+            latitude,
+            heading: gpsData.ImgDirection || 0,
+            speed: gpsData.Speed || 0,
+          },
+          image: {
+            width: image.width,
+            height: image.height,
+            filename: image.filename,
+            fileSize: image.size,
+            playableDuration: null,
+            uri: `file://${image.path}`,
+          },
+        };
+      })
+    );
+
+    if (selectedImages.length === 1) {
+      obsEditContext.createObservationFromGallery(selectedImages[0]);
+      navigation.navigate("ObsEdit");
+      closeModal();
+    }
+
+    
   };
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
