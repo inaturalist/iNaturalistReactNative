@@ -49,7 +49,7 @@ const UploadStatus = ( { color, completeColor, progress }: Props ): Node => {
   };
 
   return (
-    <View className="relative items-center justify-center w-49 h-67">
+    <View className="relative items-center justify-center w-[49px] h-[67px]">
       {( progress < 0.05 )
         ? (
           <>
