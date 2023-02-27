@@ -22,7 +22,7 @@ const MyObservationsGridItem = ( {
 }: Props ): Node => (
   <View
     className={classNames( "rounded-[17px] overflow-hidden", "h-[172px]", width )}
-    testID={`ObsList.gridItem.${observation.uuid}`}
+    testID={`MyObservations.gridItem.${observation.uuid}`}
   >
     <MyObservationsImagePreview
       source={{

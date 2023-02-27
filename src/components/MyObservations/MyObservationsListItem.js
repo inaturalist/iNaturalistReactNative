@@ -20,7 +20,7 @@ const MyObservationsListItem = ( { observation }: Props ): Node => {
 
   return (
     <View
-      testID={`ObsList.obsListItem.${observation.uuid}`}
+      testID={`MyObservations.obsListItem.${observation.uuid}`}
       className="flex-row px-[15px] my-[11px]"
     >
       <MyObservationsImagePreview

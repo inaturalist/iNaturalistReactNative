@@ -153,8 +153,8 @@ const MyObservationsToolbar = ( {
             className="ml-2"
             testID={
               layout === "list"
-                ? "ObsList.toggleGridView"
-                : "ObsList.toggleListView"
+                ? "MyObservationsToolbar.toggleGridView"
+                : "MyObservationsToolbar.toggleListView"
             }
             onPress={( ) => setLayout( currentView => {
               if ( currentView === "list" ) {

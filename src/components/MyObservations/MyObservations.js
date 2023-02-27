@@ -86,7 +86,7 @@ const MyObservations = ( {
             data={observations}
             key={layout === "grid" ? 1 : 0}
             style={{ height: screenHeight }}
-            testID="MyObservations"
+            testID="MyObservationsAnimatedList"
             numColumns={numColumns}
             renderItem={( { item } ) => (
               <MyObservationsPressable observation={item}>
