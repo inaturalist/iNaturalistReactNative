@@ -16,7 +16,13 @@ import {
   mockUseCameraDevices
 } from "./vision-camera/vision-camera";
 
-jest.mock( "react-native-image-crop-picker" );
+jest.mock( "react-native-image-crop-picker", () => {
+  const MockedModule = {
+    openPicker: jest.fn( )
+  };
+  return MockedModule;
+} );
+
 jest.mock( "@sayem314/react-native-keep-awake" );
 jest.mock( "react-native/Libraries/EventEmitter/NativeEventEmitter" );
 
