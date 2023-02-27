@@ -739,6 +739,7 @@ Messages = Messages
 Observations = Observations
 Observe = Observe
 Open-drawer = Open drawer
+Quality-Grade-No-Grade = No Quality Grade
 Sound-recorder = Sound recorder
 User = User { $userHandle }
 Observation-Name = Observation { $scientificName }

@@ -1,5 +1,5 @@
 // @flow
-import { Pressable } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import CasualGrade from "images/svg/casualGrade.svg";
 import NeedsIdGrade from "images/svg/needsIdGrade.svg";
@@ -38,16 +38,15 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
 
 const QualityGradeStatus = ( { qualityGrade, color }: Props ): React.Node => {
   const setAccessibilityLabel = () => (
-    ( qualityGrade ) ? `Quality-Grade-${qualityGrade}` : "No grade" );
+    ( qualityGrade ) ? `Quality-Grade-${qualityGrade}` : t( "Quality-Grade-No-Grade" ) );
 
   return (
-    <Pressable
-      accessibilityRole="button"
+    <View
       accessibilityLabel={t( setAccessibilityLabel() )}
     >
       {qualityGradeSVG( qualityGrade, color )}
 
-    </Pressable>
+    </View>
   );
 };
 

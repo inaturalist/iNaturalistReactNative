@@ -1,37 +1,104 @@
 // @flow
 
-import INatIcon from "components/INatIcon";
+import INatIcon from "components/SharedComponents/INatIcon";
 import { View } from "components/styledComponents";
-import * as React from "react";
+import type { Node } from "react";
+import React, { useEffect, useRef } from "react";
+import { Animated } from "react-native";
 import CircularProgressBase from "react-native-circular-progress-indicator";
-import colors from "styles/tailwindColors";
+import { useTheme } from "react-native-paper";
 
 type Props = {
-  color: string,
-  completeColor: string,
+  color?: string,
+  completeColor?: string,
   progress: number
 }
 
-const UploadStatus = ( { color, completeColor, progress }: Props ): React.Node => (
-  <View className="relative justify-center items-center">
-    {( progress < 0.05 )
-      ? <INatIcon className="m-1" name="status-saved" color={colors.darkGray} size={50} />
-      : (
-        <>
-          {( progress < 1 )
-            ? <INatIcon className="absolute" name="upload-arrow" color={color} size={25} />
-            : <INatIcon className="absolute" name="checkmark" color={completeColor} size={25} />}
-          <CircularProgressBase
-            value={progress}
-            radius={29}
-            activeStrokeColor={( progress < 1 ) ? color : completeColor}
-            progressValueColor={colors.transparent}
-            maxValue={1}
-            inActiveStrokeOpacity={0}
-            activeStrokeWidth={4}
-          />
-        </>
-      )}
-  </View>
-);
+const UploadStatus = ( { color, completeColor, progress }: Props ): Node => {
+  const theme = useTheme();
+  const defaultColor = theme.colors.primary;
+  const defaultCompleteColor = theme.colors.secondary;
+  const rotateAnimation = useRef( new Animated.Value( 0 ) ).current;
+
+  useEffect( () => {
+    Animated.loop(
+      Animated.sequence( [
+        Animated.delay( 10000 ),
+        Animated.timing( rotateAnimation, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true
+        } )
+      ] )
+    ).start( () => {
+      rotateAnimation.setValue( 0 );
+    } );
+  }, [rotateAnimation] );
+
+  const interpolateRotating = rotateAnimation.interpolate( {
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"]
+  } );
+
+  const animatedStyle = {
+    transform: [
+      {
+        rotate: interpolateRotating
+      }
+    ]
+  };
+
+  return (
+    <View className="relative items-center justify-center w-49 h-67">
+      {( progress < 0.05 )
+        ? (
+          <>
+            <Animated.View style={animatedStyle}>
+              <INatIcon name="dotted-outline" color={color || defaultColor} size={33} />
+            </Animated.View>
+            <View className="absolute">
+              <INatIcon
+                name="upload"
+                color={color || defaultColor}
+                size={15}
+              />
+            </View>
+          </>
+        )
+        : (
+          <>
+            {( progress < 1 )
+              ? (
+                <View className="absolute">
+                  <INatIcon
+                    name="upload"
+                    color={color || defaultColor}
+                    size={15}
+                  />
+                </View>
+              )
+              : (
+                <View className="absolute">
+                  <INatIcon
+                    name="icon-check-1"
+                    color={completeColor || defaultCompleteColor}
+                    size={15}
+                  />
+                </View>
+              )}
+            <CircularProgressBase
+              value={progress}
+              radius={16.5}
+              activeStrokeColor={( progress < 1 )
+                ? ( color || defaultColor ) : ( completeColor || defaultCompleteColor )}
+              showProgressValue={false}
+              maxValue={1}
+              inActiveStrokeOpacity={0}
+              activeStrokeWidth={2}
+            />
+          </>
+        )}
+    </View>
+  );
+};
 export default UploadStatus;
