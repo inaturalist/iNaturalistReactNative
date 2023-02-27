@@ -173,6 +173,7 @@ android {
         // Detox Android setup
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        vectorDrawables.useSupportLibrary = true
         // Detox end
 
         if (isNewArchitectureEnabled()) {
