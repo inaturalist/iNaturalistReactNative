@@ -1,7 +1,5 @@
 // @flow
 import MyObservationsHeader from "components/MyObservations/MyObservationsHeader";
-import ObsGridItem from "components/Observations/ObsGridItem";
-import ObsListItem from "components/Observations/ObsListItem";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -11,6 +9,8 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
 import MyObservationsEmpty from "./MyObservationsEmpty";
+import MyObservationsGridItem from "./MyObservationsGridItem";
+import MyObservationsListItem from "./MyObservationsListItem";
 import MyObservationsLoginSheet from "./MyObservationsLoginSheet";
 import MyObservationsPressable from "./MyObservationsPressable";
 
@@ -96,8 +96,8 @@ const MyObservations = ( {
                   // needs to be static; haven't come up with a good way
                   // around that, though. Maybe we can punt on it until
                   // dealing with different screen sizes ~~~kueda 20230222
-                  ? <ObsGridItem observation={item} width={`w-[${gridItemWidth}px]`} />
-                  : <ObsListItem observation={item} />
+                  ? <MyObservationsGridItem observation={item} width={`w-[${gridItemWidth}px]`} />
+                  : <MyObservationsListItem observation={item} />
               }
               </MyObservationsPressable>
             )}
