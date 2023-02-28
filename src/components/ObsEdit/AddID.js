@@ -22,7 +22,8 @@ import {
   TouchableOpacity
 } from "react-native";
 import {
-  Button, Headline, IconButton, TextInput
+  Button, Headline, IconButton, TextInput,
+  useTheme
 } from "react-native-paper";
 import uuid from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -55,6 +56,7 @@ const SearchTaxonIcon = (
 );
 
 const AddID = ( { route }: Props ): Node => {
+  const theme = useTheme();
   const [comment, setComment] = useState( "" );
   const [commentDraft, setCommentDraft] = useState( "" );
   const { onIDAdded, goBackOnSave, hideComment } = route.params;
@@ -253,7 +255,7 @@ const AddID = ( { route }: Props ): Node => {
               style={viewStyles.commentInput}
               value={commentDraft}
               selectionColor={colors.black}
-              activeUnderlineColor={colors.background}
+              activeUnderlineColor={theme.colors.background}
               autoFocus
               multiline
               onChangeText={setCommentDraft}

@@ -13,11 +13,11 @@ const theme = {
     ...DefaultTheme.colors,
     primary: colors.darkGray,
     onPrimary: colors.white,
-    secondary: colors.inatGreen, // TODO: cahnge to accessibleGreen for accessibility
+    secondary: colors.inatGreen, // TODO: change to accessibleGreen for accessibility
     onSecondary: colors.white,
+    tertiary: colors.black,
     background: colors.white,
-    surface: colors.white,
-    onSurface: colors.darkGray,
+    onBackground: colors.darkGray,
     outline: colors.lightGray,
     error: colors.warningRed,
     onError: colors.white,

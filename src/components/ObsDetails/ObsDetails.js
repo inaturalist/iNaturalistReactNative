@@ -30,7 +30,7 @@ import {
   Alert,
   LogBox
 } from "react-native";
-import { ActivityIndicator, Button as IconButton } from "react-native-paper";
+import { ActivityIndicator, Button as IconButton, useTheme } from "react-native-paper";
 import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
@@ -73,6 +73,7 @@ const ObsDetails = ( ): Node => {
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [addingComment, setAddingComment] = useState( false );
   const [comments, setComments] = useState( [] );
+  const theme = useTheme();
 
   const queryClient = useQueryClient( );
 
@@ -197,7 +198,7 @@ const ObsDetails = ( ): Node => {
       <IconButton
         icon="pencil"
         onPress={navToObsEdit}
-        textColor={colors.darkGray}
+        textColor={theme.colors.primary}
         accessibilityLabel={t( "Navigate-to-edit-observation" )}
       />
     );
@@ -205,7 +206,7 @@ const ObsDetails = ( ): Node => {
     navigation.setOptions( {
       headerRight: editIcon
     } );
-  }, [navigation, observation, currentUser, t] );
+  }, [navigation, observation, currentUser, t, theme] );
 
   useEffect( ( ) => {
     // set initial comments for activity currentTabId
@@ -350,7 +351,7 @@ const ObsDetails = ( ): Node => {
           <IconMaterial
             name="location-pin"
             size={15}
-            color={colors.darkGray}
+            color={theme.colors.primary}
           />
           <Text className="color-darkGray ml-2">
             {checkCamelAndSnakeCase( observation, "placeGuess" )}

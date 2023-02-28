@@ -159,7 +159,7 @@ const StandardCamera = ( ): Node => {
         accessibilityLabel={accessibilityLabel}
         size={40}
         icon={icon}
-        style={{ backgroundColor: colors.darkGray }}
+        style={{ backgroundColor: colors.gray }}
       />
     );
   };
@@ -207,7 +207,7 @@ const StandardCamera = ( ): Node => {
             icon="camera"
             onPress={takePhoto}
             disabled={disallowAddingPhotos}
-            containerColor={theme.colors.surface}
+            containerColor={colors.white}
           />
           <View className="w-1/3">
             {photosTaken && (
