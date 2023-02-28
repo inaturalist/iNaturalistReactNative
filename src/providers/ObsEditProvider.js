@@ -34,7 +34,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [galleryUris, setGalleryUris] = useState( [] );
   const [evidenceToAdd, setEvidenceToAdd] = useState( [] );
   const [album, setAlbum] = useState( null );
-  const [loading, setLoading] = useState( );
+  const [loading, setLoading] = useState( false );
   const [unsavedChanges, setUnsavedChanges] = useState( false );
   const [showLoginSheet, setShowLoginSheet] = useState( false );
 
