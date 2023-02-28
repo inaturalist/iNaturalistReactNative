@@ -8,7 +8,7 @@ import { t } from "i18next";
 import * as React from "react";
 import { Platform } from "react-native";
 import User from "realmModels/User";
-import useUserMe from "sharedHooks/useUserMe";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import { viewStyles } from "styles/sharedComponents/footer";
 
 import NavButton from "./NavButton";
@@ -29,11 +29,7 @@ const NavBar = ( ): React.Node => {
     screen: MESSAGES_SCREEN_ID
   } );
 
-  // TODO this renders A LOT and should not constantly be fetching the curret
-  // user. Also adds an async effect that messes with tests. We should have
-  // everything we need to know about the current user cached locally
-  // ~~~kueda 2023-02-14
-  const { remoteUser: user } = useUserMe( );
+  const user = useCurrentUser( );
 
   const footerHeight = Platform.OS === "ios" ? "h-20" : "h-15";
 

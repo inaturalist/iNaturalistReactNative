@@ -8,7 +8,7 @@ import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
 
-import factory from "../factory";
+import factory, { makeResponse } from "../factory";
 import { renderAppWithComponent } from "../helpers/render";
 import { signIn, signOut } from "../helpers/user";
 
@@ -74,41 +74,41 @@ describe( "MyObservations", ( ) => {
       expect( screen.queryByText( /Welcome-user/ ) ).toBeFalsy( );
     } );
 
-    // it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
-    //   const mockSpanishUser = factory( "LocalUser", {
-    //     locale: "es"
-    //   } );
-    //   expect( mockSpanishUser.locale ).toEqual( "es" );
-    //   await signIn( mockSpanishUser );
-    //   renderAppWithComponent( <MyObservationsContainer /> );
-    //   await waitFor( ( ) => {
-    //     expect( screen.getByText( /Bienvenido/ ) ).toBeTruthy();
-    //   } );
-    //   expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
-    // } );
+    it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
+      const mockSpanishUser = factory( "LocalUser", {
+        locale: "es"
+      } );
+      expect( mockSpanishUser.locale ).toEqual( "es" );
+      await signIn( mockSpanishUser );
+      renderAppWithComponent( <MyObservationsContainer /> );
+      await waitFor( ( ) => {
+        expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy();
+      } );
+      expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
+    } );
 
-    // it(
-    //   "should change to es when local user locale is en but remote user locale is es",
-    //   async ( ) => {
-    //     const mockUser = factory( "LocalUser" );
-    //     expect( mockUser.locale ).toEqual( "en" );
-    //     await signIn( mockUser );
+    it(
+      "should change to es when local user locale is en but remote user locale is es",
+      async ( ) => {
+        const mockUser = factory( "LocalUser" );
+        expect( mockUser.locale ).toEqual( "en" );
+        await signIn( mockUser );
 
-    //     const mockSpanishUser = factory( "LocalUser", {
-    //       locale: "es"
-    //     } );
-    //     inatjs.users.me.mockResolvedValue( makeResponse( [mockSpanishUser] ) );
+        const mockSpanishUser = factory( "LocalUser", {
+          locale: "es"
+        } );
+        inatjs.users.me.mockResolvedValue( makeResponse( [mockSpanishUser] ) );
 
-    //     renderAppWithComponent( <MyObservationsContainer /> );
-    //     // I'd prefer to wait for the Spanish text to appear, but that never
-    //     // seems to wait long enough. This waits for the relevant API call to
-    //     // have been made
-    //     await waitFor( ( ) => {
-    //       expect( inatjs.users.me ).toHaveBeenCalled( );
-    //     } );
-    //     expect( await screen.findByText( /Bienvenido/ ) ).toBeTruthy( );
-    //     expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
-    //   }
-    // );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        // I'd prefer to wait for the Spanish text to appear, but that never
+        // seems to wait long enough. This waits for the relevant API call to
+        // have been made
+        await waitFor( ( ) => {
+          expect( inatjs.users.me ).toHaveBeenCalled( );
+        } );
+        expect( screen.getByText( /Bienvenido a iNaturalist/ ) ).toBeTruthy( );
+        expect( screen.queryByText( /Welcome/ ) ).toBeFalsy( );
+      }
+    );
   } );
 } );
