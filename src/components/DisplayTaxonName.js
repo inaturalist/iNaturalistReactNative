@@ -84,14 +84,6 @@ const DisplayTaxonName = ( {
             }`
         }
       </Body1>
-
-      {
-       commonName && (
-       <Body3 className={textColorClass}>
-         {scientificNameFirst ? commonName : scientificNameComponent}
-       </Body3>
-       )
-      }
     </View>
   );
 };
