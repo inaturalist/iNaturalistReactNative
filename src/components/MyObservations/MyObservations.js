@@ -4,7 +4,7 @@ import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
-import { Animated, Dimensions } from "react-native";
+import { Animated, Dimensions, Platform } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
@@ -38,19 +38,29 @@ const MyObservations = ( {
   setLayout
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
+  // ios header height includes safe area
+  // it's probably better to get these values dynamically, if we can
   const HEADER_HEIGHT = currentUser ? 101 : 154;
+  const ANDROID_HEADER_HEIGHT = currentUser ? 81 : 144;
+
+  const getHeaderHeight = ( ) => {
+    if ( Platform.OS === "ios" ) {
+      return HEADER_HEIGHT;
+    }
+    return ANDROID_HEADER_HEIGHT;
+  };
 
   const [hideHeaderCard, setHideHeaderCard] = useState( false );
   const [yValue, setYValue] = useState( 0 );
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
-  const scrollYClamped = diffClamp( scrollY.current, 0, HEADER_HEIGHT );
+  const scrollYClamped = diffClamp( scrollY.current, 0, getHeaderHeight( ) );
 
   const offsetForHeader = scrollYClamped.interpolate( {
-    inputRange: [0, HEADER_HEIGHT],
+    inputRange: [0, getHeaderHeight( )],
     // $FlowIgnore
-    outputRange: [0, -HEADER_HEIGHT]
+    outputRange: [0, -getHeaderHeight( )]
   } );
 
   const numColumns = layout === "grid" ? 2 : 1;
@@ -69,6 +79,9 @@ const MyObservations = ( {
       listener: ( { nativeEvent } ) => {
         const { y } = nativeEvent.contentOffset;
         const hide = yValue < y;
+        // there's likely a better way to do this, but for now fading out
+        // the content that goes under the status bar / safe area notch on iOS
+        if ( Platform.OS !== "ios" ) { return; }
         if ( hide !== hideHeaderCard ) {
           setHideHeaderCard( hide );
           setYValue( y );
