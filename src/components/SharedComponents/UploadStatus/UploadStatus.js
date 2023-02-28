@@ -3,8 +3,8 @@
 import INatIcon from "components/SharedComponents/INatIcon";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useRef } from "react";
-import { Animated } from "react-native";
+import React from "react";
+import { Animated, Easing } from "react-native";
 import CircularProgressBase from "react-native-circular-progress-indicator";
 import { useTheme } from "react-native-paper";
 
@@ -18,29 +18,25 @@ const UploadStatus = ( { color, completeColor, progress }: Props ): Node => {
   const theme = useTheme();
   const defaultColor = theme.colors.primary;
   const defaultCompleteColor = theme.colors.secondary;
-  const rotateAnimation = useRef( new Animated.Value( 0 ) ).current;
+  const rotateAnimation = new Animated.Value( 0 );
 
-  useEffect( () => {
-    Animated.loop(
-      Animated.sequence( [
-        Animated.delay( 10000 ),
-        Animated.timing( rotateAnimation, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true
-        } )
-      ] )
-    ).start( () => {
-      rotateAnimation.setValue( 0 );
-    } );
-  }, [rotateAnimation] );
+  Animated.loop(
+    Animated.timing( rotateAnimation, {
+      toValue: 1,
+      duration: 10000,
+      easing: Easing.linear,
+      useNativeDriver: true
+    } )
+  ).start( () => {
+    rotateAnimation.setValue( 0 );
+  } );
 
   const interpolateRotating = rotateAnimation.interpolate( {
     inputRange: [0, 1],
     outputRange: ["0deg", "360deg"]
   } );
 
-  const animatedStyle = {
+  const rotate = {
     transform: [
       {
         rotate: interpolateRotating
@@ -53,7 +49,7 @@ const UploadStatus = ( { color, completeColor, progress }: Props ): Node => {
       {( progress < 0.05 )
         ? (
           <>
-            <Animated.View style={animatedStyle}>
+            <Animated.View style={rotate}>
               <INatIcon name="dotted-outline" color={color || defaultColor} size={33} />
             </Animated.View>
             <View className="absolute">
@@ -87,6 +83,7 @@ const UploadStatus = ( { color, completeColor, progress }: Props ): Node => {
                 </View>
               )}
             <CircularProgressBase
+              testID="UploadStatus.CircularProgress"
               value={progress}
               radius={16.5}
               activeStrokeColor={( progress < 1 )
