@@ -1,8 +1,9 @@
 // @flow
 
+import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import Svg, { Path, Text } from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
 import { viewStyles } from "styles/sharedComponents/photoCount";
 import colors from "styles/tailwindColors";
 
@@ -47,15 +48,9 @@ const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
           clipRule="evenodd"
           fillRule="nonzero"
         />
-        <Text
-          x="38%"
-          y="77%"
-          textAnchor="middle"
-          fontSize="10"
-          fill={colors.darkGray}
-        >
+        <Body3>
           {photoCount}
-        </Text>
+        </Body3>
       </Svg>
     </View>
   );
