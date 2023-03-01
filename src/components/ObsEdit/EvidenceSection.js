@@ -12,6 +12,7 @@ import { IconButton } from "react-native-paper";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import { writeExifToFile } from "sharedHelpers/parseExif";
 
+import { log } from "../../../react-native-logs.config";
 import DatePicker from "./DatePicker";
 
 type Props = {
@@ -19,6 +20,8 @@ type Props = {
   photoUris: Array<string>,
   handleAddEvidence?: Function
 }
+
+const logger = log.extend( "EvidenceSection" );
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
 const TARGET_POSITIONAL_ACCURACY = 10;
@@ -74,8 +77,12 @@ const EvidenceSection = ( {
       return;
     }
 
+    // In theory we don't need to update any photos when this component is not mounted
+    if ( !mountedRef.current ) return;
+
     // Update all photos taken via the app with the new fetched location.
     cameraRollUris.forEach( uri => {
+      logger.debug( "calling writeExifToFile for uri: ", uri );
       writeExifToFile( uri, { latitude, longitude, positional_accuracy: positionalAccuracy } );
     } );
   }, [cameraRollUris, currentObservation, hasLocation, latitude, longitude, positionalAccuracy] );

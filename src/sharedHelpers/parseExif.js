@@ -5,12 +5,16 @@ import { readExif, writeExif } from "react-native-exif-reader";
 import * as RNLocalize from "react-native-localize";
 import { formatISONoTimezone } from "sharedHelpers/dateAndTime";
 
+import { log } from "../../react-native-logs.config";
+
 class UsePhotoExifDateFormatError extends Error {}
 
 // https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
 Object.defineProperty( UsePhotoExifDateFormatError.prototype, "name", {
   value: "UsePhotoExifDateFormatError"
 } );
+
+const logger = log.extend( "parseExif" );
 
 // Parses EXIF date time into a date object
 export const parseExifDateToLocalTimezone = ( datetime: string ): ?Date => {
@@ -45,6 +49,7 @@ interface ExifToWrite {
 }
 
 export const writeExifToFile = async ( photoUri: ?string, exif: ExifToWrite ): Promise<Object> => {
+  logger.debug( "writeExifToFile, photoUri: ", photoUri );
   try {
     return await writeExif( photoUri, exif );
   } catch ( e ) {

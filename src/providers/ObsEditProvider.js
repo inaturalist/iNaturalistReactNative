@@ -19,6 +19,7 @@ import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
+import { log } from "../../react-native-logs.config";
 import { ObsEditContext, RealmContext } from "./contexts";
 
 const { useRealm } = RealmContext;
@@ -26,6 +27,8 @@ const { useRealm } = RealmContext;
 type Props = {
   children: any,
 };
+
+const logger = log.extend( "ObsEditProvider" );
 
 const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation();
@@ -230,6 +233,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       if ( observations.length === 1 ) {
         setCurrentObservationIndex( 0 );
         setObservations( [] );
+        logger.debug( "setNextScreen, setting cameraRollUris to [] before navigating to ObsList" );
+        setCameraRollUris( [] );
 
         navigation.navigate( "ObsList" );
       } else if ( currentObservationIndex === observations.length - 1 ) {
