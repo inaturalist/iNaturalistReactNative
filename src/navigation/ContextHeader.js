@@ -4,7 +4,7 @@ import { Heading1, Heading4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import getShadowStyle from "sharedHelpers/getShadowStyle";
+import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -27,8 +27,9 @@ const ContextHeader = ( {
         shadowColor: colors.black,
         offsetWidth: 0,
         offsetHeight: 2,
-        opacity: 0.25,
-        radius: 2
+        shadowOpacity: 0.25,
+        shadowRadius: 2,
+        elevation: 5
       } )}
     >
       {back && (
