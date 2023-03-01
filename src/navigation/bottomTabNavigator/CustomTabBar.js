@@ -7,7 +7,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Platform } from "react-native";
-import getShadowStyle from "sharedHelpers/getShadowStyle";
+import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import NavButton from "./NavButton";
@@ -72,7 +72,8 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
         shadowColor: colors.black,
         offsetWidth: 0,
         offsetHeight: -3,
-        opacity: 0.2,
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
         radius: 5
       } )}
       accessibilityRole="tablist"
