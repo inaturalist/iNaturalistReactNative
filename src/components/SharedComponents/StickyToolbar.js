@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import { useTheme } from "react-native-paper";
-import getShadowStyle from "sharedHelpers/getShadowStyle";
+import { getShadowStyle } from "styles/global";
 
 const getShadow = shadowColor => getShadowStyle( {
   shadowColor,
