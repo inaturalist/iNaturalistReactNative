@@ -9,8 +9,9 @@ const getShadow = shadowColor => getShadowStyle( {
   shadowColor,
   offsetWidth: 0,
   offsetHeight: -2,
-  opacity: 0.25,
-  radius: 2
+  shadowOpacity: 0.25,
+  shadowRadius: 2,
+  elevation: 5
 } );
 
 type Props = {
