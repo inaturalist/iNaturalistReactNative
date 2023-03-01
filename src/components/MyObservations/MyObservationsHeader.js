@@ -10,12 +10,16 @@ import { Animated } from "react-native";
 import User from "realmModels/User";
 import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 
+import MyObservationsOnboarding from "./MyObservationsOnboarding";
+
 type Props = {
   setLayout: Function;
   layout: string,
   hideHeaderCard: boolean,
   currentUser: ?Object,
-  hideToolbar: boolean
+  hideToolbar: boolean,
+  numOfObservations: number,
+  setHeightAboveToolbar: Function
 }
 
 const fade = ( value, duration ) => ( {
@@ -29,10 +33,11 @@ const MyObservationsHeader = ( {
   layout,
   hideHeaderCard,
   currentUser,
-  hideToolbar
+  hideToolbar,
+  numOfObservations,
+  setHeightAboveToolbar
 }: Props ): Node => {
   const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
-
   const navigation = useNavigation( );
   const numUnuploadedObs = useNumUnuploadedObservations( );
   const { t } = useTranslation( );
@@ -84,13 +89,22 @@ const MyObservationsHeader = ( {
 
   return (
     <>
-      <View className="px-5 bg-white">
+      <View
+        className="px-5 bg-white"
+        onLayout={event => {
+          const {
+            height
+          } = event.nativeEvent.layout;
+          setHeightAboveToolbar( height );
+        }}
+      >
         <Animated.View
           style={{
             opacity: fadeAnimation
           }}
         >
           {displayHeaderCard( )}
+          <MyObservationsOnboarding numOfObservations={numOfObservations} />
         </Animated.View>
       </View>
       {!hideToolbar && (

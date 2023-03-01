@@ -836,3 +836,11 @@ x-identifications = {$count ->
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
 datetime-format-short = M/d/yy h:mm a
+
+# Onboarding text on MyObservations
+# 0-10 observations
+As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
+# 11-50 observations
+Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
+# 51-100 observations
+You-can-search-observations-of-any-plant-or-animal = You can search observations of any plant or animal anywhere in the world with Explore!

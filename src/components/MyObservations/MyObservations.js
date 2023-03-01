@@ -38,29 +38,19 @@ const MyObservations = ( {
   setLayout
 }: Props ): Node => {
   const currentUser = useCurrentUser( );
-  // ios header height includes safe area
-  // it's probably better to get these values dynamically, if we can
-  const HEADER_HEIGHT = currentUser ? 101 : 154;
-  const ANDROID_HEADER_HEIGHT = currentUser ? 81 : 144;
-
-  const getHeaderHeight = ( ) => {
-    if ( Platform.OS === "ios" ) {
-      return HEADER_HEIGHT;
-    }
-    return ANDROID_HEADER_HEIGHT;
-  };
+  const [heightAboveToolbar, setHeightAboveToolbar] = useState( 0 );
 
   const [hideHeaderCard, setHideHeaderCard] = useState( false );
   const [yValue, setYValue] = useState( 0 );
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
-  const scrollYClamped = diffClamp( scrollY.current, 0, getHeaderHeight( ) );
+  const scrollYClamped = diffClamp( scrollY.current, 0, heightAboveToolbar );
 
   const offsetForHeader = scrollYClamped.interpolate( {
-    inputRange: [0, getHeaderHeight( )],
+    inputRange: [0, heightAboveToolbar],
     // $FlowIgnore
-    outputRange: [0, -getHeaderHeight( )]
+    outputRange: [0, -heightAboveToolbar]
   } );
 
   const numColumns = layout === "grid" ? 2 : 1;
@@ -123,7 +113,9 @@ const MyObservations = ( {
                 layout={layout}
                 hideHeaderCard={hideHeaderCard}
                 currentUser={currentUser}
+                numOfObservations={observations.length}
                 hideToolbar={observations.length === 0}
+                setHeightAboveToolbar={setHeightAboveToolbar}
               />
             )}
             ItemSeparatorComponent={

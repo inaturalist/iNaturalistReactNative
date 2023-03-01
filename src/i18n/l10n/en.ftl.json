@@ -610,5 +610,17 @@
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
   },
-  "datetime-format-short": "M/d/yy h:mm a"
+  "datetime-format-short": "M/d/yy h:mm a",
+  "As-you-upload-more-observations": {
+    "comment": "Onboarding text on MyObservations\n0-10 observations",
+    "val": "As you upload more observations, others in our community may be able to help you identify them!"
+  },
+  "Observations-you-upload-to-iNaturalist": {
+    "comment": "11-50 observations",
+    "val": "Observations you upload to iNaturalist can be used by scientists and researchers worldwide."
+  },
+  "You-can-search-observations-of-any-plant-or-animal": {
+    "comment": "51-100 observations",
+    "val": "You can search observations of any plant or animal anywhere in the world with Explore!"
+  }
 }
