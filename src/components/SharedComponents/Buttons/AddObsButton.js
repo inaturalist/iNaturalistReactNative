@@ -8,17 +8,8 @@ import { t } from "i18next";
 import * as React from "react";
 import { Pressable } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import getShadowStyle from "sharedHelpers/getShadowStyle";
+import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
-
-const shadow = getShadowStyle( {
-  shadowColor: colors.black,
-  offsetWidth: 0,
-  offsetHeight: 2,
-  radius: 2,
-  opacity: 0.25,
-  elevation: 5
-} );
 
 const AddObsButton = (): React.Node => {
   const [showModal, setModal] = React.useState( false );
@@ -34,6 +25,7 @@ const AddObsButton = (): React.Node => {
         modal={<AddObsModal closeModal={closeModal} />}
       />
       <Pressable
+        style={dropShadow}
         onPress={openModal}
         testID="add-obs-button"
         disabled={false}
@@ -43,7 +35,6 @@ const AddObsButton = (): React.Node => {
         accessibilityState={{
           disabled: false
         }}
-        style={shadow}
       >
         <View className="w-[69px] h-[69px] rounded-full overflow-hidden">
           <LinearGradient

@@ -5,7 +5,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Keyboard } from "react-native";
 import { useTheme } from "react-native-paper";
-import getShadowStyle from "sharedHelpers/getShadowStyle";
+import getShadowStyle from "styles/global";
 
 const getShadow = shadowColor => getShadowStyle( {
   shadowColor,
