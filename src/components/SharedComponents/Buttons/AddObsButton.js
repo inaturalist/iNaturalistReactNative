@@ -3,10 +3,9 @@
 import AddObsModal from "components/AddObsModal";
 import { INatIcon } from "components/SharedComponents";
 import Modal from "components/SharedComponents/Modal";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
-import { Pressable } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { dropShadow } from "styles/global";
 import colors from "styles/tailwindColors";
@@ -25,6 +24,7 @@ const AddObsButton = (): React.Node => {
         modal={<AddObsModal closeModal={closeModal} />}
       />
       <Pressable
+        className="w-[69px] h-[69px] rounded-full overflow-hidden"
         style={dropShadow}
         onPress={openModal}
         testID="add-obs-button"
@@ -36,17 +36,15 @@ const AddObsButton = (): React.Node => {
           disabled: false
         }}
       >
-        <View className="w-[69px] h-[69px] rounded-full overflow-hidden">
-          <LinearGradient
-            colors={[colors.inatGreen, "#297F87"]}
-            angle={156.95}
-            useAngle
-          >
-            <View className="grow aspect-square flex items-center justify-center">
-              <INatIcon name="plus-sign" size={31} color={colors.white} />
-            </View>
-          </LinearGradient>
-        </View>
+        <LinearGradient
+          colors={[colors.inatGreen, "#297F87"]}
+          angle={156.95}
+          useAngle
+        >
+          <View className="grow aspect-square flex items-center justify-center">
+            <INatIcon name="plus-sign" size={31} color={colors.white} />
+          </View>
+        </LinearGradient>
       </Pressable>
     </>
   );
