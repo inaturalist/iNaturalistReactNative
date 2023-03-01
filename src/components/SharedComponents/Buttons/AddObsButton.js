@@ -21,7 +21,7 @@ const AddObsButton = ( ): React.Node => {
         modal={<AddObsModal closeModal={closeModal} />}
       />
       <IconButton
-        icon="plus-sign"
+        icon="plus"
         onPress={openModal}
         size={40}
         mode="contained"
