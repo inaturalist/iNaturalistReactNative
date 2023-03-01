@@ -70,7 +70,8 @@ const glyphMap = {
   "arrow-up-plain": 57368,
   "sparkly-label": 57355,
   flag: 57374,
-  gallery: 57415
+  gallery: 57415,
+  taxarank: 57390
 };
 
 const iconSet = createIconSet( glyphMap, "inaturalisticons", "inaturalisticons.ttf" );
