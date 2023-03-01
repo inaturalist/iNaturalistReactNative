@@ -36,6 +36,7 @@ const MyObservationsListItem = ( { observation }: Props ): Node => {
           taxon={observation?.taxon}
           scientificNameFirst={observation?.user?.prefers_scientific_name_first}
           layout="horizontal"
+          displaySecondName={false}
         />
         <ObservationLocation observation={observation} classNameMargin="mt-1" />
         <DateDisplay

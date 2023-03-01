@@ -54,6 +54,7 @@ const MyObservationsGridItem = ( {
             }
           layout="vertical"
           color="text-white"
+          displaySecondName={false}
         />
       </View>
     </MyObservationsImagePreview>

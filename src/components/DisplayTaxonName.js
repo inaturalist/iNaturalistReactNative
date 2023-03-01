@@ -11,14 +11,16 @@ type Props = {
   scientificNameFirst?: boolean,
   taxon: Object,
   layout?: "horizontal" | "vertical",
-  color?: string
+  color?: string,
+  displaySecondName?: boolean
 };
 
 const DisplayTaxonName = ( {
   layout = "horizontal",
   scientificNameFirst = false,
   taxon,
-  color
+  color,
+  displaySecondName = true
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -84,6 +86,14 @@ const DisplayTaxonName = ( {
             }`
         }
       </Body1>
+
+      {
+       commonName && displaySecondName && (
+       <Body3 className={textColorClass}>
+         {scientificNameFirst ? commonName : scientificNameComponent}
+       </Body3>
+       )
+      }
     </View>
   );
 };
