@@ -108,7 +108,7 @@ const AddID = ( { route }: Props ): Node => {
   const renderTaxonResult = ( { item: taxon } ) => {
     const taxonImage = taxon.default_photo
       ? { uri: taxon.default_photo.square_url }
-      : IconMaterial.getImageSourceSync( "spa", 50, colors.inatGreen );
+      : IconMaterial.getImageSourceSync( "spa", 50, theme.colors.secondary );
 
     return (
       <View
@@ -146,7 +146,7 @@ const AddID = ( { route }: Props ): Node => {
           <IconButton
             icon="checkmark"
             size={25}
-            iconColor={colors.inatGreen}
+            iconColor={theme.colors.secondary}
             onPress={( ) => {
               onIDAdded( createIdentification( taxon ) );
               if ( goBackOnSave ) { navigation.goBack( ); }
@@ -221,7 +221,7 @@ const AddID = ( { route }: Props ): Node => {
             style={viewStyles.taxonSearch}
             value={taxonSearch}
             onChangeText={setTaxonSearch}
-            selectionColor={colors.black}
+            selectionColor={theme.colors.tertiary}
             accessible
             accessibilityLabel={t(
               "Search-for-a-taxon-to-add-an-identification"
@@ -254,7 +254,7 @@ const AddID = ( { route }: Props ): Node => {
               keyboardType="default"
               style={viewStyles.commentInput}
               value={commentDraft}
-              selectionColor={colors.black}
+              selectionColor={theme.colors.tertiary}
               activeUnderlineColor={theme.colors.background}
               autoFocus
               multiline

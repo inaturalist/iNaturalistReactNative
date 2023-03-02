@@ -20,8 +20,7 @@ const theme = {
     onBackground: colors.darkGray,
     outline: colors.lightGray,
     error: colors.warningRed,
-    onError: colors.white,
-    disabled: colors.white
+    onError: colors.white
   }
 };
 

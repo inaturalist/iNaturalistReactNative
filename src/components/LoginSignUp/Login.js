@@ -15,10 +15,10 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
-  Text, TextInput
+  Text, TextInput,
+  useTheme
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/tailwindColors";
 
 import {
   authenticateUser,
@@ -38,6 +38,7 @@ const Login = ( ): Node => {
   const [loading, setLoading] = useState( false );
   const [extraScrollHeight, setExtraScrollHeight] = useState( 0 );
   const realm = useRealm( );
+  const theme = useTheme();
 
   useEffect( ( ) => {
     let isCurrent = true;
@@ -105,7 +106,7 @@ const Login = ( ): Node => {
         testID="Login.email"
         autoCapitalize="none"
         keyboardType="email-address"
-        selectionColor={colors.black}
+        selectionColor={theme.colors.tertiary}
         onFocus={() => setExtraScrollHeight( 200 )}
       />
       <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
@@ -119,7 +120,7 @@ const Login = ( ): Node => {
         value={password}
         secureTextEntry
         testID="Login.password"
-        selectionColor={colors.black}
+        selectionColor={theme.colors.tertiary}
         onFocus={() => setExtraScrollHeight( 200 )}
       />
       <TouchableOpacity accessibilityRole="button" onPress={forgotPassword}>
