@@ -2,6 +2,7 @@
 
 import INatIcon from "components/SharedComponents/INatIcon";
 import { View } from "components/styledComponents";
+import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Animated, Easing } from "react-native";
@@ -44,8 +45,26 @@ const UploadStatus = ( { color, completeColor, progress }: Props ): Node => {
     ]
   };
 
+  const translationParams = {
+    uploadProgress: progress * 100
+  };
+
+  const accessibilityLabelText = () => {
+    if ( progress < 0.05 ) {
+      return t( "Saved-Observation" );
+    }
+    if ( progress < 1 ) {
+      return t( "Upload-Progress", translationParams );
+    }
+    return t( "Upload-Complete" );
+  };
+
   return (
-    <View className="relative items-center justify-center w-[49px] h-[67px]">
+    <View
+      accessible
+      accessibilityLabel={accessibilityLabelText()}
+      className="relative items-center justify-center w-[49px] h-[67px]"
+    >
       {( progress < 0.05 )
         ? (
           <>

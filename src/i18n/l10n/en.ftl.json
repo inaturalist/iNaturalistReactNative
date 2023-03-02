@@ -413,6 +413,9 @@
     "comment": "Shows the progress of uploads for X of Y",
     "val": "Uploading { $uploadedCount } of { $total }"
   },
+  "Upload-Progress": "Upload { $uploadProgress } percent complete",
+  "Upload-Complete": "Upload Complete",
+  "Saved-Observation": "Saved observation, in queue to upload",
   "User": "User { $userHandle }",
   "Username": "Username",
   "Username-or-Email": {
@@ -524,7 +527,6 @@
   "Messages": "Messages",
   "Observe": "Observe",
   "Open-drawer": "Open drawer",
-  "Quality-Grade-No-Grade": "No Quality Grade",
   "Sound-recorder": "Sound recorder",
   "Observation-Name": "Observation { $scientificName }",
   "Agrees-with-identification": "Agrees with this identification.",
@@ -598,6 +600,8 @@
   "Navigate-to-observation-list": "Navigate to observation list",
   "Navigate-to-photo-importer": "Navigate to photo importer",
   "Open-side-menu": "Open side menu",
+  "Quality-Grade-No-Grade": "No Quality Grade",
+  "Uploading": "Uploading",
   "Intl-number": "{ $val }",
   "x-comments": "{ $count ->\n  [one] { $count } comment\n *[other] { $count } comments\n}",
   "x-identifications": "{ $count ->\n  [one] { $count } identification\n *[other] { $count } identifications\n}",

@@ -42,6 +42,7 @@ const QualityGradeStatus = ( { qualityGrade, color }: Props ): React.Node => {
 
   return (
     <View
+      accessible
       accessibilityLabel={t( setAccessibilityLabel() )}
     >
       {qualityGradeSVG( qualityGrade, color )}
