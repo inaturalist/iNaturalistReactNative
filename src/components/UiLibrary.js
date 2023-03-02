@@ -1,4 +1,4 @@
-import ObsStatus from "components/Observations/ObsStatus";
+import ObsStatus from "components/MyObservations/ObsStatus";
 import {
   ActivityCount,
   Body1,

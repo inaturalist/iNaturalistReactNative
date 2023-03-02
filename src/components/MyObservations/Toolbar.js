@@ -1,7 +1,8 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { Pressable, Text, View } from "components/styledComponents";
+import { Body2, Body4 } from "components/SharedComponents";
+import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -13,20 +14,21 @@ import { IconButton, ProgressBar } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
-import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 import useUploadObservations from "sharedHooks/useUploadObservations";
 import colors from "styles/tailwindColors";
 
 type Props = {
   setLayout: Function,
   layout: string,
-};
+  numUnuploadedObs: number
+}
 
-const Toolbar = ( { setLayout, layout }: Props ): Node => {
+const Toolbar = ( {
+  setLayout, layout, numUnuploadedObs
+}: Props ): Node => {
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const { allObsToUpload } = useLocalObservations( );
-  const numUnuploadedObs = useNumUnuploadedObservations( );
   const navigation = useNavigation( );
   const {
     stopUpload,
@@ -55,14 +57,7 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
 
   const loading = obsEditContext?.loading;
   const syncObservations = obsEditContext?.syncObservations;
-
-  const getSyncClick = ( ) => {
-    if ( numUnuploadedObs > 0 ) {
-      return startUpload;
-    }
-
-    return syncObservations;
-  };
+  const setShowLoginSheet = obsEditContext?.setShowLoginSheet;
 
   const getStatusText = ( ) => {
     if ( numUnuploadedObs <= 0 ) {
@@ -96,8 +91,11 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
   const statusText = getStatusText( );
   /* eslint-disable react-native/no-inline-styles */
   return (
-    <View className="bg-white border-b border-[#e8e8e8]">
-      <View className="flex flex-row items-center px-[15px]">
+    <View className={
+      `bg-white justify-center h-[78px] ${layout !== "grid" ? "border-b border-lightGray" : ""}`
+    }
+    >
+      <View className="flex-row items-center px-[15px]">
         {currentUser && (
           <IconButton
             icon="compass-rose"
@@ -106,11 +104,22 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
             accessibilityHint={t( "Navigates-to-explore" )}
             accessibilityRole="button"
             disabled={false}
-            size={30}
+            size={26}
           />
         )}
         <Pressable
-          onPress={getSyncClick( )}
+          onPress={( ) => {
+            if ( !currentUser ) {
+              setShowLoginSheet( true );
+              return;
+            }
+
+            if ( numUnuploadedObs > 0 ) {
+              startUpload( );
+            } else {
+              syncObservations( );
+            }
+          }}
           accessibilityRole="button"
           disabled={loading || uploadInProgress}
           accessibilityState={{ disabled: loading || uploadInProgress }}
@@ -124,14 +133,14 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
 
         {statusText && (
           <View>
-            <Text className="ml-1">{statusText}</Text>
+            <Body2 className="ml-1">{statusText}</Body2>
             {uploadError && (
-              <Text
-                className="ml-1 mt-[3px]"
-                style={{ color: colors.warningRed }}
-              >
-                {uploadError}
-              </Text>
+            <Body4
+              className="ml-1 mt-[3px]"
+              style={{ color: colors.warningRed }}
+            >
+              {uploadError}
+            </Body4>
             )}
           </View>
         )}
@@ -139,7 +148,7 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
         <View className="ml-auto flex flex-row items-center">
           {uploadInProgress && (
             <Pressable onPress={stopUpload} accessibilityRole="button">
-              <IconMaterial name="close" size={20} color={colors.darkGray} />
+              <IconMaterial name="close" size={11} color={colors.darkGray} />
             </Pressable>
           )}
 
@@ -147,8 +156,8 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
             className="ml-2"
             testID={
               layout === "list"
-                ? "ObsList.toggleGridView"
-                : "ObsList.toggleListView"
+                ? "MyObservationsToolbar.toggleGridView"
+                : "MyObservationsToolbar.toggleListView"
             }
             onPress={( ) => setLayout( currentView => {
               if ( currentView === "list" ) {

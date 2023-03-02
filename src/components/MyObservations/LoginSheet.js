@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
-const MyObservationsLoginSheet = ( ): Node => {
+const LoginSheet = ( ): Node => {
   const obsEditContext = useContext( ObsEditContext );
   const showLoginSheet = obsEditContext?.showLoginSheet;
   const setShowLoginSheet = obsEditContext?.setShowLoginSheet;
@@ -53,4 +53,4 @@ const MyObservationsLoginSheet = ( ): Node => {
   return null;
 };
 
-export default MyObservationsLoginSheet;
+export default LoginSheet;

@@ -1,6 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import MyObservationsToolbar from "components/MyObservations/MyObservationsToolbar";
+import Toolbar from "components/MyObservations/Toolbar";
 import { Button, Heading1, Subheading1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -10,15 +10,14 @@ import { Animated } from "react-native";
 import User from "realmModels/User";
 import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 
-import MyObservationsOnboarding from "./MyObservationsOnboarding";
+import Onboarding from "./Onboarding";
 
 type Props = {
   setLayout: Function;
   layout: string,
   hideHeaderCard: boolean,
   currentUser: ?Object,
-  hideToolbar: boolean,
-  numOfObservations: number,
+  numObservations: number,
   setHeightAboveToolbar: Function
 }
 
@@ -28,19 +27,19 @@ const fade = ( value, duration ) => ( {
   useNativeDriver: true
 } );
 
-const MyObservationsHeader = ( {
+const Header = ( {
   setLayout,
   layout,
   hideHeaderCard,
   currentUser,
-  hideToolbar,
-  numOfObservations,
+  numObservations,
   setHeightAboveToolbar
 }: Props ): Node => {
   const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
   const navigation = useNavigation( );
   const numUnuploadedObs = useNumUnuploadedObservations( );
   const { t } = useTranslation( );
+  const hideToolbar = numObservations === 0;
 
   useEffect( ( ) => {
     if ( hideHeaderCard ) {
@@ -90,7 +89,7 @@ const MyObservationsHeader = ( {
   return (
     <>
       <View
-        className="px-5 bg-white"
+        className="px-5 bg-white w-screen"
         onLayout={event => {
           const {
             height
@@ -104,11 +103,11 @@ const MyObservationsHeader = ( {
           }}
         >
           {displayHeaderCard( )}
-          <MyObservationsOnboarding numOfObservations={numOfObservations} />
+          <Onboarding numObservations={numObservations} />
         </Animated.View>
       </View>
       {!hideToolbar && (
-        <MyObservationsToolbar
+        <Toolbar
           setLayout={setLayout}
           layout={layout}
           numUnuploadedObs={numUnuploadedObs}
@@ -118,4 +117,4 @@ const MyObservationsHeader = ( {
   );
 };
 
-export default MyObservationsHeader;
+export default Header;

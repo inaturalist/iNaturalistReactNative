@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { searchObservations } from "api/observations";
-import ObsGridItem from "components/Observations/ObsGridItem";
+import ObsGridItem from "components/MyObservations/ObsGridItem";
 import { Pressable } from "components/styledComponents";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -39,7 +39,6 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
     >
       <ObsGridItem
         observation={item}
-        isProject
       />
     </Pressable>
   );

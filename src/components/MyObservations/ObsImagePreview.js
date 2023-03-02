@@ -7,7 +7,7 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
-import Background from "./Background";
+import ObsImageBackground from "./ObsImageBackground";
 
 type SOURCE = {
   uri: string,
@@ -25,22 +25,26 @@ type Props = {
   height?: string,
   isMultiplePhotosTop?: boolean,
   disableGradient?: boolean,
-  hasSmallBorderRadius?: boolean
+  hasSmallBorderRadius?: boolean,
+  testID?: string,
+  style?: Object
 };
 
-const ObsPreviewImage = ( {
+const ObsImagePreview = ( {
   source,
   children,
   hasSound = false,
   obsPhotosCount = 0,
   selectable = false,
   selected = false,
-  height = "h-[62px]",
   width = "w-[62px]",
+  height = "h-[62px]",
   opaque = false,
   isMultiplePhotosTop = false,
   disableGradient = false,
-  hasSmallBorderRadius = false
+  hasSmallBorderRadius = false,
+  testID,
+  style
 }: Props ): Node => {
   const theme = useTheme( );
   const hasMultiplePhotos = obsPhotosCount > 1;
@@ -50,13 +54,15 @@ const ObsPreviewImage = ( {
   return (
     <View
       className={classNames(
-        "relative overflow-hidden",
-        height,
+        "relative overflow-hidden max-h-[210px]",
         width,
+        height,
         borderRadius
       )}
+      style={style}
+      testID={testID}
     >
-      <Background
+      <ObsImageBackground
         uri={source}
         opaque={opaque}
         disableGradient={disableGradient}
@@ -111,4 +117,4 @@ const ObsPreviewImage = ( {
   );
 };
 
-export default ObsPreviewImage;
+export default ObsImagePreview;

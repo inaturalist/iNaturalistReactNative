@@ -1,18 +1,20 @@
 // @flow
-import MyObservationsHeader from "components/MyObservations/MyObservationsHeader";
+import Header from "components/MyObservations/Header";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
-import { Animated, Dimensions, Platform } from "react-native";
+import {
+  Animated, Dimensions, Platform
+} from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
+import LoginSheet from "./LoginSheet";
 import MyObservationsEmpty from "./MyObservationsEmpty";
-import MyObservationsGridItem from "./MyObservationsGridItem";
-import MyObservationsListItem from "./MyObservationsListItem";
-import MyObservationsLoginSheet from "./MyObservationsLoginSheet";
 import MyObservationsPressable from "./MyObservationsPressable";
+import ObsGridItem from "./ObsGridItem";
+import ObsListItem from "./ObsListItem";
 
 const { diffClamp } = Animated;
 
@@ -28,7 +30,7 @@ const {
   width: screenWidth,
   height: screenHeight
 } = Dimensions.get( "screen" );
-const GUTTER = 5;
+const GUTTER = 15;
 
 const MyObservations = ( {
   isLoading,
@@ -53,7 +55,14 @@ const MyObservations = ( {
     outputRange: [0, -heightAboveToolbar]
   } );
 
-  const numColumns = layout === "grid" ? 2 : 1;
+  const setNumColumns = ( ) => {
+    if ( layout === "list" || screenWidth <= 320 ) { return 1; }
+    if ( screenWidth <= 744 ) { return 2; }
+    if ( screenWidth <= 1024 ) { return 4; }
+    return 6;
+  };
+
+  const numColumns = setNumColumns( );
   const combinedGutterWidth = ( numColumns + 1 ) * GUTTER;
   const gridItemWidth = Math.round( ( screenWidth - combinedGutterWidth ) / numColumns );
 
@@ -87,20 +96,30 @@ const MyObservations = ( {
         <Animated.View style={[{ transform: [{ translateY: offsetForHeader }] }]}>
           <Animated.FlatList
             data={observations}
-            key={layout === "grid" ? 1 : 0}
+            key={numColumns}
+            // eslint-disable-next-line react-native/no-inline-styles
+            contentContainerStyle={layout === "grid" && {
+              alignItems: "center"
+            }}
             style={{ height: screenHeight }}
             testID="MyObservationsAnimatedList"
-            numColumns={numColumns}
+            numColumns={setNumColumns( )}
             renderItem={( { item } ) => (
               <MyObservationsPressable observation={item}>
                 {
                 layout === "grid"
-                  // TODO: this doesn't actually work, I think b/c this style
-                  // needs to be static; haven't come up with a good way
-                  // around that, though. Maybe we can punt on it until
-                  // dealing with different screen sizes ~~~kueda 20230222
-                  ? <MyObservationsGridItem observation={item} width={`w-[${gridItemWidth}px]`} />
-                  : <MyObservationsListItem observation={item} />
+                  ? (
+                    <ObsGridItem
+                      observation={item}
+                      // 03022023 it seems like Flatlist is designed to work
+                      // better with RN styles than with Tailwind classes
+                      style={{
+                        height: gridItemWidth,
+                        width: gridItemWidth,
+                        margin: GUTTER / 2
+                      }}
+                    />
+                  ) : <ObsListItem observation={item} />
               }
               </MyObservationsPressable>
             )}
@@ -108,13 +127,12 @@ const MyObservations = ( {
               <MyObservationsEmpty isLoading={isLoading} />
             }
             ListHeaderComponent={(
-              <MyObservationsHeader
+              <Header
                 setLayout={setLayout}
                 layout={layout}
                 hideHeaderCard={hideHeaderCard}
                 currentUser={currentUser}
-                numOfObservations={observations.length}
-                hideToolbar={observations.length === 0}
+                numObservations={observations.length}
                 setHeightAboveToolbar={setHeightAboveToolbar}
               />
             )}
@@ -133,7 +151,7 @@ const MyObservations = ( {
           />
         </Animated.View>
       </ViewWithFooter>
-      <MyObservationsLoginSheet />
+      <LoginSheet />
     </>
   );
 };

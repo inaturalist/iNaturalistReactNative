@@ -6,8 +6,8 @@ import {
   faveObservation, fetchRemoteObservation, markObservationUpdatesViewed, unfaveObservation
 } from "api/observations";
 import DisplayTaxonName from "components/DisplayTaxonName";
+import ObsStatus from "components/MyObservations/ObsStatus";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
-import ObsStatus from "components/Observations/ObsStatus";
 import {
   Tabs
 } from "components/SharedComponents";

@@ -6,15 +6,15 @@ import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 
-import MyObservationsImagePreview from "./MyObservationsImagePreview";
-import MyObservationsStatus from "./MyObservationsStatus";
-import MyObservationsUploadButton from "./MyObservationsUploadButton";
+import ObsImagePreview from "./ObsImagePreview";
+import ObsStatus from "./ObsStatus";
+import UploadButton from "./UploadButton";
 
 type Props = {
   observation: Object
 };
 
-const MyObservationsListItem = ( { observation }: Props ): Node => {
+const ObsListItem = ( { observation }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo || null;
   const needsSync = observation.needsSync( );
 
@@ -23,7 +23,7 @@ const MyObservationsListItem = ( { observation }: Props ): Node => {
       testID={`MyObservations.obsListItem.${observation.uuid}`}
       className="flex-row px-[15px] my-[11px]"
     >
-      <MyObservationsImagePreview
+      <ObsImagePreview
         source={{ uri: Photo.displayLocalOrRemoteSquarePhoto( photo ) }}
         obsPhotosCount={observation?.observationPhotos?.length ?? 0}
         hasSound={!!observation?.observationSounds?.length}
@@ -48,13 +48,13 @@ const MyObservationsListItem = ( { observation }: Props ): Node => {
       </View>
       <View className="items-center ml-auto">
         {needsSync ? (
-          <MyObservationsUploadButton observation={observation} />
+          <UploadButton observation={observation} />
         ) : (
-          <MyObservationsStatus observation={observation} layout="vertical" />
+          <ObsStatus observation={observation} layout="vertical" />
         )}
       </View>
     </View>
   );
 };
 
-export default MyObservationsListItem;
+export default ObsListItem;
