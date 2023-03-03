@@ -103,7 +103,7 @@ const Header = ( {
           }}
         >
           {displayHeaderCard( )}
-          <Onboarding numObservations={numObservations} />
+          <Onboarding />
         </Animated.View>
       </View>
       {!hideToolbar && (

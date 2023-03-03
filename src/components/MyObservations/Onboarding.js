@@ -3,12 +3,11 @@ import { Body3 } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
-type Props = {
-  numObservations: number
-}
-
-const Onboarding = ( { numObservations }: Props ): Node => {
+const Onboarding = ( ): Node => {
+  const currentUser = useCurrentUser( );
+  const numObservations = currentUser?.observations_count || 0;
   const { t } = useTranslation( );
 
   const getOnboardingText = ( ) => {
