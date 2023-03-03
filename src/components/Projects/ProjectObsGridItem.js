@@ -1,14 +1,12 @@
 // @flow
 
 import DisplayTaxonName from "components/DisplayTaxonName";
+import ObsImagePreview from "components/MyObservations/ObsImagePreview";
+import ObsStatus from "components/MyObservations/ObsStatus";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import Photo from "realmModels/Photo";
-
-import ObsImagePreview from "./ObsImagePreview";
-import ObsStatus from "./ObsStatus";
-import UploadButton from "./UploadButton";
+import Observation from "realmModels/Observation";
 
 type Props = {
   observation: Object,
@@ -17,30 +15,24 @@ type Props = {
   style?: Object
 };
 
-const ObsGridItem = ( {
+const ProjectObsGridItem = ( {
   observation,
   width = "w-full",
   height,
   style
 }: Props ): Node => (
   <ObsImagePreview
-    source={{
-      uri: Photo.displayLocalOrRemoteMediumPhoto(
-        observation?.observationPhotos?.[0]?.photo
-      )
-    }}
+    source={Observation.projectUri( observation )}
     width={width}
     height={height}
     style={style}
     obsPhotosCount={observation?.observationPhotos?.length ?? 0}
     hasSound={!!observation?.observationSounds?.length}
     isMultiplePhotosTop
-    testID={`MyObservations.gridItem.${observation.uuid}`}
+    testID={`ProjectObservations.gridItem.${observation.uuid}`}
   >
     <View className="absolute bottom-0 flex p-2 w-full">
-      {observation.needsSync?.( ) ? (
-        <UploadButton observation={observation} />
-      ) : (
+      {!observation.needsSync?.( ) && (
         <ObsStatus
           observation={observation}
           layout="horizontal"
@@ -60,4 +52,4 @@ const ObsGridItem = ( {
   </ObsImagePreview>
 );
 
-export default ObsGridItem;
+export default ProjectObsGridItem;
