@@ -130,7 +130,7 @@ const MyObservations = ( {
               <Header
                 setLayout={setLayout}
                 layout={layout}
-                hideHeaderCard={hideHeaderCard}
+                // hideHeaderCard={hideHeaderCard}
                 currentUser={currentUser}
                 numObservations={observations.length}
                 setHeightAboveToolbar={setHeightAboveToolbar}

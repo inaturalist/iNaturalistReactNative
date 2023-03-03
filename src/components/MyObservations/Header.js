@@ -4,9 +4,9 @@ import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import { Button, Heading1, Subheading1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Animated } from "react-native";
+// import { Animated } from "react-native";
 import User from "realmModels/User";
 import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
 
@@ -15,39 +15,45 @@ import Onboarding from "./Onboarding";
 type Props = {
   setLayout: Function;
   layout: string,
-  hideHeaderCard: boolean,
+  // hideHeaderCard: boolean,
   currentUser: ?Object,
   numObservations: number,
   setHeightAboveToolbar: Function
 }
 
-const fade = ( value, duration ) => ( {
-  toValue: value,
-  duration,
-  useNativeDriver: true
-} );
+// const fade = ( value, duration ) => ( {
+//   toValue: value,
+//   duration,
+//   useNativeDriver: true
+// } );
 
 const Header = ( {
   setLayout,
   layout,
-  hideHeaderCard,
+  // hideHeaderCard,
   currentUser,
   numObservations,
   setHeightAboveToolbar
 }: Props ): Node => {
-  const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
+  // const fadeAnimation = useRef( new Animated.Value( 1 ) ).current;
   const navigation = useNavigation( );
   const numUnuploadedObs = useNumUnuploadedObservations( );
   const { t } = useTranslation( );
   const hideToolbar = numObservations === 0;
 
-  useEffect( ( ) => {
-    if ( hideHeaderCard ) {
-      Animated.timing( fadeAnimation, fade( 0, 1000 ) ).start( );
-    } else {
-      Animated.timing( fadeAnimation, fade( 1, 500 ) ).start( );
-    }
-  }, [hideHeaderCard, fadeAnimation] );
+  // 03032023 amanda - I was trying to fade out the header on iOS as a way
+  // of making sure the header doesn't go behind the status bar
+  // but it's pretty rudimentary. we should either use a fade more connected
+  // to scrolling, or ideally, find a way to make sure text doesn't go under the
+  // status bar without needing animation at all
+
+  // useEffect( ( ) => {
+  //   if ( hideHeaderCard ) {
+  //     Animated.timing( fadeAnimation, fade( 0, 1000 ) ).start( );
+  //   } else {
+  //     Animated.timing( fadeAnimation, fade( 1, 500 ) ).start( );
+  //   }
+  // }, [hideHeaderCard, fadeAnimation] );
 
   const displayHeaderCard = ( ) => {
     if ( currentUser ) {
@@ -97,14 +103,14 @@ const Header = ( {
           setHeightAboveToolbar( height );
         }}
       >
-        <Animated.View
+        {/* <Animated.View
           style={{
             opacity: fadeAnimation
           }}
-        >
-          {displayHeaderCard( )}
-          <Onboarding />
-        </Animated.View>
+        > */}
+        {displayHeaderCard( )}
+        <Onboarding />
+        {/* </Animated.View> */}
       </View>
       {!hideToolbar && (
         <ToolbarContainer
