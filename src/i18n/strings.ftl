@@ -247,6 +247,8 @@ LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 
 Log-in-to-contribute-and-sync = Log in to contribute & sync
 
+Log-in-to-contribute-your-observations = Log in to contribute your observations to science!
+
 Logged-in-as = Logged in as: { $username }
 
 # Appears in the login screen

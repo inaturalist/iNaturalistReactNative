@@ -44,7 +44,7 @@ describe( "MyObservations", ( ) => {
       const signedInUsers = global.realm.objects( "User" ).filtered( "signedIn == true" );
       expect( signedInUsers.length ).toEqual( 0 );
       renderAppWithComponent( <MyObservationsContainer /> );
-      const loginText = i18next.t( "Log-in-to-contribute-and-sync" );
+      const loginText = i18next.t( "Log-in-to-contribute-your-observations" );
       await waitFor( ( ) => {
         expect( screen.getByText( loginText ) ).toBeTruthy( );
       } );

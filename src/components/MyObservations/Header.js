@@ -72,15 +72,25 @@ const Header = ( {
 
     return (
       <>
-        <Subheading1
-          className="mt-5"
-          testID="log-in-to-iNaturalist-text"
-        >
-          {t( "Log-in-to-contribute-and-sync" )}
-        </Subheading1>
-        <Heading1 className="mb-5">
-          {t( "X-observations", { count: numUnuploadedObs } )}
-        </Heading1>
+        {numUnuploadedObs > 0 ? (
+          <>
+            <Subheading1
+              className="mt-5"
+              testID="log-in-to-iNaturalist-text"
+            >
+              {t( "Log-in-to-contribute-and-sync" )}
+            </Subheading1>
+            <Heading1 className="mb-5">
+              {t( "X-observations", { count: numUnuploadedObs } )}
+            </Heading1>
+          </>
+        ) : (
+          <Subheading1
+            className="my-5"
+          >
+            {t( "Log-in-to-contribute-your-observations" )}
+          </Subheading1>
+        )}
         <Button
           onPress={( ) => navigation.navigate( "login" )}
           accessibilityRole="link"
