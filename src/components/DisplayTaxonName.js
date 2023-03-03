@@ -5,6 +5,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 
 type Props = {
@@ -43,7 +44,9 @@ const DisplayTaxonName = ( {
   const getSpaceChar = showSpace => ( showSpace && isHorizontal ? " " : "" );
 
   const scientificNameComponent = scientificNamePieces.map( ( piece, index ) => {
-    const isItalics = rankLevel <= 10 && piece !== rankPiece;
+    const isItalics = piece !== rankPiece && (
+      rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
+    );
     const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal ) ? " " : "";
     const text = piece + spaceChar;
     const TextComponent = scientificNameFirst || !commonName ? Body1 : Body3;
