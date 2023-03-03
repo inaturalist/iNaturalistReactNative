@@ -58,7 +58,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     const continueUpload = shouldUpload && observationToUpload && !!apiToken;
 
     if ( !continueUpload ) {
-      cleanup( );
+      // cleanup( );
       return;
     }
 

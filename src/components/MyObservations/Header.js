@@ -1,6 +1,6 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
-import Toolbar from "components/MyObservations/Toolbar";
+import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import { Button, Heading1, Subheading1 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -107,7 +107,7 @@ const Header = ( {
         </Animated.View>
       </View>
       {!hideToolbar && (
-        <Toolbar
+        <ToolbarContainer
           setLayout={setLayout}
           layout={layout}
           numUnuploadedObs={numUnuploadedObs}

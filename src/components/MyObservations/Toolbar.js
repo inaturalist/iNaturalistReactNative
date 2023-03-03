@@ -1,46 +1,44 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import { Body2, Body4 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
-import {
-  Animated, Dimensions, Easing, PixelRatio
-} from "react-native";
+import React from "react";
+import { Animated, Easing } from "react-native";
 import { IconButton, ProgressBar } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useLocalObservations from "sharedHooks/useLocalObservations";
-import useUploadObservations from "sharedHooks/useUploadObservations";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  setLayout: Function,
   layout: string,
-  numUnuploadedObs: number
+  statusText: ?string,
+  handleSyncButtonPress: Function,
+  syncDisabled: boolean,
+  uploadError: string,
+  uploadInProgress: boolean,
+  stopUpload: Function,
+  progress: number,
+  getSyncIconColor: Function,
+  currentUser: ?Object,
+  navToExplore: Function,
+  toggleLayout: Function
 }
 
 const Toolbar = ( {
-  setLayout, layout, numUnuploadedObs
+  layout,
+  statusText,
+  handleSyncButtonPress,
+  syncDisabled,
+  uploadError,
+  uploadInProgress,
+  stopUpload,
+  progress,
+  getSyncIconColor,
+  currentUser,
+  navToExplore,
+  toggleLayout
 }: Props ): Node => {
-  const currentUser = useCurrentUser( );
-  const obsEditContext = useContext( ObsEditContext );
-  const { allObsToUpload } = useLocalObservations( );
-  const navigation = useNavigation( );
-  const {
-    stopUpload,
-    uploadInProgress,
-    startUpload,
-    progress,
-    error: uploadError,
-    currentUploadIndex,
-    totalUploadCount
-  } = useUploadObservations( allObsToUpload );
-
-  const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
   const spinValue = new Animated.Value( 1 );
 
   Animated.timing( spinValue, {
@@ -55,41 +53,6 @@ const Toolbar = ( {
     outputRange: ["0deg", "360deg"]
   } );
 
-  const loading = obsEditContext?.loading;
-  const syncObservations = obsEditContext?.syncObservations;
-  const setShowLoginSheet = obsEditContext?.setShowLoginSheet;
-
-  const getStatusText = ( ) => {
-    if ( numUnuploadedObs <= 0 ) {
-      return null;
-    }
-
-    if ( !uploadInProgress ) {
-      return t( "Upload-x-observations", { count: numUnuploadedObs } );
-    }
-
-    const translationParams = {
-      total: totalUploadCount,
-      uploadedCount: currentUploadIndex + 1
-    };
-
-    // iPhone 4 pixel width
-    if ( screenWidth <= 640 ) {
-      return t( "Uploading-x-of-y", translationParams );
-    }
-
-    return t( "Uploading-x-of-y-observations", translationParams );
-  };
-
-  const getSyncIconColor = ( ) => {
-    if ( uploadInProgress || numUnuploadedObs > 0 ) {
-      return colors.inatGreen;
-    }
-    return colors.darkGray;
-  };
-
-  const statusText = getStatusText( );
-  /* eslint-disable react-native/no-inline-styles */
   return (
     <View className={
       `bg-white justify-center h-[78px] ${layout !== "grid" ? "border-b border-lightGray" : ""}`
@@ -99,7 +62,7 @@ const Toolbar = ( {
         {currentUser && (
           <IconButton
             icon="compass-rose"
-            onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
+            onPress={navToExplore}
             accessibilityLabel={t( "Explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
             accessibilityRole="button"
@@ -108,21 +71,10 @@ const Toolbar = ( {
           />
         )}
         <Pressable
-          onPress={( ) => {
-            if ( !currentUser ) {
-              setShowLoginSheet( true );
-              return;
-            }
-
-            if ( numUnuploadedObs > 0 ) {
-              startUpload( );
-            } else {
-              syncObservations( );
-            }
-          }}
+          onPress={handleSyncButtonPress}
           accessibilityRole="button"
-          disabled={loading || uploadInProgress}
-          accessibilityState={{ disabled: loading || uploadInProgress }}
+          disabled={syncDisabled}
+          accessibilityState={{ disabled: syncDisabled }}
         >
           <Animated.View
             style={uploadInProgress ? { transform: [{ rotate: spin }] } : {}}
@@ -135,10 +87,7 @@ const Toolbar = ( {
           <View>
             <Body2 className="ml-1">{statusText}</Body2>
             {uploadError && (
-            <Body4
-              className="ml-1 mt-[3px]"
-              style={{ color: colors.warningRed }}
-            >
+            <Body4 className="ml-1 mt-[3px] color-warningRed">
               {uploadError}
             </Body4>
             )}
@@ -159,12 +108,7 @@ const Toolbar = ( {
                 ? "MyObservationsToolbar.toggleGridView"
                 : "MyObservationsToolbar.toggleListView"
             }
-            onPress={( ) => setLayout( currentView => {
-              if ( currentView === "list" ) {
-                return "grid";
-              }
-              return "list";
-            } )}
+            onPress={toggleLayout}
             accessibilityRole="button"
           >
             <IconMaterial
@@ -177,6 +121,7 @@ const Toolbar = ( {
       <ProgressBar
         progress={progress}
         color={colors.inatGreen}
+        // eslint-disable-next-line react-native/no-inline-styles
         style={{ backgroundColor: "transparent" }}
         visible={uploadInProgress && progress !== 0}
       />

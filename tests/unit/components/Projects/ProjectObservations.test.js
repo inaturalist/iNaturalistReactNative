@@ -55,7 +55,6 @@ test( "displays project observations", ( ) => {
       mockObservation.taxon.name
     }`
   );
-  console.log( screen.getByTestId( "ObsList.photo" ).props.source, "source of grid" );
   expect( screen.getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( {
     uri: mockObservation.observation_photos[0].photo.url
   } );
