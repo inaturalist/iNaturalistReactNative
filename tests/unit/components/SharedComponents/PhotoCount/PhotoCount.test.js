@@ -2,32 +2,42 @@ import { render, screen } from "@testing-library/react-native";
 import { PhotoCount } from "components/SharedComponents";
 import React from "react";
 
-describe( "PhotosCount", () => {
-  it( "should render correctly", () => {
-    render( <PhotoCount count={10} /> );
-
-    const photoCount = screen.queryByTestId( "photo-count" );
-
-    expect( photoCount ).toBeTruthy();
-  } );
-
-  it( "should not render when photo count equal to 0", () => {
-    render( <PhotoCount count={0} /> );
-
-    const photoCount = screen.queryByTestId( "photo-count" );
-
-    expect( photoCount ).toBeNull();
-  } );
-
-  it( "should show the correct value", () => {
-    render( <PhotoCount count={14} /> );
+describe( "PhotoCount", () => {
+  it( "renders correctly", () => {
+    render( <PhotoCount count={7} size={50} shadow /> );
 
     expect( screen ).toMatchSnapshot();
   } );
 
-  it( "should show photo count value equal to 99", () => {
-    render( <PhotoCount count={200} /> );
+  describe( "when photo count equal to 0", () => {
+    it( "should not render", () => {
+      render( <PhotoCount count={0} /> );
 
-    expect( screen ).toMatchSnapshot();
+      const photoCount = screen.queryByTestId( "photo-count" );
+
+      expect( photoCount ).toBeNull();
+    } );
+  } );
+
+  describe( "when photo count is greater than 0", () => {
+    describe( "when photo count is greater than 100", () => {
+      it( "renders photo count value equal to 99", () => {
+        render( <PhotoCount count={200} /> );
+
+        const photoCountValue = screen.getByTestId( "photo-count-value" );
+
+        expect( photoCountValue ).toHaveTextContent( "99" );
+      } );
+    } );
+
+    describe( "when photo count is less than 100", () => {
+      it( "renders the default photo count value", () => {
+        render( <PhotoCount count={14} /> );
+
+        const photoCountValue = screen.getByTestId( "photo-count-value" );
+
+        expect( photoCountValue ).toHaveTextContent( "14" );
+      } );
+    } );
   } );
 } );
