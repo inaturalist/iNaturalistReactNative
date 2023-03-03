@@ -1,12 +1,14 @@
 import { StyleSheet } from "react-native";
 
-const getShadowStyle = ( {
+import colors from "./tailwindColors";
+
+export const getShadowStyle = ( {
   shadowColor,
   offsetWidth,
   offsetHeight,
-  opacity,
-  radius,
-  elevation = 5
+  shadowOpacity,
+  shadowRadius,
+  elevation
 } ) => StyleSheet.create( {
   shadowColor,
   shadowOffset: {
@@ -14,11 +16,18 @@ const getShadowStyle = ( {
     height: offsetHeight
   },
   // $FlowIssue[incompatible-shape]
-  shadowOpacity: opacity,
+  shadowOpacity,
   // $FlowIssue[incompatible-shape]
-  shadowRadius: radius,
+  shadowRadius,
   // $FlowIssue[incompatible-shape]
   elevation
 } );
 
-export default getShadowStyle;
+export const dropShadow = getShadowStyle( {
+  shadowColor: colors.black,
+  offsetWidth: 0,
+  offsetHeight: 2,
+  shadowRadius: 2,
+  shadowOpacity: 0.25,
+  elevation: 5
+} );
