@@ -438,6 +438,7 @@
     "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
   "X-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
+  "X-observations-uploaded": "{ $count ->\n  [one] 1 observation uploaded\n *[other] { $count } observations uploaded\n}",
   "X-Photos": {
     "comment": "Displays number of photos attached to an observation in the Media Viewer",
     "val": "{ $photoCount ->\n  [one] 1 Photo\n *[other] { $photoCount } Photos\n}"

@@ -16,7 +16,7 @@ const MyObservationsPressable = ( { observation, children }: Props ): Node => {
   const { t } = useTranslation( );
   const unsynced = !observation.wasSynced( );
 
-  const navigateToObservation = async ( ) => {
+  const navigateToObservation = ( ) => {
     const { uuid } = observation;
     if ( unsynced ) {
       navigation.navigate( "ObsEdit", { uuid } );
@@ -27,7 +27,7 @@ const MyObservationsPressable = ( { observation, children }: Props ): Node => {
 
   return (
     <Pressable
-      onPress={( ) => navigateToObservation( )}
+      onPress={navigateToObservation}
       accessibilityRole="link"
       accessibilityHint={unsynced
         ? t( "Navigate-to-observation-edit-screen" )

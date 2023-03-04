@@ -11,7 +11,6 @@ import {
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservations from "sharedHooks/useLocalObservations";
 import useUploadObservations from "sharedHooks/useUploadObservations";
-import colors from "styles/tailwindColors";
 
 import Toolbar from "./Toolbar";
 
@@ -37,6 +36,7 @@ const ToolbarContainer = ( {
     currentUploadIndex,
     totalUploadCount
   } = useUploadObservations( allObsToUpload );
+  const uploadComplete = progress === 1;
 
   const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
 
@@ -53,9 +53,13 @@ const ToolbarContainer = ( {
       return t( "Upload-x-observations", { count: numUnuploadedObs } );
     }
 
+    if ( uploadComplete ) {
+      return t( "X-observations-uploaded", { count: totalUploadCount } );
+    }
+
     const translationParams = {
       total: totalUploadCount,
-      uploadedCount: currentUploadIndex
+      uploadedCount: currentUploadIndex + 1
     };
 
     // iPhone 4 pixel width
@@ -64,13 +68,6 @@ const ToolbarContainer = ( {
     }
 
     return t( "Uploading-x-of-y-observations", translationParams );
-  };
-
-  const getSyncIconColor = ( ) => {
-    if ( uploadInProgress || numUnuploadedObs > 0 ) {
-      return colors.inatGreen;
-    }
-    return colors.darkGray;
   };
 
   const handleSyncButtonPress = ( ) => {
@@ -106,7 +103,7 @@ const ToolbarContainer = ( {
       uploadInProgress={uploadInProgress}
       stopUpload={stopUpload}
       progress={progress}
-      getSyncIconColor={getSyncIconColor}
+      numUnuploadedObs={numUnuploadedObs}
       currentUser={currentUser}
       navToExplore={navToExplore}
       toggleLayout={toggleLayout}

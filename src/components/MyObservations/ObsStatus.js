@@ -20,7 +20,7 @@ type Props = {
   classNameMargin?: string
 };
 /* eslint-disable react-native/no-inline-styles */
-const MyObservationsStatus = ( {
+const ObsStatus = ( {
   observation,
   white,
   layout = "vertical",
@@ -56,4 +56,4 @@ const MyObservationsStatus = ( {
   );
 };
 
-export default MyObservationsStatus;
+export default ObsStatus;

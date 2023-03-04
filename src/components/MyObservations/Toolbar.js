@@ -1,14 +1,13 @@
 // @flow
 
-import { Body2, Body4 } from "components/SharedComponents";
+import { Body2, Body4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Animated, Easing } from "react-native";
-import { IconButton, ProgressBar } from "react-native-paper";
+import { IconButton, ProgressBar, useTheme } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/tailwindColors";
 
 type Props = {
   layout: string,
@@ -19,7 +18,7 @@ type Props = {
   uploadInProgress: boolean,
   stopUpload: Function,
   progress: number,
-  getSyncIconColor: Function,
+  numUnuploadedObs: number,
   currentUser: ?Object,
   navToExplore: Function,
   toggleLayout: Function
@@ -34,12 +33,15 @@ const Toolbar = ( {
   uploadInProgress,
   stopUpload,
   progress,
-  getSyncIconColor,
+  numUnuploadedObs,
   currentUser,
   navToExplore,
   toggleLayout
 }: Props ): Node => {
+  const theme = useTheme( );
   const spinValue = new Animated.Value( 1 );
+  const uploadComplete = progress === 1;
+  const uploading = uploadInProgress && !uploadComplete;
 
   Animated.timing( spinValue, {
     toValue: 0,
@@ -77,27 +79,38 @@ const Toolbar = ( {
           accessibilityState={{ disabled: syncDisabled }}
         >
           <Animated.View
-            style={uploadInProgress ? { transform: [{ rotate: spin }] } : {}}
+            style={uploading ? { transform: [{ rotate: spin }] } : {}}
           >
-            <IconMaterial name="sync" size={26} color={getSyncIconColor( )} />
+            <IconMaterial
+              name="sync"
+              size={26}
+              color={uploading || numUnuploadedObs > 0
+                ? theme.colors.secondary
+                : theme.colors.primary}
+            />
           </Animated.View>
         </Pressable>
 
         {statusText && (
-          <View>
+          <View className="flex-row items-center">
             <Body2 className="ml-1">{statusText}</Body2>
             {uploadError && (
             <Body4 className="ml-1 mt-[3px] color-warningRed">
               {uploadError}
             </Body4>
             )}
+            {uploadComplete && (
+              <View className="ml-2">
+                <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
+              </View>
+            )}
           </View>
         )}
 
-        <View className="ml-auto flex flex-row items-center">
-          {uploadInProgress && (
+        <View className="ml-auto flex-row items-center">
+          {( uploadInProgress && !uploadComplete ) && (
             <Pressable onPress={stopUpload} accessibilityRole="button">
-              <IconMaterial name="close" size={11} color={colors.darkGray} />
+              <IconMaterial name="close" size={11} color={theme.colors.primary} />
             </Pressable>
           )}
 
@@ -120,7 +133,7 @@ const Toolbar = ( {
       </View>
       <ProgressBar
         progress={progress}
-        color={colors.inatGreen}
+        color={theme.colors.secondary}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{ backgroundColor: "transparent" }}
         visible={uploadInProgress && progress !== 0}

@@ -93,6 +93,7 @@ const Login = ( ): Node => {
       <Text className="text-xl self-center text-center mt-5 mb-5">{t( "Login-sub-title" )}</Text>
       <Text className="text-base mb-1">{t( "Username-or-Email" )}</Text>
       <TextInput
+        accessibilityLabel="Text input field"
         className="h-10 bg-tertiary"
         onChangeText={text => {
           setError( null );
@@ -108,6 +109,7 @@ const Login = ( ): Node => {
       />
       <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
+        accessibilityLabel="Text input field"
         className="h-10 bg-tertiary"
         onChangeText={text => {
           setError( null );
@@ -119,7 +121,7 @@ const Login = ( ): Node => {
         selectionColor={colors.black}
         onFocus={() => setExtraScrollHeight( 200 )}
       />
-      <TouchableOpacity onPress={forgotPassword}>
+      <TouchableOpacity accessibilityRole="button" onPress={forgotPassword}>
         <Text className="underline mt-2 self-end">{t( "Forgot-Password" )}</Text>
       </TouchableOpacity>
       {error && <Text className="text-red self-center mt-5">{error}</Text>}
@@ -137,6 +139,7 @@ const Login = ( ): Node => {
 
   const renderBackButton = ( ) => (
     <Pressable
+      accessibilityRole="button"
       onPress={( ) => navigation.goBack( )}
       className="absolute top-0 right-0"
     >
