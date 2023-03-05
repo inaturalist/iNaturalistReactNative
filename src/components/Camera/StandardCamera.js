@@ -1,7 +1,8 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { CloseButton } from "components/SharedComponents";
+import { CloseButton, Heading3, Button, Body3 } from "components/SharedComponents";
+import StandardBottomSheet from "components/SharedComponents/BottomSheet";
 import {
   Pressable, View
 } from "components/styledComponents";
@@ -29,6 +30,11 @@ import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
 
 export const MAX_PHOTOS_ALLOWED = 20;
+
+const INITIAL_DISCARD_STATE = {
+  hide: true,
+  action: null
+}
 
 const StandardCamera = ( ): Node => {
   const {
@@ -58,6 +64,7 @@ const StandardCamera = ( ): Node => {
   const initialWidth = Dimensions.get( "screen" ).width;
   const [footerWidth, setFooterWidth] = useState( initialWidth );
   const [imageOrientation, setImageOrientation] = useState( "portrait" );
+  const [discardState, setDiscardState] = useState(INITIAL_DISCARD_STATE);
 
   const isTablet = DeviceInfo.isTablet();
 
@@ -80,6 +87,24 @@ const StandardCamera = ( ): Node => {
       setImageOrientation( orientation );
     }
   };
+
+  useEffect(
+    () =>
+      navigation.addListener('beforeRemove', (e) => {
+        if (cameraPreviewUris.length === 0) {
+          return;
+        }
+
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+
+        setDiscardState({
+          hide: false,
+          action: e.data.action
+        })
+      }),
+    [navigation, cameraPreviewUris]
+  );
 
   useEffect( () => {
     Orientation.addDeviceOrientationListener( onDeviceRotation );
@@ -224,8 +249,37 @@ const StandardCamera = ( ): Node => {
         </View>
       </View>
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
-        {t( "You-can-only-upload-20-media" )}
+        {t( "You-can-only-upload-20-media ")}
       </Snackbar>
+      <StandardBottomSheet snapPoints={["20%"]} hide={discardState.hide}>
+        <View className="px-[20px]">
+          <View className="relative flex items-center justify-center mt-[22px]">
+            <Heading3>{t( "discard-photos" )}</Heading3>
+            <View className="absolute right-0">
+              <IconButton
+                icon="close-button-x"
+                onPress={() => setDiscardState(INITIAL_DISCARD_STATE)}
+              />
+            </View>
+          </View>
+          <Body3 className="my-[20px] ml-[10px]">
+            {t( "discard-photos-description" )}
+          </Body3>
+          <View className="flex flex-row">
+            <Button
+              level="neutral"
+              text={t( "Cancel" )}
+              onPress={() => setDiscardState(INITIAL_DISCARD_STATE)}
+            />
+            <Button
+              className="flex-1 ml-[12px]"
+              level="warning"
+              text={t( "Discard" )}
+              onPress={() => navigation.dispatch(discardState.action)}
+            />
+          </View>
+        </View>
+      </StandardBottomSheet>
     </View>
   );
 };

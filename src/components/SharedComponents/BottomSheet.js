@@ -9,12 +9,17 @@ import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
 type Props = {
   children: any,
-  hide?: boolean
+  hide?: boolean,
+  snapPoints?: string[]
 }
 
-const SNAP_POINTS = ["45%"];
+const DEFAULT_SNAP_POINTS = ["45%"];
 
-const StandardBottomSheet = ( { children, hide }: Props ): Node => {
+const StandardBottomSheet = ( {
+  children,
+  hide,
+  snapPoints = DEFAULT_SNAP_POINTS
+}: Props ): Node => {
   const sheetRef = useRef( null );
 
   // eslint-disable-next-line
@@ -39,7 +44,8 @@ const StandardBottomSheet = ( { children, hide }: Props ): Node => {
   return (
     <BottomSheet
       ref={sheetRef}
-      snapPoints={SNAP_POINTS}
+      index={-1}
+      snapPoints={snapPoints}
       style={viewStyles.shadow}
       handleComponent={noHandle}
     >
