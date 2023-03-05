@@ -167,15 +167,17 @@ const StandardCamera = ( ): Node => {
   return (
     <View className="flex-1 bg-black">
       <StatusBar barStyle="light-content" />
-      {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
       <PhotoPreview
         photoUris={cameraPreviewUris}
         setPhotoUris={setCameraPreviewUris}
         savingPhoto={savingPhoto}
         deviceOrientation={imageOrientation}
       />
-      <FadeInOutView savingPhoto={savingPhoto} />
-      <View className="absolute bottom-0 w-full">
+      <View className="relative w-full flex-1">
+        {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
+        <FadeInOutView savingPhoto={savingPhoto} />
+      </View>
+      <View className="w-full pt-[8px]">
         <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4`}>
           {hasFlash ? (
             <Pressable onPress={toggleFlash} accessibilityRole="button">

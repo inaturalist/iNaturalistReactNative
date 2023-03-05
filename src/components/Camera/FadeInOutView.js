@@ -3,6 +3,7 @@
 import type { Node } from "react";
 import React, { useEffect, useRef } from "react";
 import { Animated } from "react-native";
+import colors from "styles/tailwindColors";
 
 type Props = {
   savingPhoto: boolean
@@ -28,7 +29,12 @@ const FadeInOutView = ( { savingPhoto }: Props ): Node => {
 
   return (
     <Animated.View
+      // eslint-disable-next-line react-native/no-inline-styles
       style={{
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        backgroundColor: colors.black,
         opacity: fadeAnimation
       }}
     />
