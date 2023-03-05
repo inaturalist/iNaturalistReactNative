@@ -35,15 +35,15 @@ const ObsStatus = ( {
   const numIdents = observation.identifications?.length || 0;
   const numComments = observation.comments?.length || 0;
 
-  let identificationA11yLabel = ""
-  let commentA11yLabel = ""
+  let identificationA11yLabel = "";
+  let commentA11yLabel = "";
   try {
     // not exactly sure why this causes a consistent error every time you run android
     // for the first time...
-    identificationA11yLabel = t( "x-identifications", { count: numIdents } )
-    commentA11yLabel = t( "x-comments", { count: numComments } )
-  } catch (e) {
-    console.warn(e)
+    identificationA11yLabel = t( "x-identifications", { count: numIdents } );
+    commentA11yLabel = t( "x-comments", { count: numComments } );
+  } catch ( e ) {
+    console.warn( e );
   }
 
   return (
