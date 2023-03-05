@@ -824,3 +824,7 @@ x-identifications = {$count ->
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
 datetime-format-short = M/d/yy h:mm a
+
+discard-photos = DISCARD PHOTOS?
+discard-photos-description = By exiting, your photos will not be saved.
+Discard = Discard

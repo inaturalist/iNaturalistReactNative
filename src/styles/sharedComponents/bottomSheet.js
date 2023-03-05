@@ -8,7 +8,7 @@ const borderRadius = 24;
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   bottomSheet: {
-    flex: 1,
+    flex: 1
   },
   shadow: {
     shadowColor: colors.black,
