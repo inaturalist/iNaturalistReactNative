@@ -173,11 +173,11 @@ const StandardCamera = ( ): Node => {
         savingPhoto={savingPhoto}
         deviceOrientation={imageOrientation}
       />
-      <View className="relative w-full flex-1">
+      <View className="relative flex-1">
         {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
         <FadeInOutView savingPhoto={savingPhoto} />
       </View>
-      <View className="w-full pt-[8px]">
+      <View className="pt-[8px]">
         <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4`}>
           {hasFlash ? (
             <Pressable onPress={toggleFlash} accessibilityRole="button">
