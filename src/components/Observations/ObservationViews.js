@@ -104,7 +104,7 @@ const ObservationViews = (): Node => {
     return <InfiniteScrollFooter view={layout} isLoading={isLoading} />;
   };
 
-  const renderItemSeparator = () => <View className="border border-border" />;
+  const renderItemSeparator = () => <View className="border border-lightGray" />;
 
   const onEndReached = () => {
     if ( !isLoading ) {

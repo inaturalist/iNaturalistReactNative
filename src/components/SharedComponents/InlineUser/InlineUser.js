@@ -30,7 +30,7 @@ const InlineUser = ( { user }: Props ): Node => {
           testID="InlineUser.NoInternetPicture"
           name="wifi-off"
           size={22}
-          color={colors.logInGray}
+          color={colors.darkGray}
         />
       );
     }
@@ -40,7 +40,7 @@ const InlineUser = ( { user }: Props ): Node => {
           testID="InlineUser.FallbackPicture"
           name="person"
           size={22}
-          color={colors.logInGray}
+          color={colors.darkGray}
         />
       );
     }

@@ -37,7 +37,7 @@ const setStyles = ( {
   } else if ( isPrimary ) {
     buttonClass = buttonClass.concat( " ", "bg-darkGray" );
   } else if ( isFocus ) {
-    buttonClass = buttonClass.concat( " ", "bg-focusGreen" );
+    buttonClass = buttonClass.concat( " ", "bg-inatGreen" );
   } else {
     buttonClass = buttonClass.concat(
       " ",

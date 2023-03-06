@@ -195,7 +195,7 @@ const StandardCamera = ( ): Node => {
               testID="camera-button-label-switch-camera"
               size={40}
               icon="camera"
-              style={{ backgroundColor: colors.gray }}
+              style={{ backgroundColor: colors.darkGray }}
             />
           </Pressable>
         </View>
@@ -207,7 +207,7 @@ const StandardCamera = ( ): Node => {
             icon="camera"
             onPress={takePhoto}
             disabled={disallowAddingPhotos}
-            containerColor={theme.colors.surface}
+            containerColor={colors.white}
           />
           <View className="w-1/3">
             {photosTaken && (
