@@ -8,13 +8,13 @@ import StandardBottomSheet from "components/SharedComponents/BottomSheet";
 import {
   Pressable, View
 } from "components/styledComponents";
-import { t } from "i18next";
 import _ from "lodash";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
 } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dimensions, StatusBar
 } from "react-native";
@@ -50,6 +50,7 @@ const StandardCamera = ( ): Node => {
   } = useContext( ObsEditContext );
   const theme = useTheme( );
   const navigation = useNavigation( );
+  const { t } = useTranslation( );
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
   // $FlowFixMe
@@ -260,6 +261,8 @@ const StandardCamera = ( ): Node => {
               <IconButton
                 icon="close-button-x"
                 onPress={() => setDiscardState( INITIAL_DISCARD_STATE )}
+                accessibilityLabel={t( "Cancel" )}
+                accessibilityState={{ disabled: false }}
               />
             </View>
           </View>
@@ -271,12 +274,16 @@ const StandardCamera = ( ): Node => {
               level="neutral"
               text={t( "Cancel" )}
               onPress={() => setDiscardState( INITIAL_DISCARD_STATE )}
+              accessibilityLabel={t( "Cancel" )}
+              accessibilityState={{ disabled: false }}
             />
             <Button
               className="flex-1 ml-[12px]"
               level="warning"
               text={t( "Discard" )}
+              accessibilityLabel={t( "Discard" )}
               onPress={() => navigation.dispatch( discardState.action )}
+              accessibilityState={{ disabled: false }}
             />
           </View>
         </View>
