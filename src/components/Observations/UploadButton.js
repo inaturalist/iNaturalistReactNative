@@ -18,7 +18,7 @@ const UploadButton = ( { observation }: Props ): Node => {
   return (
     <IconButton
       size={40}
-      icon="pencil"
+      icon="arrow-up-plain"
       iconColor={colors.lightGray}
       onPress={async ( ) => {
         setLoading( true );

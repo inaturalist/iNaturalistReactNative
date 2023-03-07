@@ -39,7 +39,7 @@ const ActivityCount = ( {
       accessibilityHint={accessibilityHint}
     >
       <INatIcon
-        name={icon || "comments-filled-in"}
+        name={icon || "comments"}
         color={color || defaultColor}
         size={14}
       />

@@ -54,7 +54,7 @@ const UiLibrary = () => {
         <Heading2 className="my-2">Floating Action Bar</Heading2>
         <IconButton
           className="mx-auto"
-          icon="icon-fave"
+          icon="star-outline"
           mode="contained"
         />
       </FloatingActionBar>
@@ -187,7 +187,7 @@ const UiLibrary = () => {
           <View>
             <Body2>Focused</Body2>
             <IconButton
-              icon="plus-sign"
+              icon="plus"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
               mode="contained"
