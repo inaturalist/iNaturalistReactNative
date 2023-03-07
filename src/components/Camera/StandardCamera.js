@@ -258,9 +258,14 @@ const StandardCamera = ( ): Node => {
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>
       <StandardBottomSheet
-        snapPoints={["25%"]}
+        snapPoints={[180]}
         hide={discardState.hide}
         backdropComponent={renderBackdrop}
+        onChange={position => {
+          if ( position === -1 ) {
+            setDiscardState( INITIAL_DISCARD_STATE );
+          }
+        }}
       >
         <View className="px-[20px]">
           <View className="relative flex items-center justify-center mt-[22px]">
