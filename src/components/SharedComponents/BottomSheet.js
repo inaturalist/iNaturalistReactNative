@@ -10,7 +10,8 @@ import { viewStyles } from "styles/sharedComponents/bottomSheet";
 type Props = {
   children: any,
   hide?: boolean,
-  snapPoints?: string[]
+  snapPoints?: string[],
+  backdropComponent?: Function
 }
 
 const DEFAULT_SNAP_POINTS = ["45%"];
@@ -18,7 +19,8 @@ const DEFAULT_SNAP_POINTS = ["45%"];
 const StandardBottomSheet = ( {
   children,
   hide,
-  snapPoints = DEFAULT_SNAP_POINTS
+  snapPoints = DEFAULT_SNAP_POINTS,
+  backdropComponent = null
 }: Props ): Node => {
   const sheetRef = useRef( null );
 
@@ -48,8 +50,9 @@ const StandardBottomSheet = ( {
       snapPoints={snapPoints}
       style={viewStyles.shadow}
       handleComponent={noHandle}
+      backdropComponent={backdropComponent}
     >
-      <BottomSheetView style={viewStyles.bottomSheet}>
+      <BottomSheetView>
         {children}
       </BottomSheetView>
     </BottomSheet>

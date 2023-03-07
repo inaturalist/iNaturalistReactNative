@@ -825,6 +825,7 @@ x-identifications = {$count ->
 date-format-short = M/d/yy
 datetime-format-short = M/d/yy h:mm a
 
-discard-photos = DISCARD PHOTOS?
-discard-photos-description = By exiting, your photos will not be saved.
-Discard = Discard
+DISCARD-PHOTOS = DISCARD PHOTOS?
+By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
+DISCARD = DISCARD
+CANCEL = CANCEL

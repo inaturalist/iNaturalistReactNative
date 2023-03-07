@@ -2,9 +2,11 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  Body3, Button, CloseButton, Heading3
+  Button, CloseButton, Heading4,
+  List2
 } from "components/SharedComponents";
 import StandardBottomSheet from "components/SharedComponents/BottomSheet";
+import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
 import {
   Pressable, View
 } from "components/styledComponents";
@@ -191,6 +193,8 @@ const StandardCamera = ( ): Node => {
     );
   };
 
+  const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
+
   return (
     <View className="flex-1 bg-black">
       <StatusBar barStyle="light-content" />
@@ -251,12 +255,17 @@ const StandardCamera = ( ): Node => {
         </View>
       </View>
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
-        {t( "You-can-only-upload-20-media " )}
+        {t( "You-can-only-upload-20-media" )}
       </Snackbar>
-      <StandardBottomSheet snapPoints={["20%"]} hide={discardState.hide}>
+      <StandardBottomSheet
+        snapPoints={["25%"]}
+        hide={discardState.hide}
+        backdropComponent={renderBackdrop}
+      >
         <View className="px-[20px]">
           <View className="relative flex items-center justify-center mt-[22px]">
-            <Heading3>{t( "discard-photos" )}</Heading3>
+            <Heading4>{t( "DISCARD-PHOTOS" )}</Heading4>
+
             <View className="absolute right-0">
               <IconButton
                 icon="close-button-x"
@@ -266,22 +275,22 @@ const StandardCamera = ( ): Node => {
               />
             </View>
           </View>
-          <Body3 className="my-[20px] ml-[10px]">
-            {t( "discard-photos-description" )}
-          </Body3>
+          <List2 className="my-[20px] text-center">
+            {t( "By-exiting-your-photos-will-not-be-saved" )}
+          </List2>
           <View className="flex flex-row">
             <Button
               level="neutral"
-              text={t( "Cancel" )}
+              text={t( "CANCEL" )}
               onPress={() => setDiscardState( INITIAL_DISCARD_STATE )}
-              accessibilityLabel={t( "Cancel" )}
+              accessibilityLabel={t( "CANCEL" )}
               accessibilityState={{ disabled: false }}
             />
             <Button
               className="flex-1 ml-[12px]"
               level="warning"
-              text={t( "Discard" )}
-              accessibilityLabel={t( "Discard" )}
+              text={t( "DISCARD" )}
+              accessibilityLabel={t( "DISCARD" )}
               onPress={() => navigation.dispatch( discardState.action )}
               accessibilityState={{ disabled: false }}
             />
