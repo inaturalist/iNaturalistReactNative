@@ -22,6 +22,7 @@ import {
   List2,
   ObservationLocation,
   QualityGradeStatus,
+  StickyToolbar,
   Subheading1,
   Tabs,
   UserIcon
@@ -53,7 +54,7 @@ const UiLibrary = () => {
         <Heading2 className="my-2">Floating Action Bar</Heading2>
         <IconButton
           className="mx-auto"
-          icon="icon-fave"
+          icon="star-outline"
           mode="contained"
         />
       </FloatingActionBar>
@@ -186,7 +187,7 @@ const UiLibrary = () => {
           <View>
             <Body2>Focused</Body2>
             <IconButton
-              icon="plus-sign"
+              icon="plus"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
               mode="contained"
@@ -378,6 +379,9 @@ const UiLibrary = () => {
           Useless spacer at the end because height in NativeWind is confusing.
         </Body1>
       </ScrollView>
+      <StickyToolbar containerClass="bottom-56">
+        <Heading2>StickyToolbar</Heading2>
+      </StickyToolbar>
     </ViewWithFooter>
   );
 };

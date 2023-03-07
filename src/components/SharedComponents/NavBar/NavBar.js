@@ -64,7 +64,7 @@ const NavBar = ( ): React.Node => {
       <AddObsButton />
       <NavButton
         onPress={navToObsList}
-        icon="ios-people-updated-2"
+        icon="people"
         userIconUri={User.uri( user )}
         testID={OBS_LIST_SCREEN_ID}
         active={name === OBS_LIST_SCREEN_ID}
