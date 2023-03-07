@@ -155,7 +155,7 @@ const UiLibrary = () => {
         <Heading2 className="my-2">Heading2</Heading2>
         <Heading3 className="my-2">Heading3</Heading3>
         <Heading4 className="my-2">Heading4</Heading4>
-        <Heading4 className="my-2 text-focusGreen">
+        <Heading4 className="my-2 text-inatGreen">
           Heading4 (non-default color)
         </Heading4>
         <Heading5 className="my-2">Heading5</Heading5>
@@ -207,7 +207,7 @@ const UiLibrary = () => {
 
         <Heading2>Special Icon buttons</Heading2>
         <View className="flex flex-row justify-between">
-          <View className="bg-secondary">
+          <View className="bg-darkGray">
             <Body2>CloseButton</Body2>
             <CloseButton />
           </View>

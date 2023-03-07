@@ -64,10 +64,10 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
       <View className="flex-row justify-center">
         <View className="bg-white rounded-xl p-5 mb-12 max-w-sm">
           <Text testID="evidence-text" className="text-2xl">{t( "Evidence" )}</Text>
-          <Text className="color-grayText my-2">{t( "Add-evidence-of-an-organism" )}</Text>
-          <Text className="color-grayText my-2">{t( "You-can" )}</Text>
+          <Text className="color-darkGray my-2">{t( "Add-evidence-of-an-organism" )}</Text>
+          <Text className="color-darkGray my-2">{t( "You-can" )}</Text>
           {bulletedText.map( string => (
-            <Text className="color-grayText" key={string}>
+            <Text className="color-darkGray" key={string}>
               {`\u2022 ${string}`}
             </Text>
           ) )}

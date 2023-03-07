@@ -1,7 +1,6 @@
 // @flow
 
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef
@@ -11,23 +10,26 @@ import { viewStyles } from "styles/sharedComponents/bottomSheet";
 type Props = {
   children: any,
   hide?: boolean,
-  snapPoints?: Array<string>,
+  snapPoints?: ( string|number )[],
+  backdropComponent?: Function,
+  onChange?: Function,
   handleClose?: Function
 }
 
-const SNAP_POINTS = ["45%"];
+const DEFAULT_SNAP_POINTS = ["45%"];
 
 const StandardBottomSheet = ( {
-  children, hide, snapPoints, handleClose
+  children,
+  hide,
+  snapPoints = DEFAULT_SNAP_POINTS,
+  backdropComponent = null,
+  onChange = null,
+  handleClose
 }: Props ): Node => {
   const sheetRef = useRef( null );
 
   // eslint-disable-next-line
   const noHandle = ( ) => <></>;
-
-  const renderBackdrop = props => (
-    <BottomSheetStandardBackdrop props={props} />
-  );
 
   const handleClosePress = useCallback( ( ) => {
     if ( handleClose ) {
@@ -51,12 +53,14 @@ const StandardBottomSheet = ( {
   return (
     <BottomSheet
       ref={sheetRef}
-      snapPoints={snapPoints || SNAP_POINTS}
+      index={-1}
+      snapPoints={snapPoints}
       style={viewStyles.shadow}
       handleComponent={noHandle}
-      backdropComponent={renderBackdrop}
+      backdropComponent={backdropComponent}
+      onChange={onChange}
     >
-      <BottomSheetView style={viewStyles.bottomSheet}>
+      <BottomSheetView>
         {children}
       </BottomSheetView>
     </BottomSheet>

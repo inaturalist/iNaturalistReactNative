@@ -624,5 +624,9 @@
   "You-can-search-observations-of-any-plant-or-animal": {
     "comment": "51-100 observations",
     "val": "You can search observations of any plant or animal anywhere in the world with Explore!"
-  }
+  },
+  "DISCARD-PHOTOS": "DISCARD PHOTOS?",
+  "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
+  "DISCARD": "DISCARD",
+  "CANCEL": "CANCEL"
 }

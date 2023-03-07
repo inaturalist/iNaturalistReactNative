@@ -758,6 +758,7 @@ Messages = Messages
 Observations = Observations
 Observe = Observe
 Open-drawer = Open drawer
+
 Sound-recorder = Sound recorder
 User = User { $userHandle }
 Observation-Name = Observation { $scientificName }
@@ -851,3 +852,8 @@ As-you-upload-more-observations = As you upload more observations, others in our
 Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
 # 51-100 observations
 You-can-search-observations-of-any-plant-or-animal = You can search observations of any plant or animal anywhere in the world with Explore!
+
+DISCARD-PHOTOS = DISCARD PHOTOS?
+By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
+DISCARD = DISCARD
+CANCEL = CANCEL

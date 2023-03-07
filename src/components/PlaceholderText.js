@@ -3,6 +3,7 @@
 import type { Node } from "react";
 import React from "react";
 import { Text } from "react-native";
+import colors from "styles/tailwindColors";
 
 type Props = {
   text: string,
@@ -10,7 +11,12 @@ type Props = {
 }
 
 const PlaceholderText = ( { text, style }: Props ): Node => (
-  <Text style={[{ color: "red", textTransform: "uppercase", fontSize: 30 }].concat( style )}>
+  <Text style={[{
+    color: colors.warningRed,
+    textTransform: "uppercase",
+    fontSize: 30
+  }].concat( style )}
+  >
     { text }
   </Text>
 );
