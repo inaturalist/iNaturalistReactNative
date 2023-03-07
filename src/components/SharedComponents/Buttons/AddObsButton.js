@@ -42,7 +42,7 @@ const AddObsButton = (): React.Node => {
           useAngle
         >
           <View className="grow aspect-square flex items-center justify-center">
-            <INatIcon name="plus" size={31} color={colors.white} />
+            <INatIcon name="plus" size={69} color={colors.white} />
           </View>
         </LinearGradient>
       </Pressable>

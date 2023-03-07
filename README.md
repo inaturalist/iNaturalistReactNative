@@ -133,7 +133,7 @@ We manage our custom font with Fontastic, so these steps can probably only be do
 
 1. `npm install -f react-native-asset`. You'll need this to link assets.
 1. Get the new icon as an SVG file. Make sure the file name matches the icon name and no prefixes like `icon-` or `icn-`. If the icon is called "shield" the file name should be `shield.svg`.
-1. Add new icon to the iNaturalist icon set in Fontastic. **Don't change any of the existing names** and **don't change any of the existing selections** (this could mess with other projects using the font). Just select your new icon(s).
+1. Add new icon to the iNaturalist icon set in Fontastic. **Don't change any of the existing names** and **don't change any of the existing selections** (this could mess with other projects using the font). Just add your new icon(s) to the selection.
 1. Click the "Publish" tab and click the "DOWNLOAD" button to download the zip of the font. Unzip it.
 1. Create a glyph file from the CSS file in the zip you just downloaded, using the following command (be sure to replace /path/to/styles with your path):
     ```
