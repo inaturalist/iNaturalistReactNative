@@ -379,7 +379,7 @@ const UiLibrary = () => {
           Useless spacer at the end because height in NativeWind is confusing.
         </Body1>
       </ScrollView>
-      <StickyToolbar>
+      <StickyToolbar containerClass="bottom-56">
         <Heading2>StickyToolbar</Heading2>
       </StickyToolbar>
     </ViewWithFooter>
