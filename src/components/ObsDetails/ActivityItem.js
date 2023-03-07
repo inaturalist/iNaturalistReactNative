@@ -59,7 +59,7 @@ const ActivityItem = ( {
             : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
           <View>
             <Text className="text-lg">{taxon.preferred_common_name}</Text>
-            <Text className="color-logInGray">
+            <Text className="color-darkGray">
               {taxon.rank}
               {" "}
               {taxon.name}

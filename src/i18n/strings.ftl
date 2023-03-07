@@ -739,6 +739,7 @@ Messages = Messages
 Observations = Observations
 Observe = Observe
 Open-drawer = Open drawer
+
 Sound-recorder = Sound recorder
 User = User { $userHandle }
 Observation-Name = Observation { $scientificName }
@@ -824,3 +825,8 @@ x-identifications = {$count ->
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
 datetime-format-short = M/d/yy h:mm a
+
+DISCARD-PHOTOS = DISCARD PHOTOS?
+By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
+DISCARD = DISCARD
+CANCEL = CANCEL
