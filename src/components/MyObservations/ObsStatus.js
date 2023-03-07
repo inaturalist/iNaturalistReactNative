@@ -35,20 +35,33 @@ const ObsStatus = ( {
   const numIdents = observation.identifications?.length || 0;
   const numComments = observation.comments?.length || 0;
 
+  // 03072023 amanda - applying chris' bandaid fix from PR #515: https://github.com/inaturalist/iNaturalistReactNative/pull/515
+  // to make sure android devices don't crash on start
+  let identificationA11yLabel = "";
+  let commentA11yLabel = "";
+  try {
+    // not exactly sure why this causes a consistent error every time you run android
+    // for the first time...
+    identificationA11yLabel = t( "x-identifications", { count: numIdents } );
+    commentA11yLabel = t( "x-comments", { count: numComments } );
+  } catch ( e ) {
+    console.warn( e );
+  }
+
   return (
     <View className={classNames( "flex", flexDirection, classNameMargin )}>
       <ActivityCount
         margin={margin}
         count={numIdents}
         color={iconColor}
-        accessibilityLabel={t( "x-identifications", { count: numIdents } )}
+        accessibilityLabel={identificationA11yLabel}
         testID="ActivityCount.identificationCount"
       />
       <ActivityCount
         margin={margin}
         count={observation.comments?.length}
         color={iconColor}
-        accessibilityLabel={t( "x-comments", { count: numComments } )}
+        accessibilityLabel={commentA11yLabel}
         testID="ActivityCount.commentCount"
       />
       <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />
