@@ -22,6 +22,7 @@ import {
   List2,
   ObservationLocation,
   QualityGradeStatus,
+  StickyToolbar,
   Subheading1,
   Tabs,
   UserIcon
@@ -378,6 +379,9 @@ const UiLibrary = () => {
           Useless spacer at the end because height in NativeWind is confusing.
         </Body1>
       </ScrollView>
+      <StickyToolbar>
+        <Heading2>StickyToolbar</Heading2>
+      </StickyToolbar>
     </ViewWithFooter>
   );
 };
