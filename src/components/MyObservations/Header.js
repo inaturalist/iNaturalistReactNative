@@ -1,11 +1,14 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
-import { Button, Heading1, Subheading1 } from "components/SharedComponents";
+import {
+  Button, Heading1, Subheading1
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { IconButton, useTheme } from "react-native-paper";
 // import { Animated } from "react-native";
 import User from "realmModels/User";
 import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
@@ -35,6 +38,7 @@ const Header = ( {
   numObservations,
   setHeightAboveToolbar
 }: Props ): Node => {
+  const theme = useTheme( );
   // const fadeAnimation = useRef( new Animated.Value( 1 ) ).current;
   const navigation = useNavigation( );
   const numUnuploadedObs = useNumUnuploadedObservations( );
@@ -72,25 +76,35 @@ const Header = ( {
 
     return (
       <>
-        {numUnuploadedObs > 0 ? (
-          <>
+        <View className="flex-row items-center">
+          <IconButton
+            className="mr-5"
+            icon="logomark"
+            size={40}
+            iconColor={theme.colors.onSecondary}
+            backgroundColor={theme.colors.secondary}
+          />
+          {numUnuploadedObs > 0 ? (
+            <View>
+              <Subheading1
+                className="mt-5"
+                testID="log-in-to-iNaturalist-text"
+              >
+                {t( "Log-in-to-contribute-and-sync" )}
+              </Subheading1>
+              <Heading1 className="mb-5">
+                {t( "X-observations", { count: numUnuploadedObs } )}
+              </Heading1>
+
+            </View>
+          ) : (
             <Subheading1
-              className="mt-5"
-              testID="log-in-to-iNaturalist-text"
+              className="my-5"
             >
-              {t( "Log-in-to-contribute-and-sync" )}
+              {t( "Log-in-to-contribute-your-observations" )}
             </Subheading1>
-            <Heading1 className="mb-5">
-              {t( "X-observations", { count: numUnuploadedObs } )}
-            </Heading1>
-          </>
-        ) : (
-          <Subheading1
-            className="my-5"
-          >
-            {t( "Log-in-to-contribute-your-observations" )}
-          </Subheading1>
-        )}
+          )}
+        </View>
         <Button
           onPress={( ) => navigation.navigate( "login" )}
           accessibilityRole="link"

@@ -1,10 +1,10 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dimensions, PixelRatio
 } from "react-native";
@@ -23,6 +23,7 @@ type Props = {
 const ToolbarContainer = ( {
   setLayout, layout, numUnuploadedObs
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const { allObsToUpload } = useLocalObservations( );
@@ -94,6 +95,13 @@ const ToolbarContainer = ( {
 
   const statusText = getStatusText( );
 
+  const setSyncIcon = ( ) => {
+    if ( numUnuploadedObs > 0 || !uploadInProgress || uploadError ) {
+      return "sync-unsynced";
+    }
+    return "sync";
+  };
+
   return (
     <Toolbar
       statusText={statusText}
@@ -108,6 +116,7 @@ const ToolbarContainer = ( {
       navToExplore={navToExplore}
       toggleLayout={toggleLayout}
       layout={layout}
+      setSyncIcon={setSyncIcon}
     />
   );
 };

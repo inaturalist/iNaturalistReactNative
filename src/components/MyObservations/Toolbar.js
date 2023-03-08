@@ -21,7 +21,8 @@ type Props = {
   numUnuploadedObs: number,
   currentUser: ?Object,
   navToExplore: Function,
-  toggleLayout: Function
+  toggleLayout: Function,
+  setSyncIcon: Function
 }
 
 const Toolbar = ( {
@@ -36,7 +37,8 @@ const Toolbar = ( {
   numUnuploadedObs,
   currentUser,
   navToExplore,
-  toggleLayout
+  toggleLayout,
+  setSyncIcon
 }: Props ): Node => {
   const theme = useTheme( );
   const spinValue = new Animated.Value( 1 );
@@ -55,6 +57,16 @@ const Toolbar = ( {
     outputRange: ["0deg", "360deg"]
   } );
 
+  const setSyncIconColor = ( ) => {
+    if ( uploadError ) {
+      return theme.colors.error;
+    }
+    if ( uploading || numUnuploadedObs > 0 ) {
+      return theme.colors.secondary;
+    }
+    return theme.colors.primary;
+  };
+
   return (
     <View className={
       `bg-white justify-center h-[78px] ${layout !== "grid" ? "border-b border-lightGray" : ""}`
@@ -72,24 +84,20 @@ const Toolbar = ( {
             size={26}
           />
         )}
-        <Pressable
-          onPress={handleSyncButtonPress}
-          accessibilityRole="button"
-          disabled={syncDisabled}
-          accessibilityState={{ disabled: syncDisabled }}
+
+        <Animated.View
+          style={uploading ? { transform: [{ rotate: spin }] } : {}}
         >
-          <Animated.View
-            style={uploading ? { transform: [{ rotate: spin }] } : {}}
-          >
-            <IconMaterial
-              name="sync"
-              size={26}
-              color={uploading || numUnuploadedObs > 0
-                ? theme.colors.secondary
-                : theme.colors.primary}
-            />
-          </Animated.View>
-        </Pressable>
+          <IconButton
+            icon={setSyncIcon( )}
+            size={26}
+            onPress={handleSyncButtonPress}
+            accessibilityRole="button"
+            disabled={syncDisabled}
+            accessibilityState={{ disabled: syncDisabled }}
+            iconColor={setSyncIconColor( )}
+          />
+        </Animated.View>
 
         {statusText && (
           <View className="flex-row items-center">
@@ -124,8 +132,8 @@ const Toolbar = ( {
             onPress={toggleLayout}
             accessibilityRole="button"
           >
-            <IconMaterial
-              name={layout === "grid" ? "format-list-bulleted" : "grid-view"}
+            <IconButton
+              icon={layout === "grid" ? "listview" : "gridview"}
               size={30}
             />
           </Pressable>

@@ -71,19 +71,24 @@ const glyphMap = {
   "sparkly-label": 57355,
   flag: 57374,
   gallery: 57415,
-  taxarank: 57390
+  taxarank: 57390,
+  "sync-unsynced": 57391,
+  sync: 57394,
+  gridview: 57395,
+  "upload-saved": 57400,
+  "upload-complete": 57401,
+  "upload-arrow": 57405,
+  listview: 57406
 };
 
 const iconSet = createIconSet( glyphMap, "inaturalisticons", "inaturalisticons.ttf" );
 
 export default iconSet;
-
 export const {
   Button,
   getImageSource,
   getImageSourceSync
 } = iconSet;
-
 export {
   glyphMap
 };
