@@ -17,56 +17,52 @@ type Props = {
   alignStart?: boolean,
 };
 
-const ContextHeader = ( {
-  navigation, route, options, back
-}: Props ): Node => {
+const ContextHeader = ({ navigation, route, options, back }: Props): Node => {
   const customTitleComponent = typeof options.headerTitle === "function";
   const subtitle = options.headerSubtitle;
 
   const getTitle = () => {
-    if ( options.headerTitle && !customTitleComponent ) {
+    if (options.headerTitle && !customTitleComponent) {
       return options.headerTitle;
     }
 
-    if ( options.title ) {
+    if (options.title) {
       return options.title;
     }
 
-    return getHeaderTitle( options, route.name );
+    return getHeaderTitle(options, route.name);
   };
 
   return (
-    <View className="bg-white pb-[10px]">
+    <>
+      <View className="bg-white h-[84px]" />
       <View
-        className={classNames( "bg-white px-[24px] z-[100]", {
-          "pt-[30px]": Platform.OS === "android",
-          "pt-[60px]": Platform.OS === "ios"
-        } )}
-        style={getShadowStyle( {
+        className="pt-[30px] h-[84px] w-full absolute bg-white px-[24px] mb-[5px]"
+        style={getShadowStyle({
           shadowColor: colors.black,
           backgroundColor: colors.white,
           offsetWidth: 0,
           offsetHeight: 2,
           shadowOpacity: 0.25,
           shadowRadius: 2,
-          elevation: 5
-        } )}
+          elevation: 5,
+        })}
       >
         <View
           className={classNames(
-            "flex flex-col items-start relative w-full px-[36px] pb-[10px] ",
+            "flex flex-col items-start relative w-full px-[36px] pb-[10px]",
             {
               "justify-center": !options?.alignStart,
-              "justify-start": options?.alignStart
+              "justify-start": options?.alignStart,
             }
           )}
         >
           {back && (
             <View
-              className={classNames( "ml-[-8px] absolute top-0", {
+              className={classNames("ml-[-8px] absolute top-0", {
                 "mt-[-4px]": Platform.OS === "android",
-                "mt-[-8px]": Platform.OS === "ios"
-              } )}
+                "mt-[-8px]": Platform.OS === "ios",
+              })}
             >
               <HeaderBackButton
                 tintColor={colors.black}
@@ -88,7 +84,7 @@ const ContextHeader = ( {
           </View>
         </View>
       </View>
-    </View>
+    </>
   );
 };
 
