@@ -3,10 +3,16 @@
 import { Platform } from "react-native";
 import colors from "styles/tailwindColors";
 
-const showHeader: Object = {
+import ContextHeader from "./ContextHeader";
+
+const baseHeaderOptions: Object = {
   headerShown: true,
   headerBackTitleVisible: false,
-  headerShadowVisible: false,
+  headerShadowVisible: false
+};
+
+const showHeader: Object = {
+  ...baseHeaderOptions,
   headerTintColor: colors.black,
   // Note: left header is not supported on iOS
   // so we would need to build a custom header for this:
@@ -15,6 +21,11 @@ const showHeader: Object = {
     fontSize: 24,
     fontFamily: Platform.OS === "ios" ? "Whitney-Medium" : "Whitney-Medium-Pro"
   }
+};
+
+const showCustomHeader: Object = {
+  ...baseHeaderOptions,
+  header: ContextHeader
 };
 
 const hideHeader = {
@@ -33,5 +44,6 @@ export {
   blankHeaderTitle,
   hideHeader,
   hideScreenTransitionAnimation,
+  showCustomHeader,
   showHeader
 };
