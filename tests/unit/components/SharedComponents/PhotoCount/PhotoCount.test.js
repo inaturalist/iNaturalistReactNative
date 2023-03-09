@@ -24,9 +24,9 @@ describe( "PhotoCount", () => {
       it( "renders photo count value equal to 99", () => {
         render( <PhotoCount count={200} /> );
 
-        const photoCountValue = screen.getByTestId( "photo-count-value" );
+        const photoCountValue = screen.getByText( "99" );
 
-        expect( photoCountValue ).toHaveTextContent( "99" );
+        expect( photoCountValue ).toBeTruthy();
       } );
     } );
 
@@ -34,9 +34,9 @@ describe( "PhotoCount", () => {
       it( "renders the default photo count value", () => {
         render( <PhotoCount count={14} /> );
 
-        const photoCountValue = screen.getByTestId( "photo-count-value" );
+        const photoCountValue = screen.getByText( "14" );
 
-        expect( photoCountValue ).toHaveTextContent( "14" );
+        expect( photoCountValue ).toBeTruthy();
       } );
     } );
   } );
