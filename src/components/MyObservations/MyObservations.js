@@ -8,6 +8,8 @@ import {
   Animated, Dimensions, Platform
 } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useLocalObservations from "sharedHooks/useLocalObservations";
+import useUploadObservations from "sharedHooks/useUploadObservations";
 
 import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
 import LoginSheet from "./LoginSheet";
@@ -66,6 +68,9 @@ const MyObservations = ( {
   const combinedGutterWidth = ( numColumns + 1 ) * GUTTER;
   const gridItemWidth = Math.round( ( screenWidth - combinedGutterWidth ) / numColumns );
 
+  const { allObsToUpload } = useLocalObservations( );
+  const uploadStatus = useUploadObservations( allObsToUpload );
+
   const handleScroll = Animated.event(
     [
       {
@@ -118,8 +123,9 @@ const MyObservations = ( {
                         width: gridItemWidth,
                         margin: GUTTER / 2
                       }}
+                      uploadStatus={uploadStatus}
                     />
-                  ) : <ObsListItem observation={item} />
+                  ) : <ObsListItem observation={item} uploadStatus={uploadStatus} />
               }
               </MyObservationsPressable>
             )}
@@ -134,6 +140,7 @@ const MyObservations = ( {
                 currentUser={currentUser}
                 numObservations={observations.length}
                 setHeightAboveToolbar={setHeightAboveToolbar}
+                uploadStatus={uploadStatus}
               />
             )}
             ItemSeparatorComponent={

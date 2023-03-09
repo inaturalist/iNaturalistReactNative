@@ -21,7 +21,8 @@ type Props = {
   // hideHeaderCard: boolean,
   currentUser: ?Object,
   numObservations: number,
-  setHeightAboveToolbar: Function
+  setHeightAboveToolbar: Function,
+  uploadStatus: Object
 }
 
 // const fade = ( value, duration ) => ( {
@@ -36,7 +37,8 @@ const Header = ( {
   // hideHeaderCard,
   currentUser,
   numObservations,
-  setHeightAboveToolbar
+  setHeightAboveToolbar,
+  uploadStatus
 }: Props ): Node => {
   const theme = useTheme( );
   // const fadeAnimation = useRef( new Animated.Value( 1 ) ).current;
@@ -141,6 +143,7 @@ const Header = ( {
           setLayout={setLayout}
           layout={layout}
           numUnuploadedObs={numUnuploadedObs}
+          uploadStatus={uploadStatus}
         />
       )}
     </>

@@ -9,24 +9,23 @@ import {
   Dimensions, PixelRatio
 } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import useLocalObservations from "sharedHooks/useLocalObservations";
-import useUploadObservations from "sharedHooks/useUploadObservations";
 
 import Toolbar from "./Toolbar";
 
 type Props = {
   setLayout: Function,
   layout: string,
-  numUnuploadedObs: number
+  numUnuploadedObs: number,
+  uploadStatus: Object
 }
 
 const ToolbarContainer = ( {
-  setLayout, layout, numUnuploadedObs
+  setLayout, layout, numUnuploadedObs,
+  uploadStatus
 }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
-  const { allObsToUpload } = useLocalObservations( );
   const navigation = useNavigation( );
   const {
     stopUpload,
@@ -36,7 +35,7 @@ const ToolbarContainer = ( {
     error: uploadError,
     currentUploadIndex,
     totalUploadCount
-  } = useUploadObservations( allObsToUpload );
+  } = uploadStatus;
   const uploadComplete = progress === 1;
 
   const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();

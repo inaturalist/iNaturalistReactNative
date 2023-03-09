@@ -8,15 +8,41 @@ import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsStatus from "./ObsStatus";
-import UploadButton from "./UploadButton";
+import UploadButton from "./UploadIcons/UploadButton";
+import UploadCircularProgress from "./UploadIcons/UploadCircularProgress";
+import UploadCompleteAnimation from "./UploadIcons/UploadCompleteAnimation";
 
 type Props = {
-  observation: Object
+  observation: Object,
+  uploadStatus: Object
 };
 
-const ObsListItem = ( { observation }: Props ): Node => {
+const ObsListItem = ( { observation, uploadStatus }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo || null;
   const needsSync = observation.needsSync( );
+  const wasSynced = observation.wasSynced( );
+  const isUploading = uploadStatus.currentObsUuid === observation.uuid;
+  const recentlyUploaded = uploadStatus.prevUploadUuid === observation.uuid;
+  console.log( recentlyUploaded, uploadStatus.prevUploadUuid, "recently uploaded" );
+
+  const displayUploadStatus = ( ) => {
+    if ( isUploading ) {
+      return <UploadCircularProgress />;
+    }
+    if ( needsSync ) {
+      return <UploadButton observation={observation} />;
+    }
+    if ( wasSynced && recentlyUploaded ) {
+      return (
+        <UploadCompleteAnimation
+          wasSynced={wasSynced}
+          observation={observation}
+          layout="vertical"
+        />
+      );
+    }
+    return <ObsStatus observation={observation} layout="vertical" />;
+  };
 
   return (
     <View
@@ -45,12 +71,8 @@ const ObsListItem = ( { observation }: Props ): Node => {
           classNameMargin="mt-1"
         />
       </View>
-      <View className="items-center ml-auto">
-        {needsSync ? (
-          <UploadButton observation={observation} />
-        ) : (
-          <ObsStatus observation={observation} layout="vertical" />
-        )}
+      <View className="items-center ml-auto justify-center">
+        {displayUploadStatus( )}
       </View>
     </View>
   );

@@ -18,6 +18,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [progress, setProgress] = useState( 0 );
   const [error, setError] = useState( null );
   const [totalUploadCount, setTotalUploadCount] = useState( 0 );
+  const [prevUploadUuid, setPrevUploadUuid] = useState( null );
   const realm = useRealm( );
   const apiToken = useApiToken( );
 
@@ -41,6 +42,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
           apiToken,
           realm
         );
+        setPrevUploadUuid( observationToUpload.uuid );
       } catch ( e ) {
         console.warn( e );
         setError( e.message );
@@ -71,7 +73,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     apiToken,
     shouldUpload,
     currentUploadIndex,
-    realm
+    realm,
+    prevUploadUuid
   ] );
 
   return {
@@ -81,7 +84,9 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     stopUpload: cleanup,
     currentUploadIndex,
     totalUploadCount,
-    startUpload: ( ) => setShouldUpload( true )
+    startUpload: ( ) => setShouldUpload( true ),
+    currentObsUuid: uploadInProgress ? allObsToUpload[currentUploadIndex]?.uuid : null,
+    prevUploadUuid
   };
 };
 
