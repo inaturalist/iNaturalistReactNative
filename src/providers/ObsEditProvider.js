@@ -37,6 +37,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [loading, setLoading] = useState( false );
   const [unsavedChanges, setUnsavedChanges] = useState( false );
   const [showLoginSheet, setShowLoginSheet] = useState( false );
+  const [uploadProgress, setUploadProgress] = useState( { } );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -280,6 +281,21 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setLoading( false );
     };
 
+    const startSingleUpload = async observation => {
+      setLoading( true );
+      const { uuid } = observation;
+      setUploadProgress( {
+        ...uploadProgress,
+        [uuid]: 0.5
+      } );
+      await uploadObservation( observation );
+      setUploadProgress( {
+        ...uploadProgress,
+        [uuid]: 1
+      } );
+      setLoading( false );
+    };
+
     return {
       createObservationNoEvidence,
       addObservations,
@@ -317,7 +333,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       unsavedChanges,
       syncObservations,
       showLoginSheet,
-      setShowLoginSheet
+      setShowLoginSheet,
+      startSingleUpload,
+      uploadProgress
     };
   }, [
     currentObservation,
@@ -344,7 +362,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     unsavedChanges,
     currentUser,
     showLoginSheet,
-    setShowLoginSheet
+    setShowLoginSheet,
+    uploadProgress
   ] );
 
   useEffect( ( ) => {

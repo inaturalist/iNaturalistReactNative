@@ -47,16 +47,25 @@ const UploadCompleteAnimation = ( {
         className={
           layout === "vertical"
             ? "absolute inset-0 flex justify-center items-center z-10"
-            : "absolute bottom-8 left-2"
+            : "absolute -left-[15px]"
         }
       >
         <INatIcon
-          size={33}
+          size={28}
           name="upload-complete"
           color={layout === "vertical" ? theme.colors.secondary : theme.colors.onSecondary}
         />
       </Animated.View>
-      <Animated.View style={{ opacity: enteringFadeAnimation }}>
+      {/* $FlowIgnore[prop-missing] */}
+      <Animated.View
+        style={{ opacity: enteringFadeAnimation }}
+        // position component fading out and component fading in on the same spot
+        className={
+          layout === "vertical"
+            ? ""
+            : "absolute -left-[25px] -bottom-[30px]"
+        }
+      >
         <ObsStatus
           observation={observation}
           layout={layout}

@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Dimensions, PixelRatio
@@ -43,6 +43,12 @@ const ToolbarContainer = ( {
   const loading = obsEditContext?.loading;
   const syncObservations = obsEditContext?.syncObservations;
   const setShowLoginSheet = obsEditContext?.setShowLoginSheet;
+
+  // clear toolbar when leaving screen
+  useEffect(
+    ( ) => navigation.addListener( "blur", ( ) => stopUpload( ) ),
+    [navigation, stopUpload]
+  );
 
   const getStatusText = ( ) => {
     if ( numUnuploadedObs <= 0 ) {

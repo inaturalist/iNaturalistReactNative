@@ -1,15 +1,14 @@
 // @flow
 import DisplayTaxonName from "components/DisplayTaxonName";
-import { DateDisplay, ObservationLocation } from "components/SharedComponents";
+import { DateDisplay, ObservationLocation, UploadStatus } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React from "react";
+import React, { useContext } from "react";
 import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsStatus from "./ObsStatus";
-import UploadButton from "./UploadIcons/UploadButton";
-import UploadCircularProgress from "./UploadIcons/UploadCircularProgress";
 import UploadCompleteAnimation from "./UploadIcons/UploadCompleteAnimation";
 
 type Props = {
@@ -18,26 +17,27 @@ type Props = {
 };
 
 const ObsListItem = ( { observation, uploadStatus }: Props ): Node => {
+  const obsEditContext = useContext( ObsEditContext );
+  const startSingleUpload = obsEditContext?.startSingleUpload;
+  const uploadProgress = obsEditContext?.uploadProgress;
   const photo = observation?.observationPhotos?.[0]?.photo || null;
   const needsSync = observation.needsSync( );
   const wasSynced = observation.wasSynced( );
-  const isUploading = uploadStatus.currentObsUuid === observation.uuid;
-  const recentlyUploaded = uploadStatus.prevUploadUuid === observation.uuid;
+  const { allObsToUpload } = uploadStatus;
 
   const displayUploadStatus = ( ) => {
-    if ( isUploading ) {
-      return <UploadCircularProgress />;
-    }
-    if ( needsSync ) {
-      return <UploadButton observation={observation} />;
-    }
-    if ( wasSynced && recentlyUploaded ) {
+    if ( allObsToUpload.find( upload => upload.uuid === observation.uuid ) ) {
       return (
-        <UploadCompleteAnimation
-          wasSynced={wasSynced}
-          observation={observation}
-          layout="vertical"
-        />
+        <UploadStatus
+          progress={uploadProgress[observation.uuid] || 0}
+          startSingleUpload={( ) => startSingleUpload( observation )}
+        >
+          <UploadCompleteAnimation
+            wasSynced={wasSynced}
+            observation={observation}
+            layout="vertical"
+          />
+        </UploadStatus>
       );
     }
     return <ObsStatus observation={observation} layout="vertical" />;

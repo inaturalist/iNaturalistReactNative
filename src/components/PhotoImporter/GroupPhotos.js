@@ -1,13 +1,13 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Body2, Button, Heading4 } from "components/SharedComponents";
+import { Body2, Button } from "components/SharedComponents";
 import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList } from "react-native";
 import { Appbar } from "react-native-paper";
 
@@ -26,6 +26,16 @@ const GroupPhotos = ( ): Node => {
   // nesting observations under observations key to be able to rerender flatlist on selections
   const [obsToEdit, setObsToEdit] = useState( { observations } );
   const [selectedObservations, setSelectedObservations] = useState( [] );
+  const groupedPhotos = obsToEdit.observations;
+
+  useEffect( () => {
+    navigation.setOptions( {
+      headerSubtitle: t( "X-PHOTOS-X-OBSERVATIONS", {
+        photoCount: groupedPhotos.length,
+        observationCount: observations.length
+      } )
+    } );
+  }, [groupedPhotos, observations, navigation] );
 
   const updateFlatList = rerenderFlatList => {
     setObsToEdit( {
@@ -63,8 +73,6 @@ const GroupPhotos = ( ): Node => {
   );
 
   const extractKey = ( item, index ) => `${item.photos[0].uri}${index}`;
-
-  const groupedPhotos = obsToEdit.observations;
 
   const combinePhotos = ( ) => {
     if ( selectedObservations.length < 2 ) { return; }
@@ -156,12 +164,6 @@ const GroupPhotos = ( ): Node => {
   return (
     <ViewNoFooter>
       <View className="mx-5">
-        <Heading4 className="self-center">
-          {t( "X-PHOTOS-X-OBSERVATIONS", {
-            photoCount: groupedPhotos.length,
-            observationCount: observations.length
-          } )}
-        </Heading4>
         <Body2 className="mt-5">{t( "Group-photos-onboarding" )}</Body2>
       </View>
       <FlatList

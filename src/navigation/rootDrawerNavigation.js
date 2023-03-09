@@ -11,7 +11,7 @@ import Settings from "components/Settings/Settings";
 import Mortal from "components/SharedComponents/Mortal";
 import UiLibrary from "components/UiLibrary";
 import { t } from "i18next";
-import { hideHeader, showHeader } from "navigation/navigationOptions";
+import { hideHeader, showCustomHeader, showHeader } from "navigation/navigationOptions";
 import type { Node } from "react";
 import * as React from "react";
 import { View } from "react-native";
@@ -82,6 +82,7 @@ const RootDrawerNavigator = ( ): Node => (
     <Drawer.Screen
       name="UI Library"
       component={UiLibrary}
+      options={showCustomHeader}
     />
   </Drawer.Navigator>
 );

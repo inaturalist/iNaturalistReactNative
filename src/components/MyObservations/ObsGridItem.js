@@ -1,15 +1,16 @@
 // @flow
 
 import DisplayTaxonName from "components/DisplayTaxonName";
+import { UploadStatus } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React from "react";
+import React, { useContext } from "react";
+import { useTheme } from "react-native-paper";
 import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
 import ObsStatus from "./ObsStatus";
-import UploadButton from "./UploadIcons/UploadButton";
-import UploadCircularProgress from "./UploadIcons/UploadCircularProgress";
 import UploadCompleteAnimation from "./UploadIcons/UploadCompleteAnimation";
 
 type Props = {
@@ -27,26 +28,29 @@ const ObsGridItem = ( {
   style,
   uploadStatus
 }: Props ): Node => {
-  const needsSync = observation.needsSync( );
+  const theme = useTheme( );
+  const obsEditContext = useContext( ObsEditContext );
+  const startSingleUpload = obsEditContext?.startSingleUpload;
+  const uploadProgress = obsEditContext?.uploadProgress;
   const wasSynced = observation.wasSynced( );
-  const isUploading = uploadStatus.currentObsUuid === observation.uuid;
+  const { allObsToUpload } = uploadStatus;
 
   const displayUploadStatus = ( ) => {
-    if ( isUploading ) {
-      return <UploadCircularProgress white layout="horizontal" />;
-    }
-    if ( needsSync ) {
-      return <UploadButton observation={observation} white layout="horizontal" />;
-    }
-    if ( wasSynced ) {
+    if ( allObsToUpload.find( upload => upload.uuid === observation.uuid ) ) {
       return (
-        <UploadCompleteAnimation
-          wasSynced={wasSynced}
-          observation={observation}
-          layout="horizontal"
-          white
-          classNameMargin="mb-1"
-        />
+        <UploadStatus
+          progress={uploadProgress[observation.uuid] || 0}
+          startSingleUpload={( ) => startSingleUpload( observation )}
+          color={theme.colors.onPrimary}
+          completeColor={theme.colors.onPrimary}
+        >
+          <UploadCompleteAnimation
+            wasSynced={wasSynced}
+            observation={observation}
+            layout="horizontal"
+            white
+          />
+        </UploadStatus>
       );
     }
     return (

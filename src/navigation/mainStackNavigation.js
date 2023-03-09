@@ -20,6 +20,7 @@ import {
   blankHeaderTitle,
   hideHeader,
   hideScreenTransitionAnimation,
+  showCustomHeader,
   showHeader
 } from "navigation/navigationOptions";
 import * as React from "react";
@@ -96,6 +97,7 @@ const MainStackNavigation = ( ): React.Node => (
         name="GroupPhotos"
         component={GroupPhotos}
         options={{
+          ...showCustomHeader,
           title: t( "Group-Photos" )
         }}
       />

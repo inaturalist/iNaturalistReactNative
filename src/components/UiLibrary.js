@@ -21,10 +21,12 @@ import {
   List1,
   List2,
   ObservationLocation,
+  PhotoCount,
   QualityGradeStatus,
   StickyToolbar,
   Subheading1,
   Tabs,
+  UploadStatus,
   UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
@@ -32,6 +34,7 @@ import { glyphMap } from "components/SharedComponents/INatIcon/INatIcon";
 import UserText from "components/SharedComponents/UserText";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
+import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
@@ -40,7 +43,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
-const UiLibrary = () => {
+const UiLibrary = (): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
   const currentUser = useCurrentUser();
@@ -230,7 +233,6 @@ const UiLibrary = () => {
                 onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
                 size={20}
               />
-              {" "}
               {iconName}
             </Body1>
           ) )}
@@ -339,6 +341,43 @@ const UiLibrary = () => {
           </View>
         </View>
 
+        <Heading2 className="my-2">Upload Status</Heading2>
+        <View className="flex flex-row justify-between">
+          <View>
+            <Body2 className="text-center">Progress &lt; 5%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.04}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">10%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.1}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">60%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.6}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">100%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={1}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+
+        </View>
+
         <Heading2 className="my-2">ActivityCount</Heading2>
         <View className="flex flex-row justify-evenly">
           <View>
@@ -373,7 +412,13 @@ const UiLibrary = () => {
             identifications: [1, 2, 3, 4, 5, 6]
           }}
         />
-
+        <Heading2 className="my-2">PhotoCount</Heading2>
+        <View className="my-2 bg-lightGray p-2 rounded-lg flex-row justify-evenly">
+          <PhotoCount count={0} />
+          <PhotoCount count={1} />
+          <PhotoCount count={12} size={50} />
+          <PhotoCount count={1000} size={50} shadow />
+        </View>
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
           Useless spacer at the end because height in NativeWind is confusing.

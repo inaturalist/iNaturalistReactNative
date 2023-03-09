@@ -623,6 +623,12 @@ Uploading-x-of-y-observations = Uploading {$uploadedCount} of {$total ->
 # Shows the progress of uploads for X of Y
 Uploading-x-of-y = Uploading {$uploadedCount} of {$total}
 
+Upload-Progress = Upload {$uploadProgress} percent complete
+
+Upload-Complete = Upload Complete
+
+Saved-Observation = Saved observation, in queue to upload
+
 
 User = User
 
@@ -825,7 +831,11 @@ Navigate-to-observation-edit-screen = Navigate to observation edit screen
 Navigate-to-observation-list = Navigate to observation list
 Navigate-to-photo-importer = Navigate to photo importer
 Open-side-menu = Open side menu
+Quality-Grade-No-Grade = No Quality Grade
+Uploading = Uploading
+
 Take-photo = Take photo
+
 
 
 Intl-number = { $val }

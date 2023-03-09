@@ -60,7 +60,6 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     const continueUpload = shouldUpload && observationToUpload && !!apiToken;
 
     if ( !continueUpload ) {
-      // cleanup( );
       return;
     }
 
@@ -86,7 +85,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     totalUploadCount,
     startUpload: ( ) => setShouldUpload( true ),
     currentObsUuid: uploadInProgress ? allObsToUpload[currentUploadIndex]?.uuid : null,
-    prevUploadUuid
+    prevUploadUuid,
+    allObsToUpload
   };
 };
 
