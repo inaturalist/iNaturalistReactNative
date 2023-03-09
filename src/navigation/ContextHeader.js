@@ -34,57 +34,54 @@ const ContextHeader = ({ navigation, route, options, back }: Props): Node => {
   };
 
   return (
-    <>
-      <View className="bg-white h-[84px]" />
+    <View
+      className="pt-[30px] h-[84px] w-full bg-white px-[24px]"
+      style={getShadowStyle({
+        shadowColor: colors.black,
+        backgroundColor: colors.white,
+        offsetWidth: 0,
+        offsetHeight: 2,
+        shadowOpacity: 0.25,
+        shadowRadius: 2,
+        elevation: 5,
+      })}
+    >
       <View
-        className="pt-[30px] h-[84px] w-full absolute bg-white px-[24px] mb-[5px]"
-        style={getShadowStyle({
-          shadowColor: colors.black,
-          backgroundColor: colors.white,
-          offsetWidth: 0,
-          offsetHeight: 2,
-          shadowOpacity: 0.25,
-          shadowRadius: 2,
-          elevation: 5,
-        })}
+        className={classNames(
+          "flex flex-col items-start relative w-full px-[36px] pb-[10px]",
+          {
+            "justify-center": !options?.alignStart,
+            "justify-start": options?.alignStart,
+          }
+        )}
       >
-        <View
-          className={classNames(
-            "flex flex-col items-start relative w-full px-[36px] pb-[10px]",
-            {
-              "justify-center": !options?.alignStart,
-              "justify-start": options?.alignStart,
-            }
-          )}
-        >
-          {back && (
-            <View
-              className={classNames("ml-[-8px] absolute top-0", {
-                "mt-[-4px]": Platform.OS === "android",
-                "mt-[-8px]": Platform.OS === "ios",
-              })}
-            >
-              <HeaderBackButton
-                tintColor={colors.black}
-                onPress={navigation.goBack}
-              />
-            </View>
-          )}
-          {customTitleComponent ? (
-            options.headerTitle()
-          ) : (
-            <View>
-              <Heading1>{getTitle()}</Heading1>
-              {subtitle && <Heading4>{subtitle}</Heading4>}
-            </View>
-          )}
-
-          <View className="absolute right-0 top-0">
-            {options?.headerRight?.()}
+        {back && (
+          <View
+            className={classNames("ml-[-8px] absolute top-0", {
+              "mt-[-4px]": Platform.OS === "android",
+              "mt-[-8px]": Platform.OS === "ios",
+            })}
+          >
+            <HeaderBackButton
+              tintColor={colors.black}
+              onPress={navigation.goBack}
+            />
           </View>
+        )}
+        {customTitleComponent ? (
+          options.headerTitle()
+        ) : (
+          <View>
+            <Heading1>{getTitle()}</Heading1>
+            {subtitle && <Heading4>{subtitle}</Heading4>}
+          </View>
+        )}
+
+        <View className="absolute right-0 top-0">
+          {options?.headerRight?.()}
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
