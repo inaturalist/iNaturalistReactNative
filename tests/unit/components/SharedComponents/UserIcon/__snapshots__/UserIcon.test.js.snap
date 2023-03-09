@@ -30,10 +30,10 @@ exports[`UserIcon displays active user image correctly 1`] = `
           "borderTopWidth": 3,
         },
         Object {
-          "borderBottomColor": "#74AC00",
-          "borderLeftColor": "#74AC00",
-          "borderRightColor": "#74AC00",
-          "borderTopColor": "#74AC00",
+          "borderBottomColor": "#77b300",
+          "borderLeftColor": "#77b300",
+          "borderRightColor": "#77b300",
+          "borderTopColor": "#77b300",
         },
         Object {
           "borderColor": "#74AC00",
