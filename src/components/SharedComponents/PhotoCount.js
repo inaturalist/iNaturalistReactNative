@@ -51,7 +51,7 @@ const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
           fillRule="nonzero"
         />
         <ForeignObject x="5%" y="26%">
-          <Body3 className="text-center w-[16px]" testID="photo-count-value">
+          <Body3 className="text-center w-[16px]">
             {photoCount}
           </Body3>
         </ForeignObject>

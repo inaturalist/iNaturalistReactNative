@@ -118,7 +118,6 @@ exports[`PhotoCount renders correctly 1`] = `
               ],
             ]
           }
-          testID="photo-count-value"
         >
           7
         </Text>
