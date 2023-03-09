@@ -9,6 +9,7 @@ export { default as INatIcon } from "./INatIcon";
 export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as ObservationLocation } from "./ObservationLocation";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
+export { default as StickyToolbar } from "./StickyToolbar";
 export { default as Tabs } from "./Tabs/Tabs";
 export { default as Body1 } from "./Typography/Body1";
 export { default as Body2 } from "./Typography/Body2";

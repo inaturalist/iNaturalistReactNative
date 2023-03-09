@@ -27,7 +27,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
 
 const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
   activityItemBody: {
-    color: colors.logInGray
+    color: colors.darkGray
   }
 } );
 
@@ -35,7 +35,7 @@ const imageStyles: { [string]: ImageStyleProp } = StyleSheet.create( {
   smallIcon: {
     width: 15,
     height: 15,
-    tintColor: colors.logInGray
+    tintColor: colors.darkGray
   }
 } );
 

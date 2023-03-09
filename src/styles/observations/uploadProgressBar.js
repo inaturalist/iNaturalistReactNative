@@ -14,14 +14,14 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   progressBar: {
     marginTop: 14,
-    backgroundColor: colors.logInGray,
+    backgroundColor: colors.darkGray,
     width
   },
   grayContainer: {
     borderTopLeftRadius: borderRadius,
     borderTopRightRadius: borderRadius,
     paddingTop: 21,
-    backgroundColor: colors.logInGray,
+    backgroundColor: colors.darkGray,
     alignItems: "center",
     height: "100%"
   },

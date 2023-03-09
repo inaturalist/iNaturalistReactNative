@@ -38,6 +38,7 @@ const ObsStatus = ( {
   return (
     <View className={classNames( "flex", flexDirection, classNameMargin )}>
       <ActivityCount
+        icon="identification-solid"
         margin={margin}
         count={numIdents}
         color={iconColor}
@@ -45,6 +46,7 @@ const ObsStatus = ( {
         testID="ActivityCount.identificationCount"
       />
       <ActivityCount
+        icon="comments"
         margin={margin}
         count={observation.comments?.length}
         color={iconColor}

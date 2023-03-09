@@ -14,7 +14,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     flexWrap: "nowrap",
     alignItems: "center",
     paddingVertical: 5,
-    borderBottomColor: colors.gray,
+    borderBottomColor: colors.darkGray,
     borderBottomWidth: 1
   },
   toggleRow: {

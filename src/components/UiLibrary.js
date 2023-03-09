@@ -22,6 +22,7 @@ import {
   List2,
   ObservationLocation,
   QualityGradeStatus,
+  StickyToolbar,
   Subheading1,
   Tabs,
   UploadStatus,
@@ -54,7 +55,7 @@ const UiLibrary = () => {
         <Heading2 className="my-2">Floating Action Bar</Heading2>
         <IconButton
           className="mx-auto"
-          icon="icon-fave"
+          icon="star-outline"
           mode="contained"
         />
       </FloatingActionBar>
@@ -156,7 +157,7 @@ const UiLibrary = () => {
         <Heading2 className="my-2">Heading2</Heading2>
         <Heading3 className="my-2">Heading3</Heading3>
         <Heading4 className="my-2">Heading4</Heading4>
-        <Heading4 className="my-2 text-focusGreen">
+        <Heading4 className="my-2 text-inatGreen">
           Heading4 (non-default color)
         </Heading4>
         <Heading5 className="my-2">Heading5</Heading5>
@@ -187,7 +188,7 @@ const UiLibrary = () => {
           <View>
             <Body2>Focused</Body2>
             <IconButton
-              icon="plus-sign"
+              icon="plus"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
               mode="contained"
@@ -208,7 +209,7 @@ const UiLibrary = () => {
 
         <Heading2>Special Icon buttons</Heading2>
         <View className="flex flex-row justify-between">
-          <View className="bg-secondary">
+          <View className="bg-darkGray">
             <Body2>CloseButton</Body2>
             <CloseButton />
           </View>
@@ -416,6 +417,9 @@ const UiLibrary = () => {
           Useless spacer at the end because height in NativeWind is confusing.
         </Body1>
       </ScrollView>
+      <StickyToolbar containerClass="bottom-56">
+        <Heading2>StickyToolbar</Heading2>
+      </StickyToolbar>
     </ViewWithFooter>
   );
 };

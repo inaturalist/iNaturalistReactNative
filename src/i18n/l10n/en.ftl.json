@@ -609,5 +609,9 @@
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
   },
-  "datetime-format-short": "M/d/yy h:mm a"
+  "datetime-format-short": "M/d/yy h:mm a",
+  "DISCARD-PHOTOS": "DISCARD PHOTOS?",
+  "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
+  "DISCARD": "DISCARD",
+  "CANCEL": "CANCEL"
 }

@@ -51,7 +51,7 @@ const PhotoPreview = ( {
         photoUris={photoUris}
         setPhotoUris={setPhotoUris}
       />
-      <View className="bg-black h-32">
+      <View className="h-32">
         <PhotoCarousel
           deletePhoto={deletePhoto}
           photoUris={photoUris}

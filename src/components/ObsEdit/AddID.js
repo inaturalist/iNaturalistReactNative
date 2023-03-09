@@ -22,7 +22,8 @@ import {
   TouchableOpacity
 } from "react-native";
 import {
-  Button, Headline, IconButton, TextInput
+  Button, Headline, IconButton, TextInput,
+  useTheme
 } from "react-native-paper";
 import uuid from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -55,6 +56,7 @@ const SearchTaxonIcon = (
 );
 
 const AddID = ( { route }: Props ): Node => {
+  const theme = useTheme();
   const [comment, setComment] = useState( "" );
   const [commentDraft, setCommentDraft] = useState( "" );
   const { onIDAdded, goBackOnSave, hideComment } = route.params;
@@ -106,7 +108,7 @@ const AddID = ( { route }: Props ): Node => {
   const renderTaxonResult = ( { item: taxon } ) => {
     const taxonImage = taxon.default_photo
       ? { uri: taxon.default_photo.square_url }
-      : IconMaterial.getImageSourceSync( "spa", 50, colors.inatGreen );
+      : IconMaterial.getImageSourceSync( "spa", 50, theme.colors.secondary );
 
     return (
       <View
@@ -144,7 +146,7 @@ const AddID = ( { route }: Props ): Node => {
           <IconButton
             icon="checkmark"
             size={25}
-            iconColor={colors.inatGreen}
+            iconColor={theme.colors.secondary}
             onPress={( ) => {
               onIDAdded( createIdentification( taxon ) );
               if ( goBackOnSave ) { navigation.goBack( ); }
@@ -210,7 +212,7 @@ const AddID = ( { route }: Props ): Node => {
               </View>
             </View>
           )}
-          <Text className="color-grayText">
+          <Text className="color-darkGray">
             {t( "Search-for-a-taxon-to-add-an-identification" )}
           </Text>
           <TextInput
@@ -219,7 +221,7 @@ const AddID = ( { route }: Props ): Node => {
             style={viewStyles.taxonSearch}
             value={taxonSearch}
             onChangeText={setTaxonSearch}
-            selectionColor={colors.black}
+            selectionColor={theme.colors.tertiary}
             accessible
             accessibilityLabel={t(
               "Search-for-a-taxon-to-add-an-identification"
@@ -252,8 +254,8 @@ const AddID = ( { route }: Props ): Node => {
               keyboardType="default"
               style={viewStyles.commentInput}
               value={commentDraft}
-              selectionColor={colors.black}
-              activeUnderlineColor={colors.transparent}
+              selectionColor={theme.colors.tertiary}
+              activeUnderlineColor={theme.colors.background}
               autoFocus
               multiline
               onChangeText={setCommentDraft}
@@ -292,7 +294,7 @@ const AddID = ( { route }: Props ): Node => {
             <Button
               style={viewStyles.commentButton}
               uppercase={false}
-              color={colors.midGray}
+              color={colors.lightGray}
               onPress={() => {
                 bottomSheetModalRef.current?.dismiss();
               }}
@@ -307,7 +309,7 @@ const AddID = ( { route }: Props ): Node => {
               style={viewStyles.commentButton}
               uppercase={false}
               disabled={commentDraft.length === 0}
-              color={colors.midGray}
+              color={colors.lightGray}
               mode="contained"
               onPress={() => {
                 setComment( commentDraft );
