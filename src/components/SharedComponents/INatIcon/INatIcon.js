@@ -77,7 +77,6 @@ const glyphMap = {
 const iconSet = createIconSet( glyphMap, "inaturalisticons", "inaturalisticons.ttf" );
 
 export default iconSet;
-
 export const {
   Button,
   getImageSource,

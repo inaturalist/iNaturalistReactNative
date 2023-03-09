@@ -24,4 +24,5 @@ export { default as Heading5 } from "./Typography/Heading5";
 export { default as List1 } from "./Typography/List1";
 export { default as List2 } from "./Typography/List2";
 export { default as Subheading1 } from "./Typography/Subheading1";
+export { default as UploadStatus } from "./UploadStatus/UploadStatus";
 export { default as UserIcon } from "./UserIcon/UserIcon";
