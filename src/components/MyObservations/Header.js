@@ -85,6 +85,8 @@ const Header = ( {
             size={40}
             iconColor={theme.colors.onSecondary}
             backgroundColor={theme.colors.secondary}
+            disabled={false}
+            accessibilityState={{ disabled: false }}
           />
           {numUnuploadedObs > 0 ? (
             <View>

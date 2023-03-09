@@ -80,8 +80,9 @@ const Toolbar = ( {
             accessibilityLabel={t( "Explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
             accessibilityRole="button"
-            disabled={false}
             size={26}
+            disabled={false}
+            accessibilityState={{ disabled: false }}
           />
         )}
 
@@ -135,6 +136,8 @@ const Toolbar = ( {
             <IconButton
               icon={layout === "grid" ? "listview" : "gridview"}
               size={30}
+              disabled={false}
+              accessibilityState={{ disabled: false }}
             />
           </Pressable>
         </View>

@@ -23,7 +23,6 @@ const ObsListItem = ( { observation, uploadStatus }: Props ): Node => {
   const wasSynced = observation.wasSynced( );
   const isUploading = uploadStatus.currentObsUuid === observation.uuid;
   const recentlyUploaded = uploadStatus.prevUploadUuid === observation.uuid;
-  console.log( recentlyUploaded, uploadStatus.prevUploadUuid, "recently uploaded" );
 
   const displayUploadStatus = ( ) => {
     if ( isUploading ) {

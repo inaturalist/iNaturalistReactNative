@@ -31,6 +31,8 @@ const UploadButton = ( { observation, layout, white }: Props ): Node => {
         await uploadObservation( observation );
         setLoading( false );
       }}
+      disabled={false}
+      accessibilityState={{ disabled: false }}
     />
   );
 };

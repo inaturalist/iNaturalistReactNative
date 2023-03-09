@@ -37,6 +37,8 @@ const UploadCircularProgress = ( { layout, white }: Props ): Node => {
           icon="arrow-up-plain"
           size={15}
           iconColor={white && theme.colors.onPrimary}
+          disabled={false}
+          accessibilityState={{ disabled: false }}
         />
       </View>
     </View>
