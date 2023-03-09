@@ -27,7 +27,8 @@ type Props = {
   handleAddEvidence?: Function,
   showAddButton?: boolean,
   deviceOrientation?: string,
-  deletePhoto?: Function
+  deletePhoto?: Function,
+  screenBreakpoint?: string
 }
 
 const PhotoCarousel = ( {
@@ -40,7 +41,8 @@ const PhotoCarousel = ( {
   handleAddEvidence,
   showAddButton = false,
   deviceOrientation,
-  deletePhoto
+  deletePhoto,
+  screenBreakpoint
 }: Props ): Node => {
   const theme = useTheme( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
@@ -54,7 +56,13 @@ const PhotoCarousel = ( {
   }, [photoUris.length, deletePhotoMode] );
 
   const renderSkeleton = ( ) => ( savingPhoto ? (
-    <View className={`${imageClass} bg-midGray mt-12`}>
+    <View className={classnames( "bg-midGray justify-center", {
+      "rounded-sm w-[42px] h-[42px] m-[3px]":
+        screenBreakpoint === ( "sm" || "md" ),
+      "rounded-md w-[83px] h-[83px] m-[8.5px]":
+        screenBreakpoint === ( "lg" || "xl" || "2xl" )
+    } )}
+    >
       <ActivityIndicator />
     </View>
   ) : null );
@@ -63,6 +71,7 @@ const PhotoCarousel = ( {
     if ( index === photoUris.length ) {
       return (
         <Pressable
+          accessibilityRole="button"
           onPress={handleAddEvidence}
           className={`${imageClass} border border-midGray items-center justify-center mt-6`}
         >
@@ -74,6 +83,7 @@ const PhotoCarousel = ( {
     return (
       <>
         <Pressable
+          accessibilityRole="button"
           onLongPress={( ) => {
             if ( deletePhoto ) {
               setDeletePhotoMode( mode => !mode );
@@ -86,22 +96,38 @@ const PhotoCarousel = ( {
               setSelectedPhotoIndex( index );
             }
           }}
-          className={classnames( imageClass, {
-            "mt-12": containerStyle === "camera",
-            "mt-6": containerStyle !== "camera",
-            "border border-selectionGreen border-4":
+          className={classnames(
+            {
+              "mt-12": containerStyle === "camera",
+              "mt-6": containerStyle !== "camera",
+              "border border-inatGreen border-4":
               selectedPhotoIndex === index
-          } )}
+            },
+            {
+              "m-[3px]": screenBreakpoint === ( "sm" || "md" ),
+              "m-[8.5px]": screenBreakpoint === ( "lg" || "xl" || "2xl" )
+            }
+          )}
         >
-          <View className="rounded-lg overflow-hidden">
+          <View className={classnames(
+            "overflow-hidden",
+            {
+              "rounded-sm w-[42px] h-[42px]": screenBreakpoint === ( "sm" || "md" ),
+              "rounded-md w-[83px] h-[83px]": screenBreakpoint === ( "lg" || "xl" || "2xl" )
+            }
+          )}
+          >
             <ImageBackground
               source={{ uri: item }}
               testID="ObsEdit.photo"
-              className={classnames( "w-fit h-full flex items-center justify-center", {
-                "rotate-0": deviceOrientation === "portrait" && !isTablet,
-                "-rotate-90": deviceOrientation === "landscapeLeft" && !isTablet,
-                "rotate-90": deviceOrientation === "landscapeRight" && !isTablet
-              } )}
+              className={classnames(
+                "w-fit h-full flex items-center justify-center",
+                {
+                  "rotate-0": deviceOrientation === "portrait" && !isTablet,
+                  "-rotate-90": deviceOrientation === "landscapeLeft" && !isTablet,
+                  "rotate-90": deviceOrientation === "landscapeRight" && !isTablet
+                }
+              )}
             >
               {deletePhotoMode && (
               <LinearGradient
@@ -135,6 +161,7 @@ const PhotoCarousel = ( {
       renderItem={renderPhotoOrEvidenceButton}
       horizontal
       ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
+
     />
   );
 

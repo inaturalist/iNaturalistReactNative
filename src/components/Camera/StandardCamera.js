@@ -23,6 +23,7 @@ import {
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
+import screens from "styles/tailwindScreens";
 
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
@@ -62,6 +63,22 @@ const StandardCamera = ( ): Node => {
   const isTablet = DeviceInfo.isTablet();
 
   const photosTaken = allObsPhotoUris.length > 0;
+
+  const getBreakpoints = () => {
+    if ( initialWidth >= screens["2xl"] ) {
+      return "2xl";
+    }
+    if ( initialWidth >= screens.xl ) {
+      return "xl";
+    }
+    if ( initialWidth >= screens.lg ) {
+      return "lg";
+    }
+    if ( initialWidth >= screens.md ) {
+      return "md";
+    }
+    return "sm";
+  };
 
   // screen orientation locked to portrait on small devices
   if ( !isTablet ) {
@@ -173,6 +190,7 @@ const StandardCamera = ( ): Node => {
         setPhotoUris={setCameraPreviewUris}
         savingPhoto={savingPhoto}
         deviceOrientation={imageOrientation}
+        screenBreakpoint={getBreakpoints()}
       />
       <FadeInOutView savingPhoto={savingPhoto} />
       <View className="absolute bottom-0 w-full">
