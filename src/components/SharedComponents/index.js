@@ -8,6 +8,7 @@ export { default as FloatingActionBar } from "./FloatingActionBar";
 export { default as INatIcon } from "./INatIcon";
 export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as ObservationLocation } from "./ObservationLocation";
+export { default as PhotoCount } from "./PhotoCount";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
 export { default as StickyToolbar } from "./StickyToolbar";
 export { default as Tabs } from "./Tabs/Tabs";
