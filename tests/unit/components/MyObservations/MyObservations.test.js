@@ -17,6 +17,19 @@ const mockObservations = [
   factory( "LocalObservation" )
 ];
 
+const mockNavigate = jest.fn();
+jest.mock( "@react-navigation/native", () => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useRoute: () => ( {} ),
+    useNavigation: () => ( {
+      navigate: mockNavigate,
+      addListener: jest.fn()
+    } )
+  };
+} );
+
 jest.mock( "sharedHooks/useApiToken" );
 
 jest.mock( "sharedHooks/useLocalObservations", () => ( {

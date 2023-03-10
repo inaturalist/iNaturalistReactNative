@@ -7,9 +7,6 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
     Array [
       Array [
         Object {
-          "position": "relative",
-        },
-        Object {
           "alignItems": "center",
         },
         Object {
@@ -55,7 +52,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
         ]
       }
     >
-      ?
+      
     </Text>
   </View>
   <CircularProgress
@@ -78,9 +75,6 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
     Array [
       Array [
         Object {
-          "position": "relative",
-        },
-        Object {
           "alignItems": "center",
         },
         Object {
@@ -100,68 +94,135 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
     collapsable={false}
     style={
       Object {
-        "transform": Array [
-          Object {
-            "rotate": "0deg",
-          },
-        ],
+        "alignSelf": undefined,
+        "bottom": undefined,
+        "left": undefined,
+        "position": undefined,
+        "right": undefined,
+        "shadowColor": "#000",
+        "shadowOffset": Object {
+          "height": 0,
+          "width": 0,
+        },
+        "shadowOpacity": 0,
+        "shadowRadius": 0,
+        "top": undefined,
       }
     }
   >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
+    <View
+      collapsable={false}
       style={
-        Array [
-          Object {
-            "color": "#454545",
-            "fontSize": 33,
+        Object {
+          "shadowColor": "#000",
+          "shadowOffset": Object {
+            "height": 0,
+            "width": 0,
           },
-          undefined,
-          Object {
-            "fontFamily": "inaturalisticons",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          Object {},
-        ]
+          "shadowOpacity": 0,
+          "shadowRadius": 0,
+        }
       }
     >
-      ?
-    </Text>
-  </View>
-  <View
-    style={
-      Array [
-        Array [
+      <View
+        collapsable={false}
+        style={
           Object {
-            "position": "absolute",
-          },
-        ],
-      ]
-    }
-  >
-    <Text
-      allowFontScaling={false}
-      selectable={false}
-      style={
-        Array [
-          Object {
-            "color": "#454545",
-            "fontSize": 15,
-          },
-          undefined,
-          Object {
-            "fontFamily": "inaturalisticons",
-            "fontStyle": "normal",
-            "fontWeight": "normal",
-          },
-          Object {},
-        ]
-      }
-    >
-      ?
-    </Text>
+            "backgroundColor": undefined,
+            "borderColor": "rgba(121, 116, 126, 1)",
+            "borderRadius": 24.5,
+            "borderWidth": 0,
+            "elevation": 0,
+            "height": 49,
+            "margin": 6,
+            "overflow": "hidden",
+            "width": 49,
+          }
+        }
+      >
+        <View
+          accessibilityComponentType="button"
+          accessibilityRole="button"
+          accessibilityState={
+            Object {
+              "disabled": true,
+            }
+          }
+          accessibilityTraits="button"
+          accessible={true}
+          centered={true}
+          collapsable={false}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 6,
+              "left": 6,
+              "right": 6,
+              "top": 6,
+            }
+          }
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Array [
+              Object {
+                "overflow": "hidden",
+              },
+              false,
+              Object {
+                "alignItems": "center",
+                "flexGrow": 1,
+                "justifyContent": "center",
+              },
+            ]
+          }
+        >
+          <Text
+            accessibilityElementsHidden={true}
+            allowFontScaling={false}
+            importantForAccessibility="no-hide-descendants"
+            pointerEvents="none"
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "#454545",
+                  "fontSize": 33,
+                },
+                Array [
+                  Object {
+                    "lineHeight": 33,
+                    "transform": Array [
+                      Object {
+                        "scaleX": 1,
+                      },
+                    ],
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                  },
+                ],
+                Object {
+                  "fontFamily": "Material Design Icons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            ?
+          </Text>
+        </View>
+      </View>
+    </View>
   </View>
 </View>
 `;
