@@ -275,7 +275,7 @@ const StandardCamera = ( ): Node => {
 
             <View className="absolute right-0">
               <IconButton
-                icon="close-button-x"
+                icon="close"
                 onPress={() => setDiscardState( INITIAL_DISCARD_STATE )}
                 accessibilityLabel={t( "Cancel" )}
                 accessibilityState={{ disabled: false }}
