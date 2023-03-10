@@ -18,7 +18,7 @@ jobs:
           cancel_others: true
 
   checksecret:
-    name: check for oauth client as one of the secrets needed for e2e testing
+    name: check for oauth client
     needs: setup
     runs-on: macos-latest
     outputs:
