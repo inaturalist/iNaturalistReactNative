@@ -155,7 +155,7 @@ const EvidenceSection = ( {
         handleAddEvidence={handleAddEvidence}
       />
       <View className="flex-row flex-nowrap items-center">
-        <IconButton size={14} icon="pencil" />
+        <IconButton size={14} icon="map-marker-outline" />
         <View>
           <Text>{currentObservation.place_guess}</Text>
           {shouldFetchLocation && <ActivityIndicator className="mx-1" />}

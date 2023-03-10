@@ -113,7 +113,7 @@ const PhotoCarousel = ( {
               )}
               {( containerStyle === "camera" && deletePhotoMode ) && (
                 <IconButton
-                  icon="trash-can"
+                  icon="trash"
                   mode="contained-tonal"
                   iconColor={theme.colors.onPrimary}
                   containerColor="rgba(0, 0, 0, 0.5)"
