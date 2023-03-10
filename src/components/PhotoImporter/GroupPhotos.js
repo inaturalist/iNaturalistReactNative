@@ -2,7 +2,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Body2, Button } from "components/SharedComponents";
-import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
@@ -14,10 +14,10 @@ import { Appbar } from "react-native-paper";
 import GroupPhotoImage from "./GroupPhotoImage";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
-const GroupPhotos = ( ): Node => {
+const GroupPhotos = (): Node => {
   const { createObservationsFromGroupedPhotos } = useContext( ObsEditContext );
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
+  const navigation = useNavigation();
+  const { params } = useRoute();
   const { selectedPhotos } = params;
   const observations = selectedPhotos.map( photo => ( {
     photos: [photo]
@@ -74,8 +74,10 @@ const GroupPhotos = ( ): Node => {
 
   const extractKey = ( item, index ) => `${item.photos[0].uri}${index}`;
 
-  const combinePhotos = ( ) => {
-    if ( selectedObservations.length < 2 ) { return; }
+  const combinePhotos = () => {
+    if ( selectedObservations.length < 2 ) {
+      return;
+    }
 
     const newObsList = [];
 
@@ -91,7 +93,9 @@ const GroupPhotos = ( ): Node => {
         const newObs = { photos: orderedPhotos };
         newObsList.push( newObs );
       } else {
-        const filteredPhotos = obsPhotos.filter( item => !orderedPhotos.includes( item ) );
+        const filteredPhotos = obsPhotos.filter(
+          item => !orderedPhotos.includes( item )
+        );
         if ( filteredPhotos.length > 0 ) {
           newObsList.push( { photos: filteredPhotos } );
         }
@@ -102,7 +106,7 @@ const GroupPhotos = ( ): Node => {
     setSelectedObservations( [] );
   };
 
-  const separatePhotos = ( ) => {
+  const separatePhotos = () => {
     let maxCombinedPhotos = 0;
 
     selectedObservations.forEach( obs => {
@@ -113,7 +117,9 @@ const GroupPhotos = ( ): Node => {
     } );
 
     // make sure at least one set of combined photos is selected
-    if ( maxCombinedPhotos < 2 ) { return; }
+    if ( maxCombinedPhotos < 2 ) {
+      return;
+    }
 
     const separatedPhotos = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
@@ -134,14 +140,16 @@ const GroupPhotos = ( ): Node => {
     setSelectedObservations( [] );
   };
 
-  const removePhotos = ( ) => {
+  const removePhotos = () => {
     const removedFromGroup = [];
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
 
     // create a list of grouped photos, with selected photos removed
     groupedPhotos.forEach( obs => {
       const obsPhotos = obs.photos;
-      const filteredGroupedPhotos = obsPhotos.filter( item => !orderedPhotos.includes( item ) );
+      const filteredGroupedPhotos = obsPhotos.filter(
+        item => !orderedPhotos.includes( item )
+      );
       if ( filteredGroupedPhotos.length > 0 ) {
         removedFromGroup.push( { photos: filteredGroupedPhotos } );
       }
@@ -150,19 +158,19 @@ const GroupPhotos = ( ): Node => {
     setObsToEdit( { observations: removedFromGroup } );
   };
 
-  const navToObsEdit = async ( ) => {
+  const navToObsEdit = async () => {
     createObservationsFromGroupedPhotos( obsToEdit.observations );
     navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
   };
 
-  const loadingWheel = ( ) => <ActivityIndicator />;
+  const loadingWheel = () => <ActivityIndicator />;
 
   const noObsSelected = selectedObservations.length === 0;
   const oneObsSelected = selectedObservations.length === 1;
   const obsWithMultiplePhotosSelected = selectedObservations?.[0]?.photos?.length > 1;
 
   return (
-    <ViewNoFooter>
+    <ViewWrapper>
       <View className="mx-5">
         <Body2 className="mt-5">{t( "Group-photos-onboarding" )}</Body2>
       </View>
@@ -179,20 +187,20 @@ const GroupPhotos = ( ): Node => {
       {selectedObservations.length > 0 && (
         <Appbar.Header className="bg-white m-5">
           <Appbar.Action
-            onPress={( ) => combinePhotos( )}
             icon="combine"
+            onPress={() => combinePhotos()}
             disabled={noObsSelected || oneObsSelected}
             accessibilityLabel={t( "Combine-Photos" )}
           />
           <Appbar.Action
-            onPress={( ) => separatePhotos( )}
             icon="separate"
+            onPress={() => separatePhotos()}
             disabled={!obsWithMultiplePhotosSelected}
             accessibilityLabel={t( "Separate-Photos" )}
           />
           <Appbar.Action
-            onPress={( ) => removePhotos( )}
-            icon="trash"
+            icon="trash-outline"
+            onPress={() => removePhotos()}
             disabled={noObsSelected}
             accessibilityLabel={t( "Remove-Photos" )}
           />
@@ -205,7 +213,7 @@ const GroupPhotos = ( ): Node => {
         onPress={navToObsEdit}
         testID="GroupPhotos.next"
       />
-    </ViewNoFooter>
+    </ViewWrapper>
   );
 };
 
