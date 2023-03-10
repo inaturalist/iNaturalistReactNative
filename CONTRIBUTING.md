@@ -11,23 +11,25 @@ We welcome volunteer contributions! This app is still early in its development a
 1. Fork the repository.
 2. Clone the forked repository to your local machine.
 3. Follow [the README](README.md) to setup your local repository.
-4. Make changes to the codebase.
+4. Create a new branch for the issue you're working on.
+5. Make changes to the codebase.
 6. Push your changes to your forked repository.
 
 ## Submitting Changes
 1. Make sure your changes are up-to-date with the latest changes in the main repository.
 2. Make sure your code is well-tested and passes all unit and integration tests.
-3. It would b nice if you could run e2e tests locally with your own app credentials.
+3. It would be nice if you could run e2e tests locally with your own app credentials.
 4. Create a pull request to the main repository with your changes.
 
 ## Guidelines
-- Please make sure your pull request includes a clear and descriptive title including the issue number in case of an open issue, and a detailed description of the changes you've made.
-- If you're adding new features or functionality, please provide a clear explanation of what the feature does and how to use it.
-- Please make sure your code is well-documented, follows our code style guide, and includes unit tests.
+- Please make sure your pull request includes a clear and descriptive title and the description includes a reference to the issue number, e.g. "Closes #123" or "Partially addresses #123" in case of an open issue, and a possibly detailed description of the changes you've made.
+- If you're adding new features or functionality differing from the description in the issue, please provide a clear explanation of how this work differs from what the issue describes.
+- Feel free to ask any questions or raise any concerns you have.
+- Please make sure your code includes unit tests, and our linting rules were applied (should happen automatically).
 
 ## Code Style Guide
 - We use [ESLint](https://eslint.org/) to enforce our code style guide.
-- We have enabled several eslint plugins to enforce best practices, e.g. in testing and accessibility (as of now, accessibility rules are only warnings because we are in the process of a rewrite of most presentational components, but will be changed back to errors at one point). We also have enabled a pre-commit hook to run `eslint --fix --quiet` on all staged files. This will fix issues that can be fixed automatically.
+- We have enabled several eslint plugins to enforce best practices, e.g. in testing and accessibility. We also have enabled a pre-commit hook to run `eslint --fix --quiet` on all staged files. This will fix issues that can be fixed automatically.
 
 ## Issues and Bugs
 If you find an issue or bug in our application, please report it by opening a new issue in the repository. Please include a clear and detailed description of the issue, steps to reproduce the issue, and any relevant screenshots or error messages.
