@@ -9,7 +9,7 @@ import ContextHeader from "./ContextHeader";
 const baseHeaderOptions: Object = {
   headerShown: true,
   headerBackTitleVisible: false,
-  headerShadowVisible: false,
+  headerShadowVisible: false
 };
 
 const showHeader: Object = {
@@ -27,7 +27,7 @@ const showHeader: Object = {
 export const showHeaderLeft: Object = {
   ...showHeader,
   headerLeft: ( ) => <BackButton />
-}
+};
 
 const showCustomHeader: Object = {
   ...baseHeaderOptions,
