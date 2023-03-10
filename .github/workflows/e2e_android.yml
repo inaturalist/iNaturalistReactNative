@@ -3,10 +3,6 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    # Android builds require access to several secrets, so Github won't run
-    # those jobs when triggered by pull requests by external developers.
-    # Instead, we're just running these jobs when staff decides to merge a PR
-    # into main
     branches:
       - main
 
