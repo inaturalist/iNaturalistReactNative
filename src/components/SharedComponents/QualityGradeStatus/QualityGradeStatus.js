@@ -16,8 +16,6 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
     return (
     // $FlowIgnore
       <ResearchGrade
-        accessible
-        accessibilityLabel={t( "Quality-Grade-research" )}
         color={color}
       />
     );
@@ -26,8 +24,6 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
     return (
     // $FlowIgnore
       <NeedsIdGrade
-        accessible
-        accessibilityLabel={t( "Quality-Grade-needs_id" )}
         color={color}
       />
     );
@@ -35,15 +31,24 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
   return (
     // $FlowIgnore
     <CasualGrade
-      accessible
-      accessibilityLabel={t( "Quality-Grade-casual" )}
       color={color}
     />
   );
 };
 
-const QualityGradeStatus = ( { qualityGrade, color }: Props ): React.Node => (
-  <View>{qualityGradeSVG( qualityGrade, color )}</View>
-);
+const QualityGradeStatus = ( { qualityGrade, color }: Props ): React.Node => {
+  const setAccessibilityLabel = () => (
+    ( qualityGrade ) ? `Quality-Grade-${qualityGrade}` : t( "Quality-Grade-No-Grade" ) );
+
+  return (
+    <View
+      accessible
+      accessibilityLabel={t( setAccessibilityLabel() )}
+    >
+      {qualityGradeSVG( qualityGrade, color )}
+
+    </View>
+  );
+};
 
 export default QualityGradeStatus;

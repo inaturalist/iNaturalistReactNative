@@ -27,12 +27,13 @@ import {
   StickyToolbar,
   Subheading1,
   Tabs,
+  UploadStatus,
   UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import { glyphMap } from "components/SharedComponents/INatIcon/INatIcon";
 import UserText from "components/SharedComponents/UserText";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -52,14 +53,13 @@ const UiLibrary = (): Node => {
     User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalist.org).
   `.trim();
   return (
-    <ViewWithFooter>
-      <FloatingActionBar position="bottomStart" containerClass="mx-4 px-2 my-[100px]">
+    <ViewWrapper>
+      <FloatingActionBar
+        position="bottomStart"
+        containerClass="mx-4 px-2 my-[100px]"
+      >
         <Heading2 className="my-2">Floating Action Bar</Heading2>
-        <IconButton
-          className="mx-auto"
-          icon="star-outline"
-          mode="contained"
-        />
+        <IconButton className="mx-auto" icon="star-outline" mode="contained" />
       </FloatingActionBar>
       <ScrollView className="px-5">
         {/* TODO replace these text components with our typography header components */}
@@ -341,6 +341,42 @@ const UiLibrary = (): Node => {
           </View>
         </View>
 
+        <Heading2 className="my-2">Upload Status</Heading2>
+        <View className="flex flex-row justify-between">
+          <View>
+            <Body2 className="text-center">Progress &lt; 5%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.04}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">10%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.1}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">60%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.6}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">100%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={1}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+        </View>
+
         <Heading2 className="my-2">ActivityCount</Heading2>
         <View className="flex flex-row justify-evenly">
           <View>
@@ -390,7 +426,7 @@ const UiLibrary = (): Node => {
       <StickyToolbar containerClass="bottom-56">
         <Heading2>StickyToolbar</Heading2>
       </StickyToolbar>
-    </ViewWithFooter>
+    </ViewWrapper>
   );
 };
 

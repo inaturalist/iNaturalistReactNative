@@ -1,19 +1,17 @@
 // @flow
 
-import { SafeAreaView, ScrollView } from "components/styledComponents";
+import { SafeAreaView, ScrollView, View } from "components/styledComponents";
 import * as React from "react";
-import {
-  Keyboard, StatusBar
-} from "react-native";
+import { Keyboard, StatusBar } from "react-native";
 
 type Props = {
   children: React.Node,
   testID?: string,
-  style?: Object
-}
+  style?: Object,
+};
 
-const ScrollNoFooter = ( { children, testID, style }: Props ): React.Node => {
-  const dismissKeyboard = ( ) => Keyboard.dismiss( );
+const ScrollViewWrapper = ( { children, testID, style }: Props ): React.Node => {
+  const dismissKeyboard = () => Keyboard.dismiss();
 
   return (
     <SafeAreaView className="flex-1 bg-white" style={style} testID={testID}>
@@ -24,9 +22,10 @@ const ScrollNoFooter = ( { children, testID, style }: Props ): React.Node => {
         scrollEventThrottle={16}
       >
         {children}
+        <View className="pb-64" />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default ScrollNoFooter;
+export default ScrollViewWrapper;

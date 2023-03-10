@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UploadStatus displays progress bar when progress is greater than 5% correctly 1`] = `
+<View
+  accessible={true}
+  style={
+    Array [
+      Array [
+        Object {
+          "position": "relative",
+        },
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "width": 49,
+        },
+        Object {
+          "height": 67,
+        },
+      ],
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Array [
+          Object {
+            "position": "absolute",
+          },
+        ],
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        Array [
+          Object {
+            "color": "#454545",
+            "fontSize": 15,
+          },
+          undefined,
+          Object {
+            "fontFamily": "inaturalisticons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          Object {},
+        ]
+      }
+    >
+      ?
+    </Text>
+  </View>
+  <CircularProgress
+    activeStrokeColor="#454545"
+    activeStrokeWidth={2}
+    inActiveStrokeOpacity={0}
+    maxValue={1}
+    radius={16.5}
+    showProgressValue={false}
+    testID="UploadStatus.CircularProgress"
+    value={0.5}
+  />
+</View>
+`;
+
+exports[`UploadStatus displays progress bar when progress is less than 5% correctly 1`] = `
+<View
+  accessible={true}
+  style={
+    Array [
+      Array [
+        Object {
+          "position": "relative",
+        },
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "width": 49,
+        },
+        Object {
+          "height": 67,
+        },
+      ],
+    ]
+  }
+>
+  <View
+    collapsable={false}
+    style={
+      Object {
+        "transform": Array [
+          Object {
+            "rotate": "0deg",
+          },
+        ],
+      }
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        Array [
+          Object {
+            "color": "#454545",
+            "fontSize": 33,
+          },
+          undefined,
+          Object {
+            "fontFamily": "inaturalisticons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          Object {},
+        ]
+      }
+    >
+      ?
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Array [
+          Object {
+            "position": "absolute",
+          },
+        ],
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        Array [
+          Object {
+            "color": "#454545",
+            "fontSize": 15,
+          },
+          undefined,
+          Object {
+            "fontFamily": "inaturalisticons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          Object {},
+        ]
+      }
+    >
+      ?
+    </Text>
+  </View>
+</View>
+`;

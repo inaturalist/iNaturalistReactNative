@@ -17,8 +17,8 @@ const logger = log.extend( "App" );
 const { useRealm } = RealmContext;
 
 type Props = {
-  children?: any
-}
+  children?: any,
+};
 
 // this children prop is here for the sake of testing with jest
 // normally we would never do this in code
