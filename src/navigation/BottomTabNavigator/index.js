@@ -49,7 +49,7 @@ const BottomTabs = () => {
         component={Explore}
         options={{
           meta: {
-            icon: "compass-rose",
+            icon: "compass-rose-outline",
             testID: EXPLORE_SCREEN_ID,
             accessibilityLabel: t( "Explore" ),
             accessibilityHint: t( "Navigates-to-explore" ),
