@@ -119,7 +119,7 @@ const BottomTabs = () => {
         component={ObsDetails}
         options={{
           headerTitle: t( "Observation" ),
-          unmountOnBlur: true,
+          unmountOnBlur: true
         }}
       />
       <Tab.Screen
