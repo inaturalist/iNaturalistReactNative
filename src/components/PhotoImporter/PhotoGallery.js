@@ -6,17 +6,13 @@ import usePhotoAlbums from "components/PhotoImporter/hooks/usePhotoAlbums";
 import PhotoAlbumPicker from "components/PhotoImporter/PhotoAlbumPicker";
 import PhotoGalleryImage from "components/PhotoImporter/PhotoGalleryImage";
 import { Button } from "components/SharedComponents";
-import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, {
-  useContext, useEffect, useState
-} from "react";
-import {
-  ActivityIndicator, FlatList
-} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { ActivityIndicator, FlatList } from "react-native";
 import { Snackbar } from "react-native-paper";
 
 const MAX_PHOTOS_ALLOWED = 20;
@@ -28,7 +24,7 @@ const options = {
   groupTypes: "All"
 };
 
-const PhotoGallery = ( ): Node => {
+const PhotoGallery = (): Node => {
   const [isScrolling, setIsScrolling] = useState( false );
   const [photoOptions, setPhotoOptions] = useState( options );
   const [rerenderList, setRerenderList] = useState( false );
@@ -43,52 +39,54 @@ const PhotoGallery = ( ): Node => {
   // they are needed and not just when this provider initializes
   const [canRequestPhotos, setCanRequestPhotos] = useState( false );
 
-  const albums = usePhotoAlbums( );
+  const albums = usePhotoAlbums();
 
-  const {
-    fetchingPhotos,
-    photos: galleryPhotos
-  } = useCameraRollPhotos( photoOptions, isScrolling, canRequestPhotos );
+  const { fetchingPhotos, photos: galleryPhotos } = useCameraRollPhotos(
+    photoOptions,
+    isScrolling,
+    canRequestPhotos
+  );
 
   // $FlowIgnore
   const selectedAlbum = photoOptions.groupName || "All";
 
   const {
     createObservationFromGallery,
-    galleryUris, setGalleryUris, allObsPhotoUris,
+    galleryUris,
+    setGalleryUris,
+    allObsPhotoUris,
     addGalleryPhotosToCurrentObservation,
     evidenceToAdd,
     setEvidenceToAdd,
     album
   } = useContext( ObsEditContext );
   const [showAlert, setShowAlert] = useState( false );
-  const { params } = useRoute( );
+  const { params } = useRoute();
   const skipGroupPhotos = params?.skipGroupPhotos;
 
-  const allPhotos: Array<Object> = Object.values( photoGallery ).flat( );
+  const allPhotos: Array<Object> = Object.values( photoGallery ).flat();
 
-  const selectedPhotos = allPhotos.filter( photo => galleryUris?.includes(
-    photo?.image?.uri
-  ) );
-  const selectedEvidenceToAdd = allPhotos.filter(
-    photo => evidenceToAdd?.includes( photo?.image?.uri )
-  );
+  const selectedPhotos = allPhotos.filter( photo => galleryUris?.includes( photo?.image?.uri ) );
+  // eslint-disable-next-line max-len
+  const selectedEvidenceToAdd = allPhotos.filter( photo => evidenceToAdd?.includes( photo?.image?.uri ) );
 
   // If this component is being rendered we have either already asked for
   // permissions in Android via a PermissionGate parent component, or the
   // user is expecting us to ask for permissions via CameraRoll in iOS.
   // Either way, we need to inform the context that it is now ok to request
   // photos from the operating system.
-  useEffect( ( ) => {
+  useEffect( () => {
     if ( !canRequestPhotos ) {
       setCanRequestPhotos( true );
     }
   }, [canRequestPhotos] );
 
-  useEffect( ( ) => {
+  useEffect( () => {
     if ( galleryPhotos ) {
-      if ( photoGallery[selectedAlbum]
-        && photoGallery[selectedAlbum].length === galleryPhotos.length ) {
+      if (
+        photoGallery[selectedAlbum]
+        && photoGallery[selectedAlbum].length === galleryPhotos.length
+      ) {
         return;
       }
 
@@ -105,7 +103,7 @@ const PhotoGallery = ( ): Node => {
     }
   }, [galleryPhotos, photoGallery, setPhotoGallery, selectedAlbum] );
 
-  const navigation = useNavigation( );
+  const navigation = useNavigation();
 
   const selectPhoto = p => {
     setGalleryUris( [...galleryUris, p?.image?.uri] );
@@ -146,7 +144,7 @@ const PhotoGallery = ( ): Node => {
     const isSelected = checkSelected( uri );
     const isDisabled = skipGroupPhotos && isSelected && checkPreviouslySelected( uri );
 
-    const handleImagePress = ( ) => {
+    const handleImagePress = () => {
       if ( isSelected || allObsPhotoUris.length < MAX_PHOTOS_ALLOWED ) {
         handlePhotoSelection( item, isSelected );
       } else {
@@ -167,28 +165,28 @@ const PhotoGallery = ( ): Node => {
 
   const extractKey = ( item, index ) => `${item}${index}`;
 
-  const fetchMorePhotos = ( ) => setIsScrolling( true );
+  const fetchMorePhotos = () => setIsScrolling( true );
 
-  const navToNextScreen = async ( ) => {
-    const navToObsEdit = ( ) => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+  const navToNextScreen = async () => {
+    const navToObsEdit = () => navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
     if ( !selectedPhotos ) return;
     if ( skipGroupPhotos ) {
       // add any newly selected photos
       // to an existing observation after navigating from ObsEdit
       addGalleryPhotosToCurrentObservation( selectedEvidenceToAdd );
-      navToObsEdit( );
+      navToObsEdit();
       return;
     }
     if ( selectedPhotos.length === 1 ) {
       // create a new observation and skip group photos screen
       createObservationFromGallery( selectedPhotos[0] );
-      navToObsEdit( );
+      navToObsEdit();
       return;
     }
     navigation.navigate( "GroupPhotos", { selectedPhotos } );
   };
 
-  const renderEmptyList = ( ) => {
+  const renderEmptyList = () => {
     if ( fetchingPhotos ) {
       return <ActivityIndicator />;
     }
@@ -197,13 +195,15 @@ const PhotoGallery = ( ): Node => {
 
   const photosByAlbum = photoGallery[selectedAlbum];
 
-  const totalSelected = skipGroupPhotos ? evidenceToAdd.length : selectedPhotos.length;
+  const totalSelected = skipGroupPhotos
+    ? evidenceToAdd.length
+    : selectedPhotos.length;
 
-  useEffect( ( ) => {
+  useEffect( () => {
     // update photo album
     const newOptions = {
       ...options,
-      groupTypes: ( album === null ) ? "All" : "Album"
+      groupTypes: album === null ? "All" : "Album"
     };
 
     if ( album !== null ) {
@@ -213,8 +213,8 @@ const PhotoGallery = ( ): Node => {
     setPhotoOptions( newOptions );
   }, [album] );
 
-  useEffect( ( ) => {
-    const headerTitle = ( ) => <PhotoAlbumPicker albums={albums} />;
+  useEffect( () => {
+    const headerTitle = () => <PhotoAlbumPicker albums={albums} />;
 
     navigation.setOptions( {
       headerTitle
@@ -222,7 +222,7 @@ const PhotoGallery = ( ): Node => {
   }, [navigation, albums] );
 
   return (
-    <ViewNoFooter testID="photo-gallery">
+    <ViewWrapper testID="photo-gallery">
       <FlatList
         // $FlowIgnore
         data={photosByAlbum}
@@ -235,7 +235,7 @@ const PhotoGallery = ( ): Node => {
         ListEmptyComponent={renderEmptyList}
         extraData={rerenderList}
       />
-      { totalSelected > 0 && (
+      {totalSelected > 0 && (
         <View className="h-16 mt-2 mx-4">
           <Button
             level="focus"
@@ -244,14 +244,11 @@ const PhotoGallery = ( ): Node => {
             testID="PhotoGallery.createObsButton"
           />
         </View>
-      ) }
-      <Snackbar
-        visible={showAlert}
-        onDismiss={() => setShowAlert( false )}
-      >
+      )}
+      <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>
-    </ViewNoFooter>
+    </ViewWrapper>
   );
 };
 

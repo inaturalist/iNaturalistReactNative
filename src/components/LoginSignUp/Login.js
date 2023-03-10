@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { Button } from "components/SharedComponents";
 import {
   Image, Pressable, SafeAreaView
@@ -72,9 +72,13 @@ const Login = ( ): Node => {
     setLoggedIn( true );
     setLoading( false );
 
-    navigation.navigate( "MainStack", {
-      screen: "ObsList"
-    } );
+    // Reset navigation state so that ObsList gets rerendered
+    navigation.dispatch( CommonActions.reset( {
+      index: 0,
+      routes: [{ name: "ObsList" }]
+    } ) );
+
+    navigation.navigate( "ObsList" );
   };
 
   const forgotPassword = ( ) => {

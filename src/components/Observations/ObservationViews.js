@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
@@ -84,16 +84,11 @@ const ObservationViews = (): Node => {
         scientificName: item.name
       } )}
     >
-      {
-        layout === "grid"
-          ? (
-            <ObsGridItem
-              observation={item}
-            />
-          )
-          : <ObsListItem observation={item} />
-      }
-
+      {layout === "grid" ? (
+        <ObsGridItem observation={item} />
+      ) : (
+        <ObsListItem observation={item} />
+      )}
     </Pressable>
   );
 
@@ -104,7 +99,9 @@ const ObservationViews = (): Node => {
     return <InfiniteScrollFooter view={layout} isLoading={isLoading} />;
   };
 
-  const renderItemSeparator = () => <View className="border border-lightGray" />;
+  const renderItemSeparator = () => (
+    <View className="border border-lightGray" />
+  );
 
   const onEndReached = () => {
     if ( !isLoading ) {
@@ -121,7 +118,7 @@ const ObservationViews = (): Node => {
   } );
 
   return (
-    <ViewWithFooter>
+    <ViewWrapper>
       <View className="overflow-hidden">
         <Animated.View style={[{ transform: [{ translateY }] }]}>
           <Animated.FlatList
@@ -147,7 +144,7 @@ const ObservationViews = (): Node => {
           <ObsListBottomSheet hasScrolled={hasScrolled} />
         </Animated.View>
       </View>
-    </ViewWithFooter>
+    </ViewWrapper>
   );
 };
 
