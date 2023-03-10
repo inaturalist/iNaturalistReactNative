@@ -228,8 +228,9 @@ const UiLibrary = (): Node => {
                 className="p-3"
                 key={iconName}
                 onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
-                size={18}
+                size={14}
               />
+              {" "}
               {iconName}
             </Body1>
           ) )}
