@@ -5,7 +5,6 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { useTheme } from "react-native-paper";
-import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import ObsStatus from "./ObsStatus";
 import UploadCompleteAnimation from "./UploadIcons/UploadCompleteAnimation";
@@ -22,18 +21,16 @@ const ObsUploadStatus = ( {
   observation,
   uploadStatus,
   layout,
-  white,
+  white = false,
   classNameMargin
 }: Props ): Node => {
-  const currentUser = useCurrentUser( );
   const theme = useTheme( );
   const obsEditContext = useContext( ObsEditContext );
   const startSingleUpload = obsEditContext?.startSingleUpload;
   const uploadProgress = obsEditContext?.uploadProgress;
   const wasSynced = observation.wasSynced( );
   const { allObsToUpload } = uploadStatus;
-
-  console.log( uploadProgress, "upload progress" );
+  const whiteColor = white && theme.colors.onPrimary;
 
   const displayUploadStatus = ( ) => {
     if ( allObsToUpload.find( upload => upload.uuid === observation.uuid ) ) {
@@ -41,9 +38,8 @@ const ObsUploadStatus = ( {
         <UploadStatus
           progress={uploadProgress[observation.uuid] || 0}
           startSingleUpload={( ) => startSingleUpload( observation )}
-          color={theme.colors.onPrimary}
-          completeColor={theme.colors.onPrimary}
-          buttonDisabled={!currentUser}
+          color={whiteColor}
+          completeColor={whiteColor}
         >
           <UploadCompleteAnimation
             wasSynced={wasSynced}

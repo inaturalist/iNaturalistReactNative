@@ -22,7 +22,7 @@ type Props = {
   currentUser: ?Object,
   navToExplore: Function,
   toggleLayout: Function,
-  setSyncIcon: Function
+  getSyncIcon: Function
 }
 
 const Toolbar = ( {
@@ -38,7 +38,7 @@ const Toolbar = ( {
   currentUser,
   navToExplore,
   toggleLayout,
-  setSyncIcon
+  getSyncIcon
 }: Props ): Node => {
   const theme = useTheme( );
   const spinValue = new Animated.Value( 1 );
@@ -57,7 +57,7 @@ const Toolbar = ( {
     outputRange: ["0deg", "360deg"]
   } );
 
-  const setSyncIconColor = ( ) => {
+  const getSyncIconColor = ( ) => {
     if ( uploadError ) {
       return theme.colors.error;
     }
@@ -90,13 +90,13 @@ const Toolbar = ( {
           style={uploading ? { transform: [{ rotate: spin }] } : {}}
         >
           <IconButton
-            icon={setSyncIcon( )}
+            icon={getSyncIcon( )}
             size={26}
             onPress={handleSyncButtonPress}
             accessibilityRole="button"
             disabled={syncDisabled}
             accessibilityState={{ disabled: syncDisabled }}
-            iconColor={setSyncIconColor( )}
+            iconColor={getSyncIconColor( )}
           />
         </Animated.View>
 

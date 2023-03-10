@@ -7,9 +7,6 @@ import React, { useRef, useState } from "react";
 import {
   Animated, Dimensions, Platform
 } from "react-native";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useLocalObservations from "sharedHooks/useLocalObservations";
-import useUploadObservations from "sharedHooks/useUploadObservations";
 
 import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
 import LoginSheet from "./LoginSheet";
@@ -25,7 +22,11 @@ type Props = {
   layout: "list" | "grid",
   observations: Array<Object>,
   onEndReached: Function,
-  setLayout: Function
+  setLayout: Function,
+  uploadStatus: Object,
+  currentUser: ?Object,
+  showLoginSheet: boolean,
+  setShowLoginSheet: Function
 }
 
 const {
@@ -39,9 +40,12 @@ const MyObservations = ( {
   layout,
   observations,
   onEndReached,
-  setLayout
+  setLayout,
+  uploadStatus,
+  currentUser,
+  showLoginSheet,
+  setShowLoginSheet
 }: Props ): Node => {
-  const currentUser = useCurrentUser( );
   const [heightAboveToolbar, setHeightAboveToolbar] = useState( 0 );
 
   const [hideHeaderCard, setHideHeaderCard] = useState( false );
@@ -67,9 +71,6 @@ const MyObservations = ( {
   const numColumns = setNumColumns( );
   const combinedGutterWidth = ( numColumns + 1 ) * GUTTER;
   const gridItemWidth = Math.round( ( screenWidth - combinedGutterWidth ) / numColumns );
-
-  const { allObsToUpload } = useLocalObservations( );
-  const uploadStatus = useUploadObservations( allObsToUpload );
 
   const handleScroll = Animated.event(
     [
@@ -136,11 +137,11 @@ const MyObservations = ( {
               <Header
                 setLayout={setLayout}
                 layout={layout}
-                // hideHeaderCard={hideHeaderCard}
                 currentUser={currentUser}
                 numObservations={observations.length}
                 setHeightAboveToolbar={setHeightAboveToolbar}
                 uploadStatus={uploadStatus}
+                setShowLoginSheet={setShowLoginSheet}
               />
             )}
             ItemSeparatorComponent={
@@ -158,7 +159,7 @@ const MyObservations = ( {
           />
         </Animated.View>
       </ViewWrapper>
-      <LoginSheet />
+      <LoginSheet showLoginSheet={showLoginSheet} setShowLoginSheet={setShowLoginSheet} />
     </>
   );
 };

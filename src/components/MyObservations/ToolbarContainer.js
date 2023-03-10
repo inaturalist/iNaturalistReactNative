@@ -16,12 +16,14 @@ type Props = {
   setLayout: Function,
   layout: string,
   numUnuploadedObs: number,
-  uploadStatus: Object
+  uploadStatus: Object,
+  setShowLoginSheet: Function
 }
 
 const ToolbarContainer = ( {
   setLayout, layout, numUnuploadedObs,
-  uploadStatus
+  uploadStatus,
+  setShowLoginSheet
 }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
@@ -42,7 +44,6 @@ const ToolbarContainer = ( {
 
   const loading = obsEditContext?.loading;
   const syncObservations = obsEditContext?.syncObservations;
-  const setShowLoginSheet = obsEditContext?.setShowLoginSheet;
 
   // clear toolbar when leaving screen
   useEffect(
@@ -100,7 +101,7 @@ const ToolbarContainer = ( {
 
   const statusText = getStatusText( );
 
-  const setSyncIcon = ( ) => {
+  const getSyncIcon = ( ) => {
     if ( numUnuploadedObs > 0 || !uploadInProgress || uploadError ) {
       return "sync-unsynced";
     }
@@ -121,7 +122,7 @@ const ToolbarContainer = ( {
       navToExplore={navToExplore}
       toggleLayout={toggleLayout}
       layout={layout}
-      setSyncIcon={setSyncIcon}
+      getSyncIcon={getSyncIcon}
     />
   );
 };

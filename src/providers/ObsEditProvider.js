@@ -4,7 +4,7 @@ import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-k
 import { searchObservations } from "api/observations";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect, useMemo, useState
+  useCallback, useMemo, useState
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -36,7 +36,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [album, setAlbum] = useState( null );
   const [loading, setLoading] = useState( false );
   const [unsavedChanges, setUnsavedChanges] = useState( false );
-  const [showLoginSheet, setShowLoginSheet] = useState( false );
   const [uploadProgress, setUploadProgress] = useState( { } );
 
   const resetObsEditContext = useCallback( ( ) => {
@@ -46,7 +45,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setGalleryUris( [] );
     setEvidenceToAdd( [] );
     setUnsavedChanges( false );
-    setShowLoginSheet( false );
   }, [] );
 
   const allObsPhotoUris = useMemo(
@@ -284,16 +282,25 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     const startSingleUpload = async observation => {
       setLoading( true );
       const { uuid } = observation;
+      const response = await uploadObservation( observation );
+      if ( Object.keys( response ).length === 0 ) {
+        return;
+      }
+      // TODO: mostly making sure UI presentation works at the moment, but we will
+      // need to figure out what counts as progress towards an observation uploading
+      // and add that functionality.
+      // maybe uploading an observation is 0.33, starting to upload photos is 0.5,
+      // checking for sounds is 0.66 progress?
+      // and we need a way to track this progress from the Observation.uploadObservation function
       setUploadProgress( {
         ...uploadProgress,
         [uuid]: 0.5
       } );
-      await uploadObservation( observation );
+      setLoading( false );
       setUploadProgress( {
         ...uploadProgress,
         [uuid]: 1
       } );
-      setLoading( false );
     };
 
     return {
@@ -332,8 +339,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setLoading,
       unsavedChanges,
       syncObservations,
-      showLoginSheet,
-      setShowLoginSheet,
       startSingleUpload,
       uploadProgress
     };
@@ -361,16 +366,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setLoading,
     unsavedChanges,
     currentUser,
-    showLoginSheet,
-    setShowLoginSheet,
     uploadProgress
   ] );
-
-  useEffect( ( ) => {
-    if ( loading && !currentUser ) {
-      setShowLoginSheet( true );
-    }
-  }, [loading, currentUser] );
 
   return (
     <ObsEditContext.Provider value={uploadValue}>

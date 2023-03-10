@@ -33,7 +33,8 @@ const MyObservationsPressable = ( { observation, children }: Props ): Node => {
         ? t( "Navigate-to-observation-edit-screen" )
         : t( "Navigate-to-observation-details" )}
       accessibilityLabel={t( "Observation-Name", {
-        scientificName: observation.name
+        // TODO: use the name that the user prefers (common or scientific)
+        scientificName: observation.species_guess
       } )}
     >
       {children}

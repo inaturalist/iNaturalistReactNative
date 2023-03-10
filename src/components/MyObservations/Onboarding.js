@@ -13,7 +13,8 @@ const Onboarding = ( ): Node => {
   const getOnboardingText = ( ) => {
     if ( numObservations <= 10 ) {
       return t( "As-you-upload-more-observations" );
-    } if ( numObservations <= 50 ) {
+    }
+    if ( numObservations <= 50 ) {
       return t( "Observations-you-upload-to-iNaturalist" );
     }
     return t( "You-can-search-observations-of-any-plant-or-animal" );
