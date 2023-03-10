@@ -71,8 +71,8 @@ const ALIASES = {
   sync: "rotate",
   "sync-unsynced": "rotate-exclamation",
   taxarankarrow: "info-circle-outline",
-  "upload-arrow": "arrow-up-plain",
-  "upload-complete": "checkmark-circle-outline",
+  "upload-arrow": "arrow-up",
+  "upload-complete": "check",
   "upload-saved": "arrow-up-circle-dots",
   "upvote-active": "arrow-up-bold-circle",
   "upvote-inactive": "arrow-up-bold-circle-outline"
