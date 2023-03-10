@@ -27,7 +27,8 @@ const SignUp = (): Node => {
 
       <Text className="text-base mb-1">{t( "Email" )}</Text>
       <TextInput
-        className="h-10 bg-tertiary"
+        accessibilityLabel={t( "Email" )}
+        className="h-10 bg-lightGray"
         onChangeText={setEmail}
         value={email}
         autoComplete="email"
@@ -35,14 +36,16 @@ const SignUp = (): Node => {
 
       <Text className="text-base mb-1">{t( "Username" )}</Text>
       <TextInput
-        className="h-10 bg-tertiary"
+        accessibilityLabel={t( "Username" )}
+        className="h-10 bg-lightGray"
         onChangeText={setUsername}
         value={username}
       />
 
       <Text className="text-base mb-1">{t( "Password" )}</Text>
       <TextInput
-        className="h-10 bg-tertiary"
+        accessibilityLabel={t( "Password" )}
+        className="h-10 bg-lightGray"
         onChangeText={setPassword}
         value={password}
         secureTextEntry

@@ -1,20 +1,20 @@
 // @flow
 
 import InputField from "components/SharedComponents/InputField";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 
 import ProjectSearch from "./ProjectSearch";
 import ProjectTabs from "./ProjectTabs";
 
-const Projects = ( ): Node => {
+const Projects = (): Node => {
   const [q, setQ] = useState( "" );
   const [view, setView] = useState( "tabs" );
 
-  const clearSearch = ( ) => setQ( "" );
+  const clearSearch = () => setQ( "" );
 
-  useEffect( ( ) => {
+  useEffect( () => {
     if ( q.length > 0 ) {
       setView( "search" );
     } else {
@@ -23,7 +23,7 @@ const Projects = ( ): Node => {
   }, [q] );
 
   return (
-    <ViewWithFooter testID="Projects">
+    <ViewWrapper testID="Projects">
       <InputField
         handleTextChange={setQ}
         placeholder="search for projects"
@@ -31,10 +31,12 @@ const Projects = ( ): Node => {
         type="none"
         testID="ProjectSearch.input"
       />
-      {view === "tabs"
-        ? <ProjectTabs />
-        : <ProjectSearch q={q} clearSearch={clearSearch} />}
-    </ViewWithFooter>
+      {view === "tabs" ? (
+        <ProjectTabs />
+      ) : (
+        <ProjectSearch q={q} clearSearch={clearSearch} />
+      )}
+    </ViewWrapper>
   );
 };
 

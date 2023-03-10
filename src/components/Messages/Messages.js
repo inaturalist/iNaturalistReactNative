@@ -2,7 +2,7 @@
 
 import searchMessages from "api/messages";
 import { Tabs } from "components/SharedComponents";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Text } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -15,13 +15,10 @@ import MessageList from "./MessageList";
 const NOTIFICATIONS_ID = "NOTIFICATIONS";
 const MESSAGES_ID = "MESSAGES";
 
-const Messages = ( ): Node => {
-  const currentUser = useCurrentUser( );
+const Messages = (): Node => {
+  const currentUser = useCurrentUser();
   const [activeTab, setActiveTab] = useState( NOTIFICATIONS_ID );
-  const {
-    data,
-    isLoading
-  } = useAuthenticatedQuery(
+  const { data, isLoading } = useAuthenticatedQuery(
     ["searchMessages"],
     optsWithAuth => searchMessages( { page: 1 }, optsWithAuth ),
     {
@@ -47,7 +44,7 @@ const Messages = ( ): Node => {
   ];
 
   return (
-    <ViewWithFooter>
+    <ViewWrapper>
       {currentUser ? (
         <>
           <Tabs tabs={tabs} activeId={activeTab} />
@@ -62,7 +59,7 @@ const Messages = ( ): Node => {
           {t( "You-must-be-logged-in-to-view-messages" )}
         </Text>
       )}
-    </ViewWithFooter>
+    </ViewWrapper>
   );
 };
 

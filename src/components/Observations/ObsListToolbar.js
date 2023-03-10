@@ -96,12 +96,12 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
   const statusText = getStatusText( );
   /* eslint-disable react-native/no-inline-styles */
   return (
-    <View className="bg-white border-b border-[#e8e8e8]">
+    <View className="bg-white border-b border-lightGray">
       <View className="pt-5 flex flex-row items-center px-[15px]">
         {currentUser && (
           <IconButton
             icon="compass-rose"
-            onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
+            onPress={( ) => navigation.navigate( "Explore" )}
             accessibilityLabel={t( "Explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
             accessibilityRole="button"

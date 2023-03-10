@@ -413,6 +413,9 @@
     "comment": "Shows the progress of uploads for X of Y",
     "val": "Uploading { $uploadedCount } of { $total }"
   },
+  "Upload-Progress": "Upload { $uploadProgress } percent complete",
+  "Upload-Complete": "Upload Complete",
+  "Saved-Observation": "Saved observation, in queue to upload",
   "User": "User { $userHandle }",
   "Username": "Username",
   "Username-or-Email": {
@@ -420,10 +423,13 @@
     "val": "Username or Email"
   },
   "Visually-search-iNaturalist-data": "Visually search iNaturalist’s wealth of data. Search by a taxon in a location",
-  "Welcome-back": "Welcome back,",
   "Whenever-you-get-internet-connection-you-can-upload": "Whenever you get internet connection, you can upload your observations to iNaturalist.",
   "Which-traditional-projects-can-add-your-observations": "Which traditional projects can add your observations?",
   "Who-can-add-observation-fields-to-my-observations": "Who can add observation fields to my observations?",
+  "Welcome-user": {
+    "comment": "Welcome user back to app",
+    "val": "<0>Welcome back,</0><1>{ $userHandle }</1>"
+  },
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
@@ -595,9 +601,15 @@
   "Navigate-to-observation-list": "Navigate to observation list",
   "Navigate-to-photo-importer": "Navigate to photo importer",
   "Open-side-menu": "Open side menu",
+  "Quality-Grade-No-Grade": "No Quality Grade",
+  "Uploading": "Uploading",
   "date-format-short": {
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
   },
-  "datetime-format-short": "M/d/yy h:mm a"
+  "datetime-format-short": "M/d/yy h:mm a",
+  "DISCARD-PHOTOS": "DISCARD PHOTOS?",
+  "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
+  "DISCARD": "DISCARD",
+  "CANCEL": "CANCEL"
 }

@@ -613,6 +613,12 @@ Uploading-x-of-y-observations = Uploading {$uploadedCount} of {$total ->
 # Shows the progress of uploads for X of Y
 Uploading-x-of-y = Uploading {$uploadedCount} of {$total}
 
+Upload-Progress = Upload {$uploadProgress} percent complete
+
+Upload-Complete = Upload Complete
+
+Saved-Observation = Saved observation, in queue to upload
+
 
 User = User
 
@@ -623,13 +629,14 @@ Username-or-Email = Username or Email
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
 
-Welcome-back = Welcome back,
-
 Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
 Which-traditional-projects-can-add-your-observations = Which traditional projects can add your observations?
 
 Who-can-add-observation-fields-to-my-observations = Who can add observation fields to my observations?
+
+# Welcome user back to app
+Welcome-user = <0>Welcome back,</0><1>{$userHandle}</1>
 
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->
@@ -739,6 +746,7 @@ Messages = Messages
 Observations = Observations
 Observe = Observe
 Open-drawer = Open drawer
+
 Sound-recorder = Sound recorder
 User = User { $userHandle }
 Observation-Name = Observation { $scientificName }
@@ -811,6 +819,9 @@ Navigate-to-observation-edit-screen = Navigate to observation edit screen
 Navigate-to-observation-list = Navigate to observation list
 Navigate-to-photo-importer = Navigate to photo importer
 Open-side-menu = Open side menu
+Quality-Grade-No-Grade = No Quality Grade
+Uploading = Uploading
+
 Take-photo = Take photo
 
 
@@ -818,3 +829,8 @@ Take-photo = Take photo
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
 datetime-format-short = M/d/yy h:mm a
+
+DISCARD-PHOTOS = DISCARD PHOTOS?
+By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
+DISCARD = DISCARD
+CANCEL = CANCEL

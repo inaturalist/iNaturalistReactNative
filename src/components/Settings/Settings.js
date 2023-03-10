@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { updateUsers } from "api/users";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
@@ -98,8 +98,8 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
     >
       <Text
         style={
-              activeTab === TAB_TYPE_NOTIFICATIONS ? textStyles.activeTab : null
-            }
+          activeTab === TAB_TYPE_NOTIFICATIONS ? textStyles.activeTab : null
+        }
       >
         {t( "Notifications" )}
       </Text>
@@ -110,8 +110,8 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
     >
       <Text
         style={
-              activeTab === TAB_TYPE_RELATIONSHIPS ? textStyles.activeTab : null
-            }
+          activeTab === TAB_TYPE_RELATIONSHIPS ? textStyles.activeTab : null
+        }
       >
         {t( "Relationships" )}
       </Text>
@@ -122,10 +122,8 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
     >
       <Text
         style={
-              activeTab === TAB_TYPE_CONTENT_DISPLAY
-                ? textStyles.activeTab
-                : null
-            }
+          activeTab === TAB_TYPE_CONTENT_DISPLAY ? textStyles.activeTab : null
+        }
       >
         {t( "Content-Display" )}
       </Text>
@@ -136,8 +134,8 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
     >
       <Text
         style={
-              activeTab === TAB_TYPE_APPLICATIONS ? textStyles.activeTab : null
-            }
+          activeTab === TAB_TYPE_APPLICATIONS ? textStyles.activeTab : null
+        }
       >
         {t( "Applications" )}
       </Text>
@@ -150,16 +148,16 @@ const Settings = ( { children: _children }: Props ): Node => {
   const [settings, setSettings] = useState( {} );
   const [isSaving, setIsSaving] = useState( false );
 
-  const { remoteUser: user, isLoading, refetchUserMe } = useUserMe( );
+  const { remoteUser: user, isLoading, refetchUserMe } = useUserMe();
 
-  const queryClient = useQueryClient( );
+  const queryClient = useQueryClient();
 
   const updateUserMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => updateUsers( params, optsWithAuth ),
     {
-      onSuccess: ( ) => {
+      onSuccess: () => {
         queryClient.invalidateQueries( ["fetchUserMe"] );
-        refetchUserMe( );
+        refetchUserMe();
       }
     }
   );
@@ -197,7 +195,7 @@ const Settings = ( { children: _children }: Props ): Node => {
   };
 
   return (
-    <ViewWithFooter>
+    <ViewWrapper>
       <SafeAreaView style={viewStyles.container}>
         <StatusBar barStyle="dark-content" />
         <Button
@@ -234,9 +232,7 @@ const Settings = ( { children: _children }: Props ): Node => {
                 onSettingsModified={setSettings}
               />
             )}
-            {activeTab === TAB_TYPE_APPLICATIONS && (
-              <SettingsApplications />
-            )}
+            {activeTab === TAB_TYPE_APPLICATIONS && <SettingsApplications />}
             {activeTab === TAB_TYPE_RELATIONSHIPS && (
               <SettingsRelationships
                 settings={settings}
@@ -246,7 +242,7 @@ const Settings = ( { children: _children }: Props ): Node => {
           </ScrollView>
         )}
       </SafeAreaView>
-    </ViewWithFooter>
+    </ViewWrapper>
   );
 };
 

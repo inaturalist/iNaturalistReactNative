@@ -1,4 +1,4 @@
-import INatIcon, { glyphMap } from "components/INatIcon";
+// @flow
 import ObsStatus from "components/Observations/ObsStatus";
 import {
   ActivityCount,
@@ -12,25 +12,32 @@ import {
   DateDisplay,
   Divider,
   EvidenceButton,
+  FloatingActionBar,
   Heading1,
   Heading2,
   Heading3,
   Heading4,
   Heading5,
   IdentificationsCount,
+  INatIcon,
   InlineUser,
   List1,
   List2,
   ObservationLocation,
+  PhotoCount,
   QualityGradeStatus,
+  StickyToolbar,
   Subheading1,
   Tabs,
+  UploadStatus,
   UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
+import { glyphMap } from "components/SharedComponents/INatIcon/INatIcon";
 import UserText from "components/SharedComponents/UserText";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
+import type { Node } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
@@ -39,7 +46,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
-const UiLibrary = () => {
+const UiLibrary = (): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
   const currentUser = useCurrentUser();
@@ -48,7 +55,14 @@ const UiLibrary = () => {
     User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalist.org).
   `.trim();
   return (
-    <ViewWithFooter>
+    <ViewWrapper>
+      <FloatingActionBar
+        position="bottomStart"
+        containerClass="mx-4 px-2 my-[100px]"
+      >
+        <Heading2 className="my-2">Floating Action Bar</Heading2>
+        <IconButton className="mx-auto" icon="star-outline" mode="contained" />
+      </FloatingActionBar>
       <ScrollView className="px-5">
         {/* TODO replace these text components with our typography header components */}
         <Body1>
@@ -147,7 +161,7 @@ const UiLibrary = () => {
         <Heading2 className="my-2">Heading2</Heading2>
         <Heading3 className="my-2">Heading3</Heading3>
         <Heading4 className="my-2">Heading4</Heading4>
-        <Heading4 className="my-2 text-focusGreen">
+        <Heading4 className="my-2 text-inatGreen">
           Heading4 (non-default color)
         </Heading4>
         <Heading5 className="my-2">Heading5</Heading5>
@@ -178,7 +192,7 @@ const UiLibrary = () => {
           <View>
             <Body2>Focused</Body2>
             <IconButton
-              icon="plus-sign"
+              icon="plus"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
               mode="contained"
@@ -199,7 +213,7 @@ const UiLibrary = () => {
 
         <Heading2>Special Icon buttons</Heading2>
         <View className="flex flex-row justify-between">
-          <View className="bg-secondary">
+          <View className="bg-darkGray">
             <Body2>CloseButton</Body2>
             <CloseButton />
           </View>
@@ -221,7 +235,6 @@ const UiLibrary = () => {
                 onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
                 size={20}
               />
-              {" "}
               {iconName}
             </Body1>
           ) )}
@@ -330,6 +343,42 @@ const UiLibrary = () => {
           </View>
         </View>
 
+        <Heading2 className="my-2">Upload Status</Heading2>
+        <View className="flex flex-row justify-between">
+          <View>
+            <Body2 className="text-center">Progress &lt; 5%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.04}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">10%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.1}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">60%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.6}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">100%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={1}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+        </View>
+
         <Heading2 className="my-2">ActivityCount</Heading2>
         <View className="flex flex-row justify-evenly">
           <View>
@@ -410,13 +459,22 @@ const UiLibrary = () => {
             identifications: [1, 2, 3, 4, 5, 6]
           }}
         />
-
+        <Heading2 className="my-2">PhotoCount</Heading2>
+        <View className="my-2 bg-lightGray p-2 rounded-lg flex-row justify-evenly">
+          <PhotoCount count={0} />
+          <PhotoCount count={1} />
+          <PhotoCount count={12} size={50} />
+          <PhotoCount count={1000} size={50} shadow />
+        </View>
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
           Useless spacer at the end because height in NativeWind is confusing.
         </Body1>
       </ScrollView>
-    </ViewWithFooter>
+      <StickyToolbar containerClass="bottom-56">
+        <Heading2>StickyToolbar</Heading2>
+      </StickyToolbar>
+    </ViewWrapper>
   );
 };
 

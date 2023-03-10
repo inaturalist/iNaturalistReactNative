@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import PlaceholderText from "components/PlaceholderText";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
@@ -13,12 +13,12 @@ import AudioRecorderPlayer from "react-native-audio-recorder-player";
 import { textStyles, viewStyles } from "styles/soundRecorder/soundRecorder";
 
 // needs to be outside of the component for stopRecorder to work correctly
-const audioRecorderPlayer = new AudioRecorderPlayer( );
+const audioRecorderPlayer = new AudioRecorderPlayer();
 
-const SoundRecorder = ( ): Node => {
+const SoundRecorder = (): Node => {
   const { addSound } = useContext( ObsEditContext );
-  const navigation = useNavigation( );
-  const { t } = useTranslation( );
+  const navigation = useNavigation();
+  const { t } = useTranslation();
   // https://www.npmjs.com/package/react-native-audio-recorder-player
   const [sound, setSound] = useState( {
     // recording
@@ -38,17 +38,19 @@ const SoundRecorder = ( ): Node => {
 
   audioRecorderPlayer.setSubscriptionDuration( 0.09 ); // optional. Default is 0.1
 
-  const startRecording = async ( ) => {
+  const startRecording = async () => {
     try {
-      const cachedFile = await audioRecorderPlayer.startRecorder( null, null, true );
+      const cachedFile = await audioRecorderPlayer.startRecorder(
+        null,
+        null,
+        true
+      );
       setStatus( "recording" );
       audioRecorderPlayer.addRecordBackListener( e => {
         setSound( {
           ...sound,
           recordSecs: e.currentPosition,
-          recordTime: audioRecorderPlayer.mmssss(
-            Math.floor( e.currentPosition )
-          ),
+          recordTime: audioRecorderPlayer.mmssss( Math.floor( e.currentPosition ) ),
           currentMetering: e.currentMetering
         } );
       } );
@@ -58,20 +60,20 @@ const SoundRecorder = ( ): Node => {
     }
   };
 
-  const resumeRecording = async ( ) => {
+  const resumeRecording = async () => {
     try {
-      await audioRecorderPlayer.resumeRecorder( );
+      await audioRecorderPlayer.resumeRecorder();
       setStatus( "recording" );
     } catch ( e ) {
       console.warn( "couldn't resume sound recorder:", e );
     }
   };
 
-  const stopRecording = async ( ) => {
+  const stopRecording = async () => {
     try {
-      await audioRecorderPlayer.stopRecorder( );
+      await audioRecorderPlayer.stopRecorder();
       setStatus( "paused" );
-      audioRecorderPlayer.removeRecordBackListener( );
+      audioRecorderPlayer.removeRecordBackListener();
       setSound( {
         ...sound,
         recordSecs: 0
@@ -81,7 +83,7 @@ const SoundRecorder = ( ): Node => {
     }
   };
 
-  const playRecording = async ( ) => {
+  const playRecording = async () => {
     try {
       setStatus( "playing" );
       await audioRecorderPlayer.startPlayer( uri );
@@ -99,32 +101,32 @@ const SoundRecorder = ( ): Node => {
     }
   };
 
-  const stopPlayback = async ( ) => {
-    audioRecorderPlayer.stopPlayer( );
-    audioRecorderPlayer.removePlayBackListener( );
+  const stopPlayback = async () => {
+    audioRecorderPlayer.stopPlayer();
+    audioRecorderPlayer.removePlayBackListener();
     setStatus( "paused" );
   };
 
-  const renderRecordButton = ( ) => {
+  const renderRecordButton = () => {
     if ( status === "notStarted" ) {
       return (
-        <Pressable
-          onPress={startRecording}
-        >
+        <Pressable onPress={startRecording}>
           <Text style={[textStyles.alignCenter, textStyles.duration]}>
             {t( "Press-Record-to-Start" )}
           </Text>
         </Pressable>
       );
-    } if ( status === "paused" ) {
+    }
+    if ( status === "paused" ) {
       return (
-        <Pressable
-          onPress={resumeRecording}
-        >
-          <Text style={[textStyles.alignCenter, textStyles.duration]}>{t( "Paused" )}</Text>
+        <Pressable onPress={resumeRecording}>
+          <Text style={[textStyles.alignCenter, textStyles.duration]}>
+            {t( "Paused" )}
+          </Text>
         </Pressable>
       );
-    } if ( status === "playing" ) {
+    }
+    if ( status === "playing" ) {
       return (
         <Text style={[textStyles.alignCenter, textStyles.duration]}>
           {t( "Playing-Sound" )}
@@ -132,30 +134,26 @@ const SoundRecorder = ( ): Node => {
       );
     }
     return (
-      <Pressable
-        onPress={stopRecording}
-      >
-        <PlaceholderText text="stop" style={[textStyles.alignCenter, textStyles.duration]} />
+      <Pressable onPress={stopRecording}>
+        <PlaceholderText
+          text="stop"
+          style={[textStyles.alignCenter, textStyles.duration]}
+        />
       </Pressable>
     );
   };
 
-  const renderPlaybackButton = ( ) => {
+  const renderPlaybackButton = () => {
     if ( status === "paused" ) {
       return (
-        <Pressable
-          onPress={playRecording}
-          style={viewStyles.playbackButton}
-        >
+        <Pressable onPress={playRecording} style={viewStyles.playbackButton}>
           <Text>{t( "Play" )}</Text>
         </Pressable>
       );
-    } if ( status === "playing" ) {
+    }
+    if ( status === "playing" ) {
       return (
-        <Pressable
-          onPress={stopPlayback}
-          style={viewStyles.playbackButton}
-        >
+        <Pressable onPress={stopPlayback} style={viewStyles.playbackButton}>
           <PlaceholderText text="stop" />
         </Pressable>
       );
@@ -164,31 +162,29 @@ const SoundRecorder = ( ): Node => {
     return <View />;
   };
 
-  const navToObsEdit = ( ) => {
-    addSound( );
+  const navToObsEdit = () => {
+    addSound();
     navigation.navigate( "ObsEdit" );
   };
 
   return (
-    <ViewWithFooter>
+    <ViewWrapper>
       <View style={viewStyles.center}>
-        <Text style={[textStyles.alignCenter, textStyles.duration]}>{sound.recordTime}</Text>
-        <View>
-          {/* TODO: add visualization for sound recording */}
-        </View>
+        <Text style={[textStyles.alignCenter, textStyles.duration]}>
+          {sound.recordTime}
+        </Text>
+        <View>{/* TODO: add visualization for sound recording */}</View>
         <View>
           <View style={viewStyles.recordButtonRow}>
-            {renderPlaybackButton( )}
-            {renderRecordButton( )}
-            <Pressable
-              onPress={navToObsEdit}
-            >
-              <Text>{ t( "Finish" )}</Text>
+            {renderPlaybackButton()}
+            {renderRecordButton()}
+            <Pressable onPress={navToObsEdit}>
+              <Text>{t( "Finish" )}</Text>
             </Pressable>
           </View>
         </View>
       </View>
-    </ViewWithFooter>
+    </ViewWrapper>
   );
 };
 

@@ -2,13 +2,9 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments } from "api/comments";
-import INatIcon from "components/INatIcon";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
-import {
-  Body4,
-  InlineUser
-} from "components/SharedComponents";
+import { Body4, INatIcon, InlineUser } from "components/SharedComponents";
 import DateDisplay from "components/SharedComponents/DateDisplay";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import {
@@ -79,7 +75,7 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
   );
 
   const renderIcon = () => {
-    if ( item.vision ) return <INatIcon name="cv" size={22} />;
+    if ( item.vision ) return <INatIcon name="sparkly-label" size={22} />;
     if ( flaggedStatus ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
   };
