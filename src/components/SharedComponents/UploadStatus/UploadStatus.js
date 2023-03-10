@@ -14,12 +14,13 @@ type Props = {
   completeColor?: string,
   progress: number,
   startSingleUpload: Function,
+  buttonDisabled: boolean,
   children: any
 }
 
 const UploadStatus = ( {
   color, completeColor, progress, startSingleUpload,
-  children
+  children, buttonDisabled
 }: Props ): Node => {
   const theme = useTheme();
   const defaultColor = theme.colors.primary;
@@ -75,7 +76,7 @@ const UploadStatus = ( {
             icon="upload-saved"
             iconColor={color || defaultColor}
             size={33}
-            onPress={startSingleUpload}
+            onPress={!buttonDisabled && startSingleUpload}
             disabled={false}
             accessibilityState={{ disabled: false }}
           />
