@@ -25,7 +25,7 @@ const CommentsCount = ( {
     <ActivityCount
       accessibilityLabel={t( "x-comments", { count } )}
       count={count}
-      icon={filled ? "comments-filled-in" : "comments"}
+      icon={filled ? "comments" : "comments-outline"}
       classNameMargin={classNameMargin}
       testID={testID}
       white={white}

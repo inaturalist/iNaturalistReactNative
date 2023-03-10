@@ -25,7 +25,7 @@ const IdentificationsCount = ( {
     <ActivityCount
       accessibilityLabel={t( "x-identifications", { count } )}
       count={count}
-      icon={filled ? "identifications-filled-in" : "identifications"}
+      icon={filled ? "label" : "label-outline"}
       classNameMargin={classNameMargin}
       testID={testID}
       white={white}
