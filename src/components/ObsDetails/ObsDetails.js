@@ -82,10 +82,8 @@ const ObsDetails = (): Node => {
     fields: Observation.FIELDS
   };
 
-  const { data: remoteObservation, refetch: refetchRemoteObservation } =
-    useAuthenticatedQuery(["fetchRemoteObservation", uuid], (optsWithAuth) =>
-      fetchRemoteObservation(uuid, remoteObservationParams, optsWithAuth)
-    );
+  // eslint-disable-next-line max-len
+  const { data: remoteObservation, refetch: refetchRemoteObservation } = useAuthenticatedQuery( ["fetchRemoteObservation", uuid], optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth ) );
 
   const observation = localObservation || remoteObservation;
 

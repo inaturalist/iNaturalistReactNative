@@ -67,9 +67,8 @@ const PhotoGallery = (): Node => {
   const allPhotos: Array<Object> = Object.values( photoGallery ).flat();
 
   const selectedPhotos = allPhotos.filter( photo => galleryUris?.includes( photo?.image?.uri ) );
-  const selectedEvidenceToAdd = allPhotos.filter((photo) =>
-    evidenceToAdd?.includes(photo?.image?.uri)
-  );
+  // eslint-disable-next-line max-len
+  const selectedEvidenceToAdd = allPhotos.filter( photo => evidenceToAdd?.includes( photo?.image?.uri ) );
 
   // If this component is being rendered we have either already asked for
   // permissions in Android via a PermissionGate parent component, or the
