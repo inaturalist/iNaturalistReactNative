@@ -227,7 +227,7 @@ const StandardCamera = ( ): Node => {
             <Avatar.Icon
               testID="camera-button-label-switch-camera"
               size={40}
-              icon="camera"
+              icon="flip"
               style={{ backgroundColor: colors.darkGray }}
             />
           </Pressable>
