@@ -1,14 +1,14 @@
 // @flow
 
 import PlaceholderText from "components/PlaceholderText";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import type { Node } from "react";
 import React from "react";
 
-const Explore = ( ): Node => (
-  <ViewWithFooter>
+const Explore = (): Node => (
+  <ViewWrapper>
     <PlaceholderText text="explore placeholder, accessible from left side menu" />
-  </ViewWithFooter>
+  </ViewWrapper>
 );
 
 export default Explore;

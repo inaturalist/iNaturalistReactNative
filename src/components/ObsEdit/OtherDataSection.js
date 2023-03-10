@@ -62,7 +62,7 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
       >
         <View className="flex-row ml-3 flex-nowrap items-center">
           <IconButton
-            icon="pencil"
+            icon="globe-outline"
             size={14}
           />
           <Text>
@@ -80,7 +80,7 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
       >
         <View className="flex-row ml-3 flex-nowrap items-center">
           <IconButton
-            icon="pencil"
+            icon="pot-outline"
             size={14}
           />
           <Text>

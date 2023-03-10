@@ -1,6 +1,6 @@
 // @flow
 import Header from "components/MyObservations/Header";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
@@ -97,7 +97,7 @@ const MyObservations = ( {
 
   return (
     <>
-      <ViewWithFooter>
+      <ViewWrapper>
         <Animated.View style={[{ transform: [{ translateY: offsetForHeader }] }]}>
           <Animated.FlatList
             data={observations}
@@ -157,7 +157,7 @@ const MyObservations = ( {
             onScroll={handleScroll}
           />
         </Animated.View>
-      </ViewWithFooter>
+      </ViewWrapper>
       <LoginSheet />
     </>
   );

@@ -1,11 +1,8 @@
 // @flow
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StandardCamera from "components/Camera/StandardCamera";
-import Explore from "components/Explore/Explore";
-import Messages from "components/Messages/Messages";
+import Login from "components/LoginSignUp/Login";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
-import ObsDetails from "components/ObsDetails/ObsDetails";
 import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
@@ -13,7 +10,6 @@ import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGate from "components/SharedComponents/PermissionGate";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
-import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import {
@@ -28,16 +24,27 @@ import { PermissionsAndroid } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { PERMISSIONS } from "react-native-permissions";
 
+import BottomTabNavigator from "./BottomTabNavigator";
+
 const isTablet = DeviceInfo.isTablet();
 
-const Stack = createNativeStackNavigator( );
+const Stack = createNativeStackNavigator();
 
-const PhotoGalleryWithPermission = ( ) => (
-  <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
-      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}>
+const PhotoGalleryWithPermission = () => (
+  <PermissionGate
+    permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}
+  >
+    <PermissionGate
+      permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
+    >
+      <PermissionGate
+        permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
+      >
         <PermissionGate permission={PERMISSIONS.IOS.PHOTO_LIBRARY} isIOS>
-          <PermissionGate permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE} isIOS>
+          <PermissionGate
+            permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE}
+            isIOS
+          >
             <PhotoGallery />
           </PermissionGate>
         </PermissionGate>
@@ -46,42 +53,63 @@ const PhotoGalleryWithPermission = ( ) => (
   </PermissionGate>
 );
 
-const StandardCameraWithPermission = ( ) => (
-  <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
+const StandardCameraWithPermission = () => (
+  <PermissionGate
+    permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
+  >
     <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
       <StandardCamera />
     </PermissionGate>
   </PermissionGate>
 );
 
-const SoundRecorderWithPermission = ( ) => (
+const SoundRecorderWithPermission = () => (
   <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
-      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
+    <PermissionGate
+      permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
+    >
+      <PermissionGate
+        permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}
+      >
         <SoundRecorder />
       </PermissionGate>
     </PermissionGate>
   </PermissionGate>
 );
 
+// The login component should be not preserve its state or effects after the
+// user navigates away from it. This will simply cause it to unmount when it
+// loses focus
+const MortalLogin = () => (
+  <Mortal>
+    <Login />
+  </Mortal>
+);
+
 const ObsEditWithPermission = () => (
   <Mortal>
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION}>
+    <PermissionGate
+      permission={PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION}
+    >
       <ObsEdit />
     </PermissionGate>
   </Mortal>
 );
 
-const MainStackNavigation = ( ): React.Node => (
+const MainStackNavigation = (): React.Node => (
   <Mortal>
     <Stack.Navigator screenOptions={showHeader}>
       <Stack.Screen
+        name="Home"
+        component={BottomTabNavigator}
+        options={{
+          ...hideHeader,
+          ...hideScreenTransitionAnimation
+        }}
+      />
+      <Stack.Screen
         name="MyObservations"
         component={MyObservationsContainer}
-        options={{
-          ...hideScreenTransitionAnimation,
-          ...hideHeader
-        }}
       />
       <Stack.Screen
         name="StandardCamera"
@@ -124,38 +152,11 @@ const MainStackNavigation = ( ): React.Node => (
         }}
       />
       <Stack.Screen
-        name="ObsDetails"
-        component={ObsDetails}
-        options={{
-          headerTitle: t( "Observation" )
-        }}
-      />
-      <Stack.Screen
-        name="TaxonDetails"
-        component={TaxonDetails}
-        options={blankHeaderTitle}
-      />
-      <Stack.Screen
         name="UserProfile"
         component={UserProfile}
         options={blankHeaderTitle}
       />
-      <Stack.Screen
-        name="Messages"
-        component={Messages}
-        options={{
-          ...hideHeader,
-          ...hideScreenTransitionAnimation
-        }}
-      />
-      <Stack.Screen
-        name="Explore"
-        component={Explore}
-        options={{
-          ...hideHeader,
-          ...hideScreenTransitionAnimation
-        }}
-      />
+      <Stack.Screen name="login" component={MortalLogin} options={hideHeader} />
     </Stack.Navigator>
   </Mortal>
 );

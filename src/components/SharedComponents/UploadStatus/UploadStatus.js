@@ -70,6 +70,20 @@ const UploadStatus = ( {
       return (
         <>
           {/* <Animated.View style={rotate}>
+            <INatIcon
+              name="upload-saved"
+              color={color || defaultColor}
+              size={33}
+            />
+          </Animated.View>
+          <View className="absolute">
+            <INatIcon
+              name="upload-arrow"
+              color={color || defaultColor}
+              size={15}
+            />
+          </View> */}
+          {/* <Animated.View style={rotate}>
             <INatIcon name="dotted-outline" color={color || defaultColor} size={33} />
           </Animated.View> */}
           <IconButton
@@ -88,7 +102,7 @@ const UploadStatus = ( {
         <>
           <View className="absolute">
             <INatIcon
-              name="arrow-up-plain"
+              name="upload-arrow"
               color={color || defaultColor}
               size={15}
             />

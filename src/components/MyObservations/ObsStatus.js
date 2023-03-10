@@ -51,7 +51,7 @@ const ObsStatus = ( {
   return (
     <View className={classNames( "flex", flexDirection, classNameMargin )}>
       <ActivityCount
-        icon="identification-solid"
+        icon="label"
         margin={margin}
         count={numIdents}
         color={iconColor}

@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "components/SharedComponents";
 import { Pressable, SafeAreaView, View } from "components/styledComponents";
@@ -53,16 +53,22 @@ const Logout = ( ): Node => {
   const onSignOut = async ( ) => {
     logger.info( `Signing out ${username || ""} at the request of the user` );
     await signOut( { realm, clearRealm: true, queryClient } );
+
     // TODO might be necessary to restart the app at this point. We just
     // deleted the realm file on disk, but the RealmProvider may still have a
     // copy of realm in local state
-    navigation.navigate( "MainStack", {
-      screen: "MyObservations"
-    } );
+    // Reset navigation state so that ObsList gets rerendered
+    navigation.dispatch( CommonActions.reset( {
+      index: 0,
+      routes: [{ name: "ObsList" }]
+    } ) );
+
+    navigation.navigate( "ObsList" );
   };
 
   const renderBackButton = ( ) => (
     <Pressable
+      accessibilityRole="button"
       onPress={( ) => navigation.goBack( )}
       className="absolute top-8 right-8"
     >
