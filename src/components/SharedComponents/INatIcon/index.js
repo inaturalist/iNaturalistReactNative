@@ -23,6 +23,7 @@ const ALIASES = {
   addid: "id-agree",
   back: "chevron-left",
   captive: "pot",
+  checkmark: "check",
   "close-large": "close",
   "close-small": "close-bold",
   combine: "photos",
