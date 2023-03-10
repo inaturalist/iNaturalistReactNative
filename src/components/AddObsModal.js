@@ -91,14 +91,14 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
       </View>
       <View className="flex-row justify-center">
         {renderIconButton(
-          "pen-and-paper",
+          "noevidence",
           "mx-2",
           navToObsEdit,
           t( "Navigate-to-observation-edit-screen" ),
           "observe-without-evidence-button"
         )}
         {renderIconButton(
-          "close-button-x",
+          "close",
           "self-center h-24 w-24 rounded-[99px]",
           ( ) => closeModal( ),
           t( "Close-camera-options-modal" ),

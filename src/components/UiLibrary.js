@@ -33,7 +33,7 @@ import {
   UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
-import { glyphMap } from "components/SharedComponents/INatIcon/INatIcon";
+import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import UserText from "components/SharedComponents/UserText";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
@@ -61,7 +61,7 @@ const UiLibrary = (): Node => {
         containerClass="mx-4 px-2 my-[100px]"
       >
         <Heading2 className="my-2">Floating Action Bar</Heading2>
-        <IconButton className="mx-auto" icon="star-outline" mode="contained" />
+        <IconButton className="mx-auto" icon="star-bold-outline" mode="contained" />
       </FloatingActionBar>
       <ScrollView className="px-5">
         {/* TODO replace these text components with our typography header components */}
@@ -184,7 +184,7 @@ const UiLibrary = (): Node => {
           <View>
             <Body2>Primary</Body2>
             <IconButton
-              icon="compass-rose"
+              icon="compass-rose-outline"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
             />
@@ -220,11 +220,7 @@ const UiLibrary = (): Node => {
         </View>
 
         <Heading2>Custom iNaturalist Icons</Heading2>
-        <Body1>
-          Make sure you're exporting glyphMap from components/INatIcon.js to see
-          all custom icons
-        </Body1>
-        {Object.keys( glyphMap )
+        {Object.keys( glyphmap )
           .sort()
           .map( iconName => (
             <Body1 key={`icons-${iconName}`}>
@@ -233,8 +229,9 @@ const UiLibrary = (): Node => {
                 className="p-3"
                 key={iconName}
                 onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
-                size={20}
+                size={14}
               />
+              {" "}
               {iconName}
             </Body1>
           ) )}

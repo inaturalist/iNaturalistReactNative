@@ -19,7 +19,8 @@
     "e2e:test:android": "npx detox test --configuration android.release",
     "e2e:test:ios": "npx detox test --configuration ios.release",
     "e2e:test": "npm run e2e:test:ios && npm run e2e:test:android",
-    "e2e": "npm run e2e:build && npm run e2e:test "
+    "e2e": "npm run e2e:build && npm run e2e:test",
+    "icons": "./scripts/update-icon-font.sh"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.2",

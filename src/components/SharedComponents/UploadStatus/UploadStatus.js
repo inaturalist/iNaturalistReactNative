@@ -65,55 +65,58 @@ const UploadStatus = ( { color, completeColor, progress }: Props ): Node => {
       accessibilityLabel={accessibilityLabelText()}
       className="relative items-center justify-center w-[49px] h-[67px]"
     >
-      {( progress < 0.05 )
-        ? (
-          <>
-            <Animated.View style={rotate}>
-              <INatIcon name="dotted-outline" color={color || defaultColor} size={33} />
-            </Animated.View>
+      {progress < 0.05 ? (
+        <>
+          <Animated.View style={rotate}>
+            <INatIcon
+              name="upload-saved"
+              color={color || defaultColor}
+              size={33}
+            />
+          </Animated.View>
+          <View className="absolute">
+            <INatIcon
+              name="upload-arrow"
+              color={color || defaultColor}
+              size={15}
+            />
+          </View>
+        </>
+      ) : (
+        <>
+          {progress < 1 ? (
             <View className="absolute">
               <INatIcon
-                name="upload"
+                name="upload-arrow"
                 color={color || defaultColor}
                 size={15}
               />
             </View>
-          </>
-        )
-        : (
-          <>
-            {( progress < 1 )
-              ? (
-                <View className="absolute">
-                  <INatIcon
-                    name="upload"
-                    color={color || defaultColor}
-                    size={15}
-                  />
-                </View>
-              )
-              : (
-                <View className="absolute">
-                  <INatIcon
-                    name="icon-check-1"
-                    color={completeColor || defaultCompleteColor}
-                    size={15}
-                  />
-                </View>
-              )}
-            <CircularProgressBase
-              testID="UploadStatus.CircularProgress"
-              value={progress}
-              radius={16.5}
-              activeStrokeColor={( progress < 1 )
-                ? ( color || defaultColor ) : ( completeColor || defaultCompleteColor )}
-              showProgressValue={false}
-              maxValue={1}
-              inActiveStrokeOpacity={0}
-              activeStrokeWidth={2}
-            />
-          </>
-        )}
+          ) : (
+            <View className="absolute">
+              <INatIcon
+                name="upload-complete"
+                color={completeColor || defaultCompleteColor}
+                size={15}
+              />
+            </View>
+          )}
+          <CircularProgressBase
+            testID="UploadStatus.CircularProgress"
+            value={progress}
+            radius={16.5}
+            activeStrokeColor={
+              progress < 1
+                ? color || defaultColor
+                : completeColor || defaultCompleteColor
+            }
+            showProgressValue={false}
+            maxValue={1}
+            inActiveStrokeOpacity={0}
+            activeStrokeWidth={2}
+          />
+        </>
+      )}
     </View>
   );
 };
