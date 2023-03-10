@@ -179,20 +179,20 @@ const GroupPhotos = ( ): Node => {
       {selectedObservations.length > 0 && (
         <Appbar.Header className="bg-white m-5">
           <Appbar.Action
-            icon="combine-photos"
             onPress={( ) => combinePhotos( )}
+            icon="combine"
             disabled={noObsSelected || oneObsSelected}
             accessibilityLabel={t( "Combine-Photos" )}
           />
           <Appbar.Action
-            icon="separate-photos"
             onPress={( ) => separatePhotos( )}
+            icon="separate"
             disabled={!obsWithMultiplePhotosSelected}
             accessibilityLabel={t( "Separate-Photos" )}
           />
           <Appbar.Action
-            icon="trash-can"
             onPress={( ) => removePhotos( )}
+            icon="trash"
             disabled={noObsSelected}
             accessibilityLabel={t( "Remove-Photos" )}
           />
