@@ -6,10 +6,14 @@ import colors from "styles/tailwindColors";
 
 const BackButton = (): Node => {
   const navigation = useNavigation();
-  console.log(navigation);
-  return (
-    <HeaderBackButton tintColor={colors.black} onPress={navigation.goBack} />
-  );
+
+  if ( navigation?.canGoBack() ) {
+    return (
+      <HeaderBackButton tintColor={colors.black} onPress={navigation.goBack} />
+    );
+  }
+
+  return null;
 };
 
 export default BackButton;

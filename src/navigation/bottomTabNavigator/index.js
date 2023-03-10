@@ -12,7 +12,11 @@ import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UiLibrary from "components/UiLibrary";
 import { t } from "i18next";
 import IdentifyStackNavigation from "navigation/identifyStackNavigation";
-import { blankHeaderTitle, hideHeader } from "navigation/navigationOptions";
+import {
+  blankHeaderTitle,
+  hideHeader,
+  showHeader
+} from "navigation/navigationOptions";
 import ProjectsStackNavigation from "navigation/projectsStackNavigation";
 import React from "react";
 import User from "realmModels/User";
@@ -20,7 +24,7 @@ import useUserMe from "sharedHooks/useUserMe";
 
 import CustomTabBar from "./CustomTabBar";
 
-const Tab = createBottomTabNavigator( );
+const Tab = createBottomTabNavigator();
 
 const OBS_LIST_SCREEN_ID = "ObsList";
 const EXPLORE_SCREEN_ID = "Explore";
@@ -28,8 +32,8 @@ const MESSAGES_SCREEN_ID = "Messages";
 
 /* eslint-disable react/jsx-props-no-spreading */
 
-const BottomTabs = ( ) => {
-  const { remoteUser: user } = useUserMe( );
+const BottomTabs = () => {
+  const { remoteUser: user } = useUserMe();
 
   const renderTabBar = props => <CustomTabBar {...props} />;
 
@@ -37,7 +41,8 @@ const BottomTabs = ( ) => {
     <Tab.Navigator
       initialRouteName={OBS_LIST_SCREEN_ID}
       tabBar={renderTabBar}
-      backBehavior="order"
+      backBehavior="history"
+      screenOptions={showHeader}
     >
       <Tab.Screen
         name="Explore"
