@@ -109,17 +109,18 @@ const PhotoCarousel = ( {
             }
           )}
         >
-          <View className={classnames(
-            "overflow-hidden",
-            {
-              "rounded-sm w-[42px] h-[42px]": screenBreakpoint === ( "sm" || "md" ),
-              "rounded-md w-[83px] h-[83px]": screenBreakpoint === ( "lg" || "xl" || "2xl" )
-            }
-          )}
+          <View
+            testID="ObsEdit.photo"
+            className={classnames(
+              "overflow-hidden",
+              {
+                "rounded-sm w-[42px] h-[42px]": screenBreakpoint === ( "sm" || "md" ),
+                "rounded-md w-[83px] h-[83px]": screenBreakpoint === ( "lg" || "xl" || "2xl" )
+              }
+            )}
           >
             <ImageBackground
               source={{ uri: item }}
-              testID="ObsEdit.photo"
               className={classnames(
                 "w-fit h-full flex items-center justify-center",
                 {
