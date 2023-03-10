@@ -29,6 +29,11 @@ export const showHeaderLeft: Object = {
   headerLeft: ( ) => <BackButton />
 };
 
+export const hideHeaderLeft: Object = {
+  ...showHeader,
+  headerLeft: null
+};
+
 const showCustomHeader: Object = {
   ...baseHeaderOptions,
   header: ContextHeader
