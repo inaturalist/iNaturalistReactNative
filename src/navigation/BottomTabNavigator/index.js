@@ -15,7 +15,7 @@ import IdentifyStackNavigation from "navigation/identifyStackNavigation";
 import {
   blankHeaderTitle,
   hideHeader,
-  showHeader
+  showHeaderLeft
 } from "navigation/navigationOptions";
 import ProjectsStackNavigation from "navigation/projectsStackNavigation";
 import React from "react";
@@ -42,7 +42,7 @@ const BottomTabs = () => {
       initialRouteName={OBS_LIST_SCREEN_ID}
       tabBar={renderTabBar}
       backBehavior="history"
-      screenOptions={showHeader}
+      screenOptions={showHeaderLeft}
     >
       <Tab.Screen
         name="Explore"

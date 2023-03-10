@@ -10,7 +10,6 @@ const baseHeaderOptions: Object = {
   headerShown: true,
   headerBackTitleVisible: false,
   headerShadowVisible: false,
-  headerLeft: ( ) => <BackButton />
 };
 
 const showHeader: Object = {
@@ -24,6 +23,11 @@ const showHeader: Object = {
     fontFamily: Platform.OS === "ios" ? "Whitney-Medium" : "Whitney-Medium-Pro"
   }
 };
+
+export const showHeaderLeft: Object = {
+  ...showHeader,
+  headerLeft: ( ) => <BackButton />
+}
 
 const showCustomHeader: Object = {
   ...baseHeaderOptions,
