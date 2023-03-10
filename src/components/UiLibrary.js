@@ -27,7 +27,7 @@ import {
   UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
-import { glyphMap } from "components/SharedComponents/INatIcon/INatIcon";
+import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import UserText from "components/SharedComponents/UserText";
 import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
@@ -53,7 +53,7 @@ const UiLibrary = () => {
         <Heading2 className="my-2">Floating Action Bar</Heading2>
         <IconButton
           className="mx-auto"
-          icon="star-outline"
+          icon="star-bold-outline"
           mode="contained"
         />
       </FloatingActionBar>
@@ -178,7 +178,7 @@ const UiLibrary = () => {
           <View>
             <Body2>Primary</Body2>
             <IconButton
-              icon="compass-rose"
+              icon="compass-rose-outline"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
             />
@@ -214,11 +214,7 @@ const UiLibrary = () => {
         </View>
 
         <Heading2>Custom iNaturalist Icons</Heading2>
-        <Body1>
-          Make sure you're exporting glyphMap from components/INatIcon.js to see
-          all custom icons
-        </Body1>
-        {Object.keys( glyphMap )
+        {Object.keys( glyphmap )
           .sort()
           .map( iconName => (
             <Body1 key={`icons-${iconName}`}>
@@ -227,7 +223,7 @@ const UiLibrary = () => {
                 className="p-3"
                 key={iconName}
                 onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
-                size={20}
+                size={18}
               />
               {" "}
               {iconName}

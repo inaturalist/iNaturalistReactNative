@@ -100,7 +100,7 @@ const Toolbar = ( { setLayout, layout }: Props ): Node => {
       <View className="pt-5 flex flex-row items-center px-[15px]">
         {currentUser && (
           <IconButton
-            icon="compass-rose"
+            icon="compass-rose-outline"
             onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
             accessibilityLabel={t( "Explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}

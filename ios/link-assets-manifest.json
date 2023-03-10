@@ -2,6 +2,10 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/INatIcon.ttf",
+      "sha1": "b46a39ffe41e00a28beada30ebd39eb325516d73"
+    },
+    {
       "path": "assets/fonts/Whitney-BookItalic-Pro.otf",
       "sha1": "15854f60175a0e82b794c259431ec45ea4b40103"
     },
@@ -12,10 +16,6 @@
     {
       "path": "assets/fonts/Whitney-Medium-Pro.otf",
       "sha1": "33ca073c11f46dc266a7dc1adeaa102891bd76d1"
-    },
-    {
-      "path": "assets/fonts/inaturalisticons.ttf",
-      "sha1": "db15c060c16ae5364838d3222510575577869ede"
     }
   ]
 }

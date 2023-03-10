@@ -58,7 +58,7 @@ const NavBar = ( ): React.Node => {
       />
       <NavButton
         onPress={navToExplore}
-        icon="compass-rose"
+        icon="compass-rose-outline"
         testID={EXPLORE_SCREEN_ID}
         active={name === EXPLORE_SCREEN_ID}
         accessibilityLabel={t( "Explore" )}
@@ -68,7 +68,7 @@ const NavBar = ( ): React.Node => {
       <AddObsButton />
       <NavButton
         onPress={navToObsList}
-        icon="people"
+        icon="person"
         userIconUri={User.uri( user )}
         testID={OBS_LIST_SCREEN_ID}
         active={name === OBS_LIST_SCREEN_ID}
