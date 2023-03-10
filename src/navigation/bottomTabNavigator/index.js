@@ -37,7 +37,7 @@ const BottomTabs = ( ) => {
     <Tab.Navigator
       initialRouteName={OBS_LIST_SCREEN_ID}
       tabBar={renderTabBar}
-      backBehavior="history"
+      backBehavior="order"
     >
       <Tab.Screen
         name="Explore"
@@ -58,7 +58,7 @@ const BottomTabs = ( ) => {
         options={{
           ...hideHeader,
           meta: {
-            icon: "ios-people-updated-2",
+            icon: "people",
             userIconUri: User.uri( user ),
             testID: OBS_LIST_SCREEN_ID,
             accessibilityLabel: t( "Observations" ),
