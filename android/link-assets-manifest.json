@@ -16,6 +16,10 @@
     {
       "path": "assets/fonts/Whitney-Medium-Pro.otf",
       "sha1": "33ca073c11f46dc266a7dc1adeaa102891bd76d1"
+    },
+    {
+      "path": "assets/fonts/inaturalisticons.ttf",
+      "sha1": "d5a9b116c0d7857ec446f4f045fe5316196d22ec"
     }
   ]
 }
