@@ -171,11 +171,11 @@ const StandardCamera = ( ): Node => {
     let testID = "";
     let accessibilityLabel = "";
     switch ( icon ) {
-      case "flash-on-circle":
+      case "flash-on":
         testID = "flash-button-label-flash";
         accessibilityLabel = t( "Flash-button-label-flash" );
         break;
-      case "camera":
+      case "flash-off":
         testID = "flash-button-label-flash-off";
         accessibilityLabel = t( "Flash-button-label-flash-off" );
         break;
@@ -213,8 +213,8 @@ const StandardCamera = ( ): Node => {
           {hasFlash ? (
             <Pressable onPress={toggleFlash} accessibilityRole="button">
               {takePhotoOptions.flash === "on"
-                ? renderFlashButton( "flash-on-circle" )
-                : renderFlashButton( "camera" )}
+                ? renderFlashButton( "flash-on" )
+                : renderFlashButton( "flash-off" )}
             </Pressable>
           ) : (
             <View />
