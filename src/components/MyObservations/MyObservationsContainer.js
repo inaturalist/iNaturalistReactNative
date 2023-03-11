@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useEffect, useState } from "react";
@@ -11,6 +12,7 @@ import useUploadObservations from "sharedHooks/useUploadObservations";
 import MyObservations from "./MyObservations";
 
 const MyObservationsContainer = ( ): Node => {
+  const navigation = useNavigation( );
   const obsEditContext = useContext( ObsEditContext );
   const { observationList: observations, allObsToUpload } = useLocalObservations( );
   const uploadStatus = useUploadObservations( allObsToUpload );
@@ -35,6 +37,17 @@ const MyObservationsContainer = ( ): Node => {
       setLoading( false );
     }
   }, [showLoginSheet, setLoading] );
+
+  // clear upload status when leaving screen
+  useEffect(
+    ( ) => {
+      navigation.addListener( "blur", ( ) => {
+        uploadStatus.stopUpload( );
+        obsEditContext?.setUploadProgress( { } );
+      } );
+    },
+    [navigation, uploadStatus, obsEditContext]
+  );
 
   return (
     <MyObservations

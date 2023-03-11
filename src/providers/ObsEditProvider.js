@@ -181,7 +181,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         setCurrentObservationIndex( 0 );
         setObservations( [] );
 
-        navigation.navigate( "MyObservations" );
+        navigation.navigate( "ObsList" );
       } else if ( currentObservationIndex === observations.length - 1 ) {
         observations.pop( );
         setCurrentObservationIndex( observations.length - 1 );
@@ -282,6 +282,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     const startSingleUpload = async observation => {
       setLoading( true );
       const { uuid } = observation;
+      setUploadProgress( {
+        ...uploadProgress,
+        [uuid]: 0.5
+      } );
       const response = await uploadObservation( observation );
       if ( Object.keys( response ).length === 0 ) {
         return;
@@ -292,10 +296,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       // maybe uploading an observation is 0.33, starting to upload photos is 0.5,
       // checking for sounds is 0.66 progress?
       // and we need a way to track this progress from the Observation.uploadObservation function
-      setUploadProgress( {
-        ...uploadProgress,
-        [uuid]: 0.5
-      } );
+
       setLoading( false );
       setUploadProgress( {
         ...uploadProgress,

@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Dimensions, PixelRatio
@@ -45,23 +45,17 @@ const ToolbarContainer = ( {
   const loading = obsEditContext?.loading;
   const syncObservations = obsEditContext?.syncObservations;
 
-  // clear toolbar when leaving screen
-  useEffect(
-    ( ) => navigation.addListener( "blur", ( ) => stopUpload( ) ),
-    [navigation, stopUpload]
-  );
-
   const getStatusText = ( ) => {
+    if ( uploadComplete ) {
+      return t( "X-observations-uploaded", { count: totalUploadCount } );
+    }
+
     if ( numUnuploadedObs <= 0 ) {
       return null;
     }
 
     if ( !uploadInProgress ) {
       return t( "Upload-x-observations", { count: numUnuploadedObs } );
-    }
-
-    if ( uploadComplete ) {
-      return t( "X-observations-uploaded", { count: totalUploadCount } );
     }
 
     const translationParams = {
@@ -102,7 +96,7 @@ const ToolbarContainer = ( {
   const statusText = getStatusText( );
 
   const getSyncIcon = ( ) => {
-    if ( numUnuploadedObs > 0 || !uploadInProgress || uploadError ) {
+    if ( ( numUnuploadedObs > 0 && !uploadInProgress ) || uploadError ) {
       return "sync-unsynced";
     }
     return "sync";

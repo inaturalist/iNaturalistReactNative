@@ -2,7 +2,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StandardCamera from "components/Camera/StandardCamera";
 import Login from "components/LoginSignUp/Login";
-import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
@@ -106,10 +105,6 @@ const MainStackNavigation = (): React.Node => (
           ...hideHeader,
           ...hideScreenTransitionAnimation
         }}
-      />
-      <Stack.Screen
-        name="MyObservations"
-        component={MyObservationsContainer}
       />
       <Stack.Screen
         name="StandardCamera"
