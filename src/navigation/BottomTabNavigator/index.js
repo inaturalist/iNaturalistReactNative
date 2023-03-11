@@ -63,7 +63,7 @@ const BottomTabs = () => {
         options={{
           ...hideHeader,
           meta: {
-            icon: "people",
+            icon: "person",
             userIconUri: User.uri( user ),
             testID: OBS_LIST_SCREEN_ID,
             accessibilityLabel: t( "Observations" ),
