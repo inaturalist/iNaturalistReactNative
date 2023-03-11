@@ -47,17 +47,21 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
 
   tabs.splice( -2, 0, <AddObsButton key="AddObsButton" /> );
   tabs.unshift(
-    <NavButton
-      onPress={( ) => navigation.openDrawer( )}
-      icon="hamburger-menu"
-      accessibilityRole="button"
-      accessibilityLabel={t( "Open-drawer" )}
-      accessibilityHint={t( "Opens-the-side-drawer-menu" )}
-      testID="OPEN_DRAWER"
-      active={isDrawerOpen}
-      size={32}
+    <View
+      className="w-[68px] h-[68px] flex items-center justify-center"
       key="DrawerToggle"
-    />
+    >
+      <NavButton
+        onPress={( ) => navigation.openDrawer( )}
+        icon="hamburger-menu"
+        accessibilityRole="button"
+        accessibilityLabel={t( "Open-drawer" )}
+        accessibilityHint={t( "Opens-the-side-drawer-menu" )}
+        testID="OPEN_DRAWER"
+        active={isDrawerOpen}
+        size={32}
+      />
+    </View>
   );
 
   const footerHeight = Platform.OS === "ios" ? "h-20" : "h-15";
