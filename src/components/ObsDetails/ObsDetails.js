@@ -295,7 +295,7 @@ const ObsDetails = (): Node => {
           <PhotoScroll photos={photos} />
           {/* TODO: a11y props are not passed down into this 3.party */}
           <IconButton
-            icon={currentUserFaved ? "star-outline" : "pencil"}
+            icon={currentUserFaved ? "star-bold-outline" : "pencil"}
             onPress={faveOrUnfave}
             textColor={colors.white}
             className="absolute top-3 right-0"

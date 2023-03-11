@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react-native";
 import { INatIcon } from "components/SharedComponents";
-import { glyphMap } from "components/SharedComponents/INatIcon/INatIcon";
+import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import React from "react";
 
 const iconName = "camera";
@@ -19,11 +19,11 @@ describe( "INatIcon", () => {
   } );
 } );
 
-describe( "glyphMap", () => {
+describe( "glyphmap", () => {
   it( "is an object", () => {
-    expect( glyphMap ).toBeInstanceOf( Object );
+    expect( glyphmap ).toBeInstanceOf( Object );
   } );
   it( "has icon name as key", () => {
-    expect( glyphMap ).toHaveProperty( iconName );
+    expect( glyphmap ).toHaveProperty( iconName );
   } );
 } );

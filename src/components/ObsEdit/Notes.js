@@ -21,7 +21,7 @@ const Notes = ( { addNotes, description, scrollToInput }: Props ): Node => {
     <View className="flex-row ml-3 flex-nowrap items-center">
       <IconButton
         size={14}
-        icon="pencil"
+        icon="pencil-outline"
       />
       <TextInput
         keyboardType="default"

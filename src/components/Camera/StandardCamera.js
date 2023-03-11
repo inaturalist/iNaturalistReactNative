@@ -171,11 +171,11 @@ const StandardCamera = ( ): Node => {
     let testID = "";
     let accessibilityLabel = "";
     switch ( icon ) {
-      case "flash-on-circle":
+      case "flash-on":
         testID = "flash-button-label-flash";
         accessibilityLabel = t( "Flash-button-label-flash" );
         break;
-      case "camera":
+      case "flash-off":
         testID = "flash-button-label-flash-off";
         accessibilityLabel = t( "Flash-button-label-flash-off" );
         break;
@@ -213,8 +213,8 @@ const StandardCamera = ( ): Node => {
           {hasFlash ? (
             <Pressable onPress={toggleFlash} accessibilityRole="button">
               {takePhotoOptions.flash === "on"
-                ? renderFlashButton( "flash-on-circle" )
-                : renderFlashButton( "camera" )}
+                ? renderFlashButton( "flash-on" )
+                : renderFlashButton( "flash-off" )}
             </Pressable>
           ) : (
             <View />
@@ -227,7 +227,7 @@ const StandardCamera = ( ): Node => {
             <Avatar.Icon
               testID="camera-button-label-switch-camera"
               size={40}
-              icon="camera"
+              icon="flip"
               style={{ backgroundColor: colors.darkGray }}
             />
           </Pressable>
@@ -275,7 +275,7 @@ const StandardCamera = ( ): Node => {
 
             <View className="absolute right-0">
               <IconButton
-                icon="close-button-x"
+                icon="close"
                 onPress={() => setDiscardState( INITIAL_DISCARD_STATE )}
                 accessibilityLabel={t( "Cancel" )}
                 accessibilityState={{ disabled: false }}
