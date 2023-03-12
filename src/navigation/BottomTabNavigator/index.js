@@ -15,7 +15,8 @@ import IdentifyStackNavigation from "navigation/identifyStackNavigation";
 import {
   blankHeaderTitle,
   hideHeader,
-  showHeader
+  hideHeaderLeft,
+  showHeaderLeft
 } from "navigation/navigationOptions";
 import ProjectsStackNavigation from "navigation/projectsStackNavigation";
 import React from "react";
@@ -42,12 +43,13 @@ const BottomTabs = () => {
       initialRouteName={OBS_LIST_SCREEN_ID}
       tabBar={renderTabBar}
       backBehavior="history"
-      screenOptions={showHeader}
+      screenOptions={showHeaderLeft}
     >
       <Tab.Screen
         name="Explore"
         component={Explore}
         options={{
+          ...hideHeaderLeft,
           meta: {
             icon: "compass-rose-outline",
             testID: EXPLORE_SCREEN_ID,
@@ -76,6 +78,7 @@ const BottomTabs = () => {
         name="Messages"
         component={Messages}
         options={{
+          ...hideHeaderLeft,
           meta: {
             icon: "notifications-bell",
             testID: MESSAGES_SCREEN_ID,
@@ -89,7 +92,10 @@ const BottomTabs = () => {
       <Tab.Screen
         name="search"
         component={Search}
-        options={{ headerTitle: t( "Search" ) }}
+        options={{
+          ...hideHeaderLeft,
+          headerTitle: t( "Search" )
+        }}
       />
       <Tab.Screen
         name="identify"
@@ -104,16 +110,28 @@ const BottomTabs = () => {
       <Tab.Screen
         name="settings"
         component={Settings}
-        options={{ headerTitle: t( "Settings" ) }}
+        options={{ ...hideHeaderLeft, headerTitle: t( "Settings" ) }}
       />
       <Tab.Screen
         name="about"
         component={About}
-        options={{ headerTitle: t( "About-iNaturalist" ) }}
+        options={{ ...hideHeaderLeft, headerTitle: t( "About-iNaturalist" ) }}
       />
-      <Tab.Screen name="help" component={PlaceholderComponent} />
-      <Tab.Screen name="network" component={NetworkLogging} />
-      <Tab.Screen name="UI Library" component={UiLibrary} />
+      <Tab.Screen
+        name="help"
+        component={PlaceholderComponent}
+        options={hideHeaderLeft}
+      />
+      <Tab.Screen
+        name="network"
+        component={NetworkLogging}
+        options={hideHeaderLeft}
+      />
+      <Tab.Screen
+        name="UI Library"
+        component={UiLibrary}
+        options={hideHeaderLeft}
+      />
       <Tab.Screen
         name="ObsDetails"
         component={ObsDetails}
