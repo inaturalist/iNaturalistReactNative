@@ -1,11 +1,11 @@
 // @flow
 import classNames from "classnames";
-import { INatIcon } from "components/SharedComponents";
+import { INatIcon, PhotoCount } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import { dropShadow } from "styles/global"
 
 import Background from "./Background";
 
@@ -44,7 +44,6 @@ const ObsPreviewImage = ( {
 }: Props ): Node => {
   const theme = useTheme( );
   const hasMultiplePhotos = obsPhotosCount > 1;
-  const filterIconName = obsPhotosCount > 9 ? "filter-9-plus" : `filter-${obsPhotosCount || 2}`;
   const borderRadius = hasSmallBorderRadius ? "rounded-lg" : "rounded-2xl";
 
   return (
@@ -74,6 +73,7 @@ const ObsPreviewImage = ( {
               }
             )
           }
+          style={selected ? dropShadow : {}}
         >
           {selected && (
             <INatIcon
@@ -86,25 +86,28 @@ const ObsPreviewImage = ( {
       )}
       {hasMultiplePhotos && (
         <View
-          className={classNames( "absolute right-0", {
-            "bottom-0 p-1": !isMultiplePhotosTop,
-            "top-0 p-2": isMultiplePhotosTop
+          className={classNames( "absolute right-0 p-1", {
+            "bottom-0": !isMultiplePhotosTop,
+            "top-0": isMultiplePhotosTop,
+            "p-2": !hasSmallBorderRadius
           } )}
         >
-          <IconMaterial
-            // $FlowIgnore
-            name={filterIconName}
-            color={theme.colors.onPrimary}
-            size={22}
-          />
+          <PhotoCount count={obsPhotosCount} />
         </View>
       )}
       {hasSound && (
-        <IconMaterial
-          name="volume-up"
-          color={theme.colors.onPrimary}
-          size={22}
-        />
+        <View
+          className={classNames("absolute left-0 top-0 p-1", {
+            "p-2": !hasSmallBorderRadius
+          })}
+          style={dropShadow}
+        >
+          <INatIcon
+            name="sound"
+            color={theme.colors.onSecondary}
+            size={18}
+          />
+        </View>
       )}
       {children}
     </View>
