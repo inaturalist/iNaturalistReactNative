@@ -7,15 +7,14 @@ import { Animated, Keyboard } from "react-native";
 import { useTheme } from "react-native-paper";
 import { getShadowStyle } from "styles/global";
 
-const getShadow = (shadowColor) =>
-  getShadowStyle({
-    shadowColor,
-    offsetWidth: 0,
-    offsetHeight: 4,
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-    elevation: 5,
-  });
+const getShadow = shadowColor => getShadowStyle( {
+  shadowColor,
+  offsetWidth: 0,
+  offsetHeight: 4,
+  shadowOpacity: 0.4,
+  shadowRadius: 4,
+  elevation: 5
+} );
 
 type Props = {
   position: "topStart" | "topEnd" | "bottomStart" | "bottomEnd",
@@ -27,66 +26,66 @@ type Props = {
 
 // Ensure this component is placed outside of scroll views
 
-const FloatingActionBar = ({
+const FloatingActionBar = ( {
   position = "bottomEnd",
   endY = null,
   containerClass,
   children,
-  show,
-}: Props): React.Node => {
+  show
+}: Props ): React.Node => {
   const theme = useTheme();
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState( 0 );
+  const [keyboardOpen, setKeyboardOpen] = useState( false );
   const isBottom = position === "bottomEnd" || position === "bottomStart";
   const start = isBottom ? 100 : -100;
   const animate = useMemo(
-    () => new Animated.Value(show ? start : 0),
+    () => new Animated.Value( show ? start : 0 ),
     [start, show]
   );
 
-  useEffect(() => {
+  useEffect( () => {
     const showSubscription = Keyboard.addListener(
       "keyboardDidShow",
-      (event) => {
-        setKeyboardHeight(event.endCoordinates.height);
-        setKeyboardOpen(true);
+      event => {
+        setKeyboardHeight( event.endCoordinates.height );
+        setKeyboardOpen( true );
       }
     );
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardOpen(false);
-    });
+    const hideSubscription = Keyboard.addListener( "keyboardDidHide", () => {
+      setKeyboardOpen( false );
+    } );
 
     return () => {
       showSubscription.remove();
       hideSubscription.remove();
     };
-  }, []);
+  }, [] );
 
-  useEffect(() => {
+  useEffect( () => {
     const sharedParams = {
       velocity: 1,
       tension: 2,
       friction: 8,
-      useNativeDriver: true,
+      useNativeDriver: true
     };
 
     const toValue = show ? 0 : start;
 
-    Animated.spring(animate, {
+    Animated.spring( animate, {
       ...sharedParams,
-      toValue,
-    }).start();
-  }, [keyboardOpen, keyboardHeight, position, show, animate, start]);
+      toValue
+    } ).start();
+  }, [keyboardOpen, keyboardHeight, position, show, animate, start] );
 
   const effectiveKeyboardHeight = keyboardOpen ? keyboardHeight : 0;
 
   const positionStyle = {};
 
-  if (position.includes("bottom")) {
-    positionStyle.bottom = (endY ?? 0) + effectiveKeyboardHeight;
+  if ( position.includes( "bottom" ) ) {
+    positionStyle.bottom = ( endY ?? 0 ) + effectiveKeyboardHeight;
   }
 
-  if (position.includes("End")) {
+  if ( position.includes( "End" ) ) {
     positionStyle.right = 0;
   }
 
@@ -98,12 +97,12 @@ const FloatingActionBar = ({
         position: "absolute",
         zIndex: 50,
         transform: [{ translateY: animate }],
-        ...positionStyle,
+        ...positionStyle
       }}
     >
       <View
-        className={classNames("bg-white", containerClass)}
-        style={getShadow(theme.colors.primary)}
+        className={classNames( "bg-white", containerClass )}
+        style={getShadow( theme.colors.primary )}
       >
         {children}
       </View>
