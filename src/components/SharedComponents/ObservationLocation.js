@@ -1,11 +1,10 @@
 // @flow
 import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
-import { Body4 } from "components/SharedComponents";
+import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { INatIcon } from "components/SharedComponents";
 
 type Props = {
   observation: Object,
