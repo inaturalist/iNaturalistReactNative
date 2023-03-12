@@ -107,13 +107,13 @@ const PhotoCarousel = ( {
             >
               {deletePhotoMode && (
               <LinearGradient
-                className="bg-lightGray absolute inset-0"
+                className="absolute inset-0"
                 colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
               />
               )}
               {( containerStyle === "camera" && deletePhotoMode ) && (
                 <IconButton
-                  icon="trash"
+                  icon="trash-outline"
                   mode="contained-tonal"
                   iconColor={theme.colors.onPrimary}
                   containerColor="rgba(0, 0, 0, 0.5)"
