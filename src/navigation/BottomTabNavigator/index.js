@@ -19,8 +19,8 @@ import {
   blankHeaderTitle,
   hideHeader,
   hideHeaderLeft,
-  showHeaderLeft,
   showCustomHeader,
+  showHeaderLeft
 } from "navigation/navigationOptions";
 import ProjectsStackNavigation from "navigation/projectsStackNavigation";
 import React from "react";
@@ -186,6 +186,7 @@ const BottomTabs = () => {
         name="GroupPhotos"
         component={GroupPhotos}
         options={{
+          ...showHeaderLeft,
           ...showCustomHeader,
           lazy: true,
           title: t( "Group-Photos" )
