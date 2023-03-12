@@ -26,11 +26,15 @@ const ObservationLocation = ( { observation, classNameMargin }: Props ): React.N
   }
 
   return (
-    <View className={classNames( "flex flex-row items-center", classNameMargin )}>
-      <INatIcon
-        name="location"
-        size={13}
-      />
+    <View
+      className={classNames( "flex flex-row items-center", classNameMargin )}
+      accessible
+      accessibilityLabel={t( "Location" )}
+      accessibilityValue={{
+        text: displayLocation
+      }}
+    >
+      <INatIcon name="location" size={13} />
       <Body4
         className="text-darkGray ml-[5px]"
         numberOfLines={1}
