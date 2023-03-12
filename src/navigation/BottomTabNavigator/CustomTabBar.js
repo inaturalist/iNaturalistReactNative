@@ -21,24 +21,28 @@ type Props = {
 /* eslint-disable react/jsx-props-no-spreading */
 
 const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
-  const isDrawerOpen = useDrawerStatus( ) === "open";
+  const isDrawerOpen = useDrawerStatus() === "open";
 
   const tabs = state.routes.reduce( ( tabList, route ) => {
     const { options } = descriptors[route.key];
 
-    const onPress = ( ) => {
+    const onPress = () => {
       navigation.navigate( { name: route.name, merge: true } );
     };
     const { history } = state;
     const currentRoute = history[history.length - 1]?.key || "";
     if ( options.meta ) {
       tabList.push(
-        <NavButton
-          {...options.meta}
+        <View
+          className="w-[68px] h-[68px] flex items-center justify-center"
           key={route.name}
-          onPress={onPress}
-          active={currentRoute.includes( route.name )}
-        />
+        >
+          <NavButton
+            {...options.meta}
+            onPress={onPress}
+            active={currentRoute.includes( route.name )}
+          />
+        </View>
       );
     }
 
@@ -52,7 +56,7 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
       key="DrawerToggle"
     >
       <NavButton
-        onPress={( ) => navigation.openDrawer( )}
+        onPress={() => navigation.openDrawer()}
         icon="hamburger-menu"
         accessibilityRole="button"
         accessibilityLabel={t( "Open-drawer" )}

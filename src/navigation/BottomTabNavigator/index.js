@@ -81,7 +81,7 @@ const BottomTabs = () => {
             testID: MESSAGES_SCREEN_ID,
             accessibilityLabel: t( "Messages" ),
             accessibilityHint: t( "Navigates-to-messages" ),
-            size: 40
+            size: 32
           }
         }}
       />

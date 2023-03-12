@@ -45,7 +45,7 @@ const NavButton = ( {
   if ( userIconUri ) {
     return (
       <Pressable
-        className="w-[68px] h-[68px] flex items-center justify-center"
+        className="flex items-center justify-center"
         {...sharedProps}
       >
         <UserIcon uri={userIconUri} active={active} />
