@@ -159,7 +159,10 @@ const BottomTabs = () => {
       <Tab.Screen
         name="UI Library"
         component={UiLibrary}
-        options={hideHeaderLeft}
+        options={{
+          ...hideHeaderLeft,
+          ...showCustomHeader
+        }}
       />
       <Tab.Screen
         name="ObsDetails"
