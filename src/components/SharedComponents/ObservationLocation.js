@@ -5,7 +5,7 @@ import { Body4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import { INatIcon } from "components/SharedComponents";
 
 type Props = {
   observation: Object,
@@ -28,7 +28,10 @@ const ObservationLocation = ( { observation, classNameMargin }: Props ): React.N
 
   return (
     <View className={classNames( "flex flex-row items-center", classNameMargin )}>
-      <IconMaterial name="location-pin" size={15} />
+      <INatIcon
+        name="location"
+        size={13}
+      />
       <Body4
         className="text-darkGray ml-[5px]"
         numberOfLines={1}

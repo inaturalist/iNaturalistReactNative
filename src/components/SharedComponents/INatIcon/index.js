@@ -34,7 +34,7 @@ const ALIASES = {
   copyrightcc: "copyright",
   currentlocation: "location-crosshairs",
   cv: "sparkly-label",
-  date: "clock",
+  date: "clock-outline",
   delete: "trash-outline",
   "downvote-active": "arrow-down-bold-circle",
   "downvote-inactive": "arrow-down-bold-circle-outline",
