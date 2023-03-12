@@ -136,7 +136,6 @@ const BottomTabs = () => {
         name="ObsDetails"
         component={ObsDetails}
         options={{
-          ...hideHeaderLeft,
           headerTitle: t( "Observation" )
         }}
       />
