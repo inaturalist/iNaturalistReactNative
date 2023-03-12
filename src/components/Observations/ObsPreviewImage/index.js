@@ -5,7 +5,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
-import { dropShadow } from "styles/global"
+import { dropShadow } from "styles/global";
 
 import Background from "./Background";
 
@@ -97,9 +97,9 @@ const ObsPreviewImage = ( {
       )}
       {hasSound && (
         <View
-          className={classNames("absolute left-0 top-0 p-1", {
+          className={classNames( "absolute left-0 top-0 p-1", {
             "p-2": !hasSmallBorderRadius
-          })}
+          } )}
           style={dropShadow}
         >
           <INatIcon

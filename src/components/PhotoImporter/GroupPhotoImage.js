@@ -1,10 +1,9 @@
 // @flow
 
+import ObsPreviewImage from "components/Observations/ObsPreviewImage";
 import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import ObsPreviewImage from "components/Observations/ObsPreviewImage";
-
 
 type Props = {
   item: Object,
