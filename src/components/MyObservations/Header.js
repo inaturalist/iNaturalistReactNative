@@ -90,6 +90,7 @@ const Header = ( {
         accessibilityLabel={t( "Navigate-to-login-screen" )}
         text={t( "LOG-IN-TO-INATURALIST" )}
         level="focus"
+        testID="log-in-to-iNaturalist-button"
       />
     </>
   );

@@ -28,7 +28,7 @@ describe( "Add observation without evidence", () => {
   } );
 
   it( "should open app with the observation list screen", async () => {
-    const loginText = element( by.id( "log-in-to-iNaturalist-text-no-observations" ) );
+    const loginText = element( by.id( "log-in-to-iNaturalist-text-button" ) );
     await waitFor( loginText ).toBeVisible( ).withTimeout( 10000 );
     await expect( loginText ).toBeVisible( );
   } );
