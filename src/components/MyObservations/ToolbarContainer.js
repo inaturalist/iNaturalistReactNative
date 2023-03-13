@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Dimensions, PixelRatio
@@ -100,6 +100,17 @@ const ToolbarContainer = ( {
     }
     return "sync";
   };
+
+  // clear upload status when leaving screen
+  useEffect(
+    ( ) => {
+      navigation.addListener( "blur", ( ) => {
+        uploadStatus.stopUpload( );
+        obsEditContext?.setUploadProgress( { } );
+      } );
+    },
+    [navigation, uploadStatus, obsEditContext]
+  );
 
   return (
     <Toolbar

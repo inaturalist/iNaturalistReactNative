@@ -18,19 +18,6 @@ const MyObservationsContainer = ( ): Node => {
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const currentUser = useCurrentUser( );
 
-  // // clear upload status when leaving screen
-  // useEffect(
-  //   ( ) => {
-  //     navigation.addListener( "blur", ( ) => {
-  //       uploadStatus.stopUpload( );
-  //       obsEditContext?.setUploadProgress( { } );
-  //     } );
-  //   },
-  //   [navigation, uploadStatus, obsEditContext]
-  // );
-
-  console.log( uploadStatus, "upload status" );
-
   return (
     <MyObservations
       observations={observations}
