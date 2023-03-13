@@ -76,7 +76,10 @@ const Header = ( {
             </Heading1>
           </View>
         ) : (
-          <Subheading1 className="my-5">
+          <Subheading1
+            className="my-5"
+            testID="log-in-to-iNaturalist-text-no-observations"
+          >
             {t( "Log-in-to-contribute-your-observations" )}
           </Subheading1>
         )}
