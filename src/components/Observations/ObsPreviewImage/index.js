@@ -62,51 +62,50 @@ const ObsPreviewImage = ( {
       />
       {selectable && (
         <View
-          className={
-            classNames(
+          className={classNames(
+            "rounded-full overflow-hidden",
+            "absolute m-2.5 right-0",
+          )}
+        >
+          <View
+            className={classNames(
               "flex items-center justify-center",
-              "border-2 border-white rounded-full",
-              "absolute m-2.5 right-0",
+              "border-2 border-white",
               "w-[24px] h-[24px]",
               {
-                "bg-white": selected
+                "bg-white": selected,
               }
-            )
-          }
-          style={selected ? dropShadow : {}}
-        >
-          {selected && (
-            <INatIcon
-              name="checkmark"
-              color={theme.colors.primary}
-              size={12}
-            />
-          )}
+            )}
+          >
+            {selected && (
+              <INatIcon
+                name="checkmark"
+                color={theme.colors.primary}
+                size={12}
+              />
+            )}
+          </View>
         </View>
       )}
       {hasMultiplePhotos && (
         <View
-          className={classNames( "absolute right-0 p-1", {
+          className={classNames("absolute right-0 p-1", {
             "bottom-0": !isMultiplePhotosTop,
             "top-0": isMultiplePhotosTop,
-            "p-2": !hasSmallBorderRadius
-          } )}
+            "p-2": !hasSmallBorderRadius,
+          })}
         >
           <PhotoCount count={obsPhotosCount} />
         </View>
       )}
       {hasSound && (
         <View
-          className={classNames( "absolute left-0 top-0 p-1", {
-            "p-2": !hasSmallBorderRadius
-          } )}
+          className={classNames("absolute left-0 top-0 p-1", {
+            "p-2": !hasSmallBorderRadius,
+          })}
           style={dropShadow}
         >
-          <INatIcon
-            name="sound"
-            color={theme.colors.onSecondary}
-            size={18}
-          />
+          <INatIcon name="sound" color={theme.colors.onSecondary} size={18} />
         </View>
       )}
       {children}
