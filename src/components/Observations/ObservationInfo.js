@@ -20,7 +20,7 @@ const ObservationInfo = ( {
   obsStatusLayout,
   hideUploadInfo = false
 }: Props ): Node => {
-  const needsSync = observation.needsSync();
+  const needsSync = observation?.needsSync?.();
   const { uploadProgress } = useUploadProgress();
 
   const obsStatus = (
@@ -31,7 +31,7 @@ const ObservationInfo = ( {
     return obsStatus;
   }
 
-  const obsProgress = uploadProgress[observation.uuid];
+  const obsProgress = uploadProgress?.[observation.uuid];
   if ( needsSync && typeof obsProgress !== "number" ) {
     return <UploadButton observation={observation} />;
   } if ( typeof obsProgress === "number" ) {

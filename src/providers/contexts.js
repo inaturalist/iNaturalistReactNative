@@ -16,6 +16,7 @@ async function checkOnRealmPath( context ) {
 checkOnRealmPath( "before creating realm context" );
 
 const ObsEditContext: Object = createContext<Function>( );
+const UploadProgressContext: Object = createContext<Function>( {} );
 const RealmContext: Object = createRealmContext( realmConfig );
 checkOnRealmPath( "after creating realm context" );
 setTimeout( ( ) => {
@@ -24,5 +25,6 @@ setTimeout( ( ) => {
 
 export {
   ObsEditContext,
-  RealmContext
+  RealmContext,
+  UploadProgressContext
 };
