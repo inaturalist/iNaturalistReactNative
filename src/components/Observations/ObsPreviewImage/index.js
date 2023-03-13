@@ -28,7 +28,7 @@ type Props = {
   hasSmallBorderRadius?: boolean,
 };
 
-const ObsPreviewImage = ({
+const ObsPreviewImage = ( {
   source,
   children,
   hasSound = false,
@@ -40,8 +40,8 @@ const ObsPreviewImage = ({
   opaque = false,
   isMultiplePhotosTop = false,
   disableGradient = false,
-  hasSmallBorderRadius = false,
-}: Props): Node => {
+  hasSmallBorderRadius = false
+}: Props ): Node => {
   const theme = useTheme();
   const hasMultiplePhotos = obsPhotosCount > 1;
   const borderRadius = hasSmallBorderRadius ? "rounded-lg" : "rounded-2xl";
@@ -70,7 +70,7 @@ const ObsPreviewImage = ({
             {
               "bg-white": selected,
               "w-[24px] h-[24px]": selected,
-              "w-[24px] h-[24px] border-2 border-white": !selected,
+              "w-[24px] h-[24px] border-2 border-white": !selected
             }
           )}
           style={dropShadow}
@@ -82,20 +82,20 @@ const ObsPreviewImage = ({
       )}
       {hasMultiplePhotos && (
         <View
-          className={classNames("absolute right-0 p-1", {
+          className={classNames( "absolute right-0 p-1", {
             "bottom-0": !isMultiplePhotosTop,
             "top-0": isMultiplePhotosTop,
-            "p-2": !hasSmallBorderRadius,
-          })}
+            "p-2": !hasSmallBorderRadius
+          } )}
         >
           <PhotoCount count={obsPhotosCount} />
         </View>
       )}
       {hasSound && (
         <View
-          className={classNames("absolute left-0 top-0 p-1", {
-            "p-2": !hasSmallBorderRadius,
-          })}
+          className={classNames( "absolute left-0 top-0 p-1", {
+            "p-2": !hasSmallBorderRadius
+          } )}
           style={dropShadow}
         >
           <INatIcon name="sound" color={theme.colors.onSecondary} size={18} />
