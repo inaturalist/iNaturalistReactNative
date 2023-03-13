@@ -9,8 +9,7 @@ import ContextHeader from "./ContextHeader";
 const baseHeaderOptions: Object = {
   headerShown: true,
   headerBackTitleVisible: false,
-  headerShadowVisible: false,
-  headerLeft: ( ) => <BackButton />
+  headerShadowVisible: false
 };
 
 const showHeader: Object = {
@@ -23,6 +22,16 @@ const showHeader: Object = {
     fontSize: 24,
     fontFamily: Platform.OS === "ios" ? "Whitney-Medium" : "Whitney-Medium-Pro"
   }
+};
+
+export const showHeaderLeft: Object = {
+  ...showHeader,
+  headerLeft: ( ) => <BackButton />
+};
+
+export const hideHeaderLeft: Object = {
+  ...showHeader,
+  headerLeft: null
 };
 
 const showCustomHeader: Object = {
