@@ -13,7 +13,6 @@ type Props = {
   layout: string,
   statusText: ?string,
   handleSyncButtonPress: Function,
-  syncDisabled: boolean,
   uploadError: string,
   uploadInProgress: boolean,
   stopUpload: Function,
@@ -29,7 +28,6 @@ const Toolbar = ( {
   layout,
   statusText,
   handleSyncButtonPress,
-  syncDisabled,
   uploadError,
   uploadInProgress,
   stopUpload,
@@ -60,8 +58,7 @@ const Toolbar = ( {
   const getSyncIconColor = ( ) => {
     if ( uploadError ) {
       return theme.colors.error;
-    }
-    if ( uploading || numUnuploadedObs > 0 ) {
+    } if ( uploading || numUnuploadedObs > 0 ) {
       return theme.colors.secondary;
     }
     return theme.colors.primary;
@@ -94,25 +91,30 @@ const Toolbar = ( {
             size={26}
             onPress={handleSyncButtonPress}
             accessibilityRole="button"
-            disabled={syncDisabled}
-            accessibilityState={{ disabled: syncDisabled }}
+            disabled={false}
+            accessibilityState={{ disabled: false }}
             iconColor={getSyncIconColor( )}
           />
         </Animated.View>
 
         {statusText && (
-          <View className="flex-row items-center">
-            <Body2 className="ml-1">{statusText}</Body2>
-            {uploadError && (
-            <Body4 className="ml-1 mt-[3px] color-warningRed">
-              {uploadError}
-            </Body4>
-            )}
-            {uploadComplete && (
+          <View>
+            <View className="flex-row items-center">
+              <Body2 className="ml-1">{statusText}</Body2>
+
+              {( uploadComplete && !uploadError ) && (
               <View className="ml-2">
                 <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
               </View>
-            )}
+              )}
+            </View>
+            <View className="max-w-[200px]">
+              {uploadError && (
+              <Body4 className="ml-1 mt-[3px] color-warningRed">
+                {uploadError}
+              </Body4>
+              )}
+            </View>
           </View>
         )}
 

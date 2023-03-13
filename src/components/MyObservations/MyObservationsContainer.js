@@ -29,6 +29,8 @@ const MyObservationsContainer = ( ): Node => {
   //   [navigation, uploadStatus, obsEditContext]
   // );
 
+  console.log( uploadStatus, "upload status" );
+
   return (
     <MyObservations
       observations={observations}

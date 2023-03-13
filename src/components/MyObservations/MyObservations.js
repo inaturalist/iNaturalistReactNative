@@ -166,7 +166,7 @@ const MyObservations = ( {
           />
         </Animated.View>
       </ViewWrapper>
-      <LoginSheet showLoginSheet={showLoginSheet} setShowLoginSheet={setShowLoginSheet} />
+      {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
     </>
   );
 };

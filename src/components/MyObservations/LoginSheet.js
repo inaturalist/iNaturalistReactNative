@@ -11,11 +11,10 @@ import { useTranslation } from "react-i18next";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 type Props = {
-  showLoginSheet: boolean,
   setShowLoginSheet: Function
 }
 
-const LoginSheet = ( { showLoginSheet, setShowLoginSheet }: Props ): Node => {
+const LoginSheet = ( { setShowLoginSheet }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
@@ -23,7 +22,6 @@ const LoginSheet = ( { showLoginSheet, setShowLoginSheet }: Props ): Node => {
 
   return (
     <BottomSheet
-      hide={!showLoginSheet}
       snapPoints={["25%"]}
       backdropComponent={renderBackdrop}
       handleClose={( ) => setShowLoginSheet( false )}

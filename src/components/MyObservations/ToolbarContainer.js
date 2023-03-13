@@ -42,7 +42,6 @@ const ToolbarContainer = ( {
 
   const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
 
-  const loading = obsEditContext?.loading;
   const syncObservations = obsEditContext?.syncObservations;
 
   const getStatusText = ( ) => {
@@ -106,7 +105,6 @@ const ToolbarContainer = ( {
     <Toolbar
       statusText={statusText}
       handleSyncButtonPress={handleSyncButtonPress}
-      syncDisabled={loading || uploadInProgress}
       uploadError={uploadError}
       uploadInProgress={uploadInProgress}
       stopUpload={stopUpload}
