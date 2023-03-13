@@ -20,6 +20,7 @@ import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-e
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { startNetworkLogging } from "react-native-network-logger";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { UploadProgressProvider } from "sharedHooks/useUploadProgress";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
@@ -90,9 +91,11 @@ const AppWithProviders = ( ) => (
           <GestureHandlerRootView className="flex-1">
             {/* NavigationContainer needs to be nested above ObsEditProvider */}
             <NavigationContainer>
-              <ObsEditProvider>
-                <App />
-              </ObsEditProvider>
+              <UploadProgressProvider>
+                <ObsEditProvider>
+                  <App />
+                </ObsEditProvider>
+              </UploadProgressProvider>
             </NavigationContainer>
           </GestureHandlerRootView>
         </INatPaperProvider>

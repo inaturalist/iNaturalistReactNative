@@ -6,9 +6,8 @@ import type { Node } from "react";
 import React from "react";
 import Photo from "realmModels/Photo";
 
+import ObservationInfo from "./ObservationInfo";
 import ObsPreviewImage from "./ObsPreviewImage";
-import ObsStatus from "./ObsStatus";
-import UploadButton from "./UploadButton";
 
 type Props = {
   observation: Object
@@ -46,11 +45,7 @@ const ObsListItem = ( { observation }: Props ): Node => {
         />
       </View>
       <View className="items-center ml-auto">
-        {needsSync ? (
-          <UploadButton observation={observation} />
-        ) : (
-          <ObsStatus observation={observation} layout="vertical" />
-        )}
+        <ObservationInfo observation={observation} obsStatusLayout="vertical" />
       </View>
     </View>
   );

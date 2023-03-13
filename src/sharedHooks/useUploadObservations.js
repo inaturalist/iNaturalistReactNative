@@ -8,6 +8,7 @@ import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
 import Observation from "realmModels/Observation";
 import useApiToken from "sharedHooks/useApiToken";
+import useUploadProgress from "sharedHooks/useUploadProgress";
 
 const { useRealm } = RealmContext;
 
@@ -20,6 +21,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const realm = useRealm( );
   const apiToken = useApiToken( );
   const [totalUploadCount, setTotalUploadCount] = useState( 0 );
+  const { setObservationProgress } = useUploadProgress();
 
   const cleanup = ( ) => {
     setUploadInProgress( false );
@@ -35,6 +37,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     const upload = async observationToUpload => {
       const increment = ( 1 / allObsToUpload.length ) / 2;
       setProgress( currentProgress => currentProgress + increment );
+
+      setObservationProgress( observationToUpload.uuid, 0.5 );
       try {
         await Observation.uploadObservation(
           observationToUpload,
@@ -44,6 +48,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
       } catch ( e ) {
         console.warn( e );
         setError( e.message );
+        setObservationProgress( observationToUpload.uuid, 0 );
       }
       setProgress( currentProgress => {
         if ( currentUploadIndex === allObsToUpload.length - 1 ) {
@@ -52,6 +57,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
         return currentProgress + increment;
       } );
       setCurrentUploadIndex( currentIndex => currentIndex + 1 );
+      setObservationProgress( observationToUpload.uuid, 1 );
     };
 
     const observationToUpload = allObsToUpload[currentUploadIndex];
@@ -71,7 +77,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     apiToken,
     shouldUpload,
     currentUploadIndex,
-    realm
+    realm,
+    setObservationProgress
   ] );
 
   return {
@@ -81,7 +88,12 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     stopUpload: cleanup,
     currentUploadIndex,
     totalUploadCount,
-    startUpload: ( ) => setShouldUpload( true )
+    startUpload: ( ) => {
+      setShouldUpload( true );
+      allObsToUpload.forEach( observation => {
+        setObservationProgress( observation.uuid, 0 );
+      } );
+    }
   };
 };
 

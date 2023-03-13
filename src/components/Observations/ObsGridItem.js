@@ -8,9 +8,8 @@ import React from "react";
 import Observation from "realmModels/Observation";
 import Photo from "realmModels/Photo";
 
+import ObservationInfo from "./ObservationInfo";
 import ObsPreviewImage from "./ObsPreviewImage";
-import ObsStatus from "./ObsStatus";
-import UploadButton from "./UploadButton";
 
 type Props = {
   observation: Object,
@@ -26,7 +25,6 @@ const ObsGridItem = ( {
   height = "h-[172px]"
 }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo;
-  const showUploadButton = !isProject && observation.needsSync?.( );
 
   const imageSource = isProject
     ? Observation.projectUri( observation )
@@ -46,16 +44,12 @@ const ObsGridItem = ( {
         isMultiplePhotosTop
       >
         <View className="absolute bottom-0 flex p-2 w-full">
-          {showUploadButton ? (
-            <UploadButton observation={observation} />
-          ) : (
-            <ObsStatus
-              observation={observation}
-              layout="horizontal"
-              white
-              classNameMargin="mb-1"
-            />
-          )}
+          <ObservationInfo
+            observation={observation}
+            obsStatusLayout="horizontal"
+            hideUploadInfo={isProject}
+            obsStatusWhite
+          />
           <DisplayTaxonName
             taxon={observation?.taxon}
             scientificNameFirst={

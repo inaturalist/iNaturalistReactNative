@@ -7,12 +7,14 @@ import type { Node } from "react";
 import React, { useEffect } from "react";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useUploadProgress from "sharedHooks/useUploadProgress";
 
 const { useRealm } = RealmContext;
 
 const ObsList = ( ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
+  const { cleanup } = useUploadProgress( );
 
   const updateParams = {
     // TODO: viewed = false is a param in the API v2 docs
@@ -43,6 +45,10 @@ const ObsList = ( ): Node => {
       } );
     } );
   }, [realm, updates] );
+
+  useEffect( ( ) => ( ) => {
+    cleanup( );
+  }, [cleanup] );
 
   return <ObservationViews />;
 };
