@@ -40,7 +40,7 @@ const ObsUploadStatus = ( {
     if ( allObsToUpload?.find( upload => upload.uuid === observation.uuid ) ) {
       return (
         <UploadStatus
-          progress={uploadProgress[observation.uuid] || 0}
+          progress={uploadProgress?.[observation.uuid] || 0}
           startSingleUpload={( ) => {
             if ( !currentUser ) {
               setShowLoginSheet( true );
