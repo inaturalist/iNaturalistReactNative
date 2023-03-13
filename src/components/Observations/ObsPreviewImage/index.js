@@ -25,10 +25,10 @@ type Props = {
   height?: string,
   isMultiplePhotosTop?: boolean,
   disableGradient?: boolean,
-  hasSmallBorderRadius?: boolean
+  hasSmallBorderRadius?: boolean,
 };
 
-const ObsPreviewImage = ( {
+const ObsPreviewImage = ({
   source,
   children,
   hasSound = false,
@@ -40,9 +40,9 @@ const ObsPreviewImage = ( {
   opaque = false,
   isMultiplePhotosTop = false,
   disableGradient = false,
-  hasSmallBorderRadius = false
-}: Props ): Node => {
-  const theme = useTheme( );
+  hasSmallBorderRadius = false,
+}: Props): Node => {
+  const theme = useTheme();
   const hasMultiplePhotos = obsPhotosCount > 1;
   const borderRadius = hasSmallBorderRadius ? "rounded-lg" : "rounded-2xl";
 
@@ -63,46 +63,39 @@ const ObsPreviewImage = ( {
       {selectable && (
         <View
           className={classNames(
-            "rounded-full overflow-hidden",
-            "absolute m-2.5 right-0"
+            "flex items-center justify-center",
+            "rounded-full",
+            "absolute m-2.5 right-0",
+
+            {
+              "bg-white": selected,
+              "w-[24px] h-[24px]": selected,
+              "w-[24px] h-[24px] border-2 border-white": !selected,
+            }
           )}
+          style={dropShadow}
         >
-          <View
-            className={classNames(
-              "flex items-center justify-center",
-              "border-2 border-white",
-              "w-[24px] h-[24px]",
-              {
-                "bg-white": selected
-              }
-            )}
-          >
-            {selected && (
-              <INatIcon
-                name="checkmark"
-                color={theme.colors.primary}
-                size={12}
-              />
-            )}
-          </View>
+          {selected && (
+            <INatIcon name="checkmark" color={theme.colors.primary} size={12} />
+          )}
         </View>
       )}
       {hasMultiplePhotos && (
         <View
-          className={classNames( "absolute right-0 p-1", {
+          className={classNames("absolute right-0 p-1", {
             "bottom-0": !isMultiplePhotosTop,
             "top-0": isMultiplePhotosTop,
-            "p-2": !hasSmallBorderRadius
-          } )}
+            "p-2": !hasSmallBorderRadius,
+          })}
         >
           <PhotoCount count={obsPhotosCount} />
         </View>
       )}
       {hasSound && (
         <View
-          className={classNames( "absolute left-0 top-0 p-1", {
-            "p-2": !hasSmallBorderRadius
-          } )}
+          className={classNames("absolute left-0 top-0 p-1", {
+            "p-2": !hasSmallBorderRadius,
+          })}
           style={dropShadow}
         >
           <INatIcon name="sound" color={theme.colors.onSecondary} size={18} />
