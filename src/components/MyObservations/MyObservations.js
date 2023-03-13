@@ -125,8 +125,15 @@ const MyObservations = ( {
                         margin: GUTTER / 2
                       }}
                       uploadStatus={uploadStatus}
+                      setShowLoginSheet={setShowLoginSheet}
                     />
-                  ) : <ObsListItem observation={item} uploadStatus={uploadStatus} />
+                  ) : (
+                    <ObsListItem
+                      observation={item}
+                      uploadStatus={uploadStatus}
+                      setShowLoginSheet={setShowLoginSheet}
+                    />
+                  )
               }
               </MyObservationsPressable>
             )}

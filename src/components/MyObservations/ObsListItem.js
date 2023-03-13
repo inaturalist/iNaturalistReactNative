@@ -11,10 +11,11 @@ import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
   observation: Object,
-  uploadStatus: Object
+  uploadStatus: Object,
+  setShowLoginSheet: Function
 };
 
-const ObsListItem = ( { observation, uploadStatus }: Props ): Node => {
+const ObsListItem = ( { observation, uploadStatus, setShowLoginSheet }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo || null;
   const needsSync = observation.needsSync( );
 
@@ -50,6 +51,7 @@ const ObsListItem = ( { observation, uploadStatus }: Props ): Node => {
           observation={observation}
           uploadStatus={uploadStatus}
           layout="vertical"
+          setShowLoginSheet={setShowLoginSheet}
         />
       </View>
     </View>

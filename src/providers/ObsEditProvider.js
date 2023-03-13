@@ -249,36 +249,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       await Photo.deletePhoto( realm, photoUriToDelete );
     };
 
-    const uploadLocalObservationsToServer = ( ) => {
-      const unsyncedObservations = Observation.filterUnsyncedObservations( realm );
-      unsyncedObservations.forEach( async observation => {
-        await Observation.uploadObservation( observation, apiToken, realm );
-      } );
-    };
-
-    const downloadRemoteObservationsFromServer = async ( ) => {
-      const params = {
-        user_id: currentUser?.id,
-        per_page: 50,
-        fields: Observation.FIELDS
-      };
-      const results = await searchObservations( params, { api_token: apiToken } );
-
-      Observation.upsertRemoteObservations( results, realm );
-    };
-
-    const syncObservations = async ( ) => {
-      // TODO: GET observation/deletions once this is enabled in API v2
-      activateKeepAwake( );
-      setLoading( true );
-      await uploadLocalObservationsToServer( );
-      await downloadRemoteObservationsFromServer( );
-      // we at least want to keep the device awake while uploads are happening
-      // not sure about downloads/deletions
-      deactivateKeepAwake( );
-      setLoading( false );
-    };
-
     const startSingleUpload = async observation => {
       setLoading( true );
       const { uuid } = observation;
@@ -302,6 +272,28 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         ...uploadProgress,
         [uuid]: 1
       } );
+    };
+
+    const downloadRemoteObservationsFromServer = async ( ) => {
+      const params = {
+        user_id: currentUser?.id,
+        per_page: 50,
+        fields: Observation.FIELDS
+      };
+      const results = await searchObservations( params, { api_token: apiToken } );
+
+      Observation.upsertRemoteObservations( results, realm );
+    };
+
+    const syncObservations = async ( ) => {
+      // TODO: GET observation/deletions once this is enabled in API v2
+      activateKeepAwake( );
+      setLoading( true );
+      await downloadRemoteObservationsFromServer( );
+      // we at least want to keep the device awake while uploads are happening
+      // not sure about downloads/deletions
+      deactivateKeepAwake( );
+      setLoading( false );
     };
 
     return {
@@ -341,7 +333,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       unsavedChanges,
       syncObservations,
       startSingleUpload,
-      uploadProgress
+      uploadProgress,
+      setUploadProgress
     };
   }, [
     currentObservation,

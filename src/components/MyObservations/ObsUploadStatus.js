@@ -5,6 +5,7 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { useTheme } from "react-native-paper";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import ObsStatus from "./ObsStatus";
 import UploadCompleteAnimation from "./UploadIcons/UploadCompleteAnimation";
@@ -14,7 +15,8 @@ type Props = {
   uploadStatus: Object,
   layout?: "horizontal" | "vertical",
   white?: boolean,
-  classNameMargin?: string
+  classNameMargin?: string,
+  setShowLoginSheet: Function
 };
 
 const ObsUploadStatus = ( {
@@ -22,9 +24,11 @@ const ObsUploadStatus = ( {
   uploadStatus,
   layout,
   white = false,
-  classNameMargin
+  classNameMargin,
+  setShowLoginSheet
 }: Props ): Node => {
   const theme = useTheme( );
+  const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const startSingleUpload = obsEditContext?.startSingleUpload;
   const uploadProgress = obsEditContext?.uploadProgress;
@@ -37,7 +41,13 @@ const ObsUploadStatus = ( {
       return (
         <UploadStatus
           progress={uploadProgress[observation.uuid] || 0}
-          startSingleUpload={( ) => startSingleUpload( observation )}
+          startSingleUpload={( ) => {
+            if ( !currentUser ) {
+              setShowLoginSheet( true );
+              return;
+            }
+            startSingleUpload( observation );
+          }}
           color={whiteColor}
           completeColor={whiteColor}
         >
