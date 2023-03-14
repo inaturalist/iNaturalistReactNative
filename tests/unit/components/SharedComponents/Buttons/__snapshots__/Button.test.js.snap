@@ -84,6 +84,7 @@ exports[`Button focus should render correctly 1`] = `
         ],
       ]
     }
+    testID="RNButton.text"
   >
     FOCUS BUTTON
   </Text>
@@ -177,6 +178,7 @@ exports[`Button focus when disabled should render correctly 1`] = `
         ],
       ]
     }
+    testID="RNButton.text"
   >
     FOCUS DISABLED
   </Text>
@@ -285,6 +287,7 @@ exports[`Button neutral should render correctly 1`] = `
         ],
       ]
     }
+    testID="RNButton.text"
   >
     NEUTRAL BUTTON
   </Text>
@@ -396,6 +399,7 @@ exports[`Button neutral when disabled should render correctly 1`] = `
         ],
       ]
     }
+    testID="RNButton.text"
   >
     NEUTRAL DISABLED
   </Text>
@@ -486,6 +490,7 @@ exports[`Button primary should render correctly 1`] = `
         ],
       ]
     }
+    testID="RNButton.text"
   >
     PRIMARY BUTTON
   </Text>
@@ -579,6 +584,7 @@ exports[`Button primary when disabled should render correctly 1`] = `
         ],
       ]
     }
+    testID="RNButton.text"
   >
     PRIMARY DISABLED
   </Text>
@@ -669,6 +675,7 @@ exports[`Button warning should render correctly 1`] = `
         ],
       ]
     }
+    testID="RNButton.text"
   >
     WARNING BUTTON
   </Text>
@@ -762,6 +769,7 @@ exports[`Button warning when disabled should render correctly 1`] = `
         ],
       ]
     }
+    testID="RNButton.text"
   >
     WARNING DISABLED
   </Text>

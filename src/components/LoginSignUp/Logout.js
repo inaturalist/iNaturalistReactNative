@@ -68,6 +68,7 @@ const Logout = ( ): Node => {
 
   const renderBackButton = ( ) => (
     <Pressable
+      accessibilityRole="button"
       onPress={( ) => navigation.goBack( )}
       className="absolute top-8 right-8"
     >

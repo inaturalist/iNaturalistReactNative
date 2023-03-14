@@ -5,9 +5,9 @@ import useCameraRollPhotos from "components/PhotoImporter/hooks/useCameraRollPho
 import usePhotoAlbums from "components/PhotoImporter/hooks/usePhotoAlbums";
 import PhotoAlbumPicker from "components/PhotoImporter/PhotoAlbumPicker";
 import PhotoGalleryImage from "components/PhotoImporter/PhotoGalleryImage";
-import { Button } from "components/SharedComponents";
+import { Button, StickyToolbar } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
-import { Text, View } from "components/styledComponents";
+import { Text } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -236,14 +236,15 @@ const PhotoGallery = (): Node => {
         extraData={rerenderList}
       />
       {totalSelected > 0 && (
-        <View className="h-16 mt-2 mx-4">
+        <StickyToolbar>
           <Button
+            className="mt-2 mx-4"
             level="focus"
             text={t( "Import-X-photos", { count: totalSelected || 0 } )}
             onPress={navToNextScreen}
             testID="PhotoGallery.createObsButton"
           />
-        </View>
+        </StickyToolbar>
       )}
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}
