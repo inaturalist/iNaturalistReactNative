@@ -44,7 +44,7 @@ const ObsListItem = ( { observation }: Props ): Node => {
           classNameMargin="mt-1"
         />
       </View>
-      <View className="flex justify-center items-center ml-auto">
+      <View className="ml-auto">
         <ObservationInfo observation={observation} obsStatusLayout="vertical" />
       </View>
     </View>
