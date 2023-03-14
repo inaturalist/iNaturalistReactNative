@@ -4,7 +4,7 @@ import initI18next from "i18n/initI18next";
 import React from "react";
 
 const count = 1;
-const icon = "comments-filled-in";
+const icon = "comments";
 const testID = "some_id";
 
 describe( "ActivityCount", () => {
@@ -17,6 +17,13 @@ describe( "ActivityCount", () => {
     render( <ActivityCount count={count} icon={icon} testID={testID} /> );
 
     expect( screen ).toMatchSnapshot();
+  } );
+
+  it( "displays the count parameter as text", () => {
+    render( <ActivityCount count={count} icon={icon} testID={testID} /> );
+
+    const activityCount = screen.getByText( count.toString() );
+    expect( activityCount ).toBeTruthy();
   } );
 
   // a11y test
