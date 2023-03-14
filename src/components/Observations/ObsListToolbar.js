@@ -59,6 +59,11 @@ const Toolbar = ({ setLayout, layout }: Props): Node => {
   );
 
   useEffect(() => {
+    const cleanup = () => {
+      cancelAnimation(rotation);
+      rotation.value = 0;
+    }
+
     if (uploadInProgress) {
       rotation.value = withRepeat(
         withTiming(360, {
@@ -68,9 +73,10 @@ const Toolbar = ({ setLayout, layout }: Props): Node => {
         -1
       );
     } else {
-      cancelAnimation(rotation);
-      rotation.value = 0;
+      cleanup()
     }
+
+    return cleanup
   }, [uploadInProgress, rotation]);
 
   const loading = obsEditContext?.loading;
