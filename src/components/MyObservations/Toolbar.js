@@ -4,9 +4,16 @@ import { Body2, Body4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
-import { Animated, Easing } from "react-native";
+import React, { useEffect } from "react";
 import { IconButton, ProgressBar, useTheme } from "react-native-paper";
+import Animated, {
+  cancelAnimation,
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming
+} from "react-native-reanimated";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 type Props = {
@@ -39,21 +46,41 @@ const Toolbar = ( {
   getSyncIcon
 }: Props ): Node => {
   const theme = useTheme( );
-  const spinValue = new Animated.Value( 1 );
   const uploadComplete = progress === 1;
   const uploading = uploadInProgress && !uploadComplete;
+  const rotation = useSharedValue( 0 );
 
-  Animated.timing( spinValue, {
-    toValue: 0,
-    duration: 3000,
-    easing: Easing.linear,
-    useNativeDriver: true
-  } ).start( );
+  const animatedStyles = useAnimatedStyle(
+    () => ( {
+      transform: [
+        {
+          rotateZ: `-${rotation.value}deg`
+        }
+      ]
+    } ),
+    [rotation.value]
+  );
 
-  const spin = spinValue.interpolate( {
-    inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"]
-  } );
+  useEffect( () => {
+    const cleanup = () => {
+      cancelAnimation( rotation );
+      rotation.value = 0;
+    };
+
+    if ( uploading ) {
+      rotation.value = withRepeat(
+        withTiming( 360, {
+          duration: 2000,
+          easing: Easing.linear
+        } ),
+        -1
+      );
+    } else {
+      cleanup();
+    }
+
+    return cleanup;
+  }, [uploading, rotation] );
 
   const getSyncIconColor = ( ) => {
     if ( uploadError ) {
@@ -84,7 +111,7 @@ const Toolbar = ( {
         )}
 
         <Animated.View
-          style={uploading ? { transform: [{ rotate: spin }] } : {}}
+          style={animatedStyles}
         >
           <IconButton
             icon={getSyncIcon( )}
