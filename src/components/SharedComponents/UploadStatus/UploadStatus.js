@@ -63,7 +63,7 @@ const UploadStatus = ( { color, completeColor, progress }: Props ): Node => {
     <View
       accessible
       accessibilityLabel={accessibilityLabelText()}
-      className="relative items-center justify-center w-[49px] h-[67px]"
+      className="relative items-center justify-center w-[49px]"
     >
       {progress < 0.05 ? (
         <>
