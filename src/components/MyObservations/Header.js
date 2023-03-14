@@ -66,18 +66,18 @@ const Header = ( {
         {numUnuploadedObs > 0 ? (
           <View>
             <Subheading1
-              className="mt-5"
+              className="mt-5 max-w-[280px]"
               testID="log-in-to-iNaturalist-text"
             >
               {t( "Log-in-to-contribute-and-sync" )}
             </Subheading1>
-            <Heading1 className="mb-5">
+            <Heading1 className="mb-5 max-w-[280px]">
               {t( "X-observations", { count: numUnuploadedObs } )}
             </Heading1>
           </View>
         ) : (
           <Subheading1
-            className="my-5"
+            className="my-5 max-w-[280px]"
             testID="log-in-to-iNaturalist-text-no-observations"
           >
             {t( "Log-in-to-contribute-your-observations" )}

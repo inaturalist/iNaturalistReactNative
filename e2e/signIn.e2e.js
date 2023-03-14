@@ -29,12 +29,12 @@ describe( "Sign into app as logged-in user", () => {
   } );
 
   it( "should open app with the observation list screen", async () => {
-    const loginText = element( by.id( "log-in-to-iNaturalist-text-button" ) );
+    const loginText = element( by.id( "log-in-to-iNaturalist-button.text" ) );
     // 10000 timeout is for github actions, which was failing with a
     // shorter timeout period
     await waitFor( loginText ).toBeVisible().withTimeout( 10000 );
     await expect( loginText ).toBeVisible();
-    await element( by.id( "log-in-to-iNaturalist-text-button" ) ).tap();
+    await element( by.id( "log-in-to-iNaturalist-button.text" ) ).tap();
     const usernameInput = element( by.id( "Login.email" ) );
     await waitFor( usernameInput ).toBeVisible().withTimeout( 10000 );
     await expect( usernameInput ).toBeVisible();
