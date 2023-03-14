@@ -116,7 +116,7 @@ const Button = ( {
           } )}
         />
       )}
-      <Heading4 className={textClass}>{text}</Heading4>
+      <Heading4 className={textClass} testID={`${testID || "RNButton"}.text`}>{text}</Heading4>
     </Pressable>
   );
 };

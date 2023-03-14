@@ -2,9 +2,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
 import Explore from "components/Explore/Explore";
 import Messages from "components/Messages/Messages";
+import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
 import ObsDetails from "components/ObsDetails/ObsDetails";
-import ObsList from "components/Observations/ObsList";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
@@ -61,7 +61,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="ObsList"
-        component={ObsList}
+        component={MyObservationsContainer}
         options={{
           ...hideHeader,
           meta: {

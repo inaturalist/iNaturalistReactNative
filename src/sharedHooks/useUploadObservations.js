@@ -58,7 +58,6 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     const continueUpload = shouldUpload && observationToUpload && !!apiToken;
 
     if ( !continueUpload ) {
-      cleanup( );
       return;
     }
 
@@ -81,7 +80,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     stopUpload: cleanup,
     currentUploadIndex,
     totalUploadCount,
-    startUpload: ( ) => setShouldUpload( true )
+    startUpload: ( ) => setShouldUpload( true ),
+    allObsToUpload
   };
 };
 

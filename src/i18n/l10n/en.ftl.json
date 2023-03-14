@@ -67,7 +67,7 @@
   "Couldnt-create-comment": "Couldn't create comment",
   "Couldnt-create-identification": "Couldn't create identification",
   "Create-an-iNaturalist-account-to-save-your-observations": "Create an iNaturalist account to save your observations and contribute them to science.",
-  "CREATE-AN-OBSERVATION": "CREATE AN OBSERVATION",
+  "CREATE-YOUR-FIRST-OBSERVATION": "CREATE YOUR FIRST OBSERVATION",
   "Date": "Date",
   "Date-added-newest-to-oldest": "Date added - newest to oldest",
   "Date-added-oldest-to-newest": "Date added - oldest to newest",
@@ -94,6 +94,7 @@
   "Error-Could-Not-Fetch-Taxon": "Error: Could Not Fetch Taxon",
   "Evidence": "Evidence",
   "Explore": "Explore",
+  "EXPLORE-OBSERVATIONS": "EXPLORE OBSERVATIONS",
   "External-Applications": "External Applications",
   "Featured": {
     "comment": "Header for featured projects",
@@ -139,7 +140,7 @@
   "iNaturalist-Activity-Notifications": "iNaturalist Activity Notifications",
   "iNaturalist-Applications": "iNaturalist Applications",
   "iNaturalist-Network-Affiliation": "iNaturalist Network Affiliation",
-  "iNaturalist-is-a-community-of-naturalists": "iNaturalist is a community of naturalists.",
+  "iNaturalist-is-a-community-of-naturalists": "iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.",
   "Insects": "Insects",
   "Introduced": "Introduced",
   "Invalid-login": {
@@ -164,7 +165,8 @@
   "Location": "Location",
   "Log-in": "Log in",
   "LOG-IN-TO-INATURALIST": "LOG IN TO INATURALIST",
-  "Log-in-to-iNaturalist": "Log in to iNaturalist",
+  "Log-in-to-contribute-and-sync": "Log in to contribute & sync",
+  "Log-in-to-contribute-your-observations": "Log in to contribute your observations to science!",
   "Logged-in-as": "Logged in as: { $username }",
   "Login-header": {
     "comment": "Appears in the login screen",
@@ -238,6 +240,7 @@
   "Observation": "Observation",
   "Observation-Attribution": "Observation © { $attribution } · { $licenseCode }",
   "Observations": "Observations",
+  "Observations-created-on-iNaturalist": "Observations created on iNaturalist are used by scientists around the world.",
   "Offensive-Inappropriate": "Offensive/Inappropriate",
   "Offensive-Inappropriate-Examples": "Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of \"appropriate,\" see the FAQ.",
   "Open": "Open",
@@ -255,6 +258,7 @@
     "comment": "Help text for playing back a sound recording",
     "val": "Playing Sound"
   },
+  "PLEASE-LOG-IN": "PLEASE LOG IN",
   "Press-Record-to-Start": {
     "comment": "Help text for beginning a sound recording",
     "val": "Press Record to Start"
@@ -385,6 +389,7 @@
   "This-sets-your-language-and-date-formatting-preferences-across-iNaturalist": "This sets your language and date formatting preferences across iNaturalist based on your locale.",
   "This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify": "This will be your default place for all searches in Explore and Identify.",
   "Threatened": "Threatened",
+  "To-sync-your-observations-to-iNaturalist": "To sync your observations to iNaturalist, please log in.",
   "Trust-with-hidden-coordinates": "Trust with hidden coordinates",
   "Trusted": "Trusted",
   "Unblock": "Unblock",
@@ -423,6 +428,7 @@
     "val": "Username or Email"
   },
   "Visually-search-iNaturalist-data": "Visually search iNaturalist’s wealth of data. Search by a taxon in a location",
+  "Welcome-to-iNaturalist": "Welcome to iNaturalist!",
   "Whenever-you-get-internet-connection-you-can-upload": "Whenever you get internet connection, you can upload your observations to iNaturalist.",
   "Which-traditional-projects-can-add-your-observations": "Which traditional projects can add your observations?",
   "Who-can-add-observation-fields-to-my-observations": "Who can add observation fields to my observations?",
@@ -434,6 +440,8 @@
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
   },
+  "X-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
+  "X-observations-uploaded": "{ $count ->\n  [one] 1 observation uploaded\n *[other] { $count } observations uploaded\n}",
   "X-Photos": {
     "comment": "Displays number of photos attached to an observation in the Media Viewer",
     "val": "{ $photoCount ->\n  [one] 1 Photo\n *[other] { $photoCount } Photos\n}"
@@ -442,7 +450,6 @@
     "comment": "Displays number of photos and observations a user has selected from the camera roll",
     "val": "{ $photoCount ->\n  [one] 1 PHOTO\n *[other] { $photoCount } PHOTOS\n}, { $observationCount ->\n  [one] 1 OBSERVATION\n *[other] { $observationCount } OBSERVATIONS\n}"
   },
-  "X-unuploaded-observations": "{ $observationCount ->\n  [one] 1 unuploaded observation\n *[other] { $observationCount } unuploaded observations\n}",
   "Yes": "Yes",
   "Yes-delete-observation": "Yes, delete observation",
   "Yes-delete-photo": "Yes, delete photo",
@@ -450,6 +457,7 @@
   "Take-a-photo-with-your-camera": "Take a photo with your camera",
   "Upload-a-photo-from-your-gallery": "Upload a photo from your gallery",
   "Record-a-sound": "Record a sound",
+  "You-can-also-explore-existing-observations": "You can also explore existing observations on iNaturalist to discover what’s around you.",
   "You-denied-iNaturalist-permission-to-do-that": {
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
     "val": "You denied iNaturalist permission to do that"
@@ -610,6 +618,18 @@
     "val": "M/d/yy"
   },
   "datetime-format-short": "M/d/yy h:mm a",
+  "As-you-upload-more-observations": {
+    "comment": "Onboarding text on MyObservations\n0-10 observations",
+    "val": "As you upload more observations, others in our community may be able to help you identify them!"
+  },
+  "Observations-you-upload-to-iNaturalist": {
+    "comment": "11-50 observations",
+    "val": "Observations you upload to iNaturalist can be used by scientists and researchers worldwide."
+  },
+  "You-can-search-observations-of-any-plant-or-animal": {
+    "comment": "51-100 observations",
+    "val": "You can search observations of any plant or animal anywhere in the world with Explore!"
+  },
   "DISCARD-PHOTOS": "DISCARD PHOTOS?",
   "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
   "DISCARD": "DISCARD",
