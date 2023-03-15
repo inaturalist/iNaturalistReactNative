@@ -53,12 +53,12 @@ const MyObservations = ( {
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
-  const scrollYClamped = diffClamp( scrollY.current, 0, heightAboveToolbar );
+  const scrollYClamped = diffClamp( scrollY.current, 0, heightAboveToolbar + 10 );
 
   const offsetForHeader = scrollYClamped.interpolate( {
-    inputRange: [0, heightAboveToolbar],
+    inputRange: [0, heightAboveToolbar + 10],
     // $FlowIgnore
-    outputRange: [0, -heightAboveToolbar]
+    outputRange: [0, -heightAboveToolbar - 10]
   } );
 
   const setNumColumns = ( ) => {
@@ -99,20 +99,21 @@ const MyObservations = ( {
   return (
     <>
       <ViewWrapper>
-        <Animated.View style={[{ transform: [{ translateY: offsetForHeader }] }]}>
-          <Animated.FlatList
-            data={observations}
-            key={numColumns}
+        <View className="overflow-hidden">
+          <Animated.View style={[{ transform: [{ translateY: offsetForHeader }] }]}>
+            <Animated.FlatList
+              data={observations}
+              key={numColumns}
             // eslint-disable-next-line react-native/no-inline-styles
-            contentContainerStyle={layout === "grid" && {
-              alignItems: "center"
-            }}
-            style={{ height: screenHeight }}
-            testID="MyObservationsAnimatedList"
-            numColumns={setNumColumns( )}
-            renderItem={( { item } ) => (
-              <MyObservationsPressable observation={item}>
-                {
+              contentContainerStyle={layout === "grid" && {
+                alignItems: "center"
+              }}
+              style={{ height: screenHeight }}
+              testID="MyObservationsAnimatedList"
+              numColumns={setNumColumns( )}
+              renderItem={( { item } ) => (
+                <MyObservationsPressable observation={item}>
+                  {
                 layout === "grid"
                   ? (
                     <ObsGridItem
@@ -135,36 +136,37 @@ const MyObservations = ( {
                     />
                   )
               }
-              </MyObservationsPressable>
-            )}
-            ListEmptyComponent={
-              <MyObservationsEmpty isLoading={isLoading} />
+                </MyObservationsPressable>
+              )}
+              ListEmptyComponent={
+                <MyObservationsEmpty isLoading={isLoading} />
             }
-            ListHeaderComponent={(
-              <Header
-                setLayout={setLayout}
-                layout={layout}
-                currentUser={currentUser}
-                numObservations={observations.length}
-                setHeightAboveToolbar={setHeightAboveToolbar}
-                uploadStatus={uploadStatus}
-                setShowLoginSheet={setShowLoginSheet}
-              />
+              ListHeaderComponent={(
+                <Header
+                  setLayout={setLayout}
+                  layout={layout}
+                  currentUser={currentUser}
+                  numObservations={observations.length}
+                  setHeightAboveToolbar={setHeightAboveToolbar}
+                  uploadStatus={uploadStatus}
+                  setShowLoginSheet={setShowLoginSheet}
+                />
             )}
-            ItemSeparatorComponent={
+              ItemSeparatorComponent={
               layout !== "grid" && <View className="border-b border-lightGray" />
             }
-            ListFooterComponent={
-              <InfiniteScrollLoadingWheel isLoading={isLoading} currentUser={currentUser} />
+              ListFooterComponent={
+                <InfiniteScrollLoadingWheel isLoading={isLoading} currentUser={currentUser} />
             }
-            stickyHeaderIndices={[0]}
-            bounces={false}
-            initialNumToRender={10}
-            onEndReached={onEndReached}
-            onEndReachedThreshold={0.1}
-            onScroll={handleScroll}
-          />
-        </Animated.View>
+              stickyHeaderIndices={[0]}
+              bounces={false}
+              initialNumToRender={10}
+              onEndReached={onEndReached}
+              onEndReachedThreshold={0.1}
+              onScroll={handleScroll}
+            />
+          </Animated.View>
+        </View>
       </ViewWrapper>
       {showLoginSheet && <LoginSheet setShowLoginSheet={setShowLoginSheet} />}
     </>

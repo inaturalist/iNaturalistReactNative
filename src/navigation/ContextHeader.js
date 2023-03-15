@@ -2,7 +2,7 @@
 import { getHeaderTitle, HeaderBackButton } from "@react-navigation/elements";
 import classNames from "classnames";
 import { Heading1, Heading4 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { SafeAreaView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Platform } from "react-native";
@@ -53,8 +53,8 @@ const ContextHeader = ( {
   const backButton = renderBackButton();
 
   return (
-    <View
-      className="pt-[30px] h-[84px] w-full bg-white px-[24px]"
+    <SafeAreaView
+      className="bg-white"
       style={getShadowStyle( {
         shadowColor: colors.black,
         backgroundColor: colors.white,
@@ -65,39 +65,41 @@ const ContextHeader = ( {
         elevation: 5
       } )}
     >
-      <View
-        className={classNames(
-          "flex flex-col items-start relative w-full px-[36px] pb-[10px]",
-          {
-            "justify-center": !options?.alignStart,
-            "justify-start": options?.alignStart
-          }
-        )}
-      >
-        {backButton && (
-          <View
-            className={classNames( "ml-[-8px] absolute top-0", {
-              "mt-[-4px]": Platform.OS === "android",
-              "mt-[-8px]": Platform.OS === "ios"
-            } )}
-          >
-            {backButton}
-          </View>
-        )}
-        {customTitleComponent ? (
-          options.headerTitle()
-        ) : (
-          <View>
-            <Heading1>{getTitle()}</Heading1>
-            {subtitle && <Heading4>{subtitle}</Heading4>}
-          </View>
-        )}
+      <View className="pt-[30px] h-[84px] w-full bg-white px-[24px] pt-[6px]">
+        <View
+          className={classNames(
+            "flex flex-col items-start relative w-full px-[36px] pb-[10px]",
+            {
+              "justify-center": !options?.alignStart,
+              "justify-start": options?.alignStart
+            }
+          )}
+        >
+          {backButton && (
+            <View
+              className={classNames( "ml-[-8px] absolute top-0", {
+                "mt-[-4px]": Platform.OS === "android",
+                "mt-[-8px]": Platform.OS === "ios"
+              } )}
+            >
+              {backButton}
+            </View>
+          )}
+          {customTitleComponent ? (
+            options.headerTitle()
+          ) : (
+            <View>
+              <Heading1>{getTitle()}</Heading1>
+              {subtitle && <Heading4>{subtitle}</Heading4>}
+            </View>
+          )}
 
-        <View className="absolute right-0 top-0">
-          {options?.headerRight?.()}
+          <View className="absolute right-0 top-0">
+            {options?.headerRight?.()}
+          </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
