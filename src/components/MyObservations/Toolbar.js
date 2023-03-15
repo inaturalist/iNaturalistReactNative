@@ -12,6 +12,8 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
+  withSequence,
+  withDelay,
   withTiming
 } from "react-native-reanimated";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -54,25 +56,35 @@ const Toolbar = ( {
     () => ( {
       transform: [
         {
-          rotateZ: `-${rotation.value}deg`
+          rotateZ: `${rotation.value}deg`
         }
       ]
     } ),
     [rotation.value]
   );
 
-  useEffect( () => {
+  const getRotationAnimation = (toValue) =>
+    withDelay(
+      500,
+      withTiming(toValue, {
+        duration: 1000,
+        easing: Easing.linear,
+      })
+    );
+
+  useEffect(() => {
     const cleanup = () => {
-      cancelAnimation( rotation );
+      cancelAnimation(rotation);
       rotation.value = 0;
     };
 
-    if ( uploading ) {
+    if (uploading || true) {
       rotation.value = withRepeat(
-        withTiming( 360, {
-          duration: 2000,
-          easing: Easing.linear
-        } ),
+        withSequence(
+          getRotationAnimation(180),
+          getRotationAnimation(360),
+          withTiming(0, { duration: 0 })
+        ),
         -1
       );
     } else {
@@ -80,7 +92,7 @@ const Toolbar = ( {
     }
 
     return cleanup;
-  }, [uploading, rotation] );
+  }, [uploading, rotation]);
 
   const getSyncIconColor = ( ) => {
     if ( uploadError ) {
