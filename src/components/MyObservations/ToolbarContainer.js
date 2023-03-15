@@ -83,7 +83,7 @@ const ToolbarContainer = ( {
     }
   };
 
-  const navToExplore = ( ) => navigation.navigate( "MainStack", { screen: "Explore" } );
+  const navToExplore = ( ) => navigation.navigate( "Explore" );
 
   const toggleLayout = ( ) => setLayout( currentView => {
     if ( currentView === "list" ) {

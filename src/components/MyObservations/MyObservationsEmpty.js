@@ -53,7 +53,7 @@ const MyObservationsEmpty = ( { isLoading }: Props ): Node => {
             className="mb-2"
             text={t( "EXPLORE-OBSERVATIONS" )}
             level="focus"
-            onPress={( ) => navigation.navigate( "MainStack", { screen: "Explore" } )}
+            onPress={( ) => navigation.navigate( "Explore" )}
             accessibilityLabel={t( "Explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
           />
