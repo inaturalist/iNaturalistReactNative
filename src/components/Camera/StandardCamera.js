@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import classnames from "classnames";
 import {
   Button, CloseButton, Heading4,
   List2
@@ -251,6 +252,11 @@ const StandardCamera = ( ): Node => {
                 onPress={navToObsEdit}
                 accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
                 disabled={false}
+                className={classnames( {
+                  "rotate-0": imageOrientation === "portrait" && !isTablet,
+                  "-rotate-90": imageOrientation === "landscapeLeft" && !isTablet,
+                  "rotate-90": imageOrientation === "landscapeRight" && !isTablet
+                } )}
               />
             )}
           </View>
