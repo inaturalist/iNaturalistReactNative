@@ -4,8 +4,10 @@ import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-k
 import { searchObservations } from "api/observations";
 import type { Node } from "react";
 import React, {
-  useCallback, useMemo, useState
+  useCallback, useEffect,
+  useMemo, useState
 } from "react";
+import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
@@ -45,6 +47,25 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setGalleryUris( [] );
     setEvidenceToAdd( [] );
     setUnsavedChanges( false );
+  }, [] );
+
+  useEffect( () => {
+    const progressListener = EventRegister.addEventListener(
+      "INCREMENT_OBSERVATIONS_PROGRESS",
+      increments => {
+        setUploadProgress( currentProgress => {
+          increments.forEach( ( [uuid, increment] ) => {
+            currentProgress[uuid] ??= 0;
+            currentProgress[uuid] += increment;
+          } );
+
+          return { ...currentProgress };
+        } );
+      }
+    );
+    return () => {
+      EventRegister.removeEventListener( progressListener );
+    };
   }, [] );
 
   const allObsPhotoUris = useMemo(

@@ -6,6 +6,7 @@ import {
 } from "@sayem314/react-native-keep-awake";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
+import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import useApiToken from "sharedHooks/useApiToken";
 
@@ -30,6 +31,15 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     setProgress( 0 );
     setTotalUploadCount( 0 );
   };
+
+  useEffect( ( ) => {
+    if ( shouldUpload ) {
+      EventRegister.emit(
+        "INCREMENT_OBSERVATIONS_PROGRESS",
+        allObsToUpload.map( observation => [observation.uuid, 0] )
+      );
+    }
+  }, [shouldUpload, allObsToUpload] );
 
   useEffect( ( ) => {
     const upload = async observationToUpload => {
