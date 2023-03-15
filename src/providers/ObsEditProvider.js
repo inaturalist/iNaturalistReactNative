@@ -4,7 +4,8 @@ import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-k
 import { searchObservations } from "api/observations";
 import type { Node } from "react";
 import React, {
-  useCallback, useMemo, useState
+  useCallback, useMemo, useState,
+   useEffect
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
@@ -14,6 +15,7 @@ import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import { EventRegister } from 'react-native-event-listeners'
 
 import { ObsEditContext, RealmContext } from "./contexts";
 
@@ -46,6 +48,22 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setEvidenceToAdd( [] );
     setUnsavedChanges( false );
   }, [] );
+
+  useEffect(() => {
+    const progressListener = EventRegister.addEventListener(
+      "INCREMENT_OBSERVATION_PROGRESS",
+      ([uuid, increment]) => {
+        setUploadProgress((currentProgress) => {
+          currentProgress[uuid] ??= increment;
+          currentProgress[uuid] += increment;
+          return { ...currentProgress };
+        });
+      }
+    );
+    return () => {
+      EventRegister.removeEventListener(progressListener);
+    };
+  }, []);
 
   const allObsPhotoUris = useMemo(
     ( ) => [...cameraPreviewUris, ...galleryUris],
