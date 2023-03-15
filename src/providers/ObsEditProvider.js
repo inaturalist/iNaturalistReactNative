@@ -51,11 +51,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   useEffect( () => {
     const progressListener = EventRegister.addEventListener(
-      "INCREMENT_OBSERVATION_PROGRESS",
-      ( [uuid, increment] ) => {
+      "INCREMENT_OBSERVATIONS_PROGRESS",
+      increments => {
         setUploadProgress( currentProgress => {
-          currentProgress[uuid] ??= increment;
-          currentProgress[uuid] += increment;
+          increments.forEach( ( [uuid, increment] ) => {
+            currentProgress[uuid] ??= increment;
+            currentProgress[uuid] += increment;
+          } );
+
           return { ...currentProgress };
         } );
       }

@@ -296,8 +296,8 @@ class Observation extends Realm.Object {
 
   static uploadObservation = async ( obs, apiToken, realm ) => {
     EventRegister.emit(
-      "INCREMENT_OBSERVATION_PROGRESS",
-      [obs.uuid, 0.05]
+      "INCREMENT_OBSERVATIONS_PROGRESS",
+      [[obs.uuid, 0.05]]
     );
     const obsToUpload = Observation.mapObservationForUpload( obs );
     const options = { api_token: apiToken };
@@ -333,10 +333,10 @@ class Observation extends Realm.Object {
           realm,
           options
         ).then( () => {
-          EventRegister.emit( "INCREMENT_OBSERVATION_PROGRESS", [
+          EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
             obs.uuid,
             hasSounds ? 0.125 : 0.25
-          ] );
+          ]] );
         } )
         : null,
       hasSounds
@@ -349,19 +349,19 @@ class Observation extends Realm.Object {
           realm,
           options
         ).then( () => {
-          EventRegister.emit( "INCREMENT_OBSERVATION_PROGRESS", [
+          EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
             obs.uuid,
             hasPhotos ? 0.125 : 0.25
-          ] );
+          ]] );
         } )
         : null
     ] );
 
     if ( !hasPhotos && !hasSounds ) {
-      EventRegister.emit( "INCREMENT_OBSERVATION_PROGRESS", [
+      EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
         obs.uuid,
         0.25
-      ] );
+      ]] );
     }
 
     // TODO
@@ -380,10 +380,10 @@ class Observation extends Realm.Object {
       response = await createObservation( uploadParams, options );
     }
 
-    EventRegister.emit( "INCREMENT_OBSERVATION_PROGRESS", [
+    EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
       obs.uuid,
       0.3
-    ] );
+    ]] );
 
     const { uuid: obsUUID } = response.results[0];
     await Promise.all( [
@@ -400,10 +400,10 @@ class Observation extends Realm.Object {
           options,
           true
         ).then( () => {
-          EventRegister.emit( "INCREMENT_OBSERVATION_PROGRESS", [
+          EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
             obs.uuid,
             hasSounds ? 0.2 : 0.4
-          ] );
+          ]] );
         } )
         : null,
       hasSounds
@@ -417,19 +417,19 @@ class Observation extends Realm.Object {
           options,
           true
         ).then( () => {
-          EventRegister.emit( "INCREMENT_OBSERVATION_PROGRESS", [
+          EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
             obs.uuid,
             hasPhotos ? 0.2 : 0.4
-          ] );
+          ]] );
         } )
         : null
     ] );
 
     if ( !hasPhotos && !hasSounds ) {
-      EventRegister.emit( "INCREMENT_OBSERVATION_PROGRESS", [
+      EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
         obs.uuid,
         0.4
-      ] );
+      ]] );
     }
 
     return response;
