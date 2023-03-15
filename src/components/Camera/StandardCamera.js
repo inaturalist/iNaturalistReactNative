@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
+import classnames from "classnames";
 import {
   Button, CloseButton, Heading4,
   List2
@@ -195,6 +196,8 @@ const StandardCamera = ( ): Node => {
 
   const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
 
+  const checkmarkClass = "w-[40px] h-[40px] my-auto";
+
   return (
     <View className="flex-1 bg-black">
       <StatusBar barStyle="light-content" />
@@ -208,53 +211,57 @@ const StandardCamera = ( ): Node => {
         {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
         <FadeInOutView savingPhoto={savingPhoto} />
       </View>
-      <View className="pt-[8px]">
-        <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4`}>
-          {hasFlash ? (
-            <Pressable onPress={toggleFlash} accessibilityRole="button">
-              {takePhotoOptions.flash === "on"
-                ? renderFlashButton( "flash-on" )
-                : renderFlashButton( "flash-off" )}
-            </Pressable>
-          ) : (
-            <View />
-          )}
-          <Pressable
-            onPress={flipCamera}
-            accessibilityLabel={t( "Camera-button-label-switch-camera" )}
-            accessibilityRole="button"
-          >
-            <Avatar.Icon
-              testID="camera-button-label-switch-camera"
-              size={40}
-              icon="flip"
-              style={{ backgroundColor: colors.darkGray }}
-            />
+      <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4`}>
+        {hasFlash ? (
+          <Pressable onPress={toggleFlash} accessibilityRole="button">
+            {takePhotoOptions.flash === "on"
+              ? renderFlashButton( "flash-on" )
+              : renderFlashButton( "flash-off" )}
           </Pressable>
-        </View>
-        <View className="bg-black h-32 flex-row justify-between items-center">
-          <View className="w-1/3">
-            <CloseButton />
-          </View>
-          <IconButton
-            icon="camera"
-            onPress={takePhoto}
-            disabled={disallowAddingPhotos}
-            containerColor={colors.white}
+        ) : (
+          <View />
+        )}
+        <Pressable
+          onPress={flipCamera}
+          accessibilityLabel={t( "Camera-button-label-switch-camera" )}
+          accessibilityRole="button"
+        >
+          <Avatar.Icon
+            testID="camera-button-label-switch-camera"
+            size={40}
+            icon="flip"
+            style={{ backgroundColor: colors.darkGray }}
           />
-          <View className="w-1/3">
-            {photosTaken && (
-              <IconButton
-                icon="checkmark"
-                iconColor={theme.colors.onSecondary}
-                containerColor={theme.colors.secondary}
-                onPress={navToObsEdit}
-                accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-                disabled={false}
-              />
-            )}
-          </View>
+        </Pressable>
+      </View>
+      <View className="h-[89px] flex-row justify-between items-center mx-7">
+        <CloseButton />
+        <IconButton
+          icon="camera"
+          onPress={takePhoto}
+          disabled={disallowAddingPhotos}
+          containerColor={colors.white}
+          size={50}
+        />
+        {photosTaken && (
+        <View
+          className={classnames( checkmarkClass, {
+            "rotate-0": imageOrientation === "portrait" && !isTablet,
+            "-rotate-90": imageOrientation === "landscapeLeft" && !isTablet,
+            "rotate-90": imageOrientation === "landscapeRight" && !isTablet
+          } )}
+        >
+          <IconButton
+            icon="checkmark"
+            iconColor={theme.colors.onSecondary}
+            containerColor={theme.colors.secondary}
+            onPress={navToObsEdit}
+            accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+            disabled={false}
+            className={checkmarkClass}
+          />
         </View>
+        )}
       </View>
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}
