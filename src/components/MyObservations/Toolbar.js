@@ -149,7 +149,7 @@ const Toolbar = ( {
         color={theme.colors.secondary}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{ backgroundColor: "transparent" }}
-        visible={uploadInProgress && progress !== 0}
+        visible={uploadInProgress && progress !== 0 && progress < 1}
       />
     </View>
   );
