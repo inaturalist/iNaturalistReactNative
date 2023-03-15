@@ -4,9 +4,10 @@ import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-k
 import { searchObservations } from "api/observations";
 import type { Node } from "react";
 import React, {
-  useCallback, useMemo, useState,
-   useEffect
+  useCallback, useEffect,
+  useMemo, useState
 } from "react";
+import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
@@ -15,7 +16,6 @@ import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
 import useCurrentUser from "sharedHooks/useCurrentUser";
-import { EventRegister } from 'react-native-event-listeners'
 
 import { ObsEditContext, RealmContext } from "./contexts";
 
@@ -49,21 +49,21 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setUnsavedChanges( false );
   }, [] );
 
-  useEffect(() => {
+  useEffect( () => {
     const progressListener = EventRegister.addEventListener(
       "INCREMENT_OBSERVATION_PROGRESS",
-      ([uuid, increment]) => {
-        setUploadProgress((currentProgress) => {
+      ( [uuid, increment] ) => {
+        setUploadProgress( currentProgress => {
           currentProgress[uuid] ??= increment;
           currentProgress[uuid] += increment;
           return { ...currentProgress };
-        });
+        } );
       }
     );
     return () => {
-      EventRegister.removeEventListener(progressListener);
+      EventRegister.removeEventListener( progressListener );
     };
-  }, []);
+  }, [] );
 
   const allObsPhotoUris = useMemo(
     ( ) => [...cameraPreviewUris, ...galleryUris],
