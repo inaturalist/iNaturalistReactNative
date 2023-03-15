@@ -1,6 +1,6 @@
 // @flow
 
-import classNames from 'classnames';
+import classNames from "classnames";
 import { Body2, Body4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
@@ -69,7 +69,7 @@ const Toolbar = ( {
     <View className={
       classNames(
         "bg-white justify-center h-[78px]",
-        {"border-b border-lightGray": layout !== "grid" }
+        { "border-b border-lightGray": layout !== "grid" }
       )
     }
     >
