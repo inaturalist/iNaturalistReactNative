@@ -35,6 +35,23 @@ const ContextHeader = ( {
     return getHeaderTitle( options, route.name );
   };
 
+  const renderBackButton = () => {
+    if ( options.headerLeft ) {
+      return options.headerLeft();
+    }
+
+    return (
+      back && (
+        <HeaderBackButton
+          tintColor={colors.black}
+          onPress={navigation.goBack}
+        />
+      )
+    );
+  };
+
+  const backButton = renderBackButton();
+
   return (
     <View
       className="pt-[30px] h-[84px] w-full bg-white px-[24px]"
@@ -57,17 +74,14 @@ const ContextHeader = ( {
           }
         )}
       >
-        {back && (
+        {backButton && (
           <View
             className={classNames( "ml-[-8px] absolute top-0", {
               "mt-[-4px]": Platform.OS === "android",
               "mt-[-8px]": Platform.OS === "ios"
             } )}
           >
-            <HeaderBackButton
-              tintColor={colors.black}
-              onPress={navigation.goBack}
-            />
+            {backButton}
           </View>
         )}
         {customTitleComponent ? (

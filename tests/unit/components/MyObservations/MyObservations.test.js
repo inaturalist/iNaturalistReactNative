@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import ObsList from "components/Observations/ObsList";
+import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import initI18next from "i18n/initI18next";
 import React from "react";
 
@@ -17,16 +17,20 @@ const mockObservations = [
   factory( "LocalObservation" )
 ];
 
-// Mock the hooks we use on ObsList since we're not trying to test them here
+const mockNavigate = jest.fn();
+jest.mock( "@react-navigation/native", () => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useRoute: () => ( {} ),
+    useNavigation: () => ( {
+      navigate: mockNavigate,
+      addListener: jest.fn()
+    } )
+  };
+} );
 
 jest.mock( "sharedHooks/useApiToken" );
-
-const mockUser = factory( "LocalUser" );
-
-jest.mock( "sharedHooks/useCurrentUser", () => ( {
-  __esModule: true,
-  default: () => mockUser
-} ) );
 
 jest.mock( "sharedHooks/useLocalObservations", () => ( {
   __esModule: true,
@@ -36,49 +40,37 @@ jest.mock( "sharedHooks/useLocalObservations", () => ( {
   } )
 } ) );
 
-jest.mock( "@react-navigation/native", () => {
-  const actualNav = jest.requireActual( "@react-navigation/native" );
-  return {
-    ...actualNav,
-    useRoute: () => ( {
-      params: {
-        id: mockObservations[0].uuid
-      }
-    } )
-  };
-} );
-
-describe( "ObsList", () => {
+describe( "MyObservations", () => {
   beforeAll( async () => {
     await initI18next();
   } );
 
   it( "should not have accessibility errors", () => {
-    renderComponent( <ObsList /> );
-    const obsList = screen.getByTestId( "ObservationViews.myObservations" );
+    renderComponent( <MyObservationsContainer /> );
+    const obsList = screen.getByTestId( "MyObservationsAnimatedList" );
     expect( obsList ).toBeAccessible();
   } );
 
   it( "renders an observation", async () => {
-    renderComponent( <ObsList /> );
+    renderComponent( <MyObservationsContainer /> );
     const obs = mockObservations[0];
 
-    const list = await screen.findByTestId( "ObservationViews.myObservations" );
+    const list = await screen.findByTestId( "MyObservationsAnimatedList" );
     // Test that there isn't other data lingering
     expect( list.props.data.length ).toEqual( mockObservations.length );
     // Test that a card got rendered for the our test obs
-    const card = await screen.findByTestId( `ObsList.obsListItem.${obs.uuid}` );
+    const card = await screen.findByTestId( `MyObservations.obsListItem.${obs.uuid}` );
     expect( card ).toBeTruthy();
   } );
 
   it( "renders multiple observations", async () => {
-    renderComponent( <ObsList /> );
+    renderComponent( <MyObservationsContainer /> );
     // Awaiting the first observation because using await in the forEach errors out
     const firstObs = mockObservations[0];
-    await screen.findByTestId( `ObsList.obsListItem.${firstObs.uuid}` );
+    await screen.findByTestId( `MyObservations.obsListItem.${firstObs.uuid}` );
     mockObservations.forEach( obs => {
       expect(
-        screen.getByTestId( `ObsList.obsListItem.${obs.uuid}` )
+        screen.getByTestId( `MyObservations.obsListItem.${obs.uuid}` )
       ).toBeTruthy();
     } );
     // TODO: some things are still happening in the background so I unmount here,
@@ -87,14 +79,14 @@ describe( "ObsList", () => {
   } );
 
   it( "renders grid view on button press", async () => {
-    renderComponent( <ObsList /> );
-    const button = await screen.findByTestId( "ObsList.toggleGridView" );
+    renderComponent( <MyObservationsContainer /> );
+    const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
     fireEvent.press( button );
     // Awaiting the first observation because using await in the forEach errors out
     const firstObs = mockObservations[0];
-    await screen.findByTestId( `ObsList.gridItem.${firstObs.uuid}` );
+    await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
     mockObservations.forEach( obs => {
-      expect( screen.getByTestId( `ObsList.gridItem.${obs.uuid}` ) ).toBeTruthy();
+      expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
     } );
   } );
 } );

@@ -15,5 +15,6 @@
   "Your-Observations": "Sus observaciones",
   "TAXONOMY-header": "TAXONOMIE es bueno",
   "X-Observations": "{ $count ->\n  [one] 1 Observación\n *[other] { $count } Observaciones\n}",
+  "Welcome-to-iNaturalist": "¡Bienvenido a iNaturalist!",
   "Welcome-user": "<0>Bienvenido de nuevo,</0><1>{ $userHandle }</1>"
 }

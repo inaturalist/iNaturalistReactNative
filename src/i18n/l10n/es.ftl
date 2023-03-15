@@ -14,4 +14,5 @@ X-Observations =
         [one] 1 Observación
        *[other] { $count } Observaciones
     }
+Welcome-to-iNaturalist = ¡Bienvenido a iNaturalist!
 Welcome-user = <0>Bienvenido de nuevo,</0><1>{$userHandle}</1>

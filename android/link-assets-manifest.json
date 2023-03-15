@@ -3,7 +3,7 @@
   "data": [
     {
       "path": "assets/fonts/INatIcon.ttf",
-      "sha1": "47a247e3585aec0da80245083a706f676a7e01c0"
+      "sha1": "2691c217d3dfbcba545ce985c306fa93f9610606"
     },
     {
       "path": "assets/fonts/Whitney-BookItalic-Pro.otf",
@@ -16,6 +16,10 @@
     {
       "path": "assets/fonts/Whitney-Medium-Pro.otf",
       "sha1": "33ca073c11f46dc266a7dc1adeaa102891bd76d1"
+    },
+    {
+      "path": "assets/fonts/inaturalisticons.ttf",
+      "sha1": "d5a9b116c0d7857ec446f4f045fe5316196d22ec"
     }
   ]
 }

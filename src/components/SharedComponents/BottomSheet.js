@@ -12,7 +12,8 @@ type Props = {
   hide?: boolean,
   snapPoints?: ( string|number )[],
   backdropComponent?: Function,
-  onChange?: Function
+  onChange?: Function,
+  handleClose?: Function
 }
 
 const DEFAULT_SNAP_POINTS = ["45%"];
@@ -22,16 +23,20 @@ const StandardBottomSheet = ( {
   hide,
   snapPoints = DEFAULT_SNAP_POINTS,
   backdropComponent = null,
-  onChange = null
+  onChange = null,
+  handleClose
 }: Props ): Node => {
   const sheetRef = useRef( null );
 
   // eslint-disable-next-line
   const noHandle = ( ) => <></>;
 
-  const handleClosePress = useCallback( () => {
-    sheetRef.current?.close();
-  }, [] );
+  const handleClosePress = useCallback( ( ) => {
+    if ( handleClose ) {
+      handleClose( );
+    }
+    sheetRef.current?.close( );
+  }, [handleClose] );
 
   const handleSnapPress = useCallback( ( ) => {
     sheetRef.current?.snapToIndex( 0 );

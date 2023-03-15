@@ -9,9 +9,9 @@ import {
   unfaveObservation
 } from "api/observations";
 import DisplayTaxonName from "components/DisplayTaxonName";
+import ObsStatus from "components/MyObservations/ObsStatus";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
-import ObsStatus from "components/Observations/ObsStatus";
-import { Tabs } from "components/SharedComponents";
+import { ObservationLocation, Tabs } from "components/SharedComponents";
 import HideView from "components/SharedComponents/HideView";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import ScrollViewWrapper from "components/SharedComponents/ScrollViewWrapper";
@@ -44,7 +44,6 @@ import colors from "styles/tailwindColors";
 import ActivityTab from "./ActivityTab";
 import AddCommentModal from "./AddCommentModal";
 import DataTab from "./DataTab";
-import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 
 const { useRealm } = RealmContext;
 
@@ -334,23 +333,7 @@ const ObsDetails = (): Node => {
           {showTaxon()}
           <ObsStatus layout="vertical" observation={observation} />
         </View>
-        <View
-          className="flex-row ml-3"
-          accessible
-          accessibilityLabel={t( "Location" )}
-          accessibilityValue={{
-            text: checkCamelAndSnakeCase( observation, "placeGuess" )
-          }}
-        >
-          <IconMaterial
-            name="location-pin"
-            size={15}
-            color={theme.colors.primary}
-          />
-          <Text className="color-darkGray ml-2">
-            {checkCamelAndSnakeCase( observation, "placeGuess" )}
-          </Text>
-        </View>
+        <ObservationLocation observation={observation} classNameMargin="ml-3 mb-2" />
         <Tabs tabs={tabs} activeId={currentTabId} />
         <HideView show={currentTabId === ACTIVITY_TAB_ID}>
           <ActivityTab

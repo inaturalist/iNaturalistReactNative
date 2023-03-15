@@ -1,5 +1,4 @@
-// @flow
-import ObsStatus from "components/Observations/ObsStatus";
+import ObsStatus from "components/MyObservations/ObsStatus";
 import {
   ActivityCount,
   Body1,
@@ -57,8 +56,10 @@ const UiLibrary = (): Node => {
   return (
     <ViewWrapper>
       <FloatingActionBar
-        position="bottomStart"
-        containerClass="mx-4 px-2 my-[100px]"
+        position="bottomEnd"
+        containerClass="mx-4 px-2 rounded-md"
+        endY={200}
+        show
       >
         <Heading2 className="my-2">Floating Action Bar</Heading2>
         <IconButton className="mx-auto" icon="star-bold-outline" mode="contained" />
