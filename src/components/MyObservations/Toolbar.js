@@ -56,7 +56,7 @@ const Toolbar = ( {
     () => ( {
       transform: [
         {
-          rotateZ: `${rotation.value}deg`
+          rotateZ: `-${rotation.value}deg`
         }
       ]
     } ),
