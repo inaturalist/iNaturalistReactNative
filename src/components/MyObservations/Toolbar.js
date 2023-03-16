@@ -2,13 +2,12 @@
 
 import classNames from "classnames";
 import { Body2, Body4, INatIcon } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 import { Animated, Easing } from "react-native";
 import { IconButton, ProgressBar, useTheme } from "react-native-paper";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
 type Props = {
   layout: string,
@@ -68,85 +67,79 @@ const Toolbar = ( {
   return (
     <View className={
       classNames(
-        "bg-white justify-center h-[78px]",
+        "bg-white h-[78px]",
         { "border-b border-lightGray": layout !== "grid" }
       )
     }
     >
-      <View className="flex-row items-center px-[15px]">
-        {currentUser && (
-          <IconButton
-            icon="compass-rose-outline"
-            onPress={navToExplore}
-            accessibilityLabel={t( "Explore" )}
-            accessibilityHint={t( "Navigates-to-explore" )}
-            accessibilityRole="button"
-            size={26}
-            disabled={false}
-            accessibilityState={{ disabled: false }}
-          />
-        )}
-
-        <Animated.View
-          style={uploading ? { transform: [{ rotate: spin }] } : {}}
-        >
-          <IconButton
-            icon={getSyncIcon( )}
-            size={26}
-            onPress={handleSyncButtonPress}
-            accessibilityRole="button"
-            disabled={false}
-            accessibilityState={{ disabled: false }}
-            iconColor={getSyncIconColor( )}
-          />
-        </Animated.View>
-
-        {statusText && (
-          <View>
-            <View className="flex-row items-center">
-              <Body2 className="ml-1">{statusText}</Body2>
-
-              {( uploadComplete && !uploadError ) && (
-                <View className="ml-2">
-                  <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
-                </View>
-              )}
-            </View>
-            <View className="max-w-[200px]">
-              {uploadError && (
-                <Body4 className="ml-1 mt-[3px] color-warningRed">
-                  {uploadError}
-                </Body4>
-              )}
-            </View>
-          </View>
-        )}
-
-        <View className="ml-auto flex-row items-center">
-          {( uploadInProgress && !uploadComplete ) && (
-            <Pressable onPress={stopUpload} accessibilityRole="button">
-              <IconMaterial name="close" size={11} color={theme.colors.primary} />
-            </Pressable>
-          )}
-
-          <Pressable
-            className="ml-2"
-            testID={
-              layout === "list"
-                ? "MyObservationsToolbar.toggleGridView"
-                : "MyObservationsToolbar.toggleListView"
-            }
-            onPress={toggleLayout}
-            accessibilityRole="button"
-          >
+      <View className="flex-row justify-between items-center px-[7px]">
+        <View className="flex-row items-center">
+          {currentUser && (
             <IconButton
-              icon={layout === "grid" ? "listview" : "gridview"}
+              icon="compass-rose-outline"
+              onPress={navToExplore}
+              accessibilityLabel={t( "Explore" )}
+              accessibilityHint={t( "Navigates-to-explore" )}
+              accessibilityRole="button"
               size={30}
               disabled={false}
               accessibilityState={{ disabled: false }}
             />
-          </Pressable>
+          )}
+          <Animated.View
+            style={uploading ? { transform: [{ rotate: spin }] } : {}}
+          >
+            <IconButton
+              icon={getSyncIcon( )}
+              size={30}
+              onPress={handleSyncButtonPress}
+              accessibilityRole="button"
+              disabled={false}
+              accessibilityState={{ disabled: false }}
+              iconColor={getSyncIconColor( )}
+            />
+          </Animated.View>
+
+          {statusText && (
+            <View className="max-w-[200px] sm:max-w-[190px]">
+              <View className="flex-row items-center">
+                <Body2>{statusText}</Body2>
+                {( uploadComplete && !uploadError ) && (
+                  <View className="ml-2">
+                    <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
+                  </View>
+                )}
+              </View>
+              {uploadError && (
+                <Body4 className="mt-[3px] color-warningRed">
+                  {uploadError}
+                </Body4>
+              )}
+            </View>
+          )}
+          {( uploadInProgress && !uploadComplete ) && (
+            <IconButton
+              icon="close"
+              size={11}
+              iconColor={theme.colors.primary}
+              onPress={stopUpload}
+              accessibilityRole="button"
+            />
+          )}
         </View>
+        <IconButton
+          icon={layout === "grid" ? "listview" : "gridview"}
+          size={30}
+          disabled={false}
+          accessibilityState={{ disabled: false }}
+          testID={
+            layout === "list"
+              ? "MyObservationsToolbar.toggleGridView"
+              : "MyObservationsToolbar.toggleListView"
+          }
+          onPress={toggleLayout}
+          accessibilityRole="button"
+        />
       </View>
       <ProgressBar
         progress={progress}
