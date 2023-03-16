@@ -107,16 +107,16 @@ const Toolbar = ( {
               <Body2 className="ml-1">{statusText}</Body2>
 
               {( uploadComplete && !uploadError ) && (
-              <View className="ml-2">
-                <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
-              </View>
+                <View className="ml-2">
+                  <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
+                </View>
               )}
             </View>
             <View className="max-w-[200px]">
               {uploadError && (
-              <Body4 className="ml-1 mt-[3px] color-warningRed">
-                {uploadError}
-              </Body4>
+                <Body4 className="ml-1 mt-[3px] color-warningRed">
+                  {uploadError}
+                </Body4>
               )}
             </View>
           </View>

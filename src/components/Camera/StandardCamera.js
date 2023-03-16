@@ -172,16 +172,16 @@ const StandardCamera = ( ): Node => {
     let testID = "";
     let accessibilityLabel = "";
     switch ( icon ) {
-      case "flash-on":
-        testID = "flash-button-label-flash";
-        accessibilityLabel = t( "Flash-button-label-flash" );
-        break;
-      case "flash-off":
-        testID = "flash-button-label-flash-off";
-        accessibilityLabel = t( "Flash-button-label-flash-off" );
-        break;
-      default:
-        break;
+    case "flash-on":
+      testID = "flash-button-label-flash";
+      accessibilityLabel = t( "Flash-button-label-flash" );
+      break;
+    case "flash-off":
+      testID = "flash-button-label-flash-off";
+      accessibilityLabel = t( "Flash-button-label-flash-off" );
+      break;
+    default:
+      break;
     }
     return (
       <Avatar.Icon
@@ -243,7 +243,6 @@ const StandardCamera = ( ): Node => {
           containerColor={colors.white}
           size={50}
         />
-        {photosTaken && (
         <View
           className={classnames( checkmarkClass, {
             "rotate-0": imageOrientation === "portrait" && !isTablet,
@@ -251,17 +250,18 @@ const StandardCamera = ( ): Node => {
             "rotate-90": imageOrientation === "landscapeRight" && !isTablet
           } )}
         >
-          <IconButton
-            icon="checkmark"
-            iconColor={theme.colors.onSecondary}
-            containerColor={theme.colors.secondary}
-            onPress={navToObsEdit}
-            accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-            disabled={false}
-            className={checkmarkClass}
-          />
+          {photosTaken && (
+            <IconButton
+              icon="checkmark"
+              iconColor={theme.colors.onSecondary}
+              containerColor={theme.colors.secondary}
+              onPress={navToObsEdit}
+              accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+              disabled={false}
+              className={checkmarkClass}
+            />
+          )}
         </View>
-        )}
       </View>
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}

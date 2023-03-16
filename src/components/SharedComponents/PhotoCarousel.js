@@ -106,10 +106,10 @@ const PhotoCarousel = ( {
               } )}
             >
               {deletePhotoMode && (
-              <LinearGradient
-                className="absolute inset-0"
-                colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
-              />
+                <LinearGradient
+                  className="absolute inset-0"
+                  colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
+                />
               )}
               {( containerStyle === "camera" && deletePhotoMode ) && (
                 <IconButton

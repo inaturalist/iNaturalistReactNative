@@ -186,12 +186,12 @@ const ObsDetails = (): Node => {
 
     const navToObsEdit = () => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } );
     const editIcon = () => ( obsCreatedLocally || obsOwnedByCurrentUser ) && (
-    <IconButton
-      icon="pencil"
-      onPress={navToObsEdit}
-      textColor={theme.colors.primary}
-      accessibilityLabel={t( "Navigate-to-edit-observation" )}
-    />
+      <IconButton
+        icon="pencil"
+        onPress={navToObsEdit}
+        textColor={theme.colors.primary}
+        accessibilityLabel={t( "Navigate-to-edit-observation" )}
+      />
     );
 
     navigation.setOptions( {

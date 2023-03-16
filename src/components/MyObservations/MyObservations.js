@@ -104,7 +104,7 @@ const MyObservations = ( {
             <Animated.FlatList
               data={observations}
               key={numColumns}
-            // eslint-disable-next-line react-native/no-inline-styles
+              // eslint-disable-next-line react-native/no-inline-styles
               contentContainerStyle={layout === "grid" && {
                 alignItems: "center"
               }}
@@ -114,33 +114,33 @@ const MyObservations = ( {
               renderItem={( { item } ) => (
                 <MyObservationsPressable observation={item}>
                   {
-                layout === "grid"
-                  ? (
-                    <ObsGridItem
-                      observation={item}
-                      // 03022023 it seems like Flatlist is designed to work
-                      // better with RN styles than with Tailwind classes
-                      style={{
-                        height: gridItemWidth,
-                        width: gridItemWidth,
-                        margin: GUTTER / 2
-                      }}
-                      uploadStatus={uploadStatus}
-                      setShowLoginSheet={setShowLoginSheet}
-                    />
-                  ) : (
-                    <ObsListItem
-                      observation={item}
-                      uploadStatus={uploadStatus}
-                      setShowLoginSheet={setShowLoginSheet}
-                    />
-                  )
-              }
+                    layout === "grid"
+                      ? (
+                        <ObsGridItem
+                          observation={item}
+                          // 03022023 it seems like Flatlist is designed to work
+                          // better with RN styles than with Tailwind classes
+                          style={{
+                            height: gridItemWidth,
+                            width: gridItemWidth,
+                            margin: GUTTER / 2
+                          }}
+                          uploadStatus={uploadStatus}
+                          setShowLoginSheet={setShowLoginSheet}
+                        />
+                      ) : (
+                        <ObsListItem
+                          observation={item}
+                          uploadStatus={uploadStatus}
+                          setShowLoginSheet={setShowLoginSheet}
+                        />
+                      )
+                  }
                 </MyObservationsPressable>
               )}
               ListEmptyComponent={
                 <MyObservationsEmpty isLoading={isLoading} />
-            }
+              }
               ListHeaderComponent={(
                 <Header
                   setLayout={setLayout}
@@ -151,13 +151,13 @@ const MyObservations = ( {
                   uploadStatus={uploadStatus}
                   setShowLoginSheet={setShowLoginSheet}
                 />
-            )}
+              )}
               ItemSeparatorComponent={
-              layout !== "grid" && <View className="border-b border-lightGray" />
-            }
+                layout !== "grid" && <View className="border-b border-lightGray" />
+              }
               ListFooterComponent={
                 <InfiniteScrollLoadingWheel isLoading={isLoading} currentUser={currentUser} />
-            }
+              }
               stickyHeaderIndices={[0]}
               bounces={false}
               initialNumToRender={10}

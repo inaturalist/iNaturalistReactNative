@@ -54,6 +54,7 @@ module.exports = {
       jsx: "never",
       json: "always"
     }],
+    indent: ["error", 2],
     "max-len": [
       "error",
       100,
