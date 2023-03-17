@@ -1,4 +1,4 @@
-import { fireEvent, screen, within } from "@testing-library/react-native";
+import { fireEvent, screen } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import initI18next from "i18n/initI18next";
 import React from "react";
@@ -61,13 +61,6 @@ describe( "MyObservations", () => {
     // Test that a card got rendered for the our test obs
     const card = await screen.findByTestId( `MyObservations.obsListItem.${obs.uuid}` );
     expect( card ).toBeTruthy();
-    // Test that the card has the correct comment count
-    const commentCount = within( card ).getByTestId( "ActivityCount.commentCount" );
-    // TODO: I disabled node eslint rule here because we will soon have to refactor this
-    // test into it's own unit test, because the comment count will be a component
-    // after the refactor we should change this line to be in compliance with the eslint rule
-    // eslint-disable-next-line testing-library/no-node-access
-    expect( commentCount.children[0] ).toEqual( obs.comments.length.toString() );
   } );
 
   it( "renders multiple observations", async () => {
