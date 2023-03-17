@@ -55,10 +55,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       increments => {
         setUploadProgress( currentProgress => {
           increments.forEach( ( [uuid, increment] ) => {
-            currentProgress[uuid] ??= 0;
+            currentProgress[uuid] = currentProgress[uuid] ? currentProgress[uuid] : 0;
             currentProgress[uuid] += increment;
           } );
-
           return { ...currentProgress };
         } );
       }
