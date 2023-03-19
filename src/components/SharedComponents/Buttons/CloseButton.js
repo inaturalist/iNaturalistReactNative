@@ -7,16 +7,18 @@ import React from "react";
 import { IconButton, useTheme } from "react-native-paper";
 
 type Props = {
-  className?: string
+  className?: string,
+  size?: number
 }
 
-const CloseButton = ( { className }: Props ): Node => {
+const CloseButton = ( { className, size }: Props ): Node => {
   const navigation = useNavigation( );
   const theme = useTheme( );
 
   return (
     <IconButton
       icon="close"
+      size={size}
       className={className}
       iconColor={theme.colors.background}
       onPress={( ) => navigation.goBack( )}
