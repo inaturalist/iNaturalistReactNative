@@ -200,22 +200,9 @@ const StandardCamera = ( ): Node => {
 
   const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
 
-  // const checkmarkClass = "w-[40px] h-[40px] my-auto";
-
-  return (
-    <View className="flex-1 bg-black">
-      <StatusBar barStyle="light-content" />
-      <PhotoPreview
-        photoUris={cameraPreviewUris}
-        setPhotoUris={setCameraPreviewUris}
-        savingPhoto={savingPhoto}
-        deviceOrientation={imageOrientation}
-      />
-      <View className="relative flex-1">
-        {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
-        <FadeInOutView savingPhoto={savingPhoto} />
-      </View>
-      {!hasFlash && (
+  const renderSmallScreenCameraOptions = () => (
+    <>
+      { hasFlash && (
         <Pressable
           className={`absolute bottom-[18px] left-[18px] ${cameraOptionsClassName}`}
           onPress={toggleFlash}
@@ -239,47 +226,107 @@ const StandardCamera = ( ): Node => {
           testID="camera-button-label-switch-camera"
         />
       </Pressable>
-      {
-        isTablet
-          ? (
-        // eslint-disable-next-line max-len
-            <View className="absolute top-0 bottom-0 right-0 justify-center items-center m-2">
-              <Pressable
-                className={`${cameraOptionsClassName} m-[12.5px]`}
-                onPress={toggleFlash}
-                accessibilityRole="button"
-              >
-                {takePhotoOptions.flash === "on"
-                  ? renderFlashButton( "flash-on" )
-                  : renderFlashButton( "flash-off" )}
-              </Pressable>
+    </>
+  );
 
+  const checkmarkClass = "bg-inatGreen rounded-full h-[40px] w-[40px] justify-center items-center";
+
+  const renderLargeScreenCameraOptions = () => (
+    <View className="absolute top-0 bottom-0 right-0 justify-center items-center m-2">
+      { hasFlash && (
+        <Pressable
+          className={`${cameraOptionsClassName} m-[12.5px]`}
+          onPress={toggleFlash}
+          accessibilityRole="button"
+        >
+          {takePhotoOptions.flash === "on"
+            ? renderFlashButton( "flash-on" )
+            : renderFlashButton( "flash-off" )}
+        </Pressable>
+      )}
+      <Pressable
+        className={` ${cameraOptionsClassName} m-[12.5px]`}
+        onPress={flipCamera}
+        accessibilityLabel={t( "Camera-button-label-switch-camera" )}
+        accessibilityRole="button"
+      >
+        <INatIcon
+          name="rotate"
+          color={colors.white}
+          size={20}
+          testID="camera-button-label-switch-camera"
+        />
+      </Pressable>
+      <Pressable
+        // eslint-disable-next-line max-len
+        className="bg-white rounded-full h-[60px] w-[60px] justify-center items-center m-[12.5px]"
+        onPress={takePhoto}
+        accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+        accessibilityRole="button"
+        disabled={disallowAddingPhotos}
+      >
+        <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
+      </Pressable>
+      {photosTaken && (
+        <Pressable
+          className={checkmarkClass}
+          onPress={navToObsEdit}
+          accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+          accessibilityRole="button"
+          disabled={false}
+        >
+          <INatIcon
+            name="checkmark"
+            color={colors.white}
+            size={20}
+            testID="camera-button-label-switch-camera"
+          />
+        </Pressable>
+      )}
+      <View className={`${cameraOptionsClassName} m-[12.5px]`}>
+        <CloseButton size={18} />
+      </View>
+    </View>
+  );
+
+  return (
+    <View className="flex-1 bg-black">
+      <StatusBar barStyle="light-content" />
+      <PhotoPreview
+        photoUris={cameraPreviewUris}
+        setPhotoUris={setCameraPreviewUris}
+        savingPhoto={savingPhoto}
+        deviceOrientation={imageOrientation}
+      />
+      <View className="relative flex-1">
+        {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
+        <FadeInOutView savingPhoto={savingPhoto} />
+        {!isTablet ? renderSmallScreenCameraOptions()
+          : renderLargeScreenCameraOptions()}
+      </View>
+      { !isTablet
+      && (
+        <View className="bg-black h-32 flex-row justify-between items-center">
+          <View className="w-1/3 ml-[20px]">
+            <CloseButton />
+          </View>
+          <Pressable
+            className="bg-white rounded-full h-[60px] w-[60px] justify-center items-center"
+            onPress={takePhoto}
+            accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+            accessibilityRole="button"
+            disabled={disallowAddingPhotos}
+          >
+            <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
+          </Pressable>
+          <View className="w-1/3 items-end mr-[20px]">
+            {photosTaken && (
               <Pressable
-                className={` ${cameraOptionsClassName} m-[12.5px]`}
-                onPress={flipCamera}
-                accessibilityLabel={t( "Camera-button-label-switch-camera" )}
-                accessibilityRole="button"
-              >
-                <INatIcon
-                  name="rotate"
-                  color={colors.white}
-                  size={20}
-                  testID="camera-button-label-switch-camera"
-                />
-              </Pressable>
-              <Pressable
-                // eslint-disable-next-line max-len
-                className="bg-white rounded-full h-[60px] w-[60px] justify-center items-center m-[12.5px]"
-                onPress={takePhoto}
-                accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-                accessibilityRole="button"
-                disabled={disallowAddingPhotos}
-              >
-                <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
-              </Pressable>
-              <Pressable
-                // eslint-disable-next-line max-len
-                className="bg-inatGreen rounded-full h-[40px] w-[40px] justify-center items-center m-[12.5px]"
+                className={classnames( checkmarkClass, {
+                  "rotate-0": imageOrientation === "portrait" && !isTablet,
+                  "-rotate-90": imageOrientation === "landscapeLeft" && !isTablet,
+                  "rotate-90": imageOrientation === "landscapeRight" && !isTablet
+                } )}
                 onPress={navToObsEdit}
                 accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
                 accessibilityRole="button"
@@ -292,51 +339,10 @@ const StandardCamera = ( ): Node => {
                   testID="camera-button-label-switch-camera"
                 />
               </Pressable>
-              <View className={`${cameraOptionsClassName} m-[12.5px]`}>
-                <CloseButton size={18} />
-              </View>
-            </View>
-          )
-          : <View />
-      }
-
-      <View className="bg-black h-32 flex-row justify-between items-center">
-        <View className="w-1/3 ml-[20px]">
-          <CloseButton />
+            )}
+          </View>
         </View>
-        <Pressable
-          className="bg-white rounded-full h-[60px] w-[60px] justify-center items-center"
-          onPress={takePhoto}
-          accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-          accessibilityRole="button"
-          disabled={disallowAddingPhotos}
-        >
-          <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
-        </Pressable>
-        <View className={classnames( "w-1/3 items-end mr-[20px]", {
-          "rotate-0": imageOrientation === "portrait" && !isTablet,
-          "-rotate-90": imageOrientation === "landscapeLeft" && !isTablet,
-          "rotate-90": imageOrientation === "landscapeRight" && !isTablet
-        } )}
-        >
-          {photosTaken && (
-            <Pressable
-              className="bg-inatGreen rounded-full h-[40px] w-[40px] justify-center items-center"
-              onPress={navToObsEdit}
-              accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-              accessibilityRole="button"
-              disabled={false}
-            >
-              <INatIcon
-                name="checkmark"
-                color={colors.white}
-                size={20}
-                testID="camera-button-label-switch-camera"
-              />
-            </Pressable>
-          )}
-        </View>
-      </View>
+      )}
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>
