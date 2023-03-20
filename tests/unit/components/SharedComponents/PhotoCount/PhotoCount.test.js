@@ -2,6 +2,14 @@ import { render, screen } from "@testing-library/react-native";
 import { PhotoCount } from "components/SharedComponents";
 import React from "react";
 
+jest.mock( "@react-navigation/native", ( ) => {
+  const actualNav = jest.requireActual( "@react-navigation/native" );
+  return {
+    ...actualNav,
+    useIsFocused: ( ) => true
+  };
+} );
+
 describe( "PhotoCount", () => {
   it( "renders correctly", () => {
     render( <PhotoCount count={7} size={50} shadow /> );
