@@ -9,8 +9,8 @@ import {
   unfaveObservation
 } from "api/observations";
 import DisplayTaxonName from "components/DisplayTaxonName";
+import ObsStatus from "components/MyObservations/ObsStatus";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
-import ObsStatus from "components/Observations/ObsStatus";
 import { ObservationLocation, Tabs } from "components/SharedComponents";
 import HideView from "components/SharedComponents/HideView";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
@@ -186,12 +186,12 @@ const ObsDetails = (): Node => {
 
     const navToObsEdit = () => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } );
     const editIcon = () => ( obsCreatedLocally || obsOwnedByCurrentUser ) && (
-    <IconButton
-      icon="pencil"
-      onPress={navToObsEdit}
-      textColor={theme.colors.primary}
-      accessibilityLabel={t( "Navigate-to-edit-observation" )}
-    />
+      <IconButton
+        icon="pencil"
+        onPress={navToObsEdit}
+        textColor={theme.colors.primary}
+        accessibilityLabel={t( "Navigate-to-edit-observation" )}
+      />
     );
 
     navigation.setOptions( {

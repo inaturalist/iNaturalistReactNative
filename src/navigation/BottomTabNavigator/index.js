@@ -2,12 +2,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
 import Explore from "components/Explore/Explore";
 import Messages from "components/Messages/Messages";
+import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
 import ObsDetails from "components/ObsDetails/ObsDetails";
-import ObsList from "components/Observations/ObsList";
+import GroupPhotos from "components/PhotoImporter/GroupPhotos";
+import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
+import PermissionGate from "components/SharedComponents/PermissionGate";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UiLibrary from "components/UiLibrary";
 import { t } from "i18next";
@@ -16,10 +19,13 @@ import {
   blankHeaderTitle,
   hideHeader,
   hideHeaderLeft,
+  showCustomHeader,
   showHeaderLeft
 } from "navigation/navigationOptions";
 import ProjectsStackNavigation from "navigation/projectsStackNavigation";
 import React from "react";
+import { PermissionsAndroid } from "react-native";
+import { PERMISSIONS } from "react-native-permissions";
 import User from "realmModels/User";
 import useUserMe from "sharedHooks/useUserMe";
 
@@ -32,6 +38,29 @@ const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
 
 /* eslint-disable react/jsx-props-no-spreading */
+
+const PhotoGalleryWithPermission = () => (
+  <PermissionGate
+    permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}
+  >
+    <PermissionGate
+      permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
+    >
+      <PermissionGate
+        permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
+      >
+        <PermissionGate permission={PERMISSIONS.IOS.PHOTO_LIBRARY} isIOS>
+          <PermissionGate
+            permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE}
+            isIOS
+          >
+            <PhotoGallery />
+          </PermissionGate>
+        </PermissionGate>
+      </PermissionGate>
+    </PermissionGate>
+  </PermissionGate>
+);
 
 const BottomTabs = () => {
   const { remoteUser: user } = useUserMe();
@@ -61,7 +90,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="ObsList"
-        component={ObsList}
+        component={MyObservationsContainer}
         options={{
           ...hideHeader,
           meta: {
@@ -130,19 +159,39 @@ const BottomTabs = () => {
       <Tab.Screen
         name="UI Library"
         component={UiLibrary}
-        options={hideHeaderLeft}
+        options={{
+          ...hideHeaderLeft,
+          ...showCustomHeader
+        }}
       />
       <Tab.Screen
         name="ObsDetails"
         component={ObsDetails}
         options={{
-          headerTitle: t( "Observation" )
+          headerTitle: t( "Observation" ),
+          unmountOnBlur: true
         }}
       />
       <Tab.Screen
         name="TaxonDetails"
         component={TaxonDetails}
         options={blankHeaderTitle}
+      />
+
+      <Tab.Screen
+        name="PhotoGallery"
+        component={PhotoGalleryWithPermission}
+        options={blankHeaderTitle}
+      />
+      <Tab.Screen
+        name="GroupPhotos"
+        component={GroupPhotos}
+        options={{
+          ...showHeaderLeft,
+          ...showCustomHeader,
+          lazy: true,
+          title: t( "Group-Photos" )
+        }}
       />
     </Tab.Navigator>
   );

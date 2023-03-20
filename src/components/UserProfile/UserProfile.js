@@ -50,7 +50,7 @@ const UserProfile = (): React.Node => {
       <Text className="text-xl pb-2">{User.userHandle( user )}</Text>
     );
     const headerRight = () => currentUser?.login === user?.login && (
-    <RNPaperButton icon="pencil" textColor={colors.lightGray} />
+      <RNPaperButton icon="pencil" textColor={colors.lightGray} />
     );
 
     navigation.setOptions( {

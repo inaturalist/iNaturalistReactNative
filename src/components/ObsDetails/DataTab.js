@@ -27,10 +27,10 @@ const DataTab = ( { observation }: Props ): Node => {
     <>
       <View className="px-5">
         {observation.description && (
-        <>
-          <Text className="text-lg my-3">{t( "Notes" )}</Text>
-          <Text>{observation.description}</Text>
-        </>
+          <>
+            <Text className="text-lg my-3">{t( "Notes" )}</Text>
+            <Text>{observation.description}</Text>
+          </>
         )}
         <Text className="text-lg my-3">{t( "Location" )}</Text>
       </View>
@@ -67,10 +67,10 @@ const DataTab = ( { observation }: Props ): Node => {
         <Text className="text-lg my-3">{t( "Other-Data" )}</Text>
         <Attribution observation={observation} />
         {application && (
-        <>
-          <Text className="mt-5">{t( "This-observation-was-created-using" )}</Text>
-          <Text>{application}</Text>
-        </>
+          <>
+            <Text className="mt-5">{t( "This-observation-was-created-using" )}</Text>
+            <Text>{application}</Text>
+          </>
         )}
       </View>
     </>

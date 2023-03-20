@@ -15,7 +15,7 @@ type Props = {
   opaque?: boolean
 };
 
-const Background = ( {
+const ObsImageBackground = ( {
   uri,
   disableGradient = false,
   opaque = false
@@ -43,4 +43,4 @@ const Background = ( {
   );
 };
 
-export default Background;
+export default ObsImageBackground;

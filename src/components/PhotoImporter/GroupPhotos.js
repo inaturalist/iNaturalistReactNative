@@ -1,7 +1,9 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Body2, Button } from "components/SharedComponents";
+import {
+  Body2, Button, FloatingActionBar, StickyToolbar
+} from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -184,35 +186,43 @@ const GroupPhotos = (): Node => {
         testID="GroupPhotos.list"
         ListEmptyComponent={loadingWheel}
       />
-      {selectedObservations.length > 0 && (
-        <Appbar.Header className="bg-white m-5">
-          <Appbar.Action
-            icon="combine"
-            onPress={() => combinePhotos()}
-            disabled={noObsSelected || oneObsSelected}
-            accessibilityLabel={t( "Combine-Photos" )}
-          />
-          <Appbar.Action
-            icon="separate"
-            onPress={() => separatePhotos()}
-            disabled={!obsWithMultiplePhotosSelected}
-            accessibilityLabel={t( "Separate-Photos" )}
-          />
-          <Appbar.Action
-            icon="trash-outline"
-            onPress={() => removePhotos()}
-            disabled={noObsSelected}
-            accessibilityLabel={t( "Remove-Photos" )}
-          />
-        </Appbar.Header>
-      )}
-      <Button
-        className="mx-5"
-        level="focus"
-        text={t( "UPLOAD-X-OBSERVATIONS", { count: observations.length } )}
-        onPress={navToObsEdit}
-        testID="GroupPhotos.next"
-      />
+      <FloatingActionBar
+        show={selectedObservations.length > 0}
+        position="bottomStart"
+        containerClass="bottom-[100px] ml-1 rounded-md"
+      >
+        <View className="rounded-md overflow-hidden">
+          <Appbar.Header>
+            <Appbar.Action
+              icon="combine"
+              onPress={() => combinePhotos()}
+              disabled={noObsSelected || oneObsSelected}
+              accessibilityLabel={t( "Combine-Photos" )}
+            />
+            <Appbar.Action
+              icon="separate"
+              onPress={() => separatePhotos()}
+              disabled={!obsWithMultiplePhotosSelected}
+              accessibilityLabel={t( "Separate-Photos" )}
+            />
+            <Appbar.Action
+              icon="trash-outline"
+              onPress={() => removePhotos()}
+              disabled={noObsSelected}
+              accessibilityLabel={t( "Remove-Photos" )}
+            />
+          </Appbar.Header>
+        </View>
+      </FloatingActionBar>
+      <StickyToolbar>
+        <Button
+          className="mt-2 mx-4"
+          level="focus"
+          text={t( "UPLOAD-X-OBSERVATIONS", { count: observations.length } )}
+          onPress={navToObsEdit}
+          testID="GroupPhotos.next"
+        />
+      </StickyToolbar>
     </ViewWrapper>
   );
 };

@@ -24,5 +24,6 @@ export default define( "LocalObservation", faker => ( {
   description: faker.lorem.paragraph( ),
   // is this the right way to test this?
   needsSync: jest.fn( ),
+  wasSynced: jest.fn( ),
   observed_on_string: "2022-12-03T11:14:16"
 } ) );

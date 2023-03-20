@@ -15,7 +15,7 @@ const useInfiniteScroll = ( idBelow: ?number ): boolean => {
 
   const params = {
     user_id: currentUser?.id,
-    per_page: 10,
+    per_page: 50,
     fields: Observation.FIELDS
   };
 

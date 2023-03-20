@@ -4,8 +4,6 @@ import StandardCamera from "components/Camera/StandardCamera";
 import Login from "components/LoginSignUp/Login";
 import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import GroupPhotos from "components/PhotoImporter/GroupPhotos";
-import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGate from "components/SharedComponents/PermissionGate";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
@@ -15,42 +13,17 @@ import {
   blankHeaderTitle,
   hideHeader,
   hideScreenTransitionAnimation,
-  showCustomHeader,
   showHeader
 } from "navigation/navigationOptions";
 import * as React from "react";
 import { PermissionsAndroid } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { PERMISSIONS } from "react-native-permissions";
 
 import BottomTabNavigator from "./BottomTabNavigator";
 
 const isTablet = DeviceInfo.isTablet();
 
 const Stack = createNativeStackNavigator();
-
-const PhotoGalleryWithPermission = () => (
-  <PermissionGate
-    permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}
-  >
-    <PermissionGate
-      permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-    >
-      <PermissionGate
-        permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
-      >
-        <PermissionGate permission={PERMISSIONS.IOS.PHOTO_LIBRARY} isIOS>
-          <PermissionGate
-            permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE}
-            isIOS
-          >
-            <PhotoGallery />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    </PermissionGate>
-  </PermissionGate>
-);
 
 const StandardCameraWithPermission = () => (
   <PermissionGate
@@ -110,19 +83,6 @@ const MainStackNavigation = (): React.Node => (
         name="StandardCamera"
         component={StandardCameraWithPermission}
         options={{ ...hideHeader, orientation: isTablet ? "all" : "portrait" }}
-      />
-      <Stack.Screen
-        name="PhotoGallery"
-        component={PhotoGalleryWithPermission}
-        options={blankHeaderTitle}
-      />
-      <Stack.Screen
-        name="GroupPhotos"
-        component={GroupPhotos}
-        options={{
-          ...showCustomHeader,
-          title: t( "Group-Photos" )
-        }}
       />
       <Stack.Screen
         name="SoundRecorder"

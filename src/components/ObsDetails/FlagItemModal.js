@@ -166,18 +166,18 @@ const FlagItemModal = ( {
           <Text className="mb-2 text-base">{t( "Flag-Item-Other-Description" )}</Text>
           {( checkBoxValue === "other" )
            && (
-           <>
-             <TextInput
-               className="text-sm"
-               placeholder={t( "Flag-Item-Other-Input-Hint" )}
-               value={explanation}
-               onChangeText={text => setExplanation( text )}
-               onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
-               accessibilityLabel={t( "Flag-Item-Other" )}
-               accessibilityHint={t( "Text-Box-to-Describe-Reason-for-Flag" )}
-             />
-             <Text>{`${explanation.length}/255`}</Text>
-           </>
+             <>
+               <TextInput
+                 className="text-sm"
+                 placeholder={t( "Flag-Item-Other-Input-Hint" )}
+                 value={explanation}
+                 onChangeText={text => setExplanation( text )}
+                 onFocus={e => scrollToInput( findNodeHandle( e.target ) )}
+                 accessibilityLabel={t( "Flag-Item-Other" )}
+                 accessibilityHint={t( "Text-Box-to-Describe-Reason-for-Flag" )}
+               />
+               <Text>{`${explanation.length}/255`}</Text>
+             </>
            )}
           <View className="flex-row justify-center m-4">
             <Button

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator 'iPad Air'",
     "start": "react-native start",
     "clean-start": "npx react-native clean-project-auto && npx pod-install && npm start",
     "test": "TZ=UTC jest",
@@ -71,6 +71,7 @@
     "react-native-config": "^1.4.11",
     "react-native-device-info": "^8.7.1",
     "react-native-dropdown-picker": "^5.3.0",
+    "react-native-event-listeners": "^1.0.7",
     "react-native-exception-handler": "^2.10.10",
     "react-native-exif-reader": "github:inaturalist/react-native-exif-reader",
     "react-native-fs": "^2.19.0",

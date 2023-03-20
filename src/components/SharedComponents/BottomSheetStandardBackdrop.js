@@ -12,7 +12,7 @@ type Props = {
 
 const BottomSheetStandardBackdrop = ( { props }: Props ): Node => (
   <BottomSheetBackdrop
-      // eslint-disable-next-line react/jsx-props-no-spreading
+    // eslint-disable-next-line react/jsx-props-no-spreading
     {...props}
     pressBehavior="close"
     appearsOnIndex={0}

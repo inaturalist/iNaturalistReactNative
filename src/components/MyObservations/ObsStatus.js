@@ -2,10 +2,7 @@
 
 import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
-import {
-  ActivityCount,
-  QualityGradeStatus
-} from "components/SharedComponents";
+import { ActivityCount, QualityGradeStatus } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -35,6 +32,19 @@ const ObsStatus = ( {
   const numIdents = observation.identifications?.length || 0;
   const numComments = observation.comments?.length || 0;
 
+  // 03072023 amanda - applying chris' bandaid fix from PR #515: https://github.com/inaturalist/iNaturalistReactNative/pull/515
+  // to make sure android devices don't crash on start
+  let identificationA11yLabel = "";
+  let commentA11yLabel = "";
+  try {
+    // not exactly sure why this causes a consistent error every time you run android
+    // for the first time...
+    identificationA11yLabel = t( "x-identifications", { count: numIdents } );
+    commentA11yLabel = t( "x-comments", { count: numComments } );
+  } catch ( e ) {
+    console.warn( e );
+  }
+
   return (
     <View className={classNames( "flex", flexDirection, classNameMargin )}>
       <ActivityCount
@@ -42,16 +52,14 @@ const ObsStatus = ( {
         margin={margin}
         count={numIdents}
         color={iconColor}
-        accessibilityLabel={t( "x-identifications", { count: numIdents } )}
-        testID="ActivityCount.identificationCount"
+        accessibilityLabel={identificationA11yLabel}
       />
       <ActivityCount
         icon="comments"
         margin={margin}
-        count={observation.comments?.length}
+        count={numComments}
         color={iconColor}
-        accessibilityLabel={t( "x-comments", { count: numComments } )}
-        testID="ActivityCount.commentCount"
+        accessibilityLabel={commentA11yLabel}
       />
       <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />
     </View>

@@ -1,5 +1,4 @@
-// @flow
-import ObsStatus from "components/Observations/ObsStatus";
+import ObsStatus from "components/MyObservations/ObsStatus";
 import {
   ActivityCount,
   Body1,
@@ -8,6 +7,7 @@ import {
   Body4,
   Button,
   CloseButton,
+  CommentsCount,
   DateDisplay,
   Divider,
   EvidenceButton,
@@ -17,6 +17,7 @@ import {
   Heading3,
   Heading4,
   Heading5,
+  IdentificationsCount,
   INatIcon,
   InlineUser,
   List1,
@@ -55,8 +56,10 @@ const UiLibrary = (): Node => {
   return (
     <ViewWrapper>
       <FloatingActionBar
-        position="bottomStart"
-        containerClass="mx-4 px-2 my-[100px]"
+        position="bottomEnd"
+        containerClass="mx-4 px-2 rounded-md"
+        endY={200}
+        show
       >
         <Heading2 className="my-2">Floating Action Bar</Heading2>
         <IconButton className="mx-auto" icon="star-bold-outline" mode="contained" />
@@ -380,7 +383,6 @@ const UiLibrary = (): Node => {
             <Body2>Small Number</Body2>
             <ActivityCount
               count={10}
-              color={theme.colors.primary}
               accessibilityLabel={t( "x-comments", { count: 10 } )}
             />
           </View>
@@ -388,9 +390,56 @@ const UiLibrary = (): Node => {
             <Body2>Large Number</Body2>
             <ActivityCount
               count={20000}
-              color={theme.colors.error}
               accessibilityLabel={t( "x-comments", { count: 10 } )}
             />
+          </View>
+          <View className="bg-darkGray">
+            <Body2 className="text-white">White</Body2>
+            <ActivityCount
+              count={3}
+              white
+              accessibilityLabel={t( "x-comments", { count: 3 } )}
+            />
+          </View>
+        </View>
+
+        <Heading2 className="my-2">CommentsCount</Heading2>
+        <View className="flex flex-row justify-evenly">
+          <View>
+            <Body2>Basic</Body2>
+            <CommentsCount count={10} />
+          </View>
+          <View>
+            <Body2>Filled</Body2>
+            <CommentsCount count={10} filled />
+          </View>
+          <View>
+            <Body2>Margin</Body2>
+            <CommentsCount count={10} classNameMargin="m-2" />
+          </View>
+          <View className="bg-secondary">
+            <Body2 className="text-white">White</Body2>
+            <CommentsCount count={10} white />
+          </View>
+        </View>
+
+        <Heading2 className="my-2">IdentificationsCount</Heading2>
+        <View className="flex flex-row justify-evenly">
+          <View>
+            <Body2>Basic</Body2>
+            <IdentificationsCount count={10} />
+          </View>
+          <View>
+            <Body2>Filled</Body2>
+            <IdentificationsCount count={10} filled />
+          </View>
+          <View>
+            <Body2>Margin</Body2>
+            <IdentificationsCount count={10} classNameMargin="m-2" />
+          </View>
+          <View className="bg-secondary">
+            <Body2 className="text-white">White</Body2>
+            <IdentificationsCount count={10} white />
           </View>
         </View>
 
