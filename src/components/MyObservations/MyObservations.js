@@ -7,6 +7,7 @@ import React, { useRef, useState } from "react";
 import {
   Animated, Dimensions, Platform
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 
 import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
 import LoginSheet from "./LoginSheet";
@@ -14,6 +15,8 @@ import MyObservationsEmpty from "./MyObservationsEmpty";
 import MyObservationsPressable from "./MyObservationsPressable";
 import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
+
+const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
 const { diffClamp } = Animated;
 
@@ -34,6 +37,31 @@ const {
   height: screenHeight
 } = Dimensions.get( "screen" );
 const GUTTER = 15;
+
+const Item = React.memo(({ item, index, layout, gridItemWidth, uploadStatus, setShowLoginSheet }) => (
+  <MyObservationsPressable observation={item}>
+    {layout === "grid" ? (
+      <ObsGridItem
+        observation={item}
+        // 03022023 it seems like Flatlist is designed to work
+        // better with RN styles than with Tailwind classes
+        style={{
+          height: gridItemWidth,
+          width: gridItemWidth,
+          margin: GUTTER / 2,
+        }}
+        uploadStatus={uploadStatus}
+        setShowLoginSheet={setShowLoginSheet}
+      />
+    ) : (
+      <ObsListItem
+        observation={item}
+        uploadStatus={uploadStatus}
+        setShowLoginSheet={setShowLoginSheet}
+      />
+    )}
+  </MyObservationsPressable>
+))
 
 const MyObservations = ( {
   isLoading,
@@ -95,75 +123,74 @@ const MyObservations = ( {
       useNativeDriver: true
     }
   );
-
+console.log(observations.map(o => o.id || o.uuid))
   return (
     <>
       <ViewWrapper>
         <View className="overflow-hidden">
-          <Animated.View style={[{ transform: [{ translateY: offsetForHeader }] }]}>
-            <Animated.FlatList
-              data={observations}
+          <Animated.View
+            style={[
+              {
+                transform: [{ translateY: offsetForHeader }],
+                height: screenHeight,
+              },
+            ]}
+          >
+            <Header
+              setLayout={setLayout}
+              layout={layout}
+              currentUser={currentUser}
+              numObservations={observations.length}
+              setHeightAboveToolbar={setHeightAboveToolbar}
+              uploadStatus={uploadStatus}
+              setShowLoginSheet={setShowLoginSheet}
+            />
+            <AnimatedFlashList
+              data={observations?.reverse?.()}
               key={numColumns}
+              estimatedItemSize={layout === "grid" ? 165 : 98}
               // eslint-disable-next-line react-native/no-inline-styles
-              contentContainerStyle={layout === "grid" && {
-                alignItems: "center"
-              }}
-              style={{ height: screenHeight }}
-              testID="MyObservationsAnimatedList"
-              numColumns={setNumColumns( )}
-              renderItem={( { item } ) => (
-                <MyObservationsPressable observation={item}>
-                  {
-                    layout === "grid"
-                      ? (
-                        <ObsGridItem
-                          observation={item}
-                          // 03022023 it seems like Flatlist is designed to work
-                          // better with RN styles than with Tailwind classes
-                          style={{
-                            height: gridItemWidth,
-                            width: gridItemWidth,
-                            margin: GUTTER / 2
-                          }}
-                          uploadStatus={uploadStatus}
-                          setShowLoginSheet={setShowLoginSheet}
-                        />
-                      ) : (
-                        <ObsListItem
-                          observation={item}
-                          uploadStatus={uploadStatus}
-                          setShowLoginSheet={setShowLoginSheet}
-                        />
-                      )
-                  }
-                </MyObservationsPressable>
-              )}
-              ListEmptyComponent={
-                <MyObservationsEmpty isLoading={isLoading} />
+              contentContainerStyle={
+                layout === "grid" && {
+                  alignItems: "center",
+                }
               }
-              ListHeaderComponent={(
-                <Header
-                  setLayout={setLayout}
+              testID="MyObservationsAnimatedList"
+              numColumns={setNumColumns()}
+              horizontal={false}
+              keyExtractor={(item) => item.id || item.uuid}
+              renderItem={(props) => (
+                <Item
+                  {...props}
                   layout={layout}
-                  currentUser={currentUser}
-                  numObservations={observations.length}
-                  setHeightAboveToolbar={setHeightAboveToolbar}
+                  gridItemWidth={gridItemWidth}
                   uploadStatus={uploadStatus}
                   setShowLoginSheet={setShowLoginSheet}
                 />
               )}
-              ItemSeparatorComponent={
-                layout !== "grid" && <View className="border-b border-lightGray" />
-              }
-              ListFooterComponent={
-                <InfiniteScrollLoadingWheel isLoading={isLoading} currentUser={currentUser} />
-              }
-              stickyHeaderIndices={[0]}
-              bounces={false}
-              initialNumToRender={10}
+              ListEmptyComponent={() => {
+                return <MyObservationsEmpty isLoading={isLoading} />;
+              }}
+              ItemSeparatorComponent={() => {
+                return (
+                  layout !== "grid" && (
+                    <View className="border-b border-lightGray" />
+                  )
+                );
+              }}
+              ListFooterComponent={() => {
+                return (
+                  <InfiniteScrollLoadingWheel
+                    isLoading={isLoading || true}
+                    currentUser={currentUser}
+                  />
+                );
+              }}
+              initialNumToRender={5}
               onEndReached={onEndReached}
-              onEndReachedThreshold={0.1}
+              onEndReachedThreshold={0.3}
               onScroll={handleScroll}
+              refreshing={isLoading}
             />
           </Animated.View>
         </View>
