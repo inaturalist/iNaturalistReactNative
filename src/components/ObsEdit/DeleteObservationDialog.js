@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
 import { deleteObservation } from "api/observations";
 import { Button } from "components/SharedComponents";
 import { Text } from "components/styledComponents";
@@ -10,7 +11,6 @@ import type { Node } from "react";
 import React, { useContext } from "react";
 import { Dialog, Portal } from "react-native-paper";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-import { useQueryClient } from '@tanstack/react-query'
 
 type Props = {
   deleteDialogVisible: boolean,
@@ -40,7 +40,7 @@ const DeleteObservationDialog = ( {
     {
       onSuccess: ( ) => {
         handleLocalDeletion( );
-        queryClient.invalidateQueries({ queryKey: ["searchObservations"] })
+        queryClient.invalidateQueries( { queryKey: ["searchObservations"] } );
       }
     }
   );
