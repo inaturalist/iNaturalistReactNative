@@ -10,6 +10,7 @@ import type { Node } from "react";
 import React, { useContext } from "react";
 import { Dialog, Portal } from "react-native-paper";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
+import { useQueryClient } from '@tanstack/react-query'
 
 type Props = {
   deleteDialogVisible: boolean,
@@ -25,6 +26,7 @@ const DeleteObservationDialog = ( {
     currentObservation
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
+  const queryClient = useQueryClient( );
   const { uuid } = currentObservation;
 
   const handleLocalDeletion = ( ) => {
@@ -38,6 +40,7 @@ const DeleteObservationDialog = ( {
     {
       onSuccess: ( ) => {
         handleLocalDeletion( );
+        queryClient.invalidateQueries({ queryKey: ["searchObservations"] })
       }
     }
   );
