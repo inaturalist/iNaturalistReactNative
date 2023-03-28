@@ -1,9 +1,10 @@
 // @flow
 
+import NetInfo from "@react-native-community/netinfo";
 import Geocoder from "react-native-geocoder-reborn";
 
 // lifted from SeekReactNative repo
-const setPlaceName = ( results: Array<Object> ) => {
+const setPlaceName = ( results: Array<Object> ): string => {
   let placeName = "";
 
   const {
@@ -32,15 +33,12 @@ const setPlaceName = ( results: Array<Object> ) => {
   return placeName;
 };
 
-const fetchPlaceName = async ( lat: number, lng: number ): Promise<?string> => {
-  try {
-    const results = await Geocoder.geocodePosition( { lat, lng } );
-    if ( results.length === 0 ) { return null; }
-    return setPlaceName( results );
-  } catch ( e ) {
-    console.warn( e, "couldn't fetch geocoded position with coordinates: ", lat, lng );
-    return null;
-  }
+const fetchPlaceName = async ( lat: ?number, lng: ?number ): any => {
+  const { isConnected } = await NetInfo.fetch( );
+  if ( !lat || !lng || !isConnected ) { return null; }
+  const results = await Geocoder.geocodePosition( { lat, lng } );
+  if ( results.length === 0 ) { return null; }
+  return setPlaceName( results );
 };
 
 export default fetchPlaceName;
