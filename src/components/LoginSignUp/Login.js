@@ -65,7 +65,7 @@ const Login = ( ): Node => {
     );
 
     if ( !success ) {
-      setError( t( "Invalid-login" ) );
+      setError( t( "Failed-to-log-in" ) );
       setLoading( false );
       return;
     }

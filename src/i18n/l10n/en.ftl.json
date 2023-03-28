@@ -631,5 +631,17 @@
   "DISCARD-PHOTOS": "DISCARD PHOTOS?",
   "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
   "DISCARD": "DISCARD",
-  "CANCEL": "CANCEL"
+  "CANCEL": "CANCEL",
+  "You-need-an-Internet-connection-to-do-that": {
+    "comment": "Error message when you try to do something that requires an Internet\nconnection but such a connection is, tragically, missing",
+    "val": "You need an Internet connection to do that."
+  },
+  "Failed-to-log-in": {
+    "comment": "Error message with log in fails",
+    "val": "Failed to log in"
+  },
+  "Something-went-wrong": {
+    "comment": "Generic error message",
+    "val": "Something went wrong."
+  }
 }

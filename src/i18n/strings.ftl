@@ -861,3 +861,13 @@ DISCARD-PHOTOS = DISCARD PHOTOS?
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 DISCARD = DISCARD
 CANCEL = CANCEL
+
+# Error message when you try to do something that requires an Internet
+# connection but such a connection is, tragically, missing
+You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
+
+# Error message with log in fails
+Failed-to-log-in = Failed to log in
+
+# Generic error message
+Something-went-wrong = Something went wrong.
