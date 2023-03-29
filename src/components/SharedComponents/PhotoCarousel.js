@@ -72,7 +72,6 @@ const PhotoCarousel = ( {
       return (
         <Pressable
           accessibilityRole="button"
-          accessibilityRole="button"
           onPress={handleAddEvidence}
           className={`${imageClass} border border-lightGray items-center justify-center mt-6`}
         >
@@ -84,7 +83,6 @@ const PhotoCarousel = ( {
     return (
       <>
         <Pressable
-          accessibilityRole="button"
           accessibilityRole="button"
           onLongPress={( ) => {
             if ( deletePhoto ) {
