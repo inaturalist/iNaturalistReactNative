@@ -1,13 +1,11 @@
 // @flow
+import { FlashList } from "@shopify/flash-list";
 import Header from "components/MyObservations/Header";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useRef, useState } from "react";
-import {
-  Animated, Dimensions, Platform
-} from "react-native";
-import { FlashList } from "@shopify/flash-list";
+import React, { useMemo, useRef, useState } from "react";
+import { Animated, Dimensions, Platform } from "react-native";
 
 import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
 import LoginSheet from "./LoginSheet";
@@ -16,12 +14,12 @@ import MyObservationsPressable from "./MyObservationsPressable";
 import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
 
-const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
+const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 const { diffClamp } = Animated;
 
 type Props = {
-  isLoading?: bool,
+  isLoading?: boolean,
   layout: "list" | "grid",
   observations: Array<Object>,
   onEndReached: Function,
@@ -29,39 +27,40 @@ type Props = {
   uploadStatus: Object,
   currentUser: ?Object,
   showLoginSheet: boolean,
-  setShowLoginSheet: Function
-}
+  setShowLoginSheet: Function,
+};
 
-const {
-  width: screenWidth,
-  height: screenHeight
-} = Dimensions.get( "screen" );
+const { width: screenWidth, height: screenHeight } = Dimensions.get( "screen" );
 const GUTTER = 15;
 
-const Item = React.memo(({ item, index, layout, gridItemWidth, uploadStatus, setShowLoginSheet }) => (
-  <MyObservationsPressable observation={item}>
-    {layout === "grid" ? (
-      <ObsGridItem
-        observation={item}
-        // 03022023 it seems like Flatlist is designed to work
-        // better with RN styles than with Tailwind classes
-        style={{
-          height: gridItemWidth,
-          width: gridItemWidth,
-          margin: GUTTER / 2,
-        }}
-        uploadStatus={uploadStatus}
-        setShowLoginSheet={setShowLoginSheet}
-      />
-    ) : (
-      <ObsListItem
-        observation={item}
-        uploadStatus={uploadStatus}
-        setShowLoginSheet={setShowLoginSheet}
-      />
-    )}
-  </MyObservationsPressable>
-))
+const Item = React.memo(
+  ( {
+    observation, layout, gridItemWidth, uploadStatus, setShowLoginSheet
+  } ) => (
+    <MyObservationsPressable observation={observation}>
+      {layout === "grid" ? (
+        <ObsGridItem
+          observation={observation}
+          // 03022023 it seems like Flatlist is designed to work
+          // better with RN styles than with Tailwind classes
+          style={{
+            height: gridItemWidth,
+            width: gridItemWidth,
+            margin: GUTTER / 2
+          }}
+          uploadStatus={uploadStatus}
+          setShowLoginSheet={setShowLoginSheet}
+        />
+      ) : (
+        <ObsListItem
+          observation={observation}
+          uploadStatus={uploadStatus}
+          setShowLoginSheet={setShowLoginSheet}
+        />
+      )}
+    </MyObservationsPressable>
+  )
+);
 
 const MyObservations = ( {
   isLoading,
@@ -78,6 +77,7 @@ const MyObservations = ( {
 
   const [hideHeaderCard, setHideHeaderCard] = useState( false );
   const [yValue, setYValue] = useState( 0 );
+  const memoizedObservations = useMemo( () => [...observations], [observations] );
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
@@ -89,16 +89,24 @@ const MyObservations = ( {
     outputRange: [0, -heightAboveToolbar - 10]
   } );
 
-  const setNumColumns = ( ) => {
-    if ( layout === "list" || screenWidth <= 320 ) { return 1; }
-    if ( screenWidth <= 744 ) { return 2; }
-    if ( screenWidth <= 1024 ) { return 4; }
+  const setNumColumns = () => {
+    if ( layout === "list" || screenWidth <= 320 ) {
+      return 1;
+    }
+    if ( screenWidth <= 744 ) {
+      return 2;
+    }
+    if ( screenWidth <= 1024 ) {
+      return 4;
+    }
     return 6;
   };
 
-  const numColumns = setNumColumns( );
+  const numColumns = setNumColumns();
   const combinedGutterWidth = ( numColumns + 1 ) * GUTTER;
-  const gridItemWidth = Math.round( ( screenWidth - combinedGutterWidth ) / numColumns );
+  const gridItemWidth = Math.round(
+    ( screenWidth - combinedGutterWidth ) / numColumns
+  );
 
   const handleScroll = Animated.event(
     [
@@ -114,7 +122,9 @@ const MyObservations = ( {
         const hide = yValue < y;
         // there's likely a better way to do this, but for now fading out
         // the content that goes under the status bar / safe area notch on iOS
-        if ( Platform.OS !== "ios" ) { return; }
+        if ( Platform.OS !== "ios" ) {
+          return;
+        }
         if ( hide !== hideHeaderCard ) {
           setHideHeaderCard( hide );
           setYValue( y );
@@ -123,7 +133,33 @@ const MyObservations = ( {
       useNativeDriver: true
     }
   );
-console.log(observations.map(o => o.id || o.uuid))
+
+  const renderItem = ( { item } ) => (
+    <Item
+      observation={item}
+      layout={layout}
+      gridItemWidth={gridItemWidth}
+      uploadStatus={uploadStatus}
+      setShowLoginSheet={setShowLoginSheet}
+    />
+  );
+
+  const renderEmptyList = () => <MyObservationsEmpty isLoading={isLoading} />;
+
+  const renderItemSeparator = () => {
+    if ( layout !== "grid" ) {
+      return null;
+    }
+    return <View className="border-b border-lightGray" />;
+  };
+
+  const renderFooter = () => (
+    <InfiniteScrollLoadingWheel
+      isLoading={isLoading || true}
+      currentUser={currentUser}
+    />
+  );
+
   return (
     <>
       <ViewWrapper>
@@ -132,8 +168,8 @@ console.log(observations.map(o => o.id || o.uuid))
             style={[
               {
                 transform: [{ translateY: offsetForHeader }],
-                height: screenHeight,
-              },
+                height: screenHeight
+              }
             ]}
           >
             <Header
@@ -146,46 +182,17 @@ console.log(observations.map(o => o.id || o.uuid))
               setShowLoginSheet={setShowLoginSheet}
             />
             <AnimatedFlashList
-              data={observations?.reverse?.()}
+              data={memoizedObservations}
               key={numColumns}
               estimatedItemSize={layout === "grid" ? 165 : 98}
-              // eslint-disable-next-line react-native/no-inline-styles
-              contentContainerStyle={
-                layout === "grid" && {
-                  alignItems: "center",
-                }
-              }
               testID="MyObservationsAnimatedList"
               numColumns={setNumColumns()}
               horizontal={false}
-              keyExtractor={(item) => item.id || item.uuid}
-              renderItem={(props) => (
-                <Item
-                  {...props}
-                  layout={layout}
-                  gridItemWidth={gridItemWidth}
-                  uploadStatus={uploadStatus}
-                  setShowLoginSheet={setShowLoginSheet}
-                />
-              )}
-              ListEmptyComponent={() => {
-                return <MyObservationsEmpty isLoading={isLoading} />;
-              }}
-              ItemSeparatorComponent={() => {
-                return (
-                  layout !== "grid" && (
-                    <View className="border-b border-lightGray" />
-                  )
-                );
-              }}
-              ListFooterComponent={() => {
-                return (
-                  <InfiniteScrollLoadingWheel
-                    isLoading={isLoading || true}
-                    currentUser={currentUser}
-                  />
-                );
-              }}
+              keyExtractor={item => item.id || item.uuid}
+              renderItem={renderItem}
+              ListEmptyComponent={renderEmptyList}
+              ItemSeparatorComponent={renderItemSeparator}
+              ListFooterComponent={renderFooter}
               initialNumToRender={5}
               onEndReached={onEndReached}
               onEndReachedThreshold={0.3}
