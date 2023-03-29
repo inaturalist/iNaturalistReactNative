@@ -35,6 +35,8 @@ const useLocalObservations = ( ): Object => {
 
       if ( allObsToUpload.length < unsyncedObs.length ) {
         setAllObsToUpload( Array.from( unsyncedObs ) );
+      } else if ( unsyncedObs.length === 0 ) {
+        setAllObsToUpload( [] );
       }
     } );
     // eslint-disable-next-line consistent-return
