@@ -34,8 +34,8 @@ const setPlaceName = ( results: Array<Object> ): string => {
 };
 
 const fetchPlaceName = async ( lat: ?number, lng: ?number ): any => {
-  const { isConnected } = await NetInfo.fetch( );
-  if ( !lat || !lng || !isConnected ) { return null; }
+  const { isInternetReachable } = await NetInfo.fetch( );
+  if ( !lat || !lng || !isInternetReachable ) { return null; }
   const results = await Geocoder.geocodePosition( { lat, lng } );
   if ( results.length === 0 ) { return null; }
   return setPlaceName( results );
