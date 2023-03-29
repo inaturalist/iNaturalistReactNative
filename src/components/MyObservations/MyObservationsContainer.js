@@ -9,14 +9,13 @@ import useUploadObservations from "sharedHooks/useUploadObservations";
 
 import MyObservations from "./MyObservations";
 
-const MyObservationsContainer = ( ): Node => {
-  const { observationList: observations, allObsToUpload } = useLocalObservations( );
+const MyObservationsContainer = (): Node => {
+  const { observationList: observations, allObsToUpload } = useLocalObservations();
   const uploadStatus = useUploadObservations( allObsToUpload );
   const [layout, setLayout] = useState( "list" );
-  const [idBelow, setIdBelow] = useState( null );
-  const isLoading = useInfiniteScroll( idBelow );
+  const { isLoading, fetchNextPage } = useInfiniteScroll();
   const [showLoginSheet, setShowLoginSheet] = useState( false );
-  const currentUser = useCurrentUser( );
+  const currentUser = useCurrentUser();
 
   return (
     <MyObservations
@@ -28,12 +27,7 @@ const MyObservationsContainer = ( ): Node => {
       currentUser={currentUser}
       showLoginSheet={showLoginSheet}
       setShowLoginSheet={setShowLoginSheet}
-      onEndReached={( ) => {
-        // infinite scroll
-        if ( !isLoading ) {
-          setIdBelow( observations[observations.length - 1].id );
-        }
-      }}
+      onEndReached={fetchNextPage}
     />
   );
 };
