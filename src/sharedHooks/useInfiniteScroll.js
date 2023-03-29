@@ -11,9 +11,9 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 
 const { useRealm } = RealmContext;
 
-const useInfiniteScroll = (): Object => {
-  const realm = useRealm();
-  const currentUser = useCurrentUser();
+const useInfiniteScroll = ( ): Object => {
+  const realm = useRealm( );
+  const currentUser = useCurrentUser( );
 
   const baseParams = {
     user_id: currentUser?.id,
@@ -29,7 +29,7 @@ const useInfiniteScroll = (): Object => {
     queryKey: ["searchObservations", baseParams],
     keepPreviousData: false,
     queryFn: async ( { pageParam } ) => {
-      const apiToken = await getJWT();
+      const apiToken = await getJWT( );
       const options = {
         api_token: apiToken
       };
@@ -51,7 +51,7 @@ const useInfiniteScroll = (): Object => {
     enabled: !!currentUser
   } );
 
-  useEffect( () => {
+  useEffect( ( ) => {
     if ( observations?.pages ) {
       Observation.upsertRemoteObservations(
         flatten( last( observations.pages ) ),
