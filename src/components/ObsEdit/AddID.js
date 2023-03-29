@@ -41,6 +41,7 @@ type Props = {
       onIDAdded: ( identification: { [string]: any } ) => void,
       goBackOnSave: boolean,
       hideComment: boolean,
+      clearSearch: boolean
     },
   },
 };
@@ -78,6 +79,14 @@ const AddID = ( { route }: Props ): Node => {
       optsWithAuth
     )
   );
+
+  useEffect( ( ) => {
+    // this clears search whenever a user is coming from ObsEdit
+    // but maintains current search when a user navigates to TaxonDetails and back
+    if ( route?.params?.clearSearch ) {
+      setTaxonSearch( "" );
+    }
+  }, [route] );
 
   const navigation = useNavigation();
 

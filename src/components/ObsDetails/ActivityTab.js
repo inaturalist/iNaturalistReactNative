@@ -104,7 +104,7 @@ const ActivityTab = ( {
   };
 
   const navToAddID = ( ) => {
-    navigation.push( "AddID", { onIDAdded, goBackOnSave: true } );
+    navigation.navigate( "AddID", { onIDAdded, goBackOnSave: true } );
   };
 
   const activityItems = ids.concat( [...comments] )
