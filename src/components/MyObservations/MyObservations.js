@@ -77,7 +77,7 @@ const MyObservations = ( {
 
   const [hideHeaderCard, setHideHeaderCard] = useState( false );
   const [yValue, setYValue] = useState( 0 );
-  const memoizedObservations = useMemo( () => [...observations], [observations] );
+  const memoizedObservations = useMemo( ( ) => [...observations], [observations] );
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
@@ -89,20 +89,14 @@ const MyObservations = ( {
     outputRange: [0, -heightAboveToolbar - 10]
   } );
 
-  const setNumColumns = () => {
-    if ( layout === "list" || screenWidth <= 320 ) {
-      return 1;
-    }
-    if ( screenWidth <= 744 ) {
-      return 2;
-    }
-    if ( screenWidth <= 1024 ) {
-      return 4;
-    }
+  const setNumColumns = ( ) => {
+    if ( layout === "list" || screenWidth <= 320 ) { return 1; }
+    if ( screenWidth <= 744 ) { return 2; }
+    if ( screenWidth <= 1024 ) { return 4; }
     return 6;
   };
 
-  const numColumns = setNumColumns();
+  const numColumns = setNumColumns( );
   const combinedGutterWidth = ( numColumns + 1 ) * GUTTER;
   const gridItemWidth = Math.round(
     ( screenWidth - combinedGutterWidth ) / numColumns
@@ -122,9 +116,7 @@ const MyObservations = ( {
         const hide = yValue < y;
         // there's likely a better way to do this, but for now fading out
         // the content that goes under the status bar / safe area notch on iOS
-        if ( Platform.OS !== "ios" ) {
-          return;
-        }
+        if ( Platform.OS !== "ios" ) { return; }
         if ( hide !== hideHeaderCard ) {
           setHideHeaderCard( hide );
           setYValue( y );
@@ -144,16 +136,16 @@ const MyObservations = ( {
     />
   );
 
-  const renderEmptyList = () => <MyObservationsEmpty isLoading={isLoading} />;
+  const renderEmptyList = ( ) => <MyObservationsEmpty isLoading={isLoading} />;
 
-  const renderItemSeparator = () => {
+  const renderItemSeparator = ( ) => {
     if ( layout !== "grid" ) {
       return null;
     }
     return <View className="border-b border-lightGray" />;
   };
 
-  const renderFooter = () => (
+  const renderFooter = ( ) => (
     <InfiniteScrollLoadingWheel
       isLoading={isLoading || true}
       currentUser={currentUser}
@@ -186,7 +178,7 @@ const MyObservations = ( {
               key={numColumns}
               estimatedItemSize={layout === "grid" ? 165 : 98}
               testID="MyObservationsAnimatedList"
-              numColumns={setNumColumns()}
+              numColumns={setNumColumns( )}
               horizontal={false}
               keyExtractor={item => item.id || item.uuid}
               renderItem={renderItem}
