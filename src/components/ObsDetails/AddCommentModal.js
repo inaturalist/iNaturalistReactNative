@@ -14,9 +14,9 @@ import { useTranslation } from "react-i18next";
 import {
   Keyboard
 } from "react-native";
+import { useTheme } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { viewStyles } from "styles/obsDetails/obsDetails";
-import colors from "styles/tailwindColors";
 
 type Props = {
   onCommentAdded: Function,
@@ -35,6 +35,7 @@ const AddCommentModal = ( {
   const [comment, setComment] = useState( "" );
   const bottomSheetModalRef = useRef( null );
   const [snapPoint, setSnapPoint] = useState( 100 );
+  const theme = useTheme();
 
   // Clear the comment in a timeout so it doesn't trigger a re-render of the
   // text input *after* the bottom sheet modal gets dismissed, b/c that seems
@@ -83,8 +84,8 @@ const AddCommentModal = ( {
       keyboardType="default"
       className="mb-16 h-16 mt-4"
       defaultValue={comment}
-      selectionColor={colors.black}
-      activeUnderlineColor={colors.transparent}
+      selectionColor={theme.colors.tertiary}
+      activeUnderlineColor={theme.colors.background}
       placeholder={t( "Add-a-comment" )}
       autoFocus
       multiline
@@ -118,10 +119,11 @@ const AddCommentModal = ( {
         >
           {renderTextInput()}
           <Pressable
+            accessibilityRole="button"
             className="absolute right-4 bottom-4"
             onPress={( ) => submitComment( )}
           >
-            <IconMaterial name="send" size={35} color={colors.inatGreen} />
+            <IconMaterial name="send" size={35} color={theme.colors.secondary} />
           </Pressable>
         </View>
       </BottomSheetModal>

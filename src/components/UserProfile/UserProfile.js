@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { updateRelationships } from "api/relationships";
 import { fetchRemoteUser } from "api/users";
 import { Button, UserIcon } from "components/SharedComponents";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
@@ -20,18 +20,16 @@ import colors from "styles/tailwindColors";
 
 import UserProjects from "./UserProjects";
 
-const UserProfile = ( ): React.Node => {
-  const navigation = useNavigation( );
-  const currentUser = useCurrentUser( );
-  const { params } = useRoute( );
+const UserProfile = (): React.Node => {
+  const navigation = useNavigation();
+  const currentUser = useCurrentUser();
+  const { params } = useRoute();
   const { userId } = params;
-  const { width } = useWindowDimensions( );
+  const { width } = useWindowDimensions();
 
-  const {
-    data: remoteUser
-  } = useAuthenticatedQuery(
+  const { data: remoteUser } = useAuthenticatedQuery(
     ["fetchRemoteUser", userId],
-    optsWithAuth => fetchRemoteUser( userId, { }, optsWithAuth )
+    optsWithAuth => fetchRemoteUser( userId, {}, optsWithAuth )
   );
 
   const user = remoteUser || null;
@@ -41,16 +39,19 @@ const UserProfile = ( ): React.Node => {
   );
 
   const showCount = ( count, label ) => (
-    <View className="w-1/4 border border-border">
+    <View className="w-1/4 border border-lightGray">
       <Text className="self-center">{count}</Text>
       <Text className="self-center">{label}</Text>
     </View>
   );
 
-  useEffect( ( ) => {
-    const headerTitle = ( ) => <Text className="text-xl pb-2">{User.userHandle( user )}</Text>;
-    const headerRight = ( ) => currentUser?.login === user?.login
-      && <RNPaperButton icon="pencil" textColor={colors.tertiary} />;
+  useEffect( () => {
+    const headerTitle = () => (
+      <Text className="text-xl pb-2">{User.userHandle( user )}</Text>
+    );
+    const headerRight = () => currentUser?.login === user?.login && (
+      <RNPaperButton icon="pencil" textColor={colors.lightGray} />
+    );
 
     navigation.setOptions( {
       headerTitle,
@@ -58,18 +59,25 @@ const UserProfile = ( ): React.Node => {
     } );
   }, [navigation, user, currentUser] );
 
-  if ( !user ) { return null; }
+  if ( !user ) {
+    return null;
+  }
 
-  const showUserRole = user?.roles?.length > 0 && <Text>{`iNaturalist ${user.roles[0]}`}</Text>;
+  const showUserRole = user?.roles?.length > 0 && (
+    <Text>{`iNaturalist ${user.roles[0]}`}</Text>
+  );
 
-  const followUser = ( ) => updateRelationshipsMutation.mutate( {
+  const followUser = () => updateRelationshipsMutation.mutate( {
     id: userId,
     relationship: { following: true }
   } );
 
   return (
-    <ViewWithFooter testID="UserProfile">
-      <View className="flex-row justify-evenly items-center m-3" testID={`UserProfile.${userId}`}>
+    <ViewWrapper testID="UserProfile">
+      <View
+        className="flex-row justify-evenly items-center m-3"
+        testID={`UserProfile.${userId}`}
+      >
         <UserIcon uri={User.uri( user )} />
         <View>
           <Text>{user.name}</Text>
@@ -87,12 +95,9 @@ const UserProfile = ( ): React.Node => {
       </View>
       <View className="mx-3 mt-5">
         <Text>{t( "BIO" )}</Text>
-        { user && user.description && user.description.length > 0 && (
-        <HTML
-          contentWidth={width}
-          source={{ html: user.description }}
-        />
-        ) }
+        {user && user.description && user.description.length > 0 && (
+          <HTML contentWidth={width} source={{ html: user.description }} />
+        )}
         <Text className="mt-5">{t( "PROJECTS" )}</Text>
         <UserProjects userId={userId} />
       </View>
@@ -110,13 +115,13 @@ const UserProfile = ( ): React.Node => {
             <Button
               level="focus"
               text={t( "Messages" )}
-              onPress={( ) => navigation.navigate( "Messages" )}
+              onPress={() => navigation.navigate( "Messages" )}
               testID="UserProfile.messagesButton"
             />
           </View>
         </View>
       )}
-    </ViewWithFooter>
+    </ViewWrapper>
   );
 };
 

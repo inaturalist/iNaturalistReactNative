@@ -3,7 +3,11 @@ import { useNavigation } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import { searchObservations } from "api/observations";
 import type { Node } from "react";
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback, useEffect,
+  useMemo, useState
+} from "react";
+import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
@@ -32,8 +36,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [galleryUris, setGalleryUris] = useState( [] );
   const [evidenceToAdd, setEvidenceToAdd] = useState( [] );
   const [album, setAlbum] = useState( null );
-  const [loading, setLoading] = useState( );
+  const [loading, setLoading] = useState( false );
   const [unsavedChanges, setUnsavedChanges] = useState( false );
+  const [uploadProgress, setUploadProgress] = useState( { } );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -42,6 +47,24 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setGalleryUris( [] );
     setEvidenceToAdd( [] );
     setUnsavedChanges( false );
+  }, [] );
+
+  useEffect( () => {
+    const progressListener = EventRegister.addEventListener(
+      "INCREMENT_OBSERVATIONS_PROGRESS",
+      increments => {
+        setUploadProgress( currentProgress => {
+          increments.forEach( ( [uuid, increment] ) => {
+            currentProgress[uuid] = currentProgress[uuid] ? currentProgress[uuid] : 0;
+            currentProgress[uuid] += increment;
+          } );
+          return { ...currentProgress };
+        } );
+      }
+    );
+    return () => {
+      EventRegister.removeEventListener( progressListener );
+    };
   }, [] );
 
   const allObsPhotoUris = useMemo(
@@ -206,6 +229,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const uploadObservation = async observation => {
+      // don't bother trying to upload unless there's a logged in user
+      if ( !currentUser ) { return {}; }
       if ( !apiToken ) {
         throw new Error( "Gack, tried to upload an observation without API token!" );
       }
@@ -244,10 +269,28 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       await Photo.deletePhoto( realm, photoUriToDelete );
     };
 
-    const uploadLocalObservationsToServer = ( ) => {
-      const unsyncedObservations = Observation.filterUnsyncedObservations( realm );
-      unsyncedObservations.forEach( async observation => {
-        await Observation.uploadObservation( observation, apiToken, realm );
+    const startSingleUpload = async observation => {
+      setLoading( true );
+      const { uuid } = observation;
+      setUploadProgress( {
+        ...uploadProgress,
+        [uuid]: 0.5
+      } );
+      const response = await uploadObservation( observation );
+      if ( Object.keys( response ).length === 0 ) {
+        return;
+      }
+      // TODO: mostly making sure UI presentation works at the moment, but we will
+      // need to figure out what counts as progress towards an observation uploading
+      // and add that functionality.
+      // maybe uploading an observation is 0.33, starting to upload photos is 0.5,
+      // checking for sounds is 0.66 progress?
+      // and we need a way to track this progress from the Observation.uploadObservation function
+
+      setLoading( false );
+      setUploadProgress( {
+        ...uploadProgress,
+        [uuid]: 1
       } );
     };
 
@@ -266,7 +309,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       // TODO: GET observation/deletions once this is enabled in API v2
       activateKeepAwake( );
       setLoading( true );
-      await uploadLocalObservationsToServer( );
       await downloadRemoteObservationsFromServer( );
       // we at least want to keep the device awake while uploads are happening
       // not sure about downloads/deletions
@@ -309,7 +351,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       loading,
       setLoading,
       unsavedChanges,
-      syncObservations
+      syncObservations,
+      startSingleUpload,
+      uploadProgress,
+      setUploadProgress
     };
   }, [
     currentObservation,
@@ -334,7 +379,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     loading,
     setLoading,
     unsavedChanges,
-    currentUser?.id
+    currentUser,
+    uploadProgress
   ] );
 
   return (

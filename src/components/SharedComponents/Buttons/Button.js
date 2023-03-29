@@ -37,7 +37,7 @@ const setStyles = ( {
   } else if ( isPrimary ) {
     buttonClass = buttonClass.concat( " ", "bg-darkGray" );
   } else if ( isFocus ) {
-    buttonClass = buttonClass.concat( " ", "bg-focusGreen" );
+    buttonClass = buttonClass.concat( " ", "bg-inatGreen" );
   } else {
     buttonClass = buttonClass.concat(
       " ",
@@ -116,7 +116,7 @@ const Button = ( {
           } )}
         />
       )}
-      <Heading4 className={textClass}>{text}</Heading4>
+      <Heading4 className={textClass} testID={`${testID || "RNButton"}.text`}>{text}</Heading4>
     </Pressable>
   );
 };

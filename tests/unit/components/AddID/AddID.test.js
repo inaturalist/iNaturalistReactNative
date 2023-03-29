@@ -12,11 +12,15 @@ import { renderComponent } from "../../../helpers/render";
 jest.mock( "inaturalistjs" );
 
 jest.mock(
-  "components/SharedComponents/ViewNoFooter",
-  () => function MockViewNoFooter( props ) {
+  "components/SharedComponents/ViewWrapper",
+  () => function MockViewWrapper( props ) {
     const MockName = "mock-view-no-footer";
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    return <MockName {...props} testID={MockName}>{props.children}</MockName>;
+    return (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <MockName {...props} testID={MockName}>
+        {props.children}
+      </MockName>
+    );
   }
 );
 
@@ -24,8 +28,12 @@ jest.mock(
   "components/SharedComponents/BottomSheetStandardBackdrop",
   () => function MockBottomSheetStandardBackdrop( props ) {
     const MockName = "mock-bottom-sheet-standard-backdrop";
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    return <MockName {...props} testID={MockName}>{props.children}</MockName>;
+    return (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <MockName {...props} testID={MockName}>
+        {props.children}
+      </MockName>
+    );
   }
 );
 
@@ -35,21 +43,21 @@ const mockTaxaList = [
   factory( "RemoteTaxon" )
 ];
 
-jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
-  default: ( ) => ( {
+  default: () => ( {
     data: mockTaxaList
   } )
 } ) );
 
-jest.mock( "react-native-vector-icons/MaterialIcons", ( ) => {
+jest.mock( "react-native-vector-icons/MaterialIcons", () => {
   const InnerReact = require( "react" );
   class MaterialIcons extends InnerReact.Component {
     static getImageSourceSync( _thing, _number, _color ) {
       return { uri: "foo" };
     }
 
-    render( ) {
+    render() {
       // I have disabled the eslint rule here because it is about a mock and not the test
       // eslint-disable-next-line testing-library/no-node-access
       return InnerReact.createElement( "MaterialIcons", this.props, this.props.children );
@@ -86,44 +94,44 @@ jest.mock( "react-native-paper", () => {
 
 const mockRoute = { params: {} };
 
-describe( "AddID", ( ) => {
-  beforeAll( async ( ) => {
-    await initI18next( );
+describe( "AddID", () => {
+  beforeAll( async () => {
+    await initI18next();
   } );
 
-  test( "should not have accessibility errors", ( ) => {
+  test( "should not have accessibility errors", () => {
     const addID = (
       <INatPaperProvider>
         <AddID route={mockRoute} />
       </INatPaperProvider>
     );
-    expect( addID ).toBeAccessible( );
+    expect( addID ).toBeAccessible();
   } );
 
-  it( "should render inside mocked container", ( ) => {
+  it( "should render inside mocked container", () => {
     renderComponent( <AddID route={mockRoute} /> );
-    expect( screen.getByTestId( "mock-view-no-footer" ) ).toBeTruthy( );
+    expect( screen.getByTestId( "mock-view-no-footer" ) ).toBeTruthy();
   } );
 
-  it( "show taxon search results", async ( ) => {
+  it( "show taxon search results", async () => {
     inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
     renderComponent( <AddID route={mockRoute} /> );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
     fireEvent.changeText( input, "Some taxon" );
-    expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
+    expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy();
     expect(
       screen.getByTestId( `Search.taxa.${taxon.id}.photo` ).props.source
     ).toStrictEqual( { uri: taxon.default_photo.square_url } );
   } );
 
-  it( "calls callback with a taxon that can be saved to Realm", async ( ) => {
+  it( "calls callback with a taxon that can be saved to Realm", async () => {
     const mockCallback = jest.fn( ident => {
-      global.realm.write( ( ) => {
+      global.realm.write( () => {
         global.realm.create( "Taxon", ident.taxon );
       } );
     } );
-    renderComponent( (
+    renderComponent(
       <AddID
         route={{
           params: {
@@ -131,16 +139,16 @@ describe( "AddID", ( ) => {
           }
         }}
       />
-    ) );
+    );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
 
     fireEvent.changeText( input, "Some taxon" );
 
-    expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy( );
+    expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy();
     const labelText = t( "Add-this-ID" );
     const chooseButton = ( await screen.findAllByLabelText( labelText ) )[0];
     fireEvent.press( chooseButton );
-    expect( mockCallback ).toHaveBeenCalled( );
+    expect( mockCallback ).toHaveBeenCalled();
   } );
 } );

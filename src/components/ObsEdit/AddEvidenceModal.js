@@ -100,9 +100,9 @@ const AddEvidenceModal = ( {
           <Text className="text-2xl ml-4 mb-4">{t( "Add-evidence" )}</Text>
           {disableAddingMoreEvidence
           && (
-          <Text className="m-3">
-            {t( "You-can-only-upload-20-media" )}
-          </Text>
+            <Text className="m-3">
+              {t( "You-can-only-upload-20-media" )}
+            </Text>
           )}
           <View className="flex-row w-full justify-around">
             <EvidenceButton

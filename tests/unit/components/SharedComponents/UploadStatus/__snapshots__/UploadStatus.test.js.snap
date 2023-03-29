@@ -1,0 +1,228 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UploadStatus displays progress bar when progress is greater than 5% correctly 1`] = `
+<View
+  accessible={true}
+  style={
+    Array [
+      Array [
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "width": 49,
+        },
+        Object {
+          "height": 67,
+        },
+      ],
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Array [
+          Object {
+            "position": "absolute",
+          },
+        ],
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        Array [
+          Object {
+            "color": "#454545",
+            "fontSize": 15,
+          },
+          undefined,
+          Object {
+            "fontFamily": "INatIcon",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          Object {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+  <CircularProgress
+    activeStrokeColor="#454545"
+    activeStrokeWidth={2}
+    inActiveStrokeOpacity={0}
+    maxValue={1}
+    radius={16.5}
+    showProgressValue={false}
+    testID="UploadStatus.CircularProgress"
+    value={0.5}
+  />
+</View>
+`;
+
+exports[`UploadStatus displays progress bar when progress is less than 5% correctly 1`] = `
+<View
+  accessible={true}
+  style={
+    Array [
+      Array [
+        Object {
+          "alignItems": "center",
+        },
+        Object {
+          "justifyContent": "center",
+        },
+        Object {
+          "width": 49,
+        },
+        Object {
+          "height": 67,
+        },
+      ],
+    ]
+  }
+>
+  <View
+    collapsable={false}
+    style={
+      Object {
+        "alignSelf": undefined,
+        "bottom": undefined,
+        "left": undefined,
+        "position": undefined,
+        "right": undefined,
+        "shadowColor": "#000",
+        "shadowOffset": Object {
+          "height": 0,
+          "width": 0,
+        },
+        "shadowOpacity": 0,
+        "shadowRadius": 0,
+        "top": undefined,
+      }
+    }
+  >
+    <View
+      collapsable={false}
+      style={
+        Object {
+          "shadowColor": "#000",
+          "shadowOffset": Object {
+            "height": 0,
+            "width": 0,
+          },
+          "shadowOpacity": 0,
+          "shadowRadius": 0,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          Object {
+            "backgroundColor": undefined,
+            "borderColor": "rgba(121, 116, 126, 1)",
+            "borderRadius": 24.5,
+            "borderWidth": 0,
+            "elevation": 0,
+            "height": 49,
+            "margin": 6,
+            "overflow": "hidden",
+            "width": 49,
+          }
+        }
+      >
+        <View
+          accessibilityComponentType="button"
+          accessibilityRole="button"
+          accessibilityState={
+            Object {
+              "disabled": true,
+            }
+          }
+          accessibilityTraits="button"
+          accessible={true}
+          centered={true}
+          collapsable={false}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 6,
+              "left": 6,
+              "right": 6,
+              "top": 6,
+            }
+          }
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Array [
+              Object {
+                "overflow": "hidden",
+              },
+              false,
+              Object {
+                "alignItems": "center",
+                "flexGrow": 1,
+                "justifyContent": "center",
+              },
+            ]
+          }
+        >
+          <Text
+            accessibilityElementsHidden={true}
+            allowFontScaling={false}
+            importantForAccessibility="no-hide-descendants"
+            pointerEvents="none"
+            selectable={false}
+            style={
+              Array [
+                Object {
+                  "color": "#454545",
+                  "fontSize": 33,
+                },
+                Array [
+                  Object {
+                    "lineHeight": 33,
+                    "transform": Array [
+                      Object {
+                        "scaleX": 1,
+                      },
+                    ],
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                  },
+                ],
+                Object {
+                  "fontFamily": "Material Design Icons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            ?
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

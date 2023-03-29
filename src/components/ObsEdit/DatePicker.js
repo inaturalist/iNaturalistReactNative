@@ -41,7 +41,7 @@ const DatePicker = ( { currentObservation }: Props ): Node => {
         onPress={openModal}
         className="flex-row flex-nowrap items-center"
       >
-        <IconButton size={14} icon="pencil" />
+        <IconButton size={14} icon="clock-outline" />
         <Text testID="ObsEdit.time">
           {displayDate( ) || t( "Add-Date-Time" )}
         </Text>

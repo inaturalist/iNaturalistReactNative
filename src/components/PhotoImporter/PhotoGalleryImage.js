@@ -28,7 +28,7 @@ const PhotoGalleryImage = ( {
         <IconMaterial
           name="indeterminate-check-box"
           size={30}
-          color={colors.gray}
+          color={colors.darkGray}
         />
       );
     }

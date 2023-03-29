@@ -1,9 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 
-const PRIMARY_DISABLED = "#C6DC98";
-const WARNING_DISABLED = "#B95F5E";
-const NEUTRAL_DISABLED = "#D3D3D3";
-
 module.exports = {
   content: ["index.js", "./src/**/*.js"],
   theme: {
@@ -91,29 +87,13 @@ module.exports = {
       }
     },
     colors: {
-      darkGray: "#454545",
-      warningRed: "#9B1010",
-      focusGreen: "#74AC00",
-      secondary: "#979797",
-      tertiary: "#C4C4C4",
       white: "#ffffff",
-      red: "#ff0000",
-      black: "#000000",
-      transparent: "#ff000000",
-      inatGreen: "#77b300",
-      inatGreenDisabled: "#cce2a4",
-      gray: "#393939",
-      lightGray: "#e8e8e8",
-      midGray: "#cccccc",
-      borderGray: "#d1d1d1",
-      grayText: "#999999",
-      logInGray: "#999999",
-      border: "#DBDBDB",
+      darkGray: "#454545",
+      inatGreen: "#74AC00",
       accessibleGreen: "#5D8017",
-      buttonPrimaryDisabled: PRIMARY_DISABLED,
-      buttonWarningDisabled: WARNING_DISABLED,
-      buttonNeutralDisabled: NEUTRAL_DISABLED,
-      selectionGreen: "#C1FF00",
+      warningRed: "#9B1010",
+      lightGray: "#E8E8E8",
+      black: "#000000",
       warningYellow: "#E6A939"
     },
     screens: {

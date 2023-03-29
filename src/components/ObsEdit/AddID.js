@@ -7,7 +7,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
-import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
@@ -22,7 +22,11 @@ import {
   TouchableOpacity
 } from "react-native";
 import {
-  Button, Headline, IconButton, TextInput
+  Button,
+  Headline,
+  IconButton,
+  TextInput,
+  useTheme
 } from "react-native-paper";
 import uuid from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -34,12 +38,12 @@ import colors from "styles/tailwindColors";
 type Props = {
   route: {
     params: {
-      onIDAdded: ( identification: {[string]: any} ) => void,
+      onIDAdded: ( identification: { [string]: any } ) => void,
       goBackOnSave: boolean,
-      hideComment: boolean
-    }
-  }
-}
+      hideComment: boolean,
+    },
+  },
+};
 
 const SearchTaxonIcon = (
   <TextInput.Icon
@@ -55,31 +59,33 @@ const SearchTaxonIcon = (
 );
 
 const AddID = ( { route }: Props ): Node => {
+  const theme = useTheme();
   const [comment, setComment] = useState( "" );
   const [commentDraft, setCommentDraft] = useState( "" );
   const { onIDAdded, goBackOnSave, hideComment } = route.params;
   const bottomSheetModalRef = useRef( null );
   const [taxonSearch, setTaxonSearch] = useState( "" );
-  const {
-    data: taxonList
-  } = useAuthenticatedQuery(
+  const { data: taxonList } = useAuthenticatedQuery(
     ["fetchSearchResults", taxonSearch],
-    optsWithAuth => fetchSearchResults( {
-      q: taxonSearch,
-      sources: "taxa",
-      fields: {
-        taxon: Taxon.TAXON_FIELDS
-      }
-    }, optsWithAuth )
+    optsWithAuth => fetchSearchResults(
+      {
+        q: taxonSearch,
+        sources: "taxa",
+        fields: {
+          taxon: Taxon.TAXON_FIELDS
+        }
+      },
+      optsWithAuth
+    )
   );
 
-  const navigation = useNavigation( );
+  const navigation = useNavigation();
 
   const renderBackdrop = props => (
     <BottomSheetStandardBackdrop props={props} />
   );
 
-  const editComment = useCallback( ( ) => {
+  const editComment = useCallback( () => {
     setCommentDraft( comment );
     bottomSheetModalRef.current?.present();
   }, [comment] );
@@ -92,10 +98,12 @@ const AddID = ( { route }: Props ): Node => {
   const createIdentification = taxon => {
     const newTaxon = {
       ...taxon,
-      default_photo: taxon.default_photo ? createPhoto( taxon.default_photo ) : null
+      default_photo: taxon.default_photo
+        ? createPhoto( taxon.default_photo )
+        : null
     };
     const newIdent = {
-      uuid: uuid.v4( ),
+      uuid: uuid.v4(),
       body: comment,
       taxon: newTaxon
     };
@@ -106,7 +114,7 @@ const AddID = ( { route }: Props ): Node => {
   const renderTaxonResult = ( { item: taxon } ) => {
     const taxonImage = taxon.default_photo
       ? { uri: taxon.default_photo.square_url }
-      : IconMaterial.getImageSourceSync( "spa", 50, colors.inatGreen );
+      : IconMaterial.getImageSourceSync( "spa", 50, theme.colors.secondary );
 
     return (
       <View
@@ -144,10 +152,12 @@ const AddID = ( { route }: Props ): Node => {
           <IconButton
             icon="checkmark"
             size={25}
-            iconColor={colors.inatGreen}
-            onPress={( ) => {
+            iconColor={theme.colors.secondary}
+            onPress={() => {
               onIDAdded( createIdentification( taxon ) );
-              if ( goBackOnSave ) { navigation.goBack( ); }
+              if ( goBackOnSave ) {
+                navigation.goBack();
+              }
             }}
             accessibilityRole="button"
             accessibilityLabel={t( "Add-this-ID" )}
@@ -160,7 +170,7 @@ const AddID = ( { route }: Props ): Node => {
 
   const showEditComment = !hideComment && comment.length === 0;
 
-  useEffect( ( ) => {
+  useEffect( () => {
     const editCommentIcon = () => (
       <IconButton
         icon="message-processing"
@@ -181,7 +191,7 @@ const AddID = ( { route }: Props ): Node => {
 
   return (
     <BottomSheetModalProvider>
-      <ViewNoFooter>
+      <ViewWrapper>
         <View className="p-3">
           {comment.length > 0 && (
             <View>
@@ -210,7 +220,7 @@ const AddID = ( { route }: Props ): Node => {
               </View>
             </View>
           )}
-          <Text className="color-grayText">
+          <Text className="color-darkGray">
             {t( "Search-for-a-taxon-to-add-an-identification" )}
           </Text>
           <TextInput
@@ -219,7 +229,7 @@ const AddID = ( { route }: Props ): Node => {
             style={viewStyles.taxonSearch}
             value={taxonSearch}
             onChangeText={setTaxonSearch}
-            selectionColor={colors.black}
+            selectionColor={theme.colors.tertiary}
             accessible
             accessibilityLabel={t(
               "Search-for-a-taxon-to-add-an-identification"
@@ -252,8 +262,8 @@ const AddID = ( { route }: Props ): Node => {
               keyboardType="default"
               style={viewStyles.commentInput}
               value={commentDraft}
-              selectionColor={colors.black}
-              activeUnderlineColor={colors.transparent}
+              selectionColor={theme.colors.tertiary}
+              activeUnderlineColor={theme.colors.background}
               autoFocus
               multiline
               onChangeText={setCommentDraft}
@@ -292,7 +302,7 @@ const AddID = ( { route }: Props ): Node => {
             <Button
               style={viewStyles.commentButton}
               uppercase={false}
-              color={colors.midGray}
+              color={colors.lightGray}
               onPress={() => {
                 bottomSheetModalRef.current?.dismiss();
               }}
@@ -307,7 +317,7 @@ const AddID = ( { route }: Props ): Node => {
               style={viewStyles.commentButton}
               uppercase={false}
               disabled={commentDraft.length === 0}
-              color={colors.midGray}
+              color={colors.lightGray}
               mode="contained"
               onPress={() => {
                 setComment( commentDraft );
@@ -322,7 +332,7 @@ const AddID = ( { route }: Props ): Node => {
             </Button>
           </View>
         </BottomSheetModal>
-      </ViewNoFooter>
+      </ViewWrapper>
     </BottomSheetModalProvider>
   );
 };

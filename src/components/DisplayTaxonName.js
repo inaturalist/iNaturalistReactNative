@@ -71,9 +71,12 @@ const DisplayTaxonName = ( {
   return (
     <View
       testID="display-taxon-name"
-      className={classNames( "flex", null, {
-        "flex-row items-end flex-wrap w-11/12": isHorizontal
-      } )}
+      // 03032023 amanda - it doesn't look to me like we need these styles at all,
+      // and they're making the common name and sci name show up on the same
+      // line. not sure if i'm missing context here
+      // className={classNames( "flex", null, {
+      //   "flex-row items-end flex-wrap w-11/12": isHorizontal
+      // } )}
     >
       <Body1
         className={textColorClass}
@@ -89,11 +92,11 @@ const DisplayTaxonName = ( {
       </Body1>
 
       {
-       commonName && (
-       <Body3 className={textColorClass}>
-         {scientificNameFirst ? commonName : scientificNameComponent}
-       </Body3>
-       )
+        commonName && (
+          <Body3 className={textColorClass}>
+            {scientificNameFirst ? commonName : scientificNameComponent}
+          </Body3>
+        )
       }
     </View>
   );

@@ -1,6 +1,5 @@
 // @flow
 
-import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import {
   useEffect, useState
@@ -29,7 +28,8 @@ const useLocalObservations = ( ): Object => {
       // array, which doesn't seem to work. _.compact or Array.from will
       // create an array of Realm objects... which will probably require some
       // degree of pagination in the future
-      setObservationList( _.compact( collection ) );
+      // setObservationList( _.compact( collection ) );
+      setObservationList( collection );
 
       const unsyncedObs = Observation.filterUnsyncedObservations( realm );
 

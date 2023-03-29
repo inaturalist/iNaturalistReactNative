@@ -57,7 +57,7 @@ const MediaViewerModal = ( {
           hideDialog={hideDialog}
         />
         <IconButton
-          icon="arrow-left"
+          icon="chevron-left"
           onPress={hideModal}
           iconColor={colors.white}
         />

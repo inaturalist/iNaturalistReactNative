@@ -27,7 +27,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   },
   commentInputText: {
     borderWidth: 1,
-    borderColor: colors.gray,
+    borderColor: colors.darkGray,
     borderRadius: 10,
     paddingTop: 8,
     paddingBottom: 8,
@@ -81,10 +81,10 @@ const textStyles: { [string]: TextStyleProp } = StyleSheet.create( {
     marginBottom: 10
   },
   taxonSearchIcon: {
-    color: colors.gray
+    color: colors.darkGray
   },
   taxonResultInfoIcon: {
-    color: colors.gray
+    color: colors.darkGray
   },
   taxonResultSelectIcon: {
     color: colors.inatGreen

@@ -12,7 +12,7 @@ exports[`INatIcon renders correctly 1`] = `
       },
       undefined,
       Object {
-        "fontFamily": "inaturalisticons",
+        "fontFamily": "INatIcon",
         "fontStyle": "normal",
         "fontWeight": "normal",
       },
@@ -20,6 +20,6 @@ exports[`INatIcon renders correctly 1`] = `
     ]
   }
 >
-  
+  
 </Text>
 `;
