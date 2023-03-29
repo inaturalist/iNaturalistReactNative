@@ -4,7 +4,7 @@ import Header from "components/MyObservations/Header";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Animated, Dimensions, Platform } from "react-native";
 
 import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
@@ -77,7 +77,6 @@ const MyObservations = ( {
 
   const [hideHeaderCard, setHideHeaderCard] = useState( false );
   const [yValue, setYValue] = useState( 0 );
-  const memoizedObservations = useMemo( ( ) => [...observations], [observations] );
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
@@ -139,7 +138,7 @@ const MyObservations = ( {
   const renderEmptyList = ( ) => <MyObservationsEmpty isLoading={isLoading} />;
 
   const renderItemSeparator = ( ) => {
-    if ( layout !== "grid" ) {
+    if ( layout === "grid" ) {
       return null;
     }
     return <View className="border-b border-lightGray" />;
@@ -174,7 +173,7 @@ const MyObservations = ( {
               setShowLoginSheet={setShowLoginSheet}
             />
             <AnimatedFlashList
-              data={memoizedObservations}
+              data={observations}
               key={numColumns}
               estimatedItemSize={layout === "grid" ? 165 : 98}
               testID="MyObservationsAnimatedList"
@@ -187,7 +186,7 @@ const MyObservations = ( {
               ListFooterComponent={renderFooter}
               initialNumToRender={5}
               onEndReached={onEndReached}
-              onEndReachedThreshold={0.3}
+              onEndReachedThreshold={0.2}
               onScroll={handleScroll}
               refreshing={isLoading}
             />
