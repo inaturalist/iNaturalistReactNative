@@ -189,6 +189,7 @@ const MyObservations = ( {
               onEndReachedThreshold={0.2}
               onScroll={handleScroll}
               refreshing={isLoading}
+              accessible
             />
           </Animated.View>
         </View>
