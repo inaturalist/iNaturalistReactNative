@@ -146,7 +146,7 @@ const MyObservations = ( {
 
   const renderFooter = ( ) => (
     <InfiniteScrollLoadingWheel
-      isLoading={isLoading || true}
+      isLoading={isLoading}
       currentUser={currentUser}
     />
   );
