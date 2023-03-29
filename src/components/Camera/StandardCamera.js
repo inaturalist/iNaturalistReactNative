@@ -172,15 +172,21 @@ const StandardCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const renderFlashButton = icon => {
+  const renderFlashButton = () => {
     let testID = "";
     let accessibilityLabel = "";
-    switch ( icon ) {
-    case "flash-on":
+    let name = "";
+    const flashClassName = ( !isTablet
+      ? `absolute bottom-[18px] left-[18px] ${cameraOptionsClassName}`
+      : `${cameraOptionsClassName} m-[12.5px]` );
+    switch ( takePhotoOptions.flash ) {
+    case "on":
+      name = "flash-on";
       testID = "flash-button-label-flash";
       accessibilityLabel = t( "Flash-button-label-flash" );
       break;
-    case "flash-off":
+    case "off":
+      name = "flash-off";
       testID = "flash-button-label-flash-off";
       accessibilityLabel = t( "Flash-button-label-flash-off" );
       break;
@@ -188,13 +194,21 @@ const StandardCamera = ( ): Node => {
       break;
     }
     return (
-      <INatIcon
-        name={icon}
-        color={colors.white}
-        size={20}
+      <Pressable
+        className={flashClassName}
+        onPress={toggleFlash}
+        accessibilityRole="button"
         testID={testID}
         accessibilityLabel={accessibilityLabel}
-      />
+        accessibilityState={{ disabled: false }}
+      >
+        <INatIcon
+          name={name}
+          color={colors.white}
+          size={20}
+        />
+
+      </Pressable>
     );
   };
 
@@ -203,21 +217,14 @@ const StandardCamera = ( ): Node => {
   const renderSmallScreenCameraOptions = () => (
     <>
       { hasFlash && (
-        <Pressable
-          className={`absolute bottom-[18px] left-[18px] ${cameraOptionsClassName}`}
-          onPress={toggleFlash}
-          accessibilityRole="button"
-        >
-          {takePhotoOptions.flash === "on"
-            ? renderFlashButton( "flash-on" )
-            : renderFlashButton( "flash-off" )}
-        </Pressable>
+        renderFlashButton()
       ) }
       <Pressable
         className={`absolute bottom-[18px] right-[18px] ${cameraOptionsClassName}`}
         onPress={flipCamera}
         accessibilityLabel={t( "Camera-button-label-switch-camera" )}
         accessibilityRole="button"
+        accessibilityState={{ disabled: false }}
       >
         <INatIcon
           name="rotate"
@@ -234,21 +241,14 @@ const StandardCamera = ( ): Node => {
   const renderLargeScreenCameraOptions = () => (
     <View className="absolute top-0 bottom-0 right-0 justify-center items-center m-2">
       { hasFlash && (
-        <Pressable
-          className={`${cameraOptionsClassName} m-[12.5px]`}
-          onPress={toggleFlash}
-          accessibilityRole="button"
-        >
-          {takePhotoOptions.flash === "on"
-            ? renderFlashButton( "flash-on" )
-            : renderFlashButton( "flash-off" )}
-        </Pressable>
+        renderFlashButton()
       )}
       <Pressable
         className={` ${cameraOptionsClassName} m-[12.5px]`}
         onPress={flipCamera}
         accessibilityLabel={t( "Camera-button-label-switch-camera" )}
         accessibilityRole="button"
+        accessibilityState={{ disabled: false }}
       >
         <INatIcon
           name="rotate"
@@ -263,6 +263,7 @@ const StandardCamera = ( ): Node => {
         onPress={takePhoto}
         accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
         accessibilityRole="button"
+        accessibilityState={{ disabled: disallowAddingPhotos }}
         disabled={disallowAddingPhotos}
       >
         <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
@@ -273,6 +274,7 @@ const StandardCamera = ( ): Node => {
           onPress={navToObsEdit}
           accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
           accessibilityRole="button"
+          accessibilityState={{ disabled: false }}
           disabled={false}
         >
           <INatIcon
@@ -315,7 +317,7 @@ const StandardCamera = ( ): Node => {
             onPress={takePhoto}
             accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
             accessibilityRole="button"
-            disabled={disallowAddingPhotos}
+            accessibilityState={{ disabled: disallowAddingPhotos }}
           >
             <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
           </Pressable>
@@ -330,6 +332,7 @@ const StandardCamera = ( ): Node => {
                 onPress={navToObsEdit}
                 accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
                 accessibilityRole="button"
+                accessibilityState={{ disabled: false }}
                 disabled={false}
               >
                 <INatIcon
