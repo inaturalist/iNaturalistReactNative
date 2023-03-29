@@ -7,7 +7,6 @@ import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import React from "react";
-import { noop } from "lodash";
 
 import factory, { makeResponse } from "../factory";
 import { renderAppWithComponent } from "../helpers/render";
@@ -17,7 +16,7 @@ jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
-    addEventListener: noop,
+    addEventListener: ( ) => {},
   };
 } );
 
