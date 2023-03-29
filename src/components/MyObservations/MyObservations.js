@@ -46,7 +46,9 @@ const Item = React.memo(
           style={{
             height: gridItemWidth,
             width: gridItemWidth,
-            margin: GUTTER / 2
+            marginLeft: GUTTER / 2,
+            marginBottom: GUTTER,
+            marginRight: GUTTER / 2
           }}
           uploadStatus={uploadStatus}
           setShowLoginSheet={setShowLoginSheet}
@@ -173,11 +175,15 @@ const MyObservations = ( {
               setShowLoginSheet={setShowLoginSheet}
             />
             <AnimatedFlashList
+              contentContainerStyle={{
+                paddingLeft: GUTTER / 2,
+                paddingRight: GUTTER / 2
+              }}
               data={observations}
               key={numColumns}
               estimatedItemSize={layout === "grid" ? 165 : 98}
               testID="MyObservationsAnimatedList"
-              numColumns={setNumColumns( )}
+              numColumns={numColumns}
               horizontal={false}
               keyExtractor={item => item.id || item.uuid}
               renderItem={renderItem}
