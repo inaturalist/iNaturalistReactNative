@@ -101,8 +101,6 @@ const ObsEdit = ( ): Node => {
     <HeaderBackButton
       tintColor={colors.black}
       onPress={handleBackButtonPress}
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{ left: -15 }}
     />
   ), [handleBackButtonPress] );
 

@@ -46,7 +46,7 @@ const LoginSheet = ( { setShowLoginSheet }: Props ): Node => {
           className="mt-5"
           onPress={( ) => {
             setShowLoginSheet( false );
-            navigation.navigate( "login" );
+            navigation.navigate( "Login" );
           }}
         />
       </View>

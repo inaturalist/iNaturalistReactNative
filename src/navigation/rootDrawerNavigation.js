@@ -7,7 +7,7 @@ import type { Node } from "react";
 import * as React from "react";
 import { View } from "react-native";
 
-import MainStackNavigation from "./mainStackNavigation";
+import BottomTabNavigator from "./BottomTabNavigator";
 
 const drawerOptions = {
   ...showHeader,
@@ -32,8 +32,8 @@ const RootDrawerNavigator = ( ): Node => (
     drawerContent={drawerRenderer}
   >
     <Drawer.Screen
-      name="MainStack"
-      component={MainStackNavigation}
+      name="TabNavigator"
+      component={BottomTabNavigator}
       options={hideHeader}
     />
   </Drawer.Navigator>
