@@ -26,7 +26,7 @@ const ObsStatus = ( {
   const { t } = useTranslation();
   const theme = useTheme();
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
-  const margin = layout === "vertical" ? "mb-1" : "mr-1";
+  const margin = layout === "vertical" ? "mb-1" : "mr-2";
   const flexDirection = layout === "vertical" ? "flex-column" : "flex-row";
   const iconColor = white ? theme.colors.onPrimary : theme.colors.primary;
   const numIdents = observation.identifications?.length || 0;
@@ -49,16 +49,16 @@ const ObsStatus = ( {
     <View className={classNames( "flex", flexDirection, classNameMargin )}>
       <ActivityCount
         icon="label"
-        margin={margin}
+        classNameMargin={margin}
         count={numIdents}
-        color={iconColor}
+        white={white}
         accessibilityLabel={identificationA11yLabel}
       />
       <ActivityCount
         icon="comments"
-        margin={margin}
+        classNameMargin={margin}
         count={numComments}
-        color={iconColor}
+        white={white}
         accessibilityLabel={commentA11yLabel}
       />
       <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />
