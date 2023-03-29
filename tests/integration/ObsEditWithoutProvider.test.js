@@ -28,11 +28,6 @@ jest.mock( "react-native-paper", () => {
 
 const mockLocationName = "San Francisco, CA";
 
-jest.mock( "sharedHooks/useLocationName", ( ) => ( {
-  __esModule: true,
-  default: ( ) => mockLocationName
-} ) );
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {

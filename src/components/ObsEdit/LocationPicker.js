@@ -8,8 +8,8 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useCoords from "sharedHooks/useCoords";
-import useLocationName from "sharedHooks/useLocationName";
 import { viewStyles } from "styles/obsEdit/locationPicker";
 
 type Props = {
@@ -27,7 +27,7 @@ const LocationPicker = ( {
     longitude: null
   } );
 
-  const locationName = useLocationName( region.latitude, region.longitude );
+  const locationName = fetchPlaceName( region.latitude, region.longitude );
   const newCoords = useCoords( searchQuery );
 
   const updateLocationAndClose = () => {
