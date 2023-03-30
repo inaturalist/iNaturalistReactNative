@@ -91,7 +91,7 @@ Couldnt-create-identification = Couldn't create identification
 
 Create-an-iNaturalist-account-to-save-your-observations = Create an iNaturalist account to save your observations and contribute them to science.
 
-CREATE-AN-OBSERVATION = CREATE AN OBSERVATION
+CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
 
 Date = Date
 
@@ -145,6 +145,8 @@ Error-Could-Not-Fetch-Taxon = Error: Could Not Fetch Taxon
 Evidence = Evidence
 
 Explore = Explore
+
+EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
 
 External-Applications = External Applications
 
@@ -213,7 +215,7 @@ iNaturalist-Applications = iNaturalist Applications
 
 iNaturalist-Network-Affiliation = iNaturalist Network Affiliation
 
-iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists.
+iNaturalist-is-a-community-of-naturalists = iNaturalist is a community of naturalists that works together to create and identify wild biodiversity observations.
 
 Insects = Insects
 
@@ -243,7 +245,9 @@ Log-in = Log in
 
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 
-Log-in-to-iNaturalist = Log in to iNaturalist
+Log-in-to-contribute-and-sync = Log in to contribute & sync
+
+Log-in-to-contribute-your-observations = Log in to contribute your observations to science!
 
 Logged-in-as = Logged in as: { $username }
 
@@ -341,6 +345,8 @@ Observation-Attribution = Observation © {$attribution} · {$licenseCode}
 
 Observations = Observations
 
+Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
+
 Offensive-Inappropriate = Offensive/Inappropriate
 
 Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of "appropriate," see the FAQ.
@@ -364,6 +370,8 @@ Plants = Plants
 
 # Help text for playing back a sound recording
 Playing-Sound = Playing Sound
+
+PLEASE-LOG-IN = PLEASE LOG IN
 
 # Help text for beginning a sound recording
 Press-Record-to-Start = Press Record to Start
@@ -570,6 +578,8 @@ This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify = This 
 
 Threatened = Threatened
 
+To-sync-your-observations-to-iNaturalist = To sync your observations to iNaturalist, please log in.
+
 Trust-with-hidden-coordinates = Trust with hidden coordinates
 
 Trusted = Trusted
@@ -613,6 +623,12 @@ Uploading-x-of-y-observations = Uploading {$uploadedCount} of {$total ->
 # Shows the progress of uploads for X of Y
 Uploading-x-of-y = Uploading {$uploadedCount} of {$total}
 
+Upload-Progress = Upload {$uploadProgress} percent complete
+
+Upload-Complete = Upload Complete
+
+Saved-Observation = Saved observation, in queue to upload
+
 
 User = User
 
@@ -622,6 +638,8 @@ Username = Username
 Username-or-Email = Username or Email
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
+
+Welcome-to-iNaturalist = Welcome to iNaturalist!
 
 Whenever-you-get-internet-connection-you-can-upload = Whenever you get internet connection, you can upload your observations to iNaturalist.
 
@@ -636,6 +654,16 @@ Welcome-user = <0>Welcome back,</0><1>{$userHandle}</1>
 X-Observations = {$count ->
     [one] 1 Observation
     *[other] {$count} Observations
+}
+
+X-observations = {$count ->
+    [one] 1 observation
+    *[other] {$count} observations
+}
+
+X-observations-uploaded = {$count ->
+    [one] 1 observation uploaded
+    *[other] {$count} observations uploaded
 }
 
 # Displays number of photos attached to an observation in the Media Viewer
@@ -653,11 +681,6 @@ X-PHOTOS-X-OBSERVATIONS = {$photoCount ->
     *[other] {$observationCount} OBSERVATIONS
 }
 
-X-unuploaded-observations = {$observationCount ->
-    [one] 1 unuploaded observation
-    *[other] {$observationCount} unuploaded observations
-}
-
 Yes = Yes
 
 Yes-delete-observation = Yes, delete observation
@@ -668,6 +691,8 @@ You-can = You can:
 Take-a-photo-with-your-camera = Take a photo with your camera
 Upload-a-photo-from-your-gallery = Upload a photo from your gallery
 Record-a-sound = Record a sound
+
+You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what’s around you.
 
 
 # Message shown when a permission is required to use a part of the app
@@ -735,13 +760,23 @@ Camera = Camera
 Close = Close
 Explore = Explore
 Flag-Item-Other = Flagged as Other Description Box
+Intl-number = { $val }
 Messages = Messages
 Observations = Observations
 Observe = Observe
 Open-drawer = Open drawer
+
 Sound-recorder = Sound recorder
 User = User { $userHandle }
 Observation-Name = Observation { $scientificName }
+x-comments = {$count ->
+    [one] {$count} comment
+    *[other] {$count} comments
+}
+x-identifications = {$count ->
+    [one] {$count} identification
+   *[other] {$count} identifications
+}
 
 ## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
 ## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
@@ -786,8 +821,6 @@ Navigate-to-login-screen = Navigate to login screen
 Navigate-to-observation-details = Navigates to observation details screen.
 Navigate-to-project-details = Navigate to project details
 Navigate-to-taxon-details = Navigate to taxon details
-Number-of-comments = Number of comments
-Number-of-identifications = Number of identifications
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Photo-taken-at = Photo taken at { $date }
 Take-photo = Take photo
@@ -805,22 +838,36 @@ Navigate-to-observation-edit-screen = Navigate to observation edit screen
 Navigate-to-observation-list = Navigate to observation list
 Navigate-to-photo-importer = Navigate to photo importer
 Open-side-menu = Open side menu
+Quality-Grade-No-Grade = No Quality Grade
+Uploading = Uploading
+
 Take-photo = Take photo
 
-
-Intl-number = { $val }
-
-x-comments = {$count ->
-    [one] {$count} comment
-    *[other] {$count} comments
-}
-
-x-identifications = {$count ->
-    [one] {$count} identification
-   *[other] {$count} identifications
-}
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
 datetime-format-short = M/d/yy h:mm a
+
+# Onboarding text on MyObservations
+# 0-10 observations
+As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
+# 11-50 observations
+Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
+# 51-100 observations
+You-can-search-observations-of-any-plant-or-animal = You can search observations of any plant or animal anywhere in the world with Explore!
+
+DISCARD-PHOTOS = DISCARD PHOTOS?
+By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
+DISCARD = DISCARD
+CANCEL = CANCEL
+
+# Error message when you try to do something that requires an Internet
+# connection but such a connection is, tragically, missing
+You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
+
+# Error message with log in fails
+Failed-to-log-in = Failed to log in
+
+# Generic error message
+Something-went-wrong = Something went wrong.

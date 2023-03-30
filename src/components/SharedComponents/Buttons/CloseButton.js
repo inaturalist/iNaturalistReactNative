@@ -16,7 +16,7 @@ const CloseButton = ( { className }: Props ): Node => {
 
   return (
     <IconButton
-      icon="close-button-x"
+      icon="close"
       className={className}
       iconColor={theme.colors.background}
       onPress={( ) => navigation.goBack( )}

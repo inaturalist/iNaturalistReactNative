@@ -54,7 +54,7 @@ const PhotoCarousel = ( {
   }, [photoUris.length, deletePhotoMode] );
 
   const renderSkeleton = ( ) => ( savingPhoto ? (
-    <View className={`${imageClass} bg-midGray mt-12`}>
+    <View className={`${imageClass} bg-lightGray mt-12`}>
       <ActivityIndicator />
     </View>
   ) : null );
@@ -63,10 +63,11 @@ const PhotoCarousel = ( {
     if ( index === photoUris.length ) {
       return (
         <Pressable
+          accessibilityRole="button"
           onPress={handleAddEvidence}
-          className={`${imageClass} border border-midGray items-center justify-center mt-6`}
+          className={`${imageClass} border border-lightGray items-center justify-center mt-6`}
         >
-          <Icon name="add" size={40} color={colors.logInGray} />
+          <Icon name="add" size={40} color={colors.darkGray} />
         </Pressable>
       );
     }
@@ -74,6 +75,7 @@ const PhotoCarousel = ( {
     return (
       <>
         <Pressable
+          accessibilityRole="button"
           onLongPress={( ) => {
             if ( deletePhoto ) {
               setDeletePhotoMode( mode => !mode );
@@ -89,7 +91,7 @@ const PhotoCarousel = ( {
           className={classnames( imageClass, {
             "mt-12": containerStyle === "camera",
             "mt-6": containerStyle !== "camera",
-            "border border-selectionGreen border-4":
+            "border border-inatGreen border-4":
               selectedPhotoIndex === index
           } )}
         >
@@ -104,14 +106,14 @@ const PhotoCarousel = ( {
               } )}
             >
               {deletePhotoMode && (
-              <LinearGradient
-                className="bg-transparent absolute inset-0"
-                colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
-              />
+                <LinearGradient
+                  className="absolute inset-0"
+                  colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
+                />
               )}
               {( containerStyle === "camera" && deletePhotoMode ) && (
                 <IconButton
-                  icon="trash-can"
+                  icon="trash-outline"
                   mode="contained-tonal"
                   iconColor={theme.colors.onPrimary}
                   containerColor="rgba(0, 0, 0, 0.5)"

@@ -1,19 +1,12 @@
 // @flow
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StandardCamera from "components/Camera/StandardCamera";
-import Explore from "components/Explore/Explore";
-import Messages from "components/Messages/Messages";
-import ObsDetails from "components/ObsDetails/ObsDetails";
+import Login from "components/LoginSignUp/Login";
 import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import ObsList from "components/Observations/ObsList";
-import GroupPhotos from "components/PhotoImporter/GroupPhotos";
-import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import Mortal from "components/SharedComponents/Mortal";
 import PermissionGate from "components/SharedComponents/PermissionGate";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
-import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import {
@@ -25,79 +18,71 @@ import {
 import * as React from "react";
 import { PermissionsAndroid } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import { PERMISSIONS } from "react-native-permissions";
+
+import BottomTabNavigator from "./BottomTabNavigator";
 
 const isTablet = DeviceInfo.isTablet();
 
-const Stack = createNativeStackNavigator( );
+const Stack = createNativeStackNavigator();
 
-const PhotoGalleryWithPermission = ( ) => (
-  <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
-      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}>
-        <PermissionGate permission={PERMISSIONS.IOS.PHOTO_LIBRARY} isIOS>
-          <PermissionGate permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE} isIOS>
-            <PhotoGallery />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    </PermissionGate>
-  </PermissionGate>
-);
-
-const StandardCameraWithPermission = ( ) => (
-  <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
+const StandardCameraWithPermission = () => (
+  <PermissionGate
+    permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
+  >
     <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
       <StandardCamera />
     </PermissionGate>
   </PermissionGate>
 );
 
-const SoundRecorderWithPermission = ( ) => (
+const SoundRecorderWithPermission = () => (
   <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}>
-      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}>
+    <PermissionGate
+      permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
+    >
+      <PermissionGate
+        permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}
+      >
         <SoundRecorder />
       </PermissionGate>
     </PermissionGate>
   </PermissionGate>
 );
 
+// The login component should be not preserve its state or effects after the
+// user navigates away from it. This will simply cause it to unmount when it
+// loses focus
+const MortalLogin = () => (
+  <Mortal>
+    <Login />
+  </Mortal>
+);
+
 const ObsEditWithPermission = () => (
   <Mortal>
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION}>
+    <PermissionGate
+      permission={PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION}
+    >
       <ObsEdit />
     </PermissionGate>
   </Mortal>
 );
 
-const MainStackNavigation = ( ): React.Node => (
+const MainStackNavigation = (): React.Node => (
   <Mortal>
     <Stack.Navigator screenOptions={showHeader}>
       <Stack.Screen
-        name="ObsList"
-        component={ObsList}
+        name="Home"
+        component={BottomTabNavigator}
         options={{
-          ...hideScreenTransitionAnimation,
-          ...hideHeader
+          ...hideHeader,
+          ...hideScreenTransitionAnimation
         }}
       />
       <Stack.Screen
         name="StandardCamera"
         component={StandardCameraWithPermission}
         options={{ ...hideHeader, orientation: isTablet ? "all" : "portrait" }}
-      />
-      <Stack.Screen
-        name="PhotoGallery"
-        component={PhotoGalleryWithPermission}
-        options={blankHeaderTitle}
-      />
-      <Stack.Screen
-        name="GroupPhotos"
-        component={GroupPhotos}
-        options={{
-          title: t( "Group-Photos" )
-        }}
       />
       <Stack.Screen
         name="SoundRecorder"
@@ -122,38 +107,11 @@ const MainStackNavigation = ( ): React.Node => (
         }}
       />
       <Stack.Screen
-        name="ObsDetails"
-        component={ObsDetails}
-        options={{
-          headerTitle: t( "Observation" )
-        }}
-      />
-      <Stack.Screen
-        name="TaxonDetails"
-        component={TaxonDetails}
-        options={blankHeaderTitle}
-      />
-      <Stack.Screen
         name="UserProfile"
         component={UserProfile}
         options={blankHeaderTitle}
       />
-      <Stack.Screen
-        name="Messages"
-        component={Messages}
-        options={{
-          ...hideHeader,
-          ...hideScreenTransitionAnimation
-        }}
-      />
-      <Stack.Screen
-        name="Explore"
-        component={Explore}
-        options={{
-          ...hideHeader,
-          ...hideScreenTransitionAnimation
-        }}
-      />
+      <Stack.Screen name="login" component={MortalLogin} options={hideHeader} />
     </Stack.Navigator>
   </Mortal>
 );

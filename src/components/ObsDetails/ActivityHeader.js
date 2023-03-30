@@ -75,7 +75,7 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
   );
 
   const renderIcon = () => {
-    if ( item.vision ) return <INatIcon name="cv" size={22} />;
+    if ( item.vision ) return <INatIcon name="sparkly-label" size={22} />;
     if ( flaggedStatus ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
   };
@@ -84,23 +84,23 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
     <View className="flex-row items-center space-x-[15px]">
       {renderIcon()}
       {
-            flaggedStatus
-              ? (
-                <Body4>
-                  {t( "Flagged" )}
-                </Body4>
-              )
-              : (
-                <Body4>
-                  {item.category ? t( `Category-${item.category}` ) : ""}
-                </Body4>
-              )
-        }
+        flaggedStatus
+          ? (
+            <Body4>
+              {t( "Flagged" )}
+            </Body4>
+          )
+          : (
+            <Body4>
+              {item.category ? t( `Category-${item.category}` ) : ""}
+            </Body4>
+          )
+      }
       {item.created_at
             && (
-            <Text>
-              {formatIdDate( item.updated_at || item.created_at, t )}
-            </Text>
+              <Text>
+                {formatIdDate( item.updated_at || item.created_at, t )}
+              </Text>
             )}
       {item.body && currentUser
         ? (
@@ -139,13 +139,13 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
         )}
       {!currentUser
         && (
-        <FlagItemModal
-          id={item.id}
-          showFlagItemModal={flagModalVisible}
-          closeFlagItemModal={closeFlagItemModal}
-          itemType={itemType}
-          onItemFlagged={onItemFlagged}
-        />
+          <FlagItemModal
+            id={item.id}
+            showFlagItemModal={flagModalVisible}
+            closeFlagItemModal={closeFlagItemModal}
+            itemType={itemType}
+            onItemFlagged={onItemFlagged}
+          />
         )}
     </View>
   );

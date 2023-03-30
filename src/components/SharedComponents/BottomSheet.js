@@ -9,20 +9,34 @@ import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
 type Props = {
   children: any,
-  hide?: boolean
+  hide?: boolean,
+  snapPoints?: ( string|number )[],
+  backdropComponent?: Function,
+  onChange?: Function,
+  handleClose?: Function
 }
 
-const SNAP_POINTS = ["45%"];
+const DEFAULT_SNAP_POINTS = ["45%"];
 
-const StandardBottomSheet = ( { children, hide }: Props ): Node => {
+const StandardBottomSheet = ( {
+  children,
+  hide,
+  snapPoints = DEFAULT_SNAP_POINTS,
+  backdropComponent = null,
+  onChange = null,
+  handleClose
+}: Props ): Node => {
   const sheetRef = useRef( null );
 
   // eslint-disable-next-line
   const noHandle = ( ) => <></>;
 
-  const handleClosePress = useCallback( () => {
-    sheetRef.current?.close();
-  }, [] );
+  const handleClosePress = useCallback( ( ) => {
+    if ( handleClose ) {
+      handleClose( );
+    }
+    sheetRef.current?.close( );
+  }, [handleClose] );
 
   const handleSnapPress = useCallback( ( ) => {
     sheetRef.current?.snapToIndex( 0 );
@@ -39,11 +53,14 @@ const StandardBottomSheet = ( { children, hide }: Props ): Node => {
   return (
     <BottomSheet
       ref={sheetRef}
-      snapPoints={SNAP_POINTS}
+      index={-1}
+      snapPoints={snapPoints}
       style={viewStyles.shadow}
       handleComponent={noHandle}
+      backdropComponent={backdropComponent}
+      onChange={onChange}
     >
-      <BottomSheetView style={viewStyles.bottomSheet}>
+      <BottomSheetView>
         {children}
       </BottomSheetView>
     </BottomSheet>

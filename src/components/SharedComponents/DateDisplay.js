@@ -1,10 +1,9 @@
 // @flow
 import classNames from "classnames";
-import { Body4 } from "components/SharedComponents";
+import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 
 type Props = {
@@ -17,7 +16,10 @@ const DateDisplay = ( { dateString, label, classNameMargin }: Props ): React.Nod
   const { t } = useTranslation( );
   return (
     <View className={classNames( "flex flex-row items-center", classNameMargin )}>
-      <IconMaterial name="watch-later" size={15} />
+      <INatIcon
+        name="date"
+        size={13}
+      />
       <Body4 className="ml-[5px]">
         {( label ? `${label} ` : "" ) + formatApiDatetime( dateString, t )}
       </Body4>
