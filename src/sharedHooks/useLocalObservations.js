@@ -33,11 +33,7 @@ const useLocalObservations = ( ): Object => {
 
       const unsyncedObs = Observation.filterUnsyncedObservations( realm );
 
-      if ( allObsToUpload.length < unsyncedObs.length ) {
-        setAllObsToUpload( Array.from( unsyncedObs ) );
-      } else if ( unsyncedObs.length === 0 ) {
-        setAllObsToUpload( [] );
-      }
+      setAllObsToUpload( Array.from( unsyncedObs ) );
     } );
     // eslint-disable-next-line consistent-return
     return ( ) => {
