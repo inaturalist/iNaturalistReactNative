@@ -10,7 +10,6 @@ import {
   ActivityIndicator,
   FlatList
 } from "react-native";
-import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import Modal from "react-native-modal";
 import { IconButton, useTheme } from "react-native-paper";
@@ -26,7 +25,6 @@ type Props = {
   savingPhoto?: boolean,
   handleAddEvidence?: Function,
   showAddButton?: boolean,
-  deviceOrientation?: string,
   deletePhoto?: Function,
   screenBreakpoint?: string
 }
@@ -40,14 +38,12 @@ const PhotoCarousel = ( {
   savingPhoto,
   handleAddEvidence,
   showAddButton = false,
-  deviceOrientation,
   deletePhoto,
   screenBreakpoint
 }: Props ): Node => {
   const theme = useTheme( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const imageClass = "justify-center items-center";
-  const isTablet = DeviceInfo.isTablet();
 
   useEffect( () => {
     if ( photoUris.length === 0 && deletePhotoMode ) {
@@ -123,12 +119,7 @@ const PhotoCarousel = ( {
             <ImageBackground
               source={{ uri: item }}
               className={classnames(
-                `w-fit h-full flex ${imageClass}`,
-                {
-                  "rotate-0": deviceOrientation === "portrait" && !isTablet,
-                  "-rotate-90": deviceOrientation === "landscapeLeft" && !isTablet,
-                  "rotate-90": deviceOrientation === "landscapeRight" && !isTablet
-                }
+                `w-fit h-full flex ${imageClass}`
               )}
             >
               {deletePhotoMode && (

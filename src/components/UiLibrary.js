@@ -318,26 +318,26 @@ const UiLibrary = (): Node => {
             <Body2 className="text-center">Research</Body2>
             {/* TODO: refactor to not have color prop because we only need black and white */}
             {/* TODO: better to access the color from theme here */}
-            <QualityGradeStatus qualityGrade="research" color="black" />
+            <QualityGradeStatus qualityGrade="research" />
           </View>
           <View>
             <Body2 className="text-center">Needs Id</Body2>
-            <QualityGradeStatus qualityGrade="needs_id" color="black" />
+            <QualityGradeStatus qualityGrade="needs_id" />
           </View>
           <View>
             <Body2 className="text-center">Casual</Body2>
-            <QualityGradeStatus qualityGrade="casual" color="black" />
+            <QualityGradeStatus qualityGrade="casual" />
           </View>
         </View>
         <View className="flex flex-row justify-between">
           <View>
-            <QualityGradeStatus qualityGrade="research" color="green" />
+            <QualityGradeStatus qualityGrade="research" color={theme.colors.secondary} />
           </View>
           <View>
-            <QualityGradeStatus qualityGrade="needs_id" color="green" />
+            <QualityGradeStatus qualityGrade="needs_id" color={theme.colors.secondary} />
           </View>
           <View>
-            <QualityGradeStatus qualityGrade="casual" color="green" />
+            <QualityGradeStatus qualityGrade="casual" color={theme.colors.secondary} />
           </View>
         </View>
 

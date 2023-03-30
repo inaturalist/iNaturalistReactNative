@@ -12,7 +12,6 @@ type Props = {
   photoUris: Array<string>,
   setPhotoUris: Function,
   savingPhoto: boolean,
-  deviceOrientation: string,
   screenBreakpoint: string
 }
 
@@ -20,7 +19,6 @@ const PhotoPreview = ( {
   photoUris,
   setPhotoUris,
   savingPhoto,
-  deviceOrientation,
   screenBreakpoint
 }: Props ): Node => {
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
@@ -69,7 +67,6 @@ const PhotoPreview = ( {
           containerStyle="camera"
           setSelectedPhotoIndex={handleSelection}
           savingPhoto={savingPhoto}
-          deviceOrientation={deviceOrientation}
           screenBreakpoint={screenBreakpoint}
         />
       </View>
