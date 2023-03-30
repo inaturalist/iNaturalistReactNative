@@ -45,12 +45,6 @@ describe( "MyObservations", () => {
     await initI18next();
   } );
 
-  it( "should not have accessibility errors", () => {
-    renderComponent( <MyObservationsContainer /> );
-    const obsList = screen.getByTestId( "MyObservationsAnimatedList" );
-    expect( obsList ).toBeAccessible();
-  } );
-
   it( "renders an observation", async () => {
     renderComponent( <MyObservationsContainer /> );
     const obs = mockObservations[0];

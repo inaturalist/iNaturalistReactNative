@@ -20,10 +20,11 @@ const IdentificationSection = ( ): Node => {
 
   const onIDAdded = async id => updateObservationKey( "taxon", id.taxon );
 
-  const navToAddID = ( ) => navigation.push( "AddID", {
+  const navToAddID = ( ) => navigation.navigate( "AddID", {
     onIDAdded,
     hideComment: true,
-    goBackOnSave: true
+    goBackOnSave: true,
+    clearSearch: true
   } );
 
   if ( identification ) {
