@@ -1,7 +1,6 @@
 // @flow
 
 import { useNavigation, useRoute } from "@react-navigation/native";
-import classnames from "classnames";
 import {
   Button, CloseButton, Heading4,
   List2
@@ -90,7 +89,7 @@ const StandardCamera = ( ): Node => {
     } else if ( _.camelCase( orientation ) === "landscapeLeft" ) {
       setImageOrientation( "landscapeRight" );
     } else {
-      setImageOrientation( orientation );
+      setImageOrientation( "portrait" );
     }
   };
 
@@ -205,7 +204,6 @@ const StandardCamera = ( ): Node => {
         photoUris={cameraPreviewUris}
         setPhotoUris={setCameraPreviewUris}
         savingPhoto={savingPhoto}
-        deviceOrientation={imageOrientation}
       />
       <View className="relative flex-1">
         {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
@@ -243,13 +241,7 @@ const StandardCamera = ( ): Node => {
           containerColor={colors.white}
           size={50}
         />
-        <View
-          className={classnames( checkmarkClass, {
-            "rotate-0": imageOrientation === "portrait" && !isTablet,
-            "-rotate-90": imageOrientation === "landscapeLeft" && !isTablet,
-            "rotate-90": imageOrientation === "landscapeRight" && !isTablet
-          } )}
-        >
+        <View className={checkmarkClass}>
           {photosTaken && (
             <IconButton
               icon="checkmark"

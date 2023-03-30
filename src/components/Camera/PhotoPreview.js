@@ -10,15 +10,13 @@ import React, { useContext, useState } from "react";
 type Props = {
   photoUris: Array<string>,
   setPhotoUris: Function,
-  savingPhoto: boolean,
-  deviceOrientation: string
+  savingPhoto: boolean
 }
 
 const PhotoPreview = ( {
   photoUris,
   setPhotoUris,
-  savingPhoto,
-  deviceOrientation
+  savingPhoto
 }: Props ): Node => {
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
@@ -59,7 +57,6 @@ const PhotoPreview = ( {
           containerStyle="camera"
           setSelectedPhotoIndex={handleSelection}
           savingPhoto={savingPhoto}
-          deviceOrientation={deviceOrientation}
         />
       </View>
     </>
