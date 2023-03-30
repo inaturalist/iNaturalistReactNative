@@ -56,6 +56,12 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
           Array [
             Array [
               Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
                 "marginTop": 24,
               },
               Object {
@@ -104,10 +110,10 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
                     "display": "flex",
                   },
                   Object {
-                    "alignItems": "center",
+                    "justifyContent": "center",
                   },
                   Object {
-                    "justifyContent": "center",
+                    "alignItems": "center",
                   },
                 ],
               ]
@@ -169,6 +175,12 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
           Array [
             Array [
               Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
                 "marginTop": 24,
               },
               Object {
@@ -217,10 +229,10 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
                     "display": "flex",
                   },
                   Object {
-                    "alignItems": "center",
+                    "justifyContent": "center",
                   },
                   Object {
-                    "justifyContent": "center",
+                    "alignItems": "center",
                   },
                 ],
               ]
@@ -282,6 +294,12 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
           Array [
             Array [
               Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
                 "marginTop": 24,
               },
               Object {
@@ -330,10 +348,10 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
                     "display": "flex",
                   },
                   Object {
-                    "alignItems": "center",
+                    "justifyContent": "center",
                   },
                   Object {
-                    "justifyContent": "center",
+                    "alignItems": "center",
                   },
                 ],
               ]
@@ -426,6 +444,12 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
           Array [
             Array [
               Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
                 "marginTop": 24,
               },
               Object {
@@ -474,10 +498,10 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                     "display": "flex",
                   },
                   Object {
-                    "alignItems": "center",
+                    "justifyContent": "center",
                   },
                   Object {
-                    "justifyContent": "center",
+                    "alignItems": "center",
                   },
                 ],
               ]
@@ -539,6 +563,12 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
           Array [
             Array [
               Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
                 "marginTop": 24,
               },
               Object {
@@ -587,10 +617,10 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                     "display": "flex",
                   },
                   Object {
-                    "alignItems": "center",
+                    "justifyContent": "center",
                   },
                   Object {
-                    "justifyContent": "center",
+                    "alignItems": "center",
                   },
                 ],
               ]
@@ -652,6 +682,12 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
           Array [
             Array [
               Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
                 "marginTop": 24,
               },
               Object {
@@ -700,10 +736,10 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                     "display": "flex",
                   },
                   Object {
-                    "alignItems": "center",
+                    "justifyContent": "center",
                   },
                   Object {
-                    "justifyContent": "center",
+                    "alignItems": "center",
                   },
                 ],
               ]
