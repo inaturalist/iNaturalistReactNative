@@ -29,7 +29,7 @@ const useLocalObservations = ( ): Object => {
       // create an array of Realm objects... which will probably require some
       // degree of pagination in the future
       // setObservationList( _.compact( collection ) );
-      setObservationList( collection );
+      setObservationList( [...collection] );
 
       const unsyncedObs = Observation.filterUnsyncedObservations( realm );
 
