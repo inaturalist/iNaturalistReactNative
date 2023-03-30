@@ -46,7 +46,7 @@ const PhotoCarousel = ( {
 }: Props ): Node => {
   const theme = useTheme( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
-  const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
+  const imageClass = "justify-center items-center";
   const isTablet = DeviceInfo.isTablet();
 
   useEffect( () => {
@@ -57,9 +57,9 @@ const PhotoCarousel = ( {
 
   const renderSkeleton = ( ) => ( savingPhoto ? (
     <View className={classnames( "bg-lightGray justify-center", {
-      "rounded-sm w-[42px] h-[42px] m-[3px]":
+      "rounded-sm w-[42px] h-[42px] mx-[3px]":
         screenBreakpoint === ( "sm" || "md" ),
-      "rounded-md w-[83px] h-[83px] m-[8.5px]":
+      "rounded-md w-[83px] h-[83px] mx-[8.5px]":
         screenBreakpoint === ( "lg" || "xl" || "2xl" )
     } )}
     >
@@ -73,7 +73,7 @@ const PhotoCarousel = ( {
         <Pressable
           accessibilityRole="button"
           onPress={handleAddEvidence}
-          className={`${imageClass} border border-lightGray items-center justify-center mt-6`}
+          className={`${imageClass} border border-lightGray mt-6`}
         >
           <Icon name="add" size={40} color={colors.darkGray} />
         </Pressable>
@@ -123,7 +123,7 @@ const PhotoCarousel = ( {
             <ImageBackground
               source={{ uri: item }}
               className={classnames(
-                "w-fit h-full flex items-center justify-center",
+                `w-fit h-full flex ${imageClass}`,
                 {
                   "rotate-0": deviceOrientation === "portrait" && !isTablet,
                   "-rotate-90": deviceOrientation === "landscapeLeft" && !isTablet,
@@ -175,7 +175,7 @@ const PhotoCarousel = ( {
       // eslint-disable-next-line react-native/no-inline-styles
       style={{ margin: 0 }}
     >
-      <View className="absolute top-0">
+      <View className="absolute top-0 pt-[50px]">
         {photoPreviewsList}
       </View>
     </Modal>
