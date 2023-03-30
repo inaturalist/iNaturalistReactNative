@@ -16,8 +16,8 @@ describe( "PhotoCarousel", ( ) => {
       <PhotoCarousel photoUris={mockPhotoUris} screenBreakpoint="sm" />
     );
 
-    expect( screen.getAllByTestId( "ObsEdit.photo" ) ).toBeTruthy();
-    const photos = screen.getAllByTestId( "ObsEdit.photo" );
+    expect( screen.getAllByTestId( "PhotoCarousel.photo" ) ).toBeTruthy();
+    const photos = screen.getAllByTestId( "PhotoCarousel.photo" );
     expect( photos[0] ).toHaveProperty( "props.style.0.3", { height: 42 } );
     expect( photos[0] ).toHaveProperty( "props.style.0.2", { width: 42 } );
   } );
@@ -27,8 +27,8 @@ describe( "PhotoCarousel", ( ) => {
       <PhotoCarousel photoUris={mockPhotoUris} screenBreakpoint="lg" />
     );
 
-    expect( screen.getAllByTestId( "ObsEdit.photo" ) ).toBeTruthy();
-    const photos = screen.getAllByTestId( "ObsEdit.photo" );
+    expect( screen.getAllByTestId( "PhotoCarousel.photo" ) ).toBeTruthy();
+    const photos = screen.getAllByTestId( "PhotoCarousel.photo" );
     expect( photos[0] ).toHaveProperty( "props.style.0.3", { height: 83 } );
     expect( photos[0] ).toHaveProperty( "props.style.0.2", { width: 83 } );
   } );

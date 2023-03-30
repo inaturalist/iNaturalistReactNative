@@ -96,7 +96,7 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
               ],
             ]
           }
-          testID="ObsEdit.photo"
+          testID="PhotoCarousel.photo"
         >
           <View
             accessibilityIgnoresInvertColors={true}
@@ -215,7 +215,7 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
               ],
             ]
           }
-          testID="ObsEdit.photo"
+          testID="PhotoCarousel.photo"
         >
           <View
             accessibilityIgnoresInvertColors={true}
@@ -334,7 +334,7 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
               ],
             ]
           }
-          testID="ObsEdit.photo"
+          testID="PhotoCarousel.photo"
         >
           <View
             accessibilityIgnoresInvertColors={true}
@@ -484,7 +484,7 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
               ],
             ]
           }
-          testID="ObsEdit.photo"
+          testID="PhotoCarousel.photo"
         >
           <View
             accessibilityIgnoresInvertColors={true}
@@ -603,7 +603,7 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
               ],
             ]
           }
-          testID="ObsEdit.photo"
+          testID="PhotoCarousel.photo"
         >
           <View
             accessibilityIgnoresInvertColors={true}
@@ -722,7 +722,7 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
               ],
             ]
           }
-          testID="ObsEdit.photo"
+          testID="PhotoCarousel.photo"
         >
           <View
             accessibilityIgnoresInvertColors={true}

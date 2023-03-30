@@ -111,7 +111,7 @@ const PhotoCarousel = ( {
           )}
         >
           <View
-            testID="ObsEdit.photo"
+            testID="PhotoCarousel.photo"
             className={classnames(
               "overflow-hidden",
               {

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios --device",
+    "ios": "react-native run-ios",
     "start": "react-native start",
     "clean-start": "npx react-native clean-project-auto && npx pod-install && npm start",
     "test": "TZ=UTC jest",
