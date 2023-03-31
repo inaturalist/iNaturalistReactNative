@@ -60,14 +60,14 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
   );
 
   return (
-    <View className="flex-1 justify-end">
+    <>
       <View className="flex-row justify-center">
         <View className="bg-white rounded-xl p-5 mb-12 max-w-sm">
           <Text testID="evidence-text" className="text-2xl">{t( "Evidence" )}</Text>
-          <Text className="color-grayText my-2">{t( "Add-evidence-of-an-organism" )}</Text>
-          <Text className="color-grayText my-2">{t( "You-can" )}</Text>
+          <Text className="color-darkGray my-2">{t( "Add-evidence-of-an-organism" )}</Text>
+          <Text className="color-darkGray my-2">{t( "You-can" )}</Text>
           {bulletedText.map( string => (
-            <Text className="color-grayText" key={string}>
+            <Text className="color-darkGray" key={string}>
               {`\u2022 ${string}`}
             </Text>
           ) )}
@@ -91,14 +91,14 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
       </View>
       <View className="flex-row justify-center">
         {renderIconButton(
-          "pen-and-paper",
+          "noevidence",
           "mx-2",
           navToObsEdit,
           t( "Navigate-to-observation-edit-screen" ),
           "observe-without-evidence-button"
         )}
         {renderIconButton(
-          "close-button-x",
+          "close",
           "self-center h-24 w-24 rounded-[99px]",
           ( ) => closeModal( ),
           t( "Close-camera-options-modal" ),
@@ -112,7 +112,7 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
           "record-sound-button"
         )}
       </View>
-    </View>
+    </>
   );
 };
 

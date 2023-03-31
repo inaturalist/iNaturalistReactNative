@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
 import { deleteObservation } from "api/observations";
 import { Button } from "components/SharedComponents";
 import { Text } from "components/styledComponents";
@@ -25,6 +26,7 @@ const DeleteObservationDialog = ( {
     currentObservation
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
+  const queryClient = useQueryClient( );
   const { uuid } = currentObservation;
 
   const handleLocalDeletion = ( ) => {
@@ -38,6 +40,7 @@ const DeleteObservationDialog = ( {
     {
       onSuccess: ( ) => {
         handleLocalDeletion( );
+        queryClient.invalidateQueries( { queryKey: ["searchObservations"] } );
       }
     }
   );

@@ -4,12 +4,12 @@ import type { Node } from "react";
 import React from "react";
 
 import PlaceholderText from "./PlaceholderText";
-import ViewWithFooter from "./SharedComponents/ViewWithFooter";
+import ViewWrapper from "./SharedComponents/ViewWrapper";
 
-const PlaceholderComponent = ( ): Node => (
-  <ViewWithFooter>
+const PlaceholderComponent = (): Node => (
+  <ViewWrapper>
     <PlaceholderText text="placeholder, accessible from left side menu" />
-  </ViewWithFooter>
+  </ViewWrapper>
 );
 
 export default PlaceholderComponent;

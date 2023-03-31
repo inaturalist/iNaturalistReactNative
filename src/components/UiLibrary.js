@@ -1,5 +1,4 @@
-import INatIcon, { glyphMap } from "components/INatIcon";
-import ObsStatus from "components/Observations/ObsStatus";
+import ObsStatus from "components/MyObservations/ObsStatus";
 import {
   ActivityCount,
   Body1,
@@ -8,27 +7,37 @@ import {
   Body4,
   Button,
   CloseButton,
+  CommentsCount,
   DateDisplay,
+  Divider,
   EvidenceButton,
+  FloatingActionBar,
   Heading1,
   Heading2,
   Heading3,
   Heading4,
+  Heading5,
+  IdentificationsCount,
+  INatIcon,
   InlineUser,
   List1,
   List2,
   ObservationLocation,
+  PhotoCount,
   QualityGradeStatus,
+  StickyToolbar,
   Subheading1,
   Tabs,
+  UploadStatus,
   UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
-import SecondaryCTAButton from "components/SharedComponents/Buttons/SecondaryCTAButton";
+import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
 import UserText from "components/SharedComponents/UserText";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
-import React from "react";
+import type { Node } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
@@ -36,15 +45,25 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
-const UiLibrary = () => {
+const UiLibrary = (): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
   const currentUser = useCurrentUser();
+  const [loading, setLoading] = useState( false );
   const userText = `
-    User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalistorg).
+    User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalist.org).
   `.trim();
   return (
-    <ViewWithFooter>
+    <ViewWrapper>
+      <FloatingActionBar
+        position="bottomEnd"
+        containerClass="mx-4 px-2 rounded-md"
+        endY={200}
+        show
+      >
+        <Heading2 className="my-2">Floating Action Bar</Heading2>
+        <IconButton className="mx-auto" icon="star-bold-outline" mode="contained" />
+      </FloatingActionBar>
       <ScrollView className="px-5">
         {/* TODO replace these text components with our typography header components */}
         <Body1>
@@ -58,16 +77,30 @@ const UiLibrary = () => {
           className="mb-2"
           level="primary"
           text="PRIMARY BUTTON"
+          loading={loading}
+          onPress={() => setLoading( !loading )}
           accessibilityHint="Describes the result of performing the tap action on this element."
         />
-        <Button className="mb-2" text="NEUTRAL BUTTON" />
+        <Button
+          className="mb-2"
+          text="NEUTRAL BUTTON"
+          loading={loading}
+          onPress={() => setLoading( !loading )}
+        />
         <Button
           className="mb-2"
           level="focus"
           text="FOCUS BUTTON"
-          onPress={() => Alert.alert( "You Tapped a Button", "Or did you click it? Fight me." )}
+          loading={loading}
+          onPress={() => setLoading( !loading )}
         />
-        <Button className="mb-2" level="warning" text="WARNING BUTTON" />
+        <Button
+          className="mb-2"
+          level="warning"
+          text="WARNING BUTTON"
+          loading={loading}
+          onPress={() => setLoading( !loading )}
+        />
         <Button
           className="mb-2"
           level="primary"
@@ -124,19 +157,15 @@ const UiLibrary = () => {
           </View>
         </View>
 
-        <Heading2 className="my-2">SecondaryCTAButton</Heading2>
-        <SecondaryCTAButton>
-          <Body1>SecondaryCTAButton</Body1>
-        </SecondaryCTAButton>
-        <SecondaryCTAButton disabled>
-          <Body1>Disabled SecondaryCTAButton</Body1>
-        </SecondaryCTAButton>
-
         <Heading2 className="my-2">Typography</Heading2>
         <Heading1 className="my-2">Heading1</Heading1>
         <Heading2 className="my-2">Heading2</Heading2>
         <Heading3 className="my-2">Heading3</Heading3>
         <Heading4 className="my-2">Heading4</Heading4>
+        <Heading4 className="my-2 text-inatGreen">
+          Heading4 (non-default color)
+        </Heading4>
+        <Heading5 className="my-2">Heading5</Heading5>
         <Subheading1 className="my-2">Subheading1</Subheading1>
         <Body1 className="my-2">Body1</Body1>
         <Body2 className="my-2">Body2</Body2>
@@ -156,7 +185,7 @@ const UiLibrary = () => {
           <View>
             <Body2>Primary</Body2>
             <IconButton
-              icon="compass-rose"
+              icon="compass-rose-outline"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
             />
@@ -164,7 +193,7 @@ const UiLibrary = () => {
           <View>
             <Body2>Focused</Body2>
             <IconButton
-              icon="plus-sign"
+              icon="plus"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
               mode="contained"
@@ -185,30 +214,28 @@ const UiLibrary = () => {
 
         <Heading2>Special Icon buttons</Heading2>
         <View className="flex flex-row justify-between">
-          <View className="bg-secondary">
+          <View className="bg-darkGray">
             <Body2>CloseButton</Body2>
             <CloseButton />
           </View>
         </View>
 
         <Heading2>Custom iNaturalist Icons</Heading2>
-        <Body1>
-          Make sure you're exporting glyphMap from components/INatIcon.js to see
-          all custom icons
-        </Body1>
-        {Object.keys( glyphMap ).sort().map( iconName => (
-          <Body1 key={`icons-${iconName}`}>
-            <INatIcon
-              name={iconName}
-              className="p-3"
-              key={iconName}
-              onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
-              size={20}
-            />
-            { " " }
-            {iconName}
-          </Body1>
-        ) )}
+        {Object.keys( glyphmap )
+          .sort()
+          .map( iconName => (
+            <Body1 key={`icons-${iconName}`}>
+              <INatIcon
+                name={iconName}
+                className="p-3"
+                key={iconName}
+                onPress={() => Alert.alert( "", `You tapped on the ${iconName} icon` )}
+                size={14}
+              />
+              {" "}
+              {iconName}
+            </Body1>
+          ) )}
 
         <Heading2 className="my-2">User Icons</Heading2>
         <View className="flex flex-row justify-between mb-3">
@@ -240,29 +267,32 @@ const UiLibrary = () => {
           </View>
         </View>
 
-        <Heading2>Tabs component</Heading2>
+        <Heading2 className="my-2">Tabs component</Heading2>
         <Tabs
           tabs={[
             {
               id: "TAB1",
-              text: "Tab1",
+              text: "TAB1",
               onPress: () => {
-                console.log( "Tab1" );
+                console.log( "TAB1" );
               }
             },
             {
               id: "TAB2",
-              text: "Tab2",
+              text: "TAB2",
               onPress: () => {
-                console.log( "Tab2" );
+                console.log( "TAB2" );
               }
             }
           ]}
           activeId="TAB1"
         />
 
+        <Heading2 className="my-2">Divider component</Heading2>
+        <Divider />
+
         <Heading2 className="my-2">Date Display Component</Heading2>
-        <DateDisplay dateTime="2023-12-14T21:07:41-09:30" />
+        <DateDisplay dateString="2023-12-14T21:07:41-09:30" />
 
         <Heading2 className="my-2">ObservationLocation Component</Heading2>
         <ObservationLocation
@@ -288,26 +318,62 @@ const UiLibrary = () => {
             <Body2 className="text-center">Research</Body2>
             {/* TODO: refactor to not have color prop because we only need black and white */}
             {/* TODO: better to access the color from theme here */}
-            <QualityGradeStatus qualityGrade="research" color="black" />
+            <QualityGradeStatus qualityGrade="research" />
           </View>
           <View>
             <Body2 className="text-center">Needs Id</Body2>
-            <QualityGradeStatus qualityGrade="needs_id" color="black" />
+            <QualityGradeStatus qualityGrade="needs_id" />
           </View>
           <View>
             <Body2 className="text-center">Casual</Body2>
-            <QualityGradeStatus qualityGrade="casual" color="black" />
+            <QualityGradeStatus qualityGrade="casual" />
           </View>
         </View>
         <View className="flex flex-row justify-between">
           <View>
-            <QualityGradeStatus qualityGrade="research" color="green" />
+            <QualityGradeStatus qualityGrade="research" color={theme.colors.secondary} />
           </View>
           <View>
-            <QualityGradeStatus qualityGrade="needs_id" color="green" />
+            <QualityGradeStatus qualityGrade="needs_id" color={theme.colors.secondary} />
           </View>
           <View>
-            <QualityGradeStatus qualityGrade="casual" color="green" />
+            <QualityGradeStatus qualityGrade="casual" color={theme.colors.secondary} />
+          </View>
+        </View>
+
+        <Heading2 className="my-2">Upload Status</Heading2>
+        <View className="flex flex-row justify-between">
+          <View>
+            <Body2 className="text-center">Progress &lt; 5%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.04}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">10%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.1}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">60%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={0.6}
+              completeColor={theme.colors.secondary}
+            />
+          </View>
+          <View>
+            <Body2 className="text-center">100%</Body2>
+            <UploadStatus
+              color={theme.colors.primary}
+              progress={1}
+              completeColor={theme.colors.secondary}
+            />
           </View>
         </View>
 
@@ -317,7 +383,6 @@ const UiLibrary = () => {
             <Body2>Small Number</Body2>
             <ActivityCount
               count={10}
-              color={theme.colors.primary}
               accessibilityLabel={t( "x-comments", { count: 10 } )}
             />
           </View>
@@ -325,9 +390,56 @@ const UiLibrary = () => {
             <Body2>Large Number</Body2>
             <ActivityCount
               count={20000}
-              color={theme.colors.error}
               accessibilityLabel={t( "x-comments", { count: 10 } )}
             />
+          </View>
+          <View className="bg-darkGray">
+            <Body2 className="text-white">White</Body2>
+            <ActivityCount
+              count={3}
+              white
+              accessibilityLabel={t( "x-comments", { count: 3 } )}
+            />
+          </View>
+        </View>
+
+        <Heading2 className="my-2">CommentsCount</Heading2>
+        <View className="flex flex-row justify-evenly">
+          <View>
+            <Body2>Basic</Body2>
+            <CommentsCount count={10} />
+          </View>
+          <View>
+            <Body2>Filled</Body2>
+            <CommentsCount count={10} filled />
+          </View>
+          <View>
+            <Body2>Margin</Body2>
+            <CommentsCount count={10} classNameMargin="m-2" />
+          </View>
+          <View className="bg-secondary">
+            <Body2 className="text-white">White</Body2>
+            <CommentsCount count={10} white />
+          </View>
+        </View>
+
+        <Heading2 className="my-2">IdentificationsCount</Heading2>
+        <View className="flex flex-row justify-evenly">
+          <View>
+            <Body2>Basic</Body2>
+            <IdentificationsCount count={10} />
+          </View>
+          <View>
+            <Body2>Filled</Body2>
+            <IdentificationsCount count={10} filled />
+          </View>
+          <View>
+            <Body2>Margin</Body2>
+            <IdentificationsCount count={10} classNameMargin="m-2" />
+          </View>
+          <View className="bg-secondary">
+            <Body2 className="text-white">White</Body2>
+            <IdentificationsCount count={10} white />
           </View>
         </View>
 
@@ -336,21 +448,31 @@ const UiLibrary = () => {
         <ObsStatus
           layout="horizontal"
           observation={{ comments: [1, 2, 3, 4], identifications: [1, 2, 3] }}
-          color={theme.colors.primary}
         />
 
         <ObsStatus
           layout="vertical"
-          observation={{ comments: [1, 2, 3], identifications: [1, 2, 3, 4, 5, 6] }}
-          color={theme.colors.primary}
+          observation={{
+            comments: [1, 2, 3],
+            identifications: [1, 2, 3, 4, 5, 6]
+          }}
         />
-
+        <Heading2 className="my-2">PhotoCount</Heading2>
+        <View className="my-2 bg-lightGray p-2 rounded-lg flex-row justify-evenly">
+          <PhotoCount count={0} />
+          <PhotoCount count={1} />
+          <PhotoCount count={12} size={50} />
+          <PhotoCount count={1000} size={50} shadow />
+        </View>
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
           Useless spacer at the end because height in NativeWind is confusing.
         </Body1>
       </ScrollView>
-    </ViewWithFooter>
+      <StickyToolbar containerClass="bottom-56">
+        <Heading2>StickyToolbar</Heading2>
+      </StickyToolbar>
+    </ViewWrapper>
   );
 };
 

@@ -18,7 +18,7 @@ const KebabMenu = ( { children, visible, setVisible }: Props ): Node => {
   const anchorButton = (
     <IconButton
       onPress={openMenu}
-      icon="triple-dots"
+      icon="kebab-menu"
       testID="KebabMenu.Button"
     />
   );

@@ -2,13 +2,9 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments } from "api/comments";
-import INatIcon from "components/INatIcon";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
-import {
-  Body4,
-  InlineUser
-} from "components/SharedComponents";
+import { Body4, INatIcon, InlineUser } from "components/SharedComponents";
 import DateDisplay from "components/SharedComponents/DateDisplay";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import {
@@ -79,7 +75,7 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
   );
 
   const renderIcon = () => {
-    if ( item.vision ) return <INatIcon name="computervision" size={22} />;
+    if ( item.vision ) return <INatIcon name="sparkly-label" size={22} />;
     if ( flaggedStatus ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
   };
@@ -88,23 +84,23 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
     <View className="flex-row items-center space-x-[15px]">
       {renderIcon()}
       {
-            flaggedStatus
-              ? (
-                <Body4>
-                  {t( "Flagged" )}
-                </Body4>
-              )
-              : (
-                <Body4>
-                  {item.category ? t( `Category-${item.category}` ) : ""}
-                </Body4>
-              )
-        }
+        flaggedStatus
+          ? (
+            <Body4>
+              {t( "Flagged" )}
+            </Body4>
+          )
+          : (
+            <Body4>
+              {item.category ? t( `Category-${item.category}` ) : ""}
+            </Body4>
+          )
+      }
       {item.created_at
             && (
-            <Body4>
-              {formatIdDate( item.updated_at || item.created_at, t )}
-            </Body4>
+              <Body4>
+                {formatIdDate( item.updated_at || item.created_at, t )}
+              </Body4>
             )}
       {item.body && currentUser
         ? (
@@ -143,13 +139,13 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
         )}
       {!currentUser
         && (
-        <FlagItemModal
-          id={item.id}
-          showFlagItemModal={flagModalVisible}
-          closeFlagItemModal={closeFlagItemModal}
-          itemType={itemType}
-          onItemFlagged={onItemFlagged}
-        />
+          <FlagItemModal
+            id={item.id}
+            showFlagItemModal={flagModalVisible}
+            closeFlagItemModal={closeFlagItemModal}
+            itemType={itemType}
+            onItemFlagged={onItemFlagged}
+          />
         )}
     </View>
   );
@@ -158,7 +154,7 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
     <View className="flex-row justify-between">
       <InlineUser user={user} />
       {( item._created_at )
-        ? <DateDisplay dateTime={item._created_at} />
+        ? <DateDisplay dateString={item.created_at} />
         : ifCommentOrID()}
     </View>
   );

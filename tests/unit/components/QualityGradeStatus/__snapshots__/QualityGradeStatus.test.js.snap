@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Quality Grade casual should render correctly 1`] = `
+<View>
+  <SvgMock
+    accessible={true}
+    color="rgba(103, 80, 164, 1)"
+    testID="QualityGrade.casual"
+  />
+</View>
+`;
+
+exports[`Quality Grade needs_id should render correctly 1`] = `
+<View>
+  <SvgMock
+    accessible={true}
+    color="rgba(103, 80, 164, 1)"
+    testID="QualityGrade.needs_id"
+  />
+</View>
+`;
+
+exports[`Quality Grade research should render correctly 1`] = `
+<View>
+  <SvgMock
+    accessible={true}
+    color="rgba(103, 80, 164, 1)"
+    testID="QualityGrade.research"
+  />
+</View>
+`;

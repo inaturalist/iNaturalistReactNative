@@ -3,12 +3,7 @@
 This is an official iNaturalist client written in React Native that will eventually replace our existing iOS and Android apps. Achieving parity with those established apps is taking some time, but we're getting there!
 
 ## Contributing
-
-We welcome volunteer contributions! This app is still early in its development and a lot of things are in flux, but there's usually something to work on. Please keep the following in mind:
-
-1. Work on [existing issues](https://github.com/inaturalist/iNaturalistReactNative/issues) (though if you have ideas for improvement that aren't directly related to features, let us know). If you'd like to work on something, please leave a comment on that issue and we'll try and assign you.
-1. Name your branch starting with the issue number and then something descriptive, e.g. `123-login-with-locale-crash`
-1. We try to review pull requests as soon as we can, but that might be up to a week or two
+See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this project.
 
 ## Setup
 
@@ -52,11 +47,15 @@ We're using [Jest](https://jestjs.io/) and [React Native Testing Library](https:
 npm test
 
 # Run test paths matching a pattern
-npx jest MyObs
+npm test MyObs
 
-# Run individual tests matching a pattern
-npx jest -t accessibility
+# Run individual tests matching a pattern. Note the `--` to pass arguments to jest
+npm test -- -t accessibility
 ```
+
+Note that you can run `npx jest` as well, but that will omit some environment variables we need to set for the test environment, so for consistent test runs please use `npm test`.
+
+Also note that `i18next` needs to be initialized in individual test files (haven't figured out a way to await initialization before *all* tests, plus allowing tests to control initialization helps when testing different locales). Add `beforeAll( async ( ) => { await initI18next( ); } );` to a test file if it depends on localized text.
 
 ### E2E tests
 We're using [Detox](https://wix.github.io/Detox/docs/19.x/) for E2E tests. If you want to run the e2e tests on your local machine, make sure you fulfill the RN development requirements, see above, and also follow the iOS specific [environment setup](https://wix.github.io/Detox/docs/19.x/introduction/ios-dev-env/).
@@ -123,30 +122,13 @@ git commit -a -m "Updated translations"
 ## Styling
 We're using Nativewind, a styling system for React Native based on Tailwind CSS. Check the [Nativewind documentation](https://www.nativewind.dev/) to see what styles can be used in RN.
 
-## Creating custom icons
+## Icons
 
-We manage our custom font with Fontastic, so these steps can probably only be done by staff.
+We have a custom set of icons stored as SVG files and compiled into a font. New icons should be included with issues in a ready-to-use form, but some editing may be required.
 
-1. `npm install -f react-native-asset`. You'll need this to link assets.
-1. Get the new icon as an SVG file.
-1. Add new icon to the iNaturalist icon set in Fontastic. Select all iNaturalist icons and download the zip of icons.
-1. Create a glyph file from the CSS file you just downloaded, using the following command (be sure to replace /path/to/styles with your path):
-    ```
-    npx generate-icon /path/to/styles.css --componentName=INatIcon --fontFamily=inaturalisticons > src/components/INatIcon.js
-    ```
-1. When adding new icons, go to `src/components/INatIcon.js` and make two manual changes. First, edit the line `const iconSet = createIconSet( glyphMap, "inaturalisticons", "INatIcon.ttf" );` to `inaturalisticons.ttf` to match the name of the `.ttf` file you downloaded. There's a discrepency here because the `generate-icon` script makes an assumption that the name of the .ttf file is the same as the name of the component. Components need to start with a capital letter, and `inaturalisticons.tff` is likely not a name we want to change, since we're using it on the web too. We'll probably want to write our own `generate-icon` script to do this automatically. Second, add the following to your exports to make sure a user can see all custom iNat icons in the UI library:
-    ```
-    export {
-      glyphMap
-    };
-    ```
-1. Add `inaturalisticons.ttf`, to `assets/fonts`.
-1. Clean build folders for iOS/Android with `rm -rf ios/build && rm -rf android/app/build`.
-1. Run `npx react-native-asset` to link the new assets.
-1. Add your icon somewhere in the app using `<INatIcon name="compass-rose" />` where name is set to the name of your new custom icon.
-1. Build the app on either platform, and you should see your custom icons.
-
-If anything goes wrong, check the [troubleshooting steps](https://github.com/oblador/react-native-vector-icons#troubleshooting) from `react-native-vector-icons` instructions on creating a glyph map.
+1. Add / edit SVGs to / in `src/images/icons/` (`git add` any new icons)
+1. `npm run icons`
+1. Rebuild the app (you'll have newly-linked assets that won't hot reload)
 
 ## Troubleshooting
 

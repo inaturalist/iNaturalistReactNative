@@ -1,8 +1,8 @@
 // @flow
 
 import DisplayTaxonName from "components/DisplayTaxonName";
-import INatIcon from "components/INatIcon";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
+import INatIcon from "components/SharedComponents/INatIcon";
 import UserText from "components/SharedComponents/UserText";
 import {
   Pressable, View
@@ -23,7 +23,7 @@ type Props = {
   navToTaxonDetails: Function,
   toggleRefetch: Function,
   refetchRemoteObservation: Function,
-  onAgree?: Function
+  onAgree: Function
 }
 
 const ActivityItem = ( {
@@ -66,7 +66,7 @@ const ActivityItem = ( {
           <Pressable
             className="m-4"
             accessibilityRole="button"
-            onPress={onAgree}
+            onPress={() => onAgree( item )}
           >
             <INatIcon name="id-agree" size={33} />
           </Pressable>

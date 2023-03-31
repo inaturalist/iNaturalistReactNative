@@ -1,14 +1,15 @@
 // @flow
-import classnames from "classnames";
+import classNames from "classnames";
 import { Body1, Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 
 type Props = {
-  scientificNameFirst: boolean,
+  scientificNameFirst?: boolean,
   taxon: Object,
   layout?: "horizontal" | "vertical",
   color?: string
@@ -43,7 +44,9 @@ const DisplayTaxonName = ( {
   const getSpaceChar = showSpace => ( showSpace && isHorizontal ? " " : "" );
 
   const scientificNameComponent = scientificNamePieces.map( ( piece, index ) => {
-    const isItalics = rankLevel <= 10 && piece !== rankPiece;
+    const isItalics = piece !== rankPiece && (
+      rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
+    );
     const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal ) ? " " : "";
     const text = piece + spaceChar;
     const TextComponent = scientificNameFirst || !commonName ? Body1 : Body3;
@@ -52,7 +55,7 @@ const DisplayTaxonName = ( {
         ? (
           <TextComponent
             key={`DisplayTaxonName-${taxon.id}-${piece}`}
-            className="italic"
+            className={classNames( "italic", textColorClass )}
           >
             {text}
           </TextComponent>
@@ -68,9 +71,12 @@ const DisplayTaxonName = ( {
   return (
     <View
       testID="display-taxon-name"
-      className={classnames( "flex", null, {
-        "flex-row items-end flex-wrap w-11/12": isHorizontal
-      } )}
+      // 03032023 amanda - it doesn't look to me like we need these styles at all,
+      // and they're making the common name and sci name show up on the same
+      // line. not sure if i'm missing context here
+      // className={classNames( "flex", null, {
+      //   "flex-row items-end flex-wrap w-11/12": isHorizontal
+      // } )}
     >
       <Body1
         className={textColorClass}
@@ -86,11 +92,11 @@ const DisplayTaxonName = ( {
       </Body1>
 
       {
-       commonName && (
-       <Body3 className={textColorClass}>
-         {scientificNameFirst ? commonName : scientificNameComponent}
-       </Body3>
-       )
+        commonName && (
+          <Body3 className={textColorClass}>
+            {scientificNameFirst ? commonName : scientificNameComponent}
+          </Body3>
+        )
       }
     </View>
   );

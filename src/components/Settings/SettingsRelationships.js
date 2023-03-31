@@ -211,31 +211,31 @@ const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
         />
       ) )}
       { totalPages > 1 && (
-      <View style={[viewStyles.row, viewStyles.paginationContainer]}>
-        <Pressable
-          disabled={page === 1}
-          style={viewStyles.pageButton}
-          onPress={() => setPage( page - 1 )}
-        >
-          <Text>&lt;</Text>
-        </Pressable>
-        {[...Array( totalPages ).keys()].map( x => (
+        <View style={[viewStyles.row, viewStyles.paginationContainer]}>
           <Pressable
-            key={x}
+            disabled={page === 1}
             style={viewStyles.pageButton}
-            onPress={() => setPage( x + 1 )}
+            onPress={() => setPage( page - 1 )}
           >
-            <Text style={x + 1 === page ? textStyles.currentPage : null}>{x + 1}</Text>
+            <Text>&lt;</Text>
           </Pressable>
-        ) )}
-        <Pressable
-          disabled={page === totalPages}
-          style={viewStyles.pageButton}
-          onPress={() => setPage( page + 1 )}
-        >
-          <Text>&gt;</Text>
-        </Pressable>
-      </View>
+          {[...Array( totalPages ).keys()].map( x => (
+            <Pressable
+              key={x}
+              style={viewStyles.pageButton}
+              onPress={() => setPage( x + 1 )}
+            >
+              <Text style={x + 1 === page ? textStyles.currentPage : null}>{x + 1}</Text>
+            </Pressable>
+          ) )}
+          <Pressable
+            disabled={page === totalPages}
+            style={viewStyles.pageButton}
+            onPress={() => setPage( page + 1 )}
+          >
+            <Text>&gt;</Text>
+          </Pressable>
+        </View>
       )}
       <Text>{t( "Following" )}</Text>
       <View style={viewStyles.row}>
