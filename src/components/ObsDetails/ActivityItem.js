@@ -23,11 +23,11 @@ type Props = {
   navToTaxonDetails: Function,
   toggleRefetch: Function,
   refetchRemoteObservation: Function,
-  // onAgree?: Function
+  onAgree?: Function
 }
 
 const ActivityItem = ( {
-  item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation
+  item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation, onAgree
 }: Props ): Node => {
   const { taxon } = item;
   const isOnline = useIsConnected( );
@@ -66,6 +66,7 @@ const ActivityItem = ( {
           <Pressable
             className="m-4"
             accessibilityRole="button"
+            onPress={onAgree}
           >
             <INatIcon name="id-agree" size={33} />
           </Pressable>
