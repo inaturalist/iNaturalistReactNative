@@ -187,7 +187,7 @@ const MyObservations = ( {
               horizontal={false}
               // only used id as a fallback key because after upload
               // react thinks we've rendered a second item w/ a duplicate key
-              keyExtractor={(item) => item.uuid || item.id}
+              keyExtractor={item => item.uuid || item.id}
               renderItem={renderItem}
               ListEmptyComponent={renderEmptyList}
               ItemSeparatorComponent={renderItemSeparator}
