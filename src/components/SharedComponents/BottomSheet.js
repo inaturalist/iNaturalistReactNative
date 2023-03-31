@@ -1,6 +1,6 @@
 // @flow
 
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef
@@ -40,6 +40,7 @@ const StandardBottomSheet = ( {
 
   const handleSnapPress = useCallback( ( ) => {
     sheetRef.current?.snapToIndex( 0 );
+    sheetRef.current?.present( );
   }, [] );
 
   useEffect( ( ) => {
@@ -51,7 +52,7 @@ const StandardBottomSheet = ( {
   }, [hide, handleClosePress, handleSnapPress] );
 
   return (
-    <BottomSheet
+    <BottomSheetModal
       ref={sheetRef}
       snapPoints={snapPoints}
       style={viewStyles.shadow}
@@ -62,7 +63,7 @@ const StandardBottomSheet = ( {
       <BottomSheetView>
         {children}
       </BottomSheetView>
-    </BottomSheet>
+    </BottomSheetModal>
   );
 };
 

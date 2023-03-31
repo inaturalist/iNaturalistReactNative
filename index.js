@@ -5,6 +5,7 @@ import {
   QueryClient,
   QueryClientProvider
 } from "@tanstack/react-query";
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import handleError from "api/error";
 import App from "components/App";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
@@ -87,14 +88,16 @@ const AppWithProviders = ( ) => (
     <RealmProvider>
       <SafeAreaProvider>
         <INatPaperProvider>
-          <GestureHandlerRootView className="flex-1">
-            {/* NavigationContainer needs to be nested above ObsEditProvider */}
-            <NavigationContainer>
-              <ObsEditProvider>
-                <App />
-              </ObsEditProvider>
-            </NavigationContainer>
-          </GestureHandlerRootView>
+          <BottomSheetModalProvider>
+            <GestureHandlerRootView className="flex-1">
+              {/* NavigationContainer needs to be nested above ObsEditProvider */}
+              <NavigationContainer>
+                <ObsEditProvider>
+                  <App />
+                </ObsEditProvider>
+              </NavigationContainer>
+            </GestureHandlerRootView>
+          </BottomSheetModalProvider>
         </INatPaperProvider>
       </SafeAreaProvider>
     </RealmProvider>
