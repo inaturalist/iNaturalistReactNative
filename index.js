@@ -1,11 +1,11 @@
 // @flow
 
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   QueryClient,
   QueryClientProvider
 } from "@tanstack/react-query";
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import handleError from "api/error";
 import App from "components/App";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
