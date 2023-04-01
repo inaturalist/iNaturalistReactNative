@@ -4,10 +4,10 @@ import { searchObservations } from "api/observations";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import Observation from "realmModels/Observation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useTranslation from "sharedHooks/useTranslation";
 import { viewStyles } from "styles/identify/identify";
 
 import CardSwipeView from "./CardSwipeView";

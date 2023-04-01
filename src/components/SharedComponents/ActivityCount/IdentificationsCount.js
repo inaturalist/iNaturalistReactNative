@@ -1,7 +1,7 @@
 // @flow
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import useTranslation from "sharedHooks/useTranslation";
 
 import ActivityCount from "./ActivityCount";
 

@@ -10,12 +10,12 @@ import React, {
   useCallback,
   useEffect, useRef, useState
 } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Keyboard
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import useTranslation from "sharedHooks/useTranslation";
 import { viewStyles } from "styles/obsDetails/obsDetails";
 
 type Props = {

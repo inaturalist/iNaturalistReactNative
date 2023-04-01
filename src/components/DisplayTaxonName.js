@@ -4,9 +4,9 @@ import { Body1, Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   scientificNameFirst?: boolean,

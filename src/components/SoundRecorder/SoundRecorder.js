@@ -6,10 +6,10 @@ import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 // $FlowFixMe
 import AudioRecorderPlayer from "react-native-audio-recorder-player";
+import useTranslation from "sharedHooks/useTranslation";
 import { textStyles, viewStyles } from "styles/soundRecorder/soundRecorder";
 
 // needs to be outside of the component for stopRecorder to work correctly
