@@ -182,7 +182,7 @@ const AddID = ( { route }: Props ): Node => {
   useEffect( () => {
     const editCommentIcon = () => (
       <IconButton
-        icon="message-processing"
+        icon="add-comment-outline"
         onPress={editComment}
         accessible
         accessibilityRole="button"

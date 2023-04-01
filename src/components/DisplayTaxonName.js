@@ -54,7 +54,7 @@ const DisplayTaxonName = ( {
       isItalics
         ? (
           <TextComponent
-            key={`DisplayTaxonName-${taxon.id}-${piece}`}
+            key={`DisplayTaxonName-${taxon.id}-${rankLevel}-${piece}`}
             className={classNames( "italic", textColorClass )}
           >
             {text}
