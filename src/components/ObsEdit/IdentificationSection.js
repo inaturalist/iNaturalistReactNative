@@ -1,19 +1,20 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { Button } from "components/SharedComponents";
+import { Button, INatIcon } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { IconButton } from "react-native-paper";
+import { IconButton, useTheme } from "react-native-paper";
 
 const IdentificationSection = ( ): Node => {
   const {
     currentObservation,
     updateObservationKey
   } = useContext( ObsEditContext );
+  const theme = useTheme( );
   const navigation = useNavigation( );
 
   const identification = currentObservation.taxon;
@@ -43,13 +44,18 @@ const IdentificationSection = ( ): Node => {
   }
 
   return (
-    <Button
-      level="focus"
-      onPress={navToAddID}
-      text={t( "Add-an-Identification" )}
-      className="mx-10 my-3"
-      testID="ObsEdit.Suggestions"
-    />
+    <View className="flex-row justify-start ml-4">
+      <Button
+        level="focus"
+        onPress={navToAddID}
+        text={t( "ADD-AN-ID" )}
+        className="my-4 rounded-full"
+        testID="ObsEdit.Suggestions"
+        icon={
+          <INatIcon name="sparkly-label" size={24} color={theme.colors.onPrimary} />
+        }
+      />
+    </View>
   );
 };
 

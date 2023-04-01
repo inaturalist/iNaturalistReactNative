@@ -1,6 +1,7 @@
 // @flow
 
-import { Pressable, Text, View } from "components/styledComponents";
+import { Heading2 } from "components/SharedComponents";
+import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -24,24 +25,23 @@ const ObsEditHeaderTitle = ( ): Node => {
 
   return observations.length === 1
     ? (
-      <Text
+      <Heading2
         testID="new-observation-text"
-        className="text-2xl"
         accessible
         accessibilityRole="header"
       >
         {t( "New-Observation" )}
-      </Text>
+      </Heading2>
     )
     : (
       <View className="flex-row items-center">
-        <Pressable onPress={showPrevObservation} className="w-16">
+        <Pressable accessibilityRole="button" onPress={showPrevObservation} className="w-16">
           {currentObservationIndex !== 0 && <Icon name="keyboard-arrow-left" size={30} />}
         </Pressable>
-        <Text className="text-2xl">
+        <Heading2>
           {`${currentObservationIndex + 1} of ${observations.length}`}
-        </Text>
-        <Pressable onPress={showNextObservation} className="w-16">
+        </Heading2>
+        <Pressable accessibilityRole="button" onPress={showNextObservation} className="w-16">
           {( currentObservationIndex !== observations.length - 1 )
             && <Icon name="keyboard-arrow-right" size={30} />}
         </Pressable>

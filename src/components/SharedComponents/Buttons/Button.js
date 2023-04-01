@@ -1,7 +1,7 @@
 // @flow
 
 import Heading4 from "components/SharedComponents/Typography/Heading4";
-import { Pressable } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 
@@ -15,7 +15,8 @@ type ButtonProps = {
   style?: any,
   className?: string,
   accessibilityRole?: string,
-  accessibilityHint?: string
+  accessibilityHint?: string,
+  icon?: any
 }
 
 const setStyles = ( {
@@ -79,7 +80,8 @@ const Button = ( {
   style,
   className,
   accessibilityRole,
-  accessibilityHint
+  accessibilityHint,
+  icon
 }: ButtonProps ): React.Node => {
   const isPrimary = level === "primary";
   const isWarning = level === "warning";
@@ -115,6 +117,11 @@ const Button = ( {
             isPrimary, isWarning, isFocus, theme
           } )}
         />
+      )}
+      {icon && (
+        <View className="mr-2">
+          {icon}
+        </View>
       )}
       <Heading4 className={textClass} testID={`${testID || "RNButton"}.text`}>{text}</Heading4>
     </Pressable>

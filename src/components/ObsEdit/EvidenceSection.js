@@ -1,7 +1,7 @@
 // @flow
 
-import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
-import { ActivityIndicator, Text, View } from "components/styledComponents";
+import { Body3, Body4, PhotoCarousel } from "components/SharedComponents";
+import { ActivityIndicator, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -154,13 +154,13 @@ const EvidenceSection = ( {
         showAddButton
         handleAddEvidence={handleAddEvidence}
       />
-      <View className="flex-row flex-nowrap items-center">
+      <View className="flex-row flex-nowrap items-center mt-4">
         <IconButton size={14} icon="map-marker-outline" />
         <View>
-          <Text>{currentObservation.place_guess}</Text>
+          <Body3>{currentObservation.place_guess}</Body3>
           {shouldFetchLocation && <ActivityIndicator className="mx-1" />}
-          {shouldFetchLocation && <Text className="mx-1">{`(${numLocationFetches})`}</Text>}
-          <Text>{displayLocation( ) || t( "No-Location" )}</Text>
+          {shouldFetchLocation && <Body4 className="mx-1">{`(${numLocationFetches})`}</Body4>}
+          <Body4>{displayLocation( ) || t( "No-Location" )}</Body4>
         </View>
       </View>
       <DatePicker currentObservation={currentObservation} />

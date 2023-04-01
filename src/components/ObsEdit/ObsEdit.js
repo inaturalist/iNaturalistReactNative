@@ -3,9 +3,10 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import { Button } from "components/SharedComponents";
-import KebabMenu from "components/SharedComponents/KebabMenu";
-import { Text, View } from "components/styledComponents";
+import {
+  Button, Heading4, KebabMenu, StickyToolbar
+} from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -183,36 +184,47 @@ const ObsEdit = ( ): Node => {
   if ( !currentObservation ) { return null; }
 
   return (
-    <View testID="obs-edit" className="flex-1">
-      <DeleteObservationDialog
-        deleteDialogVisible={deleteDialogVisible}
-        hideDialog={hideDialog}
-      />
-      <SaveDialog
-        showSaveDialog={showSaveDialog}
-        discardChanges={discardChanges}
-      />
-      <MediaViewerModal
-        mediaViewerVisible={mediaViewerVisible}
-        hideModal={hideModal}
-        initialPhotoSelected={initialPhotoSelected}
-        photoUris={photoUris}
-        setPhotoUris={setPhotos}
-      />
-      <KeyboardAwareScrollView className="bg-white">
-        <Text className="text-2xl ml-4">{t( "Evidence" )}</Text>
-        <EvidenceSection
-          handleSelection={handleSelection}
-          photoUris={photoUris}
-          handleAddEvidence={addEvidence}
+    <>
+      <View testID="obs-edit" className="bg-white flex-1">
+        <DeleteObservationDialog
+          deleteDialogVisible={deleteDialogVisible}
+          hideDialog={hideDialog}
         />
-        <Text className="text-2xl ml-4 mt-4">{t( "Identification" )}</Text>
-        <IdentificationSection />
-        <Text className="text-2xl ml-4">{t( "Other-Data" )}</Text>
-        <OtherDataSection scrollToInput={scrollToInput} />
-        {loading && <ActivityIndicator />}
+        <SaveDialog
+          showSaveDialog={showSaveDialog}
+          discardChanges={discardChanges}
+        />
+        <MediaViewerModal
+          mediaViewerVisible={mediaViewerVisible}
+          hideModal={hideModal}
+          initialPhotoSelected={initialPhotoSelected}
+          photoUris={photoUris}
+          setPhotoUris={setPhotos}
+        />
+        <KeyboardAwareScrollView className="bg-white">
+          <Heading4 className="ml-4 mt-4">{t( "EVIDENCE" )}</Heading4>
+          <EvidenceSection
+            handleSelection={handleSelection}
+            photoUris={photoUris}
+            handleAddEvidence={addEvidence}
+          />
+          <Heading4 className="ml-4 mt-4">{t( "IDENTIFICATION" )}</Heading4>
+          <IdentificationSection />
+          <Heading4 className="ml-4 mt-4">{t( "OTHER-DATA" )}</Heading4>
+          <OtherDataSection scrollToInput={scrollToInput} />
+          {loading && <ActivityIndicator />}
+
+          <AddEvidenceModal
+            showAddEvidenceModal={showAddEvidenceModal}
+            setShowAddEvidenceModal={setShowAddEvidenceModal}
+            photoUris={photoUris}
+          />
+        </KeyboardAwareScrollView>
+      </View>
+      <StickyToolbar containerClass="bottom-6">
         <View className="flex-row justify-evenly">
           <Button
+            className="px-[25px]"
             onPress={async ( ) => {
               setLoading( true );
               await saveObservation( );
@@ -225,8 +237,9 @@ const ObsEdit = ( ): Node => {
 
           />
           <Button
+            className="ml-3 grow"
             level="focus"
-            text={t( "UPLOAD-OBSERVATION" )}
+            text={t( "UPLOAD-NOW" )}
             testID="ObsEdit.uploadButton"
             onPress={async ( ) => {
               setLoading( true );
@@ -237,13 +250,8 @@ const ObsEdit = ( ): Node => {
             disabled={!currentUser}
           />
         </View>
-        <AddEvidenceModal
-          showAddEvidenceModal={showAddEvidenceModal}
-          setShowAddEvidenceModal={setShowAddEvidenceModal}
-          photoUris={photoUris}
-        />
-      </KeyboardAwareScrollView>
-    </View>
+      </StickyToolbar>
+    </>
   );
 };
 

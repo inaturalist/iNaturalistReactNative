@@ -1,6 +1,7 @@
 // @flow
 
-import { Text, View } from "components/styledComponents";
+import { Body3 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -65,11 +66,11 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
             icon="globe-outline"
             size={14}
           />
-          <Text>
+          <Body3>
             {t( "Geoprivacy" )}
             {" "}
             {currentGeoprivacyStatus?.label}
-          </Text>
+          </Body3>
         </View>
       </RNPickerSelect>
       <RNPickerSelect
@@ -83,11 +84,11 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
             icon="pot-outline"
             size={14}
           />
-          <Text>
+          <Body3>
             {t( "Organism-is-wild" )}
             {" "}
             {currentCaptiveStatus?.label}
-          </Text>
+          </Body3>
         </View>
       </RNPickerSelect>
       <Notes

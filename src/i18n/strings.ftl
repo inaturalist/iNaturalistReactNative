@@ -9,9 +9,9 @@ Accept-community-identifications = Accept community identifications
 
 Account = Account
 
-Add-an-ID = Add an ID
+ADD-AN-ID = ADD AN ID
 
-Add-an-Identification = Add an Identification
+Add-an-ID = Add an ID
 
 Add-Date-Time = Add Date/Time
 
@@ -142,7 +142,7 @@ Error-Couldnt-Upload-Photo = Error: Couldn't Upload Photo
 
 Error-Could-Not-Fetch-Taxon = Error: Could Not Fetch Taxon
 
-Evidence = Evidence
+EVIDENCE = EVIDENCE
 
 Explore = Explore
 
@@ -200,8 +200,6 @@ High = High
 IDs = ID's
 
 IDENTIFICATION = IDENTIFICATION
-
-Identification = Identification
 
 # Shows the number of photos a user selected from the camera roll for upload
 Import-X-photos = Import {$count ->
@@ -356,7 +354,7 @@ Open = Open
 # Picker prompt on observation edit
 Organism-is-wild = Organism is wild:
 
-Other-Data = Other Data
+OTHER-DATA = OTHER DATA
 
 Password = Password
 
@@ -594,7 +592,7 @@ Missing-Location = Missing Location
 
 Unreviewed-only = Unreviewed only
 
-UPLOAD-OBSERVATION = UPLOAD OBSERVATION
+UPLOAD-NOW = UPLOAD NOW
 
 # Shows the number of observations a user can upload to iNat from my observations page
 Upload-x-observations = Upload {$count ->
