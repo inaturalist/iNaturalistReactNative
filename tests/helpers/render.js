@@ -1,5 +1,5 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { NavigationContainer } from "@react-navigation/native";
 import {
   QueryClient,
   QueryClientProvider
