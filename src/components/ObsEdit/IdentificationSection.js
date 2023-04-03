@@ -1,13 +1,16 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { Button, Heading4, INatIcon } from "components/SharedComponents";
-import { Text, View } from "components/styledComponents";
+import DisplayTaxonName from "components/DisplayTaxonName";
+import {
+  Button, Heading4, INatIcon
+} from "components/SharedComponents";
+import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { IconButton, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
 const IdentificationSection = ( ): Node => {
   const {
@@ -28,35 +31,40 @@ const IdentificationSection = ( ): Node => {
     clearSearch: true
   } );
 
-  if ( identification ) {
-    return (
-      <View className="flex-row justify-between items-center ml-3 mt-2">
-        <View className="flex-row items-center">
-          <IconButton icon="pencil" size={14} />
-          <View>
-            <Text>{identification.preferred_common_name}</Text>
-            <Text>{identification.name}</Text>
-          </View>
-        </View>
-        <IconButton icon="pencil" onPress={navToAddID} />
+  const displayIdentification = ( ) => (
+    <Pressable
+      accessibilityRole="button"
+      className="flex-row items-center mb-5"
+      onPress={navToAddID}
+    >
+      <INatIcon name="label-outline" size={14} />
+      <View className="ml-5">
+        <DisplayTaxonName taxon={identification} small />
       </View>
-    );
-  }
+    </Pressable>
+  );
 
   return (
     <View className="ml-5 mt-6">
       <Heading4>{t( "IDENTIFICATION" )}</Heading4>
-      <View className="flex-row justify-start mt-4">
-        <Button
-          level="focus"
-          onPress={navToAddID}
-          text={t( "ADD-AN-ID" )}
-          className="rounded-full py-2"
-          testID="ObsEdit.Suggestions"
-          icon={
-            <INatIcon name="sparkly-label" size={24} color={theme.colors.onPrimary} />
-          }
-        />
+      <View className="mt-5 ml-1">
+        {identification && displayIdentification( )}
+        <View className="flex-row justify-start">
+          <Button
+            level={identification ? "neutral" : "focus"}
+            onPress={navToAddID}
+            text={t( "ADD-AN-ID" )}
+            className="rounded-full py-2"
+            testID="ObsEdit.Suggestions"
+            icon={(
+              <INatIcon
+                name="sparkly-label"
+                size={24}
+                color={identification ? theme.colors.primary : theme.colors.onPrimary}
+              />
+            )}
+          />
+        </View>
       </View>
     </View>
   );
