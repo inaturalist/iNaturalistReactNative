@@ -44,7 +44,7 @@ const ActivityItem = ( {
   );
 
   return (
-    <View className="flex-column mx-3">
+    <View className="flex-column ml-[15px] mr-[23px]">
       <ActivityHeader
         item={item}
         refetchRemoteObservation={refetchRemoteObservation}
@@ -53,7 +53,7 @@ const ActivityItem = ( {
       {taxon && (
         <View className="flex-row items-center justify-between">
           <Pressable
-            className="flex-row my-3 ml-3 items-center"
+            className="flex-row my-[13.5px] items-center w-2/3"
             onPress={navToTaxonDetails}
             accessibilityRole="link"
             accessibilityLabel={t( "Navigate-to-taxon-details" )}
@@ -61,10 +61,9 @@ const ActivityItem = ( {
             {isOnline
               ? <TaxonImage uri={Taxon.uri( taxon )} />
               : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
-            <DisplayTaxonName scientificNameFirst={false} taxon={taxon} layout="vertical" />
+            <DisplayTaxonName scientificNameFirst={false} taxon={taxon} layout="horizontal" />
           </Pressable>
           <Pressable
-            className="m-4"
             accessibilityRole="button"
             onPress={() => onAgree( item )}
           >
