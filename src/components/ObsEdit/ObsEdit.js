@@ -4,7 +4,7 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
-  Button, Heading4, KebabMenu, StickyToolbar
+  Button, KebabMenu, StickyToolbar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -202,15 +202,12 @@ const ObsEdit = ( ): Node => {
           setPhotoUris={setPhotos}
         />
         <KeyboardAwareScrollView className="bg-white">
-          <Heading4 className="ml-4 mt-4">{t( "EVIDENCE" )}</Heading4>
           <EvidenceSection
             handleSelection={handleSelection}
             photoUris={photoUris}
             handleAddEvidence={addEvidence}
           />
-          <Heading4 className="ml-4 mt-4">{t( "IDENTIFICATION" )}</Heading4>
           <IdentificationSection />
-          <Heading4 className="ml-4 mt-4">{t( "OTHER-DATA" )}</Heading4>
           <OtherDataSection scrollToInput={scrollToInput} />
           {loading && <ActivityIndicator />}
 

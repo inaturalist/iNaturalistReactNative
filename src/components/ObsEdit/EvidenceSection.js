@@ -1,6 +1,9 @@
 // @flow
 
-import { Body3, Body4, PhotoCarousel } from "components/SharedComponents";
+import {
+  Body3, Body4, Heading4, INatIcon,
+  PhotoCarousel
+} from "components/SharedComponents";
 import { ActivityIndicator, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
@@ -8,7 +11,6 @@ import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
 } from "react";
-import { IconButton } from "react-native-paper";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
 import DatePicker from "./DatePicker";
@@ -147,16 +149,17 @@ const EvidenceSection = ( {
   };
 
   return (
-    <View className="mx-5">
+    <View className="mx-6 mt-6">
+      <Heading4>{t( "EVIDENCE" )}</Heading4>
       <PhotoCarousel
         photoUris={photoUris}
         setSelectedPhotoIndex={handleSelection}
         showAddButton
         handleAddEvidence={handleAddEvidence}
       />
-      <View className="flex-row flex-nowrap items-center mt-4">
-        <IconButton size={14} icon="map-marker-outline" />
-        <View>
+      <View className="flex-row flex-nowrap my-4">
+        <INatIcon size={14} name="map-marker-outline" />
+        <View className="ml-5">
           <Body3>{currentObservation.place_guess}</Body3>
           {shouldFetchLocation && <ActivityIndicator className="mx-1" />}
           {shouldFetchLocation && <Body4 className="mx-1">{`(${numLocationFetches})`}</Body4>}

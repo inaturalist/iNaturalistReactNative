@@ -243,10 +243,11 @@
   "Offensive-Inappropriate": "Offensive/Inappropriate",
   "Offensive-Inappropriate-Examples": "Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of \"appropriate,\" see the FAQ.",
   "Open": "Open",
-  "Organism-is-wild": {
+  "Organism-is-captive": {
     "comment": "Picker prompt on observation edit",
-    "val": "Organism is wild:"
+    "val": "Organism is captive"
   },
+  "Organism-is-wild": "Organism is wild",
   "OTHER-DATA": "OTHER DATA",
   "Password": "Password",
   "Paused": "Paused",

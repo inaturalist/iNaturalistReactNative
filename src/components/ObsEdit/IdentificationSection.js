@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { Button, INatIcon } from "components/SharedComponents";
+import { Button, Heading4, INatIcon } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
@@ -44,17 +44,20 @@ const IdentificationSection = ( ): Node => {
   }
 
   return (
-    <View className="flex-row justify-start ml-4">
-      <Button
-        level="focus"
-        onPress={navToAddID}
-        text={t( "ADD-AN-ID" )}
-        className="my-4 rounded-full"
-        testID="ObsEdit.Suggestions"
-        icon={
-          <INatIcon name="sparkly-label" size={24} color={theme.colors.onPrimary} />
-        }
-      />
+    <View className="ml-5 mt-6">
+      <Heading4>{t( "IDENTIFICATION" )}</Heading4>
+      <View className="flex-row justify-start mt-4">
+        <Button
+          level="focus"
+          onPress={navToAddID}
+          text={t( "ADD-AN-ID" )}
+          className="rounded-full py-2"
+          testID="ObsEdit.Suggestions"
+          icon={
+            <INatIcon name="sparkly-label" size={24} color={theme.colors.onPrimary} />
+          }
+        />
+      </View>
     </View>
   );
 };

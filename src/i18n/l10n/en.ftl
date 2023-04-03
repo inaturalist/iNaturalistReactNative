@@ -352,7 +352,8 @@ Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethn
 Open = Open
 
 # Picker prompt on observation edit
-Organism-is-wild = Organism is wild:
+Organism-is-captive = Organism is captive
+Organism-is-wild = Organism is wild
 
 OTHER-DATA = OTHER DATA
 
