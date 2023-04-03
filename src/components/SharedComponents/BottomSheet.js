@@ -53,10 +53,7 @@ const StandardBottomSheet = ( {
   return (
     <BottomSheetModal
       ref={sheetRef}
-<<<<<<< HEAD
-=======
       index={0}
->>>>>>> 01493a31 (use present method)
       snapPoints={snapPoints}
       style={viewStyles.shadow}
       handleComponent={noHandle}
