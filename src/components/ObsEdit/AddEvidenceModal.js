@@ -2,7 +2,7 @@
 
 import {
   BottomSheetBackdrop,
-  BottomSheetModal,
+  BottomSheetModal
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
