@@ -1,4 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
   QueryClient,
   QueryClientProvider
@@ -25,9 +26,11 @@ function renderComponent( component, update = null ) {
   return renderMethod(
     <QueryClientProvider client={queryClient}>
       <INatPaperProvider>
-        <NavigationContainer>
-          { component }
-        </NavigationContainer>
+        <BottomSheetModalProvider>
+          <NavigationContainer>
+            { component }
+          </NavigationContainer>
+        </BottomSheetModalProvider>
       </INatPaperProvider>
     </QueryClientProvider>
   );
