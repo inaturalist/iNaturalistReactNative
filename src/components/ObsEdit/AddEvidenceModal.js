@@ -14,7 +14,7 @@ import React, {
   useCallback, useEffect,
   useRef, useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   showAddEvidenceModal: boolean,

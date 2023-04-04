@@ -6,8 +6,8 @@ import Body3 from "components/SharedComponents/Typography/Body3";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { useTheme } from "react-native-paper";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   accessibilityLabel?: string,

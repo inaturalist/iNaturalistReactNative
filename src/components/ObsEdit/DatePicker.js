@@ -5,8 +5,8 @@ import { Pressable } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { createObservedOnStringForUpload, displayDateTimeObsEdit } from "sharedHelpers/dateAndTime";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   currentObservation: Object

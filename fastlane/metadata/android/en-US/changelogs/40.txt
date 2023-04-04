@@ -1,0 +1,6 @@
+Another incremental build, but getting close on My Observations
+
+* Several styling and layout fixes
+* Skip camera focus for cameras that don't support it
+* Skup reverse geocoding w/o Internet
+* Use FlashList on MyObs, which greatly improves performance

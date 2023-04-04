@@ -4,9 +4,9 @@ import { Body1, Body3, Body4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   scientificNameFirst?: boolean,
@@ -56,7 +56,7 @@ const DisplayTaxonName = ( {
       isItalics
         ? (
           <TextComponent
-            key={`DisplayTaxonName-${taxon.id}-${piece}`}
+            key={`DisplayTaxonName-${taxon.id}-${rankLevel}-${piece}`}
             className={classNames( "italic", textColorClass )}
           >
             {text}
