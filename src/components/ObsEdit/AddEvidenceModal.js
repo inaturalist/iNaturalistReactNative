@@ -111,35 +111,6 @@ const AddEvidenceModal = ( {
             accessibilityHint={t( "Navigates-to-camera" )}
           />
           <EvidenceButton
-            icon="gallery"
-            handlePress={onImportPhoto}
-            disabled={disableAddingMoreEvidence}
-            accessibilityLabel={t( "Bulk-importer" )}
-            accessibilityHint={t( "Navigates-to-bulk-importer" )}
-          />
-          <EvidenceButton
-            icon="microphone"
-            handlePress={onRecordSound}
-            disabled={disableAddingMoreEvidence}
-            accessibilityLabel={t( "Sound-recorder" )}
-            accessibilityHint={t( "Navigates-to-sound-recorder" )}
-          />
-        </View>
-        <Text
-          className="underline mt-5"
-          onPress={( ) => setShowAddEvidenceModal( false )}
-        >
-          {t( "Cancel" )}
-        </Text>
-        <View className="flex-row w-full justify-around">
-          <EvidenceButton
-            icon="camera"
-            handlePress={onTakePhoto}
-            disabled={disableAddingMoreEvidence}
-            accessibilityLabel={t( "Camera" )}
-            accessibilityHint={t( "Navigates-to-camera" )}
-          />
-          <EvidenceButton
             icon="pencil"
             handlePress={onImportPhoto}
             disabled={disableAddingMoreEvidence}
