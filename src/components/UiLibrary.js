@@ -50,6 +50,7 @@ const UiLibrary = (): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
   const currentUser = useCurrentUser();
+  const userId = currentUser?.id;
   const [loading, setLoading] = useState( false );
   const userText = `
     User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalist.org).
@@ -493,7 +494,7 @@ const UiLibrary = (): Node => {
         </View>
 
         <Heading2 className="my-2">ActivityItem</Heading2>
-        <ActivityItem item={exampleId} />
+        <ActivityItem item={exampleId} currentUserId={userId} />
 
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">

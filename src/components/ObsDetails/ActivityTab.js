@@ -120,6 +120,7 @@ const ActivityTab = ( {
       toggleRefetch={toggleRefetch}
       refetchRemoteObservation={refetchRemoteObservation}
       onAgree={() => {}}
+      currentUserId={userId}
     />
   ) );
 

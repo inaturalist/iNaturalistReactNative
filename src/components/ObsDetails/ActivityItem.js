@@ -13,7 +13,6 @@ import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Taxon from "realmModels/Taxon";
-import useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import { textStyles } from "styles/obsDetails/obsDetails";
 
@@ -24,16 +23,16 @@ type Props = {
   navToTaxonDetails: Function,
   toggleRefetch: Function,
   refetchRemoteObservation: Function,
-  onAgree: Function
+  onAgree: Function,
+  currentUserId?: Number
 }
 
 const ActivityItem = ( {
-  item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation, onAgree
+  item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation, onAgree, currentUserId
 }: Props ): Node => {
   const { taxon, user } = item;
   const isOnline = useIsConnected( );
-  const currentUser = useCurrentUser( );
-  const userId = currentUser?.id;
+  const userId = currentUserId;
   const showAgree = taxon && user && user.id !== userId && taxon.rank_level <= 10;
 
   const showNoInternetIcon = accessibilityLabel => (
@@ -48,14 +47,14 @@ const ActivityItem = ( {
   );
 
   return (
-    <View className="flex-column ml-[15px] mr-[23px]">
+    <View className="flex-column ml-[15px]">
       <ActivityHeader
         item={item}
         refetchRemoteObservation={refetchRemoteObservation}
         toggleRefetch={toggleRefetch}
       />
       {taxon && (
-        <View className="flex-row items-center justify-between">
+        <View className="flex-row items-center justify-between mr-[23px]">
           <Pressable
             className="flex-row my-[13.5px] items-center w-2/3"
             onPress={navToTaxonDetails}
