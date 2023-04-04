@@ -6,8 +6,8 @@
   "About-iNaturalist": "About iNaturalist",
   "Accept-community-identifications": "Accept community identifications",
   "Account": "Account",
+  "ADD-AN-ID": "ADD AN ID",
   "Add-an-ID": "Add an ID",
-  "Add-an-Identification": "Add an Identification",
   "Add-Date-Time": "Add Date/Time",
   "Add-evidence-of-an-organism": "Add evidence of an organism. This helps others identify what you saw.",
   "Add-Location": "Add Location",
@@ -92,7 +92,7 @@
   "Error-Couldnt-Complete-Upload": "Error: Couldn't Complete Upload",
   "Error-Couldnt-Upload-Photo": "Error: Couldn't Upload Photo",
   "Error-Could-Not-Fetch-Taxon": "Error: Could Not Fetch Taxon",
-  "Evidence": "Evidence",
+  "EVIDENCE": "EVIDENCE",
   "Explore": "Explore",
   "EXPLORE-OBSERVATIONS": "EXPLORE OBSERVATIONS",
   "External-Applications": "External Applications",
@@ -132,7 +132,6 @@
   "High": "High",
   "IDs": "ID's",
   "IDENTIFICATION": "IDENTIFICATION",
-  "Identification": "Identification",
   "Import-X-photos": {
     "comment": "Shows the number of photos a user selected from the camera roll for upload",
     "val": "Import { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
@@ -244,11 +243,12 @@
   "Offensive-Inappropriate": "Offensive/Inappropriate",
   "Offensive-Inappropriate-Examples": "Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of \"appropriate,\" see the FAQ.",
   "Open": "Open",
-  "Organism-is-wild": {
+  "Organism-is-captive": {
     "comment": "Picker prompt on observation edit",
-    "val": "Organism is wild:"
+    "val": "Organism is captive"
   },
-  "Other-Data": "Other Data",
+  "Organism-is-wild": "Organism is wild",
+  "OTHER-DATA": "OTHER DATA",
   "Password": "Password",
   "Paused": "Paused",
   "Photo-Licensing": "Photo Licensing",
@@ -397,7 +397,7 @@
   "Unmute": "Unmute",
   "Missing-Location": "Missing Location",
   "Unreviewed-only": "Unreviewed only",
-  "UPLOAD-OBSERVATION": "UPLOAD OBSERVATION",
+  "UPLOAD-NOW": "UPLOAD NOW",
   "Upload-x-observations": {
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "Upload { $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}"
@@ -442,6 +442,7 @@
   },
   "X-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
   "X-observations-uploaded": "{ $count ->\n  [one] 1 observation uploaded\n *[other] { $count } observations uploaded\n}",
+  "X-of-Y": "{ $count ->\n  [one] 1\n *[other] { $count }\n} { $totalObservationCount ->\n  [one] of { $totalObservationCount }\n *[other] of { $totalObservationCount }\n}",
   "X-Photos": {
     "comment": "Displays number of photos attached to an observation in the Media Viewer",
     "val": "{ $photoCount ->\n  [one] 1 Photo\n *[other] { $photoCount } Photos\n}"

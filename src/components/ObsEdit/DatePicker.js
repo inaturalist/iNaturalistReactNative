@@ -1,11 +1,10 @@
 // @flow
 
-import DateTimePicker from "components/SharedComponents/DateTimePicker";
-import { Pressable, Text } from "components/styledComponents";
+import { Body3, DateTimePicker, INatIcon } from "components/SharedComponents";
+import { Pressable } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
-import { IconButton } from "react-native-paper";
 import { createObservedOnStringForUpload, displayDateTimeObsEdit } from "sharedHelpers/dateAndTime";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -38,13 +37,14 @@ const DatePicker = ( { currentObservation }: Props ): Node => {
         toggleDateTimePicker={closeModal}
       />
       <Pressable
+        accessibilityRole="button"
         onPress={openModal}
         className="flex-row flex-nowrap items-center"
       >
-        <IconButton size={14} icon="clock-outline" />
-        <Text testID="ObsEdit.time">
+        <INatIcon size={14} name="clock-outline" />
+        <Body3 testID="ObsEdit.time" className="ml-5">
           {displayDate( ) || t( "Add-Date-Time" )}
-        </Text>
+        </Body3>
       </Pressable>
     </>
   );
