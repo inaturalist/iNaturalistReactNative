@@ -1,8 +1,7 @@
 // @flow
 
 import {
-  BottomSheetModal,
-  BottomSheetModalProvider
+  BottomSheetModal
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
@@ -199,150 +198,148 @@ const AddID = ( { route }: Props ): Node => {
   }, [showEditComment, editComment, navigation] );
 
   return (
-    <BottomSheetModalProvider>
-      <ViewWrapper>
-        <View className="p-3">
-          {comment.length > 0 && (
-            <View>
-              <Text>{t( "ID-Comment" )}</Text>
-              <View style={viewStyles.commentContainer}>
+    <ViewWrapper>
+      <View className="p-3">
+        {comment.length > 0 && (
+          <View>
+            <Text>{t( "ID-Comment" )}</Text>
+            <View style={viewStyles.commentContainer}>
+              <IconMaterial
+                style={textStyles.commentLeftIcon}
+                name="textsms"
+                size={25}
+              />
+              <Text style={textStyles.comment}>{comment}</Text>
+              <Pressable
+                style={viewStyles.commentRightIconContainer}
+                onPress={editComment}
+                accessible
+                accessibilityRole="link"
+                accessibilityLabel={t( "Edit-comment" )}
+                accessibilityState={{ disabled: false }}
+              >
                 <IconMaterial
-                  style={textStyles.commentLeftIcon}
-                  name="textsms"
+                  style={textStyles.commentRightIcon}
+                  name="edit"
                   size={25}
                 />
-                <Text style={textStyles.comment}>{comment}</Text>
-                <Pressable
-                  style={viewStyles.commentRightIconContainer}
-                  onPress={editComment}
-                  accessible
-                  accessibilityRole="link"
-                  accessibilityLabel={t( "Edit-comment" )}
-                  accessibilityState={{ disabled: false }}
-                >
-                  <IconMaterial
-                    style={textStyles.commentRightIcon}
-                    name="edit"
-                    size={25}
-                  />
-                </Pressable>
-              </View>
+              </Pressable>
             </View>
+          </View>
+        )}
+        <Text className="color-darkGray">
+          {t( "Search-for-a-taxon-to-add-an-identification" )}
+        </Text>
+        <TextInput
+          testID="SearchTaxon"
+          left={SearchTaxonIcon}
+          style={viewStyles.taxonSearch}
+          value={taxonSearch}
+          onChangeText={setTaxonSearch}
+          selectionColor={theme.colors.tertiary}
+          accessible
+          accessibilityLabel={t(
+            "Search-for-a-taxon-to-add-an-identification"
           )}
-          <Text className="color-darkGray">
-            {t( "Search-for-a-taxon-to-add-an-identification" )}
-          </Text>
+          accessibilityRole="search"
+          accessibilityState={{ disabled: false }}
+        />
+        <FlatList
+          keyboardShouldPersistTaps="always"
+          data={taxonList}
+          renderItem={renderTaxonResult}
+          keyExtractor={item => item.id}
+        />
+      </View>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={0}
+        enableOverDrag={false}
+        enablePanDownToClose={false}
+        snapPoints={["50%"]}
+        backdropComponent={renderBackdrop}
+        style={viewStyles.bottomModal}
+        accessibilityState={{ disabled: false }}
+      >
+        <Headline style={textStyles.commentHeader}>
+          {comment.length > 0 ? t( "Edit-comment" ) : t( "Add-optional-comment" )}
+        </Headline>
+        <View style={viewStyles.commentInputContainer}>
           <TextInput
-            testID="SearchTaxon"
-            left={SearchTaxonIcon}
-            style={viewStyles.taxonSearch}
-            value={taxonSearch}
-            onChangeText={setTaxonSearch}
+            keyboardType="default"
+            style={viewStyles.commentInput}
+            value={commentDraft}
             selectionColor={theme.colors.tertiary}
-            accessible
-            accessibilityLabel={t(
-              "Search-for-a-taxon-to-add-an-identification"
+            activeUnderlineColor={theme.colors.background}
+            autoFocus
+            multiline
+            onChangeText={setCommentDraft}
+            render={innerProps => (
+              <NativeTextInput
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...innerProps}
+                style={[innerProps.style, viewStyles.commentInputText]}
+              />
             )}
-            accessibilityRole="search"
+            accessible
+            accessibilityLabel={t( "Add-optional-comment" )}
             accessibilityState={{ disabled: false }}
           />
-          <FlatList
-            keyboardShouldPersistTaps="always"
-            data={taxonList}
-            renderItem={renderTaxonResult}
-            keyExtractor={item => item.id}
-          />
+          <TouchableOpacity
+            style={viewStyles.commentClear}
+            disabled={commentDraft.length === 0}
+            onPress={() => setCommentDraft( "" )}
+            accessible
+            accessibilityRole="button"
+            accessibilityLabel={t( "Clear-comment" )}
+            accessibilityState={{ disabled: commentDraft.length === 0 }}
+          >
+            <Text
+              style={[
+                viewStyles.commentClearText,
+                commentDraft.length === 0 ? textStyles.disabled : null
+              ]}
+            >
+              {t( "Clear" )}
+            </Text>
+          </TouchableOpacity>
         </View>
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={0}
-          enableOverDrag={false}
-          enablePanDownToClose={false}
-          snapPoints={["50%"]}
-          backdropComponent={renderBackdrop}
-          style={viewStyles.bottomModal}
-          accessibilityState={{ disabled: false }}
-        >
-          <Headline style={textStyles.commentHeader}>
-            {comment.length > 0 ? t( "Edit-comment" ) : t( "Add-optional-comment" )}
-          </Headline>
-          <View style={viewStyles.commentInputContainer}>
-            <TextInput
-              keyboardType="default"
-              style={viewStyles.commentInput}
-              value={commentDraft}
-              selectionColor={theme.colors.tertiary}
-              activeUnderlineColor={theme.colors.background}
-              autoFocus
-              multiline
-              onChangeText={setCommentDraft}
-              render={innerProps => (
-                <NativeTextInput
-                  // eslint-disable-next-line react/jsx-props-no-spreading
-                  {...innerProps}
-                  style={[innerProps.style, viewStyles.commentInputText]}
-                />
-              )}
-              accessible
-              accessibilityLabel={t( "Add-optional-comment" )}
-              accessibilityState={{ disabled: false }}
-            />
-            <TouchableOpacity
-              style={viewStyles.commentClear}
-              disabled={commentDraft.length === 0}
-              onPress={() => setCommentDraft( "" )}
-              accessible
-              accessibilityRole="button"
-              accessibilityLabel={t( "Clear-comment" )}
-              accessibilityState={{ disabled: commentDraft.length === 0 }}
-            >
-              <Text
-                style={[
-                  viewStyles.commentClearText,
-                  commentDraft.length === 0 ? textStyles.disabled : null
-                ]}
-              >
-                {t( "Clear" )}
-              </Text>
-            </TouchableOpacity>
-          </View>
 
-          <View style={viewStyles.commentButtonContainer}>
-            <Button
-              style={viewStyles.commentButton}
-              uppercase={false}
-              color={colors.lightGray}
-              onPress={() => {
-                bottomSheetModalRef.current?.dismiss();
-              }}
-              accessible
-              accessibilityRole="button"
-              accessibilityLabel={t( "Cancel-comment" )}
-              accessibilityState={{ disabled: false }}
-            >
-              {t( "Cancel" )}
-            </Button>
-            <Button
-              style={viewStyles.commentButton}
-              uppercase={false}
-              disabled={commentDraft.length === 0}
-              color={colors.lightGray}
-              mode="contained"
-              onPress={() => {
-                setComment( commentDraft );
-                bottomSheetModalRef.current?.dismiss();
-              }}
-              accessible
-              accessibilityRole="button"
-              accessibilityLabel={t( "Save-comment" )}
-              accessibilityState={{ disabled: commentDraft.length === 0 }}
-            >
-              {comment.length > 0 ? t( "Edit-comment" ) : t( "Add-comment" )}
-            </Button>
-          </View>
-        </BottomSheetModal>
-      </ViewWrapper>
-    </BottomSheetModalProvider>
+        <View style={viewStyles.commentButtonContainer}>
+          <Button
+            style={viewStyles.commentButton}
+            uppercase={false}
+            color={colors.lightGray}
+            onPress={() => {
+              bottomSheetModalRef.current?.dismiss();
+            }}
+            accessible
+            accessibilityRole="button"
+            accessibilityLabel={t( "Cancel-comment" )}
+            accessibilityState={{ disabled: false }}
+          >
+            {t( "Cancel" )}
+          </Button>
+          <Button
+            style={viewStyles.commentButton}
+            uppercase={false}
+            disabled={commentDraft.length === 0}
+            color={colors.lightGray}
+            mode="contained"
+            onPress={() => {
+              setComment( commentDraft );
+              bottomSheetModalRef.current?.dismiss();
+            }}
+            accessible
+            accessibilityRole="button"
+            accessibilityLabel={t( "Save-comment" )}
+            accessibilityState={{ disabled: commentDraft.length === 0 }}
+          >
+            {comment.length > 0 ? t( "Edit-comment" ) : t( "Add-comment" )}
+          </Button>
+        </View>
+      </BottomSheetModal>
+    </ViewWrapper>
   );
 };
 
