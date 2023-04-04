@@ -46,7 +46,14 @@ const IdentificationSection = ( ): Node => {
 
   return (
     <View className="ml-5 mt-6">
-      <Heading4>{t( "IDENTIFICATION" )}</Heading4>
+      <View className="flex-row">
+        <Heading4>{t( "IDENTIFICATION" )}</Heading4>
+        {( identification && identification.rank_level !== 100 ) && (
+          <View className="ml-3">
+            <INatIcon name="checkmark-circle" size={19} color={theme.colors.secondary} />
+          </View>
+        )}
+      </View>
       <View className="mt-5 ml-1">
         {identification && displayIdentification( )}
         <View className="flex-row justify-start">
