@@ -69,7 +69,7 @@ const UiLibrary = (): Node => {
       name: "Larus",
       preferred_common_name: "Large White-headed Gulls",
       rank: "genus",
-      rank_level: 20
+      rank_level: 10
     },
     user: {
       icon_url: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",

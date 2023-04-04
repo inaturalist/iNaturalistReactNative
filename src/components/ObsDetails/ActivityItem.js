@@ -13,6 +13,7 @@ import type { Node } from "react";
 import React from "react";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Taxon from "realmModels/Taxon";
+import useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import { textStyles } from "styles/obsDetails/obsDetails";
 
@@ -29,8 +30,11 @@ type Props = {
 const ActivityItem = ( {
   item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation, onAgree
 }: Props ): Node => {
-  const { taxon } = item;
+  const { taxon, user } = item;
   const isOnline = useIsConnected( );
+  const currentUser = useCurrentUser( );
+  const userId = currentUser?.id;
+  const showAgree = taxon && user && user.id !== userId && taxon.rank_level <= 10;
 
   const showNoInternetIcon = accessibilityLabel => (
     <View className="mr-3">
@@ -63,12 +67,14 @@ const ActivityItem = ( {
               : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
             <DisplayTaxonName scientificNameFirst={false} taxon={taxon} layout="horizontal" />
           </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => onAgree( item )}
-          >
-            <INatIcon name="id-agree" size={33} />
-          </Pressable>
+          { showAgree && (
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => onAgree( item )}
+            >
+              <INatIcon name="id-agree" size={33} />
+            </Pressable>
+          )}
         </View>
       )}
       { !_.isEmpty( item?.body ) && (
