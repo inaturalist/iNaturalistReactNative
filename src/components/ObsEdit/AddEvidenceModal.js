@@ -95,43 +95,42 @@ const AddEvidenceModal = ( {
           setSnapPoint( height + 50 );
         }}
       >
-          <Text className="text-2xl ml-4 mb-4">{t( "Add-evidence" )}</Text>
-          {disableAddingMoreEvidence
-          && (
-            <Text className="m-3">
-              {t( "You-can-only-upload-20-media" )}
-            </Text>
-          )}
-          <View className="flex-row w-full justify-around">
-            <EvidenceButton
-              icon="camera"
-              handlePress={onTakePhoto}
-              disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Camera" )}
-              accessibilityHint={t( "Navigates-to-camera" )}
-            />
-            <EvidenceButton
-              icon="gallery"
-              handlePress={onImportPhoto}
-              disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Bulk-importer" )}
-              accessibilityHint={t( "Navigates-to-bulk-importer" )}
-            />
-            <EvidenceButton
-              icon="microphone"
-              handlePress={onRecordSound}
-              disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Sound-recorder" )}
-              accessibilityHint={t( "Navigates-to-sound-recorder" )}
-            />
-          </View>
-          <Text
-            className="underline mt-5"
-            onPress={( ) => setShowAddEvidenceModal( false )}
-          >
-            {t( "Cancel" )}
+        <Text className="text-2xl ml-4 mb-4">{t( "Add-evidence" )}</Text>
+        {disableAddingMoreEvidence
+        && (
+          <Text className="m-3">
+            {t( "You-can-only-upload-20-media" )}
           </Text>
         )}
+        <View className="flex-row w-full justify-around">
+          <EvidenceButton
+            icon="camera"
+            handlePress={onTakePhoto}
+            disabled={disableAddingMoreEvidence}
+            accessibilityLabel={t( "Camera" )}
+            accessibilityHint={t( "Navigates-to-camera" )}
+          />
+          <EvidenceButton
+            icon="gallery"
+            handlePress={onImportPhoto}
+            disabled={disableAddingMoreEvidence}
+            accessibilityLabel={t( "Bulk-importer" )}
+            accessibilityHint={t( "Navigates-to-bulk-importer" )}
+          />
+          <EvidenceButton
+            icon="microphone"
+            handlePress={onRecordSound}
+            disabled={disableAddingMoreEvidence}
+            accessibilityLabel={t( "Sound-recorder" )}
+            accessibilityHint={t( "Navigates-to-sound-recorder" )}
+          />
+        </View>
+        <Text
+          className="underline mt-5"
+          onPress={( ) => setShowAddEvidenceModal( false )}
+        >
+          {t( "Cancel" )}
+        </Text>
         <View className="flex-row w-full justify-around">
           <EvidenceButton
             icon="camera"
