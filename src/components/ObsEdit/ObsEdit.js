@@ -26,6 +26,7 @@ import AddEvidenceModal from "./AddEvidenceModal";
 import DeleteObservationDialog from "./DeleteObservationDialog";
 import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
+import MultipleObservationsArrows from "./MultipleObservationsArrows";
 import ObsEditHeaderTitle from "./ObsEditHeaderTitle";
 import OtherDataSection from "./OtherDataSection";
 import SaveDialog from "./SaveDialog";
@@ -202,6 +203,7 @@ const ObsEdit = ( ): Node => {
           setPhotoUris={setPhotos}
         />
         <KeyboardAwareScrollView className="bg-white">
+          {observations.length > 1 && <MultipleObservationsArrows />}
           <EvidenceSection
             handleSelection={handleSelection}
             photoUris={photoUris}

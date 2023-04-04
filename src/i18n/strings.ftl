@@ -665,6 +665,14 @@ X-observations-uploaded = {$count ->
     *[other] {$count} observations uploaded
 }
 
+X-of-Y = {$count ->
+    [one] 1
+    *[other] {$count}
+} { $totalObservationCount ->
+    [one] of {$totalObservationCount}
+    *[other] of {$totalObservationCount}
+}
+
 # Displays number of photos attached to an observation in the Media Viewer
 X-Photos = {$photoCount ->
     [one] 1 Photo
