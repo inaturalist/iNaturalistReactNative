@@ -38,7 +38,7 @@ const PhotoPreview = ( {
   };
 
   const emptyDescription = ( ) => (
-    <Text className="text-inatGreen text-xl ml-3">
+    <Text className="text-white text-xl ml-3">
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
