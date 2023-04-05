@@ -24,7 +24,11 @@ const LoginSheet = ( { setShowLoginSheet }: Props ): Node => {
     <BottomSheet
       snapPoints={["25%"]}
       backdropComponent={renderBackdrop}
-      handleClose={( ) => setShowLoginSheet( false )}
+      onChange={position => {
+        if ( position === -1 ) {
+          setShowLoginSheet( false );
+        }
+      }}
     >
       <View className="m-5">
         <Heading4 className="text-center py-1">
