@@ -54,9 +54,9 @@ const PhotoCarousel = ( {
   const renderSkeleton = ( ) => ( savingPhoto ? (
     <View className={classnames( "bg-lightGray justify-center", {
       "rounded-sm w-[42px] h-[42px] mx-[3px]":
-        screenBreakpoint === ( "sm" || "md" ),
+      ["sm", "md"].includes( screenBreakpoint ),
       "rounded-md w-[83px] h-[83px] mx-[8.5px]":
-        screenBreakpoint === ( "lg" || "xl" || "2xl" )
+      ["lg", "xl", "2xl"].includes( screenBreakpoint )
     } )}
     >
       <ActivityIndicator />
@@ -101,8 +101,8 @@ const PhotoCarousel = ( {
               selectedPhotoIndex === index
             },
             {
-              "m-[3px]": screenBreakpoint === ( "sm" || "md" ),
-              "m-[8.5px]": screenBreakpoint === ( "lg" || "xl" || "2xl" )
+              "mx-[3px] mt-0": ["sm", "md"].includes( screenBreakpoint ),
+              "mx-[8.5px] mt-0": ["lg", "xl", "2xl"].includes( screenBreakpoint )
             }
           )}
         >
@@ -111,8 +111,8 @@ const PhotoCarousel = ( {
             className={classnames(
               "overflow-hidden",
               {
-                "rounded-sm w-[42px] h-[42px]": screenBreakpoint === ( "sm" || "md" ),
-                "rounded-md w-[83px] h-[83px]": screenBreakpoint === ( "lg" || "xl" || "2xl" )
+                "rounded-sm w-[42px] h-[42px]": ["sm", "md"].includes( screenBreakpoint ),
+                "rounded-md w-[83px] h-[83px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
               }
             )}
           >

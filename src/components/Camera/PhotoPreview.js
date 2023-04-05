@@ -38,7 +38,7 @@ const PhotoPreview = ( {
   };
 
   const emptyDescription = ( ) => (
-    <Text className="text-white text-xl ml-3">
+    <Text className="text-inatGreen text-xl ml-3">
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
@@ -55,8 +55,8 @@ const PhotoPreview = ( {
       <View className={classnames(
         "bg-black pb-[18px] pt-[50px]",
         {
-          "h-[110px]": screenBreakpoint === ( "sm" || "md" ),
-          "h-[151px]": screenBreakpoint === ( "lg" || "xl" || "2xl" )
+          "h-[110px]": ["sm", "md"].includes( screenBreakpoint ),
+          "h-[151px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
         }
       )}
       >
