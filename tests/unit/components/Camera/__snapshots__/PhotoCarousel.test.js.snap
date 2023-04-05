@@ -65,10 +65,11 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
                 "marginTop": 24,
               },
               Object {
-                "marginBottom": 8.5,
                 "marginLeft": 8.5,
                 "marginRight": 8.5,
-                "marginTop": 8.5,
+              },
+              Object {
+                "marginTop": 0,
               },
             ],
           ]
@@ -184,10 +185,11 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
                 "marginTop": 24,
               },
               Object {
-                "marginBottom": 8.5,
                 "marginLeft": 8.5,
                 "marginRight": 8.5,
-                "marginTop": 8.5,
+              },
+              Object {
+                "marginTop": 0,
               },
             ],
           ]
@@ -303,10 +305,11 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
                 "marginTop": 24,
               },
               Object {
-                "marginBottom": 8.5,
                 "marginLeft": 8.5,
                 "marginRight": 8.5,
-                "marginTop": 8.5,
+              },
+              Object {
+                "marginTop": 0,
               },
             ],
           ]
@@ -453,10 +456,11 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                 "marginTop": 24,
               },
               Object {
-                "marginBottom": 3,
                 "marginLeft": 3,
                 "marginRight": 3,
-                "marginTop": 3,
+              },
+              Object {
+                "marginTop": 0,
               },
             ],
           ]
@@ -572,10 +576,11 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                 "marginTop": 24,
               },
               Object {
-                "marginBottom": 3,
                 "marginLeft": 3,
                 "marginRight": 3,
-                "marginTop": 3,
+              },
+              Object {
+                "marginTop": 0,
               },
             ],
           ]
@@ -691,10 +696,11 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                 "marginTop": 24,
               },
               Object {
-                "marginBottom": 3,
                 "marginLeft": 3,
                 "marginRight": 3,
-                "marginTop": 3,
+              },
+              Object {
+                "marginTop": 0,
               },
             ],
           ]
