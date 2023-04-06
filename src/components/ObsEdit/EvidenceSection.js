@@ -1,8 +1,7 @@
 // @flow
 
 import {
-  Body3, Body4, Heading4, INatIcon,
-  PhotoCarousel
+  Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
 import { ActivityIndicator, View } from "components/styledComponents";
 import {
@@ -20,6 +19,7 @@ import { useTheme } from "react-native-paper";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
 import DatePicker from "./DatePicker";
+import EvidenceList from "./EvidenceList";
 
 type Props = {
   handleSelection: Function,
@@ -203,10 +203,9 @@ const EvidenceSection = ( {
           )}
         </View>
       </View>
-      <PhotoCarousel
+      <EvidenceList
         photoUris={photoUris}
         setSelectedPhotoIndex={handleSelection}
-        showAddButton
         handleAddEvidence={handleAddEvidence}
       />
       <View className="flex-row flex-nowrap my-4">
