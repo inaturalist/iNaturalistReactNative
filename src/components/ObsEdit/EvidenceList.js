@@ -55,13 +55,13 @@ const EvidenceList = ( {
         }}
         className={classnames( imageClass )}
       >
-            <View className="rounded-lg overflow-hidden">
-            <Image
-                source={{ uri: item }}
-                testID="ObsEdit.photo"
-                className="w-fit h-full flex items-center justify-center"
-            />
-            </View>
+        <View className="rounded-lg overflow-hidden">
+          <Image
+            source={{ uri: item }}
+            testID="ObsEdit.photo"
+            className="w-fit h-full flex items-center justify-center"
+          />
+        </View>
       </Pressable>
     );
   };

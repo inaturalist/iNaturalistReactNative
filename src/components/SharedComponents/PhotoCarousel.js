@@ -1,7 +1,6 @@
 // @flow
 
 import classnames from "classnames";
-import { INatIcon } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -14,7 +13,6 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import Modal from "react-native-modal";
 import { IconButton, useTheme } from "react-native-paper";
-import colors from "styles/tailwindColors";
 
 type Props = {
   emptyComponent?: Function,
@@ -23,8 +21,6 @@ type Props = {
   selectedPhotoIndex?: number,
   containerStyle?: string,
   savingPhoto?: boolean,
-  handleAddEvidence?: Function,
-  showAddButton?: boolean,
   deletePhoto?: Function,
   screenBreakpoint?: string
 }
@@ -36,8 +32,6 @@ const PhotoCarousel = ( {
   selectedPhotoIndex,
   containerStyle,
   savingPhoto,
-  handleAddEvidence,
-  showAddButton = false,
   deletePhoto,
   screenBreakpoint
 }: Props ): Node => {
@@ -63,21 +57,8 @@ const PhotoCarousel = ( {
     </View>
   ) : null );
 
-  const renderPhotoOrEvidenceButton = ( { item, index } ) => {
-    if ( item === "add" ) {
-      return (
-        <Pressable
-          accessibilityRole="button"
-          onPress={handleAddEvidence}
-          className={`${imageClass} border border-lightGray mt-6`}
-        >
-          <INatIcon name="plus-bold" size={27} color={colors.darkGray} />
-        </Pressable>
-      );
-    }
-
-    return (
-      <>
+  const renderPhotoOrEvidenceButton = ( { item, index } ) => (
+    <>
         <Pressable
           accessibilityRole="button"
           onLongPress={( ) => {
@@ -143,14 +124,10 @@ const PhotoCarousel = ( {
         {index === photoUris.length - 1 && renderSkeleton( )}
       </>
     );
-  };
-
-  const data = [...photoUris];
-  if ( showAddButton ) data.unshift( "add" );
 
   const photoPreviewsList = (
     <FlatList
-      data={data}
+      data={[...photoUris]}
       renderItem={renderPhotoOrEvidenceButton}
       horizontal
       ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
