@@ -23,6 +23,7 @@ import {
 } from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
+import getBreakpoint from "sharedHelpers/breakpoint";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -67,6 +68,7 @@ const StandardCamera = ( ): Node => {
   const isTablet = DeviceInfo.isTablet();
 
   const photosTaken = allObsPhotoUris.length > 0;
+  const breakpoint = getBreakpoint( initialWidth );
 
   // screen orientation locked to portrait on small devices
   if ( !isTablet ) {
@@ -201,9 +203,11 @@ const StandardCamera = ( ): Node => {
           photoUris={cameraPreviewUris}
           setPhotoUris={setCameraPreviewUris}
           savingPhoto={savingPhoto}
+          screenBreakpoint={breakpoint}
         />
         <View className="relative flex-1">
-          {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
+          {device
+            && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
           <FadeInOutView savingPhoto={savingPhoto} />
         </View>
         <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4`}>

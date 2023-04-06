@@ -1,4 +1,5 @@
 // @flow
+import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
@@ -10,13 +11,15 @@ import React, { useContext, useState } from "react";
 type Props = {
   photoUris: Array<string>,
   setPhotoUris: Function,
-  savingPhoto: boolean
+  savingPhoto: boolean,
+  screenBreakpoint: string
 }
 
 const PhotoPreview = ( {
   photoUris,
   setPhotoUris,
-  savingPhoto
+  savingPhoto,
+  screenBreakpoint
 }: Props ): Node => {
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
@@ -35,7 +38,7 @@ const PhotoPreview = ( {
   };
 
   const emptyDescription = ( ) => (
-    <Text className="text-white text-xl mt-20 ml-3">
+    <Text className="text-white text-xl ml-3">
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
@@ -49,7 +52,14 @@ const PhotoPreview = ( {
         photoUris={photoUris}
         setPhotoUris={setPhotoUris}
       />
-      <View className="h-32">
+      <View className={classnames(
+        "bg-black pb-[18px] pt-[50px]",
+        {
+          "h-[110px]": ["sm", "md"].includes( screenBreakpoint ),
+          "h-[151px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
+        }
+      )}
+      >
         <PhotoCarousel
           deletePhoto={deletePhoto}
           photoUris={photoUris}
@@ -57,6 +67,7 @@ const PhotoPreview = ( {
           containerStyle="camera"
           setSelectedPhotoIndex={handleSelection}
           savingPhoto={savingPhoto}
+          screenBreakpoint={screenBreakpoint}
         />
       </View>
     </>
