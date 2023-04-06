@@ -93,8 +93,8 @@ const StandardCamera = ( ): Node => {
       setImageOrientation( "landscapeLeft" );
     } else if ( _.camelCase( orientation ) === "landscapeLeft" ) {
       setImageOrientation( "landscapeRight" );
-    } else {
-      setImageOrientation( orientation );
+    } else if ( orientation.toLowerCase() === "portrait" ) {
+      setImageOrientation( "portrait" );
     }
   };
 
@@ -238,58 +238,63 @@ const StandardCamera = ( ): Node => {
 
   const checkmarkClass = "bg-inatGreen rounded-full h-[40px] w-[40px] justify-center items-center";
 
-  const renderLargeScreenCameraOptions = () => (
-    <View className="absolute top-0 bottom-0 right-0 justify-center items-center m-2">
-      { hasFlash && (
-        renderFlashButton()
-      )}
-      <Pressable
-        className={` ${cameraOptionsClassName} m-[12.5px]`}
-        onPress={flipCamera}
-        accessibilityLabel={t( "Camera-button-label-switch-camera" )}
-        accessibilityRole="button"
-        accessibilityState={{ disabled: false }}
-      >
-        <INatIcon
-          name="rotate"
-          color={colors.white}
-          size={20}
-          testID="camera-button-label-switch-camera"
-        />
-      </Pressable>
-      <Pressable
-        // eslint-disable-next-line max-len
-        className="bg-white rounded-full h-[60px] w-[60px] justify-center items-center m-[12.5px]"
-        onPress={takePhoto}
-        accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-        accessibilityRole="button"
-        accessibilityState={{ disabled: disallowAddingPhotos }}
-        disabled={disallowAddingPhotos}
-      >
-        <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
-      </Pressable>
-      {photosTaken && (
+  const renderLargeScreenCameraOptions = () => {
+    const buttonSpacing = ( imageOrientation.toLowerCase() === "portrait" )
+      ? "space-y-[40px]" : "space-y-[32px]";
+    return (
+      // eslint-disable-next-line max-len
+      <View className={` absolute top-0 bottom-0 right-0 justify-center items-center m-2 ${buttonSpacing} pb-0`}>
+        { hasFlash && (
+          renderFlashButton()
+        )}
         <Pressable
-          className={checkmarkClass}
-          onPress={navToObsEdit}
-          accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+          className={`${cameraOptionsClassName}`}
+          onPress={flipCamera}
+          accessibilityLabel={t( "Camera-button-label-switch-camera" )}
           accessibilityRole="button"
           accessibilityState={{ disabled: false }}
-          disabled={false}
         >
           <INatIcon
-            name="checkmark"
+            name="rotate"
             color={colors.white}
             size={20}
             testID="camera-button-label-switch-camera"
           />
         </Pressable>
-      )}
-      <View className={`${cameraOptionsClassName} m-[12.5px]`}>
-        <CloseButton size={18} />
+        <Pressable
+        // eslint-disable-next-line max-len
+          className="bg-white rounded-full h-[60px] w-[60px] justify-center items-center"
+          onPress={takePhoto}
+          accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+          accessibilityRole="button"
+          accessibilityState={{ disabled: disallowAddingPhotos }}
+          disabled={disallowAddingPhotos}
+        >
+          <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
+        </Pressable>
+        {photosTaken && (
+          <Pressable
+            className={checkmarkClass}
+            onPress={navToObsEdit}
+            accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+            accessibilityRole="button"
+            accessibilityState={{ disabled: false }}
+            disabled={false}
+          >
+            <INatIcon
+              name="checkmark"
+              color={colors.white}
+              size={20}
+              testID="camera-button-label-switch-camera"
+            />
+          </Pressable>
+        )}
+        <View className={`${cameraOptionsClassName}`}>
+          <CloseButton size={18} />
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <View className="flex-1 bg-black">
