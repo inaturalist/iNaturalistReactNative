@@ -10,6 +10,7 @@ export { default as Divider } from "./Divider/Divider";
 export { default as FloatingActionBar } from "./FloatingActionBar";
 export { default as INatIcon } from "./INatIcon";
 export { default as InlineUser } from "./InlineUser/InlineUser";
+export { default as KebabMenu } from "./KebabMenu";
 export { default as ObservationLocation } from "./ObservationLocation";
 export { default as PhotoCarousel } from "./PhotoCarousel";
 export { default as PhotoCount } from "./PhotoCount";
