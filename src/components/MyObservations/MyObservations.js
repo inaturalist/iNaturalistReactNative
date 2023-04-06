@@ -46,9 +46,7 @@ const Item = React.memo(
           style={{
             height: gridItemWidth,
             width: gridItemWidth,
-            marginLeft: GUTTER / 2,
-            marginBottom: GUTTER,
-            marginRight: GUTTER / 2
+            margin: GUTTER / 2
           }}
           uploadStatus={uploadStatus}
           setShowLoginSheet={setShowLoginSheet}
@@ -82,12 +80,16 @@ const MyObservations = ( {
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
-  const scrollYClamped = diffClamp( scrollY.current, 0, heightAboveToolbar + 10 );
+  const scrollYClamped = diffClamp(
+    scrollY.current,
+    0,
+    heightAboveToolbar
+  );
 
   const offsetForHeader = scrollYClamped.interpolate( {
-    inputRange: [0, heightAboveToolbar + 10],
+    inputRange: [0, heightAboveToolbar],
     // $FlowIgnore
-    outputRange: [0, -heightAboveToolbar - 10]
+    outputRange: [0, -heightAboveToolbar]
   } );
 
   const setNumColumns = ( ) => {
@@ -153,6 +155,13 @@ const MyObservations = ( {
     />
   );
 
+  const contentContainerStyle = layout === "list"
+    ? {}
+    : {
+      paddingLeft: GUTTER / 2,
+      paddingRight: GUTTER / 2
+    };
+
   return (
     <>
       <ViewWrapper>
@@ -175,10 +184,7 @@ const MyObservations = ( {
               setShowLoginSheet={setShowLoginSheet}
             />
             <AnimatedFlashList
-              contentContainerStyle={{
-                paddingLeft: GUTTER / 2,
-                paddingRight: GUTTER / 2
-              }}
+              contentContainerStyle={contentContainerStyle}
               data={observations}
               key={numColumns}
               estimatedItemSize={layout === "grid" ? 165 : 98}

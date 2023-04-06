@@ -23,7 +23,6 @@ import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Alert, LogBox } from "react-native";
 import {
   ActivityIndicator,
@@ -39,6 +38,7 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import useLocalObservation from "sharedHooks/useLocalObservation";
+import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 import ActivityTab from "./ActivityTab";

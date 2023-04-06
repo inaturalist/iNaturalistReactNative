@@ -7,10 +7,10 @@ import ScrollViewWrapper from "components/SharedComponents/ScrollViewWrapper";
 import { Pressable, Text, View } from "components/styledComponents";
 import _ from "lodash";
 import * as React from "react";
-import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Linking, useWindowDimensions } from "react-native";
 import HTML from "react-native-render-html";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useTranslation from "sharedHooks/useTranslation";
 
 const TaxonDetails = (): React.Node => {
   const { params } = useRoute();

@@ -3,8 +3,8 @@ import classNames from "classnames";
 import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import { useTranslation } from "react-i18next";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   label?: string,

@@ -1,14 +1,22 @@
 // @flow
 
-import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
-import { ActivityIndicator, Text, View } from "components/styledComponents";
+import {
+  Body3, Body4, Heading4, INatIcon,
+  PhotoCarousel
+} from "components/SharedComponents";
+import { ActivityIndicator, View } from "components/styledComponents";
+import {
+  differenceInCalendarYears,
+  isFuture,
+  parseISO
+} from "date-fns";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
 } from "react";
-import { IconButton } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
 import DatePicker from "./DatePicker";
@@ -28,6 +36,7 @@ const EvidenceSection = ( {
   handleAddEvidence,
   photoUris
 }: Props ): Node => {
+  const theme = useTheme( );
   const {
     currentObservation,
     updateObservationKeys
@@ -141,26 +150,72 @@ const EvidenceSection = ( {
       location += `, Lon: ${formatDecimal( longitude )}`;
     }
     if ( currentObservation.positional_accuracy ) {
-      location += `, Acc: ${formatDecimal( currentObservation.positional_accuracy )}`;
+      location += `, Acc: ${currentObservation.positional_accuracy.toFixed( 0 )}`;
     }
     return location;
   };
 
+  const hasValidLocation = ( ) => {
+    if ( hasLocation
+      && ( latitude !== 0 && longitude !== 0 )
+      && ( latitude >= -90 && latitude <= 90 )
+      && ( longitude >= -180 && longitude <= 180 )
+      && (
+        currentObservation.positional_accuracy > 0
+        && currentObservation.positional_accuracy <= 4000 )
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const hasValidDate = ( ) => {
+    const observationDate = parseISO( currentObservation?.observed_on_string );
+    if ( observationDate
+      && !isFuture( observationDate )
+      && differenceInCalendarYears( observationDate, new Date( ) ) <= 130
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const passesEvidenceTest = ( ) => {
+    if ( shouldFetchLocation ) {
+      return null;
+    }
+    if ( hasValidLocation( ) && hasValidDate( ) ) {
+      return true;
+    }
+    return false;
+  };
+
   return (
-    <View className="mx-5">
+    <View className="mx-6 mt-6">
+      <View className="flex-row">
+        <Heading4>{t( "EVIDENCE" )}</Heading4>
+        <View className="ml-3">
+          {passesEvidenceTest( ) && (
+            <INatIcon name="checkmark-circle" size={19} color={theme.colors.secondary} />
+          )}
+          {passesEvidenceTest( ) === false && (
+            <INatIcon name="triangle-exclamation" size={19} color={theme.colors.error} />
+          )}
+        </View>
+      </View>
       <PhotoCarousel
         photoUris={photoUris}
         setSelectedPhotoIndex={handleSelection}
         showAddButton
         handleAddEvidence={handleAddEvidence}
       />
-      <View className="flex-row flex-nowrap items-center">
-        <IconButton size={14} icon="map-marker-outline" />
-        <View>
-          <Text>{currentObservation.place_guess}</Text>
+      <View className="flex-row flex-nowrap my-4">
+        <INatIcon size={14} name="map-marker-outline" />
+        <View className="ml-5">
+          <Body3>{currentObservation.place_guess}</Body3>
           {shouldFetchLocation && <ActivityIndicator className="mx-1" />}
-          {shouldFetchLocation && <Text className="mx-1">{`(${numLocationFetches})`}</Text>}
-          <Text>{displayLocation( ) || t( "No-Location" )}</Text>
+          {shouldFetchLocation && <Body4 className="mx-1">{`(${numLocationFetches})`}</Body4>}
+          <Body4>{displayLocation( ) || t( "No-Location" )}</Body4>
         </View>
       </View>
       <DatePicker currentObservation={currentObservation} />

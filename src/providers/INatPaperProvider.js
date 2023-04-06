@@ -3,7 +3,10 @@
 import { INatIcon } from "components/SharedComponents";
 import type { Node } from "react";
 import * as React from "react";
-import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import {
+  MD3LightTheme as DefaultTheme,
+  Provider as PaperProvider
+} from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 const theme = {

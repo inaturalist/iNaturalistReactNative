@@ -3,7 +3,6 @@
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   PermissionsAndroid,
   Platform,
@@ -12,6 +11,7 @@ import {
   View
 } from "react-native";
 import { request, RESULTS } from "react-native-permissions";
+import useTranslation from "sharedHooks/useTranslation";
 import { viewStyles } from "styles/permissionGate";
 
 import ViewWrapper from "./ViewWrapper";

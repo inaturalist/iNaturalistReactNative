@@ -1,3 +1,4 @@
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { fireEvent, screen } from "@testing-library/react-native";
 import AddID from "components/ObsEdit/AddID";
 import initI18next from "i18n/initI18next";
@@ -101,9 +102,11 @@ describe( "AddID", () => {
 
   test( "should not have accessibility errors", () => {
     const addID = (
-      <INatPaperProvider>
-        <AddID route={mockRoute} />
-      </INatPaperProvider>
+      <BottomSheetModalProvider>
+        <INatPaperProvider>
+          <AddID route={mockRoute} />
+        </INatPaperProvider>
+      </BottomSheetModalProvider>
     );
     expect( addID ).toBeAccessible();
   } );

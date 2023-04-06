@@ -5,8 +5,8 @@ import Heading4 from "components/SharedComponents/Typography/Heading4";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Tab = {
   id: string,

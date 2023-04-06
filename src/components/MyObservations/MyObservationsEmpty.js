@@ -9,7 +9,7 @@ import Modal from "components/SharedComponents/Modal";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   isLoading: ?boolean
