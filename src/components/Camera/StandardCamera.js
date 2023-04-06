@@ -12,7 +12,6 @@ import React, {
   useCallback,
   useContext, useEffect, useRef, useState
 } from "react";
-import { useTranslation } from "react-i18next";
 import {
   BackHandler,
   Dimensions, StatusBar
@@ -25,6 +24,7 @@ import {
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import getBreakpoint from "sharedHelpers/breakpoint";
+import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 import CameraView from "./CameraView";

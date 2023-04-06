@@ -7,11 +7,11 @@ import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheet
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  setShowLoginSheet: Function
+  setShowLoginSheet: Function,
 }
 
 const LoginSheet = ( { setShowLoginSheet }: Props ): Node => {

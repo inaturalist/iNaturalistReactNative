@@ -1,25 +1,27 @@
 // @flow
 import classNames from "classnames";
-import { Body1, Body3 } from "components/SharedComponents";
+import { Body1, Body3, Body4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   scientificNameFirst?: boolean,
   taxon: Object,
   layout?: "horizontal" | "vertical",
-  color?: string
+  color?: string,
+  small?: boolean
 };
 
 const DisplayTaxonName = ( {
   layout = "horizontal",
   scientificNameFirst = false,
   taxon,
-  color
+  color,
+  small = false
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -54,7 +56,7 @@ const DisplayTaxonName = ( {
       isItalics
         ? (
           <TextComponent
-            key={`DisplayTaxonName-${taxon.id}-${piece}`}
+            key={`DisplayTaxonName-${taxon.id}-${rankLevel}-${piece}`}
             className={classNames( "italic", textColorClass )}
           >
             {text}
@@ -68,6 +70,9 @@ const DisplayTaxonName = ( {
     scientificNameComponent.unshift( `${rank} ` );
   }
 
+  const TopTextComponent = !small ? Body1 : Body3;
+  const BottomTextComponent = !small ? Body3 : Body4;
+
   return (
     <View
       testID="display-taxon-name"
@@ -78,7 +83,7 @@ const DisplayTaxonName = ( {
       //   "flex-row items-end flex-wrap w-11/12": isHorizontal
       // } )}
     >
-      <Body1
+      <TopTextComponent
         className={textColorClass}
         numberOfLines={scientificNameFirst ? 1 : 3}
       >
@@ -89,13 +94,13 @@ const DisplayTaxonName = ( {
               getSpaceChar( !scientificNameFirst )
             }`
         }
-      </Body1>
+      </TopTextComponent>
 
       {
         commonName && (
-          <Body3 className={textColorClass}>
+          <BottomTextComponent className={textColorClass}>
             {scientificNameFirst ? commonName : scientificNameComponent}
-          </Body3>
+          </BottomTextComponent>
         )
       }
     </View>

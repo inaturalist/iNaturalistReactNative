@@ -1,6 +1,7 @@
 // @flow
 
 import classnames from "classnames";
+import { INatIcon } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -13,7 +14,6 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import Modal from "react-native-modal";
 import { IconButton, useTheme } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -64,14 +64,14 @@ const PhotoCarousel = ( {
   ) : null );
 
   const renderPhotoOrEvidenceButton = ( { item, index } ) => {
-    if ( index === photoUris.length ) {
+    if ( item === "add" ) {
       return (
         <Pressable
           accessibilityRole="button"
           onPress={handleAddEvidence}
           className={`${imageClass} border border-lightGray mt-6`}
         >
-          <Icon name="add" size={40} color={colors.darkGray} />
+          <INatIcon name="plus-bold" size={27} color={colors.darkGray} />
         </Pressable>
       );
     }
@@ -146,7 +146,7 @@ const PhotoCarousel = ( {
   };
 
   const data = [...photoUris];
-  if ( showAddButton ) data.push( "add" );
+  if ( showAddButton ) data.unshift( "add" );
 
   const photoPreviewsList = (
     <FlatList

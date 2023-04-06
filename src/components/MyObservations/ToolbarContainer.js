@@ -4,11 +4,11 @@ import { useNavigation } from "@react-navigation/native";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Dimensions, PixelRatio
 } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useTranslation from "sharedHooks/useTranslation";
 
 import Toolbar from "./Toolbar";
 

@@ -38,10 +38,10 @@ import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useTranslation from "sharedHooks/useTranslation";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */

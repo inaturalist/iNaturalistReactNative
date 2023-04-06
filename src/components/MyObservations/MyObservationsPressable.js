@@ -3,8 +3,8 @@
 import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { Pressable } from "react-native";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   observation: Object,

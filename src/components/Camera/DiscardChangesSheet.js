@@ -9,8 +9,8 @@ import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheet
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { IconButton } from "react-native-paper";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   setShowDiscardSheet: Function
