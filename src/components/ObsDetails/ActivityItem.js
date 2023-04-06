@@ -1,9 +1,11 @@
 // @flow
 
+import DisplayTaxonName from "components/DisplayTaxonName";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
+import INatIcon from "components/SharedComponents/INatIcon";
 import UserText from "components/SharedComponents/UserText";
 import {
-  Pressable, Text, View
+  Pressable, View
 } from "components/styledComponents";
 import { t } from "i18next";
 import _ from "lodash";
@@ -20,14 +22,18 @@ type Props = {
   item: Object,
   navToTaxonDetails: Function,
   toggleRefetch: Function,
-  refetchRemoteObservation: Function
+  refetchRemoteObservation: Function,
+  onAgree: Function,
+  currentUserId?: Number
 }
 
 const ActivityItem = ( {
-  item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation
+  item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation, onAgree, currentUserId
 }: Props ): Node => {
-  const { taxon } = item;
+  const { taxon, user } = item;
   const isOnline = useIsConnected( );
+  const userId = currentUserId;
+  const showAgree = taxon && user && user.id !== userId && taxon.rank_level <= 10;
 
   const showNoInternetIcon = accessibilityLabel => (
     <View className="mr-3">
@@ -41,34 +47,37 @@ const ActivityItem = ( {
   );
 
   return (
-    <View className={item.temporary && "opacity-50"}>
+    <View className="flex-column ml-[15px]">
       <ActivityHeader
         item={item}
         refetchRemoteObservation={refetchRemoteObservation}
         toggleRefetch={toggleRefetch}
       />
       {taxon && (
-        <Pressable
-          className="flex-row my-3 ml-3 items-center"
-          onPress={navToTaxonDetails}
-          accessibilityRole="link"
-          accessibilityLabel={t( "Navigate-to-taxon-details" )}
-        >
-          {isOnline
-            ? <TaxonImage uri={Taxon.uri( taxon )} />
-            : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
-          <View>
-            <Text className="text-lg">{taxon.preferred_common_name}</Text>
-            <Text className="color-darkGray">
-              {taxon.rank}
-              {" "}
-              {taxon.name}
-            </Text>
-          </View>
-        </Pressable>
+        <View className="flex-row items-center justify-between mr-[23px]">
+          <Pressable
+            className="flex-row my-[13.5px] items-center w-2/3"
+            onPress={navToTaxonDetails}
+            accessibilityRole="link"
+            accessibilityLabel={t( "Navigate-to-taxon-details" )}
+          >
+            {isOnline
+              ? <TaxonImage uri={Taxon.uri( taxon )} />
+              : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
+            <DisplayTaxonName scientificNameFirst={false} taxon={taxon} layout="horizontal" />
+          </Pressable>
+          { showAgree && (
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => onAgree( item )}
+            >
+              <INatIcon name="id-agree" size={33} />
+            </Pressable>
+          )}
+        </View>
       )}
       { !_.isEmpty( item?.body ) && (
-        <View className="flex-row my-3 ml-3">
+        <View className="flex-row">
           <UserText baseStyle={textStyles.activityItemBody} text={item.body} />
         </View>
       )}

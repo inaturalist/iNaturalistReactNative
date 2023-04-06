@@ -20,6 +20,7 @@ const KebabMenu = ( { children, visible, setVisible }: Props ): Node => {
       onPress={openMenu}
       icon="kebab-menu"
       testID="KebabMenu.Button"
+      size={15}
     />
   );
 

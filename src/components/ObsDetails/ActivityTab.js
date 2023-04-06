@@ -119,6 +119,8 @@ const ActivityTab = ( {
       navToTaxonDetails={navToTaxonDetails}
       toggleRefetch={toggleRefetch}
       refetchRemoteObservation={refetchRemoteObservation}
+      onAgree={() => {}}
+      currentUserId={userId}
     />
   ) );
 
