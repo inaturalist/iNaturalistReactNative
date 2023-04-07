@@ -24,11 +24,14 @@ import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import colors from "styles/tailwindColors";
 
+import { log } from "../../../react-native-logs.config";
 import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
 
 export const MAX_PHOTOS_ALLOWED = 20;
+
+const logger = log.extend( "StandardCamera" );
 
 const StandardCamera = ( ): Node => {
   const {
@@ -135,10 +138,13 @@ const StandardCamera = ( ): Node => {
 
   const navToObsEdit = ( ) => {
     if ( addEvidence ) {
+      logger.debug( "Calling addCameraPhotosToCurrentObservation: ", cameraPreviewUris );
       addCameraPhotosToCurrentObservation( evidenceToAdd );
       navigation.navigate( "ObsEdit" );
       return;
     }
+
+    logger.debug( "Calling createObsWithCameraPhotos: ", cameraPreviewUris );
     createObsWithCameraPhotos( cameraPreviewUris );
     navigation.navigate( "ObsEdit" );
   };

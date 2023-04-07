@@ -53,6 +53,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setOriginalCameraUrisMap( {} );
     setGalleryUris( [] );
     setEvidenceToAdd( [] );
+    setCameraRollUris( [] );
     setUnsavedChanges( false );
   }, [] );
 
@@ -168,6 +169,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         // Find original camera URI of each scaled-down photo
         const cameraUri = originalCameraUrisMap[uri];
 
+        logger.debug( "savePhotosToCameraGallery: ", uri, cameraUri, currentObservation?.id );
+
         if ( !cameraUri ) {
           console.error( `Couldn't find original camera URI for: ${uri}` );
         }
@@ -188,6 +191,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       newObservation.observationPhotos = obsPhotos;
       setObservations( [newObservation] );
 
+      logger.debug( "createObsWithCameraPhotos: ", localFilePaths, currentObservation?.id );
+
       await savePhotosToCameraGallery( localFilePaths );
     };
 
@@ -196,6 +201,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         localFilePaths.map( async photo => ObservationPhoto.new( photo ) )
       );
       appendObsPhotos( obsPhotos );
+
+      logger.debug(
+        "addCameraPhotosToCurrentObservation: ",
+        localFilePaths,
+        currentObservation?.id
+      );
 
       await savePhotosToCameraGallery( localFilePaths );
     };
