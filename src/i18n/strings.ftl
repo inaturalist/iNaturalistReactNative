@@ -665,6 +665,10 @@ Who-can-add-observation-fields-to-my-observations = Who can add observation fiel
 # Welcome user back to app
 Welcome-user = <0>Welcome back,</0><1>{$userHandle}</1>
 
+Wild = Wild
+
+WILD-STATUS = WILD STATUS
+
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->
     [one] 1 Observation
@@ -894,3 +898,12 @@ Failed-to-log-in = Failed to log in
 
 # Generic error message
 Something-went-wrong = Something went wrong.
+
+#Geoprivacy sheet descriptions
+Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
+The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
+The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
+
+#Wild status sheet descriptions
+This-is-a-wild-organism = This is a wild organism and wasn’t placed in this location by humans.
+This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
