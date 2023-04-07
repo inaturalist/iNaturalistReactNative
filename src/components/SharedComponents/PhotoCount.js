@@ -1,5 +1,6 @@
 // @flow
 
+import { useIsFocused } from "@react-navigation/native";
 import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
@@ -15,6 +16,14 @@ type Props = {
 
 const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
   const theme = useTheme();
+  const isFocused = useIsFocused();
+  const [idx, setIdx] = React.useState( 0 );
+
+  React.useEffect( () => {
+    if ( isFocused ) {
+      setIdx( i => i + 1 );
+    }
+  }, [isFocused, setIdx] );
 
   if ( count === 0 ) {
     return null;
@@ -50,7 +59,7 @@ const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
           clipRule="evenodd"
           fillRule="nonzero"
         />
-        <ForeignObject x="5%" y="26%">
+        <ForeignObject x="5%" y="26%" key={idx}>
           <Body3 className="text-center w-[16px]">
             {photoCount}
           </Body3>

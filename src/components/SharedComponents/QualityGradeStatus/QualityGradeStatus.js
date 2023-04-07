@@ -5,10 +5,11 @@ import CasualGrade from "images/svg/casualGrade.svg";
 import NeedsIdGrade from "images/svg/needsIdGrade.svg";
 import ResearchGrade from "images/svg/researchGrade.svg";
 import * as React from "react";
+import { useTheme } from "react-native-paper";
 
 type Props = {
   qualityGrade: ?string,
-  color: boolean
+  color?: boolean
 }
 
 const qualityGradeSVG = ( qualityGrade, color ) => {
@@ -16,6 +17,9 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
     return (
     // $FlowIgnore
       <ResearchGrade
+        accessible
+        accessibilityLabel={t( "Quality-Grade-research" )}
+        testID="QualityGrade.research"
         color={color}
       />
     );
@@ -24,6 +28,9 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
     return (
     // $FlowIgnore
       <NeedsIdGrade
+        accessible
+        accessibilityLabel={t( "Quality-Grade-needs_id" )}
+        testID="QualityGrade.needs_id"
         color={color}
       />
     );
@@ -31,23 +38,19 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
   return (
     // $FlowIgnore
     <CasualGrade
+      accessible
+      accessibilityLabel={t( "Quality-Grade-casual" )}
+      testID="QualityGrade.casual"
       color={color}
     />
   );
 };
 
 const QualityGradeStatus = ( { qualityGrade, color }: Props ): React.Node => {
-  const setAccessibilityLabel = () => (
-    ( qualityGrade ) ? `Quality-Grade-${qualityGrade}` : t( "Quality-Grade-No-Grade" ) );
-
+  const theme = useTheme();
+  const svgColor = color || theme.colors.primary;
   return (
-    <View
-      accessible
-      accessibilityLabel={t( setAccessibilityLabel() )}
-    >
-      {qualityGradeSVG( qualityGrade, color )}
-
-    </View>
+    <View>{qualityGradeSVG( qualityGrade, svgColor )}</View>
   );
 };
 

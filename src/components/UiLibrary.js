@@ -1,4 +1,5 @@
 import ObsStatus from "components/MyObservations/ObsStatus";
+import ActivityItem from "components/ObsDetails/ActivityItem";
 import {
   ActivityCount,
   Body1,
@@ -38,10 +39,10 @@ import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 import { IconButton, useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useTranslation from "sharedHooks/useTranslation";
 
 /* eslint-disable i18next/no-literal-string */
 /* eslint-disable react/no-unescaped-entities */
@@ -49,10 +50,37 @@ const UiLibrary = (): Node => {
   const { t } = useTranslation();
   const theme = useTheme();
   const currentUser = useCurrentUser();
+  const userId = currentUser?.id;
   const [loading, setLoading] = useState( false );
   const userText = `
     User-generated text should support markdown, like **bold**, *italic*, and [links](https://www.inaturalist.org).
   `.trim();
+  const exampleId = {
+    body: "",
+    category: "leading",
+    created_at: "2023-01-02T14:34:02-05:00",
+    flags: [],
+    id: 324447975,
+    taxon: {
+      // eslint-disable-next-line max-len
+      default_photo: {
+        attribution: "(c) Ján Svetlík, some rights reserved (CC BY-NC-ND)", id: 3688643, license_code: "cc-by-nc-nd", url: "https://inaturalist-open-data.s3.amazonaws.com/photos/3688643/square.jpg"
+      },
+      id: 4343,
+      name: "Larus",
+      preferred_common_name: "Large White-headed Gulls",
+      rank: "genus",
+      rank_level: 10
+    },
+    user: {
+      icon_url: "https://static.inaturalist.org/attachments/users/icons/1044550/medium.jpg?1653532155",
+      id: 1,
+      locale: null,
+      login: "frogfinder"
+    },
+    uuid: "9abd103b-097e-4d32-a0a3-6a23f98ca333",
+    vision: false
+  };
   return (
     <ViewWrapper>
       <FloatingActionBar
@@ -318,26 +346,26 @@ const UiLibrary = (): Node => {
             <Body2 className="text-center">Research</Body2>
             {/* TODO: refactor to not have color prop because we only need black and white */}
             {/* TODO: better to access the color from theme here */}
-            <QualityGradeStatus qualityGrade="research" color="black" />
+            <QualityGradeStatus qualityGrade="research" />
           </View>
           <View>
             <Body2 className="text-center">Needs Id</Body2>
-            <QualityGradeStatus qualityGrade="needs_id" color="black" />
+            <QualityGradeStatus qualityGrade="needs_id" />
           </View>
           <View>
             <Body2 className="text-center">Casual</Body2>
-            <QualityGradeStatus qualityGrade="casual" color="black" />
+            <QualityGradeStatus qualityGrade="casual" />
           </View>
         </View>
         <View className="flex flex-row justify-between">
           <View>
-            <QualityGradeStatus qualityGrade="research" color="green" />
+            <QualityGradeStatus qualityGrade="research" color={theme.colors.secondary} />
           </View>
           <View>
-            <QualityGradeStatus qualityGrade="needs_id" color="green" />
+            <QualityGradeStatus qualityGrade="needs_id" color={theme.colors.secondary} />
           </View>
           <View>
-            <QualityGradeStatus qualityGrade="casual" color="green" />
+            <QualityGradeStatus qualityGrade="casual" color={theme.colors.secondary} />
           </View>
         </View>
 
@@ -464,6 +492,10 @@ const UiLibrary = (): Node => {
           <PhotoCount count={12} size={50} />
           <PhotoCount count={1000} size={50} shadow />
         </View>
+
+        <Heading2 className="my-2">ActivityItem</Heading2>
+        <ActivityItem item={exampleId} currentUserId={userId} />
+
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
           Useless spacer at the end because height in NativeWind is confusing.

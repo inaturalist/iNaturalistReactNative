@@ -218,12 +218,20 @@ const getAPIToken = async (
   return `Bearer ${accessToken}`;
 };
 
-const showErrorAlert = errorText => {
+const showErrorAlert = ( errorText: string ) => {
   Alert.alert(
     "",
     errorText
   );
 };
+
+function errorDescriptionFromResponse( response: Object ): string {
+  let errorDescription = response?.data?.error_description;
+  if ( !errorDescription && response.problem === "NETWORK_ERROR" ) {
+    errorDescription = i18next.t( "You-need-an-Internet-connection-to-do-that" );
+  }
+  return errorDescription || i18next.t( "Something-went-wrong" );
+}
 
 /**
  * Verifies login credentials
@@ -250,7 +258,7 @@ const verifyCredentials = async (
   let response = await api.post( "/oauth/token", formData );
 
   if ( !response.ok ) {
-    showErrorAlert( response.data.error_description );
+    showErrorAlert( errorDescriptionFromResponse( response ) );
 
     if ( response.problem !== "CLIENT_ERROR" ) {
       console.error(
@@ -278,7 +286,7 @@ const verifyCredentials = async (
   );
 
   if ( !response.ok ) {
-    showErrorAlert( response.data.error_description );
+    showErrorAlert( errorDescriptionFromResponse( response ) );
     if ( response.problem !== "CLIENT_ERROR" ) {
       console.error(
         "verifyCredentials failed when calling /users/edit.json - ",

@@ -1,12 +1,11 @@
 // @flow
+import { FlashList } from "@shopify/flash-list";
 import Header from "components/MyObservations/Header";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
-import {
-  Animated, Dimensions, Platform
-} from "react-native";
+import { Animated, Dimensions, Platform } from "react-native";
 
 import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
 import LoginSheet from "./LoginSheet";
@@ -15,10 +14,12 @@ import MyObservationsPressable from "./MyObservationsPressable";
 import ObsGridItem from "./ObsGridItem";
 import ObsListItem from "./ObsListItem";
 
+const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
+
 const { diffClamp } = Animated;
 
 type Props = {
-  isLoading?: bool,
+  isLoading?: boolean,
   layout: "list" | "grid",
   observations: Array<Object>,
   onEndReached: Function,
@@ -26,14 +27,40 @@ type Props = {
   uploadStatus: Object,
   currentUser: ?Object,
   showLoginSheet: boolean,
-  setShowLoginSheet: Function
-}
+  setShowLoginSheet: Function,
+};
 
-const {
-  width: screenWidth,
-  height: screenHeight
-} = Dimensions.get( "screen" );
+const { width: screenWidth, height: screenHeight } = Dimensions.get( "screen" );
 const GUTTER = 15;
+
+const Item = React.memo(
+  ( {
+    observation, layout, gridItemWidth, uploadStatus, setShowLoginSheet
+  } ) => (
+    <MyObservationsPressable observation={observation}>
+      {layout === "grid" ? (
+        <ObsGridItem
+          observation={observation}
+          // 03022023 it seems like Flatlist is designed to work
+          // better with RN styles than with Tailwind classes
+          style={{
+            height: gridItemWidth,
+            width: gridItemWidth,
+            margin: GUTTER / 2
+          }}
+          uploadStatus={uploadStatus}
+          setShowLoginSheet={setShowLoginSheet}
+        />
+      ) : (
+        <ObsListItem
+          observation={observation}
+          uploadStatus={uploadStatus}
+          setShowLoginSheet={setShowLoginSheet}
+        />
+      )}
+    </MyObservationsPressable>
+  )
+);
 
 const MyObservations = ( {
   isLoading,
@@ -53,12 +80,16 @@ const MyObservations = ( {
   // basing collapsible sticky header code off the example in this article
   // https://medium.com/swlh/making-a-collapsible-sticky-header-animations-with-react-native-6ad7763875c3
   const scrollY = useRef( new Animated.Value( 0 ) );
-  const scrollYClamped = diffClamp( scrollY.current, 0, heightAboveToolbar + 10 );
+  const scrollYClamped = diffClamp(
+    scrollY.current,
+    0,
+    heightAboveToolbar
+  );
 
   const offsetForHeader = scrollYClamped.interpolate( {
-    inputRange: [0, heightAboveToolbar + 10],
+    inputRange: [0, heightAboveToolbar],
     // $FlowIgnore
-    outputRange: [0, -heightAboveToolbar - 10]
+    outputRange: [0, -heightAboveToolbar]
   } );
 
   const setNumColumns = ( ) => {
@@ -70,7 +101,9 @@ const MyObservations = ( {
 
   const numColumns = setNumColumns( );
   const combinedGutterWidth = ( numColumns + 1 ) * GUTTER;
-  const gridItemWidth = Math.round( ( screenWidth - combinedGutterWidth ) / numColumns );
+  const gridItemWidth = Math.round(
+    ( screenWidth - combinedGutterWidth ) / numColumns
+  );
 
   const handleScroll = Animated.event(
     [
@@ -96,74 +129,81 @@ const MyObservations = ( {
     }
   );
 
+  const renderItem = ( { item } ) => (
+    <Item
+      observation={item}
+      layout={layout}
+      gridItemWidth={gridItemWidth}
+      uploadStatus={uploadStatus}
+      setShowLoginSheet={setShowLoginSheet}
+    />
+  );
+
+  const renderEmptyList = ( ) => <MyObservationsEmpty isLoading={isLoading} />;
+
+  const renderItemSeparator = ( ) => {
+    if ( layout === "grid" ) {
+      return null;
+    }
+    return <View className="border-b border-lightGray" />;
+  };
+
+  const renderFooter = ( ) => (
+    <InfiniteScrollLoadingWheel
+      isLoading={isLoading}
+      currentUser={currentUser}
+    />
+  );
+
+  const contentContainerStyle = layout === "list"
+    ? {}
+    : {
+      paddingLeft: GUTTER / 2,
+      paddingRight: GUTTER / 2
+    };
+
   return (
     <>
       <ViewWrapper>
         <View className="overflow-hidden">
-          <Animated.View style={[{ transform: [{ translateY: offsetForHeader }] }]}>
-            <Animated.FlatList
+          <Animated.View
+            style={[
+              {
+                transform: [{ translateY: offsetForHeader }],
+                height: screenHeight
+              }
+            ]}
+          >
+            <Header
+              setLayout={setLayout}
+              layout={layout}
+              currentUser={currentUser}
+              numObservations={observations.length}
+              setHeightAboveToolbar={setHeightAboveToolbar}
+              uploadStatus={uploadStatus}
+              setShowLoginSheet={setShowLoginSheet}
+            />
+            <AnimatedFlashList
+              contentContainerStyle={contentContainerStyle}
               data={observations}
               key={numColumns}
-              // eslint-disable-next-line react-native/no-inline-styles
-              contentContainerStyle={layout === "grid" && {
-                alignItems: "center"
-              }}
-              style={{ height: screenHeight }}
+              estimatedItemSize={layout === "grid" ? 165 : 98}
               testID="MyObservationsAnimatedList"
-              numColumns={setNumColumns( )}
-              renderItem={( { item } ) => (
-                <MyObservationsPressable observation={item}>
-                  {
-                    layout === "grid"
-                      ? (
-                        <ObsGridItem
-                          observation={item}
-                          // 03022023 it seems like Flatlist is designed to work
-                          // better with RN styles than with Tailwind classes
-                          style={{
-                            height: gridItemWidth,
-                            width: gridItemWidth,
-                            margin: GUTTER / 2
-                          }}
-                          uploadStatus={uploadStatus}
-                          setShowLoginSheet={setShowLoginSheet}
-                        />
-                      ) : (
-                        <ObsListItem
-                          observation={item}
-                          uploadStatus={uploadStatus}
-                          setShowLoginSheet={setShowLoginSheet}
-                        />
-                      )
-                  }
-                </MyObservationsPressable>
-              )}
-              ListEmptyComponent={
-                <MyObservationsEmpty isLoading={isLoading} />
-              }
-              ListHeaderComponent={(
-                <Header
-                  setLayout={setLayout}
-                  layout={layout}
-                  currentUser={currentUser}
-                  numObservations={observations.length}
-                  setHeightAboveToolbar={setHeightAboveToolbar}
-                  uploadStatus={uploadStatus}
-                  setShowLoginSheet={setShowLoginSheet}
-                />
-              )}
-              ItemSeparatorComponent={
-                layout !== "grid" && <View className="border-b border-lightGray" />
-              }
-              ListFooterComponent={
-                <InfiniteScrollLoadingWheel isLoading={isLoading} currentUser={currentUser} />
-              }
-              stickyHeaderIndices={[0]}
-              bounces={false}
-              initialNumToRender={10}
+              numColumns={numColumns}
+              horizontal={false}
+              // only used id as a fallback key because after upload
+              // react thinks we've rendered a second item w/ a duplicate key
+              keyExtractor={item => item.uuid || item.id}
+              renderItem={renderItem}
+              ListEmptyComponent={renderEmptyList}
+              ItemSeparatorComponent={renderItemSeparator}
+              ListFooterComponent={renderFooter}
+              initialNumToRender={5}
               onEndReached={onEndReached}
-              onEndReachedThreshold={0.1}
+              onEndReachedThreshold={0.2}
               onScroll={handleScroll}
+              refreshing={isLoading}
+              accessible
             />
           </Animated.View>
         </View>

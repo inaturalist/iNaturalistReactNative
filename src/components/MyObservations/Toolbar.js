@@ -105,7 +105,6 @@ const Toolbar = ( {
   return (
     <View className={
       classNames(
-        "bg-white h-[78px]",
         { "border-b border-lightGray": layout !== "grid" }
       )
     }

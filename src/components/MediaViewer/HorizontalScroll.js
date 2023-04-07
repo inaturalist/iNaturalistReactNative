@@ -111,6 +111,7 @@ const HorizontalScroll = ( {
       />
       {!atFirstPhoto && (
         <Pressable
+          accessibilityRole="button"
           className="p-5 absolute top-1/2 -mt-24 left-0"
           onPress={handleArrowPressLeft}
         >
@@ -119,6 +120,7 @@ const HorizontalScroll = ( {
       )}
       {!atLastPhoto && (
         <Pressable
+          accessibilityRole="button"
           className="p-5 absolute top-1/2 -mt-24 right-0"
           onPress={handleArrowPressRight}
         >

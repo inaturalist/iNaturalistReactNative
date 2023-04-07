@@ -1,6 +1,7 @@
 // @flow
 
 import classnames from "classnames";
+import { INatIcon } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -10,11 +11,9 @@ import {
   ActivityIndicator,
   FlatList
 } from "react-native";
-import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import Modal from "react-native-modal";
 import { IconButton, useTheme } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -26,8 +25,8 @@ type Props = {
   savingPhoto?: boolean,
   handleAddEvidence?: Function,
   showAddButton?: boolean,
-  deviceOrientation?: string,
-  deletePhoto?: Function
+  deletePhoto?: Function,
+  screenBreakpoint?: string
 }
 
 const PhotoCarousel = ( {
@@ -39,13 +38,12 @@ const PhotoCarousel = ( {
   savingPhoto,
   handleAddEvidence,
   showAddButton = false,
-  deviceOrientation,
-  deletePhoto
+  deletePhoto,
+  screenBreakpoint
 }: Props ): Node => {
   const theme = useTheme( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
-  const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
-  const isTablet = DeviceInfo.isTablet();
+  const imageClass = "justify-center items-center";
 
   useEffect( () => {
     if ( photoUris.length === 0 && deletePhotoMode ) {
@@ -54,20 +52,26 @@ const PhotoCarousel = ( {
   }, [photoUris.length, deletePhotoMode] );
 
   const renderSkeleton = ( ) => ( savingPhoto ? (
-    <View className={`${imageClass} bg-lightGray mt-12`}>
+    <View className={classnames( "bg-lightGray justify-center", {
+      "rounded-sm w-[42px] h-[42px] mx-[3px]":
+      ["sm", "md"].includes( screenBreakpoint ),
+      "rounded-md w-[83px] h-[83px] mx-[8.5px]":
+      ["lg", "xl", "2xl"].includes( screenBreakpoint )
+    } )}
+    >
       <ActivityIndicator />
     </View>
   ) : null );
 
   const renderPhotoOrEvidenceButton = ( { item, index } ) => {
-    if ( index === photoUris.length ) {
+    if ( item === "add" ) {
       return (
         <Pressable
           accessibilityRole="button"
           onPress={handleAddEvidence}
-          className={`${imageClass} border border-lightGray items-center justify-center mt-6`}
+          className={`${imageClass} border border-lightGray mt-6`}
         >
-          <Icon name="add" size={40} color={colors.darkGray} />
+          <INatIcon name="plus-bold" size={27} color={colors.darkGray} />
         </Pressable>
       );
     }
@@ -88,22 +92,35 @@ const PhotoCarousel = ( {
               setSelectedPhotoIndex( index );
             }
           }}
-          className={classnames( imageClass, {
-            "mt-12": containerStyle === "camera",
-            "mt-6": containerStyle !== "camera",
-            "border border-inatGreen border-4":
+          className={classnames(
+            imageClass,
+            {
+              "mt-12": containerStyle === "camera",
+              "mt-6": containerStyle !== "camera",
+              "border border-selectionGreen border-4":
               selectedPhotoIndex === index
-          } )}
+            },
+            {
+              "mx-[3px] mt-0": ["sm", "md"].includes( screenBreakpoint ),
+              "mx-[8.5px] mt-0": ["lg", "xl", "2xl"].includes( screenBreakpoint )
+            }
+          )}
         >
-          <View className="rounded-lg overflow-hidden">
+          <View
+            testID="PhotoCarousel.photo"
+            className={classnames(
+              "overflow-hidden",
+              {
+                "rounded-sm w-[42px] h-[42px]": ["sm", "md"].includes( screenBreakpoint ),
+                "rounded-md w-[83px] h-[83px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
+              }
+            )}
+          >
             <ImageBackground
               source={{ uri: item }}
-              testID="ObsEdit.photo"
-              className={classnames( "w-fit h-full flex items-center justify-center", {
-                "rotate-0": deviceOrientation === "portrait" && !isTablet,
-                "-rotate-90": deviceOrientation === "landscapeLeft" && !isTablet,
-                "rotate-90": deviceOrientation === "landscapeRight" && !isTablet
-              } )}
+              className={classnames(
+                `w-fit h-full flex ${imageClass}`
+              )}
             >
               {deletePhotoMode && (
                 <LinearGradient
@@ -129,7 +146,7 @@ const PhotoCarousel = ( {
   };
 
   const data = [...photoUris];
-  if ( showAddButton ) data.push( "add" );
+  if ( showAddButton ) data.unshift( "add" );
 
   const photoPreviewsList = (
     <FlatList
@@ -137,6 +154,7 @@ const PhotoCarousel = ( {
       renderItem={renderPhotoOrEvidenceButton}
       horizontal
       ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
+
     />
   );
 
@@ -148,7 +166,7 @@ const PhotoCarousel = ( {
       // eslint-disable-next-line react-native/no-inline-styles
       style={{ margin: 0 }}
     >
-      <View className="absolute top-0">
+      <View className="absolute top-0 pt-[50px]">
         {photoPreviewsList}
       </View>
     </Modal>

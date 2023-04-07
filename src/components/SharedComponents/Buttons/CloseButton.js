@@ -8,10 +8,11 @@ import { IconButton, useTheme } from "react-native-paper";
 
 type Props = {
   className?: string,
+  handleClose?: Function,
   size?: number
 }
 
-const CloseButton = ( { className, size }: Props ): Node => {
+const CloseButton = ( { className, handleClose, size }: Props ): Node => {
   const navigation = useNavigation( );
   const theme = useTheme( );
 
@@ -21,7 +22,13 @@ const CloseButton = ( { className, size }: Props ): Node => {
       size={size}
       className={className}
       iconColor={theme.colors.background}
-      onPress={( ) => navigation.goBack( )}
+      onPress={( ) => {
+        if ( handleClose ) {
+          handleClose( );
+        } else {
+          navigation.goBack( );
+        }
+      }}
       accessibilityRole="button"
       accessibilityLabel={t( "Close" )}
       accessibilityHint={t( "Returns-to-previous-screen" )}

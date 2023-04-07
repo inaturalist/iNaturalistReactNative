@@ -4,7 +4,7 @@ import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndS
 import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import { useTranslation } from "react-i18next";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   observation: Object,

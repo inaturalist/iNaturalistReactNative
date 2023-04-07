@@ -1,14 +1,11 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
 import {
-  Button, CloseButton, Heading4,
-  INatIcon,
-  List2
+  CloseButton,
+  INatIcon
 } from "components/SharedComponents";
-import StandardBottomSheet from "components/SharedComponents/BottomSheet";
-import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
 import {
   Pressable, View
 } from "components/styledComponents";
@@ -16,31 +13,30 @@ import _ from "lodash";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useContext, useEffect, useRef, useState
 } from "react";
-import { useTranslation } from "react-i18next";
 import {
+  BackHandler,
   Dimensions, StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import {
-  IconButton, Snackbar
+  Snackbar
 } from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
+import getBreakpoint from "sharedHelpers/breakpoint";
+import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 import CameraView from "./CameraView";
+import DiscardChangesSheet from "./DiscardChangesSheet";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
 
 export const MAX_PHOTOS_ALLOWED = 20;
-
-const INITIAL_DISCARD_STATE = {
-  hide: true,
-  action: null
-};
 
 const StandardCamera = ( ): Node => {
   const {
@@ -71,11 +67,12 @@ const StandardCamera = ( ): Node => {
   const initialWidth = Dimensions.get( "screen" ).width;
   const [footerWidth, setFooterWidth] = useState( initialWidth );
   const [imageOrientation, setImageOrientation] = useState( "portrait" );
-  const [discardState, setDiscardState] = useState( INITIAL_DISCARD_STATE );
+  const [showDiscardSheet, setShowDiscardSheet] = useState( false );
 
   const isTablet = DeviceInfo.isTablet();
 
   const photosTaken = allObsPhotoUris.length > 0;
+  const breakpoint = getBreakpoint( initialWidth );
 
   // eslint-disable-next-line max-len
   const cameraOptionsClassName = "bg-black/50 w-[40px] h-[40px] justify-center items-center rounded-full";
@@ -93,26 +90,31 @@ const StandardCamera = ( ): Node => {
       setImageOrientation( "landscapeLeft" );
     } else if ( _.camelCase( orientation ) === "landscapeLeft" ) {
       setImageOrientation( "landscapeRight" );
-    } else if ( orientation.toLowerCase() === "portrait" ) {
+    } else {
       setImageOrientation( "portrait" );
     }
   };
 
-  useEffect(
-    () => navigation.addListener( "beforeRemove", e => {
-      if ( cameraPreviewUris.length === 0 ) {
-        return;
-      }
+  const handleBackButtonPress = useCallback( ( ) => {
+    if ( cameraPreviewUris.length === 0 ) { return; }
 
-      // Prevent default behavior of leaving the screen
-      e.preventDefault();
+    setShowDiscardSheet( true );
+  }, [setShowDiscardSheet, cameraPreviewUris] );
 
-      setDiscardState( {
-        hide: false,
-        action: e.data.action
-      } );
-    } ),
-    [navigation, cameraPreviewUris]
+  useFocusEffect(
+    // note: cannot use navigation.addListener to trigger bottom sheet in tab navigator
+    // since the screen is unfocused, not removed from navigation
+    useCallback( ( ) => {
+      // make sure an Android user cannot back out and accidentally discard photos
+      const onBackPress = ( ) => {
+        handleBackButtonPress( );
+        return true;
+      };
+
+      BackHandler.addEventListener( "hardwareBackPress", onBackPress );
+
+      return ( ) => BackHandler.removeEventListener( "hardwareBackPress", onBackPress );
+    }, [handleBackButtonPress] )
   );
 
   useEffect( () => {
@@ -212,8 +214,6 @@ const StandardCamera = ( ): Node => {
     );
   };
 
-  const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
-
   const renderSmallScreenCameraOptions = () => (
     <>
       { hasFlash && (
@@ -303,7 +303,7 @@ const StandardCamera = ( ): Node => {
         photoUris={cameraPreviewUris}
         setPhotoUris={setCameraPreviewUris}
         savingPhoto={savingPhoto}
-        deviceOrientation={imageOrientation}
+        screenBreakpoint={breakpoint}
       />
       <View className="relative flex-1">
         {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
@@ -354,51 +354,11 @@ const StandardCamera = ( ): Node => {
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>
-      <StandardBottomSheet
-        snapPoints={[180]}
-        hide={discardState.hide}
-        backdropComponent={renderBackdrop}
-        onChange={position => {
-          if ( position === -1 ) {
-            setDiscardState( INITIAL_DISCARD_STATE );
-          }
-        }}
-      >
-        <View className="px-[20px]">
-          <View className="relative flex items-center justify-center mt-[22px]">
-            <Heading4>{t( "DISCARD-PHOTOS" )}</Heading4>
-
-            <View className="absolute right-0">
-              <IconButton
-                icon="close"
-                onPress={() => setDiscardState( INITIAL_DISCARD_STATE )}
-                accessibilityLabel={t( "Cancel" )}
-                accessibilityState={{ disabled: false }}
-              />
-            </View>
-          </View>
-          <List2 className="my-[20px] text-center">
-            {t( "By-exiting-your-photos-will-not-be-saved" )}
-          </List2>
-          <View className="flex flex-row">
-            <Button
-              level="neutral"
-              text={t( "CANCEL" )}
-              onPress={() => setDiscardState( INITIAL_DISCARD_STATE )}
-              accessibilityLabel={t( "CANCEL" )}
-              accessibilityState={{ disabled: false }}
-            />
-            <Button
-              className="flex-1 ml-[12px]"
-              level="warning"
-              text={t( "DISCARD" )}
-              accessibilityLabel={t( "DISCARD" )}
-              onPress={() => navigation.dispatch( discardState.action )}
-              accessibilityState={{ disabled: false }}
-            />
-          </View>
-        </View>
-      </StandardBottomSheet>
+      {showDiscardSheet && (
+        <DiscardChangesSheet
+          setShowDiscardSheet={setShowDiscardSheet}
+        />
+      )}
     </View>
   );
 };

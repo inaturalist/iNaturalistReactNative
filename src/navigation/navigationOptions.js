@@ -43,10 +43,6 @@ const hideHeader = {
   headerShown: false
 };
 
-const hideScreenTransitionAnimation = {
-  animation: "none"
-};
-
 const blankHeaderTitle = {
   headerTitle: ""
 };
@@ -54,7 +50,6 @@ const blankHeaderTitle = {
 export {
   blankHeaderTitle,
   hideHeader,
-  hideScreenTransitionAnimation,
   showCustomHeader,
   showHeader
 };

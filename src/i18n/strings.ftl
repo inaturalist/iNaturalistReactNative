@@ -9,9 +9,9 @@ Accept-community-identifications = Accept community identifications
 
 Account = Account
 
-Add-an-ID = Add an ID
+ADD-AN-ID = ADD AN ID
 
-Add-an-Identification = Add an Identification
+Add-an-ID = Add an ID
 
 Add-Date-Time = Add Date/Time
 
@@ -142,7 +142,7 @@ Error-Couldnt-Upload-Photo = Error: Couldn't Upload Photo
 
 Error-Could-Not-Fetch-Taxon = Error: Could Not Fetch Taxon
 
-Evidence = Evidence
+EVIDENCE = EVIDENCE
 
 Explore = Explore
 
@@ -200,8 +200,6 @@ High = High
 IDs = ID's
 
 IDENTIFICATION = IDENTIFICATION
-
-Identification = Identification
 
 # Shows the number of photos a user selected from the camera roll for upload
 Import-X-photos = Import {$count ->
@@ -354,9 +352,10 @@ Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethn
 Open = Open
 
 # Picker prompt on observation edit
-Organism-is-wild = Organism is wild:
+Organism-is-captive = Organism is captive
+Organism-is-wild = Organism is wild
 
-Other-Data = Other Data
+OTHER-DATA = OTHER DATA
 
 Password = Password
 
@@ -594,7 +593,7 @@ Missing-Location = Missing Location
 
 Unreviewed-only = Unreviewed only
 
-UPLOAD-OBSERVATION = UPLOAD OBSERVATION
+UPLOAD-NOW = UPLOAD NOW
 
 # Shows the number of observations a user can upload to iNat from my observations page
 Upload-x-observations = Upload {$count ->
@@ -664,6 +663,14 @@ X-observations = {$count ->
 X-observations-uploaded = {$count ->
     [one] 1 observation uploaded
     *[other] {$count} observations uploaded
+}
+
+X-of-Y = {$count ->
+    [one] 1
+    *[other] {$count}
+} { $totalObservationCount ->
+    [one] of {$totalObservationCount}
+    *[other] of {$totalObservationCount}
 }
 
 # Displays number of photos attached to an observation in the Media Viewer
@@ -861,3 +868,13 @@ DISCARD-PHOTOS = DISCARD PHOTOS?
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 DISCARD = DISCARD
 CANCEL = CANCEL
+
+# Error message when you try to do something that requires an Internet
+# connection but such a connection is, tragically, missing
+You-need-an-Internet-connection-to-do-that = You need an Internet connection to do that.
+
+# Error message with log in fails
+Failed-to-log-in = Failed to log in
+
+# Generic error message
+Something-went-wrong = Something went wrong.
