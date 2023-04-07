@@ -1,10 +1,13 @@
 // @flow
 
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import { Heading4 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef
 } from "react";
+import { IconButton } from "react-native-paper";
 import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
 type Props = {
@@ -13,7 +16,9 @@ type Props = {
   snapPoints?: ( string|number )[],
   backdropComponent?: Function,
   onChange?: Function,
-  handleClose?: Function
+  handleClose?: Function,
+  hideCloseButton?: boolean,
+  headerText?: string
 }
 
 const DEFAULT_SNAP_POINTS = ["45%"];
@@ -24,7 +29,9 @@ const StandardBottomSheet = ( {
   snapPoints = DEFAULT_SNAP_POINTS,
   backdropComponent = null,
   onChange = null,
-  handleClose
+  handleClose,
+  hideCloseButton = false,
+  headerText
 }: Props ): Node => {
   const sheetRef = useRef( null );
 
@@ -61,7 +68,18 @@ const StandardBottomSheet = ( {
       onChange={onChange}
     >
       <BottomSheetView>
+        <View className="items-center">
+          <Heading4 className="pt-7">{headerText}</Heading4>
+        </View>
         {children}
+        {!hideCloseButton && (
+          <IconButton
+            icon="close"
+            onPress={handleClose}
+            size={19}
+            className="absolute top-3 right-3"
+          />
+        )}
       </BottomSheetView>
     </BottomSheetModal>
   );

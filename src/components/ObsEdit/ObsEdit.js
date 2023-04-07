@@ -11,8 +11,7 @@ import { t } from "i18next";
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useContext, useEffect, useRef,
-  useState
+  useCallback, useContext, useEffect, useState
 } from "react";
 import { ActivityIndicator, BackHandler } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -22,7 +21,6 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import colors from "styles/tailwindColors";
 
-import AddEvidenceModal from "./AddEvidenceModal";
 import DeleteObservationDialog from "./DeleteObservationDialog";
 import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
@@ -34,7 +32,6 @@ import SaveDialog from "./SaveDialog";
 const { useRealm } = RealmContext;
 
 const ObsEdit = ( ): Node => {
-  const keyboardScrollRef = useRef( null );
   const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
   const {
     currentObservation,
@@ -58,14 +55,8 @@ const ObsEdit = ( ): Node => {
   const currentUser = useCurrentUser( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
-  const [showAddEvidenceModal, setShowAddEvidenceModal] = useState( false );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [showSaveDialog, setShowSaveDialog] = useState( false );
-
-  const scrollToInput = node => {
-    // Add a 'scroll' ref to your ScrollView
-    keyboardScrollRef?.current?.scrollToFocusedInput( node );
-  };
 
   useEffect( ( ) => {
     // when first opening an observation from ObsDetails, fetch local observation from realm
@@ -180,8 +171,6 @@ const ObsEdit = ( ): Node => {
     showModal( );
   };
 
-  const addEvidence = ( ) => setShowAddEvidenceModal( true );
-
   if ( !currentObservation ) { return null; }
 
   return (
@@ -207,17 +196,10 @@ const ObsEdit = ( ): Node => {
           <EvidenceSection
             handleSelection={handleSelection}
             photoUris={photoUris}
-            handleAddEvidence={addEvidence}
           />
           <IdentificationSection />
-          <OtherDataSection scrollToInput={scrollToInput} />
+          <OtherDataSection />
           {loading && <ActivityIndicator />}
-
-          <AddEvidenceModal
-            showAddEvidenceModal={showAddEvidenceModal}
-            setShowAddEvidenceModal={setShowAddEvidenceModal}
-            photoUris={photoUris}
-          />
         </KeyboardAwareScrollView>
       </View>
       <StickyToolbar containerClass="bottom-6">

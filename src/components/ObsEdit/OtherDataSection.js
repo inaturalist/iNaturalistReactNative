@@ -5,16 +5,14 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import RNPickerSelect from "react-native-picker-select";
 
-import Notes from "./Notes";
+import NotesSheet from "./NotesSheet";
 
-type Props = {
-  scrollToInput: Function
-}
+const OtherDataSection = ( ): Node => {
+  const [showNotesSheet, setShowNotesSheet] = useState( false );
 
-const OtherDataSection = ( { scrollToInput }: Props ): Node => {
   const {
     currentObservation,
     updateObservationKey
@@ -89,11 +87,25 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
           </Body3>
         </View>
       </RNPickerSelect>
-      <Notes
-        addNotes={addNotes}
-        description={currentObservation.description}
-        scrollToInput={scrollToInput}
-      />
+      <View className="flex-row flex-nowrap items-center ml-1 mt-2.5">
+        {showNotesSheet && (
+          <NotesSheet
+            setShowNotesSheet={setShowNotesSheet}
+            addNotes={addNotes}
+            description={currentObservation?.description}
+          />
+        )}
+        <INatIcon
+          size={14}
+          name="pencil-outline"
+        />
+        <Body3
+          onPress={( ) => setShowNotesSheet( true )}
+          className="pl-5 py-3"
+        >
+          {currentObservation?.description || t( "Add-optional-notes" )}
+        </Body3>
+      </View>
     </View>
   );
 };

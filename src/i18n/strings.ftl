@@ -77,9 +77,13 @@ Casual = Casual
 # After pressing the reset password button
 Check-your-email = Check your email! We've sent password reset instructions.
 
+Clear = Clear
+
 Combine-Photos = Combine Photos
 
 Community-Moderation-Settings = Community Moderation Settings
+
+CONFIRM = CONFIRM
 
 Connected-Accounts = Connected Accounts
 
@@ -329,6 +333,8 @@ No-photos-found = No photos found. If this is your first time opening the app an
 
 # license code
 no-rights-reserved = no rights reserved
+
+NOTES = NOTES
 
 # Header for observation description on observation detail
 Notes = Notes
@@ -747,8 +753,8 @@ Quality-Grade-needs_id = Quality Grade Needs ID
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
 Quality-Grade-casual = Quality Grade Casual
 
-Add-evidence = Add evidence
-You-can-only-upload-20-media = You can only add 20 photos and 20 sounds to an observation
+ADD-EVIDENCE = ADD EVIDENCE
+You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
 
 Add-Comment = Add Comment
 Suggest-an-ID = Suggest an ID

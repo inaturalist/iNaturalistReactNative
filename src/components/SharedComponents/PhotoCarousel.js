@@ -59,71 +59,71 @@ const PhotoCarousel = ( {
 
   const renderPhotoOrEvidenceButton = ( { item, index } ) => (
     <>
-        <Pressable
-          accessibilityRole="button"
-          onLongPress={( ) => {
-            if ( deletePhoto ) {
-              setDeletePhotoMode( mode => !mode );
-            }
-          }}
-          onPress={( ) => {
-            if ( deletePhotoMode && deletePhoto ) {
-              deletePhoto( item );
-            } else if ( setSelectedPhotoIndex ) {
-              setSelectedPhotoIndex( index );
-            }
-          }}
-          className={classnames(
-            imageClass,
-            {
-              "mt-12": containerStyle === "camera",
-              "mt-6": containerStyle !== "camera",
-              "border border-selectionGreen border-4":
+      <Pressable
+        accessibilityRole="button"
+        onLongPress={( ) => {
+          if ( deletePhoto ) {
+            setDeletePhotoMode( mode => !mode );
+          }
+        }}
+        onPress={( ) => {
+          if ( deletePhotoMode && deletePhoto ) {
+            deletePhoto( item );
+          } else if ( setSelectedPhotoIndex ) {
+            setSelectedPhotoIndex( index );
+          }
+        }}
+        className={classnames(
+          imageClass,
+          {
+            "mt-12": containerStyle === "camera",
+            "mt-6": containerStyle !== "camera",
+            "border border-selectionGreen border-4":
               selectedPhotoIndex === index
-            },
+          },
+          {
+            "mx-[3px] mt-0": ["sm", "md"].includes( screenBreakpoint ),
+            "mx-[8.5px] mt-0": ["lg", "xl", "2xl"].includes( screenBreakpoint )
+          }
+        )}
+      >
+        <View
+          testID="PhotoCarousel.photo"
+          className={classnames(
+            "overflow-hidden",
             {
-              "mx-[3px] mt-0": ["sm", "md"].includes( screenBreakpoint ),
-              "mx-[8.5px] mt-0": ["lg", "xl", "2xl"].includes( screenBreakpoint )
+              "rounded-sm w-[42px] h-[42px]": ["sm", "md"].includes( screenBreakpoint ),
+              "rounded-md w-[83px] h-[83px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
             }
           )}
         >
-          <View
-            testID="PhotoCarousel.photo"
+          <ImageBackground
+            source={{ uri: item }}
             className={classnames(
-              "overflow-hidden",
-              {
-                "rounded-sm w-[42px] h-[42px]": ["sm", "md"].includes( screenBreakpoint ),
-                "rounded-md w-[83px] h-[83px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
-              }
+              `w-fit h-full flex ${imageClass}`
             )}
           >
-            <ImageBackground
-              source={{ uri: item }}
-              className={classnames(
-                `w-fit h-full flex ${imageClass}`
-              )}
-            >
-              {deletePhotoMode && (
-                <LinearGradient
-                  className="absolute inset-0"
-                  colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
-                />
-              )}
-              {( containerStyle === "camera" && deletePhotoMode ) && (
-                <IconButton
-                  icon="trash-outline"
-                  mode="contained-tonal"
-                  iconColor={theme.colors.onPrimary}
-                  containerColor="rgba(0, 0, 0, 0.5)"
-                  size={30}
-                />
-              )}
-            </ImageBackground>
-          </View>
-        </Pressable>
-        {index === photoUris.length - 1 && renderSkeleton( )}
-      </>
-    );
+            {deletePhotoMode && (
+              <LinearGradient
+                className="absolute inset-0"
+                colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
+              />
+            )}
+            {( containerStyle === "camera" && deletePhotoMode ) && (
+              <IconButton
+                icon="trash-outline"
+                mode="contained-tonal"
+                iconColor={theme.colors.onPrimary}
+                containerColor="rgba(0, 0, 0, 0.5)"
+                size={30}
+              />
+            )}
+          </ImageBackground>
+        </View>
+      </Pressable>
+      {index === photoUris.length - 1 && renderSkeleton( )}
+    </>
+  );
 
   const photoPreviewsList = (
     <FlatList

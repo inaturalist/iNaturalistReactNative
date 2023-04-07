@@ -60,8 +60,10 @@
     "comment": "After pressing the reset password button",
     "val": "Check your email! We've sent password reset instructions."
   },
+  "Clear": "Clear",
   "Combine-Photos": "Combine Photos",
   "Community-Moderation-Settings": "Community Moderation Settings",
+  "CONFIRM": "CONFIRM",
   "Connected-Accounts": "Connected Accounts",
   "Content-Display": "Content & Display",
   "Couldnt-create-comment": "Couldn't create comment",
@@ -230,6 +232,7 @@
     "comment": "license code",
     "val": "no rights reserved"
   },
+  "NOTES": "NOTES",
   "Notes": {
     "comment": "Header for observation description on observation detail",
     "val": "Notes"
@@ -519,8 +522,8 @@
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual",
     "val": "Quality Grade Casual"
   },
-  "Add-evidence": "Add evidence",
-  "You-can-only-upload-20-media": "You can only add 20 photos and 20 sounds to an observation",
+  "ADD-EVIDENCE": "ADD EVIDENCE",
+  "You-can-add-up-to-20-media": "You can add up to 20 photos and 20 sounds per observation.",
   "Add-Comment": "Add Comment",
   "Suggest-an-ID": "Suggest an ID",
   "Add-a-comment": {

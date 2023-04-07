@@ -1,5 +1,6 @@
 // @flow
 
+import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
 import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
@@ -18,13 +19,13 @@ import React, {
 import { useTheme } from "react-native-paper";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
+import AddEvidenceSheet from "./AddEvidenceSheet";
 import DatePicker from "./DatePicker";
 import EvidenceList from "./EvidenceList";
 
 type Props = {
   handleSelection: Function,
-  photoUris: Array<string>,
-  handleAddEvidence?: Function
+  photoUris: Array<string>
 }
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
@@ -33,7 +34,6 @@ const LOCATION_FETCH_INTERVAL = 1000;
 
 const EvidenceSection = ( {
   handleSelection,
-  handleAddEvidence,
   photoUris
 }: Props ): Node => {
   const theme = useTheme( );
@@ -42,6 +42,8 @@ const EvidenceSection = ( {
     updateObservationKeys
   } = useContext( ObsEditContext );
   const mountedRef = useRef( true );
+  const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
+  const handleAddEvidence = ( ) => setShowAddEvidenceSheet( true );
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
@@ -192,6 +194,12 @@ const EvidenceSection = ( {
 
   return (
     <View className="mx-6 mt-6">
+      {showAddEvidenceSheet && (
+        <AddEvidenceSheet
+          setShowAddEvidenceSheet={setShowAddEvidenceSheet}
+          disableAddingMoreEvidence={photoUris.length >= MAX_PHOTOS_ALLOWED}
+        />
+      )}
       <View className="flex-row">
         <Heading4>{t( "EVIDENCE" )}</Heading4>
         <View className="ml-3">

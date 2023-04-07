@@ -1,6 +1,8 @@
 export { default as ActivityCount } from "./ActivityCount/ActivityCount";
 export { default as CommentsCount } from "./ActivityCount/CommentsCount";
 export { default as IdentificationsCount } from "./ActivityCount/IdentificationsCount";
+export { default as BottomSheet } from "./BottomSheet";
+export { default as BottomSheetStandardBackdrop } from "./BottomSheetStandardBackdrop";
 export { default as Button } from "./Buttons/Button";
 export { default as CloseButton } from "./Buttons/CloseButton";
 export { default as EvidenceButton } from "./Buttons/EvidenceButton";

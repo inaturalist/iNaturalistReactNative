@@ -32,7 +32,7 @@ jest.mock( "components/MediaViewer/MediaViewerModal" );
 jest.mock( "components/ObsEdit/EvidenceSection" );
 jest.mock( "components/ObsEdit/IdentificationSection" );
 jest.mock( "components/ObsEdit/OtherDataSection" );
-jest.mock( "components/ObsEdit/AddEvidenceModal" );
+jest.mock( "components/ObsEdit/AddEvidenceSheet" );
 
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
