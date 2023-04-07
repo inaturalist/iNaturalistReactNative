@@ -333,9 +333,9 @@ const StandardCamera = ( ): Node => {
             {photosTaken && (
               <Pressable
                 className={classnames( checkmarkClass, {
-                  "rotate-0": imageOrientation === "portrait" && !isTablet,
-                  "-rotate-90": imageOrientation === "landscapeLeft" && !isTablet,
-                  "rotate-90": imageOrientation === "landscapeRight" && !isTablet
+                  "rotate-0": imageOrientation === "portrait",
+                  "-rotate-90": imageOrientation === "landscapeLeft",
+                  "rotate-90": imageOrientation === "landscapeRight"
                 } )}
                 onPress={navToObsEdit}
                 accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
