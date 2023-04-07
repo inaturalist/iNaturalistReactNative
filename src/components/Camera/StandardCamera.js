@@ -290,7 +290,10 @@ const StandardCamera = ( ): Node => {
           </Pressable>
         )}
         <View className={`${cameraOptionsClassName}`}>
-          <CloseButton size={18} />
+          <CloseButton
+            handleClose={cameraPreviewUris.length > 0 && handleBackButtonPress}
+            size={18}
+          />
         </View>
       </View>
     );
@@ -308,14 +311,14 @@ const StandardCamera = ( ): Node => {
       <View className="relative flex-1">
         {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
         <FadeInOutView savingPhoto={savingPhoto} />
-        {!isTablet ? renderSmallScreenCameraOptions()
+        {breakpoint === "sm" || breakpoint === "md" ? renderSmallScreenCameraOptions()
           : renderLargeScreenCameraOptions()}
       </View>
-      { !isTablet
+      { ( breakpoint === "sm" || breakpoint === "md" )
       && (
         <View className="bg-black h-32 flex-row justify-between items-center">
           <View className="w-1/3 ml-[20px]">
-            <CloseButton />
+            <CloseButton handleClose={cameraPreviewUris.length > 0 && handleBackButtonPress} />
           </View>
           <Pressable
             className="bg-white rounded-full h-[60px] w-[60px] justify-center items-center"
