@@ -21,7 +21,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import colors from "styles/tailwindColors";
 
-import DeleteObservationDialog from "./DeleteObservationDialog";
+import DeleteObservationSheet from "./DeleteObservationSheet";
 import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
 import MultipleObservationsArrows from "./MultipleObservationsArrows";
@@ -32,7 +32,7 @@ import SaveDialog from "./SaveDialog";
 const { useRealm } = RealmContext;
 
 const ObsEdit = ( ): Node => {
-  const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
+  const [deleteSheetVisible, setDeleteSheetVisible] = useState( false );
   const {
     currentObservation,
     observations,
@@ -112,8 +112,6 @@ const ObsEdit = ( ): Node => {
     }, [handleBackButtonPress] )
   );
 
-  const hideDialog = ( ) => setDeleteDialogVisible( false );
-
   const renderKebabMenu = useCallback( ( ) => (
     <KebabMenu
       visible={kebabMenuVisible}
@@ -121,26 +119,25 @@ const ObsEdit = ( ): Node => {
     >
       <Menu.Item
         onPress={( ) => {
-          setDeleteDialogVisible( true );
+          setDeleteSheetVisible( true );
           setKebabMenuVisible( false );
         }}
-        title={t( "Delete" )}
+        title={
+          observations.length > 0
+            ? t( "Delete-observations" )
+            : t( "Delete-observation" )
+        }
       />
     </KebabMenu>
-  ), [kebabMenuVisible] );
+  ), [kebabMenuVisible, observations] );
 
   useEffect( ( ) => {
     const renderHeaderTitle = ( ) => <ObsEditHeaderTitle />;
     const headerOptions = {
       headerTitle: renderHeaderTitle,
-      headerLeft: renderBackButton
+      headerLeft: renderBackButton,
+      headerRight: renderKebabMenu
     };
-
-    // only show delete kebab menu for observations persisted to realm
-    if ( localObservation ) {
-      // $FlowIgnore
-      headerOptions.headerRight = renderKebabMenu;
-    }
 
     navigation.setOptions( headerOptions );
   }, [observations, navigation, renderKebabMenu, localObservation, renderBackButton] );
@@ -176,10 +173,11 @@ const ObsEdit = ( ): Node => {
   return (
     <>
       <View testID="obs-edit" className="bg-white flex-1">
-        <DeleteObservationDialog
-          deleteDialogVisible={deleteDialogVisible}
-          hideDialog={hideDialog}
-        />
+        {deleteSheetVisible && (
+          <DeleteObservationSheet
+            handleClose={( ) => setDeleteSheetVisible( false )}
+          />
+        )}
         <SaveDialog
           showSaveDialog={showSaveDialog}
           discardChanges={discardChanges}

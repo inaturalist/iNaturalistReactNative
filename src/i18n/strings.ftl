@@ -67,6 +67,8 @@ C = C
 
 Camera-Roll = Camera Roll
 
+CANCEL = CANCEL
+
 Cancel = Cancel
 
 Captive-Cultivated = Captive/Cultivated
@@ -109,13 +111,21 @@ Date-uploaded-colon = Date uploaded:
 
 Default-Search-Place = Default Search Place
 
-Delete = Delete
+DELETE = DELETE
+
+DELETE-ALL = DELETE ALL
 
 Delete-comment = Delete comment
 
+DELETE-OBSERVATION = DELETE OBSERVATION?
+
+Delete-observation = Delete observation
+
+Delete-observations = Delete observations
+
 DELETE-X-OBSERVATIONS = DELETE {$count ->
-    [one] 1 OBSERVATION
-    *[other] {$count} OBSERVATIONS
+    [one] 1 OBSERVATION?
+    *[other] {$count} OBSERVATIONS?
 }
 
 Description-Tags = Description/Tags

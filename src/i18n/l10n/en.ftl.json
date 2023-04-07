@@ -50,6 +50,7 @@
     "val": "C"
   },
   "Camera-Roll": "Camera Roll",
+  "CANCEL": "CANCEL",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
   "Casual": {
@@ -76,9 +77,13 @@
   "Date-observed-colon": "Date observed:",
   "Date-uploaded-colon": "Date uploaded:",
   "Default-Search-Place": "Default Search Place",
-  "Delete": "Delete",
+  "DELETE": "DELETE",
+  "DELETE-ALL": "DELETE ALL",
   "Delete-comment": "Delete comment",
-  "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}",
+  "DELETE-OBSERVATION": "DELETE OBSERVATION?",
+  "Delete-observation": "Delete observation",
+  "Delete-observations": "Delete observations",
+  "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION?\n *[other] { $count } OBSERVATIONS?\n}",
   "Description-Tags": "Description/Tags",
   "Discard-Changes": "Discard Changes",
   "Discard-X-Observations": "{ $count ->\n  [one] Discard Observation\n *[other] Discard Observations\n}",
@@ -635,7 +640,6 @@
   "DISCARD-PHOTOS": "DISCARD PHOTOS?",
   "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
   "DISCARD": "DISCARD",
-  "CANCEL": "CANCEL",
   "You-need-an-Internet-connection-to-do-that": {
     "comment": "Error message when you try to do something that requires an Internet\nconnection but such a connection is, tragically, missing",
     "val": "You need an Internet connection to do that."
