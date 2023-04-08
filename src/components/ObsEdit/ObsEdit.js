@@ -2,13 +2,10 @@
 
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import {
-  Button, KebabMenu, StickyToolbar
-} from "components/SharedComponents";
+import { KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useContext, useEffect, useState
@@ -17,32 +14,26 @@ import { ActivityIndicator, BackHandler } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Menu } from "react-native-paper";
 import Photo from "realmModels/Photo";
-import useCurrentUser from "sharedHooks/useCurrentUser";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import colors from "styles/tailwindColors";
 
-import DeleteObservationSheet from "./DeleteObservationSheet";
+import BottomButtons from "./BottomButtons";
 import EvidenceSection from "./EvidenceSection";
 import IdentificationSection from "./IdentificationSection";
 import MultipleObservationsArrows from "./MultipleObservationsArrows";
 import ObsEditHeaderTitle from "./ObsEditHeaderTitle";
 import OtherDataSection from "./OtherDataSection";
 import SaveDialog from "./SaveDialog";
-
-const { useRealm } = RealmContext;
+import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
 
 const ObsEdit = ( ): Node => {
   const [deleteSheetVisible, setDeleteSheetVisible] = useState( false );
   const {
     currentObservation,
     observations,
-    saveObservation,
-    saveAndUploadObservation,
     setObservations,
     resetObsEditContext,
-    setNextScreen,
     loading,
-    setLoading,
     unsavedChanges
   } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
@@ -52,9 +43,6 @@ const ObsEdit = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const localObservation = useLocalObservation( params?.uuid );
-  const currentUser = useCurrentUser( );
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [showSaveDialog, setShowSaveDialog] = useState( false );
 
@@ -73,9 +61,6 @@ const ObsEdit = ( ): Node => {
       setObservations( [localObservation.toJSON( )] );
     }
   }, [localObservation, setObservations, resetObsEditContext, currentObservation] );
-
-  const showModal = ( ) => setMediaViewerVisible( true );
-  const hideModal = ( ) => setMediaViewerVisible( false );
 
   const discardChanges = useCallback( ( ) => {
     setObservations( [] );
@@ -142,32 +127,6 @@ const ObsEdit = ( ): Node => {
     navigation.setOptions( headerOptions );
   }, [observations, navigation, renderKebabMenu, localObservation, renderBackButton] );
 
-  const realm = useRealm( );
-
-  const setPhotos = uris => {
-    const updatedObservations = observations;
-    const updatedObsPhotos = Array.from( currentObservation.observationPhotos )
-      .filter( obsPhoto => {
-        const { photo } = obsPhoto;
-        if ( uris.includes( photo.url || photo.localFilePath ) ) {
-          return obsPhoto;
-        }
-        return false;
-      } );
-    // when updatedObsPhotos is an empty array, Realm apparently writes to the
-    // db immediately when you assign, so if you don't do this in write
-    // callback it raises an exception
-    realm?.write( ( ) => {
-      currentObservation.observationPhotos = updatedObsPhotos;
-    } );
-    setObservations( [...updatedObservations] );
-  };
-
-  const handleSelection = photo => {
-    setInitialPhotoSelected( photo );
-    showModal( );
-  };
-
   if ( !currentObservation ) { return null; }
 
   return (
@@ -182,17 +141,9 @@ const ObsEdit = ( ): Node => {
           showSaveDialog={showSaveDialog}
           discardChanges={discardChanges}
         />
-        <MediaViewerModal
-          mediaViewerVisible={mediaViewerVisible}
-          hideModal={hideModal}
-          initialPhotoSelected={initialPhotoSelected}
-          photoUris={photoUris}
-          setPhotoUris={setPhotos}
-        />
         <KeyboardAwareScrollView className="bg-white">
           {observations.length > 1 && <MultipleObservationsArrows />}
           <EvidenceSection
-            handleSelection={handleSelection}
             photoUris={photoUris}
           />
           <IdentificationSection />
@@ -200,36 +151,7 @@ const ObsEdit = ( ): Node => {
           {loading && <ActivityIndicator />}
         </KeyboardAwareScrollView>
       </View>
-      <StickyToolbar containerClass="bottom-6">
-        <View className="flex-row justify-evenly">
-          <Button
-            className="px-[25px]"
-            onPress={async ( ) => {
-              setLoading( true );
-              await saveObservation( );
-              setLoading( false );
-              setNextScreen( );
-            }}
-            testID="ObsEdit.saveButton"
-            text={t( "SAVE" )}
-            level="neutral"
-
-          />
-          <Button
-            className="ml-3 grow"
-            level="focus"
-            text={t( "UPLOAD-NOW" )}
-            testID="ObsEdit.uploadButton"
-            onPress={async ( ) => {
-              setLoading( true );
-              await saveAndUploadObservation( );
-              setLoading( false );
-              setNextScreen( );
-            }}
-            disabled={!currentUser}
-          />
-        </View>
-      </StickyToolbar>
+      <BottomButtons />
     </>
   );
 };

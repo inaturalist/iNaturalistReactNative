@@ -1,6 +1,7 @@
 // @flow
 
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
@@ -11,7 +12,7 @@ import {
   parseISO
 } from "date-fns";
 import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext, useEffect, useRef, useState
@@ -19,12 +20,13 @@ import React, {
 import { useTheme } from "react-native-paper";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
-import AddEvidenceSheet from "./AddEvidenceSheet";
 import DatePicker from "./DatePicker";
 import EvidenceList from "./EvidenceList";
+import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
+
+const { useRealm } = RealmContext;
 
 type Props = {
-  handleSelection: Function,
   photoUris: Array<string>
 }
 
@@ -33,13 +35,16 @@ const TARGET_POSITIONAL_ACCURACY = 10;
 const LOCATION_FETCH_INTERVAL = 1000;
 
 const EvidenceSection = ( {
-  handleSelection,
   photoUris
 }: Props ): Node => {
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const theme = useTheme( );
   const {
     currentObservation,
-    updateObservationKeys
+    updateObservationKeys,
+    observations,
+    setObservations
   } = useContext( ObsEditContext );
   const mountedRef = useRef( true );
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
@@ -144,17 +149,14 @@ const EvidenceSection = ( {
   ] );
 
   const displayLocation = ( ) => {
-    let location = "";
-    if ( latitude ) {
-      location += `Lat: ${formatDecimal( latitude )}`;
+    if ( !latitude || !longitude ) {
+      return t( "No-Location" );
     }
-    if ( longitude ) {
-      location += `, Lon: ${formatDecimal( longitude )}`;
-    }
-    if ( currentObservation.positional_accuracy ) {
-      location += `, Acc: ${currentObservation.positional_accuracy.toFixed( 0 )}`;
-    }
-    return location;
+    return t( "Lat-Lon-Acc", {
+      latitude: formatDecimal( latitude ),
+      longitude: formatDecimal( longitude ),
+      accuracy: currentObservation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
+    } );
   };
 
   const hasValidLocation = ( ) => {
@@ -192,8 +194,44 @@ const EvidenceSection = ( {
     return false;
   };
 
+  const showModal = ( ) => setMediaViewerVisible( true );
+  const hideModal = ( ) => setMediaViewerVisible( false );
+
+  const realm = useRealm( );
+
+  const setPhotos = uris => {
+    const updatedObservations = observations;
+    const updatedObsPhotos = Array.from( currentObservation.observationPhotos )
+      .filter( obsPhoto => {
+        const { photo } = obsPhoto;
+        if ( uris.includes( photo.url || photo.localFilePath ) ) {
+          return obsPhoto;
+        }
+        return false;
+      } );
+    // when updatedObsPhotos is an empty array, Realm apparently writes to the
+    // db immediately when you assign, so if you don't do this in write
+    // callback it raises an exception
+    realm?.write( ( ) => {
+      currentObservation.observationPhotos = updatedObsPhotos;
+    } );
+    setObservations( [...updatedObservations] );
+  };
+
+  const handleSelection = photo => {
+    setInitialPhotoSelected( photo );
+    showModal( );
+  };
+
   return (
     <View className="mx-6 mt-6">
+      <MediaViewerModal
+        mediaViewerVisible={mediaViewerVisible}
+        hideModal={hideModal}
+        initialPhotoSelected={initialPhotoSelected}
+        photoUris={photoUris}
+        setPhotoUris={setPhotos}
+      />
       {showAddEvidenceSheet && (
         <AddEvidenceSheet
           setShowAddEvidenceSheet={setShowAddEvidenceSheet}
@@ -222,7 +260,10 @@ const EvidenceSection = ( {
           <Body3>{currentObservation.place_guess}</Body3>
           {shouldFetchLocation && <ActivityIndicator className="mx-1" />}
           {shouldFetchLocation && <Body4 className="mx-1">{`(${numLocationFetches})`}</Body4>}
-          <Body4>{displayLocation( ) || t( "No-Location" )}</Body4>
+          {/* $FlowIgnore */}
+          <Body4 className={( !latitude || !longitude ) && "color-warningRed"}>
+            {displayLocation( )}
+          </Body4>
         </View>
       </View>
       <DatePicker currentObservation={currentObservation} />

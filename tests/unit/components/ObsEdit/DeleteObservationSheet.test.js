@@ -1,5 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
-import DeleteObservationSheet from "components/ObsEdit/DeleteObservationSheet";
+import DeleteObservationSheet from "components/ObsEdit/Sheets/DeleteObservationSheet";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";

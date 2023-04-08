@@ -7,9 +7,9 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
 
-import GeoprivacySheet from "./GeoprivacySheet";
-import NotesSheet from "./NotesSheet";
-import WildStatusSheet from "./WildStatusSheet";
+import GeoprivacySheet from "./Sheets/GeoprivacySheet";
+import NotesSheet from "./Sheets/NotesSheet";
+import WildStatusSheet from "./Sheets/WildStatusSheet";
 
 const OtherDataSection = ( ): Node => {
   const [showGeoprivacySheet, setShowGeoprivacySheet] = useState( false );

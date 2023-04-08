@@ -339,6 +339,8 @@ No-comments-or-ids-to-display = No comments or ids to display
 
 No-Location = No Location
 
+none = none
+
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
 # license code
@@ -907,3 +909,9 @@ The-location-will-not-be-visible = The location will not be visible to others, w
 #Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn’t placed in this location by humans.
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
+
+# Latitude, longitude, and accuracy
+Lat-Lon-Acc = Lat: { $latitude }, Lon: { $longitude }, Acc: { $accuracy }
+
+# Missing evidence sheet
+Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
