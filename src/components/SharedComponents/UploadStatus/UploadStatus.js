@@ -37,18 +37,19 @@ const UploadStatus = ( {
     rotateAnimation.setValue( 0 );
   } );
 
-  // const interpolateRotating = rotateAnimation.interpolate( {
-  //   inputRange: [0, 1],
-  //   outputRange: ["0deg", "360deg"]
-  // } );
+  const interpolateRotating = rotateAnimation.interpolate( {
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"]
+  } );
 
-  // const rotate = {
-  //   transform: [
-  //     {
-  //       rotate: interpolateRotating
-  //     }
-  //   ]
-  // };
+  const rotate = {
+    transform: [
+      {
+        rotate: interpolateRotating
+      }
+    ],
+    position: "absolute"
+  };
 
   const translationParams = {
     uploadProgress: progress * 100
@@ -68,27 +69,13 @@ const UploadStatus = ( {
     if ( progress < 0.05 ) {
       return (
         <>
-          {/* <Animated.View style={rotate}>
-            <INatIcon
-              name="upload-saved"
-              color={color || defaultColor}
-              size={33}
-            />
+          <Animated.View style={rotate}>
+            <INatIcon name="circle-dots" color={color || defaultColor} size={33} />
           </Animated.View>
-          <View className="absolute">
-            <INatIcon
-              name="upload-arrow"
-              color={color || defaultColor}
-              size={15}
-            />
-          </View> */}
-          {/* <Animated.View style={rotate}>
-            <INatIcon name="dotted-outline" color={color || defaultColor} size={33} />
-          </Animated.View> */}
           <IconButton
-            icon="upload-saved"
+            icon="upload-arrow"
             iconColor={color || defaultColor}
-            size={33}
+            size={15}
             onPress={startSingleUpload}
             disabled={false}
             accessibilityState={{ disabled: false }}
