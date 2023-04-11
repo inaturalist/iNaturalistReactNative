@@ -167,6 +167,8 @@ External-Applications = External Applications
 # Header for featured projects
 Featured = Featured
 
+Fetching-location = Fetching location...
+
 Filters = Filters
 
 Finish = Finish
@@ -572,6 +574,8 @@ Status = Status
 
 # Header for a block of text describing a taxon's conservation status
 STATUS-header = STATUS
+
+Stay-on-this-screen = Stay on this screen while your location loads.
 
 Tap-to-search-for-taxa = Tap to search for taxa
 

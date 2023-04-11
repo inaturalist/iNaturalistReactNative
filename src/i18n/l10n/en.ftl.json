@@ -107,6 +107,7 @@
     "comment": "Header for featured projects",
     "val": "Featured"
   },
+  "Fetching-location": "Fetching location...",
   "Filters": "Filters",
   "Finish": "Finish",
   "Fish": "Fish",
@@ -382,6 +383,7 @@
     "comment": "Header for a block of text describing a taxon's conservation status",
     "val": "STATUS"
   },
+  "Stay-on-this-screen": "Stay on this screen while your location loads.",
   "Tap-to-search-for-taxa": "Tap to search for taxa",
   "Taxon": "Taxon",
   "TAXONOMY-header": {

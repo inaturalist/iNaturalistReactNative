@@ -5,7 +5,7 @@ import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
-import { ActivityIndicator, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import {
   differenceInCalendarYears,
   isFuture,
@@ -18,7 +18,7 @@ import React, {
   useContext, useEffect, useRef, useState
 } from "react";
 import { useTheme } from "react-native-paper";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+import useLocationFetching from "sharedHooks/useLocationFetching";
 
 import DatePicker from "./DatePicker";
 import EvidenceList from "./EvidenceList";
@@ -30,10 +30,6 @@ type Props = {
   photoUris: Array<string>
 }
 
-const INITIAL_POSITIONAL_ACCURACY = 99999;
-const TARGET_POSITIONAL_ACCURACY = 10;
-const LOCATION_FETCH_INTERVAL = 1000;
-
 const EvidenceSection = ( {
   photoUris
 }: Props ): Node => {
@@ -42,28 +38,12 @@ const EvidenceSection = ( {
   const theme = useTheme( );
   const {
     currentObservation,
-    updateObservationKeys,
     observations,
     setObservations
   } = useContext( ObsEditContext );
   const mountedRef = useRef( true );
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const handleAddEvidence = ( ) => setShowAddEvidenceSheet( true );
-
-  const latitude = currentObservation?.latitude;
-  const longitude = currentObservation?.longitude;
-  const hasLocation = latitude || longitude;
-
-  const [shouldFetchLocation, setShouldFetchLocation] = useState(
-    currentObservation
-    && !currentObservation._created_at
-    && !currentObservation._synced_at
-    && !hasLocation
-  );
-  const [numLocationFetches, setNumLocationFetches] = useState( 0 );
-  const [fetchingLocation, setFetchingLocation] = useState( false );
-  const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
-  const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
 
   const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
 
@@ -83,72 +63,27 @@ const EvidenceSection = ( {
     };
   }, [] );
 
-  useEffect( ( ) => {
-    if ( !currentObservation ) return;
-    if ( !shouldFetchLocation ) return;
-    if ( fetchingLocation ) return;
+  const {
+    latitude,
+    longitude,
+    hasLocation,
+    shouldFetchLocation
+  } = useLocationFetching( mountedRef );
 
-    const fetchLocation = async () => {
-      // If the component is gone, you won't be able to updated it
-      if ( !mountedRef.current ) return;
-      if ( !shouldFetchLocation ) return;
-
-      setFetchingLocation( false );
-
-      const location = await fetchUserLocation( );
-
-      // If we're still receiving location updates and location is blank,
-      // then we don't know where we are any more and the obs should update
-      // to reflect that
-      updateObservationKeys( {
-        place_guess: location?.place_guess,
-        latitude: location?.latitude,
-        longitude: location?.longitude,
-        positional_accuracy: location?.positional_accuracy
-      } );
-
-      // The local state version of positionalAccuracy needs to be a number,
-      // so don't set it to
-      const newPositionalAccuracy = location?.positional_accuracy || INITIAL_POSITIONAL_ACCURACY;
-      setPositionalAccuracy( newPositionalAccuracy );
-      if ( newPositionalAccuracy > TARGET_POSITIONAL_ACCURACY ) {
-        // This is just here to make absolutely sure the effect runs again in a second
-        setTimeout(
-          ( ) => setNumLocationFetches( numFetches => numFetches + 1 ),
-          LOCATION_FETCH_INTERVAL
-        );
-      }
-    };
-
-    if (
-      // If we're already fetching we don't need to fetch again
-      !fetchingLocation
-      // We only need to fetch when we're above the target
-      && positionalAccuracy >= TARGET_POSITIONAL_ACCURACY
-      // Don't fetch location more than once a second
-      && Date.now() - lastLocationFetchTime >= LOCATION_FETCH_INTERVAL
-    ) {
-      setFetchingLocation( true );
-      setLastLocationFetchTime( Date.now() );
-      fetchLocation( );
-    } else if ( positionalAccuracy < TARGET_POSITIONAL_ACCURACY ) {
-      setShouldFetchLocation( false );
+  const displayPlaceName = ( ) => {
+    let placeName = "";
+    if ( currentObservation.place_guess ) {
+      placeName = currentObservation.place_guess;
+    } else if ( shouldFetchLocation ) {
+      placeName = t( "Fetching-location" );
     }
-  }, [
-    currentObservation,
-    fetchingLocation,
-    lastLocationFetchTime,
-    numLocationFetches,
-    positionalAccuracy,
-    setFetchingLocation,
-    setLastLocationFetchTime,
-    setNumLocationFetches,
-    setShouldFetchLocation,
-    shouldFetchLocation,
-    updateObservationKeys
-  ] );
+    return placeName ? <Body3>{placeName}</Body3> : null;
+  };
 
   const displayLocation = ( ) => {
+    if ( shouldFetchLocation && ( !latitude || !longitude ) ) {
+      return t( "Stay-on-this-screen" );
+    }
     if ( !latitude || !longitude ) {
       return t( "No-Location" );
     }
@@ -257,9 +192,7 @@ const EvidenceSection = ( {
       <View className="flex-row flex-nowrap my-4">
         <INatIcon size={14} name="map-marker-outline" />
         <View className="ml-5">
-          <Body3>{currentObservation.place_guess}</Body3>
-          {shouldFetchLocation && <ActivityIndicator className="mx-1" />}
-          {shouldFetchLocation && <Body4 className="mx-1">{`(${numLocationFetches})`}</Body4>}
+          {displayPlaceName( )}
           {/* $FlowIgnore */}
           <Body4 className={( !latitude || !longitude ) && "color-warningRed"}>
             {displayLocation( )}
