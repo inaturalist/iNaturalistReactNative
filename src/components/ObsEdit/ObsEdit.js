@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import { ActivityIndicator } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import Photo from "realmModels/Photo";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 
 import BottomButtons from "./BottomButtons";
@@ -27,10 +26,6 @@ const ObsEdit = ( ): Node => {
     resetObsEditContext,
     loading
   } = useContext( ObsEditContext );
-  const obsPhotos = currentObservation?.observationPhotos;
-  const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
-    obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
-  ) : [];
   const { params } = useRoute( );
   const localObservation = useLocalObservation( params?.uuid );
 
@@ -58,9 +53,7 @@ const ObsEdit = ( ): Node => {
         <Header />
         <KeyboardAwareScrollView className="bg-white">
           {observations.length > 1 && <MultipleObservationsArrows />}
-          <EvidenceSection
-            photoUris={photoUris}
-          />
+          <EvidenceSection />
           <IdentificationSection />
           <OtherDataSection />
           {loading && <ActivityIndicator />}

@@ -14,9 +14,11 @@ import {
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useContext, useEffect, useRef, useState
 } from "react";
 import { useTheme } from "react-native-paper";
+import Photo from "realmModels/Photo";
 import useLocationFetching from "sharedHooks/useLocationFetching";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -26,13 +28,7 @@ import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
 const { useRealm } = RealmContext;
 
-type Props = {
-  photoUris: Array<string>
-}
-
-const EvidenceSection = ( {
-  photoUris
-}: Props ): Node => {
+const EvidenceSection = ( ): Node => {
   const { t } = useTranslation( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
@@ -40,8 +36,13 @@ const EvidenceSection = ( {
   const {
     currentObservation,
     observations,
-    setObservations
+    setObservations,
+    setPassesEvidenceTest
   } = useContext( ObsEditContext );
+  const obsPhotos = currentObservation?.observationPhotos;
+  const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
+    obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
+  ) : [];
   const mountedRef = useRef( true );
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const handleAddEvidence = ( ) => setShowAddEvidenceSheet( true );
@@ -95,7 +96,7 @@ const EvidenceSection = ( {
     } );
   };
 
-  const hasValidLocation = ( ) => {
+  const hasValidLocation = useCallback( ( ) => {
     if ( hasLocation
       && ( latitude !== 0 && longitude !== 0 )
       && ( latitude >= -90 && latitude <= 90 )
@@ -107,9 +108,9 @@ const EvidenceSection = ( {
       return true;
     }
     return false;
-  };
+  }, [currentObservation, longitude, latitude, hasLocation] );
 
-  const hasValidDate = ( ) => {
+  const hasValidDate = useCallback( ( ) => {
     const observationDate = parseISO( currentObservation?.observed_on_string );
     if ( observationDate
       && !isFuture( observationDate )
@@ -118,9 +119,9 @@ const EvidenceSection = ( {
       return true;
     }
     return false;
-  };
+  }, [currentObservation] );
 
-  const passesEvidenceTest = ( ) => {
+  const passesEvidenceTest = useCallback( ( ) => {
     if ( shouldFetchLocation ) {
       return null;
     }
@@ -128,7 +129,7 @@ const EvidenceSection = ( {
       return true;
     }
     return false;
-  };
+  }, [shouldFetchLocation, hasValidLocation, hasValidDate] );
 
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
@@ -158,6 +159,12 @@ const EvidenceSection = ( {
     setInitialPhotoSelected( photo );
     showModal( );
   };
+
+  useEffect( ( ) => {
+    if ( passesEvidenceTest( ) ) {
+      setPassesEvidenceTest( true );
+    }
+  }, [passesEvidenceTest, setPassesEvidenceTest] );
 
   return (
     <View className="mx-6 mt-6">

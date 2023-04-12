@@ -39,6 +39,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [loading, setLoading] = useState( false );
   const [unsavedChanges, setUnsavedChanges] = useState( false );
   const [uploadProgress, setUploadProgress] = useState( { } );
+  const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
+  const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -47,6 +49,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setGalleryUris( [] );
     setEvidenceToAdd( [] );
     setUnsavedChanges( false );
+    setPassesEvidenceTest( false );
   }, [] );
 
   useEffect( () => {
@@ -369,7 +372,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       startSingleUpload,
       uploadProgress,
       setUploadProgress,
-      saveAllObservations
+      saveAllObservations,
+      setPassesEvidenceTest,
+      passesEvidenceTest,
+      passesIdentificationTest,
+      setPassesIdentificationTest
     };
   }, [
     currentObservation,
@@ -395,7 +402,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setLoading,
     unsavedChanges,
     currentUser,
-    uploadProgress
+    uploadProgress,
+    passesEvidenceTest,
+    passesIdentificationTest
   ] );
 
   return (

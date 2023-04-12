@@ -1,5 +1,6 @@
 // @flow
 
+import classnames from "classnames";
 import {
   Button, StickyToolbar
 } from "components/SharedComponents";
@@ -19,7 +20,9 @@ const BottomButtons = ( ): Node => {
     setNextScreen,
     setLoading,
     currentObservation,
-    unsavedChanges
+    unsavedChanges,
+    passesEvidenceTest,
+    passesIdentificationTest
   } = useContext( ObsEditContext );
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
 
@@ -43,7 +46,10 @@ const BottomButtons = ( ): Node => {
           level={unsavedChanges ? "focus" : "neutral"}
         />
       ) : (
-        <View className="flex-row justify-evenly">
+        <View className={classnames( "flex-row justify-evenly", {
+          "opacity-50": !passesEvidenceTest
+        } )}
+        >
           <Button
             className="px-[25px]"
             onPress={async ( ) => {
@@ -58,7 +64,7 @@ const BottomButtons = ( ): Node => {
           />
           <Button
             className="ml-3 grow"
-            level="focus"
+            level={passesEvidenceTest && passesIdentificationTest ? "focus" : "neutral"}
             text={t( "UPLOAD-NOW" )}
             testID="ObsEdit.uploadButton"
             onPress={async ( ) => {
