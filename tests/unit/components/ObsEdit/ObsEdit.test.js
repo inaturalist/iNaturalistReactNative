@@ -25,7 +25,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 const mockCurrentUser = factory( "LocalUser" );
 
-jest.mock( "components/ObsEdit/ObsEditHeaderTitle" );
+jest.mock( "components/ObsEdit/Header" );
 jest.mock( "components/ObsEdit/Sheets/DeleteObservationSheet" );
 jest.mock( "components/ObsEdit/SaveDialog" );
 jest.mock( "components/MediaViewer/MediaViewerModal" );
@@ -43,7 +43,8 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
   <INatPaperProvider>
     <ObsEditContext.Provider value={{
       observations: obs,
-      currentObservation: obs[0]
+      currentObservation: obs[0],
+      setPassesIdentificationTest: jest.fn( )
     }}
     >
       {children}
