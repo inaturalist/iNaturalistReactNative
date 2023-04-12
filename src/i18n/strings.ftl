@@ -261,6 +261,8 @@ Licensing = Licensing
 
 Location = Location
 
+LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
+
 Log-in = Log in
 
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
@@ -753,6 +755,8 @@ You-will-lose-all-existing-observations = {$count ->
 
 You-can-still-share-the-file =
     You can still share the file with another app. If you can email it, please send it to { $email }
+
+Your-location-uncertainty-is-over-10km = Your location uncertainty is over 10km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 
 # Identification category
 Category-leading = Leading
