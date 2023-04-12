@@ -17,7 +17,9 @@ const BottomButtons = ( ): Node => {
     saveObservation,
     saveAndUploadObservation,
     setNextScreen,
-    setLoading
+    setLoading,
+    currentObservation,
+    unsavedChanges
   } = useContext( ObsEditContext );
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
 
@@ -28,32 +30,46 @@ const BottomButtons = ( ): Node => {
           setShowMissingEvidenceSheet={setShowMissingEvidenceSheet}
         />
       )}
-      <View className="flex-row justify-evenly">
+      {currentObservation._synced_at ? (
         <Button
-          className="px-[25px]"
           onPress={async ( ) => {
             setLoading( true );
             await saveObservation( );
             setLoading( false );
             setNextScreen( );
           }}
-          testID="ObsEdit.saveButton"
-          text={t( "SAVE" )}
-          level="neutral"
+          testID="ObsEdit.saveChangesButton"
+          text={t( "SAVE-CHANGES" )}
+          level={unsavedChanges ? "focus" : "neutral"}
         />
-        <Button
-          className="ml-3 grow"
-          level="focus"
-          text={t( "UPLOAD-NOW" )}
-          testID="ObsEdit.uploadButton"
-          onPress={async ( ) => {
-            setLoading( true );
-            await saveAndUploadObservation( );
-            setLoading( false );
-            setNextScreen( );
-          }}
-        />
-      </View>
+      ) : (
+        <View className="flex-row justify-evenly">
+          <Button
+            className="px-[25px]"
+            onPress={async ( ) => {
+              setLoading( true );
+              await saveObservation( );
+              setLoading( false );
+              setNextScreen( );
+            }}
+            testID="ObsEdit.saveButton"
+            text={t( "SAVE" )}
+            level="neutral"
+          />
+          <Button
+            className="ml-3 grow"
+            level="focus"
+            text={t( "UPLOAD-NOW" )}
+            testID="ObsEdit.uploadButton"
+            onPress={async ( ) => {
+              setLoading( true );
+              await saveAndUploadObservation( );
+              setLoading( false );
+              setNextScreen( );
+            }}
+          />
+        </View>
+      )}
     </StickyToolbar>
   );
 };

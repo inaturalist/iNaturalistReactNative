@@ -3,6 +3,7 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Heading2, KebabMenu } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -56,10 +57,12 @@ const Header = ( ): Node => {
   }, [unsavedChanges, discardChanges, multipleObservations] );
 
   const renderBackButton = useCallback( ( ) => (
-    <HeaderBackButton
-      tintColor={colors.black}
-      onPress={handleBackButtonPress}
-    />
+    <View className="ml-4">
+      <HeaderBackButton
+        tintColor={colors.black}
+        onPress={handleBackButtonPress}
+      />
+    </View>
   ), [handleBackButtonPress] );
 
   useFocusEffect(
@@ -78,22 +81,25 @@ const Header = ( ): Node => {
   );
 
   const renderKebabMenu = useCallback( ( ) => (
-    <KebabMenu
-      visible={kebabMenuVisible}
-      setVisible={setKebabMenuVisible}
-    >
-      <Menu.Item
-        onPress={( ) => {
-          setDeleteSheetVisible( true );
-          setKebabMenuVisible( false );
-        }}
-        title={
-          observations.length > 0
-            ? t( "Delete-observations" )
-            : t( "Delete-observation" )
-        }
-      />
-    </KebabMenu>
+    <View className="mr-4">
+      <KebabMenu
+        visible={kebabMenuVisible}
+        setVisible={setKebabMenuVisible}
+        large
+      >
+        <Menu.Item
+          onPress={( ) => {
+            setDeleteSheetVisible( true );
+            setKebabMenuVisible( false );
+          }}
+          title={
+            observations.length > 0
+              ? t( "Delete-observations" )
+              : t( "Delete-observation" )
+          }
+        />
+      </KebabMenu>
+    </View>
   ), [kebabMenuVisible, observations, t, setDeleteSheetVisible] );
 
   useEffect( ( ) => {

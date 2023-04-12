@@ -538,6 +538,8 @@ Save = Save
 
 SAVE-ALL = SAVE ALL
 
+SAVE-CHANGES = SAVE CHANGES
+
 Search-for-a-location = Search for a location
 
 Search-for-a-project = Search for a project
