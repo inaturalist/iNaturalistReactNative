@@ -11,7 +11,6 @@ import {
   isFuture,
   parseISO
 } from "date-fns";
-import { t } from "i18next";
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -19,6 +18,7 @@ import React, {
 } from "react";
 import { useTheme } from "react-native-paper";
 import useLocationFetching from "sharedHooks/useLocationFetching";
+import useTranslation from "sharedHooks/useTranslation";
 
 import DatePicker from "./DatePicker";
 import EvidenceList from "./EvidenceList";
@@ -33,6 +33,7 @@ type Props = {
 const EvidenceSection = ( {
   photoUris
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const theme = useTheme( );

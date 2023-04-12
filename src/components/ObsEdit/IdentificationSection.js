@@ -6,17 +6,18 @@ import {
   Button, Heading4, INatIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { useTheme } from "react-native-paper";
+import useTranslation from "sharedHooks/useTranslation";
 
 const IdentificationSection = ( ): Node => {
   const {
     currentObservation,
     updateObservationKey
   } = useContext( ObsEditContext );
+  const { t } = useTranslation( );
   const theme = useTheme( );
   const navigation = useNavigation( );
 

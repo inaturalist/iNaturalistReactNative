@@ -2,11 +2,11 @@
 
 import { Button } from "components/SharedComponents";
 import { Text } from "components/styledComponents";
-import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { Dialog, Portal } from "react-native-paper";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   showSaveDialog: boolean,
@@ -17,6 +17,7 @@ const SaveDialog = ( {
   showSaveDialog,
   discardChanges
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const {
     saveObservation,
     observations

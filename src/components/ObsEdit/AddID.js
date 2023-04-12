@@ -10,7 +10,6 @@ import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef, useState
@@ -31,6 +30,7 @@ import uuid from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Taxon from "realmModels/Taxon";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useTranslation from "sharedHooks/useTranslation";
 import { textStyles, viewStyles } from "styles/obsDetails/addID";
 import colors from "styles/tailwindColors";
 
@@ -59,6 +59,7 @@ const SearchTaxonIcon = (
 );
 
 const AddID = ( { route }: Props ): Node => {
+  const { t } = useTranslation( );
   const theme = useTheme();
   const [comment, setComment] = useState( "" );
   const [commentDraft, setCommentDraft] = useState( "" );
@@ -195,7 +196,7 @@ const AddID = ( { route }: Props ): Node => {
         headerRight: editCommentIcon
       } );
     }
-  }, [showEditComment, editComment, navigation] );
+  }, [showEditComment, editComment, navigation, t] );
 
   return (
     <ViewWrapper>

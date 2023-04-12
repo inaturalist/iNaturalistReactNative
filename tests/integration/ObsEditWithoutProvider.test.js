@@ -1,6 +1,7 @@
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import faker from "faker";
+import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
@@ -88,6 +89,10 @@ test( "renders observation photo from photo gallery", ( ) => {
 } );
 
 describe( "location fetching", () => {
+  beforeAll( async () => {
+    await initI18next();
+  } );
+
   beforeEach( () => {
     // resets mock back to original state
     mockFetchUserLocation.mockReset();

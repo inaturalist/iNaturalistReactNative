@@ -101,8 +101,7 @@ const useLocationFetching = ( mountedRef: any ): Object => {
     latitude,
     longitude,
     hasLocation,
-    shouldFetchLocation,
-    numLocationFetches
+    shouldFetchLocation
   };
 };
 

@@ -4,14 +4,15 @@ import {
   Button, StickyToolbar
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
+import useTranslation from "sharedHooks/useTranslation";
 
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
 const BottomButtons = ( ): Node => {
+  const { t } = useTranslation( );
   const {
     saveObservation,
     saveAndUploadObservation,

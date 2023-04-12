@@ -2,16 +2,17 @@
 
 import { Body3, Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
+import useTranslation from "sharedHooks/useTranslation";
 
 import GeoprivacySheet from "./Sheets/GeoprivacySheet";
 import NotesSheet from "./Sheets/NotesSheet";
 import WildStatusSheet from "./Sheets/WildStatusSheet";
 
 const OtherDataSection = ( ): Node => {
+  const { t } = useTranslation( );
   const [showGeoprivacySheet, setShowGeoprivacySheet] = useState( false );
   const [showWildStatusSheet, setShowWildStatusSheet] = useState( false );
   const [showNotesSheet, setShowNotesSheet] = useState( false );

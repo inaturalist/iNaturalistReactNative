@@ -4,12 +4,12 @@ import { Button } from "components/SharedComponents";
 import InputField from "components/SharedComponents/InputField";
 import Map from "components/SharedComponents/Map";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
-import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useCoords from "sharedHooks/useCoords";
+import useTranslation from "sharedHooks/useTranslation";
 import { viewStyles } from "styles/obsEdit/locationPicker";
 
 type Props = {
@@ -21,6 +21,7 @@ const LocationPicker = ( {
   closeLocationPicker,
   updateLocation
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const [searchQuery, setSearchQuery] = useState( "" );
   const [region, setRegion] = useState( {
     latitude: null,
