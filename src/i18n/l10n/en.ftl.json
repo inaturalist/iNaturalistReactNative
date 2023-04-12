@@ -45,6 +45,8 @@
   },
   "Birds": "Birds",
   "Blocked-Users": "Blocked Users",
+  "By-exiting-changes-not-saved": "By exiting, changes to your observation will not be saved.",
+  "By-exiting-your-observations-not-saved": "By exiting, your observations will not be saved. You can save them to your device, or you can delete them.",
   "C": {
     "comment": "Quality grade option: Casual (shortened for My Observations view)",
     "val": "C"
@@ -85,8 +87,9 @@
   "Delete-observations": "Delete observations",
   "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION?\n *[other] { $count } OBSERVATIONS?\n}",
   "Description-Tags": "Description/Tags",
-  "Discard-Changes": "Discard Changes",
-  "Discard-X-Observations": "{ $count ->\n  [one] Discard Observation\n *[other] Discard Observations\n}",
+  "DISCARD-ALL": "DISCARD ALL",
+  "DISCARD-OBSERVATION": "DISCARD OBSERVATION",
+  "DISCARD-X-OBSERVATIONS": "{ $count ->\n  [one] DISCARD OBSERVATION\n *[other] DISCARD { $count } OBSERVATIONS\n}",
   "Display": "Display",
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
@@ -353,6 +356,7 @@
     "val": "RG"
   },
   "Save": "Save",
+  "SAVE-ALL": "SAVE ALL",
   "Search-for-a-location": "Search for a location",
   "Search-for-a-project": "Search for a project",
   "Search-for-a-taxon": "Search for a taxon",

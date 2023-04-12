@@ -184,16 +184,19 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     const updateObservationKeys = keysAndValues => {
       const updatedObservations = observations.map( ( observation, index ) => {
         if ( index === currentObservationIndex ) {
+          const isSavedObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
           const updatedObservation = {
             ...( observation.toJSON ? observation.toJSON( ) : observation ),
             ...keysAndValues
           };
+          if ( isSavedObservation && !unsavedChanges ) {
+            setUnsavedChanges( true );
+          }
           return updatedObservation;
         }
         return observation;
       } );
       setObservations( updatedObservations );
-      setUnsavedChanges( true );
     };
 
     const setNextScreen = ( ) => {
@@ -226,6 +229,17 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         throw new Error( "Gack, tried to save an observation without realm!" );
       }
       return Observation.saveLocalObservationForUpload( currentObservation, realm );
+    };
+
+    const saveAllObservations = async ( ) => {
+      if ( !realm ) {
+        throw new Error( "Gack, tried to save an observation without realm!" );
+      }
+      setLoading( true );
+      await Promise.all( observations.map( async observation => {
+        await Observation.saveLocalObservationForUpload( observation, realm );
+      } ) );
+      setLoading( false );
     };
 
     const uploadObservation = async observation => {
@@ -354,7 +368,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       syncObservations,
       startSingleUpload,
       uploadProgress,
-      setUploadProgress
+      setUploadProgress,
+      saveAllObservations
     };
   }, [
     currentObservation,

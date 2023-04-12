@@ -13,13 +13,10 @@ import { Menu } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
-import SaveDialog from "./SaveDialog";
+import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
+import DiscardChangesSheet from "./Sheets/DiscardChangesSheet";
 
-type Props = {
-  setDeleteSheetVisible: Function
-}
-
-const Header = ( { setDeleteSheetVisible }: Props ): Node => {
+const Header = ( ): Node => {
   const {
     observations,
     unsavedChanges,
@@ -27,8 +24,11 @@ const Header = ( { setDeleteSheetVisible }: Props ): Node => {
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const [deleteSheetVisible, setDeleteSheetVisible] = useState( false );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
-  const [showSaveDialog, setShowSaveDialog] = useState( false );
+  const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
+
+  const multipleObservations = observations.length > 1;
 
   const discardChanges = useCallback( ( ) => {
     setObservations( [] );
@@ -48,12 +48,12 @@ const Header = ( { setDeleteSheetVisible }: Props ): Node => {
   ), [observations, t] );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    if ( unsavedChanges ) {
-      setShowSaveDialog( true );
+    if ( unsavedChanges || multipleObservations ) {
+      setDiscardChangesSheetVisible( true );
     } else {
       discardChanges( );
     }
-  }, [unsavedChanges, discardChanges] );
+  }, [unsavedChanges, discardChanges, multipleObservations] );
 
   const renderBackButton = useCallback( ( ) => (
     <HeaderBackButton
@@ -118,10 +118,16 @@ const Header = ( { setDeleteSheetVisible }: Props ): Node => {
   }
 
   return (
-    <SaveDialog
-      showSaveDialog={showSaveDialog}
-      discardChanges={discardChanges}
-    />
+    <>
+      {deleteSheetVisible && (
+        <DeleteObservationSheet
+          handleClose={( ) => setDeleteSheetVisible( false )}
+        />
+      )}
+      {discardChangesSheetVisible && (
+        <DiscardChangesSheet handleClose={( ) => discardChanges( )} />
+      )}
+    </>
   );
 };
 

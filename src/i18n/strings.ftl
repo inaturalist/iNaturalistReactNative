@@ -62,6 +62,10 @@ Birds = Birds
 
 Blocked-Users = Blocked Users
 
+By-exiting-changes-not-saved = By exiting, changes to your observation will not be saved.
+
+By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
+
 # Quality grade option: Casual (shortened for My Observations view)
 C = C
 
@@ -130,11 +134,13 @@ DELETE-X-OBSERVATIONS = DELETE {$count ->
 
 Description-Tags = Description/Tags
 
-Discard-Changes = Discard Changes
+DISCARD-ALL = DISCARD ALL
 
-Discard-X-Observations = {$count ->
-    [one] Discard Observation
-    *[other] Discard Observations
+DISCARD-OBSERVATION = DISCARD OBSERVATION
+
+DISCARD-X-OBSERVATIONS = {$count ->
+    [one] DISCARD OBSERVATION
+    *[other] DISCARD {$count} OBSERVATIONS
 }
 
 Display = Display
@@ -529,6 +535,8 @@ Revoke = Revoke
 RG = RG
 
 Save = Save
+
+SAVE-ALL = SAVE ALL
 
 Search-for-a-location = Search for a location
 

@@ -5,7 +5,7 @@ import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useContext, useEffect, useState
+  useContext, useEffect
 } from "react";
 import { ActivityIndicator } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -18,10 +18,8 @@ import Header from "./Header";
 import IdentificationSection from "./IdentificationSection";
 import MultipleObservationsArrows from "./MultipleObservationsArrows";
 import OtherDataSection from "./OtherDataSection";
-import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
 
 const ObsEdit = ( ): Node => {
-  const [deleteSheetVisible, setDeleteSheetVisible] = useState( false );
   const {
     currentObservation,
     observations,
@@ -57,12 +55,7 @@ const ObsEdit = ( ): Node => {
   return (
     <>
       <View testID="obs-edit" className="bg-white flex-1">
-        {deleteSheetVisible && (
-          <DeleteObservationSheet
-            handleClose={( ) => setDeleteSheetVisible( false )}
-          />
-        )}
-        <Header setDeleteSheetVisible={setDeleteSheetVisible} />
+        <Header />
         <KeyboardAwareScrollView className="bg-white">
           {observations.length > 1 && <MultipleObservationsArrows />}
           <EvidenceSection
