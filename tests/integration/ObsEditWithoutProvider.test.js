@@ -10,10 +10,6 @@ import React from "react";
 import factory from "../factory";
 import { renderComponent } from "../helpers/render";
 
-// this resolves a test failure with the Animated library:
-// Animated: `useNativeDriver` is not supported because the native animated module is missing.
-jest.useFakeTimers( );
-
 jest.mock( "providers/ObsEditProvider" );
 
 // mock Portal with a Modal component inside of it (MediaViewer)
@@ -72,21 +68,27 @@ const renderObsEdit = ( ) => renderComponent(
   </ObsEditProvider>
 );
 
-test( "renders observation photo from photo gallery", ( ) => {
-  const observations = [factory( "RemoteObservation", {
-    latitude: 37.99,
-    longitude: -142.88,
-    user: mockCurrentUser,
-    place_guess: mockLocationName
-  } )];
-  mockObsEditProviderWithObs( observations );
+describe( "basic rendering", ( ) => {
+  beforeAll( async () => {
+    await initI18next();
+  } );
 
-  renderObsEdit( );
+  it( "should render place_guess and latitude", ( ) => {
+    const observations = [factory( "RemoteObservation", {
+      latitude: 37.99,
+      longitude: -142.88,
+      user: mockCurrentUser,
+      place_guess: mockLocationName
+    } )];
+    mockObsEditProviderWithObs( observations );
 
-  const obs = observations[0];
+    renderObsEdit( );
 
-  expect( screen.getByText( obs.place_guess ) ).toBeTruthy( );
-  expect( screen.getByText( new RegExp( obs.longitude ) ) ).toBeTruthy( );
+    const obs = observations[0];
+
+    expect( screen.getByText( obs.place_guess ) ).toBeTruthy( );
+    expect( screen.getByText( new RegExp( `${obs.latitude}` ) ) ).toBeTruthy( );
+  } );
 } );
 
 describe( "location fetching", () => {
@@ -98,6 +100,7 @@ describe( "location fetching", () => {
     // resets mock back to original state
     mockFetchUserLocation.mockReset();
   } );
+
   test( "should fetch location when new observation hasn't saved", async ( ) => {
     const observations = [{}];
     mockObsEditProviderWithObs( observations );
