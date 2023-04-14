@@ -2,19 +2,22 @@
 
 import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
-import { ActivityCount, QualityGradeStatus } from "components/SharedComponents";
+import {
+  CommentsCount,
+  IdentificationsCount,
+  QualityGradeStatus
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import Observation from "realmModels/Observation";
-import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   observation: typeof Observation,
   layout?: "horizontal" | "vertical",
   white?: boolean,
-  classNameMargin?: string
+  classNameMargin?: string,
 };
 /* eslint-disable react-native/no-inline-styles */
 const ObsStatus = ( {
@@ -23,7 +26,6 @@ const ObsStatus = ( {
   layout = "vertical",
   classNameMargin
 }: Props ): Node => {
-  const { t } = useTranslation();
   const theme = useTheme();
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
   const margin = layout === "vertical" ? "mb-1" : "mr-2";
@@ -31,22 +33,21 @@ const ObsStatus = ( {
   const iconColor = white ? theme.colors.onPrimary : theme.colors.primary;
   const numIdents = observation.identifications?.length || 0;
   const numComments = observation.comments?.length || 0;
+  const filled = observation.viewed === false;
 
   return (
     <View className={classNames( "flex", flexDirection, classNameMargin )}>
-      <ActivityCount
-        icon="label"
+      <IdentificationsCount
         classNameMargin={margin}
         count={numIdents}
         white={white}
-        accessibilityLabel={t( "x-identifications", { count: numIdents } )}
+        filled={filled}
       />
-      <ActivityCount
-        icon="comments"
+      <CommentsCount
         classNameMargin={margin}
         count={numComments}
         white={white}
-        accessibilityLabel={t( "x-comments", { count: numComments } )}
+        filled={filled}
       />
       <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />
     </View>
