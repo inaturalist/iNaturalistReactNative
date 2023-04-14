@@ -26,7 +26,8 @@ type Props = {
   handleAddEvidence?: Function,
   showAddButton?: boolean,
   deletePhoto?: Function,
-  screenBreakpoint?: string
+  isLandscapeMode?:boolean,
+  isSmallScreen?: boolean
 }
 
 const PhotoCarousel = ( {
@@ -39,11 +40,14 @@ const PhotoCarousel = ( {
   handleAddEvidence,
   showAddButton = false,
   deletePhoto,
-  screenBreakpoint
+  isLandscapeMode,
+  isSmallScreen
 }: Props ): Node => {
   const theme = useTheme( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const imageClass = "justify-center items-center";
+  const smallPhotoClass = "rounded-sm w-[42px] h-[42px]";
+  const largePhotoClass = "rounded-md w-[83px] h-[83px]";
 
   useEffect( () => {
     if ( photoUris.length === 0 && deletePhotoMode ) {
@@ -53,10 +57,12 @@ const PhotoCarousel = ( {
 
   const renderSkeleton = ( ) => ( savingPhoto ? (
     <View className={classnames( "bg-lightGray justify-center", {
-      "rounded-sm w-[42px] h-[42px] mx-[3px]":
-      ["sm", "md"].includes( screenBreakpoint ),
-      "rounded-md w-[83px] h-[83px] mx-[8.5px]":
-      ["lg", "xl", "2xl"].includes( screenBreakpoint )
+      [`${smallPhotoClass} mx-[3px]`]:
+      isSmallScreen,
+      [`${largePhotoClass} mx-[8.5px]`]:
+      !isSmallScreen && !isLandscapeMode,
+      [`${largePhotoClass} ml-[18px]`]:
+      !isSmallScreen && isLandscapeMode
     } )}
     >
       <ActivityIndicator />
@@ -101,8 +107,9 @@ const PhotoCarousel = ( {
               selectedPhotoIndex === index
             },
             {
-              "mx-[3px] mt-0": ["sm", "md"].includes( screenBreakpoint ),
-              "mx-[8.5px] mt-0": ["lg", "xl", "2xl"].includes( screenBreakpoint )
+              "mx-[3px] mt-0": isSmallScreen,
+              "mx-[8.5px] mt-0": !isSmallScreen && !isLandscapeMode,
+              "my-[18px] mt-0": !isSmallScreen && isLandscapeMode
             }
           )}
         >
@@ -111,8 +118,8 @@ const PhotoCarousel = ( {
             className={classnames(
               "overflow-hidden",
               {
-                "rounded-sm w-[42px] h-[42px]": ["sm", "md"].includes( screenBreakpoint ),
-                "rounded-md w-[83px] h-[83px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
+                [`${smallPhotoClass}`]: isSmallScreen,
+                [`${largePhotoClass}`]: !isSmallScreen
               }
             )}
           >
@@ -152,7 +159,7 @@ const PhotoCarousel = ( {
     <FlatList
       data={data}
       renderItem={renderPhotoOrEvidenceButton}
-      horizontal
+      horizontal={!isLandscapeMode}
       ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
 
     />
@@ -166,7 +173,13 @@ const PhotoCarousel = ( {
       // eslint-disable-next-line react-native/no-inline-styles
       style={{ margin: 0 }}
     >
-      <View className="absolute top-0 pt-[50px]">
+      <View className={classnames(
+        "absolute top-0 pt-[50px]",
+        {
+          "ml-[18px]": !isSmallScreen && isLandscapeMode
+        }
+      )}
+      >
         {photoPreviewsList}
       </View>
     </Modal>

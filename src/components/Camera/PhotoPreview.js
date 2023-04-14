@@ -12,14 +12,16 @@ type Props = {
   photoUris: Array<string>,
   setPhotoUris: Function,
   savingPhoto: boolean,
-  screenBreakpoint: string
+  isLandscapeMode?: boolean,
+  isSmallScreen?: boolean
 }
 
 const PhotoPreview = ( {
   photoUris,
   setPhotoUris,
   savingPhoto,
-  screenBreakpoint
+  isLandscapeMode,
+  isSmallScreen
 }: Props ): Node => {
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
@@ -38,7 +40,14 @@ const PhotoPreview = ( {
   };
 
   const emptyDescription = ( ) => (
-    <Text className="text-white text-xl ml-3">
+    <Text
+      className={classnames(
+        "text-white text-xl ml-3",
+        {
+          "-rotate-90": !isSmallScreen && isLandscapeMode
+        }
+      )}
+    >
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
@@ -53,10 +62,12 @@ const PhotoPreview = ( {
         setPhotoUris={setPhotoUris}
       />
       <View className={classnames(
-        "bg-black pb-[18px] pt-[50px]",
+        "bg-black",
         {
-          "h-[110px]": ["sm", "md"].includes( screenBreakpoint ),
-          "h-[151px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
+          "h-[110px] pb-[18px] pt-[50px]": isSmallScreen,
+          "h-[151px] pb-[18px] pt-[50px]": !isSmallScreen && !isLandscapeMode,
+          "w-[120px] pt-[50px]": !isSmallScreen && isLandscapeMode
+
         }
       )}
       >
@@ -67,7 +78,8 @@ const PhotoPreview = ( {
           containerStyle="camera"
           setSelectedPhotoIndex={handleSelection}
           savingPhoto={savingPhoto}
-          screenBreakpoint={screenBreakpoint}
+          isSmallScreen={isSmallScreen}
+          isLandscapeMode={isLandscapeMode}
         />
       </View>
     </>
