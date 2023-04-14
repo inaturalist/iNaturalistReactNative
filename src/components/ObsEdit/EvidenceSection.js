@@ -1,10 +1,11 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import {
   Body3, Body4, Heading4, INatIcon,
   PhotoCarousel
 } from "components/SharedComponents";
-import { ActivityIndicator, View } from "components/styledComponents";
+import { ActivityIndicator, Pressable, View } from "components/styledComponents";
 import {
   differenceInCalendarYears,
   isFuture,
@@ -42,6 +43,11 @@ const EvidenceSection = ( {
     updateObservationKeys
   } = useContext( ObsEditContext );
   const mountedRef = useRef( true );
+  const navigation = useNavigation( );
+
+  const navToLocationPicker = ( ) => {
+    navigation.navigate( "LocationPicker", { goBackOnSave: true } );
+  };
 
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
@@ -211,12 +217,12 @@ const EvidenceSection = ( {
       />
       <View className="flex-row flex-nowrap my-4">
         <INatIcon size={14} name="map-marker-outline" />
-        <View className="ml-5">
+        <Pressable accessibilityRole="button" className="ml-5" onPress={navToLocationPicker}>
           <Body3>{currentObservation.place_guess}</Body3>
           {shouldFetchLocation && <ActivityIndicator className="mx-1" />}
           {shouldFetchLocation && <Body4 className="mx-1">{`(${numLocationFetches})`}</Body4>}
           <Body4>{displayLocation( ) || t( "No-Location" )}</Body4>
-        </View>
+        </Pressable>
       </View>
       <DatePicker currentObservation={currentObservation} />
     </View>

@@ -129,6 +129,8 @@ Display-Name = Display Name
 
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 
+EDIT-LOCATION = EDIT LOCATION
+
 # Appears above the email text field
 Email = email
 
@@ -238,6 +240,8 @@ Last-Active-colon = Last Active:
 Licensing = Licensing
 
 Location = Location
+
+Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 
 Log-in = Log in
 
@@ -510,6 +514,8 @@ RG = RG
 
 Save = Save
 
+SAVE-LOCATION = SAVE LOCATION
+
 Search-for-a-location = Search for a location
 
 Search-for-a-project = Search for a project
@@ -717,6 +723,8 @@ You-will-lose-all-existing-observations = {$count ->
 
 You-can-still-share-the-file =
     You can still share the file with another app. If you can email it, please send it to { $email }
+
+Zoom-in = Zoom in so that the observation’s accuracy is as low as possible.
 
 # Identification category
 Category-leading = Leading

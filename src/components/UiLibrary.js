@@ -26,6 +26,7 @@ import {
   ObservationLocation,
   PhotoCount,
   QualityGradeStatus,
+  SearchBar,
   StickyToolbar,
   Subheading1,
   Tabs,
@@ -495,7 +496,7 @@ const UiLibrary = (): Node => {
 
         <Heading2 className="my-2">ActivityItem</Heading2>
         <ActivityItem item={exampleId} currentUserId={userId} />
-
+        <SearchBar value="search" />
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
           Useless spacer at the end because height in NativeWind is confusing.

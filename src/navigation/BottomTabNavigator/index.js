@@ -9,6 +9,7 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import NetworkLogging from "components/NetworkLogging";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import AddID from "components/ObsEdit/AddID";
+import LocationPicker from "components/ObsEdit/LocationPicker";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
@@ -281,6 +282,14 @@ const BottomTabs = () => {
           component={AddID}
           options={{
             title: t( "Add-an-ID" )
+          }}
+        />
+        <Tab.Screen
+          name="LocationPicker"
+          component={LocationPicker}
+          options={{
+            ...hideHeaderLeft,
+            title: t( "EDIT-LOCATION" )
           }}
         />
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />
