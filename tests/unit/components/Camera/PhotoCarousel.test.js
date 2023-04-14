@@ -11,9 +11,9 @@ const mockPhotoUris = [
 ];
 
 describe( "PhotoCarousel", ( ) => {
-  test( "should render photo in 42px x 42px for sm breakpoint", () => {
+  test( "should render photo in 42px x 42px for sm-lg breakpoint", () => {
     render(
-      <PhotoCarousel photoUris={mockPhotoUris} screenBreakpoint="sm" />
+      <PhotoCarousel photoUris={mockPhotoUris} isSmallScreen />
     );
 
     expect( screen.getAllByTestId( "PhotoCarousel.photo" ) ).toBeTruthy();
@@ -22,9 +22,9 @@ describe( "PhotoCarousel", ( ) => {
     expect( photos[0] ).toHaveProperty( "props.style.0.2", { width: 42 } );
   } );
 
-  test( "should render photo in 83px x 83px for lg breakpoint", () => {
+  test( "should render photo in 83px x 83px for xl-2xl breakpoint", () => {
     render(
-      <PhotoCarousel photoUris={mockPhotoUris} screenBreakpoint="lg" />
+      <PhotoCarousel photoUris={mockPhotoUris} isSmallScreen={false} />
     );
 
     expect( screen.getAllByTestId( "PhotoCarousel.photo" ) ).toBeTruthy();

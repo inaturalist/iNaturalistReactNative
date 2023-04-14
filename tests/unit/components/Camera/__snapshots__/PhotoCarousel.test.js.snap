@@ -456,8 +456,8 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                 "marginTop": 24,
               },
               Object {
-                "marginLeft": 3,
-                "marginRight": 3,
+                "marginLeft": 8.5,
+                "marginRight": 8.5,
               },
               Object {
                 "marginTop": 0,
@@ -474,16 +474,16 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                   "overflow": "hidden",
                 },
                 Object {
-                  "borderBottomLeftRadius": 4,
-                  "borderBottomRightRadius": 4,
-                  "borderTopLeftRadius": 4,
-                  "borderTopRightRadius": 4,
+                  "borderBottomLeftRadius": 9,
+                  "borderBottomRightRadius": 9,
+                  "borderTopLeftRadius": 9,
+                  "borderTopRightRadius": 9,
                 },
                 Object {
-                  "width": 42,
+                  "width": 83,
                 },
                 Object {
-                  "height": 42,
+                  "height": 83,
                 },
               ],
             ]
@@ -576,8 +576,8 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                 "marginTop": 24,
               },
               Object {
-                "marginLeft": 3,
-                "marginRight": 3,
+                "marginLeft": 8.5,
+                "marginRight": 8.5,
               },
               Object {
                 "marginTop": 0,
@@ -594,16 +594,16 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                   "overflow": "hidden",
                 },
                 Object {
-                  "borderBottomLeftRadius": 4,
-                  "borderBottomRightRadius": 4,
-                  "borderTopLeftRadius": 4,
-                  "borderTopRightRadius": 4,
+                  "borderBottomLeftRadius": 9,
+                  "borderBottomRightRadius": 9,
+                  "borderTopLeftRadius": 9,
+                  "borderTopRightRadius": 9,
                 },
                 Object {
-                  "width": 42,
+                  "width": 83,
                 },
                 Object {
-                  "height": 42,
+                  "height": 83,
                 },
               ],
             ]
@@ -696,8 +696,8 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                 "marginTop": 24,
               },
               Object {
-                "marginLeft": 3,
-                "marginRight": 3,
+                "marginLeft": 8.5,
+                "marginRight": 8.5,
               },
               Object {
                 "marginTop": 0,
@@ -714,16 +714,16 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
                   "overflow": "hidden",
                 },
                 Object {
-                  "borderBottomLeftRadius": 4,
-                  "borderBottomRightRadius": 4,
-                  "borderTopLeftRadius": 4,
-                  "borderTopRightRadius": 4,
+                  "borderBottomLeftRadius": 9,
+                  "borderBottomRightRadius": 9,
+                  "borderTopLeftRadius": 9,
+                  "borderTopRightRadius": 9,
                 },
                 Object {
-                  "width": 42,
+                  "width": 83,
                 },
                 Object {
-                  "height": 42,
+                  "height": 83,
                 },
               ],
             ]
