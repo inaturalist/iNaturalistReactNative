@@ -51,6 +51,9 @@ npm test MyObs
 
 # Run individual tests matching a pattern. Note the `--` to pass arguments to jest
 npm test -- -t accessibility
+
+# Update snapshots for a specific path
+npm test Button.test.js -- --updateSnapshot
 ```
 
 Note that you can run `npx jest` as well, but that will omit some environment variables we need to set for the test environment, so for consistent test runs please use `npm test`.

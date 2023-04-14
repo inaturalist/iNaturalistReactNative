@@ -1,7 +1,12 @@
 // @flow
 
 import classNames from "classnames";
-import { Body2, Body4, INatIcon } from "components/SharedComponents";
+import {
+  Body2,
+  Body4,
+  INatIcon,
+  INatIconButton
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -109,20 +114,29 @@ const Toolbar = ( {
       )
     }
     >
-      <View className="flex-row justify-between items-center px-[7px]">
-        <View className="flex-row items-center">
-          {currentUser && (
-            <IconButton
-              icon="compass-rose-outline"
-              onPress={navToExplore}
-              accessibilityLabel={t( "Explore" )}
-              accessibilityHint={t( "Navigates-to-explore" )}
-              accessibilityRole="button"
-              size={30}
-              disabled={false}
-              accessibilityState={{ disabled: false }}
-            />
-          )}
+      <View className="flex-row items-center mx-4">
+        {currentUser && (
+          <IconButton
+            icon="compass-rose-outline"
+            onPress={navToExplore}
+            accessibilityLabel={t( "Explore" )}
+            accessibilityHint={t( "Navigates-to-explore" )}
+            accessibilityRole="button"
+            size={30}
+            disabled={false}
+            accessibilityState={{ disabled: false }}
+            // FWIW, IconButton has a little margin we can control and a
+            // little padding that we can't control, so the negative margin
+            // here is to ensure the visible icon is flush with the edge of
+            // the container
+            className="m-0 ml-[-8px]"
+          />
+        )}
+        <View
+          // Note that without shrink, the center element will grow and push
+          // the grid/list button off the screen
+          className="flex-row items-center shrink"
+        >
           <Animated.View
             style={animatedStyles}
           >
@@ -134,12 +148,13 @@ const Toolbar = ( {
               disabled={false}
               accessibilityState={{ disabled: false }}
               iconColor={getSyncIconColor( )}
+              className="m-0"
             />
           </Animated.View>
 
           {statusText && (
-            <View className="max-w-[200px] sm:max-w-[190px]">
-              <View className="flex-row items-center">
+            <View className="flex ml-1 shrink">
+              <View className="flex-row items-center shrink">
                 <Body2>{statusText}</Body2>
                 {( uploadComplete && !uploadError ) && (
                   <View className="ml-2">
@@ -155,12 +170,11 @@ const Toolbar = ( {
             </View>
           )}
           {( uploadInProgress && !uploadComplete ) && (
-            <IconButton
+            <INatIconButton
               icon="close"
               size={11}
-              iconColor={theme.colors.primary}
+              accessibilityLabel={t( "Stop-upload" )}
               onPress={stopUpload}
-              accessibilityRole="button"
             />
           )}
         </View>
@@ -176,6 +190,10 @@ const Toolbar = ( {
           }
           onPress={toggleLayout}
           accessibilityRole="button"
+          // Negative margin here is similar to above: trying to get the icon
+          // flush with the container. ml-auto is a bit of a hack to pull
+          // this button all the way to the end.
+          className="m-0 mr-[-8px] ml-auto"
         />
       </View>
       <ProgressBar

@@ -878,3 +878,6 @@ Failed-to-log-in = Failed to log in
 
 # Generic error message
 Something-went-wrong = Something went wrong.
+
+# Button or accessibility label for an interactive element that stops an upload
+Stop-upload = Stop upload
