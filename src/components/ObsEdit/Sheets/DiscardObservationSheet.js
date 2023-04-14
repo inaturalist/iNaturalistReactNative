@@ -12,11 +12,13 @@ import type { Node } from "react";
 import React, { useContext } from "react";
 
 type Props = {
-  handleClose: Function
+  handleClose: Function,
+  discardObservation: Function
 }
 
-const DiscardChangesSheet = ( {
-  handleClose
+const DiscardObservationSheet = ( {
+  handleClose,
+  discardObservation
 }: Props ): Node => {
   const {
     observations,
@@ -58,7 +60,7 @@ const DiscardChangesSheet = ( {
             />
           ) }
           <Button
-            onPress={handleClose}
+            onPress={discardObservation}
             text={multipleObservations
               ? t( "DISCARD-ALL" )
               : t( "DISCARD-OBSERVATION" )}
@@ -71,4 +73,4 @@ const DiscardChangesSheet = ( {
   );
 };
 
-export default DiscardChangesSheet;
+export default DiscardObservationSheet;

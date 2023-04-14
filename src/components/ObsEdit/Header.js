@@ -15,26 +15,26 @@ import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
-import DiscardChangesSheet from "./Sheets/DiscardChangesSheet";
+import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 
 const Header = ( ): Node => {
   const {
     observations,
-    unsavedChanges,
     setObservations
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const [deleteSheetVisible, setDeleteSheetVisible] = useState( false );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
-  const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
+  const [discardObservationSheetVisible, setDiscardObservationSheetVisible] = useState( false );
 
-  const multipleObservations = observations.length > 1;
-
-  const discardChanges = useCallback( ( ) => {
+  const discardObservation = useCallback( ( ) => {
+    setDiscardObservationSheetVisible( false );
     setObservations( [] );
-    navigation.goBack( );
+    navigation.navigate( "ObsList" );
   }, [navigation, setObservations] );
+
+  const handleClose = ( ) => setDiscardObservationSheetVisible( false );
 
   const renderHeaderTitle = useCallback( ( ) => (
     <Heading2
@@ -49,12 +49,8 @@ const Header = ( ): Node => {
   ), [observations, t] );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    if ( unsavedChanges || multipleObservations ) {
-      setDiscardChangesSheetVisible( true );
-    } else {
-      discardChanges( );
-    }
-  }, [unsavedChanges, discardChanges, multipleObservations] );
+    setDiscardObservationSheetVisible( true );
+  }, [] );
 
   const renderBackButton = useCallback( ( ) => (
     <View className="ml-4">
@@ -130,8 +126,11 @@ const Header = ( ): Node => {
           handleClose={( ) => setDeleteSheetVisible( false )}
         />
       )}
-      {discardChangesSheetVisible && (
-        <DiscardChangesSheet handleClose={( ) => discardChanges( )} />
+      {discardObservationSheetVisible && (
+        <DiscardObservationSheet
+          discardObservation={discardObservation}
+          handleClose={handleClose}
+        />
       )}
     </>
   );
