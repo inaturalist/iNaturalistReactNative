@@ -28,6 +28,8 @@ import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
 const { useRealm } = RealmContext;
 
+const DESIRED_LOCATION_ACCURACY = 4000000;
+
 const EvidenceSection = ( ): Node => {
   const { t } = useTranslation( );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
@@ -96,14 +98,23 @@ const EvidenceSection = ( ): Node => {
     } );
   };
 
+  const hasPhotoOrSound = useCallback( ( ) => {
+    if ( currentObservation?.observationPhotos?.length > 0
+      || currentObservation?.observationSounds?.length > 0 ) {
+      return true;
+    }
+    return false;
+  }, [currentObservation] );
+
   const hasValidLocation = useCallback( ( ) => {
     if ( hasLocation
       && ( latitude !== 0 && longitude !== 0 )
       && ( latitude >= -90 && latitude <= 90 )
       && ( longitude >= -180 && longitude <= 180 )
-      && (
-        currentObservation.positional_accuracy > 0
-        && currentObservation.positional_accuracy <= 4000 )
+      && ( currentObservation.positional_accuracy === null || (
+        currentObservation.positional_accuracy
+        && currentObservation.positional_accuracy <= DESIRED_LOCATION_ACCURACY )
+      )
     ) {
       return true;
     }
@@ -111,7 +122,9 @@ const EvidenceSection = ( ): Node => {
   }, [currentObservation, longitude, latitude, hasLocation] );
 
   const hasValidDate = useCallback( ( ) => {
-    const observationDate = parseISO( currentObservation?.observed_on_string );
+    const observationDate = parseISO(
+      currentObservation?.observed_on_string || currentObservation?.time_observed_at
+    );
     if ( observationDate
       && !isFuture( observationDate )
       && differenceInCalendarYears( observationDate, new Date( ) ) <= 130
@@ -125,11 +138,11 @@ const EvidenceSection = ( ): Node => {
     if ( shouldFetchLocation ) {
       return null;
     }
-    if ( hasValidLocation( ) && hasValidDate( ) ) {
+    if ( hasValidLocation( ) && hasValidDate( ) && hasPhotoOrSound( ) ) {
       return true;
     }
     return false;
-  }, [shouldFetchLocation, hasValidLocation, hasValidDate] );
+  }, [shouldFetchLocation, hasValidLocation, hasValidDate, hasPhotoOrSound] );
 
   const showModal = ( ) => setMediaViewerVisible( true );
   const hideModal = ( ) => setMediaViewerVisible( false );
@@ -161,10 +174,14 @@ const EvidenceSection = ( ): Node => {
   };
 
   useEffect( ( ) => {
-    if ( passesEvidenceTest( ) ) {
+    // we're only showing the Missing Evidence Sheet if location/date are missing
+    // but not if there is a missing photo or sound
+    // so the ObsEditContext version of passing evidence test
+    // will be different from what shows here with the red warning/green checkmark
+    if ( hasValidLocation( ) && hasValidDate( ) ) {
       setPassesEvidenceTest( true );
     }
-  }, [passesEvidenceTest, setPassesEvidenceTest] );
+  }, [hasValidLocation, hasValidDate, setPassesEvidenceTest] );
 
   return (
     <View className="mx-6 mt-6">

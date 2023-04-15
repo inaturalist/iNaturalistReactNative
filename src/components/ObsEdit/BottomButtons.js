@@ -13,6 +13,8 @@ import useTranslation from "sharedHooks/useTranslation";
 import ImpreciseLocationSheet from "./Sheets/ImpreciseLocationSheet";
 import MissingEvidenceSheet from "./Sheets/MissingEvidenceSheet";
 
+const DESIRED_LOCATION_ACCURACY = 4000000;
+
 const BottomButtons = ( ): Node => {
   const { t } = useTranslation( );
   const {
@@ -27,19 +29,19 @@ const BottomButtons = ( ): Node => {
   } = useContext( ObsEditContext );
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
   const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );
-  const [sheetShown, setSheetShown] = useState( false );
+  const [allowUserToUpload, setAllowUserToUpload] = useState( false );
 
   const showMissingEvidence = ( ) => {
-    if ( sheetShown ) { return false; }
-    if ( !currentObservation.positional_accuracy
-      || currentObservation.positional_accuracy > 10000 ) {
-      setShowImpreciseLocationSheet( true );
-      setSheetShown( true );
-      return true;
-    }
+    if ( allowUserToUpload ) { return false; }
+    // missing evidence sheet takes precedence over the location imprecise sheet
     if ( !passesEvidenceTest ) {
       setShowMissingEvidenceSheet( true );
-      setSheetShown( true );
+      setAllowUserToUpload( true );
+      return true;
+    }
+    if ( currentObservation.positional_accuracy
+      && currentObservation.positional_accuracy > DESIRED_LOCATION_ACCURACY ) {
+      setShowImpreciseLocationSheet( true );
       return true;
     }
     return false;

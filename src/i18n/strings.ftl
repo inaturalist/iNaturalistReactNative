@@ -290,6 +290,8 @@ Media = Media
 
 Missing-Date = Missing Date
 
+MISSING-EVIDENCE = MISSING EVIDENCE
+
 Mollusks = Mollusks
 
 # The following Month- strings are the months of the year (in month order, not alphabetical order)
@@ -756,7 +758,7 @@ You-will-lose-all-existing-observations = {$count ->
 You-can-still-share-the-file =
     You can still share the file with another app. If you can email it, please send it to { $email }
 
-Your-location-uncertainty-is-over-10km = Your location uncertainty is over 10km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
+Your-location-uncertainty-is-over-4000km = Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 
 # Identification category
 Category-leading = Leading

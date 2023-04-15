@@ -5,8 +5,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
-import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
-import ViewWrapper from "components/SharedComponents/ViewWrapper";
+import { BottomSheetStandardBackdrop, ViewWrapper } from "components/SharedComponents";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";

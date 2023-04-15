@@ -39,6 +39,11 @@ const NotesSheet = ( {
       handleClose={handleClose}
       headerText={t( "NOTES" )}
       snapPoints={[416]}
+      onChange={position => {
+        if ( position === -1 ) {
+          handleClose( );
+        }
+      }}
     >
       <View className="p-5">
         <TextInput

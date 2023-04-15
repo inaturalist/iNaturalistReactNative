@@ -1,9 +1,9 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { EvidenceButton, List2 } from "components/SharedComponents";
-import BottomSheet from "components/SharedComponents/BottomSheet";
-import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
+import {
+  BottomSheet, BottomSheetStandardBackdrop, EvidenceButton, List2
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useCallback } from "react";

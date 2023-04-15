@@ -15,26 +15,34 @@ import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
+import DiscardChangesSheet from "./Sheets/DiscardChangesSheet";
 import DiscardObservationSheet from "./Sheets/DiscardObservationSheet";
 
 const Header = ( ): Node => {
   const {
     observations,
-    setObservations
+    setObservations,
+    currentObservation,
+    unsavedChanges
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const [deleteSheetVisible, setDeleteSheetVisible] = useState( false );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [discardObservationSheetVisible, setDiscardObservationSheetVisible] = useState( false );
+  const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
+
+  const discardChanges = useCallback( ( ) => {
+    setDiscardChangesSheetVisible( false );
+    setObservations( [] );
+    navigation.navigate( "ObsList" );
+  }, [navigation, setObservations] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
     setObservations( [] );
     navigation.navigate( "ObsList" );
   }, [navigation, setObservations] );
-
-  const handleClose = ( ) => setDiscardObservationSheetVisible( false );
 
   const renderHeaderTitle = useCallback( ( ) => (
     <Heading2
@@ -49,8 +57,14 @@ const Header = ( ): Node => {
   ), [observations, t] );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    setDiscardObservationSheetVisible( true );
-  }, [] );
+    if ( !currentObservation._synced_at ) {
+      setDiscardObservationSheetVisible( true );
+    } else if ( unsavedChanges ) {
+      setDiscardChangesSheetVisible( true );
+    } else {
+      navigation.goBack( );
+    }
+  }, [currentObservation, navigation, unsavedChanges] );
 
   const renderBackButton = useCallback( ( ) => (
     <View className="ml-4">
@@ -89,7 +103,7 @@ const Header = ( ): Node => {
             setKebabMenuVisible( false );
           }}
           title={
-            observations.length > 0
+            observations.length > 1
               ? t( "Delete-observations" )
               : t( "Delete-observation" )
           }
@@ -129,7 +143,13 @@ const Header = ( ): Node => {
       {discardObservationSheetVisible && (
         <DiscardObservationSheet
           discardObservation={discardObservation}
-          handleClose={handleClose}
+          handleClose={( ) => setDiscardObservationSheetVisible( false )}
+        />
+      )}
+      {discardChangesSheetVisible && (
+        <DiscardChangesSheet
+          discardChanges={discardChanges}
+          handleClose={( ) => setDiscardChangesSheetVisible( false )}
         />
       )}
     </>
