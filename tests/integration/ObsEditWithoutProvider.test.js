@@ -56,7 +56,8 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
   <INatPaperProvider>
     <ObsEditContext.Provider value={{
       observations: obs,
-      currentObservation: obs[0]
+      currentObservation: obs[0],
+      writeExifToCameraRollPhotos: () => {}
     }}
     >
       {children}
