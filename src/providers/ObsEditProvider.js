@@ -8,14 +8,14 @@ import {
 import { searchObservations } from "api/observations";
 import type { Node } from "react";
 import React, {
-  useCallback, useMemo, useState
+  useCallback, useEffect, useMemo, useState
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import { formatDateStringFromTimestamp } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
+import { formatExifDateAsString, parseExif, writeExifToFile } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
@@ -181,6 +181,18 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       // Save these camera roll URIs, so later on observation editor can update
       // the EXIF metadata of these photos, once we retrieve a location.
       setCameraRollUris( savedUris );
+    };
+
+    const writeExifToCameraRollPhotos = async exif => {
+      if ( !cameraRollUris || cameraRollUris.length === 0 || !currentObservation ) {
+        return;
+      }
+
+      // Update all photos taken via the app with the new fetched location.
+      cameraRollUris.forEach( uri => {
+        logger.debug( "calling writeExifToFile for uri: ", uri );
+        writeExifToFile( uri, exif );
+      } );
     };
 
     const createObsWithCameraPhotos = async localFilePaths => {
@@ -399,7 +411,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       syncObservations,
       originalCameraUrisMap,
       setOriginalCameraUrisMap,
-      cameraRollUris
+      writeExifToCameraRollPhotos
     };
   }, [
     currentObservation,

@@ -10,9 +10,7 @@ import React, {
 } from "react";
 import { IconButton } from "react-native-paper";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
-import { writeExifToFile } from "sharedHelpers/parseExif";
 
-import { log } from "../../../react-native-logs.config";
 import DatePicker from "./DatePicker";
 
 type Props = {
@@ -20,8 +18,6 @@ type Props = {
   photoUris: Array<string>,
   handleAddEvidence?: Function
 }
-
-const logger = log.extend( "EvidenceSection" );
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
 const TARGET_POSITIONAL_ACCURACY = 10;
@@ -35,7 +31,7 @@ const EvidenceSection = ( {
   const {
     currentObservation,
     updateObservationKeys,
-    cameraRollUris
+    writeExifToCameraRollPhotos
   } = useContext( ObsEditContext );
   const mountedRef = useRef( true );
 
@@ -73,7 +69,7 @@ const EvidenceSection = ( {
   }, [] );
 
   useEffect( () => {
-    if ( !cameraRollUris || cameraRollUris.length === 0 || !currentObservation || !hasLocation ) {
+    if ( !currentObservation || !hasLocation ) {
       return;
     }
 
@@ -81,11 +77,15 @@ const EvidenceSection = ( {
     if ( !mountedRef.current ) return;
 
     // Update all photos taken via the app with the new fetched location.
-    cameraRollUris.forEach( uri => {
-      logger.debug( "calling writeExifToFile for uri: ", uri );
-      writeExifToFile( uri, { latitude, longitude, positional_accuracy: positionalAccuracy } );
-    } );
-  }, [cameraRollUris, currentObservation, hasLocation, latitude, longitude, positionalAccuracy] );
+    writeExifToCameraRollPhotos( { latitude, longitude, positional_accuracy: positionalAccuracy } );
+  }, [
+    writeExifToCameraRollPhotos,
+    currentObservation,
+    hasLocation,
+    latitude,
+    longitude,
+    positionalAccuracy
+  ] );
 
   useEffect( ( ) => {
     if ( !currentObservation ) return;
