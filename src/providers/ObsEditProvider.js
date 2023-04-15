@@ -8,7 +8,7 @@ import {
 import { searchObservations } from "api/observations";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect, useMemo, useState
+  useCallback, useMemo, useState
 } from "react";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
