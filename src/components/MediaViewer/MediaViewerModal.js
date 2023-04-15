@@ -3,8 +3,8 @@
 import { Modal, SafeAreaView, Text } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Button, IconButton } from "react-native-paper";
+import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 import HorizontalScroll from "./HorizontalScroll";
@@ -57,7 +57,7 @@ const MediaViewerModal = ( {
           hideDialog={hideDialog}
         />
         <IconButton
-          icon="arrow-left"
+          icon="chevron-left"
           onPress={hideModal}
           iconColor={colors.white}
         />

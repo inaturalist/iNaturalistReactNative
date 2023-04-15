@@ -1,18 +1,19 @@
 // @flow
 
-import { useNavigation, useRoute } from "@react-navigation/native";
-import CloseButton from "components/SharedComponents/Buttons/CloseButton";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { CloseButton } from "components/SharedComponents";
 import {
   Pressable, View
 } from "components/styledComponents";
-import { t } from "i18next";
 import _ from "lodash";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useContext, useEffect, useRef, useState
 } from "react";
 import {
+  BackHandler,
   Dimensions, StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -22,10 +23,13 @@ import {
 } from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
+import getBreakpoint from "sharedHelpers/breakpoint";
+import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 import { log } from "../../../react-native-logs.config";
 import CameraView from "./CameraView";
+import DiscardChangesSheet from "./DiscardChangesSheet";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
 
@@ -47,6 +51,7 @@ const StandardCamera = ( ): Node => {
   } = useContext( ObsEditContext );
   const theme = useTheme( );
   const navigation = useNavigation( );
+  const { t } = useTranslation( );
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
   // $FlowFixMe
@@ -63,10 +68,12 @@ const StandardCamera = ( ): Node => {
   const initialWidth = Dimensions.get( "screen" ).width;
   const [footerWidth, setFooterWidth] = useState( initialWidth );
   const [imageOrientation, setImageOrientation] = useState( "portrait" );
+  const [showDiscardSheet, setShowDiscardSheet] = useState( false );
 
   const isTablet = DeviceInfo.isTablet();
 
   const photosTaken = allObsPhotoUris.length > 0;
+  const breakpoint = getBreakpoint( initialWidth );
 
   // screen orientation locked to portrait on small devices
   if ( !isTablet ) {
@@ -82,9 +89,31 @@ const StandardCamera = ( ): Node => {
     } else if ( _.camelCase( orientation ) === "landscapeLeft" ) {
       setImageOrientation( "landscapeRight" );
     } else {
-      setImageOrientation( orientation );
+      setImageOrientation( "portrait" );
     }
   };
+
+  const handleBackButtonPress = useCallback( ( ) => {
+    if ( cameraPreviewUris.length === 0 ) { return; }
+
+    setShowDiscardSheet( true );
+  }, [setShowDiscardSheet, cameraPreviewUris] );
+
+  useFocusEffect(
+    // note: cannot use navigation.addListener to trigger bottom sheet in tab navigator
+    // since the screen is unfocused, not removed from navigation
+    useCallback( ( ) => {
+      // make sure an Android user cannot back out and accidentally discard photos
+      const onBackPress = ( ) => {
+        handleBackButtonPress( );
+        return true;
+      };
+
+      BackHandler.addEventListener( "hardwareBackPress", onBackPress );
+
+      return ( ) => BackHandler.removeEventListener( "hardwareBackPress", onBackPress );
+    }, [handleBackButtonPress] )
+  );
 
   useEffect( () => {
     Orientation.addDeviceOrientationListener( onDeviceRotation );
@@ -149,20 +178,20 @@ const StandardCamera = ( ): Node => {
     navigation.navigate( "ObsEdit" );
   };
 
-  const renderAddObsButtons = icon => {
+  const renderFlashButton = icon => {
     let testID = "";
     let accessibilityLabel = "";
     switch ( icon ) {
-      case "flash-on-circle":
-        testID = "flash-button-label-flash";
-        accessibilityLabel = t( "Flash-button-label-flash" );
-        break;
-      case "camera":
-        testID = "flash-button-label-flash-off";
-        accessibilityLabel = t( "Flash-button-label-flash-off" );
-        break;
-      default:
-        break;
+    case "flash-on":
+      testID = "flash-button-label-flash";
+      accessibilityLabel = t( "Flash-button-label-flash" );
+      break;
+    case "flash-off":
+      testID = "flash-button-label-flash-off";
+      accessibilityLabel = t( "Flash-button-label-flash-off" );
+      break;
+    default:
+      break;
     }
     return (
       <Avatar.Icon
@@ -175,24 +204,29 @@ const StandardCamera = ( ): Node => {
     );
   };
 
+  const checkmarkClass = "w-[40px] h-[40px] my-auto";
+
   return (
-    <View className="flex-1 bg-black">
-      <StatusBar barStyle="light-content" />
-      {device && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
-      <PhotoPreview
-        photoUris={cameraPreviewUris}
-        setPhotoUris={setCameraPreviewUris}
-        savingPhoto={savingPhoto}
-        deviceOrientation={imageOrientation}
-      />
-      <FadeInOutView savingPhoto={savingPhoto} />
-      <View className="absolute bottom-0 w-full">
+    <>
+      <View className="flex-1 bg-black">
+        <StatusBar barStyle="light-content" />
+        <PhotoPreview
+          photoUris={cameraPreviewUris}
+          setPhotoUris={setCameraPreviewUris}
+          savingPhoto={savingPhoto}
+          screenBreakpoint={breakpoint}
+        />
+        <View className="relative flex-1">
+          {device
+            && <CameraView device={device} camera={camera} orientation={imageOrientation} />}
+          <FadeInOutView savingPhoto={savingPhoto} />
+        </View>
         <View className={`flex-row justify-between w-${footerWidth} mb-4 px-4`}>
           {hasFlash ? (
             <Pressable onPress={toggleFlash} accessibilityRole="button">
               {takePhotoOptions.flash === "on"
-                ? renderAddObsButtons( "flash-on-circle" )
-                : renderAddObsButtons( "camera" )}
+                ? renderFlashButton( "flash-on" )
+                : renderFlashButton( "flash-off" )}
             </Pressable>
           ) : (
             <View />
@@ -205,22 +239,21 @@ const StandardCamera = ( ): Node => {
             <Avatar.Icon
               testID="camera-button-label-switch-camera"
               size={40}
-              icon="camera"
-              style={{ backgroundColor: colors.gray }}
+              icon="flip"
+              style={{ backgroundColor: colors.darkGray }}
             />
           </Pressable>
         </View>
-        <View className="bg-black h-32 flex-row justify-between items-center">
-          <View className="w-1/3">
-            <CloseButton />
-          </View>
+        <View className="h-[89px] flex-row justify-between items-center mx-7">
+          <CloseButton handleClose={cameraPreviewUris.length > 0 && handleBackButtonPress} />
           <IconButton
             icon="camera"
             onPress={takePhoto}
             disabled={disallowAddingPhotos}
-            containerColor={theme.colors.surface}
+            containerColor={colors.white}
+            size={50}
           />
-          <View className="w-1/3">
+          <View className={checkmarkClass}>
             {photosTaken && (
               <IconButton
                 icon="checkmark"
@@ -229,15 +262,21 @@ const StandardCamera = ( ): Node => {
                 onPress={navToObsEdit}
                 accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
                 disabled={false}
+                className={checkmarkClass}
               />
             )}
           </View>
         </View>
+        <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
+          {t( "You-can-only-upload-20-media" )}
+        </Snackbar>
       </View>
-      <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
-        {t( "You-can-only-upload-20-media" )}
-      </Snackbar>
-    </View>
+      {showDiscardSheet && (
+        <DiscardChangesSheet
+          setShowDiscardSheet={setShowDiscardSheet}
+        />
+      )}
+    </>
   );
 };
 

@@ -1,7 +1,6 @@
 // @flow
 
-import "i18n";
-
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   QueryClient,
@@ -10,6 +9,7 @@ import {
 import handleError from "api/error";
 import App from "components/App";
 import { getJWT } from "components/LoginSignUp/AuthenticationService";
+import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
@@ -51,6 +51,8 @@ setNativeExceptionHandler( exceptionString => {
 
 startNetworkLogging();
 
+initI18next();
+
 // Configure inatjs to use the chosen URLs
 inatjs.setConfig( {
   apiURL: Config.API_URL,
@@ -86,14 +88,16 @@ const AppWithProviders = ( ) => (
     <RealmProvider>
       <SafeAreaProvider>
         <INatPaperProvider>
-          <GestureHandlerRootView className="flex-1">
-            {/* NavigationContainer needs to be nested above ObsEditProvider */}
-            <NavigationContainer>
-              <ObsEditProvider>
-                <App />
-              </ObsEditProvider>
-            </NavigationContainer>
-          </GestureHandlerRootView>
+          <BottomSheetModalProvider>
+            <GestureHandlerRootView className="flex-1">
+              {/* NavigationContainer needs to be nested above ObsEditProvider */}
+              <NavigationContainer>
+                <ObsEditProvider>
+                  <App />
+                </ObsEditProvider>
+              </NavigationContainer>
+            </GestureHandlerRootView>
+          </BottomSheetModalProvider>
         </INatPaperProvider>
       </SafeAreaProvider>
     </RealmProvider>

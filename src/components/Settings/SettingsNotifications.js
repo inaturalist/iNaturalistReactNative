@@ -28,6 +28,7 @@ const EMAIL_NOTIFICATIONS = {
 
 const EmailNotification = ( { title, value, onValueChange } ): Node => (
   <Pressable
+    accessibilityRole="button"
     style={[viewStyles.row, viewStyles.notificationCheckbox]}
     onPress={() => onValueChange( !value )}
   >
@@ -85,17 +86,19 @@ const SettingsNotifications = ( { settings, onSettingsModified }: SettingsProps 
 
     {!settings.prefers_no_email
       && (
-      <>
-        {Object.keys( EMAIL_NOTIFICATIONS ).map( k => (
-          <EmailNotification
-            key={k}
-            title={k}
-            value={settings[EMAIL_NOTIFICATIONS[k]]}
-            // $FlowIgnore
-            onValueChange={v => onSettingsModified( { ...settings, [EMAIL_NOTIFICATIONS[k]]: v } )}
-          />
-        ) )}
-      </>
+        <>
+          {Object.keys( EMAIL_NOTIFICATIONS ).map( k => (
+            <EmailNotification
+              key={k}
+              title={k}
+              value={settings[EMAIL_NOTIFICATIONS[k]]}
+              onValueChange={
+                // $FlowIgnore
+                v => onSettingsModified( { ...settings, [EMAIL_NOTIFICATIONS[k]]: v } )
+              }
+            />
+          ) )}
+        </>
       )}
   </>
 );

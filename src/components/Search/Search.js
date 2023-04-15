@@ -4,37 +4,43 @@ import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import PlaceholderText from "components/PlaceholderText";
 import InputField from "components/SharedComponents/InputField";
-import ViewWithFooter from "components/SharedComponents/ViewWithFooter";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import * as React from "react";
 import {
   ActivityIndicator,
-  FlatList, Image, Pressable, Text, View
+  FlatList,
+  Image,
+  Pressable,
+  Text,
+  View
 } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import { imageStyles, viewStyles } from "styles/search/search";
 
-const Search = ( ): React.Node => {
-  const navigation = useNavigation( );
+const Search = (): React.Node => {
+  const navigation = useNavigation();
   const [q, setQ] = React.useState( "" );
   const [queryType, setQueryType] = React.useState( "taxa" );
 
-  const {
-    data, isLoading
-  } = useAuthenticatedQuery(
+  const { data, isLoading } = useAuthenticatedQuery(
     ["fetchSearchResults", q],
-    optsWithAuth => fetchSearchResults( {
-      q,
-      sources: queryType
-    }, optsWithAuth )
+    optsWithAuth => fetchSearchResults(
+      {
+        q,
+        sources: queryType
+      },
+      optsWithAuth
+    )
   );
 
   const renderItem = ( { item } ) => {
     // TODO: make sure TaxonDetails navigates back to Search
     // instead of defaulting back to ObsList (first item in stack)
-    const navToTaxonDetails = ( ) => navigation.navigate( "TaxonDetails", { id: item.id } );
-    const navToUserProfile = ( ) => navigation.navigate( "UserProfile", { userId: item.id } );
+    const navToTaxonDetails = () => navigation.navigate( "TaxonDetails", { id: item.id } );
+    const navToUserProfile = () => navigation.navigate( "UserProfile", { userId: item.id } );
     if ( queryType === "taxa" ) {
-      const imageUrl = ( item && item.default_photo ) && { uri: item.default_photo.square_url };
+      const imageUrl = item
+        && item.default_photo && { uri: item.default_photo.square_url };
       return (
         <Pressable
           onPress={navToTaxonDetails}
@@ -67,11 +73,11 @@ const Search = ( ): React.Node => {
     );
   };
 
-  const setTaxaSearch = ( ) => setQueryType( "taxa" );
-  const setUserSearch = ( ) => setQueryType( "users" );
+  const setTaxaSearch = () => setQueryType( "taxa" );
+  const setUserSearch = () => setQueryType( "users" );
 
   return (
-    <ViewWithFooter testID="Search">
+    <ViewWrapper testID="Search">
       <View style={viewStyles.toggleRow}>
         <Pressable
           onPress={setTaxaSearch}
@@ -90,20 +96,22 @@ const Search = ( ): React.Node => {
       </View>
       <InputField
         handleTextChange={setQ}
-        placeholder={queryType === "taxa" ? "search for taxa" : "search for users"}
+        placeholder={
+          queryType === "taxa" ? "search for taxa" : "search for users"
+        }
         text={q}
         type="none"
       />
-      {isLoading
-        ? <ActivityIndicator />
-        : (
-          <FlatList
-            data={data}
-            renderItem={renderItem}
-            testID="Search.listView"
-          />
-        )}
-    </ViewWithFooter>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          testID="Search.listView"
+        />
+      )}
+    </ViewWrapper>
   );
 };
 

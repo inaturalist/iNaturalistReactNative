@@ -25,7 +25,7 @@ const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
     height: 50
   },
   markReviewed: {
-    backgroundColor: colors.gray,
+    backgroundColor: colors.darkGray,
     opacity: 0.5
   },
   totalObsPhotos: {

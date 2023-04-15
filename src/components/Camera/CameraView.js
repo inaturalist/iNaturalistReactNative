@@ -49,6 +49,10 @@ const CameraView = ( { camera, device, orientation }: Props ): Node => {
   } ) );
 
   const singleTapToFocus = async ( { x, y } ) => {
+    // If the device doesn't support focus, we don't want to do anything and show no animation
+    if ( !device.supportsFocus ) {
+      return;
+    }
     try {
       singleTapToFocusAnimation.setValue( 1 );
       setTappedCoordinates( { x, y } );

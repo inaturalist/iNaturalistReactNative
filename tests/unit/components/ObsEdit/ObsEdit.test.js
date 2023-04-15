@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
+import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
@@ -9,11 +10,6 @@ import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
 const mockLocationName = "San Francisco, CA";
-
-jest.mock( "sharedHooks/useLocationName", ( ) => ( {
-  __esModule: true,
-  default: ( ) => mockLocationName
-} ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -62,7 +58,11 @@ const renderObsEdit = ( ) => renderComponent(
 );
 
 describe( "ObsEdit", () => {
-  test( "should not have accessibility errors", async () => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+
+  it( "should not have accessibility errors", async () => {
     const observations = [
       factory( "RemoteObservation", {
         latitude: 37.99,

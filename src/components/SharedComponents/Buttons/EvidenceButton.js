@@ -6,14 +6,16 @@ type Props = {
   icon: any,
   disabled?: boolean,
   handlePress: any,
-  accessibilityLabel: string
+  accessibilityLabel: string,
+  accessibilityHint?: string
 }
 
 const EvidenceButton = ( {
   icon,
   disabled,
   handlePress,
-  accessibilityLabel
+  accessibilityLabel,
+  accessibilityHint
 }: Props ): React.Node => {
   const theme = useTheme( );
   return (
@@ -24,7 +26,9 @@ const EvidenceButton = ( {
       iconColor={theme.colors.onSecondary}
       size={35}
       icon={icon}
+      accessibilityRole="link"
       accessibilityLabel={accessibilityLabel}
+      accessibilityHint={accessibilityHint}
     />
   );
 };

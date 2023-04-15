@@ -1,7 +1,7 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import createIdentification from "api/identifications";
-import Button from "components/SharedComponents/Buttons/Button";
+import { Button } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
 import { formatISO } from "date-fns";
 import { t } from "i18next";
@@ -104,7 +104,7 @@ const ActivityTab = ( {
   };
 
   const navToAddID = ( ) => {
-    navigation.push( "AddID", { onIDAdded, goBackOnSave: true } );
+    navigation.navigate( "AddID", { onIDAdded, goBackOnSave: true } );
   };
 
   const activityItems = ids.concat( [...comments] )
@@ -119,6 +119,8 @@ const ActivityTab = ( {
       navToTaxonDetails={navToTaxonDetails}
       toggleRefetch={toggleRefetch}
       refetchRemoteObservation={refetchRemoteObservation}
+      onAgree={() => {}}
+      currentUserId={userId}
     />
   ) );
 
@@ -131,6 +133,8 @@ const ActivityTab = ( {
           onPress={navToAddID}
           className="mx-3"
           testID="ObsDetail.cvSuggestionsButton"
+          accessibilityRole="link"
+          accessibilityHint={t( "Navigates-to-suggest-identification" )}
         />
         <Button
           text={t( "Add-Comment" )}
@@ -138,6 +142,7 @@ const ActivityTab = ( {
           className="mx-3"
           testID="ObsDetail.commentButton"
           disabled={showCommentBox}
+          accessibilityHint={t( "Opens-add-comment-modal" )}
         />
       </View>
     </View>

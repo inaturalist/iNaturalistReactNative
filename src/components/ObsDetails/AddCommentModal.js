@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  BottomSheetModal, BottomSheetModalProvider
+  BottomSheetModal
 } from "@gorhom/bottom-sheet";
 import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
 import { BottomSheetTextInput, Pressable, View } from "components/styledComponents";
@@ -10,13 +10,13 @@ import React, {
   useCallback,
   useEffect, useRef, useState
 } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Keyboard
 } from "react-native";
+import { useTheme } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import useTranslation from "sharedHooks/useTranslation";
 import { viewStyles } from "styles/obsDetails/obsDetails";
-import colors from "styles/tailwindColors";
 
 type Props = {
   onCommentAdded: Function,
@@ -35,6 +35,7 @@ const AddCommentModal = ( {
   const [comment, setComment] = useState( "" );
   const bottomSheetModalRef = useRef( null );
   const [snapPoint, setSnapPoint] = useState( 100 );
+  const theme = useTheme();
 
   // Clear the comment in a timeout so it doesn't trigger a re-render of the
   // text input *after* the bottom sheet modal gets dismissed, b/c that seems
@@ -83,8 +84,8 @@ const AddCommentModal = ( {
       keyboardType="default"
       className="mb-16 h-16 mt-4"
       defaultValue={comment}
-      selectionColor={colors.black}
-      activeUnderlineColor={colors.transparent}
+      selectionColor={theme.colors.tertiary}
+      activeUnderlineColor={theme.colors.background}
       placeholder={t( "Add-a-comment" )}
       autoFocus
       multiline
@@ -93,39 +94,38 @@ const AddCommentModal = ( {
   );
 
   return (
-    <BottomSheetModalProvider>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={0}
-        enableOverDrag={false}
-        enablePanDownToClose
-        snapPoints={[snapPoint]}
-        backdropComponent={renderBackdrop}
-        handleComponent={renderHandle}
-        // TODO: figure out how to style shadows/elevation using Tailwind
-        style={viewStyles.bottomModal}
-        onChange={handleSheetChanges}
+    <BottomSheetModal
+      ref={bottomSheetModalRef}
+      index={0}
+      enableOverDrag={false}
+      enablePanDownToClose
+      snapPoints={[snapPoint]}
+      backdropComponent={renderBackdrop}
+      handleComponent={renderHandle}
+      // TODO: figure out how to style shadows/elevation using Tailwind
+      style={viewStyles.bottomModal}
+      onChange={handleSheetChanges}
+    >
+      <View
+        className="p-3"
+        onLayout={( {
+          nativeEvent: {
+            layout: { height }
+          }
+        } ) => {
+          setSnapPoint( height + 20 );
+        }}
       >
-        <View
-          className="p-3"
-          onLayout={( {
-            nativeEvent: {
-              layout: { height }
-            }
-          } ) => {
-            setSnapPoint( height + 20 );
-          }}
+        {renderTextInput()}
+        <Pressable
+          accessibilityRole="button"
+          className="absolute right-4 bottom-4"
+          onPress={( ) => submitComment( )}
         >
-          {renderTextInput()}
-          <Pressable
-            className="absolute right-4 bottom-4"
-            onPress={( ) => submitComment( )}
-          >
-            <IconMaterial name="send" size={35} color={colors.inatGreen} />
-          </Pressable>
-        </View>
-      </BottomSheetModal>
-    </BottomSheetModalProvider>
+          <IconMaterial name="send" size={35} color={theme.colors.secondary} />
+        </Pressable>
+      </View>
+    </BottomSheetModal>
   );
 };
 

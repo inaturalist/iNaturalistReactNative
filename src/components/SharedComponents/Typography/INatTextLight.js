@@ -6,17 +6,11 @@ import React from "react";
 
 type Props = {
   children: any,
-  testID?: string,
-  style?: any
-}
+};
 
-const INatTextLight = ( { children, testID, style }: Props ): Node => (
-  <LightText
-    style={style}
-    testID={testID}
-  >
-    {children}
-  </LightText>
+/* eslint-disable react/jsx-props-no-spreading */
+const INatTextLight = ( { children, ...props }: Props ): Node => (
+  <LightText {...props}>{children}</LightText>
 );
 
 export default INatTextLight;

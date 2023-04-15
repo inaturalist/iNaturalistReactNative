@@ -27,11 +27,11 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       />
       <DrawerItem
         label="identify"
-        onPress={( ) => navigation.navigate( "identify" )}
+        onPress={( ) => navigation.navigate( "Identify" )}
       />
       <DrawerItem
         label="projects"
-        onPress={( ) => navigation.navigate( "projects" )}
+        onPress={( ) => navigation.navigate( "Projects" )}
       />
       <DrawerItem
         label="about"
@@ -51,7 +51,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       />
       <DrawerItem
         label={currentUser ? "logout" : "login"}
-        onPress={( ) => navigation.navigate( "login" )}
+        onPress={( ) => navigation.navigate( "Login" )}
       />
     </DrawerContentScrollView>
   );

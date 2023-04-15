@@ -1,7 +1,6 @@
 // @flow
-
+import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
@@ -13,18 +12,16 @@ type Props = {
   photoUris: Array<string>,
   setPhotoUris: Function,
   savingPhoto: boolean,
-  deviceOrientation: string
+  screenBreakpoint: string
 }
 
 const PhotoPreview = ( {
   photoUris,
   setPhotoUris,
   savingPhoto,
-  deviceOrientation
+  screenBreakpoint
 }: Props ): Node => {
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
-  const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
-  const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
@@ -36,36 +33,18 @@ const PhotoPreview = ( {
     showModal( );
   };
 
-  const showDialog = ( ) => setDeleteDialogVisible( true );
-
-  const hideDialog = ( ) => {
-    setPhotoUriToDelete( null );
-    setDeleteDialogVisible( false );
-  };
-
-  const handleDelete = photoUri => {
-    setPhotoUriToDelete( photoUri );
-    showDialog( );
+  const deletePhoto = photoUri => {
+    deletePhotoFromObservation( photoUri, photoUris, setPhotoUris );
   };
 
   const emptyDescription = ( ) => (
-    <Text className="text-white text-xl mt-20 ml-3">
+    <Text className="text-white text-xl ml-3">
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
 
-  const deletePhoto = ( ) => {
-    deletePhotoFromObservation( photoUriToDelete, photoUris, setPhotoUris );
-    hideDialog( );
-  };
-
   return (
     <>
-      <DeletePhotoDialog
-        deleteDialogVisible={deleteDialogVisible}
-        deletePhoto={deletePhoto}
-        hideDialog={hideDialog}
-      />
       <MediaViewerModal
         mediaViewerVisible={mediaViewerVisible}
         hideModal={hideModal}
@@ -73,15 +52,22 @@ const PhotoPreview = ( {
         photoUris={photoUris}
         setPhotoUris={setPhotoUris}
       />
-      <View className="bg-black h-32">
+      <View className={classnames(
+        "bg-black pb-[18px] pt-[50px]",
+        {
+          "h-[110px]": ["sm", "md"].includes( screenBreakpoint ),
+          "h-[151px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
+        }
+      )}
+      >
         <PhotoCarousel
+          deletePhoto={deletePhoto}
           photoUris={photoUris}
           emptyComponent={emptyDescription}
           containerStyle="camera"
-          handleDelete={handleDelete}
           setSelectedPhotoIndex={handleSelection}
           savingPhoto={savingPhoto}
-          deviceOrientation={deviceOrientation}
+          screenBreakpoint={screenBreakpoint}
         />
       </View>
     </>

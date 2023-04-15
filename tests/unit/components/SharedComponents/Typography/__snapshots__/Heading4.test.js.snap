@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Heading4 renders correctly 1`] = `
+<Text
+  style={
+    Array [
+      Object {
+        "fontFamily": "Whitney-Medium",
+      },
+      Array [
+        Object {
+          "fontSize": 16,
+          "lineHeight": 18,
+        },
+        Object {
+          "lineHeight": 19,
+        },
+        Object {
+          "fontWeight": "600",
+        },
+        Object {
+          "letterSpacing": 2,
+        },
+        Object {
+          "color": "#454545",
+        },
+      ],
+    ]
+  }
+>
+  Heading4
+</Text>
+`;

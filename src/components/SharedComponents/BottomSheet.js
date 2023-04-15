@@ -1,6 +1,6 @@
 // @flow
 
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef
@@ -9,23 +9,37 @@ import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
 type Props = {
   children: any,
-  hide?: boolean
+  hide?: boolean,
+  snapPoints?: ( string|number )[],
+  backdropComponent?: Function,
+  onChange?: Function,
+  handleClose?: Function
 }
 
-const SNAP_POINTS = ["45%"];
+const DEFAULT_SNAP_POINTS = ["45%"];
 
-const StandardBottomSheet = ( { children, hide }: Props ): Node => {
+const StandardBottomSheet = ( {
+  children,
+  hide,
+  snapPoints = DEFAULT_SNAP_POINTS,
+  backdropComponent = null,
+  onChange = null,
+  handleClose
+}: Props ): Node => {
   const sheetRef = useRef( null );
 
   // eslint-disable-next-line
   const noHandle = ( ) => <></>;
 
-  const handleClosePress = useCallback( () => {
-    sheetRef.current?.close();
-  }, [] );
+  const handleClosePress = useCallback( ( ) => {
+    if ( handleClose ) {
+      handleClose( );
+    }
+    sheetRef.current?.close( );
+  }, [handleClose] );
 
   const handleSnapPress = useCallback( ( ) => {
-    sheetRef.current?.snapToIndex( 0 );
+    sheetRef.current?.present( );
   }, [] );
 
   useEffect( ( ) => {
@@ -37,16 +51,19 @@ const StandardBottomSheet = ( { children, hide }: Props ): Node => {
   }, [hide, handleClosePress, handleSnapPress] );
 
   return (
-    <BottomSheet
+    <BottomSheetModal
       ref={sheetRef}
-      snapPoints={SNAP_POINTS}
+      index={0}
+      snapPoints={snapPoints}
       style={viewStyles.shadow}
       handleComponent={noHandle}
+      backdropComponent={backdropComponent}
+      onChange={onChange}
     >
-      <BottomSheetView style={viewStyles.bottomSheet}>
+      <BottomSheetView>
         {children}
       </BottomSheetView>
-    </BottomSheet>
+    </BottomSheetModal>
   );
 };
 

@@ -1,11 +1,11 @@
 // @flow
 
-import { Text, View } from "components/styledComponents";
+import { Body3, Heading4, INatIcon } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { IconButton } from "react-native-paper";
 import RNPickerSelect from "react-native-picker-select";
 
 import Notes from "./Notes";
@@ -35,11 +35,11 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
 
   // opposite of Seek (asking if wild, not if captive)
   const captiveOptions = [{
-    label: t( "No" ),
+    label: t( "Organism-is-captive" ),
     value: true
   },
   {
-    label: t( "Yes" ),
+    label: t( "Organism-is-wild" ),
     value: false
   }];
 
@@ -53,23 +53,24 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
     .find( e => e.value === currentObservation.captive_flag );
 
   return (
-    <>
+    <View className="ml-5 mt-6">
+      <Heading4>{t( "OTHER-DATA" )}</Heading4>
       <RNPickerSelect
         onValueChange={updateGeoprivacyStatus}
         items={geoprivacyOptions}
         useNativeAndroidPickerStyle={false}
         value={currentObservation.geoprivacy}
       >
-        <View className="flex-row ml-3 flex-nowrap items-center">
-          <IconButton
-            icon="pencil"
+        <View className="flex-row flex-nowrap items-center ml-1 mt-5">
+          <INatIcon
+            name="globe-outline"
             size={14}
           />
-          <Text>
+          <Body3 className="ml-5">
             {t( "Geoprivacy" )}
             {" "}
             {currentGeoprivacyStatus?.label}
-          </Text>
+          </Body3>
         </View>
       </RNPickerSelect>
       <RNPickerSelect
@@ -78,16 +79,14 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
         useNativeAndroidPickerStyle={false}
         value={currentObservation.captive_flag}
       >
-        <View className="flex-row ml-3 flex-nowrap items-center">
-          <IconButton
-            icon="pencil"
+        <View className="flex-row flex-nowrap items-center ml-1 mt-5">
+          <INatIcon
+            name="pot-outline"
             size={14}
           />
-          <Text>
-            {t( "Organism-is-wild" )}
-            {" "}
+          <Body3 className="ml-5">
             {currentCaptiveStatus?.label}
-          </Text>
+          </Body3>
         </View>
       </RNPickerSelect>
       <Notes
@@ -95,7 +94,7 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
         description={currentObservation.description}
         scrollToInput={scrollToInput}
       />
-    </>
+    </View>
   );
 };
 

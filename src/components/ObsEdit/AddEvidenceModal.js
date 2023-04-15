@@ -2,19 +2,18 @@
 
 import {
   BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetModalProvider
+  BottomSheetModal
 } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
-import EvidenceButton from "components/SharedComponents/Buttons/EvidenceButton";
+import { EvidenceButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect,
   useRef, useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   showAddEvidenceModal: boolean,
@@ -77,62 +76,63 @@ const AddEvidenceModal = ( {
   };
 
   return (
-    <BottomSheetModalProvider>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={0}
-        enableOverDrag={false}
-        enablePanDownToClose={false}
-        snapPoints={[snapPoint]}
-        backdropComponent={renderBackdrop}
-        onChange={handleSheetChanges}
+    <BottomSheetModal
+      ref={bottomSheetModalRef}
+      index={0}
+      enableOverDrag={false}
+      enablePanDownToClose={false}
+      snapPoints={[snapPoint]}
+      backdropComponent={renderBackdrop}
+      onChange={handleSheetChanges}
+    >
+      <View
+        className="items-center p-10"
+        onLayout={( {
+          nativeEvent: {
+            layout: { height }
+          }
+        } ) => {
+          setSnapPoint( height + 50 );
+        }}
       >
-        <View
-          className="items-center p-10"
-          onLayout={( {
-            nativeEvent: {
-              layout: { height }
-            }
-          } ) => {
-            setSnapPoint( height + 50 );
-          }}
-        >
-          <Text className="text-2xl ml-4 mb-4">{t( "Add-evidence" )}</Text>
-          {disableAddingMoreEvidence
-          && (
+        <Text className="text-2xl ml-4 mb-4">{t( "Add-evidence" )}</Text>
+        {disableAddingMoreEvidence
+        && (
           <Text className="m-3">
             {t( "You-can-only-upload-20-media" )}
           </Text>
-          )}
-          <View className="flex-row w-full justify-around">
-            <EvidenceButton
-              icon="camera"
-              handlePress={onTakePhoto}
-              disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Navigate-to-camera" )}
-            />
-            <EvidenceButton
-              icon="pencil"
-              handlePress={onImportPhoto}
-              disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Navigate-to-bulk-importer" )}
-            />
-            <EvidenceButton
-              icon="microphone"
-              handlePress={onRecordSound}
-              disabled={disableAddingMoreEvidence}
-              accessibilityLabel={t( "Navigate-to-sound-recorder" )}
-            />
-          </View>
-          <Text
-            className="underline mt-5"
-            onPress={( ) => setShowAddEvidenceModal( false )}
-          >
-            {t( "Cancel" )}
-          </Text>
+        )}
+        <View className="flex-row w-full justify-around">
+          <EvidenceButton
+            icon="camera"
+            handlePress={onTakePhoto}
+            disabled={disableAddingMoreEvidence}
+            accessibilityLabel={t( "Camera" )}
+            accessibilityHint={t( "Navigates-to-camera" )}
+          />
+          <EvidenceButton
+            icon="pencil"
+            handlePress={onImportPhoto}
+            disabled={disableAddingMoreEvidence}
+            accessibilityLabel={t( "Bulk-importer" )}
+            accessibilityHint={t( "Navigates-to-bulk-importer" )}
+          />
+          <EvidenceButton
+            icon="microphone"
+            handlePress={onRecordSound}
+            disabled={disableAddingMoreEvidence}
+            accessibilityLabel={t( "Sound-recorder" )}
+            accessibilityHint={t( "Navigates-to-sound-recorder" )}
+          />
         </View>
-      </BottomSheetModal>
-    </BottomSheetModalProvider>
+        <Text
+          className="underline mt-5"
+          onPress={( ) => setShowAddEvidenceModal( false )}
+        >
+          {t( "Cancel" )}
+        </Text>
+      </View>
+    </BottomSheetModal>
   );
 };
 
