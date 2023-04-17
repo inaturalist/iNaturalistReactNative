@@ -938,3 +938,5 @@ Lat-Lon-Acc = Lat: { $latitude }, Lon: { $longitude }, Acc: { $accuracy }
 
 # Missing evidence sheet
 Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
+# Button or accessibility label for an interactive element that stops an upload
+Stop-upload = Stop upload

@@ -681,5 +681,9 @@
   "Every-observation-needs": {
     "comment": "Missing evidence sheet",
     "val": "Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy."
+  },
+  "Stop-upload": {
+    "comment": "Button or accessibility label for an interactive element that stops an upload",
+    "val": "Stop upload"
   }
 }

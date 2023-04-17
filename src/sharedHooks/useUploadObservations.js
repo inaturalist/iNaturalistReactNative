@@ -83,6 +83,30 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     realm
   ] );
 
+  // // Fake upload in progress
+  // return {
+  //   uploadInProgress: true,
+  //   error: null,
+  //   progress: 0.5,
+  //   stopUpload: cleanup,
+  //   currentUploadIndex: 0,
+  //   totalUploadCount: 1,
+  //   startUpload: ( ) => setShouldUpload( true ),
+  //   allObsToUpload: [{}, {}, {}, {}]
+  // };
+
+  // // Fake error state
+  // return {
+  //   uploadInProgress: false,
+  //   error: "Something went terribly wrong",
+  //   progress: 0,
+  //   stopUpload: cleanup,
+  //   currentUploadIndex: 0,
+  //   totalUploadCount: 1,
+  //   startUpload: ( ) => setShouldUpload( true ),
+  //   allObsToUpload: [{},{},{},{}]
+  // };
+
   return {
     uploadInProgress,
     error,
