@@ -33,7 +33,8 @@ const ObsStatus = ( {
   const iconColor = white ? theme.colors.onPrimary : theme.colors.primary;
   const numIdents = observation.identifications?.length || 0;
   const numComments = observation.comments?.length || 0;
-  const filled = observation.viewed === false;
+  const filledIdents = observation.viewed_identifications === false;
+  const filledComments = observation.viewed_comments === false;
 
   return (
     <View className={classNames( "flex", flexDirection, classNameMargin )}>
@@ -41,13 +42,13 @@ const ObsStatus = ( {
         classNameMargin={margin}
         count={numIdents}
         white={white}
-        filled={filled}
+        filled={filledIdents}
       />
       <CommentsCount
         classNameMargin={margin}
         count={numComments}
         white={white}
-        filled={filled}
+        filled={filledComments}
       />
       <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />
     </View>
