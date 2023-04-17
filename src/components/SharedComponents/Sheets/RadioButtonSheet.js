@@ -1,12 +1,12 @@
 // @flow
 
-import CheckBox from "@react-native-community/checkbox";
 import {
   Body1, BottomSheet, BottomSheetStandardBackdrop, Button, List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
+import { RadioButton } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
@@ -27,16 +27,20 @@ const RadioButtonSheet = ( {
   radioValues
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const [checkBoxValue, setCheckBoxValue] = useState( "none" );
+  const [checked, setChecked] = useState( "none" );
 
   const radioButtonRow = radioRow => (
     <View className="flex-row mb-4" key={radioRow}>
-      <CheckBox
-        disabled={false}
-        value={checkBoxValue === radioValues[radioRow].value}
-        onValueChange={( ) => setCheckBoxValue( radioValues[radioRow].value )}
-      />
-      <View className="ml-3 flex-1">
+      {/* adding a View here makes the onPress ripple surround only
+      the button and not use extra padding */}
+      <View>
+        <RadioButton.Android
+          value={radioValues[radioRow]}
+          status={( checked === radioValues[radioRow].value ) ? "checked" : "unchecked"}
+          onPress={( ) => setChecked( radioValues[radioRow].value )}
+        />
+      </View>
+      <View className="ml-1 mt-2 flex-1">
         <Body1>{radioValues[radioRow].label}</Body1>
         <List2 className="flex-wrap">{radioValues[radioRow].text}</List2>
       </View>
@@ -60,7 +64,7 @@ const RadioButtonSheet = ( {
         <Button
           level="primary"
           text={t( "CONFIRM" )}
-          onPress={( ) => confirm( checkBoxValue )}
+          onPress={( ) => confirm( checked )}
         />
       </View>
     </BottomSheet>

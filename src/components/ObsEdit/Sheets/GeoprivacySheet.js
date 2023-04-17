@@ -39,7 +39,7 @@ const GeoprivacySheet = ( {
   return (
     <RadioButtonSheet
       headerText={t( "GEOPRIVACY" )}
-      snapPoints={[406]}
+      snapPoints={[426]}
       confirm={checkBoxValue => {
         updateGeoprivacyStatus( checkBoxValue );
         handleClose( );
