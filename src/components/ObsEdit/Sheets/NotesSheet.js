@@ -1,8 +1,7 @@
 // @flow
 
 import {
-  Body3,
-  BottomSheet, BottomSheetStandardBackdrop, Button
+  Body3, BottomSheet, Button
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -31,11 +30,8 @@ const NotesSheet = ( {
     [setShowNotesSheet]
   );
 
-  const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
-
   return (
     <BottomSheet
-      backdropComponent={renderBackdrop}
       handleClose={handleClose}
       headerText={t( "NOTES" )}
       snapPoints={[416]}

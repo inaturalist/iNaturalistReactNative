@@ -1,7 +1,7 @@
 // @flow
 
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
-import { Heading4 } from "components/SharedComponents";
+import { BottomSheetStandardBackdrop, Heading4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -14,7 +14,6 @@ type Props = {
   children: any,
   hide?: boolean,
   snapPoints?: ( string|number )[],
-  backdropComponent?: Function,
   onChange?: Function,
   handleClose?: Function,
   hideCloseButton?: boolean,
@@ -23,11 +22,12 @@ type Props = {
 
 const DEFAULT_SNAP_POINTS = ["45%"];
 
+const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
+
 const StandardBottomSheet = ( {
   children,
   hide,
   snapPoints = DEFAULT_SNAP_POINTS,
-  backdropComponent = null,
   onChange = null,
   handleClose,
   hideCloseButton = false,
@@ -64,7 +64,7 @@ const StandardBottomSheet = ( {
       snapPoints={snapPoints}
       style={viewStyles.shadow}
       handleComponent={noHandle}
-      backdropComponent={backdropComponent}
+      backdropComponent={renderBackdrop}
       onChange={onChange}
     >
       <BottomSheetView>

@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  BottomSheet, BottomSheetStandardBackdrop, EvidenceButton, List2
+  BottomSheet, EvidenceButton, List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -26,8 +26,6 @@ const AddEvidenceSheet = ( {
     [setShowAddEvidenceSheet]
   );
 
-  const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
-
   const onImportPhoto = async () => {
     navigation.navigate( "PhotoGallery", { skipGroupPhotos: true } );
     handleClose( );
@@ -45,7 +43,6 @@ const AddEvidenceSheet = ( {
 
   return (
     <BottomSheet
-      backdropComponent={renderBackdrop}
       handleClose={handleClose}
       headerText={t( "ADD-EVIDENCE" )}
       snapPoints={[202]}

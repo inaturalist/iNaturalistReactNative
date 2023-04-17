@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  BottomSheet, BottomSheetStandardBackdrop, Button, Heading4, List2
+  BottomSheet, Button, Heading4, List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -18,12 +18,9 @@ const LoginSheet = ( { setShowLoginSheet }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
-  const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
-
   return (
     <BottomSheet
       snapPoints={["25%"]}
-      backdropComponent={renderBackdrop}
       onChange={position => {
         if ( position === -1 ) {
           setShowLoginSheet( false );

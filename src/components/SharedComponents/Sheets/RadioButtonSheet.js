@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  Body1, BottomSheet, BottomSheetStandardBackdrop, Button, List2
+  Body1, BottomSheet, Button, List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -16,8 +16,6 @@ type Props = {
   headerText: string,
   radioValues: Object
 }
-
-const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
 
 const RadioButtonSheet = ( {
   handleClose,
@@ -49,7 +47,6 @@ const RadioButtonSheet = ( {
 
   return (
     <BottomSheet
-      backdropComponent={renderBackdrop}
       handleClose={handleClose}
       headerText={headerText}
       snapPoints={snapPoints}
