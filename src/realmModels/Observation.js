@@ -473,7 +473,8 @@ class Observation extends Realm.Object {
       time_observed_at: { type: "string?", mapTo: "timeObservedAt" },
       user: "User?",
       updated_at: "date?",
-      viewed: "bool?"
+      viewed_comments: "bool?",
+      viewed_identifications: "bool?"
     }
   }
 
