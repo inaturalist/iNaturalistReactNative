@@ -156,10 +156,10 @@ const PhotoCarousel = ( {
   if ( showAddButton ) data.unshift( "add" );
 
   const photoListDirection = () => {
-    if ( isSmallScreen ) {
-      return true;
+    if ( !isSmallScreen && isLandscapeMode !== undefined ) {
+      return !isLandscapeMode;
     }
-    return !isLandscapeMode;
+    return true;
   };
 
   const photoPreviewsList = (
