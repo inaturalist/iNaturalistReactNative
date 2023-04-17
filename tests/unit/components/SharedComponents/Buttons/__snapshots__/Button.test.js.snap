@@ -80,6 +80,9 @@ exports[`Button focus should render correctly 1`] = `
             Object {
               "color": "#ffffff",
             },
+            Object {
+              "textAlign": "center",
+            },
           ],
         ],
       ]
@@ -173,6 +176,9 @@ exports[`Button focus when disabled should render correctly 1`] = `
           Array [
             Object {
               "color": "#ffffff",
+            },
+            Object {
+              "textAlign": "center",
             },
           ],
         ],
@@ -279,6 +285,9 @@ exports[`Button neutral should render correctly 1`] = `
           Array [
             Object {
               "color": "#ffffff",
+            },
+            Object {
+              "textAlign": "center",
             },
             Object {
               "color": "#454545",
@@ -393,6 +402,9 @@ exports[`Button neutral when disabled should render correctly 1`] = `
               "color": "#ffffff",
             },
             Object {
+              "textAlign": "center",
+            },
+            Object {
               "color": "#454545",
             },
           ],
@@ -485,6 +497,9 @@ exports[`Button primary should render correctly 1`] = `
           Array [
             Object {
               "color": "#ffffff",
+            },
+            Object {
+              "textAlign": "center",
             },
           ],
         ],
@@ -580,6 +595,9 @@ exports[`Button primary when disabled should render correctly 1`] = `
             Object {
               "color": "#ffffff",
             },
+            Object {
+              "textAlign": "center",
+            },
           ],
         ],
       ]
@@ -670,6 +688,9 @@ exports[`Button warning should render correctly 1`] = `
           Array [
             Object {
               "color": "#ffffff",
+            },
+            Object {
+              "textAlign": "center",
             },
           ],
         ],
@@ -764,6 +785,9 @@ exports[`Button warning when disabled should render correctly 1`] = `
           Array [
             Object {
               "color": "#ffffff",
+            },
+            Object {
+              "textAlign": "center",
             },
           ],
         ],

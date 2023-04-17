@@ -60,7 +60,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
     activeStrokeWidth={2}
     inActiveStrokeOpacity={0}
     maxValue={1}
-    radius={16.5}
+    radius={18}
     showProgressValue={false}
     testID="UploadStatus.CircularProgress"
     value={0.5}
