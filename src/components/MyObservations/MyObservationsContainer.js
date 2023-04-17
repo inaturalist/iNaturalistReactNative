@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useInfiniteScroll from "sharedHooks/useInfiniteScroll";
 import useLocalObservations from "sharedHooks/useLocalObservations";
+import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
 import useUploadObservations from "sharedHooks/useUploadObservations";
 
 import MyObservations from "./MyObservations";
@@ -16,6 +17,7 @@ const MyObservationsContainer = (): Node => {
   const { isLoading, fetchNextPage } = useInfiniteScroll();
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const currentUser = useCurrentUser();
+  useObservationsUpdates( currentUser );
 
   return (
     <MyObservations
