@@ -19,6 +19,8 @@ Add-evidence-of-an-organism = Add evidence of an organism. This helps others ide
 
 Add-Location = Add Location
 
+ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
+
 Add-optional-notes = Add optional notes
 
 Add-to-projects = Add to projects
@@ -741,6 +743,7 @@ Record-a-sound = Record a sound
 
 You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what’s around you.
 
+You-can-tell-from-the-cool-remark = You can tell from the cool remark I’m making that I know how to identify species.
 
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.

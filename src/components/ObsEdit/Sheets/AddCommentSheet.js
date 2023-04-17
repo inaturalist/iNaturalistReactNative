@@ -6,36 +6,33 @@ import React, { useCallback } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  setShowNotesSheet: Function,
-  addNotes: Function,
-  description: ?string
+  setShowAddCommentSheet: Function,
+  addComment: Function
 }
 
-const NotesSheet = ( {
-  setShowNotesSheet,
-  addNotes,
-  description
+const AddCommentSheet = ( {
+  setShowAddCommentSheet,
+  addComment
 }: Props ): Node => {
   const { t } = useTranslation( );
 
   const handleClose = useCallback(
-    ( ) => setShowNotesSheet( false ),
-    [setShowNotesSheet]
+    ( ) => setShowAddCommentSheet( false ),
+    [setShowAddCommentSheet]
   );
 
   return (
     <TextInputSheet
-      handleClose={setShowNotesSheet}
-      headerText={t( "NOTES" )}
+      handleClose={setShowAddCommentSheet}
+      headerText={t( "ADD-OPTIONAL-COMMENT" )}
       snapPoints={[416]}
-      placeholder={t( "Add-optional-notes" )}
-      initialInput={description}
+      placeholder={t( "You-can-tell-from-the-cool-remark" )}
       confirm={textInput => {
-        addNotes( textInput );
+        addComment( textInput );
         handleClose( );
       }}
     />
   );
 };
 
-export default NotesSheet;
+export default AddCommentSheet;
