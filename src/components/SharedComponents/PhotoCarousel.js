@@ -155,11 +155,18 @@ const PhotoCarousel = ( {
   const data = [...photoUris];
   if ( showAddButton ) data.unshift( "add" );
 
+  const photoListDirection = () => {
+    if ( isSmallScreen ) {
+      return true;
+    }
+    return !isLandscapeMode;
+  };
+
   const photoPreviewsList = (
     <FlatList
       data={data}
       renderItem={renderPhotoOrEvidenceButton}
-      horizontal={!isLandscapeMode}
+      horizontal={photoListDirection()}
       ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
 
     />

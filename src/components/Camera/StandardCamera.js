@@ -202,7 +202,12 @@ const StandardCamera = ( ): Node => {
     }
     return (
       <IconButton
-        className={flashClassName}
+        className={classnames(
+          [`${flashClassName}`],
+          {
+            "rotate-90": isSmallScreen && isLandscapeMode
+          }
+        )}
         onPress={toggleFlash}
         accessibilityRole="button"
         testID={testID}
@@ -222,7 +227,12 @@ const StandardCamera = ( ): Node => {
         renderFlashButton()
       ) }
       <IconButton
-        className={`absolute bottom-[18px] right-[18px] ${cameraOptionsClassName}`}
+        className={classnames(
+          [`absolute bottom-[18px] right-[18px] ${cameraOptionsClassName}`],
+          {
+            "rotate-90": isSmallScreen && isLandscapeMode
+          }
+        )}
         onPress={flipCamera}
         accessibilityRole="button"
         accessibilityLabel={t( "Camera-button-label-switch-camera" )}
