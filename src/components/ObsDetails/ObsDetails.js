@@ -88,7 +88,9 @@ const ObsDetails = (): Node => {
 
   const markViewedLocally = async () => {
     realm?.write( () => {
-      localObservation.viewed = true;
+      // Flags if all comments and identifications have been viewed
+      localObservation.viewed_comments = true;
+      localObservation.viewed_identifications = true;
     } );
   };
 
@@ -173,7 +175,7 @@ const ObsDetails = (): Node => {
   useEffect( () => {
     if (
       localObservation
-      && !localObservation.viewed
+      && ( !localObservation.viewed_comments || !localObservation.viewed_identifications )
       && !markViewedMutation.isLoading
     ) {
       markViewedMutation.mutate( { id: uuid } );
