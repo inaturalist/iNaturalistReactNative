@@ -21,7 +21,6 @@ import { formatExifDateAsString, parseExif, writeExifToFile } from "sharedHelper
 import useApiToken from "sharedHooks/useApiToken";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
-import { log } from "../../react-native-logs.config";
 import { ObsEditContext, RealmContext } from "./contexts";
 
 const { useRealm } = RealmContext;
@@ -29,8 +28,6 @@ const { useRealm } = RealmContext;
 type Props = {
   children: any,
 };
-
-const logger = log.extend( "ObsEditProvider" );
 
 const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation();
@@ -190,8 +187,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         // Find original camera URI of each scaled-down photo
         const cameraUri = originalCameraUrisMap[uri];
 
-        logger.debug( "savePhotosToCameraGallery: ", uri, cameraUri, currentObservation?.id );
-
         if ( !cameraUri ) {
           console.error( `Couldn't find original camera URI for: ${uri}` );
         }
@@ -211,7 +206,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
       // Update all photos taken via the app with the new fetched location.
       cameraRollUris.forEach( uri => {
-        logger.debug( "calling writeExifToFile for uri: ", uri );
         writeExifToFile( uri, exif );
       } );
     };
@@ -224,8 +218,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       newObservation.observationPhotos = obsPhotos;
       setObservations( [newObservation] );
 
-      logger.debug( "createObsWithCameraPhotos: ", localFilePaths, currentObservation?.id );
-
       await savePhotosToCameraGallery( localFilePaths );
     };
 
@@ -234,12 +226,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         localFilePaths.map( async photo => ObservationPhoto.new( photo ) )
       );
       appendObsPhotos( obsPhotos );
-
-      logger.debug(
-        "addCameraPhotosToCurrentObservation: ",
-        localFilePaths,
-        currentObservation?.id
-      );
 
       await savePhotosToCameraGallery( localFilePaths );
     };
@@ -277,7 +263,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       if ( observations.length === 1 ) {
         setCurrentObservationIndex( 0 );
         setObservations( [] );
-        logger.debug( "setNextScreen, setting cameraRollUris to [] before navigating to ObsList" );
         setCameraRollUris( [] );
 
         navigation.navigate( "ObsList" );
