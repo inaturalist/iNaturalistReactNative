@@ -16,6 +16,8 @@ import React, {
 import { Dimensions } from "react-native";
 import MapView from "react-native-maps";
 import { useTheme } from "react-native-paper";
+import fetchCoordinates from "sharedHelpers/fetchCoordinates";
+import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadowStyle } from "styles/global";
 
@@ -85,26 +87,17 @@ const LocationPicker = ( { route }: Props ): Node => {
     }
   }, [accuracy] );
 
-  // const locationName = fetchPlaceName( region.latitude, region.longitude );
-  // const newCoords = useCoords( searchQuery );
-
-  // useEffect( () => {
-  //   // update region when user types search term
-  //   if ( !searchQuery ) {
-  //     return;
-  //   }
-  //   if ( newCoords.latitude !== null && newCoords.latitude !== region.latitude ) {
-  //     setRegion( newCoords );
-  //   }
-  // }, [newCoords, region, searchQuery] );
-
-  const updateRegion = newRegion => {
+  const updateRegion = async newRegion => {
     const { width } = Dimensions.get( "screen" );
 
     const estimatedAccuracy = newRegion.longitudeDelta * 1000 * (
       ( CROSSHAIRLENGTH / width ) * 100
     );
 
+    const placeName = await fetchPlaceName( newRegion.latitude, newRegion.longitude );
+    if ( placeName ) {
+      setLocationName( placeName );
+    }
     setRegion( newRegion );
     setAccuracy( estimatedAccuracy );
   };
@@ -119,19 +112,15 @@ const LocationPicker = ( { route }: Props ): Node => {
     return null;
   };
 
-  useEffect( ( ) => {
-
-  }, [] );
-
   return (
     <ViewWrapper>
       <MapView
         className="flex-1 items-center justify-center"
-        initialRegion={region}
-        onRegionChange={updateRegion}
+        region={region}
         ref={mapView}
-        onRegionChangeComplete={async ( ) => {
-          console.log( await mapView?.current?.getMapBoundaries( ) );
+        onRegionChangeComplete={async newRegion => {
+          updateRegion( newRegion );
+          // console.log( await mapView?.current?.getMapBoundaries( ) );
         }}
       >
         <View
@@ -142,13 +131,21 @@ const LocationPicker = ( { route }: Props ): Node => {
           } )}
         />
         {/* vertical crosshair */}
-        <View className={`h-[${CROSSHAIRLENGTH}px] border absolute border-darkGray`} />
+        <View className={`h-[${CROSSHAIRLENGTH.toString( )}px] border absolute border-darkGray`} />
         {/* horizontal crosshair */}
-        <View className={`w-[${CROSSHAIRLENGTH}px] border absolute border-darkGray`} />
+        <View className={`w-[${CROSSHAIRLENGTH.toString( )}px] border absolute border-darkGray`} />
       </MapView>
       <SearchBar
-        onChangeText={text => setLocationName( text )}
-        placeholder={locationName}
+        handleTextChange={async locationText => {
+          const newCoords = await fetchCoordinates( locationText );
+          if ( !newCoords ) { return; }
+          setRegion( {
+            ...region,
+            latitude: newCoords.latitude,
+            longitude: newCoords.longitude
+          } );
+        }}
+        value={locationName}
         testID="LocationPicker.locationSearch"
         containerClass="absolute top-[20px] right-[26px] left-[26px]"
       />
@@ -182,7 +179,7 @@ const LocationPicker = ( { route }: Props ): Node => {
           className="px-[25px]"
           onPress={( ) => {
             if ( goBackOnSave ) {
-              navigation.goBack();
+              navigation.goBack( );
             }
           }}
           testID="LocationPicker.saveButton"
@@ -190,14 +187,6 @@ const LocationPicker = ( { route }: Props ): Node => {
           level="neutral"
         />
       </StickyToolbar>
-      {/* <InputField
-        handleTextChange={setSearchQuery}
-        placeholder={locationName || ""}
-        text={searchQuery}
-        type="addressCity"
-        testID="LocationPicker.search"
-      />
- */}
     </ViewWrapper>
   );
 };
