@@ -644,5 +644,9 @@
   "Something-went-wrong": {
     "comment": "Generic error message",
     "val": "Something went wrong."
+  },
+  "Stop-upload": {
+    "comment": "Button or accessibility label for an interactive element that stops an upload",
+    "val": "Stop upload"
   }
 }

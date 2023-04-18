@@ -109,7 +109,7 @@ const UploadStatus = ( {
           <CircularProgressBase
             testID="UploadStatus.CircularProgress"
             value={progress}
-            radius={16.5}
+            radius={18}
             activeStrokeColor={( progress < 1 )
               ? ( color || defaultColor ) : ( completeColor || defaultCompleteColor )}
             showProgressValue={false}

@@ -4,12 +4,14 @@ export { default as IdentificationsCount } from "./ActivityCount/Identifications
 export { default as Button } from "./Buttons/Button";
 export { default as CloseButton } from "./Buttons/CloseButton";
 export { default as EvidenceButton } from "./Buttons/EvidenceButton";
+export { default as INatIconButton } from "./Buttons/INatIconButton";
 export { default as DateDisplay } from "./DateDisplay";
 export { default as DateTimePicker } from "./DateTimePicker";
 export { default as Divider } from "./Divider/Divider";
 export { default as FloatingActionBar } from "./FloatingActionBar";
 export { default as INatIcon } from "./INatIcon";
 export { default as InlineUser } from "./InlineUser/InlineUser";
+export { default as KebabMenu } from "./KebabMenu";
 export { default as ObservationLocation } from "./ObservationLocation";
 export { default as PhotoCarousel } from "./PhotoCarousel";
 export { default as PhotoCount } from "./PhotoCount";
