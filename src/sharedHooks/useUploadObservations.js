@@ -36,7 +36,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     if ( shouldUpload ) {
       EventRegister.emit(
         "INCREMENT_OBSERVATIONS_PROGRESS",
-        allObsToUpload.map( observation => [observation.uuid, 0] )
+        allObsToUpload.map( observation => [observation.uuid, 0.01] )
       );
     }
   }, [shouldUpload, allObsToUpload] );

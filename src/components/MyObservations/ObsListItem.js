@@ -11,11 +11,10 @@ import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
   observation: Object,
-  uploadStatus: Object,
   setShowLoginSheet: Function
 };
 
-const ObsListItem = ( { observation, uploadStatus, setShowLoginSheet }: Props ): Node => {
+const ObsListItem = ( { observation, setShowLoginSheet }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo || null;
   const needsSync = observation.needsSync( );
 
@@ -49,7 +48,6 @@ const ObsListItem = ( { observation, uploadStatus, setShowLoginSheet }: Props ):
       <View className="items-center ml-auto justify-center">
         <ObsUploadStatus
           observation={observation}
-          uploadStatus={uploadStatus}
           layout="vertical"
           setShowLoginSheet={setShowLoginSheet}
         />

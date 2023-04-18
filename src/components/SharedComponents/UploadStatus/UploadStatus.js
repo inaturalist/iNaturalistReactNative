@@ -4,10 +4,17 @@ import INatIcon from "components/SharedComponents/INatIcon";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
-import { Animated, Easing } from "react-native";
+import React, { useEffect } from "react";
 import CircularProgressBase from "react-native-circular-progress-indicator";
 import { IconButton, useTheme } from "react-native-paper";
+import Animated, {
+  cancelAnimation,
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming
+} from "react-native-reanimated";
 
 type Props = {
   color?: string,
@@ -24,31 +31,39 @@ const UploadStatus = ( {
   const theme = useTheme();
   const defaultColor = theme.colors.primary;
   const defaultCompleteColor = theme.colors.secondary;
-  const rotateAnimation = new Animated.Value( 0 );
+  const rotation = useSharedValue( 0 );
 
-  Animated.loop(
-    Animated.timing( rotateAnimation, {
-      toValue: 1,
-      duration: 10000,
-      easing: Easing.linear,
-      useNativeDriver: true
-    } )
-  ).start( () => {
-    rotateAnimation.setValue( 0 );
-  } );
+  const animatedStyles = useAnimatedStyle(
+    () => ( {
+      transform: [
+        {
+          rotateZ: `${rotation.value}deg`
+        }
+      ]
+    } ),
+    [rotation.value]
+  );
 
-  // const interpolateRotating = rotateAnimation.interpolate( {
-  //   inputRange: [0, 1],
-  //   outputRange: ["0deg", "360deg"]
-  // } );
+  useEffect( () => {
+    const cleanup = () => {
+      cancelAnimation( rotation );
+      rotation.value = 0;
+    };
 
-  // const rotate = {
-  //   transform: [
-  //     {
-  //       rotate: interpolateRotating
-  //     }
-  //   ]
-  // };
+    if ( progress < 0.05 ) {
+      rotation.value = withRepeat(
+        withTiming( 360, {
+          duration: 10000,
+          easing: Easing.linear
+        } ),
+        -1
+      );
+    } else {
+      cleanup();
+    }
+
+    return cleanup;
+  }, [progress, rotation] );
 
   const translationParams = {
     uploadProgress: progress * 100
@@ -65,37 +80,36 @@ const UploadStatus = ( {
   };
 
   const displayIcon = ( ) => {
+    if ( progress === 0 ) {
+      return (
+        <IconButton
+          icon="upload-saved"
+          iconColor={color || defaultColor}
+          size={33}
+          onPress={startSingleUpload}
+          disabled={false}
+          accessibilityState={{ disabled: false }}
+        />
+      );
+    }
+
     if ( progress < 0.05 ) {
       return (
-        <>
-          {/* <Animated.View style={rotate}>
-            <INatIcon
-              name="upload-saved"
-              color={color || defaultColor}
-              size={33}
-            />
-          </Animated.View>
+        <View className="relative flex items-center justify-center">
           <View className="absolute">
             <INatIcon
               name="upload-arrow"
               color={color || defaultColor}
               size={15}
             />
-          </View> */}
-          {/* <Animated.View style={rotate}>
-            <INatIcon name="dotted-outline" color={color || defaultColor} size={33} />
-          </Animated.View> */}
-          <IconButton
-            icon="upload-saved"
-            iconColor={color || defaultColor}
-            size={33}
-            onPress={startSingleUpload}
-            disabled={false}
-            accessibilityState={{ disabled: false }}
-          />
-        </>
+          </View>
+          <Animated.View style={animatedStyles}>
+            <INatIcon name="circle-dots" color={color || defaultColor} size={33} />
+          </Animated.View>
+        </View>
       );
     }
+
     if ( progress < 1 ) {
       return (
         <>
