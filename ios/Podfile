@@ -75,6 +75,8 @@ target 'iNaturalistReactNative' do
         # code below appears to be necessary for building pods with XCode 14:
         # https://github.com/facebook/react-native/issues/34673#issuecomment-1252114414
         config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
+        config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '$(inherited)'
       end
     end
 
@@ -87,12 +89,6 @@ target 'iNaturalistReactNative' do
       end
     end
 
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
-      end
-    end
-
     #react_native_post_install(installer)
     `sed -i -e  $'s/__IPHONE_10_0/__IPHONE_12_0/' Pods/RCT-Folly/folly/portability/Time.h`
   end
@@ -101,7 +97,10 @@ end
 
 
 target 'iNaturalistReactNative-ShareExtension' do
-  use_react_native!
+  use_react_native!(
+      # to enable hermes on iOS, change `false` to `true` and then install pods
+      :hermes_enabled => true
+    )
 
   pod 'RNShareMenu', :path => '../node_modules/react-native-share-menu'
   # Manually link packages here to keep your extension bundle size minimal
