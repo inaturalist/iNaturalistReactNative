@@ -39,18 +39,36 @@ const PhotoPreview = ( {
     deletePhotoFromObservation( photoUri, photoUris, setPhotoUris );
   };
 
-  const emptyDescription = ( ) => (
+  let noPhotosNotice = (
     <Text
       className={classnames(
-        "text-white text-xl ml-3",
-        {
-          "-rotate-90": !isSmallScreen && isLandscapeMode
-        }
+        "text-white",
+        "text-center",
+        "text-xl",
+        "w-full"
       )}
     >
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
+  if ( !isSmallScreen && !isLandscapeMode ) {
+    noPhotosNotice = (
+      <Text
+        className={classnames(
+          "text-white",
+          "text-center",
+          "text-xl",
+          "absolute",
+          "w-[500px]",
+          "-rotate-90",
+          "left-[-190px]",
+          "top-[50%]"
+        )}
+      >
+        {t( "Photos-you-take-will-appear-here" )}
+      </Text>
+    );
+  }
 
   return (
     <>
@@ -65,22 +83,27 @@ const PhotoPreview = ( {
         "bg-black",
         {
           "h-[110px] pb-[18px] pt-[50px]": isSmallScreen,
-          "h-[151px] pb-[18px] pt-[50px]": !isSmallScreen && !isLandscapeMode,
-          "w-[120px] pt-[50px]": !isSmallScreen && isLandscapeMode
-
-        }
+          "h-[151px]": !isSmallScreen && isLandscapeMode,
+          "w-[120px]": !isSmallScreen && !isLandscapeMode
+        },
+        "justify-center"
       )}
       >
-        <PhotoCarousel
-          deletePhoto={deletePhoto}
-          photoUris={photoUris}
-          emptyComponent={emptyDescription}
-          containerStyle="camera"
-          setSelectedPhotoIndex={handleSelection}
-          savingPhoto={savingPhoto}
-          isSmallScreen={isSmallScreen}
-          isLandscapeMode={isLandscapeMode}
-        />
+        {
+          photoUris.length === 0
+            ? noPhotosNotice
+            : (
+              <PhotoCarousel
+                deletePhoto={deletePhoto}
+                photoUris={photoUris}
+                containerStyle="camera"
+                setSelectedPhotoIndex={handleSelection}
+                savingPhoto={savingPhoto}
+                isLargeScreen={!isSmallScreen}
+                isLandscapeMode={isLandscapeMode}
+              />
+            )
+        }
       </View>
     </>
   );

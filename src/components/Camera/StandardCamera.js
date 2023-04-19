@@ -9,7 +9,6 @@ import {
 import {
   Pressable, View
 } from "components/styledComponents";
-import _ from "lodash";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -18,8 +17,9 @@ import React, {
 } from "react";
 import {
   BackHandler,
-  Dimensions, StatusBar
+  StatusBar
 } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import {
   IconButton,
@@ -27,16 +27,50 @@ import {
 } from "react-native-paper";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
-import getBreakpoint from "sharedHelpers/breakpoint";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
-import CameraView from "./CameraView";
+import CameraView, {
+  LANDSCAPE_LEFT,
+  LANDSCAPE_RIGHT,
+  PORTRAIT
+} from "./CameraView";
 import DiscardChangesSheet from "./DiscardChangesSheet";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
 
+const isTablet = DeviceInfo.isTablet();
+
 export const MAX_PHOTOS_ALLOWED = 20;
+
+const CAMERA_BUTTON_DIM = 40;
+
+function orientationLockerToCameraOrientation( orientation ) {
+  // react-native-orientation-locker and react-native-vision-camera have
+  // opposite definitions for landscape right/left, and different string
+  // values for these constants
+  switch ( orientation ) {
+  case "LANDSCAPE-RIGHT":
+    return LANDSCAPE_LEFT;
+  case "LANDSCAPE-LEFT":
+    return LANDSCAPE_RIGHT;
+  default:
+    return PORTRAIT;
+  }
+}
+
+// Empty space where a camera button should be so buttons don't jump around
+// when they appear or disappear
+const CameraButtonPlaceholder = ( ) => (
+  <View
+    accessibilityElementsHidden
+    aria-hidden
+    className={classnames(
+      `w-[${CAMERA_BUTTON_DIM}px]`,
+      `h-[${CAMERA_BUTTON_DIM}px]`
+    )}
+  />
+);
 
 const StandardCamera = ( ): Node => {
   const {
@@ -63,51 +97,41 @@ const StandardCamera = ( ): Node => {
   const [savingPhoto, setSavingPhoto] = useState( false );
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
-  const initialWidth = Dimensions.get( "screen" ).width;
-  const [deviceOrientation, setDeviceOrientation] = useState( Orientation.getInitialOrientation() );
+  const [deviceOrientation, setDeviceOrientation] = useState(
+    orientationLockerToCameraOrientation( Orientation.getInitialOrientation( ) )
+  );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
 
   const photosTaken = allObsPhotoUris.length > 0;
-  const breakpoint = getBreakpoint( initialWidth );
-  const isSmallScreen = ["sm", "md", "lg"].includes( breakpoint );
-  const isLandscapeMode = ["landscapeLeft", "landscapeRight"]
-    .includes( deviceOrientation );
+  const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
   const cameraOptionsClassName = [
     "bg-black/50",
-    "h-[40px]",
+    `h-[${CAMERA_BUTTON_DIM}px]`,
     "items-center",
     "justify-center",
     "rounded-full",
-    "w-[40px]"
+    `w-[${CAMERA_BUTTON_DIM}px]`
   ].join( " " );
 
   const checkmarkClass = [
     "bg-inatGreen",
     "rounded-full",
-    "h-[40px]",
-    "w-[40px]",
+    `h-[${CAMERA_BUTTON_DIM}px]`,
+    `w-[${CAMERA_BUTTON_DIM}px]`,
     "justify-center",
     "items-center"
   ].join( " " );
 
   // screen orientation locked to portrait on small devices
-  if ( isSmallScreen ) {
+  if ( !isTablet ) {
     Orientation.lockToPortrait();
   }
 
   // detect device rotation instead of using screen orientation change
-  const onDeviceRotation = orientation => {
-    // react-native-orientation-locker and react-native-vision-camera
-    // have opposite definitions for landscape right/left
-    if ( _.camelCase( orientation ) === "landscapeRight" ) {
-      setDeviceOrientation( "landscapeLeft" );
-    } else if ( _.camelCase( orientation ) === "landscapeLeft" ) {
-      setDeviceOrientation( "landscapeRight" );
-    } else if ( _.camelCase( orientation ) === "portrait" ) {
-      setDeviceOrientation( "portrait" );
-    }
-  };
+  const onDeviceRotation = orientation => setDeviceOrientation(
+    orientationLockerToCameraOrientation( orientation )
+  );
   const handleBackButtonPress = useCallback( ( ) => {
     if ( cameraPreviewUris.length === 0 ) { return; }
 
@@ -183,12 +207,13 @@ const StandardCamera = ( ): Node => {
   };
 
   const renderFlashButton = () => {
+    if ( !hasFlash ) return <CameraButtonPlaceholder />;
     let testID = "";
     let accessibilityLabel = "";
     let name = "";
-    const flashClassName = ( isSmallScreen
+    const flashClassName = !isTablet
       ? `absolute bottom-[18px] left-[18px] ${cameraOptionsClassName}`
-      : `m-[12.5px] ${cameraOptionsClassName}` );
+      : `m-[12.5px] ${cameraOptionsClassName}`;
     switch ( takePhotoOptions.flash ) {
     case "on":
       name = "flash-on";
@@ -205,8 +230,9 @@ const StandardCamera = ( ): Node => {
         className={classnames(
           [`${flashClassName}`],
           {
-            "rotate-90": isSmallScreen && isLandscapeMode
-          }
+            "rotate-90": !isTablet && isLandscapeMode
+          },
+          "m-0"
         )}
         onPress={toggleFlash}
         accessibilityRole="button"
@@ -223,14 +249,12 @@ const StandardCamera = ( ): Node => {
 
   const renderSmallScreenCameraOptions = () => (
     <>
-      { hasFlash && (
-        renderFlashButton()
-      ) }
+      { renderFlashButton( ) }
       <IconButton
         className={classnames(
           [`absolute bottom-[18px] right-[18px] ${cameraOptionsClassName}`],
           {
-            "rotate-90": isSmallScreen && isLandscapeMode
+            "rotate-90": !isTablet && isLandscapeMode
           }
         )}
         onPress={flipCamera}
@@ -245,92 +269,114 @@ const StandardCamera = ( ): Node => {
     </>
   );
 
-  const largeScreenCameraOptionsClassName = [
+  const largeScreenCameraOptionsClasses = [
     "absolute",
-    "top-0",
     "bottom-0",
-    "right-0",
-    "justify-center",
     "items-center",
-    "m-2",
-    "pb-0"].join( " " );
+    "justify-center",
+    "mr-5",
+    "pb-0",
+    "right-0",
+    "top-0"
+  ];
 
-  const renderLargeScreenCameraOptions = () => {
-    const buttonSpacing = ( !isLandscapeMode )
-      ? "space-y-[40px]" : "space-y-[32px]";
-    return (
-      <View className={` ${largeScreenCameraOptionsClassName} ${buttonSpacing} pb-0`}>
-        { hasFlash && (
-          renderFlashButton()
+  const renderLargeScreenCameraOptions = ( ) => (
+    <View
+      className={classnames(
+        ...largeScreenCameraOptionsClasses,
+        "pb-0"
+      )}
+    >
+      { renderFlashButton( ) }
+      <IconButton
+        className={classnames( cameraOptionsClassName, "m-0", "mt-[25px]" )}
+        onPress={flipCamera}
+        accessibilityRole="button"
+        accessibilityLabel={t( "Camera-button-label-switch-camera" )}
+        accessibilityState={{ disabled: false }}
+        icon="rotate"
+        iconColor={colors.white}
+        containerColor="rgba(0, 0, 0, 0.5)"
+        size={20}
+      />
+      <Pressable
+        className={classnames(
+          "bg-white",
+          "rounded-full",
+          "h-[60px]",
+          "w-[60px]",
+          "justify-center",
+          "items-center",
+          `mt-[${CAMERA_BUTTON_DIM}px]`,
+          `mb-[${CAMERA_BUTTON_DIM}px]`
         )}
-        <IconButton
-          className={`${cameraOptionsClassName}`}
-          onPress={flipCamera}
-          accessibilityRole="button"
-          accessibilityLabel={t( "Camera-button-label-switch-camera" )}
-          accessibilityState={{ disabled: false }}
-          icon="rotate"
-          iconColor={colors.white}
-          containerColor="rgba(0, 0, 0, 0.5)"
-          size={20}
-        />
+        onPress={takePhoto}
+        accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+        accessibilityRole="button"
+        accessibilityState={{ disabled: disallowAddingPhotos }}
+        disabled={disallowAddingPhotos}
+      >
+        <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
+      </Pressable>
+      { photosTaken && (
         <Pressable
-          className="bg-white rounded-full h-[60px] w-[60px] justify-center items-center"
-          onPress={takePhoto}
+          className={classnames( checkmarkClass, "mb-[25px]" )}
+          onPress={navToObsEdit}
           accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
           accessibilityRole="button"
-          accessibilityState={{ disabled: disallowAddingPhotos }}
-          disabled={disallowAddingPhotos}
+          accessibilityState={{ disabled: false }}
+          disabled={false}
         >
-          <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
-        </Pressable>
-        {photosTaken && (
-          <Pressable
-            className={checkmarkClass}
-            onPress={navToObsEdit}
-            accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-            accessibilityRole="button"
-            accessibilityState={{ disabled: false }}
-            disabled={false}
-          >
-            <INatIcon
-              name="checkmark"
-              color={colors.white}
-              size={20}
-              testID="camera-button-label-switch-camera"
-            />
-          </Pressable>
-        )}
-        <View className={`${cameraOptionsClassName}`}>
-          <CloseButton
-            handleClose={cameraPreviewUris.length > 0 && handleBackButtonPress}
-            size={18}
+          <INatIcon
+            name="checkmark"
+            color={colors.white}
+            size={20}
+            testID="camera-button-label-switch-camera"
           />
-        </View>
+        </Pressable>
+      ) }
+      <View
+        className={classnames(
+          cameraOptionsClassName,
+          { "mb-[25px]": !photosTaken }
+        )}
+      >
+        <CloseButton
+          handleClose={cameraPreviewUris.length > 0 && handleBackButtonPress}
+          size={18}
+        />
       </View>
-    );
-  };
+      { !photosTaken && <CameraButtonPlaceholder /> }
+    </View>
+  );
 
-  const isLargeScreenLandscapeMode = ( !isSmallScreen && isLandscapeMode )
-    ? "flex-row" : "flex-col";
+  const flexDirection = isTablet && !isLandscapeMode
+    ? "flex-row"
+    : "flex-col";
   return (
-    <View className={`flex-1 bg-black ${isLargeScreenLandscapeMode}`}>
-      <StatusBar barStyle="light-content" />
+    <View className={`flex-1 bg-black ${flexDirection}`}>
+      <StatusBar hidden />
       <PhotoPreview
         photoUris={cameraPreviewUris}
         setPhotoUris={setCameraPreviewUris}
         savingPhoto={savingPhoto}
         isLandscapeMode={isLandscapeMode}
-        isSmallScreen={isSmallScreen}
+        isSmallScreen={!isTablet}
       />
       <View className="relative flex-1">
-        {device && <CameraView device={device} camera={camera} orientation={deviceOrientation} />}
+        {device && (
+          <CameraView
+            device={device}
+            camera={camera}
+            orientation={deviceOrientation}
+          />
+        )}
         <FadeInOutView savingPhoto={savingPhoto} />
-        {isSmallScreen ? renderSmallScreenCameraOptions()
-          : renderLargeScreenCameraOptions()}
+        {isTablet
+          ? renderLargeScreenCameraOptions()
+          : renderSmallScreenCameraOptions()}
       </View>
-      { isSmallScreen
-      && (
+      { !isTablet && (
         <View className="bg-black h-32 flex-row justify-between items-center">
           <View className="w-1/3 ml-[20px]">
             <CloseButton handleClose={cameraPreviewUris.length > 0 && handleBackButtonPress} />
@@ -349,8 +395,8 @@ const StandardCamera = ( ): Node => {
               <Pressable
                 className={classnames( checkmarkClass, {
                   "rotate-0": deviceOrientation === "portrait",
-                  "-rotate-90": deviceOrientation === "landscapeLeft",
-                  "rotate-90": deviceOrientation === "landscapeRight"
+                  "-rotate-90": deviceOrientation === LANDSCAPE_LEFT,
+                  "rotate-90": deviceOrientation === LANDSCAPE_RIGHT
                 } )}
                 onPress={navToObsEdit}
                 accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}

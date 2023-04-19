@@ -27,7 +27,7 @@ type Props = {
   showAddButton?: boolean,
   deletePhoto?: Function,
   isLandscapeMode?:boolean,
-  isSmallScreen?: boolean
+  isLargeScreen?: boolean
 }
 
 const PhotoCarousel = ( {
@@ -41,7 +41,7 @@ const PhotoCarousel = ( {
   showAddButton = false,
   deletePhoto,
   isLandscapeMode,
-  isSmallScreen
+  isLargeScreen
 }: Props ): Node => {
   const theme = useTheme( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
@@ -56,16 +56,27 @@ const PhotoCarousel = ( {
   }, [photoUris.length, deletePhotoMode] );
 
   const renderSkeleton = ( ) => ( savingPhoto ? (
-    <View className={classnames( "bg-lightGray justify-center", {
-      [`${smallPhotoClass} mx-[3px]`]:
-      isSmallScreen,
-      [`${largePhotoClass} mx-[8.5px]`]:
-      !isSmallScreen && !isLandscapeMode,
-      [`${largePhotoClass} ml-[18px]`]:
-      !isSmallScreen && isLandscapeMode
-    } )}
+    <View
+      className={classnames(
+        "flex",
+        {
+          "w-fit h-full": isLargeScreen && isLandscapeMode
+        },
+        imageClass
+      )}
     >
-      <ActivityIndicator />
+      <View
+        className={classnames(
+          "bg-lightGray justify-center",
+          {
+            [`${smallPhotoClass} mx-[3px]`]: !isLargeScreen,
+            [`${largePhotoClass} mx-[8.5px]`]: isLargeScreen && !isLandscapeMode,
+            [`${largePhotoClass}`]: isLargeScreen && isLandscapeMode
+          }
+        )}
+      >
+        <ActivityIndicator />
+      </View>
     </View>
   ) : null );
 
@@ -107,9 +118,9 @@ const PhotoCarousel = ( {
               selectedPhotoIndex === index
             },
             {
-              "mx-[3px] mt-0": isSmallScreen,
-              "mx-[8.5px] mt-0": !isSmallScreen && !isLandscapeMode,
-              "my-[18px] mt-0": !isSmallScreen && isLandscapeMode
+              "mx-[3px] mt-0": !isLargeScreen,
+              "mx-[8.5px] mt-0": isLargeScreen && isLandscapeMode,
+              "my-[18px] mt-0": isLargeScreen && !isLandscapeMode
             }
           )}
         >
@@ -118,8 +129,8 @@ const PhotoCarousel = ( {
             className={classnames(
               "overflow-hidden",
               {
-                [`${smallPhotoClass}`]: isSmallScreen,
-                [`${largePhotoClass}`]: !isSmallScreen
+                [`${smallPhotoClass}`]: !isLargeScreen,
+                [`${largePhotoClass}`]: isLargeScreen
               }
             )}
           >
@@ -155,20 +166,12 @@ const PhotoCarousel = ( {
   const data = [...photoUris];
   if ( showAddButton ) data.unshift( "add" );
 
-  const photoListDirection = () => {
-    if ( !isSmallScreen && isLandscapeMode !== undefined ) {
-      return !isLandscapeMode;
-    }
-    return true;
-  };
-
   const photoPreviewsList = (
     <FlatList
       data={data}
       renderItem={renderPhotoOrEvidenceButton}
-      horizontal={photoListDirection()}
+      horizontal={!isLargeScreen || !!isLandscapeMode}
       ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
-
     />
   );
 
@@ -183,7 +186,7 @@ const PhotoCarousel = ( {
       <View className={classnames(
         "absolute top-0 pt-[50px]",
         {
-          "ml-[18px]": !isSmallScreen && isLandscapeMode
+          "ml-[18px]": isLargeScreen && isLandscapeMode
         }
       )}
       >
