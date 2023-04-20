@@ -361,7 +361,7 @@ const StandardCamera = ( ): Node => {
         setPhotoUris={setCameraPreviewUris}
         savingPhoto={savingPhoto}
         isLandscapeMode={isLandscapeMode}
-        isSmallScreen={!isTablet}
+        isLargeScreen={isTablet}
       />
       <View className="relative flex-1">
         {device && (

@@ -13,7 +13,7 @@ type Props = {
   setPhotoUris: Function,
   savingPhoto: boolean,
   isLandscapeMode?: boolean,
-  isSmallScreen?: boolean
+  isLargeScreen?: boolean
 }
 
 const PhotoPreview = ( {
@@ -21,7 +21,7 @@ const PhotoPreview = ( {
   setPhotoUris,
   savingPhoto,
   isLandscapeMode,
-  isSmallScreen
+  isLargeScreen
 }: Props ): Node => {
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
@@ -51,7 +51,7 @@ const PhotoPreview = ( {
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
-  if ( !isSmallScreen && !isLandscapeMode ) {
+  if ( isLargeScreen && !isLandscapeMode ) {
     noPhotosNotice = (
       <Text
         className={classnames(
@@ -82,9 +82,9 @@ const PhotoPreview = ( {
       <View className={classnames(
         "bg-black",
         {
-          "h-[110px] pb-[18px] pt-[50px]": isSmallScreen,
-          "h-[151px]": !isSmallScreen && isLandscapeMode,
-          "w-[120px]": !isSmallScreen && !isLandscapeMode
+          "h-[110px] pb-[18px] pt-[50px]": !isLargeScreen,
+          "h-[151px]": isLargeScreen && isLandscapeMode,
+          "w-[120px]": isLargeScreen && !isLandscapeMode
         },
         "justify-center"
       )}
@@ -99,7 +99,7 @@ const PhotoPreview = ( {
                 containerStyle="camera"
                 setSelectedPhotoIndex={handleSelection}
                 savingPhoto={savingPhoto}
-                isLargeScreen={!isSmallScreen}
+                isLargeScreen={isLargeScreen}
                 isLandscapeMode={isLandscapeMode}
               />
             )
