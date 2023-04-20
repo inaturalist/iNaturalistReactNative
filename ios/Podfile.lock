@@ -246,7 +246,7 @@ PODS:
   - React-jsinspector (0.70.8)
   - React-logger (0.70.8):
     - glog
-  - react-native-cameraroll (5.0.4):
+  - react-native-cameraroll (5.3.1):
     - React-Core
   - react-native-config (1.4.11):
     - react-native-config/App (= 1.4.11)
@@ -363,7 +363,7 @@ PODS:
     - React-Core
   - RNCPicker (2.4.10):
     - React-Core
-  - RNDateTimePicker (6.5.3):
+  - RNDateTimePicker (6.7.5):
     - React-Core
   - RNDeviceInfo (8.7.1):
     - React-Core
@@ -670,7 +670,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: bc8556d76f83a1a9075cdee207aad7c0b7b30a33
   React-jsinspector: 5e5497c844f2381e8648ec3a7d0ad25b3f27f23e
   React-logger: b277ad8f4473f2506fb30b762b6348534a3de10e
-  react-native-cameraroll: 38b40d9033e4077b6c603f92f95c6d05fa7907df
+  react-native-cameraroll: f3050460fe1708378698c16686bfaa5f34099be2
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
   react-native-exif-reader: 3839c5a77c8c9cd2d05becb9f51e6ba0f2b13a65
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
@@ -704,7 +704,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
   RNCCheckbox: 43bcc6493611468af0e19f19f029dab3da8561c4
   RNCPicker: 0bc2f0a29abcca7b7ed44a2d036aac9ab6d25700
-  RNDateTimePicker: 400fc87d26052d1ac76d05935e0f8d0fd4c78f13
+  RNDateTimePicker: 65e1d202799460b286ff5e741d8baf54695e8abd
   RNDeviceInfo: aad3c663b25752a52bf8fce93f2354001dd185aa
   RNFlashList: 7fbca4fc075484a9426f1610d648dbea2de94eb0
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
