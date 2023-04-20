@@ -1,5 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
-import LocationPicker from "components/ObsEdit/LocationPicker";
+import LocationPicker from "components/LocationPicker/LocationPicker";
 import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
 import ObsEditProvider from "providers/ObsEditProvider";

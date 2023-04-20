@@ -3,13 +3,13 @@ import About from "components/About";
 import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
+import LocationPicker from "components/LocationPicker/LocationPicker";
 import Login from "components/LoginSignUp/Login";
 import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import AddID from "components/ObsEdit/AddID";
-import LocationPicker from "components/ObsEdit/LocationPicker";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
@@ -288,8 +288,9 @@ const BottomTabs = () => {
           name="LocationPicker"
           component={LocationPicker}
           options={{
-            ...hideHeaderLeft,
-            title: t( "EDIT-LOCATION" )
+            ...blankHeaderTitle,
+            ...hideHeaderLeft
+            // title: t( "EDIT-LOCATION" )
           }}
         />
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />
