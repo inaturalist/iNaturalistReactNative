@@ -98,7 +98,9 @@ const StandardCamera = ( ): Node => {
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
   const [deviceOrientation, setDeviceOrientation] = useState(
-    orientationLockerToCameraOrientation( Orientation.getInitialOrientation( ) )
+    isTablet
+      ? orientationLockerToCameraOrientation( Orientation.getInitialOrientation( ) )
+      : PORTRAIT
   );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
 
@@ -129,9 +131,13 @@ const StandardCamera = ( ): Node => {
   }
 
   // detect device rotation instead of using screen orientation change
-  const onDeviceRotation = orientation => setDeviceOrientation(
-    orientationLockerToCameraOrientation( orientation )
-  );
+  const onDeviceRotation = orientation => {
+    if ( !isTablet ) {
+      // We're not supporting rotation in phones, right?
+      return;
+    }
+    setDeviceOrientation( orientationLockerToCameraOrientation( orientation ) );
+  };
   const handleBackButtonPress = useCallback( ( ) => {
     if ( cameraPreviewUris.length === 0 ) { return; }
 
@@ -211,9 +217,9 @@ const StandardCamera = ( ): Node => {
     let testID = "";
     let accessibilityLabel = "";
     let name = "";
-    const flashClassName = !isTablet
-      ? `absolute bottom-[18px] left-[18px] ${cameraOptionsClassName}`
-      : `m-[12.5px] ${cameraOptionsClassName}`;
+    const flashClassName = isTablet
+      ? `m-[12.5px] ${cameraOptionsClassName}`
+      : `absolute bottom-[18px] left-[18px] ${cameraOptionsClassName}`;
     switch ( takePhotoOptions.flash ) {
     case "on":
       name = "flash-on";
