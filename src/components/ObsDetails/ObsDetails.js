@@ -327,9 +327,9 @@ const ObsDetails = (): Node => {
   return (
     <>
       <ScrollViewWrapper testID={`ObsDetails.${uuid}`}>
-        <ActivityHeader item={observation} />
         {displayPhoto()}
-        <View className="flex-row my-5 justify-between mx-3">
+        <ActivityHeader item={observation} classNameMargin="mx-[15px] mt-[13px]" />
+        <View className="flex-row my-[11px] justify-between mx-3">
           {showTaxon()}
           <ObsStatus layout="vertical" observation={observation} />
         </View>

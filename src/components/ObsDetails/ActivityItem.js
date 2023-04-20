@@ -56,7 +56,7 @@ const ActivityItem = ( {
       {taxon && (
         <View className="flex-row items-center justify-between mr-[23px]">
           <Pressable
-            className="flex-row my-[13.5px] items-center w-2/3"
+            className="flex-row mb-[13.5px] items-center w-2/3"
             onPress={navToTaxonDetails}
             accessibilityRole="link"
             accessibilityLabel={t( "Navigate-to-taxon-details" )}
