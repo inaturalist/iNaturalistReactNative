@@ -8,8 +8,8 @@ import { getJWT } from "components/LoginSignUp/AuthenticationService";
 const useAuthenticatedMutation = (
   mutationFunction: Function,
   mutationOptions: Object = {}
-): any => useMutation(
-  async id => {
+): any => useMutation( {
+  mutationFn: async id => {
     // Note, getJWTToken() takes care of fetching a new token if the existing
     // one is expired. We *could* store the token in state with useState if
     // fetching from RNSInfo becomes a performance issue
@@ -19,7 +19,7 @@ const useAuthenticatedMutation = (
     };
     return mutationFunction( id, options );
   },
-  mutationOptions
-);
+  ...mutationOptions
+} );
 
 export default useAuthenticatedMutation;

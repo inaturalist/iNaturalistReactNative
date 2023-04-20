@@ -2,6 +2,7 @@ package com.inaturalistreactnative;
 
 import android.app.Application;
 import android.content.Context;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -10,11 +11,10 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
 import com.inaturalistreactnative.newarchitecture.MainApplicationReactNativeHost;
+import com.lugg.RNCConfig.RNCConfigPackage;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
-import com.facebook.react.bridge.JSIModulePackage;
-import com.reactnativecommunity.cameraroll.CameraRollPackage;
 
 
 public class MainApplication extends Application implements ReactApplication {
@@ -32,7 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          packages.add(new ReactNativeConfigPackage());
+          packages.add(new RNCConfigPackage());
           return packages;
         }
 
