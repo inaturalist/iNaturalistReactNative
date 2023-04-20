@@ -1,4 +1,5 @@
 PODS:
+  - BEMCheckBox (1.4.1)
   - boost (1.76.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.70.4)
@@ -13,9 +14,9 @@ PODS:
   - glog (0.3.5)
   - hermes-engine (0.70.4)
   - libevent (2.1.12)
-  - Permission-LocationWhenInUse (3.6.1):
+  - Permission-LocationWhenInUse (3.8.0):
     - RNPermissions
-  - Permission-PhotoLibrary (3.6.1):
+  - Permission-PhotoLibrary (3.8.0):
     - RNPermissions
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -243,19 +244,19 @@ PODS:
   - React-jsinspector (0.70.4)
   - React-logger (0.70.4):
     - glog
-  - react-native-cameraroll (5.0.4):
+  - react-native-cameraroll (5.3.1):
     - React-Core
-  - react-native-config (1.4.11):
-    - react-native-config/App (= 1.4.11)
-  - react-native-config/App (1.4.11):
+  - react-native-config (1.5.0):
+    - react-native-config/App (= 1.5.0)
+  - react-native-config/App (1.5.0):
     - React-Core
   - react-native-exif-reader (0.2.3):
     - React-Core
   - react-native-geocoder-reborn (0.9.0):
     - React
-  - react-native-geolocation (3.0.5):
+  - react-native-geolocation (3.0.6):
     - React-Core
-  - react-native-image-picker (4.10.0):
+  - react-native-image-picker (4.10.3):
     - React-Core
   - react-native-image-resizer (3.0.0):
     - React-Core
@@ -265,13 +266,13 @@ PODS:
     - React-Core
   - react-native-maps (0.31.1):
     - React-Core
-  - react-native-netinfo (9.3.6):
+  - react-native-netinfo (9.3.9):
     - React-Core
   - react-native-orientation-locker (1.5.0):
     - React-Core
   - react-native-render-html (6.3.4):
     - React-Core
-  - react-native-safe-area-context (4.4.1):
+  - react-native-safe-area-context (4.5.1):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -279,7 +280,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - react-native-sensitive-info (6.0.0-alpha.9):
     - React-Core
-  - react-native-webview (11.23.1):
+  - react-native-webview (11.26.1):
     - React-Core
   - React-perflogger (0.70.4)
   - React-RCTActionSheet (0.70.4):
@@ -351,27 +352,28 @@ PODS:
     - React-Core
   - RealmJS (11.0.0):
     - React
-  - RNAudioRecorderPlayer (3.5.1):
+  - RNAudioRecorderPlayer (3.5.3):
     - React-Core
-  - RNCAsyncStorage (1.17.10):
+  - RNCAsyncStorage (1.18.1):
     - React-Core
-  - RNCCheckbox (0.5.12):
+  - RNCCheckbox (0.5.15):
+    - BEMCheckBox (~> 1.4)
     - React-Core
-  - RNCPicker (2.4.8):
+  - RNCPicker (2.4.10):
     - React-Core
-  - RNDateTimePicker (6.5.3):
+  - RNDateTimePicker (6.7.5):
     - React-Core
   - RNDeviceInfo (8.7.1):
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.8.0):
+  - RNGestureHandler (2.9.0):
     - React-Core
-  - RNLocalize (2.2.4):
+  - RNLocalize (2.2.6):
     - React-Core
-  - RNPermissions (3.6.1):
+  - RNPermissions (3.8.0):
     - React-Core
-  - RNReanimated (2.12.0):
+  - RNReanimated (2.15.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -398,16 +400,16 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.18.2):
+  - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
   - RNShareMenu (6.0.0):
     - React
-  - RNSVG (12.4.4):
+  - RNSVG (12.5.1):
     - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
-  - VisionCamera (2.15.2):
+  - VisionCamera (2.15.4):
     - React
     - React-callinvoker
     - React-Core
@@ -489,6 +491,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - BEMCheckBox
     - fmt
     - libevent
 
@@ -635,6 +638,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 8a28262f61fbe40c04ce8677b8d835d97c18f1b3
@@ -643,8 +647,8 @@ SPEC CHECKSUMS:
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 3623325e0d0676a45fbc544d72c57dd79fce7446
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  Permission-LocationWhenInUse: 667dfff996a63375d7f2ba3522ae841aa1f7aaf3
-  Permission-PhotoLibrary: b3b35c4574586c9835ecb3d432b181b6709ea517
+  Permission-LocationWhenInUse: 1c80e4797ae587642a83125e80b86686cefeba53
+  Permission-PhotoLibrary: 31787bbe77d0d3ae6a5267b8435e4a2e9ef78f1d
   RCT-Folly: 0080d0a6ebf2577475bda044aa59e2ca1f909cda
   RCTRequired: 49a2c4d4215580d8b24ed538ae01b6de20b43a76
   RCTTypeSafety: 55d538399fe8b51e5cd862e2ec2f9b135b07e783
@@ -660,22 +664,22 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 4a893fc8f683b91befcaf56c44ad8be4506b6828
   React-jsinspector: 1d5a9e84e419a57cabc23249aec3d837d1b03a80
   React-logger: f8071ad48248781d5afdb8a07f778758529d3019
-  react-native-cameraroll: 662b904dfb47fcbf25b8a0b4914974f2a5115568
-  react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
-  react-native-exif-reader: 628269d5a4bf213a53ecf5284af8640a3645b00a
+  react-native-cameraroll: f3050460fe1708378698c16686bfaa5f34099be2
+  react-native-config: 5330c8258265c1e5fdb8c009d2cabd6badd96727
+  react-native-exif-reader: b2ad2175125a5d7dbd399ac6bd3bc4ba8753f85a
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
-  react-native-geolocation: e7c11139f1c0543d65a74e248b5c1b8dd54a4e75
-  react-native-image-picker: 35834940bc572ba914707c39b60e043a06f88178
-  react-native-image-resizer: 7afcd958105cad07c34ef24f3d712e2099196e12
-  react-native-keep-awake: 16f22b2dc09f7ede9f46e3b187a824a1841f1ddf
+  react-native-geolocation: 0f7fe8a4c2de477e278b0365cce27d089a8c5903
+  react-native-image-picker: 60f4246eb5bb7187fc15638a8c1f13abd3820695
+  react-native-image-resizer: f96ab7c279ab896b01bee53728bd1e2cd1ba649b
+  react-native-keep-awake: acbee258db16483744910f0da3ace39eb9ab47fd
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
   react-native-maps: 8b8bfada2c86205a7f5a07dd1f92f29b33ea83aa
-  react-native-netinfo: 51b6a79a6f1729d853aa0bd5085e441f7ef32aa1
+  react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
   react-native-orientation-locker: 851f6510d8046ea2f14aa169b1e01fcd309a94ba
-  react-native-render-html: 5af9f6852f5e0cf9b74127537da3370984da51ee
-  react-native-safe-area-context: ec0d85aca8110dae9327430a9541fec165352dab
+  react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
+  react-native-safe-area-context: f5549f36508b1b7497434baa0cd97d7e470920d4
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
-  react-native-webview: a192040320142d8f10d652a745c46e4f43e37f8c
+  react-native-webview: 9f111dfbcfc826084d6c507f569e5e03342ee1c1
   React-perflogger: 5e41b01b35d97cc1b0ea177181eb33b5c77623b6
   React-RCTActionSheet: 48949f30b24200c82f3dd27847513be34e06a3ae
   React-RCTAnimation: 96af42c97966fcd53ed9c31bee6f969c770312b6
@@ -690,22 +694,22 @@ SPEC CHECKSUMS:
   ReactCommon: abf3605a56f98b91671d0d1327addc4ffb87af77
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
   RealmJS: 55a0d0d600a0da7d5f0cf42ecbabcd09708c7601
-  RNAudioRecorderPlayer: b305a40d789b3a6c70802704eaba77c682bfe7a1
-  RNCAsyncStorage: 73b194e58ded504eee17b9a3c125651e2507ddde
-  RNCCheckbox: 934e11d33abb6b0db105cfa5a22a42bd89dfb4b9
-  RNCPicker: 0bf8ef8f7800524f32d2bb2a8bcadd53eda0ecd1
-  RNDateTimePicker: 3d4e5e56b9874eb27a11d97c74c374ebed5edfff
-  RNDeviceInfo: af47a7d1a09d64c8cbb8b0c883db9bca422a9813
+  RNAudioRecorderPlayer: 6638283925b46808310c9fdf803ebabc3abdbadc
+  RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
+  RNCCheckbox: 43bcc6493611468af0e19f19f029dab3da8561c4
+  RNCPicker: 0bc2f0a29abcca7b7ed44a2d036aac9ab6d25700
+  RNDateTimePicker: 65e1d202799460b286ff5e741d8baf54695e8abd
+  RNDeviceInfo: aad3c663b25752a52bf8fce93f2354001dd185aa
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
-  RNLocalize: ea02d6ee626a9239c9efe0b2b3f8a4660dff6df6
-  RNPermissions: 79d0c889562fd792329821bea3155fe6eb54d359
-  RNReanimated: 2a91e85fcd343f8af3c58d3425b99fdd285590a5
-  RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
+  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
+  RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
+  RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
+  RNReanimated: 716842722e1c5b0b7c56cf718e586b7f6a712879
+  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
-  RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
+  RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
-  VisionCamera: 8ad07dd68a6fb006be185e79ef82402064ec13ec
+  VisionCamera: e9a95af10e00aaebe99d648ff4519fd336e16ffe
   Yoga: 1f02ef4ce4469aefc36167138441b27d988282b1
 
 PODFILE CHECKSUM: 6b201edfd7ce88fbec391a5a7621063c6c202dbc
