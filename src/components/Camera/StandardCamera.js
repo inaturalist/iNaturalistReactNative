@@ -13,7 +13,10 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useContext, useEffect, useRef, useState
+  useContext,
+  useEffect,
+  useRef,
+  useState
 } from "react";
 import {
   BackHandler,
@@ -98,9 +101,7 @@ const StandardCamera = ( ): Node => {
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
   const [deviceOrientation, setDeviceOrientation] = useState(
-    isTablet
-      ? orientationLockerToCameraOrientation( Orientation.getInitialOrientation( ) )
-      : PORTRAIT
+    orientationLockerToCameraOrientation( Orientation.getInitialOrientation( ) )
   );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
 
@@ -131,13 +132,19 @@ const StandardCamera = ( ): Node => {
   }
 
   // detect device rotation instead of using screen orientation change
-  const onDeviceRotation = orientation => {
-    if ( !isTablet ) {
-      // We're not supporting rotation in phones, right?
-      return;
-    }
-    setDeviceOrientation( orientationLockerToCameraOrientation( orientation ) );
-  };
+  const onDeviceRotation = useCallback(
+    orientation => {
+      // FACE-UP and FACE-DOWN could be portrait or landscape, I guess the
+      // device can't tell, so I'm just not changing the layout at all for
+      // those. ~~~ kueda 20230420
+      if ( orientation === "FACE-UP" || orientation === "FACE-DOWN" ) {
+        return;
+      }
+      setDeviceOrientation( orientationLockerToCameraOrientation( orientation ) );
+    },
+    [setDeviceOrientation]
+  );
+
   const handleBackButtonPress = useCallback( ( ) => {
     if ( cameraPreviewUris.length === 0 ) { return; }
 
@@ -235,9 +242,7 @@ const StandardCamera = ( ): Node => {
       <IconButton
         className={classnames(
           [`${flashClassName}`],
-          {
-            "rotate-90": !isTablet && isLandscapeMode
-          },
+          !isTablet && isLandscapeMode ? "rotate-90" : "rotate-0",
           "m-0"
         )}
         onPress={toggleFlash}
@@ -259,9 +264,7 @@ const StandardCamera = ( ): Node => {
       <IconButton
         className={classnames(
           [`absolute bottom-[18px] right-[18px] ${cameraOptionsClassName}`],
-          {
-            "rotate-90": !isTablet && isLandscapeMode
-          }
+          !isTablet && isLandscapeMode ? "rotate-90" : "rotate-0"
         )}
         onPress={flipCamera}
         accessibilityRole="button"
@@ -313,8 +316,7 @@ const StandardCamera = ( ): Node => {
           "w-[60px]",
           "justify-center",
           "items-center",
-          `mt-[${CAMERA_BUTTON_DIM}px]`,
-          `mb-[${CAMERA_BUTTON_DIM}px]`
+          `my-[${CAMERA_BUTTON_DIM}px]`
         )}
         onPress={takePhoto}
         accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
@@ -400,7 +402,7 @@ const StandardCamera = ( ): Node => {
             {photosTaken && (
               <Pressable
                 className={classnames( checkmarkClass, {
-                  "rotate-0": deviceOrientation === "portrait",
+                  "rotate-0": deviceOrientation === PORTRAIT,
                   "-rotate-90": deviceOrientation === LANDSCAPE_LEFT,
                   "rotate-90": deviceOrientation === LANDSCAPE_RIGHT
                 } )}
