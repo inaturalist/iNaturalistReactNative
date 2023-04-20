@@ -16,9 +16,9 @@ PODS:
   - glog (0.3.5)
   - hermes-engine (0.70.8)
   - libevent (2.1.12)
-  - Permission-LocationWhenInUse (3.6.1):
+  - Permission-LocationWhenInUse (3.8.0):
     - RNPermissions
-  - Permission-PhotoLibrary (3.6.1):
+  - Permission-PhotoLibrary (3.8.0):
     - RNPermissions
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -248,9 +248,9 @@ PODS:
     - glog
   - react-native-cameraroll (5.3.1):
     - React-Core
-  - react-native-config (1.4.11):
-    - react-native-config/App (= 1.4.11)
-  - react-native-config/App (1.4.11):
+  - react-native-config (1.5.0):
+    - react-native-config/App (= 1.5.0)
+  - react-native-config/App (1.5.0):
     - React-Core
   - react-native-exif-reader (0.1.0):
     - React-Core
@@ -258,7 +258,7 @@ PODS:
     - React
   - react-native-geolocation (3.0.6):
     - React-Core
-  - react-native-image-picker (4.10.0):
+  - react-native-image-picker (4.10.3):
     - React-Core
   - react-native-image-resizer (3.0.5):
     - React-Core
@@ -274,7 +274,7 @@ PODS:
     - React-Core
   - react-native-render-html (6.3.4):
     - React-Core
-  - react-native-safe-area-context (4.4.1):
+  - react-native-safe-area-context (4.5.1):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -282,7 +282,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - react-native-sensitive-info (6.0.0-alpha.9):
     - React-Core
-  - react-native-webview (11.23.1):
+  - react-native-webview (11.26.1):
     - React-Core
   - React-perflogger (0.70.8)
   - React-RCTActionSheet (0.70.8):
@@ -363,7 +363,7 @@ PODS:
     - React-Core
   - RNCPicker (2.4.10):
     - React-Core
-  - RNDateTimePicker (6.7.5):
+  - RNDateTimePicker (7.0.1):
     - React-Core
   - RNDeviceInfo (8.7.1):
     - React-Core
@@ -371,13 +371,13 @@ PODS:
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.8.0):
+  - RNGestureHandler (2.9.0):
     - React-Core
   - RNLocalize (2.2.6):
     - React-Core
-  - RNPermissions (3.6.1):
+  - RNPermissions (3.8.0):
     - React-Core
-  - RNReanimated (2.12.0):
+  - RNReanimated (2.15.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -404,14 +404,14 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.18.2):
+  - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
-  - RNSVG (12.4.4):
+  - RNSVG (12.5.1):
     - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
-  - VisionCamera (2.15.2):
+  - VisionCamera (2.15.4):
     - React
     - React-callinvoker
     - React-Core
@@ -653,8 +653,8 @@ SPEC CHECKSUMS:
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 0b19f33a9c2ec1dbdede3232606eeb1101db4cec
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  Permission-LocationWhenInUse: 3ba99e45c852763f730eabecec2870c2382b7bd4
-  Permission-PhotoLibrary: 5b34ca67279f7201ae109cef36f9806a6596002d
+  Permission-LocationWhenInUse: 1c80e4797ae587642a83125e80b86686cefeba53
+  Permission-PhotoLibrary: 31787bbe77d0d3ae6a5267b8435e4a2e9ef78f1d
   RCT-Folly: 0080d0a6ebf2577475bda044aa59e2ca1f909cda
   RCTRequired: 35a7977a5a3cb2d3830c3fef7352b7b116115829
   RCTTypeSafety: 259790fb8b16c94e57e0d3d1e2479e69a2b93f50
@@ -671,11 +671,11 @@ SPEC CHECKSUMS:
   React-jsinspector: 5e5497c844f2381e8648ec3a7d0ad25b3f27f23e
   React-logger: b277ad8f4473f2506fb30b762b6348534a3de10e
   react-native-cameraroll: f3050460fe1708378698c16686bfaa5f34099be2
-  react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
+  react-native-config: 5330c8258265c1e5fdb8c009d2cabd6badd96727
   react-native-exif-reader: 3839c5a77c8c9cd2d05becb9f51e6ba0f2b13a65
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
   react-native-geolocation: 0f7fe8a4c2de477e278b0365cce27d089a8c5903
-  react-native-image-picker: 4bc9ed38c8be255b515d8c88babbaf74973f91a8
+  react-native-image-picker: 60f4246eb5bb7187fc15638a8c1f13abd3820695
   react-native-image-resizer: 00ceb0e05586c7aadf061eea676957a6c2ec60fa
   react-native-keep-awake: acbee258db16483744910f0da3ace39eb9ab47fd
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
@@ -683,9 +683,9 @@ SPEC CHECKSUMS:
   react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
   react-native-orientation-locker: 851f6510d8046ea2f14aa169b1e01fcd309a94ba
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
-  react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
+  react-native-safe-area-context: f5549f36508b1b7497434baa0cd97d7e470920d4
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
-  react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
+  react-native-webview: 9f111dfbcfc826084d6c507f569e5e03342ee1c1
   React-perflogger: e9249a18e055cae96fdf685bf6145cbea62506c8
   React-RCTActionSheet: a6d2a544a4605a111ce80fa9319cc870ca3ea778
   React-RCTAnimation: 21b776b15aa5451a0b5bcb342fd2f346817c1101
@@ -704,18 +704,18 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
   RNCCheckbox: 43bcc6493611468af0e19f19f029dab3da8561c4
   RNCPicker: 0bc2f0a29abcca7b7ed44a2d036aac9ab6d25700
-  RNDateTimePicker: 65e1d202799460b286ff5e741d8baf54695e8abd
+  RNDateTimePicker: e073697ac3e8a378968d68ab0581fef542b8af8a
   RNDeviceInfo: aad3c663b25752a52bf8fce93f2354001dd185aa
   RNFlashList: 7fbca4fc075484a9426f1610d648dbea2de94eb0
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
+  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
-  RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
-  RNReanimated: 2a91e85fcd343f8af3c58d3425b99fdd285590a5
-  RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
-  RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
+  RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
+  RNReanimated: 716842722e1c5b0b7c56cf718e586b7f6a712879
+  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
+  RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
-  VisionCamera: 4cfd685b1e671fea4aa0400905ab397f0e972210
+  VisionCamera: e9a95af10e00aaebe99d648ff4519fd336e16ffe
   Yoga: d6133108734e69e8c0becc6ba587294b94829687
 
 PODFILE CHECKSUM: ce62cd185a6fa304e6f48d477b50bcf4e8dcb775
