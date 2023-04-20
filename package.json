@@ -113,6 +113,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
+    "@faker-js/faker": "^7.6.0",
     "@tanstack/eslint-plugin-query": "^4.29.0",
     "@testing-library/jest-native": "^5.4.2",
     "@testing-library/react-native": "^10.1.1",
@@ -135,8 +136,7 @@
     "eslint-plugin-react-native-a11y": "^3.3.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-testing-library": "^5.10.3",
-    "factoria": "^3.2.2",
-    "faker": "^5.5.3",
+    "factoria": "^4.0.1",
     "flow-bin": "^0.182.0",
     "fluent_conv": "^3.1.0",
     "glob": "^7.2.0",
