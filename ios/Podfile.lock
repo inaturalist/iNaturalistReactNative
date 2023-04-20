@@ -355,7 +355,7 @@ PODS:
     - React
   - RNAudioRecorderPlayer (3.5.1):
     - React-Core
-  - RNCAsyncStorage (1.17.10):
+  - RNCAsyncStorage (1.18.1):
     - React-Core
   - RNCCheckbox (0.5.12):
     - React-Core
@@ -697,7 +697,7 @@ SPEC CHECKSUMS:
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
   RealmJS: 55a0d0d600a0da7d5f0cf42ecbabcd09708c7601
   RNAudioRecorderPlayer: 308940de4f9d1448a064874fd9d83479ae47c7a7
-  RNCAsyncStorage: 0c357f3156fcb16c8589ede67cc036330b6698ca
+  RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
   RNCCheckbox: ed1b4ca295475b41e7251ebae046360a703b6eb5
   RNCPicker: 0bf8ef8f7800524f32d2bb2a8bcadd53eda0ecd1
   RNDateTimePicker: 400fc87d26052d1ac76d05935e0f8d0fd4c78f13
