@@ -1,4 +1,5 @@
 PODS:
+  - BEMCheckBox (1.4.1)
   - boost (1.76.0)
   - BVLinearGradient (2.6.2):
     - React-Core
@@ -255,11 +256,11 @@ PODS:
     - React-Core
   - react-native-geocoder-reborn (0.9.0):
     - React
-  - react-native-geolocation (3.0.5):
+  - react-native-geolocation (3.0.6):
     - React-Core
   - react-native-image-picker (4.10.0):
     - React-Core
-  - react-native-image-resizer (3.0.0):
+  - react-native-image-resizer (3.0.5):
     - React-Core
   - react-native-keep-awake (1.1.0):
     - React-Core
@@ -267,7 +268,7 @@ PODS:
     - React-Core
   - react-native-maps (0.31.1):
     - React-Core
-  - react-native-netinfo (9.3.6):
+  - react-native-netinfo (9.3.9):
     - React-Core
   - react-native-orientation-locker (1.5.0):
     - React-Core
@@ -353,13 +354,14 @@ PODS:
     - React-Core
   - RealmJS (11.0.0):
     - React
-  - RNAudioRecorderPlayer (3.5.1):
+  - RNAudioRecorderPlayer (3.5.3):
     - React-Core
   - RNCAsyncStorage (1.18.1):
     - React-Core
-  - RNCCheckbox (0.5.12):
+  - RNCCheckbox (0.5.15):
+    - BEMCheckBox (~> 1.4)
     - React-Core
-  - RNCPicker (2.4.8):
+  - RNCPicker (2.4.10):
     - React-Core
   - RNDateTimePicker (6.5.3):
     - React-Core
@@ -371,7 +373,7 @@ PODS:
     - React-Core
   - RNGestureHandler (2.8.0):
     - React-Core
-  - RNLocalize (2.2.4):
+  - RNLocalize (2.2.6):
     - React-Core
   - RNPermissions (3.6.1):
     - React-Core
@@ -492,6 +494,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - BEMCheckBox
     - fmt
     - libevent
 
@@ -640,6 +643,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
@@ -670,13 +674,13 @@ SPEC CHECKSUMS:
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
   react-native-exif-reader: 3839c5a77c8c9cd2d05becb9f51e6ba0f2b13a65
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
-  react-native-geolocation: 7383cbe9fa75b168bbbe40b566070fd0b44d30d6
+  react-native-geolocation: 0f7fe8a4c2de477e278b0365cce27d089a8c5903
   react-native-image-picker: 4bc9ed38c8be255b515d8c88babbaf74973f91a8
-  react-native-image-resizer: f96ab7c279ab896b01bee53728bd1e2cd1ba649b
+  react-native-image-resizer: 00ceb0e05586c7aadf061eea676957a6c2ec60fa
   react-native-keep-awake: acbee258db16483744910f0da3ace39eb9ab47fd
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
   react-native-maps: 8b8bfada2c86205a7f5a07dd1f92f29b33ea83aa
-  react-native-netinfo: f80db8cac2151405633324cb645c60af098ee461
+  react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
   react-native-orientation-locker: 851f6510d8046ea2f14aa169b1e01fcd309a94ba
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
@@ -696,16 +700,16 @@ SPEC CHECKSUMS:
   ReactCommon: c440e7f15075e81eb29802521c58a1f38b1aa903
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
   RealmJS: 55a0d0d600a0da7d5f0cf42ecbabcd09708c7601
-  RNAudioRecorderPlayer: 308940de4f9d1448a064874fd9d83479ae47c7a7
+  RNAudioRecorderPlayer: 6638283925b46808310c9fdf803ebabc3abdbadc
   RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
-  RNCCheckbox: ed1b4ca295475b41e7251ebae046360a703b6eb5
-  RNCPicker: 0bf8ef8f7800524f32d2bb2a8bcadd53eda0ecd1
+  RNCCheckbox: 43bcc6493611468af0e19f19f029dab3da8561c4
+  RNCPicker: 0bc2f0a29abcca7b7ed44a2d036aac9ab6d25700
   RNDateTimePicker: 400fc87d26052d1ac76d05935e0f8d0fd4c78f13
   RNDeviceInfo: aad3c663b25752a52bf8fce93f2354001dd185aa
   RNFlashList: 7fbca4fc075484a9426f1610d648dbea2de94eb0
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
-  RNLocalize: 0df7970cfc60389f00eb62fd7c097dc75af3fb4f
+  RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
   RNReanimated: 2a91e85fcd343f8af3c58d3425b99fdd285590a5
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
