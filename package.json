@@ -42,7 +42,7 @@
     "@realm/react": "^0.4.0",
     "@sayem314/react-native-keep-awake": "^1.1.0",
     "@shopify/flash-list": "^1.4.2",
-    "@tanstack/react-query": "^4.2.1",
+    "@tanstack/react-query": "^4.29.3",
     "apisauce": "^2.1.2",
     "axios": "^0.25.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
