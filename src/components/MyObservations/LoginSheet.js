@@ -1,9 +1,9 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { Button, Heading4, List2 } from "components/SharedComponents";
-import BottomSheet from "components/SharedComponents/BottomSheet";
-import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
+import {
+  BottomSheet, Button, Heading4, List2
+} from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -18,12 +18,9 @@ const LoginSheet = ( { setShowLoginSheet }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
 
-  const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
-
   return (
     <BottomSheet
       snapPoints={["25%"]}
-      backdropComponent={renderBackdrop}
       onChange={position => {
         if ( position === -1 ) {
           setShowLoginSheet( false );

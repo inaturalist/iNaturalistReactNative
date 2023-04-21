@@ -1,5 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
-import DeleteObservationDialog from "components/ObsEdit/DeleteObservationDialog";
+import DeleteObservationSheet from "components/ObsEdit/Sheets/DeleteObservationSheet";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import inatjs from "inaturalistjs";
@@ -46,16 +46,17 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
           global.realm.delete( observation );
         }
       } );
-    }
+    },
+    observations: obs
   }}
   >
     {children}
   </ObsEditContext.Provider>
 ) );
 
-const renderDeleteDialog = ( ) => renderComponent(
+const renderDeleteSheet = ( ) => renderComponent(
   <ObsEditProvider>
-    <DeleteObservationDialog deleteDialogVisible hideDialog={( ) => jest.fn( )} />
+    <DeleteObservationSheet handleClose={( ) => jest.fn( )} />
   </ObsEditProvider>
 );
 
@@ -78,8 +79,8 @@ describe( "delete observation", ( ) => {
       const localObservation = getLocalObservation( observations[0].uuid );
       expect( localObservation ).toBeTruthy( );
       mockObsEditProviderWithObs( observations );
-      renderDeleteDialog( );
-      const deleteButtonText = i18next.t( "Yes-delete-observation" );
+      renderDeleteSheet( );
+      const deleteButtonText = i18next.t( "DELETE" );
       const deleteButton = screen.queryByText( deleteButtonText );
       expect( deleteButton ).toBeTruthy( );
       fireEvent.press( deleteButton );
@@ -102,11 +103,9 @@ describe( "delete observation", ( ) => {
       const localObservation = getLocalObservation( observations[0].uuid );
       expect( localObservation ).toBeTruthy( );
       mockObsEditProviderWithObs( observations );
-      renderDeleteDialog( );
-      // TODO: figure out why this needs English text and why the one above needs
-      // the generic text. Probably has to do with User object still being stored in global realm
-      // between tests
-      const deleteButton = screen.queryByText( /delete/ );
+      renderDeleteSheet( );
+      const deleteButtonText = i18next.t( "DELETE" );
+      const deleteButton = screen.queryByText( deleteButtonText );
       expect( deleteButton ).toBeTruthy( );
       fireEvent.press( deleteButton );
       await waitFor( ( ) => {
@@ -125,9 +124,9 @@ describe( "delete observation", ( ) => {
       const localObservation = getLocalObservation( observations[0].uuid );
       expect( localObservation ).toBeTruthy( );
       mockObsEditProviderWithObs( observations );
-      renderDeleteDialog( );
+      renderDeleteSheet( );
 
-      const cancelButton = screen.queryByText( /Cancel/ );
+      const cancelButton = screen.queryByText( /CANCEL/ );
       expect( cancelButton ).toBeTruthy( );
       fireEvent.press( cancelButton );
       expect( getLocalObservation( observations[0].uuid ) ).toBeTruthy( );

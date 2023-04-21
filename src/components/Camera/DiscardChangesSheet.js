@@ -2,10 +2,9 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
+  BottomSheet, BottomSheetStandardBackdrop,
   Button, Heading4, List2
 } from "components/SharedComponents";
-import BottomSheet from "components/SharedComponents/BottomSheet";
-import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";

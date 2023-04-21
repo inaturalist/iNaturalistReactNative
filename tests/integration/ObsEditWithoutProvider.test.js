@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
+import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
@@ -8,10 +9,6 @@ import React from "react";
 
 import factory from "../factory";
 import { renderComponent } from "../helpers/render";
-
-// this resolves a test failure with the Animated library:
-// Animated: `useNativeDriver` is not supported because the native animated module is missing.
-jest.useFakeTimers();
 
 jest.mock( "providers/ObsEditProvider" );
 
@@ -53,11 +50,11 @@ jest.mock( "sharedHelpers/fetchUserLocation", () => ( {
 const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( { children } ) => (
   // eslint-disable-next-line react/jsx-no-constructed-context-values
   <INatPaperProvider>
-    <ObsEditContext.Provider
-      value={{
-        observations: obs,
-        currentObservation: obs[0]
-      }}
+    <ObsEditContext.Provider value={{
+      observations: obs,
+      currentObservation: obs[0],
+      setPassesIdentificationTest: jest.fn( )
+    }}
     >
       {children}
     </ObsEditContext.Provider>
@@ -70,31 +67,40 @@ const renderObsEdit = () => renderComponent(
   </ObsEditProvider>
 );
 
-test( "renders observation photo from photo gallery", () => {
-  const observations = [
-    factory( "RemoteObservation", {
+describe( "basic rendering", ( ) => {
+  beforeAll( async () => {
+    await initI18next();
+  } );
+
+  it( "should render place_guess and latitude", ( ) => {
+    const observations = [factory( "RemoteObservation", {
       latitude: 37.99,
       longitude: -142.88,
       user: mockCurrentUser,
       place_guess: mockLocationName
-    } )
-  ];
-  mockObsEditProviderWithObs( observations );
+    } )];
+    mockObsEditProviderWithObs( observations );
 
-  renderObsEdit();
+    renderObsEdit( );
 
-  const obs = observations[0];
+    const obs = observations[0];
 
-  expect( screen.getByText( obs.place_guess ) ).toBeTruthy();
-  expect( screen.getByText( new RegExp( obs.longitude ) ) ).toBeTruthy();
+    expect( screen.getByText( obs.place_guess ) ).toBeTruthy( );
+    expect( screen.getByText( new RegExp( `${obs.latitude}` ) ) ).toBeTruthy( );
+  } );
 } );
 
 describe( "location fetching", () => {
+  beforeAll( async () => {
+    await initI18next();
+  } );
+
   beforeEach( () => {
     // resets mock back to original state
     mockFetchUserLocation.mockReset();
   } );
-  test( "should fetch location when new observation hasn't saved", async () => {
+
+  test( "should fetch location when new observation hasn't saved", async ( ) => {
     const observations = [{}];
     mockObsEditProviderWithObs( observations );
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
