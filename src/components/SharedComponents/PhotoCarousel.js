@@ -22,7 +22,8 @@ type Props = {
   containerStyle?: string,
   savingPhoto?: boolean,
   deletePhoto?: Function,
-  screenBreakpoint?: string
+  isLandscapeMode?:boolean,
+  isLargeScreen?: boolean
 }
 
 const PhotoCarousel = ( {
@@ -33,11 +34,14 @@ const PhotoCarousel = ( {
   containerStyle,
   savingPhoto,
   deletePhoto,
-  screenBreakpoint
+  isLandscapeMode,
+  isLargeScreen
 }: Props ): Node => {
   const theme = useTheme( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const imageClass = "justify-center items-center";
+  const smallPhotoClass = "rounded-sm w-[42px] h-[42px]";
+  const largePhotoClass = "rounded-md w-[83px] h-[83px]";
 
   useEffect( () => {
     if ( photoUris.length === 0 && deletePhotoMode ) {
@@ -46,14 +50,27 @@ const PhotoCarousel = ( {
   }, [photoUris.length, deletePhotoMode] );
 
   const renderSkeleton = ( ) => ( savingPhoto ? (
-    <View className={classnames( "bg-lightGray justify-center", {
-      "rounded-sm w-[42px] h-[42px] mx-[3px]":
-      ["sm", "md"].includes( screenBreakpoint ),
-      "rounded-md w-[83px] h-[83px] mx-[8.5px]":
-      ["lg", "xl", "2xl"].includes( screenBreakpoint )
-    } )}
+    <View
+      className={classnames(
+        "flex",
+        {
+          "w-fit h-full": isLargeScreen && isLandscapeMode
+        },
+        imageClass
+      )}
     >
-      <ActivityIndicator />
+      <View
+        className={classnames(
+          "bg-lightGray justify-center",
+          {
+            [`${smallPhotoClass} mx-[3px]`]: !isLargeScreen,
+            [`${largePhotoClass} mx-[8.5px]`]: isLargeScreen && !isLandscapeMode,
+            [`${largePhotoClass}`]: isLargeScreen && isLandscapeMode
+          }
+        )}
+      >
+        <ActivityIndicator />
+      </View>
     </View>
   ) : null );
 
@@ -78,12 +95,12 @@ const PhotoCarousel = ( {
           {
             "mt-12": containerStyle === "camera",
             "mt-6": containerStyle !== "camera",
-            "border border-selectionGreen border-4":
-              selectedPhotoIndex === index
+            "border border-selectionGreen border-4": selectedPhotoIndex === index
           },
           {
-            "mx-[3px] mt-0": ["sm", "md"].includes( screenBreakpoint ),
-            "mx-[8.5px] mt-0": ["lg", "xl", "2xl"].includes( screenBreakpoint )
+            "mx-[3px] mt-0": !isLargeScreen,
+            "mx-[8.5px] mt-0": isLargeScreen && isLandscapeMode,
+            "my-[18px] mt-0": isLargeScreen && !isLandscapeMode
           }
         )}
       >
@@ -92,8 +109,8 @@ const PhotoCarousel = ( {
           className={classnames(
             "overflow-hidden",
             {
-              "rounded-sm w-[42px] h-[42px]": ["sm", "md"].includes( screenBreakpoint ),
-              "rounded-md w-[83px] h-[83px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
+              [`${smallPhotoClass}`]: !isLargeScreen,
+              [`${largePhotoClass}`]: isLargeScreen
             }
           )}
         >
@@ -129,9 +146,8 @@ const PhotoCarousel = ( {
     <FlatList
       data={[...photoUris]}
       renderItem={renderPhotoOrEvidenceButton}
-      horizontal
+      horizontal={!isLargeScreen || !!isLandscapeMode}
       ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
-
     />
   );
 
@@ -143,7 +159,13 @@ const PhotoCarousel = ( {
       // eslint-disable-next-line react-native/no-inline-styles
       style={{ margin: 0 }}
     >
-      <View className="absolute top-0 pt-[50px]">
+      <View className={classnames(
+        "absolute top-0 pt-[50px]",
+        {
+          "ml-[18px]": isLargeScreen && isLandscapeMode
+        }
+      )}
+      >
         {photoPreviewsList}
       </View>
     </Modal>

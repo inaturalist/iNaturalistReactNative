@@ -33,7 +33,6 @@ import {
 } from "navigation/navigationOptions";
 import React from "react";
 import { PermissionsAndroid } from "react-native";
-import DeviceInfo from "react-native-device-info";
 import { PERMISSIONS } from "react-native-permissions";
 import User from "realmModels/User";
 import useUserMe from "sharedHooks/useUserMe";
@@ -45,8 +44,6 @@ const Tab = createBottomTabNavigator();
 const OBS_LIST_SCREEN_ID = "ObsList";
 const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
-
-const isTablet = DeviceInfo.isTablet();
 
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -259,7 +256,7 @@ const BottomTabs = () => {
         <Tab.Screen
           name="StandardCamera"
           component={StandardCameraWithPermission}
-          options={{ ...hideHeader, orientation: isTablet ? "all" : "portrait" }}
+          options={{ ...hideHeader, orientation: "all" }}
         />
         <Tab.Screen
           name="SoundRecorder"

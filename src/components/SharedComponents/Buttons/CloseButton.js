@@ -8,16 +8,18 @@ import { IconButton, useTheme } from "react-native-paper";
 
 type Props = {
   className?: string,
-  handleClose?: Function
+  handleClose?: Function,
+  size?: number
 }
 
-const CloseButton = ( { className, handleClose }: Props ): Node => {
+const CloseButton = ( { className, handleClose, size }: Props ): Node => {
   const navigation = useNavigation( );
   const theme = useTheme( );
 
   return (
     <IconButton
       icon="close"
+      size={size}
       className={className}
       iconColor={theme.colors.background}
       onPress={( ) => {
