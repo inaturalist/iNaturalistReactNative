@@ -177,24 +177,20 @@ const StandardCamera = ( ): Node => {
 
   const takePhoto = async ( ) => {
     setSavingPhoto( true );
-    try {
-      if ( disallowAddingPhotos ) {
-        setShowAlert( true );
-        setSavingPhoto( false );
-        return;
-      }
-      const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-      const newPhoto = await Photo.new( cameraPhoto.path );
-      const uri = newPhoto.localFilePath;
-
-      setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
-      if ( addEvidence ) {
-        setEvidenceToAdd( [...evidenceToAdd, uri] );
-      }
+    if ( disallowAddingPhotos ) {
+      setShowAlert( true );
       setSavingPhoto( false );
-    } catch ( e ) {
-      setSavingPhoto( false );
+      return;
     }
+    const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
+    const newPhoto = await Photo.new( cameraPhoto.path );
+    const uri = newPhoto.localFilePath;
+
+    setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
+    if ( addEvidence ) {
+      setEvidenceToAdd( [...evidenceToAdd, uri] );
+    }
+    setSavingPhoto( false );
   };
 
   const toggleFlash = ( ) => {
@@ -316,7 +312,9 @@ const StandardCamera = ( ): Node => {
           "w-[60px]",
           "justify-center",
           "items-center",
-          `my-[${CAMERA_BUTTON_DIM}px]`
+          // There is something weird about how this gets used because
+          // sometimes there just is no margin
+          `my-[${CAMERA_BUTTON_DIM + 1}px]`
         )}
         onPress={takePhoto}
         accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}

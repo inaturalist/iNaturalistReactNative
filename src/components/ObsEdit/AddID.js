@@ -1,28 +1,15 @@
 // @flow
 
-import {
-  BottomSheetModal
-} from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
-import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
-import ViewWrapper from "components/SharedComponents/ViewWrapper";
+import { ViewWrapper } from "components/SharedComponents";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
-import React, {
-  useCallback, useEffect, useRef, useState
-} from "react";
+import React, { useEffect, useState } from "react";
+import { FlatList } from "react-native";
 import {
-  FlatList,
-  TextInput as NativeTextInput,
-  TouchableOpacity
-} from "react-native";
-import {
-  Button,
-  Headline,
   IconButton,
   TextInput,
   useTheme
@@ -31,8 +18,10 @@ import uuid from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Taxon from "realmModels/Taxon";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useTranslation from "sharedHooks/useTranslation";
 import { textStyles, viewStyles } from "styles/obsDetails/addID";
-import colors from "styles/tailwindColors";
+
+import AddCommentSheet from "./Sheets/AddCommentSheet";
 
 type Props = {
   route: {
@@ -59,11 +48,11 @@ const SearchTaxonIcon = (
 );
 
 const AddID = ( { route }: Props ): Node => {
+  const { t } = useTranslation( );
   const theme = useTheme();
+  const [showAddCommentSheet, setShowAddCommentSheet] = useState( false );
   const [comment, setComment] = useState( "" );
-  const [commentDraft, setCommentDraft] = useState( "" );
-  const { onIDAdded, goBackOnSave, hideComment } = route.params;
-  const bottomSheetModalRef = useRef( null );
+  const { onIDAdded, goBackOnSave } = route.params;
   const [taxonSearch, setTaxonSearch] = useState( "" );
   const { data: taxonList } = useAuthenticatedQuery(
     ["fetchSearchResults", taxonSearch],
@@ -88,15 +77,6 @@ const AddID = ( { route }: Props ): Node => {
   }, [route] );
 
   const navigation = useNavigation();
-
-  const renderBackdrop = props => (
-    <BottomSheetStandardBackdrop props={props} />
-  );
-
-  const editComment = useCallback( () => {
-    setCommentDraft( comment );
-    bottomSheetModalRef.current?.present();
-  }, [comment] );
 
   const createPhoto = photo => ( {
     id: photo.id,
@@ -176,57 +156,32 @@ const AddID = ( { route }: Props ): Node => {
     );
   };
 
-  const showEditComment = !hideComment && comment.length === 0;
-
-  useEffect( () => {
-    const editCommentIcon = () => (
+  useEffect( ( ) => {
+    const addCommentIcon = ( ) => (
       <IconButton
         icon="add-comment-outline"
-        onPress={editComment}
+        onPress={( ) => setShowAddCommentSheet( true )}
         accessible
         accessibilityRole="button"
-        accessibilityLabel={t( "Edit-comment" )}
+        accessibilityLabel={t( "Add-comment" )}
         accessibilityState={{ disabled: false }}
       />
     );
 
-    if ( showEditComment ) {
-      navigation.setOptions( {
-        headerRight: editCommentIcon
-      } );
-    }
-  }, [showEditComment, editComment, navigation] );
+    navigation.setOptions( {
+      headerRight: addCommentIcon
+    } );
+  }, [navigation, t] );
 
   return (
     <ViewWrapper>
+      {showAddCommentSheet && (
+        <AddCommentSheet
+          setShowAddCommentSheet={setShowAddCommentSheet}
+          addComment={setComment}
+        />
+      )}
       <View className="p-3">
-        {comment.length > 0 && (
-          <View>
-            <Text>{t( "ID-Comment" )}</Text>
-            <View style={viewStyles.commentContainer}>
-              <IconMaterial
-                style={textStyles.commentLeftIcon}
-                name="textsms"
-                size={25}
-              />
-              <Text style={textStyles.comment}>{comment}</Text>
-              <Pressable
-                style={viewStyles.commentRightIconContainer}
-                onPress={editComment}
-                accessible
-                accessibilityRole="link"
-                accessibilityLabel={t( "Edit-comment" )}
-                accessibilityState={{ disabled: false }}
-              >
-                <IconMaterial
-                  style={textStyles.commentRightIcon}
-                  name="edit"
-                  size={25}
-                />
-              </Pressable>
-            </View>
-          </View>
-        )}
         <Text className="color-darkGray">
           {t( "Search-for-a-taxon-to-add-an-identification" )}
         </Text>
@@ -251,94 +206,6 @@ const AddID = ( { route }: Props ): Node => {
           keyExtractor={item => item.id}
         />
       </View>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={0}
-        enableOverDrag={false}
-        enablePanDownToClose={false}
-        snapPoints={["50%"]}
-        backdropComponent={renderBackdrop}
-        style={viewStyles.bottomModal}
-        accessibilityState={{ disabled: false }}
-      >
-        <Headline style={textStyles.commentHeader}>
-          {comment.length > 0 ? t( "Edit-comment" ) : t( "Add-optional-comment" )}
-        </Headline>
-        <View style={viewStyles.commentInputContainer}>
-          <TextInput
-            keyboardType="default"
-            style={viewStyles.commentInput}
-            value={commentDraft}
-            selectionColor={theme.colors.tertiary}
-            activeUnderlineColor={theme.colors.background}
-            autoFocus
-            multiline
-            onChangeText={setCommentDraft}
-            render={innerProps => (
-              <NativeTextInput
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...innerProps}
-                style={[innerProps.style, viewStyles.commentInputText]}
-              />
-            )}
-            accessible
-            accessibilityLabel={t( "Add-optional-comment" )}
-            accessibilityState={{ disabled: false }}
-          />
-          <TouchableOpacity
-            style={viewStyles.commentClear}
-            disabled={commentDraft.length === 0}
-            onPress={() => setCommentDraft( "" )}
-            accessible
-            accessibilityRole="button"
-            accessibilityLabel={t( "Clear-comment" )}
-            accessibilityState={{ disabled: commentDraft.length === 0 }}
-          >
-            <Text
-              style={[
-                viewStyles.commentClearText,
-                commentDraft.length === 0 ? textStyles.disabled : null
-              ]}
-            >
-              {t( "Clear" )}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={viewStyles.commentButtonContainer}>
-          <Button
-            style={viewStyles.commentButton}
-            uppercase={false}
-            color={colors.lightGray}
-            onPress={() => {
-              bottomSheetModalRef.current?.dismiss();
-            }}
-            accessible
-            accessibilityRole="button"
-            accessibilityLabel={t( "Cancel-comment" )}
-            accessibilityState={{ disabled: false }}
-          >
-            {t( "Cancel" )}
-          </Button>
-          <Button
-            style={viewStyles.commentButton}
-            uppercase={false}
-            disabled={commentDraft.length === 0}
-            color={colors.lightGray}
-            mode="contained"
-            onPress={() => {
-              setComment( commentDraft );
-              bottomSheetModalRef.current?.dismiss();
-            }}
-            accessible
-            accessibilityRole="button"
-            accessibilityLabel={t( "Save-comment" )}
-            accessibilityState={{ disabled: commentDraft.length === 0 }}
-          >
-            {comment.length > 0 ? t( "Edit-comment" ) : t( "Add-comment" )}
-          </Button>
-        </View>
-      </BottomSheetModal>
     </ViewWrapper>
   );
 };

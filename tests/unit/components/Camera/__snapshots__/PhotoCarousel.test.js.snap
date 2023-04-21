@@ -4,9 +4,9 @@ exports[`PhotoCarousel renders correctly 1`] = `
 <RCTScrollView
   data={
     Array [
-      "http://placeimg.com/640/480",
-      "http://placeimg.com/640/480",
-      "http://placeimg.com/640/480",
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
     ]
   }
   getItem={[Function]}
@@ -123,7 +123,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
             <Image
               source={
                 Object {
-                  "uri": "http://placeimg.com/640/480",
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
@@ -243,7 +243,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
             <Image
               source={
                 Object {
-                  "uri": "http://placeimg.com/640/480",
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
@@ -363,7 +363,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
             <Image
               source={
                 Object {
-                  "uri": "http://placeimg.com/640/480",
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
@@ -395,9 +395,9 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
 <RCTScrollView
   data={
     Array [
-      "http://placeimg.com/640/480",
-      "http://placeimg.com/640/480",
-      "http://placeimg.com/640/480",
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
     ]
   }
   getItem={[Function]}
@@ -507,7 +507,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
             <Image
               source={
                 Object {
-                  "uri": "http://placeimg.com/640/480",
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
@@ -620,7 +620,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
             <Image
               source={
                 Object {
-                  "uri": "http://placeimg.com/640/480",
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
@@ -733,7 +733,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
             <Image
               source={
                 Object {
-                  "uri": "http://placeimg.com/640/480",
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={

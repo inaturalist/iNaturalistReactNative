@@ -1,6 +1,7 @@
 // @flow
 import * as React from "react";
 import { IconButton, useTheme } from "react-native-paper";
+import colors from "styles/tailwindColors";
 
 type Props = {
   icon: any,
@@ -20,9 +21,8 @@ const EvidenceButton = ( {
   const theme = useTheme( );
   return (
     <IconButton
-      disabled={disabled}
       onPress={handlePress}
-      containerColor={theme.colors.secondary}
+      containerColor={disabled ? colors.lightGray : theme.colors.secondary}
       iconColor={theme.colors.onSecondary}
       size={35}
       icon={icon}

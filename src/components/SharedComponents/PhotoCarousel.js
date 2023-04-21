@@ -1,7 +1,6 @@
 // @flow
 
 import classnames from "classnames";
-import { INatIcon } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -14,7 +13,6 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import Modal from "react-native-modal";
 import { IconButton, useTheme } from "react-native-paper";
-import colors from "styles/tailwindColors";
 
 type Props = {
   emptyComponent?: Function,
@@ -23,8 +21,6 @@ type Props = {
   selectedPhotoIndex?: number,
   containerStyle?: string,
   savingPhoto?: boolean,
-  handleAddEvidence?: Function,
-  showAddButton?: boolean,
   deletePhoto?: Function,
   isLandscapeMode?:boolean,
   isLargeScreen?: boolean
@@ -37,8 +33,6 @@ const PhotoCarousel = ( {
   selectedPhotoIndex,
   containerStyle,
   savingPhoto,
-  handleAddEvidence,
-  showAddButton = false,
   deletePhoto,
   isLandscapeMode,
   isLargeScreen
@@ -80,95 +74,77 @@ const PhotoCarousel = ( {
     </View>
   ) : null );
 
-  const renderPhotoOrEvidenceButton = ( { item, index } ) => {
-    if ( item === "add" ) {
-      return (
-        <Pressable
-          accessibilityRole="button"
-          onPress={handleAddEvidence}
-          className={`${imageClass} border border-lightGray mt-6`}
-        >
-          <INatIcon name="plus-bold" size={27} color={colors.darkGray} />
-        </Pressable>
-      );
-    }
-
-    return (
-      <>
-        <Pressable
-          accessibilityRole="button"
-          onLongPress={( ) => {
-            if ( deletePhoto ) {
-              setDeletePhotoMode( mode => !mode );
-            }
-          }}
-          onPress={( ) => {
-            if ( deletePhotoMode && deletePhoto ) {
-              deletePhoto( item );
-            } else if ( setSelectedPhotoIndex ) {
-              setSelectedPhotoIndex( index );
-            }
-          }}
+  const renderPhotoOrEvidenceButton = ( { item, index } ) => (
+    <>
+      <Pressable
+        accessibilityRole="button"
+        onLongPress={( ) => {
+          if ( deletePhoto ) {
+            setDeletePhotoMode( mode => !mode );
+          }
+        }}
+        onPress={( ) => {
+          if ( deletePhotoMode && deletePhoto ) {
+            deletePhoto( item );
+          } else if ( setSelectedPhotoIndex ) {
+            setSelectedPhotoIndex( index );
+          }
+        }}
+        className={classnames(
+          imageClass,
+          {
+            "mt-12": containerStyle === "camera",
+            "mt-6": containerStyle !== "camera",
+            "border border-selectionGreen border-4": selectedPhotoIndex === index
+          },
+          {
+            "mx-[3px] mt-0": !isLargeScreen,
+            "mx-[8.5px] mt-0": isLargeScreen && isLandscapeMode,
+            "my-[18px] mt-0": isLargeScreen && !isLandscapeMode
+          }
+        )}
+      >
+        <View
+          testID="PhotoCarousel.photo"
           className={classnames(
-            imageClass,
+            "overflow-hidden",
             {
-              "mt-12": containerStyle === "camera",
-              "mt-6": containerStyle !== "camera",
-              "border border-selectionGreen border-4":
-              selectedPhotoIndex === index
-            },
-            {
-              "mx-[3px] mt-0": !isLargeScreen,
-              "mx-[8.5px] mt-0": isLargeScreen && isLandscapeMode,
-              "my-[18px] mt-0": isLargeScreen && !isLandscapeMode
+              [`${smallPhotoClass}`]: !isLargeScreen,
+              [`${largePhotoClass}`]: isLargeScreen
             }
           )}
         >
-          <View
-            testID="PhotoCarousel.photo"
+          <ImageBackground
+            source={{ uri: item }}
             className={classnames(
-              "overflow-hidden",
-              {
-                [`${smallPhotoClass}`]: !isLargeScreen,
-                [`${largePhotoClass}`]: isLargeScreen
-              }
+              `w-fit h-full flex ${imageClass}`
             )}
           >
-            <ImageBackground
-              source={{ uri: item }}
-              className={classnames(
-                `w-fit h-full flex ${imageClass}`
-              )}
-            >
-              {deletePhotoMode && (
-                <LinearGradient
-                  className="absolute inset-0"
-                  colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
-                />
-              )}
-              {( containerStyle === "camera" && deletePhotoMode ) && (
-                <IconButton
-                  icon="trash-outline"
-                  mode="contained-tonal"
-                  iconColor={theme.colors.onPrimary}
-                  containerColor="rgba(0, 0, 0, 0.5)"
-                  size={30}
-                />
-              )}
-            </ImageBackground>
-          </View>
-        </Pressable>
-        {index === photoUris.length - 1 && renderSkeleton( )}
-      </>
-    );
-  };
-
-  const data = [...photoUris];
-  if ( showAddButton ) data.unshift( "add" );
+            {deletePhotoMode && (
+              <LinearGradient
+                className="absolute inset-0"
+                colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
+              />
+            )}
+            {( containerStyle === "camera" && deletePhotoMode ) && (
+              <IconButton
+                icon="trash-outline"
+                mode="contained-tonal"
+                iconColor={theme.colors.onPrimary}
+                containerColor="rgba(0, 0, 0, 0.5)"
+                size={30}
+              />
+            )}
+          </ImageBackground>
+        </View>
+      </Pressable>
+      {index === photoUris.length - 1 && renderSkeleton( )}
+    </>
+  );
 
   const photoPreviewsList = (
     <FlatList
-      data={data}
+      data={[...photoUris]}
       renderItem={renderPhotoOrEvidenceButton}
       horizontal={!isLargeScreen || !!isLandscapeMode}
       ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}

@@ -2,11 +2,11 @@
 
 import { Heading2 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { IconButton } from "react-native-paper";
+import useTranslation from "sharedHooks/useTranslation";
 
 const MultipleObservationsArrows = ( ): Node => {
   const {
@@ -14,6 +14,7 @@ const MultipleObservationsArrows = ( ): Node => {
     setCurrentObservationIndex,
     observations
   } = useContext( ObsEditContext );
+  const { t } = useTranslation( );
 
   const showNextObservation = ( ) => setCurrentObservationIndex( currentObservationIndex + 1 );
   const showPrevObservation = ( ) => setCurrentObservationIndex( currentObservationIndex - 1 );
