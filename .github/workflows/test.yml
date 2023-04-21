@@ -32,7 +32,7 @@ jobs:
       id: cache
       with:
         path: node_modules
-        key: node-modules-202304218-${{ hashFiles('**/package-lock.json') }}
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
