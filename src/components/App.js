@@ -1,18 +1,14 @@
 // @flow
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
 import RootDrawerNavigator from "navigation/rootDrawerNavigation";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, {
-  useCallback, useContext, useEffect
-} from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Platform } from "react-native";
-import ShareMenu from "react-native-share-menu";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useShare from "sharedHooks/useShare";
 import useUserMe from "sharedHooks/useUserMe";
 
 import { log } from "../../react-native-logs.config";
@@ -25,89 +21,17 @@ type Props = {
   children?: any
 }
 
-type SharedItem = {
-  mimeType: string,
-  data: any | any[],
-  extraData: any,
-};
-
 // this children prop is here for the sake of testing with jest
 // normally we would never do this in code
 const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const { i18n } = useTranslation( );
+  useShare();
 
   // fetch current user from server and save to realm in useEffect
   // this is used for changing locale and also for showing UserCard
   const { remoteUser } = useUserMe( );
-
-  const navigation = useNavigation( );
-  const obsEditContext = React.useContext( ObsEditContext );
-  const {
-    createObservationsFromGroupedPhotos
-  } = useContext( ObsEditContext );
-
-  const handleShare = useCallback( ( item: ?SharedItem ) => {
-    if ( !item ) {
-      return;
-    }
-
-    const { mimeType, data } = item;
-
-    if ( ( !data )
-      || (
-        ( Platform.OS === "android" )
-        && ( ( !mimeType ) || ( !mimeType.startsWith( "image/" ) ) )
-      )
-    ) {
-      return;
-    }
-
-    // Move to ObsEdit screen (new observation, with shared photos).
-
-    const resetObsEditContext = obsEditContext?.resetObsEditContext;
-
-    // Clear previous upload context before navigating
-    if ( resetObsEditContext ) {
-      resetObsEditContext( );
-    }
-
-    // Create a new observation with multiple shared photos (one or more)
-
-    let photoUris:any[];
-
-    if ( Array.isArray( data ) ) {
-      photoUris = data;
-    } else {
-      photoUris = [data];
-    }
-
-    if ( Platform.OS === "android" ) {
-      photoUris = photoUris.map( x => ( { image: { uri: x } } ) );
-    } else {
-      photoUris = photoUris
-        .filter( x => x.mimeType && x.mimeType.startsWith( "image/" ) )
-        .map( x => ( { image: { uri: x.data } } ) );
-    }
-    createObservationsFromGroupedPhotos( [{ photos: photoUris }] );
-
-    navigation.navigate( "ObsEdit" );
-  }, [createObservationsFromGroupedPhotos, navigation, obsEditContext?.resetObsEditContext] );
-
-  useEffect( () => {
-    ShareMenu.getInitialShare( handleShare );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] );
-
-  useEffect( () => {
-    const listener = ShareMenu.addNewShareListener( handleShare );
-
-    return () => {
-      listener.remove();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] );
 
   useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {
