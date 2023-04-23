@@ -1,16 +1,18 @@
 // @flow
 
-import { Image, Pressable, View } from "components/styledComponents";
+import classnames from "classnames";
+import { ImageBackground, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, {
+  useEffect, useState
+} from "react";
 import {
   ActivityIndicator,
   FlatList
 } from "react-native";
-import DeviceInfo from "react-native-device-info";
+import LinearGradient from "react-native-linear-gradient";
+import Modal from "react-native-modal";
 import { IconButton, useTheme } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/tailwindColors";
 
 type Props = {
   emptyComponent?: Function,
@@ -18,11 +20,10 @@ type Props = {
   setSelectedPhotoIndex?: Function,
   selectedPhotoIndex?: number,
   containerStyle?: string,
-  handleDelete?: Function,
   savingPhoto?: boolean,
-  handleAddEvidence?: Function,
-  showAddButton?: boolean,
-  deviceOrientation?: string
+  deletePhoto?: Function,
+  isLandscapeMode?:boolean,
+  isLargeScreen?: boolean
 }
 
 const PhotoCarousel = ( {
@@ -31,114 +32,144 @@ const PhotoCarousel = ( {
   setSelectedPhotoIndex,
   selectedPhotoIndex,
   containerStyle,
-  handleDelete,
   savingPhoto,
-  handleAddEvidence,
-  showAddButton = false,
-  deviceOrientation
-
+  deletePhoto,
+  isLandscapeMode,
+  isLargeScreen
 }: Props ): Node => {
   const theme = useTheme( );
-  const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
-  const isTablet = DeviceInfo.isTablet();
+  const [deletePhotoMode, setDeletePhotoMode] = useState( false );
+  const imageClass = "justify-center items-center";
+  const smallPhotoClass = "rounded-sm w-[42px] h-[42px]";
+  const largePhotoClass = "rounded-md w-[83px] h-[83px]";
 
-  const renderDeleteButton = photoUri => (
-    <IconButton
-      icon="trash-can"
-      iconColor={theme.colors.onPrimary}
-      containerColor={theme.colors.primary}
-      size={30}
-      onPress={( ) => {
-        if ( !handleDelete ) { return; }
-        handleDelete( photoUri );
-      }}
-      className="absolute top-10 right-0"
-    />
+  useEffect( () => {
+    if ( photoUris.length === 0 && deletePhotoMode ) {
+      setDeletePhotoMode( false );
+    }
+  }, [photoUris.length, deletePhotoMode] );
+
+  const renderSkeleton = ( ) => ( savingPhoto ? (
+    <View
+      className={classnames(
+        "flex",
+        {
+          "w-fit h-full": isLargeScreen && isLandscapeMode
+        },
+        imageClass
+      )}
+    >
+      <View
+        className={classnames(
+          "bg-lightGray justify-center",
+          {
+            [`${smallPhotoClass} mx-[3px]`]: !isLargeScreen,
+            [`${largePhotoClass} mx-[8.5px]`]: isLargeScreen && !isLandscapeMode,
+            [`${largePhotoClass}`]: isLargeScreen && isLandscapeMode
+          }
+        )}
+      >
+        <ActivityIndicator />
+      </View>
+    </View>
+  ) : null );
+
+  const renderPhotoOrEvidenceButton = ( { item, index } ) => (
+    <>
+      <Pressable
+        accessibilityRole="button"
+        onLongPress={( ) => {
+          if ( deletePhoto ) {
+            setDeletePhotoMode( mode => !mode );
+          }
+        }}
+        onPress={( ) => {
+          if ( deletePhotoMode && deletePhoto ) {
+            deletePhoto( item );
+          } else if ( setSelectedPhotoIndex ) {
+            setSelectedPhotoIndex( index );
+          }
+        }}
+        className={classnames(
+          imageClass,
+          {
+            "mt-12": containerStyle === "camera",
+            "mt-6": containerStyle !== "camera",
+            "border border-selectionGreen border-4": selectedPhotoIndex === index
+          },
+          {
+            "mx-[3px] mt-0": !isLargeScreen,
+            "mx-[8.5px] mt-0": isLargeScreen && isLandscapeMode,
+            "my-[18px] mt-0": isLargeScreen && !isLandscapeMode
+          }
+        )}
+      >
+        <View
+          testID="PhotoCarousel.photo"
+          className={classnames(
+            "overflow-hidden",
+            {
+              [`${smallPhotoClass}`]: !isLargeScreen,
+              [`${largePhotoClass}`]: isLargeScreen
+            }
+          )}
+        >
+          <ImageBackground
+            source={{ uri: item }}
+            className={classnames(
+              `w-fit h-full flex ${imageClass}`
+            )}
+          >
+            {deletePhotoMode && (
+              <LinearGradient
+                className="absolute inset-0"
+                colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
+              />
+            )}
+            {( containerStyle === "camera" && deletePhotoMode ) && (
+              <IconButton
+                icon="trash-outline"
+                mode="contained-tonal"
+                iconColor={theme.colors.onPrimary}
+                containerColor="rgba(0, 0, 0, 0.5)"
+                size={30}
+              />
+            )}
+          </ImageBackground>
+        </View>
+      </Pressable>
+      {index === photoUris.length - 1 && renderSkeleton( )}
+    </>
   );
 
-  const renderSkeleton = ( ) => {
-    if ( savingPhoto ) {
-      return (
-        <View className={`${imageClass} bg-midGray mt-12`}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-    return null;
-  };
-
-  const renderPhotoOrEvidenceButton = ( { item, index } ) => {
-    if ( index === photoUris.length ) {
-      return (
-        <Pressable
-          onPress={handleAddEvidence}
-          className={`${imageClass} border border-midGray items-center justify-center mt-6`}
-        >
-          <Icon name="add" size={40} color={colors.logInGray} />
-        </Pressable>
-      );
-    }
-
-    const setClassName = ( ) => {
-      let className = imageClass;
-      if ( containerStyle === "camera" ) {
-        className += " mt-12";
-      } else {
-        className += " mt-6";
-      }
-      if ( selectedPhotoIndex === index ) {
-        className += " border border-selectionGreen border-4";
-      }
-      return className;
-    };
-
-    const imageClassName = () => {
-      let className = "w-fit h-full ";
-      if ( deviceOrientation && !isTablet ) {
-        if ( deviceOrientation === "portrait" ) {
-          className += "rotate-0";
-        } else if ( deviceOrientation === "landscapeLeft" ) {
-          className += "-rotate-90";
-        } else if ( deviceOrientation === "landscapeRight" ) {
-          className += "rotate-90";
-        }
-      }
-      return className;
-    };
-
-    return (
-      <>
-        <Pressable
-          onPress={( ) => {
-            if ( setSelectedPhotoIndex ) {
-              setSelectedPhotoIndex( index );
-            }
-          }}
-          className={setClassName( )}
-        >
-          <Image
-            source={{ uri: item }}
-            testID="ObsEdit.photo"
-            className={imageClassName()}
-          />
-          {( containerStyle === "camera" ) && renderDeleteButton( item )}
-        </Pressable>
-        {index === photoUris.length - 1 && renderSkeleton( )}
-      </>
-    );
-  };
-
-  const data = [...photoUris];
-  if ( showAddButton ) data.push( "add" );
-
-  return (
+  const photoPreviewsList = (
     <FlatList
-      data={data}
+      data={[...photoUris]}
       renderItem={renderPhotoOrEvidenceButton}
-      horizontal
+      horizontal={!isLargeScreen || !!isLandscapeMode}
       ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
     />
   );
+
+  return deletePhotoMode ? (
+    <Modal
+      visible
+      onBackdropPress={() => setDeletePhotoMode( false )}
+      backdropOpacity={0}
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={{ margin: 0 }}
+    >
+      <View className={classnames(
+        "absolute top-0 pt-[50px]",
+        {
+          "ml-[18px]": isLargeScreen && isLandscapeMode
+        }
+      )}
+      >
+        {photoPreviewsList}
+      </View>
+    </Modal>
+  ) : photoPreviewsList;
 };
 
 export default PhotoCarousel;

@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
+import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
 import ObsEditProvider from "providers/ObsEditProvider";
@@ -9,11 +10,6 @@ import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
 const mockLocationName = "San Francisco, CA";
-
-jest.mock( "sharedHooks/useLocationName", ( ) => ( {
-  __esModule: true,
-  default: ( ) => mockLocationName
-} ) );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -29,14 +25,13 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 const mockCurrentUser = factory( "LocalUser" );
 
-jest.mock( "components/ObsEdit/ObsEditHeaderTitle" );
-jest.mock( "components/ObsEdit/DeleteObservationDialog" );
-jest.mock( "components/ObsEdit/SaveDialog" );
+jest.mock( "components/ObsEdit/Header" );
+jest.mock( "components/ObsEdit/Sheets/DeleteObservationSheet" );
 jest.mock( "components/MediaViewer/MediaViewerModal" );
 jest.mock( "components/ObsEdit/EvidenceSection" );
 jest.mock( "components/ObsEdit/IdentificationSection" );
 jest.mock( "components/ObsEdit/OtherDataSection" );
-jest.mock( "components/ObsEdit/AddEvidenceModal" );
+jest.mock( "components/ObsEdit/Sheets/AddEvidenceSheet" );
 
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
@@ -47,7 +42,8 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
   <INatPaperProvider>
     <ObsEditContext.Provider value={{
       observations: obs,
-      currentObservation: obs[0]
+      currentObservation: obs[0],
+      setPassesIdentificationTest: jest.fn( )
     }}
     >
       {children}
@@ -62,7 +58,11 @@ const renderObsEdit = ( ) => renderComponent(
 );
 
 describe( "ObsEdit", () => {
-  test( "should not have accessibility errors", async () => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+
+  it( "should not have accessibility errors", async () => {
     const observations = [
       factory( "RemoteObservation", {
         latitude: 37.99,

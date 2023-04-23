@@ -1,7 +1,7 @@
 // @flow
 
 import createIdentification from "api/identifications";
-import Button from "components/SharedComponents/Buttons/Button";
+import { Button } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -88,9 +88,10 @@ const GridItem = ( {
           <Button
             level="focus"
             onPress={agreeWithObservation}
-            text={t( "agree" )}
+            text={t( "Agree" )}
             testID="Identify.agree"
             disabled={wasReviewed}
+            accessibilityHint={t( "Agrees-with-identification" )}
           />
         )}
       </View>

@@ -7,6 +7,7 @@ import { styled } from "nativewind";
 import {
   ActivityIndicator as StyledActivityIndicator,
   Image as StyledImage,
+  ImageBackground as StyledImageBackground,
   KeyboardAvoidingView as StyledKeyboardAvoidingView,
   Modal as StyledModal,
   Platform,
@@ -29,11 +30,6 @@ const SafeAreaView = styled( StyledSafeAreaView );
 // $FlowIgnore
 const ScrollView = styled( StyledScrollView );
 // $FlowIgnore
-const HeaderText = styled(
-  StyledText,
-  Platform.OS === "ios" ? "font-Papyrus-Condensed" : "font-Roboto"
-);
-// $FlowIgnore
 const Text = styled(
   StyledText,
   Platform.OS === "ios" ? "font-Whitney-Medium" : "font-Whitney-Medium-Pro"
@@ -53,6 +49,8 @@ const Image = styled( StyledImage );
 const BottomSheetTextInput = styled( StyledBottomSheetTextInput );
 // $FlowIgnore
 const Modal = styled( StyledModal );
+// $FlowIgnore
+const ImageBackground = styled( StyledImageBackground );
 
 const fontMonoClass: string = ( Platform.OS === "ios" ? "font-Menlo" : "font-monospace" );
 
@@ -60,8 +58,8 @@ export {
   ActivityIndicator,
   BottomSheetTextInput,
   fontMonoClass,
-  HeaderText,
   Image,
+  ImageBackground,
   KeyboardAvoidingView,
   LightText,
   Modal,

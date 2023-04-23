@@ -1,5 +1,5 @@
-import "i18n";
 import "react-native-gesture-handler/jestSetup";
+import "@shopify/flash-list/jestSetup";
 
 import mockBottomSheet from "@gorhom/bottom-sheet/mock";
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock";
@@ -264,5 +264,18 @@ jest.mock( "react-native-orientation-locker", () => ( {
   addDeviceOrientationListener: jest.fn(),
   removeEventListener: jest.fn(),
   lockToPortrait: jest.fn(),
-  removeOrientationListener: jest.fn()
+  removeOrientationListener: jest.fn(),
+  getInitialOrientation: jest.fn()
+} ) );
+
+const mockErrorHandler = error => {
+  console.log( error );
+};
+jest.mock( "react-native-exception-handler", () => ( {
+  setJSExceptionHandler: jest
+    .fn()
+    .mockImplementation( () => mockErrorHandler() ),
+  setNativeExceptionHandler: jest
+    .fn()
+    .mockImplementation( () => mockErrorHandler() )
 } ) );

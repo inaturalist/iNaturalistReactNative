@@ -1,0 +1,762 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PhotoCarousel renders correctly 1`] = `
+<RCTScrollView
+  data={
+    Array [
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
+    ]
+  }
+  getItem={[Function]}
+  getItemCount={[Function]}
+  horizontal={true}
+  keyExtractor={[Function]}
+  onContentSizeChange={[Function]}
+  onLayout={[Function]}
+  onMomentumScrollBegin={[Function]}
+  onMomentumScrollEnd={[Function]}
+  onScroll={[Function]}
+  onScrollBeginDrag={[Function]}
+  onScrollEndDrag={[Function]}
+  removeClippedSubviews={false}
+  renderItem={[Function]}
+  scrollEventThrottle={50}
+  stickyHeaderIndices={Array []}
+  viewabilityConfigCallbackPairs={Array []}
+>
+  <View>
+    <View
+      onLayout={[Function]}
+      style={
+        Array [
+          Object {
+            "flexDirection": "row",
+          },
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Array [
+              Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
+                "marginTop": 24,
+              },
+              Object {
+                "marginLeft": 3,
+                "marginRight": 3,
+              },
+              Object {
+                "marginTop": 0,
+              },
+            ],
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderBottomLeftRadius": 4,
+                  "borderBottomRightRadius": 4,
+                  "borderTopLeftRadius": 4,
+                  "borderTopRightRadius": 4,
+                },
+                Object {
+                  "width": 42,
+                },
+                Object {
+                  "height": 42,
+                },
+              ],
+            ]
+          }
+          testID="PhotoCarousel.photo"
+        >
+          <View
+            accessibilityIgnoresInvertColors={true}
+            style={
+              Array [
+                Array [
+                  Object {
+                    "height": "100%",
+                  },
+                  Object {
+                    "display": "flex",
+                  },
+                  Object {
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://loremflickr.com/640/480",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  },
+                  Object {
+                    "height": "100%",
+                    "width": undefined,
+                  },
+                  undefined,
+                ]
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Array [
+          Object {
+            "flexDirection": "row",
+          },
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Array [
+              Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
+                "marginTop": 24,
+              },
+              Object {
+                "marginLeft": 3,
+                "marginRight": 3,
+              },
+              Object {
+                "marginTop": 0,
+              },
+            ],
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderBottomLeftRadius": 4,
+                  "borderBottomRightRadius": 4,
+                  "borderTopLeftRadius": 4,
+                  "borderTopRightRadius": 4,
+                },
+                Object {
+                  "width": 42,
+                },
+                Object {
+                  "height": 42,
+                },
+              ],
+            ]
+          }
+          testID="PhotoCarousel.photo"
+        >
+          <View
+            accessibilityIgnoresInvertColors={true}
+            style={
+              Array [
+                Array [
+                  Object {
+                    "height": "100%",
+                  },
+                  Object {
+                    "display": "flex",
+                  },
+                  Object {
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://loremflickr.com/640/480",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  },
+                  Object {
+                    "height": "100%",
+                    "width": undefined,
+                  },
+                  undefined,
+                ]
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Array [
+          Object {
+            "flexDirection": "row",
+          },
+          null,
+        ]
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Array [
+              Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
+                "marginTop": 24,
+              },
+              Object {
+                "marginLeft": 3,
+                "marginRight": 3,
+              },
+              Object {
+                "marginTop": 0,
+              },
+            ],
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderBottomLeftRadius": 4,
+                  "borderBottomRightRadius": 4,
+                  "borderTopLeftRadius": 4,
+                  "borderTopRightRadius": 4,
+                },
+                Object {
+                  "width": 42,
+                },
+                Object {
+                  "height": 42,
+                },
+              ],
+            ]
+          }
+          testID="PhotoCarousel.photo"
+        >
+          <View
+            accessibilityIgnoresInvertColors={true}
+            style={
+              Array [
+                Array [
+                  Object {
+                    "height": "100%",
+                  },
+                  Object {
+                    "display": "flex",
+                  },
+                  Object {
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://loremflickr.com/640/480",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  },
+                  Object {
+                    "height": "100%",
+                    "width": undefined,
+                  },
+                  undefined,
+                ]
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`PhotoCarousel renders correctly for large screen 1`] = `
+<RCTScrollView
+  data={
+    Array [
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
+    ]
+  }
+  getItem={[Function]}
+  getItemCount={[Function]}
+  horizontal={false}
+  keyExtractor={[Function]}
+  onContentSizeChange={[Function]}
+  onLayout={[Function]}
+  onMomentumScrollBegin={[Function]}
+  onMomentumScrollEnd={[Function]}
+  onScroll={[Function]}
+  onScrollBeginDrag={[Function]}
+  onScrollEndDrag={[Function]}
+  removeClippedSubviews={false}
+  renderItem={[Function]}
+  scrollEventThrottle={50}
+  stickyHeaderIndices={Array []}
+  viewabilityConfigCallbackPairs={Array []}
+>
+  <View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        accessibilityRole="button"
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Array [
+              Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
+                "marginTop": 24,
+              },
+              Object {
+                "marginBottom": 18,
+                "marginTop": 18,
+              },
+              Object {
+                "marginTop": 0,
+              },
+            ],
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderBottomLeftRadius": 9,
+                  "borderBottomRightRadius": 9,
+                  "borderTopLeftRadius": 9,
+                  "borderTopRightRadius": 9,
+                },
+                Object {
+                  "width": 83,
+                },
+                Object {
+                  "height": 83,
+                },
+              ],
+            ]
+          }
+          testID="PhotoCarousel.photo"
+        >
+          <View
+            accessibilityIgnoresInvertColors={true}
+            style={
+              Array [
+                Array [
+                  Object {
+                    "height": "100%",
+                  },
+                  Object {
+                    "display": "flex",
+                  },
+                  Object {
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://loremflickr.com/640/480",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  },
+                  Object {
+                    "height": "100%",
+                    "width": undefined,
+                  },
+                  undefined,
+                ]
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        accessibilityRole="button"
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Array [
+              Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
+                "marginTop": 24,
+              },
+              Object {
+                "marginBottom": 18,
+                "marginTop": 18,
+              },
+              Object {
+                "marginTop": 0,
+              },
+            ],
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderBottomLeftRadius": 9,
+                  "borderBottomRightRadius": 9,
+                  "borderTopLeftRadius": 9,
+                  "borderTopRightRadius": 9,
+                },
+                Object {
+                  "width": 83,
+                },
+                Object {
+                  "height": 83,
+                },
+              ],
+            ]
+          }
+          testID="PhotoCarousel.photo"
+        >
+          <View
+            accessibilityIgnoresInvertColors={true}
+            style={
+              Array [
+                Array [
+                  Object {
+                    "height": "100%",
+                  },
+                  Object {
+                    "display": "flex",
+                  },
+                  Object {
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://loremflickr.com/640/480",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  },
+                  Object {
+                    "height": "100%",
+                    "width": undefined,
+                  },
+                  undefined,
+                ]
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        accessibilityRole="button"
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Array [
+              Object {
+                "justifyContent": "center",
+              },
+              Object {
+                "alignItems": "center",
+              },
+              Object {
+                "marginTop": 24,
+              },
+              Object {
+                "marginBottom": 18,
+                "marginTop": 18,
+              },
+              Object {
+                "marginTop": 0,
+              },
+            ],
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderBottomLeftRadius": 9,
+                  "borderBottomRightRadius": 9,
+                  "borderTopLeftRadius": 9,
+                  "borderTopRightRadius": 9,
+                },
+                Object {
+                  "width": 83,
+                },
+                Object {
+                  "height": 83,
+                },
+              ],
+            ]
+          }
+          testID="PhotoCarousel.photo"
+        >
+          <View
+            accessibilityIgnoresInvertColors={true}
+            style={
+              Array [
+                Array [
+                  Object {
+                    "height": "100%",
+                  },
+                  Object {
+                    "display": "flex",
+                  },
+                  Object {
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <Image
+              source={
+                Object {
+                  "uri": "https://loremflickr.com/640/480",
+                }
+              }
+              style={
+                Array [
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  },
+                  Object {
+                    "height": "100%",
+                    "width": undefined,
+                  },
+                  undefined,
+                ]
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

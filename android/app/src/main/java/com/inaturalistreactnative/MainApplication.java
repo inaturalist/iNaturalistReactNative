@@ -13,7 +13,6 @@ import com.inaturalistreactnative.newarchitecture.MainApplicationReactNativeHost
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.lugg.RNCConfig.RNCConfigPackage;
-import com.facebook.react.bridge.JSIModulePackage;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
 
 

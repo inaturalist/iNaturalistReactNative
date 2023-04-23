@@ -49,6 +49,12 @@ module.exports = {
     // raise alarms when you try to import things not declared in
     // package.json.
     "import/no-extraneous-dependencies": ["error", {}],
+    "import/extensions": [2, {
+      js: "never",
+      jsx: "never",
+      json: "always"
+    }],
+    indent: ["error", 2],
     "max-len": [
       "error",
       100,
@@ -103,7 +109,7 @@ module.exports = {
 
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "react-native-a11y/has-accessibility-hint": 1,
+    "react-native-a11y/has-accessibility-hint": 0,
     "react-native-a11y/has-accessibility-props": 1,
     "react-native-a11y/has-valid-accessibility-actions": 1,
     "react-native-a11y/has-valid-accessibility-role": 1,

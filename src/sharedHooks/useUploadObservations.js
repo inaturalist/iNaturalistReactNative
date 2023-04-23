@@ -6,6 +6,7 @@ import {
 } from "@sayem314/react-native-keep-awake";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
+import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import useApiToken from "sharedHooks/useApiToken";
 
@@ -19,6 +20,7 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [error, setError] = useState( null );
   const realm = useRealm( );
   const apiToken = useApiToken( );
+  const [totalUploadCount, setTotalUploadCount] = useState( 0 );
 
   const cleanup = ( ) => {
     setUploadInProgress( false );
@@ -27,7 +29,17 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     setError( null );
     deactivateKeepAwake( );
     setProgress( 0 );
+    setTotalUploadCount( 0 );
   };
+
+  useEffect( ( ) => {
+    if ( shouldUpload ) {
+      EventRegister.emit(
+        "INCREMENT_OBSERVATIONS_PROGRESS",
+        allObsToUpload.map( observation => [observation.uuid, 0] )
+      );
+    }
+  }, [shouldUpload, allObsToUpload] );
 
   useEffect( ( ) => {
     const upload = async observationToUpload => {
@@ -56,10 +68,10 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     const continueUpload = shouldUpload && observationToUpload && !!apiToken;
 
     if ( !continueUpload ) {
-      cleanup( );
       return;
     }
 
+    setTotalUploadCount( allObsToUpload.length );
     activateKeepAwake( );
     setUploadInProgress( true );
     upload( observationToUpload );
@@ -71,12 +83,39 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     realm
   ] );
 
+  // // Fake upload in progress
+  // return {
+  //   uploadInProgress: true,
+  //   error: null,
+  //   progress: 0.5,
+  //   stopUpload: cleanup,
+  //   currentUploadIndex: 0,
+  //   totalUploadCount: 1,
+  //   startUpload: ( ) => setShouldUpload( true ),
+  //   allObsToUpload: [{}, {}, {}, {}]
+  // };
+
+  // // Fake error state
+  // return {
+  //   uploadInProgress: false,
+  //   error: "Something went terribly wrong",
+  //   progress: 0,
+  //   stopUpload: cleanup,
+  //   currentUploadIndex: 0,
+  //   totalUploadCount: 1,
+  //   startUpload: ( ) => setShouldUpload( true ),
+  //   allObsToUpload: [{},{},{},{}]
+  // };
+
   return {
     uploadInProgress,
     error,
     progress,
     stopUpload: cleanup,
-    startUpload: ( ) => setShouldUpload( true )
+    currentUploadIndex,
+    totalUploadCount,
+    startUpload: ( ) => setShouldUpload( true ),
+    allObsToUpload
   };
 };
 

@@ -17,6 +17,10 @@ import FocusSquare from "./FocusSquare";
 const SCALE_MAX_ZOOM = 8;
 const SCALE_MIN_ZOOM = 1;
 
+export const PORTRAIT = "portrait";
+export const LANDSCAPE_LEFT = "landscapeLeft";
+export const LANDSCAPE_RIGHT = "landscapeRight";
+
 const ReanimatedCamera = Reanimated.createAnimatedComponent( Camera );
 Reanimated.addWhitelistedNativeProps( {
   zoom: true
@@ -49,6 +53,10 @@ const CameraView = ( { camera, device, orientation }: Props ): Node => {
   } ) );
 
   const singleTapToFocus = async ( { x, y } ) => {
+    // If the device doesn't support focus, we don't want to do anything and show no animation
+    if ( !device.supportsFocus ) {
+      return;
+    }
     try {
       singleTapToFocusAnimation.setValue( 1 );
       setTappedCoordinates( { x, y } );

@@ -6,8 +6,8 @@ import RootDrawerNavigator from "navigation/rootDrawerNavigation";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useTranslation from "sharedHooks/useTranslation";
 import useShare from "sharedHooks/useShare";
 import useUserMe from "sharedHooks/useUserMe";
 
@@ -18,8 +18,8 @@ const logger = log.extend( "App" );
 const { useRealm } = RealmContext;
 
 type Props = {
-  children?: any
-}
+  children?: any,
+};
 
 // this children prop is here for the sake of testing with jest
 // normally we would never do this in code
