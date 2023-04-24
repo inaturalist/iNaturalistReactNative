@@ -44,7 +44,7 @@ class Comment extends Realm.Object {
         property: "comments"
       }
     }
-  }
+  };
 }
 
 export default Comment;

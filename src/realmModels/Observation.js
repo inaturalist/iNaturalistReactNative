@@ -39,7 +39,7 @@ class Observation extends Realm.Object {
     time_observed_at: true,
     user: User && User.USER_FIELDS,
     updated_at: true
-  }
+  };
 
   static async new( obs ) {
     return {
@@ -200,7 +200,7 @@ class Observation extends Realm.Object {
     if ( !photo.photo.url ) { return null; }
 
     return { uri: obs.observation_photos[0].photo.url };
-  }
+  };
 
   static mediumUri = obs => {
     const photo = obs.observation_photos[0];
@@ -211,7 +211,7 @@ class Observation extends Realm.Object {
     const mediumUri = obs.observation_photos[0].photo.url.replace( "square", "medium" );
 
     return { uri: mediumUri };
-  }
+  };
 
   static filterUnsyncedObservations = realm => {
     const unsyncedFilter = "_synced_at == null || _synced_at <= _updated_at";
@@ -220,13 +220,13 @@ class Observation extends Realm.Object {
     const obs = realm?.objects( "Observation" );
     const unsyncedObs = obs.filtered( `${unsyncedFilter} || ${photosUnsyncedFilter}` );
     return unsyncedObs;
-  }
+  };
 
   static isUnsyncedObservation = ( realm, obs ) => {
     const obsList = Observation.filterUnsyncedObservations( realm );
     const unsyncedObs = obsList.filtered( `uuid == "${obs.uuid}"` );
     return unsyncedObs.length > 0;
-  }
+  };
 
   static markRecordUploaded = async ( recordUUID, type, response, realm ) => {
     const { id } = response.results[0];
@@ -433,7 +433,7 @@ class Observation extends Realm.Object {
     }
 
     return response;
-  }
+  };
 
   static schema = {
     name: "Observation",
@@ -475,7 +475,7 @@ class Observation extends Realm.Object {
       updated_at: "date?",
       viewed: "bool?"
     }
-  }
+  };
 
   needsSync( ) {
     const obsPhotosNeedSync = this.observationPhotos

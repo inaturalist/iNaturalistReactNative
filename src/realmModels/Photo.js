@@ -152,7 +152,7 @@ class Photo extends Realm.Object {
       url: "string?",
       localFilePath: "string?"
     }
-  }
+  };
 }
 
 export default Photo;
