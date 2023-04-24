@@ -68,6 +68,7 @@ jobs:
   
     - name: Rebuild detox from cache
       if: steps.cache.outputs.cache-hit == 'true'
+      # Currently, (Detox 20) those two commands are macOS only
       run: npx detox clean-framework-cache && npx detox build-framework-cache
 
     - name: Install Dependencies
