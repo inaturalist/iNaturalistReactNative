@@ -115,7 +115,7 @@ class Taxon extends Realm.Object {
       rank: "string?",
       rank_level: "int?"
     }
-  }
+  };
 }
 
 export default Taxon;

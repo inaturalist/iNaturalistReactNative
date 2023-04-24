@@ -27,7 +27,7 @@ const setStyles = ( {
   className
 } ) => {
   let buttonClass = "rounded-lg flex-row justify-center items-center py-[13px] px-[10px]";
-  let textClass = "text-white";
+  let textClass = "text-white text-center";
 
   if ( className ) {
     buttonClass = buttonClass.concat( " ", className );

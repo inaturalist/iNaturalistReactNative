@@ -1,4 +1,4 @@
-import faker from "faker";
+import { faker } from "@faker-js/faker";
 import { readExif } from "react-native-exif-reader";
 import {
   formatExifDateAsString,
@@ -24,19 +24,19 @@ const mockReadExif = jest.fn( async _photoUri => ( {
 } ) );
 readExif.mockImplementation( mockReadExif );
 
-describe( "parseExifDateToLocalTimezone", ( ) => {
-  it( "should parse a date string in the format react-native-exif-reader returns", ( ) => {
+describe( "parseExifDateToLocalTimezone", () => {
+  it( "should parse a date string in the format react-native-exif-reader returns", () => {
     const date = parseExifDateToLocalTimezone( EXPECTED_EXIF_DATE );
     expect( date ).toBeInstanceOf( Date );
-    expect( date.getFullYear( ) ).toEqual( 2018 );
-    expect( date.getMonth( ) ).toEqual( 2 );
-    expect( date.getDate( ) ).toEqual( 7 );
+    expect( date.getFullYear() ).toEqual( 2018 );
+    expect( date.getMonth() ).toEqual( 2 );
+    expect( date.getDate() ).toEqual( 7 );
   } );
 } );
 
-describe( "parseExif", ( ) => {
-  it( "should parse and return exif data when given a photo uri", async ( ) => {
-    const exif = await parseExif( faker.image.imageUrl( ) );
+describe( "parseExif", () => {
+  it( "should parse and return exif data when given a photo uri", async () => {
+    const exif = await parseExif( faker.image.imageUrl() );
     expect( exif.date ).toEqual( EXPECTED_EXIF_DATE );
     expect( exif.latitude ).toEqual( EXPECTED_EXIF_LATITUDE );
     expect( exif.longitude ).toEqual( EXPECTED_EXIF_LONGITUDE );
@@ -44,8 +44,8 @@ describe( "parseExif", ( ) => {
   } );
 } );
 
-describe( "formatExifDateAsString", ( ) => {
-  it( "should return date in a string format ready to upload to server", ( ) => {
+describe( "formatExifDateAsString", () => {
+  it( "should return date in a string format ready to upload to server", () => {
     const dateString = formatExifDateAsString( EXPECTED_EXIF_DATE );
     expect( typeof dateString ).toBe( "string" );
   } );

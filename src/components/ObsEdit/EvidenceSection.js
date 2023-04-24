@@ -1,47 +1,51 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
+import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
-  Body3, Body4, Heading4, INatIcon,
-  PhotoCarousel
+  Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
-import { ActivityIndicator, Pressable, View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import {
   differenceInCalendarYears,
   isFuture,
   parseISO
 } from "date-fns";
-import { t } from "i18next";
-import { ObsEditContext } from "providers/contexts";
+import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
+  useCallback,
   useContext, useEffect, useRef, useState
 } from "react";
 import { useTheme } from "react-native-paper";
-import fetchUserLocation from "sharedHelpers/fetchUserLocation";
+import Photo from "realmModels/Photo";
+import useLocationFetching from "sharedHooks/useLocationFetching";
+import useTranslation from "sharedHooks/useTranslation";
 
 import DatePicker from "./DatePicker";
+import EvidenceList from "./EvidenceList";
+import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
-type Props = {
-  handleSelection: Function,
-  photoUris: Array<string>,
-  handleAddEvidence?: Function
-}
+const { useRealm } = RealmContext;
 
-const INITIAL_POSITIONAL_ACCURACY = 99999;
-const TARGET_POSITIONAL_ACCURACY = 10;
-const LOCATION_FETCH_INTERVAL = 1000;
+const DESIRED_LOCATION_ACCURACY = 4000000;
 
-const EvidenceSection = ( {
-  handleSelection,
-  handleAddEvidence,
-  photoUris
-}: Props ): Node => {
+const EvidenceSection = ( ): Node => {
+  const { t } = useTranslation( );
+  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
+  const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const theme = useTheme( );
   const {
     currentObservation,
-    updateObservationKeys
+    observations,
+    setObservations,
+    setPassesEvidenceTest
   } = useContext( ObsEditContext );
+  const obsPhotos = currentObservation?.observationPhotos;
+  const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
+    obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
+  ) : [];
   const mountedRef = useRef( true );
   const navigation = useNavigation( );
 
@@ -49,20 +53,8 @@ const EvidenceSection = ( {
     navigation.navigate( "LocationPicker", { goBackOnSave: true } );
   };
 
-  const latitude = currentObservation?.latitude;
-  const longitude = currentObservation?.longitude;
-  const hasLocation = latitude || longitude;
-
-  const [shouldFetchLocation, setShouldFetchLocation] = useState(
-    currentObservation
-    && !currentObservation._created_at
-    && !currentObservation._synced_at
-    && !hasLocation
-  );
-  const [numLocationFetches, setNumLocationFetches] = useState( 0 );
-  const [fetchingLocation, setFetchingLocation] = useState( false );
-  const [positionalAccuracy, setPositionalAccuracy] = useState( INITIAL_POSITIONAL_ACCURACY );
-  const [lastLocationFetchTime, setLastLocationFetchTime] = useState( 0 );
+  const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
+  const handleAddEvidence = ( ) => setShowAddEvidenceSheet( true );
 
   const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
 
@@ -82,101 +74,64 @@ const EvidenceSection = ( {
     };
   }, [] );
 
-  useEffect( ( ) => {
-    if ( !currentObservation ) return;
-    if ( !shouldFetchLocation ) return;
-    if ( fetchingLocation ) return;
+  const {
+    latitude,
+    longitude,
+    hasLocation,
+    shouldFetchLocation
+  } = useLocationFetching( mountedRef );
 
-    const fetchLocation = async () => {
-      // If the component is gone, you won't be able to updated it
-      if ( !mountedRef.current ) return;
-      if ( !shouldFetchLocation ) return;
-
-      setFetchingLocation( false );
-
-      const location = await fetchUserLocation( );
-
-      // If we're still receiving location updates and location is blank,
-      // then we don't know where we are any more and the obs should update
-      // to reflect that
-      updateObservationKeys( {
-        place_guess: location?.place_guess,
-        latitude: location?.latitude,
-        longitude: location?.longitude,
-        positional_accuracy: location?.positional_accuracy
-      } );
-
-      // The local state version of positionalAccuracy needs to be a number,
-      // so don't set it to
-      const newPositionalAccuracy = location?.positional_accuracy || INITIAL_POSITIONAL_ACCURACY;
-      setPositionalAccuracy( newPositionalAccuracy );
-      if ( newPositionalAccuracy > TARGET_POSITIONAL_ACCURACY ) {
-        // This is just here to make absolutely sure the effect runs again in a second
-        setTimeout(
-          ( ) => setNumLocationFetches( numFetches => numFetches + 1 ),
-          LOCATION_FETCH_INTERVAL
-        );
-      }
-    };
-
-    if (
-      // If we're already fetching we don't need to fetch again
-      !fetchingLocation
-      // We only need to fetch when we're above the target
-      && positionalAccuracy >= TARGET_POSITIONAL_ACCURACY
-      // Don't fetch location more than once a second
-      && Date.now() - lastLocationFetchTime >= LOCATION_FETCH_INTERVAL
-    ) {
-      setFetchingLocation( true );
-      setLastLocationFetchTime( Date.now() );
-      fetchLocation( );
-    } else if ( positionalAccuracy < TARGET_POSITIONAL_ACCURACY ) {
-      setShouldFetchLocation( false );
+  const displayPlaceName = ( ) => {
+    let placeName = "";
+    if ( currentObservation.place_guess ) {
+      placeName = currentObservation.place_guess;
+    } else if ( shouldFetchLocation ) {
+      placeName = t( "Fetching-location" );
     }
-  }, [
-    currentObservation,
-    fetchingLocation,
-    lastLocationFetchTime,
-    numLocationFetches,
-    positionalAccuracy,
-    setFetchingLocation,
-    setLastLocationFetchTime,
-    setNumLocationFetches,
-    setShouldFetchLocation,
-    shouldFetchLocation,
-    updateObservationKeys
-  ] );
-
-  const displayLocation = ( ) => {
-    let location = "";
-    if ( latitude ) {
-      location += `Lat: ${formatDecimal( latitude )}`;
-    }
-    if ( longitude ) {
-      location += `, Lon: ${formatDecimal( longitude )}`;
-    }
-    if ( currentObservation.positional_accuracy ) {
-      location += `, Acc: ${currentObservation.positional_accuracy.toFixed( 0 )}`;
-    }
-    return location;
+    return placeName ? <Body3>{placeName}</Body3> : null;
   };
 
-  const hasValidLocation = ( ) => {
+  const displayLocation = ( ) => {
+    if ( shouldFetchLocation && ( !latitude || !longitude ) ) {
+      return t( "Stay-on-this-screen" );
+    }
+    if ( !latitude || !longitude ) {
+      return t( "No-Location" );
+    }
+    return t( "Lat-Lon-Acc", {
+      latitude: formatDecimal( latitude ),
+      longitude: formatDecimal( longitude ),
+      accuracy: currentObservation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
+    } );
+  };
+
+  const hasPhotoOrSound = useCallback( ( ) => {
+    if ( currentObservation?.observationPhotos?.length > 0
+      || currentObservation?.observationSounds?.length > 0 ) {
+      return true;
+    }
+    return false;
+  }, [currentObservation] );
+
+  const hasValidLocation = useCallback( ( ) => {
     if ( hasLocation
       && ( latitude !== 0 && longitude !== 0 )
       && ( latitude >= -90 && latitude <= 90 )
       && ( longitude >= -180 && longitude <= 180 )
-      && (
-        currentObservation.positional_accuracy > 0
-        && currentObservation.positional_accuracy <= 4000 )
+      && ( currentObservation.positional_accuracy === null || (
+        currentObservation.positional_accuracy
+        && currentObservation.positional_accuracy <= DESIRED_LOCATION_ACCURACY )
+      )
     ) {
       return true;
     }
     return false;
-  };
+  }, [currentObservation, longitude, latitude, hasLocation] );
 
-  const hasValidDate = ( ) => {
-    const observationDate = parseISO( currentObservation?.observed_on_string );
+  const hasValidDate = useCallback( ( ) => {
+    const observationDate = parseISO(
+      currentObservation?.observed_on_string || currentObservation?.time_observed_at
+    );
     if ( observationDate
       && !isFuture( observationDate )
       && differenceInCalendarYears( observationDate, new Date( ) ) <= 130
@@ -184,20 +139,72 @@ const EvidenceSection = ( {
       return true;
     }
     return false;
-  };
+  }, [currentObservation] );
 
-  const passesEvidenceTest = ( ) => {
+  const passesEvidenceTest = useCallback( ( ) => {
     if ( shouldFetchLocation ) {
       return null;
     }
-    if ( hasValidLocation( ) && hasValidDate( ) ) {
+    if ( hasValidLocation( ) && hasValidDate( ) && hasPhotoOrSound( ) ) {
       return true;
     }
     return false;
+  }, [shouldFetchLocation, hasValidLocation, hasValidDate, hasPhotoOrSound] );
+
+  const showModal = ( ) => setMediaViewerVisible( true );
+  const hideModal = ( ) => setMediaViewerVisible( false );
+
+  const realm = useRealm( );
+
+  const setPhotos = uris => {
+    const updatedObservations = observations;
+    const updatedObsPhotos = Array.from( currentObservation.observationPhotos )
+      .filter( obsPhoto => {
+        const { photo } = obsPhoto;
+        if ( uris.includes( photo.url || photo.localFilePath ) ) {
+          return obsPhoto;
+        }
+        return false;
+      } );
+    // when updatedObsPhotos is an empty array, Realm apparently writes to the
+    // db immediately when you assign, so if you don't do this in write
+    // callback it raises an exception
+    realm?.write( ( ) => {
+      currentObservation.observationPhotos = updatedObsPhotos;
+    } );
+    setObservations( [...updatedObservations] );
   };
+
+  const handleSelection = photo => {
+    setInitialPhotoSelected( photo );
+    showModal( );
+  };
+
+  useEffect( ( ) => {
+    // we're only showing the Missing Evidence Sheet if location/date are missing
+    // but not if there is a missing photo or sound
+    // so the ObsEditContext version of passing evidence test
+    // will be different from what shows here with the red warning/green checkmark
+    if ( hasValidLocation( ) && hasValidDate( ) ) {
+      setPassesEvidenceTest( true );
+    }
+  }, [hasValidLocation, hasValidDate, setPassesEvidenceTest] );
 
   return (
     <View className="mx-6 mt-6">
+      <MediaViewerModal
+        mediaViewerVisible={mediaViewerVisible}
+        hideModal={hideModal}
+        initialPhotoSelected={initialPhotoSelected}
+        photoUris={photoUris}
+        setPhotoUris={setPhotos}
+      />
+      {showAddEvidenceSheet && (
+        <AddEvidenceSheet
+          setShowAddEvidenceSheet={setShowAddEvidenceSheet}
+          disableAddingMoreEvidence={photoUris.length >= MAX_PHOTOS_ALLOWED}
+        />
+      )}
       <View className="flex-row">
         <Heading4>{t( "EVIDENCE" )}</Heading4>
         <View className="ml-3">
@@ -209,19 +216,19 @@ const EvidenceSection = ( {
           )}
         </View>
       </View>
-      <PhotoCarousel
+      <EvidenceList
         photoUris={photoUris}
         setSelectedPhotoIndex={handleSelection}
-        showAddButton
         handleAddEvidence={handleAddEvidence}
       />
       <View className="flex-row flex-nowrap my-4">
         <INatIcon size={14} name="map-marker-outline" />
         <Pressable accessibilityRole="button" className="ml-5" onPress={navToLocationPicker}>
-          <Body3>{currentObservation.place_guess}</Body3>
-          {shouldFetchLocation && <ActivityIndicator className="mx-1" />}
-          {shouldFetchLocation && <Body4 className="mx-1">{`(${numLocationFetches})`}</Body4>}
-          <Body4>{displayLocation( ) || t( "No-Location" )}</Body4>
+          {displayPlaceName( )}
+          {/* $FlowIgnore */}
+          <Body4 className={( !latitude || !longitude ) && "color-warningRed"}>
+            {displayLocation( )}
+          </Body4>
         </Pressable>
       </View>
       <DatePicker currentObservation={currentObservation} />

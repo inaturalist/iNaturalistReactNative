@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
+exports[`PhotoCarousel renders correctly 1`] = `
 <RCTScrollView
   data={
-    Array [
-      "http://placeimg.com/640/480",
-      "http://placeimg.com/640/480",
-      "http://placeimg.com/640/480",
+    [
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
     ]
   }
   getItem={[Function]}
@@ -23,15 +23,15 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
   removeClippedSubviews={false}
   renderItem={[Function]}
   scrollEventThrottle={50}
-  stickyHeaderIndices={Array []}
-  viewabilityConfigCallbackPairs={Array []}
+  stickyHeaderIndices={[]}
+  viewabilityConfigCallbackPairs={[]}
 >
   <View>
     <View
       onLayout={[Function]}
       style={
-        Array [
-          Object {
+        [
+          {
             "flexDirection": "row",
           },
           null,
@@ -53,22 +53,22 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
-                "marginLeft": 8.5,
-                "marginRight": 8.5,
+              {
+                "marginLeft": 3,
+                "marginRight": 3,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -77,22 +77,22 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
-                  "borderBottomLeftRadius": 9,
-                  "borderBottomRightRadius": 9,
-                  "borderTopLeftRadius": 9,
-                  "borderTopRightRadius": 9,
+                {
+                  "borderBottomLeftRadius": 4,
+                  "borderBottomRightRadius": 4,
+                  "borderTopLeftRadius": 4,
+                  "borderTopRightRadius": 4,
                 },
-                Object {
-                  "width": 83,
+                {
+                  "width": 42,
                 },
-                Object {
-                  "height": 83,
+                {
+                  "height": 42,
                 },
               ],
             ]
@@ -102,18 +102,18 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -122,20 +122,20 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
           >
             <Image
               source={
-                Object {
-                  "uri": "http://placeimg.com/640/480",
+                {
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },
@@ -150,8 +150,8 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
     <View
       onLayout={[Function]}
       style={
-        Array [
-          Object {
+        [
+          {
             "flexDirection": "row",
           },
           null,
@@ -173,22 +173,22 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
-                "marginLeft": 8.5,
-                "marginRight": 8.5,
+              {
+                "marginLeft": 3,
+                "marginRight": 3,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -197,22 +197,22 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
-                  "borderBottomLeftRadius": 9,
-                  "borderBottomRightRadius": 9,
-                  "borderTopLeftRadius": 9,
-                  "borderTopRightRadius": 9,
+                {
+                  "borderBottomLeftRadius": 4,
+                  "borderBottomRightRadius": 4,
+                  "borderTopLeftRadius": 4,
+                  "borderTopRightRadius": 4,
                 },
-                Object {
-                  "width": 83,
+                {
+                  "width": 42,
                 },
-                Object {
-                  "height": 83,
+                {
+                  "height": 42,
                 },
               ],
             ]
@@ -222,18 +222,18 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -242,20 +242,20 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
           >
             <Image
               source={
-                Object {
-                  "uri": "http://placeimg.com/640/480",
+                {
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },
@@ -270,8 +270,8 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
     <View
       onLayout={[Function]}
       style={
-        Array [
-          Object {
+        [
+          {
             "flexDirection": "row",
           },
           null,
@@ -293,22 +293,22 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
-                "marginLeft": 8.5,
-                "marginRight": 8.5,
+              {
+                "marginLeft": 3,
+                "marginRight": 3,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -317,22 +317,22 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
-                  "borderBottomLeftRadius": 9,
-                  "borderBottomRightRadius": 9,
-                  "borderTopLeftRadius": 9,
-                  "borderTopRightRadius": 9,
+                {
+                  "borderBottomLeftRadius": 4,
+                  "borderBottomRightRadius": 4,
+                  "borderTopLeftRadius": 4,
+                  "borderTopRightRadius": 4,
                 },
-                Object {
-                  "width": 83,
+                {
+                  "width": 42,
                 },
-                Object {
-                  "height": 83,
+                {
+                  "height": 42,
                 },
               ],
             ]
@@ -342,18 +342,18 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -362,20 +362,20 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
           >
             <Image
               source={
-                Object {
-                  "uri": "http://placeimg.com/640/480",
+                {
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },
@@ -391,18 +391,18 @@ exports[`PhotoCarousel renders correctly for lg breakpoint 1`] = `
 </RCTScrollView>
 `;
 
-exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
+exports[`PhotoCarousel renders correctly for large screen 1`] = `
 <RCTScrollView
   data={
-    Array [
-      "http://placeimg.com/640/480",
-      "http://placeimg.com/640/480",
-      "http://placeimg.com/640/480",
+    [
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
+      "https://loremflickr.com/640/480",
     ]
   }
   getItem={[Function]}
   getItemCount={[Function]}
-  horizontal={true}
+  horizontal={false}
   keyExtractor={[Function]}
   onContentSizeChange={[Function]}
   onLayout={[Function]}
@@ -414,20 +414,13 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
   removeClippedSubviews={false}
   renderItem={[Function]}
   scrollEventThrottle={50}
-  stickyHeaderIndices={Array []}
-  viewabilityConfigCallbackPairs={Array []}
+  stickyHeaderIndices={[]}
+  viewabilityConfigCallbackPairs={[]}
 >
   <View>
     <View
       onLayout={[Function]}
-      style={
-        Array [
-          Object {
-            "flexDirection": "row",
-          },
-          null,
-        ]
-      }
+      style={null}
     >
       <View
         accessibilityRole="button"
@@ -444,22 +437,22 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
-                "marginLeft": 3,
-                "marginRight": 3,
+              {
+                "marginBottom": 18,
+                "marginTop": 18,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -468,22 +461,22 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
-                  "borderBottomLeftRadius": 4,
-                  "borderBottomRightRadius": 4,
-                  "borderTopLeftRadius": 4,
-                  "borderTopRightRadius": 4,
+                {
+                  "borderBottomLeftRadius": 9,
+                  "borderBottomRightRadius": 9,
+                  "borderTopLeftRadius": 9,
+                  "borderTopRightRadius": 9,
                 },
-                Object {
-                  "width": 42,
+                {
+                  "width": 83,
                 },
-                Object {
-                  "height": 42,
+                {
+                  "height": 83,
                 },
               ],
             ]
@@ -493,18 +486,18 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -513,20 +506,20 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
           >
             <Image
               source={
-                Object {
-                  "uri": "http://placeimg.com/640/480",
+                {
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },
@@ -540,14 +533,7 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
     </View>
     <View
       onLayout={[Function]}
-      style={
-        Array [
-          Object {
-            "flexDirection": "row",
-          },
-          null,
-        ]
-      }
+      style={null}
     >
       <View
         accessibilityRole="button"
@@ -564,22 +550,22 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
-                "marginLeft": 3,
-                "marginRight": 3,
+              {
+                "marginBottom": 18,
+                "marginTop": 18,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -588,22 +574,22 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
-                  "borderBottomLeftRadius": 4,
-                  "borderBottomRightRadius": 4,
-                  "borderTopLeftRadius": 4,
-                  "borderTopRightRadius": 4,
+                {
+                  "borderBottomLeftRadius": 9,
+                  "borderBottomRightRadius": 9,
+                  "borderTopLeftRadius": 9,
+                  "borderTopRightRadius": 9,
                 },
-                Object {
-                  "width": 42,
+                {
+                  "width": 83,
                 },
-                Object {
-                  "height": 42,
+                {
+                  "height": 83,
                 },
               ],
             ]
@@ -613,18 +599,18 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -633,20 +619,20 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
           >
             <Image
               source={
-                Object {
-                  "uri": "http://placeimg.com/640/480",
+                {
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },
@@ -660,14 +646,7 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
     </View>
     <View
       onLayout={[Function]}
-      style={
-        Array [
-          Object {
-            "flexDirection": "row",
-          },
-          null,
-        ]
-      }
+      style={null}
     >
       <View
         accessibilityRole="button"
@@ -684,22 +663,22 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
-                "marginLeft": 3,
-                "marginRight": 3,
+              {
+                "marginBottom": 18,
+                "marginTop": 18,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -708,22 +687,22 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
-                  "borderBottomLeftRadius": 4,
-                  "borderBottomRightRadius": 4,
-                  "borderTopLeftRadius": 4,
-                  "borderTopRightRadius": 4,
+                {
+                  "borderBottomLeftRadius": 9,
+                  "borderBottomRightRadius": 9,
+                  "borderTopLeftRadius": 9,
+                  "borderTopRightRadius": 9,
                 },
-                Object {
-                  "width": 42,
+                {
+                  "width": 83,
                 },
-                Object {
-                  "height": 42,
+                {
+                  "height": 83,
                 },
               ],
             ]
@@ -733,18 +712,18 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -753,20 +732,20 @@ exports[`PhotoCarousel renders correctly for sm breakpoint 1`] = `
           >
             <Image
               source={
-                Object {
-                  "uri": "http://placeimg.com/640/480",
+                {
+                  "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },

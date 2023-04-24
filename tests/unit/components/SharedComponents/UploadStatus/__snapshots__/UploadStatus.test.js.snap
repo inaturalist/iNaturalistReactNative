@@ -4,18 +4,18 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
 <View
   accessible={true}
   style={
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "alignItems": "center",
         },
-        Object {
+        {
           "justifyContent": "center",
         },
-        Object {
+        {
           "width": 49,
         },
-        Object {
+        {
           "height": 67,
         },
       ],
@@ -24,9 +24,9 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
 >
   <View
     style={
-      Array [
-        Array [
-          Object {
+      [
+        [
+          {
             "position": "absolute",
           },
         ],
@@ -37,18 +37,18 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
       allowFontScaling={false}
       selectable={false}
       style={
-        Array [
-          Object {
+        [
+          {
             "color": "#454545",
             "fontSize": 15,
           },
           undefined,
-          Object {
+          {
             "fontFamily": "INatIcon",
             "fontStyle": "normal",
             "fontWeight": "normal",
           },
-          Object {},
+          {},
         ]
       }
     >
@@ -60,7 +60,7 @@ exports[`UploadStatus displays progress bar when progress is greater than 5% cor
     activeStrokeWidth={2}
     inActiveStrokeOpacity={0}
     maxValue={1}
-    radius={16.5}
+    radius={18}
     showProgressValue={false}
     testID="UploadStatus.CircularProgress"
     value={0.5}
@@ -72,18 +72,18 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
 <View
   accessible={true}
   style={
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "alignItems": "center",
         },
-        Object {
+        {
           "justifyContent": "center",
         },
-        Object {
+        {
           "width": 49,
         },
-        Object {
+        {
           "height": 67,
         },
       ],
@@ -93,7 +93,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
   <View
     collapsable={false}
     style={
-      Object {
+      {
         "alignSelf": undefined,
         "backgroundColor": "transparent",
         "borderRadius": 24.5,
@@ -107,7 +107,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
         "position": undefined,
         "right": undefined,
         "shadowColor": "#000",
-        "shadowOffset": Object {
+        "shadowOffset": {
           "height": 0,
           "width": 0,
         },
@@ -124,7 +124,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
     <View
       collapsable={false}
       style={
-        Object {
+        {
           "backgroundColor": "transparent",
           "borderColor": "rgba(121, 116, 126, 1)",
           "borderRadius": 24.5,
@@ -133,7 +133,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
           "flex": 1,
           "overflow": "hidden",
           "shadowColor": "#000",
-          "shadowOffset": Object {
+          "shadowOffset": {
             "height": 0,
             "width": 0,
           },
@@ -147,7 +147,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
         accessibilityComponentType="button"
         accessibilityRole="button"
         accessibilityState={
-          Object {
+          {
             "disabled": true,
           }
         }
@@ -157,7 +157,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
         collapsable={false}
         focusable={true}
         hitSlop={
-          Object {
+          {
             "bottom": 6,
             "left": 6,
             "right": 6,
@@ -174,18 +174,18 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Object {
+          [
+            {
               "overflow": "hidden",
             },
             false,
-            Array [
-              Object {
+            [
+              {
                 "alignItems": "center",
                 "flexGrow": 1,
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "borderRadius": 24.5,
               },
             ],
@@ -200,30 +200,30 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
           pointerEvents="none"
           selectable={false}
           style={
-            Array [
-              Object {
+            [
+              {
                 "color": "#454545",
                 "fontSize": 33,
               },
-              Array [
-                Object {
+              [
+                {
                   "lineHeight": 33,
-                  "transform": Array [
-                    Object {
+                  "transform": [
+                    {
                       "scaleX": 1,
                     },
                   ],
                 },
-                Object {
+                {
                   "backgroundColor": "transparent",
                 },
               ],
-              Object {
+              {
                 "fontFamily": "Material Design Icons",
                 "fontStyle": "normal",
                 "fontWeight": "normal",
               },
-              Object {},
+              {},
             ]
           }
         >

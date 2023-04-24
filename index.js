@@ -91,16 +91,16 @@ const AppWithProviders = ( ) => (
     <RealmProvider>
       <SafeAreaProvider>
         <INatPaperProvider>
-          <BottomSheetModalProvider>
-            <GestureHandlerRootView className="flex-1">
+          <GestureHandlerRootView className="flex-1">
+            <BottomSheetModalProvider>
               {/* NavigationContainer needs to be nested above ObsEditProvider */}
               <NavigationContainer>
                 <ObsEditProvider>
                   <App />
                 </ObsEditProvider>
               </NavigationContainer>
-            </GestureHandlerRootView>
-          </BottomSheetModalProvider>
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
         </INatPaperProvider>
       </SafeAreaProvider>
     </RealmProvider>

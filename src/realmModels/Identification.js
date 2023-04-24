@@ -62,7 +62,7 @@ class Identification extends Realm.Object {
         property: "identifications"
       }
     }
-  }
+  };
 }
 
 export default Identification;

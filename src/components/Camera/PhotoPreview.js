@@ -12,14 +12,16 @@ type Props = {
   photoUris: Array<string>,
   setPhotoUris: Function,
   savingPhoto: boolean,
-  screenBreakpoint: string
+  isLandscapeMode?: boolean,
+  isLargeScreen?: boolean
 }
 
 const PhotoPreview = ( {
   photoUris,
   setPhotoUris,
   savingPhoto,
-  screenBreakpoint
+  isLandscapeMode,
+  isLargeScreen
 }: Props ): Node => {
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
@@ -37,11 +39,36 @@ const PhotoPreview = ( {
     deletePhotoFromObservation( photoUri, photoUris, setPhotoUris );
   };
 
-  const emptyDescription = ( ) => (
-    <Text className="text-white text-xl ml-3">
+  let noPhotosNotice = (
+    <Text
+      className={classnames(
+        "text-white",
+        "text-center",
+        "text-xl",
+        "w-full"
+      )}
+    >
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
+  if ( isLargeScreen && !isLandscapeMode ) {
+    noPhotosNotice = (
+      <Text
+        className={classnames(
+          "text-white",
+          "text-center",
+          "text-xl",
+          "absolute",
+          "w-[500px]",
+          "-rotate-90",
+          "left-[-190px]",
+          "top-[50%]"
+        )}
+      >
+        {t( "Photos-you-take-will-appear-here" )}
+      </Text>
+    );
+  }
 
   return (
     <>
@@ -53,22 +80,30 @@ const PhotoPreview = ( {
         setPhotoUris={setPhotoUris}
       />
       <View className={classnames(
-        "bg-black pb-[18px] pt-[50px]",
+        "bg-black",
         {
-          "h-[110px]": ["sm", "md"].includes( screenBreakpoint ),
-          "h-[151px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
-        }
+          "h-[110px] pb-[18px] pt-[50px]": !isLargeScreen,
+          "h-[151px]": isLargeScreen && isLandscapeMode,
+          "w-[120px]": isLargeScreen && !isLandscapeMode
+        },
+        "justify-center"
       )}
       >
-        <PhotoCarousel
-          deletePhoto={deletePhoto}
-          photoUris={photoUris}
-          emptyComponent={emptyDescription}
-          containerStyle="camera"
-          setSelectedPhotoIndex={handleSelection}
-          savingPhoto={savingPhoto}
-          screenBreakpoint={screenBreakpoint}
-        />
+        {
+          photoUris.length === 0
+            ? noPhotosNotice
+            : (
+              <PhotoCarousel
+                deletePhoto={deletePhoto}
+                photoUris={photoUris}
+                containerStyle="camera"
+                setSelectedPhotoIndex={handleSelection}
+                savingPhoto={savingPhoto}
+                isLargeScreen={isLargeScreen}
+                isLandscapeMode={isLandscapeMode}
+              />
+            )
+        }
       </View>
     </>
   );

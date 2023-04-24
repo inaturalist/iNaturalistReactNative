@@ -26,7 +26,9 @@ const DatePicker = ( { currentObservation }: Props ): Node => {
     closeModal();
   };
 
-  const displayDate = ( ) => displayDateTimeObsEdit( currentObservation?.observed_on_string ) || "";
+  const displayDate = ( ) => displayDateTimeObsEdit(
+    currentObservation?.observed_on_string || currentObservation?.time_observed_at
+  );
 
   return (
     <>
@@ -42,7 +44,8 @@ const DatePicker = ( { currentObservation }: Props ): Node => {
         className="flex-row flex-nowrap items-center"
       >
         <INatIcon size={14} name="clock-outline" />
-        <Body3 testID="ObsEdit.time" className="ml-5">
+        {/* $FlowIgnore */}
+        <Body3 testID="ObsEdit.time" className={`ml-5 ${!displayDate( ) && "color-warningRed"}`}>
           {displayDate( ) || t( "Add-Date-Time" )}
         </Body3>
       </Pressable>
