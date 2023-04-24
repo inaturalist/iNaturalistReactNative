@@ -205,7 +205,8 @@ jest.mock( "react-native-fs", ( ) => {
     moveFile: async ( ) => "testdata",
     stat: jest.fn( ( ) => ( {
       mtime: 123
-    } ) )
+    } ) ),
+    readFile: jest.fn( ( ) => "testdata" )
   };
 
   return RNFS;
