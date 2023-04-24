@@ -10,11 +10,6 @@ import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
 
-import com.lugg.RNCConfig.RNCConfigPackage;
-import com.facebook.react.bridge.JSIModulePackage;
-import com.reactnativecommunity.cameraroll.CameraRollPackage;
-
-
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -30,7 +25,6 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          packages.add(new RNCConfigPackage());
           return packages;
         }
 
@@ -38,7 +32,6 @@ public class MainApplication extends Application implements ReactApplication {
         protected String getJSMainModuleName() {
           return "index";
         }
-
 
         @Override
         protected boolean isNewArchEnabled() {
