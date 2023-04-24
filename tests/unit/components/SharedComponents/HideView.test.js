@@ -40,7 +40,9 @@ describe( "HideView", () => {
     );
 
     expect( testFunc ).toHaveBeenCalledTimes( 1 );
-    expect( screen.queryByText( TEST_TEXT ) ).not.toBeVisible();
+    expect(
+      screen.queryByText( TEST_TEXT, { includeHiddenElements: true } )
+    ).not.toBeVisible();
   } );
 
   test( "should not render hidden component", () => {

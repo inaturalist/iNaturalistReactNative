@@ -116,7 +116,7 @@
     "@faker-js/faker": "^7.6.0",
     "@tanstack/eslint-plugin-query": "^4.29.0",
     "@testing-library/jest-native": "^5.4.2",
-    "@testing-library/react-native": "^11.0.0",
+    "@testing-library/react-native": "^12.0.1",
     "babel-jest": "^28.0.0",
     "babel-plugin-module-resolver": "^5.0.0",
     "detox": "^20.0.0",
