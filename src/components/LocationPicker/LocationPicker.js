@@ -5,6 +5,7 @@ import {
   CloseButton, Heading4,
   ViewWrapper
 } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -13,7 +14,9 @@ import React, {
 } from "react";
 import { Dimensions } from "react-native";
 import MapView from "react-native-maps";
+import { IconButton, useTheme } from "react-native-paper";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
+import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadowStyle } from "styles/global";
 
@@ -47,11 +50,13 @@ type Props = {
 };
 
 const LocationPicker = ( { route }: Props ): Node => {
+  const theme = useTheme( );
   const { t } = useTranslation( );
   const mapView = useRef( );
   const { currentObservation } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { goBackOnSave } = route.params;
+  const [mapType, setMapType] = useState( "standard" );
   const [locationName, setLocationName] = useState( currentObservation?.place_guess );
   const [accuracy, setAccuracy] = useState( currentObservation?.positional_accuracy );
   const [accuracyTest, setAccuracyTest] = useState( "pass" );
@@ -108,12 +113,30 @@ const LocationPicker = ( { route }: Props ): Node => {
     navigation.setOptions( headerOptions );
   }, [renderBackButton, navigation, t] );
 
+  const toggleMapLayer = ( ) => {
+    if ( mapType === "standard" ) {
+      setMapType( "satellite" );
+    } else {
+      setMapType( "standard" );
+    }
+  };
+
+  const returnToUserLocation = async ( ) => {
+    const userLocation = await fetchUserLocation( );
+    setRegion( {
+      ...region,
+      latitude: userLocation?.latitude,
+      longitude: userLocation?.longitude
+    } );
+  };
+
   return (
     <ViewWrapper testID="location-picker">
       <MapView
         className="flex-1 items-center justify-center"
         region={region}
         ref={mapView}
+        mapType={mapType}
         onRegionChangeComplete={async newRegion => {
           updateRegion( newRegion );
           // console.log( await mapView?.current?.getMapBoundaries( ) );
@@ -140,7 +163,21 @@ const LocationPicker = ( { route }: Props ): Node => {
         accuracy={accuracy}
         getShadow={getShadow}
       />
-      <WarningText accuracyTest={accuracyTest} />
+      <WarningText accuracyTest={accuracyTest} getShadow={getShadow} />
+      <View style={getShadow( theme.colors.primary )}>
+        <IconButton
+          className="absolute bottom-20 bg-white left-2"
+          icon="layers"
+          onPress={toggleMapLayer}
+        />
+      </View>
+      <View style={getShadow( theme.colors.primary )}>
+        <IconButton
+          className="absolute bottom-20 bg-white right-2"
+          icon="location-crosshairs"
+          onPress={returnToUserLocation}
+        />
+      </View>
       <Footer
         keysToUpdate={keysToUpdate}
         goBackOnSave={goBackOnSave}

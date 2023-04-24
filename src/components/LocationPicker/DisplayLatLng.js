@@ -33,11 +33,11 @@ const DisplayLatLng = ( { region, accuracy, getShadow }: Props ): Node => {
   };
 
   return (
-    <View className="bg-white h-[27px] rounded-lg absolute top-[74px] right-[26px] left-[26px]">
-      <Body4
-        className="pt-[7px] pl-[14px]"
-        style={getShadow( theme.colors.primary )}
-      >
+    <View
+      className="bg-white h-[27px] rounded-lg absolute top-[74px] right-[26px] left-[26px]"
+      style={getShadow( theme.colors.primary )}
+    >
+      <Body4 className="pt-[7px] pl-[14px]">
         {displayLocation( )}
       </Body4>
     </View>
