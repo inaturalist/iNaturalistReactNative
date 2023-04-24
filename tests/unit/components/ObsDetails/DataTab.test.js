@@ -25,7 +25,9 @@ jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
 // Before migrating to Jest 27 this line was:
 // jest.useFakeTimers();
 // TODO: replace with modern usage of jest.useFakeTimers
-jest.useFakeTimers( "legacy" );
+jest.useFakeTimers( {
+  legacyFakeTimers: true
+} );
 
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
