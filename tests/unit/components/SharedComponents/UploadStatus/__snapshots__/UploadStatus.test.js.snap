@@ -148,10 +148,22 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
         accessibilityRole="button"
         accessibilityState={
           {
+            "busy": undefined,
+            "checked": undefined,
             "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
           }
         }
         accessibilityTraits="button"
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
         accessible={true}
         centered={true}
         collapsable={false}
