@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Tabs should render correctly 1`] = `
-Array [
+[
   <View
     accessibilityRole="tablist"
     style={
-      Array [
-        Array [
-          Object {
+      [
+        [
+          {
             "display": "flex",
           },
-          Object {
+          {
             "flexDirection": "row",
           },
         ],
@@ -19,9 +19,9 @@ Array [
   >
     <View
       style={
-        Array [
-          Array [
-            Object {
+        [
+          [
+            {
               "flexBasis": "0%",
               "flexGrow": 1,
               "flexShrink": 1,
@@ -35,7 +35,7 @@ Array [
         accessibilityLabel="TAB_1"
         accessibilityRole="tab"
         accessibilityState={
-          Object {
+          {
             "expanded": true,
             "selected": true,
           }
@@ -51,7 +51,7 @@ Array [
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Object {
+          {
             "opacity": 1,
           }
         }
@@ -59,32 +59,32 @@ Array [
       >
         <Text
           style={
-            Array [
-              Object {
+            [
+              {
                 "fontFamily": "Whitney-Medium",
               },
-              Array [
-                Object {
+              [
+                {
                   "fontSize": 16,
                   "lineHeight": 18,
                 },
-                Object {
+                {
                   "lineHeight": 19,
                 },
-                Object {
+                {
                   "fontWeight": "600",
                 },
-                Object {
+                {
                   "letterSpacing": 2,
                 },
-                Object {
+                {
                   "color": "#454545",
                 },
-                Array [
-                  Object {
+                [
+                  {
                     "alignSelf": "center",
                   },
-                  Object {
+                  {
                     "paddingBottom": 4,
                     "paddingTop": 4,
                   },
@@ -97,16 +97,16 @@ Array [
         </Text>
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "height": 4,
                 },
-                Object {
+                {
                   "borderTopLeftRadius": 7,
                   "borderTopRightRadius": 7,
                 },
-                Object {
+                {
                   "backgroundColor": "#454545",
                 },
               ],
@@ -117,9 +117,9 @@ Array [
     </View>
     <View
       style={
-        Array [
-          Array [
-            Object {
+        [
+          [
+            {
               "flexBasis": "0%",
               "flexGrow": 1,
               "flexShrink": 1,
@@ -133,7 +133,7 @@ Array [
         accessibilityLabel="TAB_2"
         accessibilityRole="tab"
         accessibilityState={
-          Object {
+          {
             "expanded": false,
             "selected": false,
           }
@@ -149,7 +149,7 @@ Array [
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Object {
+          {
             "opacity": 1,
           }
         }
@@ -157,32 +157,32 @@ Array [
       >
         <Text
           style={
-            Array [
-              Object {
+            [
+              {
                 "fontFamily": "Whitney-Medium",
               },
-              Array [
-                Object {
+              [
+                {
                   "fontSize": 16,
                   "lineHeight": 18,
                 },
-                Object {
+                {
                   "lineHeight": 19,
                 },
-                Object {
+                {
                   "fontWeight": "600",
                 },
-                Object {
+                {
                   "letterSpacing": 2,
                 },
-                Object {
+                {
                   "color": "#454545",
                 },
-                Array [
-                  Object {
+                [
+                  {
                     "alignSelf": "center",
                   },
-                  Object {
+                  {
                     "paddingBottom": 4,
                     "paddingTop": 4,
                   },
@@ -198,12 +198,12 @@ Array [
   </View>,
   <View
     style={
-      Array [
-        Array [
-          Object {
+      [
+        [
+          {
             "height": 1,
           },
-          Object {
+          {
             "backgroundColor": "#E8E8E8",
           },
         ],

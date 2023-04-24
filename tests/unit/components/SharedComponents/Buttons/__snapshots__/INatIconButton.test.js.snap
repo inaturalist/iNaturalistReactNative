@@ -16,8 +16,8 @@ exports[`INatIconButton renders correctly 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    Array [
-      Object {
+    [
+      {
         "alignItems": "center",
         "height": 44,
         "justifyContent": "center",
@@ -32,18 +32,18 @@ exports[`INatIconButton renders correctly 1`] = `
     allowFontScaling={false}
     selectable={false}
     style={
-      Array [
-        Object {
+      [
+        {
           "color": "rgba(103, 80, 164, 1)",
           "fontSize": 18,
         },
         undefined,
-        Object {
+        {
           "fontFamily": "INatIcon",
           "fontStyle": "normal",
           "fontWeight": "normal",
         },
-        Object {},
+        {},
       ]
     }
   >

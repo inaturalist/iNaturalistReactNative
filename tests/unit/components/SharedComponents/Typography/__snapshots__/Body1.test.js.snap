@@ -3,19 +3,19 @@
 exports[`Body1 renders correctly 1`] = `
 <Text
   style={
-    Array [
-      Object {
+    [
+      {
         "fontFamily": "Whitney-Light",
       },
-      Array [
-        Object {
+      [
+        {
           "fontSize": 18,
           "lineHeight": 22,
         },
-        Object {
+        {
           "fontWeight": "500",
         },
-        Object {
+        {
           "color": "#454545",
         },
       ],
