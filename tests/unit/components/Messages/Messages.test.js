@@ -26,7 +26,10 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-jest.useFakeTimers();
+// Before migrating to Jest 27 this line was:
+// jest.useFakeTimers();
+// TODO: replace with modern usage of jest.useFakeTimers
+jest.useFakeTimers( "legacy" );
 
 const renderMessages = ( ) => render(
   <INatPaperProvider>
