@@ -20,7 +20,7 @@ import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadowStyle } from "styles/global";
 
-// import CrosshairCircle from "./CrosshairCircle";
+import CrosshairCircle from "./CrosshairCircle";
 import DisplayLatLng from "./DisplayLatLng";
 import Footer from "./Footer";
 import LocationSearch from "./LocationSearch";
@@ -35,10 +35,10 @@ const getShadow = shadowColor => getShadowStyle( {
   elevation: 5
 } );
 
-const { width } = Dimensions.get( "screen" );
+const { width, height } = Dimensions.get( "screen" );
 
 const DELTA = 0.2;
-const CROSSHAIRLENGTH = 244;
+const CROSSHAIRLENGTH = 254;
 const DESIRED_LOCATION_ACCURACY = 4000000;
 
 type Props = {
@@ -48,6 +48,8 @@ type Props = {
     },
   },
 };
+
+const centerCrosshair = ( height / 2 ) - CROSSHAIRLENGTH + 30;
 
 const LocationPicker = ( { route }: Props ): Node => {
   const theme = useTheme( );
@@ -133,7 +135,8 @@ const LocationPicker = ( { route }: Props ): Node => {
   return (
     <ViewWrapper testID="location-picker">
       <MapView
-        className="flex-1 items-center justify-center"
+        className="flex-1"
+        showsCompass={false}
         region={region}
         ref={mapView}
         mapType={mapType}
@@ -142,21 +145,20 @@ const LocationPicker = ( { route }: Props ): Node => {
           // console.log( await mapView?.current?.getMapBoundaries( ) );
         }}
       />
-      {/* <MapView
-        className="flex-1 items-center justify-center"
-        region={region}
-        ref={mapView}
-        onRegionChangeComplete={async newRegion => {
-          updateRegion( newRegion );
-          // console.log( await mapView?.current?.getMapBoundaries( ) );
+      <CrosshairCircle
+        accuracyTest={accuracyTest}
+        // eslint-disable-next-line react-native/no-inline-styles
+        containerStyle={{
+          alignSelf: "center",
+          top: centerCrosshair
         }}
-      >
-        <CrosshairCircle accuracyTest={accuracyTest} />
-      </MapView> */}
+      />
       <LocationSearch
         region={region}
         setRegion={setRegion}
         locationName={locationName}
+        setLocationName={setLocationName}
+        getShadow={getShadow}
       />
       <DisplayLatLng
         region={region}
