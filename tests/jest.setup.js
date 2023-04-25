@@ -179,20 +179,6 @@ require( "react-native" ).NativeModules.RNCGeolocation = { };
 
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 
-// Make apisauce work with nock
-jest.mock( "apisauce", ( ) => ( {
-  create: config => {
-    const axiosInstance = jest.requireActual( "axios" ).create( config );
-    const apisauce = jest.requireActual( "apisauce" );
-    return apisauce.create( { ...config, axiosInstance } );
-  }
-} ) );
-
-// FormData isn't available in the testing environment
-function FormDataMock() {
-  this.append = jest.fn();
-}
-global.FormData = FormDataMock;
 global.ReanimatedDataMock = {
   now: () => 0
 };
