@@ -8,13 +8,6 @@ import React from "react";
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-// mock New York coordinates when user changes input field
-const mockFetchGeocodeAddress = jest.fn( () => ( { latitude: 40.712982, longitude: -74.007205 } ) );
-jest.mock( "sharedHelpers/fetchCoordinates", ( ) => ( {
-  __esModule: true,
-  default: () => mockFetchGeocodeAddress( )
-} ) );
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -51,6 +44,17 @@ const renderLocationPicker = ( ) => renderComponent(
   </ObsEditProvider>
 );
 
+const mockPlaceResult = factory( "RemotePlace", {
+  display_name: "New York"
+} );
+
+jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    data: [mockPlaceResult]
+  } )
+} ) );
+
 describe( "LocationPicker", () => {
   beforeAll( async ( ) => {
     await initI18next( );
@@ -74,7 +78,7 @@ describe( "LocationPicker", () => {
   );
 
   it(
-    "should change map region when the user types in a search",
+    "should show search results when a user changes search text",
     async ( ) => {
       const observations = [
         factory( "RemoteObservation", {
@@ -88,9 +92,37 @@ describe( "LocationPicker", () => {
       const input = screen.getByTestId( "LocationPicker.locationSearch" );
       const initialLatitude = screen.getByText( new RegExp( observations[0].latitude ) );
       expect( initialLatitude ).toBeTruthy( );
-      fireEvent.changeText( input, "New York" );
+      fireEvent.changeText( input, "New" );
       await waitFor( ( ) => {
-        expect( screen.getByText( new RegExp( 40.712982 ) ) ).toBeTruthy( );
+        expect( screen.getByText( mockPlaceResult.display_name ) ).toBeTruthy( );
+      } );
+    }
+  );
+
+  it(
+    "should move map to new coordinates when a user presses place result",
+    async ( ) => {
+      const observations = [
+        factory( "RemoteObservation", {
+          // Oakland, CA latlng
+          latitude: 37.804855,
+          longitude: -122.272504
+        } )
+      ];
+      mockObsEditProviderWithObs( observations );
+      renderLocationPicker( );
+      const input = screen.getByTestId( "LocationPicker.locationSearch" );
+      const initialLatitude = screen.getByText( new RegExp( observations[0].latitude ) );
+      expect( initialLatitude ).toBeTruthy( );
+      fireEvent.changeText( input, "New" );
+      await waitFor( ( ) => {
+        expect( screen.getByText( mockPlaceResult.display_name ) ).toBeTruthy( );
+      } );
+      fireEvent.press( screen.getByText( mockPlaceResult.display_name ) );
+      await waitFor( ( ) => {
+        expect( screen.getByText(
+          new RegExp( mockPlaceResult.point_geojson.coordinates[0] )
+        ) ).toBeTruthy( );
       } );
     }
   );
