@@ -36,8 +36,19 @@ exports[`Tabs should render correctly 1`] = `
         accessibilityRole="tab"
         accessibilityState={
           {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
             "expanded": true,
             "selected": true,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
           }
         }
         accessible={true}
@@ -134,8 +145,19 @@ exports[`Tabs should render correctly 1`] = `
         accessibilityRole="tab"
         accessibilityState={
           {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
             "expanded": false,
             "selected": false,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
           }
         }
         accessible={true}
