@@ -2,6 +2,8 @@
 
 import { useNavigation } from "@react-navigation/native";
 // Directly imported, not from index.js to avoid circular dependency
+import INatIcon from "components/SharedComponents/INatIcon/INatIcon";
+// Directly imported, not from index.js to avoid circular dependency
 import Body3 from "components/SharedComponents/Typography/Body3";
 // Directly imported, not from index.js to avoid circular dependency
 import UserIcon from "components/SharedComponents/UserIcon/UserIcon";
@@ -11,10 +13,8 @@ import {
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import User from "realmModels/User";
 import useIsConnected from "sharedHooks/useIsConnected";
-import colors from "styles/tailwindColors";
 
 type Props = {
   user: any
@@ -31,21 +31,19 @@ const InlineUser = ( { user }: Props ): Node => {
   const renderUserIcon = () => {
     if ( !isOnline ) {
       return (
-        <IconMaterial
+        <INatIcon
           testID="InlineUser.NoInternetPicture"
           name="wifi-off"
           size={22}
-          color={colors.darkGray}
         />
       );
     }
     if ( !userImgUri ) {
       return (
-        <IconMaterial
+        <INatIcon
           testID="InlineUser.FallbackPicture"
           name="person"
           size={22}
-          color={colors.darkGray}
         />
       );
     }
