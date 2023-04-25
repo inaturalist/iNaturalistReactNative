@@ -11,29 +11,33 @@ describe( "UserIcon", () => {
     expect( userIcon ).toBeAccessible();
   } );
 
-  it( "displays user image correctly", async () => {
+  it( "displays user image correctly", () => {
     render( <UserIcon uri={mockUri} /> );
-
-    // Check for image source
-    const profilePicture = await screen.findByRole( "image" );
-    expect( profilePicture ).toBeTruthy();
-    expect( profilePicture.props.source ).toEqual( mockUri );
 
     // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );
 
-  it( "displays small user image correctly", async () => {
+  it( "displays small user image correctly", () => {
     render( <UserIcon uri={mockUri} small /> );
 
     // Snapshot test
     expect( screen ).toMatchSnapshot();
   } );
 
-  it( "displays active user image correctly", async () => {
+  it( "displays active user image correctly", () => {
     render( <UserIcon uri={mockUri} active /> );
 
     // Snapshot test
     expect( screen ).toMatchSnapshot();
+  } );
+
+  it( "shows correct uri for the user icon image", () => {
+    render( <UserIcon uri={mockUri} active /> );
+
+    // TODO: replace with getByRole
+    const profilePicture = screen.getByTestId( "UserIcon.photo" );
+    expect( profilePicture ).toBeTruthy();
+    expect( profilePicture.props.source ).toEqual( mockUri );
   } );
 } );
