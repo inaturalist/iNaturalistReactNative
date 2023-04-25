@@ -1,5 +1,6 @@
 // @flow
 
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   QueryClient,
@@ -88,12 +89,14 @@ const AppWithProviders = ( ) => (
       <SafeAreaProvider>
         <INatPaperProvider>
           <GestureHandlerRootView className="flex-1">
-            {/* NavigationContainer needs to be nested above ObsEditProvider */}
-            <NavigationContainer>
-              <ObsEditProvider>
-                <App />
-              </ObsEditProvider>
-            </NavigationContainer>
+            <BottomSheetModalProvider>
+              {/* NavigationContainer needs to be nested above ObsEditProvider */}
+              <NavigationContainer>
+                <ObsEditProvider>
+                  <App />
+                </ObsEditProvider>
+              </NavigationContainer>
+            </BottomSheetModalProvider>
           </GestureHandlerRootView>
         </INatPaperProvider>
       </SafeAreaProvider>

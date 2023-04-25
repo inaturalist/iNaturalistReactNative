@@ -9,8 +9,6 @@ import factory from "../factory";
 import { renderComponent } from "../helpers/render";
 import { signIn, signOut } from "../helpers/user";
 
-jest.useFakeTimers( );
-
 beforeEach( async ( ) => {
   global.realm.write( ( ) => {
     global.realm.deleteAll( );

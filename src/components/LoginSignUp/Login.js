@@ -1,6 +1,6 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { Button } from "components/SharedComponents";
 import {
   Image, Pressable, SafeAreaView
@@ -15,10 +15,10 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
-  Text, TextInput
+  Text, TextInput,
+  useTheme
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/tailwindColors";
 
 import {
   authenticateUser,
@@ -38,6 +38,7 @@ const Login = ( ): Node => {
   const [loading, setLoading] = useState( false );
   const [extraScrollHeight, setExtraScrollHeight] = useState( 0 );
   const realm = useRealm( );
+  const theme = useTheme();
 
   useEffect( ( ) => {
     let isCurrent = true;
@@ -64,16 +65,20 @@ const Login = ( ): Node => {
     );
 
     if ( !success ) {
-      setError( t( "Invalid-login" ) );
+      setError( t( "Failed-to-log-in" ) );
       setLoading( false );
       return;
     }
     setLoggedIn( true );
     setLoading( false );
 
-    navigation.navigate( "MainStack", {
-      screen: "ObsList"
-    } );
+    // Reset navigation state so that ObsList gets rerendered
+    navigation.dispatch( CommonActions.reset( {
+      index: 0,
+      routes: [{ name: "ObsList" }]
+    } ) );
+
+    navigation.navigate( "ObsList" );
   };
 
   const forgotPassword = ( ) => {
@@ -87,13 +92,15 @@ const Login = ( ): Node => {
         className="self-center w-32 h-32"
         resizeMode="contain"
         source={require( "images/inat_logo.png" )}
+        accessibilityIgnoresInvertColors
       />
 
       <Text testID="login-header" className="text-2xl self-center mt-5">{t( "Login-header" )}</Text>
       <Text className="text-xl self-center text-center mt-5 mb-5">{t( "Login-sub-title" )}</Text>
       <Text className="text-base mb-1">{t( "Username-or-Email" )}</Text>
       <TextInput
-        className="h-10 bg-tertiary"
+        accessibilityLabel={t( "Username-or-Email" )}
+        className="h-10 bg-lightGray"
         onChangeText={text => {
           setError( null );
           setEmail( text );
@@ -103,12 +110,13 @@ const Login = ( ): Node => {
         testID="Login.email"
         autoCapitalize="none"
         keyboardType="email-address"
-        selectionColor={colors.black}
+        selectionColor={theme.colors.tertiary}
         onFocus={() => setExtraScrollHeight( 200 )}
       />
       <Text className="text-base mb-1 mt-5">{t( "Password" )}</Text>
       <TextInput
-        className="h-10 bg-tertiary"
+        accessibilityLabel={t( "Password" )}
+        className="h-10 bg-lightGray"
         onChangeText={text => {
           setError( null );
           setPassword( text );
@@ -116,13 +124,13 @@ const Login = ( ): Node => {
         value={password}
         secureTextEntry
         testID="Login.password"
-        selectionColor={colors.black}
+        selectionColor={theme.colors.tertiary}
         onFocus={() => setExtraScrollHeight( 200 )}
       />
-      <TouchableOpacity onPress={forgotPassword}>
+      <TouchableOpacity accessibilityRole="button" onPress={forgotPassword}>
         <Text className="underline mt-2 self-end">{t( "Forgot-Password" )}</Text>
       </TouchableOpacity>
-      {error && <Text className="text-red self-center mt-5">{error}</Text>}
+      {error && <Text className="text-warningRed self-center mt-5">{error}</Text>}
       <Button
         level="focus"
         text={t( "Log-in" )}
@@ -137,6 +145,7 @@ const Login = ( ): Node => {
 
   const renderBackButton = ( ) => (
     <Pressable
+      accessibilityRole="button"
       onPress={( ) => navigation.goBack( )}
       className="absolute top-0 right-0"
     >

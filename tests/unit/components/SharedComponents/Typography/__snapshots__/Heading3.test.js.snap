@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Heading3 renders correctly 1`] = `
+<Text
+  style={
+    [
+      {
+        "fontFamily": "Whitney-Medium",
+      },
+      [
+        {
+          "fontSize": 19,
+          "lineHeight": 23,
+        },
+        {
+          "fontWeight": "600",
+        },
+        {
+          "color": "#454545",
+        },
+      ],
+    ]
+  }
+>
+  Heading3
+</Text>
+`;

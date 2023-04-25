@@ -8,24 +8,24 @@ import { renderComponent } from "../../../helpers/render";
 
 const mockUser = factory( "RemoteUser" );
 
-jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   __esModule: true,
-  default: ( ) => ( {
+  default: () => ( {
     data: mockUser
   } )
 } ) );
 
-jest.mock( "@react-navigation/native", ( ) => {
+jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
     ...actualNav,
-    useRoute: ( ) => ( {
+    useRoute: () => ( {
       params: {
         userId: mockUser.id
       }
     } ),
-    useNavigation: ( ) => ( {
-      setOptions: ( ) => ( {
+    useNavigation: () => ( {
+      setOptions: () => ( {
         headerTitle: `@${mockUser.login}`
       } )
     } )
@@ -33,7 +33,7 @@ jest.mock( "@react-navigation/native", ( ) => {
 } );
 
 jest.mock(
-  "components/SharedComponents/ViewWithFooter",
+  "components/SharedComponents/ViewWrapper",
   () => function MockContainer( props ) {
     const MockName = "mock-view-with-footer";
     // No testID here because the component needs the correct one to work
@@ -43,8 +43,8 @@ jest.mock(
 );
 
 describe( "UserProfile", () => {
-  beforeAll( async ( ) => {
-    await initI18next( );
+  beforeAll( async () => {
+    await initI18next();
   } );
 
   it( "should render inside mocked container for testing", () => {

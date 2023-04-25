@@ -1,0 +1,211 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommentsCount renders default reliably 1`] = `
+<View
+  accessibilityLabel="1 comment"
+  accessible={true}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    allowFontScaling={false}
+    selectable={false}
+    style={
+      [
+        {
+          "color": "rgba(103, 80, 164, 1)",
+          "fontSize": 14,
+        },
+        undefined,
+        {
+          "fontFamily": "INatIcon",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        {},
+      ]
+    }
+  >
+    
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Light",
+        },
+        [
+          {
+            "fontSize": 14,
+            "lineHeight": 18,
+          },
+          {
+            "fontWeight": "400",
+          },
+          {
+            "color": "#454545",
+          },
+          [
+            {
+              "marginLeft": 6,
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    1
+  </Text>
+</View>
+`;
+
+exports[`CommentsCount renders filled reliably 1`] = `
+<View
+  accessibilityLabel="1 comment"
+  accessible={true}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    allowFontScaling={false}
+    selectable={false}
+    style={
+      [
+        {
+          "color": "rgba(103, 80, 164, 1)",
+          "fontSize": 14,
+        },
+        undefined,
+        {
+          "fontFamily": "INatIcon",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        {},
+      ]
+    }
+  >
+    
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Light",
+        },
+        [
+          {
+            "fontSize": 14,
+            "lineHeight": 18,
+          },
+          {
+            "fontWeight": "400",
+          },
+          {
+            "color": "#454545",
+          },
+          [
+            {
+              "marginLeft": 6,
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    1
+  </Text>
+</View>
+`;
+
+exports[`CommentsCount renders white reliably 1`] = `
+<View
+  accessibilityLabel="1 comment"
+  accessible={true}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    allowFontScaling={false}
+    selectable={false}
+    style={
+      [
+        {
+          "color": "rgba(255, 255, 255, 1)",
+          "fontSize": 14,
+        },
+        undefined,
+        {
+          "fontFamily": "INatIcon",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        {},
+      ]
+    }
+  >
+    
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Light",
+        },
+        [
+          {
+            "fontSize": 14,
+            "lineHeight": 18,
+          },
+          {
+            "fontWeight": "400",
+          },
+          {
+            "color": "#454545",
+          },
+          [
+            {
+              "marginLeft": 6,
+            },
+            {
+              "color": "#ffffff",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    1
+  </Text>
+</View>
+`;

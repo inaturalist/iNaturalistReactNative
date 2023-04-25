@@ -1,0 +1,214 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tabs should render correctly 1`] = `
+[
+  <View
+    accessibilityRole="tablist"
+    style={
+      [
+        [
+          {
+            "display": "flex",
+          },
+          {
+            "flexDirection": "row",
+          },
+        ],
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          [
+            {
+              "flexBasis": "0%",
+              "flexGrow": 1,
+              "flexShrink": 1,
+            },
+          ],
+        ]
+      }
+    >
+      <View
+        accessibilityHint="Switches to TAB_1 tab."
+        accessibilityLabel="TAB_1"
+        accessibilityRole="tab"
+        accessibilityState={
+          {
+            "expanded": true,
+            "selected": true,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+        testID="TAB_1-tab"
+      >
+        <Text
+          style={
+            [
+              {
+                "fontFamily": "Whitney-Medium",
+              },
+              [
+                {
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "lineHeight": 19,
+                },
+                {
+                  "fontWeight": "600",
+                },
+                {
+                  "letterSpacing": 2,
+                },
+                {
+                  "color": "#454545",
+                },
+                [
+                  {
+                    "alignSelf": "center",
+                  },
+                  {
+                    "paddingBottom": 4,
+                    "paddingTop": 4,
+                  },
+                ],
+              ],
+            ]
+          }
+        >
+          TAB_1
+        </Text>
+        <View
+          style={
+            [
+              [
+                {
+                  "height": 4,
+                },
+                {
+                  "borderTopLeftRadius": 7,
+                  "borderTopRightRadius": 7,
+                },
+                {
+                  "backgroundColor": "#454545",
+                },
+              ],
+            ]
+          }
+        />
+      </View>
+    </View>
+    <View
+      style={
+        [
+          [
+            {
+              "flexBasis": "0%",
+              "flexGrow": 1,
+              "flexShrink": 1,
+            },
+          ],
+        ]
+      }
+    >
+      <View
+        accessibilityHint="Switches to TAB_2 tab."
+        accessibilityLabel="TAB_2"
+        accessibilityRole="tab"
+        accessibilityState={
+          {
+            "expanded": false,
+            "selected": false,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+        testID="TAB_2-tab"
+      >
+        <Text
+          style={
+            [
+              {
+                "fontFamily": "Whitney-Medium",
+              },
+              [
+                {
+                  "fontSize": 16,
+                  "lineHeight": 18,
+                },
+                {
+                  "lineHeight": 19,
+                },
+                {
+                  "fontWeight": "600",
+                },
+                {
+                  "letterSpacing": 2,
+                },
+                {
+                  "color": "#454545",
+                },
+                [
+                  {
+                    "alignSelf": "center",
+                  },
+                  {
+                    "paddingBottom": 4,
+                    "paddingTop": 4,
+                  },
+                ],
+              ],
+            ]
+          }
+        >
+          TAB_2
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        [
+          {
+            "height": 1,
+          },
+          {
+            "backgroundColor": "#E8E8E8",
+          },
+        ],
+      ]
+    }
+  />,
+]
+`;

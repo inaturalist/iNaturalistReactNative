@@ -11,11 +11,6 @@ import { renderComponent } from "../../../helpers/render";
 
 const mockLocationName = "San Francisco, CA";
 
-jest.mock( "sharedHooks/useLocationName", ( ) => ( {
-  __esModule: true,
-  default: ( ) => mockLocationName
-} ) );
-
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
   return {
@@ -30,14 +25,13 @@ jest.mock( "@react-navigation/native", ( ) => {
 
 const mockCurrentUser = factory( "LocalUser" );
 
-jest.mock( "components/ObsEdit/ObsEditHeaderTitle" );
-jest.mock( "components/ObsEdit/DeleteObservationDialog" );
-jest.mock( "components/ObsEdit/SaveDialog" );
+jest.mock( "components/ObsEdit/Header" );
+jest.mock( "components/ObsEdit/Sheets/DeleteObservationSheet" );
 jest.mock( "components/MediaViewer/MediaViewerModal" );
 jest.mock( "components/ObsEdit/EvidenceSection" );
 jest.mock( "components/ObsEdit/IdentificationSection" );
 jest.mock( "components/ObsEdit/OtherDataSection" );
-jest.mock( "components/ObsEdit/AddEvidenceModal" );
+jest.mock( "components/ObsEdit/Sheets/AddEvidenceSheet" );
 
 // Mock ObservationProvider so it provides a specific array of observations
 // without any current observation or ability to update or fetch
@@ -48,7 +42,8 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
   <INatPaperProvider>
     <ObsEditContext.Provider value={{
       observations: obs,
-      currentObservation: obs[0]
+      currentObservation: obs[0],
+      setPassesIdentificationTest: jest.fn( )
     }}
     >
       {children}

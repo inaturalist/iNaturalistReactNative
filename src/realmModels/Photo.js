@@ -1,4 +1,4 @@
-import { createResizedImage } from "@bam.tech/react-native-image-resizer";
+import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { Realm } from "@realm/react";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
@@ -27,8 +27,11 @@ class Photo extends Realm.Object {
   static async resizeImageForUpload( pathOrUri, options = {} ) {
     const width = 2048;
     const { photoUploadPath } = Photo;
+    console.log( "Photo.resizeImageForUpload, photoUploadPath: ", photoUploadPath );
     await RNFS.mkdir( photoUploadPath );
+    console.log( "Photo.resizeImageForUpload, pathOrUri: ", pathOrUri );
     let outFilename = pathOrUri.split( "/" ).slice( -1 ).pop( );
+    console.log( "Photo.resizeImageForUpload, outFilename: ", outFilename );
 
     // If pathOrUri is an ios localIdentifier, make up a filename based on that
     const iosLocalIdentifierMatches = pathOrUri.match( /^ph:\/\/([^/]+)/ );
@@ -53,7 +56,7 @@ class Photo extends Realm.Object {
       uriForResize = `file://${uriForResize}`;
     }
 
-    const { uri } = await createResizedImage(
+    const { uri } = await ImageResizer.createResizedImage(
       uriForResize,
       width,
       width, // height
@@ -71,7 +74,9 @@ class Photo extends Realm.Object {
   }
 
   static async new( uri, resizeOptions = {} ) {
+    console.log( "Photo.new, uri: ", uri );
     const localFilePath = await Photo.resizeImageForUpload( uri, resizeOptions );
+    console.log( "Photo.new, localFilePath: ", localFilePath );
 
     return {
       _created_at: new Date( ),
@@ -147,7 +152,7 @@ class Photo extends Realm.Object {
       url: "string?",
       localFilePath: "string?"
     }
-  }
+  };
 }
 
 export default Photo;

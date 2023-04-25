@@ -1,25 +1,27 @@
 // @flow
-
-import { Body4 } from "components/SharedComponents";
+import classNames from "classnames";
+import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import { useTranslation } from "react-i18next";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  dateString: String
+  label?: string,
+  dateString: string,
+  classNameMargin?: string
 };
 
-const DateDisplay = ( {
-  dateString
-}: Props ): React.Node => {
+const DateDisplay = ( { dateString, label, classNameMargin }: Props ): React.Node => {
   const { t } = useTranslation( );
   return (
-    <View className="flex flex-row items-center">
-      <IconMaterial name="watch-later" size={15} />
-      <Body4 className="text-darkGray ml-[5px]">
-        {formatApiDatetime( dateString, t )}
+    <View className={classNames( "flex flex-row items-center", classNameMargin )}>
+      <INatIcon
+        name="date"
+        size={13}
+      />
+      <Body4 className="ml-[5px]">
+        {( label ? `${label} ` : "" ) + formatApiDatetime( dateString, t )}
       </Body4>
     </View>
   );

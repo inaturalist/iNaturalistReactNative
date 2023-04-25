@@ -1,36 +1,46 @@
 // @flow
-
-import { Body4 } from "components/SharedComponents";
+import classNames from "classnames";
+import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
+import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
-import { useTranslation } from "react-i18next";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  observation: Object
+  observation: Object,
+  classNameMargin?: string
 };
 
-const ObservationLocation = ( { observation }: Props ): React.Node => {
-  const { t } = useTranslation();
+const ObservationLocation = ( { observation, classNameMargin }: Props ): React.Node => {
+  const { t } = useTranslation( );
 
-  let locationName = observation?.place_guess;
-
+  let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
   if (
-    !locationName
-    // Check for undefined or null, Not 0
-    && observation?.latitude != null
-    && observation?.longitude != null
+    !displayLocation
+    && ( observation?.latitude !== null && observation?.latitude !== undefined )
+    && ( observation?.longitude != null && observation?.longitude !== undefined )
   ) {
-    locationName = `${observation.latitude}, ${observation.longitude}`;
-  } else if ( !locationName ) {
-    locationName = t( "Missing Location" );
+    displayLocation = `${observation.latitude}, ${observation.longitude}`;
+  } else if ( !displayLocation ) {
+    displayLocation = t( "Missing-Location" );
   }
 
   return (
-    <View className="flex flex-row items-center">
-      <IconMaterial name="location-pin" size={15} />
-      <Body4 className="text-darkGray ml-[5px]">
-        {locationName || t( "Missing-Location" )}
+    <View
+      className={classNames( "flex flex-row items-center", classNameMargin )}
+      accessible
+      accessibilityLabel={t( "Location" )}
+      accessibilityValue={{
+        text: displayLocation
+      }}
+    >
+      <INatIcon name="location" size={13} />
+      <Body4
+        className="text-darkGray ml-[5px]"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
+        {displayLocation}
       </Body4>
     </View>
   );

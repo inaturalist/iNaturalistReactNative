@@ -2,16 +2,19 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { searchObservations } from "api/observations";
-import ObsGridItem from "components/Observations/ObsGridItem";
+import ProjectObsGridItem from "components/Projects/ProjectObsGridItem";
+import { Pressable } from "components/styledComponents";
 import * as React from "react";
 import { FlatList } from "react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   id: number
 }
 
 const ProjectObservations = ( { id }: Props ): React.Node => {
+  const { t } = useTranslation();
   const {
     data: observations
   } = useAuthenticatedQuery(
@@ -25,12 +28,19 @@ const ProjectObservations = ( { id }: Props ): React.Node => {
   };
 
   const renderGridItem = ( { item } ) => (
-    <ObsGridItem
-      observation={item}
-      handlePress={navToObsDetails}
-      uri="project"
-      width="w-6/12"
-    />
+    <Pressable
+      className="w-6/12"
+      onPress={() => navToObsDetails( item )}
+      accessibilityRole="link"
+      accessibilityHint={t( "Navigate-to-observation-details" )}
+      accessibilityLabel={t( "Observation-Name", {
+        scientificName: item.name
+      } )}
+    >
+      <ProjectObsGridItem
+        observation={item}
+      />
+    </Pressable>
   );
 
   return (

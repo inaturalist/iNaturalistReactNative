@@ -1,7 +1,6 @@
 // @flow
-
+import classnames from "classnames";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
 import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
@@ -13,18 +12,18 @@ type Props = {
   photoUris: Array<string>,
   setPhotoUris: Function,
   savingPhoto: boolean,
-  deviceOrientation: string
+  isLandscapeMode?: boolean,
+  isLargeScreen?: boolean
 }
 
 const PhotoPreview = ( {
   photoUris,
   setPhotoUris,
   savingPhoto,
-  deviceOrientation
+  isLandscapeMode,
+  isLargeScreen
 }: Props ): Node => {
   const { deletePhotoFromObservation } = useContext( ObsEditContext );
-  const [deleteDialogVisible, setDeleteDialogVisible] = useState( false );
-  const [photoUriToDelete, setPhotoUriToDelete] = useState( null );
   const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
 
@@ -36,36 +35,43 @@ const PhotoPreview = ( {
     showModal( );
   };
 
-  const showDialog = ( ) => setDeleteDialogVisible( true );
-
-  const hideDialog = ( ) => {
-    setPhotoUriToDelete( null );
-    setDeleteDialogVisible( false );
+  const deletePhoto = photoUri => {
+    deletePhotoFromObservation( photoUri, photoUris, setPhotoUris );
   };
 
-  const handleDelete = photoUri => {
-    setPhotoUriToDelete( photoUri );
-    showDialog( );
-  };
-
-  const emptyDescription = ( ) => (
-    <Text className="text-white text-xl mt-20 ml-3">
+  let noPhotosNotice = (
+    <Text
+      className={classnames(
+        "text-white",
+        "text-center",
+        "text-xl",
+        "w-full"
+      )}
+    >
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
-
-  const deletePhoto = ( ) => {
-    deletePhotoFromObservation( photoUriToDelete, photoUris, setPhotoUris );
-    hideDialog( );
-  };
+  if ( isLargeScreen && !isLandscapeMode ) {
+    noPhotosNotice = (
+      <Text
+        className={classnames(
+          "text-white",
+          "text-center",
+          "text-xl",
+          "absolute",
+          "w-[500px]",
+          "-rotate-90",
+          "left-[-190px]",
+          "top-[50%]"
+        )}
+      >
+        {t( "Photos-you-take-will-appear-here" )}
+      </Text>
+    );
+  }
 
   return (
     <>
-      <DeletePhotoDialog
-        deleteDialogVisible={deleteDialogVisible}
-        deletePhoto={deletePhoto}
-        hideDialog={hideDialog}
-      />
       <MediaViewerModal
         mediaViewerVisible={mediaViewerVisible}
         hideModal={hideModal}
@@ -73,16 +79,31 @@ const PhotoPreview = ( {
         photoUris={photoUris}
         setPhotoUris={setPhotoUris}
       />
-      <View className="bg-black h-32">
-        <PhotoCarousel
-          photoUris={photoUris}
-          emptyComponent={emptyDescription}
-          containerStyle="camera"
-          handleDelete={handleDelete}
-          setSelectedPhotoIndex={handleSelection}
-          savingPhoto={savingPhoto}
-          deviceOrientation={deviceOrientation}
-        />
+      <View className={classnames(
+        "bg-black",
+        {
+          "h-[110px] pb-[18px] pt-[50px]": !isLargeScreen,
+          "h-[151px]": isLargeScreen && isLandscapeMode,
+          "w-[120px]": isLargeScreen && !isLandscapeMode
+        },
+        "justify-center"
+      )}
+      >
+        {
+          photoUris.length === 0
+            ? noPhotosNotice
+            : (
+              <PhotoCarousel
+                deletePhoto={deletePhoto}
+                photoUris={photoUris}
+                containerStyle="camera"
+                setSelectedPhotoIndex={handleSelection}
+                savingPhoto={savingPhoto}
+                isLargeScreen={isLargeScreen}
+                isLandscapeMode={isLandscapeMode}
+              />
+            )
+        }
       </View>
     </>
   );

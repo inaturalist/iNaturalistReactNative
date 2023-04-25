@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActivityCount renders reliably 1`] = `
+<View
+  accessibilityLabel="1"
+  accessible={true}
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+      ],
+    ]
+  }
+>
+  <Text
+    allowFontScaling={false}
+    selectable={false}
+    style={
+      [
+        {
+          "color": "rgba(103, 80, 164, 1)",
+          "fontSize": 14,
+        },
+        undefined,
+        {
+          "fontFamily": "INatIcon",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        {},
+      ]
+    }
+  >
+    
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Light",
+        },
+        [
+          {
+            "fontSize": 14,
+            "lineHeight": 18,
+          },
+          {
+            "fontWeight": "400",
+          },
+          {
+            "color": "#454545",
+          },
+          [
+            {
+              "marginLeft": 6,
+            },
+          ],
+        ],
+      ]
+    }
+    testID="some_id"
+  >
+    1
+  </Text>
+</View>
+`;

@@ -3,42 +3,48 @@
 import { Button } from "components/SharedComponents";
 import InputField from "components/SharedComponents/InputField";
 import Map from "components/SharedComponents/Map";
-import ViewNoFooter from "components/SharedComponents/ViewNoFooter";
-import { t } from "i18next";
+import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import useCoords from "sharedHooks/useCoords";
-import useLocationName from "sharedHooks/useLocationName";
+import useTranslation from "sharedHooks/useTranslation";
 import { viewStyles } from "styles/obsEdit/locationPicker";
 
 type Props = {
   closeLocationPicker: Function,
-  updateLocation: Function
-}
+  updateLocation: Function,
+};
 
-const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node => {
+const LocationPicker = ( {
+  closeLocationPicker,
+  updateLocation
+}: Props ): Node => {
+  const { t } = useTranslation( );
   const [searchQuery, setSearchQuery] = useState( "" );
   const [region, setRegion] = useState( {
     latitude: null,
     longitude: null
   } );
 
-  const locationName = useLocationName( region.latitude, region.longitude );
+  const locationName = fetchPlaceName( region.latitude, region.longitude );
   const newCoords = useCoords( searchQuery );
 
-  const updateLocationAndClose = ( ) => {
+  const updateLocationAndClose = () => {
     updateLocation( {
       latitude: region.latitude,
       longitude: region.longitude,
       placeGuess: locationName
     } );
-    closeLocationPicker( );
+    closeLocationPicker();
   };
 
-  useEffect( ( ) => {
+  useEffect( () => {
     // update region when user types search term
-    if ( !searchQuery ) { return; }
+    if ( !searchQuery ) {
+      return;
+    }
     if ( newCoords.latitude !== null && newCoords.latitude !== region.latitude ) {
       setRegion( newCoords );
     }
@@ -50,7 +56,7 @@ const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node 
   };
 
   return (
-    <ViewNoFooter>
+    <ViewWrapper>
       <InputField
         handleTextChange={setSearchQuery}
         placeholder={locationName || ""}
@@ -58,11 +64,7 @@ const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node 
         type="addressCity"
         testID="LocationPicker.search"
       />
-      <Map
-        updateCoords={updateCoords}
-        region={region}
-        mapHeight={600}
-      />
+      <Map updateCoords={updateCoords} region={region} mapHeight={600} />
       <View style={viewStyles.confirmButtonFooter}>
         <Button
           level="focus"
@@ -71,7 +73,7 @@ const LocationPicker = ( { closeLocationPicker, updateLocation }: Props ): Node 
           testID="LocationPicker.confirmButton"
         />
       </View>
-    </ViewNoFooter>
+    </ViewWrapper>
   );
 };
 

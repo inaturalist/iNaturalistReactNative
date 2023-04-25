@@ -1,80 +1,44 @@
 // @flow
 
-import { Image, Pressable, View } from "components/styledComponents";
+import ObsPreviewImage from "components/MyObservations/ObsImagePreview";
+import { Pressable } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import colors from "styles/tailwindColors";
 
 type Props = {
   item: Object,
   selectedObservations: Array<Object>,
-  selectObservationPhotos: Function,
-  selectionMode: boolean
+  selectObservationPhotos: Function
 }
 
 const GroupPhotoImage = ( {
   item,
   selectedObservations,
-  selectObservationPhotos,
-  selectionMode
+  selectObservationPhotos
 }: Props ): Node => {
   const firstPhoto = item.photos[0];
   const isSelected = selectedObservations.includes( item );
-  const hasMultiplePhotos = item.photos.length > 1;
 
   const handlePress = ( ) => selectObservationPhotos( isSelected, item );
 
-  const imageUri = firstPhoto && { uri: firstPhoto.image.uri };
-
-  const filterIconName = item.photos.length > 9 ? "filter-9-plus" : `filter-${item.photos.length}`;
-
-  const unselectedIcon = ( ) => (
-    <View className="absolute top-2 right-2">
-      <IconMaterial
-        name="radio-button-off"
-        color={colors.white}
-        size={35}
-      />
-    </View>
-  );
-
-  const selectedIcon = ( ) => (
-    <View className="absolute top-2 right-2">
-      <IconMaterial
-        name="check-circle"
-        color={colors.inatGreen}
-        size={35}
-      />
-    </View>
-  );
-
-  const numberOfPhotosIcon = ( ) => (
-    <View className="absolute bottom-2 right-2">
-      <IconMaterial
-        // $FlowIgnore
-        name={filterIconName}
-        color={colors.white}
-        size={35}
-      />
-    </View>
-  );
-
-  const renderIcon = isSelected ? selectedIcon : unselectedIcon;
+  const source = firstPhoto && { uri: firstPhoto.image.uri };
 
   return (
     <Pressable
+      accessibilityRole="button"
       onPress={handlePress}
       testID={`GroupPhotos.${firstPhoto.uri}`}
-      disabled={!selectionMode}
+      className="rounded-[17px] overflow-hidden m-1"
     >
-      <Image
-        testID="GroupPhotos.photo"
-        source={imageUri}
-        className="h-44 w-44 mx-1"
+      <ObsPreviewImage
+        source={source}
+        height="h-44"
+        width="w-44"
+        selected={isSelected}
+        obsPhotosCount={item.photos.length}
+        selectable
+        disableGradient
       />
-      {selectionMode && renderIcon( )}
-      {hasMultiplePhotos && numberOfPhotosIcon( )}
     </Pressable>
   );
 };
