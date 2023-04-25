@@ -18,15 +18,15 @@ exports[`InlineUser renders reliably 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "display": "flex",
         },
-        Object {
+        {
           "flexDirection": "row",
         },
-        Object {
+        {
           "alignItems": "center",
         },
       ],
@@ -36,9 +36,9 @@ exports[`InlineUser renders reliably 1`] = `
 >
   <View
     style={
-      Array [
-        Array [
-          Object {
+      [
+        [
+          {
             "marginRight": 7,
           },
         ],
@@ -51,14 +51,20 @@ exports[`InlineUser renders reliably 1`] = `
   </View>
   <Text
     style={
-      Array [
-        Object {
+      [
+        {
           "fontFamily": "Whitney-Light",
         },
-        Array [
-          Object {
+        [
+          {
             "fontSize": 14,
             "lineHeight": 18,
+          },
+          {
+            "fontWeight": "400",
+          },
+          {
+            "color": "#454545",
           },
         ],
       ]
