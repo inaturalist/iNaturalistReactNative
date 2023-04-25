@@ -24,6 +24,7 @@ const mockUser = factory( "RemoteUser" );
 const mockUserWithoutImage = factory( "RemoteUser", { icon_url: null } );
 
 const snapshotUser = { login: "some_login", icon_url: "some_icon_url" };
+const snapshotUserWithoutImage = { login: "some_login", icon_url: null };
 
 jest.mock(
   "components/SharedComponents/UserIcon/UserIcon",
@@ -73,15 +74,25 @@ describe( "InlineUser", ( ) => {
   } );
 
   describe( "when user has no icon set", () => {
-    it( "displays user handle and fallback image correctly", async ( ) => {
+    it( "displays user handle and fallback image correctly", async () => {
       render( <InlineUser user={mockUserWithoutImage} /> );
 
       expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy();
       // This icon appears after useIsConnected returns true
       // so we have to use await and findByTestId
-      expect( await screen.findByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy();
+      expect(
+        await screen.findByTestId( "InlineUser.FallbackPicture" )
+      ).toBeTruthy();
       expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();
-      expect( screen.queryByTestId( "InlineUser.NoInternetPicture" ) ).not.toBeTruthy();
+      expect(
+        screen.queryByTestId( "InlineUser.NoInternetPicture" )
+      ).not.toBeTruthy();
+    } );
+
+    it( "renders reliably", ( ) => {
+      // Snapshot test
+      render( <InlineUser user={snapshotUserWithoutImage} /> );
+      expect( screen ).toMatchSnapshot();
     } );
   } );
 
@@ -105,11 +116,10 @@ describe( "InlineUser", ( ) => {
       expect( screen.queryByTestId( "InlineUser.FallbackPicture" ) ).not.toBeTruthy( );
     } );
 
-    // TODO: Enable this test when the offline icon is from our icon design font
-    // it( "renders reliably", ( ) => {
-    //   // Snapshot test
-    //   render( <InlineUser user={snapshotUser} /> );
-    //   expect( screen ).toMatchSnapshot();
-    // } );
+    it( "renders reliably", ( ) => {
+      // Snapshot test
+      render( <InlineUser user={snapshotUser} /> );
+      expect( screen ).toMatchSnapshot();
+    } );
   } );
 } );

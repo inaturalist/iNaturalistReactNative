@@ -74,3 +74,191 @@ exports[`InlineUser renders reliably 1`] = `
   </Text>
 </View>
 `;
+
+exports[`InlineUser when offline renders reliably 1`] = `
+<View
+  accessibilityHint="Navigates to user profile."
+  accessibilityLabel="User @some_login"
+  accessibilityRole="link"
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      [
+        {
+          "display": "flex",
+        },
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+      ],
+    ]
+  }
+  testID="InlineUser"
+>
+  <View
+    style={
+      [
+        [
+          {
+            "marginRight": 7,
+          },
+        ],
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": undefined,
+            "fontSize": 22,
+          },
+          undefined,
+          {
+            "fontFamily": "INatIcon",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+      testID="InlineUser.NoInternetPicture"
+    >
+      
+    </Text>
+  </View>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Light",
+        },
+        [
+          {
+            "fontSize": 14,
+            "lineHeight": 18,
+          },
+          {
+            "fontWeight": "400",
+          },
+          {
+            "color": "#454545",
+          },
+        ],
+      ]
+    }
+  >
+    @some_login
+  </Text>
+</View>
+`;
+
+exports[`InlineUser when user has no icon set renders reliably 1`] = `
+<View
+  accessibilityHint="Navigates to user profile."
+  accessibilityLabel="User @some_login"
+  accessibilityRole="link"
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      [
+        {
+          "display": "flex",
+        },
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+      ],
+    ]
+  }
+  testID="InlineUser"
+>
+  <View
+    style={
+      [
+        [
+          {
+            "marginRight": 7,
+          },
+        ],
+      ]
+    }
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": undefined,
+            "fontSize": 22,
+          },
+          undefined,
+          {
+            "fontFamily": "INatIcon",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+      testID="InlineUser.FallbackPicture"
+    >
+      
+    </Text>
+  </View>
+  <Text
+    style={
+      [
+        {
+          "fontFamily": "Whitney-Light",
+        },
+        [
+          {
+            "fontSize": 14,
+            "lineHeight": 18,
+          },
+          {
+            "fontWeight": "400",
+          },
+          {
+            "color": "#454545",
+          },
+        ],
+      ]
+    }
+  >
+    @some_login
+  </Text>
+</View>
+`;
