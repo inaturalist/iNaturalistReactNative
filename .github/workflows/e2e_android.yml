@@ -82,6 +82,7 @@ jobs:
         E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
         E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
         JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
+        GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
       run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\n' "JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" > .env
     - name: Create keystore.properties file
       env:
