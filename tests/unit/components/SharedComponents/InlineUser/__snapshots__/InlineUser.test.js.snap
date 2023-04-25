@@ -5,6 +5,23 @@ exports[`InlineUser renders reliably 1`] = `
   accessibilityHint="Navigates to user profile."
   accessibilityLabel="User @some_login"
   accessibilityRole="link"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
   accessible={true}
   collapsable={false}
   focusable={true}
@@ -80,6 +97,23 @@ exports[`InlineUser when offline renders reliably 1`] = `
   accessibilityHint="Navigates to user profile."
   accessibilityLabel="User @some_login"
   accessibilityRole="link"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
   accessible={true}
   collapsable={false}
   focusable={true}
@@ -174,6 +208,23 @@ exports[`InlineUser when user has no icon set renders reliably 1`] = `
   accessibilityHint="Navigates to user profile."
   accessibilityLabel="User @some_login"
   accessibilityRole="link"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
   accessible={true}
   collapsable={false}
   focusable={true}
