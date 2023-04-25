@@ -33,7 +33,7 @@ const InlineUser = ( { user }: Props ): Node => {
       return (
         <INatIcon
           testID="InlineUser.NoInternetPicture"
-          name="wifi-off"
+          name="triangle-exclamation"
           size={22}
         />
       );
