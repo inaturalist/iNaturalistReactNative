@@ -24,6 +24,7 @@ const UserIcon = ( { uri, small, active }: Props ): React.Node => {
       className={className}
       style={active && style}
       source={uri}
+      accessibilityRole="image"
       accessibilityIgnoresInvertColors
     />
   );
