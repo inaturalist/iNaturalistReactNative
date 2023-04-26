@@ -8,15 +8,15 @@ const isTablet = DeviceInfo.isTablet();
 
 // Note: if using this with a tab screen, ensure you set unmountOnBlur: true
 const useUnlockScreen = () => {
-  useEffect(() => {
+  useEffect( () => {
     Orientation.unlockAllOrientations();
 
     return () => {
-      if (!isTablet) {
+      if ( !isTablet ) {
         Orientation.lockToPortrait();
       }
     };
-  }, []);
+  }, [] );
 };
 
 export default useUnlockScreen;

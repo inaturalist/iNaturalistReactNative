@@ -4,13 +4,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
 import RootDrawerNavigator from "navigation/rootDrawerNavigation";
 import { RealmContext } from "providers/contexts";
-import Orientation from "react-native-orientation-locker";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
+import DeviceInfo from "react-native-device-info";
+import Orientation from "react-native-orientation-locker";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useTranslation from "sharedHooks/useTranslation";
 import useUserMe from "sharedHooks/useUserMe";
-import DeviceInfo from "react-native-device-info";
 
 import { log } from "../../react-native-logs.config";
 
@@ -35,13 +35,13 @@ const App = ( { children }: Props ): Node => {
   // this is used for changing locale and also for showing UserCard
   const { remoteUser } = useUserMe( );
 
-  useEffect(() => {
-    if (!isTablet) {
+  useEffect( () => {
+    if ( !isTablet ) {
       Orientation.lockToPortrait();
     }
 
     return Orientation.unlockAllOrientations;
-  }, []);
+  }, [] );
 
   useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {

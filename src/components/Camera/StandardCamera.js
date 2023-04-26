@@ -23,8 +23,7 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import Orientation from "react-native-orientation-locker"
-import useUnlockScreen from 'sharedHooks/useUnlockScreen';
+import Orientation from "react-native-orientation-locker";
 import {
   IconButton,
   Snackbar
@@ -32,6 +31,7 @@ import {
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import useTranslation from "sharedHooks/useTranslation";
+import useUnlockScreen from "sharedHooks/useUnlockScreen";
 import colors from "styles/tailwindColors";
 
 import CameraView, {
