@@ -293,7 +293,7 @@ PODS:
     - React-Core
   - react-native-mail (6.1.1):
     - React-Core
-  - react-native-maps (0.31.1):
+  - react-native-maps (1.7.1):
     - React-Core
   - react-native-netinfo (9.3.9):
     - React-Core
@@ -723,7 +723,7 @@ SPEC CHECKSUMS:
   react-native-image-resizer: 00ceb0e05586c7aadf061eea676957a6c2ec60fa
   react-native-keep-awake: acbee258db16483744910f0da3ace39eb9ab47fd
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
-  react-native-maps: 8b8bfada2c86205a7f5a07dd1f92f29b33ea83aa
+  react-native-maps: 667f9b975549c6fa9b1631bf859440f68ebd3b8f
   react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
   react-native-orientation-locker: 851f6510d8046ea2f14aa169b1e01fcd309a94ba
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
@@ -765,4 +765,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1e393412e8a65a884dff99189d809b73ea234bcd
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0

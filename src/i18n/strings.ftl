@@ -151,6 +151,8 @@ Display-Name = Display Name
 
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 
+EDIT-LOCATION = EDIT LOCATION
+
 # Appears above the email text field
 Email = email
 
@@ -262,6 +264,8 @@ Last-Active-colon = Last Active:
 Licensing = Licensing
 
 Location = Location
+
+Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
 
@@ -542,6 +546,8 @@ RG = RG
 
 Save = Save
 
+SAVE-LOCATION = SAVE LOCATION
+
 SAVE-ALL = SAVE ALL
 
 SAVE-CHANGES = SAVE CHANGES
@@ -760,6 +766,8 @@ You-will-lose-all-existing-observations = {$count ->
 
 You-can-still-share-the-file =
     You can still share the file with another app. If you can email it, please send it to { $email }
+
+Zoom-in = Zoom in so that the observation’s accuracy is as low as possible.
 
 Your-location-uncertainty-is-over-4000km = Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 

@@ -3,6 +3,7 @@ import About from "components/About";
 import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
+import LocationPicker from "components/LocationPicker/LocationPicker";
 import Login from "components/LoginSignUp/Login";
 import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
@@ -278,6 +279,15 @@ const BottomTabs = () => {
           component={AddID}
           options={{
             title: t( "Add-an-ID" )
+          }}
+        />
+        <Tab.Screen
+          name="LocationPicker"
+          component={LocationPicker}
+          options={{
+            ...blankHeaderTitle,
+            ...hideHeaderLeft
+            // title: t( "EDIT-LOCATION" )
           }}
         />
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />
