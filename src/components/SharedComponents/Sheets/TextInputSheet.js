@@ -5,7 +5,7 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Platform } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
@@ -27,6 +27,7 @@ const TextInputSheet = ( {
   headerText,
   snapPoints
 }: Props ): Node => {
+  const textInputRef = useRef( );
   const theme = useTheme( );
   const [input, setInput] = useState( initialInput );
   const { t } = useTranslation( );
@@ -44,12 +45,12 @@ const TextInputSheet = ( {
     >
       <View className="p-5">
         <TextInput
+          ref={textInputRef}
           accessibilityLabel="Text input field"
           keyboardType="default"
           multiline
           mode="flat"
           onChangeText={text => setInput( text )}
-          value={input}
           placeholder={placeholder}
           className="bg-white border border-lightGray min-h-[223px] mb-5"
           testID="ObsEdit.notes"
@@ -67,14 +68,21 @@ const TextInputSheet = ( {
         />
         <Body3
           className="z-50 absolute bottom-20 right-5 p-5"
-          onPress={( ) => setInput( "" )}
+          onPress={( ) => {
+            // setInput( "" );
+            console.log( textInputRef?.current, "clear text input" );
+            textInputRef?.current?.clear( );
+          }}
         >
           {t( "Clear" )}
         </Body3>
         <Button
           level="primary"
           text={t( "CONFIRM" )}
-          onPress={confirm}
+          onPress={( ) => {
+            confirm( input );
+            handleClose( );
+          }}
         />
       </View>
     </BottomSheet>

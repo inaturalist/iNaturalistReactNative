@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
-import { ViewWrapper } from "components/SharedComponents";
+import { TextInputSheet, ViewWrapper } from "components/SharedComponents";
 import {
   Image, Pressable, Text, View
 } from "components/styledComponents";
@@ -20,8 +20,6 @@ import Taxon from "realmModels/Taxon";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useTranslation from "sharedHooks/useTranslation";
 import { textStyles, viewStyles } from "styles/obsDetails/addID";
-
-import AddCommentSheet from "./Sheets/AddCommentSheet";
 
 type Props = {
   route: {
@@ -176,9 +174,11 @@ const AddID = ( { route }: Props ): Node => {
   return (
     <ViewWrapper>
       {showAddCommentSheet && (
-        <AddCommentSheet
-          setShowAddCommentSheet={setShowAddCommentSheet}
-          addComment={setComment}
+        <TextInputSheet
+          handleClose={( ) => setShowAddCommentSheet( false )}
+          headerText={t( "ADD-OPTIONAL-COMMENT" )}
+          snapPoints={[416]}
+          confirm={textInput => setComment( textInput )}
         />
       )}
       <View className="p-3">
