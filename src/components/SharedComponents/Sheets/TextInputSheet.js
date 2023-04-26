@@ -1,5 +1,6 @@
 // @flow
 
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import {
   Body3, BottomSheet, Button
 } from "components/SharedComponents";
@@ -7,8 +8,9 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Platform } from "react-native";
-import { TextInput, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
 
   type Props = {
     handleClose: Function,
@@ -44,26 +46,25 @@ const TextInputSheet = ( {
       }}
     >
       <View className="p-5">
-        <TextInput
+        <BottomSheetTextInput
           ref={textInputRef}
           accessibilityLabel="Text input field"
           keyboardType="default"
           multiline
-          mode="flat"
           onChangeText={text => setInput( text )}
           placeholder={placeholder}
-          className="bg-white border border-lightGray min-h-[223px] mb-5"
           testID="ObsEdit.notes"
-          // kind of tricky to change the font here:
-          // https://github.com/callstack/react-native-paper/issues/3615#issuecomment-1402025033
-          theme={{
-            fonts: {
-              bodyLarge:
-              {
-                ...theme.fonts.bodyLarge,
-                fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`
-              }
-            }
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{
+            height: 223,
+            fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`,
+            fontSize: 14,
+            lineHeight: 17,
+            fontColor: theme.colors.primary,
+            borderRadius: 8,
+            borderColor: colors.lightGray,
+            borderWidth: 1,
+            padding: 15
           }}
         />
         <Body3
@@ -77,6 +78,7 @@ const TextInputSheet = ( {
           {t( "Clear" )}
         </Body3>
         <Button
+          className="mt-5"
           level="primary"
           text={t( "CONFIRM" )}
           onPress={( ) => {
