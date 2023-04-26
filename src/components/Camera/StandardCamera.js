@@ -23,7 +23,8 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import Orientation from "react-native-orientation-locker";
+import Orientation from "react-native-orientation-locker"
+import useUnlockScreen from 'sharedHooks/useUnlockScreen';
 import {
   IconButton,
   Snackbar
@@ -76,6 +77,7 @@ const CameraButtonPlaceholder = ( ) => (
 );
 
 const StandardCamera = ( ): Node => {
+  useUnlockScreen( );
   const {
     addCameraPhotosToCurrentObservation,
     createObsWithCameraPhotos,
@@ -125,11 +127,6 @@ const StandardCamera = ( ): Node => {
     "justify-center",
     "items-center"
   ].join( " " );
-
-  // screen orientation locked to portrait on small devices
-  if ( !isTablet ) {
-    Orientation.lockToPortrait();
-  }
 
   // detect device rotation instead of using screen orientation change
   const onDeviceRotation = useCallback(
