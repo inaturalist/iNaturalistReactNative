@@ -34,7 +34,7 @@ const ObsUploadStatus = ( {
   const whiteColor = white && theme.colors.onPrimary;
 
   const displayUploadStatus = ( ) => {
-    if (!observation.id ) {
+    if ( !observation.id ) {
       return (
         <UploadStatus
           progress={uploadProgress?.[observation.uuid] || 0}

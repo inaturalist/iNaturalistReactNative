@@ -434,12 +434,12 @@ class Observation extends Realm.Object {
       }
 
       return response;
-    } catch (error) {
+    } catch ( error ) {
       EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
         obs.uuid,
         -1
       ]] );
-      throw error
+      throw error;
     }
   };
 
