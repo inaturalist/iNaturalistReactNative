@@ -6,6 +6,8 @@ import RootDrawerNavigator from "navigation/rootDrawerNavigation";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
+import DeviceInfo from "react-native-device-info";
+import Orientation from "react-native-orientation-locker";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useTranslation from "sharedHooks/useTranslation";
 import useUserMe from "sharedHooks/useUserMe";
@@ -13,6 +15,8 @@ import useUserMe from "sharedHooks/useUserMe";
 import { log } from "../../react-native-logs.config";
 
 const logger = log.extend( "App" );
+
+const isTablet = DeviceInfo.isTablet();
 
 const { useRealm } = RealmContext;
 
@@ -30,6 +34,14 @@ const App = ( { children }: Props ): Node => {
   // fetch current user from server and save to realm in useEffect
   // this is used for changing locale and also for showing UserCard
   const { remoteUser } = useUserMe( );
+
+  useEffect( () => {
+    if ( !isTablet ) {
+      Orientation.lockToPortrait();
+    }
+
+    return Orientation.unlockAllOrientations;
+  }, [] );
 
   useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {

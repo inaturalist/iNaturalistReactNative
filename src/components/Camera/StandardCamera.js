@@ -31,6 +31,7 @@ import {
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import useTranslation from "sharedHooks/useTranslation";
+import useUnlockScreen from "sharedHooks/useUnlockScreen";
 import colors from "styles/tailwindColors";
 
 import CameraView, {
@@ -76,6 +77,7 @@ const CameraButtonPlaceholder = ( ) => (
 );
 
 const StandardCamera = ( ): Node => {
+  useUnlockScreen( );
   const {
     addCameraPhotosToCurrentObservation,
     createObsWithCameraPhotos,
@@ -125,11 +127,6 @@ const StandardCamera = ( ): Node => {
     "justify-center",
     "items-center"
   ].join( " " );
-
-  // screen orientation locked to portrait on small devices
-  if ( !isTablet ) {
-    Orientation.lockToPortrait();
-  }
 
   // detect device rotation instead of using screen orientation change
   const onDeviceRotation = useCallback(

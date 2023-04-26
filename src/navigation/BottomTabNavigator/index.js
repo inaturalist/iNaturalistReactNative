@@ -257,7 +257,7 @@ const BottomTabs = () => {
         <Tab.Screen
           name="StandardCamera"
           component={StandardCameraWithPermission}
-          options={{ ...hideHeader, orientation: "all" }}
+          options={{ ...hideHeader, orientation: "all", unmountOnBlur: true }}
         />
         <Tab.Screen
           name="SoundRecorder"
