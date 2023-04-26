@@ -1,6 +1,8 @@
 // @flow
 
-import { Body3, Heading4, INatIcon } from "components/SharedComponents";
+import {
+  Body3, Heading4, INatIcon, TextInputSheet
+} from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -8,7 +10,6 @@ import React, { useContext, useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 import GeoprivacySheet from "./Sheets/GeoprivacySheet";
-import NotesSheet from "./Sheets/NotesSheet";
 import WildStatusSheet from "./Sheets/WildStatusSheet";
 
 const OtherDataSection = ( ): Node => {
@@ -46,7 +47,6 @@ const OtherDataSection = ( ): Node => {
       value: true
     }];
 
-  const addNotes = text => updateObservationKey( "description", text );
   const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
   const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
 
@@ -100,10 +100,13 @@ const OtherDataSection = ( ): Node => {
       </Pressable>
       <View className="flex-row flex-nowrap items-center ml-1 mt-2.5">
         {showNotesSheet && (
-          <NotesSheet
-            setShowNotesSheet={setShowNotesSheet}
-            addNotes={addNotes}
-            description={currentObservation?.description}
+          <TextInputSheet
+            handleClose={( ) => setShowNotesSheet( false )}
+            headerText={t( "NOTES" )}
+            snapPoints={[416]}
+            placeholder={t( "Add-optional-notes" )}
+            initialInput={currentObservation?.description}
+            confirm={textInput => updateObservationKey( "description", textInput )}
           />
         )}
         <INatIcon
