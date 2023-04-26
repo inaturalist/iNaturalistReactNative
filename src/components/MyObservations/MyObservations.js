@@ -35,7 +35,7 @@ const GUTTER = 15;
 
 const Item = React.memo(
   ( {
-    observation, layout, gridItemWidth, uploadStatus, setShowLoginSheet
+    observation, layout, gridItemWidth, setShowLoginSheet
   } ) => (
     <MyObservationsPressable observation={observation}>
       {layout === "grid" ? (
@@ -48,13 +48,11 @@ const Item = React.memo(
             width: gridItemWidth,
             margin: GUTTER / 2
           }}
-          uploadStatus={uploadStatus}
           setShowLoginSheet={setShowLoginSheet}
         />
       ) : (
         <ObsListItem
           observation={observation}
-          uploadStatus={uploadStatus}
           setShowLoginSheet={setShowLoginSheet}
         />
       )}

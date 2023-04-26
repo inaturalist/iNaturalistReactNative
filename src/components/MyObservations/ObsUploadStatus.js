@@ -12,7 +12,6 @@ import UploadCompleteAnimation from "./UploadIcons/UploadCompleteAnimation";
 
 type Props = {
   observation: Object,
-  uploadStatus: Object,
   layout?: "horizontal" | "vertical",
   white?: boolean,
   classNameMargin?: string,
@@ -21,7 +20,6 @@ type Props = {
 
 const ObsUploadStatus = ( {
   observation,
-  uploadStatus,
   layout,
   white = false,
   classNameMargin,
@@ -33,11 +31,10 @@ const ObsUploadStatus = ( {
   const startSingleUpload = obsEditContext?.startSingleUpload;
   const uploadProgress = obsEditContext?.uploadProgress;
   const wasSynced = observation.wasSynced( );
-  const { allObsToUpload } = uploadStatus;
   const whiteColor = white && theme.colors.onPrimary;
 
   const displayUploadStatus = ( ) => {
-    if ( allObsToUpload?.find( upload => upload.uuid === observation.uuid ) ) {
+    if (!observation.id ) {
       return (
         <UploadStatus
           progress={uploadProgress?.[observation.uuid] || 0}
