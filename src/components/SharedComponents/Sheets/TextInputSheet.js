@@ -60,11 +60,12 @@ const TextInputSheet = ( {
             fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`,
             fontSize: 14,
             lineHeight: 17,
-            fontColor: theme.colors.primary,
+            color: theme.colors.primary,
             borderRadius: 8,
             borderColor: colors.lightGray,
             borderWidth: 1,
-            padding: 15
+            padding: 15,
+            textAlignVertical: "top"
           }}
         />
         <Body3
