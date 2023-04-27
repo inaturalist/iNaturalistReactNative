@@ -1,5 +1,6 @@
 // @flow
 import { create } from "apisauce";
+import axios from "axios";
 import i18next from "i18next";
 import { Alert, Platform } from "react-native";
 import Config from "react-native-config";
@@ -30,12 +31,16 @@ const USER_AGENT = `iNaturalistRN/${getVersion()} ${getDeviceType()} (Build ${ge
 // JWT Tokens expire after 30 mins - consider 25 mins as the max time (safe margin)
 const JWT_EXPIRATION_MINS = 25;
 
+const axiosInstance = axios.create( {
+  baseURL: API_HOST
+} );
+
 /**
  * Creates base API client for all requests
  * @param additionalHeaders any additional headers that will be passed to the API
  */
 const createAPI = ( additionalHeaders: any ) => create( {
-  baseURL: API_HOST,
+  axiosInstance,
   headers: { "User-Agent": USER_AGENT, ...additionalHeaders }
 } );
 
@@ -245,16 +250,18 @@ const verifyCredentials = async (
   username: string,
   password: string
 ) => {
-  const formData = new FormData();
-  formData.append( "format", "json" );
-  formData.append( "grant_type", "password" );
-  formData.append( "client_id", Config.OAUTH_CLIENT_ID );
-  formData.append( "client_secret", Config.OAUTH_CLIENT_SECRET );
-  formData.append( "password", password );
-  formData.append( "username", username );
-  formData.append( "locale", i18next.language );
+  const formData = {
+    format: "json",
+    grant_type: "password",
+    client_id: Config.OAUTH_CLIENT_ID,
+    client_secret: Config.OAUTH_CLIENT_SECRET,
+    password,
+    username,
+    locale: i18next.language
+  };
 
   const api = createAPI();
+
   let response = await api.post( "/oauth/token", formData );
 
   if ( !response.ok ) {
@@ -366,21 +373,31 @@ const registerUser = async (
   password: string,
   license: void | string
 ): any => {
-  const formData = new FormData();
-  formData.append( "username", username );
-  formData.append( "user[email]", email );
-  formData.append( "user[login]", username );
-  formData.append( "user[password]", password );
-  formData.append( "user[password_confirmation]", password );
-  // TODO - support for iNat site_id
-  if ( license ) {
-    formData.append( "user[preferred_observation_license]", license );
-    formData.append( "user[preferred_photo_license]", license );
-    formData.append( "user[preferred_sound_license]", license );
-  }
   const locales = RNLocalize.getLocales();
-
-  formData.append( "user[locale]", locales[0].languageCode );
+  // TODO - support for iNat site_id
+  const formData: {
+    username: string,
+    "user[email]": string,
+    "user[login]": string,
+    "user[password]": string,
+    "user[password_confirmation]": string,
+    "user[locale]": string,
+    "user[preferred_observation_license]"?: void | string,
+    "user[preferred_photo_license]"?: void | string,
+    "user[preferred_sound_license]"?: void | string,
+  } = {
+    username,
+    "user[email]": email,
+    "user[login]": username,
+    "user[password]": password,
+    "user[password_confirmation]": password,
+    "user[locale]": locales[0].languageCode
+  };
+  if ( license ) {
+    formData["user[preferred_observation_license]"] = license;
+    formData["user[preferred_photo_license]"] = license;
+    formData["user[preferred_sound_license]"] = license;
+  }
 
   const api = createAPI();
   const response = await api.post( "/users.json", formData );

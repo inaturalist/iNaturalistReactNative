@@ -28,7 +28,7 @@ const ObsStatus = ( {
 }: Props ): Node => {
   const theme = useTheme();
   const qualityGrade = checkCamelAndSnakeCase( observation, "qualityGrade" );
-  const margin = layout === "vertical" ? "mb-1" : "mr-2";
+  const margin = layout === "vertical" ? "mb-1 ml-1" : "mr-2";
   const flexDirection = layout === "vertical" ? "flex-column" : "flex-row";
   const iconColor = white ? theme.colors.onPrimary : theme.colors.primary;
   const numIdents = observation.identifications?.length || 0;

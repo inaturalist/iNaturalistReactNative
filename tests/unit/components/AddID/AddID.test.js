@@ -26,7 +26,7 @@ jest.mock(
 );
 
 jest.mock(
-  "components/SharedComponents/BottomSheetStandardBackdrop",
+  "components/SharedComponents/Sheets/BottomSheetStandardBackdrop",
   () => function MockBottomSheetStandardBackdrop( props ) {
     const MockName = "mock-bottom-sheet-standard-backdrop";
     return (

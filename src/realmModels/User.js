@@ -21,7 +21,7 @@ class User extends Realm.Object {
 
   static userHandle = user => ( user && user.login ) && `@${user.login}`;
 
-  static currentUser = realm => realm.objects( "User" ).filtered( "signedIn == true" )[0]
+  static currentUser = realm => realm.objects( "User" ).filtered( "signedIn == true" )[0];
 
   static schema = {
     name: "User",
@@ -36,7 +36,7 @@ class User extends Realm.Object {
       observations_count: "int?",
       prefers_scientific_name_first: "bool?"
     }
-  }
+  };
 }
 
 export default User;

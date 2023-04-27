@@ -20,9 +20,6 @@ module.exports = {
     "simple-import-sort",
     "@tanstack/query"
   ],
-  globals: {
-    FormData: true
-  },
   rules: {
     "arrow-parens": [2, "as-needed"],
     "comma-dangle": [2, "never"],

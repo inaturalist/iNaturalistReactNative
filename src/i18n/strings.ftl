@@ -19,6 +19,8 @@ Add-evidence-of-an-organism = Add evidence of an organism. This helps others ide
 
 Add-Location = Add Location
 
+ADD-OPTIONAL-COMMENT = ADD OPTIONAL COMMENT
+
 Add-optional-notes = Add optional notes
 
 Add-to-projects = Add to projects
@@ -62,10 +64,16 @@ Birds = Birds
 
 Blocked-Users = Blocked Users
 
+By-exiting-changes-not-saved = By exiting, changes to your observation will not be saved.
+
+By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
+
 # Quality grade option: Casual (shortened for My Observations view)
 C = C
 
 Camera-Roll = Camera Roll
+
+CANCEL = CANCEL
 
 Cancel = Cancel
 
@@ -77,9 +85,13 @@ Casual = Casual
 # After pressing the reset password button
 Check-your-email = Check your email! We've sent password reset instructions.
 
+Clear = Clear
+
 Combine-Photos = Combine Photos
 
 Community-Moderation-Settings = Community Moderation Settings
+
+CONFIRM = CONFIRM
 
 Connected-Accounts = Connected Accounts
 
@@ -105,22 +117,32 @@ Date-uploaded-colon = Date uploaded:
 
 Default-Search-Place = Default Search Place
 
-Delete = Delete
+DELETE = DELETE
+
+DELETE-ALL = DELETE ALL
 
 Delete-comment = Delete comment
 
+DELETE-OBSERVATION = DELETE OBSERVATION?
+
+Delete-observation = Delete observation
+
+Delete-observations = Delete observations
+
 DELETE-X-OBSERVATIONS = DELETE {$count ->
-    [one] 1 OBSERVATION
-    *[other] {$count} OBSERVATIONS
+    [one] 1 OBSERVATION?
+    *[other] {$count} OBSERVATIONS?
 }
 
 Description-Tags = Description/Tags
 
-Discard-Changes = Discard Changes
+DISCARD-ALL = DISCARD ALL
 
-Discard-X-Observations = {$count ->
-    [one] Discard Observation
-    *[other] Discard Observations
+DISCARD-OBSERVATION = DISCARD OBSERVATION
+
+DISCARD-X-OBSERVATIONS = {$count ->
+    [one] DISCARD OBSERVATION
+    *[other] DISCARD {$count} OBSERVATIONS
 }
 
 Display = Display
@@ -128,6 +150,8 @@ Display = Display
 Display-Name = Display Name
 
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
+
+EDIT-LOCATION = EDIT LOCATION
 
 # Appears above the email text field
 Email = email
@@ -152,6 +176,8 @@ External-Applications = External Applications
 
 # Header for featured projects
 Featured = Featured
+
+Fetching-location = Fetching location...
 
 Filters = Filters
 
@@ -239,6 +265,10 @@ Licensing = Licensing
 
 Location = Location
 
+Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
+
+LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
+
 Log-in = Log in
 
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
@@ -265,6 +295,8 @@ Mammals = Mammals
 Media = Media
 
 Missing-Date = Missing Date
+
+MISSING-EVIDENCE = MISSING EVIDENCE
 
 Mollusks = Mollusks
 
@@ -325,10 +357,14 @@ No-comments-or-ids-to-display = No comments or ids to display
 
 No-Location = No Location
 
+none = none
+
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
 # license code
 no-rights-reserved = no rights reserved
+
+NOTES = NOTES
 
 # Header for observation description on observation detail
 Notes = Notes
@@ -510,6 +546,12 @@ RG = RG
 
 Save = Save
 
+SAVE-LOCATION = SAVE LOCATION
+
+SAVE-ALL = SAVE ALL
+
+SAVE-CHANGES = SAVE CHANGES
+
 Search-for-a-location = Search for a location
 
 Search-for-a-project = Search for a project
@@ -554,6 +596,8 @@ Status = Status
 
 # Header for a block of text describing a taxon's conservation status
 STATUS-header = STATUS
+
+Stay-on-this-screen = Stay on this screen while your location loads.
 
 Tap-to-search-for-taxa = Tap to search for taxa
 
@@ -649,6 +693,10 @@ Who-can-add-observation-fields-to-my-observations = Who can add observation fiel
 # Welcome user back to app
 Welcome-user = <0>Welcome back,</0><1>{$userHandle}</1>
 
+Wild = Wild
+
+WILD-STATUS = WILD STATUS
+
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->
     [one] 1 Observation
@@ -701,7 +749,6 @@ Record-a-sound = Record a sound
 
 You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what’s around you.
 
-
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.
 You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
@@ -717,6 +764,10 @@ You-will-lose-all-existing-observations = {$count ->
 
 You-can-still-share-the-file =
     You can still share the file with another app. If you can email it, please send it to { $email }
+
+Zoom-in = Zoom in so that the observation’s accuracy is as low as possible.
+
+Your-location-uncertainty-is-over-4000km = Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 
 # Identification category
 Category-leading = Leading
@@ -747,8 +798,8 @@ Quality-Grade-needs_id = Quality Grade Needs ID
 # Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual
 Quality-Grade-casual = Quality Grade Casual
 
-Add-evidence = Add evidence
-You-can-only-upload-20-media = You can only add 20 photos and 20 sounds to an observation
+ADD-EVIDENCE = ADD EVIDENCE
+You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
 
 Add-Comment = Add Comment
 Suggest-an-ID = Suggest an ID
@@ -878,3 +929,20 @@ Failed-to-log-in = Failed to log in
 
 # Generic error message
 Something-went-wrong = Something went wrong.
+
+#Geoprivacy sheet descriptions
+Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
+The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
+The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
+
+#Wild status sheet descriptions
+This-is-a-wild-organism = This is a wild organism and wasn’t placed in this location by humans.
+This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
+
+# Latitude, longitude, and accuracy
+Lat-Lon-Acc = Lat: { $latitude }, Lon: { $longitude }, Acc: { $accuracy }
+
+# Missing evidence sheet
+Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
+# Button or accessibility label for an interactive element that stops an upload
+Stop-upload = Stop upload

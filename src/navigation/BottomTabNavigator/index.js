@@ -3,6 +3,7 @@ import About from "components/About";
 import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
+import LocationPicker from "components/LocationPicker/LocationPicker";
 import Login from "components/LoginSignUp/Login";
 import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
@@ -33,7 +34,6 @@ import {
 } from "navigation/navigationOptions";
 import React from "react";
 import { PermissionsAndroid } from "react-native";
-import DeviceInfo from "react-native-device-info";
 import { PERMISSIONS } from "react-native-permissions";
 import User from "realmModels/User";
 import useUserMe from "sharedHooks/useUserMe";
@@ -45,8 +45,6 @@ const Tab = createBottomTabNavigator();
 const OBS_LIST_SCREEN_ID = "ObsList";
 const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
-
-const isTablet = DeviceInfo.isTablet();
 
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -259,7 +257,7 @@ const BottomTabs = () => {
         <Tab.Screen
           name="StandardCamera"
           component={StandardCameraWithPermission}
-          options={{ ...hideHeader, orientation: isTablet ? "all" : "portrait" }}
+          options={{ ...hideHeader, orientation: "all", unmountOnBlur: true }}
         />
         <Tab.Screen
           name="SoundRecorder"
@@ -281,6 +279,15 @@ const BottomTabs = () => {
           component={AddID}
           options={{
             title: t( "Add-an-ID" )
+          }}
+        />
+        <Tab.Screen
+          name="LocationPicker"
+          component={LocationPicker}
+          options={{
+            ...blankHeaderTitle,
+            ...hideHeaderLeft
+            // title: t( "EDIT-LOCATION" )
           }}
         />
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />

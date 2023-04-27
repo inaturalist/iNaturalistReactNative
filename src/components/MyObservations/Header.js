@@ -64,20 +64,20 @@ const Header = ( {
           accessibilityState={{ disabled: false }}
         />
         {numUnuploadedObs > 0 ? (
-          <View>
+          <View className="shrink">
             <Subheading1
-              className="mt-5 max-w-[280px]"
+              className="mt-5"
               testID="log-in-to-iNaturalist-text"
             >
               {t( "Log-in-to-contribute-and-sync" )}
             </Subheading1>
-            <Heading1 className="mb-5 max-w-[280px]">
-              {t( "X-observations", { count: numUnuploadedObs } )}
+            <Heading1 className="mb-5">
+              { t( "X-observations", { count: numUnuploadedObs } ) }
             </Heading1>
           </View>
         ) : (
           <Subheading1
-            className="my-5 max-w-[280px]"
+            className="my-5 shrink"
             testID="log-in-to-iNaturalist-text-no-observations"
           >
             {t( "Log-in-to-contribute-your-observations" )}

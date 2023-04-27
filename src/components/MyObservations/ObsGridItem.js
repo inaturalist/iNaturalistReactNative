@@ -14,7 +14,6 @@ type Props = {
   width?: string,
   height?: string,
   style?: Object,
-  uploadStatus: Object,
   setShowLoginSheet: Function
 };
 
@@ -23,7 +22,6 @@ const ObsGridItem = ( {
   width = "w-full",
   height,
   style,
-  uploadStatus,
   setShowLoginSheet
 }: Props ): Node => (
   <ObsImagePreview
@@ -43,7 +41,6 @@ const ObsGridItem = ( {
     <View className="absolute bottom-0 flex p-2 w-full">
       <ObsUploadStatus
         observation={observation}
-        uploadStatus={uploadStatus}
         layout="horizontal"
         white
         classNameMargin="mb-1"

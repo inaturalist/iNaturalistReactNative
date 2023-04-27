@@ -20,12 +20,14 @@ import {
   Heading5,
   IdentificationsCount,
   INatIcon,
+  INatIconButton,
   InlineUser,
   List1,
   List2,
   ObservationLocation,
   PhotoCount,
   QualityGradeStatus,
+  SearchBar,
   StickyToolbar,
   Subheading1,
   Tabs,
@@ -86,7 +88,7 @@ const UiLibrary = (): Node => {
       <FloatingActionBar
         position="bottomEnd"
         containerClass="mx-4 px-2 rounded-md"
-        endY={200}
+        endY={180}
         show
       >
         <Heading2 className="my-2">Floating Action Bar</Heading2>
@@ -241,12 +243,32 @@ const UiLibrary = (): Node => {
         </View>
 
         <Heading2>Special Icon buttons</Heading2>
-        <View className="flex flex-row justify-between">
-          <View className="bg-darkGray">
-            <Body2>CloseButton</Body2>
-            <CloseButton />
-          </View>
+        <Body2>CloseButton</Body2>
+        <View className="bg-darkGray">
+          <CloseButton />
         </View>
+        <Body2>INatIconButton</Body2>
+        <Body3>Default</Body3>
+        <INatIconButton
+          icon="close"
+          className="bg-yellow"
+          onPress={() => Alert.alert(
+            "Default INatIconButton",
+            "Should be the minimum accessible size by default"
+          )}
+        />
+        <Body3>Small icon, large tappable area</Body3>
+        <INatIconButton
+          icon="close"
+          className="bg-yellow"
+          onPress={() => Alert.alert(
+            "Custon INatIconButton",
+            "The point is to adjust the interactive area and the icon size independently"
+          )}
+          size={10}
+          width={50}
+          height={50}
+        />
 
         <Heading2>Custom iNaturalist Icons</Heading2>
         {Object.keys( glyphmap )
@@ -495,13 +517,13 @@ const UiLibrary = (): Node => {
 
         <Heading2 className="my-2">ActivityItem</Heading2>
         <ActivityItem item={exampleId} currentUserId={userId} />
-
+        <SearchBar value="search" />
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
           Useless spacer at the end because height in NativeWind is confusing.
         </Body1>
       </ScrollView>
-      <StickyToolbar containerClass="bottom-56">
+      <StickyToolbar containerClass="bottom-24">
         <Heading2>StickyToolbar</Heading2>
       </StickyToolbar>
     </ViewWrapper>
