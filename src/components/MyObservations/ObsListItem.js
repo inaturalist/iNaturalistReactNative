@@ -1,6 +1,5 @@
 // @flow
-import DisplayTaxonName from "components/DisplayTaxonName";
-import { DateDisplay, ObservationLocation } from "components/SharedComponents";
+import { DateDisplay, DisplayTaxonName, ObservationLocation } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
