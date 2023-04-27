@@ -19,7 +19,8 @@ type Props = {
   containerClass?: string,
   handleTextChange: Function,
   value: string,
-  testID?: string
+  testID?: string,
+  hasShadow?: boolean
 }
 
 // Ensure this component is placed outside of scroll views
@@ -28,7 +29,8 @@ const SearchBar = ( {
   containerClass,
   testID,
   handleTextChange,
-  value
+  value,
+  hasShadow
 }: Props ): React.Node => {
   const theme = useTheme( );
 
@@ -40,9 +42,9 @@ const SearchBar = ( {
         mode="flat"
         onChangeText={handleTextChange}
         value={value}
-        className="bg-white w-full rounded-lg h-[45px]"
+        className="bg-white w-full rounded-lg h-[45px] border border-lightGray pr-5"
         testID={testID}
-        style={getShadow( theme.colors.primary )}
+        style={hasShadow && getShadow( theme.colors.primary )}
         underlineColor={theme.colors.primary}
         activeUnderlineColor={theme.colors.primary}
         // kind of tricky to change the font here:
