@@ -1,4 +1,8 @@
 {
+  "ABOUT": {
+    "comment": "Header above user biography / user description on user profile",
+    "val": "ABOUT"
+  },
   "ABOUT-taxon-header": {
     "comment": "Header for a block of text describing a taxon",
     "val": "ABOUT"
@@ -36,10 +40,6 @@
   "app-authorized-on-date": "{ $appName } (authorized on: { $date })",
   "Applications": "Applications",
   "Automatically-update-my-content-for-taxon-changes": "Automatically update my content for taxon changes",
-  "BIO": {
-    "comment": "Header above user biography / user description on user profile",
-    "val": "BIO"
-  },
   "Bio": {
     "comment": "Header for inserting user description in settings profile tab",
     "val": "Bio"
@@ -143,8 +143,8 @@
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
   "High": "High",
-  "IDs": "ID's",
   "IDENTIFICATION": "IDENTIFICATION",
+  "IDENTIFICATIONS": "IDENTIFICATIONS",
   "Import-X-photos": {
     "comment": "Shows the number of photos a user selected from the camera roll for upload",
     "val": "Import { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
@@ -163,15 +163,15 @@
     "comment": "Header for joined projects",
     "val": "Joined"
   },
-  "Joined-colon": {
+  "Joined-date": {
     "comment": "Shows date user joined iNaturalist on user profile",
-    "val": "Joined:"
+    "val": "Joined: { $date }"
   },
-  "Journal-Posts": "Journal Posts",
+  "JOURNAL-POSTS": "JOURNAL POSTS",
   "Language-Locale": "Language/Locale",
-  "Last-Active-colon": {
+  "Last-Active-date": {
     "comment": "Shows date user last active on iNaturalist on user profile",
-    "val": "Last Active:"
+    "val": "Last Active: { $date }"
   },
   "Licensing": "Licensing",
   "Location": "Location",
@@ -256,6 +256,7 @@
   "Obscured": "Obscured",
   "Observation": "Observation",
   "Observation-Attribution": "Observation © { $attribution } · { $licenseCode }",
+  "OBSERVATIONS": "OBSERVATIONS",
   "Observations": "Observations",
   "Observations-created-on-iNaturalist": "Observations created on iNaturalist are used by scientists around the world.",
   "Offensive-Inappropriate": "Offensive/Inappropriate",
@@ -388,7 +389,7 @@
   "Sort-by": "Sort by",
   "Spam": "Spam",
   "Spam-Examples": "Commercial solicitation, links to nowhere, etc.",
-  "Species": "Species",
+  "SPECIES": "SPECIES",
   "Status": "Status",
   "STATUS-header": {
     "comment": "Header for a block of text describing a taxon's conservation status",
@@ -643,6 +644,7 @@
     "val": "M/d/yy"
   },
   "datetime-format-short": "M/d/yy h:mm a",
+  "date-format-long": "PP",
   "As-you-upload-more-observations": {
     "comment": "Onboarding text on MyObservations\n0-10 observations",
     "val": "As you upload more observations, others in our community may be able to help you identify them!"
@@ -688,5 +690,13 @@
   "Stop-upload": {
     "comment": "Button or accessibility label for an interactive element that stops an upload",
     "val": "Stop upload"
-  }
+  },
+  "VIEW-PROJECTS": "VIEW PROJECTS",
+  "PEOPLE": "PEOPLE",
+  "VIEW-JOURNAL-POSTS": "VIEW JOURNAL POSTS",
+  "VIEW-FOLLOWING": "VIEW FOLLOWING",
+  "VIEW-FOLLOWERS": "VIEW FOLLOWERS",
+  "INATURALIST-ROLE": "INATURALIST { $role }",
+  "Affiliation": "Affiliation: { $site }",
+  "Monthly-Donor": "Monthly Donor"
 }

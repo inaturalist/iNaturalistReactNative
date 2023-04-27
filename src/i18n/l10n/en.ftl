@@ -1,4 +1,5 @@
-
+# Header above user biography / user description on user profile
+ABOUT = ABOUT
 
 # Header for a block of text describing a taxon
 ABOUT-taxon-header = ABOUT
@@ -53,9 +54,6 @@ app-authorized-on-date = { $appName } (authorized on: { $date })
 Applications = Applications
 
 Automatically-update-my-content-for-taxon-changes = Automatically update my content for taxon changes
-
-# Header above user biography / user description on user profile
-BIO = BIO
 
 # Header for inserting user description in settings profile tab
 Bio = Bio
@@ -223,9 +221,9 @@ Has-Sounds = Has Sounds
 
 High = High
 
-IDs = ID's
-
 IDENTIFICATION = IDENTIFICATION
+
+IDENTIFICATIONS = IDENTIFICATIONS
 
 # Shows the number of photos a user selected from the camera roll for upload
 Import-X-photos = Import {$count ->
@@ -252,14 +250,14 @@ Invalid-login = The username or password is incorrect
 Joined = Joined
 
 # Shows date user joined iNaturalist on user profile
-Joined-colon = Joined:
+Joined-date = Joined: {$date}
 
-Journal-Posts = Journal Posts
+JOURNAL-POSTS = JOURNAL POSTS
 
 Language-Locale = Language/Locale
 
 # Shows date user last active on iNaturalist on user profile
-Last-Active-colon = Last Active:
+Last-Active-date = Last Active: {$date}
 
 Licensing = Licensing
 
@@ -376,6 +374,8 @@ Obscured = Obscured
 Observation = Observation
 
 Observation-Attribution = Observation © {$attribution} · {$licenseCode}
+
+OBSERVATIONS = OBSERVATIONS
 
 Observations = Observations
 
@@ -590,7 +590,7 @@ Spam = Spam
 
 Spam-Examples = Commercial solicitation, links to nowhere, etc.
 
-Species = Species
+SPECIES = SPECIES
 
 Status = Status
 
@@ -906,6 +906,7 @@ Take-photo = Take photo
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
 datetime-format-short = M/d/yy h:mm a
+date-format-long = PP
 
 # Onboarding text on MyObservations
 # 0-10 observations
@@ -946,3 +947,12 @@ Lat-Lon-Acc = Lat: { $latitude }, Lon: { $longitude }, Acc: { $accuracy }
 Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
 # Button or accessibility label for an interactive element that stops an upload
 Stop-upload = Stop upload
+
+VIEW-PROJECTS = VIEW PROJECTS
+PEOPLE = PEOPLE
+VIEW-JOURNAL-POSTS = VIEW JOURNAL POSTS
+VIEW-FOLLOWING = VIEW FOLLOWING
+VIEW-FOLLOWERS = VIEW FOLLOWERS
+INATURALIST-ROLE = INATURALIST {$role}
+Affiliation = Affiliation: {$site}
+Monthly-Donor = Monthly Donor
