@@ -53,9 +53,7 @@ describe( "MyObservations", ( ) => {
       expect( signedInUsers.length ).toEqual( 0 );
       renderAppWithComponent( <MyObservationsContainer /> );
       const loginText = i18next.t( "Log-in-to-contribute-your-observations" );
-      await waitFor( ( ) => {
-        expect( screen.getByText( loginText ) ).toBeTruthy( );
-      } );
+      expect( await screen.findByText( loginText ) ).toBeTruthy( );
       // Unpleasant, but without adjusting the timeout it doesn't seem like
       // all of these requests get caught
       await waitFor( ( ) => {
