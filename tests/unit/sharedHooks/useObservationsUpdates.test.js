@@ -18,6 +18,7 @@ const mockIdentificationUpdate = factory( "RemoteUpdate", {
 const mockData = [mockCommentUpdate, mockIdentificationUpdate];
 
 const mockObservation = factory( "LocalObservation" );
+
 const mockRealm = {
   objectForPrimaryKey: jest.fn( ).mockReturnValue( mockObservation ),
   write: jest.fn( )
@@ -68,14 +69,16 @@ describe( "useObservationsUpdates", ( ) => {
   } );
 
   describe.each( [
-    ["comment", mockCommentUpdate],
-    ["identification", mockIdentificationUpdate]
+    ["comment", [mockCommentUpdate]],
+    ["identification", [mockIdentificationUpdate]],
+    ["both", mockData]
   ] )( "when the update is a %s", ( a, update ) => {
     beforeEach( ( ) => {
-      useAuthenticatedQuery.mockReturnValue( { data: [update], isLoading: false } );
+      useAuthenticatedQuery.mockReturnValue( { data: update, isLoading: false } );
     } );
 
     describe.each( [
+      ["viewed fields not initialized", null, null],
       ["viewed comments and viewed identifications", true, true],
       ["viewed comments and not viewed identifications", true, false],
       ["not viewed comments and viewed identifications", false, true],
@@ -89,24 +92,21 @@ describe( "useObservationsUpdates", ( ) => {
         } );
       } );
 
+      const shouldCallCommentsWrite = ( a === "comment" || a === "both" )
+        && ( viewedComments || viewedComments === null );
+      const shouldCallIdentificationsWrite = ( a === "identification" || a === "both" )
+        && ( viewedIdentifications || viewedIdentifications === null );
+      const callsArray = [shouldCallCommentsWrite, shouldCallIdentificationsWrite];
+      const numberOfCalls = callsArray.filter( call => call ).length;
+
       // Testing if realm.write is correctly called or not,
       // this is not testing the actual change in the local observation
       // Depending on whether the update is a comment or an identification
       // and whether the local observation has viewed comments or identifications
       // the realm.write function should be called or not
-      const shouldCallRealmWrite = ( ( viewedComments && a === "comment" )
-          || ( viewedIdentifications && a === "identification" ) );
       it( "should call realm.write", ( ) => {
         renderHook( ( ) => useObservationsUpdates( mockUser ) );
-        if ( shouldCallRealmWrite ) {
-          expect( mockRealm.write ).toHaveBeenCalled();
-        }
-      } );
-      it( "should not call realm.write ", ( ) => {
-        renderHook( ( ) => useObservationsUpdates( mockUser ) );
-        if ( !shouldCallRealmWrite ) {
-          expect( mockRealm.write ).not.toHaveBeenCalled();
-        }
+        expect( mockRealm.write ).toHaveBeenCalledTimes( numberOfCalls );
       } );
     } );
   } );
