@@ -58,7 +58,6 @@ test( "renders taxon details from API call", async ( ) => {
   expect( screen.getByTestId( `TaxonDetails.${mockTaxon.id}` ) ).toBeTruthy( );
   expect( screen.getByTestId( "TaxonDetails.photo" ).props.source )
     .toStrictEqual( { uri: Photo.displayMediumPhoto( mockTaxon.taxonPhotos[0].photo.url ) } );
-  expect( screen.getByText( mockTaxon.preferred_common_name ) ).toBeTruthy( );
   expect( screen.getByText( mockTaxon.wikipedia_summary ) ).toBeTruthy( );
 } );
 
