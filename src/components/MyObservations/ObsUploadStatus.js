@@ -8,7 +8,6 @@ import { useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import ObsStatus from "./ObsStatus";
-import UploadCompleteAnimation from "./UploadIcons/UploadCompleteAnimation";
 
 type Props = {
   observation: Object,
@@ -30,15 +29,24 @@ const ObsUploadStatus = ( {
   const obsEditContext = useContext( ObsEditContext );
   const startSingleUpload = obsEditContext?.startSingleUpload;
   const uploadProgress = obsEditContext?.uploadProgress;
-  const wasSynced = observation.wasSynced( );
   const whiteColor = white && theme.colors.onPrimary;
 
   const displayUploadStatus = ( ) => {
-    if ( !observation.id ) {
+    const obsStatus = (
+      <ObsStatus
+        observation={observation}
+        layout={layout}
+        white={white}
+        classNameMargin={classNameMargin}
+      />
+    );
+
+    const progress = uploadProgress?.[observation.uuid];
+    if ( !observation.id || typeof progress === "number" ) {
       return (
         <UploadStatus
-          progress={uploadProgress?.[observation.uuid] || 0}
-          startSingleUpload={( ) => {
+          progress={progress || 0}
+          startSingleUpload={() => {
             if ( !currentUser ) {
               setShowLoginSheet( true );
               return;
@@ -47,24 +55,13 @@ const ObsUploadStatus = ( {
           }}
           color={whiteColor}
           completeColor={whiteColor}
+          layout={layout}
         >
-          <UploadCompleteAnimation
-            wasSynced={wasSynced}
-            observation={observation}
-            layout={layout}
-            white={white}
-          />
+          {obsStatus}
         </UploadStatus>
       );
     }
-    return (
-      <ObsStatus
-        observation={observation}
-        layout={layout}
-        white={white}
-        classNameMargin={classNameMargin}
-      />
-    );
+    return obsStatus;
   };
 
   return displayUploadStatus( );
