@@ -33,6 +33,7 @@ describe( "MyObservations", ( ) => {
 
   // For some reason this interferes with the "should not make a request to
   // users/me" test below, can't figure out why ~~~kueda 20230105
+  // TODO: this looks to me more like it should be covered by unit tests - @jtklein
   // describe( "accessibility", ( ) => {
   //   it( "should not have accessibility errors", async ( ) => {
   //     const mockUser = factory( "LocalUser" );
@@ -65,6 +66,21 @@ describe( "MyObservations", ( ) => {
     } );
     it( "should not make a request to observations/updates", async ( ) => {
       await testApiMethodNotCalled( inatjs.observations.updates );
+    } );
+  } );
+
+  describe( "when signed in", ( ) => {
+    beforeEach( async ( ) => {
+      const mockUser = factory( "LocalUser" );
+      await signIn( mockUser );
+    } );
+
+    it( "should make a request to observations/updates", async ( ) => {
+      // Let's make sure the mock hasn't already been used
+      expect( inatjs.observations.updates ).not.toHaveBeenCalled();
+      renderAppWithComponent( <MyObservationsContainer /> );
+      expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
+      expect( inatjs.observations.updates ).toHaveBeenCalled();
     } );
   } );
 
