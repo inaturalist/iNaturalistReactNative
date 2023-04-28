@@ -232,7 +232,7 @@ const BottomTabs = () => {
         <Tab.Screen
           name="TaxonDetails"
           component={TaxonDetails}
-          options={blankHeaderTitle}
+          options={hideHeader}
         />
         <Tab.Screen
           name="UserProfile"

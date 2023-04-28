@@ -1,6 +1,6 @@
 // @flow
 
-import DisplayTaxonName from "components/DisplayTaxonName";
+import { DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";

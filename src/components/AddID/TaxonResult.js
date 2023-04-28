@@ -1,8 +1,8 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import DisplayTaxonName from "components/DisplayTaxonName";
 import ObsImagePreview from "components/MyObservations/ObsImagePreview";
+import { DisplayTaxonName } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";

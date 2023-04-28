@@ -3,10 +3,6 @@
     "comment": "Header above user biography / user description on user profile",
     "val": "ABOUT"
   },
-  "ABOUT-taxon-header": {
-    "comment": "Header for a block of text describing a taxon",
-    "val": "ABOUT"
-  },
   "About-iNaturalist": "About iNaturalist",
   "Accept-community-identifications": "Accept community identifications",
   "Account": "Account",
@@ -698,5 +694,7 @@
   "VIEW-FOLLOWERS": "VIEW FOLLOWERS",
   "INATURALIST-ROLE": "INATURALIST { $role }",
   "Affiliation": "Affiliation: { $site }",
-  "Monthly-Donor": "Monthly Donor"
+  "Monthly-Donor": "Monthly Donor",
+  "VIEW-SIMILAR-SPECIES": "VIEW SIMILAR SPECIES",
+  "WIKIPEDIA": "WIKIPEDIA"
 }

@@ -7,6 +7,7 @@ export { default as EvidenceButton } from "./Buttons/EvidenceButton";
 export { default as INatIconButton } from "./Buttons/INatIconButton";
 export { default as DateDisplay } from "./DateDisplay";
 export { default as DateTimePicker } from "./DateTimePicker";
+export { default as DisplayTaxonName } from "./DisplayTaxonName";
 export { default as Divider } from "./Divider/Divider";
 export { default as FloatingActionBar } from "./FloatingActionBar";
 export { default as INatIcon } from "./INatIcon";

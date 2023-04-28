@@ -1,9 +1,9 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import DisplayTaxonName from "components/DisplayTaxonName";
 import {
-  Button, Heading4, INatIcon
+  Button, DisplayTaxonName,
+  Heading4, INatIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";

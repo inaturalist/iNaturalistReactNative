@@ -1,112 +1,101 @@
 // @flow
 
-import { useRoute } from "@react-navigation/native";
+import { HeaderBackButton } from "@react-navigation/elements";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import fetchTaxon from "api/taxa";
-import PhotoScroll from "components/SharedComponents/PhotoScroll";
-import ScrollViewWrapper from "components/SharedComponents/ScrollViewWrapper";
-import { Pressable, Text, View } from "components/styledComponents";
-import _ from "lodash";
-import * as React from "react";
-import { ActivityIndicator, Linking, useWindowDimensions } from "react-native";
-import HTML from "react-native-render-html";
+import {
+  DisplayTaxonName, Heading4, ScrollViewWrapper, Tabs
+} from "components/SharedComponents";
+import { ImageBackground, View } from "components/styledComponents";
+import type { Node } from "react";
+import React, { useState } from "react";
+import { IconButton, useTheme } from "react-native-paper";
+import Photo from "realmModels/Photo";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useTranslation from "sharedHooks/useTranslation";
 
-const TaxonDetails = (): React.Node => {
-  const { params } = useRoute();
+import About from "./About";
+
+const ABOUT_TAB_ID = "ABOUT";
+const DATA_TAB_ID = "DATA";
+
+const TaxonDetails = ( ): Node => {
+  const theme = useTheme( );
+  const navigation = useNavigation( );
+  const { params } = useRoute( );
   const { id } = params;
+  const { t } = useTranslation( );
+  const [currentTabId, setCurrentTabId] = useState( ABOUT_TAB_ID );
+
   // Note that we want to authenticate this to localize names, desc language, etc.
   const { data, isLoading, isError } = useAuthenticatedQuery(
     ["fetchTaxon", id],
     optsWithAuth => fetchTaxon( id, {}, optsWithAuth )
   );
   const taxon = data;
-  const { width } = useWindowDimensions();
-  const { t } = useTranslation();
 
-  const displayTaxonomyList = React.useMemo( () => {
-    if ( !taxon || taxon.ancestors?.length === 0 ) {
-      return <View />;
+  const tabs = [
+    {
+      id: ABOUT_TAB_ID,
+      testID: "TaxonDetails.AboutTab",
+      onPress: () => setCurrentTabId( ABOUT_TAB_ID ),
+      text: t( "ABOUT" )
+    },
+    {
+      id: DATA_TAB_ID,
+      testID: "TaxonDetails.DataTab",
+      onPress: () => setCurrentTabId( DATA_TAB_ID ),
+      text: t( "DATA" )
     }
-    return taxon.ancestors?.map( ( ancestor, i ) => {
-      const addIndent = index => index * 5;
-      const currentTaxon = `${taxon.preferred_common_name} (${taxon.name})`;
-      // TODO: make sure this design accounts for undefined common names
-      const formattedAncestor = ancestor.preferred_common_name
-        ? `${ancestor.preferred_common_name} (${ancestor.rank} ${ancestor.name})`
-        : `(${ancestor.rank} ${ancestor.name})`;
-      const displayAncestor = (
-        <Text style={{ marginLeft: addIndent( i ) }}>{formattedAncestor}</Text>
-      );
-      const displayTaxon = (
-        <Text style={{ marginLeft: addIndent( i + 1 ) }}>{currentTaxon}</Text>
-      );
+  ];
 
-      const lastAncestor = i === taxon.ancestors.length - 1;
-
-      return (
-        <View key={lastAncestor ? taxon.id : ancestor.id}>
-          {displayAncestor}
-          {lastAncestor && displayTaxon}
-        </View>
-      );
-    } );
-  }, [taxon] );
-
-  const openWikipedia = () => Linking.openURL( taxon.wikipedia_url );
-
-  const renderContent = () => {
-    if ( isLoading ) {
-      return <ActivityIndicator />;
-    }
-
-    if ( isError || !taxon ) {
-      return <Text>{t( "Error-Could-Not-Fetch-Taxon" )}</Text>;
-    }
-
-    return (
-      <>
-        <Text>{taxon.rank}</Text>
-        <Text>{taxon.preferred_common_name}</Text>
-        <Text>{taxon.name}</Text>
-        <Text className="text-lg text-darkGray my-3">
-          {t( "ABOUT-taxon-header" )}
-        </Text>
-        {taxon.wikipedia_summary && (
-          <HTML
-            contentWidth={width}
-            source={{ html: taxon.wikipedia_summary }}
-          />
-        )}
-        <Pressable
-          onPress={openWikipedia}
-          accessibilityRole="link"
-          testID="TaxonDetails.wikipedia"
-        >
-          <Text className="my-3">{t( "Read-more-on-Wikipedia" )}</Text>
-        </Pressable>
-        <Text className="text-lg text-darkGray my-3">
-          {t( "TAXONOMY-header" )}
-        </Text>
-        {displayTaxonomyList}
-        <Text className="text-lg text-darkGray my-3">{t( "STATUS-header" )}</Text>
-        <Text className="pb-32 text-lg text-darkGray my-3">
-          {t( "SIMILAR-SPECIES-header" )}
-        </Text>
-      </>
-    );
-  };
+  if ( !taxon ) {
+    return null;
+  }
 
   return (
     <ScrollViewWrapper testID={`TaxonDetails.${taxon?.id}`}>
-      <View className="bg-black">
-        {taxon && (
-          <PhotoScroll
-            photos={_.compact( taxon.taxonPhotos?.map( tp => tp.photo ) )}
+      <ImageBackground
+        testID="TaxonDetails.photo"
+        className="w-full h-[420px] mb-5"
+        source={{ uri: Photo.displayMediumPhoto( taxon.taxonPhotos[0].photo.url ) }}
+        accessibilityIgnoresInvertColors
+      >
+        <View className="absolute left-5 top-5">
+          <HeaderBackButton
+            tintColor={theme.colors.onPrimary}
+            onPress={( ) => navigation.goBack( )}
           />
-        )}
-      </View>
-      <View className="m-5">{renderContent()}</View>
+        </View>
+        <View className="absolute bottom-5 left-5">
+          <Heading4 className="color-white">{taxon.rank}</Heading4>
+          <DisplayTaxonName
+            taxon={taxon}
+            layout="horizontal"
+            color="text-white"
+          />
+        </View>
+        <View className="absolute bottom-5 right-5">
+          <IconButton
+            icon="compass-rose-outline"
+            onPress={( ) => navigation.navigate( "Explore" )}
+            accessibilityLabel={t( "Explore" )}
+            accessibilityHint={t( "Navigates-to-explore" )}
+            accessibilityRole="button"
+            size={30}
+            iconColor={theme.colors.onPrimary}
+            disabled={false}
+            accessibilityState={{ disabled: false }}
+            // FWIW, IconButton has a little margin we can control and a
+            // little padding that we can't control, so the negative margin
+            // here is to ensure the visible icon is flush with the edge of
+            // the container
+            className="m-0 ml-[-8px] bg-inatGreen"
+          />
+        </View>
+      </ImageBackground>
+      <Tabs tabs={tabs} activeId={currentTabId} />
+      <About taxon={taxon} isLoading={isLoading} isError={isError} />
     </ScrollViewWrapper>
   );
 };

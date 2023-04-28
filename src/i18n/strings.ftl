@@ -1,9 +1,6 @@
 # Header above user biography / user description on user profile
 ABOUT = ABOUT
 
-# Header for a block of text describing a taxon
-ABOUT-taxon-header = ABOUT
-
 About-iNaturalist = About iNaturalist
 
 Accept-community-identifications = Accept community identifications
@@ -956,3 +953,6 @@ VIEW-FOLLOWERS = VIEW FOLLOWERS
 INATURALIST-ROLE = INATURALIST {$role}
 Affiliation = Affiliation: {$site}
 Monthly-Donor = Monthly Donor
+
+VIEW-SIMILAR-SPECIES = VIEW SIMILAR SPECIES
+WIKIPEDIA = WIKIPEDIA

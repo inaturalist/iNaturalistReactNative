@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
-import DisplayTaxonName from "components/DisplayTaxonName";
+import { DisplayTaxonName } from "components/SharedComponents";
 import React from "react";
 
 import factory from "../../factory";
