@@ -66,7 +66,7 @@ jest.mock( "components/ObsDetails/ActivityTab" );
 jest.mock( "components/SharedComponents/PhotoScroll" );
 
 const mockDataTab = <View testID="mock-data-tab" />;
-jest.mock( "components/ObsDetails/DataTab", () => ( {
+jest.mock( "components/ObsDetails/DetailsTab", () => ( {
   __esModule: true,
   default: () => mockDataTab
 } ) );
@@ -115,7 +115,7 @@ describe( "ObsDetails", () => {
 
   it( "renders data tab on button press", async () => {
     renderComponent( <ObsDetails /> );
-    const button = await screen.findByTestId( "ObsDetails.DataTab" );
+    const button = await screen.findByTestId( "ObsDetails.DetailsTab" );
     expect( screen.queryByTestId( "mock-data-tab" ) ).not.toBeTruthy();
 
     fireEvent.press( button );

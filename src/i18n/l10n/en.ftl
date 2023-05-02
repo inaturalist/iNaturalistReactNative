@@ -85,6 +85,8 @@ Connected-Accounts = Connected Accounts
 
 Content-Display = Content & Display
 
+Copy-coordinates = Copy Coordinates
+
 Couldnt-create-comment = Couldn't create comment
 
 Couldnt-create-identification = Couldn't create identification
@@ -98,10 +100,6 @@ Date = Date
 Date-added-newest-to-oldest = Date added - newest to oldest
 
 Date-added-oldest-to-newest = Date added - oldest to newest
-
-Date-observed-colon = Date observed:
-
-Date-uploaded-colon = Date uploaded:
 
 Default-Search-Place = Default Search Place
 
@@ -339,11 +337,13 @@ Obscured = Obscured
 
 Observation = Observation
 
-Observation-Attribution = Observation © {$attribution} · {$licenseCode}
+Observation-Attribution = Observation Copyright:© {$attribution} · {$licenseCode}
 
 Observations = Observations
 
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
+
+Observed = Observed
 
 Offensive-Inappropriate = Offensive/Inappropriate
 
@@ -530,6 +530,8 @@ Settings = Settings
 
 SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
 
+Share-location = Share Location
+
 Sign-out = Sign out
 
 Sign-Up = Sign Up
@@ -568,9 +570,6 @@ The-iNaturalist-Network-is-a-collection-of-localized-websites = The iNaturalist 
 
 This-is-how-all-taxon-names-will-be-displayed-to-you-across-iNaturalist = This is how all taxon names will be displayed to you across iNaturalist
 
-# Describes whether a user made this observation from web, iOS, or Android
-This-observation-was-created-using = This observation was created using:
-
 This-sets-your-language-and-date-formatting-preferences-across-iNaturalist = This sets your language and date formatting preferences across iNaturalist based on your locale.
 
 This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify = This will be your default place for all searches in Explore and Identify.
@@ -606,6 +605,11 @@ UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
     [one] 1 OBSERVATION
     *[other] {$count} OBSERVATIONS
 }
+
+Uploaded = Uploaded
+
+# Describes whether a user made this observation from web, iOS, or Android
+Uploaded-via = Uploaded via:
 
 # Shows the number of observations a user is currently uploading on my observations page
 Uploading-X-Observations = Uploading {$count ->

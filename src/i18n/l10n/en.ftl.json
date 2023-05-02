@@ -64,6 +64,7 @@
   "Community-Moderation-Settings": "Community Moderation Settings",
   "Connected-Accounts": "Connected Accounts",
   "Content-Display": "Content & Display",
+  "Copy-coordinates": "Copy Coordinates",
   "Couldnt-create-comment": "Couldn't create comment",
   "Couldnt-create-identification": "Couldn't create identification",
   "Create-an-iNaturalist-account-to-save-your-observations": "Create an iNaturalist account to save your observations and contribute them to science.",
@@ -71,8 +72,6 @@
   "Date": "Date",
   "Date-added-newest-to-oldest": "Date added - newest to oldest",
   "Date-added-oldest-to-newest": "Date added - oldest to newest",
-  "Date-observed-colon": "Date observed:",
-  "Date-uploaded-colon": "Date uploaded:",
   "Default-Search-Place": "Default Search Place",
   "Delete": "Delete",
   "Delete-comment": "Delete comment",
@@ -237,9 +236,10 @@
   "Notifications": "Notifications",
   "Obscured": "Obscured",
   "Observation": "Observation",
-  "Observation-Attribution": "Observation © { $attribution } · { $licenseCode }",
+  "Observation-Attribution": "Observation Copyright:© { $attribution } · { $licenseCode }",
   "Observations": "Observations",
   "Observations-created-on-iNaturalist": "Observations created on iNaturalist are used by scientists around the world.",
+  "Observed": "Observed",
   "Offensive-Inappropriate": "Offensive/Inappropriate",
   "Offensive-Inappropriate-Examples": "Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of \"appropriate,\" see the FAQ.",
   "Open": "Open",
@@ -353,6 +353,7 @@
   "Separate-Photos": "Separate Photos",
   "Settings": "Settings",
   "SHARE-DEBUG-LOGS": "SHARE DEBUG LOGS",
+  "Share-location": "Share Location",
   "Sign-out": "Sign out",
   "Sign-Up": "Sign Up",
   "SIMILAR-SPECIES-header": {
@@ -382,10 +383,6 @@
   "Taxonomy-Settings": "Taxonomy Settings",
   "The-iNaturalist-Network-is-a-collection-of-localized-websites": "The iNaturalist Network is a collection of localized websites that are fully connected to the global iNaturalist community. Network sites are supported by local institutions that have signed an agreement with iNaturalist to promote local use and benefit local biodiversity. They have access to true coordinates from their countries that are automatically obscured from public view in order to protect threatened species. Your username and password works on all sites that are part of the iNaturalist Network. If you choose to affiliate with a Network site, the local institutions that operate each site will also have access to your email address (only to communicate with you about site activities) and access to the true coordinates for observations that are publicly obscured or private. Note: Please do not experimentally change your affiliation if you have more than 1000 observations.",
   "This-is-how-all-taxon-names-will-be-displayed-to-you-across-iNaturalist": "This is how all taxon names will be displayed to you across iNaturalist",
-  "This-observation-was-created-using": {
-    "comment": "Describes whether a user made this observation from web, iOS, or Android",
-    "val": "This observation was created using:"
-  },
   "This-sets-your-language-and-date-formatting-preferences-across-iNaturalist": "This sets your language and date formatting preferences across iNaturalist based on your locale.",
   "This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify": "This will be your default place for all searches in Explore and Identify.",
   "Threatened": "Threatened",
@@ -405,6 +402,11 @@
   "UPLOAD-X-OBSERVATIONS": {
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "UPLOAD { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}"
+  },
+  "Uploaded": "Uploaded",
+  "Uploaded-via": {
+    "comment": "Describes whether a user made this observation from web, iOS, or Android",
+    "val": "Uploaded via:"
   },
   "Uploading-X-Observations": {
     "comment": "Shows the number of observations a user is currently uploading on my observations page",

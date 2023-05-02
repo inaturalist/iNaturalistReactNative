@@ -43,7 +43,7 @@ import colors from "styles/tailwindColors";
 
 import ActivityTab from "./ActivityTab";
 import AddCommentModal from "./AddCommentModal";
-import DataTab from "./DataTab";
+import DetailsTab from "./DetailsTab";
 
 const { useRealm } = RealmContext;
 
@@ -55,7 +55,7 @@ LogBox.ignoreLogs( [
 ] );
 
 const ACTIVITY_TAB_ID = "ACTIVITY";
-const DATA_TAB_ID = "DATA";
+const DETAILS_TAB_ID = "DETAILS";
 
 const ObsDetails = (): Node => {
   const isOnline = useIsConnected();
@@ -265,10 +265,10 @@ const ObsDetails = (): Node => {
       text: t( "ACTIVITY" )
     },
     {
-      id: DATA_TAB_ID,
-      testID: "ObsDetails.DataTab",
-      onPress: () => setCurrentTabId( DATA_TAB_ID ),
-      text: t( "DATA" )
+      id: DETAILS_TAB_ID,
+      testID: "ObsDetails.DetailsTab",
+      onPress: () => setCurrentTabId( DETAILS_TAB_ID ),
+      text: t( "DETAILS" )
     }
   ];
 
@@ -306,6 +306,19 @@ const ObsDetails = (): Node => {
                 : t( "Fave-button-label-fave" )
             }
           />
+          <IconButton
+            icon="chevron-left"
+            onPress={faveOrUnfave}
+            textColor={colors.white}
+            className="absolute top-3 left-0"
+            accessible
+            accessibilityRole="button"
+            accessibilityLabel={
+              currentUserFaved
+                ? t( "Fave-button-label-unfave" )
+                : t( "Fave-button-label-fave" )
+            }
+          />
         </View>
       );
     }
@@ -323,7 +336,7 @@ const ObsDetails = (): Node => {
       </View>
     );
   };
-
+  console.log( "observation", observation );
   return (
     <>
       <ScrollViewWrapper testID={`ObsDetails.${uuid}`}>
@@ -347,8 +360,8 @@ const ObsDetails = (): Node => {
             showCommentBox={showCommentBox}
           />
         </HideView>
-        <HideView noInitialRender show={currentTabId === DATA_TAB_ID}>
-          <DataTab observation={observation} />
+        <HideView noInitialRender show={currentTabId === DETAILS_TAB_ID}>
+          <DetailsTab observation={observation} />
         </HideView>
         {addingComment && (
           <View className="flex-row items-center justify-center">
