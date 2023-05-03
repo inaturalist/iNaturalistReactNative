@@ -17,6 +17,10 @@ import FocusSquare from "./FocusSquare";
 const SCALE_MAX_ZOOM = 8;
 const SCALE_MIN_ZOOM = 1;
 
+export const PORTRAIT = "portrait";
+export const LANDSCAPE_LEFT = "landscapeLeft";
+export const LANDSCAPE_RIGHT = "landscapeRight";
+
 const ReanimatedCamera = Reanimated.createAnimatedComponent( Camera );
 Reanimated.addWhitelistedNativeProps( {
   zoom: true

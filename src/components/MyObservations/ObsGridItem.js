@@ -1,6 +1,6 @@
 // @flow
 
-import DisplayTaxonName from "components/DisplayTaxonName";
+import { DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -14,7 +14,6 @@ type Props = {
   width?: string,
   height?: string,
   style?: Object,
-  uploadStatus: Object,
   setShowLoginSheet: Function
 };
 
@@ -23,7 +22,6 @@ const ObsGridItem = ( {
   width = "w-full",
   height,
   style,
-  uploadStatus,
   setShowLoginSheet
 }: Props ): Node => (
   <ObsImagePreview
@@ -43,13 +41,13 @@ const ObsGridItem = ( {
     <View className="absolute bottom-0 flex p-2 w-full">
       <ObsUploadStatus
         observation={observation}
-        uploadStatus={uploadStatus}
         layout="horizontal"
         white
         classNameMargin="mb-1"
         setShowLoginSheet={setShowLoginSheet}
       />
       <DisplayTaxonName
+        keyBase={observation?.uuid}
         taxon={observation?.taxon}
         scientificNameFirst={
           observation?.user?.prefers_scientific_name_first

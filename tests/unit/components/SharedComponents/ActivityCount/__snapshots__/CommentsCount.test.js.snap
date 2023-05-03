@@ -5,12 +5,12 @@ exports[`CommentsCount renders default reliably 1`] = `
   accessibilityLabel="1 comment"
   accessible={true}
   style={
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "flexDirection": "row",
         },
-        Object {
+        {
           "alignItems": "center",
         },
       ],
@@ -21,18 +21,18 @@ exports[`CommentsCount renders default reliably 1`] = `
     allowFontScaling={false}
     selectable={false}
     style={
-      Array [
-        Object {
+      [
+        {
           "color": "rgba(103, 80, 164, 1)",
           "fontSize": 14,
         },
         undefined,
-        Object {
+        {
           "fontFamily": "INatIcon",
           "fontStyle": "normal",
           "fontWeight": "normal",
         },
-        Object {},
+        {},
       ]
     }
   >
@@ -40,23 +40,23 @@ exports[`CommentsCount renders default reliably 1`] = `
   </Text>
   <Text
     style={
-      Array [
-        Object {
+      [
+        {
           "fontFamily": "Whitney-Light",
         },
-        Array [
-          Object {
+        [
+          {
             "fontSize": 14,
             "lineHeight": 18,
           },
-          Object {
+          {
             "fontWeight": "400",
           },
-          Object {
+          {
             "color": "#454545",
           },
-          Array [
-            Object {
+          [
+            {
               "marginLeft": 6,
             },
           ],
@@ -74,12 +74,12 @@ exports[`CommentsCount renders filled reliably 1`] = `
   accessibilityLabel="1 comment"
   accessible={true}
   style={
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "flexDirection": "row",
         },
-        Object {
+        {
           "alignItems": "center",
         },
       ],
@@ -90,18 +90,18 @@ exports[`CommentsCount renders filled reliably 1`] = `
     allowFontScaling={false}
     selectable={false}
     style={
-      Array [
-        Object {
+      [
+        {
           "color": "rgba(103, 80, 164, 1)",
           "fontSize": 14,
         },
         undefined,
-        Object {
+        {
           "fontFamily": "INatIcon",
           "fontStyle": "normal",
           "fontWeight": "normal",
         },
-        Object {},
+        {},
       ]
     }
   >
@@ -109,23 +109,23 @@ exports[`CommentsCount renders filled reliably 1`] = `
   </Text>
   <Text
     style={
-      Array [
-        Object {
+      [
+        {
           "fontFamily": "Whitney-Light",
         },
-        Array [
-          Object {
+        [
+          {
             "fontSize": 14,
             "lineHeight": 18,
           },
-          Object {
+          {
             "fontWeight": "400",
           },
-          Object {
+          {
             "color": "#454545",
           },
-          Array [
-            Object {
+          [
+            {
               "marginLeft": 6,
             },
           ],
@@ -143,12 +143,12 @@ exports[`CommentsCount renders white reliably 1`] = `
   accessibilityLabel="1 comment"
   accessible={true}
   style={
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "flexDirection": "row",
         },
-        Object {
+        {
           "alignItems": "center",
         },
       ],
@@ -159,18 +159,18 @@ exports[`CommentsCount renders white reliably 1`] = `
     allowFontScaling={false}
     selectable={false}
     style={
-      Array [
-        Object {
+      [
+        {
           "color": "rgba(255, 255, 255, 1)",
           "fontSize": 14,
         },
         undefined,
-        Object {
+        {
           "fontFamily": "INatIcon",
           "fontStyle": "normal",
           "fontWeight": "normal",
         },
-        Object {},
+        {},
       ]
     }
   >
@@ -178,26 +178,26 @@ exports[`CommentsCount renders white reliably 1`] = `
   </Text>
   <Text
     style={
-      Array [
-        Object {
+      [
+        {
           "fontFamily": "Whitney-Light",
         },
-        Array [
-          Object {
+        [
+          {
             "fontSize": 14,
             "lineHeight": 18,
           },
-          Object {
+          {
             "fontWeight": "400",
           },
-          Object {
+          {
             "color": "#454545",
           },
-          Array [
-            Object {
+          [
+            {
               "marginLeft": 6,
             },
-            Object {
+            {
               "color": "#ffffff",
             },
           ],

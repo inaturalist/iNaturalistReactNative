@@ -86,7 +86,7 @@ class ObservationPhoto extends Realm.Object {
         property: "observationPhotos"
       }
     }
-  }
+  };
 }
 
 export default ObservationPhoto;

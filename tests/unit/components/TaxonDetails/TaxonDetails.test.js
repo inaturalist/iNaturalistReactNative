@@ -4,6 +4,7 @@ import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { Linking } from "react-native";
+import Photo from "realmModels/Photo";
 
 import factory from "../../../factory";
 // Mock inaturalistjs so we can make some fake responses
@@ -55,9 +56,8 @@ jest.mock(
 test( "renders taxon details from API call", async ( ) => {
   renderTaxonDetails( );
   expect( screen.getByTestId( `TaxonDetails.${mockTaxon.id}` ) ).toBeTruthy( );
-  expect( screen.getByTestId( "PhotoScroll.photo" ).props.source )
-    .toStrictEqual( { uri: mockTaxon.taxonPhotos[0].photo.url } );
-  expect( screen.getByText( mockTaxon.preferred_common_name ) ).toBeTruthy( );
+  expect( screen.getByTestId( "TaxonDetails.photo" ).props.source )
+    .toStrictEqual( { uri: Photo.displayMediumPhoto( mockTaxon.taxonPhotos[0].photo.url ) } );
   expect( screen.getByText( mockTaxon.wikipedia_summary ) ).toBeTruthy( );
 } );
 

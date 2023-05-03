@@ -8,10 +8,13 @@ import viewStyles from "styles/sharedComponents/kebabMenu";
 type Props = {
   children: any,
   visible: boolean,
-  setVisible: Function
+  setVisible: Function,
+  large?: boolean
 }
 
-const KebabMenu = ( { children, visible, setVisible }: Props ): Node => {
+const KebabMenu = ( {
+  children, visible, setVisible, large
+}: Props ): Node => {
   const openMenu = ( ) => setVisible( true );
   const closeMenu = ( ) => setVisible( false );
 
@@ -20,7 +23,7 @@ const KebabMenu = ( { children, visible, setVisible }: Props ): Node => {
       onPress={openMenu}
       icon="kebab-menu"
       testID="KebabMenu.Button"
-      size={15}
+      size={large ? 26 : 15}
     />
   );
 

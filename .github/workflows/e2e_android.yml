@@ -68,6 +68,7 @@ jobs:
   
     - name: Rebuild detox from cache
       if: steps.cache.outputs.cache-hit == 'true'
+      # Currently, (Detox 20) those two commands are macOS only
       run: npx detox clean-framework-cache && npx detox build-framework-cache
 
     - name: Install Dependencies
@@ -82,7 +83,8 @@ jobs:
         E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
         E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
         JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
-      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\n' "JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" > .env
+        GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
+      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\n' "JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
     - name: Create keystore.properties file
       env:
         ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}

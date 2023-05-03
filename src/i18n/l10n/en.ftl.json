@@ -1,6 +1,6 @@
 {
-  "ABOUT-taxon-header": {
-    "comment": "Header for a block of text describing a taxon",
+  "ABOUT": {
+    "comment": "Header above user biography / user description on user profile",
     "val": "ABOUT"
   },
   "About-iNaturalist": "About iNaturalist",
@@ -11,6 +11,7 @@
   "Add-Date-Time": "Add Date/Time",
   "Add-evidence-of-an-organism": "Add evidence of an organism. This helps others identify what you saw.",
   "Add-Location": "Add Location",
+  "ADD-OPTIONAL-COMMENT": "ADD OPTIONAL COMMENT",
   "Add-optional-notes": "Add optional notes",
   "Add-to-projects": "Add to projects",
   "Added-on-date": {
@@ -35,21 +36,20 @@
   "app-authorized-on-date": "{ $appName } (authorized on: { $date })",
   "Applications": "Applications",
   "Automatically-update-my-content-for-taxon-changes": "Automatically update my content for taxon changes",
-  "BIO": {
-    "comment": "Header above user biography / user description on user profile",
-    "val": "BIO"
-  },
   "Bio": {
     "comment": "Header for inserting user description in settings profile tab",
     "val": "Bio"
   },
   "Birds": "Birds",
   "Blocked-Users": "Blocked Users",
+  "By-exiting-changes-not-saved": "By exiting, changes to your observation will not be saved.",
+  "By-exiting-your-observations-not-saved": "By exiting, your observations will not be saved. You can save them to your device, or you can delete them.",
   "C": {
     "comment": "Quality grade option: Casual (shortened for My Observations view)",
     "val": "C"
   },
   "Camera-Roll": "Camera Roll",
+  "CANCEL": "CANCEL",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
   "Casual": {
@@ -60,8 +60,10 @@
     "comment": "After pressing the reset password button",
     "val": "Check your email! We've sent password reset instructions."
   },
+  "Clear": "Clear",
   "Combine-Photos": "Combine Photos",
   "Community-Moderation-Settings": "Community Moderation Settings",
+  "CONFIRM": "CONFIRM",
   "Connected-Accounts": "Connected Accounts",
   "Content-Display": "Content & Display",
   "Copy-coordinates": "Copy Coordinates",
@@ -73,15 +75,21 @@
   "Date-added-newest-to-oldest": "Date added - newest to oldest",
   "Date-added-oldest-to-newest": "Date added - oldest to newest",
   "Default-Search-Place": "Default Search Place",
-  "Delete": "Delete",
+  "DELETE": "DELETE",
+  "DELETE-ALL": "DELETE ALL",
   "Delete-comment": "Delete comment",
-  "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}",
+  "DELETE-OBSERVATION": "DELETE OBSERVATION?",
+  "Delete-observation": "Delete observation",
+  "Delete-observations": "Delete observations",
+  "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION?\n *[other] { $count } OBSERVATIONS?\n}",
   "Description-Tags": "Description/Tags",
-  "Discard-Changes": "Discard Changes",
-  "Discard-X-Observations": "{ $count ->\n  [one] Discard Observation\n *[other] Discard Observations\n}",
+  "DISCARD-ALL": "DISCARD ALL",
+  "DISCARD-OBSERVATION": "DISCARD OBSERVATION",
+  "DISCARD-X-OBSERVATIONS": "{ $count ->\n  [one] DISCARD OBSERVATION\n *[other] DISCARD { $count } OBSERVATIONS\n}",
   "Display": "Display",
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
+  "EDIT-LOCATION": "EDIT LOCATION",
   "Email": {
     "comment": "Appears above the email text field",
     "val": "email"
@@ -99,6 +107,7 @@
     "comment": "Header for featured projects",
     "val": "Featured"
   },
+  "Fetching-location": "Fetching location...",
   "Filters": "Filters",
   "Finish": "Finish",
   "Fish": "Fish",
@@ -129,8 +138,8 @@
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
   "High": "High",
-  "IDs": "ID's",
   "IDENTIFICATION": "IDENTIFICATION",
+  "IDENTIFICATIONS": "IDENTIFICATIONS",
   "Import-X-photos": {
     "comment": "Shows the number of photos a user selected from the camera roll for upload",
     "val": "Import { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
@@ -149,18 +158,20 @@
     "comment": "Header for joined projects",
     "val": "Joined"
   },
-  "Joined-colon": {
+  "Joined-date": {
     "comment": "Shows date user joined iNaturalist on user profile",
-    "val": "Joined:"
+    "val": "Joined: { $date }"
   },
-  "Journal-Posts": "Journal Posts",
+  "JOURNAL-POSTS": "JOURNAL POSTS",
   "Language-Locale": "Language/Locale",
-  "Last-Active-colon": {
+  "Last-Active-date": {
     "comment": "Shows date user last active on iNaturalist on user profile",
-    "val": "Last Active:"
+    "val": "Last Active: { $date }"
   },
   "Licensing": "Licensing",
   "Location": "Location",
+  "Location-accuracy-is-too-imprecise": "Location accuracy is too imprecise to help identifiers. Please zoom in.",
+  "LOCATION-TOO-IMPRECISE": "LOCATION TOO IMPRECISE",
   "Log-in": "Log in",
   "LOG-IN-TO-INATURALIST": "LOG IN TO INATURALIST",
   "Log-in-to-contribute-and-sync": "Log in to contribute & sync",
@@ -182,6 +193,7 @@
   "Mammals": "Mammals",
   "Media": "Media",
   "Missing-Date": "Missing Date",
+  "MISSING-EVIDENCE": "MISSING EVIDENCE",
   "Mollusks": "Mollusks",
   "Month-January": {
     "comment": "The following Month- strings are the months of the year (in month order, not alphabetical order)",
@@ -224,11 +236,13 @@
   },
   "No-comments-or-ids-to-display": "No comments or ids to display",
   "No-Location": "No Location",
+  "none": "none",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
   "no-rights-reserved": {
     "comment": "license code",
     "val": "no rights reserved"
   },
+  "NOTES": "NOTES",
   "Notes": {
     "comment": "Header for observation description on observation detail",
     "val": "Notes"
@@ -237,6 +251,7 @@
   "Obscured": "Obscured",
   "Observation": "Observation",
   "Observation-Attribution": "Observation Copyright:© { $attribution } · { $licenseCode }",
+  "OBSERVATIONS": "OBSERVATIONS",
   "Observations": "Observations",
   "Observations-created-on-iNaturalist": "Observations created on iNaturalist are used by scientists around the world.",
   "Observed": "Observed",
@@ -343,6 +358,9 @@
     "val": "RG"
   },
   "Save": "Save",
+  "SAVE-LOCATION": "SAVE LOCATION",
+  "SAVE-ALL": "SAVE ALL",
+  "SAVE-CHANGES": "SAVE CHANGES",
   "Search-for-a-location": "Search for a location",
   "Search-for-a-project": "Search for a project",
   "Search-for-a-taxon": "Search for a taxon",
@@ -368,12 +386,13 @@
   "Sort-by": "Sort by",
   "Spam": "Spam",
   "Spam-Examples": "Commercial solicitation, links to nowhere, etc.",
-  "Species": "Species",
+  "SPECIES": "SPECIES",
   "Status": "Status",
   "STATUS-header": {
     "comment": "Header for a block of text describing a taxon's conservation status",
     "val": "STATUS"
   },
+  "Stay-on-this-screen": "Stay on this screen while your location loads.",
   "Tap-to-search-for-taxa": "Tap to search for taxa",
   "Taxon": "Taxon",
   "TAXONOMY-header": {
@@ -438,6 +457,8 @@
     "comment": "Welcome user back to app",
     "val": "<0>Welcome back,</0><1>{ $userHandle }</1>"
   },
+  "Wild": "Wild",
+  "WILD-STATUS": "WILD STATUS",
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
@@ -469,6 +490,8 @@
   "You-must-be-logged-in-to-view-messages": "You must be logged in to view messages",
   "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
   "You-can-still-share-the-file": "You can still share the file with another app. If you can email it, please send it to { $email }",
+  "Zoom-in": "Zoom in so that the observation’s accuracy is as low as possible.",
+  "Your-location-uncertainty-is-over-4000km": "Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.",
   "Category-leading": {
     "comment": "Identification category",
     "val": "Leading"
@@ -521,8 +544,8 @@
     "comment": "Shortened display of an observation's quality grade (used when displayed in a badge) - in this case, Casual",
     "val": "Quality Grade Casual"
   },
-  "Add-evidence": "Add evidence",
-  "You-can-only-upload-20-media": "You can only add 20 photos and 20 sounds to an observation",
+  "ADD-EVIDENCE": "ADD EVIDENCE",
+  "You-can-add-up-to-20-media": "You can add up to 20 photos and 20 sounds per observation.",
   "Add-Comment": "Add Comment",
   "Suggest-an-ID": "Suggest an ID",
   "Add-a-comment": {
@@ -619,6 +642,7 @@
     "val": "M/d/yy"
   },
   "datetime-format-short": "M/d/yy h:mm a",
+  "date-format-long": "PP",
   "As-you-upload-more-observations": {
     "comment": "Onboarding text on MyObservations\n0-10 observations",
     "val": "As you upload more observations, others in our community may be able to help you identify them!"
@@ -634,7 +658,6 @@
   "DISCARD-PHOTOS": "DISCARD PHOTOS?",
   "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
   "DISCARD": "DISCARD",
-  "CANCEL": "CANCEL",
   "You-need-an-Internet-connection-to-do-that": {
     "comment": "Error message when you try to do something that requires an Internet\nconnection but such a connection is, tragically, missing",
     "val": "You need an Internet connection to do that."
@@ -647,8 +670,53 @@
     "comment": "Generic error message",
     "val": "Something went wrong."
   },
+  "#Geoprivacy sheet descriptions": "",
+  "Anyone-using-iNaturalist-can-see": "Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.",
+  "The-exact-location-will-be-hidden": "The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).",
+  "The-location-will-not-be-visible": "The location will not be visible to others, which means it may be difficult to identify.",
+  "#Wild status sheet descriptions": "",
+  "This-is-a-wild-organism": "This is a wild organism and wasn’t placed in this location by humans.",
+  "This-organism-was-placed-by-humans": "This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.",
+  "Lat-Lon-Acc": {
+    "comment": "Latitude, longitude, and accuracy",
+    "val": "Lat: { $latitude }, Lon: { $longitude }, Acc: { $accuracy }"
+  },
+  "Every-observation-needs": {
+    "comment": "Missing evidence sheet",
+    "val": "Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy."
+  },
   "Stop-upload": {
     "comment": "Button or accessibility label for an interactive element that stops an upload",
     "val": "Stop upload"
-  }
+  },
+  "VIEW-PROJECTS": "VIEW PROJECTS",
+  "PEOPLE": "PEOPLE",
+  "VIEW-JOURNAL-POSTS": "VIEW JOURNAL POSTS",
+  "VIEW-FOLLOWING": "VIEW FOLLOWING",
+  "VIEW-FOLLOWERS": "VIEW FOLLOWERS",
+  "INATURALIST-ROLE": "INATURALIST { $role }",
+  "Affiliation": "Affiliation: { $site }",
+  "Monthly-Donor": "Monthly Donor",
+  "VIEW-SIMILAR-SPECIES": "VIEW SIMILAR SPECIES",
+  "WIKIPEDIA": "WIKIPEDIA",
+  "MY-OBSERVATIONS": {
+    "comment": "Header for a section showing the viewer's observations",
+    "val": "MY OBSERVATIONS"
+  },
+  "GRAPHS": {
+    "comment": "Header for a section showing charts",
+    "val": "MY OBSERVATIONS"
+  },
+  "TOP-OBSERVERS": {
+    "comment": "Header for a section showing top observers, e.g. of a taxon",
+    "val": "TOP OBSERVERS"
+  },
+  "TOP-IDENTIFIERS": {
+    "comment": "Header for a section showing top identifiers, e.g. of a taxon",
+    "val": "TOP IDENTIFIERS"
+  },
+  "OBSERVATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] OBSERVATION\n *[other] OBSERVATIONS\n}",
+  "SPECIES-WITHOUT-NUMBER": "{ $count ->\n  [one] SPECIES\n *[other] SPECIES\n}",
+  "IDENTIFICATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] IDENTIFICATION\n *[other] IDENTIFICATIONS\n}",
+  "JOURNAL-POSTS-WITHOUT-NUMBER": "{ $count ->\n  [one] JOURNAL POST\n *[other] JOURNAL POSTS\n}"
 }
