@@ -11,6 +11,7 @@ import { t } from "i18next";
 import _ from "lodash";
 import type { Node } from "react";
 import React from "react";
+import { Divider } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Taxon from "realmModels/Taxon";
 import useIsConnected from "sharedHooks/useIsConnected";
@@ -81,6 +82,7 @@ const ActivityItem = ( {
           <UserText baseStyle={textStyles.activityItemBody} text={item.body} />
         </View>
       )}
+      <Divider />
     </View>
   );
 };

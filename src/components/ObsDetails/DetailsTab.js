@@ -55,7 +55,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
             <Heading4 className={headingClass}>{t( "NOTES" )}</Heading4>
             <Body2>{observation.description}</Body2>
           </View>
-          <Divider bold />
+          <Divider />
         </>
       )}
 
@@ -99,7 +99,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
       <View className={`mt-[11px] ${sectionClass}`}>
         <ObservationLocation observation={observation} details />
       </View>
-      <Divider bold />
+      <Divider />
 
       <View className={sectionClass}>
         <Heading4 className={headingClass}>{t( "DATE" )}</Heading4>
@@ -113,7 +113,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
           dateString={checkCamelAndSnakeCase( observation, "createdAt" )}
         />
       </View>
-      <Divider bold />
+      <Divider />
 
       <View className={`${sectionClass} flex-col`}>
         <Heading4 className={headingClass}>{t( "DATA-QUALITY" )}</Heading4>
@@ -129,14 +129,14 @@ const DetailsTab = ( { observation }: Props ): Node => {
           <Button text={t( "VIEW DATA QUALITY ASSESSEMENT" )} />
         </View>
       </View>
-      <Divider bold />
+      <Divider />
 
       <View className={sectionClass}>
         <Heading4 className={headingClass}>{t( "PROJECTS" )}</Heading4>
         <Button text={t( "VIEW PROJECTS" )} />
       </View>
 
-      <Divider bold />
+      <Divider />
 
       <View className={`${sectionClass} space-y-[11px]`}>
         <Heading4 className={headingClass}>{t( "OTHER-DATA" )}</Heading4>
