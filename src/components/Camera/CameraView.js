@@ -67,6 +67,7 @@ const CameraView = ( { camera, device, orientation }: Props ): Node => {
           device={device}
           isActive={isActive}
           photo
+          enableZoomGesture
           orientation={orientation}
         />
       </GestureDetector>
