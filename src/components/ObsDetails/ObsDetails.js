@@ -335,7 +335,6 @@ const ObsDetails = (): Node => {
       </View>
     );
   };
-  console.log( "observation", observation );
   return (
     <>
       <ScrollViewWrapper testID={`ObsDetails.${uuid}`}>

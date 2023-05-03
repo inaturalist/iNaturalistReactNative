@@ -1,7 +1,7 @@
 // @flow
 import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
-import Geoprivacy, { Body4, INatIcon } from "components/SharedComponents";
+import { Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import useTranslation from "sharedHooks/useTranslation";
@@ -27,6 +27,19 @@ const ObservationLocation = ( { observation, classNameMargin, details }: Props )
   ) {
     displayCoords = `Lat: ${observation.latitude}, Lon: ${observation.longitude}`;
   }
+
+  const displayGeoprivacy = ( ) => (
+    <View className="flex-row mt-[11px]">
+      <INatIcon name="globe-outline" size={14} />
+      <Body4
+        className="text-darkGray ml-[5px]"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
+        {geoprivacy}
+      </Body4>
+    </View>
+  );
 
   return (
     <View
@@ -59,7 +72,7 @@ const ObservationLocation = ( { observation, classNameMargin, details }: Props )
                 {displayCoords}
               </Body4>
             )}
-            {geoprivacy && <Geoprivacy observation={observation} />}
+            {geoprivacy && displayGeoprivacy()}
           </View>
         )}
     </View>
