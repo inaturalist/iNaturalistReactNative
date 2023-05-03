@@ -1,5 +1,7 @@
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+# frozen_string_literal: true
+
+require_relative "../node_modules/react-native/scripts/react_native_pods"
+require_relative "../node_modules/@react-native-community/cli-platform-ios/native_modules"
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
@@ -13,102 +15,103 @@ prepare_react_native_project!
 #   dependencies: {
 #     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
 # ```
-flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+# flipper_config = ENV["NO_FLIPPER"] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
+linkage = ENV["USE_FRAMEWORKS"]
+unless linkage.nil?
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
+  use_frameworks! linkage: linkage.to_sym
 end
 
-target 'iNaturalistReactNative' do
+target "iNaturalistReactNative" do
   config = use_native_modules!
 
   # Flags change depending on the env values.
-  flags = get_default_flags()
+  flags = get_default_flags
 
-  permissions_path = '../node_modules/react-native-permissions/ios'
+  permissions_path = "../node_modules/react-native-permissions/ios"
 
   use_react_native!(
-    :path => config[:reactNativePath],
+    path: config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.
     # Upcoming versions of React Native may rely on get_default_flags(), but
     # we make it explicit here to aid in the React Native upgrade process.
-    :hermes_enabled => flags[:hermes_enabled],
-    :fabric_enabled => flags[:fabric_enabled],
+    hermes_enabled: flags[:hermes_enabled],
+    fabric_enabled: flags[:fabric_enabled],
     # Enables Flipper.
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
     # :flipper_configuration => flipper_config,
     # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
+    app_path: "#{Pod::Config.instance.installation_root}/.."
   )
-  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
-  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
-  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+  pod "React-jsi", path: "../node_modules/react-native/ReactCommon/jsi", modular_headers: true
+  pod "Permission-LocationWhenInUse", path: "#{permissions_path}/LocationWhenInUse"
+  pod "Permission-PhotoLibrary", path: "#{permissions_path}/PhotoLibrary"
 
-  pod 'react-native-config', :path => '../node_modules/react-native-config'
+  pod "react-native-config", path: "../node_modules/react-native-config"
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod "RNVectorIcons", path: "../node_modules/react-native-vector-icons"
 
-  ENVFILES = {
-    'Debug' => '$(PODS_ROOT)/../../.env.staging',
-    'Release' => '$(PODS_ROOT)/../../.env',
-  }
+  envfiles = {
+    "Debug" => "$(PODS_ROOT)/../../.env.staging",
+    "Release" => "$(PODS_ROOT)/../../.env"
+  }.freeze
 
-  post_install do |installer|
+  post_install do | installer |
     # use different .env files for staging and production
     # https://github.com/luggit/react-native-config#ios-1
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
+    installer.pods_project.targets.each do | target |
+      target.build_configurations.each do | build_config |
         # the following two lines allow the app to build with XCode 14.3 RC
         # https://stackoverflow.com/questions/72729591/fbreactnativespec-h-error-after-upgrading-from-0-68-x-to-0-69-0/74487309#74487309
-        config.build_settings['SWIFT_VERSION'] = '5.0'
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.4'
-        if target.name == 'react-native-config'
-          config.build_settings['ENVFILE'] = ENVFILES[config.name]
+        build_config.build_settings["SWIFT_VERSION"] = "5.0"
+        build_config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "12.4"
+        if target.name == "react-native-config"
+          build_config.build_settings["ENVFILE"] = envfiles[build_config.name]
         end
       end
     end
-  
+
     # code below appears to be necessary for building pods with XCode 14: https://github.com/facebook/react-native/issues/34673#issuecomment-1252114414
     react_native_post_install(
       installer,
       # Set `mac_catalyst_enabled` to `true` in order to apply patches
       # necessary for Mac Catalyst builds
-      :mac_catalyst_enabled => false
+      mac_catalyst_enabled: false
     )
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+    __apply_Xcode_12_5_M1_post_install_workaround( installer )
     # Add these lines for Xcode 14 builds
-    installer.generated_projects.each do |project|
-      project.targets.each do |target|
-          target.build_configurations.each do |config|
-              config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
-          end
+    installer.generated_projects.each do | project |
+      project.targets.each do | target |
+        target.build_configurations.each do | build_config |
+          build_config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
+        end
       end
     end
     # End of added lines
     # https://github.com/Agontuk/react-native-geolocation-service/issues/287#issuecomment-980772489
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    installer.pods_project.targets.each do | target |
+      target.build_configurations.each do | build_config |
+        build_config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
         # code below appears to be necessary for building pods with XCode 14:
         # https://github.com/facebook/react-native/issues/34673#issuecomment-1252114414
-        config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
+        build_config.build_settings["DEVELOPMENT_TEAM"] = "iNaturalist, LLC"
       end
     end
 
-    installer.target_installation_results.pod_target_installation_results.each do |pod_name, target_installation_result|
-      target_installation_result.native_target.build_configurations.each do |config|
+    installer.target_installation_results.pod_target_installation_results.each do | _pod_name, inst_result |
+      inst_result.native_target.build_configurations.each do | build_config |
         # For third party modules who have React-bridging dependency to search correct headers
-        config.build_settings['HEADER_SEARCH_PATHS'] ||= '$(inherited) '
-        config.build_settings['HEADER_SEARCH_PATHS'] << '"$(PODS_ROOT)/Headers/Private/React-bridging/react/bridging" '
-        config.build_settings['HEADER_SEARCH_PATHS'] << '"$(PODS_CONFIGURATION_BUILD_DIR)/React-bridging/react_bridging.framework/Headers" '
+        build_config.build_settings["HEADER_SEARCH_PATHS"] ||= "$(inherited) "
+        build_config.build_settings["HEADER_SEARCH_PATHS"] <<
+          '"$(PODS_ROOT)/Headers/Private/React-bridging/react/bridging" '
+        build_config.build_settings["HEADER_SEARCH_PATHS"] <<
+          '"$(PODS_CONFIGURATION_BUILD_DIR)/React-bridging/react_bridging.framework/Headers" '
       end
     end
-    #react_native_post_install(installer)
+    # react_native_post_install(installer)
     `sed -i -e  $'s/__IPHONE_10_0/__IPHONE_12_0/' Pods/RCT-Folly/folly/portability/Time.h`
   end
-
 end
