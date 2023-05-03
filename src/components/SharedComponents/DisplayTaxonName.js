@@ -9,19 +9,21 @@ import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  scientificNameFirst?: boolean,
-  taxon: Object,
-  layout?: "horizontal" | "vertical",
   color?: string,
-  small?: boolean
+  keyBase?: string,
+  layout?: "horizontal" | "vertical",
+  scientificNameFirst?: boolean,
+  small?: boolean,
+  taxon: Object
 };
 
 const DisplayTaxonName = ( {
+  color,
+  keyBase = "",
   layout = "horizontal",
   scientificNameFirst = false,
-  taxon,
-  color,
-  small = false
+  small = false,
+  taxon
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -56,7 +58,8 @@ const DisplayTaxonName = ( {
       isItalics
         ? (
           <TextComponent
-            key={`DisplayTaxonName-${taxon.id}-${rankLevel}-${piece}`}
+            // eslint-disable-next-line react/no-array-index-key
+            key={`DisplayTaxonName-${keyBase}-${taxon.id}-${rankLevel}-${piece}-${index}`}
             className={classNames( "italic", textColorClass )}
           >
             {text}

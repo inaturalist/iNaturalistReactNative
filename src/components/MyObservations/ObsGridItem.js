@@ -47,6 +47,7 @@ const ObsGridItem = ( {
         setShowLoginSheet={setShowLoginSheet}
       />
       <DisplayTaxonName
+        keyBase={observation?.uuid}
         taxon={observation?.taxon}
         scientificNameFirst={
           observation?.user?.prefers_scientific_name_first

@@ -696,5 +696,25 @@
   "Affiliation": "Affiliation: { $site }",
   "Monthly-Donor": "Monthly Donor",
   "VIEW-SIMILAR-SPECIES": "VIEW SIMILAR SPECIES",
-  "WIKIPEDIA": "WIKIPEDIA"
+  "WIKIPEDIA": "WIKIPEDIA",
+  "MY-OBSERVATIONS": {
+    "comment": "Header for a section showing the viewer's observations",
+    "val": "MY OBSERVATIONS"
+  },
+  "GRAPHS": {
+    "comment": "Header for a section showing charts",
+    "val": "MY OBSERVATIONS"
+  },
+  "TOP-OBSERVERS": {
+    "comment": "Header for a section showing top observers, e.g. of a taxon",
+    "val": "TOP OBSERVERS"
+  },
+  "TOP-IDENTIFIERS": {
+    "comment": "Header for a section showing top identifiers, e.g. of a taxon",
+    "val": "TOP IDENTIFIERS"
+  },
+  "OBSERVATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] OBSERVATION\n *[other] OBSERVATIONS\n}",
+  "SPECIES-WITHOUT-NUMBER": "{ $count ->\n  [one] SPECIES\n *[other] SPECIES\n}",
+  "IDENTIFICATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] IDENTIFICATION\n *[other] IDENTIFICATIONS\n}",
+  "JOURNAL-POSTS-WITHOUT-NUMBER": "{ $count ->\n  [one] JOURNAL POST\n *[other] JOURNAL POSTS\n}"
 }

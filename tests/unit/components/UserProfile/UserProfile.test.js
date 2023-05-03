@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react-native";
 import UserProfile from "components/UserProfile/UserProfile";
 import initI18next from "i18n/initI18next";
+import { t } from "i18next";
 import React from "react";
 
 import factory from "../../../factory";
@@ -60,7 +61,11 @@ describe( "UserProfile", () => {
     renderComponent( <UserProfile /> );
 
     expect( screen.getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy( );
-    expect( screen.getByText( new RegExp( mockUser.observations_count ) ) ).toBeTruthy( );
+    expect(
+      screen.getByText(
+        new RegExp( t( "OBSERVATIONS-WITHOUT-NUMBER", { count: mockUser.observations_count } ) )
+      )
+    ).toBeTruthy( );
     expect( screen.getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( {
       uri: mockUser.icon_url
     } );

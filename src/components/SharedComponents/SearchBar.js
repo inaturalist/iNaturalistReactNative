@@ -39,12 +39,21 @@ const SearchBar = ( {
       <TextInput
         accessibilityLabel="Search bar"
         keyboardType="default"
-        mode="flat"
+        mode="outlined"
         onChangeText={handleTextChange}
         value={value}
-        className="bg-white w-full rounded-lg h-[45px] border border-lightGray pr-5"
+        // eslint-disable-next-line react-native/no-inline-styles
+        outlineStyle={{
+          borderColor: "lightgray",
+          borderRadius: 8,
+          borderWidth: 1
+        }}
         testID={testID}
-        style={hasShadow && getShadow( theme.colors.primary )}
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{
+          height: 45,
+          ...( hasShadow ? getShadow( theme.colors.primary ) : {} )
+        }}
         underlineColor={theme.colors.primary}
         activeUnderlineColor={theme.colors.primary}
         // kind of tricky to change the font here:
@@ -59,8 +68,8 @@ const SearchBar = ( {
           }
         }}
       />
-      <View className="absolute right-4 top-4">
-        <INatIcon name="magnifying-glass" size={14} />
+      <View className="absolute right-4 top-[20px]">
+        <INatIcon name="magnifying-glass" size={18} />
       </View>
     </View>
   );

@@ -956,3 +956,35 @@ Monthly-Donor = Monthly Donor
 
 VIEW-SIMILAR-SPECIES = VIEW SIMILAR SPECIES
 WIKIPEDIA = WIKIPEDIA
+
+# Header for a section showing the viewer's observations
+MY-OBSERVATIONS = MY OBSERVATIONS
+
+# Header for a section showing charts
+GRAPHS = MY OBSERVATIONS
+
+# Header for a section showing top observers, e.g. of a taxon
+TOP-OBSERVERS = TOP OBSERVERS
+
+# Header for a section showing top identifiers, e.g. of a taxon
+TOP-IDENTIFIERS = TOP IDENTIFIERS
+
+OBSERVATIONS-WITHOUT-NUMBER = {$count ->
+    [one] OBSERVATION
+    *[other] OBSERVATIONS
+}
+
+SPECIES-WITHOUT-NUMBER = {$count ->
+    [one] SPECIES
+    *[other] SPECIES
+}
+
+IDENTIFICATIONS-WITHOUT-NUMBER = {$count ->
+    [one] IDENTIFICATION
+    *[other] IDENTIFICATIONS
+}
+
+JOURNAL-POSTS-WITHOUT-NUMBER = {$count ->
+    [one] JOURNAL POST
+    *[other] JOURNAL POSTS
+}

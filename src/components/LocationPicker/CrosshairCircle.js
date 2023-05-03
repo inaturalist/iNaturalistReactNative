@@ -16,7 +16,11 @@ const CrosshairCircle = ( { accuracyTest, containerStyle }: Props ): Node => {
   const theme = useTheme( );
 
   return (
-    <View className="absolute" style={containerStyle}>
+    <View
+      className="absolute"
+      style={containerStyle}
+      pointerEvents="none"
+    >
       <View
         className={
           classnames(

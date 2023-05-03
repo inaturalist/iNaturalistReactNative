@@ -26,8 +26,10 @@ const UserIcon = ( {
   };
 
   const size = getSize( );
-  const border = "border-[3px] border-inatGreen";
-  const className = classNames( "rounded-full", size, active && border );
+  const className = classNames(
+    "rounded-full",
+    size
+  );
   // For unknown reasons, the green border doesn't show up on Android using nativewind classNames
   // but it works with style, might warrant further investigation or an issue in nativewind
   const style = { borderColor: colors.inatGreen, borderWidth: 3 };

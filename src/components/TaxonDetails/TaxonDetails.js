@@ -3,8 +3,13 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import fetchTaxon from "api/taxa";
+import PlaceholderText from "components/PlaceholderText";
 import {
-  DisplayTaxonName, Heading4, ScrollViewWrapper, Tabs
+  DisplayTaxonName,
+  Heading4,
+  HideView,
+  ScrollViewWrapper,
+  Tabs
 } from "components/SharedComponents";
 import { ImageBackground, View } from "components/styledComponents";
 import type { Node } from "react";
@@ -95,7 +100,21 @@ const TaxonDetails = ( ): Node => {
         </View>
       </ImageBackground>
       <Tabs tabs={tabs} activeId={currentTabId} />
-      <About taxon={taxon} isLoading={isLoading} isError={isError} />
+      <HideView show={currentTabId === ABOUT_TAB_ID}>
+        <About taxon={taxon} isLoading={isLoading} isError={isError} />
+      </HideView>
+      <HideView noInitialRender show={currentTabId === DATA_TAB_ID}>
+        <View className="m-3">
+          <Heading4>{ t( "MY-OBSERVATIONS" ) }</Heading4>
+          <PlaceholderText text="TODO" />
+          <Heading4>{ t( "GRAPHS" ) }</Heading4>
+          <PlaceholderText text="TODO" />
+          <Heading4>{ t( "TOP-OBSERVERS" ) }</Heading4>
+          <PlaceholderText text="TODO" />
+          <Heading4>{ t( "TOP-IDENTIFIERS" ) }</Heading4>
+          <PlaceholderText text="TODO" />
+        </View>
+      </HideView>
     </ScrollViewWrapper>
   );
 };
