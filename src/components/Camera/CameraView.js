@@ -5,8 +5,7 @@ import React, { useRef, useState } from "react";
 import { Animated, StyleSheet } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Reanimated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-// $FlowFixMe
-import { Camera } from "react-native-vision-camera"; // eslint-disable-line import/no-unresolved
+import { Camera } from "react-native-vision-camera";
 import useIsForeground from "sharedHooks/useIsForeground";
 
 import FocusSquare from "./FocusSquare";

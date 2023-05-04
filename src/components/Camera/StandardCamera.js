@@ -33,8 +33,7 @@ import {
 import {
   Camera,
   useCameraDevices
-  // $FlowFixMe
-} from "react-native-vision-camera"; // eslint-disable-line import/no-unresolved
+} from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
