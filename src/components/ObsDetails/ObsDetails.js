@@ -332,9 +332,10 @@ const ObsDetails = (): Node => {
     if ( !isOnline ) {
       // TODO show photos that are available offline
       return (
-        <View className="bg-white flex-row justify-center">
+        <View className="bg-black flex-row justify-center">
           <IconMaterial
             name="wifi-off"
+            color={colors.white}
             size={100}
             accessibilityRole="image"
             accessibilityLabel={t(
@@ -349,12 +350,12 @@ const ObsDetails = (): Node => {
         <View className="bg-black">
           <PhotoScroll photos={photos} />
           {/* TODO: a11y props are not passed down into this 3.party */}
-          <View className="absolute top-3 left-3">
+          {/* <View className="absolute top-3 left-3">
             <HeaderBackButton
               tintColor={colors.white}
               onPress={( ) => navigation.goBack( )}
             />
-          </View>
+          </View> */}
           <IconButton
             icon="kebab-menu"
             textColor={colors.white}
@@ -381,11 +382,12 @@ const ObsDetails = (): Node => {
     }
     return (
       <View
-        className="bg-white flex-row justify-center"
+        className="bg-black flex-row justify-center"
         accessible
         accessibilityLabel={t( "Observation-has-no-photos-and-no-sounds" )}
       >
         <IconMaterial
+          color={colors.white}
           testID="ObsDetails.noImage"
           name="image-not-supported"
           size={100}
@@ -397,8 +399,12 @@ const ObsDetails = (): Node => {
   return (
     <>
       <ScrollViewWrapper testID={`ObsDetails.${uuid}`}>
-        <View className="relative">
-          {displayPhoto()}
+        {displayPhoto()}
+        <View className="absolute top-3 left-3">
+          <HeaderBackButton
+            tintColor={colors.white}
+            onPress={( ) => navigation.goBack( )}
+          />
         </View>
 
         <ActivityHeader item={observation} classNameMargin="mx-[15px] mt-[13px]" />
@@ -443,7 +449,7 @@ const ObsDetails = (): Node => {
           <Button
             text={t( "Suggest-an-ID" )}
             onPress={navToAddID}
-            className="mx-3"
+            className="mx-3 grow"
             testID="ObsDetail.cvSuggestionsButton"
             accessibilityRole="link"
             accessibilityHint={t( "Navigates-to-suggest-identification" )}
@@ -451,7 +457,7 @@ const ObsDetails = (): Node => {
           <Button
             text={t( "Add-Comment" )}
             onPress={openCommentBox}
-            className="mx-3"
+            className="mx-3 grow"
             testID="ObsDetail.commentButton"
             disabled={showCommentBox}
             accessibilityHint={t( "Opens-add-comment-modal" )}
