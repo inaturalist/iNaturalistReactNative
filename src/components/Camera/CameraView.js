@@ -28,11 +28,10 @@ Reanimated.addWhitelistedNativeProps( {
 
 type Props = {
   camera: Object,
-  device: Object,
-  orientation: string
+  device: Object
 }
 
-const CameraView = ( { camera, device, orientation }: Props ): Node => {
+const CameraView = ( { camera, device }: Props ): Node => {
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
   const singleTapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
   // check if camera page is active
@@ -125,7 +124,6 @@ const CameraView = ( { camera, device, orientation }: Props ): Node => {
           device={device}
           isActive={isActive}
           photo
-          orientation={orientation}
         />
       </GestureDetector>
       <FocusSquare

@@ -28,7 +28,12 @@ import {
   IconButton,
   Snackbar
 } from "react-native-paper";
-import { Camera, useCameraDevices } from "react-native-vision-camera";
+// Temporarily using a fork so this is to avoid that eslint error. Need to
+// remove if/when we return to the main repo
+import {
+  Camera,
+  useCameraDevices
+} from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
@@ -49,14 +54,14 @@ export const MAX_PHOTOS_ALLOWED = 20;
 const CAMERA_BUTTON_DIM = 40;
 
 function orientationLockerToCameraOrientation( orientation ) {
-  // react-native-orientation-locker and react-native-vision-camera have
-  // opposite definitions for landscape right/left, and different string
-  // values for these constants
+  // react-native-orientation-locker and react-native-vision-camera  different
+  // string values for these constants, so we map everything to the
+  // react-native-vision-camera versions
   switch ( orientation ) {
   case "LANDSCAPE-RIGHT":
-    return LANDSCAPE_LEFT;
-  case "LANDSCAPE-LEFT":
     return LANDSCAPE_RIGHT;
+  case "LANDSCAPE-LEFT":
+    return LANDSCAPE_LEFT;
   default:
     return PORTRAIT;
   }
@@ -233,11 +238,15 @@ const StandardCamera = ( ): Node => {
       testID = "flash-button-label-flash-off";
       accessibilityLabel = t( "Flash-button-label-flash-off" );
     }
+    let rotateClass = "rotate-0";
+    if ( !isTablet && isLandscapeMode ) {
+      rotateClass = deviceOrientation === LANDSCAPE_LEFT ? "-rotate-90" : "rotate-90";
+    }
     return (
       <IconButton
         className={classnames(
-          [`${flashClassName}`],
-          !isTablet && isLandscapeMode ? "rotate-90" : "rotate-0",
+          flashClassName,
+          rotateClass,
           "m-0"
         )}
         onPress={toggleFlash}
@@ -313,7 +322,8 @@ const StandardCamera = ( ): Node => {
           "items-center",
           // There is something weird about how this gets used because
           // sometimes there just is no margin
-          `my-[${CAMERA_BUTTON_DIM + 1}px]`
+          "mt-[40px]",
+          "mb-[40px]"
         )}
         onPress={takePhoto}
         accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
@@ -358,6 +368,7 @@ const StandardCamera = ( ): Node => {
   const flexDirection = isTablet && !isLandscapeMode
     ? "flex-row"
     : "flex-col";
+
   return (
     <View className={`flex-1 bg-black ${flexDirection}`}>
       <StatusBar hidden />
@@ -373,7 +384,6 @@ const StandardCamera = ( ): Node => {
           <CameraView
             device={device}
             camera={camera}
-            orientation={deviceOrientation}
           />
         )}
         <FadeInOutView savingPhoto={savingPhoto} />
@@ -400,8 +410,8 @@ const StandardCamera = ( ): Node => {
               <Pressable
                 className={classnames( checkmarkClass, {
                   "rotate-0": deviceOrientation === PORTRAIT,
-                  "-rotate-90": deviceOrientation === LANDSCAPE_LEFT,
-                  "rotate-90": deviceOrientation === LANDSCAPE_RIGHT
+                  "rotate-90": deviceOrientation === LANDSCAPE_LEFT,
+                  "-rotate-90": deviceOrientation === LANDSCAPE_RIGHT
                 } )}
                 onPress={navToObsEdit}
                 accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
