@@ -1,6 +1,6 @@
 // @flow
 
-import { Image, Text, View } from "components/styledComponents";
+import { Image, View } from "components/styledComponents";
 import * as React from "react";
 import { FlatList } from "react-native-gesture-handler";
 
@@ -24,13 +24,10 @@ const PhotoScroll = ( { photos }: Props ): React.Node => {
         <Image
           testID="PhotoScroll.photo"
           source={{ uri: photoUrl }}
-          className="h-56 w-screen"
+          className="h-72 w-screen"
           resizeMode="contain"
           accessibilityIgnoresInvertColors
         />
-        <Text className="absolute bottom-5 right-5 text-white">
-          {photo.licenseCode || photo.license_code}
-        </Text>
       </View>
     );
   };

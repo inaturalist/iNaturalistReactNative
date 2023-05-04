@@ -1,7 +1,9 @@
 // @flow
+import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
+import createIdentification from "api/identifications";
 import {
   faveObservation,
   fetchRemoteObservation,
@@ -10,7 +12,9 @@ import {
 } from "api/observations";
 import ObsStatus from "components/MyObservations/ObsStatus";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
-import { DisplayTaxonName, ObservationLocation, Tabs } from "components/SharedComponents";
+import {
+  Button, DisplayTaxonName, ObservationLocation, PhotoCount, Tabs
+} from "components/SharedComponents";
 import HideView from "components/SharedComponents/HideView";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import ScrollViewWrapper from "components/SharedComponents/ScrollViewWrapper";
@@ -38,6 +42,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import useLocalObservation from "sharedHooks/useLocalObservation";
 import useTranslation from "sharedHooks/useTranslation";
+import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import ActivityTab from "./ActivityTab";
@@ -59,6 +64,7 @@ const DETAILS_TAB_ID = "DETAILS";
 const ObsDetails = (): Node => {
   const isOnline = useIsConnected();
   const currentUser = useCurrentUser();
+  const [ids, setIds] = useState<Array<Object>>( [] );
   const userId = currentUser?.id;
   const [refetch, setRefetch] = useState( false );
   const { params } = useRoute();
@@ -159,6 +165,25 @@ const ObsDetails = (): Node => {
     } );
   };
 
+  const createIdentificationMutation = useAuthenticatedMutation(
+    ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
+    {
+      onSuccess: data => setIds( [...ids, data[0]] ),
+      onError: e => {
+        let error = null;
+        if ( e ) {
+          error = t( "Couldnt-create-identification", { error: e.message } );
+        } else {
+          error = t( "Couldnt-create-identification", { error: t( "Unknown-error" ) } );
+        }
+
+        // Remove temporary ID and show error
+        setIds( [...ids] );
+        showErrorAlert( error );
+      }
+    }
+  );
+
   // reload if change to observation
   useEffect( () => {
     if ( localObservation && remoteObservation ) {
@@ -256,6 +281,38 @@ const ObsDetails = (): Node => {
     }
   };
 
+  const onIDAdded = async identification => {
+    // Add temporary ID to observation.identifications ("ghosted" ID, while we're trying to add it)
+    const newId = {
+      body: identification.body,
+      taxon: identification.taxon,
+      user: {
+        id: userId,
+        login: currentUser?.login,
+        signedIn: true
+      },
+      created_at: formatISO( Date.now() ),
+      uuid: identification.uuid,
+      vision: false,
+      // This tells us to render is ghosted (since it's temporarily visible
+      // until getting a response from the server)
+      temporary: true
+    };
+    setIds( [...ids, newId] );
+
+    createIdentificationMutation.mutate( {
+      identification: {
+        observation_id: uuid,
+        taxon_id: newId.taxon.id,
+        body: newId.body
+      }
+    } );
+  };
+
+  const navToAddID = ( ) => {
+    navigation.navigate( "AddID", { onIDAdded, goBackOnSave: true } );
+  };
+
   const tabs = [
     {
       id: ACTIVITY_TAB_ID,
@@ -292,32 +349,33 @@ const ObsDetails = (): Node => {
         <View className="bg-black">
           <PhotoScroll photos={photos} />
           {/* TODO: a11y props are not passed down into this 3.party */}
+          <View className="absolute top-3 left-3">
+            <HeaderBackButton
+              tintColor={colors.white}
+              onPress={( ) => navigation.goBack( )}
+            />
+          </View>
           <IconButton
-            icon={currentUserFaved ? "star-bold-outline" : "pencil"}
-            onPress={faveOrUnfave}
+            icon="kebab-menu"
             textColor={colors.white}
-            className="absolute top-3 right-0"
+            className="absolute top-3 right-3"
             accessible
             accessibilityRole="button"
-            accessibilityLabel={
-              currentUserFaved
-                ? t( "Fave-button-label-unfave" )
-                : t( "Fave-button-label-fave" )
-            }
+            accessibilityLabel={t( "favorite" )}
           />
           <IconButton
-            icon="chevron-left"
-            onPress={faveOrUnfave}
+            icon="star-bold-outline"
+            size={25}
+            onPress={() => faveOrUnfave()}
             textColor={colors.white}
-            className="absolute top-3 left-0"
+            className="absolute bottom-3 right-3"
             accessible
             accessibilityRole="button"
-            accessibilityLabel={
-              currentUserFaved
-                ? t( "Fave-button-label-unfave" )
-                : t( "Fave-button-label-fave" )
-            }
+            accessibilityLabel={t( "favorite" )}
           />
+          <View className="absolute bottom-3 left-3">
+            <PhotoCount count={photos?.length} />
+          </View>
         </View>
       );
     }
@@ -335,10 +393,14 @@ const ObsDetails = (): Node => {
       </View>
     );
   };
+
   return (
     <>
       <ScrollViewWrapper testID={`ObsDetails.${uuid}`}>
-        {displayPhoto()}
+        <View className="relative">
+          {displayPhoto()}
+        </View>
+
         <ActivityHeader item={observation} classNameMargin="mx-[15px] mt-[13px]" />
         <View className="flex-row my-[11px] justify-between mx-3">
           {showTaxon()}
@@ -348,14 +410,11 @@ const ObsDetails = (): Node => {
         <Tabs tabs={tabs} activeId={currentTabId} />
         <HideView show={currentTabId === ACTIVITY_TAB_ID}>
           <ActivityTab
-            uuid={uuid}
             observation={observation}
             comments={comments}
             navToTaxonDetails={navToTaxonDetails}
             toggleRefetch={toggleRefetch}
             refetchRemoteObservation={refetchRemoteObservation}
-            openCommentBox={openCommentBox}
-            showCommentBox={showCommentBox}
           />
         </HideView>
         <HideView noInitialRender show={currentTabId === DETAILS_TAB_ID}>
@@ -367,6 +426,38 @@ const ObsDetails = (): Node => {
           </View>
         )}
       </ScrollViewWrapper>
+      { ( currentTabId === ACTIVITY_TAB_ID )
+      && (
+        <View
+          className="flex-row justify-evenly bottom-[90px] bg-white py-3"
+          style={getShadowStyle( {
+            shadowColor: colors.black,
+            offsetWidth: 0,
+            offsetHeight: -3,
+            shadowOpacity: 0.2,
+            shadowRadius: 2,
+            radius: 5,
+            elevation: 5
+          } )}
+        >
+          <Button
+            text={t( "Suggest-an-ID" )}
+            onPress={navToAddID}
+            className="mx-3"
+            testID="ObsDetail.cvSuggestionsButton"
+            accessibilityRole="link"
+            accessibilityHint={t( "Navigates-to-suggest-identification" )}
+          />
+          <Button
+            text={t( "Add-Comment" )}
+            onPress={openCommentBox}
+            className="mx-3"
+            testID="ObsDetail.commentButton"
+            disabled={showCommentBox}
+            accessibilityHint={t( "Opens-add-comment-modal" )}
+          />
+        </View>
+      ) }
       <AddCommentModal
         //  potential to move this modal to ActivityTab and have it handle comments
         //  and ids but there were issues with presenting the modal in a scrollview.
