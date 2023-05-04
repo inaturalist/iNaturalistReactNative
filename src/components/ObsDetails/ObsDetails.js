@@ -350,12 +350,6 @@ const ObsDetails = (): Node => {
         <View className="bg-black">
           <PhotoScroll photos={photos} />
           {/* TODO: a11y props are not passed down into this 3.party */}
-          {/* <View className="absolute top-3 left-3">
-            <HeaderBackButton
-              tintColor={colors.white}
-              onPress={( ) => navigation.goBack( )}
-            />
-          </View> */}
           <IconButton
             icon="kebab-menu"
             textColor={colors.white}
