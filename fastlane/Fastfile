@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require "fileutils"
 
-appfile_path = File.join( File.expand_path( File.dirname( __FILE__ ) ), "Appfile" )
+appfile_path = File.join( __dir__, "Appfile" )
 unless File.exist?( appfile_path )
   UI.abort_with_message! <<~NO_APPFILE_ERROR.gsub( /\s+/, " " ).strip
     Could not find #{appfile_path}. Copy the example file in that directory to
@@ -8,12 +10,12 @@ unless File.exist?( appfile_path )
   NO_APPFILE_ERROR
 end
 
-VERSION = File.open( "../package.json" ) { | f | JSON.parse( f.read )["version"] }
+VERSION = File.open( "../package.json" ) {| f | JSON.parse( f.read )["version"] }
 editor_cmd = [
   ENV["EDITOR"],
   `git config core.editor`,
   `which vi`
-].map{| e | e.to_s.strip }.detect {| e | !e.empty? }
+].map {| e | e.to_s.strip }.detect {| e | !e.empty? }
 if editor_cmd.nil?
   UI.abort_with_message! <<~NO_EDITOR_ERROR
     Could not find an editor, not even vi. Set the EDITOR environmental
@@ -31,13 +33,13 @@ PACKAGE_ID = CredentialsManager::AppfileConfig.try_fetch_value( :package_name )
 def set_android_version_code( new_version_code )
   build_gradle_path = "../android/app/build.gradle"
   new_gradle = File.read( build_gradle_path ).sub( /versionCode\s+\d+/, "versionCode #{new_version_code}" )
-  File.open( build_gradle_path, "w" ) { | f | f.write( new_gradle ) }
+  File.open( build_gradle_path, "w" ) {| f | f.write( new_gradle ) }
 end
 
-def set_android_version_name( new_version_name )
+def set_android_version_name( _new_version_name )
   build_gradle_path = "../android/app/build.gradle"
   new_gradle = File.read( build_gradle_path ).sub( /versionName\s+".+"/, "versionName \"#{VERSION}\"" )
-  File.open( build_gradle_path, "w" ) { | f | f.write( new_gradle ) }
+  File.open( build_gradle_path, "w" ) {| f | f.write( new_gradle ) }
 end
 
 def get_changelog_path( build_number = nil )
@@ -49,8 +51,8 @@ end
 
 def get_aab_path( build_number = nil )
   build_number ||= get_build_number( xcodeproj: XCODEPROJ )
-  aab_path = File.join(
-    File.expand_path( File.dirname( __FILE__ ) ),
+  File.join(
+    __dir__,
     "..",
     "android",
     "app",
@@ -64,8 +66,8 @@ end
 
 def get_apk_path( build_number = nil )
   build_number ||= get_build_number( xcodeproj: XCODEPROJ )
-  aab_path = File.join(
-    File.expand_path( File.dirname( __FILE__ ) ),
+  File.join(
+    __dir__,
     "..",
     "android",
     "app",
@@ -79,8 +81,8 @@ end
 
 def get_ipa_path( build_number = nil )
   build_number ||= get_build_number( xcodeproj: XCODEPROJ )
-  aab_path = File.join(
-    File.expand_path( File.dirname( __FILE__ ) ),
+  File.join(
+    __dir__,
     "..",
     "ios",
     "build",
@@ -94,6 +96,7 @@ lane :tag do
   last_tag = last_git_tag
   # Increment the iOS build number
   increment_build_number( xcodeproj: XCODEPROJ )
+  increment_version_number( version_number: VERSION )
   build_number = get_build_number( xcodeproj: XCODEPROJ )
   # set android/app/build.gradle versionCode to this build_number
   set_android_version_code( build_number )
@@ -105,7 +108,7 @@ lane :tag do
   if last_tag && changes.empty?
     UI.abort_with_message! "Nothing has changed since the last tag (#{last_tag})"
   end
-  
+
   # Get release notes
   # Bit silly but takes advantage of existing syntax highlighting
   fname = "COMMIT_EDITMSG"
@@ -127,7 +130,7 @@ lane :tag do
   end
   release_notes.strip!
   FileUtils.rm( fname )
-  if release_notes.strip.size == 0
+  if release_notes.strip.size.zero?
     reset_git_repo skip_clean: true
     UI.abort_with_message! "You gotta enter release notes!"
   end
@@ -145,10 +148,14 @@ lane :tag do
   git_add( path: changelog_git_path )
 
   # commit
-  commit_version_bump( message: tag, xcodeproj: XCODEPROJ, include: [
-    "android/app/build.gradle",
-    changelog_git_path
-  ] )
+  commit_version_bump(
+    message: tag,
+    xcodeproj: XCODEPROJ,
+    include: [
+      "android/app/build.gradle",
+      changelog_git_path
+    ]
+  )
   push_to_git_remote
 
   # Create a tag for this release
@@ -160,7 +167,7 @@ platform :android do
   lane :build do
     desc "Build release files for Android"
     keystore_properties_path = File.join(
-      File.expand_path( File.dirname( __FILE__ ) ),
+      __dir__,
       "..",
       "android",
       "keystore.properties"
@@ -291,14 +298,18 @@ lane :release do
   )
 
   if github_release
-    UI.important "Release already exists at #{github_release["url"]}. You need to manually upload any missing assets."
+    UI.important "Release already exists at #{github_release['url']}. You need to manually upload any missing assets."
   else
     set_github_release(
       repository_name: "inaturalist/iNaturalistReactNative",
       api_token: ENV["GITHUB_TOKEN"],
       name: last_tag,
       tag_name: last_tag,
-      description: ( File.read( changelog_path ) rescue nil ),
+      description: begin
+        File.read( changelog_path )
+      rescue StandardError
+        nil
+      end,
       # This is really just a fallback in case last_tag isn't really a tag
       commitish: "main",
       upload_assets: [apk_path]
@@ -312,7 +323,9 @@ lane :internal do
   # Ensure build files exist for the latest tag
   aab_path = get_aab_path
   unless File.exist?( aab_path )
-    UI.abort_with_message! "AAB does not exist at #{aab_path}. You may need to run the release lane before making a beta"
+    UI.abort_with_message! <<~MSG
+      AAB does not exist at #{aab_path}. You may need to run the release lane before making a beta
+    MSG
   end
   last_tag = last_git_tag
   if last_tag.nil? || last_tag.empty?
@@ -370,4 +383,3 @@ lane :prod do
   # been able to test that yet
   upload_to_play_store( version_code: build_number, track: "beta", track_promote_to: "production" )
 end
-
