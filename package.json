@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "android:device": "react-native run-android --mode=release",
+    "android:release": "react-native run-android --mode=release",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "clean-start": "npx react-native clean-project-auto && npx pod-install && npm start -- --reset-cache",
