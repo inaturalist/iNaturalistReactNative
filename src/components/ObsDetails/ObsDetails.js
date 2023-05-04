@@ -429,7 +429,7 @@ const ObsDetails = (): Node => {
       { ( currentTabId === ACTIVITY_TAB_ID )
       && (
         <View
-          className="flex-row justify-evenly bottom-[90px] bg-white py-3"
+          className="flex-row justify-evenly bottom-[80px] bg-white py-3"
           style={getShadowStyle( {
             shadowColor: colors.black,
             offsetWidth: 0,
