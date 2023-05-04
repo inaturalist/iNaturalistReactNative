@@ -4,7 +4,8 @@ import type { Node } from "react";
 import React, { useRef, useState } from "react";
 import { Animated, StyleSheet } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { Camera } from "react-native-vision-camera";
+// $FlowFixMe
+import { Camera } from "react-native-vision-camera"; // eslint-disable-line import/no-unresolved
 import useIsForeground from "sharedHooks/useIsForeground";
 
 import FocusSquare from "./FocusSquare";
@@ -15,11 +16,10 @@ export const LANDSCAPE_RIGHT = "landscapeRight";
 
 type Props = {
   camera: Object,
-  device: Object,
-  orientation: string
+  device: Object
 }
 
-const CameraView = ( { camera, device, orientation }: Props ): Node => {
+const CameraView = ( { camera, device }: Props ): Node => {
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
   const singleTapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
 
@@ -68,7 +68,6 @@ const CameraView = ( { camera, device, orientation }: Props ): Node => {
           isActive={isActive}
           photo
           enableZoomGesture
-          orientation={orientation}
         />
       </GestureDetector>
       <FocusSquare
