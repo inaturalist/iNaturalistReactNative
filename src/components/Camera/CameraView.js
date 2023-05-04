@@ -5,7 +5,8 @@ import React, { useRef, useState } from "react";
 import { Animated, StyleSheet } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Reanimated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { Camera } from "react-native-vision-camera";
+// $FlowFixMe
+import { Camera } from "react-native-vision-camera"; // eslint-disable-line import/no-unresolved
 import useIsForeground from "sharedHooks/useIsForeground";
 
 import FocusSquare from "./FocusSquare";
@@ -28,11 +29,10 @@ Reanimated.addWhitelistedNativeProps( {
 
 type Props = {
   camera: Object,
-  device: Object,
-  orientation: string
+  device: Object
 }
 
-const CameraView = ( { camera, device, orientation }: Props ): Node => {
+const CameraView = ( { camera, device }: Props ): Node => {
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
   const singleTapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
   // check if camera page is active
@@ -125,7 +125,6 @@ const CameraView = ( { camera, device, orientation }: Props ): Node => {
           device={device}
           isActive={isActive}
           photo
-          orientation={orientation}
         />
       </GestureDetector>
       <FocusSquare

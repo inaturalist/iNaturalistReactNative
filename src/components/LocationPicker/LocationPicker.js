@@ -78,7 +78,6 @@ const LocationPicker = ( { route }: Props ): Node => {
   };
 
   useEffect( ( ) => {
-    console.log( "accuracy: ", accuracy );
     if ( accuracy < DESIRED_LOCATION_ACCURACY ) {
       setAccuracyTest( "pass" );
     } else if ( accuracy < REQUIRED_LOCATION_ACCURACY ) {

@@ -105,9 +105,9 @@ target "iNaturalistReactNative" do
       inst_result.native_target.build_configurations.each do | build_config |
         # For third party modules who have React-bridging dependency to search correct headers
         build_config.build_settings["HEADER_SEARCH_PATHS"] ||= "$(inherited) "
-        build_config.build_settings["HEADER_SEARCH_PATHS"] <<
+        build_config.build_settings["HEADER_SEARCH_PATHS"] +=
           '"$(PODS_ROOT)/Headers/Private/React-bridging/react/bridging" '
-        build_config.build_settings["HEADER_SEARCH_PATHS"] <<
+        build_config.build_settings["HEADER_SEARCH_PATHS"] +=
           '"$(PODS_CONFIGURATION_BUILD_DIR)/React-bridging/react_bridging.framework/Headers" '
       end
     end
