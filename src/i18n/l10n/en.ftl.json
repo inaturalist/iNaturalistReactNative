@@ -71,7 +71,9 @@
   "Couldnt-create-identification": "Couldn't create identification",
   "Create-an-iNaturalist-account-to-save-your-observations": "Create an iNaturalist account to save your observations and contribute them to science.",
   "CREATE-YOUR-FIRST-OBSERVATION": "CREATE YOUR FIRST OBSERVATION",
+  "DATA-QUALITY": "DATA QUALITY",
   "Date": "Date",
+  "DATE": "DATE",
   "Date-added-newest-to-oldest": "Date added - newest to oldest",
   "Date-added-oldest-to-newest": "Date added - oldest to newest",
   "Default-Search-Place": "Default Search Place",
@@ -170,6 +172,7 @@
   },
   "Licensing": "Licensing",
   "Location": "Location",
+  "LOCATION": "LOCATION",
   "Location-accuracy-is-too-imprecise": "Location accuracy is too imprecise to help identifiers. Please zoom in.",
   "LOCATION-TOO-IMPRECISE": "LOCATION TOO IMPRECISE",
   "Log-in": "Log in",
@@ -242,10 +245,9 @@
     "comment": "license code",
     "val": "no rights reserved"
   },
-  "NOTES": "NOTES",
-  "Notes": {
+  "NOTES": {
     "comment": "Header for observation description on observation detail",
-    "val": "Notes"
+    "val": "NOTES"
   },
   "Notifications": "Notifications",
   "Obscured": "Obscured",
@@ -361,6 +363,7 @@
   "SAVE-LOCATION": "SAVE LOCATION",
   "SAVE-ALL": "SAVE ALL",
   "SAVE-CHANGES": "SAVE CHANGES",
+  "Saved-Observation": "Saved observation, in queue to upload",
   "Search-for-a-location": "Search for a location",
   "Search-for-a-project": "Search for a project",
   "Search-for-a-taxon": "Search for a taxon",
@@ -441,13 +444,13 @@
   },
   "Upload-Progress": "Upload { $uploadProgress } percent complete",
   "Upload-Complete": "Upload Complete",
-  "Saved-Observation": "Saved observation, in queue to upload",
   "User": "User { $userHandle }",
   "Username": "Username",
   "Username-or-Email": {
     "comment": "Appears above the text fields",
     "val": "Username or Email"
   },
+  "VIEW-DATA-QUALITY-ASSESSEMENT": "VIEW DATA QUALITY ASSESSEMENT",
   "Visually-search-iNaturalist-data": "Visually search iNaturalist’s wealth of data. Search by a taxon in a location",
   "Welcome-to-iNaturalist": "Welcome to iNaturalist!",
   "Whenever-you-get-internet-connection-you-can-upload": "Whenever you get internet connection, you can upload your observations to iNaturalist.",
@@ -547,7 +550,7 @@
   "ADD-EVIDENCE": "ADD EVIDENCE",
   "You-can-add-up-to-20-media": "You can add up to 20 photos and 20 sounds per observation.",
   "Add-Comment": "Add Comment",
-  "Suggest-an-ID": "Suggest an ID",
+  "Suggest-ID": "Suggest ID",
   "Add-a-comment": {
     "comment": "Hint text inside the 'Add a comment' Text Input",
     "val": "Add a comment..."

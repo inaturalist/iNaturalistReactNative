@@ -126,14 +126,14 @@ const DetailsTab = ( { observation }: Props ): Node => {
           <Body4>
             {t( "This observation needs more identifications to reach research grade" )}
           </Body4>
-          <Button text={t( "VIEW DATA QUALITY ASSESSEMENT" )} />
+          <Button text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )} />
         </View>
       </View>
       <Divider />
 
       <View className={sectionClass}>
         <Heading4 className={headingClass}>{t( "PROJECTS" )}</Heading4>
-        <Button text={t( "VIEW PROJECTS" )} />
+        <Button text={t( "VIEW-PROJECTS" )} />
       </View>
 
       <Divider />

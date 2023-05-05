@@ -102,7 +102,11 @@ Create-an-iNaturalist-account-to-save-your-observations = Create an iNaturalist 
 
 CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
 
+DATA-QUALITY = DATA QUALITY
+
 Date = Date
+
+DATE = DATE
 
 Date-added-newest-to-oldest = Date added - newest to oldest
 
@@ -258,6 +262,8 @@ Licensing = Licensing
 
 Location = Location
 
+LOCATION = LOCATION
+
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
@@ -357,10 +363,8 @@ No-photos-found = No photos found. If this is your first time opening the app an
 # license code
 no-rights-reserved = no rights reserved
 
-NOTES = NOTES
-
 # Header for observation description on observation detail
-Notes = Notes
+NOTES = NOTES
 
 Notifications = Notifications
 
@@ -549,6 +553,8 @@ SAVE-ALL = SAVE ALL
 
 SAVE-CHANGES = SAVE CHANGES
 
+Saved-Observation = Saved observation, in queue to upload
+
 Search-for-a-location = Search for a location
 
 Search-for-a-project = Search for a project
@@ -671,15 +677,14 @@ Upload-Progress = Upload {$uploadProgress} percent complete
 
 Upload-Complete = Upload Complete
 
-Saved-Observation = Saved observation, in queue to upload
-
-
 User = User
 
 Username = Username
 
 # Appears above the text fields
 Username-or-Email = Username or Email
+
+VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
 
@@ -803,7 +808,7 @@ ADD-EVIDENCE = ADD EVIDENCE
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
 
 Add-Comment = Add Comment
-Suggest-an-ID = Suggest an ID
+Suggest-ID = Suggest ID
 # Hint text inside the 'Add a comment' Text Input
 Add-a-comment = Add a comment...
 
