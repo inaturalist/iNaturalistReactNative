@@ -351,12 +351,12 @@ const ObsDetails = (): Node => {
           <PhotoScroll photos={photos} />
           {/* TODO: a11y props are not passed down into this 3.party */}
           <IconButton
-            icon="kebab-menu"
+            icon="pencil"
             textColor={colors.white}
             className="absolute top-3 right-3"
             accessible
             accessibilityRole="button"
-            accessibilityLabel={t( "favorite" )}
+            accessibilityLabel={t( "edit" )}
           />
           <IconButton
             icon="star-bold-outline"
@@ -441,20 +441,20 @@ const ObsDetails = (): Node => {
           } )}
         >
           <Button
-            text={t( "Suggest-an-ID" )}
-            onPress={navToAddID}
-            className="mx-3 grow"
-            testID="ObsDetail.cvSuggestionsButton"
-            accessibilityRole="link"
-            accessibilityHint={t( "Navigates-to-suggest-identification" )}
-          />
-          <Button
-            text={t( "Add-Comment" )}
+            text={t( "COMMENT" )}
             onPress={openCommentBox}
             className="mx-3 grow"
             testID="ObsDetail.commentButton"
             disabled={showCommentBox}
             accessibilityHint={t( "Opens-add-comment-modal" )}
+          />
+          <Button
+            text={t( "SUGGEST-ID" )}
+            onPress={navToAddID}
+            className="mx-3 grow"
+            testID="ObsDetail.cvSuggestionsButton"
+            accessibilityRole="link"
+            accessibilityHint={t( "Navigates-to-suggest-identification" )}
           />
         </View>
       ) }

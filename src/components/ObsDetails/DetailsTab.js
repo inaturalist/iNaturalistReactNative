@@ -144,7 +144,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
         {application && (
           <View className="flex-row">
             <Body4>{t( "Uploaded-via" )}</Body4>
-            <Body4>{application}</Body4>
+            <Body4>{` ${application}`}</Body4>
           </View>
         )}
         <Body4>{t( "View in Browser" )}</Body4>
