@@ -555,6 +555,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -583,6 +584,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
 				INFOPLIST_FILE = iNaturalistReactNativeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -816,6 +818,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iNaturalistReactNative-ShareExtension/Info.plist";
@@ -859,6 +862,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = N5J7L4P93Z;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "i386 arm64";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iNaturalistReactNative-ShareExtension/Info.plist";

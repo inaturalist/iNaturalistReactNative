@@ -17,6 +17,7 @@ import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
+import { log } from "../../react-native-logs.config";
 import { ObsEditContext, RealmContext } from "./contexts";
 
 const { useRealm } = RealmContext;
@@ -24,6 +25,8 @@ const { useRealm } = RealmContext;
 type Props = {
   children: any
 }
+
+const logger = log.extend( "ObsEditProvider" );
 
 const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
@@ -96,7 +99,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const createObservationFromGalleryPhoto = useCallback( async photo => {
     const originalPhotoUri = photo?.image?.uri;
     const firstPhotoExif = await parseExif( originalPhotoUri );
-    const exifDate = formatExifDateAsString( firstPhotoExif.date );
+    logger.info( `EXIF: ${firstPhotoExif}` );
+    const exifDate = firstPhotoExif ? formatExifDateAsString( firstPhotoExif.date ) : null;
 
     const observedOnDate = exifDate || formatDateStringFromTimestamp( photo.timestamp );
     const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
