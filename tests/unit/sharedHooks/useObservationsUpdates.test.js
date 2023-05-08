@@ -68,6 +68,21 @@ describe( "useObservationsUpdates", ( ) => {
     );
   } );
 
+  describe( "when there is no local observation with the resource_uuid", ( ) => {
+    beforeEach( ( ) => {
+      mockRealm.objectForPrimaryKey.mockReturnValue( null );
+    } );
+
+    afterEach( () => {
+      mockRealm.objectForPrimaryKey.mockReturnValue( mockObservation );
+    } );
+
+    it( "should not call realm.write", ( ) => {
+      renderHook( ( ) => useObservationsUpdates( mockUser ) );
+      expect( mockRealm.write ).not.toHaveBeenCalled( );
+    } );
+  } );
+
   describe.each( [
     ["comment", [mockCommentUpdate]],
     ["identification", [mockIdentificationUpdate]],
