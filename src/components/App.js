@@ -45,17 +45,43 @@ const App = ( { children }: Props ): Node => {
     return Orientation.unlockAllOrientations;
   }, [] );
 
+  const setObservationUpdatesViewedRealm = useCallback(
+    () => {
+      // Set all observations to viewed
+      const observations = realm
+        .objects( "Observation" )
+        .filtered( "viewed_comments == false OR viewed_identifications == false" );
+      realm?.write( () => {
+        observations.forEach( observation => {
+          observation.viewed_comments = true;
+          observation.viewed_identifications = true;
+        } );
+      } );
+    },
+    [realm]
+  );
+
   // When the app is coming back from the background, set the focusManager to focused
   // This will trigger react-query to refetch any queries that are stale
-  function onAppStateChange( status ) {
-    focusManager.setFocused( status === "active" );
-  }
+  const onAppStateChange = useCallback(
+    status => {
+      focusManager.setFocused( status === "active" );
+      // if the app is coming back from the background, set all observations to viewed
+      if ( status === "active" ) {
+        setObservationUpdatesViewedRealm();
+      }
+    },
+    [setObservationUpdatesViewedRealm]
+  );
+
   useEffect( () => {
     // subscribe to app state changes
     const subscription = AppState.addEventListener( "change", onAppStateChange );
+    setObservationUpdatesViewedRealm();
+
     // unsubscribe on unmount
     return () => subscription.remove();
-  }, [] );
+  }, [onAppStateChange, setObservationUpdatesViewedRealm] );
 
   useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {
