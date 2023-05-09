@@ -18,7 +18,6 @@ const useObservationsUpdates = ( currentUser: Object ): Object => {
 
   const {
     data,
-    isLoading,
     isError,
     error,
     refetch
