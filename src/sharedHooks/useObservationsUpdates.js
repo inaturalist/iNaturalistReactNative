@@ -21,6 +21,7 @@ const useObservationsUpdates = ( currentUser: Object ): Object => {
     isLoading,
     isError,
     error,
+    refetch
   } = useAuthenticatedQuery(
     ["fetchObservationUpdates"],
     optsWithAuth => fetchObservationUpdates( baseParams, optsWithAuth ),
@@ -103,7 +104,7 @@ const useObservationsUpdates = ( currentUser: Object ): Object => {
     }
   } );
 
-  return { isLoading };
+  return { refetch };
 };
 
 export default useObservationsUpdates;
