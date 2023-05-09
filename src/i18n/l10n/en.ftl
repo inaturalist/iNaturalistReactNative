@@ -1,7 +1,5 @@
-
-
-# Header for a block of text describing a taxon
-ABOUT-taxon-header = ABOUT
+# Header above user biography / user description on user profile
+ABOUT = ABOUT
 
 About-iNaturalist = About iNaturalist
 
@@ -53,9 +51,6 @@ app-authorized-on-date = { $appName } (authorized on: { $date })
 Applications = Applications
 
 Automatically-update-my-content-for-taxon-changes = Automatically update my content for taxon changes
-
-# Header above user biography / user description on user profile
-BIO = BIO
 
 # Header for inserting user description in settings profile tab
 Bio = Bio
@@ -151,6 +146,8 @@ Display-Name = Display Name
 
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 
+EDIT-LOCATION = EDIT LOCATION
+
 # Appears above the email text field
 Email = email
 
@@ -221,9 +218,9 @@ Has-Sounds = Has Sounds
 
 High = High
 
-IDs = ID's
-
 IDENTIFICATION = IDENTIFICATION
+
+IDENTIFICATIONS = IDENTIFICATIONS
 
 # Shows the number of photos a user selected from the camera roll for upload
 Import-X-photos = Import {$count ->
@@ -250,18 +247,20 @@ Invalid-login = The username or password is incorrect
 Joined = Joined
 
 # Shows date user joined iNaturalist on user profile
-Joined-colon = Joined:
+Joined-date = Joined: {$date}
 
-Journal-Posts = Journal Posts
+JOURNAL-POSTS = JOURNAL POSTS
 
 Language-Locale = Language/Locale
 
 # Shows date user last active on iNaturalist on user profile
-Last-Active-colon = Last Active:
+Last-Active-date = Last Active: {$date}
 
 Licensing = Licensing
 
 Location = Location
+
+Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
 
@@ -372,6 +371,8 @@ Obscured = Obscured
 Observation = Observation
 
 Observation-Attribution = Observation © {$attribution} · {$licenseCode}
+
+OBSERVATIONS = OBSERVATIONS
 
 Observations = Observations
 
@@ -542,6 +543,8 @@ RG = RG
 
 Save = Save
 
+SAVE-LOCATION = SAVE LOCATION
+
 SAVE-ALL = SAVE ALL
 
 SAVE-CHANGES = SAVE CHANGES
@@ -584,7 +587,7 @@ Spam = Spam
 
 Spam-Examples = Commercial solicitation, links to nowhere, etc.
 
-Species = Species
+SPECIES = SPECIES
 
 Status = Status
 
@@ -743,8 +746,6 @@ Record-a-sound = Record a sound
 
 You-can-also-explore-existing-observations = You can also explore existing observations on iNaturalist to discover what’s around you.
 
-You-can-tell-from-the-cool-remark = You can tell from the cool remark I’m making that I know how to identify species.
-
 # Message shown when a permission is required to use a part of the app
 # (e.g. permission to access the camera) but the user denied the permission.
 You-denied-iNaturalist-permission-to-do-that = You denied iNaturalist permission to do that
@@ -760,6 +761,8 @@ You-will-lose-all-existing-observations = {$count ->
 
 You-can-still-share-the-file =
     You can still share the file with another app. If you can email it, please send it to { $email }
+
+Zoom-in = Zoom in so that the observation’s accuracy is as low as possible.
 
 Your-location-uncertainty-is-over-4000km = Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.
 
@@ -900,6 +903,7 @@ Take-photo = Take photo
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
 datetime-format-short = M/d/yy h:mm a
+date-format-long = PP
 
 # Onboarding text on MyObservations
 # 0-10 observations
@@ -940,3 +944,47 @@ Lat-Lon-Acc = Lat: { $latitude }, Lon: { $longitude }, Acc: { $accuracy }
 Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
 # Button or accessibility label for an interactive element that stops an upload
 Stop-upload = Stop upload
+
+VIEW-PROJECTS = VIEW PROJECTS
+PEOPLE = PEOPLE
+VIEW-JOURNAL-POSTS = VIEW JOURNAL POSTS
+VIEW-FOLLOWING = VIEW FOLLOWING
+VIEW-FOLLOWERS = VIEW FOLLOWERS
+INATURALIST-ROLE = INATURALIST {$role}
+Affiliation = Affiliation: {$site}
+Monthly-Donor = Monthly Donor
+
+VIEW-SIMILAR-SPECIES = VIEW SIMILAR SPECIES
+WIKIPEDIA = WIKIPEDIA
+
+# Header for a section showing the viewer's observations
+MY-OBSERVATIONS = MY OBSERVATIONS
+
+# Header for a section showing charts
+GRAPHS = MY OBSERVATIONS
+
+# Header for a section showing top observers, e.g. of a taxon
+TOP-OBSERVERS = TOP OBSERVERS
+
+# Header for a section showing top identifiers, e.g. of a taxon
+TOP-IDENTIFIERS = TOP IDENTIFIERS
+
+OBSERVATIONS-WITHOUT-NUMBER = {$count ->
+    [one] OBSERVATION
+    *[other] OBSERVATIONS
+}
+
+SPECIES-WITHOUT-NUMBER = {$count ->
+    [one] SPECIES
+    *[other] SPECIES
+}
+
+IDENTIFICATIONS-WITHOUT-NUMBER = {$count ->
+    [one] IDENTIFICATION
+    *[other] IDENTIFICATIONS
+}
+
+JOURNAL-POSTS-WITHOUT-NUMBER = {$count ->
+    [one] JOURNAL POST
+    *[other] JOURNAL POSTS
+}

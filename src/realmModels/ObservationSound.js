@@ -75,7 +75,7 @@ class ObservationSound extends Realm.Object {
         property: "observationSounds"
       }
     }
-  }
+  };
 }
 
 export default ObservationSound;

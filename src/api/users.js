@@ -20,16 +20,18 @@ const REMOTE_USER_FIELDS = {
   icon_url: true,
   created_at: true,
   roles: true,
-  site_id: true,
   description: true,
   updated_at: true,
   species_count: true,
   observations_count: true,
   identifications_count: true,
   journal_posts_count: true,
-  site: true,
+  site: {
+    name: true
+  },
   locale: true,
-  id: true
+  id: true,
+  monthly_supporter: true
 };
 
 const REMOTE_USER_PARAMS = {

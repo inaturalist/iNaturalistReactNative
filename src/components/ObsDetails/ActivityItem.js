@@ -1,7 +1,7 @@
 // @flow
 
-import DisplayTaxonName from "components/DisplayTaxonName";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
+import { DisplayTaxonName } from "components/SharedComponents";
 import INatIcon from "components/SharedComponents/INatIcon";
 import UserText from "components/SharedComponents/UserText";
 import {

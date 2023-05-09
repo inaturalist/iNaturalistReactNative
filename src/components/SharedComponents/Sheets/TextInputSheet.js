@@ -1,14 +1,16 @@
 // @flow
 
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import {
   Body3, BottomSheet, Button
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Platform } from "react-native";
-import { TextInput, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
 
   type Props = {
     handleClose: Function,
@@ -27,6 +29,7 @@ const TextInputSheet = ( {
   headerText,
   snapPoints
 }: Props ): Node => {
+  const textInputRef = useRef( );
   const theme = useTheme( );
   const [input, setInput] = useState( initialInput );
   const { t } = useTranslation( );
@@ -43,38 +46,46 @@ const TextInputSheet = ( {
       }}
     >
       <View className="p-5">
-        <TextInput
+        <BottomSheetTextInput
+          ref={textInputRef}
           accessibilityLabel="Text input field"
           keyboardType="default"
           multiline
-          mode="flat"
           onChangeText={text => setInput( text )}
-          value={input}
           placeholder={placeholder}
-          className="bg-white border border-lightGray min-h-[223px] mb-5"
           testID="ObsEdit.notes"
-          // kind of tricky to change the font here:
-          // https://github.com/callstack/react-native-paper/issues/3615#issuecomment-1402025033
-          theme={{
-            fonts: {
-              bodyLarge:
-              {
-                ...theme.fonts.bodyLarge,
-                fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`
-              }
-            }
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{
+            height: 223,
+            fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`,
+            fontSize: 14,
+            lineHeight: 17,
+            color: theme.colors.primary,
+            borderRadius: 8,
+            borderColor: colors.lightGray,
+            borderWidth: 1,
+            padding: 15,
+            textAlignVertical: "top"
           }}
         />
         <Body3
           className="z-50 absolute bottom-20 right-5 p-5"
-          onPress={( ) => setInput( "" )}
+          onPress={( ) => {
+            // setInput( "" );
+            console.log( textInputRef?.current, "clear text input" );
+            textInputRef?.current?.clear( );
+          }}
         >
           {t( "Clear" )}
         </Body3>
         <Button
+          className="mt-5"
           level="primary"
           text={t( "CONFIRM" )}
-          onPress={confirm}
+          onPress={( ) => {
+            confirm( input );
+            handleClose( );
+          }}
         />
       </View>
     </BottomSheet>

@@ -5,18 +5,18 @@ exports[`INatIcon renders correctly 1`] = `
   allowFontScaling={false}
   selectable={false}
   style={
-    Array [
-      Object {
+    [
+      {
         "color": "#4F8EF7",
         "fontSize": 20,
       },
       undefined,
-      Object {
+      {
         "fontFamily": "INatIcon",
         "fontStyle": "normal",
         "fontWeight": "normal",
       },
-      Object {},
+      {},
     ]
   }
 >

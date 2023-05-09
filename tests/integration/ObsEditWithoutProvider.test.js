@@ -53,6 +53,7 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
     <ObsEditContext.Provider value={{
       observations: obs,
       currentObservation: obs[0],
+      updateObservationKeys: jest.fn( ),
       setPassesIdentificationTest: jest.fn( )
     }}
     >

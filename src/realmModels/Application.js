@@ -21,7 +21,7 @@ class Application extends Realm.Object {
         property: "application"
       }
     }
-  }
+  };
 }
 
 export default Application;

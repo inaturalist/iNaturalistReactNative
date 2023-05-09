@@ -3,7 +3,7 @@
 exports[`PhotoCarousel renders correctly 1`] = `
 <RCTScrollView
   data={
-    Array [
+    [
       "https://loremflickr.com/640/480",
       "https://loremflickr.com/640/480",
       "https://loremflickr.com/640/480",
@@ -23,15 +23,16 @@ exports[`PhotoCarousel renders correctly 1`] = `
   removeClippedSubviews={false}
   renderItem={[Function]}
   scrollEventThrottle={50}
-  stickyHeaderIndices={Array []}
-  viewabilityConfigCallbackPairs={Array []}
+  stickyHeaderIndices={[]}
+  viewabilityConfigCallbackPairs={[]}
 >
   <View>
     <View
+      onFocusCapture={[Function]}
       onLayout={[Function]}
       style={
-        Array [
-          Object {
+        [
+          {
             "flexDirection": "row",
           },
           null,
@@ -40,6 +41,23 @@ exports[`PhotoCarousel renders correctly 1`] = `
     >
       <View
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
         accessible={true}
         collapsable={false}
         focusable={true}
@@ -53,22 +71,22 @@ exports[`PhotoCarousel renders correctly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
+              {
                 "marginLeft": 3,
                 "marginRight": 3,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -77,21 +95,21 @@ exports[`PhotoCarousel renders correctly 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
+                {
                   "borderBottomLeftRadius": 4,
                   "borderBottomRightRadius": 4,
                   "borderTopLeftRadius": 4,
                   "borderTopRightRadius": 4,
                 },
-                Object {
+                {
                   "width": 42,
                 },
-                Object {
+                {
                   "height": 42,
                 },
               ],
@@ -102,18 +120,18 @@ exports[`PhotoCarousel renders correctly 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -122,20 +140,20 @@ exports[`PhotoCarousel renders correctly 1`] = `
           >
             <Image
               source={
-                Object {
+                {
                   "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },
@@ -148,10 +166,11 @@ exports[`PhotoCarousel renders correctly 1`] = `
       </View>
     </View>
     <View
+      onFocusCapture={[Function]}
       onLayout={[Function]}
       style={
-        Array [
-          Object {
+        [
+          {
             "flexDirection": "row",
           },
           null,
@@ -160,6 +179,23 @@ exports[`PhotoCarousel renders correctly 1`] = `
     >
       <View
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
         accessible={true}
         collapsable={false}
         focusable={true}
@@ -173,22 +209,22 @@ exports[`PhotoCarousel renders correctly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
+              {
                 "marginLeft": 3,
                 "marginRight": 3,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -197,21 +233,21 @@ exports[`PhotoCarousel renders correctly 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
+                {
                   "borderBottomLeftRadius": 4,
                   "borderBottomRightRadius": 4,
                   "borderTopLeftRadius": 4,
                   "borderTopRightRadius": 4,
                 },
-                Object {
+                {
                   "width": 42,
                 },
-                Object {
+                {
                   "height": 42,
                 },
               ],
@@ -222,18 +258,18 @@ exports[`PhotoCarousel renders correctly 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -242,20 +278,20 @@ exports[`PhotoCarousel renders correctly 1`] = `
           >
             <Image
               source={
-                Object {
+                {
                   "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },
@@ -268,10 +304,11 @@ exports[`PhotoCarousel renders correctly 1`] = `
       </View>
     </View>
     <View
+      onFocusCapture={[Function]}
       onLayout={[Function]}
       style={
-        Array [
-          Object {
+        [
+          {
             "flexDirection": "row",
           },
           null,
@@ -280,6 +317,23 @@ exports[`PhotoCarousel renders correctly 1`] = `
     >
       <View
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
         accessible={true}
         collapsable={false}
         focusable={true}
@@ -293,22 +347,22 @@ exports[`PhotoCarousel renders correctly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
+              {
                 "marginLeft": 3,
                 "marginRight": 3,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -317,21 +371,21 @@ exports[`PhotoCarousel renders correctly 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
+                {
                   "borderBottomLeftRadius": 4,
                   "borderBottomRightRadius": 4,
                   "borderTopLeftRadius": 4,
                   "borderTopRightRadius": 4,
                 },
-                Object {
+                {
                   "width": 42,
                 },
-                Object {
+                {
                   "height": 42,
                 },
               ],
@@ -342,18 +396,18 @@ exports[`PhotoCarousel renders correctly 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -362,20 +416,20 @@ exports[`PhotoCarousel renders correctly 1`] = `
           >
             <Image
               source={
-                Object {
+                {
                   "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },
@@ -394,7 +448,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
 exports[`PhotoCarousel renders correctly for large screen 1`] = `
 <RCTScrollView
   data={
-    Array [
+    [
       "https://loremflickr.com/640/480",
       "https://loremflickr.com/640/480",
       "https://loremflickr.com/640/480",
@@ -414,16 +468,34 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
   removeClippedSubviews={false}
   renderItem={[Function]}
   scrollEventThrottle={50}
-  stickyHeaderIndices={Array []}
-  viewabilityConfigCallbackPairs={Array []}
+  stickyHeaderIndices={[]}
+  viewabilityConfigCallbackPairs={[]}
 >
   <View>
     <View
+      onFocusCapture={[Function]}
       onLayout={[Function]}
       style={null}
     >
       <View
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
         accessible={true}
         collapsable={false}
         focusable={true}
@@ -437,22 +509,22 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
+              {
                 "marginBottom": 18,
                 "marginTop": 18,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -461,21 +533,21 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
+                {
                   "borderBottomLeftRadius": 9,
                   "borderBottomRightRadius": 9,
                   "borderTopLeftRadius": 9,
                   "borderTopRightRadius": 9,
                 },
-                Object {
+                {
                   "width": 83,
                 },
-                Object {
+                {
                   "height": 83,
                 },
               ],
@@ -486,18 +558,18 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -506,20 +578,20 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
           >
             <Image
               source={
-                Object {
+                {
                   "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },
@@ -532,11 +604,29 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
       </View>
     </View>
     <View
+      onFocusCapture={[Function]}
       onLayout={[Function]}
       style={null}
     >
       <View
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
         accessible={true}
         collapsable={false}
         focusable={true}
@@ -550,22 +640,22 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
+              {
                 "marginBottom": 18,
                 "marginTop": 18,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -574,21 +664,21 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
+                {
                   "borderBottomLeftRadius": 9,
                   "borderBottomRightRadius": 9,
                   "borderTopLeftRadius": 9,
                   "borderTopRightRadius": 9,
                 },
-                Object {
+                {
                   "width": 83,
                 },
-                Object {
+                {
                   "height": 83,
                 },
               ],
@@ -599,18 +689,18 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -619,20 +709,20 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
           >
             <Image
               source={
-                Object {
+                {
                   "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },
@@ -645,11 +735,29 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
       </View>
     </View>
     <View
+      onFocusCapture={[Function]}
       onLayout={[Function]}
       style={null}
     >
       <View
         accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
         accessible={true}
         collapsable={false}
         focusable={true}
@@ -663,22 +771,22 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Array [
-              Object {
+          [
+            [
+              {
                 "justifyContent": "center",
               },
-              Object {
+              {
                 "alignItems": "center",
               },
-              Object {
+              {
                 "marginTop": 24,
               },
-              Object {
+              {
                 "marginBottom": 18,
                 "marginTop": 18,
               },
-              Object {
+              {
                 "marginTop": 0,
               },
             ],
@@ -687,21 +795,21 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
       >
         <View
           style={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "overflow": "hidden",
                 },
-                Object {
+                {
                   "borderBottomLeftRadius": 9,
                   "borderBottomRightRadius": 9,
                   "borderTopLeftRadius": 9,
                   "borderTopRightRadius": 9,
                 },
-                Object {
+                {
                   "width": 83,
                 },
-                Object {
+                {
                   "height": 83,
                 },
               ],
@@ -712,18 +820,18 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
           <View
             accessibilityIgnoresInvertColors={true}
             style={
-              Array [
-                Array [
-                  Object {
+              [
+                [
+                  {
                     "height": "100%",
                   },
-                  Object {
+                  {
                     "display": "flex",
                   },
-                  Object {
+                  {
                     "justifyContent": "center",
                   },
-                  Object {
+                  {
                     "alignItems": "center",
                   },
                 ],
@@ -732,20 +840,20 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
           >
             <Image
               source={
-                Object {
+                {
                   "uri": "https://loremflickr.com/640/480",
                 }
               }
               style={
-                Array [
-                  Object {
+                [
+                  {
                     "bottom": 0,
                     "left": 0,
                     "position": "absolute",
                     "right": 0,
                     "top": 0,
                   },
-                  Object {
+                  {
                     "height": "100%",
                     "width": undefined,
                   },

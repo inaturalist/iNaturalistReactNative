@@ -81,6 +81,8 @@ const formatIdDate = ( date, t ) => {
   return format( d, t( dateFormatString ) );
 };
 
+const formatUserProfileDate = ( date, t ) => format( parseISO( date ), t( "date-format-long" ) );
+
 export {
   createObservedOnStringForUpload,
   displayDateTimeObsEdit,
@@ -89,5 +91,6 @@ export {
   formatIdDate,
   formatISONoTimezone,
   formatObsListTime,
+  formatUserProfileDate,
   timeAgo
 };

@@ -9,10 +9,13 @@ import { IconButton, useTheme } from "react-native-paper";
 type Props = {
   className?: string,
   handleClose?: Function,
+  black?: boolean,
   size?: number
 }
 
-const CloseButton = ( { className, handleClose, size }: Props ): Node => {
+const CloseButton = ( {
+  className, handleClose, black, size
+}: Props ): Node => {
   const navigation = useNavigation( );
   const theme = useTheme( );
 
@@ -21,7 +24,7 @@ const CloseButton = ( { className, handleClose, size }: Props ): Node => {
       icon="close"
       size={size}
       className={className}
-      iconColor={theme.colors.background}
+      iconColor={black ? theme.colors.tertiary : theme.colors.background}
       onPress={( ) => {
         if ( handleClose ) {
           handleClose( );

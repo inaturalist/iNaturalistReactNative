@@ -9,9 +9,12 @@ export default define( "RemoteUser", faker => ( {
   roles: [faker.datatype.string()],
   created_at: "2000-05-09T01:17:05-01:00",
   updated_at: "2000-05-09T01:17:05-01:00",
-  site_id: faker.datatype.number(),
+  site: {
+    name: faker.datatype.string()
+  },
   observations_count: faker.datatype.number(),
   species_count: faker.datatype.number(),
   identifications_count: faker.datatype.number(),
-  journal_posts_count: faker.datatype.number()
+  journal_posts_count: faker.datatype.number(),
+  monthly_supporter: false
 } ) );

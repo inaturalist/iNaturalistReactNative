@@ -7,9 +7,13 @@ const apkFilenamePrefix = `com.inaturalistreactnative-v${version}+${versionCode}
 
 /** @type {Detox.DetoxConfig} */
 module.exports = {
-  testRunner: "jest",
-  runnerConfig: "e2e/config.json",
-  skipLegacyWorkersInjection: true,
+  testRunner: {
+    $0: "jest",
+    args: {
+      config: "e2e/jest.config.js",
+      _: ["e2e"],
+    },
+  },
   apps: {
     "ios.debug": {
       type: "ios.app",

@@ -83,6 +83,7 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
     || currentRoute.includes( "ObsEdit" )
     || currentRoute.includes( "AddID" )
     || currentRoute.includes( "Login" )
+    || currentRoute.includes( "LocationPicker" )
   ) {
     return null;
   }

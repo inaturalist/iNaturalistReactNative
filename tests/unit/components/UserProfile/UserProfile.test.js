@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react-native";
 import UserProfile from "components/UserProfile/UserProfile";
 import initI18next from "i18n/initI18next";
+import { t } from "i18next";
 import React from "react";
 
 import factory from "../../../factory";
@@ -25,17 +26,15 @@ jest.mock( "@react-navigation/native", () => {
       }
     } ),
     useNavigation: () => ( {
-      setOptions: () => ( {
-        headerTitle: `@${mockUser.login}`
-      } )
+      setOptions: () => ( { } )
     } )
   };
 } );
 
 jest.mock(
-  "components/SharedComponents/ViewWrapper",
+  "components/SharedComponents/ScrollViewWrapper",
   () => function MockContainer( props ) {
-    const MockName = "mock-view-with-footer";
+    const MockName = "mock-scrollview-with-footer";
     // No testID here because the component needs the correct one to work
     // eslint-disable-next-line react/jsx-props-no-spreading
     return <MockName {...props}>{props.children}</MockName>;
@@ -61,8 +60,12 @@ describe( "UserProfile", () => {
   test( "renders user profile from API call", async () => {
     renderComponent( <UserProfile /> );
 
-    expect( screen.getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy();
-    expect( screen.getByText( `iNaturalist ${mockUser.roles[0]}` ) ).toBeTruthy();
+    expect( screen.getByTestId( `UserProfile.${mockUser.id}` ) ).toBeTruthy( );
+    expect(
+      screen.getByText(
+        new RegExp( t( "OBSERVATIONS-WITHOUT-NUMBER", { count: mockUser.observations_count } ) )
+      )
+    ).toBeTruthy( );
     expect( screen.getByTestId( "UserIcon.photo" ).props.source ).toStrictEqual( {
       uri: mockUser.icon_url
     } );

@@ -1,14 +1,15 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
+import AddID from "components/AddID/AddID";
 import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
+import LocationPicker from "components/LocationPicker/LocationPicker";
 import Login from "components/LoginSignUp/Login";
 import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
 import ObsDetails from "components/ObsDetails/ObsDetails";
-import AddID from "components/ObsEdit/AddID";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
@@ -231,7 +232,7 @@ const BottomTabs = () => {
         <Tab.Screen
           name="TaxonDetails"
           component={TaxonDetails}
-          options={blankHeaderTitle}
+          options={hideHeader}
         />
         <Tab.Screen
           name="UserProfile"
@@ -256,7 +257,7 @@ const BottomTabs = () => {
         <Tab.Screen
           name="StandardCamera"
           component={StandardCameraWithPermission}
-          options={{ ...hideHeader, orientation: "all" }}
+          options={{ ...hideHeader, orientation: "all", unmountOnBlur: true }}
         />
         <Tab.Screen
           name="SoundRecorder"
@@ -278,6 +279,15 @@ const BottomTabs = () => {
           component={AddID}
           options={{
             title: t( "Add-an-ID" )
+          }}
+        />
+        <Tab.Screen
+          name="LocationPicker"
+          component={LocationPicker}
+          options={{
+            ...blankHeaderTitle,
+            ...hideHeaderLeft
+            // title: t( "EDIT-LOCATION" )
           }}
         />
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />

@@ -1,6 +1,6 @@
 {
-  "ABOUT-taxon-header": {
-    "comment": "Header for a block of text describing a taxon",
+  "ABOUT": {
+    "comment": "Header above user biography / user description on user profile",
     "val": "ABOUT"
   },
   "About-iNaturalist": "About iNaturalist",
@@ -36,10 +36,6 @@
   "app-authorized-on-date": "{ $appName } (authorized on: { $date })",
   "Applications": "Applications",
   "Automatically-update-my-content-for-taxon-changes": "Automatically update my content for taxon changes",
-  "BIO": {
-    "comment": "Header above user biography / user description on user profile",
-    "val": "BIO"
-  },
   "Bio": {
     "comment": "Header for inserting user description in settings profile tab",
     "val": "Bio"
@@ -94,6 +90,7 @@
   "Display": "Display",
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
+  "EDIT-LOCATION": "EDIT LOCATION",
   "Email": {
     "comment": "Appears above the email text field",
     "val": "email"
@@ -142,8 +139,8 @@
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
   "High": "High",
-  "IDs": "ID's",
   "IDENTIFICATION": "IDENTIFICATION",
+  "IDENTIFICATIONS": "IDENTIFICATIONS",
   "Import-X-photos": {
     "comment": "Shows the number of photos a user selected from the camera roll for upload",
     "val": "Import { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
@@ -162,18 +159,19 @@
     "comment": "Header for joined projects",
     "val": "Joined"
   },
-  "Joined-colon": {
+  "Joined-date": {
     "comment": "Shows date user joined iNaturalist on user profile",
-    "val": "Joined:"
+    "val": "Joined: { $date }"
   },
-  "Journal-Posts": "Journal Posts",
+  "JOURNAL-POSTS": "JOURNAL POSTS",
   "Language-Locale": "Language/Locale",
-  "Last-Active-colon": {
+  "Last-Active-date": {
     "comment": "Shows date user last active on iNaturalist on user profile",
-    "val": "Last Active:"
+    "val": "Last Active: { $date }"
   },
   "Licensing": "Licensing",
   "Location": "Location",
+  "Location-accuracy-is-too-imprecise": "Location accuracy is too imprecise to help identifiers. Please zoom in.",
   "LOCATION-TOO-IMPRECISE": "LOCATION TOO IMPRECISE",
   "Log-in": "Log in",
   "LOG-IN-TO-INATURALIST": "LOG IN TO INATURALIST",
@@ -254,6 +252,7 @@
   "Obscured": "Obscured",
   "Observation": "Observation",
   "Observation-Attribution": "Observation © { $attribution } · { $licenseCode }",
+  "OBSERVATIONS": "OBSERVATIONS",
   "Observations": "Observations",
   "Observations-created-on-iNaturalist": "Observations created on iNaturalist are used by scientists around the world.",
   "Offensive-Inappropriate": "Offensive/Inappropriate",
@@ -359,6 +358,7 @@
     "val": "RG"
   },
   "Save": "Save",
+  "SAVE-LOCATION": "SAVE LOCATION",
   "SAVE-ALL": "SAVE ALL",
   "SAVE-CHANGES": "SAVE CHANGES",
   "Search-for-a-location": "Search for a location",
@@ -385,7 +385,7 @@
   "Sort-by": "Sort by",
   "Spam": "Spam",
   "Spam-Examples": "Commercial solicitation, links to nowhere, etc.",
-  "Species": "Species",
+  "SPECIES": "SPECIES",
   "Status": "Status",
   "STATUS-header": {
     "comment": "Header for a block of text describing a taxon's conservation status",
@@ -480,7 +480,6 @@
   "Upload-a-photo-from-your-gallery": "Upload a photo from your gallery",
   "Record-a-sound": "Record a sound",
   "You-can-also-explore-existing-observations": "You can also explore existing observations on iNaturalist to discover what’s around you.",
-  "You-can-tell-from-the-cool-remark": "You can tell from the cool remark I’m making that I know how to identify species.",
   "You-denied-iNaturalist-permission-to-do-that": {
     "comment": "Message shown when a permission is required to use a part of the app\n(e.g. permission to access the camera) but the user denied the permission.",
     "val": "You denied iNaturalist permission to do that"
@@ -489,6 +488,7 @@
   "You-must-be-logged-in-to-view-messages": "You must be logged in to view messages",
   "You-will-lose-all-existing-observations": "{ $count ->\n  [one] You will lose all existing observations. Would you like to discard 1 observation?\n *[other] You will lose all existing observations. Would you like to discard { $count } observations?\n}",
   "You-can-still-share-the-file": "You can still share the file with another app. If you can email it, please send it to { $email }",
+  "Zoom-in": "Zoom in so that the observation’s accuracy is as low as possible.",
   "Your-location-uncertainty-is-over-4000km": "Your location uncertainty is over 4000km, which is too high to be helpful to identifiers. Edit the location and zoom in until the accuracy circle turns green and is centered on where you observed the organism.",
   "Category-leading": {
     "comment": "Identification category",
@@ -640,6 +640,7 @@
     "val": "M/d/yy"
   },
   "datetime-format-short": "M/d/yy h:mm a",
+  "date-format-long": "PP",
   "As-you-upload-more-observations": {
     "comment": "Onboarding text on MyObservations\n0-10 observations",
     "val": "As you upload more observations, others in our community may be able to help you identify them!"
@@ -685,5 +686,35 @@
   "Stop-upload": {
     "comment": "Button or accessibility label for an interactive element that stops an upload",
     "val": "Stop upload"
-  }
+  },
+  "VIEW-PROJECTS": "VIEW PROJECTS",
+  "PEOPLE": "PEOPLE",
+  "VIEW-JOURNAL-POSTS": "VIEW JOURNAL POSTS",
+  "VIEW-FOLLOWING": "VIEW FOLLOWING",
+  "VIEW-FOLLOWERS": "VIEW FOLLOWERS",
+  "INATURALIST-ROLE": "INATURALIST { $role }",
+  "Affiliation": "Affiliation: { $site }",
+  "Monthly-Donor": "Monthly Donor",
+  "VIEW-SIMILAR-SPECIES": "VIEW SIMILAR SPECIES",
+  "WIKIPEDIA": "WIKIPEDIA",
+  "MY-OBSERVATIONS": {
+    "comment": "Header for a section showing the viewer's observations",
+    "val": "MY OBSERVATIONS"
+  },
+  "GRAPHS": {
+    "comment": "Header for a section showing charts",
+    "val": "MY OBSERVATIONS"
+  },
+  "TOP-OBSERVERS": {
+    "comment": "Header for a section showing top observers, e.g. of a taxon",
+    "val": "TOP OBSERVERS"
+  },
+  "TOP-IDENTIFIERS": {
+    "comment": "Header for a section showing top identifiers, e.g. of a taxon",
+    "val": "TOP IDENTIFIERS"
+  },
+  "OBSERVATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] OBSERVATION\n *[other] OBSERVATIONS\n}",
+  "SPECIES-WITHOUT-NUMBER": "{ $count ->\n  [one] SPECIES\n *[other] SPECIES\n}",
+  "IDENTIFICATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] IDENTIFICATION\n *[other] IDENTIFICATIONS\n}",
+  "JOURNAL-POSTS-WITHOUT-NUMBER": "{ $count ->\n  [one] JOURNAL POST\n *[other] JOURNAL POSTS\n}"
 }

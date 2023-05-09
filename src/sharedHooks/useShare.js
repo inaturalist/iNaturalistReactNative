@@ -20,6 +20,7 @@ const useShare = ( ): void => {
   } = useContext( ObsEditContext );
 
   const handleShare = useCallback( ( item: ?SharedItem ) => {
+    console.log( "handleShare, item: ", item );
     if ( !item ) {
       return;
     }

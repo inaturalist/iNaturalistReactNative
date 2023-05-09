@@ -64,7 +64,7 @@ const BottomButtons = ( ): Node => {
   };
 
   return (
-    <StickyToolbar containerClass="bottom-6">
+    <StickyToolbar>
       {showMissingEvidenceSheet && (
         <MissingEvidenceSheet
           setShowMissingEvidenceSheet={setShowMissingEvidenceSheet}

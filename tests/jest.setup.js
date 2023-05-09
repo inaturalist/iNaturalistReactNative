@@ -86,7 +86,7 @@ jest.mock( "react-native-device-info", () => mockRNDeviceInfo );
 
 jest.mock( "react-native-sensitive-info", () => {
   class RNSInfo {
-    static stores = new Map()
+    static stores = new Map();
 
     static getServiceName( o = {} ) {
       return o.sharedPreferencesName
@@ -106,7 +106,7 @@ jest.mock( "react-native-sensitive-info", () => {
 
       if ( service ) { return service.get( k ) || null; }
       return null;
-    } )
+    } );
 
     static getAllItems = jest.fn( async o => {
       const serviceName = RNSInfo.getServiceName( o );
@@ -123,7 +123,7 @@ jest.mock( "react-native-sensitive-info", () => {
       }
 
       return mappedValues;
-    } )
+    } );
 
     static setItem = jest.fn( async ( k, v, o ) => {
       RNSInfo.validateString( k );
@@ -140,7 +140,7 @@ jest.mock( "react-native-sensitive-info", () => {
       service.set( k, v );
 
       return null;
-    } )
+    } );
 
     static deleteItem = jest.fn( async ( k, o ) => {
       RNSInfo.validateString( k );
@@ -151,14 +151,14 @@ jest.mock( "react-native-sensitive-info", () => {
       if ( service ) { service.delete( k ); }
 
       return null;
-    } )
+    } );
 
-    static hasEnrolledFingerprints = jest.fn( async () => true )
+    static hasEnrolledFingerprints = jest.fn( async () => true );
 
-    static setInvalidatedByBiometricEnrollment = jest.fn()
+    static setInvalidatedByBiometricEnrollment = jest.fn();
 
     // "Touch ID" | "Face ID" | false
-    static isSensorAvailable = jest.fn( async () => "Face ID" )
+    static isSensorAvailable = jest.fn( async () => "Face ID" );
   }
 
   return RNSInfo;
@@ -179,20 +179,6 @@ require( "react-native" ).NativeModules.RNCGeolocation = { };
 
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 
-// Make apisauce work with nock
-jest.mock( "apisauce", ( ) => ( {
-  create: config => {
-    const axiosInstance = jest.requireActual( "axios" ).create( config );
-    const apisauce = jest.requireActual( "apisauce" );
-    return apisauce.create( { ...config, axiosInstance } );
-  }
-} ) );
-
-// FormData isn't available in the testing environment
-function FormDataMock() {
-  this.append = jest.fn();
-}
-global.FormData = FormDataMock;
 global.ReanimatedDataMock = {
   now: () => 0
 };
@@ -205,7 +191,8 @@ jest.mock( "react-native-fs", ( ) => {
     moveFile: async ( ) => "testdata",
     stat: jest.fn( ( ) => ( {
       mtime: 123
-    } ) )
+    } ) ),
+    readFile: jest.fn( ( ) => "testdata" )
   };
 
   return RNFS;
@@ -265,7 +252,8 @@ jest.mock( "react-native-orientation-locker", () => ( {
   removeEventListener: jest.fn(),
   lockToPortrait: jest.fn(),
   removeOrientationListener: jest.fn(),
-  getInitialOrientation: jest.fn()
+  getInitialOrientation: jest.fn(),
+  unlockAllOrientations: jest.fn()
 } ) );
 
 const mockErrorHandler = error => {

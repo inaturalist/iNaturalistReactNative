@@ -1,11 +1,12 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
 import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import {
   differenceInCalendarYears,
   isFuture,
@@ -46,6 +47,12 @@ const EvidenceSection = ( ): Node => {
     obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
   ) : [];
   const mountedRef = useRef( true );
+  const navigation = useNavigation( );
+
+  const navToLocationPicker = ( ) => {
+    navigation.navigate( "LocationPicker", { goBackOnSave: true } );
+  };
+
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const handleAddEvidence = ( ) => setShowAddEvidenceSheet( true );
 
@@ -216,13 +223,13 @@ const EvidenceSection = ( ): Node => {
       />
       <View className="flex-row flex-nowrap my-4">
         <INatIcon size={14} name="map-marker-outline" />
-        <View className="ml-5">
+        <Pressable accessibilityRole="button" className="ml-5" onPress={navToLocationPicker}>
           {displayPlaceName( )}
           {/* $FlowIgnore */}
           <Body4 className={( !latitude || !longitude ) && "color-warningRed"}>
             {displayLocation( )}
           </Body4>
-        </View>
+        </Pressable>
       </View>
       <DatePicker currentObservation={currentObservation} />
     </View>

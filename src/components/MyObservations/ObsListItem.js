@@ -1,6 +1,5 @@
 // @flow
-import DisplayTaxonName from "components/DisplayTaxonName";
-import { DateDisplay, ObservationLocation } from "components/SharedComponents";
+import { DateDisplay, DisplayTaxonName, ObservationLocation } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -11,11 +10,10 @@ import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
   observation: Object,
-  uploadStatus: Object,
   setShowLoginSheet: Function
 };
 
-const ObsListItem = ( { observation, uploadStatus, setShowLoginSheet }: Props ): Node => {
+const ObsListItem = ( { observation, setShowLoginSheet }: Props ): Node => {
   const photo = observation?.observationPhotos?.[0]?.photo || null;
   const needsSync = observation.needsSync( );
 
@@ -49,7 +47,6 @@ const ObsListItem = ( { observation, uploadStatus, setShowLoginSheet }: Props ):
       <View className="items-center ml-auto justify-center">
         <ObsUploadStatus
           observation={observation}
-          uploadStatus={uploadStatus}
           layout="vertical"
           setShowLoginSheet={setShowLoginSheet}
         />
