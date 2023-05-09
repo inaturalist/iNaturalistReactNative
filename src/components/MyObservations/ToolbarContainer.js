@@ -8,6 +8,7 @@ import {
   Dimensions, PixelRatio
 } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
 import useTranslation from "sharedHooks/useTranslation";
 
 import Toolbar from "./Toolbar";
@@ -43,6 +44,8 @@ const ToolbarContainer = ( {
   const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
 
   const syncObservations = obsEditContext?.syncObservations;
+
+  const { refetch } = useObservationsUpdates( );
 
   const getStatusText = ( ) => {
     if ( uploadComplete ) {
@@ -80,6 +83,7 @@ const ToolbarContainer = ( {
       startUpload( );
     } else {
       syncObservations( );
+      refetch( );
     }
   };
 
