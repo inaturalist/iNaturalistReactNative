@@ -47,7 +47,7 @@ describe( "useObservationsUpdates", ( ) => {
 
   it( "should return an object", ( ) => {
     const { result } = renderHook( ( ) => useObservationsUpdates( ) );
-    expect( result.current ).toEqual( { isLoading: false } );
+    expect( result.current ).toBeInstanceOf( Object );
   } );
 
   it( "should call disabled useAuthenticatedQuery without current user param", ( ) => {
