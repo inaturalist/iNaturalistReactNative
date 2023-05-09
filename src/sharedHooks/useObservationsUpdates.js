@@ -16,12 +16,21 @@ const useObservationsUpdates = ( currentUser: Object ): Object => {
     fields: "viewed,resource_uuid,comment_id,identification_id"
   };
 
-  const { data, isLoading } = useAuthenticatedQuery(
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+  } = useAuthenticatedQuery(
     ["fetchObservationUpdates"],
     optsWithAuth => fetchObservationUpdates( baseParams, optsWithAuth ),
     { enabled: !!currentUser }
   );
 
+  if ( isError ) {
+    console.log( "Error fetching observation updates", error );
+    throw error;
+  }
   /*
     Example data:
     data [
