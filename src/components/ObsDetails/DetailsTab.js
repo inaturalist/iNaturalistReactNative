@@ -5,6 +5,7 @@ import {
   Body4,
   Button,
   DateDisplay,
+  Divider,
   Heading4,
   ObservationLocation,
   QualityGradeStatus
@@ -16,7 +17,7 @@ import { t } from "i18next";
 import _ from "lodash";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Divider, Menu } from "react-native-paper";
+import { Menu } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useIsConnected from "sharedHooks/useIsConnected";
 

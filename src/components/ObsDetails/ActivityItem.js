@@ -1,7 +1,7 @@
 // @flow
 
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
-import { DisplayTaxonName } from "components/SharedComponents";
+import { DisplayTaxonName, Divider } from "components/SharedComponents";
 import INatIcon from "components/SharedComponents/INatIcon";
 import UserText from "components/SharedComponents/UserText";
 import {
@@ -11,7 +11,6 @@ import { t } from "i18next";
 import _ from "lodash";
 import type { Node } from "react";
 import React from "react";
-import { Divider } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Taxon from "realmModels/Taxon";
 import useIsConnected from "sharedHooks/useIsConnected";
