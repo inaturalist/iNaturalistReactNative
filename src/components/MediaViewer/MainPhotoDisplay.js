@@ -1,11 +1,8 @@
 // @flow
 
-import DeletePhotoDialog from "components/SharedComponents/DeletePhotoDialog";
-import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Pressable } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useRef, useState } from "react";
+import React from "react";
 import { Dimensions, FlatList } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Photo from "realmModels/Photo";
@@ -15,31 +12,19 @@ import CustomImageZoom from "./CustomImageZoom";
 
 type Props = {
   photoUris: Array<string>,
-  initialPhotoSelected: number,
-  deleteDialogVisible: boolean,
-  setPhotoUris: Function,
-  hideDialog: Function
+  selectedPhotoIndex: number,
+  setSelectedPhotoIndex: Function,
+  scrollToIndex: Function,
+  horizontalScroll: any
 }
 
 const { width } = Dimensions.get( "screen" );
 
-const HorizontalScroll = ( {
-  photoUris, initialPhotoSelected, deleteDialogVisible, setPhotoUris, hideDialog
+const MainPhotoDisplay = ( {
+  photoUris, selectedPhotoIndex, setSelectedPhotoIndex, horizontalScroll, scrollToIndex
 }: Props ): Node => {
-  const { deletePhotoFromObservation } = useContext( ObsEditContext );
-  const horizontalScroll = useRef( null );
-  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( initialPhotoSelected );
-
   const atFirstPhoto = selectedPhotoIndex === 0;
   const atLastPhoto = selectedPhotoIndex === photoUris.length - 1;
-
-  const scrollToIndex = index => {
-    // when a user taps a photo in the carousel, the UI needs to automatically
-    // scroll to the index of the photo they selected
-    if ( !horizontalScroll?.current ) { return; }
-    setSelectedPhotoIndex( index );
-    horizontalScroll?.current.scrollToIndex( { index, animated: true } );
-  };
 
   const renderImage = ( { item } ) => (
     <CustomImageZoom source={{ uri: Photo.displayLargePhoto( item ) }} />
@@ -90,11 +75,6 @@ const HorizontalScroll = ( {
     scrollToIndex( selectedPhotoIndex + 1 );
   };
 
-  const deletePhoto = ( ) => {
-    deletePhotoFromObservation( photoUris[selectedPhotoIndex], photoUris, setPhotoUris );
-    hideDialog( );
-  };
-
   return (
     <>
       <FlatList
@@ -127,18 +107,8 @@ const HorizontalScroll = ( {
           <Icon name="arrow-forward-ios" color={colors.white} size={16} />
         </Pressable>
       )}
-      <PhotoCarousel
-        photoUris={photoUris}
-        selectedPhotoIndex={selectedPhotoIndex}
-        setSelectedPhotoIndex={scrollToIndex}
-      />
-      <DeletePhotoDialog
-        deleteDialogVisible={deleteDialogVisible}
-        deletePhoto={deletePhoto}
-        hideDialog={hideDialog}
-      />
     </>
   );
 };
 
-export default HorizontalScroll;
+export default MainPhotoDisplay;

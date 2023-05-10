@@ -1,10 +1,13 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
+  useContext,
   useEffect, useState
 } from "react";
 import { FlatList } from "react-native";
@@ -12,15 +15,17 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   photoUris: Array<string>,
-  setSelectedPhotoIndex?: Function,
   handleAddEvidence?: Function
 }
 
 const EvidenceList = ( {
   photoUris,
-  setSelectedPhotoIndex,
   handleAddEvidence
 }: Props ): Node => {
+  const {
+    setMediaViewerUris
+  } = useContext( ObsEditContext );
+  const navigation = useNavigation( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const imageClass = "h-16 w-16 justify-center mx-1.5 rounded-lg";
 
@@ -49,9 +54,11 @@ const EvidenceList = ( {
       <Pressable
         accessibilityRole="button"
         onPress={( ) => {
-          if ( setSelectedPhotoIndex ) {
-            setSelectedPhotoIndex( index );
-          }
+          setMediaViewerUris( photoUris );
+          navigation.navigate( "MediaViewer", {
+            // skip the add evidence button
+            initialPhotoSelected: index - 1
+          } );
         }}
         className={classnames( imageClass )}
       >
@@ -60,6 +67,7 @@ const EvidenceList = ( {
             source={{ uri: item }}
             testID="ObsEdit.photo"
             className="w-fit h-full flex items-center justify-center"
+            accessibilityIgnoresInvertColors
           />
         </View>
       </Pressable>

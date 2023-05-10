@@ -6,6 +6,7 @@ import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
 import LocationPicker from "components/LocationPicker/LocationPicker";
 import Login from "components/LoginSignUp/Login";
+import MediaViewer from "components/MediaViewer/MediaViewer";
 import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
@@ -37,6 +38,7 @@ import { PermissionsAndroid } from "react-native";
 import { PERMISSIONS } from "react-native-permissions";
 import User from "realmModels/User";
 import useUserMe from "sharedHooks/useUserMe";
+import colors from "styles/tailwindColors";
 
 import CustomTabBar from "./CustomTabBar";
 
@@ -287,7 +289,17 @@ const BottomTabs = () => {
           options={{
             ...blankHeaderTitle,
             ...hideHeaderLeft
-            // title: t( "EDIT-LOCATION" )
+          }}
+        />
+        <Tab.Screen
+          name="MediaViewer"
+          component={MediaViewer}
+          options={{
+            ...blankHeaderTitle,
+            headerStyle: {
+              backgroundColor: colors.black
+            },
+            ...hideHeaderLeft
           }}
         />
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />

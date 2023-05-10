@@ -41,6 +41,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [uploadProgress, setUploadProgress] = useState( { } );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
+  const [mediaViewerUris, setMediaViewerUris] = useState( [] );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -269,12 +270,23 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       return updatedPhotoList || list;
     };
 
-    const deletePhotoFromObservation = async ( photoUriToDelete, photoUris, setPhotoUris ) => {
+    const deletePhotoFromObservation = async photoUriToDelete => {
       if ( !photoUriToDelete ) { return; }
-      const updatedPhotos = removePhotoFromList( photoUris, photoUriToDelete );
 
-      // spreading the array forces DeletePhotoDialog to rerender on each photo deletion
-      setPhotoUris( [...updatedPhotos] );
+      // photos to show in media viewer
+      const media = removePhotoFromList( mediaViewerUris, photoUriToDelete );
+      setMediaViewerUris( [...media] );
+
+      // photos displayed in EvidenceList
+      const updatedObs = currentObservation;
+      const obsPhotos = currentObservation?.observationPhotos;
+      const updatedObsPhotos = removePhotoFromList( Array.from( obsPhotos ), photoUriToDelete );
+      updatedObs.observationPhotos = [...updatedObsPhotos];
+      setObservations( [updatedObs] );
+
+      // photos displayed in PhotoPreview
+      const previewPhotos = removePhotoFromList( cameraPreviewUris, photoUriToDelete );
+      setCameraPreviewUris( [...previewPhotos] );
 
       // when deleting photo from StandardCamera while adding new evidence, remember to clear
       // the list of new evidence to add
@@ -376,7 +388,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setPassesEvidenceTest,
       passesEvidenceTest,
       passesIdentificationTest,
-      setPassesIdentificationTest
+      setPassesIdentificationTest,
+      mediaViewerUris,
+      setMediaViewerUris
     };
   }, [
     currentObservation,
@@ -404,7 +418,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     currentUser,
     uploadProgress,
     passesEvidenceTest,
-    passesIdentificationTest
+    passesIdentificationTest,
+    mediaViewerUris
   ] );
 
   return (

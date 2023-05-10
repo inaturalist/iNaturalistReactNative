@@ -373,8 +373,6 @@ const StandardCamera = ( ): Node => {
     <View className={`flex-1 bg-black ${flexDirection}`}>
       <StatusBar hidden />
       <PhotoPreview
-        photoUris={cameraPreviewUris}
-        setPhotoUris={setCameraPreviewUris}
         savingPhoto={savingPhoto}
         isLandscapeMode={isLandscapeMode}
         isLargeScreen={isTablet}
