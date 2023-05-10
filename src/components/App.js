@@ -65,11 +65,11 @@ const App = ( { children }: Props ): Node => {
   // This will trigger react-query to refetch any queries that are stale
   const onAppStateChange = useCallback(
     status => {
-      focusManager.setFocused( status === "active" );
       // if the app is coming back from the background, set all observations to viewed
       if ( status === "active" ) {
         setObservationUpdatesViewedRealm();
       }
+      focusManager.setFocused( status === "active" );
     },
     [setObservationUpdatesViewedRealm]
   );
