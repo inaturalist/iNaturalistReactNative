@@ -6,7 +6,7 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 const { useRealm } = RealmContext;
 
-const useObservationsUpdates = ( currentUser: Object ): Object => {
+const useObservationsUpdates = ( enabled: boolean ): Object => {
   const realm = useRealm();
 
   // Request params for fetching unviewed updates
@@ -24,7 +24,7 @@ const useObservationsUpdates = ( currentUser: Object ): Object => {
   } = useAuthenticatedQuery(
     ["fetchObservationUpdates"],
     optsWithAuth => fetchObservationUpdates( baseParams, optsWithAuth ),
-    { enabled: !!currentUser }
+    { enabled: !!enabled }
   );
 
   if ( isError ) {

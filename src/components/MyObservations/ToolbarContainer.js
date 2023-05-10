@@ -45,7 +45,7 @@ const ToolbarContainer = ( {
 
   const syncObservations = obsEditContext?.syncObservations;
 
-  const { refetch } = useObservationsUpdates( );
+  const { refetch } = useObservationsUpdates( false );
 
   const getStatusText = ( ) => {
     if ( uploadComplete ) {

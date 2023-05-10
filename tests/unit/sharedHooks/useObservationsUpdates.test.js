@@ -50,8 +50,8 @@ describe( "useObservationsUpdates", ( ) => {
     expect( result.current ).toBeInstanceOf( Object );
   } );
 
-  it( "should call disabled useAuthenticatedQuery without current user param", ( ) => {
-    renderHook( ( ) => useObservationsUpdates( undefined ) );
+  it( "should call disabled useAuthenticatedQuery without param", ( ) => {
+    renderHook( ( ) => useObservationsUpdates( ) );
     expect( useAuthenticatedQuery ).toHaveBeenCalledWith(
       ["fetchObservationUpdates"],
       expect.any( Function ),
@@ -59,8 +59,8 @@ describe( "useObservationsUpdates", ( ) => {
     );
   } );
 
-  it( "should call enabled useAuthenticatedQuery with current user param", ( ) => {
-    renderHook( ( ) => useObservationsUpdates( mockUser ) );
+  it( "should call enabled useAuthenticatedQuery with true param", ( ) => {
+    renderHook( ( ) => useObservationsUpdates( true ) );
     expect( useAuthenticatedQuery ).toHaveBeenCalledWith(
       ["fetchObservationUpdates"],
       expect.any( Function ),

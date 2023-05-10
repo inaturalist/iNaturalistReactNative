@@ -17,7 +17,7 @@ const MyObservationsContainer = (): Node => {
   const { isLoading, fetchNextPage } = useInfiniteScroll();
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const currentUser = useCurrentUser();
-  useObservationsUpdates( currentUser );
+  useObservationsUpdates( !!currentUser );
 
   return (
     <MyObservations
