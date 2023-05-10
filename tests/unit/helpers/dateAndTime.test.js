@@ -4,6 +4,8 @@ import i18next from "i18next";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 
 const remoteObservation = factory( "RemoteObservation" );
+const remoteIdentification = factory( "RemoteIdentification" );
+const remoteComment = factory( "RemoteComment" );
 
 describe( "formatApiDatetime", ( ) => {
   describe( "in default locale", ( ) => {
@@ -34,6 +36,18 @@ describe( "formatApiDatetime", ( ) => {
       expect(
         formatApiDatetime( remoteObservation.created_at, i18next.t )
       ).toEqual( "2/13/15 4:41 AM" );
+    } );
+
+    it( "should return a localized datetime for a remote identification created_at date", ( ) => {
+      expect(
+        formatApiDatetime( remoteIdentification.created_at, i18next.t )
+      ).toEqual( "2/13/15 5:12 AM" );
+    } );
+
+    it( "should return a localized datetime for a remote comment created_at date", ( ) => {
+      expect(
+        formatApiDatetime( remoteComment.created_at, i18next.t )
+      ).toEqual( "2/13/15 5:15 AM" );
     } );
 
     it( "should return the date in the local time zone by default", () => {
