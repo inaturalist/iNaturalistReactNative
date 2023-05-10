@@ -7,11 +7,18 @@ import React from "react";
 import factory, { makeResponse } from "../factory";
 import { renderAppWithComponent } from "../helpers/render";
 
-const mockObservation = factory( "LocalObservation" );
+const mockComment = factory( "LocalComment" );
+const mockObservation = factory( "LocalObservation", {
+  comments: [mockComment]
+} );
+const mockUpdate = factory( "RemoteUpdate", {
+  resource_uuid: mockObservation.uuid,
+  comment_id: mockComment.id
+} );
 
-// Mock api call to observations/fetch
+// Mock api call to observations
 jest.mock( "inaturalistjs" );
-inatjs.observations.fetch.mockResolvedValue( makeResponse( [mockObservation] ) );
+inatjs.observations.update.mockResolvedValue( makeResponse( [mockUpdate] ) );
 
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -33,19 +40,31 @@ jest.mock( "@react-navigation/native", () => {
 describe( "ObsDetails", () => {
   beforeAll( async () => {
     await initI18next();
+
+    // Write local observation to Realm
+    await global.realm.write( () => {
+      global.realm.create( "Observation", mockObservation );
+    } );
   } );
 
   afterEach( () => {
     jest.clearAllMocks();
   } );
 
-  describe( "when there is an observation", () => {
-    it( "should make a request to observations/updates", async () => {
+  describe( "when there is an observation with an update", () => {
+    it( "should make a request to observation/viewedUpdates", async () => {
       // Let's make sure the mock hasn't already been used
-      expect( inatjs.observations.updates ).not.toHaveBeenCalled();
+      expect( inatjs.observations.viewedUpdates ).not.toHaveBeenCalled();
+      // Expect the observation in realm to have viewed_comments param not initialized
+      const observation = global.realm.objects( "Observation" )[0];
+      expect( observation.viewed_comments ).toBe( null );
       renderAppWithComponent( <ObsDetails /> );
-      expect( await screen.findByText( `@${mockObservation.user.login}` ) ).toBeTruthy();
-      expect( inatjs.observations.updates ).toHaveBeenCalled();
+      expect(
+        await screen.findByText( `@${mockObservation.user.login}` )
+      ).toBeTruthy();
+      expect( inatjs.observations.viewedUpdates ).toHaveBeenCalledTimes( 1 );
+      // Expect the observation in realm to have been updated with viewed_comments = true
+      expect( observation.viewed_comments ).toBe( true );
     } );
   } );
 } );
