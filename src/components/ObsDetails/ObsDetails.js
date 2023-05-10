@@ -172,9 +172,9 @@ const ObsDetails = (): Node => {
       onError: e => {
         let error = null;
         if ( e ) {
-          error = t( "Couldnt-create-identification", { error: e.message } );
+          error = t( "Couldnt-create-identification-error", { error: e.message } );
         } else {
-          error = t( "Couldnt-create-identification", { error: t( "Unknown-error" ) } );
+          error = t( "Couldnt-create-identification-unknown-error" );
         }
 
         // Remove temporary ID and show error
@@ -369,7 +369,7 @@ const ObsDetails = (): Node => {
             accessibilityLabel={t( "favorite" )}
           />
           <View className="absolute bottom-3 left-3">
-            <PhotoCount count={photos?.length} />
+            <PhotoCount count={photos.length ? photos.length : 0} />
           </View>
         </View>
       );

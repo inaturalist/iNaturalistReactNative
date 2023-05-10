@@ -25,7 +25,11 @@ const ObservationLocation = ( { observation, classNameMargin, details }: Props )
   if ( ( observation?.latitude !== null && observation?.latitude !== undefined )
     && ( observation?.longitude != null && observation?.longitude !== undefined )
   ) {
-    displayCoords = `Lat: ${observation.latitude}, Lon: ${observation.longitude}`;
+    displayCoords = t( "Lat-Lon-Acc", {
+      latitude: observation.latitude,
+      longitude: observation.longitude,
+      accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
+    } );
   }
 
   const displayGeoprivacy = ( ) => (

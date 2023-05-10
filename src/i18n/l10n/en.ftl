@@ -46,6 +46,8 @@ Are-you-sure = Are you sure?
 
 Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
 
+attribution_cc_by_nc = some rights reserved { $licenseCode }
+
 app-authorized-on-date = { $appName } (authorized on: { $date })
 
 Applications = Applications
@@ -63,9 +65,6 @@ By-exiting-changes-not-saved = By exiting, changes to your observation will not 
 
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
 
-# Quality grade option: Casual (shortened for My Observations view)
-C = C
-
 Camera-Roll = Camera Roll
 
 CANCEL = CANCEL
@@ -73,9 +72,6 @@ CANCEL = CANCEL
 Cancel = Cancel
 
 Captive-Cultivated = Captive/Cultivated
-
-# Quality grade option
-Casual = Casual
 
 # After pressing the reset password button
 Check-your-email = Check your email! We've sent password reset instructions.
@@ -98,11 +94,21 @@ Couldnt-create-comment = Couldn't create comment
 
 Couldnt-create-identification = Couldn't create identification
 
+Couldnt-create-identification-error = Couldn't create identification { $error }
+
+Couldnt-create-identification-unknown-error = Couldn't create identification, Unknown Error.
+
 Create-an-iNaturalist-account-to-save-your-observations = Create an iNaturalist account to save your observations and contribute them to science.
 
 CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
 
 DATA-QUALITY = DATA QUALITY
+
+Data-quality-research-description = This observation has enough identifications to be considered resarch grade
+
+Data-quality-needs-id-description = This observation needs more identifications to reach research grade
+
+Data-quality-casual-description = This observation needs more information verified to be considered verifiable
 
 Date = Date
 
@@ -111,6 +117,10 @@ DATE = DATE
 Date-added-newest-to-oldest = Date added - newest to oldest
 
 Date-added-oldest-to-newest = Date added - oldest to newest
+
+Date_observed_header_short = Observed
+
+Date-uploaded-header-short = Uploaded
 
 Default-Search-Place = Default Search Place
 
@@ -337,15 +347,9 @@ Native = Native
 # Header for nearby projects
 Nearby = Nearby
 
-# Quality grade option
-Needs-ID = Needs ID
-
 New-Observation = New Observation
 
 Next = Next
-
-# Quality grade option: Needs ID (shortened for My Observations view)
-NI = NI
 
 No = No
 
@@ -361,7 +365,7 @@ none = none
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
 # license code
-no-rights-reserved = no rights reserved
+no-rights-reserved = no rights reserved { $licenseCode }
 
 # Header for observation description on observation detail
 NOTES = NOTES
@@ -379,8 +383,6 @@ OBSERVATIONS = OBSERVATIONS
 Observations = Observations
 
 Observations-created-on-iNaturalist = Observations created on iNaturalist are used by scientists around the world.
-
-Observed = Observed
 
 Offensive-Inappropriate = Offensive/Inappropriate
 
@@ -429,6 +431,11 @@ PROJECTS = PROJECTS
 Projects = Projects
 
 Quality-Grade = Quality Grade
+
+# Quality grade options
+quality-grade-research = Research
+quality-grade-needs-id = Needs Id
+quality-grade-casual = Casual
 
 Rank = Rank
 
@@ -542,9 +549,6 @@ Reviewed-only = Reviewed only
 
 Revoke = Revoke
 
-# Quality grade option: Research Grade (shortened for My Observations view)
-RG = RG
-
 Save = Save
 
 SAVE-LOCATION = SAVE LOCATION
@@ -653,10 +657,8 @@ UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
     *[other] {$count} OBSERVATIONS
 }
 
-Uploaded = Uploaded
-
 # Describes whether a user made this observation from web, iOS, or Android
-Uploaded-via = Uploaded via:
+Uploaded-via-application = Uploaded via: { $application }
 
 # Shows the number of observations a user is currently uploading on my observations page
 Uploading-X-Observations = Uploading {$count ->
@@ -685,6 +687,8 @@ Username = Username
 Username-or-Email = Username or Email
 
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
+
+View-in-browser = View in Browser
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
 
