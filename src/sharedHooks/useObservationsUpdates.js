@@ -15,7 +15,8 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
   const baseParams = {
     observations_by: "owner",
     viewed: false,
-    fields: "viewed,resource_uuid,comment_id,identification_id"
+    fields: "viewed,resource_uuid,comment_id,identification_id",
+    per_page: 50
   };
 
   const {
