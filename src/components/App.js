@@ -11,6 +11,7 @@ import { AppState } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useObservationUpdatesWhenFocused from "sharedHooks/useObservationUpdatesWhenFocused";
 import useTranslation from "sharedHooks/useTranslation";
 import useUserMe from "sharedHooks/useUserMe";
 
@@ -45,43 +46,21 @@ const App = ( { children }: Props ): Node => {
     return Orientation.unlockAllOrientations;
   }, [] );
 
-  const setObservationUpdatesViewedRealm = useCallback(
-    () => {
-      // Set all observations to viewed
-      const observations = realm
-        .objects( "Observation" )
-        .filtered( "viewed_comments == false OR viewed_identifications == false" );
-      realm?.write( () => {
-        observations.forEach( observation => {
-          observation.viewed_comments = true;
-          observation.viewed_identifications = true;
-        } );
-      } );
-    },
-    [realm]
-  );
+  useObservationUpdatesWhenFocused();
 
   // When the app is coming back from the background, set the focusManager to focused
   // This will trigger react-query to refetch any queries that are stale
-  const onAppStateChange = useCallback(
-    status => {
-      // if the app is coming back from the background, set all observations to viewed
-      if ( status === "active" ) {
-        setObservationUpdatesViewedRealm();
-      }
-      focusManager.setFocused( status === "active" );
-    },
-    [setObservationUpdatesViewedRealm]
-  );
+  const onAppStateChange = status => {
+    focusManager.setFocused( status === "active" );
+  };
 
   useEffect( () => {
     // subscribe to app state changes
     const subscription = AppState.addEventListener( "change", onAppStateChange );
-    setObservationUpdatesViewedRealm();
 
     // unsubscribe on unmount
     return () => subscription.remove();
-  }, [onAppStateChange, setObservationUpdatesViewedRealm] );
+  }, [] );
 
   useEffect( ( ) => {
     const checkForSignedInUser = async ( ) => {
