@@ -37,7 +37,8 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import useLocalObservation from "sharedHooks/useLocalObservation";
-import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
+import useObservationsUpdates,
+{ fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -104,7 +105,7 @@ const ObsDetails = (): Node => {
       onSuccess: () => {
         markViewedLocally();
         queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
-        queryClient.invalidateQueries( ["fetchObservationUpdates"] );
+        queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
         refetchRemoteObservation();
         refetchObservationUpdates();
       }

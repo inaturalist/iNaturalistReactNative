@@ -6,6 +6,8 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 const { useRealm } = RealmContext;
 
+export const fetchObservationUpdatesKey = "fetchObservationUpdates";
+
 const useObservationsUpdates = ( enabled: boolean ): Object => {
   const realm = useRealm();
 
@@ -22,7 +24,7 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     error,
     refetch
   } = useAuthenticatedQuery(
-    ["fetchObservationUpdates"],
+    [fetchObservationUpdatesKey],
     optsWithAuth => fetchObservationUpdates( baseParams, optsWithAuth ),
     { enabled: !!enabled }
   );

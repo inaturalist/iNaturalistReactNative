@@ -1,6 +1,8 @@
 import { renderHook } from "@testing-library/react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
+import useObservationsUpdates, {
+  fetchObservationUpdatesKey
+} from "sharedHooks/useObservationsUpdates";
 
 import factory from "../../factory";
 
@@ -53,7 +55,7 @@ describe( "useObservationsUpdates", ( ) => {
   it( "should call disabled useAuthenticatedQuery without param", ( ) => {
     renderHook( ( ) => useObservationsUpdates( ) );
     expect( useAuthenticatedQuery ).toHaveBeenCalledWith(
-      ["fetchObservationUpdates"],
+      [fetchObservationUpdatesKey],
       expect.any( Function ),
       { enabled: false }
     );
@@ -62,7 +64,7 @@ describe( "useObservationsUpdates", ( ) => {
   it( "should call enabled useAuthenticatedQuery with true param", ( ) => {
     renderHook( ( ) => useObservationsUpdates( true ) );
     expect( useAuthenticatedQuery ).toHaveBeenCalledWith(
-      ["fetchObservationUpdates"],
+      [fetchObservationUpdatesKey],
       expect.any( Function ),
       { enabled: true }
     );
