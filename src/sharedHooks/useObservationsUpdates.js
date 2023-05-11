@@ -74,19 +74,19 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     }
     // If both comments and identifications are already unviewed, nothing to do here
     if (
-      existingObs.viewed_comments === false
+      existingObs.comments_viewed === false
       && existingObs.identifications_viewed === false
     ) {
       return;
     }
-    // If the update is a comment, set the observation's viewed_comments to false
+    // If the update is a comment, set the observation's comments_viewed to false
     if (
-      existingObs.viewed_comments === true
-      || existingObs.viewed_comments === null
+      existingObs.comments_viewed === true
+      || existingObs.comments_viewed === null
     ) {
       if ( update.comment_id ) {
         realm?.write( () => {
-          existingObs.viewed_comments = false;
+          existingObs.comments_viewed = false;
         } );
       }
     }

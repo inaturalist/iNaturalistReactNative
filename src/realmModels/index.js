@@ -33,7 +33,7 @@ export default {
       oldObservations.keys( ).forEach( objectIndex => {
         const oldObservation = oldObservations[objectIndex];
         const newObservation = newObservations[objectIndex];
-        newObservation.viewed_comments = oldObservation.viewed;
+        newObservation.comments_viewed = oldObservation.viewed;
         newObservation.identifications_viewed = oldObservation.viewed;
         delete newObservation.viewed;
       } );

@@ -10,10 +10,10 @@ jest.mock( "react-native/Libraries/AppState/AppState", () => ( {
 } ) );
 
 const mockObservations = [
-  factory( "LocalObservation", { viewed_comments: false, identifications_viewed: false } ),
-  factory( "LocalObservation", { viewed_comments: true, identifications_viewed: false } ),
-  factory( "LocalObservation", { viewed_comments: false, identifications_viewed: true } ),
-  factory( "LocalObservation", { viewed_comments: true, identifications_viewed: true } )
+  factory( "LocalObservation", { comments_viewed: false, identifications_viewed: false } ),
+  factory( "LocalObservation", { comments_viewed: true, identifications_viewed: false } ),
+  factory( "LocalObservation", { comments_viewed: false, identifications_viewed: true } ),
+  factory( "LocalObservation", { comments_viewed: true, identifications_viewed: true } )
 ];
 
 describe( "useObservationUpdatesWhenFocused", () => {
@@ -30,7 +30,7 @@ describe( "useObservationUpdatesWhenFocused", () => {
     renderHook( () => useObservationUpdatesWhenFocused() );
     const observations = global.realm.objects( "Observation" );
     observations.forEach( o => {
-      expect( o.viewed_comments ).toBe( true );
+      expect( o.comments_viewed ).toBe( true );
       expect( o.identifications_viewed ).toBe( true );
     } );
   } );

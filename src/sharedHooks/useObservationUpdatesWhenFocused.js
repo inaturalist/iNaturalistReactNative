@@ -13,10 +13,10 @@ const useObservationUpdatesWhenFocused = () => {
     // Set all observations to viewed
     const observations = realm
       .objects( "Observation" )
-      .filtered( "viewed_comments == false OR identifications_viewed == false" );
+      .filtered( "comments_viewed == false OR identifications_viewed == false" );
     realm?.write( () => {
       observations.forEach( observation => {
-        observation.viewed_comments = true;
+        observation.comments_viewed = true;
         observation.identifications_viewed = true;
       } );
     } );

@@ -55,16 +55,16 @@ describe( "ObsDetails", () => {
     it( "should make a request to observation/viewedUpdates", async () => {
       // Let's make sure the mock hasn't already been used
       expect( inatjs.observations.viewedUpdates ).not.toHaveBeenCalled();
-      // Expect the observation in realm to have viewed_comments param not initialized
+      // Expect the observation in realm to have comments_viewed param not initialized
       const observation = global.realm.objects( "Observation" )[0];
-      expect( observation.viewed_comments ).toBe( null );
+      expect( observation.comments_viewed ).toBe( null );
       renderAppWithComponent( <ObsDetails /> );
       expect(
         await screen.findByText( `@${mockObservation.user.login}` )
       ).toBeTruthy();
       expect( inatjs.observations.viewedUpdates ).toHaveBeenCalledTimes( 1 );
-      // Expect the observation in realm to have been updated with viewed_comments = true
-      expect( observation.viewed_comments ).toBe( true );
+      // Expect the observation in realm to have been updated with comments_viewed = true
+      expect( observation.comments_viewed ).toBe( true );
     } );
   } );
 } );

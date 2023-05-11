@@ -34,7 +34,7 @@ const ObsStatus = ( {
   const numIdents = observation.identifications?.length || 0;
   const numComments = observation.comments?.length || 0;
   const identificationsFilled = observation.identifications_viewed === false;
-  const commentsFilled = observation.viewed_comments === false;
+  const commentsFilled = observation.comments_viewed === false;
 
   return (
     <View className={classNames( "flex", flexDirection, classNameMargin )}>
