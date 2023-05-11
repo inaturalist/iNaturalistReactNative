@@ -555,7 +555,10 @@
   },
   "Discard-Comment": "Discard Comment",
   "Are-you-sure-discard-comment": "Are you sure you want to discard this comment?",
-  "Bulk-importer": "Bulk importer",
+  "Bulk-importer": {
+    "comment": "Accessibility label for bulk import / photo import button\nThese are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel\niOS Guidelines \"A string that succinctly identifies the accessibility element.\" Starts with capital letter, no ending punctuation.",
+    "val": "Bulk importer"
+  },
   "Camera": "Camera",
   "Close": "Close",
   "Flag-Item-Other": "Flagged as Other Description Box",
@@ -642,18 +645,24 @@
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
   },
-  "datetime-format-short": "M/d/yy h:mm a",
-  "date-format-long": "PP",
+  "datetime-format-short": {
+    "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "M/d/yy h:mm a"
+  },
+  "date-format-long": {
+    "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
+    "val": "PP"
+  },
   "As-you-upload-more-observations": {
-    "comment": "Onboarding text on MyObservations\n0-10 observations",
+    "comment": "Onboarding text on MyObservations: 0-10 observations",
     "val": "As you upload more observations, others in our community may be able to help you identify them!"
   },
   "Observations-you-upload-to-iNaturalist": {
-    "comment": "11-50 observations",
+    "comment": "Onboarding text on MyObservations: 11-50 observations",
     "val": "Observations you upload to iNaturalist can be used by scientists and researchers worldwide."
   },
   "You-can-search-observations-of-any-plant-or-animal": {
-    "comment": "51-100 observations",
+    "comment": "Onboarding text on MyObservations: 51-100 observations",
     "val": "You can search observations of any plant or animal anywhere in the world with Explore!"
   },
   "DISCARD-PHOTOS": "DISCARD PHOTOS?",
@@ -671,16 +680,20 @@
     "comment": "Generic error message",
     "val": "Something went wrong."
   },
-  "#Geoprivacy sheet descriptions": "",
-  "Anyone-using-iNaturalist-can-see": "Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.",
+  "Anyone-using-iNaturalist-can-see": {
+    "comment": "Geoprivacy sheet descriptions",
+    "val": "Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research."
+  },
   "The-exact-location-will-be-hidden": "The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).",
   "The-location-will-not-be-visible": "The location will not be visible to others, which means it may be difficult to identify.",
-  "#Wild status sheet descriptions": "",
-  "This-is-a-wild-organism": "This is a wild organism and wasn’t placed in this location by humans.",
+  "This-is-a-wild-organism": {
+    "comment": "Wild status sheet descriptions",
+    "val": "This is a wild organism and wasn’t placed in this location by humans."
+  },
   "This-organism-was-placed-by-humans": "This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.",
   "Lat-Lon-Acc": {
-    "comment": "Latitude, longitude, and accuracy",
-    "val": "Lat: { $latitude }, Lon: { $longitude }, Acc: { $accuracy }"
+    "comment": "Latitude, longitude, and accuracy on a single line",
+    "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Acc: { $accuracy }"
   },
   "Every-observation-needs": {
     "comment": "Missing evidence sheet",

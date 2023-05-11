@@ -831,8 +831,9 @@ No = No
 Discard-Comment = Discard Comment
 Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
-## Accessibility labels: these are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
-## iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
+# Accessibility label for bulk import / photo import button
+# These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
+# iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
 Bulk-importer = Bulk importer
 Camera = Camera
 Close = Close
@@ -925,15 +926,20 @@ Take-photo = Take photo
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
+
+# Date formatting using date-fns
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-short = M/d/yy h:mm a
+
+# Date formatting using date-fns
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-long = PP
 
-# Onboarding text on MyObservations
-# 0-10 observations
+# Onboarding text on MyObservations: 0-10 observations
 As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
-# 11-50 observations
+# Onboarding text on MyObservations: 11-50 observations
 Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
-# 51-100 observations
+# Onboarding text on MyObservations: 51-100 observations
 You-can-search-observations-of-any-plant-or-animal = You can search observations of any plant or animal anywhere in the world with Explore!
 
 DISCARD-PHOTOS = DISCARD PHOTOS?
@@ -951,17 +957,17 @@ Failed-to-log-in = Failed to log in
 # Generic error message
 Something-went-wrong = Something went wrong.
 
-#Geoprivacy sheet descriptions
+# Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
 
-#Wild status sheet descriptions
+# Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn’t placed in this location by humans.
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 
-# Latitude, longitude, and accuracy
-Lat-Lon-Acc = Lat: { $latitude }, Lon: { $longitude }, Acc: { $accuracy }
+# Latitude, longitude, and accuracy on a single line
+Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 
 # Missing evidence sheet
 Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.

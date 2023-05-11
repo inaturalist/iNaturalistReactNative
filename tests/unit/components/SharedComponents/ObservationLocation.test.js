@@ -65,7 +65,6 @@ describe( "ObservationLocation", () => {
     render(
       <ObservationLocation observation={mockObservation} details />
     );
-
-    expect( await screen.findByText( expectedResult ) ).toBeTruthy();
+    expect( await screen.findByText( new RegExp( expectedResult ) ) ).toBeTruthy();
   } );
 } );

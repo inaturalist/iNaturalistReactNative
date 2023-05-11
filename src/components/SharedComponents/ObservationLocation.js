@@ -16,7 +16,7 @@ const ObservationLocation = ( { observation, classNameMargin, details }: Props )
   const { t } = useTranslation( );
 
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
-  let displayCoords = "";
+  let displayCoords;
   const geoprivacy = checkCamelAndSnakeCase( observation, "geoprivacy" );
 
   if ( !displayLocation ) {
