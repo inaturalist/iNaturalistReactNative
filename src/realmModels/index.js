@@ -34,7 +34,7 @@ export default {
         const oldObservation = oldObservations[objectIndex];
         const newObservation = newObservations[objectIndex];
         newObservation.viewed_comments = oldObservation.viewed;
-        newObservation.viewed_identifications = oldObservation.viewed;
+        newObservation.identifications_viewed = oldObservation.viewed;
         delete newObservation.viewed;
       } );
     }

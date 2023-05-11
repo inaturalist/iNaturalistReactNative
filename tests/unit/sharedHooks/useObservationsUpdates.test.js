@@ -103,7 +103,7 @@ describe( "useObservationsUpdates", ( ) => {
         mockRealm.objectForPrimaryKey.mockReturnValue( {
           ...mockObservation,
           viewed_comments: viewedComments,
-          viewed_identifications: viewedIdentifications
+          identifications_viewed: viewedIdentifications
         } );
       } );
 

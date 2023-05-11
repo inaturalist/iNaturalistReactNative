@@ -75,7 +75,7 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     // If both comments and identifications are already unviewed, nothing to do here
     if (
       existingObs.viewed_comments === false
-      && existingObs.viewed_identifications === false
+      && existingObs.identifications_viewed === false
     ) {
       return;
     }
@@ -90,14 +90,14 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
         } );
       }
     }
-    // If the update is an identification, set the observation's viewed_identifications to false
+    // If the update is an identification, set the observation's identifications_viewed to false
     if (
-      existingObs.viewed_identifications === true
-      || existingObs.viewed_identifications === null
+      existingObs.identifications_viewed === true
+      || existingObs.identifications_viewed === null
     ) {
       if ( update.identification_id ) {
         realm?.write( () => {
-          existingObs.viewed_identifications = false;
+          existingObs.identifications_viewed = false;
         } );
       }
     }

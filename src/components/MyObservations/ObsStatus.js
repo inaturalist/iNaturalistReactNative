@@ -33,7 +33,7 @@ const ObsStatus = ( {
   const iconColor = white ? theme.colors.onPrimary : theme.colors.primary;
   const numIdents = observation.identifications?.length || 0;
   const numComments = observation.comments?.length || 0;
-  const identificationsFilled = observation.viewed_identifications === false;
+  const identificationsFilled = observation.identifications_viewed === false;
   const commentsFilled = observation.viewed_comments === false;
 
   return (

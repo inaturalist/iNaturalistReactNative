@@ -482,7 +482,7 @@ class Observation extends Realm.Object {
       user: "User?",
       updated_at: "date?",
       viewed_comments: "bool?",
-      viewed_identifications: "bool?"
+      identifications_viewed: "bool?"
     }
   };
 
