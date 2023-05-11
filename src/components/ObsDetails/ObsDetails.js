@@ -95,7 +95,9 @@ const ObsDetails = (): Node => {
     } );
   };
 
-  const { refetch: refetchObservationUpdates } = useObservationsUpdates( !!observation );
+  const { refetch: refetchObservationUpdates } = useObservationsUpdates(
+    !!currentUser && !!observation
+  );
 
   const markViewedMutation = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
