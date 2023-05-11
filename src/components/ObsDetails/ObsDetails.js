@@ -37,6 +37,8 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import useLocalObservation from "sharedHooks/useLocalObservation";
+import useObservationsUpdates,
+{ fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -87,9 +89,15 @@ const ObsDetails = (): Node => {
 
   const markViewedLocally = async () => {
     realm?.write( () => {
-      localObservation.viewed = true;
+      // Flags if all comments and identifications have been viewed
+      localObservation.comments_viewed = true;
+      localObservation.identifications_viewed = true;
     } );
   };
+
+  const { refetch: refetchObservationUpdates } = useObservationsUpdates(
+    !!currentUser && !!observation
+  );
 
   const markViewedMutation = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
@@ -97,7 +105,9 @@ const ObsDetails = (): Node => {
       onSuccess: () => {
         markViewedLocally();
         queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
+        queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
         refetchRemoteObservation();
+        refetchObservationUpdates();
       }
     }
   );
@@ -172,7 +182,7 @@ const ObsDetails = (): Node => {
   useEffect( () => {
     if (
       localObservation
-      && !localObservation.viewed
+      && localObservation.unviewed()
       && !markViewedMutation.isLoading
     ) {
       markViewedMutation.mutate( { id: uuid } );
