@@ -46,7 +46,17 @@ Are-you-sure = Are you sure?
 
 Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
 
-attribution_cc_by_nc = some rights reserved { $licenseCode }
+attribution-cc-by = some rights reserved (CC BY)
+
+attribution-cc-by-sa = some rights reserved (CC BY-SA)
+
+attribution-cc-by-nc = some rights reserved (CC BY-NC) 
+
+attribution-cc-by-nd = some rights reserved (CC BY-ND)
+
+attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
+
+attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
 
 app-authorized-on-date = { $appName } (authorized on: { $date })
 
@@ -365,7 +375,7 @@ none = none
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
 # license code
-no-rights-reserved = no rights reserved { $licenseCode }
+no-rights-reserved-cc0 = no rights reserved (CC0)
 
 # Header for observation description on observation detail
 NOTES = NOTES
@@ -376,7 +386,7 @@ Obscured = Obscured
 
 Observation = Observation
 
-Observation-Attribution = Observation Copyright:© {$attribution} · {$licenseCode}
+Observation-Attribution = Observation: © {$attribution} · {$restrictions}
 
 OBSERVATIONS = OBSERVATIONS
 

@@ -5,8 +5,6 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
 
-import formatLicenseCode from "./helpers/formatLicenseCode";
-
 type Props = {
   observation: Object
 }
@@ -15,23 +13,35 @@ type Props = {
 // https://github.com/inaturalist/inaturalist/blob/768b9263931ebeea229bbc47d8442ca6b0377d45/app/webpack/shared/components/observation_attribution.jsx
 const Attribution = ( { observation }: Props ): Node => {
   const { user } = observation;
-  const licenseCode = formatLicenseCode( observation.license_code );
+  const licenseCode = observation.license_code;
   const copyrightAttribution = user ? ( user.name || user.login ) : t( "unknown" );
 
-  const renderLicenseCode = ( ) => {
-    if ( !licenseCode ) {
+  const renderRestrictions = ( ) => {
+    switch ( licenseCode ) {
+    case "cc0":
+      return t( "no-rights-reserved-cc0" );
+    case "cc-by":
+      return t( "attribution-cc-by" );
+    case "cc-by-sa":
+      return t( "attribution-cc-by-sa" );
+    case "cc-by-nc":
+      return t( "attribution-cc-by-nc" );
+    case "cc-by-nd":
+      return t( "attribution-cc-by-nd" );
+    case "cc-by-nc-sa":
+      return t( "attribution-cc-by-nc-sa" );
+    case "cc-by-nc-nd":
+      return t( "attribution-cc-by-nc-nd" );
+    default:
       return t( "all-rights-reserved" );
-    } if ( licenseCode === "cc0" ) {
-      return t( "no-rights-reserved", { licenseCode } );
     }
-    return t( "attribution_cc_by_nc", { licenseCode } );
   };
 
   return (
     <Body4>
       {t( "Observation-Attribution", {
         attribution: copyrightAttribution,
-        licenseCode: renderLicenseCode( )
+        restrictions: renderRestrictions( )
       } )}
     </Body4>
   );
