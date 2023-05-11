@@ -25,7 +25,7 @@ const testData = [
       longitude,
       place_guess: null
     },
-    `${latitude}, ${longitude}`
+    `Lat: ${latitude}, Lon: ${longitude}`
   ],
   [
     "should handle latitude/longitude w/ zero",
@@ -34,7 +34,7 @@ const testData = [
       longitude: 0,
       place_guess: null
     },
-    "0, 0"
+    "Lat: 0, Lon: 0"
   ],
   [
     "should show no location if unknown",
@@ -43,7 +43,7 @@ const testData = [
       longitude: null,
       place_guess: null
     },
-    "Missing Location"
+    "No Location"
   ]
 ];
 
@@ -63,8 +63,8 @@ describe( "ObservationLocation", () => {
     const mockObservation = factory( "RemoteObservation", obsData );
 
     render(
-      <ObservationLocation observation={mockObservation} />
+      <ObservationLocation observation={mockObservation} details />
     );
-    expect( await screen.findByText( expectedResult ) ).toBeTruthy();
+    expect( await screen.findByText( new RegExp( expectedResult ) ) ).toBeTruthy();
   } );
 } );

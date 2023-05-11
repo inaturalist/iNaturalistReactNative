@@ -8,40 +8,77 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   observation: Object,
-  classNameMargin?: string
+  classNameMargin?: string,
+  details?:boolean
 };
 
-const ObservationLocation = ( { observation, classNameMargin }: Props ): React.Node => {
+const ObservationLocation = ( { observation, classNameMargin, details }: Props ): React.Node => {
   const { t } = useTranslation( );
 
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
-  if (
-    !displayLocation
-    && ( observation?.latitude !== null && observation?.latitude !== undefined )
+  let displayCoords;
+  const geoprivacy = checkCamelAndSnakeCase( observation, "geoprivacy" );
+
+  if ( !displayLocation ) {
+    displayLocation = t( "No-Location" );
+  }
+  if ( ( observation?.latitude !== null && observation?.latitude !== undefined )
     && ( observation?.longitude != null && observation?.longitude !== undefined )
   ) {
-    displayLocation = `${observation.latitude}, ${observation.longitude}`;
-  } else if ( !displayLocation ) {
-    displayLocation = t( "Missing-Location" );
+    displayCoords = t( "Lat-Lon-Acc", {
+      latitude: observation.latitude,
+      longitude: observation.longitude,
+      accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
+    } );
   }
+
+  const displayGeoprivacy = ( ) => (
+    <View className="flex-row mt-[11px]">
+      <INatIcon name="globe-outline" size={14} />
+      <Body4
+        className="text-darkGray ml-[5px]"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
+        {geoprivacy}
+      </Body4>
+    </View>
+  );
 
   return (
     <View
-      className={classNames( "flex flex-row items-center", classNameMargin )}
+      className={classNames( "flex flex-col", classNameMargin )}
       accessible
       accessibilityLabel={t( "Location" )}
       accessibilityValue={{
         text: displayLocation
       }}
     >
-      <INatIcon name="location" size={13} />
-      <Body4
-        className="text-darkGray ml-[5px]"
-        numberOfLines={1}
-        ellipsizeMode="tail"
-      >
-        {displayLocation}
-      </Body4>
+      <View className="flex-row">
+        <INatIcon name="location" size={15} />
+        <Body4
+          className="text-darkGray ml-[8px]"
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {displayLocation}
+        </Body4>
+      </View>
+      {details
+        && (
+          <View className="flex-col">
+            {displayCoords && (
+              <Body4
+                className="text-darkGray ml-[23px] mt-[12px]"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {displayCoords}
+              </Body4>
+            )}
+            {geoprivacy && displayGeoprivacy()}
+          </View>
+        )}
     </View>
   );
 };

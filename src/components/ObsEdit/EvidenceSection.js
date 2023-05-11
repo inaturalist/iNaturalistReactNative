@@ -56,8 +56,6 @@ const EvidenceSection = ( ): Node => {
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const handleAddEvidence = ( ) => setShowAddEvidenceSheet( true );
 
-  const formatDecimal = coordinate => coordinate && coordinate.toFixed( 6 );
-
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
   // useEffects), and set it to false in the cleanup cleanup function. The
@@ -99,8 +97,8 @@ const EvidenceSection = ( ): Node => {
       return t( "No-Location" );
     }
     return t( "Lat-Lon-Acc", {
-      latitude: formatDecimal( latitude ),
-      longitude: formatDecimal( longitude ),
+      latitude,
+      longitude,
       accuracy: currentObservation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
     } );
   };

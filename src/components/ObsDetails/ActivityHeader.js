@@ -2,6 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments } from "api/comments";
+import classnames from "classnames";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
 import { Body4, INatIcon, InlineUser } from "components/SharedComponents";
@@ -26,9 +27,12 @@ type Props = {
   item: Object,
   refetchRemoteObservation?: Function,
   toggleRefetch?: Function,
+  classNameMargin?: string
 }
 
-const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props ): Node => {
+const ActivityHeader = ( {
+  item, refetchRemoteObservation, toggleRefetch, classNameMargin
+}:Props ): Node => {
   const [currentUser, setCurrentUser] = useState( null );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [flagModalVisible, setFlagModalVisible] = useState( false );
@@ -151,7 +155,7 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
   );
 
   return (
-    <View className="flex-row justify-between">
+    <View className={classnames( "flex-row justify-between", classNameMargin )}>
       <InlineUser user={user} />
       {( item._created_at )
         ? <DateDisplay dateString={item.created_at} />
