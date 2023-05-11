@@ -25,12 +25,11 @@ import { formatISO } from "date-fns";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Alert, LogBox } from "react-native";
 import {
   ActivityIndicator,
-  Button as IconButton,
-  useTheme
+  Button as IconButton
 } from "react-native-paper";
 import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -76,7 +75,6 @@ const ObsDetails = (): Node => {
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [addingComment, setAddingComment] = useState( false );
   const [comments, setComments] = useState( [] );
-  const theme = useTheme();
 
   const queryClient = useQueryClient();
 
@@ -204,24 +202,10 @@ const ObsDetails = (): Node => {
     }
   }, [localObservation, markViewedMutation, uuid] );
 
-  useEffect( () => {
-    const obsCreatedLocally = observation?.id === null;
-    const obsOwnedByCurrentUser = observation?.user?.id === currentUser?.id;
-
-    const navToObsEdit = () => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } );
-    const editIcon = () => ( obsCreatedLocally || obsOwnedByCurrentUser ) && (
-      <IconButton
-        icon="pencil"
-        onPress={navToObsEdit}
-        textColor={theme.colors.primary}
-        accessibilityLabel={t( "Navigate-to-edit-observation" )}
-      />
-    );
-
-    navigation.setOptions( {
-      headerRight: editIcon
-    } );
-  }, [navigation, observation, currentUser, t, theme] );
+  const navToObsEdit = useCallback(
+    ( ) => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } ),
+    [navigation, observation]
+  );
 
   useEffect( () => {
     // set initial comments for activity currentTabId
@@ -349,8 +333,14 @@ const ObsDetails = (): Node => {
       return (
         <View className="bg-black">
           <PhotoScroll photos={photos} />
+          {/*
+            TODO: react-navigation supports a lot of styling options including
+            a transparent header, so this custom header probably is not
+            necessary ~~~kueda
+          */}
           {/* TODO: a11y props are not passed down into this 3.party */}
           <IconButton
+            onPress={navToObsEdit}
             icon="pencil"
             textColor={colors.white}
             className="absolute top-3 right-3"
