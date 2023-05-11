@@ -83,8 +83,7 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     }
     // If the update is a comment, set the observation's comments_viewed to false
     if (
-      existingObs.comments_viewed === true
-      || existingObs.comments_viewed === null
+      existingObs.comments_viewed || existingObs.comments_viewed === null
     ) {
       if ( update.comment_id ) {
         realm?.write( () => {
@@ -94,8 +93,7 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     }
     // If the update is an identification, set the observation's identifications_viewed to false
     if (
-      existingObs.identifications_viewed === true
-      || existingObs.identifications_viewed === null
+      existingObs.identifications_viewed || existingObs.identifications_viewed === null
     ) {
       if ( update.identification_id ) {
         realm?.write( () => {
