@@ -495,6 +495,14 @@ class Observation extends Realm.Object {
   wasSynced( ) {
     return this._synced_at !== null;
   }
+
+  viewed() {
+    return this.comments_viewed && this.identifications_viewed;
+  }
+
+  unviewed() {
+    return !this.viewed();
+  }
 }
 
 export default Observation;

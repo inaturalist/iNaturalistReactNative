@@ -182,7 +182,7 @@ const ObsDetails = (): Node => {
   useEffect( () => {
     if (
       localObservation
-      && ( !localObservation.comments_viewed || !localObservation.identifications_viewed )
+      && localObservation.unviewed()
       && !markViewedMutation.isLoading
     ) {
       markViewedMutation.mutate( { id: uuid } );
