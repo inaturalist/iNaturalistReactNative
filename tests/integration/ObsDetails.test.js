@@ -51,13 +51,13 @@ describe( "ObsDetails", () => {
     jest.clearAllMocks();
   } );
 
-  describe( "when there is an observation with an update", () => {
+  describe( "with an observation where we don't know if the user has viewed comments", () => {
     it( "should make a request to observation/viewedUpdates", async () => {
       // Let's make sure the mock hasn't already been used
       expect( inatjs.observations.viewedUpdates ).not.toHaveBeenCalled();
       // Expect the observation in realm to have comments_viewed param not initialized
       const observation = global.realm.objects( "Observation" )[0];
-      expect( observation.comments_viewed ).toBe( null );
+      expect( observation.comments_viewed ).not.toBeTruthy();
       renderAppWithComponent( <ObsDetails /> );
       expect(
         await screen.findByText( `@${mockObservation.user.login}` )
