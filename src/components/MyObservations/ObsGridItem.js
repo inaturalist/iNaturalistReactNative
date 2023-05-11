@@ -1,6 +1,6 @@
 // @flow
 
-import DisplayTaxonName from "components/DisplayTaxonName";
+import { DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -47,6 +47,7 @@ const ObsGridItem = ( {
         setShowLoginSheet={setShowLoginSheet}
       />
       <DisplayTaxonName
+        keyBase={observation?.uuid}
         taxon={observation?.taxon}
         scientificNameFirst={
           observation?.user?.prefers_scientific_name_first

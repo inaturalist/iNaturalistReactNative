@@ -39,7 +39,8 @@ const { width, height } = Dimensions.get( "screen" );
 
 const DELTA = 0.2;
 const CROSSHAIRLENGTH = 254;
-const DESIRED_LOCATION_ACCURACY = 4000000;
+const DESIRED_LOCATION_ACCURACY = 100;
+const REQUIRED_LOCATION_ACCURACY = 500000;
 
 type Props = {
   route: {
@@ -77,9 +78,9 @@ const LocationPicker = ( { route }: Props ): Node => {
   };
 
   useEffect( ( ) => {
-    if ( accuracy < 10 ) {
+    if ( accuracy < DESIRED_LOCATION_ACCURACY ) {
       setAccuracyTest( "pass" );
-    } else if ( accuracy < DESIRED_LOCATION_ACCURACY ) {
+    } else if ( accuracy < REQUIRED_LOCATION_ACCURACY ) {
       setAccuracyTest( "acceptable" );
     } else {
       setAccuracyTest( "fail" );

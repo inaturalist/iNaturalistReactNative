@@ -51,6 +51,7 @@ const LocationSearch = ( {
         value={locationName}
         testID="LocationPicker.locationSearch"
         containerClass="absolute top-[20px] right-[26px] left-[26px]"
+        hasShadow
       />
       <View
         className="absolute top-[65px] right-[26px] left-[26px] bg-white rounded-lg z-50"

@@ -9,7 +9,6 @@ import type { Node } from "react";
 import React, {
   useContext
 } from "react";
-import { Platform } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
@@ -25,7 +24,7 @@ const Footer = ( { keysToUpdate, goBackOnSave }: Props ): Node => {
   } = useContext( ObsEditContext );
 
   return (
-    <StickyToolbar containerClass={Platform.OS === "ios" && "bottom-6"}>
+    <StickyToolbar>
       <Button
         className="px-[25px]"
         onPress={( ) => {

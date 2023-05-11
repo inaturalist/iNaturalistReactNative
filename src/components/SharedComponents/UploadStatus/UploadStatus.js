@@ -1,6 +1,6 @@
 // @flow
 
-import INatIcon from "components/SharedComponents/INatIcon";
+import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -8,17 +8,39 @@ import React from "react";
 import { Animated, Easing } from "react-native";
 import CircularProgressBase from "react-native-circular-progress-indicator";
 import { IconButton, useTheme } from "react-native-paper";
+import Reanimated, { FadeIn, Keyframe } from "react-native-reanimated";
 
 type Props = {
   color?: string,
   completeColor?: string,
   progress: number,
   startSingleUpload: Function,
+  layout: string,
   children: any
 }
+const AnimatedView = Reanimated.createAnimatedComponent( View );
+
+const keyframe = new Keyframe( {
+  // $FlowIgnore
+  0: {
+    opacity: 0
+  },
+  // $FlowIgnore
+  40: {
+    opacity: 1
+  },
+  // $FlowIgnore
+  100: {
+    opacity: 0
+  }
+} );
 
 const UploadStatus = ( {
-  color, completeColor, progress, startSingleUpload,
+  color,
+  completeColor,
+  progress,
+  startSingleUpload,
+  layout,
   children
 }: Props ): Node => {
   const theme = useTheme();
@@ -64,7 +86,7 @@ const UploadStatus = ( {
     return t( "Upload-Complete" );
   };
 
-  const displayIcon = ( ) => {
+  const displayIcon = () => {
     if ( progress < 0.05 ) {
       return (
         <>
@@ -110,8 +132,11 @@ const UploadStatus = ( {
             testID="UploadStatus.CircularProgress"
             value={progress}
             radius={18}
-            activeStrokeColor={( progress < 1 )
-              ? ( color || defaultColor ) : ( completeColor || defaultCompleteColor )}
+            activeStrokeColor={
+              progress < 1
+                ? color || defaultColor
+                : completeColor || defaultCompleteColor
+            }
             showProgressValue={false}
             maxValue={1}
             inActiveStrokeOpacity={0}
@@ -121,9 +146,27 @@ const UploadStatus = ( {
       );
     }
     return (
-      <View className="absolute">
-        {children}
-      </View>
+      <>
+        <AnimatedView
+          className="absolute"
+          entering={keyframe.duration( 2000 )}
+        >
+          <INatIcon
+            size={28}
+            name="upload-complete"
+            color={
+              layout === "vertical"
+                ? theme.colors.secondary
+                : theme.colors.onSecondary
+            }
+          />
+        </AnimatedView>
+        <AnimatedView
+          entering={FadeIn.duration( 1000 ).delay( 2000 )}
+        >
+          {children}
+        </AnimatedView>
+      </>
     );
   };
 
@@ -133,7 +176,7 @@ const UploadStatus = ( {
       accessibilityLabel={accessibilityLabelText()}
       className="items-center justify-center w-[49px] h-[67px]"
     >
-      {displayIcon( )}
+      {displayIcon()}
     </View>
   );
 };
