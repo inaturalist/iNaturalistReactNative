@@ -42,6 +42,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
   const [mediaViewerUris, setMediaViewerUris] = useState( [] );
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -264,36 +265,44 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const removePhotoFromList = ( list, photo ) => {
-      const updatedPhotoList = list;
-      const photoIndex = list.findIndex( p => p === photo );
-      updatedPhotoList.splice( photoIndex, 1 );
-      return updatedPhotoList || list;
+      const i = list.findIndex( p => p === photo );
+      list.splice( i, 1 );
+      return list;
+    };
+
+    const deleteObservationPhoto = ( list, photo ) => {
+      const i = list.findIndex(
+        p => p.photo.localFilePath === photo || p.originalPhotoUri === photo
+      );
+      list.splice( i, 1 );
+      return list;
     };
 
     const deletePhotoFromObservation = async photoUriToDelete => {
-      if ( !photoUriToDelete ) { return; }
+      // photos displayed in EvidenceList
+      const updatedObs = currentObservation;
+      if ( updatedObs ) {
+        const obsPhotos = Array.from( currentObservation?.observationPhotos );
+        if ( obsPhotos.length > 0 ) {
+          const updatedObsPhotos = deleteObservationPhoto( obsPhotos, photoUriToDelete );
+          updatedObs.observationPhotos = updatedObsPhotos;
+          setObservations( [updatedObs] );
+        }
+      }
 
       // photos to show in media viewer
       const media = removePhotoFromList( mediaViewerUris, photoUriToDelete );
-      setMediaViewerUris( [...media] );
-
-      // photos displayed in EvidenceList
-      const updatedObs = currentObservation;
-      const obsPhotos = currentObservation?.observationPhotos;
-      const updatedObsPhotos = removePhotoFromList( Array.from( obsPhotos ), photoUriToDelete );
-      updatedObs.observationPhotos = [...updatedObsPhotos];
-      setObservations( [updatedObs] );
-
       // photos displayed in PhotoPreview
-      const previewPhotos = removePhotoFromList( cameraPreviewUris, photoUriToDelete );
-      setCameraPreviewUris( [...previewPhotos] );
-
+      if ( cameraPreviewUris.length > 0 ) {
+        setCameraPreviewUris( media );
+      }
       // when deleting photo from StandardCamera while adding new evidence, remember to clear
       // the list of new evidence to add
       if ( evidenceToAdd.length > 0 ) {
         const updatedEvidence = removePhotoFromList( evidenceToAdd, photoUriToDelete );
         setEvidenceToAdd( [...updatedEvidence] );
       }
+      setMediaViewerUris( media );
 
       await Photo.deletePhoto( realm, photoUriToDelete );
     };
@@ -390,7 +399,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       passesIdentificationTest,
       setPassesIdentificationTest,
       mediaViewerUris,
-      setMediaViewerUris
+      setMediaViewerUris,
+      selectedPhotoIndex,
+      setSelectedPhotoIndex
     };
   }, [
     currentObservation,
@@ -419,7 +430,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     uploadProgress,
     passesEvidenceTest,
     passesIdentificationTest,
-    mediaViewerUris
+    mediaViewerUris,
+    selectedPhotoIndex
   ] );
 
   return (

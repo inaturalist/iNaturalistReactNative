@@ -42,39 +42,35 @@ const CustomImageZoom = ( { source }: Props ): Node => {
   }
 
   return (
-    <View
-      className="w-full items-center mb-16"
+    <ImageZoom
+      cropWidth={width}
+      cropHeight={SELECTED_IMAGE_HEIGHT}
+      imageWidth={width}
+      imageHeight={SELECTED_IMAGE_HEIGHT}
+      minScale={1}
+      onStartShouldSetPanResponder={e => {
+        const pinching = e.nativeEvent.touches.length === 2;
+        const alreadyZooming = scaleValue.current > 1;
+        return pinching || alreadyZooming;
+      }}
+      onMove={handleMove}
     >
-      <ImageZoom
-        cropWidth={width}
-        cropHeight={SELECTED_IMAGE_HEIGHT}
-        imageWidth={width}
-        imageHeight={SELECTED_IMAGE_HEIGHT}
-        minScale={1}
-        onStartShouldSetPanResponder={e => {
-          const pinching = e.nativeEvent.touches.length === 2;
-          const alreadyZooming = scaleValue.current > 1;
-          return pinching || alreadyZooming;
-        }}
-        onMove={handleMove}
+      <View
+        onStartShouldSetResponder={
+          e => e.nativeEvent.touches.length < 2 && scaleValue.current <= 1
+        }
       >
-        <View
-          onStartShouldSetResponder={
-            e => e.nativeEvent.touches.length < 2 && scaleValue.current <= 1
-          }
-        >
-          {/* $FlowIgnore */}
-          <Image
-            source={source}
-            resizeMode="contain"
-            className={classnames(
-              "w-full h-full"
-            )}
-            accessibilityIgnoresInvertColors
-          />
-        </View>
-      </ImageZoom>
-    </View>
+        {/* $FlowIgnore */}
+        <Image
+          source={source}
+          resizeMode="contain"
+          className={classnames(
+            "w-full h-full"
+          )}
+          accessibilityIgnoresInvertColors
+        />
+      </View>
+    </ImageZoom>
   );
 };
 

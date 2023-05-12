@@ -23,7 +23,8 @@ const EvidenceList = ( {
   handleAddEvidence
 }: Props ): Node => {
   const {
-    setMediaViewerUris
+    setMediaViewerUris,
+    setSelectedPhotoIndex
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
@@ -54,11 +55,9 @@ const EvidenceList = ( {
       <Pressable
         accessibilityRole="button"
         onPress={( ) => {
+          setSelectedPhotoIndex( index - 1 );
           setMediaViewerUris( photoUris );
-          navigation.navigate( "MediaViewer", {
-            // skip the add evidence button
-            initialPhotoSelected: index - 1
-          } );
+          navigation.navigate( "MediaViewer" );
         }}
         className={classnames( imageClass )}
       >

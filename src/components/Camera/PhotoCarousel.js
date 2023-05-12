@@ -22,7 +22,8 @@ type Props = {
   isLandscapeMode?:boolean,
   isLargeScreen?: boolean,
   setMediaViewerUris: Function,
-  photoUris: Array<string>
+  photoUris: Array<string>,
+  setSelectedPhotoIndex: Function
 }
 
 const PhotoCarousel = ( {
@@ -34,7 +35,8 @@ const PhotoCarousel = ( {
   isLandscapeMode,
   isLargeScreen,
   setMediaViewerUris,
-  photoUris
+  photoUris,
+  setSelectedPhotoIndex
 }: Props ): Node => {
   const theme = useTheme( );
   const navigation = useNavigation( );
@@ -87,10 +89,9 @@ const PhotoCarousel = ( {
           if ( deletePhotoMode && deletePhoto ) {
             deletePhoto( item );
           } else {
+            setSelectedPhotoIndex( index );
             setMediaViewerUris( photoUris );
-            navigation.navigate( "MediaViewer", {
-              initialPhotoSelected: index
-            } );
+            navigation.navigate( "MediaViewer" );
           }
         }}
         className={classnames(

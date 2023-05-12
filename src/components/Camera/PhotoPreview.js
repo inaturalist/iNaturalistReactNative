@@ -20,7 +20,8 @@ const PhotoPreview = ( {
   isLargeScreen
 }: Props ): Node => {
   const {
-    deletePhotoFromObservation, cameraPreviewUris: photoUris, setMediaViewerUris
+    deletePhotoFromObservation, cameraPreviewUris: photoUris, setMediaViewerUris,
+    setSelectedPhotoIndex
   } = useContext( ObsEditContext );
 
   const deletePhoto = photoUri => {
@@ -81,6 +82,7 @@ const PhotoPreview = ( {
               savingPhoto={savingPhoto}
               isLargeScreen={isLargeScreen}
               isLandscapeMode={isLandscapeMode}
+              setSelectedPhotoIndex={setSelectedPhotoIndex}
             />
           )
       }
