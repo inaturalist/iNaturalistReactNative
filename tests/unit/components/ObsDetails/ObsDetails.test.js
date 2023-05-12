@@ -52,6 +52,13 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   } ) )
 } ) );
 
+jest.mock( "sharedHooks/useObservationsUpdates", () => ( {
+  __esModule: true,
+  default: jest.fn( () => ( {
+    refetch: jest.fn()
+  } ) )
+} ) );
+
 // TODO if/when we test mutation behavior, the mutation will need to be mocked
 // so it actually does something, or we need to take a different approach
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
@@ -66,7 +73,7 @@ jest.mock( "components/ObsDetails/ActivityTab" );
 jest.mock( "components/SharedComponents/PhotoScroll" );
 
 const mockDataTab = <View testID="mock-data-tab" />;
-jest.mock( "components/ObsDetails/DataTab", () => ( {
+jest.mock( "components/ObsDetails/DetailsTab", () => ( {
   __esModule: true,
   default: () => mockDataTab
 } ) );
@@ -115,7 +122,7 @@ describe( "ObsDetails", () => {
 
   it( "renders data tab on button press", async () => {
     renderComponent( <ObsDetails /> );
-    const button = await screen.findByTestId( "ObsDetails.DataTab" );
+    const button = await screen.findByTestId( "ObsDetails.DetailsTab" );
     expect( screen.queryByTestId( "mock-data-tab" ) ).not.toBeTruthy();
 
     fireEvent.press( button );

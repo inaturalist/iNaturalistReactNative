@@ -284,22 +284,18 @@ const StandardCamera = ( ): Node => {
 
   const largeScreenCameraOptionsClasses = [
     "absolute",
-    "bottom-0",
+    "h-[380px]",
     "items-center",
     "justify-center",
     "mr-5",
+    "mt-[-190px]",
     "pb-0",
     "right-0",
-    "top-0"
+    "top-[50%]"
   ];
 
   const renderLargeScreenCameraOptions = ( ) => (
-    <View
-      className={classnames(
-        ...largeScreenCameraOptionsClasses,
-        "pb-0"
-      )}
-    >
+    <View className={classnames( largeScreenCameraOptionsClasses )}>
       { renderFlashButton( ) }
       <IconButton
         className={classnames( cameraOptionsClassName, "m-0", "mt-[25px]" )}

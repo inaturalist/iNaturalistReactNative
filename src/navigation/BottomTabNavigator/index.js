@@ -228,6 +228,7 @@ const BottomTabs = () => {
           component={ObsDetails}
           options={{
             headerTitle: t( "Observation" ),
+            headerShown: false,
             unmountOnBlur: true
           }}
         />

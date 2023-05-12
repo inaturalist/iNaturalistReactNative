@@ -96,7 +96,7 @@ lane :tag do
   last_tag = last_git_tag
   # Increment the iOS build number
   increment_build_number( xcodeproj: XCODEPROJ )
-  increment_version_number( version_number: VERSION )
+  increment_version_number( xcodeproj: XCODEPROJ, version_number: VERSION )
   build_number = get_build_number( xcodeproj: XCODEPROJ )
   # set android/app/build.gradle versionCode to this build_number
   set_android_version_code( build_number )

@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import DataTab from "components/ObsDetails/DataTab";
+import DetailsTab from "components/ObsDetails/DetailsTab";
 import React from "react";
 import { View } from "react-native";
 
@@ -46,16 +46,16 @@ jest.mock( "components/SharedComponents/Map", () => ( {
   default: () => mockMap
 } ) );
 
-describe( "DataTab", ( ) => {
+describe( "DetailsTab", ( ) => {
   test( "should show description of observation", async ( ) => {
-    renderComponent( <DataTab observation={mockObservation} /> );
+    renderComponent( <DetailsTab observation={mockObservation} /> );
 
     const description = await screen.findByText( mockObservation.description );
     expect( description ).toBeTruthy( );
   } );
 
   test( "should display map if user is online", ( ) => {
-    renderComponent( <DataTab observation={mockObservation} /> );
+    renderComponent( <DetailsTab observation={mockObservation} /> );
 
     const map = screen.queryByTestId( "mock-map" );
     expect( map ).toBeTruthy( );
