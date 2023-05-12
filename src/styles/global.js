@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 import colors from "./tailwindColors";
 
+// https://reactnative.dev/docs/shadow-props
 export const getShadowStyle = ( {
   shadowColor,
   offsetWidth,
@@ -10,7 +11,10 @@ export const getShadowStyle = ( {
   shadowRadius,
   elevation
 } ) => StyleSheet.create( {
+  // iOS + Android >= 28
   shadowColor,
+
+  // iOS-only
   shadowOffset: {
     width: offsetWidth,
     height: offsetHeight
@@ -19,6 +23,8 @@ export const getShadowStyle = ( {
   shadowOpacity,
   // $FlowIssue[incompatible-shape]
   shadowRadius,
+
+  // Android-only
   // $FlowIssue[incompatible-shape]
   elevation
 } );
