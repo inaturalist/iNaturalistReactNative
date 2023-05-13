@@ -20,10 +20,6 @@ import colors from "styles/tailwindColors";
 import MainPhotoDisplay from "./MainPhotoDisplay";
 import PhotoSelector from "./PhotoSelector";
 
-export const PORTRAIT = "portrait";
-export const LANDSCAPE_LEFT = "landscapeLeft";
-export const LANDSCAPE_RIGHT = "landscapeRight";
-
 const MediaViewer = ( ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -160,7 +156,7 @@ const MediaViewer = ( ): Node => {
         horizontalScroll={horizontalScroll}
       />
       {!atFirstPhoto && (
-        <View className="absolute top-1/2 -mt-20 left-0">
+        <View className="absolute top-1/2 -mt-[26px] left-0">
           <IconButton
             onPress={handleArrowPressLeft}
             icon="chevron-left-circle"
@@ -170,7 +166,7 @@ const MediaViewer = ( ): Node => {
         </View>
       )}
       {!atLastPhoto && (
-        <View className="absolute top-1/2 -mt-20 right-0">
+        <View className="absolute top-1/2 -mt-[26px] right-0">
           <IconButton
             onPress={handleArrowPressRight}
             icon="chevron-right-circle"
@@ -180,7 +176,6 @@ const MediaViewer = ( ): Node => {
         </View>
       )}
       <View className={classnames(
-        "absolute bottom-[18px]",
         {
           "left-[19px]": isTablet,
           "left-[5px]": !isTablet

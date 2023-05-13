@@ -4,6 +4,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { FlatList } from "react-native";
+import Photo from "realmModels/Photo";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 
 import CustomImageZoom from "./CustomImageZoom";
@@ -20,7 +21,9 @@ const MainPhotoDisplay = ( {
   handleScrollEndDrag
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
-  const renderImage = ( { item } ) => <CustomImageZoom source={{ uri: item }} />;
+  const renderImage = ( { item } ) => (
+    <CustomImageZoom source={{ uri: Photo.displayLargePhoto( item ) }} />
+  );
 
   // need getItemLayout for setting initial scroll index
   const getItemLayout = ( data, index ) => ( {

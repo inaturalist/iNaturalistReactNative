@@ -35,13 +35,14 @@ const PhotoSelector = ( {
         source={{ uri: item }}
         accessibilityIgnoresInvertColors
         className={classnames(
+          "mt-[6px]",
           {
             "border border-white border-[3px]": selectedPhotoIndex === index
           },
           {
-            "mx-[3px] mt-0": !isLargeScreen,
-            "mx-[8.5px] mt-0": isLargeScreen && isLandscapeMode,
-            "mx-[10px] my-[18px] mt-0": isLargeScreen && !isLandscapeMode
+            "mx-[3px]": !isLargeScreen,
+            "mx-[8.5px] mt-[47px]": isLargeScreen && isLandscapeMode,
+            "mx-[10px] my-[18px] mt-[47px]": isLargeScreen && !isLandscapeMode
           },
           {
             [`${smallPhotoClass}`]: !isLargeScreen,
