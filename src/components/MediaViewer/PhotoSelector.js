@@ -1,7 +1,7 @@
 // @flow
 
 import classnames from "classnames";
-import { Image, Pressable } from "components/styledComponents";
+import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import {
@@ -23,8 +23,8 @@ const PhotoSelector = ( {
   isLandscapeMode,
   isLargeScreen
 }: Props ): Node => {
-  const smallPhotoClass = "rounded-sm w-[42px] h-[42px]";
-  const largePhotoClass = "rounded-md w-[83px] h-[83px]";
+  const smallPhotoClass = "rounded-sm w-[42px] h-[42px] mt-[6px] mx-[3px]";
+  const largePhotoClass = "rounded-md w-[83px] h-[83px] mx-[10px]";
 
   const renderPhoto = ( { item, index } ) => (
     <Pressable
@@ -35,14 +35,12 @@ const PhotoSelector = ( {
         source={{ uri: item }}
         accessibilityIgnoresInvertColors
         className={classnames(
-          "mt-[6px]",
           {
             "border border-white border-[3px]": selectedPhotoIndex === index
           },
           {
-            "mx-[3px]": !isLargeScreen,
-            "mx-[8.5px] mt-[47px]": isLargeScreen && isLandscapeMode,
-            "mx-[10px] my-[18px] mt-[47px]": isLargeScreen && !isLandscapeMode
+            "mt-[18px]": isLargeScreen && isLandscapeMode,
+            "mt-[47px]": isLargeScreen && !isLandscapeMode
           },
           {
             [`${smallPhotoClass}`]: !isLargeScreen,
@@ -54,11 +52,18 @@ const PhotoSelector = ( {
   );
 
   return (
-    <FlatList
-      data={[...photoUris]}
-      renderItem={renderPhoto}
-      horizontal
-    />
+    <View className={classnames(
+      {
+        "left-[9px]": isLargeScreen
+      }
+    )}
+    >
+      <FlatList
+        data={[...photoUris]}
+        renderItem={renderPhoto}
+        horizontal
+      />
+    </View>
   );
 };
 

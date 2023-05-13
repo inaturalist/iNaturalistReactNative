@@ -44,7 +44,8 @@ const MediaViewer = ( ): Node => {
 
   const horizontalScroll = useRef( null );
 
-  const { isTablet, isLandscapeMode, screenWidth } = useDeviceOrientation( );
+  const { isLandscapeMode, screenWidth } = useDeviceOrientation( );
+  const isLargeScreen = screenWidth > 320;
 
   const numOfPhotos = photoUris.length;
 
@@ -175,27 +176,19 @@ const MediaViewer = ( ): Node => {
           />
         </View>
       )}
-      <View className={classnames(
-        {
-          "left-[19px]": isTablet,
-          "left-[5px]": !isTablet
-        }
-      )}
-      >
-        <PhotoSelector
-          photoUris={photoUris}
-          scrollToIndex={scrollToIndex}
-          isLargeScreen={isTablet}
-          isLandscapeMode={isLandscapeMode}
-          selectedPhotoIndex={selectedPhotoIndex}
-        />
-      </View>
+      <PhotoSelector
+        photoUris={photoUris}
+        scrollToIndex={scrollToIndex}
+        isLargeScreen={screenWidth > 320}
+        isLandscapeMode={isLandscapeMode}
+        selectedPhotoIndex={selectedPhotoIndex}
+      />
       <IconButton
         className={classnames(
-          "absolute",
+          "absolute right-[14px]",
           {
-            "bottom-40 right-10": isTablet,
-            "bottom-20 right-5": !isTablet
+            "bottom-[138px]": isLargeScreen,
+            "bottom-[91px]": !isLargeScreen
           }
         )}
         onPress={showWarningSheet}
