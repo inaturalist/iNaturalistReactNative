@@ -6,6 +6,7 @@ import { Platform, useWindowDimensions } from "react-native";
 import HTML, { defaultSystemFonts } from "react-native-render-html";
 import WebView from "react-native-webview";
 import sanitizeHtml from "sanitize-html";
+import { isEqual } from 'lodash';
 
 const ALLOWED_TAGS = ( `
   a
@@ -130,4 +131,6 @@ const UserText = ( {
   );
 };
 
-export default UserText;
+export default React.memo(UserText, (oldProps, newProps) => {
+  return isEqual(oldProps, newProps)
+});
