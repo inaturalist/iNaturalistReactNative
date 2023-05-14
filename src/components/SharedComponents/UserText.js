@@ -130,4 +130,4 @@ const UserText = ( {
   );
 };
 
-export default UserText;
+export default React.memo(UserText);
