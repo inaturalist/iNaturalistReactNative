@@ -1,11 +1,12 @@
 // @flow
 
+import { useIsFocused } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import {
-  useEffect, useState, useRef
+  useEffect, useRef,
+  useState
 } from "react";
 import Observation from "realmModels/Observation";
-import { useIsFocused } from "@react-navigation/native";
 
 const { useRealm } = RealmContext;
 
@@ -14,8 +15,8 @@ const useLocalObservations = ( ): Object => {
   // use a ref as a temporary store because MyObservations page doesn't unmount on blue
   // only updating state when focused will help prevent MyObservations from
   // blocking other components from rendering
-  const stagedObservationList = useRef([])
-  const stagedObsToUpload = useRef([])
+  const stagedObservationList = useRef( [] );
+  const stagedObsToUpload = useRef( [] );
   const [observationList, setObservationList] = useState( [] );
   const [allObsToUpload, setAllObsToUpload] = useState( [] );
 
@@ -36,18 +37,15 @@ const useLocalObservations = ( ): Object => {
       // create an array of Realm objects... which will probably require some
       // degree of pagination in the future
       // setObservationList( _.compact( collection ) );
-      const currentCollection = [...collection];
+      stagedObservationList.current = [...collection];
 
       const unsyncedObs = Observation.filterUnsyncedObservations( realm );
 
-      const currentObsToUpload = Array.from( unsyncedObs );
-
-      stagedObservationList.current = currentCollection;
-      stagedObsToUpload.current = currentObsToUpload;
+      stagedObsToUpload.current = Array.from( unsyncedObs );
 
       if ( isFocused ) {
-        setObservationList( currentCollection );
-        setAllObsToUpload( currentObsToUpload );
+        setObservationList( stagedObservationList.current );
+        setAllObsToUpload( stagedObsToUpload.current );
       }
     } );
     // eslint-disable-next-line consistent-return
@@ -57,12 +55,12 @@ const useLocalObservations = ( ): Object => {
     };
   }, [isFocused, allObsToUpload.length, realm] );
 
-  useEffect(( ) => {
+  useEffect( ( ) => {
     if ( isFocused ) {
       setObservationList( stagedObservationList.current );
       setAllObsToUpload( stagedObsToUpload.current );
     }
-  }, [isFocused])
+  }, [isFocused] );
 
   return {
     observationList,
