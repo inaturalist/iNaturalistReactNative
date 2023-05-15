@@ -168,6 +168,8 @@ Display-Name = Display Name
 
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 
+Dont-have-an-account - Don't have an account? Sign up
+
 EDIT-LOCATION = EDIT LOCATION
 
 # Appears above the email text field
@@ -213,7 +215,7 @@ Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
 Following = Following
 
 # Forgot password link
-Forgot-Password = Forgot Password?
+Forgot-Password = Forgot Password
 
 Fungi = Fungi
 
@@ -288,7 +290,7 @@ Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help 
 
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
 
-Log-in = Log in
+LOG-IN = LOG IN
 
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 
@@ -297,9 +299,6 @@ Log-in-to-contribute-and-sync = Log in to contribute & sync
 Log-in-to-contribute-your-observations = Log in to contribute your observations to science!
 
 Logged-in-as = Logged in as: { $username }
-
-# Appears in the login screen
-Login-header = Log in to use iNaturalist
 
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
@@ -406,7 +405,7 @@ Organism-is-wild = Organism is wild
 
 OTHER-DATA = OTHER DATA
 
-Password = Password
+PASSWORD = PASSWORD
 
 Paused = Paused
 
@@ -692,7 +691,7 @@ User = User
 Username = Username
 
 # Appears above the text fields
-Username-or-Email = Username or Email
+USERNAME-OR-EMAIL = USERNAME OR EMAIL
 
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
 

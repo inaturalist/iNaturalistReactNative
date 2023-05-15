@@ -96,6 +96,7 @@
   "Display": "Display",
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
+  "Dont-have-an-account - Don't have an account? Sign up": "",
   "EDIT-LOCATION": "EDIT LOCATION",
   "Email": {
     "comment": "Appears above the email text field",
@@ -125,7 +126,7 @@
   "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
-    "val": "Forgot Password?"
+    "val": "Forgot Password"
   },
   "Fungi": "Fungi",
   "Geoprivacy": "Geoprivacy:",
@@ -180,15 +181,11 @@
   "LOCATION": "LOCATION",
   "Location-accuracy-is-too-imprecise": "Location accuracy is too imprecise to help identifiers. Please zoom in.",
   "LOCATION-TOO-IMPRECISE": "LOCATION TOO IMPRECISE",
-  "Log-in": "Log in",
+  "LOG-IN": "LOG IN",
   "LOG-IN-TO-INATURALIST": "LOG IN TO INATURALIST",
   "Log-in-to-contribute-and-sync": "Log in to contribute & sync",
   "Log-in-to-contribute-your-observations": "Log in to contribute your observations to science!",
   "Logged-in-as": "Logged in as: { $username }",
-  "Login-header": {
-    "comment": "Appears in the login screen",
-    "val": "Log in to use iNaturalist"
-  },
   "Login-sub-title": {
     "comment": "Appears in the login screen",
     "val": "Document living things, identify organisms & contribute to science"
@@ -262,7 +259,7 @@
   },
   "Organism-is-wild": "Organism is wild",
   "OTHER-DATA": "OTHER DATA",
-  "Password": "Password",
+  "PASSWORD": "PASSWORD",
   "Paused": "Paused",
   "Photo-Licensing": "Photo Licensing",
   "Photos-you-take-will-appear-here": "Photos you take will appear here",
@@ -442,9 +439,9 @@
   "Upload-Complete": "Upload Complete",
   "User": "User { $userHandle }",
   "Username": "Username",
-  "Username-or-Email": {
+  "USERNAME-OR-EMAIL": {
     "comment": "Appears above the text fields",
-    "val": "Username or Email"
+    "val": "USERNAME OR EMAIL"
   },
   "VIEW-DATA-QUALITY-ASSESSEMENT": "VIEW DATA QUALITY ASSESSEMENT",
   "View-in-browser": "View in Browser",
