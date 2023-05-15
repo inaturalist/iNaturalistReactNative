@@ -2,7 +2,6 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
-import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
 import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
@@ -12,7 +11,7 @@ import {
   isFuture,
   parseISO
 } from "date-fns";
-import { ObsEditContext, RealmContext } from "providers/contexts";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
@@ -27,19 +26,13 @@ import DatePicker from "./DatePicker";
 import EvidenceList from "./EvidenceList";
 import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
 
-const { useRealm } = RealmContext;
-
 const DESIRED_LOCATION_ACCURACY = 4000000;
 
 const EvidenceSection = ( ): Node => {
   const { t } = useTranslation( );
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-  const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
   const theme = useTheme( );
   const {
     currentObservation,
-    observations,
-    setObservations,
     setPassesEvidenceTest
   } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
@@ -149,35 +142,6 @@ const EvidenceSection = ( ): Node => {
     return false;
   }, [shouldFetchLocation, hasValidLocation, hasValidDate, hasPhotoOrSound] );
 
-  const showModal = ( ) => setMediaViewerVisible( true );
-  const hideModal = ( ) => setMediaViewerVisible( false );
-
-  const realm = useRealm( );
-
-  const setPhotos = uris => {
-    const updatedObservations = observations;
-    const updatedObsPhotos = Array.from( currentObservation.observationPhotos )
-      .filter( obsPhoto => {
-        const { photo } = obsPhoto;
-        if ( uris.includes( photo.url || photo.localFilePath ) ) {
-          return obsPhoto;
-        }
-        return false;
-      } );
-    // when updatedObsPhotos is an empty array, Realm apparently writes to the
-    // db immediately when you assign, so if you don't do this in write
-    // callback it raises an exception
-    realm?.write( ( ) => {
-      currentObservation.observationPhotos = updatedObsPhotos;
-    } );
-    setObservations( [...updatedObservations] );
-  };
-
-  const handleSelection = photo => {
-    setInitialPhotoSelected( photo );
-    showModal( );
-  };
-
   useEffect( ( ) => {
     // we're only showing the Missing Evidence Sheet if location/date are missing
     // but not if there is a missing photo or sound
@@ -190,13 +154,6 @@ const EvidenceSection = ( ): Node => {
 
   return (
     <View className="mx-6 mt-6">
-      <MediaViewerModal
-        mediaViewerVisible={mediaViewerVisible}
-        hideModal={hideModal}
-        initialPhotoSelected={initialPhotoSelected}
-        photoUris={photoUris}
-        setPhotoUris={setPhotos}
-      />
       {showAddEvidenceSheet && (
         <AddEvidenceSheet
           setShowAddEvidenceSheet={setShowAddEvidenceSheet}
@@ -216,7 +173,6 @@ const EvidenceSection = ( ): Node => {
       </View>
       <EvidenceList
         photoUris={photoUris}
-        setSelectedPhotoIndex={handleSelection}
         handleAddEvidence={handleAddEvidence}
       />
       <View className="flex-row flex-nowrap my-4">

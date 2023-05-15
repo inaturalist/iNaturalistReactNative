@@ -532,8 +532,6 @@ Recording-Sound = Recording Sound
 
 Relationships = Relationships
 
-Remove-Photo = Remove Photo
-
 Remove-Photos = Remove Photos
 
 Remove-Relationship = Remove Relationship
@@ -742,9 +740,9 @@ X-of-Y = {$count ->
 }
 
 # Displays number of photos attached to an observation in the Media Viewer
-X-Photos = {$photoCount ->
-    [one] 1 Photo
-    *[other] {$photoCount} Photos
+X-PHOTOS = {$photoCount ->
+    [one] 1 PHOTO
+    *[other] {$photoCount} PHOTOS
 }
 
 # Displays number of photos and observations a user has selected from the camera roll
@@ -942,6 +940,7 @@ Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist 
 # Onboarding text on MyObservations: 51-100 observations
 You-can-search-observations-of-any-plant-or-animal = You can search observations of any plant or animal anywhere in the world with Explore!
 
+DISCARD-MEDIA = DISCARD MEDIA?
 DISCARD-PHOTOS = DISCARD PHOTOS?
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 DISCARD = DISCARD

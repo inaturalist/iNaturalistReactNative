@@ -336,7 +336,6 @@
   "Record-new-sound": "Record new sound",
   "Recording-Sound": "Recording Sound",
   "Relationships": "Relationships",
-  "Remove-Photo": "Remove Photo",
   "Remove-Photos": "Remove Photos",
   "Remove-Relationship": "Remove Relationship",
   "Reptiles": "Reptiles",
@@ -467,9 +466,9 @@
   "X-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
   "X-observations-uploaded": "{ $count ->\n  [one] 1 observation uploaded\n *[other] { $count } observations uploaded\n}",
   "X-of-Y": "{ $count ->\n  [one] 1\n *[other] { $count }\n} { $totalObservationCount ->\n  [one] of { $totalObservationCount }\n *[other] of { $totalObservationCount }\n}",
-  "X-Photos": {
+  "X-PHOTOS": {
     "comment": "Displays number of photos attached to an observation in the Media Viewer",
-    "val": "{ $photoCount ->\n  [one] 1 Photo\n *[other] { $photoCount } Photos\n}"
+    "val": "{ $photoCount ->\n  [one] 1 PHOTO\n *[other] { $photoCount } PHOTOS\n}"
   },
   "X-PHOTOS-X-OBSERVATIONS": {
     "comment": "Displays number of photos and observations a user has selected from the camera roll",
@@ -665,6 +664,7 @@
     "comment": "Onboarding text on MyObservations: 51-100 observations",
     "val": "You can search observations of any plant or animal anywhere in the world with Explore!"
   },
+  "DISCARD-MEDIA": "DISCARD MEDIA?",
   "DISCARD-PHOTOS": "DISCARD PHOTOS?",
   "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
   "DISCARD": "DISCARD",

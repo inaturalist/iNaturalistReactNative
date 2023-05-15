@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
-import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
+import PhotoCarousel from "components/Camera/PhotoCarousel";
 import React from "react";
 
 import factory from "../../../factory";
