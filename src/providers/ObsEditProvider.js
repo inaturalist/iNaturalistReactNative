@@ -99,8 +99,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const createObservationFromGalleryPhoto = useCallback( async photo => {
     const originalPhotoUri = photo?.image?.uri;
     const firstPhotoExif = await parseExif( originalPhotoUri );
-    logger.info( `EXIF: ${firstPhotoExif}` );
-    const exifDate = firstPhotoExif ? formatExifDateAsString( firstPhotoExif.date ) : null;
+    logger.info( `EXIF: ${JSON.stringify( firstPhotoExif, null, 2 )}` );
+    const exifDate = firstPhotoExif?.date ? formatExifDateAsString( firstPhotoExif.date ) : null;
 
     const observedOnDate = exifDate || formatDateStringFromTimestamp( photo.timestamp );
     const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
