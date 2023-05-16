@@ -46,6 +46,18 @@ Are-you-sure = Are you sure?
 
 Are-you-sure-you-want-to-sign-out = Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.
 
+attribution-cc-by = some rights reserved (CC BY)
+
+attribution-cc-by-sa = some rights reserved (CC BY-SA)
+
+attribution-cc-by-nc = some rights reserved (CC BY-NC) 
+
+attribution-cc-by-nd = some rights reserved (CC BY-ND)
+
+attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
+
+attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
+
 app-authorized-on-date = { $appName } (authorized on: { $date })
 
 Applications = Applications
@@ -63,9 +75,6 @@ By-exiting-changes-not-saved = By exiting, changes to your observation will not 
 
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
 
-# Quality grade option: Casual (shortened for My Observations view)
-C = C
-
 Camera-Roll = Camera Roll
 
 CANCEL = CANCEL
@@ -73,9 +82,6 @@ CANCEL = CANCEL
 Cancel = Cancel
 
 Captive-Cultivated = Captive/Cultivated
-
-# Quality grade option
-Casual = Casual
 
 # After pressing the reset password button
 Check-your-email = Check your email! We've sent password reset instructions.
@@ -92,23 +98,39 @@ Connected-Accounts = Connected Accounts
 
 Content-Display = Content & Display
 
+Copy-coordinates = Copy Coordinates
+
 Couldnt-create-comment = Couldn't create comment
 
 Couldnt-create-identification = Couldn't create identification
+
+Couldnt-create-identification-error = Couldn't create identification { $error }
+
+Couldnt-create-identification-unknown-error = Couldn't create identification, Unknown Error.
 
 Create-an-iNaturalist-account-to-save-your-observations = Create an iNaturalist account to save your observations and contribute them to science.
 
 CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
 
+DATA-QUALITY = DATA QUALITY
+
+Data-quality-research-description = This observation has enough identifications to be considered resarch grade
+
+Data-quality-needs-id-description = This observation needs more identifications to reach research grade
+
+Data-quality-casual-description = This observation needs more information verified to be considered verifiable
+
 Date = Date
+
+DATE = DATE
 
 Date-added-newest-to-oldest = Date added - newest to oldest
 
 Date-added-oldest-to-newest = Date added - oldest to newest
 
-Date-observed-colon = Date observed:
+Date_observed_header_short = Observed
 
-Date-uploaded-colon = Date uploaded:
+Date-uploaded-header-short = Uploaded
 
 Default-Search-Place = Default Search Place
 
@@ -260,6 +282,8 @@ Licensing = Licensing
 
 Location = Location
 
+LOCATION = LOCATION
+
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
@@ -333,15 +357,9 @@ Native = Native
 # Header for nearby projects
 Nearby = Nearby
 
-# Quality grade option
-Needs-ID = Needs ID
-
 New-Observation = New Observation
 
 Next = Next
-
-# Quality grade option: Needs ID (shortened for My Observations view)
-NI = NI
 
 No = No
 
@@ -357,12 +375,10 @@ none = none
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
 # license code
-no-rights-reserved = no rights reserved
-
-NOTES = NOTES
+no-rights-reserved-cc0 = no rights reserved (CC0)
 
 # Header for observation description on observation detail
-Notes = Notes
+NOTES = NOTES
 
 Notifications = Notifications
 
@@ -370,7 +386,7 @@ Obscured = Obscured
 
 Observation = Observation
 
-Observation-Attribution = Observation © {$attribution} · {$licenseCode}
+Observation-Attribution = Observation: © {$attribution} · {$restrictions}
 
 OBSERVATIONS = OBSERVATIONS
 
@@ -425,6 +441,11 @@ PROJECTS = PROJECTS
 Projects = Projects
 
 Quality-Grade = Quality Grade
+
+# Quality grade options
+quality-grade-research = Research
+quality-grade-needs-id = Needs Id
+quality-grade-casual = Casual
 
 Rank = Rank
 
@@ -511,8 +532,6 @@ Recording-Sound = Recording Sound
 
 Relationships = Relationships
 
-Remove-Photo = Remove Photo
-
 Remove-Photos = Remove Photos
 
 Remove-Relationship = Remove Relationship
@@ -538,9 +557,6 @@ Reviewed-only = Reviewed only
 
 Revoke = Revoke
 
-# Quality grade option: Research Grade (shortened for My Observations view)
-RG = RG
-
 Save = Save
 
 SAVE-LOCATION = SAVE LOCATION
@@ -548,6 +564,8 @@ SAVE-LOCATION = SAVE LOCATION
 SAVE-ALL = SAVE ALL
 
 SAVE-CHANGES = SAVE CHANGES
+
+Saved-Observation = Saved observation, in queue to upload
 
 Search-for-a-location = Search for a location
 
@@ -568,6 +586,8 @@ Separate-Photos = Separate Photos
 Settings = Settings
 
 SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
+
+Share-location = Share Location
 
 Sign-out = Sign out
 
@@ -609,9 +629,6 @@ The-iNaturalist-Network-is-a-collection-of-localized-websites = The iNaturalist 
 
 This-is-how-all-taxon-names-will-be-displayed-to-you-across-iNaturalist = This is how all taxon names will be displayed to you across iNaturalist
 
-# Describes whether a user made this observation from web, iOS, or Android
-This-observation-was-created-using = This observation was created using:
-
 This-sets-your-language-and-date-formatting-preferences-across-iNaturalist = This sets your language and date formatting preferences across iNaturalist based on your locale.
 
 This-will-be-your-default-place-for-all-searches-in-Explore-and-Identify = This will be your default place for all searches in Explore and Identify.
@@ -648,6 +665,9 @@ UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
     *[other] {$count} OBSERVATIONS
 }
 
+# Describes whether a user made this observation from web, iOS, or Android
+Uploaded-via-application = Uploaded via: { $application }
+
 # Shows the number of observations a user is currently uploading on my observations page
 Uploading-X-Observations = Uploading {$count ->
     [one] 1 Observation
@@ -667,15 +687,16 @@ Upload-Progress = Upload {$uploadProgress} percent complete
 
 Upload-Complete = Upload Complete
 
-Saved-Observation = Saved observation, in queue to upload
-
-
 User = User
 
 Username = Username
 
 # Appears above the text fields
 Username-or-Email = Username or Email
+
+VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
+
+View-in-browser = View in Browser
 
 Visually-search-iNaturalist-data = Visually search iNaturalist’s wealth of data. Search by a taxon in a location
 
@@ -719,9 +740,9 @@ X-of-Y = {$count ->
 }
 
 # Displays number of photos attached to an observation in the Media Viewer
-X-Photos = {$photoCount ->
-    [one] 1 Photo
-    *[other] {$photoCount} Photos
+X-PHOTOS = {$photoCount ->
+    [one] 1 PHOTO
+    *[other] {$photoCount} PHOTOS
 }
 
 # Displays number of photos and observations a user has selected from the camera roll
@@ -798,8 +819,8 @@ Quality-Grade-casual = Quality Grade Casual
 ADD-EVIDENCE = ADD EVIDENCE
 You-can-add-up-to-20-media = You can add up to 20 photos and 20 sounds per observation.
 
-Add-Comment = Add Comment
-Suggest-an-ID = Suggest an ID
+COMMENT = COMMENT
+SUGGEST-ID = SUGGEST ID
 # Hint text inside the 'Add a comment' Text Input
 Add-a-comment = Add a comment...
 
@@ -808,8 +829,9 @@ No = No
 Discard-Comment = Discard Comment
 Are-you-sure-discard-comment = Are you sure you want to discard this comment?
 
-## Accessibility labels: these are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
-## iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
+# Accessibility label for bulk import / photo import button
+# These are used by screen readers to label actionable elements iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619577-accessibilitylabel
+# iOS Guidelines "A string that succinctly identifies the accessibility element." Starts with capital letter, no ending punctuation.
 Bulk-importer = Bulk importer
 Camera = Camera
 Close = Close
@@ -902,17 +924,23 @@ Take-photo = Take photo
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-short = M/d/yy
+
+# Date formatting using date-fns
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-short = M/d/yy h:mm a
+
+# Date formatting using date-fns
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 date-format-long = PP
 
-# Onboarding text on MyObservations
-# 0-10 observations
+# Onboarding text on MyObservations: 0-10 observations
 As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
-# 11-50 observations
+# Onboarding text on MyObservations: 11-50 observations
 Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
-# 51-100 observations
+# Onboarding text on MyObservations: 51-100 observations
 You-can-search-observations-of-any-plant-or-animal = You can search observations of any plant or animal anywhere in the world with Explore!
 
+DISCARD-MEDIA = DISCARD MEDIA?
 DISCARD-PHOTOS = DISCARD PHOTOS?
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 DISCARD = DISCARD
@@ -928,17 +956,17 @@ Failed-to-log-in = Failed to log in
 # Generic error message
 Something-went-wrong = Something went wrong.
 
-#Geoprivacy sheet descriptions
+# Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
 
-#Wild status sheet descriptions
+# Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn’t placed in this location by humans.
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 
-# Latitude, longitude, and accuracy
-Lat-Lon-Acc = Lat: { $latitude }, Lon: { $longitude }, Acc: { $accuracy }
+# Latitude, longitude, and accuracy on a single line
+Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 
 # Missing evidence sheet
 Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.

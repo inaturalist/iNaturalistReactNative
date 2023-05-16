@@ -16,7 +16,6 @@ export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as KebabMenu } from "./KebabMenu";
 export { default as Map } from "./Map";
 export { default as ObservationLocation } from "./ObservationLocation";
-export { default as PhotoCarousel } from "./PhotoCarousel";
 export { default as PhotoCount } from "./PhotoCount";
 export { default as QualityGradeStatus } from "./QualityGradeStatus/QualityGradeStatus";
 export { default as ScrollViewWrapper } from "./ScrollViewWrapper";

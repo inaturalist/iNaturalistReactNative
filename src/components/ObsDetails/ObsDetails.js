@@ -1,7 +1,9 @@
 // @flow
+import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
+import createIdentification from "api/identifications";
 import {
   faveObservation,
   fetchRemoteObservation,
@@ -10,7 +12,9 @@ import {
 } from "api/observations";
 import ObsStatus from "components/MyObservations/ObsStatus";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
-import { DisplayTaxonName, ObservationLocation, Tabs } from "components/SharedComponents";
+import {
+  Button, DisplayTaxonName, ObservationLocation, PhotoCount, Tabs
+} from "components/SharedComponents";
 import HideView from "components/SharedComponents/HideView";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import ScrollViewWrapper from "components/SharedComponents/ScrollViewWrapper";
@@ -21,12 +25,11 @@ import { formatISO } from "date-fns";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Alert, LogBox } from "react-native";
 import {
   ActivityIndicator,
-  Button as IconButton,
-  useTheme
+  Button as IconButton
 } from "react-native-paper";
 import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
@@ -37,12 +40,15 @@ import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useIsConnected from "sharedHooks/useIsConnected";
 import useLocalObservation from "sharedHooks/useLocalObservation";
+import useObservationsUpdates,
+{ fetchObservationUpdatesKey } from "sharedHooks/useObservationsUpdates";
 import useTranslation from "sharedHooks/useTranslation";
+import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import ActivityTab from "./ActivityTab";
 import AddCommentModal from "./AddCommentModal";
-import DataTab from "./DataTab";
+import DetailsTab from "./DetailsTab";
 
 const { useRealm } = RealmContext;
 
@@ -54,11 +60,12 @@ LogBox.ignoreLogs( [
 ] );
 
 const ACTIVITY_TAB_ID = "ACTIVITY";
-const DATA_TAB_ID = "DATA";
+const DETAILS_TAB_ID = "DETAILS";
 
 const ObsDetails = (): Node => {
   const isOnline = useIsConnected();
   const currentUser = useCurrentUser();
+  const [ids, setIds] = useState<Array<Object>>( [] );
   const userId = currentUser?.id;
   const [refetch, setRefetch] = useState( false );
   const { params } = useRoute();
@@ -70,7 +77,6 @@ const ObsDetails = (): Node => {
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [addingComment, setAddingComment] = useState( false );
   const [comments, setComments] = useState( [] );
-  const theme = useTheme();
 
   const queryClient = useQueryClient();
 
@@ -87,9 +93,15 @@ const ObsDetails = (): Node => {
 
   const markViewedLocally = async () => {
     realm?.write( () => {
-      localObservation.viewed = true;
+      // Flags if all comments and identifications have been viewed
+      localObservation.comments_viewed = true;
+      localObservation.identifications_viewed = true;
     } );
   };
+
+  const { refetch: refetchObservationUpdates } = useObservationsUpdates(
+    !!currentUser && !!observation
+  );
 
   const markViewedMutation = useAuthenticatedMutation(
     ( viewedParams, optsWithAuth ) => markObservationUpdatesViewed( viewedParams, optsWithAuth ),
@@ -97,7 +109,9 @@ const ObsDetails = (): Node => {
       onSuccess: () => {
         markViewedLocally();
         queryClient.invalidateQueries( ["fetchRemoteObservation", uuid] );
+        queryClient.invalidateQueries( [fetchObservationUpdatesKey] );
         refetchRemoteObservation();
+        refetchObservationUpdates();
       }
     }
   );
@@ -159,6 +173,25 @@ const ObsDetails = (): Node => {
     } );
   };
 
+  const createIdentificationMutation = useAuthenticatedMutation(
+    ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
+    {
+      onSuccess: data => setIds( [...ids, data[0]] ),
+      onError: e => {
+        let error = null;
+        if ( e ) {
+          error = t( "Couldnt-create-identification-error", { error: e.message } );
+        } else {
+          error = t( "Couldnt-create-identification-unknown-error" );
+        }
+
+        // Remove temporary ID and show error
+        setIds( [...ids] );
+        showErrorAlert( error );
+      }
+    }
+  );
+
   // reload if change to observation
   useEffect( () => {
     if ( localObservation && remoteObservation ) {
@@ -172,31 +205,17 @@ const ObsDetails = (): Node => {
   useEffect( () => {
     if (
       localObservation
-      && !localObservation.viewed
+      && localObservation.unviewed()
       && !markViewedMutation.isLoading
     ) {
       markViewedMutation.mutate( { id: uuid } );
     }
   }, [localObservation, markViewedMutation, uuid] );
 
-  useEffect( () => {
-    const obsCreatedLocally = observation?.id === null;
-    const obsOwnedByCurrentUser = observation?.user?.id === currentUser?.id;
-
-    const navToObsEdit = () => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } );
-    const editIcon = () => ( obsCreatedLocally || obsOwnedByCurrentUser ) && (
-      <IconButton
-        icon="pencil"
-        onPress={navToObsEdit}
-        textColor={theme.colors.primary}
-        accessibilityLabel={t( "Navigate-to-edit-observation" )}
-      />
-    );
-
-    navigation.setOptions( {
-      headerRight: editIcon
-    } );
-  }, [navigation, observation, currentUser, t, theme] );
+  const navToObsEdit = useCallback(
+    ( ) => navigation.navigate( "ObsEdit", { uuid: observation?.uuid } ),
+    [navigation, observation]
+  );
 
   useEffect( () => {
     // set initial comments for activity currentTabId
@@ -256,6 +275,38 @@ const ObsDetails = (): Node => {
     }
   };
 
+  const onIDAdded = async identification => {
+    // Add temporary ID to observation.identifications ("ghosted" ID, while we're trying to add it)
+    const newId = {
+      body: identification.body,
+      taxon: identification.taxon,
+      user: {
+        id: userId,
+        login: currentUser?.login,
+        signedIn: true
+      },
+      created_at: formatISO( Date.now() ),
+      uuid: identification.uuid,
+      vision: false,
+      // This tells us to render is ghosted (since it's temporarily visible
+      // until getting a response from the server)
+      temporary: true
+    };
+    setIds( [...ids, newId] );
+
+    createIdentificationMutation.mutate( {
+      identification: {
+        observation_id: uuid,
+        taxon_id: newId.taxon.id,
+        body: newId.body
+      }
+    } );
+  };
+
+  const navToAddID = ( ) => {
+    navigation.navigate( "AddID", { onIDAdded, goBackOnSave: true } );
+  };
+
   const tabs = [
     {
       id: ACTIVITY_TAB_ID,
@@ -264,10 +315,10 @@ const ObsDetails = (): Node => {
       text: t( "ACTIVITY" )
     },
     {
-      id: DATA_TAB_ID,
-      testID: "ObsDetails.DataTab",
-      onPress: () => setCurrentTabId( DATA_TAB_ID ),
-      text: t( "DATA" )
+      id: DETAILS_TAB_ID,
+      testID: "ObsDetails.DetailsTab",
+      onPress: () => setCurrentTabId( DETAILS_TAB_ID ),
+      text: t( "DETAILS" )
     }
   ];
 
@@ -275,9 +326,10 @@ const ObsDetails = (): Node => {
     if ( !isOnline ) {
       // TODO show photos that are available offline
       return (
-        <View className="bg-white flex-row justify-center">
+        <View className="bg-black flex-row justify-center">
           <IconMaterial
             name="wifi-off"
+            color={colors.white}
             size={100}
             accessibilityRole="image"
             accessibilityLabel={t(
@@ -291,30 +343,45 @@ const ObsDetails = (): Node => {
       return (
         <View className="bg-black">
           <PhotoScroll photos={photos} />
+          {/*
+            TODO: react-navigation supports a lot of styling options including
+            a transparent header, so this custom header probably is not
+            necessary ~~~kueda
+          */}
           {/* TODO: a11y props are not passed down into this 3.party */}
           <IconButton
-            icon={currentUserFaved ? "star-bold-outline" : "pencil"}
-            onPress={faveOrUnfave}
+            onPress={navToObsEdit}
+            icon="pencil"
             textColor={colors.white}
-            className="absolute top-3 right-0"
+            className="absolute top-3 right-3"
             accessible
             accessibilityRole="button"
-            accessibilityLabel={
-              currentUserFaved
-                ? t( "Fave-button-label-unfave" )
-                : t( "Fave-button-label-fave" )
-            }
+            accessibilityLabel={t( "edit" )}
           />
+          <IconButton
+            icon="star-bold-outline"
+            size={25}
+            onPress={() => faveOrUnfave()}
+            textColor={colors.white}
+            className="absolute bottom-3 right-3"
+            accessible
+            accessibilityRole="button"
+            accessibilityLabel={t( "favorite" )}
+          />
+          <View className="absolute bottom-3 left-3">
+            <PhotoCount count={photos.length ? photos.length : 0} />
+          </View>
         </View>
       );
     }
     return (
       <View
-        className="bg-white flex-row justify-center"
+        className="bg-black flex-row justify-center"
         accessible
         accessibilityLabel={t( "Observation-has-no-photos-and-no-sounds" )}
       >
         <IconMaterial
+          color={colors.white}
           testID="ObsDetails.noImage"
           name="image-not-supported"
           size={100}
@@ -326,9 +393,16 @@ const ObsDetails = (): Node => {
   return (
     <>
       <ScrollViewWrapper testID={`ObsDetails.${uuid}`}>
-        <ActivityHeader item={observation} />
         {displayPhoto()}
-        <View className="flex-row my-5 justify-between mx-3">
+        <View className="absolute top-3 left-3">
+          <HeaderBackButton
+            tintColor={colors.white}
+            onPress={( ) => navigation.goBack( )}
+          />
+        </View>
+
+        <ActivityHeader item={observation} classNameMargin="mx-[15px] mt-[13px]" />
+        <View className="flex-row my-[11px] justify-between mx-3">
           {showTaxon()}
           <ObsStatus layout="vertical" observation={observation} />
         </View>
@@ -336,18 +410,15 @@ const ObsDetails = (): Node => {
         <Tabs tabs={tabs} activeId={currentTabId} />
         <HideView show={currentTabId === ACTIVITY_TAB_ID}>
           <ActivityTab
-            uuid={uuid}
             observation={observation}
             comments={comments}
             navToTaxonDetails={navToTaxonDetails}
             toggleRefetch={toggleRefetch}
             refetchRemoteObservation={refetchRemoteObservation}
-            openCommentBox={openCommentBox}
-            showCommentBox={showCommentBox}
           />
         </HideView>
-        <HideView noInitialRender show={currentTabId === DATA_TAB_ID}>
-          <DataTab observation={observation} />
+        <HideView noInitialRender show={currentTabId === DETAILS_TAB_ID}>
+          <DetailsTab observation={observation} />
         </HideView>
         {addingComment && (
           <View className="flex-row items-center justify-center">
@@ -355,6 +426,38 @@ const ObsDetails = (): Node => {
           </View>
         )}
       </ScrollViewWrapper>
+      { ( currentTabId === ACTIVITY_TAB_ID )
+      && (
+        <View
+          className="flex-row justify-evenly bottom-[80px] bg-white py-3"
+          style={getShadowStyle( {
+            shadowColor: colors.black,
+            offsetWidth: 0,
+            offsetHeight: -3,
+            shadowOpacity: 0.2,
+            shadowRadius: 2,
+            radius: 5,
+            elevation: 5
+          } )}
+        >
+          <Button
+            text={t( "COMMENT" )}
+            onPress={openCommentBox}
+            className="mx-3 grow"
+            testID="ObsDetail.commentButton"
+            disabled={showCommentBox}
+            accessibilityHint={t( "Opens-add-comment-modal" )}
+          />
+          <Button
+            text={t( "SUGGEST-ID" )}
+            onPress={navToAddID}
+            className="mx-3 grow"
+            testID="ObsDetail.cvSuggestionsButton"
+            accessibilityRole="link"
+            accessibilityHint={t( "Navigates-to-suggest-identification" )}
+          />
+        </View>
+      ) }
       <AddCommentModal
         //  potential to move this modal to ActivityTab and have it handle comments
         //  and ids but there were issues with presenting the modal in a scrollview.

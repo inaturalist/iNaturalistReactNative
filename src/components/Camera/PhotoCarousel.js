@@ -1,11 +1,10 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, {
-  useEffect, useState
-} from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList
@@ -16,28 +15,31 @@ import { IconButton, useTheme } from "react-native-paper";
 
 type Props = {
   emptyComponent?: Function,
-  photoUris: Array<string>,
-  setSelectedPhotoIndex?: Function,
   selectedPhotoIndex?: number,
   containerStyle?: string,
   savingPhoto?: boolean,
   deletePhoto?: Function,
   isLandscapeMode?:boolean,
-  isLargeScreen?: boolean
+  isLargeScreen?: boolean,
+  setMediaViewerUris: Function,
+  photoUris: Array<string>,
+  setSelectedPhotoIndex: Function
 }
 
 const PhotoCarousel = ( {
-  photoUris,
   emptyComponent,
-  setSelectedPhotoIndex,
   selectedPhotoIndex,
   containerStyle,
   savingPhoto,
   deletePhoto,
   isLandscapeMode,
-  isLargeScreen
+  isLargeScreen,
+  setMediaViewerUris,
+  photoUris,
+  setSelectedPhotoIndex
 }: Props ): Node => {
   const theme = useTheme( );
+  const navigation = useNavigation( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
   const imageClass = "justify-center items-center";
   const smallPhotoClass = "rounded-sm w-[42px] h-[42px]";
@@ -86,8 +88,10 @@ const PhotoCarousel = ( {
         onPress={( ) => {
           if ( deletePhotoMode && deletePhoto ) {
             deletePhoto( item );
-          } else if ( setSelectedPhotoIndex ) {
+          } else {
             setSelectedPhotoIndex( index );
+            setMediaViewerUris( photoUris );
+            navigation.navigate( "MediaViewer" );
           }
         }}
         className={classnames(

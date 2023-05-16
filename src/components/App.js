@@ -1,14 +1,17 @@
 // @flow
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { focusManager } from "@tanstack/react-query";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
 import RootDrawerNavigator from "navigation/rootDrawerNavigation";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
+import { AppState } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useObservationUpdatesWhenFocused from "sharedHooks/useObservationUpdatesWhenFocused";
 import useShare from "sharedHooks/useShare";
 import useTranslation from "sharedHooks/useTranslation";
 import useUserMe from "sharedHooks/useUserMe";
@@ -43,6 +46,22 @@ const App = ( { children }: Props ): Node => {
     }
 
     return Orientation.unlockAllOrientations;
+  }, [] );
+
+  useObservationUpdatesWhenFocused();
+
+  // When the app is coming back from the background, set the focusManager to focused
+  // This will trigger react-query to refetch any queries that are stale
+  const onAppStateChange = status => {
+    focusManager.setFocused( status === "active" );
+  };
+
+  useEffect( () => {
+    // subscribe to app state changes
+    const subscription = AppState.addEventListener( "change", onAppStateChange );
+
+    // unsubscribe on unmount
+    return () => subscription.remove();
   }, [] );
 
   useEffect( ( ) => {

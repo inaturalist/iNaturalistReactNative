@@ -82,8 +82,12 @@ type Props = {
 }
 
 const UserText = ( {
-  text, htmlStyle
+  children,
+  htmlStyle,
+  text: textProp
 } : Props ): React.Node => {
+  // Allow stringified children to serve as text if no prop provided
+  const text = textProp || children.toString( );
   const { width } = useWindowDimensions( );
   let html = trim( text );
 

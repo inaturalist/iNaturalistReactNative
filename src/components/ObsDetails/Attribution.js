@@ -1,6 +1,6 @@
 // @flow
 
-import { Text } from "components/styledComponents";
+import { Body4 } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
@@ -16,22 +16,34 @@ const Attribution = ( { observation }: Props ): Node => {
   const licenseCode = observation.license_code;
   const copyrightAttribution = user ? ( user.name || user.login ) : t( "unknown" );
 
-  const renderLicenseCode = ( ) => {
-    if ( !licenseCode ) {
+  const renderRestrictions = ( ) => {
+    switch ( licenseCode ) {
+    case "cc0":
+      return t( "no-rights-reserved-cc0" );
+    case "cc-by":
+      return t( "attribution-cc-by" );
+    case "cc-by-sa":
+      return t( "attribution-cc-by-sa" );
+    case "cc-by-nc":
+      return t( "attribution-cc-by-nc" );
+    case "cc-by-nd":
+      return t( "attribution-cc-by-nd" );
+    case "cc-by-nc-sa":
+      return t( "attribution-cc-by-nc-sa" );
+    case "cc-by-nc-nd":
+      return t( "attribution-cc-by-nc-nd" );
+    default:
       return t( "all-rights-reserved" );
-    } if ( licenseCode === "cc0" ) {
-      return t( "no-rights-reserved" ) + licenseCode;
     }
-    return t( "some-rights-reserved" ) + licenseCode;
   };
 
   return (
-    <Text>
+    <Body4>
       {t( "Observation-Attribution", {
         attribution: copyrightAttribution,
-        licenseCode: renderLicenseCode( )
+        restrictions: renderRestrictions( )
       } )}
-    </Text>
+    </Body4>
   );
 };
 
