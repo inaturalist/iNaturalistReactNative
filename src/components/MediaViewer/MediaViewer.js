@@ -13,6 +13,7 @@ import React, {
 } from "react";
 import { BackHandler, StatusBar } from "react-native";
 import { IconButton } from "react-native-paper";
+import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
@@ -45,7 +46,7 @@ const MediaViewer = ( ): Node => {
   const horizontalScroll = useRef( null );
 
   const { isLandscapeMode, screenWidth } = useDeviceOrientation( );
-  const isLargeScreen = screenWidth > 320;
+  const isLargeScreen = screenWidth > BREAKPOINTS.md;
 
   const numOfPhotos = photoUris.length;
 
@@ -179,7 +180,7 @@ const MediaViewer = ( ): Node => {
       <PhotoSelector
         photoUris={photoUris}
         scrollToIndex={scrollToIndex}
-        isLargeScreen={screenWidth > 320}
+        isLargeScreen={isLargeScreen}
         isLandscapeMode={isLandscapeMode}
         selectedPhotoIndex={selectedPhotoIndex}
       />
