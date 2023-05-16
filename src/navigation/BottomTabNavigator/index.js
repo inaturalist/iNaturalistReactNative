@@ -6,6 +6,7 @@ import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
 import LocationPicker from "components/LocationPicker/LocationPicker";
 import Login from "components/LoginSignUp/Login";
+import SignUp from "components/LoginSignUp/SignUp";
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
@@ -349,6 +350,7 @@ const BottomTabs = ( ) => {
           }}
         />
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />
+        <Tab.Screen name="SignUp" component={SignUp} options={hideHeader} />
       </Tab.Navigator>
     </Mortal>
   );

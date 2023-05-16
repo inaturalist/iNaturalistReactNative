@@ -168,7 +168,7 @@ Display-Name = Display Name
 
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 
-Dont-have-an-account - Don't have an account? Sign up
+Dont-have-an-account = Don't have an account? Sign up
 
 EDIT-LOCATION = EDIT LOCATION
 

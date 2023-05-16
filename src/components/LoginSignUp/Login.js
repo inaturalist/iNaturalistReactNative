@@ -8,7 +8,8 @@ import {
   List2
 } from "components/SharedComponents";
 import {
-  Image, SafeAreaView, View
+  Image, ImageBackground,
+  SafeAreaView, View
 } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
@@ -85,100 +86,108 @@ const Login = ( ): Node => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
-      {loggedIn ? <Logout /> : (
-        <KeyboardAwareScrollView
-          keyboardShouldPersistTaps="always"
-          ref={keyboardScrollRef}
-          enableOnAndroid
-          enableAutomaticScroll
-          extraScrollHeight={extraScrollHeight}
-          className="p-4"
-          // eslint-disable-next-line react-native/no-inline-styles
-          contentContainerStyle={{
-            flex: 1,
-            justifyContent: "space-between"
-          }}
-        >
-          <View>
-            <View className="self-end">
-              <CloseButton size={19} />
+    <SafeAreaView className="bg-black flex-1">
+      <ImageBackground
+        source={require( "images/toucan.png" )}
+        className="flex-1"
+      >
+        {loggedIn ? <Logout /> : (
+          <KeyboardAwareScrollView
+            keyboardShouldPersistTaps="always"
+            ref={keyboardScrollRef}
+            enableOnAndroid
+            enableAutomaticScroll
+            extraScrollHeight={extraScrollHeight}
+            className="p-4"
+            // eslint-disable-next-line react-native/no-inline-styles
+            contentContainerStyle={{
+              flex: 1,
+              justifyContent: "space-between"
+            }}
+          >
+            <View>
+              <View className="self-end">
+                <CloseButton size={19} />
+              </View>
+              <Image
+                className="self-center w-[234px] h-[48px]"
+                resizeMode="contain"
+                source={require( "images/inaturalist.png" )}
+                accessibilityIgnoresInvertColors
+              />
+              <Body1 className="self-center text-center color-white mt-8 max-w-[280px]">
+                {t( "Login-sub-title" )}
+              </Body1>
             </View>
-            <Image
-              className="self-center w-[48px] h-[48px]"
-              resizeMode="contain"
-              source={require( "images/inat_logo.png" )}
-              accessibilityIgnoresInvertColors
-            />
-            <Body1 className="self-center text-center color-white mt-8 max-w-[280px]">
-              {t( "Login-sub-title" )}
-            </Body1>
-          </View>
-          <View>
-            <View className="mx-4">
-              <Heading4 className="color-white mb-3">{t( "USERNAME-OR-EMAIL" )}</Heading4>
-              <TextInput
-                accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
-                className="h-[45px] rounded-md"
-                onChangeText={text => {
-                  setError( null );
-                  setEmail( text );
-                }}
-                value={email}
-                autoComplete="email"
-                testID="Login.email"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                selectionColor={theme.colors.tertiary}
-                onFocus={() => setExtraScrollHeight( 200 )}
+            <View>
+              <View className="mx-4">
+                <Heading4 className="color-white mb-3">{t( "USERNAME-OR-EMAIL" )}</Heading4>
+                <TextInput
+                  accessibilityLabel={t( "USERNAME-OR-EMAIL" )}
+                  className="h-[45px] rounded-md"
+                  onChangeText={text => {
+                    setError( null );
+                    setEmail( text );
+                  }}
+                  value={email}
+                  autoComplete="email"
+                  testID="Login.email"
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  selectionColor={theme.colors.tertiary}
+                  onFocus={() => setExtraScrollHeight( 200 )}
+                />
+                <Heading4 className="color-white mb-3 mt-6">{t( "PASSWORD" )}</Heading4>
+                <TextInput
+                  accessibilityLabel={t( "PASSWORD" )}
+                  className="h-[45px] rounded-md"
+                  onChangeText={text => {
+                    setError( null );
+                    setPassword( text );
+                  }}
+                  value={password}
+                  secureTextEntry
+                  testID="Login.password"
+                  selectionColor={theme.colors.tertiary}
+                  onFocus={() => setExtraScrollHeight( 200 )}
+                />
+                <Body2
+                  className="underline mt-5 self-end color-white"
+                  accessibilityRole="button"
+                  onPress={forgotPassword}
+                >
+                  {t( "Forgot-Password" )}
+                </Body2>
+                {error && (
+                  <View className="flex-row items-center justify-center mt-5">
+                    <INatIcon name="triangle-exclamation" size={19} color={theme.colors.error} />
+                    <List2 className="color-white ml-3">
+                      {error}
+                    </List2>
+                  </View>
+                )}
+              </View>
+              <Button
+                level="focus"
+                text={t( "LOG-IN" )}
+                onPress={login}
+                className={classnames( "mt-8", {
+                  "mt-5": error
+                } )}
+                disabled={!email || !password}
+                testID="Login.loginButton"
+                loading={loading}
               />
-              <Heading4 className="color-white mb-3 mt-6">{t( "PASSWORD" )}</Heading4>
-              <TextInput
-                accessibilityLabel={t( "PASSWORD" )}
-                className="h-[45px] rounded-md"
-                onChangeText={text => {
-                  setError( null );
-                  setPassword( text );
-                }}
-                value={password}
-                secureTextEntry
-                testID="Login.password"
-                selectionColor={theme.colors.tertiary}
-                onFocus={() => setExtraScrollHeight( 200 )}
-              />
-              <Body2
-                className="underline mt-5 self-end color-white"
-                accessibilityRole="button"
-                onPress={forgotPassword}
+              <Body1
+                className="color-white self-center mt-8 underline"
+                onPress={( ) => navigation.navigate( "SignUp" )}
               >
-                {t( "Forgot-Password" )}
-              </Body2>
-              {error && (
-                <View className="flex-row items-center justify-center mt-5">
-                  <INatIcon name="triangle-exclamation" size={19} color={theme.colors.error} />
-                  <List2 className="color-white ml-3">
-                    {error}
-                  </List2>
-                </View>
-              )}
+                {t( "Dont-have-an-account" )}
+              </Body1>
             </View>
-            <Button
-              level="focus"
-              text={t( "LOG-IN" )}
-              onPress={login}
-              className={classnames( "mt-8", {
-                "mt-5": error
-              } )}
-              disabled={!email || !password}
-              testID="Login.loginButton"
-              loading={loading}
-            />
-            <Body1 className="color-white self-center mt-8 underline">
-              {t( "Dont-have-an-account" )}
-            </Body1>
-          </View>
-        </KeyboardAwareScrollView>
-      )}
+          </KeyboardAwareScrollView>
+        )}
+      </ImageBackground>
     </SafeAreaView>
   );
 };
