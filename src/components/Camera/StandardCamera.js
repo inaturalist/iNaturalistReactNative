@@ -20,6 +20,7 @@ import React, {
 } from "react";
 import {
   BackHandler,
+  Platform,
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -189,8 +190,23 @@ const StandardCamera = ( ): Node => {
       return;
     }
     const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-    const newPhoto = await Photo.new( cameraPhoto.path );
+    let rotation = 0;
+    switch ( cameraPhoto.metadata.Orientation ) {
+      case 3:
+        rotation = 180;
+        break;
+      case 6:
+        rotation = 90;
+        break;
+      case 8:
+        rotation = 270;
+        break;
+      default:
+        rotation = 0;
+    }
+    const newPhoto = await Photo.new( cameraPhoto.path, { rotation } );
     const uri = newPhoto.localFilePath;
+    console.log( "cameraPhoto.metadata: ", cameraPhoto.metadata );
 
     setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
     if ( addEvidence ) {
@@ -388,6 +404,14 @@ const StandardCamera = ( ): Node => {
           <CameraView
             device={device}
             camera={camera}
+            orientation={
+              // In Android the camera won't set the orientation metadata
+              // correctly without this, but in iOS it won't display the
+              // preview correctly *with* it
+              Platform.OS === "android"
+                ? deviceOrientation
+                : null
+            }
           />
         )}
         <FadeInOutView savingPhoto={savingPhoto} />
