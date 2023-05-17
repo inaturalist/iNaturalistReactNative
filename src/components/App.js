@@ -7,7 +7,7 @@ import RootDrawerNavigator from "navigation/rootDrawerNavigation";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
-import { AppState } from "react-native";
+import { AppState, LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -17,6 +17,12 @@ import useTranslation from "sharedHooks/useTranslation";
 import useUserMe from "sharedHooks/useUserMe";
 
 import { log } from "../../react-native-logs.config";
+
+// Ignore warnings about 3rd parties that haven't implemented the new
+// NativeEventEmitter interface methods yet. As of 20230517, this is coming
+// from react-native-share-menu.
+// https://stackoverflow.com/questions/69538962
+LogBox.ignoreLogs( ["new NativeEventEmitter"] );
 
 const logger = log.extend( "App" );
 
@@ -34,7 +40,7 @@ const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const { i18n } = useTranslation( );
-  useShare();
+  useShare( );
 
   // fetch current user from server and save to realm in useEffect
   // this is used for changing locale and also for showing UserCard
