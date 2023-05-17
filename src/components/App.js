@@ -12,6 +12,7 @@ import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useObservationUpdatesWhenFocused from "sharedHooks/useObservationUpdatesWhenFocused";
+import useShare from "sharedHooks/useShare";
 import useTranslation from "sharedHooks/useTranslation";
 import useUserMe from "sharedHooks/useUserMe";
 
@@ -33,6 +34,7 @@ const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   const { i18n } = useTranslation( );
+  useShare();
 
   // fetch current user from server and save to realm in useEffect
   // this is used for changing locale and also for showing UserCard

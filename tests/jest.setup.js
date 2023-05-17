@@ -34,6 +34,12 @@ jest.mock( "react-native-vision-camera", ( ) => ( {
 
 jest.mock( "react-native-localize", () => mockRNLocalize );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
+// Trivial mock b/c I assume we can't really test the native parts of this
+// library ~~~kueda 20230516
+jest.mock( "react-native-share-menu", ( ) => ( {
+  addNewShareListener: jest.fn( ),
+  getInitialShare: jest.fn( )
+} ) );
 
 // mock Portal with a Modal component inside of it (MediaViewer)
 jest.mock( "react-native-paper", () => {
@@ -68,7 +74,7 @@ jest.mock( "@react-navigation/drawer", ( ) => {
 // this resolves error with importing file after Jest environment is torn down
 // https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
 jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
-  default: ( ) => ( { getInitialState: { then: jest.fn() } } ),
+  default: ( ) => ( { getInitialState: { then: jest.fn( ) } } ),
   __esModule: true
 } ) );
 
