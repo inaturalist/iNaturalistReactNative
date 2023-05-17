@@ -11,7 +11,7 @@ import useUploadObservations from "sharedHooks/useUploadObservations";
 import MyObservations from "./MyObservations";
 
 const MyObservationsContainer = (): Node => {
-  const { observationList: observations, allObsToUpload } = useLocalObservations();
+  const { observationList: observations, allObsToUpload } = useLocalObservations( );
   const uploadStatus = useUploadObservations( allObsToUpload );
   const [layout, setLayout] = useState( "list" );
   const { isLoading, fetchNextPage } = useInfiniteScroll();

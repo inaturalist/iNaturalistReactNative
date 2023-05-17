@@ -1,5 +1,5 @@
 import linkifyHtml from "linkify-html";
-import { trim } from "lodash";
+import { isEqual, trim } from "lodash";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
 import { Platform, useWindowDimensions } from "react-native";
@@ -130,4 +130,5 @@ const UserText = ( {
   );
 };
 
-export default UserText;
+// Memoize to prevent excessive re-renders when HTML component is in a list
+export default React.memo( UserText, ( oldProps, newProps ) => isEqual( oldProps, newProps ) );
