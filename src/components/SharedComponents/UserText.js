@@ -130,4 +130,5 @@ const UserText = ( {
   );
 };
 
+// Memoize to prevent excessive re-renders when HTML component is in a list
 export default React.memo( UserText, ( oldProps, newProps ) => isEqual( oldProps, newProps ) );

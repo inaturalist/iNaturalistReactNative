@@ -12,9 +12,9 @@ const { useRealm } = RealmContext;
 
 const useLocalObservations = ( ): Object => {
   const isFocused = useIsFocused( );
-  // use a ref as a temporary store because MyObservations page doesn't unmount on blue
-  // only updating state when focused will help prevent MyObservations from
-  // blocking other components from rendering
+  // Use refs to maintain state without triggering re-renders of hook consumers
+  // when they have lost focus, which prevents other
+  // views from rendering when they have focus.
   const stagedObservationList = useRef( [] );
   const stagedObsToUpload = useRef( [] );
   const [observationList, setObservationList] = useState( [] );
