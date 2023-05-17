@@ -36,9 +36,11 @@ const EvidenceSection = ( ): Node => {
     setPassesEvidenceTest
   } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
-  const photoUris = obsPhotos ? Array.from( obsPhotos ).map(
-    obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
-  ) : [];
+  const photoUris = obsPhotos
+    ? Array.from( obsPhotos ).map(
+      obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
+    )
+    : [];
   const mountedRef = useRef( true );
   const navigation = useNavigation( );
 
@@ -79,7 +81,9 @@ const EvidenceSection = ( ): Node => {
     } else if ( shouldFetchLocation ) {
       placeName = t( "Fetching-location" );
     }
-    return placeName ? <Body3>{placeName}</Body3> : null;
+    return placeName
+      ? <Body3>{placeName}</Body3>
+      : null;
   };
 
   const displayLocation = ( ) => {

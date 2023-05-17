@@ -179,7 +179,9 @@ const Toolbar = ( {
           )}
         </View>
         <IconButton
-          icon={layout === "grid" ? "listview" : "gridview"}
+          icon={layout === "grid"
+            ? "listview"
+            : "gridview"}
           size={30}
           disabled={false}
           accessibilityState={{ disabled: false }}

@@ -52,7 +52,9 @@ const SearchBar = ( {
         // eslint-disable-next-line react-native/no-inline-styles
         style={{
           height: 45,
-          ...( hasShadow ? getShadow( theme.colors.primary ) : {} )
+          ...( hasShadow
+            ? getShadow( theme.colors.primary )
+            : {} )
         }}
         underlineColor={theme.colors.primary}
         activeUnderlineColor={theme.colors.primary}
@@ -63,7 +65,9 @@ const SearchBar = ( {
             bodyLarge:
               {
                 ...theme.fonts.bodyLarge,
-                fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`
+                fontFamily: `Whitney-Light${Platform.OS === "ios"
+                  ? ""
+                  : "-Pro"}`
               }
           }
         }}

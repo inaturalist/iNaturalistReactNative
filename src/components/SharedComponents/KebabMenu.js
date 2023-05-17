@@ -23,7 +23,9 @@ const KebabMenu = ( {
       onPress={openMenu}
       icon="kebab-menu"
       testID="KebabMenu.Button"
-      size={large ? 26 : 15}
+      size={large
+        ? 26
+        : 15}
     />
   );
 

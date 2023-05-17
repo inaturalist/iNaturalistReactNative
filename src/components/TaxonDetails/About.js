@@ -39,7 +39,10 @@ const About = ( { taxon, isLoading, isError }: Props ): React.Node => {
       const lastAncestor = i === taxon.ancestors.length - 1;
 
       return (
-        <View key={lastAncestor ? taxon.id : ancestor.id}>
+        <View key={lastAncestor
+          ? taxon.id
+          : ancestor.id}
+        >
           {displayAncestor}
           {lastAncestor && displayTaxon}
         </View>
@@ -50,7 +53,9 @@ const About = ( { taxon, isLoading, isError }: Props ): React.Node => {
   const openWikipedia = () => Linking.openURL( taxon.wikipedia_url );
 
   const baseStyle = {
-    fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`,
+    fontFamily: `Whitney-Light${Platform.OS === "ios"
+      ? ""
+      : "-Pro"}`,
     fontSize: 16,
     lineHeight: 22
   };

@@ -12,7 +12,9 @@ const UserDescription = ( { description }: Props ): React.Node => {
   const { width } = useWindowDimensions( );
 
   const baseStyle = {
-    fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`,
+    fontFamily: `Whitney-Light${Platform.OS === "ios"
+      ? ""
+      : "-Pro"}`,
     fontSize: 16,
     lineHeight: 22
   };

@@ -63,7 +63,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       increments => {
         setUploadProgress( currentProgress => {
           increments.forEach( ( [uuid, increment] ) => {
-            currentProgress[uuid] = currentProgress[uuid] ? currentProgress[uuid] : 0;
+            currentProgress[uuid] = currentProgress[uuid]
+              ? currentProgress[uuid]
+              : 0;
             currentProgress[uuid] += increment;
           } );
           return { ...currentProgress };
@@ -102,7 +104,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     const originalPhotoUri = photo?.image?.uri;
     const firstPhotoExif = await parseExif( originalPhotoUri );
     logger.info( `EXIF: ${JSON.stringify( firstPhotoExif, null, 2 )}` );
-    const exifDate = firstPhotoExif?.date ? formatExifDateAsString( firstPhotoExif.date ) : null;
+    const exifDate = firstPhotoExif?.date
+      ? formatExifDateAsString( firstPhotoExif.date )
+      : null;
 
     const observedOnDate = exifDate || formatDateStringFromTimestamp( photo.timestamp );
     const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
@@ -180,7 +184,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       const updatedObservations = observations.map( ( observation, index ) => {
         if ( index === currentObservationIndex ) {
           return {
-            ...( observation.toJSON ? observation.toJSON( ) : observation ),
+            ...( observation.toJSON
+              ? observation.toJSON( )
+              : observation ),
             [key]: value
           };
         }
@@ -195,7 +201,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         if ( index === currentObservationIndex ) {
           const isSavedObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
           const updatedObservation = {
-            ...( observation.toJSON ? observation.toJSON( ) : observation ),
+            ...( observation.toJSON
+              ? observation.toJSON( )
+              : observation ),
             ...keysAndValues
           };
           if ( isSavedObservation && !unsavedChanges ) {

@@ -27,23 +27,23 @@ type Props = {
 
 const qualityGradeOption = option => {
   switch ( option ) {
-  case "research":
-    return t( "quality-grade-research" );
-  case "needs_id":
-    return t( "quality-grade-needs-id" );
-  default:
-    return t( "quality-grade-casual" );
+    case "research":
+      return t( "quality-grade-research" );
+    case "needs_id":
+      return t( "quality-grade-needs-id" );
+    default:
+      return t( "quality-grade-casual" );
   }
 };
 
 const qualityGradeDescription = option => {
   switch ( option ) {
-  case "research":
-    return t( "Data-quality-research-description" );
-  case "needs_id":
-    return t( "Data-quality-needs-id-description" );
-  default:
-    return t( "Data-quality-casual-description" );
+    case "research":
+      return t( "Data-quality-research-description" );
+    case "needs_id":
+      return t( "Data-quality-needs-id-description" );
+    default:
+      return t( "Data-quality-casual-description" );
   }
 };
 
@@ -56,7 +56,9 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const qualityGrade = observation?.quality_grade;
 
   const displayQualityGradeOption = option => {
-    const labelClassName = ( qualityGrade === option ) ? "font-bold" : "";
+    const labelClassName = ( qualityGrade === option )
+      ? "font-bold"
+      : "";
 
     return (
       <View className="flex-col space-y-[8px]">

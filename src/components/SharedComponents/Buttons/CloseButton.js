@@ -24,7 +24,9 @@ const CloseButton = ( {
       icon="close"
       size={size}
       className={className}
-      iconColor={black ? theme.colors.tertiary : theme.colors.background}
+      iconColor={black
+        ? theme.colors.tertiary
+        : theme.colors.background}
       onPress={( ) => {
         if ( handleClose ) {
           handleClose( );

@@ -150,7 +150,9 @@ const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
   const perPage = data?.per_page;
   const totalResults = data?.total_results;
 
-  const totalPages = totalResults > 0 && perPage > 0 ? Math.ceil( totalResults / perPage ) : 1;
+  const totalPages = totalResults > 0 && perPage > 0
+    ? Math.ceil( totalResults / perPage )
+    : 1;
 
   const updateRelationship = useCallback( async ( relationship, update ) => {
     updateRelationshipsMutation.mutate( { id: relationship.id, relationship: update } );
@@ -225,7 +227,12 @@ const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
               style={viewStyles.pageButton}
               onPress={() => setPage( x + 1 )}
             >
-              <Text style={x + 1 === page ? textStyles.currentPage : null}>{x + 1}</Text>
+              <Text style={x + 1 === page
+                ? textStyles.currentPage
+                : null}
+              >
+                {x + 1}
+              </Text>
             </Pressable>
           ) )}
           <Pressable

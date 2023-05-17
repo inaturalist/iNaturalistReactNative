@@ -38,13 +38,17 @@ const Map = ( {
     <View
       style={[
         viewStyles.mapContainer,
-        mapHeight ? { height: mapHeight } : null
+        mapHeight
+          ? { height: mapHeight }
+          : null
       ]}
       testID="MapView"
     >
       <MapView
         style={viewStyles.map}
-        region={( region?.latitude ) ? region : initialRegion}
+        region={( region?.latitude )
+          ? region
+          : initialRegion}
         onRegionChange={updateCoords}
         showsUserLocation
         showsMyLocationButton

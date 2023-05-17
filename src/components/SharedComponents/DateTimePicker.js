@@ -30,7 +30,9 @@ const DatePicker = ( {
       isDarkModeEnabled={colorScheme === "dark"}
       isVisible={isDateTimePickerVisible}
       maximumDate={new Date( )}
-      mode={datetime ? "datetime" : "date"}
+      mode={datetime
+        ? "datetime"
+        : "date"}
       onCancel={toggleDateTimePicker}
       onConfirm={onDatePicked}
     />

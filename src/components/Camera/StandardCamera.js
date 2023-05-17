@@ -58,12 +58,12 @@ function orientationLockerToCameraOrientation( orientation ) {
   // string values for these constants, so we map everything to the
   // react-native-vision-camera versions
   switch ( orientation ) {
-  case "LANDSCAPE-RIGHT":
-    return LANDSCAPE_RIGHT;
-  case "LANDSCAPE-LEFT":
-    return LANDSCAPE_LEFT;
-  default:
-    return PORTRAIT;
+    case "LANDSCAPE-RIGHT":
+      return LANDSCAPE_RIGHT;
+    case "LANDSCAPE-LEFT":
+      return LANDSCAPE_LEFT;
+    default:
+      return PORTRAIT;
   }
 }
 
@@ -104,7 +104,9 @@ const StandardCamera = ( ): Node => {
   const devices = useCameraDevices( );
   const device = devices[cameraPosition];
   const hasFlash = device?.hasFlash;
-  const initialPhotoOptions = hasFlash ? { flash: "off" } : { };
+  const initialPhotoOptions = hasFlash
+    ? { flash: "off" }
+    : { };
   const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
   const [savingPhoto, setSavingPhoto] = useState( false );
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
@@ -200,12 +202,16 @@ const StandardCamera = ( ): Node => {
   const toggleFlash = ( ) => {
     setTakePhotoOptions( {
       ...takePhotoOptions,
-      flash: takePhotoOptions.flash === "on" ? "off" : "on"
+      flash: takePhotoOptions.flash === "on"
+        ? "off"
+        : "on"
     } );
   };
 
   const flipCamera = ( ) => {
-    const newPosition = cameraPosition === "back" ? "front" : "back";
+    const newPosition = cameraPosition === "back"
+      ? "front"
+      : "back";
     setCameraPosition( newPosition );
   };
 
@@ -228,19 +234,21 @@ const StandardCamera = ( ): Node => {
       ? `m-[12.5px] ${cameraOptionsClassName}`
       : `absolute bottom-[18px] left-[18px] ${cameraOptionsClassName}`;
     switch ( takePhotoOptions.flash ) {
-    case "on":
-      name = "flash-on";
-      testID = "flash-button-label-flash";
-      accessibilityLabel = t( "Flash-button-label-flash" );
-      break;
-    default: // default to off if no flash
-      name = "flash-off";
-      testID = "flash-button-label-flash-off";
-      accessibilityLabel = t( "Flash-button-label-flash-off" );
+      case "on":
+        name = "flash-on";
+        testID = "flash-button-label-flash";
+        accessibilityLabel = t( "Flash-button-label-flash" );
+        break;
+      default: // default to off if no flash
+        name = "flash-off";
+        testID = "flash-button-label-flash-off";
+        accessibilityLabel = t( "Flash-button-label-flash-off" );
     }
     let rotateClass = "rotate-0";
     if ( !isTablet && isLandscapeMode ) {
-      rotateClass = deviceOrientation === LANDSCAPE_LEFT ? "-rotate-90" : "rotate-90";
+      rotateClass = deviceOrientation === LANDSCAPE_LEFT
+        ? "-rotate-90"
+        : "rotate-90";
     }
     return (
       <IconButton
@@ -268,7 +276,9 @@ const StandardCamera = ( ): Node => {
       <IconButton
         className={classnames(
           [`absolute bottom-[18px] right-[18px] ${cameraOptionsClassName}`],
-          !isTablet && isLandscapeMode ? "rotate-90" : "rotate-0"
+          !isTablet && isLandscapeMode
+            ? "rotate-90"
+            : "rotate-0"
         )}
         onPress={flipCamera}
         accessibilityRole="button"

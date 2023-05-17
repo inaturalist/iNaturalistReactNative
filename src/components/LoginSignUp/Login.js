@@ -45,40 +45,44 @@ const Login = ( ): Node => {
         source={require( "images/toucan.png" )}
         className="h-full"
       >
-        {loggedIn ? <Logout /> : (
-          <ScrollView
-            keyboardShouldPersistTaps="always"
-            ref={keyboardScrollRef}
-            // eslint-disable-next-line react-native/no-inline-styles
-            contentContainerStyle={{
-              flex: 1,
-              justifyContent: "space-between"
-            }}
-          >
-            {!hideHeader && (
-              <View>
-                <View className="self-end pr-2">
-                  <CloseButton size={19} />
-                </View>
-                <View className="self-center">
-                  <Image
-                    className="w-[234px] h-[43px]"
-                    resizeMode="contain"
-                    source={require( "images/inaturalist.png" )}
-                    accessibilityIgnoresInvertColors
-                  />
-                  <Body1 className="text-center color-white mt-[24px] max-w-[280px]">
-                    {t( "Login-sub-title" )}
-                  </Body1>
-                </View>
-              </View>
-            )}
-            <LoginForm
-              setLoggedIn={setLoggedIn}
-              handleInputFocus={handleInputFocus}
-            />
-          </ScrollView>
-        )}
+        {
+          loggedIn
+            ? <Logout />
+            : (
+              <ScrollView
+                keyboardShouldPersistTaps="always"
+                ref={keyboardScrollRef}
+                // eslint-disable-next-line react-native/no-inline-styles
+                contentContainerStyle={{
+                  flex: 1,
+                  justifyContent: "space-between"
+                }}
+              >
+                {!hideHeader && (
+                  <View>
+                    <View className="self-end pr-2">
+                      <CloseButton size={19} />
+                    </View>
+                    <View className="self-center">
+                      <Image
+                        className="w-[234px] h-[43px]"
+                        resizeMode="contain"
+                        source={require( "images/inaturalist.png" )}
+                        accessibilityIgnoresInvertColors
+                      />
+                      <Body1 className="text-center color-white mt-[24px] max-w-[280px]">
+                        {t( "Login-sub-title" )}
+                      </Body1>
+                    </View>
+                  </View>
+                )}
+                <LoginForm
+                  setLoggedIn={setLoggedIn}
+                  handleInputFocus={handleInputFocus}
+                />
+              </ScrollView>
+            )
+        }
       </ImageBackground>
     </SafeAreaView>
   );

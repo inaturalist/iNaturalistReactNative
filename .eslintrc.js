@@ -51,7 +51,7 @@ module.exports = {
       jsx: "never",
       json: "always"
     }],
-    indent: ["error", 2],
+    indent: ["error", 2, { SwitchCase: 1 }],
     "max-len": [
       "error",
       100,
@@ -81,11 +81,13 @@ module.exports = {
     quotes: [2, "double"],
     "space-in-parens": [2, "always"],
     "module-resolver/use-alias": 2,
+    "multiline-ternary": ["error", "always"],
     // At least before we start making production builds
     "no-console": 0,
     "no-restricted-globals": 0,
     "no-param-reassign": 0,
     "no-var": 1,
+    "operator-linebreak": [2, "before"],
     "prefer-const": [2, { destructuring: "all" }],
     // "react/forbid-prop-types": 0,
     "react/prop-types": 0,

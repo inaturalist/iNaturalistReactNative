@@ -119,7 +119,9 @@ const ObsDetails = (): Node => {
   const taxon = observation?.taxon;
   const faves = observation?.faves;
   const observationPhotos = observation?.observationPhotos || observation?.observation_photos;
-  const currentUserFaved = faves?.length > 0 ? faves.find( fave => fave.user.id === userId ) : null;
+  const currentUserFaved = faves?.length > 0
+    ? faves.find( fave => fave.user.id === userId )
+    : null;
 
   const showErrorAlert = error => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
     cancelable: true
@@ -369,7 +371,10 @@ const ObsDetails = (): Node => {
             accessibilityLabel={t( "favorite" )}
           />
           <View className="absolute bottom-3 left-3">
-            <PhotoCount count={photos.length ? photos.length : 0} />
+            <PhotoCount count={photos.length
+              ? photos.length
+              : 0}
+            />
           </View>
         </View>
       );

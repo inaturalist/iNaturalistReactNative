@@ -39,7 +39,9 @@ const ActivityCount = ( {
     >
       <INatIcon
         name={icon || "comments"}
-        color={white ? theme.colors.onPrimary : theme.colors.primary}
+        color={white
+          ? theme.colors.onPrimary
+          : theme.colors.primary}
         size={14}
       />
       <Body3

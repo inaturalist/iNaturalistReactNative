@@ -15,12 +15,12 @@ const useDeviceOrientation = ( ): Object => {
   const [screenWidth, setScreenWidth] = useState( width );
   function orientationLocker( orientation ) {
     switch ( orientation ) {
-    case "LANDSCAPE-RIGHT":
-      return LANDSCAPE_RIGHT;
-    case "LANDSCAPE-LEFT":
-      return LANDSCAPE_LEFT;
-    default:
-      return PORTRAIT;
+      case "LANDSCAPE-RIGHT":
+        return LANDSCAPE_RIGHT;
+      case "LANDSCAPE-LEFT":
+        return LANDSCAPE_LEFT;
+      default:
+        return PORTRAIT;
     }
   }
 

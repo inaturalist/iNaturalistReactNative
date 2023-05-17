@@ -203,7 +203,9 @@ const PhotoGallery = (): Node => {
     // update photo album
     const newOptions = {
       ...options,
-      groupTypes: album === null ? "All" : "Album"
+      groupTypes: album === null
+        ? "All"
+        : "Album"
     };
 
     if ( album !== null ) {
