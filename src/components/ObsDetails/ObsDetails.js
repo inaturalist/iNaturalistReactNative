@@ -408,7 +408,7 @@ const ObsDetails = (): Node => {
           />
         </HideView>
         <HideView noInitialRender show={currentTabId === DETAILS_TAB_ID}>
-          <DetailsTab observation={observation} />
+          <DetailsTab observation={observation} uuid={uuid} />
         </HideView>
         {addingComment && (
           <View className="flex-row items-center justify-center">

@@ -9,6 +9,7 @@ import Login from "components/LoginSignUp/Login";
 import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
+import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotos from "components/PhotoImporter/GroupPhotos";
@@ -226,7 +227,7 @@ const BottomTabs = () => {
           component={ObsDetails}
           options={{
             headerTitle: t( "Observation" ),
-            headerShown: false,
+            ...hideHeader,
             unmountOnBlur: true
           }}
         />
@@ -289,6 +290,14 @@ const BottomTabs = () => {
             ...blankHeaderTitle,
             ...hideHeaderLeft
             // title: t( "EDIT-LOCATION" )
+          }}
+        />
+        <Tab.Screen
+          name="DataQualityAssessment"
+          component={DataQualityAssessment}
+          options={{
+            headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
+            unmountOnBlur: true
           }}
         />
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />

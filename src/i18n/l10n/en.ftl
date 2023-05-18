@@ -3,6 +3,11 @@ ABOUT = ABOUT
 
 About-iNaturalist = About iNaturalist
 
+# About the Data Quality Assement
+ABOUT-THE-DQA = ABOUT THE DQA
+
+About-the-DQA-description = The Quality Grade summarizes the accuracy, precision, completeness, relevance, and appropriateness of an iNaturalist observation as biodiversity data. Some attributes are automatically determined, while others are subject to a vote by iNat users. iNaturalist shares licensed "Research Grade" observations with a number of data partners for use in science and conservation.
+
 Accept-community-identifications = Accept community identifications
 
 Account = Account
@@ -114,11 +119,53 @@ CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
 
 DATA-QUALITY = DATA QUALITY
 
+DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
+
+# declares the current data quality status of the observation 
+Data-quality-assessment-title-research = This observation is Research Grade!
+
+Data-quality-assessment-title-needs-id = This observation Needs ID
+
+Data-quality-assessment-title-casual = This observation is Casual Grade
+
+# description for different quality grades in the DQA
+Data-quality-assessment-description-research = It can now be used for research and featured on other websites.
+
+Data-quality-assessment-description-research-not-licensed = However, it is not licensed for re-use and will not be shared with data repositories that respect license choices.
+
+Data-quality-assessment-description-needs-id = This observation has not yet met the conditions required to meet research grade status:
+
+Data-quality-assessment-description-casual = This observation has not met the conditions required to meet research grade status.
+
+# checklist test for Data Quality Assessment of Observation Details 
+Data-quality-assessment-date-specified = Date specified
+
+Data-quality-assessment-location-specified = Location specified
+
+Data-quality-assessment-has-photos-or-sounds = Has Photos or Sounds
+
+Data-quality-assessment-id-supported-by-two-or-more = Has ID supported by two or more
+
+Data-quality-assessment-community-taxon-at-species-level-or-lower = Community taxon at species level or lower
+
+Data-quality-assessment-date-is-accurate = Date is accurate
+
+Data-quality-assessment-location-is-accurate = Location is accurate
+
+Data-quality-assessment-organism-is-wild = Organism is wild
+
+Data-quality-assessment-evidence-of-organism = Evidence of organism
+
+Data-quality-assessment-recent-evidence-of-organism = Recent evidence of an organism
+
+Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Based on the evidence, can the Community Taxon still be improved?
+
 Data-quality-research-description = This observation has enough identifications to be considered resarch grade
 
 Data-quality-needs-id-description = This observation needs more identifications to reach research grade
 
 Data-quality-casual-description = This observation needs more information verified to be considered verifiable
+
 
 Date = Date
 
