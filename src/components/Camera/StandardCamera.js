@@ -35,6 +35,8 @@ import {
   useCameraDevices
 } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
+import { BREAKPOINTS } from "sharedHelpers/breakpoint";
+import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
@@ -115,6 +117,7 @@ const StandardCamera = ( ): Node => {
     orientationLockerToCameraOrientation( Orientation.getInitialOrientation( ) )
   );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
+  const { screenWidth } = useDeviceOrientation( );
 
   const photosTaken = allObsPhotoUris.length > 0;
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
@@ -381,7 +384,8 @@ const StandardCamera = ( ): Node => {
       <PhotoPreview
         savingPhoto={savingPhoto}
         isLandscapeMode={isLandscapeMode}
-        isLargeScreen={isTablet}
+        isLargeScreen={screenWidth > BREAKPOINTS.md}
+        isTablet={isTablet}
       />
       <View className="relative flex-1">
         {device && (

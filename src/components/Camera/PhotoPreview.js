@@ -6,23 +6,35 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 
-import PhotoCarousel from "./PhotoCarousel";
+import PhotoCarousel, {
+  LARGE_PHOTO_DIM,
+  LARGE_PHOTO_GUTTER,
+  SMALL_PHOTO_DIM,
+  SMALL_PHOTO_GUTTER
+} from "./PhotoCarousel";
 
 type Props = {
   savingPhoto: boolean,
   isLandscapeMode?: boolean,
-  isLargeScreen?: boolean
+  isLargeScreen?: boolean,
+  isTablet?: boolean
 }
 
 const PhotoPreview = ( {
   savingPhoto,
   isLandscapeMode,
-  isLargeScreen
+  isLargeScreen,
+  isTablet
 }: Props ): Node => {
   const {
-    deletePhotoFromObservation, cameraPreviewUris: photoUris, setMediaViewerUris,
+    cameraPreviewUris: photoUris,
+    deletePhotoFromObservation,
+    setMediaViewerUris,
     setSelectedPhotoIndex
   } = useContext( ObsEditContext );
+  const wrapperDim = isLargeScreen
+    ? LARGE_PHOTO_DIM + LARGE_PHOTO_GUTTER * 2
+    : SMALL_PHOTO_DIM + SMALL_PHOTO_GUTTER * 2;
 
   const deletePhoto = photoUri => {
     deletePhotoFromObservation( photoUri );
@@ -40,7 +52,7 @@ const PhotoPreview = ( {
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
-  if ( isLargeScreen && !isLandscapeMode ) {
+  if ( isTablet && !isLandscapeMode ) {
     noPhotosNotice = (
       <Text
         className={classnames(
@@ -59,16 +71,21 @@ const PhotoPreview = ( {
     );
   }
 
+  const wrapperStyle = { justifyContent: "center" };
+  if ( isTablet && !isLandscapeMode ) {
+    // $FlowIssue[prop-missing]
+    wrapperStyle.width = wrapperDim;
+  } else {
+    // $FlowIssue[prop-missing]
+    wrapperStyle.height = wrapperDim;
+    // $FlowIssue[prop-missing]
+    wrapperStyle.width = "100%";
+  }
+
   return (
-    <View className={classnames(
-      "bg-black",
-      {
-        "h-[110px] pb-[18px] pt-[50px]": !isLargeScreen,
-        "h-[151px]": isLargeScreen && isLandscapeMode,
-        "w-[120px]": isLargeScreen && !isLandscapeMode
-      },
-      "justify-center"
-    )}
+    <View
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={wrapperStyle}
     >
       {
         photoUris.length === 0
@@ -78,9 +95,9 @@ const PhotoPreview = ( {
               deletePhoto={deletePhoto}
               photoUris={photoUris}
               setMediaViewerUris={setMediaViewerUris}
-              containerStyle="camera"
               savingPhoto={savingPhoto}
               isLargeScreen={isLargeScreen}
+              isTablet={isTablet}
               isLandscapeMode={isLandscapeMode}
               setSelectedPhotoIndex={setSelectedPhotoIndex}
             />
