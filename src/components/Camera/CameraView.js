@@ -9,16 +9,13 @@ import useIsForeground from "sharedHooks/useIsForeground";
 
 import FocusSquare from "./FocusSquare";
 
-export const PORTRAIT = "portrait";
-export const LANDSCAPE_LEFT = "landscapeLeft";
-export const LANDSCAPE_RIGHT = "landscapeRight";
-
 type Props = {
   camera: Object,
-  device: Object
+  device: Object,
+  orientation?: any
 }
 
-const CameraView = ( { camera, device }: Props ): Node => {
+const CameraView = ( { camera, device, orientation }: Props ): Node => {
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
   const singleTapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
 
@@ -67,6 +64,7 @@ const CameraView = ( { camera, device }: Props ): Node => {
           isActive={isActive}
           photo
           enableZoomGesture
+          orientation={orientation}
         />
       </GestureDetector>
       <FocusSquare
