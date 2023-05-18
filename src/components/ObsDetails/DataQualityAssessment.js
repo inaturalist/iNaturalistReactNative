@@ -1,5 +1,6 @@
 // @flow
 import { useRoute } from "@react-navigation/native";
+import { fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
 import {
   Body3,
   Divider,
@@ -17,8 +18,6 @@ import { useEffect, useState } from "react";
 import * as React from "react";
 import { useTheme } from "react-native-paper";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-import {fetchQualityMetrics, setQualityMetric} from "api/qualityMetrics";
-
 
 const titleOption = option => {
   switch ( option ) {
@@ -95,7 +94,7 @@ const DataQualityAssessment = ( ): React.Node => {
   const checkTest = metric => {
     const match = qualityMetrics.find( element => element.metric === metric );
     if ( match && match.agree === true ) { return true; }
-    if ( match && match.agree === false ) { return false; } 
+    if ( match && match.agree === false ) { return false; }
     return null;
   };
 
