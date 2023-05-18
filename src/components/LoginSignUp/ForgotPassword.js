@@ -50,7 +50,10 @@ const ForgotPassword = ( ): Node => {
           text={t( "If-an-account-with-that-email-exists" )}
           buttonText={t( "OPEN-EMAIL" )}
           secondButtonText={t( "BACK-TO-LOGIN" )}
-          handleSecondButtonPress={( ) => navigation.navigate( "Login" )}
+          handleSecondButtonPress={( ) => {
+            setShowSheet( false );
+            navigation.navigate( "Login" );
+          }}
           buttonType="focus"
         />
       )}
