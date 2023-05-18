@@ -60,7 +60,6 @@ const PhotoCarousel = ( {
   const photoClasses = isLargeScreen
     ? LARGE_PHOTO_CLASSES
     : SMALL_PHOTO_CLASSES;
-  console.log( "photoClasses: ", photoClasses );
   const photoDim = isLargeScreen
     ? LARGE_PHOTO_DIM
     : SMALL_PHOTO_DIM;
@@ -111,7 +110,7 @@ const PhotoCarousel = ( {
             deletePhoto( item );
           } else {
             setSelectedPhotoIndex( index );
-            setMediaViewerUris( photoUris );
+            setMediaViewerUris( [...photoUris] );
             navigation.navigate( "MediaViewer" );
           }
         }}

@@ -26,12 +26,14 @@ const MediaViewer = ( ): Node => {
   const { t } = useTranslation( );
   const [warningSheet, setWarningSheet] = useState( false );
   const {
-    deletePhotoFromObservation, mediaViewerUris, selectedPhotoIndex, setSelectedPhotoIndex
+    deletePhotoFromObservation,
+    mediaViewerUris,
+    selectedPhotoIndex,
+    setSelectedPhotoIndex
   } = useContext( ObsEditContext );
 
-  const photoUris = mediaViewerUris;
   const atFirstPhoto = selectedPhotoIndex === 0;
-  const atLastPhoto = selectedPhotoIndex === photoUris.length - 1;
+  const atLastPhoto = selectedPhotoIndex === mediaViewerUris.length - 1;
 
   const handleScrollLeft = index => {
     if ( atFirstPhoto ) { return; }
@@ -48,7 +50,7 @@ const MediaViewer = ( ): Node => {
   const { isLandscapeMode, screenWidth } = useDeviceOrientation( );
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
 
-  const numOfPhotos = photoUris.length;
+  const numOfPhotos = mediaViewerUris.length;
 
   const showWarningSheet = ( ) => setWarningSheet( true );
   const hideWarningSheet = ( ) => setWarningSheet( false );
@@ -80,9 +82,9 @@ const MediaViewer = ( ): Node => {
   );
 
   const deletePhoto = ( ) => {
-    deletePhotoFromObservation( photoUris[selectedPhotoIndex] );
+    deletePhotoFromObservation( mediaViewerUris[selectedPhotoIndex] );
     hideWarningSheet( );
-    if ( photoUris.length === 0 ) {
+    if ( mediaViewerUris.length === 0 ) {
       navigation.goBack( );
     } else if ( selectedPhotoIndex !== 0 ) {
       setSelectedPhotoIndex( selectedPhotoIndex - 1 );
@@ -152,7 +154,7 @@ const MediaViewer = ( ): Node => {
         />
       )}
       <MainPhotoDisplay
-        photoUris={photoUris}
+        photoUris={mediaViewerUris}
         selectedPhotoIndex={selectedPhotoIndex}
         handleScrollEndDrag={handleScrollEndDrag}
         horizontalScroll={horizontalScroll}
@@ -178,7 +180,7 @@ const MediaViewer = ( ): Node => {
         </View>
       )}
       <PhotoSelector
-        photoUris={photoUris}
+        photoUris={mediaViewerUris}
         scrollToIndex={scrollToIndex}
         isLargeScreen={isLargeScreen}
         isLandscapeMode={isLandscapeMode}

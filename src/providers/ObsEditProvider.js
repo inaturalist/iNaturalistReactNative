@@ -303,18 +303,19 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
 
       // photos to show in media viewer
-      const media = removePhotoFromList( mediaViewerUris, photoUriToDelete );
+      const newMediaViewerUris = removePhotoFromList( mediaViewerUris, photoUriToDelete );
+      setMediaViewerUris( [...newMediaViewerUris] );
+
       // photos displayed in PhotoPreview
-      if ( cameraPreviewUris.length > 0 ) {
-        setCameraPreviewUris( media );
-      }
+      const newCameraPreviewUris = removePhotoFromList( cameraPreviewUris, photoUriToDelete );
+      setCameraPreviewUris( [...newCameraPreviewUris] );
+
       // when deleting photo from StandardCamera while adding new evidence, remember to clear
       // the list of new evidence to add
       if ( evidenceToAdd.length > 0 ) {
         const updatedEvidence = removePhotoFromList( evidenceToAdd, photoUriToDelete );
         setEvidenceToAdd( [...updatedEvidence] );
       }
-      setMediaViewerUris( media );
 
       await Photo.deletePhoto( realm, photoUriToDelete );
     };
