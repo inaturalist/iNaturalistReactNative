@@ -33,11 +33,10 @@ const ForgotPassword = ( ): Node => {
   }, [navigation] );
 
   const reset = async email => {
+    await resetPassword( email );
     setHideHeader( false );
     setShowSheet( true );
     Keyboard.dismiss( );
-    const success = await resetPassword( email );
-    console.log( success, "success" );
   };
 
   return (

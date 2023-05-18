@@ -22,7 +22,8 @@ const logger = log.extend( "AuthenticationService" );
 
 // Base API domain can be overridden (in case we want to use staging URL) -
 // either by placing it in .env file, or in an environment variable.
-const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "https://www.inaturalist.org";
+// const API_HOST: string = Config.OAUTH_API_URL || process.env.OAUTH_API_URL || "https://www.inaturalist.org";
+const API_HOST: string = "https://www.inaturalist.org";
 
 // User agent being used, when calling the iNat APIs
 // eslint-disable-next-line max-len
@@ -429,22 +430,19 @@ const isCurrentUser = async ( username: string ): Promise<boolean> => {
 const resetPassword = async (
   email: string
 ): any => {
-  const formData: {
-    "user[email]": string
-  } = {
-    "user[email]": email
+  const formData = {
+    user: {
+      email
+    }
   };
 
   const api = createAPI( );
   const response = await api.post( "/users/password", formData );
 
+  // this endpoint doesn't exactly exist,
+  // so it's expected to get a 404 Not found error back here
   if ( !response.ok ) {
-    console.error(
-      "failure when calling /users/password - ",
-      response.problem,
-      response.status
-    );
-    return response.data.errors[0];
+    return response.data.error;
   }
 
   return null;
