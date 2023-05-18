@@ -9,10 +9,6 @@ import useIsForeground from "sharedHooks/useIsForeground";
 
 import FocusSquare from "./FocusSquare";
 
-export const PORTRAIT = "portrait";
-export const LANDSCAPE_LEFT = "landscapeLeft";
-export const LANDSCAPE_RIGHT = "landscapeRight";
-
 type Props = {
   camera: Object,
   device: Object,

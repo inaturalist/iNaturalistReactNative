@@ -14,7 +14,6 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useContext,
-  useEffect,
   useRef,
   useState
 } from "react";
@@ -36,14 +35,15 @@ import {
   useCameraDevices
 } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
-import useTranslation from "sharedHooks/useTranslation";
-import colors from "styles/tailwindColors";
-
-import CameraView, {
+import useDeviceOrientation, {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
   PORTRAIT
-} from "./CameraView";
+} from "sharedHooks/useDeviceOrientation";
+import useTranslation from "sharedHooks/useTranslation";
+import colors from "styles/tailwindColors";
+
+import CameraView from "./CameraView";
 import DiscardChangesSheet from "./DiscardChangesSheet";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
@@ -53,20 +53,6 @@ const isTablet = DeviceInfo.isTablet();
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const CAMERA_BUTTON_DIM = 40;
-
-function orientationLockerToCameraOrientation( orientation ) {
-  // react-native-orientation-locker and react-native-vision-camera  different
-  // string values for these constants, so we map everything to the
-  // react-native-vision-camera versions
-  switch ( orientation ) {
-    case "LANDSCAPE-RIGHT":
-      return LANDSCAPE_RIGHT;
-    case "LANDSCAPE-LEFT":
-      return LANDSCAPE_LEFT;
-    default:
-      return PORTRAIT;
-  }
-}
 
 // Empty space where a camera button should be so buttons don't jump around
 // when they appear or disappear
@@ -112,9 +98,7 @@ const StandardCamera = ( ): Node => {
   const [savingPhoto, setSavingPhoto] = useState( false );
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
-  const [deviceOrientation, setDeviceOrientation] = useState(
-    orientationLockerToCameraOrientation( Orientation.getInitialOrientation( ) )
-  );
+  const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
 
   const photosTaken = allObsPhotoUris.length > 0;
@@ -138,20 +122,6 @@ const StandardCamera = ( ): Node => {
     "items-center"
   ].join( " " );
 
-  // detect device rotation instead of using screen orientation change
-  const onDeviceRotation = useCallback(
-    orientation => {
-      // FACE-UP and FACE-DOWN could be portrait or landscape, I guess the
-      // device can't tell, so I'm just not changing the layout at all for
-      // those. ~~~ kueda 20230420
-      if ( orientation === "FACE-UP" || orientation === "FACE-DOWN" ) {
-        return;
-      }
-      setDeviceOrientation( orientationLockerToCameraOrientation( orientation ) );
-    },
-    [setDeviceOrientation]
-  );
-
   const handleBackButtonPress = useCallback( ( ) => {
     if ( cameraPreviewUris.length === 0 ) { return; }
 
@@ -174,14 +144,6 @@ const StandardCamera = ( ): Node => {
     }, [handleBackButtonPress] )
   );
 
-  useEffect( () => {
-    Orientation.addDeviceOrientationListener( onDeviceRotation );
-
-    return () => {
-      Orientation.removeOrientationListener( onDeviceRotation );
-    };
-  } );
-
   const takePhoto = async ( ) => {
     setSavingPhoto( true );
     if ( disallowAddingPhotos ) {
@@ -192,8 +154,11 @@ const StandardCamera = ( ): Node => {
     const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
     let rotation = 0;
     switch ( cameraPhoto.metadata.Orientation ) {
-      case 3:
-        rotation = 180;
+      case 1:
+        // Because the universe is a cruel, cruel place
+        if ( Platform.OS === "android" ) {
+          rotation = 180;
+        }
         break;
       case 6:
         rotation = 90;
@@ -206,7 +171,6 @@ const StandardCamera = ( ): Node => {
     }
     const newPhoto = await Photo.new( cameraPhoto.path, { rotation } );
     const uri = newPhoto.localFilePath;
-    console.log( "cameraPhoto.metadata: ", cameraPhoto.metadata );
 
     setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
     if ( addEvidence ) {

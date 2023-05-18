@@ -253,13 +253,15 @@ inatjs.observations.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 
 jest.mock( "react-native-orientation-locker", () => ( {
-  addEventListener: jest.fn(),
-  addDeviceOrientationListener: jest.fn(),
-  removeEventListener: jest.fn(),
-  lockToPortrait: jest.fn(),
-  removeOrientationListener: jest.fn(),
-  getInitialOrientation: jest.fn(),
-  unlockAllOrientations: jest.fn()
+  addDeviceOrientationListener: jest.fn( ),
+  addEventListener: jest.fn( ),
+  getDeviceOrientation: jest.fn( ),
+  getInitialOrientation: jest.fn( ),
+  getOrientation: jest.fn( ),
+  lockToPortrait: jest.fn( ),
+  removeEventListener: jest.fn( ),
+  removeOrientationListener: jest.fn( ),
+  unlockAllOrientations: jest.fn( )
 } ) );
 
 const mockErrorHandler = error => {
