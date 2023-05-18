@@ -86,7 +86,7 @@
     "react-native-linear-gradient": "^2.6.2",
     "react-native-localize": "^2.2.6",
     "react-native-logs": "^5.0.1",
-    "react-native-mail": "^6.1.1",
+    "react-native-mail": "github:chirag04/react-native-mail",
     "react-native-maps": "^1.7.1",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^15.0.1",
