@@ -15,7 +15,8 @@ type Props = {
   confirm: Function,
   snapPoints: Array<number>,
   secondButtonText?: string,
-  handleSecondButtonPress?: Function
+  handleSecondButtonPress?: Function,
+  buttonType?: string
 }
 
 const WarningSheet = ( {
@@ -26,7 +27,8 @@ const WarningSheet = ( {
   confirm,
   snapPoints,
   secondButtonText,
-  handleSecondButtonPress
+  handleSecondButtonPress,
+  buttonType
 }: Props ): Node => (
   <BottomSheet
     handleClose={handleClose}
@@ -50,7 +52,7 @@ const WarningSheet = ( {
         <Button
           onPress={confirm}
           text={buttonText}
-          level="warning"
+          level={buttonType || "warning"}
           className="grow ml-3"
         />
       </View>

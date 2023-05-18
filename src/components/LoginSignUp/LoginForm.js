@@ -12,7 +12,6 @@ import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Linking } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 
 import {
@@ -60,11 +59,6 @@ const LoginForm = ( { setLoggedIn, handleInputFocus }: Props ): Node => {
     navigation.navigate( "ObsList" );
   };
 
-  const forgotPassword = ( ) => {
-    // TODO - should be put in a constant somewhere?
-    Linking.openURL( "https://www.inaturalist.org/users/password/new" );
-  };
-
   return (
     <View className="px-4 mt-[9px] justify-end">
       <View className="mx-4">
@@ -101,7 +95,7 @@ const LoginForm = ( { setLoggedIn, handleInputFocus }: Props ): Node => {
         <Body2
           className="underline mt-[15px] self-end color-white"
           accessibilityRole="button"
-          onPress={forgotPassword}
+          onPress={( ) => navigation.navigate( "ForgotPassword" )}
         >
           {t( "Forgot-Password" )}
         </Body2>

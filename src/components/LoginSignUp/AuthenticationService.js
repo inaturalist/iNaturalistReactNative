@@ -419,6 +419,37 @@ const isCurrentUser = async ( username: string ): Promise<boolean> => {
   return username === currentUsername;
 };
 
+/**
+ * Resets user password
+ *
+ * @param email
+ *
+ * @returns null if successful, otherwise an error string
+ */
+const resetPassword = async (
+  email: string
+): any => {
+  const formData: {
+    "user[email]": string
+  } = {
+    "user[email]": email
+  };
+
+  const api = createAPI( );
+  const response = await api.post( "/users/password", formData );
+
+  if ( !response.ok ) {
+    console.error(
+      "failure when calling /users/password - ",
+      response.problem,
+      response.status
+    );
+    return response.data.errors[0];
+  }
+
+  return null;
+};
+
 export {
   API_HOST,
   authenticateUser,
@@ -428,5 +459,6 @@ export {
   isCurrentUser,
   isLoggedIn,
   registerUser,
+  resetPassword,
   signOut
 };
