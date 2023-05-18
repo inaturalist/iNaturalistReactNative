@@ -112,7 +112,9 @@ const UserText = ( {
 
   html = linkifyHtml( html, LINKIFY_OPTIONS );
   const baseStyle = {
-    fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`,
+    fontFamily: `Whitney-Light${Platform.OS === "ios"
+      ? ""
+      : "-Pro"}`,
     fontSize: 16,
     lineHeight: 22,
     ...htmlStyle

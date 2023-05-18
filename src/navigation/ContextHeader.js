@@ -85,14 +85,16 @@ const ContextHeader = ( {
               {backButton}
             </View>
           )}
-          {customTitleComponent ? (
-            options.headerTitle()
-          ) : (
-            <View>
-              <Heading1>{getTitle()}</Heading1>
-              {subtitle && <Heading4>{subtitle}</Heading4>}
-            </View>
-          )}
+          {customTitleComponent
+            ? (
+              options.headerTitle()
+            )
+            : (
+              <View>
+                <Heading1>{getTitle()}</Heading1>
+                {subtitle && <Heading4>{subtitle}</Heading4>}
+              </View>
+            )}
 
           <View className="absolute right-0 top-0">
             {options?.headerRight?.()}

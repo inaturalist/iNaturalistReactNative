@@ -52,7 +52,9 @@ const INatIconButton = ( {
       onPress={onPress}
       style={( { pressed } ) => [
         {
-          opacity: pressed ? 0.95 : 1,
+          opacity: pressed
+            ? 0.95
+            : 1,
           width,
           height,
           justifyContent: "center",

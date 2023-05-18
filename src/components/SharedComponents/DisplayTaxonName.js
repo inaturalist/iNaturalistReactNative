@@ -45,15 +45,21 @@ const DisplayTaxonName = ( {
     rank
   } = generateTaxonPieces( taxon );
   const isHorizontal = layout === "horizontal";
-  const getSpaceChar = showSpace => ( showSpace && isHorizontal ? " " : "" );
+  const getSpaceChar = showSpace => ( showSpace && isHorizontal
+    ? " "
+    : "" );
 
   const scientificNameComponent = scientificNamePieces.map( ( piece, index ) => {
     const isItalics = piece !== rankPiece && (
       rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
     );
-    const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal ) ? " " : "";
+    const spaceChar = ( ( index !== scientificNamePieces.length - 1 ) || isHorizontal )
+      ? " "
+      : "";
     const text = piece + spaceChar;
-    const TextComponent = scientificNameFirst || !commonName ? Body1 : Body3;
+    const TextComponent = scientificNameFirst || !commonName
+      ? Body1
+      : Body3;
     return (
       isItalics
         ? (
@@ -73,8 +79,12 @@ const DisplayTaxonName = ( {
     scientificNameComponent.unshift( `${rank} ` );
   }
 
-  const TopTextComponent = !small ? Body1 : Body3;
-  const BottomTextComponent = !small ? Body3 : Body4;
+  const TopTextComponent = !small
+    ? Body1
+    : Body3;
+  const BottomTextComponent = !small
+    ? Body3
+    : Body4;
 
   return (
     <View
@@ -88,7 +98,9 @@ const DisplayTaxonName = ( {
     >
       <TopTextComponent
         className={textColorClass}
-        numberOfLines={scientificNameFirst ? 1 : 3}
+        numberOfLines={scientificNameFirst
+          ? 1
+          : 3}
       >
         {
           ( scientificNameFirst || !commonName )
@@ -102,7 +114,9 @@ const DisplayTaxonName = ( {
       {
         commonName && (
           <BottomTextComponent className={textColorClass}>
-            {scientificNameFirst ? commonName : scientificNameComponent}
+            {scientificNameFirst
+              ? commonName
+              : scientificNameComponent}
           </BottomTextComponent>
         )
       }

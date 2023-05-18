@@ -51,30 +51,32 @@ const PhotoCarousel = ( {
     }
   }, [photoUris.length, deletePhotoMode] );
 
-  const renderSkeleton = ( ) => ( savingPhoto ? (
-    <View
-      className={classnames(
-        "flex",
-        {
-          "w-fit h-full": isLargeScreen && isLandscapeMode
-        },
-        imageClass
-      )}
-    >
+  const renderSkeleton = ( ) => ( savingPhoto
+    ? (
       <View
         className={classnames(
-          "bg-lightGray justify-center",
+          "flex",
           {
-            [`${smallPhotoClass} mx-[3px]`]: !isLargeScreen,
-            [`${largePhotoClass} mx-[8.5px]`]: isLargeScreen && !isLandscapeMode,
-            [`${largePhotoClass}`]: isLargeScreen && isLandscapeMode
-          }
+            "w-fit h-full": isLargeScreen && isLandscapeMode
+          },
+          imageClass
         )}
       >
-        <ActivityIndicator />
+        <View
+          className={classnames(
+            "bg-lightGray justify-center",
+            {
+              [`${smallPhotoClass} mx-[3px]`]: !isLargeScreen,
+              [`${largePhotoClass} mx-[8.5px]`]: isLargeScreen && !isLandscapeMode,
+              [`${largePhotoClass}`]: isLargeScreen && isLandscapeMode
+            }
+          )}
+        >
+          <ActivityIndicator />
+        </View>
       </View>
-    </View>
-  ) : null );
+    )
+    : null );
 
   const renderPhotoOrEvidenceButton = ( { item, index } ) => (
     <>
@@ -151,29 +153,33 @@ const PhotoCarousel = ( {
       data={[...photoUris]}
       renderItem={renderPhotoOrEvidenceButton}
       horizontal={!isLargeScreen || !!isLandscapeMode}
-      ListEmptyComponent={savingPhoto ? renderSkeleton( ) : emptyComponent}
+      ListEmptyComponent={savingPhoto
+        ? renderSkeleton( )
+        : emptyComponent}
     />
   );
 
-  return deletePhotoMode ? (
-    <Modal
-      visible
-      onBackdropPress={() => setDeletePhotoMode( false )}
-      backdropOpacity={0}
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{ margin: 0 }}
-    >
-      <View className={classnames(
-        "absolute top-0 pt-[50px]",
-        {
-          "ml-[18px]": isLargeScreen && isLandscapeMode
-        }
-      )}
+  return deletePhotoMode
+    ? (
+      <Modal
+        visible
+        onBackdropPress={() => setDeletePhotoMode( false )}
+        backdropOpacity={0}
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{ margin: 0 }}
       >
-        {photoPreviewsList}
-      </View>
-    </Modal>
-  ) : photoPreviewsList;
+        <View className={classnames(
+          "absolute top-0 pt-[50px]",
+          {
+            "ml-[18px]": isLargeScreen && isLandscapeMode
+          }
+        )}
+        >
+          {photoPreviewsList}
+        </View>
+      </Modal>
+    )
+    : photoPreviewsList;
 };
 
 export default PhotoCarousel;

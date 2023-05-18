@@ -75,34 +75,40 @@ const BottomButtons = ( ): Node => {
           setShowImpreciseLocationSheet={setShowImpreciseLocationSheet}
         />
       )}
-      {currentObservation._synced_at ? (
-        <Button
-          onPress={handleSave}
-          testID="ObsEdit.saveChangesButton"
-          text={t( "SAVE-CHANGES" )}
-          level={unsavedChanges ? "focus" : "neutral"}
-        />
-      ) : (
-        <View className={classnames( "flex-row justify-evenly", {
-          "opacity-50": !passesEvidenceTest
-        } )}
-        >
+      {currentObservation._synced_at
+        ? (
           <Button
-            className="px-[25px]"
             onPress={handleSave}
-            testID="ObsEdit.saveButton"
-            text={t( "SAVE" )}
-            level="neutral"
+            testID="ObsEdit.saveChangesButton"
+            text={t( "SAVE-CHANGES" )}
+            level={unsavedChanges
+              ? "focus"
+              : "neutral"}
           />
-          <Button
-            className="ml-3 grow"
-            level={passesEvidenceTest && passesIdentificationTest ? "focus" : "neutral"}
-            text={t( "UPLOAD-NOW" )}
-            testID="ObsEdit.uploadButton"
-            onPress={handleUpload}
-          />
-        </View>
-      )}
+        )
+        : (
+          <View className={classnames( "flex-row justify-evenly", {
+            "opacity-50": !passesEvidenceTest
+          } )}
+          >
+            <Button
+              className="px-[25px]"
+              onPress={handleSave}
+              testID="ObsEdit.saveButton"
+              text={t( "SAVE" )}
+              level="neutral"
+            />
+            <Button
+              className="ml-3 grow"
+              level={passesEvidenceTest && passesIdentificationTest
+                ? "focus"
+                : "neutral"}
+              text={t( "UPLOAD-NOW" )}
+              testID="ObsEdit.uploadButton"
+              onPress={handleUpload}
+            />
+          </View>
+        )}
     </StickyToolbar>
   );
 };

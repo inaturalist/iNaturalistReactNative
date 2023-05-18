@@ -97,20 +97,24 @@ const Search = (): React.Node => {
       <InputField
         handleTextChange={setQ}
         placeholder={
-          queryType === "taxa" ? "search for taxa" : "search for users"
+          queryType === "taxa"
+            ? "search for taxa"
+            : "search for users"
         }
         text={q}
         type="none"
       />
-      {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          testID="Search.listView"
-        />
-      )}
+      {isLoading
+        ? (
+          <ActivityIndicator />
+        )
+        : (
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            testID="Search.listView"
+          />
+        )}
     </ViewWrapper>
   );
 };

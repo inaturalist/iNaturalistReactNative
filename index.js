@@ -38,7 +38,11 @@ const jsErrorHandler = ( e, isFatal ) => {
   // possibly also related to error boundaries in React 16+:
   // https://github.com/a7ul/react-native-exception-handler/issues/60
   if ( !e.name && !e.message ) return;
-  logger.error( `JS Error: ${isFatal ? "Fatal:" : ""} ${e.stack}` );
+  if ( isFatal ) {
+    logger.error( `JS Error: Fatal: ${e.stack}` );
+  } else {
+    logger.error( `JS Error: ${e.stack}` );
+  }
 };
 
 // record JS exceptions; second parameter allows this to work in DEV mode

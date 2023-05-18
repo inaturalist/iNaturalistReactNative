@@ -20,7 +20,9 @@ const showHeader: Object = {
   // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
   headerTitleStyle: {
     fontSize: 24,
-    fontFamily: Platform.OS === "ios" ? "Whitney-Medium" : "Whitney-Medium-Pro"
+    fontFamily: Platform.OS === "ios"
+      ? "Whitney-Medium"
+      : "Whitney-Medium-Pro"
   }
 };
 

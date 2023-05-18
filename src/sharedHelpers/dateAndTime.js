@@ -59,7 +59,9 @@ const formatObsListTime = date => {
 };
 
 const formatIdDate = ( date, t ) => {
-  const d = typeof date === "string" ? parseISO( date ) : new Date( date );
+  const d = typeof date === "string"
+    ? parseISO( date )
+    : new Date( date );
   const now = new Date();
 
   const days = differenceInDays( now, d );
