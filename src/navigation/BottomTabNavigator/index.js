@@ -5,6 +5,7 @@ import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
 import LocationPicker from "components/LocationPicker/LocationPicker";
+import ForgotPassword from "components/LoginSignUp/ForgotPassword";
 import Login from "components/LoginSignUp/Login";
 import SignUp from "components/LoginSignUp/SignUp";
 import MediaViewer from "components/MediaViewer/MediaViewer";
@@ -351,6 +352,7 @@ const BottomTabs = ( ) => {
         />
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />
         <Tab.Screen name="SignUp" component={SignUp} options={hideHeader} />
+        <Tab.Screen name="ForgotPassword" component={ForgotPassword} options={hideHeader} />
       </Tab.Navigator>
     </Mortal>
   );

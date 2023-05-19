@@ -419,6 +419,34 @@ const isCurrentUser = async ( username: string ): Promise<boolean> => {
   return username === currentUsername;
 };
 
+/**
+ * Resets user password
+ *
+ * @param email
+ *
+ * @returns null if successful, otherwise an error string
+ */
+const resetPassword = async (
+  email: string
+): any => {
+  const formData = {
+    user: {
+      email
+    }
+  };
+
+  const api = createAPI( );
+  const response = await api.post( "/users/password", formData );
+
+  // this endpoint doesn't exactly exist,
+  // so it's expected to get a 404 Not found error back here
+  if ( !response.ok ) {
+    return response.data.error;
+  }
+
+  return null;
+};
+
 export {
   API_HOST,
   authenticateUser,
@@ -428,5 +456,6 @@ export {
   isCurrentUser,
   isLoggedIn,
   registerUser,
+  resetPassword,
   signOut
 };

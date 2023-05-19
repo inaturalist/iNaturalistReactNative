@@ -64,6 +64,9 @@ Applications = Applications
 
 Automatically-update-my-content-for-taxon-changes = Automatically update my content for taxon changes
 
+# Returns user to login screen
+BACK-TO-LOGIN = BACK TO LOGIN
+
 # Header for inserting user description in settings profile tab
 Bio = Bio
 
@@ -84,7 +87,7 @@ Cancel = Cancel
 Captive-Cultivated = Captive/Cultivated
 
 # After pressing the reset password button
-Check-your-email = Check your email! We've sent password reset instructions.
+CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 
 Clear = Clear
 
@@ -246,6 +249,8 @@ IDENTIFICATION = IDENTIFICATION
 
 IDENTIFICATIONS = IDENTIFICATIONS
 
+If-an-account-with-that-email-exists = If an account with that email exists, we’ve sent password reset instructions to your email.
+
 # Shows the number of photos a user selected from the camera roll for upload
 Import-X-photos = Import {$count ->
     [one] 1 photo
@@ -399,6 +404,8 @@ Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethn
 
 Open = Open
 
+OPEN-EMAIL = OPEN EMAIL
+
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
 Organism-is-wild = Organism is wild
@@ -543,10 +550,10 @@ Research-Grade = Research Grade
 Reset = Reset
 
 # Appears in the reset password screen
-Reset-password-header = Let's reset your password
+Lets-reset-your-password = Let's reset your password
 
 # Reset password button
-Reset-Password = Reset Password
+RESET-PASSWORD = RESET PASSWORD
 
 Return-to-login = Return to login
 

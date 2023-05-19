@@ -42,6 +42,10 @@
   "app-authorized-on-date": "{ $appName } (authorized on: { $date })",
   "Applications": "Applications",
   "Automatically-update-my-content-for-taxon-changes": "Automatically update my content for taxon changes",
+  "BACK-TO-LOGIN": {
+    "comment": "Returns user to login screen",
+    "val": "BACK TO LOGIN"
+  },
   "Bio": {
     "comment": "Header for inserting user description in settings profile tab",
     "val": "Bio"
@@ -54,9 +58,9 @@
   "CANCEL": "CANCEL",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
-  "Check-your-email": {
+  "CHECK-YOUR-EMAIL": {
     "comment": "After pressing the reset password button",
-    "val": "Check your email! We've sent password reset instructions."
+    "val": "CHECK YOUR EMAIL!"
   },
   "Clear": "Clear",
   "Combine-Photos": "Combine Photos",
@@ -148,6 +152,7 @@
   "High": "High",
   "IDENTIFICATION": "IDENTIFICATION",
   "IDENTIFICATIONS": "IDENTIFICATIONS",
+  "If-an-account-with-that-email-exists": "If an account with that email exists, we’ve sent password reset instructions to your email.",
   "Import-X-photos": {
     "comment": "Shows the number of photos a user selected from the camera roll for upload",
     "val": "Import { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
@@ -253,6 +258,7 @@
   "Offensive-Inappropriate": "Offensive/Inappropriate",
   "Offensive-Inappropriate-Examples": "Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of \"appropriate,\" see the FAQ.",
   "Open": "Open",
+  "OPEN-EMAIL": "OPEN EMAIL",
   "Organism-is-captive": {
     "comment": "Picker prompt on observation edit",
     "val": "Organism is captive"
@@ -341,13 +347,13 @@
     "val": "Research Grade"
   },
   "Reset": "Reset",
-  "Reset-password-header": {
+  "Lets-reset-your-password": {
     "comment": "Appears in the reset password screen",
     "val": "Let's reset your password"
   },
-  "Reset-Password": {
+  "RESET-PASSWORD": {
     "comment": "Reset password button",
-    "val": "Reset Password"
+    "val": "RESET PASSWORD"
   },
   "Return-to-login": "Return to login",
   "Reviewed": "Reviewed",
