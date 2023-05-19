@@ -15,15 +15,14 @@ required_env_vars = [
   "IOS_SHARE_BUNDLE_ID",
   "IOS_SHARE_PROVISIONING_PROFILE_NAME"
 ]
-required_env_vars.each do |env_var|
-  if ENV[env_var].to_s.size == 0
-    UI.abort_with_message! <<~NO_ENV_ERROR.gsub( /\s+/, " " ).strip
-      ENV is missing #{env_var}. Add the value to .env or populate your ENV in
-      another way.
-    NO_ENV_ERROR
-  end
-end
+required_env_vars.each do | env_var |
+  next unless ENV[env_var].to_s.size.zero?
 
+  UI.abort_with_message! <<~NO_ENV_ERROR.gsub( /\s+/, " " ).strip
+    ENV is missing #{env_var}. Add the value to .env or populate your ENV in
+    another way.
+  NO_ENV_ERROR
+end
 
 VERSION = File.open( "../package.json" ) {| f | JSON.parse( f.read )["version"] }
 editor_cmd = [
@@ -67,7 +66,7 @@ end
 
 def get_aab_path( build_number = nil )
   build_number ||= get_build_number( xcodeproj: XCODEPROJ )
-  File.join(
+  File.expand_path( File.join(
     __dir__,
     "..",
     "android",
@@ -77,12 +76,12 @@ def get_aab_path( build_number = nil )
     "bundle",
     "release",
     "#{PACKAGE_ID}-v#{VERSION}+#{build_number}-release.aab"
-  )
+  ) )
 end
 
 def get_apk_path( build_number = nil )
   build_number ||= get_build_number( xcodeproj: XCODEPROJ )
-  File.join(
+  File.expand_path( File.join(
     __dir__,
     "..",
     "android",
@@ -92,18 +91,18 @@ def get_apk_path( build_number = nil )
     "apk",
     "release",
     "#{PACKAGE_ID}-v#{VERSION}+#{build_number}-release.apk"
-  )
+  ) )
 end
 
 def get_ipa_path( build_number = nil )
   build_number ||= get_build_number( xcodeproj: XCODEPROJ )
-  File.join(
+  File.expand_path( File.join(
     __dir__,
     "..",
     "ios",
     "build",
     "#{PACKAGE_ID}-v#{VERSION}+#{build_number}.ipa"
-  )
+  ) )
 end
 
 lane :tag do
@@ -312,8 +311,10 @@ lane :release do
 
   build
 
-  apk_path = get_apk_path( build_number )
-  unless File.exist?( apk_path )
+  apk_path = File.expand_path( get_apk_path( build_number ) )
+  if File.exist?( apk_path )
+    UI.success "Found APK at #{apk_path}"
+  else
     UI.abort_with_message! "Failed to find APK at #{apk_path}"
   end
 
