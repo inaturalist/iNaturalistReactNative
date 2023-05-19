@@ -92,7 +92,7 @@ const PhotoPreview = ( {
       style={wrapperStyle}
     >
       {
-        photoUris.length === 0
+        photoUris.length === 0 && !savingPhoto
           ? noPhotosNotice
           : (
             <PhotoCarousel
