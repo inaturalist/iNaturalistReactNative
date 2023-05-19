@@ -39,15 +39,15 @@ export const LARGE_PHOTO_GUTTER = 17;
 const IMAGE_CONTAINER_CLASSES = ["justify-center", "items-center"];
 const SMALL_PHOTO_CLASSES = [
   "rounded-sm",
-  `w-[${SMALL_PHOTO_DIM}px]`,
-  `h-[${SMALL_PHOTO_DIM}px]`,
-  `m-[${SMALL_PHOTO_GUTTER / 2}px]`
+  "w-[42px]",
+  "h-[42x]",
+  "mx-[3px]"
 ];
 const LARGE_PHOTO_CLASSES = [
   "rounded-md",
-  `w-[${LARGE_PHOTO_DIM}px]`,
-  `h-[${LARGE_PHOTO_DIM}px]`,
-  `m-[${LARGE_PHOTO_GUTTER / 2}px]`
+  "w-[83px]",
+  "h-[83px]",
+  "m-[8.5px]"
 ];
 
 const PhotoCarousel = ( {
@@ -203,10 +203,7 @@ const PhotoCarousel = ( {
     height: isTablet && !isLandscapeMode
       ? "auto"
       : photoDim + photoGutter * 2,
-    paddingTop: photoGutter,
-    paddingBottom: photoGutter,
-    paddingLeft: photoGutter / 2,
-    paddingRight: photoGutter / 2
+    padding: photoGutter / 2
   };
 
   return (

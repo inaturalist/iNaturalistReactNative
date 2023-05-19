@@ -7,10 +7,7 @@ exports[`PhotoCarousel renders correctly 1`] = `
     [
       {
         "height": 54,
-        "paddingBottom": 6,
-        "paddingLeft": 3,
-        "paddingRight": 3,
-        "paddingTop": 6,
+        "padding": 3,
       },
     ]
   }
@@ -133,151 +130,12 @@ exports[`PhotoCarousel renders correctly 1`] = `
                       "borderTopLeftRadius": 4,
                       "borderTopRightRadius": 4,
                     },
-                  ],
-                ]
-              }
-              testID="PhotoCarousel.photo"
-            >
-              <View
-                accessibilityIgnoresInvertColors={true}
-                style={
-                  [
-                    [
-                      {
-                        "height": "100%",
-                      },
-                      {
-                        "display": "flex",
-                      },
-                      {
-                        "justifyContent": "center",
-                      },
-                      {
-                        "alignItems": "center",
-                      },
-                    ],
-                  ]
-                }
-              >
-                <Image
-                  source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
-                    }
-                  }
-                  style={
-                    [
-                      {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      },
-                      {
-                        "height": "100%",
-                        "width": undefined,
-                      },
-                      undefined,
-                    ]
-                  }
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        onFocusCapture={[Function]}
-        onLayout={[Function]}
-        style={
-          [
-            {
-              "flexDirection": "row",
-            },
-            null,
-          ]
-        }
-      >
-        <View
-          animatedStyle={
-            {
-              "value": {
-                "transform": [
-                  {
-                    "rotateZ": 0,
-                  },
-                ],
-              },
-            }
-          }
-          collapsable={false}
-          style={
-            {
-              "transform": [
-                {
-                  "rotateZ": 0,
-                },
-              ],
-            }
-          }
-        >
-          <View
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": undefined,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              [
-                [
-                  {
-                    "justifyContent": "center",
-                  },
-                  {
-                    "alignItems": "center",
-                  },
-                ],
-              ]
-            }
-          >
-            <View
-              style={
-                [
-                  [
-                    {
-                      "overflow": "hidden",
+                      "width": 42,
                     },
                     {
-                      "borderBottomLeftRadius": 4,
-                      "borderBottomRightRadius": 4,
-                      "borderTopLeftRadius": 4,
-                      "borderTopRightRadius": 4,
+                      "marginLeft": 3,
+                      "marginRight": 3,
                     },
                   ],
                 ]
@@ -424,6 +282,166 @@ exports[`PhotoCarousel renders correctly 1`] = `
                       "borderBottomRightRadius": 4,
                       "borderTopLeftRadius": 4,
                       "borderTopRightRadius": 4,
+                    },
+                    {
+                      "width": 42,
+                    },
+                    {
+                      "marginLeft": 3,
+                      "marginRight": 3,
+                    },
+                  ],
+                ]
+              }
+              testID="PhotoCarousel.photo"
+            >
+              <View
+                accessibilityIgnoresInvertColors={true}
+                style={
+                  [
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://loremflickr.com/640/480",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          animatedStyle={
+            {
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": 0,
+                  },
+                ],
+              },
+            }
+          }
+          collapsable={false}
+          style={
+            {
+              "transform": [
+                {
+                  "rotateZ": 0,
+                },
+              ],
+            }
+          }
+        >
+          <View
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                [
+                  {
+                    "justifyContent": "center",
+                  },
+                  {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  [
+                    {
+                      "overflow": "hidden",
+                    },
+                    {
+                      "borderBottomLeftRadius": 4,
+                      "borderBottomRightRadius": 4,
+                      "borderTopLeftRadius": 4,
+                      "borderTopRightRadius": 4,
+                    },
+                    {
+                      "width": 42,
+                    },
+                    {
+                      "marginLeft": 3,
+                      "marginRight": 3,
                     },
                   ],
                 ]
@@ -491,10 +509,7 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
     [
       {
         "height": 117,
-        "paddingBottom": 17,
-        "paddingLeft": 8.5,
-        "paddingRight": 8.5,
-        "paddingTop": 17,
+        "padding": 8.5,
       },
     ]
   }
@@ -617,151 +632,17 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                       "borderTopLeftRadius": 9,
                       "borderTopRightRadius": 9,
                     },
-                  ],
-                ]
-              }
-              testID="PhotoCarousel.photo"
-            >
-              <View
-                accessibilityIgnoresInvertColors={true}
-                style={
-                  [
-                    [
-                      {
-                        "height": "100%",
-                      },
-                      {
-                        "display": "flex",
-                      },
-                      {
-                        "justifyContent": "center",
-                      },
-                      {
-                        "alignItems": "center",
-                      },
-                    ],
-                  ]
-                }
-              >
-                <Image
-                  source={
                     {
-                      "uri": "https://loremflickr.com/640/480",
-                    }
-                  }
-                  style={
-                    [
-                      {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      },
-                      {
-                        "height": "100%",
-                        "width": undefined,
-                      },
-                      undefined,
-                    ]
-                  }
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        onFocusCapture={[Function]}
-        onLayout={[Function]}
-        style={
-          [
-            {
-              "flexDirection": "row",
-            },
-            null,
-          ]
-        }
-      >
-        <View
-          animatedStyle={
-            {
-              "value": {
-                "transform": [
-                  {
-                    "rotateZ": 0,
-                  },
-                ],
-              },
-            }
-          }
-          collapsable={false}
-          style={
-            {
-              "transform": [
-                {
-                  "rotateZ": 0,
-                },
-              ],
-            }
-          }
-        >
-          <View
-            accessibilityRole="button"
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": undefined,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              [
-                [
-                  {
-                    "justifyContent": "center",
-                  },
-                  {
-                    "alignItems": "center",
-                  },
-                ],
-              ]
-            }
-          >
-            <View
-              style={
-                [
-                  [
-                    {
-                      "overflow": "hidden",
+                      "width": 83,
                     },
                     {
-                      "borderBottomLeftRadius": 9,
-                      "borderBottomRightRadius": 9,
-                      "borderTopLeftRadius": 9,
-                      "borderTopRightRadius": 9,
+                      "height": 83,
+                    },
+                    {
+                      "marginBottom": 8.5,
+                      "marginLeft": 8.5,
+                      "marginRight": 8.5,
+                      "marginTop": 8.5,
                     },
                   ],
                 ]
@@ -908,6 +789,176 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
                       "borderBottomRightRadius": 9,
                       "borderTopLeftRadius": 9,
                       "borderTopRightRadius": 9,
+                    },
+                    {
+                      "width": 83,
+                    },
+                    {
+                      "height": 83,
+                    },
+                    {
+                      "marginBottom": 8.5,
+                      "marginLeft": 8.5,
+                      "marginRight": 8.5,
+                      "marginTop": 8.5,
+                    },
+                  ],
+                ]
+              }
+              testID="PhotoCarousel.photo"
+            >
+              <View
+                accessibilityIgnoresInvertColors={true}
+                style={
+                  [
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://loremflickr.com/640/480",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={
+          [
+            {
+              "flexDirection": "row",
+            },
+            null,
+          ]
+        }
+      >
+        <View
+          animatedStyle={
+            {
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": 0,
+                  },
+                ],
+              },
+            }
+          }
+          collapsable={false}
+          style={
+            {
+              "transform": [
+                {
+                  "rotateZ": 0,
+                },
+              ],
+            }
+          }
+        >
+          <View
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                [
+                  {
+                    "justifyContent": "center",
+                  },
+                  {
+                    "alignItems": "center",
+                  },
+                ],
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  [
+                    {
+                      "overflow": "hidden",
+                    },
+                    {
+                      "borderBottomLeftRadius": 9,
+                      "borderBottomRightRadius": 9,
+                      "borderTopLeftRadius": 9,
+                      "borderTopRightRadius": 9,
+                    },
+                    {
+                      "width": 83,
+                    },
+                    {
+                      "height": 83,
+                    },
+                    {
+                      "marginBottom": 8.5,
+                      "marginLeft": 8.5,
+                      "marginRight": 8.5,
+                      "marginTop": 8.5,
                     },
                   ],
                 ]
