@@ -12,20 +12,21 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import Modal from "react-native-modal";
 import { IconButton, useTheme } from "react-native-paper";
-import {
-  LANDSCAPE_LEFT,
-  LANDSCAPE_RIGHT,
-  PORTRAIT_UPSIDE_DOWN
-} from "sharedHooks/useDeviceOrientation";
+import Animated, {
+  useAnimatedStyle,
+  withTiming
+} from "react-native-reanimated";
 
 type Props = {
-  deviceOrientation?: string,
   emptyComponent?: Function,
   savingPhoto?: boolean,
   deletePhoto?: Function,
   isLandscapeMode?:boolean,
   isLargeScreen?: boolean,
   isTablet?: boolean,
+  rotation?: {
+    value: number
+  },
   setMediaViewerUris: Function,
   photoUris: Array<string>,
   setSelectedPhotoIndex: Function
@@ -50,13 +51,13 @@ const LARGE_PHOTO_CLASSES = [
 ];
 
 const PhotoCarousel = ( {
-  deviceOrientation,
   emptyComponent,
   savingPhoto,
   deletePhoto,
   isLandscapeMode,
   isLargeScreen,
   isTablet,
+  rotation,
   setMediaViewerUris,
   photoUris,
   setSelectedPhotoIndex
@@ -79,6 +80,20 @@ const PhotoCarousel = ( {
       setDeletePhotoMode( false );
     }
   }, [photoUris.length, deletePhotoMode] );
+
+  // I tried passing this in as a prop but the animation wasn't as smooth
+  const animatedStyle = useAnimatedStyle(
+    () => ( {
+      transform: [
+        {
+          rotateZ: rotation
+            ? withTiming( `${-1 * rotation.value}deg` )
+            : 0
+        }
+      ]
+    } ),
+    [rotation?.value]
+  );
 
   const renderSkeleton = ( ) => ( savingPhoto
     ? (
@@ -105,64 +120,59 @@ const PhotoCarousel = ( {
 
   const renderPhotoOrEvidenceButton = ( { item, index } ) => (
     <>
-      <Pressable
-        accessibilityRole="button"
-        onLongPress={( ) => {
-          if ( deletePhoto ) {
-            setDeletePhotoMode( mode => !mode );
-          }
-        }}
-        onPress={( ) => {
-          if ( deletePhotoMode && deletePhoto ) {
-            deletePhoto( item );
-          } else {
-            setSelectedPhotoIndex( index );
-            setMediaViewerUris( [...photoUris] );
-            navigation.navigate( "MediaViewer" );
-          }
-        }}
-        className={classnames(
-          IMAGE_CONTAINER_CLASSES,
-          {
-            "-rotate-90": !isTablet && deviceOrientation === LANDSCAPE_RIGHT,
-            "rotate-90": !isTablet && deviceOrientation === LANDSCAPE_LEFT,
-            "rotate-180": !isTablet && deviceOrientation === PORTRAIT_UPSIDE_DOWN
-          }
-        )}
-      >
-        <View
-          testID="PhotoCarousel.photo"
-          className={classnames(
-            "overflow-hidden",
-            ...photoClasses
-          )}
+      <Animated.View style={!isTablet && animatedStyle}>
+        <Pressable
+          accessibilityRole="button"
+          onLongPress={( ) => {
+            if ( deletePhoto ) {
+              setDeletePhotoMode( mode => !mode );
+            }
+          }}
+          onPress={( ) => {
+            if ( deletePhotoMode && deletePhoto ) {
+              deletePhoto( item );
+            } else {
+              setSelectedPhotoIndex( index );
+              setMediaViewerUris( [...photoUris] );
+              navigation.navigate( "MediaViewer" );
+            }
+          }}
+          className={classnames( IMAGE_CONTAINER_CLASSES )}
         >
-          <ImageBackground
-            source={{ uri: item }}
+          <View
+            testID="PhotoCarousel.photo"
             className={classnames(
-              "w-fit",
-              "h-full",
-              "flex",
-              ...IMAGE_CONTAINER_CLASSES
+              "overflow-hidden",
+              ...photoClasses
             )}
           >
-            {deletePhotoMode && (
-              <LinearGradient
-                className="absolute inset-0"
-                colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
-              />
-            )}
-            { deletePhotoMode && (
-              <IconButton
-                icon="trash-outline"
-                mode="contained-tonal"
-                iconColor={theme.colors.onPrimary}
-                containerColor="rgba(0, 0, 0, 0.5)"
-              />
-            )}
-          </ImageBackground>
-        </View>
-      </Pressable>
+            <ImageBackground
+              source={{ uri: item }}
+              className={classnames(
+                "w-fit",
+                "h-full",
+                "flex",
+                ...IMAGE_CONTAINER_CLASSES
+              )}
+            >
+              {deletePhotoMode && (
+                <LinearGradient
+                  className="absolute inset-0"
+                  colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]}
+                />
+              )}
+              { deletePhotoMode && (
+                <IconButton
+                  icon="trash-outline"
+                  mode="contained-tonal"
+                  iconColor={theme.colors.onPrimary}
+                  containerColor="rgba(0, 0, 0, 0.5)"
+                />
+              )}
+            </ImageBackground>
+          </View>
+        </Pressable>
+      </Animated.View>
       {index === photoUris.length - 1 && renderSkeleton( )}
     </>
   );

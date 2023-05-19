@@ -54,111 +54,135 @@ exports[`PhotoCarousel renders correctly 1`] = `
         }
       >
         <View
-          accessibilityRole="button"
-          accessibilityState={
+          animatedStyle={
             {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": 0,
+                  },
+                ],
+              },
             }
           }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            [
-              [
+            {
+              "transform": [
                 {
-                  "justifyContent": "center",
-                },
-                {
-                  "alignItems": "center",
+                  "rotateZ": 0,
                 },
               ],
-            ]
+            }
           }
         >
           <View
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               [
                 [
                   {
-                    "overflow": "hidden",
+                    "justifyContent": "center",
                   },
                   {
-                    "borderBottomLeftRadius": 4,
-                    "borderBottomRightRadius": 4,
-                    "borderTopLeftRadius": 4,
-                    "borderTopRightRadius": 4,
+                    "alignItems": "center",
                   },
                 ],
               ]
             }
-            testID="PhotoCarousel.photo"
           >
             <View
-              accessibilityIgnoresInvertColors={true}
               style={
                 [
                   [
                     {
-                      "height": "100%",
+                      "overflow": "hidden",
                     },
                     {
-                      "display": "flex",
-                    },
-                    {
-                      "justifyContent": "center",
-                    },
-                    {
-                      "alignItems": "center",
+                      "borderBottomLeftRadius": 4,
+                      "borderBottomRightRadius": 4,
+                      "borderTopLeftRadius": 4,
+                      "borderTopRightRadius": 4,
                     },
                   ],
                 ]
               }
+              testID="PhotoCarousel.photo"
             >
-              <Image
-                source={
-                  {
-                    "uri": "https://loremflickr.com/640/480",
-                  }
-                }
+              <View
+                accessibilityIgnoresInvertColors={true}
                 style={
                   [
-                    {
-                      "bottom": 0,
-                      "left": 0,
-                      "position": "absolute",
-                      "right": 0,
-                      "top": 0,
-                    },
-                    {
-                      "height": "100%",
-                      "width": undefined,
-                    },
-                    undefined,
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
                   ]
                 }
-              />
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://loremflickr.com/640/480",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -176,111 +200,135 @@ exports[`PhotoCarousel renders correctly 1`] = `
         }
       >
         <View
-          accessibilityRole="button"
-          accessibilityState={
+          animatedStyle={
             {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": 0,
+                  },
+                ],
+              },
             }
           }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            [
-              [
+            {
+              "transform": [
                 {
-                  "justifyContent": "center",
-                },
-                {
-                  "alignItems": "center",
+                  "rotateZ": 0,
                 },
               ],
-            ]
+            }
           }
         >
           <View
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               [
                 [
                   {
-                    "overflow": "hidden",
+                    "justifyContent": "center",
                   },
                   {
-                    "borderBottomLeftRadius": 4,
-                    "borderBottomRightRadius": 4,
-                    "borderTopLeftRadius": 4,
-                    "borderTopRightRadius": 4,
+                    "alignItems": "center",
                   },
                 ],
               ]
             }
-            testID="PhotoCarousel.photo"
           >
             <View
-              accessibilityIgnoresInvertColors={true}
               style={
                 [
                   [
                     {
-                      "height": "100%",
+                      "overflow": "hidden",
                     },
                     {
-                      "display": "flex",
-                    },
-                    {
-                      "justifyContent": "center",
-                    },
-                    {
-                      "alignItems": "center",
+                      "borderBottomLeftRadius": 4,
+                      "borderBottomRightRadius": 4,
+                      "borderTopLeftRadius": 4,
+                      "borderTopRightRadius": 4,
                     },
                   ],
                 ]
               }
+              testID="PhotoCarousel.photo"
             >
-              <Image
-                source={
-                  {
-                    "uri": "https://loremflickr.com/640/480",
-                  }
-                }
+              <View
+                accessibilityIgnoresInvertColors={true}
                 style={
                   [
-                    {
-                      "bottom": 0,
-                      "left": 0,
-                      "position": "absolute",
-                      "right": 0,
-                      "top": 0,
-                    },
-                    {
-                      "height": "100%",
-                      "width": undefined,
-                    },
-                    undefined,
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
                   ]
                 }
-              />
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://loremflickr.com/640/480",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -298,111 +346,135 @@ exports[`PhotoCarousel renders correctly 1`] = `
         }
       >
         <View
-          accessibilityRole="button"
-          accessibilityState={
+          animatedStyle={
             {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": 0,
+                  },
+                ],
+              },
             }
           }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            [
-              [
+            {
+              "transform": [
                 {
-                  "justifyContent": "center",
-                },
-                {
-                  "alignItems": "center",
+                  "rotateZ": 0,
                 },
               ],
-            ]
+            }
           }
         >
           <View
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               [
                 [
                   {
-                    "overflow": "hidden",
+                    "justifyContent": "center",
                   },
                   {
-                    "borderBottomLeftRadius": 4,
-                    "borderBottomRightRadius": 4,
-                    "borderTopLeftRadius": 4,
-                    "borderTopRightRadius": 4,
+                    "alignItems": "center",
                   },
                 ],
               ]
             }
-            testID="PhotoCarousel.photo"
           >
             <View
-              accessibilityIgnoresInvertColors={true}
               style={
                 [
                   [
                     {
-                      "height": "100%",
+                      "overflow": "hidden",
                     },
                     {
-                      "display": "flex",
-                    },
-                    {
-                      "justifyContent": "center",
-                    },
-                    {
-                      "alignItems": "center",
+                      "borderBottomLeftRadius": 4,
+                      "borderBottomRightRadius": 4,
+                      "borderTopLeftRadius": 4,
+                      "borderTopRightRadius": 4,
                     },
                   ],
                 ]
               }
+              testID="PhotoCarousel.photo"
             >
-              <Image
-                source={
-                  {
-                    "uri": "https://loremflickr.com/640/480",
-                  }
-                }
+              <View
+                accessibilityIgnoresInvertColors={true}
                 style={
                   [
-                    {
-                      "bottom": 0,
-                      "left": 0,
-                      "position": "absolute",
-                      "right": 0,
-                      "top": 0,
-                    },
-                    {
-                      "height": "100%",
-                      "width": undefined,
-                    },
-                    undefined,
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
                   ]
                 }
-              />
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://loremflickr.com/640/480",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -466,111 +538,135 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         }
       >
         <View
-          accessibilityRole="button"
-          accessibilityState={
+          animatedStyle={
             {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": 0,
+                  },
+                ],
+              },
             }
           }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            [
-              [
+            {
+              "transform": [
                 {
-                  "justifyContent": "center",
-                },
-                {
-                  "alignItems": "center",
+                  "rotateZ": 0,
                 },
               ],
-            ]
+            }
           }
         >
           <View
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               [
                 [
                   {
-                    "overflow": "hidden",
+                    "justifyContent": "center",
                   },
                   {
-                    "borderBottomLeftRadius": 9,
-                    "borderBottomRightRadius": 9,
-                    "borderTopLeftRadius": 9,
-                    "borderTopRightRadius": 9,
+                    "alignItems": "center",
                   },
                 ],
               ]
             }
-            testID="PhotoCarousel.photo"
           >
             <View
-              accessibilityIgnoresInvertColors={true}
               style={
                 [
                   [
                     {
-                      "height": "100%",
+                      "overflow": "hidden",
                     },
                     {
-                      "display": "flex",
-                    },
-                    {
-                      "justifyContent": "center",
-                    },
-                    {
-                      "alignItems": "center",
+                      "borderBottomLeftRadius": 9,
+                      "borderBottomRightRadius": 9,
+                      "borderTopLeftRadius": 9,
+                      "borderTopRightRadius": 9,
                     },
                   ],
                 ]
               }
+              testID="PhotoCarousel.photo"
             >
-              <Image
-                source={
-                  {
-                    "uri": "https://loremflickr.com/640/480",
-                  }
-                }
+              <View
+                accessibilityIgnoresInvertColors={true}
                 style={
                   [
-                    {
-                      "bottom": 0,
-                      "left": 0,
-                      "position": "absolute",
-                      "right": 0,
-                      "top": 0,
-                    },
-                    {
-                      "height": "100%",
-                      "width": undefined,
-                    },
-                    undefined,
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
                   ]
                 }
-              />
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://loremflickr.com/640/480",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -588,111 +684,135 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         }
       >
         <View
-          accessibilityRole="button"
-          accessibilityState={
+          animatedStyle={
             {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": 0,
+                  },
+                ],
+              },
             }
           }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            [
-              [
+            {
+              "transform": [
                 {
-                  "justifyContent": "center",
-                },
-                {
-                  "alignItems": "center",
+                  "rotateZ": 0,
                 },
               ],
-            ]
+            }
           }
         >
           <View
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               [
                 [
                   {
-                    "overflow": "hidden",
+                    "justifyContent": "center",
                   },
                   {
-                    "borderBottomLeftRadius": 9,
-                    "borderBottomRightRadius": 9,
-                    "borderTopLeftRadius": 9,
-                    "borderTopRightRadius": 9,
+                    "alignItems": "center",
                   },
                 ],
               ]
             }
-            testID="PhotoCarousel.photo"
           >
             <View
-              accessibilityIgnoresInvertColors={true}
               style={
                 [
                   [
                     {
-                      "height": "100%",
+                      "overflow": "hidden",
                     },
                     {
-                      "display": "flex",
-                    },
-                    {
-                      "justifyContent": "center",
-                    },
-                    {
-                      "alignItems": "center",
+                      "borderBottomLeftRadius": 9,
+                      "borderBottomRightRadius": 9,
+                      "borderTopLeftRadius": 9,
+                      "borderTopRightRadius": 9,
                     },
                   ],
                 ]
               }
+              testID="PhotoCarousel.photo"
             >
-              <Image
-                source={
-                  {
-                    "uri": "https://loremflickr.com/640/480",
-                  }
-                }
+              <View
+                accessibilityIgnoresInvertColors={true}
                 style={
                   [
-                    {
-                      "bottom": 0,
-                      "left": 0,
-                      "position": "absolute",
-                      "right": 0,
-                      "top": 0,
-                    },
-                    {
-                      "height": "100%",
-                      "width": undefined,
-                    },
-                    undefined,
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
                   ]
                 }
-              />
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://loremflickr.com/640/480",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -710,111 +830,135 @@ exports[`PhotoCarousel renders correctly for large screen 1`] = `
         }
       >
         <View
-          accessibilityRole="button"
-          accessibilityState={
+          animatedStyle={
             {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
+              "value": {
+                "transform": [
+                  {
+                    "rotateZ": 0,
+                  },
+                ],
+              },
             }
           }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            [
-              [
+            {
+              "transform": [
                 {
-                  "justifyContent": "center",
-                },
-                {
-                  "alignItems": "center",
+                  "rotateZ": 0,
                 },
               ],
-            ]
+            }
           }
         >
           <View
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               [
                 [
                   {
-                    "overflow": "hidden",
+                    "justifyContent": "center",
                   },
                   {
-                    "borderBottomLeftRadius": 9,
-                    "borderBottomRightRadius": 9,
-                    "borderTopLeftRadius": 9,
-                    "borderTopRightRadius": 9,
+                    "alignItems": "center",
                   },
                 ],
               ]
             }
-            testID="PhotoCarousel.photo"
           >
             <View
-              accessibilityIgnoresInvertColors={true}
               style={
                 [
                   [
                     {
-                      "height": "100%",
+                      "overflow": "hidden",
                     },
                     {
-                      "display": "flex",
-                    },
-                    {
-                      "justifyContent": "center",
-                    },
-                    {
-                      "alignItems": "center",
+                      "borderBottomLeftRadius": 9,
+                      "borderBottomRightRadius": 9,
+                      "borderTopLeftRadius": 9,
+                      "borderTopRightRadius": 9,
                     },
                   ],
                 ]
               }
+              testID="PhotoCarousel.photo"
             >
-              <Image
-                source={
-                  {
-                    "uri": "https://loremflickr.com/640/480",
-                  }
-                }
+              <View
+                accessibilityIgnoresInvertColors={true}
                 style={
                   [
-                    {
-                      "bottom": 0,
-                      "left": 0,
-                      "position": "absolute",
-                      "right": 0,
-                      "top": 0,
-                    },
-                    {
-                      "height": "100%",
-                      "width": undefined,
-                    },
-                    undefined,
+                    [
+                      {
+                        "height": "100%",
+                      },
+                      {
+                        "display": "flex",
+                      },
+                      {
+                        "justifyContent": "center",
+                      },
+                      {
+                        "alignItems": "center",
+                      },
+                    ],
                   ]
                 }
-              />
+              >
+                <Image
+                  source={
+                    {
+                      "uri": "https://loremflickr.com/640/480",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      },
+                      {
+                        "height": "100%",
+                        "width": undefined,
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
