@@ -192,7 +192,8 @@ global.ReanimatedDataMock = {
 jest.mock( "react-native-fs", ( ) => {
   const RNFS = {
     appendFile: jest.fn( ),
-    DocumentDirectoryPath: jest.fn( ),
+    CachesDirectoryPath: "caches/directory/path",
+    DocumentDirectoryPath: "document/directory/path",
     exists: jest.fn( async ( ) => true ),
     moveFile: async ( ) => "testdata",
     stat: jest.fn( ( ) => ( {

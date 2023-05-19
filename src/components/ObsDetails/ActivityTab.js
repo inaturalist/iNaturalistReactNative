@@ -55,7 +55,7 @@ const ActivityTab = ( {
   ) );
 
   return (
-    <View>
+    <View testID="ActivityTab">
       {activitytemsList}
     </View>
   );

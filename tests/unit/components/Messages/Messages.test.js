@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { render, screen } from "@testing-library/react-native";
 import Messages from "components/Messages/Messages";
+import initI18next from "i18n/initI18next";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 
@@ -24,13 +25,6 @@ jest.mock( "@react-navigation/native", ( ) => {
     } ),
     useRoute: ( ) => ( { } )
   };
-} );
-
-// Before migrating to Jest 27 this line was:
-// jest.useFakeTimers();
-// TODO: replace with modern usage of jest.useFakeTimers
-jest.useFakeTimers( {
-  legacyFakeTimers: true
 } );
 
 const renderMessages = ( ) => render(
@@ -58,7 +52,11 @@ jest.mock( "@tanstack/react-query", ( ) => ( {
 } ) );
 
 describe( "Messages", ( ) => {
-  test( "should not have accessibility errors", () => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+
+  it( "should not have accessibility errors", () => {
     const messages = (
       <INatPaperProvider>
         <Messages />
@@ -66,35 +64,35 @@ describe( "Messages", ( ) => {
     );
     expect( messages ).toBeAccessible();
   } );
-} );
 
-describe( "when loading", ( ) => {
-  beforeAll( ( ) => {
-    MockData.useQueryResponse = {
-      data: [],
-      isLoading: true,
-      isError: false
-    };
+  describe( "when loading", ( ) => {
+    beforeAll( ( ) => {
+      MockData.useQueryResponse = {
+        data: [],
+        isLoading: true,
+        isError: false
+      };
+    } );
+
+    it( "displays activity indicator when loading", ( ) => {
+      renderMessages( );
+      expect( screen.getByTestId( "Messages.activityIndicator" ) ).toBeTruthy( );
+    } );
   } );
 
-  it( "displays activity indicator when loading", ( ) => {
-    renderMessages( );
-    expect( screen.getByTestId( "Messages.activityIndicator" ) ).toBeTruthy( );
-  } );
-} );
+  describe( "when loading complete", ( ) => {
+    beforeAll( ( ) => {
+      MockData.useQueryResponse = {
+        data: [mockMessage],
+        isLoading: false,
+        isError: false
+      };
+    } );
 
-describe( "when loading complete", ( ) => {
-  beforeAll( ( ) => {
-    MockData.useQueryResponse = {
-      data: [mockMessage],
-      isLoading: false,
-      isError: false
-    };
-  } );
-
-  it( "displays message subject and not activity indicator when loading complete", ( ) => {
-    renderMessages( );
-    expect( screen.getByText( mockMessage.subject ) ).toBeTruthy( );
-    expect( screen.queryByTestId( "Messages.activityIndicator" ) ).toBeNull( );
+    it( "displays message subject and not activity indicator when loading complete", ( ) => {
+      renderMessages( );
+      expect( screen.getByText( mockMessage.subject ) ).toBeTruthy( );
+      expect( screen.queryByTestId( "Messages.activityIndicator" ) ).toBeNull( );
+    } );
   } );
 } );

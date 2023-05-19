@@ -3,6 +3,9 @@ import PhotoCarousel from "components/Camera/PhotoCarousel";
 import React from "react";
 
 import factory from "../../../factory";
+import * as mockReactI18next from "../../../mocks/react-i18next";
+
+jest.mock( "react-i18next", ( ) => mockReactI18next );
 
 const mockPhotoUris = [
   factory( "LocalPhoto" ).url,
