@@ -149,5 +149,4 @@ describe( "DisplayTaxonName", ( ) => {
       );
     } );
   } );
-
 } );
