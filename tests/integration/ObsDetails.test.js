@@ -45,6 +45,8 @@ describe( "ObsDetails", () => {
     await global.realm.write( () => {
       global.realm.create( "Observation", mockObservation );
     } );
+
+    jest.useFakeTimers( );
   } );
 
   afterEach( () => {

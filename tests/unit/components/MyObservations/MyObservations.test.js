@@ -43,6 +43,7 @@ jest.mock( "sharedHooks/useLocalObservations", () => ( {
 describe( "MyObservations", () => {
   beforeAll( async () => {
     await initI18next();
+    jest.useFakeTimers( );
   } );
 
   it( "renders an observation", async () => {

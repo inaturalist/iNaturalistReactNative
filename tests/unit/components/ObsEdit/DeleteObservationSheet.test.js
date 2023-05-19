@@ -66,6 +66,9 @@ const getLocalObservation = uuid => global.realm
 describe( "delete observation", ( ) => {
   beforeAll( async ( ) => {
     await initI18next( );
+
+    // There's a timer buried somewhere in react-query and this prevents an open handle
+    jest.useFakeTimers( );
   } );
 
   describe( "delete an unsynced observation", ( ) => {
@@ -84,13 +87,10 @@ describe( "delete observation", ( ) => {
       const deleteButton = screen.queryByText( deleteButtonText );
       expect( deleteButton ).toBeTruthy( );
       fireEvent.press( deleteButton );
-      expect( getLocalObservation( observations[0].uuid ) ).toBeFalsy( );
-    } );
-
-    it( "should not make a request to observations/delete", async ( ) => {
       await waitFor( ( ) => {
         expect( inatjs.observations.delete ).not.toHaveBeenCalled( );
       } );
+      expect( getLocalObservation( observations[0].uuid ) ).toBeFalsy( );
     } );
   } );
 
@@ -105,7 +105,7 @@ describe( "delete observation", ( ) => {
       mockObsEditProviderWithObs( observations );
       renderDeleteSheet( );
       const deleteButtonText = i18next.t( "DELETE" );
-      const deleteButton = screen.queryByText( deleteButtonText );
+      const deleteButton = await screen.findByText( deleteButtonText );
       expect( deleteButton ).toBeTruthy( );
       fireEvent.press( deleteButton );
       await waitFor( ( ) => {
