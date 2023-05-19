@@ -14,17 +14,19 @@ import PhotoCarousel, {
 } from "./PhotoCarousel";
 
 type Props = {
-  savingPhoto: boolean,
+  deviceOrientation?: string,
   isLandscapeMode?: boolean,
   isLargeScreen?: boolean,
-  isTablet?: boolean
+  isTablet?: boolean,
+  savingPhoto: boolean
 }
 
 const PhotoPreview = ( {
-  savingPhoto,
+  deviceOrientation,
   isLandscapeMode,
   isLargeScreen,
-  isTablet
+  isTablet,
+  savingPhoto
 }: Props ): Node => {
   const {
     cameraPreviewUris: photoUris,
@@ -92,6 +94,7 @@ const PhotoPreview = ( {
           ? noPhotosNotice
           : (
             <PhotoCarousel
+              deviceOrientation={deviceOrientation}
               deletePhoto={deletePhoto}
               photoUris={photoUris}
               setMediaViewerUris={setMediaViewerUris}

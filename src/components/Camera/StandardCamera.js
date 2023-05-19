@@ -361,6 +361,7 @@ const StandardCamera = ( ): Node => {
     <View className={`flex-1 bg-black ${flexDirection}`}>
       <StatusBar hidden />
       <PhotoPreview
+        deviceOrientation={deviceOrientation}
         savingPhoto={savingPhoto}
         isLandscapeMode={isLandscapeMode}
         isLargeScreen={screenWidth > BREAKPOINTS.md}

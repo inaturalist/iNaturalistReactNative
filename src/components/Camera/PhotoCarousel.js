@@ -12,8 +12,14 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import Modal from "react-native-modal";
 import { IconButton, useTheme } from "react-native-paper";
+import {
+  LANDSCAPE_LEFT,
+  LANDSCAPE_RIGHT,
+  PORTRAIT_UPSIDE_DOWN
+} from "sharedHooks/useDeviceOrientation";
 
 type Props = {
+  deviceOrientation?: string,
   emptyComponent?: Function,
   savingPhoto?: boolean,
   deletePhoto?: Function,
@@ -44,6 +50,7 @@ const LARGE_PHOTO_CLASSES = [
 ];
 
 const PhotoCarousel = ( {
+  deviceOrientation,
   emptyComponent,
   savingPhoto,
   deletePhoto,
@@ -114,7 +121,14 @@ const PhotoCarousel = ( {
             navigation.navigate( "MediaViewer" );
           }
         }}
-        className={classnames( IMAGE_CONTAINER_CLASSES )}
+        className={classnames(
+          IMAGE_CONTAINER_CLASSES,
+          {
+            "-rotate-90": !isTablet && deviceOrientation === LANDSCAPE_RIGHT,
+            "rotate-90": !isTablet && deviceOrientation === LANDSCAPE_LEFT,
+            "rotate-180": !isTablet && deviceOrientation === PORTRAIT_UPSIDE_DOWN
+          }
+        )}
       >
         <View
           testID="PhotoCarousel.photo"
