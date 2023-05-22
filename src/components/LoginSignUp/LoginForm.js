@@ -118,6 +118,7 @@ const LoginForm = ( { setLoggedIn, handleInputFocus }: Props ): Node => {
         disabled={!email || !password}
         testID="Login.loginButton"
         loading={loading}
+        forceDark
       />
       <Body1
         className="color-white self-center mt-[30px] underline"

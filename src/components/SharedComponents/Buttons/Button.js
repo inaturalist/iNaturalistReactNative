@@ -1,57 +1,86 @@
 // @flow
 
+import classnames from "classnames";
 import Heading4 from "components/SharedComponents/Typography/Heading4";
 import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 
 type ButtonProps = {
-  text: string,
-  disabled?: boolean,
-  onPress: any,
-  level?: string,
-  testID?: string,
-  loading?: boolean,
-  style?: any,
-  className?: string,
-  accessibilityRole?: string,
   accessibilityHint?: string,
-  icon?: any
+  accessibilityRole?: string,
+  className?: string,
+  disabled?: boolean,
+  forceDark?: boolean,
+  icon?: any,
+  level?: string,
+  loading?: boolean,
+  onPress: any,
+  style?: any,
+  testID?: string,
+  text: string
 }
 
 const setStyles = ( {
-  isPrimary,
-  isFocus,
-  isWarning,
+  className,
   disabled,
-  className
+  forceDark,
+  isFocus,
+  isPrimary,
+  isWarning
 } ) => {
-  let buttonClass = "rounded-lg flex-row justify-center items-center py-[13px] px-[10px]";
-  let textClass = "text-white text-center";
+  const buttonClasses = [
+    "active:opacity-75",
+    "flex-row",
+    "items-center",
+    "justify-center",
+    "px-[10px]",
+    "py-[13px]",
+    "rounded-lg"
+  ];
+  const textClasses = [
+    "text-center",
+    disabled
+      ? "text-white/50"
+      : "text-white"
+  ];
 
   if ( className ) {
-    buttonClass = buttonClass.concat( " ", className );
+    buttonClasses.push( className );
   }
 
   if ( isWarning ) {
-    buttonClass = buttonClass.concat( " ", "bg-warningRed" );
+    buttonClasses.push( disabled
+      ? "bg-warningRedDisabled"
+      : "bg-warningRed" );
   } else if ( isPrimary ) {
-    buttonClass = buttonClass.concat( " ", "bg-darkGray" );
+    buttonClasses.push( disabled
+      ? "bg-darkGrayDisabled"
+      : "bg-darkGray dark:bg-white" );
+    textClasses.push( disabled
+      ? "text-white/50 dark:text-darkGray/50"
+      : "text-white dark:text-darkGray" );
   } else if ( isFocus ) {
-    buttonClass = buttonClass.concat( " ", "bg-inatGreen" );
+    if ( forceDark ) {
+      buttonClasses.push( disabled
+        ? "bg-inatGreenDisabledDark"
+        : "bg-inatGreen" );
+    } else {
+      buttonClasses.push( disabled
+        ? "bg-inatGreenDisabled dark:bg-inatGreenDisabledDark"
+        : "bg-inatGreen" );
+    }
   } else {
-    buttonClass = buttonClass.concat(
-      " ",
-      "border border-darkGray border-[3px]"
-    );
-    textClass = textClass.concat( " ", "text-darkGray" );
+    buttonClasses.push( "border border-[3px]" );
+    buttonClasses.push( disabled
+      ? "border-darkGrayDisabled dark:border-lightGray"
+      : "border-darkGray dark:border-white bg-white dark:bg-darkGray" );
+    textClasses.push( disabled
+      ? "text-darkGrayDisabled dark:text-lightGray"
+      : "text-darkGray dark:text-white" );
   }
 
-  if ( disabled ) {
-    buttonClass = buttonClass.concat( " ", "opacity-[0.5]" );
-  }
-
-  return { buttonClass, textClass };
+  return { buttonClasses, textClasses };
 };
 
 const activityIndicatorColor = ( {
@@ -71,28 +100,30 @@ const activityIndicatorColor = ( {
 };
 
 const Button = ( {
-  text,
-  onPress,
+  accessibilityHint,
+  accessibilityRole,
+  className,
   disabled,
-  testID,
+  forceDark,
+  icon,
   level,
   loading,
+  onPress,
   style,
-  className,
-  accessibilityRole,
-  accessibilityHint,
-  icon
+  testID,
+  text
 }: ButtonProps ): React.Node => {
   const isPrimary = level === "primary";
   const isWarning = level === "warning";
   const isFocus = level === "focus";
   const isNeutral = !isPrimary && !isWarning && !isFocus;
-  const { buttonClass, textClass } = setStyles( {
+  const { buttonClasses, textClasses } = setStyles( {
+    className,
     disabled,
-    isPrimary,
+    forceDark,
     isFocus,
-    isWarning,
-    className
+    isPrimary,
+    isWarning
   } );
 
   const theme = useTheme();
@@ -100,7 +131,7 @@ const Button = ( {
   return (
     <Pressable
       onPress={onPress}
-      className={buttonClass}
+      className={classnames( buttonClasses )}
       style={style}
       disabled={disabled}
       testID={testID}
@@ -123,7 +154,12 @@ const Button = ( {
           {icon}
         </View>
       )}
-      <Heading4 className={textClass} testID={`${testID || "RNButton"}.text`}>{text}</Heading4>
+      <Heading4
+        className={classnames( textClasses )}
+        testID={`${testID || "RNButton"}.text`}
+      >
+        {text}
+      </Heading4>
     </Pressable>
   );
 };

@@ -266,8 +266,7 @@ const BottomTabs = ( ) => {
           name="UI Library"
           component={UiLibrary}
           options={{
-            ...hideHeaderLeft,
-            ...showCustomHeader
+            ...hideHeaderLeft
           }}
         />
         <Tab.Screen
