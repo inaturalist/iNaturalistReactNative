@@ -1049,3 +1049,5 @@ Return-to-Login = Return to Login
 One-last-step = One last step!
 We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
 Please-click-the-link = Please click the link in the email within 60 minutes  to confirm your account
+Internet-Connection-Required = Internet Connection Required
+Please-try-again-when-you-are-connected-to-the-internet=Please try again when you are connected to the internet.
