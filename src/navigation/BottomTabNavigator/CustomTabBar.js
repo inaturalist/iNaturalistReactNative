@@ -84,6 +84,9 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
     || currentRoute.includes( "LocationPicker" )
     || currentRoute.includes( "MediaViewer" )
     || currentRoute.includes( "ForgotPassword" )
+    || currentRoute.includes( "SignUp" )
+    || currentRoute.includes( "LicensePhotos" )
+    || currentRoute.includes( "SignUpConfirmation" )
   ) {
     return null;
   }

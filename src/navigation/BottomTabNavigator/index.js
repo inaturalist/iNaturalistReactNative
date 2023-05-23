@@ -6,8 +6,10 @@ import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
 import LocationPicker from "components/LocationPicker/LocationPicker";
 import ForgotPassword from "components/LoginSignUp/ForgotPassword";
+import LicensePhotos from "components/LoginSignUp/LicensePhotos";
 import Login from "components/LoginSignUp/Login";
 import SignUp from "components/LoginSignUp/SignUp";
+import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation";
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
@@ -352,6 +354,8 @@ const BottomTabs = ( ) => {
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />
         <Tab.Screen name="SignUp" component={SignUp} options={hideHeader} />
         <Tab.Screen name="ForgotPassword" component={ForgotPassword} options={hideHeader} />
+        <Tab.Screen name="LicensePhotos" component={LicensePhotos} options={hideHeader} />
+        <Tab.Screen name="SignUpConfirmation" component={SignUpConfirmation} options={hideHeader} />
       </Tab.Navigator>
     </Mortal>
   );
