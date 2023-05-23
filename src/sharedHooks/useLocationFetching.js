@@ -19,8 +19,9 @@ const useLocationFetching = ( mountedRef: any ): Object => {
   const latitude = currentObservation?.latitude;
   const longitude = currentObservation?.longitude;
   const hasLocation = latitude || longitude;
-  const originalPhotoUri = currentObservation?.observationPhotos[0]?.originalPhotoUri;
-  const isGalleryPhoto = !originalPhotoUri?.includes( "photoUploads" );
+  const originalPhotoUri = currentObservation?.observationPhotos
+    && currentObservation?.observationPhotos[0]?.originalPhotoUri;
+  const isGalleryPhoto = originalPhotoUri && !originalPhotoUri?.includes( "photoUploads" );
 
   const [shouldFetchLocation, setShouldFetchLocation] = useState(
     currentObservation
