@@ -38,6 +38,10 @@ All-observations = All observations
 # license code
 all-rights-reserved = all rights reserved
 
+Almost-done = Almost done!
+
+Already-have-an-account = Already have an account? Log in
+
 Amphibians = Amphibians
 
 Arachnids = Arachnids
@@ -111,6 +115,8 @@ Couldnt-create-identification-error = Couldn't create identification { $error }
 
 Couldnt-create-identification-unknown-error = Couldn't create identification, Unknown Error.
 
+CREATE-AN-ACCOUNT = CREATE AN ACCOUNT
+
 Create-an-iNaturalist-account-to-save-your-observations = Create an iNaturalist account to save your observations and contribute them to science.
 
 CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
@@ -174,6 +180,8 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 Dont-have-an-account = Don't have an account? Sign up
 
 EDIT-LOCATION = EDIT LOCATION
+
+EMAIL = EMAIL
 
 # Appears above the email text field
 Email = email
@@ -271,6 +279,8 @@ Introduced = Introduced
 
 # Appears when the user enters invalid username/password
 Invalid-login = The username or password is incorrect
+
+Join-the-largest-community-of-naturalists = Join the largest community of naturalists in the world!
 
 # Header for joined projects
 Joined = Joined
@@ -695,6 +705,8 @@ Upload-Complete = Upload Complete
 
 User = User
 
+USERNAME = USERNAME
+
 Username = Username
 
 # Appears above the text fields
@@ -1022,3 +1034,18 @@ JOURNAL-POSTS-WITHOUT-NUMBER = {$count ->
     [one] JOURNAL POST
     *[other] JOURNAL POSTS
 }
+
+Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
+I-consent-to-allow-iNaturalist-to-store = I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)
+I-consent-to-allow-my-personal-information = I consent to allow my personal information to be transferred to the United States of America (required)
+I-agree-to-the-Terms-of-Use = I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (required).
+Learn-More = Learn More
+Terms-of-Use = Terms of Use
+Privacy-Policy = Privacy Policy
+Community-Guidelines = Community Guidelines
+Agree-to-all-of-the-above = Agree to all of the above
+
+Return-to-Login = Return to Login
+One-last-step = One last step!
+We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
+Please-click-the-link = Please click the link in the email within 60 minutes  to confirm your account

@@ -4,8 +4,7 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Body1, Body2,
-  Button, Heading4, INatIcon,
-  List2
+  Button, Heading4
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -17,6 +16,7 @@ import { TextInput, useTheme } from "react-native-paper";
 import {
   authenticateUser
 } from "./AuthenticationService";
+import Error from "./Error";
 
 const { useRealm } = RealmContext;
 
@@ -99,14 +99,7 @@ const LoginForm = ( { setLoggedIn, handleInputFocus }: Props ): Node => {
         >
           {t( "Forgot-Password" )}
         </Body2>
-        {error && (
-          <View className="flex-row items-center justify-center mt-5">
-            <INatIcon name="triangle-exclamation" size={19} color={theme.colors.error} />
-            <List2 className="color-white ml-3">
-              {error}
-            </List2>
-          </View>
-        )}
+        {error && <Error error={error} />}
       </View>
       <Button
         level="focus"
