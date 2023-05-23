@@ -80,10 +80,10 @@ const EvidenceSection = ( ): Node => {
       placeName = currentObservation.place_guess;
     } else if ( shouldFetchLocation ) {
       placeName = t( "Fetching-location" );
+    } else if ( !latitude || !longitude ) {
+      return t( "Add-Location" );
     }
-    return placeName
-      ? <Body3>{placeName}</Body3>
-      : null;
+    return placeName;
   };
 
   const displayLocation = ( ) => {
@@ -182,7 +182,11 @@ const EvidenceSection = ( ): Node => {
       <View className="flex-row flex-nowrap my-4">
         <INatIcon size={14} name="map-marker-outline" />
         <Pressable accessibilityRole="button" className="ml-5" onPress={navToLocationPicker}>
-          {displayPlaceName( )}
+          {displayPlaceName( ) && (
+            <Body3 className={( !latitude || !longitude ) && "color-warningRed"}>
+              {displayPlaceName( )}
+            </Body3>
+          )}
           {/* $FlowIgnore */}
           <Body4 className={( !latitude || !longitude ) && "color-warningRed"}>
             {displayLocation( )}

@@ -11,7 +11,6 @@ import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
-import { formatDateStringFromTimestamp } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
@@ -101,23 +100,17 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   ), [] );
 
   const createObservationFromGalleryPhoto = useCallback( async photo => {
-    const originalPhotoUri = photo?.image?.uri;
-    const firstPhotoExif = await parseExif( originalPhotoUri );
+    const firstPhotoExif = await parseExif( photo?.image?.uri );
     logger.info( `EXIF: ${JSON.stringify( firstPhotoExif, null, 2 )}` );
-    const exifDate = firstPhotoExif?.date
-      ? formatExifDateAsString( firstPhotoExif.date )
-      : null;
 
-    const observedOnDate = exifDate || formatDateStringFromTimestamp( photo.timestamp );
-    const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
-    const longitude = firstPhotoExif.longitude || photo?.location?.longitude;
+    const { latitude, longitude } = firstPhotoExif;
     const placeGuess = await fetchPlaceName( latitude, longitude );
 
     const newObservation = {
       latitude,
       longitude,
       place_guess: placeGuess,
-      observed_on_string: observedOnDate
+      observed_on_string: formatExifDateAsString( firstPhotoExif.date ) || null
     };
 
     if ( firstPhotoExif.positional_accuracy ) {
