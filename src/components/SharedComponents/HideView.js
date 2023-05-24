@@ -32,7 +32,9 @@ const HideView = ( {
     return null;
   }
 
-  const props = show ? {} : { className: "hidden" };
+  const props = show
+    ? {}
+    : { className: "hidden" };
   // eslint-disable-next-line react/jsx-props-no-spreading
   return <View {...props}>{children}</View>;
 };

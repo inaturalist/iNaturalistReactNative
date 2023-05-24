@@ -16,7 +16,9 @@ const setPlaceName = ( results: Array<Object> ): string => {
   // this seems to be preferred formatting for iNat web
   // TODO: localize formatting
   // TODO: throttle requests on iOS so this doesn't error out in location picker
-  const appendName = name => ( placeName.length > 0 ? `, ${name}` : name );
+  const appendName = name => ( placeName.length > 0
+    ? `, ${name}`
+    : name );
 
   if ( streetName ) {
     placeName += streetName;
@@ -36,9 +38,13 @@ const setPlaceName = ( results: Array<Object> ): string => {
 const fetchPlaceName = async ( lat: ?number, lng: ?number ): any => {
   const { isInternetReachable } = await NetInfo.fetch( );
   if ( !lat || !lng || !isInternetReachable ) { return null; }
-  const results = await Geocoder.geocodePosition( { lat, lng } );
-  if ( results.length === 0 ) { return null; }
-  return setPlaceName( results );
+  try {
+    const results = await Geocoder.geocodePosition( { lat, lng } );
+    if ( results.length === 0 || typeof results !== "object" ) { return null; }
+    return setPlaceName( results );
+  } catch {
+    return null;
+  }
 };
 
 export default fetchPlaceName;

@@ -1,0 +1,6 @@
+ObsDetail UI refinement and native camera zoom
+
+* Start of UI refinement for ObsDetail
+* Improved camera zoom and tap-to-focus performance; removed double-tap to
+  zoom in Android
+* Fixed camera buttons and orientation problems for iPad

@@ -2,6 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments } from "api/comments";
+import classnames from "classnames";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
 import { Body4, INatIcon, InlineUser } from "components/SharedComponents";
@@ -26,9 +27,12 @@ type Props = {
   item: Object,
   refetchRemoteObservation?: Function,
   toggleRefetch?: Function,
+  classNameMargin?: string
 }
 
-const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props ): Node => {
+const ActivityHeader = ( {
+  item, refetchRemoteObservation, toggleRefetch, classNameMargin
+}:Props ): Node => {
   const [currentUser, setCurrentUser] = useState( null );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [flagModalVisible, setFlagModalVisible] = useState( false );
@@ -36,7 +40,9 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const { user } = item;
-  const itemType = item.category ? "Identification" : "Comment";
+  const itemType = item.category
+    ? "Identification"
+    : "Comment";
 
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {
@@ -92,7 +98,9 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
           )
           : (
             <Body4>
-              {item.category ? t( `Category-${item.category}` ) : ""}
+              {item.category
+                ? t( `Category-${item.category}` )
+                : ""}
             </Body4>
           )
       }
@@ -102,41 +110,46 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
                 {formatIdDate( item.updated_at || item.created_at, t )}
               </Body4>
             )}
-      {item.body && currentUser
-        ? (
-          <KebabMenu
-            visible={kebabMenuVisible}
-            setVisible={setKebabMenuVisible}
-          >
-            <Menu.Item
-              onPress={async ( ) => {
-                // first delete locally
-                Comment.deleteComment( item.uuid, realm );
-                // then delete remotely
-                deleteCommentMutation.mutate( item.uuid );
-                if ( toggleRefetch ) {
-                  toggleRefetch( );
-                }
-                setKebabMenuVisible( false );
-              }}
-              title={t( "Delete-comment" )}
-            />
-          </KebabMenu>
-        ) : (
-          <KebabMenu
-            visible={kebabMenuVisible}
-            setVisible={setKebabMenuVisible}
-          >
-            {!currentUser ? (
+      {
+        item.body && currentUser
+          ? (
+            <KebabMenu
+              visible={kebabMenuVisible}
+              setVisible={setKebabMenuVisible}
+            >
               <Menu.Item
-                onPress={() => setFlagModalVisible( true )}
-                title={t( "Flag" )}
-                testID="MenuItem.Flag"
+                onPress={async ( ) => {
+                  // first delete locally
+                  Comment.deleteComment( item.uuid, realm );
+                  // then delete remotely
+                  deleteCommentMutation.mutate( item.uuid );
+                  if ( toggleRefetch ) {
+                    toggleRefetch( );
+                  }
+                  setKebabMenuVisible( false );
+                }}
+                title={t( "Delete-comment" )}
               />
-            ) : undefined}
-            <View />
-          </KebabMenu>
-        )}
+            </KebabMenu>
+          )
+          : (
+            <KebabMenu
+              visible={kebabMenuVisible}
+              setVisible={setKebabMenuVisible}
+            >
+              {!currentUser
+                ? (
+                  <Menu.Item
+                    onPress={() => setFlagModalVisible( true )}
+                    title={t( "Flag" )}
+                    testID="MenuItem.Flag"
+                  />
+                )
+                : undefined}
+              <View />
+            </KebabMenu>
+          )
+      }
       {!currentUser
         && (
           <FlagItemModal
@@ -151,7 +164,7 @@ const ActivityHeader = ( { item, refetchRemoteObservation, toggleRefetch }:Props
   );
 
   return (
-    <View className="flex-row justify-between">
+    <View className={classnames( "flex-row justify-between", classNameMargin )}>
       <InlineUser user={user} />
       {( item._created_at )
         ? <DateDisplay dateString={item.created_at} />

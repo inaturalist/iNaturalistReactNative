@@ -24,7 +24,7 @@ const TextHeader = ( { level, children } ) => {
   return <Text className={`${sizeClass} mt-1 mb-2`}>{children}</Text>;
 };
 
-const AboutScreen = (): Node => {
+const About = (): Node => {
   const appVersion = getVersion();
   const buildVersion = getBuildNumber();
   const device = getSystemName();
@@ -128,4 +128,4 @@ const AboutScreen = (): Node => {
   );
 };
 
-export default AboutScreen;
+export default About;

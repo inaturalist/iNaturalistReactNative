@@ -5,6 +5,6 @@ export default define( "LocalTaxon", faker => ( {
   name: faker.name.firstName( ),
   rank: "species",
   rank_level: 10,
-  preferred_common_name: faker.name.findName( ),
+  preferred_common_name: faker.name.fullName( ),
   defaultPhoto: factory( "LocalPhoto" )
 } ) );

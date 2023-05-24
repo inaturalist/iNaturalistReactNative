@@ -32,12 +32,16 @@ const ScrollView = styled( StyledScrollView );
 // $FlowIgnore
 const Text = styled(
   StyledText,
-  Platform.OS === "ios" ? "font-Whitney-Medium" : "font-Whitney-Medium-Pro"
+  Platform.OS === "ios"
+    ? "font-Whitney-Medium"
+    : "font-Whitney-Medium-Pro"
 );
 // $FlowIgnore
 const LightText = styled(
   StyledText,
-  Platform.OS === "ios" ? "font-Whitney-Light" : "font-Whitney-Light-Pro"
+  Platform.OS === "ios"
+    ? "font-Whitney-Light"
+    : "font-Whitney-Light-Pro"
 );
 // $FlowIgnore
 const TextInput = styled( StyledTextInput );
@@ -52,7 +56,9 @@ const Modal = styled( StyledModal );
 // $FlowIgnore
 const ImageBackground = styled( StyledImageBackground );
 
-const fontMonoClass: string = ( Platform.OS === "ios" ? "font-Menlo" : "font-monospace" );
+const fontMonoClass: string = ( Platform.OS === "ios"
+  ? "font-Menlo"
+  : "font-monospace" );
 
 export {
   ActivityIndicator,

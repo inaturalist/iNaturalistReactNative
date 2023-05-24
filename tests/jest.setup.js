@@ -34,6 +34,12 @@ jest.mock( "react-native-vision-camera", ( ) => ( {
 
 jest.mock( "react-native-localize", () => mockRNLocalize );
 jest.mock( "react-native-safe-area-context", () => mockSafeAreaContext );
+// Trivial mock b/c I assume we can't really test the native parts of this
+// library ~~~kueda 20230516
+jest.mock( "react-native-share-menu", ( ) => ( {
+  addNewShareListener: jest.fn( ),
+  getInitialShare: jest.fn( )
+} ) );
 
 // mock Portal with a Modal component inside of it (MediaViewer)
 jest.mock( "react-native-paper", () => {
@@ -68,7 +74,7 @@ jest.mock( "@react-navigation/drawer", ( ) => {
 // this resolves error with importing file after Jest environment is torn down
 // https://github.com/react-navigation/react-navigation/issues/9568#issuecomment-881943770
 jest.mock( "@react-navigation/native/lib/commonjs/useLinking.native", ( ) => ( {
-  default: ( ) => ( { getInitialState: { then: jest.fn() } } ),
+  default: ( ) => ( { getInitialState: { then: jest.fn( ) } } ),
   __esModule: true
 } ) );
 
@@ -86,7 +92,7 @@ jest.mock( "react-native-device-info", () => mockRNDeviceInfo );
 
 jest.mock( "react-native-sensitive-info", () => {
   class RNSInfo {
-    static stores = new Map()
+    static stores = new Map();
 
     static getServiceName( o = {} ) {
       return o.sharedPreferencesName
@@ -106,7 +112,7 @@ jest.mock( "react-native-sensitive-info", () => {
 
       if ( service ) { return service.get( k ) || null; }
       return null;
-    } )
+    } );
 
     static getAllItems = jest.fn( async o => {
       const serviceName = RNSInfo.getServiceName( o );
@@ -123,7 +129,7 @@ jest.mock( "react-native-sensitive-info", () => {
       }
 
       return mappedValues;
-    } )
+    } );
 
     static setItem = jest.fn( async ( k, v, o ) => {
       RNSInfo.validateString( k );
@@ -140,7 +146,7 @@ jest.mock( "react-native-sensitive-info", () => {
       service.set( k, v );
 
       return null;
-    } )
+    } );
 
     static deleteItem = jest.fn( async ( k, o ) => {
       RNSInfo.validateString( k );
@@ -151,14 +157,14 @@ jest.mock( "react-native-sensitive-info", () => {
       if ( service ) { service.delete( k ); }
 
       return null;
-    } )
+    } );
 
-    static hasEnrolledFingerprints = jest.fn( async () => true )
+    static hasEnrolledFingerprints = jest.fn( async () => true );
 
-    static setInvalidatedByBiometricEnrollment = jest.fn()
+    static setInvalidatedByBiometricEnrollment = jest.fn();
 
     // "Touch ID" | "Face ID" | false
-    static isSensorAvailable = jest.fn( async () => "Face ID" )
+    static isSensorAvailable = jest.fn( async () => "Face ID" );
   }
 
   return RNSInfo;
@@ -179,20 +185,6 @@ require( "react-native" ).NativeModules.RNCGeolocation = { };
 
 jest.mock( "@react-native-community/netinfo", () => mockRNCNetInfo );
 
-// Make apisauce work with nock
-jest.mock( "apisauce", ( ) => ( {
-  create: config => {
-    const axiosInstance = jest.requireActual( "axios" ).create( config );
-    const apisauce = jest.requireActual( "apisauce" );
-    return apisauce.create( { ...config, axiosInstance } );
-  }
-} ) );
-
-// FormData isn't available in the testing environment
-function FormDataMock() {
-  this.append = jest.fn();
-}
-global.FormData = FormDataMock;
 global.ReanimatedDataMock = {
   now: () => 0
 };
@@ -200,12 +192,14 @@ global.ReanimatedDataMock = {
 jest.mock( "react-native-fs", ( ) => {
   const RNFS = {
     appendFile: jest.fn( ),
-    DocumentDirectoryPath: jest.fn( ),
+    CachesDirectoryPath: "caches/directory/path",
+    DocumentDirectoryPath: "document/directory/path",
     exists: jest.fn( async ( ) => true ),
     moveFile: async ( ) => "testdata",
     stat: jest.fn( ( ) => ( {
       mtime: 123
-    } ) )
+    } ) ),
+    readFile: jest.fn( ( ) => "testdata" )
   };
 
   return RNFS;
@@ -260,11 +254,15 @@ inatjs.observations.search.mockResolvedValue( makeResponse( ) );
 inatjs.observations.updates.mockResolvedValue( makeResponse( ) );
 
 jest.mock( "react-native-orientation-locker", () => ( {
-  addEventListener: jest.fn(),
-  addDeviceOrientationListener: jest.fn(),
-  removeEventListener: jest.fn(),
-  lockToPortrait: jest.fn(),
-  removeOrientationListener: jest.fn()
+  addDeviceOrientationListener: jest.fn( ),
+  addEventListener: jest.fn( ),
+  getDeviceOrientation: jest.fn( ),
+  getInitialOrientation: jest.fn( ),
+  getOrientation: jest.fn( ),
+  lockToPortrait: jest.fn( ),
+  removeEventListener: jest.fn( ),
+  removeOrientationListener: jest.fn( ),
+  unlockAllOrientations: jest.fn( )
 } ) );
 
 const mockErrorHandler = error => {

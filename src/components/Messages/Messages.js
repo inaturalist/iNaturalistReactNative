@@ -45,20 +45,22 @@ const Messages = (): Node => {
 
   return (
     <ViewWrapper>
-      {currentUser ? (
-        <>
-          <Tabs tabs={tabs} activeId={activeTab} />
-          <MessageList
-            loading={isLoading}
-            messageList={data}
-            testID="Messages.messages"
-          />
-        </>
-      ) : (
-        <Text className="self-center">
-          {t( "You-must-be-logged-in-to-view-messages" )}
-        </Text>
-      )}
+      {currentUser
+        ? (
+          <>
+            <Tabs tabs={tabs} activeId={activeTab} />
+            <MessageList
+              loading={isLoading}
+              messageList={data}
+              testID="Messages.messages"
+            />
+          </>
+        )
+        : (
+          <Text className="self-center">
+            {t( "You-must-be-logged-in-to-view-messages" )}
+          </Text>
+        )}
     </ViewWrapper>
   );
 };

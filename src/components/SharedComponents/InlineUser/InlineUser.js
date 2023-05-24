@@ -1,17 +1,20 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+// Directly imported, not from index.js to avoid circular dependency
+import INatIcon from "components/SharedComponents/INatIcon/INatIcon";
+// Directly imported, not from index.js to avoid circular dependency
+import Body3 from "components/SharedComponents/Typography/Body3";
+// Directly imported, not from index.js to avoid circular dependency
 import UserIcon from "components/SharedComponents/UserIcon/UserIcon";
 import {
-  Pressable, Text, View
+  Pressable, View
 } from "components/styledComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import { useTranslation } from "react-i18next";
 import User from "realmModels/User";
 import useIsConnected from "sharedHooks/useIsConnected";
-import colors from "styles/tailwindColors";
 
 type Props = {
   user: any
@@ -23,24 +26,24 @@ const InlineUser = ( { user }: Props ): Node => {
   const userImgUri = User.uri( user );
   const userHandle = User.userHandle( user );
 
+  const { t } = useTranslation( );
+
   const renderUserIcon = () => {
     if ( !isOnline ) {
       return (
-        <IconMaterial
+        <INatIcon
           testID="InlineUser.NoInternetPicture"
-          name="wifi-off"
+          name="triangle-exclamation"
           size={22}
-          color={colors.darkGray}
         />
       );
     }
     if ( !userImgUri ) {
       return (
-        <IconMaterial
+        <INatIcon
           testID="InlineUser.FallbackPicture"
           name="person"
           size={22}
-          color={colors.darkGray}
         />
       );
     }
@@ -59,7 +62,7 @@ const InlineUser = ( { user }: Props ): Node => {
       }}
     >
       <View className="mr-[7px]">{renderUserIcon()}</View>
-      <Text>{userHandle}</Text>
+      <Body3>{userHandle}</Body3>
     </Pressable>
   );
 };

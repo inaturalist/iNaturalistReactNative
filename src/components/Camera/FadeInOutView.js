@@ -29,6 +29,7 @@ const FadeInOutView = ( { savingPhoto }: Props ): Node => {
 
   return (
     <Animated.View
+      pointerEvents="none"
       // eslint-disable-next-line react-native/no-inline-styles
       style={{
         position: "absolute",

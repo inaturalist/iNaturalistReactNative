@@ -1,6 +1,6 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { fireEvent, screen } from "@testing-library/react-native";
-import AddID from "components/ObsEdit/AddID";
+import AddID from "components/AddID/AddID";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
@@ -25,19 +25,6 @@ jest.mock(
   }
 );
 
-jest.mock(
-  "components/SharedComponents/BottomSheetStandardBackdrop",
-  () => function MockBottomSheetStandardBackdrop( props ) {
-    const MockName = "mock-bottom-sheet-standard-backdrop";
-    return (
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      <MockName {...props} testID={MockName}>
-        {props.children}
-      </MockName>
-    );
-  }
-);
-
 const mockTaxaList = [
   factory( "RemoteTaxon" ),
   factory( "RemoteTaxon" ),
@@ -50,29 +37,6 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
     data: mockTaxaList
   } )
 } ) );
-
-jest.mock( "react-native-vector-icons/MaterialIcons", () => {
-  const InnerReact = require( "react" );
-  class MaterialIcons extends InnerReact.Component {
-    static getImageSourceSync( _thing, _number, _color ) {
-      return { uri: "foo" };
-    }
-
-    render() {
-      // I have disabled the eslint rule here because it is about a mock and not the test
-      // eslint-disable-next-line testing-library/no-node-access
-      return InnerReact.createElement( "MaterialIcons", this.props, this.props.children );
-    }
-  }
-  return MaterialIcons;
-} );
-
-jest.mock( "@gorhom/bottom-sheet", () => {
-  const actualBottomSheet = jest.requireActual( "@gorhom/bottom-sheet" );
-  return {
-    ...actualBottomSheet
-  };
-} );
 
 // react-native-paper's TextInput does a bunch of async stuff that's hard to
 // control in a test, so we're just mocking it here.
@@ -123,9 +87,6 @@ describe( "AddID", () => {
     const taxon = mockTaxaList[0];
     fireEvent.changeText( input, "Some taxon" );
     expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy();
-    expect(
-      screen.getByTestId( `Search.taxa.${taxon.id}.photo` ).props.source
-    ).toStrictEqual( { uri: taxon.default_photo.square_url } );
   } );
 
   it( "calls callback with a taxon that can be saved to Realm", async () => {

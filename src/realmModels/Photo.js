@@ -1,4 +1,4 @@
-import { createResizedImage } from "@bam.tech/react-native-image-resizer";
+import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { Realm } from "@realm/react";
 import { Platform } from "react-native";
 import RNFS from "react-native-fs";
@@ -53,7 +53,7 @@ class Photo extends Realm.Object {
       uriForResize = `file://${uriForResize}`;
     }
 
-    const { uri } = await createResizedImage(
+    const { uri } = await ImageResizer.createResizedImage(
       uriForResize,
       width,
       width, // height
@@ -147,7 +147,7 @@ class Photo extends Realm.Object {
       url: "string?",
       localFilePath: "string?"
     }
-  }
+  };
 }
 
 export default Photo;

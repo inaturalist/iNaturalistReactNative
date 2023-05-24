@@ -14,6 +14,7 @@ type Props = {
   onPress: Function,
   size?: number,
   style?: Object,
+  testID?: string,
   width?: number,
 }
 
@@ -30,6 +31,7 @@ const INatIconButton = ( {
   onPress,
   size,
   style,
+  testID,
   width
 }: Props ): Node => {
   const theme = useTheme( );
@@ -52,7 +54,9 @@ const INatIconButton = ( {
       onPress={onPress}
       style={( { pressed } ) => [
         {
-          opacity: pressed ? 0.95 : 1,
+          opacity: pressed
+            ? 0.95
+            : 1,
           width,
           height,
           justifyContent: "center",
@@ -60,6 +64,7 @@ const INatIconButton = ( {
         },
         style
       ]}
+      testID={testID}
     >
       <INatIcon name={icon} size={size} color={color || theme.colors.primary} />
     </Pressable>

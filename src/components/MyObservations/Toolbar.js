@@ -155,7 +155,9 @@ const Toolbar = ( {
           {statusText && (
             <View className="flex ml-1 shrink">
               <View className="flex-row items-center shrink">
-                <Body2>{statusText}</Body2>
+                <Body2 onPress={getSyncIcon( ) === "sync-unsynced" && handleSyncButtonPress}>
+                  {statusText}
+                </Body2>
                 {( uploadComplete && !uploadError ) && (
                   <View className="ml-2">
                     <INatIcon name="checkmark" size={11} color={theme.colors.secondary} />
@@ -179,7 +181,9 @@ const Toolbar = ( {
           )}
         </View>
         <IconButton
-          icon={layout === "grid" ? "listview" : "gridview"}
+          icon={layout === "grid"
+            ? "listview"
+            : "gridview"}
           size={30}
           disabled={false}
           accessibilityState={{ disabled: false }}

@@ -82,6 +82,7 @@ const PermissionGate = ( { children, permission, isIOS }: Props ): Node => {
 
   const manualGrantButton = (
     <Pressable
+      accessibilityRole="button"
       style={viewStyles.permissionButton}
       onPress={async () => {
         try {

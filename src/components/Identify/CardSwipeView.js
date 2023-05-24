@@ -49,14 +49,16 @@ const CardSwipeView = ( { observationList }: Props ): Node => {
       <PlaceholderText text="Swipe right to agree." />
       {observationList.map( obs => {
         const commonName = obs.taxon && obs.taxon.preferred_common_name;
-        const name = obs.taxon ? obs.taxon.name : "unknown";
+        const name = obs.taxon
+          ? obs.taxon.name
+          : "unknown";
         const isSpecies = obs.taxon && obs.taxon.rank === "species";
         const imageUri = Observation.mediumUri( obs );
         const preventSwipeDirections = ["up", "down"];
         if ( !isSpecies ) {
           preventSwipeDirections.push( "right" );
         }
-        const agreeParams = { observation_id: obs.uuid, taxon_id: obs.taxon.id };
+        const agreeParams = { observation_id: obs.uuid, taxon_id: obs.taxon?.id };
 
         return (
           <TinderCard

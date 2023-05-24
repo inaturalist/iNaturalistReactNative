@@ -67,7 +67,7 @@ describe( "Flags", ( ) => {
     expect( await screen.findByTestId( "FlagItemModal" ) ).toHaveProperty( "props.visible", false );
 
     fireEvent.press( await screen.findByTestId( "KebabMenu.Button" ) );
-    expect( screen.getByTestId( "MenuItem.Flag" ) ).toBeTruthy( );
+    expect( await screen.findByTestId( "MenuItem.Flag" ) ).toBeTruthy( );
     expect( screen.getByText( "Flag" ) ).toBeTruthy( );
   } );
 
@@ -85,7 +85,7 @@ describe( "Flags", ( ) => {
     fireEvent.press( await screen.findByTestId( "KebabMenu.Button" ) );
     expect( await screen.findByTestId( "MenuItem.Flag" ) ).toBeTruthy( );
     fireEvent.press( await screen.findByTestId( "MenuItem.Flag" ) );
-    expect( screen.queryByTestId( "FlagItemModal" ) ).toHaveProperty( "props.visible", true );
+    expect( await screen.findByTestId( "FlagItemModal" ) ).toHaveProperty( "props.visible", true );
     expect( screen.getByText( "Flag An Item" ) ).toBeTruthy( );
   } );
 
@@ -99,7 +99,7 @@ describe( "Flags", ( ) => {
         onItemFlagged={mockCallback}
       />
     );
-    expect( screen.getByText( "Flag An Item" ) ).toBeTruthy( );
+    expect( await screen.findByText( "Flag An Item" ) ).toBeTruthy( );
     expect( screen.getByText( "Spam" ) ).toBeTruthy( );
     expect( screen.getByText( "Offensive/Inappropriate" ) ).toBeTruthy( );
     expect( screen.getByText( "Other" ) ).toBeTruthy( );
@@ -116,11 +116,11 @@ describe( "Flags", ( ) => {
         onItemFlagged={mockCallback}
       />
     );
-    expect( screen.getByText( "Flag An Item" ) ).toBeTruthy( );
+    expect( await screen.findByText( "Flag An Item" ) ).toBeTruthy( );
     expect( screen.getByText( "Spam" ) ).toBeTruthy( );
     expect( screen.queryAllByRole( "checkbox" ) ).toHaveLength( 3 );
     fireEvent.press( screen.queryByText( "Spam" ) );
-    expect( screen.getByText( "Save" ) ).toBeTruthy( );
+    expect( await screen.findByText( "Save" ) ).toBeTruthy( );
     fireEvent.press( screen.queryByText( "Save" ) );
     expect( await mockMutate ).toHaveBeenCalled();
   } );

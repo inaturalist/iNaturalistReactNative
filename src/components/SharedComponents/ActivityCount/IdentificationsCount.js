@@ -37,7 +37,9 @@ const IdentificationsCount = ( {
     <ActivityCount
       accessibilityLabel={identificationA11yLabel}
       count={count}
-      icon={filled ? "label" : "label-outline"}
+      icon={filled
+        ? "label"
+        : "label-outline"}
       classNameMargin={classNameMargin}
       testID={testID}
       white={white}

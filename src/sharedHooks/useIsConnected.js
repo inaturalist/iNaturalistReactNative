@@ -7,7 +7,9 @@ const useIsConnected = ( ): boolean => {
   // assume there is network connectivity until proven otherwise
   // this should prevent the UI from flickering while isConnected
   // is fetched
-  return netInfo.isConnected === null ? true : netInfo.isConnected;
+  return netInfo.isConnected === null
+    ? true
+    : netInfo.isConnected;
 };
 
 export default useIsConnected;

@@ -3,19 +3,19 @@
 exports[`Heading3 renders correctly 1`] = `
 <Text
   style={
-    Array [
-      Object {
+    [
+      {
         "fontFamily": "Whitney-Medium",
       },
-      Array [
-        Object {
+      [
+        {
           "fontSize": 19,
           "lineHeight": 23,
         },
-        Object {
+        {
           "fontWeight": "600",
         },
-        Object {
+        {
           "color": "#454545",
         },
       ],

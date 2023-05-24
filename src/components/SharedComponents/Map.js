@@ -20,18 +20,12 @@ type Props = {
 const Map = ( {
   obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region
 }: Props ): React.Node => {
-  const { latLng } = useUserLocation( { skipPlaceGuess: true } );
+  const { latLng: viewerLatLng } = useUserLocation( { skipPlaceGuess: true } );
 
-  const initialLatitude = obsLatitude || ( latLng && latLng.latitude );
-  const initialLongitude = obsLongitude || ( latLng && latLng.longitude );
+  const initialLatitude = obsLatitude || ( viewerLatLng?.latitude );
+  const initialLongitude = obsLongitude || ( viewerLatLng?.longitude );
 
   const urlTemplate = taxonId && `https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png?taxon_id=${taxonId}&color=%2377B300&verifiable=true`;
-
-  if ( !latLng || !latLng.latitude ) {
-    // TODO: add fallbacks (maybe Cupertino and MountainView) for initial region
-    // when user has no location permissions or no geolocation
-    return null;
-  }
 
   const initialRegion = {
     latitude: initialLatitude,
@@ -42,12 +36,19 @@ const Map = ( {
 
   return (
     <View
-      style={[viewStyles.mapContainer, mapHeight ? { height: mapHeight } : null]}
+      style={[
+        viewStyles.mapContainer,
+        mapHeight
+          ? { height: mapHeight }
+          : null
+      ]}
       testID="MapView"
     >
       <MapView
         style={viewStyles.map}
-        region={( region && region.latitude ) ? region : initialRegion}
+        region={( region?.latitude )
+          ? region
+          : initialRegion}
         onRegionChange={updateCoords}
         showsUserLocation
         showsMyLocationButton

@@ -8,13 +8,28 @@ import colors from "styles/tailwindColors";
 type Props = {
   uri: Object,
   small?: boolean,
-  active?: boolean
+  active?: boolean,
+  large?: boolean
 }
 
-const UserIcon = ( { uri, small, active }: Props ): React.Node => {
-  const size = small ? "w-[22px] h-[22px]" : "w-[40px] h-[40px]";
-  const border = "border-[3px] border-inatGreen";
-  const className = classNames( "rounded-full", size, active && border );
+const UserIcon = ( {
+  uri, small, active, large
+}: Props ): React.Node => {
+  const getSize = ( ) => {
+    if ( small ) {
+      return "w-[22px] h-[22px]";
+    }
+    if ( large ) {
+      return "w-[134px] h-[134px]";
+    }
+    return "w-[40px] h-[40px]";
+  };
+
+  const size = getSize( );
+  const className = classNames(
+    "rounded-full",
+    size
+  );
   // For unknown reasons, the green border doesn't show up on Android using nativewind classNames
   // but it works with style, might warrant further investigation or an issue in nativewind
   const style = { borderColor: colors.inatGreen, borderWidth: 3 };
@@ -24,6 +39,7 @@ const UserIcon = ( { uri, small, active }: Props ): React.Node => {
       className={className}
       style={active && style}
       source={uri}
+      accessibilityRole="image"
       accessibilityIgnoresInvertColors
     />
   );

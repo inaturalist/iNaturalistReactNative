@@ -1,26 +1,30 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import DisplayTaxonName from "components/DisplayTaxonName";
 import {
-  Button, Heading4, INatIcon
+  Button, DisplayTaxonName,
+  Heading4, INatIcon
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
-import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useTheme } from "react-native-paper";
+import useTranslation from "sharedHooks/useTranslation";
 
 const IdentificationSection = ( ): Node => {
   const {
     currentObservation,
-    updateObservationKey
+    updateObservationKey,
+    setPassesIdentificationTest
   } = useContext( ObsEditContext );
+  const { t } = useTranslation( );
   const theme = useTheme( );
   const navigation = useNavigation( );
 
   const identification = currentObservation.taxon;
+
+  const hasIdentification = identification && identification.rank_level !== 100;
 
   const onIDAdded = async id => updateObservationKey( "taxon", id.taxon );
 
@@ -44,11 +48,17 @@ const IdentificationSection = ( ): Node => {
     </Pressable>
   );
 
+  useEffect( ( ) => {
+    if ( hasIdentification ) {
+      setPassesIdentificationTest( true );
+    }
+  }, [hasIdentification, setPassesIdentificationTest] );
+
   return (
     <View className="ml-5 mt-6">
       <View className="flex-row">
         <Heading4>{t( "IDENTIFICATION" )}</Heading4>
-        {( identification && identification.rank_level !== 100 ) && (
+        {hasIdentification && (
           <View className="ml-3">
             <INatIcon name="checkmark-circle" size={19} color={theme.colors.secondary} />
           </View>
@@ -58,7 +68,9 @@ const IdentificationSection = ( ): Node => {
         {identification && displayIdentification( )}
         <View className="flex-row justify-start">
           <Button
-            level={identification ? "neutral" : "focus"}
+            level={identification
+              ? "neutral"
+              : "focus"}
             onPress={navToAddID}
             text={t( "ADD-AN-ID" )}
             className="rounded-full py-2"
@@ -67,7 +79,9 @@ const IdentificationSection = ( ): Node => {
               <INatIcon
                 name="sparkly-label"
                 size={24}
-                color={identification ? theme.colors.primary : theme.colors.onPrimary}
+                color={identification
+                  ? theme.colors.primary
+                  : theme.colors.onPrimary}
               />
             )}
           />

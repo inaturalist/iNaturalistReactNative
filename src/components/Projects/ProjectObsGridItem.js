@@ -1,8 +1,8 @@
 // @flow
 
-import DisplayTaxonName from "components/DisplayTaxonName";
 import ObsImagePreview from "components/MyObservations/ObsImagePreview";
 import ObsStatus from "components/MyObservations/ObsStatus";
+import { DisplayTaxonName } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
