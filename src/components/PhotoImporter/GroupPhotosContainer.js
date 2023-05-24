@@ -10,36 +10,23 @@ import GroupPhotos from "./GroupPhotos";
 import flattenAndOrderSelectedPhotos from "./helpers/groupPhotoHelpers";
 
 const GroupPhotosContainer = ( ): Node => {
-  const { createObservationsFromGroupedPhotos, photosToGroup } = useContext( ObsEditContext );
+  const {
+    createObservationsFromGroupedPhotos, groupedPhotos, setGroupedPhotos
+  } = useContext( ObsEditContext );
   const navigation = useNavigation( );
-  const observations = photosToGroup.map( photo => ( {
-    photos: [photo]
-  } ) );
 
-  const [obsToEdit, setObsToEdit] = useState( [] );
   const [selectedObservations, setSelectedObservations] = useState( [] );
-  const totalPhotos = obsToEdit.reduce( ( count, current ) => count + current.photos.length, 0 );
-
-  useEffect(
-    ( ) => {
-      navigation.addListener( "focus", ( ) => {
-        setObsToEdit( observations );
-      } );
-      navigation.addListener( "blur", ( ) => {
-        setObsToEdit( [] );
-      } );
-    },
-    [navigation, observations]
-  );
+  const totalPhotos = groupedPhotos
+    .reduce( ( count, current ) => count + current.photos.length, 0 );
 
   useEffect( ( ) => {
     navigation.setOptions( {
       headerSubtitle: t( "X-PHOTOS-X-OBSERVATIONS", {
         photoCount: totalPhotos,
-        observationCount: obsToEdit.length
+        observationCount: groupedPhotos.length
       } )
     } );
-  }, [totalPhotos, obsToEdit, navigation] );
+  }, [totalPhotos, groupedPhotos, navigation] );
 
   const selectObservationPhotos = ( isSelected, observation ) => {
     if ( !isSelected ) {
@@ -64,7 +51,7 @@ const GroupPhotosContainer = ( ): Node => {
     const mostRecentPhoto = orderedPhotos[0];
 
     // remove selected photos from observations
-    obsToEdit.forEach( obs => {
+    groupedPhotos.forEach( obs => {
       const obsPhotos = obs.photos;
       const mostRecentSelected = obsPhotos.indexOf( mostRecentPhoto );
 
@@ -81,7 +68,7 @@ const GroupPhotosContainer = ( ): Node => {
       }
     } );
 
-    setObsToEdit( newObsList );
+    setGroupedPhotos( newObsList );
     setSelectedObservations( [] );
   };
 
@@ -104,18 +91,18 @@ const GroupPhotosContainer = ( ): Node => {
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
 
     // create a list of grouped photos, with selected photos split into individual observations
-    obsToEdit.forEach( obs => {
+    groupedPhotos.forEach( obs => {
       const obsPhotos = obs.photos;
-      const filteredobsToEdit = obsPhotos.filter( item => orderedPhotos.includes( item ) );
-      if ( filteredobsToEdit.length > 0 ) {
-        filteredobsToEdit.forEach( photo => {
+      const filteredGroupedPhotos = obsPhotos.filter( item => orderedPhotos.includes( item ) );
+      if ( filteredGroupedPhotos.length > 0 ) {
+        filteredGroupedPhotos.forEach( photo => {
           separatedPhotos.push( { photos: [photo] } );
         } );
       } else {
         separatedPhotos.push( obs );
       }
     } );
-    setObsToEdit( separatedPhotos );
+    setGroupedPhotos( separatedPhotos );
     setSelectedObservations( [] );
   };
 
@@ -124,28 +111,28 @@ const GroupPhotosContainer = ( ): Node => {
     const orderedPhotos = flattenAndOrderSelectedPhotos( selectedObservations );
 
     // create a list of grouped photos, with selected photos removed
-    obsToEdit.forEach( obs => {
+    groupedPhotos.forEach( obs => {
       const obsPhotos = obs.photos;
-      const filteredobsToEdit = obsPhotos.filter(
+      const filteredGroupedPhotos = obsPhotos.filter(
         item => !orderedPhotos.includes( item )
       );
-      if ( filteredobsToEdit.length > 0 ) {
-        removedFromGroup.push( { photos: filteredobsToEdit } );
+      if ( filteredGroupedPhotos.length > 0 ) {
+        removedFromGroup.push( { photos: filteredGroupedPhotos } );
       }
     } );
     // remove from group photos screen
-    setObsToEdit( removedFromGroup );
+    setGroupedPhotos( removedFromGroup );
   };
 
   const navToObsEdit = async () => {
-    createObservationsFromGroupedPhotos( obsToEdit );
-    navigation.navigate( "ObsEdit", { lastScreen: "PhotoGallery" } );
+    createObservationsFromGroupedPhotos( groupedPhotos );
+    navigation.navigate( "ObsEdit", { lastScreen: "GroupPhotos" } );
   };
 
   return (
     <GroupPhotos
       navToObsEdit={navToObsEdit}
-      obsToEdit={obsToEdit}
+      groupedPhotos={groupedPhotos}
       selectedObservations={selectedObservations}
       selectObservationPhotos={selectObservationPhotos}
       combinePhotos={combinePhotos}

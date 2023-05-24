@@ -59,7 +59,7 @@ const PhotoGallery = (): Node => {
     evidenceToAdd,
     setEvidenceToAdd,
     album,
-    setPhotosToGroup
+    setGroupedPhotos
   } = useContext( ObsEditContext );
   const [showAlert, setShowAlert] = useState( false );
   const { params } = useRoute();
@@ -184,7 +184,9 @@ const PhotoGallery = (): Node => {
       navToObsEdit();
       return;
     }
-    setPhotosToGroup( allPhotos.filter( photo => galleryUris?.includes( photo?.image?.uri ) ) );
+    setGroupedPhotos( selectedPhotos.map( photo => ( {
+      photos: [photo]
+    } ) ) );
     navigation.navigate( "GroupPhotos" );
   };
 

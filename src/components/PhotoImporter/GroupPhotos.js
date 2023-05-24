@@ -14,7 +14,7 @@ import { Appbar } from "react-native-paper";
 import GroupPhotoImage from "./GroupPhotoImage";
 
 type Props = {
-  obsToEdit: Array<Object>,
+  groupedPhotos: Array<Object>,
   selectedObservations: Array<Object>,
   selectObservationPhotos: Function,
   navToObsEdit: Function,
@@ -24,7 +24,7 @@ type Props = {
 }
 
 const GroupPhotos = ( {
-  obsToEdit,
+  groupedPhotos,
   selectedObservations,
   selectObservationPhotos,
   navToObsEdit,
@@ -53,7 +53,7 @@ const GroupPhotos = ( {
       </View>
       <FlatList
         className="mt-5"
-        data={obsToEdit}
+        data={groupedPhotos}
         initialNumToRender={4}
         keyExtractor={extractKey}
         numColumns={2}
@@ -92,7 +92,7 @@ const GroupPhotos = ( {
         <Button
           className="mt-2 mx-4"
           level="focus"
-          text={t( "UPLOAD-X-OBSERVATIONS", { count: obsToEdit.length } )}
+          text={t( "UPLOAD-X-OBSERVATIONS", { count: groupedPhotos.length } )}
           onPress={navToObsEdit}
           testID="GroupPhotos.next"
         />
