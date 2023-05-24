@@ -58,7 +58,8 @@ const PhotoGallery = (): Node => {
     addGalleryPhotosToCurrentObservation,
     evidenceToAdd,
     setEvidenceToAdd,
-    album
+    album,
+    setPhotosToGroup
   } = useContext( ObsEditContext );
   const [showAlert, setShowAlert] = useState( false );
   const { params } = useRoute();
@@ -183,7 +184,8 @@ const PhotoGallery = (): Node => {
       navToObsEdit();
       return;
     }
-    navigation.navigate( "GroupPhotos", { selectedPhotos } );
+    setPhotosToGroup( allPhotos.filter( photo => galleryUris?.includes( photo?.image?.uri ) ) );
+    navigation.navigate( "GroupPhotos" );
   };
 
   const renderEmptyList = () => {
