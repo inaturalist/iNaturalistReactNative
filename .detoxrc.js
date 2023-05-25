@@ -27,7 +27,7 @@ module.exports = {
       binaryPath:
         "ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app",
       build:
-        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+        "export MOCK_MODE=e2e && xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build && unset MOCK_MODE",
     },
     "android.debug": {
       type: "android.apk",
