@@ -93,6 +93,8 @@ jobs:
     - run: brew install applesimutils
     
     - name: Build test app
+      env:
+        MOCK_MODE: e2e
       run: npm run e2e:build:ios
     
     - name: Run e2e test
