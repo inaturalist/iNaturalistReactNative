@@ -1035,7 +1035,6 @@ JOURNAL-POSTS-WITHOUT-NUMBER = {$count ->
     *[other] JOURNAL POSTS
 }
 
-<<<<<<< HEAD
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
 I-consent-to-allow-iNaturalist-to-store = I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)
 I-consent-to-allow-my-personal-information = I consent to allow my personal information to be transferred to the United States of America (required)
@@ -1050,7 +1049,7 @@ Return-to-Login = Return to Login
 One-last-step = One last step!
 We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
 Please-click-the-link = Please click the link in the email within 60 minutes  to confirm your account
-=======
+
+# Title for dialog telling the user that an Internet connection is required
 Internet-Connection-Required = Internet Connection Required
-Please-try-again-when-you-are-connected-to-the-internet=Please try again when you are connected to the internet.
->>>>>>> a7fb50e2 (Add alert message if offline upload is attempted)
+Please-try-again-when-you-are-connected-to-the-internet=Please try again when you are connected to the Internet.

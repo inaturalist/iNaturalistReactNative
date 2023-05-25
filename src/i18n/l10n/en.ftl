@@ -1051,3 +1051,7 @@ We-sent-a-confirmation-email = We sent a confirmation email to the email you sig
 Please-click-the-link = Please click the link in the email within 60 minutes  to confirm your account
 Internet-Connection-Required = Internet Connection Required
 Please-try-again-when-you-are-connected-to-the-internet=Please try again when you are connected to the internet.
+
+# Title for dialog telling the user that an Internet connection is required
+Internet-Connection-Required = Internet Connection Required
+Please-try-again-when-you-are-connected-to-the-internet=Please try again when you are connected to the Internet.
