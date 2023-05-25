@@ -93,25 +93,16 @@ jobs:
     - name: Set MOCK_MODE to e2e
       run: echo "MOCK_MODE=e2e" >> "$GITHUB_ENV"
 
-    - name: Testing
-      run: echo "$MOCK_MODE"
-
     # Install prerequisites for detox and build app, and test
     - run: brew tap wix/brew
     - run: brew install applesimutils
     
     - name: Build test app
       run: npm run e2e:build:ios
-
-    - name: Testing
-      run: echo "$MOCK_MODE"
     
     - name: Run e2e test
       run: npm run e2e:test:ios -- --cleanup --debug-synchronization 200 --take-screenshots failing --record-videos failing -l debug
     
-    - name: Testing
-      run: echo "$MOCK_MODE"
-
     # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
     - name: Store Detox artifacts on test failure
       uses: actions/upload-artifact@v3
