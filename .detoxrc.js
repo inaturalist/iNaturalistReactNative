@@ -20,28 +20,28 @@ module.exports = {
       binaryPath:
         "ios/build/Build/Products/Debug-iphonesimulator/iNaturalistReactNative.app",
       build:
-        "export MOCK_MODE=e2e && xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build && unset MOCK_MODE",
+        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
     },
     "ios.release": {
       type: "ios.app",
       binaryPath:
         "ios/build/Build/Products/Release-iphonesimulator/iNaturalistReactNative.app",
       build:
-        "export MOCK_MODE=e2e && xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build && unset MOCK_MODE",
+        "xcodebuild -workspace ios/iNaturalistReactNative.xcworkspace -scheme iNaturalistReactNative -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
     },
     "android.debug": {
       type: "android.apk",
       binaryPath: `android/app/build/outputs/apk/debug/${apkFilenamePrefix}-debug.apk`,
       testBinaryPath: `android/app/build/outputs/apk/androidTest/debug/${apkFilenamePrefix}-debug-androidTest.apk`,
       build:
-        "export MOCK_MODE=e2e && cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd .. && unset MOCK_MODE",
+        "(cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug)",
     },
     "android.release": {
       type: "android.apk",
       binaryPath: `android/app/build/outputs/apk/release/${apkFilenamePrefix}-release.apk`,
       testBinaryPath: `android/app/build/outputs/apk/androidTest/release/${apkFilenamePrefix}-release-androidTest.apk`,
       build:
-        "export MOCK_MODE=e2e && cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd .. && unset MOCK_MODE",
+        "(cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release)",
     },
   },
   devices: {
