@@ -5,9 +5,11 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useEffect } from "react";
 import {
+  Alert,
   Dimensions, PixelRatio
 } from "react-native";
 import useCurrentUser from "sharedHooks/useCurrentUser";
+import useIsConnected from "sharedHooks/useIsConnected";
 import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -30,6 +32,7 @@ const ToolbarContainer = ( {
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const navigation = useNavigation( );
+  const isOnline = useIsConnected( );
   const {
     stopUpload,
     uploadInProgress,
@@ -74,6 +77,14 @@ const ToolbarContainer = ( {
   };
 
   const handleSyncButtonPress = ( ) => {
+    if ( !isOnline ) {
+      Alert.alert(
+        t( "Internet-Connection-Required" ),
+        t( "Please-try-again-when-you-are-connected-to-the-internet" )
+      );
+      return;
+    }
+
     if ( !currentUser ) {
       setShowLoginSheet( true );
       return;
