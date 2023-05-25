@@ -13,7 +13,7 @@ type Props = {
 }
 
 const DatePicker = ( { currentObservation }: Props ): Node => {
-  const { updateObservationKey } = useContext( ObsEditContext );
+  const { updateObservationKeys } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const [showModal, setShowModal] = useState( false );
 
@@ -22,7 +22,9 @@ const DatePicker = ( { currentObservation }: Props ): Node => {
 
   const handlePicked = value => {
     const dateString = createObservedOnStringForUpload( value );
-    updateObservationKey( "observed_on_string", dateString );
+    updateObservationKeys( {
+      observed_on_string: dateString
+    } );
     closeModal();
   };
 

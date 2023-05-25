@@ -20,7 +20,7 @@ const OtherDataSection = ( ): Node => {
 
   const {
     currentObservation,
-    updateObservationKey
+    updateObservationKeys
   } = useContext( ObsEditContext );
 
   const geoprivacyOptions = [{
@@ -47,8 +47,12 @@ const OtherDataSection = ( ): Node => {
       value: true
     }];
 
-  const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
-  const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
+  const updateGeoprivacyStatus = value => updateObservationKeys( {
+    geoprivacy: value
+  } );
+  const updateCaptiveStatus = value => updateObservationKeys( {
+    captive_flag: value
+  } );
 
   const currentGeoprivacyStatus = geoprivacyOptions
     .find( e => e.value === currentObservation.geoprivacy );
@@ -106,7 +110,9 @@ const OtherDataSection = ( ): Node => {
             snapPoints={[416]}
             placeholder={t( "Add-optional-notes" )}
             initialInput={currentObservation?.description}
-            confirm={textInput => updateObservationKey( "description", textInput )}
+            confirm={textInput => updateObservationKeys( {
+              description: textInput
+            } )}
           />
         )}
         <INatIcon
