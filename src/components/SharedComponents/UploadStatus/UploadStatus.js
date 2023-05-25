@@ -4,11 +4,15 @@ import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
-import { Animated, Easing } from "react-native";
+import React, { useEffect } from "react";
 import CircularProgressBase from "react-native-circular-progress-indicator";
 import { IconButton, useTheme } from "react-native-paper";
-import Reanimated, { FadeIn, Keyframe } from "react-native-reanimated";
+import Reanimated, {
+  cancelAnimation,
+  Easing, FadeIn, interpolate,
+  Keyframe, useAnimatedStyle, useDerivedValue, useSharedValue, withRepeat,
+  withTiming
+} from "react-native-reanimated";
 
 type Props = {
   color?: string,
@@ -46,31 +50,28 @@ const UploadStatus = ( {
   const theme = useTheme();
   const defaultColor = theme.colors.primary;
   const defaultCompleteColor = theme.colors.secondary;
-  const rotateAnimation = new Animated.Value( 0 );
-
-  Animated.loop(
-    Animated.timing( rotateAnimation, {
-      toValue: 1,
-      duration: 10000,
-      easing: Easing.linear,
-      useNativeDriver: true
-    } )
-  ).start( () => {
-    rotateAnimation.setValue( 0 );
-  } );
-
-  const interpolateRotating = rotateAnimation.interpolate( {
-    inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"]
-  } );
-
-  const rotate = {
+  const animation = useSharedValue( 0 );
+  const rotation = useDerivedValue( () => interpolate(
+    animation.value,
+    [0, 1],
+    [0, 360]
+  ) );
+  const rotate = useAnimatedStyle( () => ( {
     transform: [
       {
-        rotate: interpolateRotating
+        rotateZ: `${rotation.value}deg`
       }
-    ],
-    position: "absolute"
+    ]
+  } ), [rotation.value] );
+
+  const startAnimation = () => {
+    animation.value = withRepeat(
+      withTiming( 1, {
+        duration: 10000,
+        easing: Easing.linear
+      } ),
+      -1
+    );
   };
 
   const translationParams = {
@@ -87,25 +88,43 @@ const UploadStatus = ( {
     return t( "Upload-Complete" );
   };
 
+  const startUpload = () => {
+    startAnimation();
+    startSingleUpload();
+  };
+
+  useEffect( () => () => cancelAnimation( rotation ), [rotation] );
+
   const displayIcon = () => {
-    if ( progress < 0.05 ) {
+    if ( progress === 0 ) {
+      return (
+        <IconButton
+          icon="upload-saved"
+          iconColor={color || defaultColor}
+          size={33}
+          onPress={startUpload}
+          disabled={false}
+          accessibilityState={{ disabled: false }}
+        />
+      );
+    }
+    if ( progress <= 0.05 ) {
       return (
         <>
-          <Animated.View style={rotate}>
+          <View className="absolute">
+            <INatIcon
+              name="upload-arrow"
+              color={color || defaultColor}
+              size={15}
+            />
+          </View>
+          <AnimatedView style={rotate}>
             <INatIcon name="circle-dots" color={color || defaultColor} size={33} />
-          </Animated.View>
-          <IconButton
-            icon="upload-arrow"
-            iconColor={color || defaultColor}
-            size={15}
-            onPress={startSingleUpload}
-            disabled={false}
-            accessibilityState={{ disabled: false }}
-          />
+          </AnimatedView>
         </>
       );
     }
-    if ( progress < 1 ) {
+    if ( progress > 0.05 && progress < 1 ) {
       return (
         <>
           <View className="absolute">
