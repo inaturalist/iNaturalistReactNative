@@ -86,15 +86,13 @@ jobs:
         E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
         E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
         JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
-      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\n' "JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" > .env
+      run: printf 'MOCK_MODE=e2e\nAPI_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\n' "JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" > .env
 
     # Install prerequisites for detox and build app, and test
     - run: brew tap wix/brew
     - run: brew install applesimutils
     
     - name: Build test app
-      env:
-        MOCK_MODE: e2e
       run: npm run e2e:build:ios
     
     - name: Run e2e test
