@@ -25,7 +25,10 @@ module.exports = ( async () => {
     },
     resolver: {
       assetExts: assetExts.filter( ext => ext !== "svg" ),
-      sourceExts: [...sourceExts, "svg"]
+      sourceExts:
+        process.env.MOCK_MODE === "e2e"
+          ? ["e2e-mock.js", ...sourceExts, "svg"]
+          : [...sourceExts, "svg"]
     }
   };
 } )();

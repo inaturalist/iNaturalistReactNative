@@ -10,6 +10,17 @@ unless File.exist?( appfile_path )
   NO_APPFILE_ERROR
 end
 
+forbidden_env_vars = [
+  "MOCK_MODE"
+]
+forbidden_env_vars.each do | env_var |
+  next unless ENV[env_var].to_s.size.positive?
+
+  UI.abort_with_message! <<~NO_ENV_ERROR.gsub( /\s+/, " " ).strip
+    ENV is set #{env_var}. Remove the value from your ENV before running fastlane.
+  NO_ENV_ERROR
+end
+
 required_env_vars = [
   "IOS_PROVISIONING_PROFILE_NAME",
   "IOS_SHARE_BUNDLE_ID",
