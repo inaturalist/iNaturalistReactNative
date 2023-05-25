@@ -96,32 +96,38 @@ jobs:
     - name: Testing
       run: echo "$MOCK_MODE"
 
-  #   # Install prerequisites for detox and build app, and test
-  #   - run: brew tap wix/brew
-  #   - run: brew install applesimutils
+    # Install prerequisites for detox and build app, and test
+    - run: brew tap wix/brew
+    - run: brew install applesimutils
     
-  #   - name: Build test app
-  #     run: npm run e2e:build:ios
-    
-  #   - name: Run e2e test
-  #     run: npm run e2e:test:ios -- --cleanup --debug-synchronization 200 --take-screenshots failing --record-videos failing -l debug
-    
-  #   # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
-  #   - name: Store Detox artifacts on test failure
-  #     uses: actions/upload-artifact@v3
-  #     if: failure()
-  #     with:
-  #       name: detox-artifacts
-  #       path: artifacts
+    - name: Build test app
+      run: npm run e2e:build:ios
 
-  # notify:
-  #   name: Notify Slack
-  #   needs: test
-  #   if: ${{ success() || failure() }}
-  #   runs-on: macos-latest
-  #   steps:
-  #     - uses: iRoachie/slack-github-actions@v2.3.0
-  #       if: env.SLACK_WEBHOOK_URL != null
-  #       env:
-  #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Testing
+      run: echo "$MOCK_MODE"
+    
+    - name: Run e2e test
+      run: npm run e2e:test:ios -- --cleanup --debug-synchronization 200 --take-screenshots failing --record-videos failing -l debug
+    
+    - name: Testing
+      run: echo "$MOCK_MODE"
+
+    # The artifacts for the failing tests are available for download on github.com on the page of the individual actions run
+    - name: Store Detox artifacts on test failure
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: detox-artifacts
+        path: artifacts
+
+  notify:
+    name: Notify Slack
+    needs: test
+    if: ${{ success() || failure() }}
+    runs-on: macos-latest
+    steps:
+      - uses: iRoachie/slack-github-actions@v2.3.0
+        if: env.SLACK_WEBHOOK_URL != null
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BUILDS_WEBHOOK_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
