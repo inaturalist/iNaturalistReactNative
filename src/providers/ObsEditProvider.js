@@ -45,6 +45,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
   const [mediaViewerUris, setMediaViewerUris] = useState( [] );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
+  const [groupedPhotos, setGroupedPhotos] = useState( [] );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -54,6 +55,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setEvidenceToAdd( [] );
     setUnsavedChanges( false );
     setPassesEvidenceTest( false );
+    setGroupedPhotos( [] );
   }, [] );
 
   useEffect( () => {
@@ -407,7 +409,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       mediaViewerUris,
       setMediaViewerUris,
       selectedPhotoIndex,
-      setSelectedPhotoIndex
+      setSelectedPhotoIndex,
+      groupedPhotos,
+      setGroupedPhotos
     };
   }, [
     currentObservation,
@@ -437,7 +441,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     passesEvidenceTest,
     passesIdentificationTest,
     mediaViewerUris,
-    selectedPhotoIndex
+    selectedPhotoIndex,
+    groupedPhotos
   ] );
 
   return (

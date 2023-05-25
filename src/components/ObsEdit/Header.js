@@ -1,7 +1,7 @@
 // @flow
 
 import { HeaderBackButton } from "@react-navigation/elements";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { Heading2, KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
@@ -27,6 +27,7 @@ const Header = ( ): Node => {
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const navigation = useNavigation( );
+  const { params } = useRoute( );
   const [deleteSheetVisible, setDeleteSheetVisible] = useState( false );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [discardObservationSheetVisible, setDiscardObservationSheetVisible] = useState( false );
@@ -57,14 +58,16 @@ const Header = ( ): Node => {
   ), [observations, t] );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    if ( !currentObservation._synced_at ) {
+    if ( params?.lastScreen === "GroupPhotos" ) {
+      navigation.goBack( );
+    } else if ( !currentObservation._synced_at ) {
       setDiscardObservationSheetVisible( true );
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
     } else {
       navigation.goBack( );
     }
-  }, [currentObservation, navigation, unsavedChanges] );
+  }, [currentObservation, navigation, unsavedChanges, params] );
 
   const renderBackButton = useCallback( ( ) => (
     <View className="ml-4">

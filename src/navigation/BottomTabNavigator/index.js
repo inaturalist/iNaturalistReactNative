@@ -16,7 +16,7 @@ import MyObservationsContainer from "components/MyObservations/MyObservationsCon
 import NetworkLogging from "components/NetworkLogging";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import ObsEdit from "components/ObsEdit/ObsEdit";
-import GroupPhotos from "components/PhotoImporter/GroupPhotos";
+import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import ProjectDetails from "components/Projects/ProjectDetails";
@@ -297,7 +297,7 @@ const BottomTabs = ( ) => {
         />
         <Tab.Screen
           name="GroupPhotos"
-          component={GroupPhotos}
+          component={GroupPhotosContainer}
           options={{
             ...showHeaderLeft,
             ...showCustomHeader,
