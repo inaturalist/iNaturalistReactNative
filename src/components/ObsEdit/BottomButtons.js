@@ -21,7 +21,6 @@ const BottomButtons = ( ): Node => {
     saveObservation,
     saveAndUploadObservation,
     setNextScreen,
-    setLoading,
     currentObservation,
     unsavedChanges,
     passesEvidenceTest,
@@ -30,6 +29,7 @@ const BottomButtons = ( ): Node => {
   const [showMissingEvidenceSheet, setShowMissingEvidenceSheet] = useState( false );
   const [showImpreciseLocationSheet, setShowImpreciseLocationSheet] = useState( false );
   const [allowUserToUpload, setAllowUserToUpload] = useState( false );
+  const [buttonPressed, setButtonPressed] = useState( null );
 
   const showMissingEvidence = ( ) => {
     if ( allowUserToUpload ) { return false; }
@@ -49,17 +49,15 @@ const BottomButtons = ( ): Node => {
 
   const handleSave = async ( ) => {
     if ( showMissingEvidence( ) ) { return; }
-    setLoading( true );
+    setButtonPressed( "save" );
     await saveObservation( );
-    setLoading( false );
     setNextScreen( );
   };
 
   const handleUpload = async ( ) => {
     if ( showMissingEvidence( ) ) { return; }
-    setLoading( true );
+    setButtonPressed( "upload" );
     await saveAndUploadObservation( );
-    setLoading( false );
     setNextScreen( );
   };
 
@@ -84,6 +82,8 @@ const BottomButtons = ( ): Node => {
             level={unsavedChanges
               ? "focus"
               : "neutral"}
+            loading={buttonPressed === "save"}
+            disabled={buttonPressed !== null}
           />
         )
         : (
@@ -97,6 +97,8 @@ const BottomButtons = ( ): Node => {
               testID="ObsEdit.saveButton"
               text={t( "SAVE" )}
               level="neutral"
+              loading={buttonPressed === "save"}
+              disabled={buttonPressed !== null}
             />
             <Button
               className="ml-3 grow"
@@ -106,6 +108,8 @@ const BottomButtons = ( ): Node => {
               text={t( "UPLOAD-NOW" )}
               testID="ObsEdit.uploadButton"
               onPress={handleUpload}
+              loading={buttonPressed === "upload"}
+              disabled={buttonPressed !== null}
             />
           </View>
         )}
