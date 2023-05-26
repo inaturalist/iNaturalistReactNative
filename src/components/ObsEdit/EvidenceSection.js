@@ -17,7 +17,7 @@ import React, {
   useCallback,
   useContext, useEffect, useRef, useState
 } from "react";
-import { useTheme } from "react-native-paper";
+import { ActivityIndicator, useTheme } from "react-native-paper";
 import Photo from "realmModels/Photo";
 import useLocationFetching from "sharedHooks/useLocationFetching";
 import useTranslation from "sharedHooks/useTranslation";
@@ -179,9 +179,18 @@ const EvidenceSection = ( ): Node => {
         photoUris={photoUris}
         handleAddEvidence={handleAddEvidence}
       />
-      <View className="flex-row flex-nowrap my-4">
-        <INatIcon size={14} name="map-marker-outline" />
-        <Pressable accessibilityRole="button" className="ml-5" onPress={navToLocationPicker}>
+      <Pressable
+        accessibilityRole="button"
+        className="flex-row flex-nowrap my-3"
+        onPress={navToLocationPicker}
+      >
+        <View className="w-[30px] items-center mr-1">
+          {shouldFetchLocation && <ActivityIndicator />}
+          <View className={shouldFetchLocation && "bottom-5"}>
+            <INatIcon size={14} name="map-marker-outline" />
+          </View>
+        </View>
+        <View>
           {displayPlaceName( ) && (
             <Body3 className={( !latitude || !longitude ) && "color-warningRed"}>
               {displayPlaceName( )}
@@ -191,8 +200,9 @@ const EvidenceSection = ( ): Node => {
           <Body4 className={( !latitude || !longitude ) && "color-warningRed"}>
             {displayLocation( )}
           </Body4>
-        </Pressable>
-      </View>
+        </View>
+
+      </Pressable>
       <DatePicker currentObservation={currentObservation} />
     </View>
   );

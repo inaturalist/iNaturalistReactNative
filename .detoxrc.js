@@ -34,14 +34,14 @@ module.exports = {
       binaryPath: `android/app/build/outputs/apk/debug/${apkFilenamePrefix}-debug.apk`,
       testBinaryPath: `android/app/build/outputs/apk/androidTest/debug/${apkFilenamePrefix}-debug-androidTest.apk`,
       build:
-        "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
+        "(cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug)",
     },
     "android.release": {
       type: "android.apk",
       binaryPath: `android/app/build/outputs/apk/release/${apkFilenamePrefix}-release.apk`,
       testBinaryPath: `android/app/build/outputs/apk/androidTest/release/${apkFilenamePrefix}-release-androidTest.apk`,
       build:
-        "cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..",
+        "(cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release)",
     },
   },
   devices: {
