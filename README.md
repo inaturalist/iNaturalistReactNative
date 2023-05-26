@@ -1,4 +1,4 @@
-# iNaturalistReactNative
+# iNaturalistReactNative ![test workflow](https://github.com/inaturalist/iNaturalistReactNative/actions/workflows/test.yml/badge.svg) ![iOS e2e workflow](https://github.com/inaturalist/iNaturalistReactNative/actions/workflows/e2e_ios.yml/badge.svg) ![Android e2e workflow](https://github.com/inaturalist/iNaturalistReactNative/actions/workflows/e2e_android.yml/badge.svg)
 
 This is an official iNaturalist client written in React Native that will eventually replace our existing iOS and Android apps. Achieving parity with those established apps is taking some time, but we're getting there!
 
