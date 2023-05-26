@@ -175,40 +175,21 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   }, [appendObsPhotos] );
 
   const uploadValue = useMemo( ( ) => {
-    const updateObservationKey = ( key, value ) => {
-      const updatedObservations = observations.map( ( observation, index ) => {
-        if ( index === currentObservationIndex ) {
-          return {
-            ...( observation.toJSON
-              ? observation.toJSON( )
-              : observation ),
-            [key]: value
-          };
-        }
-        return observation;
-      } );
-      setObservations( updatedObservations );
-      setUnsavedChanges( true );
-    };
-
     const updateObservationKeys = keysAndValues => {
-      const updatedObservations = observations.map( ( observation, index ) => {
-        if ( index === currentObservationIndex ) {
-          const isSavedObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
-          const updatedObservation = {
-            ...( observation.toJSON
-              ? observation.toJSON( )
-              : observation ),
-            ...keysAndValues
-          };
-          if ( isSavedObservation && !unsavedChanges ) {
-            setUnsavedChanges( true );
-          }
-          return updatedObservation;
-        }
-        return observation;
-      } );
-      setObservations( updatedObservations );
+      const updatedObservations = observations;
+      const obsToUpdate = observations[currentObservationIndex];
+      const isSavedObservation = realm.objectForPrimaryKey( "Observation", obsToUpdate.uuid );
+      const updatedObservation = {
+        ...( obsToUpdate.toJSON
+          ? obsToUpdate.toJSON( )
+          : obsToUpdate ),
+        ...keysAndValues
+      };
+      if ( isSavedObservation && !unsavedChanges ) {
+        setUnsavedChanges( true );
+      }
+      updatedObservations[currentObservationIndex] = updatedObservation;
+      setObservations( [...updatedObservations] );
     };
 
     const setNextScreen = ( ) => {
@@ -372,7 +353,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       observations,
       setCurrentObservationIndex,
       setObservations,
-      updateObservationKey,
       updateObservationKeys,
       cameraPreviewUris,
       setCameraPreviewUris,
