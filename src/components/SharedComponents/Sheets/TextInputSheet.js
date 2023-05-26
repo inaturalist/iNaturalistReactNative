@@ -69,12 +69,11 @@ const TextInputSheet = ( {
             padding: 15,
             textAlignVertical: "top"
           }}
+          autoFocus
         />
         <Body3
           className="z-50 absolute bottom-20 right-5 p-5"
           onPress={( ) => {
-            // setInput( "" );
-            console.log( textInputRef?.current, "clear text input" );
             textInputRef?.current?.clear( );
           }}
         >
