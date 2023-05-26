@@ -22,7 +22,9 @@ const EvidenceButton = ( {
   return (
     <IconButton
       onPress={handlePress}
-      containerColor={disabled ? colors.lightGray : theme.colors.secondary}
+      containerColor={disabled
+        ? colors.lightGray
+        : theme.colors.secondary}
       iconColor={theme.colors.onSecondary}
       size={35}
       icon={icon}

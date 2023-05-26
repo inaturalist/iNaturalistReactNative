@@ -1,8 +1,11 @@
 import { render, screen } from "@testing-library/react-native";
-import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
+import PhotoCarousel from "components/Camera/PhotoCarousel";
 import React from "react";
 
 import factory from "../../../factory";
+import * as mockReactI18next from "../../../mocks/react-i18next";
+
+jest.mock( "react-i18next", ( ) => mockReactI18next );
 
 const mockPhotoUris = [
   factory( "LocalPhoto" ).url,
@@ -11,27 +14,10 @@ const mockPhotoUris = [
 ];
 
 describe( "PhotoCarousel", ( ) => {
-  test( "should render photo in 42px x 42px for sm-lg breakpoint", () => {
-    render(
-      <PhotoCarousel photoUris={mockPhotoUris} />
-    );
-
-    expect( screen.getAllByTestId( "PhotoCarousel.photo" ) ).toBeTruthy();
-    const photos = screen.getAllByTestId( "PhotoCarousel.photo" );
-    expect( photos[0] ).toHaveProperty( "props.style.0.3", { height: 42 } );
-    expect( photos[0] ).toHaveProperty( "props.style.0.2", { width: 42 } );
-  } );
-
-  test( "should render photo in 83px x 83px for xl-2xl breakpoint", () => {
-    render(
-      <PhotoCarousel photoUris={mockPhotoUris} isLargeScreen />
-    );
-
-    expect( screen.getAllByTestId( "PhotoCarousel.photo" ) ).toBeTruthy();
-    const photos = screen.getAllByTestId( "PhotoCarousel.photo" );
-    expect( photos[0] ).toHaveProperty( "props.style.0.3", { height: 83 } );
-    expect( photos[0] ).toHaveProperty( "props.style.0.2", { width: 83 } );
-  } );
+  // There were some tests of photo sizes responding to the isLargeScreen prop
+  // but somewhat dynamic tailwind classes don't seem to create style props
+  // in a test environment, so I'm not sure we can test those now ~~~kueda
+  // 20230518
   it( "renders correctly", async () => {
     render(
       <PhotoCarousel photoUris={mockPhotoUris} />

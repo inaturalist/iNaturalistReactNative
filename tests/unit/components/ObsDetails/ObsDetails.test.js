@@ -52,6 +52,13 @@ jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {
   } ) )
 } ) );
 
+jest.mock( "sharedHooks/useObservationsUpdates", () => ( {
+  __esModule: true,
+  default: jest.fn( () => ( {
+    refetch: jest.fn()
+  } ) )
+} ) );
+
 // TODO if/when we test mutation behavior, the mutation will need to be mocked
 // so it actually does something, or we need to take a different approach
 jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {

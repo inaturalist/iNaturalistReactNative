@@ -34,7 +34,9 @@ const RadioButtonSheet = ( {
       <View>
         <RadioButton.Android
           value={radioValues[radioRow]}
-          status={( checked === radioValues[radioRow].value ) ? "checked" : "unchecked"}
+          status={( checked === radioValues[radioRow].value )
+            ? "checked"
+            : "unchecked"}
           onPress={( ) => setChecked( radioValues[radioRow].value )}
         />
       </View>

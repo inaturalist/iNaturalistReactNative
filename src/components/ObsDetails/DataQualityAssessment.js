@@ -14,48 +14,56 @@ import {
 import QualityGradeStatus from "components/SharedComponents/QualityGradeStatus/QualityGradeStatus";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import { useEffect, useState } from "react";
+import {
+  useEffect, useState
+} from "react";
 import * as React from "react";
 import { useTheme } from "react-native-paper";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
 const titleOption = option => {
   switch ( option ) {
-  case "research":
-    return t( "Data-quality-assessment-title-research" );
-  case "needs_id":
-    return t( "Data-quality-assessment-title-needs-id" );
-  default:
-    return t( "Data-quality-assessment-title-casual" );
+    case "research":
+      return t( "Data-quality-assessment-title-research" );
+    case "needs_id":
+      return t( "Data-quality-assessment-title-needs-id" );
+    default:
+      return t( "Data-quality-assessment-title-casual" );
   }
 };
 
 const titleDescription = option => {
   switch ( option ) {
-  case "research":
-    return t( "Data-quality-assessment-description-research" );
-  case "needs_id":
-    return t( "Data-quality-assessment-description-needs-id" );
-  default:
-    return t( "Data-quality-assessment-description-casual" );
+    case "research":
+      return t( "Data-quality-assessment-description-research" );
+    case "needs_id":
+      return t( "Data-quality-assessment-description-needs-id" );
+    default:
+      return t( "Data-quality-assessment-description-casual" );
   }
 };
 
 const DataQualityAssessment = ( ): React.Node => {
   const { params } = useRoute( );
-  const { observationUUID } = params;
-  const { qualityGrade } = params;
+  const { observationUUID, qualityGrade } = params;
   const isResearchGrade = qualityGrade === "research";
   const theme = useTheme( );
   const sectionClass = "flex-row ml-[15px] my-[14px] space-x-[11px]";
   const voteClass = "flex-row mx-[15px] my-[7px] justify-between items-center";
   const listTextClass = "flex-row space-x-[11px]";
-  const [qualityMetrics, setQualityMetrics] = useState( [] );
+  const [qualityMetrics, setQualityMetrics] = useState( null );
 
-  const createFetchQualityMetricMutation = useAuthenticatedMutation(
+  const fetchMetricsParams = {
+    id: observationUUID,
+    fields: "metric,agree,user_id",
+    ttl: -1
+  };
+
+  const createFetchQualityMetricsMutation = useAuthenticatedMutation(
     ( PARAMS, optsWithAuth ) => fetchQualityMetrics( PARAMS, optsWithAuth ),
     {
       onSuccess: response => {
+        console.log( response );
         setQualityMetrics( response );
       },
       onError: error => {
@@ -63,18 +71,24 @@ const DataQualityAssessment = ( ): React.Node => {
       }
     }
   );
+
   useEffect( ( ) => {
-    if ( qualityMetrics.length === 0 ) {
-      createFetchQualityMetricMutation.mutate( { id: observationUUID, fields: "metric,agree" } );
+    if ( qualityMetrics === null ) {
+      createFetchQualityMetricsMutation.mutate( fetchMetricsParams );
     }
-    // createFetchQualityMetricMutation.mutate( { id: observationUUID, fields: "metric,agree" } );
-  }, [createFetchQualityMetricMutation, qualityMetrics, observationUUID] );
+    // render once on mount and reduces number of calls overall.
+    // Not sure what the better option is instead of disabling eslint
+    // since I cant use hooks in useEffect
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [] );
 
   const createQualityMetricMutation = useAuthenticatedMutation(
     ( PARAMS, optsWithAuth ) => setQualityMetric( PARAMS, optsWithAuth ),
     {
       onSuccess: response => {
         console.log( "success", response );
+        // fetch updated quality metrics with new vote
+        createFetchQualityMetricsMutation.mutate( fetchMetricsParams );
       },
       onError: error => {
         console.log( "error", error );
@@ -86,15 +100,19 @@ const DataQualityAssessment = ( ): React.Node => {
     const PARAMS = {
       id: observationUUID,
       metric,
-      agree: vote
+      agree: vote,
+      ttyl: -1
     };
     createQualityMetricMutation.mutate( PARAMS );
   };
 
   const checkTest = metric => {
-    const match = qualityMetrics.find( element => element.metric === metric );
-    if ( match && match.agree === true ) { return true; }
-    if ( match && match.agree === false ) { return false; }
+    if ( qualityMetrics ) {
+      const match = qualityMetrics.find( element => (
+        element.metric === metric && element.user_id ) );
+      if ( match && match.agree === true ) { return true; }
+      if ( match && match.agree === false ) { return false; }
+    }
     return null;
   };
 
@@ -109,9 +127,21 @@ const DataQualityAssessment = ( ): React.Node => {
     );
   };
 
+  const renderVoteCount = ( status, metric ) => {
+    if ( qualityMetrics ) {
+      const count = qualityMetrics.filter(
+        element => ( element.agree === status && element.metric === metric )
+      ).length;
+
+      return ( count > 0 ) && <Body3>{count}</Body3>;
+    }
+    return null;
+  };
+
+  // move to different component
   const renderVoteButtons = metric => {
     const ifAgree = checkTest( metric );
-    if ( ifAgree === null ) { // no vote made yet
+    if ( ifAgree === null ) { // no votes made yet
       return (
         <View className="flex-row">
           <INatIconButton
@@ -129,7 +159,7 @@ const DataQualityAssessment = ( ): React.Node => {
     }
 
     return (
-      <View className="flex-row">
+      <View className="flex-row items-center">
         {ifAgree // if vote true
           ? (
             <INatIconButton
@@ -145,6 +175,7 @@ const DataQualityAssessment = ( ): React.Node => {
               onPress={() => setMetricVote( metric, true )}
             />
           )}
+        {renderVoteCount( true, metric )}
         {!ifAgree // if vote false
           ? (
             <INatIconButton
@@ -160,6 +191,7 @@ const DataQualityAssessment = ( ): React.Node => {
               onPress={() => setMetricVote( metric, false )}
             />
           )}
+        {renderVoteCount( false, metric )}
       </View>
     );
   };
@@ -170,7 +202,8 @@ const DataQualityAssessment = ( ): React.Node => {
         <QualityGradeStatus
           qualityGrade={qualityGrade}
           color={( qualityGrade === "research" )
-            ? theme.colors.secondary : theme.colors.primary}
+            ? theme.colors.secondary
+            : theme.colors.primary}
         />
         <View className="flex-row space-x-[7px]">
           {isResearchGrade

@@ -7,6 +7,7 @@ import {
 import { render } from "@testing-library/react-native";
 import App from "components/App";
 import INatPaperProvider from "providers/INatPaperProvider";
+import ObsEditProvider from "providers/ObsEditProvider";
 import React from "react";
 
 const queryClient = new QueryClient( {
@@ -37,7 +38,7 @@ function renderComponent( component, update = null ) {
 }
 
 function renderAppWithComponent( component, update = null ) {
-  return renderComponent( <App>{ component }</App>, update );
+  return renderComponent( <ObsEditProvider><App>{ component }</App></ObsEditProvider>, update );
 }
 
 export {

@@ -77,7 +77,9 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
       accessibilityRole="link"
     >
       <Text
-        style={activeTab === TAB_TYPE_PROFILE ? textStyles.activeTab : null}
+        style={activeTab === TAB_TYPE_PROFILE
+          ? textStyles.activeTab
+          : null}
       >
         {t( "Profile" )}
       </Text>
@@ -87,7 +89,9 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
       accessibilityRole="link"
     >
       <Text
-        style={activeTab === TAB_TYPE_ACCOUNT ? textStyles.activeTab : null}
+        style={activeTab === TAB_TYPE_ACCOUNT
+          ? textStyles.activeTab
+          : null}
       >
         {t( "Account" )}
       </Text>
@@ -98,7 +102,9 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
     >
       <Text
         style={
-          activeTab === TAB_TYPE_NOTIFICATIONS ? textStyles.activeTab : null
+          activeTab === TAB_TYPE_NOTIFICATIONS
+            ? textStyles.activeTab
+            : null
         }
       >
         {t( "Notifications" )}
@@ -110,7 +116,9 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
     >
       <Text
         style={
-          activeTab === TAB_TYPE_RELATIONSHIPS ? textStyles.activeTab : null
+          activeTab === TAB_TYPE_RELATIONSHIPS
+            ? textStyles.activeTab
+            : null
         }
       >
         {t( "Relationships" )}
@@ -122,7 +130,9 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
     >
       <Text
         style={
-          activeTab === TAB_TYPE_CONTENT_DISPLAY ? textStyles.activeTab : null
+          activeTab === TAB_TYPE_CONTENT_DISPLAY
+            ? textStyles.activeTab
+            : null
         }
       >
         {t( "Content-Display" )}
@@ -134,7 +144,9 @@ const SettingsTabs = ( { activeTab, onTabPress } ): React.Node => (
     >
       <Text
         style={
-          activeTab === TAB_TYPE_APPLICATIONS ? textStyles.activeTab : null
+          activeTab === TAB_TYPE_APPLICATIONS
+            ? textStyles.activeTab
+            : null
         }
       >
         {t( "Applications" )}
@@ -204,43 +216,45 @@ const Settings = ( { children: _children }: Props ): Node => {
           disabled={isLoading || isSaving}
         />
         <SettingsTabs activeTab={activeTab} onTabPress={setActiveTab} />
-        {isLoading ? (
-          <ActivityIndicator size="large" />
-        ) : (
-          <ScrollView>
-            {activeTab === TAB_TYPE_PROFILE && (
-              <SettingsProfile
-                settings={settings}
-                onSettingsModified={setSettings}
-              />
-            )}
-            {activeTab === TAB_TYPE_ACCOUNT && (
-              <SettingsAccount
-                settings={settings}
-                onSettingsModified={setSettings}
-              />
-            )}
-            {activeTab === TAB_TYPE_NOTIFICATIONS && (
-              <SettingsNotifications
-                settings={settings}
-                onSettingsModified={setSettings}
-              />
-            )}
-            {activeTab === TAB_TYPE_CONTENT_DISPLAY && (
-              <SettingsContentDisplay
-                settings={settings}
-                onSettingsModified={setSettings}
-              />
-            )}
-            {activeTab === TAB_TYPE_APPLICATIONS && <SettingsApplications />}
-            {activeTab === TAB_TYPE_RELATIONSHIPS && (
-              <SettingsRelationships
-                settings={settings}
-                refetchUserMe={refetchUserMe}
-              />
-            )}
-          </ScrollView>
-        )}
+        {isLoading
+          ? (
+            <ActivityIndicator size="large" />
+          )
+          : (
+            <ScrollView>
+              {activeTab === TAB_TYPE_PROFILE && (
+                <SettingsProfile
+                  settings={settings}
+                  onSettingsModified={setSettings}
+                />
+              )}
+              {activeTab === TAB_TYPE_ACCOUNT && (
+                <SettingsAccount
+                  settings={settings}
+                  onSettingsModified={setSettings}
+                />
+              )}
+              {activeTab === TAB_TYPE_NOTIFICATIONS && (
+                <SettingsNotifications
+                  settings={settings}
+                  onSettingsModified={setSettings}
+                />
+              )}
+              {activeTab === TAB_TYPE_CONTENT_DISPLAY && (
+                <SettingsContentDisplay
+                  settings={settings}
+                  onSettingsModified={setSettings}
+                />
+              )}
+              {activeTab === TAB_TYPE_APPLICATIONS && <SettingsApplications />}
+              {activeTab === TAB_TYPE_RELATIONSHIPS && (
+                <SettingsRelationships
+                  settings={settings}
+                  refetchUserMe={refetchUserMe}
+                />
+              )}
+            </ScrollView>
+          )}
       </SafeAreaView>
     </ViewWrapper>
   );

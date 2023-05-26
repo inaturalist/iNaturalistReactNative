@@ -31,11 +31,13 @@ const Projects = (): Node => {
         type="none"
         testID="ProjectSearch.input"
       />
-      {view === "tabs" ? (
-        <ProjectTabs />
-      ) : (
-        <ProjectSearch q={q} clearSearch={clearSearch} />
-      )}
+      {view === "tabs"
+        ? (
+          <ProjectTabs />
+        )
+        : (
+          <ProjectSearch q={q} clearSearch={clearSearch} />
+        )}
     </ViewWrapper>
   );
 };

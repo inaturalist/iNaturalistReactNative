@@ -27,7 +27,9 @@ const GridItem = ( {
 }: Props ): Node => {
   const [showLoadingWheel, setShowLoadingWheel] = useState( false );
   const commonName = item.taxon && item.taxon.preferred_common_name;
-  const name = item.taxon ? item.taxon.name : "unknown";
+  const name = item.taxon
+    ? item.taxon.name
+    : "unknown";
   const isSpecies = item.taxon && item.taxon.rank === "species";
   const wasReviewed = reviewedIds.includes( item.id );
   // TODO: fix whatever funkiness is preventing realm mapTo from correctly

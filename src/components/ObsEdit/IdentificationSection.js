@@ -68,7 +68,9 @@ const IdentificationSection = ( ): Node => {
         {identification && displayIdentification( )}
         <View className="flex-row justify-start">
           <Button
-            level={identification ? "neutral" : "focus"}
+            level={identification
+              ? "neutral"
+              : "focus"}
             onPress={navToAddID}
             text={t( "ADD-AN-ID" )}
             className="rounded-full py-2"
@@ -77,7 +79,9 @@ const IdentificationSection = ( ): Node => {
               <INatIcon
                 name="sparkly-label"
                 size={24}
-                color={identification ? theme.colors.primary : theme.colors.onPrimary}
+                color={identification
+                  ? theme.colors.primary
+                  : theme.colors.onPrimary}
               />
             )}
           />

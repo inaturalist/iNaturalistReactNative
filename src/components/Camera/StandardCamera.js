@@ -14,12 +14,12 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useContext,
-  useEffect,
   useRef,
   useState
 } from "react";
 import {
   BackHandler,
+  Platform,
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -28,6 +28,11 @@ import {
   IconButton,
   Snackbar
 } from "react-native-paper";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming
+} from "react-native-reanimated";
 // Temporarily using a fork so this is to avoid that eslint error. Need to
 // remove if/when we return to the main repo
 import {
@@ -35,14 +40,16 @@ import {
   useCameraDevices
 } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
+import { BREAKPOINTS } from "sharedHelpers/breakpoint";
+import useDeviceOrientation, {
+  LANDSCAPE_LEFT,
+  LANDSCAPE_RIGHT,
+  PORTRAIT_UPSIDE_DOWN
+} from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
-import CameraView, {
-  LANDSCAPE_LEFT,
-  LANDSCAPE_RIGHT,
-  PORTRAIT
-} from "./CameraView";
+import CameraView from "./CameraView";
 import DiscardChangesSheet from "./DiscardChangesSheet";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
@@ -52,20 +59,6 @@ const isTablet = DeviceInfo.isTablet();
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const CAMERA_BUTTON_DIM = 40;
-
-function orientationLockerToCameraOrientation( orientation ) {
-  // react-native-orientation-locker and react-native-vision-camera  different
-  // string values for these constants, so we map everything to the
-  // react-native-vision-camera versions
-  switch ( orientation ) {
-  case "LANDSCAPE-RIGHT":
-    return LANDSCAPE_RIGHT;
-  case "LANDSCAPE-LEFT":
-    return LANDSCAPE_LEFT;
-  default:
-    return PORTRAIT;
-  }
-}
 
 // Empty space where a camera button should be so buttons don't jump around
 // when they appear or disappear
@@ -104,20 +97,46 @@ const StandardCamera = ( ): Node => {
   const devices = useCameraDevices( );
   const device = devices[cameraPosition];
   const hasFlash = device?.hasFlash;
-  const initialPhotoOptions = hasFlash ? { flash: "off" } : { };
+  const initialPhotoOptions = hasFlash
+    ? { flash: "off" }
+    : { };
   const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
   const [savingPhoto, setSavingPhoto] = useState( false );
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
-  const [deviceOrientation, setDeviceOrientation] = useState(
-    orientationLockerToCameraOrientation( Orientation.getInitialOrientation( ) )
-  );
+  const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
+  const { screenWidth } = useDeviceOrientation( );
 
   const photosTaken = allObsPhotoUris.length > 0;
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
-  const cameraOptionsClassName = [
+  const rotation = useSharedValue( 0 );
+  switch ( deviceOrientation ) {
+    case LANDSCAPE_LEFT:
+      rotation.value = -90;
+      break;
+    case LANDSCAPE_RIGHT:
+      rotation.value = 90;
+      break;
+    case PORTRAIT_UPSIDE_DOWN:
+      rotation.value = 180;
+      break;
+    default:
+      rotation.value = 0;
+  }
+  const rotatableAnimatedStyle = useAnimatedStyle(
+    () => ( {
+      transform: [
+        {
+          rotateZ: withTiming( `${-1 * ( rotation?.value || 0 )}deg` )
+        }
+      ]
+    } ),
+    [rotation.value]
+  );
+
+  const cameraOptionsClasses = [
     "bg-black/50",
     `h-[${CAMERA_BUTTON_DIM}px]`,
     "items-center",
@@ -126,7 +145,7 @@ const StandardCamera = ( ): Node => {
     `w-[${CAMERA_BUTTON_DIM}px]`
   ].join( " " );
 
-  const checkmarkClass = [
+  const checkmarkClasses = [
     "bg-inatGreen",
     "rounded-full",
     `h-[${CAMERA_BUTTON_DIM}px]`,
@@ -134,20 +153,6 @@ const StandardCamera = ( ): Node => {
     "justify-center",
     "items-center"
   ].join( " " );
-
-  // detect device rotation instead of using screen orientation change
-  const onDeviceRotation = useCallback(
-    orientation => {
-      // FACE-UP and FACE-DOWN could be portrait or landscape, I guess the
-      // device can't tell, so I'm just not changing the layout at all for
-      // those. ~~~ kueda 20230420
-      if ( orientation === "FACE-UP" || orientation === "FACE-DOWN" ) {
-        return;
-      }
-      setDeviceOrientation( orientationLockerToCameraOrientation( orientation ) );
-    },
-    [setDeviceOrientation]
-  );
 
   const handleBackButtonPress = useCallback( ( ) => {
     if ( cameraPreviewUris.length === 0 ) { return; }
@@ -171,14 +176,6 @@ const StandardCamera = ( ): Node => {
     }, [handleBackButtonPress] )
   );
 
-  useEffect( () => {
-    Orientation.addDeviceOrientationListener( onDeviceRotation );
-
-    return () => {
-      Orientation.removeOrientationListener( onDeviceRotation );
-    };
-  } );
-
   const takePhoto = async ( ) => {
     setSavingPhoto( true );
     if ( disallowAddingPhotos ) {
@@ -187,7 +184,24 @@ const StandardCamera = ( ): Node => {
       return;
     }
     const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-    const newPhoto = await Photo.new( cameraPhoto.path );
+    let photoRotation = 0;
+    switch ( cameraPhoto.metadata.Orientation ) {
+      case 1:
+        // Because the universe is a cruel, cruel place
+        if ( Platform.OS === "android" ) {
+          photoRotation = 180;
+        }
+        break;
+      case 6:
+        photoRotation = 90;
+        break;
+      case 8:
+        photoRotation = 270;
+        break;
+      default:
+        photoRotation = 0;
+    }
+    const newPhoto = await Photo.new( cameraPhoto.path, { rotation: photoRotation } );
     const uri = newPhoto.localFilePath;
 
     setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
@@ -200,12 +214,16 @@ const StandardCamera = ( ): Node => {
   const toggleFlash = ( ) => {
     setTakePhotoOptions( {
       ...takePhotoOptions,
-      flash: takePhotoOptions.flash === "on" ? "off" : "on"
+      flash: takePhotoOptions.flash === "on"
+        ? "off"
+        : "on"
     } );
   };
 
   const flipCamera = ( ) => {
-    const newPosition = cameraPosition === "back" ? "front" : "back";
+    const newPosition = cameraPosition === "back"
+      ? "front"
+      : "back";
     setCameraPosition( newPosition );
   };
 
@@ -225,91 +243,92 @@ const StandardCamera = ( ): Node => {
     let accessibilityLabel = "";
     let name = "";
     const flashClassName = isTablet
-      ? `m-[12.5px] ${cameraOptionsClassName}`
-      : `absolute bottom-[18px] left-[18px] ${cameraOptionsClassName}`;
+      ? "m-[12.5px]"
+      : "absolute bottom-[18px] left-[18px]";
     switch ( takePhotoOptions.flash ) {
-    case "on":
-      name = "flash-on";
-      testID = "flash-button-label-flash";
-      accessibilityLabel = t( "Flash-button-label-flash" );
-      break;
-    default: // default to off if no flash
-      name = "flash-off";
-      testID = "flash-button-label-flash-off";
-      accessibilityLabel = t( "Flash-button-label-flash-off" );
+      case "on":
+        name = "flash-on";
+        testID = "flash-button-label-flash";
+        accessibilityLabel = t( "Flash-button-label-flash" );
+        break;
+      default: // default to off if no flash
+        name = "flash-off";
+        testID = "flash-button-label-flash-off";
+        accessibilityLabel = t( "Flash-button-label-flash-off" );
     }
-    let rotateClass = "rotate-0";
-    if ( !isTablet && isLandscapeMode ) {
-      rotateClass = deviceOrientation === LANDSCAPE_LEFT ? "-rotate-90" : "rotate-90";
-    }
+
     return (
-      <IconButton
+      <Animated.View
+        style={!isTablet && rotatableAnimatedStyle}
         className={classnames(
           flashClassName,
-          rotateClass,
-          "m-0"
+          "m-0",
+          "border-0"
         )}
-        onPress={toggleFlash}
-        accessibilityRole="button"
-        testID={testID}
-        accessibilityLabel={accessibilityLabel}
-        accessibilityState={{ disabled: false }}
-        icon={name}
-        iconColor={colors.white}
-        containerColor="rgba(0, 0, 0, 0.5)"
-        size={20}
-      />
+      >
+        <IconButton
+          className={classnames( cameraOptionsClasses )}
+          onPress={toggleFlash}
+          accessibilityRole="button"
+          testID={testID}
+          accessibilityLabel={accessibilityLabel}
+          accessibilityState={{ disabled: false }}
+          icon={name}
+          iconColor={colors.white}
+          size={20}
+        />
+      </Animated.View>
     );
   };
 
-  const renderSmallScreenCameraOptions = () => (
+  const renderPhoneCameraOptions = () => (
     <>
       { renderFlashButton( ) }
-      <IconButton
+      <Animated.View
+        style={!isTablet && rotatableAnimatedStyle}
         className={classnames(
-          [`absolute bottom-[18px] right-[18px] ${cameraOptionsClassName}`],
-          !isTablet && isLandscapeMode ? "rotate-90" : "rotate-0"
+          "absolute",
+          "bottom-[18px]",
+          "right-[18px]"
         )}
-        onPress={flipCamera}
-        accessibilityRole="button"
-        accessibilityLabel={t( "Camera-button-label-switch-camera" )}
-        accessibilityState={{ disabled: false }}
-        icon="rotate"
-        iconColor={colors.white}
-        containerColor="rgba(0, 0, 0, 0.5)"
-        size={20}
-      />
+      >
+        <IconButton
+          className={classnames( cameraOptionsClasses )}
+          onPress={flipCamera}
+          accessibilityRole="button"
+          accessibilityLabel={t( "Camera-button-label-switch-camera" )}
+          accessibilityState={{ disabled: false }}
+          icon="rotate"
+          iconColor={colors.white}
+          size={20}
+        />
+      </Animated.View>
     </>
   );
 
-  const largeScreenCameraOptionsClasses = [
+  const tabletCameraOptionsClasses = [
     "absolute",
-    "bottom-0",
+    "h-[380px]",
     "items-center",
     "justify-center",
     "mr-5",
+    "mt-[-190px]",
     "pb-0",
     "right-0",
-    "top-0"
+    "top-[50%]"
   ];
 
-  const renderLargeScreenCameraOptions = ( ) => (
-    <View
-      className={classnames(
-        ...largeScreenCameraOptionsClasses,
-        "pb-0"
-      )}
-    >
+  const renderTabletCameraOptions = ( ) => (
+    <View className={classnames( tabletCameraOptionsClasses )}>
       { renderFlashButton( ) }
       <IconButton
-        className={classnames( cameraOptionsClassName, "m-0", "mt-[25px]" )}
+        className={classnames( cameraOptionsClasses, "m-0", "mt-[25px]" )}
         onPress={flipCamera}
         accessibilityRole="button"
         accessibilityLabel={t( "Camera-button-label-switch-camera" )}
         accessibilityState={{ disabled: false }}
         icon="rotate"
         iconColor={colors.white}
-        containerColor="rgba(0, 0, 0, 0.5)"
         size={20}
       />
       <Pressable
@@ -334,25 +353,29 @@ const StandardCamera = ( ): Node => {
         <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
       </Pressable>
       { photosTaken && (
-        <Pressable
-          className={classnames( checkmarkClass, "mb-[25px]" )}
-          onPress={navToObsEdit}
-          accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-          accessibilityRole="button"
-          accessibilityState={{ disabled: false }}
-          disabled={false}
+        <Animated.View
+          style={!isTablet && rotatableAnimatedStyle}
+          className={classnames( checkmarkClasses, "mb-[25px]" )}
         >
-          <INatIcon
-            name="checkmark"
-            color={colors.white}
-            size={20}
-            testID="camera-button-label-switch-camera"
-          />
-        </Pressable>
+          <Pressable
+            onPress={navToObsEdit}
+            accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+            accessibilityRole="button"
+            accessibilityState={{ disabled: false }}
+            disabled={false}
+          >
+            <INatIcon
+              name="checkmark"
+              color={colors.white}
+              size={20}
+              testID="camera-button-label-switch-camera"
+            />
+          </Pressable>
+        </Animated.View>
       ) }
       <View
         className={classnames(
-          cameraOptionsClassName,
+          cameraOptionsClasses,
           { "mb-[25px]": !photosTaken }
         )}
       >
@@ -373,23 +396,32 @@ const StandardCamera = ( ): Node => {
     <View className={`flex-1 bg-black ${flexDirection}`}>
       <StatusBar hidden />
       <PhotoPreview
-        photoUris={cameraPreviewUris}
-        setPhotoUris={setCameraPreviewUris}
+        // deviceOrientation={deviceOrientation}
+        rotation={rotation}
         savingPhoto={savingPhoto}
         isLandscapeMode={isLandscapeMode}
-        isLargeScreen={isTablet}
+        isLargeScreen={screenWidth > BREAKPOINTS.md}
+        isTablet={isTablet}
       />
       <View className="relative flex-1">
         {device && (
           <CameraView
             device={device}
             camera={camera}
+            orientation={
+              // In Android the camera won't set the orientation metadata
+              // correctly without this, but in iOS it won't display the
+              // preview correctly *with* it
+              Platform.OS === "android"
+                ? deviceOrientation
+                : null
+            }
           />
         )}
         <FadeInOutView savingPhoto={savingPhoto} />
         {isTablet
-          ? renderLargeScreenCameraOptions()
-          : renderSmallScreenCameraOptions()}
+          ? renderTabletCameraOptions()
+          : renderPhoneCameraOptions()}
       </View>
       { !isTablet && (
         <View className="bg-black h-32 flex-row justify-between items-center">
@@ -407,25 +439,25 @@ const StandardCamera = ( ): Node => {
           </Pressable>
           <View className="w-1/3 items-end mr-[20px]">
             {photosTaken && (
-              <Pressable
-                className={classnames( checkmarkClass, {
-                  "rotate-0": deviceOrientation === PORTRAIT,
-                  "rotate-90": deviceOrientation === LANDSCAPE_LEFT,
-                  "-rotate-90": deviceOrientation === LANDSCAPE_RIGHT
-                } )}
-                onPress={navToObsEdit}
-                accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-                accessibilityRole="button"
-                accessibilityState={{ disabled: false }}
-                disabled={false}
+              <Animated.View
+                style={!isTablet && rotatableAnimatedStyle}
+                className={classnames( checkmarkClasses )}
               >
-                <INatIcon
-                  name="checkmark"
-                  color={colors.white}
-                  size={20}
-                  testID="camera-button-label-switch-camera"
-                />
-              </Pressable>
+                <Pressable
+                  onPress={navToObsEdit}
+                  accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+                  accessibilityRole="button"
+                  accessibilityState={{ disabled: false }}
+                  disabled={false}
+                >
+                  <INatIcon
+                    name="checkmark"
+                    color={colors.white}
+                    size={20}
+                    testID="camera-button-label-switch-camera"
+                  />
+                </Pressable>
+              </Animated.View>
             )}
           </View>
         </View>

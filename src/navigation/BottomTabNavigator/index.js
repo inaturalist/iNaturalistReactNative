@@ -5,7 +5,12 @@ import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
 import LocationPicker from "components/LocationPicker/LocationPicker";
+import ForgotPassword from "components/LoginSignUp/ForgotPassword";
+import LicensePhotos from "components/LoginSignUp/LicensePhotos";
 import Login from "components/LoginSignUp/Login";
+import SignUp from "components/LoginSignUp/SignUp";
+import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation";
+import MediaViewer from "components/MediaViewer/MediaViewer";
 import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
@@ -34,10 +39,11 @@ import {
   showHeaderLeft
 } from "navigation/navigationOptions";
 import React from "react";
-import { PermissionsAndroid } from "react-native";
+import { PermissionsAndroid, Platform } from "react-native";
 import { PERMISSIONS } from "react-native-permissions";
 import User from "realmModels/User";
 import useUserMe from "sharedHooks/useUserMe";
+import colors from "styles/tailwindColors";
 
 import CustomTabBar from "./CustomTabBar";
 
@@ -47,48 +53,93 @@ const OBS_LIST_SCREEN_ID = "ObsList";
 const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
 
+const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
+const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
+
+const androidReadPermissions = usesAndroid13Permissions
+  ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+  : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+
 /* eslint-disable react/jsx-props-no-spreading */
 
 // The login component should be not preserve its state or effects after the
 // user navigates away from it. This will simply cause it to unmount when it
 // loses focus
-const MortalLogin = () => (
+const MortalLogin = ( ) => (
   <Mortal>
     <Login />
   </Mortal>
 );
 
-const StandardCameraWithPermission = () => (
-  <PermissionGate
-    permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-  >
+const StandardCameraWithPermission = ( ) => {
+  if ( usesAndroid10Permissions ) {
+    // WRITE_EXTERNAL_STORAGE is deprecated after Android 10
+    // https://developer.android.com/training/data-storage/shared/media#access-other-apps-files
+    return (
+      <PermissionGate
+        permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
+      >
+        <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
+          <StandardCamera />
+        </PermissionGate>
+      </PermissionGate>
+    );
+  }
+  return (
     <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
       <StandardCamera />
     </PermissionGate>
-  </PermissionGate>
-);
+  );
+};
 
-const SoundRecorderWithPermission = () => (
-  <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
-    <PermissionGate
-      permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-    >
+const SoundRecorderWithPermission = ( ) => {
+  if ( usesAndroid10Permissions ) {
+    return (
+      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
+        <PermissionGate
+          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
+        >
+          <PermissionGate
+            permission={androidReadPermissions}
+          >
+            <SoundRecorder />
+          </PermissionGate>
+        </PermissionGate>
+      </PermissionGate>
+    );
+  }
+  return (
+    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
       <PermissionGate
-        permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}
+        permission={androidReadPermissions}
       >
         <SoundRecorder />
       </PermissionGate>
     </PermissionGate>
-  </PermissionGate>
-);
+  );
+};
 
-const PhotoGalleryWithPermission = () => (
-  <PermissionGate
-    permission={PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE}
-  >
-    <PermissionGate
-      permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-    >
+const PhotoGalleryWithPermission = ( ) => {
+  if ( usesAndroid10Permissions ) {
+    return (
+      <PermissionGate
+        permission={androidReadPermissions}
+      >
+        <PermissionGate
+          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
+        >
+          <PermissionGate
+            permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
+          >
+            <PhotoGallery />
+          </PermissionGate>
+        </PermissionGate>
+      </PermissionGate>
+    );
+  }
+
+  return (
+    <PermissionGate permission={androidReadPermissions}>
       <PermissionGate
         permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
       >
@@ -102,10 +153,10 @@ const PhotoGalleryWithPermission = () => (
         </PermissionGate>
       </PermissionGate>
     </PermissionGate>
-  </PermissionGate>
-);
+  );
+};
 
-const ObsEditWithPermission = () => (
+const ObsEditWithPermission = ( ) => (
   <Mortal>
     <PermissionGate
       permission={PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION}
@@ -115,8 +166,8 @@ const ObsEditWithPermission = () => (
   </Mortal>
 );
 
-const BottomTabs = () => {
-  const { remoteUser: user } = useUserMe();
+const BottomTabs = ( ) => {
+  const { remoteUser: user } = useUserMe( );
 
   const renderTabBar = props => <CustomTabBar {...props} />;
 
@@ -218,8 +269,7 @@ const BottomTabs = () => {
           name="UI Library"
           component={UiLibrary}
           options={{
-            ...hideHeaderLeft,
-            ...showCustomHeader
+            ...hideHeaderLeft
           }}
         />
         <Tab.Screen
@@ -227,7 +277,7 @@ const BottomTabs = () => {
           component={ObsDetails}
           options={{
             headerTitle: t( "Observation" ),
-            ...hideHeader,
+            headerShown: false,
             unmountOnBlur: true
           }}
         />
@@ -289,7 +339,17 @@ const BottomTabs = () => {
           options={{
             ...blankHeaderTitle,
             ...hideHeaderLeft
-            // title: t( "EDIT-LOCATION" )
+          }}
+        />
+        <Tab.Screen
+          name="MediaViewer"
+          component={MediaViewer}
+          options={{
+            ...blankHeaderTitle,
+            headerStyle: {
+              backgroundColor: colors.black
+            },
+            ...hideHeaderLeft
           }}
         />
         <Tab.Screen
@@ -301,6 +361,10 @@ const BottomTabs = () => {
           }}
         />
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />
+        <Tab.Screen name="SignUp" component={SignUp} options={hideHeader} />
+        <Tab.Screen name="ForgotPassword" component={ForgotPassword} options={hideHeader} />
+        <Tab.Screen name="LicensePhotos" component={LicensePhotos} options={hideHeader} />
+        <Tab.Screen name="SignUpConfirmation" component={SignUpConfirmation} options={hideHeader} />
       </Tab.Navigator>
     </Mortal>
   );

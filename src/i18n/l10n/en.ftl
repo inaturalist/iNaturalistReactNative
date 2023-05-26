@@ -43,6 +43,10 @@ All-observations = All observations
 # license code
 all-rights-reserved = all rights reserved
 
+Almost-done = Almost done!
+
+Already-have-an-account = Already have an account? Log in
+
 Amphibians = Amphibians
 
 Arachnids = Arachnids
@@ -63,11 +67,26 @@ attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
 
 attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
 
+attribution-cc-by = some rights reserved (CC BY)
+
+attribution-cc-by-sa = some rights reserved (CC BY-SA)
+
+attribution-cc-by-nc = some rights reserved (CC BY-NC) 
+
+attribution-cc-by-nd = some rights reserved (CC BY-ND)
+
+attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
+
+attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
+
 app-authorized-on-date = { $appName } (authorized on: { $date })
 
 Applications = Applications
 
 Automatically-update-my-content-for-taxon-changes = Automatically update my content for taxon changes
+
+# Returns user to login screen
+BACK-TO-LOGIN = BACK TO LOGIN
 
 # Header for inserting user description in settings profile tab
 Bio = Bio
@@ -89,7 +108,7 @@ Cancel = Cancel
 Captive-Cultivated = Captive/Cultivated
 
 # After pressing the reset password button
-Check-your-email = Check your email! We've sent password reset instructions.
+CHECK-YOUR-EMAIL = CHECK YOUR EMAIL!
 
 Clear = Clear
 
@@ -105,6 +124,8 @@ Content-Display = Content & Display
 
 Copy-coordinates = Copy Coordinates
 
+Copy-coordinates = Copy Coordinates
+
 Couldnt-create-comment = Couldn't create comment
 
 Couldnt-create-identification = Couldn't create identification
@@ -112,6 +133,12 @@ Couldnt-create-identification = Couldn't create identification
 Couldnt-create-identification-error = Couldn't create identification { $error }
 
 Couldnt-create-identification-unknown-error = Couldn't create identification, Unknown Error.
+
+Couldnt-create-identification-error = Couldn't create identification { $error }
+
+Couldnt-create-identification-unknown-error = Couldn't create identification, Unknown Error.
+
+CREATE-AN-ACCOUNT = CREATE AN ACCOUNT
 
 Create-an-iNaturalist-account-to-save-your-observations = Create an iNaturalist account to save your observations and contribute them to science.
 
@@ -167,7 +194,17 @@ Data-quality-needs-id-description = This observation needs more identifications 
 Data-quality-casual-description = This observation needs more information verified to be considered verifiable
 
 
+DATA-QUALITY = DATA QUALITY
+
+Data-quality-research-description = This observation has enough identifications to be considered resarch grade
+
+Data-quality-needs-id-description = This observation needs more identifications to reach research grade
+
+Data-quality-casual-description = This observation needs more information verified to be considered verifiable
+
 Date = Date
+
+DATE = DATE
 
 DATE = DATE
 
@@ -215,7 +252,11 @@ Display-Name = Display Name
 
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 
+Dont-have-an-account = Don't have an account? Sign up
+
 EDIT-LOCATION = EDIT LOCATION
+
+EMAIL = EMAIL
 
 # Appears above the email text field
 Email = email
@@ -260,7 +301,7 @@ Flag-Item-Other-Input-Hint = Specify the reason you're flagging this item
 Following = Following
 
 # Forgot password link
-Forgot-Password = Forgot Password?
+Forgot-Password = Forgot Password
 
 Fungi = Fungi
 
@@ -291,6 +332,8 @@ IDENTIFICATION = IDENTIFICATION
 
 IDENTIFICATIONS = IDENTIFICATIONS
 
+If-an-account-with-that-email-exists = If an account with that email exists, we’ve sent password reset instructions to your email.
+
 # Shows the number of photos a user selected from the camera roll for upload
 Import-X-photos = Import {$count ->
     [one] 1 photo
@@ -312,6 +355,8 @@ Introduced = Introduced
 # Appears when the user enters invalid username/password
 Invalid-login = The username or password is incorrect
 
+Join-the-largest-community-of-naturalists = Join the largest community of naturalists in the world!
+
 # Header for joined projects
 Joined = Joined
 
@@ -331,11 +376,13 @@ Location = Location
 
 LOCATION = LOCATION
 
+LOCATION = LOCATION
+
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
 
-Log-in = Log in
+LOG-IN = LOG IN
 
 LOG-IN-TO-INATURALIST = LOG IN TO INATURALIST
 
@@ -344,9 +391,6 @@ Log-in-to-contribute-and-sync = Log in to contribute & sync
 Log-in-to-contribute-your-observations = Log in to contribute your observations to science!
 
 Logged-in-as = Logged in as: { $username }
-
-# Appears in the login screen
-Login-header = Log in to use iNaturalist
 
 # Appears in the login screen
 Login-sub-title = Document living things, identify organisms & contribute to science
@@ -422,8 +466,9 @@ none = none
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
 # license code
-no-rights-reserved-cc0 = no rights reserved (CC0)
+no-rights-reserved-cc0-cc0 = no rights reserved (CC0) (CC0)
 
+# Header for observation description on observation detail
 # Header for observation description on observation detail
 NOTES = NOTES
 
@@ -447,13 +492,15 @@ Offensive-Inappropriate-Examples = Misleading or illegal content, racial or ethn
 
 Open = Open
 
+OPEN-EMAIL = OPEN EMAIL
+
 # Picker prompt on observation edit
 Organism-is-captive = Organism is captive
 Organism-is-wild = Organism is wild
 
 OTHER-DATA = OTHER DATA
 
-Password = Password
+PASSWORD = PASSWORD
 
 Paused = Paused
 
@@ -488,6 +535,11 @@ PROJECTS = PROJECTS
 Projects = Projects
 
 Quality-Grade = Quality Grade
+
+# Quality grade options
+quality-grade-research = Research
+quality-grade-needs-id = Needs Id
+quality-grade-casual = Casual
 
 # Quality grade options
 quality-grade-research = Research
@@ -579,8 +631,6 @@ Recording-Sound = Recording Sound
 
 Relationships = Relationships
 
-Remove-Photo = Remove Photo
-
 Remove-Photos = Remove Photos
 
 Remove-Relationship = Remove Relationship
@@ -593,10 +643,10 @@ Research-Grade = Research Grade
 Reset = Reset
 
 # Appears in the reset password screen
-Reset-password-header = Let's reset your password
+Lets-reset-your-password = Let's reset your password
 
 # Reset password button
-Reset-Password = Reset Password
+RESET-PASSWORD = RESET PASSWORD
 
 Return-to-login = Return to login
 
@@ -613,6 +663,8 @@ SAVE-LOCATION = SAVE LOCATION
 SAVE-ALL = SAVE ALL
 
 SAVE-CHANGES = SAVE CHANGES
+
+Saved-Observation = Saved observation, in queue to upload
 
 Saved-Observation = Saved observation, in queue to upload
 
@@ -635,6 +687,8 @@ Separate-Photos = Separate Photos
 Settings = Settings
 
 SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
+
+Share-location = Share Location
 
 Share-location = Share Location
 
@@ -717,6 +771,9 @@ UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
 # Describes whether a user made this observation from web, iOS, or Android
 Uploaded-via-application = Uploaded via: { $application }
 
+# Describes whether a user made this observation from web, iOS, or Android
+Uploaded-via-application = Uploaded via: { $application }
+
 # Shows the number of observations a user is currently uploading on my observations page
 Uploading-X-Observations = Uploading {$count ->
     [one] 1 Observation
@@ -738,10 +795,16 @@ Upload-Complete = Upload Complete
 
 User = User
 
+USERNAME = USERNAME
+
 Username = Username
 
 # Appears above the text fields
-Username-or-Email = Username or Email
+USERNAME-OR-EMAIL = USERNAME OR EMAIL
+
+VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
+
+View-in-browser = View in Browser
 
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
 
@@ -789,9 +852,9 @@ X-of-Y = {$count ->
 }
 
 # Displays number of photos attached to an observation in the Media Viewer
-X-Photos = {$photoCount ->
-    [one] 1 Photo
-    *[other] {$photoCount} Photos
+X-PHOTOS = {$photoCount ->
+    [one] 1 PHOTO
+    *[other] {$photoCount} PHOTOS
 }
 
 # Displays number of photos and observations a user has selected from the camera roll
@@ -976,7 +1039,13 @@ date-format-short = M/d/yy
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+
+# Date formatting using date-fns
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-short = M/d/yy h:mm a
+
+# Date formatting using date-fns
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
@@ -984,11 +1053,12 @@ date-format-long = PP
 
 # Onboarding text on MyObservations: 0-10 observations
 As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
-# Onboarding text on MyObservations: 11-50 observations
+# Onboarding text on MyObservations: Onboarding text on MyObservations: 11-50 observations
 Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
-# Onboarding text on MyObservations: 51-100 observations
+# Onboarding text on MyObservations: Onboarding text on MyObservations: 51-100 observations
 You-can-search-observations-of-any-plant-or-animal = You can search observations of any plant or animal anywhere in the world with Explore!
 
+DISCARD-MEDIA = DISCARD MEDIA?
 DISCARD-PHOTOS = DISCARD PHOTOS?
 By-exiting-your-photos-will-not-be-saved = By exiting, your photos will not be saved.
 DISCARD = DISCARD
@@ -1004,17 +1074,17 @@ Failed-to-log-in = Failed to log in
 # Generic error message
 Something-went-wrong = Something went wrong.
 
-# Geoprivacy sheet descriptions
+#  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
 
-# Wild status sheet descriptions
+#  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn’t placed in this location by humans.
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 
-# Latitude, longitude, and accuracy on a single line
-Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
+# Latitude, longitude, and accuracy on a single line on a single line
+Lat-Lon-Acc = Lat: { NUMBER(NUMBER($latitude, maximumFractionDigits: 6), maximumFractionDigits: 6) }, Lon: { NUMBER(NUMBER($longitude, maximumFractionDigits: 6), maximumFractionDigits: 6) }, Acc: { $accuracy }
 
 # Missing evidence sheet
 Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
@@ -1064,3 +1134,18 @@ JOURNAL-POSTS-WITHOUT-NUMBER = {$count ->
     [one] JOURNAL POST
     *[other] JOURNAL POSTS
 }
+
+Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
+I-consent-to-allow-iNaturalist-to-store = I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)
+I-consent-to-allow-my-personal-information = I consent to allow my personal information to be transferred to the United States of America (required)
+I-agree-to-the-Terms-of-Use = I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (required).
+Learn-More = Learn More
+Terms-of-Use = Terms of Use
+Privacy-Policy = Privacy Policy
+Community-Guidelines = Community Guidelines
+Agree-to-all-of-the-above = Agree to all of the above
+
+Return-to-Login = Return to Login
+One-last-step = One last step!
+We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
+Please-click-the-link = Please click the link in the email within 60 minutes  to confirm your account

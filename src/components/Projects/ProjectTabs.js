@@ -77,7 +77,9 @@ const ProjectTabs = ( ): Node => {
   return (
     <>
       <Tabs tabs={tabs} activeId={currentTabId} />
-      { loading ? <Text>Loading</Text> : <ProjectList data={projects} />}
+      { loading
+        ? <Text>Loading</Text>
+        : <ProjectList data={projects} />}
     </>
   );
 };

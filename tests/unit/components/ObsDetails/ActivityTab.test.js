@@ -1,4 +1,6 @@
+import { screen } from "@testing-library/react-native";
 import ActivityTab from "components/ObsDetails/ActivityTab";
+import initI18next from "i18n/initI18next";
 import React from "react";
 
 import factory from "../../../factory";
@@ -41,7 +43,8 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
 } ) );
 
 describe( "ActivityTab", () => {
-  test( "renders", async ( ) => {
+  it( "renders", async ( ) => {
+    await initI18next( );
     renderComponent(
       <ActivityTab
         uuid={mockObservation.uuid}
@@ -54,5 +57,6 @@ describe( "ActivityTab", () => {
         showCommentBox={jest.fn()}
       />
     );
+    expect( await screen.findByTestId( "ActivityTab" ) ).toBeTruthy( );
   } );
 } );

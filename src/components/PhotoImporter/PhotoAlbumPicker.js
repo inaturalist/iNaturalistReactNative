@@ -25,7 +25,9 @@ type Props = {
 const PhotoAlbumPicker = ( { albums }: Props ): Node => {
   const { setAlbum } = useContext( ObsEditContext );
 
-  const changeAlbum = newAlbum => setAlbum( newAlbum !== "All" ? newAlbum : null );
+  const changeAlbum = newAlbum => setAlbum( newAlbum !== "All"
+    ? newAlbum
+    : null );
 
   if ( !albums ) {
     return null;

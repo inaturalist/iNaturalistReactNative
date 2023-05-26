@@ -10,7 +10,9 @@ class ObservationSound extends Realm.Object {
   }
 
   static async moveFromCacheToDocumentDirectory( soundUUID ) {
-    const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
+    const fileExt = Platform.OS === "android"
+      ? "mp4"
+      : "m4a";
     const soundPath = `${soundUUID}.${fileExt}`;
     // in theory, should be able to pass in a path to the audio recorder
     // but that's buggy so moving the file from cache to document directory instead
@@ -35,7 +37,9 @@ class ObservationSound extends Realm.Object {
   }
 
   static mapSoundForUpload( id, observationSound ) {
-    const fileExt = Platform.OS === "android" ? "mp4" : "m4a";
+    const fileExt = Platform.OS === "android"
+      ? "mp4"
+      : "m4a";
 
     return {
       "sound[uuid]": observationSound.uuid,

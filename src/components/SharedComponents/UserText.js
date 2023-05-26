@@ -1,5 +1,5 @@
 import linkifyHtml from "linkify-html";
-import { trim } from "lodash";
+import { isEqual, trim } from "lodash";
 import MarkdownIt from "markdown-it";
 import * as React from "react";
 import { Platform, useWindowDimensions } from "react-native";
@@ -112,7 +112,9 @@ const UserText = ( {
 
   html = linkifyHtml( html, LINKIFY_OPTIONS );
   const baseStyle = {
-    fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`,
+    fontFamily: `Whitney-Light${Platform.OS === "ios"
+      ? ""
+      : "-Pro"}`,
     fontSize: 16,
     lineHeight: 22,
     ...htmlStyle
@@ -130,4 +132,5 @@ const UserText = ( {
   );
 };
 
-export default UserText;
+// Memoize to prevent excessive re-renders when HTML component is in a list
+export default React.memo( UserText, ( oldProps, newProps ) => isEqual( oldProps, newProps ) );

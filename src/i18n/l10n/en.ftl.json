@@ -34,6 +34,8 @@
     "comment": "license code",
     "val": "all rights reserved"
   },
+  "Almost-done": "Almost done!",
+  "Already-have-an-account": "Already have an account? Log in",
   "Amphibians": "Amphibians",
   "Arachnids": "Arachnids",
   "Are-you-sure": "Are you sure?",
@@ -47,6 +49,10 @@
   "app-authorized-on-date": "{ $appName } (authorized on: { $date })",
   "Applications": "Applications",
   "Automatically-update-my-content-for-taxon-changes": "Automatically update my content for taxon changes",
+  "BACK-TO-LOGIN": {
+    "comment": "Returns user to login screen",
+    "val": "BACK TO LOGIN"
+  },
   "Bio": {
     "comment": "Header for inserting user description in settings profile tab",
     "val": "Bio"
@@ -59,9 +65,9 @@
   "CANCEL": "CANCEL",
   "Cancel": "Cancel",
   "Captive-Cultivated": "Captive/Cultivated",
-  "Check-your-email": {
+  "CHECK-YOUR-EMAIL": {
     "comment": "After pressing the reset password button",
-    "val": "Check your email! We've sent password reset instructions."
+    "val": "CHECK YOUR EMAIL!"
   },
   "Clear": "Clear",
   "Combine-Photos": "Combine Photos",
@@ -74,6 +80,7 @@
   "Couldnt-create-identification": "Couldn't create identification",
   "Couldnt-create-identification-error": "Couldn't create identification { $error }",
   "Couldnt-create-identification-unknown-error": "Couldn't create identification, Unknown Error.",
+  "CREATE-AN-ACCOUNT": "CREATE AN ACCOUNT",
   "Create-an-iNaturalist-account-to-save-your-observations": "Create an iNaturalist account to save your observations and contribute them to science.",
   "CREATE-YOUR-FIRST-OBSERVATION": "CREATE YOUR FIRST OBSERVATION",
   "DATA-QUALITY": "DATA QUALITY",
@@ -129,7 +136,9 @@
   "Display": "Display",
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
+  "Dont-have-an-account": "Don't have an account? Sign up",
   "EDIT-LOCATION": "EDIT LOCATION",
+  "EMAIL": "EMAIL",
   "Email": {
     "comment": "Appears above the email text field",
     "val": "email"
@@ -158,7 +167,7 @@
   "Following": "Following",
   "Forgot-Password": {
     "comment": "Forgot password link",
-    "val": "Forgot Password?"
+    "val": "Forgot Password"
   },
   "Fungi": "Fungi",
   "Geoprivacy": "Geoprivacy:",
@@ -180,6 +189,7 @@
   "High": "High",
   "IDENTIFICATION": "IDENTIFICATION",
   "IDENTIFICATIONS": "IDENTIFICATIONS",
+  "If-an-account-with-that-email-exists": "If an account with that email exists, we’ve sent password reset instructions to your email.",
   "Import-X-photos": {
     "comment": "Shows the number of photos a user selected from the camera roll for upload",
     "val": "Import { $count ->\n  [one] 1 photo\n *[other] { $count } photos\n}"
@@ -194,6 +204,7 @@
     "comment": "Appears when the user enters invalid username/password",
     "val": "The username or password is incorrect"
   },
+  "Join-the-largest-community-of-naturalists": "Join the largest community of naturalists in the world!",
   "Joined": {
     "comment": "Header for joined projects",
     "val": "Joined"
@@ -213,15 +224,11 @@
   "LOCATION": "LOCATION",
   "Location-accuracy-is-too-imprecise": "Location accuracy is too imprecise to help identifiers. Please zoom in.",
   "LOCATION-TOO-IMPRECISE": "LOCATION TOO IMPRECISE",
-  "Log-in": "Log in",
+  "LOG-IN": "LOG IN",
   "LOG-IN-TO-INATURALIST": "LOG IN TO INATURALIST",
   "Log-in-to-contribute-and-sync": "Log in to contribute & sync",
   "Log-in-to-contribute-your-observations": "Log in to contribute your observations to science!",
   "Logged-in-as": "Logged in as: { $username }",
-  "Login-header": {
-    "comment": "Appears in the login screen",
-    "val": "Log in to use iNaturalist"
-  },
   "Login-sub-title": {
     "comment": "Appears in the login screen",
     "val": "Document living things, identify organisms & contribute to science"
@@ -271,12 +278,12 @@
   "No-Location": "No Location",
   "none": "none",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
-  "no-rights-reserved-cc0": {
+  "no-rights-reserved-cc0-cc0": {
     "comment": "license code",
-    "val": "no rights reserved (CC0)"
+    "val": "no rights reserved (CC0) (CC0)"
   },
   "NOTES": {
-    "comment": "Header for observation description on observation detail",
+    "comment": "Header for observation description on observation detail\nHeader for observation description on observation detail",
     "val": "NOTES"
   },
   "Notifications": "Notifications",
@@ -289,13 +296,14 @@
   "Offensive-Inappropriate": "Offensive/Inappropriate",
   "Offensive-Inappropriate-Examples": "Misleading or illegal content, racial or ethnic slurs, etc. For more on our defintion of \"appropriate,\" see the FAQ.",
   "Open": "Open",
+  "OPEN-EMAIL": "OPEN EMAIL",
   "Organism-is-captive": {
     "comment": "Picker prompt on observation edit",
     "val": "Organism is captive"
   },
   "Organism-is-wild": "Organism is wild",
   "OTHER-DATA": "OTHER DATA",
-  "Password": "Password",
+  "PASSWORD": "PASSWORD",
   "Paused": "Paused",
   "Photo-Licensing": "Photo Licensing",
   "Photos-you-take-will-appear-here": "Photos you take will appear here",
@@ -369,7 +377,6 @@
   "Record-new-sound": "Record new sound",
   "Recording-Sound": "Recording Sound",
   "Relationships": "Relationships",
-  "Remove-Photo": "Remove Photo",
   "Remove-Photos": "Remove Photos",
   "Remove-Relationship": "Remove Relationship",
   "Reptiles": "Reptiles",
@@ -378,13 +385,13 @@
     "val": "Research Grade"
   },
   "Reset": "Reset",
-  "Reset-password-header": {
+  "Lets-reset-your-password": {
     "comment": "Appears in the reset password screen",
     "val": "Let's reset your password"
   },
-  "Reset-Password": {
+  "RESET-PASSWORD": {
     "comment": "Reset password button",
-    "val": "Reset Password"
+    "val": "RESET PASSWORD"
   },
   "Return-to-login": "Return to login",
   "Reviewed": "Reviewed",
@@ -475,10 +482,11 @@
   "Upload-Progress": "Upload { $uploadProgress } percent complete",
   "Upload-Complete": "Upload Complete",
   "User": "User { $userHandle }",
+  "USERNAME": "USERNAME",
   "Username": "Username",
-  "Username-or-Email": {
+  "USERNAME-OR-EMAIL": {
     "comment": "Appears above the text fields",
-    "val": "Username or Email"
+    "val": "USERNAME OR EMAIL"
   },
   "VIEW-DATA-QUALITY-ASSESSEMENT": "VIEW DATA QUALITY ASSESSEMENT",
   "View-in-browser": "View in Browser",
@@ -500,9 +508,9 @@
   "X-observations": "{ $count ->\n  [one] 1 observation\n *[other] { $count } observations\n}",
   "X-observations-uploaded": "{ $count ->\n  [one] 1 observation uploaded\n *[other] { $count } observations uploaded\n}",
   "X-of-Y": "{ $count ->\n  [one] 1\n *[other] { $count }\n} { $totalObservationCount ->\n  [one] of { $totalObservationCount }\n *[other] of { $totalObservationCount }\n}",
-  "X-Photos": {
+  "X-PHOTOS": {
     "comment": "Displays number of photos attached to an observation in the Media Viewer",
-    "val": "{ $photoCount ->\n  [one] 1 Photo\n *[other] { $photoCount } Photos\n}"
+    "val": "{ $photoCount ->\n  [one] 1 PHOTO\n *[other] { $photoCount } PHOTOS\n}"
   },
   "X-PHOTOS-X-OBSERVATIONS": {
     "comment": "Displays number of photos and observations a user has selected from the camera roll",
@@ -678,6 +686,7 @@
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
   },
+  "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
   "datetime-format-short": {
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy h:mm a"
@@ -691,13 +700,14 @@
     "val": "As you upload more observations, others in our community may be able to help you identify them!"
   },
   "Observations-you-upload-to-iNaturalist": {
-    "comment": "Onboarding text on MyObservations: 11-50 observations",
+    "comment": "Onboarding text on MyObservations: Onboarding text on MyObservations: 11-50 observations",
     "val": "Observations you upload to iNaturalist can be used by scientists and researchers worldwide."
   },
   "You-can-search-observations-of-any-plant-or-animal": {
-    "comment": "Onboarding text on MyObservations: 51-100 observations",
+    "comment": "Onboarding text on MyObservations: Onboarding text on MyObservations: 51-100 observations",
     "val": "You can search observations of any plant or animal anywhere in the world with Explore!"
   },
+  "DISCARD-MEDIA": "DISCARD MEDIA?",
   "DISCARD-PHOTOS": "DISCARD PHOTOS?",
   "By-exiting-your-photos-will-not-be-saved": "By exiting, your photos will not be saved.",
   "DISCARD": "DISCARD",
@@ -714,19 +724,19 @@
     "val": "Something went wrong."
   },
   "Anyone-using-iNaturalist-can-see": {
-    "comment": "Geoprivacy sheet descriptions",
+    "comment": " Geoprivacy sheet descriptions",
     "val": "Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research."
   },
   "The-exact-location-will-be-hidden": "The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).",
   "The-location-will-not-be-visible": "The location will not be visible to others, which means it may be difficult to identify.",
   "This-is-a-wild-organism": {
-    "comment": "Wild status sheet descriptions",
+    "comment": " Wild status sheet descriptions",
     "val": "This is a wild organism and wasn’t placed in this location by humans."
   },
   "This-organism-was-placed-by-humans": "This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.",
   "Lat-Lon-Acc": {
-    "comment": "Latitude, longitude, and accuracy on a single line",
-    "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Acc: { $accuracy }"
+    "comment": "Latitude, longitude, and accuracy on a single line on a single line",
+    "val": "Lat: { NUMBER($NUMBER, maximumFractionDigits: \"6\") }, Lon: { NUMBER($NUMBER, maximumFractionDigits: \"6\") }, Acc: { $accuracy }"
   },
   "Every-observation-needs": {
     "comment": "Missing evidence sheet",
@@ -765,5 +775,18 @@
   "OBSERVATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] OBSERVATION\n *[other] OBSERVATIONS\n}",
   "SPECIES-WITHOUT-NUMBER": "{ $count ->\n  [one] SPECIES\n *[other] SPECIES\n}",
   "IDENTIFICATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] IDENTIFICATION\n *[other] IDENTIFICATIONS\n}",
-  "JOURNAL-POSTS-WITHOUT-NUMBER": "{ $count ->\n  [one] JOURNAL POST\n *[other] JOURNAL POSTS\n}"
+  "JOURNAL-POSTS-WITHOUT-NUMBER": "{ $count ->\n  [one] JOURNAL POST\n *[other] JOURNAL POSTS\n}",
+  "Yes-license-my-photos": "Yes, license my photos, sounds, and observations so scientists can use my data (recommended)",
+  "I-consent-to-allow-iNaturalist-to-store": "I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)",
+  "I-consent-to-allow-my-personal-information": "I consent to allow my personal information to be transferred to the United States of America (required)",
+  "I-agree-to-the-Terms-of-Use": "I agree to the Terms of Use and Privacy Policy, and I have reviewed the Community Guidelines (required).",
+  "Learn-More": "Learn More",
+  "Terms-of-Use": "Terms of Use",
+  "Privacy-Policy": "Privacy Policy",
+  "Community-Guidelines": "Community Guidelines",
+  "Agree-to-all-of-the-above": "Agree to all of the above",
+  "Return-to-Login": "Return to Login",
+  "One-last-step": "One last step!",
+  "We-sent-a-confirmation-email": "We sent a confirmation email to the email you signed up with.",
+  "Please-click-the-link": "Please click the link in the email within 60 minutes  to confirm your account"
 }

@@ -367,40 +367,20 @@ const authenticateUser = async (
  *
  * @returns null if successful, otherwise an error string
  */
-const registerUser = async (
-  email: string,
-  username: string,
-  password: string,
-  license: void | string
-): any => {
+const registerUser = async ( user: Object ): any => {
   const locales = RNLocalize.getLocales();
-  // TODO - support for iNat site_id
-  const formData: {
-    username: string,
-    "user[email]": string,
-    "user[login]": string,
-    "user[password]": string,
-    "user[password_confirmation]": string,
-    "user[locale]": string,
-    "user[preferred_observation_license]"?: void | string,
-    "user[preferred_photo_license]"?: void | string,
-    "user[preferred_sound_license]"?: void | string,
-  } = {
-    username,
-    "user[email]": email,
-    "user[login]": username,
-    "user[password]": password,
-    "user[password_confirmation]": password,
-    "user[locale]": locales[0].languageCode
+  const formData = {
+    user: {
+      ...user,
+      password_confirmation: user.password,
+      locale: locales[0].languageCode
+    }
   };
-  if ( license ) {
-    formData["user[preferred_observation_license]"] = license;
-    formData["user[preferred_photo_license]"] = license;
-    formData["user[preferred_sound_license]"] = license;
-  }
 
   const api = createAPI();
   const response = await api.post( "/users.json", formData );
+
+  console.log( response, "response" );
 
   if ( !response.ok ) {
     console.error(
@@ -419,6 +399,34 @@ const isCurrentUser = async ( username: string ): Promise<boolean> => {
   return username === currentUsername;
 };
 
+/**
+ * Resets user password
+ *
+ * @param email
+ *
+ * @returns null if successful, otherwise an error string
+ */
+const resetPassword = async (
+  email: string
+): any => {
+  const formData = {
+    user: {
+      email
+    }
+  };
+
+  const api = createAPI( );
+  const response = await api.post( "/users/password", formData );
+
+  // this endpoint doesn't exactly exist,
+  // so it's expected to get a 404 Not found error back here
+  if ( !response.ok ) {
+    return response.data.error;
+  }
+
+  return null;
+};
+
 export {
   API_HOST,
   authenticateUser,
@@ -428,5 +436,6 @@ export {
   isCurrentUser,
   isLoggedIn,
   registerUser,
+  resetPassword,
   signOut
 };

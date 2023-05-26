@@ -11,12 +11,12 @@ import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
-import { formatDateStringFromTimestamp } from "sharedHelpers/dateAndTime";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
+import { log } from "../../react-native-logs.config";
 import { ObsEditContext, RealmContext } from "./contexts";
 
 const { useRealm } = RealmContext;
@@ -24,6 +24,8 @@ const { useRealm } = RealmContext;
 type Props = {
   children: any
 }
+
+const logger = log.extend( "ObsEditProvider" );
 
 const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
@@ -41,6 +43,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [uploadProgress, setUploadProgress] = useState( { } );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
+  const [mediaViewerUris, setMediaViewerUris] = useState( [] );
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -58,7 +62,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       increments => {
         setUploadProgress( currentProgress => {
           increments.forEach( ( [uuid, increment] ) => {
-            currentProgress[uuid] = currentProgress[uuid] ? currentProgress[uuid] : 0;
+            currentProgress[uuid] = currentProgress[uuid]
+              ? currentProgress[uuid]
+              : 0;
             currentProgress[uuid] += increment;
           } );
           return { ...currentProgress };
@@ -94,20 +100,17 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   ), [] );
 
   const createObservationFromGalleryPhoto = useCallback( async photo => {
-    const originalPhotoUri = photo?.image?.uri;
-    const firstPhotoExif = await parseExif( originalPhotoUri );
-    const exifDate = formatExifDateAsString( firstPhotoExif.date );
+    const firstPhotoExif = await parseExif( photo?.image?.uri );
+    logger.info( `EXIF: ${JSON.stringify( firstPhotoExif, null, 2 )}` );
 
-    const observedOnDate = exifDate || formatDateStringFromTimestamp( photo.timestamp );
-    const latitude = firstPhotoExif.latitude || photo?.location?.latitude;
-    const longitude = firstPhotoExif.longitude || photo?.location?.longitude;
+    const { latitude, longitude } = firstPhotoExif;
     const placeGuess = await fetchPlaceName( latitude, longitude );
 
     const newObservation = {
       latitude,
       longitude,
       place_guess: placeGuess,
-      observed_on_string: observedOnDate
+      observed_on_string: formatExifDateAsString( firstPhotoExif.date ) || null
     };
 
     if ( firstPhotoExif.positional_accuracy ) {
@@ -174,7 +177,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       const updatedObservations = observations.map( ( observation, index ) => {
         if ( index === currentObservationIndex ) {
           return {
-            ...( observation.toJSON ? observation.toJSON( ) : observation ),
+            ...( observation.toJSON
+              ? observation.toJSON( )
+              : observation ),
             [key]: value
           };
         }
@@ -189,7 +194,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         if ( index === currentObservationIndex ) {
           const isSavedObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
           const updatedObservation = {
-            ...( observation.toJSON ? observation.toJSON( ) : observation ),
+            ...( observation.toJSON
+              ? observation.toJSON( )
+              : observation ),
             ...keysAndValues
           };
           if ( isSavedObservation && !unsavedChanges ) {
@@ -263,18 +270,38 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const removePhotoFromList = ( list, photo ) => {
-      const updatedPhotoList = list;
-      const photoIndex = list.findIndex( p => p === photo );
-      updatedPhotoList.splice( photoIndex, 1 );
-      return updatedPhotoList || list;
+      const i = list.findIndex( p => p === photo );
+      list.splice( i, 1 );
+      return list;
     };
 
-    const deletePhotoFromObservation = async ( photoUriToDelete, photoUris, setPhotoUris ) => {
-      if ( !photoUriToDelete ) { return; }
-      const updatedPhotos = removePhotoFromList( photoUris, photoUriToDelete );
+    const deleteObservationPhoto = ( list, photo ) => {
+      const i = list.findIndex(
+        p => p.photo.localFilePath === photo || p.originalPhotoUri === photo
+      );
+      list.splice( i, 1 );
+      return list;
+    };
 
-      // spreading the array forces DeletePhotoDialog to rerender on each photo deletion
-      setPhotoUris( [...updatedPhotos] );
+    const deletePhotoFromObservation = async photoUriToDelete => {
+      // photos displayed in EvidenceList
+      const updatedObs = currentObservation;
+      if ( updatedObs ) {
+        const obsPhotos = Array.from( currentObservation?.observationPhotos );
+        if ( obsPhotos.length > 0 ) {
+          const updatedObsPhotos = deleteObservationPhoto( obsPhotos, photoUriToDelete );
+          updatedObs.observationPhotos = updatedObsPhotos;
+          setObservations( [updatedObs] );
+        }
+      }
+
+      // photos to show in media viewer
+      const newMediaViewerUris = removePhotoFromList( mediaViewerUris, photoUriToDelete );
+      setMediaViewerUris( [...newMediaViewerUris] );
+
+      // photos displayed in PhotoPreview
+      const newCameraPreviewUris = removePhotoFromList( cameraPreviewUris, photoUriToDelete );
+      setCameraPreviewUris( [...newCameraPreviewUris] );
 
       // when deleting photo from StandardCamera while adding new evidence, remember to clear
       // the list of new evidence to add
@@ -376,7 +403,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setPassesEvidenceTest,
       passesEvidenceTest,
       passesIdentificationTest,
-      setPassesIdentificationTest
+      setPassesIdentificationTest,
+      mediaViewerUris,
+      setMediaViewerUris,
+      selectedPhotoIndex,
+      setSelectedPhotoIndex
     };
   }, [
     currentObservation,
@@ -404,7 +435,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     currentUser,
     uploadProgress,
     passesEvidenceTest,
-    passesIdentificationTest
+    passesIdentificationTest,
+    mediaViewerUris,
+    selectedPhotoIndex
   ] );
 
   return (

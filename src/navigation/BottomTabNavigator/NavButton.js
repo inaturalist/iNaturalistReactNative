@@ -56,7 +56,9 @@ const NavButton = ( {
   return (
     <IconButton
       icon={icon}
-      iconColor={active ? colors.inatGreen : colors.darkGray}
+      iconColor={active
+        ? colors.inatGreen
+        : colors.darkGray}
       size={size}
       {...sharedProps}
     />

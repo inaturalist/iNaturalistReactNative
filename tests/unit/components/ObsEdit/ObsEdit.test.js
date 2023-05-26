@@ -27,7 +27,7 @@ const mockCurrentUser = factory( "LocalUser" );
 
 jest.mock( "components/ObsEdit/Header" );
 jest.mock( "components/ObsEdit/Sheets/DeleteObservationSheet" );
-jest.mock( "components/MediaViewer/MediaViewerModal" );
+jest.mock( "components/MediaViewer/MediaViewer" );
 jest.mock( "components/ObsEdit/EvidenceSection" );
 jest.mock( "components/ObsEdit/IdentificationSection" );
 jest.mock( "components/ObsEdit/OtherDataSection" );

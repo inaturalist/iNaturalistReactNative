@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import StandardCamera from "components/Camera/StandardCamera";
+import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
@@ -51,7 +52,12 @@ const renderStandardCamera = () => render(
 );
 
 describe( "StandardCamera", ( ) => {
-  test( "should not have accessibility errors", () => {
+  beforeAll( async ( ) => {
+    await initI18next();
+    jest.useFakeTimers( );
+  } );
+
+  it( "should not have accessibility errors", () => {
     const standardCamera = (
       <INatPaperProvider>
         <ObsEditContext.Provider value={mockValue}>
@@ -63,13 +69,13 @@ describe( "StandardCamera", ( ) => {
     expect( standardCamera ).toBeAccessible();
   } );
 
-  test( "should first render with flash disabled", async () => {
+  it( "should first render with flash disabled", async () => {
     renderStandardCamera();
 
     await screen.findByTestId( "flash-button-label-flash-off" );
   } );
 
-  test( "should change to flash enabled on button press", async () => {
+  it( "should change to flash enabled on button press", async () => {
     renderStandardCamera();
 
     const flashButton = await screen.findByTestId(

@@ -27,11 +27,8 @@ class Photo extends Realm.Object {
   static async resizeImageForUpload( pathOrUri, options = {} ) {
     const width = 2048;
     const { photoUploadPath } = Photo;
-    console.log( "Photo.resizeImageForUpload, photoUploadPath: ", photoUploadPath );
     await RNFS.mkdir( photoUploadPath );
-    console.log( "Photo.resizeImageForUpload, pathOrUri: ", pathOrUri );
     let outFilename = pathOrUri.split( "/" ).slice( -1 ).pop( );
-    console.log( "Photo.resizeImageForUpload, outFilename: ", outFilename );
 
     // If pathOrUri is an ios localIdentifier, make up a filename based on that
     const iosLocalIdentifierMatches = pathOrUri.match( /^ph:\/\/([^/]+)/ );
@@ -74,9 +71,7 @@ class Photo extends Realm.Object {
   }
 
   static async new( uri, resizeOptions = {} ) {
-    console.log( "Photo.new, uri: ", uri );
     const localFilePath = await Photo.resizeImageForUpload( uri, resizeOptions );
-    console.log( "Photo.new, localFilePath: ", localFilePath );
 
     return {
       _created_at: new Date( ),

@@ -1,8 +1,9 @@
 // @flow
 
+import INatIconButton from "components/SharedComponents/Buttons/INatIconButton";
 import type { Node } from "react";
 import React from "react";
-import { IconButton, Menu } from "react-native-paper";
+import { Menu } from "react-native-paper";
 import viewStyles from "styles/sharedComponents/kebabMenu";
 
 type Props = {
@@ -19,11 +20,13 @@ const KebabMenu = ( {
   const closeMenu = ( ) => setVisible( false );
 
   const anchorButton = (
-    <IconButton
+    <INatIconButton
       onPress={openMenu}
       icon="kebab-menu"
       testID="KebabMenu.Button"
-      size={large ? 26 : 15}
+      size={large
+        ? 26
+        : 15}
     />
   );
 

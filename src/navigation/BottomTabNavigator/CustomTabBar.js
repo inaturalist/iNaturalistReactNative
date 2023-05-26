@@ -69,8 +69,6 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
     </View>
   );
 
-  const footerHeight = Platform.OS === "ios" ? "h-[80px]" : "h-20";
-
   // Hacky solution but is required to show ContextHeader shadow in PhotoGallery
   // when PhotoGallery is hoisted to stack navigator, the header is rendered first
   // and zIndex/elevation is not respected, thus the child screen cuts off the shadow
@@ -84,6 +82,11 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
     || currentRoute.includes( "AddID" )
     || currentRoute.includes( "Login" )
     || currentRoute.includes( "LocationPicker" )
+    || currentRoute.includes( "MediaViewer" )
+    || currentRoute.includes( "ForgotPassword" )
+    || currentRoute.includes( "SignUp" )
+    || currentRoute.includes( "LicensePhotos" )
+    || currentRoute.includes( "SignUpConfirmation" )
   ) {
     return null;
   }
@@ -92,8 +95,7 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
     <View
       className={classNames(
         "flex flex-row absolute bottom-0 bg-white w-full justify-evenly items-center p-1 m-0",
-        { "pb-5": Platform.OS === "ios" },
-        footerHeight
+        { "pb-5": Platform.OS === "ios" }
       )}
       style={getShadowStyle( {
         shadowColor: colors.black,
@@ -101,8 +103,7 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
         offsetHeight: -3,
         shadowOpacity: 0.2,
         shadowRadius: 2,
-        radius: 5,
-        elevation: 5
+        elevation: 20
       } )}
       accessibilityRole="tablist"
     >

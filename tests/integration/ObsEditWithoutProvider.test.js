@@ -12,17 +12,6 @@ import { renderComponent } from "../helpers/render";
 
 jest.mock( "providers/ObsEditProvider" );
 
-// mock Portal with a Modal component inside of it (MediaViewer)
-jest.mock( "react-native-paper", () => {
-  const RealModule = jest.requireActual( "react-native-paper" );
-  const MockedModule = {
-    ...RealModule,
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    Portal: ( { children } ) => <>{children}</>
-  };
-  return MockedModule;
-} );
-
 const mockLocationName = "San Francisco, CA";
 
 jest.mock( "@react-navigation/native", () => {

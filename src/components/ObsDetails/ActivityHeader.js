@@ -40,7 +40,9 @@ const ActivityHeader = ( {
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const { user } = item;
-  const itemType = item.category ? "Identification" : "Comment";
+  const itemType = item.category
+    ? "Identification"
+    : "Comment";
 
   useEffect( ( ) => {
     const isActiveUserTheCurrentUser = async ( ) => {
@@ -96,7 +98,9 @@ const ActivityHeader = ( {
           )
           : (
             <Body4>
-              {item.category ? t( `Category-${item.category}` ) : ""}
+              {item.category
+                ? t( `Category-${item.category}` )
+                : ""}
             </Body4>
           )
       }
@@ -106,41 +110,46 @@ const ActivityHeader = ( {
                 {formatIdDate( item.updated_at || item.created_at, t )}
               </Body4>
             )}
-      {item.body && currentUser
-        ? (
-          <KebabMenu
-            visible={kebabMenuVisible}
-            setVisible={setKebabMenuVisible}
-          >
-            <Menu.Item
-              onPress={async ( ) => {
-                // first delete locally
-                Comment.deleteComment( item.uuid, realm );
-                // then delete remotely
-                deleteCommentMutation.mutate( item.uuid );
-                if ( toggleRefetch ) {
-                  toggleRefetch( );
-                }
-                setKebabMenuVisible( false );
-              }}
-              title={t( "Delete-comment" )}
-            />
-          </KebabMenu>
-        ) : (
-          <KebabMenu
-            visible={kebabMenuVisible}
-            setVisible={setKebabMenuVisible}
-          >
-            {!currentUser ? (
+      {
+        item.body && currentUser
+          ? (
+            <KebabMenu
+              visible={kebabMenuVisible}
+              setVisible={setKebabMenuVisible}
+            >
               <Menu.Item
-                onPress={() => setFlagModalVisible( true )}
-                title={t( "Flag" )}
-                testID="MenuItem.Flag"
+                onPress={async ( ) => {
+                  // first delete locally
+                  Comment.deleteComment( item.uuid, realm );
+                  // then delete remotely
+                  deleteCommentMutation.mutate( item.uuid );
+                  if ( toggleRefetch ) {
+                    toggleRefetch( );
+                  }
+                  setKebabMenuVisible( false );
+                }}
+                title={t( "Delete-comment" )}
               />
-            ) : undefined}
-            <View />
-          </KebabMenu>
-        )}
+            </KebabMenu>
+          )
+          : (
+            <KebabMenu
+              visible={kebabMenuVisible}
+              setVisible={setKebabMenuVisible}
+            >
+              {!currentUser
+                ? (
+                  <Menu.Item
+                    onPress={() => setFlagModalVisible( true )}
+                    title={t( "Flag" )}
+                    testID="MenuItem.Flag"
+                  />
+                )
+                : undefined}
+              <View />
+            </KebabMenu>
+          )
+      }
       {!currentUser
         && (
           <FlagItemModal

@@ -10,21 +10,24 @@ type Props = {
   className?: string,
   handleClose?: Function,
   black?: boolean,
-  size?: number
+  size?: number,
+  icon?: string
 }
 
 const CloseButton = ( {
-  className, handleClose, black, size
+  className, handleClose, black, size, icon
 }: Props ): Node => {
   const navigation = useNavigation( );
   const theme = useTheme( );
 
   return (
     <IconButton
-      icon="close"
+      icon={icon || "close"}
       size={size}
       className={className}
-      iconColor={black ? theme.colors.tertiary : theme.colors.background}
+      iconColor={black
+        ? theme.colors.tertiary
+        : theme.colors.background}
       onPress={( ) => {
         if ( handleClose ) {
           handleClose( );

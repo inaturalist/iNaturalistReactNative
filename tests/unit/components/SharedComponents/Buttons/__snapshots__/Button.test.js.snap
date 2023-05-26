@@ -36,27 +36,27 @@ exports[`Button focus should render correctly 1`] = `
     [
       [
         {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
+          "flexDirection": "row",
         },
         {
-          "flexDirection": "row",
+          "alignItems": "center",
         },
         {
           "justifyContent": "center",
         },
         {
-          "alignItems": "center",
+          "paddingLeft": 10,
+          "paddingRight": 10,
         },
         {
           "paddingBottom": 13,
           "paddingTop": 13,
         },
         {
-          "paddingLeft": 10,
-          "paddingRight": 10,
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
         },
         {
           "backgroundColor": "#74AC00",
@@ -90,10 +90,10 @@ exports[`Button focus should render correctly 1`] = `
           },
           [
             {
-              "color": "#ffffff",
+              "textAlign": "center",
             },
             {
-              "textAlign": "center",
+              "color": "#ffffff",
             },
           ],
         ],
@@ -142,33 +142,30 @@ exports[`Button focus when disabled should render correctly 1`] = `
     [
       [
         {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        {
           "flexDirection": "row",
-        },
-        {
-          "justifyContent": "center",
         },
         {
           "alignItems": "center",
         },
         {
-          "paddingBottom": 13,
-          "paddingTop": 13,
+          "justifyContent": "center",
         },
         {
           "paddingLeft": 10,
           "paddingRight": 10,
         },
         {
-          "backgroundColor": "#74AC00",
+          "paddingBottom": 13,
+          "paddingTop": 13,
         },
         {
-          "opacity": 0.5,
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "backgroundColor": "#B9D580",
         },
       ],
     ]
@@ -199,10 +196,10 @@ exports[`Button focus when disabled should render correctly 1`] = `
           },
           [
             {
-              "color": "#ffffff",
+              "textAlign": "center",
             },
             {
-              "textAlign": "center",
+              "color": "rgba(255, 255, 255, 0.5)",
             },
           ],
         ],
@@ -251,27 +248,27 @@ exports[`Button neutral should render correctly 1`] = `
     [
       [
         {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
+          "flexDirection": "row",
         },
         {
-          "flexDirection": "row",
+          "alignItems": "center",
         },
         {
           "justifyContent": "center",
         },
         {
-          "alignItems": "center",
+          "paddingLeft": 10,
+          "paddingRight": 10,
         },
         {
           "paddingBottom": 13,
           "paddingTop": 13,
         },
         {
-          "paddingLeft": 10,
-          "paddingRight": 10,
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
         },
         {
           "borderBottomWidth": 1,
@@ -280,16 +277,19 @@ exports[`Button neutral should render correctly 1`] = `
           "borderTopWidth": 1,
         },
         {
+          "borderBottomWidth": 3,
+          "borderLeftWidth": 3,
+          "borderRightWidth": 3,
+          "borderTopWidth": 3,
+        },
+        {
           "borderBottomColor": "#454545",
           "borderLeftColor": "#454545",
           "borderRightColor": "#454545",
           "borderTopColor": "#454545",
         },
         {
-          "borderBottomWidth": 3,
-          "borderLeftWidth": 3,
-          "borderRightWidth": 3,
-          "borderTopWidth": 3,
+          "backgroundColor": "#ffffff",
         },
       ],
     ]
@@ -320,10 +320,10 @@ exports[`Button neutral should render correctly 1`] = `
           },
           [
             {
-              "color": "#ffffff",
+              "textAlign": "center",
             },
             {
-              "textAlign": "center",
+              "color": "#ffffff",
             },
             {
               "color": "#454545",
@@ -375,27 +375,27 @@ exports[`Button neutral when disabled should render correctly 1`] = `
     [
       [
         {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
+          "flexDirection": "row",
         },
         {
-          "flexDirection": "row",
+          "alignItems": "center",
         },
         {
           "justifyContent": "center",
         },
         {
-          "alignItems": "center",
+          "paddingLeft": 10,
+          "paddingRight": 10,
         },
         {
           "paddingBottom": 13,
           "paddingTop": 13,
         },
         {
-          "paddingLeft": 10,
-          "paddingRight": 10,
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
         },
         {
           "borderBottomWidth": 1,
@@ -404,19 +404,16 @@ exports[`Button neutral when disabled should render correctly 1`] = `
           "borderTopWidth": 1,
         },
         {
-          "borderBottomColor": "#454545",
-          "borderLeftColor": "#454545",
-          "borderRightColor": "#454545",
-          "borderTopColor": "#454545",
-        },
-        {
           "borderBottomWidth": 3,
           "borderLeftWidth": 3,
           "borderRightWidth": 3,
           "borderTopWidth": 3,
         },
         {
-          "opacity": 0.5,
+          "borderBottomColor": "#828181",
+          "borderLeftColor": "#828181",
+          "borderRightColor": "#828181",
+          "borderTopColor": "#828181",
         },
       ],
     ]
@@ -447,13 +444,13 @@ exports[`Button neutral when disabled should render correctly 1`] = `
           },
           [
             {
-              "color": "#ffffff",
-            },
-            {
               "textAlign": "center",
             },
             {
-              "color": "#454545",
+              "color": "rgba(255, 255, 255, 0.5)",
+            },
+            {
+              "color": "#828181",
             },
           ],
         ],
@@ -502,27 +499,27 @@ exports[`Button primary should render correctly 1`] = `
     [
       [
         {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
+          "flexDirection": "row",
         },
         {
-          "flexDirection": "row",
+          "alignItems": "center",
         },
         {
           "justifyContent": "center",
         },
         {
-          "alignItems": "center",
+          "paddingLeft": 10,
+          "paddingRight": 10,
         },
         {
           "paddingBottom": 13,
           "paddingTop": 13,
         },
         {
-          "paddingLeft": 10,
-          "paddingRight": 10,
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
         },
         {
           "backgroundColor": "#454545",
@@ -556,10 +553,13 @@ exports[`Button primary should render correctly 1`] = `
           },
           [
             {
+              "textAlign": "center",
+            },
+            {
               "color": "#ffffff",
             },
             {
-              "textAlign": "center",
+              "color": "#ffffff",
             },
           ],
         ],
@@ -608,33 +608,30 @@ exports[`Button primary when disabled should render correctly 1`] = `
     [
       [
         {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        {
           "flexDirection": "row",
-        },
-        {
-          "justifyContent": "center",
         },
         {
           "alignItems": "center",
         },
         {
-          "paddingBottom": 13,
-          "paddingTop": 13,
+          "justifyContent": "center",
         },
         {
           "paddingLeft": 10,
           "paddingRight": 10,
         },
         {
-          "backgroundColor": "#454545",
+          "paddingBottom": 13,
+          "paddingTop": 13,
         },
         {
-          "opacity": 0.5,
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "backgroundColor": "#828181",
         },
       ],
     ]
@@ -665,10 +662,13 @@ exports[`Button primary when disabled should render correctly 1`] = `
           },
           [
             {
-              "color": "#ffffff",
+              "textAlign": "center",
             },
             {
-              "textAlign": "center",
+              "color": "rgba(255, 255, 255, 0.5)",
+            },
+            {
+              "color": "rgba(255, 255, 255, 0.5)",
             },
           ],
         ],
@@ -717,27 +717,27 @@ exports[`Button warning should render correctly 1`] = `
     [
       [
         {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
+          "flexDirection": "row",
         },
         {
-          "flexDirection": "row",
+          "alignItems": "center",
         },
         {
           "justifyContent": "center",
         },
         {
-          "alignItems": "center",
+          "paddingLeft": 10,
+          "paddingRight": 10,
         },
         {
           "paddingBottom": 13,
           "paddingTop": 13,
         },
         {
-          "paddingLeft": 10,
-          "paddingRight": 10,
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
         },
         {
           "backgroundColor": "#9B1010",
@@ -771,10 +771,10 @@ exports[`Button warning should render correctly 1`] = `
           },
           [
             {
-              "color": "#ffffff",
+              "textAlign": "center",
             },
             {
-              "textAlign": "center",
+              "color": "#ffffff",
             },
           ],
         ],
@@ -823,33 +823,30 @@ exports[`Button warning when disabled should render correctly 1`] = `
     [
       [
         {
-          "borderBottomLeftRadius": 8,
-          "borderBottomRightRadius": 8,
-          "borderTopLeftRadius": 8,
-          "borderTopRightRadius": 8,
-        },
-        {
           "flexDirection": "row",
-        },
-        {
-          "justifyContent": "center",
         },
         {
           "alignItems": "center",
         },
         {
-          "paddingBottom": 13,
-          "paddingTop": 13,
+          "justifyContent": "center",
         },
         {
           "paddingLeft": 10,
           "paddingRight": 10,
         },
         {
-          "backgroundColor": "#9B1010",
+          "paddingBottom": 13,
+          "paddingTop": 13,
         },
         {
-          "opacity": 0.5,
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+        },
+        {
+          "backgroundColor": "#b06365",
         },
       ],
     ]
@@ -880,10 +877,10 @@ exports[`Button warning when disabled should render correctly 1`] = `
           },
           [
             {
-              "color": "#ffffff",
+              "textAlign": "center",
             },
             {
-              "textAlign": "center",
+              "color": "rgba(255, 255, 255, 0.5)",
             },
           ],
         ],

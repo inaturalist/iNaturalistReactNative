@@ -38,24 +38,28 @@ const Item = React.memo(
     observation, layout, gridItemWidth, setShowLoginSheet
   } ) => (
     <MyObservationsPressable observation={observation}>
-      {layout === "grid" ? (
-        <ObsGridItem
-          observation={observation}
-          // 03022023 it seems like Flatlist is designed to work
-          // better with RN styles than with Tailwind classes
-          style={{
-            height: gridItemWidth,
-            width: gridItemWidth,
-            margin: GUTTER / 2
-          }}
-          setShowLoginSheet={setShowLoginSheet}
-        />
-      ) : (
-        <ObsListItem
-          observation={observation}
-          setShowLoginSheet={setShowLoginSheet}
-        />
-      )}
+      {
+        layout === "grid"
+          ? (
+            <ObsGridItem
+              observation={observation}
+              // 03022023 it seems like Flatlist is designed to work
+              // better with RN styles than with Tailwind classes
+              style={{
+                height: gridItemWidth,
+                width: gridItemWidth,
+                margin: GUTTER / 2
+              }}
+              setShowLoginSheet={setShowLoginSheet}
+            />
+          )
+          : (
+            <ObsListItem
+              observation={observation}
+              setShowLoginSheet={setShowLoginSheet}
+            />
+          )
+      }
     </MyObservationsPressable>
   )
 );
@@ -185,7 +189,11 @@ const MyObservations = ( {
               contentContainerStyle={contentContainerStyle}
               data={observations}
               key={numColumns}
-              estimatedItemSize={layout === "grid" ? 165 : 98}
+              estimatedItemSize={
+                layout === "grid"
+                  ? 165
+                  : 98
+              }
               testID="MyObservationsAnimatedList"
               numColumns={numColumns}
               horizontal={false}

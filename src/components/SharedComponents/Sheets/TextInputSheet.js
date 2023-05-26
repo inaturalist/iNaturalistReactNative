@@ -57,7 +57,9 @@ const TextInputSheet = ( {
           // eslint-disable-next-line react-native/no-inline-styles
           style={{
             height: 223,
-            fontFamily: `Whitney-Light${Platform.OS === "ios" ? "" : "-Pro"}`,
+            fontFamily: `Whitney-Light${Platform.OS === "ios"
+              ? ""
+              : "-Pro"}`,
             fontSize: 14,
             lineHeight: 17,
             color: theme.colors.primary,

@@ -16,7 +16,9 @@ const setPlaceName = ( results: Array<Object> ): string => {
   // this seems to be preferred formatting for iNat web
   // TODO: localize formatting
   // TODO: throttle requests on iOS so this doesn't error out in location picker
-  const appendName = name => ( placeName.length > 0 ? `, ${name}` : name );
+  const appendName = name => ( placeName.length > 0
+    ? `, ${name}`
+    : name );
 
   if ( streetName ) {
     placeName += streetName;

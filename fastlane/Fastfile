@@ -10,6 +10,20 @@ unless File.exist?( appfile_path )
   NO_APPFILE_ERROR
 end
 
+required_env_vars = [
+  "IOS_PROVISIONING_PROFILE_NAME",
+  "IOS_SHARE_BUNDLE_ID",
+  "IOS_SHARE_PROVISIONING_PROFILE_NAME"
+]
+required_env_vars.each do | env_var |
+  next unless ENV[env_var].to_s.size.zero?
+
+  UI.abort_with_message! <<~NO_ENV_ERROR.gsub( /\s+/, " " ).strip
+    ENV is missing #{env_var}. Add the value to .env or populate your ENV in
+    another way.
+  NO_ENV_ERROR
+end
+
 VERSION = File.open( "../package.json" ) {| f | JSON.parse( f.read )["version"] }
 editor_cmd = [
   ENV["EDITOR"],
@@ -26,6 +40,7 @@ editor_cmd_needs_to_wait = ( editor_cmd =~ /^code / || editor_cmd =~ /^subl / ) 
 EDITOR = editor_cmd_needs_to_wait ? "#{editor_cmd} -w" : editor_cmd
 XCODEPROJ = "ios/iNaturalistReactNative.xcodeproj"
 PACKAGE_ID = CredentialsManager::AppfileConfig.try_fetch_value( :package_name )
+IOS_BUNDLE_ID = CredentialsManager::AppfileConfig.try_fetch_value( :app_identifier )
 
 # https://github.com/fastlane/fastlane/issues/20741#issuecomment-1280687500
 # ENV["ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD"] = "true"
@@ -51,7 +66,7 @@ end
 
 def get_aab_path( build_number = nil )
   build_number ||= get_build_number( xcodeproj: XCODEPROJ )
-  File.join(
+  File.expand_path( File.join(
     __dir__,
     "..",
     "android",
@@ -61,12 +76,12 @@ def get_aab_path( build_number = nil )
     "bundle",
     "release",
     "#{PACKAGE_ID}-v#{VERSION}+#{build_number}-release.aab"
-  )
+  ) )
 end
 
 def get_apk_path( build_number = nil )
   build_number ||= get_build_number( xcodeproj: XCODEPROJ )
-  File.join(
+  File.expand_path( File.join(
     __dir__,
     "..",
     "android",
@@ -76,18 +91,18 @@ def get_apk_path( build_number = nil )
     "apk",
     "release",
     "#{PACKAGE_ID}-v#{VERSION}+#{build_number}-release.apk"
-  )
+  ) )
 end
 
 def get_ipa_path( build_number = nil )
   build_number ||= get_build_number( xcodeproj: XCODEPROJ )
-  File.join(
+  File.expand_path( File.join(
     __dir__,
     "..",
     "ios",
     "build",
     "#{PACKAGE_ID}-v#{VERSION}+#{build_number}.ipa"
-  )
+  ) )
 end
 
 lane :tag do
@@ -96,7 +111,7 @@ lane :tag do
   last_tag = last_git_tag
   # Increment the iOS build number
   increment_build_number( xcodeproj: XCODEPROJ )
-  increment_version_number( version_number: VERSION )
+  increment_version_number( xcodeproj: XCODEPROJ, version_number: VERSION )
   build_number = get_build_number( xcodeproj: XCODEPROJ )
   # set android/app/build.gradle versionCode to this build_number
   set_android_version_code( build_number )
@@ -232,7 +247,17 @@ platform :ios do
         workspace: File.join( "ios", "iNaturalistReactNative.xcworkspace" ),
         scheme: "iNaturalistReactNative",
         output_directory: File.dirname( ipa_path ),
-        output_name: File.basename( ipa_path )
+        output_name: File.basename( ipa_path ),
+        # I'd rather not do it this way, but so far I haven't figured out a
+        # way for fastlane to automatically detect both of the provisioning
+        # profiles we need
+        export_options: {
+          signingStyle: "manual",
+          provisioningProfiles: {
+            IOS_BUNDLE_ID => ENV["IOS_PROVISIONING_PROFILE_NAME"],
+            ENV["IOS_SHARE_BUNDLE_ID"] => ENV["IOS_SHARE_PROVISIONING_PROFILE_NAME"]
+          }
+        }
       )
     end
   end
@@ -286,8 +311,10 @@ lane :release do
 
   build
 
-  apk_path = get_apk_path( build_number )
-  unless File.exist?( apk_path )
+  apk_path = File.expand_path( get_apk_path( build_number ) )
+  if File.exist?( apk_path )
+    UI.success "Found APK at #{apk_path}"
+  else
     UI.abort_with_message! "Failed to find APK at #{apk_path}"
   end
 
