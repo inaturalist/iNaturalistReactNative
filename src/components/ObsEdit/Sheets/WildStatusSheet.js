@@ -9,22 +9,24 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   handleClose: Function,
+  selectedValue: any,
   updateCaptiveStatus: Function
 }
 
 const WildStatusSheet = ( {
   handleClose,
+  selectedValue,
   updateCaptiveStatus
 }: Props ): Node => {
   const { t } = useTranslation( );
 
   const radioValues = {
-    first: {
+    wild: {
       label: t( "Wild" ),
       text: t( "This-is-a-wild-organism" ),
       value: false
     },
-    second: {
+    captive: {
       label: t( "Captive-Cultivated" ),
       text: t( "This-organism-was-placed-by-humans" ),
       value: true
@@ -41,6 +43,7 @@ const WildStatusSheet = ( {
       }}
       handleClose={handleClose}
       radioValues={radioValues}
+      selectedValue={selectedValue}
     />
   );
 };

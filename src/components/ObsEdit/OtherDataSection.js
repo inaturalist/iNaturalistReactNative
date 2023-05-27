@@ -63,12 +63,14 @@ const OtherDataSection = ( ): Node => {
     <View className="ml-5 mt-6">
       {showGeoprivacySheet && (
         <GeoprivacySheet
+          selectedValue={currentObservation.geoprivacy}
           handleClose={( ) => setShowGeoprivacySheet( false )}
           updateGeoprivacyStatus={updateGeoprivacyStatus}
         />
       )}
       {showWildStatusSheet && (
         <WildStatusSheet
+          selectedValue={currentObservation.captive_flag}
           handleClose={( ) => setShowWildStatusSheet( false )}
           updateCaptiveStatus={updateCaptiveStatus}
         />
