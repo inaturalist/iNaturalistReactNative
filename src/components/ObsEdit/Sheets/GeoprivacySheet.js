@@ -9,27 +9,29 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   handleClose: Function,
+  selectedValue?: any,
   updateGeoprivacyStatus: Function
 }
 
 const GeoprivacySheet = ( {
   handleClose,
+  selectedValue,
   updateGeoprivacyStatus
 }: Props ): Node => {
   const { t } = useTranslation( );
 
   const radioValues = {
-    first: {
+    open: {
       label: t( "Open" ),
       text: t( "Anyone-using-iNaturalist-can-see" ),
       value: "open"
     },
-    second: {
+    obscured: {
       label: t( "Obscured" ),
       text: t( "The-exact-location-will-be-hidden" ),
       value: "obscured"
     },
-    third: {
+    private: {
       label: t( "Private" ),
       text: t( "The-location-will-not-be-visible" ),
       value: "private"
@@ -46,6 +48,7 @@ const GeoprivacySheet = ( {
       }}
       handleClose={handleClose}
       radioValues={radioValues}
+      selectedValue={selectedValue}
     />
   );
 };

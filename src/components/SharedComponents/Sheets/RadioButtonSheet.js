@@ -15,7 +15,8 @@ type Props = {
   confirm: Function,
   snapPoints: Array<number>,
   headerText: string,
-  radioValues: Object
+  radioValues: Object,
+  selectedValue?: any
 }
 
 const RadioButtonSheet = ( {
@@ -23,14 +24,15 @@ const RadioButtonSheet = ( {
   confirm,
   snapPoints,
   headerText,
-  radioValues
+  radioValues,
+  selectedValue = "none"
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
-  const [checked, setChecked] = useState( "none" );
+  const [checked, setChecked] = useState( selectedValue );
 
   const radioButtonRow = radioRow => (
-    <RadioButton.Group>
+    <RadioButton.Group key={`RadioButtonSheet-row-${radioRow}`}>
       <RadioButton.Item
         value={radioValues[radioRow]}
         status={( checked === radioValues[radioRow].value )
