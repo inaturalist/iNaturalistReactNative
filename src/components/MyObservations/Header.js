@@ -15,7 +15,7 @@ import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservatio
 import Onboarding from "./Onboarding";
 
 type Props = {
-  setLayout: Function;
+  toggleLayout: Function;
   layout: string,
   currentUser: ?Object,
   numObservations: number,
@@ -25,7 +25,7 @@ type Props = {
 }
 
 const Header = ( {
-  setLayout,
+  toggleLayout,
   layout,
   currentUser,
   numObservations,
@@ -115,7 +115,7 @@ const Header = ( {
       </View>
       {!hideToolbar && (
         <ToolbarContainer
-          setLayout={setLayout}
+          toggleLayout={toggleLayout}
           layout={layout}
           numUnuploadedObs={numUnuploadedObs}
           uploadStatus={uploadStatus}
