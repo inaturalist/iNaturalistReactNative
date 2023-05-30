@@ -37,7 +37,7 @@ const DiscardObservationSheet = ( {
       snapPoints={[178]}
       text={multipleObservations
         ? t( "By-exiting-your-observations-not-saved" )
-        : t( "By-exiting-changes-not-saved" )}
+        : t( "By-exiting-observation-not-saved" )}
       handleSecondButtonPress={( ) => {
         saveAllObservations( );
         setObservations( [] );
