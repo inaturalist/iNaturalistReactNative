@@ -80,6 +80,8 @@ Blocked-Users = Blocked Users
 
 By-exiting-changes-not-saved = By exiting, changes to your observation will not be saved.
 
+By-exiting-observation-not-saved = By exiting, your observation will not be saved.
+
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
 
 Camera-Roll = Camera Roll
@@ -163,6 +165,8 @@ DELETE-X-OBSERVATIONS = DELETE {$count ->
 Description-Tags = Description/Tags
 
 DISCARD-ALL = DISCARD ALL
+
+DISCARD-CHANGES = DISCARD CHANGES
 
 DISCARD-OBSERVATION = DISCARD OBSERVATION
 

@@ -58,9 +58,13 @@ const Header = ( ): Node => {
   ), [observations, t] );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    if ( params?.lastScreen === "GroupPhotos" ) {
+    const unsyncedObservation = !currentObservation._synced_at && currentObservation._created_at;
+    console.log( currentObservation, "current observation" );
+    if ( params?.lastScreen === "GroupPhotos"
+      || ( unsyncedObservation && !unsavedChanges )
+    ) {
       navigation.goBack( );
-    } else if ( !currentObservation._synced_at ) {
+    } else if ( !currentObservation._created_at ) {
       setDiscardObservationSheetVisible( true );
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
