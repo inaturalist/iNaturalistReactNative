@@ -23,7 +23,7 @@ type Props = {
   layout: "list" | "grid",
   observations: Array<Object>,
   onEndReached: Function,
-  setLayout: Function,
+  toggleLayout: Function,
   uploadStatus: Object,
   currentUser: ?Object,
   showLoginSheet: boolean,
@@ -69,7 +69,7 @@ const MyObservations = ( {
   layout,
   observations,
   onEndReached,
-  setLayout,
+  toggleLayout,
   uploadStatus,
   currentUser,
   showLoginSheet,
@@ -177,7 +177,7 @@ const MyObservations = ( {
             ]}
           >
             <Header
-              setLayout={setLayout}
+              toggleLayout={toggleLayout}
               layout={layout}
               currentUser={currentUser}
               numObservations={observations.length}

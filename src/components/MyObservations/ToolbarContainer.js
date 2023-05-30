@@ -16,7 +16,7 @@ import useTranslation from "sharedHooks/useTranslation";
 import Toolbar from "./Toolbar";
 
 type Props = {
-  setLayout: Function,
+  toggleLayout: Function,
   layout: string,
   numUnuploadedObs: number,
   uploadStatus: Object,
@@ -24,7 +24,7 @@ type Props = {
 }
 
 const ToolbarContainer = ( {
-  setLayout, layout, numUnuploadedObs,
+  toggleLayout, layout, numUnuploadedObs,
   uploadStatus,
   setShowLoginSheet
 }: Props ): Node => {
@@ -99,13 +99,6 @@ const ToolbarContainer = ( {
   };
 
   const navToExplore = ( ) => navigation.navigate( "Explore" );
-
-  const toggleLayout = ( ) => setLayout( currentView => {
-    if ( currentView === "list" ) {
-      return "grid";
-    }
-    return "list";
-  } );
 
   const statusText = getStatusText( );
 
