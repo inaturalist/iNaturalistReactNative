@@ -30,23 +30,25 @@ const PhotoSelector = ( {
     <Pressable
       accessibilityRole="button"
       onPress={( ) => scrollToIndex( index )}
+      className={classnames(
+        "overflow-hidden",
+        {
+          "border border-white border-[3px]": selectedPhotoIndex === index
+        },
+        {
+          "mt-[18px]": isLargeScreen && isLandscapeMode,
+          "mt-[47px]": isLargeScreen && !isLandscapeMode
+        },
+        {
+          [`${smallPhotoClass}`]: !isLargeScreen,
+          [`${largePhotoClass}`]: isLargeScreen
+        }
+      )}
     >
       <Image
         source={{ uri: item }}
         accessibilityIgnoresInvertColors
-        className={classnames(
-          {
-            "border border-white border-[3px]": selectedPhotoIndex === index
-          },
-          {
-            "mt-[18px]": isLargeScreen && isLandscapeMode,
-            "mt-[47px]": isLargeScreen && !isLandscapeMode
-          },
-          {
-            [`${smallPhotoClass}`]: !isLargeScreen,
-            [`${largePhotoClass}`]: isLargeScreen
-          }
-        )}
+        className="w-full h-full"
       />
     </Pressable>
   );
