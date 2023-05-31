@@ -44,6 +44,8 @@ Already-have-an-account = Already have an account? Log in
 
 Amphibians = Amphibians
 
+An-Internet-connection-is-required = An Internet connection is required to load more observations.
+
 Arachnids = Arachnids
 
 Are-you-sure = Are you sure?

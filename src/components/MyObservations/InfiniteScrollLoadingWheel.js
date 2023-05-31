@@ -1,10 +1,13 @@
 // @flow
 
 import classnames from "classnames";
+import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { ActivityIndicator } from "react-native";
+import useIsConnected from "sharedHooks/useIsConnected";
+import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   isFetchingNextPage?: boolean,
@@ -15,6 +18,9 @@ type Props = {
 const InfiniteScrollLoadingWheel = ( {
   isFetchingNextPage, currentUser, layout
 }: Props ): Node => {
+  const isOnline = useIsConnected( );
+  const { t } = useTranslation( );
+
   const loadingWheelClass = "h-64 py-16";
   if ( !isFetchingNextPage || !currentUser ) {
     return <View className={loadingWheelClass} />;
@@ -24,7 +30,13 @@ const InfiniteScrollLoadingWheel = ( {
       "border-t border-lightGray": layout === "list"
     } )}
     >
-      <ActivityIndicator />
+      {!isOnline
+        ? (
+          <Body3 className="text-center">
+            {t( "An-Internet-connection-is-required" )}
+          </Body3>
+        )
+        : <ActivityIndicator />}
     </View>
   );
 };
