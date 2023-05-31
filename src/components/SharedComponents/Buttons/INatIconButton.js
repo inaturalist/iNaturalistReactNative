@@ -1,6 +1,8 @@
 // @flow
 
+import classnames from "classnames";
 import { INatIcon } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Pressable } from "react-native";
@@ -16,6 +18,7 @@ type Props = {
   style?: Object,
   testID?: string,
   width?: number,
+  whiteBackground?: boolean
 }
 
 const MIN_ACCESSIBLE_DIM = 44;
@@ -32,7 +35,8 @@ const INatIconButton = ( {
   size,
   style,
   testID,
-  width
+  width,
+  whiteBackground
 }: Props ): Node => {
   const theme = useTheme( );
   // width || 0 is to placate flow. width should never be undefined because of
@@ -66,7 +70,12 @@ const INatIconButton = ( {
       ]}
       testID={testID}
     >
-      <INatIcon name={icon} size={size} color={color || theme.colors.primary} />
+      <View className={classnames( "rounded-full", {
+        "bg-white": whiteBackground
+      } )}
+      >
+        <INatIcon name={icon} size={size} color={color || theme.colors.primary} />
+      </View>
     </Pressable>
   );
 };
