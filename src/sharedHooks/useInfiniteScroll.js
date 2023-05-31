@@ -17,13 +17,14 @@ const useInfiniteScroll = ( ): Object => {
 
   const baseParams = {
     user_id: currentUser?.id,
-    per_page: 50,
+    per_page: 5,
+    // per_page: 50,
     fields: Observation.FIELDS
   };
 
   const {
     data: observations,
-    isLoading,
+    isFetchingNextPage,
     fetchNextPage
   } = useInfiniteQuery( {
     queryKey: ["searchObservations", baseParams],
@@ -62,10 +63,10 @@ const useInfiniteScroll = ( ): Object => {
 
   return currentUser
     ? {
-      isLoading,
+      isFetchingNextPage,
       fetchNextPage
     }
-    : { isLoading: false, fetchNextPage: noop };
+    : { isFetchingNextPage: false, fetchNextPage: noop };
 };
 
 export default useInfiniteScroll;

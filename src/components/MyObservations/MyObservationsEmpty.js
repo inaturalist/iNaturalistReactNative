@@ -12,15 +12,15 @@ import React, { useState } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  isLoading: ?boolean
+  isFetchingNextPage: ?boolean
 }
 
-const MyObservationsEmpty = ( { isLoading }: Props ): Node => {
+const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const [showModal, setShowModal] = useState( false );
 
-  if ( !isLoading ) {
+  if ( !isFetchingNextPage ) {
     return (
       <>
         <Modal

@@ -1,22 +1,29 @@
 // @flow
 
+import classnames from "classnames";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { ActivityIndicator } from "react-native";
 
 type Props = {
-  isLoading?: boolean,
-  currentUser: ?Object
+  isFetchingNextPage?: boolean,
+  currentUser: ?Object,
+  layout: string
 }
 
-const InfiniteScrollLoadingWheel = ( { isLoading, currentUser }: Props ): Node => {
-  const className = "h-64 border-t border-border py-16";
-  if ( !isLoading || !currentUser ) {
-    return <View className="h-64 py-16" />;
+const InfiniteScrollLoadingWheel = ( {
+  isFetchingNextPage, currentUser, layout
+}: Props ): Node => {
+  const loadingWheelClass = "h-64 py-16";
+  if ( !isFetchingNextPage || !currentUser ) {
+    return <View className={loadingWheelClass} />;
   }
   return (
-    <View className={className}>
+    <View className={classnames( loadingWheelClass, {
+      "border-t border-lightGray": layout === "list"
+    } )}
+    >
       <ActivityIndicator />
     </View>
   );

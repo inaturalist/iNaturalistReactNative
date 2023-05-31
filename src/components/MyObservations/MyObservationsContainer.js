@@ -16,7 +16,7 @@ const MyObservationsContainer = ( ): Node => {
   const uploadStatus = useUploadObservations( allObsToUpload );
   const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
-  const { isLoading, fetchNextPage } = useInfiniteScroll();
+  const { isFetchingNextPage, fetchNextPage } = useInfiniteScroll( );
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const currentUser = useCurrentUser();
   useObservationsUpdates( !!currentUser );
@@ -53,7 +53,7 @@ const MyObservationsContainer = ( ): Node => {
       observations={observations}
       layout={layout}
       toggleLayout={toggleLayout}
-      isLoading={isLoading}
+      isFetchingNextPage={isFetchingNextPage}
       uploadStatus={uploadStatus}
       currentUser={currentUser}
       showLoginSheet={showLoginSheet}
