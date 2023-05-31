@@ -1,12 +1,12 @@
 // @flow
 import { useRoute } from "@react-navigation/native";
-import { fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
+import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
+import DQAVoteButtons from "components/ObsDetails/DQAVoteButtons";
 import {
   Body3,
   Divider,
   Heading4,
   INatIcon,
-  INatIconButton,
   List1,
   List2,
   ScrollViewWrapper
@@ -52,6 +52,9 @@ const DataQualityAssessment = ( ): React.Node => {
   const voteClass = "flex-row mx-[15px] my-[7px] justify-between items-center";
   const listTextClass = "flex-row space-x-[11px]";
   const [qualityMetrics, setQualityMetrics] = useState( null );
+  const [loadingAgree, setLoadingAgree] = useState( false );
+  const [loadingDisagree, setLoadingDisagree] = useState( false );
+  const [loadingMetric, setLoadingMetric] = useState( null );
 
   const fetchMetricsParams = {
     id: observationUUID,
@@ -64,6 +67,13 @@ const DataQualityAssessment = ( ): React.Node => {
     {
       onSuccess: response => {
         console.log( response );
+        setLoadingMetric( null );
+        if ( loadingAgree ) {
+          setLoadingAgree( false );
+        }
+        if ( loadingDisagree ) {
+          setLoadingDisagree( false );
+        }
         setQualityMetrics( response );
       },
       onError: error => {
@@ -103,7 +113,42 @@ const DataQualityAssessment = ( ): React.Node => {
       agree: vote,
       ttyl: -1
     };
+    setLoadingMetric( metric );
+    if ( vote ) {
+      setLoadingAgree( true );
+    } else {
+      setLoadingDisagree( true );
+    }
     createQualityMetricMutation.mutate( PARAMS );
+  };
+
+  const createRemoveQualityMetricMutation = useAuthenticatedMutation(
+    ( PARAMS, optsWithAuth ) => deleteQualityMetric( PARAMS, optsWithAuth ),
+    {
+      onSuccess: response => {
+        console.log( "success", response );
+        // fetch updated quality metrics with new vote
+        createFetchQualityMetricsMutation.mutate( fetchMetricsParams );
+      },
+      onError: error => {
+        console.log( "error", error );
+      }
+    }
+  );
+
+  const removeMetricVote = ( metric, vote ) => {
+    const PARAMS = {
+      id: observationUUID,
+      metric,
+      ttyl: -1
+    };
+    setLoadingMetric( metric );
+    if ( vote ) {
+      setLoadingAgree( true );
+    } else {
+      setLoadingDisagree( true );
+    }
+    createRemoveQualityMetricMutation.mutate( PARAMS );
   };
 
   const checkTest = metric => {
@@ -124,75 +169,6 @@ const DataQualityAssessment = ( ): React.Node => {
     }
     return (
       <INatIcon name="triangle-exclamation" size={19} color={theme.colors.error} />
-    );
-  };
-
-  const renderVoteCount = ( status, metric ) => {
-    if ( qualityMetrics ) {
-      const count = qualityMetrics.filter(
-        element => ( element.agree === status && element.metric === metric )
-      ).length;
-
-      return ( count > 0 ) && <Body3>{count}</Body3>;
-    }
-    return null;
-  };
-
-  // move to different component
-  const renderVoteButtons = metric => {
-    const ifAgree = checkTest( metric );
-    if ( ifAgree === null ) { // no votes made yet
-      return (
-        <View className="flex-row">
-          <INatIconButton
-            icon="arrow-up-bold-circle-outline"
-            size={33}
-            onPress={() => setMetricVote( metric, true )}
-          />
-          <INatIconButton
-            icon="arrow-down-bold-circle-outline"
-            size={33}
-            onPress={() => setMetricVote( metric, false )}
-          />
-        </View>
-      );
-    }
-
-    return (
-      <View className="flex-row items-center">
-        {ifAgree // if vote true
-          ? (
-            <INatIconButton
-              icon="arrow-up-bold-circle"
-              size={33}
-              color={theme.colors.secondary}
-            />
-          )
-          : (
-            <INatIconButton
-              icon="arrow-up-bold-circle-outline"
-              size={33}
-              onPress={() => setMetricVote( metric, true )}
-            />
-          )}
-        {renderVoteCount( true, metric )}
-        {!ifAgree // if vote false
-          ? (
-            <INatIconButton
-              icon="arrow-down-bold-circle"
-              size={33}
-              color={theme.colors.error}
-            />
-          )
-          : (
-            <INatIconButton
-              icon="arrow-down-bold-circle-outline"
-              size={33}
-              onPress={() => setMetricVote( metric, false )}
-            />
-          )}
-        {renderVoteCount( false, metric )}
-      </View>
     );
   };
 
@@ -259,7 +235,15 @@ const DataQualityAssessment = ( ): React.Node => {
           {renderIndicator( "date" )}
           <Body3>{t( "Data-quality-assessment-date-is-accurate" )}</Body3>
         </View>
-        {renderVoteButtons( "date" )}
+        <DQAVoteButtons
+          metric="date"
+          qualityMetrics={qualityMetrics}
+          setVote={setMetricVote}
+          loadingAgree={loadingAgree}
+          loadingDisagree={loadingDisagree}
+          loadingMetric={loadingMetric}
+          removeVote={removeMetricVote}
+        />
       </View>
       <Divider />
 
@@ -268,7 +252,15 @@ const DataQualityAssessment = ( ): React.Node => {
           {renderIndicator( "location" )}
           <Body3>{t( "Data-quality-assessment-location-is-accurate" )}</Body3>
         </View>
-        {renderVoteButtons( "location" )}
+        <DQAVoteButtons
+          metric="location"
+          qualityMetrics={qualityMetrics}
+          setVote={setMetricVote}
+          loadingAgree={loadingAgree}
+          loadingDisagree={loadingDisagree}
+          loadingMetric={loadingMetric}
+          removeVote={removeMetricVote}
+        />
       </View>
       <Divider />
 
@@ -277,7 +269,15 @@ const DataQualityAssessment = ( ): React.Node => {
           {renderIndicator( "wild" )}
           <Body3>{t( "Data-quality-assessment-organism-is-wild" )}</Body3>
         </View>
-        {renderVoteButtons( "wild" )}
+        <DQAVoteButtons
+          metric="wild"
+          qualityMetrics={qualityMetrics}
+          setVote={setMetricVote}
+          loadingAgree={loadingAgree}
+          loadingDisagree={loadingDisagree}
+          loadingMetric={loadingMetric}
+          removeVote={removeMetricVote}
+        />
       </View>
       <Divider />
 
@@ -286,7 +286,15 @@ const DataQualityAssessment = ( ): React.Node => {
           {renderIndicator( "evidence" )}
           <Body3>{t( "Data-quality-assessment-evidence-of-organism" )}</Body3>
         </View>
-        {renderVoteButtons( "evidence" )}
+        <DQAVoteButtons
+          metric="evidence"
+          qualityMetrics={qualityMetrics}
+          setVote={setMetricVote}
+          loadingAgree={loadingAgree}
+          loadingDisagree={loadingDisagree}
+          loadingMetric={loadingMetric}
+          removeVote={removeMetricVote}
+        />
       </View>
       <Divider />
 
@@ -295,7 +303,15 @@ const DataQualityAssessment = ( ): React.Node => {
           {renderIndicator( "recent" )}
           <Body3>{t( "Data-quality-assessment-recent-evidence-of-organism" )}</Body3>
         </View>
-        {renderVoteButtons( "recent" )}
+        <DQAVoteButtons
+          metric="recent"
+          qualityMetrics={qualityMetrics}
+          setVote={setMetricVote}
+          loadingAgree={loadingAgree}
+          loadingDisagree={loadingDisagree}
+          loadingMetric={loadingMetric}
+          removeVote={removeMetricVote}
+        />
       </View>
       <Divider />
 
@@ -305,7 +321,15 @@ const DataQualityAssessment = ( ): React.Node => {
             "Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence"
           )}
         </Body3>
-        {renderVoteButtons( "needs_id" )}
+        <DQAVoteButtons
+          metric="needs_id"
+          qualityMetrics={qualityMetrics}
+          setVote={setMetricVote}
+          loadingAgree={loadingAgree}
+          loadingDisagree={loadingDisagree}
+          loadingMetric={loadingMetric}
+          removeVote={removeMetricVote}
+        />
       </View>
 
       <View className="mt-[30px] mx-[15px] space-y-[11px]">

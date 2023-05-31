@@ -21,7 +21,7 @@ const deleteQualityMetric = async (
   opts: Object = {}
 ): Promise<any> => {
   try {
-    const { results } = await inatjs.observations.setQualityMetric( params, opts );
+    const { results } = await inatjs.observations.deleteQualityMetric( params, opts );
     return results;
   } catch ( e ) {
     return handleError( e );
