@@ -467,7 +467,7 @@ const StandardCamera = ( ): Node => {
               </Animated.View>
             )
             : (
-              <View className={classnames( checkmarkClasses, "bg-black" )} />
+              <View className={classnames( checkmarkClasses, "w-1/3 h-full bg-black" )} />
             )}
         </View>
       )}
