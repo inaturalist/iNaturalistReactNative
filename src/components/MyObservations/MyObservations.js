@@ -4,8 +4,9 @@ import Header from "components/MyObservations/Header";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useRef, useState } from "react";
-import { Animated, Dimensions, Platform } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, Platform } from "react-native";
+import { useDeviceOrientation } from "sharedHooks";
 
 import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
 import LoginSheet from "./LoginSheet";
@@ -30,7 +31,6 @@ type Props = {
   setShowLoginSheet: Function,
 };
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get( "screen" );
 const GUTTER = 15;
 
 const Item = React.memo(
@@ -75,7 +75,12 @@ const MyObservations = ( {
   showLoginSheet,
   setShowLoginSheet
 }: Props ): Node => {
+  const {
+    screenWidth, screenHeight, isLandscapeMode
+  } = useDeviceOrientation( );
   const [heightAboveToolbar, setHeightAboveToolbar] = useState( 0 );
+  const [numColumns, setNumColumns] = useState( 0 );
+  const [gridItemWidth, setGridItemWidth] = useState( 0 );
 
   const [hideHeaderCard, setHideHeaderCard] = useState( false );
   const [yValue, setYValue] = useState( 0 );
@@ -94,18 +99,31 @@ const MyObservations = ( {
     outputRange: [0, -heightAboveToolbar]
   } );
 
-  const setNumColumns = ( ) => {
-    if ( layout === "list" || screenWidth <= 320 ) { return 1; }
-    if ( screenWidth <= 744 ) { return 2; }
-    if ( screenWidth <= 1024 ) { return 4; }
-    return 6;
-  };
+  useEffect( ( ) => {
+    const calculateGridItemWidth = columns => {
+      const combinedGutter = ( columns + 1 ) * GUTTER;
+      return Math.round(
+        ( screenWidth - combinedGutter ) / columns
+      );
+    };
 
-  const numColumns = setNumColumns( );
-  const combinedGutterWidth = ( numColumns + 1 ) * GUTTER;
-  const gridItemWidth = Math.round(
-    ( screenWidth - combinedGutterWidth ) / numColumns
-  );
+    const calculateNumColumns = ( ) => {
+      if ( layout === "list" || screenWidth <= 320 ) {
+        return 1;
+      }
+      if ( isLandscapeMode ) {
+        return 6;
+      }
+      if ( screenWidth <= 744 ) {
+        return 2;
+      }
+      return 4;
+    };
+
+    const columns = calculateNumColumns( );
+    setGridItemWidth( calculateGridItemWidth( columns ) );
+    setNumColumns( columns );
+  }, [layout, screenWidth, isLandscapeMode] );
 
   const handleScroll = Animated.event(
     [
@@ -165,6 +183,8 @@ const MyObservations = ( {
       paddingRight: GUTTER / 2
     };
 
+  if ( numColumns === 0 ) { return null; }
+
   return (
     <>
       <ViewWrapper>
@@ -189,7 +209,7 @@ const MyObservations = ( {
             <AnimatedFlashList
               contentContainerStyle={contentContainerStyle}
               data={observations}
-              key={numColumns}
+              key={`${numColumns}-${screenWidth}-${screenHeight}`}
               estimatedItemSize={
                 layout === "grid"
                   ? 165
