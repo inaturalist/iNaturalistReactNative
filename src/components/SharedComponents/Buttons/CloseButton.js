@@ -41,6 +41,7 @@ const CloseButton = ( {
       }}
       accessibilityRole="button"
       accessibilityLabel={t( "Close" )}
+      accessibilityState={{ disabled: false }}
       accessibilityHint={t( "Returns-to-previous-screen" )}
       disabled={false}
       width={width}
