@@ -3,11 +3,13 @@
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useInfiniteScroll from "sharedHooks/useInfiniteScroll";
-import useLocalObservations from "sharedHooks/useLocalObservations";
-import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
-import useUploadObservations from "sharedHooks/useUploadObservations";
+import {
+  useCurrentUser,
+  useInfiniteScroll,
+  useLocalObservations,
+  useObservationsUpdates,
+  useUploadObservations
+} from "sharedHooks";
 
 import MyObservations from "./MyObservations";
 

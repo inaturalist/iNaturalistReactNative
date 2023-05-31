@@ -6,8 +6,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { ActivityIndicator } from "react-native";
-import useIsConnected from "sharedHooks/useIsConnected";
-import useTranslation from "sharedHooks/useTranslation";
+import { useIsConnected, useTranslation } from "sharedHooks";
 
 type Props = {
   isFetchingNextPage?: boolean,

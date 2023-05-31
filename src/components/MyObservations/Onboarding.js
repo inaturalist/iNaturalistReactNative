@@ -2,8 +2,7 @@
 import { Body3 } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useTranslation from "sharedHooks/useTranslation";
+import { useCurrentUser, useTranslation } from "sharedHooks";
 
 const Onboarding = ( ): Node => {
   const currentUser = useCurrentUser( );
