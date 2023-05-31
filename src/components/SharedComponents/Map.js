@@ -1,8 +1,9 @@
 // @flow
 
+import { Image } from "components/styledComponents";
 import * as React from "react";
 import { View } from "react-native";
-import MapView, { UrlTile } from "react-native-maps";
+import MapView, { Marker, UrlTile } from "react-native-maps";
 import useUserLocation from "sharedHooks/useUserLocation";
 import { viewStyles } from "styles/sharedComponents/map";
 
@@ -12,13 +13,15 @@ type Props = {
   mapHeight?: number,
   taxonId?: number,
   updateCoords?: Function,
-  region?: Object
+  region?: Object,
+  showMarker?: boolean
 }
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( {
-  obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region
+  obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region,
+  showMarker
 }: Props ): React.Node => {
   const { latLng: viewerLatLng } = useUserLocation( { skipPlaceGuess: true } );
 
@@ -59,6 +62,20 @@ const Map = ( {
             tileSize={512}
             urlTemplate={urlTemplate}
           />
+        )}
+        {showMarker && (
+          <Marker
+            coordinate={{
+              latitude: obsLatitude,
+              longitude: obsLongitude
+            }}
+          >
+            <Image
+              source={require( "images/location_indicator.png" )}
+              className="w-[25px] h-[32px]"
+              accessibilityIgnoresInvertColors
+            />
+          </Marker>
         )}
       </MapView>
     </View>
