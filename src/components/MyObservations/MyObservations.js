@@ -19,7 +19,7 @@ const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 const { diffClamp } = Animated;
 
 type Props = {
-  isLoading?: boolean,
+  isFetchingNextPage?: boolean,
   layout: "list" | "grid",
   observations: Array<Object>,
   onEndReached: Function,
@@ -65,7 +65,7 @@ const Item = React.memo(
 );
 
 const MyObservations = ( {
-  isLoading,
+  isFetchingNextPage,
   layout,
   observations,
   onEndReached,
@@ -141,7 +141,7 @@ const MyObservations = ( {
     />
   );
 
-  const renderEmptyList = ( ) => <MyObservationsEmpty isLoading={isLoading} />;
+  const renderEmptyList = ( ) => <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />;
 
   const renderItemSeparator = ( ) => {
     if ( layout === "grid" ) {
@@ -152,8 +152,9 @@ const MyObservations = ( {
 
   const renderFooter = ( ) => (
     <InfiniteScrollLoadingWheel
-      isLoading={isLoading}
+      isFetchingNextPage={isFetchingNextPage}
       currentUser={currentUser}
+      layout={layout}
     />
   );
 
@@ -208,7 +209,7 @@ const MyObservations = ( {
               onEndReached={onEndReached}
               onEndReachedThreshold={0.2}
               onScroll={handleScroll}
-              refreshing={isLoading}
+              refreshing={isFetchingNextPage}
               accessible
             />
           </Animated.View>

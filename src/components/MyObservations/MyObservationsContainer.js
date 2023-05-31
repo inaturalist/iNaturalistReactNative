@@ -3,11 +3,13 @@
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useInfiniteScroll from "sharedHooks/useInfiniteScroll";
-import useLocalObservations from "sharedHooks/useLocalObservations";
-import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
-import useUploadObservations from "sharedHooks/useUploadObservations";
+import {
+  useCurrentUser,
+  useInfiniteScroll,
+  useLocalObservations,
+  useObservationsUpdates,
+  useUploadObservations
+} from "sharedHooks";
 
 import MyObservations from "./MyObservations";
 
@@ -16,7 +18,7 @@ const MyObservationsContainer = ( ): Node => {
   const uploadStatus = useUploadObservations( allObsToUpload );
   const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
-  const { isLoading, fetchNextPage } = useInfiniteScroll();
+  const { isFetchingNextPage, fetchNextPage } = useInfiniteScroll( );
   const [showLoginSheet, setShowLoginSheet] = useState( false );
   const currentUser = useCurrentUser();
   useObservationsUpdates( !!currentUser );
@@ -53,7 +55,7 @@ const MyObservationsContainer = ( ): Node => {
       observations={observations}
       layout={layout}
       toggleLayout={toggleLayout}
-      isLoading={isLoading}
+      isFetchingNextPage={isFetchingNextPage}
       uploadStatus={uploadStatus}
       currentUser={currentUser}
       showLoginSheet={showLoginSheet}

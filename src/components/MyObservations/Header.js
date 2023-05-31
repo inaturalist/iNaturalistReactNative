@@ -7,10 +7,10 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { IconButton, useTheme } from "react-native-paper";
 import User from "realmModels/User";
-import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
+import { useNumUnuploadedObservations, useTranslation } from "sharedHooks";
 
 import Onboarding from "./Onboarding";
 

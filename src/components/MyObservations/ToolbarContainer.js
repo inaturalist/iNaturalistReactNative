@@ -8,10 +8,12 @@ import {
   Alert,
   Dimensions, PixelRatio
 } from "react-native";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useIsConnected from "sharedHooks/useIsConnected";
-import useObservationsUpdates from "sharedHooks/useObservationsUpdates";
-import useTranslation from "sharedHooks/useTranslation";
+import {
+  useCurrentUser,
+  useIsConnected,
+  useObservationsUpdates,
+  useTranslation
+} from "sharedHooks";
 
 import Toolbar from "./Toolbar";
 

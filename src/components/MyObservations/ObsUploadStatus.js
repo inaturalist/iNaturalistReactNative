@@ -6,9 +6,11 @@ import type { Node } from "react";
 import React, { useContext } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "react-native-paper";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useIsConnected from "sharedHooks/useIsConnected";
-import useTranslation from "sharedHooks/useTranslation";
+import {
+  useCurrentUser,
+  useIsConnected,
+  useTranslation
+} from "sharedHooks";
 
 import ObsStatus from "./ObsStatus";
 

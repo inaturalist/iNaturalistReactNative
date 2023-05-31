@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { Node } from "react";
 import React from "react";
 import { Pressable } from "react-native";
-import useTranslation from "sharedHooks/useTranslation";
+import { useTranslation } from "sharedHooks";
 
 type Props = {
   observation: Object,
