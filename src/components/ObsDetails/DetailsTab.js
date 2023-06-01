@@ -138,7 +138,14 @@ const DetailsTab = ( { observation }: Props ): Node => {
             text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )}
             onPress={() => navigation.navigate( "DataQualityAssessment", {
               qualityGrade,
-              observationUUID
+              observationUUID,
+              observation: {
+                date: observation._created_at,
+                location: [observation.latitude, observation.longitude],
+                evidence: [observation.observationPhotos, observation.observationSounds],
+                taxon: observation.taxon,
+                identifications: observation.identifications
+              }
             } )}
           />
         </View>

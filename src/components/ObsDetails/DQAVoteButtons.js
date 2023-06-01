@@ -19,7 +19,7 @@ type Props = {
 }
 
 // rename
-const checkTest = ( metric, qualityMetrics ) => {
+const checkUserVote = ( metric, qualityMetrics ) => {
   if ( qualityMetrics ) {
     const match = qualityMetrics.find( element => (
       element.metric === metric && element.user_id ) );
@@ -44,18 +44,9 @@ const DQAVoteButtons = ( {
   metric, qualityMetrics, loadingAgree, loadingDisagree, loadingMetric, setVote, removeVote
 }: Props ): React.Node => {
   const theme = useTheme( );
-  const ifAgree = checkTest( metric, qualityMetrics );
+  const ifAgree = checkUserVote( metric, qualityMetrics );
 
   const renderAgree = () => {
-    if ( ifAgree === null ) {
-      return (
-        <INatIconButton
-          icon="arrow-up-bold-circle-outline"
-          size={33}
-          onPress={() => setVote( metric, true )}
-        />
-      );
-    }
     if ( loadingAgree && loadingMetric === metric ) {
       return ( <ActivityIndicator /> );
     }
@@ -79,17 +70,17 @@ const DQAVoteButtons = ( {
   };
 
   const renderDisagree = () => {
+    if ( loadingDisagree && loadingMetric === metric ) {
+      return ( <ActivityIndicator /> );
+    }
     if ( ifAgree === null ) {
       return (
         <INatIconButton
           icon="arrow-down-bold-circle-outline"
           size={33}
-          onPress={() => setVote( metric, true )}
+          onPress={() => setVote( metric, false )}
         />
       );
-    }
-    if ( loadingDisagree && loadingMetric === metric ) {
-      return ( <ActivityIndicator /> );
     }
     if ( !ifAgree ) {
       return (

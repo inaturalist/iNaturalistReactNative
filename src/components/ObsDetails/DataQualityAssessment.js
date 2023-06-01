@@ -45,7 +45,7 @@ const titleDescription = option => {
 
 const DataQualityAssessment = ( ): React.Node => {
   const { params } = useRoute( );
-  const { observationUUID, qualityGrade } = params;
+  const { observationUUID, observation, qualityGrade } = params;
   const isResearchGrade = qualityGrade === "research";
   const theme = useTheme( );
   const sectionClass = "flex-row ml-[15px] my-[14px] space-x-[11px]";
@@ -55,6 +55,12 @@ const DataQualityAssessment = ( ): React.Node => {
   const [loadingAgree, setLoadingAgree] = useState( false );
   const [loadingDisagree, setLoadingDisagree] = useState( false );
   const [loadingMetric, setLoadingMetric] = useState( null );
+
+  // location : long lat
+  // observationPhotos observationSounds
+  // observed on
+  // taxon.rank
+  // time_observed_at
 
   const fetchMetricsParams = {
     id: observationUUID,
@@ -151,14 +157,48 @@ const DataQualityAssessment = ( ): React.Node => {
     createRemoveQualityMetricMutation.mutate( PARAMS );
   };
 
-  const checkTest = metric => {
+  const ifMajorityAgree = metric => {
     if ( qualityMetrics ) {
-      const match = qualityMetrics.find( element => (
-        element.metric === metric && element.user_id ) );
-      if ( match && match.agree === true ) { return true; }
-      if ( match && match.agree === false ) { return false; }
+      const agreeCount = qualityMetrics.filter(
+        element => ( element.agree && element.metric === metric )
+      ).length;
+      const disagreeCount = qualityMetrics.filter(
+        element => ( !element.agree && element.metric === metric )
+      ).length;
+
+      return agreeCount >= disagreeCount;
     }
     return null;
+  };
+
+  const renderMetricIndicator = metric => {
+    const ifAgree = ifMajorityAgree( metric );
+    if ( ifAgree || ifAgree === null ) {
+      return (
+        <INatIcon name="checkmark-circle" size={19} color={theme.colors.secondary} /> );
+    }
+    return (
+      <INatIcon name="triangle-exclamation" size={19} color={theme.colors.error} />
+    );
+  };
+
+  const checkTest = metric => {
+    if ( observation ) {
+      if ( observation[metric] ) {
+        return true;
+      }
+      if ( metric === "id_supported" ) {
+        const taxonId = observation.taxon.id;
+        const supportedIDs = observation.identifications.filter(
+          identification => ( identification.taxon.id === taxonId )
+        ).length;
+        return supportedIDs >= 2;
+      }
+      if ( metric === "rank" && observation.taxon.rank_level <= 10 ) {
+        return true;
+      }
+    }
+    return false;
   };
 
   const renderIndicator = metric => {
@@ -201,38 +241,38 @@ const DataQualityAssessment = ( ): React.Node => {
       <Divider />
 
       <View className={sectionClass}>
-        {renderIndicator( ) }
+        {renderIndicator( "date" ) }
         <Body3>{t( "Data-quality-assessment-date-specified" )}</Body3>
       </View>
       <Divider />
 
       <View className={sectionClass}>
-        {renderIndicator( )}
+        {renderIndicator( "location" )}
         <Body3>{t( "Data-quality-assessment-location-specified" )}</Body3>
       </View>
       <Divider />
 
       <View className={sectionClass}>
-        {renderIndicator()}
+        {renderIndicator( "evidence" )}
         <Body3>{t( "Data-quality-assessment-has-photos-or-sounds" )}</Body3>
       </View>
       <Divider />
 
       <View className={sectionClass}>
-        {renderIndicator()}
+        {renderIndicator( "id_supported" )}
         <Body3>{t( "Data-quality-assessment-id-supported-by-two-or-more" )}</Body3>
       </View>
       <Divider />
 
       <View className={sectionClass}>
-        {renderIndicator()}
+        {renderIndicator( "rank" )}
         <Body3>{t( "Data-quality-assessment-community-taxon-at-species-level-or-lower" )}</Body3>
       </View>
       <Divider />
 
       <View className={voteClass}>
         <View className={listTextClass}>
-          {renderIndicator( "date" )}
+          {renderMetricIndicator( "date" )}
           <Body3>{t( "Data-quality-assessment-date-is-accurate" )}</Body3>
         </View>
         <DQAVoteButtons
@@ -249,7 +289,7 @@ const DataQualityAssessment = ( ): React.Node => {
 
       <View className={voteClass}>
         <View className={listTextClass}>
-          {renderIndicator( "location" )}
+          {renderMetricIndicator( "location" )}
           <Body3>{t( "Data-quality-assessment-location-is-accurate" )}</Body3>
         </View>
         <DQAVoteButtons
@@ -266,7 +306,7 @@ const DataQualityAssessment = ( ): React.Node => {
 
       <View className={voteClass}>
         <View className={listTextClass}>
-          {renderIndicator( "wild" )}
+          {renderMetricIndicator( "wild" )}
           <Body3>{t( "Data-quality-assessment-organism-is-wild" )}</Body3>
         </View>
         <DQAVoteButtons
@@ -283,7 +323,7 @@ const DataQualityAssessment = ( ): React.Node => {
 
       <View className={voteClass}>
         <View className={listTextClass}>
-          {renderIndicator( "evidence" )}
+          {renderMetricIndicator( "evidence" )}
           <Body3>{t( "Data-quality-assessment-evidence-of-organism" )}</Body3>
         </View>
         <DQAVoteButtons
@@ -300,7 +340,7 @@ const DataQualityAssessment = ( ): React.Node => {
 
       <View className={voteClass}>
         <View className={listTextClass}>
-          {renderIndicator( "recent" )}
+          {renderMetricIndicator( "recent" )}
           <Body3>{t( "Data-quality-assessment-recent-evidence-of-organism" )}</Body3>
         </View>
         <DQAVoteButtons
