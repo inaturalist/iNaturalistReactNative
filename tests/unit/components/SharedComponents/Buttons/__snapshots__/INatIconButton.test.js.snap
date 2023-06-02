@@ -50,10 +50,7 @@ exports[`INatIconButton renders correctly 1`] = `
       [
         [
           {
-            "borderBottomLeftRadius": 9999,
-            "borderBottomRightRadius": 9999,
-            "borderTopLeftRadius": 9999,
-            "borderTopRightRadius": 9999,
+            "position": "relative",
           },
         ],
       ]
