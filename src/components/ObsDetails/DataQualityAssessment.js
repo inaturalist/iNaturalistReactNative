@@ -4,6 +4,8 @@ import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/
 import DQAVoteButtons from "components/ObsDetails/DQAVoteButtons";
 import {
   Body3,
+  BottomSheet,
+  Button,
   Divider,
   Heading4,
   INatIcon,
@@ -55,12 +57,7 @@ const DataQualityAssessment = ( ): React.Node => {
   const [loadingAgree, setLoadingAgree] = useState( false );
   const [loadingDisagree, setLoadingDisagree] = useState( false );
   const [loadingMetric, setLoadingMetric] = useState( null );
-
-  // location : long lat
-  // observationPhotos observationSounds
-  // observed on
-  // taxon.rank
-  // time_observed_at
+  const [hideErrorSheet, setHideErrorSheet] = useState( true );
 
   const fetchMetricsParams = {
     id: observationUUID,
@@ -72,7 +69,6 @@ const DataQualityAssessment = ( ): React.Node => {
     ( PARAMS, optsWithAuth ) => fetchQualityMetrics( PARAMS, optsWithAuth ),
     {
       onSuccess: response => {
-        console.log( response );
         setLoadingMetric( null );
         if ( loadingAgree ) {
           setLoadingAgree( false );
@@ -82,8 +78,8 @@ const DataQualityAssessment = ( ): React.Node => {
         }
         setQualityMetrics( response );
       },
-      onError: error => {
-        console.log( "error", error );
+      onError: () => {
+        setHideErrorSheet( false );
       }
     }
   );
@@ -101,13 +97,12 @@ const DataQualityAssessment = ( ): React.Node => {
   const createQualityMetricMutation = useAuthenticatedMutation(
     ( PARAMS, optsWithAuth ) => setQualityMetric( PARAMS, optsWithAuth ),
     {
-      onSuccess: response => {
-        console.log( "success", response );
-        // fetch updated quality metrics with new vote
+      onSuccess: () => {
+        // fetch updated quality metrics with updated votes
         createFetchQualityMetricsMutation.mutate( fetchMetricsParams );
       },
-      onError: error => {
-        console.log( "error", error );
+      onError: () => {
+        setHideErrorSheet( false );
       }
     }
   );
@@ -131,13 +126,12 @@ const DataQualityAssessment = ( ): React.Node => {
   const createRemoveQualityMetricMutation = useAuthenticatedMutation(
     ( PARAMS, optsWithAuth ) => deleteQualityMetric( PARAMS, optsWithAuth ),
     {
-      onSuccess: response => {
-        console.log( "success", response );
-        // fetch updated quality metrics with new vote
+      onSuccess: () => {
+        // fetch updated quality metrics with updated votes
         createFetchQualityMetricsMutation.mutate( fetchMetricsParams );
       },
-      onError: error => {
-        console.log( "error", error );
+      onError: () => {
+        setHideErrorSheet( false );
       }
     }
   );
@@ -213,16 +207,17 @@ const DataQualityAssessment = ( ): React.Node => {
   };
 
   return (
-    <ScrollViewWrapper testID="DataQualityAssessment">
-      <View className="mx-[26px] my-[19px] space-y-[9px]">
-        <QualityGradeStatus
-          qualityGrade={qualityGrade}
-          color={( qualityGrade === "research" )
-            ? theme.colors.secondary
-            : theme.colors.primary}
-        />
-        <View className="flex-row space-x-[7px]">
-          {isResearchGrade
+    <>
+      <ScrollViewWrapper testID="DataQualityAssessment">
+        <View className="mx-[26px] my-[19px] space-y-[9px]">
+          <QualityGradeStatus
+            qualityGrade={qualityGrade}
+            color={( qualityGrade === "research" )
+              ? theme.colors.secondary
+              : theme.colors.primary}
+          />
+          <View className="flex-row space-x-[7px]">
+            {isResearchGrade
           && (
             <INatIcon
               name="checkmark-circle"
@@ -230,154 +225,169 @@ const DataQualityAssessment = ( ): React.Node => {
               color={theme.colors.secondary}
             />
           )}
-          <List1 className="text-black">
-            {titleOption( qualityGrade )}
-          </List1>
+            <List1 className="text-black">
+              {titleOption( qualityGrade )}
+            </List1>
+          </View>
+          <List2 className="text-black">
+            {titleDescription( qualityGrade )}
+          </List2>
         </View>
-        <List2 className="text-black">
-          {titleDescription( qualityGrade )}
-        </List2>
-      </View>
-      <Divider />
+        <Divider />
 
-      <View className={sectionClass}>
-        {renderIndicator( "date" ) }
-        <Body3>{t( "Data-quality-assessment-date-specified" )}</Body3>
-      </View>
-      <Divider />
-
-      <View className={sectionClass}>
-        {renderIndicator( "location" )}
-        <Body3>{t( "Data-quality-assessment-location-specified" )}</Body3>
-      </View>
-      <Divider />
-
-      <View className={sectionClass}>
-        {renderIndicator( "evidence" )}
-        <Body3>{t( "Data-quality-assessment-has-photos-or-sounds" )}</Body3>
-      </View>
-      <Divider />
-
-      <View className={sectionClass}>
-        {renderIndicator( "id_supported" )}
-        <Body3>{t( "Data-quality-assessment-id-supported-by-two-or-more" )}</Body3>
-      </View>
-      <Divider />
-
-      <View className={sectionClass}>
-        {renderIndicator( "rank" )}
-        <Body3>{t( "Data-quality-assessment-community-taxon-at-species-level-or-lower" )}</Body3>
-      </View>
-      <Divider />
-
-      <View className={voteClass}>
-        <View className={listTextClass}>
-          {renderMetricIndicator( "date" )}
-          <Body3>{t( "Data-quality-assessment-date-is-accurate" )}</Body3>
+        <View className={sectionClass}>
+          {renderIndicator( "date" ) }
+          <Body3>{t( "Data-quality-assessment-date-specified" )}</Body3>
         </View>
-        <DQAVoteButtons
-          metric="date"
-          qualityMetrics={qualityMetrics}
-          setVote={setMetricVote}
-          loadingAgree={loadingAgree}
-          loadingDisagree={loadingDisagree}
-          loadingMetric={loadingMetric}
-          removeVote={removeMetricVote}
-        />
-      </View>
-      <Divider />
+        <Divider />
 
-      <View className={voteClass}>
-        <View className={listTextClass}>
-          {renderMetricIndicator( "location" )}
-          <Body3>{t( "Data-quality-assessment-location-is-accurate" )}</Body3>
+        <View className={sectionClass}>
+          {renderIndicator( "location" )}
+          <Body3>{t( "Data-quality-assessment-location-specified" )}</Body3>
         </View>
-        <DQAVoteButtons
-          metric="location"
-          qualityMetrics={qualityMetrics}
-          setVote={setMetricVote}
-          loadingAgree={loadingAgree}
-          loadingDisagree={loadingDisagree}
-          loadingMetric={loadingMetric}
-          removeVote={removeMetricVote}
-        />
-      </View>
-      <Divider />
+        <Divider />
 
-      <View className={voteClass}>
-        <View className={listTextClass}>
-          {renderMetricIndicator( "wild" )}
-          <Body3>{t( "Data-quality-assessment-organism-is-wild" )}</Body3>
+        <View className={sectionClass}>
+          {renderIndicator( "evidence" )}
+          <Body3>{t( "Data-quality-assessment-has-photos-or-sounds" )}</Body3>
         </View>
-        <DQAVoteButtons
-          metric="wild"
-          qualityMetrics={qualityMetrics}
-          setVote={setMetricVote}
-          loadingAgree={loadingAgree}
-          loadingDisagree={loadingDisagree}
-          loadingMetric={loadingMetric}
-          removeVote={removeMetricVote}
-        />
-      </View>
-      <Divider />
+        <Divider />
 
-      <View className={voteClass}>
-        <View className={listTextClass}>
-          {renderMetricIndicator( "evidence" )}
-          <Body3>{t( "Data-quality-assessment-evidence-of-organism" )}</Body3>
+        <View className={sectionClass}>
+          {renderIndicator( "id_supported" )}
+          <Body3>{t( "Data-quality-assessment-id-supported-by-two-or-more" )}</Body3>
         </View>
-        <DQAVoteButtons
-          metric="evidence"
-          qualityMetrics={qualityMetrics}
-          setVote={setMetricVote}
-          loadingAgree={loadingAgree}
-          loadingDisagree={loadingDisagree}
-          loadingMetric={loadingMetric}
-          removeVote={removeMetricVote}
-        />
-      </View>
-      <Divider />
+        <Divider />
 
-      <View className={voteClass}>
-        <View className={listTextClass}>
-          {renderMetricIndicator( "recent" )}
-          <Body3>{t( "Data-quality-assessment-recent-evidence-of-organism" )}</Body3>
+        <View className={sectionClass}>
+          {renderIndicator( "rank" )}
+          <Body3>{t( "Data-quality-assessment-community-taxon-at-species-level-or-lower" )}</Body3>
         </View>
-        <DQAVoteButtons
-          metric="recent"
-          qualityMetrics={qualityMetrics}
-          setVote={setMetricVote}
-          loadingAgree={loadingAgree}
-          loadingDisagree={loadingDisagree}
-          loadingMetric={loadingMetric}
-          removeVote={removeMetricVote}
-        />
-      </View>
-      <Divider />
+        <Divider />
 
-      <View className="flex-row bg-lightGray px-[15px] py-[7px] mt-[20px]">
-        <Body3 className="shrink">
-          {t(
-            "Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence"
-          )}
-        </Body3>
-        <DQAVoteButtons
-          metric="needs_id"
-          qualityMetrics={qualityMetrics}
-          setVote={setMetricVote}
-          loadingAgree={loadingAgree}
-          loadingDisagree={loadingDisagree}
-          loadingMetric={loadingMetric}
-          removeVote={removeMetricVote}
-        />
-      </View>
+        <View className={voteClass}>
+          <View className={listTextClass}>
+            {renderMetricIndicator( "date" )}
+            <Body3>{t( "Data-quality-assessment-date-is-accurate" )}</Body3>
+          </View>
+          <DQAVoteButtons
+            metric="date"
+            qualityMetrics={qualityMetrics}
+            setVote={setMetricVote}
+            loadingAgree={loadingAgree}
+            loadingDisagree={loadingDisagree}
+            loadingMetric={loadingMetric}
+            removeVote={removeMetricVote}
+          />
+        </View>
+        <Divider />
 
-      <View className="mt-[30px] mx-[15px] space-y-[11px]">
-        <Heading4>{t( "ABOUT-THE-DQA" )}</Heading4>
-        <List2>{t( "About-the-DQA-description" )}</List2>
-      </View>
+        <View className={voteClass}>
+          <View className={listTextClass}>
+            {renderMetricIndicator( "location" )}
+            <Body3>{t( "Data-quality-assessment-location-is-accurate" )}</Body3>
+          </View>
+          <DQAVoteButtons
+            metric="location"
+            qualityMetrics={qualityMetrics}
+            setVote={setMetricVote}
+            loadingAgree={loadingAgree}
+            loadingDisagree={loadingDisagree}
+            loadingMetric={loadingMetric}
+            removeVote={removeMetricVote}
+          />
+        </View>
+        <Divider />
 
-    </ScrollViewWrapper>
+        <View className={voteClass}>
+          <View className={listTextClass}>
+            {renderMetricIndicator( "wild" )}
+            <Body3>{t( "Data-quality-assessment-organism-is-wild" )}</Body3>
+          </View>
+          <DQAVoteButtons
+            metric="wild"
+            qualityMetrics={qualityMetrics}
+            setVote={setMetricVote}
+            loadingAgree={loadingAgree}
+            loadingDisagree={loadingDisagree}
+            loadingMetric={loadingMetric}
+            removeVote={removeMetricVote}
+          />
+        </View>
+        <Divider />
+
+        <View className={voteClass}>
+          <View className={listTextClass}>
+            {renderMetricIndicator( "evidence" )}
+            <Body3>{t( "Data-quality-assessment-evidence-of-organism" )}</Body3>
+          </View>
+          <DQAVoteButtons
+            metric="evidence"
+            qualityMetrics={qualityMetrics}
+            setVote={setMetricVote}
+            loadingAgree={loadingAgree}
+            loadingDisagree={loadingDisagree}
+            loadingMetric={loadingMetric}
+            removeVote={removeMetricVote}
+          />
+        </View>
+        <Divider />
+
+        <View className={voteClass}>
+          <View className={listTextClass}>
+            {renderMetricIndicator( "recent" )}
+            <Body3>{t( "Data-quality-assessment-recent-evidence-of-organism" )}</Body3>
+          </View>
+          <DQAVoteButtons
+            metric="recent"
+            qualityMetrics={qualityMetrics}
+            setVote={setMetricVote}
+            loadingAgree={loadingAgree}
+            loadingDisagree={loadingDisagree}
+            loadingMetric={loadingMetric}
+            removeVote={removeMetricVote}
+          />
+        </View>
+        <Divider />
+
+        <View className="flex-row bg-lightGray px-[15px] py-[7px] mt-[20px]">
+          <Body3 className="shrink">
+            {t(
+              "Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence"
+            )}
+          </Body3>
+          <DQAVoteButtons
+            metric="needs_id"
+            qualityMetrics={qualityMetrics}
+            setVote={setMetricVote}
+            loadingAgree={loadingAgree}
+            loadingDisagree={loadingDisagree}
+            loadingMetric={loadingMetric}
+            removeVote={removeMetricVote}
+          />
+        </View>
+
+        <View className="mt-[30px] mx-[15px] space-y-[11px]">
+          <Heading4>{t( "ABOUT-THE-DQA" )}</Heading4>
+          <List2>{t( "About-the-DQA-description" )}</List2>
+        </View>
+
+      </ScrollViewWrapper>
+      <BottomSheet
+        headerText={t( "ERROR-VOTING-IN-DQA" )}
+        hide={hideErrorSheet}
+        hideCloseButton
+        snapPoints={["25"]}
+      >
+        <View className="px-[26px] pt-[20px] flex-col space-y-[20px]">
+          <List2 className="text-black">{t( "Error-voting-in-DQA-description" )}</List2>
+          <Button
+            text={t( "OK" )}
+            onPress={() => setHideErrorSheet( true )}
+          />
+        </View>
+      </BottomSheet>
+    </>
   );
 };
 

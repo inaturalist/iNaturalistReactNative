@@ -18,8 +18,7 @@ type Props = {
   removeVote: Function
 }
 
-// rename
-const checkUserVote = ( metric, qualityMetrics ) => {
+const getUserVote = ( metric, qualityMetrics ) => {
   if ( qualityMetrics ) {
     const match = qualityMetrics.find( element => (
       element.metric === metric && element.user_id ) );
@@ -44,11 +43,11 @@ const DQAVoteButtons = ( {
   metric, qualityMetrics, loadingAgree, loadingDisagree, loadingMetric, setVote, removeVote
 }: Props ): React.Node => {
   const theme = useTheme( );
-  const ifAgree = checkUserVote( metric, qualityMetrics );
+  const ifAgree = getUserVote( metric, qualityMetrics );
 
   const renderAgree = () => {
     if ( loadingAgree && loadingMetric === metric ) {
-      return ( <ActivityIndicator /> );
+      return ( <ActivityIndicator size={33} /> );
     }
     if ( ifAgree ) {
       return (
@@ -71,7 +70,7 @@ const DQAVoteButtons = ( {
 
   const renderDisagree = () => {
     if ( loadingDisagree && loadingMetric === metric ) {
-      return ( <ActivityIndicator /> );
+      return ( <ActivityIndicator size={30} className="mx-[7px]" /> );
     }
     if ( ifAgree === null ) {
       return (
@@ -102,11 +101,15 @@ const DQAVoteButtons = ( {
   };
 
   return (
-    <View className="flex-row items-center">
-      {renderAgree()}
-      {renderVoteCount( true, metric, qualityMetrics )}
-      {renderDisagree()}
-      {renderVoteCount( false, metric, qualityMetrics )}
+    <View className="flex-row items-center space-x-[5px]">
+      <View className="flex-row items-center">
+        {renderAgree()}
+        {renderVoteCount( true, metric, qualityMetrics )}
+      </View>
+      <View className="flex-row items-center">
+        {renderDisagree()}
+        {renderVoteCount( false, metric, qualityMetrics )}
+      </View>
     </View>
   );
 };

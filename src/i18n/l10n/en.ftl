@@ -271,6 +271,10 @@ Error-Couldnt-Upload-Photo = Error: Couldn't Upload Photo
 
 Error-Could-Not-Fetch-Taxon = Error: Could Not Fetch Taxon
 
+ERROR-VOTING-IN-DQA = ERROR VOTING IN DQA
+
+Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. Check your internet connection and try again.
+
 EVIDENCE = EVIDENCE
 
 Explore = Explore
