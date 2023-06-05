@@ -37,6 +37,7 @@
   "Almost-done": "Almost done!",
   "Already-have-an-account": "Already have an account? Log in",
   "Amphibians": "Amphibians",
+  "An-Internet-connection-is-required": "An Internet connection is required to load more observations.",
   "Arachnids": "Arachnids",
   "Are-you-sure": "Are you sure?",
   "Are-you-sure-you-want-to-sign-out": "Are you sure you want to sign out? This will delete all your observations on this device. It will not affect any observations you've uploaded to iNaturalist.",
@@ -60,6 +61,7 @@
   "Birds": "Birds",
   "Blocked-Users": "Blocked Users",
   "By-exiting-changes-not-saved": "By exiting, changes to your observation will not be saved.",
+  "By-exiting-observation-not-saved": "By exiting, your observation will not be saved.",
   "By-exiting-your-observations-not-saved": "By exiting, your observations will not be saved. You can save them to your device, or you can delete them.",
   "Camera-Roll": "Camera Roll",
   "CANCEL": "CANCEL",
@@ -131,6 +133,7 @@
   "DELETE-X-OBSERVATIONS": "DELETE { $count ->\n  [one] 1 OBSERVATION?\n *[other] { $count } OBSERVATIONS?\n}",
   "Description-Tags": "Description/Tags",
   "DISCARD-ALL": "DISCARD ALL",
+  "DISCARD-CHANGES": "DISCARD CHANGES",
   "DISCARD-OBSERVATION": "DISCARD OBSERVATION",
   "DISCARD-X-OBSERVATIONS": "{ $count ->\n  [one] DISCARD OBSERVATION\n *[other] DISCARD { $count } OBSERVATIONS\n}",
   "Display": "Display",
@@ -790,5 +793,10 @@
   "Return-to-Login": "Return to Login",
   "One-last-step": "One last step!",
   "We-sent-a-confirmation-email": "We sent a confirmation email to the email you signed up with.",
-  "Please-click-the-link": "Please click the link in the email within 60 minutes  to confirm your account"
+  "Please-click-the-link": "Please click the link in the email within 60 minutes  to confirm your account",
+  "Internet-Connection-Required": {
+    "comment": "Title for dialog telling the user that an Internet connection is required",
+    "val": "Internet Connection Required"
+  },
+  "Please-try-again-when-you-are-connected-to-the-internet": "Please try again when you are connected to the Internet."
 }

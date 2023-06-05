@@ -35,7 +35,7 @@ type Props = {
   currentUser: ?Object,
   navToExplore: Function,
   toggleLayout: Function,
-  getSyncIcon: Function
+  needsSync: Function
 }
 
 const Toolbar = ( {
@@ -50,7 +50,7 @@ const Toolbar = ( {
   currentUser,
   navToExplore,
   toggleLayout,
-  getSyncIcon
+  needsSync
 }: Props ): Node => {
   const theme = useTheme( );
   const uploadComplete = progress === 1;
@@ -141,7 +141,11 @@ const Toolbar = ( {
             style={animatedStyles}
           >
             <IconButton
-              icon={getSyncIcon( )}
+              icon={
+                needsSync( )
+                  ? "sync-unsynced"
+                  : "sync"
+              }
               size={30}
               onPress={handleSyncButtonPress}
               accessibilityRole="button"
@@ -155,7 +159,13 @@ const Toolbar = ( {
           {statusText && (
             <View className="flex ml-1 shrink">
               <View className="flex-row items-center shrink">
-                <Body2 onPress={getSyncIcon( ) === "sync-unsynced" && handleSyncButtonPress}>
+                <Body2
+                  onPress={
+                    needsSync( )
+                      ? handleSyncButtonPress
+                      : ( ) => { }
+                  }
+                >
                   {statusText}
                 </Body2>
                 {( uploadComplete && !uploadError ) && (

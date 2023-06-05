@@ -1,0 +1,9 @@
+Fixed several bugs
+
+* Made sure location fetching mock does not get included in releases
+* Border for selected photo in Android MediaViewer
+* Fixed discard changes / observation bottom sheet
+* Map marker on ObsDetail
+* Bigger tappable areas for bottom camera buttons
+* Loading indicator when fetching new observations on MyObs
+* Fixed layout bug when rotating tablet

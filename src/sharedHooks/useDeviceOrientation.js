@@ -30,6 +30,7 @@ export function orientationLockerToIosOrientation( orientation: string ): string
 const useDeviceOrientation = ( ): Object => {
   const { width, height } = Dimensions.get( "screen" );
   const [screenWidth, setScreenWidth] = useState( width );
+  const [screenHeight, setScreenHeight] = useState( height );
 
   const [deviceOrientation, setDeviceOrientation] = useState( );
 
@@ -73,8 +74,10 @@ const useDeviceOrientation = ( ): Object => {
     // so doing this manually
     if ( isLandscapeMode ) {
       setScreenWidth( Math.max( width, height ) );
+      setScreenHeight( Math.min( width, height ) );
     } else {
       setScreenWidth( Math.min( width, height ) );
+      setScreenHeight( Math.max( width, height ) );
     }
   }, [isLandscapeMode, width, height] );
 
@@ -82,7 +85,8 @@ const useDeviceOrientation = ( ): Object => {
     deviceOrientation,
     isTablet,
     isLandscapeMode,
-    screenWidth
+    screenWidth,
+    screenHeight
   };
 };
 

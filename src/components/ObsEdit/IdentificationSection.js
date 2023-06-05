@@ -15,7 +15,7 @@ import useTranslation from "sharedHooks/useTranslation";
 const IdentificationSection = ( ): Node => {
   const {
     currentObservation,
-    updateObservationKey,
+    updateObservationKeys,
     setPassesIdentificationTest
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
@@ -26,7 +26,9 @@ const IdentificationSection = ( ): Node => {
 
   const hasIdentification = identification && identification.rank_level !== 100;
 
-  const onIDAdded = async id => updateObservationKey( "taxon", id.taxon );
+  const onIDAdded = async id => updateObservationKeys( {
+    taxon: id.taxon
+  } );
 
   const navToAddID = ( ) => navigation.navigate( "AddID", {
     onIDAdded,

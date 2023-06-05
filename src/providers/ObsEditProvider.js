@@ -45,6 +45,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
   const [mediaViewerUris, setMediaViewerUris] = useState( [] );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
+  const [groupedPhotos, setGroupedPhotos] = useState( [] );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -54,6 +55,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setEvidenceToAdd( [] );
     setUnsavedChanges( false );
     setPassesEvidenceTest( false );
+    setGroupedPhotos( [] );
   }, [] );
 
   useEffect( () => {
@@ -173,40 +175,21 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   }, [appendObsPhotos] );
 
   const uploadValue = useMemo( ( ) => {
-    const updateObservationKey = ( key, value ) => {
-      const updatedObservations = observations.map( ( observation, index ) => {
-        if ( index === currentObservationIndex ) {
-          return {
-            ...( observation.toJSON
-              ? observation.toJSON( )
-              : observation ),
-            [key]: value
-          };
-        }
-        return observation;
-      } );
-      setObservations( updatedObservations );
-      setUnsavedChanges( true );
-    };
-
     const updateObservationKeys = keysAndValues => {
-      const updatedObservations = observations.map( ( observation, index ) => {
-        if ( index === currentObservationIndex ) {
-          const isSavedObservation = realm.objectForPrimaryKey( "Observation", observation.uuid );
-          const updatedObservation = {
-            ...( observation.toJSON
-              ? observation.toJSON( )
-              : observation ),
-            ...keysAndValues
-          };
-          if ( isSavedObservation && !unsavedChanges ) {
-            setUnsavedChanges( true );
-          }
-          return updatedObservation;
-        }
-        return observation;
-      } );
-      setObservations( updatedObservations );
+      const updatedObservations = observations;
+      const obsToUpdate = observations[currentObservationIndex];
+      const isSavedObservation = realm.objectForPrimaryKey( "Observation", obsToUpdate.uuid );
+      const updatedObservation = {
+        ...( obsToUpdate.toJSON
+          ? obsToUpdate.toJSON( )
+          : obsToUpdate ),
+        ...keysAndValues
+      };
+      if ( isSavedObservation && !unsavedChanges ) {
+        setUnsavedChanges( true );
+      }
+      updatedObservations[currentObservationIndex] = updatedObservation;
+      setObservations( [...updatedObservations] );
     };
 
     const setNextScreen = ( ) => {
@@ -370,7 +353,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       observations,
       setCurrentObservationIndex,
       setObservations,
-      updateObservationKey,
       updateObservationKeys,
       cameraPreviewUris,
       setCameraPreviewUris,
@@ -407,7 +389,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       mediaViewerUris,
       setMediaViewerUris,
       selectedPhotoIndex,
-      setSelectedPhotoIndex
+      setSelectedPhotoIndex,
+      groupedPhotos,
+      setGroupedPhotos
     };
   }, [
     currentObservation,
@@ -437,7 +421,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     passesEvidenceTest,
     passesIdentificationTest,
     mediaViewerUris,
-    selectedPhotoIndex
+    selectedPhotoIndex,
+    groupedPhotos
   ] );
 
   return (

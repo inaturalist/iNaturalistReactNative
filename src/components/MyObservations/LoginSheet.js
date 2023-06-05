@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import WarningSheet from "components/SharedComponents/Sheets/WarningSheet";
 import type { Node } from "react";
 import React from "react";
-import useTranslation from "sharedHooks/useTranslation";
+import { useTranslation } from "sharedHooks";
 
 type Props = {
   setShowLoginSheet: Function,

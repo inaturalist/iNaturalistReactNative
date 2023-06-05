@@ -4,8 +4,13 @@ import { UploadStatus } from "components/SharedComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
+import { Alert } from "react-native";
 import { useTheme } from "react-native-paper";
-import useCurrentUser from "sharedHooks/useCurrentUser";
+import {
+  useCurrentUser,
+  useIsConnected,
+  useTranslation
+} from "sharedHooks";
 
 import ObsStatus from "./ObsStatus";
 
@@ -30,6 +35,8 @@ const ObsUploadStatus = ( {
   const startSingleUpload = obsEditContext?.startSingleUpload;
   const uploadProgress = obsEditContext?.uploadProgress;
   const whiteColor = white && theme.colors.onPrimary;
+  const isConnected = useIsConnected( );
+  const { t } = useTranslation( );
 
   const displayUploadStatus = ( ) => {
     const obsStatus = (
@@ -47,6 +54,14 @@ const ObsUploadStatus = ( {
         <UploadStatus
           progress={progress || 0}
           startSingleUpload={() => {
+            if ( !isConnected ) {
+              Alert.alert(
+                t( "Internet-Connection-Required" ),
+                t( "Please-try-again-when-you-are-connected-to-the-internet" )
+              );
+              return;
+            }
+
             if ( !currentUser ) {
               setShowLoginSheet( true );
               return;

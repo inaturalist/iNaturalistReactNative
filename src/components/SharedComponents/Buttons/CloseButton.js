@@ -1,31 +1,35 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import { INatIconButton } from "components/SharedComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { IconButton, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
 type Props = {
   className?: string,
   handleClose?: Function,
   black?: boolean,
   size?: number,
-  icon?: string
+  icon?: string,
+  width?: number,
+  height?: number
 }
 
 const CloseButton = ( {
-  className, handleClose, black, size, icon
+  className, handleClose, black, size, icon,
+  width, height
 }: Props ): Node => {
   const navigation = useNavigation( );
   const theme = useTheme( );
 
   return (
-    <IconButton
+    <INatIconButton
       icon={icon || "close"}
       size={size}
       className={className}
-      iconColor={black
+      color={black
         ? theme.colors.tertiary
         : theme.colors.background}
       onPress={( ) => {
@@ -37,8 +41,11 @@ const CloseButton = ( {
       }}
       accessibilityRole="button"
       accessibilityLabel={t( "Close" )}
+      accessibilityState={{ disabled: false }}
       accessibilityHint={t( "Returns-to-previous-screen" )}
       disabled={false}
+      width={width}
+      height={height}
     />
   );
 };

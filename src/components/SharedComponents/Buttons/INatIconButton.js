@@ -1,6 +1,7 @@
 // @flow
 
 import { INatIcon } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Pressable } from "react-native";
@@ -16,6 +17,9 @@ type Props = {
   style?: Object,
   testID?: string,
   width?: number,
+  // Inserts a white view under the icon so an holes in the shape show as
+  // white
+  whiteBackground?: boolean
 }
 
 const MIN_ACCESSIBLE_DIM = 44;
@@ -26,13 +30,14 @@ const MIN_ACCESSIBLE_DIM = 44;
 const INatIconButton = ( {
   accessibilityLabel,
   color,
-  height,
+  height = 44,
   icon,
   onPress,
-  size,
+  size = 18,
   style,
   testID,
-  width
+  width = 44,
+  whiteBackground
 }: Props ): Node => {
   const theme = useTheme( );
   // width || 0 is to placate flow. width should never be undefined because of
@@ -66,7 +71,24 @@ const INatIconButton = ( {
       ]}
       testID={testID}
     >
-      <INatIcon name={icon} size={size} color={color || theme.colors.primary} />
+      <View className="relative">
+        { whiteBackground && (
+          <View
+            // Position and size need to be dynamic
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{
+              position: "absolute",
+              top: 2,
+              start: 2,
+              width: size - 2,
+              height: size - 2,
+              backgroundColor: "white",
+              borderRadius: 9999
+            }}
+          />
+        )}
+        <INatIcon name={icon} size={size} color={color || theme.colors.primary} />
+      </View>
     </Pressable>
   );
 };

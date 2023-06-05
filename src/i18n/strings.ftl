@@ -49,6 +49,8 @@ Already-have-an-account = Already have an account? Log in
 
 Amphibians = Amphibians
 
+An-Internet-connection-is-required = An Internet connection is required to load more observations.
+
 Arachnids = Arachnids
 
 Are-you-sure = Are you sure?
@@ -96,6 +98,8 @@ Birds = Birds
 Blocked-Users = Blocked Users
 
 By-exiting-changes-not-saved = By exiting, changes to your observation will not be saved.
+
+By-exiting-observation-not-saved = By exiting, your observation will not be saved.
 
 By-exiting-your-observations-not-saved = By exiting, your observations will not be saved. You can save them to your device, or you can delete them.
 
@@ -238,6 +242,8 @@ DELETE-X-OBSERVATIONS = DELETE {$count ->
 Description-Tags = Description/Tags
 
 DISCARD-ALL = DISCARD ALL
+
+DISCARD-CHANGES = DISCARD CHANGES
 
 DISCARD-OBSERVATION = DISCARD OBSERVATION
 
@@ -1153,3 +1159,7 @@ Return-to-Login = Return to Login
 One-last-step = One last step!
 We-sent-a-confirmation-email = We sent a confirmation email to the email you signed up with.
 Please-click-the-link = Please click the link in the email within 60 minutes  to confirm your account
+
+# Title for dialog telling the user that an Internet connection is required
+Internet-Connection-Required = Internet Connection Required
+Please-try-again-when-you-are-connected-to-the-internet=Please try again when you are connected to the Internet.

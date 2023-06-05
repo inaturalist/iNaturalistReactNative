@@ -1,7 +1,7 @@
 // @flow
 
 import { Body3, DateTimePicker, INatIcon } from "components/SharedComponents";
-import { Pressable } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useState } from "react";
@@ -13,7 +13,7 @@ type Props = {
 }
 
 const DatePicker = ( { currentObservation }: Props ): Node => {
-  const { updateObservationKey } = useContext( ObsEditContext );
+  const { updateObservationKeys } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const [showModal, setShowModal] = useState( false );
 
@@ -22,7 +22,9 @@ const DatePicker = ( { currentObservation }: Props ): Node => {
 
   const handlePicked = value => {
     const dateString = createObservedOnStringForUpload( value );
-    updateObservationKey( "observed_on_string", dateString );
+    updateObservationKeys( {
+      observed_on_string: dateString
+    } );
     closeModal();
   };
 
@@ -43,9 +45,11 @@ const DatePicker = ( { currentObservation }: Props ): Node => {
         onPress={openModal}
         className="flex-row flex-nowrap items-center"
       >
-        <INatIcon size={14} name="clock-outline" />
+        <View className="w-[30px] items-center mr-1">
+          <INatIcon size={14} name="clock-outline" />
+        </View>
         {/* $FlowIgnore */}
-        <Body3 testID="ObsEdit.time" className={`ml-5 ${!displayDate( ) && "color-warningRed"}`}>
+        <Body3 testID="ObsEdit.time" className={!displayDate( ) && "color-warningRed"}>
           {displayDate( ) || t( "Add-Date-Time" )}
         </Body3>
       </Pressable>

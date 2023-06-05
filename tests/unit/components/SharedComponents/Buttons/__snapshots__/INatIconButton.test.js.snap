@@ -45,26 +45,38 @@ exports[`INatIconButton renders correctly 1`] = `
     ]
   }
 >
-  <Text
-    allowFontScaling={false}
-    selectable={false}
+  <View
     style={
       [
-        {
-          "color": "rgba(103, 80, 164, 1)",
-          "fontSize": 18,
-        },
-        undefined,
-        {
-          "fontFamily": "INatIcon",
-          "fontStyle": "normal",
-          "fontWeight": "normal",
-        },
-        {},
+        [
+          {
+            "position": "relative",
+          },
+        ],
       ]
     }
   >
-    
-  </Text>
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": "rgba(103, 80, 164, 1)",
+            "fontSize": 18,
+          },
+          undefined,
+          {
+            "fontFamily": "INatIcon",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
 </View>
 `;

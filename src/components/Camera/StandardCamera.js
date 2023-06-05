@@ -4,7 +4,8 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 import classnames from "classnames";
 import {
   CloseButton,
-  INatIcon
+  INatIcon,
+  INatIconButton
 } from "components/SharedComponents";
 import {
   Pressable, View
@@ -345,7 +346,7 @@ const StandardCamera = ( ): Node => {
           "mb-[40px]"
         )}
         onPress={takePhoto}
-        accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+        accessibilityLabel={t( "Take-photo" )}
         accessibilityRole="button"
         accessibilityState={{ disabled: disallowAddingPhotos }}
         disabled={disallowAddingPhotos}
@@ -424,42 +425,50 @@ const StandardCamera = ( ): Node => {
           : renderPhoneCameraOptions()}
       </View>
       { !isTablet && (
-        <View className="bg-black h-32 flex-row justify-between items-center">
-          <View className="w-1/3 ml-[20px]">
-            <CloseButton handleClose={cameraPreviewUris.length > 0 && handleBackButtonPress} />
-          </View>
+        <View className="h-32 flex-row justify-between items-center">
+          <CloseButton
+            handleClose={cameraPreviewUris.length > 0 && handleBackButtonPress}
+            width="33%"
+            height="100%"
+          />
           <Pressable
-            className="bg-white rounded-full h-[60px] w-[60px] justify-center items-center"
+            className="w-1/3 h-full items-center justify-center"
             onPress={takePhoto}
-            accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+            accessibilityLabel={t( "Take-photo" )}
             accessibilityRole="button"
             accessibilityState={{ disabled: disallowAddingPhotos }}
           >
-            <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
+            <View className="bg-white rounded-full h-[60px] w-[60px] justify-center items-center">
+              <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
+            </View>
           </Pressable>
-          <View className="w-1/3 items-end mr-[20px]">
-            {photosTaken && (
+          {photosTaken
+            ? (
               <Animated.View
                 style={!isTablet && rotatableAnimatedStyle}
-                className={classnames( checkmarkClasses )}
+                className={classnames( checkmarkClasses, {
+                  "w-1/3 h-full bg-black": !isTablet
+                } )}
               >
-                <Pressable
+                <INatIconButton
                   onPress={navToObsEdit}
                   accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
                   accessibilityRole="button"
                   accessibilityState={{ disabled: false }}
                   disabled={false}
-                >
-                  <INatIcon
-                    name="checkmark"
-                    color={colors.white}
-                    size={20}
-                    testID="camera-button-label-switch-camera"
-                  />
-                </Pressable>
+                  icon="checkmark-circle"
+                  color={colors.inatGreen}
+                  size={40}
+                  testID="camera-button-label-switch-camera"
+                  width="100%"
+                  height="100%"
+                  whiteBackground
+                />
               </Animated.View>
+            )
+            : (
+              <View className={classnames( checkmarkClasses, "w-1/3 h-full bg-black" )} />
             )}
-          </View>
         </View>
       )}
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
