@@ -741,7 +741,7 @@
   "This-organism-was-placed-by-humans": "This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.",
   "Lat-Lon-Acc": {
     "comment": "Latitude, longitude, and accuracy on a single line on a single line",
-    "val": "Lat: { NUMBER($NUMBER, maximumFractionDigits: \"6\") }, Lon: { NUMBER($NUMBER, maximumFractionDigits: \"6\") }, Acc: { $accuracy }"
+    "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Acc: { $accuracy }"
   },
   "Every-observation-needs": {
     "comment": "Missing evidence sheet",

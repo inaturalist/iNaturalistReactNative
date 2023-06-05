@@ -1094,7 +1094,7 @@ This-is-a-wild-organism = This is a wild organism and wasn’t placed in this lo
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 
 # Latitude, longitude, and accuracy on a single line on a single line
-Lat-Lon-Acc = Lat: { NUMBER(NUMBER($latitude, maximumFractionDigits: 6), maximumFractionDigits: 6) }, Lon: { NUMBER(NUMBER($longitude, maximumFractionDigits: 6), maximumFractionDigits: 6) }, Acc: { $accuracy }
+Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 
 # Missing evidence sheet
 Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.
