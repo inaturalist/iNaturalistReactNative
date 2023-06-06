@@ -36,7 +36,8 @@ import {
   hideHeader,
   hideHeaderLeft,
   showCustomHeader,
-  showHeaderLeft
+  showHeaderLeft,
+  showLongHeader
 } from "navigation/navigationOptions";
 import React from "react";
 import { PermissionsAndroid, Platform } from "react-native";
@@ -356,6 +357,7 @@ const BottomTabs = ( ) => {
           name="DataQualityAssessment"
           component={DataQualityAssessment}
           options={{
+            ...showLongHeader,
             headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
             unmountOnBlur: true
           }}
