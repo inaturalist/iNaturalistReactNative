@@ -65,7 +65,9 @@ const DataQualityAssessment = ( ): React.Node => {
     ttl: -1
   };
 
-  const createFetchQualityMetricsMutation = useAuthenticatedMutation(
+  // destructured mutate to pass into useEffect to prevent infinite
+  // rerender and disabling eslint useEffect dependency rule
+  const { mutate } = useAuthenticatedMutation(
     ( PARAMS, optsWithAuth ) => fetchQualityMetrics( PARAMS, optsWithAuth ),
     {
       onSuccess: response => {
@@ -85,21 +87,20 @@ const DataQualityAssessment = ( ): React.Node => {
   );
 
   useEffect( ( ) => {
-    if ( qualityMetrics === null ) {
-      createFetchQualityMetricsMutation.mutate( fetchMetricsParams );
-    }
-    // render once on mount and reduces number of calls overall.
-    // Not sure what the better option is instead of disabling eslint
-    // since I cant use hooks in useEffect
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] );
+    const PARAMS = {
+      id: params.observationUUID,
+      fields: "metric,agree,user_id",
+      ttl: -1
+    };
+    mutate( PARAMS );
+  }, [mutate, params] );
 
   const createQualityMetricMutation = useAuthenticatedMutation(
     ( PARAMS, optsWithAuth ) => setQualityMetric( PARAMS, optsWithAuth ),
     {
       onSuccess: () => {
         // fetch updated quality metrics with updated votes
-        createFetchQualityMetricsMutation.mutate( fetchMetricsParams );
+        mutate( fetchMetricsParams );
       },
       onError: () => {
         setHideErrorSheet( false );
@@ -128,7 +129,7 @@ const DataQualityAssessment = ( ): React.Node => {
     {
       onSuccess: () => {
         // fetch updated quality metrics with updated votes
-        createFetchQualityMetricsMutation.mutate( fetchMetricsParams );
+        mutate( fetchMetricsParams );
       },
       onError: () => {
         setHideErrorSheet( false );
