@@ -164,9 +164,9 @@ Data-quality-assessment-description-research = It can now be used for research a
 
 Data-quality-assessment-description-research-not-licensed = However, it is not licensed for re-use and will not be shared with data repositories that respect license choices.
 
-Data-quality-assessment-description-needs-id = This observation has not yet met the conditions required to meet research grade status:
+Data-quality-assessment-description-needs-id = This observation has not yet met the conditions for Research Grade status:
 
-Data-quality-assessment-description-casual = This observation has not met the conditions required to meet research grade status.
+Data-quality-assessment-description-casual = This observation has not met the conditions for Research Grade status.
 
 # checklist test for Data Quality Assessment of Observation Details 
 Data-quality-assessment-date-specified = Date specified

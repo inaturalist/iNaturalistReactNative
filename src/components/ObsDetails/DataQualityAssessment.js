@@ -182,6 +182,9 @@ const DataQualityAssessment = ( ): React.Node => {
       if ( observation[metric] ) {
         return true;
       }
+      if ( !observation.taxon ) {
+        return false;
+      }
       if ( metric === "id_supported" ) {
         const taxonId = observation.taxon.id;
         const supportedIDs = observation.identifications.filter(
