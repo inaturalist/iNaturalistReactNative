@@ -2,9 +2,9 @@ import { Realm } from "@realm/react";
 // eslint-disable-next-line import/no-cycle
 import { createObservation, createOrUpdateEvidence, updateObservation } from "api/observations";
 import inatjs from "inaturalistjs";
-import { EventRegister } from "react-native-event-listeners";
 import uuid from "react-native-uuid";
 import { createObservedOnStringForUpload } from "sharedHelpers/dateAndTime";
+import emitUploadProgress from "sharedHelpers/emitEvent";
 
 import Application from "./Application";
 import Comment from "./Comment";
@@ -234,7 +234,7 @@ class Observation extends Realm.Object {
     return unsyncedObs.length > 0;
   };
 
-  static markRecordUploaded = async ( recordUUID, type, response, realm ) => {
+  static markRecordUploaded = ( recordUUID, type, response, realm ) => {
     const { id } = response.results[0];
 
     const record = realm.objectForPrimaryKey( type, recordUUID );
@@ -250,11 +250,19 @@ class Observation extends Realm.Object {
     params: Object,
     apiEndpoint: Function,
     realm: any,
-    options: Object
+    options: Object,
+    observationUUID: string,
+    trackProgress: boolean
   ) => {
-    const response = await createOrUpdateEvidence( apiEndpoint, params, options );
+    const response = await createOrUpdateEvidence(
+      apiEndpoint,
+      observationUUID,
+      trackProgress,
+      params,
+      options
+    );
     if ( response ) {
-      await Observation.markRecordUploaded( evidenceUUID, type, response, realm );
+      Observation.markRecordUploaded( evidenceUUID, type, response, realm );
     }
   };
 
@@ -266,7 +274,9 @@ class Observation extends Realm.Object {
     apiEndpoint: Function,
     realm: any,
     options: Object,
-    forceUpload: boolean
+    observationUUID: string,
+    forceUpload: boolean,
+    trackProgress: boolean = false
   ): Promise<any> => {
     // only try to upload evidence which is not yet on the server
     const unsyncedEvidence = forceUpload
@@ -295,7 +305,9 @@ class Observation extends Realm.Object {
         params,
         apiEndpoint,
         realm,
-        options
+        options,
+        observationUUID,
+        trackProgress
       );
     } ) );
     // eslint-disable-next-line consistent-return
@@ -303,160 +315,75 @@ class Observation extends Realm.Object {
   };
 
   static uploadObservation = async ( obs, apiToken, realm ) => {
-    try {
-      EventRegister.emit(
-        "INCREMENT_OBSERVATIONS_PROGRESS",
-        [[obs.uuid, 0.05]]
-      );
-      const obsToUpload = Observation.mapObservationForUpload( obs );
-      const options = { api_token: apiToken };
+    emitUploadProgress( obs.uuid, 0.5 );
+    const obsToUpload = Observation.mapObservationForUpload( obs );
+    const options = { api_token: apiToken };
 
-      // Remove all null values, b/c the API doesn't seem to like them for some
-      // reason (might be an error with the API as of 20220801)
-      const newObs = {};
-      Object.keys( obsToUpload ).forEach( k => {
-        if ( obsToUpload[k] !== null ) {
-          newObs[k] = obsToUpload[k];
-        }
-      } );
-
-      const uploadParams = {
-        observation: { ...newObs },
-        fields: { id: true }
-      };
-
-      let response;
-
-      // First upload the photos/sounds (before uploading the observation itself)
-      const hasPhotos = obs?.observationPhotos?.length > 0;
-      const hasSounds = obs?.observationSounds?.length > 0;
-
-      await Promise.all( [
-        hasPhotos
-          ? Observation.uploadEvidence(
-            obs.observationPhotos,
-            "ObservationPhoto",
-            ObservationPhoto.mapPhotoForUpload,
-            null,
-            inatjs.photos.create,
-            realm,
-            options
-          ).then( () => {
-            EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
-              obs.uuid,
-              hasSounds
-                ? 0.125
-                : 0.25
-            ]] );
-          } )
-          : null,
-        hasSounds
-          ? Observation.uploadEvidence(
-            obs.observationSounds,
-            "ObservationSound",
-            ObservationSound.mapSoundForUpload,
-            null,
-            inatjs.sounds.create,
-            realm,
-            options
-          ).then( () => {
-            EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
-              obs.uuid,
-              hasPhotos
-                ? 0.125
-                : 0.25
-            ]] );
-          } )
-          : null
-      ] );
-
-      if ( !hasPhotos && !hasSounds ) {
-        EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
-          obs.uuid,
-          0.25
-        ]] );
+    // Remove all null values, b/c the API doesn't seem to like them for some
+    // reason (might be an error with the API as of 20220801)
+    const newObs = {};
+    Object.keys( obsToUpload ).forEach( k => {
+      if ( obsToUpload[k] !== null ) {
+        newObs[k] = obsToUpload[k];
       }
+    } );
 
-      // TODO
+    let response;
 
-      const wasPreviouslySynced = obs.wasSynced( );
+    // First upload the photos/sounds (before uploading the observation itself)
+    const hasPhotos = obs?.observationPhotos?.length > 0;
 
-      if ( wasPreviouslySynced ) {
-        response = await updateObservation( {
-          id: newObs.uuid,
-          ignore_photos: true,
-          observation: { ...newObs },
-          fields: { id: true }
-        }, options );
-      } else {
-        // TODO - before creating observation, POST /v2/photos or POST /v2/sounds
-        response = await createObservation( uploadParams, options );
-      }
+    await Promise.all( [
+      hasPhotos
+        ? Observation.uploadEvidence(
+          obs.observationPhotos,
+          "ObservationPhoto",
+          ObservationPhoto.mapPhotoForUpload,
+          null,
+          inatjs.photos.create,
+          realm,
+          options
+        )
+        : null
+    ] );
 
-      EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
-        obs.uuid,
-        0.3
-      ]] );
+    const wasPreviouslySynced = obs.wasSynced( );
+    const uploadParams = {
+      observation: { ...newObs },
+      fields: { id: true }
+    };
 
-      const { uuid: obsUUID } = response.results[0];
-      await Promise.all( [
-        Observation.markRecordUploaded( obs.uuid, "Observation", response, realm ),
-        // Next, attach the uploaded photos/sounds to the uploaded observation
-        hasPhotos
-          ? Observation.uploadEvidence(
-            obs.observationPhotos,
-            "ObservationPhoto",
-            ObservationPhoto.mapPhotoForAttachingToObs,
-            obsUUID,
-            inatjs.observation_photos.create,
-            realm,
-            options,
-            true
-          ).then( () => {
-            EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
-              obs.uuid,
-              hasSounds
-                ? 0.2
-                : 0.4
-            ]] );
-          } )
-          : null,
-        hasSounds
-          ? Observation.uploadEvidence(
-            obs.observationSounds,
-            "ObservationSound",
-            ObservationSound.mapSoundForAttachingToObs,
-            obsUUID,
-            inatjs.observation_sounds.create,
-            realm,
-            options,
-            true
-          ).then( () => {
-            EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
-              obs.uuid,
-              hasPhotos
-                ? 0.2
-                : 0.4
-            ]] );
-          } )
-          : null
-      ] );
-
-      if ( !hasPhotos && !hasSounds ) {
-        EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
-          obs.uuid,
-          0.4
-        ]] );
-      }
-
-      return response;
-    } catch ( error ) {
-      EventRegister.emit( "INCREMENT_OBSERVATIONS_PROGRESS", [[
-        obs.uuid,
-        -1
-      ]] );
-      throw error;
+    if ( wasPreviouslySynced ) {
+      response = await updateObservation( {
+        ...uploadParams,
+        id: newObs.uuid,
+        ignore_photos: true
+      }, options );
+    } else {
+      response = await createObservation( uploadParams, options );
     }
+
+    const { uuid: obsUUID } = response.results[0];
+
+    await Promise.all( [
+      Observation.markRecordUploaded( obs.uuid, "Observation", response, realm ),
+      // Next, attach the uploaded photos/sounds to the uploaded observation
+      hasPhotos
+        ? Observation.uploadEvidence(
+          obs.observationPhotos,
+          "ObservationPhoto",
+          ObservationPhoto.mapPhotoForAttachingToObs,
+          obsUUID,
+          inatjs.observation_photos.create,
+          realm,
+          options,
+          obsUUID,
+          true,
+          true
+        )
+        : null
+    ] );
+    return response;
   };
 
   static schema = {

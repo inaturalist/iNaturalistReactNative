@@ -155,7 +155,12 @@ const Toolbar = ( {
           {statusText && (
             <View className="flex ml-1 shrink">
               <View className="flex-row items-center shrink">
-                <Body2 onPress={getSyncIcon( ) === "sync-unsynced" && handleSyncButtonPress}>
+                <Body2 onPress={( ) => {
+                  if ( getSyncIcon( ) === "sync-unsynced" ) {
+                    handleSyncButtonPress( );
+                  }
+                }}
+                >
                   {statusText}
                 </Body2>
                 {( uploadComplete && !uploadError ) && (

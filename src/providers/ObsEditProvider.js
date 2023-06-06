@@ -58,25 +58,22 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setGroupedPhotos( [] );
   }, [] );
 
-  useEffect( () => {
+  useEffect( ( ) => {
+    const currentProgress = uploadProgress;
     const progressListener = EventRegister.addEventListener(
-      "INCREMENT_OBSERVATIONS_PROGRESS",
+      "INCREMENT_SINGLE_OBSERVATION_PROGRESS",
       increments => {
-        setUploadProgress( currentProgress => {
-          increments.forEach( ( [uuid, increment] ) => {
-            currentProgress[uuid] = currentProgress[uuid]
-              ? currentProgress[uuid]
-              : 0;
-            currentProgress[uuid] += increment;
-          } );
-          return { ...currentProgress };
-        } );
+        const uuid = increments[0];
+        const increment = increments[1];
+
+        currentProgress[uuid] = ( uploadProgress[uuid] || 0 ) + increment;
+        setUploadProgress( currentProgress );
       }
     );
     return () => {
       EventRegister.removeEventListener( progressListener );
     };
-  }, [] );
+  }, [uploadProgress] );
 
   const allObsPhotoUris = useMemo(
     ( ) => [...cameraPreviewUris, ...galleryUris],
@@ -298,27 +295,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const startSingleUpload = async observation => {
       setLoading( true );
-      const { uuid } = observation;
-      setUploadProgress( {
-        ...uploadProgress,
-        [uuid]: 0.5
-      } );
       const response = await uploadObservation( observation );
       if ( Object.keys( response ).length === 0 ) {
         return;
       }
-      // TODO: mostly making sure UI presentation works at the moment, but we will
-      // need to figure out what counts as progress towards an observation uploading
-      // and add that functionality.
-      // maybe uploading an observation is 0.33, starting to upload photos is 0.5,
-      // checking for sounds is 0.66 progress?
-      // and we need a way to track this progress from the Observation.uploadObservation function
-
       setLoading( false );
-      setUploadProgress( {
-        ...uploadProgress,
-        [uuid]: 1
-      } );
     };
 
     const downloadRemoteObservationsFromServer = async ( ) => {

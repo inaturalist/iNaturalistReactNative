@@ -1,6 +1,7 @@
 // @flow
 
 import inatjs from "inaturalistjs";
+import emitUploadProgress from "sharedHelpers/emitEvent";
 
 import handleError from "./error";
 
@@ -73,7 +74,9 @@ const createObservation = async (
   opts: Object = {}
 ): Promise<?any> => {
   try {
-    return await inatjs.observations.create( params, opts );
+    const obs = await inatjs.observations.create( params, opts );
+    emitUploadProgress( params.observation.uuid, 0.5 );
+    return obs;
   } catch ( e ) {
     return handleError( e );
   }
@@ -84,7 +87,9 @@ const updateObservation = async (
   opts: Object = {}
 ): Promise<?any> => {
   try {
-    return await inatjs.observations.update( params, opts );
+    const obs = await inatjs.observations.update( params, opts );
+    emitUploadProgress( params.observation.uuid, 0.5 );
+    return obs;
   } catch ( e ) {
     return handleError( e );
   }
@@ -92,11 +97,19 @@ const updateObservation = async (
 
 const createOrUpdateEvidence = async (
   apiEndpoint: Function,
+  uuid: string,
+  trackProgress: boolean,
   params: Object = {},
   opts: Object = {}
 ): Promise<?any> => {
   try {
-    return await apiEndpoint( params, opts );
+    const evidence = await apiEndpoint( params, opts );
+    // only emit progress when an observation photo is attached
+    // to an observation, not when the photo is created on the website
+    if ( trackProgress ) {
+      emitUploadProgress( uuid, 1 );
+    }
+    return evidence;
   } catch ( e ) {
     return handleError( e );
   }

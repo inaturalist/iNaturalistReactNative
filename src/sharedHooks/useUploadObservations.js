@@ -6,7 +6,6 @@ import {
 } from "@sayem314/react-native-keep-awake";
 import { RealmContext } from "providers/contexts";
 import { useEffect, useState } from "react";
-import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import useApiToken from "sharedHooks/useApiToken";
 
@@ -16,11 +15,11 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   const [uploadInProgress, setUploadInProgress] = useState( false );
   const [shouldUpload, setShouldUpload] = useState( false );
   const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
-  const [progress, setProgress] = useState( 0 );
   const [error, setError] = useState( null );
+  const [uploads, setUploads] = useState( [] );
+  const [uploadedUUIDs, setUploadedUUIDS] = useState( [] );
   const realm = useRealm( );
   const apiToken = useApiToken( );
-  const [totalUploadCount, setTotalUploadCount] = useState( 0 );
 
   const cleanup = ( ) => {
     setUploadInProgress( false );
@@ -28,23 +27,14 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
     setCurrentUploadIndex( 0 );
     setError( null );
     deactivateKeepAwake( );
-    setProgress( 0 );
-    setTotalUploadCount( 0 );
   };
 
   useEffect( ( ) => {
-    if ( shouldUpload ) {
-      EventRegister.emit(
-        "INCREMENT_OBSERVATIONS_PROGRESS",
-        allObsToUpload.map( observation => [observation.uuid, 0] )
-      );
-    }
-  }, [shouldUpload, allObsToUpload] );
-
-  useEffect( ( ) => {
     const upload = async observationToUpload => {
-      const increment = ( 1 / allObsToUpload.length ) / 2;
-      setProgress( currentProgress => currentProgress + increment );
+      setUploadedUUIDS( [
+        ...uploadedUUIDs,
+        observationToUpload.uuid
+      ] );
       try {
         await Observation.uploadObservation(
           observationToUpload,
@@ -55,12 +45,6 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
         console.warn( e );
         setError( e.message );
       }
-      setProgress( currentProgress => {
-        if ( currentUploadIndex === allObsToUpload.length - 1 ) {
-          return 1;
-        }
-        return currentProgress + increment;
-      } );
       setCurrentUploadIndex( currentIndex => currentIndex + 1 );
     };
 
@@ -71,16 +55,23 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
       return;
     }
 
-    setTotalUploadCount( allObsToUpload.length );
+    if ( allObsToUpload.length >= uploads.length ) {
+      setUploads( allObsToUpload );
+    }
     activateKeepAwake( );
     setUploadInProgress( true );
-    upload( observationToUpload );
+    // only try to upload every observation once
+    if ( !uploadedUUIDs.includes( observationToUpload.uuid ) ) {
+      upload( observationToUpload );
+    }
   }, [
+    uploadedUUIDs,
     allObsToUpload,
     apiToken,
     shouldUpload,
     currentUploadIndex,
-    realm
+    realm,
+    uploads
   ] );
 
   // // Fake upload in progress
@@ -110,10 +101,8 @@ const useUploadObservations = ( allObsToUpload: Array<Object> ): Object => {
   return {
     uploadInProgress,
     error,
-    progress,
     stopUpload: cleanup,
     currentUploadIndex,
-    totalUploadCount,
     startUpload: ( ) => setShouldUpload( true ),
     allObsToUpload
   };

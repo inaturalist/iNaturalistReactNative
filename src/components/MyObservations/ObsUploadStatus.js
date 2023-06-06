@@ -38,6 +38,9 @@ const ObsUploadStatus = ( {
   const isConnected = useIsConnected( );
   const { t } = useTranslation( );
 
+  const totalProgressIncrements = 1 + observation.observationPhotos.length;
+  const currentProgress = uploadProgress?.[observation.uuid];
+
   const displayUploadStatus = ( ) => {
     const obsStatus = (
       <ObsStatus
@@ -48,8 +51,8 @@ const ObsUploadStatus = ( {
       />
     );
 
-    const progress = uploadProgress?.[observation.uuid];
-    if ( !observation.id || typeof progress === "number" ) {
+    if ( !observation.id || typeof currentProgress === "number" ) {
+      const progress = currentProgress / totalProgressIncrements;
       return (
         <UploadStatus
           progress={progress || 0}

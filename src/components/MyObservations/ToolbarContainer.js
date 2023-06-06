@@ -3,11 +3,9 @@
 import { useNavigation } from "@react-navigation/native";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect } from "react";
-import {
-  Alert,
-  Dimensions, PixelRatio
-} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { Alert, Dimensions, PixelRatio } from "react-native";
+import { EventRegister } from "react-native-event-listeners";
 import {
   useCurrentUser,
   useIsConnected,
@@ -39,11 +37,20 @@ const ToolbarContainer = ( {
     stopUpload,
     uploadInProgress,
     startUpload,
-    progress,
     error: uploadError,
     currentUploadIndex,
-    totalUploadCount
+    allObsToUpload
   } = uploadStatus;
+  const [totalUploadCount, setTotalUploadCount] = useState( allObsToUpload.length );
+  const [totalProgressIncrements, setTotalProgressIncrements] = useState(
+    allObsToUpload.length + allObsToUpload
+      .reduce( ( count, current ) => count + current.observationPhotos.length, 0 )
+  );
+  const [totalUploadProgress, setTotalUploadProgress] = useState( 0 );
+
+  const progress = totalProgressIncrements > 0
+    ? totalUploadProgress / totalProgressIncrements
+    : 0;
   const uploadComplete = progress === 1;
 
   const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
@@ -93,6 +100,9 @@ const ToolbarContainer = ( {
     }
 
     if ( numUnuploadedObs > 0 ) {
+      setTotalUploadCount( allObsToUpload.length );
+      setTotalProgressIncrements( allObsToUpload.length + allObsToUpload
+        .reduce( ( count, current ) => count + current.observationPhotos.length, 0 ) );
       startUpload( );
     } else {
       syncObservations( );
@@ -117,10 +127,26 @@ const ToolbarContainer = ( {
       navigation.addListener( "blur", ( ) => {
         uploadStatus.stopUpload( );
         obsEditContext?.setUploadProgress( { } );
+        setTotalUploadProgress( 0 );
+        setTotalProgressIncrements( 0 );
+        setTotalUploadCount( 0 );
       } );
     },
     [navigation, uploadStatus, obsEditContext]
   );
+
+  useEffect( ( ) => {
+    const progressListener = EventRegister.addEventListener(
+      "INCREMENT_TOTAL_UPLOAD_PROGRESS",
+      currentProgress => {
+        const updatedProgress = totalUploadProgress + currentProgress;
+        setTotalUploadProgress( updatedProgress );
+      }
+    );
+    return ( ) => {
+      EventRegister.removeEventListener( progressListener );
+    };
+  }, [totalUploadProgress] );
 
   return (
     <Toolbar
