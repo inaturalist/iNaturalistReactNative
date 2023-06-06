@@ -687,6 +687,12 @@ UPLOAD-X-OBSERVATIONS = UPLOAD {$count ->
     *[other] {$count} OBSERVATIONS
 }
 
+# Shows the number of observations a user is about to import
+IMPORT-X-OBSERVATIONS = IMPORT {$count ->
+    [one] 1 OBSERVATION
+    *[other] {$count} OBSERVATIONS
+}
+
 # Describes whether a user made this observation from web, iOS, or Android
 Uploaded-via-application = Uploaded via: { $application }
 
