@@ -251,13 +251,11 @@ class Observation extends Realm.Object {
     apiEndpoint: Function,
     realm: any,
     options: Object,
-    observationUUID: string,
-    trackProgress: boolean
+    observationUUID: string
   ) => {
     const response = await createOrUpdateEvidence(
       apiEndpoint,
       observationUUID,
-      trackProgress,
       params,
       options
     );
@@ -275,8 +273,7 @@ class Observation extends Realm.Object {
     realm: any,
     options: Object,
     observationUUID: string,
-    forceUpload: boolean,
-    trackProgress: boolean = false
+    forceUpload: boolean
   ): Promise<any> => {
     // only try to upload evidence which is not yet on the server
     const unsyncedEvidence = forceUpload
@@ -306,8 +303,7 @@ class Observation extends Realm.Object {
         apiEndpoint,
         realm,
         options,
-        observationUUID,
-        trackProgress
+        observationUUID
       );
     } ) );
     // eslint-disable-next-line consistent-return
@@ -315,6 +311,9 @@ class Observation extends Realm.Object {
   };
 
   static uploadObservation = async ( obs, apiToken, realm ) => {
+    // every observation and observation photo counts for a total of 1 progress
+    // we're showing progress in 0.5 increments: when an upload of obs/obsPhoto starts
+    // and when the upload of obs/obsPhoto successfully completes
     emitUploadProgress( obs.uuid, 0.5 );
     const obsToUpload = Observation.mapObservationForUpload( obs );
     const options = { api_token: apiToken };
@@ -378,7 +377,6 @@ class Observation extends Realm.Object {
           realm,
           options,
           obsUUID,
-          true,
           true
         )
         : null

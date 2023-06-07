@@ -98,17 +98,13 @@ const updateObservation = async (
 const createOrUpdateEvidence = async (
   apiEndpoint: Function,
   uuid: string,
-  trackProgress: boolean,
   params: Object = {},
   opts: Object = {}
 ): Promise<?any> => {
   try {
+    emitUploadProgress( uuid, 0.5 );
     const evidence = await apiEndpoint( params, opts );
-    // only emit progress when an observation photo is attached
-    // to an observation, not when the photo is created on the website
-    if ( trackProgress ) {
-      emitUploadProgress( uuid, 1 );
-    }
+    emitUploadProgress( uuid, 0.5 );
     return evidence;
   } catch ( e ) {
     return handleError( e );
