@@ -380,8 +380,6 @@ const registerUser = async ( user: Object ): any => {
   const api = createAPI();
   const response = await api.post( "/users.json", formData );
 
-  console.log( response, "response" );
-
   if ( !response.ok ) {
     console.error(
       "registerUser failed when calling /users.json - ",

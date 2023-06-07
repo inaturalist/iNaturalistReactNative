@@ -6,6 +6,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import { Animated, Platform } from "react-native";
+import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useDeviceOrientation } from "sharedHooks";
 
 import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
@@ -102,19 +103,19 @@ const MyObservations = ( {
   useEffect( ( ) => {
     const calculateGridItemWidth = columns => {
       const combinedGutter = ( columns + 1 ) * GUTTER;
-      return Math.round(
+      return Math.floor(
         ( screenWidth - combinedGutter ) / columns
       );
     };
 
     const calculateNumColumns = ( ) => {
-      if ( layout === "list" || screenWidth <= 320 ) {
+      if ( layout === "list" || screenWidth <= BREAKPOINTS.md ) {
         return 1;
       }
       if ( isLandscapeMode ) {
         return 6;
       }
-      if ( screenWidth <= 744 ) {
+      if ( screenWidth <= BREAKPOINTS.xl ) {
         return 2;
       }
       return 4;
@@ -212,7 +213,7 @@ const MyObservations = ( {
               key={`${numColumns}-${screenWidth}-${screenHeight}`}
               estimatedItemSize={
                 layout === "grid"
-                  ? 165
+                  ? gridItemWidth
                   : 98
               }
               testID="MyObservationsAnimatedList"

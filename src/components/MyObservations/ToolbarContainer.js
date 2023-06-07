@@ -114,12 +114,9 @@ const ToolbarContainer = ( {
 
   const statusText = getStatusText( );
 
-  const getSyncIcon = ( ) => {
-    if ( ( numUnuploadedObs > 0 && !uploadInProgress ) || uploadError ) {
-      return "sync-unsynced";
-    }
-    return "sync";
-  };
+  const needsSync = ( ) => (
+    ( numUnuploadedObs > 0 && !uploadInProgress ) || uploadError
+  );
 
   // clear upload status when leaving screen
   useEffect(
@@ -161,7 +158,7 @@ const ToolbarContainer = ( {
       navToExplore={navToExplore}
       toggleLayout={toggleLayout}
       layout={layout}
-      getSyncIcon={getSyncIcon}
+      needsSync={needsSync}
     />
   );
 };

@@ -92,7 +92,7 @@ const GroupPhotos = ( {
         <Button
           className="mt-2 mx-4"
           level="focus"
-          text={t( "UPLOAD-X-OBSERVATIONS", { count: groupedPhotos.length } )}
+          text={t( "IMPORT-X-OBSERVATIONS", { count: groupedPhotos.length } )}
           onPress={navToObsEdit}
           testID="GroupPhotos.next"
         />
