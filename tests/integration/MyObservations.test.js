@@ -1,7 +1,7 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
-import { screen, waitFor } from "@testing-library/react-native";
+import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import initI18next from "i18n/initI18next";
 import i18next from "i18next";
@@ -25,7 +25,7 @@ describe( "MyObservations", ( ) => {
     await initI18next( );
   } );
 
-  beforeEach( signOut );
+  // beforeEach( signOut );
 
   afterEach( ( ) => {
     jest.clearAllMocks( );
@@ -70,10 +70,13 @@ describe( "MyObservations", ( ) => {
   } );
 
   describe( "when signed in", ( ) => {
+    const mockUser = factory( "LocalUser" );
+
     beforeEach( async ( ) => {
-      const mockUser = factory( "LocalUser" );
       await signIn( mockUser );
     } );
+
+    afterEach( signOut );
 
     it( "should make a request to observations/updates", async ( ) => {
       // Let's make sure the mock hasn't already been used
@@ -81,6 +84,41 @@ describe( "MyObservations", ( ) => {
       renderAppWithComponent( <MyObservationsContainer /> );
       expect( await screen.findByText( /Welcome back/ ) ).toBeTruthy();
       expect( inatjs.observations.updates ).toHaveBeenCalled();
+    } );
+
+    describe( "with observations", ( ) => {
+      const mockObservations = [
+        factory( "LocalObservation", {
+          comments: [
+            factory( "LocalComment" ),
+            factory( "LocalComment" ),
+            factory( "LocalComment" )
+          ]
+        } ),
+        factory( "LocalObservation" )
+      ];
+
+      beforeEach( async () => {
+        // Write local observation to Realm
+        await global.realm.write( () => {
+          mockObservations.forEach( mockObservation => {
+            global.realm.create( "Observation", mockObservation );
+          } );
+        } );
+      } );
+
+      it( "renders grid view on button press", async () => {
+        expect( global.realm.objects( "Observation" ).length ).toBeGreaterThan( 0 );
+        renderAppWithComponent( <MyObservationsContainer /> );
+        const button = await screen.findByTestId( "MyObservationsToolbar.toggleGridView" );
+        fireEvent.press( button );
+        // Awaiting the first observation because using await in the forEach errors out
+        const firstObs = mockObservations[0];
+        await screen.findByTestId( `MyObservations.gridItem.${firstObs.uuid}` );
+        mockObservations.forEach( obs => {
+          expect( screen.getByTestId( `MyObservations.gridItem.${obs.uuid}` ) ).toBeTruthy();
+        } );
+      } );
     } );
   } );
 
