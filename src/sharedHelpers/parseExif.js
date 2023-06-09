@@ -44,8 +44,9 @@ export const parseExif = async ( photoUri: ?string ): Promise<Object> => {
 };
 
 interface ExifToWrite {
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
+  positional_accuracy?: number;
 }
 
 export const writeExifToFile = async ( photoUri: ?string, exif: ExifToWrite ): Promise<Object> => {
