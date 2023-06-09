@@ -33,8 +33,7 @@ const EvidenceSection = ( ): Node => {
   const theme = useTheme( );
   const {
     currentObservation,
-    setPassesEvidenceTest,
-    writeExifToCameraRollPhotos
+    setPassesEvidenceTest
   } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
   const photoUris = obsPhotos
@@ -71,29 +70,9 @@ const EvidenceSection = ( ): Node => {
   const {
     latitude,
     longitude,
-    positionalAccuracy,
     hasLocation,
     shouldFetchLocation
   } = useLocationFetching( mountedRef );
-
-  useEffect( () => {
-    if ( !currentObservation || !hasLocation ) {
-      return;
-    }
-
-    // In theory we don't need to update any photos when this component is not mounted
-    if ( !mountedRef.current ) return;
-
-    // Update all photos taken via the app with the new fetched location.
-    writeExifToCameraRollPhotos( { latitude, longitude, positional_accuracy: positionalAccuracy } );
-  }, [
-    writeExifToCameraRollPhotos,
-    currentObservation,
-    hasLocation,
-    latitude,
-    longitude,
-    positionalAccuracy
-  ] );
 
   const displayPlaceName = ( ) => {
     let placeName = "";

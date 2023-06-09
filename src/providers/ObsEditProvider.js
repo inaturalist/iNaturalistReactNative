@@ -181,10 +181,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         if ( !cameraUri ) {
           console.error( `Couldn't find original camera URI for: ${uri}` );
         }
-
+        logger.info( "savePhotosToCameraGallery, saving cameraUri: ", cameraUri );
         return CameraRoll.save( cameraUri, { type: "photo", album: "Camera" } );
       } ) );
 
+      logger.info( "savePhotosToCameraGallery, savedUris: ", savedUris );
       // Save these camera roll URIs, so later on observation editor can update
       // the EXIF metadata of these photos, once we retrieve a location.
       setCameraRollUris( savedUris );
@@ -196,6 +197,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
       // Update all photos taken via the app with the new fetched location.
       cameraRollUris.forEach( uri => {
+        logger.info( "writeExifToCameraRollPhotos, writing exif for uri: ", uri );
         writeExifToFile( uri, exif );
       } );
     };
@@ -207,6 +209,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       ) );
       newObservation.observationPhotos = obsPhotos;
       setObservations( [newObservation] );
+      logger.info(
+        "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
+        localFilePaths
+      );
       await savePhotosToCameraGallery( localFilePaths );
     };
 
@@ -215,6 +221,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         async photo => ObservationPhoto.new( photo )
       ) );
       appendObsPhotos( obsPhotos );
+      logger.info(
+        "addCameraPhotosToCurrentObservation, calling savePhotosToCameraGallery with paths: ",
+        localFilePaths
+      );
       await savePhotosToCameraGallery( localFilePaths );
     };
 
@@ -260,19 +270,32 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       } );
     };
 
-    const saveObservation = async ( ) => {
+    function ensureRealm( ) {
       if ( !realm ) {
         throw new Error( "Gack, tried to save an observation without realm!" );
       }
-      return Observation.saveLocalObservationForUpload( currentObservation, realm );
+    }
+
+    const saveObservation = async observation => {
+      ensureRealm( );
+      await writeExifToCameraRollPhotos( {
+        latitude: observation.latitude,
+        longitude: observation.longitude,
+        positional_accuracy: observation.positionalAccuracy
+      } );
+      return Observation.saveLocalObservationForUpload( observation, realm );
     };
 
+    const saveCurrentObservation = async ( ) => saveObservation( currentObservation );
+
     const saveAllObservations = async ( ) => {
-      if ( !realm ) {
-        throw new Error( "Gack, tried to save an observation without realm!" );
-      }
+      ensureRealm( );
       setLoading( true );
       await Promise.all( observations.map( async observation => {
+        // Note that this should only happen after import when ObsEdit has
+        // multiple observations to save, none of which should have
+        // corresponding photos in cameraRollPhotos, so there's no need to
+        // write EXIF for those.
         await Observation.saveLocalObservationForUpload( observation, realm );
       } ) );
       setLoading( false );
@@ -297,7 +320,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const saveAndUploadObservation = async ( ) => {
-      const savedObservation = await saveObservation( );
+      const savedObservation = await saveCurrentObservation( );
       return uploadObservation( savedObservation );
     };
 
@@ -415,7 +438,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setEvidenceToAdd,
       addCameraPhotosToCurrentObservation,
       resetObsEditContext,
-      saveObservation,
+      saveCurrentObservation,
       saveAndUploadObservation,
       deleteLocalObservation,
       album,
@@ -442,8 +465,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       groupedPhotos,
       setGroupedPhotos,
       originalCameraUrisMap,
-      setOriginalCameraUrisMap,
-      writeExifToCameraRollPhotos
+      setOriginalCameraUrisMap
     };
   }, [
     currentObservation,
