@@ -25,7 +25,9 @@ class Identification extends Realm.Object {
     return {
       ...id,
       createdAt: id.created_at,
-      flags: id.flags.length > 0 ? Flag.mapApiToRealm( id.flags ) : [],
+      flags: id.flags.length > 0
+        ? Flag.mapApiToRealm( id.flags )
+        : [],
       taxon: Taxon.mapApiToRealm( id.taxon ),
       user: User.mapApiToRealm( id.user )
     };
@@ -62,7 +64,7 @@ class Identification extends Realm.Object {
         property: "identifications"
       }
     }
-  }
+  };
 }
 
 export default Identification;

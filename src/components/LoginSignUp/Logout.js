@@ -2,14 +2,14 @@
 
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "components/SharedComponents";
+import { Body1, Button } from "components/SharedComponents";
 import { Pressable, SafeAreaView, View } from "components/styledComponents";
 import { t } from "i18next";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
-  Dialog, Paragraph, Portal, Text
+  Dialog, Paragraph, Portal
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
@@ -100,7 +100,9 @@ const Logout = ( ): Node => {
       <SafeAreaView>
         {renderBackButton( )}
         <View className="self-center justify-center h-screen">
-          <Text testID="Login.loggedInAs">{t( "Logged-in-as", { username } )}</Text>
+          <Body1 className="text-white" testID="Login.loggedInAs">
+            {t( "Logged-in-as", { username } )}
+          </Body1>
           <Button
             level="focus"
             className="mt-5"

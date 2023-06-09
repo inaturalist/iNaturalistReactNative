@@ -87,14 +87,18 @@ module.exports = {
       }
     },
     colors: {
-      white: "#ffffff",
-      darkGray: "#454545",
-      inatGreen: "#74AC00",
       accessibleGreen: "#5D8017",
-      warningRed: "#9B1010",
-      lightGray: "#E8E8E8",
       black: "#000000",
+      darkGray: "#454545",
+      darkGrayDisabled: "#828181",
+      inatGreen: "#74AC00",
+      inatGreenDisabled: "#B9D580",
+      inatGreenDisabledDark: "#3A5600",
+      lightGray: "#E8E8E8",
+      warningRed: "#9B1010",
+      warningRedDisabled: "#b06365",
       warningYellow: "#E6A939",
+      white: "#ffffff",
 
       // Mostly for debugging
       red: "#FF0000",

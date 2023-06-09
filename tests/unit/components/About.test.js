@@ -15,9 +15,9 @@ describe( "email logs button", ( ) => {
     await initI18next( );
   } );
 
-  it( "should open the native email client", ( ) => {
+  it( "should open the native email client", async ( ) => {
     renderComponent( <About /> );
-    const debugLogButton = screen.getByText( /EMAIL DEBUG LOGS/ );
+    const debugLogButton = await screen.findByText( /EMAIL DEBUG LOGS/ );
     expect( debugLogButton ).toBeTruthy( );
     fireEvent.press( debugLogButton );
     expect( Mailer.mail ).toHaveBeenCalled( );

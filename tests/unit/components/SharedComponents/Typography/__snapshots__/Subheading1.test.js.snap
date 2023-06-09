@@ -3,19 +3,19 @@
 exports[`Subheading1 renders correctly 1`] = `
 <Text
   style={
-    Array [
-      Object {
+    [
+      {
         "fontFamily": "Whitney-Light",
       },
-      Array [
-        Object {
+      [
+        {
           "fontSize": 21,
           "lineHeight": 25,
         },
-        Object {
+        {
           "fontWeight": "300",
         },
-        Object {
+        {
           "color": "#454545",
         },
       ],

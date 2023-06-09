@@ -1,0 +1,12 @@
+New login screens, sharing photos w/ the app, and more!
+
+New
+* MediaViewer landscape support
+* Ability to share photos from other apps into iNat
+* Designed Log In screen
+* Designed Forgot Password screen
+* Rotate camera elements (but not layout) on phone rotation
+
+Fixed
+* Camera always takes photos with correct orientation in Android
+* Deleting a photo in camera no longer deletes all photos

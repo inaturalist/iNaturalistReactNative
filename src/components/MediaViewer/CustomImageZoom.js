@@ -1,27 +1,45 @@
 // @flow
 
-import { Image, View } from "components/styledComponents";
+import classnames from "classnames";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useRef } from "react";
-import { Dimensions } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Dimensions, Image } from "react-native";
 import ImageZoom from "react-native-image-pan-zoom";
 
 // lifted from this issue: https://github.com/ascoders/react-native-image-zoom/issues/42#issuecomment-734209924
-
-const { width, height } = Dimensions.get( "screen" );
-// $FlowIgnore
-const SELECTED_IMAGE_HEIGHT = height - 350;
 
 type Props = {
   source: Object
 }
 
-const ImageViewer = ( { source }: Props ): Node => {
+const CustomImageZoom = ( { source }: Props ): Node => {
   const scaleValue = useRef( 1 );
+  const [photoDimensions, setPhotoDimensions] = useState( {
+    width: 0,
+    height: 0
+  } );
+
+  const { width, height } = Dimensions.get( "screen" );
+  const aspectRatio = photoDimensions.width / photoDimensions.height;
+  const SELECTED_IMAGE_HEIGHT = Math.min( photoDimensions.height * aspectRatio, height ) - 150;
 
   const handleMove = ( { scale } ) => {
     scaleValue.current = scale;
   };
+
+  useEffect( ( ) => {
+    Image.getSize( source.uri, ( w, h ) => {
+      setPhotoDimensions( {
+        height: h,
+        width: w
+      } );
+    } );
+  }, [source] );
+
+  if ( !photoDimensions.width ) {
+    return null;
+  }
 
   return (
     <ImageZoom
@@ -38,16 +56,22 @@ const ImageViewer = ( { source }: Props ): Node => {
       onMove={handleMove}
     >
       <View
-        className="w-full h-full"
-        onStartShouldSetResponder={e => e.nativeEvent.touches.length < 2 && scaleValue.current <= 1}
+        onStartShouldSetResponder={
+          e => e.nativeEvent.touches.length < 2 && scaleValue.current <= 1
+        }
       >
+        {/* $FlowIgnore */}
         <Image
           source={source}
-          className="w-full h-full"
+          resizeMode="contain"
+          className={classnames(
+            "w-full h-full"
+          )}
+          accessibilityIgnoresInvertColors
         />
       </View>
     </ImageZoom>
   );
 };
 
-export default ImageViewer;
+export default CustomImageZoom;

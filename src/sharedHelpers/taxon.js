@@ -40,7 +40,9 @@ const capitalize = s => {
     `[A-z${lowerCaseChars}${upperCaseChars}]`
   );
   const firstLetterMatch = s.match( allCasePattern );
-  let firstLetterIndex = firstLetterMatch ? firstLetterMatch.index : 0;
+  let firstLetterIndex = firstLetterMatch
+    ? firstLetterMatch.index
+    : 0;
   // eslint-disable-next-line no-misleading-character-class
   const leadingContractionPattern = new RegExp(
     `^[a-z${

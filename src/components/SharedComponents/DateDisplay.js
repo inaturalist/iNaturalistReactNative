@@ -21,7 +21,9 @@ const DateDisplay = ( { dateString, label, classNameMargin }: Props ): React.Nod
         size={13}
       />
       <Body4 className="ml-[5px]">
-        {( label ? `${label} ` : "" ) + formatApiDatetime( dateString, t )}
+        {( label
+          ? `${label} `
+          : "" ) + formatApiDatetime( dateString, t )}
       </Body4>
     </View>
   );

@@ -1,23 +1,26 @@
 // @flow
 
-import { Body3, Heading4, INatIcon } from "components/SharedComponents";
-import { View } from "components/styledComponents";
-import { t } from "i18next";
+import {
+  Body3, Heading4, INatIcon, TextInputSheet
+} from "components/SharedComponents";
+import { Pressable, View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext } from "react";
-import RNPickerSelect from "react-native-picker-select";
+import React, { useContext, useState } from "react";
+import useTranslation from "sharedHooks/useTranslation";
 
-import Notes from "./Notes";
+import GeoprivacySheet from "./Sheets/GeoprivacySheet";
+import WildStatusSheet from "./Sheets/WildStatusSheet";
 
-type Props = {
-  scrollToInput: Function
-}
+const OtherDataSection = ( ): Node => {
+  const { t } = useTranslation( );
+  const [showGeoprivacySheet, setShowGeoprivacySheet] = useState( false );
+  const [showWildStatusSheet, setShowWildStatusSheet] = useState( false );
+  const [showNotesSheet, setShowNotesSheet] = useState( false );
 
-const OtherDataSection = ( { scrollToInput }: Props ): Node => {
   const {
     currentObservation,
-    updateObservationKey
+    updateObservationKeys
   } = useContext( ObsEditContext );
 
   const geoprivacyOptions = [{
@@ -34,18 +37,22 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
   }];
 
   // opposite of Seek (asking if wild, not if captive)
-  const captiveOptions = [{
-    label: t( "Organism-is-captive" ),
-    value: true
-  },
-  {
-    label: t( "Organism-is-wild" ),
-    value: false
-  }];
+  const captiveOptions = [
+    {
+      label: t( "Organism-is-wild" ),
+      value: false
+    },
+    {
+      label: t( "Organism-is-captive" ),
+      value: true
+    }];
 
-  const addNotes = text => updateObservationKey( "description", text );
-  const updateGeoprivacyStatus = value => updateObservationKey( "geoprivacy", value );
-  const updateCaptiveStatus = value => updateObservationKey( "captive_flag", value );
+  const updateGeoprivacyStatus = value => updateObservationKeys( {
+    geoprivacy: value
+  } );
+  const updateCaptiveStatus = value => updateObservationKeys( {
+    captive_flag: value
+  } );
 
   const currentGeoprivacyStatus = geoprivacyOptions
     .find( e => e.value === currentObservation.geoprivacy );
@@ -54,46 +61,73 @@ const OtherDataSection = ( { scrollToInput }: Props ): Node => {
 
   return (
     <View className="ml-5 mt-6">
+      {showGeoprivacySheet && (
+        <GeoprivacySheet
+          selectedValue={currentObservation.geoprivacy}
+          handleClose={( ) => setShowGeoprivacySheet( false )}
+          updateGeoprivacyStatus={updateGeoprivacyStatus}
+        />
+      )}
+      {showWildStatusSheet && (
+        <WildStatusSheet
+          selectedValue={currentObservation.captive_flag}
+          handleClose={( ) => setShowWildStatusSheet( false )}
+          updateCaptiveStatus={updateCaptiveStatus}
+        />
+      )}
       <Heading4>{t( "OTHER-DATA" )}</Heading4>
-      <RNPickerSelect
-        onValueChange={updateGeoprivacyStatus}
-        items={geoprivacyOptions}
-        useNativeAndroidPickerStyle={false}
-        value={currentObservation.geoprivacy}
+      <Pressable
+        className="flex-row flex-nowrap items-center ml-1 mt-5"
+        onPress={( ) => setShowGeoprivacySheet( true )}
+        accessibilityRole="button"
       >
-        <View className="flex-row flex-nowrap items-center ml-1 mt-5">
-          <INatIcon
-            name="globe-outline"
-            size={14}
-          />
-          <Body3 className="ml-5">
-            {t( "Geoprivacy" )}
-            {" "}
-            {currentGeoprivacyStatus?.label}
-          </Body3>
-        </View>
-      </RNPickerSelect>
-      <RNPickerSelect
-        onValueChange={updateCaptiveStatus}
-        items={captiveOptions}
-        useNativeAndroidPickerStyle={false}
-        value={currentObservation.captive_flag}
+        <INatIcon
+          name="globe-outline"
+          size={14}
+        />
+        <Body3 className="ml-5">
+          {t( "Geoprivacy" )}
+          {" "}
+          {currentGeoprivacyStatus?.label || geoprivacyOptions[0].label}
+        </Body3>
+      </Pressable>
+      <Pressable
+        className="flex-row flex-nowrap items-center ml-1 mt-5"
+        onPress={( ) => setShowWildStatusSheet( true )}
+        accessibilityRole="button"
       >
-        <View className="flex-row flex-nowrap items-center ml-1 mt-5">
-          <INatIcon
-            name="pot-outline"
-            size={14}
+        <INatIcon
+          name="pot-outline"
+          size={14}
+        />
+        <Body3 className="ml-5">
+          {currentCaptiveStatus?.label || captiveOptions[0].label}
+        </Body3>
+      </Pressable>
+      <View className="flex-row flex-nowrap items-center ml-1 mt-2.5">
+        {showNotesSheet && (
+          <TextInputSheet
+            handleClose={( ) => setShowNotesSheet( false )}
+            headerText={t( "NOTES" )}
+            snapPoints={[416]}
+            placeholder={t( "Add-optional-notes" )}
+            initialInput={currentObservation?.description}
+            confirm={textInput => updateObservationKeys( {
+              description: textInput
+            } )}
           />
-          <Body3 className="ml-5">
-            {currentCaptiveStatus?.label}
-          </Body3>
-        </View>
-      </RNPickerSelect>
-      <Notes
-        addNotes={addNotes}
-        description={currentObservation.description}
-        scrollToInput={scrollToInput}
-      />
+        )}
+        <INatIcon
+          size={14}
+          name="pencil-outline"
+        />
+        <Body3
+          onPress={( ) => setShowNotesSheet( true )}
+          className="pl-5 py-3"
+        >
+          {currentObservation?.description || t( "Add-optional-notes" )}
+        </Body3>
+      </View>
     </View>
   );
 };

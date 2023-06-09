@@ -7,15 +7,15 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { IconButton, useTheme } from "react-native-paper";
 import User from "realmModels/User";
-import useNumUnuploadedObservations from "sharedHooks/useNumUnuploadedObservations";
+import { useNumUnuploadedObservations, useTranslation } from "sharedHooks";
 
 import Onboarding from "./Onboarding";
 
 type Props = {
-  setLayout: Function;
+  toggleLayout: Function;
   layout: string,
   currentUser: ?Object,
   numObservations: number,
@@ -25,7 +25,7 @@ type Props = {
 }
 
 const Header = ( {
-  setLayout,
+  toggleLayout,
   layout,
   currentUser,
   numObservations,
@@ -63,26 +63,28 @@ const Header = ( {
           disabled={false}
           accessibilityState={{ disabled: false }}
         />
-        {numUnuploadedObs > 0 ? (
-          <View className="shrink">
+        {numUnuploadedObs > 0
+          ? (
+            <View className="shrink">
+              <Subheading1
+                className="mt-5"
+                testID="log-in-to-iNaturalist-text"
+              >
+                {t( "Log-in-to-contribute-and-sync" )}
+              </Subheading1>
+              <Heading1 className="mb-5">
+                { t( "X-observations", { count: numUnuploadedObs } ) }
+              </Heading1>
+            </View>
+          )
+          : (
             <Subheading1
-              className="mt-5"
-              testID="log-in-to-iNaturalist-text"
+              className="my-5 shrink"
+              testID="log-in-to-iNaturalist-text-no-observations"
             >
-              {t( "Log-in-to-contribute-and-sync" )}
+              {t( "Log-in-to-contribute-your-observations" )}
             </Subheading1>
-            <Heading1 className="mb-5">
-              { t( "X-observations", { count: numUnuploadedObs } ) }
-            </Heading1>
-          </View>
-        ) : (
-          <Subheading1
-            className="my-5 shrink"
-            testID="log-in-to-iNaturalist-text-no-observations"
-          >
-            {t( "Log-in-to-contribute-your-observations" )}
-          </Subheading1>
-        )}
+          )}
       </View>
       <Button
         onPress={( ) => navigation.navigate( "Login" )}
@@ -106,12 +108,14 @@ const Header = ( {
           setHeightAboveToolbar( height );
         }}
       >
-        {currentUser ? signedInContent( ) : signedOutContent( )}
+        {currentUser
+          ? signedInContent( )
+          : signedOutContent( )}
         <Onboarding />
       </View>
       {!hideToolbar && (
         <ToolbarContainer
-          setLayout={setLayout}
+          toggleLayout={toggleLayout}
           layout={layout}
           numUnuploadedObs={numUnuploadedObs}
           uploadStatus={uploadStatus}

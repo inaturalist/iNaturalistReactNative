@@ -58,7 +58,8 @@ const PhotoGallery = (): Node => {
     addGalleryPhotosToCurrentObservation,
     evidenceToAdd,
     setEvidenceToAdd,
-    album
+    album,
+    setGroupedPhotos
   } = useContext( ObsEditContext );
   const [showAlert, setShowAlert] = useState( false );
   const { params } = useRoute();
@@ -183,7 +184,10 @@ const PhotoGallery = (): Node => {
       navToObsEdit();
       return;
     }
-    navigation.navigate( "GroupPhotos", { selectedPhotos } );
+    setGroupedPhotos( selectedPhotos.map( photo => ( {
+      photos: [photo]
+    } ) ) );
+    navigation.navigate( "GroupPhotos" );
   };
 
   const renderEmptyList = () => {
@@ -203,7 +207,9 @@ const PhotoGallery = (): Node => {
     // update photo album
     const newOptions = {
       ...options,
-      groupTypes: album === null ? "All" : "Album"
+      groupTypes: album === null
+        ? "All"
+        : "Album"
     };
 
     if ( album !== null ) {

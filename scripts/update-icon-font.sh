@@ -12,7 +12,7 @@ if ! type react-native-asset > /dev/null; then
   exit
 fi
 
-bundle exec ruby scripts/clean-icon-svgs.rb src/images/icons/*.svg
+bundle exec ruby scripts/clean_icon_svgs.rb src/images/icons/*.svg
 
 # Generate the font file and the glyphmap
 fantasticon src/images/icons/ \

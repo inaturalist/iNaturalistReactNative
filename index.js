@@ -19,11 +19,14 @@ import { AppRegistry } from "react-native";
 import Config from "react-native-config";
 import { setJSExceptionHandler, setNativeExceptionHandler } from "react-native-exception-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { enableLatestRenderer } from "react-native-maps";
 import { startNetworkLogging } from "react-native-network-logger";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { name as appName } from "./app.json";
 import { log } from "./react-native-logs.config";
+
+enableLatestRenderer( );
 
 const logger = log.extend( "index.js" );
 
@@ -35,7 +38,11 @@ const jsErrorHandler = ( e, isFatal ) => {
   // possibly also related to error boundaries in React 16+:
   // https://github.com/a7ul/react-native-exception-handler/issues/60
   if ( !e.name && !e.message ) return;
-  logger.error( `JS Error: ${isFatal ? "Fatal:" : ""} ${e.stack}` );
+  if ( isFatal ) {
+    logger.error( `JS Error: Fatal: ${e.stack}` );
+  } else {
+    logger.error( `JS Error: ${e.stack}` );
+  }
 };
 
 // record JS exceptions; second parameter allows this to work in DEV mode
@@ -88,16 +95,16 @@ const AppWithProviders = ( ) => (
     <RealmProvider>
       <SafeAreaProvider>
         <INatPaperProvider>
-          <BottomSheetModalProvider>
-            <GestureHandlerRootView className="flex-1">
+          <GestureHandlerRootView className="flex-1">
+            <BottomSheetModalProvider>
               {/* NavigationContainer needs to be nested above ObsEditProvider */}
               <NavigationContainer>
                 <ObsEditProvider>
                   <App />
                 </ObsEditProvider>
               </NavigationContainer>
-            </GestureHandlerRootView>
-          </BottomSheetModalProvider>
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
         </INatPaperProvider>
       </SafeAreaProvider>
     </RealmProvider>

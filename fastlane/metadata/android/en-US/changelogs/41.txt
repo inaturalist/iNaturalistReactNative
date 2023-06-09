@@ -1,0 +1,8 @@
+Many UI updates
+
+* StandardCamera UI on tablets (close to done)
+* ObsEdit UI (close to done)
+* LocationPicker for ObsEdit (started)
+* AddID UI (close to done)
+* TaxonDetail UI (improved, Data tab TODO)
+* Updated React Native version

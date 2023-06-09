@@ -37,9 +37,13 @@ const FloatingActionBar = ( {
   const [keyboardHeight, setKeyboardHeight] = useState( 0 );
   const [keyboardOpen, setKeyboardOpen] = useState( false );
   const isBottom = position === "bottomEnd" || position === "bottomStart";
-  const start = isBottom ? 100 : -100;
+  const start = isBottom
+    ? 100
+    : -100;
   const animate = useMemo(
-    () => new Animated.Value( show ? start : 0 ),
+    () => new Animated.Value( show
+      ? start
+      : 0 ),
     [start, show]
   );
 
@@ -69,7 +73,9 @@ const FloatingActionBar = ( {
       useNativeDriver: true
     };
 
-    const toValue = show ? 0 : start;
+    const toValue = show
+      ? 0
+      : start;
 
     Animated.spring( animate, {
       ...sharedParams,
@@ -77,7 +83,9 @@ const FloatingActionBar = ( {
     } ).start();
   }, [keyboardOpen, keyboardHeight, position, show, animate, start] );
 
-  const effectiveKeyboardHeight = keyboardOpen ? keyboardHeight : 0;
+  const effectiveKeyboardHeight = keyboardOpen
+    ? keyboardHeight
+    : 0;
 
   const positionStyle = {};
 

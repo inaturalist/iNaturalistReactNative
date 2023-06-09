@@ -3,39 +3,28 @@
 exports[`UserIcon displays active user image correctly 1`] = `
 <Image
   accessibilityIgnoresInvertColors={true}
+  accessibilityRole="image"
   source={
-    Object {
+    {
       "uri": "some_uri",
     }
   }
   style={
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "borderBottomLeftRadius": 9999,
           "borderBottomRightRadius": 9999,
           "borderTopLeftRadius": 9999,
           "borderTopRightRadius": 9999,
         },
-        Object {
+        {
           "width": 40,
         },
-        Object {
+        {
           "height": 40,
         },
-        Object {
-          "borderBottomWidth": 3,
-          "borderLeftWidth": 3,
-          "borderRightWidth": 3,
-          "borderTopWidth": 3,
-        },
-        Object {
-          "borderBottomColor": "#74AC00",
-          "borderLeftColor": "#74AC00",
-          "borderRightColor": "#74AC00",
-          "borderTopColor": "#74AC00",
-        },
-        Object {
+        {
           "borderColor": "#74AC00",
           "borderWidth": 3,
         },
@@ -49,24 +38,25 @@ exports[`UserIcon displays active user image correctly 1`] = `
 exports[`UserIcon displays small user image correctly 1`] = `
 <Image
   accessibilityIgnoresInvertColors={true}
+  accessibilityRole="image"
   source={
-    Object {
+    {
       "uri": "some_uri",
     }
   }
   style={
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "borderBottomLeftRadius": 9999,
           "borderBottomRightRadius": 9999,
           "borderTopLeftRadius": 9999,
           "borderTopRightRadius": 9999,
         },
-        Object {
+        {
           "width": 22,
         },
-        Object {
+        {
           "height": 22,
         },
       ],
@@ -79,24 +69,25 @@ exports[`UserIcon displays small user image correctly 1`] = `
 exports[`UserIcon displays user image correctly 1`] = `
 <Image
   accessibilityIgnoresInvertColors={true}
+  accessibilityRole="image"
   source={
-    Object {
+    {
       "uri": "some_uri",
     }
   }
   style={
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "borderBottomLeftRadius": 9999,
           "borderBottomRightRadius": 9999,
           "borderTopLeftRadius": 9999,
           "borderTopRightRadius": 9999,
         },
-        Object {
+        {
           "width": 40,
         },
-        Object {
+        {
           "height": 40,
         },
       ],

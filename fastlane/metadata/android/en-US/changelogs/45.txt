@@ -1,0 +1,10 @@
+Designed sign up view and many bug fixes and minor UI updates
+
+* Only use photo EXIF when importing a photo
+* Toolbar upload text is now tappable
+* GroupPhotos should not show old photos
+* Alert when attempting to upload while offline
+* Avoid updating observation properties with each location fetch
+* Added actvitivy indicator to show that location is being fetched
+* Focus on text input when editing description
+* Made labels of radio bottom sheets tappable

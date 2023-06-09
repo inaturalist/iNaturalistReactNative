@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { InlineUser } from "components/SharedComponents";
+import initI18next from "i18n/initI18next";
 import React from "react";
 import useIsConnected from "sharedHooks/useIsConnected";
 
@@ -22,7 +23,8 @@ jest.mock( "@react-navigation/native", ( ) => {
 const mockUser = factory( "RemoteUser" );
 const mockUserWithoutImage = factory( "RemoteUser", { icon_url: null } );
 
-const consistentUser = { login: "some_login", icon_url: "some_icon_url" };
+const snapshotUser = { login: "some_login", icon_url: "some_icon_url" };
+const snapshotUserWithoutImage = { login: "some_login", icon_url: null };
 
 jest.mock(
   "components/SharedComponents/UserIcon/UserIcon",
@@ -33,11 +35,20 @@ jest.mock(
 );
 
 describe( "InlineUser", ( ) => {
+  beforeAll( async () => {
+    await initI18next();
+  } );
+
+  it( "should not have accessibility erros", () => {
+    const inlineUser = <InlineUser user={mockUser} />;
+    expect( inlineUser ).toBeAccessible();
+  } );
+
   it( "renders reliably", () => {
     // Snapshot test
-    render( <InlineUser user={consistentUser} /> );
-    // TODO: Enable this test when Typography is used instead of Text
-    // expect( screen ).toMatchSnapshot();
+    render( <InlineUser user={snapshotUser} /> );
+
+    expect( screen ).toMatchSnapshot();
   } );
 
   it( "displays user handle and image correctly", async ( ) => {
@@ -52,17 +63,6 @@ describe( "InlineUser", ( ) => {
     expect( screen.queryByTestId( "InlineUser.NoInternetPicture" ) ).not.toBeTruthy( );
   } );
 
-  it( "displays user handle and and fallback image correctly", async ( ) => {
-    render( <InlineUser user={mockUserWithoutImage} /> );
-
-    expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy();
-    // This icon appears after useIsConnected returns true
-    // so we have to use await and findByTestId
-    expect( await screen.findByTestId( "InlineUser.FallbackPicture" ) ).toBeTruthy();
-    expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();
-    expect( screen.queryByTestId( "InlineUser.NoInternetPicture" ) ).not.toBeTruthy();
-  } );
-
   it( "fires onPress handler", ( ) => {
     render( <InlineUser user={mockUser} /> );
 
@@ -71,6 +71,29 @@ describe( "InlineUser", ( ) => {
 
     expect( mockNavigate )
       .toHaveBeenCalledWith( "UserProfile", { userId: mockUser.id } );
+  } );
+
+  describe( "when user has no icon set", () => {
+    it( "displays user handle and fallback image correctly", async () => {
+      render( <InlineUser user={mockUserWithoutImage} /> );
+
+      expect( screen.getByText( `@${mockUserWithoutImage.login}` ) ).toBeTruthy();
+      // This icon appears after useIsConnected returns true
+      // so we have to use await and findByTestId
+      expect(
+        await screen.findByTestId( "InlineUser.FallbackPicture" )
+      ).toBeTruthy();
+      expect( screen.queryByTestId( "mockUserIcon" ) ).not.toBeTruthy();
+      expect(
+        screen.queryByTestId( "InlineUser.NoInternetPicture" )
+      ).not.toBeTruthy();
+    } );
+
+    it( "renders reliably", ( ) => {
+      // Snapshot test
+      render( <InlineUser user={snapshotUserWithoutImage} /> );
+      expect( screen ).toMatchSnapshot();
+    } );
   } );
 
   describe( "when offline", () => {
@@ -93,11 +116,10 @@ describe( "InlineUser", ( ) => {
       expect( screen.queryByTestId( "InlineUser.FallbackPicture" ) ).not.toBeTruthy( );
     } );
 
-    // TODO: Enable this test when the offline icon is from our icon design font
-    // it( "renders reliably", ( ) => {
-    //   // Snapshot test
-    //   render( <InlineUser user={consistentUser} /> );
-    //   expect( screen ).toMatchSnapshot();
-    // } );
+    it( "renders reliably", ( ) => {
+      // Snapshot test
+      render( <InlineUser user={snapshotUser} /> );
+      expect( screen ).toMatchSnapshot();
+    } );
   } );
 } );

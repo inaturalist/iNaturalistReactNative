@@ -3,12 +3,12 @@
 exports[`Divider should render correctly 1`] = `
 <View
   style={
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "height": 1,
         },
-        Object {
+        {
           "backgroundColor": "#E8E8E8",
         },
       ],

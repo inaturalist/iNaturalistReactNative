@@ -3,7 +3,7 @@
 import {
   BottomSheetModal
 } from "@gorhom/bottom-sheet";
-import BottomSheetStandardBackdrop from "components/SharedComponents/BottomSheetStandardBackdrop";
+import { BottomSheetStandardBackdrop } from "components/SharedComponents";
 import { BottomSheetTextInput, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {

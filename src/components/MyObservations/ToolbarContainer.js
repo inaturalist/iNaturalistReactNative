@@ -5,15 +5,20 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useEffect } from "react";
 import {
+  Alert,
   Dimensions, PixelRatio
 } from "react-native";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useTranslation from "sharedHooks/useTranslation";
+import {
+  useCurrentUser,
+  useIsConnected,
+  useObservationsUpdates,
+  useTranslation
+} from "sharedHooks";
 
 import Toolbar from "./Toolbar";
 
 type Props = {
-  setLayout: Function,
+  toggleLayout: Function,
   layout: string,
   numUnuploadedObs: number,
   uploadStatus: Object,
@@ -21,7 +26,7 @@ type Props = {
 }
 
 const ToolbarContainer = ( {
-  setLayout, layout, numUnuploadedObs,
+  toggleLayout, layout, numUnuploadedObs,
   uploadStatus,
   setShowLoginSheet
 }: Props ): Node => {
@@ -29,6 +34,7 @@ const ToolbarContainer = ( {
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const navigation = useNavigation( );
+  const isOnline = useIsConnected( );
   const {
     stopUpload,
     uploadInProgress,
@@ -43,6 +49,8 @@ const ToolbarContainer = ( {
   const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
 
   const syncObservations = obsEditContext?.syncObservations;
+
+  const { refetch } = useObservationsUpdates( false );
 
   const getStatusText = ( ) => {
     if ( uploadComplete ) {
@@ -71,6 +79,14 @@ const ToolbarContainer = ( {
   };
 
   const handleSyncButtonPress = ( ) => {
+    if ( !isOnline ) {
+      Alert.alert(
+        t( "Internet-Connection-Required" ),
+        t( "Please-try-again-when-you-are-connected-to-the-internet" )
+      );
+      return;
+    }
+
     if ( !currentUser ) {
       setShowLoginSheet( true );
       return;
@@ -80,26 +96,17 @@ const ToolbarContainer = ( {
       startUpload( );
     } else {
       syncObservations( );
+      refetch( );
     }
   };
 
   const navToExplore = ( ) => navigation.navigate( "Explore" );
 
-  const toggleLayout = ( ) => setLayout( currentView => {
-    if ( currentView === "list" ) {
-      return "grid";
-    }
-    return "list";
-  } );
-
   const statusText = getStatusText( );
 
-  const getSyncIcon = ( ) => {
-    if ( ( numUnuploadedObs > 0 && !uploadInProgress ) || uploadError ) {
-      return "sync-unsynced";
-    }
-    return "sync";
-  };
+  const needsSync = ( ) => (
+    ( numUnuploadedObs > 0 && !uploadInProgress ) || uploadError
+  );
 
   // clear upload status when leaving screen
   useEffect(
@@ -125,7 +132,7 @@ const ToolbarContainer = ( {
       navToExplore={navToExplore}
       toggleLayout={toggleLayout}
       layout={layout}
-      getSyncIcon={getSyncIcon}
+      needsSync={needsSync}
     />
   );
 };

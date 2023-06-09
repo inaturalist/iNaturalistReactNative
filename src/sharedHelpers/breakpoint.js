@@ -1,16 +1,22 @@
+import { reduce } from "lodash";
 import screens from "styles/tailwindScreens";
 
-const getBreakpoint = initialWidth => {
-  if ( initialWidth >= screens["2xl"].replace( "px", "" ) ) {
+export const BREAKPOINTS = reduce( screens, ( memo, widthString, breakpoint ) => {
+  memo[breakpoint] = parseInt( widthString.replace( "px", "" ), 10 );
+  return memo;
+}, { } );
+
+const getBreakpoint = screenWidth => {
+  if ( screenWidth >= BREAKPOINTS["2xl"] ) {
     return "2xl";
   }
-  if ( initialWidth >= screens.xl.replace( "px", "" ) ) {
+  if ( screenWidth >= BREAKPOINTS.xl ) {
     return "xl";
   }
-  if ( initialWidth >= screens.lg.replace( "px", "" ) ) {
+  if ( screenWidth >= BREAKPOINTS.lg ) {
     return "lg";
   }
-  if ( initialWidth >= screens.md.replace( "px", "" ) ) {
+  if ( screenWidth >= BREAKPOINTS.md ) {
     return "md";
   }
   return "sm";

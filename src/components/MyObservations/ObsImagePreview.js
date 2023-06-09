@@ -48,7 +48,9 @@ const ObsImagePreview = ( {
 }: Props ): Node => {
   const theme = useTheme();
   const hasMultiplePhotos = obsPhotosCount > 1;
-  const borderRadius = hasSmallBorderRadius ? "rounded-lg" : "rounded-2xl";
+  const borderRadius = hasSmallBorderRadius
+    ? "rounded-lg"
+    : "rounded-2xl";
 
   return (
     <View

@@ -1,14 +1,22 @@
 // @flow
 
+import { useIsFocused } from "@react-navigation/native";
 import { RealmContext } from "providers/contexts";
 import {
-  useEffect, useState
+  useEffect, useRef,
+  useState
 } from "react";
 import Observation from "realmModels/Observation";
 
 const { useRealm } = RealmContext;
 
 const useLocalObservations = ( ): Object => {
+  const isFocused = useIsFocused( );
+  // Use refs to maintain state without triggering re-renders of hook consumers
+  // when they have lost focus, which prevents other
+  // views from rendering when they have focus.
+  const stagedObservationList = useRef( [] );
+  const stagedObsToUpload = useRef( [] );
   const [observationList, setObservationList] = useState( [] );
   const [allObsToUpload, setAllObsToUpload] = useState( [] );
 
@@ -29,18 +37,30 @@ const useLocalObservations = ( ): Object => {
       // create an array of Realm objects... which will probably require some
       // degree of pagination in the future
       // setObservationList( _.compact( collection ) );
-      setObservationList( [...collection] );
+      stagedObservationList.current = [...collection];
 
       const unsyncedObs = Observation.filterUnsyncedObservations( realm );
 
-      setAllObsToUpload( Array.from( unsyncedObs ) );
+      stagedObsToUpload.current = Array.from( unsyncedObs );
+
+      if ( isFocused ) {
+        setObservationList( stagedObservationList.current );
+        setAllObsToUpload( stagedObsToUpload.current );
+      }
     } );
     // eslint-disable-next-line consistent-return
     return ( ) => {
       // remember to remove listeners to avoid async updates
       localObservations.removeAllListeners( );
     };
-  }, [allObsToUpload.length, realm] );
+  }, [isFocused, allObsToUpload.length, realm] );
+
+  useEffect( ( ) => {
+    if ( isFocused ) {
+      setObservationList( stagedObservationList.current );
+      setAllObsToUpload( stagedObsToUpload.current );
+    }
+  }, [isFocused] );
 
   return {
     observationList,

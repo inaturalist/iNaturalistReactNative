@@ -33,7 +33,7 @@ class Flag extends Realm.Object {
       resolved: "bool",
       uuid: "string?"
     }
-  }
+  };
 }
 
 export default Flag;

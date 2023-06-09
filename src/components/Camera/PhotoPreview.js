@@ -1,76 +1,114 @@
 // @flow
 import classnames from "classnames";
-import MediaViewerModal from "components/MediaViewer/MediaViewerModal";
-import PhotoCarousel from "components/SharedComponents/PhotoCarousel";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
+
+import PhotoCarousel, {
+  LARGE_PHOTO_DIM,
+  LARGE_PHOTO_GUTTER,
+  SMALL_PHOTO_DIM,
+  SMALL_PHOTO_GUTTER
+} from "./PhotoCarousel";
 
 type Props = {
-  photoUris: Array<string>,
-  setPhotoUris: Function,
-  savingPhoto: boolean,
-  screenBreakpoint: string
+  rotation?: {
+    value: number
+  },
+  isLandscapeMode?: boolean,
+  isLargeScreen?: boolean,
+  isTablet?: boolean,
+  savingPhoto: boolean
 }
 
 const PhotoPreview = ( {
-  photoUris,
-  setPhotoUris,
-  savingPhoto,
-  screenBreakpoint
+  isLandscapeMode,
+  isLargeScreen,
+  isTablet,
+  rotation,
+  savingPhoto
 }: Props ): Node => {
-  const { deletePhotoFromObservation } = useContext( ObsEditContext );
-  const [initialPhotoSelected, setInitialPhotoSelected] = useState( null );
-  const [mediaViewerVisible, setMediaViewerVisible] = useState( false );
-
-  const showModal = ( ) => setMediaViewerVisible( true );
-  const hideModal = ( ) => setMediaViewerVisible( false );
-
-  const handleSelection = photoUri => {
-    setInitialPhotoSelected( photoUri );
-    showModal( );
-  };
+  const {
+    cameraPreviewUris: photoUris,
+    deletePhotoFromObservation,
+    setMediaViewerUris,
+    setSelectedPhotoIndex
+  } = useContext( ObsEditContext );
+  const wrapperDim = isLargeScreen
+    ? LARGE_PHOTO_DIM + LARGE_PHOTO_GUTTER * 2
+    : SMALL_PHOTO_DIM + SMALL_PHOTO_GUTTER * 2;
 
   const deletePhoto = photoUri => {
-    deletePhotoFromObservation( photoUri, photoUris, setPhotoUris );
+    deletePhotoFromObservation( photoUri );
   };
 
-  const emptyDescription = ( ) => (
-    <Text className="text-white text-xl ml-3">
+  let noPhotosNotice = (
+    <Text
+      className={classnames(
+        "text-white",
+        "text-center",
+        "text-xl",
+        "w-full"
+      )}
+    >
       {t( "Photos-you-take-will-appear-here" )}
     </Text>
   );
+  if ( isTablet && !isLandscapeMode ) {
+    noPhotosNotice = (
+      <Text
+        className={classnames(
+          "text-white",
+          "text-center",
+          "text-xl",
+          "absolute",
+          "w-[500px]",
+          "-rotate-90",
+          "left-[-190px]",
+          "top-[50%]"
+        )}
+      >
+        {t( "Photos-you-take-will-appear-here" )}
+      </Text>
+    );
+  }
+
+  const wrapperStyle = { justifyContent: "center" };
+  if ( isTablet && !isLandscapeMode ) {
+    // $FlowIssue[prop-missing]
+    wrapperStyle.width = wrapperDim;
+  } else {
+    // $FlowIssue[prop-missing]
+    wrapperStyle.height = wrapperDim;
+    // $FlowIssue[prop-missing]
+    wrapperStyle.width = "100%";
+  }
 
   return (
-    <>
-      <MediaViewerModal
-        mediaViewerVisible={mediaViewerVisible}
-        hideModal={hideModal}
-        initialPhotoSelected={initialPhotoSelected}
-        photoUris={photoUris}
-        setPhotoUris={setPhotoUris}
-      />
-      <View className={classnames(
-        "bg-black pb-[18px] pt-[50px]",
-        {
-          "h-[110px]": ["sm", "md"].includes( screenBreakpoint ),
-          "h-[151px]": ["lg", "xl", "2xl"].includes( screenBreakpoint )
-        }
-      )}
-      >
-        <PhotoCarousel
-          deletePhoto={deletePhoto}
-          photoUris={photoUris}
-          emptyComponent={emptyDescription}
-          containerStyle="camera"
-          setSelectedPhotoIndex={handleSelection}
-          savingPhoto={savingPhoto}
-          screenBreakpoint={screenBreakpoint}
-        />
-      </View>
-    </>
+    <View
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={wrapperStyle}
+    >
+      {
+        photoUris.length === 0 && !savingPhoto
+          ? noPhotosNotice
+          : (
+            <PhotoCarousel
+              deletePhoto={deletePhoto}
+              photoUris={photoUris}
+              rotation={rotation}
+              setMediaViewerUris={setMediaViewerUris}
+              savingPhoto={savingPhoto}
+              isLargeScreen={isLargeScreen}
+              isTablet={isTablet}
+              isLandscapeMode={isLandscapeMode}
+              setSelectedPhotoIndex={setSelectedPhotoIndex}
+            />
+          )
+      }
+    </View>
   );
 };
 
