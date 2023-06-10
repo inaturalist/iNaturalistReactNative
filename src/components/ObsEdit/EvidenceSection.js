@@ -2,6 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
+import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
   Body3, Body4, Heading4, INatIcon
 } from "components/SharedComponents";
@@ -19,14 +20,12 @@ import React, {
 } from "react";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 import Photo from "realmModels/Photo";
-import useLocationFetching from "sharedHooks/useLocationFetching";
+import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
 import useTranslation from "sharedHooks/useTranslation";
 
 import DatePicker from "./DatePicker";
 import EvidenceList from "./EvidenceList";
 import AddEvidenceSheet from "./Sheets/AddEvidenceSheet";
-
-const DESIRED_LOCATION_ACCURACY = 4000000;
 
 const EvidenceSection = ( ): Node => {
   const { t } = useTranslation( );
@@ -68,17 +67,17 @@ const EvidenceSection = ( ): Node => {
   }, [] );
 
   const {
-    latitude,
-    longitude,
     hasLocation,
-    shouldFetchLocation
-  } = useLocationFetching( mountedRef );
+    isFetchingLocation
+  } = useCurrentObservationLocation( mountedRef );
+
+  const { latitude, longitude } = currentObservation;
 
   const displayPlaceName = ( ) => {
     let placeName = "";
     if ( currentObservation.place_guess ) {
       placeName = currentObservation.place_guess;
-    } else if ( shouldFetchLocation ) {
+    } else if ( isFetchingLocation ) {
       placeName = t( "Fetching-location" );
     } else if ( !latitude || !longitude ) {
       return t( "Add-Location" );
@@ -87,7 +86,7 @@ const EvidenceSection = ( ): Node => {
   };
 
   const displayLocation = ( ) => {
-    if ( shouldFetchLocation && ( !latitude || !longitude ) ) {
+    if ( isFetchingLocation && ( !latitude || !longitude ) ) {
       return t( "Stay-on-this-screen" );
     }
     if ( !latitude || !longitude ) {
@@ -137,14 +136,14 @@ const EvidenceSection = ( ): Node => {
   }, [currentObservation] );
 
   const passesEvidenceTest = useCallback( ( ) => {
-    if ( shouldFetchLocation ) {
+    if ( isFetchingLocation ) {
       return null;
     }
     if ( hasValidLocation( ) && hasValidDate( ) && hasPhotoOrSound( ) ) {
       return true;
     }
     return false;
-  }, [shouldFetchLocation, hasValidLocation, hasValidDate, hasPhotoOrSound] );
+  }, [isFetchingLocation, hasValidLocation, hasValidDate, hasPhotoOrSound] );
 
   useEffect( ( ) => {
     // we're only showing the Missing Evidence Sheet if location/date are missing
@@ -185,8 +184,8 @@ const EvidenceSection = ( ): Node => {
         onPress={navToLocationPicker}
       >
         <View className="w-[30px] items-center mr-1">
-          {shouldFetchLocation && <ActivityIndicator />}
-          <View className={shouldFetchLocation && "bottom-5"}>
+          {isFetchingLocation && <ActivityIndicator />}
+          <View className={isFetchingLocation && "bottom-5"}>
             <INatIcon size={14} name="map-marker-outline" />
           </View>
         </View>

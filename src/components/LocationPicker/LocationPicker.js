@@ -39,8 +39,8 @@ const { width, height } = Dimensions.get( "screen" );
 
 const DELTA = 0.2;
 const CROSSHAIRLENGTH = 254;
-const DESIRED_LOCATION_ACCURACY = 100;
-const REQUIRED_LOCATION_ACCURACY = 500000;
+export const DESIRED_LOCATION_ACCURACY = 100;
+export const REQUIRED_LOCATION_ACCURACY = 500000;
 
 type Props = {
   route: {

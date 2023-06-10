@@ -43,7 +43,8 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
       observations: obs,
       currentObservation: obs[0],
       updateObservationKeys: jest.fn( ),
-      setPassesIdentificationTest: jest.fn( )
+      setPassesIdentificationTest: jest.fn( ),
+      writeExifToCameraRollPhotos: jest.fn( )
     }}
     >
       {children}
