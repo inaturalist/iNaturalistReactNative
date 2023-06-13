@@ -98,12 +98,14 @@ const DetailsTab = ( { observation }: Props ): Node => {
           />
         </KebabMenu>
       </View>
-      <Map
-        obsLatitude={observation.latitude}
-        obsLongitude={observation.longitude}
-        mapHeight={230}
-        showMarker
-      />
+      { ( observation.latitude || observation.private_latitude ) && (
+        <Map
+          obsLatitude={observation.latitude}
+          obsLongitude={observation.longitude}
+          mapHeight={230}
+          showMarker
+        />
+      ) }
 
       <View className={`mt-[11px] ${sectionClass}`}>
         <ObservationLocation observation={observation} details />
@@ -141,7 +143,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
               qualityGrade,
               observationUUID,
               observation: {
-                date: observation._created_at,
+                date: observation.observed_on,
                 location: [observation.latitude, observation.longitude],
                 evidence: [observation.observationPhotos, observation.observationSounds],
                 taxon: observation.taxon,

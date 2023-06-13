@@ -2,6 +2,7 @@
 import { useRoute } from "@react-navigation/native";
 import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
 import DQAVoteButtons from "components/ObsDetails/DQAVoteButtons";
+import PlaceholderText from "components/PlaceholderText";
 import {
   Body3,
   BottomSheet,
@@ -179,18 +180,30 @@ const DataQualityAssessment = ( ): React.Node => {
 
   const checkTest = metric => {
     if ( observation ) {
-      if ( observation[metric] ) {
-        return true;
+      if ( metric === "date" ) {
+        return observation[metric] !== null;
       }
-      if ( metric === "id_supported" ) {
-        const taxonId = observation.taxon.id;
-        const supportedIDs = observation.identifications.filter(
-          identification => ( identification.taxon.id === taxonId )
-        ).length;
-        return supportedIDs >= 2;
+      if ( metric === "location" ) {
+        const removedNull = observation[metric]
+          .filter( value => ( value !== null ) );
+        return removedNull.length !== 0;
       }
-      if ( metric === "rank" && observation.taxon.rank_level <= 10 ) {
-        return true;
+      if ( metric === "evidence" ) {
+        const removedNull = observation[metric]
+          .filter( value => ( Object.keys( value ).length !== 0 ) );
+        return removedNull.length !== 0;
+      }
+      if ( observation.taxon ) {
+        if ( metric === "id_supported" ) {
+          const taxonId = observation.taxon.id;
+          const supportedIDs = observation.identifications.filter(
+            identification => ( identification.taxon.id === taxonId )
+          ).length;
+          return supportedIDs >= 2;
+        }
+        if ( metric === "rank" && observation.taxon.rank_level <= 10 ) {
+          return true;
+        }
       }
     }
     return false;
@@ -352,6 +365,7 @@ const DataQualityAssessment = ( ): React.Node => {
         <Divider />
 
         <View className="flex-row bg-lightGray px-[15px] py-[7px] mt-[20px]">
+          <PlaceholderText text="TODO" />
           <Body3 className="shrink">
             {t(
               "Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence"
