@@ -1,7 +1,10 @@
 // @flow
 import { useNavigation } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
-import { searchObservations } from "api/observations";
+import {
+  createObservation, createOrUpdateEvidence, searchObservations, updateObservation
+} from "api/observations";
+import inatjs from "inaturalistjs";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect,
@@ -11,6 +14,7 @@ import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
+import emitUploadProgress from "sharedHelpers/emitUploadProgress";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import useApiToken from "sharedHooks/useApiToken";
@@ -232,15 +236,165 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setLoading( false );
     };
 
-    const uploadObservation = async observation => {
+    const markRecordUploaded = ( recordUUID, type, response ) => {
+      if ( !response ) { return; }
+      const { id } = response.results[0];
+
+      const record = realm.objectForPrimaryKey( type, recordUUID );
+      realm?.write( ( ) => {
+        record.id = id;
+        record._synced_at = new Date( );
+      } );
+    };
+
+    const uploadToServer = async (
+      evidenceUUID: string,
+      type: string,
+      params: Object,
+      apiEndpoint: Function,
+      options: Object,
+      observationUUID?: string
+    ) => {
+      emitUploadProgress( observationUUID, 0.5 );
+      const response = await createOrUpdateEvidence(
+        apiEndpoint,
+        params,
+        options
+      );
+      if ( response ) {
+        emitUploadProgress( observationUUID, 0.5 );
+        markRecordUploaded( evidenceUUID, type, response );
+      }
+    };
+
+    const uploadEvidence = async (
+      evidence: Array<Object>,
+      type: string,
+      apiSchemaMapper: Function,
+      observationId: ?number,
+      apiEndpoint: Function,
+      options: Object,
+      observationUUID?: string,
+      forceUpload?: boolean
+    ): Promise<any> => {
+      // only try to upload evidence which is not yet on the server
+      const unsyncedEvidence = forceUpload
+        ? evidence
+        : evidence.filter( item => !item.wasSynced( ) );
+
+      const responses = await Promise.all( unsyncedEvidence.map( item => {
+        const currentEvidence = item.toJSON( );
+        const evidenceUUID = currentEvidence.uuid;
+
+        // Remove all null values, b/c the API doesn't seem to like them
+        const newPhoto = {};
+        const photo = currentEvidence?.photo;
+        Object.keys( photo ).forEach( k => {
+          if ( photo[k] !== null ) {
+            newPhoto[k] = photo[k];
+          }
+        } );
+
+        currentEvidence.photo = newPhoto;
+
+        const params = apiSchemaMapper( observationId, currentEvidence );
+        return uploadToServer(
+          evidenceUUID,
+          type,
+          params,
+          apiEndpoint,
+          options,
+          observationUUID
+        );
+      } ) );
+      // eslint-disable-next-line consistent-return
+      return responses[0];
+    };
+
+    const uploadObservation = async obs => {
+      setLoading( true );
       // don't bother trying to upload unless there's a logged in user
       if ( !currentUser ) { return {}; }
       if ( !apiToken ) {
         throw new Error( "Gack, tried to upload an observation without API token!" );
       }
       activateKeepAwake( );
-      const response = Observation.uploadObservation( observation, apiToken, realm );
+      // every observation and observation photo counts for a total of 1 progress
+      // we're showing progress in 0.5 increments: when an upload of obs/obsPhoto starts
+      // and when the upload of obs/obsPhoto successfully completes
+      emitUploadProgress( obs.uuid, 0.5 );
+      const obsToUpload = Observation.mapObservationForUpload( obs );
+      const options = { api_token: apiToken };
+
+      // Remove all null values, b/c the API doesn't seem to like them for some
+      // reason (might be an error with the API as of 20220801)
+      const newObs = {};
+      Object.keys( obsToUpload ).forEach( k => {
+        if ( obsToUpload[k] !== null ) {
+          newObs[k] = obsToUpload[k];
+        }
+      } );
+
+      let response;
+
+      // First upload the photos/sounds (before uploading the observation itself)
+      const hasPhotos = obs?.observationPhotos?.length > 0;
+
+      await Promise.all( [
+        hasPhotos
+          ? uploadEvidence(
+            obs.observationPhotos,
+            "ObservationPhoto",
+            ObservationPhoto.mapPhotoForUpload,
+            null,
+            inatjs.photos.create,
+            options
+          )
+          : null
+      ] );
+
+      const wasPreviouslySynced = obs.wasSynced( );
+      const uploadParams = {
+        observation: { ...newObs },
+        fields: { id: true }
+      };
+
+      if ( wasPreviouslySynced ) {
+        response = await updateObservation( {
+          ...uploadParams,
+          id: newObs.uuid,
+          ignore_photos: true
+        }, options );
+        emitUploadProgress( obs.uuid, 0.5 );
+      } else {
+        response = await createObservation( uploadParams, options );
+        emitUploadProgress( obs.uuid, 0.5 );
+      }
+
+      if ( !response ) {
+        return response;
+      }
+
+      const { uuid: obsUUID } = response.results[0];
+
+      await Promise.all( [
+        markRecordUploaded( obs.uuid, "Observation", response ),
+        // Next, attach the uploaded photos/sounds to the uploaded observation
+        hasPhotos
+          ? uploadEvidence(
+            obs.observationPhotos,
+            "ObservationPhoto",
+            ObservationPhoto.mapPhotoForAttachingToObs,
+            obsUUID,
+            inatjs.observation_photos.create,
+            options,
+            obsUUID,
+            true
+          )
+          : null
+      ] );
       deactivateKeepAwake( );
+      setLoading( false );
       return response;
     };
 
@@ -291,15 +445,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
 
       await Photo.deletePhoto( realm, photoUriToDelete );
-    };
-
-    const startSingleUpload = async observation => {
-      setLoading( true );
-      const response = await uploadObservation( observation );
-      if ( Object.keys( response ).length === 0 ) {
-        return;
-      }
-      setLoading( false );
     };
 
     const downloadRemoteObservationsFromServer = async ( ) => {
@@ -359,7 +504,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setLoading,
       unsavedChanges,
       syncObservations,
-      startSingleUpload,
       uploadProgress,
       setUploadProgress,
       saveAllObservations,

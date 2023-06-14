@@ -1,7 +1,6 @@
 // @flow
 
 import inatjs from "inaturalistjs";
-import emitUploadProgress from "sharedHelpers/emitEvent";
 
 import handleError from "./error";
 
@@ -74,9 +73,7 @@ const createObservation = async (
   opts: Object = {}
 ): Promise<?any> => {
   try {
-    const obs = await inatjs.observations.create( params, opts );
-    emitUploadProgress( params.observation.uuid, 0.5 );
-    return obs;
+    return await inatjs.observations.create( params, opts );
   } catch ( e ) {
     return handleError( e );
   }
@@ -87,9 +84,7 @@ const updateObservation = async (
   opts: Object = {}
 ): Promise<?any> => {
   try {
-    const obs = await inatjs.observations.update( params, opts );
-    emitUploadProgress( params.observation.uuid, 0.5 );
-    return obs;
+    return await inatjs.observations.update( params, opts );
   } catch ( e ) {
     return handleError( e );
   }
@@ -97,15 +92,11 @@ const updateObservation = async (
 
 const createOrUpdateEvidence = async (
   apiEndpoint: Function,
-  uuid: string,
   params: Object = {},
   opts: Object = {}
 ): Promise<?any> => {
   try {
-    emitUploadProgress( uuid, 0.5 );
-    const evidence = await apiEndpoint( params, opts );
-    emitUploadProgress( uuid, 0.5 );
-    return evidence;
+    return await apiEndpoint( params, opts );
   } catch ( e ) {
     return handleError( e );
   }

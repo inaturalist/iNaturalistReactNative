@@ -32,7 +32,7 @@ const ObsUploadStatus = ( {
   const theme = useTheme( );
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
-  const startSingleUpload = obsEditContext?.startSingleUpload;
+  const uploadObservation = obsEditContext?.uploadObservation;
   const uploadProgress = obsEditContext?.uploadProgress;
   const whiteColor = white && theme.colors.onPrimary;
   const isConnected = useIsConnected( );
@@ -58,7 +58,7 @@ const ObsUploadStatus = ( {
       return (
         <UploadStatus
           progress={progress || 0}
-          startSingleUpload={() => {
+          uploadObservation={() => {
             if ( !isConnected ) {
               Alert.alert(
                 t( "Internet-Connection-Required" ),
@@ -71,7 +71,7 @@ const ObsUploadStatus = ( {
               setShowLoginSheet( true );
               return;
             }
-            startSingleUpload( observation );
+            uploadObservation( observation );
           }}
           color={whiteColor}
           completeColor={whiteColor}
