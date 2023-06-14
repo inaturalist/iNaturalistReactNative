@@ -17,8 +17,10 @@ import Photo from "realmModels/Photo";
 import emitUploadProgress from "sharedHelpers/emitUploadProgress";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
-import useApiToken from "sharedHooks/useApiToken";
-import useCurrentUser from "sharedHooks/useCurrentUser";
+import {
+  useApiToken,
+  useCurrentUser
+} from "sharedHooks";
 
 import { log } from "../../react-native-logs.config";
 import { ObsEditContext, RealmContext } from "./contexts";
@@ -50,6 +52,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [mediaViewerUris, setMediaViewerUris] = useState( [] );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
   const [groupedPhotos, setGroupedPhotos] = useState( [] );
+  const [uploadInProgress, setUploadInProgress] = useState( false );
+  const [shouldUpload, setShouldUpload] = useState( false );
+  const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
+  const [error, setError] = useState( null );
+  const [uploads, setUploads] = useState( [] );
+  const [uploadedUUIDs, setUploadedUUIDS] = useState( [] );
 
   const resetObsEditContext = useCallback( ( ) => {
     setObservations( [] );
@@ -469,6 +477,48 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setLoading( false );
     };
 
+    const uploadMultipleObservations = allObsToUpload => {
+      setShouldUpload( true );
+      const upload = async observationToUpload => {
+        setUploadedUUIDS( [
+          ...uploadedUUIDs,
+          observationToUpload.uuid
+        ] );
+        try {
+          await uploadObservation( observationToUpload );
+        } catch ( e ) {
+          console.warn( e );
+          setError( e.message );
+        }
+        setCurrentUploadIndex( currentIndex => currentIndex + 1 );
+      };
+
+      const observationToUpload = allObsToUpload[currentUploadIndex];
+      const continueUpload = shouldUpload && observationToUpload && !!apiToken;
+
+      if ( !continueUpload ) {
+        return;
+      }
+
+      if ( allObsToUpload.length >= uploads.length ) {
+        setUploads( allObsToUpload );
+      }
+      activateKeepAwake( );
+      setUploadInProgress( true );
+      // only try to upload every observation once
+      if ( !uploadedUUIDs.includes( observationToUpload.uuid ) ) {
+        upload( observationToUpload );
+      }
+    };
+
+    const stopUpload = ( ) => {
+      setUploadInProgress( false );
+      setShouldUpload( false );
+      setCurrentUploadIndex( 0 );
+      setError( null );
+      deactivateKeepAwake( );
+    };
+
     return {
       createObservationNoEvidence,
       addObservations,
@@ -516,7 +566,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       selectedPhotoIndex,
       setSelectedPhotoIndex,
       groupedPhotos,
-      setGroupedPhotos
+      setGroupedPhotos,
+      stopUpload,
+      uploadMultipleObservations,
+      uploadInProgress,
+      error,
+      currentUploadIndex
     };
   }, [
     currentObservation,
@@ -547,7 +602,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     passesIdentificationTest,
     mediaViewerUris,
     selectedPhotoIndex,
-    groupedPhotos
+    groupedPhotos,
+    currentUploadIndex,
+    shouldUpload,
+    uploadedUUIDs,
+    uploads,
+    error,
+    uploadInProgress
   ] );
 
   return (

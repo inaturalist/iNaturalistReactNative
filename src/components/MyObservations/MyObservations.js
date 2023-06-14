@@ -26,7 +26,7 @@ type Props = {
   observations: Array<Object>,
   onEndReached: Function,
   toggleLayout: Function,
-  uploadStatus: Object,
+  allObsToUpload: Array<Object>,
   currentUser: ?Object,
   showLoginSheet: boolean,
   setShowLoginSheet: Function,
@@ -71,7 +71,7 @@ const MyObservations = ( {
   observations,
   onEndReached,
   toggleLayout,
-  uploadStatus,
+  allObsToUpload,
   currentUser,
   showLoginSheet,
   setShowLoginSheet
@@ -155,7 +155,7 @@ const MyObservations = ( {
       observation={item}
       layout={layout}
       gridItemWidth={gridItemWidth}
-      uploadStatus={uploadStatus}
+      allObsToUpload={allObsToUpload}
       setShowLoginSheet={setShowLoginSheet}
     />
   );
@@ -204,7 +204,7 @@ const MyObservations = ( {
               currentUser={currentUser}
               numObservations={observations.length}
               setHeightAboveToolbar={setHeightAboveToolbar}
-              uploadStatus={uploadStatus}
+              allObsToUpload={allObsToUpload}
               setShowLoginSheet={setShowLoginSheet}
             />
             <AnimatedFlashList

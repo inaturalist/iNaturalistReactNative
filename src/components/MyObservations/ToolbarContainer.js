@@ -19,13 +19,13 @@ type Props = {
   toggleLayout: Function,
   layout: string,
   numUnuploadedObs: number,
-  uploadStatus: Object,
+  allObsToUpload: Array<Object>,
   setShowLoginSheet: Function
 }
 
 const ToolbarContainer = ( {
   toggleLayout, layout, numUnuploadedObs,
-  uploadStatus,
+  allObsToUpload,
   setShowLoginSheet
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -37,11 +37,10 @@ const ToolbarContainer = ( {
   const {
     stopUpload,
     uploadInProgress,
-    startUpload,
+    uploadMultipleObservations,
     error: uploadError,
-    currentUploadIndex,
-    allObsToUpload
-  } = uploadStatus;
+    currentUploadIndex
+  } = obsEditContext;
   const [totalUploadCount, setTotalUploadCount] = useState( allObsToUpload.length );
   const [totalProgressIncrements, setTotalProgressIncrements] = useState(
     allObsToUpload.length + allObsToUpload
@@ -103,7 +102,7 @@ const ToolbarContainer = ( {
       setTotalProgressIncrements( allObsToUpload.length + allObsToUpload
         .reduce( ( count, current ) => count
          + current.observationPhotos.length, 0 ) );
-      startUpload( );
+      uploadMultipleObservations( allObsToUpload );
     } else {
       syncObservations( );
       refetch( );
@@ -122,14 +121,14 @@ const ToolbarContainer = ( {
   useEffect(
     ( ) => {
       navigation.addListener( "blur", ( ) => {
-        uploadStatus.stopUpload( );
+        stopUpload( );
         obsEditContext?.setUploadProgress( { } );
         setTotalUploadProgress( 0 );
         setTotalProgressIncrements( 0 );
         setTotalUploadCount( 0 );
       } );
     },
-    [navigation, uploadStatus, obsEditContext]
+    [navigation, obsEditContext, stopUpload]
   );
 
   useEffect( ( ) => {
