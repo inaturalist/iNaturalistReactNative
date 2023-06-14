@@ -107,7 +107,7 @@
   "Data-quality-assessment-location-specified": "Location specified",
   "Data-quality-assessment-has-photos-or-sounds": "Has Photos or Sounds",
   "Data-quality-assessment-id-supported-by-two-or-more": "Has ID supported by two or more",
-  "Data-quality-assessment-community-taxon-at-species-level-or-lower": "Community taxon at species level or lower",
+  "Data-quality-assessment-community-taxon-species-level-or-lower": "Community taxon at species level or lower",
   "Data-quality-assessment-date-is-accurate": "Date is accurate",
   "Data-quality-assessment-location-is-accurate": "Location is accurate",
   "Data-quality-assessment-organism-is-wild": "Organism is wild",
