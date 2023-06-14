@@ -468,6 +468,10 @@
     "comment": "Shows the number of observations a user can upload to iNat from my observations page",
     "val": "UPLOAD { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}"
   },
+  "IMPORT-X-OBSERVATIONS": {
+    "comment": "Shows the number of observations a user is about to import",
+    "val": "IMPORT { $count ->\n  [one] 1 OBSERVATION\n *[other] { $count } OBSERVATIONS\n}"
+  },
   "Uploaded-via-application": {
     "comment": "Describes whether a user made this observation from web, iOS, or Android",
     "val": "Uploaded via: { $application }"

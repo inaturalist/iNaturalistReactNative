@@ -1,0 +1,8 @@
+NEW
+
+* Photos should get written outside the app when taken
+
+FIXED
+
+* Column count should not change on rotation on phones
+* Updated button text on GroupPhotos

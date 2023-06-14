@@ -77,7 +77,10 @@ const MyObservations = ( {
   setShowLoginSheet
 }: Props ): Node => {
   const {
-    screenWidth, screenHeight, isLandscapeMode
+    isLandscapeMode,
+    isTablet,
+    screenHeight,
+    screenWidth
   } = useDeviceOrientation( );
   const [heightAboveToolbar, setHeightAboveToolbar] = useState( 0 );
   const [numColumns, setNumColumns] = useState( 0 );
@@ -103,8 +106,11 @@ const MyObservations = ( {
   useEffect( ( ) => {
     const calculateGridItemWidth = columns => {
       const combinedGutter = ( columns + 1 ) * GUTTER;
+      const gridWidth = isTablet
+        ? screenWidth
+        : Math.min( screenWidth, screenHeight );
       return Math.floor(
-        ( screenWidth - combinedGutter ) / columns
+        ( gridWidth - combinedGutter ) / columns
       );
     };
 
@@ -112,19 +118,22 @@ const MyObservations = ( {
       if ( layout === "list" || screenWidth <= BREAKPOINTS.md ) {
         return 1;
       }
-      if ( isLandscapeMode ) {
-        return 6;
-      }
-      if ( screenWidth <= BREAKPOINTS.xl ) {
-        return 2;
-      }
+      if ( !isTablet ) return 2;
+      if ( isLandscapeMode ) return 6;
+      if ( screenWidth <= BREAKPOINTS.xl ) return 2;
       return 4;
     };
 
     const columns = calculateNumColumns( );
     setGridItemWidth( calculateGridItemWidth( columns ) );
     setNumColumns( columns );
-  }, [layout, screenWidth, isLandscapeMode] );
+  }, [
+    isLandscapeMode,
+    isTablet,
+    layout,
+    screenHeight,
+    screenWidth
+  ] );
 
   const handleScroll = Animated.event(
     [
@@ -194,7 +203,9 @@ const MyObservations = ( {
             style={[
               {
                 transform: [{ translateY: offsetForHeader }],
-                height: screenHeight
+                height: isTablet
+                  ? screenHeight
+                  : Math.max( screenWidth, screenHeight )
               }
             ]}
           >
@@ -210,7 +221,7 @@ const MyObservations = ( {
             <AnimatedFlashList
               contentContainerStyle={contentContainerStyle}
               data={observations}
-              key={`${numColumns}-${screenWidth}-${screenHeight}`}
+              key={layout}
               estimatedItemSize={
                 layout === "grid"
                   ? gridItemWidth
