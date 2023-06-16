@@ -5,10 +5,6 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useEffect, useState } from "react";
 import { Alert, Dimensions, PixelRatio } from "react-native";
-import { EventRegister } from "react-native-event-listeners";
-import {
-  INCREMENT_MULTIPLE_UPLOAD_PROGRESS
-} from "sharedHelpers/emitUploadProgress";
 import {
   useCurrentUser,
   useIsConnected,
@@ -40,20 +36,13 @@ const ToolbarContainer = ( {
   const uploadInProgress = obsEditContext?.uploadInProgress;
   const uploadMultipleObservations = obsEditContext?.uploadMultipleObservations;
   const currentUploadIndex = obsEditContext?.currentUploadIndex;
+  const progress = obsEditContext?.progress;
+  const setUploads = obsEditContext?.setUploads;
+  const uploads = obsEditContext?.uploads;
   const uploadError = obsEditContext?.error;
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
   const [totalUploadCount, setTotalUploadCount] = useState( allObsToUpload.length );
-  const [totalProgressIncrements, setTotalProgressIncrements] = useState(
-    allObsToUpload.length + allObsToUpload
-      .reduce( ( count, current ) => count
-       + current.observationPhotos.length, 0 )
-  );
-  const [totalUploadProgress, setTotalUploadProgress] = useState( 0 );
-
-  const progress = totalProgressIncrements > 0
-    ? totalUploadProgress / totalProgressIncrements
-    : 0;
 
   const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
 
@@ -101,10 +90,7 @@ const ToolbarContainer = ( {
 
     if ( numUnuploadedObs > 0 ) {
       setTotalUploadCount( allObsToUpload.length );
-      setTotalProgressIncrements( allObsToUpload.length + allObsToUpload
-        .reduce( ( count, current ) => count
-         + current.observationPhotos.length, 0 ) );
-      uploadMultipleObservations( allObsToUpload );
+      setUploads( allObsToUpload );
     } else {
       syncObservations( );
       refetch( );
@@ -119,32 +105,23 @@ const ToolbarContainer = ( {
     ( numUnuploadedObs > 0 && !uploadInProgress ) || uploadError
   );
 
+  useEffect( ( ) => {
+    if ( uploads.length > 0 ) {
+      uploadMultipleObservations( );
+    }
+  }, [uploads, uploadMultipleObservations] );
+
   // clear upload status when leaving screen
   useEffect(
     ( ) => {
       navigation.addListener( "blur", ( ) => {
         stopUpload( );
         setUploadProgress( { } );
-        setTotalUploadProgress( 0 );
-        setTotalProgressIncrements( 0 );
         setTotalUploadCount( 0 );
       } );
     },
     [navigation, setUploadProgress, stopUpload]
   );
-
-  useEffect( ( ) => {
-    const progressListener = EventRegister.addEventListener(
-      INCREMENT_MULTIPLE_UPLOAD_PROGRESS,
-      currentProgress => {
-        const updatedProgress = totalUploadProgress + currentProgress;
-        setTotalUploadProgress( updatedProgress );
-      }
-    );
-    return ( ) => {
-      EventRegister.removeEventListener( progressListener );
-    };
-  }, [totalUploadProgress] );
 
   return (
     <Toolbar
