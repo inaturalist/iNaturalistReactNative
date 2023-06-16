@@ -16,7 +16,6 @@ import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
 import emitUploadProgress, {
-  INCREMENT_MULTIPLE_UPLOAD_PROGRESS,
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
@@ -105,26 +104,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         const increment = increments[1];
 
         currentProgress[uuid] = ( uploadProgress[uuid] || 0 ) + increment;
+        setTotalUploadProgress( totalUploadProgress + increment );
         setUploadProgress( currentProgress );
-      }
-    );
-    return () => {
-      EventRegister.removeEventListener( progressListener );
-    };
-  }, [uploadProgress] );
-
-  useEffect( ( ) => {
-    const progressListener = EventRegister.addEventListener(
-      INCREMENT_MULTIPLE_UPLOAD_PROGRESS,
-      currentProgress => {
-        const updatedProgress = totalUploadProgress + currentProgress;
-        setTotalUploadProgress( updatedProgress );
       }
     );
     return ( ) => {
       EventRegister.removeEventListener( progressListener );
     };
-  }, [totalUploadProgress] );
+  }, [uploadProgress, totalUploadProgress] );
 
   const allObsPhotoUris = useMemo(
     ( ) => [...cameraPreviewUris, ...galleryUris],
