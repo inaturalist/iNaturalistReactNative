@@ -42,7 +42,7 @@ const ToolbarContainer = ( {
   const uploadError = obsEditContext?.error;
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
-  const [totalUploadCount, setTotalUploadCount] = useState( allObsToUpload.length );
+  const [totalUploadCount, setTotalUploadCount] = useState( allObsToUpload?.length || 0 );
 
   const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
 
