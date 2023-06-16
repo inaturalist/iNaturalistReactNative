@@ -86,7 +86,9 @@ const StandardCamera = ( ): Node => {
     setCameraPreviewUris,
     allObsPhotoUris,
     evidenceToAdd,
-    setEvidenceToAdd
+    setEvidenceToAdd,
+    setOriginalCameraUrisMap,
+    originalCameraUrisMap
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { t } = useTranslation( );
@@ -204,6 +206,9 @@ const StandardCamera = ( ): Node => {
     }
     const newPhoto = await Photo.new( cameraPhoto.path, { rotation: photoRotation } );
     const uri = newPhoto.localFilePath;
+
+    // Remember original (unresized) camera URI
+    setOriginalCameraUrisMap( { ...originalCameraUrisMap, [uri]: cameraPhoto.path } );
 
     setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
     if ( addEvidence ) {

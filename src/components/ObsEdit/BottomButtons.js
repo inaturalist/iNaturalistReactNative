@@ -18,7 +18,7 @@ const DESIRED_LOCATION_ACCURACY = 4000000;
 const BottomButtons = ( ): Node => {
   const { t } = useTranslation( );
   const {
-    saveObservation,
+    saveCurrentObservation,
     saveAndUploadObservation,
     setNextScreen,
     currentObservation,
@@ -50,7 +50,7 @@ const BottomButtons = ( ): Node => {
   const handleSave = async ( ) => {
     if ( showMissingEvidence( ) ) { return; }
     setButtonPressed( "save" );
-    await saveObservation( );
+    await saveCurrentObservation( );
     setNextScreen( );
   };
 

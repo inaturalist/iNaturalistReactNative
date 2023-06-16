@@ -11,7 +11,11 @@ const INITIAL_POSITIONAL_ACCURACY = 99999;
 const TARGET_POSITIONAL_ACCURACY = 10;
 const LOCATION_FETCH_INTERVAL = 1000;
 
-const useLocationFetching = ( mountedRef: any ): Object => {
+// Primarily fetches the current location for a new observation and returns
+// isFetchingLocation to tell the consumer whether this process is happening.
+// If currentObservation is not new, it will not fetch location and return
+// information about the current observation's location
+const useCurrentObservationLocation = ( mountedRef: any ): Object => {
   const {
     currentObservation,
     updateObservationKeys
@@ -25,10 +29,10 @@ const useLocationFetching = ( mountedRef: any ): Object => {
 
   const [shouldFetchLocation, setShouldFetchLocation] = useState(
     currentObservation
-        && !currentObservation._created_at
-        && !currentObservation._synced_at
-        && !hasLocation
-        && !isGalleryPhoto
+      && !currentObservation._created_at
+      && !currentObservation._synced_at
+      && !hasLocation
+      && !isGalleryPhoto
   );
   const [numLocationFetches, setNumLocationFetches] = useState( 0 );
   const [fetchingLocation, setFetchingLocation] = useState( false );
@@ -104,9 +108,13 @@ const useLocationFetching = ( mountedRef: any ): Object => {
   return {
     latitude,
     longitude,
+    positionalAccuracy: currentObservation.positional_accuracy,
     hasLocation,
-    shouldFetchLocation
+    // Internally we're tracking isFetching when one of potentially many
+    // location requests is in flight, but this tells the external consumer
+    // whether the overall location fetching process is happening
+    isFetchingLocation: shouldFetchLocation
   };
 };
 
-export default useLocationFetching;
+export default useCurrentObservationLocation;

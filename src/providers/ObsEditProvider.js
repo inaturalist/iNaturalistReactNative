@@ -1,4 +1,5 @@
 // @flow
+import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useNavigation } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import {
@@ -19,7 +20,7 @@ import emitUploadProgress, {
   INCREMENT_SINGLE_UPLOAD_PROGRESS
 } from "sharedHelpers/emitUploadProgress";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
-import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
+import { formatExifDateAsString, parseExif, writeExifToFile } from "sharedHelpers/parseExif";
 import {
   useApiToken,
   useCurrentUser
@@ -31,8 +32,8 @@ import { ObsEditContext, RealmContext } from "./contexts";
 const { useRealm } = RealmContext;
 
 type Props = {
-  children: any
-}
+  children: any,
+};
 
 const logger = log.extend( "ObsEditProvider" );
 
@@ -49,6 +50,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [cameraPreviewUris, setCameraPreviewUris] = useState( [] );
   const [galleryUris, setGalleryUris] = useState( [] );
   const [evidenceToAdd, setEvidenceToAdd] = useState( [] );
+  const [originalCameraUrisMap, setOriginalCameraUrisMap] = useState( {} );
+  const [cameraRollUris, setCameraRollUris] = useState( [] );
   const [album, setAlbum] = useState( null );
   const [loading, setLoading] = useState( false );
   const [unsavedChanges, setUnsavedChanges] = useState( false );
@@ -74,8 +77,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( [] );
     setCurrentObservationIndex( 0 );
     setCameraPreviewUris( [] );
+    setOriginalCameraUrisMap( {} );
     setGalleryUris( [] );
     setEvidenceToAdd( [] );
+    setCameraRollUris( [] );
     setUnsavedChanges( false );
     setPassesEvidenceTest( false );
     setGroupedPhotos( [] );
@@ -140,9 +145,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setObservations( [newObservation] );
   };
 
-  const createObsPhotos = useCallback( async photos => Promise.all(
-    photos.map( async photo => ObservationPhoto.new( photo?.image?.uri ) )
-  ), [] );
+  const createObsPhotos = useCallback(
+    async photos => Promise.all(
+      photos.map( async photo => ObservationPhoto.new( photo?.image?.uri ) )
+    ),
+    []
+  );
 
   const createObservationFromGalleryPhoto = useCallback( async photo => {
     const firstPhotoExif = await parseExif( photo?.image?.uri );
@@ -201,23 +209,65 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     appendObsPhotos( obsPhotos );
   }, [createObsPhotos, appendObsPhotos] );
 
-  const createObsWithCameraPhotos = useCallback( async localFilePaths => {
-    const newObservation = await Observation.new( );
-    const obsPhotos = await Promise.all( localFilePaths.map(
-      async photo => ObservationPhoto.new( photo )
-    ) );
-    newObservation.observationPhotos = obsPhotos;
-    setObservations( [newObservation] );
-  }, [] );
-
-  const addCameraPhotosToCurrentObservation = useCallback( async localFilePaths => {
-    const obsPhotos = await Promise.all( localFilePaths.map(
-      async photo => ObservationPhoto.new( photo )
-    ) );
-    appendObsPhotos( obsPhotos );
-  }, [appendObsPhotos] );
-
   const uploadValue = useMemo( ( ) => {
+    // Save URIs to camera gallery (if a photo was taken using the app,
+    // we want it accessible in the camera's folder, as if the user has taken those photos
+    // via their own camera app).
+    const savePhotosToCameraGallery = async uris => {
+      const savedUris = await Promise.all( uris.map( async uri => {
+        // Find original camera URI of each scaled-down photo
+        const cameraUri = originalCameraUrisMap[uri];
+
+        if ( !cameraUri ) {
+          console.error( `Couldn't find original camera URI for: ${uri}` );
+        }
+        logger.info( "savePhotosToCameraGallery, saving cameraUri: ", cameraUri );
+        return CameraRoll.save( cameraUri, { type: "photo", album: "Camera" } );
+      } ) );
+
+      logger.info( "savePhotosToCameraGallery, savedUris: ", savedUris );
+      // Save these camera roll URIs, so later on observation editor can update
+      // the EXIF metadata of these photos, once we retrieve a location.
+      setCameraRollUris( savedUris );
+    };
+
+    const writeExifToCameraRollPhotos = async exif => {
+      if ( !cameraRollUris || cameraRollUris.length === 0 || !currentObservation ) {
+        return;
+      }
+      // Update all photos taken via the app with the new fetched location.
+      cameraRollUris.forEach( uri => {
+        logger.info( "writeExifToCameraRollPhotos, writing exif for uri: ", uri );
+        writeExifToFile( uri, exif );
+      } );
+    };
+
+    const createObsWithCameraPhotos = async localFilePaths => {
+      const newObservation = await Observation.new( );
+      const obsPhotos = await Promise.all( localFilePaths.map(
+        async photo => ObservationPhoto.new( photo )
+      ) );
+      newObservation.observationPhotos = obsPhotos;
+      setObservations( [newObservation] );
+      logger.info(
+        "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
+        localFilePaths
+      );
+      await savePhotosToCameraGallery( localFilePaths );
+    };
+
+    const addCameraPhotosToCurrentObservation = async localFilePaths => {
+      const obsPhotos = await Promise.all( localFilePaths.map(
+        async photo => ObservationPhoto.new( photo )
+      ) );
+      appendObsPhotos( obsPhotos );
+      logger.info(
+        "addCameraPhotosToCurrentObservation, calling savePhotosToCameraGallery with paths: ",
+        localFilePaths
+      );
+      await savePhotosToCameraGallery( localFilePaths );
+    };
+
     const updateObservationKeys = keysAndValues => {
       const updatedObservations = observations;
       const obsToUpdate = observations[currentObservationIndex];
@@ -260,19 +310,32 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       } );
     };
 
-    const saveObservation = async ( ) => {
+    function ensureRealm( ) {
       if ( !realm ) {
         throw new Error( "Gack, tried to save an observation without realm!" );
       }
-      return Observation.saveLocalObservationForUpload( currentObservation, realm );
+    }
+
+    const saveObservation = async observation => {
+      ensureRealm( );
+      await writeExifToCameraRollPhotos( {
+        latitude: observation.latitude,
+        longitude: observation.longitude,
+        positional_accuracy: observation.positionalAccuracy
+      } );
+      return Observation.saveLocalObservationForUpload( observation, realm );
     };
 
+    const saveCurrentObservation = async ( ) => saveObservation( currentObservation );
+
     const saveAllObservations = async ( ) => {
-      if ( !realm ) {
-        throw new Error( "Gack, tried to save an observation without realm!" );
-      }
+      ensureRealm( );
       setLoading( true );
       await Promise.all( observations.map( async observation => {
+        // Note that this should only happen after import when ObsEdit has
+        // multiple observations to save, none of which should have
+        // corresponding photos in cameraRollPhotos, so there's no need to
+        // write EXIF for those.
         await Observation.saveLocalObservationForUpload( observation, realm );
       } ) );
       setLoading( false );
@@ -358,7 +421,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       // don't bother trying to upload unless there's a logged in user
       if ( !currentUser ) { return {}; }
       if ( !apiToken ) {
-        throw new Error( "Gack, tried to upload an observation without API token!" );
+        throw new Error(
+          "Gack, tried to upload an observation without API token!"
+        );
       }
       activateKeepAwake( );
       // every observation and observation photo counts for a total of 1 progress
@@ -441,7 +506,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const saveAndUploadObservation = async ( ) => {
-      const savedObservation = await saveObservation( );
+      const savedObservation = await saveCurrentObservation( );
       return uploadObservation( savedObservation );
     };
 
@@ -566,7 +631,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setEvidenceToAdd,
       addCameraPhotosToCurrentObservation,
       resetObsEditContext,
-      saveObservation,
+      saveCurrentObservation,
       saveAndUploadObservation,
       deleteLocalObservation,
       album,
@@ -598,13 +663,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       currentUploadIndex,
       progress,
       setUploads,
-      uploads
+      uploads,
+      originalCameraUrisMap,
+      setOriginalCameraUrisMap
     };
   }, [
     currentObservation,
     currentObservationIndex,
     observations,
-    createObsWithCameraPhotos,
     cameraPreviewUris,
     galleryUris,
     allObsPhotoUris,
@@ -613,7 +679,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     createObservationFromGallery,
     evidenceToAdd,
     setEvidenceToAdd,
-    addCameraPhotosToCurrentObservation,
     resetObsEditContext,
     apiToken,
     navigation,
@@ -635,7 +700,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     uploadInProgress,
     progress,
     totalProgressIncrements,
-    uploads
+    uploads,
+    setOriginalCameraUrisMap,
+    originalCameraUrisMap,
+    appendObsPhotos,
+    cameraRollUris
   ] );
 
   return (
