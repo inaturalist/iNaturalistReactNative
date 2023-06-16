@@ -106,7 +106,7 @@ const ToolbarContainer = ( {
   );
 
   useEffect( ( ) => {
-    if ( uploads.length > 0 ) {
+    if ( uploads?.length > 0 ) {
       uploadMultipleObservations( );
     }
   }, [uploads, uploadMultipleObservations] );
