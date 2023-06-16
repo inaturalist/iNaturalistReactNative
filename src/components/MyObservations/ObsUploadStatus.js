@@ -38,9 +38,12 @@ const ObsUploadStatus = ( {
   const isConnected = useIsConnected( );
   const { t } = useTranslation( );
 
-  const totalProgressIncrements = observation.needsSync( )
+  const needsSync = item => !item._synced_at
+    || item._synced_at <= item._updated_at;
+
+  const totalProgressIncrements = needsSync( observation )
     + observation
-      .observationPhotos.map( obsPhoto => obsPhoto.needsSync( ) ).length;
+      .observationPhotos.map( obsPhoto => needsSync( obsPhoto ) ).length;
   const currentProgress = uploadProgress?.[observation.uuid];
 
   const displayUploadStatus = ( ) => {

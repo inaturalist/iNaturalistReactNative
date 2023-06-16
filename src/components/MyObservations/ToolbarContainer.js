@@ -7,6 +7,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { Alert, Dimensions, PixelRatio } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import {
+  INCREMENT_MULTIPLE_UPLOAD_PROGRESS
+} from "sharedHelpers/emitUploadProgress";
+import {
   useCurrentUser,
   useIsConnected,
   useObservationsUpdates,
@@ -32,15 +35,14 @@ const ToolbarContainer = ( {
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
   const syncObservations = obsEditContext?.syncObservations;
+  const stopUpload = obsEditContext?.stopUpload;
+  const setUploadProgress = obsEditContext?.setUploadProgress;
+  const uploadInProgress = obsEditContext?.uploadInProgress;
+  const uploadMultipleObservations = obsEditContext?.uploadMultipleObservations;
+  const currentUploadIndex = obsEditContext?.currentUploadIndex;
+  const uploadError = obsEditContext?.error;
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
-  const {
-    stopUpload,
-    uploadInProgress,
-    uploadMultipleObservations,
-    error: uploadError,
-    currentUploadIndex
-  } = obsEditContext;
   const [totalUploadCount, setTotalUploadCount] = useState( allObsToUpload.length );
   const [totalProgressIncrements, setTotalProgressIncrements] = useState(
     allObsToUpload.length + allObsToUpload
@@ -122,18 +124,18 @@ const ToolbarContainer = ( {
     ( ) => {
       navigation.addListener( "blur", ( ) => {
         stopUpload( );
-        obsEditContext?.setUploadProgress( { } );
+        setUploadProgress( { } );
         setTotalUploadProgress( 0 );
         setTotalProgressIncrements( 0 );
         setTotalUploadCount( 0 );
       } );
     },
-    [navigation, obsEditContext, stopUpload]
+    [navigation, setUploadProgress, stopUpload]
   );
 
   useEffect( ( ) => {
     const progressListener = EventRegister.addEventListener(
-      "INCREMENT_TOTAL_UPLOAD_PROGRESS",
+      INCREMENT_MULTIPLE_UPLOAD_PROGRESS,
       currentProgress => {
         const updatedProgress = totalUploadProgress + currentProgress;
         setTotalUploadProgress( updatedProgress );

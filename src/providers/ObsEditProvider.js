@@ -14,7 +14,9 @@ import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
-import emitUploadProgress from "sharedHelpers/emitUploadProgress";
+import emitUploadProgress, {
+  INCREMENT_SINGLE_UPLOAD_PROGRESS
+} from "sharedHelpers/emitUploadProgress";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif } from "sharedHelpers/parseExif";
 import {
@@ -70,10 +72,18 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setGroupedPhotos( [] );
   }, [] );
 
+  const stopUpload = ( ) => {
+    setUploadInProgress( false );
+    setShouldUpload( false );
+    setCurrentUploadIndex( 0 );
+    setError( null );
+    deactivateKeepAwake( );
+  };
+
   useEffect( ( ) => {
     const currentProgress = uploadProgress;
     const progressListener = EventRegister.addEventListener(
-      "INCREMENT_SINGLE_OBSERVATION_PROGRESS",
+      INCREMENT_SINGLE_UPLOAD_PROGRESS,
       increments => {
         const uuid = increments[0];
         const increment = increments[1];
@@ -509,14 +519,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       if ( !uploadedUUIDs.includes( observationToUpload.uuid ) ) {
         upload( observationToUpload );
       }
-    };
-
-    const stopUpload = ( ) => {
-      setUploadInProgress( false );
-      setShouldUpload( false );
-      setCurrentUploadIndex( 0 );
-      setError( null );
-      deactivateKeepAwake( );
     };
 
     return {
