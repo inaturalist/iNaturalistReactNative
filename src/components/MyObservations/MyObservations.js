@@ -220,7 +220,7 @@ const MyObservations = ( {
             />
             <AnimatedFlashList
               contentContainerStyle={contentContainerStyle}
-              data={observations}
+              data={observations.filter( o => o.isValid() )}
               key={layout}
               estimatedItemSize={
                 layout === "grid"
