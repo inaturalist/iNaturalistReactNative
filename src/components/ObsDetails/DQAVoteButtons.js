@@ -22,36 +22,36 @@ const getUserVote = ( metric, qualityMetrics ) => {
   if ( qualityMetrics ) {
     const match = qualityMetrics.find( element => (
       element.metric === metric && element.user_id ) );
-    if ( match && match.agree === true ) { return true; }
-    if ( match && match.agree === false ) { return false; }
+    if ( match ) {
+      return match.agree === true;
+    }
   }
   return null;
 };
 
 const renderVoteCount = ( status, metric, qualityMetrics ) => {
-  let count = 0;
-  if ( qualityMetrics ) {
-    count = qualityMetrics.filter(
-      element => ( element.agree === status && element.metric === metric )
-    ).length;
+  if ( !qualityMetrics ) return null;
 
-    return ( count > 0 ) && <Body3 classname="ml-[5px]">{count}</Body3>;
-  }
-  return null;
+  const count = qualityMetrics
+    ?.filter( qualityMetric => qualityMetric.agree === status && qualityMetric.metric === metric )
+    ?.length;
+  if ( !count || count === 0 ) return null;
+
+  return <Body3 classname="ml-[5px]">{count}</Body3>;
 };
 
 const DQAVoteButtons = ( {
   metric, qualityMetrics, loadingAgree, loadingDisagree, loadingMetric, setVote, removeVote
 }: Props ): React.Node => {
   const theme = useTheme( );
-  const ifAgree = getUserVote( metric, qualityMetrics );
+  const userAgrees = getUserVote( metric, qualityMetrics );
   const activityIndicatorOffset = "mx-[7px]";
 
   const renderAgree = () => {
     if ( loadingAgree && loadingMetric === metric ) {
       return ( <ActivityIndicator size={33} className={activityIndicatorOffset} /> );
     }
-    if ( ifAgree ) {
+    if ( userAgrees ) {
       return (
         <INatIconButton
           icon="arrow-up-bold-circle"
@@ -74,7 +74,8 @@ const DQAVoteButtons = ( {
     if ( loadingDisagree && loadingMetric === metric ) {
       return ( <ActivityIndicator size={30} className={activityIndicatorOffset} /> );
     }
-    if ( ifAgree === null ) {
+
+    if ( userAgrees === null ) {
       return (
         <INatIconButton
           icon="arrow-down-bold-circle-outline"
@@ -83,7 +84,7 @@ const DQAVoteButtons = ( {
         />
       );
     }
-    if ( !ifAgree ) {
+    if ( !userAgrees ) {
       return (
         <INatIconButton
           icon="arrow-down-bold-circle"

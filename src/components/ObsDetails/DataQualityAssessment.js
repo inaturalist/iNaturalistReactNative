@@ -69,7 +69,10 @@ const DataQualityAssessment = ( ): React.Node => {
   // destructured mutate to pass into useEffect to prevent infinite
   // rerender and disabling eslint useEffect dependency rule
   const { mutate } = useAuthenticatedMutation(
-    ( PARAMS, optsWithAuth ) => fetchQualityMetrics( PARAMS, optsWithAuth ),
+    ( qualityMetricParams, optsWithAuth ) => fetchQualityMetrics(
+      qualityMetricParams,
+      optsWithAuth
+    ),
     {
       onSuccess: response => {
         setLoadingMetric( null );
@@ -88,16 +91,15 @@ const DataQualityAssessment = ( ): React.Node => {
   );
 
   useEffect( ( ) => {
-    const PARAMS = {
+    mutate( {
       id: params.observationUUID,
       fields: "metric,agree,user_id",
       ttl: -1
-    };
-    mutate( PARAMS );
+    } );
   }, [mutate, params] );
 
   const createQualityMetricMutation = useAuthenticatedMutation(
-    ( PARAMS, optsWithAuth ) => setQualityMetric( PARAMS, optsWithAuth ),
+    ( qualityMetricParams, optsWithAuth ) => setQualityMetric( qualityMetricParams, optsWithAuth ),
     {
       onSuccess: () => {
         // fetch updated quality metrics with updated votes
@@ -110,7 +112,7 @@ const DataQualityAssessment = ( ): React.Node => {
   );
 
   const setMetricVote = ( metric, vote ) => {
-    const PARAMS = {
+    const qualityMetricParams = {
       id: observationUUID,
       metric,
       agree: vote,
@@ -122,11 +124,14 @@ const DataQualityAssessment = ( ): React.Node => {
     } else {
       setLoadingDisagree( true );
     }
-    createQualityMetricMutation.mutate( PARAMS );
+    createQualityMetricMutation.mutate( qualityMetricParams );
   };
 
   const createRemoveQualityMetricMutation = useAuthenticatedMutation(
-    ( PARAMS, optsWithAuth ) => deleteQualityMetric( PARAMS, optsWithAuth ),
+    ( qualityMetricParams, optsWithAuth ) => deleteQualityMetric(
+      qualityMetricParams,
+      optsWithAuth
+    ),
     {
       onSuccess: () => {
         // fetch updated quality metrics with updated votes
@@ -139,7 +144,7 @@ const DataQualityAssessment = ( ): React.Node => {
   );
 
   const removeMetricVote = ( metric, vote ) => {
-    const PARAMS = {
+    const qualityMetricParams = {
       id: observationUUID,
       metric,
       ttyl: -1
@@ -150,7 +155,7 @@ const DataQualityAssessment = ( ): React.Node => {
     } else {
       setLoadingDisagree( true );
     }
-    createRemoveQualityMetricMutation.mutate( PARAMS );
+    createRemoveQualityMetricMutation.mutate( qualityMetricParams );
   };
 
   const ifMajorityAgree = metric => {
@@ -189,9 +194,9 @@ const DataQualityAssessment = ( ): React.Node => {
         return removedNull.length !== 0;
       }
       if ( metric === "evidence" ) {
-        const removedNull = observation[metric]
+        const removedEmpty = observation[metric]
           .filter( value => ( Object.keys( value ).length !== 0 ) );
-        return removedNull.length !== 0;
+        return removedEmpty.length !== 0;
       }
       if ( observation.taxon ) {
         if ( metric === "id_supported" ) {
