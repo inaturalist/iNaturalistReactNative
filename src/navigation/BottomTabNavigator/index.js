@@ -14,6 +14,7 @@ import MediaViewer from "components/MediaViewer/MediaViewer";
 import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
+import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
@@ -35,7 +36,8 @@ import {
   hideHeader,
   hideHeaderLeft,
   showCustomHeader,
-  showHeaderLeft
+  showHeaderLeft,
+  showLongHeader
 } from "navigation/navigationOptions";
 import React from "react";
 import { PermissionsAndroid, Platform } from "react-native";
@@ -349,6 +351,15 @@ const BottomTabs = ( ) => {
               backgroundColor: colors.black
             },
             ...hideHeaderLeft
+          }}
+        />
+        <Tab.Screen
+          name="DataQualityAssessment"
+          component={DataQualityAssessment}
+          options={{
+            ...showLongHeader,
+            headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
+            unmountOnBlur: true
           }}
         />
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />

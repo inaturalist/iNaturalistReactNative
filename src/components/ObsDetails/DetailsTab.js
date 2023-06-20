@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import {
   Body4,
   Button,
@@ -22,7 +23,8 @@ import Attribution from "./Attribution";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 
 type Props = {
-  observation: Object
+  observation: Object,
+  uuid:string
 }
 
 const qualityGradeOption = option => {
@@ -51,9 +53,11 @@ const headingClass = "mt-[20px] mb-[11px] text-black";
 const sectionClass = "mx-[15px] mb-[20px]";
 
 const DetailsTab = ( { observation }: Props ): Node => {
+  const navigation = useNavigation( );
   const application = observation?.application?.name;
   const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
   const qualityGrade = observation?.quality_grade;
+  const observationUUID = observation.uuid;
 
   const displayQualityGradeOption = option => {
     const labelClassName = ( qualityGrade === option )
@@ -94,12 +98,14 @@ const DetailsTab = ( { observation }: Props ): Node => {
           />
         </KebabMenu>
       </View>
-      <Map
-        obsLatitude={observation.latitude}
-        obsLongitude={observation.longitude}
-        mapHeight={230}
-        showMarker
-      />
+      { ( observation.latitude || observation.private_latitude ) && (
+        <Map
+          obsLatitude={observation.latitude}
+          obsLongitude={observation.longitude}
+          mapHeight={230}
+          showMarker
+        />
+      ) }
 
       <View className={`mt-[11px] ${sectionClass}`}>
         <ObservationLocation observation={observation} details />
@@ -131,7 +137,23 @@ const DetailsTab = ( { observation }: Props ): Node => {
           <Body4>
             {qualityGradeDescription( qualityGrade )}
           </Body4>
-          <Button text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )} />
+          <Button
+            text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )}
+            onPress={() => navigation.navigate( "DataQualityAssessment", {
+              qualityGrade,
+              observationUUID,
+              observation: {
+                date: observation.observed_on,
+                location: [observation.latitude, observation.longitude],
+                evidence: [observation.observationPhotos, observation.observationSounds],
+                taxon: {
+                  id: observation.taxon.id,
+                  rank_level: observation.taxon.rank_level
+                },
+                identifications: observation.identifications
+              }
+            } )}
+          />
         </View>
       </View>
       <Divider />

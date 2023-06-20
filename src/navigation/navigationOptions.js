@@ -26,6 +26,20 @@ const showHeader: Object = {
   }
 };
 
+const showLongHeader: Object = {
+  ...baseHeaderOptions,
+  headerTintColor: colors.black,
+  // Note: left header is not supported on iOS
+  // so we would need to build a custom header for this:
+  // https://reactnavigation.org/docs/native-stack-navigator#headertitlealign
+  headerTitleStyle: {
+    fontSize: 16,
+    fontFamily: Platform.OS === "ios"
+      ? "Whitney-Medium"
+      : "Whitney-Medium-Pro"
+  }
+};
+
 export const showHeaderLeft: Object = {
   ...showHeader,
   headerLeft: ( ) => <BackButton />
@@ -53,5 +67,6 @@ export {
   blankHeaderTitle,
   hideHeader,
   showCustomHeader,
-  showHeader
+  showHeader,
+  showLongHeader
 };

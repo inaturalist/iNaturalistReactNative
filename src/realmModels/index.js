@@ -24,9 +24,18 @@ export default {
     Taxon,
     User
   ],
-  schemaVersion: 33,
+  schemaVersion: 34,
   path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   migration: ( oldRealm, newRealm ) => {
+    if ( oldRealm.schemaVersion < 34 ) {
+      const oldObservations = oldRealm.objects( "Observation" );
+      const newObservations = newRealm.objects( "Observation" );
+      oldObservations.keys( ).forEach( objectIndex => {
+        const oldObservation = oldObservations[objectIndex];
+        const newObservation = newObservations[objectIndex];
+        newObservation.observed_on = oldObservation.time_observed_at;
+      } );
+    }
     if ( oldRealm.schemaVersion < 33 ) {
       const oldObservations = oldRealm.objects( "Observation" );
       const newObservations = newRealm.objects( "Observation" );

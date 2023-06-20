@@ -3,6 +3,11 @@ ABOUT = ABOUT
 
 About-iNaturalist = About iNaturalist
 
+# About the Data Quality Assement
+ABOUT-THE-DQA = ABOUT THE DQA
+
+About-the-DQA-description = The Quality Grade summarizes the accuracy, precision, completeness, relevance, and appropriateness of an iNaturalist observation as biodiversity data. Some attributes are automatically determined, while others are subject to a vote by iNat users. iNaturalist shares licensed "Research Grade" observations with a number of data partners for use in science and conservation.
+
 Accept-community-identifications = Accept community identifications
 
 Account = Account
@@ -64,6 +69,18 @@ attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
 
 attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
 
+attribution-cc-by = some rights reserved (CC BY)
+
+attribution-cc-by-sa = some rights reserved (CC BY-SA)
+
+attribution-cc-by-nc = some rights reserved (CC BY-NC) 
+
+attribution-cc-by-nd = some rights reserved (CC BY-ND)
+
+attribution-cc-by-nc-sa = some rights reserved (CC BY-NC-SA)
+
+attribution-cc-by-nc-nd = some rights reserved (CC BY-NC-ND)
+
 app-authorized-on-date = { $appName } (authorized on: { $date })
 
 Applications = Applications
@@ -111,9 +128,15 @@ Content-Display = Content & Display
 
 Copy-coordinates = Copy Coordinates
 
+Copy-coordinates = Copy Coordinates
+
 Couldnt-create-comment = Couldn't create comment
 
 Couldnt-create-identification = Couldn't create identification
+
+Couldnt-create-identification-error = Couldn't create identification { $error }
+
+Couldnt-create-identification-unknown-error = Couldn't create identification, Unknown Error.
 
 Couldnt-create-identification-error = Couldn't create identification { $error }
 
@@ -127,6 +150,56 @@ CREATE-YOUR-FIRST-OBSERVATION = CREATE YOUR FIRST OBSERVATION
 
 DATA-QUALITY = DATA QUALITY
 
+DATA-QUALITY-ASSESSMENT = DATA QUALITY ASSESSMENT
+
+# declares the current data quality status of the observation 
+Data-quality-assessment-title-research = This observation is Research Grade!
+
+Data-quality-assessment-title-needs-id = This observation Needs ID
+
+Data-quality-assessment-title-casual = This observation is Casual Grade
+
+# description for different quality grades in the DQA
+Data-quality-assessment-description-research = It can now be used for research and featured on other websites.
+
+Data-quality-assessment-description-research-not-licensed = However, it is not licensed for re-use and will not be shared with data repositories that respect license choices.
+
+Data-quality-assessment-description-needs-id = This observation has not yet met the conditions for Research Grade status:
+
+Data-quality-assessment-description-casual = This observation has not met the conditions for Research Grade status.
+
+# checklist test for Data Quality Assessment of Observation Details 
+Data-quality-assessment-date-specified = Date specified
+
+Data-quality-assessment-location-specified = Location specified
+
+Data-quality-assessment-has-photos-or-sounds = Has Photos or Sounds
+
+Data-quality-assessment-id-supported-by-two-or-more = Has ID supported by two or more
+
+Data-quality-assessment-community-taxon-species-level-or-lower = Community taxon at species level or lower
+
+Data-quality-assessment-date-is-accurate = Date is accurate
+
+Data-quality-assessment-location-is-accurate = Location is accurate
+
+Data-quality-assessment-organism-is-wild = Organism is wild
+
+Data-quality-assessment-evidence-of-organism = Evidence of organism
+
+Data-quality-assessment-recent-evidence-of-organism = Recent evidence of an organism
+
+Data-quality-assessment-can-taxon-still-be-confirmed-improved-based-on-the-evidence = Based on the evidence, can the Community Taxon still be improved?
+
+Data-quality-research-description = This observation has enough identifications to be considered resarch grade
+
+Data-quality-needs-id-description = This observation needs more identifications to reach research grade
+
+Data-quality-casual-description = This observation needs more information verified to be considered verifiable
+
+
+DATA-QUALITY = DATA QUALITY
+
 Data-quality-research-description = This observation has enough identifications to be considered resarch grade
 
 Data-quality-needs-id-description = This observation needs more identifications to reach research grade
@@ -134,6 +207,8 @@ Data-quality-needs-id-description = This observation needs more identifications 
 Data-quality-casual-description = This observation needs more information verified to be considered verifiable
 
 Date = Date
+
+DATE = DATE
 
 DATE = DATE
 
@@ -201,6 +276,10 @@ Error-Couldnt-Complete-Upload = Error: Couldn't Complete Upload
 Error-Couldnt-Upload-Photo = Error: Couldn't Upload Photo
 
 Error-Could-Not-Fetch-Taxon = Error: Could Not Fetch Taxon
+
+ERROR-VOTING-IN-DQA = ERROR VOTING IN DQA
+
+Error-voting-in-DQA-description = Your vote may not have been cast in the DQA. Check your internet connection and try again.
 
 EVIDENCE = EVIDENCE
 
@@ -307,6 +386,8 @@ Location = Location
 
 LOCATION = LOCATION
 
+LOCATION = LOCATION
+
 Location-accuracy-is-too-imprecise = Location accuracy is too imprecise to help identifiers. Please zoom in.
 
 LOCATION-TOO-IMPRECISE = LOCATION TOO IMPRECISE
@@ -395,8 +476,9 @@ none = none
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
 
 # license code
-no-rights-reserved-cc0 = no rights reserved (CC0)
+no-rights-reserved-cc0-cc0 = no rights reserved (CC0) (CC0)
 
+# Header for observation description on observation detail
 # Header for observation description on observation detail
 NOTES = NOTES
 
@@ -463,6 +545,11 @@ PROJECTS = PROJECTS
 Projects = Projects
 
 Quality-Grade = Quality Grade
+
+# Quality grade options
+quality-grade-research = Research
+quality-grade-needs-id = Needs Id
+quality-grade-casual = Casual
 
 # Quality grade options
 quality-grade-research = Research
@@ -589,6 +676,8 @@ SAVE-CHANGES = SAVE CHANGES
 
 Saved-Observation = Saved observation, in queue to upload
 
+Saved-Observation = Saved observation, in queue to upload
+
 Search-for-a-location = Search for a location
 
 Search-for-a-project = Search for a project
@@ -608,6 +697,8 @@ Separate-Photos = Separate Photos
 Settings = Settings
 
 SHARE-DEBUG-LOGS = SHARE DEBUG LOGS
+
+Share-location = Share Location
 
 Share-location = Share Location
 
@@ -696,6 +787,9 @@ IMPORT-X-OBSERVATIONS = IMPORT {$count ->
 # Describes whether a user made this observation from web, iOS, or Android
 Uploaded-via-application = Uploaded via: { $application }
 
+# Describes whether a user made this observation from web, iOS, or Android
+Uploaded-via-application = Uploaded via: { $application }
+
 # Shows the number of observations a user is currently uploading on my observations page
 Uploading-X-Observations = Uploading {$count ->
     [one] 1 Observation
@@ -723,6 +817,10 @@ Username = Username
 
 # Appears above the text fields
 USERNAME-OR-EMAIL = USERNAME OR EMAIL
+
+VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
+
+View-in-browser = View in Browser
 
 VIEW-DATA-QUALITY-ASSESSEMENT = VIEW DATA QUALITY ASSESSEMENT
 
@@ -957,7 +1055,13 @@ date-format-short = M/d/yy
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
+
+# Date formatting using date-fns
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 datetime-format-short = M/d/yy h:mm a
+
+# Date formatting using date-fns
+# See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
@@ -965,9 +1069,9 @@ date-format-long = PP
 
 # Onboarding text on MyObservations: 0-10 observations
 As-you-upload-more-observations = As you upload more observations, others in our community may be able to help you identify them!
-# Onboarding text on MyObservations: 11-50 observations
+# Onboarding text on MyObservations: Onboarding text on MyObservations: 11-50 observations
 Observations-you-upload-to-iNaturalist = Observations you upload to iNaturalist can be used by scientists and researchers worldwide.
-# Onboarding text on MyObservations: 51-100 observations
+# Onboarding text on MyObservations: Onboarding text on MyObservations: 51-100 observations
 You-can-search-observations-of-any-plant-or-animal = You can search observations of any plant or animal anywhere in the world with Explore!
 
 DISCARD-MEDIA = DISCARD MEDIA?
@@ -986,16 +1090,16 @@ Failed-to-log-in = Failed to log in
 # Generic error message
 Something-went-wrong = Something went wrong.
 
-# Geoprivacy sheet descriptions
+#  Geoprivacy sheet descriptions
 Anyone-using-iNaturalist-can-see = Anyone using iNaturalist can see where this species was observed, and scientists can most easily use it for research.
 The-exact-location-will-be-hidden = The exact location will be hidden publicly, and instead generalized to a larger area. (Threatened and endangered species are automatically obscured).
 The-location-will-not-be-visible = The location will not be visible to others, which means it may be difficult to identify.
 
-# Wild status sheet descriptions
+#  Wild status sheet descriptions
 This-is-a-wild-organism = This is a wild organism and wasn’t placed in this location by humans.
 This-organism-was-placed-by-humans = This organism was placed in this location by humans. This applies to things like garden plants, pets, and zoo animals.
 
-# Latitude, longitude, and accuracy on a single line
+# Latitude, longitude, and accuracy on a single line on a single line
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
 
 # Missing evidence sheet

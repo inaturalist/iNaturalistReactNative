@@ -33,6 +33,7 @@ class Observation extends Realm.Object {
     location: true,
     longitude: true,
     observation_photos: ObservationPhoto.OBSERVATION_PHOTOS_FIELDS,
+    observed_on: true,
     place_guess: true,
     quality_grade: true,
     taxon: Taxon.TAXON_FIELDS,
@@ -47,6 +48,9 @@ class Observation extends Realm.Object {
       captive_flag: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
+      observed_on: obs
+        ? obs?.observed_on
+        : createObservedOnStringForUpload( ),
       observed_on_string: obs
         ? obs?.observed_on_string
         : createObservedOnStringForUpload( ),
@@ -187,6 +191,7 @@ class Observation extends Realm.Object {
       species_guess: obs.species_guess,
       description: obs.description,
       observed_on_string: obs.observed_on_string,
+      observed_on: obs.observed_on,
       place_guess: obs.place_guess,
       latitude: obs.latitude,
       longitude: obs.longitude,
@@ -486,6 +491,7 @@ class Observation extends Realm.Object {
       observationSounds: "ObservationSound[]",
       // date and/or time submitted to the server when a new obs is uploaded
       observed_on_string: "string?",
+      observed_on: "string?",
       owners_identification_from_vision: "bool?",
       species_guess: "string?",
       place_guess: { type: "string?", mapTo: "placeGuess" },
