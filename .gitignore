@@ -79,3 +79,5 @@ artifacts/
 
 # VisualStudioCode #
 .vscode
+ios/Podfile.lock
+ios/iNaturalistReactNative.xcodeproj/project.pbxproj
