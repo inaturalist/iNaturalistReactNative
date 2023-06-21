@@ -5,7 +5,9 @@ import {
   DrawerItem
 } from "@react-navigation/drawer";
 import {
-  INatIcon,
+  Body1,
+  INatIconButton,
+  List2,
   UserIcon
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
@@ -40,7 +42,12 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     color: theme.colors.primary,
     fontWeight: "700",
     textAlign: "left",
-    textAlignVertical: "center"
+    textAlignVertical: "center",
+    marginLeft: -20
+  };
+
+  const drawerItemStyle = {
+    marginBottom: -5
   };
 
   const drawerItems = {
@@ -52,7 +59,8 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     identify: {
       label: t( "IDENTIFY" ),
       navigation: "Identify",
-      icon: "label"
+      icon: "label",
+      loggedInOnly: true
     },
     projects: {
       label: t( "PROJECTS" ),
@@ -82,9 +90,11 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     settings: {
       label: t( "SETTINGS" ),
       navigation: "settings",
-      icon: "gear"
+      icon: "gear",
+      loggedInOnly: true
     },
-    // these two are only for development mode
+    // the following two are only for development mode,
+    // and should not be included in future app store releases
     network: {
       label: t( "NETWORK" ),
       navigation: "network",
@@ -100,26 +110,59 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         ? t( "LOG-OUT" )
         : t( "LOG-IN" ),
       navigation: "Login",
-      icon: "door-exit"
+      icon: "door-exit",
+      loggedInOnly: true
     }
   };
 
-  const renderIcon = item => <INatIcon name={drawerItems[item].icon} size={15} />;
+  const renderIcon = item => (
+    <INatIconButton
+      icon={drawerItems[item].icon}
+      size={15}
+    />
+  );
 
   return (
     <DrawerContentScrollView state={state} navigation={navigation} descriptors={descriptors}>
-      <UserIcon
-        uri={User.uri( currentUser )}
-      />
-      <View className="ml-5">
-        {Object.keys( drawerItems ).map( item => (
-          <DrawerItem
-            label={drawerItems[item].label}
-            onPress={( ) => navigation.navigate( drawerItems[item].navigation )}
-            labelStyle={labelStyle}
-            icon={( ) => renderIcon( item )}
-          />
-        ) )}
+      <View className="ml-4 flex-row flex-nowrap">
+        <UserIcon
+          uri={User.uri( currentUser )}
+        />
+        <View className="ml-3 justify-center">
+          <Body1>
+            {currentUser
+              ? User.userHandle( currentUser )
+              : t( "Log-in-to-iNaturalist" )}
+          </Body1>
+          {currentUser && (
+            <List2>
+              {t( "X-Observations", { count: currentUser.observations_count } )}
+            </List2>
+          )}
+        </View>
+      </View>
+      <View className="ml-3">
+        {Object.keys( drawerItems ).map( item => {
+          if ( drawerItems[item].loggedInOnly && !currentUser ) {
+            return null;
+          }
+          return (
+            <DrawerItem
+              key={drawerItems[item].label}
+              label={drawerItems[item].label}
+              onPress={( ) => navigation.navigate( drawerItems[item].navigation )}
+              labelStyle={labelStyle}
+              icon={( ) => renderIcon( item )}
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                ...drawerItemStyle,
+                opacity: ( item === "login" )
+                  ? 0.5
+                  : 1
+              }}
+            />
+          );
+        } )}
       </View>
     </DrawerContentScrollView>
   );

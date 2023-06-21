@@ -1179,3 +1179,4 @@ BLOG = BLOG
 DONATE = DONATE
 SETTINGS = SETTINGS
 LOG-OUT = LOG OUT
+Log-in-to-iNaturalist = Log in to iNaturalist
