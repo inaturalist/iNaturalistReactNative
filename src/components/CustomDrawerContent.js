@@ -28,8 +28,6 @@ type Props = {
 
 const { width, height } = Dimensions.get( "screen" );
 
-console.log( width, BREAKPOINTS.md, "width breakpoints" );
-
 const CustomDrawerContent = ( { ...props }: Props ): Node => {
   // $FlowFixMe
   const { state, navigation, descriptors } = props;
