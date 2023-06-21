@@ -407,6 +407,7 @@
   "SAVE-ALL": "SAVE ALL",
   "SAVE-CHANGES": "SAVE CHANGES",
   "Saved-Observation": "Saved observation, in queue to upload",
+  "SEARCH": "SEARCH",
   "Search-for-a-location": "Search for a location",
   "Search-for-a-project": "Search for a project",
   "Search-for-a-taxon": "Search for a taxon",
@@ -802,5 +803,11 @@
     "comment": "Title for dialog telling the user that an Internet connection is required",
     "val": "Internet Connection Required"
   },
-  "Please-try-again-when-you-are-connected-to-the-internet": "Please try again when you are connected to the Internet."
+  "Please-try-again-when-you-are-connected-to-the-internet": "Please try again when you are connected to the Internet.",
+  "IDENTIFY": "IDENTIFY",
+  "HELP": "HELP",
+  "BLOG": "BLOG",
+  "DONATE": "DONATE",
+  "SETTINGS": "SETTINGS",
+  "LOG-OUT": "LOG OUT"
 }

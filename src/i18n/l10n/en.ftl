@@ -678,6 +678,8 @@ Saved-Observation = Saved observation, in queue to upload
 
 Saved-Observation = Saved observation, in queue to upload
 
+SEARCH = SEARCH
+
 Search-for-a-location = Search for a location
 
 Search-for-a-project = Search for a project
@@ -1169,3 +1171,11 @@ Please-click-the-link = Please click the link in the email within 60 minutes  to
 # Title for dialog telling the user that an Internet connection is required
 Internet-Connection-Required = Internet Connection Required
 Please-try-again-when-you-are-connected-to-the-internet=Please try again when you are connected to the Internet.
+
+IDENTIFY = IDENTIFY
+PROJECTS = PROJECTS
+HELP = HELP
+BLOG = BLOG
+DONATE = DONATE
+SETTINGS = SETTINGS
+LOG-OUT = LOG OUT
