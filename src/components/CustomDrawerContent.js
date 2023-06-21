@@ -13,17 +13,22 @@ import {
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
+import { Dimensions, Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import User from "realmModels/User";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useTranslation from "sharedHooks/useTranslation";
+import { BREAKPOINTS } from "sharedHelpers/breakpoint";
+import { useCurrentUser, useTranslation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 type Props = {
   state: any,
   navigation: any,
   descriptors: any
 }
+
+const { width, height } = Dimensions.get( "screen" );
+
+console.log( width, BREAKPOINTS.md, "width breakpoints" );
 
 const CustomDrawerContent = ( { ...props }: Props ): Node => {
   // $FlowFixMe
@@ -47,7 +52,9 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
   };
 
   const drawerItemStyle = {
-    marginBottom: -5
+    marginBottom: width <= BREAKPOINTS.lg
+      ? -15
+      : -5
   };
 
   const drawerItems = {
@@ -70,7 +77,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     help: {
       label: t( "HELP" ),
       navigation: "Help",
-      icon: "help-circle"
+      icon: "help"
     },
     blog: {
       label: t( "BLOG" ),
@@ -115,21 +122,61 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     }
   };
 
-  const renderIcon = item => (
-    <INatIconButton
-      icon={drawerItems[item].icon}
-      size={15}
-    />
-  );
+  const renderIcon = item => {
+    let color = null;
+    let backgroundColor = null;
+
+    if ( item === "help" ) {
+      color = colors.white;
+      backgroundColor = colors.darkGray;
+    }
+    return (
+      <INatIconButton
+        icon={drawerItems[item].icon}
+        size={15}
+        color={color}
+        backgroundColor={backgroundColor}
+      />
+    );
+  };
+
+  const drawerScrollViewStyle = {
+    backgroundColor: "white",
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+    height
+  };
 
   return (
-    <DrawerContentScrollView state={state} navigation={navigation} descriptors={descriptors}>
-      <View className="ml-4 flex-row flex-nowrap">
-        <UserIcon
-          uri={User.uri( currentUser )}
-        />
+    <DrawerContentScrollView
+      state={state}
+      navigation={navigation}
+      descriptors={descriptors}
+      contentContainerStyle={drawerScrollViewStyle}
+    >
+      <View className="ml-4 mb-8 flex-row flex-nowrap">
+        {currentUser
+          ? (
+            <UserIcon
+              uri={User.uri( currentUser )}
+            />
+          )
+          : (
+            <INatIconButton
+              icon="inaturalist"
+              size={40}
+              color={colors.inatGreen}
+              onPress={( ) => navigation.navigate( "Login" )}
+            />
+          ) }
         <View className="ml-3 justify-center">
-          <Body1>
+          <Body1
+            onPress={( ) => {
+              if ( !currentUser ) {
+                navigation.navigate( "Login" );
+              }
+            }}
+          >
             {currentUser
               ? User.userHandle( currentUser )
               : t( "Log-in-to-iNaturalist" )}

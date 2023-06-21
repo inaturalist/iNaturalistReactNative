@@ -12,7 +12,11 @@ import BottomTabNavigator from "./BottomTabNavigator";
 const drawerOptions = {
   ...showHeader,
   // this removes the default hamburger menu from header
-  headerLeft: ( ) => <View />
+  headerLeft: ( ) => <View />,
+  drawerType: "front",
+  drawerStyle: {
+    backgroundColor: "transparent"
+  }
 };
 
 const Drawer = createDrawerNavigator( );
