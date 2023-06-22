@@ -45,6 +45,11 @@ export const showHeaderLeft: Object = {
   headerLeft: ( ) => <BackButton />
 };
 
+export const showHeaderLeftWhite: Object = {
+  ...showHeader,
+  headerLeft: ( ) => <BackButton color={colors.white} />
+};
+
 export const hideHeaderLeft: Object = {
   ...showHeader,
   headerLeft: null

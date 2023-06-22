@@ -86,8 +86,11 @@ const ObsDetails = (): Node => {
     fields: Observation.FIELDS
   };
 
-  // eslint-disable-next-line max-len
-  const { data: remoteObservation, refetch: refetchRemoteObservation } = useAuthenticatedQuery( ["fetchRemoteObservation", uuid], optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth ) );
+  const { data: remoteObservation, refetch: refetchRemoteObservation }
+  = useAuthenticatedQuery(
+    ["fetchRemoteObservation", uuid],
+    optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth )
+  );
 
   const observation = localObservation || remoteObservation;
 
@@ -119,9 +122,62 @@ const ObsDetails = (): Node => {
   const taxon = observation?.taxon;
   const faves = observation?.faves;
   const observationPhotos = observation?.observationPhotos || observation?.observation_photos;
-  const currentUserFaved = faves?.length > 0
-    ? faves.find( fave => fave.user.id === userId )
-    : null;
+  // const currentUserFaved = faves?.length > 0
+  //   ? faves.find( fave => fave.user_id === userId )
+  //   : null;
+  const currentUserFaved = () => {
+    if ( faves?.length > 0 ) {
+      const userFaved = faves.find( fave => fave.user_id === userId );
+      return userFaved === true;
+    }
+    return null;
+  };
+  const [userFav, setUserFav] = useState( false );
+
+  // console.log( "faved?", currentUserFaved );
+  // console.log( "userFav?", userFav );
+  // console.log( "observationFav?", observation.faves );
+
+  const createUnfaveMutation = useAuthenticatedMutation(
+    ( faveOrUnfaveParams, optsWithAuth ) => unfaveObservation( faveOrUnfaveParams, optsWithAuth ),
+    {
+      onSuccess: data => {
+        console.log( "unfave", data );
+        // setRefetch( true );
+        // queryClient.invalidateQueries( ["fetchRemoteObservation"] );
+        // refetchRemoteObservation();
+        // refetchObservationUpdates();
+        setUserFav( false );
+      },
+      onError: () => {
+      }
+    }
+  );
+
+  const createFaveMutation = useAuthenticatedMutation(
+    ( faveOrUnfaveParams, optsWithAuth ) => faveObservation( faveOrUnfaveParams, optsWithAuth ),
+    {
+      onSuccess: reponse => {
+        console.log( "fav", reponse );
+        // setRefetch( true );
+        // queryClient.invalidateQueries( ["fetchRemoteObservation"] );
+        // refetchRemoteObservation();
+        // refetchObservationUpdates();
+        setUserFav( true );
+      },
+      onError: () => {
+      }
+    }
+  );
+
+  const faveOrUnfave = async () => {
+    // TODO: fix fave/unfave functionality with useMutation
+    if ( currentUserFaved ) {
+      createUnfaveMutation.mutate( { uuid } );
+    } else {
+      createFaveMutation.mutate( { uuid } );
+    }
+  };
 
   const showErrorAlert = error => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
     cancelable: true
@@ -200,6 +256,7 @@ const ObsDetails = (): Node => {
       const remoteUpdatedAt = new Date( remoteObservation?.updated_at );
       if ( remoteUpdatedAt > localObservation?.updated_at ) {
         Observation.upsertRemoteObservations( [remoteObservation], realm );
+        console.log( "reload" );
       }
     }
   }, [localObservation, remoteObservation, realm] );
@@ -262,19 +319,6 @@ const ObsDetails = (): Node => {
         </Pressable>
       </View>
     );
-  };
-
-  const faveOrUnfave = async () => {
-    // TODO: fix fave/unfave functionality with useMutation
-    if ( currentUserFaved ) {
-      await unfaveObservation( { uuid } );
-      setRefetch( true );
-      queryClient.invalidateQueries( ["fetchRemoteObservation"] );
-    } else {
-      await faveObservation( { uuid } );
-      setRefetch( true );
-      queryClient.invalidateQueries( ["fetchRemoteObservation"] );
-    }
   };
 
   const onIDAdded = async identification => {
@@ -360,16 +404,31 @@ const ObsDetails = (): Node => {
             accessibilityRole="button"
             accessibilityLabel={t( "edit" )}
           />
-          <IconButton
-            icon="star-bold-outline"
-            size={25}
-            onPress={() => faveOrUnfave()}
-            textColor={colors.white}
-            className="absolute bottom-3 right-3"
-            accessible
-            accessibilityRole="button"
-            accessibilityLabel={t( "favorite" )}
-          />
+          {userFav
+            ? (
+              <IconButton
+                icon="star"
+                size={25}
+                onPress={() => faveOrUnfave()}
+                textColor={colors.white}
+                className="absolute bottom-3 right-3"
+                accessible
+                accessibilityRole="button"
+                accessibilityLabel={t( "favorite" )}
+              />
+            )
+            : (
+              <IconButton
+                icon="star-bold-outline"
+                size={25}
+                onPress={() => faveOrUnfave()}
+                textColor={colors.white}
+                className="absolute bottom-3 right-3"
+                accessible
+                accessibilityRole="button"
+                accessibilityLabel={t( "favorite" )}
+              />
+            )}
           <View className="absolute bottom-3 left-3">
             <PhotoCount count={photos.length
               ? photos.length

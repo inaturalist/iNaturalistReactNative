@@ -9,10 +9,11 @@ import { useTheme } from "react-native-paper";
 
 type Props = {
   qualityGrade: ?string,
-  color?: boolean
+  color?: boolean,
+  opacity?: boolean
 }
 
-const qualityGradeSVG = ( qualityGrade, color ) => {
+const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
   if ( qualityGrade === "research" ) {
     return (
     // $FlowIgnore
@@ -21,6 +22,7 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
         accessibilityLabel={t( "Quality-Grade-research" )}
         testID="QualityGrade.research"
         color={color}
+        opacity={opacity}
       />
     );
   }
@@ -32,6 +34,7 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
         accessibilityLabel={t( "Quality-Grade-needs_id" )}
         testID="QualityGrade.needs_id"
         color={color}
+        opacity={opacity}
       />
     );
   }
@@ -42,15 +45,17 @@ const qualityGradeSVG = ( qualityGrade, color ) => {
       accessibilityLabel={t( "Quality-Grade-casual" )}
       testID="QualityGrade.casual"
       color={color}
+      opacity={opacity}
     />
   );
 };
 
-const QualityGradeStatus = ( { qualityGrade, color }: Props ): React.Node => {
+const QualityGradeStatus = ( { qualityGrade, color, opacity }: Props ): React.Node => {
   const theme = useTheme();
   const svgColor = color || theme.colors.primary;
+  const svgOpacity = opacity || 1;
   return (
-    <View>{qualityGradeSVG( qualityGrade, svgColor )}</View>
+    <View>{qualityGradeSVG( qualityGrade, svgColor, svgOpacity )}</View>
   );
 };
 

@@ -10,6 +10,7 @@ import ObservationSound from "./ObservationSound";
 import Photo from "./Photo";
 import Taxon from "./Taxon";
 import User from "./User";
+import Vote from "./Vote";
 
 export default {
   schema: [
@@ -22,9 +23,10 @@ export default {
     ObservationSound,
     Photo,
     Taxon,
-    User
+    User,
+    Vote
   ],
-  schemaVersion: 34,
+  schemaVersion: 35,
   path: `${RNFS.DocumentDirectoryPath}/db.realm`,
   migration: ( oldRealm, newRealm ) => {
     if ( oldRealm.schemaVersion < 34 ) {

@@ -63,10 +63,12 @@ const DetailsTab = ( { observation }: Props ): Node => {
     const labelClassName = ( qualityGrade === option )
       ? "font-bold"
       : "";
-
+    const opacity = ( qualityGrade === option )
+      ? "1"
+      : "0.5";
     return (
       <View className="flex-col space-y-[8px]">
-        <QualityGradeStatus qualityGrade={option} />
+        <QualityGradeStatus qualityGrade={option} opacity={opacity} />
         <Body4 className={labelClassName}>{ qualityGradeOption( option ) }</Body4>
       </View>
     );

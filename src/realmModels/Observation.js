@@ -13,6 +13,7 @@ import ObservationPhoto from "./ObservationPhoto";
 import ObservationSound from "./ObservationSound";
 import Taxon from "./Taxon";
 import User from "./User";
+import Vote from "./Vote";
 
 // noting that methods like .toJSON( ) are only accessible when the model
 // class is extended with Realm.Object per this issue:
@@ -24,6 +25,7 @@ class Observation extends Realm.Object {
     comments: Comment.COMMENT_FIELDS,
     created_at: true,
     description: true,
+    faves: Vote.VOTE_FIELDS,
     geojson: true,
     geoprivacy: true,
     id: true,
@@ -107,11 +109,16 @@ class Observation extends Realm.Object {
     const user = User.mapApiToRealm( obs.user );
     const application = Application.mapApiToRealm( obs.application );
 
+    const faves = obs.faves
+      ? Observation.createLinkedObjects( obs.faves, Vote, realm )
+      : [];
+
     const localObs = {
       ...obs,
       _synced_at: new Date( ),
       application,
       comments,
+      faves,
       identifications,
       // obs detail on web says geojson coords are preferred over lat/long
       // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/ducks/observation.js#L145
@@ -481,6 +488,7 @@ class Observation extends Realm.Object {
       // timestamp of when observation was created on the server; not editable
       created_at: { type: "string?", mapTo: "createdAt" },
       description: "string?",
+      faves: "Vote[]",
       geoprivacy: "string?",
       id: "int?",
       identifications: "Identification[]",
