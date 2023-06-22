@@ -28,14 +28,6 @@ const useLocalObservations = ( ): Object => {
     const obs = realm.objects( "Observation" );
     const localObservations = obs.sorted( "_created_at", true );
     localObservations.addListener( ( collection, _changes ) => {
-      if ( localObservations.length === 0 ) { return; }
-      // started hitting https://github.com/realm/realm-js/issues/4484 on
-      // 2022-09-13 for no reason i can discern Note that if you
-      // setObservationsList to collection, it is a Realm.Collection, not an
-      // array, which doesn't seem to work. _.compact or Array.from will
-      // create an array of Realm objects... which will probably require some
-      // degree of pagination in the future
-      // setObservationList( _.compact( collection ) );
       stagedObservationList.current = [...collection];
 
       const unsyncedObs = Observation.filterUnsyncedObservations( realm );

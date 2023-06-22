@@ -25,7 +25,7 @@ import { formatISO } from "date-fns";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Alert, LogBox } from "react-native";
 import {
   ActivityIndicator,
@@ -231,6 +231,18 @@ const ObsDetails = (): Node => {
     }
   }, [observation, comments] );
 
+  const editButton = useMemo( ( ) => (
+    <IconButton
+      onPress={navToObsEdit}
+      icon="pencil"
+      textColor={colors.white}
+      className="absolute top-3 right-3"
+      accessible
+      accessibilityRole="button"
+      accessibilityLabel={t( "edit" )}
+    />
+  ), [navToObsEdit, t] );
+
   if ( !observation ) {
     return null;
   }
@@ -351,15 +363,7 @@ const ObsDetails = (): Node => {
             necessary ~~~kueda
           */}
           {/* TODO: a11y props are not passed down into this 3.party */}
-          <IconButton
-            onPress={navToObsEdit}
-            icon="pencil"
-            textColor={colors.white}
-            className="absolute top-3 right-3"
-            accessible
-            accessibilityRole="button"
-            accessibilityLabel={t( "edit" )}
-          />
+          { editButton }
           <IconButton
             icon="star-bold-outline"
             size={25}
@@ -385,6 +389,7 @@ const ObsDetails = (): Node => {
         accessible
         accessibilityLabel={t( "Observation-has-no-photos-and-no-sounds" )}
       >
+        { editButton }
         <IconMaterial
           color={colors.white}
           testID="ObsDetails.noImage"
