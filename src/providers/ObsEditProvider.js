@@ -59,6 +59,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [mediaViewerUris, setMediaViewerUris] = useState( [] );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
   const [groupedPhotos, setGroupedPhotos] = useState( [] );
+  const [savingPhoto, setSavingPhoto] = useState( false );
   // state related to uploads
   const [uploadProgress, setUploadProgress] = useState( { } );
   const [uploadInProgress, setUploadInProgress] = useState( false );
@@ -192,8 +193,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   }, [currentObservation] );
 
   const addGalleryPhotosToCurrentObservation = useCallback( async photos => {
+    setSavingPhoto( true );
     const obsPhotos = await createObsPhotos( photos );
     appendObsPhotos( obsPhotos );
+    setSavingPhoto( false );
   }, [createObsPhotos, appendObsPhotos] );
 
   const uploadValue = useMemo( ( ) => {
@@ -244,6 +247,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const addCameraPhotosToCurrentObservation = async localFilePaths => {
+      setSavingPhoto( true );
       const obsPhotos = await Promise.all( localFilePaths.map(
         async photo => ObservationPhoto.new( photo )
       ) );
@@ -253,6 +257,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         localFilePaths
       );
       await savePhotosToCameraGallery( localFilePaths );
+      setSavingPhoto( false );
     };
 
     const updateObservationKeys = keysAndValues => {
@@ -652,7 +657,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setUploads,
       uploads,
       originalCameraUrisMap,
-      setOriginalCameraUrisMap
+      setOriginalCameraUrisMap,
+      savingPhoto
     };
   }, [
     currentObservation,
@@ -691,7 +697,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setOriginalCameraUrisMap,
     originalCameraUrisMap,
     appendObsPhotos,
-    cameraRollUris
+    cameraRollUris,
+    savingPhoto
   ] );
 
   return (
