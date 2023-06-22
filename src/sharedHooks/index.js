@@ -16,6 +16,5 @@ export { default as useObservationUpdatesWhenFocused } from "./useObservationUpd
 export { default as useShare } from "./useShare";
 export { default as useTranslation } from "./useTranslation";
 export { default as useUnlockScreen } from "./useUnlockScreen";
-export { default as useUploadObservations } from "./useUploadObservations";
 export { default as useUserLocation } from "./useUserLocation";
 export { default as useUserMe } from "./useUserMe";

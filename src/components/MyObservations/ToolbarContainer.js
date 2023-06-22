@@ -3,11 +3,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect } from "react";
-import {
-  Alert,
-  Dimensions, PixelRatio
-} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { Alert, Dimensions, PixelRatio } from "react-native";
 import {
   useCurrentUser,
   useIsConnected,
@@ -21,39 +18,38 @@ type Props = {
   toggleLayout: Function,
   layout: string,
   numUnuploadedObs: number,
-  uploadStatus: Object,
+  allObsToUpload: Array<Object>,
   setShowLoginSheet: Function
 }
 
 const ToolbarContainer = ( {
   toggleLayout, layout, numUnuploadedObs,
-  uploadStatus,
+  allObsToUpload,
   setShowLoginSheet
 }: Props ): Node => {
   const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
+  const syncObservations = obsEditContext?.syncObservations;
+  const stopUpload = obsEditContext?.stopUpload;
+  const setUploadProgress = obsEditContext?.setUploadProgress;
+  const uploadInProgress = obsEditContext?.uploadInProgress;
+  const uploadMultipleObservations = obsEditContext?.uploadMultipleObservations;
+  const currentUploadIndex = obsEditContext?.currentUploadIndex;
+  const progress = obsEditContext?.progress;
+  const setUploads = obsEditContext?.setUploads;
+  const uploads = obsEditContext?.uploads;
+  const uploadError = obsEditContext?.error;
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
-  const {
-    stopUpload,
-    uploadInProgress,
-    startUpload,
-    progress,
-    error: uploadError,
-    currentUploadIndex,
-    totalUploadCount
-  } = uploadStatus;
-  const uploadComplete = progress === 1;
+  const [totalUploadCount, setTotalUploadCount] = useState( allObsToUpload?.length || 0 );
 
   const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
-
-  const syncObservations = obsEditContext?.syncObservations;
 
   const { refetch } = useObservationsUpdates( false );
 
   const getStatusText = ( ) => {
-    if ( uploadComplete ) {
+    if ( progress === 1 ) {
       return t( "X-observations-uploaded", { count: totalUploadCount } );
     }
 
@@ -93,7 +89,8 @@ const ToolbarContainer = ( {
     }
 
     if ( numUnuploadedObs > 0 ) {
-      startUpload( );
+      setTotalUploadCount( allObsToUpload.length );
+      setUploads( allObsToUpload );
     } else {
       syncObservations( );
       refetch( );
@@ -108,15 +105,22 @@ const ToolbarContainer = ( {
     ( numUnuploadedObs > 0 && !uploadInProgress ) || uploadError
   );
 
+  useEffect( ( ) => {
+    if ( uploads?.length > 0 ) {
+      uploadMultipleObservations( );
+    }
+  }, [uploads, uploadMultipleObservations] );
+
   // clear upload status when leaving screen
   useEffect(
     ( ) => {
       navigation.addListener( "blur", ( ) => {
-        uploadStatus.stopUpload( );
-        obsEditContext?.setUploadProgress( { } );
+        stopUpload( );
+        setUploadProgress( { } );
+        setTotalUploadCount( 0 );
       } );
     },
-    [navigation, uploadStatus, obsEditContext]
+    [navigation, setUploadProgress, stopUpload]
   );
 
   return (

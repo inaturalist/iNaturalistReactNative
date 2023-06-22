@@ -32,11 +32,19 @@ const ObsUploadStatus = ( {
   const theme = useTheme( );
   const currentUser = useCurrentUser( );
   const obsEditContext = useContext( ObsEditContext );
-  const startSingleUpload = obsEditContext?.startSingleUpload;
+  const uploadObservation = obsEditContext?.uploadObservation;
   const uploadProgress = obsEditContext?.uploadProgress;
   const whiteColor = white && theme.colors.onPrimary;
   const isConnected = useIsConnected( );
   const { t } = useTranslation( );
+
+  const needsSync = item => !item._synced_at
+    || item._synced_at <= item._updated_at;
+
+  const totalProgressIncrements = needsSync( observation )
+    + observation
+      .observationPhotos.map( obsPhoto => needsSync( obsPhoto ) ).length;
+  const currentProgress = uploadProgress?.[observation.uuid];
 
   const displayUploadStatus = ( ) => {
     const obsStatus = (
@@ -48,12 +56,12 @@ const ObsUploadStatus = ( {
       />
     );
 
-    const progress = uploadProgress?.[observation.uuid];
-    if ( !observation.id || typeof progress === "number" ) {
+    if ( !observation.id || typeof currentProgress === "number" ) {
+      const progress = currentProgress / totalProgressIncrements;
       return (
         <UploadStatus
           progress={progress || 0}
-          startSingleUpload={() => {
+          uploadObservation={() => {
             if ( !isConnected ) {
               Alert.alert(
                 t( "Internet-Connection-Required" ),
@@ -66,7 +74,7 @@ const ObsUploadStatus = ( {
               setShowLoginSheet( true );
               return;
             }
-            startSingleUpload( observation );
+            uploadObservation( observation );
           }}
           color={whiteColor}
           completeColor={whiteColor}

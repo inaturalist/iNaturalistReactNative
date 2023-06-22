@@ -20,7 +20,7 @@ type Props = {
   currentUser: ?Object,
   numObservations: number,
   setHeightAboveToolbar: Function,
-  uploadStatus: Object,
+  allObsToUpload: Array<Object>,
   setShowLoginSheet: Function
 }
 
@@ -30,7 +30,7 @@ const Header = ( {
   currentUser,
   numObservations,
   setHeightAboveToolbar,
-  uploadStatus,
+  allObsToUpload,
   setShowLoginSheet
 }: Props ): Node => {
   const theme = useTheme( );
@@ -118,7 +118,7 @@ const Header = ( {
           toggleLayout={toggleLayout}
           layout={layout}
           numUnuploadedObs={numUnuploadedObs}
-          uploadStatus={uploadStatus}
+          allObsToUpload={allObsToUpload}
           setShowLoginSheet={setShowLoginSheet}
         />
       )}

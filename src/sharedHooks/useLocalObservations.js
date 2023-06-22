@@ -16,7 +16,6 @@ const useLocalObservations = ( ): Object => {
   // when they have lost focus, which prevents other
   // views from rendering when they have focus.
   const stagedObservationList = useRef( [] );
-  const stagedObsToUpload = useRef( [] );
   const [observationList, setObservationList] = useState( [] );
   const [allObsToUpload, setAllObsToUpload] = useState( [] );
 
@@ -41,11 +40,9 @@ const useLocalObservations = ( ): Object => {
 
       const unsyncedObs = Observation.filterUnsyncedObservations( realm );
 
-      stagedObsToUpload.current = Array.from( unsyncedObs );
-
       if ( isFocused ) {
         setObservationList( stagedObservationList.current );
-        setAllObsToUpload( stagedObsToUpload.current );
+        setAllObsToUpload( Array.from( unsyncedObs ) );
       }
     } );
     // eslint-disable-next-line consistent-return
@@ -58,7 +55,6 @@ const useLocalObservations = ( ): Object => {
   useEffect( ( ) => {
     if ( isFocused ) {
       setObservationList( stagedObservationList.current );
-      setAllObsToUpload( stagedObsToUpload.current );
     }
   }, [isFocused] );
 
