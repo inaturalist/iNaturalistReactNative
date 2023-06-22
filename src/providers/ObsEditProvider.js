@@ -36,7 +36,7 @@ type Props = {
 
 const logger = log.extend( "ObsEditProvider" );
 
-const uploadProgressIncrement = 0.5;
+const UPLOAD_PROGRESS_INCREMENT = 0.5;
 
 const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
@@ -99,12 +99,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     const currentProgress = uploadProgress;
     const progressListener = EventRegister.addEventListener(
       INCREMENT_SINGLE_UPLOAD_PROGRESS,
-      increments => {
-        const uuid = increments[0];
-        const increment = increments[1];
-
-        currentProgress[uuid] = ( uploadProgress[uuid] || 0 ) + increment;
-        setTotalUploadProgress( totalUploadProgress + increment );
+      observationUUID => {
+        currentProgress[observationUUID] = (
+          ( uploadProgress[observationUUID] || 0 ) + UPLOAD_PROGRESS_INCREMENT
+        );
+        setTotalUploadProgress( totalUploadProgress + UPLOAD_PROGRESS_INCREMENT );
         setUploadProgress( currentProgress );
       }
     );
@@ -112,6 +111,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       EventRegister.removeEventListener( progressListener );
     };
   }, [uploadProgress, totalUploadProgress] );
+
+  // Keep device awake while uploading
+  useEffect( ( ) => {
+    if ( uploadInProgress ) {
+      activateKeepAwake( );
+    } else {
+      deactivateKeepAwake( );
+    }
+    return ( ) => deactivateKeepAwake( );
+  }, [uploadInProgress] );
 
   const allObsPhotoUris = useMemo(
     ( ) => [...cameraPreviewUris, ...galleryUris],
@@ -347,15 +356,18 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       options: Object,
       observationUUID?: string
     ) => {
-      emitUploadProgress( observationUUID, uploadProgressIncrement );
-      const response = await createOrUpdateEvidence(
-        apiEndpoint,
-        params,
-        options
-      );
-      if ( response ) {
-        emitUploadProgress( observationUUID, uploadProgressIncrement );
-        markRecordUploaded( evidenceUUID, type, response );
+      emitUploadProgress( observationUUID );
+      try {
+        const response = await createOrUpdateEvidence(
+          apiEndpoint,
+          params,
+          options
+        );
+        if ( response ) {
+          markRecordUploaded( evidenceUUID, type, response );
+        }
+      } finally {
+        emitUploadProgress( observationUUID );
       }
     };
 
@@ -403,20 +415,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       return responses[0];
     };
 
-    const uploadObservation = async obs => {
-      setLoading( true );
-      // don't bother trying to upload unless there's a logged in user
-      if ( !currentUser ) { return {}; }
-      if ( !apiToken ) {
-        throw new Error(
-          "Gack, tried to upload an observation without API token!"
-        );
-      }
-      activateKeepAwake( );
-      // every observation and observation photo counts for a total of 1 progress
-      // we're showing progress in 0.5 increments: when an upload of obs/obsPhoto starts
-      // and when the upload of obs/obsPhoto successfully completes
-      emitUploadProgress( obs.uuid, uploadProgressIncrement );
+    // "private" function that actually uploads the observation
+    const uploadObservationInternal = async obs => {
       const obsToUpload = Observation.mapObservationForUpload( obs );
       const options = { api_token: apiToken };
 
@@ -429,23 +429,19 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         }
       } );
 
-      let response;
-
       // First upload the photos/sounds (before uploading the observation itself)
       const hasPhotos = obs?.observationPhotos?.length > 0;
 
-      await Promise.all( [
-        hasPhotos
-          ? uploadEvidence(
-            obs.observationPhotos,
-            "ObservationPhoto",
-            ObservationPhoto.mapPhotoForUpload,
-            null,
-            inatjs.photos.create,
-            options
-          )
-          : null
-      ] );
+      if ( hasPhotos ) {
+        await uploadEvidence(
+          obs.observationPhotos,
+          "ObservationPhoto",
+          ObservationPhoto.mapPhotoForUpload,
+          null,
+          inatjs.photos.create,
+          options
+        );
+      }
 
       const wasPreviouslySynced = obs.wasSynced( );
       const uploadParams = {
@@ -453,16 +449,15 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         fields: { id: true }
       };
 
+      let response;
       if ( wasPreviouslySynced ) {
         response = await updateObservation( {
           ...uploadParams,
           id: newObs.uuid,
           ignore_photos: true
         }, options );
-        emitUploadProgress( obs.uuid, uploadProgressIncrement );
       } else {
         response = await createObservation( uploadParams, options );
-        emitUploadProgress( obs.uuid, uploadProgressIncrement );
       }
 
       if ( !response ) {
@@ -471,24 +466,45 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
       const { uuid: obsUUID } = response.results[0];
 
-      await Promise.all( [
-        markRecordUploaded( obs.uuid, "Observation", response ),
+      await markRecordUploaded( obs.uuid, "Observation", response );
+      if ( hasPhotos ) {
         // Next, attach the uploaded photos/sounds to the uploaded observation
-        hasPhotos
-          ? uploadEvidence(
-            obs.observationPhotos,
-            "ObservationPhoto",
-            ObservationPhoto.mapPhotoForAttachingToObs,
-            obsUUID,
-            inatjs.observation_photos.create,
-            options,
-            obsUUID,
-            true
-          )
-          : null
-      ] );
-      deactivateKeepAwake( );
-      setLoading( false );
+        await uploadEvidence(
+          obs.observationPhotos,
+          "ObservationPhoto",
+          ObservationPhoto.mapPhotoForAttachingToObs,
+          obsUUID,
+          inatjs.observation_photos.create,
+          options,
+          obsUUID,
+          true
+        );
+      }
+      return response;
+    };
+
+    // Performs some minor checks and handles before and after events
+    const uploadObservation = async obs => {
+      setLoading( true );
+      // don't bother trying to upload unless there's a logged in user
+      if ( !currentUser ) { return {}; }
+      if ( !apiToken ) {
+        throw new Error(
+          "Gack, tried to upload an observation without API token!"
+        );
+      }
+      // every observation and observation photo counts for a total of 1 progress
+      // we're showing progress in 0.5 increments: when an upload of obs/obsPhoto starts
+      // and when the upload of obs/obsPhoto successfully completes
+      emitUploadProgress( obs.uuid );
+      let response;
+      try {
+        response = await uploadObservationInternal( obs );
+      } finally {
+        // Even if an error is thrown, we are done with this observation
+        setLoading( false );
+        emitUploadProgress( obs.uuid );
+      }
       return response;
     };
 
@@ -565,9 +581,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const uploadMultipleObservations = ( ) => {
       if ( totalProgressIncrements === 0 ) {
-        setTotalProgressIncrements( uploads.length + uploads
-          .reduce( ( count, current ) => count
-           + current.observationPhotos.length, 0 ) );
+        const numPhotos = uploads.reduce(
+          ( count, current ) => count + current.observationPhotos.length,
+          0
+        );
+        setTotalProgressIncrements( uploads.length + numPhotos );
       }
       const upload = async observationToUpload => {
         try {
