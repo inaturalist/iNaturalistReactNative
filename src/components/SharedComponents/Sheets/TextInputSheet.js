@@ -70,6 +70,7 @@ const TextInputSheet = ( {
             textAlignVertical: "top"
           }}
           autoFocus
+          defaultValue={input}
         />
         <Body3
           className="z-50 absolute bottom-20 right-5 p-5"
