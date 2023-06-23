@@ -20,7 +20,10 @@ afterEach( ( ) => {
 
 // This tests both the PhotoGallery component *and* the ObsEditProvider
 test( "shows a selected checkmark when a photo is tapped", async ( ) => {
-  signIn( factory( "LocalUser" ) );
+  signIn( factory( "LocalUser", {
+    login: faker.internet.userName( ),
+    iconUrl: faker.image.imageUrl( )
+  } ) );
   const photo = {
     image: {
       uri: faker.image.imageUrl( )

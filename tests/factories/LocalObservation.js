@@ -35,7 +35,11 @@ export default define( "LocalObservation", faker => ( {
       url: faker.image.imageUrl( )
     }
   } ),
-  user: factory( "LocalUser" ),
+  user: factory( "LocalUser", {
+    login: faker.internet.userName( ),
+    iconUrl: faker.image.imageUrl( ),
+    locale: "en"
+  } ),
   qualityGrade: "research",
   latitude: Number( faker.address.latitude( ) ),
   longitude: Number( faker.address.longitude( ) ),

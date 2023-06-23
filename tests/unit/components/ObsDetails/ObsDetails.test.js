@@ -22,7 +22,10 @@ const mockNoEvidenceObservation = factory( "LocalObservation", {
 } );
 mockNoEvidenceObservation.observationPhotos = [];
 mockNoEvidenceObservation.observationSounds = [];
-const mockUser = factory( "LocalUser" );
+const mockUser = factory( "LocalUser", {
+  login: faker.internet.userName( ),
+  iconUrl: faker.image.imageUrl( )
+} );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,

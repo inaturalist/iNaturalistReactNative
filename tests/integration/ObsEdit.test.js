@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { useRoute } from "@react-navigation/native";
 import { screen, waitFor } from "@testing-library/react-native";
 import ObsEdit from "components/ObsEdit/ObsEdit";
@@ -14,7 +15,11 @@ beforeEach( async ( ) => {
   global.realm.write( ( ) => {
     global.realm.deleteAll( );
   } );
-  const mockUser = factory( "LocalUser" );
+  const mockUser = factory( "LocalUser", {
+    login: faker.internet.userName( ),
+    iconUrl: faker.image.imageUrl( ),
+    locale: "en"
+  } );
   await signIn( mockUser );
 } );
 

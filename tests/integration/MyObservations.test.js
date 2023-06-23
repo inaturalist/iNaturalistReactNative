@@ -1,6 +1,7 @@
 // These test ensure that My Observation integrates with other systems like
 // remote data retrieval and local data persistence
 
+import { faker } from "@faker-js/faker";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import initI18next from "i18n/initI18next";
@@ -70,7 +71,11 @@ describe( "MyObservations", ( ) => {
   } );
 
   describe( "when signed in", ( ) => {
-    const mockUser = factory( "LocalUser" );
+    const mockUser = factory( "LocalUser", {
+      login: faker.internet.userName( ),
+      iconUrl: faker.image.imageUrl( ),
+      locale: "en"
+    } );
 
     beforeEach( async ( ) => {
       await signIn( mockUser );
@@ -124,7 +129,11 @@ describe( "MyObservations", ( ) => {
 
   describe( "localization for current user", ( ) => {
     it( "should be English by default", async ( ) => {
-      const mockUser = factory( "LocalUser" );
+      const mockUser = factory( "LocalUser", {
+        login: faker.internet.userName( ),
+        iconUrl: faker.image.imageUrl( ),
+        locale: "en"
+      } );
       expect( mockUser.locale ).toEqual( "en" );
       await signIn( mockUser );
       renderAppWithComponent( <MyObservationsContainer /> );
@@ -136,6 +145,8 @@ describe( "MyObservations", ( ) => {
 
     it( "should be Spanish if signed in user's locale is Spanish", async ( ) => {
       const mockSpanishUser = factory( "LocalUser", {
+        login: faker.internet.userName( ),
+        iconUrl: faker.image.imageUrl( ),
         locale: "es"
       } );
       expect( mockSpanishUser.locale ).toEqual( "es" );
@@ -150,7 +161,11 @@ describe( "MyObservations", ( ) => {
     it(
       "should change to es when local user locale is en but remote user locale is es",
       async ( ) => {
-        const mockUser = factory( "LocalUser" );
+        const mockUser = factory( "LocalUser", {
+          login: faker.internet.userName( ),
+          iconUrl: faker.image.imageUrl( ),
+          locale: "en"
+        } );
         expect( mockUser.locale ).toEqual( "en" );
         await signIn( mockUser );
 
