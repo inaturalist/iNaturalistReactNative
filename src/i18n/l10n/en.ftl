@@ -547,12 +547,7 @@ Projects = Projects
 Quality-Grade = Quality Grade
 
 # Quality grade options
-quality-grade-research = Research
-quality-grade-needs-id = Needs Id
-quality-grade-casual = Casual
-
-# Quality grade options
-quality-grade-research = Research
+quality-grade-research = Research Grade
 quality-grade-needs-id = Needs Id
 quality-grade-casual = Casual
 
