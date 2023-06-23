@@ -13,7 +13,14 @@ export default define( "LocalObservation", faker => ( {
     factory( "LocalIdentification" )
   ],
   observationPhotos: [
-    factory( "LocalObservationPhoto" )
+    factory( "LocalObservationPhoto", {
+      photo: {
+        id: faker.datatype.number( ),
+        attribution: faker.lorem.sentence( ),
+        licenseCode: "cc-by-nc",
+        url: faker.image.imageUrl( )
+      }
+    } )
   ],
   placeGuess: "SF",
   taxon: factory( "LocalTaxon", {
@@ -21,7 +28,12 @@ export default define( "LocalObservation", faker => ( {
     rank: "species",
     rank_level: 10,
     preferred_common_name: faker.name.fullName( ),
-    defaultPhoto: factory( "LocalPhoto" )
+    defaultPhoto: {
+      id: faker.datatype.number( ),
+      attribution: faker.lorem.sentence( ),
+      licenseCode: "cc-by-nc",
+      url: faker.image.imageUrl( )
+    }
   } ),
   user: factory( "LocalUser" ),
   qualityGrade: "research",
