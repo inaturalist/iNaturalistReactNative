@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { renderHook } from "@testing-library/react-native";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useObservationsUpdates, {
@@ -12,10 +13,14 @@ jest.mock( "api/observations" );
 const mockUser = factory( "LocalUser" );
 
 const mockCommentUpdate = factory( "RemoteUpdate", {
-  comment_id: 1
+  comment_id: 1,
+  viewed: false,
+  resource_uuid: faker.datatype.uuid( )
 } );
 const mockIdentificationUpdate = factory( "RemoteUpdate", {
-  identification_id: 2
+  identification_id: 2,
+  viewed: false,
+  resource_uuid: faker.datatype.uuid( )
 } );
 const mockData = [mockCommentUpdate, mockIdentificationUpdate];
 

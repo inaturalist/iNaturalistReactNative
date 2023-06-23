@@ -3,7 +3,9 @@ import initI18next from "i18n/initI18next";
 import i18next from "i18next";
 import { formatApiDatetime } from "sharedHelpers/dateAndTime";
 
-const remoteObservation = factory( "RemoteObservation" );
+const remoteObservation = factory( "RemoteObservation", {
+  created_at: "2015-02-12T20:41:10-08:00"
+} );
 const remoteIdentification = factory( "RemoteIdentification", {
   created_at: "2015-02-13T05:12:05+00:00"
 } );

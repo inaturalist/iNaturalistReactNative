@@ -13,7 +13,8 @@ const mockObservation = factory( "LocalObservation", {
 } );
 const mockUpdate = factory( "RemoteUpdate", {
   resource_uuid: mockObservation.uuid,
-  comment_id: mockComment.id
+  comment_id: mockComment.id,
+  viewed: false
 } );
 
 // Mock api call to observations
