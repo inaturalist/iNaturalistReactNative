@@ -59,7 +59,6 @@ const Header = ( ): Node => {
 
   const handleBackButtonPress = useCallback( ( ) => {
     const unsyncedObservation = !currentObservation._synced_at && currentObservation._created_at;
-    console.log( currentObservation, "current observation" );
     if ( params?.lastScreen === "GroupPhotos"
       || ( unsyncedObservation && !unsavedChanges )
     ) {

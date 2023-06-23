@@ -25,5 +25,7 @@ export default define( "LocalObservation", faker => ( {
   // is this the right way to test this?
   needsSync: jest.fn( ),
   wasSynced: jest.fn( ),
-  observed_on_string: "2022-12-03T11:14:16"
+  observed_on_string: "2022-12-03T11:14:16",
+  // This is a Realm object method that we use to see if a record was deleted or not
+  isValid: jest.fn( () => true )
 } ) );

@@ -10,7 +10,7 @@ import React, {
   useContext,
   useEffect, useState
 } from "react";
-import { FlatList } from "react-native";
+import { ActivityIndicator, FlatList } from "react-native";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -24,7 +24,8 @@ const EvidenceList = ( {
 }: Props ): Node => {
   const {
     setMediaViewerUris,
-    setSelectedPhotoIndex
+    setSelectedPhotoIndex,
+    savingPhoto
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
@@ -48,6 +49,19 @@ const EvidenceList = ( {
         >
           <INatIcon name="plus-bold" size={27} color={colors.darkGray} />
         </Pressable>
+      );
+    }
+
+    // add skeleton ActivityIndicator when a photo is being saved from the add evidence flow
+    if ( item === "savingPhoto" ) {
+      return (
+        <View className={classnames( imageClass )}>
+          <View className="rounded-lg overflow-hidden">
+            <View className="bg-lightGray w-fit h-full justify-center">
+              <ActivityIndicator />
+            </View>
+          </View>
+        </View>
       );
     }
 
@@ -75,6 +89,9 @@ const EvidenceList = ( {
 
   const data = [...photoUris];
   data.unshift( "add" );
+  if ( savingPhoto ) {
+    data.push( "savingPhoto" );
+  }
 
   return (
     <View className="mt-5">

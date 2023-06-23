@@ -7,15 +7,13 @@ import {
   useCurrentUser,
   useInfiniteScroll,
   useLocalObservations,
-  useObservationsUpdates,
-  useUploadObservations
+  useObservationsUpdates
 } from "sharedHooks";
 
 import MyObservations from "./MyObservations";
 
 const MyObservationsContainer = ( ): Node => {
   const { observationList: observations, allObsToUpload } = useLocalObservations( );
-  const uploadStatus = useUploadObservations( allObsToUpload );
   const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
   const { isFetchingNextPage, fetchNextPage } = useInfiniteScroll( );
@@ -56,7 +54,7 @@ const MyObservationsContainer = ( ): Node => {
       layout={layout}
       toggleLayout={toggleLayout}
       isFetchingNextPage={isFetchingNextPage}
-      uploadStatus={uploadStatus}
+      allObsToUpload={allObsToUpload}
       currentUser={currentUser}
       showLoginSheet={showLoginSheet}
       setShowLoginSheet={setShowLoginSheet}

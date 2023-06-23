@@ -18,7 +18,7 @@ type Props = {
   color?: string,
   completeColor?: string,
   progress: number,
-  startSingleUpload: Function,
+  uploadObservation: Function,
   layout: string,
   children: any
 }
@@ -43,7 +43,7 @@ const UploadStatus = ( {
   color,
   completeColor,
   progress,
-  startSingleUpload,
+  uploadObservation,
   layout,
   children
 }: Props ): Node => {
@@ -88,9 +88,9 @@ const UploadStatus = ( {
     return t( "Upload-Complete" );
   };
 
-  const startUpload = () => {
+  const startUpload = async ( ) => {
     startAnimation();
-    startSingleUpload();
+    await uploadObservation( );
   };
 
   useEffect( () => () => cancelAnimation( rotation ), [rotation] );

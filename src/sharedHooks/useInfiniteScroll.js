@@ -18,7 +18,8 @@ const useInfiniteScroll = ( ): Object => {
   const baseParams = {
     user_id: currentUser?.id,
     per_page: 50,
-    fields: Observation.FIELDS
+    fields: Observation.FIELDS,
+    ttl: -1
   };
 
   const {
