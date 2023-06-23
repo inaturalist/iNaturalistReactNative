@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { NavigationContainer } from "@react-navigation/native";
 import { render, screen } from "@testing-library/react-native";
 import Messages from "components/Messages/Messages";
@@ -8,7 +9,9 @@ import React from "react";
 import factory from "../../../factory";
 
 const mockedNavigate = jest.fn( );
-const mockMessage = factory( "RemoteMessage" );
+const mockMessage = factory( "RemoteMessage", {
+  subject: faker.lorem.sentence( )
+} );
 const mockUser = factory( "LocalUser" );
 
 jest.mock( "sharedHooks/useCurrentUser", ( ) => ( {

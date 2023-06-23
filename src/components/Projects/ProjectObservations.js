@@ -6,8 +6,10 @@ import ProjectObsGridItem from "components/Projects/ProjectObsGridItem";
 import { Pressable } from "components/styledComponents";
 import * as React from "react";
 import { FlatList } from "react-native";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import useTranslation from "sharedHooks/useTranslation";
+import {
+  useAuthenticatedQuery,
+  useTranslation
+} from "sharedHooks";
 
 type Props = {
   id: number

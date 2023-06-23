@@ -1,11 +1,13 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { t } from "i18next";
 import * as React from "react";
 import {
   FlatList, Image, Pressable, Text
 } from "react-native";
+import {
+  useTranslation
+} from "sharedHooks";
 import { imageStyles, textStyles, viewStyles } from "styles/projects/projects";
 
 type Props = {
@@ -13,6 +15,7 @@ type Props = {
 }
 
 const ProjectList = ( { data }: Props ): React.Node => {
+  const { t } = useTranslation( );
   const navigation = useNavigation( );
 
   const renderProjects = ( { item } ) => {

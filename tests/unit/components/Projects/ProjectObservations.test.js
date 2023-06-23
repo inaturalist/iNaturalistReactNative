@@ -40,22 +40,22 @@ describe( "ProjectObservations", () => {
     const projectObservations = await screen.findByTestId( "ProjectObservations.grid" );
     expect( projectObservations ).toBeAccessible();
   } );
-} );
 
-test( "displays project observations", ( ) => {
-  renderComponent( <ProjectObservations /> );
+  test( "displays project observations", ( ) => {
+    renderComponent( <ProjectObservations /> );
 
-  expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-    `${
-      mockObservation.taxon.preferred_common_name
-    }${
-      mockObservation.taxon.rank.charAt( 0 ).toUpperCase()
-      + mockObservation.taxon.rank.slice( 1 )
-    } ${
-      mockObservation.taxon.name
-    }`
-  );
-  expect( screen.getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( {
-    uri: mockObservation.observation_photos[0].photo.url
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      `${
+        mockObservation.taxon.preferred_common_name
+      }${
+        mockObservation.taxon.rank.charAt( 0 ).toUpperCase()
+        + mockObservation.taxon.rank.slice( 1 )
+      } ${
+        mockObservation.taxon.name
+      }`
+    );
+    expect( screen.getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( {
+      uri: mockObservation.observation_photos[0].photo.url
+    } );
   } );
 } );
