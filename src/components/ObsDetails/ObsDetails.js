@@ -122,9 +122,6 @@ const ObsDetails = (): Node => {
   const taxon = observation?.taxon;
   const faves = observation?.faves;
   const observationPhotos = observation?.observationPhotos || observation?.observation_photos;
-  // const currentUserFaved = faves?.length > 0
-  //   ? faves.find( fave => fave.user_id === userId )
-  //   : null;
   const currentUserFaved = () => {
     if ( faves?.length > 0 ) {
       const userFaved = faves.find( fave => fave.user_id === userId );
@@ -132,21 +129,15 @@ const ObsDetails = (): Node => {
     }
     return null;
   };
-  const [userFav, setUserFav] = useState( false );
-
-  // console.log( "faved?", currentUserFaved );
-  // console.log( "userFav?", userFav );
-  // console.log( "observationFav?", observation.faves );
+  const [userFav, setUserFav] = useState( currentUserFaved() );
 
   const createUnfaveMutation = useAuthenticatedMutation(
     ( faveOrUnfaveParams, optsWithAuth ) => unfaveObservation( faveOrUnfaveParams, optsWithAuth ),
     {
-      onSuccess: data => {
-        console.log( "unfave", data );
-        // setRefetch( true );
-        // queryClient.invalidateQueries( ["fetchRemoteObservation"] );
-        // refetchRemoteObservation();
-        // refetchObservationUpdates();
+      onSuccess: () => {
+        queryClient.invalidateQueries( ["fetchRemoteObservation"] );
+        refetchRemoteObservation();
+        refetchObservationUpdates();
         setUserFav( false );
       },
       onError: () => {
@@ -157,12 +148,11 @@ const ObsDetails = (): Node => {
   const createFaveMutation = useAuthenticatedMutation(
     ( faveOrUnfaveParams, optsWithAuth ) => faveObservation( faveOrUnfaveParams, optsWithAuth ),
     {
-      onSuccess: reponse => {
-        console.log( "fav", reponse );
-        // setRefetch( true );
-        // queryClient.invalidateQueries( ["fetchRemoteObservation"] );
-        // refetchRemoteObservation();
-        // refetchObservationUpdates();
+      onSuccess: () => {
+        setRefetch( true );
+        queryClient.invalidateQueries( ["fetchRemoteObservation"] );
+        refetchRemoteObservation();
+        refetchObservationUpdates();
         setUserFav( true );
       },
       onError: () => {
@@ -171,8 +161,9 @@ const ObsDetails = (): Node => {
   );
 
   const faveOrUnfave = async () => {
-    // TODO: fix fave/unfave functionality with useMutation
-    if ( currentUserFaved ) {
+    // TODO: figure out why ObsDetails doesnt update with changes after refetch
+    // maybe similar to how comments work(?)
+    if ( currentUserFaved() ) {
       createUnfaveMutation.mutate( { uuid } );
     } else {
       createFaveMutation.mutate( { uuid } );
@@ -389,11 +380,6 @@ const ObsDetails = (): Node => {
       return (
         <View className="bg-black">
           <PhotoScroll photos={photos} />
-          {/*
-            TODO: react-navigation supports a lot of styling options including
-            a transparent header, so this custom header probably is not
-            necessary ~~~kueda
-          */}
           {/* TODO: a11y props are not passed down into this 3.party */}
           <IconButton
             onPress={navToObsEdit}
@@ -457,6 +443,14 @@ const ObsDetails = (): Node => {
   return (
     <>
       <ScrollViewWrapper testID={`ObsDetails.${uuid}`}>
+        {/*
+            TODO: react-navigation supports a lot of styling options including
+            a transparent header, so this custom header probably is not
+            necessary ~~~kueda
+
+            Tried using transparent react-navigation header but had issues where the header
+            blocked the Edit button and the header would follow scroll
+          */}
         {displayPhoto()}
         <View className="absolute top-3 left-3">
           <HeaderBackButton
