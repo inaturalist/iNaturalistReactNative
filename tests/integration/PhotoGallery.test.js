@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import {
   fireEvent,
@@ -20,7 +21,11 @@ afterEach( ( ) => {
 // This tests both the PhotoGallery component *and* the ObsEditProvider
 test( "shows a selected checkmark when a photo is tapped", async ( ) => {
   signIn( factory( "LocalUser" ) );
-  const photo = factory( "DevicePhoto" );
+  const photo = {
+    image: {
+      uri: faker.image.imageUrl( )
+    }
+  };
   // Mock CameraRoll.getPhotos so it returns our test photo
   CameraRoll.getPhotos.mockImplementation( ( ) => ( {
     page_info: {

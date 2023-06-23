@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import initI18next from "i18n/initI18next";
@@ -90,7 +91,10 @@ jest.mock(
 
 jest.mock( "sharedHooks/useIsConnected" );
 
-const mockLatLng = factory( "DeviceLocation" );
+const mockLatLng = {
+  latitude: Number( faker.address.latitude( ) ),
+  longitude: Number( faker.address.longitude( ) )
+};
 
 jest.mock( "sharedHooks/useUserLocation", () => ( {
   __esModule: true,
