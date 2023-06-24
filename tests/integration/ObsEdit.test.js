@@ -45,7 +45,20 @@ describe( "ObsEdit", ( ) => {
   describe( "UUID in params", ( ) => {
     it( "should set the observation in context when context is blank", async ( ) => {
       const observation = await Observation.saveLocalObservationForUpload(
-        factory( "LocalObservation" ),
+        factory( "LocalObservation", {
+          taxon: factory( "LocalTaxon", {
+            name: faker.name.firstName( ),
+            rank: "species",
+            rank_level: 10,
+            preferred_common_name: faker.name.fullName( ),
+            defaultPhoto: {
+              id: faker.datatype.number( ),
+              attribution: faker.lorem.sentence( ),
+              licenseCode: "cc-by-nc",
+              url: faker.image.imageUrl( )
+            }
+          } )
+        } ),
         global.realm
       );
       useRoute.mockImplementation( ( ) => ( { params: { uuid: observation.uuid } } ) );
@@ -61,7 +74,20 @@ describe( "ObsEdit", ( ) => {
     // because that's one of the systems under test here
     it( "should render the observation in params after viewing other observation", async ( ) => {
       const observation = await Observation.saveLocalObservationForUpload(
-        factory( "LocalObservation" ),
+        factory( "LocalObservation", {
+          taxon: factory( "LocalTaxon", {
+            name: faker.name.firstName( ),
+            rank: "species",
+            rank_level: 10,
+            preferred_common_name: faker.name.fullName( ),
+            defaultPhoto: {
+              id: faker.datatype.number( ),
+              attribution: faker.lorem.sentence( ),
+              licenseCode: "cc-by-nc",
+              url: faker.image.imageUrl( )
+            }
+          } )
+        } ),
         global.realm
       );
       useRoute.mockImplementation( () => ( { params: { uuid: observation.uuid } } ) );
@@ -72,7 +98,20 @@ describe( "ObsEdit", ( ) => {
 
       // Now we alter the params so they specify a different observation
       const newObservation = await Observation.saveLocalObservationForUpload(
-        factory( "LocalObservation" ),
+        factory( "LocalObservation", {
+          taxon: factory( "LocalTaxon", {
+            name: faker.name.firstName( ),
+            rank: "species",
+            rank_level: 10,
+            preferred_common_name: faker.name.fullName( ),
+            defaultPhoto: {
+              id: faker.datatype.number( ),
+              attribution: faker.lorem.sentence( ),
+              licenseCode: "cc-by-nc",
+              url: faker.image.imageUrl( )
+            }
+          } )
+        } ),
         global.realm
       );
       useRoute.mockImplementation( () => ( {
@@ -86,7 +125,20 @@ describe( "ObsEdit", ( ) => {
     it( "should not reset the observation in context when context has "
         + "the same observation", async ( ) => {
       const observation = await Observation.saveLocalObservationForUpload(
-        factory( "LocalObservation" ),
+        factory( "LocalObservation", {
+          taxon: factory( "LocalTaxon", {
+            name: faker.name.firstName( ),
+            rank: "species",
+            rank_level: 10,
+            preferred_common_name: faker.name.fullName( ),
+            defaultPhoto: {
+              id: faker.datatype.number( ),
+              attribution: faker.lorem.sentence( ),
+              licenseCode: "cc-by-nc",
+              url: faker.image.imageUrl( )
+            }
+          } )
+        } ),
         global.realm
       );
       useRoute.mockImplementation( ( ) => ( { params: { uuid: observation.uuid } } ) );

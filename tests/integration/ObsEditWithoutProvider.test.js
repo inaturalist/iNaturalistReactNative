@@ -129,7 +129,11 @@ describe( "location fetching", () => {
   } );
 
   test( "shouldn't fetch location for existing obs on device that hasn't uploaded", async () => {
-    const observation = factory( "LocalObservation" );
+    const observation = factory( "LocalObservation", {
+      _created_at: faker.date.past( ),
+      latitude: Number( faker.address.latitude( ) ),
+      longitude: Number( faker.address.longitude( ) )
+    } );
     expect( observation.id ).toBeFalsy();
     expect( observation.created_at ).toBeFalsy();
     expect( observation._created_at ).toBeTruthy();
@@ -146,7 +150,9 @@ describe( "location fetching", () => {
     const observation = factory( "LocalObservation", {
       id: faker.datatype.number(),
       created_at: faker.date.past(),
-      _synced_at: faker.date.past()
+      _synced_at: faker.date.past(),
+      latitude: Number( faker.address.latitude( ) ),
+      longitude: Number( faker.address.longitude( ) )
     } );
     expect( observation.id ).toBeTruthy();
     expect( observation.created_at ).toBeTruthy();

@@ -24,7 +24,10 @@ const mockIdentificationUpdate = factory( "RemoteUpdate", {
 } );
 const mockData = [mockCommentUpdate, mockIdentificationUpdate];
 
-const mockObservation = factory( "LocalObservation" );
+const mockObservation = factory( "LocalObservation", {
+  comments_viewed: false,
+  identifications_view: false
+} );
 
 const mockRealm = {
   objectForPrimaryKey: jest.fn( ).mockReturnValue( mockObservation ),

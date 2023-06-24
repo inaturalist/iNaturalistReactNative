@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { fireEvent, screen, waitFor } from "@testing-library/react-native";
 import DeleteObservationSheet from "components/ObsEdit/Sheets/DeleteObservationSheet";
 import initI18next from "i18n/initI18next";
@@ -96,7 +97,9 @@ describe( "delete observation", ( ) => {
 
   describe( "delete a previously synced observation", ( ) => {
     it( "should make a request to observations/delete", async ( ) => {
-      const observations = [factory( "LocalObservation" )];
+      const observations = [factory( "LocalObservation", {
+        _synced_at: faker.date.past( )
+      } )];
       global.realm.write( ( ) => {
         global.realm.create( "Observation", observations[0] );
       } );

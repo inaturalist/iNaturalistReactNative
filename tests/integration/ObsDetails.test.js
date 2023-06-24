@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import initI18next from "i18n/initI18next";
@@ -9,7 +10,12 @@ import { renderAppWithComponent } from "../helpers/render";
 
 const mockComment = factory( "LocalComment" );
 const mockObservation = factory( "LocalObservation", {
-  comments: [mockComment]
+  comments: [mockComment],
+  user: factory( "LocalUser", {
+    login: faker.internet.userName( ),
+    iconUrl: faker.image.imageUrl( ),
+    locale: "en"
+  } )
 } );
 const mockUpdate = factory( "RemoteUpdate", {
   resource_uuid: mockObservation.uuid,
