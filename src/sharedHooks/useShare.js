@@ -75,7 +75,7 @@ const useShare = ( ): void => {
     const listener = ShareMenu.addNewShareListener( handleShare );
 
     return () => {
-      listener.remove();
+      listener?.remove();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [] );

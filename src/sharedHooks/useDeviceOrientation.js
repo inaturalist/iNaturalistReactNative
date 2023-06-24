@@ -65,7 +65,7 @@ const useDeviceOrientation = ( ): Object => {
     Orientation.addDeviceOrientationListener( onDeviceRotation );
 
     return () => {
-      Orientation.removeOrientationListener( onDeviceRotation );
+      Orientation?.removeOrientationListener( onDeviceRotation );
     };
   } );
 

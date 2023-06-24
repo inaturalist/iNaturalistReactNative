@@ -13,7 +13,7 @@ const useUnlockScreen = () => {
 
     return () => {
       if ( !isTablet ) {
-        Orientation.lockToPortrait();
+        Orientation?.lockToPortrait();
       }
     };
   }, [] );

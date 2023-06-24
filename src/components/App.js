@@ -51,7 +51,7 @@ const App = ( { children }: Props ): Node => {
       Orientation.lockToPortrait();
     }
 
-    return Orientation.unlockAllOrientations;
+    return ( ) => Orientation?.unlockAllOrientations( );
   }, [] );
 
   useObservationUpdatesWhenFocused();
@@ -67,7 +67,7 @@ const App = ( { children }: Props ): Node => {
     const subscription = AppState.addEventListener( "change", onAppStateChange );
 
     // unsubscribe on unmount
-    return () => subscription.remove();
+    return ( ) => subscription?.remove();
   }, [] );
 
   useEffect( ( ) => {

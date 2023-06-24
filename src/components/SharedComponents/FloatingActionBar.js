@@ -60,8 +60,8 @@ const FloatingActionBar = ( {
     } );
 
     return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
+      showSubscription?.remove( );
+      hideSubscription?.remove( );
     };
   }, [] );
 

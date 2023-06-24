@@ -9,7 +9,7 @@ export default ( ): boolean => {
       setIsForeground( state === "active" );
     };
     const listener = AppState.addEventListener( "change", onChange );
-    return ( ) => listener.remove( );
+    return ( ) => listener?.remove( );
   }, [setIsForeground] );
 
   return isForeground;

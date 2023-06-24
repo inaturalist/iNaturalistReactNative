@@ -25,8 +25,6 @@ describe( "MyObservations", ( ) => {
     await initI18next( );
   } );
 
-  // beforeEach( signOut );
-
   afterEach( ( ) => {
     jest.clearAllMocks( );
   } );

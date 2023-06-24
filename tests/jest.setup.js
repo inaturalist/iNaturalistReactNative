@@ -43,9 +43,9 @@ jest.mock( "react-native-share-menu", ( ) => ( {
 
 // mock Portal with a Modal component inside of it (MediaViewer)
 jest.mock( "react-native-paper", () => {
-  const RealModule = jest.requireActual( "react-native-paper" );
+  const actual = jest.requireActual( "react-native-paper" );
   const MockedModule = {
-    ...RealModule,
+    ...actual,
     // eslint-disable-next-line react/jsx-no-useless-fragment
     Portal: ( { children } ) => <>{children}</>
   };
