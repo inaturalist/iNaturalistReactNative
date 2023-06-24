@@ -44,9 +44,7 @@ class Observation extends Realm.Object {
       captive_flag: false,
       geoprivacy: "open",
       owners_identification_from_vision: false,
-      observed_on: obs
-        ? obs?.observed_on
-        : createObservedOnStringForUpload( ),
+      observed_on: obs?.observed_on,
       observed_on_string: obs
         ? obs?.observed_on_string
         : createObservedOnStringForUpload( ),
@@ -187,7 +185,6 @@ class Observation extends Realm.Object {
       species_guess: obs.species_guess,
       description: obs.description,
       observed_on_string: obs.observed_on_string,
-      observed_on: obs.observed_on,
       place_guess: obs.place_guess,
       latitude: obs.latitude,
       longitude: obs.longitude,

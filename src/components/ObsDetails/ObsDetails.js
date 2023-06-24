@@ -25,7 +25,9 @@ import { formatISO } from "date-fns";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback, useEffect, useMemo, useState
+} from "react";
 import { Alert, LogBox } from "react-native";
 import {
   ActivityIndicator,
