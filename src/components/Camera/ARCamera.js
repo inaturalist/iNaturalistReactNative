@@ -9,6 +9,21 @@ import {
 
 import CameraContainer from "./CameraContainer";
 import FrameProcessorCamera from "./FrameProcessorCamera";
+
+const styles = StyleSheet.create( {
+  label: {
+    position: "absolute",
+    top: 48,
+    zIndex: 1,
+    padding: 4,
+    marginHorizontal: 20,
+    backgroundColor: "#000000",
+    fontSize: 26,
+    color: "white",
+    textAlign: "center"
+  }
+} );
+
 const ARCamera = (): Node => {
   const [results, setResult] = useState( [] );
 
