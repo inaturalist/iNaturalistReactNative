@@ -16,6 +16,12 @@ const ARCamera = (): Node => {
 
   const camera = useRef<any>( null );
 
+  const handleClassifierError = event => {
+    console.log( "handleClassifierError event :>> ", event );
+    // TODO: when we hit this error, it means the ARCamera is basically useless because there is an
+    // error with the classifier.
+    // We should show an error message and maybe also disable the ARCamera.
+  };
   return (
     <View className="flex-1 bg-black">
       <StatusBar hidden />

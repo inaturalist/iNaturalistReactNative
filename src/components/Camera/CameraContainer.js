@@ -12,6 +12,7 @@ type Props = {
   cameraComponent: Function,
   cameraRef: Object,
   device: Object,
+  onClassifierError?: Function,
 };
 
 // A container for the Camera component
@@ -20,6 +21,7 @@ const CameraContainer = ( {
   cameraComponent,
   cameraRef,
   device,
+  onClassifierError,
 }: Props ): Node => {
   const [focusAvailable, setFocusAvailable] = useState( true );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
@@ -89,6 +91,7 @@ const CameraContainer = ( {
 
       // If the error code is "frame-processor/unavailable" handle the error as classifier error
       if ( error.code === "frame-processor/unavailable" ) {
+        onClassifierError( error.code );
         return;
       }
 
@@ -100,6 +103,7 @@ const CameraContainer = ( {
       }
     },
     [
+      onClassifierError
     ]
   );
 
@@ -123,6 +127,7 @@ const CameraContainer = ( {
           // Props specificaly set
           ref: cameraRef,
           device,
+          onClassifierError,
         } )}
       </GestureDetector>
       <FocusSquare
