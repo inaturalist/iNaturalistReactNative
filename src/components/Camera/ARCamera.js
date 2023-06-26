@@ -6,7 +6,6 @@ import { StatusBar, StyleSheet } from "react-native";
 import {
   useCameraDevices
 } from "react-native-vision-camera";
-import { dirModel, dirTaxonomy } from "sharedHelpers/cvModel";
 
 import CameraContainer from "./CameraContainer";
 import FrameProcessorCamera from "./FrameProcessorCamera";
@@ -74,8 +73,6 @@ const ARCamera = (): Node => {
           cameraComponent={FrameProcessorCamera}
           cameraRef={camera}
           device={device}
-          modelPath={dirModel}
-          taxonomyPath={dirTaxonomy}
           confidenceThreshold={confidenceThresholdString}
           onTaxaDetected={handleTaxaDetected}
           // onCameraError={handleCameraError}

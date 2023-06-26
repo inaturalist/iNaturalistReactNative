@@ -8,6 +8,7 @@ import {
   Camera,
   useFrameProcessor
 } from "react-native-vision-camera";
+import { dirModel, dirTaxonomy } from "sharedHelpers/cvModel";
 // eslint-disable-next-line import/no-unresolved
 import * as InatVision from "vision-camera-plugin-inatvision";
 
@@ -20,8 +21,6 @@ type Props = {
   ref: Object,
   device: Object,
   orientation?: any,
-  modelPath: string,
-  taxonomyPath: string,
   confidenceThreshold: number,
   onTaxaDetected: Function,
   onClassifierError: Function,
@@ -37,8 +36,6 @@ const FrameProcessorCamera = ( {
   ref,
   device,
   orientation,
-  modelPath,
-  taxonomyPath,
   confidenceThreshold,
   onTaxaDetected,
   onClassifierError,
@@ -67,8 +64,8 @@ const FrameProcessorCamera = ( {
       try {
         const results = InatVision.inatVision(
           frame,
-          modelPath,
-          taxonomyPath,
+          dirModel,
+          dirTaxonomy,
           confidenceThreshold
         );
         REA.runOnJS( onTaxaDetected )( results );
