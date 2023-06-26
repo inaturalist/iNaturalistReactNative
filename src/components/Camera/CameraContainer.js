@@ -24,7 +24,10 @@ const CameraContainer = ( {
   cameraRef,
   device,
   onTaxaDetected,
+  // onCameraError,
+  // onDeviceNotSupported,
   onClassifierError,
+  // onCaptureError
   onLog
 }: Props ): Node => {
   const [focusAvailable, setFocusAvailable] = useState( true );
@@ -85,11 +88,13 @@ const CameraContainer = ( {
       // If it is any other "device/" error, return the error code
       if ( error.code.includes( "device/" ) ) {
         console.log( "error :>> ", error );
+        // onDeviceNotSupported( error.code );
         return;
       }
 
       if ( error.code.includes( "capture/" ) ) {
         console.log( "error :>> ", error );
+        // onCaptureError( error.code );
         return;
       }
 
@@ -105,9 +110,13 @@ const CameraContainer = ( {
           console.log( "error :>> ", error );
         }
       }
+      // onCameraError( returnError );
     },
     [
+      // onCameraError,
+      // onDeviceNotSupported,
       onClassifierError
+      // onCaptureError
     ]
   );
 
@@ -131,6 +140,7 @@ const CameraContainer = ( {
           // Props specificaly set
           ref: cameraRef,
           device,
+          // Props only used in ARCamera
           onTaxaDetected,
           onClassifierError,
           onLog
