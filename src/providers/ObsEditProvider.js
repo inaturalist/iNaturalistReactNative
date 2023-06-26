@@ -3,13 +3,18 @@ import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useNavigation } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
 import {
-  createObservation, createOrUpdateEvidence, searchObservations, updateObservation
+  createObservation,
+  createOrUpdateEvidence,
+  searchObservations,
+  updateObservation
 } from "api/observations";
 import inatjs from "inaturalistjs";
 import type { Node } from "react";
 import React, {
-  useCallback, useEffect,
-  useMemo, useState
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
 import Observation from "realmModels/Observation";
@@ -110,7 +115,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
     );
     return ( ) => {
-      EventRegister.removeEventListener( progressListener );
+      EventRegister?.removeEventListener( progressListener );
     };
   }, [uploadProgress, totalUploadProgress] );
 

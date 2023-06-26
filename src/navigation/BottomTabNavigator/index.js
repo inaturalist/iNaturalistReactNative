@@ -367,6 +367,19 @@ const BottomTabs = ( ) => {
         <Tab.Screen name="ForgotPassword" component={ForgotPassword} options={hideHeader} />
         <Tab.Screen name="LicensePhotos" component={LicensePhotos} options={hideHeader} />
         <Tab.Screen name="SignUpConfirmation" component={SignUpConfirmation} options={hideHeader} />
+
+        <Tab.Screen
+          name="Help"
+          component={PlaceholderComponent}
+        />
+        <Tab.Screen
+          name="Blog"
+          component={PlaceholderComponent}
+        />
+        <Tab.Screen
+          name="Donate"
+          component={PlaceholderComponent}
+        />
       </Tab.Navigator>
     </Mortal>
   );

@@ -40,7 +40,7 @@ const useLocalObservations = ( ): Object => {
     // eslint-disable-next-line consistent-return
     return ( ) => {
       // remember to remove listeners to avoid async updates
-      localObservations.removeAllListeners( );
+      localObservations?.removeAllListeners( );
     };
   }, [isFocused, allObsToUpload.length, realm] );
 

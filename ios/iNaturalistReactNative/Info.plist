@@ -49,8 +49,8 @@
 		<string>Whitney-Light-Pro.otf</string>
 		<string>Whitney-Medium-Pro.otf</string>
 		<string>Whitney-BookItalic-Pro.otf</string>
-		<string>inaturalisticons.ttf</string>
 		<string>INatIcon.ttf</string>
+		<string>inaturalisticons.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -72,15 +72,15 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>inaturalistmobile</string>
-            </array>
-        </dict>
-    </array>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>inaturalistmobile</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

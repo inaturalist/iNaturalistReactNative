@@ -41,7 +41,7 @@ const useObservationUpdatesWhenFocused = () => {
     setObservationUpdatesViewedRealm();
 
     // unsubscribe on unmount
-    return () => subscription.remove();
+    return () => subscription?.remove();
   }, [onAppStateChange, setObservationUpdatesViewedRealm] );
 };
 
