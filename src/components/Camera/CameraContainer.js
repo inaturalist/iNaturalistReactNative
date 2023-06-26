@@ -12,6 +12,7 @@ type Props = {
   cameraComponent: Function,
   cameraRef: Object,
   device: Object,
+  onTaxaDetected?: Function,
   onClassifierError?: Function,
   onLog?: Function
 };
@@ -22,6 +23,7 @@ const CameraContainer = ( {
   cameraComponent,
   cameraRef,
   device,
+  onTaxaDetected,
   onClassifierError,
   onLog
 }: Props ): Node => {
@@ -129,6 +131,7 @@ const CameraContainer = ( {
           // Props specificaly set
           ref: cameraRef,
           device,
+          onTaxaDetected,
           onClassifierError,
           onLog
         } )}
