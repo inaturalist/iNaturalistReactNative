@@ -21,11 +21,12 @@ type Props = {
   ref: Object,
   device: Object,
   orientation?: any,
-  confidenceThreshold: number,
   onTaxaDetected: Function,
   onClassifierError: Function,
   onLog: Function
 };
+
+const confidenceThreshold = "0.7";
 
 const FrameProcessorCamera = ( {
   photo,
@@ -36,7 +37,6 @@ const FrameProcessorCamera = ( {
   ref,
   device,
   orientation,
-  confidenceThreshold,
   onTaxaDetected,
   onClassifierError,
   onLog
