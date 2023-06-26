@@ -1,78 +1,39 @@
 // @flow
-import { useIsFocused } from "@react-navigation/native";
 import type { Node } from "react";
-import React, { useRef, useState } from "react";
-import { Animated, StyleSheet } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import React from "react";
 import { Camera } from "react-native-vision-camera";
-import useIsForeground from "sharedHooks/useIsForeground";
-
-import FocusSquare from "./FocusSquare";
 
 type Props = {
-  camera: Object,
+  photo: boolean,
+  enableZoomGesture: boolean,
+  isActive: boolean,
+  style: Object,
+  onError: Function,
   device: Object,
-  orientation?: any
-}
-
-const CameraView = ( { camera, device, orientation }: Props ): Node => {
-  const [tappedCoordinates, setTappedCoordinates] = useState( null );
-  const singleTapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
-
-  // check if camera page is active
-  const isFocused = useIsFocused( );
-  const isForeground = useIsForeground( );
-  const isActive = isFocused && isForeground;
-
-  const singleTapToFocus = async ( { x, y } ) => {
-    // If the device doesn't support focus, we don't want to do anything and show no animation
-    if ( !device.supportsFocus ) {
-      return;
-    }
-    try {
-      singleTapToFocusAnimation.setValue( 1 );
-      setTappedCoordinates( { x, y } );
-      await camera.current.focus( { x, y } );
-    } catch ( e ) {
-      // Android often catches the following error from the Camera X library
-      // but it doesn't seem to affect functionality, so we're ignoring this error
-      // and throwing other errors
-      const startFocusError = e?.message?.includes( "Cancelled by another startFocusAndMetering" );
-      if ( !startFocusError ) {
-        throw e;
-      }
-    }
-  };
-
-  const singleTap = Gesture.Tap( )
-    .runOnJS( true )
-    .maxDuration( 250 )
-    .numberOfTaps( 1 )
-    .onStart( e => {
-      singleTapToFocus( e );
-    } );
-
-  return (
-    <>
-      <GestureDetector gesture={Gesture.Exclusive( singleTap )}>
-        <Camera
-          ref={camera}
-          style={[
-            StyleSheet.absoluteFill
-          ]}
-          device={device}
-          isActive={isActive}
-          photo
-          enableZoomGesture
-          orientation={orientation}
-        />
-      </GestureDetector>
-      <FocusSquare
-        singleTapToFocusAnimation={singleTapToFocusAnimation}
-        tappedCoordinates={tappedCoordinates}
-      />
-    </>
-  );
+  ref: Object,
+  orientation?: any,
 };
+
+const CameraView = ( {
+  photo,
+  enableZoomGesture,
+  isActive,
+  style,
+  onError,
+  ref,
+  device,
+  orientation
+}: Props ): Node => (
+  <Camera
+    photo={photo}
+    enableZoomGesture={enableZoomGesture}
+    isActive={isActive}
+    style={style}
+    onError={onError}
+    ref={ref}
+    device={device}
+    orientation={orientation}
+  />
+);
 
 export default CameraView;

@@ -50,6 +50,7 @@ import useDeviceOrientation, {
 import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
+import CameraContainer from "./CameraContainer";
 import CameraView from "./CameraView";
 import DiscardChangesSheet from "./DiscardChangesSheet";
 import FadeInOutView from "./FadeInOutView";
@@ -411,17 +412,10 @@ const StandardCamera = ( ): Node => {
       />
       <View className="relative flex-1">
         {device && (
-          <CameraView
+          <CameraContainer
+            cameraComponent={CameraView}
+            cameraRef={camera}
             device={device}
-            camera={camera}
-            orientation={
-              // In Android the camera won't set the orientation metadata
-              // correctly without this, but in iOS it won't display the
-              // preview correctly *with* it
-              Platform.OS === "android"
-                ? deviceOrientation
-                : null
-            }
           />
         )}
         <FadeInOutView savingPhoto={savingPhoto} />
