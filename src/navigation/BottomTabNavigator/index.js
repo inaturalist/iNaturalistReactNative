@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
 import AddID from "components/AddID/AddID";
+import ARCamera from "components/Camera/ARCamera";
 import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
@@ -89,6 +90,27 @@ const StandardCameraWithPermission = ( ) => {
   return (
     <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
       <StandardCamera />
+    </PermissionGate>
+  );
+};
+
+const ARCameraWithPermission = ( ) => {
+  if ( usesAndroid10Permissions ) {
+    // WRITE_EXTERNAL_STORAGE is deprecated after Android 10
+    // https://developer.android.com/training/data-storage/shared/media#access-other-apps-files
+    return (
+      <PermissionGate
+        permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
+      >
+        <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
+          <ARCamera />
+        </PermissionGate>
+      </PermissionGate>
+    );
+  }
+  return (
+    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
+      <ARCamera />
     </PermissionGate>
   );
 };
@@ -310,6 +332,11 @@ const BottomTabs = ( ) => {
         <Tab.Screen
           name="StandardCamera"
           component={StandardCameraWithPermission}
+          options={{ ...hideHeader, orientation: "all", unmountOnBlur: true }}
+        />
+        <Tab.Screen
+          name="ARCamera"
+          component={ARCameraWithPermission}
           options={{ ...hideHeader, orientation: "all", unmountOnBlur: true }}
         />
         <Tab.Screen
