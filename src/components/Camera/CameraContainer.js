@@ -21,6 +21,7 @@ const CameraContainer = ( {
   cameraRef,
   device,
 }: Props ): Node => {
+  const [focusAvailable, setFocusAvailable] = useState( true );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
   const singleTapToFocusAnimation = useRef( new Animated.Value( 0 ) ).current;
 
@@ -59,6 +60,49 @@ const CameraContainer = ( {
     .numberOfTaps( 1 )
     .onStart( e => singleTapToFocus( e ) );
 
+  const onError = useCallback(
+    error => {
+      console.log( "error", error );
+      // If there is no error code, log the error
+      // and return because we don't know what to do with it
+      if ( !error.code ) {
+        console.log( "Camera runtime error without error code:" );
+        console.log( "error", error );
+        return;
+      }
+
+      // If the error code is "device/focus-not-supported" disable focus
+      if ( error.code === "device/focus-not-supported" ) {
+        setFocusAvailable( false );
+        return;
+      }
+      // If it is any other "device/" error, return the error code
+      if ( error.code.includes( "device/" ) ) {
+        console.log( "error :>> ", error );
+        return;
+      }
+
+      if ( error.code.includes( "capture/" ) ) {
+        console.log( "error :>> ", error );
+        return;
+      }
+
+      // If the error code is "frame-processor/unavailable" handle the error as classifier error
+      if ( error.code === "frame-processor/unavailable" ) {
+        return;
+      }
+
+      if ( error.code.includes( "permission/" ) ) {
+        if ( error.code === "permission/camera-permission-denied" ) {
+          // No camera permission
+          console.log( "error :>> ", error );
+        }
+      }
+    },
+    [
+    ]
+  );
+
   return (
     <>
       <GestureDetector gesture={Gesture.Exclusive( singleTap )}>
@@ -69,6 +113,7 @@ const CameraContainer = ( {
           enableZoomGesture: true,
           isActive,
           style: [StyleSheet.absoluteFill],
+          onError: e => onError( e ),
           // In Android the camera won't set the orientation metadata
           // correctly without this, but in iOS it won't display the
           // preview correctly *with* it
