@@ -988,6 +988,7 @@ x-identifications = {$count ->
 Agrees-with-identification = Agrees with this identification.
 Navigates-to-bulk-importer = Navigates to bulk importer.
 Navigates-to-camera = Navigate to camera.
+Navigates-to-ar-camera = Navigate to augmented reality camera.
 Navigates-to-explore = Navigates to explore.
 Navigates-to-messages = Navigates to messages.
 Navigates-to-observations = Navigates to observations.

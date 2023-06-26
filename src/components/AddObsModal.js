@@ -38,6 +38,8 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
 
   const navToStandardCamera = ( ) => navAndCloseModal( "StandardCamera" );
 
+  const navToARCamera = ( ) => navAndCloseModal( "ARCamera" );
+
   const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
 
   const bulletedText = [
@@ -80,6 +82,13 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
           navToStandardCamera,
           t( "Navigates-to-camera" ),
           "camera-button"
+        )}
+        {renderIconButton(
+          "arcamera",
+          "mx-5",
+          navToARCamera,
+          t( "Navigates-to-ar-camera" ),
+          "ar-camera-button"
         )}
         {renderIconButton(
           "gallery",
