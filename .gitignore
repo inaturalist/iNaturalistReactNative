@@ -79,3 +79,8 @@ artifacts/
 
 # VisualStudioCode #
 .vscode
+
+# CV Model #
+**/assets/**/*.csv
+*.tflite
+*.mlmodel
