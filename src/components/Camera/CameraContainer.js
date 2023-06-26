@@ -13,6 +13,7 @@ type Props = {
   cameraRef: Object,
   device: Object,
   onClassifierError?: Function,
+  onLog?: Function
 };
 
 // A container for the Camera component
@@ -22,6 +23,7 @@ const CameraContainer = ( {
   cameraRef,
   device,
   onClassifierError,
+  onLog
 }: Props ): Node => {
   const [focusAvailable, setFocusAvailable] = useState( true );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
@@ -128,6 +130,7 @@ const CameraContainer = ( {
           ref: cameraRef,
           device,
           onClassifierError,
+          onLog
         } )}
       </GestureDetector>
       <FocusSquare

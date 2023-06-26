@@ -22,6 +22,13 @@ const ARCamera = (): Node => {
     // error with the classifier.
     // We should show an error message and maybe also disable the ARCamera.
   };
+
+  const handleLog = event => {
+    console.log( "handleLog event :>> ", event );
+    // TODO: this handles incoming logs from the vision-camera-plugin-inatvision,
+    // can be used for debugging, added to a logfile, etc.
+  };
+
   return (
     <View className="flex-1 bg-black">
       <StatusBar hidden />
