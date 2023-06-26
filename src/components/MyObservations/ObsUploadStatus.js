@@ -74,7 +74,7 @@ const ObsUploadStatus = ( {
               setShowLoginSheet( true );
               return;
             }
-            uploadObservation( observation );
+            uploadObservation( observation, true );
           }}
           color={whiteColor}
           completeColor={whiteColor}

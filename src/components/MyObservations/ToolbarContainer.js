@@ -40,6 +40,7 @@ const ToolbarContainer = ( {
   const setUploads = obsEditContext?.setUploads;
   const uploads = obsEditContext?.uploads;
   const uploadError = obsEditContext?.error;
+  const singleUpload = obsEditContext?.singleUpload;
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
   const [totalUploadCount, setTotalUploadCount] = useState( allObsToUpload?.length || 0 );
@@ -106,10 +107,13 @@ const ToolbarContainer = ( {
   );
 
   useEffect( ( ) => {
-    if ( uploads?.length > 0 ) {
+    if ( uploads?.length > 0 && !singleUpload ) {
       uploadMultipleObservations( );
     }
-  }, [uploads, uploadMultipleObservations] );
+    if ( singleUpload ) {
+      setTotalUploadCount( 1 );
+    }
+  }, [uploads, uploadMultipleObservations, singleUpload] );
 
   // clear upload status when leaving screen
   useEffect(

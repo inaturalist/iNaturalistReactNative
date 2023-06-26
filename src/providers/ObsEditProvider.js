@@ -73,6 +73,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [totalProgressIncrements, setTotalProgressIncrements] = useState( 0 );
   const [totalUploadProgress, setTotalUploadProgress] = useState( 0 );
   const [uploads, setUploads] = useState( [] );
+  const [singleUpload, setSingleUpload] = useState( false );
 
   const progress = totalProgressIncrements > 0
     ? totalUploadProgress / totalProgressIncrements
@@ -413,7 +414,15 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       return responses[0];
     };
 
-    const uploadObservation = async obs => {
+    const uploadObservation = async ( obs, isSingleUpload ) => {
+      if ( isSingleUpload ) {
+        setUploads( [obs] );
+        setSingleUpload( true );
+        setUploadInProgress( true );
+        setTotalProgressIncrements( 1 + [obs]
+          .reduce( ( count, current ) => count
+            + current.observationPhotos.length, 0 ) );
+      }
       setLoading( true );
       // don't bother trying to upload unless there's a logged in user
       if ( !currentUser ) { return {}; }
@@ -663,7 +672,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       uploads,
       originalCameraUrisMap,
       setOriginalCameraUrisMap,
-      savingPhoto
+      savingPhoto,
+      singleUpload
     };
   }, [
     currentObservation,
@@ -703,7 +713,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     originalCameraUrisMap,
     appendObsPhotos,
     cameraRollUris,
-    savingPhoto
+    savingPhoto,
+    singleUpload
   ] );
 
   return (
