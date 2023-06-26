@@ -88,7 +88,6 @@ const ARCamera = (): Node => {
           cameraComponent={FrameProcessorCamera}
           cameraRef={camera}
           device={device}
-          confidenceThreshold={confidenceThresholdString}
           onTaxaDetected={handleTaxaDetected}
           // onCameraError={handleCameraError}
           onClassifierError={handleClassifierError}
