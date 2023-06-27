@@ -249,7 +249,6 @@ const ObsDetails = (): Node => {
       const remoteUpdatedAt = new Date( remoteObservation?.updated_at );
       if ( remoteUpdatedAt > localObservation?.updated_at ) {
         Observation.upsertRemoteObservations( [remoteObservation], realm );
-        console.log( "reload" );
       }
     }
   }, [localObservation, remoteObservation, realm] );
