@@ -14,6 +14,9 @@ type Props = {
   device: Object,
   onTaxaDetected?: Function,
   onClassifierError?: Function,
+  onDeviceNotSupported?: Function,
+  onCaptureError?: Function,
+  onCameraError?: Function,
   onLog?: Function
 };
 
@@ -24,10 +27,10 @@ const CameraContainer = ( {
   cameraRef,
   device,
   onTaxaDetected,
-  // onCameraError,
-  // onDeviceNotSupported,
   onClassifierError,
-  // onCaptureError
+  onDeviceNotSupported,
+  onCaptureError,
+  onCameraError,
   onLog
 }: Props ): Node => {
   const [focusAvailable, setFocusAvailable] = useState( true );
@@ -88,13 +91,13 @@ const CameraContainer = ( {
       // If it is any other "device/" error, return the error code
       if ( error.code.includes( "device/" ) ) {
         console.log( "error :>> ", error );
-        // onDeviceNotSupported( error.code );
+        onDeviceNotSupported( error.code );
         return;
       }
 
       if ( error.code.includes( "capture/" ) ) {
         console.log( "error :>> ", error );
-        // onCaptureError( error.code );
+        onCaptureError( error.code );
         return;
       }
 
@@ -108,15 +111,18 @@ const CameraContainer = ( {
         if ( error.code === "permission/camera-permission-denied" ) {
           // No camera permission
           console.log( "error :>> ", error );
+          // TODO: in Seek we do not have the PermissionGate component,
+          // so we need to handle this error there.
+          // Here we can just log it for now, because it should in principle never be hit.
         }
       }
-      // onCameraError( returnError );
+      onCameraError( error.code );
     },
     [
-      // onCameraError,
-      // onDeviceNotSupported,
-      onClassifierError
-      // onCaptureError
+      onClassifierError,
+      onDeviceNotSupported,
+      onCaptureError,
+      onCameraError
     ]
   );
 

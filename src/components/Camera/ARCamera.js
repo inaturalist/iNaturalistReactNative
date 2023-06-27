@@ -64,9 +64,25 @@ const ARCamera = (): Node => {
 
   const handleClassifierError = event => {
     console.log( "handleClassifierError event :>> ", event );
-    // TODO: when we hit this error, it means the ARCamera is basically useless because there is an
-    // error with the classifier.
+    // TODO: when we hit this error, there is an error with the classifier.
     // We should show an error message and maybe also disable the ARCamera.
+  };
+
+  const handleDeviceNotSupported = event => {
+    console.log( "handleDeviceNotSupported event :>> ", event );
+    // TODO: when we hit this error, something with the current device is not supported.
+    // We should show an error message depending on the error and change the way we use it.
+  };
+
+  const handleCaptureError = event => {
+    console.log( "handleCaptureError event :>> ", event );
+    // TODO: when we hit this error, taking a photo did not work correctly
+    // We should show an error message and do something if the error persists.
+  };
+
+  const handleCameraError = event => {
+    console.log( "handleCameraError event :>> ", event );
+    // TODO: This error is thrown when it does not fit in any of the above categories.
   };
 
   const handleLog = event => {
@@ -89,10 +105,10 @@ const ARCamera = (): Node => {
           cameraRef={camera}
           device={device}
           onTaxaDetected={handleTaxaDetected}
-          // onCameraError={handleCameraError}
           onClassifierError={handleClassifierError}
-          // onDeviceNotSupported={handleDeviceNotSupported}
-          // onCaptureError={handleCaptureError}
+          onDeviceNotSupported={handleDeviceNotSupported}
+          onCaptureError={handleCaptureError}
+          onCameraError={handleCameraError}
           onLog={handleLog}
         />
       )}
