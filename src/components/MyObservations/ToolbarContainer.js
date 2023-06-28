@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Alert, Dimensions, PixelRatio } from "react-native";
 import {
   useCurrentUser,
@@ -32,18 +32,17 @@ const ToolbarContainer = ( {
   const obsEditContext = useContext( ObsEditContext );
   const syncObservations = obsEditContext?.syncObservations;
   const stopUpload = obsEditContext?.stopUpload;
-  const setUploadProgress = obsEditContext?.setUploadProgress;
   const uploadInProgress = obsEditContext?.uploadInProgress;
   const uploadMultipleObservations = obsEditContext?.uploadMultipleObservations;
   const currentUploadIndex = obsEditContext?.currentUploadIndex;
   const progress = obsEditContext?.progress;
   const setUploads = obsEditContext?.setUploads;
   const uploads = obsEditContext?.uploads;
+  const totalUploadCount = obsEditContext?.totalUploadCount;
   const uploadError = obsEditContext?.error;
   const singleUpload = obsEditContext?.singleUpload;
   const navigation = useNavigation( );
   const isOnline = useIsConnected( );
-  const [totalUploadCount, setTotalUploadCount] = useState( allObsToUpload?.length || 0 );
 
   const screenWidth = Dimensions.get( "window" ).width * PixelRatio.get();
 
@@ -90,7 +89,6 @@ const ToolbarContainer = ( {
     }
 
     if ( numUnuploadedObs > 0 ) {
-      setTotalUploadCount( allObsToUpload.length );
       setUploads( allObsToUpload );
     } else {
       syncObservations( );
@@ -110,9 +108,6 @@ const ToolbarContainer = ( {
     if ( uploads?.length > 0 && !singleUpload ) {
       uploadMultipleObservations( );
     }
-    if ( singleUpload ) {
-      setTotalUploadCount( 1 );
-    }
   }, [uploads, uploadMultipleObservations, singleUpload] );
 
   // clear upload status when leaving screen
@@ -120,11 +115,9 @@ const ToolbarContainer = ( {
     ( ) => {
       navigation.addListener( "blur", ( ) => {
         stopUpload( );
-        setUploadProgress( { } );
-        setTotalUploadCount( 0 );
       } );
     },
-    [navigation, setUploadProgress, stopUpload]
+    [navigation, stopUpload]
   );
 
   return (
