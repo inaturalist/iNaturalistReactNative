@@ -51,7 +51,6 @@ import useTranslation from "sharedHooks/useTranslation";
 import colors from "styles/tailwindColors";
 
 import CameraContainer from "./CameraContainer";
-import CameraView from "./CameraView";
 import DiscardChangesSheet from "./DiscardChangesSheet";
 import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
@@ -413,10 +412,9 @@ const StandardCamera = ( ): Node => {
       <View className="relative flex-1">
         {device && (
           <CameraContainer
-            cameraComponent={CameraView}
             cameraRef={camera}
             device={device}
-            // TODO: include error handling
+            // TODO: include error handling and UI responses
           />
         )}
         <FadeInOutView savingPhoto={savingPhoto} />

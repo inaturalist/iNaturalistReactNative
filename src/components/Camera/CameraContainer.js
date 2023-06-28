@@ -3,35 +3,34 @@ import type { Node } from "react";
 import React, { useCallback, useRef, useState } from "react";
 import { Animated, Platform, StyleSheet } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Camera } from "react-native-vision-camera";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useIsForeground from "sharedHooks/useIsForeground";
 
 import FocusSquare from "./FocusSquare";
 
 type Props = {
-  cameraComponent: Function,
   cameraRef: Object,
   device: Object,
-  onTaxaDetected?: Function,
   onClassifierError?: Function,
   onDeviceNotSupported?: Function,
   onCaptureError?: Function,
   onCameraError?: Function,
-  onLog?: Function
+  frameProcessor?: Function,
+  frameProcessorFps?: number,
 };
 
 // A container for the Camera component
 // that has logic that applies to both use cases in StandardCamera and ARCamera
 const CameraContainer = ( {
-  cameraComponent,
   cameraRef,
   device,
-  onTaxaDetected,
   onClassifierError,
   onDeviceNotSupported,
   onCaptureError,
   onCameraError,
-  onLog
+  frameProcessor,
+  frameProcessorFps
 }: Props ): Node => {
   const [focusAvailable, setFocusAvailable] = useState( true );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
@@ -129,28 +128,27 @@ const CameraContainer = ( {
   return (
     <>
       <GestureDetector gesture={Gesture.Exclusive( singleTap )}>
-        {cameraComponent( {
+        <Camera
           // Shared props between Camera (used in StandardCamera)
           // and FrameProcessorCamera (used in ARCamera)
-          photo: true,
-          enableZoomGesture: true,
-          isActive,
-          style: [StyleSheet.absoluteFill],
-          onError: e => onError( e ),
+          photo
+          enableZoomGesture
+          isActive={isActive}
+          style={[StyleSheet.absoluteFill]}
+          onError={e => onError( e )}
           // In Android the camera won't set the orientation metadata
           // correctly without this, but in iOS it won't display the
           // preview correctly *with* it
-          orientation: Platform.OS === "android"
+          orientation={Platform.OS === "android"
             ? deviceOrientation
-            : null,
+            : null}
           // Props specificaly set
-          ref: cameraRef,
-          device,
-          // Props only used in ARCamera
-          onTaxaDetected,
-          onClassifierError,
-          onLog
-        } )}
+          ref={cameraRef}
+          device={device}
+          // Props for ARCamera only
+          frameProcessor={frameProcessor}
+          frameProcessorFps={frameProcessorFps}
+        />
       </GestureDetector>
       <FocusSquare
         singleTapToFocusAnimation={singleTapToFocusAnimation}

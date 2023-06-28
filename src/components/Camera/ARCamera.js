@@ -7,7 +7,6 @@ import {
   useCameraDevices
 } from "react-native-vision-camera";
 
-import CameraContainer from "./CameraContainer";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 
 const styles = StyleSheet.create( {
@@ -112,8 +111,7 @@ const ARCamera = (): Node => {
         </Text>
       ) )}
       {device && (
-        <CameraContainer
-          cameraComponent={FrameProcessorCamera}
+        <FrameProcessorCamera
           cameraRef={camera}
           device={device}
           onTaxaDetected={handleTaxaDetected}

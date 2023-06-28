@@ -6,23 +6,21 @@ import React, {
 import { Platform } from "react-native";
 import * as REA from "react-native-reanimated";
 import {
-  Camera,
   useFrameProcessor
 } from "react-native-vision-camera";
 import { dirModel, dirTaxonomy } from "sharedHelpers/cvModel";
 import * as InatVision from "vision-camera-plugin-inatvision";
 
+import CameraContainer from "./CameraContainer";
+
 type Props = {
-  photo: boolean,
-  enableZoomGesture: boolean,
-  isActive: boolean,
-  style: Object,
-  onError: Function,
-  ref: Object,
+  cameraRef: Object,
   device: Object,
-  orientation?: any,
   onTaxaDetected: Function,
   onClassifierError: Function,
+  onDeviceNotSupported: Function,
+  onCaptureError: Function,
+  onCameraError: Function,
   onLog: Function
 };
 
@@ -32,16 +30,13 @@ type Props = {
 const confidenceThreshold = "0.7";
 
 const FrameProcessorCamera = ( {
-  photo,
-  enableZoomGesture,
-  isActive,
-  style,
-  onError,
-  ref,
+  cameraRef,
   device,
-  orientation,
   onTaxaDetected,
   onClassifierError,
+  onDeviceNotSupported,
+  onCaptureError,
+  onCameraError,
   onLog
 }: Props ): Node => {
   useEffect( () => {
@@ -92,20 +87,18 @@ const FrameProcessorCamera = ( {
   );
 
   return (
-    <Camera
+    <CameraContainer
+      cameraRef={cameraRef}
+      device={device}
+      onClassifierError={onClassifierError}
+      onDeviceNotSupported={onDeviceNotSupported}
+      onCaptureError={onCaptureError}
+      onCameraError={onCameraError}
       frameProcessor={frameProcessor}
       // A value of 1 indicates that the frame processor gets executed once per second.
       // This roughly equals the setting of the legacy camera of 1000ms between predictions,
       // i.e. what taxaDetectionInterval was set to.
       frameProcessorFps={1}
-      photo={photo}
-      enableZoomGesture={enableZoomGesture}
-      isActive={isActive}
-      style={style}
-      onError={onError}
-      ref={ref}
-      device={device}
-      orientation={orientation}
     />
   );
 };
