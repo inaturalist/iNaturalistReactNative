@@ -36,19 +36,13 @@ const addCameraFilesAndroid = () => {
   RNFS.readDirAssets( "camera" ).then( results => {
     const model = modelFiles.ANDROIDMODEL;
     const taxonomy = modelFiles.ANDROIDTAXONOMY;
-    const sampleModel = "small_inception_tf1.tflite";
-    const sampleTaxonomy = "small_export_tax.csv";
 
     const hasModel = results.find( r => r.name === model );
-    const hasSampleModel = results.find( r => r.name === sampleModel );
 
     // Android writes over existing files
     if ( hasModel !== undefined ) {
       copyFilesAndroid( `camera/${model}`, dirModel );
       copyFilesAndroid( `camera/${taxonomy}`, dirTaxonomy );
-    } else if ( hasSampleModel !== undefined ) {
-      copyFilesAndroid( `camera/${sampleModel}`, dirModel );
-      copyFilesAndroid( `camera/${sampleTaxonomy}`, dirTaxonomy );
     }
   } );
 };
@@ -71,8 +65,6 @@ const addCameraFilesiOS = () => {
   RNFS.readDir( RNFS.MainBundlePath ).then( () => {
     const model = modelFiles.IOSMODEL;
     const taxonomy = modelFiles.IOSTAXONOMY;
-    // const sampleModel = "small_inception_tf1.mlmodelc";
-    // const sampleTaxonomy = "small_export_tax.json";
 
     copyFilesiOS( `${RNFS.MainBundlePath}/${model}`, dirModel );
     copyFilesiOS( `${RNFS.MainBundlePath}/${taxonomy}`, dirTaxonomy );
