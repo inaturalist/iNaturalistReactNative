@@ -129,8 +129,7 @@ const CameraContainer = ( {
     <>
       <GestureDetector gesture={Gesture.Exclusive( singleTap )}>
         <Camera
-          // Shared props between Camera (used in StandardCamera)
-          // and FrameProcessorCamera (used in ARCamera)
+          // Shared props between StandardCamera and ARCamera
           photo
           enableZoomGesture
           isActive={isActive}
@@ -142,7 +141,6 @@ const CameraContainer = ( {
           orientation={Platform.OS === "android"
             ? deviceOrientation
             : null}
-          // Props specificaly set
           ref={cameraRef}
           device={device}
           // Props for ARCamera only
