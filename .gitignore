@@ -84,3 +84,4 @@ artifacts/
 **/assets/**/*.csv
 *.tflite
 *.mlmodel
+**/ios/*.json
