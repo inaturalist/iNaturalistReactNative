@@ -3,6 +3,7 @@ import type { Node } from "react";
 import React, {
   useEffect
 } from "react";
+import { Platform } from "react-native";
 import * as REA from "react-native-reanimated";
 import {
   Camera,
@@ -42,14 +43,14 @@ const FrameProcessorCamera = ( {
   onLog
 }: Props ): Node => {
   useEffect( () => {
-    InatVision.addLogListener( event => {
-      // The vision-plugin events are in this format { log: "string" }
-      // The ARCamera component expects events in this format { nativeEvent: { log: "string" } }
-      const returnEvent = {
-        nativeEvent: event
-      };
-      onLog( returnEvent );
-    } );
+    // This registers a listener for the frame processor plugin's log events
+    // iOS part exposes no logging, so calling it would crash
+    if ( Platform.OS === "android" ) {
+      InatVision.addLogListener( event => {
+        // The vision-plugin events are in this format { log: "string" }
+        onLog( event );
+      } );
+    }
 
     return () => {
       InatVision.removeLogListener();
