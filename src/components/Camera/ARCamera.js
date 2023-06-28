@@ -29,6 +29,12 @@ const ARCamera = (): Node => {
   const devices = useCameraDevices();
   const device = devices.back;
 
+  // Johannes (June 2023): I did read through the native code of the legacy inatcamera
+  // that is triggered when using ref.current.takePictureAsync()
+  // and to me it seems everything should be handled by vision-camera itself.
+  // With the orientation stuff patched by the current fork.
+  // However, there is also some Exif and device orientation related code
+  // that I have not checked. Anyway, those parts we would hoist into JS side if not done yet.
   const camera = useRef<any>( null );
 
   const handleTaxaDetected = cvResults => {

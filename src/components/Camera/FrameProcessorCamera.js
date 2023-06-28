@@ -68,20 +68,15 @@ const FrameProcessorCamera = ( {
         );
         REA.runOnJS( onTaxaDetected )( results );
       } catch ( classifierError ) {
-        // TODO: needs to throw Exception in the native code for it to work here?
-        // Currently the native side throws RuntimeException but
-        // that doesn't seem to arrive here over he bridge
+        // According to the docs, when throwing an error in the native frame processor code
+        // it should be possible to catch it here and handle it.
+        // Currently Android native side throws RuntimeException but
+        // that doesn't seem to arrive here over he bridge.
+        // iOS native side does not throw any errors, because I haven't tried.
+        // TODO: make it work?
         console.log( `Error: ${classifierError.message}` );
-        const returnError = {
-          nativeEvent: { error: classifierError.message }
-        };
-        REA.runOnJS( onClassifierError )( returnError );
+        REA.runOnJS( onClassifierError )( classifierError );
       }
-      // Johannes: I did a read though of the native code
-      // that is triggered when using ref.current.takePictureAsync()
-      // and to me it seems everything should be handled by vision-camera itself.
-      // However, there is also some Exif and device orientation stuff going on.
-      // related code that would need to be tested if it all is saved as expected.
     },
     [confidenceThreshold]
   );
