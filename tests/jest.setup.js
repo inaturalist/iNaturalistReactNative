@@ -209,7 +209,7 @@ jest.mock( "react-native-fs", ( ) => {
         mtime: 123,
         name: "testdata"
       }
-    ] ) ),
+    ] ) )
   };
 
   return RNFS;
