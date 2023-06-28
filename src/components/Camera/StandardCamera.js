@@ -416,6 +416,7 @@ const StandardCamera = ( ): Node => {
             cameraComponent={CameraView}
             cameraRef={camera}
             device={device}
+            // TODO: include error handling
           />
         )}
         <FadeInOutView savingPhoto={savingPhoto} />
