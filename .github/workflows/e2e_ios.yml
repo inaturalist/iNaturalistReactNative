@@ -89,8 +89,10 @@ jobs:
       run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\n' "JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" > .env
 
     # Download an example CoreML model to mimic our production model
-    - name: Download CoreML model
+    - name: Download fake CoreML model
       run: curl https://ml-assets.apple.com/coreml/models/Image/ImageClassification/SqueezeNet/SqueezeNetInt8LUT.mlmodel -o ./ios/optimized_model.mlmodel
+    - name: Fake taxonomy.json
+      run: touch ./ios/taxonomy.json
 
     # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
     # This will be available for all subsequent steps
