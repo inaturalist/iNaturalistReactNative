@@ -2,7 +2,7 @@
 import { Text, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
-import { StatusBar, StyleSheet } from "react-native";
+import { Platform, StatusBar, StyleSheet } from "react-native";
 import {
   useCameraDevices
 } from "react-native-vision-camera";
@@ -34,7 +34,7 @@ const ARCamera = (): Node => {
 
   const handleTaxaDetected = cvResults => {
     /*
-      Using FrameProcessorCamera results in this as predictions atm on Android
+      Using FrameProcessorCamera results in this as cvResults atm on Android
       [
         {
           "stateofmatter": [
@@ -53,12 +53,24 @@ const ARCamera = (): Node => {
         }
       ]
     */
-    const predictions = cvResults.map( result => {
-      const rank = Object.keys( result )[0];
-      const prediction = result[rank][0];
-      prediction.rank = rank;
-      return prediction;
-    } );
+    /*
+      Using FrameProcessorCamera results in this as cvResults atm on iOS (= top prediction)
+      [
+        {"name": "Aves", "rank": 50, "score": 0.7627944946289062, "taxon_id": 3}
+      ]
+    */
+    console.log( "cvResults :>> ", cvResults );
+    let predictions = [];
+    if ( Platform.OS === "ios" ) {
+      predictions = cvResults;
+    } else {
+      predictions = cvResults.map( result => {
+        const rank = Object.keys( result )[0];
+        const prediction = result[rank][0];
+        prediction.rank = rank;
+        return prediction;
+      } );
+    }
     setResult( predictions );
   };
 
