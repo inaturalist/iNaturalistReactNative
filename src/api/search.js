@@ -18,8 +18,9 @@ const PARAMS = {
 
 const fetchSearchResults = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
-    const { results } = await inatjs.search( { ...PARAMS, ...params }, opts );
-    const records = results.map( result => {
+    const response = await inatjs.search( { ...PARAMS, ...params }, opts );
+    if ( !response ) { return null; }
+    const records = response?.results?.map( result => {
       const recordType = mappedRecords[params.sources];
       return result[recordType];
     } );

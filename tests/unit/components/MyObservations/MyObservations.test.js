@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import MyObservations from "components/MyObservations/MyObservations";
 import initI18next from "i18n/initI18next";
@@ -14,9 +15,37 @@ const mockObservations = [
       factory( "LocalComment" ),
       factory( "LocalComment" ),
       factory( "LocalComment" )
+    ],
+    // This is a Realm object method that we use to see if a record was deleted or not
+    isValid: jest.fn( () => true ),
+    wasSynced: jest.fn( ),
+    needsSync: jest.fn( ),
+    observationPhotos: [
+      factory( "LocalObservationPhoto", {
+        photo: {
+          id: faker.datatype.number( ),
+          attribution: faker.lorem.sentence( ),
+          licenseCode: "cc-by-nc",
+          url: faker.image.imageUrl( )
+        }
+      } )
     ]
   } ),
-  factory( "LocalObservation" )
+  factory( "LocalObservation", {
+    isValid: jest.fn( () => true ),
+    wasSynced: jest.fn( ),
+    needsSync: jest.fn( ),
+    observationPhotos: [
+      factory( "LocalObservationPhoto", {
+        photo: {
+          id: faker.datatype.number( ),
+          attribution: faker.lorem.sentence( ),
+          licenseCode: "cc-by-nc",
+          url: faker.image.imageUrl( )
+        }
+      } )
+    ]
+  } )
 ];
 
 // Need to mock this b/c header and maybe other things interact directly with

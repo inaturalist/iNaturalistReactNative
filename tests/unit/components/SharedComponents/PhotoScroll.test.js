@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import _ from "lodash";
@@ -8,7 +9,17 @@ import { renderComponent } from "../../../helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
-  time_observed_at: "2023-12-14T21:07:41-09:30"
+  time_observed_at: "2023-12-14T21:07:41-09:30",
+  observationPhotos: [
+    factory( "LocalObservationPhoto", {
+      photo: {
+        id: faker.datatype.number( ),
+        attribution: faker.lorem.sentence( ),
+        licenseCode: "cc-by-nc",
+        url: faker.image.imageUrl( )
+      }
+    } )
+  ]
 } );
 
 const mockPhotos = _.compact(

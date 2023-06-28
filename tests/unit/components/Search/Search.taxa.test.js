@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import Search from "components/Search/Search";
 import React from "react";
@@ -7,7 +8,12 @@ import { renderComponent } from "../../../helpers/render";
 
 const mockedNavigate = jest.fn( );
 
-const mockTaxon = factory( "RemoteTaxon" );
+const mockTaxon = factory( "RemoteTaxon", {
+  preferred_common_name: faker.name.fullName( ),
+  default_photo: {
+    square_url: faker.image.imageUrl( )
+  }
+} );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,

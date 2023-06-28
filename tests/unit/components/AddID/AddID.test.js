@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { fireEvent, screen } from "@testing-library/react-native";
 import AddID from "components/AddID/AddID";
@@ -25,10 +26,37 @@ jest.mock(
   }
 );
 
+const mockTaxon = factory( "RemoteTaxon", {
+  name: faker.name.firstName( ),
+  rank: "genus",
+  rank_level: 27,
+  preferred_common_name: faker.name.fullName( ),
+  default_photo: {
+    square_url: faker.image.imageUrl( )
+  },
+  ancestors: [{
+    id: faker.datatype.number( ),
+    preferred_common_name: faker.name.fullName( ),
+    name: faker.name.fullName( ),
+    rank: "class"
+  }],
+  wikipedia_summary: faker.lorem.paragraph( ),
+  taxonPhotos: [{
+    photo: factory( "RemotePhoto" )
+  }],
+  wikipedia_url: faker.internet.url( )
+} );
+
 const mockTaxaList = [
-  factory( "RemoteTaxon" ),
-  factory( "RemoteTaxon" ),
-  factory( "RemoteTaxon" )
+  mockTaxon,
+  {
+    ...mockTaxon,
+    id: faker.datatype.number( )
+  },
+  {
+    ...mockTaxon,
+    id: faker.datatype.number( )
+  }
 ];
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", () => ( {

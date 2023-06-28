@@ -1,6 +1,8 @@
+import { faker } from "@faker-js/faker";
 import { NavigationContainer } from "@react-navigation/native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
+import initI18next from "i18n/initI18next";
 import INatPaperProvider from "providers/INatPaperProvider";
 import React from "react";
 import { Linking } from "react-native";
@@ -10,7 +12,26 @@ import factory from "../../../factory";
 // Mock inaturalistjs so we can make some fake responses
 jest.mock( "inaturalistjs" );
 
-const mockTaxon = factory( "RemoteTaxon" );
+const mockTaxon = factory( "RemoteTaxon", {
+  name: faker.name.firstName( ),
+  rank: "genus",
+  rank_level: 27,
+  preferred_common_name: faker.name.fullName( ),
+  default_photo: {
+    square_url: faker.image.imageUrl( )
+  },
+  ancestors: [{
+    id: faker.datatype.number( ),
+    preferred_common_name: faker.name.fullName( ),
+    name: faker.name.fullName( ),
+    rank: "class"
+  }],
+  wikipedia_summary: faker.lorem.paragraph( ),
+  taxonPhotos: [{
+    photo: factory( "RemotePhoto" )
+  }],
+  wikipedia_url: faker.internet.url( )
+} );
 
 jest.mock( "@react-navigation/native", ( ) => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -53,28 +74,33 @@ jest.mock(
   } )
 );
 
-test( "renders taxon details from API call", async ( ) => {
-  renderTaxonDetails( );
-  expect( screen.getByTestId( `TaxonDetails.${mockTaxon.id}` ) ).toBeTruthy( );
-  expect( screen.getByTestId( "TaxonDetails.photo" ).props.source )
-    .toStrictEqual( { uri: Photo.displayMediumPhoto( mockTaxon.taxonPhotos[0].photo.url ) } );
-  expect( screen.getByText( mockTaxon.wikipedia_summary ) ).toBeTruthy( );
-} );
+describe( "TaxonDetails", ( ) => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+  test( "renders taxon details from API call", async ( ) => {
+    renderTaxonDetails( );
+    expect( screen.getByTestId( `TaxonDetails.${mockTaxon.id}` ) ).toBeTruthy( );
+    expect( screen.getByTestId( "TaxonDetails.photo" ).props.source )
+      .toStrictEqual( { uri: Photo.displayMediumPhoto( mockTaxon.taxonPhotos[0].photo.url ) } );
+    expect( screen.getByText( mockTaxon.wikipedia_summary ) ).toBeTruthy( );
+  } );
 
-test( "should not have accessibility errors", ( ) => {
-  const taxonDetails = (
-    <INatPaperProvider>
-      <NavigationContainer>
-        <TaxonDetails />
-      </NavigationContainer>
-    </INatPaperProvider>
-  );
-  expect( taxonDetails ).toBeAccessible( );
-} );
+  test( "should not have accessibility errors", ( ) => {
+    const taxonDetails = (
+      <INatPaperProvider>
+        <NavigationContainer>
+          <TaxonDetails />
+        </NavigationContainer>
+      </INatPaperProvider>
+    );
+    expect( taxonDetails ).toBeAccessible( );
+  } );
 
-test( "navigates to Wikipedia on button press", async ( ) => {
-  renderTaxonDetails( );
-  fireEvent.press( screen.getByTestId( "TaxonDetails.wikipedia" ) );
-  expect( Linking.openURL ).toHaveBeenCalledTimes( 1 );
-  expect( Linking.openURL ).toHaveBeenCalledWith( mockTaxon.wikipedia_url );
+  test( "navigates to Wikipedia on button press", async ( ) => {
+    renderTaxonDetails( );
+    fireEvent.press( screen.getByTestId( "TaxonDetails.wikipedia" ) );
+    expect( Linking.openURL ).toHaveBeenCalledTimes( 1 );
+    expect( Linking.openURL ).toHaveBeenCalledWith( mockTaxon.wikipedia_url );
+  } );
 } );

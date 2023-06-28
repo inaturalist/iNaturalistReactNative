@@ -1,11 +1,18 @@
+import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import ProjectDetails from "components/Projects/ProjectDetails";
+import initI18next from "i18n/initI18next";
 import React from "react";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-const mockProject = factory( "RemoteProject" );
+const mockProject = factory( "RemoteProject", {
+  title: faker.lorem.sentence( ),
+  icon: faker.image.imageUrl( ),
+  header_image_url: faker.image.imageUrl( ),
+  description: faker.lorem.paragraph( )
+} );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
@@ -26,8 +33,11 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-describe( "ProjectDetails", () => {
-  test( "should not have accessibility errors", async () => {
+describe( "ProjectDetails", ( ) => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
+  test( "should not have accessibility errors", async ( ) => {
     renderComponent( <ProjectDetails /> );
     const projectDetails = await screen.findByTestId( "project-details" );
     expect( projectDetails ).toBeAccessible();

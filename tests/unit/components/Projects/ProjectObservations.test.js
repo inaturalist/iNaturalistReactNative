@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import ProjectObservations from "components/Projects/ProjectObservations";
 import initI18next from "i18n/initI18next";
@@ -8,7 +9,33 @@ import { renderComponent } from "../../../helpers/render";
 
 const mockProject = factory( "RemoteProject" );
 const mockObservation = factory( "RemoteObservation", {
-  taxon: { preferred_common_name: "Foo", name: "bar" }
+  observation_photos: [
+    factory( "RemoteObservationPhoto", {
+      photo: factory( "RemotePhoto", {
+        url: faker.image.imageUrl( )
+      } )
+    } )
+  ],
+  taxon: {
+    preferred_common_name: "Foo",
+    name: "bar",
+    rank: "genus",
+    rank_level: 27,
+    default_photo: {
+      square_url: faker.image.imageUrl( )
+    },
+    ancestors: [{
+      id: faker.datatype.number( ),
+      preferred_common_name: faker.name.fullName( ),
+      name: faker.name.fullName( ),
+      rank: "class"
+    }],
+    wikipedia_summary: faker.lorem.paragraph( ),
+    taxonPhotos: [{
+      photo: factory( "RemotePhoto" )
+    }],
+    wikipedia_url: faker.internet.url( )
+  }
 } );
 
 jest.mock( "@react-navigation/native", ( ) => {
@@ -40,22 +67,22 @@ describe( "ProjectObservations", () => {
     const projectObservations = await screen.findByTestId( "ProjectObservations.grid" );
     expect( projectObservations ).toBeAccessible();
   } );
-} );
 
-test( "displays project observations", ( ) => {
-  renderComponent( <ProjectObservations /> );
+  test( "displays project observations", ( ) => {
+    renderComponent( <ProjectObservations /> );
 
-  expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
-    `${
-      mockObservation.taxon.preferred_common_name
-    }${
-      mockObservation.taxon.rank.charAt( 0 ).toUpperCase()
-      + mockObservation.taxon.rank.slice( 1 )
-    } ${
-      mockObservation.taxon.name
-    }`
-  );
-  expect( screen.getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( {
-    uri: mockObservation.observation_photos[0].photo.url
+    expect( screen.getByTestId( "display-taxon-name" ) ).toHaveTextContent(
+      `${
+        mockObservation.taxon.preferred_common_name
+      }${
+        mockObservation.taxon.rank.charAt( 0 ).toUpperCase()
+        + mockObservation.taxon.rank.slice( 1 )
+      } ${
+        mockObservation.taxon.name
+      }`
+    );
+    expect( screen.getByTestId( "ObsList.photo" ).props.source ).toStrictEqual( {
+      uri: mockObservation.observation_photos[0].photo.url
+    } );
   } );
 } );

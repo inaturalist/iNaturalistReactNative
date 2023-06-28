@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import Projects from "components/Projects/Projects";
 import initI18next from "i18n/initI18next";
@@ -7,7 +8,10 @@ import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
 const mockedNavigate = jest.fn( );
-const mockProject = factory( "RemoteProject" );
+const mockProject = factory( "RemoteProject", {
+  icon: faker.image.imageUrl( ),
+  title: faker.lorem.sentence( )
+} );
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
@@ -27,7 +31,10 @@ jest.mock( "@react-navigation/native", ( ) => {
   };
 } );
 
-describe( "Projects", () => {
+describe( "Projects", ( ) => {
+  beforeAll( async ( ) => {
+    await initI18next( );
+  } );
   it( "should display project search results", ( ) => {
     renderComponent( <Projects /> );
 
@@ -44,10 +51,6 @@ describe( "Projects", () => {
   } );
 
   describe( "accessibility", ( ) => {
-    beforeAll( async ( ) => {
-      await initI18next( );
-    } );
-
     it( "should not have errors", async ( ) => {
       renderComponent( <Projects /> );
       const projectObservations = await screen.findByTestId( "Projects" );

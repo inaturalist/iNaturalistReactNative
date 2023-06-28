@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import initI18next from "i18n/initI18next";
@@ -12,16 +13,65 @@ import { renderComponent } from "../../../helpers/render";
 
 const mockNavigate = jest.fn();
 const mockObservation = factory( "LocalObservation", {
+  _created_at: faker.date.past( ),
   created_at: "2022-11-27T19:07:41-08:00",
-  time_observed_at: "2023-12-14T21:07:41-09:30"
+  time_observed_at: "2023-12-14T21:07:41-09:30",
+  observationPhotos: [
+    factory( "LocalObservationPhoto", {
+      photo: {
+        id: faker.datatype.number( ),
+        attribution: faker.lorem.sentence( ),
+        licenseCode: "cc-by-nc",
+        url: faker.image.imageUrl( )
+      }
+    } )
+  ],
+  taxon: factory( "LocalTaxon", {
+    name: faker.name.firstName( ),
+    rank: "species",
+    rank_level: 10,
+    preferred_common_name: faker.name.fullName( ),
+    defaultPhoto: {
+      id: faker.datatype.number( ),
+      attribution: faker.lorem.sentence( ),
+      licenseCode: "cc-by-nc",
+      url: faker.image.imageUrl( )
+    }
+  } ),
+  user: factory( "LocalUser", {
+    login: faker.internet.userName( ),
+    iconUrl: faker.image.imageUrl( ),
+    locale: "en"
+  } )
 } );
 const mockNoEvidenceObservation = factory( "LocalObservation", {
+  _created_at: faker.date.past( ),
   created_at: "2022-11-27T19:07:41-08:00",
-  time_observed_at: "2023-12-14T21:07:41-09:30"
+  time_observed_at: "2023-12-14T21:07:41-09:30",
+  taxon: factory( "LocalTaxon", {
+    name: faker.name.firstName( ),
+    rank: "species",
+    rank_level: 10,
+    preferred_common_name: faker.name.fullName( ),
+    defaultPhoto: {
+      id: faker.datatype.number( ),
+      attribution: faker.lorem.sentence( ),
+      licenseCode: "cc-by-nc",
+      url: faker.image.imageUrl( )
+    }
+  } ),
+  user: factory( "LocalUser", {
+    login: faker.internet.userName( ),
+    iconUrl: faker.image.imageUrl( ),
+    locale: "en"
+  } )
 } );
 mockNoEvidenceObservation.observationPhotos = [];
 mockNoEvidenceObservation.observationSounds = [];
-const mockUser = factory( "LocalUser" );
+const mockUser = factory( "LocalUser", {
+  login: faker.internet.userName( ),
+  iconUrl: faker.image.imageUrl( )
+} );
 
 jest.mock( "sharedHooks/useCurrentUser", () => ( {
   __esModule: true,
@@ -90,7 +140,10 @@ jest.mock(
 
 jest.mock( "sharedHooks/useIsConnected" );
 
-const mockLatLng = factory( "DeviceLocation" );
+const mockLatLng = {
+  latitude: Number( faker.address.latitude( ) ),
+  longitude: Number( faker.address.longitude( ) )
+};
 
 jest.mock( "sharedHooks/useUserLocation", () => ( {
   __esModule: true,
