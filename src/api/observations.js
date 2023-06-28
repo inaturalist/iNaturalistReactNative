@@ -35,11 +35,13 @@ const fetchRemoteObservation = async (
   opts: Object = {}
 ): Promise<?number> => {
   try {
-    const { results } = await inatjs.observations.fetch(
+    const response = await inatjs.observations.fetch(
       uuid,
       params,
       opts
     );
+    if ( !response ) { return null; }
+    const { results } = response;
     if ( results?.length > 0 ) {
       return results[0];
     }

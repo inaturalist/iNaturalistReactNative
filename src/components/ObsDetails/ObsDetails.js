@@ -97,6 +97,7 @@ const ObsDetails = (): Node => {
   const observation = localObservation || remoteObservation;
 
   const markViewedLocally = async () => {
+    if ( !localObservation ) { return; }
     realm?.write( () => {
       // Flags if all comments and identifications have been viewed
       localObservation.comments_viewed = true;

@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { render, screen } from "@testing-library/react-native";
 import { DisplayTaxonName } from "components/SharedComponents";
 import initI18next from "i18n/initI18next";
@@ -15,14 +16,17 @@ const speciesTaxon = factory( "LocalTaxon", {
 } );
 
 const noCommonNameTaxon = factory( "LocalTaxon", {
+  name: faker.name.firstName( ),
   preferred_common_name: null,
   rank: "species",
   rank_level: 10
 } );
 
 const highRankTaxon = factory( "LocalTaxon", {
+  name: faker.name.firstName( ),
   preferred_common_name: null,
-  rank_level: 27
+  rank_level: 27,
+  rank: "genus"
 } );
 
 const subspeciesTaxon = factory( "LocalTaxon", {

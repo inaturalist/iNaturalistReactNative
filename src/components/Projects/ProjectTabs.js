@@ -2,13 +2,15 @@
 
 import { searchProjects } from "api/projects";
 import { Tabs } from "components/SharedComponents";
-import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Text } from "react-native";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useUserLocation from "sharedHooks/useUserLocation";
+import {
+  useAuthenticatedQuery,
+  useCurrentUser,
+  useTranslation,
+  useUserLocation
+} from "sharedHooks";
 
 import ProjectList from "./ProjectList";
 
@@ -17,6 +19,7 @@ const FEATURED_TAB_ID = "FEATURED";
 const NEARBY_TAB_ID = "NEARBY";
 
 const ProjectTabs = ( ): Node => {
+  const { t } = useTranslation( );
   const currentUser = useCurrentUser( );
   const memberId = currentUser?.id;
   const [apiParams, setApiParams] = useState( { } );

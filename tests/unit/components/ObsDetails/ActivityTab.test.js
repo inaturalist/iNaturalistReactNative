@@ -8,7 +8,15 @@ import { renderComponent } from "../../../helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
-  time_observed_at: "2023-12-14T21:07:41-09:30"
+  time_observed_at: "2023-12-14T21:07:41-09:30",
+  comments: [
+    factory( "LocalComment" ),
+    factory( "LocalComment" ),
+    factory( "LocalComment" )
+  ],
+  identifications: [
+    factory( "LocalIdentification" )
+  ]
 } );
 
 const mockUser = factory( "LocalUser" );

@@ -14,6 +14,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useReducer,
   useState
 } from "react";
 import { EventRegister } from "react-native-event-listeners";
@@ -43,6 +44,72 @@ const logger = log.extend( "ObsEditProvider" );
 
 const uploadProgressIncrement = 0.5;
 
+const initialState = {
+  currentUploadIndex: 0,
+  error: null,
+  singleUpload: false,
+  totalProgressIncrements: 0,
+  uploadInProgress: false,
+  uploadProgress: { },
+  uploads: []
+};
+
+const reducer = ( state, action ) => {
+  switch ( action.type ) {
+    case "CONTINUE_UPLOADS":
+      return {
+        ...state,
+        uploadInProgress: true
+      };
+    case "PAUSE_UPLOADS":
+      return {
+        ...state,
+        uploadInProgress: false
+      };
+    case "SET_UPLOAD_ERROR":
+      return {
+        ...state,
+        error: action.error
+      };
+    case "START_MULTIPLE_UPLOADS":
+      return {
+        ...state,
+        uploads: action.uploads,
+        uploadProgress: action.uploadProgress,
+        totalProgressIncrements: action.uploads.length + action.uploads
+          .reduce( ( count, current ) => count
+            + current.observationPhotos.length, 0 )
+      };
+    case "START_NEXT_UPLOAD":
+      return {
+        ...state,
+        currentUploadIndex: Math.min( state.currentUploadIndex + 1, state.uploads.length - 1 )
+      };
+    case "STOP_UPLOADS":
+      return {
+        ...state,
+        ...initialState
+      };
+    case "UPDATE_PROGRESS":
+      return {
+        ...state,
+        uploadProgress: action.uploadProgress
+      };
+    case "UPLOAD_SINGLE_OBSERVATION":
+      return {
+        ...state,
+        uploads: [action.observation],
+        singleUpload: true,
+        uploadInProgress: true,
+        totalProgressIncrements: 1 + [action.observation]
+          .reduce( ( count, current ) => count
+            + current.observationPhotos.length, 0 )
+      };
+    default:
+      throw new Error( );
+  }
+};
+
 const ObsEditProvider = ( { children }: Props ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
@@ -65,14 +132,23 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
   const [groupedPhotos, setGroupedPhotos] = useState( [] );
   const [savingPhoto, setSavingPhoto] = useState( false );
-  // state related to uploads
-  const [uploadProgress, setUploadProgress] = useState( { } );
-  const [uploadInProgress, setUploadInProgress] = useState( false );
-  const [currentUploadIndex, setCurrentUploadIndex] = useState( 0 );
-  const [error, setError] = useState( null );
-  const [totalProgressIncrements, setTotalProgressIncrements] = useState( 0 );
-  const [totalUploadProgress, setTotalUploadProgress] = useState( 0 );
-  const [uploads, setUploads] = useState( [] );
+
+  // state related to uploads in useReducer
+  const [state, dispatch] = useReducer( reducer, initialState );
+
+  const {
+    currentUploadIndex,
+    error,
+    singleUpload,
+    totalProgressIncrements,
+    uploadInProgress,
+    uploadProgress,
+    uploads
+  } = state;
+
+  const totalUploadCount = uploads.length;
+  const totalUploadProgress = Object.values( uploadProgress ).reduce( ( count, current ) => count
+  + Number( current ), 0 );
 
   const progress = totalProgressIncrements > 0
     ? totalUploadProgress / totalProgressIncrements
@@ -92,32 +168,42 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   }, [] );
 
   const stopUpload = ( ) => {
-    setUploadInProgress( false );
-    setCurrentUploadIndex( 0 );
-    setError( null );
+    dispatch( { type: "STOP_UPLOADS" } );
     deactivateKeepAwake( );
-    setTotalProgressIncrements( 0 );
-    setTotalUploadProgress( 0 );
-    setUploads( [] );
+  };
+
+  const setUploads = allUploads => {
+    const resetProgress = { };
+    dispatch( {
+      type: "START_MULTIPLE_UPLOADS",
+      uploads: allUploads,
+      uploadProgress: resetProgress
+    } );
   };
 
   useEffect( ( ) => {
-    const currentProgress = uploadProgress;
+    let currentProgress = uploadProgress;
     const progressListener = EventRegister.addEventListener(
       INCREMENT_SINGLE_UPLOAD_PROGRESS,
       increments => {
         const uuid = increments[0];
         const increment = increments[1];
 
+        if ( singleUpload && !currentProgress[uuid] ) {
+          currentProgress = { };
+        }
+
         currentProgress[uuid] = ( uploadProgress[uuid] || 0 ) + increment;
-        setTotalUploadProgress( totalUploadProgress + increment );
-        setUploadProgress( currentProgress );
+        dispatch( {
+          type: "UPDATE_PROGRESS",
+          uploadProgress: currentProgress
+        } );
       }
     );
     return ( ) => {
       EventRegister?.removeEventListener( progressListener );
     };
-  }, [uploadProgress, totalUploadProgress] );
+  }, [uploadProgress, singleUpload] );
 
   const allObsPhotoUris = useMemo(
     ( ) => [...cameraPreviewUris, ...galleryUris],
@@ -413,7 +499,13 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       return responses[0];
     };
 
-    const uploadObservation = async obs => {
+    const uploadObservation = async ( obs, isSingleUpload ) => {
+      if ( isSingleUpload ) {
+        dispatch( {
+          type: "UPLOAD_SINGLE_OBSERVATION",
+          observation: obs
+        } );
+      }
       setLoading( true );
       // don't bother trying to upload unless there's a logged in user
       if ( !currentUser ) { return {}; }
@@ -574,33 +666,31 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const uploadMultipleObservations = ( ) => {
-      if ( totalProgressIncrements === 0 ) {
-        setTotalProgressIncrements( uploads.length + uploads
-          .reduce( ( count, current ) => count
-           + current.observationPhotos.length, 0 ) );
-      }
+      // if ( totalProgressIncrements === 0 ) {
+      //   dispatch( { type: "SET_TOTAL_PROGRESS" } );
+      // }
       const upload = async observationToUpload => {
         try {
           await uploadObservation( observationToUpload );
         } catch ( e ) {
           console.warn( e );
-          setError( e.message );
+          dispatch( { type: "SET_UPLOAD_ERROR", error: e.message } );
         }
-        setCurrentUploadIndex( currentIndex => currentIndex + 1 );
+        dispatch( { type: "START_NEXT_UPLOAD" } );
       };
 
       const observationToUpload = uploads[currentUploadIndex];
       const continueUpload = observationToUpload && !!apiToken;
 
-      if ( !continueUpload ) {
-        setUploadInProgress( false );
+      if ( !continueUpload && uploadInProgress ) {
+        dispatch( { type: "PAUSE_UPLOADS" } );
         return;
       }
 
       const uploadedUUIDS = Object.keys( uploadProgress );
       // only try to upload every observation once
       if ( !uploadedUUIDS.includes( observationToUpload.uuid ) ) {
-        setUploadInProgress( true );
+        dispatch( { type: "CONTINUE_UPLOADS" } );
         upload( observationToUpload );
       }
     };
@@ -641,7 +731,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       unsavedChanges,
       syncObservations,
       uploadProgress,
-      setUploadProgress,
       saveAllObservations,
       setPassesEvidenceTest,
       passesEvidenceTest,
@@ -663,7 +752,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       uploads,
       originalCameraUrisMap,
       setOriginalCameraUrisMap,
-      savingPhoto
+      savingPhoto,
+      singleUpload,
+      totalUploadCount
     };
   }, [
     currentObservation,
@@ -697,13 +788,14 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     error,
     uploadInProgress,
     progress,
-    totalProgressIncrements,
     uploads,
     setOriginalCameraUrisMap,
     originalCameraUrisMap,
     appendObsPhotos,
     cameraRollUris,
-    savingPhoto
+    savingPhoto,
+    singleUpload,
+    totalUploadCount
   ] );
 
   return (
