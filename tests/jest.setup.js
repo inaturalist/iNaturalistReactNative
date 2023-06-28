@@ -16,6 +16,8 @@ import {
   mockUseCameraDevices
 } from "./vision-camera/vision-camera";
 
+jest.mock( "vision-camera-plugin-inatvision" );
+
 jest.mock( "@sayem314/react-native-keep-awake" );
 jest.mock( "react-native/Libraries/EventEmitter/NativeEventEmitter" );
 

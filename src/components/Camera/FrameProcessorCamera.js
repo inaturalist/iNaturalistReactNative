@@ -10,7 +10,6 @@ import {
   useFrameProcessor
 } from "react-native-vision-camera";
 import { dirModel, dirTaxonomy } from "sharedHelpers/cvModel";
-// eslint-disable-next-line import/no-unresolved
 import * as InatVision from "vision-camera-plugin-inatvision";
 
 type Props = {
