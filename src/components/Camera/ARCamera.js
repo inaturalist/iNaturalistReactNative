@@ -79,30 +79,31 @@ const ARCamera = (): Node => {
     setResult( predictions );
   };
 
-  const handleClassifierError = event => {
-    console.log( "handleClassifierError event :>> ", event );
+  const handleClassifierError = error => {
+    console.log( "handleClassifierError error.message :>> ", error.message );
     // TODO: when we hit this error, there is an error with the classifier.
     // We should show an error message and maybe also disable the ARCamera.
   };
 
-  const handleDeviceNotSupported = event => {
-    console.log( "handleDeviceNotSupported event :>> ", event );
+  const handleDeviceNotSupported = error => {
+    console.log( "handleDeviceNotSupported error.message :>> ", error.message );
     // TODO: when we hit this error, something with the current device is not supported.
     // We should show an error message depending on the error and change the way we use it.
   };
 
-  const handleCaptureError = event => {
-    console.log( "handleCaptureError event :>> ", event );
+  const handleCaptureError = error => {
+    console.log( "handleCaptureError error.message :>> ", error.message );
     // TODO: when we hit this error, taking a photo did not work correctly
     // We should show an error message and do something if the error persists.
   };
 
-  const handleCameraError = event => {
-    console.log( "handleCameraError event :>> ", event );
+  const handleCameraError = error => {
+    console.log( "handleCameraError error.message :>> ", error.message );
     // TODO: This error is thrown when it does not fit in any of the above categories.
   };
 
   const handleLog = event => {
+    // event = { log: "string" }
     console.log( "handleLog event :>> ", event );
     // TODO: this handles incoming logs from the vision-camera-plugin-inatvision,
     // can be used for debugging, added to a logfile, etc.

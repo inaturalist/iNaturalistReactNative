@@ -68,12 +68,6 @@ const FrameProcessorCamera = ( {
         );
         REA.runOnJS( onTaxaDetected )( results );
       } catch ( classifierError ) {
-        // According to the docs, when throwing an error in the native frame processor code
-        // it should be possible to catch it here and handle it.
-        // Currently Android native side throws RuntimeException but
-        // that doesn't seem to arrive here over he bridge.
-        // iOS native side does not throw any errors, because I haven't tried.
-        // TODO: make it work?
         console.log( `Error: ${classifierError.message}` );
         REA.runOnJS( onClassifierError )( classifierError );
       }

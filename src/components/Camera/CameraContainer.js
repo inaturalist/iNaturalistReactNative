@@ -73,6 +73,8 @@ const CameraContainer = ( {
 
   const onError = useCallback(
     error => {
+      // error is a CameraRuntimeError =
+      // { code: string, message: string, cause?: {} }
       console.log( "error", error );
       // If there is no error code, log the error
       // and return because we don't know what to do with it
@@ -102,7 +104,7 @@ const CameraContainer = ( {
 
       // If the error code is "frame-processor/unavailable" handle the error as classifier error
       if ( error.code === "frame-processor/unavailable" ) {
-        onClassifierError( error.code );
+        onClassifierError( error );
         return;
       }
 
@@ -110,11 +112,10 @@ const CameraContainer = ( {
         console.log( "error :>> ", error );
         if ( error.code === "permission/camera-permission-denied" ) {
           // No camera permission
-          console.log( "error :>> ", error );
-          // TODO: in Seek we do not have the PermissionGate component,
           // In Seek we do not have a PermissionGate wrapper component,
           // so we need to handle this error there.
           // Here we can just log it for now, it should in principle never be hit,
+          // because if we don't have permission the screen is not shown.
           return;
         }
       }
