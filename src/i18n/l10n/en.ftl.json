@@ -333,7 +333,7 @@
   "Quality-Grade": "Quality Grade",
   "quality-grade-research": {
     "comment": "Quality grade options",
-    "val": "Research"
+    "val": "Research Grade"
   },
   "quality-grade-needs-id": "Needs Id",
   "quality-grade-casual": "Casual",

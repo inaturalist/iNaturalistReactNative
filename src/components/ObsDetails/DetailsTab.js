@@ -17,7 +17,7 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { Menu } from "react-native-paper";
+import { Menu, useTheme } from "react-native-paper";
 
 import Attribution from "./Attribution";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
@@ -58,15 +58,22 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation.uuid;
+  const theme = useTheme( );
 
   const displayQualityGradeOption = option => {
+    const isResearchGrade = ( qualityGrade === "research" && option === "research" );
     const labelClassName = ( qualityGrade === option )
       ? "font-bold"
       : "";
-
+    const opacity = ( qualityGrade === option )
+      ? "1"
+      : "0.5";
+    const color = ( isResearchGrade )
+      ? theme.colors.secondary
+      : theme.colors.primary;
     return (
       <View className="flex-col space-y-[8px]">
-        <QualityGradeStatus qualityGrade={option} />
+        <QualityGradeStatus qualityGrade={option} opacity={opacity} color={color} />
         <Body4 className={labelClassName}>{ qualityGradeOption( option ) }</Body4>
       </View>
     );
