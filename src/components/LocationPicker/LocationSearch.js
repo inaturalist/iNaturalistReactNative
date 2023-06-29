@@ -9,13 +9,14 @@ import {
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
+import { Keyboard } from "react-native";
 import { useTheme } from "react-native-paper";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 type Props = {
   region: Object,
   setRegion: Function,
-  locationName: string,
+  locationName: ?string,
   setLocationName: Function,
   getShadow: Function
 };
@@ -71,6 +72,7 @@ const LocationSearch = ( {
                 latitude: coordinates[1],
                 longitude: coordinates[0]
               } );
+              Keyboard.dismiss( );
             }}
           >
             <Body3>{place.display_name}</Body3>

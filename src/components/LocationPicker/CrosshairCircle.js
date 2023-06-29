@@ -17,7 +17,7 @@ const CrosshairCircle = ( { accuracyTest, containerStyle }: Props ): Node => {
 
   return (
     <View
-      className="absolute"
+      className="absolute self-center"
       style={containerStyle}
       pointerEvents="none"
     >
