@@ -1,0 +1,12 @@
+Several updates to obs detail and bug fixes
+
+NEW
+* DQA
+* Faves
+* Styled side menu
+
+
+FIXED
+* Obs deletion should work
+* Improved obs upload progress
+* Obs detail edit button for media-less obs
