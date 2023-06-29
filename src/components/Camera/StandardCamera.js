@@ -414,7 +414,10 @@ const StandardCamera = ( ): Node => {
           <CameraContainer
             cameraRef={camera}
             device={device}
-            // TODO: include error handling and UI responses
+            onClassifierError={error => console.log( "error :>> ", error )}
+            onDeviceNotSupported={error => console.log( "error :>> ", error )}
+            onCaptureError={error => console.log( "error :>> ", error )}
+            onCameraError={error => console.log( "error :>> ", error )}
           />
         )}
         <FadeInOutView savingPhoto={savingPhoto} />

@@ -12,10 +12,10 @@ import FocusSquare from "./FocusSquare";
 type Props = {
   cameraRef: Object,
   device: Object,
-  onClassifierError?: Function,
-  onDeviceNotSupported?: Function,
-  onCaptureError?: Function,
-  onCameraError?: Function,
+  onClassifierError: Function,
+  onDeviceNotSupported: Function,
+  onCaptureError: Function,
+  onCameraError: Function,
   frameProcessor?: Function,
   frameProcessorFps?: number,
 };
@@ -107,12 +107,15 @@ const CameraContainer = ( {
       }
 
       if ( error.code.includes( "permission/" ) ) {
+        console.log( "error :>> ", error );
         if ( error.code === "permission/camera-permission-denied" ) {
           // No camera permission
           console.log( "error :>> ", error );
           // TODO: in Seek we do not have the PermissionGate component,
+          // In Seek we do not have a PermissionGate wrapper component,
           // so we need to handle this error there.
-          // Here we can just log it for now, because it should in principle never be hit.
+          // Here we can just log it for now, it should in principle never be hit,
+          return;
         }
       }
       onCameraError( error.code );
