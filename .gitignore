@@ -79,3 +79,6 @@ artifacts/
 
 # VisualStudioCode #
 .vscode
+
+# testing
+/coverage
