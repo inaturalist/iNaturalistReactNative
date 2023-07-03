@@ -303,7 +303,7 @@ PODS:
     - React-Core
   - react-native-webview (11.26.1):
     - React-Core
-  - react-native-worklets-core (0.2.2):
+  - react-native-worklets-core (0.2.0):
     - React
     - React-callinvoker
     - React-Core
@@ -420,12 +420,11 @@ PODS:
     - React-Core
   - RNPermissions (3.10.0):
     - React-Core
-  - RNReanimated (3.5.4):
+  - RNReanimated (2.17.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
     - glog
-    - hermes-engine
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
@@ -435,7 +434,6 @@ PODS:
     - React-Core/RCTWebSocket
     - React-CoreModules
     - React-cxxreact
-    - React-hermes
     - React-jsi
     - React-jsiexecutor
     - React-jsinspector
@@ -458,7 +456,7 @@ PODS:
     - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
-  - VisionCamera (3.6.4):
+  - VisionCamera (3.2.2):
     - React
     - React-callinvoker
     - React-Core
@@ -739,7 +737,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 7aa8e6d9d0f3100a820efb1a98af68aa747f9284
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
   react-native-webview: 9f111dfbcfc826084d6c507f569e5e03342ee1c1
-  react-native-worklets-core: 81629f0e2629a63336221a8e6a60aaa5cdbd1bf9
+  react-native-worklets-core: 7ad416a8965086b98b07964f7f6932560a54a14c
   React-perflogger: 75b0e25075c67565a830985f3c373e2eae5389e0
   React-RCTActionSheet: a0c3e916b327e297d124d9ebe8b0c721840ee04d
   React-RCTAnimation: 3da7025801d7bf0f8cfd94574d6278d5b82a8b88
@@ -767,15 +765,15 @@ SPEC CHECKSUMS:
   RNGestureHandler: 6e4dc6b7ab3a385386d4e36228bd065e5a611394
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPermissions: 0332875c444efe864dd97071dc848529bd7cc692
-  RNReanimated: be07c7ae209074d0e8a84cf38b7909457ac59a32
+  RNReanimated: f186e85d9f28c9383d05ca39e11dd194f59093ec
   RNScreens: d3675ab2878704de70c9dae57fa5d024802404cc
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
-  VisionCamera: db57ca079c4f933f1ddd07f2f8fb2d171a826b85
+  VisionCamera: cb27c70cea1439e9a946bf2acdc059f8fb1bc68c
   VisionCameraPluginInatVision: 79bb258db75218889c74d0897ecba676492c4def
   Yoga: 39310a10944fc864a7550700de349183450f8aaa
 
 PODFILE CHECKSUM: 77ed9526d4011b245ce5afa1ea331dea4c67d753
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0

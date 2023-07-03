@@ -85,3 +85,6 @@ artifacts/
 *.tflite
 *.mlmodel
 **/ios/*.json
+
+# testing
+/coverage
