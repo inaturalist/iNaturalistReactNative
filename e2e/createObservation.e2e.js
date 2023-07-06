@@ -75,5 +75,22 @@ describe( "Sign in and create an observation", () => {
     // Check that the observation list screen is visible
     const observation = element( by.text( "unknown" ) );
     await waitFor( observation ).toBeVisible().withTimeout( 10000 );
+    /*
+    / 3. Update the observation by adding a comment
+    */
+    await observation.tap();
+    const commentButton = element( by.id( "ObsDetail.commentButton" ) );
+    await waitFor( commentButton ).toBeVisible().withTimeout( 10000 );
+    await commentButton.tap();
+    // Check that the comment modal is visible
+    const commentModalInput = element( by.id( "AddCommentModal.commentInput" ) );
+    await waitFor( commentModalInput ).toBeVisible().withTimeout( 10000 );
+    // Add a comment
+    await commentModalInput.tap();
+    await commentModalInput.typeText( "This is a comment" );
+    const commentModalSubmitButton = element(
+      by.id( "AddCommentModal.sendButton" )
+    );
+    await commentModalSubmitButton.tap();
   } );
 } );

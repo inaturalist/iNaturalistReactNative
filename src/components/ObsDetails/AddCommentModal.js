@@ -94,6 +94,7 @@ const AddCommentModal = ( {
 
   const renderTextInput = () => (
     <BottomSheetTextInput
+      testID="AddCommentModal.commentInput"
       keyboardType="default"
       className="mb-16 h-16 mt-4"
       defaultValue={comment}
@@ -136,8 +137,12 @@ const AddCommentModal = ( {
           color={colors.darkGray}
         />
         {title
-          ? <Heading4>{title}</Heading4>
-          : <Heading4>{t( "ADD-COMMENT" )}</Heading4>}
+          ? (
+            <Heading4>{title}</Heading4>
+          )
+          : (
+            <Heading4>{t( "ADD-COMMENT" )}</Heading4>
+          )}
 
         <View className="border border-lightGray p-[5px] m-[10px] my-[15px]  w-full">
           {renderTextInput()}
@@ -150,14 +155,14 @@ const AddCommentModal = ( {
           </Pressable>
         </View>
         <Button
+          testID="AddCommentModal.sendButton"
           accessibilityRole="button"
           level="primary"
           className="w-full"
-          onPress={( ) => submitComment( )}
+          onPress={() => submitComment()}
           text={t( "CONFIRM" )}
         />
       </View>
-
     </BottomSheetModal>
   );
 };
