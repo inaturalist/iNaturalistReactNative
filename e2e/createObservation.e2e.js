@@ -68,5 +68,12 @@ describe( "Sign in and create an observation", () => {
     await waitFor( element( by.id( "new-observation-text" ) ) )
       .toBeVisible()
       .withTimeout( 10000 );
+    // Press Upload now button
+    const uploadNowButton = element( by.id( "ObsEdit.uploadButton" ) );
+    await expect( uploadNowButton ).toBeVisible();
+    await uploadNowButton.tap();
+    // Check that the observation list screen is visible
+    const observation = element( by.text( "unknown" ) );
+    await waitFor( observation ).toBeVisible().withTimeout( 10000 );
   } );
 } );
