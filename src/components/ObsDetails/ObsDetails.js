@@ -267,6 +267,7 @@ const ObsDetails = (): Node => {
 
   const editButton = useMemo( ( ) => (
     <IconButton
+      testID="ObsDetail.editButton"
       onPress={navToObsEdit}
       icon="pencil"
       textColor={colors.white}

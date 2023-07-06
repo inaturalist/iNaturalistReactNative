@@ -39,6 +39,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
             {t( "Observations-created-on-iNaturalist" )}
           </Body2>
           <Button
+            testID="MyObservationsEmpty.firstObservationButton"
             className="mb-2"
             text={t( "CREATE-YOUR-FIRST-OBSERVATION" )}
             level="focus"

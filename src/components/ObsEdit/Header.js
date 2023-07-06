@@ -104,6 +104,7 @@ const Header = ( ): Node => {
         large
       >
         <Menu.Item
+          testID="Header.delete-observation"
           onPress={( ) => {
             setDeleteSheetVisible( true );
             setKebabMenuVisible( false );
