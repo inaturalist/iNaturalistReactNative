@@ -92,5 +92,9 @@ describe( "Sign in and create an observation", () => {
       by.id( "AddCommentModal.sendButton" )
     );
     await commentModalSubmitButton.tap();
+    // Check that the comment is visible
+    // TODO: this does not work currently because the comment is added twice
+    // const comment = element( by.text( "This is a comment" ) );
+    // await waitFor( comment ).toBeVisible().withTimeout( 10000 );
   } );
 } );
