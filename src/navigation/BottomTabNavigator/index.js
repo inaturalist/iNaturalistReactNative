@@ -313,6 +313,11 @@ const BottomTabs = ( ) => {
           options={{ ...hideHeader, orientation: "all", unmountOnBlur: true }}
         />
         <Tab.Screen
+          name="ARCamera"
+          component={PlaceholderComponent}
+          options={{ ...hideHeader, orientation: "all", unmountOnBlur: true }}
+        />
+        <Tab.Screen
           name="SoundRecorder"
           component={SoundRecorderWithPermission}
           options={{
