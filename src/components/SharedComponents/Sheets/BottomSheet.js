@@ -42,7 +42,7 @@ const StandardBottomSheet = ( {
     if ( handleClose ) {
       handleClose( );
     }
-    sheetRef.current?.close( );
+    sheetRef.current?.dismiss( );
   }, [handleClose] );
 
   const handleSnapPress = useCallback( ( ) => {
