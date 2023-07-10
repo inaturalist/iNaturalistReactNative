@@ -78,6 +78,7 @@ const StandardBottomSheet = ( {
             onPress={handleClose}
             size={19}
             className="absolute top-3 right-3"
+            accessibilityState={{ disabled: hide }}
           />
         )}
       </BottomSheetView>
