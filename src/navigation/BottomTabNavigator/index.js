@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
 import AddID from "components/AddID/AddID";
+import ARCamera from "components/Camera/ARCamera";
 import StandardCamera from "components/Camera/StandardCamera";
 import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
@@ -314,7 +315,7 @@ const BottomTabs = ( ) => {
         />
         <Tab.Screen
           name="ARCamera"
-          component={PlaceholderComponent}
+          component={ARCamera}
           options={{ ...hideHeader, orientation: "all", unmountOnBlur: true }}
         />
         <Tab.Screen

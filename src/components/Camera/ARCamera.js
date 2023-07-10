@@ -49,7 +49,7 @@ const isTablet = DeviceInfo.isTablet();
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
-const StandardCamera = ( ): Node => {
+const ARCamera = ( ): Node => {
   // screen orientation locked to portrait on small devices
   if ( !isTablet ) {
     Orientation.lockToPortrait();
@@ -265,4 +265,4 @@ const StandardCamera = ( ): Node => {
   );
 };
 
-export default StandardCamera;
+export default ARCamera;
