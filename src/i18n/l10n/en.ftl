@@ -984,7 +984,8 @@ x-identifications = {$count ->
 ## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
 Agrees-with-identification = Agrees with this identification.
 Navigates-to-bulk-importer = Navigates to bulk importer.
-Navigates-to-camera = Navigate to camera.
+Navigates-to-camera = Navigates to camera.
+Navigates-to-AR-camera = Navigates to AR camera.
 Navigates-to-explore = Navigates to explore.
 Navigates-to-messages = Navigates to messages.
 Navigates-to-observations = Navigates to observations.
