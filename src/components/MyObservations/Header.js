@@ -100,7 +100,7 @@ const Header = ( {
   return (
     <>
       <View
-        className="px-5 bg-white w-screen"
+        className="px-5 bg-white w-full"
         onLayout={event => {
           const {
             height
