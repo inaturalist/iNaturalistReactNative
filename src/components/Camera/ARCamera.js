@@ -1,6 +1,7 @@
 // @flow
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -30,7 +31,6 @@ import {
   useCameraDevices
 } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
-import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation, {
   LANDSCAPE_LEFT,
   LANDSCAPE_RIGHT,
@@ -38,16 +38,22 @@ import useDeviceOrientation, {
 } from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
 
-import CameraNavButtons from "./CameraNavButtons";
-import CameraOptionsButtons from "./CameraOptionsButtons";
+import ARCameraButtons from "./ARCameraButtons";
 import CameraView from "./CameraView";
 import DiscardChangesSheet from "./DiscardChangesSheet";
 import FadeInOutView from "./FadeInOutView";
-import PhotoPreview from "./PhotoPreview";
 
 const isTablet = DeviceInfo.isTablet();
 
 export const MAX_PHOTOS_ALLOWED = 20;
+
+const exampleTaxon = {
+  id: 1,
+  name: "taxon name",
+  rank: "species",
+  rank_level: 10,
+  preferred_common_name: "common name"
+};
 
 const ARCamera = ( ): Node => {
   // screen orientation locked to portrait on small devices
@@ -55,8 +61,6 @@ const ARCamera = ( ): Node => {
     Orientation.lockToPortrait();
   }
   const {
-    addCameraPhotosToCurrentObservation,
-    createObsWithCameraPhotos,
     cameraPreviewUris,
     setCameraPreviewUris,
     allObsPhotoUris,
@@ -84,9 +88,7 @@ const ARCamera = ( ): Node => {
   const [showAlert, setShowAlert] = useState( false );
   const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
-  const { screenWidth } = useDeviceOrientation( );
 
-  const photosTaken = allObsPhotoUris.length > 0;
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
   const rotation = useSharedValue( 0 );
@@ -192,66 +194,54 @@ const ARCamera = ( ): Node => {
     setCameraPosition( newPosition );
   };
 
-  const navToObsEdit = ( ) => {
-    if ( addEvidence ) {
-      addCameraPhotosToCurrentObservation( evidenceToAdd );
-      navigation.navigate( "ObsEdit" );
-      return;
-    }
-    createObsWithCameraPhotos( cameraPreviewUris );
-    navigation.navigate( "ObsEdit" );
-  };
+  // const navToObsEdit = ( ) => {
+  //   if ( addEvidence ) {
+  //     addCameraPhotosToCurrentObservation( evidenceToAdd );
+  //     navigation.navigate( "ObsEdit" );
+  //     return;
+  //   }
+  //   createObsWithCameraPhotos( cameraPreviewUris );
+  //   navigation.navigate( "ObsEdit" );
+  // };
 
   const flexDirection = isTablet && !isLandscapeMode
     ? "flex-row"
     : "flex-col";
 
   return (
-    <View className={`flex-1 bg-black ${flexDirection}`}>
+    <View className={`flex-1 ${flexDirection}`}>
       <StatusBar hidden />
-      <PhotoPreview
-        rotation={rotation}
-        savingPhoto={savingPhoto}
-        isLandscapeMode={isLandscapeMode}
-        isLargeScreen={screenWidth > BREAKPOINTS.md}
-        isTablet={isTablet}
-      />
-      <View className="relative flex-1">
-        {device && (
-          <CameraView
-            device={device}
-            camera={camera}
-            orientation={
-              // In Android the camera won't set the orientation metadata
-              // correctly without this, but in iOS it won't display the
-              // preview correctly *with* it
-              Platform.OS === "android"
-                ? deviceOrientation
-                : null
-            }
-          />
-        )}
-        <FadeInOutView savingPhoto={savingPhoto} />
-        <CameraOptionsButtons
-          takePhoto={takePhoto}
-          handleClose={handleBackButtonPress}
-          disallowAddingPhotos={disallowAddingPhotos}
-          photosTaken={photosTaken}
-          rotatableAnimatedStyle={rotatableAnimatedStyle}
-          navToObsEdit={navToObsEdit}
-          toggleFlash={toggleFlash}
-          flipCamera={flipCamera}
-          hasFlash={hasFlash}
-          takePhotoOptions={takePhotoOptions}
+      {device && (
+        <CameraView
+          device={device}
+          camera={camera}
+          orientation={
+          // In Android the camera won't set the orientation metadata
+          // correctly without this, but in iOS it won't display the
+          // preview correctly *with* it
+            Platform.OS === "android"
+              ? deviceOrientation
+              : null
+          }
+        />
+      )}
+      <View className="pt-8">
+        <TaxonResult
+          taxon={exampleTaxon}
+          handleCheckmarkPress={( ) => { }}
+          testID={`ARCamera.taxa.${exampleTaxon.id}`}
+          clearBackground
         />
       </View>
-      <CameraNavButtons
+      <FadeInOutView savingPhoto={savingPhoto} />
+      <ARCameraButtons
         takePhoto={takePhoto}
-        handleClose={handleBackButtonPress}
         disallowAddingPhotos={disallowAddingPhotos}
-        photosTaken={photosTaken}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
-        navToObsEdit={navToObsEdit}
+        toggleFlash={toggleFlash}
+        flipCamera={flipCamera}
+        hasFlash={hasFlash}
+        takePhotoOptions={takePhotoOptions}
       />
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}

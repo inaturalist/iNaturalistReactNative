@@ -1,27 +1,20 @@
 // @flow
 
 import classnames from "classnames";
-import {
-  CloseButton,
-  INatIcon
-} from "components/SharedComponents";
-import {
-  Pressable, View
-} from "components/styledComponents";
+import { CloseButton } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
-import {
-  IconButton
-} from "react-native-paper";
 import Animated from "react-native-reanimated";
-import { useTranslation } from "sharedHooks";
-import colors from "styles/tailwindColors";
+
+import CameraFlip from "./Buttons/CameraFlip";
+import Flash from "./Buttons/Flash";
+import GreenCheckmark from "./Buttons/GreenCheckmark";
+import TakePhoto from "./Buttons/TakePhoto";
 
 const isTablet = DeviceInfo.isTablet();
-
-export const MAX_PHOTOS_ALLOWED = 20;
 
 const CAMERA_BUTTON_DIM = 40;
 
@@ -85,55 +78,16 @@ const CameraOptionsButtons = ( {
   if ( !isTablet ) {
     Orientation.lockToPortrait();
   }
-  const { t } = useTranslation( );
-
-  const renderFlashButton = () => {
-    if ( !hasFlash ) return <CameraButtonPlaceholder />;
-    let testID = "";
-    let accessibilityLabel = "";
-    let name = "";
-    const flashClassName = isTablet
-      ? "m-[12.5px]"
-      : "absolute bottom-[18px] left-[18px]";
-    switch ( takePhotoOptions.flash ) {
-      case "on":
-        name = "flash-on";
-        testID = "flash-button-label-flash";
-        accessibilityLabel = t( "Flash-button-label-flash" );
-        break;
-      default: // default to off if no flash
-        name = "flash-off";
-        testID = "flash-button-label-flash-off";
-        accessibilityLabel = t( "Flash-button-label-flash-off" );
-    }
-
-    return (
-      <Animated.View
-        style={!isTablet && rotatableAnimatedStyle}
-        className={classnames(
-          flashClassName,
-          "m-0",
-          "border-0"
-        )}
-      >
-        <IconButton
-          className={classnames( cameraOptionsClasses )}
-          onPress={toggleFlash}
-          accessibilityRole="button"
-          testID={testID}
-          accessibilityLabel={accessibilityLabel}
-          accessibilityState={{ disabled: false }}
-          icon={name}
-          iconColor={colors.white}
-          size={20}
-        />
-      </Animated.View>
-    );
-  };
 
   const renderPhoneCameraOptions = () => (
     <>
-      { renderFlashButton( ) }
+      <Flash
+        toggleFlash={toggleFlash}
+        hasFlash={hasFlash}
+        takePhotoOptions={takePhotoOptions}
+        rotatableAnimatedStyle={rotatableAnimatedStyle}
+        flashClassName="absolute bottom-[18px] left-[18px]"
+      />
       <Animated.View
         style={!isTablet && rotatableAnimatedStyle}
         className={classnames(
@@ -142,15 +96,8 @@ const CameraOptionsButtons = ( {
           "right-[18px]"
         )}
       >
-        <IconButton
-          className={classnames( cameraOptionsClasses )}
-          onPress={flipCamera}
-          accessibilityRole="button"
-          accessibilityLabel={t( "Camera-button-label-switch-camera" )}
-          accessibilityState={{ disabled: false }}
-          icon="rotate"
-          iconColor={colors.white}
-          size={20}
+        <CameraFlip
+          flipCamera={flipCamera}
         />
       </Animated.View>
     </>
@@ -170,57 +117,30 @@ const CameraOptionsButtons = ( {
 
   const renderTabletCameraOptions = ( ) => (
     <View className={classnames( tabletCameraOptionsClasses )}>
-      { renderFlashButton( ) }
-      <IconButton
-        className={classnames( cameraOptionsClasses, "m-0", "mt-[25px]" )}
-        onPress={flipCamera}
-        accessibilityRole="button"
-        accessibilityLabel={t( "Camera-button-label-switch-camera" )}
-        accessibilityState={{ disabled: false }}
-        icon="rotate"
-        iconColor={colors.white}
-        size={20}
+      <Flash
+        toggleFlash={toggleFlash}
+        hasFlash={hasFlash}
+        takePhotoOptions={takePhotoOptions}
+        rotatableAnimatedStyle={rotatableAnimatedStyle}
+        flashClassName="absolute bottom-[18px] left-[18px]"
       />
-      <Pressable
-        className={classnames(
-          "bg-white",
-          "rounded-full",
-          "h-[60px]",
-          "w-[60px]",
-          "justify-center",
-          "items-center",
-          // There is something weird about how this gets used because
-          // sometimes there just is no margin
-          "mt-[40px]",
-          "mb-[40px]"
-        )}
-        onPress={takePhoto}
-        accessibilityLabel={t( "Take-photo" )}
-        accessibilityRole="button"
-        accessibilityState={{ disabled: disallowAddingPhotos }}
-        disabled={disallowAddingPhotos}
-      >
-        <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />
-      </Pressable>
+      <CameraFlip
+        flipCamera={flipCamera}
+      />
+      <View className="mt-[40px] mb-[40px]">
+        <TakePhoto
+          disallowAddingPhotos={disallowAddingPhotos}
+          takePhoto={takePhoto}
+        />
+      </View>
       { photosTaken && (
         <Animated.View
           style={!isTablet && rotatableAnimatedStyle}
           className={classnames( checkmarkClasses, "mb-[25px]" )}
         >
-          <Pressable
-            onPress={navToObsEdit}
-            accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-            accessibilityRole="button"
-            accessibilityState={{ disabled: false }}
-            disabled={false}
-          >
-            <INatIcon
-              name="checkmark"
-              color={colors.white}
-              size={20}
-              testID="camera-button-label-switch-camera"
-            />
-          </Pressable>
+          <GreenCheckmark
+            navToObsEdit={navToObsEdit}
+          />
         </Animated.View>
       ) }
       <View

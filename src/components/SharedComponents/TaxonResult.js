@@ -1,23 +1,25 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
 import ObsImagePreview from "components/MyObservations/ObsImagePreview";
-import { DisplayTaxonName } from "components/SharedComponents";
+import { DisplayTaxonName, INatIconButton } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import {
-  IconButton,
-  useTheme
-} from "react-native-paper";
-import useTranslation from "sharedHooks/useTranslation";
+import { useTheme } from "react-native-paper";
+import { useTranslation } from "sharedHooks";
 
 type Props = {
-  item: Object,
-  createId: Function
+  taxon: Object,
+  handleCheckmarkPress: Function,
+  testID: string,
+  clearBackground?: boolean
 };
 
-const TaxonResult = ( { item: taxon, createId }: Props ): Node => {
+const TaxonResult = ( {
+  taxon, handleCheckmarkPress, testID, clearBackground
+}: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
   const theme = useTheme( );
@@ -25,8 +27,16 @@ const TaxonResult = ( { item: taxon, createId }: Props ): Node => {
 
   return (
     <View
-      className="flex-row items-center justify-between border-[0.5px] pl-3 py-1 border-lightGray"
-      testID={`Search.taxa.${taxon.id}`}
+      className={
+        classnames(
+          "flex-row items-center justify-between pl-3 py-1",
+          {
+            "border-[0.5px] border-lightGray": !clearBackground,
+            "mx-4": clearBackground
+          }
+        )
+      }
+      testID={testID}
     >
       <Pressable
         className="flex-row items-center w-16 grow"
@@ -39,29 +49,36 @@ const TaxonResult = ( { item: taxon, createId }: Props ): Node => {
       >
         <ObsImagePreview
           source={taxonImage}
-          testID={`Search.taxa.${taxon.id}.photo`}
+          testID={`${testID}.photo`}
         />
         <View className="shrink ml-3">
           <DisplayTaxonName
             taxon={taxon}
             layout="horizontal"
+            color={clearBackground && "text-white"}
           />
         </View>
       </Pressable>
       <View className="flex-row items-center">
-        <IconButton
+        <INatIconButton
           icon="info-circle-outline"
           size={22}
           onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
+          color={clearBackground && theme.colors.onSecondary}
           accessibilityRole="link"
           accessibilityLabel={t( "Navigate-to-taxon-details" )}
           accessibilityState={{ disabled: false }}
         />
-        <IconButton
-          icon="checkmark-circle"
+        <INatIconButton
+          className="ml-2"
+          icon={clearBackground
+            ? "checkmark-circle-outline"
+            : "checkmark-circle"}
           size={40}
-          iconColor={theme.colors.secondary}
-          onPress={( ) => createId( taxon )}
+          color={clearBackground
+            ? theme.colors.onSecondary
+            : theme.colors.secondary}
+          onPress={handleCheckmarkPress}
           accessibilityRole="button"
           accessibilityLabel={t( "Add-this-ID" )}
           accessibilityState={{ disabled: false }}
