@@ -23,7 +23,8 @@
     "e2e:test:ios": "MOCK_MODE=e2e npx detox test --configuration ios.release",
     "e2e:test": "npm run e2e:test:ios && npm run e2e:test:android",
     "e2e": "npm run e2e:build && npm run e2e:test",
-    "icons": "./scripts/update-icon-font.sh"
+    "icons": "./scripts/update-icon-font.sh",
+    "add-example-model": "node scripts/add-example-model.js"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.21.3",
@@ -131,6 +132,7 @@
     "babel-jest": "^29.5.0",
     "babel-plugin-module-resolver": "^5.0.0",
     "detox": "^20.9.0",
+    "download": "^8.0.0",
     "eslint": "^8.40.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-import-resolver-babel-module": "^5.3.2",
