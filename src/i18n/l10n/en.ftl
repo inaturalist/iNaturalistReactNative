@@ -16,6 +16,8 @@ ADD-AN-ID = ADD AN ID
 
 Add-an-ID = Add an ID
 
+ADD-COMMENT = ADD COMMENT
+
 Add-Date-Time = Add Date/Time
 
 Add-evidence-of-an-organism = Add evidence of an organism. This helps others identify what you saw.
@@ -35,6 +37,10 @@ Added-on-date = Added on { $date }
 Affiliation-colon = Affiliation:
 
 Agree = Agree
+
+AGREE-WITH-ID = AGREE WITH ID?
+
+Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
 
 All = All
 
@@ -259,6 +265,8 @@ Display-Name = Display Name
 Do-not-collect-stability-and-usage-data-using-third-party-services = Do not collect stability and usage data using third-party services
 
 Dont-have-an-account = Don't have an account? Sign up
+
+EDIT-COMMENT = EDIT COMMENT
 
 EDIT-LOCATION = EDIT LOCATION
 

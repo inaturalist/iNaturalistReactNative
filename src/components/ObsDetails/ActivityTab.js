@@ -1,8 +1,11 @@
 // @flow
+import createIdentification from "api/identifications";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
 import { useEffect, useState } from "react";
+import { Alert } from "react-native";
+import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 
 import ActivityItem from "./ActivityItem";
@@ -13,16 +16,38 @@ type Props = {
   navToTaxonDetails: Function,
   toggleRefetch: Function,
   refetchRemoteObservation: Function,
+  uuid: string
 }
 
 const ActivityTab = ( {
   observation, comments, navToTaxonDetails,
-  toggleRefetch, refetchRemoteObservation
+  toggleRefetch, refetchRemoteObservation, uuid
 }: Props ): React.Node => {
   const currentUser = useCurrentUser( );
   const userId = currentUser?.id;
   const [ids, setIds] = useState<Array<Object>>( [] );
 
+  const onAgreeErrorAlert = ( ) => {
+    Alert.alert(
+      "Cannot agree with ID at this time"
+    );
+  };
+
+  const createIdentificationMutation = useAuthenticatedMutation(
+    ( params, optsWithAuth ) => createIdentification( params, optsWithAuth ),
+    {
+      onSuccess: () => {
+        // TODO
+      },
+      onError: () => {
+        onAgreeErrorAlert();
+      }
+    }
+  );
+
+  const onAgree = agreeParams => {
+    createIdentificationMutation.mutate( { identification: agreeParams } );
+  };
   useEffect( ( ) => {
     // set initial ids for activity tab
     const currentIds = observation?.identifications;
@@ -45,11 +70,12 @@ const ActivityTab = ( {
   const activitytemsList = activityItems.map( item => (
     <ActivityItem
       key={item.uuid}
+      observationUUID={uuid}
       item={item}
       navToTaxonDetails={navToTaxonDetails}
       toggleRefetch={toggleRefetch}
       refetchRemoteObservation={refetchRemoteObservation}
-      onAgree={() => {}}
+      onAgree={onAgree}
       currentUserId={userId}
     />
   ) );

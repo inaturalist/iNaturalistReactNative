@@ -33,7 +33,6 @@ import {
   ActivityIndicator,
   Button as IconButton
 } from "react-native-paper";
-import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
@@ -182,7 +181,9 @@ const ObsDetails = (): Node => {
   const createCommentMutation = useAuthenticatedMutation(
     ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
     {
-      onSuccess: data => setComments( [...comments, data[0]] ),
+      onSuccess: data => {
+        setComments( [...comments, data[0]] );
+      },
       onError: e => {
         let error = null;
         if ( e ) {
@@ -199,23 +200,6 @@ const ObsDetails = (): Node => {
     }
   );
   const onCommentAdded = async commentBody => {
-    // Add temporary comment to observation.comments ("ghosted" comment,
-    // while we're trying to add it)
-    const newComment = {
-      body: commentBody,
-      user: {
-        id: userId,
-        login: currentUser?.login,
-        signedIn: true
-      },
-      created_at: formatISO( Date.now() ),
-      uuid: createUUID.v4(),
-      // This tells us to render is ghosted (since it's temporarily visible
-      // until getting a response from the server)
-      temporary: true
-    };
-    setComments( [...comments, newComment] );
-
     createCommentMutation.mutate( {
       comment: {
         body: commentBody,
@@ -476,6 +460,7 @@ const ObsDetails = (): Node => {
         <HideView show={currentTabId === ACTIVITY_TAB_ID}>
           <ActivityTab
             observation={observation}
+            uuid={uuid}
             comments={comments}
             navToTaxonDetails={navToTaxonDetails}
             toggleRefetch={toggleRefetch}
