@@ -1,6 +1,7 @@
 // @flow
 
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import classnames from "classnames";
 import { TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
@@ -17,8 +18,8 @@ import {
   StatusBar
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import LinearGradient from "react-native-linear-gradient";
 import Orientation from "react-native-orientation-locker";
-import { Snackbar } from "react-native-paper";
 import {
   useAnimatedStyle,
   useSharedValue,
@@ -36,11 +37,9 @@ import useDeviceOrientation, {
   LANDSCAPE_RIGHT,
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation";
-import useTranslation from "sharedHooks/useTranslation";
 
 import ARCameraButtons from "./ARCameraButtons";
 import CameraView from "./CameraView";
-import DiscardChangesSheet from "./DiscardChangesSheet";
 import FadeInOutView from "./FadeInOutView";
 
 const isTablet = DeviceInfo.isTablet();
@@ -48,11 +47,11 @@ const isTablet = DeviceInfo.isTablet();
 export const MAX_PHOTOS_ALLOWED = 20;
 
 const exampleTaxon = {
-  id: 1,
-  name: "taxon name",
-  rank: "species",
-  rank_level: 10,
-  preferred_common_name: "common name"
+  id: 12704,
+  name: "Muscicapidae",
+  rank: "family",
+  rank_level: 30,
+  preferred_common_name: "Old World Flycatchers and Chats"
 };
 
 const ARCamera = ( ): Node => {
@@ -63,14 +62,12 @@ const ARCamera = ( ): Node => {
   const {
     cameraPreviewUris,
     setCameraPreviewUris,
-    allObsPhotoUris,
     evidenceToAdd,
     setEvidenceToAdd,
     setOriginalCameraUrisMap,
     originalCameraUrisMap
   } = useContext( ObsEditContext );
   const navigation = useNavigation( );
-  const { t } = useTranslation( );
   const { params } = useRoute( );
   const addEvidence = params?.addEvidence;
   // $FlowFixMe
@@ -84,10 +81,7 @@ const ARCamera = ( ): Node => {
     : { };
   const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
   const [savingPhoto, setSavingPhoto] = useState( false );
-  const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
-  const [showAlert, setShowAlert] = useState( false );
   const { deviceOrientation } = useDeviceOrientation( );
-  const [showDiscardSheet, setShowDiscardSheet] = useState( false );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
@@ -117,12 +111,8 @@ const ARCamera = ( ): Node => {
   );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    if ( cameraPreviewUris.length > 0 ) {
-      setShowDiscardSheet( true );
-    } else {
-      navigation.goBack( );
-    }
-  }, [setShowDiscardSheet, cameraPreviewUris, navigation] );
+    navigation.goBack( );
+  }, [navigation] );
 
   useFocusEffect(
     // note: cannot use navigation.addListener to trigger bottom sheet in tab navigator
@@ -141,12 +131,6 @@ const ARCamera = ( ): Node => {
   );
 
   const takePhoto = async ( ) => {
-    setSavingPhoto( true );
-    if ( disallowAddingPhotos ) {
-      setShowAlert( true );
-      setSavingPhoto( false );
-      return;
-    }
     const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
     let photoRotation = 0;
     switch ( cameraPhoto.metadata.Orientation ) {
@@ -225,32 +209,37 @@ const ARCamera = ( ): Node => {
           }
         />
       )}
-      <View className="pt-8">
-        <TaxonResult
-          taxon={exampleTaxon}
-          handleCheckmarkPress={( ) => { }}
-          testID={`ARCamera.taxa.${exampleTaxon.id}`}
-          clearBackground
-        />
-      </View>
+      <LinearGradient
+        colors={["#000000", "rgba(0, 0, 0, 0)"]}
+        locations={[0.001, 1]}
+        className="w-full"
+      >
+        <View className={
+          classnames( "self-center h-[219px]", {
+            "w-[493px]": isTablet,
+            "pt-8 w-[346px]": !isTablet
+          } )
+        }
+        >
+          <TaxonResult
+            taxon={exampleTaxon}
+            handleCheckmarkPress={( ) => { }}
+            testID={`ARCamera.taxa.${exampleTaxon.id}`}
+            clearBackground
+            confidence={4}
+          />
+        </View>
+      </LinearGradient>
       <FadeInOutView savingPhoto={savingPhoto} />
       <ARCameraButtons
         takePhoto={takePhoto}
-        disallowAddingPhotos={disallowAddingPhotos}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
         toggleFlash={toggleFlash}
         flipCamera={flipCamera}
         hasFlash={hasFlash}
         takePhotoOptions={takePhotoOptions}
+        isLandscapeMode={isLandscapeMode}
       />
-      <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
-        {t( "You-can-only-upload-20-media" )}
-      </Snackbar>
-      {showDiscardSheet && (
-        <DiscardChangesSheet
-          setShowDiscardSheet={setShowDiscardSheet}
-        />
-      )}
     </View>
   );
 };

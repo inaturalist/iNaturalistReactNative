@@ -5,6 +5,7 @@ export { default as Button } from "./Buttons/Button";
 export { default as CloseButton } from "./Buttons/CloseButton";
 export { default as EvidenceButton } from "./Buttons/EvidenceButton";
 export { default as INatIconButton } from "./Buttons/INatIconButton";
+export { default as ConfidenceInterval } from "./ConfidenceInterval";
 export { default as DateDisplay } from "./DateDisplay";
 export { default as DateTimePicker } from "./DateTimePicker";
 export { default as DisplayTaxonName } from "./DisplayTaxonName";

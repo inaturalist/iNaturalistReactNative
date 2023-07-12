@@ -3,14 +3,11 @@
 import classnames from "classnames";
 import type { Node } from "react";
 import React from "react";
-import DeviceInfo from "react-native-device-info";
 import {
   IconButton
 } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
-
-const isTablet = DeviceInfo.isTablet();
 
 const CAMERA_BUTTON_DIM = 40;
 
@@ -24,19 +21,19 @@ const cameraOptionsClasses = [
 ].join( " " );
 
 type Props = {
-  flipCamera: Function
+  flipCamera: Function,
+  cameraFlipClasses?: string
 }
 
 const CameraFlip = ( {
-  flipCamera
+  flipCamera,
+  cameraFlipClasses
 }: Props ): Node => {
   const { t } = useTranslation( );
 
   return (
     <IconButton
-      className={classnames( cameraOptionsClasses, {
-        "m-0 mt-[25px]": isTablet
-      } )}
+      className={classnames( cameraOptionsClasses, cameraFlipClasses )}
       onPress={flipCamera}
       accessibilityRole="button"
       accessibilityLabel={t( "Camera-button-label-switch-camera" )}

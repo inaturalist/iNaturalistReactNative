@@ -122,10 +122,11 @@ const CameraOptionsButtons = ( {
         hasFlash={hasFlash}
         takePhotoOptions={takePhotoOptions}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
-        flashClassName="absolute bottom-[18px] left-[18px]"
+        flashClassName="absolute bottom-[18px] left-[18px] m-[12.5px]"
       />
       <CameraFlip
         flipCamera={flipCamera}
+        cameraFlipClasses="m-0 mt-[25px]"
       />
       <View className="mt-[40px] mb-[40px]">
         <TakePhoto

@@ -10,15 +10,18 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
+import ConfidenceInterval from "./ConfidenceInterval";
+
 type Props = {
   taxon: Object,
   handleCheckmarkPress: Function,
   testID: string,
-  clearBackground?: boolean
+  clearBackground?: boolean,
+  confidence?: number
 };
 
 const TaxonResult = ( {
-  taxon, handleCheckmarkPress, testID, clearBackground
+  taxon, handleCheckmarkPress, testID, clearBackground, confidence
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -51,6 +54,11 @@ const TaxonResult = ( {
           source={taxonImage}
           testID={`${testID}.photo`}
         />
+        {confidence && (
+          <View className="absolute -bottom-5 w-[62px]">
+            <ConfidenceInterval confidence={confidence} />
+          </View>
+        )}
         <View className="shrink ml-3">
           <DisplayTaxonName
             taxon={taxon}

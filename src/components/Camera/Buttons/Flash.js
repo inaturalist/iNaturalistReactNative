@@ -55,7 +55,7 @@ const Flash = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  if ( !hasFlash ) return <CameraButtonPlaceholder />;
+  if ( hasFlash ) return <CameraButtonPlaceholder />;
   let testID = "";
   let accessibilityLabel = "";
   let name = "";
@@ -77,10 +77,7 @@ const Flash = ( {
       className={classnames(
         flashClassName,
         "m-0",
-        "border-0",
-        {
-          "m-[12.5px]": isTablet
-        }
+        "border-0"
       )}
     >
       <IconButton
