@@ -24,7 +24,8 @@
     "e2e:test": "npm run e2e:test:ios && npm run e2e:test:android",
     "e2e": "npm run e2e:build && npm run e2e:test",
     "icons": "./scripts/update-icon-font.sh",
-    "add-example-model": "node scripts/add-example-model.js"
+    "add-example-model": "node scripts/add-example-model.js",
+    "add-fake-model": "node scripts/add-fake-model.js"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.21.3",

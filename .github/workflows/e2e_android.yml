@@ -75,6 +75,10 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
 
+    # Download the example model otherwise an error alert will be shown on app start
+    - name: Download a fake cv model and taxonomy file into the assets folder
+      run: npm run add-fake-model
+
     # Generate the secret files needed for a release build
     - name: Create .env file
       env:
