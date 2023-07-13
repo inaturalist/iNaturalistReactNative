@@ -38,6 +38,7 @@ const ActivityTab = ( {
     {
       onSuccess: () => {
         // TODO
+        // reload activity list to update suggest id icon
       },
       onError: () => {
         onAgreeErrorAlert();
@@ -48,6 +49,16 @@ const ActivityTab = ( {
   const onAgree = agreeParams => {
     createIdentificationMutation.mutate( { identification: agreeParams } );
   };
+
+  const findUserAgreedToID = () => {
+    const currentIds = observation?.identifications;
+    const userAgree = currentIds.filter( id => id.user.id === userId );
+    console.log( "userAgree", userAgree );
+    return userAgree[userAgree.length - 1].taxon.id;
+  };
+
+  const userAgreedToId = findUserAgreedToID();
+
   useEffect( ( ) => {
     // set initial ids for activity tab
     const currentIds = observation?.identifications;
@@ -69,6 +80,7 @@ const ActivityTab = ( {
   // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/components/activity_item.jsx
   const activitytemsList = activityItems.map( item => (
     <ActivityItem
+      userAgreedId={userAgreedToId}
       key={item.uuid}
       observationUUID={uuid}
       item={item}

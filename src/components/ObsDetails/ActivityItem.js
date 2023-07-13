@@ -27,21 +27,25 @@ type Props = {
   refetchRemoteObservation: Function,
   onAgree: Function,
   currentUserId?: Number,
-  observationUUID: string
+  observationUUID: string,
+  userAgreedId?: string
 }
 
 const ActivityItem = ( {
   item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation, onAgree, currentUserId,
-  observationUUID
+  observationUUID, userAgreedId
 }: Props ): Node => {
   const { taxon, user } = item;
   const isOnline = useIsConnected( );
   const userId = currentUserId;
-  const showAgree = taxon && user && user.id !== userId && taxon.rank_level <= 10;
   const [hideAgreeWithIdSheet, setHideAgreeWithIdSheet] = useState( true );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
+  const showAgree = taxon && user && user.id !== userId && taxon.rank_level <= 10
+  && userAgreedId !== taxon.id;
 
+  console.log( "item", item.id );
+  console.log( "showAgree", showAgree );
   const showNoInternetIcon = accessibilityLabel => (
     <View className="mr-3">
       <IconMaterial
