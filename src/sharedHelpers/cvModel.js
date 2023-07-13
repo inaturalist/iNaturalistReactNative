@@ -1,6 +1,7 @@
 // @flow
 import i18next from "i18next";
 import { Alert, Platform } from "react-native";
+import Config from "react-native-config";
 import RNFS from "react-native-fs";
 
 import { log } from "../../react-native-logs.config";
@@ -8,10 +9,10 @@ import { log } from "../../react-native-logs.config";
 const logger = log.extend( "cvModel" );
 
 const modelFiles = {
-  IOSMODEL: "optimized_model.mlmodelc",
-  IOSTAXONOMY: "taxonomy.json",
-  ANDROIDMODEL: "optimized_model.tflite",
-  ANDROIDTAXONOMY: "taxonomy.csv"
+  IOSMODEL: `${Config.IOS_MODEL_FILE_NAME}c`,
+  IOSTAXONOMY: Config.IOS_TAXONOMY_FILE_NAME,
+  ANDROIDMODEL: Config.ANDROID_MODEL_FILE_NAME,
+  ANDROIDTAXONOMY: Config.ANDROID_TAXONOMY_FILE_NAME
 };
 
 export const dirModel: string = Platform.select( {
@@ -41,19 +42,14 @@ const addCameraFilesAndroid = () => {
   RNFS.readDirAssets( "camera" ).then( results => {
     const model = modelFiles.ANDROIDMODEL;
     const taxonomy = modelFiles.ANDROIDTAXONOMY;
-    const sampleModel = "small_inception_tf1.tflite";
-    const sampleTaxonomy = "small_export_tax.csv";
 
     const hasModel = results.find( r => r.name === model );
-    const hasSampleModel = results.find( r => r.name === sampleModel );
 
     // Android writes over existing files
     if ( hasModel !== undefined ) {
+      logger.debug( "Found model asset found with filename", model );
       copyFilesAndroid( `camera/${model}`, dirModel );
       copyFilesAndroid( `camera/${taxonomy}`, dirTaxonomy );
-    } else if ( hasSampleModel !== undefined ) {
-      copyFilesAndroid( `camera/${sampleModel}`, dirModel );
-      copyFilesAndroid( `camera/${sampleTaxonomy}`, dirTaxonomy );
     } else {
       logger.debug( "No model asset found to copy into document directory." );
       Alert.alert(
@@ -91,8 +87,11 @@ const addCameraFilesiOS = () => {
       copyFilesiOS( `${RNFS.MainBundlePath}/${model}`, dirModel );
       copyFilesiOS( `${RNFS.MainBundlePath}/${taxonomy}`, dirTaxonomy );
     } else {
-      logger.debug( "No model files found" );
-      Alert.alert( "No cv model files found", "Unable to load ARCamera" );
+      logger.debug( "No model asset found to copy into document directory." );
+      Alert.alert(
+        i18next.t( "No-model-found" ),
+        i18next.t( "During-app-start-no-model-found" )
+      );
     }
   } );
 };

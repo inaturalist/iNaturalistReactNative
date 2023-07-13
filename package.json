@@ -133,6 +133,7 @@
     "babel-jest": "^29.5.0",
     "babel-plugin-module-resolver": "^5.0.0",
     "detox": "^20.9.0",
+    "dotenv": "^16.3.1",
     "download": "^8.0.0",
     "eslint": "^8.40.0",
     "eslint-config-airbnb": "^19.0.4",

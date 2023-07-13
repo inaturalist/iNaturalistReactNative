@@ -21,11 +21,11 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 1. Add AR Camera example model and taxonomy files.
     1. Add the example model files by executing `npm run add-example-models`.
     1. If the download script fails: The sample model files are available in this [`small_model.zip`](https://github.com/inaturalist/SeekReactNative/releases/tag/v2.9.1-138) file.
-    1. On Android, these files are named `small_inception_tf1.tflite` and `small_export_tax.csv`. Create a camera folder within Android assets (i.e. `android/app/src/debug/assets/camera`) and place the files there. 
+    1. On Android, these files are named `small_inception_tf1.tflite` and `small_export_tax.csv`. Create a camera folder within Android assets (i.e. `android/app/src/debug/assets/camera`) and place the files there.
     1. On iOS, these files are named `small_inception_tf1.mlmodel` and `small_export_tax.json` and should be added to the `ios` folder.
 1. Add AR Camera model and taxonomy files.
-    1. On Android, these files are named `optimized_model.tflite` and `taxonomy.csv`. Create a camera folder within Android assets (i.e. `android/app/src/main/assets/camera`) and place the files there. 
-    1. On iOS, these files are named `optimized_model.mlmodel` and `taxonomy.json` and should be added to the `ios` folder.
+    1. On Android, the current file names are specified in these env variables `ANDROID_MODEL_FILE_NAME` and `ANDROID_TAXONOMY_FILE_NAME`. Create a camera folder within Android assets (i.e. `android/app/src/main/assets/camera`) and place the files there. 
+    1. On iOS, the current file names are specified in these env variables `IOS_MODEL_FILE_NAME` and `IOS_TAXONOMY_FILE_NAME` and should be added to the `ios` folder.
 
 ### Set up pre-commit hooks
 

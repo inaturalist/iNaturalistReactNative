@@ -1,6 +1,7 @@
 const fs = require( "fs" ).promises;
 const path = require( "path" );
 const download = require( "download" );
+require( "dotenv" ).config();
 
 const modelURL
   = "https://github.com/inaturalist/SeekReactNative/releases/download/v2.9.1-138/small_model.zip";
@@ -30,25 +31,31 @@ const iosDestinationPath = path.join( __dirname, "..", "ios" );
   } );
   console.log( "Downloaded!" );
 
+  console.log( "Reading output filenames from .env file..." );
+  const androidModelFile = process.env.ANDROID_MODEL_FILE_NAME;
+  const androidTaxonomyFile = process.env.ANDROID_TAXONOMY_FILE_NAME;
+  const iosModelFile = process.env.IOS_MODEL_FILE_NAME;
+  const iosTaxonomyFile = process.env.IOS_TAXONOMY_FILE_NAME;
+
   console.log( "Copying model files to assets folder..." );
   await fs.mkdir( androidDestinationPath, { recursive: true } );
   await fs.copyFile(
     androidModelPath,
-    path.join( androidDestinationPath, "optimized_model.tflite" )
+    path.join( androidDestinationPath, androidModelFile )
   );
   await fs.copyFile(
     androidTaxonomyPath,
-    path.join( androidDestinationPath, "taxonomy.csv" )
+    path.join( androidDestinationPath, androidTaxonomyFile )
   );
 
   await fs.mkdir( iosDestinationPath, { recursive: true } );
   await fs.copyFile(
     iosModelPath,
-    path.join( iosDestinationPath, "optimized_model.mlmodel" )
+    path.join( iosDestinationPath, iosModelFile )
   );
   await fs.copyFile(
     iosTaxonomyPath,
-    path.join( iosDestinationPath, "taxonomy.json" )
+    path.join( iosDestinationPath, iosTaxonomyFile )
   );
 
   console.log( "Delete temp model folder and its contents..." );
