@@ -50,8 +50,6 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
 
   const navToStandardCamera = ( ) => navAndCloseModal( "StandardCamera" );
 
-  const navToARCamera = ( ) => navAndCloseModal( "ARCamera" );
-
   const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
 
   const bulletedText = [
