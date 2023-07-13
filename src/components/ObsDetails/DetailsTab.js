@@ -16,8 +16,9 @@ import UserText from "components/SharedComponents/UserText";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useState } from "react";
-import { Menu } from "react-native-paper";
+import React, { useCallback, useState } from "react";
+import { Alert, Linking } from "react-native";
+import { Menu, useTheme } from "react-native-paper";
 
 import Attribution from "./Attribution";
 import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
@@ -26,6 +27,29 @@ type Props = {
   observation: Object,
   uuid:string
 }
+
+const ViewInBrowserButton = ( { id } ) => {
+  const url = `https://inaturalist.org/observations/${id}`;
+  const handlePress = useCallback( async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL( url );
+
+    if ( supported ) {
+      await Linking.openURL( url );
+    } else {
+      Alert.alert( `Don't know how to open this URL: ${url}` );
+    }
+  }, [url] );
+
+  return (
+    <Body4
+      className="underline mt-[11px]"
+      onPress={handlePress}
+    >
+      {t( "View-in-browser" )}
+    </Body4>
+  );
+};
 
 const qualityGradeOption = option => {
   switch ( option ) {
@@ -58,15 +82,22 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation.uuid;
+  const theme = useTheme( );
 
   const displayQualityGradeOption = option => {
+    const isResearchGrade = ( qualityGrade === "research" && option === "research" );
     const labelClassName = ( qualityGrade === option )
       ? "font-bold"
       : "";
-
+    const opacity = ( qualityGrade === option )
+      ? "1"
+      : "0.5";
+    const color = ( isResearchGrade )
+      ? theme.colors.secondary
+      : theme.colors.primary;
     return (
       <View className="flex-col space-y-[8px]">
-        <QualityGradeStatus qualityGrade={option} />
+        <QualityGradeStatus qualityGrade={option} opacity={opacity} color={color} />
         <Body4 className={labelClassName}>{ qualityGradeOption( option ) }</Body4>
       </View>
     );
@@ -171,7 +202,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
         {application && (
           <Body4>{t( "Uploaded-via-application", { application } )}</Body4>
         )}
-        <Body4>{t( "View-in-browser" )}</Body4>
+        <ViewInBrowserButton id={observation.id} />
       </View>
     </>
   );

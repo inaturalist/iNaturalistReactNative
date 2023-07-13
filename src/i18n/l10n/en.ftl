@@ -16,6 +16,8 @@ ADD-AN-ID = ADD AN ID
 
 Add-an-ID = Add an ID
 
+ADD-COMMENT = ADD COMMENT
+
 Add-Date-Time = Add Date/Time
 
 Add-evidence-of-an-organism = Add evidence of an organism. This helps others identify what you saw.
@@ -35,6 +37,10 @@ Added-on-date = Added on { $date }
 Affiliation-colon = Affiliation:
 
 Agree = Agree
+
+AGREE-WITH-ID = AGREE WITH ID?
+
+Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
 
 All = All
 
@@ -261,6 +267,8 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 Dont-have-an-account = Don't have an account? Sign up
 
 During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AR camera.
+
+EDIT-COMMENT = EDIT COMMENT
 
 EDIT-LOCATION = EDIT LOCATION
 
@@ -551,12 +559,7 @@ Projects = Projects
 Quality-Grade = Quality Grade
 
 # Quality grade options
-quality-grade-research = Research
-quality-grade-needs-id = Needs Id
-quality-grade-casual = Casual
-
-# Quality grade options
-quality-grade-research = Research
+quality-grade-research = Research Grade
 quality-grade-needs-id = Needs Id
 quality-grade-casual = Casual
 
@@ -681,6 +684,8 @@ SAVE-CHANGES = SAVE CHANGES
 Saved-Observation = Saved observation, in queue to upload
 
 Saved-Observation = Saved observation, in queue to upload
+
+SEARCH = SEARCH
 
 Search-for-a-location = Search for a location
 
@@ -991,8 +996,8 @@ x-identifications = {$count ->
 ## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
 Agrees-with-identification = Agrees with this identification.
 Navigates-to-bulk-importer = Navigates to bulk importer.
-Navigates-to-camera = Navigate to camera.
-Navigates-to-ar-camera = Navigate to augmented reality camera.
+Navigates-to-camera = Navigates to camera.
+Navigates-to-AR-camera = Navigates to AR camera.
 Navigates-to-explore = Navigates to explore.
 Navigates-to-messages = Navigates to messages.
 Navigates-to-observations = Navigates to observations.
@@ -1174,3 +1179,12 @@ Please-click-the-link = Please click the link in the email within 60 minutes  to
 # Title for dialog telling the user that an Internet connection is required
 Internet-Connection-Required = Internet Connection Required
 Please-try-again-when-you-are-connected-to-the-internet=Please try again when you are connected to the Internet.
+
+IDENTIFY = IDENTIFY
+PROJECTS = PROJECTS
+HELP = HELP
+BLOG = BLOG
+DONATE = DONATE
+SETTINGS = SETTINGS
+LOG-OUT = LOG OUT
+Log-in-to-iNaturalist = Log in to iNaturalist

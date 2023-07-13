@@ -103,9 +103,9 @@ Run `npm run e2e:build:android && npm run e2e:test:android` to build the .apk fo
 1. Run `node src/i18n/i18ncli.js build` to build the JSON files i18next needs to access text in the app
 1. In a commponent, use the `useTranslation` hook to reference your new string, e.g.
     ```jsx
-    import { useTranslation } from "react-i18next";
+    import { useTranslation } from "sharedHooks";
     const MyComponent = ( ) => {
-      const { t } = useTranslation();
+      const { t } = useTranslation( );
       return (
         <View>
           <Text>{ t( "ABOUT-PROJECTS" ) }</Text>

@@ -463,7 +463,7 @@ const StandardCamera = ( ): Node => {
                   testID="camera-button-label-switch-camera"
                   width="100%"
                   height="100%"
-                  whiteBackground
+                  backgroundColor={colors.white}
                 />
               </Animated.View>
             )

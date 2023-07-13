@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import initI18next from "i18n/initI18next";
@@ -7,7 +8,11 @@ import React from "react";
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
 
-const mockPhoto = factory( "DevicePhoto" );
+const mockPhoto = {
+  image: {
+    uri: faker.image.imageUrl( )
+  }
+};
 
 jest.mock( "components/PhotoImporter/hooks/useCameraRollPhotos", ( ) => ( {
   __esModule: true,

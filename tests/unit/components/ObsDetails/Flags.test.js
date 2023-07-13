@@ -14,7 +14,9 @@ const mockObservation = factory( "LocalObservation", {
   time_observed_at: "2023-12-14T21:07:41-09:30"
 } );
 
-const mockIdentification = factory( "RemoteIdentification" );
+const mockIdentification = factory( "RemoteIdentification", {
+  created_at: "2015-02-13T05:12:05+00:00"
+} );
 
 jest.mock( "sharedHooks/useIsConnected" );
 
