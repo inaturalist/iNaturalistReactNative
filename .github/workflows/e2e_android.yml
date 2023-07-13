@@ -75,10 +75,6 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: npm install
 
-    # Download the example model otherwise an error alert will be shown on app start
-    - name: Download a fake cv model and taxonomy file into the assets folder
-      run: npm run add-fake-model
-
     # Generate the secret files needed for a release build
     - name: Create .env file
       env:
@@ -88,7 +84,7 @@ jobs:
         E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
         JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
         GMAPS_API_KEY: ${{ secrets.GMAPS_API_KEY }}
-      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\n' "JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
+      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=small_inception_tf1.tflite\nANDROID_TAXONOMY_FILE_NAME=small_export_tax.csv\nIOS_MODEL_FILE_NAME=small_inception_tf1.mlmodel\nIOS_TAXONOMY_FILE_NAME=small_export_tax.json\n' "JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
     - name: Create keystore.properties file
       env:
         ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
@@ -104,7 +100,11 @@ jobs:
         keytool -genkeypair -v -noprompt -storetype PKCS12 -keystore release.keystore -alias "$ANDROID_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass "$ANDROID_KEY_STORE_PASSWORD" -keypass "$ANDROID_KEY_PASSWORD" -dname "CN=mqttserver.ibm.com, OU=ID, O=IBM, L=Hursley, S=Hants, C=GB"
     - name: Move keystore
       run: mv release.keystore android/app/release.keystore
-    
+
+    # Download the example model otherwise an error alert will be shown on app start, requires .env
+    - name: Download a fake cv model and taxonomy file into the assets folder
+      run: npm run add-fake-model
+
     # Macos-latest runner has 3 Java versions pre-installed, if not specified as here, the build step errors with requiring at least Java 11 or higher
     # So, this step is needed for the apk build step, but somehow this is breaking emulator setup, so it is placed here
     - name: Set up JDK 11
