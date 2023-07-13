@@ -1,6 +1,11 @@
 // @flow
-import { Platform } from "react-native";
+import i18next from "i18next";
+import { Alert, Platform } from "react-native";
 import RNFS from "react-native-fs";
+
+import { log } from "../../react-native-logs.config";
+
+const logger = log.extend( "cvModel" );
 
 const modelFiles = {
   IOSMODEL: "optimized_model.mlmodelc",
@@ -49,6 +54,12 @@ const addCameraFilesAndroid = () => {
     } else if ( hasSampleModel !== undefined ) {
       copyFilesAndroid( `camera/${sampleModel}`, dirModel );
       copyFilesAndroid( `camera/${sampleTaxonomy}`, dirTaxonomy );
+    } else {
+      logger.debug( "No model asset found to copy into document directory." );
+      Alert.alert(
+        i18next.t( "No-model-found" ),
+        i18next.t( "During-app-start-no-model-found" )
+      );
     }
   } );
 };
@@ -67,13 +78,22 @@ const addCameraFilesiOS = () => {
       } );
   };
 
-  // external devs should swap sample model and taxonomy file
-  RNFS.readDir( RNFS.MainBundlePath ).then( () => {
+  RNFS.readDir( RNFS.MainBundlePath ).then( results => {
+    // iOS will error out during build if those files are not found,
+    // because they are linked in the xcode project
     const model = modelFiles.IOSMODEL;
     const taxonomy = modelFiles.IOSTAXONOMY;
 
-    copyFilesiOS( `${RNFS.MainBundlePath}/${model}`, dirModel );
-    copyFilesiOS( `${RNFS.MainBundlePath}/${taxonomy}`, dirTaxonomy );
+    const hasModel = results.find( r => r.name === model );
+
+    // Android writes over existing files
+    if ( hasModel !== undefined ) {
+      copyFilesiOS( `${RNFS.MainBundlePath}/${model}`, dirModel );
+      copyFilesiOS( `${RNFS.MainBundlePath}/${taxonomy}`, dirTaxonomy );
+    } else {
+      logger.debug( "No model files found" );
+      Alert.alert( "No cv model files found", "Unable to load ARCamera" );
+    }
   } );
 };
 
