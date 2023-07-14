@@ -12,7 +12,7 @@ import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
 type Props = {
   children: any,
-  hide?: boolean,
+  hidden?: boolean,
   snapPoints?: ( string|number )[],
   onChange?: Function,
   handleClose?: Function,
@@ -26,7 +26,7 @@ const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
 
 const StandardBottomSheet = ( {
   children,
-  hide,
+  hidden,
   snapPoints = DEFAULT_SNAP_POINTS,
   onChange = null,
   handleClose,
@@ -50,12 +50,12 @@ const StandardBottomSheet = ( {
   }, [] );
 
   useEffect( ( ) => {
-    if ( hide ) {
+    if ( hidden ) {
       handleClosePress( );
     } else {
       handleSnapPress( );
     }
-  }, [hide, handleClosePress, handleSnapPress] );
+  }, [hidden, handleClosePress, handleSnapPress] );
 
   return (
     <BottomSheetModal
@@ -78,7 +78,7 @@ const StandardBottomSheet = ( {
             onPress={handleClose}
             size={19}
             className="absolute top-3 right-3"
-            accessibilityState={{ disabled: hide }}
+            accessibilityState={{ disabled: hidden }}
           />
         )}
       </BottomSheetView>

@@ -494,7 +494,7 @@ const StandardCamera = ( ): Node => {
       </Snackbar>
       <DiscardChangesSheet
         setShowDiscardSheet={setShowDiscardSheet}
-        hide={!showDiscardSheet}
+        hidden={!showDiscardSheet}
         onDiscard={() => {
           setDismissChanges( true );
         }}

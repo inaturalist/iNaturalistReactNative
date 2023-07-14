@@ -179,7 +179,7 @@ const EvidenceSection = ( ): Node => {
       <AddEvidenceSheet
         setShowAddEvidenceSheet={setShowAddEvidenceSheet}
         disableAddingMoreEvidence={photoUris.length >= MAX_PHOTOS_ALLOWED}
-        hide={!showAddEvidenceSheet}
+        hidden={!showAddEvidenceSheet}
         onTakePhoto={() => { setTakePhoto( true ); }}
         onImportPhoto={() => { setImportPhoto( true ); }}
         onRecordSound={() => { setRecordSound( true ); }}

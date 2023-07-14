@@ -396,7 +396,7 @@ const DataQualityAssessment = ( ): React.Node => {
       </ScrollViewWrapper>
       <BottomSheet
         headerText={t( "ERROR-VOTING-IN-DQA" )}
-        hide={hideErrorSheet}
+        hidden={hideErrorSheet}
         hideCloseButton
         snapPoints={["25"]}
       >

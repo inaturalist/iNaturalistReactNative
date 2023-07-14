@@ -9,14 +9,14 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   setShowDiscardSheet: Function,
-  hide?: boolean,
+  hidden?: boolean,
   onDiscard: Function
 }
 
 const DiscardChangesSheet = ( {
   setShowDiscardSheet,
   onDiscard,
-  hide
+  hidden
 }: Props ): Node => {
   const { t } = useTranslation( );
 
@@ -29,7 +29,7 @@ const DiscardChangesSheet = ( {
       secondButtonText={t( "CANCEL" )}
       handleSecondButtonPress={( ) => setShowDiscardSheet( false )}
       buttonText={t( "DISCARD" )}
-      hide={hide}
+      hidden={hidden}
       confirm={( ) => {
         setShowDiscardSheet( false );
         if ( onDiscard ) {
