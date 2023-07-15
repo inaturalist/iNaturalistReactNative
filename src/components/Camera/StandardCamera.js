@@ -14,7 +14,7 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback,
-  useContext,
+  useContext, useEffect,
   useRef,
   useState
 } from "react";
@@ -109,10 +109,23 @@ const StandardCamera = ( ): Node => {
   const [showAlert, setShowAlert] = useState( false );
   const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
+  const [dismissChanges, setDismissChanges] = useState( false );
   const { screenWidth } = useDeviceOrientation( );
 
   const photosTaken = allObsPhotoUris.length > 0;
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
+
+  useEffect( () => {
+    // We do this navigation indirectly (vs doing it directly in DiscardChangesSheet),
+    // since we need for the bottom sheet of discard-changes to first finish dismissing,
+    // only then we can do the navigation - otherwise, this causes the bottom sheet
+    // to sometimes pop back up on the next screen - see GH issue #629
+    if ( !showDiscardSheet ) {
+      if ( dismissChanges ) {
+        navigation.goBack();
+      }
+    }
+  }, [dismissChanges, showDiscardSheet, navigation] );
 
   const rotation = useSharedValue( 0 );
   switch ( deviceOrientation ) {
@@ -479,11 +492,13 @@ const StandardCamera = ( ): Node => {
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>
-      {showDiscardSheet && (
-        <DiscardChangesSheet
-          setShowDiscardSheet={setShowDiscardSheet}
-        />
-      )}
+      <DiscardChangesSheet
+        setShowDiscardSheet={setShowDiscardSheet}
+        hidden={!showDiscardSheet}
+        onDiscard={() => {
+          setDismissChanges( true );
+        }}
+      />
     </View>
   );
 };
