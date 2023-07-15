@@ -10,6 +10,7 @@ import React, { useCallback, useEffect } from "react";
 import { AppState, LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
+import { addARCameraFiles } from "sharedHelpers/cvModel";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useObservationUpdatesWhenFocused from "sharedHooks/useObservationUpdatesWhenFocused";
 import useShare from "sharedHooks/useShare";
@@ -68,6 +69,10 @@ const App = ( { children }: Props ): Node => {
 
     // unsubscribe on unmount
     return ( ) => subscription?.remove();
+  }, [] );
+
+  useEffect( () => {
+    addARCameraFiles();
   }, [] );
 
   useEffect( ( ) => {
