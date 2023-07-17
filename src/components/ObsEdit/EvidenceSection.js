@@ -131,8 +131,10 @@ const EvidenceSection = ( ): Node => {
       && ( latitude !== 0 && longitude !== 0 )
       && ( latitude >= -90 && latitude <= 90 )
       && ( longitude >= -180 && longitude <= 180 )
-      && ( currentObservation.positional_accuracy === null || (
-        currentObservation.positional_accuracy
+      && ( currentObservation.positional_accuracy === null
+        || currentObservation.positional_accuracy === undefined
+        || (
+          currentObservation.positional_accuracy
         && currentObservation.positional_accuracy <= DESIRED_LOCATION_ACCURACY )
       )
     ) {
