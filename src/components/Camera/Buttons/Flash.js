@@ -55,7 +55,7 @@ const Flash = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  if ( hasFlash ) return <CameraButtonPlaceholder />;
+  if ( !hasFlash ) return <CameraButtonPlaceholder />;
   let testID = "";
   let accessibilityLabel = "";
   let name = "";

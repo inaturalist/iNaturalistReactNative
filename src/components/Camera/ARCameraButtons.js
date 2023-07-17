@@ -9,8 +9,35 @@ import CameraFlip from "./Buttons/CameraFlip";
 import Close from "./Buttons/Close";
 import Flash from "./Buttons/Flash";
 import TakePhoto from "./Buttons/TakePhoto";
+import TabletButtons from "./TabletButtons";
 
 const isTablet = DeviceInfo.isTablet();
+
+// <>
+// <View className="h-full justify-center absolute right-6">
+//   <TakePhoto
+//     disallowAddingPhotos={false}
+//     takePhoto={takePhoto}
+//     showPrediction
+//   />
+// </View>
+// <View
+//   className="bottom-10 absolute right-5 left-5 flex-row justify-between items-center"
+// >
+//   <View className="flex-row justify-evenly w-[180px]">
+//     <Flash
+//       toggleFlash={toggleFlash}
+//       hasFlash={hasFlash}
+//       takePhotoOptions={takePhotoOptions}
+//       rotatableAnimatedStyle={rotatableAnimatedStyle}
+//     />
+//     <CameraFlip flipCamera={flipCamera} />
+//   </View>
+//   <View className="w-[74px] items-center">
+//     <Close />
+//   </View>
+// </View>
+// </>
 
 type Props = {
   takePhoto: Function,
@@ -19,7 +46,7 @@ type Props = {
   flipCamera: Function,
   hasFlash: boolean,
   takePhotoOptions: Object,
-  isLandscapeMode: boolean
+  showPrediction: boolean
 }
 
 const ARCameraButtons = ( {
@@ -29,34 +56,18 @@ const ARCameraButtons = ( {
   toggleFlash,
   hasFlash,
   takePhotoOptions,
-  isLandscapeMode
-}: Props ): Node => ( isTablet && isLandscapeMode
+  showPrediction
+}: Props ): Node => ( isTablet
   ? (
-    <>
-      <View className="h-full justify-center absolute right-6">
-        <TakePhoto
-          disallowAddingPhotos={false}
-          takePhoto={takePhoto}
-          computerVision
-        />
-      </View>
-      <View
-        className="bottom-10 absolute right-5 left-5 flex-row justify-between items-center"
-      >
-        <View className="flex-row justify-evenly w-[180px]">
-          <Flash
-            toggleFlash={toggleFlash}
-            hasFlash={hasFlash}
-            takePhotoOptions={takePhotoOptions}
-            rotatableAnimatedStyle={rotatableAnimatedStyle}
-          />
-          <CameraFlip flipCamera={flipCamera} />
-        </View>
-        <View className="w-[74px] items-center">
-          <Close />
-        </View>
-      </View>
-    </>
+    <TabletButtons
+      takePhoto={takePhoto}
+      rotatableAnimatedStyle={rotatableAnimatedStyle}
+      toggleFlash={toggleFlash}
+      flipCamera={flipCamera}
+      hasFlash={hasFlash}
+      takePhotoOptions={takePhotoOptions}
+      showPrediction={showPrediction}
+    />
   )
   : (
     <View className="bottom-10 absolute right-5 left-5">
@@ -73,6 +84,7 @@ const ARCameraButtons = ( {
         <TakePhoto
           disallowAddingPhotos={false}
           takePhoto={takePhoto}
+          showPrediction={showPrediction}
         />
         <CameraFlip flipCamera={flipCamera} />
       </View>

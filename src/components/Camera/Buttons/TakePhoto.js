@@ -11,17 +11,27 @@ import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
+import { getShadowStyle } from "styles/global";
+
+const getShadow = shadowColor => getShadowStyle( {
+  shadowColor,
+  offsetWidth: 0,
+  offsetHeight: 2,
+  shadowOpacity: 0.25,
+  shadowRadius: 2,
+  elevation: 5
+} );
 
 type Props = {
   takePhoto: Function,
-  disallowAddingPhotos: boolean,
-  computerVision?: boolean
+  disallowAddingPhotos?: boolean,
+  showPrediction?: boolean
 }
 
 const TakePhoto = ( {
   takePhoto,
   disallowAddingPhotos,
-  computerVision
+  showPrediction
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -42,9 +52,10 @@ const TakePhoto = ( {
       accessibilityState={{ disabled: disallowAddingPhotos }}
       disabled={disallowAddingPhotos}
     >
-      {computerVision
+      {showPrediction
         ? (
           <View
+            style={getShadow( theme.colors.primary )}
             className={classnames(
               "border-[1.64px] rounded-full h-[49.2px] w-[49.2px]",
               "bg-inatGreen border-lightGray items-center justify-center"

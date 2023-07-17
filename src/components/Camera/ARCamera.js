@@ -1,42 +1,17 @@
 // @flow
 
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import classnames from "classnames";
-import { TaxonResult } from "components/SharedComponents";
+import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, {
-  useCallback,
-  useContext,
-  useRef,
-  useState
-} from "react";
+import React from "react";
 import {
-  BackHandler,
-  Platform,
-  StatusBar
+  Platform
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
-import Orientation from "react-native-orientation-locker";
-import {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming
-} from "react-native-reanimated";
-// Temporarily using a fork so this is to avoid that eslint error. Need to
-// remove if/when we return to the main repo
-import {
-  Camera,
-  useCameraDevices
-} from "react-native-vision-camera";
-import Photo from "realmModels/Photo";
-import useDeviceOrientation, {
-  LANDSCAPE_LEFT,
-  LANDSCAPE_RIGHT,
-  PORTRAIT_UPSIDE_DOWN
-} from "sharedHooks/useDeviceOrientation";
+import { useTheme } from "react-native-paper";
+import { useTranslation } from "sharedHooks";
 
 import ARCameraButtons from "./ARCameraButtons";
 import CameraView from "./CameraView";
@@ -46,6 +21,7 @@ const isTablet = DeviceInfo.isTablet();
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
+// TODO: eventually, these values will be predictions that come back from AR Camera
 const exampleTaxon = {
   id: 12704,
   name: "Muscicapidae",
@@ -54,147 +30,45 @@ const exampleTaxon = {
   preferred_common_name: "Old World Flycatchers and Chats"
 };
 
-const ARCamera = ( ): Node => {
-  // screen orientation locked to portrait on small devices
-  if ( !isTablet ) {
-    Orientation.lockToPortrait();
-  }
-  const {
-    cameraPreviewUris,
-    setCameraPreviewUris,
-    evidenceToAdd,
-    setEvidenceToAdd,
-    setOriginalCameraUrisMap,
-    originalCameraUrisMap
-  } = useContext( ObsEditContext );
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
-  const addEvidence = params?.addEvidence;
-  // $FlowFixMe
-  const camera = useRef<Camera>( null );
-  const [cameraPosition, setCameraPosition] = useState( "back" );
-  const devices = useCameraDevices( );
-  const device = devices[cameraPosition];
-  const hasFlash = device?.hasFlash;
-  const initialPhotoOptions = hasFlash
-    ? { flash: "off" }
-    : { };
-  const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
-  const [savingPhoto, setSavingPhoto] = useState( false );
-  const { deviceOrientation } = useDeviceOrientation( );
+// TODO: eventually, we'll be able to calculate a score from 1-5 confidence from predictions
+const exampleConfidence = 4;
 
-  const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
+// only show predictions when rank is order or lower, like we do on Seek
+const showPrediction = exampleTaxon.rank_level <= 40;
 
-  const rotation = useSharedValue( 0 );
-  switch ( deviceOrientation ) {
-    case LANDSCAPE_LEFT:
-      rotation.value = -90;
-      break;
-    case LANDSCAPE_RIGHT:
-      rotation.value = 90;
-      break;
-    case PORTRAIT_UPSIDE_DOWN:
-      rotation.value = 180;
-      break;
-    default:
-      rotation.value = 0;
-  }
-  const rotatableAnimatedStyle = useAnimatedStyle(
-    () => ( {
-      transform: [
-        {
-          rotateZ: withTiming( `${-1 * ( rotation?.value || 0 )}deg` )
-        }
-      ]
-    } ),
-    [rotation.value]
-  );
+// TODO: get value from native AR camera
+const modelLoaded = true;
 
-  const handleBackButtonPress = useCallback( ( ) => {
-    navigation.goBack( );
-  }, [navigation] );
+type Props = {
+  flipCamera: Function,
+  toggleFlash: Function,
+  takePhoto: Function,
+  rotatableAnimatedStyle: Object,
+  device: any,
+  camera: any,
+  deviceOrientation: string,
+  hasFlash: boolean,
+  takePhotoOptions: Object,
+  savingPhoto: boolean
+}
 
-  useFocusEffect(
-    // note: cannot use navigation.addListener to trigger bottom sheet in tab navigator
-    // since the screen is unfocused, not removed from navigation
-    useCallback( ( ) => {
-      // make sure an Android user cannot back out and accidentally discard photos
-      const onBackPress = ( ) => {
-        handleBackButtonPress( );
-        return true;
-      };
-
-      BackHandler.addEventListener( "hardwareBackPress", onBackPress );
-
-      return ( ) => BackHandler.removeEventListener( "hardwareBackPress", onBackPress );
-    }, [handleBackButtonPress] )
-  );
-
-  const takePhoto = async ( ) => {
-    const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
-    let photoRotation = 0;
-    switch ( cameraPhoto.metadata.Orientation ) {
-      case 1:
-        // Because the universe is a cruel, cruel place
-        if ( Platform.OS === "android" ) {
-          photoRotation = 180;
-        }
-        break;
-      case 6:
-        photoRotation = 90;
-        break;
-      case 8:
-        photoRotation = 270;
-        break;
-      default:
-        photoRotation = 0;
-    }
-    const newPhoto = await Photo.new( cameraPhoto.path, { rotation: photoRotation } );
-    const uri = newPhoto.localFilePath;
-
-    // Remember original (unresized) camera URI
-    setOriginalCameraUrisMap( { ...originalCameraUrisMap, [uri]: cameraPhoto.path } );
-
-    setCameraPreviewUris( cameraPreviewUris.concat( [uri] ) );
-    if ( addEvidence ) {
-      setEvidenceToAdd( [...evidenceToAdd, uri] );
-    }
-    setSavingPhoto( false );
-  };
-
-  const toggleFlash = ( ) => {
-    setTakePhotoOptions( {
-      ...takePhotoOptions,
-      flash: takePhotoOptions.flash === "on"
-        ? "off"
-        : "on"
-    } );
-  };
-
-  const flipCamera = ( ) => {
-    const newPosition = cameraPosition === "back"
-      ? "front"
-      : "back";
-    setCameraPosition( newPosition );
-  };
-
-  // const navToObsEdit = ( ) => {
-  //   if ( addEvidence ) {
-  //     addCameraPhotosToCurrentObservation( evidenceToAdd );
-  //     navigation.navigate( "ObsEdit" );
-  //     return;
-  //   }
-  //   createObsWithCameraPhotos( cameraPreviewUris );
-  //   navigation.navigate( "ObsEdit" );
-  // };
-
-  const flexDirection = isTablet && !isLandscapeMode
-    ? "flex-row"
-    : "flex-col";
+const ARCamera = ( {
+  flipCamera,
+  toggleFlash,
+  takePhoto,
+  rotatableAnimatedStyle,
+  device,
+  camera,
+  deviceOrientation,
+  hasFlash,
+  takePhotoOptions,
+  savingPhoto
+}: Props ): Node => {
+  const { t } = useTranslation( );
+  const theme = useTheme( );
 
   return (
-    <View className={`flex-1 ${flexDirection}`}>
-      <StatusBar hidden />
+    <>
       {device && (
         <CameraView
           device={device}
@@ -221,15 +95,38 @@ const ARCamera = ( ): Node => {
           } )
         }
         >
-          <TaxonResult
-            taxon={exampleTaxon}
-            handleCheckmarkPress={( ) => { }}
-            testID={`ARCamera.taxa.${exampleTaxon.id}`}
-            clearBackground
-            confidence={4}
-          />
+          {showPrediction
+            ? (
+              <TaxonResult
+                taxon={exampleTaxon}
+                handleCheckmarkPress={( ) => { }}
+                testID={`ARCamera.taxa.${exampleTaxon.id}`}
+                clearBackground
+                confidence={exampleConfidence}
+              />
+            )
+            : (
+              <Body1
+                className="text-white self-center mt-[22px]"
+              >
+                {modelLoaded
+                  ? t( "Scan-the-area-around-you-for-organisms" )
+                  : t( "Loading-iNaturalists-AR-Camera" )}
+              </Body1>
+            )}
         </View>
       </LinearGradient>
+      {!modelLoaded && (
+        <View className="absolute left-1/2 top-1/2">
+          <View className="right-[57px] bottom-[57px]">
+            <INatIcon
+              name="inaturalist"
+              size={114}
+              color={theme.colors.onPrimary}
+            />
+          </View>
+        </View>
+      )}
       <FadeInOutView savingPhoto={savingPhoto} />
       <ARCameraButtons
         takePhoto={takePhoto}
@@ -238,9 +135,9 @@ const ARCamera = ( ): Node => {
         flipCamera={flipCamera}
         hasFlash={hasFlash}
         takePhotoOptions={takePhotoOptions}
-        isLandscapeMode={isLandscapeMode}
+        showPrediction={showPrediction}
       />
-    </View>
+    </>
   );
 };
 

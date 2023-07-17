@@ -811,5 +811,7 @@
   "DONATE": "DONATE",
   "SETTINGS": "SETTINGS",
   "LOG-OUT": "LOG OUT",
-  "Log-in-to-iNaturalist": "Log in to iNaturalist"
+  "Log-in-to-iNaturalist": "Log in to iNaturalist",
+  "Scan-the-area-around-you-for-organisms": "Scan the area around you for organisms.",
+  "Loading-iNaturalists-AR-Camera": "Loading iNaturalist’s AR Camera"
 }

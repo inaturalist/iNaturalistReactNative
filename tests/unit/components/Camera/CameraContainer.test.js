@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import StandardCamera from "components/Camera/StandardCamera";
+import CameraContainer from "components/Camera/CameraContainer";
 import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
@@ -43,40 +43,40 @@ jest.mock( "components/Camera/PhotoPreview", () => ( {
   default: () => mockView
 } ) );
 
-const renderStandardCamera = () => render(
+const renderCameraContainer = () => render(
   <INatPaperProvider>
     <ObsEditContext.Provider value={mockValue}>
-      <StandardCamera />
+      <CameraContainer />
     </ObsEditContext.Provider>
   </INatPaperProvider>
 );
 
-describe( "StandardCamera", ( ) => {
+describe( "CameraContainer", ( ) => {
   beforeAll( async ( ) => {
     await initI18next();
     jest.useFakeTimers( );
   } );
 
   it( "should not have accessibility errors", () => {
-    const standardCamera = (
+    const Camera = (
       <INatPaperProvider>
         <ObsEditContext.Provider value={mockValue}>
-          <StandardCamera />
+          <CameraContainer />
         </ObsEditContext.Provider>
       </INatPaperProvider>
     );
 
-    expect( standardCamera ).toBeAccessible();
+    expect( Camera ).toBeAccessible();
   } );
 
   it( "should first render with flash disabled", async () => {
-    renderStandardCamera();
+    renderCameraContainer();
 
     await screen.findByTestId( "flash-button-label-flash-off" );
   } );
 
   it( "should change to flash enabled on button press", async () => {
-    renderStandardCamera();
+    renderCameraContainer();
 
     const flashButton = await screen.findByTestId(
       "flash-button-label-flash-off"

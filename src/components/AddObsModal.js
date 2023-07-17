@@ -46,9 +46,9 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 
-  const navToARCamera = ( ) => navAndCloseModal( "ARCamera" );
+  const navToARCamera = ( ) => navAndCloseModal( "Camera", { camera: "AR" } );
 
-  const navToStandardCamera = ( ) => navAndCloseModal( "StandardCamera" );
+  const navToStandardCamera = ( ) => navAndCloseModal( "Camera", { camera: "Standard" } );
 
   const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
 

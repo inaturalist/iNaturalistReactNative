@@ -32,7 +32,7 @@ const AddEvidenceSheet = ( {
   };
 
   const onTakePhoto = async () => {
-    navigation.navigate( "StandardCamera", { addEvidence: true } );
+    navigation.navigate( "Camera", { addEvidence: true, camera: "Standard" } );
     handleClose( );
   };
 
