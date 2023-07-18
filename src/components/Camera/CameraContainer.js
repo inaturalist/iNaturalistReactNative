@@ -65,14 +65,14 @@ const CameraContainer = ( ): Node => {
   const [cameraPosition, setCameraPosition] = useState( "back" );
   const devices = useCameraDevices( );
   const device = devices[cameraPosition];
-  const hasFlash = device?.hasFlash;
+  const hasFlash = devices;
   const initialPhotoOptions = hasFlash
     ? { flash: "off" }
     : { };
   const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
   const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
-  const [savingPhoto, setSavingPhoto] = useState( false );
+  const [takingPhoto, setTakingPhoto] = useState( false );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
@@ -143,7 +143,7 @@ const CameraContainer = ( ): Node => {
   ] );
 
   const takePhoto = async ( ) => {
-    setSavingPhoto( true );
+    setTakingPhoto( true );
     const cameraPhoto = await camera.current.takePhoto( takePhotoOptions );
     let photoRotation = 0;
     switch ( cameraPhoto.metadata.Orientation ) {
@@ -172,7 +172,7 @@ const CameraContainer = ( ): Node => {
     if ( addEvidence ) {
       setEvidenceToAdd( [...evidenceToAdd, uri] );
     }
-    setSavingPhoto( false );
+    setTakingPhoto( false );
   };
 
   const toggleFlash = ( ) => {
@@ -201,6 +201,8 @@ const CameraContainer = ( ): Node => {
     }
   }, [navigation, cameraPreviewUris.length, cameraType, navToObsEdit] );
 
+  console.log( cameraPreviewUris, "camera preview uris" );
+
   return (
     <View className={`flex-1 bg-black ${flexDirection}`}>
       <StatusBar hidden />
@@ -217,12 +219,11 @@ const CameraContainer = ( ): Node => {
             isLandscapeMode={isLandscapeMode}
             device={device}
             camera={camera}
-            deviceOrientation={deviceOrientation}
             hasFlash={hasFlash}
             takePhotoOptions={takePhotoOptions}
             setShowDiscardSheet={setShowDiscardSheet}
             showDiscardSheet={showDiscardSheet}
-            savingPhoto={savingPhoto}
+            takingPhoto={takingPhoto}
           />
         )
         : (
@@ -233,10 +234,9 @@ const CameraContainer = ( ): Node => {
             rotatableAnimatedStyle={rotatableAnimatedStyle}
             device={device}
             camera={camera}
-            deviceOrientation={deviceOrientation}
             hasFlash={hasFlash}
             takePhotoOptions={takePhotoOptions}
-            savingPhoto={savingPhoto}
+            takingPhoto={takingPhoto}
           />
         )}
     </View>

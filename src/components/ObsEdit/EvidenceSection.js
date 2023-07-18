@@ -42,6 +42,9 @@ const EvidenceSection = ( ): Node => {
     : [];
   const mountedRef = useRef( true );
   const navigation = useNavigation( );
+  const [takePhoto, setTakePhoto] = useState( false );
+  const [importPhoto, setImportPhoto] = useState( false );
+  const [recordSound, setRecordSound] = useState( false );
 
   const navToLocationPicker = ( ) => {
     navigation.navigate( "LocationPicker", { goBackOnSave: true } );
@@ -49,6 +52,22 @@ const EvidenceSection = ( ): Node => {
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const handleAddEvidence = ( ) => setShowAddEvidenceSheet( true );
+
+  useEffect( () => {
+    // We do this navigation indirectly (vs doing it directly in AddEvidenceSheet),
+    // since we need for the bottom sheet of add-evidence to first finish dismissing,
+    // only then we can do the navigation - otherwise, this causes the bottom sheet
+    // to sometimes pop back up on the next screen - see GH issue #629
+    if ( !showAddEvidenceSheet ) {
+      if ( takePhoto ) {
+        navigation.navigate( "Camera", { addEvidence: true, camera: "Standard" } );
+      } else if ( importPhoto ) {
+        navigation.navigate( "PhotoGallery", { skipGroupPhotos: true } );
+      } else if ( recordSound ) {
+        // TODO - need to implement
+      }
+    }
+  }, [takePhoto, importPhoto, recordSound, showAddEvidenceSheet, navigation] );
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
@@ -157,12 +176,14 @@ const EvidenceSection = ( ): Node => {
 
   return (
     <View className="mx-6 mt-6">
-      {showAddEvidenceSheet && (
-        <AddEvidenceSheet
-          setShowAddEvidenceSheet={setShowAddEvidenceSheet}
-          disableAddingMoreEvidence={photoUris.length >= MAX_PHOTOS_ALLOWED}
-        />
-      )}
+      <AddEvidenceSheet
+        setShowAddEvidenceSheet={setShowAddEvidenceSheet}
+        disableAddingMoreEvidence={photoUris.length >= MAX_PHOTOS_ALLOWED}
+        hidden={!showAddEvidenceSheet}
+        onTakePhoto={() => { setTakePhoto( true ); }}
+        onImportPhoto={() => { setImportPhoto( true ); }}
+        onRecordSound={() => { setRecordSound( true ); }}
+      />
       <View className="flex-row">
         <Heading4>{t( "EVIDENCE" )}</Heading4>
         <View className="ml-3">

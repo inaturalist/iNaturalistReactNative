@@ -4,7 +4,7 @@ import classnames from "classnames";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
 import {
   Platform
 } from "react-native";
@@ -14,12 +14,18 @@ import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
 import ARCameraButtons from "./ARCameraButtons";
-import CameraView from "./CameraView";
 import FadeInOutView from "./FadeInOutView";
+import FrameProcessorCamera from "./FrameProcessorCamera";
 
 const isTablet = DeviceInfo.isTablet();
 
 export const MAX_PHOTOS_ALLOWED = 20;
+
+// {results.map( ( result: { rank: string, name: string } ) => (
+//   <Text key={result.rank} style={styles.label}>
+//     {result.name}
+//   </Text>
+// ) )}
 
 // TODO: eventually, these values will be predictions that come back from AR Camera
 const exampleTaxon = {
@@ -46,10 +52,9 @@ type Props = {
   rotatableAnimatedStyle: Object,
   device: any,
   camera: any,
-  deviceOrientation: string,
   hasFlash: boolean,
   takePhotoOptions: Object,
-  savingPhoto: boolean
+  takingPhoto: boolean
 }
 
 const ARCamera = ( {
@@ -59,28 +64,108 @@ const ARCamera = ( {
   rotatableAnimatedStyle,
   device,
   camera,
-  deviceOrientation,
   hasFlash,
   takePhotoOptions,
-  savingPhoto
+  takingPhoto
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
 
+  const [results, setResult] = useState( [] );
+
+  console.log( results, "results in AR camera" );
+
+  // Johannes (June 2023): I did read through the native code of the legacy inatcamera
+  // that is triggered when using ref.current.takePictureAsync()
+  // and to me it seems everything should be handled by vision-camera itself.
+  // With the orientation stuff patched by the current fork.
+  // However, there is also some Exif and device orientation related code
+  // that I have not checked. Anyway, those parts we would hoist into JS side if not done yet.
+
+  const handleTaxaDetected = cvResults => {
+    /*
+      Using FrameProcessorCamera results in this as cvResults atm on Android
+      [
+        {
+          "stateofmatter": [
+            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
+          ]
+        },
+        {
+          "order": [
+            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
+          ]
+        },
+        {
+          "species": [
+            {"ancestor_ids": [Array], "name": xx, "rank": xx, "score": xx, "taxon_id": xx}
+          ]
+        }
+      ]
+    */
+    /*
+      Using FrameProcessorCamera results in this as cvResults atm on iOS (= top prediction)
+      [
+        {"name": "Aves", "rank": 50, "score": 0.7627944946289062, "taxon_id": 3}
+      ]
+    */
+    console.log( "cvResults :>> ", cvResults );
+    let predictions = [];
+    if ( Platform.OS === "ios" ) {
+      predictions = cvResults;
+    } else {
+      predictions = cvResults.map( result => {
+        const rank = Object.keys( result )[0];
+        const prediction = result[rank][0];
+        prediction.rank = rank;
+        return prediction;
+      } );
+    }
+    setResult( predictions );
+  };
+
+  const handleClassifierError = error => {
+    console.log( "handleClassifierError error.message :>> ", error.message );
+    // TODO: when we hit this error, there is an error with the classifier.
+    // We should show an error message and maybe also disable the ARCamera.
+  };
+
+  const handleDeviceNotSupported = error => {
+    console.log( "handleDeviceNotSupported error.message :>> ", error.message );
+    // TODO: when we hit this error, something with the current device is not supported.
+    // We should show an error message depending on the error and change the way we use it.
+  };
+
+  const handleCaptureError = error => {
+    console.log( "handleCaptureError error.message :>> ", error.message );
+    // TODO: when we hit this error, taking a photo did not work correctly
+    // We should show an error message and do something if the error persists.
+  };
+
+  const handleCameraError = error => {
+    console.log( "handleCameraError error.message :>> ", error.message );
+    // TODO: This error is thrown when it does not fit in any of the above categories.
+  };
+
+  const handleLog = event => {
+    // event = { log: "string" }
+    console.log( "handleLog event :>> ", event );
+    // TODO: this handles incoming logs from the vision-camera-plugin-inatvision,
+    // can be used for debugging, added to a logfile, etc.
+  };
+
   return (
     <>
       {device && (
-        <CameraView
+        <FrameProcessorCamera
+          cameraRef={camera}
           device={device}
-          camera={camera}
-          orientation={
-          // In Android the camera won't set the orientation metadata
-          // correctly without this, but in iOS it won't display the
-          // preview correctly *with* it
-            Platform.OS === "android"
-              ? deviceOrientation
-              : null
-          }
+          onTaxaDetected={handleTaxaDetected}
+          onClassifierError={handleClassifierError}
+          onDeviceNotSupported={handleDeviceNotSupported}
+          onCaptureError={handleCaptureError}
+          onCameraError={handleCameraError}
+          onLog={handleLog}
         />
       )}
       <LinearGradient
@@ -127,7 +212,7 @@ const ARCamera = ( {
           </View>
         </View>
       )}
-      <FadeInOutView savingPhoto={savingPhoto} />
+      <FadeInOutView takingPhoto={takingPhoto} />
       <ARCameraButtons
         takePhoto={takePhoto}
         rotatableAnimatedStyle={rotatableAnimatedStyle}

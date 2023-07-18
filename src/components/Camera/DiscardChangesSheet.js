@@ -1,6 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import {
   WarningSheet
 } from "components/SharedComponents";
@@ -9,13 +8,16 @@ import React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
-  setShowDiscardSheet: Function
+  setShowDiscardSheet: Function,
+  hidden?: boolean,
+  onDiscard: Function
 }
 
 const DiscardChangesSheet = ( {
-  setShowDiscardSheet
+  setShowDiscardSheet,
+  onDiscard,
+  hidden
 }: Props ): Node => {
-  const navigation = useNavigation( );
   const { t } = useTranslation( );
 
   return (
@@ -27,9 +29,12 @@ const DiscardChangesSheet = ( {
       secondButtonText={t( "CANCEL" )}
       handleSecondButtonPress={( ) => setShowDiscardSheet( false )}
       buttonText={t( "DISCARD" )}
+      hidden={hidden}
       confirm={( ) => {
         setShowDiscardSheet( false );
-        navigation.goBack( );
+        if ( onDiscard ) {
+          onDiscard();
+        }
       }}
     />
   );

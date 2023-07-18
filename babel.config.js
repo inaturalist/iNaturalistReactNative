@@ -19,7 +19,13 @@ module.exports = {
         styles: "./src/styles"
       }
     }],
-    "react-native-reanimated/plugin" // Reanimated 2 plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
+    // Reanimated 2 plugin has to be listed last https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/
+    [
+      "react-native-reanimated/plugin",
+      {
+        globals: ["__inatVision"]
+      }
+    ]
   ],
   env: {
     production: {

@@ -273,7 +273,7 @@ PODS:
   - React-jsinspector (0.71.8)
   - React-logger (0.71.8):
     - glog
-  - react-native-cameraroll (5.4.0):
+  - react-native-cameraroll (5.7.2):
     - React-Core
   - react-native-config (1.5.0):
     - react-native-config/App (= 1.5.0)
@@ -462,6 +462,8 @@ PODS:
     - React
     - React-callinvoker
     - React-Core
+  - VisionCameraPluginInatVision (0.1.0):
+    - React-Core
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -538,6 +540,7 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
+  - VisionCameraPluginInatVision (from `../node_modules/vision-camera-plugin-inatvision`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -689,6 +692,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-vector-icons"
   VisionCamera:
     :path: "../node_modules/react-native-vision-camera"
+  VisionCameraPluginInatVision:
+    :path: "../node_modules/vision-camera-plugin-inatvision"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -719,7 +724,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 747911ab5921641b4ed7e4900065896597142125
   React-jsinspector: c712f9e3bb9ba4122d6b82b4f906448b8a281580
   React-logger: 342f358b8decfbf8f272367f4eacf4b6154061be
-  react-native-cameraroll: 8ffb0af7a5e5de225fd667610e2979fc1f0c2151
+  react-native-cameraroll: 134805127580aed23403b8c2cb1548920dd77b3a
   react-native-config: 5330c8258265c1e5fdb8c009d2cabd6badd96727
   react-native-exif-reader: b2ad2175125a5d7dbd399ac6bd3bc4ba8753f85a
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
@@ -767,8 +772,9 @@ SPEC CHECKSUMS:
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   VisionCamera: f41b08470c9ae0a01be0d5e48f9fdd61602aa51f
+  VisionCameraPluginInatVision: 79bb258db75218889c74d0897ecba676492c4def
   Yoga: 065f0b74dba4832d6e328238de46eb72c5de9556
 
-PODFILE CHECKSUM: 98b5e3459383d514f704de4aef72ab8faf44b800
+PODFILE CHECKSUM: 30369fa5e81b6ffd4950226cf0ef9275489616be
 
 COCOAPODS: 1.12.1

@@ -20,7 +20,7 @@ type Props = {
   isLandscapeMode?: boolean,
   isLargeScreen?: boolean,
   isTablet?: boolean,
-  savingPhoto: boolean
+  takingPhoto: boolean
 }
 
 const PhotoPreview = ( {
@@ -28,7 +28,7 @@ const PhotoPreview = ( {
   isLargeScreen,
   isTablet,
   rotation,
-  savingPhoto
+  takingPhoto
 }: Props ): Node => {
   const {
     cameraPreviewUris: photoUris,
@@ -92,7 +92,7 @@ const PhotoPreview = ( {
       style={wrapperStyle}
     >
       {
-        photoUris.length === 0 && !savingPhoto
+        photoUris.length === 0 && !takingPhoto
           ? noPhotosNotice
           : (
             <PhotoCarousel
@@ -100,7 +100,7 @@ const PhotoPreview = ( {
               photoUris={photoUris}
               rotation={rotation}
               setMediaViewerUris={setMediaViewerUris}
-              savingPhoto={savingPhoto}
+              takingPhoto={takingPhoto}
               isLargeScreen={isLargeScreen}
               isTablet={isTablet}
               isLandscapeMode={isLandscapeMode}

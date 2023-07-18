@@ -6,7 +6,7 @@ import { Animated } from "react-native";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  savingPhoto: boolean
+  takingPhoto: boolean
 }
 
 const fade = value => ( {
@@ -15,17 +15,17 @@ const fade = value => ( {
   useNativeDriver: true
 } );
 
-const FadeInOutView = ( { savingPhoto }: Props ): Node => {
+const FadeInOutView = ( { takingPhoto }: Props ): Node => {
   const fadeAnimation = useRef( new Animated.Value( 0 ) ).current;
 
   useEffect( ( ) => {
-    if ( savingPhoto ) {
+    if ( takingPhoto ) {
       Animated.sequence( [
         Animated.timing( fadeAnimation, fade( 1 ) ),
         Animated.timing( fadeAnimation, fade( 0 ) )
       ] ).start( );
     }
-  }, [savingPhoto, fadeAnimation] );
+  }, [takingPhoto, fadeAnimation] );
 
   return (
     <Animated.View

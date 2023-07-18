@@ -1,15 +1,14 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useContext,
+  useEffect,
   useState
 } from "react";
-import {
-  Platform
-} from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { Snackbar } from "react-native-paper";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
@@ -38,12 +37,11 @@ type Props = {
   isLandscapeMode: boolean,
   device: any,
   camera: any,
-  deviceOrientation: string,
   hasFlash: boolean,
   takePhotoOptions: Object,
   setShowDiscardSheet: Function,
   showDiscardSheet: boolean,
-  savingPhoto: boolean
+  takingPhoto: boolean
 }
 
 const StandardCamera = ( {
@@ -57,22 +55,35 @@ const StandardCamera = ( {
   isLandscapeMode,
   device,
   camera,
-  deviceOrientation,
   hasFlash,
   takePhotoOptions,
   setShowDiscardSheet,
   showDiscardSheet,
-  savingPhoto
+  takingPhoto
 }: Props ): Node => {
   const {
     allObsPhotoUris
   } = useContext( ObsEditContext );
+  const navigation = useNavigation( );
   const { t } = useTranslation( );
   const disallowAddingPhotos = allObsPhotoUris.length >= MAX_PHOTOS_ALLOWED;
   const [showAlert, setShowAlert] = useState( false );
+  const [dismissChanges, setDismissChanges] = useState( false );
   const { screenWidth } = useDeviceOrientation( );
 
   const photosTaken = allObsPhotoUris.length > 0;
+
+  useEffect( ( ) => {
+    // We do this navigation indirectly (vs doing it directly in DiscardChangesSheet),
+    // since we need for the bottom sheet of discard-changes to first finish dismissing,
+    // only then we can do the navigation - otherwise, this causes the bottom sheet
+    // to sometimes pop back up on the next screen - see GH issue #629
+    if ( !showDiscardSheet ) {
+      if ( dismissChanges ) {
+        navigation.goBack();
+      }
+    }
+  }, [dismissChanges, showDiscardSheet, navigation] );
 
   const handleTakePhoto = async ( ) => {
     if ( disallowAddingPhotos ) {
@@ -86,7 +97,7 @@ const StandardCamera = ( {
     <>
       <PhotoPreview
         rotation={rotation}
-        savingPhoto={savingPhoto}
+        takingPhoto={takingPhoto}
         isLandscapeMode={isLandscapeMode}
         isLargeScreen={screenWidth > BREAKPOINTS.md}
         isTablet={isTablet}
@@ -94,19 +105,11 @@ const StandardCamera = ( {
       <View className="relative flex-1">
         {device && (
           <CameraView
+            cameraRef={camera}
             device={device}
-            camera={camera}
-            orientation={
-              // In Android the camera won't set the orientation metadata
-              // correctly without this, but in iOS it won't display the
-              // preview correctly *with* it
-              Platform.OS === "android"
-                ? deviceOrientation
-                : null
-            }
           />
         )}
-        <FadeInOutView savingPhoto={savingPhoto} />
+        <FadeInOutView takingPhoto={takingPhoto} />
         <CameraOptionsButtons
           takePhoto={handleTakePhoto}
           handleClose={handleBackButtonPress}
@@ -131,11 +134,13 @@ const StandardCamera = ( {
       <Snackbar visible={showAlert} onDismiss={() => setShowAlert( false )}>
         {t( "You-can-only-upload-20-media" )}
       </Snackbar>
-      {showDiscardSheet && (
-        <DiscardChangesSheet
-          setShowDiscardSheet={setShowDiscardSheet}
-        />
-      )}
+      <DiscardChangesSheet
+        setShowDiscardSheet={setShowDiscardSheet}
+        hidden={!showDiscardSheet}
+        onDiscard={() => {
+          setDismissChanges( true );
+        }}
+      />
     </>
   );
 };
