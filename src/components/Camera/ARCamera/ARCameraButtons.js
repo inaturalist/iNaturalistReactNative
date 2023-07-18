@@ -12,6 +12,9 @@ import DeviceInfo from "react-native-device-info";
 
 const isTablet = DeviceInfo.isTablet();
 
+// the following code is for another version of the layout, rotated on landscape,
+// which we're not currently supporting in the StandardCamera
+
 // <>
 // <View className="h-full justify-center absolute right-6">
 //   <TakePhoto

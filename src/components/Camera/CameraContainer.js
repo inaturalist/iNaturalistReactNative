@@ -65,7 +65,7 @@ const CameraContainer = ( ): Node => {
   const [cameraPosition, setCameraPosition] = useState( "back" );
   const devices = useCameraDevices( );
   const device = devices[cameraPosition];
-  const hasFlash = devices;
+  const hasFlash = device?.hasFlash;
   const initialPhotoOptions = hasFlash
     ? { flash: "off" }
     : { };
@@ -200,8 +200,6 @@ const CameraContainer = ( ): Node => {
       navToObsEdit( );
     }
   }, [navigation, cameraPreviewUris.length, cameraType, navToObsEdit] );
-
-  console.log( cameraPreviewUris, "camera preview uris" );
 
   return (
     <View className={`flex-1 bg-black ${flexDirection}`}>

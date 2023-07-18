@@ -1,4 +1,6 @@
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import {
+  fireEvent, render, screen
+} from "@testing-library/react-native";
 import CameraContainer from "components/Camera/CameraContainer";
 import initI18next from "i18n/initI18next";
 import { ObsEditContext } from "providers/contexts";
@@ -28,7 +30,7 @@ const mockValue = {
 };
 
 const mockView = <View />;
-jest.mock( "components/Camera/CameraContainer", () => ( {
+jest.mock( "components/Camera/CameraView", () => ( {
   __esModule: true,
   default: ( ) => mockView
 } ) );
@@ -38,7 +40,12 @@ jest.mock( "components/Camera/FadeInOutView", () => ( {
   default: () => mockView
 } ) );
 
-jest.mock( "components/Camera/PhotoPreview", () => ( {
+jest.mock( "components/Camera/StandardCamera/PhotoPreview", () => ( {
+  __esModule: true,
+  default: () => mockView
+} ) );
+
+jest.mock( "components/Camera/ARCamera/FrameProcessorCamera", () => ( {
   __esModule: true,
   default: () => mockView
 } ) );
