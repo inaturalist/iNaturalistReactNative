@@ -36,8 +36,8 @@ import useDeviceOrientation, {
   PORTRAIT_UPSIDE_DOWN
 } from "sharedHooks/useDeviceOrientation";
 
-import ARCamera from "./ARCamera";
-import StandardCamera from "./StandardCamera";
+import ARCamera from "./ARCamera/ARCamera";
+import StandardCamera from "./StandardCamera/StandardCamera";
 
 const isTablet = DeviceInfo.isTablet( );
 

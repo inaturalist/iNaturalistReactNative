@@ -1,6 +1,7 @@
 // @flow
 
 import classnames from "classnames";
+import FadeInOutView from "components/Camera/FadeInOutView";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -14,36 +15,19 @@ import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
 import ARCameraButtons from "./ARCameraButtons";
-import FadeInOutView from "./FadeInOutView";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 
 const isTablet = DeviceInfo.isTablet();
 
 export const MAX_PHOTOS_ALLOWED = 20;
 
-// {results.map( ( result: { rank: string, name: string } ) => (
-//   <Text key={result.rank} style={styles.label}>
-//     {result.name}
-//   </Text>
-// ) )}
-
-// TODO: eventually, these values will be predictions that come back from AR Camera
-const exampleTaxon = {
-  id: 12704,
-  name: "Muscicapidae",
-  rank: "family",
-  rank_level: 30,
-  preferred_common_name: "Old World Flycatchers and Chats"
-};
-
-// TODO: eventually, we'll be able to calculate a score from 1-5 confidence from predictions
-const exampleConfidence = 4;
-
-// only show predictions when rank is order or lower, like we do on Seek
-const showPrediction = exampleTaxon.rank_level <= 40;
-
-// TODO: get value from native AR camera
-const modelLoaded = true;
+// const exampleTaxonResult = {
+//   id: 12704,
+//   name: "Muscicapidae",
+//   rank: "family",
+//   rank_level: 30,
+//   preferred_common_name: "Old World Flycatchers and Chats"
+// };
 
 type Props = {
   flipCamera: Function,
@@ -71,9 +55,11 @@ const ARCamera = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
 
-  const [results, setResult] = useState( [] );
+  const [result, setResult] = useState( null );
+  const [modelLoaded, setModelLoaded] = useState( false );
 
-  console.log( results, "results in AR camera" );
+  // only show predictions when rank is order or lower, like we do on Seek
+  const showPrediction = ( result && result.rank_level <= 40 ) || false;
 
   // Johannes (June 2023): I did read through the native code of the legacy inatcamera
   // that is triggered when using ref.current.takePictureAsync()
@@ -82,7 +68,29 @@ const ARCamera = ( {
   // However, there is also some Exif and device orientation related code
   // that I have not checked. Anyway, those parts we would hoist into JS side if not done yet.
 
+  const convertScoreToConfidence = score => {
+    if ( !score ) {
+      return null;
+    }
+    if ( score < 0.2 ) {
+      return 1;
+    }
+    if ( score < 0.4 ) {
+      return 2;
+    }
+    if ( score < 0.6 ) {
+      return 3;
+    }
+    if ( score < 0.8 ) {
+      return 4;
+    }
+    return 5;
+  };
+
   const handleTaxaDetected = cvResults => {
+    if ( cvResults && !modelLoaded ) {
+      setModelLoaded( true );
+    }
     /*
       Using FrameProcessorCamera results in this as cvResults atm on Android
       [
@@ -110,18 +118,29 @@ const ARCamera = ( {
       ]
     */
     console.log( "cvResults :>> ", cvResults );
+    let prediction = null;
     let predictions = [];
     if ( Platform.OS === "ios" ) {
-      predictions = cvResults;
+      prediction = {
+        rank_level: cvResults[0].rank,
+        id: cvResults[0].taxon_id,
+        name: cvResults[0].name,
+        score: cvResults[0].score
+      };
     } else {
-      predictions = cvResults.map( result => {
-        const rank = Object.keys( result )[0];
-        const prediction = result[rank][0];
-        prediction.rank = rank;
-        return prediction;
-      } );
+      predictions = cvResults.map( r => {
+        const rank = Object.keys( r )[0];
+        return r[rank][0];
+      } )
+        .sort( ( a, b ) => a.rank - b.rank );
+      prediction = {
+        rank_level: predictions[0].rank,
+        id: predictions[0].taxon_id,
+        name: predictions[0].name,
+        score: predictions[0].score
+      };
     }
-    setResult( predictions );
+    setResult( prediction );
   };
 
   const handleClassifierError = error => {
@@ -180,14 +199,14 @@ const ARCamera = ( {
           } )
         }
         >
-          {showPrediction
+          {showPrediction && result
             ? (
               <TaxonResult
-                taxon={exampleTaxon}
+                taxon={result}
                 handleCheckmarkPress={( ) => { }}
-                testID={`ARCamera.taxa.${exampleTaxon.id}`}
+                testID={`ARCamera.taxa.${result.id}`}
                 clearBackground
-                confidence={exampleConfidence}
+                confidence={convertScoreToConfidence( result?.score )}
               />
             )
             : (

@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
+import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
   Body3, Body4, Heading4, INatIcon

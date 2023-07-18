@@ -1,6 +1,8 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import CameraView from "components/Camera/CameraView";
+import FadeInOutView from "components/Camera/FadeInOutView";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -17,9 +19,7 @@ import useTranslation from "sharedHooks/useTranslation";
 
 import CameraNavButtons from "./CameraNavButtons";
 import CameraOptionsButtons from "./CameraOptionsButtons";
-import CameraView from "./CameraView";
 import DiscardChangesSheet from "./DiscardChangesSheet";
-import FadeInOutView from "./FadeInOutView";
 import PhotoPreview from "./PhotoPreview";
 
 const isTablet = DeviceInfo.isTablet( );

@@ -1,15 +1,14 @@
 // @flow
 
 import classnames from "classnames";
+import GreenCheckmark from "components/Camera/Buttons/GreenCheckmark";
+import TakePhoto from "components/Camera/Buttons/TakePhoto";
 import { CloseButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
 import Animated from "react-native-reanimated";
-
-import GreenCheckmark from "./Buttons/GreenCheckmark";
-import TakePhoto from "./Buttons/TakePhoto";
 
 const isTablet = DeviceInfo.isTablet();
 

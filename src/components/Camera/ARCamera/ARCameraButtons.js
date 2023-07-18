@@ -1,15 +1,14 @@
 // @flow
 
+import CameraFlip from "components/Camera/Buttons/CameraFlip";
+import Close from "components/Camera/Buttons/Close";
+import Flash from "components/Camera/Buttons/Flash";
+import TakePhoto from "components/Camera/Buttons/TakePhoto";
+import TabletButtons from "components/Camera/TabletButtons";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
-
-import CameraFlip from "./Buttons/CameraFlip";
-import Close from "./Buttons/Close";
-import Flash from "./Buttons/Flash";
-import TakePhoto from "./Buttons/TakePhoto";
-import TabletButtons from "./TabletButtons";
 
 const isTablet = DeviceInfo.isTablet();
 
