@@ -1,6 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import {
   BottomSheet, EvidenceButton, List2
 } from "components/SharedComponents";
@@ -11,14 +10,21 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   disableAddingMoreEvidence: boolean,
-  setShowAddEvidenceSheet: Function
+  setShowAddEvidenceSheet: Function,
+  hidden?: boolean,
+  onImportPhoto: Function,
+  onTakePhoto: Function,
+  onRecordSound: Function,
 }
 
 const AddEvidenceSheet = ( {
   setShowAddEvidenceSheet,
-  disableAddingMoreEvidence
+  disableAddingMoreEvidence,
+  hidden,
+  onImportPhoto,
+  onTakePhoto,
+  onRecordSound
 }: Props ): Node => {
-  const navigation = useNavigation( );
   const { t } = useTranslation( );
 
   const handleClose = useCallback(
@@ -26,19 +32,19 @@ const AddEvidenceSheet = ( {
     [setShowAddEvidenceSheet]
   );
 
-  const onImportPhoto = async () => {
-    navigation.navigate( "PhotoGallery", { skipGroupPhotos: true } );
+  const onImportPhotoCallback = async () => {
     handleClose( );
+    onImportPhoto();
   };
 
-  const onTakePhoto = async () => {
-    navigation.navigate( "StandardCamera", { addEvidence: true } );
+  const onTakePhotoCallback = async () => {
     handleClose( );
+    onTakePhoto();
   };
 
-  const onRecordSound = () => {
-    // TODO - need to implement
+  const onRecordSoundCallback = () => {
     handleClose( );
+    onRecordSound();
   };
 
   return (
@@ -46,6 +52,12 @@ const AddEvidenceSheet = ( {
       handleClose={handleClose}
       headerText={t( "ADD-EVIDENCE" )}
       snapPoints={[202]}
+      hidden={hidden}
+      onChange={position => {
+        if ( position === -1 ) {
+          handleClose( );
+        }
+      }}
     >
       <View className="items-center p-5">
         {disableAddingMoreEvidence && (
@@ -56,21 +68,21 @@ const AddEvidenceSheet = ( {
         <View className="flex-row w-full justify-around">
           <EvidenceButton
             icon="camera"
-            handlePress={onTakePhoto}
+            handlePress={onTakePhotoCallback}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Camera" )}
             accessibilityHint={t( "Navigates-to-camera" )}
           />
           <EvidenceButton
             icon="gallery"
-            handlePress={onImportPhoto}
+            handlePress={onImportPhotoCallback}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Bulk-importer" )}
             accessibilityHint={t( "Navigates-to-bulk-importer" )}
           />
           <EvidenceButton
             icon="microphone"
-            handlePress={onRecordSound}
+            handlePress={onRecordSoundCallback}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Sound-recorder" )}
             accessibilityHint={t( "Navigates-to-sound-recorder" )}

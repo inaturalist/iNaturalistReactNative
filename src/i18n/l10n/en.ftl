@@ -266,6 +266,8 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 
 Dont-have-an-account = Don't have an account? Sign up
 
+During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AR camera.
+
 EDIT-COMMENT = EDIT COMMENT
 
 EDIT-LOCATION = EDIT LOCATION
@@ -478,6 +480,8 @@ No-account-found = No account found with that email
 No-comments-or-ids-to-display = No comments or ids to display
 
 No-Location = No Location
+
+No-model-found = No model found
 
 none = none
 

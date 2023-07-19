@@ -28,7 +28,7 @@ const mockValue = {
 };
 
 const mockView = <View />;
-jest.mock( "components/Camera/CameraView", () => ( {
+jest.mock( "components/Camera/CameraContainer", () => ( {
   __esModule: true,
   default: ( ) => mockView
 } ) );

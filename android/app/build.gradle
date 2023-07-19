@@ -123,8 +123,8 @@ android {
         applicationId "com.inaturalistreactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 48
-        versionName "0.6.1"
+        versionCode 49
+        versionName "0.7.0"
         setProperty("archivesBaseName", applicationId + "-v" + versionName + "+" + versionCode)
         // Detox Android setup
         testBuildType System.getProperty('testBuildType', 'debug')

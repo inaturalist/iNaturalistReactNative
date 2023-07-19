@@ -143,6 +143,7 @@
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
   "Dont-have-an-account": "Don't have an account? Sign up",
+  "During-app-start-no-model-found": "During app start there was no computer vision model found. There will be no AR camera.",
   "EDIT-COMMENT": "EDIT COMMENT",
   "EDIT-LOCATION": "EDIT LOCATION",
   "EMAIL": "EMAIL",
@@ -285,6 +286,7 @@
   },
   "No-comments-or-ids-to-display": "No comments or ids to display",
   "No-Location": "No Location",
+  "No-model-found": "No model found",
   "none": "none",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
   "no-rights-reserved-cc0-cc0": {
