@@ -76,8 +76,7 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
   if (
     currentRoute.includes( "PhotoGallery" )
     || currentRoute.includes( "GroupPhotos" )
-    || currentRoute.includes( "StandardCamera" )
-    || currentRoute.includes( "ARCamera" )
+    || currentRoute.includes( "Camera" )
     || currentRoute.includes( "SoundRecorder" )
     || currentRoute.includes( "ObsEdit" )
     || currentRoute.includes( "AddID" )

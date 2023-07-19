@@ -2,7 +2,8 @@
 
 import fetchSearchResults from "api/search";
 import {
-  SearchBar
+  SearchBar,
+  TaxonResult
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -10,8 +11,6 @@ import React, { useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import Taxon from "realmModels/Taxon";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-
-import TaxonResult from "./TaxonResult";
 
 type Props = {
   route: Object,
@@ -58,7 +57,13 @@ const TaxonSearch = ( {
       <FlatList
         keyboardShouldPersistTaps="always"
         data={taxonList}
-        renderItem={( { item } ) => <TaxonResult item={item} createId={createId} />}
+        renderItem={( { item } ) => (
+          <TaxonResult
+            taxon={item}
+            handleCheckmarkPress={( ) => createId( item )}
+            testID={`Search.taxa.${item.id}`}
+          />
+        )}
         keyExtractor={item => item.id}
       />
     </>

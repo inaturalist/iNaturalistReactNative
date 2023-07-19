@@ -1,4 +1,5 @@
 // @flow
+import CameraView from "components/Camera/CameraView";
 import type { Node } from "react";
 import React, {
   useEffect
@@ -10,8 +11,6 @@ import {
 } from "react-native-vision-camera";
 import { dirModel, dirTaxonomy } from "sharedHelpers/cvModel";
 import * as InatVision from "vision-camera-plugin-inatvision";
-
-import CameraContainer from "./CameraContainer";
 
 type Props = {
   cameraRef: Object,
@@ -76,7 +75,7 @@ const FrameProcessorCamera = ( {
   );
 
   return (
-    <CameraContainer
+    <CameraView
       cameraRef={cameraRef}
       device={device}
       onClassifierError={onClassifierError}

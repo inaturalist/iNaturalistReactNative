@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
+import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
   Body3, Body4, Heading4, INatIcon
@@ -60,7 +60,7 @@ const EvidenceSection = ( ): Node => {
     // to sometimes pop back up on the next screen - see GH issue #629
     if ( !showAddEvidenceSheet ) {
       if ( takePhoto ) {
-        navigation.navigate( "StandardCamera", { addEvidence: true } );
+        navigation.navigate( "Camera", { addEvidence: true, camera: "Standard" } );
       } else if ( importPhoto ) {
         navigation.navigate( "PhotoGallery", { skipGroupPhotos: true } );
       } else if ( recordSound ) {

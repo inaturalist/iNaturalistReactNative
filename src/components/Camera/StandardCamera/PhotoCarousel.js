@@ -19,7 +19,7 @@ import Animated, {
 
 type Props = {
   emptyComponent?: Function,
-  savingPhoto?: boolean,
+  takingPhoto?: boolean,
   deletePhoto?: Function,
   isLandscapeMode?:boolean,
   isLargeScreen?: boolean,
@@ -52,7 +52,7 @@ const LARGE_PHOTO_CLASSES = [
 
 const PhotoCarousel = ( {
   emptyComponent,
-  savingPhoto,
+  takingPhoto,
   deletePhoto,
   isLandscapeMode,
   isLargeScreen,
@@ -95,7 +95,7 @@ const PhotoCarousel = ( {
     [rotation?.value]
   );
 
-  const renderSkeleton = ( ) => ( savingPhoto
+  const renderSkeleton = ( ) => ( takingPhoto
     ? (
       <View
         className={classnames(
@@ -182,7 +182,7 @@ const PhotoCarousel = ( {
       data={[...photoUris]}
       renderItem={renderPhotoOrEvidenceButton}
       horizontal={!isTablet || !!isLandscapeMode}
-      ListEmptyComponent={savingPhoto
+      ListEmptyComponent={takingPhoto
         ? renderSkeleton( )
         : emptyComponent}
     />
