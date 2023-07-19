@@ -90,7 +90,15 @@ const ObsDetails = (): Node => {
   const { data: remoteObservation, refetch: refetchRemoteObservation }
   = useAuthenticatedQuery(
     ["fetchRemoteObservation", uuid],
-    optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth )
+    optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth ),
+    {
+      onSuccess: data => {
+        console.log( "refetch success" );
+        console.log( data );
+      },
+      onError: () => {
+      }
+    }
   );
 
   const observation = localObservation || remoteObservation;

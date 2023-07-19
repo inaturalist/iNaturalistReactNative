@@ -196,6 +196,10 @@
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
   "High": "High",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "ID Withdrawn"
+  },
   "IDENTIFICATION": "IDENTIFICATION",
   "IDENTIFICATIONS": "IDENTIFICATIONS",
   "If-an-account-with-that-email-exists": "If an account with that email exists, we’ve sent password reset instructions to your email.",

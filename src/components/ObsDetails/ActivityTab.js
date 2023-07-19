@@ -36,9 +36,13 @@ const ActivityTab = ( {
   const createIdentificationMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => createIdentification( params, optsWithAuth ),
     {
-      onSuccess: () => {
+      onSuccess: data => {
         // TODO
         // reload activity list to update suggest id icon
+        console.log( "data", data );
+        if ( refetchRemoteObservation ) {
+          refetchRemoteObservation( );
+        }
       },
       onError: () => {
         onAgreeErrorAlert();
@@ -53,8 +57,9 @@ const ActivityTab = ( {
   const findUserAgreedToID = () => {
     const currentIds = observation?.identifications;
     const userAgree = currentIds.filter( id => id.user.id === userId );
-    console.log( "userAgree", userAgree );
-    return userAgree[userAgree.length - 1].taxon.id;
+    return userAgree
+      ? userAgree[userAgree.length - 1].taxon.id
+      : undefined;
   };
 
   const userAgreedToId = findUserAgreedToID();

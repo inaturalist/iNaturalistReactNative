@@ -346,6 +346,9 @@ Has-Sounds = Has Sounds
 
 High = High
 
+# Identification Status
+ID-Withdrawn = ID Withdrawn
+
 IDENTIFICATION = IDENTIFICATION
 
 IDENTIFICATIONS = IDENTIFICATIONS

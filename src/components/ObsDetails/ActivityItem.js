@@ -42,10 +42,8 @@ const ActivityItem = ( {
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
   const showAgree = taxon && user && user.id !== userId && taxon.rank_level <= 10
-  && userAgreedId !== taxon.id;
+  && userAgreedId !== taxon?.id;
 
-  console.log( "item", item.id );
-  console.log( "showAgree", showAgree );
   const showNoInternetIcon = accessibilityLabel => (
     <View className="mr-3">
       <IconMaterial
