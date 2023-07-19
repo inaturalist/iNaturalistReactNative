@@ -19,7 +19,7 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 1. `cp env.example .env.staging` for staging and `cp env.example .env` for production and fill in appropriate values. This is not part of the code repo (contains secrets, such as OAuth client ID).
 1. To run on Android, do this `cp android/example-keystore.properties android/keystore.properties`. Fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff.
 1. Add AR Camera example model and taxonomy files.
-    1. Add the example model files by executing `npm run add-example-models`.
+    1. Add the example model files by executing `npm run add-example-model`.
     1. If the download script fails: The sample model files are available in this [`small_model.zip`](https://github.com/inaturalist/SeekReactNative/releases/tag/v2.9.1-138) file.
     1. On Android, these files are named `small_inception_tf1.tflite` and `small_export_tax.csv`. Create a camera folder within Android assets (i.e. `android/app/src/debug/assets/camera`) and place the files there.
     1. On iOS, these files are named `small_inception_tf1.mlmodel` and `small_export_tax.json` and should be added to the `ios` folder.
