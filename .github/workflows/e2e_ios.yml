@@ -91,8 +91,6 @@ jobs:
     # Download all linked model files not included in the repository (otherwise build will error out), requires .env file
     - name: Download the example cv model and taxonomy file into the ios folder
       run: npm run add-example-model
-    - name: Download a fake cv model and taxonomy file into the ios folder
-      run: npm run add-github-actions-test-model
 
     # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable
     # This will be available for all subsequent steps
