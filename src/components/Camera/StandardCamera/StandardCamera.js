@@ -30,6 +30,7 @@ type Props = {
   navToObsEdit: Function,
   flipCamera: Function,
   toggleFlash: Function,
+  changeZoom: Function,
   takePhoto: Function,
   handleBackButtonPress: Function,
   rotatableAnimatedStyle: Object,
@@ -41,7 +42,9 @@ type Props = {
   takePhotoOptions: Object,
   setShowDiscardSheet: Function,
   showDiscardSheet: boolean,
-  takingPhoto: boolean
+  takingPhoto: boolean,
+  animatedProps: any,
+  zoom: number
 }
 
 const StandardCamera = ( {
@@ -59,7 +62,10 @@ const StandardCamera = ( {
   takePhotoOptions,
   setShowDiscardSheet,
   showDiscardSheet,
-  takingPhoto
+  takingPhoto,
+  changeZoom,
+  animatedProps,
+  zoom
 }: Props ): Node => {
   const {
     allObsPhotoUris
@@ -107,6 +113,7 @@ const StandardCamera = ( {
           <CameraView
             cameraRef={camera}
             device={device}
+            animatedProps={animatedProps}
           />
         )}
         <FadeInOutView takingPhoto={takingPhoto} />
@@ -121,6 +128,8 @@ const StandardCamera = ( {
           flipCamera={flipCamera}
           hasFlash={hasFlash}
           takePhotoOptions={takePhotoOptions}
+          changeZoom={changeZoom}
+          zoom={zoom}
         />
       </View>
       <CameraNavButtons

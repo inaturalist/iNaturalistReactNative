@@ -19,8 +19,6 @@ import FrameProcessorCamera from "./FrameProcessorCamera";
 
 const isTablet = DeviceInfo.isTablet();
 
-export const MAX_PHOTOS_ALLOWED = 20;
-
 // const exampleTaxonResult = {
 //   id: 12704,
 //   name: "Muscicapidae",
@@ -38,7 +36,10 @@ type Props = {
   camera: any,
   hasFlash: boolean,
   takePhotoOptions: Object,
-  takingPhoto: boolean
+  takingPhoto: boolean,
+  animatedProps: any,
+  changeZoom: Function,
+  zoom: number
 }
 
 const ARCamera = ( {
@@ -50,7 +51,10 @@ const ARCamera = ( {
   camera,
   hasFlash,
   takePhotoOptions,
-  takingPhoto
+  takingPhoto,
+  animatedProps,
+  changeZoom,
+  zoom
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -185,6 +189,7 @@ const ARCamera = ( {
           onCaptureError={handleCaptureError}
           onCameraError={handleCameraError}
           onLog={handleLog}
+          animatedProps={animatedProps}
         />
       )}
       <LinearGradient
@@ -240,6 +245,8 @@ const ARCamera = ( {
         hasFlash={hasFlash}
         takePhotoOptions={takePhotoOptions}
         showPrediction={showPrediction}
+        zoom={zoom}
+        changeZoom={changeZoom}
       />
     </>
   );

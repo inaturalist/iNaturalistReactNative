@@ -12,6 +12,7 @@ import CameraFlip from "./Buttons/CameraFlip";
 import Flash from "./Buttons/Flash";
 import GreenCheckmark from "./Buttons/GreenCheckmark";
 import TakePhoto from "./Buttons/TakePhoto";
+import Zoom from "./Buttons/Zoom";
 
 const isTablet = DeviceInfo.isTablet();
 
@@ -44,9 +45,11 @@ type Props = {
   navToObsEdit?: Function,
   toggleFlash: Function,
   flipCamera: Function,
+  changeZoom: Function,
   hasFlash: boolean,
   takePhotoOptions: Object,
-  showPrediction?: boolean
+  showPrediction?: boolean,
+  zoom: number
 }
 
 // Empty space where a camera button should be so buttons don't jump around
@@ -73,7 +76,9 @@ const TabletButtons = ( {
   flipCamera,
   hasFlash,
   takePhotoOptions,
-  showPrediction
+  showPrediction,
+  changeZoom,
+  zoom
 }: Props ): Node => {
   const tabletCameraOptionsClasses = [
     "absolute",
@@ -89,6 +94,10 @@ const TabletButtons = ( {
 
   return (
     <View className={classnames( tabletCameraOptionsClasses )}>
+      <Zoom
+        changeZoom={changeZoom}
+        zoom={zoom}
+      />
       <Flash
         toggleFlash={toggleFlash}
         hasFlash={hasFlash}

@@ -19,8 +19,10 @@ import {
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import {
+  useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
+  withSpring,
   withTiming
 } from "react-native-reanimated";
 // Temporarily using a fork so this is to avoid that eslint error. Need to
@@ -73,8 +75,29 @@ const CameraContainer = ( ): Node => {
   const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
   const [takingPhoto, setTakingPhoto] = useState( false );
+  const zoom = useSharedValue( 1 );
+  const [zoomTextValue, setZoomTextValue] = useState( 1 );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
+
+  const changeZoom = ( ) => {
+    const currentZoomValue = zoomTextValue;
+    if ( currentZoomValue === 1 ) {
+      zoom.value = withSpring( 2 );
+      setZoomTextValue( 2 );
+    } else if ( currentZoomValue === 2 ) {
+      zoom.value = withSpring( 3 );
+      setZoomTextValue( 3 );
+    } else {
+      zoom.value = withSpring( 1 );
+      setZoomTextValue( 1 );
+    }
+  };
+
+  const animatedProps = useAnimatedProps(
+    () => ( { zoom: zoom.value } ),
+    [zoom]
+  );
 
   const rotation = useSharedValue( 0 );
   switch ( deviceOrientation ) {
@@ -222,6 +245,9 @@ const CameraContainer = ( ): Node => {
             setShowDiscardSheet={setShowDiscardSheet}
             showDiscardSheet={showDiscardSheet}
             takingPhoto={takingPhoto}
+            changeZoom={changeZoom}
+            animatedProps={animatedProps}
+            zoom={zoomTextValue}
           />
         )
         : (
@@ -235,6 +261,9 @@ const CameraContainer = ( ): Node => {
             hasFlash={hasFlash}
             takePhotoOptions={takePhotoOptions}
             takingPhoto={takingPhoto}
+            changeZoom={changeZoom}
+            animatedProps={animatedProps}
+            zoom={zoomTextValue}
           />
         )}
     </View>

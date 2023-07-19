@@ -20,7 +20,8 @@ type Props = {
   onDeviceNotSupported: Function,
   onCaptureError: Function,
   onCameraError: Function,
-  onLog: Function
+  onLog: Function,
+  animatedProps: any
 };
 
 // Johannes: when I copied over the native code from the legacy react-native-camera on Android
@@ -36,7 +37,8 @@ const FrameProcessorCamera = ( {
   onDeviceNotSupported,
   onCaptureError,
   onCameraError,
-  onLog
+  onLog,
+  animatedProps
 }: Props ): Node => {
   useEffect( () => {
     // This registers a listener for the frame processor plugin's log events
@@ -87,6 +89,7 @@ const FrameProcessorCamera = ( {
       // This roughly equals the setting of the legacy camera of 1000ms between predictions,
       // i.e. what taxaDetectionInterval was set to.
       frameProcessorFps={1}
+      animatedProps={animatedProps}
     />
   );
 };

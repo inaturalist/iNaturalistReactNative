@@ -3,6 +3,7 @@
 import classnames from "classnames";
 import CameraFlip from "components/Camera/Buttons/CameraFlip";
 import Flash from "components/Camera/Buttons/Flash";
+import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
 import type { Node } from "react";
 import React from "react";
@@ -20,8 +21,10 @@ type Props = {
   navToObsEdit: Function,
   toggleFlash: Function,
   flipCamera: Function,
+  changeZoom: Function,
   hasFlash: boolean,
-  takePhotoOptions: Object
+  takePhotoOptions: Object,
+  zoom: number
 }
 
 const CameraOptionsButtons = ( {
@@ -34,7 +37,9 @@ const CameraOptionsButtons = ( {
   toggleFlash,
   flipCamera,
   hasFlash,
-  takePhotoOptions
+  takePhotoOptions,
+  changeZoom,
+  zoom
 }: Props ): Node => {
   const renderPhoneCameraOptions = () => (
     <>
@@ -44,6 +49,11 @@ const CameraOptionsButtons = ( {
         takePhotoOptions={takePhotoOptions}
         rotatableAnimatedStyle={rotatableAnimatedStyle}
         flashClassName="absolute bottom-[18px] left-[18px]"
+      />
+      <Zoom
+        changeZoom={changeZoom}
+        cameraZoomClasses="absolute bottom-[18px] self-center"
+        zoom={zoom}
       />
       <Animated.View
         style={!isTablet && rotatableAnimatedStyle}
@@ -72,6 +82,8 @@ const CameraOptionsButtons = ( {
       flipCamera={flipCamera}
       hasFlash={hasFlash}
       takePhotoOptions={takePhotoOptions}
+      changeZoom={changeZoom}
+      zoom={zoom}
     />
   );
 

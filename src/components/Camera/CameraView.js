@@ -3,11 +3,17 @@ import type { Node } from "react";
 import React, { useCallback, useRef, useState } from "react";
 import { Animated, Platform, StyleSheet } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Reanimated from "react-native-reanimated";
 import { Camera } from "react-native-vision-camera";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useIsForeground from "sharedHooks/useIsForeground";
 
 import FocusSquare from "./FocusSquare";
+
+const ReanimatedCamera = Reanimated.createAnimatedComponent( Camera );
+Reanimated.addWhitelistedNativeProps( {
+  zoom: true
+} );
 
 type Props = {
   cameraRef: Object,
@@ -18,6 +24,7 @@ type Props = {
   onCameraError?: Function,
   frameProcessor?: Function,
   frameProcessorFps?: number,
+  animatedProps: any
 };
 
 // A container for the Camera component
@@ -30,7 +37,8 @@ const CameraView = ( {
   onCaptureError,
   onCameraError,
   frameProcessor,
-  frameProcessorFps
+  frameProcessorFps,
+  animatedProps
 }: Props ): Node => {
   const [focusAvailable, setFocusAvailable] = useState( true );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
@@ -132,7 +140,7 @@ const CameraView = ( {
   return (
     <>
       <GestureDetector gesture={Gesture.Exclusive( singleTap )}>
-        <Camera
+        <ReanimatedCamera
           // Shared props between StandardCamera and ARCamera
           photo
           enableZoomGesture
@@ -150,6 +158,7 @@ const CameraView = ( {
           // Props for ARCamera only
           frameProcessor={frameProcessor}
           frameProcessorFps={frameProcessorFps}
+          animatedProps={animatedProps}
         />
       </GestureDetector>
       <FocusSquare
