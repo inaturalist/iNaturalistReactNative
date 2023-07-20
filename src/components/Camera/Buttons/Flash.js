@@ -1,29 +1,17 @@
 // @flow
 
 import classnames from "classnames";
+import TransparentCircleButton, {
+  CIRCLE_BUTTON_DIM
+} from "components/SharedComponents/Buttons/TransparentCircleButton";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import DeviceInfo from "react-native-device-info";
-import {
-  IconButton
-} from "react-native-paper";
 import Animated from "react-native-reanimated";
 import { useTranslation } from "sharedHooks";
-import colors from "styles/tailwindColors";
 
 const isTablet = DeviceInfo.isTablet();
-
-const CAMERA_BUTTON_DIM = 40;
-
-const cameraOptionsClasses = [
-  "bg-black/50",
-  `h-[${CAMERA_BUTTON_DIM}px]`,
-  "items-center",
-  "justify-center",
-  "rounded-full",
-  `w-[${CAMERA_BUTTON_DIM}px]`
-].join( " " );
 
 type Props = {
   rotatableAnimatedStyle: Object,
@@ -40,8 +28,8 @@ const CameraButtonPlaceholder = ( ) => (
     accessibilityElementsHidden
     aria-hidden
     className={classnames(
-      `w-[${CAMERA_BUTTON_DIM}px]`,
-      `h-[${CAMERA_BUTTON_DIM}px]`
+      `w-[${CIRCLE_BUTTON_DIM}px]`,
+      `h-[${CIRCLE_BUTTON_DIM}px]`
     )}
   />
 );
@@ -80,16 +68,11 @@ const Flash = ( {
         "border-0"
       )}
     >
-      <IconButton
-        className={classnames( cameraOptionsClasses )}
+      <TransparentCircleButton
         onPress={toggleFlash}
-        accessibilityRole="button"
         testID={testID}
         accessibilityLabel={accessibilityLabel}
-        accessibilityState={{ disabled: false }}
         icon={name}
-        iconColor={colors.white}
-        size={20}
       />
     </Animated.View>
   );

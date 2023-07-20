@@ -4,6 +4,7 @@ import CameraFlip from "components/Camera/Buttons/CameraFlip";
 import Close from "components/Camera/Buttons/Close";
 import Flash from "components/Camera/Buttons/Flash";
 import TakePhoto from "components/Camera/Buttons/TakePhoto";
+import Zoom from "components/Camera/Buttons/Zoom";
 import TabletButtons from "components/Camera/TabletButtons";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -48,7 +49,9 @@ type Props = {
   flipCamera: Function,
   hasFlash: boolean,
   takePhotoOptions: Object,
-  showPrediction: boolean
+  changeZoom: Function,
+  showPrediction: boolean,
+  zoom: number
 }
 
 const ARCameraButtons = ( {
@@ -58,7 +61,9 @@ const ARCameraButtons = ( {
   toggleFlash,
   hasFlash,
   takePhotoOptions,
-  showPrediction
+  showPrediction,
+  changeZoom,
+  zoom
 }: Props ): Node => ( isTablet
   ? (
     <TabletButtons
@@ -69,11 +74,19 @@ const ARCameraButtons = ( {
       hasFlash={hasFlash}
       takePhotoOptions={takePhotoOptions}
       showPrediction={showPrediction}
+      changeZoom={changeZoom}
+      zoom={zoom}
     />
   )
   : (
     <View className="bottom-10 absolute right-5 left-5">
-      <View className="flex-row justify-end">
+      <View className="flex-row justify-end pb-[30px]">
+        <Zoom
+          zoom={zoom}
+          changeZoom={changeZoom}
+        />
+      </View>
+      <View className="flex-row justify-end pb-[20px]">
         <Flash
           toggleFlash={toggleFlash}
           hasFlash={hasFlash}
