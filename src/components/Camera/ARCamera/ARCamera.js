@@ -7,6 +7,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import {
+  Alert,
   Platform
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
@@ -149,25 +150,26 @@ const ARCamera = ( {
 
   const handleClassifierError = error => {
     console.log( "handleClassifierError error.message :>> ", error.message );
-    // TODO: when we hit this error, there is an error with the classifier.
-    // We should show an error message and maybe also disable the ARCamera.
+    // When we hit this error, there is an error with the classifier.
+    Alert.alert( "error", error.message );
   };
 
   const handleDeviceNotSupported = error => {
     console.log( "handleDeviceNotSupported error.message :>> ", error.message );
-    // TODO: when we hit this error, something with the current device is not supported.
-    // We should show an error message depending on the error and change the way we use it.
+    // When we hit this error, something with the current device is not supported.
+    Alert.alert( "error", error.message );
   };
 
   const handleCaptureError = error => {
     console.log( "handleCaptureError error.message :>> ", error.message );
-    // TODO: when we hit this error, taking a photo did not work correctly
-    // We should show an error message and do something if the error persists.
+    // When we hit this error, taking a photo did not work correctly
+    Alert.alert( "error", error.message );
   };
 
   const handleCameraError = error => {
     console.log( "handleCameraError error.message :>> ", error.message );
-    // TODO: This error is thrown when it does not fit in any of the above categories.
+    // This error is thrown when it does not fit in any of the above categories.
+    Alert.alert( "error", error.message );
   };
 
   const handleLog = event => {
