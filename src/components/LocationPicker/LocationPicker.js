@@ -11,7 +11,7 @@ import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
-  useCallback, useContext, useEffect,
+  useContext, useEffect,
   useReducer, useRef
 } from "react";
 import { Dimensions, Platform } from "react-native";
@@ -26,7 +26,6 @@ import CrosshairCircle from "./CrosshairCircle";
 import DisplayLatLng from "./DisplayLatLng";
 import Footer from "./Footer";
 import LocationSearch from "./LocationSearch";
-import WarningText from "./WarningText";
 
 const { width, height } = Dimensions.get( "screen" );
 
@@ -132,7 +131,6 @@ type Props = {
   },
 };
 
-const centerCrosshair = ( height / 2 ) - CROSSHAIRLENGTH + 30;
 const centerIndicator = ( height / 2 ) - 120;
 
 const LocationPicker = ( { route }: Props ): Node => {
@@ -153,6 +151,8 @@ const LocationPicker = ( { route }: Props ): Node => {
     mapType,
     region
   } = state;
+
+  const showMap = region.latitude && region.latitude !== 0.0;
 
   const keysToUpdate = {
     latitude: region.latitude,
@@ -190,22 +190,6 @@ const LocationPicker = ( { route }: Props ): Node => {
       accuracy: newAccuracy
     } );
   };
-
-  const renderBackButton = useCallback(
-    ( ) => <CloseButton black className="absolute" size={19} />,
-    []
-  );
-
-  useEffect( ( ) => {
-    const renderHeaderTitle = ( ) => <Heading4>{t( "EDIT-LOCATION" )}</Heading4>;
-
-    const headerOptions = {
-      headerRight: renderBackButton,
-      headerTitle: renderHeaderTitle
-    };
-
-    navigation.setOptions( headerOptions );
-  }, [renderBackButton, navigation, t] );
 
   const toggleMapLayer = ( ) => {
     if ( mapType === "standard" ) {
@@ -250,8 +234,22 @@ const LocationPicker = ( { route }: Props ): Node => {
 
   return (
     <ViewWrapper testID="location-picker" className="flex-1">
+      <View className="justify-center">
+        <Heading4 className="self-center my-4">{t( "EDIT-LOCATION" )}</Heading4>
+        <View className="absolute right-2">
+          <CloseButton black size={19} />
+        </View>
+      </View>
+      <View className="top-1/2 left-1/2 absolute z-10">
+        {( showMap && !loading ) && (
+          <CrosshairCircle
+            accuracyTest={accuracyTest}
+            getShadow={getShadow}
+          />
+        )}
+      </View>
       <View className="flex-shrink">
-        {region.latitude
+        {showMap
           ? (
             <MapView
               className="h-full"
@@ -259,7 +257,9 @@ const LocationPicker = ( { route }: Props ): Node => {
               region={region}
               ref={mapView}
               mapType={mapType}
-              minZoomLevel={15}
+              // TODO: figure out the right zoom level here
+              // don't think it's necessary to let a user zoom out far beyond cities
+              minZoomLevel={5}
               onRegionChangeComplete={async newRegion => {
                 updateRegion( newRegion );
               }}
@@ -281,15 +281,6 @@ const LocationPicker = ( { route }: Props ): Node => {
             <ActivityIndicator large />
           </View>
         )}
-        {( region.latitude && !loading ) && (
-          <CrosshairCircle
-            accuracyTest={accuracyTest}
-            // eslint-disable-next-line react-native/no-inline-styles
-            containerStyle={{
-              top: centerCrosshair
-            }}
-          />
-        )}
         <LocationSearch
           region={region}
           setRegion={updateRegion}
@@ -302,7 +293,6 @@ const LocationPicker = ( { route }: Props ): Node => {
           accuracy={accuracy}
           getShadow={getShadow}
         />
-        <WarningText accuracyTest={accuracyTest} getShadow={getShadow} />
         <View
           style={getShadow( theme.colors.primary )}
           className="absolute bottom-3 bg-white left-3 rounded-full"

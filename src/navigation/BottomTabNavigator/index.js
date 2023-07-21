@@ -337,10 +337,7 @@ const BottomTabs = ( ) => {
         <Tab.Screen
           name="LocationPicker"
           component={LocationPicker}
-          options={{
-            ...blankHeaderTitle,
-            ...hideHeaderLeft
-          }}
+          options={hideHeader}
         />
         <Tab.Screen
           name="MediaViewer"

@@ -7,18 +7,19 @@ import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 
+import WarningText from "./WarningText";
+
 type Props = {
   accuracyTest: string,
-  containerStyle: Object
+  getShadow: Function
 };
 
-const CrosshairCircle = ( { accuracyTest, containerStyle }: Props ): Node => {
+const CrosshairCircle = ( { accuracyTest, getShadow }: Props ): Node => {
   const theme = useTheme( );
 
   return (
     <View
-      className="absolute self-center"
-      style={containerStyle}
+      className="right-[127px] bottom-[127px]"
       pointerEvents="none"
     >
       <View
@@ -53,6 +54,9 @@ const CrosshairCircle = ( { accuracyTest, containerStyle }: Props ): Node => {
             color={theme.colors.error}
           />
         )}
+      </View>
+      <View className="absolute m-auto left-0 right-0 top-[300px]">
+        <WarningText accuracyTest={accuracyTest} getShadow={getShadow} />
       </View>
     </View>
   );
