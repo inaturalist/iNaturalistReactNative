@@ -49,8 +49,6 @@ const useCurrentObservationLocation = ( mountedRef: any ): Object => {
       if ( !mountedRef.current ) return;
       if ( !shouldFetchLocation ) return;
 
-      setFetchingLocation( false );
-
       const location = await fetchUserLocation( );
 
       // If we're still receiving location updates and location is blank,
@@ -62,6 +60,8 @@ const useCurrentObservationLocation = ( mountedRef: any ): Object => {
         longitude: location?.longitude,
         positional_accuracy: location?.positional_accuracy
       } );
+
+      setFetchingLocation( false );
 
       // The local state version of positionalAccuracy needs to be a number,
       // so don't set it to

@@ -3,7 +3,9 @@
 import {
   BottomSheetModal
 } from "@gorhom/bottom-sheet";
-import { BottomSheetStandardBackdrop } from "components/SharedComponents";
+import {
+  Body3, BottomSheetStandardBackdrop, Button, Heading4, INatIconButton
+} from "components/SharedComponents";
 import { BottomSheetTextInput, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -14,22 +16,28 @@ import {
   Keyboard
 } from "react-native";
 import { useTheme } from "react-native-paper";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import useTranslation from "sharedHooks/useTranslation";
 import { viewStyles } from "styles/obsDetails/obsDetails";
+import colors from "styles/tailwindColors";
 
 type Props = {
+  title?: string,
   onCommentAdded: Function,
   showCommentBox: boolean,
   setShowCommentBox: Function,
-  setAddingComment: Function
+  setAddingComment?: Function,
+  commentToEdit?: string,
+  edit?: boolean
 }
 
 const AddCommentModal = ( {
+  title,
   onCommentAdded,
   showCommentBox,
   setShowCommentBox,
-  setAddingComment
+  setAddingComment,
+  commentToEdit,
+  edit
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [comment, setComment] = useState( "" );
@@ -47,10 +55,13 @@ const AddCommentModal = ( {
   useEffect( ( ) => {
     if ( showCommentBox ) {
       bottomSheetModalRef.current?.present( );
+      if ( edit && commentToEdit ) {
+        setComment( commentToEdit );
+      }
     } else {
       bottomSheetModalRef.current?.dismiss( );
     }
-  }, [showCommentBox, bottomSheetModalRef] );
+  }, [showCommentBox, bottomSheetModalRef, commentToEdit, edit] );
 
   const renderHandle = () => <View />;
 
@@ -65,8 +76,10 @@ const AddCommentModal = ( {
   }, [setShowCommentBox] );
 
   const submitComment = async ( ) => {
-    setAddingComment( true );
-    if ( comment.length > 0 ) {
+    if ( setAddingComment ) {
+      setAddingComment( true );
+    }
+    if ( comment.length > 0 || edit ) {
       onCommentAdded( comment );
     }
     clearAndCloseCommentBox( );
@@ -107,7 +120,7 @@ const AddCommentModal = ( {
       onChange={handleSheetChanges}
     >
       <View
-        className="p-3"
+        className="flex-col p-[20px] items-center"
         onLayout={( {
           nativeEvent: {
             layout: { height }
@@ -116,15 +129,35 @@ const AddCommentModal = ( {
           setSnapPoint( height + 20 );
         }}
       >
-        {renderTextInput()}
-        <Pressable
+        <INatIconButton
+          onPress={clearAndCloseCommentBox}
+          className="absolute top-1 right-1"
+          icon="close"
+          color={colors.darkGray}
+        />
+        {title
+          ? <Heading4>{title}</Heading4>
+          : <Heading4>{t( "ADD-COMMENT" )}</Heading4>}
+
+        <View className="border border-lightGray p-[5px] m-[10px] my-[15px]  w-full">
+          {renderTextInput()}
+          <Pressable
+            className="absolute bottom-2 right-2"
+            accessibilityRole="button"
+            onPress={() => setComment( "" )}
+          >
+            <Body3 className="opacity-50">{t( "Clear" )}</Body3>
+          </Pressable>
+        </View>
+        <Button
           accessibilityRole="button"
-          className="absolute right-4 bottom-4"
+          level="primary"
+          className="w-full"
           onPress={( ) => submitComment( )}
-        >
-          <IconMaterial name="send" size={35} color={theme.colors.secondary} />
-        </Pressable>
+          text={t( "CONFIRM" )}
+        />
       </View>
+
     </BottomSheetModal>
   );
 };

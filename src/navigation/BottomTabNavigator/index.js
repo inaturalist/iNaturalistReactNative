@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
 import AddID from "components/AddID/AddID";
-import StandardCamera from "components/Camera/StandardCamera";
+import CameraContainer from "components/Camera/CameraContainer";
 import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
 import LocationPicker from "components/LocationPicker/LocationPicker";
@@ -72,7 +72,7 @@ const MortalLogin = ( ) => (
   </Mortal>
 );
 
-const StandardCameraWithPermission = ( ) => {
+const CameraContainerWithPermission = ( ) => {
   if ( usesAndroid10Permissions ) {
     // WRITE_EXTERNAL_STORAGE is deprecated after Android 10
     // https://developer.android.com/training/data-storage/shared/media#access-other-apps-files
@@ -81,14 +81,14 @@ const StandardCameraWithPermission = ( ) => {
         permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
       >
         <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-          <StandardCamera />
+          <CameraContainer />
         </PermissionGate>
       </PermissionGate>
     );
   }
   return (
     <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-      <StandardCamera />
+      <CameraContainer />
     </PermissionGate>
   );
 };
@@ -308,8 +308,8 @@ const BottomTabs = ( ) => {
           }}
         />
         <Tab.Screen
-          name="StandardCamera"
-          component={StandardCameraWithPermission}
+          name="Camera"
+          component={CameraContainerWithPermission}
           options={{ ...hideHeader, orientation: "all", unmountOnBlur: true }}
         />
         <Tab.Screen

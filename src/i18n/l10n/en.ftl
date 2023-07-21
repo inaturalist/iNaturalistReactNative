@@ -16,6 +16,8 @@ ADD-AN-ID = ADD AN ID
 
 Add-an-ID = Add an ID
 
+ADD-COMMENT = ADD COMMENT
+
 Add-Date-Time = Add Date/Time
 
 Add-evidence-of-an-organism = Add evidence of an organism. This helps others identify what you saw.
@@ -35,6 +37,10 @@ Added-on-date = Added on { $date }
 Affiliation-colon = Affiliation:
 
 Agree = Agree
+
+AGREE-WITH-ID = AGREE WITH ID?
+
+Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
 
 All = All
 
@@ -260,6 +266,10 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 
 Dont-have-an-account = Don't have an account? Sign up
 
+During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AR camera.
+
+EDIT-COMMENT = EDIT COMMENT
+
 EDIT-LOCATION = EDIT LOCATION
 
 EMAIL = EMAIL
@@ -471,6 +481,8 @@ No-comments-or-ids-to-display = No comments or ids to display
 
 No-Location = No Location
 
+No-model-found = No model found
+
 none = none
 
 No-photos-found = No photos found. If this is your first time opening the app and giving permissions, try restarting the app.
@@ -547,12 +559,7 @@ Projects = Projects
 Quality-Grade = Quality Grade
 
 # Quality grade options
-quality-grade-research = Research
-quality-grade-needs-id = Needs Id
-quality-grade-casual = Casual
-
-# Quality grade options
-quality-grade-research = Research
+quality-grade-research = Research Grade
 quality-grade-needs-id = Needs Id
 quality-grade-casual = Casual
 
@@ -989,7 +996,8 @@ x-identifications = {$count ->
 ## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
 Agrees-with-identification = Agrees with this identification.
 Navigates-to-bulk-importer = Navigates to bulk importer.
-Navigates-to-camera = Navigate to camera.
+Navigates-to-camera = Navigates to camera.
+Navigates-to-AR-camera = Navigates to AR camera.
 Navigates-to-explore = Navigates to explore.
 Navigates-to-messages = Navigates to messages.
 Navigates-to-observations = Navigates to observations.
@@ -1182,3 +1190,5 @@ LOG-OUT = LOG OUT
 Log-in-to-iNaturalist = Log in to iNaturalist
 
 Try-searching-for-a-location-name = Try searching for a location name to see the map
+Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
+Loading-iNaturalists-AR-Camera = Loading iNaturalist’s AR Camera

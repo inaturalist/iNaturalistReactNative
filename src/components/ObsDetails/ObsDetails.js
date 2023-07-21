@@ -33,7 +33,6 @@ import {
   ActivityIndicator,
   Button as IconButton
 } from "react-native-paper";
-import createUUID from "react-native-uuid";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
 import Taxon from "realmModels/Taxon";
@@ -88,8 +87,11 @@ const ObsDetails = (): Node => {
     fields: Observation.FIELDS
   };
 
-  // eslint-disable-next-line max-len
-  const { data: remoteObservation, refetch: refetchRemoteObservation } = useAuthenticatedQuery( ["fetchRemoteObservation", uuid], optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth ) );
+  const { data: remoteObservation, refetch: refetchRemoteObservation }
+  = useAuthenticatedQuery(
+    ["fetchRemoteObservation", uuid],
+    optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth )
+  );
 
   const observation = localObservation || remoteObservation;
 
@@ -122,9 +124,53 @@ const ObsDetails = (): Node => {
   const taxon = observation?.taxon;
   const faves = observation?.faves;
   const observationPhotos = observation?.observationPhotos || observation?.observation_photos;
-  const currentUserFaved = faves?.length > 0
-    ? faves.find( fave => fave.user.id === userId )
-    : null;
+  const currentUserFaved = () => {
+    if ( faves?.length > 0 ) {
+      const userFaved = faves.find( fave => fave.user_id === userId );
+      return userFaved === true;
+    }
+    return null;
+  };
+  const [userFav, setUserFav] = useState( currentUserFaved() );
+
+  const createUnfaveMutation = useAuthenticatedMutation(
+    ( faveOrUnfaveParams, optsWithAuth ) => unfaveObservation( faveOrUnfaveParams, optsWithAuth ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries( ["fetchRemoteObservation"] );
+        refetchRemoteObservation();
+        refetchObservationUpdates();
+        setUserFav( false );
+      },
+      onError: () => {
+      }
+    }
+  );
+
+  const createFaveMutation = useAuthenticatedMutation(
+    ( faveOrUnfaveParams, optsWithAuth ) => faveObservation( faveOrUnfaveParams, optsWithAuth ),
+    {
+      onSuccess: () => {
+        setRefetch( true );
+        queryClient.invalidateQueries( ["fetchRemoteObservation"] );
+        refetchRemoteObservation();
+        refetchObservationUpdates();
+        setUserFav( true );
+      },
+      onError: () => {
+      }
+    }
+  );
+
+  const faveOrUnfave = async () => {
+    // TODO: figure out why ObsDetails doesnt update with changes after refetch
+    // maybe similar to how comments work(?)
+    if ( currentUserFaved() ) {
+      createUnfaveMutation.mutate( { uuid } );
+    } else {
+      createFaveMutation.mutate( { uuid } );
+    }
+  };
 
   const showErrorAlert = error => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
     cancelable: true
@@ -135,7 +181,9 @@ const ObsDetails = (): Node => {
   const createCommentMutation = useAuthenticatedMutation(
     ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
     {
-      onSuccess: data => setComments( [...comments, data[0]] ),
+      onSuccess: data => {
+        setComments( [...comments, data[0]] );
+      },
       onError: e => {
         let error = null;
         if ( e ) {
@@ -152,23 +200,6 @@ const ObsDetails = (): Node => {
     }
   );
   const onCommentAdded = async commentBody => {
-    // Add temporary comment to observation.comments ("ghosted" comment,
-    // while we're trying to add it)
-    const newComment = {
-      body: commentBody,
-      user: {
-        id: userId,
-        login: currentUser?.login,
-        signedIn: true
-      },
-      created_at: formatISO( Date.now() ),
-      uuid: createUUID.v4(),
-      // This tells us to render is ghosted (since it's temporarily visible
-      // until getting a response from the server)
-      temporary: true
-    };
-    setComments( [...comments, newComment] );
-
     createCommentMutation.mutate( {
       comment: {
         body: commentBody,
@@ -279,19 +310,6 @@ const ObsDetails = (): Node => {
     );
   };
 
-  const faveOrUnfave = async () => {
-    // TODO: fix fave/unfave functionality with useMutation
-    if ( currentUserFaved ) {
-      await unfaveObservation( { uuid } );
-      setRefetch( true );
-      queryClient.invalidateQueries( ["fetchRemoteObservation"] );
-    } else {
-      await faveObservation( { uuid } );
-      setRefetch( true );
-      queryClient.invalidateQueries( ["fetchRemoteObservation"] );
-    }
-  };
-
   const onIDAdded = async identification => {
     // Add temporary ID to observation.identifications ("ghosted" ID, while we're trying to add it)
     const newId = {
@@ -360,23 +378,33 @@ const ObsDetails = (): Node => {
       return (
         <View className="bg-black">
           <PhotoScroll photos={photos} />
-          {/*
-            TODO: react-navigation supports a lot of styling options including
-            a transparent header, so this custom header probably is not
-            necessary ~~~kueda
-          */}
           {/* TODO: a11y props are not passed down into this 3.party */}
           { editButton }
-          <IconButton
-            icon="star-bold-outline"
-            size={25}
-            onPress={() => faveOrUnfave()}
-            textColor={colors.white}
-            className="absolute bottom-3 right-3"
-            accessible
-            accessibilityRole="button"
-            accessibilityLabel={t( "favorite" )}
-          />
+          {userFav
+            ? (
+              <IconButton
+                icon="star"
+                size={25}
+                onPress={() => faveOrUnfave()}
+                textColor={colors.white}
+                className="absolute bottom-3 right-3"
+                accessible
+                accessibilityRole="button"
+                accessibilityLabel={t( "favorite" )}
+              />
+            )
+            : (
+              <IconButton
+                icon="star-bold-outline"
+                size={25}
+                onPress={() => faveOrUnfave()}
+                textColor={colors.white}
+                className="absolute bottom-3 right-3"
+                accessible
+                accessibilityRole="button"
+                accessibilityLabel={t( "favorite" )}
+              />
+            )}
           <View className="absolute bottom-3 left-3">
             <PhotoCount count={photos.length
               ? photos.length
@@ -406,6 +434,14 @@ const ObsDetails = (): Node => {
   return (
     <>
       <ScrollViewWrapper testID={`ObsDetails.${uuid}`}>
+        {/*
+            TODO: react-navigation supports a lot of styling options including
+            a transparent header, so this custom header probably is not
+            necessary ~~~kueda
+
+            Tried using transparent react-navigation header but had issues where the header
+            blocked the Edit button and the header would follow scroll
+          */}
         {displayPhoto()}
         <View className="absolute top-3 left-3">
           <HeaderBackButton
@@ -424,6 +460,7 @@ const ObsDetails = (): Node => {
         <HideView show={currentTabId === ACTIVITY_TAB_ID}>
           <ActivityTab
             observation={observation}
+            uuid={uuid}
             comments={comments}
             navToTaxonDetails={navToTaxonDetails}
             toggleRefetch={toggleRefetch}
