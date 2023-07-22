@@ -14,7 +14,8 @@ type Props = {
   layout?: "horizontal" | "vertical",
   scientificNameFirst?: boolean,
   small?: boolean,
-  taxon: Object
+  taxon: Object,
+  withdrawn?: boolean
 };
 
 const DisplayTaxonName = ( {
@@ -23,15 +24,22 @@ const DisplayTaxonName = ( {
   layout = "horizontal",
   scientificNameFirst = false,
   small = false,
-  taxon
+  taxon,
+  withdrawn
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  const textColorClass = color || "text-darkGray";
+  const textClass = () => {
+    const textColorClass = color || "text-darkGray";
+    if ( withdrawn ) {
+      return "text-darkGray opacity-50 line-through";
+    }
+    return textColorClass;
+  };
 
   if ( !taxon ) {
     return (
-      <Body1 className={textColorClass} numberOfLines={1}>
+      <Body1 className={textClass()} numberOfLines={1}>
         {t( "unknown" )}
       </Body1>
     );
@@ -66,7 +74,7 @@ const DisplayTaxonName = ( {
           <TextComponent
             // eslint-disable-next-line react/no-array-index-key
             key={`DisplayTaxonName-${keyBase}-${taxon.id}-${rankLevel}-${piece}-${index}`}
-            className={classNames( "italic", textColorClass )}
+            className={classNames( "italic", textClass() )}
           >
             {text}
           </TextComponent>
@@ -97,7 +105,7 @@ const DisplayTaxonName = ( {
       // } )}
     >
       <TopTextComponent
-        className={textColorClass}
+        className={textClass()}
         numberOfLines={scientificNameFirst
           ? 1
           : 3}
@@ -113,7 +121,7 @@ const DisplayTaxonName = ( {
 
       {
         commonName && (
-          <BottomTextComponent className={textColorClass}>
+          <BottomTextComponent className={textClass()}>
             {scientificNameFirst
               ? commonName
               : scientificNameComponent}

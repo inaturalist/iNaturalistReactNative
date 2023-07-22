@@ -44,6 +44,12 @@ const ActivityItem = ( {
   const showAgree = taxon && user && user.id !== userId && taxon.rank_level <= 10
   && userAgreedId !== taxon?.id;
 
+  const isCurrent = item.current !== undefined
+    ? item.current
+    : undefined;
+
+  const idWithdrawn = isCurrent !== undefined && !isCurrent;
+
   const showNoInternetIcon = accessibilityLabel => (
     <View className="mr-3">
       <IconMaterial
@@ -81,6 +87,16 @@ const ActivityItem = ( {
     setHideAgreeWithIdSheet( false );
   };
 
+  // const renderTaxonImage = () => {
+  //   if ( isOnline ) {
+  //     if ( isCurrent ) {
+  //       return ( <TaxonImage props="opacity-50" uri={Taxon.uri( taxon )} /> );
+  //     }
+  //     return ( <TaxonImage uri={Taxon.uri( taxon )} /> );
+  //   }
+  //   return showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) );
+  // };
+
   return (
     <View className="flex-column ml-[15px]">
       <ActivityHeader
@@ -97,12 +113,18 @@ const ActivityItem = ( {
             accessibilityLabel={t( "Navigate-to-taxon-details" )}
           >
             {isOnline
-              ? <TaxonImage uri={Taxon.uri( taxon )} />
+              ? <TaxonImage withdrawn={idWithdrawn} uri={Taxon.uri( taxon )} />
               : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
-            <DisplayTaxonName scientificNameFirst={false} taxon={taxon} layout="horizontal" />
+            <DisplayTaxonName
+              withdrawn={idWithdrawn}
+              scientificNameFirst={false}
+              taxon={taxon}
+              layout="horizontal"
+            />
           </Pressable>
           { showAgree && (
             <Pressable
+              testID="ActivityItem.AgreeIdButton"
               accessibilityRole="button"
               onPress={() => onIDAgreePressed( )}
             >

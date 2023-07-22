@@ -90,15 +90,7 @@ const ObsDetails = (): Node => {
   const { data: remoteObservation, refetch: refetchRemoteObservation }
   = useAuthenticatedQuery(
     ["fetchRemoteObservation", uuid],
-    optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth ),
-    {
-      onSuccess: data => {
-        console.log( "refetch success" );
-        console.log( data );
-      },
-      onError: () => {
-      }
-    }
+    optsWithAuth => fetchRemoteObservation( uuid, remoteObservationParams, optsWithAuth )
   );
 
   const observation = localObservation || remoteObservation;
@@ -172,8 +164,6 @@ const ObsDetails = (): Node => {
   );
 
   const faveOrUnfave = async () => {
-    // TODO: figure out why ObsDetails doesnt update with changes after refetch
-    // maybe similar to how comments work(?)
     if ( currentUserFaved() ) {
       createUnfaveMutation.mutate( { uuid } );
     } else {
@@ -221,7 +211,9 @@ const ObsDetails = (): Node => {
   const createIdentificationMutation = useAuthenticatedMutation(
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
-      onSuccess: data => setIds( [...ids, data[0]] ),
+      onSuccess: data => {
+        setIds( [...ids, data[0]] );
+      },
       onError: e => {
         let error = null;
         if ( e ) {
@@ -275,12 +267,19 @@ const ObsDetails = (): Node => {
   }, [observation, comments] );
 
   useEffect( () => {
+    // set user fav
     if ( currentUserFaved() ) {
       setUserFav( true );
     } else {
       setUserFav( false );
     }
   }, [currentUserFaved] );
+
+  useEffect( () => {
+    if ( observation?.identifications ) {
+      setIds( observation?.identifications );
+    }
+  }, [observation] );
 
   const editButton = useMemo( ( ) => (
     <IconButton
