@@ -4,9 +4,12 @@ import { useIsFocused } from "@react-navigation/native";
 import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
+import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import Svg, { ForeignObject, Path } from "react-native-svg";
 import { dropShadow } from "styles/global";
+
+import Body3Bold from "./Typography/Body3Bold";
 
 type Props = {
   count: number,
@@ -34,6 +37,10 @@ const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
     photoCount = 99;
   }
 
+  const TextComponent = Platform.OS === "ios"
+    ? Body3
+    : Body3Bold;
+
   return (
     <View
       style={[{ height: size, width: size }, shadow && dropShadow]}
@@ -59,10 +66,16 @@ const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
           clipRule="evenodd"
           fillRule="nonzero"
         />
-        <ForeignObject x="5%" y="26%" key={idx}>
-          <Body3 className="text-center w-[16px]">
+        <ForeignObject
+          x="5%"
+          y={Platform.OS === "ios"
+            ? "26%"
+            : "20%"}
+          key={idx}
+        >
+          <TextComponent className="text-center w-[16px]">
             {photoCount}
-          </Body3>
+          </TextComponent>
         </ForeignObject>
       </Svg>
     </View>
