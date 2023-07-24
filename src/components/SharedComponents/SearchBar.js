@@ -1,7 +1,8 @@
 // @flow
 import { INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import * as React from "react";
+import type { Node } from "react";
+import React from "react";
 import { Platform } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
 import { getShadowStyle } from "styles/global";
@@ -20,7 +21,8 @@ type Props = {
   handleTextChange: Function,
   value: string,
   testID?: string,
-  hasShadow?: boolean
+  hasShadow?: boolean,
+  input?: any
 }
 
 // Ensure this component is placed outside of scroll views
@@ -30,13 +32,15 @@ const SearchBar = ( {
   testID,
   handleTextChange,
   value,
-  hasShadow
-}: Props ): React.Node => {
+  hasShadow,
+  input
+}: Props ): Node => {
   const theme = useTheme( );
 
   return (
     <View className={containerClass}>
       <TextInput
+        ref={input}
         accessibilityLabel="Search bar"
         keyboardType="default"
         mode="outlined"
