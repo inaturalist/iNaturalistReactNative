@@ -31,6 +31,7 @@ export { default as StickyToolbar } from "./StickyToolbar";
 export { default as Tabs } from "./Tabs/Tabs";
 export { default as TaxonResult } from "./TaxonResult";
 export { default as Body1 } from "./Typography/Body1";
+export { default as Body1Bold } from "./Typography/Body1Bold";
 export { default as Body2 } from "./Typography/Body2";
 export { default as Body3 } from "./Typography/Body3";
 export { default as Body3Bold } from "./Typography/Body3Bold";
