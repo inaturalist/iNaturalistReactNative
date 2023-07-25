@@ -2,9 +2,9 @@
 
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
 import AgreeWithIDSheet from "components/ObsDetails/Sheets/AgreeWithIDSheet";
-import { DisplayTaxonName, Divider } from "components/SharedComponents";
-import INatIcon from "components/SharedComponents/INatIcon";
-import UserText from "components/SharedComponents/UserText";
+import {
+  DisplayTaxonName, Divider, INatIcon, UserText
+} from "components/SharedComponents";
 import {
   Pressable, View
 } from "components/styledComponents";
@@ -37,8 +37,8 @@ const ActivityItem = ( {
   const { taxon, user } = item;
   const isOnline = useIsConnected( );
   const userId = currentUserId;
-  const showAgree = taxon && user && user.id !== userId && taxon.rank_level <= 10;
-  const [hideAgreeWithIdSheet, setHideAgreeWithIdSheet] = useState( true );
+  const showAgreeButton = taxon && user && user.id !== userId && taxon.rank_level <= 10;
+  const [showAgreeWithIdSheet, setShowAgreeWithIdSheet] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
 
@@ -61,7 +61,7 @@ const ActivityItem = ( {
     };
 
     onAgree( agreeParams );
-    setHideAgreeWithIdSheet( true );
+    setShowAgreeWithIdSheet( false );
   };
 
   const openCommentBox = () => setShowCommentBox( true );
@@ -72,11 +72,11 @@ const ActivityItem = ( {
 
   const agreeIdSheetDiscardChanges = () => {
     setComment( "" );
-    setHideAgreeWithIdSheet( true );
+    setShowAgreeWithIdSheet( false );
   };
 
   const onIDAgreePressed = () => {
-    setHideAgreeWithIdSheet( false );
+    setShowAgreeWithIdSheet( true );
   };
 
   return (
@@ -99,10 +99,10 @@ const ActivityItem = ( {
               : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
             <DisplayTaxonName scientificNameFirst={false} taxon={taxon} layout="horizontal" />
           </Pressable>
-          { showAgree && (
+          { showAgreeButton && (
             <Pressable
               accessibilityRole="button"
-              onPress={() => onIDAgreePressed( )}
+              onPress={onIDAgreePressed}
             >
               <INatIcon name="id-agree" size={33} />
             </Pressable>
@@ -116,12 +116,12 @@ const ActivityItem = ( {
       )}
       <Divider />
       <AgreeWithIDSheet
-        hide={hideAgreeWithIdSheet}
+        showAgreeWithIdSheet={showAgreeWithIdSheet}
         comment={comment}
         openCommentBox={openCommentBox}
         taxon={taxon}
-        discardChanges={() => agreeIdSheetDiscardChanges( )}
-        handleClose={() => agreeIdSheetDiscardChanges( )}
+        discardChanges={agreeIdSheetDiscardChanges}
+        handleClose={agreeIdSheetDiscardChanges}
         onAgree={onAgreePressed}
       />
       <AddCommentModal
