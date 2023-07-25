@@ -1,0 +1,10 @@
+UPDATED
+* Obs Detail photo scroll
+* Obs Detail agree bottom sheet
+* Obs Detail View in Browser link
+* Add Evidence modal has AR Camera button
+
+FIXED
+* Double comment creation
+* Location fetches overwriting Obs Edit values
+* Log In button width on tablet

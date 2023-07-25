@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { render, screen } from "@testing-library/react-native";
-import PhotoCarousel from "components/Camera/PhotoCarousel";
+import PhotoCarousel from "components/Camera/StandardCamera/PhotoCarousel";
 import React from "react";
 
 import * as mockReactI18next from "../../../mocks/react-i18next";

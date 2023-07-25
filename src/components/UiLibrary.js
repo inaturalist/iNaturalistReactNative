@@ -9,6 +9,7 @@ import {
   Button,
   CloseButton,
   CommentsCount,
+  ConfidenceInterval,
   DateDisplay,
   Divider,
   EvidenceButton,
@@ -31,6 +32,7 @@ import {
   StickyToolbar,
   Subheading1,
   Tabs,
+  TaxonResult,
   UploadStatus,
   UserIcon
 } from "components/SharedComponents";
@@ -518,6 +520,17 @@ const UiLibrary = (): Node => {
         <Heading2 className="my-2">ActivityItem</Heading2>
         <ActivityItem item={exampleId} currentUserId={userId} />
         <SearchBar value="search" />
+        <Heading2 className="my-2">Confidence Interval</Heading2>
+        <ConfidenceInterval confidence={3} activeColor="bg-inatGreen" />
+        <Heading2 className="my-2">Taxon Result</Heading2>
+        <TaxonResult taxon={{
+          id: 1,
+          name: "Aves",
+          preferred_common_name: "Birds",
+          rank: "family",
+          rank_level: 60
+        }}
+        />
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
           Useless spacer at the end because height in NativeWind is confusing.

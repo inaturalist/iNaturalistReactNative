@@ -8,6 +8,23 @@ import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
+const rankNames = {
+  // $FlowIgnore
+  10: "species",
+  // $FlowIgnore
+  20: "genus",
+  // $FlowIgnore
+  30: "family",
+  // $FlowIgnore
+  40: "order",
+  // $FlowIgnore
+  50: "class",
+  // $FlowIgnore
+  60: "phylum",
+  // $FlowIgnore
+  70: "kingdom"
+};
+
 type Props = {
   color?: string,
   keyBase?: string,
@@ -28,6 +45,11 @@ const DisplayTaxonName = ( {
   withdrawn
 }: Props ): Node => {
   const { t } = useTranslation( );
+
+  // this is mostly for the ARCamera, but might be helpful to display elsewhere
+  if ( taxon?.rank_level && !taxon?.rank ) {
+    taxon.rank = rankNames[taxon?.rank_level];
+  }
 
   const textClass = () => {
     const textColorClass = color || "text-darkGray";
