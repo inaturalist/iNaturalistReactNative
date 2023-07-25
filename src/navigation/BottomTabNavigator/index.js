@@ -184,7 +184,7 @@ const BottomTabs = ( ) => {
           name="Explore"
           component={Explore}
           options={{
-            ...hideHeaderLeft,
+            ...hideHeader,
             meta: {
               icon: "compass-rose-outline",
               testID: EXPLORE_SCREEN_ID,
