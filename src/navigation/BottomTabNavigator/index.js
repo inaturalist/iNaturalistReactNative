@@ -4,7 +4,7 @@ import AddID from "components/AddID/AddID";
 import CameraContainer from "components/Camera/CameraContainer";
 import Explore from "components/Explore/Explore";
 import Identify from "components/Identify/Identify";
-import LocationPicker from "components/LocationPicker/LocationPicker";
+import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import ForgotPassword from "components/LoginSignUp/ForgotPassword";
 import LicensePhotos from "components/LoginSignUp/LicensePhotos";
 import Login from "components/LoginSignUp/Login";
@@ -336,11 +336,8 @@ const BottomTabs = ( ) => {
         />
         <Tab.Screen
           name="LocationPicker"
-          component={LocationPicker}
-          options={{
-            ...blankHeaderTitle,
-            ...hideHeaderLeft
-          }}
+          component={LocationPickerContainer}
+          options={hideHeader}
         />
         <Tab.Screen
           name="MediaViewer"

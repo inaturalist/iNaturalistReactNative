@@ -1,6 +1,6 @@
 // @flow
 import classNames from "classnames";
-import { Body1, Body3, Body4 } from "components/SharedComponents";
+import { Body1Bold, Body3, Body4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -61,9 +61,9 @@ const DisplayTaxonName = ( {
 
   if ( !taxon ) {
     return (
-      <Body1 className={textClass()} numberOfLines={1}>
+      <Body1Bold className={textClass()} numberOfLines={1}>
         {t( "unknown" )}
-      </Body1>
+      </Body1Bold>
     );
   }
 
@@ -88,7 +88,7 @@ const DisplayTaxonName = ( {
       : "";
     const text = piece + spaceChar;
     const TextComponent = scientificNameFirst || !commonName
-      ? Body1
+      ? Body1Bold
       : Body3;
     return (
       isItalics
@@ -110,7 +110,7 @@ const DisplayTaxonName = ( {
   }
 
   const TopTextComponent = !small
-    ? Body1
+    ? Body1Bold
     : Body3;
   const BottomTextComponent = !small
     ? Body3

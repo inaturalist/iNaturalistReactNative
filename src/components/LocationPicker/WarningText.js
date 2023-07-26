@@ -30,26 +30,26 @@ const WarningText = ( { accuracyTest, getShadow }: Props ): Node => {
   };
 
   return (
-    <View className="justify-center items-center" style={getShadow( theme.colors.primary )}>
-      <View
-        className={classnames( "p-4 rounded-xl bottom-[180px] max-w-[316px]", {
-          "bg-transparent": accuracyTest === "pass",
-          "bg-white": accuracyTest === "acceptable",
-          "bg-warningRed": accuracyTest === "fail"
-        } )}
+    <View
+      pointerEvents="none"
+      className={classnames( "p-4 rounded-xl", {
+        "bg-transparent": accuracyTest === "pass",
+        "bg-white": accuracyTest === "acceptable",
+        "bg-warningRed": accuracyTest === "fail"
+      } )}
+      style={getShadow( theme.colors.primary )}
+    >
+      <Body3
+        className={classnames(
+          "text-black",
+          "text-center",
+          {
+            "text-white": accuracyTest === "fail"
+          }
+        )}
       >
-        <Body3
-          className={classnames(
-            "text-black",
-            "text-center",
-            {
-              "text-white": accuracyTest === "fail"
-            }
-          )}
-        >
-          {displayWarningText( )}
-        </Body3>
-      </View>
+        {displayWarningText( )}
+      </Body3>
     </View>
   );
 };

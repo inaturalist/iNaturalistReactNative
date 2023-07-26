@@ -8,7 +8,6 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 
 type Props = {
-  className?: string,
   handleClose?: Function,
   black?: boolean,
   size?: number,
@@ -18,7 +17,7 @@ type Props = {
 }
 
 const CloseButton = ( {
-  className, handleClose, black, size, icon,
+  handleClose, black, size, icon,
   width, height
 }: Props ): Node => {
   const navigation = useNavigation( );
@@ -28,7 +27,6 @@ const CloseButton = ( {
     <INatIconButton
       icon={icon || "close"}
       size={size}
-      className={className}
       color={black
         ? theme.colors.tertiary
         : theme.colors.background}

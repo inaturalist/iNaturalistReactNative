@@ -2,9 +2,9 @@
 
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
 import AgreeWithIDSheet from "components/ObsDetails/Sheets/AgreeWithIDSheet";
-import { DisplayTaxonName, Divider } from "components/SharedComponents";
-import INatIcon from "components/SharedComponents/INatIcon";
-import UserText from "components/SharedComponents/UserText";
+import {
+  DisplayTaxonName, Divider, INatIcon, UserText
+} from "components/SharedComponents";
 import {
   Pressable, View
 } from "components/styledComponents";
@@ -28,21 +28,22 @@ type Props = {
   onAgree: Function,
   currentUserId?: Number,
   observationUUID: string,
-  userAgreedId?: string
+  // userAgreedId?: string
 }
 
 const ActivityItem = ( {
   item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation, onAgree, currentUserId,
-  observationUUID, userAgreedId
+  observationUUID
 }: Props ): Node => {
   const { taxon, user } = item;
   const isOnline = useIsConnected( );
   const userId = currentUserId;
-  const [hideAgreeWithIdSheet, setHideAgreeWithIdSheet] = useState( true );
+  const showAgreeButton = taxon && user && user.id !== userId && taxon.rank_level <= 10;
+  const [showAgreeWithIdSheet, setShowAgreeWithIdSheet] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
-  const showAgree = taxon && user && user.id !== userId && taxon.rank_level <= 10
-  && userAgreedId !== taxon?.id;
+  // const showAgree = taxon && user && user.id !== userId && taxon.rank_level <= 10
+  // && userAgreedId !== taxon?.id;
 
   const isCurrent = item.current !== undefined
     ? item.current
@@ -69,7 +70,7 @@ const ActivityItem = ( {
     };
 
     onAgree( agreeParams );
-    setHideAgreeWithIdSheet( true );
+    setShowAgreeWithIdSheet( false );
   };
 
   const openCommentBox = () => setShowCommentBox( true );
@@ -80,11 +81,11 @@ const ActivityItem = ( {
 
   const agreeIdSheetDiscardChanges = () => {
     setComment( "" );
-    setHideAgreeWithIdSheet( true );
+    setShowAgreeWithIdSheet( false );
   };
 
   const onIDAgreePressed = () => {
-    setHideAgreeWithIdSheet( false );
+    setShowAgreeWithIdSheet( true );
   };
 
   // const renderTaxonImage = () => {
@@ -122,11 +123,11 @@ const ActivityItem = ( {
               layout="horizontal"
             />
           </Pressable>
-          { showAgree && (
+          { showAgreeButton && (
             <Pressable
               testID="ActivityItem.AgreeIdButton"
               accessibilityRole="button"
-              onPress={() => onIDAgreePressed( )}
+              onPress={onIDAgreePressed}
             >
               <INatIcon name="id-agree" size={33} />
             </Pressable>
@@ -140,12 +141,12 @@ const ActivityItem = ( {
       )}
       <Divider />
       <AgreeWithIDSheet
-        hide={hideAgreeWithIdSheet}
+        showAgreeWithIdSheet={showAgreeWithIdSheet}
         comment={comment}
         openCommentBox={openCommentBox}
         taxon={taxon}
-        discardChanges={() => agreeIdSheetDiscardChanges( )}
-        handleClose={() => agreeIdSheetDiscardChanges( )}
+        discardChanges={agreeIdSheetDiscardChanges}
+        handleClose={agreeIdSheetDiscardChanges}
         onAgree={onAgreePressed}
       />
       <AddCommentModal
