@@ -28,22 +28,21 @@ type Props = {
   onAgree: Function,
   currentUserId?: Number,
   observationUUID: string,
-  // userAgreedId?: string
+  userAgreedId?: string
 }
 
 const ActivityItem = ( {
   item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation, onAgree, currentUserId,
-  observationUUID
+  observationUUID, userAgreedId
 }: Props ): Node => {
   const { taxon, user } = item;
   const isOnline = useIsConnected( );
   const userId = currentUserId;
-  const showAgreeButton = taxon && user && user.id !== userId && taxon.rank_level <= 10;
+  const showAgreeButton = taxon && user && user.id !== userId && taxon.rank_level <= 10
+  && userAgreedId !== taxon?.id;
   const [showAgreeWithIdSheet, setShowAgreeWithIdSheet] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
-  // const showAgree = taxon && user && user.id !== userId && taxon.rank_level <= 10
-  // && userAgreedId !== taxon?.id;
 
   const isCurrent = item.current !== undefined
     ? item.current
@@ -87,16 +86,6 @@ const ActivityItem = ( {
   const onIDAgreePressed = () => {
     setShowAgreeWithIdSheet( true );
   };
-
-  // const renderTaxonImage = () => {
-  //   if ( isOnline ) {
-  //     if ( isCurrent ) {
-  //       return ( <TaxonImage props="opacity-50" uri={Taxon.uri( taxon )} /> );
-  //     }
-  //     return ( <TaxonImage uri={Taxon.uri( taxon )} /> );
-  //   }
-  //   return showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) );
-  // };
 
   return (
     <View className="flex-column ml-[15px]">
