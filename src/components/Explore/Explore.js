@@ -1,36 +1,23 @@
 // @flow
 
 import {
-  FloatingActionBar,
   ViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
-import MapView from "react-native-maps";
-import { Appbar } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
+import React, { useState } from "react";
 
-type Props = {
-  region: Object,
-  mapView: any,
-  updateRegion: Function,
-  mapType: string,
-  setMapReady: Function
-};
+// import MapView from "react-native-maps";
+import Header from "./Header";
+import ViewBar from "./ViewBar";
 
-const Explore = ( {
-  region,
-  mapView,
-  updateRegion,
-  mapType,
-  setMapReady
-}: Props ): Node => {
-  const { t } = useTranslation( );
+const Explore = ( ): Node => {
+  // const { t } = useTranslation( );
+  const [view, setView] = useState( "list" );
 
   return (
     <ViewWrapper testID="Explore">
-      <MapView
+      <Header />
+      {/* <MapView
         className="h-full"
         showsCompass={false}
         region={region}
@@ -40,36 +27,11 @@ const Explore = ( {
           updateRegion( newRegion );
         }}
         onMapReady={setMapReady}
+      /> */}
+      <ViewBar
+        view={view}
+        updateView={newView => setView( newView )}
       />
-      <FloatingActionBar
-        position="bottomStart"
-        containerClass="bottom-[100px] ml-1 rounded-md"
-        endY={180}
-        show
-      >
-        <View className="rounded-full overflow-hidden">
-          <Appbar.Header>
-            <Appbar.Action
-              icon="combine"
-              // onPress={combinePhotos}
-              // disabled={noObsSelected || oneObsSelected}
-              accessibilityLabel={t( "Combine-Photos" )}
-            />
-            <Appbar.Action
-              icon="separate"
-              // onPress={separatePhotos}
-              // disabled={!obsWithMultiplePhotosSelected}
-              accessibilityLabel={t( "Separate-Photos" )}
-            />
-            <Appbar.Action
-              icon="trash-outline"
-              // onPress={removePhotos}
-              // disabled={noObsSelected}
-              accessibilityLabel={t( "Remove-Photos" )}
-            />
-          </Appbar.Header>
-        </View>
-      </FloatingActionBar>
     </ViewWrapper>
   );
 };

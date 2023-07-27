@@ -1,7 +1,7 @@
 // @flow
 
 import classnames from "classnames";
-import Heading4 from "components/SharedComponents/Typography/Heading4";
+import { Heading4Bold, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
 import { ActivityIndicator, useTheme } from "react-native-paper";
@@ -18,7 +18,8 @@ type ButtonProps = {
   onPress: any,
   style?: any,
   testID?: string,
-  text: string
+  text: string,
+  dropdown?: boolean
 }
 
 const setStyles = ( {
@@ -36,7 +37,8 @@ const setStyles = ( {
     "justify-center",
     "px-[10px]",
     "py-[13px]",
-    "rounded-lg"
+    "rounded-lg",
+    "font-Whitney-Bold"
   ];
   const textClasses = [
     "text-center",
@@ -111,7 +113,8 @@ const Button = ( {
   onPress,
   style,
   testID,
-  text
+  text,
+  dropdown
 }: ButtonProps ): React.Node => {
   const isPrimary = level === "primary";
   const isWarning = level === "warning";
@@ -154,12 +157,20 @@ const Button = ( {
           {icon}
         </View>
       )}
-      <Heading4
+      <Heading4Bold
         className={classnames( textClasses )}
         testID={`${testID || "RNButton"}.text`}
       >
         {text}
-      </Heading4>
+      </Heading4Bold>
+      {dropdown && (
+        <View className="ml-2 mb-1">
+          <INatIcon
+            name="caret"
+            size={10}
+          />
+        </View>
+      )}
     </Pressable>
   );
 };
