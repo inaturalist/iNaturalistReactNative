@@ -169,6 +169,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
             {qualityGradeDescription( qualityGrade )}
           </Body4>
           <Button
+            testID="DetailsTab.DQA"
             text={t( "VIEW-DATA-QUALITY-ASSESSEMENT" )}
             onPress={() => navigation.navigate( "DataQualityAssessment", {
               qualityGrade,
