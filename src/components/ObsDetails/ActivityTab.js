@@ -42,8 +42,8 @@ const ActivityTab = ( {
       user: {
         id: userId,
         login: currentUser?.login,
-        signedIn: true
-        // icon_url: currentUser?.icon_url
+        signedIn: true,
+        icon_url: currentUser?.icon_url
       },
       created_at: formatISO( Date.now() ),
       uuid: identification.uuid,
