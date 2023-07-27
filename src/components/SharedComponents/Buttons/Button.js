@@ -1,7 +1,7 @@
 // @flow
 
 import classnames from "classnames";
-import { Heading4Bold, INatIcon } from "components/SharedComponents";
+import { Heading4, INatIcon } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import * as React from "react";
 import { ActivityIndicator, useTheme } from "react-native-paper";
@@ -157,12 +157,12 @@ const Button = ( {
           {icon}
         </View>
       )}
-      <Heading4Bold
+      <Heading4
         className={classnames( textClasses )}
         testID={`${testID || "RNButton"}.text`}
       >
         {text}
-      </Heading4Bold>
+      </Heading4>
       {dropdown && (
         <View className="ml-2 mb-1">
           <INatIcon
