@@ -21,10 +21,10 @@
 		8FE03BBB2A5EFCB2001B35BA /* small_inception_tf1.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 8FE03BB92A5EFCB2001B35BA /* small_inception_tf1.mlmodel */; };
 		8FE03BBC2A5EFCB2001B35BA /* small_export_tax.json in Resources */ = {isa = PBXBuildFile; fileRef = 8FE03BBA2A5EFCB2001B35BA /* small_export_tax.json */; };
 		A252B2AEA64E47C9AC1D20E8 /* Whitney-Light-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = BA9D41ECEBFA4C38B74009B3 /* Whitney-Light-Pro.otf */; };
-		A73B79DF08174573BDE236D8 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E27A1558C021416DA12C2DD7 /* INatIcon.ttf */; };
 		BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */; };
 		D1A158A7F6C9E77B651BB4AA /* libPods-iNaturalistReactNative-ShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDD0D061046941F61CA31D /* libPods-iNaturalistReactNative-ShareExtension.a */; };
 		DB0FE09161514806984B15F1 /* INatIcon.ttf.orig in Resources */ = {isa = PBXBuildFile; fileRef = 9A38B7678E4842D3B8357621 /* INatIcon.ttf.orig */; };
+		763319F15FC44DBF89C9DEB0 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A96A8C1FA45F4C8692AAE36F /* INatIcon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,9 +89,9 @@
 		BA9D41ECEBFA4C38B74009B3 /* Whitney-Light-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Light-Pro.otf"; path = "../assets/fonts/Whitney-Light-Pro.otf"; sourceTree = "<group>"; };
 		D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Medium-Pro.otf"; path = "../assets/fonts/Whitney-Medium-Pro.otf"; sourceTree = "<group>"; };
 		DEB901D3F8FB2DAE1CCED0CC /* Pods-iNaturalistReactNative-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-ShareExtension/Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
-		E27A1558C021416DA12C2DD7 /* INatIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = inaturalisticons.ttf; path = ../assets/fonts/inaturalisticons.ttf; sourceTree = "<group>"; };
+		A96A8C1FA45F4C8692AAE36F /* INatIcon.ttf */ = {isa = PBXFileReference; name = "INatIcon.ttf"; path = "../assets/fonts/INatIcon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,8 +229,8 @@
 				D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */,
 				374CB22E29943E63005885ED /* Whitney-BookItalic-Pro.otf */,
 				EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */,
-				E27A1558C021416DA12C2DD7 /* INatIcon.ttf */,
 				9A38B7678E4842D3B8357621 /* INatIcon.ttf.orig */,
+				A96A8C1FA45F4C8692AAE36F /* INatIcon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -360,8 +360,8 @@
 				A252B2AEA64E47C9AC1D20E8 /* Whitney-Light-Pro.otf in Resources */,
 				BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */,
 				4FB3B444D46A4115B867B9CC /* inaturalisticons.ttf in Resources */,
-				A73B79DF08174573BDE236D8 /* INatIcon.ttf in Resources */,
 				DB0FE09161514806984B15F1 /* INatIcon.ttf.orig in Resources */,
+				763319F15FC44DBF89C9DEB0 /* INatIcon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
