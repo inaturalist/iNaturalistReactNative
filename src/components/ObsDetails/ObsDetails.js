@@ -124,19 +124,20 @@ const ObsDetails = (): Node => {
   const taxon = observation?.taxon;
   const faves = observation?.faves;
   const observationPhotos = observation?.observationPhotos || observation?.observation_photos;
-  const currentUserFaved = () => {
+  const currentUserFaved = useCallback( () => {
     if ( faves?.length > 0 ) {
       const userFaved = faves.find( fave => fave.user_id === userId );
-      return userFaved === true;
+      return !!userFaved;
     }
     return null;
-  };
+  }, [faves, userId] );
   const [userFav, setUserFav] = useState( currentUserFaved() );
 
   const createUnfaveMutation = useAuthenticatedMutation(
     ( faveOrUnfaveParams, optsWithAuth ) => unfaveObservation( faveOrUnfaveParams, optsWithAuth ),
     {
       onSuccess: () => {
+        setRefetch( true );
         queryClient.invalidateQueries( ["fetchRemoteObservation"] );
         refetchRemoteObservation();
         refetchObservationUpdates();
@@ -163,8 +164,6 @@ const ObsDetails = (): Node => {
   );
 
   const faveOrUnfave = async () => {
-    // TODO: figure out why ObsDetails doesnt update with changes after refetch
-    // maybe similar to how comments work(?)
     if ( currentUserFaved() ) {
       createUnfaveMutation.mutate( { uuid } );
     } else {
@@ -212,7 +211,9 @@ const ObsDetails = (): Node => {
   const createIdentificationMutation = useAuthenticatedMutation(
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
-      onSuccess: data => setIds( [...ids, data[0]] ),
+      onSuccess: data => {
+        setIds( [...ids, data[0]] );
+      },
       onError: e => {
         let error = null;
         if ( e ) {
@@ -264,6 +265,21 @@ const ObsDetails = (): Node => {
       setComments( currentComments );
     }
   }, [observation, comments] );
+
+  useEffect( () => {
+    // set user fav
+    if ( currentUserFaved() ) {
+      setUserFav( true );
+    } else {
+      setUserFav( false );
+    }
+  }, [currentUserFaved] );
+
+  useEffect( () => {
+    if ( observation?.identifications ) {
+      setIds( observation?.identifications );
+    }
+  }, [observation] );
 
   const editButton = useMemo( ( ) => (
     <IconButton

@@ -27,20 +27,28 @@ type Props = {
   refetchRemoteObservation: Function,
   onAgree: Function,
   currentUserId?: Number,
-  observationUUID: string
+  observationUUID: string,
+  userAgreedId?: string
 }
 
 const ActivityItem = ( {
   item, navToTaxonDetails, toggleRefetch, refetchRemoteObservation, onAgree, currentUserId,
-  observationUUID
+  observationUUID, userAgreedId
 }: Props ): Node => {
   const { taxon, user } = item;
   const isOnline = useIsConnected( );
   const userId = currentUserId;
-  const showAgreeButton = taxon && user && user.id !== userId && taxon.rank_level <= 10;
+  const showAgreeButton = taxon && user && user.id !== userId && taxon.rank_level <= 10
+  && userAgreedId !== taxon?.id;
   const [showAgreeWithIdSheet, setShowAgreeWithIdSheet] = useState( false );
   const [showCommentBox, setShowCommentBox] = useState( false );
   const [comment, setComment] = useState( "" );
+
+  const isCurrent = item.current !== undefined
+    ? item.current
+    : undefined;
+
+  const idWithdrawn = isCurrent !== undefined && !isCurrent;
 
   const showNoInternetIcon = accessibilityLabel => (
     <View className="mr-3">
@@ -95,12 +103,18 @@ const ActivityItem = ( {
             accessibilityLabel={t( "Navigate-to-taxon-details" )}
           >
             {isOnline
-              ? <TaxonImage uri={Taxon.uri( taxon )} />
+              ? <TaxonImage withdrawn={idWithdrawn} uri={Taxon.uri( taxon )} />
               : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
-            <DisplayTaxonName scientificNameFirst={false} taxon={taxon} layout="horizontal" />
+            <DisplayTaxonName
+              withdrawn={idWithdrawn}
+              scientificNameFirst={false}
+              taxon={taxon}
+              layout="horizontal"
+            />
           </Pressable>
           { showAgreeButton && (
             <Pressable
+              testID="ActivityItem.AgreeIdButton"
               accessibilityRole="button"
               onPress={onIDAgreePressed}
             >

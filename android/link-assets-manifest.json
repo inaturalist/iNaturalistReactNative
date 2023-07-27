@@ -3,6 +3,10 @@
   "data": [
     {
       "path": "assets/fonts/INatIcon.ttf",
+      "sha1": "5d6bb6c14058dbfe7a2850b73c5e88e49a9ae548"
+    },
+    {
+      "path": "assets/fonts/INatIcon.ttf.orig",
       "sha1": "1ccd6d4baf1109c0506304d45fa15e4b4f609ba2"
     },
     {
