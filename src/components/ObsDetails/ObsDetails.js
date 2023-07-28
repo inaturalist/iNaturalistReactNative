@@ -10,12 +10,12 @@ import {
   markObservationUpdatesViewed,
   unfaveObservation
 } from "api/observations";
-import ObsStatus from "components/MyObservations/ObsStatus";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
 import {
   Button, DisplayTaxonName, ObservationLocation, PhotoCount, Tabs
 } from "components/SharedComponents";
 import HideView from "components/SharedComponents/HideView";
+import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import ScrollViewWrapper from "components/SharedComponents/ScrollViewWrapper";
 import {

@@ -1,22 +1,14 @@
 // @flow
-import { FlashList } from "@shopify/flash-list";
 import Header from "components/MyObservations/Header";
-import ViewWrapper from "components/SharedComponents/ViewWrapper";
+import { ObservationsFlashList, ViewWrapper } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Animated, Platform } from "react-native";
-import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import { useDeviceOrientation } from "sharedHooks";
 
-import InfiniteScrollLoadingWheel from "./InfiniteScrollLoadingWheel";
 import LoginSheet from "./LoginSheet";
 import MyObservationsEmpty from "./MyObservationsEmpty";
-import MyObservationsPressable from "./MyObservationsPressable";
-import ObsGridItem from "./ObsGridItem";
-import ObsListItem from "./ObsListItem";
-
-const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 const { diffClamp } = Animated;
 
@@ -32,39 +24,6 @@ type Props = {
   setShowLoginSheet: Function,
 };
 
-const GUTTER = 15;
-
-const Item = React.memo(
-  ( {
-    observation, layout, gridItemWidth, setShowLoginSheet
-  } ) => (
-    <MyObservationsPressable observation={observation}>
-      {
-        layout === "grid"
-          ? (
-            <ObsGridItem
-              observation={observation}
-              // 03022023 it seems like Flatlist is designed to work
-              // better with RN styles than with Tailwind classes
-              style={{
-                height: gridItemWidth,
-                width: gridItemWidth,
-                margin: GUTTER / 2
-              }}
-              setShowLoginSheet={setShowLoginSheet}
-            />
-          )
-          : (
-            <ObsListItem
-              observation={observation}
-              setShowLoginSheet={setShowLoginSheet}
-            />
-          )
-      }
-    </MyObservationsPressable>
-  )
-);
-
 const MyObservations = ( {
   isFetchingNextPage,
   layout,
@@ -77,14 +36,11 @@ const MyObservations = ( {
   setShowLoginSheet
 }: Props ): Node => {
   const {
-    isLandscapeMode,
     isTablet,
     screenHeight,
     screenWidth
   } = useDeviceOrientation( );
   const [heightAboveToolbar, setHeightAboveToolbar] = useState( 0 );
-  const [numColumns, setNumColumns] = useState( 0 );
-  const [gridItemWidth, setGridItemWidth] = useState( 0 );
 
   const [hideHeaderCard, setHideHeaderCard] = useState( false );
   const [yValue, setYValue] = useState( 0 );
@@ -108,37 +64,7 @@ const MyObservations = ( {
     outputRange: [0, -heightAboveToolbar]
   } );
 
-  useEffect( ( ) => {
-    const calculateGridItemWidth = columns => {
-      const combinedGutter = ( columns + 1 ) * GUTTER;
-      const gridWidth = isTablet
-        ? screenWidth
-        : Math.min( screenWidth, screenHeight );
-      return Math.floor(
-        ( gridWidth - combinedGutter ) / columns
-      );
-    };
-
-    const calculateNumColumns = ( ) => {
-      if ( layout === "list" || screenWidth <= BREAKPOINTS.md ) {
-        return 1;
-      }
-      if ( !isTablet ) return 2;
-      if ( isLandscapeMode ) return 6;
-      if ( screenWidth <= BREAKPOINTS.xl ) return 2;
-      return 4;
-    };
-
-    const columns = calculateNumColumns( );
-    setGridItemWidth( calculateGridItemWidth( columns ) );
-    setNumColumns( columns );
-  }, [
-    isLandscapeMode,
-    isTablet,
-    layout,
-    screenHeight,
-    screenWidth
-  ] );
+  const renderEmptyList = ( ) => <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />;
 
   const handleScroll = Animated.event(
     [
@@ -164,42 +90,6 @@ const MyObservations = ( {
     }
   );
 
-  const renderItem = ( { item } ) => (
-    <Item
-      observation={item}
-      layout={layout}
-      gridItemWidth={gridItemWidth}
-      allObsToUpload={allObsToUpload}
-      setShowLoginSheet={setShowLoginSheet}
-    />
-  );
-
-  const renderEmptyList = ( ) => <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />;
-
-  const renderItemSeparator = ( ) => {
-    if ( layout === "grid" ) {
-      return null;
-    }
-    return <View className="border-b border-lightGray" />;
-  };
-
-  const renderFooter = ( ) => (
-    <InfiniteScrollLoadingWheel
-      isFetchingNextPage={isFetchingNextPage}
-      currentUser={currentUser}
-      layout={layout}
-    />
-  );
-
-  const contentContainerStyle = layout === "list"
-    ? {}
-    : {
-      paddingLeft: GUTTER / 2,
-      paddingRight: GUTTER / 2
-    };
-
-  if ( numColumns === 0 ) { return null; }
-
   return (
     <>
       <ViewWrapper>
@@ -223,31 +113,17 @@ const MyObservations = ( {
               allObsToUpload={allObsToUpload}
               setShowLoginSheet={setShowLoginSheet}
             />
-            <AnimatedFlashList
-              contentContainerStyle={contentContainerStyle}
-              data={observations.filter( o => o.isValid() )}
-              key={layout}
-              estimatedItemSize={
-                layout === "grid"
-                  ? gridItemWidth
-                  : 98
-              }
-              testID="MyObservationsAnimatedList"
-              numColumns={numColumns}
-              horizontal={false}
-              // only used id as a fallback key because after upload
-              // react thinks we've rendered a second item w/ a duplicate key
-              keyExtractor={item => item.uuid || item.id}
-              renderItem={renderItem}
-              ListEmptyComponent={renderEmptyList}
-              ItemSeparatorComponent={renderItemSeparator}
-              ListFooterComponent={renderFooter}
-              initialNumToRender={5}
+            <ObservationsFlashList
+              isFetchingNextPage={isFetchingNextPage}
+              layout={layout}
+              observations={observations}
               onEndReached={onEndReached}
-              onEndReachedThreshold={0.2}
-              onScroll={handleScroll}
-              refreshing={isFetchingNextPage}
-              accessible
+              allObsToUpload={allObsToUpload}
+              currentUser={currentUser}
+              testID="MyObservationsAnimatedList"
+              handleScroll={handleScroll}
+              renderEmptyList={renderEmptyList}
+              data={observations.filter( o => o.isValid() )}
             />
           </Animated.View>
         </View>

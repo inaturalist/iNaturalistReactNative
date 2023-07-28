@@ -11,7 +11,7 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 
 const { useRealm } = RealmContext;
 
-const useInfiniteScroll = ( ): Object => {
+const useInfiniteScroll = ( { upsert }: Object ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
 
@@ -53,20 +53,27 @@ const useInfiniteScroll = ( ): Object => {
   } );
 
   useEffect( ( ) => {
-    if ( observations?.pages ) {
+    if ( observations?.pages && upsert ) {
       Observation.upsertRemoteObservations(
         flatten( last( observations.pages ) ),
         realm
       );
     }
-  }, [realm, observations] );
+  }, [realm, observations, upsert] );
+
+  console.log( flatten( observations?.pages[0] ), "observations in useInfinite" );
 
   return currentUser
     ? {
       isFetchingNextPage,
-      fetchNextPage
+      fetchNextPage,
+      observations: flatten( observations?.pages )
     }
-    : { isFetchingNextPage: false, fetchNextPage: noop };
+    : {
+      isFetchingNextPage: false,
+      fetchNextPage: noop,
+      observations: flatten( observations?.pages )
+    };
 };
 
 export default useInfiniteScroll;

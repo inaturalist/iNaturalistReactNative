@@ -27,7 +27,7 @@ const ObsGridItem = ( {
   <ObsImagePreview
     source={{
       uri: Photo.displayLocalOrRemoteMediumPhoto(
-        observation?.observationPhotos?.[0]?.photo
+        observation?.observationPhotos?.[0]?.photo || observation?.observation_photos?.[0]?.photo
       )
     }}
     width={width}

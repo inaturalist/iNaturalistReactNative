@@ -14,7 +14,7 @@ type Props = {
 const MyObservationsPressable = ( { observation, children }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
-  const unsynced = !observation.wasSynced( );
+  const unsynced = typeof observation.wasSynced !== "undefined" && !observation.wasSynced( );
 
   const navigateToObservation = ( ) => {
     const { uuid } = observation;
