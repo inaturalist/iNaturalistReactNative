@@ -27,9 +27,12 @@ const ViewBar = ( {
 }: Props ): Node => {
   const theme = useTheme( );
 
-  const buttonStyle = {
-    minWidth: 55
-  };
+  const buttonStyle = buttonValue => ( {
+    minWidth: 55,
+    backgroundColor: buttonValue === view
+      ? colors.inatGreen
+      : colors.white
+  } );
 
   return (
     <View
@@ -40,24 +43,23 @@ const ViewBar = ( {
         onValueChange={updateView}
         theme={{
           colors: {
-            secondaryContainer: colors.inatGreen,
             onSecondaryContainer: colors.white
           }
         }}
         style={getShadow( theme.colors.primary )}
         buttons={[
           {
-            style: buttonStyle,
+            style: buttonStyle( "map" ),
             value: "map",
             icon: "map"
           },
           {
-            style: buttonStyle,
+            style: buttonStyle( "list" ),
             value: "list",
             icon: "hamburger-menu"
           },
           {
-            style: buttonStyle,
+            style: buttonStyle( "grid" ),
             value: "grid",
             icon: "grid"
           }
