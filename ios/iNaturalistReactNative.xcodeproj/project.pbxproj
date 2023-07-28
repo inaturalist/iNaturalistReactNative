@@ -23,8 +23,7 @@
 		A252B2AEA64E47C9AC1D20E8 /* Whitney-Light-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = BA9D41ECEBFA4C38B74009B3 /* Whitney-Light-Pro.otf */; };
 		BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */; };
 		D1A158A7F6C9E77B651BB4AA /* libPods-iNaturalistReactNative-ShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDD0D061046941F61CA31D /* libPods-iNaturalistReactNative-ShareExtension.a */; };
-		F005F5581901496B8576FB4E /* BuildFile in Resources */ = {isa = PBXBuildFile; };
-		41DE3088F97E402FBC6E6DD8 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63D7A2871FF24F76861F64DD /* INatIcon.ttf */; };
+		763319F15FC44DBF89C9DEB0 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A96A8C1FA45F4C8692AAE36F /* INatIcon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,7 +89,7 @@
 		DEB901D3F8FB2DAE1CCED0CC /* Pods-iNaturalistReactNative-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative-ShareExtension/Pods-iNaturalistReactNative-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = inaturalisticons.ttf; path = ../assets/fonts/inaturalisticons.ttf; sourceTree = "<group>"; };
-		63D7A2871FF24F76861F64DD /* INatIcon.ttf */ = {isa = PBXFileReference; name = "INatIcon.ttf"; path = "../assets/fonts/INatIcon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A96A8C1FA45F4C8692AAE36F /* INatIcon.ttf */ = {isa = PBXFileReference; name = "INatIcon.ttf"; path = "../assets/fonts/INatIcon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,7 +227,7 @@
 				D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */,
 				374CB22E29943E63005885ED /* Whitney-BookItalic-Pro.otf */,
 				EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */,
-				63D7A2871FF24F76861F64DD /* INatIcon.ttf */,
+				A96A8C1FA45F4C8692AAE36F /* INatIcon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -358,8 +357,7 @@
 				A252B2AEA64E47C9AC1D20E8 /* Whitney-Light-Pro.otf in Resources */,
 				BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */,
 				4FB3B444D46A4115B867B9CC /* inaturalisticons.ttf in Resources */,
-				F005F5581901496B8576FB4E /* BuildFile in Resources */,
-				41DE3088F97E402FBC6E6DD8 /* INatIcon.ttf in Resources */,
+				763319F15FC44DBF89C9DEB0 /* INatIcon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
