@@ -1,6 +1,7 @@
 // @flow
 
 import {
+  Map,
   ObservationsFlashList,
   ViewWrapper
 } from "components/SharedComponents";
@@ -16,33 +17,31 @@ type Props = {
   isFetchingNextPage?: boolean,
   observations: Array<Object>,
   onEndReached: Function,
+  region: Object
 }
 
 const Explore = ( {
   isFetchingNextPage,
   observations,
-  onEndReached
+  onEndReached,
+  region
 }: Props ): Node => {
   // const { t } = useTranslation( );
-  const [view, setView] = useState( "list" );
+  const [view, setView] = useState( "map" );
 
   return (
     <ViewWrapper testID="Explore">
-      <Header />
-      {/* <MapView
-        className="h-full"
-        showsCompass={false}
-        region={region}
-        ref={mapView}
-        mapType={mapType}
-        onRegionChangeComplete={async newRegion => {
-          updateRegion( newRegion );
-        }}
-        onMapReady={setMapReady}
-      /> */}
-      {console.log( observations, "obs in explore" )}
-      {observations.length > 0 && (
-        <View className="h-full mt-[180px]">
+      <Header region={region} />
+      {view === "map" && (
+        <Map
+          className="h-full"
+          showsCompass={false}
+          region={region}
+          taxonId={3}
+        />
+      )}
+      <View className="h-full mt-[180px]">
+        {( observations.length > 0 && view !== "map" ) && (
           <ObservationsFlashList
             isFetchingNextPage={isFetchingNextPage}
             layout={view}
@@ -50,8 +49,8 @@ const Explore = ( {
             onEndReached={onEndReached}
             testID="ExploreAnimatedList"
           />
-        </View>
-      )}
+        )}
+      </View>
       <ViewBar
         view={view}
         updateView={newView => setView( newView )}

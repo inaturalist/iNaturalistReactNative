@@ -61,8 +61,6 @@ const useInfiniteScroll = ( { upsert }: Object ): Object => {
     }
   }, [realm, observations, upsert] );
 
-  console.log( flatten( observations?.pages[0] ), "observations in useInfinite" );
-
   return currentUser
     ? {
       isFetchingNextPage,

@@ -12,7 +12,11 @@ import { Surface, useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-const Header = ( ): Node => {
+type Props = {
+  region: Object
+}
+
+const Header = ( { region }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
 
@@ -26,60 +30,60 @@ const Header = ( ): Node => {
   const displayScientificName = ( ) => "Aves";
 
   return (
-    <Surface
-      style={surfaceStyle}
-      className="h-[230px] top-0 absolute w-full"
-      elevation={5}
-    >
-      <View className="top-[65px] mx-5">
-        <View className="flex-row justify-between pb-5 align-center">
-          <Button
-            text={t( "OBSERVATIONS" )}
-            className="shrink"
-            dropdown
+    <View className="z-10 top-0 absolute w-full">
+      <Surface
+        style={surfaceStyle}
+        className="h-[230px]"
+        elevation={5}
+      >
+        <View className="top-[65px] mx-5">
+          <View className="flex-row justify-between pb-5 align-center">
+            <Button
+              text={t( "OBSERVATIONS" )}
+              className="shrink"
+              dropdown
+            />
+            <View className="bg-darkGray rounded-full h-[46px] w-[46px]">
+              <INatIconButton
+                icon="label"
+                color={colors.white}
+                className="self-center"
+              />
+            </View>
+          </View>
+          <View className="flex-row mb-4">
+            <INatIcon name="label-outline" size={15} />
+            <View>
+              <Body3
+                className="text-darkGray ml-[8px]"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {displayCommonName( )}
+              </Body3>
+              <Body4
+                className="text-darkGray ml-[8px]"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {displayScientificName( )}
+              </Body4>
+            </View>
+          </View>
+          <ObservationLocation
+            observation={region}
+            large
           />
-          <View className="bg-darkGray rounded-full h-[46px] w-[46px]">
+          <View className="absolute right-0 bg-darkGray rounded-full" />
+          <View className="absolute right-0 top-20 bg-darkGray rounded-md">
             <INatIconButton
-              icon="label"
+              icon="sliders"
               color={colors.white}
-              className="self-center"
             />
           </View>
         </View>
-        <View className="flex-row mb-4">
-          <INatIcon name="label-outline" size={15} />
-          <View>
-            <Body3
-              className="text-darkGray ml-[8px]"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {displayCommonName( )}
-            </Body3>
-            <Body4
-              className="text-darkGray ml-[8px]"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {displayScientificName( )}
-            </Body4>
-          </View>
-        </View>
-        <ObservationLocation
-          observation={{
-            latitude: 30.18183,
-            longitude: -85.760449
-          }}
-        />
-        <View className="absolute right-0 bg-darkGray rounded-full" />
-        <View className="absolute right-0 top-20 bg-darkGray rounded-md">
-          <INatIconButton
-            icon="sliders"
-            color={colors.white}
-          />
-        </View>
-      </View>
-    </Surface>
+      </Surface>
+    </View>
   );
 };
 
