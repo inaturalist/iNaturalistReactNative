@@ -36,26 +36,31 @@ const initialState = {
     longitudeDelta: DELTA
   },
   loading: true,
+  fetchingLocation: false,
   hidePlaceResults: true
 };
 
 const reducer = ( state, action ) => {
-  console.log( action.type, "action type" );
   switch ( action.type ) {
     case "ESTIMATE_ACCURACY":
       return {
         ...state,
         positional_accuracy: estimatedAccuracy( state.region.longitudeDelta )
       };
-    case "FETCH_CURRENT_LOCATION":
+    case "SET_CURRENT_LOCATION":
       return {
         ...state,
-        loading: false,
+        fetchingLocation: false,
         region: {
           ...state.region,
           latitude: action.userLocation?.latitude,
           longitude: action.userLocation?.longitude
         }
+      };
+    case "SET_FETCHING_LOCATION":
+      return {
+        ...state,
+        fetchingLocation: true
       };
     case "INITIALIZE_MAP":
       return {
@@ -135,11 +140,12 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
   const {
     accuracy,
     accuracyTest,
+    fetchingLocation,
+    hidePlaceResults,
     loading,
     locationName,
     mapType,
-    region,
-    hidePlaceResults
+    region
   } = state;
 
   const showMap = region.latitude !== 0.0;
@@ -190,17 +196,25 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
   };
 
   const returnToUserLocation = async ( ) => {
-    dispatch( { type: "SET_LOADING", loading: false } );
+    dispatch( { type: "SET_FETCHING_LOCATION" } );
     const userLocation = await fetchUserLocation( );
-    dispatch( { type: "FETCH_CURRENT_LOCATION", userLocation } );
-    mapView.current?.getCamera().then( cam => {
-      if ( Platform.OS === "android" ) {
-        cam.zoom = 20;
-      } else {
-        cam.altitude = 100;
-      }
-      mapView.current?.animateCamera( cam );
-    } );
+    dispatch( { type: "SET_CURRENT_LOCATION", userLocation } );
+    mapView.current?.getCamera( )
+      .then( cam => {
+        if ( Platform.OS === "android" ) {
+          cam.zoom = 20;
+        } else {
+          cam.altitude = 100;
+        }
+        mapView.current?.animateCamera( cam );
+      } )
+      .catch( getCameraError => {
+        if ( getCameraError.message.match( /AirMapView.map is not valid/ ) ) {
+          // This doesn't seem to have any ill effect
+          return;
+        }
+        throw getCameraError;
+      } );
     dispatch( { type: "ESTIMATE_ACCURACY" } );
   };
 
@@ -222,6 +236,10 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
     [navigation, currentObservation]
   );
 
+  useEffect( ( ) => {
+    if ( !showMap ) dispatch( { type: "SET_LOADING", loading: false } );
+  }, [showMap] );
+
   const setMapReady = ( ) => dispatch( { type: "SET_LOADING", loading: false } );
 
   const selectPlaceResult = place => {
@@ -239,23 +257,24 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
 
   return (
     <LocationPicker
-      showMap={showMap}
-      loading={loading}
-      accuracyTest={accuracyTest}
-      region={region}
-      mapView={mapView}
-      updateRegion={updateRegion}
-      locationName={locationName}
-      updateLocationName={updateLocationName}
       accuracy={accuracy}
-      returnToUserLocation={returnToUserLocation}
-      keysToUpdate={keysToUpdate}
+      accuracyTest={accuracyTest}
       goBackOnSave={goBackOnSave}
-      toggleMapLayer={toggleMapLayer}
-      mapType={mapType}
-      setMapReady={setMapReady}
-      selectPlaceResult={selectPlaceResult}
+      fetchingLocation={fetchingLocation}
       hidePlaceResults={hidePlaceResults}
+      keysToUpdate={keysToUpdate}
+      loading={loading}
+      locationName={locationName}
+      mapType={mapType}
+      mapView={mapView}
+      region={region}
+      returnToUserLocation={returnToUserLocation}
+      selectPlaceResult={selectPlaceResult}
+      setMapReady={setMapReady}
+      showMap={showMap}
+      toggleMapLayer={toggleMapLayer}
+      updateLocationName={updateLocationName}
+      updateRegion={updateRegion}
     />
   );
 };

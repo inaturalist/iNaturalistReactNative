@@ -10,7 +10,9 @@ import colors from "styles/tailwindColors";
 
 type Props = {
   accessibilityLabel?: string,
+  children?: any,
   color?: string,
+  disabled?: boolean,
   height?: number,
   icon: string,
   onPress: Function,
@@ -30,7 +32,9 @@ const MIN_ACCESSIBLE_DIM = 44;
 // the icon with `size`
 const INatIconButton = ( {
   accessibilityLabel,
+  children,
   color,
+  disabled = false,
   height = 44,
   icon,
   onPress,
@@ -58,6 +62,8 @@ const INatIconButton = ( {
     <Pressable
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
+      accessibilityState={{ disabled }}
+      disabled={disabled}
       onPress={onPress}
       style={( { pressed } ) => [
         {
@@ -97,7 +103,15 @@ const INatIconButton = ( {
             }}
           />
         )}
-        <INatIcon name={icon} size={size} color={color || theme.colors.primary} />
+        {
+          children || (
+            <INatIcon
+              name={icon}
+              size={size}
+              color={color || theme.colors.primary}
+            />
+          )
+        }
       </View>
     </Pressable>
   );

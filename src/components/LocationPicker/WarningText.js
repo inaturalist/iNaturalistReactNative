@@ -19,6 +19,10 @@ const WarningText = ( { accuracyTest, getShadow }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
 
+  if ( accuracyTest === "pass" ) {
+    return null;
+  }
+
   const displayWarningText = ( ) => {
     if ( accuracyTest === "acceptable" ) {
       return t( "Zoom-in" );
@@ -33,7 +37,6 @@ const WarningText = ( { accuracyTest, getShadow }: Props ): Node => {
     <View
       pointerEvents="none"
       className={classnames( "p-4 rounded-xl", {
-        "bg-transparent": accuracyTest === "pass",
         "bg-white": accuracyTest === "acceptable",
         "bg-warningRed": accuracyTest === "fail"
       } )}
