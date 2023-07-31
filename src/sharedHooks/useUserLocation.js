@@ -10,6 +10,9 @@ type Props = {
   skipPlaceGuess?: bool
 }
 
+// Max time to wait while fetching current location
+const CURRENT_LOCATION_TIMEOUT_MS = 30000;
+
 const useUserLocation = ( { skipPlaceGuess = false }: Props ): Object => {
   const [latLng, setLatLng] = useState( null );
   const [isLoading, setIsLoading] = useState( true );
@@ -58,7 +61,11 @@ const useUserLocation = ( { skipPlaceGuess = false }: Props ): Object => {
         setIsLoading( false );
       };
 
-      const options = { enableHighAccuracy: true, maximumAge: 0 };
+      const options = {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: CURRENT_LOCATION_TIMEOUT_MS
+      };
 
       Geolocation.getCurrentPosition( success, failure, options );
     };

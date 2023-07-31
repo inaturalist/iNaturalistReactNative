@@ -64,8 +64,10 @@ const reducer = ( state, action ) => {
         locationName: action.currentObservation?.place_guess,
         region: {
           ...state.region,
-          latitude: action.currentObservation?.latitude,
-          longitude: action.currentObservation?.longitude,
+          // This was causing a crash when getting to the location picker before
+          // current location was fetched in the observation viewer
+          latitude: action.currentObservation?.latitude || 0.0,
+          longitude: action.currentObservation?.longitude || 0.0,
           latitudeDelta: DELTA,
           longitudeDelta: DELTA
         }
