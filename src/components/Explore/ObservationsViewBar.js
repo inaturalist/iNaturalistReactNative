@@ -17,19 +17,19 @@ const getShadow = shadowColor => getShadowStyle( {
 } );
 
 type Props = {
-  view: string,
-  updateView: Function
+  observationsView: string,
+  updateObservationsView: Function
 };
 
-const ViewBar = ( {
-  view,
-  updateView
+const ObservationsViewBar = ( {
+  observationsView,
+  updateObservationsView
 }: Props ): Node => {
   const theme = useTheme( );
 
   const buttonStyle = buttonValue => ( {
     minWidth: 55,
-    backgroundColor: buttonValue === view
+    backgroundColor: buttonValue === observationsView
       ? colors.inatGreen
       : colors.white
   } );
@@ -39,8 +39,8 @@ const ViewBar = ( {
       className="bottom-[115px] absolute left-[10px]"
     >
       <SegmentedButtons
-        value={view}
-        onValueChange={updateView}
+        value={observationsView}
+        onValueChange={updateObservationsView}
         theme={{
           colors: {
             onSecondaryContainer: colors.white
@@ -69,4 +69,4 @@ const ViewBar = ( {
   );
 };
 
-export default ViewBar;
+export default ObservationsViewBar;

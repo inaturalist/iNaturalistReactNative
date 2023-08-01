@@ -11,12 +11,12 @@ import useCurrentUser from "sharedHooks/useCurrentUser";
 
 const { useRealm } = RealmContext;
 
-const useInfiniteScroll = ( { upsert }: Object ): Object => {
+const useInfiniteScroll = ( { upsert, params: newInputParams }: Object ): Object => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
 
   const baseParams = {
-    user_id: currentUser?.id,
+    ...newInputParams,
     per_page: 50,
     fields: Observation.FIELDS,
     ttl: -1
@@ -27,6 +27,7 @@ const useInfiniteScroll = ( { upsert }: Object ): Object => {
     isFetchingNextPage,
     fetchNextPage
   } = useInfiniteQuery( {
+    // eslint-disable-next-line
     queryKey: ["searchObservations", baseParams],
     keepPreviousData: false,
     queryFn: async ( { pageParam } ) => {
@@ -34,6 +35,7 @@ const useInfiniteScroll = ( { upsert }: Object ): Object => {
       const options = {
         api_token: apiToken
       };
+
       const params = {
         ...baseParams
       };

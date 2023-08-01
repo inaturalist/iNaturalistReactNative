@@ -15,7 +15,13 @@ const initialState = {
     latitudeDelta: DELTA,
     longitudeDelta: DELTA,
     place_guess: false
-  }
+  },
+  exploreParams: {
+    taxon_id: 3,
+    lat: 0.0,
+    lng: 0.0
+  },
+  exploreView: "observations"
 };
 
 const reducer = ( state, action ) => {
@@ -23,7 +29,17 @@ const reducer = ( state, action ) => {
     case "SET_LOCATION":
       return {
         ...state,
-        region: action.region
+        region: action.region,
+        exploreParams: {
+          ...state.exploreParams,
+          lat: action.region.latitude,
+          lng: action.region.longitude
+        }
+      };
+    case "CHANGE_EXPLORE_VIEW":
+      return {
+        ...state,
+        exploreView: action.exploreView
       };
     default:
       throw new Error( );
@@ -31,22 +47,22 @@ const reducer = ( state, action ) => {
 };
 
 const ExploreContainer = ( ): Node => {
-  // const { t } = useTranslation( );
   const { latLng } = useUserLocation( { skipPlaceGuess: false } );
 
   const [state, dispatch] = useReducer( reducer, initialState );
 
   const {
-    region
+    region,
+    exploreParams,
+    exploreView
   } = state;
 
   const {
     observations, isFetchingNextPage, fetchNextPage
-  } = useInfiniteScroll( { upsert: false } );
+  } = useInfiniteScroll( { upsert: false, params: exploreParams } );
 
   useEffect( ( ) => {
     if ( latLng?.latitude && latLng?.latitude !== region.latitude ) {
-      console.log( latLng, "latlng" );
       dispatch( {
         type: "SET_LOCATION",
         region: {
@@ -59,12 +75,18 @@ const ExploreContainer = ( ): Node => {
     }
   }, [latLng, region] );
 
+  const changeExploreView = newView => {
+    dispatch( { type: "CHANGE_EXPLORE_VIEW", exploreView: newView } );
+  };
+
   return (
     <Explore
       observations={observations}
       isFetchingNextPage={isFetchingNextPage}
       onEndReached={fetchNextPage}
       region={region}
+      exploreView={exploreView}
+      changeExploreView={changeExploreView}
     />
   );
 };

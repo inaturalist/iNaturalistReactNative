@@ -16,9 +16,14 @@ const MyObservationsContainer = ( ): Node => {
   const { observationList: observations, allObsToUpload } = useLocalObservations( );
   const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
-  const { isFetchingNextPage, fetchNextPage } = useInfiniteScroll( { upsert: true } );
-  const [showLoginSheet, setShowLoginSheet] = useState( false );
   const currentUser = useCurrentUser();
+  const { isFetchingNextPage, fetchNextPage } = useInfiniteScroll( {
+    upsert: true,
+    params: {
+      user_id: currentUser?.id
+    }
+  } );
+  const [showLoginSheet, setShowLoginSheet] = useState( false );
   useObservationsUpdates( !!currentUser );
 
   const writeItemToStorage = useCallback( async newValue => {

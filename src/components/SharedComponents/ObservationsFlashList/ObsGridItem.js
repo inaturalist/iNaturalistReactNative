@@ -7,6 +7,7 @@ import React from "react";
 import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
+import ObsSeenCheckmark from "./ObsSeenCheckmark";
 import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
@@ -14,7 +15,9 @@ type Props = {
   width?: string,
   height?: string,
   style?: Object,
-  setShowLoginSheet: Function
+  setShowLoginSheet: Function,
+  hideUploadStatus?: boolean,
+  showSpeciesSeen?: boolean
 };
 
 const ObsGridItem = ( {
@@ -22,7 +25,9 @@ const ObsGridItem = ( {
   width = "w-full",
   height,
   style,
-  setShowLoginSheet
+  setShowLoginSheet,
+  hideUploadStatus,
+  showSpeciesSeen
 }: Props ): Node => (
   <ObsImagePreview
     source={{
@@ -38,14 +43,21 @@ const ObsGridItem = ( {
     isMultiplePhotosTop
     testID={`MyObservations.gridItem.${observation.uuid}`}
   >
-    <View className="absolute bottom-0 flex p-2 w-full">
-      <ObsUploadStatus
-        observation={observation}
-        layout="horizontal"
-        white
-        classNameMargin="mb-1"
-        setShowLoginSheet={setShowLoginSheet}
+    {showSpeciesSeen && (
+      <ObsSeenCheckmark
+        observationUUID={observation.uuid}
       />
+    )}
+    <View className="absolute bottom-0 flex p-2 w-full">
+      {!hideUploadStatus && (
+        <ObsUploadStatus
+          observation={observation}
+          layout="horizontal"
+          white
+          classNameMargin="mb-1"
+          setShowLoginSheet={setShowLoginSheet}
+        />
+      )}
       <DisplayTaxonName
         keyBase={observation?.uuid}
         taxon={observation?.taxon}

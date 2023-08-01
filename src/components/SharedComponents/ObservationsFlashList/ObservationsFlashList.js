@@ -1,6 +1,7 @@
 // @flow
 import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
+import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
@@ -23,14 +24,16 @@ type Props = {
   currentUser?: ?Object,
   testID: string,
   handleScroll?: Function,
-  renderEmptyList?: Function
+  hideUploadStatus?: boolean,
+  showSpeciesSeen?: boolean
 };
 
 const GUTTER = 15;
 
 const Item = React.memo(
   ( {
-    observation, layout, gridItemWidth, setShowLoginSheet = false
+    observation, layout, gridItemWidth, setShowLoginSheet = false,
+    hideUploadStatus, showSpeciesSeen
   } ) => (
     <MyObservationsPressable observation={observation}>
       {
@@ -46,6 +49,8 @@ const Item = React.memo(
                 margin: GUTTER / 2
               }}
               setShowLoginSheet={setShowLoginSheet}
+              hideUploadStatus={hideUploadStatus}
+              showSpeciesSeen={showSpeciesSeen}
             />
           )
           : (
@@ -68,7 +73,8 @@ const ObservationsFlashList = ( {
   currentUser,
   testID,
   handleScroll,
-  renderEmptyList
+  hideUploadStatus,
+  showSpeciesSeen
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -118,6 +124,8 @@ const ObservationsFlashList = ( {
       gridItemWidth={gridItemWidth}
       allObsToUpload={allObsToUpload}
       testID={testID}
+      hideUploadStatus={hideUploadStatus}
+      showSpeciesSeen={showSpeciesSeen}
     />
   );
 
@@ -142,6 +150,8 @@ const ObservationsFlashList = ( {
       paddingLeft: GUTTER / 2,
       paddingRight: GUTTER / 2
     };
+
+  const renderEmptyList = ( ) => <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />;
 
   if ( numColumns === 0 ) { return null; }
 

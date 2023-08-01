@@ -9,16 +9,16 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Surface, useTheme } from "react-native-paper";
-import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  region: Object
+  region: Object,
+  setShowExploreBottomSheet: Function,
+  exploreViewButtonText: string
 }
 
-const Header = ( { region }: Props ): Node => {
+const Header = ( { region, setShowExploreBottomSheet, exploreViewButtonText }: Props ): Node => {
   const theme = useTheme( );
-  const { t } = useTranslation( );
 
   const surfaceStyle = {
     backgroundColor: theme.colors.onPrimary,
@@ -39,9 +39,10 @@ const Header = ( { region }: Props ): Node => {
         <View className="top-[65px] mx-5">
           <View className="flex-row justify-between pb-5 align-center">
             <Button
-              text={t( "OBSERVATIONS" )}
+              text={exploreViewButtonText}
               className="shrink"
               dropdown
+              onPress={( ) => setShowExploreBottomSheet( true )}
             />
             <View className="bg-darkGray rounded-full h-[46px] w-[46px]">
               <INatIconButton

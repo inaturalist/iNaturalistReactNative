@@ -41,6 +41,8 @@ const ObsUploadStatus = ( {
   const needsSync = item => !item._synced_at
     || item._synced_at <= item._updated_at;
 
+  const obsPhotos = observation?.observationPhotos?.map( obsPhoto => needsSync( obsPhoto ) ).length;
+
   const currentProgress = uploadProgress?.[observation.uuid];
 
   const displayUploadStatus = ( ) => {
@@ -53,10 +55,8 @@ const ObsUploadStatus = ( {
       />
     );
 
-    if ( !observation.id || typeof currentProgress === "number" ) {
-      const totalProgressIncrements = needsSync( observation )
-      + observation
-        .observationPhotos.map( obsPhoto => needsSync( obsPhoto ) ).length;
+    if ( !observation.id ) {
+      const totalProgressIncrements = needsSync( observation ) + obsPhotos;
 
       if ( typeof currentProgress === "number" ) { return null; }
       const progress = currentProgress / totalProgressIncrements;

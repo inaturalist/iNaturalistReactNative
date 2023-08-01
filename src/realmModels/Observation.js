@@ -63,7 +63,7 @@ class Observation extends Realm.Object {
   }
 
   static createLinkedObjects = ( list, createFunction, realm ) => {
-    if ( list.length === 0 ) { return list; }
+    if ( !list || list.length === 0 ) { return list; }
     return list.map( item => createFunction.mapApiToRealm( item, realm ) );
   };
 

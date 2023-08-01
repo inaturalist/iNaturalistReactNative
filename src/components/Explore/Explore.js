@@ -1,60 +1,84 @@
 // @flow
 
 import {
-  Map,
-  ObservationsFlashList,
+  BottomSheet,
+  Button,
   ViewWrapper
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
+import { useTranslation } from "sharedHooks";
 
-// import MapView from "react-native-maps";
 import Header from "./Header";
-import ViewBar from "./ViewBar";
+import ObservationsView from "./ObservationsView";
+import SpeciesView from "./SpeciesView";
 
 type Props = {
   isFetchingNextPage?: boolean,
   observations: Array<Object>,
   onEndReached: Function,
-  region: Object
+  region: Object,
+  exploreView: string,
+  changeExploreView: Function
 }
 
 const Explore = ( {
   isFetchingNextPage,
   observations,
   onEndReached,
-  region
+  region,
+  exploreView,
+  changeExploreView
 }: Props ): Node => {
-  // const { t } = useTranslation( );
-  const [view, setView] = useState( "map" );
+  const { t } = useTranslation( );
+  const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
+
+  const exploreViewText = {
+    observations: t( "OBSERVATIONS" ),
+    species: t( "SPECIES" ),
+    observers: t( "OBSERVERS" ),
+    identifiers: t( "IDENTIFIERS" )
+  };
 
   return (
     <ViewWrapper testID="Explore">
-      <Header region={region} />
-      {view === "map" && (
-        <Map
-          className="h-full"
-          showsCompass={false}
+      <Header
+        region={region}
+        setShowExploreBottomSheet={setShowExploreBottomSheet}
+        exploreViewButtonText={exploreViewText[exploreView]}
+      />
+      {exploreView === "observations" && (
+        <ObservationsView
           region={region}
-          taxonId={3}
+          isFetchingNextPage={isFetchingNextPage}
+          observations={observations}
+          onEndReached={onEndReached}
         />
       )}
-      <View className="h-full mt-[180px]">
-        {( observations.length > 0 && view !== "map" ) && (
-          <ObservationsFlashList
-            isFetchingNextPage={isFetchingNextPage}
-            layout={view}
-            data={observations}
-            onEndReached={onEndReached}
-            testID="ExploreAnimatedList"
-          />
-        )}
-      </View>
-      <ViewBar
-        view={view}
-        updateView={newView => setView( newView )}
-      />
+      {exploreView === "species" && (
+        <SpeciesView
+          isFetchingNextPage={isFetchingNextPage}
+          observations={observations}
+          onEndReached={onEndReached}
+        />
+      )}
+      {showExploreBottomSheet && (
+        <BottomSheet
+          headerText={t( "EXPLORE" )}
+        >
+          {Object.keys( exploreViewText ).map( view => (
+            <Button
+              text={exploreViewText[view]}
+              key={exploreViewText[view]}
+              className="mx-5 my-3"
+              onPress={( ) => {
+                changeExploreView( view );
+                setShowExploreBottomSheet( false );
+              }}
+            />
+          ) )}
+        </BottomSheet>
+      )}
     </ViewWrapper>
   );
 };
