@@ -126,19 +126,22 @@ const ARCamera = ( {
     let prediction = null;
     let predictions = [];
     if ( Platform.OS === "ios" ) {
-      prediction = {
-        rank_level: cvResults[0].rank,
-        id: cvResults[0].taxon_id,
-        name: cvResults[0].name,
-        score: cvResults[0].score
-      };
+      if ( cvResults.length > 0 ) {
+        const finestPrediction = cvResults[cvResults.length - 1];
+        prediction = {
+          rank_level: finestPrediction.rank,
+          id: finestPrediction.taxon_id,
+          name: finestPrediction.name,
+          score: finestPrediction.score
+        };
+      }
     } else {
-      predictions = cvResults.map( r => {
+      predictions = cvResults?.map( r => {
         const rank = Object.keys( r )[0];
         return r[rank][0];
       } )
         .sort( ( a, b ) => a.rank - b.rank );
-      prediction = {
+      prediction = predictions && predictions.length > 0 && {
         rank_level: predictions[0].rank,
         id: predictions[0].taxon_id,
         name: predictions[0].name,

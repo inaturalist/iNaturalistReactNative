@@ -97,7 +97,7 @@ export const capitalizeCommonName = name => {
 export const generateTaxonPieces = taxon => {
   const taxonData = {};
 
-  taxonData.rank = capitalize( taxon.rank );
+  if ( taxon.rank ) taxonData.rank = capitalize( taxon.rank );
   taxonData.rankLevel = taxon.rank_level;
 
   // Logic follows the SplitTaxon component from web

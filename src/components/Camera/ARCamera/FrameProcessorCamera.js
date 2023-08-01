@@ -27,7 +27,7 @@ type Props = {
 // Johannes: when I copied over the native code from the legacy react-native-camera on Android
 // this value had to be a string. On iOS I changed the API to also accept a string (was number).
 // Maybe, the intention would look clearer if we refactor to use a number here.
-const confidenceThreshold = "0.7";
+const confidenceThreshold = "0.5";
 
 const FrameProcessorCamera = ( {
   cameraRef,
