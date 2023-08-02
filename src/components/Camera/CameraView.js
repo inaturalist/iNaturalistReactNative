@@ -155,6 +155,8 @@ const CameraView = ( {
             : null}
           ref={cameraRef}
           device={device}
+          preset="photo"
+          enableHighQualityPhotos
           // Props for ARCamera only
           frameProcessor={frameProcessor}
           frameProcessorFps={frameProcessorFps}
