@@ -61,12 +61,12 @@ const FrameProcessorCamera = ( {
 
       // Reminder: this is a worklet, running on the UI thread.
       try {
-        const results = InatVision.inatVision(
-          frame,
-          dirModel,
-          dirTaxonomy,
+        const results = InatVision.inatVision( frame, {
+          version: "1.0",
+          modelPath: dirModel,
+          taxonomyPath: dirTaxonomy,
           confidenceThreshold
-        );
+        } );
         REA.runOnJS( onTaxaDetected )( results );
       } catch ( classifierError ) {
         console.log( `Error: ${classifierError.message}` );
