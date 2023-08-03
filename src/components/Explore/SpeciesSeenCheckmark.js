@@ -20,15 +20,15 @@ const getShadow = shadowColor => getShadowStyle( {
 } );
 
 type Props = {
-  observationUUID: number
+  taxonId: number
 };
 
-const ObsSeenCheckmark = ( {
-  observationUUID
+const SpeciesSeenCheckmark = ( {
+  taxonId
 }: Props ): Node => {
   const realm = useRealm( );
   const theme = useTheme( );
-  const userObservation = realm?.objectForPrimaryKey( "Observation", observationUUID );
+  const userObservation = realm?.objectForPrimaryKey( "Taxon", taxonId );
 
   if ( !userObservation ) { return null; }
   return (
@@ -45,4 +45,4 @@ const ObsSeenCheckmark = ( {
   );
 };
 
-export default ObsSeenCheckmark;
+export default SpeciesSeenCheckmark;

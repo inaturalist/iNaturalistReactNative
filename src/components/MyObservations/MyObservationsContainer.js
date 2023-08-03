@@ -5,7 +5,7 @@ import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   useCurrentUser,
-  useInfiniteScroll,
+  useInfiniteObservationsScroll,
   useLocalObservations,
   useObservationsUpdates
 } from "sharedHooks";
@@ -17,7 +17,7 @@ const MyObservationsContainer = ( ): Node => {
   const { getItem, setItem } = useAsyncStorage( "myObservationsLayout" );
   const [layout, setLayout] = useState( null );
   const currentUser = useCurrentUser();
-  const { isFetchingNextPage, fetchNextPage } = useInfiniteScroll( {
+  const { isFetchingNextPage, fetchNextPage } = useInfiniteObservationsScroll( {
     upsert: true,
     params: {
       user_id: currentUser?.id

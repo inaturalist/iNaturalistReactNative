@@ -24,8 +24,7 @@ type Props = {
   currentUser?: ?Object,
   testID: string,
   handleScroll?: Function,
-  hideUploadStatus?: boolean,
-  showSpeciesSeen?: boolean
+  hideUploadStatus?: boolean
 };
 
 const GUTTER = 15;
@@ -33,7 +32,7 @@ const GUTTER = 15;
 const Item = React.memo(
   ( {
     observation, layout, gridItemWidth, setShowLoginSheet = false,
-    hideUploadStatus, showSpeciesSeen
+    hideUploadStatus
   } ) => (
     <MyObservationsPressable observation={observation}>
       {
@@ -50,7 +49,6 @@ const Item = React.memo(
               }}
               setShowLoginSheet={setShowLoginSheet}
               hideUploadStatus={hideUploadStatus}
-              showSpeciesSeen={showSpeciesSeen}
             />
           )
           : (
@@ -73,8 +71,7 @@ const ObservationsFlashList = ( {
   currentUser,
   testID,
   handleScroll,
-  hideUploadStatus,
-  showSpeciesSeen
+  hideUploadStatus
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -125,7 +122,6 @@ const ObservationsFlashList = ( {
       allObsToUpload={allObsToUpload}
       testID={testID}
       hideUploadStatus={hideUploadStatus}
-      showSpeciesSeen={showSpeciesSeen}
     />
   );
 

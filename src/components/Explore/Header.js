@@ -1,6 +1,7 @@
 // @flow
 
 import {
+  Body1,
   Body3, Body4,
   Button,
   INatIcon, INatIconButton, ObservationLocation
@@ -14,10 +15,13 @@ import colors from "styles/tailwindColors";
 type Props = {
   region: Object,
   setShowExploreBottomSheet: Function,
-  exploreViewButtonText: string
+  exploreViewButtonText: string,
+  headerRight?: ?string
 }
 
-const Header = ( { region, setShowExploreBottomSheet, exploreViewButtonText }: Props ): Node => {
+const Header = ( {
+  region, setShowExploreBottomSheet, exploreViewButtonText, headerRight
+}: Props ): Node => {
   const theme = useTheme( );
 
   const surfaceStyle = {
@@ -44,13 +48,22 @@ const Header = ( { region, setShowExploreBottomSheet, exploreViewButtonText }: P
               dropdown
               onPress={( ) => setShowExploreBottomSheet( true )}
             />
-            <View className="bg-darkGray rounded-full h-[46px] w-[46px]">
-              <INatIconButton
-                icon="label"
-                color={colors.white}
-                className="self-center"
-              />
-            </View>
+            {headerRight
+              ? (
+                <View className="mt-4">
+                  <Body1>{headerRight}</Body1>
+                </View>
+              )
+              : (
+                <View className="bg-darkGray rounded-full h-[46px] w-[46px]">
+                  <INatIconButton
+                    icon="label"
+                    color={colors.white}
+                    className="self-center"
+                  />
+                </View>
+
+              )}
           </View>
           <View className="flex-row mb-4">
             <INatIcon name="label-outline" size={15} />

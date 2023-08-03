@@ -1,79 +1,48 @@
 // @flow
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { searchObservations } from "api/observations";
-import { getJWT } from "components/LoginSignUp/AuthenticationService";
-import { flatten, last, noop } from "lodash";
-import { RealmContext } from "providers/contexts";
-import { useEffect } from "react";
-import Observation from "realmModels/Observation";
-import useCurrentUser from "sharedHooks/useCurrentUser";
+import { flatten } from "lodash";
 
-const { useRealm } = RealmContext;
-
-const useInfiniteScroll = ( { upsert, params: newInputParams }: Object ): Object => {
-  const realm = useRealm( );
-  const currentUser = useCurrentUser( );
-
+const useInfiniteScroll = (
+  queryKey: string,
+  apiCall: Function,
+  newInputParams: Object
+): Object => {
   const baseParams = {
     ...newInputParams,
-    per_page: 50,
-    fields: Observation.FIELDS,
+    per_page: 10,
     ttl: -1
   };
 
   const {
-    data: observations,
+    data,
     isFetchingNextPage,
     fetchNextPage
   } = useInfiniteQuery( {
     // eslint-disable-next-line
-    queryKey: ["searchObservations", baseParams],
+    queryKey: [queryKey, baseParams],
     keepPreviousData: false,
-    queryFn: async ( { pageParam } ) => {
-      const apiToken = await getJWT( );
-      const options = {
-        api_token: apiToken
-      };
-
+    queryFn: async ( { pageParam = 0 } ) => {
       const params = {
         ...baseParams
       };
 
-      if ( pageParam ) {
-        // $FlowIgnore
-        params.id_below = pageParam;
-      } else {
-        // $FlowIgnore
-        params.page = 1;
-      }
+      params.page = pageParam;
 
-      return searchObservations( params, options );
+      return apiCall( params );
     },
-    getNextPageParam: lastPage => last( lastPage )?.id,
-    enabled: !!currentUser
+    getNextPageParam: lastPage => lastPage.page + 1
   } );
 
-  useEffect( ( ) => {
-    if ( observations?.pages && upsert ) {
-      Observation.upsertRemoteObservations(
-        flatten( last( observations.pages ) ),
-        realm
-      );
-    }
-  }, [realm, observations, upsert] );
+  const pages = data?.pages;
+  const allResults = pages?.map( page => page.results );
 
-  return currentUser
-    ? {
-      isFetchingNextPage,
-      fetchNextPage,
-      observations: flatten( observations?.pages )
-    }
-    : {
-      isFetchingNextPage: false,
-      fetchNextPage: noop,
-      observations: flatten( observations?.pages )
-    };
+  return {
+    isFetchingNextPage,
+    fetchNextPage,
+    data: flatten( allResults ),
+    totalResults: pages?.[0].total_results
+  };
 };
 
 export default useInfiniteScroll;

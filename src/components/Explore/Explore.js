@@ -10,7 +10,9 @@ import React, { useState } from "react";
 import { useTranslation } from "sharedHooks";
 
 import Header from "./Header";
+import IdentifiersView from "./IdentifiersView";
 import ObservationsView from "./ObservationsView";
+import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
 
 type Props = {
@@ -32,6 +34,7 @@ const Explore = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
+  const [headerRight, setHeaderRight] = useState( null );
 
   const exploreViewText = {
     observations: t( "OBSERVATIONS" ),
@@ -46,6 +49,7 @@ const Explore = ( {
         region={region}
         setShowExploreBottomSheet={setShowExploreBottomSheet}
         exploreViewButtonText={exploreViewText[exploreView]}
+        headerRight={headerRight}
       />
       {exploreView === "observations" && (
         <ObservationsView
@@ -57,10 +61,15 @@ const Explore = ( {
       )}
       {exploreView === "species" && (
         <SpeciesView
-          isFetchingNextPage={isFetchingNextPage}
-          observations={observations}
-          onEndReached={onEndReached}
+          testID="ExploreSpeciesAnimatedList"
+          setHeaderRight={setHeaderRight}
         />
+      )}
+      {exploreView === "observers" && (
+        <ObserversView testID="ExploreObserversAnimatedList" setHeaderRight={setHeaderRight} />
+      )}
+      {exploreView === "identifiers" && (
+        <IdentifiersView testID="ExploreIdentifiersAnimatedList" setHeaderRight={setHeaderRight} />
       )}
       {showExploreBottomSheet && (
         <BottomSheet

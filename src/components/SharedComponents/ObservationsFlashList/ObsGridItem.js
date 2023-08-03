@@ -7,7 +7,6 @@ import React from "react";
 import Photo from "realmModels/Photo";
 
 import ObsImagePreview from "./ObsImagePreview";
-import ObsSeenCheckmark from "./ObsSeenCheckmark";
 import ObsUploadStatus from "./ObsUploadStatus";
 
 type Props = {
@@ -16,8 +15,7 @@ type Props = {
   height?: string,
   style?: Object,
   setShowLoginSheet: Function,
-  hideUploadStatus?: boolean,
-  showSpeciesSeen?: boolean
+  hideUploadStatus?: boolean
 };
 
 const ObsGridItem = ( {
@@ -26,8 +24,7 @@ const ObsGridItem = ( {
   height,
   style,
   setShowLoginSheet,
-  hideUploadStatus,
-  showSpeciesSeen
+  hideUploadStatus
 }: Props ): Node => (
   <ObsImagePreview
     source={{
@@ -43,11 +40,6 @@ const ObsGridItem = ( {
     isMultiplePhotosTop
     testID={`MyObservations.gridItem.${observation.uuid}`}
   >
-    {showSpeciesSeen && (
-      <ObsSeenCheckmark
-        observationUUID={observation.uuid}
-      />
-    )}
     <View className="absolute bottom-0 flex p-2 w-full">
       {!hideUploadStatus && (
         <ObsUploadStatus

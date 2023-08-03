@@ -9,11 +9,12 @@ type Props = {
   uri: Object,
   small?: boolean,
   active?: boolean,
-  large?: boolean
+  large?: boolean,
+  medium?: boolean
 }
 
 const UserIcon = ( {
-  uri, small, active, large
+  uri, small, active, large, medium
 }: Props ): React.Node => {
   const getSize = ( ) => {
     if ( small ) {
@@ -21,6 +22,9 @@ const UserIcon = ( {
     }
     if ( large ) {
       return "w-[134px] h-[134px]";
+    }
+    if ( medium ) {
+      return "w-[62px] h-[62px]";
     }
     return "w-[40px] h-[40px]";
   };
