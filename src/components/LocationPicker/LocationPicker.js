@@ -10,9 +10,10 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import MapView from "react-native-maps";
-import { useTheme } from "react-native-paper";
+import { ActivityIndicator, useTheme } from "react-native-paper";
 import useTranslation from "sharedHooks/useTranslation";
 import { getShadowStyle } from "styles/global";
+import colors from "styles/tailwindColors";
 
 import CrosshairCircle from "./CrosshairCircle";
 import DisplayLatLng from "./DisplayLatLng";
@@ -33,43 +34,45 @@ const getShadow = shadowColor => getShadowStyle( {
 } );
 
 type Props = {
-  showMap: boolean,
-  loading: boolean,
-  accuracyTest: string,
-  region: Object,
-  mapView: any,
-  updateRegion: Function,
-  locationName: ?string,
-  updateLocationName: Function,
   accuracy: number,
-  returnToUserLocation: Function,
-  keysToUpdate: Object,
+  accuracyTest: string,
   goBackOnSave: Function,
-  toggleMapLayer: Function,
+  fetchingLocation: boolean,
+  hidePlaceResults: boolean,
+  keysToUpdate: Object,
+  loading: boolean,
+  locationName: ?string,
   mapType: string,
-  setMapReady: Function,
+  mapView: any,
+  region: Object,
+  returnToUserLocation: Function,
   selectPlaceResult: Function,
-  hidePlaceResults: boolean
+  setMapReady: Function,
+  showMap: boolean,
+  toggleMapLayer: Function,
+  updateLocationName: Function,
+  updateRegion: Function,
 };
 
 const LocationPicker = ( {
-  showMap,
-  loading,
-  accuracyTest,
-  region,
-  mapView,
-  updateRegion,
-  locationName,
-  updateLocationName,
   accuracy,
-  returnToUserLocation,
-  keysToUpdate,
+  accuracyTest,
   goBackOnSave,
-  toggleMapLayer,
+  fetchingLocation,
+  hidePlaceResults,
+  keysToUpdate,
+  loading,
+  locationName,
   mapType,
-  setMapReady,
+  mapView,
+  region,
+  returnToUserLocation,
   selectPlaceResult,
-  hidePlaceResults
+  setMapReady,
+  showMap,
+  toggleMapLayer,
+  updateLocationName,
+  updateRegion
 }: Props ): Node => {
   const theme = useTheme( );
   const { t } = useTranslation( );
@@ -98,7 +101,10 @@ const LocationPicker = ( {
           getShadow={getShadow}
         />
       </View>
-      <View className="top-1/2 left-1/2 absolute z-10">
+      <View
+        className="top-1/2 left-1/2 absolute z-10"
+        pointerEvents="none"
+      >
         {showMap && (
           <CrosshairCircle
             accuracyTest={accuracyTest}
@@ -107,7 +113,7 @@ const LocationPicker = ( {
         )}
       </View>
       <View className="top-1/2 left-1/2 absolute z-10">
-        {loading && <LoadingIndicator />}
+        {loading && <LoadingIndicator getShadow={getShadow} theme={theme} />}
       </View>
       <View className="flex-shrink">
         {showMap
@@ -148,13 +154,28 @@ const LocationPicker = ( {
           style={getShadow( theme.colors.primary )}
           className="absolute bottom-3 bg-white right-3 rounded-full"
         >
-          <INatIconButton
-            icon="location-crosshairs"
-            onPress={returnToUserLocation}
-            height={46}
-            width={46}
-            size={24}
-          />
+          {
+            fetchingLocation
+              ? (
+                <INatIconButton
+                  disabled
+                  height={46}
+                  width={46}
+                  size={24}
+                >
+                  <ActivityIndicator color={colors.darkGrayDisabled} />
+                </INatIconButton>
+              )
+              : (
+                <INatIconButton
+                  icon="location-crosshairs"
+                  onPress={returnToUserLocation}
+                  height={46}
+                  width={46}
+                  size={24}
+                />
+              )
+          }
         </View>
       </View>
       <Footer

@@ -134,7 +134,9 @@ We're using Nativewind, a styling system for React Native based on Tailwind CSS.
 
 We have a custom set of icons stored as SVG files and compiled into a font. New icons should be included with issues in a ready-to-use form, but some editing may be required.
 
-1. Add / edit SVGs to / in `src/images/icons/` (`git add` any new icons)
+1. Add / edit SVGs to / in `src/images/icons/` (`git add` any new icons). Icon SVGs must meet the following requirements
+  * `<svg>` element must have `width="24"` and `height="24"` attributes
+  * No paths with `fill-rule="evenodd"` attribute or `fill-rule: evenodd styles`
 1. `npm run icons`
 1. Rebuild the app (you'll have newly-linked assets that won't hot reload)
 

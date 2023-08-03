@@ -105,7 +105,7 @@ const DisplayTaxonName = ( {
     );
   } );
 
-  if ( rankLevel > 10 ) {
+  if ( rank && rankLevel > 10 ) {
     scientificNameComponent.unshift( `${rank} ` );
   }
 

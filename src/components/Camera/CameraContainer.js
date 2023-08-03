@@ -68,9 +68,11 @@ const CameraContainer = ( ): Node => {
   const devices = useCameraDevices( );
   const device = devices[cameraPosition];
   const hasFlash = device?.hasFlash;
-  const initialPhotoOptions = hasFlash
-    ? { flash: "off" }
-    : { };
+  const initialPhotoOptions = {
+    enableAutoStabilization: true,
+    qualityPrioritization: "quality",
+    ...( hasFlash && { flash: "off" } )
+  };
   const [takePhotoOptions, setTakePhotoOptions] = useState( initialPhotoOptions );
   const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );

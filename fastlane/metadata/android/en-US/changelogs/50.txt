@@ -1,0 +1,10 @@
+NEW
+* Basic AR camera (just names, using Seek model)
+* Withdrawing IDs on ObsDetail
+* StandardCamera zoom button
+
+FIXED
+* Bottom sheet appearing over camera from ObsEdit
+* Importing photo shows evidence as complete
+* MyObs header jitter on scroll in Android
+* Several LocationPicker problems
