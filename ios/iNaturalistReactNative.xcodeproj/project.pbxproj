@@ -402,6 +402,7 @@
 		};
 		197A169F2A7C2D90001A03DC /* Link iNat model files */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
