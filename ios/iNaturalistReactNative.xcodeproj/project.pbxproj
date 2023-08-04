@@ -11,8 +11,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		19FA77402A787B8A00982F02 /* taxonomy.json in Resources */ = {isa = PBXBuildFile; fileRef = 19FA773E2A787B8A00982F02 /* taxonomy.json */; };
-		19FA77412A787B8A00982F02 /* cvmodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 19FA773F2A787B8A00982F02 /* cvmodel.mlmodel */; };
+		1956B4912A7C3C1E00BBBDE4 /* link-inat-model-files.sh in Resources */ = {isa = PBXBuildFile; fileRef = 1956B4902A7C3C1E00BBBDE4 /* link-inat-model-files.sh */; };
+		197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 197A169B2A7C2567001A03DC /* cvmodel.mlmodel */; };
+		197A169E2A7C2567001A03DC /* taxonomy.json in Resources */ = {isa = PBXBuildFile; fileRef = 197A169C2A7C2567001A03DC /* taxonomy.json */; };
 		374CB22F29943E63005885ED /* Whitney-BookItalic-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = 374CB22E29943E63005885ED /* Whitney-BookItalic-Pro.otf */; };
 		4FB3B444D46A4115B867B9CC /* inaturalisticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */; };
 		763319F15FC44DBF89C9DEB0 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A96A8C1FA45F4C8692AAE36F /* INatIcon.ttf */; };
@@ -70,9 +71,10 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = iNaturalistReactNative/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = iNaturalistReactNative/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iNaturalistReactNative/main.m; sourceTree = "<group>"; };
+		1956B4902A7C3C1E00BBBDE4 /* link-inat-model-files.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "link-inat-model-files.sh"; sourceTree = "<group>"; };
+		197A169B2A7C2567001A03DC /* cvmodel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = cvmodel.mlmodel; sourceTree = "<group>"; };
+		197A169C2A7C2567001A03DC /* taxonomy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = taxonomy.json; sourceTree = "<group>"; };
 		19A5877328F8E3310016D128 /* iNaturalistReactNative-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iNaturalistReactNative-Bridging-Header.h"; sourceTree = "<group>"; };
-		19FA773E2A787B8A00982F02 /* taxonomy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = taxonomy.json; sourceTree = "<group>"; };
-		19FA773F2A787B8A00982F02 /* cvmodel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = cvmodel.mlmodel; sourceTree = "<group>"; };
 		374CB22E29943E63005885ED /* Whitney-BookItalic-Pro.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Whitney-BookItalic-Pro.otf"; path = "../assets/fonts/Whitney-BookItalic-Pro.otf"; sourceTree = "<group>"; };
 		52305C33CFC262F17ADC692E /* Pods-iNaturalistReactNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = iNaturalistReactNative/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -143,8 +145,9 @@
 		13B07FAE1A68108700A75B9A /* iNaturalistReactNative */ = {
 			isa = PBXGroup;
 			children = (
-				19FA773F2A787B8A00982F02 /* cvmodel.mlmodel */,
-				19FA773E2A787B8A00982F02 /* taxonomy.json */,
+				1956B4902A7C3C1E00BBBDE4 /* link-inat-model-files.sh */,
+				197A169B2A7C2567001A03DC /* cvmodel.mlmodel */,
+				197A169C2A7C2567001A03DC /* taxonomy.json */,
 				8FE03BBA2A5EFCB2001B35BA /* small_export_tax.json */,
 				8FE03BB92A5EFCB2001B35BA /* small_inception_tf1.mlmodel */,
 				8B8BAD0429F54EB300CE5C9F /* iNaturalistReactNative.entitlements */,
@@ -264,6 +267,7 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "iNaturalistReactNative" */;
 			buildPhases = (
 				F2ED1E9C8F0D0CEE2EFC8B3D /* [CP] Check Pods Manifest.lock */,
+				197A169F2A7C2D90001A03DC /* Link iNat model files */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -357,9 +361,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				19FA77402A787B8A00982F02 /* taxonomy.json in Resources */,
+				197A169E2A7C2567001A03DC /* taxonomy.json in Resources */,
 				8FE03BBC2A5EFCB2001B35BA /* small_export_tax.json in Resources */,
 				374CB22F29943E63005885ED /* Whitney-BookItalic-Pro.otf in Resources */,
+				1956B4912A7C3C1E00BBBDE4 /* link-inat-model-files.sh in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				A252B2AEA64E47C9AC1D20E8 /* Whitney-Light-Pro.otf in Resources */,
 				BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */,
@@ -394,6 +399,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+		};
+		197A169F2A7C2D90001A03DC /* Link iNat model files */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Link iNat model files";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n$SRCROOT/link-inat-model-files.sh\n";
 		};
 		49042D6B9285839976E1E986 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -525,7 +548,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				19FA77412A787B8A00982F02 /* cvmodel.mlmodel in Sources */,
+				197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */,
 				8FE03BBB2A5EFCB2001B35BA /* small_inception_tf1.mlmodel in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
