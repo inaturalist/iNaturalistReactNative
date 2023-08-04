@@ -1,29 +1,26 @@
 // @flow
-import { FlashList } from "@shopify/flash-list";
 import { fetchObservers } from "api/observations";
-import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import UserListItem from "components/SharedComponents/UserListItem";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect } from "react";
-import { Animated } from "react-native";
 import User from "realmModels/User";
 import { useInfiniteScroll, useTranslation } from "sharedHooks";
 
-const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
+import ExploreFlashList from "./ExploreFlashList";
 
 type Props = {
-  testID: string,
-  setHeaderRight: Function
+  setHeaderRight: Function,
+  handleScroll: Function
 };
 
 const ObserversView = ( {
-  testID,
-  setHeaderRight
+  setHeaderRight,
+  handleScroll
 }: Props ): Node => {
   const { t } = useTranslation( );
   const {
-    data: observerList,
+    data,
     isFetchingNextPage,
     fetchNextPage,
     totalResults
@@ -48,40 +45,24 @@ const ObserversView = ( {
 
   const renderItemSeparator = ( ) => <View className="border-b border-lightGray" />;
 
-  const renderFooter = ( ) => (
-    <InfiniteScrollLoadingWheel
-      isFetchingNextPage={isFetchingNextPage}
-    />
-  );
-
   useEffect( ( ) => {
     if ( totalResults ) {
       setHeaderRight( t( "X-Observers", { count: totalResults } ) );
     }
   }, [totalResults, setHeaderRight, t] );
 
-  if ( !observerList || observerList.length === 0 ) {
-    return null;
-  }
-
   return (
-    <View className="h-full mt-[180px]">
-      <AnimatedFlashList
-        data={observerList}
-        estimatedItemSize={98}
-        testID={testID}
-        horizontal={false}
-        keyExtractor={item => item.user.id}
-        renderItem={renderItem}
-        ItemSeparatorComponent={renderItemSeparator}
-        ListFooterComponent={renderFooter}
-        initialNumToRender={5}
-        onEndReached={fetchNextPage}
-        onEndReachedThreshold={0.5}
-        refreshing={isFetchingNextPage}
-        accessible
-      />
-    </View>
+    <ExploreFlashList
+      testID="ExploreObserversAnimatedList"
+      handleScroll={handleScroll}
+      isFetchingNextPage={isFetchingNextPage}
+      data={data}
+      renderItem={renderItem}
+      renderItemSeparator={renderItemSeparator}
+      fetchNextPage={fetchNextPage}
+      estimatedItemSize={98}
+      keyExtractor={item => item.user.id}
+    />
   );
 };
 

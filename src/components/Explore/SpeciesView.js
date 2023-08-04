@@ -1,31 +1,26 @@
 // @flow
 
-import { FlashList } from "@shopify/flash-list";
 import { fetchSpeciesCounts } from "api/observations";
-import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
-import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { Animated } from "react-native";
 import Taxon from "realmModels/Taxon";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import {
   useDeviceOrientation, useInfiniteScroll, useTranslation
 } from "sharedHooks";
 
+import ExploreFlashList from "./ExploreFlashList";
 import TaxonGridItem from "./TaxonGridItem";
-
-const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
 const GUTTER = 15;
 
 type Props = {
-  testID: string,
+  handleScroll: Function,
   setHeaderRight: Function
 }
 
 const SpeciesView = ( {
-  testID,
+  handleScroll,
   setHeaderRight
 }: Props ): Node => {
   const {
@@ -66,7 +61,7 @@ const SpeciesView = ( {
   ] );
   const { t } = useTranslation( );
   const {
-    data: speciesCountList,
+    data,
     isFetchingNextPage,
     fetchNextPage,
     totalResults
@@ -103,40 +98,20 @@ const SpeciesView = ( {
     paddingRight: GUTTER / 2
   };
 
-  const renderEmptyList = ( ) => <View />;
-
-  const renderFooter = ( ) => (
-    <InfiniteScrollLoadingWheel
-      isFetchingNextPage={isFetchingNextPage}
-      layout="grid"
-    />
-  );
-
-  if ( !speciesCountList || speciesCountList.length === 0 ) {
-    return null;
-  }
-
   return (
-    <View className="h-full mt-[180px]">
-      <AnimatedFlashList
-        contentContainerStyle={contentContainerStyle}
-        data={speciesCountList}
-        testID={testID}
-        horizontal={false}
-        key="grid"
-        estimatedItemSize={gridItemWidth}
-        keyExtractor={item => item.taxon.id}
-        renderItem={renderItem}
-        ListEmptyComponent={renderEmptyList}
-        ListFooterComponent={renderFooter}
-        numColumns={numColumns}
-        initialNumToRender={5}
-        onEndReached={fetchNextPage}
-        onEndReachedThreshold={1}
-        refreshing={isFetchingNextPage}
-        accessible
-      />
-    </View>
+    <ExploreFlashList
+      contentContainerStyle={contentContainerStyle}
+      testID="ExploreSpeciesAnimatedList"
+      handleScroll={handleScroll}
+      isFetchingNextPage={isFetchingNextPage}
+      data={data}
+      renderItem={renderItem}
+      fetchNextPage={fetchNextPage}
+      estimatedItemSize={gridItemWidth}
+      keyExtractor={item => item.taxon.id}
+      layout="grid"
+      numColumns={numColumns}
+    />
   );
 };
 

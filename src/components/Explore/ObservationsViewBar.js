@@ -36,7 +36,7 @@ const ObservationsViewBar = ( {
 
   return (
     <View
-      className="bottom-[115px] absolute left-[10px]"
+      className="bottom-[165px] absolute left-[10px]"
     >
       <SegmentedButtons
         value={observationsView}

@@ -1,5 +1,6 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import {
   Body1,
   Body3, Body4,
@@ -16,12 +17,15 @@ type Props = {
   region: Object,
   setShowExploreBottomSheet: Function,
   exploreViewButtonText: string,
-  headerRight?: ?string
+  headerRight?: ?string,
+  setHeightAboveFilters: Function
 }
 
 const Header = ( {
-  region, setShowExploreBottomSheet, exploreViewButtonText, headerRight
+  region, setShowExploreBottomSheet, exploreViewButtonText, headerRight,
+  setHeightAboveFilters
 }: Props ): Node => {
+  const navigation = useNavigation( );
   const theme = useTheme( );
 
   const surfaceStyle = {
@@ -37,11 +41,21 @@ const Header = ( {
     <View className="z-10 top-0 absolute w-full">
       <Surface
         style={surfaceStyle}
-        className="h-[230px]"
+        className="h-[175px]"
         elevation={5}
       >
-        <View className="top-[65px] mx-5">
-          <View className="flex-row justify-between pb-5 align-center">
+        <View
+          className="top-[15px] mx-5"
+        >
+          <View
+            className="flex-row justify-between pb-5 align-center"
+            onLayout={event => {
+              const {
+                height
+              } = event.nativeEvent.layout;
+              setHeightAboveFilters( height );
+            }}
+          >
             <Button
               text={exploreViewButtonText}
               className="shrink"
@@ -60,6 +74,7 @@ const Header = ( {
                     icon="label"
                     color={colors.white}
                     className="self-center"
+                    onPress={( ) => navigation.navigate( "Identify" )}
                   />
                 </View>
 
