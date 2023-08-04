@@ -51,7 +51,7 @@ const ObsEdit = ( ): Node => {
     <>
       <View testID="obs-edit" className="bg-white flex-1">
         <Header />
-        <KeyboardAwareScrollView className="bg-white">
+        <KeyboardAwareScrollView className="bg-white mb-[80px]">
           {observations.length > 1 && <MultipleObservationsArrows />}
           <EvidenceSection />
           <IdentificationSection />
