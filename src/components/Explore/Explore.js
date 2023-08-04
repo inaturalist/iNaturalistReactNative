@@ -14,24 +14,21 @@ import { useDeviceOrientation, useTranslation } from "sharedHooks";
 import Header from "./Header";
 import IdentifiersView from "./IdentifiersView";
 import ObservationsView from "./ObservationsView";
+import ObservationsViewBar from "./ObservationsViewBar";
 import ObserversView from "./ObserversView";
 import SpeciesView from "./SpeciesView";
 
 const { diffClamp } = Animated;
 
 type Props = {
-  isFetchingNextPage?: boolean,
-  observations: Array<Object>,
-  onEndReached: Function,
+  exploreParams: Object,
   region: Object,
   exploreView: string,
   changeExploreView: Function
 }
 
 const Explore = ( {
-  isFetchingNextPage,
-  observations,
-  onEndReached,
+  exploreParams,
   region,
   exploreView,
   changeExploreView
@@ -44,6 +41,7 @@ const Explore = ( {
   const { t } = useTranslation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const [headerRight, setHeaderRight] = useState( null );
+  const [observationsView, setObservationsView] = useState( "map" );
 
   const [heightAboveFilters, setHeightAboveFilters] = useState( 0 );
 
@@ -110,6 +108,12 @@ const Explore = ( {
     <>
       <ViewWrapper testID="Explore">
         <View className="overflow-hidden">
+          {exploreView === "observations" && (
+            <ObservationsViewBar
+              observationsView={observationsView}
+              updateObservationsView={newView => setObservationsView( newView )}
+            />
+          )}
           <Animated.View
             style={[
               {
@@ -130,9 +134,9 @@ const Explore = ( {
             {exploreView === "observations" && (
               <ObservationsView
                 region={region}
-                isFetchingNextPage={isFetchingNextPage}
-                observations={observations}
-                onEndReached={onEndReached}
+                exploreParams={exploreParams}
+                handleScroll={handleScroll}
+                observationsView={observationsView}
               />
             )}
             {exploreView === "species" && (

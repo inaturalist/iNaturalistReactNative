@@ -6,24 +6,25 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
-
-import ObservationsViewBar from "./ObservationsViewBar";
+import React from "react";
+import { useInfiniteObservationsScroll } from "sharedHooks";
 
 type Props = {
-  isFetchingNextPage?: boolean,
-  observations: Array<Object>,
-  onEndReached: Function,
-  region: Object
+  exploreParams: Object,
+  region: Object,
+  handleScroll: Function,
+  observationsView: string
 }
 
 const ObservationsView = ( {
-  isFetchingNextPage,
-  observations,
-  onEndReached,
-  region
+  exploreParams,
+  region,
+  handleScroll,
+  observationsView
 }: Props ): Node => {
-  const [observationsView, setObservationsView] = useState( "map" );
+  const {
+    observations, isFetchingNextPage, fetchNextPage
+  } = useInfiniteObservationsScroll( { upsert: false, params: exploreParams } );
 
   return (
     <>
@@ -41,15 +42,12 @@ const ObservationsView = ( {
             isFetchingNextPage={isFetchingNextPage}
             layout={observationsView}
             data={observations}
-            onEndReached={onEndReached}
+            onEndReached={fetchNextPage}
             testID="ExploreObservationsAnimatedList"
+            handleScroll={handleScroll}
           />
         )}
       </View>
-      <ObservationsViewBar
-        observationsView={observationsView}
-        updateObservationsView={newView => setObservationsView( newView )}
-      />
     </>
   );
 };

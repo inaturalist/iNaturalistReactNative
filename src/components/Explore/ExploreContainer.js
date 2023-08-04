@@ -2,7 +2,7 @@
 
 import type { Node } from "react";
 import React, { useEffect, useReducer } from "react";
-import { useInfiniteObservationsScroll, useUserLocation } from "sharedHooks";
+import { useUserLocation } from "sharedHooks";
 
 import Explore from "./Explore";
 
@@ -57,10 +57,6 @@ const ExploreContainer = ( ): Node => {
     exploreView
   } = state;
 
-  const {
-    observations, isFetchingNextPage, fetchNextPage
-  } = useInfiniteObservationsScroll( { upsert: false, params: exploreParams } );
-
   useEffect( ( ) => {
     if ( latLng?.latitude && latLng?.latitude !== region.latitude ) {
       dispatch( {
@@ -84,9 +80,7 @@ const ExploreContainer = ( ): Node => {
 
   return (
     <Explore
-      observations={observations}
-      isFetchingNextPage={isFetchingNextPage}
-      onEndReached={fetchNextPage}
+      exploreParams={exploreParams}
       region={region}
       exploreView={exploreView}
       changeExploreView={changeExploreView}
