@@ -1212,3 +1212,6 @@ Log-in-to-iNaturalist = Log in to iNaturalist
 Try-searching-for-a-location-name = Try searching for a location name to see the map
 Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
 Loading-iNaturalists-AR-Camera = Loading iNaturalist’s AR Camera
+
+# Used for explore screen when search params lead to a search with no data
+No-results-found = No results found

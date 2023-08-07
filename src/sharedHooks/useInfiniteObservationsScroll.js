@@ -25,7 +25,8 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
   const {
     data: observations,
     isFetchingNextPage,
-    fetchNextPage
+    fetchNextPage,
+    status
   } = useInfiniteQuery( {
     // eslint-disable-next-line
     queryKey: ["searchObservations", baseParams],
@@ -67,12 +68,14 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
     ? {
       isFetchingNextPage,
       fetchNextPage,
-      observations: flatten( observations?.pages )
+      observations: flatten( observations?.pages ),
+      status
     }
     : {
       isFetchingNextPage: false,
       fetchNextPage: noop,
-      observations: flatten( observations?.pages )
+      observations: flatten( observations?.pages ),
+      status
     };
 };
 

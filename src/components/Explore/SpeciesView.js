@@ -16,12 +16,14 @@ const GUTTER = 15;
 
 type Props = {
   handleScroll: Function,
-  setHeaderRight: Function
+  setHeaderRight: Function,
+  queryParams: Object
 }
 
 const SpeciesView = ( {
   handleScroll,
-  setHeaderRight
+  setHeaderRight,
+  queryParams
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -64,12 +66,13 @@ const SpeciesView = ( {
     data,
     isFetchingNextPage,
     fetchNextPage,
-    totalResults
+    totalResults,
+    status
   } = useInfiniteScroll(
     "fetchSpeciesCounts",
     fetchSpeciesCounts,
     {
-      place_id: 54321,
+      ...queryParams,
       fields: {
         taxon: Taxon.TAXON_FIELDS
       }
@@ -111,6 +114,7 @@ const SpeciesView = ( {
       keyExtractor={item => item.taxon.id}
       layout="grid"
       numColumns={numColumns}
+      status={status}
     />
   );
 };

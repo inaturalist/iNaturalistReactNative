@@ -24,14 +24,22 @@ type Props = {
   exploreParams: Object,
   region: Object,
   exploreView: string,
-  changeExploreView: Function
+  changeExploreView: Function,
+  updateTaxon: Function,
+  updatePlace: Function,
+  updatePlaceName: Function,
+  updateTaxonName: Function
 }
 
 const Explore = ( {
   exploreParams,
   region,
   exploreView,
-  changeExploreView
+  changeExploreView,
+  updateTaxon,
+  updatePlace,
+  updatePlaceName,
+  updateTaxonName
 }: Props ): Node => {
   const {
     isTablet,
@@ -104,6 +112,9 @@ const Explore = ( {
     }
   );
 
+  const queryParams = { ...exploreParams };
+  delete queryParams.taxon_name;
+
   return (
     <>
       <ViewWrapper testID="Explore">
@@ -130,6 +141,11 @@ const Explore = ( {
               exploreViewButtonText={exploreViewText[exploreView]}
               headerRight={headerRight}
               setHeightAboveFilters={setHeightAboveFilters}
+              updateTaxon={updateTaxon}
+              updatePlace={updatePlace}
+              updatePlaceName={updatePlaceName}
+              exploreParams={exploreParams}
+              updateTaxonName={updateTaxonName}
             />
             {exploreView === "observations" && (
               <ObservationsView
@@ -143,18 +159,21 @@ const Explore = ( {
               <SpeciesView
                 setHeaderRight={setHeaderRight}
                 handleScroll={handleScroll}
+                queryParams={queryParams}
               />
             )}
             {exploreView === "observers" && (
               <ObserversView
                 setHeaderRight={setHeaderRight}
                 handleScroll={handleScroll}
+                queryParams={queryParams}
               />
             )}
             {exploreView === "identifiers" && (
               <IdentifiersView
                 setHeaderRight={setHeaderRight}
                 handleScroll={handleScroll}
+                queryParams={queryParams}
               />
             )}
 

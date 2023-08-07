@@ -116,7 +116,6 @@ const MyObservations = ( {
             <ObservationsFlashList
               isFetchingNextPage={isFetchingNextPage}
               layout={layout}
-              observations={observations}
               onEndReached={onEndReached}
               allObsToUpload={allObsToUpload}
               currentUser={currentUser}
@@ -124,6 +123,7 @@ const MyObservations = ( {
               handleScroll={handleScroll}
               renderEmptyList={renderEmptyList}
               data={observations.filter( o => o.isValid() )}
+              showObservationsEmptyScreen
             />
           </Animated.View>
         </View>

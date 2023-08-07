@@ -23,33 +23,31 @@ const ObservationsView = ( {
   observationsView
 }: Props ): Node => {
   const {
-    observations, isFetchingNextPage, fetchNextPage
+    observations, isFetchingNextPage, fetchNextPage, status
   } = useInfiniteObservationsScroll( { upsert: false, params: exploreParams } );
 
-  return (
-    <>
-      {observationsView === "map" && (
-        <Map
-          className="h-full"
-          showsCompass={false}
-          region={region}
-          taxonId={3}
-        />
-      )}
+  return observationsView === "map"
+    ? (
+      <Map
+        className="h-full"
+        showsCompass={false}
+        region={region}
+        taxonId={exploreParams.taxon_id}
+      />
+    )
+    : (
       <View className="h-full mt-[180px]">
-        {( observations.length > 0 && observationsView !== "map" ) && (
-          <ObservationsFlashList
-            isFetchingNextPage={isFetchingNextPage}
-            layout={observationsView}
-            data={observations}
-            onEndReached={fetchNextPage}
-            testID="ExploreObservationsAnimatedList"
-            handleScroll={handleScroll}
-          />
-        )}
+        <ObservationsFlashList
+          isFetchingNextPage={isFetchingNextPage}
+          layout={observationsView}
+          data={observations}
+          onEndReached={fetchNextPage}
+          testID="ExploreObservationsAnimatedList"
+          handleScroll={handleScroll}
+          status={status}
+        />
       </View>
-    </>
-  );
+    );
 };
 
 export default ObservationsView;

@@ -11,24 +11,28 @@ import ExploreFlashList from "./ExploreFlashList";
 
 type Props = {
   setHeaderRight: Function,
-  handleScroll: Function
+  handleScroll: Function,
+  queryParams: Object
 };
 
 const IdentifiersView = ( {
   setHeaderRight,
-  handleScroll
+  handleScroll,
+  queryParams
 }: Props ): Node => {
   const { t } = useTranslation( );
+
   const {
     data,
     isFetchingNextPage,
     fetchNextPage,
-    totalResults
+    totalResults,
+    status
   } = useInfiniteScroll(
     "fetchIdentifiers",
     fetchIdentifiers,
     {
-      place_id: 54321,
+      ...queryParams,
       fields: {
         identifications_count: true,
         user: User.USER_FIELDS
@@ -63,6 +67,7 @@ const IdentifiersView = ( {
       fetchNextPage={fetchNextPage}
       estimatedItemSize={98}
       keyExtractor={item => item.user.id}
+      status={status}
     />
   );
 };

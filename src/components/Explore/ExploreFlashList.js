@@ -1,10 +1,12 @@
 // @flow
 import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
+import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Animated } from "react-native";
+import { ActivityIndicator, Animated } from "react-native";
+import { useTranslation } from "sharedHooks";
 
 const AnimatedFlashList = Animated.createAnimatedComponent( FlashList );
 
@@ -20,7 +22,8 @@ type Props = {
   keyExtractor: Function,
   layout?: string,
   contentContainerStyle?: Object,
-  numColumns?: number
+  numColumns?: number,
+  status: string
 };
 
 const ExploreFlashList = ( {
@@ -35,8 +38,11 @@ const ExploreFlashList = ( {
   keyExtractor,
   layout,
   contentContainerStyle,
-  numColumns
+  numColumns,
+  status
 }: Props ): Node => {
+  const { t } = useTranslation( );
+
   const renderFooter = ( ) => (
     <InfiniteScrollLoadingWheel
       isFetchingNextPage={isFetchingNextPage}
@@ -45,7 +51,15 @@ const ExploreFlashList = ( {
   );
 
   if ( !data || data.length === 0 ) {
-    return null;
+    return (
+      <View className="flex-1 justify-center items-center">
+        {status === "loading"
+          ? (
+            <ActivityIndicator size="large" />
+          )
+          : <Body3>{t( "No-results-found" )}</Body3>}
+      </View>
+    );
   }
 
   return (

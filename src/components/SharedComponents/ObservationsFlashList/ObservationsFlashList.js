@@ -2,12 +2,13 @@
 import { FlashList } from "@shopify/flash-list";
 import InfiniteScrollLoadingWheel from "components/MyObservations/InfiniteScrollLoadingWheel";
 import MyObservationsEmpty from "components/MyObservations/MyObservationsEmpty";
+import { Body3 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { Animated } from "react-native";
+import { ActivityIndicator, Animated } from "react-native";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
-import { useDeviceOrientation } from "sharedHooks";
+import { useDeviceOrientation, useTranslation } from "sharedHooks";
 
 import MyObservationsPressable from "./MyObservationsPressable";
 import ObsGridItem from "./ObsGridItem";
@@ -24,7 +25,9 @@ type Props = {
   currentUser?: ?Object,
   testID: string,
   handleScroll?: Function,
-  hideUploadStatus?: boolean
+  hideUploadStatus?: boolean,
+  status?: string,
+  showObservationsEmptyScreen?: boolean
 };
 
 const GUTTER = 15;
@@ -71,7 +74,9 @@ const ObservationsFlashList = ( {
   currentUser,
   testID,
   handleScroll,
-  hideUploadStatus
+  hideUploadStatus,
+  status,
+  showObservationsEmptyScreen
 }: Props ): Node => {
   const {
     isLandscapeMode,
@@ -79,6 +84,7 @@ const ObservationsFlashList = ( {
     screenHeight,
     screenWidth
   } = useDeviceOrientation( );
+  const { t } = useTranslation( );
   const [numColumns, setNumColumns] = useState( 0 );
   const [gridItemWidth, setGridItemWidth] = useState( 0 );
 
@@ -147,9 +153,21 @@ const ObservationsFlashList = ( {
       paddingRight: GUTTER / 2
     };
 
-  const renderEmptyList = ( ) => <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />;
-
   if ( numColumns === 0 ) { return null; }
+
+  const showEmptyScreen = showObservationsEmptyScreen
+    ? <MyObservationsEmpty isFetchingNextPage={isFetchingNextPage} />
+    : <Body3 className="self-center mt-[150px]">{t( "No-results-found" )}</Body3>;
+
+  if ( !data || data.length === 0 ) {
+    return status === "loading"
+      ? (
+        <View className="self-center mt-[150px]">
+          <ActivityIndicator size="large" />
+        </View>
+      )
+      : showEmptyScreen;
+  }
 
   return (
     <AnimatedFlashList
@@ -168,7 +186,6 @@ const ObservationsFlashList = ( {
       // react thinks we've rendered a second item w/ a duplicate key
       keyExtractor={item => item.uuid || item.id}
       renderItem={renderItem}
-      ListEmptyComponent={renderEmptyList}
       ItemSeparatorComponent={renderItemSeparator}
       ListFooterComponent={renderFooter}
       initialNumToRender={5}

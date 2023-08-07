@@ -17,7 +17,8 @@ const useInfiniteScroll = (
   const {
     data,
     isFetchingNextPage,
-    fetchNextPage
+    fetchNextPage,
+    status
   } = useInfiniteQuery( {
     // eslint-disable-next-line
     queryKey: [queryKey, baseParams],
@@ -31,17 +32,22 @@ const useInfiniteScroll = (
 
       return apiCall( params );
     },
-    getNextPageParam: lastPage => lastPage.page + 1
+    getNextPageParam: lastPage => ( lastPage
+      ? lastPage.page + 1
+      : 1 )
   } );
 
   const pages = data?.pages;
-  const allResults = pages?.map( page => page.results );
+  const allResults = pages?.map( page => page?.results );
 
   return {
     isFetchingNextPage,
     fetchNextPage,
     data: flatten( allResults ),
-    totalResults: pages?.[0].total_results
+    totalResults: pages?.[0]
+      ? pages?.[0].total_results
+      : 0,
+    status
   };
 };
 
