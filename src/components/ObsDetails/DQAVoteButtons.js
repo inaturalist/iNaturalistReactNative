@@ -54,6 +54,7 @@ const DQAVoteButtons = ( {
     if ( userAgrees ) {
       return (
         <INatIconButton
+          testID="DQAVoteButton.UserAgree"
           icon="arrow-up-bold-circle"
           size={33}
           color={theme.colors.secondary}
@@ -63,6 +64,7 @@ const DQAVoteButtons = ( {
     }
     return (
       <INatIconButton
+        testID="DQAVoteButton.EmptyAgree"
         icon="arrow-up-bold-circle-outline"
         size={33}
         onPress={() => setVote( metric, true )}
@@ -78,6 +80,7 @@ const DQAVoteButtons = ( {
     if ( userAgrees === null ) {
       return (
         <INatIconButton
+          testID="DQAVoteButton.EmptyDisagree"
           icon="arrow-down-bold-circle-outline"
           size={33}
           onPress={() => setVote( metric, false )}
@@ -87,6 +90,7 @@ const DQAVoteButtons = ( {
     if ( !userAgrees ) {
       return (
         <INatIconButton
+          testID="DQAVoteButton.UserDisagree"
           icon="arrow-down-bold-circle"
           size={33}
           color={theme.colors.error}
@@ -96,6 +100,7 @@ const DQAVoteButtons = ( {
     }
     return (
       <INatIconButton
+        testID="DQAVoteButton.EmptyDisagree"
         icon="arrow-down-bold-circle-outline"
         size={33}
         onPress={() => setVote( metric, false )}

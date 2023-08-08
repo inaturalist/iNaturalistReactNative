@@ -40,6 +40,12 @@ const ActivityHeader = ( {
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const { user } = item;
+  const isCurrent = item.current !== undefined
+    ? item.current
+    : undefined;
+
+  const idWithdrawn = isCurrent !== undefined && !isCurrent;
+
   const itemType = item.category
     ? "Identification"
     : "Comment";
@@ -51,7 +57,6 @@ const ActivityHeader = ( {
     };
     isActiveUserTheCurrentUser( );
 
-    // show flagged activity item right after flag item modal closes
     if ( item.flags?.length > 0 ) {
       setFlaggedStatus( true );
     }
@@ -81,28 +86,46 @@ const ActivityHeader = ( {
   );
 
   const renderIcon = () => {
+    if ( idWithdrawn ) {
+      return <INatIcon name="ban" color={colors.primary} size={22} />;
+    }
     if ( item.vision ) return <INatIcon name="sparkly-label" size={22} />;
     if ( flaggedStatus ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
+  };
+
+  const renderStatus = () => {
+    if ( flaggedStatus ) {
+      return (
+        <Body4>
+          {t( "Flagged" )}
+        </Body4>
+      );
+    }
+    if ( idWithdrawn ) {
+      return (
+        <Body4>
+          { t( "ID-Withdrawn" )}
+        </Body4>
+      );
+    }
+    if ( item.category ) {
+      return (
+        <Body4>
+          { t( `Category-${item.category}` )}
+        </Body4>
+      );
+    }
+    return (
+      <Body4 />
+    );
   };
 
   const ifCommentOrID = () => (
     <View className="flex-row items-center space-x-[15px]">
       {renderIcon()}
       {
-        flaggedStatus
-          ? (
-            <Body4>
-              {t( "Flagged" )}
-            </Body4>
-          )
-          : (
-            <Body4>
-              {item.category
-                ? t( `Category-${item.category}` )
-                : ""}
-            </Body4>
-          )
+        renderStatus()
       }
       {item.created_at
             && (

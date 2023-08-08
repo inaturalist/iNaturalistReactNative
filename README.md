@@ -134,7 +134,9 @@ We're using Nativewind, a styling system for React Native based on Tailwind CSS.
 
 We have a custom set of icons stored as SVG files and compiled into a font. New icons should be included with issues in a ready-to-use form, but some editing may be required.
 
-1. Add / edit SVGs to / in `src/images/icons/` (`git add` any new icons)
+1. Add / edit SVGs to / in `src/images/icons/` (`git add` any new icons). Icon SVGs must meet the following requirements
+  * `<svg>` element must have `width="24"` and `height="24"` attributes
+  * No paths with `fill-rule="evenodd"` attribute or `fill-rule: evenodd styles`
 1. `npm run icons`
 1. Rebuild the app (you'll have newly-linked assets that won't hot reload)
 
@@ -160,7 +162,7 @@ We use [fastlane](https://docs.fastlane.tools/) to help automate parts of the de
 
 ### Usage
 
-The current expectation is that you we tag to freeze the code, bump the version, and describe the changes represented by the tag. Then we release to make builds and publish on Github. Later, presumably when some of the change logs have been translated, we push builds for internal testing. If that looks ok, we push to public testing, and later to production release.
+The current expectation is that you we tag to freeze the code, bump the internal build number, and describe the changes represented by the tag. Then we release to make builds and publish on Github. Later, presumably when some of the change logs have been translated, we push builds for internal testing. If that looks ok, we push to public testing, and later to production release.
 
 ```zsh
 # Make a git tag. This will bump the build number and prompt you to describe
