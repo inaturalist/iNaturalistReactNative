@@ -70,7 +70,7 @@ const addCameraFilesiOS = () => {
     try {
       await RNFS.unlink( destination );
     } catch ( unlinkError ) {
-      console.error( "Error deleting file at ", destination, ": ", unlinkError );
+      console.log( "Error deleting file at ", destination, ": ", unlinkError );
     }
     try {
       await RNFS.copyFile( source, destination );
