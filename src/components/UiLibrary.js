@@ -1,4 +1,3 @@
-import ObsStatus from "components/MyObservations/ObsStatus";
 import ActivityItem from "components/ObsDetails/ActivityItem";
 import {
   ActivityCount,
@@ -38,6 +37,7 @@ import {
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
+import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
 import UserText from "components/SharedComponents/UserText";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";

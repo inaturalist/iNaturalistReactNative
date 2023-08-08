@@ -15,8 +15,8 @@
 		197A169D2A7C2567001A03DC /* cvmodel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 197A169B2A7C2567001A03DC /* cvmodel.mlmodel */; };
 		197A169E2A7C2567001A03DC /* taxonomy.json in Resources */ = {isa = PBXBuildFile; fileRef = 197A169C2A7C2567001A03DC /* taxonomy.json */; };
 		374CB22F29943E63005885ED /* Whitney-BookItalic-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = 374CB22E29943E63005885ED /* Whitney-BookItalic-Pro.otf */; };
+		37785BD62A81CC0A0077C2CC /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37785BD52A81CC090077C2CC /* INatIcon.ttf */; };
 		4FB3B444D46A4115B867B9CC /* inaturalisticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */; };
-		763319F15FC44DBF89C9DEB0 /* INatIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A96A8C1FA45F4C8692AAE36F /* INatIcon.ttf */; };
 		7F29616A6267D5F6EC5F67B7 /* libPods-iNaturalistReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B935DA49196EBFE90895C8DD /* libPods-iNaturalistReactNative.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8B65ED3129F575C10054CCEF /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B65ED2F29F575C10054CCEF /* MainInterface.storyboard */; };
@@ -76,6 +76,7 @@
 		197A169C2A7C2567001A03DC /* taxonomy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = taxonomy.json; sourceTree = "<group>"; };
 		19A5877328F8E3310016D128 /* iNaturalistReactNative-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iNaturalistReactNative-Bridging-Header.h"; sourceTree = "<group>"; };
 		374CB22E29943E63005885ED /* Whitney-BookItalic-Pro.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Whitney-BookItalic-Pro.otf"; path = "../assets/fonts/Whitney-BookItalic-Pro.otf"; sourceTree = "<group>"; };
+		37785BD52A81CC090077C2CC /* INatIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
 		52305C33CFC262F17ADC692E /* Pods-iNaturalistReactNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative.release.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = iNaturalistReactNative/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8B65ED2B29F575C10054CCEF /* iNaturalistReactNative-ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "iNaturalistReactNative-ShareExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,7 +89,6 @@
 		8BF3756EB416D21D28518C7D /* Pods-iNaturalistReactNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iNaturalistReactNative.debug.xcconfig"; path = "Target Support Files/Pods-iNaturalistReactNative/Pods-iNaturalistReactNative.debug.xcconfig"; sourceTree = "<group>"; };
 		8FE03BB92A5EFCB2001B35BA /* small_inception_tf1.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = small_inception_tf1.mlmodel; sourceTree = "<group>"; };
 		8FE03BBA2A5EFCB2001B35BA /* small_export_tax.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = small_export_tax.json; sourceTree = "<group>"; };
-		A96A8C1FA45F4C8692AAE36F /* INatIcon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = INatIcon.ttf; path = ../assets/fonts/INatIcon.ttf; sourceTree = "<group>"; };
 		ADBDD0D061046941F61CA31D /* libPods-iNaturalistReactNative-ShareExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iNaturalistReactNative-ShareExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B935DA49196EBFE90895C8DD /* libPods-iNaturalistReactNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iNaturalistReactNative.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA9D41ECEBFA4C38B74009B3 /* Whitney-Light-Pro.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Whitney-Light-Pro.otf"; path = "../assets/fonts/Whitney-Light-Pro.otf"; sourceTree = "<group>"; };
@@ -234,9 +234,9 @@
 			children = (
 				BA9D41ECEBFA4C38B74009B3 /* Whitney-Light-Pro.otf */,
 				D09FA3A0162844FF80A5EF96 /* Whitney-Medium-Pro.otf */,
+				37785BD52A81CC090077C2CC /* INatIcon.ttf */,
 				374CB22E29943E63005885ED /* Whitney-BookItalic-Pro.otf */,
 				EE004FD2EC174086A7AB2908 /* inaturalisticons.ttf */,
-				A96A8C1FA45F4C8692AAE36F /* INatIcon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -369,7 +369,7 @@
 				A252B2AEA64E47C9AC1D20E8 /* Whitney-Light-Pro.otf in Resources */,
 				BA2479FA3D7B40A7BEF7B3CD /* Whitney-Medium-Pro.otf in Resources */,
 				4FB3B444D46A4115B867B9CC /* inaturalisticons.ttf in Resources */,
-				763319F15FC44DBF89C9DEB0 /* INatIcon.ttf in Resources */,
+				37785BD62A81CC0A0077C2CC /* INatIcon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

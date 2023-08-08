@@ -2,8 +2,8 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import ObsImagePreview from "components/MyObservations/ObsImagePreview";
 import { DisplayTaxonName, INatIconButton } from "components/SharedComponents";
+import ObsImagePreview from "components/SharedComponents/ObservationsFlashList/ObsImagePreview";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";

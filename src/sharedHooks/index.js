@@ -5,6 +5,7 @@ export { default as useCoords } from "./useCoords";
 export { default as useCurrentObservationLocation } from "./useCurrentObservationLocation";
 export { default as useCurrentUser } from "./useCurrentUser";
 export { default as useDeviceOrientation } from "./useDeviceOrientation";
+export { default as useInfiniteObservationsScroll } from "./useInfiniteObservationsScroll";
 export { default as useInfiniteScroll } from "./useInfiniteScroll";
 export { default as useIsConnected } from "./useIsConnected";
 export { default as useIsForeground } from "./useIsForeground";
