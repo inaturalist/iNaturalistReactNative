@@ -6,14 +6,10 @@ import { Platform } from "react-native";
 import { PERMISSIONS, request } from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 
-type Props = {
-  skipPlaceGuess?: bool
-}
-
 // Max time to wait while fetching current location
 const CURRENT_LOCATION_TIMEOUT_MS = 30000;
 
-const useUserLocation = ( { skipPlaceGuess = false }: Props ): Object => {
+const useUserLocation = ( { skipPlaceGuess = false }: Object ): Object => {
   const [latLng, setLatLng] = useState( null );
   const [isLoading, setIsLoading] = useState( true );
 

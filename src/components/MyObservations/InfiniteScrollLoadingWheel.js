@@ -10,8 +10,8 @@ import { useIsConnected, useTranslation } from "sharedHooks";
 
 type Props = {
   isFetchingNextPage?: boolean,
-  currentUser: ?Object,
-  layout: string
+  currentUser?: ?Object,
+  layout?: string
 }
 
 const InfiniteScrollLoadingWheel = ( {

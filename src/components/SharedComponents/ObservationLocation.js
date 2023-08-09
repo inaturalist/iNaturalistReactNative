@@ -1,7 +1,7 @@
 // @flow
 import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
-import { Body4, INatIcon } from "components/SharedComponents";
+import { Body3, Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import useTranslation from "sharedHooks/useTranslation";
@@ -9,10 +9,13 @@ import useTranslation from "sharedHooks/useTranslation";
 type Props = {
   observation: Object,
   classNameMargin?: string,
-  details?:boolean
+  details?: boolean,
+  large?: boolean
 };
 
-const ObservationLocation = ( { observation, classNameMargin, details }: Props ): React.Node => {
+const ObservationLocation = ( {
+  observation, classNameMargin, details, large
+}: Props ): React.Node => {
   const { t } = useTranslation( );
 
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
@@ -45,6 +48,10 @@ const ObservationLocation = ( { observation, classNameMargin, details }: Props )
     </View>
   );
 
+  const TextComponent = large
+    ? Body3
+    : Body4;
+
   return (
     <View
       className={classNames( "flex flex-col", classNameMargin )}
@@ -56,13 +63,13 @@ const ObservationLocation = ( { observation, classNameMargin, details }: Props )
     >
       <View className="flex-row">
         <INatIcon name="location" size={15} />
-        <Body4
+        <TextComponent
           className="text-darkGray ml-[8px]"
           numberOfLines={1}
           ellipsizeMode="tail"
         >
           {displayLocation}
-        </Body4>
+        </TextComponent>
       </View>
       {details
         && (

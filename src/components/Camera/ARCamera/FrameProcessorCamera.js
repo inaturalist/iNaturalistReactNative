@@ -5,6 +5,7 @@ import React, {
   useEffect
 } from "react";
 import { Platform } from "react-native";
+import Config from "react-native-config";
 import * as REA from "react-native-reanimated";
 import {
   useFrameProcessor
@@ -24,6 +25,7 @@ type Props = {
   animatedProps: any
 };
 
+const version = Config.CV_MODEL_VERSION;
 // Johannes: when I copied over the native code from the legacy react-native-camera on Android
 // this value had to be a string. On iOS I changed the API to also accept a string (was number).
 // Maybe, the intention would look clearer if we refactor to use a number here.
@@ -62,7 +64,7 @@ const FrameProcessorCamera = ( {
       // Reminder: this is a worklet, running on the UI thread.
       try {
         const results = InatVision.inatVision( frame, {
-          version: "1.0",
+          version,
           modelPath: dirModel,
           taxonomyPath: dirTaxonomy,
           confidenceThreshold
@@ -73,7 +75,7 @@ const FrameProcessorCamera = ( {
         REA.runOnJS( onClassifierError )( classifierError );
       }
     },
-    [confidenceThreshold]
+    [version, confidenceThreshold]
   );
 
   return (

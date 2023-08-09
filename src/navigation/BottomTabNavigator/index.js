@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
 import AddID from "components/AddID/AddID";
 import CameraContainer from "components/Camera/CameraContainer";
-import Explore from "components/Explore/Explore";
+import ExploreContainer from "components/Explore/ExploreContainer";
 import Identify from "components/Identify/Identify";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import ForgotPassword from "components/LoginSignUp/ForgotPassword";
@@ -182,9 +182,9 @@ const BottomTabs = ( ) => {
       >
         <Tab.Screen
           name="Explore"
-          component={Explore}
+          component={ExploreContainer}
           options={{
-            ...hideHeaderLeft,
+            ...hideHeader,
             meta: {
               icon: "compass-rose-outline",
               testID: EXPLORE_SCREEN_ID,

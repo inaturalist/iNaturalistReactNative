@@ -995,6 +995,26 @@ x-identifications = {$count ->
    *[other] {$count} identifications
 }
 
+X-Identifications = {$count ->
+    [one] {$count} Identification
+   *[other] {$count} Identifications
+}
+
+X-Identifiers = {$count ->
+    [one] {$count} Identifier
+   *[other] {$count} Identifiers
+}
+
+X-Observers = {$count ->
+    [one] {$count} Observer
+   *[other] {$count} Observers
+}
+
+X-Species = {$count ->
+    [one] {$count} Species
+   *[other] {$count} Species
+}
+
 ## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
 ## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
 Agrees-with-identification = Agrees with this identification.
@@ -1195,3 +1215,6 @@ Log-in-to-iNaturalist = Log in to iNaturalist
 Try-searching-for-a-location-name = Try searching for a location name to see the map
 Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
 Loading-iNaturalists-AR-Camera = Loading iNaturalist’s AR Camera
+
+# Used for explore screen when search params lead to a search with no data
+No-results-found = No results found

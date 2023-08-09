@@ -14,8 +14,10 @@ type Props = {
 };
 
 const ObsListItem = ( { observation, setShowLoginSheet }: Props ): Node => {
-  const photo = observation?.observationPhotos?.[0]?.photo || null;
-  const needsSync = observation.needsSync( );
+  const photo = observation?.observationPhotos?.[0]?.photo
+    || observation?.observation_photos?.[0]?.photo
+    || null;
+  const needsSync = typeof observation.needsSync !== "undefined" && observation.needsSync( );
 
   return (
     <View

@@ -1,4 +1,3 @@
-import ObsStatus from "components/MyObservations/ObsStatus";
 import ActivityItem from "components/ObsDetails/ActivityItem";
 import {
   ActivityCount,
@@ -19,6 +18,7 @@ import {
   Heading3,
   Heading4,
   Heading5,
+  IconicTaxonChooser,
   IdentificationsCount,
   INatIcon,
   INatIconButton,
@@ -38,6 +38,7 @@ import {
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
+import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
 import UserText from "components/SharedComponents/UserText";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
@@ -519,6 +520,7 @@ const UiLibrary = (): Node => {
 
         <Heading2 className="my-2">ActivityItem</Heading2>
         <ActivityItem item={exampleId} currentUserId={userId} />
+        <Heading2 className="my-2">Search Bar</Heading2>
         <SearchBar value="search" />
         <Heading2 className="my-2">Confidence Interval</Heading2>
         <ConfidenceInterval confidence={3} activeColor="bg-inatGreen" />
@@ -530,6 +532,16 @@ const UiLibrary = (): Node => {
           rank: "family",
           rank_level: 60
         }}
+        />
+        <Heading2 className="my-2">Iconic Taxon Chooser</Heading2>
+        <IconicTaxonChooser
+          taxon={{
+            name: "Aves",
+            id: 3,
+            iconic_taxon_name: "Aves"
+          }}
+          before={<Button text={t( "ADD-AN-ID" )} className="rounded-full" />}
+          onTaxonChosen={taxon => console.log( "taxon selected:", taxon )}
         />
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
