@@ -359,6 +359,7 @@ const BottomTabs = ( ) => {
             unmountOnBlur: true
           }}
         />
+
         <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />
         <Tab.Screen name="SignUp" component={SignUp} options={hideHeader} />
         <Tab.Screen name="ForgotPassword" component={ForgotPassword} options={hideHeader} />

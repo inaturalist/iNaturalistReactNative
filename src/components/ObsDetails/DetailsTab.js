@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import MapModal from "components/ObsDetails/MapModal";
 import {
   Body4,
   Button,
@@ -12,8 +13,9 @@ import {
 } from "components/SharedComponents";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import Map from "components/SharedComponents/Map";
+import Modal from "components/SharedComponents/Modal";
 import UserText from "components/SharedComponents/UserText";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
@@ -80,9 +82,12 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const navigation = useNavigation( );
   const application = observation?.application?.name;
   const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
+  const [showModal, setShowModal] = useState( false );
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation.uuid;
   const theme = useTheme( );
+  const privacy = observation?.geoprivacy;
+  console.log( observation );
 
   const displayQualityGradeOption = option => {
     const isResearchGrade = ( qualityGrade === "research" && option === "research" );
@@ -105,6 +110,11 @@ const DetailsTab = ( { observation }: Props ): Node => {
 
   return (
     <>
+      <Modal
+        showModal={showModal}
+        closeModal={( ) => setShowModal( false )}
+        modal={<MapModal observation={observation} closeModal={( ) => setShowModal( false )} />}
+      />
       {observation.description && (
         <>
           <View className={sectionClass}>
@@ -130,12 +140,18 @@ const DetailsTab = ( { observation }: Props ): Node => {
         </KebabMenu>
       </View>
       { ( observation.latitude || observation.private_latitude ) && (
-        <Map
-          obsLatitude={observation.latitude}
-          obsLongitude={observation.longitude}
-          mapHeight={230}
-          showMarker
-        />
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => setShowModal( true )}
+        >
+          <Map
+            obsLatitude={observation.latitude}
+            obsLongitude={observation.longitude}
+            mapHeight={230}
+            privacy={privacy}
+            showMarker
+          />
+        </Pressable>
       ) }
 
       <View className={`mt-[11px] ${sectionClass}`}>
