@@ -2,7 +2,7 @@
 
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import fetchTaxon from "api/taxa";
+import { fetchTaxon } from "api/taxa";
 import PlaceholderText from "components/PlaceholderText";
 import {
   DisplayTaxonName,

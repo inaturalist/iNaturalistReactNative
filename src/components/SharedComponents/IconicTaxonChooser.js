@@ -5,6 +5,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { FlatList } from "react-native";
+import { useIconicTaxa } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -15,8 +16,8 @@ type Props = {
 
 const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => {
   const [selectedIcon, setSelectedIcon] = useState( null );
-
-  const isIconic = taxon.iconic_taxon_name;
+  const iconicTaxa = useIconicTaxa( { reload: false } );
+  const isIconic = taxon?.id && iconicTaxa.filtered( `id = ${taxon?.id}` );
 
   const iconicTaxonIcons = [
     "plantae",
@@ -37,8 +38,8 @@ const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => 
 
   useEffect( ( ) => {
     if ( !isIconic ) { return; }
-    setSelectedIcon( isIconic.toLowerCase( ) );
-  }, [isIconic] );
+    setSelectedIcon( taxon.name.toLowerCase( ) );
+  }, [isIconic, taxon] );
 
   const renderIcon = ( { item } ) => {
     const isSelected = selectedIcon === item;
@@ -46,7 +47,8 @@ const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => 
       <View
         className={
           classnames(
-            "border-darkGray rounded-full border border-[2px] mr-4 justify-center",
+            "border-darkGray border border-[2px] mr-4 justify-center items-center",
+            "h-[36px] w-[36px] rounded-full",
             {
               "bg-darkGray": isSelected
             }
@@ -60,7 +62,7 @@ const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => 
       >
         <INatIconButton
           icon={`iconic-${item}`}
-          size={25}
+          size={22}
           onPress={( ) => {
             setSelectedIcon( item );
             onTaxonChosen( item );
@@ -83,16 +85,14 @@ const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => 
   };
 
   return (
-    <View className="flex-row mt-[11px]">
-      <FlatList
-        data={iconicTaxonIcons}
-        horizontal
-        renderItem={renderIcon}
-        showsHorizontalScrollIndicator={false}
-        ListHeaderComponent={renderHeader}
-        accessibilityRole="radiogroup"
-      />
-    </View>
+    <FlatList
+      data={iconicTaxonIcons}
+      horizontal
+      renderItem={renderIcon}
+      showsHorizontalScrollIndicator={false}
+      ListHeaderComponent={renderHeader}
+      accessibilityRole="radiogroup"
+    />
   );
 };
 

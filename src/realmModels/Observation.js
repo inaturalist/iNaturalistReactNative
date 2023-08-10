@@ -162,9 +162,7 @@ class Observation extends Realm.Object {
       return evidence;
     };
 
-    const taxon = obs.taxon
-      ? Taxon.mapApiToRealm( obs.taxon )
-      : null;
+    const taxon = obs.taxon || null;
     const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
 

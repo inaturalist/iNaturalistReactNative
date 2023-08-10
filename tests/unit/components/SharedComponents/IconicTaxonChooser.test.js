@@ -4,9 +4,20 @@ import React from "react";
 
 import factory from "../../../factory";
 
+const mockData = [factory( "RemoteTaxon" )];
+
+jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
+  __esModule: true,
+  default: ( ) => ( {
+    data: mockData
+  } )
+} ) );
+
 describe( "IconicTaxonChooser", () => {
   it( "should be accessible", () => {
-    const mockTaxon = factory( "RemoteTaxon" );
+    const mockTaxon = factory( "RemoteTaxon", {
+      name: "Aves"
+    } );
     expect(
       <IconicTaxonChooser taxon={mockTaxon} />
     ).toBeAccessible( );
