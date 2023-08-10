@@ -6,6 +6,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Alert, Platform, Share } from "react-native";
+import Config from "react-native-config";
 import {
   getBuildNumber,
   getSystemName,
@@ -13,17 +14,18 @@ import {
 } from "react-native-device-info";
 import RNFS from "react-native-fs";
 import Mailer from "react-native-mail";
-import { modelPath, taxonomyPath } from "sharedHelpers/cvModel";
 
 import { logFilePath } from "../../react-native-logs.config";
 import ScrollViewWrapper from "./SharedComponents/ScrollViewWrapper";
 
-function basename( path ) {
-  return path.split( "/" ).reverse( )[0];
-}
-
-const modelFileName = basename( modelPath );
-const taxonomyFileName = basename( taxonomyPath );
+const modelFileName: string = Platform.select( {
+  ios: Config.IOS_MODEL_FILE_NAME,
+  android: Config.ANDROID_MODEL_FILE_NAME
+} );
+const taxonomyFileName = Platform.select( {
+  ios: Config.IOS_TAXONOMY_FILE_NAME,
+  android: Config.ANDROID_TAXONOMY_FILE_NAME
+} );
 
 const TextHeader = ( { level, children } ) => {
   let sizeClass = "text-2xl";
