@@ -13,9 +13,17 @@ import {
 } from "react-native-device-info";
 import RNFS from "react-native-fs";
 import Mailer from "react-native-mail";
+import { modelPath, taxonomyPath } from "sharedHelpers/cvModel";
 
 import { logFilePath } from "../../react-native-logs.config";
 import ScrollViewWrapper from "./SharedComponents/ScrollViewWrapper";
+
+function basename( path ) {
+  return path.split( "/" ).reverse( )[0];
+}
+
+const modelFileName = basename( modelPath );
+const taxonomyFileName = basename( taxonomyPath );
 
 const TextHeader = ( { level, children } ) => {
   let sizeClass = "text-2xl";
@@ -100,6 +108,15 @@ const About = (): Node => {
         </Text>
         <TextHeader>Version</TextHeader>
         <Text selectable>{`${appVersion} (${buildVersion})`}</Text>
+        <TextHeader>Computer Vision</TextHeader>
+        <View className="flex-row">
+          <Text className="font-bold">Model: </Text>
+          <Text selectable>{modelFileName}</Text>
+        </View>
+        <View className="flex-row">
+          <Text className="font-bold">Taxonomy: </Text>
+          <Text selectable>{taxonomyFileName}</Text>
+        </View>
         <TextHeader>Logs</TextHeader>
         <Text>Last 100 lines</Text>
         <Text className={`text-xs h-fit mb-5 ${fontMonoClass}`}>

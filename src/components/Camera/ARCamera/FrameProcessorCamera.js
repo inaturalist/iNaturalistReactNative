@@ -10,7 +10,7 @@ import * as REA from "react-native-reanimated";
 import {
   useFrameProcessor
 } from "react-native-vision-camera";
-import { dirModel, dirTaxonomy } from "sharedHelpers/cvModel";
+import { modelPath, taxonomyPath } from "sharedHelpers/cvModel";
 import * as InatVision from "vision-camera-plugin-inatvision";
 
 type Props = {
@@ -65,8 +65,8 @@ const FrameProcessorCamera = ( {
       try {
         const results = InatVision.inatVision( frame, {
           version,
-          modelPath: dirModel,
-          taxonomyPath: dirTaxonomy,
+          modelPath,
+          taxonomyPath,
           confidenceThreshold
         } );
         REA.runOnJS( onTaxaDetected )( results );

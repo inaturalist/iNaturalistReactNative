@@ -20,12 +20,12 @@ const modelFiles = {
   ANDROIDTAXONOMY: Config.ANDROID_TAXONOMY_FILE_NAME
 };
 
-export const dirModel: string = Platform.select( {
+export const modelPath: string = Platform.select( {
   ios: `${RNFS.DocumentDirectoryPath}/${modelFiles.IOSMODEL}`,
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDMODEL}`
 } );
 
-export const dirTaxonomy: string = Platform.select( {
+export const taxonomyPath: string = Platform.select( {
   ios: `${RNFS.DocumentDirectoryPath}/${modelFiles.IOSTAXONOMY}`,
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDTAXONOMY}`
 } );
@@ -53,8 +53,8 @@ const addCameraFilesAndroid = () => {
     // Android writes over existing files
     if ( hasModel !== undefined ) {
       logger.debug( "Found model asset found with filename", model );
-      copyFilesAndroid( `camera/${model}`, dirModel );
-      copyFilesAndroid( `camera/${taxonomy}`, dirTaxonomy );
+      copyFilesAndroid( `camera/${model}`, modelPath );
+      copyFilesAndroid( `camera/${taxonomy}`, taxonomyPath );
     } else {
       logger.debug( "No model asset found to copy into document directory." );
       Alert.alert(
@@ -92,8 +92,8 @@ const addCameraFilesiOS = () => {
 
     // Android writes over existing files
     if ( hasModel !== undefined ) {
-      copyFilesiOS( `${RNFS.MainBundlePath}/${model}`, dirModel );
-      copyFilesiOS( `${RNFS.MainBundlePath}/${taxonomy}`, dirTaxonomy );
+      copyFilesiOS( `${RNFS.MainBundlePath}/${model}`, modelPath );
+      copyFilesiOS( `${RNFS.MainBundlePath}/${taxonomy}`, taxonomyPath );
     } else {
       logger.debug( "No model asset found to copy into document directory." );
       Alert.alert(
