@@ -14,14 +14,15 @@ type Props = {
   taxonId?: number,
   updateCoords?: Function,
   region?: Object,
-  showMarker?: boolean
+  showMarker?: boolean,
+  hideMap?: boolean
 }
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( {
   obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region,
-  showMarker
+  showMarker, hideMap
 }: Props ): React.Node => {
   const { latLng: viewerLatLng } = useUserLocation( { skipPlaceGuess: true } );
 
@@ -47,37 +48,39 @@ const Map = ( {
       ]}
       testID="MapView"
     >
-      <MapView
-        style={viewStyles.map}
-        region={( region?.latitude )
-          ? region
-          : initialRegion}
-        onRegionChange={updateCoords}
-        showsUserLocation
-        showsMyLocationButton
-        loadingEnabled
-      >
-        {taxonId && (
-          <UrlTile
-            tileSize={512}
-            urlTemplate={urlTemplate}
-          />
-        )}
-        {showMarker && (
-          <Marker
-            coordinate={{
-              latitude: obsLatitude,
-              longitude: obsLongitude
-            }}
-          >
-            <Image
-              source={require( "images/location_indicator.png" )}
-              className="w-[25px] h-[32px]"
-              accessibilityIgnoresInvertColors
+      {!hideMap && (
+        <MapView
+          style={viewStyles.map}
+          region={( region?.latitude )
+            ? region
+            : initialRegion}
+          onRegionChange={updateCoords}
+          showsUserLocation
+          showsMyLocationButton
+          loadingEnabled
+        >
+          {taxonId && (
+            <UrlTile
+              tileSize={512}
+              urlTemplate={urlTemplate}
             />
-          </Marker>
-        )}
-      </MapView>
+          )}
+          {showMarker && (
+            <Marker
+              coordinate={{
+                latitude: obsLatitude,
+                longitude: obsLongitude
+              }}
+            >
+              <Image
+                source={require( "images/location_indicator.png" )}
+                className="w-[25px] h-[32px]"
+                accessibilityIgnoresInvertColors
+              />
+            </Marker>
+          )}
+        </MapView>
+      )}
     </View>
   );
 };

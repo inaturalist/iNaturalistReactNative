@@ -33,6 +33,7 @@ const ObservationsView = ( {
         showsCompass={false}
         region={region}
         taxonId={exploreParams.taxon_id}
+        hideMap={region.latitude === 0.0}
       />
     )
     : (

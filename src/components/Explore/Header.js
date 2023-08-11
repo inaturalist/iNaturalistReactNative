@@ -99,8 +99,9 @@ const Header = ( {
           >
             <Button
               text={exploreViewButtonText}
-              className="shrink"
+              className="shrink border border-[3px] border-darkGray"
               dropdown
+              level="primary"
               onPress={( ) => setShowExploreBottomSheet( true )}
             />
             {headerRight
