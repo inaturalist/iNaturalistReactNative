@@ -11,11 +11,14 @@ import { AppState, LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import { addARCameraFiles } from "sharedHelpers/cvModel";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useObservationUpdatesWhenFocused from "sharedHooks/useObservationUpdatesWhenFocused";
-import useShare from "sharedHooks/useShare";
-import useTranslation from "sharedHooks/useTranslation";
-import useUserMe from "sharedHooks/useUserMe";
+import {
+  useCurrentUser,
+  useIconicTaxa,
+  useObservationUpdatesWhenFocused,
+  useShare,
+  useTranslation,
+  useUserMe
+} from "sharedHooks";
 
 import { log } from "../../react-native-logs.config";
 
@@ -40,6 +43,7 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
+  useIconicTaxa( { reload: true } );
   const { i18n } = useTranslation( );
   useShare( );
 

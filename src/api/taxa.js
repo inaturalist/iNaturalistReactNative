@@ -42,4 +42,16 @@ async function fetchTaxon( id: number, params: Object = {}, opts: Object = {} ):
   }
 }
 
-export default fetchTaxon;
+async function searchTaxa( params: Object = {}, opts: Object = {} ): Promise<any> {
+  try {
+    const { results } = await inatjs.taxa.search( { ...PARAMS, ...params }, opts );
+    return results;
+  } catch ( e ) {
+    return handleError( e );
+  }
+}
+
+export {
+  fetchTaxon,
+  searchTaxa
+};
