@@ -189,7 +189,7 @@ const Explore = ( {
               text={exploreViewText[view]}
               key={exploreViewText[view]}
               className="mx-5 my-3 border border-[3px] border-darkGray bg-white"
-              level="primary"
+              level={Platform.OS === "android" && "primary"}
               onPress={( ) => {
                 changeExploreView( view );
                 setShowExploreBottomSheet( false );
