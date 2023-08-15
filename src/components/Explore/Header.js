@@ -13,7 +13,7 @@ import SearchBar from "components/SharedComponents/SearchBar";
 import { Image, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useRef, useState } from "react";
-import { Keyboard, Platform } from "react-native";
+import { Keyboard } from "react-native";
 import { Surface, useTheme } from "react-native-paper";
 import Taxon from "realmModels/Taxon";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
@@ -99,8 +99,7 @@ const Header = ( {
           >
             <Button
               text={exploreViewButtonText}
-              className="shrink border border-[3px] border-darkGray bg-white"
-              level={Platform.OS === "android" && "primary"}
+              className="shrink"
               dropdown
               onPress={( ) => setShowExploreBottomSheet( true )}
             />
