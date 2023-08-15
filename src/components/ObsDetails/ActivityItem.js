@@ -3,8 +3,9 @@
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
 import AgreeWithIDSheet from "components/ObsDetails/Sheets/AgreeWithIDSheet";
 import {
-  DisplayTaxonName, Divider, INatIcon, UserText
+  Divider, INatIcon, UserText
 } from "components/SharedComponents";
+import DisplayTaxon from "components/SharedComponents/DisplayTaxon";
 import {
   Pressable, View
 } from "components/styledComponents";
@@ -12,13 +13,9 @@ import { t } from "i18next";
 import _ from "lodash";
 import type { Node } from "react";
 import React, { useState } from "react";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
-import Taxon from "realmModels/Taxon";
-import useIsConnected from "sharedHooks/useIsConnected";
 import { textStyles } from "styles/obsDetails/obsDetails";
 
 import AddCommentModal from "./AddCommentModal";
-import TaxonImage from "./TaxonImage";
 
 type Props = {
   item: Object,
@@ -36,7 +33,6 @@ const ActivityItem = ( {
   observationUUID, userAgreedId
 }: Props ): Node => {
   const { taxon, user } = item;
-  const isOnline = useIsConnected( );
   const userId = currentUserId;
   const showAgreeButton = taxon && user && user.id !== userId && taxon.rank_level <= 10
   && userAgreedId !== taxon?.id;
@@ -49,17 +45,6 @@ const ActivityItem = ( {
     : undefined;
 
   const idWithdrawn = isCurrent !== undefined && !isCurrent;
-
-  const showNoInternetIcon = accessibilityLabel => (
-    <View className="mr-3">
-      <IconMaterial
-        name="wifi-off"
-        size={30}
-        accessibilityRole="image"
-        accessibilityLabel={accessibilityLabel}
-      />
-    </View>
-  );
 
   const onAgreePressed = () => {
     const agreeParams = {
@@ -95,23 +80,13 @@ const ActivityItem = ( {
         toggleRefetch={toggleRefetch}
       />
       {taxon && (
-        <View className="flex-row items-center justify-between mr-[23px]">
-          <Pressable
-            className="flex-row mb-[13.5px] items-center w-2/3"
-            onPress={navToTaxonDetails}
-            accessibilityRole="link"
+        <View className="flex-row items-center justify-between mr-[23px] mb-4">
+          <DisplayTaxon
+            taxon={taxon}
+            handlePress={navToTaxonDetails}
             accessibilityLabel={t( "Navigate-to-taxon-details" )}
-          >
-            {isOnline
-              ? <TaxonImage withdrawn={idWithdrawn} uri={Taxon.uri( taxon )} />
-              : showNoInternetIcon( t( "Taxon-photo-unavailable-without-internet" ) )}
-            <DisplayTaxonName
-              withdrawn={idWithdrawn}
-              scientificNameFirst={false}
-              taxon={taxon}
-              layout="horizontal"
-            />
-          </Pressable>
+            withdrawn={idWithdrawn}
+          />
           { showAgreeButton && (
             <Pressable
               testID="ActivityItem.AgreeIdButton"

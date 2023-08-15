@@ -1218,3 +1218,8 @@ Loading-iNaturalists-AR-Camera = Loading iNaturalist’s AR Camera
 
 # Used for explore screen when search params lead to a search with no data
 No-results-found = No results found
+
+Navigate-to-add-identification = Navigate to add identification
+
+# Default accessibility label for DisplayTaxon component
+Taxon-photo-and-name = Taxon photo and name

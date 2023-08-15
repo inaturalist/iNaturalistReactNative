@@ -12,15 +12,14 @@ import {
 } from "api/observations";
 import ActivityHeader from "components/ObsDetails/ActivityHeader";
 import {
-  Button, DisplayTaxonName, ObservationLocation, PhotoCount, Tabs
+  Button, ObservationLocation, PhotoCount, Tabs
 } from "components/SharedComponents";
+import DisplayTaxon from "components/SharedComponents/DisplayTaxon";
 import HideView from "components/SharedComponents/HideView";
 import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import ScrollViewWrapper from "components/SharedComponents/ScrollViewWrapper";
-import {
-  Image, Pressable, Text, View
-} from "components/styledComponents";
+import { Text, View } from "components/styledComponents";
 import { formatISO } from "date-fns";
 import _ from "lodash";
 import { RealmContext } from "providers/contexts";
@@ -35,7 +34,6 @@ import {
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import Observation from "realmModels/Observation";
-import Taxon from "realmModels/Taxon";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 import useCurrentUser from "sharedHooks/useCurrentUser";
@@ -306,23 +304,12 @@ const ObsDetails = (): Node => {
       return <Text>{t( "Unknown-organism" )}</Text>;
     }
     return (
-      <View className="flex-row">
-        <Image
-          source={Taxon.uri( taxon )}
-          className="w-16 h-16 rounded-xl mr-3"
-          accessibilityIgnoresInvertColors
-        />
-        <Pressable
-          className="justify-center"
-          onPress={navToTaxonDetails}
-          testID={`ObsDetails.taxon.${taxon.id}`}
-          accessibilityRole="link"
-          accessibilityLabel={t( "Navigate-to-taxon-details" )}
-          accessibilityValue={{ text: taxon.name }}
-        >
-          <DisplayTaxonName taxon={taxon} layout="vertical" />
-        </Pressable>
-      </View>
+      <DisplayTaxon
+        taxon={taxon}
+        handlePress={navToTaxonDetails}
+        testID={`ObsDetails.taxon.${taxon.id}`}
+        accessibilityLabel={t( "Navigate-to-taxon-details" )}
+      />
     );
   };
 

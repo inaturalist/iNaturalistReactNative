@@ -2,11 +2,12 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  Button, DisplayTaxonName,
+  Button, DisplayTaxon,
   Heading4, IconicTaxonChooser,
-  INatIcon
+  INatIcon,
+  INatIconButton
 } from "components/SharedComponents";
-import { Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useEffect } from "react";
@@ -48,19 +49,6 @@ const IdentificationSection = ( ): Node => {
     clearSearch: true
   } );
 
-  const displayIdentification = ( ) => (
-    <Pressable
-      accessibilityRole="button"
-      className="flex-row items-center mb-5"
-      onPress={navToAddID}
-    >
-      <INatIcon name="label-outline" size={14} />
-      <View className="ml-5">
-        <DisplayTaxonName taxon={identification} small />
-      </View>
-    </Pressable>
-  );
-
   useEffect( ( ) => {
     if ( hasIdentification ) {
       setPassesIdentificationTest( true );
@@ -77,32 +65,47 @@ const IdentificationSection = ( ): Node => {
           </View>
         )}
       </View>
-      <View className="mt-5 ml-1">
-        {identification && displayIdentification( )}
-        <IconicTaxonChooser
-          before={(
-            <Button
-              level={identification
-                ? "neutral"
-                : "focus"}
-              onPress={navToAddID}
-              text={t( "ADD-AN-ID" )}
-              className="rounded-full py-1 h-[36px]"
-              testID="ObsEdit.Suggestions"
-              icon={(
-                <INatIcon
-                  name="sparkly-label"
-                  size={24}
-                  color={identification
-                    ? theme.colors.primary
-                    : theme.colors.onPrimary}
-                />
-              )}
+      <View className="ml-1">
+        {identification && (
+          <View className="flex-row items-center justify-between mr-5 mt-5">
+            <DisplayTaxon
+              taxon={identification}
+              handlePress={navToAddID}
+              accessibilityLabel={t( "Navigate-to-add-identification" )}
             />
-          )}
-          taxon={identification}
-          onTaxonChosen={onTaxonChosen}
-        />
+            <INatIconButton
+              icon="edit"
+              size={20}
+              onPress={navToAddID}
+            />
+          </View>
+        )}
+        <View className="mt-5">
+          <IconicTaxonChooser
+            before={(
+              <Button
+                level={identification
+                  ? "neutral"
+                  : "focus"}
+                onPress={navToAddID}
+                text={t( "ADD-AN-ID" )}
+                className="rounded-full py-1 h-[36px]"
+                testID="ObsEdit.Suggestions"
+                icon={(
+                  <INatIcon
+                    name="sparkly-label"
+                    size={24}
+                    color={identification
+                      ? theme.colors.primary
+                      : theme.colors.onPrimary}
+                  />
+                )}
+              />
+            )}
+            taxon={identification}
+            onTaxonChosen={onTaxonChosen}
+          />
+        </View>
       </View>
     </View>
   );
