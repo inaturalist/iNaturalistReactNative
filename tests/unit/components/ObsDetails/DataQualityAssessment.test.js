@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
-import DQAVoteButtons from "components/ObsDetails/DQAVoteButtons";
+import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import React from "react";
@@ -75,7 +75,7 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
 } ) );
 
 const mockAttribution = <View testID="mock-attribution" />;
-jest.mock( "components/ObsDetails/Attribution", () => ( {
+jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
   __esModule: true,
   default: () => mockAttribution
 } ) );

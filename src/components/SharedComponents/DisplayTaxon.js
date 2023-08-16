@@ -30,7 +30,7 @@ const DisplayTaxon = ( {
   return (
     <Pressable
       accessibilityRole="button"
-      className="flex-row items-center"
+      className="flex-row items-center shrink"
       onPress={handlePress}
       testID={testID}
       accessibilityLabel={accessibilityLabel || t( "Taxon-photo-and-name" )}
@@ -46,7 +46,7 @@ const DisplayTaxon = ( {
         accessibilityIgnoresInvertColors
         testID="DisplayTaxon.image"
       />
-      <View className="ml-3">
+      <View className="ml-3 shrink">
         <DisplayTaxonName taxon={taxon} withdrawn={withdrawn} />
       </View>
     </Pressable>
