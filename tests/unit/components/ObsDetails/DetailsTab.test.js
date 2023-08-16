@@ -1,23 +1,12 @@
 import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
-import DetailsTab from "components/ObsDetails/DetailsTab";
+import DetailsTab from "components/ObsDetails/DetailsTab/DetailsTab";
 import initI18next from "i18n/initI18next";
 import React from "react";
 import { View } from "react-native";
 
 import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
-
-// jest.mock( "react-i18next", () => ( {
-//   useTranslation: () => ( {
-//     t: str => {
-//       if ( str === "datetime-format-short" ) {
-//         return "M/d/yy h:mm a";
-//       }
-//       return str;
-//     }
-//   } )
-// } ) );
 
 jest.mock( "sharedHooks/useIsConnected", ( ) => ( {
   __esModule: true,
@@ -41,7 +30,7 @@ const mockObservation = factory( "LocalObservation", {
 } );
 
 const mockAttribution = <View testID="mock-attribution" />;
-jest.mock( "components/ObsDetails/Attribution", () => ( {
+jest.mock( "components/ObsDetails/DetailsTab/Attribution", () => ( {
   __esModule: true,
   default: () => mockAttribution
 } ) );

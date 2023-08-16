@@ -1,7 +1,7 @@
 // @flow
 import { useRoute } from "@react-navigation/native";
 import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
-import DQAVoteButtons from "components/ObsDetails/DQAVoteButtons";
+import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import PlaceholderText from "components/PlaceholderText";
 import {
   Body3,

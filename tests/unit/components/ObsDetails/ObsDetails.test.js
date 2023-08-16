@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
-import ObsDetails from "components/ObsDetails/ObsDetails";
+import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import React from "react";
@@ -118,12 +118,11 @@ jest.mock( "sharedHooks/useAuthenticatedMutation", () => ( {
   } )
 } ) );
 
-jest.mock( "components/ObsDetails/AddCommentModal" );
-jest.mock( "components/ObsDetails/ActivityTab" );
+jest.mock( "components/ObsDetails/ActivityTab/ActivityTab" );
 jest.mock( "components/SharedComponents/PhotoScroll" );
 
 const mockDataTab = <View testID="mock-data-tab" />;
-jest.mock( "components/ObsDetails/DetailsTab", () => ( {
+jest.mock( "components/ObsDetails/DetailsTab/DetailsTab", () => ( {
   __esModule: true,
   default: () => mockDataTab
 } ) );
@@ -156,7 +155,7 @@ describe( "ObsDetails", () => {
   } );
 
   it( "should not have accessibility errors", async () => {
-    renderComponent( <ObsDetails /> );
+    renderComponent( <ObsDetailsContainer /> );
     const obsDetails = await screen.findByTestId(
       `ObsDetails.${mockObservation.uuid}`
     );
@@ -165,7 +164,7 @@ describe( "ObsDetails", () => {
 
   it( "renders obs details from remote call", async () => {
     useIsConnected.mockImplementation( () => true );
-    renderComponent( <ObsDetails /> );
+    renderComponent( <ObsDetailsContainer /> );
 
     expect(
       await screen.findByTestId( `ObsDetails.${mockObservation.uuid}` )
@@ -174,7 +173,7 @@ describe( "ObsDetails", () => {
   } );
 
   it( "renders data tab on button press", async () => {
-    renderComponent( <ObsDetails /> );
+    renderComponent( <ObsDetailsContainer /> );
     const button = await screen.findByTestId( "ObsDetails.DetailsTab" );
     expect( screen.queryByTestId( "mock-data-tab" ) ).not.toBeTruthy();
 
@@ -191,7 +190,7 @@ describe( "ObsDetails", () => {
 
     it( "should render fallback image icon instead of photos", async () => {
       useIsConnected.mockImplementation( () => true );
-      renderComponent( <ObsDetails /> );
+      renderComponent( <ObsDetailsContainer /> );
 
       const labelText = t( "Observation-has-no-photos-and-no-sounds" );
       const fallbackImage = await screen.findByLabelText( labelText );
@@ -207,7 +206,7 @@ describe( "ObsDetails", () => {
 
   describe( "activity tab", () => {
     it( "navigates to taxon details on button press", async () => {
-      renderComponent( <ObsDetails /> );
+      renderComponent( <ObsDetailsContainer /> );
       fireEvent.press(
         await screen.findByTestId(
           `ObsDetails.taxon.${mockObservation.taxon.id}`
@@ -220,7 +219,7 @@ describe( "ObsDetails", () => {
 
     it( "shows network error image instead of observation photos if user is offline", async () => {
       useIsConnected.mockImplementation( () => false );
-      renderComponent( <ObsDetails /> );
+      renderComponent( <ObsDetailsContainer /> );
       const labelText = t( "Observation-photos-unavailable-without-internet" );
       const noInternet = await screen.findByLabelText( labelText );
       expect( noInternet ).toBeTruthy();

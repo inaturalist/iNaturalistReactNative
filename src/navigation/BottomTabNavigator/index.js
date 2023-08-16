@@ -15,7 +15,7 @@ import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
-import ObsDetails from "components/ObsDetails/ObsDetails";
+import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
@@ -275,7 +275,7 @@ const BottomTabs = ( ) => {
         />
         <Tab.Screen
           name="ObsDetails"
-          component={ObsDetails}
+          component={ObsDetailsContainer}
           options={{
             headerTitle: t( "Observation" ),
             headerShown: false,

@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import ActivityTab from "components/ObsDetails/ActivityTab";
+import ActivityTab from "components/ObsDetails/ActivityTab/ActivityTab";
 import initI18next from "i18n/initI18next";
 import React from "react";
 
@@ -55,14 +55,10 @@ describe( "ActivityTab", () => {
     await initI18next( );
     renderComponent(
       <ActivityTab
-        uuid={mockObservation.uuid}
         observation={mockObservation}
-        comments={[]}
-        navToTaxonDetails={jest.fn()}
-        toggleRefetch={jest.fn()}
+        activityItems={[]}
         refetchRemoteObservation={jest.fn()}
-        openCommentBox={jest.fn()}
-        showCommentBox={jest.fn()}
+        onIDAgreePressed={jest.fn()}
       />
     );
     expect( await screen.findByTestId( "ActivityTab" ) ).toBeTruthy( );
