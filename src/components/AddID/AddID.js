@@ -2,49 +2,34 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  Body2, Body3, Heading4, INatIcon, TextInputSheet, ViewWrapper
+  Body3, Heading4, INatIcon, TextInputSheet, ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   IconButton
 } from "react-native-paper";
-import uuid from "react-native-uuid";
-import useTranslation from "sharedHooks/useTranslation";
+import { useTranslation } from "sharedHooks";
 
 import TaxonSearch from "./TaxonSearch";
 
 type Props = {
-  route: {
-    params: {
-      // TODO suporting a callback here results in this warning:
-      // https://reactnavigation.org/docs/troubleshooting/#i-get-the-warning-non-serializable-values-were-found-in-the-navigation-state
-      onIDAdded: ( identification: { [string]: any } ) => void,
-      goBackOnSave: boolean,
-      hideComment: boolean,
-      clearSearch: boolean
-    },
-  },
+  setComment: Function,
+  comment: string,
+  clearSearch: boolean,
+  createId: Function,
+  loading: boolean
 };
 
-const AddID = ( { route }: Props ): Node => {
+const AddID = ( {
+  setComment, comment, clearSearch, createId, loading
+}: Props ): Node => {
   const { t } = useTranslation( );
   const [showAddCommentSheet, setShowAddCommentSheet] = useState( false );
-  const [comment, setComment] = useState( "" );
-  const { onIDAdded, goBackOnSave } = route.params;
 
   const navigation = useNavigation();
-
-  const createIdentification = taxon => {
-    const newIdent = {
-      uuid: uuid.v4(),
-      body: comment,
-      taxon
-    };
-
-    return newIdent;
-  };
 
   useEffect( ( ) => {
     const addCommentIcon = ( ) => (
@@ -66,13 +51,6 @@ const AddID = ( { route }: Props ): Node => {
     } );
   }, [navigation, t] );
 
-  const createId = taxon => {
-    onIDAdded( createIdentification( taxon ) );
-    if ( goBackOnSave ) {
-      navigation.goBack( );
-    }
-  };
-
   return (
     <ViewWrapper>
       {showAddCommentSheet && (
@@ -93,10 +71,12 @@ const AddID = ( { route }: Props ): Node => {
             <Body3 className="ml-4 shrink">{ comment }</Body3>
           </View>
         ) }
-        <TaxonSearch route={route} createId={createId} />
-        <Body2 className="self-center">
-          {t( "Search-for-a-taxon-to-add-an-identification" )}
-        </Body2>
+        {loading && (
+          <View className="absolute self-center z-10 pt-[30px]">
+            <ActivityIndicator large />
+          </View>
+        )}
+        <TaxonSearch clearSearch={clearSearch} createId={createId} />
       </View>
     </ViewWrapper>
   );

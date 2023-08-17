@@ -214,6 +214,7 @@ const ObsDetailsContainer = ( ): Node => {
       }
     }
   );
+
   const onCommentAdded = commentBody => {
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
     createCommentMutation.mutate( {
@@ -255,17 +256,6 @@ const ObsDetailsContainer = ( ): Node => {
     }
   );
 
-  const onIDAdded = async identification => {
-    dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
-    createIdentificationMutation.mutate( {
-      identification: {
-        observation_id: uuid,
-        taxon_id: identification.taxon.id,
-        body: identification.body
-      }
-    } );
-  };
-
   useEffect( ( ) => {
     if (
       localObservation
@@ -277,7 +267,11 @@ const ObsDetailsContainer = ( ): Node => {
   }, [localObservation, markViewedMutation, uuid] );
 
   const navToAddID = ( ) => {
-    navigation.navigate( "AddID", { onIDAdded, goBackOnSave: true } );
+    navigation.navigate( "AddID", {
+      clearSearch: true,
+      observationUUID: uuid,
+      createRemoteIdentification: true
+    } );
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;
@@ -301,7 +295,6 @@ const ObsDetailsContainer = ( ): Node => {
   };
 
   const agreeIdSheetDiscardChanges = ( ) => {
-    console.log( "agree discard changes" );
     dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: false } );
   };
 

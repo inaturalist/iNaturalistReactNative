@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { fireEvent, screen } from "@testing-library/react-native";
-import AddID from "components/AddID/AddID";
+import AddIDContainer from "components/AddID/AddIDContainer";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
@@ -96,7 +96,7 @@ describe( "AddID", () => {
     const addID = (
       <BottomSheetModalProvider>
         <INatPaperProvider>
-          <AddID route={mockRoute} />
+          <AddIDContainer route={mockRoute} />
         </INatPaperProvider>
       </BottomSheetModalProvider>
     );
@@ -104,13 +104,13 @@ describe( "AddID", () => {
   } );
 
   it( "should render inside mocked container", () => {
-    renderComponent( <AddID route={mockRoute} /> );
+    renderComponent( <AddIDContainer route={mockRoute} /> );
     expect( screen.getByTestId( "mock-view-no-footer" ) ).toBeTruthy();
   } );
 
   it( "show taxon search results", async () => {
     inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
-    renderComponent( <AddID route={mockRoute} /> );
+    renderComponent( <AddIDContainer route={mockRoute} /> );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
     fireEvent.changeText( input, "Some taxon" );
@@ -124,10 +124,9 @@ describe( "AddID", () => {
       } );
     } );
     renderComponent(
-      <AddID
+      <AddIDContainer
         route={{
           params: {
-            onIDAdded: mockCallback
           }
         }}
       />
