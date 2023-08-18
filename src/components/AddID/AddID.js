@@ -72,7 +72,10 @@ const AddID = ( {
           </View>
         ) }
         {loading && (
-          <View className="absolute self-center z-10 pt-[30px]">
+          <View
+            className="absolute self-center z-10 pt-[30px]"
+            testID="AddID.ActivityIndicator"
+          >
             <ActivityIndicator large />
           </View>
         )}
