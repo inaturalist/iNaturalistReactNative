@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
-import AddID from "components/AddID/AddID";
+import AddIDContainer from "components/AddID/AddIDContainer";
 import CameraContainer from "components/Camera/CameraContainer";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import Identify from "components/Identify/Identify";
@@ -329,7 +329,7 @@ const BottomTabs = ( ) => {
         />
         <Tab.Screen
           name="AddID"
-          component={AddID}
+          component={AddIDContainer}
           options={{
             title: t( "Add-an-ID" )
           }}

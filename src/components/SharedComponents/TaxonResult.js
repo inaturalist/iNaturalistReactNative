@@ -78,7 +78,7 @@ const TaxonResult = ( {
           accessibilityState={{ disabled: false }}
         />
         <INatIconButton
-          className="ml-2"
+          className="mx-2"
           icon={clearBackground
             ? "checkmark-circle-outline"
             : "checkmark-circle"}

@@ -31,10 +31,6 @@ const IdentificationSection = ( ): Node => {
 
   const hasIdentification = identification && identification.rank_level !== 100;
 
-  const onIDAdded = async id => updateObservationKeys( {
-    taxon: id.taxon
-  } );
-
   const onTaxonChosen = taxonName => {
     const selectedTaxon = realm?.objects( "Taxon" ).filtered( "name CONTAINS[c] $0", taxonName );
     updateObservationKeys( {
@@ -43,9 +39,6 @@ const IdentificationSection = ( ): Node => {
   };
 
   const navToAddID = ( ) => navigation.navigate( "AddID", {
-    onIDAdded,
-    hideComment: true,
-    goBackOnSave: true,
     clearSearch: true
   } );
 
