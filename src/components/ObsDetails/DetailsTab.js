@@ -1,7 +1,6 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import MapModal from "components/ObsDetails/MapModal";
 import {
   Body4,
   Button,
@@ -13,9 +12,8 @@ import {
 } from "components/SharedComponents";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import Map from "components/SharedComponents/Map";
-import Modal from "components/SharedComponents/Modal";
 import UserText from "components/SharedComponents/UserText";
-import { Pressable, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
@@ -80,14 +78,28 @@ const sectionClass = "mx-[15px] mb-[20px]";
 
 const DetailsTab = ( { observation }: Props ): Node => {
   const navigation = useNavigation( );
+  const theme = useTheme( );
   const application = observation?.application?.name;
   const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
-  const [showModal, setShowModal] = useState( false );
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation.uuid;
-  const theme = useTheme( );
   const privacy = observation?.geoprivacy;
-  console.log( observation );
+  const positionalAccuracy = observation?.positional_accuracy;
+
+  const getPrivateCoordinates = () => {
+    if ( observation?.private_location ) {
+      const coordinates = observation?.private_location.split( "," );
+      return {
+        latitude: coordinates[0],
+        longitude: coordinates[1]
+      };
+    }
+    return null;
+  };
+
+  const privateLocation = getPrivateCoordinates();
+  const latitude = observation.latitude || ( parseFloat( privateLocation?.latitude ) );
+  const longitude = observation.longitude || ( parseFloat( privateLocation?.longitude ) );
 
   const displayQualityGradeOption = option => {
     const isResearchGrade = ( qualityGrade === "research" && option === "research" );
@@ -110,11 +122,6 @@ const DetailsTab = ( { observation }: Props ): Node => {
 
   return (
     <>
-      <Modal
-        showModal={showModal}
-        closeModal={( ) => setShowModal( false )}
-        modal={<MapModal observation={observation} closeModal={( ) => setShowModal( false )} />}
-      />
       {observation.description && (
         <>
           <View className={sectionClass}>
@@ -124,38 +131,47 @@ const DetailsTab = ( { observation }: Props ): Node => {
           <Divider />
         </>
       )}
-
-      <View className="flex-row justify-between items-center mt-[8px] mx-[15px]">
-        <Heading4>{t( "LOCATION" )}</Heading4>
-        <KebabMenu
-          visible={locationKebabMenuVisible}
-          setVisible={setLocationKebabMenuVisible}
-        >
-          <Menu.Item
-            title={t( "Share-location" )}
-          />
-          <Menu.Item
-            title={t( "Copy-coordinates" )}
-          />
-        </KebabMenu>
-      </View>
-      { ( observation.latitude || observation.private_latitude ) && (
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => setShowModal( true )}
-        >
-          <Map
-            obsLatitude={observation.latitude}
-            obsLongitude={observation.longitude}
-            mapHeight={230}
-            privacy={privacy}
-            showMarker
-          />
-        </Pressable>
+      {
+        privacy !== "private" && (
+          <View className="flex-row justify-between items-center mt-[8px] mx-[15px]">
+            <Heading4>{t( "LOCATION" )}</Heading4>
+            <KebabMenu
+              visible={locationKebabMenuVisible}
+              setVisible={setLocationKebabMenuVisible}
+            >
+              <Menu.Item
+                title={t( "Share-location" )}
+              />
+              <Menu.Item
+                title={t( "Copy-coordinates" )}
+              />
+            </KebabMenu>
+          </View>
+        )
+      }
+      { ( latitude ) && (
+        <Map
+          obsLatitude={latitude}
+          obsLongitude={longitude}
+          mapHeight={230}
+          privacy={privacy}
+          showMarker
+          openMapDetails={() => navigation.navigate(
+            "MapModal",
+            { observation, latitude, longitude }
+          )}
+          positionalAccuracy={positionalAccuracy}
+        />
       ) }
 
-      <View className={`mt-[11px] ${sectionClass}`}>
+      <View className={`mt-[11px] space-y-[11px] ${sectionClass}`}>
         <ObservationLocation observation={observation} details />
+        {privacy === "obscured"
+        && (
+          <Body4 className="italic ml-[20px]">
+            {t( "Obscured-observation-location-map-description" )}
+          </Body4>
+        ) }
       </View>
       <Divider />
 

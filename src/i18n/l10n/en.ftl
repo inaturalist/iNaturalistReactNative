@@ -132,6 +132,8 @@ Connected-Accounts = Connected Accounts
 
 Content-Display = Content & Display
 
+Coordinates-copied-to-keyboard = Coordinates copied to keyboard
+
 Copy-coordinates = Copy Coordinates
 
 Copy-coordinates = Copy Coordinates
@@ -500,6 +502,9 @@ NOTES = NOTES
 Notifications = Notifications
 
 Obscured = Obscured
+
+# Displayed when user views an obscured location on the ObsDetail map screen
+Obscured-observation-location-map-description = This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon.
 
 Observation = Observation
 
@@ -1134,6 +1139,10 @@ This-organism-was-placed-by-humans = This organism was placed in this location b
 
 # Latitude, longitude, and accuracy on a single line on a single line
 Lat-Lon-Acc = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }, Acc: { $accuracy }
+
+# Latitude, longitude on a single line on a single line
+Lat-Lon = Lat: { NUMBER($latitude, maximumFractionDigits: 6) }, Lon: { NUMBER($longitude, maximumFractionDigits: 6) }
+
 
 # Missing evidence sheet
 Every-observation-needs = Every observation needs a location, date, and time to be helpful to identifiers. You can edit geoprivacy if you’re concerned about location privacy.

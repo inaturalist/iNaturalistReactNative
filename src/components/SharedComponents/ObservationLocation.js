@@ -3,6 +3,7 @@ import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import { Body3, Body4, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { capitalize } from "lodash";
 import * as React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -20,13 +21,18 @@ const ObservationLocation = ( {
 
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
   let displayCoords;
-  const geoprivacy = checkCamelAndSnakeCase( observation, "geoprivacy" );
+  const geoprivacy = capitalize( checkCamelAndSnakeCase( observation, "geoprivacy" ) );
+  const isObscured = geoprivacy === "Obscured";
 
   if ( !displayLocation ) {
     displayLocation = t( "No-Location" );
+    if ( geoprivacy === "Private" ) {
+      displayLocation = t( "Private" );
+    }
   }
   if ( ( observation?.latitude !== null && observation?.latitude !== undefined )
     && ( observation?.longitude != null && observation?.longitude !== undefined )
+    && !isObscured
   ) {
     displayCoords = t( "Lat-Lon-Acc", {
       latitude: observation.latitude,
@@ -43,7 +49,14 @@ const ObservationLocation = ( {
         numberOfLines={1}
         ellipsizeMode="tail"
       >
-        {geoprivacy}
+        {t( "Geoprivacy" )}
+      </Body4>
+      <Body4
+        className="text-darkGray ml-[5px]"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
+        {t( geoprivacy )}
       </Body4>
     </View>
   );

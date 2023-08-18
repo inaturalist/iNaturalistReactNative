@@ -8,7 +8,10 @@ type Props = {
   showModal: boolean,
   closeModal: Function,
   modal: any,
-  backdropOpacity?: number
+  backdropOpacity?: number,
+  style?: Object,
+  animationIn?: string,
+  animationOut?: string
 }
 
 const modalStyle = {
@@ -20,7 +23,7 @@ const modalStyle = {
 // https://github.com/react-native-modal/react-native-modal/issues/525
 
 const Modal = ( {
-  showModal, closeModal, modal, backdropOpacity
+  showModal, closeModal, modal, backdropOpacity, style, animationIn, animationOut
 }: Props ): React.Node => (
   <RNModal
     isVisible={showModal}
@@ -29,8 +32,10 @@ const Modal = ( {
     swipeDirection="down"
     useNativeDriverForBackdrop
     useNativeDriver
-    style={modalStyle}
+    style={{ ...style, ...modalStyle }}
     backdropOpacity={backdropOpacity}
+    animationIn={animationIn || "slideInUp"}
+    animationOut={animationOut || "slideOutDown"}
   >
     {modal}
   </RNModal>

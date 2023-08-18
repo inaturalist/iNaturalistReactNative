@@ -15,20 +15,23 @@ const OBSCURATION_VALUE = 0.2;
 type Props = {
   obsLatitude: number,
   obsLongitude: number,
-  mapHeight?: number,
+  mapHeight?: number|string, // allows for height to be defined as px or percentage
   taxonId?: number,
   updateCoords?: Function,
   region?: Object,
   showMarker?: boolean,
   privacy?: string,
-  // positional_accuracy?: number
+  openMapDetails?: Function,
+  children?: any,
+  mapType?: string,
+  positionalAccuracy?: number
 }
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( {
-  obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region, privacy, showMarker
-  // , positional_accuracy
+  obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region, privacy, showMarker,
+  openMapDetails, children, mapType, positionalAccuracy
 }: Props ): React.Node => {
   const { latLng: viewerLatLng } = useUserLocation( { skipPlaceGuess: true } );
 
@@ -40,8 +43,8 @@ const Map = ( {
   const initialRegion = {
     latitude: initialLatitude,
     longitude: initialLongitude,
-    latitudeDelta: 0.9,
-    longitudeDelta: 0.9
+    latitudeDelta: 0.4,
+    longitudeDelta: 0.4
   };
 
   const returnRandomArbitraryCoordinates = () => {
@@ -54,6 +57,7 @@ const Map = ( {
       longitude: Math.random() * ( longMax - longMin ) + longMin
     };
   };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const obscuredCoordinates = useMemo( () => returnRandomArbitraryCoordinates(), [] );
   return (
@@ -68,6 +72,7 @@ const Map = ( {
     >
       <MapView
         style={viewStyles.map}
+        onPress={() => { if ( openMapDetails ) openMapDetails(); }}
         region={( region?.latitude )
           ? region
           : initialRegion}
@@ -75,6 +80,7 @@ const Map = ( {
         showsUserLocation
         showsMyLocationButton
         loadingEnabled
+        mapType={mapType || "standard"}
       >
         {taxonId && (
           <UrlTile
@@ -82,34 +88,34 @@ const Map = ( {
             urlTemplate={urlTemplate}
           />
         )}
-        {( privacy === "open" && showMarker )
-          ? (
-            <>
-              <Circle
-                center={{
-                  latitude: obsLatitude,
-                  longitude: obsLongitude
-                }}
-                radius={6000}
-                strokeWidth={1}
-                strokeColor="#74AC00"
-                fillColor="rgba( 116, 172, 0, 0.2 )"
+        {( showMarker && privacy !== "obscured" ) && (
+          <>
+            <Circle
+              center={{
+                latitude: obsLatitude,
+                longitude: obsLongitude
+              }}
+              radius={positionalAccuracy}
+              strokeWidth={1}
+              strokeColor="#74AC00"
+              fillColor="rgba( 116, 172, 0, 0.2 )"
+            />
+            <Marker
+              coordinate={{
+                latitude: obsLatitude,
+                longitude: obsLongitude
+              }}
+            >
+              <Image
+                source={require( "images/location_indicator.png" )}
+                className="w-[25px] h-[32px]"
+                accessibilityIgnoresInvertColors
               />
-              <Marker
-                coordinate={{
-                  latitude: obsLatitude,
-                  longitude: obsLongitude
-                }}
-              >
-                <Image
-                  source={require( "images/location_indicator.png" )}
-                  className="w-[25px] h-[32px]"
-                  accessibilityIgnoresInvertColors
-                />
-              </Marker>
-            </>
-          )
-          : (
+            </Marker>
+          </>
+        )}
+        {( showMarker && privacy === "obscured" )
+          && (
             <>
               <Polygon
                 coordinates={[
@@ -149,6 +155,7 @@ const Map = ( {
             </>
           )}
       </MapView>
+      {children}
     </View>
   );
 };

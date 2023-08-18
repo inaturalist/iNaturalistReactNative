@@ -37,7 +37,11 @@ class Observation extends Realm.Object {
     taxon: Taxon.TAXON_FIELDS,
     time_observed_at: true,
     user: User && User.USER_FIELDS,
-    updated_at: true
+    updated_at: true,
+    viewer_trusted_by_observer: true,
+    private_location: true,
+    private_place_guess: true,
+    positional_accuracy: true
   };
 
   static async new( obs ) {
@@ -280,7 +284,10 @@ class Observation extends Realm.Object {
       user: "User?",
       updated_at: "date?",
       comments_viewed: "bool?",
-      identifications_viewed: "bool?"
+      identifications_viewed: "bool?",
+      viewer_trusted_by_observer: "bool?",
+      private_place_guess: { type: "string?", mapTo: "privatePlaceGuess" },
+      private_location: "string?"
     }
   };
 

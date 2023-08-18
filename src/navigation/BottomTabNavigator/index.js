@@ -15,6 +15,7 @@ import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
+import MapModal from "components/ObsDetails/MapModal";
 import ObsDetails from "components/ObsDetails/ObsDetails";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
@@ -356,6 +357,15 @@ const BottomTabs = ( ) => {
           options={{
             ...showLongHeader,
             headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
+            unmountOnBlur: true
+          }}
+        />
+
+        <Tab.Screen
+          name="MapModal"
+          component={MapModal}
+          options={{
+            ...hideHeader,
             unmountOnBlur: true
           }}
         />
