@@ -36,13 +36,13 @@ const Header = ( ): Node => {
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
     setObservations( [] );
-    navigation.navigate( "ObsList" );
+    navigation.navigate( "TabNavigator" );
   }, [navigation, setObservations] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
     setObservations( [] );
-    navigation.navigate( "ObsList" );
+    navigation.navigate( "TabNavigator" );
   }, [navigation, setObservations] );
 
   const renderHeaderTitle = useCallback( ( ) => (
@@ -51,24 +51,24 @@ const Header = ( ): Node => {
       accessible
       accessibilityRole="header"
     >
-      {observations.length === 1
+      {observations.length <= 1
         ? t( "New-Observation" )
         : t( "X-Observations", { count: observations.length } )}
     </Heading2>
   ), [observations, t] );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    const unsyncedObservation = !currentObservation._synced_at && currentObservation._created_at;
+    const unsyncedObservation = !currentObservation?._synced_at && currentObservation?._created_at;
     if ( params?.lastScreen === "GroupPhotos"
       || ( unsyncedObservation && !unsavedChanges )
     ) {
       navigation.goBack( );
-    } else if ( !currentObservation._created_at ) {
+    } else if ( !currentObservation?._created_at ) {
       setDiscardObservationSheetVisible( true );
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
     } else {
-      navigation.goBack( );
+      navigation.navigate( "TabNavigator" );
     }
   }, [currentObservation, navigation, unsavedChanges, params] );
 

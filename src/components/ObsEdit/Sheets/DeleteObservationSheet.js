@@ -33,7 +33,7 @@ const DeleteObservationSheet = ( {
   const handleLocalDeletion = ( ) => {
     deleteLocalObservation( uuid );
     handleClose( );
-    navigation.navigate( "ObsList" );
+    navigation.navigate( "TabNavigator" );
   };
 
   const deleteObservationMutation = useAuthenticatedMutation(
@@ -56,14 +56,14 @@ const DeleteObservationSheet = ( {
       handleSecondButtonPress={handleClose}
       secondButtonText={t( "CANCEL" )}
       confirm={( ) => {
-        if ( multipleObservations && !currentObservation._created_at ) {
+        if ( multipleObservations && !currentObservation?._created_at ) {
           // observations are not yet persisted to realm if user
           // is viewing multiple observations screen
           // or adding new evidence,
           // so we can simply navigate away before saving
           handleClose( );
-          navigation.navigate( "ObsList" );
-        } else if ( !currentObservation._synced_at ) {
+          navigation.navigate( "TabNavigator" );
+        } else if ( !currentObservation?._synced_at ) {
           handleLocalDeletion( );
         } else {
           deleteObservationMutation.mutate( { uuid } );

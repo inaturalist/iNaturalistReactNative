@@ -131,7 +131,12 @@ const ObsEditWithPermission = ( ) => (
 );
 
 const CameraStackNavigator = ( ): Node => (
-  <Stack.Navigator>
+  <Stack.Navigator
+    screenOptions={{
+      headerBackTitleVisible: false,
+      headerTintColor: "black"
+    }}
+  >
     <Stack.Group>
       <Stack.Screen
         name="Camera"
@@ -180,7 +185,6 @@ const CameraStackNavigator = ( ): Node => (
         name="AddID"
         component={AddIDContainer}
         options={{
-          headerBackVisible: false,
           ...removeBottomBorder,
           title: t( "Add-an-ID" )
         }}

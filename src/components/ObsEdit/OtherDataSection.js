@@ -55,22 +55,22 @@ const OtherDataSection = ( ): Node => {
   } );
 
   const currentGeoprivacyStatus = geoprivacyOptions
-    .find( e => e.value === currentObservation.geoprivacy );
+    .find( e => e.value === currentObservation?.geoprivacy );
   const currentCaptiveStatus = captiveOptions
-    .find( e => e.value === currentObservation.captive_flag );
+    .find( e => e.value === currentObservation?.captive_flag );
 
   return (
     <View className="ml-5 mt-6">
       {showGeoprivacySheet && (
         <GeoprivacySheet
-          selectedValue={currentObservation.geoprivacy}
+          selectedValue={currentObservation?.geoprivacy}
           handleClose={( ) => setShowGeoprivacySheet( false )}
           updateGeoprivacyStatus={updateGeoprivacyStatus}
         />
       )}
       {showWildStatusSheet && (
         <WildStatusSheet
-          selectedValue={currentObservation.captive_flag}
+          selectedValue={currentObservation?.captive_flag}
           handleClose={( ) => setShowWildStatusSheet( false )}
           updateCaptiveStatus={updateCaptiveStatus}
         />

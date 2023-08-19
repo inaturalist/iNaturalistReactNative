@@ -41,7 +41,7 @@ const DiscardObservationSheet = ( {
       handleSecondButtonPress={( ) => {
         saveAllObservations( );
         setObservations( [] );
-        navigation.navigate( "ObsList" );
+        navigation.navigate( "TabNavigator" );
       }}
       secondButtonText={multipleObservations && t( "SAVE-ALL" )}
       buttonText={multipleObservations
