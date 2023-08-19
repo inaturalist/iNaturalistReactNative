@@ -69,28 +69,6 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
     </View>
   );
 
-  // Hacky solution but is required to show ContextHeader shadow in PhotoGallery
-  // when PhotoGallery is hoisted to stack navigator, the header is rendered first
-  // and zIndex/elevation is not respected, thus the child screen cuts off the shadow
-  // there isn't a built in option to hide bottom tabs in react-navigation
-  if (
-    currentRoute.includes( "PhotoGallery" )
-    || currentRoute.includes( "GroupPhotos" )
-    || currentRoute.includes( "Camera" )
-    || currentRoute.includes( "SoundRecorder" )
-    || currentRoute.includes( "ObsEdit" )
-    || currentRoute.includes( "AddID" )
-    || currentRoute.includes( "Login" )
-    || currentRoute.includes( "LocationPicker" )
-    || currentRoute.includes( "MediaViewer" )
-    || currentRoute.includes( "ForgotPassword" )
-    || currentRoute.includes( "SignUp" )
-    || currentRoute.includes( "LicensePhotos" )
-    || currentRoute.includes( "SignUpConfirmation" )
-  ) {
-    return null;
-  }
-
   return (
     <View
       className={classNames(

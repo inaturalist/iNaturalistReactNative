@@ -8,6 +8,8 @@ import * as React from "react";
 import { View } from "react-native";
 
 import BottomTabNavigator from "./BottomTabNavigator";
+import CameraStackNavigator from "./cameraStackNavigator";
+import LoginStackNavigator from "./loginStackNavigator";
 
 const drawerOptions = {
   ...showHeader,
@@ -38,6 +40,16 @@ const RootDrawerNavigator = ( ): Node => (
     <Drawer.Screen
       name="TabNavigator"
       component={BottomTabNavigator}
+      options={hideHeader}
+    />
+    <Drawer.Screen
+      name="LoginNavigator"
+      component={LoginStackNavigator}
+      options={hideHeader}
+    />
+    <Drawer.Screen
+      name="CameraNavigator"
+      component={CameraStackNavigator}
       options={hideHeader}
     />
   </Drawer.Navigator>

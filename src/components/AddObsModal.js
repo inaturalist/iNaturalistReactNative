@@ -39,7 +39,10 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
       createObservationNoEvidence( );
     }
     // access nested screen
-    navigation.navigate( screen, params );
+    navigation.navigate( "CameraNavigator", {
+      screen,
+      params
+    } );
     closeModal( );
   };
 

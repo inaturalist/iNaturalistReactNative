@@ -1,4 +1,6 @@
 // @flow
+import { HeaderBackground } from "@react-navigation/elements";
+import type { Node } from "react";
 import React from "react";
 import { Platform } from "react-native";
 import colors from "styles/tailwindColors";
@@ -63,9 +65,17 @@ const blankHeaderTitle = {
   headerTitle: ""
 };
 
+const removeBottomBorder = {
+  headerBackground: ( ): Node => (
+    // eslint-disable-next-line react-native/no-inline-styles
+    <HeaderBackground style={{ bottomBorderColor: "white" }} />
+  )
+};
+
 export {
   blankHeaderTitle,
   hideHeader,
+  removeBottomBorder,
   showCustomHeader,
   showHeader,
   showLongHeader

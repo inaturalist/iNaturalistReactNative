@@ -1,32 +1,18 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
-import AddIDContainer from "components/AddID/AddIDContainer";
-import CameraContainer from "components/Camera/CameraContainer";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import Identify from "components/Identify/Identify";
-import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
-import ForgotPassword from "components/LoginSignUp/ForgotPassword";
-import LicensePhotos from "components/LoginSignUp/LicensePhotos";
-import Login from "components/LoginSignUp/Login";
-import SignUp from "components/LoginSignUp/SignUp";
-import SignUpConfirmation from "components/LoginSignUp/SignUpConfirmation";
-import MediaViewer from "components/MediaViewer/MediaViewer";
 import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import ObsEdit from "components/ObsEdit/ObsEdit";
-import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
-import PhotoGallery from "components/PhotoImporter/PhotoGallery";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import ProjectDetails from "components/Projects/ProjectDetails";
 import Projects from "components/Projects/Projects";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import Mortal from "components/SharedComponents/Mortal";
-import PermissionGate from "components/SharedComponents/PermissionGate";
-import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UiLibrary from "components/UiLibrary";
 import UserProfile from "components/UserProfile/UserProfile";
@@ -35,16 +21,12 @@ import {
   blankHeaderTitle,
   hideHeader,
   hideHeaderLeft,
-  showCustomHeader,
   showHeaderLeft,
   showLongHeader
 } from "navigation/navigationOptions";
 import React from "react";
-import { PermissionsAndroid, Platform } from "react-native";
-import { PERMISSIONS } from "react-native-permissions";
 import User from "realmModels/User";
 import useUserMe from "sharedHooks/useUserMe";
-import colors from "styles/tailwindColors";
 
 import CustomTabBar from "./CustomTabBar";
 
@@ -54,118 +36,7 @@ const OBS_LIST_SCREEN_ID = "ObsList";
 const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
 
-const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
-const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
-
-const androidReadPermissions = usesAndroid13Permissions
-  ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-  : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
-
 /* eslint-disable react/jsx-props-no-spreading */
-
-// The login component should be not preserve its state or effects after the
-// user navigates away from it. This will simply cause it to unmount when it
-// loses focus
-const MortalLogin = ( ) => (
-  <Mortal>
-    <Login />
-  </Mortal>
-);
-
-const CameraContainerWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    // WRITE_EXTERNAL_STORAGE is deprecated after Android 10
-    // https://developer.android.com/training/data-storage/shared/media#access-other-apps-files
-    return (
-      <PermissionGate
-        permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-      >
-        <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-          <CameraContainer />
-        </PermissionGate>
-      </PermissionGate>
-    );
-  }
-  return (
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-      <CameraContainer />
-    </PermissionGate>
-  );
-};
-
-const SoundRecorderWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    return (
-      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
-        <PermissionGate
-          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-        >
-          <PermissionGate
-            permission={androidReadPermissions}
-          >
-            <SoundRecorder />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    );
-  }
-  return (
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
-      <PermissionGate
-        permission={androidReadPermissions}
-      >
-        <SoundRecorder />
-      </PermissionGate>
-    </PermissionGate>
-  );
-};
-
-const PhotoGalleryWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    return (
-      <PermissionGate
-        permission={androidReadPermissions}
-      >
-        <PermissionGate
-          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-        >
-          <PermissionGate
-            permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
-          >
-            <PhotoGallery />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    );
-  }
-
-  return (
-    <PermissionGate permission={androidReadPermissions}>
-      <PermissionGate
-        permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
-      >
-        <PermissionGate permission={PERMISSIONS.IOS.PHOTO_LIBRARY} isIOS>
-          <PermissionGate
-            permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE}
-            isIOS
-          >
-            <PhotoGallery />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    </PermissionGate>
-  );
-};
-
-const ObsEditWithPermission = ( ) => (
-  <Mortal>
-    <PermissionGate
-      permission={PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION}
-    >
-      <ObsEdit />
-    </PermissionGate>
-  </Mortal>
-);
 
 const BottomTabs = ( ) => {
   const { remoteUser: user } = useUserMe( );
@@ -293,64 +164,6 @@ const BottomTabs = ( ) => {
           options={blankHeaderTitle}
         />
         <Tab.Screen
-          name="PhotoGallery"
-          component={PhotoGalleryWithPermission}
-          options={blankHeaderTitle}
-        />
-        <Tab.Screen
-          name="GroupPhotos"
-          component={GroupPhotosContainer}
-          options={{
-            ...showHeaderLeft,
-            ...showCustomHeader,
-            lazy: true,
-            title: t( "Group-Photos" )
-          }}
-        />
-        <Tab.Screen
-          name="Camera"
-          component={CameraContainerWithPermission}
-          options={{ ...hideHeader, orientation: "all", unmountOnBlur: true }}
-        />
-        <Tab.Screen
-          name="SoundRecorder"
-          component={SoundRecorderWithPermission}
-          options={{
-            title: t( "Record-new-sound" )
-          }}
-        />
-        <Tab.Screen
-          name="ObsEdit"
-          component={ObsEditWithPermission}
-          options={{
-            ...blankHeaderTitle,
-            headerBackVisible: false
-          }}
-        />
-        <Tab.Screen
-          name="AddID"
-          component={AddIDContainer}
-          options={{
-            title: t( "Add-an-ID" )
-          }}
-        />
-        <Tab.Screen
-          name="LocationPicker"
-          component={LocationPickerContainer}
-          options={hideHeader}
-        />
-        <Tab.Screen
-          name="MediaViewer"
-          component={MediaViewer}
-          options={{
-            ...blankHeaderTitle,
-            headerStyle: {
-              backgroundColor: colors.black
-            },
-            ...hideHeaderLeft
-          }}
-        />
-        <Tab.Screen
           name="DataQualityAssessment"
           component={DataQualityAssessment}
           options={{
@@ -359,12 +172,6 @@ const BottomTabs = ( ) => {
             unmountOnBlur: true
           }}
         />
-        <Tab.Screen name="Login" component={MortalLogin} options={hideHeader} />
-        <Tab.Screen name="SignUp" component={SignUp} options={hideHeader} />
-        <Tab.Screen name="ForgotPassword" component={ForgotPassword} options={hideHeader} />
-        <Tab.Screen name="LicensePhotos" component={LicensePhotos} options={hideHeader} />
-        <Tab.Screen name="SignUpConfirmation" component={SignUpConfirmation} options={hideHeader} />
-
         <Tab.Screen
           name="Help"
           component={PlaceholderComponent}
