@@ -3,27 +3,21 @@ import About from "components/About";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import Identify from "components/Identify/Identify";
 import Messages from "components/Messages/Messages";
-import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
-import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
-import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import ProjectDetails from "components/Projects/ProjectDetails";
 import Projects from "components/Projects/Projects";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import Mortal from "components/SharedComponents/Mortal";
-import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UiLibrary from "components/UiLibrary";
-import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
 import {
-  blankHeaderTitle,
   hideHeader,
   hideHeaderLeft,
-  showHeaderLeft,
-  showLongHeader
+  showHeaderLeft
 } from "navigation/navigationOptions";
+import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import React from "react";
 import User from "realmModels/User";
 import useUserMe from "sharedHooks/useUserMe";
@@ -52,6 +46,21 @@ const BottomTabs = ( ) => {
         screenOptions={showHeaderLeft}
       >
         <Tab.Screen
+          name="ObservationNavigator"
+          component={ObservationsStackNavigator}
+          options={{
+            ...hideHeader,
+            meta: {
+              icon: "person",
+              userIconUri: User.uri( user ),
+              testID: OBS_LIST_SCREEN_ID,
+              accessibilityLabel: t( "Observations" ),
+              accessibilityHint: t( "Navigates-to-observations" ),
+              size: 40
+            }
+          }}
+        />
+        <Tab.Screen
           name="Explore"
           component={ExploreContainer}
           options={{
@@ -65,21 +74,7 @@ const BottomTabs = ( ) => {
             }
           }}
         />
-        <Tab.Screen
-          name="ObsList"
-          component={MyObservationsContainer}
-          options={{
-            ...hideHeader,
-            meta: {
-              icon: "person",
-              userIconUri: User.uri( user ),
-              testID: OBS_LIST_SCREEN_ID,
-              accessibilityLabel: t( "Observations" ),
-              accessibilityHint: t( "Navigates-to-observations" ),
-              size: 40
-            }
-          }}
-        />
+
         <Tab.Screen
           name="Messages"
           component={Messages}
@@ -142,34 +137,6 @@ const BottomTabs = ( ) => {
           component={UiLibrary}
           options={{
             ...hideHeaderLeft
-          }}
-        />
-        <Tab.Screen
-          name="ObsDetails"
-          component={ObsDetailsContainer}
-          options={{
-            headerTitle: t( "Observation" ),
-            headerShown: false,
-            unmountOnBlur: true
-          }}
-        />
-        <Tab.Screen
-          name="TaxonDetails"
-          component={TaxonDetails}
-          options={hideHeader}
-        />
-        <Tab.Screen
-          name="UserProfile"
-          component={UserProfile}
-          options={blankHeaderTitle}
-        />
-        <Tab.Screen
-          name="DataQualityAssessment"
-          component={DataQualityAssessment}
-          options={{
-            ...showLongHeader,
-            headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
-            unmountOnBlur: true
           }}
         />
         <Tab.Screen

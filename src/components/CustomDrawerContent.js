@@ -114,7 +114,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       label: currentUser
         ? t( "LOG-OUT" )
         : t( "LOG-IN" ),
-      navigation: "Login",
+      navigation: "LoginNavigator",
       icon: "door-exit",
       loggedInOnly: true
     }

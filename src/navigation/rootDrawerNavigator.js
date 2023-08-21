@@ -3,13 +3,13 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawerContent from "components/CustomDrawerContent";
 import { hideHeader, showHeader } from "navigation/navigationOptions";
+import CameraStackNavigator from "navigation/StackNavigators/CameraStackNavigator";
+import LoginStackNavigator from "navigation/StackNavigators/LoginStackNavigator";
 import type { Node } from "react";
 import * as React from "react";
 import { View } from "react-native";
 
 import BottomTabNavigator from "./BottomTabNavigator";
-import CameraStackNavigator from "./cameraStackNavigator";
-import LoginStackNavigator from "./loginStackNavigator";
 
 const drawerOptions = {
   ...showHeader,
