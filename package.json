@@ -12,7 +12,7 @@
     "lint": "npm run lint:eslint && npm run lint:flow",
     "lint:eslint": "eslint . --fix --quiet",
     "lint:flow": "flow check",
-    "postinstall": "husky install && patch-package",
+    "postinstall": "husky install && patch-package && react-native setup-ios-permissions",
     "translate": "node src/i18n/i18ncli.js build",
     "e2e:android": "npm run e2e:build:android && npm run e2e:test:android",
     "e2e:build:android": "MOCK_MODE=e2e npx detox build --configuration android.release",
@@ -97,7 +97,7 @@
     "react-native-network-logger": "^1.14.1",
     "react-native-orientation-locker": "github:wonday/react-native-orientation-locker",
     "react-native-paper": "^5.7.2",
-    "react-native-permissions": "^3.8.0",
+    "react-native-permissions": "^3.8.4",
     "react-native-picker-select": "^8.0.4",
     "react-native-reanimated": "^2.17.0",
     "react-native-reanimated-carousel": "^3.4.0",
@@ -197,5 +197,14 @@
     "hooks": {
       "pre-commit": "npm run lint"
     }
-  }
+  },
+  "reactNativePermissionsIOS": [
+    "Camera",
+    "LocationAccuracy",
+    "LocationAlways",
+    "LocationWhenInUse",
+    "MediaLibrary",
+    "Microphone",
+    "PhotoLibrary"
+  ]
 }

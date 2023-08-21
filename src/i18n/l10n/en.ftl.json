@@ -837,5 +837,15 @@
   "Taxon-photo-and-name": {
     "comment": "Default accessibility label for DisplayTaxon component",
     "val": "Taxon photo and name"
-  }
+  },
+  "Observe-and-identify-organisms-in-real-time-with-your-camera": {
+    "comment": "Title of screen asking for permission to access the camera",
+    "val": "Observe and identify organisms in real-time with your camera"
+  },
+  "Please-allow-Camera-Access": {
+    "comment": "Title of screen asking for permission to access the camera when access was denied",
+    "val": "Please allow Camera Access"
+  },
+  "Use-the-iNaturalist-camera-to-observe": "Use the iNaturalist camera to observe and identify organisms on-screen in real-time, and share them with our community to get identifications and contribute to science!",
+  "Youve-previously-denied-camera-permissions": "You've previously denied camera permissions, so please enable them in settings."
 }

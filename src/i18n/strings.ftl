@@ -1223,3 +1223,13 @@ Navigate-to-add-identification = Navigate to add identification
 
 # Default accessibility label for DisplayTaxon component
 Taxon-photo-and-name = Taxon photo and name
+
+# Title of screen asking for permission to access the camera
+Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real-time with your camera
+
+# Title of screen asking for permission to access the camera when access was denied
+Please-allow-Camera-Access = Please allow Camera Access
+
+Use-the-iNaturalist-camera-to-observe = Use the iNaturalist camera to observe and identify organisms on-screen in real-time, and share them with our community to get identifications and contribute to science!
+
+Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.

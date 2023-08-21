@@ -25,7 +25,12 @@ import Projects from "components/Projects/Projects";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import Mortal from "components/SharedComponents/Mortal";
-import PermissionGate from "components/SharedComponents/PermissionGate";
+import PermissionGate, {
+  AUDIO_PERMISSIONS,
+  CAMERA_PERMISSIONS,
+  LOCATION_PERMISSIONS,
+  READ_MEDIA_PERMISSIONS
+} from "components/SharedComponents/PermissionGateContainer";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UiLibrary from "components/UiLibrary";
@@ -40,8 +45,6 @@ import {
   showLongHeader
 } from "navigation/navigationOptions";
 import React from "react";
-import { PermissionsAndroid, Platform } from "react-native";
-import { PERMISSIONS } from "react-native-permissions";
 import User from "realmModels/User";
 import useUserMe from "sharedHooks/useUserMe";
 import colors from "styles/tailwindColors";
@@ -54,13 +57,6 @@ const OBS_LIST_SCREEN_ID = "ObsList";
 const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
 
-const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
-const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
-
-const androidReadPermissions = usesAndroid13Permissions
-  ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-  : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
-
 /* eslint-disable react/jsx-props-no-spreading */
 
 // The login component should be not preserve its state or effects after the
@@ -72,95 +68,54 @@ const MortalLogin = ( ) => (
   </Mortal>
 );
 
-const CameraContainerWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    // WRITE_EXTERNAL_STORAGE is deprecated after Android 10
-    // https://developer.android.com/training/data-storage/shared/media#access-other-apps-files
-    return (
-      <PermissionGate
-        permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-      >
-        <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-          <CameraContainer />
-        </PermissionGate>
-      </PermissionGate>
-    );
-  }
-  return (
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-      <CameraContainer />
-    </PermissionGate>
-  );
-};
+const CameraContainerWithPermission = ( ) => (
+  <PermissionGate
+    permissions={CAMERA_PERMISSIONS}
+    title={t( "Observe-and-identify-organisms-in-real-time-with-your-camera" )}
+    titleDenied={t( "Please allow Camera Access" )}
+    body={t( "Use-the-iNaturalist-camera-to-observe" )}
+    blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
+    icon="camera"
+  >
+    <CameraContainer />
+  </PermissionGate>
+);
 
-const SoundRecorderWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    return (
-      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
-        <PermissionGate
-          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-        >
-          <PermissionGate
-            permission={androidReadPermissions}
-          >
-            <SoundRecorder />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    );
-  }
-  return (
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.RECORD_AUDIO}>
-      <PermissionGate
-        permission={androidReadPermissions}
-      >
-        <SoundRecorder />
-      </PermissionGate>
-    </PermissionGate>
-  );
-};
+const SoundRecorderWithPermission = ( ) => (
+  <PermissionGate
+    permissions={AUDIO_PERMISSIONS}
+    title="Record organism sounds with the microphone"
+    titleDenied="Please allow Microphone Access"
+    body="Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!"
+    blockedPrompt="You’ve previously denied microphone permissions, so please enable them in settings."
+    icon="microphone"
+  >
+    <SoundRecorder />
+  </PermissionGate>
+);
 
-const PhotoGalleryWithPermission = ( ) => {
-  if ( usesAndroid10Permissions ) {
-    return (
-      <PermissionGate
-        permission={androidReadPermissions}
-      >
-        <PermissionGate
-          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-        >
-          <PermissionGate
-            permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
-          >
-            <PhotoGallery />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    );
-  }
-
-  return (
-    <PermissionGate permission={androidReadPermissions}>
-      <PermissionGate
-        permission={PermissionsAndroid.PERMISSIONS.ACCESS_MEDIA_LOCATION}
-      >
-        <PermissionGate permission={PERMISSIONS.IOS.PHOTO_LIBRARY} isIOS>
-          <PermissionGate
-            permission={PERMISSIONS.IOS.LOCATION_WHEN_IN_USE}
-            isIOS
-          >
-            <PhotoGallery />
-          </PermissionGate>
-        </PermissionGate>
-      </PermissionGate>
-    </PermissionGate>
-  );
-};
+const PhotoGalleryWithPermission = ( ) => (
+  <PermissionGate
+    permissions={READ_MEDIA_PERMISSIONS}
+    title="Observe and identify organisms from your gallery"
+    titleDenied="Please Allow Gallery Access"
+    body="Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed! You’ve previously denied gallery permissions, so please enable them in settings."
+    blockedPrompt="You’ve previously denied gallery permissions, so please enable them in settings."
+    icon="gallery"
+  >
+    <PhotoGallery />
+  </PermissionGate>
+);
 
 const ObsEditWithPermission = ( ) => (
   <Mortal>
     <PermissionGate
-      permission={PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION}
+      permissions={LOCATION_PERMISSIONS}
+      title="Get more accurate suggestions & create useful data for science using your location"
+      titleDenied="Please allow Location Access"
+      body="iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location. You’re always in control of the location privacy of every observation you create."
+      blockedPrompt="You’ve previously denied location permissions, so please enable them in settings."
+      icon="map-marker-outline"
     >
       <ObsEdit />
     </PermissionGate>
