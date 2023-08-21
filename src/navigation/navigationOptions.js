@@ -2,7 +2,7 @@
 import { HeaderBackground } from "@react-navigation/elements";
 import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 import colors from "styles/tailwindColors";
 
 import BackButton from "./BackButton";
@@ -72,8 +72,16 @@ const removeBottomBorder = {
   )
 };
 
+// this removes the default hamburger menu from header
+const hideDrawerHeaderLeft = {
+  headerLeft: ( ): Node => (
+    <View />
+  )
+};
+
 export {
   blankHeaderTitle,
+  hideDrawerHeaderLeft,
   hideHeader,
   removeBottomBorder,
   showCustomHeader,

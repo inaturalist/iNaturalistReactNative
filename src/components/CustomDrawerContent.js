@@ -10,7 +10,7 @@ import {
   List2,
   UserIcon
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Dimensions, Platform } from "react-native";
@@ -152,7 +152,19 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       descriptors={descriptors}
       contentContainerStyle={drawerScrollViewStyle}
     >
-      <View className="ml-4 mb-8 flex-row flex-nowrap">
+      <Pressable
+        accessibilityRole="button"
+        className="ml-4 mb-8 flex-row flex-nowrap"
+        onPress={( ) => {
+          if ( !currentUser ) {
+            navigation.navigate( "Login" );
+          } else {
+            navigation.navigate( "TabNavigator", {
+              screen: "ObservationsStack"
+            } );
+          }
+        }}
+      >
         {currentUser
           ? (
             <UserIcon
@@ -164,17 +176,10 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
               icon="inaturalist"
               size={40}
               color={colors.inatGreen}
-              onPress={( ) => navigation.navigate( "Login" )}
             />
           ) }
         <View className="ml-3 justify-center">
-          <Body1
-            onPress={( ) => {
-              if ( !currentUser ) {
-                navigation.navigate( "Login" );
-              }
-            }}
-          >
+          <Body1>
             {currentUser
               ? User.userHandle( currentUser )
               : t( "Log-in-to-iNaturalist" )}
@@ -185,7 +190,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
             </List2>
           )}
         </View>
-      </View>
+      </Pressable>
       <View className="ml-3">
         {Object.keys( drawerItems ).map( item => {
           if ( drawerItems[item].loggedInOnly && !currentUser ) {

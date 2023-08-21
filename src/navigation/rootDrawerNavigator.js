@@ -1,20 +1,29 @@
 // @flow
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import About from "components/About";
 import CustomDrawerContent from "components/CustomDrawerContent";
-import { hideHeader, showHeader } from "navigation/navigationOptions";
+import Identify from "components/Identify/Identify";
+import NetworkLogging from "components/NetworkLogging";
+import PlaceholderComponent from "components/PlaceholderComponent";
+import ProjectDetails from "components/Projects/ProjectDetails";
+import Projects from "components/Projects/Projects";
+import Search from "components/Search/Search";
+import Settings from "components/Settings/Settings";
+import UiLibrary from "components/UiLibrary";
+import { t } from "i18next";
+import {
+  hideDrawerHeaderLeft, hideHeader, showHeader
+} from "navigation/navigationOptions";
 import CameraStackNavigator from "navigation/StackNavigators/CameraStackNavigator";
 import LoginStackNavigator from "navigation/StackNavigators/LoginStackNavigator";
 import type { Node } from "react";
 import * as React from "react";
-import { View } from "react-native";
 
 import BottomTabNavigator from "./BottomTabNavigator";
 
 const drawerOptions = {
   ...showHeader,
-  // this removes the default hamburger menu from header
-  headerLeft: ( ) => <View />,
   drawerType: "front",
   drawerStyle: {
     backgroundColor: "transparent"
@@ -40,17 +49,83 @@ const RootDrawerNavigator = ( ): Node => (
     <Drawer.Screen
       name="TabNavigator"
       component={BottomTabNavigator}
-      options={hideHeader}
+      options={{
+        ...hideHeader,
+        ...hideDrawerHeaderLeft
+      }}
     />
     <Drawer.Screen
       name="LoginNavigator"
       component={LoginStackNavigator}
-      options={hideHeader}
+      options={{
+        ...hideHeader,
+        ...hideDrawerHeaderLeft
+      }}
     />
     <Drawer.Screen
       name="CameraNavigator"
       component={CameraStackNavigator}
-      options={hideHeader}
+      options={{
+        ...hideHeader,
+        ...hideDrawerHeaderLeft
+      }}
+    />
+    <Drawer.Screen
+      name="search"
+      component={Search}
+      options={{
+        ...showHeader,
+        headerTitle: t( "Search" )
+      }}
+    />
+    <Drawer.Screen
+      name="Identify"
+      component={Identify}
+      options={{ headerTitle: t( "Identify" ) }}
+    />
+    <Drawer.Screen
+      name="Projects"
+      component={Projects}
+      options={{ headerTitle: t( "Projects" ) }}
+    />
+    <Drawer.Screen
+      name="ProjectDetails"
+      component={ProjectDetails}
+      options={{ headerTitle: t( "Project" ) }}
+    />
+    <Drawer.Screen
+      name="settings"
+      component={Settings}
+      options={{ headerTitle: t( "Settings" ) }}
+    />
+    <Drawer.Screen
+      name="about"
+      component={About}
+      options={{ headerTitle: t( "About-iNaturalist" ) }}
+    />
+    <Drawer.Screen
+      name="help"
+      component={PlaceholderComponent}
+    />
+    <Drawer.Screen
+      name="network"
+      component={NetworkLogging}
+    />
+    <Drawer.Screen
+      name="UI Library"
+      component={UiLibrary}
+    />
+    <Drawer.Screen
+      name="Help"
+      component={PlaceholderComponent}
+    />
+    <Drawer.Screen
+      name="Blog"
+      component={PlaceholderComponent}
+    />
+    <Drawer.Screen
+      name="Donate"
+      component={PlaceholderComponent}
     />
   </Drawer.Navigator>
 );
