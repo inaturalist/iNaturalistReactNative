@@ -134,7 +134,10 @@ const CameraStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
-      headerTintColor: "black"
+      headerTintColor: "black",
+      contentStyle: {
+        backgroundColor: "white"
+      }
     }}
   >
     <Stack.Group>

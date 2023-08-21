@@ -69,7 +69,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     },
     projects: {
       label: t( "PROJECTS" ),
-      navigation: "Projects",
+      navigation: "ProjectNavigator",
       icon: "briefcase"
     },
     help: {
@@ -160,7 +160,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
             navigation.navigate( "Login" );
           } else {
             navigation.navigate( "TabNavigator", {
-              screen: "ObservationsStack"
+              screen: "ObservationNavigator"
             } );
           }
         }}

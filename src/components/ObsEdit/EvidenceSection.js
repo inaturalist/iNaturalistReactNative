@@ -90,7 +90,8 @@ const EvidenceSection = ( ): Node => {
     isFetchingLocation
   } = useCurrentObservationLocation( mountedRef );
 
-  const { latitude, longitude } = currentObservation;
+  const latitude = currentObservation?.latitude;
+  const longitude = currentObservation?.longitude;
 
   const displayPlaceName = ( ) => {
     let placeName = "";

@@ -43,7 +43,7 @@ const UserProfile = ( ): React.Node => {
 
   useEffect( ( ) => {
     const headerRight = ( ) => currentUser?.login === user?.login && (
-      <IconButton icon="pencil" textColor={colors.darkGray} />
+      <IconButton icon="pencil" textColor={colors.darkGray} size={22} />
     );
 
     navigation.setOptions( { headerRight } );

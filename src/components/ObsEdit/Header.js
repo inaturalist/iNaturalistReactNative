@@ -33,17 +33,29 @@ const Header = ( ): Node => {
   const [discardObservationSheetVisible, setDiscardObservationSheetVisible] = useState( false );
   const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
 
+  const navToObsDetails = useCallback( ( ) => {
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationNavigator",
+      params: {
+        screen: "ObsDetails",
+        params: {
+          uuid: currentObservation?.uuid
+        }
+      }
+    } );
+  }, [navigation, currentObservation] );
+
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
     setObservations( [] );
-    navigation.navigate( "TabNavigator" );
-  }, [navigation, setObservations] );
+    navToObsDetails( );
+  }, [setObservations, navToObsDetails] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
     setObservations( [] );
-    navigation.navigate( "TabNavigator" );
-  }, [navigation, setObservations] );
+    navToObsDetails( );
+  }, [setObservations, navToObsDetails] );
 
   const renderHeaderTitle = useCallback( ( ) => (
     <Heading2
@@ -59,6 +71,7 @@ const Header = ( ): Node => {
 
   const handleBackButtonPress = useCallback( ( ) => {
     const unsyncedObservation = !currentObservation?._synced_at && currentObservation?._created_at;
+    console.log( params?.lastScreen, unsyncedObservation, !unsavedChanges, "last screen group" );
     if ( params?.lastScreen === "GroupPhotos"
       || ( unsyncedObservation && !unsavedChanges )
     ) {
@@ -68,9 +81,9 @@ const Header = ( ): Node => {
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
     } else {
-      navigation.navigate( "TabNavigator" );
+      navToObsDetails( );
     }
-  }, [currentObservation, navigation, unsavedChanges, params] );
+  }, [currentObservation, navigation, unsavedChanges, params, navToObsDetails] );
 
   const renderBackButton = useCallback( ( ) => (
     <View className="ml-4">
@@ -120,7 +133,7 @@ const Header = ( ): Node => {
 
   useEffect( ( ) => {
     const headerOptions = {
-      headerTitle: renderHeaderTitle,
+      headerTitle: currentObservation && renderHeaderTitle,
       headerLeft: renderBackButton,
       headerRight: renderKebabMenu
     };
@@ -131,7 +144,8 @@ const Header = ( ): Node => {
     navigation,
     renderKebabMenu,
     renderBackButton,
-    renderHeaderTitle
+    renderHeaderTitle,
+    currentObservation
   ] );
 
   // prevent header from flickering if observations haven't loaded yet

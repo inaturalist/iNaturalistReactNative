@@ -6,17 +6,17 @@ import CustomDrawerContent from "components/CustomDrawerContent";
 import Identify from "components/Identify/Identify";
 import NetworkLogging from "components/NetworkLogging";
 import PlaceholderComponent from "components/PlaceholderComponent";
-import ProjectDetails from "components/Projects/ProjectDetails";
-import Projects from "components/Projects/Projects";
 import Search from "components/Search/Search";
 import Settings from "components/Settings/Settings";
 import UiLibrary from "components/UiLibrary";
 import { t } from "i18next";
 import {
-  hideDrawerHeaderLeft, hideHeader, showHeader
+  hideDrawerHeaderLeft, hideHeader,
+  showHeader
 } from "navigation/navigationOptions";
 import CameraStackNavigator from "navigation/StackNavigators/CameraStackNavigator";
 import LoginStackNavigator from "navigation/StackNavigators/LoginStackNavigator";
+import ProjectStackNavigator from "navigation/StackNavigators/ProjectStackNavigator";
 import type { Node } from "react";
 import * as React from "react";
 
@@ -84,14 +84,9 @@ const RootDrawerNavigator = ( ): Node => (
       options={{ headerTitle: t( "Identify" ) }}
     />
     <Drawer.Screen
-      name="Projects"
-      component={Projects}
-      options={{ headerTitle: t( "Projects" ) }}
-    />
-    <Drawer.Screen
-      name="ProjectDetails"
-      component={ProjectDetails}
-      options={{ headerTitle: t( "Project" ) }}
+      name="ProjectNavigator"
+      component={ProjectStackNavigator}
+      options={hideHeader}
     />
     <Drawer.Screen
       name="settings"

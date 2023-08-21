@@ -11,6 +11,8 @@ import { t } from "i18next";
 import {
   blankHeaderTitle,
   hideHeader,
+  removeBottomBorder,
+  showHeaderLeft,
   showLongHeader
 } from "navigation/navigationOptions";
 import type { Node } from "react";
@@ -19,7 +21,12 @@ import React from "react";
 const Stack = createNativeStackNavigator( );
 
 const ObservationsStackNavigator = ( ): Node => (
-  <Stack.Navigator>
+  <Stack.Navigator
+    screenOptions={{
+      headerBackTitleVisible: false,
+      headerTintColor: "black"
+    }}
+  >
     <Stack.Group>
       <Stack.Screen
         name="ObsList"
@@ -45,7 +52,11 @@ const ObservationsStackNavigator = ( ): Node => (
       <Stack.Screen
         name="UserProfile"
         component={UserProfile}
-        options={blankHeaderTitle}
+        options={{
+          ...showHeaderLeft,
+          ...blankHeaderTitle,
+          ...removeBottomBorder
+        }}
       />
       <Stack.Screen
         name="DataQualityAssessment"

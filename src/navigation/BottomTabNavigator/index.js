@@ -17,7 +17,7 @@ import CustomTabBar from "./CustomTabBar";
 
 const Tab = createBottomTabNavigator( );
 
-const OBS_LIST_SCREEN_ID = "ObsList";
+const OBS_LIST_SCREEN_ID = "ObservationNavigator";
 const EXPLORE_SCREEN_ID = "Explore";
 const MESSAGES_SCREEN_ID = "Messages";
 
