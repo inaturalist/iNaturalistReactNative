@@ -1,5 +1,6 @@
 // @flow
 
+import Clipboard from "@react-native-clipboard/clipboard";
 import { useNavigation } from "@react-navigation/native";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
@@ -19,6 +20,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import { Alert, Linking } from "react-native";
+import openMap from "react-native-open-maps";
 import { Menu, useTheme } from "react-native-paper";
 
 import Attribution from "./Attribution";
@@ -84,7 +86,12 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation.uuid;
   const privacy = observation?.geoprivacy;
+  const isPrivate = privacy === "private";
   const positionalAccuracy = observation?.positional_accuracy;
+  const coordinateString = t( "Lat-Lon", {
+    latitude: observation.latitude,
+    longitude: observation.longitude
+  } );
 
   const getPrivateCoordinates = () => {
     if ( observation?.private_location ) {
@@ -132,7 +139,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
         </>
       )}
       {
-        privacy !== "private" && (
+        !isPrivate && (
           <View className="flex-row justify-between items-center mt-[8px] mx-[15px]">
             <Heading4>{t( "LOCATION" )}</Heading4>
             <KebabMenu
@@ -141,9 +148,11 @@ const DetailsTab = ( { observation }: Props ): Node => {
             >
               <Menu.Item
                 title={t( "Share-location" )}
+                onPress={() => openMap( { latitude, longitude } )}
               />
               <Menu.Item
                 title={t( "Copy-coordinates" )}
+                onPress={() => Clipboard.setString( coordinateString )}
               />
             </KebabMenu>
           </View>
