@@ -18,13 +18,14 @@ import TaxonSearch from "./TaxonSearch";
 type Props = {
   setComment: Function,
   comment: string,
-  clearSearch: boolean,
+  taxonSearch: string,
+  setTaxonSearch: Function,
   createId: Function,
   loading: boolean
 };
 
 const AddID = ( {
-  setComment, comment, clearSearch, createId, loading
+  setComment, comment, taxonSearch, setTaxonSearch, createId, loading
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [showAddCommentSheet, setShowAddCommentSheet] = useState( false );
@@ -79,7 +80,11 @@ const AddID = ( {
             <ActivityIndicator large />
           </View>
         )}
-        <TaxonSearch clearSearch={clearSearch} createId={createId} />
+        <TaxonSearch
+          taxonSearch={taxonSearch}
+          setTaxonSearch={setTaxonSearch}
+          createId={createId}
+        />
       </View>
     </ViewWrapper>
   );

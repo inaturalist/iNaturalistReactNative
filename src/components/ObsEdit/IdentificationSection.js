@@ -38,9 +38,7 @@ const IdentificationSection = ( ): Node => {
     } );
   };
 
-  const navToAddID = ( ) => navigation.navigate( "AddID", {
-    clearSearch: true
-  } );
+  const navToAddID = ( ) => navigation.navigate( "AddID" );
 
   useEffect( ( ) => {
     if ( hasIdentification ) {

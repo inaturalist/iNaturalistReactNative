@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import createIdentification from "api/identifications";
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import uuid from "react-native-uuid";
 import {
@@ -21,9 +21,9 @@ const { useRealm } = RealmContext;
 type Props = {
   route: {
     params: {
-      clearSearch: boolean,
       observationUUID?: string,
-      createRemoteIdentification?: boolean
+      createRemoteIdentification?: boolean,
+      belongsToCurrentUser?: boolean
     },
   },
 };
@@ -31,11 +31,12 @@ type Props = {
 const AddIDContainer = ( { route }: Props ): Node => {
   const [comment, setComment] = useState( "" );
   const [loading, setLoading] = useState( false );
+  const [taxonSearch, setTaxonSearch] = useState( "" );
   const {
     updateObservationKeys
   } = useContext( ObsEditContext );
   const {
-    observationUUID, createRemoteIdentification
+    observationUUID, createRemoteIdentification, belongsToCurrentUser
   } = route.params;
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
@@ -52,17 +53,19 @@ const AddIDContainer = ( { route }: Props ): Node => {
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
-        realm?.write( ( ) => {
-          const localIdentifications = localObservation?.identifications;
-          const newIdentification = data[0];
-          newIdentification.user = currentUser;
-          newIdentification.taxon = realm?.objectForPrimaryKey(
-            "Taxon",
-            newIdentification.taxon.id
-          ) || newIdentification.taxon;
-          const realmIdentification = realm?.create( "Identification", newIdentification );
-          localIdentifications.push( realmIdentification );
-        } );
+        if ( belongsToCurrentUser ) {
+          realm?.write( ( ) => {
+            const localIdentifications = localObservation?.identifications;
+            const newIdentification = data[0];
+            newIdentification.user = currentUser;
+            newIdentification.taxon = realm?.objectForPrimaryKey(
+              "Taxon",
+              newIdentification.taxon.id
+            ) || newIdentification.taxon;
+            const realmIdentification = realm?.create( "Identification", newIdentification );
+            localIdentifications.push( realmIdentification );
+          } );
+        }
         // navigate back to ObsDetails
         navigation.goBack( );
       },
@@ -107,11 +110,23 @@ const AddIDContainer = ( { route }: Props ): Node => {
     }
   };
 
+  useEffect(
+    ( ) => {
+      navigation.addListener( "blur", ( ) => {
+        setTaxonSearch( "" );
+        setComment( "" );
+        setLoading( false );
+      } );
+    },
+    [navigation]
+  );
+
   return (
     <AddID
       setComment={setComment}
       comment={comment}
-      clearSearch={route?.params?.clearSearch}
+      taxonSearch={taxonSearch}
+      setTaxonSearch={setTaxonSearch}
       createId={createId}
       loading={loading}
     />
