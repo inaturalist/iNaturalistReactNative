@@ -3,7 +3,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { focusManager } from "@tanstack/react-query";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
-import RootDrawerNavigator from "navigation/RootDrawerNavigator";
+import RootDrawerNavigator from "navigation/rootDrawerNavigator";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
