@@ -84,11 +84,12 @@ const CameraContainerWithPermission = ( ) => (
 const SoundRecorderWithPermission = ( ) => (
   <PermissionGate
     permissions={AUDIO_PERMISSIONS}
-    title="Record organism sounds with the microphone"
-    titleDenied="Please allow Microphone Access"
-    body="Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!"
-    blockedPrompt="You’ve previously denied microphone permissions, so please enable them in settings."
+    title={t( "Record-organism-sounds-with-the-microphone" )}
+    titleDenied={t( "Please-allow-Microphone-Access" )}
+    body={t( "Use-your-devices-microphone-to-record" )}
+    blockedPrompt={t( "Youve-previously-denied-microphone-permissions" )}
     icon="microphone"
+    image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
   >
     <SoundRecorder />
   </PermissionGate>
@@ -97,11 +98,12 @@ const SoundRecorderWithPermission = ( ) => (
 const PhotoGalleryWithPermission = ( ) => (
   <PermissionGate
     permissions={READ_MEDIA_PERMISSIONS}
-    title="Observe and identify organisms from your gallery"
-    titleDenied="Please Allow Gallery Access"
-    body="Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed! You’ve previously denied gallery permissions, so please enable them in settings."
-    blockedPrompt="You’ve previously denied gallery permissions, so please enable them in settings."
+    title={t( "Observe-and-identify-organisms-from-your-gallery" )}
+    titleDenied={t( "Please-Allow-Gallery-Access" )}
+    body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
+    blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
     icon="gallery"
+    image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
   >
     <PhotoGallery />
   </PermissionGate>
@@ -111,11 +113,12 @@ const ObsEditWithPermission = ( ) => (
   <Mortal>
     <PermissionGate
       permissions={LOCATION_PERMISSIONS}
-      title="Get more accurate suggestions & create useful data for science using your location"
-      titleDenied="Please allow Location Access"
-      body="iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location. You’re always in control of the location privacy of every observation you create."
-      blockedPrompt="You’ve previously denied location permissions, so please enable them in settings."
+      title={t( "Get-more-accurate-suggestions-create-useful-data" )}
+      titleDenied={t( "Please-allow-Location-Access" )}
+      body={t( "iNaturalist-uses-your-location-to-give-you" )}
+      blockedPrompt={t( "Youve-previously-denied-location-permissions" )}
       icon="map-marker-outline"
+      image={require( "images/landon-parenteau-EEuDMqRYbx0-unsplash.jpg" )}
     >
       <ObsEdit />
     </PermissionGate>

@@ -4,9 +4,6 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { Heading2, KebabMenu } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import {
-  blankHeaderTitle
-} from "navigation/navigationOptions";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
@@ -123,12 +120,9 @@ const Header = ( ): Node => {
 
   useEffect( ( ) => {
     const headerOptions = {
-      ...blankHeaderTitle,
-      headerBackVisible: false,
       headerTitle: renderHeaderTitle,
       headerLeft: renderBackButton,
-      headerRight: renderKebabMenu,
-      headerTransparent: false
+      headerRight: renderKebabMenu
     };
 
     navigation.setOptions( headerOptions );

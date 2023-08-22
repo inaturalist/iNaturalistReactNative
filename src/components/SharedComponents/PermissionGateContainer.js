@@ -1,8 +1,8 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import Modal from "components/SharedComponents/Modal";
 import _ from "lodash";
-import BackButton from "navigation/BackButton";
 import type { Node } from "react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Platform } from "react-native";
@@ -10,7 +10,6 @@ import {
   checkMultiple, PERMISSIONS, requestMultiple, RESULTS
 } from "react-native-permissions";
 
-// import useTranslation from "sharedHooks/useTranslation";
 import PermissionGate from "./PermissionGate";
 
 const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
@@ -31,19 +30,19 @@ const androidCameraPermissions = usesAndroid10Permissions
   ? [PERMISSIONS.ANDROID.CAMERA, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]
   : [PERMISSIONS.ANDROID.CAMERA];
 
-export const CAMERA_PERMISSIONS: Array = Platform.OS === "ios"
+export const CAMERA_PERMISSIONS: Array<string> = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.CAMERA]
   : androidCameraPermissions;
 
-export const AUDIO_PERMISSIONS: Array = Platform.OS === "ios"
+export const AUDIO_PERMISSIONS: Array<string> = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.MICROPHONE]
   : [...androidReadPermissions, PERMISSIONS.ANDROID.RECORD_AUDIO];
 
-export const READ_MEDIA_PERMISSIONS: Array = Platform.OS === "ios"
+export const READ_MEDIA_PERMISSIONS: Array<string> = Platform.OS === "ios"
   ? [PERMISSIONS.IOS.PHOTO_LIBRARY]
   : androidReadPermissions;
 
-export const LOCATION_PERMISSIONS = Platform.OS === "ios"
+export const LOCATION_PERMISSIONS: Array<string> = Platform.OS === "ios"
   ? [
     PERMISSIONS.IOS.LOCATION_ACCURACY,
     PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
@@ -52,7 +51,7 @@ export const LOCATION_PERMISSIONS = Platform.OS === "ios"
 
 type Props = {
   children: Node,
-  permissions: Array,
+  permissions: Array<string>,
   icon?: string,
   title?: string,
   titleDenied: string,
@@ -61,8 +60,6 @@ type Props = {
   buttonText?: string,
   image?: Object
 };
-
-const PermissionGateBackButton = () => <BackButton tintColor="white" />;
 
 // Prompts the user for an Android permission and renders children if granted.
 // Otherwise renders a view saying that permission is required, with a button
@@ -81,8 +78,11 @@ const PermissionGateContainer = ( {
   image
 }: Props ): Node => {
   const [result, setResult] = useState( null );
+  const [modalShown, setModalShown] = useState( true );
 
   const navigation = useNavigation();
+
+  console.log( "result: ", result );
 
   const setResultFromMultiple = useCallback( multiResults => {
     if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
@@ -102,14 +102,11 @@ const PermissionGateContainer = ( {
 
   const requestPermission = useCallback( async ( ) => {
     const requestResult = await requestMultiple( permissions );
-    console.log( "requestPermission, permission: ", permissions, ", requestResult: ", requestResult );
     setResultFromMultiple( requestResult );
   }, [permissions, setResultFromMultiple] );
 
   const checkPermission = useCallback( async ( ) => {
     const checkResult = await checkMultiple( permissions );
-    console.log( "checkPermission, permission: ", permissions, ", checkResult: ", checkResult );
-    // setResult( checkResult );
     setResultFromMultiple( checkResult );
   }, [permissions, setResultFromMultiple] );
 
@@ -122,41 +119,40 @@ const PermissionGateContainer = ( {
   useEffect( ( ) => {
     const unsubscribe = navigation.addListener( "focus", async () => {
       await checkPermission( );
+      setModalShown( true );
     } );
     return unsubscribe;
   }, [checkPermission, navigation] );
 
-  useEffect( ( ) => {
-    if ( !result || result === RESULTS.GRANTED ) return;
-
-    const headerOptions = {
-      headerTitle: "",
-      headerTransparent: true,
-      headerTintColor: "white",
-      headerLeft: PermissionGateBackButton,
-      headerShown: true
-    };
-    console.log( "PermissionGateContainer, result: ", result );
-    console.log( "PermissionGateContainer, setting header options to: ", headerOptions );
-
-    navigation.setOptions( headerOptions );
-  }, [navigation, result] );
+  const closeModal = useCallback( ( ) => {
+    setModalShown( false );
+    navigation.goBack( );
+  }, [setModalShown, navigation] );
 
   if ( result === RESULTS.GRANTED ) {
     return children;
   }
   if ( !result ) return null;
+
   return (
-    <PermissionGate
-      requestPermission={requestPermission}
-      grantStatus={result}
-      icon={icon}
-      title={title}
-      titleDenied={titleDenied}
-      body={body}
-      blockedPrompt={blockedPrompt}
-      buttonText={buttonText}
-      image={image}
+    <Modal
+      showModal={modalShown}
+      closeModal={closeModal}
+      fullScreen
+      modal={(
+        <PermissionGate
+          requestPermission={requestPermission}
+          grantStatus={result}
+          icon={icon}
+          title={title}
+          titleDenied={titleDenied}
+          body={body}
+          blockedPrompt={blockedPrompt}
+          buttonText={buttonText}
+          image={image}
+          onClose={closeModal}
+        />
+      )}
     />
   );
 };

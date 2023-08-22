@@ -4,12 +4,14 @@ import {
   Button,
   Heading2,
   INatIcon,
+  INatIconButton,
   ViewWrapper
 } from "components/SharedComponents";
 import {
   ImageBackground,
   View
 } from "components/styledComponents";
+import { t } from "i18next";
 import React from "react";
 import {
   Linking
@@ -26,12 +28,13 @@ const PermissionGate = ( {
   requestPermission,
   grantStatus,
   icon,
-  title = "Grant Permission",
-  titleDenied = "Please Grant Permission",
+  title = t( "Grant-Permission" ),
+  titleDenied = t( "Please-Grant-Permission" ),
   body,
-  blockedPrompt = "You’ve denied permission. Please grant permission in the settings app.",
-  buttonText = "GRANT PERMISSION",
-  image = require( "images/bart-zimny-W5XTTLpk1-I-unsplash.jpg" )
+  blockedPrompt = t( "Youve-denied-permission-prompt" ),
+  buttonText = t( "GRANT-PERMISSION" ),
+  image = require( "images/bart-zimny-W5XTTLpk1-I-unsplash.jpg" ),
+  onClose
 } ) => (
   <ViewWrapper wrapperClassName="bg-black">
     <ImageBackground
@@ -43,6 +46,12 @@ const PermissionGate = ( {
         "h-full"
       )}
     >
+      <INatIconButton
+        icon="close"
+        color={colors.white}
+        onPress={() => onClose( )}
+        className="absolute top-2 right-2 z-10"
+      />
       <View
         className={classnames(
           "w-full",
@@ -77,7 +86,7 @@ const PermissionGate = ( {
             <Button
               level="focus"
               onPress={( ) => Linking.openSettings( )}
-              text="OPEN SETTINGS"
+              text={t( "OPEN-SETTINGS" )}
               className="w-full"
             />
           )

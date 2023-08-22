@@ -1,4 +1,4 @@
-// @flow strict-local
+// @flow
 
 import classnames from "classnames";
 import { SafeAreaView } from "components/styledComponents";
@@ -10,7 +10,7 @@ type Props = {
   testID?: string,
   // If someone can explain to me why className doesn't work here, I'm all
   // ears ~~~kueda 20230815
-  wrapperClassName: string
+  wrapperClassName?: string
 };
 
 const ViewWrapper = ( {

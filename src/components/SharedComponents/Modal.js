@@ -8,7 +8,8 @@ type Props = {
   showModal: boolean,
   closeModal: Function,
   modal: any,
-  backdropOpacity?: number
+  backdropOpacity?: number,
+  fullScreen?: boolean
 }
 
 const modalStyle = {
@@ -16,11 +17,20 @@ const modalStyle = {
   justifyContent: "flex-end"
 };
 
+const fullScreenModalStyle = {
+  ...modalStyle,
+  margin: 0
+};
+
 // accessibility might not work on Android because of backdrop
 // https://github.com/react-native-modal/react-native-modal/issues/525
 
 const Modal = ( {
-  showModal, closeModal, modal, backdropOpacity
+  showModal,
+  closeModal,
+  modal,
+  backdropOpacity,
+  fullScreen = false
 }: Props ): React.Node => (
   <RNModal
     isVisible={showModal}
@@ -29,7 +39,9 @@ const Modal = ( {
     swipeDirection="down"
     useNativeDriverForBackdrop
     useNativeDriver
-    style={modalStyle}
+    style={fullScreen
+      ? fullScreenModalStyle
+      : modalStyle}
     backdropOpacity={backdropOpacity}
   >
     {modal}
