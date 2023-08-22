@@ -133,7 +133,9 @@ const Header = ( ): Node => {
 
   useEffect( ( ) => {
     const headerOptions = {
-      headerTitle: currentObservation && renderHeaderTitle,
+      headerTitle: currentObservation
+        ? renderHeaderTitle
+        : "",
       headerLeft: renderBackButton,
       headerRight: renderKebabMenu
     };

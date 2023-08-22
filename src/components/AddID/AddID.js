@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  Body3, Heading4, INatIcon, TextInputSheet, ViewWrapper
+  Body3, INatIcon, TextInputSheet, ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -43,11 +43,8 @@ const AddID = ( {
       />
     );
 
-    const renderHeaderTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
-
     navigation.setOptions( {
-      headerRight: addCommentIcon,
-      headerTitle: renderHeaderTitle
+      headerRight: addCommentIcon
     } );
   }, [navigation, t] );
 

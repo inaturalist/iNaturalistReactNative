@@ -9,8 +9,7 @@ import MediaViewer from "components/MediaViewer/MediaViewer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
-import Mortal from "components/SharedComponents/Mortal";
-import PermissionGate from "components/SharedComponents/PermissionGate";
+import { Heading4, Mortal, PermissionGate } from "components/SharedComponents";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
 import { t } from "i18next";
 import {
@@ -25,6 +24,8 @@ import type { Node } from "react";
 import React from "react";
 import { PermissionsAndroid, Platform } from "react-native";
 import { PERMISSIONS } from "react-native-permissions";
+
+const addIDTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
 
 const usesAndroid10Permissions = Platform.OS === "android" && Platform.Version <= 29;
 const usesAndroid13Permissions = Platform.OS === "android" && Platform.Version >= 33;
@@ -189,7 +190,7 @@ const CameraStackNavigator = ( ): Node => (
         component={AddIDContainer}
         options={{
           ...removeBottomBorder,
-          title: t( "Add-an-ID" )
+          headerTitle: addIDTitle
         }}
       />
       <Stack.Screen
