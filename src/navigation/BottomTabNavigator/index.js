@@ -11,7 +11,7 @@ import {
 import ObservationsStackNavigator from "navigation/StackNavigators/ObservationsStackNavigator";
 import React from "react";
 import User from "realmModels/User";
-import useUserMe from "sharedHooks/useUserMe";
+import { useCurrentUser } from "sharedHooks";
 
 import CustomTabBar from "./CustomTabBar";
 
@@ -24,7 +24,7 @@ const MESSAGES_SCREEN_ID = "Messages";
 /* eslint-disable react/jsx-props-no-spreading */
 
 const BottomTabs = ( ) => {
-  const { remoteUser: user } = useUserMe( );
+  const currentUser = useCurrentUser( );
 
   const renderTabBar = props => <CustomTabBar {...props} />;
 
@@ -57,7 +57,7 @@ const BottomTabs = ( ) => {
             ...hideHeader,
             meta: {
               icon: "person",
-              userIconUri: User.uri( user ),
+              userIconUri: User.uri( currentUser ),
               testID: OBS_LIST_SCREEN_ID,
               accessibilityLabel: t( "Observations" ),
               accessibilityHint: t( "Navigates-to-observations" ),

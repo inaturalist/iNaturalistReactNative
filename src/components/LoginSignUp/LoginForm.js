@@ -50,7 +50,9 @@ const LoginForm = ( { setLoggedIn, handleInputFocus }: Props ): Node => {
     setLoggedIn( true );
     setLoading( false );
 
-    navigation.navigate( "TabNavigator" );
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationNavigator"
+    } );
   };
 
   return (

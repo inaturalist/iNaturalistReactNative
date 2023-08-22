@@ -45,6 +45,10 @@ const Header = ( ): Node => {
     } );
   }, [navigation, currentObservation] );
 
+  const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
+    screen: "ObservationNavigator"
+  } ), [navigation] );
+
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
     setObservations( [] );
@@ -54,8 +58,8 @@ const Header = ( ): Node => {
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
     setObservations( [] );
-    navToObsDetails( );
-  }, [setObservations, navToObsDetails] );
+    navToObsList( );
+  }, [setObservations, navToObsList] );
 
   const renderHeaderTitle = useCallback( ( ) => (
     <Heading2
@@ -71,7 +75,6 @@ const Header = ( ): Node => {
 
   const handleBackButtonPress = useCallback( ( ) => {
     const unsyncedObservation = !currentObservation?._synced_at && currentObservation?._created_at;
-    console.log( params?.lastScreen, unsyncedObservation, !unsavedChanges, "last screen group" );
     if ( params?.lastScreen === "GroupPhotos"
       || ( unsyncedObservation && !unsavedChanges )
     ) {
@@ -160,18 +163,21 @@ const Header = ( ): Node => {
       {deleteSheetVisible && (
         <DeleteObservationSheet
           handleClose={( ) => setDeleteSheetVisible( false )}
+          navToObsList={navToObsList}
         />
       )}
       {discardObservationSheetVisible && (
         <DiscardObservationSheet
           discardObservation={discardObservation}
           handleClose={( ) => setDiscardObservationSheetVisible( false )}
+          navToObsList={navToObsList}
         />
       )}
       {discardChangesSheetVisible && (
         <DiscardChangesSheet
           discardChanges={discardChanges}
           handleClose={( ) => setDiscardChangesSheetVisible( false )}
+
         />
       )}
     </>

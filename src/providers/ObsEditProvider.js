@@ -388,8 +388,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const deleteLocalObservation = uuid => {
+      const localObservation = realm.objectForPrimaryKey( "Observation", uuid );
+      if ( !localObservation ) { return; }
       realm?.write( ( ) => {
-        realm?.delete( realm.objectForPrimaryKey( "Observation", uuid ) );
+        realm?.delete( localObservation );
       } );
     };
 
