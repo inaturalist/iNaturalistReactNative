@@ -99,7 +99,7 @@ const Map = ( {
                   longitude: obsLongitude
                 }}
                 radius={positionalAccuracy}
-                strokeWidth={1}
+                strokeWidth={2}
                 strokeColor="#74AC00"
                 fillColor="rgba( 116, 172, 0, 0.2 )"
               />
@@ -139,7 +139,7 @@ const Map = ( {
                     longitude: obsLongitude + OBSCURATION_VALUE
                   }
                 ]}
-                strokeWidth={1}
+                strokeWidth={2}
                 strokeColor="#74AC00"
                 fillColor="rgba( 116, 172, 0, 0.2 )"
               />

@@ -140,13 +140,18 @@ const ObsDetailsMap = (): Node => {
           >
             {displayLocation}
           </Body4>
-          <Body4
-            className="text-darkGray"
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {displayCoordinates}
-          </Body4>
+          {
+            !isObscured && (
+              <Body4
+                className="text-darkGray"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {displayCoordinates}
+              </Body4>
+            )
+          }
+
           {isObscured
         && (
           <Body4 className="italic">
