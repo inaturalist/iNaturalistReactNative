@@ -113,7 +113,9 @@ class Taxon extends Realm.Object {
       name: "string?",
       preferred_common_name: { type: "string?", mapTo: "preferredCommonName" },
       rank: "string?",
-      rank_level: "int?"
+      rank_level: "int?",
+      isIconic: "bool?",
+      iconic_taxon_name: "string?"
     }
   };
 }

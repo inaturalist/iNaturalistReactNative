@@ -24,7 +24,7 @@ import { useTheme } from "react-native-paper";
 
 import CoordinatesCopiedNotification from "./CoordinatesCopiedNotification";
 
-const MapModal = (): Node => {
+const ObsDetailsMap = (): Node => {
   const navigation = useNavigation( );
   const theme = useTheme( );
   const { params } = useRoute( );
@@ -76,6 +76,10 @@ const MapModal = (): Node => {
     openMap( { latitude, longitude } );
   };
 
+  const toCurrentUserLocation = () => {
+
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 h-full">
@@ -110,6 +114,7 @@ const MapModal = (): Node => {
             width={46}
             size={24}
             className={`${mapButtonClassName} bottom-0 right-0`}
+            onPress={() => { toCurrentUserLocation(); }}
           />
           <INatIconButton
             icon="map-layers"
@@ -179,4 +184,4 @@ const MapModal = (): Node => {
   );
 };
 
-export default MapModal;
+export default ObsDetailsMap;

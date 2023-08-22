@@ -6,7 +6,6 @@ import classnames from "classnames";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
 import { Body4, INatIcon, InlineUser } from "components/SharedComponents";
-import DateDisplay from "components/SharedComponents/DateDisplay";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import {
   View
@@ -26,12 +25,13 @@ const { useRealm } = RealmContext;
 type Props = {
   item: Object,
   refetchRemoteObservation?: Function,
-  toggleRefetch?: Function,
-  classNameMargin?: string
+  classNameMargin?: string,
+  idWithdrawn: boolean
 }
 
 const ActivityHeader = ( {
-  item, refetchRemoteObservation, toggleRefetch, classNameMargin
+  item, refetchRemoteObservation, classNameMargin,
+  idWithdrawn
 }:Props ): Node => {
   const [currentUser, setCurrentUser] = useState( null );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
@@ -40,11 +40,6 @@ const ActivityHeader = ( {
   const realm = useRealm( );
   const queryClient = useQueryClient( );
   const { user } = item;
-  const isCurrent = item.current !== undefined
-    ? item.current
-    : undefined;
-
-  const idWithdrawn = isCurrent !== undefined && !isCurrent;
 
   const itemType = item.category
     ? "Identification"
@@ -121,59 +116,58 @@ const ActivityHeader = ( {
     );
   };
 
-  const ifCommentOrID = () => (
-    <View className="flex-row items-center space-x-[15px]">
-      {renderIcon()}
-      {
-        renderStatus()
-      }
-      {item.created_at
+  return (
+    <View className={classnames( "flex-row justify-between", classNameMargin )}>
+      <InlineUser user={user} />
+      <View className="flex-row items-center space-x-[15px]">
+        {renderIcon()}
+        {
+          renderStatus()
+        }
+        {item.created_at
             && (
               <Body4>
                 {formatIdDate( item.updated_at || item.created_at, t )}
               </Body4>
             )}
-      {
-        item.body && currentUser
-          ? (
-            <KebabMenu
-              visible={kebabMenuVisible}
-              setVisible={setKebabMenuVisible}
-            >
-              <Menu.Item
-                onPress={async ( ) => {
+        {
+          item.body && currentUser
+            ? (
+              <KebabMenu
+                visible={kebabMenuVisible}
+                setVisible={setKebabMenuVisible}
+              >
+                <Menu.Item
+                  onPress={async ( ) => {
                   // first delete locally
-                  Comment.deleteComment( item.uuid, realm );
-                  // then delete remotely
-                  deleteCommentMutation.mutate( item.uuid );
-                  if ( toggleRefetch ) {
-                    toggleRefetch( );
-                  }
-                  setKebabMenuVisible( false );
-                }}
-                title={t( "Delete-comment" )}
-              />
-            </KebabMenu>
-          )
-          : (
-            <KebabMenu
-              visible={kebabMenuVisible}
-              setVisible={setKebabMenuVisible}
-            >
-              {!currentUser
-                ? (
-                  <Menu.Item
-                    onPress={() => setFlagModalVisible( true )}
-                    title={t( "Flag" )}
-                    testID="MenuItem.Flag"
-                  />
-                )
-                : undefined}
-              <View />
-            </KebabMenu>
-          )
-      }
-      {!currentUser
+                    Comment.deleteComment( item.uuid, realm );
+                    // then delete remotely
+                    deleteCommentMutation.mutate( item.uuid );
+                    setKebabMenuVisible( false );
+                  }}
+                  title={t( "Delete-comment" )}
+                />
+              </KebabMenu>
+            )
+            : (
+              <KebabMenu
+                visible={kebabMenuVisible}
+                setVisible={setKebabMenuVisible}
+              >
+                {!currentUser
+                  ? (
+                    <Menu.Item
+                      onPress={() => setFlagModalVisible( true )}
+                      title={t( "Flag" )}
+                      testID="MenuItem.Flag"
+                    />
+                  )
+                  : undefined}
+                <View />
+              </KebabMenu>
+            )
+        }
+        {!currentUser
         && (
           <FlagItemModal
             id={item.id}
@@ -183,15 +177,7 @@ const ActivityHeader = ( {
             onItemFlagged={onItemFlagged}
           />
         )}
-    </View>
-  );
-
-  return (
-    <View className={classnames( "flex-row justify-between", classNameMargin )}>
-      <InlineUser user={user} />
-      {( item._created_at )
-        ? <DateDisplay dateString={item.created_at} />
-        : ifCommentOrID()}
+      </View>
     </View>
   );
 };

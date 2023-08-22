@@ -160,7 +160,7 @@ We use [fastlane](https://docs.fastlane.tools/) to help automate parts of the de
 1. Manage Certificates and add an Apple Distribution certificate associated with the iNaturalist team
 
 
-### Usage
+### Using Fastlane
 
 The current expectation is that you we tag to freeze the code, bump the internal build number, and describe the changes represented by the tag. Then we release to make builds and publish on Github. Later, presumably when some of the change logs have been translated, we push builds for internal testing. If that looks ok, we push to public testing, and later to production release.
 
@@ -185,3 +185,13 @@ fastlane beta
 # should just promote the last beta to prod.
 fastlane prod
 ```
+
+### Example: Build & Release for Internal Testing
+
+1. Write release notes based on commits since the last release. Try to keep them brief but emphasize what's new and what's fixed. Just keep them in a text editor; you'll save them at a later step.
+1. Edit `package.json` and update the `version` per semantic versioning rules: bump the patch version for bug fixes, minor version for new features, major version if the app was completely re-written or can't import data from previous versions.
+1. `npm install` to set the version in `package-lock.json`
+1. Commit changes
+1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote.
+1. `bundle exec fastlane release` to build and push a release to Github
+1. `bundle exec fastlane internal` to distribute the builds to TestFlight and the Play Store

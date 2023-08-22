@@ -42,10 +42,5 @@ const iosDestinationPath = path.join( __dirname, "..", "ios" );
   console.log( "Delete temp model folder and its contents..." );
   await fs.rm( modelPath, { recursive: true } );
 
-  const iosModelLink = await fs.open( path.join( iosDestinationPath, "cvmodel.mlmodel" ), "a" );
-  await iosModelLink.close( );
-  const iosTaxonomyLink = await fs.open( path.join( iosDestinationPath, "taxonomy.json" ), "a" );
-  await iosTaxonomyLink.close( );
-
   console.log( "Done!" );
 } )();

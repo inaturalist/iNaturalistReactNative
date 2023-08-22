@@ -87,7 +87,7 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
     || currentRoute.includes( "SignUp" )
     || currentRoute.includes( "LicensePhotos" )
     || currentRoute.includes( "SignUpConfirmation" )
-    || currentRoute.includes( "MapModal" )
+    || currentRoute.includes( "ObsDetailsMap" )
   ) {
     return null;
   }

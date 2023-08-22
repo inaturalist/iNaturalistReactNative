@@ -1,4 +1,4 @@
-import ActivityItem from "components/ObsDetails/ActivityItem";
+import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
 import {
   ActivityCount,
   Body1,

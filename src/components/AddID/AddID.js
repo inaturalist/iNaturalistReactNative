@@ -36,22 +36,11 @@ const AddID = ( { route }: Props ): Node => {
 
   const navigation = useNavigation();
 
-  const createPhoto = photo => ( {
-    id: photo.id,
-    url: photo.square_url
-  } );
-
   const createIdentification = taxon => {
-    const newTaxon = {
-      ...taxon,
-      default_photo: taxon.default_photo
-        ? createPhoto( taxon.default_photo )
-        : null
-    };
     const newIdent = {
       uuid: uuid.v4(),
       body: comment,
-      taxon: newTaxon
+      taxon
     };
 
     return newIdent;

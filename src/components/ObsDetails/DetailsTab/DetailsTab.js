@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
   Body4,
   Button,
@@ -21,7 +22,6 @@ import { Alert, Linking } from "react-native";
 import { Menu, useTheme } from "react-native-paper";
 
 import Attribution from "./Attribution";
-import checkCamelAndSnakeCase from "./helpers/checkCamelAndSnakeCase";
 
 type Props = {
   observation: Object,
@@ -157,7 +157,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
           privacy={privacy}
           showMarker
           openMapDetails={() => navigation.navigate(
-            "MapModal",
+            "ObsDetailsMap",
             { observation, latitude, longitude }
           )}
           positionalAccuracy={positionalAccuracy}

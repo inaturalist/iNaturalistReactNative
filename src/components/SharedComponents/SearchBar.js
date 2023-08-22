@@ -58,7 +58,8 @@ const SearchBar = ( {
           height: 45,
           ...( hasShadow
             ? getShadow( theme.colors.primary )
-            : {} )
+            : {} ),
+          paddingRight: 28
         }}
         underlineColor={theme.colors.primary}
         activeUnderlineColor={theme.colors.primary}

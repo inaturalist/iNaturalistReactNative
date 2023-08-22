@@ -20,6 +20,7 @@ type Props = {
   updateCoords?: Function,
   region?: Object,
   showMarker?: boolean,
+  hideMap?: boolean,
   privacy?: string,
   openMapDetails?: Function,
   children?: any,
@@ -30,7 +31,7 @@ type Props = {
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( {
-  obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region, privacy, showMarker,
+  obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region, privacy, showMarker, hideMap,
   openMapDetails, children, mapType, positionalAccuracy
 }: Props ): React.Node => {
   const { latLng: viewerLatLng } = useUserLocation( { skipPlaceGuess: true } );
@@ -60,6 +61,7 @@ const Map = ( {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const obscuredCoordinates = useMemo( () => returnRandomArbitraryCoordinates(), [] );
+
   return (
     <View
       style={[
@@ -70,51 +72,52 @@ const Map = ( {
       ]}
       testID="MapView"
     >
-      <MapView
-        style={viewStyles.map}
-        onPress={() => { if ( openMapDetails ) openMapDetails(); }}
-        region={( region?.latitude )
-          ? region
-          : initialRegion}
-        onRegionChange={updateCoords}
-        showsUserLocation
-        showsMyLocationButton
-        loadingEnabled
-        mapType={mapType || "standard"}
-      >
-        {taxonId && (
-          <UrlTile
-            tileSize={512}
-            urlTemplate={urlTemplate}
-          />
-        )}
-        {( showMarker && privacy !== "obscured" ) && (
-          <>
-            <Circle
-              center={{
-                latitude: obsLatitude,
-                longitude: obsLongitude
-              }}
-              radius={positionalAccuracy}
-              strokeWidth={1}
-              strokeColor="#74AC00"
-              fillColor="rgba( 116, 172, 0, 0.2 )"
+      {!hideMap && (
+        <MapView
+          style={viewStyles.map}
+          onPress={() => { if ( openMapDetails ) openMapDetails(); }}
+          region={( region?.latitude )
+            ? region
+            : initialRegion}
+          onRegionChange={updateCoords}
+          showsUserLocation
+          showsMyLocationButton
+          loadingEnabled
+          mapType={mapType || "standard"}
+        >
+          {taxonId && (
+            <UrlTile
+              tileSize={512}
+              urlTemplate={urlTemplate}
             />
-            <Marker
-              coordinate={{
-                latitude: obsLatitude,
-                longitude: obsLongitude
-              }}
-            >
-              <Image
-                source={require( "images/location_indicator.png" )}
-                className="w-[25px] h-[32px]"
-                accessibilityIgnoresInvertColors
+          )}
+          {( showMarker && privacy !== "obscured" ) && (
+            <>
+              <Circle
+                center={{
+                  latitude: obsLatitude,
+                  longitude: obsLongitude
+                }}
+                radius={positionalAccuracy}
+                strokeWidth={1}
+                strokeColor="#74AC00"
+                fillColor="rgba( 116, 172, 0, 0.2 )"
               />
-            </Marker>
-          </>
-        )}
-        {( showMarker && privacy === "obscured" )
+              <Marker
+                coordinate={{
+                  latitude: obsLatitude,
+                  longitude: obsLongitude
+                }}
+              >
+                <Image
+                  source={require( "images/location_indicator.png" )}
+                  className="w-[25px] h-[32px]"
+                  accessibilityIgnoresInvertColors
+                />
+              </Marker>
+            </>
+          )}
+          {( showMarker && privacy === "obscured" )
           && (
             <>
               <Polygon
@@ -154,7 +157,8 @@ const Map = ( {
               </Marker>
             </>
           )}
-      </MapView>
+        </MapView>
+      )}
       {children}
     </View>
   );
