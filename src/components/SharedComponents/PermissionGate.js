@@ -16,6 +16,7 @@ import React from "react";
 import {
   Linking
 } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { RESULTS } from "react-native-permissions";
 import colors from "styles/tailwindColors";
 
@@ -23,6 +24,8 @@ const BACKGROUND_IMAGE_STYLE = {
   opacity: 0.33,
   backgroundColor: "black"
 };
+
+const isTablet = DeviceInfo.isTablet();
 
 const PermissionGate = ( {
   requestPermission,
@@ -56,8 +59,11 @@ const PermissionGate = ( {
         className={classnames(
           "w-full",
           "h-full",
-          "sm:justify-end",
+          isTablet
+            ? "justify-center"
+            : "justify-end",
           "p-5",
+          isTablet && "px-[200px]",
           "items-center"
         )}
       >

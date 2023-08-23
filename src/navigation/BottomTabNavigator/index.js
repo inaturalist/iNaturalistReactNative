@@ -75,6 +75,7 @@ const CameraContainerWithPermission = ( ) => (
     titleDenied={t( "Please allow Camera Access" )}
     body={t( "Use-the-iNaturalist-camera-to-observe" )}
     blockedPrompt={t( "Youve-previously-denied-camera-permissions" )}
+    buttonText={t( "OBSERVE-ORGANISMS" )}
     icon="camera"
   >
     <CameraContainer />
@@ -88,6 +89,7 @@ const SoundRecorderWithPermission = ( ) => (
     titleDenied={t( "Please-allow-Microphone-Access" )}
     body={t( "Use-your-devices-microphone-to-record" )}
     blockedPrompt={t( "Youve-previously-denied-microphone-permissions" )}
+    buttonText={t( "RECORD-SOUND" )}
     icon="microphone"
     image={require( "images/viviana-rishe-j2330n6bg3I-unsplash.jpg" )}
   >
@@ -102,6 +104,7 @@ const PhotoGalleryWithPermission = ( ) => (
     titleDenied={t( "Please-Allow-Gallery-Access" )}
     body={t( "Upload-photos-from-your-gallery-and-create-observations" )}
     blockedPrompt={t( "Youve-previously-denied-gallery-permissions" )}
+    buttonText={t( "CHOOSE-PHOTOS" )}
     icon="gallery"
     image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
   >
@@ -117,6 +120,7 @@ const ObsEditWithPermission = ( ) => (
       titleDenied={t( "Please-allow-Location-Access" )}
       body={t( "iNaturalist-uses-your-location-to-give-you" )}
       blockedPrompt={t( "Youve-previously-denied-location-permissions" )}
+      buttonText={t( "USE-LOCATION" )}
       icon="map-marker-outline"
       image={require( "images/landon-parenteau-EEuDMqRYbx0-unsplash.jpg" )}
     >
