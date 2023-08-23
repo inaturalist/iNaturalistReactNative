@@ -5,69 +5,94 @@ import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { Platform } from "react-native";
+import User from "realmModels/User";
+import { useCurrentUser } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
 
 import NavButton from "./NavButton";
 
+const DRAWER_ID = "OPEN_DRAWER";
+const EXPLORE_SCREEN_ID = "Explore";
+const OBS_LIST_SCREEN_ID = "ObservationsStackNavigator";
+const MESSAGES_SCREEN_ID = "Messages";
+
 type Props = {
-  state: Object,
-  descriptors: Object,
   navigation: Object,
 };
 
 /* eslint-disable react/jsx-props-no-spreading */
 
-const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
+const CustomTabBar = ( { navigation }: Props ): Node => {
+  const currentUser = useCurrentUser( );
+  const [activeTab, setActiveTab] = useState( OBS_LIST_SCREEN_ID );
   const isDrawerOpen = useDrawerStatus() === "open";
-  const { history } = state;
-  const currentRoute = history[history.length - 1]?.key || "";
 
-  const tabs = state.routes.reduce( ( tabList, route ) => {
-    const { options } = descriptors[route.key];
-
-    const onPress = () => {
-      navigation.navigate( { name: route.name, merge: true } );
-    };
-
-    if ( options.meta ) {
-      tabList.push(
-        <View
-          className="w-[68px] h-[68px] flex items-center justify-center"
-          key={route.name}
-        >
-          <NavButton
-            {...options.meta}
-            onPress={onPress}
-            active={currentRoute.includes( route.name )}
-          />
-        </View>
-      );
+  const tabs = [
+    {
+      icon: "hamburger-menu",
+      testID: DRAWER_ID,
+      accessibilityLabel: t( "Open-drawer" ),
+      accessibilityHint: t( "Opens-the-side-drawer-menu" ),
+      size: 32,
+      onPress: ( ) => {
+        navigation.openDrawer( );
+        setActiveTab( null );
+      },
+      active: isDrawerOpen
+    },
+    {
+      icon: "compass-rose-outline",
+      testID: EXPLORE_SCREEN_ID,
+      accessibilityLabel: t( "Explore" ),
+      accessibilityHint: t( "Navigates-to-explore" ),
+      size: 40,
+      onPress: ( ) => {
+        navigation.navigate( "ObservationsStackNavigator", {
+          screen: "Explore"
+        } );
+        setActiveTab( EXPLORE_SCREEN_ID );
+      },
+      active: EXPLORE_SCREEN_ID === activeTab
+    },
+    {
+      icon: "person",
+      userIconUri: User.uri( currentUser ),
+      testID: OBS_LIST_SCREEN_ID,
+      accessibilityLabel: t( "Observations" ),
+      accessibilityHint: t( "Navigates-to-observations" ),
+      size: 40,
+      onPress: ( ) => {
+        navigation.navigate( "ObservationsStackNavigator", {
+          screen: "ObsList"
+        } );
+        setActiveTab( OBS_LIST_SCREEN_ID );
+      },
+      active: OBS_LIST_SCREEN_ID === activeTab
+    },
+    {
+      icon: "notifications-bell",
+      testID: MESSAGES_SCREEN_ID,
+      accessibilityLabel: t( "Messages" ),
+      accessibilityHint: t( "Navigates-to-messages" ),
+      size: 32,
+      onPress: ( ) => {
+        navigation.navigate( "Messages" );
+        setActiveTab( MESSAGES_SCREEN_ID );
+      },
+      active: MESSAGES_SCREEN_ID === activeTab
     }
+  ];
 
-    return tabList;
-  }, [] );
-
-  tabs.splice( -2, 0, <AddObsButton key="AddObsButton" /> );
-  tabs.unshift(
-    <View
-      className="w-[68px] h-[68px] flex items-center justify-center"
-      key="DrawerToggle"
-    >
-      <NavButton
-        onPress={() => navigation.openDrawer()}
-        icon="hamburger-menu"
-        accessibilityRole="button"
-        accessibilityLabel={t( "Open-drawer" )}
-        accessibilityHint={t( "Opens-the-side-drawer-menu" )}
-        testID="OPEN_DRAWER"
-        active={isDrawerOpen}
-        size={32}
-      />
+  const tabList = tabs.map( tab => (
+    <View key={tab.testID}>
+      <NavButton {...tab} />
     </View>
-  );
+  ) );
+
+  tabList.splice( -2, 0, <AddObsButton key="AddObsButton" /> );
 
   return (
     <View
@@ -85,7 +110,7 @@ const CustomTabBar = ( { state, descriptors, navigation }: Props ): Node => {
       } )}
       accessibilityRole="tablist"
     >
-      {tabs}
+      {tabList}
     </View>
   );
 };

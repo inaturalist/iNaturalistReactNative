@@ -131,7 +131,7 @@ const ObsEditWithPermission = ( ) => (
   </Mortal>
 );
 
-const CameraStackNavigator = ( ): Node => (
+const AddObsStackNavigator = ( ): Node => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
@@ -213,4 +213,4 @@ const CameraStackNavigator = ( ): Node => (
   </Stack.Navigator>
 );
 
-export default CameraStackNavigator;
+export default AddObsStackNavigator;

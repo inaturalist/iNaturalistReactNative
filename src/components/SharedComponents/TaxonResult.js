@@ -72,7 +72,7 @@ const TaxonResult = ( {
           icon="info-circle-outline"
           size={22}
           onPress={() => navigation.navigate( "TabNavigator", {
-            screen: "ObservationNavigator",
+            screen: "ObservationsStackNavigator",
             params: {
               screen: "TaxonDetails",
               params: {

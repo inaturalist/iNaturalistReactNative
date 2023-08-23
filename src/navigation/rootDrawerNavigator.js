@@ -2,7 +2,6 @@
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import About from "components/About";
-import CustomDrawerContent from "components/CustomDrawerContent";
 import Identify from "components/Identify/Identify";
 import NetworkLogging from "components/NetworkLogging";
 import PlaceholderComponent from "components/PlaceholderComponent";
@@ -14,13 +13,13 @@ import {
   hideDrawerHeaderLeft, hideHeader,
   showHeader
 } from "navigation/navigationOptions";
-import CameraStackNavigator from "navigation/StackNavigators/CameraStackNavigator";
+import AddObsStackNavigator from "navigation/StackNavigators/AddObsStackNavigator";
 import LoginStackNavigator from "navigation/StackNavigators/LoginStackNavigator";
-import ProjectStackNavigator from "navigation/StackNavigators/ProjectStackNavigator";
 import type { Node } from "react";
 import * as React from "react";
 
 import BottomTabNavigator from "./BottomTabNavigator";
+import CustomDrawerContent from "./CustomDrawerContent";
 
 const drawerOptions = {
   ...showHeader,
@@ -64,7 +63,7 @@ const RootDrawerNavigator = ( ): Node => (
     />
     <Drawer.Screen
       name="CameraNavigator"
-      component={CameraStackNavigator}
+      component={AddObsStackNavigator}
       options={{
         ...hideHeader,
         ...hideDrawerHeaderLeft
@@ -82,11 +81,6 @@ const RootDrawerNavigator = ( ): Node => (
       name="Identify"
       component={Identify}
       options={{ headerTitle: t( "Identify" ) }}
-    />
-    <Drawer.Screen
-      name="ProjectNavigator"
-      component={ProjectStackNavigator}
-      options={hideHeader}
     />
     <Drawer.Screen
       name="settings"

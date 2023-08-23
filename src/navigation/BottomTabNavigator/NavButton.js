@@ -1,8 +1,7 @@
 // @flow
-import { UserIcon } from "components/SharedComponents";
+import { INatIconButton, UserIcon } from "components/SharedComponents";
 import { Pressable } from "components/styledComponents";
 import * as React from "react";
-import { IconButton } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -54,9 +53,9 @@ const NavButton = ( {
   }
 
   return (
-    <IconButton
+    <INatIconButton
       icon={icon}
-      iconColor={active
+      color={active
         ? colors.inatGreen
         : colors.darkGray}
       size={size}

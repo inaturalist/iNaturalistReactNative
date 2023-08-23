@@ -69,7 +69,13 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     },
     projects: {
       label: t( "PROJECTS" ),
-      navigation: "ProjectNavigator",
+      navigation: "TabNavigator",
+      params: {
+        screen: "ObservationsStackNavigator",
+        params: {
+          screen: "Projects"
+        }
+      },
       icon: "briefcase"
     },
     help: {
@@ -157,10 +163,13 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         className="ml-4 mb-8 flex-row flex-nowrap"
         onPress={( ) => {
           if ( !currentUser ) {
-            navigation.navigate( "Login" );
+            navigation.navigate( "LoginNavigator" );
           } else {
             navigation.navigate( "TabNavigator", {
-              screen: "ObservationNavigator"
+              screen: "ObservationsStackNavigator",
+              params: {
+                screen: "ObsList"
+              }
             } );
           }
         }}
@@ -200,7 +209,9 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
             <DrawerItem
               key={drawerItems[item].label}
               label={drawerItems[item].label}
-              onPress={( ) => navigation.navigate( drawerItems[item].navigation )}
+              onPress={( ) => {
+                navigation.navigate( drawerItems[item].navigation, drawerItems[item].params );
+              }}
               labelStyle={labelStyle}
               icon={( ) => renderIcon( item )}
               // eslint-disable-next-line react-native/no-inline-styles

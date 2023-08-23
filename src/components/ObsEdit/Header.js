@@ -35,7 +35,7 @@ const Header = ( ): Node => {
 
   const navToObsDetails = useCallback( ( ) => {
     navigation.navigate( "TabNavigator", {
-      screen: "ObservationNavigator",
+      screen: "ObservationsStackNavigator",
       params: {
         screen: "ObsDetails",
         params: {
@@ -46,7 +46,7 @@ const Header = ( ): Node => {
   }, [navigation, currentObservation] );
 
   const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
-    screen: "ObservationNavigator"
+    screen: "ObservationsStackNavigator"
   } ), [navigation] );
 
   const discardChanges = useCallback( ( ) => {
