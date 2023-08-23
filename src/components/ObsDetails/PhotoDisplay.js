@@ -39,10 +39,7 @@ const PhotoDisplay = ( {
 
   const editButton = useMemo( ( ) => (
     <IconButton
-      onPress={( ) => navigation.navigate( "CameraNavigator", {
-        screen: "ObsEdit",
-        params: { uuid }
-      } )}
+      onPress={( ) => navigation.navigate( "ObsEdit", { uuid } )}
       icon="pencil"
       textColor={colors.white}
       className="absolute top-3 right-3"

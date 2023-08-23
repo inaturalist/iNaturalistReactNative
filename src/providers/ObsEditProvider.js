@@ -373,7 +373,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         setCurrentObservationIndex( 0 );
         setObservations( [] );
 
-        navigation.navigate( "ObsList" );
+        navigation.navigate( "TabNavigator", {
+          screen: "ObservationsStack",
+          params: {
+            screen: "ObsList"
+          }
+        } );
       } else if ( currentObservationIndex === observations.length - 1 ) {
         observations.pop( );
         setCurrentObservationIndex( observations.length - 1 );

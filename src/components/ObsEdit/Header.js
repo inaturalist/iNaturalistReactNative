@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
-import useTranslation from "sharedHooks/useTranslation";
+import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
@@ -46,7 +46,10 @@ const Header = ( ): Node => {
   }, [navigation, currentObservation] );
 
   const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
-    screen: "ObservationsStackNavigator"
+    screen: "ObservationsStackNavigator",
+    params: {
+      screen: "ObsList"
+    }
   } ), [navigation] );
 
   const discardChanges = useCallback( ( ) => {
@@ -89,12 +92,10 @@ const Header = ( ): Node => {
   }, [currentObservation, navigation, unsavedChanges, params, navToObsDetails] );
 
   const renderBackButton = useCallback( ( ) => (
-    <View className="ml-4">
-      <HeaderBackButton
-        tintColor={colors.black}
-        onPress={handleBackButtonPress}
-      />
-    </View>
+    <HeaderBackButton
+      tintColor={colors.black}
+      onPress={handleBackButtonPress}
+    />
   ), [handleBackButtonPress] );
 
   useFocusEffect(

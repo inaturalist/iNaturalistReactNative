@@ -291,13 +291,10 @@ const ObsDetailsContainer = ( ): Node => {
   }, [localObservation, markViewedMutation, uuid] );
 
   const navToAddID = ( ) => {
-    navigation.navigate( "CameraNavigator", {
-      screen: "AddID",
-      params: {
-        observationUUID: uuid,
-        createRemoteIdentification: true,
-        belongsToCurrentUser
-      }
+    navigation.navigate( "AddID", {
+      observationUUID: uuid,
+      createRemoteIdentification: true,
+      belongsToCurrentUser
     } );
   };
 
