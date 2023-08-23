@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native";
-import ActivityItem from "components/ObsDetails/ActivityItem";
+import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
 import initI18next from "i18n/initI18next";
 import React from "react";
 
@@ -74,7 +74,6 @@ describe( "ActivityItem", () => {
         observationUUID=""
         item={mockIdentification}
         navToTaxonDetails={jest.fn()}
-        toggleRefetch={jest.fn()}
         refetchRemoteObservation={jest.fn()}
         onAgree={jest.fn()}
         currentUserId="000"
@@ -91,7 +90,6 @@ describe( "ActivityItem", () => {
         observationUUID=""
         item={mockIdentification}
         navToTaxonDetails={jest.fn()}
-        toggleRefetch={jest.fn()}
         refetchRemoteObservation={jest.fn()}
         onAgree={jest.fn()}
         currentUserId="000"
@@ -116,7 +114,6 @@ describe( "ActivityItem", () => {
         observationUUID=""
         item={mockId}
         navToTaxonDetails={jest.fn()}
-        toggleRefetch={jest.fn()}
         refetchRemoteObservation={jest.fn()}
         onAgree={jest.fn()}
         currentUserId="000"

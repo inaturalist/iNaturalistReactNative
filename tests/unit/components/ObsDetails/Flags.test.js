@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
-import ActivityItem from "components/ObsDetails/ActivityItem";
+import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
 import initI18next from "i18n/initI18next";
 import React from "react";

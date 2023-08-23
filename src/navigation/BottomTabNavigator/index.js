@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import About from "components/About";
-import AddID from "components/AddID/AddID";
+import AddIDContainer from "components/AddID/AddIDContainer";
 import CameraContainer from "components/Camera/CameraContainer";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import Identify from "components/Identify/Identify";
@@ -15,7 +15,7 @@ import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
-import ObsDetails from "components/ObsDetails/ObsDetails";
+import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
@@ -237,7 +237,7 @@ const BottomTabs = ( ) => {
         />
         <Tab.Screen
           name="ObsDetails"
-          component={ObsDetails}
+          component={ObsDetailsContainer}
           options={{
             headerTitle: t( "Observation" ),
             headerShown: false,
@@ -291,7 +291,7 @@ const BottomTabs = ( ) => {
         />
         <Tab.Screen
           name="AddID"
-          component={AddID}
+          component={AddIDContainer}
           options={{
             title: t( "Add-an-ID" )
           }}
