@@ -1,19 +1,33 @@
 import { render, screen } from "@testing-library/react-native";
 import { IconicTaxonChooser } from "components/SharedComponents";
+import initI18next from "i18n/initI18next";
 import React from "react";
 
 import factory from "../../../factory";
 
-const mockData = [factory( "RemoteTaxon" )];
+const mockIconicTaxa = [
+  factory( "RemoteTaxon", {
+    name: "Aves",
+    preferred_common_name: "Birds"
+  } ),
+  factory( "RemoteTaxon", {
+    name: "Plantae",
+    preferred_common_name: "Plants"
+  } )
+];
 
 jest.mock( "sharedHooks/useAuthenticatedQuery", ( ) => ( {
   __esModule: true,
   default: ( ) => ( {
-    data: mockData
+    data: mockIconicTaxa
   } )
 } ) );
 
 describe( "IconicTaxonChooser", () => {
+  beforeAll( async () => {
+    await initI18next( );
+  } );
+
   it( "should be accessible", () => {
     const mockTaxon = factory( "RemoteTaxon", {
       name: "Aves"

@@ -9,7 +9,7 @@ import { useTheme } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  accessibilityLabel?: string,
+  accessibilityLabel: string,
   children?: any,
   color?: string,
   disabled?: boolean,
@@ -57,6 +57,9 @@ const INatIconButton = ( {
     throw new Error(
       `Height cannot be less than ${MIN_ACCESSIBLE_DIM}. Use IconButton for smaller buttons.`
     );
+  }
+  if ( !accessibilityLabel || accessibilityLabel.length === 0 ) {
+    throw new Error( "accessibilityLabel cannot be blank for INatIconButton" );
   }
   return (
     <Pressable

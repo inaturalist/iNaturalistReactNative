@@ -28,7 +28,7 @@ const useIconicTaxa = ( { reload }: Object ): Object => {
     }
   }, [iconicTaxa, realm] );
 
-  return realm?.objects( "Taxon" ).filtered( "isIconic = true" );
+  return realm?.objects( "Taxon" ).filtered( "isIconic == true" );
 };
 
 export default useIconicTaxa;

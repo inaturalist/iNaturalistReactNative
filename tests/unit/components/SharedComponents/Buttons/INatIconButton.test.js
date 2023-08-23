@@ -7,6 +7,7 @@ describe( "INatIconButton", () => {
     render(
       <INatIconButton
         icon="camera"
+        accessibilityLabel="camera"
         onPress={( ) => {
           // all is well
         }}
@@ -25,6 +26,7 @@ describe( "INatIconButton", () => {
     expect( () => render(
       <INatIconButton
         icon="camera"
+        accessibilityLabel="camera"
         width={10}
         onPress={() => {
           // all is well
@@ -44,12 +46,31 @@ describe( "INatIconButton", () => {
     expect( () => render(
       <INatIconButton
         icon="camera"
+        accessibilityLabel="camera"
         height={10}
         onPress={() => {
           // all is well
         }}
       />
     ) ).toThrow( /height/i );
+
+    console.error.mockRestore();
+  } );
+
+  it( "throws an error when it does not receive accessibilityLabel", ( ) => {
+    // Even though the error is caught, it still gets printed to the console
+    // so we mock that out to avoid the wall of red text.
+    jest.spyOn( console, "error" );
+    console.error.mockImplementation( () => {} );
+
+    expect( () => render(
+      <INatIconButton
+        icon="camera"
+        onPress={() => {
+          // all is well
+        }}
+      />
+    ) ).toThrow( /accessibilityLabel/i );
 
     console.error.mockRestore();
   } );
