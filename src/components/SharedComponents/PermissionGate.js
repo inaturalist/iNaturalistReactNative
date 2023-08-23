@@ -46,7 +46,8 @@ const PermissionGate = ( {
       accessibilityIgnoresInvertColors
       className={classnames(
         "w-full",
-        "h-full"
+        "h-full",
+        "items-center"
       )}
     >
       <INatIconButton
@@ -58,13 +59,14 @@ const PermissionGate = ( {
       />
       <View
         className={classnames(
-          "w-full",
+          isTablet
+            ? "w-[500px]"
+            : "w-full",
           "h-full",
           isTablet
             ? "justify-center"
             : "justify-end",
           "p-5",
-          isTablet && "px-[200px]",
           "items-center"
         )}
       >
@@ -75,16 +77,16 @@ const PermissionGate = ( {
             size={40}
           />
         ) }
-        <Heading2 className="text-center text-white mt-8 mb-8">
+        <Heading2 className="text-center text-white mt-8 mb-5">
           { grantStatus === null
             ? title
             : titleDenied}
         </Heading2>
         { body && (
-          <Body2 className="text-center text-white mb-10">{ body }</Body2>
+          <Body2 className="text-center text-white">{ body }</Body2>
         ) }
         { grantStatus === RESULTS.BLOCKED && (
-          <Body2 className="text-center text-white mb-10">
+          <Body2 className="text-center text-white mt-5">
             { blockedPrompt }
           </Body2>
         ) }
@@ -94,7 +96,7 @@ const PermissionGate = ( {
               level="focus"
               onPress={( ) => Linking.openSettings( )}
               text={t( "OPEN-SETTINGS" )}
-              className="w-full"
+              className="w-full mt-10"
             />
           )
           : (
@@ -102,7 +104,7 @@ const PermissionGate = ( {
               level="focus"
               onPress={requestPermission}
               text={buttonText}
-              className="w-full"
+              className="w-full mt-10"
             />
           )}
       </View>
