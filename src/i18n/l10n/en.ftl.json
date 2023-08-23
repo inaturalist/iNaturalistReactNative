@@ -909,5 +909,9 @@
   "USE-LOCATION": {
     "comment": "Text for a button prompting the user to grant access to location",
     "val": "USE LOCATION"
+  },
+  "Close-permission-request-screen": {
+    "comment": "Accessibility label for a button that closes the permission request screen",
+    "val": "Close permission request screen"
   }
 }

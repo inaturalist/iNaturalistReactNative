@@ -1276,3 +1276,6 @@ iNaturalist-uses-your-location-to-give-you= iNaturalist uses your location to gi
 Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
 # Text for a button prompting the user to grant access to location
 USE-LOCATION = USE LOCATION
+
+# Accessibility label for a button that closes the permission request screen
+Close-permission-request-screen = Close permission request screen

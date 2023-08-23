@@ -54,6 +54,7 @@ const PermissionGate = ( {
         color={colors.white}
         onPress={() => onClose( )}
         className="absolute top-2 right-2 z-10"
+        accessibilityLabel={t( "Close-permission-request-screen" )}
       />
       <View
         className={classnames(
