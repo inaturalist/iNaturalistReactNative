@@ -4,10 +4,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AddIDContainer from "components/AddID/AddIDContainer";
 import ExploreContainer from "components/Explore/ExploreContainer";
+import Identify from "components/Identify/Identify";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
+import PlaceholderComponent from "components/PlaceholderComponent";
 import ProjectDetails from "components/Projects/ProjectDetails";
 import Projects from "components/Projects/Projects";
 import { Heading4, Mortal, PermissionGate } from "components/SharedComponents";
@@ -24,8 +26,6 @@ import {
 import type { Node } from "react";
 import React from "react";
 import { PermissionsAndroid } from "react-native";
-
-const EXPLORE_SCREEN_ID = "Explore";
 
 const Stack = createNativeStackNavigator( );
 
@@ -106,26 +106,28 @@ const ObservationsStackNavigator = ( ): Node => (
         }}
       />
     </Stack.Group>
-    <Stack.Screen
-      name="Explore"
-      component={ExploreContainer}
-      options={{
-        ...hideHeader,
-        meta: {
-          icon: "compass-rose-outline",
-          testID: EXPLORE_SCREEN_ID,
-          accessibilityLabel: t( "Explore" ),
-          accessibilityHint: t( "Navigates-to-explore" ),
-          size: 40
-        }
-      }}
-    />
+    <Stack.Group>
+      <Stack.Screen
+        name="Explore"
+        component={ExploreContainer}
+        options={hideHeader}
+      />
+      <Stack.Screen
+        name="ExploreFilters"
+        component={PlaceholderComponent}
+        options={{
+          ...showHeaderLeft,
+          ...removeBottomBorder
+        }}
+      />
+    </Stack.Group>
     <Stack.Group>
       <Stack.Screen
         name="Projects"
         component={Projects}
         options={{
           ...removeBottomBorder,
+          ...showHeaderLeft,
           headerTitle: t( "Projects" )
         }}
       />
@@ -139,6 +141,15 @@ const ObservationsStackNavigator = ( ): Node => (
         }}
       />
     </Stack.Group>
+    <Stack.Screen
+      name="Identify"
+      component={Identify}
+      options={{
+        ...removeBottomBorder,
+        ...showHeaderLeft,
+        headerTitle: t( "Identify" )
+      }}
+    />
   </Stack.Navigator>
 );
 

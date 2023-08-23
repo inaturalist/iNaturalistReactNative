@@ -2,7 +2,6 @@
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import About from "components/About";
-import Identify from "components/Identify/Identify";
 import NetworkLogging from "components/NetworkLogging";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import Search from "components/Search/Search";
@@ -76,11 +75,6 @@ const RootDrawerNavigator = ( ): Node => (
         ...showHeader,
         headerTitle: t( "Search" )
       }}
-    />
-    <Drawer.Screen
-      name="Identify"
-      component={Identify}
-      options={{ headerTitle: t( "Identify" ) }}
     />
     <Drawer.Screen
       name="settings"

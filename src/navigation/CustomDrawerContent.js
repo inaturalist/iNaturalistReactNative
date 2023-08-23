@@ -63,7 +63,13 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     },
     identify: {
       label: t( "IDENTIFY" ),
-      navigation: "Identify",
+      navigation: "TabNavigator",
+      params: {
+        screen: "ObservationsStackNavigator",
+        params: {
+          screen: "Identify"
+        }
+      },
       icon: "label",
       loggedInOnly: true
     },
