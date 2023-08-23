@@ -8,23 +8,24 @@ import {
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FlatList } from "react-native";
 import Taxon from "realmModels/Taxon";
 import { useTranslation } from "sharedHooks";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 type Props = {
-  clearSearch: boolean,
+  taxonSearch: string,
+  setTaxonSearch: Function,
   createId: Function
 };
 
 const TaxonSearch = ( {
-  clearSearch,
+  taxonSearch,
+  setTaxonSearch,
   createId
 }: Props ): Node => {
   const { t } = useTranslation( );
-  const [taxonSearch, setTaxonSearch] = useState( "" );
   const { data: taxonList } = useAuthenticatedQuery(
     ["fetchSearchResults", taxonSearch],
     optsWithAuth => fetchSearchResults(
@@ -38,14 +39,6 @@ const TaxonSearch = ( {
       optsWithAuth
     )
   );
-
-  useEffect( ( ) => {
-    // this clears search whenever a user is coming from ObsEdit
-    // but maintains current search when a user navigates to TaxonDetails and back
-    if ( clearSearch ) {
-      setTaxonSearch( "" );
-    }
-  }, [clearSearch] );
 
   const renderEmptyComponent = ( ) => (
     <Body2 className="self-center">

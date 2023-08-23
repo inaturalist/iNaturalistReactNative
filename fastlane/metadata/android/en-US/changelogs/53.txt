@@ -1,0 +1,6 @@
+NEW
+* iconic taxon chooser for ObsEdit
+
+FIXED
+* Ensure IDs appear on ObsDetail after adding them for your observations
+* Several bugfixes for Explore on Android
