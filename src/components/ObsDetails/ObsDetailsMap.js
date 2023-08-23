@@ -76,10 +76,6 @@ const ObsDetailsMap = (): Node => {
     openMap( { latitude, longitude } );
   };
 
-  const toCurrentUserLocation = () => {
-
-  };
-
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 h-full">
@@ -114,7 +110,7 @@ const ObsDetailsMap = (): Node => {
             width={46}
             size={24}
             className={`${mapButtonClassName} bottom-0 right-0`}
-            onPress={() => { toCurrentUserLocation(); }}
+            // TODO
           />
           <INatIconButton
             icon="map-layers"
