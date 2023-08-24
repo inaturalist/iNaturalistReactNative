@@ -7,7 +7,6 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useContext,
-  useEffect,
   useRef,
   useState
 } from "react";
@@ -150,21 +149,26 @@ const CameraContainer = ( ): Node => {
     }, [handleBackButtonPress] )
   );
 
-  const navToObsEdit = useCallback( ( ) => {
+  const createOrUpdateEvidence = useCallback( prediction => {
     if ( addEvidence ) {
       addCameraPhotosToCurrentObservation( evidenceToAdd );
-      navigation.navigate( "ObsEdit" );
-      return;
+    } else {
+      createObsWithCameraPhotos( cameraPreviewUris, prediction );
     }
-    createObsWithCameraPhotos( cameraPreviewUris );
-    navigation.navigate( "ObsEdit" );
   }, [
     addCameraPhotosToCurrentObservation,
     createObsWithCameraPhotos,
     cameraPreviewUris,
-    navigation,
     addEvidence,
     evidenceToAdd
+  ] );
+
+  const navToObsEdit = useCallback( prediction => {
+    createOrUpdateEvidence( prediction );
+    navigation.navigate( "ObsEdit" );
+  }, [
+    createOrUpdateEvidence,
+    navigation
   ] );
 
   const takePhoto = async ( ) => {
@@ -220,12 +224,6 @@ const CameraContainer = ( ): Node => {
     ? "flex-row"
     : "flex-col";
 
-  useEffect( ( ) => {
-    if ( cameraPreviewUris.length > 0 && cameraType === "AR" ) {
-      navToObsEdit( );
-    }
-  }, [navigation, cameraPreviewUris.length, cameraType, navToObsEdit] );
-
   return (
     <View className={`flex-1 bg-black ${flexDirection}`}>
       <StatusBar hidden />
@@ -266,6 +264,8 @@ const CameraContainer = ( ): Node => {
             changeZoom={changeZoom}
             animatedProps={animatedProps}
             zoom={zoomTextValue}
+            navToObsEdit={navToObsEdit}
+            photoSaved={cameraPreviewUris.length > 0}
           />
         )}
     </View>

@@ -323,12 +323,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       } );
     };
 
-    const createObsWithCameraPhotos = async localFilePaths => {
+    const createObsWithCameraPhotos = async ( localFilePaths, taxonPrediction ) => {
       const newObservation = await Observation.new( );
       const obsPhotos = await Promise.all( localFilePaths.map(
         async photo => ObservationPhoto.new( photo )
       ) );
       newObservation.observationPhotos = obsPhotos;
+
+      if ( taxonPrediction ) {
+        newObservation.taxon = taxonPrediction;
+      }
       setObservations( [newObservation] );
       logger.info(
         "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
