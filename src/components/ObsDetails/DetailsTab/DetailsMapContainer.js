@@ -2,7 +2,7 @@
 
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useRoute } from "@react-navigation/native";
-import ObsDetailsMap from "components/ObsDetails/DetailsTab/ObsDetailsMap";
+import DetailsMap from "components/ObsDetails/DetailsTab/DetailsMap";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -10,7 +10,7 @@ import React, { useRef, useState } from "react";
 import openMap from "react-native-open-maps";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
-const MapContainer = (): Node => {
+const DetailsMapContainer = (): Node => {
   const { params } = useRoute( );
   const { observation, latitude, longitude } = params;
   const coordinateString = t( "Lat-Lon", {
@@ -71,7 +71,7 @@ const MapContainer = (): Node => {
   };
 
   return (
-    <ObsDetailsMap
+    <DetailsMap
       mapViewRef={mapViewRef}
       latitude={latitude}
       longitude={longitude}
@@ -90,4 +90,4 @@ const MapContainer = (): Node => {
   );
 };
 
-export default MapContainer;
+export default DetailsMapContainer;

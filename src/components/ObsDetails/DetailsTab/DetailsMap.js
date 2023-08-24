@@ -48,7 +48,7 @@ type Props = {
   zoomToCurrentUserLocation: Function
 }
 
-const ObsDetailsMap = ( {
+const DetailsMap = ( {
   latitude, longitude, privacy, positionalAccuracy,
   mapViewRef, mapType, closeModal, displayLocation,
   displayCoordinates,
@@ -187,4 +187,4 @@ const ObsDetailsMap = ( {
   );
 };
 
-export default ObsDetailsMap;
+export default DetailsMap;
