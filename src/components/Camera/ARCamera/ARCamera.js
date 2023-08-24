@@ -223,7 +223,7 @@ const ARCamera = ( {
             ? (
               <TaxonResult
                 taxon={result}
-                handleCheckmarkPress={( ) => navToObsEdit( result )}
+                handleCheckmarkPress={takePhoto}
                 testID={`ARCamera.taxa.${result.id}`}
                 clearBackground
                 confidence={convertScoreToConfidence( result?.score )}
