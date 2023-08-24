@@ -54,7 +54,7 @@ const ToolbarContainer = ( {
     }
 
     if ( !uploadInProgress ) {
-      return numUnuploadedObs <= 0
+      return numUnuploadedObs !== 0
         ? t( "Upload-x-observations", { count: numUnuploadedObs } )
         : "";
     }
