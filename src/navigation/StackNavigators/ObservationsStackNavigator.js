@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AddIDContainer from "components/AddID/AddIDContainer";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import Identify from "components/Identify/Identify";
+import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
@@ -104,6 +105,11 @@ const ObservationsStackNavigator = ( ): Node => (
           ...removeBottomBorder,
           headerTitle: addIDTitle
         }}
+      />
+      <Stack.Screen
+        name="LocationPicker"
+        component={LocationPickerContainer}
+        options={hideHeader}
       />
     </Stack.Group>
     <Stack.Group>
