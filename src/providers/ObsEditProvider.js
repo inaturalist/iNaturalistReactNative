@@ -374,7 +374,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         setObservations( [] );
 
         navigation.navigate( "TabNavigator", {
-          screen: "ObservationsStack",
+          screen: "ObservationsStackNavigator",
           params: {
             screen: "ObsList"
           }
