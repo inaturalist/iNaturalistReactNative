@@ -15,8 +15,8 @@ import Messages from "components/Messages/Messages";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import NetworkLogging from "components/NetworkLogging";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
+import MapContainer from "components/ObsDetails/DetailsTab/MapContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import ObsDetailsMap from "components/ObsDetails/ObsDetailsMap";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
@@ -362,8 +362,8 @@ const BottomTabs = ( ) => {
         />
 
         <Tab.Screen
-          name="ObsDetailsMap"
-          component={ObsDetailsMap}
+          name="MapContainer"
+          component={MapContainer}
           options={{
             ...hideHeader,
             unmountOnBlur: true

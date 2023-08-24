@@ -1,10 +1,8 @@
 // @flow
 
-import Clipboard from "@react-native-clipboard/clipboard";
 import { HeaderBackButton } from "@react-navigation/elements";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import classNames from "classnames";
-import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
   Body4,
   INatIconButton
@@ -17,64 +15,51 @@ import {
 } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React from "react";
 import { Platform } from "react-native";
-import openMap from "react-native-open-maps";
 import { useTheme } from "react-native-paper";
+import { getShadowStyle } from "styles/global";
 
 import CoordinatesCopiedNotification from "./CoordinatesCopiedNotification";
 
-const ObsDetailsMap = (): Node => {
+const getShadow = shadowColor => getShadowStyle( {
+  shadowColor,
+  offsetWidth: 0,
+  offsetHeight: 2,
+  shadowOpacity: 0.25,
+  shadowRadius: 2,
+  elevation: 5
+} );
+
+type Props = {
+  latitude: number,
+  longitude: number,
+  mapType: string,
+  privacy?: string,
+  positionalAccuracy: number,
+  mapViewRef: any,
+  showNotificationModal: boolean,
+  displayLocation: string,
+  displayCoordinates: string,
+  closeModal: Function,
+  copyCoordinates: Function,
+  shareMap: Function,
+  cycleMapTypes: Function,
+  zoomToCurrentUserLocation: Function
+}
+
+const ObsDetailsMap = ( {
+  latitude, longitude, privacy, positionalAccuracy,
+  mapViewRef, mapType, closeModal, displayLocation,
+  displayCoordinates,
+  copyCoordinates, shareMap, cycleMapTypes, zoomToCurrentUserLocation,
+  showNotificationModal
+}: Props ): Node => {
   const navigation = useNavigation( );
   const theme = useTheme( );
-  const { params } = useRoute( );
-  const { observation, latitude, longitude } = params;
-  const privacy = observation?.geoprivacy;
-  const coordinateString = t( "Lat-Lon", {
-    latitude: observation.latitude,
-    longitude: observation.longitude
-  } );
-
-  const [showModal, setShowModal] = useState( false );
-  const [mapTypeIndex, setMapTypeIndex] = useState( 0 );
 
   const mapButtonClassName = "absolute bg-white rounded-full m-[15px]";
-  const mapTypes = ["standard", "satellite", "hybrid"];
   const isObscured = privacy === "obscured";
-  const displayCoordinates = t( "Lat-Lon-Acc", {
-    latitude,
-    longitude,
-    accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
-  } );
-  let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" )
-  || checkCamelAndSnakeCase( observation, "privatePlaceGuess" );
-
-  if ( !displayLocation ) {
-    displayLocation = t( "No-Location" );
-  }
-
-  const closeModal = () => {
-    setShowModal( false );
-  };
-  const copyCoordinates = () => {
-    Clipboard.setString( coordinateString );
-    setShowModal( true );
-    // notification disappears after 2 secs
-    setTimeout( closeModal, 2000 );
-  };
-
-  const cycleMapTypes = () => {
-    if ( mapTypeIndex < 2 ) {
-      setMapTypeIndex( mapTypeIndex + 1 );
-    } else {
-      setMapTypeIndex( 0 );
-    }
-  };
-
-  const shareMap = () => {
-    // takes in a provider prop but opens in browser instead of in app(google maps on iOS)
-    openMap( { latitude, longitude } );
-  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -85,41 +70,58 @@ const ObsDetailsMap = (): Node => {
           mapHeight="100%"
           privacy={privacy}
           showMarker
-          mapType={mapTypes[mapTypeIndex]}
-          positionalAccuracy={observation.positional_accuracy}
+          mapType={mapType}
+          positionalAccuracy={positionalAccuracy}
+          mapViewRef={mapViewRef}
         >
-          <INatIconButton
-            icon="copy"
-            height={46}
-            width={46}
-            size={26}
+          <View
+            style={getShadow( theme.colors.primary )}
             className={`${mapButtonClassName} top-0 left-0`}
-            onPress={() => copyCoordinates()}
-          />
-          <INatIconButton
-            icon="share"
-            height={46}
-            width={46}
-            size={26}
+          >
+            <INatIconButton
+              icon="copy"
+              height={46}
+              width={46}
+              size={26}
+              onPress={() => copyCoordinates()}
+            />
+          </View>
+          <View
+            style={getShadow( theme.colors.primary )}
             className={`${mapButtonClassName} top-0 right-0`}
-            onPress={() => shareMap()}
-          />
-          <INatIconButton
-            icon="currentlocation"
-            height={46}
-            width={46}
-            size={24}
+          >
+            <INatIconButton
+              icon="share"
+              height={46}
+              width={46}
+              size={26}
+              onPress={() => shareMap()}
+            />
+          </View>
+          <View
+            style={getShadow( theme.colors.primary )}
             className={`${mapButtonClassName} bottom-0 right-0`}
-            // TODO
-          />
-          <INatIconButton
-            icon="map-layers"
-            height={46}
-            width={46}
-            size={24}
+          >
+            <INatIconButton
+              icon="currentlocation"
+              height={46}
+              width={46}
+              size={24}
+              onPress={() => zoomToCurrentUserLocation()}
+            />
+          </View>
+          <View
+            style={getShadow( theme.colors.primary )}
             className={`${mapButtonClassName} bottom-0 left-0`}
-            onPress={() => cycleMapTypes()}
-          />
+          >
+            <INatIconButton
+              icon="map-layers"
+              height={46}
+              width={46}
+              size={24}
+              onPress={() => cycleMapTypes()}
+            />
+          </View>
         </Map>
       </View>
       <View className="py-[17px] bg-white w-fit">
@@ -174,8 +176,8 @@ const ObsDetailsMap = (): Node => {
         }}
         animationIn="fadeIn"
         animationOut="fadeOut"
-        showModal={showModal}
-        closeModal={( ) => setShowModal( false )}
+        showModal={showNotificationModal}
+        closeModal={( ) => closeModal( false )}
         modal={(
           <CoordinatesCopiedNotification />
         )}

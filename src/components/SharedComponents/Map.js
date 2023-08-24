@@ -5,7 +5,8 @@ import * as React from "react";
 import { useMemo } from "react";
 import { View } from "react-native";
 import MapView, {
-  Circle, Marker, Polygon, UrlTile
+  Circle,
+  Marker, Polygon, UrlTile
 } from "react-native-maps";
 import useUserLocation from "sharedHooks/useUserLocation";
 import { viewStyles } from "styles/sharedComponents/map";
@@ -25,14 +26,15 @@ type Props = {
   openMapDetails?: Function,
   children?: any,
   mapType?: string,
-  positionalAccuracy?: number
+  positionalAccuracy?: number,
+  mapViewRef?: any
 }
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( {
   obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region, privacy, showMarker, hideMap,
-  openMapDetails, children, mapType, positionalAccuracy
+  openMapDetails, children, mapType, positionalAccuracy, mapViewRef
 }: Props ): React.Node => {
   const { latLng: viewerLatLng } = useUserLocation( { skipPlaceGuess: true } );
 
@@ -61,6 +63,7 @@ const Map = ( {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const obscuredCoordinates = useMemo( () => returnRandomArbitraryCoordinates(), [] );
+  // const mapViewRef = useRef<MapView>( null );
 
   return (
     <View
@@ -74,8 +77,9 @@ const Map = ( {
     >
       {!hideMap && (
         <MapView
+          ref={mapViewRef}
           style={viewStyles.map}
-          onPress={() => { if ( openMapDetails ) openMapDetails(); }}
+          onPress={() => { if ( openMapDetails ) openMapDetails( ); }}
           region={( region?.latitude )
             ? region
             : initialRegion}

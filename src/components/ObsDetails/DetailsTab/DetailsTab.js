@@ -166,7 +166,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
           privacy={privacy}
           showMarker
           openMapDetails={() => navigation.navigate(
-            "ObsDetailsMap",
+            "MapContainer",
             { observation, latitude, longitude }
           )}
           positionalAccuracy={positionalAccuracy}

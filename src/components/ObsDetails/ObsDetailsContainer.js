@@ -301,7 +301,6 @@ const ObsDetailsContainer = ( ): Node => {
   };
 
   const agreeIdSheetDiscardChanges = ( ) => {
-    console.log( "agree discard changes" );
     dispatch( { type: "SHOW_AGREE_SHEET", showAgreeWithIdSheet: false } );
   };
 
