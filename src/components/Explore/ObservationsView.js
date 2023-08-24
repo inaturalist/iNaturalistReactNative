@@ -29,11 +29,10 @@ const ObservationsView = ( {
   return observationsView === "map"
     ? (
       <Map
-        className="h-full"
         showsCompass={false}
         region={region}
         taxonId={exploreParams.taxon_id}
-        hideMap={region.latitude === 0.0}
+        showCurrentLocationButton
       />
     )
     : (

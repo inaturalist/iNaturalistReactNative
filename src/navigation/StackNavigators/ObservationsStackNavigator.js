@@ -13,10 +13,8 @@ import ObsEdit from "components/ObsEdit/ObsEdit";
 import PlaceholderComponent from "components/PlaceholderComponent";
 import ProjectDetails from "components/Projects/ProjectDetails";
 import Projects from "components/Projects/Projects";
-import { Heading4, Mortal } from "components/SharedComponents";
-import PermissionGateContainer, {
-  LOCATION_PERMISSIONS
-} from "components/SharedComponents/PermissionGateContainer";
+import { Heading4 } from "components/SharedComponents";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
@@ -35,20 +33,9 @@ const Stack = createNativeStackNavigator( );
 const addIDTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
 
 const ObsEditWithPermission = ( ) => (
-  <Mortal>
-    <PermissionGateContainer
-      permissions={LOCATION_PERMISSIONS}
-      title={t( "Get-more-accurate-suggestions-create-useful-data" )}
-      titleDenied={t( "Please-allow-Location-Access" )}
-      body={t( "iNaturalist-uses-your-location-to-give-you" )}
-      blockedPrompt={t( "Youve-previously-denied-location-permissions" )}
-      buttonText={t( "USE-LOCATION" )}
-      icon="map-marker-outline"
-      image={require( "images/landon-parenteau-EEuDMqRYbx0-unsplash.jpg" )}
-    >
-      <ObsEdit />
-    </PermissionGateContainer>
-  </Mortal>
+  <LocationPermissionGate>
+    <ObsEdit />
+  </LocationPermissionGate>
 );
 const ObservationsStackNavigator = ( ): Node => (
   <Stack.Navigator

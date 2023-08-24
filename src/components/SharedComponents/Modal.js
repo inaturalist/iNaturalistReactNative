@@ -9,7 +9,8 @@ type Props = {
   closeModal: Function,
   modal: any,
   backdropOpacity?: number,
-  fullScreen?: boolean
+  fullScreen?: boolean,
+  onModalHide?: Function
 }
 
 const modalStyle = {
@@ -30,7 +31,8 @@ const Modal = ( {
   closeModal,
   modal,
   backdropOpacity,
-  fullScreen = false
+  fullScreen = false,
+  onModalHide
 }: Props ): React.Node => (
   <RNModal
     isVisible={showModal}
@@ -43,6 +45,7 @@ const Modal = ( {
       ? fullScreenModalStyle
       : modalStyle}
     backdropOpacity={backdropOpacity}
+    onModalHide={onModalHide}
   >
     {modal}
   </RNModal>

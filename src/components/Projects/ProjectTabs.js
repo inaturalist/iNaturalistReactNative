@@ -2,6 +2,7 @@
 
 import { searchProjects } from "api/projects";
 import { Tabs } from "components/SharedComponents";
+import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Text } from "react-native";
@@ -83,6 +84,13 @@ const ProjectTabs = ( ): Node => {
       { loading
         ? <Text>Loading</Text>
         : <ProjectList data={projects} />}
+      <LocationPermissionGate
+        permissionNeeded={currentTabId === NEARBY_TAB_ID}
+        onComplete={( ) => {
+          console.warn( "TODO: figure out how to refetch user location when permission granted" );
+        }}
+        withoutNavigation
+      />
     </>
   );
 };

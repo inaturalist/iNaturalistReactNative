@@ -50,7 +50,7 @@ export const LOCATION_PERMISSIONS: Array<string> = Platform.OS === "ios"
   : [PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
 
 type Props = {
-  children: Node,
+  children?: Node,
   permissions: Array<string>,
   icon?: string,
   title?: string,
@@ -58,8 +58,24 @@ type Props = {
   body?: string,
   blockedPrompt?: string,
   buttonText?: string,
-  image?: Object
+  image?: Object,
+  permissionNeeded?: boolean,
+  onComplete?: Function,
+  withoutNavigation?: boolean
 };
+
+export function permissionResultFromMultiple( multiResults: Array<string> ): string {
+  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
+    return RESULTS.BLOCKED;
+  }
+  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.DENIED ) ) {
+    return RESULTS.DENIED;
+  }
+  if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.UNAVAILABLE ) ) {
+    return RESULTS.UNAVAILABLE;
+  }
+  return RESULTS.GRANTED;
+}
 
 // Prompts the user for an Android permission and renders children if granted.
 // Otherwise renders a view saying that permission is required, with a button
@@ -75,67 +91,85 @@ const PermissionGateContainer = ( {
   body,
   blockedPrompt,
   buttonText,
-  image
+  image,
+  permissionNeeded = true,
+  onComplete,
+  withoutNavigation
 }: Props ): Node => {
   const [result, setResult] = useState( null );
   const [modalShown, setModalShown] = useState( true );
 
   const navigation = useNavigation();
 
-  const setResultFromMultiple = useCallback( multiResults => {
-    if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
-      setResult( RESULTS.BLOCKED );
-      return;
-    }
-    if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.DENIED ) ) {
-      setResult( RESULTS.DENIED );
-      return;
-    }
-    if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.UNAVAILABLE ) ) {
-      setResult( RESULTS.UNAVAILABLE );
-      return;
-    }
-    setResult( RESULTS.GRANTED );
-  }, [setResult] );
-
   const requestPermission = useCallback( async ( ) => {
     const requestResult = await requestMultiple( permissions );
-    setResultFromMultiple( requestResult );
-  }, [permissions, setResultFromMultiple] );
+    setResult( permissionResultFromMultiple( requestResult ) );
+  }, [permissions] );
 
   const checkPermission = useCallback( async ( ) => {
     const checkResult = await checkMultiple( permissions );
-    setResultFromMultiple( checkResult );
-  }, [permissions, setResultFromMultiple] );
+    setResult( permissionResultFromMultiple( checkResult ) );
+  }, [permissions] );
 
   useEffect( () => {
-    if ( result === null ) {
+    if ( result === null && permissionNeeded ) {
       checkPermission( );
     }
-  }, [checkPermission, result] );
+  }, [checkPermission, result, permissionNeeded] );
 
   useEffect( ( ) => {
-    const unsubscribe = navigation.addListener( "focus", async () => {
-      await checkPermission( );
+    if ( withoutNavigation && permissionNeeded ) {
       setModalShown( true );
-    } );
-    return unsubscribe;
-  }, [checkPermission, navigation] );
+      return () => {};
+    }
+    if ( !withoutNavigation ) {
+      const unsubscribe = navigation.addListener( "focus", async () => {
+        await checkPermission( );
+        setModalShown( true );
+      } );
+      return unsubscribe;
+    }
+    return () => {};
+  }, [
+    checkPermission,
+    navigation,
+    children,
+    withoutNavigation,
+    permissionNeeded
+  ] );
+
+  useEffect( ( ) => {
+    if ( result === RESULTS.GRANTED && !children ) {
+      setModalShown( false );
+    }
+  }, [result, children, setModalShown] );
 
   const closeModal = useCallback( ( ) => {
     setModalShown( false );
-    navigation.goBack( );
-  }, [setModalShown, navigation] );
+    if ( !withoutNavigation ) navigation.goBack( );
+  }, [
+    navigation,
+    // onComplete,
+    // result,
+    setModalShown,
+    withoutNavigation
+  ] );
 
-  if ( result === RESULTS.GRANTED ) {
+  if ( result === RESULTS.GRANTED && children ) {
+    // if ( onComplete ) onComplete( result );
     return children;
   }
+
   if ( !result ) return null;
 
   return (
     <Modal
       showModal={modalShown}
       closeModal={closeModal}
+      onModalHide={() => {
+        console.log( "onModalHide" );
+        if ( onComplete ) onComplete( result );
+      }}
       fullScreen
       modal={(
         <PermissionGate

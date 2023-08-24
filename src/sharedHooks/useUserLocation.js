@@ -1,9 +1,14 @@
 // @flow
 
 import Geolocation from "@react-native-community/geolocation";
+import {
+  LOCATION_PERMISSIONS,
+  permissionResultFromMultiple
+} from "components/SharedComponents/PermissionGateContainer";
 import { useEffect, useState } from "react";
-import { Platform } from "react-native";
-import { PERMISSIONS, request } from "react-native-permissions";
+import {
+  checkMultiple, RESULTS
+} from "react-native-permissions";
 import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 
 // Max time to wait while fetching current location
@@ -12,29 +17,29 @@ const CURRENT_LOCATION_TIMEOUT_MS = 30000;
 const useUserLocation = ( { skipPlaceGuess = false }: Object ): Object => {
   const [latLng, setLatLng] = useState( null );
   const [isLoading, setIsLoading] = useState( true );
+  const [permissionsGranted, setPermissionsGranted] = useState( false );
 
-  // TODO: wrap this in PermissionsGate so permissions aren't requested at odd times
-  const requestiOSPermissions = async ( ): Promise<?string> => {
-    // TODO: test this on a real device
-    try {
-      const permission = await request( PERMISSIONS.IOS.LOCATION_WHEN_IN_USE );
-      return permission;
-    } catch ( e ) {
-      console.warn( e, ": error requesting iOS permissions" );
+  useEffect( ( ) => {
+    async function checkPermissions() {
+      const permissionsResult = permissionResultFromMultiple(
+        await checkMultiple( LOCATION_PERMISSIONS )
+      );
+      if ( permissionsResult === RESULTS.GRANTED ) {
+        setPermissionsGranted( true );
+      } else {
+        console.warn(
+          "Location permissions have not been granted. You probably need to use a PermissionGate"
+        );
+      }
     }
-    return null;
-  };
+    checkPermissions( );
+  }, [] );
 
   useEffect( ( ) => {
     let isCurrent = true;
 
     const fetchLocation = async ( ) => {
       setIsLoading( true );
-      if ( Platform.OS === "ios" ) {
-        const permissions = await requestiOSPermissions( );
-        // TODO: handle case where iOS permissions are not granted
-        if ( permissions !== "granted" ) { return; }
-      }
 
       const success = async ( { coords } ) => {
         if ( !isCurrent ) { return; }
@@ -65,12 +70,15 @@ const useUserLocation = ( { skipPlaceGuess = false }: Object ): Object => {
 
       Geolocation.getCurrentPosition( success, failure, options );
     };
-    fetchLocation( );
+
+    if ( permissionsGranted ) {
+      fetchLocation( );
+    }
 
     return ( ) => {
       isCurrent = false;
     };
-  }, [skipPlaceGuess] );
+  }, [permissionsGranted, skipPlaceGuess] );
 
   return {
     latLng,
