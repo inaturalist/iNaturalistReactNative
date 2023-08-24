@@ -82,8 +82,6 @@ const PermissionGateContainer = ( {
 
   const navigation = useNavigation();
 
-  console.log( "result: ", result );
-
   const setResultFromMultiple = useCallback( multiResults => {
     if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
       setResult( RESULTS.BLOCKED );

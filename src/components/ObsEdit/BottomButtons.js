@@ -39,8 +39,8 @@ const BottomButtons = ( ): Node => {
       setAllowUserToUpload( true );
       return true;
     }
-    if ( currentObservation.positional_accuracy
-      && currentObservation.positional_accuracy > DESIRED_LOCATION_ACCURACY ) {
+    if ( currentObservation?.positional_accuracy
+      && currentObservation?.positional_accuracy > DESIRED_LOCATION_ACCURACY ) {
       setShowImpreciseLocationSheet( true );
       return true;
     }
@@ -73,7 +73,7 @@ const BottomButtons = ( ): Node => {
           setShowImpreciseLocationSheet={setShowImpreciseLocationSheet}
         />
       )}
-      {currentObservation._synced_at
+      {currentObservation?._synced_at
         ? (
           <Button
             onPress={handleSave}

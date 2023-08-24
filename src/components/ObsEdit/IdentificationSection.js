@@ -27,7 +27,7 @@ const IdentificationSection = ( ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
 
-  const identification = currentObservation.taxon;
+  const identification = currentObservation?.taxon;
 
   const hasIdentification = identification && identification.rank_level !== 100;
 
@@ -38,9 +38,7 @@ const IdentificationSection = ( ): Node => {
     } );
   };
 
-  const navToAddID = ( ) => navigation.navigate( "AddID", {
-    clearSearch: true
-  } );
+  const navToAddID = ( ) => navigation.navigate( "AddID" );
 
   useEffect( ( ) => {
     if ( hasIdentification ) {

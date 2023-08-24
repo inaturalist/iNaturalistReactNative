@@ -29,8 +29,8 @@ const useCurrentObservationLocation = ( mountedRef: any ): Object => {
 
   const [shouldFetchLocation, setShouldFetchLocation] = useState(
     currentObservation
-      && !currentObservation._created_at
-      && !currentObservation._synced_at
+      && !currentObservation?._created_at
+      && !currentObservation?._synced_at
       && !hasLocation
       && !isGalleryPhoto
   );
@@ -108,7 +108,7 @@ const useCurrentObservationLocation = ( mountedRef: any ): Object => {
   return {
     latitude,
     longitude,
-    positionalAccuracy: currentObservation.positional_accuracy,
+    positionalAccuracy: currentObservation?.positional_accuracy,
     hasLocation,
     // Internally we're tracking isFetching when one of potentially many
     // location requests is in flight, but this tells the external consumer

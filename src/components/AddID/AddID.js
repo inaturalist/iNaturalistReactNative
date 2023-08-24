@@ -2,7 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  Body3, Heading4, INatIcon, TextInputSheet, ViewWrapper
+  Body3, INatIcon, TextInputSheet, ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
@@ -18,13 +18,14 @@ import TaxonSearch from "./TaxonSearch";
 type Props = {
   setComment: Function,
   comment: string,
-  clearSearch: boolean,
+  taxonSearch: string,
+  setTaxonSearch: Function,
   createId: Function,
   loading: boolean
 };
 
 const AddID = ( {
-  setComment, comment, clearSearch, createId, loading
+  setComment, comment, taxonSearch, setTaxonSearch, createId, loading
 }: Props ): Node => {
   const { t } = useTranslation( );
   const [showAddCommentSheet, setShowAddCommentSheet] = useState( false );
@@ -43,11 +44,8 @@ const AddID = ( {
       />
     );
 
-    const renderHeaderTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
-
     navigation.setOptions( {
-      headerRight: addCommentIcon,
-      headerTitle: renderHeaderTitle
+      headerRight: addCommentIcon
     } );
   }, [navigation, t] );
 
@@ -79,7 +77,11 @@ const AddID = ( {
             <ActivityIndicator large />
           </View>
         )}
-        <TaxonSearch clearSearch={clearSearch} createId={createId} />
+        <TaxonSearch
+          taxonSearch={taxonSearch}
+          setTaxonSearch={setTaxonSearch}
+          createId={createId}
+        />
       </View>
     </ViewWrapper>
   );
