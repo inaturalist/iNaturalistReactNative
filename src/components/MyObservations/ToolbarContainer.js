@@ -53,12 +53,10 @@ const ToolbarContainer = ( {
       return t( "X-observations-uploaded", { count: totalUploadCount } );
     }
 
-    if ( numUnuploadedObs <= 0 ) {
-      return null;
-    }
-
     if ( !uploadInProgress ) {
-      return t( "Upload-x-observations", { count: numUnuploadedObs } );
+      return numUnuploadedObs <= 0
+        ? t( "Upload-x-observations", { count: numUnuploadedObs } )
+        : "";
     }
 
     const translationParams = {

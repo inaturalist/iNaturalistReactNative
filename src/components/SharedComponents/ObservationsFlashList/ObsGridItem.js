@@ -14,8 +14,7 @@ type Props = {
   width?: string,
   height?: string,
   style?: Object,
-  setShowLoginSheet: Function,
-  hideUploadStatus?: boolean
+  setShowLoginSheet: Function
 };
 
 const ObsGridItem = ( {
@@ -23,8 +22,7 @@ const ObsGridItem = ( {
   width = "w-full",
   height,
   style,
-  setShowLoginSheet,
-  hideUploadStatus
+  setShowLoginSheet
 }: Props ): Node => (
   <ObsImagePreview
     source={{
@@ -41,15 +39,13 @@ const ObsGridItem = ( {
     testID={`MyObservations.gridItem.${observation.uuid}`}
   >
     <View className="absolute bottom-0 flex p-2 w-full">
-      {!hideUploadStatus && (
-        <ObsUploadStatus
-          observation={observation}
-          layout="horizontal"
-          white
-          classNameMargin="mb-1"
-          setShowLoginSheet={setShowLoginSheet}
-        />
-      )}
+      <ObsUploadStatus
+        observation={observation}
+        layout="horizontal"
+        white
+        classNameMargin="mb-1"
+        setShowLoginSheet={setShowLoginSheet}
+      />
       <DisplayTaxonName
         keyBase={observation?.uuid}
         taxon={observation?.taxon}
