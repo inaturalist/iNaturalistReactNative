@@ -57,7 +57,10 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
 
 const renderDeleteSheet = ( ) => renderComponent(
   <ObsEditProvider>
-    <DeleteObservationSheet handleClose={( ) => jest.fn( )} />
+    <DeleteObservationSheet
+      handleClose={( ) => jest.fn( )}
+      navToObsList={( ) => jest.fn( )}
+    />
   </ObsEditProvider>
 );
 

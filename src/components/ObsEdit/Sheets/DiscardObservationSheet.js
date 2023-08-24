@@ -1,6 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import {
   WarningSheet
 } from "components/SharedComponents";
@@ -11,19 +10,20 @@ import React, { useContext } from "react";
 
 type Props = {
   handleClose: Function,
-  discardObservation: Function
+  discardObservation: Function,
+  navToObsList: Function
 }
 
 const DiscardObservationSheet = ( {
   handleClose,
-  discardObservation
+  discardObservation,
+  navToObsList
 }: Props ): Node => {
   const {
     observations,
     saveAllObservations,
     setObservations
   } = useContext( ObsEditContext );
-  const navigation = useNavigation( );
 
   const multipleObservations = observations.length > 1;
 
@@ -41,7 +41,7 @@ const DiscardObservationSheet = ( {
       handleSecondButtonPress={( ) => {
         saveAllObservations( );
         setObservations( [] );
-        navigation.navigate( "ObsList" );
+        navToObsList( );
       }}
       secondButtonText={multipleObservations && t( "SAVE-ALL" )}
       buttonText={multipleObservations

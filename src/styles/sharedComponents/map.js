@@ -1,17 +1,16 @@
 // @flow strict-local
 
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import type { ViewStyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
-
-const { width, height } = Dimensions.get( "screen" );
 
 const viewStyles: { [string]: ViewStyleProp } = StyleSheet.create( {
   mapContainer: {
-    width,
-    height
+    width: "100%",
+    height: "100%"
   },
   map: {
-    ...StyleSheet.absoluteFillObject
+    width: "100%",
+    height: "100%"
   }
 } );
 

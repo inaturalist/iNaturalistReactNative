@@ -35,11 +35,11 @@ const AddIDContainer = ( { route }: Props ): Node => {
   const {
     updateObservationKeys
   } = useContext( ObsEditContext );
-  const {
-    observationUUID, createRemoteIdentification, belongsToCurrentUser
-  } = route.params;
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
+  const observationUUID = route?.params?.observationUUID;
+  const createRemoteIdentification = route?.params?.createRemoteIdentification;
+  const belongsToCurrentUser = route?.params?.belongsToCurrentUser;
   const localObservation = useLocalObservation( observationUUID );
   const { t } = useTranslation( );
 

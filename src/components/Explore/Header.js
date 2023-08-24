@@ -192,6 +192,7 @@ const Header = ( {
             <INatIconButton
               icon="sliders"
               color={colors.white}
+              onPress={( ) => navigation.navigate( "ExploreFilters" )}
             />
           </View>
         </View>

@@ -29,6 +29,7 @@ const TaxonDetails = ( ): Node => {
   const navigation = useNavigation( );
   const { params } = useRoute( );
   const { id } = params;
+  const lastScreen = params?.lastScreen;
   const { t } = useTranslation( );
   const [currentTabId, setCurrentTabId] = useState( ABOUT_TAB_ID );
 
@@ -69,7 +70,16 @@ const TaxonDetails = ( ): Node => {
         <View className="absolute left-5 top-5">
           <HeaderBackButton
             tintColor={theme.colors.onPrimary}
-            onPress={( ) => navigation.goBack( )}
+            onPress={( ) => {
+              if ( lastScreen ) {
+                navigation.navigate( "CameraNavigator", {
+                  screen: "AddID",
+                  params: { }
+                } );
+              } else {
+                navigation.goBack( );
+              }
+            }}
           />
         </View>
         <View className="absolute bottom-5 left-5">

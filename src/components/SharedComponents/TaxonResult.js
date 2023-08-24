@@ -71,7 +71,16 @@ const TaxonResult = ( {
         <INatIconButton
           icon="info-circle-outline"
           size={22}
-          onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
+          onPress={() => navigation.navigate( "TabNavigator", {
+            screen: "ObservationsStackNavigator",
+            params: {
+              screen: "TaxonDetails",
+              params: {
+                id: taxon.id,
+                lastScreen: "AddID"
+              }
+            }
+          } )}
           color={clearBackground && theme.colors.onSecondary}
           accessibilityRole="link"
           accessibilityLabel={t( "Navigate-to-taxon-details" )}

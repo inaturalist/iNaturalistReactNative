@@ -37,7 +37,6 @@ const AddEvidenceSheet = ( {
     onImportPhoto();
   };
 
-  // navigation.navigate( "Camera", { addEvidence: true, camera: "Standard" } );
   const onTakePhotoCallback = async () => {
     handleClose( );
     onTakePhoto();

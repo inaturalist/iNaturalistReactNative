@@ -1,6 +1,6 @@
 // @flow
 
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
   Body1, Body2,
@@ -50,13 +50,9 @@ const LoginForm = ( { setLoggedIn, handleInputFocus }: Props ): Node => {
     setLoggedIn( true );
     setLoading( false );
 
-    // Reset navigation state so that ObsList gets rerendered
-    navigation.dispatch( CommonActions.reset( {
-      index: 0,
-      routes: [{ name: "ObsList" }]
-    } ) );
-
-    navigation.navigate( "ObsList" );
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsStackNavigator"
+    } );
   };
 
   return (

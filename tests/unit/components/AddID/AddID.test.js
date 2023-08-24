@@ -168,7 +168,6 @@ describe( "AddID", ( ) => {
     expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy();
     const labelText = t( "Add-this-ID" );
     const chooseButton = ( await screen.findAllByLabelText( labelText ) )[0];
-    console.log( chooseButton, "choos button" );
     fireEvent.press( chooseButton );
     await screen.findByTestId( "AddID.ActivityIndicator" );
   } );

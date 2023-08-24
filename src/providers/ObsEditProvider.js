@@ -377,7 +377,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         setCurrentObservationIndex( 0 );
         setObservations( [] );
 
-        navigation.navigate( "ObsList" );
+        navigation.navigate( "TabNavigator", {
+          screen: "ObservationsStackNavigator",
+          params: {
+            screen: "ObsList"
+          }
+        } );
       } else if ( currentObservationIndex === observations.length - 1 ) {
         observations.pop( );
         setCurrentObservationIndex( observations.length - 1 );
@@ -392,8 +397,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     };
 
     const deleteLocalObservation = uuid => {
+      const localObservation = realm.objectForPrimaryKey( "Observation", uuid );
+      if ( !localObservation ) { return; }
       realm?.write( ( ) => {
-        realm?.delete( realm.objectForPrimaryKey( "Observation", uuid ) );
+        realm?.delete( localObservation );
       } );
     };
 

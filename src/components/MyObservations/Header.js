@@ -87,7 +87,7 @@ const Header = ( {
           )}
       </View>
       <Button
-        onPress={( ) => navigation.navigate( "Login" )}
+        onPress={( ) => navigation.navigate( "LoginNavigator" )}
         accessibilityRole="link"
         accessibilityLabel={t( "Navigate-to-login-screen" )}
         text={t( "LOG-IN-TO-INATURALIST" )}
