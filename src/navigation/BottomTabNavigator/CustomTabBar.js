@@ -36,6 +36,8 @@ const CustomTabBar = ( { navigation }: Props ): Node => {
       testID: DRAWER_ID,
       accessibilityLabel: t( "Open-drawer" ),
       accessibilityHint: t( "Opens-the-side-drawer-menu" ),
+      width: 44,
+      height: 44,
       size: 32,
       onPress: ( ) => {
         navigation.openDrawer( );
@@ -48,6 +50,8 @@ const CustomTabBar = ( { navigation }: Props ): Node => {
       testID: EXPLORE_SCREEN_ID,
       accessibilityLabel: t( "Explore" ),
       accessibilityHint: t( "Navigates-to-explore" ),
+      width: 44,
+      height: 44,
       size: 40,
       onPress: ( ) => {
         navigation.navigate( "ObservationsStackNavigator", {
@@ -63,6 +67,8 @@ const CustomTabBar = ( { navigation }: Props ): Node => {
       testID: OBS_LIST_SCREEN_ID,
       accessibilityLabel: t( "Observations" ),
       accessibilityHint: t( "Navigates-to-observations" ),
+      width: 44,
+      height: 44,
       size: 40,
       onPress: ( ) => {
         navigation.navigate( "ObservationsStackNavigator", {
@@ -77,6 +83,8 @@ const CustomTabBar = ( { navigation }: Props ): Node => {
       testID: MESSAGES_SCREEN_ID,
       accessibilityLabel: t( "Messages" ),
       accessibilityHint: t( "Navigates-to-messages" ),
+      width: 44,
+      height: 44,
       size: 32,
       onPress: ( ) => {
         navigation.navigate( "Messages" );
@@ -97,7 +105,7 @@ const CustomTabBar = ( { navigation }: Props ): Node => {
   return (
     <View
       className={classNames(
-        "flex flex-row absolute bottom-0 bg-white w-full justify-evenly items-center p-1 m-0",
+        "flex flex-row fixed bottom-0 bg-white w-full justify-evenly items-center p-1 m-0",
         { "pb-5": Platform.OS === "ios" }
       )}
       style={getShadowStyle( {

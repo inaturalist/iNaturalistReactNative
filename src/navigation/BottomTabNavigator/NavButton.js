@@ -14,6 +14,8 @@ type Props = {
   accessibilityHint?: string,
   active: boolean,
   size: number,
+  width?: number,
+  height?: number
 };
 
 const NavButton = ( {
@@ -25,7 +27,9 @@ const NavButton = ( {
   active,
   accessibilityLabel,
   accessibilityHint,
-  accessibilityRole = "tab"
+  accessibilityRole = "tab",
+  width,
+  height
 }: Props ): React.Node => {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {
@@ -38,7 +42,9 @@ const NavButton = ( {
       selected: active,
       expanded: active,
       disabled: false
-    }
+    },
+    width,
+    height
   };
 
   if ( userIconUri ) {
