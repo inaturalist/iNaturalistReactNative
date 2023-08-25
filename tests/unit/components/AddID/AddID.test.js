@@ -166,7 +166,7 @@ describe( "AddID", ( ) => {
     fireEvent.changeText( input, "Some taxon" );
 
     expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy();
-    const labelText = t( "Add-this-ID" );
+    const labelText = t( "Checkmark" );
     const chooseButton = ( await screen.findAllByLabelText( labelText ) )[0];
     fireEvent.press( chooseButton );
     await screen.findByTestId( "AddID.ActivityIndicator" );

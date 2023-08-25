@@ -20,9 +20,8 @@ const GreenCheckmark = ( {
   return (
     <INatIconButton
       onPress={navToObsEdit}
-      accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
-      accessibilityRole="button"
-      accessibilityState={{ disabled: false }}
+      accessibilityLabel={t( "Checkmark" )}
+      accessibilityHint={t( "Navigate-to-observation-edit-screen" )}
       disabled={false}
       icon="checkmark-circle"
       color={colors.inatGreen}

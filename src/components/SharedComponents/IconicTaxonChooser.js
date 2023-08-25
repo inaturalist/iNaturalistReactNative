@@ -5,7 +5,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { FlatList } from "react-native";
-import { useIconicTaxa } from "sharedHooks";
+import { useIconicTaxa, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -15,6 +15,7 @@ type Props = {
 };
 
 const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => {
+  const { t } = useTranslation( );
   const [selectedIcon, setSelectedIcon] = useState( null );
   const iconicTaxa = useIconicTaxa( { reload: false } );
   const isIconic = taxon?.id && iconicTaxa.filtered( `id = ${taxon?.id}` );
@@ -68,6 +69,10 @@ const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => 
             onTaxonChosen( item );
           }}
           color={isSelected && colors.white}
+          accessibilityLabel={item}
+          accessibilityHint={
+            t( "Selects-iconic-taxon-X-for-identification", { iconicTaxon: item } )
+          }
         />
       </View>
     );

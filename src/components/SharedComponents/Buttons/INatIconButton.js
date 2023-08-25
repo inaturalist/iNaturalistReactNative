@@ -9,7 +9,8 @@ import { useTheme } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  accessibilityLabel?: string,
+  accessibilityHint?: string,
+  accessibilityLabel: string,
   children?: any,
   color?: string,
   disabled?: boolean,
@@ -31,6 +32,7 @@ const MIN_ACCESSIBLE_DIM = 44;
 // control over touchable area with `width` and `height` *and* the size of
 // the icon with `size`
 const INatIconButton = ( {
+  accessibilityHint,
   accessibilityLabel,
   children,
   color,
@@ -58,8 +60,14 @@ const INatIconButton = ( {
       `Height cannot be less than ${MIN_ACCESSIBLE_DIM}. Use IconButton for smaller buttons.`
     );
   }
+  if ( !accessibilityLabel ) {
+    throw new Error(
+      "Button needs an accessibility label"
+    );
+  }
   return (
     <Pressable
+      accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
       accessibilityState={{ disabled }}

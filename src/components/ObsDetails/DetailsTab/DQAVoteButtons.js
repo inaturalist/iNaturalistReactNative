@@ -7,6 +7,7 @@ import {
 import { View } from "components/styledComponents";
 import * as React from "react";
 import { ActivityIndicator, useTheme } from "react-native-paper";
+import { useTranslation } from "sharedHooks";
 
 type Props = {
   metric: string,
@@ -43,6 +44,7 @@ const renderVoteCount = ( status, metric, qualityMetrics ) => {
 const DQAVoteButtons = ( {
   metric, qualityMetrics, loadingAgree, loadingDisagree, loadingMetric, setVote, removeVote
 }: Props ): React.Node => {
+  const { t } = useTranslation( );
   const theme = useTheme( );
   const userAgrees = getUserVote( metric, qualityMetrics );
   const activityIndicatorOffset = "mx-[7px]";
@@ -59,6 +61,7 @@ const DQAVoteButtons = ( {
           size={33}
           color={theme.colors.secondary}
           onPress={() => removeVote( metric, true )}
+          accessibilityLabel={t( "Arrow-up-selected" )}
         />
       );
     }
@@ -68,6 +71,7 @@ const DQAVoteButtons = ( {
         icon="arrow-up-bold-circle-outline"
         size={33}
         onPress={() => setVote( metric, true )}
+        accessibilityLabel={t( "Arrow-up-unselected" )}
       />
     );
   };
@@ -77,17 +81,7 @@ const DQAVoteButtons = ( {
       return ( <ActivityIndicator size={30} className={activityIndicatorOffset} /> );
     }
 
-    if ( userAgrees === null ) {
-      return (
-        <INatIconButton
-          testID="DQAVoteButton.EmptyDisagree"
-          icon="arrow-down-bold-circle-outline"
-          size={33}
-          onPress={() => setVote( metric, false )}
-        />
-      );
-    }
-    if ( !userAgrees ) {
+    if ( userAgrees === false ) {
       return (
         <INatIconButton
           testID="DQAVoteButton.UserDisagree"
@@ -95,6 +89,7 @@ const DQAVoteButtons = ( {
           size={33}
           color={theme.colors.error}
           onPress={() => removeVote( metric, false )}
+          accessibilityLabel={t( "Arrow-down-selected" )}
         />
       );
     }
@@ -104,6 +99,7 @@ const DQAVoteButtons = ( {
         icon="arrow-down-bold-circle-outline"
         size={33}
         onPress={() => setVote( metric, false )}
+        accessibilityLabel={t( "Arrow-down-unselected" )}
       />
     );
   };
