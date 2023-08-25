@@ -1,12 +1,12 @@
 // @flow
 
-import { INatIcon } from "components/SharedComponents";
+import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect } from "react";
 import CircularProgressBase from "react-native-circular-progress-indicator";
-import { IconButton, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import Reanimated, {
   cancelAnimation,
   Easing, FadeIn, interpolate,
@@ -98,13 +98,13 @@ const UploadStatus = ( {
   const displayIcon = () => {
     if ( progress === 0 ) {
       return (
-        <IconButton
+        <INatIconButton
           icon="upload-saved"
-          iconColor={color || defaultColor}
+          color={color || defaultColor}
           size={33}
           onPress={startUpload}
           disabled={false}
-          accessibilityState={{ disabled: false }}
+          accessibilityLabel={t( "Start-upload" )}
         />
       );
     }

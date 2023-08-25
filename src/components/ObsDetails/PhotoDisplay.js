@@ -2,17 +2,14 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import {
-  PhotoCount
+  INatIconButton,
+  PhotoCount, PhotoScroll
 } from "components/SharedComponents";
-import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useMemo
 } from "react";
-import {
-  Button as IconButton
-} from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
 import {
   useIsConnected,
@@ -38,14 +35,12 @@ const PhotoDisplay = ( {
   const navigation = useNavigation( );
 
   const editButton = useMemo( ( ) => (
-    <IconButton
+    <INatIconButton
       onPress={( ) => navigation.navigate( "ObsEdit", { uuid } )}
       icon="pencil"
-      textColor={colors.white}
+      color={colors.white}
       className="absolute top-3 right-3"
-      accessible
-      accessibilityRole="button"
-      accessibilityLabel={t( "edit" )}
+      accessibilityLabel={t( "Edit" )}
     />
   ), [t, navigation, uuid] );
 
@@ -72,31 +67,18 @@ const PhotoDisplay = ( {
           <PhotoScroll photos={photos} />
           {/* TODO: a11y props are not passed down into this 3.party */}
           { editButton }
-          {userFav
-            ? (
-              <IconButton
-                icon="star"
-                size={25}
-                onPress={faveOrUnfave}
-                textColor={colors.white}
-                className="absolute bottom-3 right-3"
-                accessible
-                accessibilityRole="button"
-                accessibilityLabel={t( "favorite" )}
-              />
-            )
-            : (
-              <IconButton
-                icon="star-bold-outline"
-                size={25}
-                onPress={faveOrUnfave}
-                textColor={colors.white}
-                className="absolute bottom-3 right-3"
-                accessible
-                accessibilityRole="button"
-                accessibilityLabel={t( "favorite" )}
-              />
-            )}
+          <INatIconButton
+            icon={userFav
+              ? "star"
+              : "star-bold-outline"}
+            size={25}
+            onPress={faveOrUnfave}
+            color={colors.white}
+            className="absolute bottom-3 right-3"
+            accessibilityLabel={userFav
+              ? t( "Remove-favorite" )
+              : t( "Add-favorite" )}
+          />
           <View className="absolute bottom-3 left-3">
             <PhotoCount count={photos.length
               ? photos.length

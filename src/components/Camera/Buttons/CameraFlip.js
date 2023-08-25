@@ -1,6 +1,6 @@
 // @flow
 
-import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton";
+import { TransparentCircleButton } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";

@@ -1,6 +1,6 @@
 // @flow
 
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { Body1, Button } from "components/SharedComponents";
 import { Pressable, SafeAreaView, View } from "components/styledComponents";
@@ -58,12 +58,12 @@ const Logout = ( ): Node => {
     // deleted the realm file on disk, but the RealmProvider may still have a
     // copy of realm in local state
     // Reset navigation state so that ObsList gets rerendered
-    navigation.dispatch( CommonActions.reset( {
-      index: 0,
-      routes: [{ name: "ObsList" }]
-    } ) );
-
-    navigation.navigate( "ObsList" );
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsStackNavigator",
+      params: {
+        screen: "ObsList"
+      }
+    } );
   };
 
   const renderBackButton = ( ) => (

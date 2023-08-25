@@ -45,7 +45,7 @@ import { fontMonoClass, ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert } from "react-native";
-import { IconButton, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -95,10 +95,16 @@ const UiLibrary = (): Node => {
         show
       >
         <Heading2 className="my-2">Floating Action Bar</Heading2>
-        <IconButton className="mx-auto" icon="star-bold-outline" mode="contained" />
+        <INatIconButton
+          className="mx-auto"
+          icon="star-bold-outline"
+          mode="contained"
+          color={theme.colors.onSecondary}
+          backgroundColor={theme.colors.secondary}
+          accessibilityLabel="Star"
+        />
       </FloatingActionBar>
       <ScrollView className="px-5">
-        {/* TODO replace these text components with our typography header components */}
         <Body1>
           All the re-usable UI components we've got. If you're making a new UI
           component, please put it here first and try to show what it looks like
@@ -178,15 +184,15 @@ const UiLibrary = (): Node => {
         <View className="flex flex-row justify-between">
           <View>
             <Body2>Default</Body2>
-            <EvidenceButton icon="camera" />
+            <EvidenceButton icon="camera" accessibilityLabel="Camera" />
           </View>
           <View>
             <Body2>Disabled</Body2>
-            <EvidenceButton icon="microphone" disabled />
+            <EvidenceButton icon="microphone" disabled accessibilityLabel="Sound recorder" />
           </View>
           <View>
             <Body2>With Icon</Body2>
-            <EvidenceButton icon="microphone" />
+            <EvidenceButton icon="microphone" accessibilityLabel="Sound Recorder" />
           </View>
         </View>
 
@@ -217,30 +223,35 @@ const UiLibrary = (): Node => {
         <View className="flex flex-row justify-between">
           <View>
             <Body2>Primary</Body2>
-            <IconButton
+            <INatIconButton
               icon="compass-rose-outline"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
+              accessibilityLabel="Explore"
+              size={25}
             />
           </View>
           <View>
             <Body2>Focused</Body2>
-            <IconButton
+            <INatIconButton
               icon="plus"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
               mode="contained"
-              containerColor={theme.colors.secondary}
-              iconColor={theme.colors.onSecondary}
+              backgroundColor={theme.colors.secondary}
+              color={theme.colors.onSecondary}
+              accessibilityLabel="Add Observation"
             />
           </View>
           <View>
             <Body2>Warning</Body2>
-            <IconButton
+            <INatIconButton
               icon="notifications-bell"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
-              iconColor={theme.colors.error}
+              color={theme.colors.error}
+              size={25}
+              accessibilityLabel="Notifications"
             />
           </View>
         </View>
@@ -274,7 +285,6 @@ const UiLibrary = (): Node => {
           height={50}
           accessibilityLabel="Close button"
         />
-
         <Heading2>Custom iNaturalist Icons</Heading2>
         {Object.keys( glyphmap )
           .sort()
