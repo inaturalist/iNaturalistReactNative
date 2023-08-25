@@ -2,6 +2,7 @@
 
 exports[`INatIconButton renders correctly 1`] = `
 <View
+  accessibilityLabel="Camera"
   accessibilityRole="button"
   accessibilityState={
     {

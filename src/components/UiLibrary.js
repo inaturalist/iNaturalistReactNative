@@ -259,18 +259,20 @@ const UiLibrary = (): Node => {
             "Default INatIconButton",
             "Should be the minimum accessible size by default"
           )}
+          accessibilityLabel="Close button"
         />
         <Body3>Small icon, large tappable area</Body3>
         <INatIconButton
           icon="close"
           className="bg-yellow"
           onPress={() => Alert.alert(
-            "Custon INatIconButton",
+            "Custom INatIconButton",
             "The point is to adjust the interactive area and the icon size independently"
           )}
           size={10}
           width={50}
           height={50}
+          accessibilityLabel="Close button"
         />
 
         <Heading2>Custom iNaturalist Icons</Heading2>

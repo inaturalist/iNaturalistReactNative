@@ -10,6 +10,7 @@ describe( "INatIconButton", () => {
         onPress={( ) => {
           // all is well
         }}
+        accessibilityLabel="Camera"
       />
     );
     // Snapshot test
@@ -53,4 +54,29 @@ describe( "INatIconButton", () => {
 
     console.error.mockRestore();
   } );
+} );
+
+it( "should be accessible if accessibility label is passes as props", ( ) => {
+  expect(
+    <INatIconButton
+      icon="camera"
+      onPress={jest.fn( )}
+      accessibilityLabel="Navigate to camera"
+    />
+  ).toBeAccessible( );
+} );
+
+it( "throws an error when no accessibility label is passed into props", ( ) => {
+  // Even though the error is caught, it still gets printed to the console
+  // so we mock that out to avoid the wall of red text.
+  jest.spyOn( console, "error" );
+  console.error.mockImplementation( () => {} );
+
+  expect( () => render(
+    <INatIconButton
+      icon="camera"
+    />
+  ) ).toThrow( /accessibility/i );
+
+  console.error.mockRestore( );
 } );

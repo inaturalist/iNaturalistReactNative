@@ -146,6 +146,8 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         size={15}
         color={color}
         backgroundColor={backgroundColor}
+        accessibilityLabel={drawerItems[item].label}
+        accessibilityHint={t( "Navigates-to-drawer-item" )}
       />
     );
   };
@@ -191,6 +193,8 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
               icon="inaturalist"
               size={40}
               color={colors.inatGreen}
+              accessibilityLabel="iNaturalist"
+              accessibilityHint={t( "Shows-iNaturalist-bird-logo" )}
             />
           ) }
         <View className="ml-3 justify-center">

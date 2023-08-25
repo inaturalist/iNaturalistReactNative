@@ -148,6 +148,8 @@ const LocationPicker = ( {
             height={46}
             width={46}
             size={24}
+            accessibilityLabel={t( "Map-layers" )}
+            accessibilityHint={t( "Toggles-map-layer" )}
           />
         </View>
         <View
@@ -162,6 +164,8 @@ const LocationPicker = ( {
                   height={46}
                   width={46}
                   size={24}
+                  accessibilityLabel={t( "Loading-wheel" )}
+                  accessibilityHint={t( "Indicates-location-is-loading" )}
                 >
                   <ActivityIndicator color={colors.darkGrayDisabled} />
                 </INatIconButton>
@@ -173,6 +177,8 @@ const LocationPicker = ( {
                   height={46}
                   width={46}
                   size={24}
+                  accessibilityLabel={t( "User-location" )}
+                  accessibilityHint={t( "Returns-map-to-users-current-location" )}
                 />
               )
           }
