@@ -15,10 +15,13 @@ import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
+import { log } from "../../../../react-native-logs.config";
 import ARCameraButtons from "./ARCameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 
 const isTablet = DeviceInfo.isTablet();
+
+const logger = log.extend( "ARCamera" );
 
 // const exampleTaxonResult = {
 //   id: 12704,
@@ -181,9 +184,7 @@ const ARCamera = ( {
 
   const handleLog = event => {
     // event = { log: "string" }
-    console.log( "handleLog event :>> ", event );
-    // TODO: this handles incoming logs from the vision-camera-plugin-inatvision,
-    // can be used for debugging, added to a logfile, etc.
+    logger.info( `ARCamera: ${JSON.stringify( event )}` );
   };
 
   useEffect( ( ) => {
