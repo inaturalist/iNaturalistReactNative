@@ -188,7 +188,7 @@ const ARCamera = ( {
 
   useEffect( ( ) => {
     if ( photoSaved ) {
-      navToObsEdit( result );
+      navToObsEdit( { prediction: result } );
     }
   }, [photoSaved, navToObsEdit, result] );
 

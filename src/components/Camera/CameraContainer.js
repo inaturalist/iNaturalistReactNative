@@ -163,7 +163,7 @@ const CameraContainer = ( ): Node => {
     evidenceToAdd
   ] );
 
-  const navToObsEdit = useCallback( prediction => {
+  const navToObsEdit = useCallback( ( { prediction } ) => {
     createOrUpdateEvidence( prediction );
     navigation.navigate( "ObsEdit" );
   }, [
