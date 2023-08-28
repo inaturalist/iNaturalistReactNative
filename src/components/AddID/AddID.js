@@ -2,14 +2,14 @@
 
 import { useNavigation } from "@react-navigation/native";
 import {
-  Body3, INatIcon, TextInputSheet, ViewWrapper
+  Body3, INatIcon, INatIconButton,
+  TextInputSheet, ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
-  IconButton
+  ActivityIndicator
 } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
@@ -34,13 +34,11 @@ const AddID = ( {
 
   useEffect( ( ) => {
     const addCommentIcon = ( ) => (
-      <IconButton
+      <INatIconButton
         icon="add-comment-outline"
         onPress={( ) => setShowAddCommentSheet( true )}
-        accessible
-        accessibilityRole="button"
         accessibilityLabel={t( "Add-comment" )}
-        accessibilityState={{ disabled: false }}
+        size={25}
       />
     );
 

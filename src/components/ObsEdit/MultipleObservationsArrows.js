@@ -1,12 +1,11 @@
 // @flow
 
-import { Heading2 } from "components/SharedComponents";
+import { Heading2, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
-import { IconButton } from "react-native-paper";
-import useTranslation from "sharedHooks/useTranslation";
+import { useTranslation } from "sharedHooks";
 
 const MultipleObservationsArrows = ( ): Node => {
   const {
@@ -23,10 +22,11 @@ const MultipleObservationsArrows = ( ): Node => {
     <View className="flex-row items-center justify-between pt-5">
       <View className="w-16">
         {currentObservationIndex !== 0 && (
-          <IconButton
+          <INatIconButton
             icon="chevron-left-circle"
             size={26}
             onPress={showPrevObservation}
+            accessibilityLabel={t( "Previous-observation" )}
           />
         )}
       </View>
@@ -39,10 +39,11 @@ const MultipleObservationsArrows = ( ): Node => {
       <View className="w-16">
         {( currentObservationIndex !== observations.length - 1 )
           && (
-            <IconButton
+            <INatIconButton
               icon="chevron-right-circle"
               size={26}
               onPress={showNextObservation}
+              accessibilityLabel={t( "Next-observation" )}
             />
           )}
       </View>

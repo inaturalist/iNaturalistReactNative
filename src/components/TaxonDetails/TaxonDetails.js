@@ -8,16 +8,16 @@ import {
   DisplayTaxonName,
   Heading4,
   HideView,
+  INatIconButton,
   ScrollViewWrapper,
   Tabs
 } from "components/SharedComponents";
 import { ImageBackground, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
-import { IconButton, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import Photo from "realmModels/Photo";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import useTranslation from "sharedHooks/useTranslation";
+import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 
 import About from "./About";
 
@@ -91,21 +91,18 @@ const TaxonDetails = ( ): Node => {
           />
         </View>
         <View className="absolute bottom-5 right-5">
-          <IconButton
+          <INatIconButton
             icon="compass-rose-outline"
             onPress={( ) => navigation.navigate( "Explore" )}
             accessibilityLabel={t( "Explore" )}
             accessibilityHint={t( "Navigates-to-explore" )}
-            accessibilityRole="button"
             size={30}
-            iconColor={theme.colors.onPrimary}
-            disabled={false}
-            accessibilityState={{ disabled: false }}
+            color={theme.colors.onPrimary}
             // FWIW, IconButton has a little margin we can control and a
             // little padding that we can't control, so the negative margin
             // here is to ensure the visible icon is flush with the edge of
             // the container
-            className="m-0 ml-[-8px] bg-inatGreen"
+            className="m-0 ml-[-8px] bg-inatGreen rounded-full"
           />
         </View>
       </ImageBackground>

@@ -23,7 +23,8 @@ type Props = {
   width?: number,
   // Inserts a white or colored view under the icon so an holes in the shape show as
   // white
-  backgroundColor?: string
+  backgroundColor?: string,
+  mode?: string
 }
 
 const MIN_ACCESSIBLE_DIM = 44;
@@ -44,7 +45,8 @@ const INatIconButton = ( {
   style,
   testID,
   width = 44,
-  backgroundColor
+  backgroundColor,
+  mode
 }: Props ): Node => {
   const theme = useTheme( );
   const isWhite = backgroundColor === colors.white;
@@ -82,6 +84,10 @@ const INatIconButton = ( {
           height,
           justifyContent: "center",
           alignItems: "center"
+        },
+        mode === "contained" && {
+          backgroundColor,
+          borderRadius: 9999
         },
         style
       ]}

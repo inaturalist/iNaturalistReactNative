@@ -1,6 +1,7 @@
 // @flow
+import { INatIconButton } from "components/SharedComponents";
 import * as React from "react";
-import { IconButton, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -19,18 +20,25 @@ const EvidenceButton = ( {
   accessibilityHint
 }: Props ): React.Node => {
   const theme = useTheme( );
+  if ( !accessibilityLabel ) {
+    throw new Error(
+      "EvidenceButton needs an accessibility label"
+    );
+  }
   return (
-    <IconButton
+    <INatIconButton
       onPress={handlePress}
-      containerColor={disabled
+      backgroundColor={disabled
         ? colors.lightGray
         : theme.colors.secondary}
-      iconColor={theme.colors.onSecondary}
-      size={35}
+      color={theme.colors.onSecondary}
+      size={33}
       icon={icon}
-      accessibilityRole="link"
       accessibilityLabel={accessibilityLabel}
       accessibilityHint={accessibilityHint}
+      width={60}
+      height={60}
+      mode="contained"
     />
   );
 };
