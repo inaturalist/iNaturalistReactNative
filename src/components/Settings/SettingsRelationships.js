@@ -184,6 +184,7 @@ const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
       <Text style={textStyles.title}>{t( "Relationships" )}</Text>
       <View style={viewStyles.row}>
         <TextInput
+          accessibilityLabel="Text input field"
           style={viewStyles.textInput}
           onChangeText={v => {
             setUserSearch( v );
@@ -191,6 +192,7 @@ const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
           value={userSearch}
         />
         <Pressable
+          accessibilityRole="button"
           style={viewStyles.clearSearch}
           onPress={() => {
             setUserSearch( "" );
@@ -215,6 +217,7 @@ const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
       { totalPages > 1 && (
         <View style={[viewStyles.row, viewStyles.paginationContainer]}>
           <Pressable
+            accessibilityRole="button"
             disabled={page === 1}
             style={viewStyles.pageButton}
             onPress={() => setPage( page - 1 )}
@@ -223,6 +226,7 @@ const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
           </Pressable>
           {[...Array( totalPages ).keys()].map( x => (
             <Pressable
+              accessibilityRole="button"
               key={x}
               style={viewStyles.pageButton}
               onPress={() => setPage( x + 1 )}
@@ -236,6 +240,7 @@ const SettingsRelationships = ( { settings, refetchUserMe }: Props ): Node => {
             </Pressable>
           ) )}
           <Pressable
+            accessibilityRole="button"
             disabled={page === totalPages}
             style={viewStyles.pageButton}
             onPress={() => setPage( page + 1 )}

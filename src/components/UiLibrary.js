@@ -90,8 +90,8 @@ const UiLibrary = (): Node => {
     <ViewWrapper>
       <FloatingActionBar
         position="bottomEnd"
-        containerClass="mx-4 px-2 rounded-md"
-        endY={180}
+        containerClass="mx-4 px-2 pb-2 rounded-md"
+        endY={80}
         show
       >
         <Heading2 className="my-2">Floating Action Bar</Heading2>
@@ -560,7 +560,7 @@ const UiLibrary = (): Node => {
           Useless spacer at the end because height in NativeWind is confusing.
         </Body1>
       </ScrollView>
-      <StickyToolbar containerClass="bottom-24">
+      <StickyToolbar>
         <Heading2>StickyToolbar</Heading2>
       </StickyToolbar>
     </ViewWrapper>
