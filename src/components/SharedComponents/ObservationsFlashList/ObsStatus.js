@@ -34,9 +34,12 @@ const ObsStatus = ( {
   const flexDirection = layout === "vertical"
     ? "flex-column"
     : "flex-row";
+  const iconColorResearchCheck = qualityGrade === "research"
+    ? theme.colors.secondary
+    : theme.colors.primary;
   const iconColor = white
     ? theme.colors.onPrimary
-    : theme.colors.primary;
+    : iconColorResearchCheck;
   const numIdents = observation.identifications?.length || 0;
   const numComments = observation.comments?.length || 0;
   const identificationsFilled = observation.identifications_viewed === false;

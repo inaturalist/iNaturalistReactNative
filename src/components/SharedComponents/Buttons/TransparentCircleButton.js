@@ -20,6 +20,7 @@ const circleOptionsClasses = [
 type Props = {
   onPress: Function,
   optionalClasses?: string,
+  accessibilityHint?: string,
   accessibilityLabel: string,
   icon: string,
   testID?: string
@@ -29,15 +30,15 @@ const TransparentCircleButton = ( {
   onPress,
   optionalClasses,
   accessibilityLabel,
+  accessibilityHint,
   icon,
   testID
 }: Props ): Node => (
   <INatIconButton
     className={classnames( circleOptionsClasses, optionalClasses )}
     onPress={onPress}
-    accessibilityRole="button"
     accessibilityLabel={accessibilityLabel}
-    accessibilityState={{ disabled: false }}
+    accessibilityHint={accessibilityHint}
     icon={icon}
     color={colors.white}
     size={20}

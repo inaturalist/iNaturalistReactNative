@@ -39,7 +39,10 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
       createObservationNoEvidence( );
     }
     // access nested screen
-    navigation.navigate( screen, params );
+    navigation.navigate( "CameraNavigator", {
+      screen,
+      params
+    } );
     closeModal( );
   };
 
@@ -89,7 +92,8 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
             "mr-[9px]": !showARCamera
           } )}
           onPress={navToStandardCamera}
-          accessibilityLabel={t( "Navigates-to-camera" )}
+          accessibilityLabel={t( "Camera" )}
+          accessibilityHint={t( "Navigates-to-camera" )}
         />
         {showARCamera && (
           <INatIconButton
@@ -102,7 +106,8 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
               "absolute bottom-[26px]"
             )}
             onPress={navToARCamera}
-            accessibilityLabel={t( "Navigates-to-AR-camera" )}
+            accessibilityLabel={t( "AR-Camera" )}
+            accessibilityHint={t( "Navigates-to-AR-camera" )}
           />
         )}
         <INatIconButton
@@ -115,7 +120,8 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
             "ml-[9px]": !showARCamera
           } )}
           onPress={navToPhotoGallery}
-          accessibilityLabel={t( "Navigate-to-photo-importer" )}
+          accessibilityLabel={t( "Photo-importer" )}
+          accessibilityHint={t( "Navigate-to-photo-importer" )}
         />
       </View>
       <View className="flex-row justify-center items-center">
@@ -129,7 +135,8 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
             "mr-[20px] bottom-[33px]": !showARCamera
           } )}
           onPress={navToObsEdit}
-          accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+          accessibilityLabel={t( "Observation-with-no-evidence" )}
+          accessibilityHint={t( "Navigate-to-observation-edit-screen" )}
         />
         <INatIconButton
           testID="close-camera-options-button"
@@ -138,7 +145,8 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
           size={31}
           className="h-[69px] w-[69px] bg-inatGreen rounded-full"
           onPress={( ) => closeModal( )}
-          accessibilityLabel={t( "Close-camera-options-modal" )}
+          accessibilityLabel={t( "Close" )}
+          accessibilityHint={t( "Close-add-observation-modal" )}
         />
         <INatIconButton
           testID="record-sound-button"
@@ -150,7 +158,8 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
             "ml-[20px] bottom-[33px]": !showARCamera
           } )}
           onPress={navToSoundRecorder}
-          accessibilityLabel={t( "Navigate-to-sound-recorder" )}
+          accessibilityLabel={t( "Sound-recorder" )}
+          accessibilityHint={t( "Navigates-to-sound-recorder" )}
         />
       </View>
     </>

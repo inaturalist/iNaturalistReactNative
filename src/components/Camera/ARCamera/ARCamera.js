@@ -5,7 +5,7 @@ import FadeInOutView from "components/Camera/FadeInOutView";
 import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Platform
@@ -40,7 +40,9 @@ type Props = {
   takingPhoto: boolean,
   animatedProps: any,
   changeZoom: Function,
-  zoom: number
+  zoom: number,
+  navToObsEdit: Function,
+  photoSaved: boolean
 }
 
 const ARCamera = ( {
@@ -55,7 +57,9 @@ const ARCamera = ( {
   takingPhoto,
   animatedProps,
   changeZoom,
-  zoom
+  zoom,
+  navToObsEdit,
+  photoSaved
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -122,7 +126,7 @@ const ARCamera = ( {
         {"name": "Aves", "rank": 50, "score": 0.7627944946289062, "taxon_id": 3}
       ]
     */
-    console.log( "cvResults :>> ", cvResults );
+    // console.log( "cvResults :>> ", cvResults );
     let prediction = null;
     let predictions = [];
     if ( Platform.OS === "ios" ) {
@@ -182,6 +186,12 @@ const ARCamera = ( {
     // can be used for debugging, added to a logfile, etc.
   };
 
+  useEffect( ( ) => {
+    if ( photoSaved ) {
+      navToObsEdit( { prediction: result } );
+    }
+  }, [photoSaved, navToObsEdit, result] );
+
   return (
     <>
       {device && (
@@ -213,7 +223,7 @@ const ARCamera = ( {
             ? (
               <TaxonResult
                 taxon={result}
-                handleCheckmarkPress={( ) => { }}
+                handleCheckmarkPress={takePhoto}
                 testID={`ARCamera.taxa.${result.id}`}
                 clearBackground
                 confidence={convertScoreToConfidence( result?.score )}

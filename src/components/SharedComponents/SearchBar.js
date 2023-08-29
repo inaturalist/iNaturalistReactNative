@@ -42,6 +42,7 @@ const SearchBar = ( {
       <TextInput
         ref={input}
         accessibilityLabel="Search bar"
+        accessibilityState={{ disabled: false }}
         keyboardType="default"
         mode="outlined"
         onChangeText={handleTextChange}

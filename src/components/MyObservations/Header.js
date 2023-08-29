@@ -2,13 +2,14 @@
 import { useNavigation } from "@react-navigation/native";
 import ToolbarContainer from "components/MyObservations/ToolbarContainer";
 import {
-  Button, Heading1, Subheading1
+  Button, Heading1, INatIconButton,
+  Subheading1
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Trans } from "react-i18next";
-import { IconButton, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import User from "realmModels/User";
 import { useNumUnuploadedObservations, useTranslation } from "sharedHooks";
 
@@ -54,14 +55,16 @@ const Header = ( {
   const signedOutContent = ( ) => (
     <>
       <View className="flex-row items-center">
-        <IconButton
+        <INatIconButton
           className="mr-5"
           icon="inaturalist"
-          size={40}
-          iconColor={theme.colors.onSecondary}
+          size={41}
+          color={theme.colors.onSecondary}
           backgroundColor={theme.colors.secondary}
-          disabled={false}
-          accessibilityState={{ disabled: false }}
+          accessibilityLabel="iNaturalist"
+          mode="contained"
+          width={67}
+          height={67}
         />
         {numUnuploadedObs > 0
           ? (
@@ -87,7 +90,7 @@ const Header = ( {
           )}
       </View>
       <Button
-        onPress={( ) => navigation.navigate( "Login" )}
+        onPress={( ) => navigation.navigate( "LoginNavigator" )}
         accessibilityRole="link"
         accessibilityLabel={t( "Navigate-to-login-screen" )}
         text={t( "LOG-IN-TO-INATURALIST" )}

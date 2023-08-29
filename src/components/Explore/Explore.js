@@ -9,7 +9,7 @@ import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import { Animated, Platform } from "react-native";
-import { useDeviceOrientation, useTranslation } from "sharedHooks";
+import { useTranslation } from "sharedHooks";
 
 import Header from "./Header";
 import IdentifiersView from "./IdentifiersView";
@@ -41,11 +41,6 @@ const Explore = ( {
   updatePlaceName,
   updateTaxonName
 }: Props ): Node => {
-  const {
-    isTablet,
-    screenHeight,
-    screenWidth
-  } = useDeviceOrientation( );
   const { t } = useTranslation( );
   const [showExploreBottomSheet, setShowExploreBottomSheet] = useState( false );
   const [headerRight, setHeaderRight] = useState( null );
@@ -118,7 +113,7 @@ const Explore = ( {
   return (
     <>
       <ViewWrapper testID="Explore">
-        <View className="overflow-hidden">
+        <View className="flex-1">
           {exploreView === "observations" && (
             <ObservationsViewBar
               observationsView={observationsView}
@@ -126,14 +121,14 @@ const Explore = ( {
             />
           )}
           <Animated.View
-            style={[
-              {
-                transform: [{ translateY: offsetForHeader }],
-                height: isTablet
-                  ? screenHeight
-                  : Math.max( screenWidth, screenHeight )
-              }
-            ]}
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{
+              transform: [{ translateY: offsetForHeader }],
+              flex: 1,
+              width: "100%",
+              height: "100%",
+              flexGrow: 1
+            }}
           >
             <Header
               region={region}
@@ -176,7 +171,6 @@ const Explore = ( {
                 queryParams={queryParams}
               />
             )}
-
           </Animated.View>
         </View>
       </ViewWrapper>

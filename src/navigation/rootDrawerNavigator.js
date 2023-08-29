@@ -1,18 +1,20 @@
 // @flow
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import CustomDrawerContent from "components/CustomDrawerContent";
-import { hideHeader, showHeader } from "navigation/navigationOptions";
+import {
+  hideDrawerHeaderLeft, hideHeader,
+  showHeader
+} from "navigation/navigationOptions";
+import AddObsStackNavigator from "navigation/StackNavigators/AddObsStackNavigator";
+import LoginStackNavigator from "navigation/StackNavigators/LoginStackNavigator";
 import type { Node } from "react";
 import * as React from "react";
-import { View } from "react-native";
 
 import BottomTabNavigator from "./BottomTabNavigator";
+import CustomDrawerContent from "./CustomDrawerContent";
 
 const drawerOptions = {
   ...showHeader,
-  // this removes the default hamburger menu from header
-  headerLeft: ( ) => <View />,
   drawerType: "front",
   drawerStyle: {
     backgroundColor: "transparent"
@@ -38,7 +40,26 @@ const RootDrawerNavigator = ( ): Node => (
     <Drawer.Screen
       name="TabNavigator"
       component={BottomTabNavigator}
-      options={hideHeader}
+      options={{
+        ...hideHeader,
+        ...hideDrawerHeaderLeft
+      }}
+    />
+    <Drawer.Screen
+      name="LoginNavigator"
+      component={LoginStackNavigator}
+      options={{
+        ...hideHeader,
+        ...hideDrawerHeaderLeft
+      }}
+    />
+    <Drawer.Screen
+      name="CameraNavigator"
+      component={AddObsStackNavigator}
+      options={{
+        ...hideHeader,
+        ...hideDrawerHeaderLeft
+      }}
     />
   </Drawer.Navigator>
 );

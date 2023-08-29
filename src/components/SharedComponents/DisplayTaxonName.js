@@ -79,7 +79,7 @@ const DisplayTaxonName = ( {
     ? " "
     : "" );
 
-  const scientificNameComponent = scientificNamePieces.map( ( piece, index ) => {
+  const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
     const isItalics = piece !== rankPiece && (
       rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
     );

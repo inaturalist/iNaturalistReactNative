@@ -6,25 +6,23 @@ import { fetchRemoteUser } from "api/users";
 import {
   Body2,
   Button, Heading1, Heading4,
+  INatIconButton,
   ScrollViewWrapper,
   Subheading1, UserIcon
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
-import * as React from "react";
-import { useEffect } from "react";
-import { IconButton } from "react-native-paper";
+import type { Node } from "react";
+import React, { useEffect } from "react";
 import User from "realmModels/User";
 import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
-import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
-import useCurrentUser from "sharedHooks/useCurrentUser";
+import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import UserCounts from "./UserCounts";
 import UserDescription from "./UserDescription";
 
-const UserProfile = ( ): React.Node => {
+const UserProfile = ( ): Node => {
   const navigation = useNavigation( );
   const currentUser = useCurrentUser( );
   const { params } = useRoute( );
@@ -43,7 +41,12 @@ const UserProfile = ( ): React.Node => {
 
   useEffect( ( ) => {
     const headerRight = ( ) => currentUser?.login === user?.login && (
-      <IconButton icon="pencil" textColor={colors.darkGray} />
+      <INatIconButton
+        icon="pencil"
+        color={colors.darkGray}
+        size={22}
+        accessibilityLabel={t( "Edit" )}
+      />
     );
 
     navigation.setOptions( { headerRight } );

@@ -31,6 +31,7 @@ const ProjectSearch = ( { q, clearSearch }: Props ): React.Node => {
   return (
     <>
       <Pressable
+        accessibilityRole="button"
         onPress={clearSearch}
       >
         <PlaceholderText text="cancel search" />

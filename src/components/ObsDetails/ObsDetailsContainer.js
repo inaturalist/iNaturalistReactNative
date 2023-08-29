@@ -118,7 +118,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   const queryClient = useQueryClient( );
 
-  const { data: remoteObservation, refetch: refetchRemoteObservation }
+  const { data: remoteObservation, refetch: refetchRemoteObservation, isRefetching }
   = useAuthenticatedQuery(
     ["fetchRemoteObservation", uuid],
     optsWithAuth => fetchRemoteObservation(
@@ -127,11 +127,16 @@ const ObsDetailsContainer = ( ): Node => {
         fields: Observation.FIELDS
       },
       optsWithAuth
-    )
+    ),
+    {
+      keepPreviousData: false
+    }
   );
 
   const localObservation = useLocalObservation( uuid );
   const observation = localObservation || remoteObservation;
+
+  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
 
   useEffect( ( ) => {
     if ( !observationShown ) {
@@ -141,6 +146,17 @@ const ObsDetailsContainer = ( ): Node => {
       } );
     }
   }, [observation, observationShown] );
+
+  useEffect( ( ) => {
+    // if observation does not belong to current user, show
+    // new activity items after a refetch
+    if ( remoteObservation && !isRefetching ) {
+      dispatch( {
+        type: "ADD_ACTIVITY_ITEM",
+        observationShown: remoteObservation
+      } );
+    }
+  }, [remoteObservation, isRefetching] );
 
   const tabs = [
     {
@@ -193,15 +209,19 @@ const ObsDetailsContainer = ( ): Node => {
     ( commentParams, optsWithAuth ) => createComment( commentParams, optsWithAuth ),
     {
       onSuccess: data => {
-        realm?.write( ( ) => {
-          const localComments = localObservation?.comments;
-          const newComment = data[0];
-          newComment.user = currentUser;
-          const realmComment = realm?.create( "Comment", newComment );
-          localComments.push( realmComment );
-        } );
-        const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-        dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+        if ( belongsToCurrentUser ) {
+          realm?.write( ( ) => {
+            const localComments = localObservation?.comments;
+            const newComment = data[0];
+            newComment.user = currentUser;
+            const realmComment = realm?.create( "Comment", newComment );
+            localComments.push( realmComment );
+          } );
+          const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
+          dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+        } else {
+          refetchRemoteObservation( );
+        }
       },
       onError: e => {
         let error = null;
@@ -214,6 +234,7 @@ const ObsDetailsContainer = ( ): Node => {
       }
     }
   );
+
   const onCommentAdded = commentBody => {
     dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
     createCommentMutation.mutate( {
@@ -229,19 +250,23 @@ const ObsDetailsContainer = ( ): Node => {
     ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
     {
       onSuccess: data => {
-        realm?.write( ( ) => {
-          const localIdentifications = localObservation?.identifications;
-          const newIdentification = data[0];
-          newIdentification.user = currentUser;
-          newIdentification.taxon = realm?.objectForPrimaryKey(
-            "Taxon",
-            newIdentification.taxon.id
-          ) || newIdentification.taxon;
-          const realmIdentification = realm?.create( "Identification", newIdentification );
-          localIdentifications.push( realmIdentification );
-        } );
-        const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
-        dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+        if ( belongsToCurrentUser ) {
+          realm?.write( ( ) => {
+            const localIdentifications = localObservation?.identifications;
+            const newIdentification = data[0];
+            newIdentification.user = currentUser;
+            newIdentification.taxon = realm?.objectForPrimaryKey(
+              "Taxon",
+              newIdentification.taxon.id
+            ) || newIdentification.taxon;
+            const realmIdentification = realm?.create( "Identification", newIdentification );
+            localIdentifications.push( realmIdentification );
+          } );
+          const updatedLocalObservation = realm.objectForPrimaryKey( "Observation", uuid );
+          dispatch( { type: "ADD_ACTIVITY_ITEM", observationShown: updatedLocalObservation } );
+        } else {
+          refetchRemoteObservation( );
+        }
       },
       onError: e => {
         let error = null;
@@ -255,17 +280,6 @@ const ObsDetailsContainer = ( ): Node => {
     }
   );
 
-  const onIDAdded = async identification => {
-    dispatch( { type: "LOADING_ACTIVITY_ITEM" } );
-    createIdentificationMutation.mutate( {
-      identification: {
-        observation_id: uuid,
-        taxon_id: identification.taxon.id,
-        body: identification.body
-      }
-    } );
-  };
-
   useEffect( ( ) => {
     if (
       localObservation
@@ -277,7 +291,11 @@ const ObsDetailsContainer = ( ): Node => {
   }, [localObservation, markViewedMutation, uuid] );
 
   const navToAddID = ( ) => {
-    navigation.navigate( "AddID", { onIDAdded, goBackOnSave: true } );
+    navigation.navigate( "AddID", {
+      observationUUID: uuid,
+      createRemoteIdentification: true,
+      belongsToCurrentUser
+    } );
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;

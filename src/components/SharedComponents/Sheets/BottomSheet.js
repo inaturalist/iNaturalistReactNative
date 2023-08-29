@@ -1,13 +1,13 @@
 // @flow
 
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
-import { BottomSheetStandardBackdrop, Heading4 } from "components/SharedComponents";
+import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef
 } from "react";
-import { IconButton } from "react-native-paper";
+import { useTranslation } from "sharedHooks";
 import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
 type Props = {
@@ -33,6 +33,7 @@ const StandardBottomSheet = ( {
   hideCloseButton = false,
   headerText
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const sheetRef = useRef( null );
 
   // eslint-disable-next-line
@@ -73,12 +74,13 @@ const StandardBottomSheet = ( {
         </View>
         {children}
         {!hideCloseButton && (
-          <IconButton
+          <INatIconButton
             icon="close"
             onPress={handleClose}
             size={19}
-            className="absolute top-3 right-3"
+            className="absolute top-3.5 right-3"
             accessibilityState={{ disabled: hidden }}
+            accessibilityLabel={t( "Close" )}
           />
         )}
       </BottomSheetView>

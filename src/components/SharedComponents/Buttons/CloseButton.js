@@ -37,10 +37,8 @@ const CloseButton = ( {
           navigation.goBack( );
         }
       }}
-      accessibilityRole="button"
       accessibilityLabel={t( "Close" )}
-      accessibilityState={{ disabled: false }}
-      accessibilityHint={t( "Returns-to-previous-screen" )}
+      accessibilityHint={t( "Navigate-to-previous-screen" )}
       disabled={false}
       width={width}
       height={height}

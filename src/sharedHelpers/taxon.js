@@ -108,7 +108,7 @@ export const generateTaxonPieces = taxon => {
 
   let { name: scientificName } = taxon;
 
-  scientificName = scientificName.split( " " );
+  scientificName = scientificName?.split( " " );
   if ( taxon.rank_level < 10 ) {
     if ( taxon.rank === "variety" ) {
       taxon.rankPiece = "var.";
@@ -125,7 +125,7 @@ export const generateTaxonPieces = taxon => {
   }
 
   taxonData.scientificNamePieces = scientificName;
-  scientificName = scientificName.join( " " );
+  scientificName = scientificName?.join( " " );
 
   return taxonData;
 };

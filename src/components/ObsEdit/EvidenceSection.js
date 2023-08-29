@@ -90,12 +90,13 @@ const EvidenceSection = ( ): Node => {
     isFetchingLocation
   } = useCurrentObservationLocation( mountedRef );
 
-  const { latitude, longitude } = currentObservation;
+  const latitude = currentObservation?.latitude;
+  const longitude = currentObservation?.longitude;
 
   const displayPlaceName = ( ) => {
     let placeName = "";
-    if ( currentObservation.place_guess ) {
-      placeName = currentObservation.place_guess;
+    if ( currentObservation?.place_guess ) {
+      placeName = currentObservation?.place_guess;
     } else if ( isFetchingLocation ) {
       placeName = t( "Fetching-location" );
     } else if ( !latitude || !longitude ) {
@@ -131,11 +132,11 @@ const EvidenceSection = ( ): Node => {
       && ( latitude !== 0 && longitude !== 0 )
       && ( latitude >= -90 && latitude <= 90 )
       && ( longitude >= -180 && longitude <= 180 )
-      && ( currentObservation.positional_accuracy === null
-        || currentObservation.positional_accuracy === undefined
+      && ( currentObservation?.positional_accuracy === null
+        || currentObservation?.positional_accuracy === undefined
         || (
-          currentObservation.positional_accuracy
-        && currentObservation.positional_accuracy <= DESIRED_LOCATION_ACCURACY )
+          currentObservation?.positional_accuracy
+        && currentObservation?.positional_accuracy <= DESIRED_LOCATION_ACCURACY )
       )
     ) {
       return true;

@@ -10,7 +10,7 @@ import {
   List2,
   UserIcon
 } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Dimensions, Platform } from "react-native";
@@ -63,13 +63,25 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     },
     identify: {
       label: t( "IDENTIFY" ),
-      navigation: "Identify",
+      navigation: "TabNavigator",
+      params: {
+        screen: "ObservationsStackNavigator",
+        params: {
+          screen: "Identify"
+        }
+      },
       icon: "label",
       loggedInOnly: true
     },
     projects: {
       label: t( "PROJECTS" ),
-      navigation: "Projects",
+      navigation: "TabNavigator",
+      params: {
+        screen: "ObservationsStackNavigator",
+        params: {
+          screen: "Projects"
+        }
+      },
       icon: "briefcase"
     },
     help: {
@@ -114,7 +126,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       label: currentUser
         ? t( "LOG-OUT" )
         : t( "LOG-IN" ),
-      navigation: "Login",
+      navigation: "LoginNavigator",
       icon: "door-exit",
       loggedInOnly: true
     }
@@ -134,6 +146,8 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
         size={15}
         color={color}
         backgroundColor={backgroundColor}
+        accessibilityLabel={drawerItems[item].label}
+        accessibilityHint={t( "Navigates-to-drawer-item" )}
       />
     );
   };
@@ -152,7 +166,22 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       descriptors={descriptors}
       contentContainerStyle={drawerScrollViewStyle}
     >
-      <View className="ml-4 mb-8 flex-row flex-nowrap">
+      <Pressable
+        accessibilityRole="button"
+        className="ml-4 mb-8 flex-row flex-nowrap"
+        onPress={( ) => {
+          if ( !currentUser ) {
+            navigation.navigate( "LoginNavigator" );
+          } else {
+            navigation.navigate( "TabNavigator", {
+              screen: "ObservationsStackNavigator",
+              params: {
+                screen: "ObsList"
+              }
+            } );
+          }
+        }}
+      >
         {currentUser
           ? (
             <UserIcon
@@ -164,17 +193,12 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
               icon="inaturalist"
               size={40}
               color={colors.inatGreen}
-              onPress={( ) => navigation.navigate( "Login" )}
+              accessibilityLabel="iNaturalist"
+              accessibilityHint={t( "Shows-iNaturalist-bird-logo" )}
             />
           ) }
         <View className="ml-3 justify-center">
-          <Body1
-            onPress={( ) => {
-              if ( !currentUser ) {
-                navigation.navigate( "Login" );
-              }
-            }}
-          >
+          <Body1>
             {currentUser
               ? User.userHandle( currentUser )
               : t( "Log-in-to-iNaturalist" )}
@@ -185,7 +209,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
             </List2>
           )}
         </View>
-      </View>
+      </Pressable>
       <View className="ml-3">
         {Object.keys( drawerItems ).map( item => {
           if ( drawerItems[item].loggedInOnly && !currentUser ) {
@@ -195,7 +219,9 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
             <DrawerItem
               key={drawerItems[item].label}
               label={drawerItems[item].label}
-              onPress={( ) => navigation.navigate( drawerItems[item].navigation )}
+              onPress={( ) => {
+                navigation.navigate( drawerItems[item].navigation, drawerItems[item].params );
+              }}
               labelStyle={labelStyle}
               icon={( ) => renderIcon( item )}
               // eslint-disable-next-line react-native/no-inline-styles

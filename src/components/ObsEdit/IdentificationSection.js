@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
 import {
   Button, DisplayTaxon,
   Heading4, IconicTaxonChooser,
@@ -27,13 +28,9 @@ const IdentificationSection = ( ): Node => {
   const navigation = useNavigation( );
   const realm = useRealm( );
 
-  const identification = currentObservation.taxon;
+  const identification = currentObservation?.taxon;
 
   const hasIdentification = identification && identification.rank_level !== 100;
-
-  const onIDAdded = async id => updateObservationKeys( {
-    taxon: id.taxon
-  } );
 
   const onTaxonChosen = taxonName => {
     const selectedTaxon = realm?.objects( "Taxon" ).filtered( "name CONTAINS[c] $0", taxonName );
@@ -42,12 +39,7 @@ const IdentificationSection = ( ): Node => {
     } );
   };
 
-  const navToAddID = ( ) => navigation.navigate( "AddID", {
-    onIDAdded,
-    hideComment: true,
-    goBackOnSave: true,
-    clearSearch: true
-  } );
+  const navToAddID = ( ) => navigation.navigate( "AddID" );
 
   useEffect( ( ) => {
     if ( hasIdentification ) {
@@ -71,12 +63,14 @@ const IdentificationSection = ( ): Node => {
             <DisplayTaxon
               taxon={identification}
               handlePress={navToAddID}
-              accessibilityLabel={t( "Navigate-to-add-identification" )}
+              accessibilityLabel={t( "Navigates-to-add-identification" )}
             />
             <INatIconButton
               icon="edit"
               size={20}
               onPress={navToAddID}
+              accessibilityLabel={t( "Edit" )}
+              accessibilityHint={t( "Navigates-to-add-identification" )}
             />
           </View>
         )}
@@ -85,11 +79,13 @@ const IdentificationSection = ( ): Node => {
             before={(
               <Button
                 level={identification
-                  ? "neutral"
+                  ? "primary"
                   : "focus"}
                 onPress={navToAddID}
                 text={t( "ADD-AN-ID" )}
-                className="rounded-full py-1 h-[36px]"
+                className={classnames( "rounded-full py-1 h-[36px]", {
+                  "border border-darkGray border-[2px]": identification
+                } )}
                 testID="ObsEdit.Suggestions"
                 icon={(
                   <INatIcon

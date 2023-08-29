@@ -71,14 +71,22 @@ const TaxonResult = ( {
         <INatIconButton
           icon="info-circle-outline"
           size={22}
-          onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
+          onPress={() => navigation.navigate( "TabNavigator", {
+            screen: "ObservationsStackNavigator",
+            params: {
+              screen: "TaxonDetails",
+              params: {
+                id: taxon.id,
+                lastScreen: "AddID"
+              }
+            }
+          } )}
           color={clearBackground && theme.colors.onSecondary}
-          accessibilityRole="link"
-          accessibilityLabel={t( "Navigate-to-taxon-details" )}
-          accessibilityState={{ disabled: false }}
+          accessibilityLabel={t( "Information" )}
+          accessibilityHint={t( "Navigate-to-taxon-details" )}
         />
         <INatIconButton
-          className="ml-2"
+          className="mx-2"
           icon={clearBackground
             ? "checkmark-circle-outline"
             : "checkmark-circle"}
@@ -87,9 +95,8 @@ const TaxonResult = ( {
             ? theme.colors.onSecondary
             : theme.colors.secondary}
           onPress={handleCheckmarkPress}
-          accessibilityRole="button"
-          accessibilityLabel={t( "Add-this-ID" )}
-          accessibilityState={{ disabled: false }}
+          accessibilityLabel={t( "Checkmark" )}
+          accessibilityHint={t( "Add-this-ID" )}
         />
       </View>
     </View>
