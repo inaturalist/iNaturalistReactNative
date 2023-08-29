@@ -82,7 +82,11 @@ const ActivityHeader = ( {
 
   const renderIcon = () => {
     if ( idWithdrawn ) {
-      return <INatIcon name="ban" color={colors.primary} size={22} />;
+      return (
+        <View className="opacity-50">
+          <INatIcon name="ban" color={colors.primary} size={22} />
+        </View>
+      );
     }
     if ( item.vision ) return <INatIcon name="sparkly-label" size={22} />;
     if ( flaggedStatus ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
