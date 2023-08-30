@@ -89,6 +89,8 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const observationUUID = observation.uuid;
   const privacy = observation?.geoprivacy;
   const isPrivate = privacy === "private";
+  const isObscured = privacy === "obscured";
+  const showShareOptions = !isPrivate && !isObscured;
   const positionalAccuracy = observation?.positional_accuracy;
   const [showMapModal, setShowMapModal] = useState( false );
   const coordinateString = t( "Lat-Lon", {
@@ -141,26 +143,25 @@ const DetailsTab = ( { observation }: Props ): Node => {
           <Divider />
         </>
       )}
-      {
-        !isPrivate && (
-          <View className="flex-row justify-between items-center mt-[8px] mx-[15px]">
-            <Heading4>{t( "LOCATION" )}</Heading4>
-            <KebabMenu
-              visible={locationKebabMenuVisible}
-              setVisible={setLocationKebabMenuVisible}
-            >
-              <Menu.Item
-                title={t( "Share-location" )}
-                onPress={() => openMap( { latitude, longitude } )}
-              />
-              <Menu.Item
-                title={t( "Copy-coordinates" )}
-                onPress={() => Clipboard.setString( coordinateString )}
-              />
-            </KebabMenu>
-          </View>
-        )
-      }
+      <View className="flex-row justify-between items-center mt-[8px] mx-[15px]">
+        <Heading4 className={headingClass}>{t( "LOCATION" )}</Heading4>
+        {showShareOptions && (
+          <KebabMenu
+            visible={locationKebabMenuVisible}
+            setVisible={setLocationKebabMenuVisible}
+          >
+            <Menu.Item
+              title={t( "Share-location" )}
+              onPress={() => openMap( { latitude, longitude } )}
+            />
+            <Menu.Item
+              title={t( "Copy-coordinates" )}
+              onPress={() => Clipboard.setString( coordinateString )}
+            />
+          </KebabMenu>
+        )}
+
+      </View>
       { ( latitude ) && (
         <Map
           obsLatitude={latitude}
