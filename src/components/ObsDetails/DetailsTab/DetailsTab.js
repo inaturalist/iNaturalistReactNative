@@ -14,6 +14,7 @@ import {
 } from "components/SharedComponents";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import Map from "components/SharedComponents/Map";
+import Modal from "components/SharedComponents/Modal";
 import UserText from "components/SharedComponents/UserText";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -24,6 +25,7 @@ import openMap from "react-native-open-maps";
 import { Menu, useTheme } from "react-native-paper";
 
 import Attribution from "./Attribution";
+import DetailsMapContainer from "./DetailsMapContainer";
 
 type Props = {
   observation: Object,
@@ -88,6 +90,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const privacy = observation?.geoprivacy;
   const isPrivate = privacy === "private";
   const positionalAccuracy = observation?.positional_accuracy;
+  const [showMapModal, setShowMapModal] = useState( false );
   const coordinateString = t( "Lat-Lon", {
     latitude: observation.latitude,
     longitude: observation.longitude
@@ -165,10 +168,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
           mapHeight={230}
           privacy={privacy}
           showMarker
-          openMapDetails={() => navigation.navigate(
-            "DetailsMapContainer",
-            { observation, latitude, longitude }
-          )}
+          openMapDetails={() => setShowMapModal( true )}
           positionalAccuracy={positionalAccuracy}
         />
       ) }
@@ -246,6 +246,22 @@ const DetailsTab = ( { observation }: Props ): Node => {
         )}
         <ViewInBrowserButton id={observation.id} />
       </View>
+      <Modal
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        showModal={showMapModal}
+        closeModal={( ) => setShowMapModal( false )}
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{ margin: 0 }}
+        modal={(
+          <DetailsMapContainer
+            observation={observation}
+            latitude={latitude}
+            longitude={longitude}
+            closeModal={( ) => setShowMapModal( false )}
+          />
+        )}
+      />
     </>
   );
 };

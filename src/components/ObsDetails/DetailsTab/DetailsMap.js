@@ -1,7 +1,6 @@
 // @flow
 
 import { HeaderBackButton } from "@react-navigation/elements";
-import { useNavigation } from "@react-navigation/native";
 import classNames from "classnames";
 import {
   Body4,
@@ -41,21 +40,21 @@ type Props = {
   showNotificationModal: boolean,
   displayLocation: string,
   displayCoordinates: string,
-  closeModal: Function,
+  closeNotificationsModal: Function,
   copyCoordinates: Function,
   shareMap: Function,
   cycleMapTypes: Function,
-  zoomToCurrentUserLocation: Function
+  zoomToCurrentUserLocation: Function,
+  closeModal: Function
 }
 
 const DetailsMap = ( {
   latitude, longitude, privacy, positionalAccuracy,
-  mapViewRef, mapType, closeModal, displayLocation,
+  mapViewRef, mapType, closeNotificationsModal, displayLocation,
   displayCoordinates,
   copyCoordinates, shareMap, cycleMapTypes, zoomToCurrentUserLocation,
-  showNotificationModal
+  showNotificationModal, closeModal
 }: Props ): Node => {
-  const navigation = useNavigation( );
   const theme = useTheme( );
 
   const mapButtonClassName = "absolute bg-white rounded-full m-[15px]";
@@ -74,30 +73,37 @@ const DetailsMap = ( {
           positionalAccuracy={positionalAccuracy}
           mapViewRef={mapViewRef}
         >
-          <View
-            style={getShadow( theme.colors.primary )}
-            className={`${mapButtonClassName} top-0 left-0`}
-          >
-            <INatIconButton
-              icon="copy"
-              height={46}
-              width={46}
-              size={26}
-              onPress={() => copyCoordinates()}
-            />
-          </View>
-          <View
-            style={getShadow( theme.colors.primary )}
-            className={`${mapButtonClassName} top-0 right-0`}
-          >
-            <INatIconButton
-              icon="share"
-              height={46}
-              width={46}
-              size={26}
-              onPress={() => shareMap()}
-            />
-          </View>
+          { !isObscured && (
+            <>
+              <View
+                style={getShadow( theme.colors.primary )}
+                className={`${mapButtonClassName} top-0 left-0`}
+              >
+                <INatIconButton
+                  icon="copy"
+                  height={46}
+                  width={46}
+                  size={26}
+                  onPress={() => copyCoordinates()}
+                  accessibilityLabel={t( ( "Copy-map-coordinates" ) )}
+                />
+              </View>
+              <View
+                style={getShadow( theme.colors.primary )}
+                className={`${mapButtonClassName} top-0 right-0`}
+              >
+                <INatIconButton
+                  icon="share"
+                  height={46}
+                  width={46}
+                  size={26}
+                  onPress={() => shareMap()}
+                  accessibilityLabel={t( ( "Share-map" ) )}
+                />
+              </View>
+            </>
+          )}
+
           <View
             style={getShadow( theme.colors.primary )}
             className={`${mapButtonClassName} bottom-0 right-0`}
@@ -108,6 +114,7 @@ const DetailsMap = ( {
               width={46}
               size={24}
               onPress={() => zoomToCurrentUserLocation()}
+              accessibilityLabel={t( ( "User-location" ) )}
             />
           </View>
           <View
@@ -120,6 +127,7 @@ const DetailsMap = ( {
               width={46}
               size={24}
               onPress={() => cycleMapTypes()}
+              accessibilityLabel={t( ( "Map-layers" ) )}
             />
           </View>
         </Map>
@@ -165,7 +173,7 @@ const DetailsMap = ( {
         >
           <HeaderBackButton
             tintColor={theme.colors.primary}
-            onPress={( ) => navigation.goBack( )}
+            onPress={( ) => closeModal()}
           />
         </View>
       </View>
@@ -177,7 +185,7 @@ const DetailsMap = ( {
         animationIn="fadeIn"
         animationOut="fadeOut"
         showModal={showNotificationModal}
-        closeModal={( ) => closeModal( false )}
+        closeModal={( ) => closeNotificationsModal( false )}
         modal={(
           <CoordinatesCopiedNotification />
         )}

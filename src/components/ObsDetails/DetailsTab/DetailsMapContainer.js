@@ -1,7 +1,6 @@
 // @flow
 
 import Clipboard from "@react-native-clipboard/clipboard";
-import { useRoute } from "@react-navigation/native";
 import DetailsMap from "components/ObsDetails/DetailsTab/DetailsMap";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import { t } from "i18next";
@@ -10,9 +9,16 @@ import React, { useRef, useState } from "react";
 import openMap from "react-native-open-maps";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
-const DetailsMapContainer = (): Node => {
-  const { params } = useRoute( );
-  const { observation, latitude, longitude } = params;
+type Props = {
+  observation: Object,
+  latitude: number,
+  longitude: number,
+  closeModal: Function
+}
+
+const DetailsMapContainer = ( {
+  observation, latitude, longitude, closeModal
+}: Props ): Node => {
   const coordinateString = t( "Lat-Lon", {
     latitude: observation.latitude,
     longitude: observation.longitude
@@ -33,7 +39,7 @@ const DetailsMapContainer = (): Node => {
     displayLocation = t( "No-Location" );
   }
 
-  const closeModal = () => {
+  const closeShowNotificationModal = () => {
     setShowNotificationModal( false );
   };
   const copyCoordinates = () => {
@@ -85,7 +91,8 @@ const DetailsMapContainer = (): Node => {
       cycleMapTypes={cycleMapTypes}
       zoomToCurrentUserLocation={zoomToCurrentUserLocation}
       showNotificationModal={showNotificationModal}
-      closeModal={setShowNotificationModal}
+      closeNotificationsModal={closeShowNotificationModal}
+      closeModal={closeModal}
     />
   );
 };

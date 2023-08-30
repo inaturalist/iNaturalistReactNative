@@ -8,7 +8,6 @@ import Identify from "components/Identify/Identify";
 import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
-import DetailsMapContainer from "components/ObsDetails/DetailsTab/DetailsMapContainer";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import PlaceholderComponent from "components/PlaceholderComponent";
@@ -84,15 +83,6 @@ const ObservationsStackNavigator = ( ): Node => (
       <Stack.Screen
         name="DataQualityAssessment"
         component={DataQualityAssessment}
-        options={{
-          ...showLongHeader,
-          headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
-          unmountOnBlur: true
-        }}
-      />
-      <Stack.Screen
-        name="DetailsMapContainer"
-        component={DetailsMapContainer}
         options={{
           ...showLongHeader,
           headerTitle: t( "DATA-QUALITY-ASSESSMENT" ),
