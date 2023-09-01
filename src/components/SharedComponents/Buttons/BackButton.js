@@ -15,7 +15,7 @@ const BackButton = ( {
   const navigation = useNavigation();
   const tintColor = color || colors.black;
 
-  if ( navigation?.canGoBack() ) {
+  if ( navigation?.canGoBack ) {
     return (
       <HeaderBackButton tintColor={tintColor} onPress={onPress || navigation.goBack} />
     );
