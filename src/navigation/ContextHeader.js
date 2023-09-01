@@ -1,7 +1,8 @@
 // @flow
-import { getHeaderTitle, HeaderBackButton } from "@react-navigation/elements";
+import { getHeaderTitle } from "@react-navigation/elements";
 import classNames from "classnames";
 import { Heading1, Heading4 } from "components/SharedComponents";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { SafeAreaView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -42,7 +43,7 @@ const ContextHeader = ( {
 
     return (
       back && (
-        <HeaderBackButton
+        <BackButton
           tintColor={colors.black}
           onPress={navigation.goBack}
         />

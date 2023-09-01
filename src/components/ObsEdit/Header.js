@@ -1,8 +1,8 @@
 // @flow
 
-import { HeaderBackButton } from "@react-navigation/elements";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { Heading2, KebabMenu } from "components/SharedComponents";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -92,8 +92,8 @@ const Header = ( ): Node => {
   }, [currentObservation, navigation, unsavedChanges, params, navToObsDetails] );
 
   const renderBackButton = useCallback( ( ) => (
-    <HeaderBackButton
-      tintColor={colors.black}
+    <BackButton
+      color={colors.black}
       onPress={handleBackButtonPress}
     />
   ), [handleBackButtonPress] );

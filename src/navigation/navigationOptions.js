@@ -1,11 +1,11 @@
 // @flow
 import { HeaderBackground } from "@react-navigation/elements";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import type { Node } from "react";
 import React from "react";
 import { Platform, View } from "react-native";
 import colors from "styles/tailwindColors";
 
-import BackButton from "./BackButton";
 import ContextHeader from "./ContextHeader";
 
 const baseHeaderOptions: Object = {
