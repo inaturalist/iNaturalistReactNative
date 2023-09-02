@@ -11,7 +11,8 @@ import ContextHeader from "./ContextHeader";
 const baseHeaderOptions: Object = {
   headerShown: true,
   headerBackTitleVisible: false,
-  headerShadowVisible: false
+  headerShadowVisible: false,
+  headerLeft: () => <BackButton />
 };
 
 const showHeader: Object = {

@@ -44,7 +44,7 @@ const ContextHeader = ( {
     return (
       back && (
         <BackButton
-          tintColor={colors.black}
+          color={colors.black}
           onPress={navigation.goBack}
         />
       )
