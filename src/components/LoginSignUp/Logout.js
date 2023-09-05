@@ -12,6 +12,7 @@ import {
   Dialog, Paragraph, Portal
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import colors from "styles/tailwindColors";
 
 import { log } from "../../../react-native-logs.config";
 import {
@@ -72,7 +73,7 @@ const Logout = ( ): Node => {
       onPress={( ) => navigation.goBack( )}
       className="absolute top-8 right-8"
     >
-      <IconMaterial name="close" size={35} />
+      <IconMaterial name="close" color={colors.white} size={35} />
     </Pressable>
   );
 

@@ -1,10 +1,10 @@
 // @flow
-import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import {
   INatIconButton,
   PhotoCount, PhotoScroll
 } from "components/SharedComponents";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -110,8 +110,8 @@ const PhotoDisplay = ( {
     <>
       {displayPhoto( )}
       <View className="absolute top-3 left-3">
-        <HeaderBackButton
-          tintColor={colors.white}
+        <BackButton
+          color={colors.white}
           onPress={( ) => navigation.goBack( )}
         />
       </View>

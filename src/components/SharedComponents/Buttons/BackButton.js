@@ -4,16 +4,26 @@ import type { Node } from "react";
 import React from "react";
 import colors from "styles/tailwindColors";
 
-const BackButton = (): Node => {
-  const navigation = useNavigation();
+type Props = {
+    color?: string,
+    onPress?: Function
+  }
 
-  if ( navigation?.canGoBack() ) {
+const BackButton = ( {
+  onPress, color
+}: Props ): Node => {
+  const navigation = useNavigation();
+  const tintColor = color || colors.black;
+
+  if ( navigation?.canGoBack ) {
     return (
-      <HeaderBackButton tintColor={colors.black} onPress={navigation.goBack} />
+      <HeaderBackButton tintColor={tintColor} onPress={onPress || navigation.goBack} />
     );
   }
 
-  return null;
+  return (
+    null
+  );
 };
 
 export default BackButton;
