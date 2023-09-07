@@ -45,6 +45,32 @@
           <category android:name="android.intent.category.DEFAULT" />
           <data android:mimeType="image/*" />
         </intent-filter>
+        <intent-filter>
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <!-- Accepts URIs that begin with "https://www.inaturalist.org/users/sign_in" -->
+          <data android:scheme="https"
+                android:host="www.inaturalist.org"
+                android:pathPrefix="/users/sign_in" />
+          <!-- note that the leading "/" is required for pathPrefix-->
+      </intent-filter>
+      <intent-filter>
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <!-- Accepts URIs that begin with "https://www.inaturalist.org/home" -->
+          <data android:scheme="https"
+                android:host="www.inaturalist.org"
+                android:pathPrefix="/home" />
+          <!-- note that the leading "/" is required for pathPrefix-->
+      </intent-filter>
       </activity>
     </application>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https"/>
+        </intent>
+    </queries>
 </manifest>

@@ -1,13 +1,14 @@
 // @flow
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import { focusManager } from "@tanstack/react-query";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
 import RootDrawerNavigator from "navigation/rootDrawerNavigator";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
-import { AppState, LogBox } from "react-native";
+import { AppState, Linking, LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import { addARCameraFiles } from "sharedHelpers/cvModel";
@@ -41,6 +42,7 @@ type Props = {
 // this children prop is here for the sake of testing with jest
 // normally we would never do this in code
 const App = ( { children }: Props ): Node => {
+  const navigation = useNavigation( );
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   useIconicTaxa( { reload: true } );
@@ -125,6 +127,29 @@ const App = ( { children }: Props ): Node => {
       changeLanguageToLocale( currentUser.locale );
     }
   }, [changeLanguageToLocale, currentUser?.locale, i18n] );
+
+  useEffect( ( ) => {
+    const newAccountURL = "https://www.inaturalist.org/users/sign_in?confirmed=true";
+    const existingAccountURL = "https://www.inaturalist.org/home?confirmed=true";
+
+    const navigateConfirmedUser = e => {
+      console.log( e, "navigate confirmed user" );
+      if ( currentUser ) { return; }
+      navigation.navigate( "Login", { emailConfirmed: true } );
+    };
+
+    Linking.addEventListener( "url", navigateConfirmedUser );
+
+    const fetchInitialUrl = async ( ) => {
+      const initialUrl = await Linking.getInitialURL( );
+      console.log( initialUrl, "initial url" );
+
+      if ( initialUrl === newAccountURL || initialUrl === existingAccountURL ) {
+        navigateConfirmedUser( );
+      }
+    };
+    fetchInitialUrl( );
+  }, [currentUser, navigation] );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code
