@@ -29,7 +29,7 @@ const MyObservationsEmpty = ( { isFetchingNextPage }: Props ): Node => {
           modal={<AddObsModal closeModal={( ) => setShowModal( false )} />}
         />
         <View className="mx-5">
-          <Body1 className="mb-3 mt-10">
+          <Body1 className="mb-3 mt-5">
             {t( "Welcome-to-iNaturalist" )}
           </Body1>
           <Body2 className="mb-5">

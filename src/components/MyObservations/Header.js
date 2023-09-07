@@ -53,8 +53,8 @@ const Header = ( {
   );
 
   const signedOutContent = ( ) => (
-    <>
-      <View className="flex-row items-center">
+    <View className="my-5">
+      <View className="flex-row items-center mb-5">
         <INatIconButton
           className="mr-5"
           icon="inaturalist"
@@ -70,19 +70,18 @@ const Header = ( {
           ? (
             <View className="shrink">
               <Subheading1
-                className="mt-5"
                 testID="log-in-to-iNaturalist-text"
               >
                 {t( "Log-in-to-contribute-and-sync" )}
               </Subheading1>
-              <Heading1 className="mb-5">
+              <Heading1>
                 { t( "X-observations", { count: numUnuploadedObs } ) }
               </Heading1>
             </View>
           )
           : (
             <Subheading1
-              className="my-5 shrink"
+              className="my-5 shrink m-0"
               testID="log-in-to-iNaturalist-text-no-observations"
             >
               {t( "Log-in-to-contribute-your-observations" )}
@@ -97,7 +96,7 @@ const Header = ( {
         level="focus"
         testID="log-in-to-iNaturalist-button"
       />
-    </>
+    </View>
   );
 
   return (
