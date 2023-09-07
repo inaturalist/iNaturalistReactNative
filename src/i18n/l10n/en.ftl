@@ -1241,6 +1241,7 @@ BLOG = BLOG
 DONATE = DONATE
 SETTINGS = SETTINGS
 LOG-OUT = LOG OUT
+Log-out = Log out
 Log-in-to-iNaturalist = Log in to iNaturalist
 
 Try-searching-for-a-location-name = Try searching for a location name to see the map
