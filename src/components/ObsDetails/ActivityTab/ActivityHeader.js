@@ -1,11 +1,13 @@
 // @flow
 
 import { useQueryClient } from "@tanstack/react-query";
-import { deleteComments } from "api/comments";
+import { deleteComments, updateComment } from "api/comments";
 import classnames from "classnames";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
-import { Body4, INatIcon, InlineUser } from "components/SharedComponents";
+import {
+  Body4, INatIcon, InlineUser, TextInputSheet
+} from "components/SharedComponents";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import {
   View
@@ -39,6 +41,7 @@ const ActivityHeader = ( {
   const [flaggedStatus, setFlaggedStatus] = useState( false );
   const realm = useRealm( );
   const queryClient = useQueryClient( );
+  const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const { user } = item;
 
   const itemType = item.category
@@ -79,6 +82,30 @@ const ActivityHeader = ( {
       }
     }
   );
+
+  const updateCommentMutation = useAuthenticatedMutation(
+    ( uuid, optsWithAuth ) => updateComment( uuid, optsWithAuth ),
+    {
+      onSuccess: data => {
+        console.log( "success", data );
+        queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
+        if ( refetchRemoteObservation ) {
+          refetchRemoteObservation( );
+        }
+      }
+    }
+  );
+
+  const updateCommentBody = comment => {
+    const updateCommentParams = {
+      id: item.uuid,
+      comment: {
+        body: comment
+      }
+    };
+    console.log( "updateComment", updateCommentParams );
+    updateCommentMutation.mutate( updateCommentParams );
+  };
 
   const renderIcon = () => {
     if ( idWithdrawn ) {
@@ -143,6 +170,18 @@ const ActivityHeader = ( {
               >
                 <Menu.Item
                   onPress={async ( ) => {
+                    setShowEditCommentSheet( true );
+                    setKebabMenuVisible( false );
+                    // // first delete locally
+                    //   Comment.deleteComment( item.uuid, realm );
+                    //   // then delete remotely
+                    //   deleteCommentMutation.mutate( item.uuid );
+                    //   setKebabMenuVisible( false );
+                  }}
+                  title={t( "Edit-comment" )}
+                />
+                <Menu.Item
+                  onPress={async ( ) => {
                   // first delete locally
                     Comment.deleteComment( item.uuid, realm );
                     // then delete remotely
@@ -179,6 +218,15 @@ const ActivityHeader = ( {
             closeFlagItemModal={closeFlagItemModal}
             itemType={itemType}
             onItemFlagged={onItemFlagged}
+          />
+        )}
+        {( currentUser && showEditCommentSheet ) && (
+          <TextInputSheet
+            handleClose={() => setShowEditCommentSheet( false )}
+            headerText={t( "EDIT-COMMENT" )}
+            initialInput={item.body}
+            snapPoints={[416]}
+            confirm={textInput => updateCommentBody( textInput )}
           />
         )}
       </View>

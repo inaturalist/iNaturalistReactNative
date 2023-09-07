@@ -85,6 +85,7 @@ const TextInputSheet = ( {
           level="primary"
           text={t( "CONFIRM" )}
           onPress={( ) => {
+            console.log( "input", input );
             confirm( input );
             handleClose( );
           }}
