@@ -64,7 +64,7 @@ const DisplayTaxon = ( {
           )}
           >
             <INatIcon
-              name={`iconic-${iconicTaxonName.toLowerCase( )}`}
+              name={`iconic-${iconicTaxonName?.toLowerCase( )}`}
               size={22}
             />
           </View>
