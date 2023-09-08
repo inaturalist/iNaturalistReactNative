@@ -58,13 +58,15 @@ const DisplayTaxon = ( {
           />
         )
         : (
-          <View className={classnames(
-            imageClassName,
-            "justify-center items-center"
-          )}
+          <View
+            className={classnames(
+              imageClassName,
+              "justify-center items-center"
+            )}
+            testID="DisplayTaxon.iconicTaxonIcon"
           >
             <INatIcon
-              name={`iconic-${iconicTaxonName?.toLowerCase( )}`}
+              name={iconicTaxonName && `iconic-${iconicTaxonName?.toLowerCase( )}`}
               size={22}
             />
           </View>
