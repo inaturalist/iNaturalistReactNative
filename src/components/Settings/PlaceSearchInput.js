@@ -52,6 +52,7 @@ const PlaceSearchInput = ( { placeId, onPlaceChanged } ): React.Node => {
     <View style={viewStyles.column}>
       <View style={viewStyles.row}>
         <TextInput
+          accessibilityLabel="Text input field"
           style={viewStyles.textInput}
           onChangeText={v => {
             setHideResults( false );
@@ -60,6 +61,7 @@ const PlaceSearchInput = ( { placeId, onPlaceChanged } ): React.Node => {
           value={placeSearch}
         />
         <Pressable
+          accessibilityRole="button"
           style={viewStyles.clearSearch}
           onPress={() => {
             setHideResults( true );
@@ -76,6 +78,7 @@ const PlaceSearchInput = ( { placeId, onPlaceChanged } ): React.Node => {
       </View>
       {!hideResults && finalPlaceSearch.length > 0 && placeResults?.map( place => (
         <Pressable
+          accessibilityRole="button"
           key={place.id}
           style={[viewStyles.row, viewStyles.placeResultContainer]}
           onPress={() => {

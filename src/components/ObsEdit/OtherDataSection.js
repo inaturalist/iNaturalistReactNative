@@ -85,11 +85,15 @@ const OtherDataSection = ( ): Node => {
           name="globe-outline"
           size={14}
         />
-        <Body3 className="ml-5">
+        <Body3 className="mx-3">
           {t( "Geoprivacy" )}
           {" "}
           {currentGeoprivacyStatus?.label || geoprivacyOptions[0].label}
         </Body3>
+        <INatIcon
+          name="caret"
+          size={10}
+        />
       </Pressable>
       <Pressable
         className="flex-row flex-nowrap items-center ml-1 mt-5"
@@ -100,9 +104,13 @@ const OtherDataSection = ( ): Node => {
           name="pot-outline"
           size={14}
         />
-        <Body3 className="ml-5">
+        <Body3 className="mx-3">
           {currentCaptiveStatus?.label || captiveOptions[0].label}
         </Body3>
+        <INatIcon
+          name="caret"
+          size={10}
+        />
       </Pressable>
       <View className="flex-row flex-nowrap items-center ml-1 mt-2.5">
         {showNotesSheet && (
@@ -123,10 +131,14 @@ const OtherDataSection = ( ): Node => {
         />
         <Body3
           onPress={( ) => setShowNotesSheet( true )}
-          className="pl-5 py-3"
+          className="mx-3 py-3"
         >
           {currentObservation?.description || t( "Add-optional-notes" )}
         </Body3>
+        <INatIcon
+          name="caret"
+          size={10}
+        />
       </View>
     </View>
   );

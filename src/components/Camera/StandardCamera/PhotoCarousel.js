@@ -2,6 +2,7 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import { INatIconButton } from "components/SharedComponents";
 import { ImageBackground, Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useRef, useState } from "react";
@@ -11,11 +12,12 @@ import {
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Modal from "react-native-modal";
-import { IconButton, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import Animated, {
   useAnimatedStyle,
   withTiming
 } from "react-native-reanimated";
+import { useTranslation } from "sharedHooks";
 
 type Props = {
   emptyComponent?: Function,
@@ -62,6 +64,7 @@ const PhotoCarousel = ( {
   photoUris,
   setSelectedPhotoIndex
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const theme = useTheme( );
   const navigation = useNavigation( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
@@ -162,11 +165,12 @@ const PhotoCarousel = ( {
                 />
               )}
               { deletePhotoMode && (
-                <IconButton
+                <INatIconButton
                   icon="trash-outline"
-                  mode="contained-tonal"
-                  iconColor={theme.colors.onPrimary}
-                  containerColor="rgba(0, 0, 0, 0.5)"
+                  mode="contained"
+                  color={theme.colors.onPrimary}
+                  backgroundColor="rgba(0, 0, 0, 0.5)"
+                  accessibilityLabel={t( "Delete" )}
                 />
               )}
             </ImageBackground>

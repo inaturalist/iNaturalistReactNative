@@ -42,6 +42,7 @@ exports[`INatIconButton renders correctly 1`] = `
         "opacity": 1,
         "width": 44,
       },
+      false,
       undefined,
     ]
   }

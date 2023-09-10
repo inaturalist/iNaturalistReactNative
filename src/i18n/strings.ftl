@@ -1103,6 +1103,15 @@ Sound-recorder = Sound recorder
 Observation-with-no-evidence = Observation with no evidence
 Photo-importer = Photo importer
 AR-Camera = AR Camera
+Delete = Delete
+Sync-observations = Sync observations
+List-view = List view
+Grid-view = Grid view
+Remove-favorite = Remove favorite
+Add-favorite = Add favorite
+Start-upload = Start upload
+Previous-observation = Previous observation
+Next-observation = Next observation
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
@@ -1232,6 +1241,7 @@ BLOG = BLOG
 DONATE = DONATE
 SETTINGS = SETTINGS
 LOG-OUT = LOG OUT
+Log-out = Log out
 Log-in-to-iNaturalist = Log in to iNaturalist
 
 Try-searching-for-a-location-name = Try searching for a location name to see the map

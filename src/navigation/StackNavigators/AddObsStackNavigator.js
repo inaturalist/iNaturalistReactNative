@@ -41,19 +41,23 @@ const CameraContainerWithPermission = ( ) => {
     // WRITE_EXTERNAL_STORAGE is deprecated after Android 10
     // https://developer.android.com/training/data-storage/shared/media#access-other-apps-files
     return (
-      <PermissionGate
-        permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
-      >
-        <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-          <CameraContainer />
+      <Mortal>
+        <PermissionGate
+          permission={PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE}
+        >
+          <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
+            <CameraContainer />
+          </PermissionGate>
         </PermissionGate>
-      </PermissionGate>
+      </Mortal>
     );
   }
   return (
-    <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
-      <CameraContainer />
-    </PermissionGate>
+    <Mortal>
+      <PermissionGate permission={PermissionsAndroid.PERMISSIONS.CAMERA}>
+        <CameraContainer />
+      </PermissionGate>
+    </Mortal>
   );
 };
 
