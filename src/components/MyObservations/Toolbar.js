@@ -27,7 +27,7 @@ type Props = {
   layout: string,
   statusText: ?string,
   handleSyncButtonPress: Function,
-  uploadError: string,
+  uploadError: ?string,
   uploadInProgress: boolean,
   stopUpload: Function,
   progress: number,
