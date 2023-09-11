@@ -23,6 +23,9 @@ import React, { useCallback, useState } from "react";
 import { Alert, Linking } from "react-native";
 import openMap from "react-native-open-maps";
 import { Menu, useTheme } from "react-native-paper";
+import {
+  useCurrentUser
+} from "sharedHooks";
 
 import Attribution from "./Attribution";
 import DetailsMapContainer from "./DetailsMapContainer";
@@ -81,6 +84,7 @@ const headingClass = "mt-[20px] mb-[11px] text-black";
 const sectionClass = "mx-[15px] mb-[20px]";
 
 const DetailsTab = ( { observation }: Props ): Node => {
+  const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
   const theme = useTheme( );
   const application = observation?.application?.name;
@@ -88,9 +92,6 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation.uuid;
   const privacy = observation?.geoprivacy;
-  const isPrivate = privacy === "private";
-  const isObscured = privacy === "obscured";
-  const showShareOptions = !isPrivate && !isObscured;
   const positionalAccuracy = observation?.positional_accuracy;
   const [showMapModal, setShowMapModal] = useState( false );
   const coordinateString = t( "Lat-Lon", {
@@ -98,20 +99,24 @@ const DetailsTab = ( { observation }: Props ): Node => {
     longitude: observation.longitude
   } );
 
+  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
+  const isPrivate = privacy === "private" && !belongsToCurrentUser;
+  const isObscured = observation?.obscured && !belongsToCurrentUser;
+  const showShareOptions = !isPrivate && !isObscured;
+
   const getPrivateCoordinates = () => {
-    if ( observation?.private_location ) {
+    if ( observation?.private_location && belongsToCurrentUser ) {
       const coordinates = observation?.private_location.split( "," );
       return {
-        latitude: coordinates[0],
-        longitude: coordinates[1]
+        latitude: parseFloat( coordinates[0] ),
+        longitude: parseFloat( coordinates[1] )
       };
     }
     return null;
   };
-
   const privateLocation = getPrivateCoordinates();
-  const latitude = observation.latitude || ( parseFloat( privateLocation?.latitude ) );
-  const longitude = observation.longitude || ( parseFloat( privateLocation?.longitude ) );
+  const latitude = observation.latitude || privateLocation?.latitude;
+  const longitude = observation.longitude || privateLocation?.longitude;
 
   const displayQualityGradeOption = option => {
     const isResearchGrade = ( qualityGrade === "research" && option === "research" );
@@ -167,7 +172,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
           obsLatitude={latitude}
           obsLongitude={longitude}
           mapHeight={230}
-          privacy={privacy}
+          obscured={isObscured}
           showMarker
           openMapDetails={() => setShowMapModal( true )}
           positionalAccuracy={positionalAccuracy}
@@ -175,8 +180,8 @@ const DetailsTab = ( { observation }: Props ): Node => {
       ) }
 
       <View className={`mt-[11px] space-y-[11px] ${sectionClass}`}>
-        <ObservationLocation observation={observation} details />
-        {privacy === "obscured"
+        <ObservationLocation observation={observation} obscured={isObscured} details />
+        {isObscured
         && (
           <Body4 className="italic ml-[20px]">
             {t( "Obscured-observation-location-map-description" )}
@@ -252,6 +257,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
         animationOut="fadeOut"
         showModal={showMapModal}
         closeModal={( ) => setShowMapModal( false )}
+        disableSwipeDirection
         // eslint-disable-next-line react-native/no-inline-styles
         style={{ margin: 0 }}
         modal={(
@@ -259,6 +265,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
             observation={observation}
             latitude={latitude}
             longitude={longitude}
+            obscured={isObscured}
             closeModal={( ) => setShowMapModal( false )}
           />
         )}

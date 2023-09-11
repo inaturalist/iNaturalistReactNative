@@ -1,6 +1,7 @@
 // @flow
 
-import { Image } from "components/styledComponents";
+import LocationIndicator from "images/svg/location_indicator.svg";
+import ObscuredLocationIndicator from "images/svg/obscured_location_indicator.svg";
 import * as React from "react";
 import { useMemo } from "react";
 import { View } from "react-native";
@@ -22,19 +23,19 @@ type Props = {
   region?: Object,
   showMarker?: boolean,
   hideMap?: boolean,
-  privacy?: string,
   openMapDetails?: Function,
   children?: any,
   mapType?: string,
   positionalAccuracy?: number,
-  mapViewRef?: any
+  mapViewRef?: any,
+  obscured?: boolean
 }
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( {
-  obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region, privacy, showMarker, hideMap,
-  openMapDetails, children, mapType, positionalAccuracy, mapViewRef
+  obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region, showMarker, hideMap,
+  openMapDetails, children, mapType, positionalAccuracy, mapViewRef, obscured
 }: Props ): React.Node => {
   const { latLng: viewerLatLng } = useUserLocation( { skipPlaceGuess: true } );
 
@@ -61,9 +62,18 @@ const Map = ( {
     };
   };
 
+  const locationIndicator = () => (
+    // $FlowIgnore
+    <LocationIndicator width={25} height={32} />
+  );
+
+  const obscuredlLocationIndicator = () => (
+    // $FlowIgnore
+    <ObscuredLocationIndicator width={31} height={31} />
+  );
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const obscuredCoordinates = useMemo( () => returnRandomArbitraryCoordinates(), [] );
-  // const mapViewRef = useRef<MapView>( null );
 
   return (
     <View
@@ -95,7 +105,7 @@ const Map = ( {
               urlTemplate={urlTemplate}
             />
           )}
-          {( showMarker && privacy !== "obscured" ) && (
+          {( showMarker && !obscured ) && (
             <>
               <Circle
                 center={{
@@ -113,15 +123,11 @@ const Map = ( {
                   longitude: obsLongitude
                 }}
               >
-                <Image
-                  source={require( "images/location_indicator.png" )}
-                  className="w-[25px] h-[32px]"
-                  accessibilityIgnoresInvertColors
-                />
+                {locationIndicator()}
               </Marker>
             </>
           )}
-          {( showMarker && privacy === "obscured" )
+          {( showMarker && obscured )
           && (
             <>
               <Polygon
@@ -153,11 +159,7 @@ const Map = ( {
                   longitude: obscuredCoordinates.longitude
                 }}
               >
-                <Image
-                  source={require( "images/obscuredlocation-indicator.png" )}
-                  className="w-[31px] h-[31px]"
-                  accessibilityIgnoresInvertColors
-                />
+                {obscuredlLocationIndicator()}
               </Marker>
             </>
           )}

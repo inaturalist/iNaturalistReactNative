@@ -32,6 +32,7 @@ class Observation extends Realm.Object {
     longitude: true,
     observation_photos: ObservationPhoto.OBSERVATION_PHOTOS_FIELDS,
     observed_on: true,
+    obscured: true,
     place_guess: true,
     quality_grade: true,
     taxon: Taxon.TAXON_FIELDS,
@@ -270,6 +271,7 @@ class Observation extends Realm.Object {
       // date and/or time submitted to the server when a new obs is uploaded
       observed_on_string: "string?",
       observed_on: "string?",
+      obscured: "bool",
       owners_identification_from_vision: "bool?",
       species_guess: "string?",
       place_guess: { type: "string?", mapTo: "placeGuess" },
@@ -282,10 +284,10 @@ class Observation extends Realm.Object {
       user: "User?",
       updated_at: "date?",
       comments_viewed: "bool?",
-      identifications_viewed: "bool?",
-      viewer_trusted_by_observer: "bool?",
+      identifications_viewed: { type: "bool?", mapTo: "identificationsViewed" },
+      viewer_trusted_by_observer: { type: "bool?", mapTo: "viewerTrustedByObserver" },
       private_place_guess: { type: "string?", mapTo: "privatePlaceGuess" },
-      private_location: "string?"
+      private_location: { type: "string?", mapTo: "privateLocation" }
     }
   };
 

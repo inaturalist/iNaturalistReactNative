@@ -13,11 +13,12 @@ type Props = {
   observation: Object,
   latitude: number,
   longitude: number,
-  closeModal: Function
+  closeModal: Function,
+  obscured: bool
 }
 
 const DetailsMapContainer = ( {
-  observation, latitude, longitude, closeModal
+  observation, latitude, longitude, closeModal, obscured
 }: Props ): Node => {
   const coordinateString = t( "Lat-Lon", {
     latitude: observation.latitude,
@@ -81,7 +82,7 @@ const DetailsMapContainer = ( {
       mapViewRef={mapViewRef}
       latitude={latitude}
       longitude={longitude}
-      privacy={observation?.geoprivacy}
+      obscured={obscured}
       positionalAccuracy={observation.positional_accuracy}
       displayLocation={displayLocation}
       displayCoordinates={displayCoordinates}

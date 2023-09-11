@@ -9,20 +9,19 @@ import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   observation: Object,
+  obscured?: boolean,
   classNameMargin?: string,
   details?: boolean,
   large?: boolean
 };
 
 const ObservationLocation = ( {
-  observation, classNameMargin, details, large
+  observation, classNameMargin, details, large, obscured
 }: Props ): React.Node => {
   const { t } = useTranslation( );
-
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
   let displayCoords;
   const geoprivacy = capitalize( checkCamelAndSnakeCase( observation, "geoprivacy" ) );
-  const isObscured = geoprivacy === "Obscured";
 
   if ( !displayLocation ) {
     displayLocation = t( "No-Location" );
@@ -32,7 +31,7 @@ const ObservationLocation = ( {
   }
   if ( ( observation?.latitude !== null && observation?.latitude !== undefined )
     && ( observation?.longitude != null && observation?.longitude !== undefined )
-    && !isObscured
+    && !obscured
   ) {
     displayCoords = t( "Lat-Lon-Acc", {
       latitude: observation.latitude,

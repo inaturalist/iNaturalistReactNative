@@ -34,7 +34,7 @@ type Props = {
   latitude: number,
   longitude: number,
   mapType: string,
-  privacy?: string,
+  obscured?: boolean,
   positionalAccuracy: number,
   mapViewRef: any,
   showNotificationModal: boolean,
@@ -49,7 +49,7 @@ type Props = {
 }
 
 const DetailsMap = ( {
-  latitude, longitude, privacy, positionalAccuracy,
+  latitude, longitude, obscured, positionalAccuracy,
   mapViewRef, mapType, closeNotificationsModal, displayLocation,
   displayCoordinates,
   copyCoordinates, shareMap, cycleMapTypes, zoomToCurrentUserLocation,
@@ -58,7 +58,6 @@ const DetailsMap = ( {
   const theme = useTheme( );
 
   const mapButtonClassName = "absolute bg-white rounded-full m-[15px]";
-  const isObscured = privacy === "obscured";
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -67,13 +66,13 @@ const DetailsMap = ( {
           obsLatitude={latitude}
           obsLongitude={longitude}
           mapHeight="100%"
-          privacy={privacy}
+          obscured={obscured}
           showMarker
           mapType={mapType}
           positionalAccuracy={positionalAccuracy}
           mapViewRef={mapViewRef}
         >
-          { !isObscured && (
+          { !obscured && (
             <>
               <View
                 style={getShadow( theme.colors.primary )}
@@ -147,7 +146,7 @@ const DetailsMap = ( {
             {displayLocation}
           </Body4>
           {
-            !isObscured && (
+            !obscured && (
               <Body4
                 className="text-darkGray"
                 numberOfLines={1}
@@ -158,7 +157,7 @@ const DetailsMap = ( {
             )
           }
 
-          {isObscured
+          {obscured
         && (
           <Body4 className="italic">
             {t( "Obscured-observation-location-map-description" )}
