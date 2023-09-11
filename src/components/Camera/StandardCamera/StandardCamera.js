@@ -44,7 +44,9 @@ type Props = {
   showDiscardSheet: boolean,
   takingPhoto: boolean,
   animatedProps: any,
-  zoom: number
+  zoom: number,
+  onZoomStart?: Function,
+  onZoomChange?: Function
 }
 
 const StandardCamera = ( {
@@ -65,7 +67,9 @@ const StandardCamera = ( {
   takingPhoto,
   changeZoom,
   animatedProps,
-  zoom
+  zoom,
+  onZoomStart,
+  onZoomChange
 }: Props ): Node => {
   const {
     allObsPhotoUris
@@ -114,6 +118,8 @@ const StandardCamera = ( {
             cameraRef={camera}
             device={device}
             animatedProps={animatedProps}
+            onZoomStart={onZoomStart}
+            onZoomChange={onZoomChange}
           />
         )}
         <FadeInOutView takingPhoto={takingPhoto} />

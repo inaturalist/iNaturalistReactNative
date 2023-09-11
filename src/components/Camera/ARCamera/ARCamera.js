@@ -45,7 +45,9 @@ type Props = {
   changeZoom: Function,
   zoom: number,
   navToObsEdit: Function,
-  photoSaved: boolean
+  photoSaved: boolean,
+  onZoomStart?: Function,
+  onZoomChange?: Function
 }
 
 const ARCamera = ( {
@@ -62,7 +64,9 @@ const ARCamera = ( {
   changeZoom,
   zoom,
   navToObsEdit,
-  photoSaved
+  photoSaved,
+  onZoomStart,
+  onZoomChange
 }: Props ): Node => {
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -206,6 +210,8 @@ const ARCamera = ( {
           onCameraError={handleCameraError}
           onLog={handleLog}
           animatedProps={animatedProps}
+          onZoomStart={onZoomStart}
+          onZoomChange={onZoomChange}
         />
       )}
       <LinearGradient
