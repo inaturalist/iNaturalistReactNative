@@ -9,18 +9,23 @@ import { log } from "../../react-native-logs.config";
 const logger = log.extend( "cvModel" );
 
 const modelFiles = {
-  IOSMODEL: `${Config.IOS_MODEL_FILE_NAME}c`,
-  IOSTAXONOMY: Config.IOS_TAXONOMY_FILE_NAME,
+  // The iOS model and taxonomy files always have to be referenced in the
+  // xcode project. To avoid constantly having to add new files every time we
+  // change the model, we are keeping the files referenced in the xcode
+  // project the same but linking them to the files specified in .env in a
+  // build phase script. See ios/link-inat-model-files.sh
+  IOSMODEL: "cvmodel.mlmodelc",
+  IOSTAXONOMY: "taxonomy.json",
   ANDROIDMODEL: Config.ANDROID_MODEL_FILE_NAME,
   ANDROIDTAXONOMY: Config.ANDROID_TAXONOMY_FILE_NAME
 };
 
-export const dirModel: string = Platform.select( {
+export const modelPath: string = Platform.select( {
   ios: `${RNFS.DocumentDirectoryPath}/${modelFiles.IOSMODEL}`,
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDMODEL}`
 } );
 
-export const dirTaxonomy: string = Platform.select( {
+export const taxonomyPath: string = Platform.select( {
   ios: `${RNFS.DocumentDirectoryPath}/${modelFiles.IOSTAXONOMY}`,
   android: `${RNFS.DocumentDirectoryPath}/${modelFiles.ANDROIDTAXONOMY}`
 } );
@@ -48,8 +53,8 @@ const addCameraFilesAndroid = () => {
     // Android writes over existing files
     if ( hasModel !== undefined ) {
       logger.debug( "Found model asset found with filename", model );
-      copyFilesAndroid( `camera/${model}`, dirModel );
-      copyFilesAndroid( `camera/${taxonomy}`, dirTaxonomy );
+      copyFilesAndroid( `camera/${model}`, modelPath );
+      copyFilesAndroid( `camera/${taxonomy}`, taxonomyPath );
     } else {
       logger.debug( "No model asset found to copy into document directory." );
       Alert.alert(
@@ -61,17 +66,20 @@ const addCameraFilesAndroid = () => {
 };
 
 const addCameraFilesiOS = () => {
-  const copyFilesiOS = ( source, destination ) => {
-    RNFS.copyFile( source, destination )
-      .then( () => {
-        console.log( `moved file from ${source} to ${destination}` );
-      } )
-      .catch( error => {
-        console.log(
-          error,
-          `error moving file from ${source} to ${destination}`
-        );
-      } );
+  const copyFilesiOS = async ( source, destination ) => {
+    try {
+      await RNFS.unlink( destination );
+    } catch ( unlinkError ) {
+      console.log( "Error deleting file at ", destination, ": ", unlinkError );
+    }
+    try {
+      await RNFS.copyFile( source, destination );
+    } catch ( copyError ) {
+      console.error(
+        `Error moving file from ${source} to ${destination}: `,
+        copyError
+      );
+    }
   };
 
   RNFS.readDir( RNFS.MainBundlePath ).then( results => {
@@ -84,8 +92,8 @@ const addCameraFilesiOS = () => {
 
     // Android writes over existing files
     if ( hasModel !== undefined ) {
-      copyFilesiOS( `${RNFS.MainBundlePath}/${model}`, dirModel );
-      copyFilesiOS( `${RNFS.MainBundlePath}/${taxonomy}`, dirTaxonomy );
+      copyFilesiOS( `${RNFS.MainBundlePath}/${model}`, modelPath );
+      copyFilesiOS( `${RNFS.MainBundlePath}/${taxonomy}`, taxonomyPath );
     } else {
       logger.debug( "No model asset found to copy into document directory." );
       Alert.alert(

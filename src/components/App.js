@@ -3,7 +3,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { focusManager } from "@tanstack/react-query";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
-import RootDrawerNavigator from "navigation/rootDrawerNavigation";
+import RootDrawerNavigator from "navigation/rootDrawerNavigator";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
@@ -11,11 +11,14 @@ import { AppState, LogBox } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import { addARCameraFiles } from "sharedHelpers/cvModel";
-import useCurrentUser from "sharedHooks/useCurrentUser";
-import useObservationUpdatesWhenFocused from "sharedHooks/useObservationUpdatesWhenFocused";
-import useShare from "sharedHooks/useShare";
-import useTranslation from "sharedHooks/useTranslation";
-import useUserMe from "sharedHooks/useUserMe";
+import {
+  useCurrentUser,
+  useIconicTaxa,
+  useObservationUpdatesWhenFocused,
+  useShare,
+  useTranslation,
+  useUserMe
+} from "sharedHooks";
 
 import { log } from "../../react-native-logs.config";
 
@@ -40,6 +43,7 @@ type Props = {
 const App = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
+  useIconicTaxa( { reload: true } );
   const { i18n } = useTranslation( );
   useShare( );
 

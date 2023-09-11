@@ -9,8 +9,11 @@ import { useTheme } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  accessibilityLabel?: string,
+  accessibilityHint?: string,
+  accessibilityLabel: string,
+  children?: any,
   color?: string,
+  disabled?: boolean,
   height?: number,
   icon: string,
   onPress: Function,
@@ -20,7 +23,8 @@ type Props = {
   width?: number,
   // Inserts a white or colored view under the icon so an holes in the shape show as
   // white
-  backgroundColor?: string
+  backgroundColor?: string,
+  mode?: string
 }
 
 const MIN_ACCESSIBLE_DIM = 44;
@@ -29,8 +33,11 @@ const MIN_ACCESSIBLE_DIM = 44;
 // control over touchable area with `width` and `height` *and* the size of
 // the icon with `size`
 const INatIconButton = ( {
+  accessibilityHint,
   accessibilityLabel,
+  children,
   color,
+  disabled = false,
   height = 44,
   icon,
   onPress,
@@ -38,7 +45,8 @@ const INatIconButton = ( {
   style,
   testID,
   width = 44,
-  backgroundColor
+  backgroundColor,
+  mode
 }: Props ): Node => {
   const theme = useTheme( );
   const isWhite = backgroundColor === colors.white;
@@ -54,10 +62,18 @@ const INatIconButton = ( {
       `Height cannot be less than ${MIN_ACCESSIBLE_DIM}. Use IconButton for smaller buttons.`
     );
   }
+  if ( !accessibilityLabel ) {
+    throw new Error(
+      "Button needs an accessibility label"
+    );
+  }
   return (
     <Pressable
+      accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
+      accessibilityState={{ disabled }}
+      disabled={disabled}
       onPress={onPress}
       style={( { pressed } ) => [
         {
@@ -68,6 +84,10 @@ const INatIconButton = ( {
           height,
           justifyContent: "center",
           alignItems: "center"
+        },
+        mode === "contained" && {
+          backgroundColor,
+          borderRadius: 9999
         },
         style
       ]}
@@ -97,7 +117,15 @@ const INatIconButton = ( {
             }}
           />
         )}
-        <INatIcon name={icon} size={size} color={color || theme.colors.primary} />
+        {
+          children || (
+            <INatIcon
+              name={icon}
+              size={size}
+              color={color || theme.colors.primary}
+            />
+          )
+        }
       </View>
     </Pressable>
   );

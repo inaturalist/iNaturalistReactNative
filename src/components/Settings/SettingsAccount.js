@@ -49,6 +49,7 @@ const SettingsAccount = ( { settings, onSettingsModified }: SettingsProps ): Nod
 
     <Text style={[textStyles.subTitle]}>{t( "Privacy" )}</Text>
     <Pressable
+      accessibilityRole="button"
       style={[viewStyles.row, viewStyles.notificationCheckbox]}
       onPress={() => onSettingsModified( {
         ...settings,

@@ -323,12 +323,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       } );
     };
 
-    const createObsWithCameraPhotos = async localFilePaths => {
+    const createObsWithCameraPhotos = async ( localFilePaths, taxonPrediction ) => {
       const newObservation = await Observation.new( );
       const obsPhotos = await Promise.all( localFilePaths.map(
         async photo => ObservationPhoto.new( photo )
       ) );
       newObservation.observationPhotos = obsPhotos;
+
+      if ( taxonPrediction ) {
+        newObservation.taxon = taxonPrediction;
+      }
       setObservations( [newObservation] );
       logger.info(
         "createObsWithCameraPhotos, calling savePhotosToCameraGallery with paths: ",
@@ -368,28 +372,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setObservations( [...updatedObservations] );
     };
 
-    const setNextScreen = ( ) => {
-      if ( observations.length === 1 ) {
-        setCurrentObservationIndex( 0 );
-        setObservations( [] );
-
-        navigation.navigate( "ObsList" );
-      } else if ( currentObservationIndex === observations.length - 1 ) {
-        observations.pop( );
-        setCurrentObservationIndex( observations.length - 1 );
-        setObservations( observations );
-      } else {
-        observations.splice( currentObservationIndex, 1 );
-        setCurrentObservationIndex( currentObservationIndex );
-        // this seems necessary for rerendering the ObsEdit screen
-        setObservations( [] );
-        setObservations( observations );
-      }
-    };
-
     const deleteLocalObservation = uuid => {
+      const localObservation = realm.objectForPrimaryKey( "Observation", uuid );
+      if ( !localObservation ) { return; }
       realm?.write( ( ) => {
-        realm?.delete( realm.objectForPrimaryKey( "Observation", uuid ) );
+        realm?.delete( localObservation );
       } );
     };
 
@@ -499,8 +486,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       return responses[0];
     };
 
-    const uploadObservation = async ( obs, isSingleUpload ) => {
-      if ( isSingleUpload ) {
+    const uploadObservation = async ( obs, uploadOptions ) => {
+      if ( uploadOptions?.isSingleUpload ) {
         dispatch( {
           type: "UPLOAD_SINGLE_OBSERVATION",
           observation: obs
@@ -594,9 +581,33 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       return response;
     };
 
-    const saveAndUploadObservation = async ( ) => {
+    const setNextScreen = async ( { type }: Object ) => {
       const savedObservation = await saveCurrentObservation( );
-      return uploadObservation( savedObservation );
+      if ( type === "upload" ) {
+        uploadObservation( savedObservation, { isSingleUpload: true } );
+      }
+
+      if ( observations.length === 1 ) {
+        setCurrentObservationIndex( 0 );
+        setObservations( [] );
+
+        navigation.navigate( "TabNavigator", {
+          screen: "ObservationsStackNavigator",
+          params: {
+            screen: "ObsList"
+          }
+        } );
+      } else if ( currentObservationIndex === observations.length - 1 ) {
+        observations.pop( );
+        setCurrentObservationIndex( observations.length - 1 );
+        setObservations( observations );
+      } else {
+        observations.splice( currentObservationIndex, 1 );
+        setCurrentObservationIndex( currentObservationIndex );
+        // this seems necessary for rerendering the ObsEdit screen
+        setObservations( [] );
+        setObservations( observations );
+      }
     };
 
     const removePhotoFromList = ( list, photo ) => {
@@ -719,7 +730,6 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       addCameraPhotosToCurrentObservation,
       resetObsEditContext,
       saveCurrentObservation,
-      saveAndUploadObservation,
       deleteLocalObservation,
       album,
       setAlbum,

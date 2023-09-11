@@ -1,7 +1,7 @@
 // @flow
 import { useRoute } from "@react-navigation/native";
 import { deleteQualityMetric, fetchQualityMetrics, setQualityMetric } from "api/qualityMetrics";
-import DQAVoteButtons from "components/ObsDetails/DQAVoteButtons";
+import DQAVoteButtons from "components/ObsDetails/DetailsTab/DQAVoteButtons";
 import PlaceholderText from "components/PlaceholderText";
 import {
   Body3,
@@ -176,10 +176,20 @@ const DataQualityAssessment = ( ): React.Node => {
     const ifAgree = ifMajorityAgree( metric );
     if ( ifAgree || ifAgree === null ) {
       return (
-        <INatIcon name="checkmark-circle" size={19} color={theme.colors.secondary} /> );
+        <INatIcon
+          testID="DQA.pass"
+          name="checkmark-circle"
+          size={19}
+          color={theme.colors.secondary}
+        />
+      );
     }
     return (
-      <INatIcon name="triangle-exclamation" size={19} color={theme.colors.error} />
+      <INatIcon
+        name="triangle-exclamation"
+        size={19}
+        color={theme.colors.error}
+      />
     );
   };
 
@@ -221,7 +231,11 @@ const DataQualityAssessment = ( ): React.Node => {
         <INatIcon name="checkmark-circle" size={19} color={theme.colors.secondary} /> );
     }
     return (
-      <INatIcon name="triangle-exclamation" size={19} color={theme.colors.error} />
+      <INatIcon
+        name="triangle-exclamation"
+        size={19}
+        color={theme.colors.error}
+      />
     );
   };
 

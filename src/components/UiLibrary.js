@@ -1,5 +1,4 @@
-import ObsStatus from "components/MyObservations/ObsStatus";
-import ActivityItem from "components/ObsDetails/ActivityItem";
+import ActivityItem from "components/ObsDetails/ActivityTab/ActivityItem";
 import {
   ActivityCount,
   Body1,
@@ -9,6 +8,7 @@ import {
   Button,
   CloseButton,
   CommentsCount,
+  ConfidenceInterval,
   DateDisplay,
   Divider,
   EvidenceButton,
@@ -18,6 +18,7 @@ import {
   Heading3,
   Heading4,
   Heading5,
+  IconicTaxonChooser,
   IdentificationsCount,
   INatIcon,
   INatIconButton,
@@ -31,18 +32,20 @@ import {
   StickyToolbar,
   Subheading1,
   Tabs,
+  TaxonResult,
   UploadStatus,
   UserIcon
 } from "components/SharedComponents";
 import AddObsButton from "components/SharedComponents/Buttons/AddObsButton";
 import glyphmap from "components/SharedComponents/INatIcon/glyphmap.json";
+import ObsStatus from "components/SharedComponents/ObservationsFlashList/ObsStatus";
 import UserText from "components/SharedComponents/UserText";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { fontMonoClass, ScrollView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
 import { Alert } from "react-native";
-import { IconButton, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import useCurrentUser from "sharedHooks/useCurrentUser";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -87,15 +90,21 @@ const UiLibrary = (): Node => {
     <ViewWrapper>
       <FloatingActionBar
         position="bottomEnd"
-        containerClass="mx-4 px-2 rounded-md"
-        endY={180}
+        containerClass="mx-4 px-2 pb-2 rounded-md"
+        endY={80}
         show
       >
         <Heading2 className="my-2">Floating Action Bar</Heading2>
-        <IconButton className="mx-auto" icon="star-bold-outline" mode="contained" />
+        <INatIconButton
+          className="mx-auto"
+          icon="star-bold-outline"
+          mode="contained"
+          color={theme.colors.onSecondary}
+          backgroundColor={theme.colors.secondary}
+          accessibilityLabel="Star"
+        />
       </FloatingActionBar>
       <ScrollView className="px-5">
-        {/* TODO replace these text components with our typography header components */}
         <Body1>
           All the re-usable UI components we've got. If you're making a new UI
           component, please put it here first and try to show what it looks like
@@ -175,15 +184,15 @@ const UiLibrary = (): Node => {
         <View className="flex flex-row justify-between">
           <View>
             <Body2>Default</Body2>
-            <EvidenceButton icon="camera" />
+            <EvidenceButton icon="camera" accessibilityLabel="Camera" />
           </View>
           <View>
             <Body2>Disabled</Body2>
-            <EvidenceButton icon="microphone" disabled />
+            <EvidenceButton icon="microphone" disabled accessibilityLabel="Sound recorder" />
           </View>
           <View>
             <Body2>With Icon</Body2>
-            <EvidenceButton icon="microphone" />
+            <EvidenceButton icon="microphone" accessibilityLabel="Sound Recorder" />
           </View>
         </View>
 
@@ -214,30 +223,35 @@ const UiLibrary = (): Node => {
         <View className="flex flex-row justify-between">
           <View>
             <Body2>Primary</Body2>
-            <IconButton
+            <INatIconButton
               icon="compass-rose-outline"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
+              accessibilityLabel="Explore"
+              size={25}
             />
           </View>
           <View>
             <Body2>Focused</Body2>
-            <IconButton
+            <INatIconButton
               icon="plus"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
               mode="contained"
-              containerColor={theme.colors.secondary}
-              iconColor={theme.colors.onSecondary}
+              backgroundColor={theme.colors.secondary}
+              color={theme.colors.onSecondary}
+              accessibilityLabel="Add Observation"
             />
           </View>
           <View>
             <Body2>Warning</Body2>
-            <IconButton
+            <INatIconButton
               icon="notifications-bell"
               className="my-2"
               onPress={() => Alert.alert( "", "You tapped!" )}
-              iconColor={theme.colors.error}
+              color={theme.colors.error}
+              size={25}
+              accessibilityLabel="Notifications"
             />
           </View>
         </View>
@@ -256,20 +270,21 @@ const UiLibrary = (): Node => {
             "Default INatIconButton",
             "Should be the minimum accessible size by default"
           )}
+          accessibilityLabel="Close button"
         />
         <Body3>Small icon, large tappable area</Body3>
         <INatIconButton
           icon="close"
           className="bg-yellow"
           onPress={() => Alert.alert(
-            "Custon INatIconButton",
+            "Custom INatIconButton",
             "The point is to adjust the interactive area and the icon size independently"
           )}
           size={10}
           width={50}
           height={50}
+          accessibilityLabel="Close button"
         />
-
         <Heading2>Custom iNaturalist Icons</Heading2>
         {Object.keys( glyphmap )
           .sort()
@@ -517,13 +532,35 @@ const UiLibrary = (): Node => {
 
         <Heading2 className="my-2">ActivityItem</Heading2>
         <ActivityItem item={exampleId} currentUserId={userId} />
+        <Heading2 className="my-2">Search Bar</Heading2>
         <SearchBar value="search" />
+        <Heading2 className="my-2">Confidence Interval</Heading2>
+        <ConfidenceInterval confidence={3} activeColor="bg-inatGreen" />
+        <Heading2 className="my-2">Taxon Result</Heading2>
+        <TaxonResult taxon={{
+          id: 1,
+          name: "Aves",
+          preferred_common_name: "Birds",
+          rank: "family",
+          rank_level: 60
+        }}
+        />
+        <Heading2 className="my-2">Iconic Taxon Chooser</Heading2>
+        <IconicTaxonChooser
+          taxon={{
+            name: "Aves",
+            id: 3,
+            iconic_taxon_name: "Aves"
+          }}
+          before={<Button text={t( "ADD-AN-ID" )} className="rounded-full" />}
+          onTaxonChosen={taxon => console.log( "taxon selected:", taxon )}
+        />
         <Heading2 className="my-2">More Stuff!</Heading2>
         <Body1 className="h-[400px]">
           Useless spacer at the end because height in NativeWind is confusing.
         </Body1>
       </ScrollView>
-      <StickyToolbar containerClass="bottom-24">
+      <StickyToolbar>
         <Heading2>StickyToolbar</Heading2>
       </StickyToolbar>
     </ViewWrapper>

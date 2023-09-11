@@ -63,7 +63,7 @@ class Observation extends Realm.Object {
   }
 
   static createLinkedObjects = ( list, createFunction, realm ) => {
-    if ( list.length === 0 ) { return list; }
+    if ( !list || list.length === 0 ) { return list; }
     return list.map( item => createFunction.mapApiToRealm( item, realm ) );
   };
 
@@ -162,9 +162,7 @@ class Observation extends Realm.Object {
       return evidence;
     };
 
-    const taxon = obs.taxon
-      ? Taxon.mapApiToRealm( obs.taxon )
-      : null;
+    const taxon = obs.taxon || null;
     const observationPhotos = addTimestampsToEvidence( obs.observationPhotos );
     const observationSounds = addTimestampsToEvidence( obs.observationSounds );
 

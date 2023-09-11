@@ -2,27 +2,30 @@
 
 import fetchSearchResults from "api/search";
 import {
-  SearchBar
+  Body2,
+  SearchBar,
+  TaxonResult
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FlatList } from "react-native";
 import Taxon from "realmModels/Taxon";
+import { useTranslation } from "sharedHooks";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
-import TaxonResult from "./TaxonResult";
-
 type Props = {
-  route: Object,
+  taxonSearch: string,
+  setTaxonSearch: Function,
   createId: Function
 };
 
 const TaxonSearch = ( {
-  route,
+  taxonSearch,
+  setTaxonSearch,
   createId
 }: Props ): Node => {
-  const [taxonSearch, setTaxonSearch] = useState( "" );
+  const { t } = useTranslation( );
   const { data: taxonList } = useAuthenticatedQuery(
     ["fetchSearchResults", taxonSearch],
     optsWithAuth => fetchSearchResults(
@@ -37,13 +40,11 @@ const TaxonSearch = ( {
     )
   );
 
-  useEffect( ( ) => {
-    // this clears search whenever a user is coming from ObsEdit
-    // but maintains current search when a user navigates to TaxonDetails and back
-    if ( route?.params?.clearSearch ) {
-      setTaxonSearch( "" );
-    }
-  }, [route] );
+  const renderEmptyComponent = ( ) => (
+    <Body2 className="self-center">
+      {t( "Search-for-a-taxon-to-add-an-identification" )}
+    </Body2>
+  );
 
   return (
     <>
@@ -58,8 +59,15 @@ const TaxonSearch = ( {
       <FlatList
         keyboardShouldPersistTaps="always"
         data={taxonList}
-        renderItem={( { item } ) => <TaxonResult item={item} createId={createId} />}
+        renderItem={( { item } ) => (
+          <TaxonResult
+            taxon={item}
+            handleCheckmarkPress={( ) => createId( item )}
+            testID={`Search.taxa.${item.id}`}
+          />
+        )}
         keyExtractor={item => item.id}
+        ListEmptyComponent={renderEmptyComponent}
       />
     </>
   );

@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
+import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
   Body3, Body4, Heading4, INatIcon
@@ -60,7 +60,7 @@ const EvidenceSection = ( ): Node => {
     // to sometimes pop back up on the next screen - see GH issue #629
     if ( !showAddEvidenceSheet ) {
       if ( takePhoto ) {
-        navigation.navigate( "StandardCamera", { addEvidence: true } );
+        navigation.navigate( "Camera", { addEvidence: true, camera: "Standard" } );
       } else if ( importPhoto ) {
         navigation.navigate( "PhotoGallery", { skipGroupPhotos: true } );
       } else if ( recordSound ) {
@@ -90,12 +90,13 @@ const EvidenceSection = ( ): Node => {
     isFetchingLocation
   } = useCurrentObservationLocation( mountedRef );
 
-  const { latitude, longitude } = currentObservation;
+  const latitude = currentObservation?.latitude;
+  const longitude = currentObservation?.longitude;
 
   const displayPlaceName = ( ) => {
     let placeName = "";
-    if ( currentObservation.place_guess ) {
-      placeName = currentObservation.place_guess;
+    if ( currentObservation?.place_guess ) {
+      placeName = currentObservation?.place_guess;
     } else if ( isFetchingLocation ) {
       placeName = t( "Fetching-location" );
     } else if ( !latitude || !longitude ) {
@@ -131,9 +132,11 @@ const EvidenceSection = ( ): Node => {
       && ( latitude !== 0 && longitude !== 0 )
       && ( latitude >= -90 && latitude <= 90 )
       && ( longitude >= -180 && longitude <= 180 )
-      && ( currentObservation.positional_accuracy === null || (
-        currentObservation.positional_accuracy
-        && currentObservation.positional_accuracy <= DESIRED_LOCATION_ACCURACY )
+      && ( currentObservation?.positional_accuracy === null
+        || currentObservation?.positional_accuracy === undefined
+        || (
+          currentObservation?.positional_accuracy
+        && currentObservation?.positional_accuracy <= DESIRED_LOCATION_ACCURACY )
       )
     ) {
       return true;

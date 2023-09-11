@@ -1,0 +1,7 @@
+NEW
+* Explore basics, including differnet content types and views (may not work in Android yet)
+* Using 2.4 model from May 2023. May be a bit slower.
+* Cameras should favor image quality over preview quality
+
+FIXED
+* All of ObsEdit form should be visible on small screens

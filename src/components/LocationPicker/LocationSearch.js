@@ -8,24 +8,25 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useRef } from "react";
+import { Keyboard } from "react-native";
 import { useTheme } from "react-native-paper";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 type Props = {
-  region: Object,
-  setRegion: Function,
-  locationName: string,
-  setLocationName: Function,
-  getShadow: Function
+  locationName: ?string,
+  updateLocationName: Function,
+  getShadow: Function,
+  selectPlaceResult: Function,
+  hidePlaceResults: boolean
 };
 
 const LocationSearch = ( {
-  region, setRegion, locationName, setLocationName, getShadow
+  locationName, updateLocationName, getShadow, selectPlaceResult, hidePlaceResults
 }: Props ): Node => {
-  const [hideResults, setHideResults] = useState( false );
   const theme = useTheme( );
   const queryClient = useQueryClient( );
+  const locationInput = useRef( );
 
   // this seems necessary for clearing the cache between searches
   queryClient.invalidateQueries( ["fetchSearchResults"] );
@@ -45,32 +46,30 @@ const LocationSearch = ( {
     <>
       <SearchBar
         handleTextChange={locationText => {
-          setLocationName( locationText );
-          setHideResults( false );
+          // only update location name when a user is typing,
+          // not when a user selects a location from the dropdown
+          if ( locationInput?.current?.isFocused( ) ) {
+            updateLocationName( locationText );
+          }
         }}
         value={locationName}
         testID="LocationPicker.locationSearch"
         containerClass="absolute top-[20px] right-[26px] left-[26px]"
         hasShadow
+        input={locationInput}
       />
       <View
-        className="absolute top-[65px] right-[26px] left-[26px] bg-white rounded-lg z-50"
+        className="absolute top-[65px] right-[26px] left-[26px] bg-white rounded-lg z-100"
         style={getShadow( theme.colors.primary )}
       >
-        {!hideResults && placeResults?.map( place => (
+        {!hidePlaceResults && placeResults?.map( place => (
           <Pressable
             accessibilityRole="button"
             key={place.id}
             className="p-2 border-[0.5px] border-lightGray"
             onPress={( ) => {
-              setHideResults( true );
-              setLocationName( place.display_name );
-              const { coordinates } = place.point_geojson;
-              setRegion( {
-                ...region,
-                latitude: coordinates[1],
-                longitude: coordinates[0]
-              } );
+              selectPlaceResult( place );
+              Keyboard.dismiss( );
             }}
           >
             <Body3>{place.display_name}</Body3>

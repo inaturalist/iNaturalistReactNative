@@ -2,27 +2,21 @@
 import {
   BottomSheet,
   Button,
-  DisplayTaxonName,
+  DisplayTaxon,
   INatIcon,
-  List2
+  List2,
+  TextInputSheet
 } from "components/SharedComponents";
-import {
-  Image, Pressable, Text, View
-} from "components/styledComponents";
+import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import Taxon from "realmModels/Taxon";
 
-  type Props = {
-    onAgree:Function,
-    handleClose: Function,
-    taxon: Object,
-    discardChanges: Function,
-    hide: boolean,
-    comment:string,
-    openCommentBox: Function
-  }
+type Props = {
+  onAgree:Function,
+  handleClose: Function,
+  taxon: Object
+}
 
 const showTaxon = taxon => {
   if ( !taxon ) {
@@ -30,21 +24,7 @@ const showTaxon = taxon => {
   }
   return (
     <View className="flex-row mx-[15px]">
-      <Image
-        source={Taxon.uri( taxon )}
-        className="w-16 h-16 rounded-xl mr-3"
-        accessibilityIgnoresInvertColors
-      />
-      <Pressable
-        className="justify-center"
-        // onPress={navToTaxonDetails}
-        testID={`ObsDetails.taxon.${taxon.id}`}
-        accessibilityRole="link"
-        accessibilityLabel={t( "Navigate-to-taxon-details" )}
-        accessibilityValue={{ text: taxon.name }}
-      >
-        <DisplayTaxonName taxon={taxon} layout="vertical" />
-      </Pressable>
+      <DisplayTaxon taxon={taxon} />
     </View>
   );
 };
@@ -52,13 +32,11 @@ const showTaxon = taxon => {
 const AgreeWithIDSheet = ( {
   onAgree,
   handleClose,
-  discardChanges,
-  taxon,
-  hide,
-  comment,
-  openCommentBox
+  taxon
 }: Props ): Node => {
+  const [comment, setComment] = useState( "" );
   const [snapPoint, setSnapPoint] = useState( 263 );
+  const [showCommentBox, setShowCommentBox] = useState( false );
 
   useEffect( () => {
     if ( comment.length !== 0 ) {
@@ -70,9 +48,7 @@ const AgreeWithIDSheet = ( {
 
   return (
     <BottomSheet
-      hide={hide}
       handleClose={handleClose}
-      confirm={discardChanges}
       headerText={t( "AGREE-WITH-ID" )}
       snapPoints={[snapPoint]}
       text={t( "By-exiting-changes-not-saved" )}
@@ -81,7 +57,7 @@ const AgreeWithIDSheet = ( {
       <View
         className="mx-[26px] space-y-[11px] my-[15px]"
       >
-        <List2>
+        <List2 className="text-black">
           {t( "Agree-with-ID-description" )}
         </List2>
         { comment && (
@@ -89,20 +65,20 @@ const AgreeWithIDSheet = ( {
             className=" flex-row items-center bg-lightGray p-[15px] rounded"
           >
             <INatIcon name="add-comment-outline" size={22} />
-            <List2 className="ml-[7px]">
+            <List2 className="ml-[7px] text-black">
               {comment}
             </List2>
           </View>
         )}
         {showTaxon( taxon )}
       </View>
-      <View className="flex-row">
+      <View className="flex-row justify-evenly mx-3">
         {comment
           ? (
             <Button
               text={t( "EDIT-COMMENT" )}
-              onPress={openCommentBox}
-              className="mx-3 grow"
+              onPress={( ) => setShowCommentBox( true )}
+              className="mx-2 grow"
               testID="ObsDetail.AgreeId.EditCommentButton"
               disabled={!comment}
               accessibilityHint={t( "Opens-add-comment-modal" )}
@@ -110,9 +86,9 @@ const AgreeWithIDSheet = ( {
           )
           : (
             <Button
-              text={t( "COMMENT" )}
-              onPress={openCommentBox}
-              className="mx-3 grow"
+              text={t( "ADD-COMMENT" )}
+              onPress={( ) => setShowCommentBox( true )}
+              className="mx-2 grow"
               testID="ObsDetail.AgreeId.commentButton"
               disabled={false}
               accessibilityHint={t( "Opens-add-comment-modal" )}
@@ -121,13 +97,24 @@ const AgreeWithIDSheet = ( {
 
         <Button
           text={t( "AGREE" )}
-          onPress={onAgree}
-          className="mx-3 grow"
+          onPress={( ) => {
+            onAgree( comment );
+          }}
+          className="mx-2 grow"
           testID="ObsDetail.AgreeId.cvSuggestionsButton"
           accessibilityRole="link"
           accessibilityHint={t( "Navigates-to-suggest-identification" )}
+          level={comment && "primary"}
         />
       </View>
+      {showCommentBox && (
+        <TextInputSheet
+          handleClose={( ) => setShowCommentBox( false )}
+          headerText={t( "ADD-OPTIONAL-COMMENT" )}
+          snapPoints={[416]}
+          confirm={textInput => setComment( textInput )}
+        />
+      )}
     </BottomSheet>
   );
 };

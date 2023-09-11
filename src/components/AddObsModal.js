@@ -2,12 +2,13 @@
 
 import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
+import { INatIconButton } from "components/SharedComponents";
 import { Text, View } from "components/styledComponents";
 import { t } from "i18next";
 import { ObsEditContext } from "providers/contexts";
 import * as React from "react";
 import { Platform } from "react-native";
-import { IconButton, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
 type Props = {
   closeModal: ( ) => void
@@ -38,7 +39,10 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
       createObservationNoEvidence( );
     }
     // access nested screen
-    navigation.navigate( screen, params );
+    navigation.navigate( "CameraNavigator", {
+      screen,
+      params
+    } );
     closeModal( );
   };
 
@@ -46,9 +50,9 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
 
   const navToSoundRecorder = ( ) => navAndCloseModal( "SoundRecorder" );
 
-  const navToARCamera = ( ) => navAndCloseModal( "ARCamera" );
+  const navToARCamera = ( ) => navAndCloseModal( "Camera", { camera: "AR" } );
 
-  const navToStandardCamera = ( ) => navAndCloseModal( "StandardCamera" );
+  const navToStandardCamera = ( ) => navAndCloseModal( "Camera", { camera: "Standard" } );
 
   const navToObsEdit = ( ) => navAndCloseModal( "ObsEdit" );
 
@@ -57,6 +61,8 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
     t( "Upload-a-photo-from-your-gallery" ),
     t( "Record-a-sound" )
   ];
+
+  const greenCircleClass = "bg-inatGreen rounded-full h-[46px] w-[46px]";
 
   return (
     <>
@@ -72,85 +78,88 @@ const AddObsModal = ( { closeModal }: Props ): React.Node => {
           ) )}
         </View>
       </View>
-      <View className="flex-row justify-center">
-        <IconButton
+      <View className={classnames( "flex-row justify-center", {
+        "bottom-[20px]": !showARCamera
+      } )}
+      >
+        <INatIconButton
           testID="camera-button"
           size={30}
           icon="camera"
-          containerColor={theme.colors.secondary}
-          iconColor={theme.colors.onSecondary}
-          className={showARCamera
-            ? "mx-12 -bottom-3"
-            : "mx-5"}
+          color={theme.colors.onSecondary}
+          className={classnames( greenCircleClass, {
+            "mr-[37px] bottom-[1px]": showARCamera,
+            "mr-[9px]": !showARCamera
+          } )}
           onPress={navToStandardCamera}
-          accessibilityLabel={t( "Navigates-to-camera" )}
+          accessibilityLabel={t( "Camera" )}
+          accessibilityHint={t( "Navigates-to-camera" )}
         />
         {showARCamera && (
-          <IconButton
+          <INatIconButton
             testID="arcamera-button"
             size={30}
             icon="arcamera"
-            containerColor={theme.colors.secondary}
-            iconColor={theme.colors.onSecondary}
-            className="absolute bottom-4"
+            color={theme.colors.onSecondary}
+            className={classnames(
+              greenCircleClass,
+              "absolute bottom-[26px]"
+            )}
             onPress={navToARCamera}
-            accessibilityLabel={t( "Navigates-to-AR-camera" )}
+            accessibilityLabel={t( "AR-Camera" )}
+            accessibilityHint={t( "Navigates-to-AR-camera" )}
           />
         )}
-        <IconButton
+        <INatIconButton
           testID="import-media-button"
           size={30}
           icon="gallery"
-          containerColor={theme.colors.secondary}
-          iconColor={theme.colors.onSecondary}
-          className={showARCamera
-            ? "mx-12 -bottom-3"
-            : "mx-5"}
+          color={theme.colors.onSecondary}
+          className={classnames( greenCircleClass, {
+            "ml-[37px] bottom-[1px]": showARCamera,
+            "ml-[9px]": !showARCamera
+          } )}
           onPress={navToPhotoGallery}
-          accessibilityLabel={t( "Navigate-to-photo-importer" )}
+          accessibilityLabel={t( "Photo-importer" )}
+          accessibilityHint={t( "Navigate-to-photo-importer" )}
         />
       </View>
-      <View className={
-        classnames(
-          "flex-row justify-center",
-          {
-            "items-center": showARCamera
-          }
-        )
-      }
-      >
-        <IconButton
+      <View className="flex-row justify-center items-center">
+        <INatIconButton
           testID="observe-without-evidence-button"
           size={30}
           icon="noevidence"
-          containerColor={theme.colors.secondary}
-          iconColor={theme.colors.onSecondary}
-          className={showARCamera
-            ? "mx-5"
-            : "mx-4"}
+          color={theme.colors.onSecondary}
+          className={classnames( greenCircleClass, {
+            "mr-[26px]": showARCamera,
+            "mr-[20px] bottom-[33px]": !showARCamera
+          } )}
           onPress={navToObsEdit}
-          accessibilityLabel={t( "Navigate-to-observation-edit-screen" )}
+          accessibilityLabel={t( "Observation-with-no-evidence" )}
+          accessibilityHint={t( "Navigate-to-observation-edit-screen" )}
         />
-        <IconButton
+        <INatIconButton
           testID="close-camera-options-button"
           icon="close"
-          containerColor={theme.colors.secondary}
-          iconColor={theme.colors.onSecondary}
-          className="self-center h-24 w-24 rounded-[99px]"
+          color={theme.colors.onSecondary}
+          size={31}
+          className="h-[69px] w-[69px] bg-inatGreen rounded-full"
           onPress={( ) => closeModal( )}
-          accessibilityLabel={t( "Close-camera-options-modal" )}
+          accessibilityLabel={t( "Close" )}
+          accessibilityHint={t( "Close-add-observation-modal" )}
         />
-        <IconButton
+        <INatIconButton
           testID="record-sound-button"
           size={30}
           icon="microphone"
-          containerColor={theme.colors.secondary}
-          iconColor={theme.colors.onSecondary}
-          className={showARCamera
-            ? "mx-5"
-            : "mx-4"}
+          color={theme.colors.onSecondary}
+          className={classnames( greenCircleClass, {
+            "ml-[26px]": showARCamera,
+            "ml-[20px] bottom-[33px]": !showARCamera
+          } )}
           onPress={navToSoundRecorder}
-          accessibilityLabel={t( "Navigate-to-sound-recorder" )}
+          accessibilityLabel={t( "Sound-recorder" )}
+          accessibilityHint={t( "Navigates-to-sound-recorder" )}
         />
       </View>
     </>

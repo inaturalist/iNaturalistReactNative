@@ -59,6 +59,7 @@ const LicenseSelector = ( {
     </View>
 
     <Pressable
+      accessibilityRole="button"
       style={[viewStyles.row, viewStyles.notificationCheckbox]}
       onPress={() => {
         onUpdateExisting( !updateExisting );
@@ -110,6 +111,7 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
 
       <Text style={[textStyles.title, textStyles.marginTop]}>{t( "Taxonomy-Settings" )}</Text>
       <Pressable
+        accessibilityRole="button"
         style={[viewStyles.row, viewStyles.notificationCheckbox]}
         onPress={() => {
           onSettingsModified( {
@@ -179,6 +181,7 @@ const SettingsContentDisplay = ( { settings, onSettingsModified }: SettingsProps
         {t( "Community-Moderation-Settings" )}
       </Text>
       <Pressable
+        accessibilityRole="button"
         style={[viewStyles.row, viewStyles.notificationCheckbox]}
         onPress={() => {
           onSettingsModified( {
