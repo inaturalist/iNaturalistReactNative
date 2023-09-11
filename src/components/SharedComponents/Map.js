@@ -29,8 +29,6 @@ const Map = ( {
   const initialLatitude = obsLatitude || ( viewerLatLng?.latitude );
   const initialLongitude = obsLongitude || ( viewerLatLng?.longitude );
 
-  // const urlTemplate = taxonId && `https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png?taxon_id=${taxonId}&color=%2377B300&verifiable=true`;
-
   const initialRegion = {
     latitude: initialLatitude,
     longitude: initialLongitude,
@@ -46,6 +44,7 @@ const Map = ( {
       }}
     >
       <Image
+        testID="Map.LocationMarkerImage"
         source={require( "images/location_indicator.png" )}
         className="w-[25px] h-[32px]"
         accessibilityIgnoresInvertColors
@@ -76,6 +75,7 @@ const Map = ( {
         >
           {observations?.map( observation => (
             <Marker
+              testID={`ExploreMap.TaxonMarker.${observation.uuid}`}
               key={`ExploreMap.TaxonMarker.${observation.uuid}`}
               coordinate={{
                 latitude: observation.latitude,
