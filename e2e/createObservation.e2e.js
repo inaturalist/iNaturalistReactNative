@@ -83,14 +83,12 @@ describe( "Sign in and create an observation", () => {
     await waitFor( commentButton ).toBeVisible().withTimeout( 10000 );
     await commentButton.tap();
     // Check that the comment modal is visible
-    const commentModalInput = element( by.id( "AddCommentModal.commentInput" ) );
+    const commentModalInput = element( by.id( "ObsEdit.notes" ) );
     await waitFor( commentModalInput ).toBeVisible().withTimeout( 10000 );
     // Add a comment
     await commentModalInput.tap();
     await commentModalInput.typeText( "This is a comment" );
-    const commentModalSubmitButton = element(
-      by.id( "AddCommentModal.sendButton" )
-    );
+    const commentModalSubmitButton = element( by.id( "ObsEdit.confirm" ) );
     await commentModalSubmitButton.tap();
     // Check that the comment is visible
     // TODO: this does not work currently because the comment is added twice
