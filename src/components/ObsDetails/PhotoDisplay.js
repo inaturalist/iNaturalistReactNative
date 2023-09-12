@@ -79,7 +79,7 @@ const PhotoDisplay = ( {
               ? t( "Remove-favorite" )
               : t( "Add-favorite" )}
           />
-          <View className="absolute bottom-3 left-3">
+          <View className="absolute bottom-5 left-5">
             <PhotoCount count={photos.length
               ? photos.length
               : 0}
