@@ -2,6 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteComments, updateComment } from "api/comments";
+import { updateIdentification } from "api/identifications";
 import classnames from "classnames";
 import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
@@ -86,8 +87,7 @@ const ActivityHeader = ( {
   const updateCommentMutation = useAuthenticatedMutation(
     ( uuid, optsWithAuth ) => updateComment( uuid, optsWithAuth ),
     {
-      onSuccess: data => {
-        console.log( "success", data );
+      onSuccess: () => {
         queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
         if ( refetchRemoteObservation ) {
           refetchRemoteObservation( );
@@ -103,8 +103,30 @@ const ActivityHeader = ( {
         body: comment
       }
     };
-    console.log( "updateComment", updateCommentParams );
     updateCommentMutation.mutate( updateCommentParams );
+  };
+
+  const updateIdentificationMutation = useAuthenticatedMutation(
+    ( uuid, optsWithAuth ) => updateIdentification( uuid, optsWithAuth ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
+        if ( refetchRemoteObservation ) {
+          refetchRemoteObservation( );
+        }
+      }
+    }
+  );
+
+  const withdrawOrRestoreIdentification = withdrawOrRestore => {
+    const updateIdentificationParams = {
+      id: item.uuid,
+      identification: {
+        body: item.body,
+        current: withdrawOrRestore
+      }
+    };
+    updateIdentificationMutation.mutate( updateIdentificationParams );
   };
 
   const renderIcon = () => {
@@ -161,9 +183,46 @@ const ActivityHeader = ( {
                 {formatIdDate( item.updated_at || item.created_at, t )}
               </Body4>
             )}
+        {( itemType === "Identification" && currentUser )
+          && (
+            <KebabMenu
+              visible={kebabMenuVisible}
+              setVisible={setKebabMenuVisible}
+            >
+              {item.current === true
+                ? (
+                  <Menu.Item
+                    onPress={async ( ) => {
+                      withdrawOrRestoreIdentification( false );
+                      setKebabMenuVisible( false );
+                      // // first delete locally
+                      //   Comment.deleteComment( item.uuid, realm );
+                      //   // then delete remotely
+                      //   deleteCommentMutation.mutate( item.uuid );
+                      //   setKebabMenuVisible( false );
+                    }}
+                    title={t( "Withdraw" )}
+                  />
+                )
+                : (
+                  <Menu.Item
+                    onPress={async ( ) => {
+                      withdrawOrRestoreIdentification( true );
+                      setKebabMenuVisible( false );
+                      // // first delete locally
+                      //   Comment.deleteComment( item.uuid, realm );
+                      //   // then delete remotely
+                      //   deleteCommentMutation.mutate( item.uuid );
+                      //   setKebabMenuVisible( false );
+                    }}
+                    title={t( "Restore" )}
+                  />
+                )}
+            </KebabMenu>
+          )}
         {
-          item.body && currentUser
-            ? (
+          ( item.body && currentUser )
+            && (
               <KebabMenu
                 visible={kebabMenuVisible}
                 setVisible={setKebabMenuVisible}
@@ -173,10 +232,7 @@ const ActivityHeader = ( {
                     setShowEditCommentSheet( true );
                     setKebabMenuVisible( false );
                     // // first delete locally
-                    //   Comment.deleteComment( item.uuid, realm );
-                    //   // then delete remotely
-                    //   deleteCommentMutation.mutate( item.uuid );
-                    //   setKebabMenuVisible( false );
+                    // update realm with edited comments?
                   }}
                   title={t( "Edit-comment" )}
                 />
@@ -192,24 +248,28 @@ const ActivityHeader = ( {
                 />
               </KebabMenu>
             )
-            : (
-              <KebabMenu
-                visible={kebabMenuVisible}
-                setVisible={setKebabMenuVisible}
-              >
-                {!currentUser
-                  ? (
-                    <Menu.Item
-                      onPress={() => setFlagModalVisible( true )}
-                      title={t( "Flag" )}
-                      testID="MenuItem.Flag"
-                    />
-                  )
-                  : undefined}
-                <View />
-              </KebabMenu>
-            )
         }
+        {
+          !currentUser
+          && (
+            <KebabMenu
+              visible={kebabMenuVisible}
+              setVisible={setKebabMenuVisible}
+            >
+              {!currentUser
+                ? (
+                  <Menu.Item
+                    onPress={() => setFlagModalVisible( true )}
+                    title={t( "Flag" )}
+                    testID="MenuItem.Flag"
+                  />
+                )
+                : undefined}
+              <View />
+            </KebabMenu>
+          )
+        }
+
         {!currentUser
         && (
           <FlagItemModal

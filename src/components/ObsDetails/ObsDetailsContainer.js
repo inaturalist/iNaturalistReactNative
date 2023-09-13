@@ -2,7 +2,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { createComment } from "api/comments";
-import createIdentification from "api/identifications";
+import { createIdentification } from "api/identifications";
 import {
   fetchRemoteObservation,
   markObservationUpdatesViewed
