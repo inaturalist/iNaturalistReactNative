@@ -2,14 +2,14 @@
 
 import { FlashList } from "@shopify/flash-list";
 import {
-  Body2, Button, FloatingActionBar, StickyToolbar
+  Body2, Button, FloatingActionBar, INatIconButton, StickyToolbar
 } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { Appbar } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
 import GroupPhotoImage from "./GroupPhotoImage";
 
@@ -32,6 +32,7 @@ const GroupPhotos = ( {
   removePhotos,
   separatePhotos
 }: Props ): Node => {
+  const theme = useTheme();
   const renderImage = ( { item } ) => (
     <GroupPhotoImage
       item={item}
@@ -68,27 +69,40 @@ const GroupPhotos = ( {
         position="bottomStart"
         containerClass="bottom-[100px] ml-1 rounded-md"
       >
-        <View className="rounded-md overflow-hidden">
-          <Appbar.Header>
-            <Appbar.Action
-              icon="combine"
-              onPress={combinePhotos}
-              disabled={noObsSelected || oneObsSelected}
-              accessibilityLabel={t( "Combine-Photos" )}
-            />
-            <Appbar.Action
-              icon="separate"
-              onPress={separatePhotos}
-              disabled={!obsWithMultiplePhotosSelected}
-              accessibilityLabel={t( "Separate-Photos" )}
-            />
-            <Appbar.Action
-              icon="trash-outline"
-              onPress={removePhotos}
-              disabled={noObsSelected}
-              accessibilityLabel={t( "Remove-Photos" )}
-            />
-          </Appbar.Header>
+        <View className="rounded-md overflow-hidden flex-row">
+          <INatIconButton
+            icon="combine"
+            mode="contained"
+            size={20}
+            color={theme.colors.onPrimary}
+            backgroundColor={theme.colors.primary}
+            className="m-4"
+            accessibilityLabel={t( "Combine-Photos" )}
+            disabled={noObsSelected || oneObsSelected}
+            onPress={combinePhotos}
+          />
+          <INatIconButton
+            icon="separate"
+            mode="contained"
+            size={20}
+            color={theme.colors.onPrimary}
+            backgroundColor={theme.colors.primary}
+            className="m-4"
+            accessibilityLabel={t( "Separate-Photos" )}
+            disabled={!obsWithMultiplePhotosSelected}
+            onPress={separatePhotos}
+          />
+          <INatIconButton
+            icon="trash-outline"
+            mode="contained"
+            size={20}
+            color={theme.colors.onError}
+            backgroundColor={theme.colors.error}
+            className="m-4"
+            accessibilityLabel={t( "Remove-Photos" )}
+            disabled={noObsSelected}
+            onPress={removePhotos}
+          />
         </View>
       </FloatingActionBar>
       <StickyToolbar>
