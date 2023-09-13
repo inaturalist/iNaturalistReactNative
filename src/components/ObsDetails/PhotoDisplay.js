@@ -34,15 +34,19 @@ const PhotoDisplay = ( {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
-  const editButton = useMemo( ( ) => (
-    <INatIconButton
-      onPress={( ) => navigation.navigate( "ObsEdit", { uuid } )}
-      icon="pencil"
-      color={colors.white}
-      className="absolute top-3 right-3"
-      accessibilityLabel={t( "Edit" )}
-    />
-  ), [t, navigation, uuid] );
+  const editButton = useMemo(
+    () => (
+      <INatIconButton
+        testID="ObsDetail.editButton"
+        onPress={() => navigation.navigate( "ObsEdit", { uuid } )}
+        icon="pencil"
+        color={colors.white}
+        className="absolute top-3 right-3"
+        accessibilityLabel={t( "Edit" )}
+      />
+    ),
+    [t, navigation, uuid]
+  );
 
   const displayPhoto = ( ) => {
     if ( !isOnline ) {
