@@ -77,9 +77,12 @@ const INatIconButton = ( {
       onPress={onPress}
       style={( { pressed } ) => [
         {
-          opacity: pressed
-            ? 0.95
-            : 1,
+          // eslint-disable-next-line no-nested-ternary
+          opacity: disabled
+            ? 0.5
+            : pressed
+              ? 0.95
+              : 1,
           width,
           height,
           justifyContent: "center",
