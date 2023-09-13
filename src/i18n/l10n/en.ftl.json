@@ -162,9 +162,9 @@
   "Explore": "Explore",
   "EXPLORE-OBSERVATIONS": "EXPLORE OBSERVATIONS",
   "External-Applications": "External Applications",
-  "Featured": {
+  "FEATURED": {
     "comment": "Header for featured projects",
-    "val": "Featured"
+    "val": "FEATURED"
   },
   "Fetching-location": "Fetching location...",
   "Filters": "Filters",
@@ -219,9 +219,9 @@
     "val": "The username or password is incorrect"
   },
   "Join-the-largest-community-of-naturalists": "Join the largest community of naturalists in the world!",
-  "Joined": {
+  "JOINED": {
     "comment": "Header for joined projects",
-    "val": "Joined"
+    "val": "JOINED"
   },
   "Joined-date": {
     "comment": "Shows date user joined iNaturalist on user profile",
@@ -277,9 +277,9 @@
   "Muted-Users": "Muted Users",
   "Names": "Names",
   "Native": "Native",
-  "Nearby": {
+  "NEARBY": {
     "comment": "Header for nearby projects",
-    "val": "Nearby"
+    "val": "NEARBY"
   },
   "New-Observation": "New Observation",
   "Next": "Next",
@@ -865,5 +865,12 @@
   "Taxon-photo-and-name": {
     "comment": "Default accessibility label for DisplayTaxon component",
     "val": "Taxon photo and name"
-  }
+  },
+  "You-havent-joined-any-projects-yet": "You haven’t joined any projects yet!",
+  "You-can-click-join-on-the-project-page": "You can click “join” on the project page.",
+  "No-projects-match-that-search": "No projects match that search",
+  "RESET-SEARCH": "RESET SEARCH",
+  "PROJECT-REQUIREMENTS": "PROJECT REQUIREMENTS",
+  "VIEW-PROJECT-REQUIREMENTS": "VIEW PROJECT REQUIREMENTS",
+  "VIEW-IN-EXPLORE": "VIEW IN EXPLORE"
 }

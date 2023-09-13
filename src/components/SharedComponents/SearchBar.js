@@ -22,7 +22,8 @@ type Props = {
   value: string,
   testID?: string,
   hasShadow?: boolean,
-  input?: any
+  input?: any,
+  placeholder?: string
 }
 
 // Ensure this component is placed outside of scroll views
@@ -33,7 +34,8 @@ const SearchBar = ( {
   handleTextChange,
   value,
   hasShadow,
-  input
+  input,
+  placeholder
 }: Props ): Node => {
   const theme = useTheme( );
 
@@ -41,6 +43,7 @@ const SearchBar = ( {
     <View className={containerClass}>
       <TextInput
         ref={input}
+        placeholder={placeholder}
         accessibilityLabel="Search bar"
         accessibilityState={{ disabled: false }}
         keyboardType="default"

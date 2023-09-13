@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { fireEvent, screen } from "@testing-library/react-native";
-import Projects from "components/Projects/Projects";
+import ProjectsContainer from "components/Projects/ProjectsContainer";
 import initI18next from "i18n/initI18next";
 import React from "react";
 
@@ -36,7 +36,7 @@ describe( "Projects", ( ) => {
     await initI18next( );
   } );
   it( "should display project search results", ( ) => {
-    renderComponent( <Projects /> );
+    renderComponent( <ProjectsContainer /> );
 
     const input = screen.getByTestId( "ProjectSearch.input" );
     fireEvent.changeText( input, "butterflies" );
@@ -52,7 +52,7 @@ describe( "Projects", ( ) => {
 
   describe( "accessibility", ( ) => {
     it( "should not have errors", async ( ) => {
-      renderComponent( <Projects /> );
+      renderComponent( <ProjectsContainer /> );
       const projectObservations = await screen.findByTestId( "Projects" );
       expect( projectObservations ).toBeAccessible();
     } );

@@ -300,7 +300,7 @@ EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
 External-Applications = External Applications
 
 # Header for featured projects
-Featured = Featured
+FEATURED = FEATURED
 
 Fetching-location = Fetching location...
 
@@ -381,7 +381,7 @@ Invalid-login = The username or password is incorrect
 Join-the-largest-community-of-naturalists = Join the largest community of naturalists in the world!
 
 # Header for joined projects
-Joined = Joined
+JOINED = JOINED
 
 # Shows date user joined iNaturalist on user profile
 Joined-date = Joined: {$date}
@@ -469,7 +469,7 @@ Names = Names
 Native = Native
 
 # Header for nearby projects
-Nearby = Nearby
+NEARBY = NEARBY
 
 New-Observation = New Observation
 
@@ -1253,3 +1253,17 @@ No-results-found = No results found
 
 # Default accessibility label for DisplayTaxon component
 Taxon-photo-and-name = Taxon photo and name
+
+You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
+
+You-can-click-join-on-the-project-page = You can click “join” on the project page.
+
+No-projects-match-that-search = No projects match that search
+
+RESET-SEARCH = RESET SEARCH
+
+PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
+
+VIEW-PROJECT-REQUIREMENTS = VIEW PROJECT REQUIREMENTS
+
+VIEW-IN-EXPLORE = VIEW IN EXPLORE

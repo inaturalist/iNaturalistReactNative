@@ -7,12 +7,23 @@ import handleError from "./error";
 const FIELDS = {
   title: true,
   icon: true,
-  header_image_url: true,
-  description: true
+  project_type: true
 };
 
 const PARAMS = {
   fields: FIELDS
+};
+
+const DETAIL_FIELDS = {
+  ...FIELDS,
+  icon_file_name: true,
+  header_image_url: true,
+  description: true,
+  place_id: true
+};
+
+const DETAIL_PARAMS = {
+  fields: DETAIL_FIELDS
 };
 
 const fetchProjects = async (
@@ -21,7 +32,7 @@ const fetchProjects = async (
   opts: Object = {}
 ): Promise<any> => {
   try {
-    const { results } = await inatjs.projects.fetch( id, { ...PARAMS, ...params }, opts );
+    const { results } = await inatjs.projects.fetch( id, { ...DETAIL_PARAMS, ...params }, opts );
     return results[0];
   } catch ( e ) {
     return handleError( e );
