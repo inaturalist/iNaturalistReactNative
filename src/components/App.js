@@ -8,7 +8,9 @@ import RootDrawerNavigator from "navigation/rootDrawerNavigator";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
-import { AppState, Linking, LogBox } from "react-native";
+import {
+  AppState, Linking, LogBox, Platform
+} from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import { addARCameraFiles } from "sharedHelpers/cvModel";
@@ -128,28 +130,48 @@ const App = ( { children }: Props ): Node => {
     }
   }, [changeLanguageToLocale, currentUser?.locale, i18n] );
 
+  const navigateConfirmedUser = useCallback( ( ) => {
+    if ( currentUser ) { return; }
+    navigation.navigate( "LoginNavigator", {
+      screen: "Login",
+      params: { emailConfirmed: true }
+    } );
+  }, [navigation, currentUser] );
+
+  const newAccountConfirmedUrl = "https://www.inaturalist.org/users/sign_in?confirmed=true";
+  const existingAccountConfirmedUrl = "https://www.inaturalist.org/home?confirmed=true";
+  const testUrl = "https://www.inaturalist.org/observations";
+
   useEffect( ( ) => {
-    const newAccountURL = "https://www.inaturalist.org/users/sign_in?confirmed=true";
-    const existingAccountURL = "https://www.inaturalist.org/home?confirmed=true";
+    Linking.addEventListener( "url", async ( { url } ) => {
+      console.log( url.includes( testUrl ), "addEventListener" );
+      if ( url === newAccountConfirmedUrl
+        || url === existingAccountConfirmedUrl
+        || url.includes( testUrl ) ) {
+        navigateConfirmedUser( );
+      }
+    } );
+  }, [navigateConfirmedUser] );
 
-    const navigateConfirmedUser = e => {
-      console.log( e, "navigate confirmed user" );
-      if ( currentUser ) { return; }
-      navigation.navigate( "Login", { emailConfirmed: true } );
-    };
-
-    Linking.addEventListener( "url", navigateConfirmedUser );
-
+  useEffect( ( ) => {
     const fetchInitialUrl = async ( ) => {
-      const initialUrl = await Linking.getInitialURL( );
-      console.log( initialUrl, "initial url" );
+      const url = await Linking.getInitialURL( );
 
-      if ( initialUrl === newAccountURL || initialUrl === existingAccountURL ) {
+      console.log(
+        url,
+        url?.includes( testUrl ),
+        "initialUrl",
+        Platform.OS
+      );
+
+      if ( url === newAccountConfirmedUrl
+        || url === existingAccountConfirmedUrl
+        || url?.includes( testUrl ) ) {
         navigateConfirmedUser( );
       }
     };
     fetchInitialUrl( );
-  }, [currentUser, navigation] );
+  }, [navigateConfirmedUser] );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

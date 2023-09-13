@@ -1252,3 +1252,5 @@ No-results-found = No results found
 
 # Default accessibility label for DisplayTaxon component
 Taxon-photo-and-name = Taxon photo and name
+
+Your-email-is-confirmed = Your email is confirmed! Please log in to continue.

@@ -11,7 +11,7 @@
             openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-  return [ShareMenuManager application:app openURL:url options:options] || [RCTLinkingManager application:app openURL:url options:options];
+  return [RCTLinkingManager application:app openURL:url options:options] || [ShareMenuManager application:app openURL:url options:options];
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
