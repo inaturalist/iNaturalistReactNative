@@ -5,11 +5,12 @@ const testUser = process.env.E2E_TEST_USERNAME;
 
 const checkTestUsersObservations = async ( ) => {
   // eslint-disable-next-line camelcase
-  const { total_results } = await inaturalistjs.observations.search( {
+  const apiResponse = await inaturalistjs.observations.search( {
     user_id: testUser
   } );
+  console.log( "apiResponse :>> ", apiResponse );
   // eslint-disable-next-line camelcase
-  if ( total_results !== 0 ) {
+  if ( apiResponse.total_results !== 0 ) {
     // eslint-disable-next-line max-len
     console.log( "The e2e test user has observations associated with it, this will break the e2e tests." );
     console.log( "Please, manually remove those observations from the production database." );
