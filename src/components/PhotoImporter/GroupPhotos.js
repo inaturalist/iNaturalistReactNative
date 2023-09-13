@@ -48,11 +48,12 @@ const GroupPhotos = ( {
 
   return (
     <ViewWrapper>
-      <View className="mx-5">
-        <Body2 className="mt-5">{t( "Group-photos-onboarding" )}</Body2>
-      </View>
       <FlatList
-        className="mt-5"
+        ListHeaderComponent={(
+          <View className="m-5">
+            <Body2>{t( "Group-photos-onboarding" )}</Body2>
+          </View>
+        )}
         data={groupedPhotos}
         initialNumToRender={4}
         keyExtractor={extractKey}
