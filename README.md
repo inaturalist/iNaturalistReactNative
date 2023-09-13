@@ -162,7 +162,7 @@ We use [fastlane](https://docs.fastlane.tools/) to help automate parts of the de
 
 ### Using Fastlane
 
-The current expectation is that you we tag to freeze the code, bump the internal build number, and describe the changes represented by the tag. Then we release to make builds and publish on Github. Later, presumably when some of the change logs have been translated, we push builds for internal testing. If that looks ok, we push to public testing, and later to production release.
+The current expectation is that we tag to freeze the code, bump the internal build number, and describe the changes represented by the tag. Then we release to make builds and publish on Github. Later, presumably when some of the change logs have been translated, we push builds for internal testing. If that looks ok, we push to public testing, and later to production release.
 
 ```zsh
 # Make a git tag. This will bump the build number and prompt you to describe
