@@ -1,5 +1,6 @@
 // @flow
 
+import { FlashList } from "@shopify/flash-list";
 import {
   Body2, Button, FloatingActionBar, StickyToolbar
 } from "components/SharedComponents";
@@ -8,7 +9,6 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { FlatList } from "react-native";
 import { Appbar } from "react-native-paper";
 
 import GroupPhotoImage from "./GroupPhotoImage";
@@ -48,7 +48,7 @@ const GroupPhotos = ( {
 
   return (
     <ViewWrapper>
-      <FlatList
+      <FlashList
         ListHeaderComponent={(
           <View className="m-5">
             <Body2>{t( "Group-photos-onboarding" )}</Body2>
@@ -60,6 +60,8 @@ const GroupPhotos = ( {
         numColumns={2}
         renderItem={renderImage}
         testID="GroupPhotos.list"
+        estimatedItemSize={178}
+        extraData={selectedObservations}
       />
       <FloatingActionBar
         show={selectedObservations.length > 0}
