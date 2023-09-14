@@ -2,10 +2,10 @@
 
 import { FlashList } from "@shopify/flash-list";
 import {
-  Body2, Button, FloatingActionBar, INatIconButton, StickyToolbar
+  Body2, Button, FloatingActionBar, INatIcon, INatIconButton, StickyToolbar
 } from "components/SharedComponents";
 import ViewWrapper from "components/SharedComponents/ViewWrapper";
-import { View } from "components/styledComponents";
+import { Pressable, View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
@@ -22,7 +22,8 @@ type Props = {
   navToObsEdit: Function,
   combinePhotos: Function,
   removePhotos: Function,
-  separatePhotos: Function
+  separatePhotos: Function,
+  totalPhotos: number
 }
 
 const GroupPhotos = ( {
@@ -32,20 +33,22 @@ const GroupPhotos = ( {
   navToObsEdit,
   combinePhotos,
   removePhotos,
-  separatePhotos
+  separatePhotos,
+  totalPhotos
 }: Props ): Node => {
   const theme = useTheme();
   const {
-    isLandscapeMode,
-    isTablet,
-    screenWidth,
-    screenHeight
-  } = useDeviceOrientation();
-  const extractKey = ( item, index ) => `${item.photos[0].uri}${index}`;
+    isLandscapeMode, isTablet, screenWidth, screenHeight
+  }
+    = useDeviceOrientation();
+  const extractKey = ( item, index ) => ( item.empty
+    ? "empty"
+    : `${item.photos[0].uri}${index}` );
 
   const noObsSelected = selectedObservations.length === 0;
   const oneObsSelected = selectedObservations.length === 1;
-  const obsWithMultiplePhotosSelected = selectedObservations?.[0]?.photos?.length > 1;
+  const obsWithMultiplePhotosSelected
+    = selectedObservations?.[0]?.photos?.length > 1;
 
   const calculateNumColumns = () => {
     if ( screenWidth <= BREAKPOINTS.sm ) {
@@ -74,7 +77,7 @@ const GroupPhotos = ( {
     margin: GUTTER / 2
   };
 
-  const renderImage = ( { item } ) => (
+  const renderImage = item => (
     <GroupPhotoImage
       item={item}
       selectedObservations={selectedObservations}
@@ -82,6 +85,34 @@ const GroupPhotos = ( {
       style={itemStyle}
     />
   );
+
+  const renderItem = ( { item } ) => {
+    console.log( "item :>> ", item );
+    if ( item.empty ) {
+      return (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => console.log( "TODO" )}
+          className="rounded-[15px] justify-center items-center"
+          // Sorry, couldn't get this to work with tailwind
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={[itemStyle, {
+            borderWidth: 4,
+            borderStyle: "dashed",
+            borderColor: theme.colors.mediumGray
+          }]}
+        >
+          <INatIcon name="plus" size={50} color={theme.colors.mediumGray} />
+        </Pressable>
+      );
+    }
+    return renderImage( item );
+  };
+
+  const data = [].concat( groupedPhotos );
+  if ( totalPhotos < 20 ) {
+    data.push( { empty: true } );
+  }
 
   return (
     <ViewWrapper>
@@ -96,12 +127,12 @@ const GroupPhotos = ( {
             <Body2>{t( "Group-photos-onboarding" )}</Body2>
           </View>
         )}
-        data={groupedPhotos}
+        data={data}
         initialNumToRender={4}
         keyExtractor={extractKey}
         numColumns={numColumns}
         key={numColumns}
-        renderItem={renderImage}
+        renderItem={renderItem}
         testID="GroupPhotos.list"
         extraData={{
           selectedObservations,
