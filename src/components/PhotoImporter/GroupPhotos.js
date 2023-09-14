@@ -88,7 +88,8 @@ const GroupPhotos = ( {
       <FlashList
         contentContainerStyle={{
           paddingLeft: GUTTER / 2,
-          paddingRight: GUTTER / 2
+          paddingRight: GUTTER / 2,
+          paddingBottom: 80 + GUTTER / 2
         }}
         ListHeaderComponent={(
           <View className="m-5">
