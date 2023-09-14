@@ -9,7 +9,7 @@ import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
 import {
-  AppState, Linking, LogBox, Platform
+  AppState, Linking, LogBox
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
@@ -144,7 +144,6 @@ const App = ( { children }: Props ): Node => {
 
   useEffect( ( ) => {
     Linking.addEventListener( "url", async ( { url } ) => {
-      console.log( url.includes( testUrl ), "addEventListener" );
       if ( url === newAccountConfirmedUrl
         || url === existingAccountConfirmedUrl
         || url.includes( testUrl ) ) {
@@ -156,13 +155,6 @@ const App = ( { children }: Props ): Node => {
   useEffect( ( ) => {
     const fetchInitialUrl = async ( ) => {
       const url = await Linking.getInitialURL( );
-
-      console.log(
-        url,
-        url?.includes( testUrl ),
-        "initialUrl",
-        Platform.OS
-      );
 
       if ( url === newAccountConfirmedUrl
         || url === existingAccountConfirmedUrl
