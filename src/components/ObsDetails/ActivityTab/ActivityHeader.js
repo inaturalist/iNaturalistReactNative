@@ -1,10 +1,5 @@
 // @flow
-
-import { useQueryClient } from "@tanstack/react-query";
-import { deleteComments, updateComment } from "api/comments";
-import { updateIdentification } from "api/identifications";
 import classnames from "classnames";
-import { isCurrentUser } from "components/LoginSignUp/AuthenticationService";
 import FlagItemModal from "components/ObsDetails/FlagItemModal";
 import {
   Body4, INatIcon, InlineUser, TextInputSheet
@@ -14,120 +9,38 @@ import {
   View
 } from "components/styledComponents";
 import { t } from "i18next";
-import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Menu } from "react-native-paper";
-import Comment from "realmModels/Comment";
 import { formatIdDate } from "sharedHelpers/dateAndTime";
-import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 import colors from "styles/tailwindColors";
-
-const { useRealm } = RealmContext;
 
 type Props = {
   item: Object,
-  refetchRemoteObservation?: Function,
+  currentUser: boolean,
   classNameMargin?: string,
-  idWithdrawn: boolean
+  idWithdrawn: boolean,
+  flagged: boolean,
+  updateCommentBody: Function,
+  deleteComment: Function,
+  withdrawOrRestoreIdentification: Function,
+  onItemFlagged:Function
+
 }
 
 const ActivityHeader = ( {
-  item, refetchRemoteObservation, classNameMargin,
-  idWithdrawn
+  item, classNameMargin, currentUser,
+  idWithdrawn, flagged, updateCommentBody, deleteComment, withdrawOrRestoreIdentification,
+  onItemFlagged
 }:Props ): Node => {
-  const [currentUser, setCurrentUser] = useState( null );
   const [kebabMenuVisible, setKebabMenuVisible] = useState( false );
   const [flagModalVisible, setFlagModalVisible] = useState( false );
-  const [flaggedStatus, setFlaggedStatus] = useState( false );
-  const realm = useRealm( );
-  const queryClient = useQueryClient( );
   const [showEditCommentSheet, setShowEditCommentSheet] = useState( false );
   const { user } = item;
 
   const itemType = item.category
     ? "Identification"
     : "Comment";
-
-  useEffect( ( ) => {
-    const isActiveUserTheCurrentUser = async ( ) => {
-      const current = await isCurrentUser( user?.login );
-      setCurrentUser( current );
-    };
-    isActiveUserTheCurrentUser( );
-
-    if ( item.flags?.length > 0 ) {
-      setFlaggedStatus( true );
-    }
-  }, [user, item] );
-
-  const closeFlagItemModal = () => {
-    setFlagModalVisible( false );
-  };
-
-  const onItemFlagged = () => {
-    if ( refetchRemoteObservation ) {
-      setFlaggedStatus( true );
-      refetchRemoteObservation();
-    }
-  };
-
-  const deleteCommentMutation = useAuthenticatedMutation(
-    ( uuid, optsWithAuth ) => deleteComments( uuid, optsWithAuth ),
-    {
-      onSuccess: ( ) => {
-        queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
-        if ( refetchRemoteObservation ) {
-          refetchRemoteObservation( );
-        }
-      }
-    }
-  );
-
-  const updateCommentMutation = useAuthenticatedMutation(
-    ( uuid, optsWithAuth ) => updateComment( uuid, optsWithAuth ),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
-        if ( refetchRemoteObservation ) {
-          refetchRemoteObservation( );
-        }
-      }
-    }
-  );
-
-  const updateCommentBody = comment => {
-    const updateCommentParams = {
-      id: item.uuid,
-      comment: {
-        body: comment
-      }
-    };
-    updateCommentMutation.mutate( updateCommentParams );
-  };
-
-  const updateIdentificationMutation = useAuthenticatedMutation(
-    ( uuid, optsWithAuth ) => updateIdentification( uuid, optsWithAuth ),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries( ["fetchRemoteObservation", item.uuid] );
-        if ( refetchRemoteObservation ) {
-          refetchRemoteObservation( );
-        }
-      }
-    }
-  );
-
-  const withdrawOrRestoreIdentification = withdrawOrRestore => {
-    const updateIdentificationParams = {
-      id: item.uuid,
-      identification: {
-        body: item.body,
-        current: withdrawOrRestore
-      }
-    };
-    updateIdentificationMutation.mutate( updateIdentificationParams );
-  };
 
   const renderIcon = () => {
     if ( idWithdrawn ) {
@@ -138,12 +51,12 @@ const ActivityHeader = ( {
       );
     }
     if ( item.vision ) return <INatIcon name="sparkly-label" size={22} />;
-    if ( flaggedStatus ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
+    if ( flagged ) return <INatIcon name="flag" color={colors.warningYellow} size={22} />;
     return null;
   };
 
   const renderStatus = () => {
-    if ( flaggedStatus ) {
+    if ( flagged ) {
       return (
         <Body4>
           {t( "Flagged" )}
@@ -167,6 +80,10 @@ const ActivityHeader = ( {
     return (
       <Body4 />
     );
+  };
+
+  const closeFlagItemModal = () => {
+    setFlagModalVisible( false );
   };
 
   return (
@@ -195,13 +112,9 @@ const ActivityHeader = ( {
                     onPress={async ( ) => {
                       withdrawOrRestoreIdentification( false );
                       setKebabMenuVisible( false );
-                      // // first delete locally
-                      //   Comment.deleteComment( item.uuid, realm );
-                      //   // then delete remotely
-                      //   deleteCommentMutation.mutate( item.uuid );
-                      //   setKebabMenuVisible( false );
                     }}
                     title={t( "Withdraw" )}
+                    testID="MenuItem.Withdraw"
                   />
                 )
                 : (
@@ -209,11 +122,6 @@ const ActivityHeader = ( {
                     onPress={async ( ) => {
                       withdrawOrRestoreIdentification( true );
                       setKebabMenuVisible( false );
-                      // // first delete locally
-                      //   Comment.deleteComment( item.uuid, realm );
-                      //   // then delete remotely
-                      //   deleteCommentMutation.mutate( item.uuid );
-                      //   setKebabMenuVisible( false );
                     }}
                     title={t( "Restore" )}
                   />
@@ -221,7 +129,7 @@ const ActivityHeader = ( {
             </KebabMenu>
           )}
         {
-          ( item.body && currentUser )
+          ( itemType === "Comment" && item.body && currentUser )
             && (
               <KebabMenu
                 visible={kebabMenuVisible}
@@ -231,20 +139,17 @@ const ActivityHeader = ( {
                   onPress={async ( ) => {
                     setShowEditCommentSheet( true );
                     setKebabMenuVisible( false );
-                    // // first delete locally
-                    // update realm with edited comments?
                   }}
                   title={t( "Edit-comment" )}
+                  testID="MenuItem.EditComment"
                 />
                 <Menu.Item
                   onPress={async ( ) => {
-                  // first delete locally
-                    Comment.deleteComment( item.uuid, realm );
-                    // then delete remotely
-                    deleteCommentMutation.mutate( item.uuid );
+                    deleteComment( item.uuid );
                     setKebabMenuVisible( false );
                   }}
                   title={t( "Delete-comment" )}
+                  testID="MenuItem.DeleteComment"
                 />
               </KebabMenu>
             )
