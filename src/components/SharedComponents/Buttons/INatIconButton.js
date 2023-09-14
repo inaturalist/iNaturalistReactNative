@@ -24,7 +24,7 @@ type Props = {
   // Inserts a white or colored view under the icon so an holes in the shape show as
   // white
   backgroundColor?: string,
-  mode?: string
+  mode?: "contained"
 }
 
 const MIN_ACCESSIBLE_DIM = 44;
@@ -102,6 +102,9 @@ const INatIconButton = ( {
             // Position and size need to be dynamic
             // eslint-disable-next-line react-native/no-inline-styles
             style={{
+              opacity: disabled
+                ? 0
+                : 1,
               position: "absolute",
               top: isWhite
                 ? 2
