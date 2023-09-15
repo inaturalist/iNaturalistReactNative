@@ -3,7 +3,6 @@
 import LocationIndicator from "images/svg/location_indicator.svg";
 import ObscuredLocationIndicator from "images/svg/obscured_location_indicator.svg";
 import * as React from "react";
-import { useMemo } from "react";
 import { View } from "react-native";
 import MapView, {
   Circle,
@@ -51,17 +50,6 @@ const Map = ( {
     longitudeDelta: 0.4
   };
 
-  const returnRandomArbitraryCoordinates = () => {
-    const latMin = obsLatitude - OBSCURATION_VALUE;
-    const latMax = obsLatitude + OBSCURATION_VALUE;
-    const longMin = obsLongitude - OBSCURATION_VALUE;
-    const longMax = obsLongitude + OBSCURATION_VALUE;
-    return {
-      latitude: Math.random() * ( latMax - latMin ) + latMin,
-      longitude: Math.random() * ( longMax - longMin ) + longMin
-    };
-  };
-
   const locationIndicator = () => (
     // $FlowIgnore
     <LocationIndicator width={25} height={32} />
@@ -71,9 +59,6 @@ const Map = ( {
     // $FlowIgnore
     <ObscuredLocationIndicator width={31} height={31} />
   );
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const obscuredCoordinates = useMemo( () => returnRandomArbitraryCoordinates(), [] );
 
   return (
     <View
@@ -155,8 +140,8 @@ const Map = ( {
               />
               <Marker
                 coordinate={{
-                  latitude: obscuredCoordinates.latitude,
-                  longitude: obscuredCoordinates.longitude
+                  latitude: obsLatitude,
+                  longitude: obsLongitude
                 }}
               >
                 {obscuredlLocationIndicator()}

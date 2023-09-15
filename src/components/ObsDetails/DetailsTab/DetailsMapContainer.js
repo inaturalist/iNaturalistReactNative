@@ -47,7 +47,7 @@ const DetailsMapContainer = ( {
     Clipboard.setString( coordinateString );
     setShowNotificationModal( true );
     // notification disappears after 2 secs
-    setTimeout( closeModal, 2000 );
+    setTimeout( closeShowNotificationModal, 2000 );
   };
 
   const cycleMapTypes = () => {

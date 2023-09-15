@@ -40,25 +40,37 @@ const ObservationLocation = ( {
     } );
   }
 
-  const displayGeoprivacy = ( ) => (
-    <View className="flex-row mt-[11px]">
-      <INatIcon name="globe-outline" size={14} />
-      <Body4
-        className="text-darkGray ml-[5px]"
-        numberOfLines={1}
-        ellipsizeMode="tail"
-      >
-        {t( "Geoprivacy" )}
-      </Body4>
-      <Body4
-        className="text-darkGray ml-[5px]"
-        numberOfLines={1}
-        ellipsizeMode="tail"
-      >
-        {t( geoprivacy )}
-      </Body4>
-    </View>
-  );
+  const displayGeoprivacy = ( ) => {
+    let displayPrivacy = geoprivacy;
+    if ( obscured ) {
+      if ( displayPrivacy === "Private" ) {
+        displayPrivacy = "Private";
+      }
+      displayPrivacy = "Obscured";
+    }
+    if ( displayCoords ) {
+      displayPrivacy = "Open";
+    }
+    return (
+      <View className="flex-row mt-[11px]">
+        <INatIcon name="globe-outline" size={14} />
+        <Body4
+          className="text-darkGray ml-[5px]"
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {t( "Geoprivacy" )}
+        </Body4>
+        <Body4
+          className="text-darkGray ml-[5px]"
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {t( displayPrivacy )}
+        </Body4>
+      </View>
+    );
+  };
 
   const TextComponent = large
     ? Body3
@@ -95,7 +107,7 @@ const ObservationLocation = ( {
                 {displayCoords}
               </Body4>
             )}
-            {geoprivacy && displayGeoprivacy()}
+            {displayGeoprivacy()}
           </View>
         )}
     </View>
