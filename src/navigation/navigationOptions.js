@@ -55,7 +55,9 @@ export const hideHeaderLeft: Object = {
 
 const showCustomHeader: Object = {
   ...baseHeaderOptions,
-  header: ContextHeader
+  header: ContextHeader,
+  headerShadowVisible: true,
+  alignStart: true
 };
 
 const hideHeader = {

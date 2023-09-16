@@ -170,7 +170,8 @@ const AddObsStackNavigator = ( ): Node => (
           ...showHeaderLeft,
           ...showCustomHeader,
           lazy: true,
-          title: t( "Group-Photos" )
+          title: t( "Group-Photos" ),
+          headerShadowVisible: false
         }}
       />
       <Stack.Screen

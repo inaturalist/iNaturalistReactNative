@@ -26,6 +26,8 @@ type Props = {
   totalPhotos: number
 }
 
+const GUTTER = 15;
+
 const GroupPhotos = ( {
   groupedPhotos,
   selectedObservations,
@@ -39,8 +41,7 @@ const GroupPhotos = ( {
   const theme = useTheme();
   const {
     isLandscapeMode, isTablet, screenWidth, screenHeight
-  }
-    = useDeviceOrientation();
+  } = useDeviceOrientation();
   const extractKey = ( item, index ) => ( item.empty
     ? "empty"
     : `${item.photos[0].uri}${index}` );
@@ -60,8 +61,6 @@ const GroupPhotos = ( {
     return 4;
   };
   const numColumns = calculateNumColumns();
-
-  const GUTTER = 15;
   const calculateGridItemWidth = () => {
     const combinedGutter = ( numColumns + 1 ) * GUTTER;
     const gridWidth = isTablet
@@ -87,7 +86,6 @@ const GroupPhotos = ( {
   );
 
   const renderItem = ( { item } ) => {
-    console.log( "item :>> ", item );
     if ( item.empty ) {
       return (
         <Pressable
@@ -143,7 +141,7 @@ const GroupPhotos = ( {
       <FloatingActionBar
         show={selectedObservations.length > 0}
         position="bottomStart"
-        containerClass="bottom-[100px] ml-1 rounded-md"
+        containerClass="bottom-[90px] ml-[15px] rounded-md"
       >
         <View className="rounded-md overflow-hidden flex-row">
           <INatIconButton
@@ -181,9 +179,9 @@ const GroupPhotos = ( {
           />
         </View>
       </FloatingActionBar>
-      <StickyToolbar>
+      <StickyToolbar containerClass="items-center">
         <Button
-          className="mt-2 mx-4"
+          className="max-w-[500px] w-full"
           level="focus"
           text={t( "IMPORT-X-OBSERVATIONS", { count: groupedPhotos.length } )}
           onPress={navToObsEdit}
