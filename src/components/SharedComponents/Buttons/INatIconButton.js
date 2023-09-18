@@ -67,6 +67,16 @@ const INatIconButton = ( {
       "Button needs an accessibility label"
     );
   }
+  const opacity = pressed => {
+    if ( disabled ) {
+      return 0.5;
+    }
+    if ( pressed ) {
+      return 0.95;
+    }
+    return 1;
+  };
+
   return (
     <Pressable
       accessibilityHint={accessibilityHint}
@@ -77,12 +87,7 @@ const INatIconButton = ( {
       onPress={onPress}
       style={( { pressed } ) => [
         {
-          // eslint-disable-next-line no-nested-ternary
-          opacity: disabled
-            ? 0.5
-            : pressed
-              ? 0.95
-              : 1,
+          opacity: opacity( pressed ),
           width,
           height,
           justifyContent: "center",
