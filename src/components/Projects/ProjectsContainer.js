@@ -57,6 +57,8 @@ const ProjectsContainer = ( ): Node => {
   useEffect( ( ) => {
     if ( searchInput.length > 0 ) {
       setApiParams( { q: searchInput } );
+    } else {
+      setApiParams( { } );
     }
   }, [searchInput] );
 

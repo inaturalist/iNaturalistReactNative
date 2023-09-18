@@ -70,6 +70,7 @@ const Projects = ( {
   );
 
   const renderEmptyList = ( ) => {
+    console.log( "rendering empty list" );
     if ( isLoading ) {
       <ActivityIndicator large />;
     } else {
@@ -116,7 +117,12 @@ const Projects = ( {
         containerClass="pb-5 mx-4"
         placeholder={t( "Search-for-a-project" )}
       />
-      {searchInput.length === 0 && <Tabs tabs={tabs} activeId={currentTabId} />}
+      {searchInput.length === 0 && (
+        <>
+          <Tabs tabs={tabs} activeId={currentTabId} />
+          <View className="mb-3" />
+        </>
+      )}
       <FlatList
         contentContainerStyle={projects?.length === 0 && emptyListStyles}
         data={projects}
