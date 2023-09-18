@@ -26,15 +26,26 @@ const ObservationsView = ( {
     observations, isFetchingNextPage, fetchNextPage, status
   } = useInfiniteObservationsScroll( { upsert: false, params: exploreParams } );
 
+  // console.log( observations[0], "observations" );
+
+  const tileMapParams = { };
+
+  if ( exploreParams?.taxon_id ) {
+    tileMapParams.taxon_id = exploreParams?.taxon_id;
+  }
+  if ( exploreParams?.place_id ) {
+    tileMapParams.place_id = exploreParams?.place_id;
+  }
+
   return observationsView === "map"
     ? (
       <Map
         className="h-full"
         showsCompass={false}
         region={region}
-        taxonId={exploreParams.taxon_id}
         hideMap={region.latitude === 0.0}
         observations={observations}
+        tileMapParams={tileMapParams}
       />
     )
     : (
