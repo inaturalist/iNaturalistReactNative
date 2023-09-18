@@ -140,13 +140,14 @@ const App = ( { children }: Props ): Node => {
 
   const newAccountConfirmedUrl = "https://www.inaturalist.org/users/sign_in?confirmed=true";
   const existingAccountConfirmedUrl = "https://www.inaturalist.org/home?confirmed=true";
-  const testUrl = "https://www.inaturalist.org/observations";
+  // const testUrl = "https://www.inaturalist.org/observations";
 
   useEffect( ( ) => {
     Linking.addEventListener( "url", async ( { url } ) => {
       if ( url === newAccountConfirmedUrl
+        // || url.includes( testUrl )
         || url === existingAccountConfirmedUrl
-        || url.includes( testUrl ) ) {
+      ) {
         navigateConfirmedUser( );
       }
     } );
@@ -157,8 +158,9 @@ const App = ( { children }: Props ): Node => {
       const url = await Linking.getInitialURL( );
 
       if ( url === newAccountConfirmedUrl
+        // || url?.includes( testUrl )
         || url === existingAccountConfirmedUrl
-        || url?.includes( testUrl ) ) {
+      ) {
         navigateConfirmedUser( );
       }
     };
