@@ -397,7 +397,7 @@ PODS:
     - React-perflogger (= 0.71.12)
   - ReactNativeExceptionHandler (2.10.10):
     - React-Core
-  - RealmJS (11.8.0):
+  - RealmJS (11.10.2):
     - React
   - RNAudioRecorderPlayer (3.5.3):
     - React-Core
@@ -412,11 +412,11 @@ PODS:
     - React-Core
   - RNDeviceInfo (10.6.0):
     - React-Core
-  - RNFlashList (1.4.3):
+  - RNFlashList (1.6.1):
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.9.0):
+  - RNGestureHandler (2.13.0):
     - React-Core
   - RNLocalize (2.2.6):
     - React-Core
@@ -754,16 +754,16 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 7902246857a4ead4166869e6c42d4df329ff721d
   ReactCommon: a6d1c76b9e10b439e41db225263341240e1cda9f
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
-  RealmJS: 27b8d695fa4bc9606a4a4a378de55511edc2084c
+  RealmJS: 73a36da3cbbe85e1bdcbf55683172b51f35070d3
   RNAudioRecorderPlayer: 6638283925b46808310c9fdf803ebabc3abdbadc
   RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
   RNCCheckbox: 43bcc6493611468af0e19f19f029dab3da8561c4
   RNCPicker: 0bc2f0a29abcca7b7ed44a2d036aac9ab6d25700
   RNDateTimePicker: e073697ac3e8a378968d68ab0581fef542b8af8a
   RNDeviceInfo: 475a4c447168d0ad4c807e48ef5e0963a0f4eb1b
-  RNFlashList: ade81b4e928ebd585dd492014d40fb8d0e848aab
+  RNFlashList: 236646d48f224a034f35baa0242e1b77db063b1e
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
+  RNGestureHandler: 6e4dc6b7ab3a385386d4e36228bd065e5a611394
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
   RNReanimated: f186e85d9f28c9383d05ca39e11dd194f59093ec
