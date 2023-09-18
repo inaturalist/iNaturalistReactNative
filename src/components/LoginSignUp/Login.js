@@ -1,5 +1,6 @@
 // @flow
 
+import { useRoute } from "@react-navigation/native";
 import { ScrollView } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
@@ -12,6 +13,8 @@ import LoginSignUpWrapper from "./LoginSignUpWrapper";
 import Logout from "./Logout";
 
 const Login = ( ): Node => {
+  const { params } = useRoute( );
+  const emailConfirmed = params?.emailConfirmed;
   const [loggedIn, setLoggedIn] = useState( false );
   const [hideHeader, setHideHeader] = useState( false );
 
@@ -52,6 +55,7 @@ const Login = ( ): Node => {
             <LoginForm
               setLoggedIn={setLoggedIn}
               handleInputFocus={handleInputFocus}
+              emailConfirmed={emailConfirmed}
             />
           </ScrollView>
         )}

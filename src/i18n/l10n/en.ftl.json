@@ -865,5 +865,6 @@
   "Taxon-photo-and-name": {
     "comment": "Default accessibility label for DisplayTaxon component",
     "val": "Taxon photo and name"
-  }
+  },
+  "Your-email-is-confirmed": "Your email is confirmed! Please log in to continue."
 }
