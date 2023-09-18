@@ -95,6 +95,7 @@ module.exports = {
       inatGreenDisabled: "#B9D580",
       inatGreenDisabledDark: "#3A5600",
       lightGray: "#E8E8E8",
+      mediumGray: "#BFBFBF",
       warningRed: "#9B1010",
       warningRedDisabled: "#b06365",
       warningYellow: "#E6A939",

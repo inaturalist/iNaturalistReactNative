@@ -24,7 +24,7 @@ type Props = {
   // Inserts a white or colored view under the icon so an holes in the shape show as
   // white
   backgroundColor?: string,
-  mode?: string
+  mode?: "contained"
 }
 
 const MIN_ACCESSIBLE_DIM = 44;
@@ -67,6 +67,16 @@ const INatIconButton = ( {
       "Button needs an accessibility label"
     );
   }
+  const opacity = pressed => {
+    if ( disabled ) {
+      return 0.5;
+    }
+    if ( pressed ) {
+      return 0.95;
+    }
+    return 1;
+  };
+
   return (
     <Pressable
       accessibilityHint={accessibilityHint}
@@ -77,9 +87,7 @@ const INatIconButton = ( {
       onPress={onPress}
       style={( { pressed } ) => [
         {
-          opacity: pressed
-            ? 0.95
-            : 1,
+          opacity: opacity( pressed ),
           width,
           height,
           justifyContent: "center",
@@ -99,6 +107,9 @@ const INatIconButton = ( {
             // Position and size need to be dynamic
             // eslint-disable-next-line react-native/no-inline-styles
             style={{
+              opacity: disabled
+                ? 0
+                : 1,
               position: "absolute",
               top: isWhite
                 ? 2
