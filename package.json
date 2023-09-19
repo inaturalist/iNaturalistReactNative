@@ -117,7 +117,7 @@
     "react-native-webview": "^11.26.1",
     "react-tinder-card": "^1.6.2",
     "realm": "^11.10.2",
-    "sanitize-html": "^2.10.0",
+    "sanitize-html": "^2.11.0",
     "use-debounce": "^9.0.4",
     "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision"
   },
