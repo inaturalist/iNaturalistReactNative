@@ -51,29 +51,26 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="image/*" />
             </intent-filter>
+            <!--
+                Note that this doesn't seem to work with redirects, which
+                means it doesn't work the way we want it to, i.e. to open the
+                app when you are redirected after successful confirmation.
+                We're going to punt on that until we start focusing on
+                releasing on Android. ~~~kueda 20230919
+            -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "https://www.inaturalist.org/users/sign_in" -->
+                <category android:name="android.intent.category.DEFAULT" />
                 <data
                     android:scheme="https"
                     android:host="www.inaturalist.org"
-                    android:pathPrefix="/users/sign_in" />
-                <!-- note that the leading "/" is required for pathPrefix-->
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "https://www.inaturalist.org/home" -->
+                    android:path="/users/sign_in?confirmed=true" />
                 <data
                     android:scheme="https"
                     android:host="www.inaturalist.org"
-                    android:pathPrefix="/home" />
-                <!-- note that the leading "/" is required for pathPrefix-->
+                    android:pathPrefix="/home?confirmed=true" />
             </intent-filter>
         </activity>
     </application>
