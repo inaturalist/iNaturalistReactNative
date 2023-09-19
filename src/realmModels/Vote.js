@@ -17,7 +17,7 @@ class Vote extends Realm.Object {
     name: "Vote",
     primaryKey: "id",
     properties: {
-      created_at: { type: "string", optional: true, mapTo: "createdAt" },
+      created_at: { type: "string?", mapTo: "createdAt" },
       id: "int",
       user_id: "int",
       vote_flag: "bool",

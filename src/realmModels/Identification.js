@@ -51,7 +51,7 @@ class Identification extends Realm.Object {
       body: "string?",
       category: "string?",
       current: "bool",
-      created_at: { type: "string", optional: true, mapTo: "createdAt" },
+      created_at: { type: "string?", mapTo: "createdAt" },
       flags: "Flag[]",
       id: "int?",
       taxon: "Taxon?",

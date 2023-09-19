@@ -143,7 +143,7 @@ class Photo extends Realm.Object {
       _updated_at: "date?",
       id: "int?",
       attribution: "string?",
-      license_code: { type: "string", optional: true, mapTo: "licenseCode" },
+      license_code: { type: "string?", mapTo: "licenseCode" },
       url: "string?",
       localFilePath: "string?"
     }

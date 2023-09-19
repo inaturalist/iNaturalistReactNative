@@ -47,7 +47,7 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "@react-spring/native": "9.5.5",
-    "@realm/react": "^0.6.0",
+    "@realm/react": "^0.4.3",
     "@sayem314/react-native-keep-awake": "1.1.0",
     "@shopify/flash-list": "^1.6.1",
     "@tanstack/react-query": "^4.35.3",
@@ -116,7 +116,7 @@
     "react-native-vision-camera": "github:inaturalist/react-native-vision-camera#our-main-fork",
     "react-native-webview": "^11.26.1",
     "react-tinder-card": "^1.6.2",
-    "realm": "^12.1.0",
+    "realm": "^11.10.2",
     "sanitize-html": "^2.11.0",
     "use-debounce": "^9.0.4",
     "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision"
