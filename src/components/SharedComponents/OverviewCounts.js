@@ -1,40 +1,61 @@
 // @flow
 
 import {
-  Body2, Heading5
+  Body2, Heading5, INatIcon
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
+import colors from "styles/tailwindColors";
 
 type Props = {
-  user: Object
+  counts: Object
 }
 
-const Count = ( { count, label } ) => (
-  <View className="w-1/4">
-    <Body2 className="self-center">{t( "Intl-number", { val: count } )}</Body2>
-    <Heading5 className="self-center">{label}</Heading5>
+const Count = ( { count, label, icon } ) => (
+  <View className="w-1/4 items-center">
+    <View className="bg-inatGreen w-[32px] h-[32px] rounded-lg items-center justify-center">
+      <INatIcon
+        name={icon}
+        size={18}
+        color={colors.white}
+      />
+    </View>
+    <Body2 className="mt-2">{t( "Intl-number", { val: count } )}</Body2>
+    <Heading5 className="mt-2 text-center">{t( label, { count } )}</Heading5>
   </View>
 );
 
-const OverviewCounts = ( { user }: Props ): React.Node => (
+const OverviewCounts = ( { counts }: Props ): React.Node => (
   <View className="flex-row mt-6">
     <Count
-      count={user.observations_count}
-      label={t( "OBSERVATIONS-WITHOUT-NUMBER", { count: user.observations_count } )}
+      count={counts.observations_count}
+      label="OBSERVATIONS-WITHOUT-NUMBER"
+      icon="binoculars"
     />
     <Count
-      count={user.species_count}
-      label={t( "SPECIES-WITHOUT-NUMBER", { count: user.species_count } )}
+      count={counts.species_count}
+      label="SPECIES-WITHOUT-NUMBER"
+      icon="leaf"
     />
+    {counts.identifications_count && (
+      <Count
+        count={counts.identifications_count}
+        label="IDENTIFICATIONS-WITHOUT-NUMBER"
+        icon="person"
+      />
+    )}
+    {counts.members_count && (
+      <Count
+        count={counts.members_count}
+        label="MEMBERS-WITHOUT-NUMBER"
+        icon="person"
+      />
+    )}
     <Count
-      count={user.identifications_count}
-      label={t( "IDENTIFICATIONS-WITHOUT-NUMBER", { count: user.identifications_count } )}
-    />
-    <Count
-      count={user.journal_posts_count}
-      label={t( "JOURNAL-POSTS-WITHOUT-NUMBER", { count: user.journal_posts_count } )}
+      count={counts.journal_posts_count}
+      label="JOURNAL-POSTS-WITHOUT-NUMBER"
+      icon="book"
     />
   </View>
 );

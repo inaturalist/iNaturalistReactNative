@@ -19,7 +19,9 @@ const DETAIL_FIELDS = {
   icon_file_name: true,
   header_image_url: true,
   description: true,
-  place_id: true
+  place_id: true,
+  observation_count: true,
+  species_count: true
 };
 
 const DETAIL_PARAMS = {
@@ -39,6 +41,30 @@ const fetchProjects = async (
   }
 };
 
+const fetchProjectMembers = async (
+  params: Object = {},
+  opts: Object = {}
+): Promise<any> => {
+  try {
+    const response = await inatjs.projects.members( params, opts );
+    return response.total_results;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const fetchProjectPosts = async (
+  params: Object = {},
+  opts: Object = {}
+): Promise<any> => {
+  try {
+    const response = await inatjs.projects.posts( params, opts );
+    return response.total_results;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 const searchProjects = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
     const { results } = await inatjs.projects.search( { ...PARAMS, ...params }, opts );
@@ -51,6 +77,8 @@ const searchProjects = async ( params: Object = {}, opts: Object = {} ): Promise
 export default searchProjects;
 
 export {
+  fetchProjectMembers,
+  fetchProjectPosts,
   fetchProjects,
   searchProjects
 };

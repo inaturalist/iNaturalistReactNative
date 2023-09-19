@@ -660,7 +660,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         per_page: 50,
         fields: Observation.FIELDS
       };
-      const results = await searchObservations( params, { api_token: apiToken } );
+      const { results } = await searchObservations( params, { api_token: apiToken } );
 
       Observation.upsertRemoteObservations( results, realm );
     };

@@ -76,7 +76,7 @@ const UserProfile = ( ): Node => {
           </Heading4>
         )}
       </View>
-      <OverviewCounts user={user} />
+      <OverviewCounts counts={user} />
       <View className="mx-3">
         {currentUser?.login !== user?.login && (
           <View className="flex-row justify-evenly mt-8 mb-4">

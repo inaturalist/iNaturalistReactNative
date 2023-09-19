@@ -75,7 +75,6 @@ const Projects = ( {
   );
 
   const renderEmptyList = ( ) => {
-    console.log( "rendering empty list" );
     if ( isLoading ) {
       <ActivityIndicator large />;
     } else {

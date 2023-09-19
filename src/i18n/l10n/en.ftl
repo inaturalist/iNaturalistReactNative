@@ -1216,6 +1216,11 @@ JOURNAL-POSTS-WITHOUT-NUMBER = {$count ->
     *[other] JOURNAL POSTS
 }
 
+MEMBERS-WITHOUT-NUMBER = {$count ->
+    [one] MEMBER
+    *[other] MEMBERS
+}
+
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
 I-consent-to-allow-iNaturalist-to-store = I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)
 I-consent-to-allow-my-personal-information = I consent to allow my personal information to be transferred to the United States of America (required)
