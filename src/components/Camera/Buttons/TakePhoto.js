@@ -36,13 +36,15 @@ const TakePhoto = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
 
+  const borderClass = "border-[1.64px] rounded-full h-[60px] w-[60px]";
+
   return (
     <Pressable
       className={classnames(
         "bg-white",
         "rounded-full",
-        "h-[60px]",
-        "w-[60px]",
+        "h-[74px]",
+        "w-[74px]",
         "justify-center",
         "items-center"
       )}
@@ -57,8 +59,8 @@ const TakePhoto = ( {
           <View
             style={getShadow( theme.colors.primary )}
             className={classnames(
-              "border-[1.64px] rounded-full h-[49.2px] w-[49.2px]",
-              "bg-inatGreen border-lightGray items-center justify-center"
+              borderClass,
+              "bg-inatGreen items-center justify-center border-darkGray"
             )}
           >
             <INatIcon
@@ -68,7 +70,7 @@ const TakePhoto = ( {
             />
           </View>
         )
-        : <View className="border-[1.64px] rounded-full h-[49.2px] w-[49.2px]" />}
+        : <View className={borderClass} />}
     </Pressable>
   );
 };

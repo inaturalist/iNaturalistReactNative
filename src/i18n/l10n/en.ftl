@@ -1247,6 +1247,7 @@ BLOG = BLOG
 DONATE = DONATE
 SETTINGS = SETTINGS
 LOG-OUT = LOG OUT
+Log-out = Log out
 Log-in-to-iNaturalist = Log in to iNaturalist
 
 Try-searching-for-a-location-name = Try searching for a location name to see the map
@@ -1258,3 +1259,5 @@ No-results-found = No results found
 
 # Default accessibility label for DisplayTaxon component
 Taxon-photo-and-name = Taxon photo and name
+
+Your-email-is-confirmed = Your email is confirmed! Please log in to continue.

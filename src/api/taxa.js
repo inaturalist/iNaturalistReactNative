@@ -19,6 +19,9 @@ const PHOTO_FIELDS = {
 
 const FIELDS = {
   ancestors: ANCESTOR_FIELDS,
+  default_photo: {
+    url: true
+  },
   name: true,
   preferred_common_name: true,
   rank: true,
