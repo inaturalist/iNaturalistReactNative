@@ -1,9 +1,10 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
-  Body2, Button,
-  Heading1, Heading3, Heading4, ScrollViewWrapper
+  Button, Heading1, Heading3, Heading4, ScrollViewWrapper,
+  UserText
 } from "components/SharedComponents";
 import {
   Image, ImageBackground, View
@@ -24,15 +25,7 @@ const ProjectDetails = ( { project }: Props ): Node => {
     return null;
   }
 
-  const displayProjectType = ( ) => {
-    if ( project.project_type === "collection" ) {
-      return t( "Collection-Project" );
-    }
-    if ( project.project_type === "umbrella" ) {
-      return t( "Umbrella-Project" );
-    }
-    return t( "Traditional-Project" );
-  };
+  console.log( project.description, "project description" );
 
   return (
     <ScrollViewWrapper testID="project-details">
@@ -52,9 +45,10 @@ const ProjectDetails = ( { project }: Props ): Node => {
       </ImageBackground>
       <View className="mx-4">
         <Heading1 className="shrink mt-4">{project.title}</Heading1>
-        <Heading3>{displayProjectType( )}</Heading3>
+        <Heading3>{displayProjectType( project.project_type, t )}</Heading3>
         <Heading4 className="mb-3 mt-5">{t( "ABOUT" )}</Heading4>
-        <Body2>{project.description}</Body2>
+        {/* eslint-disable-next-line react-native/no-inline-styles */}
+        <UserText text={project.description} htmlStyle={{ lineHeight: 26 }} />
         <Heading4 className="mb-3 mt-5">{t( "PROJECT-REQUIREMENTS" )}</Heading4>
         <Button
           level="neutral"

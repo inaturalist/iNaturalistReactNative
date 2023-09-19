@@ -735,6 +735,7 @@
   "Start-upload": "Start upload",
   "Previous-observation": "Previous observation",
   "Next-observation": "Next observation",
+  "Close-search": "Close search",
   "date-format-short": {
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
@@ -872,5 +873,8 @@
   "RESET-SEARCH": "RESET SEARCH",
   "PROJECT-REQUIREMENTS": "PROJECT REQUIREMENTS",
   "VIEW-PROJECT-REQUIREMENTS": "VIEW PROJECT REQUIREMENTS",
-  "VIEW-IN-EXPLORE": "VIEW IN EXPLORE"
+  "VIEW-IN-EXPLORE": "VIEW IN EXPLORE",
+  "Collection-Project": "Collection Project",
+  "Umbrella-Project": "Umbrella Project",
+  "Traditional-Project": "Traditional Project"
 }

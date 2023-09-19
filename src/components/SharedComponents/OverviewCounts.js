@@ -18,7 +18,7 @@ const Count = ( { count, label } ) => (
   </View>
 );
 
-const UserCounts = ( { user }: Props ): React.Node => (
+const OverviewCounts = ( { user }: Props ): React.Node => (
   <View className="flex-row mt-6">
     <Count
       count={user.observations_count}
@@ -39,4 +39,4 @@ const UserCounts = ( { user }: Props ): React.Node => (
   </View>
 );
 
-export default UserCounts;
+export default OverviewCounts;

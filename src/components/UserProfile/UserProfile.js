@@ -7,6 +7,7 @@ import {
   Body2,
   Button, Heading1, Heading4,
   INatIconButton,
+  OverviewCounts,
   ScrollViewWrapper,
   Subheading1, UserIcon
 } from "components/SharedComponents";
@@ -19,7 +20,6 @@ import { formatUserProfileDate } from "sharedHelpers/dateAndTime";
 import { useAuthenticatedMutation, useAuthenticatedQuery, useCurrentUser } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
-import UserCounts from "./UserCounts";
 import UserDescription from "./UserDescription";
 
 const UserProfile = ( ): Node => {
@@ -76,7 +76,7 @@ const UserProfile = ( ): Node => {
           </Heading4>
         )}
       </View>
-      <UserCounts user={user} />
+      <OverviewCounts user={user} />
       <View className="mx-3">
         {currentUser?.login !== user?.login && (
           <View className="flex-row justify-evenly mt-8 mb-4">

@@ -1,10 +1,11 @@
 // @flow
-import { INatIcon } from "components/SharedComponents";
+import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { Platform } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
+import { useTranslation } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
 
 const getShadow = shadowColor => getShadowStyle( {
@@ -23,7 +24,8 @@ type Props = {
   testID?: string,
   hasShadow?: boolean,
   input?: any,
-  placeholder?: string
+  placeholder?: string,
+  clearSearch?: Function
 }
 
 // Ensure this component is placed outside of scroll views
@@ -35,9 +37,11 @@ const SearchBar = ( {
   value,
   hasShadow,
   input,
-  placeholder
+  placeholder,
+  clearSearch
 }: Props ): Node => {
   const theme = useTheme( );
+  const { t } = useTranslation( );
 
   return (
     <View className={containerClass}>
@@ -81,9 +85,22 @@ const SearchBar = ( {
           }
         }}
       />
-      <View className="absolute right-4 top-[20px]">
-        <INatIcon name="magnifying-glass" size={18} />
-      </View>
+      {value.length > 0 && clearSearch
+        ? (
+          <View className="absolute right-0 top-[10px]">
+            <INatIconButton
+              icon="close"
+              accessibilityLabel={t( "Close-search" )}
+              size={18}
+              onPress={clearSearch}
+            />
+          </View>
+        )
+        : (
+          <View className="absolute right-4 top-[20px]">
+            <INatIcon name="magnifying-glass" size={18} />
+          </View>
+        )}
     </View>
   );
 };

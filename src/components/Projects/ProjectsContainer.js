@@ -51,14 +51,13 @@ const ProjectsContainer = ( ): Node => {
   }, [
     memberId,
     currentTabId,
-    latLng
+    latLng,
+    searchInput
   ] );
 
   useEffect( ( ) => {
     if ( searchInput.length > 0 ) {
       setApiParams( { q: searchInput } );
-    } else {
-      setApiParams( { } );
     }
   }, [searchInput] );
 
@@ -85,6 +84,10 @@ const ProjectsContainer = ( ): Node => {
       }
     }
   ];
+
+  if ( !currentUser ) {
+    tabs.shift( );
+  }
 
   return (
     <Projects

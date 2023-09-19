@@ -22,6 +22,7 @@ export { default as Map } from "./Map";
 export { default as Mortal } from "./Mortal";
 export { default as ObservationLocation } from "./ObservationLocation";
 export { default as ObservationsFlashList } from "./ObservationsFlashList/ObservationsFlashList";
+export { default as OverviewCounts } from "./OverviewCounts";
 export { default as PermissionGate } from "./PermissionGate";
 export { default as PhotoCount } from "./PhotoCount";
 export { default as PhotoScroll } from "./PhotoScroll";

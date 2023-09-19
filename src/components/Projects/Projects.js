@@ -1,9 +1,11 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
   Body1, Button,
   Heading1, INatIcon,
+  List2,
   SearchBar, Tabs, ViewWrapper
 } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
@@ -50,22 +52,25 @@ const Projects = ( {
     } );
   }, [navigation, t] );
 
-  const renderProject = ( { item } ) => (
+  const renderProject = ( { item: project } ) => (
     <Pressable
-      onPress={( ) => navigation.navigate( "ProjectDetails", { id: item.id } )}
+      onPress={( ) => navigation.navigate( "ProjectDetails", { id: project.id } )}
       style={viewStyles.row}
-      testID={`Project.${item.id}`}
+      testID={`Project.${project.id}`}
       accessible
       accessibilityRole="button"
       accessibilityLabel={t( "Navigate-to-project-details" )}
     >
       <Image
         className="w-[62px] h-[62px] rounded-xl ml-4 mr-3"
-        source={{ uri: item.icon }}
-        testID={`Project.${item.id}.photo`}
+        source={{ uri: project.icon }}
+        testID={`Project.${project.id}.photo`}
         accessibilityIgnoresInvertColors
       />
-      <Body1 className="shrink mr-4">{item.title}</Body1>
+      <View className="shrink mr-4">
+        <Body1>{project.title}</Body1>
+        <List2 className="mt-2">{displayProjectType( project.project_type, t )}</List2>
+      </View>
     </Pressable>
   );
 
@@ -116,6 +121,7 @@ const Projects = ( {
         testID="ProjectSearch.input"
         containerClass="pb-5 mx-4"
         placeholder={t( "Search-for-a-project" )}
+        clearSearch={( ) => setSearchInput( "" )}
       />
       {searchInput.length === 0 && (
         <>

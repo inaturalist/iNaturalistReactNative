@@ -1112,6 +1112,7 @@ Add-favorite = Add favorite
 Start-upload = Start upload
 Previous-observation = Previous observation
 Next-observation = Next observation
+Close-search = Close search
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
@@ -1267,3 +1268,7 @@ PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
 VIEW-PROJECT-REQUIREMENTS = VIEW PROJECT REQUIREMENTS
 
 VIEW-IN-EXPLORE = VIEW IN EXPLORE
+
+Collection-Project = Collection Project
+Umbrella-Project = Umbrella Project
+Traditional-Project = Traditional Project
