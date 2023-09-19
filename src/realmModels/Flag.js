@@ -1,7 +1,5 @@
 import { Realm } from "@realm/react";
 
-// import User from "./User";
-
 class Flag extends Realm.Object {
   static FLAG_FIELDS = {
     id: true,
@@ -23,7 +21,7 @@ class Flag extends Realm.Object {
     name: "Flag",
     primaryKey: "uuid",
     properties: {
-      created_at: { type: "string?", mapTo: "createdAt" },
+      created_at: { type: "string", optional: true, mapTo: "createdAt" },
       id: "int",
       comment: "string?",
       flag: "string",
