@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera";
+import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
   Body3, Body4, Heading4, INatIcon
@@ -42,6 +42,9 @@ const EvidenceSection = ( ): Node => {
     : [];
   const mountedRef = useRef( true );
   const navigation = useNavigation( );
+  const [takePhoto, setTakePhoto] = useState( false );
+  const [importPhoto, setImportPhoto] = useState( false );
+  const [recordSound, setRecordSound] = useState( false );
 
   const navToLocationPicker = ( ) => {
     navigation.navigate( "LocationPicker", { goBackOnSave: true } );
@@ -49,6 +52,22 @@ const EvidenceSection = ( ): Node => {
 
   const [showAddEvidenceSheet, setShowAddEvidenceSheet] = useState( false );
   const handleAddEvidence = ( ) => setShowAddEvidenceSheet( true );
+
+  useEffect( () => {
+    // We do this navigation indirectly (vs doing it directly in AddEvidenceSheet),
+    // since we need for the bottom sheet of add-evidence to first finish dismissing,
+    // only then we can do the navigation - otherwise, this causes the bottom sheet
+    // to sometimes pop back up on the next screen - see GH issue #629
+    if ( !showAddEvidenceSheet ) {
+      if ( takePhoto ) {
+        navigation.navigate( "Camera", { addEvidence: true, camera: "Standard" } );
+      } else if ( importPhoto ) {
+        navigation.navigate( "PhotoGallery", { skipGroupPhotos: true } );
+      } else if ( recordSound ) {
+        // TODO - need to implement
+      }
+    }
+  }, [takePhoto, importPhoto, recordSound, showAddEvidenceSheet, navigation] );
 
   // Hook version of componentWillUnmount. We use a ref to track mounted
   // state (not useState, which might get frozen in a closure for other
@@ -71,12 +90,13 @@ const EvidenceSection = ( ): Node => {
     isFetchingLocation
   } = useCurrentObservationLocation( mountedRef );
 
-  const { latitude, longitude } = currentObservation;
+  const latitude = currentObservation?.latitude;
+  const longitude = currentObservation?.longitude;
 
   const displayPlaceName = ( ) => {
     let placeName = "";
-    if ( currentObservation.place_guess ) {
-      placeName = currentObservation.place_guess;
+    if ( currentObservation?.place_guess ) {
+      placeName = currentObservation?.place_guess;
     } else if ( isFetchingLocation ) {
       placeName = t( "Fetching-location" );
     } else if ( !latitude || !longitude ) {
@@ -112,9 +132,11 @@ const EvidenceSection = ( ): Node => {
       && ( latitude !== 0 && longitude !== 0 )
       && ( latitude >= -90 && latitude <= 90 )
       && ( longitude >= -180 && longitude <= 180 )
-      && ( currentObservation.positional_accuracy === null || (
-        currentObservation.positional_accuracy
-        && currentObservation.positional_accuracy <= DESIRED_LOCATION_ACCURACY )
+      && ( currentObservation?.positional_accuracy === null
+        || currentObservation?.positional_accuracy === undefined
+        || (
+          currentObservation?.positional_accuracy
+        && currentObservation?.positional_accuracy <= DESIRED_LOCATION_ACCURACY )
       )
     ) {
       return true;
@@ -157,12 +179,14 @@ const EvidenceSection = ( ): Node => {
 
   return (
     <View className="mx-6 mt-6">
-      {showAddEvidenceSheet && (
-        <AddEvidenceSheet
-          setShowAddEvidenceSheet={setShowAddEvidenceSheet}
-          disableAddingMoreEvidence={photoUris.length >= MAX_PHOTOS_ALLOWED}
-        />
-      )}
+      <AddEvidenceSheet
+        setShowAddEvidenceSheet={setShowAddEvidenceSheet}
+        disableAddingMoreEvidence={photoUris.length >= MAX_PHOTOS_ALLOWED}
+        hidden={!showAddEvidenceSheet}
+        onTakePhoto={() => { setTakePhoto( true ); }}
+        onImportPhoto={() => { setImportPhoto( true ); }}
+        onRecordSound={() => { setRecordSound( true ); }}
+      />
       <View className="flex-row">
         <Heading4>{t( "EVIDENCE" )}</Heading4>
         <View className="ml-3">

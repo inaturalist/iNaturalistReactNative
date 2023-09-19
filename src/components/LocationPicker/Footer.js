@@ -1,14 +1,11 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import {
-  Button, StickyToolbar
-} from "components/SharedComponents";
+import { Button } from "components/SharedComponents";
+import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, {
-  useContext
-} from "react";
+import React, { useContext } from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
@@ -24,9 +21,9 @@ const Footer = ( { keysToUpdate, goBackOnSave }: Props ): Node => {
   } = useContext( ObsEditContext );
 
   return (
-    <StickyToolbar>
+    <View className="h-[73px] justify-center">
       <Button
-        className="px-[25px]"
+        className="mx-[25px]"
         onPress={( ) => {
           updateObservationKeys( keysToUpdate );
           if ( goBackOnSave ) {
@@ -37,7 +34,7 @@ const Footer = ( { keysToUpdate, goBackOnSave }: Props ): Node => {
         text={t( "SAVE-LOCATION" )}
         level="neutral"
       />
-    </StickyToolbar>
+    </View>
   );
 };
 

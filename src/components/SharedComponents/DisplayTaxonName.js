@@ -1,6 +1,6 @@
 // @flow
 import classNames from "classnames";
-import { Body1, Body3, Body4 } from "components/SharedComponents";
+import { Body1Bold, Body3, Body4 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -8,13 +8,31 @@ import Taxon from "realmModels/Taxon";
 import { generateTaxonPieces } from "sharedHelpers/taxon";
 import useTranslation from "sharedHooks/useTranslation";
 
+const rankNames = {
+  // $FlowIgnore
+  10: "species",
+  // $FlowIgnore
+  20: "genus",
+  // $FlowIgnore
+  30: "family",
+  // $FlowIgnore
+  40: "order",
+  // $FlowIgnore
+  50: "class",
+  // $FlowIgnore
+  60: "phylum",
+  // $FlowIgnore
+  70: "kingdom"
+};
+
 type Props = {
   color?: string,
   keyBase?: string,
   layout?: "horizontal" | "vertical",
   scientificNameFirst?: boolean,
   small?: boolean,
-  taxon: Object
+  taxon: Object,
+  withdrawn?: boolean
 };
 
 const DisplayTaxonName = ( {
@@ -23,17 +41,29 @@ const DisplayTaxonName = ( {
   layout = "horizontal",
   scientificNameFirst = false,
   small = false,
-  taxon
+  taxon,
+  withdrawn
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  const textColorClass = color || "text-darkGray";
+  // this is mostly for the ARCamera, but might be helpful to display elsewhere
+  if ( taxon?.rank_level && !taxon?.rank ) {
+    taxon.rank = rankNames[taxon?.rank_level];
+  }
+
+  const textClass = () => {
+    const textColorClass = color || "text-darkGray";
+    if ( withdrawn ) {
+      return "text-darkGray opacity-50 line-through";
+    }
+    return textColorClass;
+  };
 
   if ( !taxon ) {
     return (
-      <Body1 className={textColorClass} numberOfLines={1}>
+      <Body1Bold className={textClass()} numberOfLines={1}>
         {t( "unknown" )}
-      </Body1>
+      </Body1Bold>
     );
   }
 
@@ -49,7 +79,7 @@ const DisplayTaxonName = ( {
     ? " "
     : "" );
 
-  const scientificNameComponent = scientificNamePieces.map( ( piece, index ) => {
+  const scientificNameComponent = scientificNamePieces?.map( ( piece, index ) => {
     const isItalics = piece !== rankPiece && (
       rankLevel <= Taxon.SPECIES_LEVEL || rankLevel === Taxon.GENUS_LEVEL
     );
@@ -58,7 +88,7 @@ const DisplayTaxonName = ( {
       : "";
     const text = piece + spaceChar;
     const TextComponent = scientificNameFirst || !commonName
-      ? Body1
+      ? Body1Bold
       : Body3;
     return (
       isItalics
@@ -66,7 +96,7 @@ const DisplayTaxonName = ( {
           <TextComponent
             // eslint-disable-next-line react/no-array-index-key
             key={`DisplayTaxonName-${keyBase}-${taxon.id}-${rankLevel}-${piece}-${index}`}
-            className={classNames( "italic", textColorClass )}
+            className={classNames( "italic", textClass() )}
           >
             {text}
           </TextComponent>
@@ -75,12 +105,12 @@ const DisplayTaxonName = ( {
     );
   } );
 
-  if ( rankLevel > 10 ) {
+  if ( rank && rankLevel > 10 ) {
     scientificNameComponent.unshift( `${rank} ` );
   }
 
   const TopTextComponent = !small
-    ? Body1
+    ? Body1Bold
     : Body3;
   const BottomTextComponent = !small
     ? Body3
@@ -97,7 +127,7 @@ const DisplayTaxonName = ( {
       // } )}
     >
       <TopTextComponent
-        className={textColorClass}
+        className={textClass()}
         numberOfLines={scientificNameFirst
           ? 1
           : 3}
@@ -113,7 +143,7 @@ const DisplayTaxonName = ( {
 
       {
         commonName && (
-          <BottomTextComponent className={textColorClass}>
+          <BottomTextComponent className={textClass()}>
             {scientificNameFirst
               ? commonName
               : scientificNameComponent}

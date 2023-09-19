@@ -17,7 +17,12 @@ See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this proje
 1. Run `npm install`
 1. Run `npx pod-install` or `cd ios && pod install` from the root directory
 1. `cp env.example .env.staging` for staging and `cp env.example .env` for production and fill in appropriate values. This is not part of the code repo (contains secrets, such as OAuth client ID).
-1. To run on Android, do this `cp android/example-keystore.properties android/keystore.properties`. Fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff. 
+1. To run on Android, do this `cp android/example-keystore.properties android/keystore.properties`. Fill in the relevant values. If you are a member of iNat staff, get them from another member of iNat Staff.
+1. Add AR Camera model and taxonomy files. The computer vision model files are not part of the code repo, and have to be installed. The app itself will load the model file with the filename specified in a .env file. On Android, the current file names are specified in these env variables `ANDROID_MODEL_FILE_NAME` and `ANDROID_TAXONOMY_FILE_NAME`. On iOS, the current file names are specified in these env variables `IOS_MODEL_FILE_NAME` and `IOS_TAXONOMY_FILE_NAME`. Currently, after a fresh clone of the repo, and copy of the env.example file, see above, you have to add the files following these steps:
+    1. Add the example model files by executing `npm run add-example-model`. If that does not work continue with the next step.
+    1. If the download script fails: The sample model files are available in this [`small_model.zip`](https://github.com/inaturalist/SeekReactNative/releases/tag/v2.9.1-138) file.
+    1. On Android, these files are named `small_inception_tf1.tflite` and `small_export_tax.csv`. Create a camera folder within Android assets (i.e. `android/app/src/debug/assets/camera`) and place the files there.
+    1. On iOS, these files are named `small_inception_tf1.mlmodel` and `small_export_tax.json` and should be added to the `ios` folder.
 
 ### Set up pre-commit hooks
 
@@ -129,7 +134,9 @@ We're using Nativewind, a styling system for React Native based on Tailwind CSS.
 
 We have a custom set of icons stored as SVG files and compiled into a font. New icons should be included with issues in a ready-to-use form, but some editing may be required.
 
-1. Add / edit SVGs to / in `src/images/icons/` (`git add` any new icons)
+1. Add / edit SVGs to / in `src/images/icons/` (`git add` any new icons). Icon SVGs must meet the following requirements
+  * `<svg>` element must have `width="24"` and `height="24"` attributes
+  * No paths with `fill-rule="evenodd"` attribute or `fill-rule: evenodd styles`
 1. `npm run icons`
 1. Rebuild the app (you'll have newly-linked assets that won't hot reload)
 
@@ -153,9 +160,9 @@ We use [fastlane](https://docs.fastlane.tools/) to help automate parts of the de
 1. Manage Certificates and add an Apple Distribution certificate associated with the iNaturalist team
 
 
-### Usage
+### Using Fastlane
 
-The current expectation is that you we tag to freeze the code, bump the version, and describe the changes represented by the tag. Then we release to make builds and publish on Github. Later, presumably when some of the change logs have been translated, we push builds for internal testing. If that looks ok, we push to public testing, and later to production release.
+The current expectation is that we tag to freeze the code, bump the internal build number, and describe the changes represented by the tag. Then we release to make builds and publish on Github. Later, presumably when some of the change logs have been translated, we push builds for internal testing. If that looks ok, we push to public testing, and later to production release.
 
 ```zsh
 # Make a git tag. This will bump the build number and prompt you to describe
@@ -178,3 +185,13 @@ fastlane beta
 # should just promote the last beta to prod.
 fastlane prod
 ```
+
+### Example: Build & Release for Internal Testing
+
+1. Write release notes based on commits since the last release. Try to keep them brief but emphasize what's new and what's fixed. Just keep them in a text editor; you'll save them at a later step.
+1. Edit `package.json` and update the `version` per semantic versioning rules: bump the patch version for bug fixes, minor version for new features, major version if the app was completely re-written or can't import data from previous versions.
+1. `npm install` to set the version in `package-lock.json`
+1. Commit changes
+1. `bundle exec fastlane tag` to create a tag and bump the build number. You'll be prompted to enter those release notes you wrote.
+1. `bundle exec fastlane release` to build and push a release to Github
+1. `bundle exec fastlane internal` to distribute the builds to TestFlight and the Play Store

@@ -82,3 +82,9 @@ artifacts/
 
 # testing
 /coverage
+
+# CV Model #
+**/assets/**/*.csv
+*.tflite
+*.mlmodel
+**/ios/*.json

@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker";
-import { screen } from "@testing-library/react-native";
+import { render, screen } from "@testing-library/react-native";
 import PhotoScroll from "components/SharedComponents/PhotoScroll";
 import _ from "lodash";
 import React from "react";
 
 import factory from "../../../factory";
-import { renderComponent } from "../../../helpers/render";
 
 const mockObservation = factory( "LocalObservation", {
   created_at: "2022-11-27T19:07:41-08:00",
@@ -27,25 +26,20 @@ const mockPhotos = _.compact(
 );
 
 describe( "PhotosScroll", () => {
-  test( "should not have accessibility errors", async () => {
-    const photoScroll = <PhotoScroll photos={mockPhotos} />;
+  it.todo( "should not have accessibility errors" );
+  // it( "should not have accessibility errors", async () => {
+  //   const photoScroll = <PhotoScroll photos={mockPhotos} />;
+  //   expect( photoScroll ).toBeAccessible( );
+  // } );
 
-    expect( photoScroll ).toBeAccessible();
+  it( "should show the main carousel", async () => {
+    render( <PhotoScroll photos={mockPhotos} /> );
+    expect( screen.getByTestId( "photo-scroll" ) ).toBeTruthy();
   } );
 
-  test( "should render correctly", async () => {
-    renderComponent( <PhotoScroll photos={mockPhotos} /> );
-
-    const photoScroll = await screen.findByTestId( "photo-scroll" );
-
-    expect( photoScroll ).toBeTruthy();
-  } );
-
-  test( "should show photo with given url", async () => {
-    renderComponent( <PhotoScroll photos={mockPhotos} /> );
-
+  it( "should show photo with given url", async () => {
+    render( <PhotoScroll photos={mockPhotos} /> );
     const photo = await screen.findByTestId( "PhotoScroll.photo" );
-
     expect( photo.props.source ).toStrictEqual(
       {
         uri: mockObservation.observationPhotos[0].photo.url

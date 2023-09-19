@@ -124,13 +124,40 @@ const deleteObservation = async ( params: Object = {}, opts: Object = {} ) : Pro
   }
 };
 
+const fetchObservers = async ( params: Object = {} ) : Promise<?any> => {
+  try {
+    return await inatjs.observations.observers( params );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const fetchIdentifiers = async ( params: Object = {} ) : Promise<?any> => {
+  try {
+    return await inatjs.observations.identifiers( params );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const fetchSpeciesCounts = async ( params: Object = {} ) : Promise<?any> => {
+  try {
+    return await inatjs.observations.speciesCounts( params );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export {
   createObservation,
   createOrUpdateEvidence,
   deleteObservation,
   faveObservation,
+  fetchIdentifiers,
   fetchObservationUpdates,
+  fetchObservers,
   fetchRemoteObservation,
+  fetchSpeciesCounts,
   markAsReviewed,
   markObservationUpdatesViewed,
   searchObservations,

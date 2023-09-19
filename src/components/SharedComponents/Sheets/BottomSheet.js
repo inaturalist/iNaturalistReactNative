@@ -1,18 +1,18 @@
 // @flow
 
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
-import { BottomSheetStandardBackdrop, Heading4 } from "components/SharedComponents";
+import { BottomSheetStandardBackdrop, Heading4, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
   useCallback, useEffect, useRef
 } from "react";
-import { IconButton } from "react-native-paper";
+import { useTranslation } from "sharedHooks";
 import { viewStyles } from "styles/sharedComponents/bottomSheet";
 
 type Props = {
   children: any,
-  hide?: boolean,
+  hidden?: boolean,
   snapPoints?: ( string|number )[],
   onChange?: Function,
   handleClose?: Function,
@@ -26,13 +26,14 @@ const renderBackdrop = props => <BottomSheetStandardBackdrop props={props} />;
 
 const StandardBottomSheet = ( {
   children,
-  hide,
+  hidden,
   snapPoints = DEFAULT_SNAP_POINTS,
   onChange = null,
   handleClose,
   hideCloseButton = false,
   headerText
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const sheetRef = useRef( null );
 
   // eslint-disable-next-line
@@ -42,7 +43,7 @@ const StandardBottomSheet = ( {
     if ( handleClose ) {
       handleClose( );
     }
-    sheetRef.current?.close( );
+    sheetRef.current?.dismiss( );
   }, [handleClose] );
 
   const handleSnapPress = useCallback( ( ) => {
@@ -50,12 +51,12 @@ const StandardBottomSheet = ( {
   }, [] );
 
   useEffect( ( ) => {
-    if ( hide ) {
+    if ( hidden ) {
       handleClosePress( );
     } else {
       handleSnapPress( );
     }
-  }, [hide, handleClosePress, handleSnapPress] );
+  }, [hidden, handleClosePress, handleSnapPress] );
 
   return (
     <BottomSheetModal
@@ -73,11 +74,13 @@ const StandardBottomSheet = ( {
         </View>
         {children}
         {!hideCloseButton && (
-          <IconButton
+          <INatIconButton
             icon="close"
             onPress={handleClose}
             size={19}
-            className="absolute top-3 right-3"
+            className="absolute top-3.5 right-3"
+            accessibilityState={{ disabled: hidden }}
+            accessibilityLabel={t( "Close" )}
           />
         )}
       </BottomSheetView>

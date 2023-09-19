@@ -321,7 +321,7 @@ PODS:
   - React-jsinspector (0.72.1)
   - React-logger (0.72.1):
     - glog
-  - react-native-cameraroll (5.4.0):
+  - react-native-cameraroll (5.7.2):
     - React-Core
   - react-native-config (1.5.0):
     - react-native-config/App (= 1.5.0)
@@ -537,6 +537,8 @@ PODS:
     - React
     - React-callinvoker
     - React-Core
+  - VisionCameraPluginInatVision (0.1.0):
+    - React-Core
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -618,6 +620,7 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
+  - VisionCameraPluginInatVision (from `../node_modules/vision-camera-plugin-inatvision`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -781,6 +784,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-vector-icons"
   VisionCamera:
     :path: "../node_modules/react-native-vision-camera"
+  VisionCameraPluginInatVision:
+    :path: "../node_modules/vision-camera-plugin-inatvision"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 

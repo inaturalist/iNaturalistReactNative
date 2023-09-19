@@ -54,6 +54,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
       <View style={viewStyles.column}>
         <Text>{t( "Username" )}</Text>
         <TextInput
+          accessibilityLabel="Text input field"
           style={viewStyles.textInput}
           onChangeText={x => onSettingsModified( { ...settings, login: x } )}
           value={settings.login}
@@ -62,6 +63,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
       <View style={viewStyles.column}>
         <Text>{t( "Email" )}</Text>
         <TextInput
+          accessibilityLabel="Text input field"
           style={viewStyles.textInput}
           onChangeText={x => onSettingsModified( { ...settings, email: x } )}
           value={settings.email}
@@ -70,6 +72,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
       <View style={viewStyles.column}>
         <Text>{t( "Display-Name" )}</Text>
         <TextInput
+          accessibilityLabel="Text input field"
           style={viewStyles.textInput}
           onChangeText={x => onSettingsModified( { ...settings, name: x } )}
           value={settings.name}
@@ -78,6 +81,7 @@ const SettingsProfile = ( { settings, onSettingsModified }: SettingsProps ): Nod
       <View style={viewStyles.column}>
         <Text>{t( "Bio" )}</Text>
         <TextInput
+          accessibilityLabel="Text input field"
           style={viewStyles.textInput}
           multiline
           numberOfLines={4}

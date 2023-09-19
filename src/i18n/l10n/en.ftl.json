@@ -13,6 +13,7 @@
   "Account": "Account",
   "ADD-AN-ID": "ADD AN ID",
   "Add-an-ID": "Add an ID",
+  "ADD-COMMENT": "ADD COMMENT",
   "Add-Date-Time": "Add Date/Time",
   "Add-evidence-of-an-organism": "Add evidence of an organism. This helps others identify what you saw.",
   "Add-Location": "Add Location",
@@ -28,6 +29,8 @@
     "val": "Affiliation:"
   },
   "Agree": "Agree",
+  "AGREE-WITH-ID": "AGREE WITH ID?",
+  "Agree-with-ID-description": "Would you like to agree with the ID and suggest the following identification?",
   "All": "All",
   "All-observations": "All observations",
   "all-rights-reserved": {
@@ -140,6 +143,8 @@
   "Display-Name": "Display Name",
   "Do-not-collect-stability-and-usage-data-using-third-party-services": "Do not collect stability and usage data using third-party services",
   "Dont-have-an-account": "Don't have an account? Sign up",
+  "During-app-start-no-model-found": "During app start there was no computer vision model found. There will be no AR camera.",
+  "EDIT-COMMENT": "EDIT COMMENT",
   "EDIT-LOCATION": "EDIT LOCATION",
   "EMAIL": "EMAIL",
   "Email": {
@@ -192,6 +197,10 @@
   "Has-Photos": "Has Photos",
   "Has-Sounds": "Has Sounds",
   "High": "High",
+  "ID-Withdrawn": {
+    "comment": "Identification Status",
+    "val": "ID Withdrawn"
+  },
   "IDENTIFICATION": "IDENTIFICATION",
   "IDENTIFICATIONS": "IDENTIFICATIONS",
   "If-an-account-with-that-email-exists": "If an account with that email exists, we’ve sent password reset instructions to your email.",
@@ -281,6 +290,7 @@
   },
   "No-comments-or-ids-to-display": "No comments or ids to display",
   "No-Location": "No Location",
+  "No-model-found": "No model found",
   "none": "none",
   "No-photos-found": "No photos found. If this is your first time opening the app and giving permissions, try restarting the app.",
   "no-rights-reserved-cc0-cc0": {
@@ -390,6 +400,10 @@
     "val": "Research Grade"
   },
   "Reset": "Reset",
+  "Restore": {
+    "comment": "Option to restore withdrawn id from current user",
+    "val": "Restore"
+  },
   "Lets-reset-your-password": {
     "comment": "Appears in the reset password screen",
     "val": "Let's reset your password"
@@ -511,6 +525,10 @@
   },
   "Wild": "Wild",
   "WILD-STATUS": "WILD STATUS",
+  "Withdraw": {
+    "comment": "Option to Withdraw identification made by user",
+    "val": "Withdraw"
+  },
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
@@ -621,27 +639,44 @@
   "Observation-Name": "Observation { $scientificName }",
   "x-comments": "{ $count ->\n  [one] { $count } comment\n *[other] { $count } comments\n}",
   "x-identifications": "{ $count ->\n  [one] { $count } identification\n *[other] { $count } identifications\n}",
+  "X-Identifications": "{ $count ->\n  [one] { $count } Identification\n *[other] { $count } Identifications\n}",
+  "X-Identifiers": "{ $count ->\n  [one] { $count } Identifier\n *[other] { $count } Identifiers\n}",
+  "X-Observers": "{ $count ->\n  [one] { $count } Observer\n *[other] { $count } Observers\n}",
+  "X-Species": "{ $count ->\n  [one] { $count } Species\n *[other] { $count } Species\n}",
   "Agrees-with-identification": "Agrees with this identification.",
   "Navigates-to-bulk-importer": "Navigates to bulk importer.",
-  "Navigates-to-camera": "Navigate to camera.",
+  "Navigates-to-camera": "Navigates to camera.",
+  "Navigates-to-AR-camera": "Navigates to AR camera.",
   "Navigates-to-explore": "Navigates to explore.",
   "Navigates-to-messages": "Navigates to messages.",
   "Navigates-to-observations": "Navigates to observations.",
   "Navigates-to-sound-recorder": "Navigates to sound recorder.",
   "Navigates-to-suggest-identification": "Navigates to suggest identification.",
   "Navigates-to-user-profile": "Navigates to user profile.",
+  "Navigates-to-drawer-item": "Navigates to drawer item.",
+  "Navigate-to-taxon-details": "Navigate to taxon details",
+  "Navigates-to-add-identification": "Navigates to add identification.",
+  "Navigates-to-identify": "Navigates to identify.",
   "Opens-add-comment-modal": "Opens add comment modal.",
   "Opens-add-observation-modal": "Opens add observation modal.",
   "Opens-the-side-drawer-menu": "Opens the side drawer menu.",
-  "Returns-to-previous-screen": "Returns to previous screen.",
+  "Navigate-to-previous-screen": "Navigate to previous screen",
+  "Shows-iNaturalist-bird-logo": "Shows iNaturalist bird logo.",
   "Switches-to-tab": "Switches to { $tab } tab.",
   "Text-Box-to-Describe-Reason-for-Flag": "Text box to describe reason for flag.",
-  "Add-this-ID": "Add this identification",
-  "Camera-button-label-switch-camera": {
+  "Use-the-devices-other-camera": "Use the device's other camera.",
+  "Open-kebab-menu": "Open kebab menu.",
+  "Selects-iconic-taxon-X-for-identification": "Selects iconic taxon { $iconicTaxon } for identification.",
+  "Indicates-location-is-loading": "Indicates location is loading.",
+  "Returns-map-to-users-current-location": "Returns map to user's current location.",
+  "Toggles-map-layer": "Toggles map layer.",
+  "Navigate-to-observation-edit-screen": "Navigate to observation edit screen",
+  "Close-add-observation-modal": "Close add observation modal",
+  "Navigate-to-photo-importer": "Navigate to photo importer",
+  "Camera-button-value-back": {
     "comment": "Accessible label for the camera button",
-    "val": "Use the device's other camera."
+    "val": "The back camera is being used."
   },
-  "Camera-button-value-back": "The back camera is being used.",
   "Camera-button-value-front": "The front camera is being used.",
   "Cancel-comment": "Cancel comment",
   "Clear-comment": "Clear comment",
@@ -654,14 +689,6 @@
     "comment": "Accessible label for the favorite button, when the observation is not favorited",
     "val": "Favorite this observation."
   },
-  "Flash-button-label-flash": {
-    "comment": "Accessible label for the flash button, when flash is turned on",
-    "val": "Disable flash."
-  },
-  "Flash-button-label-flash-off": {
-    "comment": "Accessible label for the flash button, when flash is turned off",
-    "val": "Enable flash."
-  },
   "Flash-button-value-flash": "The flash is turned on.",
   "Flash-button-value-flash-off": "The flash is turned off.",
   "Navigate-back": "Navigate back",
@@ -669,7 +696,6 @@
   "Navigate-to-login-screen": "Navigate to login screen",
   "Navigate-to-observation-details": "Navigates to observation details screen.",
   "Navigate-to-project-details": "Navigate to project details",
-  "Navigate-to-taxon-details": "Navigate to taxon details",
   "Observation-has-no-photos-and-no-sounds": "This observation has no photos and no sounds.",
   "Photo-taken-at": "Photo taken at { $date }",
   "Take-photo": "Take photo",
@@ -680,18 +706,43 @@
   "Observation-photos-unavailable-without-internet": "Observation photos unavailable without internet",
   "Taxon-photo-unavailable-without-internet": "Taxon photo unavailable without internet",
   "User-photo-unavailable-without-internet": "User photo unavailable without internet",
-  "Close-camera-options-modal": {
+  "Add-this-ID": {
     "comment": "Accessibility labels for icons",
-    "val": "Close camera options modal"
+    "val": "Add this identification"
   },
-  "Navigate-to-explore-screen": "Navigate to explore screen",
   "Navigate-to-notifications-screen": "Navigate to notifications screen",
-  "Navigate-to-observation-edit-screen": "Navigate to observation edit screen",
   "Navigate-to-observation-list": "Navigate to observation list",
-  "Navigate-to-photo-importer": "Navigate to photo importer",
   "Open-side-menu": "Open side menu",
   "Quality-Grade-No-Grade": "No Quality Grade",
   "Uploading": "Uploading",
+  "Arrow-up-selected": "Arrow up selected",
+  "Arrow-up-unselected": "Arrow up unselected",
+  "Arrow-down-unselected": "Arrow down unselected",
+  "Arrow-down-selected": "Arrow down selected",
+  "Camera-flip": "Camera-flip",
+  "Flash": "flash",
+  "Disable-flash": "Disable flash",
+  "Enable-flash": "Enable flash",
+  "Information": "Information",
+  "Checkmark": "Checkmark",
+  "Kebab-menu": "Kebab menu",
+  "Edit": "Edit",
+  "User-location": "User location",
+  "Loading-wheel": "Loading wheel",
+  "Map-layers": "Map layers",
+  "Identification-label": "Identification label",
+  "Observation-with-no-evidence": "Observation with no evidence",
+  "Photo-importer": "Photo importer",
+  "AR-Camera": "AR Camera",
+  "Delete": "Delete",
+  "Sync-observations": "Sync observations",
+  "List-view": "List view",
+  "Grid-view": "Grid view",
+  "Remove-favorite": "Remove favorite",
+  "Add-favorite": "Add favorite",
+  "Start-upload": "Start upload",
+  "Previous-observation": "Previous observation",
+  "Next-observation": "Next observation",
   "date-format-short": {
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
@@ -810,5 +861,18 @@
   "DONATE": "DONATE",
   "SETTINGS": "SETTINGS",
   "LOG-OUT": "LOG OUT",
-  "Log-in-to-iNaturalist": "Log in to iNaturalist"
+  "Log-out": "Log out",
+  "Log-in-to-iNaturalist": "Log in to iNaturalist",
+  "Try-searching-for-a-location-name": "Try searching for a location name to see the map",
+  "Scan-the-area-around-you-for-organisms": "Scan the area around you for organisms.",
+  "Loading-iNaturalists-AR-Camera": "Loading iNaturalist’s AR Camera",
+  "No-results-found": {
+    "comment": "Used for explore screen when search params lead to a search with no data",
+    "val": "No results found"
+  },
+  "Taxon-photo-and-name": {
+    "comment": "Default accessibility label for DisplayTaxon component",
+    "val": "Taxon photo and name"
+  },
+  "Your-email-is-confirmed": "Your email is confirmed! Please log in to continue."
 }

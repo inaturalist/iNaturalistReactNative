@@ -167,7 +167,7 @@ exports[`UploadStatus displays progress bar when progress is less than 5% correc
         ]
       }
     >
-      
+      
     </Text>
   </View>
 </View>

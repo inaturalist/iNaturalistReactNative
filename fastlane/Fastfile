@@ -386,7 +386,8 @@ lane :internal do
     ipa: get_ipa_path,
     distribute_external: true,
     groups: [
-      "iNat staff"
+      "iNat staff",
+      "iNat friends"
     ],
     changelog: File.read( changelog_path ),
     # https://github.com/fastlane/fastlane/issues/20756

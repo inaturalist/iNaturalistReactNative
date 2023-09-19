@@ -1,15 +1,18 @@
 // @flow
+import { HeaderBackground } from "@react-navigation/elements";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
+import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 import colors from "styles/tailwindColors";
 
-import BackButton from "./BackButton";
 import ContextHeader from "./ContextHeader";
 
 const baseHeaderOptions: Object = {
   headerShown: true,
   headerBackTitleVisible: false,
-  headerShadowVisible: false
+  headerShadowVisible: false,
+  headerLeft: () => <BackButton />
 };
 
 const showHeader: Object = {
@@ -52,7 +55,9 @@ export const hideHeaderLeft: Object = {
 
 const showCustomHeader: Object = {
   ...baseHeaderOptions,
-  header: ContextHeader
+  header: ContextHeader,
+  headerShadowVisible: true,
+  alignStart: true
 };
 
 const hideHeader = {
@@ -63,9 +68,25 @@ const blankHeaderTitle = {
   headerTitle: ""
 };
 
+const removeBottomBorder = {
+  headerBackground: ( ): Node => (
+    // eslint-disable-next-line react-native/no-inline-styles
+    <HeaderBackground style={{ bottomBorderColor: "white" }} />
+  )
+};
+
+// this removes the default hamburger menu from header
+const hideDrawerHeaderLeft = {
+  headerLeft: ( ): Node => (
+    <View />
+  )
+};
+
 export {
   blankHeaderTitle,
+  hideDrawerHeaderLeft,
   hideHeader,
+  removeBottomBorder,
   showCustomHeader,
   showHeader,
   showLongHeader
