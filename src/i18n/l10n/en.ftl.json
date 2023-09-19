@@ -400,6 +400,10 @@
     "val": "Research Grade"
   },
   "Reset": "Reset",
+  "Restore": {
+    "comment": "Option to restore withdrawn id from current user",
+    "val": "Restore"
+  },
   "Lets-reset-your-password": {
     "comment": "Appears in the reset password screen",
     "val": "Let's reset your password"
@@ -521,6 +525,10 @@
   },
   "Wild": "Wild",
   "WILD-STATUS": "WILD STATUS",
+  "Withdraw": {
+    "comment": "Option to Withdraw identification made by user",
+    "val": "Withdraw"
+  },
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"

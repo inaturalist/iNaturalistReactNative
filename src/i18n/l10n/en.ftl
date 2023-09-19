@@ -662,6 +662,9 @@ Research-Grade = Research Grade
 
 Reset = Reset
 
+# Option to restore withdrawn id from current user
+Restore = Restore
+
 # Appears in the reset password screen
 Lets-reset-your-password = Let's reset your password
 
@@ -854,6 +857,9 @@ Welcome-user = <0>Welcome back,</0><1>{$userHandle}</1>
 Wild = Wild
 
 WILD-STATUS = WILD STATUS
+
+# Option to Withdraw identification made by user
+Withdraw = Withdraw
 
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->
