@@ -5,6 +5,7 @@ import { ObsEditContext } from "providers/contexts";
 import { useCallback, useContext, useEffect } from "react";
 import { Platform } from "react-native";
 import ShareMenu from "react-native-share-menu";
+
 import { log } from "../../react-native-logs.config";
 
 type SharedItem = {
