@@ -25,16 +25,43 @@ jest.mock( "@react-navigation/native", ( ) => {
   return {
     ...actualNav,
     useNavigation: () => ( {
-      navigate: mockedNavigate
+      navigate: mockedNavigate,
+      setOptions: jest.fn( )
     } ),
     useRoute: () => ( {} )
   };
 } );
 
+// react-native-paper's TextInput does a bunch of async stuff that's hard to
+// control in a test, so we're just mocking it here.
+jest.mock( "react-native-paper", () => {
+  const RealModule = jest.requireActual( "react-native-paper" );
+  const MockTextInput = props => {
+    const MockName = "mock-text-input";
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <MockName {...props}>{props.children}</MockName>;
+  };
+  MockTextInput.Icon = RealModule.TextInput.Icon;
+  const MockedModule = {
+    ...RealModule,
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    // TextInput: props => <View {...props}>{props.children}</View>
+    TextInput: MockTextInput
+  };
+  return MockedModule;
+} );
+
 describe( "Projects", ( ) => {
   beforeAll( async ( ) => {
     await initI18next( );
+    jest.useFakeTimers( );
   } );
+
+  it( "should not have accessibility errors", async ( ) => {
+    const projects = <ProjectsContainer />;
+    expect( projects ).toBeAccessible( );
+  } );
+
   it( "should display project search results", ( ) => {
     renderComponent( <ProjectsContainer /> );
 
@@ -47,14 +74,6 @@ describe( "Projects", ( ) => {
     fireEvent.press( screen.getByTestId( `Project.${mockProject.id}` ) );
     expect( mockedNavigate ).toHaveBeenCalledWith( "ProjectDetails", {
       id: mockProject.id
-    } );
-  } );
-
-  describe( "accessibility", ( ) => {
-    it( "should not have errors", async ( ) => {
-      renderComponent( <ProjectsContainer /> );
-      const projectObservations = await screen.findByTestId( "Projects" );
-      expect( projectObservations ).toBeAccessible();
     } );
   } );
 } );
