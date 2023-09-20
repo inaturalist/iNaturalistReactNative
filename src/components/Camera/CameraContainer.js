@@ -44,7 +44,7 @@ import StandardCamera from "./StandardCamera/StandardCamera";
 
 const isTablet = DeviceInfo.isTablet( );
 
-// The maximum zoom _factor_ you should be able to zoom in
+// The maximum zoom factor you should be able to zoom in
 const MAX_ZOOM_FACTOR = 20;
 // Used for calculating the final zoom by pinch gesture
 const SCALE_FULL_ZOOM = 3;
@@ -85,7 +85,7 @@ const CameraContainer = ( ): Node => {
   const [takingPhoto, setTakingPhoto] = useState( false );
   const zoom = useSharedValue( 1 );
   const [zoomTextValue, setZoomTextValue] = useState( 1 );
-  const [startZoom, setStartZoom] = useState( 1 );
+  const startZoom = useSharedValue( 1 );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
@@ -107,7 +107,7 @@ const CameraContainer = ( ): Node => {
   const maxZoom = Math.min( device?.maxZoom ?? 1, MAX_ZOOM_FACTOR );
 
   const onZoomStart = () => {
-    setStartZoom( zoom.value );
+    startZoom.value = zoom.value;
   };
 
   const onZoomChange = scale => {
@@ -121,7 +121,7 @@ const CameraContainer = ( ): Node => {
     const newZoom = interpolate(
       newScale,
       [-1, 0, 1],
-      [minZoom, startZoom, maxZoom],
+      [minZoom, startZoom.value, maxZoom],
       Extrapolate.CLAMP
     );
     zoom.value = newZoom;
