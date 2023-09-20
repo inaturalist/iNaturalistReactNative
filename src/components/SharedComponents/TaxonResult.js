@@ -82,9 +82,8 @@ const TaxonResult = ( {
             }
           } )}
           color={clearBackground && theme.colors.onSecondary}
-          accessibilityRole="link"
-          accessibilityLabel={t( "Navigate-to-taxon-details" )}
-          accessibilityState={{ disabled: false }}
+          accessibilityLabel={t( "Information" )}
+          accessibilityHint={t( "Navigate-to-taxon-details" )}
         />
         <INatIconButton
           className="mx-2"
@@ -96,9 +95,8 @@ const TaxonResult = ( {
             ? theme.colors.onSecondary
             : theme.colors.secondary}
           onPress={handleCheckmarkPress}
-          accessibilityRole="button"
-          accessibilityLabel={t( "Add-this-ID" )}
-          accessibilityState={{ disabled: false }}
+          accessibilityLabel={t( "Checkmark" )}
+          accessibilityHint={t( "Add-this-ID" )}
         />
       </View>
     </View>

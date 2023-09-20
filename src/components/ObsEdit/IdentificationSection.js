@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
 import {
   Button, DisplayTaxon,
   Heading4, IconicTaxonChooser,
@@ -62,12 +63,14 @@ const IdentificationSection = ( ): Node => {
             <DisplayTaxon
               taxon={identification}
               handlePress={navToAddID}
-              accessibilityLabel={t( "Navigate-to-add-identification" )}
+              accessibilityLabel={t( "Navigates-to-add-identification" )}
             />
             <INatIconButton
               icon="edit"
               size={20}
               onPress={navToAddID}
+              accessibilityLabel={t( "Edit" )}
+              accessibilityHint={t( "Navigates-to-add-identification" )}
             />
           </View>
         )}
@@ -76,11 +79,13 @@ const IdentificationSection = ( ): Node => {
             before={(
               <Button
                 level={identification
-                  ? "neutral"
+                  ? "primary"
                   : "focus"}
                 onPress={navToAddID}
                 text={t( "ADD-AN-ID" )}
-                className="rounded-full py-1 h-[36px]"
+                className={classnames( "rounded-full py-1 h-[36px]", {
+                  "border border-darkGray border-[2px]": identification
+                } )}
                 testID="ObsEdit.Suggestions"
                 icon={(
                   <INatIcon

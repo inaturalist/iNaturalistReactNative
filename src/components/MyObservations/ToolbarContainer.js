@@ -53,12 +53,10 @@ const ToolbarContainer = ( {
       return t( "X-observations-uploaded", { count: totalUploadCount } );
     }
 
-    if ( numUnuploadedObs <= 0 ) {
-      return null;
-    }
-
     if ( !uploadInProgress ) {
-      return t( "Upload-x-observations", { count: numUnuploadedObs } );
+      return numUnuploadedObs !== 0
+        ? t( "Upload-x-observations", { count: numUnuploadedObs } )
+        : "";
     }
 
     const translationParams = {
@@ -101,14 +99,14 @@ const ToolbarContainer = ( {
   const statusText = getStatusText( );
 
   const needsSync = ( ) => (
-    ( numUnuploadedObs > 0 && !uploadInProgress ) || uploadError
+    ( numUnuploadedObs > 0 && !uploadInProgress ) || ( uploadError && !uploadInProgress )
   );
 
   useEffect( ( ) => {
-    if ( uploads?.length > 0 && !singleUpload ) {
+    if ( uploads?.length > 0 && !singleUpload && uploadInProgress ) {
       uploadMultipleObservations( );
     }
-  }, [uploads, uploadMultipleObservations, singleUpload] );
+  }, [uploads, uploadMultipleObservations, singleUpload, uploadInProgress] );
 
   // clear upload status when leaving screen
   useEffect(
@@ -124,7 +122,9 @@ const ToolbarContainer = ( {
     <Toolbar
       statusText={statusText}
       handleSyncButtonPress={handleSyncButtonPress}
-      uploadError={uploadError}
+      uploadError={uploadError && !uploadInProgress
+        ? uploadError
+        : null}
       uploadInProgress={uploadInProgress}
       stopUpload={stopUpload}
       progress={progress}

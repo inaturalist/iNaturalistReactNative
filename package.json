@@ -1,11 +1,12 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.10.0",
+  "version": "0.12.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
     "android:release": "react-native run-android --mode=release",
     "ios": "react-native run-ios",
+    "ios:release": "npx react-native run-ios --device --mode Release",
     "start": "react-native start",
     "clean-start": "npx react-native clean-project-auto && npx pod-install && npm start -- --reset-cache",
     "test": "TZ=UTC jest",
@@ -25,7 +26,8 @@
     "e2e": "npm run e2e:build && npm run e2e:test",
     "icons": "./scripts/update-icon-font.sh",
     "add-example-model": "node scripts/add-example-model.js",
-    "add-github-actions-test-model": "node scripts/add-github-actions-test-model.js"
+    "add-github-actions-test-model": "node scripts/add-github-actions-test-model.js",
+    "github-actions-test-user-check": "node scripts/check-test-user.js"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.21.3",

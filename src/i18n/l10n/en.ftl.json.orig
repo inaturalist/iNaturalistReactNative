@@ -874,6 +874,7 @@
     "comment": "Default accessibility label for DisplayTaxon component",
     "val": "Taxon photo and name"
   },
+<<<<<<< HEAD
   "Observe-and-identify-organisms-in-real-time-with-your-camera": {
     "comment": "Title of screen asking for permission to access the camera",
     "val": "Observe and identify organisms in real-time with your camera"
@@ -950,4 +951,7 @@
     "comment": "Accessibility label for a button that closes the permission request screen",
     "val": "Close permission request screen"
   }
+=======
+  "Your-email-is-confirmed": "Your email is confirmed! Please log in to continue."
+>>>>>>> main
 }

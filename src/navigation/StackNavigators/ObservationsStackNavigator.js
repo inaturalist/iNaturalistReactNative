@@ -98,6 +98,7 @@ const ObservationsStackNavigator = ( ): Node => (
         component={AddIDContainer}
         options={{
           ...removeBottomBorder,
+          ...showHeaderLeft,
           headerTitle: addIDTitle
         }}
       />

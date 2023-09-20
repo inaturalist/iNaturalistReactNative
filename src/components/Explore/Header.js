@@ -16,7 +16,7 @@ import React, { useRef, useState } from "react";
 import { Keyboard } from "react-native";
 import { Surface, useTheme } from "react-native-paper";
 import Taxon from "realmModels/Taxon";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { useAuthenticatedQuery, useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -37,6 +37,7 @@ const Header = ( {
   setHeightAboveFilters, updateTaxon, updatePlace, updatePlaceName, exploreParams,
   updateTaxonName
 }: Props ): Node => {
+  const { t } = useTranslation( );
   const taxonInput = useRef( );
   const placeInput = useRef( );
   const placeName = region.place_guess;
@@ -116,6 +117,8 @@ const Header = ( {
                     color={colors.white}
                     className="self-center"
                     onPress={( ) => navigation.navigate( "Identify" )}
+                    accessibilityLabel={t( "Identification-label" )}
+                    accessibilityHint={t( "Navigates-to-identify" )}
                   />
                 </View>
               )}
@@ -193,6 +196,8 @@ const Header = ( {
               icon="sliders"
               color={colors.white}
               onPress={( ) => navigation.navigate( "ExploreFilters" )}
+              accessibilityLabel={t( "Filters" )}
+              accessibilityHint={t( "Navigates-to-explore" )}
             />
           </View>
         </View>

@@ -1260,6 +1260,7 @@ No-results-found = No results found
 # Default accessibility label for DisplayTaxon component
 Taxon-photo-and-name = Taxon photo and name
 
+<<<<<<< HEAD
 # Title of screen asking for permission to access the camera
 Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real-time with your camera
 # Title of screen asking for permission to access the camera when access was denied
@@ -1315,3 +1316,6 @@ USE-LOCATION = USE LOCATION
 
 # Accessibility label for a button that closes the permission request screen
 Close-permission-request-screen = Close permission request screen
+=======
+Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
+>>>>>>> main

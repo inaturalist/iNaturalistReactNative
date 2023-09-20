@@ -1,9 +1,9 @@
 // @flow
 
-import { HeaderBackButton } from "@react-navigation/elements";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
-import { Heading4, WarningSheet } from "components/SharedComponents";
+import { Heading4, TransparentCircleButton, WarningSheet } from "components/SharedComponents";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { SafeAreaView, View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -12,7 +12,6 @@ import React, {
   useState
 } from "react";
 import { BackHandler, StatusBar } from "react-native";
-import { IconButton } from "react-native-paper";
 import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
@@ -59,8 +58,8 @@ const MediaViewer = ( ): Node => {
 
   const renderBackButton = useCallback( ( ) => (
     <View className="ml-4">
-      <HeaderBackButton
-        tintColor={colors.white}
+      <BackButton
+        color={colors.white}
         onPress={handleBackButtonPress}
       />
     </View>
@@ -111,16 +110,6 @@ const MediaViewer = ( ): Node => {
     horizontalScroll?.current?.scrollToIndex( { index, animated: true } );
   }, [setSelectedPhotoIndex] );
 
-  const handleArrowPressLeft = ( ) => {
-    if ( atFirstPhoto ) { return; }
-    scrollToIndex( selectedPhotoIndex - 1 );
-  };
-
-  const handleArrowPressRight = ( ) => {
-    if ( atLastPhoto ) { return; }
-    scrollToIndex( selectedPhotoIndex + 1 );
-  };
-
   const handleScrollEndDrag = e => {
     const { contentOffset, layoutMeasurement } = e.nativeEvent;
     const { x } = contentOffset;
@@ -159,26 +148,6 @@ const MediaViewer = ( ): Node => {
         handleScrollEndDrag={handleScrollEndDrag}
         horizontalScroll={horizontalScroll}
       />
-      {!atFirstPhoto && (
-        <View className="absolute top-1/2 -mt-[26px] left-0">
-          <IconButton
-            onPress={handleArrowPressLeft}
-            icon="chevron-left-circle"
-            iconColor={colors.white}
-            size={26}
-          />
-        </View>
-      )}
-      {!atLastPhoto && (
-        <View className="absolute top-1/2 -mt-[26px] right-0">
-          <IconButton
-            onPress={handleArrowPressRight}
-            icon="chevron-right-circle"
-            iconColor={colors.white}
-            size={26}
-          />
-        </View>
-      )}
       <PhotoSelector
         photoUris={mediaViewerUris}
         scrollToIndex={scrollToIndex}
@@ -186,7 +155,7 @@ const MediaViewer = ( ): Node => {
         isLandscapeMode={isLandscapeMode}
         selectedPhotoIndex={selectedPhotoIndex}
       />
-      <IconButton
+      <View
         className={classnames(
           "absolute right-[14px]",
           {
@@ -194,11 +163,14 @@ const MediaViewer = ( ): Node => {
             "bottom-[91px]": !isLargeScreen
           }
         )}
-        onPress={showWarningSheet}
-        icon="trash-outline"
-        iconColor={colors.white}
-        containerColor="rgba(0, 0, 0, 0.5)"
-      />
+      >
+        <TransparentCircleButton
+          onPress={showWarningSheet}
+          icon="trash-outline"
+          color={colors.white}
+          accessibilityLabel={t( "Delete" )}
+        />
+      </View>
     </SafeAreaView>
   );
 };

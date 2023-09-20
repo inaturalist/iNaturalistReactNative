@@ -662,6 +662,9 @@ Research-Grade = Research Grade
 
 Reset = Reset
 
+# Option to restore withdrawn id from current user
+Restore = Restore
+
 # Appears in the reset password screen
 Lets-reset-your-password = Let's reset your password
 
@@ -855,6 +858,9 @@ Wild = Wild
 
 WILD-STATUS = WILD STATUS
 
+# Option to Withdraw identification made by user
+Withdraw = Withdraw
+
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->
     [one] 1 Observation
@@ -1027,17 +1033,29 @@ Navigates-to-observations = Navigates to observations.
 Navigates-to-sound-recorder = Navigates to sound recorder.
 Navigates-to-suggest-identification = Navigates to suggest identification.
 Navigates-to-user-profile = Navigates to user profile.
+Navigates-to-drawer-item = Navigates to drawer item.
+Navigate-to-taxon-details = Navigate to taxon details
+Navigates-to-add-identification = Navigates to add identification.
+Navigates-to-identify = Navigates to identify.
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
 Opens-the-side-drawer-menu = Opens the side drawer menu.
-Returns-to-previous-screen = Returns to previous screen.
+Navigate-to-previous-screen = Navigate to previous screen
+Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
 Switches-to-tab = Switches to { $tab } tab.
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
+Use-the-devices-other-camera = Use the device's other camera.
+Open-kebab-menu = Open kebab menu.
+Selects-iconic-taxon-X-for-identification = Selects iconic taxon { $iconicTaxon } for identification.
+Indicates-location-is-loading = Indicates location is loading.
+Returns-map-to-users-current-location = Returns map to user's current location.
+Toggles-map-layer = Toggles map layer.
+Navigate-to-observation-edit-screen = Navigate to observation edit screen
+Close-add-observation-modal = Close add observation modal
+Navigate-to-photo-importer = Navigate to photo importer
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
-Add-this-ID = Add this identification
 # Accessible label for the camera button
-Camera-button-label-switch-camera = Use the device's other camera.
 Camera-button-value-back = The back camera is being used.
 Camera-button-value-front = The front camera is being used.
 Cancel-comment = Cancel comment
@@ -1047,10 +1065,6 @@ Edit-comment = Edit comment
 Fave-button-label-unfave = Unfavorite this observation.
 # Accessible label for the favorite button, when the observation is not favorited
 Fave-button-label-fave = Favorite this observation.
-# Accessible label for the flash button, when flash is turned on
-Flash-button-label-flash = Disable flash.
-# Accessible label for the flash button, when flash is turned off
-Flash-button-label-flash-off = Enable flash.
 Flash-button-value-flash = The flash is turned on.
 Flash-button-value-flash-off = The flash is turned off.
 Navigate-back = Navigate back
@@ -1058,7 +1072,6 @@ Navigate-to-edit-observation = Navigate to edit observation screen
 Navigate-to-login-screen = Navigate to login screen
 Navigate-to-observation-details = Navigates to observation details screen.
 Navigate-to-project-details = Navigate to project details
-Navigate-to-taxon-details = Navigate to taxon details
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Photo-taken-at = Photo taken at { $date }
 Take-photo = Take photo
@@ -1069,18 +1082,42 @@ Taxon-photo-unavailable-without-internet = Taxon photo unavailable without inter
 User-photo-unavailable-without-internet = User photo unavailable without internet
 
 # Accessibility labels for icons
-Close-camera-options-modal = Close camera options modal
-Navigate-to-explore-screen = Navigate to explore screen
+Add-this-ID = Add this identification
 Navigate-to-notifications-screen = Navigate to notifications screen
-Navigate-to-observation-edit-screen = Navigate to observation edit screen
 Navigate-to-observation-list = Navigate to observation list
-Navigate-to-photo-importer = Navigate to photo importer
 Open-side-menu = Open side menu
 Quality-Grade-No-Grade = No Quality Grade
 Uploading = Uploading
-
-Take-photo = Take photo
-
+Arrow-up-selected = Arrow up selected
+Arrow-up-unselected = Arrow up unselected
+Arrow-down-unselected = Arrow down unselected
+Arrow-down-selected = Arrow down selected
+Camera-flip = Camera-flip
+Flash = flash
+Disable-flash = Disable flash
+Enable-flash = Enable flash
+Information = Information
+Checkmark = Checkmark
+Kebab-menu = Kebab menu
+Edit = Edit
+User-location = User location
+Loading-wheel = Loading wheel
+Map-layers = Map layers
+Filters = Filters
+Identification-label = Identification label
+Sound-recorder = Sound recorder
+Observation-with-no-evidence = Observation with no evidence
+Photo-importer = Photo importer
+AR-Camera = AR Camera
+Delete = Delete
+Sync-observations = Sync observations
+List-view = List view
+Grid-view = Grid view
+Remove-favorite = Remove favorite
+Add-favorite = Add favorite
+Start-upload = Start upload
+Previous-observation = Previous observation
+Next-observation = Next observation
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
@@ -1210,6 +1247,7 @@ BLOG = BLOG
 DONATE = DONATE
 SETTINGS = SETTINGS
 LOG-OUT = LOG OUT
+Log-out = Log out
 Log-in-to-iNaturalist = Log in to iNaturalist
 
 Try-searching-for-a-location-name = Try searching for a location name to see the map
@@ -1218,8 +1256,6 @@ Loading-iNaturalists-AR-Camera = Loading iNaturalist’s AR Camera
 
 # Used for explore screen when search params lead to a search with no data
 No-results-found = No results found
-
-Navigate-to-add-identification = Navigate to add identification
 
 # Default accessibility label for DisplayTaxon component
 Taxon-photo-and-name = Taxon photo and name

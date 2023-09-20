@@ -58,11 +58,12 @@ const ObsUploadStatus = ( {
     if ( !observation.id ) {
       const totalProgressIncrements = needsSync( observation ) + obsPhotos;
 
-      if ( typeof currentProgress === "number" ) { return null; }
-      const progress = currentProgress / totalProgressIncrements;
+      const progress = currentProgress === "number"
+        ? currentProgress / totalProgressIncrements
+        : 0;
       return (
         <UploadStatus
-          progress={progress || 0}
+          progress={progress}
           uploadObservation={() => {
             if ( !isConnected ) {
               Alert.alert(
@@ -76,7 +77,7 @@ const ObsUploadStatus = ( {
               setShowLoginSheet( true );
               return;
             }
-            uploadObservation( observation, true );
+            uploadObservation( observation, { isSingleUpload: true } );
           }}
           color={whiteColor}
           completeColor={whiteColor}

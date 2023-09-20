@@ -1,17 +1,18 @@
 // @flow
 import { HeaderBackground } from "@react-navigation/elements";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import type { Node } from "react";
 import React from "react";
 import { Platform, View } from "react-native";
 import colors from "styles/tailwindColors";
 
-import BackButton from "./BackButton";
 import ContextHeader from "./ContextHeader";
 
 const baseHeaderOptions: Object = {
   headerShown: true,
   headerBackTitleVisible: false,
-  headerShadowVisible: false
+  headerShadowVisible: false,
+  headerLeft: () => <BackButton />
 };
 
 const showHeader: Object = {
@@ -54,7 +55,9 @@ export const hideHeaderLeft: Object = {
 
 const showCustomHeader: Object = {
   ...baseHeaderOptions,
-  header: ContextHeader
+  header: ContextHeader,
+  headerShadowVisible: true,
+  alignStart: true
 };
 
 const hideHeader = {

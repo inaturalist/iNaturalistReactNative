@@ -59,6 +59,7 @@ const Relationship = ( {
     </View>
     <Text>{t( "Added-on-date", { date: relationship.created_at } )}</Text>
     <Pressable
+      accessibilityRole="button"
       style={viewStyles.removeRelationship}
       onPress={() => askToRemoveRelationship( relationship )}
     >

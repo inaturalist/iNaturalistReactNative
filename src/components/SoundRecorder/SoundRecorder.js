@@ -110,7 +110,7 @@ const SoundRecorder = (): Node => {
   const renderRecordButton = () => {
     if ( status === "notStarted" ) {
       return (
-        <Pressable onPress={startRecording}>
+        <Pressable accessibilityRole="button" onPress={startRecording}>
           <Text style={[textStyles.alignCenter, textStyles.duration]}>
             {t( "Press-Record-to-Start" )}
           </Text>
@@ -119,7 +119,7 @@ const SoundRecorder = (): Node => {
     }
     if ( status === "paused" ) {
       return (
-        <Pressable onPress={resumeRecording}>
+        <Pressable accessibilityRole="button" onPress={resumeRecording}>
           <Text style={[textStyles.alignCenter, textStyles.duration]}>
             {t( "Paused" )}
           </Text>
@@ -134,7 +134,7 @@ const SoundRecorder = (): Node => {
       );
     }
     return (
-      <Pressable onPress={stopRecording}>
+      <Pressable accessibilityRole="button" onPress={stopRecording}>
         <PlaceholderText
           text="stop"
           style={[textStyles.alignCenter, textStyles.duration]}
@@ -146,14 +146,22 @@ const SoundRecorder = (): Node => {
   const renderPlaybackButton = () => {
     if ( status === "paused" ) {
       return (
-        <Pressable onPress={playRecording} style={viewStyles.playbackButton}>
+        <Pressable
+          accessibilityRole="button"
+          onPress={playRecording}
+          style={viewStyles.playbackButton}
+        >
           <Text>{t( "Play" )}</Text>
         </Pressable>
       );
     }
     if ( status === "playing" ) {
       return (
-        <Pressable onPress={stopPlayback} style={viewStyles.playbackButton}>
+        <Pressable
+          accessibilityRole="button"
+          onPress={stopPlayback}
+          style={viewStyles.playbackButton}
+        >
           <PlaceholderText text="stop" />
         </Pressable>
       );
@@ -178,7 +186,7 @@ const SoundRecorder = (): Node => {
           <View style={viewStyles.recordButtonRow}>
             {renderPlaybackButton()}
             {renderRecordButton()}
-            <Pressable onPress={navToObsEdit}>
+            <Pressable accessibilityRole="button" onPress={navToObsEdit}>
               <Text>{t( "Finish" )}</Text>
             </Pressable>
           </View>

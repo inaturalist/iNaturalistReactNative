@@ -1,6 +1,6 @@
 // @flow
 
-import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton";
+import { TransparentCircleButton } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
@@ -20,7 +20,8 @@ const CameraFlip = ( {
     <TransparentCircleButton
       optionalClasses={cameraFlipClasses}
       onPress={flipCamera}
-      accessibilityLabel={t( "Camera-button-label-switch-camera" )}
+      accessibilityLabel={t( "Camera-flip" )}
+      accessibilityHint={t( "Use-the-devices-other-camera" )}
       icon="rotate"
     />
   );

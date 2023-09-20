@@ -18,8 +18,6 @@ const DESIRED_LOCATION_ACCURACY = 4000000;
 const BottomButtons = ( ): Node => {
   const { t } = useTranslation( );
   const {
-    saveCurrentObservation,
-    saveAndUploadObservation,
     setNextScreen,
     currentObservation,
     unsavedChanges,
@@ -47,18 +45,10 @@ const BottomButtons = ( ): Node => {
     return false;
   };
 
-  const handleSave = async ( ) => {
+  const handlePress = type => {
     if ( showMissingEvidence( ) ) { return; }
-    setButtonPressed( "save" );
-    await saveCurrentObservation( );
-    setNextScreen( );
-  };
-
-  const handleUpload = async ( ) => {
-    if ( showMissingEvidence( ) ) { return; }
-    setButtonPressed( "upload" );
-    await saveAndUploadObservation( );
-    setNextScreen( );
+    setButtonPressed( type );
+    setNextScreen( { type } );
   };
 
   return (
@@ -76,7 +66,7 @@ const BottomButtons = ( ): Node => {
       {currentObservation?._synced_at
         ? (
           <Button
-            onPress={handleSave}
+            onPress={( ) => handlePress( "save" )}
             testID="ObsEdit.saveChangesButton"
             text={t( "SAVE-CHANGES" )}
             level={unsavedChanges
@@ -93,7 +83,7 @@ const BottomButtons = ( ): Node => {
           >
             <Button
               className="px-[25px]"
-              onPress={handleSave}
+              onPress={( ) => handlePress( "save" )}
               testID="ObsEdit.saveButton"
               text={t( "SAVE" )}
               level="neutral"
@@ -107,7 +97,7 @@ const BottomButtons = ( ): Node => {
                 : "neutral"}
               text={t( "UPLOAD-NOW" )}
               testID="ObsEdit.uploadButton"
-              onPress={handleUpload}
+              onPress={( ) => handlePress( "upload" )}
               loading={buttonPressed === "upload"}
               disabled={buttonPressed !== null}
             />

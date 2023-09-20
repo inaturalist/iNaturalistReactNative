@@ -11,7 +11,7 @@ import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect } from "react";
-import { IconButton, ProgressBar, useTheme } from "react-native-paper";
+import { ProgressBar, useTheme } from "react-native-paper";
 import Animated, {
   cancelAnimation,
   Easing,
@@ -27,7 +27,7 @@ type Props = {
   layout: string,
   statusText: ?string,
   handleSyncButtonPress: Function,
-  uploadError: string,
+  uploadError: ?string,
   uploadInProgress: boolean,
   stopUpload: Function,
   progress: number,
@@ -116,7 +116,7 @@ const Toolbar = ( {
     >
       <View className="flex-row items-center mx-4">
         {currentUser && (
-          <IconButton
+          <INatIconButton
             icon="compass-rose-outline"
             onPress={navToExplore}
             accessibilityLabel={t( "Explore" )}
@@ -124,7 +124,6 @@ const Toolbar = ( {
             accessibilityRole="button"
             size={30}
             disabled={false}
-            accessibilityState={{ disabled: false }}
             // FWIW, IconButton has a little margin we can control and a
             // little padding that we can't control, so the negative margin
             // here is to ensure the visible icon is flush with the edge of
@@ -140,7 +139,7 @@ const Toolbar = ( {
           <Animated.View
             style={animatedStyles}
           >
-            <IconButton
+            <INatIconButton
               icon={
                 needsSync( )
                   ? "sync-unsynced"
@@ -148,11 +147,9 @@ const Toolbar = ( {
               }
               size={30}
               onPress={handleSyncButtonPress}
-              accessibilityRole="button"
               disabled={false}
-              accessibilityState={{ disabled: false }}
-              iconColor={getSyncIconColor( )}
-              className="m-0"
+              accessibilityLabel={t( "Sync-observations" )}
+              color={getSyncIconColor( )}
             />
           </Animated.View>
 
@@ -190,20 +187,21 @@ const Toolbar = ( {
             />
           )}
         </View>
-        <IconButton
+        <INatIconButton
           icon={layout === "grid"
             ? "listview"
             : "gridview"}
           size={30}
           disabled={false}
-          accessibilityState={{ disabled: false }}
+          accessibilityLabel={layout === "grid"
+            ? t( "List-view" )
+            : t( "Grid-view" )}
           testID={
             layout === "list"
               ? "MyObservationsToolbar.toggleGridView"
               : "MyObservationsToolbar.toggleListView"
           }
           onPress={toggleLayout}
-          accessibilityRole="button"
           // Negative margin here is similar to above: trying to get the icon
           // flush with the container. ml-auto is a bit of a hack to pull
           // this button all the way to the end.

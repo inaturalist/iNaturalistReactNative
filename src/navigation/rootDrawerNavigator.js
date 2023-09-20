@@ -1,13 +1,6 @@
 // @flow
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import About from "components/About";
-import NetworkLogging from "components/NetworkLogging";
-import PlaceholderComponent from "components/PlaceholderComponent";
-import Search from "components/Search/Search";
-import Settings from "components/Settings/Settings";
-import UiLibrary from "components/UiLibrary";
-import { t } from "i18next";
 import {
   hideDrawerHeaderLeft, hideHeader,
   showHeader
@@ -67,48 +60,6 @@ const RootDrawerNavigator = ( ): Node => (
         ...hideHeader,
         ...hideDrawerHeaderLeft
       }}
-    />
-    <Drawer.Screen
-      name="search"
-      component={Search}
-      options={{
-        ...showHeader,
-        headerTitle: t( "Search" )
-      }}
-    />
-    <Drawer.Screen
-      name="settings"
-      component={Settings}
-      options={{ headerTitle: t( "Settings" ) }}
-    />
-    <Drawer.Screen
-      name="about"
-      component={About}
-      options={{ headerTitle: t( "About-iNaturalist" ) }}
-    />
-    <Drawer.Screen
-      name="help"
-      component={PlaceholderComponent}
-    />
-    <Drawer.Screen
-      name="network"
-      component={NetworkLogging}
-    />
-    <Drawer.Screen
-      name="UI Library"
-      component={UiLibrary}
-    />
-    <Drawer.Screen
-      name="Help"
-      component={PlaceholderComponent}
-    />
-    <Drawer.Screen
-      name="Blog"
-      component={PlaceholderComponent}
-    />
-    <Drawer.Screen
-      name="Donate"
-      component={PlaceholderComponent}
     />
   </Drawer.Navigator>
 );

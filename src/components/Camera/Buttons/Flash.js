@@ -45,18 +45,18 @@ const Flash = ( {
 
   if ( !hasFlash ) return <CameraButtonPlaceholder />;
   let testID = "";
-  let accessibilityLabel = "";
+  let accessibilityHint = "";
   let name = "";
   switch ( takePhotoOptions.flash ) {
     case "on":
       name = "flash-on";
       testID = "flash-button-label-flash";
-      accessibilityLabel = t( "Flash-button-label-flash" );
+      accessibilityHint = t( "Disable-flash" );
       break;
     default: // default to off if no flash
       name = "flash-off";
       testID = "flash-button-label-flash-off";
-      accessibilityLabel = t( "Flash-button-label-flash-off" );
+      accessibilityHint = t( "Enable-flash" );
   }
 
   return (
@@ -71,7 +71,8 @@ const Flash = ( {
       <TransparentCircleButton
         onPress={toggleFlash}
         testID={testID}
-        accessibilityLabel={accessibilityLabel}
+        accessibilityLabel={t( "Flash" )}
+        accessibilityHint={accessibilityHint}
         icon={name}
       />
     </Animated.View>

@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import TransparentCircleButton from "components/SharedComponents/Buttons/TransparentCircleButton";
+import { TransparentCircleButton } from "components/SharedComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
@@ -14,6 +14,7 @@ const Close = ( ): Node => {
     <TransparentCircleButton
       onPress={( ) => navigation.goBack( )}
       accessibilityLabel={t( "Close-AR-camera" )}
+      accessibilityHint={t( "Navigate-to-previous-screen" )}
       icon="close"
     />
   );
