@@ -1,10 +1,9 @@
 // @flow
 
 import { searchProjects } from "api/projects";
-import { Tabs } from "components/SharedComponents";
+import _ from "lodash";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import { Text } from "react-native";
 import {
   useAuthenticatedQuery,
   useCurrentUser,
@@ -12,33 +11,37 @@ import {
   useUserLocation
 } from "sharedHooks";
 
-import ProjectList from "./ProjectList";
+import Projects from "./Projects";
 
 const JOINED_TAB_ID = "JOINED";
 const FEATURED_TAB_ID = "FEATURED";
 const NEARBY_TAB_ID = "NEARBY";
 
-const ProjectTabs = ( ): Node => {
-  const { t } = useTranslation( );
+const ProjectsContainer = ( ): Node => {
+  const [searchInput, setSearchInput] = useState( "" );
   const currentUser = useCurrentUser( );
   const memberId = currentUser?.id;
+  const { t } = useTranslation( );
   const [apiParams, setApiParams] = useState( { } );
   const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
-  const { latLng, isLoading: isLoadingLocation } = useUserLocation( { skipPlaceGuess: true } );
+  const { latLng } = useUserLocation( { skipPlaceGuess: true } );
 
   const {
     data: projects,
     isLoading
   } = useAuthenticatedQuery(
     ["searchProjects", apiParams],
-    optsWithAuth => searchProjects( apiParams, optsWithAuth )
+    optsWithAuth => searchProjects( apiParams, optsWithAuth ),
+    {
+      enabled: !_.isEmpty( apiParams )
+    }
   );
 
   useEffect( ( ) => {
-    if ( memberId && currentTabId === JOINED_TAB_ID ) {
+    if ( currentTabId === JOINED_TAB_ID ) {
       setApiParams( { member_id: memberId } );
     } else if ( currentTabId === FEATURED_TAB_ID ) {
-      setApiParams( { features: true } );
+      setApiParams( { featured: true } );
     } else if ( currentTabId === NEARBY_TAB_ID && latLng ) {
       setApiParams( {
         lat: latLng.latitude,
@@ -48,43 +51,55 @@ const ProjectTabs = ( ): Node => {
   }, [
     memberId,
     currentTabId,
-    latLng
+    latLng,
+    searchInput
   ] );
+
+  useEffect( ( ) => {
+    if ( searchInput.length > 0 ) {
+      setApiParams( { q: searchInput } );
+    }
+  }, [searchInput] );
 
   const tabs = [
     {
       id: JOINED_TAB_ID,
-      text: t( "Joined" ),
+      text: t( "JOINED" ),
       onPress: () => {
         setCurrentTabId( JOINED_TAB_ID );
       }
     },
     {
       id: FEATURED_TAB_ID,
-      text: t( "Featured" ),
+      text: t( "FEATURED" ),
       onPress: () => {
         setCurrentTabId( FEATURED_TAB_ID );
       }
     },
     {
       id: NEARBY_TAB_ID,
-      text: t( "Nearby" ),
+      text: t( "NEARBY" ),
       onPress: () => {
         setCurrentTabId( NEARBY_TAB_ID );
       }
     }
   ];
 
-  const loading = isLoading || ( currentTabId === NEARBY_TAB_ID && isLoadingLocation );
-  /* eslint-disable i18next/no-literal-string */
+  if ( !currentUser ) {
+    tabs.shift( );
+  }
+
   return (
-    <>
-      <Tabs tabs={tabs} activeId={currentTabId} />
-      { loading
-        ? <Text>Loading</Text>
-        : <ProjectList data={projects} />}
-    </>
+    <Projects
+      searchInput={searchInput}
+      setSearchInput={setSearchInput}
+      tabs={tabs}
+      currentTabId={currentTabId}
+      projects={projects}
+      isLoading={isLoading}
+      memberId={memberId}
+    />
   );
 };
 
-export default ProjectTabs;
+export default ProjectsContainer;

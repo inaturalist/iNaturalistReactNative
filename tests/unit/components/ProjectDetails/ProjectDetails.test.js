@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
-import ProjectDetails from "components/Projects/ProjectDetails";
+import ProjectDetailsContainer from "components/ProjectDetails/ProjectDetailsContainer";
 import initI18next from "i18n/initI18next";
 import React from "react";
 
@@ -38,13 +38,13 @@ describe( "ProjectDetails", ( ) => {
     await initI18next( );
   } );
   test( "should not have accessibility errors", async ( ) => {
-    renderComponent( <ProjectDetails /> );
+    renderComponent( <ProjectDetailsContainer /> );
     const projectDetails = await screen.findByTestId( "project-details" );
     expect( projectDetails ).toBeAccessible();
   } );
 
   test( "displays project details", ( ) => {
-    renderComponent( <ProjectDetails /> );
+    renderComponent( <ProjectDetailsContainer /> );
 
     expect( screen.getByText( mockProject.title ) ).toBeTruthy( );
     expect( screen.getByText( mockProject.description ) ).toBeTruthy( );

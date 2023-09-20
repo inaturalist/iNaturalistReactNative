@@ -48,8 +48,9 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
         // $FlowIgnore
         params.page = 1;
       }
+      const { results } = await searchObservations( params, options );
 
-      return searchObservations( params, options );
+      return results || [];
     },
     getNextPageParam: lastPage => last( lastPage )?.id,
     enabled: !!currentUser
