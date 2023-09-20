@@ -138,6 +138,7 @@ const GroupPhotosContainer = ( ): Node => {
       combinePhotos={combinePhotos}
       removePhotos={removePhotos}
       separatePhotos={separatePhotos}
+      totalPhotos={totalPhotos}
     />
   );
 };

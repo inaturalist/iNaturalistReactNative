@@ -21,6 +21,18 @@ const createComment = async (
   }
 };
 
+const updateComment = async (
+  params: Object = {},
+  opts: Object = {}
+): Promise<any> => {
+  try {
+    const { results } = await inatjs.comments.update( { ...PARAMS, ...params }, opts );
+    return results;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 const deleteComments = async (
   id: number,
   opts: Object = {}
@@ -34,5 +46,6 @@ const deleteComments = async (
 
 export {
   createComment,
-  deleteComments
+  deleteComments,
+  updateComment
 };

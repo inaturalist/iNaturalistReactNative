@@ -162,9 +162,9 @@
   "Explore": "Explore",
   "EXPLORE-OBSERVATIONS": "EXPLORE OBSERVATIONS",
   "External-Applications": "External Applications",
-  "FEATURED": {
+  "Featured": {
     "comment": "Header for featured projects",
-    "val": "FEATURED"
+    "val": "Featured"
   },
   "Fetching-location": "Fetching location...",
   "Filters": "Filters",
@@ -186,7 +186,7 @@
     "val": "Go to the Settings app to grant iNaturalist the appropriate permissions."
   },
   "Grant-Permission": {
-    "comment": "Verb phrase label for a button to grant the app a permission, e.g.\npermission to use the camera",
+    "comment": "Title of a screen asking for permission",
     "val": "Grant Permission"
   },
   "Group-Photos": "Group Photos",
@@ -219,9 +219,9 @@
     "val": "The username or password is incorrect"
   },
   "Join-the-largest-community-of-naturalists": "Join the largest community of naturalists in the world!",
-  "JOINED": {
+  "Joined": {
     "comment": "Header for joined projects",
-    "val": "JOINED"
+    "val": "Joined"
   },
   "Joined-date": {
     "comment": "Shows date user joined iNaturalist on user profile",
@@ -277,9 +277,9 @@
   "Muted-Users": "Muted Users",
   "Names": "Names",
   "Native": "Native",
-  "NEARBY": {
+  "Nearby": {
     "comment": "Header for nearby projects",
-    "val": "NEARBY"
+    "val": "Nearby"
   },
   "New-Observation": "New Observation",
   "Next": "Next",
@@ -743,7 +743,6 @@
   "Start-upload": "Start upload",
   "Previous-observation": "Previous observation",
   "Next-observation": "Next observation",
-  "Close-search": "Close search",
   "date-format-short": {
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
@@ -838,7 +837,6 @@
   "SPECIES-WITHOUT-NUMBER": "{ $count ->\n  [one] SPECIES\n *[other] SPECIES\n}",
   "IDENTIFICATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] IDENTIFICATION\n *[other] IDENTIFICATIONS\n}",
   "JOURNAL-POSTS-WITHOUT-NUMBER": "{ $count ->\n  [one] JOURNAL POST\n *[other] JOURNAL POSTS\n}",
-  "MEMBERS-WITHOUT-NUMBER": "{ $count ->\n  [one] MEMBER\n *[other] MEMBERS\n}",
   "Yes-license-my-photos": "Yes, license my photos, sounds, and observations so scientists can use my data (recommended)",
   "I-consent-to-allow-iNaturalist-to-store": "I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)",
   "I-consent-to-allow-my-personal-information": "I consent to allow my personal information to be transferred to the United States of America (required)",
@@ -876,25 +874,84 @@
     "comment": "Default accessibility label for DisplayTaxon component",
     "val": "Taxon photo and name"
   },
-  "You-havent-joined-any-projects-yet": "You haven’t joined any projects yet!",
-  "You-can-click-join-on-the-project-page": "You can click “join” on the project page.",
-  "No-projects-match-that-search": "No projects match that search",
-  "RESET-SEARCH": "RESET SEARCH",
-  "PROJECT-REQUIREMENTS": "PROJECT REQUIREMENTS",
-  "VIEW-PROJECT-REQUIREMENTS": "VIEW PROJECT REQUIREMENTS",
-  "VIEW-IN-EXPLORE": "VIEW IN EXPLORE",
-  "Collection-Project": "Collection Project",
-  "Umbrella-Project": "Umbrella Project",
-  "Traditional-Project": "Traditional Project",
-  "ABOUT-COLLECTION-PROJECTS": "ABOUT COLLECTION PROJECTS",
-  "ABOUT-TRADITIONAL-PROJECTS": "ABOUT TRADITIONAL PROJECTS",
-  "ABOUT-UMBRELLA-PROJECTS": "ABOUT UMBRELLA PROJECTS",
-  "Every-time-a-collection-project": "Every time a collection project’s page is loaded, iNaturalist will perform a quick search and display all observations that match the project’s requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.",
-  "Obervations-must-be-manually-added": "Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.",
-  "If-you-want-to-collate-compare-promote": "If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city’s observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.",
-  "JOIN-PROJECT": "JOIN PROJECT",
-  "JOIN": "JOIN",
-  "LEAVE-PROJECT": "LEAVE PROJECT",
-  "LEAVE": "LEAVE",
+<<<<<<< HEAD
+  "Observe-and-identify-organisms-in-real-time-with-your-camera": {
+    "comment": "Title of screen asking for permission to access the camera",
+    "val": "Observe and identify organisms in real-time with your camera"
+  },
+  "Please-allow-Camera-Access": {
+    "comment": "Title of screen asking for permission to access the camera when access was denied",
+    "val": "Please allow Camera Access"
+  },
+  "Use-the-iNaturalist-camera-to-observe": "Use the iNaturalist camera to observe and identify organisms on-screen in real-time, and share them with our community to get identifications and contribute to science!",
+  "Youve-previously-denied-camera-permissions": "You've previously denied camera permissions, so please enable them in settings.",
+  "OBSERVE-ORGANISMS": {
+    "comment": "Text for a button prompting the user to grant access to the camera",
+    "val": "OBSERVE ORGANISMS"
+  },
+  "OPEN-SETTINGS": {
+    "comment": "Text for a button that opens the operating system Settings app",
+    "val": "OPEN SETTINGS"
+  },
+  "Please-Grant-Permission": {
+    "comment": "Title of a screen asking for permission when permission has been denied",
+    "val": "Please Grant Permission"
+  },
+  "Youve-denied-permission-prompt": {
+    "comment": "Text prompting the user to open Settings to grant permission after\npermission has been denied",
+    "val": "You’ve denied permission. Please grant permission in the settings app."
+  },
+  "GRANT-PERMISSION": {
+    "comment": "Text for a button that asks the user to grant permission",
+    "val": "GRANT PERMISSION"
+  },
+  "Record-organism-sounds-with-the-microphone": {
+    "comment": "Title of screen asking for permission to access the microphone",
+    "val": "Record organism sounds with the microphone"
+  },
+  "Please-allow-Microphone-Access": {
+    "comment": "Title of screen asking for permission to access the microphone when access was denied",
+    "val": "Please allow Microphone Access"
+  },
+  "Use-your-devices-microphone-to-record": "Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!",
+  "Youve-previously-denied-microphone-permissions": "You’ve previously denied microphone permissions, so please enable them in settings.",
+  "RECORD-SOUND": {
+    "comment": "Text for a button prompting the user to grant access to the microphone",
+    "val": "RECORD SOUND"
+  },
+  "Observe-and-identify-organisms-from-your-gallery": {
+    "comment": "Title of screen asking for permission to access the gallery",
+    "val": "Observe and identify organisms from your gallery"
+  },
+  "Please-Allow-Gallery-Access": {
+    "comment": "Title of screen asking for permission to access the gallery when access was denied",
+    "val": "Please Allow Gallery Access"
+  },
+  "Upload-photos-from-your-gallery-and-create-observations": "Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!",
+  "Youve-previously-denied-gallery-permissions": "You’ve previously denied gallery permissions, so please enable them in settings.",
+  "CHOOSE-PHOTOS": {
+    "comment": "Text for a button prompting the user to grant access to the gallery",
+    "val": "CHOOSE PHOTOS"
+  },
+  "Get-more-accurate-suggestions-create-useful-data": {
+    "comment": "Title of screen asking for permission to access location",
+    "val": "Get more accurate suggestions & create useful data for science using your location"
+  },
+  "Please-allow-Location-Access": {
+    "comment": "Title of screen asking for permission to access location when access was denied",
+    "val": "Please allow Location Access"
+  },
+  "iNaturalist-uses-your-location-to-give-you": "iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location. You’re always in control of the location privacy of every observation you create.",
+  "Youve-previously-denied-location-permissions": "You’ve previously denied location permissions, so please enable them in settings.",
+  "USE-LOCATION": {
+    "comment": "Text for a button prompting the user to grant access to location",
+    "val": "USE LOCATION"
+  },
+  "Close-permission-request-screen": {
+    "comment": "Accessibility label for a button that closes the permission request screen",
+    "val": "Close permission request screen"
+  }
+=======
   "Your-email-is-confirmed": "Your email is confirmed! Please log in to continue."
+>>>>>>> main
 }

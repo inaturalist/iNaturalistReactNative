@@ -10,20 +10,19 @@ type Props = {
   }
 
 const BackButton = ( {
-  onPress, color
+  color,
+  onPress
 }: Props ): Node => {
   const navigation = useNavigation();
   const tintColor = color || colors.black;
 
-  if ( navigation?.canGoBack ) {
+  if ( navigation?.canGoBack( ) ) {
     return (
       <HeaderBackButton tintColor={tintColor} onPress={onPress || navigation.goBack} />
     );
   }
 
-  return (
-    null
-  );
+  return null;
 };
 
 export default BackButton;

@@ -300,7 +300,7 @@ EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
 External-Applications = External Applications
 
 # Header for featured projects
-FEATURED = FEATURED
+Featured = Featured
 
 Fetching-location = Fetching location...
 
@@ -381,7 +381,7 @@ Invalid-login = The username or password is incorrect
 Join-the-largest-community-of-naturalists = Join the largest community of naturalists in the world!
 
 # Header for joined projects
-JOINED = JOINED
+Joined = Joined
 
 # Shows date user joined iNaturalist on user profile
 Joined-date = Joined: {$date}
@@ -469,7 +469,7 @@ Names = Names
 Native = Native
 
 # Header for nearby projects
-NEARBY = NEARBY
+Nearby = Nearby
 
 New-Observation = New Observation
 
@@ -1118,7 +1118,6 @@ Add-favorite = Add favorite
 Start-upload = Start upload
 Previous-observation = Previous observation
 Next-observation = Next observation
-Close-search = Close search
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
@@ -1222,11 +1221,6 @@ JOURNAL-POSTS-WITHOUT-NUMBER = {$count ->
     *[other] JOURNAL POSTS
 }
 
-MEMBERS-WITHOUT-NUMBER = {$count ->
-    [one] MEMBER
-    *[other] MEMBERS
-}
-
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
 I-consent-to-allow-iNaturalist-to-store = I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)
 I-consent-to-allow-my-personal-information = I consent to allow my personal information to be transferred to the United States of America (required)
@@ -1266,35 +1260,62 @@ No-results-found = No results found
 # Default accessibility label for DisplayTaxon component
 Taxon-photo-and-name = Taxon photo and name
 
-You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
+<<<<<<< HEAD
+# Title of screen asking for permission to access the camera
+Observe-and-identify-organisms-in-real-time-with-your-camera = Observe and identify organisms in real-time with your camera
+# Title of screen asking for permission to access the camera when access was denied
+Please-allow-Camera-Access = Please allow Camera Access
+Use-the-iNaturalist-camera-to-observe = Use the iNaturalist camera to observe and identify organisms on-screen in real-time, and share them with our community to get identifications and contribute to science!
+Youve-previously-denied-camera-permissions = You've previously denied camera permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to the camera
+OBSERVE-ORGANISMS = OBSERVE ORGANISMS
 
-You-can-click-join-on-the-project-page = You can click “join” on the project page.
+# Text for a button that opens the operating system Settings app
+OPEN-SETTINGS = OPEN SETTINGS
 
-No-projects-match-that-search = No projects match that search
+# Title of a screen asking for permission
+Grant-Permission = Grant Permission
 
-RESET-SEARCH = RESET SEARCH
+# Title of a screen asking for permission when permission has been denied
+Please-Grant-Permission = Please Grant Permission
 
-PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
+# Text prompting the user to open Settings to grant permission after
+# permission has been denied
+Youve-denied-permission-prompt = You’ve denied permission. Please grant permission in the settings app.
 
-VIEW-PROJECT-REQUIREMENTS = VIEW PROJECT REQUIREMENTS
+# Text for a button that asks the user to grant permission
+GRANT-PERMISSION = GRANT PERMISSION
 
-VIEW-IN-EXPLORE = VIEW IN EXPLORE
 
-Collection-Project = Collection Project
-Umbrella-Project = Umbrella Project
-Traditional-Project = Traditional Project
+# Title of screen asking for permission to access the microphone
+Record-organism-sounds-with-the-microphone = Record organism sounds with the microphone
+# Title of screen asking for permission to access the microphone when access was denied
+Please-allow-Microphone-Access = Please allow Microphone Access
+Use-your-devices-microphone-to-record = Use your device’s microphone to record sounds made by organisms and share them with our community to get identifications and contribute to science!
+Youve-previously-denied-microphone-permissions = You’ve previously denied microphone permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to the microphone
+RECORD-SOUND = RECORD SOUND
 
-ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
-ABOUT-TRADITIONAL-PROJECTS = ABOUT TRADITIONAL PROJECTS
-ABOUT-UMBRELLA-PROJECTS = ABOUT UMBRELLA PROJECTS
+# Title of screen asking for permission to access the gallery
+Observe-and-identify-organisms-from-your-gallery = Observe and identify organisms from your gallery
+# Title of screen asking for permission to access the gallery when access was denied
+Please-Allow-Gallery-Access = Please Allow Gallery Access
+Upload-photos-from-your-gallery-and-create-observations = Upload photos from your gallery and create observations and get identifications of organisms you’ve already observed!
+Youve-previously-denied-gallery-permissions = You’ve previously denied gallery permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to the gallery
+CHOOSE-PHOTOS = CHOOSE PHOTOS
 
-Every-time-a-collection-project = Every time a collection project’s page is loaded, iNaturalist will perform a quick search and display all observations that match the project’s requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
-Obervations-must-be-manually-added = Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.
-If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city’s observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
+# Title of screen asking for permission to access location
+Get-more-accurate-suggestions-create-useful-data = Get more accurate suggestions & create useful data for science using your location
+# Title of screen asking for permission to access location when access was denied
+Please-allow-Location-Access = Please allow Location Access
+iNaturalist-uses-your-location-to-give-you= iNaturalist uses your location to give you better identification suggestions and we can automatically add a location to your observations, which helps scientists. We also use it to help you find organisms observed near your location. You’re always in control of the location privacy of every observation you create.
+Youve-previously-denied-location-permissions = You’ve previously denied location permissions, so please enable them in settings.
+# Text for a button prompting the user to grant access to location
+USE-LOCATION = USE LOCATION
 
-JOIN-PROJECT = JOIN PROJECT
-JOIN = JOIN
-
-LEAVE-PROJECT = LEAVE PROJECT
-LEAVE = LEAVE
+# Accessibility label for a button that closes the permission request screen
+Close-permission-request-screen = Close permission request screen
+=======
 Your-email-is-confirmed = Your email is confirmed! Please log in to continue.
+>>>>>>> main

@@ -1,13 +1,16 @@
 // @flow
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import { focusManager } from "@tanstack/react-query";
 import { signOut } from "components/LoginSignUp/AuthenticationService";
 import RootDrawerNavigator from "navigation/rootDrawerNavigator";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useCallback, useEffect } from "react";
-import { AppState, LogBox } from "react-native";
+import {
+  AppState, Linking, LogBox
+} from "react-native";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import { addARCameraFiles } from "sharedHelpers/cvModel";
@@ -41,6 +44,7 @@ type Props = {
 // this children prop is here for the sake of testing with jest
 // normally we would never do this in code
 const App = ( { children }: Props ): Node => {
+  const navigation = useNavigation( );
   const realm = useRealm( );
   const currentUser = useCurrentUser( );
   useIconicTaxa( { reload: true } );
@@ -125,6 +129,43 @@ const App = ( { children }: Props ): Node => {
       changeLanguageToLocale( currentUser.locale );
     }
   }, [changeLanguageToLocale, currentUser?.locale, i18n] );
+
+  const navigateConfirmedUser = useCallback( ( ) => {
+    if ( currentUser ) { return; }
+    navigation.navigate( "LoginNavigator", {
+      screen: "Login",
+      params: { emailConfirmed: true }
+    } );
+  }, [navigation, currentUser] );
+
+  const newAccountConfirmedUrl = "https://www.inaturalist.org/users/sign_in?confirmed=true";
+  const existingAccountConfirmedUrl = "https://www.inaturalist.org/home?confirmed=true";
+  // const testUrl = "https://www.inaturalist.org/observations";
+
+  useEffect( ( ) => {
+    Linking.addEventListener( "url", async ( { url } ) => {
+      if ( url === newAccountConfirmedUrl
+        // || url.includes( testUrl )
+        || url === existingAccountConfirmedUrl
+      ) {
+        navigateConfirmedUser( );
+      }
+    } );
+  }, [navigateConfirmedUser] );
+
+  useEffect( ( ) => {
+    const fetchInitialUrl = async ( ) => {
+      const url = await Linking.getInitialURL( );
+
+      if ( url === newAccountConfirmedUrl
+        // || url?.includes( testUrl )
+        || url === existingAccountConfirmedUrl
+      ) {
+        navigateConfirmedUser( );
+      }
+    };
+    fetchInitialUrl( );
+  }, [navigateConfirmedUser] );
 
   // this children prop is here for the sake of testing with jest
   // normally we would never do this in code

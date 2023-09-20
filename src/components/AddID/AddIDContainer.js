@@ -1,7 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import createIdentification from "api/identifications";
+import { createIdentification } from "api/identifications";
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useEffect, useState } from "react";
