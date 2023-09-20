@@ -2,16 +2,20 @@
 
 import { useRoute } from "@react-navigation/native";
 import { fetchSpeciesCounts, searchObservations } from "api/observations";
-import { fetchProjectMembers, fetchProjectPosts, fetchProjects } from "api/projects";
+import {
+  fetchMembership,
+  fetchProjectMembers, fetchProjectPosts, fetchProjects, joinProject, leaveProject
+} from "api/projects";
 import type { Node } from "react";
-import React from "react";
-import { useAuthenticatedQuery } from "sharedHooks";
+import React, { useEffect, useState } from "react";
+import { useAuthenticatedMutation, useAuthenticatedQuery } from "sharedHooks";
 
 import ProjectDetails from "./ProjectDetails";
 
 const ProjectDetailsContainer = ( ): Node => {
   const { params } = useRoute( );
   const { id } = params;
+  const [loading, setLoading] = useState( false );
 
   const { data: project } = useAuthenticatedQuery(
     ["fetchProjects", id],
@@ -47,16 +51,63 @@ const ProjectDetailsContainer = ( ): Node => {
     } )
   );
 
+  const { data: currentMembership, refetch, isRefetching } = useAuthenticatedQuery(
+    ["fetchMembership", id],
+    optsWithAuth => fetchMembership( {
+      id
+    }, optsWithAuth )
+  );
+
+  const createJoinProjectMutation = useAuthenticatedMutation(
+    ( joinParams, optsWithAuth ) => joinProject( joinParams, optsWithAuth ),
+    {
+      onSuccess: ( ) => {
+        refetch( );
+      },
+      onError: error => {
+        console.log( error, "couldn't join project" );
+      }
+    }
+  );
+
+  const createLeaveProjectMutation = useAuthenticatedMutation(
+    ( leaveParams, optsWithAuth ) => leaveProject( leaveParams, optsWithAuth ),
+    {
+      onSuccess: ( ) => {
+        refetch( );
+      },
+      onError: error => {
+        console.log( error, "couldn't leave project" );
+      }
+    }
+  );
+
+  useEffect( ( ) => {
+    if ( isRefetching === false ) {
+      setLoading( false );
+    }
+  }, [isRefetching] );
+
   if ( project ) {
     project.members_count = projectMembers;
     project.journal_posts_count = projectPosts;
     project.observations_count = projectStats?.total_results;
     project.species_count = speciesCounts?.total_results;
+    project.current_user_is_member = currentMembership === 1;
   }
 
   return (
     <ProjectDetails
       project={project}
+      joinProject={( ) => {
+        setLoading( true );
+        createJoinProjectMutation.mutate( { id } );
+      }}
+      leaveProject={( ) => {
+        setLoading( true );
+        createLeaveProjectMutation.mutate( { id } );
+      }}
+      loadingProjectMembership={loading}
     />
   );
 };

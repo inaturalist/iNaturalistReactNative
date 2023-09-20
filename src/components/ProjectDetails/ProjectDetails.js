@@ -3,10 +3,10 @@
 import { useNavigation } from "@react-navigation/native";
 import displayProjectType from "components/Projects/helpers/displayProjectType";
 import {
-  Button, Heading1, Heading3, Heading4, ScrollViewWrapper,
+  Button, Heading1, Heading3, Heading4, OverviewCounts,
+  ScrollViewWrapper,
   UserText
 } from "components/SharedComponents";
-import OverviewCounts from "components/SharedComponents/OverviewCounts";
 import {
   Image, ImageBackground, View
 } from "components/styledComponents";
@@ -14,11 +14,18 @@ import type { Node } from "react";
 import React from "react";
 import { useTranslation } from "sharedHooks";
 
+import AboutProjectType from "./AboutProjectType";
+
 type Props = {
-  project: Object
+  project: Object,
+  joinProject: Function,
+  leaveProject: Function,
+  loadingProjectMembership: boolean
 }
 
-const ProjectDetails = ( { project }: Props ): Node => {
+const ProjectDetails = ( {
+  project, joinProject, leaveProject, loadingProjectMembership
+}: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
@@ -34,7 +41,6 @@ const ProjectDetails = ( { project }: Props ): Node => {
         source={{ uri: project.header_image_url }}
         testID="ProjectDetails.headerImage"
       >
-        {/* {console.log( project, "project" )} */}
         <Image
           source={{ uri: project.icon }}
           className="h-[70px] w-[70px] rounded-full bottom-6 z-100"
@@ -53,14 +59,18 @@ const ProjectDetails = ( { project }: Props ): Node => {
             journal_posts_count: project.journal_posts_count
           }}
         />
-        <Heading4 className="mb-3 mt-5">{t( "ABOUT" )}</Heading4>
+        <Heading4 className="mt-7">{t( "ABOUT" )}</Heading4>
         {/* eslint-disable-next-line react-native/no-inline-styles */}
         <UserText text={project.description} htmlStyle={{ lineHeight: 26 }} />
-        <Heading4 className="mb-3 mt-5">{t( "PROJECT-REQUIREMENTS" )}</Heading4>
-        <Button
-          level="neutral"
-          text={t( "VIEW-PROJECT-REQUIREMENTS" )}
-        />
+        {project.project_type === "collection" && (
+          <>
+            <Heading4 className="mb-3 mt-5">{t( "PROJECT-REQUIREMENTS" )}</Heading4>
+            <Button
+              level="neutral"
+              text={t( "VIEW-PROJECT-REQUIREMENTS" )}
+            />
+          </>
+        )}
         <Heading4 className="mb-3 mt-5">{t( "MAP" )}</Heading4>
         <Button
           level="neutral"
@@ -70,6 +80,35 @@ const ProjectDetails = ( { project }: Props ): Node => {
             placeId: project.place_id
           } )}
         />
+        {!project.project_type && (
+          <>
+            <Heading4 className="mb-3 mt-5">
+              {
+                !project.current_user_is_member
+                  ? t( "JOIN-PROJECT" )
+                  : t( "LEAVE-PROJECT" )
+              }
+            </Heading4>
+            {!project.current_user_is_member
+              ? (
+                <Button
+                  level="neutral"
+                  text={t( "JOIN" )}
+                  onPress={joinProject}
+                  loading={loadingProjectMembership}
+                />
+              )
+              : (
+                <Button
+                  level="neutral"
+                  text={t( "LEAVE" )}
+                  onPress={leaveProject}
+                  loading={loadingProjectMembership}
+                />
+              )}
+          </>
+        )}
+        <AboutProjectType projectType={project.project_type} />
       </View>
     </ScrollViewWrapper>
   );

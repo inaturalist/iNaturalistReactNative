@@ -6,6 +6,7 @@ import {
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
+import { ActivityIndicator } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -21,7 +22,9 @@ const Count = ( { count, label, icon } ) => (
         color={colors.white}
       />
     </View>
-    <Body2 className="mt-2">{t( "Intl-number", { val: count } )}</Body2>
+    {typeof count === "number"
+      ? <Body2 className="mt-2">{t( "Intl-number", { val: count } )}</Body2>
+      : <ActivityIndicator />}
     <Heading5 className="mt-2 text-center">{t( label, { count } )}</Heading5>
   </View>
 );

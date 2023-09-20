@@ -22,7 +22,8 @@ const initialState = {
     lat: 0.0,
     lng: 0.0,
     radius: 50,
-    taxon_name: "Animals"
+    taxon_name: "Animals",
+    return_bounds: true
   },
   exploreView: "observations"
 };
@@ -106,8 +107,6 @@ const ExploreContainer = ( ): Node => {
     exploreParams,
     exploreView
   } = state;
-
-  console.log( exploreParams, "explore params" );
 
   useEffect( ( ) => {
     if ( params?.projectId ) {

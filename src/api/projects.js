@@ -74,11 +74,39 @@ const searchProjects = async ( params: Object = {}, opts: Object = {} ): Promise
   }
 };
 
+const joinProject = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+  try {
+    return await inatjs.projects.join( { ...PARAMS, ...params }, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const leaveProject = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+  try {
+    return await inatjs.projects.leave( { ...PARAMS, ...params }, opts );
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
+const fetchMembership = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
+  try {
+    const response = await inatjs.projects.membership( { ...PARAMS, ...params }, opts );
+    return response.total_results;
+  } catch ( e ) {
+    return handleError( e );
+  }
+};
+
 export default searchProjects;
 
 export {
+  fetchMembership,
   fetchProjectMembers,
   fetchProjectPosts,
   fetchProjects,
+  joinProject,
+  leaveProject,
   searchProjects
 };
