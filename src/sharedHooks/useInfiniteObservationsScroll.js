@@ -18,7 +18,7 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
   const baseParams = {
     ...newInputParams,
     per_page: 50,
-    fields: Observation.FIELDS,
+    fields: Observation.LIST_FIELDS,
     ttl: -1
   };
 
@@ -53,7 +53,9 @@ const useInfiniteObservationsScroll = ( { upsert, params: newInputParams }: Obje
       return results || [];
     },
     getNextPageParam: lastPage => last( lastPage )?.id,
-    enabled: !!currentUser
+    // allow a user to see the Explore screen Observations
+    // content while logged out
+    enabled: !!currentUser || upsert === false
   } );
 
   useEffect( ( ) => {
