@@ -1,3 +1,6 @@
+// adapted from native Android iNaturalist app
+// https://github.com/inaturalist/iNaturalistAndroid/blob/main/iNaturalist/src/main/java/org/inaturalist/android/UTFGrid.java
+
 const EXPANSION_PIXELS = 8;
 
 const TILE_SIZE = 256;
@@ -16,13 +19,15 @@ const decodeId = id => {
 const getKeyForPixel = ( x, y, json ) => {
   let id = 0;
 
-  if ( x >= 0 && y >= 0
-        && x < TILE_SIZE && y < TILE_SIZE ) {
+  if (
+    x >= 0
+      && y >= 0
+      && x < TILE_SIZE
+      && y < TILE_SIZE
+  ) {
     const factor = TILE_SIZE / json.grid.length;
-    const row = y / factor;
-    const col = x / factor;
-
-    console.log( factor, row, col, "factor row col" );
+    const row = Math.floor( y / factor );
+    const col = Math.floor( x / factor );
 
     id = json.grid[row].charCodeAt( col );
     id = decodeId( id );
@@ -33,14 +38,13 @@ const getKeyForPixel = ( x, y, json ) => {
   }
 
   const key = json.keys[id];
-  console.log( key, "key in fetch" );
 
   return key;
 };
 
 const getKeyForPixelExpansive = ( x, y, json ) => {
   let key = getKeyForPixel( x, y, json );
-  if ( !key.equals( EMPTY_KEY ) ) return key;
+  if ( key !== EMPTY_KEY ) return key;
 
   // Search nearby pixels
   const factor = TILE_SIZE / json.grid.length;
@@ -50,21 +54,21 @@ const getKeyForPixelExpansive = ( x, y, json ) => {
   // Slowly expand the search grid around the current pixel
   for ( let expansion = factor; expansion <= expansionFactor; expansion += factor ) {
     key = getKeyForPixel( x - expansion, y - expansion, json );
-    if ( !key.equals( EMPTY_KEY ) ) return key;
+    if ( key !== EMPTY_KEY ) return key;
     key = getKeyForPixel( x, y - expansion, json );
-    if ( !key.equals( EMPTY_KEY ) ) return key;
+    if ( key !== EMPTY_KEY ) return key;
     key = getKeyForPixel( x + expansion, y - expansion, json );
-    if ( !key.equals( EMPTY_KEY ) ) return key;
+    if ( key !== EMPTY_KEY ) return key;
     key = getKeyForPixel( x + expansion, y, json );
-    if ( !key.equals( EMPTY_KEY ) ) return key;
+    if ( key !== EMPTY_KEY ) return key;
     key = getKeyForPixel( x + expansion, y + expansion, json );
-    if ( !key.equals( EMPTY_KEY ) ) return key;
+    if ( key !== EMPTY_KEY ) return key;
     key = getKeyForPixel( x, y + expansion, json );
-    if ( !key.equals( EMPTY_KEY ) ) return key;
+    if ( key !== EMPTY_KEY ) return key;
     key = getKeyForPixel( x - expansion, y + expansion, json );
-    if ( !key.equals( EMPTY_KEY ) ) return key;
+    if ( key !== EMPTY_KEY ) return key;
     key = getKeyForPixel( x - expansion, y, json );
-    if ( !key.equals( EMPTY_KEY ) ) return key;
+    if ( key !== EMPTY_KEY ) return key;
   }
 
   return EMPTY_KEY;
@@ -75,14 +79,11 @@ const getKeyForPixelExpansive = ( x, y, json ) => {
    */
 const getDataForPixel = ( x, y, json ) => {
   const key = getKeyForPixelExpansive( x, y, json );
-  console.log( key, "key in getDataForPixel", x, y );
 
-  // This tile position has no key attached to it - no data
-  if ( key.equals( EMPTY_KEY ) ) return null;
   // Non existent key
-  if ( !json.data.has( key ) ) return null;
+  if ( !json.data[key] ) { return null; }
 
-  return json.data( key );
+  return json.data[key];
 };
 
 export default getDataForPixel;

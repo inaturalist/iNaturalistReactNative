@@ -1,6 +1,6 @@
 // @flow
 
-// import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { Image, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -14,6 +14,7 @@ const calculateZoom = ( width, delta ) => Math.round(
 );
 
 const tilesUrl = "https://tiles.inaturalist.org/v1/points";
+const baseUrl = "https://api.inaturalist.org/v2";
 
 type Props = {
   obsLatitude?: number,
@@ -38,7 +39,7 @@ const Map = ( {
       ? calculateZoom( screenWidth, region.longitudeDelta )
       : 5
   );
-  // const navigation = useNavigation( );
+  const navigation = useNavigation( );
   const { latLng: viewerLatLng } = useUserLocation( { skipPlaceGuess: true } );
 
   const initialLatitude = obsLatitude || ( viewerLatLng?.latitude );
@@ -59,9 +60,9 @@ const Map = ( {
 
   const queryString = Object.keys( params ).map( key => `${key}=${params[key]}` ).join( "&" );
 
-  const url = currentZoom > 10
-    ? "https://api.inaturalist.org/v2/points/{z}/{x}/{y}.png"
-    : "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png";
+  const url = currentZoom > 13
+    ? `${baseUrl}/points/{z}/{x}/{y}.png`
+    : `${baseUrl}/grid/{z}/{x}/{y}.png`;
   const urlTemplate = `${url}?${queryString}`;
 
   const onMapPress = async latLng => {
@@ -73,10 +74,8 @@ const Map = ( {
       mPixelPositionY
     } = UTFPosition;
     const tilesParams = {
-      color: "%2374ac00",
-      verifiable: "true",
+      ...params,
       style: "geotilegrid"
-      // tile_size: 512
     };
     const gridQuery = Object.keys( tilesParams )
       .map( key => `${key}=${tilesParams[key]}` ).join( "&" );
@@ -95,10 +94,11 @@ const Map = ( {
     const json = await response.json( );
 
     const observation = getDataForPixel( mPixelPositionX, mPixelPositionY, json );
+    const uuid = observation?.uuid;
 
-    console.log( observation, "observation" );
-
-    // https://tiles.inaturalist.org/v1/points/11/310/382.grid.json?verifiable=true&place_id=66538&style=geotilegrid&tile_size=512&color=%2374ac00
+    if ( uuid ) {
+      navigation.navigate( "ObsDetails", { uuid } );
+    }
   };
 
   const displayLocation = ( ) => (
@@ -148,23 +148,6 @@ const Map = ( {
               urlTemplate={urlTemplate}
             />
           )}
-          {/* {observations?.map( observation => (
-            <Marker
-              testID={`ExploreMap.TaxonMarker.${observation.uuid}`}
-              key={`ExploreMap.TaxonMarker.${observation.uuid}`}
-              coordinate={{
-                latitude: observation.latitude,
-                longitude: observation.longitude
-              }}
-              onPress={( ) => navigation.navigate( "ObsDetails", { uuid: observation.uuid } )}
-            >
-              <Image
-                source={require( "images/location_indicator.png" )}
-                className="w-[25px] h-[32px]"
-                accessibilityIgnoresInvertColors
-              />
-            </Marker>
-          ) ) } */}
           {showLocationIndicator && displayLocation( )}
         </MapView>
       )}
