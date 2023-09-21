@@ -4,10 +4,11 @@ import { INatIconButton } from "components/SharedComponents";
 import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { Image } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { View } from "react-native";
 import MapView, { Marker, UrlTile } from "react-native-maps";
 import { useTheme } from "react-native-paper";
+import useTranslation from "sharedHooks/useTranslation";
 import useUserLocation from "sharedHooks/useUserLocation";
 import { getShadowStyle } from "styles/global";
 import { viewStyles } from "styles/sharedComponents/map";
@@ -49,6 +50,10 @@ const Map = ( {
   const { latLng: viewerLatLng } = useUserLocation( { skipPlaceGuess: true } );
   const theme = useTheme( );
   const [permissionRequested, setPermissionRequested] = useState( false );
+  const [showsUserLocation, setShowsUserLocation] = useState( false );
+  const [userLocation, setUserLocation] = useState( null );
+  const { t } = useTranslation( );
+  const mapRef = useRef( );
 
   const initialLatitude = obsLatitude || ( viewerLatLng?.latitude );
   const initialLongitude = obsLongitude || ( viewerLatLng?.longitude );
@@ -66,7 +71,16 @@ const Map = ( {
       : 100
   };
 
-  console.log( "permissionRequested: ", permissionRequested );
+  const panToUserLocation = useCallback( ( ) => {
+    if ( !userLocation ) return;
+
+    mapRef?.current?.animateCamera( {
+      center: {
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude
+      }
+    } );
+  }, [mapRef, userLocation] );
 
   return (
     <View
@@ -86,8 +100,12 @@ const Map = ( {
               ? region
               : initialRegion}
             onRegionChange={updateCoords}
-            showsUserLocation
+            onUserLocationChange={locationChangeEvent => {
+              setUserLocation( locationChangeEvent?.nativeEvent?.coordinate );
+            }}
+            showsUserLocation={showsUserLocation}
             loadingEnabled
+            ref={mapRef}
           >
             {taxonId && (
               <UrlTile
@@ -115,6 +133,7 @@ const Map = ( {
               icon="location-crosshairs"
               className="absolute bottom-5 right-5 bg-white rounded-full"
               style={getShadow( theme.colors.primary )}
+              accessibilityLabel={t( "User-location" )}
               onPress={( ) => setPermissionRequested( true )}
             />
           )}
@@ -122,9 +141,18 @@ const Map = ( {
       )}
       <LocationPermissionGate
         permissionNeeded={permissionRequested}
-        onComplete={( ) => {
+        onPermissionGranted={( ) => {
           setPermissionRequested( false );
-          console.warn( "TODO: figure out how to refetch user location when permission granted" );
+          setShowsUserLocation( true );
+          panToUserLocation( );
+        }}
+        onPermissionBlocked={( ) => {
+          setPermissionRequested( false );
+          setShowsUserLocation( false );
+        }}
+        onPermissionDenied={( ) => {
+          setPermissionRequested( false );
+          setShowsUserLocation( false );
         }}
         withoutNavigation
       />

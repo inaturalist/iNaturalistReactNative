@@ -86,9 +86,6 @@ const ProjectTabs = ( ): Node => {
         : <ProjectList data={projects} />}
       <LocationPermissionGate
         permissionNeeded={currentTabId === NEARBY_TAB_ID}
-        onComplete={( ) => {
-          console.warn( "TODO: figure out how to refetch user location when permission granted" );
-        }}
         withoutNavigation
       />
     </>

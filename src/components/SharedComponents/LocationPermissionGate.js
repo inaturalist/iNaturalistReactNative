@@ -10,14 +10,18 @@ import React from "react";
 type Props = {
   children?: Node,
   permissionNeeded?: boolean,
-  onComplete?: Function,
+  onPermissionGranted?: Function,
+  onPermissionDenied?: Function,
+  onPermissionBlocked?: Function,
   withoutNavigation?: boolean
 };
 
 const LocationPermissionGate = ( {
   children,
   permissionNeeded,
-  onComplete,
+  onPermissionGranted,
+  onPermissionDenied,
+  onPermissionBlocked,
   withoutNavigation
 }: Props ): Node => (
   <PermissionGateContainer
@@ -30,7 +34,9 @@ const LocationPermissionGate = ( {
     icon="map-marker-outline"
     image={require( "images/landon-parenteau-EEuDMqRYbx0-unsplash.jpg" )}
     permissionNeeded={permissionNeeded}
-    onComplete={onComplete}
+    onPermissionGranted={onPermissionGranted}
+    onPermissionBlocked={onPermissionBlocked}
+    onPermissionDenied={onPermissionDenied}
     withoutNavigation={withoutNavigation}
   >
     {children}

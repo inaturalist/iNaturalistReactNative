@@ -60,7 +60,9 @@ type Props = {
   buttonText?: string,
   image?: Object,
   permissionNeeded?: boolean,
-  onComplete?: Function,
+  onPermissionGranted?: Function,
+  onPermissionDenied?: Function,
+  onPermissionBlocked?: Function,
   withoutNavigation?: boolean
 };
 
@@ -83,21 +85,23 @@ export function permissionResultFromMultiple( multiResults: Array<string> ): str
 // future we might want to extend this to always show a custom view before
 // asking the user for a permission.
 const PermissionGateContainer = ( {
+  blockedPrompt,
+  body,
+  buttonText,
   children,
-  permissions,
   icon,
+  image,
+  onPermissionBlocked,
+  onPermissionDenied,
+  onPermissionGranted,
+  permissionNeeded = true,
+  permissions,
   title,
   titleDenied,
-  body,
-  blockedPrompt,
-  buttonText,
-  image,
-  permissionNeeded = true,
-  onComplete,
   withoutNavigation
 }: Props ): Node => {
   const [result, setResult] = useState( null );
-  const [modalShown, setModalShown] = useState( true );
+  const [modalShown, setModalShown] = useState( false );
 
   const navigation = useNavigation();
 
@@ -118,7 +122,7 @@ const PermissionGateContainer = ( {
   }, [checkPermission, result, permissionNeeded] );
 
   useEffect( ( ) => {
-    if ( withoutNavigation && permissionNeeded ) {
+    if ( withoutNavigation && permissionNeeded && result !== RESULTS.GRANTED ) {
       setModalShown( true );
       return () => {};
     }
@@ -132,10 +136,11 @@ const PermissionGateContainer = ( {
     return () => {};
   }, [
     checkPermission,
-    navigation,
     children,
-    withoutNavigation,
-    permissionNeeded
+    navigation,
+    permissionNeeded,
+    result,
+    withoutNavigation
   ] );
 
   useEffect( ( ) => {
@@ -149,16 +154,28 @@ const PermissionGateContainer = ( {
     if ( !withoutNavigation ) navigation.goBack( );
   }, [
     navigation,
-    // onComplete,
-    // result,
     setModalShown,
     withoutNavigation
   ] );
 
-  if ( result === RESULTS.GRANTED && children ) {
-    // if ( onComplete ) onComplete( result );
-    return children;
-  }
+  // If the result changes, notify the parent component
+  useEffect( ( ) => {
+    if ( onPermissionDenied && result === RESULTS.DENIED ) {
+      onPermissionDenied( );
+    } else if ( onPermissionGranted && result === RESULTS.GRANTED ) {
+      onPermissionGranted( );
+    } else if ( onPermissionBlocked && result === RESULTS.BLOCKED ) {
+      onPermissionBlocked( );
+    }
+  }, [
+    onPermissionBlocked,
+    onPermissionDenied,
+    onPermissionGranted,
+    result
+  ] );
+
+  // If permission was granted, just render the children
+  if ( result === RESULTS.GRANTED && children ) return children;
 
   if ( !result ) return null;
 
@@ -166,10 +183,6 @@ const PermissionGateContainer = ( {
     <Modal
       showModal={modalShown}
       closeModal={closeModal}
-      onModalHide={() => {
-        console.log( "onModalHide" );
-        if ( onComplete ) onComplete( result );
-      }}
       fullScreen
       modal={(
         <PermissionGate
