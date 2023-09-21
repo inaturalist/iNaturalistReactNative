@@ -12,7 +12,6 @@ import jwt from "react-native-jwt-io";
 import * as RNLocalize from "react-native-localize";
 import RNSInfo from "react-native-sensitive-info";
 import Realm from "realm";
-// eslint-disable-next-line import/extensions
 import realmConfig from "realmModels/index";
 import User from "realmModels/User";
 

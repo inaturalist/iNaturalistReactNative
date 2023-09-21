@@ -6,8 +6,7 @@ import handleError from "./error";
 
 const searchObservations = async ( params: Object = {}, opts: Object = {} ): Promise<any> => {
   try {
-    const { results } = await inatjs.observations.search( params, opts );
-    return results || [];
+    return await inatjs.observations.search( params, opts );
   } catch ( e ) {
     return handleError( e, { throw: true } );
   }

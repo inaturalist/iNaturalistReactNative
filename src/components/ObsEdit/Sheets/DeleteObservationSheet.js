@@ -1,6 +1,5 @@
 // @flow
 
-import { useQueryClient } from "@tanstack/react-query";
 import { deleteObservation } from "api/observations";
 import {
   WarningSheet
@@ -25,7 +24,6 @@ const DeleteObservationSheet = ( {
     currentObservation,
     observations
   } = useContext( ObsEditContext );
-  const queryClient = useQueryClient( );
   const { uuid } = currentObservation;
 
   const multipleObservations = observations.length > 1;
@@ -40,8 +38,11 @@ const DeleteObservationSheet = ( {
     ( params, optsWithAuth ) => deleteObservation( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        handleLocalDeletion( );
-        queryClient.invalidateQueries( { queryKey: ["searchObservations"] } );
+        handleLocalDeletion();
+        // We do not invalidate the searchObservations query here because it would fetch
+        // observations from the server and potentially do so before the refresh period
+        // on elasticsearch for observations.search has passed and so retrieve the
+        // observation "pending deletion" again.
       }
     }
   );

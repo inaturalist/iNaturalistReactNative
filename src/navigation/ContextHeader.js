@@ -6,7 +6,6 @@ import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { SafeAreaView, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
 import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
 
@@ -16,6 +15,16 @@ type Props = {
   options: Object,
   back: boolean,
   alignStart?: boolean,
+};
+
+const SHADOW_STYLE = {
+  shadowColor: colors.black,
+  backgroundColor: colors.white,
+  offsetWidth: 0,
+  offsetHeight: 2,
+  shadowOpacity: 0.25,
+  shadowRadius: 2,
+  elevation: 5
 };
 
 const ContextHeader = ( {
@@ -56,36 +65,34 @@ const ContextHeader = ( {
   return (
     <SafeAreaView
       className="bg-white"
-      style={getShadowStyle( {
-        shadowColor: colors.black,
-        backgroundColor: colors.white,
-        offsetWidth: 0,
-        offsetHeight: 2,
-        shadowOpacity: 0.25,
-        shadowRadius: 2,
-        elevation: 5
-      } )}
+      style={{
+        ...options.headerStyle,
+        ...( options.headerShadowVisible && getShadowStyle( SHADOW_STYLE ) )
+      }}
     >
-      <View className="pt-[30px] h-[84px] w-full bg-white px-[24px] pt-[6px]">
+      <View
+        className={classNames(
+          "w-full",
+          "bg-white",
+          "pr-[24px]",
+          "pt-[6px]"
+        )}
+      >
         <View
           className={classNames(
-            "flex flex-col items-start relative w-full px-[36px] pb-[10px]",
+            "flex",
+            "flex-row",
+            "items-start",
+            "relative",
+            "w-full",
+            "pb-[10px]",
             {
               "justify-center": !options?.alignStart,
               "justify-start": options?.alignStart
             }
           )}
         >
-          {backButton && (
-            <View
-              className={classNames( "ml-[-8px] absolute top-0", {
-                "mt-[-4px]": Platform.OS === "android",
-                "mt-[-8px]": Platform.OS === "ios"
-              } )}
-            >
-              {backButton}
-            </View>
-          )}
+          {backButton}
           {customTitleComponent
             ? (
               options.headerTitle()

@@ -242,9 +242,9 @@ const PhotoGallery = (): Node => {
         extraData={rerenderList}
       />
       {totalSelected > 0 && (
-        <StickyToolbar>
+        <StickyToolbar containerClass="items-center">
           <Button
-            className="mt-2 mx-4"
+            className="max-w-[500px] w-full"
             level="focus"
             text={t( "Import-X-photos", { count: totalSelected || 0 } )}
             onPress={navToNextScreen}

@@ -6,11 +6,15 @@ import { useCallback, useContext, useEffect } from "react";
 import { Platform } from "react-native";
 import ShareMenu from "react-native-share-menu";
 
+import { log } from "../../react-native-logs.config";
+
 type SharedItem = {
   mimeType: string,
   data: any | any[],
   extraData: any,
 };
+
+const logger = log.extend( "useShare" );
 
 const useShare = ( ): void => {
   const navigation = useNavigation( );
@@ -21,6 +25,7 @@ const useShare = ( ): void => {
 
   const handleShare = useCallback( ( item: ?SharedItem ) => {
     if ( !item ) {
+      logger.info( "no item" );
       return;
     }
 
@@ -32,6 +37,7 @@ const useShare = ( ): void => {
         && ( ( !mimeType ) || ( !mimeType.startsWith( "image/" ) ) )
       )
     ) {
+      logger.info( "no data or not an image" );
       return;
     }
 
@@ -41,6 +47,7 @@ const useShare = ( ): void => {
 
     // Clear previous upload context before navigating
     if ( resetObsEditContext ) {
+      logger.info( "calling resetObsEditContext" );
       resetObsEditContext( );
     }
 
@@ -54,6 +61,8 @@ const useShare = ( ): void => {
       photoUris = [data];
     }
 
+    logger.info( "photoUris: ", photoUris );
+
     if ( Platform.OS === "android" ) {
       photoUris = photoUris.map( x => ( { image: { uri: x } } ) );
     } else {
@@ -61,6 +70,7 @@ const useShare = ( ): void => {
         .filter( x => x.mimeType && x.mimeType.startsWith( "image/" ) )
         .map( x => ( { image: { uri: x.data } } ) );
     }
+    logger.info( "calling createObservationsFromGroupedPhotos with photoUris: ", photoUris );
     createObservationsFromGroupedPhotos( [{ photos: photoUris }] );
 
     navigation.navigate( "ObsEdit" );

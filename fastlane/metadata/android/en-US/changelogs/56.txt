@@ -1,0 +1,8 @@
+NEW
+* Browser should show user the option to open the app after confirmation
+
+FIXED
+* Acitivityitem kebab menu supports withdrawing and restoring IDs, and
+  deleting comments
+* GroupPhoto UI updates (note plus button does not work yet)
+* Fixed bug in which on error in upload could hold up the entire process
