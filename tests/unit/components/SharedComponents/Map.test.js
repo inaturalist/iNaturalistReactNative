@@ -5,10 +5,6 @@ import React from "react";
 
 import { renderComponent } from "../../../helpers/render";
 
-global.fetch = jest.fn( ( ) => Promise.resolve( {
-  json: ( ) => Promise.resolve( { grid: [], keys: [], data: { } } )
-} ) );
-
 const mockNavigate = jest.fn( );
 jest.mock( "@react-navigation/native", () => {
   const actualNav = jest.requireActual( "@react-navigation/native" );
@@ -21,9 +17,6 @@ jest.mock( "@react-navigation/native", () => {
 } );
 
 describe( "Map", ( ) => {
-  beforeEach( ( ) => {
-    fetch.mockClear( );
-  } );
   it( "should be accessible", ( ) => {
     expect( <Map /> ).toBeAccessible( );
   } );
