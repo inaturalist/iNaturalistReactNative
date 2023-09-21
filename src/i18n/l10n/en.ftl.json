@@ -800,7 +800,7 @@
   },
   "Lat-Lon": {
     "comment": "Latitude, longitude on a single line on a single line",
-    "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }"
+    "val": "{ NUMBER($latitude, maximumFractionDigits: \"6\") }, { NUMBER($longitude, maximumFractionDigits: \"6\") }"
   },
   "Every-observation-needs": {
     "comment": "Missing evidence sheet",

@@ -1,7 +1,8 @@
 // @flow
 import classNames from "classnames";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
-import { Body3, Body4, INatIcon } from "components/SharedComponents";
+import { Body3, Body4 } from "components/SharedComponents";
+import ContentWithIcon from "components/SharedComponents/ObsDetails/ContentWithIcon";
 import { View } from "components/styledComponents";
 import { capitalize } from "lodash";
 import * as React from "react";
@@ -22,6 +23,10 @@ const ObservationLocation = ( {
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
   let displayCoords;
   const geoprivacy = capitalize( checkCamelAndSnakeCase( observation, "geoprivacy" ) );
+
+  const TextComponent = large
+    ? Body3
+    : Body4;
 
   if ( !displayLocation ) {
     displayLocation = t( "No-Location" );
@@ -52,29 +57,27 @@ const ObservationLocation = ( {
       displayPrivacy = "Open";
     }
     return (
-      <View className="flex-row mt-[11px]">
-        <INatIcon name="globe-outline" size={14} />
-        <Body4
-          className="text-darkGray ml-[5px]"
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
-          {t( "Geoprivacy" )}
-        </Body4>
-        <Body4
-          className="text-darkGray ml-[5px]"
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
-          {t( displayPrivacy )}
-        </Body4>
-      </View>
+
+      <ContentWithIcon icon="globe-outline" size={14} classNameMargin="mt-[11px]">
+        <View className="flex-row space-x-[2px]">
+          <TextComponent
+            className="text-darkGray"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {t( "Geoprivacy" )}
+          </TextComponent>
+          <TextComponent
+            className="text-darkGray"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {t( displayPrivacy )}
+          </TextComponent>
+        </View>
+      </ContentWithIcon>
     );
   };
-
-  const TextComponent = large
-    ? Body3
-    : Body4;
 
   return (
     <View
@@ -85,31 +88,29 @@ const ObservationLocation = ( {
         text: displayLocation
       }}
     >
-      <View className="flex-row">
-        <INatIcon name="location" size={15} />
-        <TextComponent
-          className="text-darkGray ml-[8px]"
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
-          {displayLocation}
-        </TextComponent>
-      </View>
+      <ContentWithIcon icon="location" size={14}>
+        <View className="flex-col space-y-[11px]">
+          <TextComponent
+            className="text-darkGray"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {displayLocation}
+          </TextComponent>
+          {( details && displayCoords )
+           && (
+             <TextComponent
+               className="text-darkGray"
+               numberOfLines={1}
+               ellipsizeMode="tail"
+             >
+               {displayCoords}
+             </TextComponent>
+           )}
+        </View>
+      </ContentWithIcon>
       {details
-        && (
-          <View className="flex-col">
-            {displayCoords && (
-              <Body4
-                className="text-darkGray ml-[23px] mt-[12px]"
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {displayCoords}
-              </Body4>
-            )}
-            {displayGeoprivacy()}
-          </View>
-        )}
+        && displayGeoprivacy()}
     </View>
   );
 };

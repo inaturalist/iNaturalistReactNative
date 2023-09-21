@@ -21,7 +21,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import { Alert, Linking } from "react-native";
-import openMap from "react-native-open-maps";
+import createOpenLink from "react-native-open-maps";
 import { Menu, useTheme } from "react-native-paper";
 import {
   useCurrentUser
@@ -94,10 +94,6 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const privacy = observation?.geoprivacy;
   const positionalAccuracy = observation?.positional_accuracy;
   const [showMapModal, setShowMapModal] = useState( false );
-  const coordinateString = t( "Lat-Lon", {
-    latitude: observation.latitude,
-    longitude: observation.longitude
-  } );
 
   const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
   const isPrivate = privacy === "private" && !belongsToCurrentUser;
@@ -117,6 +113,10 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const privateLocation = getPrivateCoordinates();
   const latitude = observation.latitude || privateLocation?.latitude;
   const longitude = observation.longitude || privateLocation?.longitude;
+  const coordinateString = t( "Lat-Lon", {
+    latitude,
+    longitude
+  } );
 
   const displayQualityGradeOption = option => {
     const isResearchGrade = ( qualityGrade === "research" && option === "research" );
@@ -157,7 +157,9 @@ const DetailsTab = ( { observation }: Props ): Node => {
           >
             <Menu.Item
               title={t( "Share-location" )}
-              onPress={() => openMap( { latitude, longitude } )}
+              onPress={() => createOpenLink(
+                { latitude, longitude, query: `${latitude},${longitude}` }
+              )}
             />
             <Menu.Item
               title={t( "Copy-coordinates" )}

@@ -21,8 +21,8 @@ const DetailsMapContainer = ( {
   observation, latitude, longitude, closeModal, obscured
 }: Props ): Node => {
   const coordinateString = t( "Lat-Lon", {
-    latitude: observation.latitude,
-    longitude: observation.longitude
+    latitude,
+    longitude
   } );
 
   const [showNotificationModal, setShowNotificationModal] = useState( false );
