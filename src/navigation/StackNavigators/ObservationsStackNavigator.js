@@ -93,7 +93,8 @@ const ObservationsStackNavigator = ( ): Node => (
         options={{
           ...removeBottomBorder,
           ...blankHeaderTitle,
-          headerBackVisible: false
+          headerBackVisible: false,
+          headerTitleAlign: "center"
         }}
       />
       <Stack.Screen
@@ -101,8 +102,8 @@ const ObservationsStackNavigator = ( ): Node => (
         component={AddIDContainer}
         options={{
           ...removeBottomBorder,
-          ...showHeaderLeft,
-          headerTitle: addIDTitle
+          headerTitle: addIDTitle,
+          headerTitleAlign: "center"
         }}
       />
       <Stack.Screen

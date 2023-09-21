@@ -84,7 +84,7 @@ const SearchBar = ( {
           }
         }}
       />
-      {value.length > 0 && clearSearch
+      {value?.length > 0 && clearSearch
         ? (
           <View className="absolute right-0 top-[10px]">
             <INatIconButton
