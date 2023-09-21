@@ -129,6 +129,7 @@ const Map = ( {
     >
       {!hideMap && (
         <MapView
+          testID="Map.MapView"
           className="flex-1"
           region={( region?.latitude )
             ? region
@@ -144,6 +145,7 @@ const Map = ( {
         >
           {urlTemplate && (
             <UrlTile
+              testID="Map.UrlTile"
               tileSize={512}
               urlTemplate={urlTemplate}
             />

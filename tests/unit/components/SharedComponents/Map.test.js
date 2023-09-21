@@ -1,10 +1,13 @@
 import { faker } from "@faker-js/faker";
-import { fireEvent, screen } from "@testing-library/react-native";
+import { screen } from "@testing-library/react-native";
 import { Map } from "components/SharedComponents";
 import React from "react";
 
-import factory from "../../../factory";
 import { renderComponent } from "../../../helpers/render";
+
+global.fetch = jest.fn( ( ) => Promise.resolve( {
+  json: ( ) => Promise.resolve( { grid: [], keys: [], data: { } } )
+} ) );
 
 const mockNavigate = jest.fn( );
 jest.mock( "@react-navigation/native", () => {
@@ -17,38 +20,21 @@ jest.mock( "@react-navigation/native", () => {
   };
 } );
 
-const mockObservations = [
-  factory( "RemoteObservation", {
-    latitude: Number( faker.address.latitude( ) ),
-    longitude: Number( faker.address.longitude( ) )
-  } ),
-  factory( "RemoteObservation", {
-    latitude: Number( faker.address.latitude( ) ),
-    longitude: Number( faker.address.longitude( ) )
-  } )
-];
-
 describe( "Map", ( ) => {
+  beforeEach( ( ) => {
+    fetch.mockClear( );
+  } );
   it( "should be accessible", ( ) => {
     expect( <Map /> ).toBeAccessible( );
   } );
 
-  it( "displays all observations on map", async ( ) => {
-    renderComponent( <Map observations={mockObservations} /> );
-    await screen.findByTestId( `ExploreMap.TaxonMarker.${mockObservations[0].uuid}` );
-    await screen.findByTestId( `ExploreMap.TaxonMarker.${mockObservations[1].uuid}` );
-  } );
-
-  it( "navigates to observation details when observation marker is pressed", async ( ) => {
-    renderComponent( <Map observations={mockObservations} /> );
-    fireEvent.press(
-      await screen.findByTestId(
-        `ExploreMap.TaxonMarker.${mockObservations[0].uuid}`
-      )
-    );
-    expect( mockNavigate ).toHaveBeenCalledWith( "ObsDetails", {
-      uuid: mockObservations[0].uuid
-    } );
+  it( "displays filtered observations on map", async ( ) => {
+    renderComponent( <Map tileMapParams={{
+      taxon_id: 47178
+    }}
+    /> );
+    const tiles = await screen.findByTestId( "Map.UrlTile" );
+    expect( tiles ).toHaveProp( "urlTemplate", "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png?taxon_id=47178&color=%2374ac00&verifiable=true" );
   } );
 
   it( "displays location indicator when given an observation lat/lng", async ( ) => {
