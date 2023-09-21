@@ -17,6 +17,12 @@ import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
 
+import {
+  handleCameraError,
+  handleCaptureError,
+  handleClassifierError,
+  handleDeviceNotSupported
+} from "../helpers";
 import CameraNavButtons from "./CameraNavButtons";
 import CameraOptionsButtons from "./CameraOptionsButtons";
 import DiscardChangesSheet from "./DiscardChangesSheet";
@@ -114,6 +120,10 @@ const StandardCamera = ( {
             cameraRef={camera}
             device={device}
             animatedProps={animatedProps}
+            onClassifierError={handleClassifierError}
+            onDeviceNotSupported={handleDeviceNotSupported}
+            onCaptureError={handleCaptureError}
+            onCameraError={handleCameraError}
           />
         )}
         <FadeInOutView takingPhoto={takingPhoto} />
