@@ -24,7 +24,7 @@ type Props = {
   changeZoom: Function,
   hasFlash: boolean,
   takePhotoOptions: Object,
-  zoom: number
+  zoomTextValue: number
 }
 
 const CameraOptionsButtons = ( {
@@ -39,7 +39,7 @@ const CameraOptionsButtons = ( {
   hasFlash,
   takePhotoOptions,
   changeZoom,
-  zoom
+  zoomTextValue
 }: Props ): Node => {
   const renderPhoneCameraOptions = () => (
     <>
@@ -53,7 +53,7 @@ const CameraOptionsButtons = ( {
       <Zoom
         changeZoom={changeZoom}
         cameraZoomClasses="absolute bottom-[18px] self-center"
-        zoom={zoom}
+        zoomTextValue={zoomTextValue}
       />
       <Animated.View
         style={!isTablet && rotatableAnimatedStyle}
@@ -83,7 +83,7 @@ const CameraOptionsButtons = ( {
       hasFlash={hasFlash}
       takePhotoOptions={takePhotoOptions}
       changeZoom={changeZoom}
-      zoom={zoom}
+      zoomTextValue={zoomTextValue}
     />
   );
 

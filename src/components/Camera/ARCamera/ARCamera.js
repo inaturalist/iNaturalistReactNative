@@ -44,12 +44,12 @@ type Props = {
   takingPhoto: boolean,
   animatedProps: any,
   changeZoom: Function,
-  zoom: number,
+  zoomTextValue: number,
   navToObsEdit: Function,
   photoSaved: boolean,
   onZoomStart?: Function,
-  onZoomChange?: Function
-}
+  onZoomChange?: Function,
+};
 
 const ARCamera = ( {
   flipCamera,
@@ -63,14 +63,14 @@ const ARCamera = ( {
   takingPhoto,
   animatedProps,
   changeZoom,
-  zoom,
+  zoomTextValue,
   navToObsEdit,
   photoSaved,
   onZoomStart,
   onZoomChange
 }: Props ): Node => {
-  const { t } = useTranslation( );
-  const theme = useTheme( );
+  const { t } = useTranslation();
+  const theme = useTheme();
 
   const [result, setResult] = useState( null );
   const [modelLoaded, setModelLoaded] = useState( false );
@@ -148,12 +148,14 @@ const ARCamera = ( {
         };
       }
     } else {
-      predictions = cvResults?.map( r => {
-        const rank = Object.keys( r )[0];
-        return r[rank][0];
-      } )
+      predictions = cvResults
+        ?.map( r => {
+          const rank = Object.keys( r )[0];
+          return r[rank][0];
+        } )
         .sort( ( a, b ) => a.rank - b.rank );
-      prediction = predictions && predictions.length > 0 && {
+      prediction = predictions
+        && predictions.length > 0 && {
         rank_level: predictions[0].rank,
         id: predictions[0].taxon_id,
         name: predictions[0].name,
@@ -163,7 +165,7 @@ const ARCamera = ( {
     setResult( prediction );
   };
 
-  useEffect( ( ) => {
+  useEffect( () => {
     if ( photoSaved ) {
       navToObsEdit( { prediction: result } );
     }
@@ -191,12 +193,11 @@ const ARCamera = ( {
         locations={[0.001, 1]}
         className="w-full"
       >
-        <View className={
-          classnames( "self-center h-[219px]", {
+        <View
+          className={classnames( "self-center h-[219px]", {
             "w-[493px]": isTablet,
             "pt-8 w-[346px]": !isTablet
-          } )
-        }
+          } )}
         >
           {showPrediction && result
             ? (
@@ -209,9 +210,7 @@ const ARCamera = ( {
               />
             )
             : (
-              <Body1
-                className="text-white self-center mt-[22px]"
-              >
+              <Body1 className="text-white self-center mt-[22px]">
                 {modelLoaded
                   ? t( "Scan-the-area-around-you-for-organisms" )
                   : t( "Loading-iNaturalists-AR-Camera" )}
@@ -239,7 +238,7 @@ const ARCamera = ( {
         hasFlash={hasFlash}
         takePhotoOptions={takePhotoOptions}
         showPrediction={showPrediction}
-        zoom={zoom}
+        zoomTextValue={zoomTextValue}
         changeZoom={changeZoom}
       />
     </>

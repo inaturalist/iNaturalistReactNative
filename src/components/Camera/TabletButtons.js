@@ -49,7 +49,7 @@ type Props = {
   hasFlash: boolean,
   takePhotoOptions: Object,
   showPrediction?: boolean,
-  zoom: number
+  zoomTextValue: number
 }
 
 // Empty space where a camera button should be so buttons don't jump around
@@ -78,7 +78,7 @@ const TabletButtons = ( {
   takePhotoOptions,
   showPrediction,
   changeZoom,
-  zoom
+  zoomTextValue
 }: Props ): Node => {
   const tabletCameraOptionsClasses = [
     "absolute",
@@ -96,7 +96,7 @@ const TabletButtons = ( {
     <View className={classnames( tabletCameraOptionsClasses )}>
       <Zoom
         changeZoom={changeZoom}
-        zoom={zoom}
+        zoomTextValue={zoomTextValue}
       />
       <Flash
         toggleFlash={toggleFlash}

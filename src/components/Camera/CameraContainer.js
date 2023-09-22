@@ -85,8 +85,8 @@ const CameraContainer = ( ): Node => {
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
   const [takingPhoto, setTakingPhoto] = useState( false );
   const zoom = useSharedValue( 1 );
-  const [zoomTextValue, setZoomTextValue] = useState( 1 );
   const startZoom = useSharedValue( 1 );
+  const [zoomTextValue, setZoomTextValue] = useState( 1 );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
@@ -280,7 +280,7 @@ const CameraContainer = ( ): Node => {
             takingPhoto={takingPhoto}
             changeZoom={changeZoom}
             animatedProps={animatedProps}
-            zoom={zoomTextValue}
+            zoomTextValue={zoomTextValue}
             onZoomStart={onZoomStart}
             onZoomChange={onZoomChange}
           />
@@ -298,7 +298,7 @@ const CameraContainer = ( ): Node => {
             takingPhoto={takingPhoto}
             changeZoom={changeZoom}
             animatedProps={animatedProps}
-            zoom={zoomTextValue}
+            zoomTextValue={zoomTextValue}
             navToObsEdit={navToObsEdit}
             photoSaved={cameraPreviewUris.length > 0}
             onZoomStart={onZoomStart}

@@ -22,17 +22,17 @@ const circleOptionsClasses = [
 type Props = {
   changeZoom: Function,
   cameraZoomClasses?: string,
-  zoom: number
+  zoomTextValue: number
 }
 
 const CameraZoom = ( {
   changeZoom,
   cameraZoomClasses,
-  zoom
+  zoomTextValue
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  const zoomButtonText = `${zoom}x`;
+  const zoomButtonText = `${zoomTextValue}x`;
 
   return (
     <Pressable
