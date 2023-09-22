@@ -29,6 +29,7 @@ const IdentificationSection = ( ): Node => {
   const realm = useRealm( );
 
   const identification = currentObservation?.taxon;
+  console.log( identification, "identification in test" );
 
   const hasIdentification = identification && identification.rank_level !== 100;
 
