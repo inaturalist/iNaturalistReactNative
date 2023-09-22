@@ -50,7 +50,21 @@ const MAX_ZOOM_FACTOR = 20;
 // Used for calculating the final zoom by pinch gesture
 const SCALE_FULL_ZOOM = 3;
 
-const CameraContainer = ( ): Node => {
+type Props = {
+  addEvidence: ?boolean,
+  cameraType: string,
+  cameraPosition: string,
+  device: Object,
+  setCameraPosition: Function
+}
+
+const CameraWithDevice = ( {
+  addEvidence,
+  cameraType,
+  cameraPosition,
+  device,
+  setCameraPosition
+}: Props ): Node => {
   // screen orientation locked to portrait on small devices
   if ( !isTablet ) {
     Orientation.lockToPortrait( );
@@ -65,15 +79,9 @@ const CameraContainer = ( ): Node => {
     setOriginalCameraUrisMap,
     originalCameraUrisMap
   } = useContext( ObsEditContext );
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
-  const addEvidence = params?.addEvidence;
-  const cameraType = params?.camera;
+  const navigation = useNavigation();
   // $FlowFixMe
   const camera = useRef<Camera>( null );
-  const [cameraPosition, setCameraPosition] = useState( "back" );
-  const devices = useCameraDevices( );
-  const device = devices[cameraPosition];
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
     enableAutoStabilization: true,
@@ -306,6 +314,28 @@ const CameraContainer = ( ): Node => {
           />
         )}
     </View>
+  );
+};
+
+const CameraContainer = ( ): Node => {
+  const { params } = useRoute( );
+  const addEvidence = params?.addEvidence;
+  const cameraType = params?.camera;
+  const [cameraPosition, setCameraPosition] = useState( "back" );
+  const devices = useCameraDevices( );
+  const device = devices[cameraPosition];
+
+  if ( !device ) {
+    return null;
+  }
+  return (
+    <CameraWithDevice
+      addEvidence={addEvidence}
+      cameraType={cameraType}
+      cameraPosition={cameraPosition}
+      setCameraPosition={setCameraPosition}
+      device={device}
+    />
   );
 };
 
