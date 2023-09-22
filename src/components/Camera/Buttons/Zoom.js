@@ -32,7 +32,7 @@ const CameraZoom = ( {
 }: Props ): Node => {
   const { t } = useTranslation( );
 
-  const zoomButtonText = `${zoomTextValue}x`;
+  const zoomButtonText = `${zoomTextValue}×`;
 
   return (
     <Pressable
