@@ -92,8 +92,9 @@ const CameraWithDevice = ( {
   const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
   const [takingPhoto, setTakingPhoto] = useState( false );
-  const zoom = useSharedValue( 1 );
-  const startZoom = useSharedValue( 1 );
+
+  const zoom = useSharedValue( device.neutralZoom );
+  const startZoom = useSharedValue( device.neutralZoom );
   const [zoomTextValue, setZoomTextValue] = useState( 1 );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
