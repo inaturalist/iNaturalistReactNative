@@ -18,6 +18,8 @@ import {
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import {
+  Extrapolate,
+  interpolate,
   useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
@@ -41,6 +43,12 @@ import ARCamera from "./ARCamera/ARCamera";
 import StandardCamera from "./StandardCamera/StandardCamera";
 
 const isTablet = DeviceInfo.isTablet( );
+
+// This is taken from react-native-vision library itself: https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/Constants.ts#L19 https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/CameraPage.tsx#L34
+// The maximum zoom factor you should be able to zoom in
+const MAX_ZOOM_FACTOR = 20;
+// Used for calculating the final zoom by pinch gesture
+const SCALE_FULL_ZOOM = 3;
 
 const CameraContainer = ( ): Node => {
   // screen orientation locked to portrait on small devices
@@ -78,6 +86,7 @@ const CameraContainer = ( ): Node => {
   const [takingPhoto, setTakingPhoto] = useState( false );
   const zoom = useSharedValue( 1 );
   const [zoomTextValue, setZoomTextValue] = useState( 1 );
+  const startZoom = useSharedValue( 1 );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
@@ -93,6 +102,30 @@ const CameraContainer = ( ): Node => {
       zoom.value = withSpring( 1 );
       setZoomTextValue( 1 );
     }
+  };
+
+  const minZoom = 1;
+  const maxZoom = Math.min( device?.maxZoom ?? 1, MAX_ZOOM_FACTOR );
+
+  const onZoomStart = () => {
+    startZoom.value = zoom.value;
+  };
+
+  const onZoomChange = scale => {
+    // Calculate new zoom value (since scale factor is relative to initial pinch)
+    const newScale = interpolate(
+      scale,
+      [1 - 1 / SCALE_FULL_ZOOM, 1, SCALE_FULL_ZOOM],
+      [-1, 0, 1],
+      Extrapolate.CLAMP
+    );
+    const newZoom = interpolate(
+      newScale,
+      [-1, 0, 1],
+      [minZoom, startZoom.value, maxZoom],
+      Extrapolate.CLAMP
+    );
+    zoom.value = newZoom;
   };
 
   const animatedProps = useAnimatedProps(
@@ -248,6 +281,8 @@ const CameraContainer = ( ): Node => {
             changeZoom={changeZoom}
             animatedProps={animatedProps}
             zoom={zoomTextValue}
+            onZoomStart={onZoomStart}
+            onZoomChange={onZoomChange}
           />
         )
         : (
@@ -266,6 +301,8 @@ const CameraContainer = ( ): Node => {
             zoom={zoomTextValue}
             navToObsEdit={navToObsEdit}
             photoSaved={cameraPreviewUris.length > 0}
+            onZoomStart={onZoomStart}
+            onZoomChange={onZoomChange}
           />
         )}
     </View>
