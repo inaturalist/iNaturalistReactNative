@@ -134,7 +134,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
           obsLatitude={observation.latitude}
           obsLongitude={observation.longitude}
           mapHeight={230}
-          showMarker
+          showLocationIndicator
         />
       ) }
 

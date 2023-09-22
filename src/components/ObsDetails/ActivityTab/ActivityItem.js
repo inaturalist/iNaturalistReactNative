@@ -14,7 +14,7 @@ import type { Node } from "react";
 import React from "react";
 import { textStyles } from "styles/obsDetails/obsDetails";
 
-import ActivityHeader from "./ActivityHeader";
+import ActivityHeaderContainer from "./ActivityHeaderContainer";
 
 type Props = {
   item: Object,
@@ -45,7 +45,7 @@ const ActivityItem = ( {
 
   return (
     <View className="flex-column ml-[15px]">
-      <ActivityHeader
+      <ActivityHeaderContainer
         item={item}
         refetchRemoteObservation={refetchRemoteObservation}
         idWithdrawn={idWithdrawn}

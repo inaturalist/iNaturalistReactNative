@@ -162,9 +162,9 @@
   "Explore": "Explore",
   "EXPLORE-OBSERVATIONS": "EXPLORE OBSERVATIONS",
   "External-Applications": "External Applications",
-  "Featured": {
+  "FEATURED": {
     "comment": "Header for featured projects",
-    "val": "Featured"
+    "val": "FEATURED"
   },
   "Fetching-location": "Fetching location...",
   "Filters": "Filters",
@@ -219,9 +219,9 @@
     "val": "The username or password is incorrect"
   },
   "Join-the-largest-community-of-naturalists": "Join the largest community of naturalists in the world!",
-  "Joined": {
+  "JOINED": {
     "comment": "Header for joined projects",
-    "val": "Joined"
+    "val": "JOINED"
   },
   "Joined-date": {
     "comment": "Shows date user joined iNaturalist on user profile",
@@ -277,9 +277,9 @@
   "Muted-Users": "Muted Users",
   "Names": "Names",
   "Native": "Native",
-  "Nearby": {
+  "NEARBY": {
     "comment": "Header for nearby projects",
-    "val": "Nearby"
+    "val": "NEARBY"
   },
   "New-Observation": "New Observation",
   "Next": "Next",
@@ -400,6 +400,10 @@
     "val": "Research Grade"
   },
   "Reset": "Reset",
+  "Restore": {
+    "comment": "Option to restore withdrawn id from current user",
+    "val": "Restore"
+  },
   "Lets-reset-your-password": {
     "comment": "Appears in the reset password screen",
     "val": "Let's reset your password"
@@ -521,6 +525,10 @@
   },
   "Wild": "Wild",
   "WILD-STATUS": "WILD STATUS",
+  "Withdraw": {
+    "comment": "Option to Withdraw identification made by user",
+    "val": "Withdraw"
+  },
   "X-Observations": {
     "comment": "Banner above Explore Map showing total number of results",
     "val": "{ $count ->\n  [one] 1 Observation\n *[other] { $count } Observations\n}"
@@ -735,6 +743,7 @@
   "Start-upload": "Start upload",
   "Previous-observation": "Previous observation",
   "Next-observation": "Next observation",
+  "Close-search": "Close search",
   "date-format-short": {
     "comment": "Date formatting using date-fns\nSee complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format",
     "val": "M/d/yy"
@@ -829,6 +838,7 @@
   "SPECIES-WITHOUT-NUMBER": "{ $count ->\n  [one] SPECIES\n *[other] SPECIES\n}",
   "IDENTIFICATIONS-WITHOUT-NUMBER": "{ $count ->\n  [one] IDENTIFICATION\n *[other] IDENTIFICATIONS\n}",
   "JOURNAL-POSTS-WITHOUT-NUMBER": "{ $count ->\n  [one] JOURNAL POST\n *[other] JOURNAL POSTS\n}",
+  "MEMBERS-WITHOUT-NUMBER": "{ $count ->\n  [one] MEMBER\n *[other] MEMBERS\n}",
   "Yes-license-my-photos": "Yes, license my photos, sounds, and observations so scientists can use my data (recommended)",
   "I-consent-to-allow-iNaturalist-to-store": "I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)",
   "I-consent-to-allow-my-personal-information": "I consent to allow my personal information to be transferred to the United States of America (required)",
@@ -865,5 +875,26 @@
   "Taxon-photo-and-name": {
     "comment": "Default accessibility label for DisplayTaxon component",
     "val": "Taxon photo and name"
-  }
+  },
+  "You-havent-joined-any-projects-yet": "You haven’t joined any projects yet!",
+  "You-can-click-join-on-the-project-page": "You can click “join” on the project page.",
+  "No-projects-match-that-search": "No projects match that search",
+  "RESET-SEARCH": "RESET SEARCH",
+  "PROJECT-REQUIREMENTS": "PROJECT REQUIREMENTS",
+  "VIEW-PROJECT-REQUIREMENTS": "VIEW PROJECT REQUIREMENTS",
+  "VIEW-IN-EXPLORE": "VIEW IN EXPLORE",
+  "Collection-Project": "Collection Project",
+  "Umbrella-Project": "Umbrella Project",
+  "Traditional-Project": "Traditional Project",
+  "ABOUT-COLLECTION-PROJECTS": "ABOUT COLLECTION PROJECTS",
+  "ABOUT-TRADITIONAL-PROJECTS": "ABOUT TRADITIONAL PROJECTS",
+  "ABOUT-UMBRELLA-PROJECTS": "ABOUT UMBRELLA PROJECTS",
+  "Every-time-a-collection-project": "Every time a collection project’s page is loaded, iNaturalist will perform a quick search and display all observations that match the project’s requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.",
+  "Obervations-must-be-manually-added": "Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.",
+  "If-you-want-to-collate-compare-promote": "If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city’s observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.",
+  "JOIN-PROJECT": "JOIN PROJECT",
+  "JOIN": "JOIN",
+  "LEAVE-PROJECT": "LEAVE PROJECT",
+  "LEAVE": "LEAVE",
+  "Your-email-is-confirmed": "Your email is confirmed! Please log in to continue."
 }

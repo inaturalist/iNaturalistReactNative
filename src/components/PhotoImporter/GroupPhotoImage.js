@@ -8,17 +8,18 @@ import React from "react";
 type Props = {
   item: Object,
   selectedObservations: Array<Object>,
-  selectObservationPhotos: Function
+  selectObservationPhotos: Function,
+  style?: Object
 }
 
 const GroupPhotoImage = ( {
   item,
   selectedObservations,
-  selectObservationPhotos
+  selectObservationPhotos,
+  style
 }: Props ): Node => {
   const firstPhoto = item.photos[0];
   const isSelected = selectedObservations.includes( item );
-
   const handlePress = ( ) => selectObservationPhotos( isSelected, item );
 
   const source = firstPhoto && { uri: firstPhoto.image.uri };
@@ -28,12 +29,11 @@ const GroupPhotoImage = ( {
       accessibilityRole="button"
       onPress={handlePress}
       testID={`GroupPhotos.${firstPhoto.uri}`}
-      className="rounded-[17px] overflow-hidden m-1"
+      className="rounded-[17px] overflow-hidden"
     >
       <ObsPreviewImage
         source={source}
-        height="h-44"
-        width="w-44"
+        style={style}
         selected={isSelected}
         obsPhotosCount={item.photos.length}
         selectable

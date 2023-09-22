@@ -1,0 +1,10 @@
+NEW
+* Logging of native frame processor logs to the log file
+
+FIXED
+* Lined up photo count and share button icons
+* Now showing default photo for iconic taxa in ObsCreate
+* Show icon in DisplayTaxon if no photo
+* Increased shutter button size
+* Layout adjustments for custom drawer menu, signed-out MyObs
+* The research quality grade icon is now green

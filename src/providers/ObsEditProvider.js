@@ -64,7 +64,8 @@ const reducer = ( state, action ) => {
     case "PAUSE_UPLOADS":
       return {
         ...state,
-        uploadInProgress: false
+        uploadInProgress: false,
+        currentUploadIndex: 0
       };
     case "SET_UPLOAD_ERROR":
       return {
@@ -74,6 +75,8 @@ const reducer = ( state, action ) => {
     case "START_MULTIPLE_UPLOADS":
       return {
         ...state,
+        error: null,
+        uploadInProgress: true,
         uploads: action.uploads,
         uploadProgress: action.uploadProgress,
         totalProgressIncrements: action.uploads.length + action.uploads
@@ -660,7 +663,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         per_page: 50,
         fields: Observation.FIELDS
       };
-      const results = await searchObservations( params, { api_token: apiToken } );
+      const { results } = await searchObservations( params, { api_token: apiToken } );
 
       Observation.upsertRemoteObservations( results, realm );
     };
@@ -687,7 +690,12 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           console.warn( e );
           dispatch( { type: "SET_UPLOAD_ERROR", error: e.message } );
         }
-        dispatch( { type: "START_NEXT_UPLOAD" } );
+        if ( currentUploadIndex === uploads.length - 1 ) {
+          // Finished uploading the last observation
+          dispatch( { type: "PAUSE_UPLOADS" } );
+        } else {
+          dispatch( { type: "START_NEXT_UPLOAD" } );
+        }
       };
 
       const observationToUpload = uploads[currentUploadIndex];

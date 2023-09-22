@@ -6,22 +6,23 @@ import { Body1, INatIcon, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  Platform
-} from "react-native";
+import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import LinearGradient from "react-native-linear-gradient";
 import { useTheme } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
-import { log } from "../../../../react-native-logs.config";
+import {
+  handleCameraError,
+  handleCaptureError,
+  handleClassifierError,
+  handleDeviceNotSupported,
+  handleLog
+} from "../helpers";
 import ARCameraButtons from "./ARCameraButtons";
 import FrameProcessorCamera from "./FrameProcessorCamera";
 
 const isTablet = DeviceInfo.isTablet();
-
-const logger = log.extend( "ARCamera" );
 
 // const exampleTaxonResult = {
 //   id: 12704,
@@ -160,35 +161,6 @@ const ARCamera = ( {
       };
     }
     setResult( prediction );
-  };
-
-  const handleClassifierError = error => {
-    console.log( "handleClassifierError error.message :>> ", error.message );
-    // When we hit this error, there is an error with the classifier.
-    Alert.alert( "error", error.message );
-  };
-
-  const handleDeviceNotSupported = error => {
-    console.log( "handleDeviceNotSupported error.message :>> ", error.message );
-    // When we hit this error, something with the current device is not supported.
-    Alert.alert( "error", error.message );
-  };
-
-  const handleCaptureError = error => {
-    console.log( "handleCaptureError error.message :>> ", error.message );
-    // When we hit this error, taking a photo did not work correctly
-    Alert.alert( "error", error.message );
-  };
-
-  const handleCameraError = error => {
-    console.log( "handleCameraError error.message :>> ", error.message );
-    // This error is thrown when it does not fit in any of the above categories.
-    Alert.alert( "error", error.message );
-  };
-
-  const handleLog = event => {
-    // event = { log: "string" }
-    logger.info( `ARCamera: ${JSON.stringify( event )}` );
   };
 
   useEffect( ( ) => {
