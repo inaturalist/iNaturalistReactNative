@@ -95,26 +95,26 @@ const CameraWithDevice = ( {
 
   const zoom = useSharedValue( device.neutralZoom );
   const startZoom = useSharedValue( device.neutralZoom );
-  const [zoomTextValue, setZoomTextValue] = useState( 1 );
+  const [zoomTextValue, setZoomTextValue] = useState( "1" );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
+  const { minZoom } = device;
+  const maxZoom = Math.min( device.maxZoom ?? 1, MAX_ZOOM_FACTOR );
+
   const changeZoom = ( ) => {
     const currentZoomValue = zoomTextValue;
-    if ( currentZoomValue === 1 ) {
-      zoom.value = withSpring( 2 );
-      setZoomTextValue( 2 );
-    } else if ( currentZoomValue === 2 ) {
-      zoom.value = withSpring( 3 );
-      setZoomTextValue( 3 );
+    if ( currentZoomValue === "1" ) {
+      zoom.value = withSpring( maxZoom );
+      setZoomTextValue( "3" );
+    } else if ( currentZoomValue === "3" ) {
+      zoom.value = withSpring( minZoom );
+      setZoomTextValue( ".5" );
     } else {
-      zoom.value = withSpring( 1 );
-      setZoomTextValue( 1 );
+      zoom.value = withSpring( device.neutralZoom );
+      setZoomTextValue( "1" );
     }
   };
-
-  const minZoom = 1;
-  const maxZoom = Math.min( device?.maxZoom ?? 1, MAX_ZOOM_FACTOR );
 
   const onZoomStart = () => {
     startZoom.value = zoom.value;
