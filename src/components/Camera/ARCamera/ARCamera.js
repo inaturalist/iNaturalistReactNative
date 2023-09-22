@@ -44,7 +44,8 @@ type Props = {
   takingPhoto: boolean,
   animatedProps: any,
   changeZoom: Function,
-  zoomTextValue: number,
+  zoomTextValue: string,
+  showZoomButton: boolean,
   navToObsEdit: Function,
   photoSaved: boolean,
   onZoomStart?: Function,
@@ -64,6 +65,7 @@ const ARCamera = ( {
   animatedProps,
   changeZoom,
   zoomTextValue,
+  showZoomButton,
   navToObsEdit,
   photoSaved,
   onZoomStart,
@@ -239,6 +241,7 @@ const ARCamera = ( {
         takePhotoOptions={takePhotoOptions}
         showPrediction={showPrediction}
         zoomTextValue={zoomTextValue}
+        showZoomButton={showZoomButton}
         changeZoom={changeZoom}
       />
     </>

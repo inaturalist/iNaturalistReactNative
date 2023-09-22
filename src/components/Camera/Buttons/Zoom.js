@@ -22,15 +22,21 @@ const circleOptionsClasses = [
 type Props = {
   changeZoom: Function,
   cameraZoomClasses?: string,
-  zoomTextValue: number
+  zoomTextValue: string,
+  showZoomButton: boolean
 }
 
 const CameraZoom = ( {
   changeZoom,
   cameraZoomClasses,
-  zoomTextValue
+  zoomTextValue,
+  showZoomButton
 }: Props ): Node => {
-  const { t } = useTranslation( );
+  const { t } = useTranslation();
+
+  if ( !showZoomButton ) {
+    return null;
+  }
 
   const zoomButtonText = `${zoomTextValue}×`;
 

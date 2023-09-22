@@ -50,7 +50,8 @@ type Props = {
   showDiscardSheet: boolean,
   takingPhoto: boolean,
   animatedProps: any,
-  zoomTextValue: number,
+  zoomTextValue: string,
+  showZoomButton: boolean,
   onZoomStart?: Function,
   onZoomChange?: Function,
 };
@@ -74,6 +75,7 @@ const StandardCamera = ( {
   changeZoom,
   animatedProps,
   zoomTextValue,
+  showZoomButton,
   onZoomStart,
   onZoomChange
 }: Props ): Node => {
@@ -146,6 +148,7 @@ const StandardCamera = ( {
           takePhotoOptions={takePhotoOptions}
           changeZoom={changeZoom}
           zoomTextValue={zoomTextValue}
+          showZoomButton={showZoomButton}
         />
       </View>
       <CameraNavButtons

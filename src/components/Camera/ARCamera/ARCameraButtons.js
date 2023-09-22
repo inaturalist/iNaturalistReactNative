@@ -51,7 +51,8 @@ type Props = {
   takePhotoOptions: Object,
   changeZoom: Function,
   showPrediction: boolean,
-  zoomTextValue: number
+  zoomTextValue: string,
+  showZoomButton: boolean
 }
 
 const ARCameraButtons = ( {
@@ -63,7 +64,8 @@ const ARCameraButtons = ( {
   takePhotoOptions,
   showPrediction,
   changeZoom,
-  zoomTextValue
+  zoomTextValue,
+  showZoomButton
 }: Props ): Node => ( isTablet
   ? (
     <TabletButtons
@@ -76,6 +78,7 @@ const ARCameraButtons = ( {
       showPrediction={showPrediction}
       changeZoom={changeZoom}
       zoomTextValue={zoomTextValue}
+      showZoomButton={showZoomButton}
     />
   )
   : (
@@ -84,6 +87,7 @@ const ARCameraButtons = ( {
         <Zoom
           zoomTextValue={zoomTextValue}
           changeZoom={changeZoom}
+          showZoomButton={showZoomButton}
         />
       </View>
       <View className="flex-row justify-end pb-[20px]">

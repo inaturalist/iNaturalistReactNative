@@ -24,7 +24,8 @@ type Props = {
   changeZoom: Function,
   hasFlash: boolean,
   takePhotoOptions: Object,
-  zoomTextValue: number
+  zoomTextValue: string,
+  showZoomButton: boolean
 }
 
 const CameraOptionsButtons = ( {
@@ -39,7 +40,8 @@ const CameraOptionsButtons = ( {
   hasFlash,
   takePhotoOptions,
   changeZoom,
-  zoomTextValue
+  zoomTextValue,
+  showZoomButton
 }: Props ): Node => {
   const renderPhoneCameraOptions = () => (
     <>
@@ -54,23 +56,18 @@ const CameraOptionsButtons = ( {
         changeZoom={changeZoom}
         cameraZoomClasses="absolute bottom-[18px] self-center"
         zoomTextValue={zoomTextValue}
+        showZoomButton={showZoomButton}
       />
       <Animated.View
         style={!isTablet && rotatableAnimatedStyle}
-        className={classnames(
-          "absolute",
-          "bottom-[18px]",
-          "right-[18px]"
-        )}
+        className={classnames( "absolute", "bottom-[18px]", "right-[18px]" )}
       >
-        <CameraFlip
-          flipCamera={flipCamera}
-        />
+        <CameraFlip flipCamera={flipCamera} />
       </Animated.View>
     </>
   );
 
-  const renderTabletCameraOptions = ( ) => (
+  const renderTabletCameraOptions = () => (
     <TabletButtons
       takePhoto={takePhoto}
       handleClose={handleClose}
@@ -84,6 +81,7 @@ const CameraOptionsButtons = ( {
       takePhotoOptions={takePhotoOptions}
       changeZoom={changeZoom}
       zoomTextValue={zoomTextValue}
+      showZoomButton={showZoomButton}
     />
   );
 

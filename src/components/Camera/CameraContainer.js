@@ -290,6 +290,7 @@ const CameraWithDevice = ( {
             changeZoom={changeZoom}
             animatedProps={animatedProps}
             zoomTextValue={zoomTextValue}
+            showZoomButton={device.isMultiCam}
             onZoomStart={onZoomStart}
             onZoomChange={onZoomChange}
           />
@@ -308,6 +309,7 @@ const CameraWithDevice = ( {
             changeZoom={changeZoom}
             animatedProps={animatedProps}
             zoomTextValue={zoomTextValue}
+            showZoomButton={device.isMultiCam}
             navToObsEdit={navToObsEdit}
             photoSaved={cameraPreviewUris.length > 0}
             onZoomStart={onZoomStart}
@@ -329,6 +331,7 @@ const CameraContainer = ( ): Node => {
   if ( !device ) {
     return null;
   }
+
   return (
     <CameraWithDevice
       addEvidence={addEvidence}
