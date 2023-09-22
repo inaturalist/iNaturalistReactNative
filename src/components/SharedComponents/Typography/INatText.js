@@ -7,13 +7,17 @@ import React from "react";
 type Props = {
   children: any,
   testID?: string,
-  style?: any
+  style?: any,
+  className?: string
 }
 
-const INatText = ( { children, testID, style }: Props ): Node => (
+const INatText = ( {
+  children, testID, style, className
+}: Props ): Node => (
   <Text
     style={style}
     testID={testID}
+    className={className}
   >
     {children}
   </Text>
