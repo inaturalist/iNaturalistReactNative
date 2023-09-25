@@ -72,29 +72,31 @@ exports[`Button focus should render correctly 1`] = `
           "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "lineHeight": 19,
-          },
-          {
-            "fontWeight": "600",
-          },
-          {
-            "letterSpacing": 2,
-          },
-          {
-            "color": "#454545",
-          },
           [
             {
-              "textAlign": "center",
+              "fontSize": 16,
+              "lineHeight": 18,
             },
             {
-              "color": "#ffffff",
+              "lineHeight": 19,
             },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+            ],
           ],
         ],
       ]
@@ -178,29 +180,31 @@ exports[`Button focus when disabled should render correctly 1`] = `
           "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "lineHeight": 19,
-          },
-          {
-            "fontWeight": "600",
-          },
-          {
-            "letterSpacing": 2,
-          },
-          {
-            "color": "#454545",
-          },
           [
             {
-              "textAlign": "center",
+              "fontSize": 16,
+              "lineHeight": 18,
             },
             {
-              "color": "rgba(255, 255, 255, 0.5)",
+              "lineHeight": 19,
             },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+            ],
           ],
         ],
       ]
@@ -302,32 +306,34 @@ exports[`Button neutral should render correctly 1`] = `
           "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "lineHeight": 19,
-          },
-          {
-            "fontWeight": "600",
-          },
-          {
-            "letterSpacing": 2,
-          },
-          {
-            "color": "#454545",
-          },
           [
             {
-              "textAlign": "center",
+              "fontSize": 16,
+              "lineHeight": 18,
             },
             {
-              "color": "#ffffff",
+              "lineHeight": 19,
+            },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
             },
             {
               "color": "#454545",
             },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+              {
+                "color": "#454545",
+              },
+            ],
           ],
         ],
       ]
@@ -426,32 +432,34 @@ exports[`Button neutral when disabled should render correctly 1`] = `
           "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "lineHeight": 19,
-          },
-          {
-            "fontWeight": "600",
-          },
-          {
-            "letterSpacing": 2,
-          },
-          {
-            "color": "#454545",
-          },
           [
             {
-              "textAlign": "center",
+              "fontSize": 16,
+              "lineHeight": 18,
             },
             {
-              "color": "rgba(255, 255, 255, 0.5)",
+              "lineHeight": 19,
             },
             {
-              "color": "#828181",
+              "fontWeight": "600",
             },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+              {
+                "color": "#828181",
+              },
+            ],
           ],
         ],
       ]
@@ -535,32 +543,34 @@ exports[`Button primary should render correctly 1`] = `
           "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "lineHeight": 19,
-          },
-          {
-            "fontWeight": "600",
-          },
-          {
-            "letterSpacing": 2,
-          },
-          {
-            "color": "#454545",
-          },
           [
             {
-              "textAlign": "center",
+              "fontSize": 16,
+              "lineHeight": 18,
             },
             {
-              "color": "#ffffff",
+              "lineHeight": 19,
             },
             {
-              "color": "#ffffff",
+              "fontWeight": "600",
             },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+              {
+                "color": "#ffffff",
+              },
+            ],
           ],
         ],
       ]
@@ -644,32 +654,34 @@ exports[`Button primary when disabled should render correctly 1`] = `
           "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "lineHeight": 19,
-          },
-          {
-            "fontWeight": "600",
-          },
-          {
-            "letterSpacing": 2,
-          },
-          {
-            "color": "#454545",
-          },
           [
             {
-              "textAlign": "center",
+              "fontSize": 16,
+              "lineHeight": 18,
             },
             {
-              "color": "rgba(255, 255, 255, 0.5)",
+              "lineHeight": 19,
             },
             {
-              "color": "rgba(255, 255, 255, 0.5)",
+              "fontWeight": "600",
             },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+            ],
           ],
         ],
       ]
@@ -753,29 +765,31 @@ exports[`Button warning should render correctly 1`] = `
           "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "lineHeight": 19,
-          },
-          {
-            "fontWeight": "600",
-          },
-          {
-            "letterSpacing": 2,
-          },
-          {
-            "color": "#454545",
-          },
           [
             {
-              "textAlign": "center",
+              "fontSize": 16,
+              "lineHeight": 18,
             },
             {
-              "color": "#ffffff",
+              "lineHeight": 19,
             },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "#ffffff",
+              },
+            ],
           ],
         ],
       ]
@@ -859,29 +873,31 @@ exports[`Button warning when disabled should render correctly 1`] = `
           "fontFamily": "Whitney-Medium",
         },
         [
-          {
-            "fontSize": 16,
-            "lineHeight": 18,
-          },
-          {
-            "lineHeight": 19,
-          },
-          {
-            "fontWeight": "600",
-          },
-          {
-            "letterSpacing": 2,
-          },
-          {
-            "color": "#454545",
-          },
           [
             {
-              "textAlign": "center",
+              "fontSize": 16,
+              "lineHeight": 18,
             },
             {
-              "color": "rgba(255, 255, 255, 0.5)",
+              "lineHeight": 19,
             },
+            {
+              "fontWeight": "600",
+            },
+            {
+              "letterSpacing": 2,
+            },
+            {
+              "color": "#454545",
+            },
+            [
+              {
+                "textAlign": "center",
+              },
+              {
+                "color": "rgba(255, 255, 255, 0.5)",
+              },
+            ],
           ],
         ],
       ]
