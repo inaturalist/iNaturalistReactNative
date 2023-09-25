@@ -299,6 +299,34 @@ end
 
 lane :release do
   desc "Make github release for the latest tag and make builds"
+  ANDROID_ASSETS_FOLDER = Dir.children( "../android/app/src/main/assets/camera" )
+
+  ANDROID_ASSETS_FOLDER.each do | file |
+    next unless !ENV.has_value?( file ) 
+
+    UI.abort_with_message! <<~EXTRA_ANDROID_ASSETS_ERROR
+      Android assets folder has extraneous file: #{file}, which is not listed
+      as an environment variable. Remove any unreferenced files from
+      android/app/src/main/assets/camera before running a release build
+      EXTRA_ANDROID_ASSETS_ERROR
+  end
+
+  ASSETS = File.open( "../android/link-assets-manifest.json" ) {| f | JSON.parse( f.read )["data"] }
+  linked_assets = Array.new
+  ASSETS.each do | asset |
+    linked_assets.push( asset["path"].split( "assets/fonts/" )[1] )
+  end
+
+  FONTS_FOLDER = Dir.children( "../assets/fonts" )
+  FONTS_FOLDER.each do | file |
+    next unless !linked_assets.include?( file ) and file != ".DS_Store"
+
+    UI.abort_with_message! <<~EXTRA_ASSETS_ERROR
+      Assets folder has extraneous file: #{file}, which is not listed
+      in link-assets-manifest.json. Remove any unreferenced assets before
+      running a release build
+      EXTRA_ASSETS_ERROR
+  end
   last_tag = last_git_tag
   if last_tag.nil? || last_tag.empty?
     UI.abort_with_message! "No tags have been added yet. Try starting with `fastlane tag`"
