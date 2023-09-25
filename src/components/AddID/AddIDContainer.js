@@ -31,7 +31,7 @@ type Props = {
 const AddIDContainer = ( { route }: Props ): Node => {
   const [comment, setComment] = useState( "" );
   const [loading, setLoading] = useState( false );
-  const [taxonSearch, setTaxonSearch] = useState( "" );
+  const [taxonQuery, setTaxonQuery] = useState( "" );
   const {
     updateObservationKeys
   } = useContext( ObsEditContext );
@@ -113,7 +113,7 @@ const AddIDContainer = ( { route }: Props ): Node => {
   useEffect(
     ( ) => {
       navigation.addListener( "blur", ( ) => {
-        setTaxonSearch( "" );
+        setTaxonQuery( "" );
         setComment( "" );
         setLoading( false );
       } );
@@ -125,8 +125,8 @@ const AddIDContainer = ( { route }: Props ): Node => {
     <AddID
       setComment={setComment}
       comment={comment}
-      taxonSearch={taxonSearch}
-      setTaxonSearch={setTaxonSearch}
+      taxonQuery={taxonQuery}
+      setTaxonQuery={setTaxonQuery}
       createId={createId}
       loading={loading}
     />
