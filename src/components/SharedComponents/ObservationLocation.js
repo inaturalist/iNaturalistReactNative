@@ -4,7 +4,6 @@ import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndS
 import { Body3, Body4 } from "components/SharedComponents";
 import ContentWithIcon from "components/SharedComponents/ObsDetails/ContentWithIcon";
 import { View } from "components/styledComponents";
-import { capitalize } from "lodash";
 import * as React from "react";
 import useTranslation from "sharedHooks/useTranslation";
 
@@ -22,7 +21,7 @@ const ObservationLocation = ( {
   const { t } = useTranslation( );
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
   let displayCoords;
-  const geoprivacy = capitalize( checkCamelAndSnakeCase( observation, "geoprivacy" ) );
+  const displayGeoprivacy = checkCamelAndSnakeCase( observation, "geoprivacy" );
 
   const TextComponent = large
     ? Body3
@@ -30,7 +29,7 @@ const ObservationLocation = ( {
 
   if ( !displayLocation ) {
     displayLocation = t( "No-Location" );
-    if ( geoprivacy === "Private" ) {
+    if ( displayGeoprivacy === "Private" ) {
       displayLocation = t( "Private" );
     }
   }
@@ -45,15 +44,15 @@ const ObservationLocation = ( {
     } );
   }
 
-  const displayGeoprivacy = ( ) => {
-    let displayPrivacy = geoprivacy;
-    if ( obscured ) {
-      if ( displayPrivacy === "Private" ) {
-        displayPrivacy = "Private";
-      }
+  const showGeoprivacy = ( ) => {
+    let displayPrivacy = displayGeoprivacy;
+    if ( displayPrivacy === "private" ) {
+      displayPrivacy = "Private";
+    }
+    if ( displayPrivacy === "obscured" ) {
       displayPrivacy = "Obscured";
     }
-    if ( displayCoords ) {
+    if ( displayPrivacy === null || displayPrivacy === "open" ) {
       displayPrivacy = "Open";
     }
     return (
@@ -110,7 +109,7 @@ const ObservationLocation = ( {
         </View>
       </ContentWithIcon>
       {details
-        && displayGeoprivacy()}
+        && showGeoprivacy()}
     </View>
   );
 };
