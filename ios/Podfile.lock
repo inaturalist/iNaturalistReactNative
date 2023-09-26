@@ -497,7 +497,7 @@ PODS:
     - React-Core
   - RNPermissions (3.8.0):
     - React-Core
-  - RNReanimated (3.5.2):
+  - RNReanimated (3.5.3):
     - DoubleConversion
     - FBLazyVector
     - glog
@@ -866,7 +866,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
-  RNReanimated: 2491645f0883526f4470d8b5c761308709ba31f8
+  RNReanimated: e037aac4d8b0055a399f5af065e8210f6c8cc900
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
