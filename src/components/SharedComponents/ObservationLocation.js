@@ -22,9 +22,6 @@ const ObservationLocation = ( {
   let displayCoords;
   const geoprivacy = checkCamelAndSnakeCase( observation, "geoprivacy" );
 
-  if ( !displayLocation ) {
-    displayLocation = t( "No-Location" );
-  }
   if ( ( observation?.latitude !== null && observation?.latitude !== undefined )
     && ( observation?.longitude != null && observation?.longitude !== undefined )
   ) {
@@ -33,6 +30,13 @@ const ObservationLocation = ( {
       longitude: observation.longitude,
       accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
     } );
+  }
+  if ( !displayLocation ) {
+    if ( displayCoords && !details ) {
+      displayLocation = displayCoords;
+    } else {
+      displayLocation = t( "No-Location" );
+    }
   }
 
   const displayGeoprivacy = ( ) => (
@@ -62,9 +66,9 @@ const ObservationLocation = ( {
       }}
     >
       <View className="flex-row">
-        <INatIcon name="location" size={15} />
+        <INatIcon name="location" size={13} />
         <TextComponent
-          className="text-darkGray ml-[8px]"
+          className="text-darkGray ml-[5px]"
           numberOfLines={1}
           ellipsizeMode="tail"
         >
