@@ -39,6 +39,19 @@ jobs:
     runs-on: macos-latest
     # Kill the task if not finished after 60 minutes
     timeout-minutes: 60
+    env:
+      OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+      OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+      E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
+      E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
+      JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
+      API_URL: https://stagingapi.inaturalist.org/v2
+      OAUTH_API_URL: https://staging.inaturalist.org
+      GMAPS_API_KEY: ${{ secrets.E2E_TEST_PASSWORD }}
+      ANDROID_MODEL_FILE_NAME: small_inception_tf1.tflite
+      ANDROID_TAXONOMY_FILE_NAME: small_export_tax.csv
+      IOS_MODEL_FILE_NAME: small_inception_tf1.mlmodel
+      IOS_TAXONOMY_FILE_NAME: small_export_tax.json
 
     steps:
     - name: Check out Git repository
@@ -78,15 +91,10 @@ jobs:
         gem update cocoapods xcodeproj
         cd ios && pod install && cd ..
 
-    # Generate the secret files needed for a release build
-    - name: Create .env file
-      env:
-        OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
-        OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
-        E2E_TEST_USERNAME: ${{ secrets.E2E_TEST_USERNAME }}
-        E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
-        JWT_ANONYMOUS_API_SECRET: ${{ secrets.JWT_ANONYMOUS_API_SECRET }}
-      run: printf 'API_URL=https://stagingapi.inaturalist.org/v2\nOAUTH_API_URL=https://staging.inaturalist.org\nJWT_ANONYMOUS_API_SECRET=%s\nOAUTH_CLIENT_ID=%s\nOAUTH_CLIENT_SECRET=%s\nE2E_TEST_USERNAME=%s\nE2E_TEST_PASSWORD=%s\nGMAPS_API_KEY=%s\nANDROID_MODEL_FILE_NAME=small_inception_tf1.tflite\nANDROID_TAXONOMY_FILE_NAME=small_export_tax.csv\nIOS_MODEL_FILE_NAME=small_inception_tf1.mlmodel\nIOS_TAXONOMY_FILE_NAME=small_export_tax.json\n' "JWT_ANONYMOUS_API_SECRET" "$OAUTH_CLIENT_ID" "$OAUTH_CLIENT_SECRET" "$E2E_TEST_USERNAME" "$E2E_TEST_PASSWORD" "$GMAPS_API_KEY" > .env
+    # All of the ENV vars are set above for the entire job, but the build
+    # process expects to see this file regardless
+    - name: Add .env
+      run: touch .env
 
     # Check that the e2e test user is setup correctly, requires .env
     - name: Check that the e2e test user is setup correctly
