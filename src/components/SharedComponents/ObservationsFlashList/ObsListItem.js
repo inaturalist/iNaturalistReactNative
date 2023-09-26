@@ -31,6 +31,7 @@ const ObsListItem = ( { observation, setShowLoginSheet }: Props ): Node => {
         opaque={needsSync}
         disableGradient
         hasSmallBorderRadius
+        iconicTaxonName={observation.taxon?.iconic_taxon_name}
       />
       <View className="pr-[25px] flex-1 ml-[10px]">
         <DisplayTaxonName

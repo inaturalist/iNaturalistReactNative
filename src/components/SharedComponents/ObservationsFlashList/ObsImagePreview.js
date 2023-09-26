@@ -1,6 +1,6 @@
 // @flow
 import classNames from "classnames";
-import { INatIcon, PhotoCount } from "components/SharedComponents";
+import { IconicTaxonIcon, INatIcon, PhotoCount } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -27,7 +27,9 @@ type Props = {
   disableGradient?: boolean,
   hasSmallBorderRadius?: boolean,
   testID?: string,
-  style?: Object
+  style?: Object,
+  iconicTaxonName?: string,
+  white?: boolean
 };
 
 const ObsImagePreview = ( {
@@ -44,7 +46,9 @@ const ObsImagePreview = ( {
   disableGradient = false,
   hasSmallBorderRadius = false,
   testID,
-  style
+  style,
+  iconicTaxonName = "unknown",
+  white = false
 }: Props ): Node => {
   const theme = useTheme();
   const hasMultiplePhotos = obsPhotosCount > 1;
@@ -63,11 +67,27 @@ const ObsImagePreview = ( {
       style={style}
       testID={testID}
     >
-      <ObsImageBackground
-        uri={source}
-        opaque={opaque}
-        disableGradient={disableGradient}
-      />
+      {!source
+        ? (
+          <ObsImageBackground
+            uri={source}
+            opaque={opaque}
+            disableGradient={disableGradient}
+          />
+        )
+        : (
+          <IconicTaxonIcon
+            imageClassName={classNames(
+              "relative overflow-hidden max-h-[210px]",
+              width,
+              height,
+              borderRadius
+            )}
+            iconicTaxonName={iconicTaxonName}
+            style={style}
+            white={white}
+          />
+        )}
       {selectable && (
         <View
           className={classNames(
