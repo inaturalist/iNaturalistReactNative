@@ -45,17 +45,19 @@ const ObsEdit = ( ): Node => {
     }
   }, [localObservation, setObservations, resetObsEditContext, currentObservation] );
 
-  if ( !currentObservation ) { return null; }
-
   return (
     <>
       <View testID="obs-edit" className="bg-white flex-1">
         <Header />
-        <KeyboardAwareScrollView className="bg-white">
-          {observations.length > 1 && <MultipleObservationsArrows />}
-          <EvidenceSection />
-          <IdentificationSection />
-          <OtherDataSection />
+        <KeyboardAwareScrollView className="bg-white mb-[80px]">
+          {currentObservation && (
+            <>
+              {observations.length > 1 && <MultipleObservationsArrows />}
+              <EvidenceSection />
+              <IdentificationSection />
+              <OtherDataSection />
+            </>
+          )}
           {loading && <ActivityIndicator />}
         </KeyboardAwareScrollView>
       </View>

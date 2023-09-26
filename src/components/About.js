@@ -6,6 +6,7 @@ import { t } from "i18next";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
 import { Alert, Platform, Share } from "react-native";
+import Config from "react-native-config";
 import {
   getBuildNumber,
   getSystemName,
@@ -16,6 +17,15 @@ import Mailer from "react-native-mail";
 
 import { logFilePath } from "../../react-native-logs.config";
 import ScrollViewWrapper from "./SharedComponents/ScrollViewWrapper";
+
+const modelFileName: string = Platform.select( {
+  ios: Config.IOS_MODEL_FILE_NAME,
+  android: Config.ANDROID_MODEL_FILE_NAME
+} );
+const taxonomyFileName = Platform.select( {
+  ios: Config.IOS_TAXONOMY_FILE_NAME,
+  android: Config.ANDROID_TAXONOMY_FILE_NAME
+} );
 
 const TextHeader = ( { level, children } ) => {
   let sizeClass = "text-2xl";
@@ -100,6 +110,15 @@ const About = (): Node => {
         </Text>
         <TextHeader>Version</TextHeader>
         <Text selectable>{`${appVersion} (${buildVersion})`}</Text>
+        <TextHeader>Computer Vision</TextHeader>
+        <View className="flex-row">
+          <Text className="font-bold">Model: </Text>
+          <Text selectable>{modelFileName}</Text>
+        </View>
+        <View className="flex-row">
+          <Text className="font-bold">Taxonomy: </Text>
+          <Text selectable>{taxonomyFileName}</Text>
+        </View>
         <TextHeader>Logs</TextHeader>
         <Text>Last 100 lines</Text>
         <Text className={`text-xs h-fit mb-5 ${fontMonoClass}`}>

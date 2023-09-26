@@ -1,6 +1,6 @@
 // @flow
 
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { Body1, Button } from "components/SharedComponents";
 import { Pressable, SafeAreaView, View } from "components/styledComponents";
@@ -12,6 +12,7 @@ import {
   Dialog, Paragraph, Portal
 } from "react-native-paper";
 import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import colors from "styles/tailwindColors";
 
 import { log } from "../../../react-native-logs.config";
 import {
@@ -58,12 +59,12 @@ const Logout = ( ): Node => {
     // deleted the realm file on disk, but the RealmProvider may still have a
     // copy of realm in local state
     // Reset navigation state so that ObsList gets rerendered
-    navigation.dispatch( CommonActions.reset( {
-      index: 0,
-      routes: [{ name: "ObsList" }]
-    } ) );
-
-    navigation.navigate( "ObsList" );
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsStackNavigator",
+      params: {
+        screen: "ObsList"
+      }
+    } );
   };
 
   const renderBackButton = ( ) => (
@@ -72,7 +73,7 @@ const Logout = ( ): Node => {
       onPress={( ) => navigation.goBack( )}
       className="absolute top-8 right-8"
     >
-      <IconMaterial name="close" size={35} />
+      <IconMaterial name="close" color={colors.white} size={35} />
     </Pressable>
   );
 

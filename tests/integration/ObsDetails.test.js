@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
-import ObsDetails from "components/ObsDetails/ObsDetails";
+import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
 import initI18next from "i18n/initI18next";
 import inatjs from "inaturalistjs";
 import React from "react";
@@ -34,7 +34,8 @@ jest.mock( "@react-navigation/native", () => {
     addEventListener: () => {},
     useNavigation: () => ( {
       navigate: jest.fn(),
-      setOptions: jest.fn()
+      setOptions: jest.fn(),
+      canGoBack: jest.fn( ( ) => true )
     } ),
     useRoute: () => ( {
       params: {
@@ -67,7 +68,7 @@ describe( "ObsDetails", () => {
       // Expect the observation in realm to have comments_viewed param not initialized
       const observation = global.realm.objects( "Observation" )[0];
       expect( observation.comments_viewed ).not.toBeTruthy();
-      renderAppWithComponent( <ObsDetails /> );
+      renderAppWithComponent( <ObsDetailsContainer /> );
       expect(
         await screen.findByText( `@${mockObservation.user.login}` )
       ).toBeTruthy();

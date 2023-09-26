@@ -1,8 +1,7 @@
 // @flow
-import { UserIcon } from "components/SharedComponents";
+import { INatIconButton, UserIcon } from "components/SharedComponents";
 import { Pressable } from "components/styledComponents";
 import * as React from "react";
-import { IconButton } from "react-native-paper";
 import colors from "styles/tailwindColors";
 
 type Props = {
@@ -15,6 +14,8 @@ type Props = {
   accessibilityHint?: string,
   active: boolean,
   size: number,
+  width?: number,
+  height?: number
 };
 
 const NavButton = ( {
@@ -26,7 +27,9 @@ const NavButton = ( {
   active,
   accessibilityLabel,
   accessibilityHint,
-  accessibilityRole = "tab"
+  accessibilityRole = "tab",
+  width,
+  height
 }: Props ): React.Node => {
   /* eslint-disable react/jsx-props-no-spreading */
   const sharedProps = {
@@ -39,7 +42,9 @@ const NavButton = ( {
       selected: active,
       expanded: active,
       disabled: false
-    }
+    },
+    width,
+    height
   };
 
   if ( userIconUri ) {
@@ -54,9 +59,9 @@ const NavButton = ( {
   }
 
   return (
-    <IconButton
+    <INatIconButton
       icon={icon}
-      iconColor={active
+      color={active
         ? colors.inatGreen
         : colors.darkGray}
       size={size}

@@ -11,7 +11,7 @@ import useTranslation from "sharedHooks/useTranslation";
 type Props = {
   disableAddingMoreEvidence: boolean,
   setShowAddEvidenceSheet: Function,
-  hide?: boolean,
+  hidden?: boolean,
   onImportPhoto: Function,
   onTakePhoto: Function,
   onRecordSound: Function,
@@ -20,7 +20,7 @@ type Props = {
 const AddEvidenceSheet = ( {
   setShowAddEvidenceSheet,
   disableAddingMoreEvidence,
-  hide,
+  hidden,
   onImportPhoto,
   onTakePhoto,
   onRecordSound
@@ -32,17 +32,17 @@ const AddEvidenceSheet = ( {
     [setShowAddEvidenceSheet]
   );
 
-  const onImportPhotoCb = async () => {
+  const onImportPhotoCallback = async () => {
     handleClose( );
     onImportPhoto();
   };
 
-  const onTakePhotoCb = async () => {
+  const onTakePhotoCallback = async () => {
     handleClose( );
     onTakePhoto();
   };
 
-  const onRecordSoundCb = () => {
+  const onRecordSoundCallback = () => {
     handleClose( );
     onRecordSound();
   };
@@ -52,7 +52,7 @@ const AddEvidenceSheet = ( {
       handleClose={handleClose}
       headerText={t( "ADD-EVIDENCE" )}
       snapPoints={[202]}
-      hide={hide}
+      hidden={hidden}
       onChange={position => {
         if ( position === -1 ) {
           handleClose( );
@@ -68,21 +68,21 @@ const AddEvidenceSheet = ( {
         <View className="flex-row w-full justify-around">
           <EvidenceButton
             icon="camera"
-            handlePress={onTakePhotoCb}
+            handlePress={onTakePhotoCallback}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Camera" )}
             accessibilityHint={t( "Navigates-to-camera" )}
           />
           <EvidenceButton
             icon="gallery"
-            handlePress={onImportPhotoCb}
+            handlePress={onImportPhotoCallback}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Bulk-importer" )}
             accessibilityHint={t( "Navigates-to-bulk-importer" )}
           />
           <EvidenceButton
             icon="microphone"
-            handlePress={onRecordSoundCb}
+            handlePress={onRecordSoundCallback}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Sound-recorder" )}
             accessibilityHint={t( "Navigates-to-sound-recorder" )}

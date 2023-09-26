@@ -1,10 +1,10 @@
 // @flow
 
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import {
-  Body1, Body2,
-  Button, Heading4
+  Body1, Body2, Button, Heading4, INatIcon,
+  List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
@@ -22,10 +22,11 @@ const { useRealm } = RealmContext;
 
 type Props = {
   setLoggedIn: Function,
-  handleInputFocus: Function
+  handleInputFocus: Function,
+  emailConfirmed: ?boolean
 }
 
-const LoginForm = ( { setLoggedIn, handleInputFocus }: Props ): Node => {
+const LoginForm = ( { setLoggedIn, handleInputFocus, emailConfirmed }: Props ): Node => {
   const realm = useRealm( );
   const navigation = useNavigation( );
   const [email, setEmail] = useState( "" );
@@ -50,18 +51,28 @@ const LoginForm = ( { setLoggedIn, handleInputFocus }: Props ): Node => {
     setLoggedIn( true );
     setLoading( false );
 
-    // Reset navigation state so that ObsList gets rerendered
-    navigation.dispatch( CommonActions.reset( {
-      index: 0,
-      routes: [{ name: "ObsList" }]
-    } ) );
-
-    navigation.navigate( "ObsList" );
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsStackNavigator"
+    } );
   };
 
   return (
     <View className="px-4 mt-[9px] justify-end">
       <View className="mx-4">
+        {emailConfirmed && (
+          <View className="flex-row mb-5 items-center justify-center">
+            <View className="bg-white rounded-full">
+              <INatIcon
+                name="checkmark-circle"
+                color={theme.colors.secondary}
+                size={19}
+              />
+            </View>
+            <List2 className="ml-3 text-white font-medium">
+              {t( "Your-email-is-confirmed" )}
+            </List2>
+          </View>
+        )}
         <Heading4 className="color-white mb-[11px]">{t( "USERNAME-OR-EMAIL" )}</Heading4>
         <TextInput
           accessibilityLabel={t( "USERNAME-OR-EMAIL" )}

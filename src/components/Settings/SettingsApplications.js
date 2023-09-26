@@ -68,7 +68,11 @@ const SettingsApplications = ( ): Node => {
           <Text>
             {app.application.name}
           </Text>
-          <Pressable style={viewStyles.revokeAccess} onPress={() => askToRevokeApp( app )}>
+          <Pressable
+            accessibilityRole="button"
+            style={viewStyles.revokeAccess}
+            onPress={() => askToRevokeApp( app )}
+          >
             <Text>{t( "Revoke" )}</Text>
           </Pressable>
         </View>
@@ -96,7 +100,11 @@ const SettingsApplications = ( ): Node => {
           <Text style={textStyles.applicationName}>
             {t( "authorized-on-date", { appName: app.application.name, date: app.created_at } )}
           </Text>
-          <Pressable style={viewStyles.revokeAccess} onPress={() => askToRevokeApp( app )}>
+          <Pressable
+            accessibilityRole="button"
+            style={viewStyles.revokeAccess}
+            onPress={() => askToRevokeApp( app )}
+          >
             <Text>{t( "Revoke" )}</Text>
           </Pressable>
         </View>

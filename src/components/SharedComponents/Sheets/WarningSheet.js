@@ -17,7 +17,7 @@ type Props = {
   secondButtonText?: string,
   handleSecondButtonPress?: Function,
   buttonType?: string,
-  hide?: boolean,
+  hidden?: boolean,
 }
 
 const WarningSheet = ( {
@@ -30,13 +30,13 @@ const WarningSheet = ( {
   secondButtonText,
   handleSecondButtonPress,
   buttonType,
-  hide
+  hidden
 }: Props ): Node => (
   <BottomSheet
     handleClose={handleClose}
     headerText={headerText}
     snapPoints={snapPoints}
-    hide={hide}
+    hidden={hidden}
     onChange={position => {
       if ( position === -1 ) {
         handleClose( );

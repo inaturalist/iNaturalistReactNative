@@ -2,32 +2,35 @@
 
 import fetchSearchResults from "api/search";
 import {
-  SearchBar
+  Body2,
+  SearchBar,
+  TaxonResult
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FlatList } from "react-native";
 import Taxon from "realmModels/Taxon";
+import { useTranslation } from "sharedHooks";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
-import TaxonResult from "./TaxonResult";
-
 type Props = {
-  route: Object,
-  createId: Function
+  taxonQuery: string,
+  setTaxonQuery: Function,
+  onTaxonChosen: Function
 };
 
 const TaxonSearch = ( {
-  route,
-  createId
+  taxonQuery,
+  setTaxonQuery,
+  onTaxonChosen
 }: Props ): Node => {
-  const [taxonSearch, setTaxonSearch] = useState( "" );
+  const { t } = useTranslation( );
   const { data: taxonList } = useAuthenticatedQuery(
-    ["fetchSearchResults", taxonSearch],
+    ["fetchSearchResults", taxonQuery],
     optsWithAuth => fetchSearchResults(
       {
-        q: taxonSearch,
+        q: taxonQuery,
         sources: "taxa",
         fields: {
           taxon: Taxon.TAXON_FIELDS
@@ -37,20 +40,18 @@ const TaxonSearch = ( {
     )
   );
 
-  useEffect( ( ) => {
-    // this clears search whenever a user is coming from ObsEdit
-    // but maintains current search when a user navigates to TaxonDetails and back
-    if ( route?.params?.clearSearch ) {
-      setTaxonSearch( "" );
-    }
-  }, [route] );
+  const renderEmptyComponent = ( ) => (
+    <Body2 className="self-center">
+      {t( "Search-for-a-taxon-to-add-an-identification" )}
+    </Body2>
+  );
 
   return (
     <>
       <View className="mx-6">
         <SearchBar
-          handleTextChange={setTaxonSearch}
-          value={taxonSearch}
+          handleTextChange={setTaxonQuery}
+          value={taxonQuery}
           testID="SearchTaxon"
           containerClass="pb-5 mt-3"
         />
@@ -58,8 +59,15 @@ const TaxonSearch = ( {
       <FlatList
         keyboardShouldPersistTaps="always"
         data={taxonList}
-        renderItem={( { item } ) => <TaxonResult item={item} createId={createId} />}
+        renderItem={( { item } ) => (
+          <TaxonResult
+            taxon={item}
+            handleCheckmarkPress={( ) => onTaxonChosen( item )}
+            testID={`Search.taxa.${item.id}`}
+          />
+        )}
         keyExtractor={item => item.id}
+        ListEmptyComponent={renderEmptyComponent}
       />
     </>
   );

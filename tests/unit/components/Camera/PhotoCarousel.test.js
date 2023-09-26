@@ -1,11 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { render, screen } from "@testing-library/react-native";
-import PhotoCarousel from "components/Camera/PhotoCarousel";
+import PhotoCarousel from "components/Camera/StandardCamera/PhotoCarousel";
+import initI18next from "i18n/initI18next";
 import React from "react";
-
-import * as mockReactI18next from "../../../mocks/react-i18next";
-
-jest.mock( "react-i18next", ( ) => mockReactI18next );
 
 const mockPhotoUris = [
   faker.image.imageUrl( ),
@@ -14,6 +11,9 @@ const mockPhotoUris = [
 ];
 
 describe( "PhotoCarousel", ( ) => {
+  beforeAll( async () => {
+    await initI18next( );
+  } );
   // There were some tests of photo sizes responding to the isLargeScreen prop
   // but somewhat dynamic tailwind classes don't seem to create style props
   // in a test environment, so I'm not sure we can test those now ~~~kueda

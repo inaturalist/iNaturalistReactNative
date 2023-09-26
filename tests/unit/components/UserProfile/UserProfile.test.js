@@ -41,6 +41,8 @@ jest.mock(
   }
 );
 
+jest.mock( "components/UserProfile/UserDescription" );
+
 describe( "UserProfile", () => {
   beforeAll( async () => {
     await initI18next();

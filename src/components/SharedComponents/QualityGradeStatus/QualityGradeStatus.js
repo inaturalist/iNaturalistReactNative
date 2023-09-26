@@ -16,7 +16,7 @@ type Props = {
 const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
   if ( qualityGrade === "research" ) {
     return (
-    // $FlowIgnore
+    // $FlowIgnore[not-a-component]
       <ResearchGrade
         accessible
         accessibilityLabel={t( "Quality-Grade-research" )}
@@ -28,7 +28,7 @@ const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
   }
   if ( qualityGrade === "needs_id" ) {
     return (
-    // $FlowIgnore
+    // $FlowIgnore[not-a-component]
       <NeedsIdGrade
         accessible
         accessibilityLabel={t( "Quality-Grade-needs_id" )}
@@ -39,7 +39,7 @@ const qualityGradeSVG = ( qualityGrade, color, opacity ) => {
     );
   }
   return (
-    // $FlowIgnore
+    // $FlowIgnore[not-a-component]
     <CasualGrade
       accessible
       accessibilityLabel={t( "Quality-Grade-casual" )}

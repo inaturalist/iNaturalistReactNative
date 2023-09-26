@@ -1,9 +1,11 @@
 // @flow
-import { INatIcon } from "components/SharedComponents";
+import { INatIcon, INatIconButton } from "components/SharedComponents";
 import { View } from "components/styledComponents";
-import * as React from "react";
+import type { Node } from "react";
+import React from "react";
 import { Platform } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
+import { useTranslation } from "sharedHooks";
 import { getShadowStyle } from "styles/global";
 
 const getShadow = shadowColor => getShadowStyle( {
@@ -20,7 +22,10 @@ type Props = {
   handleTextChange: Function,
   value: string,
   testID?: string,
-  hasShadow?: boolean
+  hasShadow?: boolean,
+  input?: any,
+  placeholder?: string,
+  clearSearch?: Function
 }
 
 // Ensure this component is placed outside of scroll views
@@ -30,13 +35,19 @@ const SearchBar = ( {
   testID,
   handleTextChange,
   value,
-  hasShadow
-}: Props ): React.Node => {
+  hasShadow,
+  input,
+  placeholder,
+  clearSearch
+}: Props ): Node => {
   const theme = useTheme( );
+  const { t } = useTranslation( );
 
   return (
     <View className={containerClass}>
       <TextInput
+        ref={input}
+        placeholder={placeholder}
         accessibilityLabel="Search bar"
         keyboardType="default"
         mode="outlined"
@@ -54,7 +65,8 @@ const SearchBar = ( {
           height: 45,
           ...( hasShadow
             ? getShadow( theme.colors.primary )
-            : {} )
+            : {} ),
+          paddingRight: 28
         }}
         underlineColor={theme.colors.primary}
         activeUnderlineColor={theme.colors.primary}
@@ -72,9 +84,22 @@ const SearchBar = ( {
           }
         }}
       />
-      <View className="absolute right-4 top-[20px]">
-        <INatIcon name="magnifying-glass" size={18} />
-      </View>
+      {value?.length > 0 && clearSearch
+        ? (
+          <View className="absolute right-0 top-[10px]">
+            <INatIconButton
+              icon="close"
+              accessibilityLabel={t( "Close-search" )}
+              size={18}
+              onPress={clearSearch}
+            />
+          </View>
+        )
+        : (
+          <View className="absolute right-4 top-[20px]">
+            <INatIcon name="magnifying-glass" size={18} />
+          </View>
+        )}
     </View>
   );
 };

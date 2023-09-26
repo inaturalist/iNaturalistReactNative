@@ -16,6 +16,8 @@ ADD-AN-ID = ADD AN ID
 
 Add-an-ID = Add an ID
 
+ADD-COMMENT = ADD COMMENT
+
 Add-Date-Time = Add Date/Time
 
 Add-evidence-of-an-organism = Add evidence of an organism. This helps others identify what you saw.
@@ -35,6 +37,10 @@ Added-on-date = Added on { $date }
 Affiliation-colon = Affiliation:
 
 Agree = Agree
+
+AGREE-WITH-ID = AGREE WITH ID?
+
+Agree-with-ID-description = Would you like to agree with the ID and suggest the following identification?
 
 All = All
 
@@ -260,6 +266,10 @@ Do-not-collect-stability-and-usage-data-using-third-party-services = Do not coll
 
 Dont-have-an-account = Don't have an account? Sign up
 
+During-app-start-no-model-found = During app start there was no computer vision model found. There will be no AR camera.
+
+EDIT-COMMENT = EDIT COMMENT
+
 EDIT-LOCATION = EDIT LOCATION
 
 EMAIL = EMAIL
@@ -290,7 +300,7 @@ EXPLORE-OBSERVATIONS = EXPLORE OBSERVATIONS
 External-Applications = External Applications
 
 # Header for featured projects
-Featured = Featured
+FEATURED = FEATURED
 
 Fetching-location = Fetching location...
 
@@ -338,6 +348,9 @@ Has-Sounds = Has Sounds
 
 High = High
 
+# Identification Status
+ID-Withdrawn = ID Withdrawn
+
 IDENTIFICATION = IDENTIFICATION
 
 IDENTIFICATIONS = IDENTIFICATIONS
@@ -368,7 +381,7 @@ Invalid-login = The username or password is incorrect
 Join-the-largest-community-of-naturalists = Join the largest community of naturalists in the world!
 
 # Header for joined projects
-Joined = Joined
+JOINED = JOINED
 
 # Shows date user joined iNaturalist on user profile
 Joined-date = Joined: {$date}
@@ -456,7 +469,7 @@ Names = Names
 Native = Native
 
 # Header for nearby projects
-Nearby = Nearby
+NEARBY = NEARBY
 
 New-Observation = New Observation
 
@@ -470,6 +483,8 @@ No-account-found = No account found with that email
 No-comments-or-ids-to-display = No comments or ids to display
 
 No-Location = No Location
+
+No-model-found = No model found
 
 none = none
 
@@ -646,6 +661,9 @@ Reptiles = Reptiles
 Research-Grade = Research Grade
 
 Reset = Reset
+
+# Option to restore withdrawn id from current user
+Restore = Restore
 
 # Appears in the reset password screen
 Lets-reset-your-password = Let's reset your password
@@ -840,6 +858,9 @@ Wild = Wild
 
 WILD-STATUS = WILD STATUS
 
+# Option to Withdraw identification made by user
+Withdraw = Withdraw
+
 # Banner above Explore Map showing total number of results
 X-Observations = {$count ->
     [one] 1 Observation
@@ -980,28 +1001,61 @@ x-identifications = {$count ->
    *[other] {$count} identifications
 }
 
+X-Identifications = {$count ->
+    [one] {$count} Identification
+   *[other] {$count} Identifications
+}
+
+X-Identifiers = {$count ->
+    [one] {$count} Identifier
+   *[other] {$count} Identifiers
+}
+
+X-Observers = {$count ->
+    [one] {$count} Observer
+   *[other] {$count} Observers
+}
+
+X-Species = {$count ->
+    [one] {$count} Species
+   *[other] {$count} Species
+}
+
 ## Accessibility hints: these are used by screen readers to describe what happens when the user interacts with an element iOS: https://developer.apple.com/documentation/uikit/uiaccessibilityelement/1619585-accessibilityhint
 ## iOS Guidelines "A string that briefly describes the result of performing an action on the accessibility element." Third person singular ending with a period.
 Agrees-with-identification = Agrees with this identification.
 Navigates-to-bulk-importer = Navigates to bulk importer.
-Navigates-to-camera = Navigate to camera.
+Navigates-to-camera = Navigates to camera.
+Navigates-to-AR-camera = Navigates to AR camera.
 Navigates-to-explore = Navigates to explore.
 Navigates-to-messages = Navigates to messages.
 Navigates-to-observations = Navigates to observations.
 Navigates-to-sound-recorder = Navigates to sound recorder.
 Navigates-to-suggest-identification = Navigates to suggest identification.
 Navigates-to-user-profile = Navigates to user profile.
+Navigates-to-drawer-item = Navigates to drawer item.
+Navigate-to-taxon-details = Navigate to taxon details
+Navigates-to-add-identification = Navigates to add identification.
+Navigates-to-identify = Navigates to identify.
 Opens-add-comment-modal = Opens add comment modal.
 Opens-add-observation-modal = Opens add observation modal.
 Opens-the-side-drawer-menu = Opens the side drawer menu.
-Returns-to-previous-screen = Returns to previous screen.
+Navigate-to-previous-screen = Navigate to previous screen
+Shows-iNaturalist-bird-logo = Shows iNaturalist bird logo.
 Switches-to-tab = Switches to { $tab } tab.
 Text-Box-to-Describe-Reason-for-Flag = Text box to describe reason for flag.
+Use-the-devices-other-camera = Use the device's other camera.
+Open-kebab-menu = Open kebab menu.
+Selects-iconic-taxon-X-for-identification = Selects iconic taxon { $iconicTaxon } for identification.
+Indicates-location-is-loading = Indicates location is loading.
+Returns-map-to-users-current-location = Returns map to user's current location.
+Toggles-map-layer = Toggles map layer.
+Navigate-to-observation-edit-screen = Navigate to observation edit screen
+Close-add-observation-modal = Close add observation modal
+Navigate-to-photo-importer = Navigate to photo importer
 
 ## The following are actually more like "accessibility hints" than labels we should probably refactor
-Add-this-ID = Add this identification
 # Accessible label for the camera button
-Camera-button-label-switch-camera = Use the device's other camera.
 Camera-button-value-back = The back camera is being used.
 Camera-button-value-front = The front camera is being used.
 Cancel-comment = Cancel comment
@@ -1011,10 +1065,6 @@ Edit-comment = Edit comment
 Fave-button-label-unfave = Unfavorite this observation.
 # Accessible label for the favorite button, when the observation is not favorited
 Fave-button-label-fave = Favorite this observation.
-# Accessible label for the flash button, when flash is turned on
-Flash-button-label-flash = Disable flash.
-# Accessible label for the flash button, when flash is turned off
-Flash-button-label-flash-off = Enable flash.
 Flash-button-value-flash = The flash is turned on.
 Flash-button-value-flash-off = The flash is turned off.
 Navigate-back = Navigate back
@@ -1022,7 +1072,6 @@ Navigate-to-edit-observation = Navigate to edit observation screen
 Navigate-to-login-screen = Navigate to login screen
 Navigate-to-observation-details = Navigates to observation details screen.
 Navigate-to-project-details = Navigate to project details
-Navigate-to-taxon-details = Navigate to taxon details
 Observation-has-no-photos-and-no-sounds = This observation has no photos and no sounds.
 Photo-taken-at = Photo taken at { $date }
 Take-photo = Take photo
@@ -1033,18 +1082,43 @@ Taxon-photo-unavailable-without-internet = Taxon photo unavailable without inter
 User-photo-unavailable-without-internet = User photo unavailable without internet
 
 # Accessibility labels for icons
-Close-camera-options-modal = Close camera options modal
-Navigate-to-explore-screen = Navigate to explore screen
+Add-this-ID = Add this identification
 Navigate-to-notifications-screen = Navigate to notifications screen
-Navigate-to-observation-edit-screen = Navigate to observation edit screen
 Navigate-to-observation-list = Navigate to observation list
-Navigate-to-photo-importer = Navigate to photo importer
 Open-side-menu = Open side menu
 Quality-Grade-No-Grade = No Quality Grade
 Uploading = Uploading
-
-Take-photo = Take photo
-
+Arrow-up-selected = Arrow up selected
+Arrow-up-unselected = Arrow up unselected
+Arrow-down-unselected = Arrow down unselected
+Arrow-down-selected = Arrow down selected
+Camera-flip = Camera-flip
+Flash = flash
+Disable-flash = Disable flash
+Enable-flash = Enable flash
+Information = Information
+Checkmark = Checkmark
+Kebab-menu = Kebab menu
+Edit = Edit
+User-location = User location
+Loading-wheel = Loading wheel
+Map-layers = Map layers
+Filters = Filters
+Identification-label = Identification label
+Sound-recorder = Sound recorder
+Observation-with-no-evidence = Observation with no evidence
+Photo-importer = Photo importer
+AR-Camera = AR Camera
+Delete = Delete
+Sync-observations = Sync observations
+List-view = List view
+Grid-view = Grid view
+Remove-favorite = Remove favorite
+Add-favorite = Add favorite
+Start-upload = Start upload
+Previous-observation = Previous observation
+Next-observation = Next observation
+Close-search = Close search
 
 # Date formatting using date-fns
 # See complete list of formatting styles: https://date-fns.org/v2.29.3/docs/format
@@ -1148,6 +1222,11 @@ JOURNAL-POSTS-WITHOUT-NUMBER = {$count ->
     *[other] JOURNAL POSTS
 }
 
+MEMBERS-WITHOUT-NUMBER = {$count ->
+    [one] MEMBER
+    *[other] MEMBERS
+}
+
 Yes-license-my-photos = Yes, license my photos, sounds, and observations so scientists can use my data (recommended)
 I-consent-to-allow-iNaturalist-to-store = I consent to allow iNaturalist to store and process limited kinds of personal information about me in order to manage my account (required)
 I-consent-to-allow-my-personal-information = I consent to allow my personal information to be transferred to the United States of America (required)
@@ -1174,4 +1253,48 @@ BLOG = BLOG
 DONATE = DONATE
 SETTINGS = SETTINGS
 LOG-OUT = LOG OUT
+Log-out = Log out
 Log-in-to-iNaturalist = Log in to iNaturalist
+
+Try-searching-for-a-location-name = Try searching for a location name to see the map
+Scan-the-area-around-you-for-organisms = Scan the area around you for organisms.
+Loading-iNaturalists-AR-Camera = Loading iNaturalist’s AR Camera
+
+# Used for explore screen when search params lead to a search with no data
+No-results-found = No results found
+
+# Default accessibility label for DisplayTaxon component
+Taxon-photo-and-name = Taxon photo and name
+
+You-havent-joined-any-projects-yet = You haven’t joined any projects yet!
+
+You-can-click-join-on-the-project-page = You can click “join” on the project page.
+
+No-projects-match-that-search = No projects match that search
+
+RESET-SEARCH = RESET SEARCH
+
+PROJECT-REQUIREMENTS = PROJECT REQUIREMENTS
+
+VIEW-PROJECT-REQUIREMENTS = VIEW PROJECT REQUIREMENTS
+
+VIEW-IN-EXPLORE = VIEW IN EXPLORE
+
+Collection-Project = Collection Project
+Umbrella-Project = Umbrella Project
+Traditional-Project = Traditional Project
+
+ABOUT-COLLECTION-PROJECTS = ABOUT COLLECTION PROJECTS
+ABOUT-TRADITIONAL-PROJECTS = ABOUT TRADITIONAL PROJECTS
+ABOUT-UMBRELLA-PROJECTS = ABOUT UMBRELLA PROJECTS
+
+Every-time-a-collection-project = Every time a collection project’s page is loaded, iNaturalist will perform a quick search and display all observations that match the project’s requirements. It is an easy way to display a set of observations, such as for a class project, a park, or a bioblitz without making participants take the extra step of manually adding their observations to a project.
+Obervations-must-be-manually-added = Observations must be manually added to a traditional project, either during the upload stage or after the observation has been shared to iNaturalist. A user must also join a traditional project in order to add their observations to it.
+If-you-want-to-collate-compare-promote = If you want to collate, compare, or promote a set of existing projects, then an Umbrella project is what you should use. For example the 2018 City Nature Challenge, which collated over 60 projects, made for a great landing page where anyone could compare and contrast each city’s observations. Both Collection and Traditional projects can be used in an Umbrella project, and up to 500 projects can be collated by an Umbrella project.
+
+JOIN-PROJECT = JOIN PROJECT
+JOIN = JOIN
+
+LEAVE-PROJECT = LEAVE PROJECT
+LEAVE = LEAVE
+Your-email-is-confirmed = Your email is confirmed! Please log in to continue.

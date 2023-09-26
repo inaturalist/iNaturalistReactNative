@@ -43,6 +43,7 @@ const Search = (): React.Node => {
         && item.default_photo && { uri: item.default_photo.square_url };
       return (
         <Pressable
+          accessibilityRole="button"
           onPress={navToTaxonDetails}
           style={viewStyles.row}
           testID={`Search.taxa.${item.id}`}
@@ -58,6 +59,7 @@ const Search = (): React.Node => {
     }
     return (
       <Pressable
+        accessibilityRole="button"
         onPress={navToUserProfile}
         style={viewStyles.row}
         testID={`Search.user.${item.login}`}

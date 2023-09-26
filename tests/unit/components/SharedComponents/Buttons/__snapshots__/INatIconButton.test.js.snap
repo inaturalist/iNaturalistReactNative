@@ -2,12 +2,13 @@
 
 exports[`INatIconButton renders correctly 1`] = `
 <View
+  accessibilityLabel="Camera"
   accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
       "checked": undefined,
-      "disabled": undefined,
+      "disabled": false,
       "expanded": undefined,
       "selected": undefined,
     }
@@ -41,6 +42,7 @@ exports[`INatIconButton renders correctly 1`] = `
         "opacity": 1,
         "width": 44,
       },
+      false,
       undefined,
     ]
   }
@@ -75,7 +77,7 @@ exports[`INatIconButton renders correctly 1`] = `
         ]
       }
     >
-      
+      
     </Text>
   </View>
 </View>

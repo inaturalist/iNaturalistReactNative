@@ -192,6 +192,29 @@ end
 platform :android do
   lane :build do
     desc "Build release files for Android"
+    Dir.children( "../android/app/src/main/assets/camera" ).each do | file |
+      next unless !ENV.has_value?( file ) 
+
+      UI.abort_with_message! <<~EXTRA_ANDROID_ASSETS_ERROR
+        Android assets folder has extraneous file: #{file}, which is not listed
+        as an environment variable. Remove any unreferenced files from
+        android/app/src/main/assets/camera before running a release build
+        EXTRA_ANDROID_ASSETS_ERROR
+    end
+    ASSETS = File.open( "../android/link-assets-manifest.json" ) {| f | JSON.parse( f.read )["data"] }
+    linked_assets = Array.new
+    ASSETS.each do | asset |
+      linked_assets.push( asset["path"].split( "assets/fonts/" )[1] )
+    end
+    Dir.children( "../assets/fonts" ).each do | file |
+      next unless !linked_assets.include?( file ) and file != ".DS_Store"
+
+      UI.abort_with_message! <<~EXTRA_ASSETS_ERROR
+        Assets folder has extraneous file: #{file}, which is not listed
+        in link-assets-manifest.json. Remove any unreferenced assets before
+        running a release build
+        EXTRA_ASSETS_ERROR
+    end
     keystore_properties_path = File.join(
       __dir__,
       "..",
@@ -386,7 +409,8 @@ lane :internal do
     ipa: get_ipa_path,
     distribute_external: true,
     groups: [
-      "iNat staff"
+      "iNat staff",
+      "iNat friends"
     ],
     changelog: File.read( changelog_path ),
     # https://github.com/fastlane/fastlane/issues/20756

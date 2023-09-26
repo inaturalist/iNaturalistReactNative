@@ -1,8 +1,8 @@
 // @flow
 
-import { HeaderBackButton } from "@react-navigation/elements";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { Heading2, KebabMenu } from "components/SharedComponents";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import { BackHandler } from "react-native";
 import { Menu } from "react-native-paper";
-import useTranslation from "sharedHooks/useTranslation";
+import { useTranslation } from "sharedHooks";
 import colors from "styles/tailwindColors";
 
 import DeleteObservationSheet from "./Sheets/DeleteObservationSheet";
@@ -33,17 +33,36 @@ const Header = ( ): Node => {
   const [discardObservationSheetVisible, setDiscardObservationSheetVisible] = useState( false );
   const [discardChangesSheetVisible, setDiscardChangesSheetVisible] = useState( false );
 
+  const navToObsDetails = useCallback( ( ) => {
+    navigation.navigate( "TabNavigator", {
+      screen: "ObservationsStackNavigator",
+      params: {
+        screen: "ObsDetails",
+        params: {
+          uuid: currentObservation?.uuid
+        }
+      }
+    } );
+  }, [navigation, currentObservation] );
+
+  const navToObsList = useCallback( ( ) => navigation.navigate( "TabNavigator", {
+    screen: "ObservationsStackNavigator",
+    params: {
+      screen: "ObsList"
+    }
+  } ), [navigation] );
+
   const discardChanges = useCallback( ( ) => {
     setDiscardChangesSheetVisible( false );
     setObservations( [] );
-    navigation.navigate( "ObsList" );
-  }, [navigation, setObservations] );
+    navToObsDetails( );
+  }, [setObservations, navToObsDetails] );
 
   const discardObservation = useCallback( ( ) => {
     setDiscardObservationSheetVisible( false );
     setObservations( [] );
-    navigation.navigate( "ObsList" );
-  }, [navigation, setObservations] );
+    navToObsList( );
+  }, [setObservations, navToObsList] );
 
   const renderHeaderTitle = useCallback( ( ) => (
     <Heading2
@@ -51,34 +70,32 @@ const Header = ( ): Node => {
       accessible
       accessibilityRole="header"
     >
-      {observations.length === 1
+      {observations.length <= 1
         ? t( "New-Observation" )
         : t( "X-Observations", { count: observations.length } )}
     </Heading2>
   ), [observations, t] );
 
   const handleBackButtonPress = useCallback( ( ) => {
-    const unsyncedObservation = !currentObservation._synced_at && currentObservation._created_at;
+    const unsyncedObservation = !currentObservation?._synced_at && currentObservation?._created_at;
     if ( params?.lastScreen === "GroupPhotos"
       || ( unsyncedObservation && !unsavedChanges )
     ) {
       navigation.goBack( );
-    } else if ( !currentObservation._created_at ) {
+    } else if ( !currentObservation?._created_at ) {
       setDiscardObservationSheetVisible( true );
     } else if ( unsavedChanges ) {
       setDiscardChangesSheetVisible( true );
     } else {
-      navigation.goBack( );
+      navToObsDetails( );
     }
-  }, [currentObservation, navigation, unsavedChanges, params] );
+  }, [currentObservation, navigation, unsavedChanges, params, navToObsDetails] );
 
   const renderBackButton = useCallback( ( ) => (
-    <View className="ml-4">
-      <HeaderBackButton
-        tintColor={colors.black}
-        onPress={handleBackButtonPress}
-      />
-    </View>
+    <BackButton
+      color={colors.black}
+      onPress={handleBackButtonPress}
+    />
   ), [handleBackButtonPress] );
 
   useFocusEffect(
@@ -104,6 +121,7 @@ const Header = ( ): Node => {
         large
       >
         <Menu.Item
+          testID="Header.delete-observation"
           onPress={( ) => {
             setDeleteSheetVisible( true );
             setKebabMenuVisible( false );
@@ -120,7 +138,9 @@ const Header = ( ): Node => {
 
   useEffect( ( ) => {
     const headerOptions = {
-      headerTitle: renderHeaderTitle,
+      headerTitle: currentObservation
+        ? renderHeaderTitle
+        : "",
       headerLeft: renderBackButton,
       headerRight: renderKebabMenu
     };
@@ -131,7 +151,8 @@ const Header = ( ): Node => {
     navigation,
     renderKebabMenu,
     renderBackButton,
-    renderHeaderTitle
+    renderHeaderTitle,
+    currentObservation
   ] );
 
   // prevent header from flickering if observations haven't loaded yet
@@ -144,18 +165,21 @@ const Header = ( ): Node => {
       {deleteSheetVisible && (
         <DeleteObservationSheet
           handleClose={( ) => setDeleteSheetVisible( false )}
+          navToObsList={navToObsList}
         />
       )}
       {discardObservationSheetVisible && (
         <DiscardObservationSheet
           discardObservation={discardObservation}
           handleClose={( ) => setDiscardObservationSheetVisible( false )}
+          navToObsList={navToObsList}
         />
       )}
       {discardChangesSheetVisible && (
         <DiscardChangesSheet
           discardChanges={discardChanges}
           handleClose={( ) => setDiscardChangesSheetVisible( false )}
+
         />
       )}
     </>

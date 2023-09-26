@@ -1,0 +1,7 @@
+NEW
+* Native transitions when moving between screens
+
+FIXED
+* Update activity list on ObsDetail for someone else's obs after ID
+* Pass prediction from ARCamera through to ObsEdit
+* "UPLOAD NOW" button returns user to MyObs before uploading

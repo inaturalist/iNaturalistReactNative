@@ -1,7 +1,5 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
-import { useQueryClient } from "@tanstack/react-query";
 import { deleteObservation } from "api/observations";
 import {
   WarningSheet
@@ -13,19 +11,19 @@ import React, { useContext } from "react";
 import useAuthenticatedMutation from "sharedHooks/useAuthenticatedMutation";
 
 type Props = {
-  handleClose: Function
+  handleClose: Function,
+  navToObsList: Function
 }
 
 const DeleteObservationSheet = ( {
-  handleClose
+  handleClose,
+  navToObsList
 }: Props ): Node => {
   const {
     deleteLocalObservation,
     currentObservation,
     observations
   } = useContext( ObsEditContext );
-  const navigation = useNavigation( );
-  const queryClient = useQueryClient( );
   const { uuid } = currentObservation;
 
   const multipleObservations = observations.length > 1;
@@ -33,15 +31,18 @@ const DeleteObservationSheet = ( {
   const handleLocalDeletion = ( ) => {
     deleteLocalObservation( uuid );
     handleClose( );
-    navigation.navigate( "ObsList" );
+    navToObsList( );
   };
 
   const deleteObservationMutation = useAuthenticatedMutation(
     ( params, optsWithAuth ) => deleteObservation( params, optsWithAuth ),
     {
       onSuccess: ( ) => {
-        handleLocalDeletion( );
-        queryClient.invalidateQueries( { queryKey: ["searchObservations"] } );
+        handleLocalDeletion();
+        // We do not invalidate the searchObservations query here because it would fetch
+        // observations from the server and potentially do so before the refresh period
+        // on elasticsearch for observations.search has passed and so retrieve the
+        // observation "pending deletion" again.
       }
     }
   );
@@ -56,14 +57,14 @@ const DeleteObservationSheet = ( {
       handleSecondButtonPress={handleClose}
       secondButtonText={t( "CANCEL" )}
       confirm={( ) => {
-        if ( multipleObservations && !currentObservation._created_at ) {
+        if ( multipleObservations && !currentObservation?._created_at ) {
           // observations are not yet persisted to realm if user
           // is viewing multiple observations screen
           // or adding new evidence,
           // so we can simply navigate away before saving
           handleClose( );
-          navigation.navigate( "ObsList" );
-        } else if ( !currentObservation._synced_at ) {
+          navToObsList( );
+        } else if ( !currentObservation?._synced_at ) {
           handleLocalDeletion( );
         } else {
           deleteObservationMutation.mutate( { uuid } );

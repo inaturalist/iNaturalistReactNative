@@ -7,6 +7,7 @@ import inatjs from "inaturalistjs";
 import React from "react";
 import mockRNDeviceInfo from "react-native-device-info/jest/react-native-device-info-mock";
 import mockRNLocalize from "react-native-localize/mock";
+// eslint-disable-next-line import/no-unresolved
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock";
 
 import { makeResponse } from "./factory";
@@ -15,6 +16,8 @@ import {
   mockSortDevices,
   mockUseCameraDevices
 } from "./vision-camera/vision-camera";
+
+jest.mock( "vision-camera-plugin-inatvision" );
 
 jest.mock( "@sayem314/react-native-keep-awake" );
 jest.mock( "react-native/Libraries/EventEmitter/NativeEventEmitter" );
@@ -196,10 +199,18 @@ jest.mock( "react-native-fs", ( ) => {
     DocumentDirectoryPath: "document/directory/path",
     exists: jest.fn( async ( ) => true ),
     moveFile: async ( ) => "testdata",
+    copyFile: async ( ) => "testdata",
     stat: jest.fn( ( ) => ( {
       mtime: 123
     } ) ),
-    readFile: jest.fn( ( ) => "testdata" )
+    readFile: jest.fn( ( ) => "testdata" ),
+    readDir: jest.fn( async ( ) => ( [
+      {
+        ctime: 123,
+        mtime: 123,
+        name: "testdata"
+      }
+    ] ) )
   };
 
   return RNFS;
