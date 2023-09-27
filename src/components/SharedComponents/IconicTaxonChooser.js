@@ -11,10 +11,13 @@ import colors from "styles/tailwindColors";
 type Props = {
   taxon: Object,
   before: any,
-  onTaxonChosen: Function
+  onTaxonChosen: Function,
+  testID?: string
 };
 
-const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => {
+const IconicTaxonChooser = ( {
+  taxon, before, onTaxonChosen, testID
+}: Props ): Node => {
   const { t } = useTranslation( );
   const [selectedIcon, setSelectedIcon] = useState( null );
   const iconicTaxa = useIconicTaxa( { reload: false } );
@@ -97,6 +100,7 @@ const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => 
       showsHorizontalScrollIndicator={false}
       ListHeaderComponent={renderHeader}
       accessibilityRole="radiogroup"
+      testID={testID}
     />
   );
 };

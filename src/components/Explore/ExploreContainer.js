@@ -1,5 +1,6 @@
 // @flow
 
+import { useRoute } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useEffect, useReducer } from "react";
 import { useUserLocation } from "sharedHooks";
@@ -21,7 +22,8 @@ const initialState = {
     lat: 0.0,
     lng: 0.0,
     radius: 50,
-    taxon_name: "Animals"
+    taxon_name: "Animals",
+    return_bounds: true
   },
   exploreView: "observations"
 };
@@ -81,6 +83,14 @@ const reducer = ( state, action ) => {
           taxon_name: action.taxonName
         }
       };
+    case "SET_EXPLORE_FILTERS":
+      return {
+        ...state,
+        exploreParams: {
+          ...state.exploreParams,
+          ...action.exploreFilters
+        }
+      };
     default:
       throw new Error( );
   }
@@ -88,6 +98,7 @@ const reducer = ( state, action ) => {
 
 const ExploreContainer = ( ): Node => {
   const { latLng } = useUserLocation( { skipPlaceGuess: false } );
+  const { params } = useRoute( );
 
   const [state, dispatch] = useReducer( reducer, initialState );
 
@@ -96,6 +107,21 @@ const ExploreContainer = ( ): Node => {
     exploreParams,
     exploreView
   } = state;
+
+  useEffect( ( ) => {
+    if ( params?.projectId ) {
+      dispatch( {
+        type: "SET_EXPLORE_FILTERS",
+        exploreFilters: {
+          project_id: params?.projectId,
+          place_id: params?.placeId || "any",
+          lat: null,
+          lng: null,
+          radius: null
+        }
+      } );
+    }
+  }, [params] );
 
   useEffect( ( ) => {
     if ( region.latitude === 0.0 && latLng?.latitude ) {

@@ -40,6 +40,21 @@ class Observation extends Realm.Object {
     updated_at: true
   };
 
+  static LIST_FIELDS = {
+    comments: Comment.COMMENT_FIELDS,
+    created_at: true,
+    geojson: true,
+    id: true,
+    identifications: Identification.ID_FIELDS,
+    latitude: true,
+    longitude: true,
+    observation_photos: ObservationPhoto.OBSERVATION_PHOTOS_FIELDS,
+    place_guess: true,
+    quality_grade: true,
+    taxon: Taxon.TAXON_FIELDS,
+    time_observed_at: true
+  };
+
   static async new( obs ) {
     return {
       ...obs,
