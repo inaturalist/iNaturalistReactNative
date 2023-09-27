@@ -816,7 +816,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: ff70a72027dea5cc7d71cfcc6fad7f599f63987a
   React-jsinspector: aef73cbd43b70675f572214d10fa438c89bf11ba
   React-logger: 2e4aee3e11b3ec4fa6cfd8004610bbb3b8d6cca4
-  react-native-cameraroll: 134805127580aed23403b8c2cb1548920dd77b3a
+  react-native-cameraroll: fad943a324a4d893c249cabe6d0608c807e0e58f
   react-native-config: 5330c8258265c1e5fdb8c009d2cabd6badd96727
   react-native-exif-reader: b2ad2175125a5d7dbd399ac6bd3bc4ba8753f85a
   react-native-geocoder-reborn: c31cbc630d9307ebbceea1dea2746d0054be35c4
