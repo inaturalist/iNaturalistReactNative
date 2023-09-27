@@ -22,7 +22,9 @@ type Props = {
   onCaptureError: Function,
   onCameraError: Function,
   onLog: Function,
-  animatedProps: any
+  animatedProps: any,
+  onZoomStart?: Function,
+  onZoomChange?: Function
 };
 
 const version = Config.CV_MODEL_VERSION;
@@ -40,7 +42,9 @@ const FrameProcessorCamera = ( {
   onCaptureError,
   onCameraError,
   onLog,
-  animatedProps
+  animatedProps,
+  onZoomStart,
+  onZoomChange
 }: Props ): Node => {
   useEffect( () => {
     // This registers a listener for the frame processor plugin's log events
@@ -92,6 +96,8 @@ const FrameProcessorCamera = ( {
       // i.e. what taxaDetectionInterval was set to.
       frameProcessorFps={1}
       animatedProps={animatedProps}
+      onZoomStart={onZoomStart}
+      onZoomChange={onZoomChange}
     />
   );
 };

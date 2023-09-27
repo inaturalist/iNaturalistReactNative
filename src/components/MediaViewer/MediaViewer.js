@@ -1,9 +1,9 @@
 // @flow
 
-import { HeaderBackButton } from "@react-navigation/elements";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import classnames from "classnames";
 import { Heading4, TransparentCircleButton, WarningSheet } from "components/SharedComponents";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { SafeAreaView, View } from "components/styledComponents";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
@@ -58,8 +58,8 @@ const MediaViewer = ( ): Node => {
 
   const renderBackButton = useCallback( ( ) => (
     <View className="ml-4">
-      <HeaderBackButton
-        tintColor={colors.white}
+      <BackButton
+        color={colors.white}
         onPress={handleBackButtonPress}
       />
     </View>

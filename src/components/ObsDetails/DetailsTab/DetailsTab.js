@@ -170,15 +170,16 @@ const DetailsTab = ( { observation }: Props ): Node => {
 
       </View>
       { ( latitude ) && (
-        <Map
-          obsLatitude={latitude}
-          obsLongitude={longitude}
-          mapHeight={230}
-          obscured={isObscured}
-          showMarker
-          openMapDetails={() => setShowMapModal( true )}
-          positionalAccuracy={positionalAccuracy}
-        />
+        <View onPress={() => setShowMapModal( true )}>
+          <Map
+            obsLatitude={latitude}
+            obsLongitude={longitude}
+            mapHeight={230}
+            obscured={isObscured}
+            showLocationIndicator
+            positionalAccuracy={positionalAccuracy}
+          />
+        </View>
       ) }
 
       <View className={`mt-[11px] space-y-[11px] ${sectionClass}`}>

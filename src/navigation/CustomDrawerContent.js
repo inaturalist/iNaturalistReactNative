@@ -4,6 +4,7 @@ import {
   DrawerContentScrollView,
   DrawerItem
 } from "@react-navigation/drawer";
+import classnames from "classnames";
 import {
   Body1,
   INatIconButton,
@@ -12,7 +13,7 @@ import {
 } from "components/SharedComponents";
 import { Pressable, View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { Dimensions, Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 import User from "realmModels/User";
@@ -26,7 +27,7 @@ type Props = {
   descriptors: any
 }
 
-const { width, height } = Dimensions.get( "screen" );
+const { width } = Dimensions.get( "screen" );
 
 const CustomDrawerContent = ( { ...props }: Props ): Node => {
   // $FlowFixMe
@@ -34,6 +35,14 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
   const currentUser = useCurrentUser( );
   const theme = useTheme( );
   const { t } = useTranslation( );
+
+  const signOutButton = useCallback( ( ) => (
+    <INatIconButton
+      icon="door-exit"
+      size={20}
+      accessibilityLabel={t( "Log-out" )}
+    />
+  ), [t] );
 
   const labelStyle = {
     fontSize: 16,
@@ -53,6 +62,14 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     marginBottom: width <= BREAKPOINTS.lg
       ? -15
       : -5
+  };
+
+  const loginDrawerItemStyle = {
+    ...drawerItemStyle,
+    opacity: 0.5,
+    display: currentUser
+      ? "flex"
+      : "none"
   };
 
   const drawerItems = {
@@ -77,7 +94,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       label: t( "PROJECTS" ),
       navigation: "TabNavigator",
       params: {
-        screen: "ObservationsStackNavigator",
+        screen: "ProjectsStackNavigator",
         params: {
           screen: "Projects"
         }
@@ -121,14 +138,6 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       label: t( "UI-LIBRARY" ),
       navigation: "UI Library",
       icon: "help"
-    },
-    login: {
-      label: currentUser
-        ? t( "LOG-OUT" )
-        : t( "LOG-IN" ),
-      navigation: "LoginNavigator",
-      icon: "door-exit",
-      loggedInOnly: true
     }
   };
 
@@ -143,11 +152,10 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     return (
       <INatIconButton
         icon={drawerItems[item].icon}
-        size={15}
+        size={20}
         color={color}
         backgroundColor={backgroundColor}
         accessibilityLabel={drawerItems[item].label}
-        accessibilityHint={t( "Navigates-to-drawer-item" )}
       />
     );
   };
@@ -156,7 +164,7 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
     backgroundColor: "white",
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
-    height
+    height: "100%"
   };
 
   return (
@@ -166,74 +174,92 @@ const CustomDrawerContent = ( { ...props }: Props ): Node => {
       descriptors={descriptors}
       contentContainerStyle={drawerScrollViewStyle}
     >
-      <Pressable
-        accessibilityRole="button"
-        className="ml-4 mb-8 flex-row flex-nowrap"
-        onPress={( ) => {
-          if ( !currentUser ) {
-            navigation.navigate( "LoginNavigator" );
-          } else {
-            navigation.navigate( "TabNavigator", {
-              screen: "ObservationsStackNavigator",
-              params: {
-                screen: "ObsList"
-              }
-            } );
-          }
-        }}
-      >
-        {currentUser
-          ? (
-            <UserIcon
-              uri={User.uri( currentUser )}
-            />
-          )
-          : (
-            <INatIconButton
-              icon="inaturalist"
-              size={40}
-              color={colors.inatGreen}
-              accessibilityLabel="iNaturalist"
-              accessibilityHint={t( "Shows-iNaturalist-bird-logo" )}
-            />
-          ) }
-        <View className="ml-3 justify-center">
-          <Body1>
-            {currentUser
-              ? User.userHandle( currentUser )
-              : t( "Log-in-to-iNaturalist" )}
-          </Body1>
-          {currentUser && (
-            <List2>
-              {t( "X-Observations", { count: currentUser.observations_count } )}
-            </List2>
+      <View className="py-5 flex h-full justify-between">
+        <Pressable
+          accessibilityRole="button"
+          className={classnames(
+            currentUser
+              ? "ml-5"
+              : "ml-3",
+            "mb-5",
+            "flex-row",
+            "flex-nowrap"
           )}
+          onPress={( ) => {
+            if ( !currentUser ) {
+              navigation.navigate( "LoginNavigator" );
+            } else {
+              navigation.navigate( "TabNavigator", {
+                screen: "ObservationsStackNavigator",
+                params: {
+                  screen: "ObsList"
+                }
+              } );
+            }
+          }}
+        >
+          {currentUser
+            ? (
+              <UserIcon
+                uri={User.uri( currentUser )}
+              />
+            )
+            : (
+              <INatIconButton
+                icon="inaturalist"
+                size={40}
+                color={colors.inatGreen}
+                accessibilityLabel="iNaturalist"
+                accessibilityHint={t( "Shows-iNaturalist-bird-logo" )}
+              />
+            ) }
+          <View className="ml-3 justify-center">
+            <Body1>
+              {currentUser
+                ? User.userHandle( currentUser )
+                : t( "Log-in-to-iNaturalist" )}
+            </Body1>
+            {currentUser && (
+              <List2>
+                {t( "X-Observations", { count: currentUser.observations_count } )}
+              </List2>
+            )}
+          </View>
+        </Pressable>
+        <View className="grow">
+          {Object.keys( drawerItems ).map( item => {
+            if ( drawerItems[item].loggedInOnly && !currentUser ) {
+              return null;
+            }
+            return (
+              <DrawerItem
+                key={drawerItems[item].label}
+                label={drawerItems[item].label}
+                onPress={( ) => {
+                  navigation.navigate( drawerItems[item].navigation, drawerItems[item].params );
+                }}
+                labelStyle={labelStyle}
+                icon={( ) => renderIcon( item )}
+                style={drawerItemStyle}
+              />
+            );
+          } )}
         </View>
-      </Pressable>
-      <View className="ml-3">
-        {Object.keys( drawerItems ).map( item => {
-          if ( drawerItems[item].loggedInOnly && !currentUser ) {
-            return null;
-          }
-          return (
-            <DrawerItem
-              key={drawerItems[item].label}
-              label={drawerItems[item].label}
-              onPress={( ) => {
-                navigation.navigate( drawerItems[item].navigation, drawerItems[item].params );
-              }}
-              labelStyle={labelStyle}
-              icon={( ) => renderIcon( item )}
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                ...drawerItemStyle,
-                opacity: ( item === "login" )
-                  ? 0.5
-                  : 1
-              }}
-            />
-          );
-        } )}
+        <View className="h-[66px]">
+          <DrawerItem
+            label={
+              currentUser
+                ? t( "LOG-OUT" )
+                : t( "LOG-IN" )
+            }
+            onPress={( ) => {
+              navigation.navigate( "LoginNavigator" );
+            }}
+            labelStyle={labelStyle}
+            icon={signOutButton}
+            style={loginDrawerItemStyle}
+          />
+        </View>
       </View>
     </DrawerContentScrollView>
   );

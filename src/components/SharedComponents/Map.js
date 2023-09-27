@@ -1,15 +1,24 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
+import { View } from "components/styledComponents";
 import LocationIndicator from "images/svg/location_indicator.svg";
 import ObscuredLocationIndicator from "images/svg/obscured_location_indicator.svg";
-import * as React from "react";
-import { View } from "react-native";
+import type { Node } from "react";
+import React, { useState } from "react";
 import MapView, {
-  Circle,
-  Marker, Polygon, UrlTile
+  Circle, Marker, Polygon, UrlTile
 } from "react-native-maps";
-import useUserLocation from "sharedHooks/useUserLocation";
-import { viewStyles } from "styles/sharedComponents/map";
+import createUTFPosition from "sharedHelpers/createUTFPosition";
+import getDataForPixel from "sharedHelpers/fetchUTFGridData";
+import { useDeviceOrientation, useUserLocation } from "sharedHooks";
+
+const calculateZoom = ( width, delta ) => Math.round(
+  Math.log2( 360 * ( width / 256 / delta ) ) + 1
+);
+
+const tilesUrl = "https://tiles.inaturalist.org/v1/points";
+const baseUrl = "https://api.inaturalist.org/v2";
 
 const OBSCURATION_VALUE = 0.2;
 
@@ -17,31 +26,36 @@ type Props = {
   obsLatitude: number,
   obsLongitude: number,
   mapHeight?: number|string, // allows for height to be defined as px or percentage
-  taxonId?: number,
   updateCoords?: Function,
   region?: Object,
-  showMarker?: boolean,
+  showLocationIndicator?: boolean,
   hideMap?: boolean,
-  openMapDetails?: Function,
+  tileMapParams?: Object,
   children?: any,
   mapType?: string,
   positionalAccuracy?: number,
   mapViewRef?: any,
-  obscured?: boolean
+  obscured?: boolean,
+  showExplore?: boolean
 }
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( {
-  obsLatitude, obsLongitude, mapHeight, taxonId, updateCoords, region, showMarker, hideMap,
-  openMapDetails, children, mapType, positionalAccuracy, mapViewRef, obscured
-}: Props ): React.Node => {
+  obsLatitude, obsLongitude, mapHeight, updateCoords, region, showLocationIndicator,
+  hideMap, tileMapParams, children, mapType, positionalAccuracy, mapViewRef, obscured, showExplore
+}: Props ): Node => {
+  const { screenWidth } = useDeviceOrientation( );
+  const [currentZoom, setCurrentZoom] = useState(
+    region
+      ? calculateZoom( screenWidth, region.longitudeDelta )
+      : 5
+  );
+  const navigation = useNavigation( );
   const { latLng: viewerLatLng } = useUserLocation( { skipPlaceGuess: true } );
 
   const initialLatitude = obsLatitude || ( viewerLatLng?.latitude );
   const initialLongitude = obsLongitude || ( viewerLatLng?.longitude );
-
-  const urlTemplate = taxonId && `https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png?taxon_id=${taxonId}&color=%2377B300&verifiable=true`;
 
   const initialRegion = {
     latitude: initialLatitude,
@@ -50,31 +64,88 @@ const Map = ( {
     longitudeDelta: 0.4
   };
 
+  const params = {
+    ...tileMapParams,
+    color: "%2374ac00",
+    verifiable: "true"
+  };
+
+  const queryString = Object.keys( params ).map( key => `${key}=${params[key]}` ).join( "&" );
+
+  const url = currentZoom > 13
+    ? `${baseUrl}/points/{z}/{x}/{y}.png`
+    : `${baseUrl}/grid/{z}/{x}/{y}.png`;
+  const urlTemplate = `${url}?${queryString}`;
+
+  const onMapPress = async latLng => {
+    const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
+    const {
+      mTilePositionX,
+      mTilePositionY,
+      mPixelPositionX,
+      mPixelPositionY
+    } = UTFPosition;
+    const tilesParams = {
+      ...params,
+      style: "geotilegrid"
+    };
+    const gridQuery = Object.keys( tilesParams )
+      .map( key => `${key}=${tilesParams[key]}` ).join( "&" );
+
+    const gridUrl = `${tilesUrl}/${currentZoom}/${mTilePositionX}/${mTilePositionY}.grid.json`;
+    const gridUrlTemplate = `${gridUrl}?${gridQuery}`;
+
+    const options = {
+      method: "GET",
+      headers: {
+        Accept: "application/json"
+      }
+    };
+
+    const response = await fetch( gridUrlTemplate, options );
+    const json = await response.json( );
+
+    const observation = getDataForPixel( mPixelPositionX, mPixelPositionY, json );
+    const uuid = observation?.uuid;
+
+    if ( uuid ) {
+      navigation.navigate( "ObsDetails", { uuid } );
+    }
+  };
+
   const locationIndicator = () => (
     // $FlowIgnore
-    <LocationIndicator width={25} height={32} />
+    <LocationIndicator
+      testID="Map.LocationIndicator"
+      width={25}
+      height={32}
+    />
   );
 
   const obscuredlLocationIndicator = () => (
     // $FlowIgnore
-    <ObscuredLocationIndicator width={31} height={31} />
+    <ObscuredLocationIndicator
+      testID="Map.ObscuredLocationIndicator"
+      width={31}
+      height={31}
+    />
   );
 
   return (
     <View
       style={[
-        viewStyles.mapContainer,
         mapHeight
           ? { height: mapHeight }
           : null
       ]}
       testID="MapView"
+      className="flex-1"
     >
       {!hideMap && (
         <MapView
           ref={mapViewRef}
-          style={viewStyles.map}
-          onPress={() => { if ( openMapDetails ) openMapDetails( ); }}
+          testID="Map.MapView"
+          className="flex-1"
           region={( region?.latitude )
             ? region
             : initialRegion}
@@ -82,15 +153,20 @@ const Map = ( {
           showsUserLocation
           showsMyLocationButton
           loadingEnabled
+          onRegionChangeComplete={async r => {
+            setCurrentZoom( calculateZoom( screenWidth, r.longitudeDelta ) );
+          }}
+          onPress={e => { if ( showExplore ) { onMapPress( e.nativeEvent.coordinate ); } }}
           mapType={mapType || "standard"}
         >
-          {taxonId && (
+          {( urlTemplate && showExplore ) && (
             <UrlTile
+              testID="Map.UrlTile"
               tileSize={512}
               urlTemplate={urlTemplate}
             />
           )}
-          {( showMarker && !obscured ) && (
+          {( showLocationIndicator && ( !obscured ) ) && (
             <>
               <Circle
                 center={{
@@ -112,7 +188,7 @@ const Map = ( {
               </Marker>
             </>
           )}
-          {( showMarker && obscured )
+          {( showLocationIndicator && obscured )
           && (
             <>
               <Polygon

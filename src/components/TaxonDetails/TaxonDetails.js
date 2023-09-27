@@ -1,6 +1,5 @@
 // @flow
 
-import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchTaxon } from "api/taxa";
 import PlaceholderText from "components/PlaceholderText";
@@ -12,6 +11,7 @@ import {
   ScrollViewWrapper,
   Tabs
 } from "components/SharedComponents";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { ImageBackground, View } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useState } from "react";
@@ -68,8 +68,8 @@ const TaxonDetails = ( ): Node => {
         accessibilityIgnoresInvertColors
       >
         <View className="absolute left-5 top-5">
-          <HeaderBackButton
-            tintColor={theme.colors.onPrimary}
+          <BackButton
+            color={theme.colors.onPrimary}
             onPress={( ) => {
               if ( lastScreen ) {
                 navigation.navigate( "CameraNavigator", {

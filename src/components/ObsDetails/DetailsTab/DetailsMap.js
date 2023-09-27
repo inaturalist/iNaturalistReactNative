@@ -63,11 +63,11 @@ const DetailsMap = ( {
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 h-full">
         <Map
+          showLocationIndicator
           obsLatitude={latitude}
           obsLongitude={longitude}
           mapHeight="100%"
           obscured={obscured}
-          showMarker
           mapType={mapType}
           positionalAccuracy={positionalAccuracy}
           mapViewRef={mapViewRef}

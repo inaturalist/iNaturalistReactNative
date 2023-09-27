@@ -1,0 +1,9 @@
+NEW
+* Added projects and project details UI
+* Logging camera errors to logfile
+* Show taxon pins on Explore Map
+
+FIXED
+* Double back button
+* Changed app icon on iOS
+* Fixed losing of zoom state on photo capture

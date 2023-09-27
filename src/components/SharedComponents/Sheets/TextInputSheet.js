@@ -41,7 +41,7 @@ const TextInputSheet = ( {
       snapPoints={snapPoints}
       onChange={position => {
         if ( position === -1 ) {
-          handleClose( );
+          handleClose();
         }
       }}
     >
@@ -74,19 +74,20 @@ const TextInputSheet = ( {
         />
         <Body3
           className="z-50 absolute bottom-20 right-5 p-5"
-          onPress={( ) => {
-            textInputRef?.current?.clear( );
+          onPress={() => {
+            textInputRef?.current?.clear();
           }}
         >
           {t( "Clear" )}
         </Body3>
         <Button
+          testID="ObsEdit.confirm"
           className="mt-5"
           level="primary"
           text={t( "CONFIRM" )}
-          onPress={( ) => {
+          onPress={() => {
             confirm( input );
-            handleClose( );
+            handleClose();
           }}
         />
       </View>

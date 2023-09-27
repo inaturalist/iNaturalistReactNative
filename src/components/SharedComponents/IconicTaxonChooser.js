@@ -27,7 +27,7 @@ const IconicTaxonChooser = ( { taxon, before, onTaxonChosen }: Props ): Node => 
     "animalia",
     "fungi",
     "arachnida",
-    "mollusica",
+    "mollusca",
     "mammalia",
     "reptilia",
     "amphibia",

@@ -1,10 +1,10 @@
 // @flow
-import { HeaderBackButton } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import {
   INatIconButton,
   PhotoCount, PhotoScroll
 } from "components/SharedComponents";
+import BackButton from "components/SharedComponents/Buttons/BackButton";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React, {
@@ -34,15 +34,19 @@ const PhotoDisplay = ( {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
 
-  const editButton = useMemo( ( ) => (
-    <INatIconButton
-      onPress={( ) => navigation.navigate( "ObsEdit", { uuid } )}
-      icon="pencil"
-      color={colors.white}
-      className="absolute top-3 right-3"
-      accessibilityLabel={t( "Edit" )}
-    />
-  ), [t, navigation, uuid] );
+  const editButton = useMemo(
+    () => (
+      <INatIconButton
+        testID="ObsDetail.editButton"
+        onPress={() => navigation.navigate( "ObsEdit", { uuid } )}
+        icon="pencil"
+        color={colors.white}
+        className="absolute top-3 right-3"
+        accessibilityLabel={t( "Edit" )}
+      />
+    ),
+    [t, navigation, uuid]
+  );
 
   const displayPhoto = ( ) => {
     if ( !isOnline ) {
@@ -79,7 +83,7 @@ const PhotoDisplay = ( {
               ? t( "Remove-favorite" )
               : t( "Add-favorite" )}
           />
-          <View className="absolute bottom-3 left-3">
+          <View className="absolute bottom-5 left-5">
             <PhotoCount count={photos.length
               ? photos.length
               : 0}
@@ -110,8 +114,8 @@ const PhotoDisplay = ( {
     <>
       {displayPhoto( )}
       <View className="absolute top-3 left-3">
-        <HeaderBackButton
-          tintColor={colors.white}
+        <BackButton
+          color={colors.white}
           onPress={( ) => navigation.goBack( )}
         />
       </View>

@@ -170,7 +170,8 @@ const AddObsStackNavigator = ( ): Node => (
           ...showHeaderLeft,
           ...showCustomHeader,
           lazy: true,
-          title: t( "Group-Photos" )
+          title: t( "Group-Photos" ),
+          headerShadowVisible: false
         }}
       />
       <Stack.Screen
@@ -186,7 +187,8 @@ const AddObsStackNavigator = ( ): Node => (
         options={{
           ...removeBottomBorder,
           ...blankHeaderTitle,
-          headerBackVisible: false
+          headerBackVisible: false,
+          headerTitleAlign: "center"
         }}
       />
       <Stack.Screen
@@ -194,7 +196,8 @@ const AddObsStackNavigator = ( ): Node => (
         component={AddIDContainer}
         options={{
           ...removeBottomBorder,
-          headerTitle: addIDTitle
+          headerTitle: addIDTitle,
+          headerTitleAlign: "center"
         }}
       />
       <Stack.Screen

@@ -17,6 +17,12 @@ import { BREAKPOINTS } from "sharedHelpers/breakpoint";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useTranslation from "sharedHooks/useTranslation";
 
+import {
+  handleCameraError,
+  handleCaptureError,
+  handleClassifierError,
+  handleDeviceNotSupported
+} from "../helpers";
 import CameraNavButtons from "./CameraNavButtons";
 import CameraOptionsButtons from "./CameraOptionsButtons";
 import DiscardChangesSheet from "./DiscardChangesSheet";
@@ -44,7 +50,9 @@ type Props = {
   showDiscardSheet: boolean,
   takingPhoto: boolean,
   animatedProps: any,
-  zoom: number
+  zoom: number,
+  onZoomStart?: Function,
+  onZoomChange?: Function
 }
 
 const StandardCamera = ( {
@@ -65,7 +73,9 @@ const StandardCamera = ( {
   takingPhoto,
   changeZoom,
   animatedProps,
-  zoom
+  zoom,
+  onZoomStart,
+  onZoomChange
 }: Props ): Node => {
   const {
     allObsPhotoUris
@@ -114,6 +124,12 @@ const StandardCamera = ( {
             cameraRef={camera}
             device={device}
             animatedProps={animatedProps}
+            onZoomStart={onZoomStart}
+            onZoomChange={onZoomChange}
+            onClassifierError={handleClassifierError}
+            onDeviceNotSupported={handleDeviceNotSupported}
+            onCaptureError={handleCaptureError}
+            onCameraError={handleCameraError}
           />
         )}
         <FadeInOutView takingPhoto={takingPhoto} />
