@@ -73,7 +73,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "^12.2.2",
-    "react-native": "0.72.4",
+    "react-native": "0.72.5",
     "react-native-animated-dots-carousel": "^1.0.2",
     "react-native-audio-recorder-player": "^3.5.3",
     "react-native-circular-progress-indicator": "^4.4.2",
