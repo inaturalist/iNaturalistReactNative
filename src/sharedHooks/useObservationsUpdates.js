@@ -30,7 +30,7 @@ const useObservationsUpdates = ( enabled: boolean ): Object => {
     { enabled: !!enabled }
   );
 
-  if ( isError ) {
+  if ( isError && error?.status !== 503 ) {
     console.log( "Error fetching observation updates", error );
     throw error;
   }
