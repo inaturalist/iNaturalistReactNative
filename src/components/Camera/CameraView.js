@@ -2,7 +2,9 @@ import { useIsFocused } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useCallback, useRef, useState } from "react";
 import { Animated, Platform, StyleSheet } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import {
+  Gesture, GestureDetector
+} from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import { Camera } from "react-native-vision-camera";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
@@ -24,7 +26,9 @@ type Props = {
   onCameraError?: Function,
   frameProcessor?: Function,
   frameProcessorFps?: number,
-  animatedProps: any
+  animatedProps: any,
+  onZoomStart?: Function,
+  onZoomChange?: Function
 };
 
 // A container for the Camera component
@@ -38,7 +42,9 @@ const CameraView = ( {
   onCameraError,
   frameProcessor,
   frameProcessorFps,
-  animatedProps
+  animatedProps,
+  onZoomStart,
+  onZoomChange
 }: Props ): Node => {
   const [focusAvailable, setFocusAvailable] = useState( true );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
@@ -137,13 +143,21 @@ const CameraView = ( {
     ]
   );
 
+  const pinchGesture = Gesture.Pinch()
+    .runOnJS( true )
+    .onStart( _ => {
+      onZoomStart?.();
+    } ).onChange( e => {
+      onZoomChange?.( e.scale );
+    } );
+
   return (
     <>
-      <GestureDetector gesture={Gesture.Exclusive( singleTap )}>
+      <GestureDetector gesture={Gesture.Exclusive( singleTap, pinchGesture )}>
         <ReanimatedCamera
           // Shared props between StandardCamera and ARCamera
           photo
-          enableZoomGesture
+          enableZoomGesture={false}
           isActive={isActive}
           style={[StyleSheet.absoluteFill]}
           onError={e => onError( e )}

@@ -1,6 +1,7 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import classnames from "classnames";
 import { MAX_PHOTOS_ALLOWED } from "components/Camera/StandardCamera/StandardCamera";
 import { DESIRED_LOCATION_ACCURACY } from "components/LocationPicker/LocationPicker";
 import {
@@ -177,6 +178,8 @@ const EvidenceSection = ( ): Node => {
     }
   }, [hasValidLocation, hasValidDate, setPassesEvidenceTest] );
 
+  const locationTextClassNames = ( !latitude || !longitude ) && ["color-warningRed"];
+
   return (
     <View className="mx-6 mt-6">
       <AddEvidenceSheet
@@ -214,15 +217,24 @@ const EvidenceSection = ( ): Node => {
           </View>
         </View>
         <View>
-          {displayPlaceName( ) && (
-            <Body3 className={( !latitude || !longitude ) && "color-warningRed"}>
-              {displayPlaceName( )}
-            </Body3>
-          )}
-          {/* $FlowIgnore */}
-          <Body4 className={( !latitude || !longitude ) && "color-warningRed"}>
-            {displayLocation( )}
-          </Body4>
+          {
+            displayPlaceName( )
+              ? (
+                <>
+                  <Body3 className={classnames( locationTextClassNames )}>
+                    {displayPlaceName( )}
+                  </Body3>
+                  <Body4 className={classnames( locationTextClassNames )}>
+                    {displayLocation( )}
+                  </Body4>
+                </>
+              )
+              : (
+                <Body3 className={classnames( locationTextClassNames )}>
+                  {displayLocation( )}
+                </Body3>
+              )
+          }
         </View>
 
       </Pressable>

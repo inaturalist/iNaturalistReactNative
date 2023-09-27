@@ -144,7 +144,8 @@ const AddObsStackNavigator = ( ): Node => (
         options={{
           ...removeBottomBorder,
           ...blankHeaderTitle,
-          headerBackVisible: false
+          headerBackVisible: false,
+          headerTitleAlign: "center"
         }}
       />
       <Stack.Screen
@@ -152,7 +153,8 @@ const AddObsStackNavigator = ( ): Node => (
         component={AddIDContainer}
         options={{
           ...removeBottomBorder,
-          headerTitle: addIDTitle
+          headerTitle: addIDTitle,
+          headerTitleAlign: "center"
         }}
       />
       <Stack.Screen

@@ -8,22 +8,24 @@ exports[`Heading4 renders correctly 1`] = `
         "fontFamily": "Whitney-Medium",
       },
       [
-        {
-          "fontSize": 16,
-          "lineHeight": 18,
-        },
-        {
-          "lineHeight": 19,
-        },
-        {
-          "fontWeight": "600",
-        },
-        {
-          "letterSpacing": 2,
-        },
-        {
-          "color": "#454545",
-        },
+        [
+          {
+            "fontSize": 16,
+            "lineHeight": 18,
+          },
+          {
+            "lineHeight": 19,
+          },
+          {
+            "fontWeight": "600",
+          },
+          {
+            "letterSpacing": 2,
+          },
+          {
+            "color": "#454545",
+          },
+        ],
       ],
     ]
   }

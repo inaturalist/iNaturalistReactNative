@@ -18,6 +18,8 @@ import {
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import {
+  Extrapolate,
+  interpolate,
   useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
@@ -42,7 +44,27 @@ import StandardCamera from "./StandardCamera/StandardCamera";
 
 const isTablet = DeviceInfo.isTablet( );
 
-const CameraContainer = ( ): Node => {
+// This is taken from react-native-vision library itself: https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/Constants.ts#L19 https://github.com/mrousavy/react-native-vision-camera/blob/9eed89aac6155eba155595f3e006707152550d0d/package/example/src/CameraPage.tsx#L34
+// The maximum zoom factor you should be able to zoom in
+const MAX_ZOOM_FACTOR = 20;
+// Used for calculating the final zoom by pinch gesture
+const SCALE_FULL_ZOOM = 3;
+
+type Props = {
+  addEvidence: ?boolean,
+  cameraType: string,
+  cameraPosition: string,
+  device: Object,
+  setCameraPosition: Function
+}
+
+const CameraWithDevice = ( {
+  addEvidence,
+  cameraType,
+  cameraPosition,
+  device,
+  setCameraPosition
+}: Props ): Node => {
   // screen orientation locked to portrait on small devices
   if ( !isTablet ) {
     Orientation.lockToPortrait( );
@@ -57,15 +79,9 @@ const CameraContainer = ( ): Node => {
     setOriginalCameraUrisMap,
     originalCameraUrisMap
   } = useContext( ObsEditContext );
-  const navigation = useNavigation( );
-  const { params } = useRoute( );
-  const addEvidence = params?.addEvidence;
-  const cameraType = params?.camera;
+  const navigation = useNavigation();
   // $FlowFixMe
   const camera = useRef<Camera>( null );
-  const [cameraPosition, setCameraPosition] = useState( "back" );
-  const devices = useCameraDevices( );
-  const device = devices[cameraPosition];
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
     enableAutoStabilization: true,
@@ -76,23 +92,53 @@ const CameraContainer = ( ): Node => {
   const { deviceOrientation } = useDeviceOrientation( );
   const [showDiscardSheet, setShowDiscardSheet] = useState( false );
   const [takingPhoto, setTakingPhoto] = useState( false );
-  const zoom = useSharedValue( 1 );
-  const [zoomTextValue, setZoomTextValue] = useState( 1 );
+
+  const zoom = useSharedValue( !device.isMultiCam
+    ? device.minZoom
+    : device.neutralZoom );
+  const startZoom = useSharedValue( !device.isMultiCam
+    ? device.minZoom
+    : device.neutralZoom );
+  const [zoomTextValue, setZoomTextValue] = useState( "1" );
 
   const isLandscapeMode = [LANDSCAPE_LEFT, LANDSCAPE_RIGHT].includes( deviceOrientation );
 
+  const { minZoom } = device;
+  const maxZoom = Math.min( device.maxZoom ?? 1, MAX_ZOOM_FACTOR );
+
   const changeZoom = ( ) => {
     const currentZoomValue = zoomTextValue;
-    if ( currentZoomValue === 1 ) {
-      zoom.value = withSpring( 2 );
-      setZoomTextValue( 2 );
-    } else if ( currentZoomValue === 2 ) {
-      zoom.value = withSpring( 3 );
-      setZoomTextValue( 3 );
+    if ( currentZoomValue === "1" ) {
+      zoom.value = withSpring( maxZoom );
+      setZoomTextValue( "3" );
+    } else if ( currentZoomValue === "3" ) {
+      zoom.value = withSpring( minZoom );
+      setZoomTextValue( ".5" );
     } else {
-      zoom.value = withSpring( 1 );
-      setZoomTextValue( 1 );
+      zoom.value = withSpring( device.neutralZoom );
+      setZoomTextValue( "1" );
     }
+  };
+
+  const onZoomStart = () => {
+    startZoom.value = zoom.value;
+  };
+
+  const onZoomChange = scale => {
+    // Calculate new zoom value (since scale factor is relative to initial pinch)
+    const newScale = interpolate(
+      scale,
+      [1 - 1 / SCALE_FULL_ZOOM, 1, SCALE_FULL_ZOOM],
+      [-1, 0, 1],
+      Extrapolate.CLAMP
+    );
+    const newZoom = interpolate(
+      newScale,
+      [-1, 0, 1],
+      [minZoom, startZoom.value, maxZoom],
+      Extrapolate.CLAMP
+    );
+    zoom.value = newZoom;
   };
 
   const animatedProps = useAnimatedProps(
@@ -247,7 +293,10 @@ const CameraContainer = ( ): Node => {
             takingPhoto={takingPhoto}
             changeZoom={changeZoom}
             animatedProps={animatedProps}
-            zoom={zoomTextValue}
+            zoomTextValue={zoomTextValue}
+            showZoomButton={device.isMultiCam}
+            onZoomStart={onZoomStart}
+            onZoomChange={onZoomChange}
           />
         )
         : (
@@ -263,12 +312,38 @@ const CameraContainer = ( ): Node => {
             takingPhoto={takingPhoto}
             changeZoom={changeZoom}
             animatedProps={animatedProps}
-            zoom={zoomTextValue}
+            zoomTextValue={zoomTextValue}
+            showZoomButton={device.isMultiCam}
             navToObsEdit={navToObsEdit}
             photoSaved={cameraPreviewUris.length > 0}
+            onZoomStart={onZoomStart}
+            onZoomChange={onZoomChange}
           />
         )}
     </View>
+  );
+};
+
+const CameraContainer = ( ): Node => {
+  const { params } = useRoute( );
+  const addEvidence = params?.addEvidence;
+  const cameraType = params?.camera;
+  const [cameraPosition, setCameraPosition] = useState( "back" );
+  const devices = useCameraDevices( );
+  const device = devices[cameraPosition];
+
+  if ( !device ) {
+    return null;
+  }
+
+  return (
+    <CameraWithDevice
+      addEvidence={addEvidence}
+      cameraType={cameraType}
+      cameraPosition={cameraPosition}
+      setCameraPosition={setCameraPosition}
+      device={device}
+    />
   );
 };
 
