@@ -36,14 +36,16 @@ type Props = {
   positionalAccuracy?: number,
   mapViewRef?: any,
   obscured?: boolean,
-  showExplore?: boolean
+  showExplore?: boolean,
+  openMapScreen?: Function
 }
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( {
   obsLatitude, obsLongitude, mapHeight, updateCoords, region, showLocationIndicator,
-  hideMap, tileMapParams, children, mapType, positionalAccuracy, mapViewRef, obscured, showExplore
+  hideMap, tileMapParams, children, mapType, positionalAccuracy, mapViewRef, obscured, showExplore,
+  openMapScreen
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
@@ -77,7 +79,7 @@ const Map = ( {
     : `${baseUrl}/grid/{z}/{x}/{y}.png`;
   const urlTemplate = `${url}?${queryString}`;
 
-  const onMapPress = async latLng => {
+  const exploreNavigateToDetails = async latLng => {
     const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
     const {
       mTilePositionX,
@@ -110,6 +112,14 @@ const Map = ( {
 
     if ( uuid ) {
       navigation.navigate( "ObsDetails", { uuid } );
+    }
+  };
+
+  const onMapPress = coordinate => {
+    if ( showExplore ) {
+      exploreNavigateToDetails( coordinate );
+    } else if ( openMapScreen ) {
+      openMapScreen();
     }
   };
 
@@ -156,7 +166,7 @@ const Map = ( {
           onRegionChangeComplete={async r => {
             setCurrentZoom( calculateZoom( screenWidth, r.longitudeDelta ) );
           }}
-          onPress={e => { if ( showExplore ) { onMapPress( e.nativeEvent.coordinate ); } }}
+          onPress={e => onMapPress( e.nativeEvent.coordinate )}
           mapType={mapType || "standard"}
         >
           {( urlTemplate && showExplore ) && (

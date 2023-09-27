@@ -15,22 +15,22 @@ import { useTranslation } from "sharedHooks";
 import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
 
 type Props = {
-  taxonSearch: string,
-  setTaxonSearch: Function,
-  createId: Function
+  taxonQuery: string,
+  setTaxonQuery: Function,
+  onTaxonChosen: Function
 };
 
 const TaxonSearch = ( {
-  taxonSearch,
-  setTaxonSearch,
-  createId
+  taxonQuery,
+  setTaxonQuery,
+  onTaxonChosen
 }: Props ): Node => {
   const { t } = useTranslation( );
   const { data: taxonList } = useAuthenticatedQuery(
-    ["fetchSearchResults", taxonSearch],
+    ["fetchSearchResults", taxonQuery],
     optsWithAuth => fetchSearchResults(
       {
-        q: taxonSearch,
+        q: taxonQuery,
         sources: "taxa",
         fields: {
           taxon: Taxon.TAXON_FIELDS
@@ -50,8 +50,8 @@ const TaxonSearch = ( {
     <>
       <View className="mx-6">
         <SearchBar
-          handleTextChange={setTaxonSearch}
-          value={taxonSearch}
+          handleTextChange={setTaxonQuery}
+          value={taxonQuery}
           testID="SearchTaxon"
           containerClass="pb-5 mt-3"
         />
@@ -62,7 +62,7 @@ const TaxonSearch = ( {
         renderItem={( { item } ) => (
           <TaxonResult
             taxon={item}
-            handleCheckmarkPress={( ) => createId( item )}
+            handleCheckmarkPress={( ) => onTaxonChosen( item )}
             testID={`Search.taxa.${item.id}`}
           />
         )}

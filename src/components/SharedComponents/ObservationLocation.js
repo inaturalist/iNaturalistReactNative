@@ -27,12 +27,6 @@ const ObservationLocation = ( {
     ? Body3
     : Body4;
 
-  if ( !displayLocation ) {
-    displayLocation = t( "No-Location" );
-    if ( displayGeoprivacy === "Private" ) {
-      displayLocation = t( "Private" );
-    }
-  }
   if ( ( observation?.latitude !== null && observation?.latitude !== undefined )
     && ( observation?.longitude != null && observation?.longitude !== undefined )
     && !obscured
@@ -42,6 +36,13 @@ const ObservationLocation = ( {
       longitude: observation.longitude,
       accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
     } );
+  }
+  if ( !displayLocation ) {
+    if ( displayCoords && !details ) {
+      displayLocation = displayCoords;
+    } else {
+      displayLocation = t( "No-Location" );
+    }
   }
 
   const showGeoprivacy = ( ) => {

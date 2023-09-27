@@ -50,10 +50,11 @@ type Props = {
   showDiscardSheet: boolean,
   takingPhoto: boolean,
   animatedProps: any,
-  zoom: number,
+  zoomTextValue: string,
+  showZoomButton: boolean,
   onZoomStart?: Function,
-  onZoomChange?: Function
-}
+  onZoomChange?: Function,
+};
 
 const StandardCamera = ( {
   navToObsEdit,
@@ -73,7 +74,8 @@ const StandardCamera = ( {
   takingPhoto,
   changeZoom,
   animatedProps,
-  zoom,
+  zoomTextValue,
+  showZoomButton,
   onZoomStart,
   onZoomChange
 }: Props ): Node => {
@@ -145,7 +147,8 @@ const StandardCamera = ( {
           hasFlash={hasFlash}
           takePhotoOptions={takePhotoOptions}
           changeZoom={changeZoom}
-          zoom={zoom}
+          zoomTextValue={zoomTextValue}
+          showZoomButton={showZoomButton}
         />
       </View>
       <CameraNavButtons

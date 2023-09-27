@@ -46,8 +46,9 @@ class Observation extends Realm.Object {
   };
 
   static LIST_FIELDS = {
-    geojson: true,
     comments: Comment.COMMENT_FIELDS,
+    created_at: true,
+    geojson: true,
     id: true,
     identifications: Identification.ID_FIELDS,
     latitude: true,
