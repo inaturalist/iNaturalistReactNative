@@ -67,11 +67,11 @@ const ARCamera = ( {
   const { t } = useTranslation( );
   const theme = useTheme( );
 
-  const [result, setResult] = useState( null );
-  const [modelLoaded, setModelLoaded] = useState( false );
+  const modelLoaded = useSharedValue( false );
+  const result = useSharedValue( null );
 
   // only show predictions when rank is order or lower, like we do on Seek
-  const showPrediction = ( result && result.rank_level <= 40 ) || false;
+  const showPrediction = ( result.value && result.value.rank_level <= 40 ) || false;
 
   // Johannes (June 2023): I did read through the native code of the legacy inatcamera
   // that is triggered when using ref.current.takePictureAsync()
@@ -100,8 +100,8 @@ const ARCamera = ( {
   };
 
   const handleTaxaDetected = cvResults => {
-    if ( cvResults && !modelLoaded ) {
-      setModelLoaded( true );
+    if ( cvResults && !modelLoaded.value ) {
+      modelLoaded.value = true;
     }
     /*
       Using FrameProcessorCamera results in this as cvResults atm on Android
@@ -155,7 +155,7 @@ const ARCamera = ( {
         score: predictions[0].score
       };
     }
-    setResult( prediction );
+    result.value = prediction;
   };
 
   const handleClassifierError = error => {
@@ -189,9 +189,9 @@ const ARCamera = ( {
 
   useEffect( ( ) => {
     if ( photoSaved ) {
-      navToObsEdit( { prediction: result } );
+      navToObsEdit( { prediction: result.value } );
     }
-  }, [photoSaved, navToObsEdit, result] );
+  }, [photoSaved, navToObsEdit, result.value] );
 
   return (
     <>
@@ -220,28 +220,28 @@ const ARCamera = ( {
           } )
         }
         >
-          {showPrediction && result
+          {showPrediction && result.value
             ? (
               <TaxonResult
-                taxon={result}
+                taxon={result.value}
                 handleCheckmarkPress={takePhoto}
-                testID={`ARCamera.taxa.${result.id}`}
+                testID={`ARCamera.taxa.${result.value.id}`}
                 clearBackground
-                confidence={convertScoreToConfidence( result?.score )}
+                confidence={convertScoreToConfidence( result.value?.score )}
               />
             )
             : (
               <Body1
                 className="text-white self-center mt-[22px]"
               >
-                {modelLoaded
+                {modelLoaded.value
                   ? t( "Scan-the-area-around-you-for-organisms" )
                   : t( "Loading-iNaturalists-AR-Camera" )}
               </Body1>
             )}
         </View>
       </LinearGradient>
-      {!modelLoaded && (
+      {!modelLoaded.value && (
         <View className="absolute left-1/2 top-1/2">
           <View className="right-[57px] bottom-[57px]">
             <INatIcon
