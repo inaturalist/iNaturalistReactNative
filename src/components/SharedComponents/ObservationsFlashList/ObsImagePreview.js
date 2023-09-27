@@ -1,13 +1,13 @@
 // @flow
 import classNames from "classnames";
-import { IconicTaxonIcon, INatIcon, PhotoCount } from "components/SharedComponents";
+import { INatIcon, PhotoCount } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
 import { dropShadow } from "styles/global";
 
-import ObsImageBackground from "./ObsImageBackground";
+import ObsImage from "./ObsImage";
 
 type SOURCE = {
   uri: string,
@@ -24,7 +24,6 @@ type Props = {
   width?: string,
   height?: string,
   isMultiplePhotosTop?: boolean,
-  disableGradient?: boolean,
   hasSmallBorderRadius?: boolean,
   testID?: string,
   style?: Object,
@@ -43,7 +42,6 @@ const ObsImagePreview = ( {
   height = "h-[62px]",
   opaque = false,
   isMultiplePhotosTop = false,
-  disableGradient = false,
   hasSmallBorderRadius = false,
   testID,
   style,
@@ -56,38 +54,27 @@ const ObsImagePreview = ( {
     ? "rounded-lg"
     : "rounded-2xl";
 
+  const imageClassName = classNames(
+    "relative overflow-hidden max-h-[210px]",
+    width,
+    height,
+    borderRadius
+  );
+
   return (
     <View
-      className={classNames(
-        "relative overflow-hidden max-h-[210px]",
-        width,
-        height,
-        borderRadius
-      )}
+      className={imageClassName}
       style={style}
       testID={testID}
     >
-      {!source
-        ? (
-          <ObsImageBackground
-            uri={source}
-            opaque={opaque}
-            disableGradient={disableGradient}
-          />
-        )
-        : (
-          <IconicTaxonIcon
-            imageClassName={classNames(
-              "relative overflow-hidden max-h-[210px]",
-              width,
-              height,
-              borderRadius
-            )}
-            iconicTaxonName={iconicTaxonName}
-            style={style}
-            white={white}
-          />
-        )}
+      <ObsImage
+        uri={source}
+        opaque={opaque}
+        imageClassName={imageClassName}
+        iconicTaxonName={iconicTaxonName}
+        style={style}
+        white={white}
+      />
       {selectable && (
         <View
           className={classNames(
