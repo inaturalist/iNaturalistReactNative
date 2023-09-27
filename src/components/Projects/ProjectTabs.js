@@ -25,7 +25,11 @@ const ProjectTabs = ( ): Node => {
   const memberId = currentUser?.id;
   const [apiParams, setApiParams] = useState( { } );
   const [currentTabId, setCurrentTabId] = useState( JOINED_TAB_ID );
-  const { latLng, isLoading: isLoadingLocation } = useUserLocation( { skipPlaceGuess: true } );
+  const [permissionsGranted, setPermissionsGranted] = useState( false );
+  const { latLng, isLoading: isLoadingLocation } = useUserLocation( {
+    skipPlaceGuess: true,
+    permissionsGranted
+  } );
 
   const {
     data: projects,
@@ -87,6 +91,9 @@ const ProjectTabs = ( ): Node => {
       <LocationPermissionGate
         permissionNeeded={currentTabId === NEARBY_TAB_ID}
         withoutNavigation
+        onPermissionGranted={( ) => setPermissionsGranted( true )}
+        onPermissionDenied={( ) => setPermissionsGranted( false )}
+        onPermissionBlocked={( ) => setPermissionsGranted( false )}
       />
     </>
   );

@@ -14,10 +14,19 @@ import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 // Max time to wait while fetching current location
 const CURRENT_LOCATION_TIMEOUT_MS = 30000;
 
-const useUserLocation = ( { skipPlaceGuess = false }: Object ): Object => {
+const useUserLocation = ( {
+  skipPlaceGuess = false,
+  permissionsGranted: permissionsGrantedProp = false
+}: Object ): Object => {
   const [latLng, setLatLng] = useState( null );
   const [isLoading, setIsLoading] = useState( true );
-  const [permissionsGranted, setPermissionsGranted] = useState( false );
+  const [permissionsGranted, setPermissionsGranted] = useState( permissionsGrantedProp );
+
+  useEffect( ( ) => {
+    if ( permissionsGrantedProp === true && permissionsGranted === false ) {
+      setPermissionsGranted( true );
+    }
+  }, [permissionsGranted, permissionsGrantedProp] );
 
   useEffect( ( ) => {
     async function checkPermissions() {
@@ -58,7 +67,7 @@ const useUserLocation = ( { skipPlaceGuess = false }: Object ): Object => {
 
       // TODO: set geolocation fetch error
       const failure = error => {
-        console.warn( error.code, error.message );
+        console.warn( `useUserLocation: ${error.message} (${error.code})` );
         setIsLoading( false );
       };
 
