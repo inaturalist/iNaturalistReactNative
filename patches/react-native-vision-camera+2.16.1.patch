@@ -1,3 +1,16 @@
+diff --git a/node_modules/react-native-vision-camera/android/build.gradle b/node_modules/react-native-vision-camera/android/build.gradle
+index d308e15..e1d9dd9 100644
+--- a/node_modules/react-native-vision-camera/android/build.gradle
++++ b/node_modules/react-native-vision-camera/android/build.gradle
+@@ -135,7 +135,7 @@ android {
+   }
+ 
+   defaultConfig {
+-    minSdkVersion 21
++    minSdkVersion getExtOrIntegerDefault('minSdkVersion')
+     targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
+ 
+     if (ENABLE_FRAME_PROCESSORS) {
 diff --git a/node_modules/react-native-vision-camera/ios/CameraView+AVCaptureSession.swift b/node_modules/react-native-vision-camera/ios/CameraView+AVCaptureSession.swift
 index 5c9b77d..5ea7ad5 100644
 --- a/node_modules/react-native-vision-camera/ios/CameraView+AVCaptureSession.swift
