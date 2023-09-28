@@ -33,6 +33,7 @@ const ObsGridItem = ( {
     style={style}
     isMultiplePhotosTop
     testID={`TaxonGridItem.${taxon.id}`}
+    iconicTaxonName={taxon.iconic_taxon_name}
   >
     <SpeciesSeenCheckmark
       taxonId={taxon.id}

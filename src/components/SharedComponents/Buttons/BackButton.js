@@ -18,7 +18,15 @@ const BackButton = ( {
 
   if ( navigation?.canGoBack( ) ) {
     return (
-      <HeaderBackButton tintColor={tintColor} onPress={onPress || navigation.goBack} />
+      <HeaderBackButton
+        tintColor={tintColor}
+        onPress={onPress || navigation.goBack}
+        // move backbutton to same margin as in react-navigation
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{
+          margin: -11
+        }}
+      />
     );
   }
 

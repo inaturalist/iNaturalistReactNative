@@ -2,16 +2,12 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AddIDContainer from "components/AddID/AddIDContainer";
 import ExploreContainer from "components/Explore/ExploreContainer";
 import Identify from "components/Identify/Identify";
-import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
 import MyObservationsContainer from "components/MyObservations/MyObservationsContainer";
 import DataQualityAssessment from "components/ObsDetails/DataQualityAssessment";
 import ObsDetailsContainer from "components/ObsDetails/ObsDetailsContainer";
-import ObsEdit from "components/ObsEdit/ObsEdit";
 import PlaceholderComponent from "components/PlaceholderComponent";
-import { Heading4, Mortal, PermissionGate } from "components/SharedComponents";
 import TaxonDetails from "components/TaxonDetails/TaxonDetails";
 import UserProfile from "components/UserProfile/UserProfile";
 import { t } from "i18next";
@@ -24,21 +20,10 @@ import {
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
-import { PermissionsAndroid } from "react-native";
+
+import SharedStackScreens from "./SharedStackScreens";
 
 const Stack = createNativeStackNavigator( );
-
-const addIDTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
-
-const ObsEditWithPermission = ( ) => (
-  <Mortal>
-    <PermissionGate
-      permission={PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION}
-    >
-      <ObsEdit />
-    </PermissionGate>
-  </Mortal>
-);
 
 const ObservationsStackNavigator = ( ): Node => (
   <Stack.Navigator
@@ -87,31 +72,8 @@ const ObservationsStackNavigator = ( ): Node => (
           unmountOnBlur: true
         }}
       />
-      <Stack.Screen
-        name="ObsEdit"
-        component={ObsEditWithPermission}
-        options={{
-          ...removeBottomBorder,
-          ...blankHeaderTitle,
-          headerBackVisible: false,
-          headerTitleAlign: "center"
-        }}
-      />
-      <Stack.Screen
-        name="AddID"
-        component={AddIDContainer}
-        options={{
-          ...removeBottomBorder,
-          headerTitle: addIDTitle,
-          headerTitleAlign: "center"
-        }}
-      />
-      <Stack.Screen
-        name="LocationPicker"
-        component={LocationPickerContainer}
-        options={hideHeader}
-      />
     </Stack.Group>
+    {SharedStackScreens( )}
     <Stack.Group>
       <Stack.Screen
         name="Explore"

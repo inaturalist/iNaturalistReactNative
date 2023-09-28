@@ -70,19 +70,27 @@ const queryClient = new QueryClient( {
   defaultOptions: {
     queries: {
       retry: async ( failureCount, error ) => {
+        if ( error.status > 500 ) {
+          logger.warn( `${error.status} Error for query` );
+          return 0;
+        }
         if (
           // If this is an actual 408 Request Timeout error, we probably want to
           // retry... but this will probably never happen
           error.status === 408
           // If there's just no network at the moment, definitely retry
           || ( error instanceof TypeError && error.message.match( "Network request failed" ) )
-        ) return failureCount < 3;
+        ) {
+          return failureCount < 3;
+        }
         handleError( error, { throw: false } );
         if ( error.status === 401 || error.status === 403 ) {
           // If we get a 401 or 403, call getJWT
           // which has a timestamp check if we need to refresh the token
           const token = await getJWT( );
-          if ( token ) return failureCount < 2;
+          if ( token ) {
+            return failureCount < 2;
+          }
         }
         return false;
       }

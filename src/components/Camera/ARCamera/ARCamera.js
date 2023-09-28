@@ -220,6 +220,7 @@ const ARCamera = ( {
                 testID={`ARCamera.taxa.${result.value.id}`}
                 clearBackground
                 confidence={convertScoreToConfidence( result.value?.score )}
+                white
               />
             )
             : (
