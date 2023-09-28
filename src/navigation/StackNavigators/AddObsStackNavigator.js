@@ -2,18 +2,12 @@
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AddIDContainer from "components/AddID/AddIDContainer";
 import CameraContainer from "components/Camera/CameraContainer";
-import LocationPickerContainer from "components/LocationPicker/LocationPickerContainer";
-import MediaViewer from "components/MediaViewer/MediaViewer";
-import ObsEdit from "components/ObsEdit/ObsEdit";
 import GroupPhotosContainer from "components/PhotoImporter/GroupPhotosContainer";
 import PhotoGallery from "components/PhotoImporter/PhotoGallery";
-import { Heading4 } from "components/SharedComponents";
 import PermissionGateContainer, {
   AUDIO_PERMISSIONS,
   CAMERA_PERMISSIONS,
-  LOCATION_PERMISSIONS,
   READ_MEDIA_PERMISSIONS
 } from "components/SharedComponents/PermissionGateContainer";
 import SoundRecorder from "components/SoundRecorder/SoundRecorder";
@@ -21,15 +15,13 @@ import { t } from "i18next";
 import {
   blankHeaderTitle,
   hideHeader,
-  hideHeaderLeft,
-  removeBottomBorder,
   showCustomHeader,
   showHeaderLeft
 } from "navigation/navigationOptions";
 import type { Node } from "react";
 import React from "react";
 
-const addIDTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
+import SharedStackScreens from "./SharedStackScreens";
 
 const Stack = createNativeStackNavigator( );
 
@@ -74,21 +66,6 @@ const PhotoGalleryWithPermission = ( ) => (
     image={require( "images/azmaan-baluch-_ra6NcejHVs-unsplash.jpg" )}
   >
     <PhotoGallery />
-  </PermissionGateContainer>
-);
-
-const ObsEditWithPermission = ( ) => (
-  <PermissionGateContainer
-    permissions={LOCATION_PERMISSIONS}
-    title={t( "Get-more-accurate-suggestions-create-useful-data" )}
-    titleDenied={t( "Please-allow-Location-Access" )}
-    body={t( "iNaturalist-uses-your-location-to-give-you" )}
-    blockedPrompt={t( "Youve-previously-denied-location-permissions" )}
-    buttonText={t( "USE-LOCATION" )}
-    icon="map-marker-outline"
-    image={require( "images/landon-parenteau-EEuDMqRYbx0-unsplash.jpg" )}
-  >
-    <ObsEdit />
   </PermissionGateContainer>
 );
 
@@ -138,42 +115,8 @@ const AddObsStackNavigator = ( ): Node => (
           title: t( "Record-new-sound" )
         }}
       />
-      <Stack.Screen
-        name="ObsEdit"
-        component={ObsEditWithPermission}
-        options={{
-          ...removeBottomBorder,
-          ...blankHeaderTitle,
-          headerBackVisible: false,
-          headerTitleAlign: "center"
-        }}
-      />
-      <Stack.Screen
-        name="AddID"
-        component={AddIDContainer}
-        options={{
-          ...removeBottomBorder,
-          headerTitle: addIDTitle,
-          headerTitleAlign: "center"
-        }}
-      />
-      <Stack.Screen
-        name="LocationPicker"
-        component={LocationPickerContainer}
-        options={hideHeader}
-      />
-      <Stack.Screen
-        name="MediaViewer"
-        component={MediaViewer}
-        options={{
-          ...blankHeaderTitle,
-          headerStyle: {
-            backgroundColor: "black"
-          },
-          ...hideHeaderLeft
-        }}
-      />
     </Stack.Group>
+    {SharedStackScreens( )}
   </Stack.Navigator>
 );
 
