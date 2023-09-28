@@ -42,7 +42,6 @@ const ObservationsView = ( {
       <Map
         showsCompass={false}
         region={region}
-        hideMap={region.latitude === 0.0}
         observations={observations}
         tileMapParams={tileMapParams}
         showCurrentLocationButton
