@@ -493,7 +493,7 @@ PODS:
     - React-Core
   - RNPermissions (3.8.0):
     - React-Core
-  - RNReanimated (3.5.4):
+  - RNReanimated (3.5.3):
     - DoubleConversion
     - FBLazyVector
     - glog
@@ -529,7 +529,7 @@ PODS:
     - React
   - RNSVG (13.9.0):
     - React-Core
-  - RNVectorIcons (9.2.0):
+  - RNVectorIcons (10.0.0):
     - React-Core
   - SocketRocket (0.6.1)
   - VisionCamera (2.16.1):
@@ -862,11 +862,11 @@ SPEC CHECKSUMS:
   RNGestureHandler: 6e4dc6b7ab3a385386d4e36228bd065e5a611394
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
-  RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
+  RNReanimated: e037aac4d8b0055a399f5af065e8210f6c8cc900
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
-  RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
+  RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   VisionCamera: b5aaa1d533a1063289eb71ad70bcbb50a57f2e0d
   VisionCameraPluginInatVision: 79bb258db75218889c74d0897ecba676492c4def
