@@ -15,6 +15,7 @@ export { default as Divider } from "./Divider/Divider";
 export { default as FloatingActionBar } from "./FloatingActionBar";
 export { default as HideView } from "./HideView";
 export { default as IconicTaxonChooser } from "./IconicTaxonChooser";
+export { default as IconicTaxonIcon } from "./IconicTaxonIcon";
 export { default as INatIcon } from "./INatIcon";
 export { default as InlineUser } from "./InlineUser/InlineUser";
 export { default as KebabMenu } from "./KebabMenu";

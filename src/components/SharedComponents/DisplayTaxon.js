@@ -1,7 +1,7 @@
 // @flow
 
 import classnames from "classnames";
-import { DisplayTaxonName, INatIcon } from "components/SharedComponents";
+import { DisplayTaxonName, IconicTaxonIcon } from "components/SharedComponents";
 import { Image, Pressable, View } from "components/styledComponents";
 import { RealmContext } from "providers/contexts";
 import type { Node } from "react";
@@ -58,18 +58,10 @@ const DisplayTaxon = ( {
           />
         )
         : (
-          <View
-            className={classnames(
-              imageClassName,
-              "justify-center items-center"
-            )}
-            testID="DisplayTaxon.iconicTaxonIcon"
-          >
-            <INatIcon
-              name={iconicTaxonName && `iconic-${iconicTaxonName?.toLowerCase( )}`}
-              size={22}
-            />
-          </View>
+          <IconicTaxonIcon
+            imageClassName={imageClassName}
+            iconicTaxonName={iconicTaxonName}
+          />
         )}
       <View className="ml-3 shrink">
         <DisplayTaxonName taxon={taxon} withdrawn={withdrawn} />
