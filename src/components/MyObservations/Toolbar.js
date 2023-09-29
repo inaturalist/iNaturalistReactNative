@@ -5,23 +5,14 @@ import {
   Body2,
   Body4,
   INatIcon,
-  INatIconButton
+  INatIconButton,
+  RotatingINatIconButton
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
-import React, { useEffect } from "react";
+import React from "react";
 import { ProgressBar, useTheme } from "react-native-paper";
-import Animated, {
-  cancelAnimation,
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withDelay,
-  withRepeat,
-  withSequence,
-  withTiming
-} from "react-native-reanimated";
 
 type Props = {
   layout: string,
@@ -55,48 +46,6 @@ const Toolbar = ( {
   const theme = useTheme( );
   const uploadComplete = progress === 1;
   const uploading = uploadInProgress && !uploadComplete;
-  const rotation = useSharedValue( 0 );
-
-  const animatedStyles = useAnimatedStyle(
-    () => ( {
-      transform: [
-        {
-          rotateZ: `-${rotation.value}deg`
-        }
-      ]
-    } ),
-    [rotation.value]
-  );
-
-  const getRotationAnimation = toValue => withDelay(
-    500,
-    withTiming( toValue, {
-      duration: 1000,
-      easing: Easing.linear
-    } )
-  );
-
-  useEffect( () => {
-    const cleanup = () => {
-      cancelAnimation( rotation );
-      rotation.value = 0;
-    };
-
-    if ( uploading ) {
-      rotation.value = withRepeat(
-        withSequence(
-          getRotationAnimation( 180 ),
-          getRotationAnimation( 360 ),
-          withTiming( 0, { duration: 0 } )
-        ),
-        -1
-      );
-    } else {
-      cleanup();
-    }
-
-    return cleanup;
-  }, [uploading, rotation] );
 
   const getSyncIconColor = ( ) => {
     if ( uploadError ) {
@@ -136,22 +85,19 @@ const Toolbar = ( {
           // the grid/list button off the screen
           className="flex-row items-center shrink"
         >
-          <Animated.View
-            style={animatedStyles}
-          >
-            <INatIconButton
-              icon={
-                needsSync( )
-                  ? "sync-unsynced"
-                  : "sync"
-              }
-              size={30}
-              onPress={handleSyncButtonPress}
-              disabled={false}
-              accessibilityLabel={t( "Sync-observations" )}
-              color={getSyncIconColor( )}
-            />
-          </Animated.View>
+          <RotatingINatIconButton
+            icon={
+              needsSync( )
+                ? "sync-unsynced"
+                : "sync"
+            }
+            rotating={uploading}
+            onPress={handleSyncButtonPress}
+            color={getSyncIconColor( )}
+            disabled={false}
+            accessibilityLabel={t( "Sync-observations" )}
+            size={30}
+          />
 
           {statusText && (
             <View className="flex ml-1 shrink">

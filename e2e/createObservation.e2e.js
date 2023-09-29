@@ -79,7 +79,7 @@ describe( "Sign in and create an observation", () => {
     await expect( uploadNowButton ).toBeVisible();
     await uploadNowButton.tap();
     // Check that the observation list screen is visible
-    const observation = element( by.text( "unknown" ) );
+    const observation = element( by.id( "MyObservationsPressable" ) ).atIndex( 0 );
     await waitFor( observation ).toBeVisible().withTimeout( 10000 );
     /*
     / 3. Update the observation by adding a comment
@@ -123,10 +123,10 @@ describe( "Sign in and create an observation", () => {
     await waitFor( deleteObservationButton ).toBeVisible().withTimeout( 10000 );
     // Press delete observation
     await deleteObservationButton.tap();
-    // Check that the observation list screen is visible with first observation button
-    const firstObservationButton = element(
-      by.id( "MyObservationsEmpty.firstObservationButton" )
-    );
-    await waitFor( firstObservationButton ).toBeVisible().withTimeout( 10000 );
+    // Make sure we're back on MyObservations
+    await waitFor( username ).toBeVisible().withTimeout( 10000 );
+    // TODO test to make sure the exact observation we created was deleted.
+    // Testing for the empty list UI isn't adequate because other test runs
+    // happening in parallel might cause other observations to be there
   } );
 } );
