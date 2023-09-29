@@ -35,7 +35,7 @@ describe( "DisplayTaxon", () => {
   it( "displays an iconic taxon icon when no photo is available", () => {
     renderComponent( <DisplayTaxon taxon={mockTaxon} handlePress={( ) => { }} /> );
 
-    expect( screen.getByTestId( "DisplayTaxon.iconicTaxonIcon" ) );
+    expect( screen.getByTestId( "IconicTaxonName.iconicTaxonIcon" ) );
   } );
 
   it( "displays an iconic taxon photo when no taxon photo is available", () => {

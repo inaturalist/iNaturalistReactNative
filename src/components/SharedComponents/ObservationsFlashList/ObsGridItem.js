@@ -37,6 +37,8 @@ const ObsGridItem = ( {
     hasSound={!!observation?.observationSounds?.length}
     isMultiplePhotosTop
     testID={`MyObservations.gridItem.${observation.uuid}`}
+    iconicTaxonName={observation.taxon?.iconic_taxon_name}
+    white
   >
     <View className="absolute bottom-0 flex p-2 w-full">
       <ObsUploadStatus

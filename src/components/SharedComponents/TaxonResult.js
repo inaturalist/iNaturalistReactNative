@@ -53,6 +53,7 @@ const TaxonResult = ( {
         <ObsImagePreview
           source={taxonImage}
           testID={`${testID}.photo`}
+          iconicTaxonName={taxon?.iconic_taxon_name}
         />
         {confidence && (
           <View className="absolute -bottom-5 w-[62px]">
