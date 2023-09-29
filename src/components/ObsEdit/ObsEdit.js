@@ -12,7 +12,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import useLocalObservation from "sharedHooks/useLocalObservation";
 
 import BottomButtons from "./BottomButtons";
-import EvidenceSection from "./EvidenceSection";
+import EvidenceSectionContainer from "./EvidenceSectionContainer";
 import Header from "./Header";
 import IdentificationSection from "./IdentificationSection";
 import MultipleObservationsArrows from "./MultipleObservationsArrows";
@@ -53,7 +53,7 @@ const ObsEdit = ( ): Node => {
           {currentObservation && (
             <>
               {observations.length > 1 && <MultipleObservationsArrows />}
-              <EvidenceSection />
+              <EvidenceSectionContainer />
               <IdentificationSection />
               <OtherDataSection />
             </>

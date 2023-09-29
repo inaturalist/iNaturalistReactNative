@@ -228,9 +228,16 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const createObsPhotos = useCallback(
-    async photos => Promise.all(
-      photos.map( async photo => ObservationPhoto.new( photo?.image?.uri ) )
-    ),
+    async ( photos, { position } ) => {
+      let photoPosition = position;
+      return Promise.all(
+        photos.map( async photo => {
+          const newPhoto = ObservationPhoto.new( photo?.image?.uri, photoPosition );
+          photoPosition += 1;
+          return newPhoto;
+        } )
+      );
+    },
     []
   );
 
@@ -260,7 +267,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       async ( { photos } ) => {
         const firstPhoto = photos[0];
         const newLocalObs = await createObservationFromGalleryPhoto( firstPhoto );
-        newLocalObs.observationPhotos = await createObsPhotos( photos );
+        newLocalObs.observationPhotos = await createObsPhotos( photos, { position: 0 } );
         return newLocalObs;
       }
     ) );
@@ -269,7 +276,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const createObservationFromGallery = useCallback( async photo => {
     const newLocalObs = await createObservationFromGalleryPhoto( photo );
-    newLocalObs.observationPhotos = await createObsPhotos( [photo] );
+    newLocalObs.observationPhotos = await createObsPhotos( [photo], { position: 0 } );
     setObservations( [newLocalObs] );
   }, [createObsPhotos, createObservationFromGalleryPhoto] );
 
@@ -288,10 +295,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const addGalleryPhotosToCurrentObservation = useCallback( async photos => {
     setSavingPhoto( true );
-    const obsPhotos = await createObsPhotos( photos );
+    const numOfObsPhotos = currentObservation?.observationPhotos.length;
+    const obsPhotos = await createObsPhotos( photos, { position: numOfObsPhotos } );
     appendObsPhotos( obsPhotos );
     setSavingPhoto( false );
-  }, [createObsPhotos, appendObsPhotos] );
+  }, [createObsPhotos, appendObsPhotos, currentObservation] );
 
   const uploadValue = useMemo( ( ) => {
     // Save URIs to camera gallery (if a photo was taken using the app,
