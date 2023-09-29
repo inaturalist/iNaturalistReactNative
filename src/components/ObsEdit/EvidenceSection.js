@@ -11,7 +11,6 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext } from "react";
 import { ActivityIndicator, useTheme } from "react-native-paper";
-import Photo from "realmModels/Photo";
 import useTranslation from "sharedHooks/useTranslation";
 
 import DatePicker from "./DatePicker";
@@ -53,11 +52,6 @@ const EvidenceSection = ( {
     currentObservation
   } = useContext( ObsEditContext );
   const obsPhotos = currentObservation?.observationPhotos;
-  const photoUris = obsPhotos
-    ? Array.from( obsPhotos ).map(
-      obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
-    )
-    : [];
   const navigation = useNavigation( );
 
   const navToLocationPicker = ( ) => {
@@ -97,7 +91,7 @@ const EvidenceSection = ( {
     <View className="mx-6 mt-6">
       <AddEvidenceSheet
         setShowAddEvidenceSheet={setShowAddEvidenceSheet}
-        disableAddingMoreEvidence={photoUris.length >= MAX_PHOTOS_ALLOWED}
+        disableAddingMoreEvidence={obsPhotos?.length >= MAX_PHOTOS_ALLOWED}
         hidden={!showAddEvidenceSheet}
         onTakePhoto={( ) => setTakePhoto( true )}
         onImportPhoto={( ) => setImportPhoto( true )}

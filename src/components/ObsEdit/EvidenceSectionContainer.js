@@ -11,8 +11,10 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useContext, useEffect,
+  useMemo,
   useRef, useState
 } from "react";
+import Photo from "realmModels/Photo";
 import useCurrentObservationLocation from "sharedHooks/useCurrentObservationLocation";
 
 import EvidenceSection from "./EvidenceSection";
@@ -26,7 +28,10 @@ const EvidenceSectionContainer = ( ): Node => {
     setSelectedPhotoIndex,
     updateObservationKeys
   } = useContext( ObsEditContext );
-  const obsPhotos = currentObservation?.observationPhotos;
+  const obsPhotos = useMemo(
+    ( ) => currentObservation?.observationPhotos || [],
+    [currentObservation]
+  );
   const mountedRef = useRef( true );
   const navigation = useNavigation( );
   const [takePhoto, setTakePhoto] = useState( false );
@@ -122,7 +127,13 @@ const EvidenceSectionContainer = ( ): Node => {
 
   const showMediaViewer = index => {
     setSelectedPhotoIndex( index - 1 );
-    setMediaViewerUris( obsPhotos );
+    setMediaViewerUris(
+      obsPhotos
+        ? Array.from( obsPhotos ).map(
+          obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
+        )
+        : []
+    );
     navigation.navigate( "MediaViewer" );
   };
 
@@ -137,10 +148,10 @@ const EvidenceSectionContainer = ( ): Node => {
   }, [isFetchingLocation, hasValidLocation, hasValidDate, hasPhotoOrSound] );
 
   useEffect( ( ) => {
-    if ( obsPhotos.length === 0 && deletePhotoMode ) {
+    if ( obsPhotos?.length === 0 && deletePhotoMode ) {
       setDeletePhotoMode( false );
     }
-  }, [obsPhotos.length, deletePhotoMode] );
+  }, [obsPhotos, deletePhotoMode] );
 
   useEffect( ( ) => {
     // we're only showing the Missing Evidence Sheet if location/date are missing
