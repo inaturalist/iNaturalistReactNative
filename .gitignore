@@ -80,6 +80,9 @@ artifacts/
 # VisualStudioCode #
 .vscode
 
+# testing
+/coverage
+
 # CV Model #
 **/assets/**/*.csv
 *.tflite
