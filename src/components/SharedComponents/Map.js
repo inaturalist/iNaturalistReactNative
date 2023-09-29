@@ -67,7 +67,7 @@ const Map = ( {
   const navigation = useNavigation( );
   const theme = useTheme( );
   const [permissionRequested, setPermissionRequested] = useState( false );
-  const [showsUserLocation, setShowsUserLocation] = useState( true );
+  const [showsUserLocation, setShowsUserLocation] = useState( false );
   const [userLocation, setUserLocation] = useState( null );
   const { t } = useTranslation( );
   const mapRef = useRef( );
@@ -101,6 +101,12 @@ const Map = ( {
       setPanToUserLocationRequested( false );
     }
   }, [userLocation, panToUserLocationRequested] );
+
+  // Kludge for the fact that the onUserLocationChange callback in MapView
+  // won't fire if showsUserLocation is true on the first render
+  useEffect( ( ) => {
+    setShowsUserLocation( true );
+  }, [] );
 
   // PermissionGate callbacks need to use useCallback, otherwise they'll
   // trigger re-renders if/when they change
@@ -234,6 +240,7 @@ const Map = ( {
           accessibilityLabel={t( "User-location" )}
           onPress={( ) => {
             setPanToUserLocationRequested( true );
+            setShowsUserLocation( true );
             setPermissionRequested( true );
           }}
         />
