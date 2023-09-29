@@ -60,7 +60,7 @@ const DetailsMapContainer = ( {
 
   const shareMap = () => {
     // takes in a provider prop but opens in browser instead of in app(google maps on iOS)
-    openMap( { latitude, longitude } );
+    openMap( { query: `${latitude}, ${longitude}` } );
   };
 
   const mapViewRef = useRef<any>( null );

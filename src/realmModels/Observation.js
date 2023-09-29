@@ -40,6 +40,7 @@ class Observation extends Realm.Object {
     user: User && User.USER_FIELDS,
     updated_at: true,
     viewer_trusted_by_observer: true,
+    private_geojson: true,
     private_location: true,
     private_place_guess: true,
     positional_accuracy: true
@@ -51,10 +52,13 @@ class Observation extends Realm.Object {
     geojson: true,
     id: true,
     identifications: Identification.ID_FIELDS,
+    geoprivacy: true,
     latitude: true,
     longitude: true,
     observation_photos: ObservationPhoto.OBSERVATION_PHOTOS_FIELDS,
     place_guess: true,
+    private_place_guess: true,
+    private_geojson: true,
     quality_grade: true,
     taxon: Taxon.TAXON_FIELDS,
     time_observed_at: true
@@ -138,6 +142,10 @@ class Observation extends Realm.Object {
       // https://github.com/inaturalist/inaturalist/blob/df6572008f60845b8ef5972a92a9afbde6f67829/app/webpack/observations/show/ducks/observation.js#L145
       latitude: obs.geojson && obs.geojson.coordinates && obs.geojson.coordinates[1],
       longitude: obs.geojson && obs.geojson.coordinates && obs.geojson.coordinates[0],
+      privateLatitude: obs.private_geojson && obs.private_geojson.coordinates
+                      && obs.private_geojson.coordinates[1],
+      privateLongitude: obs.private_geojson && obs.private_geojson.coordinates
+                      && obs.private_geojson.coordinates[0],
       observationPhotos,
       taxon,
       user
@@ -213,7 +221,6 @@ class Observation extends Realm.Object {
       place_guess: obs.place_guess,
       latitude: obs.latitude,
       longitude: obs.longitude,
-      positional_accuracy: obs.positional_accuracy,
       taxon_id: obs.taxon && obs.taxon.id,
       geoprivacy: obs.geoprivacy,
       uuid: obs.uuid,
@@ -302,7 +309,9 @@ class Observation extends Realm.Object {
       identifications_viewed: { type: "bool?", mapTo: "identificationsViewed" },
       viewer_trusted_by_observer: { type: "bool?", mapTo: "viewerTrustedByObserver" },
       private_place_guess: { type: "string?", mapTo: "privatePlaceGuess" },
-      private_location: { type: "string?", mapTo: "privateLocation" }
+      private_location: { type: "string?", mapTo: "privateLocation" },
+      privateLatitude: "double?",
+      privateLongitude: "double?"
     }
   };
 

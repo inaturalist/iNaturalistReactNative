@@ -100,19 +100,8 @@ const DetailsTab = ( { observation }: Props ): Node => {
   const isObscured = observation?.obscured && !belongsToCurrentUser;
   const showShareOptions = !isPrivate && !isObscured;
 
-  const getPrivateCoordinates = () => {
-    if ( observation?.private_location && belongsToCurrentUser ) {
-      const coordinates = observation?.private_location.split( "," );
-      return {
-        latitude: parseFloat( coordinates[0] ),
-        longitude: parseFloat( coordinates[1] )
-      };
-    }
-    return null;
-  };
-  const privateLocation = getPrivateCoordinates();
-  const latitude = observation.latitude || privateLocation?.latitude;
-  const longitude = observation.longitude || privateLocation?.longitude;
+  const latitude = observation.privateLatitude || observation.latitude;
+  const longitude = observation.privateLongitude || observation.longitude;
   const coordinateString = t( "Lat-Lon", {
     latitude,
     longitude
@@ -158,7 +147,7 @@ const DetailsTab = ( { observation }: Props ): Node => {
             <Menu.Item
               title={t( "Share-location" )}
               onPress={() => createOpenLink(
-                { latitude, longitude, query: `${latitude},${longitude}` }
+                { query: `${latitude},${longitude}` }
               )}
             />
             <Menu.Item

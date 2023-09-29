@@ -3,7 +3,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { View } from "components/styledComponents";
 import LocationIndicator from "images/svg/location_indicator.svg";
-import ObscuredLocationIndicator from "images/svg/obscured_location_indicator.svg";
 import type { Node } from "react";
 import React, { useState } from "react";
 import MapView, {
@@ -132,15 +131,6 @@ const Map = ( {
     />
   );
 
-  const obscuredlLocationIndicator = () => (
-    // $FlowIgnore
-    <ObscuredLocationIndicator
-      testID="Map.ObscuredLocationIndicator"
-      width={31}
-      height={31}
-    />
-  );
-
   return (
     <View
       style={[
@@ -200,39 +190,29 @@ const Map = ( {
           )}
           {( showLocationIndicator && obscured )
           && (
-            <>
-              <Polygon
-                coordinates={[
-                  {
-                    latitude: obsLatitude + OBSCURATION_VALUE,
-                    longitude: obsLongitude + OBSCURATION_VALUE
-                  },
-                  {
-                    latitude: obsLatitude + OBSCURATION_VALUE,
-                    longitude: obsLongitude - OBSCURATION_VALUE
-                  },
-                  {
-                    latitude: obsLatitude - OBSCURATION_VALUE,
-                    longitude: obsLongitude - OBSCURATION_VALUE
-                  },
-                  {
-                    latitude: obsLatitude - OBSCURATION_VALUE,
-                    longitude: obsLongitude + OBSCURATION_VALUE
-                  }
-                ]}
-                strokeWidth={2}
-                strokeColor="#74AC00"
-                fillColor="rgba( 116, 172, 0, 0.2 )"
-              />
-              <Marker
-                coordinate={{
-                  latitude: obsLatitude,
-                  longitude: obsLongitude
-                }}
-              >
-                {obscuredlLocationIndicator()}
-              </Marker>
-            </>
+            <Polygon
+              coordinates={[
+                {
+                  latitude: obsLatitude + OBSCURATION_VALUE,
+                  longitude: obsLongitude + OBSCURATION_VALUE
+                },
+                {
+                  latitude: obsLatitude + OBSCURATION_VALUE,
+                  longitude: obsLongitude - OBSCURATION_VALUE
+                },
+                {
+                  latitude: obsLatitude - OBSCURATION_VALUE,
+                  longitude: obsLongitude - OBSCURATION_VALUE
+                },
+                {
+                  latitude: obsLatitude - OBSCURATION_VALUE,
+                  longitude: obsLongitude + OBSCURATION_VALUE
+                }
+              ]}
+              strokeWidth={2}
+              strokeColor="#74AC00"
+              fillColor="rgba( 116, 172, 0, 0.2 )"
+            />
           )}
         </MapView>
       )}

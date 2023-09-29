@@ -37,6 +37,16 @@ const ObservationLocation = ( {
       accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
     } );
   }
+  if ( ( observation?.privateLatitude !== null && observation?.privateLatitude !== undefined )
+  && ( observation?.privateLongitude != null && observation?.privateLongitude !== undefined )
+  && !obscured
+  ) {
+    displayCoords = t( "Lat-Lon-Acc", {
+      latitude: observation.privateLatitude,
+      longitude: observation.privateLongitude,
+      accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
+    } );
+  }
   if ( !displayLocation ) {
     if ( displayCoords && !details ) {
       displayLocation = displayCoords;

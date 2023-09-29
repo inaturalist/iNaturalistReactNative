@@ -145,17 +145,14 @@ const DetailsMap = ( {
           >
             {displayLocation}
           </Body4>
-          {
-            !obscured && (
-              <Body4
-                className="text-darkGray"
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {displayCoordinates}
-              </Body4>
-            )
-          }
+
+          <Body4
+            className="text-darkGray"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {displayCoordinates}
+          </Body4>
 
           {obscured
         && (
