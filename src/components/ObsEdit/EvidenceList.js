@@ -35,6 +35,7 @@ const EvidenceList = ( {
         accessibilityRole="button"
         onPress={( ) => showMediaViewer( getIndex( ) )}
         className={classnames( imageClass )}
+        testID={`EvidenceList.${item}`}
       >
         <View className="rounded-lg overflow-hidden">
           <Image
@@ -51,7 +52,7 @@ const EvidenceList = ( {
   const renderFooter = ( ) => {
     if ( savingPhoto ) {
       return (
-        <View className={classnames( imageClass )}>
+        <View className={classnames( imageClass )} testID="EvidenceList.saving">
           <View className="rounded-lg overflow-hidden">
             <View className="bg-lightGray w-fit h-full justify-center">
               <ActivityIndicator />
@@ -70,6 +71,7 @@ const EvidenceList = ( {
       className={
         `${imageClass} border border-[2px] border-darkGray items-center justify-center`
       }
+      testID="EvidenceList.add"
     >
       <INatIcon name="plus-bold" size={27} color={colors.darkGray} />
     </Pressable>
