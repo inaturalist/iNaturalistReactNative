@@ -35,7 +35,7 @@ const Item = React.memo(
   ( {
     observation, layout, gridItemWidth, setShowLoginSheet = false
   } ) => (
-    <MyObservationsPressable observation={observation}>
+    <MyObservationsPressable observation={observation} testID="MyObservationsPressable">
       {
         layout === "grid"
           ? (

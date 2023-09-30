@@ -26,9 +26,6 @@ type Props = {
   evidenceList: Array<string>,
   setShowAddEvidenceSheet: Function,
   showAddEvidenceSheet: boolean,
-  setTakePhoto: Function,
-  setImportPhoto: Function,
-  setRecordSound: Function,
   savingPhoto: boolean
 }
 
@@ -41,9 +38,6 @@ const EvidenceSection = ( {
   evidenceList,
   setShowAddEvidenceSheet,
   showAddEvidenceSheet,
-  setTakePhoto,
-  setImportPhoto,
-  setRecordSound,
   savingPhoto
 }: Props ): Node => {
   const { t } = useTranslation( );
@@ -90,12 +84,9 @@ const EvidenceSection = ( {
   return (
     <View className="mx-6 mt-6">
       <AddEvidenceSheet
-        setShowAddEvidenceSheet={setShowAddEvidenceSheet}
         disableAddingMoreEvidence={obsPhotos?.length >= MAX_PHOTOS_ALLOWED}
         hidden={!showAddEvidenceSheet}
-        onTakePhoto={( ) => setTakePhoto( true )}
-        onImportPhoto={( ) => setImportPhoto( true )}
-        onRecordSound={( ) => setRecordSound( true )}
+        onClose={( ) => setShowAddEvidenceSheet( false )}
       />
       <View className="flex-row">
         <Heading4>{t( "EVIDENCE" )}</Heading4>
