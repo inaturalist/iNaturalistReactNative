@@ -11,7 +11,6 @@ import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
 import React, {
   useCallback, useContext, useEffect,
-  useMemo,
   useRef, useState
 } from "react";
 import Photo from "realmModels/Photo";
@@ -28,10 +27,7 @@ const EvidenceSectionContainer = ( ): Node => {
     setSelectedPhotoIndex,
     updateObservationKeys
   } = useContext( ObsEditContext );
-  const obsPhotos = useMemo(
-    ( ) => currentObservation?.observationPhotos || [],
-    [currentObservation]
-  );
+  const obsPhotos = currentObservation?.observationPhotos;
   const mountedRef = useRef( true );
   const navigation = useNavigation( );
   const [deletePhotoMode, setDeletePhotoMode] = useState( false );
@@ -103,11 +99,9 @@ const EvidenceSectionContainer = ( ): Node => {
   const showMediaViewer = index => {
     setSelectedPhotoIndex( index - 1 );
     setMediaViewerUris(
-      obsPhotos
-        ? Array.from( obsPhotos ).map(
-          obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
-        )
-        : []
+      obsPhotos.map(
+        obsPhoto => Photo.displayLocalOrRemoteSquarePhoto( obsPhoto.photo )
+      )
     );
     navigation.navigate( "MediaViewer" );
   };
