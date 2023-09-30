@@ -7,7 +7,7 @@ import React from "react";
 import { useTheme } from "react-native-paper";
 import { dropShadow } from "styles/global";
 
-import ObsImageBackground from "./ObsImageBackground";
+import ObsImage from "./ObsImage";
 
 type SOURCE = {
   uri: string,
@@ -24,10 +24,11 @@ type Props = {
   width?: string,
   height?: string,
   isMultiplePhotosTop?: boolean,
-  disableGradient?: boolean,
   hasSmallBorderRadius?: boolean,
   testID?: string,
-  style?: Object
+  style?: Object,
+  iconicTaxonName?: string,
+  white?: boolean
 };
 
 const ObsImagePreview = ( {
@@ -41,10 +42,11 @@ const ObsImagePreview = ( {
   height = "h-[62px]",
   opaque = false,
   isMultiplePhotosTop = false,
-  disableGradient = false,
   hasSmallBorderRadius = false,
   testID,
-  style
+  style,
+  iconicTaxonName = "unknown",
+  white = false
 }: Props ): Node => {
   const theme = useTheme();
   const hasMultiplePhotos = obsPhotosCount > 1;
@@ -52,21 +54,26 @@ const ObsImagePreview = ( {
     ? "rounded-lg"
     : "rounded-2xl";
 
+  const imageClassName = classNames(
+    "relative overflow-hidden max-h-[210px]",
+    width,
+    height,
+    borderRadius
+  );
+
   return (
     <View
-      className={classNames(
-        "relative overflow-hidden max-h-[210px]",
-        width,
-        height,
-        borderRadius
-      )}
+      className={imageClassName}
       style={style}
       testID={testID}
     >
-      <ObsImageBackground
+      <ObsImage
         uri={source}
         opaque={opaque}
-        disableGradient={disableGradient}
+        imageClassName={imageClassName}
+        iconicTaxonName={iconicTaxonName}
+        style={style}
+        white={white}
       />
       {selectable && (
         <View

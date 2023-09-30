@@ -10,10 +10,10 @@ class INatApiError extends Error {
   // HTTP status code of the server response
   status: number;
 
-  constructor( json ) {
+  constructor( json, status ) {
     super( JSON.stringify( json ) );
     this.json = json;
-    this.status = json.status;
+    this.status = status || json.status;
   }
 }
 // https://wbinnssmith.com/blog/subclassing-error-in-modern-javascript/
@@ -24,7 +24,7 @@ Object.defineProperty( INatApiError.prototype, "name", {
 const handleError = async ( e: Object, options: Object = {} ): Object => {
   if ( !e.response ) { throw e; }
   const errorText = await e.response.text( );
-  const error = new INatApiError( errorText );
+  const error = new INatApiError( errorText, e.response.status );
   // TODO: this will log all errors handled here to the log file, in a production build
   // we probably don't want to do that, so change this back to console.error at one point
   logger.error(
@@ -33,6 +33,7 @@ const handleError = async ( e: Object, options: Object = {} ): Object => {
   if ( options.throw ) {
     throw error;
   }
+  return null;
 };
 
 export default handleError;

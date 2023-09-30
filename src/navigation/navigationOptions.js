@@ -43,7 +43,7 @@ const showLongHeader: Object = {
   }
 };
 
-export const showHeaderLeft: Object = {
+const showHeaderLeft: Object = {
   ...showHeader,
   headerLeft: ( ) => <BackButton />
 };
@@ -89,5 +89,6 @@ export {
   removeBottomBorder,
   showCustomHeader,
   showHeader,
+  showHeaderLeft,
   showLongHeader
 };

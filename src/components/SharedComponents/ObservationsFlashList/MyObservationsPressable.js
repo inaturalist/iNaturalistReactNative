@@ -8,10 +8,11 @@ import { useTranslation } from "sharedHooks";
 
 type Props = {
   observation: Object,
+  testID?: string,
   children: any
 }
 
-const MyObservationsPressable = ( { observation, children }: Props ): Node => {
+const MyObservationsPressable = ( { observation, testID, children }: Props ): Node => {
   const navigation = useNavigation( );
   const { t } = useTranslation( );
   const unsynced = typeof observation.wasSynced !== "undefined" && !observation.wasSynced( );
@@ -27,6 +28,7 @@ const MyObservationsPressable = ( { observation, children }: Props ): Node => {
 
   return (
     <Pressable
+      testID={testID}
       onPress={navigateToObservation}
       accessibilityRole="link"
       accessibilityHint={unsynced

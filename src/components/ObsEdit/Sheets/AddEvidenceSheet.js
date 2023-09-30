@@ -1,61 +1,46 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import {
   BottomSheet, EvidenceButton, List2
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React, { useCallback } from "react";
+import React, { useState } from "react";
+import { Alert } from "react-native";
 import useTranslation from "sharedHooks/useTranslation";
 
 type Props = {
   disableAddingMoreEvidence: boolean,
-  setShowAddEvidenceSheet: Function,
   hidden?: boolean,
-  onImportPhoto: Function,
-  onTakePhoto: Function,
-  onRecordSound: Function,
+  onClose: Function
 }
 
 const AddEvidenceSheet = ( {
-  setShowAddEvidenceSheet,
   disableAddingMoreEvidence,
   hidden,
-  onImportPhoto,
-  onTakePhoto,
-  onRecordSound
+  onClose
 }: Props ): Node => {
   const { t } = useTranslation( );
-
-  const handleClose = useCallback(
-    ( ) => setShowAddEvidenceSheet( false ),
-    [setShowAddEvidenceSheet]
-  );
-
-  const onImportPhotoCallback = async () => {
-    handleClose( );
-    onImportPhoto();
-  };
-
-  const onTakePhotoCallback = async () => {
-    handleClose( );
-    onTakePhoto();
-  };
-
-  const onRecordSoundCallback = () => {
-    handleClose( );
-    onRecordSound();
-  };
+  const navigation = useNavigation( );
+  const [choice, setChoice] = useState( null );
 
   return (
     <BottomSheet
-      handleClose={handleClose}
+      handleClose={onClose}
       headerText={t( "ADD-EVIDENCE" )}
       snapPoints={[202]}
       hidden={hidden}
       onChange={position => {
-        if ( position === -1 ) {
-          handleClose( );
+        // -1 means the sheet is fully hidden... and in theory it's safe to navigate away
+        if ( position > -1 ) return;
+
+        if ( choice === "camera" ) {
+          navigation.navigate( "Camera", { addEvidence: true, camera: "Standard" } );
+        } else if ( choice === "import" ) {
+          navigation.navigate( "PhotoGallery", { skipGroupPhotos: true } );
+        } else if ( choice === "sound" ) {
+          Alert.alert( "TODO", "Still need to implement sound recording" );
         }
       }}
     >
@@ -68,21 +53,30 @@ const AddEvidenceSheet = ( {
         <View className="flex-row w-full justify-around">
           <EvidenceButton
             icon="camera"
-            handlePress={onTakePhotoCallback}
+            handlePress={( ) => {
+              setChoice( "camera" );
+              onClose( );
+            }}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Camera" )}
             accessibilityHint={t( "Navigates-to-camera" )}
           />
           <EvidenceButton
             icon="gallery"
-            handlePress={onImportPhotoCallback}
+            handlePress={( ) => {
+              setChoice( "import" );
+              onClose( );
+            }}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Bulk-importer" )}
             accessibilityHint={t( "Navigates-to-bulk-importer" )}
           />
           <EvidenceButton
             icon="microphone"
-            handlePress={onRecordSoundCallback}
+            handlePress={( ) => {
+              setChoice( "sound" );
+              onClose( );
+            }}
             disabled={disableAddingMoreEvidence}
             accessibilityLabel={t( "Sound-recorder" )}
             accessibilityHint={t( "Navigates-to-sound-recorder" )}
