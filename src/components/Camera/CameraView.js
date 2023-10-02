@@ -25,7 +25,6 @@ type Props = {
   onCaptureError?: Function,
   onCameraError?: Function,
   frameProcessor?: Function,
-  frameProcessorFps?: number,
   animatedProps: any,
   onZoomStart?: Function,
   onZoomChange?: Function
@@ -41,7 +40,6 @@ const CameraView = ( {
   onCaptureError,
   onCameraError,
   frameProcessor,
-  frameProcessorFps,
   animatedProps,
   onZoomStart,
   onZoomChange
@@ -169,11 +167,12 @@ const CameraView = ( {
             : null}
           ref={cameraRef}
           device={device}
-          preset="photo"
           enableHighQualityPhotos
           // Props for ARCamera only
           frameProcessor={frameProcessor}
-          frameProcessorFps={frameProcessorFps}
+          pixelFormat={Platform.OS === "ios"
+            ? "native"
+            : "yuv"}
           animatedProps={animatedProps}
         />
       </GestureDetector>
