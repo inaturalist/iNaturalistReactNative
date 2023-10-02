@@ -120,7 +120,7 @@
     "realm": "^11.10.2",
     "sanitize-html": "^2.11.0",
     "use-debounce": "^9.0.4",
-    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision"
+    "vision-camera-plugin-inatvision": "github:inaturalist/vision-camera-plugin-inatvision#vision-v3"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
