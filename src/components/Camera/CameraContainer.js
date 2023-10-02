@@ -84,6 +84,7 @@ const CameraWithDevice = ( {
   const camera = useRef<Camera>( null );
   const hasFlash = device?.hasFlash;
   const initialPhotoOptions = {
+    enableShutterSound: true,
     enableAutoStabilization: true,
     qualityPrioritization: "quality",
     ...( hasFlash && { flash: "off" } )
