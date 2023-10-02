@@ -6,12 +6,12 @@ import React, {
 } from "react";
 import { Platform } from "react-native";
 import Config from "react-native-config";
-import * as REA from "react-native-reanimated";
 import {
   useFrameProcessor
 } from "react-native-vision-camera";
 import { modelPath, taxonomyPath } from "sharedHelpers/cvModel";
 import * as InatVision from "vision-camera-plugin-inatvision";
+import { Worklets } from "react-native-worklets-core";
 
 type Props = {
   cameraRef: Object,
@@ -61,6 +61,14 @@ const FrameProcessorCamera = ( {
     };
   }, [onLog] );
 
+  const handleResults = Worklets.createRunInJsFn( predictions => {
+    onTaxaDetected( predictions );
+  } );
+
+  const handleError = Worklets.createRunInJsFn( error => {
+    onClassifierError( error );
+  } );
+
   const frameProcessor = useFrameProcessor(
     frame => {
       "worklet";
@@ -73,10 +81,10 @@ const FrameProcessorCamera = ( {
           taxonomyPath,
           confidenceThreshold
         } );
-        REA.runOnJS( onTaxaDetected )( results );
+        handleResults( results );
       } catch ( classifierError ) {
         console.log( `Error: ${classifierError.message}` );
-        REA.runOnJS( onClassifierError )( classifierError );
+        handleError( classifierError );
       }
     },
     [version, confidenceThreshold]
