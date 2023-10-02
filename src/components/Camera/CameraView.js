@@ -7,7 +7,7 @@ import {
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import { Camera } from "react-native-vision-camera";
-import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
+// import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useIsForeground from "sharedHooks/useIsForeground";
 
 import FocusSquare from "./FocusSquare";
@@ -53,7 +53,7 @@ const CameraView = ( {
   const isForeground = useIsForeground();
   const isActive = isFocused && isForeground;
 
-  const { deviceOrientation } = useDeviceOrientation();
+  // const { deviceOrientation } = useDeviceOrientation();
 
   const singleTapToFocus = async ( { x, y } ) => {
     // If the device doesn't support focus, we don't want to do anything and show no animation
@@ -162,9 +162,11 @@ const CameraView = ( {
           // In Android the camera won't set the orientation metadata
           // correctly without this, but in iOS it won't display the
           // preview correctly *with* it
-          orientation={Platform.OS === "android"
-            ? deviceOrientation
-            : null}
+          // TODO: as of react-native-vision-camera 3.2.2 this is not supported
+          // There is an open issue about adding orientation support to Android
+          // orientation={Platform.OS === "android"
+          //   ? deviceOrientation
+          //   : null}
           ref={cameraRef}
           device={device}
           enableHighQualityPhotos
