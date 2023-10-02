@@ -30,7 +30,7 @@ import {
 // remove if/when we return to the main repo
 import {
   Camera,
-  useCameraDevices
+  useCameraDevice
 } from "react-native-vision-camera";
 import Photo from "realmModels/Photo";
 import useDeviceOrientation, {
@@ -329,8 +329,7 @@ const CameraContainer = ( ): Node => {
   const addEvidence = params?.addEvidence;
   const cameraType = params?.camera;
   const [cameraPosition, setCameraPosition] = useState( "back" );
-  const devices = useCameraDevices( );
-  const device = devices[cameraPosition];
+  const device = useCameraDevice( cameraPosition );
 
   if ( !device ) {
     return null;
