@@ -10,14 +10,6 @@ export class mockCamera extends React.PureComponent {
     ];
   }
 
-  static async getCameraPermissionStatus() {
-    return "authorized";
-  }
-
-  static async requestCameraPermission() {
-    return "authorized";
-  }
-
   // I (johannes) did not use this function in the tests,
   // but it's here as in documentation in case someone needs it
   // async takePhoto() {
@@ -36,29 +28,23 @@ export class mockCamera extends React.PureComponent {
 
 export const mockSortDevices = ( _left, _right ) => 1;
 
-export const mockUseCameraDevices = _deviceType => {
-  const devices = {
-    back: {
-      position: "back",
-      hasFlash: true
-    },
-    front: {
-      devices: ["wide-angle-camera"],
-      hasFlash: true,
-      hasTorch: true,
-      id: "1",
-      isMultiCam: true,
-      maxZoom: 12.931958198547363,
-      minZoom: 1,
-      name: "front (1)",
-      neutralZoom: 1,
-      position: "front",
-      supportsDepthCapture: false,
-      supportsFocus: true,
-      supportsLowLightBoost: false,
-      supportsParallelVideoProcessing: true,
-      supportsRawCapture: true
-    }
+export const mockUseCameraDevice = _deviceType => {
+  const device = {
+    devices: ["wide-angle-camera"],
+    hasFlash: true,
+    hasTorch: true,
+    id: "1",
+    isMultiCam: true,
+    maxZoom: 12.931958198547363,
+    minZoom: 1,
+    name: "front (1)",
+    neutralZoom: 1,
+    position: "front",
+    supportsDepthCapture: false,
+    supportsFocus: true,
+    supportsLowLightBoost: false,
+    supportsParallelVideoProcessing: true,
+    supportsRawCapture: true
   };
-  return devices;
+  return device;
 };
