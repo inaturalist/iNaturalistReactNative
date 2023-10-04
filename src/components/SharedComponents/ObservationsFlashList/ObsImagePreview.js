@@ -28,7 +28,8 @@ type Props = {
   testID?: string,
   style?: Object,
   iconicTaxonName?: string,
-  white?: boolean
+  white?: boolean,
+  className?: string
 };
 
 const ObsImagePreview = ( {
@@ -46,7 +47,8 @@ const ObsImagePreview = ( {
   testID,
   style,
   iconicTaxonName = "unknown",
-  white = false
+  white = false,
+  className
 }: Props ): Node => {
   const theme = useTheme();
   const hasMultiplePhotos = obsPhotosCount > 1;
@@ -58,7 +60,8 @@ const ObsImagePreview = ( {
     "relative overflow-hidden max-h-[210px]",
     width,
     height,
-    borderRadius
+    borderRadius,
+    className
   );
 
   return (

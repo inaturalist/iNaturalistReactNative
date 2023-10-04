@@ -290,8 +290,8 @@ const ObsDetailsContainer = ( ): Node => {
     }
   }, [localObservation, markViewedMutation, uuid] );
 
-  const navToAddID = ( ) => {
-    navigation.navigate( "AddID", {
+  const navToSuggestions = ( ) => {
+    navigation.navigate( "Suggestions", {
       observationUUID: uuid,
       createRemoteIdentification: true,
       belongsToCurrentUser
@@ -332,7 +332,7 @@ const ObsDetailsContainer = ( ): Node => {
 
   return (
     <ObsDetails
-      navToAddID={navToAddID}
+      navToSuggestions={navToSuggestions}
       onCommentAdded={onCommentAdded}
       openCommentBox={openCommentBox}
       tabs={tabs}

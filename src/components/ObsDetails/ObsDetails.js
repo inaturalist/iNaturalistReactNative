@@ -20,7 +20,7 @@ import DetailsTab from "./DetailsTab/DetailsTab";
 import Header from "./Header";
 
 type Props = {
-  navToAddID: Function,
+  navToSuggestions: Function,
   onCommentAdded: Function,
   openCommentBox: Function,
   tabs: Array<Object>,
@@ -40,7 +40,7 @@ type Props = {
 }
 
 const ObsDetails = ( {
-  navToAddID,
+  navToSuggestions,
   onCommentAdded,
   openCommentBox,
   tabs,
@@ -97,7 +97,7 @@ const ObsDetails = ( {
       </ScrollView>
       {showActivityTab && (
         <FloatingButtons
-          navToAddID={navToAddID}
+          navToSuggestions={navToSuggestions}
           openCommentBox={openCommentBox}
           showCommentBox={showCommentBox}
         />

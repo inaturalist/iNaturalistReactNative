@@ -12,13 +12,13 @@ import { getShadowStyle } from "styles/global";
 import colors from "styles/tailwindColors";
 
 type Props = {
-  navToAddID: Function,
+  navToSuggestions: Function,
   showCommentBox: Function,
   openCommentBox: Function
 }
 
 const FloatingButtons = ( {
-  navToAddID,
+  navToSuggestions,
   openCommentBox,
   showCommentBox
 }: Props ): Node => {
@@ -47,7 +47,7 @@ const FloatingButtons = ( {
       />
       <Button
         text={t( "SUGGEST-ID" )}
-        onPress={navToAddID}
+        onPress={navToSuggestions}
         className="w-1/2 mx-6"
         testID="ObsDetail.cvSuggestionsButton"
         accessibilityRole="link"

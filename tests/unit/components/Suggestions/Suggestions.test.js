@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { fireEvent, screen } from "@testing-library/react-native";
-import AddIDContainer from "components/AddID/AddIDContainer";
+import SuggestionsContainer from "components/Suggestions/SuggestionsContainer";
 import initI18next from "i18n/initI18next";
 import { t } from "i18next";
 import inatjs from "inaturalistjs";
@@ -114,44 +114,44 @@ const mockRoute = {
   }
 };
 
-const renderAddId = ( ) => renderComponent(
+const renderSuggestions = ( ) => renderComponent(
   <ObsEditContext.Provider value={{
     updateObservationKeys: jest.fn( )
   }}
   >
-    <AddIDContainer route={mockRoute} />
+    <SuggestionsContainer route={mockRoute} />
   </ObsEditContext.Provider>
 );
 
-describe( "AddID", ( ) => {
+describe( "Suggestions", ( ) => {
   beforeAll( async ( ) => {
     await initI18next( );
   } );
 
   test( "should not have accessibility errors", () => {
-    const addID = (
+    const suggestions = (
       <BottomSheetModalProvider>
         <INatPaperProvider>
           <ObsEditContext.Provider value={{
             updateObservationKeys: jest.fn( )
           }}
           >
-            <AddIDContainer route={mockRoute} />
+            <SuggestionsContainer route={mockRoute} />
           </ObsEditContext.Provider>
         </INatPaperProvider>
       </BottomSheetModalProvider>
     );
-    expect( addID ).toBeAccessible( );
+    expect( suggestions ).toBeAccessible( );
   } );
 
   it( "should render inside mocked container", ( ) => {
-    renderAddId( );
+    renderSuggestions( );
     expect( screen.getByTestId( "mock-view-no-footer" ) ).toBeTruthy();
   } );
 
   it( "show taxon search results", async ( ) => {
     inatjs.search.mockResolvedValue( makeResponse( mockTaxaList ) );
-    renderAddId( );
+    renderSuggestions( );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
     fireEvent.changeText( input, "Some taxon" );
@@ -159,7 +159,7 @@ describe( "AddID", ( ) => {
   } );
 
   it( "shows loading indicator when taxon is selected", async () => {
-    renderAddId( );
+    renderSuggestions( );
     const input = screen.getByTestId( "SearchTaxon" );
     const taxon = mockTaxaList[0];
 
@@ -169,6 +169,6 @@ describe( "AddID", ( ) => {
     const labelText = t( "Checkmark" );
     const chooseButton = ( await screen.findAllByLabelText( labelText ) )[0];
     fireEvent.press( chooseButton );
-    await screen.findByTestId( "AddID.ActivityIndicator" );
+    await screen.findByTestId( "Suggestions.ActivityIndicator" );
   } );
 } );

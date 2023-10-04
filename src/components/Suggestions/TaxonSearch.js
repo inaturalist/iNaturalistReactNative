@@ -1,31 +1,27 @@
 // @flow
 
+import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import {
-  Body2,
   SearchBar,
   TaxonResult
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import Taxon from "realmModels/Taxon";
-import { useTranslation } from "sharedHooks";
-import useAuthenticatedQuery from "sharedHooks/useAuthenticatedQuery";
+import { useAuthenticatedQuery } from "sharedHooks";
 
 type Props = {
-  taxonQuery: string,
-  setTaxonQuery: Function,
   onTaxonChosen: Function
 };
 
 const TaxonSearch = ( {
-  taxonQuery,
-  setTaxonQuery,
   onTaxonChosen
 }: Props ): Node => {
-  const { t } = useTranslation( );
+  const [taxonQuery, setTaxonQuery] = useState( "" );
+  const navigation = useNavigation( );
   const { data: taxonList } = useAuthenticatedQuery(
     ["fetchSearchResults", taxonQuery],
     optsWithAuth => fetchSearchResults(
@@ -40,36 +36,42 @@ const TaxonSearch = ( {
     )
   );
 
-  const renderEmptyComponent = ( ) => (
-    <Body2 className="self-center">
-      {t( "Search-for-a-taxon-to-add-an-identification" )}
-    </Body2>
+  useEffect(
+    ( ) => {
+      navigation.addListener( "blur", ( ) => {
+        setTaxonQuery( "" );
+      } );
+    },
+    [navigation]
+  );
+
+  const renderFooter = ( ) => (
+    <View className="pb-10" />
   );
 
   return (
-    <>
-      <View className="mx-6">
-        <SearchBar
-          handleTextChange={setTaxonQuery}
-          value={taxonQuery}
-          testID="SearchTaxon"
-          containerClass="pb-5 mt-3"
-        />
-      </View>
+    <View className="flex-1">
+      <SearchBar
+        handleTextChange={setTaxonQuery}
+        value={taxonQuery}
+        testID="SearchTaxon"
+        containerClass="pb-5 mx-4"
+      />
       <FlatList
         keyboardShouldPersistTaps="always"
         data={taxonList}
-        renderItem={( { item } ) => (
+        renderItem={( { item, index } ) => (
           <TaxonResult
             taxon={item}
             handleCheckmarkPress={( ) => onTaxonChosen( item )}
             testID={`Search.taxa.${item.id}`}
+            first={index === 0}
           />
         )}
         keyExtractor={item => item.id}
-        ListEmptyComponent={renderEmptyComponent}
+        ListFooterComponent={renderFooter}
       />
-    </>
+    </View>
   );
 };
 

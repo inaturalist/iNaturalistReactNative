@@ -23,6 +23,7 @@ const EvidenceList = ( {
   handleAddEvidence
 }: Props ): Node => {
   const {
+    mediaViewerUris,
     setMediaViewerUris,
     setSelectedPhotoIndex,
     savingPhoto
@@ -36,6 +37,12 @@ const EvidenceList = ( {
       setDeletePhotoMode( false );
     }
   }, [photoUris.length, deletePhotoMode] );
+
+  useEffect( ( ) => {
+    if ( photoUris.length !== mediaViewerUris.length ) {
+      setMediaViewerUris( photoUris );
+    }
+  }, [photoUris, setMediaViewerUris, mediaViewerUris] );
 
   const renderPhotoOrEvidenceButton = ( { item, index } ) => {
     if ( item === "add" ) {
@@ -70,7 +77,6 @@ const EvidenceList = ( {
         accessibilityRole="button"
         onPress={( ) => {
           setSelectedPhotoIndex( index - 1 );
-          setMediaViewerUris( photoUris );
           navigation.navigate( "MediaViewer" );
         }}
         className={classnames( imageClass )}

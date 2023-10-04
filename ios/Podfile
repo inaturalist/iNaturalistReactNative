@@ -29,7 +29,7 @@ target "iNaturalistReactNative" do
   # Flags change depending on the env values.
   flags = get_default_flags
 
-  permissions_path = "../node_modules/react-native-permissions/ios"
+  # permissions_path = "../node_modules/react-native-permissions/ios"
 
   use_react_native!(
     path: config[:reactNativePath],
@@ -47,8 +47,8 @@ target "iNaturalistReactNative" do
     app_path: "#{Pod::Config.instance.installation_root}/.."
   )
   pod "React-jsi", path: "../node_modules/react-native/ReactCommon/jsi", modular_headers: true
-  pod "Permission-LocationWhenInUse", path: "#{permissions_path}/LocationWhenInUse"
-  pod "Permission-PhotoLibrary", path: "#{permissions_path}/PhotoLibrary"
+  # pod "Permission-LocationWhenInUse", path: "#{permissions_path}/LocationWhenInUse"
+  # pod "Permission-PhotoLibrary", path: "#{permissions_path}/PhotoLibrary"
 
   pod "react-native-config", path: "../node_modules/react-native-config"
 

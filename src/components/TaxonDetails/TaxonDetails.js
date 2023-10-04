@@ -73,7 +73,7 @@ const TaxonDetails = ( ): Node => {
             onPress={( ) => {
               if ( lastScreen ) {
                 navigation.navigate( "CameraNavigator", {
-                  screen: "AddID",
+                  screen: "Suggestions",
                   params: { }
                 } );
               } else {

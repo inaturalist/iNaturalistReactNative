@@ -1,20 +1,23 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
+import scoreImage from "api/computerVision";
 import { createIdentification } from "api/identifications";
 import { ObsEditContext, RealmContext } from "providers/contexts";
 import type { Node } from "react";
 import React, { useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import uuid from "react-native-uuid";
+import flattenUploadParams from "sharedHelpers/flattenUploadParams";
 import {
   useAuthenticatedMutation,
+  useAuthenticatedQuery,
   useCurrentUser,
   useLocalObservation,
   useTranslation
 } from "sharedHooks";
 
-import AddID from "./AddID";
+import Suggestions from "./Suggestions";
 
 const { useRealm } = RealmContext;
 
@@ -28,12 +31,11 @@ type Props = {
   },
 };
 
-const AddIDContainer = ( { route }: Props ): Node => {
+const SuggestionsContainer = ( { route }: Props ): Node => {
   const [comment, setComment] = useState( "" );
-  const [loading, setLoading] = useState( false );
-  const [taxonQuery, setTaxonQuery] = useState( "" );
   const {
-    updateObservationKeys
+    updateObservationKeys,
+    mediaViewerUris
   } = useContext( ObsEditContext );
   const currentUser = useCurrentUser( );
   const realm = useRealm( );
@@ -42,8 +44,24 @@ const AddIDContainer = ( { route }: Props ): Node => {
   const belongsToCurrentUser = route?.params?.belongsToCurrentUser;
   const localObservation = useLocalObservation( observationUUID );
   const { t } = useTranslation( );
+  const [selectedPhotoUri, setSelectedPhotoUri] = useState( mediaViewerUris[0] );
 
   const navigation = useNavigation( );
+
+  const { data: nearbySuggestions } = useAuthenticatedQuery(
+    ["scoreImage", selectedPhotoUri],
+    async optsWithAuth => scoreImage(
+      await flattenUploadParams(
+        selectedPhotoUri
+        // latitude,
+        // longitude,
+        // observedOn
+      ),
+      optsWithAuth
+    )
+  );
+
+  console.log( nearbySuggestions, "nearby suggestions" );
 
   const showErrorAlert = error => Alert.alert( "Error", error, [{ text: t( "OK" ) }], {
     cancelable: true
@@ -92,7 +110,6 @@ const AddIDContainer = ( { route }: Props ): Node => {
   };
 
   const createId = identification => {
-    setLoading( true );
     const newIdentification = formatIdentification( identification );
     if ( createRemoteIdentification ) {
       createIdentificationMutation.mutate( {
@@ -113,24 +130,23 @@ const AddIDContainer = ( { route }: Props ): Node => {
   useEffect(
     ( ) => {
       navigation.addListener( "blur", ( ) => {
-        setTaxonQuery( "" );
         setComment( "" );
-        setLoading( false );
       } );
     },
     [navigation]
   );
 
   return (
-    <AddID
+    <Suggestions
+      photoUris={mediaViewerUris}
+      selectedPhotoUri={selectedPhotoUri}
+      setSelectedPhotoUri={setSelectedPhotoUri}
+      nearbySuggestions={nearbySuggestions}
+      onTaxonChosen={createId}
       setComment={setComment}
       comment={comment}
-      taxonQuery={taxonQuery}
-      setTaxonQuery={setTaxonQuery}
-      createId={createId}
-      loading={loading}
     />
   );
 };
 
-export default AddIDContainer;
+export default SuggestionsContainer;
