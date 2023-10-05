@@ -29,7 +29,7 @@ const ObsListItem = ( { observation, setShowLoginSheet }: Props ): Node => {
         obsPhotosCount={observation?.observationPhotos?.length ?? 0}
         hasSound={!!observation?.observationSounds?.length}
         opaque={needsSync}
-        hasSmallBorderRadius
+        isSmall
         iconicTaxonName={observation.taxon?.iconic_taxon_name}
       />
       <View className="pr-[25px] flex-1 ml-[10px]">

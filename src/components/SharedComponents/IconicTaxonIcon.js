@@ -30,7 +30,6 @@ const IconicTaxonIcon = ( {
       }
     )}
     testID="IconicTaxonName.iconicTaxonIcon"
-    style={style}
   >
     <INatIcon
       name={iconicTaxonName && `iconic-${iconicTaxonName?.toLowerCase( )}`}

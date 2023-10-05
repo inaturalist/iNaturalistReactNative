@@ -5,60 +5,64 @@ import {
 } from "@gorhom/bottom-sheet";
 import { styled } from "nativewind";
 import {
-  ActivityIndicator as StyledActivityIndicator,
-  Image as StyledImage,
-  ImageBackground as StyledImageBackground,
-  KeyboardAvoidingView as StyledKeyboardAvoidingView,
-  Modal as StyledModal,
+  ActivityIndicator as UnstyledActivityIndicator,
+  Image as UnstyledImage,
+  ImageBackground as UnstyledImageBackground,
+  KeyboardAvoidingView as UnstyledKeyboardAvoidingView,
+  Modal as UnstyledModal,
   Platform,
   Pressable as StyledPressable,
-  SafeAreaView as StyledSafeAreaView,
-  ScrollView as StyledScrollView,
-  Text as StyledText,
-  TextInput as StyledTextInput,
-  View as StyledView
+  SafeAreaView as UnstyledSafeAreaView,
+  ScrollView as UnstyledScrollView,
+  Text as UnstyledText,
+  TextInput as UntyledTextInput,
+  View as UnstyledView
 } from "react-native";
+import UnstyledLinearGradient from "react-native-linear-gradient";
 
 // $FlowIgnore
-const ActivityIndicator = styled( StyledActivityIndicator );
+const ActivityIndicator = styled( UnstyledActivityIndicator );
 // $FlowIgnore
-const View = styled( StyledView );
+const View = styled( UnstyledView );
 // $FlowIgnore
-const KeyboardAvoidingView = styled( StyledKeyboardAvoidingView );
+const KeyboardAvoidingView = styled( UnstyledKeyboardAvoidingView );
 // $FlowIgnore
-const SafeAreaView = styled( StyledSafeAreaView );
+const SafeAreaView = styled( UnstyledSafeAreaView );
 // $FlowIgnore
-const ScrollView = styled( StyledScrollView );
+const ScrollView = styled( UnstyledScrollView );
 // $FlowIgnore
 const Text = styled(
-  StyledText,
+  UnstyledText,
   Platform.OS === "ios"
     ? "font-Whitney-Medium"
     : "font-Whitney-Medium-Pro"
 );
 // $FlowIgnore
 const LightText = styled(
-  StyledText,
+  UnstyledText,
   Platform.OS === "ios"
     ? "font-Whitney-Light"
     : "font-Whitney-Light-Pro"
 );
 // $FlowIgnore
-const TextInput = styled( StyledTextInput );
+const TextInput = styled( UntyledTextInput );
 // $FlowIgnore
 const Pressable = styled( StyledPressable );
 // $FlowIgnore
-const Image = styled( StyledImage );
+const Image = styled( UnstyledImage );
 // $FlowIgnore
 const BottomSheetTextInput = styled( StyledBottomSheetTextInput );
 // $FlowIgnore
-const Modal = styled( StyledModal );
+const Modal = styled( UnstyledModal );
 // $FlowIgnore
-const ImageBackground = styled( StyledImageBackground );
+const ImageBackground = styled( UnstyledImageBackground );
 
 const fontMonoClass: string = ( Platform.OS === "ios"
   ? "font-Menlo"
   : "font-monospace" );
+
+// $FlowIgnore
+const LinearGradient = styled( UnstyledLinearGradient );
 
 export {
   ActivityIndicator,
@@ -68,6 +72,7 @@ export {
   ImageBackground,
   KeyboardAvoidingView,
   LightText,
+  LinearGradient,
   Modal,
   Pressable,
   SafeAreaView,
