@@ -66,6 +66,9 @@ describe( "Signed in user", () => {
     // Check that the observation list screen is visible
     const observation = element( by.id( "MyObservationsPressable" ) ).atIndex( 0 );
     await waitFor( observation ).toBeVisible().withTimeout( 10000 );
+    // Check that the number of comments component is visible
+    const commentCount = element( by.id( "ObsStatus.commentsCount" ) ).atIndex( 0 );
+    await waitFor( commentCount ).toBeVisible().withTimeout( 10000 );
     /*
     / 3. Update the observation by adding a comment
     */
