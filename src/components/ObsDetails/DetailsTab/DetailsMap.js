@@ -1,8 +1,9 @@
 // @flow
 
 import { HeaderBackButton } from "@react-navigation/elements";
-import classNames from "classnames";
+import classnames from "classnames";
 import {
+  Body2,
   Body4,
   INatIconButton
 } from "components/SharedComponents";
@@ -15,20 +16,15 @@ import {
 import { t } from "i18next";
 import type { Node } from "react";
 import React from "react";
-import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
-import { getShadowStyle } from "styles/global";
+import { getShadowForColor } from "styles/global";
 
 import CoordinatesCopiedNotification from "./CoordinatesCopiedNotification";
 
-const getShadow = shadowColor => getShadowStyle( {
-  shadowColor,
-  offsetWidth: 0,
-  offsetHeight: 2,
-  shadowOpacity: 0.25,
-  shadowRadius: 2,
-  elevation: 5
-} );
+const HEADER_BACK_BUTTON_STYLE = {
+  marginBottom: 15,
+  marginLeft: 15
+};
 
 type Props = {
   latitude: number,
@@ -48,22 +44,55 @@ type Props = {
   closeModal: Function
 }
 
+const FloatingActionButton = ( {
+  buttonClassName,
+  onPress,
+  accessibilityLabel,
+  icon,
+  theme
+} ) => (
+  <INatIconButton
+    style={getShadowForColor( theme.colors.primary )}
+    className={classnames(
+      "absolute",
+      "bg-white",
+      "rounded-full",
+      "m-5",
+      buttonClassName
+    )}
+    icon={icon}
+    height={46}
+    width={46}
+    size={24}
+    onPress={onPress}
+    accessibilityLabel={accessibilityLabel}
+  />
+);
+
 const DetailsMap = ( {
-  latitude, longitude, obscured, positionalAccuracy,
-  mapViewRef, mapType, closeNotificationsModal, displayLocation,
+  closeModal,
+  closeNotificationsModal,
+  copyCoordinates,
+  cycleMapTypes,
   displayCoordinates,
-  copyCoordinates, shareMap, cycleMapTypes, zoomToCurrentUserLocation,
-  showNotificationModal, closeModal
+  displayLocation,
+  latitude,
+  longitude,
+  mapType,
+  mapViewRef,
+  obscured,
+  positionalAccuracy,
+  shareMap,
+  showNotificationModal,
+  zoomToCurrentUserLocation
 }: Props ): Node => {
   const theme = useTheme( );
-
-  const mapButtonClassName = "absolute bg-white rounded-full m-[15px]";
-
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 h-full">
         <Map
           showLocationIndicator
+          showsMyLocationButton={false}
           obsLatitude={latitude}
           obsLongitude={longitude}
           mapHeight="100%"
@@ -74,103 +103,65 @@ const DetailsMap = ( {
         >
           { !obscured && (
             <>
-              <View
-                style={getShadow( theme.colors.primary )}
-                className={`${mapButtonClassName} top-0 left-0`}
-              >
-                <INatIconButton
-                  icon="copy"
-                  height={46}
-                  width={46}
-                  size={26}
-                  onPress={() => copyCoordinates()}
-                  accessibilityLabel={t( ( "Copy-map-coordinates" ) )}
-                />
-              </View>
-              <View
-                style={getShadow( theme.colors.primary )}
-                className={`${mapButtonClassName} top-0 right-0`}
-              >
-                <INatIconButton
-                  icon="share"
-                  height={46}
-                  width={46}
-                  size={26}
-                  onPress={() => shareMap()}
-                  accessibilityLabel={t( ( "Share-map" ) )}
-                />
-              </View>
+              <FloatingActionButton
+                icon="copy"
+                onPress={( ) => copyCoordinates( )}
+                accessibilityLabel={t( "Copy-map-coordinates" )}
+                buttonClassName="top-0 left-0"
+                theme={theme}
+              />
+              <FloatingActionButton
+                icon="share"
+                onPress={( ) => shareMap( )}
+                accessibilityLabel={t( "Share-map" )}
+                buttonClassName="top-0 right-0"
+                theme={theme}
+              />
             </>
           )}
-
-          <View
-            style={getShadow( theme.colors.primary )}
-            className={`${mapButtonClassName} bottom-0 right-0`}
-          >
-            <INatIconButton
-              icon="currentlocation"
-              height={46}
-              width={46}
-              size={24}
-              onPress={() => zoomToCurrentUserLocation()}
-              accessibilityLabel={t( ( "User-location" ) )}
-            />
-          </View>
-          <View
-            style={getShadow( theme.colors.primary )}
-            className={`${mapButtonClassName} bottom-0 left-0`}
-          >
-            <INatIconButton
-              icon="map-layers"
-              height={46}
-              width={46}
-              size={24}
-              onPress={() => cycleMapTypes()}
-              accessibilityLabel={t( ( "Map-layers" ) )}
-            />
-          </View>
+          <FloatingActionButton
+            icon="currentlocation"
+            onPress={( ) => zoomToCurrentUserLocation( )}
+            accessibilityLabel={t( "User-location" )}
+            buttonClassName="bottom-0 right-0"
+            theme={theme}
+          />
+          <FloatingActionButton
+            icon="map-layers"
+            onPress={( ) => cycleMapTypes( )}
+            accessibilityLabel={t( "Map-layers" )}
+            buttonClassName="bottom-0 left-0"
+            theme={theme}
+          />
         </Map>
       </View>
-      <View className="py-[17px] bg-white w-fit">
-        <View
-          className={classNames( "space-y-[11px] pl-[64px] pr-[26px]", {
-            "": Platform.OS === "android",
-            "pl-[74px]": Platform.OS === "ios"
-          } )}
-        >
-          <Body4
+      <View className="bg-white w-fit flex-row items-end">
+        <HeaderBackButton
+          tintColor={theme.colors.primary}
+          onPress={( ) => closeModal()}
+          style={HEADER_BACK_BUTTON_STYLE}
+        />
+        <View className="pt-5 pr-5 pb-5 flex-1">
+          <Body2
             className="text-darkGray"
             numberOfLines={1}
             ellipsizeMode="tail"
           >
             {displayLocation}
-          </Body4>
+          </Body2>
 
-          <Body4
+          <Body2
             className="text-darkGray"
             numberOfLines={1}
             ellipsizeMode="tail"
           >
             {displayCoordinates}
-          </Body4>
-
-          {obscured
-        && (
-          <Body4 className="italic">
-            {t( "Obscured-observation-location-map-description" )}
-          </Body4>
-        ) }
-        </View>
-        <View
-          className={classNames( "absolute bottom-0 left-0", {
-            "mb-[25px]": Platform.OS === "android",
-            "m-[25px] mb-[10px]": Platform.OS === "ios"
-          } )}
-        >
-          <HeaderBackButton
-            tintColor={theme.colors.primary}
-            onPress={( ) => closeModal()}
-          />
+          </Body2>
+          {obscured && (
+            <Body4 className="italic">
+              {t( "Obscured-observation-location-map-description" )}
+            </Body4>
+          ) }
         </View>
       </View>
       <Modal

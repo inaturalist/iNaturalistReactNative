@@ -33,8 +33,10 @@ const DetailsMapContainer = ( {
     longitude,
     accuracy: observation?.positional_accuracy?.toFixed( 0 ) || t( "none" )
   } );
-  let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" )
-  || checkCamelAndSnakeCase( observation, "privatePlaceGuess" );
+  let displayLocation = (
+    checkCamelAndSnakeCase( observation, "placeGuess" )
+    || checkCamelAndSnakeCase( observation, "privatePlaceGuess" )
+  );
 
   if ( !displayLocation ) {
     displayLocation = t( "No-Location" );

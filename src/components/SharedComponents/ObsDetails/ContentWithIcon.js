@@ -19,9 +19,7 @@ const ContentWithIcon = ( {
 }: Props ): React.Node => (
   <View className={classNames( "flex-row space-x-[5px]", classNameMargin )}>
     <INatIcon name={icon} size={size} />
-
     {children}
-
   </View>
 );
 

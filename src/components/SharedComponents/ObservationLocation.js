@@ -21,7 +21,12 @@ const ObservationLocation = ( {
   const { t } = useTranslation( );
   let displayLocation = checkCamelAndSnakeCase( observation, "placeGuess" );
   let displayCoords;
-  const displayGeoprivacy = checkCamelAndSnakeCase( observation, "geoprivacy" );
+  let displayGeoprivacy = t( "Open" );
+  if ( observation.geoprivacy === "obscured" ) {
+    displayGeoprivacy = t( "Obscured" );
+  } else if ( observation.geoprivacy === "private" ) {
+    displayGeoprivacy = t( "Private" );
+  }
 
   const TextComponent = large
     ? Body3
@@ -67,7 +72,6 @@ const ObservationLocation = ( {
       displayPrivacy = "Open";
     }
     return (
-
       <ContentWithIcon icon="globe-outline" size={14} classNameMargin="mt-[11px]">
         <View className="flex-row space-x-[2px]">
           <TextComponent

@@ -11,6 +11,7 @@ import MapView, {
 import createUTFPosition from "sharedHelpers/createUTFPosition";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 import { useDeviceOrientation, useUserLocation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 const calculateZoom = ( width, delta ) => Math.round(
   Math.log2( 360 * ( width / 256 / delta ) ) + 1
@@ -19,7 +20,31 @@ const calculateZoom = ( width, delta ) => Math.round(
 const tilesUrl = "https://tiles.inaturalist.org/v1/points";
 const baseUrl = "https://api.inaturalist.org/v2";
 
-const OBSCURATION_VALUE = 0.2;
+const OBSCURATION_CELL_SIZE = 0.2;
+
+// Adapted from
+// https://github.com/inaturalist/inaturalist/blob/main/app/assets/javascripts/inaturalist/map3.js.erb#L1500
+function obscurationCellForLatLng( lat, lng ) {
+  const coords = [lat, lng];
+  const firstCorner = [
+    coords[0] - ( coords[0] % OBSCURATION_CELL_SIZE ),
+    coords[1] - ( coords[1] % OBSCURATION_CELL_SIZE )
+  ];
+  const secondCorner = [firstCorner[0], firstCorner[1]];
+  coords.forEach( ( value, index ) => {
+    if ( value < secondCorner[index] ) {
+      secondCorner[index] -= OBSCURATION_CELL_SIZE;
+    } else {
+      secondCorner[index] += OBSCURATION_CELL_SIZE;
+    }
+  } );
+  return {
+    minLat: Math.min( firstCorner[0], secondCorner[0] ),
+    minLng: Math.min( firstCorner[1], secondCorner[1] ),
+    maxLat: Math.max( firstCorner[0], secondCorner[0] ),
+    maxLng: Math.max( firstCorner[1], secondCorner[1] )
+  };
+}
 
 type Props = {
   obsLatitude: number,
@@ -36,15 +61,29 @@ type Props = {
   mapViewRef?: any,
   obscured?: boolean,
   showExplore?: boolean,
-  openMapScreen?: Function
+  openMapScreen?: Function,
+  showsMyLocationButton?: boolean
 }
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( {
-  obsLatitude, obsLongitude, mapHeight, updateCoords, region, showLocationIndicator,
-  hideMap, tileMapParams, children, mapType, positionalAccuracy, mapViewRef, obscured, showExplore,
-  openMapScreen
+  children,
+  hideMap,
+  mapHeight,
+  mapType,
+  mapViewRef,
+  obscured,
+  obsLatitude,
+  obsLongitude,
+  openMapScreen,
+  positionalAccuracy,
+  region,
+  showExplore,
+  showLocationIndicator,
+  showsMyLocationButton = false,
+  tileMapParams,
+  updateCoords
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
@@ -58,12 +97,22 @@ const Map = ( {
   const initialLatitude = obsLatitude || ( viewerLatLng?.latitude );
   const initialLongitude = obsLongitude || ( viewerLatLng?.longitude );
 
-  const initialRegion = {
+  let initialRegion = {
     latitude: initialLatitude,
     longitude: initialLongitude,
     latitudeDelta: 0.4,
     longitudeDelta: 0.4
   };
+
+  const obscurationCell = obscurationCellForLatLng( obsLatitude, obsLongitude );
+  if ( obscured ) {
+    initialRegion = {
+      latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
+      longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
+      latitudeDelta: 0.3,
+      longitudeDelta: 0.3
+    };
+  }
 
   const params = {
     ...tileMapParams,
@@ -151,7 +200,7 @@ const Map = ( {
             : initialRegion}
           onRegionChange={updateCoords}
           showsUserLocation
-          showsMyLocationButton
+          showsMyLocationButton={showsMyLocationButton}
           loadingEnabled
           onRegionChangeComplete={async r => {
             setCurrentZoom( calculateZoom( screenWidth, r.longitudeDelta ) );
@@ -188,29 +237,28 @@ const Map = ( {
               </Marker>
             </>
           )}
-          {( showLocationIndicator && obscured )
-          && (
+          {( showLocationIndicator && obscured ) && (
             <Polygon
               coordinates={[
                 {
-                  latitude: obsLatitude + OBSCURATION_VALUE,
-                  longitude: obsLongitude + OBSCURATION_VALUE
+                  latitude: obscurationCell.minLat,
+                  longitude: obscurationCell.minLng
                 },
                 {
-                  latitude: obsLatitude + OBSCURATION_VALUE,
-                  longitude: obsLongitude - OBSCURATION_VALUE
+                  latitude: obscurationCell.minLat,
+                  longitude: obscurationCell.maxLng
                 },
                 {
-                  latitude: obsLatitude - OBSCURATION_VALUE,
-                  longitude: obsLongitude - OBSCURATION_VALUE
+                  latitude: obscurationCell.maxLat,
+                  longitude: obscurationCell.maxLng
                 },
                 {
-                  latitude: obsLatitude - OBSCURATION_VALUE,
-                  longitude: obsLongitude + OBSCURATION_VALUE
+                  latitude: obscurationCell.maxLat,
+                  longitude: obscurationCell.minLng
                 }
               ]}
               strokeWidth={2}
-              strokeColor="#74AC00"
+              strokeColor={colors.inatGreen}
               fillColor="rgba( 116, 172, 0, 0.2 )"
             />
           )}

@@ -1,24 +1,35 @@
 // @flow
 
+import classnames from "classnames";
 import {
-  Body3,
+  Body2,
   INatIcon
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import * as React from "react";
 import { useTheme } from "react-native-paper";
+import { getShadowForColor } from "styles/global";
 
 const CoordinatesCopiedNotification = ( ): React.Node => {
   const theme = useTheme( );
   return (
     <View
-      className="flex flex-row justify-center items-center
-      bottom-1/2 bg-white p-[10px] rounded-md w-[268px]"
+      className={classnames(
+        "flex",
+        "flex-row",
+        "justify-center",
+        "items-center",
+        "bottom-1/2",
+        "bg-white",
+        "p-3",
+        "rounded-xl"
+      )}
+      style={getShadowForColor( theme.colors.primary )}
     >
-      <Body3 className="mr-[10px]">
+      <Body2 className="mr-3">
         {t( "Coordinates-copied-to-keyboard" )}
-      </Body3>
+      </Body2>
       <INatIcon
         name="checkmark-circle"
         size={19}
