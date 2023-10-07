@@ -97,8 +97,10 @@ exports[`Tabs should render correctly 1`] = `
                       "alignSelf": "center",
                     },
                     {
-                      "paddingBottom": 4,
-                      "paddingTop": 4,
+                      "paddingTop": 16,
+                    },
+                    {
+                      "paddingBottom": 12,
                     },
                   ],
                 ],
@@ -208,8 +210,10 @@ exports[`Tabs should render correctly 1`] = `
                       "alignSelf": "center",
                     },
                     {
-                      "paddingBottom": 4,
-                      "paddingTop": 4,
+                      "paddingTop": 16,
+                    },
+                    {
+                      "paddingBottom": 12,
                     },
                   ],
                 ],

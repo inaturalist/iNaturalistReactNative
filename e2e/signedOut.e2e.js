@@ -6,34 +6,19 @@ import {
   waitFor
 } from "detox";
 
-describe( "Add observation without evidence", () => {
-  beforeAll( async () => {
-    await device.launchApp( {
-      newInstance: true,
-      permissions: { location: "always" }
-    } );
-  } );
+import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 
-  beforeEach( async () => {
-    // device.launchApp would be preferred for an app of our complexity. It does work locally
-    // for both, but on CI for Android it does not work. So we use reloadReactNative for Android.
-    if ( device.getPlatform() === "android" ) {
-      await device.reloadReactNative();
-    } else {
-      await device.launchApp( {
-        newInstance: true,
-        permissions: { location: "always" }
-      } );
-    }
-  } );
+describe( "Signed out user", () => {
+  beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
+  beforeEach( async ( ) => iNatE2eBeforeEach( device ) );
 
-  it( "should open app with the observation list screen", async () => {
+  it( "should start at My Observations with log in text", async () => {
     const loginText = element( by.id( "log-in-to-iNaturalist-button.text" ) );
     await waitFor( loginText ).toBeVisible( ).withTimeout( 10000 );
     await expect( loginText ).toBeVisible( );
   } );
 
-  it( "should navigate to observation add screen on add evidence button pressed", async () => {
+  it( "should add an observation without evidence", async () => {
     const addObsButton = element( by.id( "add-obs-button" ) );
     await waitFor( addObsButton ).toBeVisible( ).withTimeout( 10000 );
     await addObsButton.tap( );

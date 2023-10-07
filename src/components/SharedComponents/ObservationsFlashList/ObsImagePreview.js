@@ -1,7 +1,7 @@
 // @flow
 import classNames from "classnames";
 import { INatIcon, PhotoCount } from "components/SharedComponents";
-import { View } from "components/styledComponents";
+import { LinearGradient, View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
 import { useTheme } from "react-native-paper";
@@ -14,51 +14,52 @@ type SOURCE = {
 };
 
 type Props = {
-  source: SOURCE,
   children?: Node,
+  isSmall?: boolean,
+  hasSound?: boolean,
+  height?: string,
+  iconicTaxonName?: string,
+  isMultiplePhotosTop?: boolean,
   obsPhotosCount?: number,
+  opaque?: boolean,
   selectable?: boolean,
   selected?: boolean,
-  hasSound?: boolean,
-  opaque?: boolean,
-  width?: string,
-  height?: string,
-  isMultiplePhotosTop?: boolean,
-  hasSmallBorderRadius?: boolean,
-  testID?: string,
+  source: SOURCE,
   style?: Object,
-  iconicTaxonName?: string,
-  white?: boolean
+  testID?: string,
+  white?: boolean,
+  width?: string
 };
 
 const ObsImagePreview = ( {
-  source,
   children,
+  isSmall = false,
   hasSound = false,
+  height = "h-[62px]",
+  iconicTaxonName = "unknown",
+  isMultiplePhotosTop = false,
   obsPhotosCount = 0,
+  opaque = false,
   selectable = false,
   selected = false,
-  width = "w-[62px]",
-  height = "h-[62px]",
-  opaque = false,
-  isMultiplePhotosTop = false,
-  hasSmallBorderRadius = false,
-  testID,
+  source,
   style,
-  iconicTaxonName = "unknown",
-  white = false
+  testID,
+  white = false,
+  width = "w-[62px]"
 }: Props ): Node => {
   const theme = useTheme();
-  const hasMultiplePhotos = obsPhotosCount > 1;
-  const borderRadius = hasSmallBorderRadius
+  const borderRadius = isSmall
     ? "rounded-lg"
     : "rounded-2xl";
 
   const imageClassName = classNames(
-    "relative overflow-hidden max-h-[210px]",
-    width,
+    "max-h-[210px]",
+    "overflow-hidden",
+    "relative",
+    borderRadius,
     height,
-    borderRadius
+    width
   );
 
   return (
@@ -72,9 +73,14 @@ const ObsImagePreview = ( {
         opaque={opaque}
         imageClassName={imageClassName}
         iconicTaxonName={iconicTaxonName}
-        style={style}
         white={white}
       />
+      { !isSmall && (
+        <LinearGradient
+          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5) 100%)"]}
+          className="absolute w-full h-full"
+        />
+      ) }
       {selectable && (
         <View
           className={classNames(
@@ -95,21 +101,21 @@ const ObsImagePreview = ( {
           )}
         </View>
       )}
-      {hasMultiplePhotos && (
+      {obsPhotosCount !== 1 && (
         <View
           className={classNames( "absolute right-0 p-1", {
             "bottom-0": !isMultiplePhotosTop,
             "top-0": isMultiplePhotosTop,
-            "p-2": !hasSmallBorderRadius
+            "p-2": !isSmall
           } )}
         >
-          <PhotoCount count={obsPhotosCount} />
+          { !( isSmall && obsPhotosCount === 0 ) && <PhotoCount count={obsPhotosCount} /> }
         </View>
       )}
       {hasSound && (
         <View
           className={classNames( "absolute left-0 top-0 p-1", {
-            "p-2": !hasSmallBorderRadius
+            "p-2": !isSmall
           } )}
           style={dropShadow}
         >
