@@ -3,26 +3,11 @@ import {
 } from "detox";
 import Config from "react-native-config-node";
 
-describe( "Sign in and create an observation", () => {
-  beforeAll( async () => {
-    await device.launchApp( {
-      newInstance: true,
-      permissions: { location: "always" }
-    } );
-  } );
+import { iNatE2eBeforeAll, iNatE2eBeforeEach } from "./helpers";
 
-  beforeEach( async () => {
-    // device.launchApp would be preferred for an app of our complexity. It does work locally
-    // for both, but on CI for Android it does not work. So we use reloadReactNative for Android.
-    if ( device.getPlatform() === "android" ) {
-      await device.reloadReactNative();
-    } else {
-      await device.launchApp( {
-        newInstance: true,
-        permissions: { location: "always" }
-      } );
-    }
-  } );
+describe( "Signed in user", () => {
+  beforeAll( async ( ) => iNatE2eBeforeAll( device ) );
+  beforeEach( async ( ) => iNatE2eBeforeEach( device ) );
 
   it( "should create an observation, add a comment, and delete the observation", async () => {
     /*
@@ -81,6 +66,9 @@ describe( "Sign in and create an observation", () => {
     // Check that the observation list screen is visible
     const observation = element( by.id( "MyObservationsPressable" ) ).atIndex( 0 );
     await waitFor( observation ).toBeVisible().withTimeout( 10000 );
+    // Check that the number of comments component is visible
+    const commentCount = element( by.id( "ObsStatus.commentsCount" ) ).atIndex( 0 );
+    await waitFor( commentCount ).toBeVisible().withTimeout( 10000 );
     /*
     / 3. Update the observation by adding a comment
     */
