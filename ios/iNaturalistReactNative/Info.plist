@@ -39,6 +39,8 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Add existing photos and sounds to your observations.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>${PRODUCT_NAME} uses the camera to add photos to your observations of nature.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
