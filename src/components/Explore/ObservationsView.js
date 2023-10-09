@@ -40,6 +40,7 @@ const ObservationsView = ( {
   return observationsView === "map"
     ? (
       <Map
+        showExplore
         className="h-full"
         showsCompass={false}
         region={region}

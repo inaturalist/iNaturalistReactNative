@@ -1,5 +1,6 @@
 // @flow
 
+import Clipboard from "@react-native-clipboard/clipboard";
 import { useNavigation } from "@react-navigation/native";
 import checkCamelAndSnakeCase from "components/ObsDetails/helpers/checkCamelAndSnakeCase";
 import {
@@ -13,15 +14,21 @@ import {
 } from "components/SharedComponents";
 import KebabMenu from "components/SharedComponents/KebabMenu";
 import Map from "components/SharedComponents/Map";
+import Modal from "components/SharedComponents/Modal";
 import UserText from "components/SharedComponents/UserText";
 import { View } from "components/styledComponents";
 import { t } from "i18next";
 import type { Node } from "react";
 import React, { useCallback, useState } from "react";
 import { Alert, Linking } from "react-native";
+import createOpenLink from "react-native-open-maps";
 import { Menu, useTheme } from "react-native-paper";
+import {
+  useCurrentUser
+} from "sharedHooks";
 
 import Attribution from "./Attribution";
+import DetailsMapContainer from "./DetailsMapContainer";
 
 type Props = {
   observation: Object,
@@ -77,12 +84,28 @@ const headingClass = "mt-[20px] mb-[11px] text-black";
 const sectionClass = "mx-[15px] mb-[20px]";
 
 const DetailsTab = ( { observation }: Props ): Node => {
+  const currentUser = useCurrentUser( );
   const navigation = useNavigation( );
+  const theme = useTheme( );
   const application = observation?.application?.name;
   const [locationKebabMenuVisible, setLocationKebabMenuVisible] = useState( false );
   const qualityGrade = observation?.quality_grade;
   const observationUUID = observation.uuid;
-  const theme = useTheme( );
+  const privacy = observation?.geoprivacy;
+  const positionalAccuracy = observation?.positional_accuracy;
+  const [showMapModal, setShowMapModal] = useState( false );
+
+  const belongsToCurrentUser = observation?.user?.login === currentUser?.login;
+  const isPrivate = privacy === "private" && !belongsToCurrentUser;
+  const isObscured = observation?.obscured && !belongsToCurrentUser;
+  const showShareOptions = !isPrivate && !isObscured;
+
+  const latitude = observation.privateLatitude || observation.latitude;
+  const longitude = observation.privateLongitude || observation.longitude;
+  const coordinateString = t( "Lat-Lon", {
+    latitude,
+    longitude
+  } );
 
   const displayQualityGradeOption = option => {
     const isResearchGrade = ( qualityGrade === "research" && option === "research" );
@@ -114,32 +137,47 @@ const DetailsTab = ( { observation }: Props ): Node => {
           <Divider />
         </>
       )}
-
       <View className="flex-row justify-between items-center mt-[8px] mx-[15px]">
-        <Heading4>{t( "LOCATION" )}</Heading4>
-        <KebabMenu
-          visible={locationKebabMenuVisible}
-          setVisible={setLocationKebabMenuVisible}
-        >
-          <Menu.Item
-            title={t( "Share-location" )}
-          />
-          <Menu.Item
-            title={t( "Copy-coordinates" )}
-          />
-        </KebabMenu>
+        <Heading4 className={headingClass}>{t( "LOCATION" )}</Heading4>
+        {showShareOptions && (
+          <KebabMenu
+            visible={locationKebabMenuVisible}
+            setVisible={setLocationKebabMenuVisible}
+          >
+            <Menu.Item
+              title={t( "Share-location" )}
+              onPress={() => createOpenLink(
+                { query: `${latitude},${longitude}` }
+              )}
+            />
+            <Menu.Item
+              title={t( "Copy-coordinates" )}
+              onPress={() => Clipboard.setString( coordinateString )}
+            />
+          </KebabMenu>
+        )}
+
       </View>
-      { ( observation.latitude || observation.private_latitude ) && (
+      { ( latitude ) && (
         <Map
-          obsLatitude={observation.latitude}
-          obsLongitude={observation.longitude}
+          obsLatitude={latitude}
+          obsLongitude={longitude}
           mapHeight={230}
+          obscured={isObscured}
+          openMapScreen={() => setShowMapModal( true )}
           showLocationIndicator
+          positionalAccuracy={positionalAccuracy}
         />
       ) }
 
-      <View className={`mt-[11px] ${sectionClass}`}>
-        <ObservationLocation observation={observation} details />
+      <View className={`mt-[11px] space-y-[11px] ${sectionClass}`}>
+        <ObservationLocation observation={observation} obscured={isObscured} details />
+        {isObscured
+        && (
+          <Body4 className="italic ml-[20px]">
+            {t( "Obscured-observation-location-map-description" )}
+          </Body4>
+        ) }
       </View>
       <Divider />
 
@@ -205,6 +243,24 @@ const DetailsTab = ( { observation }: Props ): Node => {
         )}
         <ViewInBrowserButton id={observation.id} />
       </View>
+      <Modal
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        showModal={showMapModal}
+        closeModal={( ) => setShowMapModal( false )}
+        disableSwipeDirection
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{ margin: 0 }}
+        modal={(
+          <DetailsMapContainer
+            observation={observation}
+            latitude={latitude}
+            longitude={longitude}
+            obscured={isObscured}
+            closeModal={( ) => setShowMapModal( false )}
+          />
+        )}
+      />
     </>
   );
 };

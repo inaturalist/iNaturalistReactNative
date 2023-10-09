@@ -22,9 +22,11 @@ describe( "Map", ( ) => {
   } );
 
   it( "displays filtered observations on map", async ( ) => {
-    renderComponent( <Map tileMapParams={{
-      taxon_id: 47178
-    }}
+    renderComponent( <Map
+      showExplore
+      tileMapParams={{
+        taxon_id: 47178
+      }}
     /> );
     const tiles = await screen.findByTestId( "Map.UrlTile" );
     expect( tiles ).toHaveProp( "urlTemplate", "https://api.inaturalist.org/v2/grid/{z}/{x}/{y}.png?taxon_id=47178&color=%2374ac00&verifiable=true" );
@@ -38,7 +40,7 @@ describe( "Map", ( ) => {
         obsLongitude={Number( faker.address.longitude( ) )}
       />
     );
-    expect( screen.getByTestId( "Map.LocationMarkerImage" ).props.source )
-      .toStrictEqual( require( "images/location_indicator.png" ) );
+    const testId = "Map.LocationIndicator";
+    expect( screen.getByTestId( testId ) ).toBeTruthy();
   } );
 } );
