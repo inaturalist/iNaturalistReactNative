@@ -7,7 +7,6 @@ import LocationPickerContainer from "components/LocationPicker/LocationPickerCon
 import MediaViewer from "components/MediaViewer/MediaViewer";
 import ObsEdit from "components/ObsEdit/ObsEdit";
 import { Heading4 } from "components/SharedComponents";
-import LocationPermissionGate from "components/SharedComponents/LocationPermissionGate";
 import { t } from "i18next";
 import {
   blankHeaderTitle,
@@ -21,17 +20,11 @@ const addIDTitle = ( ) => <Heading4>{t( "ADD-AN-ID" )}</Heading4>;
 
 const Stack = createNativeStackNavigator( );
 
-const ObsEditWithPermission = ( ) => (
-  <LocationPermissionGate>
-    <ObsEdit />
-  </LocationPermissionGate>
-);
-
 const SharedStackScreens = ( ): Node => (
   <Stack.Group>
     <Stack.Screen
       name="ObsEdit"
-      component={ObsEditWithPermission}
+      component={ObsEdit}
       options={{
         ...removeBottomBorder,
         ...blankHeaderTitle,

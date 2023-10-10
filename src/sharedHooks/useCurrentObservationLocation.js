@@ -1,10 +1,16 @@
 // @flow
 
+import {
+  LOCATION_PERMISSIONS,
+  permissionResultFromMultiple
+} from "components/SharedComponents/PermissionGateContainer";
 import { ObsEditContext } from "providers/contexts";
 import {
   useContext,
-  useEffect, useState
+  useEffect,
+  useState
 } from "react";
+import { checkMultiple, RESULTS } from "react-native-permissions";
 import fetchUserLocation from "sharedHelpers/fetchUserLocation";
 
 const INITIAL_POSITIONAL_ACCURACY = 99999;
@@ -49,6 +55,14 @@ const useCurrentObservationLocation = ( mountedRef: any ): Object => {
       if ( !mountedRef.current ) return;
       if ( !shouldFetchLocation ) return;
 
+      const permissionResult = permissionResultFromMultiple(
+        await checkMultiple( LOCATION_PERMISSIONS )
+      );
+      if ( permissionResult !== RESULTS.GRANTED ) {
+        setFetchingLocation( false );
+        setShouldFetchLocation( false );
+        return;
+      }
       const location = await fetchUserLocation( );
 
       // If we're still receiving location updates and location is blank,

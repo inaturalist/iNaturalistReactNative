@@ -8,6 +8,7 @@ import type { Node } from "react";
 import React, {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState
 } from "react";
@@ -23,8 +24,8 @@ const calculateZoom = ( width, delta ) => Math.round(
   Math.log2( 360 * ( width / 256 / delta ) ) + 1
 );
 
-const tilesUrl = "https://tiles.inaturalist.org/v1/points";
-const baseUrl = "https://api.inaturalist.org/v2";
+const POINT_TILES_ENDPOINT = "https://tiles.inaturalist.org/v1/points";
+const API_ENDPOINT = "https://api.inaturalist.org/v2";
 
 type Props = {
   mapHeight?: number,
@@ -34,7 +35,17 @@ type Props = {
   showCurrentLocationButton?: boolean,
   showLocationIndicator?: boolean,
   tileMapParams?: Object,
-  updateCoords?: Function
+  onRegionChange?: Function,
+  className?: string,
+  showsCompass?: boolean,
+  mapRef?: Object,
+  mapType?: string,
+  minZoomLevel?: number,
+  onRegionChangeComplete?: Function,
+  onMapReady?: Function,
+  startAtUserLocation?: boolean,
+  style?: Object,
+  withObsTiles?: boolean
 }
 
 const getShadow = shadowColor => getShadowStyle( {
@@ -56,7 +67,17 @@ const Map = ( {
   showCurrentLocationButton,
   showLocationIndicator,
   tileMapParams,
-  updateCoords
+  onRegionChange,
+  className = "flex-1",
+  showsCompass,
+  mapRef: mapRefProp,
+  mapType,
+  minZoomLevel,
+  onRegionChangeComplete,
+  onMapReady,
+  startAtUserLocation = false,
+  style,
+  withObsTiles
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
@@ -70,7 +91,7 @@ const Map = ( {
   const [showsUserLocation, setShowsUserLocation] = useState( false );
   const [userLocation, setUserLocation] = useState( null );
   const { t } = useTranslation( );
-  const mapRef = useRef( );
+  const mapRef = useRef( mapRefProp );
 
   const initialLatitude = obsLatitude;
   const initialLongitude = obsLongitude;
@@ -89,18 +110,19 @@ const Map = ( {
   // Kind of obtuse, but the more obvious approach of making a function that
   // pans the map results in a function that gets recreated every time the
   // userLocation changes
-  const [panToUserLocationRequested, setPanToUserLocationRequested] = useState( true );
+  const [panToUserLocationRequested, setPanToUserLocationRequested] = useState(
+    startAtUserLocation
+  );
   useEffect( ( ) => {
     if ( userLocation && panToUserLocationRequested && mapRef?.current ) {
-      mapRef.current.animateCamera( {
-        center: {
-          latitude: userLocation.latitude,
-          longitude: userLocation.longitude
-        }
+      mapRef.current.animateToRegion( {
+        ...region,
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude
       } );
       setPanToUserLocationRequested( false );
     }
-  }, [userLocation, panToUserLocationRequested] );
+  }, [userLocation, panToUserLocationRequested, region] );
 
   // Kludge for the fact that the onUserLocationChange callback in MapView
   // won't fire if showsUserLocation is true on the first render
@@ -124,20 +146,20 @@ const Map = ( {
     setShowsUserLocation( false );
   }, [setPermissionRequested, setShowsUserLocation] );
 
-  const params = {
+  const params = useMemo( ( ) => ( {
     ...tileMapParams,
     color: "%2374ac00",
     verifiable: "true"
-  };
+  } ), [tileMapParams] );
 
   const queryString = Object.keys( params ).map( key => `${key}=${params[key]}` ).join( "&" );
 
   const url = currentZoom > 13
-    ? `${baseUrl}/points/{z}/{x}/{y}.png`
-    : `${baseUrl}/grid/{z}/{x}/{y}.png`;
+    ? `${API_ENDPOINT}/points/{z}/{x}/{y}.png`
+    : `${API_ENDPOINT}/grid/{z}/{x}/{y}.png`;
   const urlTemplate = `${url}?${queryString}`;
 
-  const onMapPress = async latLng => {
+  const onMapPressForObsLyr = useCallback( async latLng => {
     const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
     const {
       mTilePositionX,
@@ -152,7 +174,8 @@ const Map = ( {
     const gridQuery = Object.keys( tilesParams )
       .map( key => `${key}=${tilesParams[key]}` ).join( "&" );
 
-    const gridUrl = `${tilesUrl}/${currentZoom}/${mTilePositionX}/${mTilePositionY}.grid.json`;
+    const gridUrl = `${POINT_TILES_ENDPOINT}/${currentZoom}/${mTilePositionX}/${mTilePositionY}`
+      + ".grid.json";
     const gridUrlTemplate = `${gridUrl}?${gridQuery}`;
 
     const options = {
@@ -171,7 +194,7 @@ const Map = ( {
     if ( uuid ) {
       navigation.navigate( "ObsDetails", { uuid } );
     }
-  };
+  }, [params, currentZoom, navigation] );
 
   const displayLocation = ( ) => (
     <Marker
@@ -197,16 +220,16 @@ const Map = ( {
           : null
       ]}
       testID="MapView"
-      className="flex-1"
+      className="flex-1 h-full"
     >
       <MapView
         ref={mapRef}
         testID="Map.MapView"
-        className="flex-1"
+        className={className}
         region={( region?.latitude )
           ? region
           : initialRegion}
-        onRegionChange={updateCoords}
+        onRegionChange={onRegionChange}
         onUserLocationChange={locationChangeEvent => {
           const coordinate = locationChangeEvent?.nativeEvent?.coordinate;
           if (
@@ -218,12 +241,20 @@ const Map = ( {
         }}
         showsUserLocation={showsUserLocation}
         loadingEnabled
-        onRegionChangeComplete={async r => {
-          setCurrentZoom( calculateZoom( screenWidth, r.longitudeDelta ) );
+        onRegionChangeComplete={async newRegion => {
+          if ( onRegionChangeComplete ) onRegionChangeComplete( newRegion );
+          setCurrentZoom( calculateZoom( screenWidth, newRegion.longitudeDelta ) );
         }}
-        onPress={e => onMapPress( e.nativeEvent.coordinate )}
+        onPress={e => {
+          if ( withObsTiles ) onMapPressForObsLyr( e.nativeEvent.coordinate );
+        }}
+        showsCompass={showsCompass}
+        mapType={mapType}
+        minZoomLevel={minZoomLevel}
+        onMapReady={onMapReady}
+        style={style}
       >
-        {urlTemplate && (
+        {withObsTiles && urlTemplate && (
           <UrlTile
             testID="Map.UrlTile"
             tileSize={512}

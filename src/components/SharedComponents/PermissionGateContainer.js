@@ -43,9 +43,7 @@ export const READ_MEDIA_PERMISSIONS: Array<string> = Platform.OS === "ios"
   : androidReadPermissions;
 
 export const LOCATION_PERMISSIONS: Array<string> = Platform.OS === "ios"
-  ? [
-    PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-  ]
+  ? [PERMISSIONS.IOS.LOCATION_WHEN_IN_USE]
   : [PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
 
 type Props = {
@@ -65,7 +63,13 @@ type Props = {
   withoutNavigation?: boolean
 };
 
-export function permissionResultFromMultiple( multiResults: Array<string> ): string {
+export function permissionResultFromMultiple( multiResults: Object ): string {
+  if ( typeof ( multiResults ) !== "object" ) {
+    throw new Error(
+      "permissionResultFromMultiple received something other than an object. "
+      + "Make sure you're using it with checkMultiple and not check"
+    );
+  }
   if ( _.find( multiResults, ( permResult, _perm ) => permResult === RESULTS.BLOCKED ) ) {
     return RESULTS.BLOCKED;
   }

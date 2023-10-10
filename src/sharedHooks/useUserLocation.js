@@ -82,6 +82,8 @@ const useUserLocation = ( {
 
     if ( permissionsGranted ) {
       fetchLocation( );
+    } else {
+      setIsLoading( false );
     }
 
     return ( ) => {
