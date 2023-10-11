@@ -41,7 +41,7 @@ type Props = {
   loading: boolean,
   locationName: ?string,
   mapType: string,
-  mapRef: any,
+  mapViewRef: any,
   region: Object,
   selectPlaceResult: Function,
   setMapReady: Function,
@@ -59,11 +59,11 @@ const LocationPicker = ( {
   keysToUpdate,
   loading,
   locationName,
-  mapRef,
+  mapViewRef,
   mapType,
   region,
   selectPlaceResult,
-  setMapReady,
+  setMapReady = ( ) => { },
   showCrosshairs,
   toggleMapLayer,
   updateLocationName,
@@ -123,7 +123,7 @@ const LocationPicker = ( {
           className="h-full"
           showsCompass={false}
           region={region}
-          mapRef={mapRef}
+          mapViewRef={mapViewRef}
           mapType={mapType}
           minZoomLevel={5}
           onRegionChangeComplete={async newRegion => {

@@ -15,6 +15,10 @@ type Props = {
   testID?: string
 };
 
+const STYLESHEET = {
+  alignItems: "center"
+};
+
 const IconicTaxonChooser = ( {
   taxon, before, onTaxonChosen, testID
 }: Props ): Node => {
@@ -101,6 +105,7 @@ const IconicTaxonChooser = ( {
       ListHeaderComponent={renderHeader}
       accessibilityRole="radiogroup"
       testID={testID}
+      contentContainerStyle={STYLESHEET}
     />
   );
 };

@@ -115,7 +115,7 @@ type Props = {
 };
 
 const LocationPickerContainer = ( { route }: Props ): Node => {
-  const mapRef = useRef( );
+  const mapViewRef = useRef( );
   const { currentObservation } = useContext( ObsEditContext );
   const navigation = useNavigation( );
   const { goBackOnSave } = route.params;
@@ -228,7 +228,7 @@ const LocationPickerContainer = ( { route }: Props ): Node => {
       loading={loading}
       locationName={locationName}
       mapType={mapType}
-      mapRef={mapRef}
+      mapViewRef={mapViewRef}
       region={region}
       selectPlaceResult={selectPlaceResult}
       setMapReady={setMapReady}

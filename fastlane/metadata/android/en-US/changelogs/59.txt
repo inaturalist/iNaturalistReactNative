@@ -1,0 +1,10 @@
+UPDATED
+
+* Hide iconic taxon chooser on ObsEdit when non-iconic taxon chosen
+* ObsDetail tab bar sticks to the top of the screen on scroll
+* iOS: zoom button restricted to multicamera devices, starts at neutral
+* My Observations should display observations in order of date added
+  descending
+* Fixed layout bug with back button on MediaViewer
+* Stop AddEvidenve bottom sheet from appearing over StandardCamera in Android
+  12

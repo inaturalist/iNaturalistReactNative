@@ -17,11 +17,17 @@ type Props = {
   handleCheckmarkPress: Function,
   testID: string,
   clearBackground?: boolean,
-  confidence?: number
+  confidence?: number,
+  white?: boolean
 };
 
 const TaxonResult = ( {
-  taxon, handleCheckmarkPress, testID, clearBackground, confidence
+  clearBackground,
+  confidence,
+  handleCheckmarkPress,
+  taxon,
+  testID,
+  white = false
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -54,6 +60,8 @@ const TaxonResult = ( {
           source={taxonImage}
           testID={`${testID}.photo`}
           iconicTaxonName={taxon?.iconic_taxon_name}
+          isSmall
+          white={white}
         />
         {confidence && (
           <View className="absolute -bottom-5 w-[62px]">

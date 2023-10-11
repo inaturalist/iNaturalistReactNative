@@ -1,7 +1,7 @@
 // @flow
 
 import { useIsFocused } from "@react-navigation/native";
-import { Body3, Body3Bold } from "components/SharedComponents";
+import { Body3, Body3Bold, INatIcon } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import * as React from "react";
 import { Platform } from "react-native";
@@ -27,7 +27,7 @@ const PhotoCount = ( { count, size, shadow }: Props ): React.Node => {
   }, [isFocused, setIdx] );
 
   if ( count === 0 ) {
-    return null;
+    return <INatIcon name="noevidence" size={size} color={theme.colors.inverseOnSurface} />;
   }
 
   let photoCount = count;

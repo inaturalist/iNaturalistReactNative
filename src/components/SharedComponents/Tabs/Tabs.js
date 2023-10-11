@@ -47,7 +47,7 @@ const Tabs = ( { tabs = DEFAULT_TABS, activeId }: Props ): Node => {
                   expanded: active
                 }}
               >
-                <Heading4 className="self-center py-[4px]">{text}</Heading4>
+                <Heading4 className="self-center pt-4 pb-3">{text}</Heading4>
                 { active && <View className="h-[4px] rounded-t bg-darkGray" /> }
               </TouchableOpacity>
             </View>

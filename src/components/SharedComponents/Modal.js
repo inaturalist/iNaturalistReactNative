@@ -10,7 +10,11 @@ type Props = {
   modal: any,
   backdropOpacity?: number,
   fullScreen?: boolean,
-  onModalHide?: Function
+  onModalHide?: Function,
+  style?: Object,
+  animationIn?: string,
+  animationOut?: string,
+  disableSwipeDirection?: boolean
 }
 
 const modalStyle = {
@@ -27,28 +31,43 @@ const fullScreenModalStyle = {
 // https://github.com/react-native-modal/react-native-modal/issues/525
 
 const Modal = ( {
-  showModal,
-  closeModal,
-  modal,
+  animationIn,
+  animationOut,
   backdropOpacity,
+  closeModal,
+  disableSwipeDirection,
   fullScreen = false,
-  onModalHide
-}: Props ): React.Node => (
-  <RNModal
-    isVisible={showModal}
-    onBackdropPress={closeModal}
-    onSwipeComplete={closeModal}
-    swipeDirection="down"
-    useNativeDriverForBackdrop
-    useNativeDriver
-    style={fullScreen
-      ? fullScreenModalStyle
-      : modalStyle}
-    backdropOpacity={backdropOpacity}
-    onModalHide={onModalHide}
-  >
-    {modal}
-  </RNModal>
-);
+  modal,
+  onModalHide,
+  showModal,
+  style
+}: Props ): React.Node => {
+  const swipeDirection = disableSwipeDirection
+    ? null
+    : "down";
+  return (
+    <RNModal
+      isVisible={showModal}
+      onBackdropPress={closeModal}
+      onSwipeComplete={closeModal}
+      swipeDirection={swipeDirection}
+      useNativeDriverForBackdrop
+      useNativeDriver
+      style={{
+        ...style,
+        ...( fullScreen
+          ? fullScreenModalStyle
+          : modalStyle
+        )
+      }}
+      backdropOpacity={backdropOpacity}
+      onModalHide={onModalHide}
+      animationIn={animationIn || "slideInUp"}
+      animationOut={animationOut || "slideOutDown"}
+    >
+      {modal}
+    </RNModal>
+  );
+};
 
 export default Modal;

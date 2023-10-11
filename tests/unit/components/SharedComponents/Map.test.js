@@ -40,7 +40,7 @@ describe( "Map", ( ) => {
         obsLongitude={Number( faker.address.longitude( ) )}
       />
     );
-    expect( screen.getByTestId( "Map.LocationMarkerImage" ).props.source )
-      .toStrictEqual( require( "images/location_indicator.png" ) );
+    const testId = "Map.LocationIndicator";
+    expect( screen.getByTestId( testId ) ).toBeTruthy();
   } );
 } );
