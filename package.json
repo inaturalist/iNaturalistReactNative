@@ -102,7 +102,7 @@
     "react-native-open-maps": "^0.4.3",
     "react-native-orientation-locker": "github:wonday/react-native-orientation-locker",
     "react-native-paper": "^5.10.5",
-    "react-native-permissions": "3.8.0",
+    "react-native-permissions": "^3.10.0",
     "react-native-picker-select": "8.0.4",
     "react-native-reanimated": "^2.17.0",
     "react-native-reanimated-carousel": "^3.4.0",
