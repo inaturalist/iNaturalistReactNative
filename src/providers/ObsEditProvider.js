@@ -214,6 +214,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   );
 
   const currentObservation = observations[currentObservationIndex];
+  const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
   const addSound = async ( ) => {
     const newObservation = await Observation.createObsWithSounds( );
@@ -228,9 +229,18 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   };
 
   const createObsPhotos = useCallback(
-    async photos => Promise.all(
-      photos.map( async photo => ObservationPhoto.new( photo?.image?.uri ) )
-    ),
+    async ( photos, { position, local } ) => {
+      let photoPosition = position;
+      return Promise.all(
+        photos.map( async photo => {
+          const newPhoto = ObservationPhoto.new( local
+            ? photo
+            : photo?.image?.uri, photoPosition );
+          photoPosition += 1;
+          return newPhoto;
+        } )
+      );
+    },
     []
   );
 
@@ -260,7 +270,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       async ( { photos } ) => {
         const firstPhoto = photos[0];
         const newLocalObs = await createObservationFromGalleryPhoto( firstPhoto );
-        newLocalObs.observationPhotos = await createObsPhotos( photos );
+        newLocalObs.observationPhotos = await createObsPhotos( photos, { position: 0 } );
         return newLocalObs;
       }
     ) );
@@ -269,7 +279,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const createObservationFromGallery = useCallback( async photo => {
     const newLocalObs = await createObservationFromGalleryPhoto( photo );
-    newLocalObs.observationPhotos = await createObsPhotos( [photo] );
+    newLocalObs.observationPhotos = await createObsPhotos( [photo], { position: 0 } );
     setObservations( [newLocalObs] );
   }, [createObsPhotos, createObservationFromGalleryPhoto] );
 
@@ -288,10 +298,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const addGalleryPhotosToCurrentObservation = useCallback( async photos => {
     setSavingPhoto( true );
-    const obsPhotos = await createObsPhotos( photos );
+    const obsPhotos = await createObsPhotos( photos, { position: numOfObsPhotos } );
     appendObsPhotos( obsPhotos );
     setSavingPhoto( false );
-  }, [createObsPhotos, appendObsPhotos] );
+  }, [createObsPhotos, appendObsPhotos, numOfObsPhotos] );
 
   const uploadValue = useMemo( ( ) => {
     // Save URIs to camera gallery (if a photo was taken using the app,
@@ -328,10 +338,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const createObsWithCameraPhotos = async ( localFilePaths, taxonPrediction ) => {
       const newObservation = await Observation.new( );
-      const obsPhotos = await Promise.all( localFilePaths.map(
-        async photo => ObservationPhoto.new( photo )
-      ) );
-      newObservation.observationPhotos = obsPhotos;
+      newObservation.observationPhotos = await createObsPhotos( localFilePaths, {
+        position: 0,
+        local: true
+      } );
 
       if ( taxonPrediction ) {
         newObservation.taxon = taxonPrediction;
@@ -346,9 +356,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
     const addCameraPhotosToCurrentObservation = async localFilePaths => {
       setSavingPhoto( true );
-      const obsPhotos = await Promise.all( localFilePaths.map(
-        async photo => ObservationPhoto.new( photo )
-      ) );
+      const obsPhotos = await createObsPhotos( localFilePaths, {
+        position: numOfObsPhotos,
+        local: true
+      } );
       appendObsPhotos( obsPhotos );
       logger.info(
         "addCameraPhotosToCurrentObservation, calling savePhotosToCameraGallery with paths: ",
@@ -813,7 +824,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     cameraRollUris,
     savingPhoto,
     singleUpload,
-    totalUploadCount
+    totalUploadCount,
+    createObsPhotos,
+    numOfObsPhotos
   ] );
 
   return (

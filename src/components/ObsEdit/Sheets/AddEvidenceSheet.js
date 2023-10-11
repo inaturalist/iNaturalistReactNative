@@ -36,9 +36,15 @@ const AddEvidenceSheet = ( {
         if ( position > -1 ) return;
 
         if ( choice === "camera" ) {
-          navigation.navigate( "Camera", { addEvidence: true, camera: "Standard" } );
+          navigation.navigate( "CameraNavigator", {
+            screen: "Camera",
+            params: { addEvidence: true, camera: "Standard" }
+          } );
         } else if ( choice === "import" ) {
-          navigation.navigate( "PhotoGallery", { skipGroupPhotos: true } );
+          navigation.navigate( "CameraNavigator", {
+            screen: "PhotoGallery",
+            params: { skipGroupPhotos: true }
+          } );
         } else if ( choice === "sound" ) {
           Alert.alert( "TODO", "Still need to implement sound recording" );
         }

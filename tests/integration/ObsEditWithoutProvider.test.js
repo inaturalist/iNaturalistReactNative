@@ -90,7 +90,8 @@ describe( "basic rendering", ( ) => {
       longitude: -142.88,
       user: mockCurrentUser,
       place_guess: mockLocationName,
-      taxon: mockTaxon
+      taxon: mockTaxon,
+      observationPhotos: []
     } )];
     mockObsEditProviderWithObs( observations );
 
@@ -114,7 +115,9 @@ describe( "location fetching", () => {
   } );
 
   test( "should fetch location when new observation hasn't saved", async ( ) => {
-    const observations = [{}];
+    const observations = [factory( "RemoteObservation", {
+      observationPhotos: []
+    } )];
     mockObsEditProviderWithObs( observations );
     expect( mockFetchUserLocation ).not.toHaveBeenCalled();
 
@@ -132,7 +135,8 @@ describe( "location fetching", () => {
     const observation = factory( "LocalObservation", {
       _created_at: faker.date.past( ),
       latitude: Number( faker.address.latitude( ) ),
-      longitude: Number( faker.address.longitude( ) )
+      longitude: Number( faker.address.longitude( ) ),
+      observationPhotos: []
     } );
     expect( observation.id ).toBeFalsy();
     expect( observation.created_at ).toBeFalsy();
@@ -152,7 +156,8 @@ describe( "location fetching", () => {
       created_at: faker.date.past(),
       _synced_at: faker.date.past(),
       latitude: Number( faker.address.latitude( ) ),
-      longitude: Number( faker.address.longitude( ) )
+      longitude: Number( faker.address.longitude( ) ),
+      observationPhotos: []
     } );
     expect( observation.id ).toBeTruthy();
     expect( observation.created_at ).toBeTruthy();
