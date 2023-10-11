@@ -33,6 +33,12 @@ const ObsEditWithPermission = ( ) => (
   </Mortal>
 );
 
+const MortalSuggestions = ( { route } ) => (
+  <Mortal>
+    <SuggestionsContainer route={route} />
+  </Mortal>
+);
+
 const SharedStackScreens = ( ): Node => (
   <Stack.Group>
     <Stack.Screen
@@ -47,11 +53,12 @@ const SharedStackScreens = ( ): Node => (
     />
     <Stack.Screen
       name="Suggestions"
-      component={SuggestionsContainer}
+      component={MortalSuggestions}
       options={{
         ...removeBottomBorder,
         headerTitle: suggestionsTitle,
-        headerTitleAlign: "center"
+        headerTitleAlign: "center",
+        headerBackTitleVisible: false
       }}
     />
     <Stack.Screen

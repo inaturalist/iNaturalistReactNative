@@ -1078,6 +1078,8 @@ Location-map-unavailable-without-internet = Location map unavailable without int
 Observation-photos-unavailable-without-internet = Observation photos unavailable without internet
 Taxon-photo-unavailable-without-internet = Taxon photo unavailable without internet
 User-photo-unavailable-without-internet = User photo unavailable without internet
+Search = Search
+Select-photo = Select photo
 
 # Accessibility labels for icons
 Add-this-ID = Add this identification

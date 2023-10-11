@@ -23,8 +23,8 @@ const EvidenceList = ( {
   handleAddEvidence
 }: Props ): Node => {
   const {
-    mediaViewerUris,
-    setMediaViewerUris,
+    photoEvidenceUris,
+    setPhotoEvidenceUris,
     setSelectedPhotoIndex,
     savingPhoto
   } = useContext( ObsEditContext );
@@ -39,10 +39,10 @@ const EvidenceList = ( {
   }, [photoUris.length, deletePhotoMode] );
 
   useEffect( ( ) => {
-    if ( photoUris.length !== mediaViewerUris.length ) {
-      setMediaViewerUris( photoUris );
+    if ( photoUris.length !== photoEvidenceUris.length ) {
+      setPhotoEvidenceUris( photoUris );
     }
-  }, [photoUris, setMediaViewerUris, mediaViewerUris] );
+  }, [photoUris, setPhotoEvidenceUris, photoEvidenceUris] );
 
   const renderPhotoOrEvidenceButton = ( { item, index } ) => {
     if ( item === "add" ) {

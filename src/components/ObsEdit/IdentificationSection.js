@@ -21,7 +21,8 @@ const IdentificationSection = ( ): Node => {
   const {
     currentObservation,
     updateObservationKeys,
-    setPassesIdentificationTest
+    setPassesIdentificationTest,
+    setLastScreen
   } = useContext( ObsEditContext );
   const { t } = useTranslation( );
   const theme = useTheme( );
@@ -49,7 +50,10 @@ const IdentificationSection = ( ): Node => {
     } );
   };
 
-  const navToSuggestions = ( ) => navigation.navigate( "Suggestions" );
+  const navToSuggestions = ( ) => {
+    setLastScreen( "ObsEdit" );
+    navigation.navigate( "Suggestions" );
+  };
 
   useEffect( ( ) => {
     if ( hasIdentification ) {

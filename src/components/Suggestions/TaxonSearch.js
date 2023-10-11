@@ -4,22 +4,21 @@ import { useNavigation } from "@react-navigation/native";
 import fetchSearchResults from "api/search";
 import {
   SearchBar,
-  TaxonResult
+  TaxonResult,
+  ViewWrapper
 } from "components/SharedComponents";
 import { View } from "components/styledComponents";
+import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import Taxon from "realmModels/Taxon";
 import { useAuthenticatedQuery } from "sharedHooks";
 
-type Props = {
-  onTaxonChosen: Function
-};
-
-const TaxonSearch = ( {
-  onTaxonChosen
-}: Props ): Node => {
+const TaxonSearch = ( ): Node => {
+  const {
+    createId
+  } = useContext( ObsEditContext );
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const navigation = useNavigation( );
   const { data: taxonList } = useAuthenticatedQuery(
@@ -50,7 +49,7 @@ const TaxonSearch = ( {
   );
 
   return (
-    <View className="flex-1">
+    <ViewWrapper className="flex-1">
       <SearchBar
         handleTextChange={setTaxonQuery}
         value={taxonQuery}
@@ -63,7 +62,7 @@ const TaxonSearch = ( {
         renderItem={( { item, index } ) => (
           <TaxonResult
             taxon={item}
-            handleCheckmarkPress={( ) => onTaxonChosen( item )}
+            handleCheckmarkPress={( ) => createId( item )}
             testID={`Search.taxa.${item.id}`}
             first={index === 0}
           />
@@ -71,7 +70,7 @@ const TaxonSearch = ( {
         keyExtractor={item => item.id}
         ListFooterComponent={renderFooter}
       />
-    </View>
+    </ViewWrapper>
   );
 };
 

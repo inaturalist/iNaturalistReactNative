@@ -2,6 +2,7 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { useNavigation } from "@react-navigation/native";
 import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake";
+import { createIdentification } from "api/identifications";
 import {
   createObservation,
   createOrUpdateEvidence,
@@ -17,7 +18,9 @@ import React, {
   useReducer,
   useState
 } from "react";
+import { Alert } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
+import rnUUID from "react-native-uuid";
 import Observation from "realmModels/Observation";
 import ObservationPhoto from "realmModels/ObservationPhoto";
 import Photo from "realmModels/Photo";
@@ -28,7 +31,10 @@ import fetchPlaceName from "sharedHelpers/fetchPlaceName";
 import { formatExifDateAsString, parseExif, writeExifToFile } from "sharedHelpers/parseExif";
 import {
   useApiToken,
-  useCurrentUser
+  useAuthenticatedMutation,
+  useCurrentUser,
+  useLocalObservation,
+  useTranslation
 } from "sharedHooks";
 
 import { log } from "../../react-native-logs.config";
@@ -118,6 +124,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const realm = useRealm( );
   const apiToken = useApiToken( );
   const currentUser = useCurrentUser( );
+  const { t } = useTranslation( );
   // state related to creating/editing an observation
   const [currentObservationIndex, setCurrentObservationIndex] = useState( 0 );
   const [observations, setObservations] = useState( [] );
@@ -131,10 +138,11 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [unsavedChanges, setUnsavedChanges] = useState( false );
   const [passesEvidenceTest, setPassesEvidenceTest] = useState( false );
   const [passesIdentificationTest, setPassesIdentificationTest] = useState( false );
-  const [mediaViewerUris, setMediaViewerUris] = useState( [] );
+  const [photoEvidenceUris, setPhotoEvidenceUris] = useState( [] );
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState( 0 );
   const [groupedPhotos, setGroupedPhotos] = useState( [] );
   const [savingPhoto, setSavingPhoto] = useState( false );
+  const [lastScreen, setLastScreen] = useState( "" );
 
   // state related to uploads in useReducer
   const [state, dispatch] = useReducer( reducer, initialState );
@@ -215,6 +223,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
 
   const currentObservation = observations[currentObservationIndex];
 
+  const localObservation = useLocalObservation( currentObservation?.uuid );
+  const wasSynced = localObservation?.wasSynced( );
+
   const addSound = async ( ) => {
     const newObservation = await Observation.createObsWithSounds( );
     setObservations( [newObservation] );
@@ -292,6 +303,43 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     appendObsPhotos( obsPhotos );
     setSavingPhoto( false );
   }, [createObsPhotos, appendObsPhotos] );
+
+  const createIdentificationMutation = useAuthenticatedMutation(
+    ( idParams, optsWithAuth ) => createIdentification( idParams, optsWithAuth ),
+    {
+      onSuccess: data => {
+        const belongsToCurrentUser = currentObservation?.user?.login === currentUser?.login;
+        if ( belongsToCurrentUser && wasSynced ) {
+          realm?.write( ( ) => {
+            const localIdentifications = currentObservation?.identifications;
+            const newIdentification = data[0];
+            newIdentification.user = currentUser;
+            newIdentification.taxon = realm?.objectForPrimaryKey(
+              "Taxon",
+              newIdentification.taxon.id
+            ) || newIdentification.taxon;
+            const realmIdentification = realm?.create( "Identification", newIdentification );
+            localIdentifications.push( realmIdentification );
+          } );
+        }
+        setLoading( false );
+        navigation.navigate( "ObsDetails", { uuid: currentObservation.uuid } );
+      },
+      onError: e => {
+        const showErrorAlert = err => Alert.alert( "Error", err, [{ text: t( "OK" ) }], {
+          cancelable: true
+        } );
+        let identificationError = null;
+        if ( e ) {
+          identificationError = t( "Couldnt-create-identification-error", { error: e.message } );
+        } else {
+          identificationError = t( "Couldnt-create-identification-unknown-error" );
+        }
+        setLoading( false );
+        return showErrorAlert( identificationError );
+      }
+    }
+  );
 
   const uploadValue = useMemo( ( ) => {
     // Save URIs to camera gallery (if a photo was taken using the app,
@@ -375,11 +423,45 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setObservations( [...updatedObservations] );
     };
 
+    const formatIdentification = ( taxon, comment ) => {
+      const newIdent = {
+        uuid: rnUUID.v4(),
+        body: comment,
+        taxon
+      };
+
+      return newIdent;
+    };
+
+    const createId = ( identification, comment, createRemoteIdentification ) => {
+      setLoading( true );
+      const newIdentification = formatIdentification( identification, comment );
+      if ( createRemoteIdentification ) {
+        createIdentificationMutation.mutate( {
+          identification: {
+            observation_id: currentObservation.uuid,
+            taxon_id: newIdentification.taxon.id,
+            body: newIdentification.body
+          }
+        } );
+      } else {
+        updateObservationKeys( {
+          taxon: newIdentification.taxon
+        } );
+        setLoading( false );
+        const navParams = {};
+        if ( lastScreen === "ObsDetails" ) {
+          navParams.uuid = currentObservation.uuid;
+        }
+        navigation.navigate( lastScreen, navParams );
+      }
+    };
+
     const deleteLocalObservation = uuid => {
-      const localObservation = realm.objectForPrimaryKey( "Observation", uuid );
-      if ( !localObservation ) { return; }
+      const localObsToDelete = realm.objectForPrimaryKey( "Observation", uuid );
+      if ( !localObsToDelete ) { return; }
       realm?.write( ( ) => {
-        realm?.delete( localObservation );
+        realm?.delete( localObsToDelete );
       } );
     };
 
@@ -640,8 +722,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       }
 
       // photos to show in media viewer
-      const newMediaViewerUris = removePhotoFromList( mediaViewerUris, photoUriToDelete );
-      setMediaViewerUris( [...newMediaViewerUris] );
+      const newphotoEvidenceUris = removePhotoFromList( photoEvidenceUris, photoUriToDelete );
+      setPhotoEvidenceUris( [...newphotoEvidenceUris] );
 
       // photos displayed in PhotoPreview
       const newCameraPreviewUris = removePhotoFromList( cameraPreviewUris, photoUriToDelete );
@@ -754,8 +836,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       passesEvidenceTest,
       passesIdentificationTest,
       setPassesIdentificationTest,
-      mediaViewerUris,
-      setMediaViewerUris,
+      photoEvidenceUris,
+      setPhotoEvidenceUris,
       selectedPhotoIndex,
       setSelectedPhotoIndex,
       groupedPhotos,
@@ -772,7 +854,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setOriginalCameraUrisMap,
       savingPhoto,
       singleUpload,
-      totalUploadCount
+      totalUploadCount,
+      createId,
+      setLastScreen
     };
   }, [
     currentObservation,
@@ -799,7 +883,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     uploadProgress,
     passesEvidenceTest,
     passesIdentificationTest,
-    mediaViewerUris,
+    photoEvidenceUris,
     selectedPhotoIndex,
     groupedPhotos,
     currentUploadIndex,
@@ -813,7 +897,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     cameraRollUris,
     savingPhoto,
     singleUpload,
-    totalUploadCount
+    totalUploadCount,
+    createIdentificationMutation,
+    lastScreen
   ] );
 
   return (

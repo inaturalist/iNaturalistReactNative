@@ -29,8 +29,7 @@ const resizeImage = async (
 const flattenUploadParams = async (
   uri: string,
   latitude: number,
-  longitude: number,
-  observedOn: string
+  longitude: number
 ): Object => {
   const userImage = await resizeImage( uri, 299 );
 
@@ -39,11 +38,14 @@ const flattenUploadParams = async (
       uri: userImage,
       name: "photo.jpeg",
       type: "image/jpeg"
-    } ),
-    observed_on: observedOn,
-    latitude,
-    longitude
+    } )
   };
+  if ( latitude ) {
+    params.latitude = latitude;
+  }
+  if ( longitude ) {
+    params.longitude = longitude;
+  }
   return params;
 };
 

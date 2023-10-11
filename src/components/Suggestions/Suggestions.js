@@ -11,8 +11,12 @@ import {
 } from "components/styledComponents";
 import type { Node } from "react";
 import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator
+} from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
+import Attribution from "./Attribution";
 import PhotoSelectionList from "./PhotoSelectionList";
 import SuggestionsList from "./SuggestionsList";
 
@@ -23,12 +27,14 @@ type Props = {
   selectedPhotoUri: string,
   setSelectedPhotoUri: Function,
   nearbySuggestions: Array<Object>,
-  onTaxonChosen: Function
+  onTaxonChosen: Function,
+  wasSynced: boolean,
+  loading: boolean
 };
 
 const Suggestions = ( {
   photoUris, selectedPhotoUri, setSelectedPhotoUri, nearbySuggestions, onTaxonChosen,
-  setComment, comment
+  setComment, comment, wasSynced, loading
 }: Props ): Node => {
   const [showAddCommentSheet, setShowAddCommentSheet] = useState( false );
 
@@ -45,10 +51,12 @@ const Suggestions = ( {
       />
     );
 
-    navigation.setOptions( {
-      headerRight: addCommentIcon
-    } );
-  }, [navigation, t] );
+    if ( wasSynced ) {
+      navigation.setOptions( {
+        headerRight: addCommentIcon
+      } );
+    }
+  }, [navigation, t, wasSynced] );
 
   return (
     <ScrollViewWrapper>
@@ -60,6 +68,14 @@ const Suggestions = ( {
           confirm={textInput => setComment( textInput )}
         />
       )}
+      {loading && (
+        <View
+          className="absolute self-center z-10 pt-[30px]"
+          testID="Suggestions.ActivityIndicator"
+        >
+          <ActivityIndicator large />
+        </View>
+      )}
       <View className="mx-5">
         <PhotoSelectionList
           photoUris={photoUris}
@@ -70,6 +86,7 @@ const Suggestions = ( {
         <Button
           text={t( "SEARCH-FOR-A-TAXON" )}
           onPress={( ) => navigation.navigate( "TaxonSearch" )}
+          accessibilityLabel={t( "Search" )}
         />
       </View>
       { comment && comment.length > 0 && (
@@ -90,13 +107,11 @@ const Suggestions = ( {
         nearbySuggestions={nearbySuggestions}
         onTaxonChosen={onTaxonChosen}
       />
-      <Body3 className="mt-6 mb-4 mx-4">
-        {t( "iNaturalist-Identification-suggestions-are-trained-on", {
-          user1: "",
-          user2: "",
-          user3: ""
-        } )}
-      </Body3>
+      {nearbySuggestions?.length > 0 && (
+        <Attribution
+          taxonIds={nearbySuggestions.map( suggestion => suggestion.taxon.id )}
+        />
+      )}
     </ScrollViewWrapper>
   );
 };

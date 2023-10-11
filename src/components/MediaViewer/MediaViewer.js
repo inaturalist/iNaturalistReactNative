@@ -25,13 +25,13 @@ const MediaViewer = ( ): Node => {
   const [warningSheet, setWarningSheet] = useState( false );
   const {
     deletePhotoFromObservation,
-    mediaViewerUris,
+    photoEvidenceUris,
     selectedPhotoIndex,
     setSelectedPhotoIndex
   } = useContext( ObsEditContext );
 
   const atFirstPhoto = selectedPhotoIndex === 0;
-  const atLastPhoto = selectedPhotoIndex === mediaViewerUris.length - 1;
+  const atLastPhoto = selectedPhotoIndex === photoEvidenceUris.length - 1;
 
   const handleScrollLeft = index => {
     if ( atFirstPhoto ) { return; }
@@ -48,15 +48,15 @@ const MediaViewer = ( ): Node => {
   const { isLandscapeMode, screenWidth } = useDeviceOrientation( );
   const isLargeScreen = screenWidth > BREAKPOINTS.md;
 
-  const numOfPhotos = mediaViewerUris.length;
+  const numOfPhotos = photoEvidenceUris.length;
 
   const showWarningSheet = ( ) => setWarningSheet( true );
   const hideWarningSheet = ( ) => setWarningSheet( false );
 
   const deletePhoto = ( ) => {
-    deletePhotoFromObservation( mediaViewerUris[selectedPhotoIndex] );
+    deletePhotoFromObservation( photoEvidenceUris[selectedPhotoIndex] );
     hideWarningSheet( );
-    if ( mediaViewerUris.length === 0 ) {
+    if ( photoEvidenceUris.length === 0 ) {
       navigation.goBack( );
     } else if ( selectedPhotoIndex !== 0 ) {
       setSelectedPhotoIndex( selectedPhotoIndex - 1 );
@@ -115,13 +115,13 @@ const MediaViewer = ( ): Node => {
         />
       )}
       <MainPhotoDisplay
-        photoUris={mediaViewerUris}
+        photoUris={photoEvidenceUris}
         selectedPhotoIndex={selectedPhotoIndex}
         handleScrollEndDrag={handleScrollEndDrag}
         horizontalScroll={horizontalScroll}
       />
       <PhotoSelector
-        photoUris={mediaViewerUris}
+        photoUris={photoEvidenceUris}
         scrollToIndex={scrollToIndex}
         isLargeScreen={isLargeScreen}
         isLandscapeMode={isLandscapeMode}

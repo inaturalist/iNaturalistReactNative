@@ -16,6 +16,7 @@ const SuggestionsList = ( {
   onTaxonChosen
 }: Props ): Node => {
   const { t } = useTranslation( );
+
   if ( !nearbySuggestions || nearbySuggestions.length === 0 ) {
     return null;
   }
@@ -41,8 +42,6 @@ const SuggestionsList = ( {
     return 5;
   };
 
-  nearbySuggestions.shift( );
-
   return (
     <>
       <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
@@ -59,18 +58,23 @@ const SuggestionsList = ( {
         />
       </View>
       <Heading4 className="mt-6 mb-4 ml-4">{t( "NEARBY-SUGGESTIONS" )}</Heading4>
-      {nearbySuggestions.map( ( suggestion, index ) => (
-        <TaxonResult
-          key={suggestion.taxon.id}
-          taxon={suggestion.taxon}
-          handleCheckmarkPress={( ) => onTaxonChosen( suggestion.taxon )}
-          testID={`SuggestionsList.taxa.${suggestion.taxon.id}`}
-          confidence={convertScoreToConfidence( suggestion.combined_score )}
-          activeColor="bg-inatGreen"
-          confidencePosition="text"
-          first={index === 0}
-        />
-      ) )}
+      {nearbySuggestions.map( ( suggestion, index ) => {
+        if ( index === 0 ) {
+          return null;
+        }
+        return (
+          <TaxonResult
+            key={suggestion.taxon.id}
+            taxon={suggestion.taxon}
+            handleCheckmarkPress={( ) => onTaxonChosen( suggestion.taxon )}
+            testID={`SuggestionsList.taxa.${suggestion.taxon.id}`}
+            confidence={convertScoreToConfidence( suggestion.combined_score )}
+            activeColor="bg-inatGreen"
+            confidencePosition="text"
+            first={index === 0}
+          />
+        );
+      } )}
     </>
   );
 };
