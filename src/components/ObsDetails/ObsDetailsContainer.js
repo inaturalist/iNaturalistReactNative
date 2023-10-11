@@ -311,9 +311,7 @@ const ObsDetailsContainer = ( ): Node => {
     );
     setPhotoEvidenceUris( photoUris );
     setLastScreen( "ObsDetails" );
-    navigation.navigate( "Suggestions", {
-      createRemoteIdentification: true
-    } );
+    navigation.navigate( "Suggestions" );
   };
 
   const showActivityTab = currentTabId === ACTIVITY_TAB_ID;

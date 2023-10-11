@@ -33,9 +33,9 @@ const ObsEditWithPermission = ( ) => (
   </Mortal>
 );
 
-const MortalSuggestions = ( { route } ) => (
+const MortalSuggestions = ( ) => (
   <Mortal>
-    <SuggestionsContainer route={route} />
+    <SuggestionsContainer />
   </Mortal>
 );
 

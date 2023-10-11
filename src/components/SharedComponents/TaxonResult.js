@@ -125,6 +125,7 @@ const TaxonResult = ( {
           onPress={handleCheckmarkPress}
           accessibilityLabel={t( "Checkmark" )}
           accessibilityHint={t( "Add-this-ID" )}
+          testID={`${testID}.checkmark`}
         />
       </View>
     </View>

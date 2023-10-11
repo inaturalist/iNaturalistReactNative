@@ -143,6 +143,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   const [groupedPhotos, setGroupedPhotos] = useState( [] );
   const [savingPhoto, setSavingPhoto] = useState( false );
   const [lastScreen, setLastScreen] = useState( "" );
+  const [comment, setComment] = useState( "" );
 
   // state related to uploads in useReducer
   const [state, dispatch] = useReducer( reducer, initialState );
@@ -423,7 +424,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       setObservations( [...updatedObservations] );
     };
 
-    const formatIdentification = ( taxon, comment ) => {
+    const formatIdentification = taxon => {
       const newIdent = {
         uuid: rnUUID.v4(),
         body: comment,
@@ -433,9 +434,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       return newIdent;
     };
 
-    const createId = ( identification, comment, createRemoteIdentification ) => {
+    const createId = identification => {
       setLoading( true );
-      const newIdentification = formatIdentification( identification, comment );
+      const newIdentification = formatIdentification( identification );
+      const createRemoteIdentification = localObservation?.wasSynced( );
       if ( createRemoteIdentification ) {
         createIdentificationMutation.mutate( {
           identification: {
@@ -856,7 +858,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
       singleUpload,
       totalUploadCount,
       createId,
-      setLastScreen
+      setLastScreen,
+      comment,
+      setComment
     };
   }, [
     currentObservation,
@@ -899,7 +903,9 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     singleUpload,
     totalUploadCount,
     createIdentificationMutation,
-    lastScreen
+    lastScreen,
+    localObservation,
+    comment
   ] );
 
   return (

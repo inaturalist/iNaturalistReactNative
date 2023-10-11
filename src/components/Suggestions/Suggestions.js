@@ -59,7 +59,7 @@ const Suggestions = ( {
   }, [navigation, t, wasSynced] );
 
   return (
-    <ScrollViewWrapper>
+    <ScrollViewWrapper testID="suggestions">
       {showAddCommentSheet && (
         <TextInputSheet
           handleClose={( ) => setShowAddCommentSheet( false )}

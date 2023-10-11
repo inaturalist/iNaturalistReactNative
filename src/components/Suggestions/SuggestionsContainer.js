@@ -13,26 +13,17 @@ import {
 
 import Suggestions from "./Suggestions";
 
-type Props = {
-  route: {
-    params: {
-      observationUUID?: string,
-      createRemoteIdentification?: boolean
-    },
-  },
-};
-
-const SuggestionsContainer = ( { route }: Props ): Node => {
-  const [comment, setComment] = useState( "" );
+const SuggestionsContainer = ( ): Node => {
   const {
     photoEvidenceUris,
     currentObservation,
     createId,
-    loading
+    loading,
+    comment,
+    setComment
   } = useContext( ObsEditContext );
-  const observationUUID = route?.params?.observationUUID;
-  const createRemoteIdentification = route?.params?.createRemoteIdentification;
-  const localObservation = useLocalObservation( observationUUID );
+  const uuid = currentObservation?.uuid;
+  const localObservation = useLocalObservation( uuid );
   const wasSynced = localObservation?.wasSynced( );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoEvidenceUris[0] );
 
@@ -62,7 +53,7 @@ const SuggestionsContainer = ( { route }: Props ): Node => {
         setComment( "" );
       } );
     },
-    [navigation]
+    [navigation, setComment]
   );
 
   return (
@@ -71,9 +62,7 @@ const SuggestionsContainer = ( { route }: Props ): Node => {
       selectedPhotoUri={selectedPhotoUri}
       setSelectedPhotoUri={setSelectedPhotoUri}
       onTaxonChosen={
-        identification => {
-          createId( identification, comment, createRemoteIdentification );
-        }
+        identification => createId( identification )
       }
       setComment={setComment}
       comment={comment}
