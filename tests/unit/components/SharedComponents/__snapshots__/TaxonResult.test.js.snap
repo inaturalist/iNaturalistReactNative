@@ -1,0 +1,483 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TaxonResult should render correctly 1`] = `
+<View
+  style={
+    [
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "alignItems": "center",
+        },
+        {
+          "justifyContent": "space-between",
+        },
+        {
+          "paddingLeft": 12,
+        },
+        {
+          "paddingBottom": 4,
+          "paddingTop": 4,
+        },
+        {
+          "borderBottomWidth": 0.5,
+          "borderLeftWidth": 0.5,
+          "borderRightWidth": 0.5,
+          "borderTopWidth": 0.5,
+        },
+        {
+          "borderBottomColor": "#E8E8E8",
+          "borderLeftColor": "#E8E8E8",
+          "borderRightColor": "#E8E8E8",
+          "borderTopColor": "#E8E8E8",
+        },
+      ],
+    ]
+  }
+>
+  <View
+    accessibilityLabel="Navigate to taxon details"
+    accessibilityRole="link"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": false,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": "Aves",
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      [
+        [
+          {
+            "flexDirection": "row",
+          },
+          {
+            "alignItems": "center",
+          },
+          {
+            "width": 64,
+          },
+          {
+            "flexGrow": 1,
+          },
+        ],
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          [
+            {
+              "maxHeight": 210,
+            },
+            {
+              "overflow": "hidden",
+            },
+            {
+              "position": "relative",
+            },
+            {
+              "borderBottomLeftRadius": 8,
+              "borderBottomRightRadius": 8,
+              "borderTopLeftRadius": 8,
+              "borderTopRightRadius": 8,
+            },
+            {
+              "height": 62,
+            },
+            {
+              "width": 62,
+            },
+          ],
+        ]
+      }
+      testID="undefined.photo"
+    >
+      <View
+        style={
+          [
+            [
+              {
+                "flexGrow": 1,
+              },
+              {
+                "aspectRatio": 1,
+              },
+              {
+                "maxHeight": 210,
+              },
+              {
+                "overflow": "hidden",
+              },
+              {
+                "position": "relative",
+              },
+              {
+                "borderBottomLeftRadius": 8,
+                "borderBottomRightRadius": 8,
+                "borderTopLeftRadius": 8,
+                "borderTopRightRadius": 8,
+              },
+              {
+                "height": 62,
+              },
+              {
+                "width": 62,
+              },
+              {
+                "justifyContent": "center",
+              },
+              {
+                "alignItems": "center",
+              },
+              {
+                "borderBottomWidth": 1,
+                "borderLeftWidth": 1,
+                "borderRightWidth": 1,
+                "borderTopWidth": 1,
+              },
+              {
+                "borderBottomColor": "#E8E8E8",
+                "borderLeftColor": "#E8E8E8",
+                "borderRightColor": "#E8E8E8",
+                "borderTopColor": "#E8E8E8",
+              },
+            ],
+          ]
+        }
+        testID="IconicTaxonName.iconicTaxonIcon"
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "rgba(103, 80, 164, 1)",
+                "fontSize": 22,
+              },
+              undefined,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            [
+              {
+                "position": "absolute",
+              },
+              {
+                "right": 0,
+              },
+              {
+                "paddingBottom": 4,
+                "paddingLeft": 4,
+                "paddingRight": 4,
+                "paddingTop": 4,
+              },
+              {
+                "bottom": 0,
+              },
+            ],
+          ]
+        }
+      />
+    </View>
+    <View
+      style={
+        [
+          [
+            {
+              "flexShrink": 1,
+            },
+            {
+              "marginLeft": 12,
+            },
+          ],
+        ]
+      }
+    >
+      <View
+        testID="display-taxon-name"
+      >
+        <Text
+          style={
+            [
+              {
+                "fontFamily": "Whitney-Medium",
+              },
+              [
+                [
+                  {
+                    "fontSize": 18,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "fontWeight": "500",
+                  },
+                  {
+                    "color": "#454545",
+                  },
+                  [
+                    {
+                      "color": "#454545",
+                    },
+                  ],
+                ],
+              ],
+            ]
+          }
+        >
+          Birds 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "fontFamily": "Whitney-Light",
+              },
+              [
+                {
+                  "fontSize": 14,
+                  "lineHeight": 18,
+                },
+                {
+                  "fontWeight": "400",
+                },
+                {
+                  "color": "#454545",
+                },
+                [
+                  {
+                    "color": "#454545",
+                  },
+                ],
+              ],
+            ]
+          }
+        >
+          Family 
+          Aves 
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      [
+        [
+          {
+            "flexDirection": "row",
+          },
+          {
+            "alignItems": "center",
+          },
+        ],
+      ]
+    }
+  >
+    <View
+      accessibilityHint="Navigate to taxon details"
+      accessibilityLabel="Information"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "height": 44,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 44,
+          },
+          false,
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            [
+              {
+                "position": "relative",
+              },
+            ],
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "rgba(103, 80, 164, 1)",
+                "fontSize": 22,
+              },
+              undefined,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+    <View
+      accessibilityHint="Add this identification"
+      accessibilityLabel="Checkmark"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        [
+          {
+            "alignItems": "center",
+            "height": 44,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 44,
+          },
+          false,
+          [
+            {
+              "marginLeft": 8,
+              "marginRight": 8,
+            },
+          ],
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            [
+              {
+                "position": "relative",
+              },
+            ],
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "rgba(98, 91, 113, 1)",
+                "fontSize": 40,
+              },
+              undefined,
+              {
+                "fontFamily": "INatIcon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

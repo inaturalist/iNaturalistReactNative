@@ -1,13 +1,17 @@
 // @flow
 
 import { useNavigation } from "@react-navigation/native";
-import { Image, View } from "components/styledComponents";
+import { View } from "components/styledComponents";
+import LocationIndicator from "images/svg/location_indicator.svg";
 import type { Node } from "react";
 import React, { useState } from "react";
-import MapView, { Marker, UrlTile } from "react-native-maps";
+import MapView, {
+  Circle, Marker, Polygon, UrlTile
+} from "react-native-maps";
 import createUTFPosition from "sharedHelpers/createUTFPosition";
 import getDataForPixel from "sharedHelpers/fetchUTFGridData";
 import { useDeviceOrientation, useUserLocation } from "sharedHooks";
+import colors from "styles/tailwindColors";
 
 const calculateZoom = ( width, delta ) => Math.round(
   Math.log2( 360 * ( width / 256 / delta ) ) + 1
@@ -16,22 +20,70 @@ const calculateZoom = ( width, delta ) => Math.round(
 const tilesUrl = "https://tiles.inaturalist.org/v1/points";
 const baseUrl = "https://api.inaturalist.org/v2";
 
+const OBSCURATION_CELL_SIZE = 0.2;
+
+// Adapted from
+// https://github.com/inaturalist/inaturalist/blob/main/app/assets/javascripts/inaturalist/map3.js.erb#L1500
+function obscurationCellForLatLng( lat, lng ) {
+  const coords = [lat, lng];
+  const firstCorner = [
+    coords[0] - ( coords[0] % OBSCURATION_CELL_SIZE ),
+    coords[1] - ( coords[1] % OBSCURATION_CELL_SIZE )
+  ];
+  const secondCorner = [firstCorner[0], firstCorner[1]];
+  coords.forEach( ( value, index ) => {
+    if ( value < secondCorner[index] ) {
+      secondCorner[index] -= OBSCURATION_CELL_SIZE;
+    } else {
+      secondCorner[index] += OBSCURATION_CELL_SIZE;
+    }
+  } );
+  return {
+    minLat: Math.min( firstCorner[0], secondCorner[0] ),
+    minLng: Math.min( firstCorner[1], secondCorner[1] ),
+    maxLat: Math.max( firstCorner[0], secondCorner[0] ),
+    maxLng: Math.max( firstCorner[1], secondCorner[1] )
+  };
+}
+
 type Props = {
-  obsLatitude?: number,
-  obsLongitude?: number,
-  mapHeight?: number,
+  obsLatitude: number,
+  obsLongitude: number,
+  mapHeight?: number|string, // allows for height to be defined as px or percentage
   updateCoords?: Function,
   region?: Object,
   showLocationIndicator?: boolean,
   hideMap?: boolean,
-  tileMapParams?: Object
+  tileMapParams?: Object,
+  children?: any,
+  mapType?: string,
+  positionalAccuracy?: number,
+  mapViewRef?: any,
+  obscured?: boolean,
+  showExplore?: boolean,
+  openMapScreen?: Function,
+  showsMyLocationButton?: boolean
 }
 
 // TODO: fallback to another map library
 // for people who don't use GMaps (i.e. users in China)
 const Map = ( {
-  obsLatitude, obsLongitude, mapHeight, updateCoords, region,
-  showLocationIndicator, hideMap, tileMapParams
+  children,
+  hideMap,
+  mapHeight,
+  mapType,
+  mapViewRef,
+  obscured,
+  obsLatitude,
+  obsLongitude,
+  openMapScreen,
+  positionalAccuracy,
+  region,
+  showExplore,
+  showLocationIndicator,
+  showsMyLocationButton = false,
+  tileMapParams,
+  updateCoords
 }: Props ): Node => {
   const { screenWidth } = useDeviceOrientation( );
   const [currentZoom, setCurrentZoom] = useState(
@@ -45,12 +97,22 @@ const Map = ( {
   const initialLatitude = obsLatitude || ( viewerLatLng?.latitude );
   const initialLongitude = obsLongitude || ( viewerLatLng?.longitude );
 
-  const initialRegion = {
+  let initialRegion = {
     latitude: initialLatitude,
     longitude: initialLongitude,
-    latitudeDelta: 0.2,
-    longitudeDelta: 0.2
+    latitudeDelta: 0.4,
+    longitudeDelta: 0.4
   };
+
+  const obscurationCell = obscurationCellForLatLng( obsLatitude, obsLongitude );
+  if ( obscured ) {
+    initialRegion = {
+      latitude: obscurationCell.minLat + ( OBSCURATION_CELL_SIZE / 2 ),
+      longitude: obscurationCell.minLng + ( OBSCURATION_CELL_SIZE / 2 ),
+      latitudeDelta: 0.3,
+      longitudeDelta: 0.3
+    };
+  }
 
   const params = {
     ...tileMapParams,
@@ -65,7 +127,7 @@ const Map = ( {
     : `${baseUrl}/grid/{z}/{x}/{y}.png`;
   const urlTemplate = `${url}?${queryString}`;
 
-  const onMapPress = async latLng => {
+  const exploreNavigateToDetails = async latLng => {
     const UTFPosition = createUTFPosition( currentZoom, latLng.latitude, latLng.longitude );
     const {
       mTilePositionX,
@@ -101,20 +163,21 @@ const Map = ( {
     }
   };
 
-  const displayLocation = ( ) => (
-    <Marker
-      coordinate={{
-        latitude: obsLatitude,
-        longitude: obsLongitude
-      }}
-    >
-      <Image
-        testID="Map.LocationMarkerImage"
-        source={require( "images/location_indicator.png" )}
-        className="w-[25px] h-[32px]"
-        accessibilityIgnoresInvertColors
-      />
-    </Marker>
+  const onMapPress = coordinate => {
+    if ( showExplore ) {
+      exploreNavigateToDetails( coordinate );
+    } else if ( openMapScreen ) {
+      openMapScreen();
+    }
+  };
+
+  const locationIndicator = () => (
+    // $FlowIgnore
+    <LocationIndicator
+      testID="Map.LocationIndicator"
+      width={25}
+      height={32}
+    />
   );
 
   return (
@@ -129,6 +192,7 @@ const Map = ( {
     >
       {!hideMap && (
         <MapView
+          ref={mapViewRef}
           testID="Map.MapView"
           className="flex-1"
           region={( region?.latitude )
@@ -136,23 +200,71 @@ const Map = ( {
             : initialRegion}
           onRegionChange={updateCoords}
           showsUserLocation
-          showsMyLocationButton
+          showsMyLocationButton={showsMyLocationButton}
           loadingEnabled
           onRegionChangeComplete={async r => {
             setCurrentZoom( calculateZoom( screenWidth, r.longitudeDelta ) );
           }}
           onPress={e => onMapPress( e.nativeEvent.coordinate )}
+          mapType={mapType || "standard"}
         >
-          {urlTemplate && (
+          {( urlTemplate && showExplore ) && (
             <UrlTile
               testID="Map.UrlTile"
               tileSize={512}
               urlTemplate={urlTemplate}
             />
           )}
-          {showLocationIndicator && displayLocation( )}
+          {( showLocationIndicator && ( !obscured ) ) && (
+            <>
+              <Circle
+                center={{
+                  latitude: obsLatitude,
+                  longitude: obsLongitude
+                }}
+                radius={positionalAccuracy}
+                strokeWidth={2}
+                strokeColor="#74AC00"
+                fillColor="rgba( 116, 172, 0, 0.2 )"
+              />
+              <Marker
+                coordinate={{
+                  latitude: obsLatitude,
+                  longitude: obsLongitude
+                }}
+              >
+                {locationIndicator()}
+              </Marker>
+            </>
+          )}
+          {( showLocationIndicator && obscured ) && (
+            <Polygon
+              coordinates={[
+                {
+                  latitude: obscurationCell.minLat,
+                  longitude: obscurationCell.minLng
+                },
+                {
+                  latitude: obscurationCell.minLat,
+                  longitude: obscurationCell.maxLng
+                },
+                {
+                  latitude: obscurationCell.maxLat,
+                  longitude: obscurationCell.maxLng
+                },
+                {
+                  latitude: obscurationCell.maxLat,
+                  longitude: obscurationCell.minLng
+                }
+              ]}
+              strokeWidth={2}
+              strokeColor={colors.inatGreen}
+              fillColor="rgba( 116, 172, 0, 0.2 )"
+            />
+          )}
         </MapView>
       )}
+      {children}
     </View>
   );
 };

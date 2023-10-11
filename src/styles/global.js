@@ -37,3 +37,15 @@ export const dropShadow = getShadowStyle( {
   shadowOpacity: 0.25,
   elevation: 5
 } );
+
+export function getShadowForColor( shadowColor, options = {} ) {
+  return getShadowStyle( {
+    shadowColor,
+    offsetWidth: 0,
+    offsetHeight: 2,
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+    elevation: 5,
+    ...options
+  } );
+}
