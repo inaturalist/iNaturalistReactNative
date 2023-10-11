@@ -35,7 +35,7 @@ const EvidenceList = ( {
         accessibilityRole="button"
         onPress={( ) => showMediaViewer( getIndex( ) )}
         className={classnames( imageClass )}
-        testID={`EvidenceList.${item}`}
+        testID={`EvidenceList.${item.photo?.url || item.photo?.localFilePath}`}
       >
         <View className="rounded-lg overflow-hidden">
           <Image
@@ -76,8 +76,6 @@ const EvidenceList = ( {
       <INatIcon name="plus-bold" size={27} color={colors.darkGray} />
     </Pressable>
   );
-
-  console.log( evidenceList, "evidence list" );
 
   return (
     <View className="mt-5">
