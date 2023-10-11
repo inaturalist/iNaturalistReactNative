@@ -77,6 +77,8 @@ const EvidenceList = ( {
     </Pressable>
   );
 
+  console.log( evidenceList, "evidence list" );
+
   return (
     <View className="mt-5">
       <DraggableFlatList

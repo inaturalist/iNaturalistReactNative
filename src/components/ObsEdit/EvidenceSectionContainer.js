@@ -151,7 +151,7 @@ const EvidenceSectionContainer = ( ): Node => {
       showMediaViewer={showMediaViewer}
       passesEvidenceTest={passesEvidenceTest}
       isFetchingLocation={isFetchingLocation}
-      evidenceList={obsPhotos}
+      evidenceList={obsPhotos || []}
       setShowAddEvidenceSheet={setShowAddEvidenceSheet}
       showAddEvidenceSheet={showAddEvidenceSheet}
       savingPhoto={savingPhoto}

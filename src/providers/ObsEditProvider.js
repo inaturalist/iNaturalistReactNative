@@ -214,7 +214,7 @@ const ObsEditProvider = ( { children }: Props ): Node => {
   );
 
   const currentObservation = observations[currentObservationIndex];
-  const numOfObsPhotos = currentObservation?.observationPhotos.length;
+  const numOfObsPhotos = currentObservation?.observationPhotos?.length || 0;
 
   const addSound = async ( ) => {
     const newObservation = await Observation.createObsWithSounds( );
