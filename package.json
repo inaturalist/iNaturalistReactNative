@@ -1,6 +1,6 @@
 {
   "name": "inaturalistreactnative",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -36,6 +36,7 @@
     "@gorhom/bottom-sheet": "^4.4.7",
     "@react-native-async-storage/async-storage": "^1.19.3",
     "@react-native-camera-roll/camera-roll": "^5.9.0",
+    "@react-native-clipboard/clipboard": "^1.11.2",
     "@react-native-community/checkbox": "^0.5.16",
     "@react-native-community/datetimepicker": "^7.6.0",
     "@react-native-community/geolocation": "^3.1.0",
@@ -98,6 +99,7 @@
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^17.1.0",
     "react-native-network-logger": "^1.15.0",
+    "react-native-open-maps": "^0.4.3",
     "react-native-orientation-locker": "github:wonday/react-native-orientation-locker",
     "react-native-paper": "^5.10.5",
     "react-native-permissions": "3.8.0",

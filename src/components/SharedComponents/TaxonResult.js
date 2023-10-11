@@ -18,17 +18,19 @@ type Props = {
   testID: string,
   clearBackground?: boolean,
   confidence?: number,
+  white?: boolean,
   activeColor?: string,
   confidencePosition?: string,
-  first?: boolean
+  first?: boolean,
 };
 
 const TaxonResult = ( {
-  taxon,
-  handleCheckmarkPress,
-  testID,
   clearBackground,
   confidence,
+  handleCheckmarkPress,
+  taxon,
+  testID,
+  white = false,
   activeColor,
   confidencePosition = "photo",
   first = false
@@ -66,6 +68,8 @@ const TaxonResult = ( {
           testID={`${testID}.photo`}
           iconicTaxonName={taxon?.iconic_taxon_name}
           className="rounded-xl"
+          isSmall
+          white={white}
         />
         {( confidence && confidencePosition === "photo" ) && (
           <View className="absolute -bottom-5 w-[62px]">

@@ -58,6 +58,7 @@ const ObsStatus = ( {
         count={numComments}
         white={white}
         filled={commentsFilled}
+        testID="ObsStatus.commentsCount"
       />
       <QualityGradeStatus qualityGrade={qualityGrade} color={iconColor} />
     </View>

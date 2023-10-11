@@ -80,6 +80,7 @@
   "CONFIRM": "CONFIRM",
   "Connected-Accounts": "Connected Accounts",
   "Content-Display": "Content & Display",
+  "Coordinates-copied-to-keyboard": "Coordinates copied to keyboard",
   "Copy-coordinates": "Copy Coordinates",
   "Couldnt-create-comment": "Couldn't create comment",
   "Couldnt-create-identification": "Couldn't create identification",
@@ -303,6 +304,10 @@
   },
   "Notifications": "Notifications",
   "Obscured": "Obscured",
+  "Obscured-observation-location-map-description": {
+    "comment": "Displayed when user views an obscured location on the ObsDetail map screen",
+    "val": "This observation’s location is obscured. You are seeing a randomized point within the obscuration polygon."
+  },
   "Observation": "Observation",
   "Observation-Attribution": "Observation: © { $attribution } · { $restrictions }",
   "OBSERVATIONS": "OBSERVATIONS",
@@ -731,6 +736,8 @@
   "User-location": "User location",
   "Loading-wheel": "Loading wheel",
   "Map-layers": "Map layers",
+  "Share-map": "Share map",
+  "Copy-map-coordinates": "Copy map coordinates",
   "Identification-label": "Identification label",
   "Observation-with-no-evidence": "Observation with no evidence",
   "Photo-importer": "Photo importer",
@@ -800,6 +807,10 @@
   "Lat-Lon-Acc": {
     "comment": "Latitude, longitude, and accuracy on a single line on a single line",
     "val": "Lat: { NUMBER($latitude, maximumFractionDigits: \"6\") }, Lon: { NUMBER($longitude, maximumFractionDigits: \"6\") }, Acc: { $accuracy }"
+  },
+  "Lat-Lon": {
+    "comment": "Latitude, longitude on a single line on a single line",
+    "val": "{ NUMBER($latitude, maximumFractionDigits: \"6\") }, { NUMBER($longitude, maximumFractionDigits: \"6\") }"
   },
   "Every-observation-needs": {
     "comment": "Missing evidence sheet",
