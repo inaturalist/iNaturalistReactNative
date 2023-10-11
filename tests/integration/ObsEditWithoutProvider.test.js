@@ -45,7 +45,8 @@ const mockObsEditProviderWithObs = obs => ObsEditProvider.mockImplementation( ( 
       updateObservationKeys: jest.fn( ),
       setPassesIdentificationTest: jest.fn( ),
       writeExifToCameraRollPhotos: jest.fn( ),
-      photoEvidenceUris: [faker.image.imageUrl( )]
+      photoEvidenceUris: [faker.image.imageUrl( )],
+      setPhotoEvidenceUris: jest.fn( )
     }}
     >
       {children}
