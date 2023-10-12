@@ -919,5 +919,7 @@
   "SPECIES-NEARBY": "SPECIES NEARBY",
   "Below-are-all-the-species-observed-within-50km": "Below are all the species observed within 50 km of your location within the taxon:",
   "Species-Nearby-requires-internet-to-work": "Species Nearby requires internet to work. Please check your internet connection.",
-  "Your-identification-will-be-posted-with-the-following-comment": "Your identification will be posted with the following comment:"
+  "Your-identification-will-be-posted-with-the-following-comment": "Your identification will be posted with the following comment:",
+  "iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo": "iNaturalist isn't able to provide a top ID suggestion for this photo.",
+  "iNaturalist-has-no-ID-suggestions-for-this-photo": "iNaturalist has no ID suggestions for this photo."
 }

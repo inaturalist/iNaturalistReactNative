@@ -1,6 +1,6 @@
 // @flow
 
-import { Heading4, TaxonResult } from "components/SharedComponents";
+import { Body1, Heading4, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
@@ -18,7 +18,18 @@ const SuggestionsList = ( {
   const { t } = useTranslation( );
 
   if ( !nearbySuggestions || nearbySuggestions.length === 0 ) {
-    return null;
+    return (
+      <>
+        <Heading4 className="mt-6 mb-4 ml-4">{t( "TOP-ID-SUGGESTION" )}</Heading4>
+        <Body1 className="mx-10 text-center">
+          {t( "iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo" )}
+        </Body1>
+        <Heading4 className="mt-6 mb-4 ml-4">{t( "NEARBY-SUGGESTIONS" )}</Heading4>
+        <Body1 className="mx-10 text-center">
+          {t( "iNaturalist-has-no-ID-suggestions-for-this-photo" )}
+        </Body1>
+      </>
+    );
   }
 
   const topSuggestion = nearbySuggestions[0];
