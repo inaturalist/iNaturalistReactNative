@@ -25,7 +25,8 @@ type Props = {
   onLog: Function,
   animatedProps: any,
   onZoomStart?: Function,
-  onZoomChange?: Function
+  onZoomChange?: Function,
+  takingPhoto: boolean,
 };
 
 const version = Config.CV_MODEL_VERSION;
@@ -45,7 +46,8 @@ const FrameProcessorCamera = ( {
   onLog,
   animatedProps,
   onZoomStart,
-  onZoomChange
+  onZoomChange,
+  takingPhoto
 }: Props ): Node => {
   useEffect( () => {
     // This registers a listener for the frame processor plugin's log events
@@ -74,6 +76,10 @@ const FrameProcessorCamera = ( {
     frame => {
       "worklet";
 
+      if ( takingPhoto ) {
+        return;
+      }
+
       runAtTargetFps( 1, () => {
         "worklet";
 
@@ -92,7 +98,7 @@ const FrameProcessorCamera = ( {
         }
       } );
     },
-    [version, confidenceThreshold]
+    [version, confidenceThreshold, takingPhoto]
   );
 
   return (
