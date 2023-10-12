@@ -177,6 +177,8 @@ const ObsEditProvider = ( { children }: Props ): Node => {
     setUnsavedChanges( false );
     setPassesEvidenceTest( false );
     setGroupedPhotos( [] );
+    setPhotoEvidenceUris( [] );
+    setComment( "" );
   }, [] );
 
   const stopUpload = ( ) => {
@@ -324,7 +326,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
           } );
         }
         setLoading( false );
-        navigation.navigate( "ObsDetails", { uuid: currentObservation.uuid } );
+        navigation.navigate( "ObservationsStackNavigator", {
+          screen: "ObsDetails",
+          params: { uuid: currentObservation.uuid }
+        } );
       },
       onError: e => {
         const showErrorAlert = err => Alert.alert( "Error", err, [{ text: t( "OK" ) }], {
@@ -455,7 +460,10 @@ const ObsEditProvider = ( { children }: Props ): Node => {
         if ( lastScreen === "ObsDetails" ) {
           navParams.uuid = currentObservation.uuid;
         }
-        navigation.navigate( lastScreen, navParams );
+        navigation.navigate( "ObservationsStackNavigator", {
+          screen: lastScreen,
+          params: navParams
+        } );
       }
     };
 

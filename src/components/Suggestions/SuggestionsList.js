@@ -4,18 +4,29 @@ import { Body1, Heading4, TaxonResult } from "components/SharedComponents";
 import { View } from "components/styledComponents";
 import type { Node } from "react";
 import React from "react";
+import { ActivityIndicator } from "react-native-paper";
 import { useTranslation } from "sharedHooks";
 
 type Props = {
   nearbySuggestions: Array<Object>,
-  onTaxonChosen: Function
+  onTaxonChosen: Function,
+  loading: boolean
 };
 
 const SuggestionsList = ( {
   nearbySuggestions,
-  onTaxonChosen
+  onTaxonChosen,
+  loading
 }: Props ): Node => {
   const { t } = useTranslation( );
+
+  if ( loading ) {
+    return (
+      <View className="justify-center items-center mt-5" testID="SuggestionsList.loading">
+        <ActivityIndicator large />
+      </View>
+    );
+  }
 
   if ( !nearbySuggestions || nearbySuggestions.length === 0 ) {
     return (

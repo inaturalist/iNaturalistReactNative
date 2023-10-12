@@ -27,12 +27,13 @@ type Props = {
   setSelectedPhotoUri: Function,
   nearbySuggestions: Array<Object>,
   onTaxonChosen: Function,
-  loading: boolean
+  loading: boolean,
+  loadingSuggestions: boolean
 };
 
 const Suggestions = ( {
   photoUris, selectedPhotoUri, setSelectedPhotoUri, nearbySuggestions, onTaxonChosen,
-  comment, loading
+  comment, loading, loadingSuggestions
 }: Props ): Node => {
   const { t } = useTranslation( );
   const navigation = useNavigation( );
@@ -65,6 +66,7 @@ const Suggestions = ( {
       <SuggestionsList
         nearbySuggestions={nearbySuggestions}
         onTaxonChosen={onTaxonChosen}
+        loading={loadingSuggestions}
       />
       {nearbySuggestions?.length > 0 && (
         <Attribution

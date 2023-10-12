@@ -56,7 +56,10 @@ const TaxonResult = ( {
     >
       <Pressable
         className="flex-row items-center w-16 grow"
-        onPress={() => navigation.navigate( "TaxonDetails", { id: taxon.id } )}
+        onPress={() => navigation.navigate( "ObservationsStackNavigator", {
+          screen: "TaxonDetails",
+          params: { id: taxon.id }
+        } )}
         accessible
         accessibilityRole="link"
         accessibilityLabel={t( "Navigate-to-taxon-details" )}

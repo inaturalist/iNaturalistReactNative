@@ -72,7 +72,7 @@ const TaxonDetails = ( ): Node => {
             color={theme.colors.onPrimary}
             onPress={( ) => {
               if ( lastScreen ) {
-                navigation.navigate( "CameraNavigator", {
+                navigation.navigate( "ObservationsStackNavigator", {
                   screen: "Suggestions",
                   params: { }
                 } );

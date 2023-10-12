@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import { screen } from "@testing-library/react-native";
 import SuggestionsList from "components/Suggestions/SuggestionsList";
 import initI18next from "i18n/initI18next";
+import i18next from "i18next";
 import React from "react";
 
 import factory from "../../../factory";
@@ -57,5 +58,27 @@ describe( "SuggestionsList", ( ) => {
       `SuggestionsList.taxa.${mockSuggestionsList[1].taxon.id}`
     );
     expect( secondSuggestion ).toBeVisible( );
+  } );
+
+  it( "should display empty text if no suggestions are found", ( ) => {
+    renderComponent(
+      <SuggestionsList
+        nearbySuggestions={[]}
+      />
+    );
+    const emptyText = i18next
+      .t( "iNaturalist-isnt-able-to-provide-a-top-ID-suggestion-for-this-photo" );
+    expect( screen.getByText( emptyText ) ).toBeVisible( );
+  } );
+
+  it( "should display a loading wheel if suggestions are loading", ( ) => {
+    renderComponent(
+      <SuggestionsList
+        nearbySuggestions={[]}
+        loading
+      />
+    );
+    const loading = screen.getByTestId( "SuggestionsList.loading" );
+    expect( loading ).toBeVisible( );
   } );
 } );

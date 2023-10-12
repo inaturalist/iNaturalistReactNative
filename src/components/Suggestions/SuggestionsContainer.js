@@ -30,7 +30,7 @@ const SuggestionsContainer = ( ): Node => {
     longitude: localObservation?.longitude || currentObservation?.longitude
   };
 
-  const { data: nearbySuggestions } = useAuthenticatedQuery(
+  const { data: nearbySuggestions, isLoading: loadingSuggestions } = useAuthenticatedQuery(
     ["scoreImage", params.image],
     async optsWithAuth => scoreImage(
       await flattenUploadParams(
@@ -39,7 +39,10 @@ const SuggestionsContainer = ( ): Node => {
         params.longitude
       ),
       optsWithAuth
-    )
+    ),
+    {
+      enabled: !!params.image
+    }
   );
 
   return (
@@ -53,6 +56,7 @@ const SuggestionsContainer = ( ): Node => {
       comment={comment}
       loading={loading}
       nearbySuggestions={nearbySuggestions}
+      loadingSuggestions={loadingSuggestions && photoEvidenceUris.length > 0}
     />
   );
 };
