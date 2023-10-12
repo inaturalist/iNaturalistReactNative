@@ -1,10 +1,9 @@
 // @flow
 
-import { useNavigation } from "@react-navigation/native";
 import scoreImage from "api/computerVision";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import flattenUploadParams from "sharedHelpers/flattenUploadParams";
 import {
   useAuthenticatedQuery,
@@ -19,15 +18,11 @@ const SuggestionsContainer = ( ): Node => {
     currentObservation,
     createId,
     loading,
-    comment,
-    setComment
+    comment
   } = useContext( ObsEditContext );
   const uuid = currentObservation?.uuid;
   const localObservation = useLocalObservation( uuid );
-  const wasSynced = localObservation?.wasSynced( );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoEvidenceUris[0] );
-
-  const navigation = useNavigation( );
 
   const params = {
     image: selectedPhotoUri,
@@ -47,15 +42,6 @@ const SuggestionsContainer = ( ): Node => {
     )
   );
 
-  useEffect(
-    ( ) => {
-      navigation.addListener( "blur", ( ) => {
-        setComment( "" );
-      } );
-    },
-    [navigation, setComment]
-  );
-
   return (
     <Suggestions
       photoUris={photoEvidenceUris}
@@ -64,9 +50,7 @@ const SuggestionsContainer = ( ): Node => {
       onTaxonChosen={
         identification => createId( identification )
       }
-      setComment={setComment}
       comment={comment}
-      wasSynced={wasSynced}
       loading={loading}
       nearbySuggestions={nearbySuggestions}
     />

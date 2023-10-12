@@ -33,14 +33,15 @@ const ObsEditWithPermission = ( ) => (
   </Mortal>
 );
 
-const MortalSuggestions = ( ) => (
-  <Mortal>
-    <SuggestionsContainer />
-  </Mortal>
-);
-
 const SharedStackScreens = ( ): Node => (
-  <Stack.Group>
+  <Stack.Group
+    screenOptions={{
+      cardStyle: {
+        backgroundColor: "rgba(0,0,0,0)",
+        opacity: 1
+      }
+    }}
+  >
     <Stack.Screen
       name="ObsEdit"
       component={ObsEditWithPermission}
@@ -53,7 +54,7 @@ const SharedStackScreens = ( ): Node => (
     />
     <Stack.Screen
       name="Suggestions"
-      component={MortalSuggestions}
+      component={SuggestionsContainer}
       options={{
         ...removeBottomBorder,
         headerTitle: suggestionsTitle,

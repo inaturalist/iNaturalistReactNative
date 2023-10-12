@@ -3,6 +3,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { fireEvent, screen } from "@testing-library/react-native";
 import TaxonSearch from "components/Suggestions/TaxonSearch";
 import initI18next from "i18n/initI18next";
+import i18next from "i18next";
 import inatjs from "inaturalistjs";
 import { ObsEditContext } from "providers/contexts";
 import INatPaperProvider from "providers/INatPaperProvider";
@@ -85,9 +86,14 @@ jest.mock( "react-native-paper", () => {
   return MockedModule;
 } );
 
-const renderTaxonSearch = ( ) => renderComponent(
+const mockCreateId = jest.fn( );
+
+const renderTaxonSearch = ( loading = false, comment = "" ) => renderComponent(
   <ObsEditContext.Provider value={{
-    updateObservationKeys: jest.fn( )
+    updateObservationKeys: jest.fn( ),
+    createId: mockCreateId,
+    loading,
+    comment
   }}
   >
     <TaxonSearch />
@@ -127,5 +133,13 @@ describe( "TaxonSearch", ( ) => {
     const taxon = mockTaxaList[0];
     fireEvent.changeText( input, "Some taxon" );
     expect( await screen.findByTestId( `Search.taxa.${taxon.id}` ) ).toBeTruthy();
+  } );
+
+  it( "shows comment section if observation has comment", ( ) => {
+    renderTaxonSearch( false, "Comment added to observation in TaxonSearch" );
+    const commentSection = screen.getByText(
+      i18next.t( "Your-identification-will-be-posted-with-the-following-comment" )
+    );
+    expect( commentSection ).toBeVisible( );
   } );
 } );

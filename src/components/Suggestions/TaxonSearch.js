@@ -15,9 +15,13 @@ import { FlatList } from "react-native";
 import Taxon from "realmModels/Taxon";
 import { useAuthenticatedQuery } from "sharedHooks";
 
+import AddCommentPrompt from "./AddCommentPrompt";
+import CommentBox from "./CommentBox";
+
 const TaxonSearch = ( ): Node => {
   const {
-    createId
+    createId,
+    comment
   } = useContext( ObsEditContext );
   const [taxonQuery, setTaxonQuery] = useState( "" );
   const navigation = useNavigation( );
@@ -50,11 +54,13 @@ const TaxonSearch = ( ): Node => {
 
   return (
     <ViewWrapper className="flex-1">
+      <AddCommentPrompt />
+      <CommentBox comment={comment} />
       <SearchBar
         handleTextChange={setTaxonQuery}
         value={taxonQuery}
         testID="SearchTaxon"
-        containerClass="pb-5 mx-4"
+        containerClass="my-5 mx-4"
       />
       <FlatList
         keyboardShouldPersistTaps="always"
