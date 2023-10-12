@@ -28,7 +28,8 @@ type Props = {
   frameProcessor?: Function,
   animatedProps: any,
   onZoomStart?: Function,
-  onZoomChange?: Function
+  onZoomChange?: Function,
+  resizeMode?: string
 };
 
 // A container for the Camera component
@@ -43,7 +44,8 @@ const CameraView = ( {
   frameProcessor,
   animatedProps,
   onZoomStart,
-  onZoomChange
+  onZoomChange,
+  resizeMode
 }: Props ): Node => {
   const [focusAvailable, setFocusAvailable] = useState( true );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
@@ -170,6 +172,7 @@ const CameraView = ( {
           frameProcessor={frameProcessor}
           pixelFormat={pixelFormatPatch()}
           animatedProps={animatedProps}
+          resizeMode={resizeMode || "cover"}
         />
       </GestureDetector>
       <FocusSquare
