@@ -46,7 +46,7 @@ const EvidenceSectionContainer = ( ): Node => {
   }, [] );
 
   useEffect( ( ) => {
-    if ( obsPhotos.length > photoEvidenceUris.length ) {
+    if ( obsPhotos?.length > photoEvidenceUris.length ) {
       setPhotoEvidenceUris( obsPhotos.map(
         obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
       ) );
