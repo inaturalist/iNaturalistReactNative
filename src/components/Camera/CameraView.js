@@ -1,12 +1,13 @@
 import { useIsFocused } from "@react-navigation/native";
 import type { Node } from "react";
 import React, { useCallback, useRef, useState } from "react";
-import { Animated, Platform, StyleSheet } from "react-native";
+import { Animated, StyleSheet } from "react-native";
 import {
   Gesture, GestureDetector
 } from "react-native-gesture-handler";
 import Reanimated from "react-native-reanimated";
 import { Camera } from "react-native-vision-camera";
+import { orientationPatch, pixelFormatPatch } from "sharedHelpers/visionCameraPatches";
 import useDeviceOrientation from "sharedHooks/useDeviceOrientation";
 import useIsForeground from "sharedHooks/useIsForeground";
 
@@ -25,10 +26,10 @@ type Props = {
   onCaptureError?: Function,
   onCameraError?: Function,
   frameProcessor?: Function,
-  frameProcessorFps?: number,
   animatedProps: any,
   onZoomStart?: Function,
-  onZoomChange?: Function
+  onZoomChange?: Function,
+  resizeMode?: string
 };
 
 // A container for the Camera component
@@ -41,10 +42,10 @@ const CameraView = ( {
   onCaptureError,
   onCameraError,
   frameProcessor,
-  frameProcessorFps,
   animatedProps,
   onZoomStart,
-  onZoomChange
+  onZoomChange,
+  resizeMode
 }: Props ): Node => {
   const [focusAvailable, setFocusAvailable] = useState( true );
   const [tappedCoordinates, setTappedCoordinates] = useState( null );
@@ -161,20 +162,17 @@ const CameraView = ( {
           isActive={isActive}
           style={[StyleSheet.absoluteFill]}
           onError={e => onError( e )}
-          // In Android the camera won't set the orientation metadata
-          // correctly without this, but in iOS it won't display the
-          // preview correctly *with* it
-          orientation={Platform.OS === "android"
-            ? deviceOrientation
-            : null}
+          // react-native-vision-camera v3.3.1: This prop is undocumented, but does work on iOS
+          // it does nothing on Android so we set it to null there
+          orientation={orientationPatch( deviceOrientation )}
           ref={cameraRef}
           device={device}
-          preset="photo"
           enableHighQualityPhotos
           // Props for ARCamera only
           frameProcessor={frameProcessor}
-          frameProcessorFps={frameProcessorFps}
+          pixelFormat={pixelFormatPatch()}
           animatedProps={animatedProps}
+          resizeMode={resizeMode || "cover"}
         />
       </GestureDetector>
       <FocusSquare

@@ -100,7 +100,6 @@ const reducer = ( state, action ) => {
 
 const ObsDetailsContainer = ( ): Node => {
   const {
-    setPhotoEvidenceUris,
     setObservations,
     setLastScreen
   } = useContext( ObsEditContext );
@@ -306,10 +305,6 @@ const ObsDetailsContainer = ( ): Node => {
 
   const navToSuggestions = ( ) => {
     setObservations( [observation] );
-    const photoUris = observation.observationPhotos.map(
-      obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
-    );
-    setPhotoEvidenceUris( photoUris );
     setLastScreen( "ObsDetails" );
     navigation.navigate( "Suggestions" );
   };

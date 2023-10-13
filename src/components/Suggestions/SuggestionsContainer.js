@@ -3,7 +3,7 @@
 import scoreImage from "api/computerVision";
 import { ObsEditContext } from "providers/contexts";
 import type { Node } from "react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import flattenUploadParams from "sharedHelpers/flattenUploadParams";
 import {
   useAuthenticatedQuery,
@@ -18,11 +18,21 @@ const SuggestionsContainer = ( ): Node => {
     currentObservation,
     createId,
     loading,
-    comment
+    comment,
+    setPhotoEvidenceUris
   } = useContext( ObsEditContext );
   const uuid = currentObservation?.uuid;
+  const obsPhotos = currentObservation?.observationPhotos;
   const localObservation = useLocalObservation( uuid );
   const [selectedPhotoUri, setSelectedPhotoUri] = useState( photoEvidenceUris[0] );
+
+  useEffect( ( ) => {
+    if ( obsPhotos?.length > photoEvidenceUris.length ) {
+      setPhotoEvidenceUris( obsPhotos.map(
+        obsPhoto => obsPhoto.photo?.url || obsPhoto.photo?.localFilePath
+      ) );
+    }
+  }, [obsPhotos, photoEvidenceUris, setPhotoEvidenceUris] );
 
   const params = {
     image: selectedPhotoUri,
